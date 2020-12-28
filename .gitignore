@@ -14,6 +14,9 @@
 # load folder
 /public/load
 
+# debug.log
+debug.log
+
 # misc
 .DS_Store
 .env.local

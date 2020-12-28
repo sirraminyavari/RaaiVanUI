@@ -9,6 +9,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <link rel="stylesheet" href="%PUBLIC_URL%/api/rv/theme"/>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
     <!-- from source code -->
@@ -48,6 +49,11 @@
       href="%PUBLIC_URL%/load/css/input-anim-label.css"
     />
 
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/api/rv/global_params?set=true"
+      charset="utf-8"
+    ></script>
     <script
       type="text/javascript"
       src="%PUBLIC_URL%/load/scripts/jQuery/jquery.js"
@@ -168,8 +174,6 @@
   <body>
     <script type="text/javascript">
       jQuery(document).ready(function () {
-        window.RVGlobal = {};
-
         window.MasterPageHandler = new MasterPageBuilder({
           ContentSection: document.getElementById("root"),
         });

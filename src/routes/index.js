@@ -1,5 +1,5 @@
-import Home from '../views/Home/Home';
-import Test from '../views/Test/Test';
+import Home from 'views/Home/Home';
+import Test from 'views/Test/Test';
 
 const routes = [
     {
