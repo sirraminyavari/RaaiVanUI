@@ -12,7 +12,9 @@
 /build
 
 # load folder
-/public/load
+/public/load/css
+/public/load/fonts
+/public/load/scripts
 
 # debug.log
 debug.log

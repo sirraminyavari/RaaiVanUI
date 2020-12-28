@@ -2,8 +2,8 @@ import React from "react";
 import useScript from "hooks/useScript";
 
 const Home = () => {
-  useScript("/load/scripts/LoadHome/LoadHome.js", () => {
-    console.log("LoadHome.js loaded");
+  useScript("/load/pageLoadScripts/LoadHome/LoadHome.js", () => {
+    console.log("LoadHome.js has been loaded");
   });
 
   return (
