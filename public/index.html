@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+    <!-- from source code -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/scripts/jQuery/TextNTags/jquery-textntags.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/scripts/jQuery/Tooltip/style.css"
+    />
+    <link
+      rel="Stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/scripts/jQuery/nanoScroller/nanoscroller.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/fonts/font-awesome.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/scripts/Foundation/foundation.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/css/foundation-fix.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/css/input-anim-label.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/jquery.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/jquery.mb.browser.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/jquery.mousewheel.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/jquery.blockUI.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/Foundation/foundation.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/Foundation/what-input.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/API/RVRequest.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/TextEncoding.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/GlobalUtilities.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/OverrideAlerts.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/Lib/underscore.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/TextNTags/jquery-textntags.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/AdvancedTextArea/AdvancedTextArea.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/Tooltip/jquery.tooltip.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/nanoScroller/jquery.nanoscroller.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/jQuery/nanoScroller/overthrow.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/json2.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/AutoSuggest/autosuggest.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/RaaiVanHelp/HelpUtils.js?v=29"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/API/UsersAPI.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/API/RVAPI.js?v=29"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/API/PrivacyAPI.js?v=29"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/USR/MasterPageBuilder.js?v=29"
+    ></script>
+
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/load/scripts/Lang/fa.js?v=29"
+    ></script>
+
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        jQuery(document).foundation();
+
+        for (var i in (window.RVGlobal || {}).Modules || {})
+          RVGlobal.Modules[String(i).toLowerCase()] = RVGlobal.Modules[i];
+      });
+    </script>
+    <!-- from source code -->
+    <title>Raaivan</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        window.RVGlobal = {};
+
+        window.MasterPageHandler = new MasterPageBuilder({
+          ContentSection: document.getElementById("root"),
+        });
+      });
+    </script>
+    <div
+      id="root"
+      class="small-12 medium-12 large-12 rv-content-section"
+      style="position: relative; padding-top: 0.5rem"
+    ></div>
+  </body>
+</html>
