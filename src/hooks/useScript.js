@@ -1,17 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-const useScript = (source, callback) => {
+const useScript = (source, id, callback) => {
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = source;
     script.async = true;
+    script.id = id;
     document.body.appendChild(script);
     script.onload = () => {
-       if (callback) callback();
+      if (callback) callback();
     };
 
     return () => {
-      document.body.removeChild(script);
+      const scriptTag = document.getElementById(id);
+      document.body.removeChild(scriptTag);
     };
   }, [source]);
 };
