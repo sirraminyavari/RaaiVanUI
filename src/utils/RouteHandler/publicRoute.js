@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { AuthContext } from "context/AuthProvider";
 
@@ -8,9 +8,11 @@ const PublicRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
+        //! If user is not authenticated, Go on and show login page.
         if (!isAuthenticated) {
           return <Component {...props} />;
         } else if (currentUser.IncompleteProfile) {
+          //! Otherwise choose which page should be the landing page
           return (
             <Redirect
               to={{
@@ -20,16 +22,16 @@ const PublicRoute = ({ component: Component, ...rest }) => {
             />
           );
         } else if (!appId) {
-            return (
+          return (
             <Redirect
               to={{
                 pathname: "/teams",
                 state: { from: props.location },
               }}
             />
-          ); 
+          );
         } else {
-            return (
+          return (
             <Redirect
               to={{
                 pathname: "/home",

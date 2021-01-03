@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { PrivateRoute, PublicRoute } from "components/RouteHandler";
+import { PrivateRoute, PublicRoute } from "utils/RouteHandler";
 import { AuthProvider } from "context/AuthProvider";
 import MainLayout from "layouts/Main";
 import Login from "views/Auth/Login";

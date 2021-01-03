@@ -11,7 +11,7 @@
     />
     <link rel="stylesheet" href="%PUBLIC_URL%/api/rv/theme"/>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!-- from source code -->
     <link
       rel="stylesheet"
@@ -47,6 +47,16 @@
       rel="stylesheet"
       type="text/css"
       href="%PUBLIC_URL%/load/css/input-anim-label.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/css/Global.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/load/css/RTL.css"
     />
 
     <script
@@ -172,17 +182,6 @@
     <title>Raaivan</title>
   </head>
   <body>
-    <script type="text/javascript">
-      jQuery(document).ready(function () {
-        window.MasterPageHandler = new MasterPageBuilder({
-          ContentSection: document.getElementById("root"),
-        });
-      });
-    </script>
-    <div
-      id="root"
-      class="small-12 medium-12 large-12 rv-content-section"
-      style="position: relative; padding-top: 0.5rem"
-    ></div>
+    <div id="root"></div>
   </body>
 </html>

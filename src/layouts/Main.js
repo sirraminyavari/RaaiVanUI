@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch, NavLink } from "react-router-dom";
+import useScript from "hooks/useScript";
+import { Route, Switch } from "react-router-dom";
 import Routes from "routes";
 
 const switchRoutes = (
@@ -18,23 +18,15 @@ const switchRoutes = (
 );
 
 const Main = () => {
+  useScript("/load/pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
-    <>
-      <div>
-        <ul>
-          <li>
-            <NavLink to="/home">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/profile">Profile</NavLink>
-          </li>
-          <li>
-            <NavLink to="/teams">Teams</NavLink>
-          </li>
-        </ul>
-      </div>
+    <div
+      id="mainContentSection"
+      className="small-12 medium-12 large-12 rv-content-section"
+      style={{ position: "relative", paddingTop: "0.5rem" }}
+    >
       {switchRoutes}
-    </>
+    </div>
   );
 };
 

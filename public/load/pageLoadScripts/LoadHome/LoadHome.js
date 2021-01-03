@@ -1,8 +1,6 @@
 (function () {
-    // var initialJson = JSON.parse(document.getElementById("initialJson").value) || {};
-    // var currentUser = initialJson.User || {};
-
-    const currentUser = {};
+    var initialJson = JSON.parse(document.getElementById("initialJson").value) || {};
+    var currentUser = initialJson.User || {};
 
     var modules = (window.RVGlobal || {}).Modules || {};
     
