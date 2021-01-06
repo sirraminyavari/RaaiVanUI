@@ -1,6 +1,7 @@
 import useScript from "hooks/useScript";
 import { Route, Switch } from "react-router-dom";
 import Routes from "routes";
+import Navbar from "components/Navbar/Navbar";
 
 const switchRoutes = (
   <Switch>
@@ -18,15 +19,18 @@ const switchRoutes = (
 );
 
 const Main = () => {
-  useScript("/load/pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
+//   useScript("/load/pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
-    <div
-      id="mainContentSection"
-      className="small-12 medium-12 large-12 rv-content-section"
-      style={{ position: "relative", paddingTop: "0.5rem" }}
-    >
-      {switchRoutes}
-    </div>
+    <>
+      <Navbar/>
+      <div
+        //id="mainContentSection"
+        className="small-12 medium-12 large-12 rv-content-section"
+        style={{ position: "relative", paddingTop: "0.5rem" }}
+      >
+        {switchRoutes}
+      </div>
+    </>
   );
 };
 

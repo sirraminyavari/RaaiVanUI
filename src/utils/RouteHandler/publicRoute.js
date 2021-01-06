@@ -1,9 +1,13 @@
 import { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { AuthContext } from "context/AuthProvider";
+import { RVGlobalContext } from "context/RVGlobalProvider";
 
 const PublicRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, currentUser, appId } = useContext(AuthContext);
+  const {
+    IsAuthenticated: isAuthenticated,
+    CurrentUser: currentUser,
+    ApplicationID: appId,
+  } = useContext(RVGlobalContext);
   return (
     <Route
       {...rest}
