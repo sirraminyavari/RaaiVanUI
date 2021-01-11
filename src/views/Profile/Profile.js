@@ -2,9 +2,9 @@ import React from "react";
 import useScript from "hooks/useScript";
 
 const Profile = () => {
-  useScript("/load/pageLoadScripts/LoadProfile/_1_profile.js", "1-profile.js");
-  useScript("/load/pageLoadScripts/LoadProfile/_2_profile.js", "2-profile.js");
-  useScript("/load/pageLoadScripts/LoadProfile/_3_profile.js", "3-profile.js");
+  useScript("pageLoadScripts/LoadProfile/_1_profile.js", "1-profile.js");
+  useScript("pageLoadScripts/LoadProfile/_2_profile.js", "2-profile.js");
+  useScript("pageLoadScripts/LoadProfile/_3_profile.js", "3-profile.js");
   return (
     <>
       <div

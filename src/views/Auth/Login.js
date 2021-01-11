@@ -2,10 +2,10 @@ import React from "react";
 import useScript from "hooks/useScript";
 
 const Login = () => {
-    useScript('/load/scripts/USR/LoginControl.js', 'LoginControl.js', () => {
+    useScript('scripts/USR/LoginControl.js', 'LoginControl.js', () => {
         console.log('LoginControl.js has been loaded');
     });
-    useScript('/load/pageLoadScripts/LoadLogin/LoadLogin.js', 'LoadLogin.js', () => {
+    useScript('pageLoadScripts/LoadLogin/LoadLogin.js', 'LoadLogin.js', () => {
         console.log("LoadLogin.js has been loaded");
     });
   return (

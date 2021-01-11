@@ -1,30 +1,24 @@
-import useScript from "hooks/useScript";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import Routes from "routes";
-import Navbar from "components/Navbar/Navbar";
+import Navbar from "./Navbar";
+import ProtectedRoute from "utils/RouteHandler/protectedRoute";
 
 const switchRoutes = (
   <Switch>
     {Routes.map((route, key) => {
+      const { exact, path, component } = route;
       return (
-        <Route
-          exact={route.exact}
-          path={route.path}
-          component={route.component}
-          key={key}
-        />
+        <ProtectedRoute exact={exact} path={path} component={component} key={key} />
       );
     })}
   </Switch>
 );
 
 const Main = () => {
-//   useScript("/load/pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div
-        //id="mainContentSection"
         className="small-12 medium-12 large-12 rv-content-section"
         style={{ position: "relative", paddingTop: "0.5rem" }}
       >

@@ -1,3 +1,3 @@
-export const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+export const getURL = (url) => window.RVAPI[`${url}PageURL`]().slice(5);

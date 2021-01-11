@@ -1,22 +1,23 @@
 import Profile from "views/Profile/Profile";
 import Teams from "views/Teams/Teams";
 import Home from "views/Home/Home";
+import {getURL} from "helpers";
 
 const routes = [
   {
-    path: "/profile",
+    path: getURL('User'),
     name: "ProfilePage",
     exact: true,
     component: Profile,
   },
   {
-    path: "/teams",
+    path: getURL('Applications'),
     name: "TeamsPage",
     exact: true,
     component: Teams,
   },
   {
-    path: "/home",
+    path: getURL('Home'),
     name: "HomePage",
     exact: true,
     component: Home,

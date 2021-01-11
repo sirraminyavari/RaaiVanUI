@@ -2,14 +2,14 @@ import React from "react";
 import useScript from "hooks/useScript";
 
 const Teams = () => {
-  useScript("/load/scripts/USR/ApplicationsManager.js","ApplicationsManager.js");
-  useScript("/load/scripts/CKEditor5/ckeditor.js", "ckeditor.js");
-  useScript("/load/scripts/CCKEditor5/translations/fa.js", "translations.js");
+  useScript("scripts/USR/ApplicationsManager.js","ApplicationsManager.js");
+  useScript("scripts/CKEditor5/ckeditor.js", "ckeditor.js");
+  useScript("scripts/CCKEditor5/translations/fa.js", "translations.js");
 
   //! Load Applications
-  useScript("/load/pageLoadScripts/LoadApplications/_1_applications.js", "1-applications.js");
-  useScript("/load/pageLoadScripts/LoadApplications/_2_applications.js", "2-applications.js");
-  useScript("/load/pageLoadScripts/LoadApplications/_3_applications.js", "3-applications.js");
+  useScript("pageLoadScripts/LoadApplications/_1_applications.js", "1-applications.js");
+  useScript("pageLoadScripts/LoadApplications/_2_applications.js", "2-applications.js");
+  useScript("pageLoadScripts/LoadApplications/_3_applications.js", "3-applications.js");
 
   return (
     <>
