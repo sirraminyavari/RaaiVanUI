@@ -1,13 +1,13 @@
 import React from "react";
-import useScript from "hooks/useScript";
+import useAllScripts from "hooks/useAllScripts";
+
+const scripts = [
+  { src: "scripts/USR/LoginControl.js", id: "LoginControl.js" },
+  { src: "pageLoadScripts/LoadLogin/LoadLogin.js", id: "LoadLogin.js" }
+];
 
 const Login = () => {
-    useScript('scripts/USR/LoginControl.js', 'LoginControl.js', () => {
-        console.log('LoginControl.js has been loaded');
-    });
-    useScript('pageLoadScripts/LoadLogin/LoadLogin.js', 'LoadLogin.js', () => {
-        console.log("LoadLogin.js has been loaded");
-    });
+    useAllScripts(scripts);
   return (
     <>
       <div
@@ -15,7 +15,7 @@ const Login = () => {
         className="small-12 medium-12 large-12"
         style={styles.mainContent}
       >
-        <div style={{width:'100%'}}>
+        <div style={{ width: "100%" }}>
           <div
             id="loginContainer"
             className="small-12 medium-8 large-6 rv-border-radius-1"
@@ -24,13 +24,15 @@ const Login = () => {
             <div id="loginArea" className="small-12 medium-12 large-12"></div>
           </div>
         </div>
-        <div style={{
-            position:'absolute',
-            bottom:'0.5rem',
-            left:0,
-            right:0,
-            textAlign:'center'
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "0.5rem",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+          }}
+        >
           <div
             id="pageDownButton"
             className="rv-air-button-base rv-air-button-white rv-circle"
@@ -49,9 +51,9 @@ const Login = () => {
         <div
           className="small-12 medium-12 large-12"
           style={{
-            textAlign:'center',
-            paddingTop:'0.5rem',
-            height:'4rem'
+            textAlign: "center",
+            paddingTop: "0.5rem",
+            height: "4rem",
           }}
         >
           <div
@@ -62,14 +64,11 @@ const Login = () => {
             <i
               className="fa fa-chevron-up fa-2x"
               aria-hidden="true"
-              style={{marginBottom:'0.5rem'}}
+              style={{ marginBottom: "0.5rem" }}
             ></i>
           </div>
         </div>
-        <div
-          id="loginPageContent"
-          style={styles.loginPageContent}
-        ></div>
+        <div id="loginPageContent" style={styles.loginPageContent}></div>
       </div>
     </>
   );
@@ -89,34 +88,34 @@ const styles = {
     position: "relative",
   },
   loginContainer: {
-    padding:'1rem 5rem',
-    backgroundColor:'rgba(0,0,0,0.7)',
-    margin:'0 auto'
+    padding: "1rem 5rem",
+    backgroundColor: "rgba(0,0,0,0.7)",
+    margin: "0 auto",
   },
   pageDownButton: {
-    display:'inline-flex',
-    alignItems:'center',
-    justifyContent:'center',
-    width:'3rem',
-    height:'3rem'
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "3rem",
+    height: "3rem",
   },
   statisticsArea: {
-    margin:'0rem',
-    padding:'0vw 4vw',
-    minHeight:'100vh',
-    position:'relative'
+    margin: "0rem",
+    padding: "0vw 4vw",
+    minHeight: "100vh",
+    position: "relative",
   },
   pageUpButton: {
-    display:'inline-flex',
-    alignItems:'center',
-    justifyContent:'center',
-    width:'3rem',
-    height:'3rem'
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "3rem",
+    height: "3rem",
   },
   loginPageContent: {
-    minHeight:'calc(100vh - 4rem)',
-    width:'100%'
-  }
+    minHeight: "calc(100vh - 4rem)",
+    width: "100%",
+  },
 };
 
 export default Login;
