@@ -1,7 +1,7 @@
 import { useContext, lazy, Suspense } from "react";
 import { RVGlobalContext } from "context/RVGlobalProvider";
 import NavbarStyle from "assets/jss/components/NavbarStyle";
-const NotLogedInNav = lazy(() => import("./components/LogedOutNav"));
+const LogedOutNav = lazy(() => import("./components/LogedOutNav"));
 const LogedInNav = lazy(() => import("./components/LogedInNav"));
 
 const Navbar = () => {
@@ -12,7 +12,7 @@ const Navbar = () => {
       style={NavbarStyle.navbarContainer}
     >
       <Suspense fallback={<div>Loading...</div>}>
-        {isAuth ? <LogedInNav /> : <NotLogedInNav />}
+        {isAuth ? <LogedInNav /> : <LogedOutNav />}
       </Suspense>
     </div>
   );
