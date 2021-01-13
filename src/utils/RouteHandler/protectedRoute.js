@@ -1,33 +1,28 @@
-import { useState, useEffect } from "react";
-import { Route } from "react-router-dom";
-import Loading from "views/Loading/Loading";
-import Unauthorized from "views/Unauthorized/Unauthorized";
+import { Route, Redirect } from "react-router-dom";
+import useRoute from "hooks/useRoute";
+import ServiceUnavailable from "views/Redirect/ServiceUnavailable";
+import NoApplicationFound from "views/Redirect/NoApplicationFound";
+import Spinner from "components/Spinner";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const [loading, setLoading] = useState(true);
-  const [userHasPermission, setUserHasPermission] = useState(false);
-  useEffect(() => {
-    // Call api here
-    setTimeout(() => {
-      setUserHasPermission(true);
-      setLoading(false);
-    }, 1000);
-    return () => {
-        setUserHasPermission(false);
-        setLoading(true);
-    }
-  }, []);
-
-  return loading ? (
-    <Loading />
-  ) : (
+const ProtectedRoute = ({ component: Component, path, ...rest }) => {
+  const route = useRoute({ name: path.slice(1) });
+  console.log(route);
+  return (
     <Route
       {...rest}
       render={(props) => {
-        if (userHasPermission) {
-          return <Component {...props} />;
+        if (route.ServiceUnavailable) {
+          //Show Service Unavailable Component
+          return <ServiceUnavailable />;
+        } else if (route.NoApplicationFound) {
+          //Show NoApplicationFound Component
+          return <NoApplicationFound />;
+        } else if (!route.IsAuthenticated) {
+          //Show Spinner while checking for permissions
+          return <Spinner />;
         } else {
-          return <Unauthorized />
+          //Show Route Component if permission is granted
+          return <Component {...props} />;
         }
       }}
     />
