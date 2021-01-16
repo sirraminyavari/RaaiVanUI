@@ -25,7 +25,7 @@ const CustomNavBtn = (props) => {
 
   const handleOnClick = (e) => {
     if (!onClickButton) return;
-    onClickButton();
+    onClickButton(e);
   };
 
   return (

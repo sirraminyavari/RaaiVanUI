@@ -4,7 +4,7 @@ const Spinner = () => {
   return (
     <FingerprintSpinner
       color="#ff1d5e"
-      size="300"
+      size={300}
       style={{ margin: "auto", paddingTop: "85vh"}}
     />
   );

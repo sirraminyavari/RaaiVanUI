@@ -48,12 +48,12 @@ export const NavbarList = [
       (!appId || !modules.MSG ? null : {
           icon: "fa-envelope",
           title: RVDic.Messages,
-          onClickButton: () => alert("Messages button clicked")
+          linkTo: getURL('Messages')
       }),
       (!appId ? null : {
           icon: "fa-inbox",
           title: RVDic.Dashboard,
-          onClickButton: () => alert("Dashboard button clicked")
+          linkTo: getURL('Dashboard')
       }),
       (!appId ? null : {
           icon: "fa-bell-o",

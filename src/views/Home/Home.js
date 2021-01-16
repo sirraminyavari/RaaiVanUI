@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useScript from "hooks/useScript";
 
-const Home = () => {
+const Home = (prop) => {
   useScript("pageLoadScripts/LoadHome/LoadHome.js", "LoadHome.js", () => {
-    console.log("LoadHome.js has been loaded");
+    window.loadHome(prop.routeParams);
   });
+
+  //   useEffect(() => {
+  //     import("./HomeScript")
+  //       .then((home) => {
+  //         home.loadScript(prop.routeParams);
+  //         console.log("HomeScript loaded");
+  //       })
+  //       .catch();
+  //   }, []);
 
   return (
     <div

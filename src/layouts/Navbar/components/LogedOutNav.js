@@ -4,6 +4,7 @@ const NotLogedInNav = () => {
       className="RevDirection RevTextAlign"
       style={{
         position: "absolute",
+        display: "flex",
         top: 0,
         bottom: 0,
         [window.RV_RevFloat]: "2rem",
@@ -26,7 +27,7 @@ const NotLogedInNav = () => {
           }}
           onClick={() => alert("Show login dialog")}
         >
-          <span>{window.RVDic.SystemLogin}</span>
+          <div>{window.RVDic.SystemLogin}</div>
         </div>
       </div>
     </div>

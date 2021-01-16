@@ -21,6 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./post_build.ps1",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

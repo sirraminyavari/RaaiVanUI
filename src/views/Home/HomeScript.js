@@ -1,4 +1,4 @@
-window.loadHome = (params) => {
+export const loadScript = (params) => {
   var initialJson = params || {};
   var currentUser = initialJson.User || {};
 
