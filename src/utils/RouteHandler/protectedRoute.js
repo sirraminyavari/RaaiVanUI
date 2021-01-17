@@ -1,25 +1,23 @@
 import { lazy, Suspense } from "react";
 import { Route, Redirect, useLocation } from "react-router-dom";
-import useRoute from "hooks/useRoute";
+import useCheckRoute from "hooks/useCheckRoute";
 import Spinner from "components/Spinner";
 
 const ServiceUnavailable = lazy(() =>
   import("views/Exceptions/ServiceUnavailable")
 );
-const NoApplicationFound = lazy(() => 
+const NoApplicationFound = lazy(() =>
   import("views/Exceptions/NoApplicationFound")
 );
-const AccessDenied = lazy(() => 
-  import("views/Exceptions/AccessDenied")
-);
-const NullProfileException = lazy(() => 
+const AccessDenied = lazy(() => import("views/Exceptions/AccessDenied"));
+const NullProfileException = lazy(() =>
   import("views/Exceptions/NullProfileException")
 );
 
-const ProtectedRoute = ({ component: Component, path, ...rest }) => {
-  const route = useRoute({ name: path.slice(1) });
+const ProtectedRoute = ({ component: Component, name, ...rest }) => {
   const location = useLocation();
-  console.log(route);
+  const route = useCheckRoute({ name });
+  
   return (
     <Suspense fallback={<Spinner />}>
       <Route
