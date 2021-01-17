@@ -1,5 +1,6 @@
 import React from "react";
 import useAllScripts from "hooks/useAllScripts";
+import useCheckRoute from "hooks/useCheckRoute";
 
 const scripts = [
   { src: "scripts/USR/ApplicationsManager.js", id: "ApplicationsManager.js" },
@@ -17,8 +18,9 @@ const scripts = [
   },
 ];
 
-const Teams = () => {
+const Teams = (props) => {
   useAllScripts(scripts);
+  console.log(props);
   return (
     <>
       <div

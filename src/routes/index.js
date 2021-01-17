@@ -3,6 +3,7 @@ import Teams from "views/Teams/Teams";
 import Home from "views/Home/Home";
 import Messages from "views/Messages/Messages";
 import Dashboard from "views/Dashboard/Dashboard";
+import Test from "views/Test/Test"
 import { getURL } from "helpers";
 
 const routes = [
@@ -35,6 +36,12 @@ const routes = [
       name: "dashboard",
       exact: true,
       component: Dashboard
+  },
+  {
+      path: '/test/:id',
+      name: "test",
+      exact: true,
+      component: Test
   }
 ];
 

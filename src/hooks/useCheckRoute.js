@@ -7,6 +7,7 @@ const useCheckRoute = ({ name }) => {
   const routeParams = useParams();
   const queryParams = useQuery();
   const params = { ...routeParams, ...queryParams };
+  console.log(params);
   useEffect(() => {
     window.RVAPI.CheckRoute({
       RouteName: name,

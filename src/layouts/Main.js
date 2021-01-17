@@ -1,14 +1,21 @@
-import { Switch, Redirect } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import Routes from "routes";
 import Navbar from "./Navbar";
-import ProtectedRoute from "utils/RouteHandler/protectedRoute";
+import CheckRoute from "utils/CheckRoute/CheckRoute";
 
 const switchRoutes = (
   <Switch>
     {Routes.map((route, key) => {
-      const { exact, path, component } = route;
+      const { exact, path, component, name } = route;
       return (
-        <ProtectedRoute exact={exact} path={path} component={component} key={key} />
+        <Route
+          key={key}
+          exact={exact}
+          path={path}
+          render={(props) => (
+            <CheckRoute component={component} name={name} props={props} />
+          )}
+        />
       );
     })}
     <Redirect from="/" to="/teams" />
