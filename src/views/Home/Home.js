@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import useScript from "hooks/useScript";
 
-const Home = (prop) => {
-  useScript("pageLoadScripts/LoadHome/LoadHome.js", "LoadHome.js", () => {
-    window.loadHome(prop.routeParams);
-  });
-
-  //   useEffect(() => {
-  //     import("./HomeScript")
-  //       .then((home) => {
-  //         home.loadScript(prop.routeParams);
-  //         console.log("HomeScript loaded");
-  //       })
-  //       .catch();
-  //   }, []);
+const Home = (props) => {
+    useScript("pageLoadScripts/LoadHome/LoadHome.js", "LoadHome.js", () => {
+      window.loadHome(props.route);
+    });
+//   useEffect(() => {
+//     window.GlobalUtilities.load_files(
+//       ["pageLoadScripts/LoadHome/LoadHome.js"],
+//       {
+//         OnLoad: function () {
+//           window.loadHome(props.route);
+//         },
+//       }
+//     );
+//   }, []);
 
   return (
     <div

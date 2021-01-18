@@ -3,7 +3,10 @@ import Teams from "views/Teams/Teams";
 import Home from "views/Home/Home";
 import Messages from "views/Messages/Messages";
 import Dashboard from "views/Dashboard/Dashboard";
-import Test from "views/Test/Test"
+import ErrorView from "views/Error/Error";
+import ChangePassword from "views/ChangePassword/ChangePassword";
+import NewNode from "views/NewNode/NewNode";
+import Test from "views/Test/Test";
 import { getURL } from "helpers";
 
 const routes = [
@@ -32,17 +35,35 @@ const routes = [
     component: Messages,
   },
   {
-      path: getURL("Dashboard"),
-      name: "dashboard",
-      exact: true,
-      component: Dashboard
+    path: getURL("Dashboard"),
+    name: "dashboard",
+    exact: true,
+    component: Dashboard,
   },
   {
-      path: '/test/:id',
-      name: "test",
-      exact: true,
-      component: Test
-  }
+    path: "/error/:code",
+    name: "error",
+    exact: true,
+    component: ErrorView,
+  },
+  {
+    path: "/changepassword",
+    name: "changepassword",
+    exact: true,
+    component: ChangePassword,
+  },
+  {
+    path: "/newnode/:id",
+    name: "newnode",
+    exact: true,
+    component: NewNode,
+  },
+  {
+    path: "/test/:id",
+    name: "test",
+    exact: true,
+    component: Test,
+  },
 ];
 
 export default routes;

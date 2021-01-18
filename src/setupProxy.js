@@ -29,4 +29,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    "/signalr",
+    createProxyMiddleware({
+      target: "http://localhost:20470",
+      changeOrigin: true,
+    })
+  );
 };
