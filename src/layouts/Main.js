@@ -1,7 +1,9 @@
 import { Switch, Redirect, Route } from "react-router-dom";
 import Routes from "routes";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 import CheckRoute from "utils/CheckRoute/CheckRoute";
+import useScript from "hooks/useScript";
 
 const switchRoutes = (
   <Switch>
@@ -23,13 +25,23 @@ const switchRoutes = (
 );
 
 const Main = () => {
+  const paddingName = window.RV_RTL ? "paddingRight" : "paddingLeft";
+  //   useScript("pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
     <>
       <Navbar />
       <div
+        //id="mainContentSection"
         className="small-12 medium-12 large-12 rv-content-section"
-        style={{ position: "relative", paddingTop: "0.5rem", direction: "rtl" }}
+        style={{
+          position: "relative",
+          paddingTop: "0.5rem",
+          direction: "rtl",
+          // TODO: toggle padding value based on menu click
+          [paddingName]: "18rem",
+        }}
       >
+        <Sidebar />
         {switchRoutes}
       </div>
     </>

@@ -33,6 +33,7 @@ const CustomNavBtn = (props) => {
       className={ButtonClass}
       style={{ ...styles.button }}
       onClick={handleOnClick}
+      id={name}
     >
       <div style={styles.buttonFirstChild}>
         <div style={{fontSize: fontSize || '1rem'}}>
