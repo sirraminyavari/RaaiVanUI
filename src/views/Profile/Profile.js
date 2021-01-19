@@ -1,10 +1,16 @@
 import React from "react";
 import useScript from "hooks/useScript";
+import { isEmpty } from "helpers";
 
-const Profile = () => {
-  useScript("pageLoadScripts/LoadProfile/_1_profile.js", "1-profile.js");
-  useScript("pageLoadScripts/LoadProfile/_2_profile.js", "2-profile.js");
-  useScript("pageLoadScripts/LoadProfile/_3_profile.js", "3-profile.js");
+const Profile = (props) => {
+  useScript(
+    "pageLoadScripts/LoadProfile/LoadProfile.js",
+    "LoadProfile.js",
+    (user) => {
+      !isEmpty(user) && window.loadProfile(user);
+    },
+    props.route
+  );
   return (
     <>
       <div
@@ -14,22 +20,10 @@ const Profile = () => {
       ></div>
 
       <div
+        id="profileArea"
         className="small-12 medium-12 large-12"
         style={{ padding: "0vw 6vw", marginBottom: "8rem" }}
-      >
-        <div id="tabsArea" className="small-12 medium-12 large-12"></div>
-
-        <div id="socialArea" className="small-12 medium-12 large-12"></div>
-        <div id="resumeArea" className="small-12 medium-12 large-12"></div>
-        <div
-          id="wikiArea"
-          className="small-12 medium-12 large-12"
-          style={{ marginTop: "1rem" }}
-        >
-          <div id="wikiContent" className="small-12 medium-12 large-12"></div>
-        </div>
-        <div id="relatedArea" className="small-12 medium-12 large-12"></div>
-      </div>
+      ></div>
     </>
   );
 };

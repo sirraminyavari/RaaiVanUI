@@ -17,6 +17,12 @@ const routes = [
     component: Profile,
   },
   {
+    path: getURL("User") + "/:uid",
+    name: "profile",
+    exact: true,
+    component: Profile,
+  },
+  {
     path: getURL("Applications"),
     name: "teams",
     exact: true,

@@ -8,7 +8,6 @@ const NewNode = (props) => {
       window.loadNewNode(props.route);
     }
   );
-  console.log(props);
   return (
     <div
       id="nodeArea"

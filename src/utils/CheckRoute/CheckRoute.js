@@ -5,7 +5,6 @@ import Exception from "components/Exception/Exception";
 const CheckRoute = ({ component: Component, name, props }) => {
   const location = useLocation();
   const route = useCheckRoute({ name });
-  console.log(props);
 
   if (route.ServiceUnavailable) {
     //Show Service Unavailable Component
@@ -41,7 +40,7 @@ const CheckRoute = ({ component: Component, name, props }) => {
     );
   } else if (route.RedirectToProfile && location.pathname !== "/user") {
     const path = route.RedirectToProfile;
-    const isString = typeof result === "string";
+    const isString = typeof path === "string";
     return (
       <Redirect
         to={{

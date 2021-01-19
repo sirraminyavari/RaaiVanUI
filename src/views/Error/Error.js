@@ -4,7 +4,6 @@ const ErrorView = (props) => {
   useScript("pageLoadScripts/LoadError/LoadError.js", "LoadError.js", () => {
     window.loadError(props.route);
   });
-  console.log(props);
   return (
     <div
       className="small-12 medium-12 large-12"

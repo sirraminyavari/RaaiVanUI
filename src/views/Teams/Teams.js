@@ -1,25 +1,14 @@
-import React from "react";
-import useAllScripts from "hooks/useAllScripts";
+import useScript from "hooks/useScript";
 
-const scripts = [
-  { src: "scripts/USR/ApplicationsManager.js", id: "ApplicationsManager.js" },
-  {
-    src: "pageLoadScripts/LoadApplications/_1_applications.js",
-    id: "1-applications.js",
-  },
-  {
-    src: "pageLoadScripts/LoadApplications/_2_applications.js",
-    id: "2-applications.js",
-  },
-  {
-    src: "pageLoadScripts/LoadApplications/_3_applications.js",
-    id: "3-applications.js",
-  },
-];
+const Teams = () => {
+  useScript(
+    "pageLoadScripts/LoadApplications/LoadApplications.js",
+    "LoadApplications.js",
+    () => {
+      window.loadApplications();
+    }
+  );
 
-const Teams = (props) => {
-  useAllScripts(scripts);
-  console.log(props);
   return (
     <>
       <div

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 //! This hook injects script tag to body on componentDidMount ...
 //! and removes it on componentWillUnmount.
-const useScript = (src, id, callback) => {
+const useScript = (src, id, callback, params) => {
   let source = `/load/${src}`;
   useEffect(() => {
     const script = document.createElement("script");
@@ -12,7 +12,7 @@ const useScript = (src, id, callback) => {
     document.body.appendChild(script);
     script.onload = () => {
       //! Do some stuff in a callback when script loaded.
-      if (callback) callback();
+      if (callback) callback(params);
     };
 
     //! Clean up. Remove script according to its id.
@@ -20,7 +20,7 @@ const useScript = (src, id, callback) => {
       const scriptTag = document.getElementById(id);
       document.body.removeChild(scriptTag);
     };
-  }, [src]);
+  }, [src, params]);
 };
 
 export default useScript;
