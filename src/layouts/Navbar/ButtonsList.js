@@ -14,7 +14,6 @@ export const Menu = {
     icon: "fa-user-circle",
     title: RVDic.WorkTable,
     name: "worktableButton",
-    onClickButton: () => alert("clicked")
 }
 
 export const SearchOptions = {

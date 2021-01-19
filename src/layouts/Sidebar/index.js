@@ -13,7 +13,7 @@ const getVersion = () => {
   return systemVersion;
 };
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }) => {
   return (
     <div
       className="SoftBackgroundColor SurroundingShadow"
@@ -25,8 +25,9 @@ const Sidebar = () => {
         top: "3.4rem",
         bottom: 0,
         width: `${sideWidth}rem`,
-        // TODO: toggle right or left value based on menu click
-        [window.RV_Float]: `${-sideWidth + 18}rem`,
+        [window.RV_Float]: `${
+          isOpen ? `${-sideWidth + 18}rem` : `${-sideWidth}rem`
+        }`,
       }}
     >
       <div

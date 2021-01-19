@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
+import { ThemeContext } from "context/ThemeProvider";
 import Routes from "routes";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
@@ -25,6 +27,7 @@ const switchRoutes = (
 );
 
 const Main = () => {
+  const { isOpen } = useContext(ThemeContext);
   const paddingName = window.RV_RTL ? "paddingRight" : "paddingLeft";
   //   useScript("pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
@@ -37,11 +40,10 @@ const Main = () => {
           position: "relative",
           paddingTop: "0.5rem",
           direction: "rtl",
-          // TODO: toggle padding value based on menu click
-          [paddingName]: "18rem",
+          [paddingName]: isOpen ? "18rem" : "0",
         }}
       >
-        <Sidebar />
+        <Sidebar isOpen={isOpen} />
         {switchRoutes}
       </div>
     </>
