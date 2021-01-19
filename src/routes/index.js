@@ -6,7 +6,9 @@ import Dashboard from "views/Dashboard/Dashboard";
 import ErrorView from "views/Error/Error";
 import ChangePassword from "views/ChangePassword/ChangePassword";
 import NewNode from "views/NewNode/NewNode";
-import Test from "views/Test/Test";
+import Configuration from "views/Settings/Configuration";
+import SystemSettings from "views/Settings/SystemSettings";
+import Users from "views/Settings/Users";
 import { getURL } from "helpers";
 
 const routes = [
@@ -65,11 +67,23 @@ const routes = [
     component: NewNode,
   },
   {
-    path: "/test/:id",
-    name: "test",
+    path: "/configuration",
+    name: "admin_configuration",
     exact: true,
-    component: Test,
+    component: Configuration,
   },
+  {
+    path: "/configuration/systemsettings",
+    name: "admin_systemsettings",
+    exact: true,
+    component: SystemSettings,
+  },
+  {
+    path: "/configuration/users",
+    name: "admin_users",
+    exact: true,
+    component: Users,
+  }
 ];
 
 export default routes;
