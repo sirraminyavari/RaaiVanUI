@@ -3,6 +3,7 @@ import Home from "views/Home/Home";
 import Messages from "views/Messages";
 import Dashboard from "views/Dashboard";
 import AdvancedSearch from "views/AdvancedSearch";
+import Search from "views/Search";
 import { getURL } from "helpers";
 
 const NavbarRoutes = [
@@ -35,6 +36,12 @@ const NavbarRoutes = [
     name: "advanced_search",
     exact: true,
     component: AdvancedSearch,
+  },
+  {
+    path: "/dosearch/:searchtext",
+    name: "search",
+    exact: true,
+    component: Search,
   },
 ];
 
