@@ -1,15 +1,7 @@
-// import useScript from "hooks/useScript";
 import PanelList from "./panelList";
 import Panel from "components/Panel";
 
 const Configuration = () => {
-//   useScript(
-//     "pageLoadScripts/LoadConfiguration/LoadConfiguration.js",
-//     "LoadConfiguration.js",
-//     () => {
-//       window.loadConfiguration();
-//     }
-//   );
   return (
     <div
       id="settingsArea"

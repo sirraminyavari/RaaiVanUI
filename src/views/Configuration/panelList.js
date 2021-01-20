@@ -21,6 +21,7 @@ const panelList = [
     url: "externalnotifications",
   },
   { name: "RemoteServers", icon: "remote_server.png", url: "remoteservers" },
+  { name: "Help", icon: "Book.png", url: "help" },
 ];
 
 export default panelList;
