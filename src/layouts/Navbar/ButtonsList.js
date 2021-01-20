@@ -19,7 +19,8 @@ export const Menu = {
 export const SearchOptions = {
     Advanced: {
         icon: "fa-filter",
-        title: RVDic.Advanced
+        title: RVDic.Advanced,
+        linkTo: getURL('Classes')
     },
     Users: {
         title: RVDic.KnowledgeWorkers,

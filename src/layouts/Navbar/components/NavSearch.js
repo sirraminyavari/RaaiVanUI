@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { RVGlobalContext } from "context/RVGlobalProvider";
 import NavBtnComponent from "components/NavbarButton/NavBotton";
 import NavbarStyle from "assets/jss/components/NavbarStyle";
@@ -13,7 +14,9 @@ const NavSearch = () => {
       {appId && (
         <div className="show-for-large" style={NavbarStyle.searchContainer}>
           <div style={NavbarStyle.searchOptions}>
-            <NavBtnComponent {...Buttons.SearchOptions.Advanced} />
+            <Link to={Buttons.SearchOptions.Advanced.linkTo}>
+              <NavBtnComponent {...Buttons.SearchOptions.Advanced} />
+            </Link>
             {!isSaas && (
               <>
                 <div style={NavbarStyle.Saas1}>
