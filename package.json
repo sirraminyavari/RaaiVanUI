@@ -2,7 +2,7 @@
   "name": "raaivan-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:20470",
+  "proxy": "http://185.239.107.180",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
