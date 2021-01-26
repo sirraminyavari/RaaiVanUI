@@ -1,19 +1,41 @@
+import Avatar from "components/Avatar";
+
 const NewNavbar = () => {
-    return (
+  return (
+    <div
+      style={{
+        backgroundColor: "#2B7BE4",
+        height: "11%",
+        overflow: "hidden",
+        position: "fixed",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        top: 0,
+        width: "calc(100% - 250px)",
+        padding: "0 20px",
+        zIndex: 1,
+      }}
+    >
+      <div>Nav Buttons</div>
       <div
         style={{
-          backgroundColor: "#2B7BE4",
-          height: "10%",
-          overflow: "hidden",
-          position: "fixed",
-          top: 0,
-          width: "100%",
-          zIndex: 1
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          width: "400px",
         }}
       >
-        Navbar
+        <div>
+          <input
+            type="search"
+            style={{ border: "none", borderRadius: "5px", outline: 0, height: "32px", width: "250px", padding: "0 10px" }}
+          />
+        </div>
+        <Avatar radius={45} />
       </div>
-    );
-  };
-  
-  export default NewNavbar;  
+    </div>
+  );
+};
+
+export default NewNavbar;

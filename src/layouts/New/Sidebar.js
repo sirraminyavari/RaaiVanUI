@@ -1,3 +1,8 @@
+import MenuIcon from "assets/icons/menu.svg";
+import FilterIcon from "assets/icons/filter.svg";
+import EditIcon from "assets/icons/edit.svg";
+import Logo from "assets/icons/logo.svg";
+
 const NewSidebar = () => {
   return (
     <div
@@ -12,21 +17,42 @@ const NewSidebar = () => {
         right: 0,
         backgroundColor: "#033547",
         overflowX: "hidden",
-        paddingTop: "10px",
-        color: "#ddd",
+        color: "#fff",
       }}
     >
-      <div style={{ flexGrow: 1, padding: "0 20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h4>Logo</h4>
-          <h4>Button</h4>
+      <div style={{ flexGrow: 1, padding: "0 20px", }}>
+        <div style={{ display: "flex", justifyContent: "space-between", height: "14%" }}>
+          <img src={Logo} width="100" alt="logo-icon" />
+          <img
+            src={MenuIcon}
+            width="25"
+            alt="menu-icon"
+            style={{ cursor: "pointer" }}
+          />
         </div>
-        <h3>تیم شاهین</h3>
-        <input
-          type="search"
-          placeholder="جستجو در دسته و کلاس ها"
-          style={{ width: "100%" }}
-        ></input>
+        <div style={{ fontSize: 22, margin: "35px 0" }}>
+          <span>تیم شاهین</span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            placeItems: "center",
+            borderBottom: "1px solid #707070",
+          }}
+        >
+          <input
+            type="search"
+            placeholder="جستجو در دسته و کلاس ها"
+            style={{
+              width: "100%",
+              backgroundColor: "inherit",
+              color: "#fff",
+              border: "none",
+              outline: 0,
+            }}
+          />
+          <img src={FilterIcon} style={{ color: "#707070" }} />
+        </div>
       </div>
       <div>
         <div
@@ -34,11 +60,12 @@ const NewSidebar = () => {
             backgroundColor: "#032E3D",
             height: "40px",
             lineHeight: "40px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          <h5 style={{ margin: "0", textAlign: "center" }}>
-            مدیریت دسته و کلاس ها
-          </h5>
+          <img src={EditIcon} />
+          <span style={{ marginRight: "5px" }}>مدیریت دسته و کلاس ها</span>
         </div>
         <div
           style={{

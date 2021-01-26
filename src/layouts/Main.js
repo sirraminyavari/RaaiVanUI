@@ -29,12 +29,12 @@ const Main = () => {
   const { isOpen } = useContext(ThemeContext);
   const marginName = window.RV_RTL ? "marginRight" : "marginLeft";
   return (
-    <div style={{ direction: "rtl" }}>
+    <div style={{ direction: window.RV_Direction }}>
       <Sidebar />
       <div
         style={{
           [marginName]: "250px",
-          height: "100vh",
+          height: "100vh"
         }}
       >
         <Navbar />
