@@ -1,10 +1,10 @@
-import useScript from "hooks/useScript";
-import { isEmpty } from "helpers";
+import useScript from 'hooks/useScript';
+import { isEmpty } from 'helpers';
 
 const Users = (props) => {
   useScript(
-    "pageLoadScripts/LoadUsers/LoadUsers.js",
-    "LoadUsers.js",
+    'pageLoadScripts/LoadUsers/LoadUsers.js',
+    'LoadUsers.js',
     (users) => {
       !isEmpty(users) && window.loadUsers(users);
     },
@@ -14,8 +14,7 @@ const Users = (props) => {
     <div
       id="usersArea"
       className="small-12 medium-12 large-12 row align-center"
-      style={{ marginBottom: "5rem", padding: "0 10vw 0 10vw" }}
-    ></div>
+      style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
   );
 };
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import useQuery from "hooks/useQuery";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useQuery from 'hooks/useQuery';
 
 const useCheckRoute = ({ name }) => {
   const [result, setResult] = useState({});

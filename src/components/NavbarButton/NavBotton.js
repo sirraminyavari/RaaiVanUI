@@ -1,5 +1,5 @@
-import ClassNames from "classnames";
-import styles from "./NavButtonStyle";
+import ClassNames from 'classnames';
+import styles from './NavButtonStyle';
 
 const CustomNavBtn = (props) => {
   const {
@@ -16,10 +16,10 @@ const CustomNavBtn = (props) => {
   } = props;
 
   const ButtonClass = ClassNames(
-    "Direction TextAlign rv-bg-color-trans-white-opaque",
+    'Direction TextAlign rv-bg-color-trans-white-opaque',
     {
-      [dontHide ? "" : "show-for-large"]: hasAppId,
-      [hideForLarge ? "hide-for-large" : ""]: hasAppId,
+      [dontHide ? '' : 'show-for-large']: hasAppId,
+      [hideForLarge ? 'hide-for-large' : '']: hasAppId,
     }
   );
 
@@ -33,22 +33,16 @@ const CustomNavBtn = (props) => {
       className={ButtonClass}
       style={{ ...styles.button }}
       onClick={handleOnClick}
-      id={name}
-    >
+      id={name}>
       <div style={styles.buttonFirstChild}>
-        <div style={{fontSize: fontSize || '1rem'}}>
+        <div style={{ fontSize: fontSize || '1rem' }}>
           {imageURL && (
             <img
               className="rv-circle"
-              style={{ width: "1.5rem", height: "1.5rem" }}
+              style={{ width: '1.5rem', height: '1.5rem' }}
             />
           )}
-          {icon && (
-            <i
-              className={`fa ${icon} fa-lg`}
-              aria-hidden={true}
-            ></i>
-          )}
+          {icon && <i className={`fa ${icon} fa-lg`} aria-hidden={true}></i>}
         </div>
       </div>
       <div style={styles.buttonSecondChild}>
@@ -56,14 +50,12 @@ const CustomNavBtn = (props) => {
         {isMenu && (
           <i
             className="fa fa-caret-down"
-            style={{ marginRight: "0.3rem" }}
-            aria-hidden={true}
-          ></i>
+            style={{ marginRight: '0.3rem' }}
+            aria-hidden={true}></i>
         )}
       </div>
     </div>
   );
 };
-
 
 export default CustomNavBtn;

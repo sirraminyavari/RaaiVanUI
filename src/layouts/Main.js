@@ -1,10 +1,11 @@
-import { useContext } from "react";
-import { Switch, Redirect, Route } from "react-router-dom";
-import { ThemeContext } from "context/ThemeProvider";
-import Routes from "routes";
-import Navbar from "./New/Navbar";
-import Sidebar from "./New/Sidebar";
-import CheckRoute from "utils/CheckRoute/CheckRoute";
+import { useContext } from 'react';
+import { Switch, Redirect, Route } from 'react-router-dom';
+import { ThemeContext } from 'context/ThemeProvider';
+import Routes from 'routes';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import CheckRoute from 'utils/CheckRoute/CheckRoute';
+import useScript from 'hooks/useScript';
 
 const switchRoutes = (
   <Switch>
@@ -27,20 +28,17 @@ const switchRoutes = (
 
 const Main = () => {
   const { isOpen } = useContext(ThemeContext);
-  const marginName = window.RV_RTL ? "marginRight" : "marginLeft";
+  const marginName = window.RV_RTL ? 'marginRight' : 'marginLeft';
   return (
     <div style={{ direction: window.RV_Direction }}>
       <Sidebar />
       <div
         style={{
-          [marginName]: "250px",
-          height: "100vh"
-        }}
-      >
+          [marginName]: '250px',
+          height: '100vh',
+        }}>
         <Navbar />
-        <div style={{ marginTop: "100px" }}>
-          {switchRoutes}
-        </div>
+        <div style={{ marginTop: '100px' }}>{switchRoutes}</div>
       </div>
     </div>
   );

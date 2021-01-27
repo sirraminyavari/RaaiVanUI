@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import NavBtnComponent from "components/NavbarButton/NavBotton";
-import NavbarStyle from "assets/jss/components/NavbarStyle";
-import * as Buttons from "../ButtonsList";
+import { Link } from 'react-router-dom';
+import NavBtnComponent from 'components/NavbarButton/NavBotton';
+import NavbarStyle from 'assets/jss/components/NavbarStyle';
+import * as Buttons from '../ButtonsList';
 
 const NavButtons = () => {
   return (

@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 //! This hook injects script tag to body on componentDidMount ...
 //! and removes it on componentWillUnmount.
 const useScript = (src, id, callback, params) => {
   let source = `/load/${src}`;
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = source;
     script.async = true;
     script.id = id;
