@@ -1,6 +1,6 @@
-import { Redirect, useLocation } from "react-router-dom";
-import useCheckRoute from "hooks/useCheckRoute";
-import Exception from "components/Exception/Exception";
+import { Redirect, useLocation } from 'react-router-dom';
+import useCheckRoute from 'hooks/useCheckRoute';
+import Exception from 'components/Exception/Exception';
 
 const CheckRoute = ({ component: Component, name, props }) => {
   const location = useLocation();
@@ -23,38 +23,38 @@ const CheckRoute = ({ component: Component, name, props }) => {
     return (
       <Redirect
         to={{
-          pathname: "/login",
+          pathname: '/login',
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToHome && location.pathname !== "/home") {
+  } else if (route.RedirectToHome && location.pathname !== '/home') {
     //Redirect to '/home'
     return (
       <Redirect
         to={{
-          pathname: "/home",
+          pathname: '/home',
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToProfile && location.pathname !== "/user") {
+  } else if (route.RedirectToProfile && location.pathname !== '/user') {
     const path = route.RedirectToProfile;
-    const isString = typeof path === "string";
+    const isString = typeof path === 'string';
     return (
       <Redirect
         to={{
-          pathname: isString ? `/user/${path}` : "/user",
+          pathname: isString ? `/user/${path}` : '/user',
           state: { from: props.location },
         }}
       />
-    )
-  } else if (route.RedirectToTeams && location.pathname !== "/teams") {
+    );
+  } else if (route.RedirectToTeams && location.pathname !== '/teams') {
     //Redirect to '/teams'
     return (
       <Redirect
         to={{
-          pathname: "/teams",
+          pathname: '/teams',
           state: { from: props.location },
         }}
       />
@@ -64,7 +64,7 @@ const CheckRoute = ({ component: Component, name, props }) => {
     return (
       <Redirect
         to={{
-          pathname: "/changepassword",
+          pathname: '/changepassword',
           state: { from: props.location },
         }}
       />

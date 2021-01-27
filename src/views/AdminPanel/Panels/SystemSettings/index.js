@@ -1,10 +1,10 @@
-import useScript from "hooks/useScript";
-import { isEmpty } from "helpers";
+import useScript from 'hooks/useScript';
+import { isEmpty } from 'helpers';
 
 const SystemSettings = (props) => {
   useScript(
-    "pageLoadScripts/LoadSystemSettings/LoadSystemSettings.js",
-    "LoadSystemSettings.js",
+    'pageLoadScripts/LoadSystemSettings/LoadSystemSettings.js',
+    'LoadSystemSettings.js',
     (settings) => {
       !isEmpty(settings) && window.loadSystemSettings(settings);
     },
@@ -13,8 +13,7 @@ const SystemSettings = (props) => {
   return (
     <div
       id="settingsArea"
-      className="small-12 medium-12 large-12 row align-center rv-form"
-    ></div>
+      className="small-12 medium-12 large-12 row align-center rv-form"></div>
   );
 };
 

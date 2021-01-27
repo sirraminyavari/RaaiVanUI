@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import NavBtnComponent from "components/NavbarButton/NavBotton";
-import NavButtons from "./NavButtons";
-import NavSearch from "./NavSearch";
-import NavbarStyle from "assets/jss/components/NavbarStyle";
-import * as Buttons from "../ButtonsList";
-import { ThemeContext } from "context/ThemeProvider";
+import { useContext } from 'react';
+import NavBtnComponent from 'components/NavbarButton/NavBotton';
+import NavButtons from './NavButtons';
+import NavSearch from './NavSearch';
+import NavbarStyle from 'assets/jss/components/NavbarStyle';
+import * as Buttons from '../ButtonsList';
+import { ThemeContext } from 'context/ThemeProvider';
 
 const LogedInNav = () => {
   const { isOpen, setIsOpen } = useContext(ThemeContext);
@@ -19,8 +19,7 @@ const LogedInNav = () => {
       </div>
       <div
         className="small-12 medium-12 large-12 Direction TextAlign"
-        style={NavbarStyle.logedInNav}
-      >
+        style={NavbarStyle.logedInNav}>
         <NavButtons />
         <NavSearch />
       </div>

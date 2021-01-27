@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { RVGlobalContext } from "context/RVGlobalProvider";
-import NavBtnComponent from "components/NavbarButton/NavBotton";
-import NavbarStyle from "assets/jss/components/NavbarStyle";
-import * as Buttons from "../ButtonsList";
+import { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { RVGlobalContext } from 'context/RVGlobalProvider';
+import NavBtnComponent from 'components/NavbarButton/NavBotton';
+import NavbarStyle from 'assets/jss/components/NavbarStyle';
+import * as Buttons from '../ButtonsList';
 
 const searchIcon = (
   <div style={NavbarStyle.searchIcon}>
@@ -15,7 +15,7 @@ const searchIcon = (
 
 const NavSearch = () => {
   const history = useHistory();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const { ApplicationID: appId, SAASBasedMultiTenancy: isSaas } = useContext(
     RVGlobalContext
   );
@@ -25,12 +25,12 @@ const NavSearch = () => {
   };
 
   const clearSearchField = () => {
-    setSearchText("");
+    setSearchText('');
   };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    if (searchText === "") return;
+    if (searchText === '') return;
     clearSearchField();
     history.push(`/dosearch/${window.Base64.encode(searchText)}`);
   };
@@ -58,11 +58,10 @@ const NavSearch = () => {
           </div>
           <form onSubmit={handleSubmitForm}>
             <div style={NavbarStyle.middle}>
-              {searchText !== "" ? (
+              {searchText !== '' ? (
                 <Link
                   to={`/dosearch/${window.Base64.encode(searchText)}`}
-                  onClick={handleClickIcon}
-                >
+                  onClick={handleClickIcon}>
                   {searchIcon}
                 </Link>
               ) : (
