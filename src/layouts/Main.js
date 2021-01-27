@@ -1,11 +1,8 @@
-import { useContext } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
-import { ThemeContext } from 'context/ThemeProvider';
 import Routes from 'routes';
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
+import Navbar from './New/Navbar';
+import Sidebar from './New/Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import useScript from 'hooks/useScript';
 
 const switchRoutes = (
   <Switch>
@@ -27,7 +24,6 @@ const switchRoutes = (
 );
 
 const Main = () => {
-  const { isOpen } = useContext(ThemeContext);
   const marginName = window.RV_RTL ? 'marginRight' : 'marginLeft';
   return (
     <div style={{ direction: window.RV_Direction }}>
