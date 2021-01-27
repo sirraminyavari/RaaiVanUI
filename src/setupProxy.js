@@ -1,38 +1,38 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
   app.use(
-    "/api",
+    '/api',
     createProxyMiddleware({
-      target: "http://185.239.107.180",
+      target: 'http://185.239.107.180',
       changeOrigin: true,
     })
   );
   app.use(
-    "/rss",
+    '/rss',
     createProxyMiddleware({
-      target: "http://185.239.107.180",
+      target: 'http://185.239.107.180',
       changeOrigin: true,
     })
   );
   app.use(
-    "/upload",
+    '/upload',
     createProxyMiddleware({
-      target: "http://185.239.107.180",
+      target: 'http://185.239.107.180',
       changeOrigin: true,
     })
   );
   app.use(
-    "/download",
+    '/download',
     createProxyMiddleware({
-      target: "http://185.239.107.180",
+      target: 'http://185.239.107.180',
       changeOrigin: true,
     })
   );
   app.use(
-    "/signalr",
+    '/signalr',
     createProxyMiddleware({
-      target: "http://185.239.107.180",
+      target: 'http://185.239.107.180',
       changeOrigin: true,
     })
   );
