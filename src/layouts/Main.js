@@ -1,8 +1,9 @@
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Routes from 'routes';
-import Navbar from './New/Navbar';
-import Sidebar from './New/Sidebar';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
+import { MainContainer, ContentWrapper, Content } from 'assets/jss/Main.styles';
 
 const switchRoutes = (
   <Switch>
@@ -24,19 +25,14 @@ const switchRoutes = (
 );
 
 const Main = () => {
-  const marginName = window.RV_RTL ? 'marginRight' : 'marginLeft';
   return (
-    <div style={{ direction: window.RV_Direction }}>
+    <MainContainer>
       <Sidebar />
-      <div
-        style={{
-          [marginName]: '250px',
-          height: '100vh',
-        }}>
+      <ContentWrapper>
         <Navbar />
-        <div style={{ marginTop: '100px' }}>{switchRoutes}</div>
-      </div>
-    </div>
+        <Content>{switchRoutes}</Content>
+      </ContentWrapper>
+    </MainContainer>
   );
 };
 

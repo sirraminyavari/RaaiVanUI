@@ -1,26 +1,15 @@
-import UserIcon from "assets/icons/user.svg";
+import UserIcon from 'assets/icons/user.svg';
+import { AvatarWrapper, AvatarImage } from 'assets/jss/Navbar.styles';
 
-const Avatar = (props) => {
-  const { radius, image } = props;
+const Avatar = ({ radius, userImage }) => {
   return (
-    <div
-      style={{
-        width: radius,
-        height: radius,
-        borderRadius: radius,
-        padding: 0,
-        marginRight: 15,
-        position: "relative",
-        overflow: "hidden",
-        border: "2px solid #fff",
-      }}
-    >
-      <img
-        src={image ? image : UserIcon}
-        width="100%"
-        style={{ position: "absolute", top: 0 }}
+    <AvatarWrapper>
+      <AvatarImage
+        src={userImage ? userImage : UserIcon}
+        radius={radius}
+        alt="user-avatar"
       />
-    </div>
+    </AvatarWrapper>
   );
 };
 

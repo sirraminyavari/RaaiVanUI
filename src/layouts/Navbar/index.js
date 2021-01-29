@@ -1,19 +1,30 @@
-import { useContext, lazy, Suspense } from 'react';
-import { RVGlobalContext } from 'context/RVGlobalProvider';
-import NavbarStyle from 'assets/jss/components/NavbarStyle';
-const LogedOutNav = lazy(() => import('./components/LogedOutNav'));
-const LogedInNav = lazy(() => import('./components/LogedInNav'));
+import Avatar from 'components/Avatar';
+import SocialIcon from 'assets/icons/social.svg';
+import TeamsIcon from 'assets/icons/teams.svg';
+import MessagesIcon from 'assets/icons/messages.svg';
+import NotificationsIcon from 'assets/icons/notifications.svg';
+import NavbarButton from './NavbarButton';
+import NavbarSearchInput from './NavbarSearchInput';
+import {
+  NavbarContainer,
+  ButtonsWrapper,
+  SearchWrapper,
+} from 'assets/jss/Navbar.styles';
 
 const Navbar = () => {
-  const { IsAuthenticated: isAuth } = useContext(RVGlobalContext);
   return (
-    <div
-      className="WarmBackgroundColor RevTextAlign rv-not-printable"
-      style={NavbarStyle.navbarContainer}>
-      <Suspense fallback={<div>Loading...</div>}>
-        {isAuth ? <LogedInNav /> : <LogedOutNav />}
-      </Suspense>
-    </div>
+    <NavbarContainer>
+      <ButtonsWrapper>
+        <NavbarButton label="اجتماعی" icon={SocialIcon} />
+        <NavbarButton label="تیم ها" icon={TeamsIcon} />
+        <NavbarButton label="پیام ها" icon={MessagesIcon} />
+        <NavbarButton label="اعلان ها" icon={NotificationsIcon} badge={99} />
+      </ButtonsWrapper>
+      <SearchWrapper>
+        <NavbarSearchInput />
+        <Avatar radius={32} />
+      </SearchWrapper>
+    </NavbarContainer>
   );
 };
 
