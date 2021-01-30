@@ -1,5 +1,5 @@
 import UserIcon from 'assets/icons/user.svg';
-import { AvatarWrapper, AvatarImage } from 'assets/jss/Navbar.styles';
+import { AvatarWrapper, AvatarImage } from './Avatar.styles';
 
 const Avatar = ({ radius, userImage }) => {
   return (

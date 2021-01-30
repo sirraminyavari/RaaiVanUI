@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  SearchContainer,
-  SearchInput,
-  SearchIcon,
-} from 'assets/jss/Navbar.styles';
+import { SearchContainer, SearchInput, SearchIcon } from './Navbar.styles';
 
 const NavbarSearchInput = () => {
   const [isFocused, setIsFocused] = useState(false);

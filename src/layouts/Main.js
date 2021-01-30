@@ -3,7 +3,7 @@ import Routes from 'routes';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import { MainContainer, ContentWrapper, Content } from 'assets/jss/Main.styles';
+import { MainContainer, ContentWrapper, Content } from './Main.styles';
 
 const switchRoutes = (
   <Switch>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.div`
-  background-color: #2b7be4;
+  background-color: #2b388f;
   height: 10%;
   overflow: hidden;
   position: fixed;
@@ -18,6 +18,34 @@ export const NavbarContainer = styled.div`
 export const ButtonsWrapper = styled.div`
   height: 100%;
   display: flex;
+`;
+
+export const ButtonContainer = styled.div`
+  margin: 0 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: #fff;
+`;
+
+export const ButtonIcon = styled.div`
+  text-align: center;
+  position: relative;
+  font-size: 20px;
+`;
+
+export const BadgeWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  line-height: 22px;
+  border-radius: 10px;
+  background-color: red;
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  font-size: 10px;
 `;
 
 export const SearchWrapper = styled.div`
@@ -46,19 +74,4 @@ export const SearchIcon = styled.i`
   top: 5px;
   font-size: 20px;
   color: ${(props) => (props.inFocus ? `#2b7be4` : `#ddd`)};
-`;
-
-export const AvatarImage = styled.img`
-  vertical-align: middle;
-  width: ${(props) => `${props.radius}px`};
-  height: ${(props) => `${props.radius}px`};
-  border-radius: 50%;
-`;
-
-export const AvatarWrapper = styled.div`
-  border-radius: 50%;
-  padding: 0;
-  margin-right: 25px;
-  overflow: hidden;
-  border: 2px solid #fff;
 `;

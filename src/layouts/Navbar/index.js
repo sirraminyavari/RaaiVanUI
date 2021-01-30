@@ -1,24 +1,26 @@
 import Avatar from 'components/Avatar';
-import SocialIcon from 'assets/icons/social.svg';
-import TeamsIcon from 'assets/icons/teams.svg';
-import MessagesIcon from 'assets/icons/messages.svg';
-import NotificationsIcon from 'assets/icons/notifications.svg';
 import NavbarButton from './NavbarButton';
 import NavbarSearchInput from './NavbarSearchInput';
 import {
   NavbarContainer,
   ButtonsWrapper,
   SearchWrapper,
-} from 'assets/jss/Navbar.styles';
+} from './Navbar.styles';
 
 const Navbar = () => {
   return (
     <NavbarContainer>
       <ButtonsWrapper>
-        <NavbarButton label="اجتماعی" icon={SocialIcon} />
-        <NavbarButton label="تیم ها" icon={TeamsIcon} />
-        <NavbarButton label="پیام ها" icon={MessagesIcon} />
-        <NavbarButton label="اعلان ها" icon={NotificationsIcon} badge={99} />
+        <NavbarButton linkTo="/home" label="خانه" icon="home" />
+        <NavbarButton linkTo="/teams" label="تیم ها" icon="users" />
+        <NavbarButton linkTo="/messages" label="پیام ها" icon="commenting-o" />
+        <NavbarButton linkTo="/inbox" label="کارتابل" icon="inbox" />
+        <NavbarButton
+          linkTo="/notifications"
+          label="اعلان ها"
+          icon="bell"
+          badge={99}
+        />
       </ButtonsWrapper>
       <SearchWrapper>
         <NavbarSearchInput />

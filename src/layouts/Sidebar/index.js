@@ -1,88 +1,56 @@
-import MenuIcon from 'assets/icons/menu.svg';
-import FilterIcon from 'assets/icons/filter.svg';
-import EditIcon from 'assets/icons/edit.svg';
+import { Link } from 'react-router-dom';
 import Logo from 'assets/icons/logo.svg';
+import { useState } from 'react';
+import {
+  SidebarContainer,
+  SidebarContent,
+  SidebarHeader,
+  ToggleArrow,
+  SidebarTitle,
+  SearchWrapper,
+  SearchInput,
+  SidebarFooter,
+} from './Sidebar.styles';
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const ToggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
   return (
-    <div
-      style={{
-        height: '100%',
-        width: '250px',
-        position: 'fixed',
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        top: 0,
-        right: 0,
-        backgroundColor: '#033547',
-        overflowX: 'hidden',
-        color: '#fff',
-      }}>
-      <div style={{ flexGrow: 1, padding: '0 20px' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            height: '14%',
-          }}>
-          <img src={Logo} width="100" alt="logo-icon" />
-          <img
-            src={MenuIcon}
-            width="25"
-            alt="menu-icon"
+    <SidebarContainer width={isOpen ? 250 : 80}>
+      <SidebarContent>
+        <SidebarHeader>
+          <img src={Logo} width="120" alt="logo-icon" />
+          <ToggleArrow onClick={ToggleMenu} isOpen={isOpen}>
+            <i
+              className={`fa fa-arrow-${isOpen ? 'right' : 'left'}`}
+              aria-hidden={true}
+            />
+          </ToggleArrow>
+        </SidebarHeader>
+        <SidebarTitle>
+          <span>تیم شاهین</span>
+          <i
+            className="fa fa-cog"
+            aria-hidden="true"
             style={{ cursor: 'pointer' }}
           />
-        </div>
-        <div style={{ fontSize: 22, margin: '35px 0' }}>
-          <span>تیم شاهین</span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            placeItems: 'center',
-            borderBottom: '1px solid #707070',
-          }}>
-          <input
-            type="search"
-            placeholder="جستجو در دسته و کلاس ها"
-            style={{
-              width: '100%',
-              backgroundColor: 'inherit',
-              color: '#fff',
-              border: 'none',
-              outline: 0,
-            }}
-          />
-          <img
-            src={FilterIcon}
+        </SidebarTitle>
+        <SearchWrapper>
+          <SearchInput type="search" placeholder="جستجو در دسته و کلاس ها" />
+          <i
+            className="fa fa-filter"
+            aria-hidden="true"
             style={{ color: '#707070' }}
-            alt="filter-icon"
           />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            backgroundColor: '#032E3D',
-            height: '40px',
-            lineHeight: '40px',
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
-          <img src={EditIcon} alt="edit-icon" />
-          <span style={{ marginRight: '5px' }}>مدیریت دسته و کلاس ها</span>
-        </div>
-        <div
-          style={{
-            height: '55px',
-            lineHeight: '55px',
-            backgroundColor: '#2B7BE4',
-          }}>
-          <h3 style={{ margin: '0', textAlign: 'center' }}>Footer</h3>
-        </div>
-      </div>
-    </div>
+        </SearchWrapper>
+      </SidebarContent>
+      <SidebarFooter as={Link} to="#">
+        <i className="fa fa-pencil" aria-hidden="true" />
+        <span style={{ marginRight: '5px' }}>مدیریت دسته و کلاس ها</span>
+      </SidebarFooter>
+    </SidebarContainer>
   );
 };
 
