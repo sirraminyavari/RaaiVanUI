@@ -9,10 +9,12 @@ export const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
-  width: calc(100% - 250px);
+  width: ${(props) =>
+    props.isOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
   padding: 0 20px;
   z-index: 1;
   box-shadow: 0px 3px 10px #333;
+  transition: all 0.7s ease;
 `;
 
 export const ButtonsWrapper = styled.div`

@@ -4,6 +4,8 @@ import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import { MainContainer, ContentWrapper, Content } from './Main.styles';
+import { useContext } from 'react';
+import { ThemeContext } from 'context/ThemeProvider';
 
 const switchRoutes = (
   <Switch>
@@ -25,10 +27,12 @@ const switchRoutes = (
 );
 
 const Main = () => {
+  const { isOpen } = useContext(ThemeContext);
+
   return (
     <MainContainer>
       <Sidebar />
-      <ContentWrapper>
+      <ContentWrapper isOpen={isOpen}>
         <Navbar />
         <Content>{switchRoutes}</Content>
       </ContentWrapper>

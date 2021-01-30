@@ -1,6 +1,8 @@
 import Avatar from 'components/Avatar';
 import NavbarButton from './NavbarButton';
 import NavbarSearchInput from './NavbarSearchInput';
+import { useContext } from 'react';
+import { ThemeContext } from 'context/ThemeProvider';
 import {
   NavbarContainer,
   ButtonsWrapper,
@@ -8,8 +10,9 @@ import {
 } from './Navbar.styles';
 
 const Navbar = () => {
+  const { isOpen } = useContext(ThemeContext);
   return (
-    <NavbarContainer>
+    <NavbarContainer isOpen={isOpen}>
       <ButtonsWrapper>
         <NavbarButton linkTo="/home" label="خانه" icon="home" />
         <NavbarButton linkTo="/teams" label="تیم ها" icon="users" />

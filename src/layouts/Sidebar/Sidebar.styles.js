@@ -4,21 +4,30 @@ export const SidebarContainer = styled.div`
   height: 100%;
   width: ${(props) => `${props.width}px`};
   position: fixed;
-  display: flex;
-  flex-direction: column;
   z-index: 100;
   top: 0;
   right: 0;
   background-color: #15113c;
-  overflow-x: hidden;
+  overflow: hidden;
   color: #fff;
   box-shadow: 10px 0px 15px 10px #000;
   transition: all 0.7s ease;
 `;
 
+export const InnerWrapper = styled.div`
+  width: ${(props) => (props.isOpen ? '110%' : '140%')};
+  position: absolute;
+  top: 0;
+  bottom: -20px;
+  left: -20px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const SidebarContent = styled.div`
   flex-grow: 1;
-  padding: 0 1.5vw;
+  padding: 0 20px;
 `;
 
 export const SidebarHeader = styled.div`
@@ -70,4 +79,11 @@ export const SidebarFooter = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
+`;
+
+export const FooterTitle = styled.span`
+  margin-right: 5px;
+  position: relative;
+  top: ${(props) => (props.isOpen ? '0px' : '100px')};
+  transition: all 0.5s linear;
 `;
