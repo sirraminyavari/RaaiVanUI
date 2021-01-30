@@ -1,9 +1,9 @@
-import useScript from "hooks/useScript";
+import useScript from 'hooks/useScript';
 
 const RemoteServers = () => {
   useScript(
-    "pageLoadScripts/LoadRemoteServers/LoadRemoteServers.js",
-    "LoadRemoteServers.js",
+    'pageLoadScripts/LoadRemoteServers/LoadRemoteServers.js',
+    'LoadRemoteServers.js',
     () => {
       window.loadRemoteServers();
     }
@@ -12,8 +12,7 @@ const RemoteServers = () => {
     <div
       id="remoteServers"
       className="small-12 medium-12 large-12"
-      style={{ margin: "0", marginBottom: "5rem", padding: "0 6vw" }}
-    ></div>
+      style={{ margin: '0', marginBottom: '5rem', padding: '0 6vw' }}></div>
   );
 };
 

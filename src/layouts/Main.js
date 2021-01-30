@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import { Switch, Redirect, Route } from "react-router-dom";
-import { ThemeContext } from "context/ThemeProvider";
-import Routes from "routes";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import CheckRoute from "utils/CheckRoute/CheckRoute";
-import useScript from "hooks/useScript";
+import { Switch, Redirect, Route } from 'react-router-dom';
+import Routes from 'routes';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import CheckRoute from 'utils/CheckRoute/CheckRoute';
+import { MainContainer, ContentWrapper, Content } from 'assets/jss/Main.styles';
 
 const switchRoutes = (
   <Switch>
@@ -27,26 +25,14 @@ const switchRoutes = (
 );
 
 const Main = () => {
-  const { isOpen } = useContext(ThemeContext);
-  const paddingName = window.RV_RTL ? "paddingRight" : "paddingLeft";
-  //   useScript("pageLoadScripts/LoadMainLayout/LoadMain.js", "loadMain.js");
   return (
-    <>
-      <Navbar />
-      <div
-        //id="mainContentSection"
-        className="small-12 medium-12 large-12 rv-content-section"
-        style={{
-          position: "relative",
-          paddingTop: "0.5rem",
-          direction: "rtl",
-          [paddingName]: isOpen ? "18rem" : "0",
-        }}
-      >
-        <Sidebar isOpen={isOpen} />
-        {switchRoutes}
-      </div>
-    </>
+    <MainContainer>
+      <Sidebar />
+      <ContentWrapper>
+        <Navbar />
+        <Content>{switchRoutes}</Content>
+      </ContentWrapper>
+    </MainContainer>
   );
 };
 

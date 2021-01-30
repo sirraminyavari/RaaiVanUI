@@ -1,9 +1,9 @@
-import useScript from "hooks/useScript";
+import useScript from 'hooks/useScript';
 
 const NewNode = (props) => {
   useScript(
-    "pageLoadScripts/LoadNewNode/LoadNewNode.js",
-    "LoadNewNode.js",
+    'pageLoadScripts/LoadNewNode/LoadNewNode.js',
+    'LoadNewNode.js',
     () => {
       window.loadNewNode(props.route);
     }
@@ -12,8 +12,7 @@ const NewNode = (props) => {
     <div
       id="nodeArea"
       className="small-12 medium-12 large-12"
-      style={{ padding: "0vw 6vw", marginBottom: "8rem" }}
-    ></div>
+      style={{ padding: '0vw 6vw', marginBottom: '8rem' }}></div>
   );
 };
 

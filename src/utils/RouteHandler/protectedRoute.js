@@ -1,16 +1,16 @@
-import { lazy } from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
-import useCheckRoute from "hooks/useCheckRoute";
+import { lazy } from 'react';
+import { Route, Redirect, useLocation } from 'react-router-dom';
+import useCheckRoute from 'hooks/useCheckRoute';
 
 const ServiceUnavailable = lazy(() =>
-  import("views/Exceptions/ServiceUnavailable")
+  import('views/Exceptions/ServiceUnavailable')
 );
 const NoApplicationFound = lazy(() =>
-  import("views/Exceptions/NoApplicationFound")
+  import('views/Exceptions/NoApplicationFound')
 );
-const AccessDenied = lazy(() => import("views/Exceptions/AccessDenied"));
+const AccessDenied = lazy(() => import('views/Exceptions/AccessDenied'));
 const NullProfileException = lazy(() =>
-  import("views/Exceptions/NullProfileException")
+  import('views/Exceptions/NullProfileException')
 );
 
 const ProtectedRoute = ({ component: Component, name, ...rest }) => {
@@ -38,24 +38,24 @@ const ProtectedRoute = ({ component: Component, name, ...rest }) => {
           return (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: '/login',
                 state: { from: props.location },
               }}
             />
           );
-        } else if (route.RedirectToHome && location.pathname !== "/home") {
+        } else if (route.RedirectToHome && location.pathname !== '/home') {
           //Redirect to '/home'
           return (
             <Redirect
               to={{
-                pathname: "/home",
+                pathname: '/home',
                 state: { from: props.location },
               }}
             />
           );
-        } else if (route.RedirectToProfile && location.pathname !== "/user") {
+        } else if (route.RedirectToProfile && location.pathname !== '/user') {
           const path = route.RedirectToProfile;
-          const isString = typeof result === "string";
+          const isString = typeof result === 'string';
           return isString ? (
             //Redirect to '/user/[result.RedirectToProfile]'
             <Redirect
@@ -68,17 +68,17 @@ const ProtectedRoute = ({ component: Component, name, ...rest }) => {
             //Redirect to '/user'
             <Redirect
               to={{
-                pathname: "/user",
+                pathname: '/user',
                 state: { from: props.location },
               }}
             />
           );
-        } else if (route.RedirectToTeams && location.pathname !== "/teams") {
+        } else if (route.RedirectToTeams && location.pathname !== '/teams') {
           //Redirect to '/teams'
           return (
             <Redirect
               to={{
-                pathname: "/teams",
+                pathname: '/teams',
                 state: { from: props.location },
               }}
             />
@@ -88,7 +88,7 @@ const ProtectedRoute = ({ component: Component, name, ...rest }) => {
           return (
             <Redirect
               to={{
-                pathname: "/changepassword",
+                pathname: '/changepassword',
                 state: { from: props.location },
               }}
             />

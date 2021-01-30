@@ -1,25 +1,25 @@
-import { getURL } from "helpers";
-import ConfigRoutes from "./Config.routes";
-import Profile from "views/Profile";
-import Reports from "views/Reports";
+import { getURL } from 'helpers';
+import ConfigRoutes from './Config.routes';
+import Profile from 'views/Profile';
+import Reports from 'views/Reports';
 
 const SidebarRoutes = [
   ...ConfigRoutes,
   {
-    path: getURL("Reports"),
-    name: "reports",
+    path: getURL('Reports'),
+    name: 'reports',
     exact: true,
     component: Reports,
   },
   {
-    path: getURL("User"),
-    name: "profile",
+    path: getURL('User'),
+    name: 'profile',
     exact: true,
     component: Profile,
   },
   {
-    path: getURL("User") + "/:uid",
-    name: "profile",
+    path: getURL('User') + '/:uid',
+    name: 'profile',
     exact: true,
     component: Profile,
   },

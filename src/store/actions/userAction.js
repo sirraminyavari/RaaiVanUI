@@ -1,4 +1,4 @@
-import { userSlice } from "../reducers/userReducer";
+import { userSlice } from '../reducers/userReducer';
 
 const { loginUser, logoutUser } = userSlice.actions;
 

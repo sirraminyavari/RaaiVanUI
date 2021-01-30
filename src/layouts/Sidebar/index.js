@@ -1,96 +1,87 @@
-import SidebarOption from "./SidebarOption";
-import { Link } from "react-router-dom";
-import optionsList from "./optionsList";
+import MenuIcon from 'assets/icons/menu.svg';
+import FilterIcon from 'assets/icons/filter.svg';
+import EditIcon from 'assets/icons/edit.svg';
+import Logo from 'assets/icons/logo.svg';
 
-const sideWidth = 18;
-const getVersion = () => {
-  let systemVersion = !(window.RVGlobal || {}).ShowSystemVersion
-    ? null
-    : (window.RVGlobal || {}).SystemVersion;
-  if (systemVersion && systemVersion.toLowerCase()[0] === "v") {
-    systemVersion = systemVersion.substring(1);
-  }
-  return systemVersion;
-};
-
-const Sidebar = ({ isOpen }) => {
+const Sidebar = () => {
   return (
     <div
-      className="SoftBackgroundColor SurroundingShadow"
-      id="sideContent"
       style={{
-        position: "fixed",
-        display: "flex",
-        flexFlow: "column",
-        top: "3.4rem",
-        bottom: 0,
-        width: `${sideWidth}rem`,
-        [window.RV_Float]: `${
-          isOpen ? `${-sideWidth + 18}rem` : `${-sideWidth}rem`
-        }`,
-      }}
-    >
-      <div
-        id="serivces"
-        style={{
-          flexGrow: 1,
-          flexShrink: 1,
-          flexBasis: "auto",
-          paddingTop: "0.5rem",
-        }}
-      ></div>
-      <div
-        id="options"
-        style={{
-          flexGrow: 0,
-          flexShrink: 1,
-          flexBasis: "auto",
-          textAlign: "center",
-          paddingBottom: "0.4rem",
-        }}
-      >
+        height: '100%',
+        width: '250px',
+        position: 'fixed',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 1,
+        top: 0,
+        right: 0,
+        backgroundColor: '#033547',
+        overflowX: 'hidden',
+        color: '#fff',
+      }}>
+      <div style={{ flexGrow: 1, padding: '0 20px' }}>
         <div
           style={{
-            display: "inline-block",
-            width: "90%",
-            paddingTop: "1px",
-            backgroundColor: "rgb(220,220,220)",
-          }}
-        ></div>
-      </div>
-      <div
-        id="options"
-        style={{
-          flexGrow: 0,
-          flexShrink: 1,
-          flexBasis: "auto",
-          textAlign: "center",
-        }}
-      >
-        {optionsList.map((opt, key) => {
-          return opt.linkTo ? (
-            <Link to={opt.linkTo} key={key}>
-              <SidebarOption {...opt} />
-            </Link>
-          ) : (
-            <SidebarOption {...opt} key={key} />
-          );
-        })}
-      </div>
-      {getVersion() && (
-        <div
-          style={{
-            flex: "0 1 auto",
-            textAlign: "center",
-            fontSize: "0.7rem",
-            color: "rgb(80,80,80)",
-          }}
-        >
-          <span>
-            {window.RVDic.Version} {getVersion()}
-          </span>
+            display: 'flex',
+            justifyContent: 'space-between',
+            height: '14%',
+          }}>
+          <img src={Logo} width="100" alt="logo-icon" />
+          <img
+            src={MenuIcon}
+            width="25"
+            alt="menu-icon"
+            style={{ cursor: 'pointer' }}
+          />
         </div>
-      )}
+        <div style={{ fontSize: 22, margin: '35px 0' }}>
+          <span>تیم شاهین</span>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            placeItems: 'center',
+            borderBottom: '1px solid #707070',
+          }}>
+          <input
+            type="search"
+            placeholder="جستجو در دسته و کلاس ها"
+            style={{
+              width: '100%',
+              backgroundColor: 'inherit',
+              color: '#fff',
+              border: 'none',
+              outline: 0,
+            }}
+          />
+          <img
+            src={FilterIcon}
+            style={{ color: '#707070' }}
+            alt="filter-icon"
+          />
+        </div>
+      </div>
+      <div>
+        <div
+          style={{
+            backgroundColor: '#032E3D',
+            height: '40px',
+            lineHeight: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+          <img src={EditIcon} alt="edit-icon" />
+          <span style={{ marginRight: '5px' }}>مدیریت دسته و کلاس ها</span>
+        </div>
+        <div
+          style={{
+            height: '55px',
+            lineHeight: '55px',
+            backgroundColor: '#2B7BE4',
+          }}>
+          <h3 style={{ margin: '0', textAlign: 'center' }}>Footer</h3>
+        </div>
+      </div>
     </div>
   );
 };
