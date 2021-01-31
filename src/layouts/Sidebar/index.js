@@ -8,7 +8,8 @@ import {
 } from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
 import SidebarFooter from './SidebarFooter';
-import SidebarOpenContent from './SidebarContent.Open';
+import SidebarOpenContent from './SidebarContent-Open';
+import SidebarCloseContent from './SidebarContent-Close';
 
 const Sidebar = () => {
   const { isOpen } = useContext(ThemeContext);
@@ -22,10 +23,10 @@ const Sidebar = () => {
             <i
               className="fa fa-cog"
               aria-hidden="true"
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', paddingRight: '5px' }}
             />
           </SidebarTitle>
-          {isOpen && <SidebarOpenContent />}
+          {isOpen ? <SidebarOpenContent /> : <SidebarCloseContent />}
         </SidebarContentWrap>
       </InnerWrapper>
       <SidebarFooter isOpen={isOpen} />

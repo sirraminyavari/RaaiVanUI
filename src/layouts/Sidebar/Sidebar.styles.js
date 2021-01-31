@@ -43,6 +43,7 @@ export const ToggleArrow = styled.div`
   height: 20px;
   line-height: 22px;
   padding: 0 2px;
+  margin-right: 5px;
   cursor: pointer;
   ${(props) =>
     props.isOpen
