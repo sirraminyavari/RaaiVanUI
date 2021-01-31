@@ -9,21 +9,28 @@ import {
   SearchWrapper,
 } from './Navbar.styles';
 
+const navButtons = [
+  { label: 'خانه', icon: 'home', linkTo: '/home' },
+  { label: 'تیم ها', icon: 'users', linkTo: '/teams' },
+  { label: 'کارتابل', icon: 'inbox', linkTo: '/inbox' },
+  { label: 'اعلان ها', icon: 'bell', linkTo: '/notifications', badge: 99 },
+];
+
 const Navbar = () => {
   const { isOpen } = useContext(ThemeContext);
   return (
     <NavbarContainer isOpen={isOpen}>
       <ButtonsWrapper>
-        <NavbarButton linkTo="/home" label="خانه" icon="home" />
-        <NavbarButton linkTo="/teams" label="تیم ها" icon="users" />
-        <NavbarButton linkTo="/messages" label="پیام ها" icon="commenting-o" />
-        <NavbarButton linkTo="/inbox" label="کارتابل" icon="inbox" />
-        <NavbarButton
-          linkTo="/notifications"
-          label="اعلان ها"
-          icon="bell"
-          badge={99}
-        />
+        {navButtons.map((btn) => {
+          return (
+            <NavbarButton
+              linkTo={btn.linkTo}
+              label={btn.label}
+              icon={btn.icon}
+              badge={btn.badge}
+            />
+          );
+        })}
       </ButtonsWrapper>
       <SearchWrapper>
         <NavbarSearchInput />

@@ -23,9 +23,10 @@ export const InnerWrapper = styled.div`
   overflow: scroll;
   display: flex;
   flex-direction: column;
+  margin-bottom: 39px;
 `;
 
-export const SidebarContent = styled.div`
+export const SidebarContentWrap = styled.div`
   flex-grow: 1;
   padding: 0 20px;
 `;
@@ -62,6 +63,7 @@ export const SearchWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #707070;
+  margin-bottom: 30px;
 `;
 
 export const SearchInput = styled.input`
@@ -76,6 +78,8 @@ export const SidebarFooter = styled.div`
   background-color: #2b388f;
   height: 6%;
   display: flex;
+  position: relative;
+  top: 94%;
   justify-content: center;
   align-items: center;
   color: #fff;
@@ -86,4 +90,61 @@ export const FooterTitle = styled.span`
   position: relative;
   top: ${(props) => (props.isOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
+`;
+
+export const MenuContainer = styled.div`
+  border: 1px solid #222;
+  height: 35px;
+  margin: 10px 0;
+  padding: 0 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #19265e;
+  }
+`;
+
+export const MenuTitle = styled.div`
+  display: flex;
+  place-items: center;
+  color: #fff;
+`;
+
+export const SubMenuContainer = styled.div`
+  max-height: ${({ show, itemsCount }) =>
+    show ? `${itemsCount * 35}px` : '0px'};
+  overflow: hidden;
+  transition: all 0.5s ease;
+`;
+
+export const SubMenu = styled.div`
+  margin: 5px 0;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: flex;
+  color: #fff;
+  &:hover {
+    background-color: #19265e;
+  }
+`;
+
+export const BadgeWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  line-height: 22px;
+  border-radius: 10px;
+  background-color: blue;
+  text-align: center;
+  font-size: 10px;
+`;
+
+export const BookmakedWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
 `;
