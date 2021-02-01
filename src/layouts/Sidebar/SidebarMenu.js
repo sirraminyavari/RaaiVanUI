@@ -6,6 +6,7 @@ import {
   SubMenuContainer,
   SubMenu,
 } from './Sidebar.styles';
+import Icons from 'components/Icons';
 
 const SidebarMenu = ({ item }) => {
   const { title, subMenu, path, icon } = item;
@@ -18,27 +19,22 @@ const SidebarMenu = ({ item }) => {
         to={path}
         onClick={subMenu ? handleDropdown : null}>
         <MenuTitle>
-          <i
-            className={`fa fa-${
-              subMenu ? (show ? 'caret-down' : 'caret-left') : icon
-            }`}
-            aria-hidden="true"
-          />
+          {subMenu
+            ? show
+              ? Icons['caretDown']
+              : Icons['caretLeft']
+            : Icons[icon]}
           <span style={{ marginRight: '5px' }}>{title}</span>
         </MenuTitle>
-        {subMenu && <i className="fa fa-ellipsis-v" aria-hidden="true"></i>}
+        {subMenu && !show && Icons['moreVertical']}
       </MenuContainer>
       {subMenu && (
         <SubMenuContainer show={show} itemsCount={subMenu.length}>
           {subMenu.map((sub) => {
             return (
               <SubMenu as={Link} to={sub.path}>
-                <i
-                  className="fa fa-user"
-                  style={{ margin: '0 5px' }}
-                  aria-hidden="true"
-                />
-                <span>{sub.title}</span>
+                {Icons['home']}
+                <span style={{ margin: '0 10px' }}>{sub.title}</span>
               </SubMenu>
             );
           })}

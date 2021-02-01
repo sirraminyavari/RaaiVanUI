@@ -1,14 +1,15 @@
-import UserIcon from 'assets/icons/user.svg';
+import { Link } from 'react-router-dom';
+import { GoPerson as AvatarIcon } from 'react-icons/go';
 import { AvatarWrapper, AvatarImage } from './Avatar.styles';
 
 const Avatar = ({ radius, userImage }) => {
   return (
-    <AvatarWrapper>
-      <AvatarImage
-        src={userImage ? userImage : UserIcon}
-        radius={radius}
-        alt="user-avatar"
-      />
+    <AvatarWrapper as={Link} to="/user">
+      {userImage ? (
+        <AvatarImage radius={radius} src={userImage} alt="user-avatar" />
+      ) : (
+        <AvatarIcon size={radius} color="#fff" />
+      )}
     </AvatarWrapper>
   );
 };

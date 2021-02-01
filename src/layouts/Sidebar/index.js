@@ -1,35 +1,42 @@
-import { useContext } from 'react';
+import { useContext, lazy, Suspense } from 'react';
 import { ThemeContext } from 'context/ThemeProvider';
 import {
   SidebarContainer,
   SidebarContentWrap,
-  SidebarTitle,
   InnerWrapper,
 } from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
-import SidebarFooter from './SidebarFooter';
-import SidebarOpenContent from './SidebarContent-Open';
-import SidebarCloseContent from './SidebarContent-Close';
+const SidebarFooter = lazy(() => import('./SidebarFooter'));
+const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
+const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
 
 const Sidebar = () => {
-  const { isOpen } = useContext(ThemeContext);
+  const { isOpen, setIsOpen, showSetting, setShowSetting } = useContext(
+    ThemeContext
+  );
+  const showSettings = () => {
+    if (!isOpen) {
+      setIsOpen(true);
+      setShowSetting(true);
+    } else {
+      setShowSetting(!showSetting);
+    }
+  };
   return (
     <SidebarContainer width={isOpen ? 250 : 55}>
-      <InnerWrapper isOpen={isOpen}>
-        <SidebarContentWrap>
-          <SidebarHeader />
-          <SidebarTitle>
-            {isOpen && <span>تیم شاهین</span>}
-            <i
-              className="fa fa-cog"
-              aria-hidden="true"
-              style={{ cursor: 'pointer', paddingRight: '5px' }}
-            />
-          </SidebarTitle>
-          {isOpen ? <SidebarOpenContent /> : <SidebarCloseContent />}
-        </SidebarContentWrap>
-      </InnerWrapper>
-      <SidebarFooter isOpen={isOpen} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <InnerWrapper isOpen={isOpen}>
+          <SidebarContentWrap>
+            <SidebarHeader />
+            {isOpen ? (
+              <SidebarOpenContent showSettings={showSettings} />
+            ) : (
+              <SidebarCloseContent showSettings={showSettings} />
+            )}
+          </SidebarContentWrap>
+        </InnerWrapper>
+        {!showSetting && <SidebarFooter isOpen={isOpen} />}
+      </Suspense>
     </SidebarContainer>
   );
 };

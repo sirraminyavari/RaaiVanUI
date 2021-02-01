@@ -9,8 +9,8 @@ export const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
-  width: ${(props) =>
-    props.isOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
+  width: ${({ isOpen }) =>
+    isOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
   padding: 0 20px;
   z-index: 1;
   box-shadow: 0px 3px 10px #333;
@@ -39,8 +39,8 @@ export const ButtonIcon = styled.div`
 `;
 
 export const BadgeWrapper = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   line-height: 22px;
   border-radius: 10px;
   background-color: red;
@@ -57,6 +57,12 @@ export const SearchWrapper = styled.div`
 
 export const SearchContainer = styled.div`
   position: relative;
+  :focus-within input {
+    width: 300px;
+  }
+  :focus-within div {
+    color: #2b7be4;
+  }
 `;
 
 export const SearchInput = styled.input`
@@ -66,14 +72,17 @@ export const SearchInput = styled.input`
   color: #333;
   height: 32px;
   padding: 0 10px;
-  width: ${(props) => (props.inFocus ? '300px' : '230px')};
+  width: 230px;
   transition: all 0.6s ease;
+  :focus::placeholder {
+    color: transparent;
+  }
 `;
 
-export const SearchIcon = styled.i`
+export const SearchIcon = styled.div`
   position: absolute;
-  left: 10px;
+  left: 5px;
   top: 5px;
-  font-size: 20px;
-  color: ${(props) => (props.inFocus ? `#2b7be4` : `#ddd`)};
+  font-size: 25px;
+  color: #ddd;
 `;

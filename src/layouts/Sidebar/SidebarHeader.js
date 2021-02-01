@@ -1,13 +1,17 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from 'context/ThemeProvider';
-import Logo from 'assets/icons/logo.svg';
+import Logo from 'assets/images/logo.svg';
 import { SidebarHeader, ToggleArrow } from './Sidebar.styles';
+import Icons from 'components/Icons';
 
 const Header = () => {
-  const { isOpen, setIsOpen } = useContext(ThemeContext);
+  const { isOpen, setIsOpen, setShowSetting } = useContext(ThemeContext);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+    if (isOpen) {
+      setShowSetting(false);
+    }
   };
   return (
     <SidebarHeader>
@@ -16,11 +20,8 @@ const Header = () => {
           <img src={Logo} width="120" alt="logo-icon" />
         </Link>
       )}
-      <ToggleArrow onClick={toggleMenu} isOpen={isOpen}>
-        <i
-          className={`fa fa-arrow-${isOpen ? 'right' : 'left'}`}
-          aria-hidden={true}
-        />
+      <ToggleArrow onClick={toggleMenu}>
+        {Icons[isOpen ? 'toggleRight' : 'toggleLeft']}
       </ToggleArrow>
     </SidebarHeader>
   );
