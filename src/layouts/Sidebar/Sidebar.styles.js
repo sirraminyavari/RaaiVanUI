@@ -187,12 +187,18 @@ const arrowCss = css`
 
 export const ArrowUp = styled.div`
   ${arrowCss}
+  color: ${(props) => (props.isUp ? '#444' : '#fff')};
+  cursor: ${(props) => (props.isUp ? 'revert' : 'pointer')};
   top: 0;
+  padding-bottom: 20px;
 `;
 
 export const ArrowDown = styled.div`
   ${arrowCss}
+  color: ${(props) => (props.isDown ? '#444' : '#fff')};
+  cursor: ${(props) => (props.isDown ? 'revert' : 'pointer')};
   bottom: -20px;
+  padding-bottom: -20px;
 `;
 
 export const IconListContainer = styled.div`
