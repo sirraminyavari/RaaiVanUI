@@ -23,6 +23,11 @@ const miniSide = [
   'inbox',
   'settings',
   'notifications',
+  'home',
+  'teams',
+  'inbox',
+  'settings',
+  'notifications',
 ];
 
 const CloseContent = ({ showSettings }) => {
@@ -33,17 +38,23 @@ const CloseContent = ({ showSettings }) => {
 
   const scrollDown = () => {
     if (isDown) return;
-    setSC((c) => c + 55);
+    setSC((c) => c + 50);
   };
   const scrollUp = () => {
     if (isUp) return;
-    setSC((c) => c - 55);
+    setSC((c) => c - 50);
   };
 
   const handleScroll = () => {
     const diff = listRef.current.scrollHeight - listRef.current.clientHeight;
     setIsDown(listRef.current.scrollTop === diff);
     setIsUp(listRef.current.scrollTop === 0);
+    if (listRef.current.scrollTop === diff) {
+      setSC(diff);
+    }
+    if (listRef.current.scrollTop === 0) {
+      setSC(0);
+    }
   };
 
   useLayoutEffect(() => {
