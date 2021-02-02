@@ -29,26 +29,26 @@ export const SidebarContainer = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const InnerWrapper = styled.div`
-  width: ${({ isOpen }) => (isOpen ? '110%' : '140%')};
+export const ContentWrapper = styled.div`
+  width: ${(props) => (props.options.isOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: -10vh;
+  bottom: ${(props) => (props.options.showSetting ? '-10vh' : '-3vh')};
   left: -20px;
   overflow: scroll;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 39px;
-`;
-
-export const SidebarContentWrap = styled.div`
-  flex-grow: 1;
+  margin-bottom: 6vh;
   padding: 0 20px;
+  margin-top: 10vh;
 `;
 
 export const SidebarHeader = styled.div`
   ${FlexBetween}
   height: 10%;
+  position: relative;
+  top: 0;
+  z-index: 1000;
+  padding: 0 20px;
+  background-color: inherit;
 `;
 
 export const ToggleArrow = styled.div`
@@ -82,10 +82,11 @@ export const SidebarFooter = styled.div`
   height: 6%;
   display: flex;
   position: relative;
-  top: 94%;
+  top: 84%;
   justify-content: center;
   align-items: center;
   color: #fff;
+  transition: all 0.7s ease;
 `;
 
 export const FooterTitle = styled.span`
@@ -166,7 +167,7 @@ export const SettingMenu = styled.div`
   :hover {
     background-color: #171c4d;
   }
-  transition: all 0.5s ease;
+  transition: all 0.3s linear;
 `;
 
 export const CloseContentContainer = styled.div`

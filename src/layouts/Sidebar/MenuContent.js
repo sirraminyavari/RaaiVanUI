@@ -51,17 +51,19 @@ const MenuContent = () => {
         return <SidebarMenu item={item} key={key} />;
       })}
       <hr />
-      <BookmarkWrapper>
+      <div style={{ paddingBottom: '50px' }}>
+        <BookmarkWrapper>
+          <CenterIcon>
+            {Icons['bookmark']}
+            <span style={{ marginRight: '10px' }}>موضوعات نشان شده</span>
+          </CenterIcon>
+          <BadgeWrapper>55</BadgeWrapper>
+        </BookmarkWrapper>
         <CenterIcon>
-          {Icons['bookmark']}
-          <span style={{ marginRight: '10px' }}>موضوعات نشان شده</span>
+          {Icons['diamond']}
+          <span style={{ marginRight: '10px' }}>گالری تمپلیت ها</span>
         </CenterIcon>
-        <BadgeWrapper>55</BadgeWrapper>
-      </BookmarkWrapper>
-      <CenterIcon>
-        {Icons['diamond']}
-        <span style={{ marginRight: '10px' }}>گالری تمپلیت ها</span>
-      </CenterIcon>
+      </div>
     </>
   );
 };
