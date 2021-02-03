@@ -2,8 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { PrivateRoute, PublicRoute } from 'utils/RouteHandler';
-import { Provider } from 'react-redux';
-import store from 'store';
+import StoreProvider from 'store/StoreProvider';
 import Spinner from 'components/Spinner';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 
@@ -15,7 +14,7 @@ const Login = lazy(() => import('views/Auth/Login'));
 
 render(
   <React.StrictMode>
-    <Provider store={store}>
+    <StoreProvider>
       <RVGlobalProvider>
         <ErrorBoundry>
           <Suspense fallback={<Spinner />}>
@@ -28,7 +27,7 @@ render(
           </Suspense>
         </ErrorBoundry>
       </RVGlobalProvider>
-    </Provider>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
