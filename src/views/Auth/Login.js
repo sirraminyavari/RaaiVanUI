@@ -1,113 +1,82 @@
-import React from 'react';
-import useAllScripts from 'hooks/useAllScripts';
+/**
+ * A mother component for handling all login events.
+ */
+import Loader from 'components/Loader/Loader';
+import Logo from 'components/Media/Logo';
+import React, { Suspense, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
+import styled from 'styled-components';
+import WavyBackground from './items/WavyBackground';
+import LoginControl from './LoginControl';
 
-const scripts = [
-  { src: 'scripts/USR/LoginControl.js', id: 'LoginControl.js' },
-  { src: 'pageLoadScripts/LoadLogin/LoadLogin.js', id: 'LoadLogin.js' },
-];
-
+/**
+ * A function that handle custom routing between login's screen such as :
+ * login,signup,reset password,...
+ */
 const Login = () => {
-  useAllScripts(scripts);
-  return (
-    <>
-      <div
-        id="mainContent"
-        className="small-12 medium-12 large-12"
-        style={styles.mainContent}>
-        <div style={{ width: '100%' }}>
-          <div
-            id="loginContainer"
-            className="small-12 medium-8 large-6 rv-border-radius-1"
-            style={styles.loginContainer}>
-            <div id="loginArea" className="small-12 medium-12 large-12"></div>
-          </div>
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '0.5rem',
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-          }}>
-          <div
-            id="pageDownButton"
-            className="rv-air-button-base rv-air-button-white rv-circle"
-            style={styles.pageDownButton}>
-            <i className="fa fa-chevron-down fa-2x" aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
+  const { currentRoute } = useSelector((state) => state.loginRoute);
+  const state = useSelector((state) => state);
 
-      <div
-        id="statisticsArea"
-        className="small-12 medium-12 large-12 row align-center"
-        style={styles.statisticsArea}>
-        <div
-          className="small-12 medium-12 large-12"
-          style={{
-            textAlign: 'center',
-            paddingTop: '0.5rem',
-            height: '4rem',
-          }}>
-          <div
-            id="pageUpButton"
-            className="rv-air-button-base rv-air-button-black rv-circle"
-            style={styles.pageUpButton}>
-            <i
-              className="fa fa-chevron-up fa-2x"
-              aria-hidden="true"
-              style={{ marginBottom: '0.5rem' }}></i>
-          </div>
-        </div>
-        <div id="loginPageContent" style={styles.loginPageContent}></div>
-      </div>
-    </>
+  const Signup = React.lazy(() => import('./Signup'));
+  // Use React.lazy to increase page loading speed.
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1000px)' });
+  // It checks screen dimension.
+
+  useEffect(() => {}, [currentRoute]);
+
+  console.log(state, 'state');
+
+  return (
+    <Suspense
+      fallback={
+        <Maintainer>
+          <WavyBackground />
+          <Loader />
+        </Maintainer>
+      }>
+      <Maintainer>
+        <WavyBackground />
+        <Container>
+          <Logo />
+
+          <Box smallScreen={isTabletOrMobile}>
+            {/* currenRoute handles custom route between login screens */}
+            {currentRoute === 'login' ? <LoginControl /> : <Signup />}
+          </Box>
+        </Container>
+      </Maintainer>
+    </Suspense>
   );
 };
 
-const styles = {
-  mainContent: {
-    backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    height: '100vh',
-    display: 'flex',
-    flexFlow: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  loginContainer: {
-    padding: '1rem 5rem',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    margin: '0 auto',
-  },
-  pageDownButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '3rem',
-    height: '3rem',
-  },
-  statisticsArea: {
-    margin: '0rem',
-    padding: '0vw 4vw',
-    minHeight: '100vh',
-    position: 'relative',
-  },
-  pageUpButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '3rem',
-    height: '3rem',
-  },
-  loginPageContent: {
-    minHeight: 'calc(100vh - 4rem)',
-    width: '100%',
-  },
-};
-
 export default Login;
+
+const Maintainer = styled.div`
+  background-color: rgb(42, 56, 143);
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+  top: 100vw;
+`;
+const Box = styled.div`
+  display: flex;
+  width: ${({ smallScreen }) => (smallScreen ? '90vw' : '40vw')};
+  max-width: 90%;
+  height: 80vh;
+  background-color: white;
+  border-radius: 13px;
+  flex-direction: column;
+  align-items: center;
+`;
