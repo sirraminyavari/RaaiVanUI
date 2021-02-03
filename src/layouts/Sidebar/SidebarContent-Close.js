@@ -1,16 +1,7 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Icons from 'components/Icons';
-import {
-  CloseContentContainer,
-  ArrowUp,
-  ArrowDown,
-  IconListContainer,
-  IconListWrap,
-  MiniIconWrapper,
-  SidebarTitle,
-  SettingWrapper,
-} from './Sidebar.styles';
+import * as Styled from './Sidebar.styles';
 
 const miniSide = [
   'home',
@@ -31,63 +22,65 @@ const miniSide = [
 ];
 
 const CloseContent = ({ showSettings }) => {
-  const listRef = useRef();
-  const [SC, setSC] = useState(0);
+  const ref = useRef();
+  const [scroll, setScroll] = useState(0);
   const [isDown, setIsDown] = useState(false);
   const [isUp, setIsUp] = useState(false);
 
   const scrollDown = () => {
     if (isDown) return;
-    setSC((c) => c + 50);
+    setScroll((s) => s + 50);
   };
   const scrollUp = () => {
     if (isUp) return;
-    setSC((c) => c - 50);
+    setScroll((s) => s - 50);
   };
 
   const handleScroll = () => {
-    const diff = listRef.current.scrollHeight - listRef.current.clientHeight;
-    setIsDown(listRef.current.scrollTop === diff);
-    setIsUp(listRef.current.scrollTop === 0);
-    if (listRef.current.scrollTop === diff) {
-      setSC(diff);
+    const diff = ref.current.scrollHeight - ref.current.clientHeight;
+    const isScrollDown = ref.current.scrollTop === diff;
+    const isScrollUp = ref.current.scrollTop === 0;
+    setIsDown(isScrollDown);
+    setIsUp(isScrollUp);
+    if (isScrollDown) {
+      setScroll(diff);
     }
-    if (listRef.current.scrollTop === 0) {
-      setSC(0);
+    if (isScrollUp) {
+      setScroll(0);
     }
   };
 
   useLayoutEffect(() => {
-    listRef.current.scrollTo(0, SC);
+    ref.current.scrollTo(0, scroll);
     handleScroll();
-  }, [SC]);
+  }, [scroll]);
 
   return (
     <>
-      <SidebarTitle>
-        <SettingWrapper onClick={showSettings}>
-          {Icons['settings']}
-        </SettingWrapper>
-      </SidebarTitle>
-      <CloseContentContainer>
-        <ArrowUp onClick={scrollUp} isUp={isUp}>
-          {Icons['chevronUp']}
-        </ArrowUp>
-        <IconListContainer>
-          <IconListWrap ref={listRef} onScroll={handleScroll}>
+      <Styled.SidebarTitle>
+        <Styled.SettingWrapper onClick={showSettings}>
+          {Icons.settings}
+        </Styled.SettingWrapper>
+      </Styled.SidebarTitle>
+      <Styled.CloseContentContainer>
+        <Styled.ArrowUp onClick={scrollUp} isUp={isUp}>
+          {Icons.chevronUp}
+        </Styled.ArrowUp>
+        <Styled.IconListContainer>
+          <Styled.IconListWrap ref={ref} onScroll={handleScroll}>
             {miniSide.map((icon, key) => {
               return (
-                <MiniIconWrapper as={Link} to="#" key={key}>
+                <Styled.MiniIconWrapper as={Link} to="#" key={key}>
                   {Icons[icon]}
-                </MiniIconWrapper>
+                </Styled.MiniIconWrapper>
               );
             })}
-          </IconListWrap>
-        </IconListContainer>
-        <ArrowDown onClick={scrollDown} isDown={isDown}>
-          {Icons['chevronDown']}
-        </ArrowDown>
-      </CloseContentContainer>
+          </Styled.IconListWrap>
+        </Styled.IconListContainer>
+        <Styled.ArrowDown onClick={scrollDown} isDown={isDown}>
+          {Icons.chevronDown}
+        </Styled.ArrowDown>
+      </Styled.CloseContentContainer>
     </>
   );
 };

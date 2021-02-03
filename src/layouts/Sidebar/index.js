@@ -1,6 +1,6 @@
 import { useContext, lazy, Suspense } from 'react';
 import { ThemeContext } from 'context/ThemeProvider';
-import { SidebarContainer, ContentWrapper } from './Sidebar.styles';
+import * as Styled from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
 const SidebarFooter = lazy(() => import('./SidebarFooter'));
 const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
@@ -19,9 +19,9 @@ const Sidebar = () => {
     }
   };
   return (
-    <SidebarContainer width={isOpen ? 250 : 55}>
+    <Styled.SidebarContainer width={isOpen ? 250 : 55}>
       <SidebarHeader />
-      <ContentWrapper options={{ isOpen, showSetting }}>
+      <Styled.ContentWrapper options={{ isOpen, showSetting }}>
         <Suspense fallback={<div>Loading....</div>}>
           {isOpen ? (
             <SidebarOpenContent showSettings={showSettings} />
@@ -29,9 +29,9 @@ const Sidebar = () => {
             <SidebarCloseContent showSettings={showSettings} />
           )}
         </Suspense>
-      </ContentWrapper>
+      </Styled.ContentWrapper>
       {!showSetting && <SidebarFooter isOpen={isOpen} />}
-    </SidebarContainer>
+    </Styled.SidebarContainer>
   );
 };
 

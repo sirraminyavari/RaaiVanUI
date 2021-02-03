@@ -1,15 +1,15 @@
-import { SearchContainer, SearchInput, SearchIcon } from './Navbar.styles';
+import * as Styled from './Navbar.styles';
 import Icons from 'components/Icons';
 
 const NavbarSearchInput = () => {
   return (
-    <SearchContainer>
-      <SearchIcon>{Icons['search']}</SearchIcon>
-      <SearchInput
+    <Styled.SearchContainer>
+      <Styled.SearchIcon>{Icons.search}</Styled.SearchIcon>
+      <Styled.SearchInput
         type="search"
         placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}
       />
-    </SearchContainer>
+    </Styled.SearchContainer>
   );
 };
 

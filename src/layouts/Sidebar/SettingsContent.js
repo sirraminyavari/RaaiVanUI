@@ -1,4 +1,4 @@
-import { SettingMenu } from './Sidebar.styles';
+import * as Styled from './Sidebar.styles';
 import Icons from 'components/Icons';
 
 const settingList = [
@@ -15,10 +15,10 @@ const SettingContent = () => {
     <>
       {settingList.map((item, key) => {
         return (
-          <SettingMenu key={key}>
-            {Icons['arrowLeft']}
+          <Styled.SettingMenu key={key}>
+            {Icons.arrowLeft}
             <span style={{ marginRight: '5px' }}>{item}</span>
-          </SettingMenu>
+          </Styled.SettingMenu>
         );
       })}
     </>

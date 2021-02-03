@@ -3,11 +3,7 @@ import NavbarButton from './NavbarButton';
 import NavbarSearchInput from './NavbarSearchInput';
 import { useContext } from 'react';
 import { ThemeContext } from 'context/ThemeProvider';
-import {
-  NavbarContainer,
-  ButtonsWrapper,
-  SearchWrapper,
-} from './Navbar.styles';
+import * as Styled from './Navbar.styles';
 
 const navButtons = [
   { label: 'خانه', icon: 'home', linkTo: '/home' },
@@ -24,17 +20,17 @@ const navButtons = [
 const Navbar = () => {
   const { isOpen } = useContext(ThemeContext);
   return (
-    <NavbarContainer isOpen={isOpen}>
-      <ButtonsWrapper>
-        {navButtons.map((btn) => {
-          return <NavbarButton options={btn} />;
+    <Styled.NavbarContainer isOpen={isOpen}>
+      <Styled.ButtonsWrapper>
+        {navButtons.map((btn, key) => {
+          return <NavbarButton options={btn} key={key} />;
         })}
-      </ButtonsWrapper>
-      <SearchWrapper>
+      </Styled.ButtonsWrapper>
+      <Styled.SearchWrapper>
         <NavbarSearchInput />
         <Avatar radius={32} />
-      </SearchWrapper>
-    </NavbarContainer>
+      </Styled.SearchWrapper>
+    </Styled.NavbarContainer>
   );
 };
 

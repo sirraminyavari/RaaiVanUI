@@ -3,7 +3,7 @@ import Routes from 'routes';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import { MainContainer, ContentWrapper, Content } from './Main.styles';
+import * as Styled from './Main.styles';
 import { useContext } from 'react';
 import { ThemeContext } from 'context/ThemeProvider';
 
@@ -30,13 +30,13 @@ const Main = () => {
   const { isOpen } = useContext(ThemeContext);
 
   return (
-    <MainContainer>
+    <Styled.MainContainer>
       <Sidebar />
-      <ContentWrapper isOpen={isOpen}>
+      <Styled.ContentWrapper isOpen={isOpen}>
         <Navbar />
-        <Content>{switchRoutes}</Content>
-      </ContentWrapper>
-    </MainContainer>
+        <Styled.Content>{switchRoutes}</Styled.Content>
+      </Styled.ContentWrapper>
+    </Styled.MainContainer>
   );
 };
 

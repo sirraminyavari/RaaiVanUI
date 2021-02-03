@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
-import { ButtonContainer, BadgeWrapper, ButtonIcon } from './Navbar.styles';
+import * as Styled from './Navbar.styles';
 import Icons from 'components/Icons';
 
 const NavbarButton = ({ options }) => {
   const { label, icon, badge, linkTo } = options;
   return (
-    <ButtonContainer as={Link} to={linkTo}>
-      <ButtonIcon>
+    <Styled.ButtonContainer as={Link} to={linkTo}>
+      <Styled.ButtonIcon>
         {Icons[icon]}
-        {badge && <BadgeWrapper>{badge}</BadgeWrapper>}
-      </ButtonIcon>
+        {badge && <Styled.BadgeWrapper>{badge}</Styled.BadgeWrapper>}
+      </Styled.ButtonIcon>
       <span>{label}</span>
-    </ButtonContainer>
+    </Styled.ButtonContainer>
   );
 };
 
