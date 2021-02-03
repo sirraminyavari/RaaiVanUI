@@ -1,9 +1,10 @@
 import { Switch, Redirect, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Routes from 'routes';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import { MainContainer, ContentWrapper, Content } from 'assets/jss/Main.styles';
+import * as Styled from './Main.styles';
 
 const switchRoutes = (
   <Switch>
@@ -25,14 +26,16 @@ const switchRoutes = (
 );
 
 const Main = () => {
+  const { isSidebarOpen } = useSelector((state) => state.theme);
+
   return (
-    <MainContainer>
+    <Styled.MainContainer>
       <Sidebar />
-      <ContentWrapper>
-        <Navbar />
-        <Content>{switchRoutes}</Content>
-      </ContentWrapper>
-    </MainContainer>
+      <Styled.ContentWrapper isSidebarOpen={isSidebarOpen}>
+        <Navbar isSidebarOpen={isSidebarOpen} />
+        <Styled.Content>{switchRoutes}</Styled.Content>
+      </Styled.ContentWrapper>
+    </Styled.MainContainer>
   );
 };
 
