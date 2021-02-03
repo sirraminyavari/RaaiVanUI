@@ -1,27 +1,29 @@
-import { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { themeSlice } from 'store/reducers/themeReducer';
 import { Link } from 'react-router-dom';
-import { ThemeContext } from 'context/ThemeProvider';
 import Logo from 'assets/images/logo.svg';
 import * as Styled from './Sidebar.styles';
 import Icons from 'components/Icons';
 
 const Header = () => {
-  const { isOpen, setIsOpen, setShowSetting } = useContext(ThemeContext);
+  const dispatch = useDispatch();
+  const { toggleSidebar, toggleSetting } = themeSlice.actions;
+  const { isSidebarOpen } = useSelector((state) => state.theme);
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
-    if (isOpen) {
-      setShowSetting(false);
+    dispatch(toggleSidebar(!isSidebarOpen));
+    if (isSidebarOpen) {
+      dispatch(toggleSetting(false));
     }
   };
   return (
     <Styled.SidebarHeader>
-      {isOpen && (
+      {isSidebarOpen && (
         <Link to="/home">
           <img src={Logo} width="120" alt="logo-icon" />
         </Link>
       )}
       <Styled.ToggleArrow onClick={toggleMenu}>
-        {Icons[isOpen ? 'toggleRight' : 'toggleLeft']}
+        {Icons[isSidebarOpen ? 'toggleRight' : 'toggleLeft']}
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );

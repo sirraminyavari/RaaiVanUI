@@ -1,8 +1,6 @@
 import Avatar from 'components/Avatar';
 import NavbarButton from './NavbarButton';
 import NavbarSearchInput from './NavbarSearchInput';
-import { useContext } from 'react';
-import { ThemeContext } from 'context/ThemeProvider';
 import * as Styled from './Navbar.styles';
 
 const navButtons = [
@@ -17,10 +15,9 @@ const navButtons = [
   },
 ];
 
-const Navbar = () => {
-  const { isOpen } = useContext(ThemeContext);
+const Navbar = ({ isSidebarOpen }) => {
   return (
-    <Styled.NavbarContainer isOpen={isOpen}>
+    <Styled.NavbarContainer isSidebarOpen={isSidebarOpen}>
       <Styled.ButtonsWrapper>
         {navButtons.map((btn, key) => {
           return <NavbarButton options={btn} key={key} />;

@@ -1,36 +1,38 @@
-import { useContext, lazy, Suspense } from 'react';
-import { ThemeContext } from 'context/ThemeProvider';
+import { lazy, Suspense } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
+import { themeSlice } from 'store/reducers/themeReducer';
 const SidebarFooter = lazy(() => import('./SidebarFooter'));
 const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
 const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
 
 const Sidebar = () => {
-  const { isOpen, setIsOpen, showSetting, setShowSetting } = useContext(
-    ThemeContext
-  );
-  const showSettings = () => {
-    if (!isOpen) {
-      setIsOpen(true);
-      setShowSetting(true);
+  const dispatch = useDispatch();
+  const { toggleSidebar, toggleSetting } = themeSlice.actions;
+  const { isSidebarOpen, isSettingShown } = useSelector((state) => state.theme);
+
+  const handleSettings = () => {
+    if (!isSidebarOpen) {
+      dispatch(toggleSidebar(true));
+      dispatch(toggleSetting(true));
     } else {
-      setShowSetting(!showSetting);
+      dispatch(toggleSetting(!isSettingShown));
     }
   };
   return (
-    <Styled.SidebarContainer width={isOpen ? 250 : 55}>
+    <Styled.SidebarContainer width={isSidebarOpen ? 250 : 55}>
       <SidebarHeader />
-      <Styled.ContentWrapper options={{ isOpen, showSetting }}>
+      <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
         <Suspense fallback={<div>Loading....</div>}>
-          {isOpen ? (
-            <SidebarOpenContent showSettings={showSettings} />
+          {isSidebarOpen ? (
+            <SidebarOpenContent handleSettings={handleSettings} />
           ) : (
-            <SidebarCloseContent showSettings={showSettings} />
+            <SidebarCloseContent handleSettings={handleSettings} />
           )}
         </Suspense>
       </Styled.ContentWrapper>
-      {!showSetting && <SidebarFooter isOpen={isOpen} />}
+      {!isSettingShown && <SidebarFooter />}
     </Styled.SidebarContainer>
   );
 };

@@ -21,9 +21,9 @@ const SidebarMenu = ({ item }) => {
       </Styled.MenuContainer>
       {subMenu && (
         <Styled.SubMenuContainer show={show} itemsCount={subMenu.length}>
-          {subMenu.map((sub) => {
+          {subMenu.map((sub, key) => {
             return (
-              <Styled.SubMenu as={Link} to={sub.path}>
+              <Styled.SubMenu as={Link} to={sub.path} key={key}>
                 {Icons.home}
                 <span style={{ margin: '0 10px' }}>{sub.title}</span>
               </Styled.SubMenu>

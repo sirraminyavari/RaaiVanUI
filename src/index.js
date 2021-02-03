@@ -9,7 +9,6 @@ import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 
 //TODO: Move to redux Provider
 import { RVGlobalProvider } from 'context/RVGlobalProvider';
-import { ThemeProvider } from 'context/ThemeProvider';
 
 const MainLayout = lazy(() => import('layouts/Main'));
 const Login = lazy(() => import('views/Auth/Login'));
@@ -18,18 +17,16 @@ render(
   <React.StrictMode>
     <Provider store={store}>
       <RVGlobalProvider>
-        <ThemeProvider>
-          <ErrorBoundry>
-            <Suspense fallback={<Spinner />}>
-              <Router>
-                <Switch>
-                  <PublicRoute exact path="/login" component={Login} />
-                  <PrivateRoute path="/" component={MainLayout} />
-                </Switch>
-              </Router>
-            </Suspense>
-          </ErrorBoundry>
-        </ThemeProvider>
+        <ErrorBoundry>
+          <Suspense fallback={<Spinner />}>
+            <Router>
+              <Switch>
+                <PublicRoute exact path="/login" component={Login} />
+                <PrivateRoute path="/" component={MainLayout} />
+              </Switch>
+            </Router>
+          </Suspense>
+        </ErrorBoundry>
       </RVGlobalProvider>
     </Provider>
   </React.StrictMode>,

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import user from './userReducer';
+import theme from './themeReducer';
 import auth from './loginReducer';
 import domains from './domainsReducer';
 import loginRoute from './loginRouteReducer';
@@ -7,7 +7,7 @@ import signup from './signupReducer';
 //import reducers here
 
 const rootReducer = combineReducers({
-  user,
+  theme,
   auth,
   domains,
   loginRoute,

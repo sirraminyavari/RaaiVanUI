@@ -30,10 +30,10 @@ export const SidebarContainer = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  width: ${(props) => (props.options.isOpen ? '110%' : '140%')};
+  width: ${({ options }) => (options.isSidebarOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: ${(props) => (props.options.showSetting ? '-10vh' : '-3vh')};
+  bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
   left: -20px;
   overflow: scroll;
   margin-bottom: 6vh;
@@ -92,7 +92,7 @@ export const SidebarFooter = styled.div`
 export const FooterTitle = styled.span`
   margin-right: 5px;
   position: relative;
-  top: ${({ isOpen }) => (isOpen ? '0px' : '100px')};
+  top: ${({ isSidebarOpen }) => (isSidebarOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
 `;
 
@@ -187,16 +187,16 @@ const arrowCss = css`
 
 export const ArrowUp = styled.div`
   ${arrowCss}
-  color: ${(props) => (props.isUp ? '#444' : '#fff')};
-  cursor: ${(props) => (props.isUp ? 'revert' : 'pointer')};
+  color: ${({ isUp }) => (isUp ? '#444' : '#fff')};
+  cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0;
   padding-bottom: 20px;
 `;
 
 export const ArrowDown = styled.div`
   ${arrowCss}
-  color: ${(props) => (props.isDown ? '#444' : '#fff')};
-  cursor: ${(props) => (props.isDown ? 'revert' : 'pointer')};
+  color: ${({ isDown }) => (isDown ? '#444' : '#fff')};
+  cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: -20px;
   padding-bottom: -20px;
 `;

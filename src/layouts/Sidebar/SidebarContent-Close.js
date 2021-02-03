@@ -21,7 +21,7 @@ const miniSide = [
   'notifications',
 ];
 
-const CloseContent = ({ showSettings }) => {
+const CloseContent = ({ handleSettings }) => {
   const ref = useRef();
   const [scroll, setScroll] = useState(0);
   const [isDown, setIsDown] = useState(false);
@@ -58,7 +58,7 @@ const CloseContent = ({ showSettings }) => {
   return (
     <>
       <Styled.SidebarTitle>
-        <Styled.SettingWrapper onClick={showSettings}>
+        <Styled.SettingWrapper onClick={handleSettings}>
           {Icons.settings}
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>

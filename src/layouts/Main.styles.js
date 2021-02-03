@@ -6,7 +6,7 @@ export const MainContainer = styled.div`
 
 export const ContentWrapper = styled.div`
   ${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${(props) =>
-    props.isOpen ? '250px' : '55px'};
+    props.isSidebarOpen ? '250px' : '55px'};
   height: 100vh;
   transition: all 0.7s ease;
 `;

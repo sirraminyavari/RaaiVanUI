@@ -9,8 +9,8 @@ export const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
-  width: ${({ isOpen }) =>
-    isOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
+  width: ${({ isSidebarOpen }) =>
+    isSidebarOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
   padding: 0 20px;
   z-index: 1;
   box-shadow: 0px 3px 10px #333;
