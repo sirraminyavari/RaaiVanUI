@@ -1,40 +1,10 @@
+import { useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import SidebarMenu from './SidebarMenu';
 import Icons from 'components/Icons';
 
-const sidebarItems = [
-  {
-    title: 'منابع انسانی',
-    path: '/services',
-    icon: 'home',
-  },
-  {
-    title: 'مدیریت',
-    path: '/manager',
-    subMenu: [
-      { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-      { title: 'تقویم محتوایی', path: '/manager/mark' },
-    ],
-  },
-  {
-    title: 'منابع انسانی',
-    path: '/services',
-    subMenu: [
-      { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-      { title: 'تقویم محتوایی', path: '/manager/mark' },
-    ],
-  },
-  {
-    title: 'منابع انسانی',
-    path: '/services',
-    subMenu: [
-      { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-      { title: 'تقویم محتوایی', path: '/manager/mark' },
-    ],
-  },
-];
-
 const MenuContent = () => {
+  const { menuItems } = useSelector((state) => state.sidebarItems);
   return (
     <>
       <Styled.SearchWrapper>
@@ -44,7 +14,7 @@ const MenuContent = () => {
         />
         {Icons.filter}
       </Styled.SearchWrapper>
-      {sidebarItems.map((item, key) => {
+      {menuItems.map((item, key) => {
         return <SidebarMenu item={item} key={key} />;
       })}
       <hr />

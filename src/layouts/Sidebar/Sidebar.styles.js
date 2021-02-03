@@ -115,8 +115,8 @@ export const MenuTitle = styled.div`
 `;
 
 export const SubMenuContainer = styled.div`
-  max-height: ${({ show, itemsCount }) =>
-    show ? `${itemsCount * 35}px` : '0px'};
+  max-height: ${({ isOpen, itemsCount }) =>
+    isOpen ? `${itemsCount * 35}px` : '0px'};
   overflow: hidden;
   transition: all 0.5s ease;
 `;
