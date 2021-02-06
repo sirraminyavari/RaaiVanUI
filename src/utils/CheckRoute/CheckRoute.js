@@ -1,10 +1,21 @@
+import { useEffect } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import useCheckRoute from 'hooks/useCheckRoute';
 import Exception from 'components/Exception/Exception';
+import Spinner from 'components/Spinner';
+import { useDispatch } from 'react-redux';
+import { themeSlice } from 'store/reducers/themeReducer';
 
-const CheckRoute = ({ component: Component, name, props }) => {
+const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
-  const route = useCheckRoute({ name });
+  const route = useCheckRoute(name);
+  const dispatch = useDispatch();
+  const { toggleNavSide } = themeSlice.actions;
+
+  useEffect(() => {
+    dispatch(toggleNavSide(hasNavSide));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasNavSide]);
 
   if (route.ServiceUnavailable) {
     //Show Service Unavailable Component
@@ -73,6 +84,8 @@ const CheckRoute = ({ component: Component, name, props }) => {
     //Redirect to '[result.RedirectToURL]'
     const url = route.RedirectToURL;
     window.location.href = url;
+  } else if (Object.keys(route).length === 0) {
+    return <Spinner />;
   } else {
     //Show Route Component if permission is granted
     return <Component {...props} route={route} />;

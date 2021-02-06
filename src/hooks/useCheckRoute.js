@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useQuery from 'hooks/useQuery';
 
-const useCheckRoute = ({ name }) => {
+const useCheckRoute = (name) => {
   const [result, setResult] = useState({});
   const routeParams = useParams();
   const queryParams = useQuery();
   const params = { ...routeParams, ...queryParams };
-  console.log(params);
+
   useEffect(() => {
     window.RVAPI.CheckRoute({
       RouteName: name,
@@ -21,6 +21,7 @@ const useCheckRoute = ({ name }) => {
     return () => {
       setResult({});
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
   return result;
 };

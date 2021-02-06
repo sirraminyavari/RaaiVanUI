@@ -9,18 +9,21 @@ const SidebarRoutes = [
     path: getURL('Reports'),
     name: 'reports',
     exact: true,
+    hasNavSide: true,
     component: Reports,
   },
   {
     path: getURL('User'),
     name: 'profile',
     exact: true,
+    hasNavSide: true,
     component: Profile,
   },
   {
     path: getURL('User') + '/:uid',
     name: 'profile',
     exact: true,
+    hasNavSide: true,
     component: Profile,
   },
 ];
