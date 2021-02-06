@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
 import { themeSlice } from 'store/reducers/themeReducer';
+import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 const SidebarFooter = lazy(() => import('./SidebarFooter'));
 const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
 const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
@@ -20,6 +21,14 @@ const Sidebar = () => {
       dispatch(toggleSetting(!isSettingShown));
     }
   };
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      dispatch(getSidebarNodes());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSidebarOpen]);
+
   return (
     <Styled.SidebarContainer width={isSidebarOpen ? 250 : 55}>
       <SidebarHeader />

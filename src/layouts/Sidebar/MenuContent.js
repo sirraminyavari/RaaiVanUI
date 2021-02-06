@@ -4,7 +4,7 @@ import SidebarMenu from './SidebarMenu';
 import Icons from 'components/Icons';
 
 const MenuContent = () => {
-  const { menuItems } = useSelector((state) => state.sidebarItems);
+  const { tree } = useSelector((state) => state.sidebarItems);
   return (
     <>
       <Styled.SearchWrapper>
@@ -14,7 +14,7 @@ const MenuContent = () => {
         />
         {Icons.filter}
       </Styled.SearchWrapper>
-      {menuItems.map((item, key) => {
+      {tree.map((item, key) => {
         return <SidebarMenu item={item} key={key} />;
       })}
       <hr />

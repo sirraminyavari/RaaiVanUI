@@ -4,6 +4,7 @@ import * as MD from 'react-icons/md';
 import * as BS from 'react-icons/bs';
 import * as GI from 'react-icons/gi';
 import * as BI from 'react-icons/bi';
+import { VscPreview } from 'react-icons/vsc';
 
 const Icons = {
   home: <AI.AiFillHome />,
@@ -29,6 +30,7 @@ const Icons = {
   arrowDown: <BS.BsArrowDown size={20} />,
   arrowLeft: <BS.BsArrowLeft size={20} />,
   arrowRight: <BS.BsArrowRight size={20} />,
+  preview: (props) => <VscPreview {...props} />,
 };
 
 export default Icons;

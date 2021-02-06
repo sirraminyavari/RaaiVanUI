@@ -4,45 +4,13 @@ import { createSlice } from '@reduxjs/toolkit';
 export const sidebarMenuSlice = createSlice({
   name: 'sidebar-items',
   initialState: {
-    menuItems: [
-      {
-        id: 1,
-        title: 'منابع انسانی',
-        path: '/services',
-        icon: 'home',
-      },
-      {
-        id: 2,
-        title: 'مدیریت',
-        subMenu: [
-          { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-          { title: 'تقویم محتوایی', path: '/manager/mark' },
-        ],
-        isOpen: true,
-      },
-      {
-        id: 3,
-        title: 'منابع انسانی',
-        subMenu: [
-          { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-          { title: 'تقویم محتوایی', path: '/manager/mark' },
-        ],
-        isOpen: false,
-      },
-      {
-        id: 4,
-        title: 'منابع انسانی',
-        subMenu: [
-          { title: 'اسناد مارکتینگ', path: '/manager/mark' },
-          { title: 'تقویم محتوایی', path: '/manager/mark' },
-        ],
-        isOpen: false,
-      },
-    ],
+    nodeTypes: [],
+    tree: [],
   },
   reducers: {
-    getSidebarItems: (state, action) => {
-      state.menuItems = action.payload;
+    setSidebarNodes: (state, action) => {
+      state.nodeTypes = action.payload.NodeTypes;
+      state.tree = action.payload.Tree;
     },
     toggleSidebarMenu: (state, action) => {
       let newItems = state.menuItems.map((item) => {
