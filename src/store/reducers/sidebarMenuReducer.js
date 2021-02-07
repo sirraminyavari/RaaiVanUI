@@ -11,7 +11,9 @@ export const sidebarMenuSlice = createSlice({
   reducers: {
     setSidebarNodes: (state, action) => {
       state.nodeTypes = action.payload.NodeTypes;
-      state.tree = action.payload.Tree;
+      if (state.tree.length !== action.payload.Tree.length) {
+        state.tree = action.payload.Tree;
+      }
     },
     toggleSidebarMenu: (state, action) => {
       let IDs = state.openMenuID;
@@ -22,6 +24,9 @@ export const sidebarMenuSlice = createSlice({
       } else {
         state.openMenuID.push(action.payload);
       }
+    },
+    reorderTree: (state, action) => {
+      state.tree = action.payload;
     },
   },
 });
