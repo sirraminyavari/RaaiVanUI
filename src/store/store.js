@@ -13,7 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import rootReducer from './reducers/rootReducer';
 
 const persistConfig = {
-  key: 'root',
+  key: 'Raaivan',
   version: 1,
   storage,
   whitelist: ['theme', 'sidebarItems'],

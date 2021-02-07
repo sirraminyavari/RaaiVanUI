@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Sidebar Menu Slice
+//! Sidebar Menu Slice
 export const sidebarMenuSlice = createSlice({
   name: 'sidebar-items',
   initialState: {
     nodeTypes: [],
     tree: [],
+    openMenuID: [],
   },
   reducers: {
     setSidebarNodes: (state, action) => {
@@ -13,14 +14,14 @@ export const sidebarMenuSlice = createSlice({
       state.tree = action.payload.Tree;
     },
     toggleSidebarMenu: (state, action) => {
-      let newItems = state.menuItems.map((item) => {
-        if (item.id === action.payload) {
-          item.isOpen = !item.isOpen;
-          return item;
-        }
-        return item;
-      });
-      state.menuItems = newItems;
+      let IDs = state.openMenuID;
+      if (IDs.includes(action.payload)) {
+        let index = IDs.indexOf(action.payload);
+        IDs.splice(index, 1);
+        state.openMenuID = IDs;
+      } else {
+        state.openMenuID.push(action.payload);
+      }
     },
   },
 });

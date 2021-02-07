@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
 import * as Styled from './Sidebar.styles';
@@ -13,11 +13,15 @@ const SidebarMenu = ({ item }) => {
     TypeName: title,
     Sub: subMenu,
     IconURL: iconImage,
-    isOpen,
   } = item;
+  const { openMenuID } = useSelector((state) => state.sidebarItems);
   const dispatch = useDispatch();
   const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+
   const handleDropdown = () => dispatch(toggleSidebarMenu(id));
+
+  const isOpen = () => openMenuID.includes(id);
+
   return (
     <>
       <Styled.MenuContainer
@@ -26,7 +30,7 @@ const SidebarMenu = ({ item }) => {
         onClick={subMenu ? handleDropdown : null}>
         <Styled.MenuTitle>
           {subMenu ? (
-            isOpen ? (
+            isOpen() ? (
               <CaretIcon dir="down" />
             ) : (
               <CaretIcon dir="left" />
@@ -36,10 +40,10 @@ const SidebarMenu = ({ item }) => {
           )}
           <span style={{ marginRight: '5px' }}>{decode(title)}</span>
         </Styled.MenuTitle>
-        {subMenu && !isOpen && <ShowMoreIcon dir="vertical" />}
+        {subMenu && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
       {subMenu && (
-        <Styled.SubMenuContainer isOpen={true} itemsCount={subMenu.length}>
+        <Styled.SubMenuContainer isOpen={isOpen()} itemsCount={subMenu.length}>
           {subMenu.map((sub, key) => {
             return (
               <Styled.SubMenu
