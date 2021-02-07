@@ -6,7 +6,7 @@ import * as Styled from './Navbar.styles';
 const navButtons = [
   { label: 'خانه', icon: 'home', linkTo: '/home' },
   { label: 'تیم ها', icon: 'teams', linkTo: '/teams' },
-  { label: 'کارتابل', icon: 'inbox', linkTo: '/dashboard' },
+  { label: 'کارتابل', icon: 'dashboard', linkTo: '/dashboard' },
   {
     label: 'اعلان ها',
     icon: 'notifications',

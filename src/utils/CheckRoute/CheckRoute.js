@@ -17,6 +17,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
+  if (Object.keys(route).length === 0) {
+    return <Spinner />;
+  }
   if (route.ServiceUnavailable) {
     //Show Service Unavailable Component
     return <Exception message="Service Unavailable" />;
@@ -84,8 +87,6 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     //Redirect to '[result.RedirectToURL]'
     const url = route.RedirectToURL;
     window.location.href = url;
-  } else if (Object.keys(route).length === 0) {
-    return <Spinner />;
   } else {
     //Show Route Component if permission is granted
     return <Component {...props} route={route} />;

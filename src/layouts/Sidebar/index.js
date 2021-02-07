@@ -23,9 +23,7 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    if (isSidebarOpen) {
-      dispatch(getSidebarNodes());
-    }
+    dispatch(getSidebarNodes());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen]);
 

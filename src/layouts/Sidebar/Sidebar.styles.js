@@ -116,7 +116,7 @@ export const MenuTitle = styled.div`
 
 export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 35}px` : '0px'};
+    isOpen ? `${itemsCount * 40}px` : '0px'};
   overflow: hidden;
   transition: all 0.5s ease;
 `;
@@ -134,8 +134,8 @@ export const SubMenu = styled.div`
 `;
 
 export const BadgeWrapper = styled.div`
-  width: 20px;
   height: 20px;
+  padding: 0 5px;
   line-height: 22px;
   border-radius: 10px;
   background-color: blue;
@@ -185,7 +185,7 @@ const arrowCss = css`
   font-size: 40px;
 `;
 
-export const ArrowUp = styled.div`
+export const Up = styled.div`
   ${arrowCss}
   color: ${({ isUp }) => (isUp ? '#444' : '#fff')};
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
@@ -193,7 +193,7 @@ export const ArrowUp = styled.div`
   padding-bottom: 20px;
 `;
 
-export const ArrowDown = styled.div`
+export const Down = styled.div`
   ${arrowCss}
   color: ${({ isDown }) => (isDown ? '#444' : '#fff')};
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
@@ -212,9 +212,9 @@ export const IconListWrap = styled.div`
   height: 100%;
   overflow-y: scroll;
   position: absolute;
-  padding: 0 5px;
+  padding: 0 0.3rem;
   top: 0;
-  left: -20px;
+  left: -1rem;
   box-sizing: content-box;
   text-align: center;
 `;

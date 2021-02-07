@@ -39,14 +39,14 @@ export const ButtonIcon = styled.div`
 `;
 
 export const BadgeWrapper = styled.div`
-  width: 18px;
   height: 18px;
+  padding: 0 5px;
   line-height: 22px;
   border-radius: 10px;
   background-color: red;
   position: absolute;
   top: 5px;
-  left: -10px;
+  left: -15px;
   font-size: 10px;
 `;
 
