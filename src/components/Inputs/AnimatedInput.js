@@ -1,11 +1,13 @@
 /**
  * An input component that animates placeholder position
  */
-import React, { useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import InVisibleIcon from 'components/Icons/InVisible';
+import VisibleIcon from 'components/Icons/VisibleIcon';
+import { MAIN_BLUE } from 'const/Colors';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RevFloat } = window;
 
 const AnimatedInput = ({
   placeholder,
@@ -17,9 +19,11 @@ const AnimatedInput = ({
 }) => {
   const [inputFocused, setFocused] = useState(false);
   const [passVisible, setPassVisible] = useState(false);
-
+  useEffect(() => {
+    console.log(window, 'focused input');
+  }, [inputFocused]);
   return (
-    <Container error={error} style={style}>
+    <Container error={error} style={style} inputFocused={inputFocused}>
       {type === 'password' &&
         (!passVisible ? (
           <VisibleMe onClick={() => setPassVisible(true)} />
@@ -32,8 +36,14 @@ const AnimatedInput = ({
           value={value}
           type={passVisible ? 'text' : type}
           onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onBlur={(e) => {
+            console.log('blurred');
+            e.preventDefault();
+            setFocused(false);
+          }}
           onChange={(event) => {
+            console.log(event.target.value, 'on event');
+
             onChange(event.target.value);
           }}
           error={error}></Input>
@@ -53,11 +63,15 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 13px;
-  width: 90%;
+  width: 100%;
   align-self: center;
   flex-direction: row;
-  border: ${({ error }) => (error ? 'solid 0.5px red' : 'solid 0.9px #bac9dc')};
+  border: ${({ error, inputFocused }) =>
+    error
+      ? 'solid 0.5px red'
+      : inputFocused
+      ? `solid 1px ${MAIN_BLUE}`
+      : 'solid 0.5px #bac9dc'};
   border-radius: 7px;
 `;
 
@@ -84,9 +98,10 @@ const Label = styled.label`
 
 const Input = styled.input`
   position: relative;
+  display: flex;
   width: 100%;
   outline: none;
-  padding: 11px 0px 10px 11px;
+  padding: 11px 7px 10px 11px;
   color: #2c3235;
   letter-spacing: 0.2px;
   font-weight: 400;
@@ -95,7 +110,6 @@ const Input = styled.input`
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
   text-align: ${RV_Float};
-  padding-right: 13px;
   border: none;
   border-radius: 7px;
 `;
@@ -122,8 +136,12 @@ const Span = styled.span`
   -moz-border-radius: 0.25rem;
   -webkit-border-radius: 0.25rem;
   text-align: ${RV_Float};
-  width: 100%;
-  top: ${({ inputFocused }) => (inputFocused ? `-9px` : `50%`)};
+  background-color: ${({ inputFocused }) =>
+    inputFocused ? `white` : 'rgba(0,0,0,0)'};
+  ${({ inputFocused }) =>
+    inputFocused ? `${RV_Float}: 10px` : `${RV_Float}: 0px`};
+  top: ${({ inputFocused }) => (inputFocused ? `0px` : `50%`)};
+
   color: ${({ inputFocused, value }) =>
     inputFocused ? `black` : value.length > 0 ? 'rgba(0,0,0,0)' : `#707070`};
   font-size: ${({ inputFocused }) => (inputFocused ? `11px` : `16px`)};
@@ -133,19 +151,19 @@ const Error = styled.span`
   font-size: 23px;
   margin-left: 13px;
   position: relative;
-  left: 1px;
+  left: 13px;
 `;
-const VisibleMe = styled(AiFillEye)`
+const VisibleMe = styled(VisibleIcon)`
   color: grey;
   font-size: 23px;
   position: relative;
-  left: 3px;
+  left: 7px;
   z-index: 3;
 `;
-const InVisibleMe = styled(AiFillEyeInvisible)`
+const InVisibleMe = styled(InVisibleIcon)`
   color: grey;
   font-size: 23px;
   position: relative;
   z-index: 3;
-  left: 3px;
+  left: 7px;
 `;

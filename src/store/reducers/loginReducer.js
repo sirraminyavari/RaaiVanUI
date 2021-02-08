@@ -6,6 +6,8 @@ export const loginSlice = createSlice({
   initialState: {
     isFetching: false,
     login: null,
+    email: '',
+    password: '',
   },
   reducers: {
     loginAction: (state, action) => {
@@ -18,6 +20,12 @@ export const loginSlice = createSlice({
     loginFailed: (state, action) => {
       state.error = action.payload;
       state.isFetching = false;
+    },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    setPassword: (state, action) => {
+      state.password = action.payload;
     },
   },
 });

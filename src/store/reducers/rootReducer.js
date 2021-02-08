@@ -3,7 +3,7 @@ import theme from './themeReducer';
 import auth from './loginReducer';
 import domains from './domainsReducer';
 import loginRoute from './loginRouteReducer';
-import signup from './signupReducer';
+import login from './loginReducer';
 //import reducers here
 
 const rootReducer = combineReducers({
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   auth,
   domains,
   loginRoute,
-  signup,
+  login,
   // add reducers
 });
 

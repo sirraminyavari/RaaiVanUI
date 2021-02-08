@@ -14,14 +14,15 @@ const Logo = () => {
 export default Logo;
 
 const Container = styled.div`
-  width: 50vw;
+  width: 30vw;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 13px;
 `;
 const Image = styled.img`
-  max-width: 50%;
+  max-width: 30%;
   src: ${(props) => props.src};
   margin-bottom: 13px;
 `;

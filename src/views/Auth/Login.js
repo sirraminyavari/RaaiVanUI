@@ -3,12 +3,19 @@
  */
 import Loader from 'components/Loader/Loader';
 import Logo from 'components/Media/Logo';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
+import ContinueWithGoogle from './elements/ContinueWithGoogle';
+import CreateAccountButton from './elements/CreateAccountButton';
+import Email from './elements/Email';
+import ForgotPassword from './elements/ForgotPassword';
+import NavigateButton from './elements/NavigateButton';
+import Password from './elements/Password';
 import WavyBackground from './items/WavyBackground';
-import LoginControl from './LoginControl';
+import Description from './elements/Description';
+import Return from './elements/Return';
 
 /**
  * A function that handle custom routing between login's screen such as :
@@ -17,37 +24,33 @@ import LoginControl from './LoginControl';
 const Login = () => {
   const { currentRoute } = useSelector((state) => state.loginRoute);
   const state = useSelector((state) => state);
+  const [fullScreen, setFullScreen] = useState(false);
 
-  const Signup = React.lazy(() => import('./Signup'));
   // Use React.lazy to increase page loading speed.
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1000px)' });
   // It checks screen dimension.
 
-  useEffect(() => {}, [currentRoute]);
-
-  console.log(state, 'state');
-
   return (
-    <Suspense
-      fallback={
-        <Maintainer>
-          <WavyBackground />
-          <Loader />
-        </Maintainer>
-      }>
-      <Maintainer>
-        <WavyBackground />
-        <Container>
-          <Logo />
+    <Maintainer>
+      <WavyBackground />
+      <Container>
+        <Logo />
+        <Box smallScreen={isTabletOrMobile}>
+          {/* currenRoute handles custom route between login screens */}
+          {/* {currentRoute.includes('login') ? <LoginControl /> : <Signup />} */}
+          <Email />
+          <Password />
+          <Description />
 
-          <Box smallScreen={isTabletOrMobile}>
-            {/* currenRoute handles custom route between login screens */}
-            {currentRoute === 'login' ? <LoginControl /> : <Signup />}
-          </Box>
-        </Container>
-      </Maintainer>
-    </Suspense>
+          <NavigateButton />
+          <ForgotPassword />
+          <Return />
+          <ContinueWithGoogle />
+          <CreateAccountButton />
+        </Box>
+      </Container>
+    </Maintainer>
   );
 };
 
@@ -72,11 +75,15 @@ const Container = styled.div`
 `;
 const Box = styled.div`
   display: flex;
-  width: ${({ smallScreen }) => (smallScreen ? '90vw' : '40vw')};
-  max-width: 90%;
-  height: 80vh;
+  width: ${({ smallScreen }) => (smallScreen ? '90vw' : '31vw')};
+  height: ${({ smallScreen }) => (smallScreen ? '90vh' : '83vh')};
+  padding-top: 2.6rem;
+
+  max-height: 80%;
   background-color: white;
-  border-radius: 13px;
+  border-radius: 0.8rem;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  transition: all 1s;
 `;

@@ -3,15 +3,8 @@
  */
 import React from 'react';
 import styled from 'styled-components';
-
 const WavyBackground = () => {
-  return (
-    <Layer1>
-      <Layer2>
-        <Layer3></Layer3>
-      </Layer2>
-    </Layer1>
-  );
+  return <BackgroundImage />;
 };
 export default WavyBackground;
 const Layer1 = styled.div`
@@ -55,4 +48,9 @@ const Layer3 = styled.div`
   justify-content: center;
   flex-direction: column;
   top: 20vw;
+`;
+const BackgroundImage = styled.img`
+  src: 'login_bg.jpg';
+  width: '100%';
+  height: auto;
 `;
