@@ -43,7 +43,7 @@ export const ContentWrapper = styled.div`
 
 export const SidebarHeader = styled.div`
   ${FlexBetween}
-  height: 10%;
+  height: 4.1rem;
   position: relative;
   top: 0;
   z-index: 1000;

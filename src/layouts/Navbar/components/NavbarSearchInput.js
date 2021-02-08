@@ -1,4 +1,4 @@
-import * as Styled from './Navbar.styles';
+import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
 const NavbarSearchInput = () => {

@@ -1,7 +1,7 @@
-import { GiCutDiamond } from 'react-icons/gi';
+import { FaSketch } from 'react-icons/fa';
 
 const DiamondIcon = (props) => {
-  return <GiCutDiamond {...props} />;
+  return <FaSketch {...props} />;
 };
 
 export default DiamondIcon;
