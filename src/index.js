@@ -17,14 +17,14 @@ render(
     <StoreProvider>
       <RVGlobalProvider>
         <ErrorBoundry>
-          <Suspense fallback={<LogoLoader size={10} />}>
-            <Router>
-              <Switch>
+          <Router>
+            <Switch>
+              <Suspense fallback={<LogoLoader size={10} />}>
                 <PublicRoute exact path="/login" component={Login} />
                 <PrivateRoute path="/" component={MainLayout} />
-              </Switch>
-            </Router>
-          </Suspense>
+              </Suspense>
+            </Switch>
+          </Router>
         </ErrorBoundry>
       </RVGlobalProvider>
     </StoreProvider>

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
@@ -31,9 +31,7 @@ const OpenContent = ({ handleSettings }) => {
           )}
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      <Suspense fallback={<div>Loading ..</div>}>
-        {isSettingShown ? <SettingsContent /> : <MenuContent />}
-      </Suspense>
+      {isSettingShown ? <SettingsContent /> : <MenuContent />}
     </>
   );
 };

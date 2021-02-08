@@ -1,9 +1,8 @@
-import { lazy } from 'react';
 import NavbarRoutes from './Navbar.routes';
 import SidebarRoutes from './Sidebar.routes';
-const ErrorView = lazy(() => import('views/Error'));
-const NewNode = lazy(() => import('views/NewNode'));
-const ChangePassword = lazy(() => import('views/ChangePassword'));
+import ErrorView from 'views/Error';
+import NewNode from 'views/NewNode';
+import ChangePassword from 'views/ChangePassword';
 
 const routes = [
   ...NavbarRoutes,

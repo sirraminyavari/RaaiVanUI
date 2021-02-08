@@ -4,7 +4,8 @@ import * as Styled from './Sidebar.styles';
 import SidebarHeader from './SidebarHeader';
 import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
-const SidebarFooter = lazy(() => import('./SidebarFooter'));
+import LogoLoader from 'components/LogoLoader/LogoLoader';
+import SidebarFooter from './SidebarFooter';
 const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
 const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
 
@@ -31,7 +32,7 @@ const Sidebar = () => {
     <Styled.SidebarContainer width={isSidebarOpen ? 250 : 55}>
       <SidebarHeader />
       <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
-        <Suspense fallback={<div>Loading....</div>}>
+        <Suspense fallback={<LogoLoader size={10} />}>
           {isSidebarOpen ? (
             <SidebarOpenContent handleSettings={handleSettings} />
           ) : (
