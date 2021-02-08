@@ -2,6 +2,7 @@ import { getURL } from 'helpers';
 import ConfigRoutes from './Config.routes';
 import Profile from 'views/Profile';
 import Reports from 'views/Reports';
+import Classes from 'views/Classes';
 
 const SidebarRoutes = [
   ...ConfigRoutes,
@@ -25,6 +26,20 @@ const SidebarRoutes = [
     exact: true,
     hasNavSide: true,
     component: Profile,
+  },
+  {
+    path: getURL('Classes') + '/:id',
+    name: 'advanced_search',
+    exact: true,
+    hasNavSide: true,
+    component: Classes,
+  },
+  {
+    path: getURL('Classes'),
+    name: 'advanced_search',
+    exact: true,
+    hasNavSide: true,
+    component: Classes,
   },
 ];
 

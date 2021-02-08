@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
@@ -18,7 +19,9 @@ const OpenContent = ({ handleSettings }) => {
             <span style={{ padding: '0 10px' }}>مدیریت تیم</span>
           </Styled.CenterIcon>
         ) : (
-          <span>تیم شاهین</span>
+          <Link to="/classes" style={{ color: '#fff' }}>
+            تیم شاهین
+          </Link>
         )}
         <Styled.SettingWrapper onClick={handleSettings}>
           {isSettingShown ? (

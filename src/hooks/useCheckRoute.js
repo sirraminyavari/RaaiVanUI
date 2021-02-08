@@ -21,7 +21,7 @@ const useCheckRoute = (name) => {
       setResult({});
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
+  }, [name, routeParams, queryParams]);
   return result;
 };
 

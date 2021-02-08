@@ -2,7 +2,6 @@ import Teams from 'views/Teams/Teams';
 import Home from 'views/Home/Home';
 import Messages from 'views/Messages';
 import Dashboard from 'views/Dashboard';
-import AdvancedSearch from 'views/AdvancedSearch';
 import Search from 'views/Search';
 import { getURL } from 'helpers';
 
@@ -34,13 +33,6 @@ const NavbarRoutes = [
     exact: true,
     hasNavSide: true,
     component: Dashboard,
-  },
-  {
-    path: getURL('Classes'),
-    name: 'advanced_search',
-    exact: true,
-    hasNavSide: true,
-    component: AdvancedSearch,
   },
   {
     path: '/dosearch/:searchtext',
