@@ -6,6 +6,7 @@ export const themeSlice = createSlice({
   initialState: {
     isSidebarOpen: false,
     isSettingShown: false,
+    hasNavSide: false,
   },
   reducers: {
     toggleSidebar: (state, action) => {
@@ -13,6 +14,9 @@ export const themeSlice = createSlice({
     },
     toggleSetting: (state, action) => {
       state.isSettingShown = action.payload;
+    },
+    toggleNavSide: (state, action) => {
+      state.hasNavSide = action.payload;
     },
   },
 });

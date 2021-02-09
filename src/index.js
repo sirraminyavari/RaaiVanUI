@@ -1,10 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { PrivateRoute, PublicRoute } from 'utils/RouteHandler';
 import StoreProvider from 'store/StoreProvider';
-import Spinner from 'components/Spinner';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
+import LogoLoader from 'components/LogoLoader/LogoLoader';
 
 //TODO: Move to redux Provider
 import { RVGlobalProvider } from 'context/RVGlobalProvider';
@@ -17,7 +17,7 @@ render(
     <StoreProvider>
       <RVGlobalProvider>
         <ErrorBoundry>
-          <Suspense fallback={<Spinner />}>
+          <Suspense fallback={<LogoLoader size={10} />}>
             <Router>
               <Switch>
                 <PublicRoute exact path="/login" component={Login} />

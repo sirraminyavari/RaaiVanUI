@@ -34,26 +34,26 @@ export const ContentWrapper = styled.div`
   position: absolute;
   top: 0;
   bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
-  left: -20px;
+  left: -1.1rem;
   overflow: scroll;
   margin-bottom: 6vh;
-  padding: 0 20px;
+  padding: 0 1.1rem;
   margin-top: 10vh;
 `;
 
 export const SidebarHeader = styled.div`
   ${FlexBetween}
-  height: 10%;
+  height: 4.1rem;
   position: relative;
   top: 0;
   z-index: 1000;
-  padding: 0 20px;
+  padding: 0 1.1rem;
   background-color: inherit;
 `;
 
 export const ToggleArrow = styled.div`
-  height: 20px;
-  margin-left: -5px;
+  height: 1.5rem;
+  margin-left: -0.5rem;
   cursor: pointer;
 `;
 
@@ -66,7 +66,7 @@ export const SidebarTitle = styled.div`
 export const SearchWrapper = styled.div`
   ${FlexBetween}
   border-bottom: 1px solid #707070;
-  margin-bottom: 30px;
+  margin-bottom: 1rem;
 `;
 
 export const SearchInput = styled.input`
@@ -90,7 +90,7 @@ export const SidebarFooter = styled.div`
 `;
 
 export const FooterTitle = styled.span`
-  margin-right: 5px;
+  margin-right: 0.5rem;
   position: relative;
   top: ${({ isSidebarOpen }) => (isSidebarOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
@@ -98,12 +98,13 @@ export const FooterTitle = styled.span`
 
 export const MenuContainer = styled.div`
   ${FlexBetween}
-  border: 1px solid #222;
-  height: 35px;
-  margin: 10px 0;
-  padding: 0 5px;
-  border-radius: 5px;
+  border: 0.1rem solid #222;
+  height: 2.2rem;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
+  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background-color: #19265e;
   }
@@ -115,54 +116,58 @@ export const MenuTitle = styled.div`
 `;
 
 export const SubMenuContainer = styled.div`
-  max-height: ${({ show, itemsCount }) =>
-    show ? `${itemsCount * 35}px` : '0px'};
+  max-height: ${({ isOpen, itemsCount }) =>
+    isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver ? '#383388' : 'inherit'};
   transition: all 0.5s ease;
 `;
 
 export const SubMenu = styled.div`
-  margin: 5px 0;
-  margin-right: 10px;
-  border-radius: 5px;
-  padding: 5px 10px;
+  margin: 0.3rem 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.3rem;
   display: flex;
   color: #fff;
+  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background-color: #19265e;
   }
 `;
 
 export const BadgeWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  line-height: 22px;
-  border-radius: 10px;
+  height: 1.3rem;
+  padding: 0 0.3rem;
+  line-height: 1.5rem;
+  border-radius: 1rem;
   background-color: blue;
   text-align: center;
-  font-size: 10px;
+  font-size: 0.8rem;
 `;
 
 export const BookmarkWrapper = styled.div`
   ${FlexBetween}
-  margin: 20px 0;
+  margin: 1rem 0;
 `;
 
 export const SettingWrapper = styled.div`
   background-color: #171c4d;
   border-radius: 50%;
-  padding: 5px;
-  margin-left: -5px;
-  line-height: 5px;
+  padding: 0.3rem;
+  margin-left: -0.5rem;
+  line-height: 0.5rem;
   cursor: pointer;
 `;
 
 export const SettingMenu = styled.div`
   ${FlexCenter}
-  margin: 10px 0;
-  margin-right: 10px;
-  padding: 10px;
-  border-radius: 5px;
+  margin: 0.5rem 0;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   :hover {
     background-color: #171c4d;
@@ -176,52 +181,56 @@ export const CloseContentContainer = styled.div`
   justify-content: center;
   position: relative;
   height: 70vh;
-  margin-right: -2px;
 `;
 
 const arrowCss = css`
   position: absolute;
-  right: -6px;
-  font-size: 40px;
+  right: -0.3rem;
+  font-size: 2.5rem;
 `;
 
-export const ArrowUp = styled.div`
+export const Up = styled.div`
   ${arrowCss}
   color: ${({ isUp }) => (isUp ? '#444' : '#fff')};
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0;
-  padding-bottom: 20px;
 `;
 
-export const ArrowDown = styled.div`
+export const Down = styled.div`
   ${arrowCss}
   color: ${({ isDown }) => (isDown ? '#444' : '#fff')};
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: -20px;
-  padding-bottom: -20px;
 `;
 
 export const IconListContainer = styled.div`
   height: 90%;
   overflow: hidden;
   position: relative;
-  left: -3px;
 `;
 
 export const IconListWrap = styled.div`
   height: 100%;
   overflow-y: scroll;
   position: absolute;
-  padding: 0 5px;
+  padding: 0 0.3rem;
   top: 0;
-  left: -20px;
+  left: -1rem;
   box-sizing: content-box;
   text-align: center;
 `;
 
 export const MiniIconWrapper = styled.div`
   display: block;
-  margin: 20px 0px;
-  font-size: 18px;
+  margin: 1rem 0px;
+  font-size: 1.6rem;
   color: #fff;
+`;
+
+export const MenuTreeContainer = styled.div`
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver ? '#383388' : 'inherit'};
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease;
 `;

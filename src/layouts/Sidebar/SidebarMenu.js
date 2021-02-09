@@ -1,36 +1,50 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
 import * as Styled from './Sidebar.styles';
-import Icons from 'components/Icons';
+import { decode } from 'js-base64';
+import CaretIcon from 'components/Icons/CaretIcons/Caret';
+import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
+import SubMenus from './components/SubMenus';
 
-const SidebarMenu = ({ item }) => {
-  const { title, subMenu, path, icon } = item;
-  const [show, setShow] = useState(false);
-  const handleDropdown = () => setShow(!show);
+const SidebarMenu = ({ item, isDragging, dragProps }) => {
+  const {
+    NodeTypeID: id,
+    TypeName: title,
+    Sub: subMenus,
+    IconURL: iconImage,
+  } = item;
+  const { openMenuID } = useSelector((state) => state.sidebarItems);
+  const dispatch = useDispatch();
+  const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+
+  const handleDropdown = () => dispatch(toggleSidebarMenu(id));
+
+  const isOpen = () => openMenuID.includes(id);
+
   return (
     <>
       <Styled.MenuContainer
-        as={subMenu ? 'div' : Link}
-        to={path}
-        onClick={subMenu ? handleDropdown : null}>
+        isDragging={isDragging}
+        {...dragProps}
+        as={subMenus ? 'div' : Link}
+        to={`/classes/${id}`}
+        onClick={subMenus ? handleDropdown : null}>
         <Styled.MenuTitle>
-          {subMenu ? (show ? Icons.caretDown : Icons.caretLeft) : Icons[icon]}
-          <span style={{ marginRight: '5px' }}>{title}</span>
+          {subMenus ? (
+            isOpen() ? (
+              <CaretIcon dir="down" />
+            ) : (
+              <CaretIcon dir="left" />
+            )
+          ) : (
+            <img src={iconImage} alt="menu-icon" />
+          )}
+          <span style={{ marginRight: '5px' }}>{decode(title)}</span>
         </Styled.MenuTitle>
-        {subMenu && !show && Icons.moreVertical}
+        {subMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
-      {subMenu && (
-        <Styled.SubMenuContainer show={show} itemsCount={subMenu.length}>
-          {subMenu.map((sub, key) => {
-            return (
-              <Styled.SubMenu as={Link} to={sub.path} key={key}>
-                {Icons.home}
-                <span style={{ margin: '0 10px' }}>{sub.title}</span>
-              </Styled.SubMenu>
-            );
-          })}
-        </Styled.SubMenuContainer>
-      )}
+      {subMenus && <SubMenus isOpen={isOpen()} subList={subMenus} />}
     </>
   );
 };
