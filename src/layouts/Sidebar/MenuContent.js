@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from './Sidebar.styles';
+import { reorder } from 'helpers';
 import SidebarMenu from './SidebarMenu';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
@@ -9,16 +10,18 @@ import FilterIcon from 'components/Icons/FilterIcon/Filter';
 
 const MenuContent = () => {
   const dispatch = useDispatch();
-  const { reorderTree } = sidebarMenuSlice.actions;
+  const { setReorderedTree } = sidebarMenuSlice.actions;
   const { tree } = useSelector((state) => state.sidebarItems);
 
-  const handleOnDragEnd = (value) => {
-    if (!value.destination) return;
-    const items = Array.from(tree);
-    const [reorderedItem] = items.splice(value.source.index, 1);
-    items.splice(value.destination.index, 0, reorderedItem);
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const newTree = reorder(
+      tree,
+      result.source.index,
+      result.destination.index
+    );
 
-    dispatch(reorderTree(items));
+    dispatch(setReorderedTree(newTree));
   };
 
   return (
@@ -31,28 +34,35 @@ const MenuContent = () => {
         <FilterIcon />
       </Styled.SearchWrapper>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="sidebar-menu-container">
-          {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+        <Droppable droppableId="sidebar-menu-container" type="parentMenu">
+          {(provided, snapshot) => (
+            <Styled.MenuTreeContainer
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              isDraggingOver={snapshot.isDraggingOver}>
               {tree.map((item, index) => {
                 return (
                   <Draggable
                     key={item.NodeTypeID}
                     draggableId={item.TypeName}
                     index={index}>
-                    {(provided) => (
+                    {(provided, snapshot) => (
                       <div
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}>
-                        <SidebarMenu item={item} />
+                        ref={provided.innerRef}
+                        style={{ ...provided.draggableProps.style }}>
+                        <SidebarMenu
+                          item={item}
+                          isDragging={snapshot.isDragging}
+                          dragProps={provided.dragHandleProps}
+                        />
                       </div>
                     )}
                   </Draggable>
                 );
               })}
               {provided.placeholder}
-            </div>
+            </Styled.MenuTreeContainer>
           )}
         </Droppable>
       </DragDropContext>

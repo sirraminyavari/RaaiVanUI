@@ -4,27 +4,30 @@ import NavbarSearchInput from './components/NavbarSearchInput';
 import * as Styled from './Navbar.styles';
 
 const navButtons = [
-  { title: 'خانه', icon: 'home', linkTo: '/home' },
+  { id: 1, title: 'خانه', icon: 'home', linkTo: '/home' },
   {
+    id: 2,
     title: 'پیمایش',
     icon: 'direction',
     options: [
-      { optName: 'مرورگر', optIcon: 'site' },
-      { optName: 'نقشه گرافیکی', optIcon: 'target' },
+      { id: 1, optName: 'مرورگر', optIcon: 'site' },
+      { id: 2, optName: 'نقشه گرافیکی', optIcon: 'target' },
     ],
   },
   {
+    id: 3,
     title: 'پرسش',
     icon: 'question',
     options: [
-      { optName: 'پرسش جدید', optIcon: 'plus' },
-      { optName: 'پرسش ها', optIcon: 'question' },
+      { id: 1, optName: 'پرسش جدید', optIcon: 'plus' },
+      { id: 2, optName: 'پرسش ها', optIcon: 'question' },
     ],
   },
-  { title: 'همکاران', icon: 'teams', linkTo: '/teams' },
-  { title: 'پیام ها', icon: 'messages', linkTo: '/messages' },
-  { title: 'کارتابل', icon: 'dashboard', linkTo: '/dashboard' },
+  { id: 4, title: 'همکاران', icon: 'teams', linkTo: '/teams' },
+  { id: 5, title: 'پیام ها', icon: 'messages', linkTo: '/messages' },
+  { id: 6, title: 'کارتابل', icon: 'dashboard', linkTo: '/dashboard' },
   {
+    id: 7,
     title: 'اعلان ها',
     icon: 'notifications',
     linkTo: '/notifications',
@@ -36,8 +39,8 @@ const Navbar = ({ isSidebarOpen }) => {
   return (
     <Styled.NavbarContainer isSidebarOpen={isSidebarOpen}>
       <Styled.ButtonsWrapper>
-        {navButtons.map((btn, key) => {
-          return <NavbarButton btnProps={btn} key={key} />;
+        {navButtons.map((btn) => {
+          return <NavbarButton btnProps={btn} key={btn.id} />;
         })}
       </Styled.ButtonsWrapper>
       <Styled.SearchWrapper>

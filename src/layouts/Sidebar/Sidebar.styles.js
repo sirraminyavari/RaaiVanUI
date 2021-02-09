@@ -66,7 +66,7 @@ export const SidebarTitle = styled.div`
 export const SearchWrapper = styled.div`
   ${FlexBetween}
   border-bottom: 1px solid #707070;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
 
 export const SearchInput = styled.input`
@@ -104,6 +104,7 @@ export const MenuContainer = styled.div`
   padding: 0 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background-color: #19265e;
   }
@@ -118,16 +119,20 @@ export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver ? '#383388' : 'inherit'};
   transition: all 0.5s ease;
 `;
 
 export const SubMenu = styled.div`
   margin: 0.3rem 0;
-  margin-right: 1rem;
   border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.3rem;
   display: flex;
   color: #fff;
+  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background-color: #19265e;
   }
@@ -220,4 +225,12 @@ export const MiniIconWrapper = styled.div`
   margin: 1rem 0px;
   font-size: 1.6rem;
   color: #fff;
+`;
+
+export const MenuTreeContainer = styled.div`
+  background-color: ${({ isDraggingOver }) =>
+    isDraggingOver ? '#383388' : 'inherit'};
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease;
 `;

@@ -5,13 +5,13 @@ import * as Styled from './Sidebar.styles';
 import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
-import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
+import SubMenus from './components/SubMenus';
 
-const SidebarMenu = ({ item }) => {
+const SidebarMenu = ({ item, isDragging, dragProps }) => {
   const {
     NodeTypeID: id,
     TypeName: title,
-    Sub: subMenu,
+    Sub: subMenus,
     IconURL: iconImage,
   } = item;
   const { openMenuID } = useSelector((state) => state.sidebarItems);
@@ -25,11 +25,13 @@ const SidebarMenu = ({ item }) => {
   return (
     <>
       <Styled.MenuContainer
-        as={subMenu ? 'div' : Link}
+        isDragging={isDragging}
+        {...dragProps}
+        as={subMenus ? 'div' : Link}
         to={`/classes/${id}`}
-        onClick={subMenu ? handleDropdown : null}>
+        onClick={subMenus ? handleDropdown : null}>
         <Styled.MenuTitle>
-          {subMenu ? (
+          {subMenus ? (
             isOpen() ? (
               <CaretIcon dir="down" />
             ) : (
@@ -40,24 +42,9 @@ const SidebarMenu = ({ item }) => {
           )}
           <span style={{ marginRight: '5px' }}>{decode(title)}</span>
         </Styled.MenuTitle>
-        {subMenu && !isOpen() && <ShowMoreIcon dir="vertical" />}
+        {subMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
-      {subMenu && (
-        <Styled.SubMenuContainer isOpen={isOpen()} itemsCount={subMenu.length}>
-          {subMenu.map((sub, key) => {
-            return (
-              <Styled.SubMenu
-                as={Link}
-                to={`/classes/${sub.NodeTypeID}`}
-                key={key}>
-                {sub.IconName && SidebarIcons[sub.IconName]({ size: 20 })}
-                {sub.IconURL && <img src={sub.IconURL} alt="sub-menu-icon" />}
-                <span style={{ margin: '0 10px' }}>{decode(sub.TypeName)}</span>
-              </Styled.SubMenu>
-            );
-          })}
-        </Styled.SubMenuContainer>
-      )}
+      {subMenus && <SubMenus isOpen={isOpen()} subList={subMenus} />}
     </>
   );
 };
