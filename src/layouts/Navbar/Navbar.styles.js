@@ -1,53 +1,75 @@
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.div`
-  background-color: #2b388f;
-  height: 10%;
-  overflow: hidden;
+  width: ${({ isSidebarOpen }) =>
+    isSidebarOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
+  height: 4.1rem;
   position: fixed;
   display: flex;
+  z-index: 100;
   justify-content: space-between;
   align-items: center;
   top: 0;
-  width: ${({ isSidebarOpen }) =>
-    isSidebarOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
-  padding: 0 20px;
-  z-index: 1;
-  box-shadow: 0px 3px 10px #333;
+  opacity: 1;
+  padding: 0 1.5rem;
+  background: #2b388f 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 10px #00000029;
   transition: all 0.7s ease;
 `;
 
 export const ButtonsWrapper = styled.div`
   height: 100%;
+  padding: 0.2rem 0;
   display: flex;
 `;
 
 export const ButtonContainer = styled.div`
-  margin: 0 10px;
-  padding: 15px;
+  width: 3.7rem;
+  margin: 0rem 0.5rem;
+  padding: 1.5rem;
+  border-radius: 60%;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  color: #fff;
+  :hover {
+    background-color: #27499f;
+  }
 `;
 
 export const ButtonIcon = styled.div`
   text-align: center;
   position: relative;
-  font-size: 20px;
+  font-size: 1.3rem;
+  color: #e6f4f1;
+`;
+
+export const ButtonTitle = styled.span`
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #e6f4f1;
+  opacity: 1;
+  position: relative;
+  bottom: 5px;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const BadgeWrapper = styled.div`
-  width: 18px;
-  height: 18px;
-  line-height: 22px;
-  border-radius: 10px;
-  background-color: red;
+  height: 1.3rem;
+  min-width: 1.3rem;
+  padding: 0.1rem;
+  line-height: 1.1rem;
+  border-radius: 50%;
+  border: 0.15rem solid #2b388f;
+  background-color: #e2234f;
   position: absolute;
-  top: 5px;
-  left: -10px;
-  font-size: 10px;
+  top: 0.3rem;
+  left: -0.6rem;
+  font-size: 0.7rem;
 `;
 
 export const SearchWrapper = styled.div`
@@ -85,4 +107,31 @@ export const SearchIcon = styled.div`
   top: 5px;
   font-size: 25px;
   color: #ddd;
+`;
+
+export const OptionsContainer = styled.div`
+  width: 150px;
+  height: ${({ optionCount }) => `${optionCount * 45}px`};
+  padding: 10px;
+  overflow: hidden;
+  display: ${({ isOptionShown }) => (isOptionShown ? 'revert' : 'none')};
+  background-color: #fff;
+  position: absolute;
+  top: 55px;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0px 1px 15px #9e9fff;
+  transition: all 0.7s ease;
+`;
+
+export const OptionWrapper = styled.div`
+  display: flex;
+  place-items: center;
+  color: #000;
+  border-radius: 5px;
+  margin: 5px 0px;
+  transition: all 0.5s ease;
+  :hover {
+    background-color: #e3e3e3;
+  }
 `;

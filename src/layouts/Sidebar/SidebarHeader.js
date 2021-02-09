@@ -3,7 +3,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import { Link } from 'react-router-dom';
 import Logo from 'assets/images/logo.svg';
 import * as Styled from './Sidebar.styles';
-import Icons from 'components/Icons';
+import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,11 @@ const Header = () => {
         </Link>
       )}
       <Styled.ToggleArrow onClick={toggleMenu}>
-        {Icons[isSidebarOpen ? 'toggleRight' : 'toggleLeft']}
+        {isSidebarOpen ? (
+          <ToggleIcon size={25} />
+        ) : (
+          <ToggleIcon dir="left" size={25} />
+        )}
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );

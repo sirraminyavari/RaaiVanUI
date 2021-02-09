@@ -1,7 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
-import Icons from 'components/Icons';
+import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
+import SettingIcon from 'components/Icons/SettingIcon/Setting';
 const SettingsContent = lazy(() => import('./SettingsContent'));
 const MenuContent = lazy(() => import('./MenuContent'));
 
@@ -13,19 +15,23 @@ const OpenContent = ({ handleSettings }) => {
       <Styled.SidebarTitle>
         {isSettingShown ? (
           <Styled.CenterIcon>
-            {Icons.settings}
+            <SettingIcon />
             <span style={{ padding: '0 10px' }}>مدیریت تیم</span>
           </Styled.CenterIcon>
         ) : (
-          <span>تیم شاهین</span>
+          <Link to="/classes" style={{ color: '#fff' }}>
+            تیم شاهین
+          </Link>
         )}
         <Styled.SettingWrapper onClick={handleSettings}>
-          {Icons[isSettingShown ? 'arrowLeft' : 'settings']}
+          {isSettingShown ? (
+            <ArrowIcon dir="left" size={20} />
+          ) : (
+            <SettingIcon />
+          )}
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      <Suspense fallback={<div>Loading ..</div>}>
-        {isSettingShown ? <SettingsContent /> : <MenuContent />}
-      </Suspense>
+      {isSettingShown ? <SettingsContent /> : <MenuContent />}
     </>
   );
 };

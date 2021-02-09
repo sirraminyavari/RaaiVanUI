@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { GoPerson as AvatarIcon } from 'react-icons/go';
+import UserIcon from 'components/Icons/UserIcon/User';
 import { AvatarWrapper, AvatarImage } from './Avatar.styles';
 
 const Avatar = ({ radius, userImage }) => {
@@ -8,7 +8,7 @@ const Avatar = ({ radius, userImage }) => {
       {userImage ? (
         <AvatarImage radius={radius} src={userImage} alt="user-avatar" />
       ) : (
-        <AvatarIcon size={radius} color="#fff" />
+        <UserIcon size={radius} color="#fff" />
       )}
     </AvatarWrapper>
   );

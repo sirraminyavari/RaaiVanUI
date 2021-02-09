@@ -1,7 +1,7 @@
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Routes from 'routes';
-import Navbar from './Navbar';
+import Navbar from './Navbar/Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
@@ -9,14 +9,19 @@ import * as Styled from './Main.styles';
 const switchRoutes = (
   <Switch>
     {Routes.map((route, key) => {
-      const { exact, path, component, name } = route;
+      const { exact, path, component, name, hasNavSide } = route;
       return (
         <Route
           key={key}
           exact={exact}
           path={path}
           render={(props) => (
-            <CheckRoute component={component} name={name} props={props} />
+            <CheckRoute
+              component={component}
+              hasNavSide={hasNavSide}
+              name={name}
+              props={props}
+            />
           )}
         />
       );
@@ -26,16 +31,22 @@ const switchRoutes = (
 );
 
 const Main = () => {
-  const { isSidebarOpen } = useSelector((state) => state.theme);
+  const { isSidebarOpen, hasNavSide } = useSelector((state) => state.theme);
 
   return (
-    <Styled.MainContainer>
-      <Sidebar />
-      <Styled.ContentWrapper isSidebarOpen={isSidebarOpen}>
-        <Navbar isSidebarOpen={isSidebarOpen} />
-        <Styled.Content>{switchRoutes}</Styled.Content>
-      </Styled.ContentWrapper>
-    </Styled.MainContainer>
+    <>
+      {hasNavSide ? (
+        <Styled.MainContainer>
+          <Sidebar />
+          <Styled.ContentWrapper isSidebarOpen={isSidebarOpen}>
+            <Navbar isSidebarOpen={isSidebarOpen} />
+            <Styled.Content>{switchRoutes}</Styled.Content>
+          </Styled.ContentWrapper>
+        </Styled.MainContainer>
+      ) : (
+        <>{switchRoutes}</>
+      )}
+    </>
   );
 };
 

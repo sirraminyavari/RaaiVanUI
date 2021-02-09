@@ -1,5 +1,5 @@
 import * as Styled from './Sidebar.styles';
-import Icons from 'components/Icons';
+import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 
 const settingList = [
   'سطوح محرمانگی',
@@ -16,7 +16,7 @@ const SettingContent = () => {
       {settingList.map((item, key) => {
         return (
           <Styled.SettingMenu key={key}>
-            {Icons.arrowLeft}
+            <ArrowIcon dir="left" size={20} />
             <span style={{ marginRight: '5px' }}>{item}</span>
           </Styled.SettingMenu>
         );

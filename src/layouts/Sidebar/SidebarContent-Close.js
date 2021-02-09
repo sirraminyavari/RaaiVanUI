@@ -1,32 +1,19 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Icons from 'components/Icons';
+import { useSelector } from 'react-redux';
+import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
+import SettingIcon from 'components/Icons/SettingIcon/Setting';
+import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import * as Styled from './Sidebar.styles';
-
-const miniSide = [
-  'home',
-  'teams',
-  'inbox',
-  'settings',
-  'notifications',
-  'home',
-  'teams',
-  'inbox',
-  'settings',
-  'notifications',
-  'home',
-  'teams',
-  'inbox',
-  'settings',
-  'notifications',
-];
 
 const CloseContent = ({ handleSettings }) => {
   const ref = useRef();
   const [scroll, setScroll] = useState(0);
   const [isDown, setIsDown] = useState(false);
   const [isUp, setIsUp] = useState(false);
+  const { nodeTypes } = useSelector((state) => state.sidebarItems);
 
+  //TODO: Calculate scroll size based on items count
   const scrollDown = () => {
     if (isDown) return;
     setScroll((s) => s + 50);
@@ -59,27 +46,32 @@ const CloseContent = ({ handleSettings }) => {
     <>
       <Styled.SidebarTitle>
         <Styled.SettingWrapper onClick={handleSettings}>
-          {Icons.settings}
+          <SettingIcon />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        <Styled.ArrowUp onClick={scrollUp} isUp={isUp}>
-          {Icons.chevronUp}
-        </Styled.ArrowUp>
+        <Styled.Up onClick={scrollUp} isUp={isUp}>
+          <ChevronIcon dir="up" />
+        </Styled.Up>
         <Styled.IconListContainer>
           <Styled.IconListWrap ref={ref} onScroll={handleScroll}>
-            {miniSide.map((icon, key) => {
+            {nodeTypes.map((node, key) => {
+              let { IconURL, IconName, NodeTypeID } = node;
               return (
-                <Styled.MiniIconWrapper as={Link} to="#" key={key}>
-                  {Icons[icon]}
+                <Styled.MiniIconWrapper
+                  as={Link}
+                  to={`/classes/${NodeTypeID}`}
+                  key={key}>
+                  {IconName && SidebarIcons[IconName]()}
+                  {IconURL && <img src={IconURL} alt="sidebar-icon" />}
                 </Styled.MiniIconWrapper>
               );
             })}
           </Styled.IconListWrap>
         </Styled.IconListContainer>
-        <Styled.ArrowDown onClick={scrollDown} isDown={isDown}>
-          {Icons.chevronDown}
-        </Styled.ArrowDown>
+        <Styled.Down onClick={scrollDown} isDown={isDown}>
+          <ChevronIcon dir="down" />
+        </Styled.Down>
       </Styled.CloseContentContainer>
     </>
   );
