@@ -119,7 +119,7 @@ export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
-  padding: 0.3rem;
+  padding: 0 0.3rem;
   border-radius: 0.5rem;
   background-color: ${({ isDraggingOver }) =>
     isDraggingOver ? '#383388' : 'inherit'};
