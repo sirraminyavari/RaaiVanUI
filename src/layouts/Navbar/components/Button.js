@@ -5,8 +5,8 @@ import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 const BottonOptions = lazy(() => import('./ButtonOptions'));
 
-const NavbarButton = ({ btnProps }) => {
-  const { title, icon, badge, linkTo, options } = btnProps;
+const NavbarButton = ({ btnProps, badge }) => {
+  const { title, icon, linkTo, options } = btnProps;
   const [isOptionShown, setIsOptionShown] = useState(false);
   const handleOptions = () => {
     setIsOptionShown(!isOptionShown);

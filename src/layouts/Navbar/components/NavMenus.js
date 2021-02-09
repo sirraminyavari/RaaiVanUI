@@ -1,0 +1,49 @@
+import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import NavButtonsList from './NavButtonsList';
+import MenuIcon from 'components/Icons/MenuIcon/Menu';
+import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
+import * as Styled from '../Navbar.styles';
+
+const NavMenus = () => {
+  const [isMenuShown, setIsMenuShown] = useState(false);
+  const node = useRef();
+  const flattenedNavButtons = NavButtonsList.reduce(
+    (acc, val) => acc.concat(val.options ? val.options : val),
+    []
+  );
+
+  const handleShowMenu = () => {
+    setIsMenuShown(!isMenuShown);
+  };
+
+  const handleClick = (e) => {
+    if (node.current.contains(e.target)) return;
+    setIsMenuShown(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+
+  return (
+    <Styled.NavMenuContainer ref={node}>
+      <MenuIcon size={30} color="#fff" onClick={handleShowMenu} />
+      <Styled.MenuOptionsWrapper isOpen={isMenuShown}>
+        {flattenedNavButtons.map((btn, index) => {
+          return (
+            <Styled.NavMenuOption as={Link} to={btn.linkTo} key={index}>
+              {NavbarIcons[btn.icon]({ color: '#2B388F', size: 20 })}
+              {btn.title}
+            </Styled.NavMenuOption>
+          );
+        })}
+      </Styled.MenuOptionsWrapper>
+    </Styled.NavMenuContainer>
+  );
+};
+
+export default NavMenus;

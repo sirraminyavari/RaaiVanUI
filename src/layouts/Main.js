@@ -2,7 +2,7 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Routes from 'routes';
 import Navbar from './Navbar/Navbar';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
 import { useMediaQuery } from 'react-responsive';

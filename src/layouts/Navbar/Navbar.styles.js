@@ -148,7 +148,7 @@ export const NavMenuContainer = styled.div`
 export const MenuOptionsWrapper = styled.div`
   height: 200px;
   width: 300px;
-  display: flex;
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 0px 1px 10px #333;
@@ -157,4 +157,16 @@ export const MenuOptionsWrapper = styled.div`
   z-index: 100;
   position: absolute;
   top: 40px;
+  transition: all 0.7s ease;
+`;
+
+export const NavMenuOption = styled.div`
+  width: 33%;
+  height: 33%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
 `;
