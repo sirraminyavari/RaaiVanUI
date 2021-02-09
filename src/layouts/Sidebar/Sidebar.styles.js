@@ -44,11 +44,9 @@ export const ContentWrapper = styled.div`
 export const SidebarHeader = styled.div`
   ${FlexBetween}
   height: 4.1rem;
-  position: relative;
-  top: 0;
   z-index: 1000;
   padding: 0 1.1rem;
-  background-color: inherit;
+  background-color: #15113c;
 `;
 
 export const ToggleArrow = styled.div`

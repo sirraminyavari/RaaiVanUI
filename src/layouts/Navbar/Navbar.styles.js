@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 export const NavbarContainer = styled.div`
-  width: ${({ isSidebarOpen }) =>
-    isSidebarOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
+  width: ${({ isSidebarOpen, isMobile }) =>
+    `calc(100% - ${
+      !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
+    }px)`};
   height: 4.1rem;
   position: fixed;
   display: flex;
@@ -10,6 +13,7 @@ export const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
+  left: 0;
   opacity: 1;
   padding: 0 1.5rem;
   background: #2b388f 0% 0% no-repeat padding-box;
@@ -124,7 +128,7 @@ export const OptionsContainer = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const OptionWrapper = styled.div`
+export const BtnOptionWrapper = styled.div`
   display: flex;
   place-items: center;
   color: #000;
@@ -134,4 +138,23 @@ export const OptionWrapper = styled.div`
   :hover {
     background-color: #e3e3e3;
   }
+`;
+
+export const NavMenuContainer = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
+
+export const MenuOptionsWrapper = styled.div`
+  height: 200px;
+  width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0px 1px 10px #333;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 100;
+  position: absolute;
+  top: 40px;
 `;

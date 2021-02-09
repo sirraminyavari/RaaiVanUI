@@ -5,6 +5,9 @@ import Navbar from './Navbar/Navbar';
 import Sidebar from './Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
+import { useMediaQuery } from 'react-responsive';
+import SidebarHeader from './Sidebar/SidebarHeader';
+import { MOBILE_BOUNDRY } from 'constant/constants';
 
 const switchRoutes = (
   <Switch>
@@ -32,13 +35,18 @@ const switchRoutes = (
 
 const Main = () => {
   const { isSidebarOpen, hasNavSide } = useSelector((state) => state.theme);
+  const isMobileOrTabletScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
 
   return (
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          <Sidebar />
-          <Styled.ContentWrapper isSidebarOpen={isSidebarOpen}>
+          {!isMobileOrTabletScreen ? <Sidebar /> : <SidebarHeader />}
+          <Styled.ContentWrapper
+            isSidebarOpen={isSidebarOpen}
+            isMobile={isMobileOrTabletScreen}>
             <Navbar isSidebarOpen={isSidebarOpen} />
             <Styled.Content>{switchRoutes}</Styled.Content>
           </Styled.ContentWrapper>

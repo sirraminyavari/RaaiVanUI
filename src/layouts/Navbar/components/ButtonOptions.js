@@ -9,10 +9,10 @@ const BottonOptions = ({ isOptionShown, options }) => {
       optionCount={options.length}>
       {options.map((option) => {
         return (
-          <Styled.OptionWrapper as={Link} to="#" key={option.id}>
-            {NavbarIcons[option.optIcon]({ color: '#2B7BE4', size: 20 })}
-            <span style={{ margin: '5px 10px' }}>{option.optName}</span>
-          </Styled.OptionWrapper>
+          <Styled.BtnOptionWrapper as={Link} to="#" key={option.id}>
+            {NavbarIcons[option.icon]({ color: '#2B7BE4', size: 20 })}
+            <span style={{ margin: '5px 10px' }}>{option.title}</span>
+          </Styled.BtnOptionWrapper>
         );
       })}
     </Styled.OptionsContainer>

@@ -6,6 +6,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import LogoLoader from 'components/LogoLoader/LogoLoader';
 import SidebarFooter from './SidebarFooter';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
 const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
 
@@ -29,7 +30,7 @@ const Sidebar = () => {
   }, [isSidebarOpen]);
 
   return (
-    <Styled.SidebarContainer width={isSidebarOpen ? 250 : 55}>
+    <Styled.SidebarContainer width={isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}>
       <SidebarHeader />
       <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
         <Suspense fallback={<LogoLoader size={10} />}>

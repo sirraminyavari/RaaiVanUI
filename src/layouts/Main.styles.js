@@ -1,12 +1,16 @@
 import styled from 'styled-components';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 export const MainContainer = styled.div`
   direction: ${window.RV_Direction};
 `;
 
 export const ContentWrapper = styled.div`
-  ${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${(props) =>
-    props.isSidebarOpen ? '250px' : '55px'};
+  ${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${({
+    isSidebarOpen,
+    isMobile,
+  }) =>
+    !isMobile ? (isSidebarOpen ? `${OPEN_WIDTH}px` : `${CLOSE_WIDTH}px`) : '0'};
   height: 100vh;
   transition: all 0.7s ease;
 `;
