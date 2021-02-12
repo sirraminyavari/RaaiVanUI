@@ -1,9 +1,20 @@
-import Teams from 'views/Teams/Teams';
-import Home from 'views/Home/Home';
-import Messages from 'views/Messages';
-import Dashboard from 'views/Dashboard';
-import Search from 'views/Search';
 import { getURL } from 'helpers';
+import { lazy } from 'react';
+const Teams = lazy(() =>
+  import(/* webpackChunkName: "teams-view"*/ 'views/Teams/Teams')
+);
+const Home = lazy(() =>
+  import(/* webpackChunkName: "home-view"*/ 'views/Home/Home')
+);
+const Messages = lazy(() =>
+  import(/* webpackChunkName: "messages-view"*/ 'views/Messages')
+);
+const Dashboard = lazy(() =>
+  import(/* webpackChunkName: "dashboard-view"*/ 'views/Dashboard')
+);
+const Search = lazy(() =>
+  import(/* webpackChunkName: "search-view"*/ 'views/Search')
+);
 
 const NavbarRoutes = [
   {

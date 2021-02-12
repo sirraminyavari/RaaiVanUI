@@ -1,8 +1,15 @@
+import { lazy } from 'react';
 import NavbarRoutes from './Navbar.routes';
 import SidebarRoutes from './Sidebar.routes';
-import ErrorView from 'views/Error';
-import NewNode from 'views/NewNode';
-import ChangePassword from 'views/ChangePassword';
+const ErrorView = lazy(() =>
+  import(/* webpackChunkName: "error-view"*/ 'views/Error')
+);
+const NewNode = lazy(() =>
+  import(/* webpackChunkName: "new-node-view"*/ 'views/NewNode')
+);
+const ChangePassword = lazy(() =>
+  import(/* webpackChunkName: "change-password-view"*/ 'views/ChangePassword')
+);
 
 const routes = [
   ...NavbarRoutes,

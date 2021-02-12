@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import { reorder } from 'helpers';
-import SidebarMenu from './SidebarMenu';
+import SidebarParentMenu from './SidebarParentMenu';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
 import FilterIcon from 'components/Icons/FilterIcon/Filter';
 
-const MenuContent = () => {
+const SidebarMenuContent = () => {
   const dispatch = useDispatch();
   const { setReorderedTree } = sidebarMenuSlice.actions;
   const { tree } = useSelector((state) => state.sidebarItems);
@@ -51,7 +51,7 @@ const MenuContent = () => {
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                         style={{ ...provided.draggableProps.style }}>
-                        <SidebarMenu
+                        <SidebarParentMenu
                           item={item}
                           isDragging={snapshot.isDragging}
                           dragProps={provided.dragHandleProps}
@@ -84,4 +84,4 @@ const MenuContent = () => {
   );
 };
 
-export default MenuContent;
+export default SidebarMenuContent;

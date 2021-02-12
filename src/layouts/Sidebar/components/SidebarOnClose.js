@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 
-const CloseContent = ({ handleSettings }) => {
+const SidebarOnClose = ({ handleSettings }) => {
   const ref = useRef();
   const [scroll, setScroll] = useState(0);
   const [isDown, setIsDown] = useState(false);
@@ -77,4 +77,4 @@ const CloseContent = ({ handleSettings }) => {
   );
 };
 
-export default CloseContent;
+export default SidebarOnClose;

@@ -1,13 +1,19 @@
 import { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
-const SettingsContent = lazy(() => import('./SettingsContent'));
-const MenuContent = lazy(() => import('./MenuContent'));
+const SidebarSettingContent = lazy(() =>
+  import(
+    /* webpackChunkName: "sidebar-setting-content"*/ './SidebarSettingContent'
+  )
+);
+const SideabrMenuContent = lazy(() =>
+  import(/* webpackChunkName: "sidebar-menu-content"*/ './SidebarMenuContent')
+);
 
-const OpenContent = ({ handleSettings }) => {
+const SidebarOnOpen = ({ handleSettings }) => {
   const { isSettingShown } = useSelector((state) => state.theme);
 
   return (
@@ -31,9 +37,9 @@ const OpenContent = ({ handleSettings }) => {
           )}
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      {isSettingShown ? <SettingsContent /> : <MenuContent />}
+      {isSettingShown ? <SidebarSettingContent /> : <SideabrMenuContent />}
     </>
   );
 };
 
-export default OpenContent;
+export default SidebarOnOpen;

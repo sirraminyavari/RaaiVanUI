@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import EditIcon from 'components/Icons/EditIcon/Edit';
 
-const Footer = () => {
+const SidebarFooter = () => {
   const { isSidebarOpen } = useSelector((state) => state.theme);
   return (
     <Styled.SidebarFooter as={Link} to="#">
@@ -17,4 +17,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default SidebarFooter;

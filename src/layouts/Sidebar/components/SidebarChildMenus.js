@@ -6,17 +6,17 @@ import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers';
 
-const SubMenus = ({ isOpen, subList }) => {
-  const [items, setItems] = useState(subList);
+const SidebarChildMenus = ({ isOpen, subList: menuList }) => {
+  const [menus, setMenus] = useState(menuList);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-    const newItems = reorder(
-      items,
+    const newMenus = reorder(
+      menus,
       result.source.index,
       result.destination.index
     );
-    setItems(newItems);
+    setMenus(newMenus);
   };
 
   return (
@@ -26,30 +26,31 @@ const SubMenus = ({ isOpen, subList }) => {
           <Styled.SubMenuContainer
             isOpen={isOpen}
             isDraggingOver={snapshot.isDraggingOver}
-            itemsCount={subList.length}
+            itemsCount={menuList.length}
             {...provided.droppableProps}
             ref={provided.innerRef}>
-            {items.map((sub, index) => {
+            {menus.map((menu, index) => {
               return (
                 <Draggable
-                  key={sub.NodeTypeID}
-                  draggableId={sub.NodeTypeID}
+                  key={menu.NodeTypeID}
+                  draggableId={menu.NodeTypeID}
                   index={index}>
                   {(provided, snapshot) => (
                     <Styled.SubMenu
                       as={Link}
-                      to={`/classes/${sub.NodeTypeID}`}
+                      to={`/classes/${menu.NodeTypeID}`}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                       style={{ ...provided.draggableProps.style }}
                       isDragging={snapshot.isDragging}>
-                      {sub.IconName && SidebarIcons[sub.IconName]({ size: 20 })}
-                      {sub.IconURL && (
-                        <img src={sub.IconURL} alt="sub-menu-icon" />
+                      {menu.IconName &&
+                        SidebarIcons[menu.IconName]({ size: 20 })}
+                      {menu.IconURL && (
+                        <img src={menu.IconURL} alt="sub-menu-icon" />
                       )}
                       <span style={{ margin: '0 10px' }}>
-                        {decode(sub.TypeName)}
+                        {decode(menu.TypeName)}
                       </span>
                     </Styled.SubMenu>
                   )}
@@ -64,4 +65,4 @@ const SubMenus = ({ isOpen, subList }) => {
   );
 };
 
-export default SubMenus;
+export default SidebarChildMenus;

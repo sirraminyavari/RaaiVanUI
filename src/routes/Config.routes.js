@@ -1,19 +1,74 @@
-import Configuration from 'views/AdminPanel';
-import SystemSettings from 'views/AdminPanel/Panels/SystemSettings';
-import Users from 'views/AdminPanel/Panels/Users';
-import Confidentiality from 'views/AdminPanel/Panels/Confidentiality';
-import UserGroups from 'views/AdminPanel/Panels/UserGroups';
-import MapConfig from 'views/AdminPanel/Panels/MapConfig';
-import Knowledge from 'views/AdminPanel/Panels/Knowledge';
-import DocumentTrees from 'views/AdminPanel/Panels/DocumentTrees';
-import Forms from 'views/AdminPanel/Panels/Forms';
-import Polls from 'views/AdminPanel/Panels/Polls';
-import WorkFlows from 'views/AdminPanel/Panels/WorkFlows';
-import QaWorkFlow from 'views/AdminPanel/Panels/QaWorkFlow';
-import DataImport from 'views/AdminPanel/Panels/DataImport';
-import Notifications from 'views/AdminPanel/Panels/Notifications';
-import Help from 'views/AdminPanel/Panels/Help';
-import RemoteServers from 'views/AdminPanel/Panels/RemoteServers';
+import { lazy } from 'react';
+const AdminPanel = lazy(() =>
+  import(/* webpackChunkName: "admin-panel-view"*/ 'views/AdminPanel')
+);
+const SystemSettings = lazy(() =>
+  import(
+    /* webpackChunkName: "system-settings-view"*/ 'views/AdminPanel/Panels/SystemSettings'
+  )
+);
+const Users = lazy(() =>
+  import(/* webpackChunkName: "users-view"*/ 'views/AdminPanel/Panels/Users')
+);
+const Confidentiality = lazy(() =>
+  import(
+    /* webpackChunkName: "confidentiality-view"*/ 'views/AdminPanel/Panels/Confidentiality'
+  )
+);
+const UserGroups = lazy(() =>
+  import(
+    /* webpackChunkName: "user-groups-view"*/ 'views/AdminPanel/Panels/UserGroups'
+  )
+);
+const MapConfig = lazy(() =>
+  import(
+    /* webpackChunkName: "map-config-view"*/ 'views/AdminPanel/Panels/MapConfig'
+  )
+);
+const Knowledge = lazy(() =>
+  import(
+    /* webpackChunkName: "knowledge-view"*/ 'views/AdminPanel/Panels/Knowledge'
+  )
+);
+const DocumentTrees = lazy(() =>
+  import(
+    /* webpackChunkName: "document-trees-view"*/ 'views/AdminPanel/Panels/DocumentTrees'
+  )
+);
+const Forms = lazy(() =>
+  import(/* webpackChunkName: "forms-view"*/ 'views/AdminPanel/Panels/Forms')
+);
+const Polls = lazy(() =>
+  import(/* webpackChunkName: "polls-view"*/ 'views/AdminPanel/Panels/Polls')
+);
+const WorkFlows = lazy(() =>
+  import(
+    /* webpackChunkName: "work-flows-view"*/ 'views/AdminPanel/Panels/WorkFlows'
+  )
+);
+const QaWorkFlow = lazy(() =>
+  import(
+    /* webpackChunkName: "qa-work-flow-view"*/ 'views/AdminPanel/Panels/QaWorkFlow'
+  )
+);
+const DataImport = lazy(() =>
+  import(
+    /* webpackChunkName: "data-import-view"*/ 'views/AdminPanel/Panels/DataImport'
+  )
+);
+const Notifications = lazy(() =>
+  import(
+    /* webpackChunkName: "notifications-view"*/ 'views/AdminPanel/Panels/Notifications'
+  )
+);
+const Help = lazy(() =>
+  import(/* webpackChunkName: "help-view"*/ 'views/AdminPanel/Panels/Help')
+);
+const RemoteServers = lazy(() =>
+  import(
+    /* webpackChunkName: "remote-servers-view"*/ 'views/AdminPanel/Panels/RemoteServers'
+  )
+);
 
 const ConfigRoutes = [
   {
@@ -21,7 +76,7 @@ const ConfigRoutes = [
     name: 'admin_configuration',
     exact: true,
     hasNavSide: true,
-    component: Configuration,
+    component: AdminPanel,
   },
   {
     path: '/configuration/systemsettings',

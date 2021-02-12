@@ -6,7 +6,7 @@ import Sidebar from './Sidebar/Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
 import { useMediaQuery } from 'react-responsive';
-import SidebarHeader from './Sidebar/SidebarHeader';
+import SidebarHeader from './Sidebar/components/SidebarHeader';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 
 const switchRoutes = (

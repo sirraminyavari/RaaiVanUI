@@ -160,7 +160,7 @@ export const SettingWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const SettingMenu = styled.div`
+export const SettingList = styled.div`
   ${FlexCenter}
   margin: 0.5rem 0;
   margin-right: 0.5rem;

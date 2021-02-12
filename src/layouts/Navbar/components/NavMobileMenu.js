@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import NavButtonsList from './NavButtonsList';
-import MenuIcon from 'components/Icons/MenuIcon/Menu';
+import NavButtonsList from './buttonsList';
+import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
 import * as Styled from '../Navbar.styles';
 import OnClickAway from 'components/OnClickAway/OnClickAway';

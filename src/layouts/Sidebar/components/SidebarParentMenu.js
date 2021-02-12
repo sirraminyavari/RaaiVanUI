@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
-import SubMenus from './components/SubMenus';
+import SidebarChildMenus from './SidebarChildMenus';
 
-const SidebarMenu = ({ item, isDragging, dragProps }) => {
+const SidebarParentMenu = ({ item, isDragging, dragProps }) => {
   const {
     NodeTypeID: id,
     TypeName: title,
-    Sub: subMenus,
+    Sub: childMenus,
     IconURL: iconImage,
   } = item;
   const { openMenuID } = useSelector((state) => state.sidebarItems);
@@ -27,11 +27,11 @@ const SidebarMenu = ({ item, isDragging, dragProps }) => {
       <Styled.MenuContainer
         isDragging={isDragging}
         {...dragProps}
-        as={subMenus ? 'div' : Link}
+        as={childMenus ? 'div' : Link}
         to={`/classes/${id}`}
-        onClick={subMenus ? handleDropdown : null}>
+        onClick={childMenus ? handleDropdown : null}>
         <Styled.MenuTitle>
-          {subMenus ? (
+          {childMenus ? (
             isOpen() ? (
               <CaretIcon dir="down" />
             ) : (
@@ -42,11 +42,13 @@ const SidebarMenu = ({ item, isDragging, dragProps }) => {
           )}
           <span style={{ marginRight: '5px' }}>{decode(title)}</span>
         </Styled.MenuTitle>
-        {subMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
+        {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
-      {subMenus && <SubMenus isOpen={isOpen()} subList={subMenus} />}
+      {childMenus && (
+        <SidebarChildMenus isOpen={isOpen()} menuList={childMenus} />
+      )}
     </>
   );
 };
 
-export default SidebarMenu;
+export default SidebarParentMenu;

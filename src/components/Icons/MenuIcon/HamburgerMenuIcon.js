@@ -1,7 +1,7 @@
 import { GiHamburgerMenu } from 'react-icons/gi';
 
-const MenuIcon = (props) => {
+const HamburgerMenuIcon = (props) => {
   return <GiHamburgerMenu {...props} />;
 };
 
-export default MenuIcon;
+export default HamburgerMenuIcon;

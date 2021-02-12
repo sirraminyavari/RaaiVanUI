@@ -1,17 +1,25 @@
 import { lazy, Suspense } from 'react';
 import Avatar from 'components/Avatar';
-import NavbarSearchInput from './components/SearchInput';
+import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import MenuIcon from 'components/Icons/MenuIcon/Menu';
+import HamburgerMenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
-const NavButtons = lazy(() => import('./components/NavButtons'));
-const NavMenus = lazy(() => import('./components/NavMenus'));
+const NavWideScreenMenu = lazy(() =>
+  import(
+    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './components/NavWideScreenMenu'
+  )
+);
+const NavMobileMenu = lazy(() =>
+  import(
+    /* webpackChunkName: "nav-mobile-menu-component"*/ './components/NavMobileMenu'
+  )
+);
 
 const Navbar = ({ isSidebarOpen }) => {
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
@@ -29,10 +37,10 @@ const Navbar = ({ isSidebarOpen }) => {
       <Suspense
         fallback={
           <Styled.NavMenuContainer>
-            <MenuIcon size={30} color="#fff" />
+            <HamburgerMenuIcon size={30} color="#fff" />
           </Styled.NavMenuContainer>
         }>
-        {isMobileScreen ? <NavMenus /> : <NavButtons />}
+        {isMobileScreen ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>
         {isSidebarOpen ? (

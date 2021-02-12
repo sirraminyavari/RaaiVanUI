@@ -2,21 +2,21 @@ import { Link } from 'react-router-dom';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
 
-const ButtonOptions = ({ isOptionShown, options }) => {
+const NavButtonActions = ({ isOptionShown, options }) => {
   return (
-    <Styled.OptionsContainer
+    <Styled.ButtonActionsContainer
       isOptionShown={isOptionShown}
       optionCount={options.length}>
       {options.map((option) => {
         return (
-          <Styled.BtnOptionWrapper as={Link} to="#" key={option.id}>
+          <Styled.ButtonAction as={Link} to="#" key={option.id}>
             {NavbarIcons[option.icon]({ color: '#2B7BE4', size: 20 })}
             <span style={{ margin: '5px 10px' }}>{option.title}</span>
-          </Styled.BtnOptionWrapper>
+          </Styled.ButtonAction>
         );
       })}
-    </Styled.OptionsContainer>
+    </Styled.ButtonActionsContainer>
   );
 };
 
-export default ButtonOptions;
+export default NavButtonActions;

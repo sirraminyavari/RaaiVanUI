@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
-const BottonOptions = lazy(() => import('./ButtonOptions'));
+const ButtonActions = lazy(() =>
+  import(/* webpackChunkName: "nav-button-actions"*/ './NavButtonActions')
+);
 
-const NavbarButton = ({ btnProps, badge }) => {
+const NavButtonComponent = ({ btnProps, badge }) => {
   const { title, icon, linkTo, options } = btnProps;
   const [isOptionShown, setIsOptionShown] = useState(false);
   const handleOptions = () => {
@@ -19,17 +21,17 @@ const NavbarButton = ({ btnProps, badge }) => {
       onMouseLeave={handleOptions}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
-        {badge && <Styled.BadgeWrapper>{badge}</Styled.BadgeWrapper>}
+        {badge && <Styled.Badge>{badge}</Styled.Badge>}
       </Styled.ButtonIcon>
       <Styled.ButtonTitle>
         {title}
         {options && <CaretIcon dir={isOptionShown ? 'up' : 'down'} size={12} />}
       </Styled.ButtonTitle>
       {options && (
-        <BottonOptions isOptionShown={isOptionShown} options={options} />
+        <ButtonActions isOptionShown={isOptionShown} options={options} />
       )}
     </Styled.ButtonContainer>
   );
 };
 
-export default NavbarButton;
+export default NavButtonComponent;

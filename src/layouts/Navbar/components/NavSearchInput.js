@@ -1,7 +1,7 @@
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
-const NavbarSearchInput = () => {
+const NavSearchInput = () => {
   return (
     <Styled.SearchContainer>
       <Styled.SearchIcon>
@@ -15,4 +15,4 @@ const NavbarSearchInput = () => {
   );
 };
 
-export default NavbarSearchInput;
+export default NavSearchInput;

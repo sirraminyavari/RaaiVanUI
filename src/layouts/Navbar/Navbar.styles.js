@@ -21,7 +21,7 @@ export const NavbarContainer = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const ButtonsWrapper = styled.div`
+export const WideScreenMenu = styled.div`
   height: 100%;
   padding: 0.2rem 0;
   display: flex;
@@ -62,7 +62,7 @@ export const ButtonTitle = styled.span`
   align-items: center;
 `;
 
-export const BadgeWrapper = styled.div`
+export const Badge = styled.div`
   height: 1.3rem;
   min-width: 1.3rem;
   padding: 0.1rem;
@@ -113,7 +113,7 @@ export const SearchIcon = styled.div`
   color: #ddd;
 `;
 
-export const OptionsContainer = styled.div`
+export const ButtonActionsContainer = styled.div`
   width: 150px;
   height: ${({ optionCount }) => `${optionCount * 45}px`};
   padding: 10px;
@@ -128,7 +128,7 @@ export const OptionsContainer = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const BtnOptionWrapper = styled.div`
+export const ButtonAction = styled.div`
   display: flex;
   place-items: center;
   color: #000;

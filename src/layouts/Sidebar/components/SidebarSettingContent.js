@@ -1,4 +1,4 @@
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 
 const settingList = [
@@ -10,19 +10,19 @@ const settingList = [
   'درخت های مستندات',
 ];
 
-const SettingContent = () => {
+const SidebarSettingContent = () => {
   return (
     <>
       {settingList.map((item, key) => {
         return (
-          <Styled.SettingMenu key={key}>
+          <Styled.SettingList key={key}>
             <ArrowIcon dir="left" size={20} />
             <span style={{ marginRight: '5px' }}>{item}</span>
-          </Styled.SettingMenu>
+          </Styled.SettingList>
         );
       })}
     </>
   );
 };
 
-export default SettingContent;
+export default SidebarSettingContent;

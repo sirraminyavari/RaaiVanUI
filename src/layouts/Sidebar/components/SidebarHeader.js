@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { Link } from 'react-router-dom';
 import Logo from 'assets/images/logo.svg';
-import * as Styled from './Sidebar.styles';
+import * as Styled from '../Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
 
-const Header = () => {
+const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { toggleSidebar, toggleSetting } = themeSlice.actions;
   const { isSidebarOpen } = useSelector((state) => state.theme);
@@ -37,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default SidebarHeader;
