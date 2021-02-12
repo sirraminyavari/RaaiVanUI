@@ -6,7 +6,7 @@ import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers';
 
-const SidebarChildMenus = ({ isOpen, subList: menuList }) => {
+const SidebarChildMenus = ({ isOpen, menuList }) => {
   const [menus, setMenus] = useState(menuList);
 
   const handleOnDragEnd = (result) => {
