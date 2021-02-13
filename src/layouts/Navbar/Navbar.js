@@ -5,6 +5,7 @@ import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import HamburgerMenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
+import Tooltip from 'components/Tooltip/Tooltip';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -54,7 +55,9 @@ const Navbar = ({ isSidebarOpen }) => {
         ) : (
           <SearchIcon size={30} color="#fff" />
         )}
-        <Avatar radius={32} />
+        <Tooltip content="Hello, I'm a tooltip" direction="down">
+          <Avatar radius={32} />
+        </Tooltip>
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
