@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import Avatar from 'components/Avatar';
+import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';

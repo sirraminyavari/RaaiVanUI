@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
-export const AvatarWrapper = styled.div`
+export const AvatarContainer = styled.div`
   display: flex;
   place-items: center;
   border-radius: 50%;
   margin-right: 25px;
   overflow: hidden;
+  color: #fff;
   border: 2px solid #fff;
 `;
 
