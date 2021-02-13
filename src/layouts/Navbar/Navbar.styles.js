@@ -30,7 +30,7 @@ export const WideScreenMenu = styled.div`
 export const ButtonContainer = styled.div`
   width: 3.7rem;
   margin: 0rem 0.5rem;
-  padding: 1.5rem;
+  padding: 0.4rem;
   border-radius: 60%;
   display: flex;
   position: relative;
@@ -83,6 +83,7 @@ export const SearchWrapper = styled.div`
 
 export const SearchContainer = styled.div`
   position: relative;
+  margin: 0 15px;
   :focus-within input {
     width: 300px;
   }
@@ -117,15 +118,11 @@ export const ButtonActionsContainer = styled.div`
   width: 150px;
   height: ${({ optionCount }) => `${optionCount * 45}px`};
   padding: 10px;
+  margin: -10px;
   overflow: hidden;
-  display: ${({ isOptionShown }) => (isOptionShown ? 'revert' : 'none')};
   background-color: #fff;
-  position: absolute;
-  top: 55px;
-  z-index: 1000;
   border-radius: 10px;
   box-shadow: 0px 1px 15px #9e9fff;
-  transition: all 0.7s ease;
 `;
 
 export const ButtonAction = styled.div`
@@ -134,9 +131,10 @@ export const ButtonAction = styled.div`
   color: #000;
   border-radius: 5px;
   margin: 5px 0px;
+  padding: 0 5px;
   transition: all 0.5s ease;
   :hover {
-    background-color: #e3e3e3;
+    background-color: #d3d3d3;
   }
 `;
 

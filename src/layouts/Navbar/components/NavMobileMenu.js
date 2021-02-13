@@ -10,7 +10,7 @@ const NavMenus = () => {
   const [isMenuShown, setIsMenuShown] = useState(false);
   const node = useRef();
   const flattenedNavButtons = NavButtonsList.reduce(
-    (acc, val) => acc.concat(val.options ? val.options : val),
+    (acc, val) => acc.concat(val.actions ? val.actions : val),
     []
   );
 

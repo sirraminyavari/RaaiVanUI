@@ -4,7 +4,7 @@ const NavButtons = [
     id: 2,
     title: 'پیمایش',
     icon: 'direction',
-    options: [
+    actions: [
       { id: 1, title: 'مرورگر', icon: 'site', linkTo: '/teams' },
       { id: 2, title: 'نقشه گرافیکی', icon: 'target', linkTo: '/teams' },
     ],
@@ -13,7 +13,7 @@ const NavButtons = [
     id: 3,
     title: 'پرسش',
     icon: 'question',
-    options: [
+    actions: [
       { id: 1, title: 'پرسش جدید', icon: 'plus', linkTo: '/teams' },
       { id: 2, title: 'پرسش ها', icon: 'question', linkTo: '/teams' },
     ],

@@ -55,7 +55,7 @@ const Navbar = ({ isSidebarOpen }) => {
         ) : (
           <SearchIcon size={30} color="#fff" />
         )}
-        <Tooltip content="Hello, I'm a tooltip" direction="down">
+        <Tooltip content={"Hello, I'm a tooltip"} position="bottom">
           <Avatar radius={32} />
         </Tooltip>
       </Styled.SearchWrapper>
