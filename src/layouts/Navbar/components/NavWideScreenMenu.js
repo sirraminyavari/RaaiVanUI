@@ -2,7 +2,7 @@ import { lazy, Fragment } from 'react';
 import * as Styled from '../Navbar.styles';
 import NavButtonComponent from './NavButtonComponent';
 import NavButtonsList from './buttonsList';
-import Tooltip from 'components/Tooltip/Tooltip';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
 const ButtonActions = lazy(() =>
   import(/* webpackChunkName: "nav-button-actions"*/ './NavButtonActions')
 );
@@ -14,12 +14,11 @@ const NavWideScreenMenu = () => {
         return (
           <Fragment key={btn.id}>
             {btn.actions ? (
-              <Tooltip
+              <PopupMenu
                 content={() => <ButtonActions actions={btn.actions} />}
-                delay={100}
-                offsetY={35}>
+                delay={100}>
                 <NavButtonComponent btnProps={btn} badge={btn.badge} />
-              </Tooltip>
+              </PopupMenu>
             ) : (
               <NavButtonComponent btnProps={btn} badge={btn.badge} />
             )}
