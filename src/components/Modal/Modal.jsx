@@ -17,7 +17,9 @@ const Modal = ({
   titleClass,
   ...props
 }) => {
-  const [componentId, _setId] = useState(null);
+  const [componentId, __dontCallMe] = useState(
+    'r' + GlobalUtilities.random_str(10)
+  );
   const [disposed, _setDisposed] = useState(false);
   const [showState, setShowState] = useState(show);
   const prevDisposed = usePrevious(disposed);
@@ -26,11 +28,6 @@ const Modal = ({
   useEffect(() => {
     setShowState(show);
   }, [show]);
-
-  if (!componentId) {
-    _setId('r' + GlobalUtilities.random_str(10));
-    return <></>;
-  }
 
   let disposedRecently = disposed && !prevDisposed;
   if (disposedRecently && GlobalUtilities.get_type(onClose) == 'function')

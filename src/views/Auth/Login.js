@@ -9,6 +9,8 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import WavyBackground from './items/WavyBackground';
 import LoginControl from './LoginControl';
+import Modal from '../../components/Modal/Modal';
+import Confirm from '../../components/Modal/Confirm';
 
 /**
  * A function that handle custom routing between login's screen such as :
@@ -39,6 +41,8 @@ const Login = () => {
       <Maintainer>
         <WavyBackground />
         <Container>
+          <Modal>ramin yavari</Modal>
+
           <Logo />
 
           <Box smallScreen={isTabletOrMobile}>
