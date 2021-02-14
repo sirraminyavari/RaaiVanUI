@@ -6,7 +6,7 @@ const PopupMenu = (props) => {
   const contentNode = useRef();
 
   let menu;
-  const { GlobalUtilities } = window;
+  const { GlobalUtilities, RV_Direction } = window;
 
   const handlePopup = () => {
     if (menu?.IsOpen()) {
@@ -17,7 +17,7 @@ const PopupMenu = (props) => {
         contentNode.current,
         {
           Align: rest.align,
-          Style: rest.menuStyle,
+          Style: rest.menuStyle + `direction: ${RV_Direction};`,
           ArrowClass: rest.arrowClass,
           Class: rest.menuClass,
           ContentClass: rest.contentClass,
@@ -32,15 +32,26 @@ const PopupMenu = (props) => {
 
   return (
     <>
-      <div
-        ref={containerNode}
-        onMouseEnter={handlePopup}
-        onMouseLeave={handlePopup}>
-        {children}
-      </div>
-      <div ref={contentNode}>
-        {typeof Content === 'string' ? Content : <Content />}
-      </div>
+      {typeof Content === 'string' ? (
+        <>
+          <div
+            ref={containerNode}
+            onMouseEnter={handlePopup}
+            onMouseLeave={handlePopup}>
+            {children}
+          </div>
+          <div ref={contentNode}>{Content}</div>
+        </>
+      ) : (
+        <>
+          <div ref={containerNode} onClick={handlePopup}>
+            {children}
+          </div>
+          <div ref={contentNode}>
+            <Content />
+          </div>
+        </>
+      )}
     </>
   );
 };

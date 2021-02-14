@@ -16,7 +16,8 @@ const NavWideScreenMenu = () => {
             {btn.actions ? (
               <PopupMenu
                 content={() => <ButtonActions actions={btn.actions} />}
-                delay={100}>
+                delay={100}
+                menuStyle="background-color: #fff; border: none;">
                 <NavButtonComponent btnProps={btn} badge={btn.badge} />
               </PopupMenu>
             ) : (

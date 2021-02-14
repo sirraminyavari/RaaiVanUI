@@ -58,7 +58,7 @@ const Navbar = ({ isSidebarOpen }) => {
         <PopupMenu
           content={"Hello, I'm a Tooltip"}
           delay={1000}
-          menuStyle="color: #fff; background-color: #333; border: none;">
+          menuStyle="color: #fff; background-color: #333; border: none; ">
           <Avatar radius={32} />
         </PopupMenu>
       </Styled.SearchWrapper>
