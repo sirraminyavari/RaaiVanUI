@@ -48,12 +48,12 @@ const Navbar = ({ isSidebarOpen }) => {
           isMediumScreen ? (
             <NavbarSearchInput />
           ) : (
-            <SearchIcon size={30} color="#fff" />
+            <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
           )
         ) : isWideScreen ? (
           <NavbarSearchInput />
         ) : (
-          <SearchIcon size={30} color="#fff" />
+          <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
         <Tooltip content={"Hello, I'm a tooltip"} position="bottom">
           <Avatar radius={32} />
