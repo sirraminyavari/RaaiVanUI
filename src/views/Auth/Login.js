@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import WavyBackground from './items/WavyBackground';
 import LoginControl from './LoginControl';
 import Modal from '../../components/Modal/Modal';
+import Confirm from '../../components/Modal/Confirm';
 
 /**
  * A function that handle custom routing between login's screen such as :
@@ -40,6 +41,22 @@ const Login = () => {
       <Maintainer>
         <WavyBackground />
         <Container>
+          <Modal
+            show={true}
+            contentClass="small-10 medium-8 large-6"
+            onClose={() => console.log('Closed!')}
+            title="این یک پنجره مدال است"
+            stick={false}
+            noBackground={false}>
+            <div style={{ textAlign: 'center' }}>Modal Dialog :)</div>
+          </Modal>
+
+          <Confirm
+            onConfirm={() => console.log('confirmed!')}
+            title="تایید تغییرات">
+            {window.RVDic.Confirms.DoYouWantToRemoveAllOfTheRecords}
+          </Confirm>
+
           <Logo />
 
           <Box smallScreen={isTabletOrMobile}>
