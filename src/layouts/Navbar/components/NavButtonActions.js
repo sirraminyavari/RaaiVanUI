@@ -9,7 +9,7 @@ const NavButtonActions = ({ actions }) => {
         return (
           <Styled.ButtonAction as={Link} to="/home" key={action.id}>
             {NavbarIcons[action.icon]({ color: '#2B7BE4', size: 20 })}
-            <span style={{ margin: '5px 10px' }}>{action.title}</span>
+            <Styled.ActionTitle>{action.title}</Styled.ActionTitle>
           </Styled.ButtonAction>
         );
       })}

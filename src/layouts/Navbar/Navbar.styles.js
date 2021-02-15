@@ -17,7 +17,7 @@ export const NavbarContainer = styled.div`
   opacity: 1;
   padding: 0 1.5rem;
   background: #2b388f 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 10px #00000029;
+  box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
 `;
 
@@ -37,8 +37,11 @@ export const ButtonContainer = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  :hover {
+  &:hover {
     background-color: #27499f;
+  }
+  &:hover span {
+    transform: rotateX(180deg);
   }
 `;
 
@@ -49,7 +52,7 @@ export const ButtonIcon = styled.div`
   color: #e6f4f1;
 `;
 
-export const ButtonTitle = styled.span`
+export const ButtonTitle = styled.div`
   font-size: 0.7rem;
   font-weight: bold;
   color: #e6f4f1;
@@ -85,7 +88,7 @@ export const SearchContainer = styled.div`
   position: relative;
   margin: 0 1.5rem;
   :focus-within input {
-    width: 300px;
+    width: 18rem;
   }
   :focus-within div {
     color: #2b7be4;
@@ -94,12 +97,12 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   outline: 0;
   color: #333;
-  height: 32px;
-  padding: 0 10px;
-  width: 230px;
+  height: 2rem;
+  padding: 0 0.6rem;
+  width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {
     color: transparent;
@@ -108,20 +111,20 @@ export const SearchInput = styled.input`
 
 export const SearchIcon = styled.div`
   position: absolute;
-  left: 5px;
-  top: 5px;
-  font-size: 25px;
+  left: 0.3rem;
+  top: 0.3rem;
+  font-size: 1.5rem;
   color: #ddd;
 `;
 
 export const ButtonActionsContainer = styled.div`
-  width: 150px;
-  height: ${({ optionCount }) => `${optionCount * 45}px`};
-  padding: 10px;
-  margin: -10px;
+  width: 12rem;
+  height: ${({ optionCount }) => `${optionCount * 2.8}rem`};
+  padding: 0.7rem;
+  margin: -0.7rem;
   overflow: hidden;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   box-shadow: 0px 1px 15px #9e9fff;
 `;
 
@@ -129,13 +132,17 @@ export const ButtonAction = styled.div`
   display: flex;
   place-items: center;
   color: #000;
-  border-radius: 5px;
-  margin: 5px 0px;
-  padding: 0 5px;
+  border-radius: 0.3rem;
+  margin: 0.3rem 0;
+  padding: 0 0.3rem;
   transition: all 0.5s ease;
   :hover {
     background-color: #d3d3d3;
   }
+`;
+
+export const ActionTitle = styled.span`
+  margin: 0.3rem 0.5rem;
 `;
 
 export const NavMenuContainer = styled.div`
@@ -144,17 +151,17 @@ export const NavMenuContainer = styled.div`
 `;
 
 export const MenuOptionsWrapper = styled.div`
-  height: 200px;
-  width: 300px;
+  height: 12rem;
+  width: 19rem;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 0px 1px 10px #333;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   background-color: #fff;
   z-index: 100;
   position: absolute;
-  top: 40px;
+  top: 3rem;
   transition: all 0.7s ease;
 `;
 
@@ -167,4 +174,14 @@ export const NavMenuOption = styled.div`
   justify-content: center;
   align-items: center;
   color: #000;
+`;
+
+export const Arrow = styled.span`
+  width: 0;
+  height: 0;
+  margin: 0 0.1rem;
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid #fff;
+  transition: all 0.5s ease;
 `;
