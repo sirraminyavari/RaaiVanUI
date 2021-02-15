@@ -88,7 +88,7 @@ export const SearchContainer = styled.div`
   position: relative;
   margin: 0 1.5rem;
   :focus-within input {
-    width: 18rem;
+    width: 16rem;
   }
   :focus-within div {
     color: #2b7be4;
