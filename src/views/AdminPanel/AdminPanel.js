@@ -1,5 +1,5 @@
 import PanelList from './panelList';
-import Panel from 'components/Panel';
+import Panel from './Panel';
 
 const Configuration = () => {
   return (

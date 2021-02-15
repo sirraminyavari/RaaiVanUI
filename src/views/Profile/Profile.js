@@ -1,6 +1,6 @@
 import React from 'react';
 import useScript from 'hooks/useScript';
-import { isEmpty } from 'helpers';
+import { isEmpty } from 'helpers/helpers';
 
 const Profile = (props) => {
   useScript(

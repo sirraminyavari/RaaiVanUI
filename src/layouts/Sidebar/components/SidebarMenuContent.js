@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from '../Sidebar.styles';
-import { reorder } from 'helpers';
+import { reorder } from 'helpers/helpers';
 import SidebarParentMenu from './SidebarParentMenu';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';

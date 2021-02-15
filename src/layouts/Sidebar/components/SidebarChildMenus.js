@@ -4,7 +4,7 @@ import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
-import { reorder } from 'helpers';
+import { reorder } from 'helpers/helpers';
 
 const SidebarChildMenus = ({ isOpen, menuList }) => {
   const [menus, setMenus] = useState(menuList);

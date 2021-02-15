@@ -1,72 +1,82 @@
 import { lazy } from 'react';
 const AdminPanel = lazy(() =>
-  import(/* webpackChunkName: "admin-panel-view"*/ 'views/AdminPanel')
+  import(
+    /* webpackChunkName: "admin-panel-view"*/ 'views/AdminPanel/AdminPanel'
+  )
 );
 const SystemSettings = lazy(() =>
   import(
-    /* webpackChunkName: "system-settings-view"*/ 'views/AdminPanel/Panels/SystemSettings'
+    /* webpackChunkName: "system-settings-view"*/ 'views/AdminPanel/PanelsView/SystemSettings/SystemSettings'
   )
 );
 const Users = lazy(() =>
-  import(/* webpackChunkName: "users-view"*/ 'views/AdminPanel/Panels/Users')
+  import(
+    /* webpackChunkName: "users-view"*/ 'views/AdminPanel/PanelsView/Users/Users'
+  )
 );
 const Confidentiality = lazy(() =>
   import(
-    /* webpackChunkName: "confidentiality-view"*/ 'views/AdminPanel/Panels/Confidentiality'
+    /* webpackChunkName: "confidentiality-view"*/ 'views/AdminPanel/PanelsView/Confidentiality/Confidentiality'
   )
 );
 const UserGroups = lazy(() =>
   import(
-    /* webpackChunkName: "user-groups-view"*/ 'views/AdminPanel/Panels/UserGroups'
+    /* webpackChunkName: "user-groups-view"*/ 'views/AdminPanel/PanelsView/UserGroups/UserGroups'
   )
 );
 const MapConfig = lazy(() =>
   import(
-    /* webpackChunkName: "map-config-view"*/ 'views/AdminPanel/Panels/MapConfig'
+    /* webpackChunkName: "map-config-view"*/ 'views/AdminPanel/PanelsView/MapConfig/MapConfig'
   )
 );
 const Knowledge = lazy(() =>
   import(
-    /* webpackChunkName: "knowledge-view"*/ 'views/AdminPanel/Panels/Knowledge'
+    /* webpackChunkName: "knowledge-view"*/ 'views/AdminPanel/PanelsView/Knowledge/Knowledge'
   )
 );
 const DocumentTrees = lazy(() =>
   import(
-    /* webpackChunkName: "document-trees-view"*/ 'views/AdminPanel/Panels/DocumentTrees'
+    /* webpackChunkName: "document-trees-view"*/ 'views/AdminPanel/PanelsView/DocumentTrees/DataImport'
   )
 );
 const Forms = lazy(() =>
-  import(/* webpackChunkName: "forms-view"*/ 'views/AdminPanel/Panels/Forms')
+  import(
+    /* webpackChunkName: "forms-view"*/ 'views/AdminPanel/PanelsView/Forms/DataImport'
+  )
 );
 const Polls = lazy(() =>
-  import(/* webpackChunkName: "polls-view"*/ 'views/AdminPanel/Panels/Polls')
+  import(
+    /* webpackChunkName: "polls-view"*/ 'views/AdminPanel/PanelsView/Polls/Polls'
+  )
 );
 const WorkFlows = lazy(() =>
   import(
-    /* webpackChunkName: "work-flows-view"*/ 'views/AdminPanel/Panels/WorkFlows'
+    /* webpackChunkName: "work-flows-view"*/ 'views/AdminPanel/PanelsView/WorkFlows/WorkFlows'
   )
 );
 const QaWorkFlow = lazy(() =>
   import(
-    /* webpackChunkName: "qa-work-flow-view"*/ 'views/AdminPanel/Panels/QaWorkFlow'
+    /* webpackChunkName: "qa-work-flow-view"*/ 'views/AdminPanel/PanelsView/QaWorkFlow/QaWorkFlow'
   )
 );
 const DataImport = lazy(() =>
   import(
-    /* webpackChunkName: "data-import-view"*/ 'views/AdminPanel/Panels/DataImport'
+    /* webpackChunkName: "data-import-view"*/ 'views/AdminPanel/PanelsView/DataImport/DataImport'
   )
 );
 const Notifications = lazy(() =>
   import(
-    /* webpackChunkName: "notifications-view"*/ 'views/AdminPanel/Panels/Notifications'
+    /* webpackChunkName: "notifications-view"*/ 'views/AdminPanel/PanelsView/Notifications/Notifications'
   )
 );
 const Help = lazy(() =>
-  import(/* webpackChunkName: "help-view"*/ 'views/AdminPanel/Panels/Help')
+  import(
+    /* webpackChunkName: "help-view"*/ 'views/AdminPanel/PanelsView/Help/Help'
+  )
 );
 const RemoteServers = lazy(() =>
   import(
-    /* webpackChunkName: "remote-servers-view"*/ 'views/AdminPanel/Panels/RemoteServers'
+    /* webpackChunkName: "remote-servers-view"*/ 'views/AdminPanel/PanelsView/RemoteServers/RemoteServers'
   )
 );
 
