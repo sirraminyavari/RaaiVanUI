@@ -10,6 +10,9 @@ import styled from 'styled-components';
 import WavyBackground from './items/WavyBackground';
 import LoginControl from './LoginControl';
 
+import PopupMenu from '../../components/PopupMenu/PopupMenu';
+import Sticker from '../../components/PopupMenu/Sticker';
+
 /**
  * A function that handle custom routing between login's screen such as :
  * login,signup,reset password,...
@@ -36,6 +39,20 @@ const Login = () => {
           <Loader />
         </Maintainer>
       }>
+      <div style={{ margin: '3rem 5rem' }}>
+        <PopupMenu trigger="click" align="bottom">
+          <div
+            style={{
+              backgroundColor: 'rgb(200,200,200)',
+              display: 'inline-block',
+              width: '10rem',
+              height: '4rem',
+            }}>
+            ramin
+          </div>
+          <div style={{ backgroundColor: 'rgba(255,0,0,0.3)' }}>yavari</div>
+        </PopupMenu>
+      </div>
       <Maintainer>
         <WavyBackground />
         <Container>

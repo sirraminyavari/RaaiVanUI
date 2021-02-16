@@ -171,7 +171,9 @@ const calculatePosition = ({
   return {
     css: GlobalUtilities.extend(
       {
-        top: align == 't' || align == 'b' ? _newTop : computedTop,
+        top:
+          (align == 't' || align == 'b' ? _newTop : computedTop) -
+          GlobalUtilities.scrolltop(document.body),
         left: align == 'l' || align == 'r' ? _newLeft : computedLeft,
       },
       fit ? { width: pos.width } : {}

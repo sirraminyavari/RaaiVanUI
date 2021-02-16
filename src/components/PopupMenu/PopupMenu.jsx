@@ -4,6 +4,7 @@ import Sticker from './Sticker';
 import useWindowSize from '../../hooks/useWindowSize';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import usePrevious from '../../hooks/usePrevious';
+import useWindowScroll from 'hooks/useWindowScroll';
 
 const { jQuery } = window;
 const Empty = (props) => <>{props.children}</>;
@@ -38,6 +39,9 @@ const PopupMenu = ({
   const windowSize = useWindowSize();
   const preWindowSize = usePrevious(windowSize);
 
+  const scrollTop = useWindowScroll();
+  const preScrollTop = usePrevious(scrollTop);
+
   useEffect(() => {
     setInfo(
       calculatePosition({
@@ -59,7 +63,8 @@ const PopupMenu = ({
   if (
     showMenu &&
     (windowSize.width != preWindowSize.width ||
-      windowSize.height != preWindowSize.height)
+      windowSize.height != preWindowSize.height ||
+      scrollTop != preScrollTop)
   )
     setShowMenu(false);
 
