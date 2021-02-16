@@ -5,6 +5,7 @@ import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
+import SimpleDownshift from 'components/Downshift/SimpleDownshift';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -50,6 +51,7 @@ const Navbar = () => {
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
+        <SimpleDownshift onChange={(v) => console.log(v)} />
         <Avatar />
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
