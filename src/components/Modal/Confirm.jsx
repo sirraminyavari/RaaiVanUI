@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
+import Button from '../Buttons/Button';
 
 const { GlobalUtilities, RVDic, RV_RTL } = window;
 
@@ -16,19 +17,30 @@ const Confirm = ({ onConfirm, ...props }) => {
       {...props}>
       <Message>{props.children}</Message>
       <ButtonsContainer>
-        <ConfirmButton
-          className="rv-action-button-base rv-action-button-red"
+        <Button
+          type="negative"
+          style={GlobalUtilities.extend(
+            {
+              flex: '0 0 auto',
+              width: '6rem',
+            },
+            RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
+          )}
           onClick={() => {
             if (GlobalUtilities.get_type(onConfirm) == 'function') onConfirm();
             setShowState(false);
           }}>
           {RVDic.Confirm}
-        </ConfirmButton>
-        <CancelButton
-          className="rv-action-button-base rv-action-button-o"
+        </Button>
+        <Button
+          type="primary-o"
+          style={{
+            flex: '0 0 auto',
+            width: '6rem',
+          }}
           onClick={() => setShowState(false)}>
           {RVDic.Cancel}
-        </CancelButton>
+        </Button>
       </ButtonsContainer>
     </Modal>
   );
@@ -46,19 +58,4 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-flow: row;
   justify-content: center;
-`;
-
-const ConfirmButton = styled.div`
-  flex: 0 0 auto;
-  width: 6rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  ${RV_RTL ? 'margin-left' : 'margin-right'}: 1rem;
-`;
-
-const CancelButton = styled.div`
-  flex: 0 0 auto;
-  width: 6rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 `;

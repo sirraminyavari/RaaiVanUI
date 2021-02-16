@@ -10,8 +10,8 @@ const Sticker = ({
   onReposition,
   ...props
 }) => {
-  const mainRef = React.createRef();
-  const stickerRef = React.createRef();
+  const mainId = 'r' + GlobalUtilities.random_str(10);
+  const stickerId = 'r' + GlobalUtilities.random_str(10);
 
   align = String(align).toLowerCase().charAt(0);
 
@@ -20,8 +20,8 @@ const Sticker = ({
   useEffect(() => {
     setInfo(
       calculatePosition({
-        mainDom: mainRef.current,
-        stickerDom: stickerRef.current,
+        mainDom: document.getElementById(mainId),
+        stickerDom: document.getElementById(stickerId),
         align,
         fit,
         leftOffset,
@@ -39,9 +39,9 @@ const Sticker = ({
 
   return (
     <>
-      {React.cloneElement(props.children[0], { ref: mainRef })}
+      {React.cloneElement(props.children[0], { id: mainId })}
       {React.cloneElement(props.children[1], {
-        ref: stickerRef,
+        id: stickerId,
         style: GlobalUtilities.extend(
           props.children[1].props.style || {},
           info.css || { opacity: 0 },
