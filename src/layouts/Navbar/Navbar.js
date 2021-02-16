@@ -5,7 +5,6 @@ import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import HamburgerMenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -55,12 +54,7 @@ const Navbar = ({ isSidebarOpen }) => {
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
-        <PopupMenu
-          content={"Hello, I'm a Tooltip"}
-          delay={1000}
-          menuStyle="color: #fff; background-color: #333; border: none; ">
-          <Avatar />
-        </PopupMenu>
+        <Avatar />
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
