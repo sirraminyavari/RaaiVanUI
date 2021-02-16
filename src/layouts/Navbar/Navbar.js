@@ -1,10 +1,10 @@
 import { lazy, Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import HamburgerMenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -21,7 +21,8 @@ const NavMobileMenu = lazy(() =>
   )
 );
 
-const Navbar = ({ isSidebarOpen }) => {
+const Navbar = () => {
+  const { isSidebarOpen } = useSelector((state) => state.theme);
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
     query: `(min-width: ${MEDIUM_BOUNDRY})`,
@@ -34,12 +35,7 @@ const Navbar = ({ isSidebarOpen }) => {
     <Styled.NavbarContainer
       isSidebarOpen={isSidebarOpen}
       isMobile={isMobileScreen}>
-      <Suspense
-        fallback={
-          <Styled.NavMenuContainer>
-            <HamburgerMenuIcon size={30} color="#fff" />
-          </Styled.NavMenuContainer>
-        }>
+      <Suspense fallback={<Styled.NavMenuContainer />}>
         {isMobileScreen ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>

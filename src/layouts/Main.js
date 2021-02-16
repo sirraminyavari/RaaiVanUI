@@ -47,7 +47,7 @@ const Main = () => {
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileOrTabletScreen}>
-            <Navbar isSidebarOpen={isSidebarOpen} />
+            <Navbar />
             <Styled.Content>{switchRoutes}</Styled.Content>
           </Styled.ContentWrapper>
         </Styled.MainContainer>

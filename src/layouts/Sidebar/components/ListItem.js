@@ -1,7 +1,7 @@
 import * as Styled from '../Sidebar.styles';
 import { Link } from 'react-router-dom';
 
-const ListItem = ({ icon: Icon, title, badge, linkTo }) => {
+const ListItem = ({ icon: Icon, title, badge, linkTo = '#' }) => {
   return (
     <Styled.ListItemWrapper as={Link} to={linkTo}>
       <Styled.CenterIcon>
