@@ -29,9 +29,11 @@ const Modal = ({
     setShowState(show);
   }, [show]);
 
-  let disposedRecently = disposed && !prevDisposed;
-  if (disposedRecently && GlobalUtilities.get_type(onClose) == 'function')
-    onClose();
+  useEffect(() => {
+    let disposedRecently = disposed && !prevDisposed;
+    if (disposedRecently && GlobalUtilities.get_type(onClose) == 'function')
+      onClose();
+  }, [disposed]);
 
   if (!showState && prevShowState)
     GlobalUtilities.after_fade_out(() => {
