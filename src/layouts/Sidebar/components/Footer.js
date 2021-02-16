@@ -1,13 +1,12 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as Styled from '../Sidebar.styles';
 import EditIcon from 'components/Icons/EditIcon/Edit';
+import * as Styled from '../Sidebar.styles';
 
 const SidebarFooter = () => {
   const { isSidebarOpen } = useSelector((state) => state.theme);
   return (
-    <Styled.SidebarFooter as={Link} to="#">
-      <div style={{ marginRight: isSidebarOpen ? '0px' : '40px' }}>
+    <Styled.SidebarFooter>
+      <div style={{ marginRight: isSidebarOpen ? '0' : '3rem' }}>
         <EditIcon size={20} />
       </div>
       <Styled.FooterTitle isSidebarOpen={isSidebarOpen}>

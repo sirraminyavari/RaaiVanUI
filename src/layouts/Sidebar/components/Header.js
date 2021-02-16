@@ -5,6 +5,7 @@ import Logo from 'assets/images/logo.svg';
 import * as Styled from '../Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
+import { getURL } from 'helpers/helpers';
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
@@ -22,16 +23,12 @@ const SidebarHeader = () => {
   return (
     <Styled.SidebarHeader>
       {isSidebarOpen && (
-        <Link to="/home">
+        <Link to={getURL('Home')}>
           <img src={Logo} width="120" alt="logo-icon" />
         </Link>
       )}
       <Styled.ToggleArrow onClick={toggleMenu}>
-        {isSidebarOpen ? (
-          <ToggleIcon size={25} color="#fff" />
-        ) : (
-          <ToggleIcon dir="left" size={25} color="#fff" />
-        )}
+        <ToggleIcon dir={isSidebarOpen ? '' : 'left'} size={25} color="#fff" />
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );

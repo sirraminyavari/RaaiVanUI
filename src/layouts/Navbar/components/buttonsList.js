@@ -1,30 +1,60 @@
+import { getURL } from 'helpers/helpers';
+const { RVDic } = window;
+
 const NavButtons = [
-  { id: 1, title: 'خانه', icon: 'home', linkTo: '/home' },
+  { id: 1, title: RVDic.Home, icon: 'home', linkTo: getURL('Home') },
   {
     id: 2,
     title: 'پیمایش',
     icon: 'direction',
+    //TODO: Change link to url
     actions: [
-      { id: 1, title: 'مرورگر', icon: 'site', linkTo: '/teams' },
-      { id: 2, title: 'نقشه گرافیکی', icon: 'target', linkTo: '/teams' },
+      { id: 1, title: RVDic.Browser, icon: 'site', linkTo: '/teams' },
+      { id: 2, title: RVDic.KnowledgeMap, icon: 'target', linkTo: '/teams' },
     ],
   },
   {
     id: 3,
-    title: 'پرسش',
+    title: RVDic.Question,
     icon: 'question',
     actions: [
-      { id: 1, title: 'پرسش جدید', icon: 'plus', linkTo: '/teams' },
-      { id: 2, title: 'پرسش ها', icon: 'question', linkTo: '/teams' },
+      {
+        id: 1,
+        title: RVDic.NewQuestion,
+        icon: 'plus',
+        linkTo: getURL('NewQuestion'),
+      },
+      {
+        id: 2,
+        title: RVDic.Questions,
+        icon: 'question',
+        linkTo: getURL('Questions'),
+      },
     ],
   },
-  { id: 4, title: 'همکاران', icon: 'teams', linkTo: '/teams' },
-  { id: 5, title: 'پیام ها', icon: 'messages', linkTo: '/messages' },
-  { id: 6, title: 'کارتابل', icon: 'dashboard', linkTo: '/dashboard' },
+  {
+    id: 4,
+    title: RVDic.Coworkers,
+    icon: 'teams',
+    linkTo: getURL('Applications'),
+  },
+  {
+    id: 5,
+    title: RVDic.Messages,
+    icon: 'messages',
+    linkTo: getURL('Messages'),
+  },
+  {
+    id: 6,
+    title: RVDic.Dashboard,
+    icon: 'dashboard',
+    linkTo: getURL('Dashboard'),
+  },
   {
     id: 7,
-    title: 'اعلان ها',
+    title: RVDic.Notifications,
     icon: 'notifications',
+    // TODO: change link to notifications
     linkTo: '/notifications',
     badge: 99,
   },

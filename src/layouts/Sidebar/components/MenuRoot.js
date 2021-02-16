@@ -5,9 +5,9 @@ import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
-import SidebarChildMenus from './SidebarChildMenus';
+import SidebarMenuBranches from './MenuBranches';
 
-const SidebarParentMenu = ({ item, isDragging, dragProps }) => {
+const SidebarMenuRoot = ({ item, isDragging, dragProps }) => {
   const {
     NodeTypeID: id,
     TypeName: title,
@@ -45,10 +45,10 @@ const SidebarParentMenu = ({ item, isDragging, dragProps }) => {
         {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
       {childMenus && (
-        <SidebarChildMenus isOpen={isOpen()} menuList={childMenus} />
+        <SidebarMenuBranches isOpen={isOpen()} menuList={childMenus} />
       )}
     </>
   );
 };
 
-export default SidebarParentMenu;
+export default SidebarMenuRoot;

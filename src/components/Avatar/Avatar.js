@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AvatarIcon from 'components/Icons/UserIcon/User';
 import * as Styled from './Avatar.styles';
+import { getURL } from 'helpers/helpers';
 
-const Avatar = ({ radius, userImage, linkTo = '/user' }) => {
+const Avatar = ({ radius = 40, userImage, linkTo = getURL('User') }) => {
   return (
     <Styled.AvatarContainer as={Link} to={linkTo}>
       {userImage ? (
@@ -16,7 +17,7 @@ const Avatar = ({ radius, userImage, linkTo = '/user' }) => {
 };
 
 Avatar.propTypes = {
-  radius: PropTypes.number.isRequired,
+  radius: PropTypes.number,
   userImage: PropTypes.string,
   linkTo: PropTypes.string,
 };

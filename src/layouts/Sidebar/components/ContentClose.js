@@ -6,7 +6,7 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import * as Styled from '../Sidebar.styles';
 
-const SidebarOnClose = ({ handleSettings }) => {
+const SidebarContentClose = ({ handleSettings }) => {
   const ref = useRef();
   const [scroll, setScroll] = useState(0);
   const [isDown, setIsDown] = useState(false);
@@ -77,4 +77,4 @@ const SidebarOnClose = ({ handleSettings }) => {
   );
 };
 
-export default SidebarOnClose;
+export default SidebarContentClose;

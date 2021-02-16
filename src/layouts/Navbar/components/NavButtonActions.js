@@ -7,7 +7,7 @@ const NavButtonActions = ({ actions }) => {
     <Styled.ButtonActionsContainer optionCount={actions.length}>
       {actions.map((action) => {
         return (
-          <Styled.ButtonAction as={Link} to="/home" key={action.id}>
+          <Styled.ButtonAction as={Link} to={action.linkTo} key={action.id}>
             {NavbarIcons[action.icon]({ color: '#2B7BE4', size: 20 })}
             <Styled.ActionTitle>{action.title}</Styled.ActionTitle>
           </Styled.ButtonAction>

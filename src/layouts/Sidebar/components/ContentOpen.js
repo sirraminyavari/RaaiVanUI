@@ -4,13 +4,12 @@ import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
-const SidebarSettingContent = lazy(() =>
-  import(
-    /* webpackChunkName: "sidebar-setting-content"*/ './SidebarSettingContent'
-  )
+import { getURL } from 'helpers/helpers';
+const SidebarManagement = lazy(() =>
+  import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
 );
-const SideabrMenuContent = lazy(() =>
-  import(/* webpackChunkName: "sidebar-menu-content"*/ './SidebarMenuContent')
+const SidebarMain = lazy(() =>
+  import(/* webpackChunkName: "sidebar-menu-content"*/ './Main')
 );
 
 const SidebarOnOpen = ({ handleSettings }) => {
@@ -22,12 +21,12 @@ const SidebarOnOpen = ({ handleSettings }) => {
         {isSettingShown ? (
           <Styled.CenterIcon>
             <SettingIcon />
-            <span style={{ padding: '0 10px' }}>مدیریت تیم</span>
+            <Styled.TitleText>مدیریت تیم</Styled.TitleText>
           </Styled.CenterIcon>
         ) : (
-          <Link to="/classes" style={{ color: '#fff' }}>
+          <Styled.TitleText as={Link} to={getURL('Classes')}>
             تیم شاهین
-          </Link>
+          </Styled.TitleText>
         )}
         <Styled.SettingWrapper onClick={handleSettings}>
           {isSettingShown ? (
@@ -37,7 +36,7 @@ const SidebarOnOpen = ({ handleSettings }) => {
           )}
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      {isSettingShown ? <SidebarSettingContent /> : <SideabrMenuContent />}
+      {isSettingShown ? <SidebarManagement /> : <SidebarMain />}
     </>
   );
 };

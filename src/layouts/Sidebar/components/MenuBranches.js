@@ -6,7 +6,7 @@ import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers/helpers';
 
-const SidebarChildMenus = ({ isOpen, menuList }) => {
+const SidebarMenuBranches = ({ isOpen, menuList }) => {
   const [menus, setMenus] = useState(menuList);
 
   const handleOnDragEnd = (result) => {
@@ -65,4 +65,4 @@ const SidebarChildMenus = ({ isOpen, menuList }) => {
   );
 };
 
-export default SidebarChildMenus;
+export default SidebarMenuBranches;

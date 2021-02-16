@@ -4,17 +4,17 @@ import * as Styled from './Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import LogoLoader from 'components/LogoLoader/LogoLoader';
-import SidebarHeader from './components/SidebarHeader';
-import SidebarFooter from './components/SidebarFooter';
+import SidebarHeader from './components/Header';
+import SidebarFooter from './components/Footer';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
-const SidebarOnOpen = lazy(() =>
+const SidebarContentOpen = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-open-content"*/ './components/SidebarOnOpen'
+    /* webpackChunkName: "sidebar-open-content"*/ './components/ContentOpen'
   )
 );
-const SidebarOnClose = lazy(() =>
+const SidebarContentClose = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-close-content"*/ './components/SidebarOnClose'
+    /* webpackChunkName: "sidebar-close-content"*/ './components/ContentClose'
   )
 );
 
@@ -43,9 +43,9 @@ const Sidebar = () => {
       <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
         <Suspense fallback={<LogoLoader size={10} />}>
           {isSidebarOpen ? (
-            <SidebarOnOpen handleSettings={handleSettings} />
+            <SidebarContentOpen handleSettings={handleSettings} />
           ) : (
-            <SidebarOnClose handleSettings={handleSettings} />
+            <SidebarContentClose handleSettings={handleSettings} />
           )}
         </Suspense>
       </Styled.ContentWrapper>

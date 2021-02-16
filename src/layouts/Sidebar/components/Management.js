@@ -10,7 +10,7 @@ const settingList = [
   'درخت های مستندات',
 ];
 
-const SidebarSettingContent = () => {
+const SidebarManagement = () => {
   return (
     <>
       {settingList.map((item, key) => {
@@ -25,4 +25,4 @@ const SidebarSettingContent = () => {
   );
 };
 
-export default SidebarSettingContent;
+export default SidebarManagement;

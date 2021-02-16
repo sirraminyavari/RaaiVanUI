@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import Edit from 'components/Icons/EditIcon/Edit';
 
 const FlexBetween = css`
   display: flex;
@@ -9,6 +10,11 @@ const FlexBetween = css`
 const FlexCenter = css`
   display: flex;
   place-items: center;
+`;
+
+export const TitleText = styled.span`
+  color: #fff;
+  margin: 0.5rem;
 `;
 
 export const CenterIcon = styled.div`
@@ -67,7 +73,10 @@ export const SearchWrapper = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled.input.attrs((props) => ({
+  type: props.type || 'search',
+  placeholder: props.text || 'جستجو ...',
+}))`
   width: 100%;
   background-color: inherit;
   color: #fff;
@@ -84,6 +93,7 @@ export const SidebarFooter = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
+  cursor: pointer;
   transition: all 0.7s ease;
 `;
 
@@ -146,9 +156,9 @@ export const BadgeWrapper = styled.div`
   font-size: 0.8rem;
 `;
 
-export const BookmarkWrapper = styled.div`
+export const ListItemWrapper = styled.div`
   ${FlexBetween}
-  margin: 1rem 0;
+  color: #fff;
 `;
 
 export const SettingWrapper = styled.div`
@@ -231,4 +241,12 @@ export const MenuTreeContainer = styled.div`
   padding: 0.1rem 0.2rem;
   border-radius: 0.5rem;
   transition: all 0.5s ease;
+`;
+
+export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
+  margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '-2rem')};
+`;
+
+export const UnderMenuContainer = styled.div`
+  padding-bottom: 3rem;
 `;
