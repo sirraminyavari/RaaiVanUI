@@ -6,11 +6,18 @@ function useOutsideClick(callback, nodes) {
   if (GlobalUtilities.get_type(nodes) != 'array') nodes = [nodes];
 
   const handleClick = (e) => {
-    let clickItems = nodes.filter((nd) => !!(nd || {}).current);
+    let clickItems = nodes
+      .map((nd) =>
+        GlobalUtilities.get_type(nd) == 'string'
+          ? document.getElementById(nd)
+          : (nd || {}).current
+      )
+      .filter((nd) => !!nd);
+
     let outsideClicked =
       !!e.target &&
       !!clickItems.length &&
-      !clickItems.some((nd) => nd.current.contains(e.target));
+      !clickItems.some((nd) => nd.contains(e.target));
     if (outsideClicked) callback();
   };
 

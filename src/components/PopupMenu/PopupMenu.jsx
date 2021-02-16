@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Sticker from './Sticker';
 import useWindowSize from '../../hooks/useWindowSize';
@@ -6,7 +6,7 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import usePrevious from '../../hooks/usePrevious';
 import useWindowScroll from 'hooks/useWindowScroll';
 
-const { jQuery } = window;
+const { GlobalUtilities, jQuery } = window;
 const Empty = (props) => <>{props.children}</>;
 
 const ArrowWidth = 0.8;
@@ -24,10 +24,10 @@ const PopupMenu = ({
   hoverTimeout = 200,
   ...props
 }) => {
-  const mainRef = React.createRef();
-  const menuContainerRef = React.createRef();
-  const arrowRef = React.createRef();
-  const menuRef = React.createRef();
+  const mainId = 'r' + GlobalUtilities.random_str(10);
+  const menuContainerId = 'r' + GlobalUtilities.random_str(10);
+  const arrowId = 'r' + GlobalUtilities.random_str(10);
+  const menuId = 'r' + GlobalUtilities.random_str(10);
 
   align = String(align).toLowerCase().charAt(0);
   trigger = String(trigger || 'hover');
@@ -45,8 +45,8 @@ const PopupMenu = ({
   useEffect(() => {
     setInfo(
       calculatePosition({
-        contentDom: menuRef.current,
-        arrowDom: arrowRef.current,
+        contentDom: document.getElementById(menuId),
+        arrowDom: document.getElementById(arrowId),
         align: align,
         positionInfo: stickerPos,
       })
@@ -57,7 +57,7 @@ const PopupMenu = ({
     (e) => {
       if (showMenu && trigger == 'click') setShowMenu(false);
     },
-    [menuRef, menuContainerRef]
+    [menuId, menuContainerId]
   );
 
   if (
@@ -101,20 +101,20 @@ const PopupMenu = ({
       topOffset={topOffset}
       onReposition={(pos) => setStickerPos(pos)}>
       {React.cloneElement(props.children[0], {
-        ref: mainRef,
+        id: mainId,
         onClick: trigger != 'click' ? null : () => setShowMenu(!showMenu),
         onMouseOver: mouseOver,
         onMouseOut: mouseOut,
       })}
       {showMenu && (
         <MenuContainer
-          ref={menuContainerRef}
+          id={menuContainerId}
           align={align}
           onMouseOver={mouseOver}
           onMouseOut={mouseOut}>
           <ArrowContainer align={align}>
             <MenuArrow
-              ref={arrowRef}
+              id={arrowId}
               className={arrowClass || menuClass}
               style={info.arrowStyle || {}}
               arrowStyle={menuStyle}
@@ -122,7 +122,7 @@ const PopupMenu = ({
             />
           </ArrowContainer>
           <MenuContent
-            ref={menuRef}
+            id={menuId}
             className={'rv-border-radius-half ' + menuClass}
             style={info.contentStyle || {}}
             menuStyle={menuStyle}>
