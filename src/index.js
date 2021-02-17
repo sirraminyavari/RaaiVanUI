@@ -9,8 +9,12 @@ import LogoLoader from 'components/LogoLoader/LogoLoader';
 //TODO: Move to redux Provider
 import { RVGlobalProvider } from 'context/RVGlobalProvider';
 
-const MainLayout = lazy(() => import('layouts/Main'));
-const Login = lazy(() => import('views/Auth/Login'));
+const MainLayout = lazy(() =>
+  import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
+);
+const Login = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/Login_')
+);
 
 render(
   <React.StrictMode>

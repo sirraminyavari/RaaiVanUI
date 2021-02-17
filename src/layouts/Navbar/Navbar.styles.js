@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 export const NavbarContainer = styled.div`
-  width: ${({ isSidebarOpen }) =>
-    isSidebarOpen ? 'calc(100% - 250px)' : 'calc(100% - 55px)'};
+  width: ${({ isSidebarOpen, isMobile }) =>
+    `calc(100% - ${
+      !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
+    }px)`};
   height: 4.1rem;
   position: fixed;
   display: flex;
@@ -10,14 +13,15 @@ export const NavbarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
+  left: 0;
   opacity: 1;
   padding: 0 1.5rem;
   background: #2b388f 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 10px #00000029;
+  box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
 `;
 
-export const ButtonsWrapper = styled.div`
+export const WideScreenMenu = styled.div`
   height: 100%;
   padding: 0.2rem 0;
   display: flex;
@@ -26,15 +30,18 @@ export const ButtonsWrapper = styled.div`
 export const ButtonContainer = styled.div`
   width: 3.7rem;
   margin: 0rem 0.5rem;
-  padding: 1.5rem;
+  padding: 0.4rem;
   border-radius: 60%;
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  :hover {
+  &:hover {
     background-color: #27499f;
+  }
+  &:hover span {
+    transform: rotateX(180deg);
   }
 `;
 
@@ -45,7 +52,7 @@ export const ButtonIcon = styled.div`
   color: #e6f4f1;
 `;
 
-export const ButtonTitle = styled.span`
+export const ButtonTitle = styled.div`
   font-size: 0.7rem;
   font-weight: bold;
   color: #e6f4f1;
@@ -58,7 +65,7 @@ export const ButtonTitle = styled.span`
   align-items: center;
 `;
 
-export const BadgeWrapper = styled.div`
+export const Badge = styled.div`
   height: 1.3rem;
   min-width: 1.3rem;
   padding: 0.1rem;
@@ -79,8 +86,9 @@ export const SearchWrapper = styled.div`
 
 export const SearchContainer = styled.div`
   position: relative;
+  margin: 0 1.5rem;
   :focus-within input {
-    width: 300px;
+    width: 16rem;
   }
   :focus-within div {
     color: #2b7be4;
@@ -89,12 +97,12 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled.input`
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   outline: 0;
   color: #333;
-  height: 32px;
-  padding: 0 10px;
-  width: 230px;
+  height: 2rem;
+  padding: 0 0.6rem;
+  width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {
     color: transparent;
@@ -103,35 +111,77 @@ export const SearchInput = styled.input`
 
 export const SearchIcon = styled.div`
   position: absolute;
-  left: 5px;
-  top: 5px;
-  font-size: 25px;
+  left: 0.3rem;
+  top: 0.3rem;
+  font-size: 1.5rem;
   color: #ddd;
 `;
 
-export const OptionsContainer = styled.div`
-  width: 150px;
-  height: ${({ optionCount }) => `${optionCount * 45}px`};
-  padding: 10px;
+export const ButtonActionsContainer = styled.div`
+  width: 12rem;
+  height: ${({ optionCount }) => `${optionCount * 2.8}rem`};
+  padding: 0.7rem;
+  margin: -0.7rem;
   overflow: hidden;
-  display: ${({ isOptionShown }) => (isOptionShown ? 'revert' : 'none')};
   background-color: #fff;
-  position: absolute;
-  top: 55px;
-  z-index: 1000;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   box-shadow: 0px 1px 15px #9e9fff;
-  transition: all 0.7s ease;
 `;
 
-export const OptionWrapper = styled.div`
+export const ButtonAction = styled.div`
   display: flex;
   place-items: center;
   color: #000;
-  border-radius: 5px;
-  margin: 5px 0px;
+  border-radius: 0.3rem;
+  margin: 0.3rem 0;
+  padding: 0 0.3rem;
   transition: all 0.5s ease;
   :hover {
-    background-color: #e3e3e3;
+    background-color: #d3d3d3;
   }
+`;
+
+export const ActionTitle = styled.span`
+  margin: 0.3rem 0.5rem;
+`;
+
+export const NavMenuContainer = styled.div`
+  cursor: pointer;
+  position: relative;
+`;
+
+export const MenuOptionsWrapper = styled.div`
+  height: 12rem;
+  width: 19rem;
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  flex-wrap: wrap;
+  align-items: center;
+  box-shadow: 0px 1px 10px #333;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  z-index: 100;
+  position: absolute;
+  top: 3rem;
+  transition: all 0.7s ease;
+`;
+
+export const NavMenuOption = styled.div`
+  width: 33%;
+  height: 33%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+`;
+
+export const Arrow = styled.span`
+  width: 0;
+  height: 0;
+  margin: 0 0.1rem;
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
+  border-bottom: 0.3rem solid #fff;
+  transition: all 0.5s ease;
 `;
