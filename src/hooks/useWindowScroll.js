@@ -28,6 +28,7 @@ function useWindowScroll({ timeOut } = {}) {
     // clean up function
     return () => {
       window.removeEventListener('scroll', scrollListener);
+      clearTimeout(timeoutId);
     };
   }, []);
 
