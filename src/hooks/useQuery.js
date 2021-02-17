@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+/**
+ * This hook returns a key-value pair object of query params if exist.
+ */
 const useQuery = () => {
   const [query, setQuery] = useState({});
   const location = useLocation();
