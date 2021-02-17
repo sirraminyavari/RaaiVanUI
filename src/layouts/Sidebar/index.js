@@ -1,97 +1,47 @@
-import SidebarOption from "./SidebarOption";
-import { Link } from "react-router-dom";
-import optionsList from "./optionsList";
+import { lazy, Suspense, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Styled from './Sidebar.styles';
+import SidebarHeader from './SidebarHeader';
+import { themeSlice } from 'store/reducers/themeReducer';
+import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
+import LogoLoader from 'components/LogoLoader/LogoLoader';
+import SidebarFooter from './SidebarFooter';
+const SidebarOpenContent = lazy(() => import('./SidebarContent-Open'));
+const SidebarCloseContent = lazy(() => import('./SidebarContent-Close'));
 
-const sideWidth = 18;
-const getVersion = () => {
-  let systemVersion = !(window.RVGlobal || {}).ShowSystemVersion
-    ? null
-    : (window.RVGlobal || {}).SystemVersion;
-  if (systemVersion && systemVersion.toLowerCase()[0] === "v") {
-    systemVersion = systemVersion.substring(1);
-  }
-  return systemVersion;
-};
+const Sidebar = () => {
+  const dispatch = useDispatch();
+  const { toggleSidebar, toggleSetting } = themeSlice.actions;
+  const { isSidebarOpen, isSettingShown } = useSelector((state) => state.theme);
 
-const Sidebar = ({ isOpen }) => {
+  const handleSettings = () => {
+    if (!isSidebarOpen) {
+      dispatch(toggleSidebar(true));
+      dispatch(toggleSetting(true));
+    } else {
+      dispatch(toggleSetting(!isSettingShown));
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getSidebarNodes());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSidebarOpen]);
+
   return (
-    <div
-      className="SoftBackgroundColor SurroundingShadow"
-      id="sideContent"
-      style={{
-        position: "fixed",
-        display: "flex",
-        flexFlow: "column",
-        top: "3.4rem",
-        bottom: 0,
-        width: `${sideWidth}rem`,
-        [window.RV_Float]: `${
-          isOpen ? `${-sideWidth + 18}rem` : `${-sideWidth}rem`
-        }`,
-      }}
-    >
-      <div
-        id="serivces"
-        style={{
-          flexGrow: 1,
-          flexShrink: 1,
-          flexBasis: "auto",
-          paddingTop: "0.5rem",
-        }}
-      ></div>
-      <div
-        id="options"
-        style={{
-          flexGrow: 0,
-          flexShrink: 1,
-          flexBasis: "auto",
-          textAlign: "center",
-          paddingBottom: "0.4rem",
-        }}
-      >
-        <div
-          style={{
-            display: "inline-block",
-            width: "90%",
-            paddingTop: "1px",
-            backgroundColor: "rgb(220,220,220)",
-          }}
-        ></div>
-      </div>
-      <div
-        id="options"
-        style={{
-          flexGrow: 0,
-          flexShrink: 1,
-          flexBasis: "auto",
-          textAlign: "center",
-        }}
-      >
-        {optionsList.map((opt, key) => {
-          return opt.linkTo ? (
-            <Link to={opt.linkTo} key={key}>
-              <SidebarOption {...opt} />
-            </Link>
+    <Styled.SidebarContainer width={isSidebarOpen ? 250 : 55}>
+      <SidebarHeader />
+      <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
+        <Suspense fallback={<LogoLoader size={10} />}>
+          {isSidebarOpen ? (
+            <SidebarOpenContent handleSettings={handleSettings} />
           ) : (
-            <SidebarOption {...opt} key={key} />
-          );
-        })}
-      </div>
-      {getVersion() && (
-        <div
-          style={{
-            flex: "0 1 auto",
-            textAlign: "center",
-            fontSize: "0.7rem",
-            color: "rgb(80,80,80)",
-          }}
-        >
-          <span>
-            {window.RVDic.Version} {getVersion()}
-          </span>
-        </div>
-      )}
-    </div>
+            <SidebarCloseContent handleSettings={handleSettings} />
+          )}
+        </Suspense>
+      </Styled.ContentWrapper>
+      {!isSettingShown && <SidebarFooter />}
+    </Styled.SidebarContainer>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 const useAllScripts = (sources) => {
   useEffect(() => {
@@ -6,9 +6,9 @@ const useAllScripts = (sources) => {
       await previousPromise;
       return new Promise((resolve, reject) => {
         const src = `/load/${source.src}`;
-        const script = document.createElement("script");
+        const script = document.createElement('script');
         script.src = src;
-        script.type = "text/javascript";
+        script.type = 'text/javascript';
         script.async = true;
         script.id = source.id;
         script.onload = resolve;

@@ -1,9 +1,9 @@
-import useScript from "hooks/useScript";
+import useScript from 'hooks/useScript';
 
 const MapConfig = () => {
   useScript(
-    "pageLoadScripts/LoadMapConfig/LoadMapConfig.js",
-    "LoadMapConfig.js",
+    'pageLoadScripts/LoadMapConfig/LoadMapConfig.js',
+    'LoadMapConfig.js',
     () => {
       window.loadMapConfig();
     }
@@ -12,8 +12,11 @@ const MapConfig = () => {
     <div
       id="mapArea"
       className="small-12 medium-12 large-12 row"
-      style={{ margin: "0rem", marginBottom: "5rem", padding: "0vw 6vw" }}
-    ></div>
+      style={{
+        margin: '0rem',
+        marginBottom: '5rem',
+        padding: '0vw 6vw',
+      }}></div>
   );
 };
 
