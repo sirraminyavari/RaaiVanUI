@@ -10,7 +10,7 @@ const Button = ({ type, disable, ...props }) => {
   return (
     <div
       className={
-        'rv-action-button-base ' +
+        'rv-border-radius-half rv-action-button-base ' +
         resolveClass({ type, disable }) +
         ' ' +
         (props.className || ' ')
