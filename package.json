@@ -9,6 +9,8 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "classnames": "^2.2.6",
+    "dompurify": "^2.2.6",
+    "downshift": "^6.1.0",
     "http-proxy-middleware": "^1.0.6",
     "js-base64": "^3.6.0",
     "persian-rex": "^2.3.3",

@@ -1,5 +1,5 @@
 import useScript from 'hooks/useScript';
-import { isEmpty } from 'helpers';
+import { isEmpty } from 'helpers/helpers';
 
 const Home = (props) => {
   useScript(

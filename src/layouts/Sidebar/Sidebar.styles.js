@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import Edit from 'components/Icons/EditIcon/Edit';
 
 const FlexBetween = css`
   display: flex;
@@ -9,6 +10,11 @@ const FlexBetween = css`
 const FlexCenter = css`
   display: flex;
   place-items: center;
+`;
+
+export const TitleText = styled.span`
+  color: #fff;
+  margin: 0.5rem;
 `;
 
 export const CenterIcon = styled.div`
@@ -44,11 +50,9 @@ export const ContentWrapper = styled.div`
 export const SidebarHeader = styled.div`
   ${FlexBetween}
   height: 4.1rem;
-  position: relative;
-  top: 0;
   z-index: 1000;
   padding: 0 1.1rem;
-  background-color: inherit;
+  background-color: #15113c;
 `;
 
 export const ToggleArrow = styled.div`
@@ -69,7 +73,10 @@ export const SearchWrapper = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled.input.attrs((props) => ({
+  type: props.type || 'search',
+  placeholder: props.text || 'جستجو ...',
+}))`
   width: 100%;
   background-color: inherit;
   color: #fff;
@@ -86,6 +93,7 @@ export const SidebarFooter = styled.div`
   justify-content: center;
   align-items: center;
   color: #fff;
+  cursor: pointer;
   transition: all 0.7s ease;
 `;
 
@@ -119,7 +127,7 @@ export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
-  padding: 0.3rem;
+  padding: 0 0.3rem;
   border-radius: 0.5rem;
   background-color: ${({ isDraggingOver }) =>
     isDraggingOver ? '#383388' : 'inherit'};
@@ -148,9 +156,9 @@ export const BadgeWrapper = styled.div`
   font-size: 0.8rem;
 `;
 
-export const BookmarkWrapper = styled.div`
+export const ListItemWrapper = styled.div`
   ${FlexBetween}
-  margin: 1rem 0;
+  color: #fff;
 `;
 
 export const SettingWrapper = styled.div`
@@ -162,7 +170,7 @@ export const SettingWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const SettingMenu = styled.div`
+export const SettingList = styled.div`
   ${FlexCenter}
   margin: 0.5rem 0;
   margin-right: 0.5rem;
@@ -233,4 +241,12 @@ export const MenuTreeContainer = styled.div`
   padding: 0.1rem 0.2rem;
   border-radius: 0.5rem;
   transition: all 0.5s ease;
+`;
+
+export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
+  margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '-2rem')};
+`;
+
+export const UnderMenuContainer = styled.div`
+  padding-bottom: 3rem;
 `;
