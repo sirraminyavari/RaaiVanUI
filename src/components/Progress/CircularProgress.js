@@ -11,6 +11,7 @@ const CircularProgress = ({
   countDown = true,
   minValue,
   maxValue = 100,
+  progress = 0,
   color = '#ff9f00',
   hideChannel,
   channelColor = '#eee',
@@ -28,11 +29,17 @@ const CircularProgress = ({
     maxValue = 100;
   }
 
-  const [value, setValue] = useState(auto ? maxValue : minValue);
+  const [value, setValue] = useState(
+    auto ? (countDown ? maxValue : minValue) : progress
+  );
 
   useEffect(() => {
     if (GlobalUtilities.get_type(onUpdate) == 'function') onUpdate(value);
   }, [value]);
+
+  useEffect(() => {
+    if (!auto) setValue(progress);
+  }, [progress]);
 
   if (auto) {
     let newValue = countDown ? value - 1 : value + 1;
