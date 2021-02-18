@@ -5,7 +5,19 @@ import useKeypress from '../../hooks/useKeypress';
 import useOnClickOutside from '../../hooks/useOnClickOtside';
 import * as Styled from './InlineEdit.styles';
 
-const InlineEdit = ({ text, onSetText }) => {
+/**
+ * @typedef PropType
+ * @property {string} text -The editable text.
+ * @property {function} onSetText -The function to be called on text edit.
+ */
+
+/**
+ *  Renders an inline editable text.
+ * @component
+ * @param {PropType} props
+ */
+const InlineEdit = (props) => {
+  const { text, onSetText } = props;
   const [isInputActive, setIsInputActive] = useState(false);
   const [inputValue, setInputValue] = useState(text);
 
@@ -85,8 +97,10 @@ const InlineEdit = ({ text, onSetText }) => {
 };
 
 InlineEdit.propTypes = {
-  text: PropTypes.string,
-  onSetText: PropTypes.func,
+  text: PropTypes.string.isRequired,
+  onSetText: PropTypes.func.isRequired,
 };
+
+InlineEdit.displayName = 'InlineEditComponent';
 
 export default InlineEdit;

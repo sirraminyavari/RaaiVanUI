@@ -43,6 +43,7 @@ const Navbar = () => {
         {isSidebarOpen ? (
           isMediumScreen ? (
             <AutoSuggestInput
+              endpoint="names"
               onSearchChange={(value) => console.log(value)}
               placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
               <NavbarSearchInput />
@@ -52,6 +53,7 @@ const Navbar = () => {
           )
         ) : isWideScreen ? (
           <AutoSuggestInput
+            endpoint="names"
             onSearchChange={(v) => console.log(v)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
             <NavbarSearchInput />

@@ -2,8 +2,25 @@ import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 /**
- * Renders an alphanumeric input.
- * @component
+ * @typedef RefType
+ * @property {Object} current -The object that represents the current ref.
+ */
+
+/**
+ * @typedef PropType
+ * @property {RefType} ref
+ * @property {number} maxLength -The maximum length of the digit that is allowed for input.
+ * @property {number} maxDecimal -The maximum length of decimal that is allowed for input.
+ * @property {boolean} isFloat -The parameter that indicates is input allowed to be a float number.
+ * @property {boolean} isNumber -The parameter that indicates is input allowed to be only a number or not.
+ * @property {function} onInputChange -The function that receives input value.
+ * @property {string} inputValue -The current value of input.
+ * @property {string} initial -The default value of input.
+ */
+
+/**
+ * Renders an alphanumeric or numeric input.
+ * @type {React.FC<PropType>}
  */
 const AlphanumericInput = forwardRef((props, ref) => {
   const {
@@ -52,33 +69,12 @@ const AlphanumericInput = forwardRef((props, ref) => {
 });
 
 AlphanumericInput.propTypes = {
-  /**
-   * @param {number} props.maxLength -The maximum length of digit allowed for input.
-   */
   maxLength: PropTypes.number,
-  /**
-   * @param {number} props.maxDecimal -The maximum length of decimal allowed for input.
-   */
   maxDecimal: PropTypes.number,
-  /**
-   * @param {boolean} props.isFloat -The parameter that indicates if input allowed to be float.
-   */
   isFloat: PropTypes.bool,
-  /**
-   * @param {boolean} props.isNumber -The parameter that indicates if input allowed to be only number.
-   */
   isNumber: PropTypes.bool,
-  /**
-   * @param {function} props.onInputChange -The function that receives input value.
-   */
-  onInputChange: PropTypes.func,
-  /**
-   * @param {string} props.inputValue -The current value of input.
-   */
-  inputValue: PropTypes.string,
-  /**
-   * @param {string} props.initial -The default value of input.
-   */
+  onInputChange: PropTypes.func.isRequired,
+  inputValue: PropTypes.string.isRequired,
   initial: PropTypes.string,
 };
 
@@ -87,5 +83,7 @@ AlphanumericInput.defaultProps = {
   isNumber: false,
   initial: '',
 };
+
+AlphanumericInput.displayName = 'AlphanumericInput';
 
 export default AlphanumericInput;

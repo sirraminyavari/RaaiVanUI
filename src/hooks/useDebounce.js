@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 /**
  * This hook allows you to debounce any fast changing value.
+ * @hook
  * @param {string} value - The value for debouncing.
  * @param {number} delay - The dealy of debounce.
  * @returns {string} The debounced value

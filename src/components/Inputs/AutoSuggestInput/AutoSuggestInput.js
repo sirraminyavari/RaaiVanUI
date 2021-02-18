@@ -3,15 +3,32 @@ import PropTypes from 'prop-types';
 import Downshift from 'downshift';
 import useDebounce from 'hooks/useDebounce';
 import Loader from 'components/Loader/Loader';
+import Button from 'components/Buttons/Button.jsx';
 import * as Styled from './AutoSuggestInput.styles';
 
 /**
- * Renders an auto suggestion input.
+ * @typedef PropType
+ * @property {number} delay - The delay of debouncing.
+ * @property {number} searchAt -The minimum character is needed to api call begins.
+ * @property {string} placeholder -The input placeholder.
+ * @property {string} endpoint -The endpoint to search for suggestions.
+ * @property {function} onSearchChange -The function to be called on suggestion selection.
+ */
+
+/**
+ *  Renders an auto suggestion input.
  * @component
- * @param props
+ * @param {PropType} props
  */
 const AutoSuggestInput = (props) => {
-  const { delay, searchAt, onSearchChange, placeholder, children } = props;
+  const {
+    delay,
+    searchAt,
+    onSearchChange,
+    placeholder,
+    endpoint,
+    children,
+  } = props;
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -20,7 +37,7 @@ const AutoSuggestInput = (props) => {
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
 
   const fetchItems = (search) => {
-    fetch(`http://localhost:3004/names?name_like=${search}`)
+    fetch(`http://localhost:3004/${endpoint}?name_like=${search}`)
       .then((response) => response.json())
       .then((data) => {
         setHasError(false);
@@ -91,7 +108,8 @@ const AutoSuggestInput = (props) => {
         inputValue,
         highlightedIndex,
       }) => (
-        <Styled.InputContainer hasChildren={!!children}>
+        <Styled.InputContainer
+          className={`${!children && 'ColdBackgroundColor'} BorderRadius4`}>
           {children ? (
             <Styled.ComponentWrapper
               {...getRootProps({ refKey: 'componentRef' })}>
@@ -103,32 +121,53 @@ const AutoSuggestInput = (props) => {
           ) : (
             <Styled.InputElementWrapper
               {...getRootProps({ refKey: 'inputwrapperRef' })}>
-              <Styled.Input {...getInputProps({ placeholder })} />
+              <Styled.Input
+                {...getInputProps({ placeholder, className: 'BorderRadius4' })}
+              />
               {isSearching && <Loader />}
             </Styled.InputElementWrapper>
           )}
           <Styled.List
-            {...getMenuProps()}
+            {...getMenuProps({
+              className: 'BorderRadius4 ColdBackgroundColor SurroundingShadow',
+            })}
             {...getRootProps({ refKey: 'ulRef' })}
+            hasChildren={!!children}
+            hasError={hasError}
             items={items}>
-            {isOpen &&
-              inputValue &&
-              items.map((item, index) => {
-                return (
-                  <Styled.ListItems
-                    hasError={hasError}
-                    highlightedIndex={highlightedIndex}
-                    index={index}
-                    {...getItemProps({
-                      key: item.value,
-                      index,
-                      item,
-                    })}>
-                    {hasError && <Styled.Error>!</Styled.Error>}
-                    {item.value}
-                  </Styled.ListItems>
-                );
-              })}
+            {!hasError && (
+              <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
+                <Button type="secondary-o">Click me</Button>
+                <Button type="secondary-o">Click me</Button>
+              </Styled.ButtonsContainer>
+            )}
+            <Styled.ListItemsContainer hasError={hasError} items={items}>
+              {isOpen &&
+                inputValue &&
+                items.map((item, index) => {
+                  return (
+                    <Styled.ListItems
+                      hasError={hasError}
+                      {...getItemProps({
+                        key: index,
+                        className: `${
+                          hasError
+                            ? 'ColdBackgroundColor'
+                            : highlightedIndex === index
+                            ? 'SoftBackgroundColor'
+                            : 'ColdBackgroundColor'
+                        }`,
+                        index,
+                        item,
+                      })}>
+                      {hasError && (
+                        <Styled.Error className="Circle">!</Styled.Error>
+                      )}
+                      {item.value}
+                    </Styled.ListItems>
+                  );
+                })}
+            </Styled.ListItemsContainer>
           </Styled.List>
         </Styled.InputContainer>
       )}
@@ -137,22 +176,11 @@ const AutoSuggestInput = (props) => {
 };
 
 AutoSuggestInput.propTypes = {
-  /**
-   * @param {number} props.delay - The delay of debouncing.
-   */
   delay: PropTypes.number,
-  /**
-   * @param {number} props.searchAt -The minimum character is needed to api call begins.
-   */
   searchAt: PropTypes.number,
-  /**
-   * @param {function} props.onSearchChange -The function to be called on suggestion selection.
-   */
-  onSearchChange: PropTypes.func,
-  /**
-   * @param {string} props.placeholder -The input placeholder.
-   */
+  onSearchChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
+  endpoint: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
 };
 
@@ -161,5 +189,7 @@ AutoSuggestInput.defaultProps = {
   searchAt: 3,
   placeholder: 'جستجو ...',
 };
+
+AutoSuggestInput.displayName = 'AutoSuggestInput';
 
 export default AutoSuggestInput;
