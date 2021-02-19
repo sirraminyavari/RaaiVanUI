@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Downshift from 'downshift';
 import useDebounce from 'hooks/useDebounce';
 import Loader from 'components/Loader/Loader';
-import Button from 'components/Buttons/Button.jsx';
+import Button from 'components/Buttons/Button';
 import * as Styled from './AutoSuggestInput.styles';
 
 /**
@@ -83,6 +83,21 @@ const AutoSuggestInput = (props) => {
 
   const handleToString = (item) => (item ? item.value : '');
 
+  const getHighlightedText = (text, highlight) => {
+    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    return (
+      <span>
+        {parts.map((part, i) => (
+          <Styled.HighlightedText
+            key={i}
+            isMatch={part.toLowerCase() === highlight.toLowerCase()}>
+            {part}
+          </Styled.HighlightedText>
+        ))}
+      </span>
+    );
+  };
+
   useEffect(() => {
     if (debouncedSearchTerm && debouncedSearchTerm.length >= searchAt) {
       setIsSearching(true);
@@ -137,8 +152,8 @@ const AutoSuggestInput = (props) => {
             items={items}>
             {!hasError && (
               <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
-                <Button type="secondary-o">Click me</Button>
-                <Button type="secondary-o">Click me</Button>
+                <Button type="primary">Click me</Button>
+                <Button type="negative">Click me</Button>
               </Styled.ButtonsContainer>
             )}
             <Styled.ListItemsContainer hasError={hasError} items={items}>
@@ -163,7 +178,7 @@ const AutoSuggestInput = (props) => {
                       {hasError && (
                         <Styled.Error className="Circle">!</Styled.Error>
                       )}
-                      {item.value}
+                      {getHighlightedText(item.value, searchTerm)}
                     </Styled.ListItems>
                   );
                 })}

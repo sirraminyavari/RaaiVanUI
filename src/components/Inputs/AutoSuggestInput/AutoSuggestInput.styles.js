@@ -96,3 +96,18 @@ export const ListItemsContainer = styled.div`
   margin-left: 0.3rem;
   overflow-y: auto;
 `;
+
+const getHighlightCss = ({ isMatch }) => {
+  return isMatch
+    ? `
+    font-weight: bold;
+    background-color: yellow;
+    padding: 0 0.2rem;
+    border-radius: 0.5rem;
+    `
+    : null;
+};
+
+export const HighlightedText = styled.span`
+  ${getHighlightCss}
+`;
