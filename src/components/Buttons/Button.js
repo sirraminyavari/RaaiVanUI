@@ -8,8 +8,9 @@ const { GlobalUtilities } = window;
  * @param type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
  * @param loading determines if the button is in the state of processing or loading and thus cannot be clicked
  * @param disable determines if the button is disabled and so, cannot be clicked
+ * @param onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
-const Button = ({ type, loading, disable, ...props }) => {
+const Button = ({ type, loading, disable, onClick, ...props }) => {
   return (
     <div
       className={
@@ -19,6 +20,7 @@ const Button = ({ type, loading, disable, ...props }) => {
         (props.className || ' ')
       }
       style={props.style}
+      onClick={disable || loading ? null : onClick}
       {...props}>
       {!loading ? (
         props.children
