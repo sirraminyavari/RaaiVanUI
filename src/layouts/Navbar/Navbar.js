@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
@@ -32,29 +32,34 @@ const Navbar = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
+  const isMobileNav = useMediaQuery({
+    query: '(max-width: 970px)',
+  });
+
+  const showInput = () => {
+    if (!isSidebarOpen && (isMediumScreen || isWideScreen)) return true;
+    if (isSidebarOpen && isWideScreen) return true;
+    return false;
+  };
+
+  const showMobileNav = () => {
+    if (!isSidebarOpen && isMobileScreen) return true;
+    if (isSidebarOpen && isMobileNav) return true;
+    return false;
+  };
+
   return (
     <Styled.NavbarContainer
       isSidebarOpen={isSidebarOpen}
       isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
-        {isMobileScreen ? <NavMobileMenu /> : <NavWideScreenMenu />}
+        {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>
-        {isSidebarOpen ? (
-          isMediumScreen ? (
-            <AutoSuggestInput
-              endpoint="names"
-              onSearchChange={(value) => console.log(value)}
-              placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
-              <NavbarSearchInput />
-            </AutoSuggestInput>
-          ) : (
-            <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
-          )
-        ) : isWideScreen ? (
+        {showInput() ? (
           <AutoSuggestInput
             endpoint="names"
-            onSearchChange={(v) => console.log(v)}
+            onSearchChange={(value) => console.log(value)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
             <NavbarSearchInput />
           </AutoSuggestInput>

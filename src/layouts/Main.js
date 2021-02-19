@@ -35,7 +35,7 @@ const switchRoutes = (
 
 const Main = () => {
   const { isSidebarOpen, hasNavSide } = useSelector((state) => state.theme);
-  const isMobileOrTabletScreen = useMediaQuery({
+  const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
@@ -43,10 +43,10 @@ const Main = () => {
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          {!isMobileOrTabletScreen ? <Sidebar /> : <SidebarHeader />}
+          {!isMobileScreen ? <Sidebar /> : <SidebarHeader />}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
-            isMobile={isMobileOrTabletScreen}>
+            isMobile={isMobileScreen}>
             <Navbar />
             <Styled.Content>{switchRoutes}</Styled.Content>
           </Styled.ContentWrapper>
