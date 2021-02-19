@@ -35,6 +35,8 @@ function useWindowSize() {
     return () => {
       // remove resize listener
       window.removeEventListener('resize', resizeListener);
+
+      clearTimeout(timeoutId);
     };
   }, []);
 

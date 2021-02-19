@@ -2,7 +2,7 @@ import { lazy, Fragment } from 'react';
 import * as Styled from '../Navbar.styles';
 import NavButtonComponent from './NavButtonComponent';
 import NavButtonsList from './buttonsList';
-import PopupMenu from 'components/PopupMenu/PopupMenu.jsx';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
 const ButtonActions = lazy(() =>
   import(/* webpackChunkName: "nav-button-actions"*/ './NavButtonActions')
 );
