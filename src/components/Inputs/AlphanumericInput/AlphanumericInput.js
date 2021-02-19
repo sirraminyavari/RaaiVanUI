@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import * as Styled from './AlphanumericInput.styles';
 
 /**
  * @typedef RefType
@@ -15,7 +16,6 @@ import PropTypes from 'prop-types';
  * @property {boolean} isNumber -The parameter that indicates is input allowed to be only a number or not.
  * @property {function} onInputChange -The function that receives input value.
  * @property {string} inputValue -The current value of input.
- * @property {string} initial -The default value of input.
  */
 
 /**
@@ -28,7 +28,6 @@ const AlphanumericInput = forwardRef((props, ref) => {
     maxDecimal,
     onInputChange,
     inputValue,
-    initial,
     isFloat,
     isNumber,
     ...rest
@@ -56,12 +55,12 @@ const AlphanumericInput = forwardRef((props, ref) => {
   };
 
   return (
-    <input
+    <Styled.Input
+      className="BorderRadius4"
       type="text"
       ref={ref}
       pattern={inputPattern()}
       onChange={handleChange}
-      defaultValue={initial}
       value={inputValue}
       {...rest}
     />
@@ -75,13 +74,11 @@ AlphanumericInput.propTypes = {
   isNumber: PropTypes.bool,
   onInputChange: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
-  initial: PropTypes.string,
 };
 
 AlphanumericInput.defaultProps = {
   isFloat: false,
   isNumber: false,
-  initial: '',
 };
 
 AlphanumericInput.displayName = 'AlphanumericInput';
