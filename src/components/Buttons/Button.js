@@ -1,12 +1,15 @@
 import React from 'react';
+import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
 
 const { GlobalUtilities } = window;
 
-/*
-    type: primary, primary-o, secondary-o, negative, negative-o
-    disable: true|false
-*/
-const Button = ({ type, disable, ...props }) => {
+/**
+ * @description standard button component that is created based on design system
+ * @param type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
+ * @param loading determines if the button is in the state of processing or loading and thus cannot be clicked
+ * @param disable determines if the button is disabled and so, cannot be clicked
+ */
+const Button = ({ type, loading, disable, ...props }) => {
   return (
     <div
       className={
@@ -17,7 +20,15 @@ const Button = ({ type, disable, ...props }) => {
       }
       style={props.style}
       {...props}>
-      {props.children}
+      {!loading ? (
+        props.children
+      ) : (
+        <>
+          <span style={{ color: 'transparent' }}>1</span>
+          <LoadingIconFlat />
+          <span style={{ color: 'transparent' }}>1</span>
+        </>
+      )}
     </div>
   );
 };
