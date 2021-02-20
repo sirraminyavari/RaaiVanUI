@@ -35,7 +35,7 @@ const SidebarHeader = () => {
   }, [isMobileNav]);
 
   return (
-    <Styled.SidebarHeader>
+    <Styled.SidebarHeader isSidebarOpen={isSidebarOpen}>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img src={Logo} width="120" alt="logo-icon" />

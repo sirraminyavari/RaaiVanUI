@@ -6,7 +6,7 @@ import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import LogoLoader from 'components/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+
 const SidebarContentOpen = lazy(() =>
   import(
     /* webpackChunkName: "sidebar-open-content"*/ './components/ContentOpen'
@@ -38,7 +38,7 @@ const Sidebar = () => {
   }, [isSidebarOpen]);
 
   return (
-    <Styled.SidebarContainer width={isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}>
+    <Styled.SidebarContainer isSidebarOpen={isSidebarOpen}>
       <SidebarHeader />
       <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
         <Suspense fallback={<LogoLoader size={10} />}>

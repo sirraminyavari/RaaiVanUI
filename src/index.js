@@ -5,6 +5,7 @@ import { PrivateRoute, PublicRoute } from 'utils/RouteHandler';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/LogoLoader/LogoLoader';
+import 'assets/css/index.css';
 
 //TODO: Move to redux Provider
 import { RVGlobalProvider } from 'context/RVGlobalProvider';

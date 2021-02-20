@@ -6,7 +6,7 @@ export const NavbarContainer = styled.div`
     `calc(100% - ${
       !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
     }px)`};
-  height: 4.1rem;
+  height: 4rem;
   position: fixed;
   display: flex;
   z-index: 100;

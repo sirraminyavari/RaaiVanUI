@@ -1,6 +1,7 @@
+import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import Edit from 'components/Icons/EditIcon/Edit';
-import { forwardRef } from 'react';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 const FlexBetween = css`
   display: flex;
@@ -24,7 +25,8 @@ export const CenterIcon = styled.div`
 
 export const SidebarContainer = styled.div`
   height: 100%;
-  width: ${({ width }) => `${width}px`};
+  width: ${({ isSidebarOpen }) =>
+    `${isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
   position: fixed;
   z-index: 100;
   top: 0;
@@ -43,17 +45,20 @@ export const ContentWrapper = styled.div`
   bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
   left: -1.1rem;
   overflow: scroll;
-  margin-bottom: 6vh;
   padding: 0 1.1rem;
-  margin-top: 10vh;
+  margin-top: 4rem;
 `;
 
 export const SidebarHeader = styled.div`
   ${FlexBetween}
-  height: 4.1rem;
-  z-index: 1000;
+  height: 4rem;
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH)}px;
+  z-index: 10;
   padding: 0 1.1rem;
   background-color: #15113c;
+  position: fixed;
+  top: 0;
+  transition: all 0.7s ease;
 `;
 
 export const ToggleArrow = styled.div`
@@ -64,14 +69,15 @@ export const ToggleArrow = styled.div`
 
 export const SidebarTitle = styled.div`
   ${FlexBetween}
-  font-size: 16px;
-  height: 12%;
+  font-size: 1rem;
+  height: 3.7rem;
 `;
 
 export const SearchWrapper = styled.div`
   ${FlexBetween}
   border-bottom: 1px solid #707070;
   margin-bottom: 1rem;
+  padding: 0 0.3rem;
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -90,7 +96,7 @@ export const SidebarFooter = styled.div`
   height: 6%;
   display: flex;
   position: relative;
-  top: 84%;
+  top: 94%;
   justify-content: center;
   align-items: center;
   color: #fff;
@@ -174,7 +180,7 @@ export const SettingWrapper = styled.div`
   background-color: #171c4d;
   border-radius: 50%;
   padding: 0.3rem;
-  margin-left: -0.5rem;
+  margin-left: -0.1rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
@@ -232,7 +238,7 @@ export const IconListWrap = styled.div`
   position: absolute;
   padding: 0 0.3rem;
   top: 0;
-  left: -1rem;
+  left: -30%;
   box-sizing: content-box;
   text-align: center;
 `;
