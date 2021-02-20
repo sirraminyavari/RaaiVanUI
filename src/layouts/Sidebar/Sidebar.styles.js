@@ -42,11 +42,12 @@ export const ContentWrapper = styled.div`
   width: ${({ options }) => (options.isSidebarOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
+  bottom: ${({ options }) => (options.isSettingShown ? '-6%' : '0')};
   left: -1.1rem;
   overflow: scroll;
   padding: 0 1.1rem;
   margin-top: 4rem;
+  margin-bottom: 5vh;
 `;
 
 export const SidebarHeader = styled.div`
@@ -203,7 +204,8 @@ export const CloseContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   position: relative;
-  height: 70vh;
+  overflow: hidden;
+  height: 73vh;
 `;
 
 const arrowCss = css`
