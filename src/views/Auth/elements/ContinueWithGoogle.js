@@ -13,14 +13,19 @@ import {
   SIGN_UP_EMAIL,
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
+import GoogleLogin from 'react-google-login';
 
+/**
+ * It's not completed.
+ * @param {*} param0
+ */
 const ContinueWithGoogle = ({ ...props }) => {
   const dispatch = useDispatch();
   const { currentRoute, email } = useSelector((state) => ({
-    currentRoute: state.loginRoute.currentRoute,
+    currentRoute: state.login.currentRoute,
     email: state.login.email,
   }));
-  const isVisible = (currentRoute) => {
+  const isVisible = () => {
     switch (currentRoute) {
       case FORGOT_PASSWORD:
       case SIGN_UP_EMAIL:
@@ -36,16 +41,26 @@ const ContinueWithGoogle = ({ ...props }) => {
 
   const onGoogle = () => {
     console.log('change route');
-    // dispatch(setLoginRoute(SIGN_IN));
+    // dispatch(setLoginRouteAction(SIGN_IN));
   };
   return (
-    <UpToDownAnimate
-      isVisible={isVisible(currentRoute)}
-      style={{ marginBottom: '0.4rem' }}>
-      <Container {...props} onClick={onGoogle}>
-        <GoogleIcon style={{ fontSize: '1.4rem' }} />
-        <Label>Continue with Google</Label>
-      </Container>
+    <UpToDownAnimate isVisible={isVisible()} style={{ marginTop: '3rem' }}>
+      <GoogleLogin
+        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+        buttonText="Continue with Google"
+        render={(renderProps) => (
+          <Container
+            {...props}
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}>
+            <GoogleIcon style={{ fontSize: '1.4rem' }} />
+            <Label>Continue with Google</Label>
+          </Container>
+        )}
+        onSuccess={() => console.log('success google')}
+        onFailure={() => console.log('failed google')}
+        cookiePolicy={'single_host_origin'}
+      />
     </UpToDownAnimate>
   );
 };
@@ -55,13 +70,12 @@ const Container = styled.button`
   width: 90%;
   align-self: center;
   text-align: center;
-  margin-top: 1.43rem;
   align-items: center;
   flex-direction: row;
   justify-content: center;
   display: flex;
   border: solid ${MAIN_BLUE} 1px;
-  border-radius: 0.4rem;
+  border-radius: 0.8rem;
   padding: 0.6rem;
 `;
 const Label = styled.div`
