@@ -1,51 +1,84 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+/**
+ * A component for inputting the password
+ */
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import setEmailAction from 'store/actions/auth/setEmailAction';
-import { UpToDownAnimate } from './Animate.style';
 import {
-  FORGOT_PASSWORD,
+  RESET_PASSWORD,
   SIGN_IN,
   SIGN_IN_COLLAPSED,
   SIGN_UP_EMAIL,
-  SIGN_UP_EMAIL_COLLAPSED,
-  SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import setPassword from 'store/actions/auth/setPassAction';
+import setPasswordFocusAction from 'store/actions/auth/setPasswordFocusAction';
+import { UpToDownAnimate } from './Animate.style';
+
+const { RVDic } = window;
 
 const Password = () => {
   const dispatch = useDispatch();
-  const isVisible = (currentRoute) => {
+  /**
+   * According to 'currentRoute'
+   * this function decides to return true or false.
+   */
+  const isVisible = () => {
     switch (currentRoute) {
       case SIGN_IN:
       case SIGN_IN_COLLAPSED:
-      case SIGN_UP_PASSWORD:
+      case SIGN_UP_EMAIL:
+      case RESET_PASSWORD:
         return true;
       default:
         return false;
     }
   };
-  const { currentRoute, password } = useSelector((state) => ({
+
+  const { currentRoute, password, passwordError } = useSelector((state) => ({
     password: state.login.password,
-    currentRoute: state.loginRoute.currentRoute,
+    passwordError: state.login.passwordError,
+    currentRoute: state.login.currentRoute,
   }));
-  useEffect(() => {
-    console.log(password, '<***');
-  }, [currentRoute]);
+  /**
+   * Synchronously set user inputted value to Redux state
+   * @param {String} value - inputted user passowrd
+   */
   const onPasswordChanged = (value) => {
     dispatch(setPassword(value));
   };
 
+  /**
+   * sets isPasswordFocused = True on redux state
+   * if user focuses on password field
+   */
+  const onFocus = () => {
+    // setPassFocused(true);
+    dispatch(setPasswordFocusAction(true));
+  };
+  /**
+   * sets isPasswordFocused = False on redux state
+   * if user defocuses on password field
+   */
+  const onBlur = () => {
+    // setPassFocused(false);
+    dispatch(setPasswordFocusAction(false));
+  };
+
   return (
-    <UpToDownAnimate isVisible={isVisible(currentRoute)}>
-      <AnimatedInput
-        onChange={onPasswordChanged}
-        value={password}
-        placeholder={'رمز عبور'}
-        type={'password'}
-      />
-    </UpToDownAnimate>
+    <>
+      <UpToDownAnimate isVisible={isVisible()} style={{ marginTop: '1.5rem' }}>
+        <AnimatedInput
+          onChange={onPasswordChanged}
+          value={password}
+          placeholder={RVDic.Password}
+          type={'password'}
+          error={passwordError}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      </UpToDownAnimate>
+      {/* <PasswordValidation passFocused={passFocused} /> */}
+    </>
   );
 };
 
