@@ -10,7 +10,7 @@ const {
 } = loginSlice.actions;
 const { GlobalUtilities, UsersAPI } = window;
 
-const verificationAction = () => async (dispatch) => {
+const signupLoadFilesAction = () => async (dispatch) => {
   dispatch(signupLoadFiles());
   try {
     GlobalUtilities.load_files(
@@ -30,4 +30,4 @@ const verificationAction = () => async (dispatch) => {
     dispatch(signupLoadFilesFailed(err));
   }
 };
-export default verificationAction;
+export default signupLoadFilesAction;
