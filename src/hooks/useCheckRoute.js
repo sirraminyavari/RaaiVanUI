@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom';
 import useQuery from 'hooks/useQuery';
 import APIHandler from 'apiHelper/APIHandler';
 
+/**
+ * This hook checks every route for permission.
+ * @hook
+ * @param {string} name -The name of the given route.
+ * @returns {Object} The result object
+ */
 const useCheckRoute = (name) => {
   const [result, setResult] = useState({});
   const routeParams = useParams();

@@ -27,7 +27,7 @@ const SidebarMenuRoot = ({ item, isDragging, dragProps }) => {
       <Styled.MenuContainer
         isDragging={isDragging}
         {...dragProps}
-        as={childMenus ? 'div' : Link}
+        forwardedAs={childMenus ? 'div' : Link}
         to={`/classes/${id}`}
         onClick={childMenus ? handleDropdown : null}>
         <Styled.MenuTitle>
