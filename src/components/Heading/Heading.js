@@ -8,7 +8,10 @@ const { GlobalUtilities } = window;
 
 /**
  * @description standard heading component based on design system
- * @property type {*} param0
+ * @typedef { object } props
+ * @property { string } type determines the type of the heading and can be one of these values:
+ * [h1, h2, h3, h4, h5, h6]
+ * @property { bool } darkBackground determines if the heading is rendered on a dark background or not
  */
 
 const Heading = ({ type, darkBackground, className, ...props }) => {

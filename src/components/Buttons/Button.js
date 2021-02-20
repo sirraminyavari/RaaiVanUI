@@ -5,10 +5,11 @@ const { GlobalUtilities } = window;
 
 /**
  * @description standard button component that is created based on design system
- * @param type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
- * @param loading determines if the button is in the state of processing or loading and thus cannot be clicked
- * @param disable determines if the button is disabled and so, cannot be clicked
- * @param onClick @fires onClick when the button is clicked and is not disabled or in loading state
+ * @typedef { object } props
+ * @property { string } type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
+ * @property { bool } loading determines if the button is in the state of processing or loading and thus cannot be clicked
+ * @property { bool } disable determines if the button is disabled and so, cannot be clicked
+ * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
 const Button = ({ type, loading, disable, onClick, ...props }) => {
   return (
