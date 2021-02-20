@@ -2,6 +2,7 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: #f1f1f1 #999;
+  scrollbar-shadow-color: #999;
 }
 
 /*! Works on Chrome, Edge, and Safari */
@@ -14,7 +15,11 @@
 
 @media screen and (max-width: 800px) {
   ::-webkit-scrollbar {
-    display: none;
+    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+  }
+  * {
+    -ms-overflow-style: none; /*! IE and Edge */
+    scrollbar-width: none; /*! Firefox */
   }
 }
 
