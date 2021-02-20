@@ -1,8 +1,13 @@
+/**
+ * Shown logo in the Login page of the project.
+ */
 import React from 'react';
 import styled from 'styled-components';
 
 const Logo = () => {
+  // Access to logo src.
   const { RVGlobal } = window;
+  // Defines project is enterprise or not.
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
 
   return (
@@ -14,14 +19,13 @@ const Logo = () => {
 export default Logo;
 
 const Container = styled.div`
-  width: 50vw;
-  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 5rem;
 `;
 const Image = styled.img`
-  max-width: 50%;
   src: ${(props) => props.src};
   margin-bottom: 13px;
+  align-self: center;
 `;
