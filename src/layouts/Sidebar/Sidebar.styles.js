@@ -265,5 +265,5 @@ export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding-bottom: 3rem;
+  padding: 0 0.3rem 3rem 0.3rem;
 `;

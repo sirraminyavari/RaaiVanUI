@@ -152,17 +152,13 @@ export const NavMenuContainer = styled.div`
 
 export const MenuOptionsWrapper = styled.div`
   height: 12rem;
-  width: 19rem;
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  width: 17rem;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 0px 1px 10px #333;
   border-radius: 0.5rem;
-  background-color: #fff;
-  z-index: 100;
-  position: absolute;
-  top: 3rem;
-  transition: all 0.7s ease;
+  margin: -10px;
 `;
 
 export const NavMenuOption = styled.div`
