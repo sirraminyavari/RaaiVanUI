@@ -1,17 +1,22 @@
+/**
+ * A button for returning to the previous page.
+ */
 import TextButton from 'components/Buttons/TextButton';
-import {
-  FORGOT_PASSWORD,
-  RESET_PASSWORD_SENT,
-  SIGN_IN,
-} from 'const/LoginRoutes';
-import React, { useEffect } from 'react';
+import { FORGOT_PASSWORD, SIGN_IN } from 'const/LoginRoutes';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import setLoginRoute from 'store/actions/auth/loginRouteAction';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import styled from 'styled-components';
 import { UpToDownAnimate } from './Animate.style';
 
+const { RVDic } = window;
 const Return = () => {
   const dispatch = useDispatch();
+
+  /**
+   * According to 'currentRoute'
+   * this function decides to return true or false.
+   */
   const isVisible = (currentRoute) => {
     switch (currentRoute) {
       case FORGOT_PASSWORD:
@@ -22,25 +27,22 @@ const Return = () => {
     }
   };
   const { currentRoute } = useSelector((state) => ({
-    currentRoute: state.loginRoute.currentRoute,
+    currentRoute: state.login.currentRoute,
   }));
-
+  /**
+   * By clicking the button, will fire.
+   */
   const onReturn = () => {
-    console.log('change route');
-    dispatch(setLoginRoute(SIGN_IN));
+    dispatch(setLoginRouteAction(SIGN_IN));
   };
 
   return (
-    <UpToDownAnimate isVisible={isVisible(currentRoute)}>
-      <TextButton onClick={onReturn} label={'بازگشت'}></TextButton>
+    <UpToDownAnimate
+      isVisible={isVisible(currentRoute)}
+      style={{ marginTop: '2rem' }}>
+      <TextButton onClick={onReturn}>{RVDic.Return}</TextButton>
     </UpToDownAnimate>
   );
 };
-const Animator = styled.div`
-  background-color: ${({ isVisible }) => (isVisible ? 'red' : 'white')};
-  transform: translateX(200px);
-  width: ${({ isVisible }) => (isVisible ? 'auto' : 0)};
-  transition: width 1s, background-color 1s;
-`;
 
 export default Return;
