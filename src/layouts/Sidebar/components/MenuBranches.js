@@ -37,7 +37,7 @@ const SidebarMenuBranches = ({ isOpen, menuList }) => {
                   index={index}>
                   {(provided, snapshot) => (
                     <Styled.SubMenu
-                      as={Link}
+                      forwardedAs={Link}
                       to={`/classes/${menu.NodeTypeID}`}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}

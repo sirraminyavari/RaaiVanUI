@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import Edit from 'components/Icons/EditIcon/Edit';
+import { forwardRef } from 'react';
 
 const FlexBetween = css`
   display: flex;
@@ -104,7 +105,13 @@ export const FooterTitle = styled.span`
   transition: all 0.5s linear;
 `;
 
-export const MenuContainer = styled.div`
+//! This solution used because of conflict with DnD props passing down to styled component.
+//! Use ''forwardedAs'' instead of ''as'' in this solution.
+const DIV = styled.div``;
+
+export const MenuContainer = styled(({ isDragging, ...props }) => (
+  <DIV {...props} />
+))`
   ${FlexBetween}
   border: 0.1rem solid #222;
   height: 2.2rem;
@@ -134,7 +141,9 @@ export const SubMenuContainer = styled.div`
   transition: all 0.5s ease;
 `;
 
-export const SubMenu = styled.div`
+export const SubMenu = styled(
+  forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
+)`
   margin: 0.3rem 0;
   border-radius: 0.5rem;
   padding: 0.5rem 1.3rem;
