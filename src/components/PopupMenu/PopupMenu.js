@@ -42,6 +42,8 @@ const PopupMenu = ({
   const scrollTop = useWindowScroll();
   const preScrollTop = usePrevious(scrollTop);
 
+  let hideTimeOut = null;
+
   useEffect(() => {
     setInfo(
       calculatePosition({
@@ -52,6 +54,14 @@ const PopupMenu = ({
       })
     );
   }, [stickerPos]);
+
+  useEffect(() => {
+    //cleanup
+    return () => {
+      if (hideTimeOut) clearTimeout(hideTimeOut);
+      hideTimeOut = null;
+    };
+  });
 
   useOutsideClick(
     (e) => {
@@ -71,8 +81,6 @@ const PopupMenu = ({
   if ((props.children || []).length != 2) return <></>;
 
   //Mouse Events
-  let hideTimeOut = null;
-
   const mouseOver =
     trigger != 'hover'
       ? null
