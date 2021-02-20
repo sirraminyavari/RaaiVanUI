@@ -105,6 +105,7 @@ const AutoSuggestInput = (props) => {
     } else {
       setItems([]);
     }
+    console.log(items.length);
   }, [debouncedSearchTerm]);
 
   return (
@@ -142,7 +143,7 @@ const AutoSuggestInput = (props) => {
               {isSearching && <Loader />}
             </Styled.InputElementWrapper>
           )}
-          <Styled.List
+          <Styled.SuggestMenu
             {...getMenuProps({
               className: 'BorderRadius4 ColdBackgroundColor SurroundingShadow',
             })}
@@ -150,12 +151,10 @@ const AutoSuggestInput = (props) => {
             hasChildren={!!children}
             hasError={hasError}
             items={items}>
-            {!hasError && (
-              <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
-                <Button type="primary">Click me</Button>
-                <Button type="negative">Click me</Button>
-              </Styled.ButtonsContainer>
-            )}
+            <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
+              <Button type="primary">Click me</Button>
+              <Button type="negative">Click me</Button>
+            </Styled.ButtonsContainer>
             <Styled.ListItemsContainer hasError={hasError} items={items}>
               {isOpen &&
                 inputValue &&
@@ -183,7 +182,7 @@ const AutoSuggestInput = (props) => {
                   );
                 })}
             </Styled.ListItemsContainer>
-          </Styled.List>
+          </Styled.SuggestMenu>
         </Styled.InputContainer>
       )}
     </Downshift>
