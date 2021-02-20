@@ -1,10 +1,10 @@
 /**
- * A component for navigating the user to create an account route.
+ * A button for creating a new account.
  */
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import loginRoute from 'store/actions/auth/loginRouteAction';
+import loginRoute from 'store/actions/auth/setLoginRouteAction';
 import { UpToDownAnimate } from './Animate.style';
 import {
   SIGN_IN,
@@ -12,21 +12,28 @@ import {
   SIGN_UP_EMAIL,
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
+import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
+import Loader from 'components/Loader/Loader';
 
+const { RVDic } = window;
 /**
- * Due to the currentRoute title of this button will change,
- * its routing will also change.
+ * By clicking this button, user will able to start signing up procedure.
+ * @param {object} props - Other params that don't include above.
  */
 const CreateAccountButton = ({ ...props }) => {
   const dispatch = useDispatch();
-  const { currentRoute, email } = useSelector((state) => ({
-    currentRoute: state.loginRoute.currentRoute,
+  const { currentRoute, email, fetchingFiles } = useSelector((state) => ({
+    currentRoute: state.login.currentRoute,
     email: state.login.email,
+    fetchingFiles: state.login.fetchingFiles,
   }));
-  const title =
-    currentRoute === SIGN_IN ? 'ایجاد حساب کاربری جدید' : '!حساب کاربری دارم';
-
+  // Button title in sign-in page is different with other pages.
+  const title = currentRoute === SIGN_IN ? RVDic.SignUp : '!حساب کاربری دارم';
+  /**
+   * According to 'currentRoute'
+   * this function decides to return true or false.
+   */
   const isVisible = (currentRoute) => {
     switch (currentRoute) {
       case FORGOT_PASSWORD:
@@ -40,18 +47,27 @@ const CreateAccountButton = ({ ...props }) => {
         return false;
     }
   };
-
+  /**
+   * In 'sign in' page, touching button, navigates to 'sign-up' steps.
+   * In other pages, touching button, navigates to 'sign-in' page.
+   */
   const onCreate = () => {
-    dispatch(loginRoute(currentRoute === SIGN_IN ? SIGN_UP_EMAIL : SIGN_IN));
+    currentRoute === SIGN_IN
+      ? dispatch(signupLoadFilesAction())
+      : dispatch(setLoginRouteAction(SIGN_IN));
   };
 
   return (
     <UpToDownAnimate
       isVisible={isVisible(currentRoute)}
-      style={{ marginBottom: '0.8rem' }}>
-      <Container {...props} onClick={onCreate}>
-        {title}
-      </Container>
+      style={{ marginTop: '1.5rem' }}>
+      {fetchingFiles ? (
+        <Loader />
+      ) : (
+        <Container {...props} onClick={onCreate}>
+          {title}
+        </Container>
+      )}
     </UpToDownAnimate>
   );
 };
