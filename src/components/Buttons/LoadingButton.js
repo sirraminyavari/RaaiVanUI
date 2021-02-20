@@ -1,21 +1,35 @@
 /**
- * A Button that has a loading state.
+ * A Button with a loading state.
  */
 import Loader from 'components/Loader/Loader';
 import { MAIN_BLUE, MAIN_BLUE_HOVER } from 'const/Colors';
 import React from 'react';
 import styled from 'styled-components';
 
+/**
+ * Renders a button, can switch to loading mode when it's fetching.
+ * @param {Boolean} isFetching - True in loading state,False in normal state
+ * @param {Boolean} disabled - If True, onClick will not fire
+ * @callback onClick - Fires, if user clicks the button.
+ * @param {ReactNode|ReactNodeArray} children - The computed children for this slot.
+ * @param {object} props - Other params that don't include above.
+ */
 const LoadingButton = ({
-  label,
   isFetching = false,
-  disable = false,
+  disabled = false,
   onClick,
+  children,
   ...props
 }) => {
   return (
-    <Container isFetching={isFetching} disable={disable} {...props}>
-      {isFetching ? <Loader /> : <Button onClick={onClick}>{label}</Button>}
+    <Container isFetching={isFetching} {...props}>
+      {isFetching ? (
+        <Loader />
+      ) : (
+        <Button onClick={onClick} disabled={disabled}>
+          {children}
+        </Button>
+      )}
     </Container>
   );
 };
@@ -30,11 +44,9 @@ const Container = styled.div`
     isFetching ? `solid 0.5px ${MAIN_BLUE}` : '#ffffff'};
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
+  border-radius: 13px;
   padding: 0px 0px 0px 0px;
   transition: background-color 0.5s;
-  background-color: ${({ disable, isFetching, background = MAIN_BLUE }) =>
-    isFetching ? 'white' : `${background}`};
   height: 47px;
   :hover {
     background-color: ${({ isFetching, backgroundHover = MAIN_BLUE_HOVER }) =>
