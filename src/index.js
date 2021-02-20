@@ -13,7 +13,7 @@ const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
 );
 const Login = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/Login_')
+  import(/* webpackChunkName: "login"*/ 'views/Auth/Login')
 );
 
 render(
