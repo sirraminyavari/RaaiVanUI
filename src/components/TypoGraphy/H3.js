@@ -1,24 +1,22 @@
 /**
- * H5 text-box
+ * H3 text-box
  */
-import { MAIN_BLUE } from 'const/Colors';
 import React from 'react';
 import styled from 'styled-components';
 /**
  * @param {ReactNode|ReactNodeArray} children - The computed children for this slot.
  * @param {object} props - Other params that don't include above.
  */
-const H5 = ({ children, value, ...props }) => {
+const H3 = ({ children, ...props }) => {
   return (
     <Container className="textarea" {...props}>
       {children}
     </Container>
   );
 };
-export default H5;
+export default H3;
 
-const Container = styled.div`
-  font-size: 16px;
+const Container = styled.h3`
+  font-size: 0.7rem;
   text-align: right;
-  color: ${MAIN_BLUE};
 `;
