@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { Link } from 'react-router-dom';
@@ -6,20 +7,33 @@ import * as Styled from '../Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
 import { getURL } from 'helpers/helpers';
+import { MOBILE_BOUNDRY } from 'constant/constants';
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { toggleSidebar, toggleSetting } = themeSlice.actions;
   const { isSidebarOpen } = useSelector((state) => state.theme);
-  const isMobileOrTabletScreen = useMediaQuery({ query: '(max-width: 800px)' });
+  const isMobileScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
+  const isMobileNav = useMediaQuery({
+    query: '(max-width: 975px)',
+  });
 
   const toggleMenu = () => {
-    if (isMobileOrTabletScreen) return;
+    if (isMobileScreen) return;
     dispatch(toggleSidebar(!isSidebarOpen));
     if (isSidebarOpen) {
       dispatch(toggleSetting(false));
     }
   };
+
+  useEffect(() => {
+    if (isMobileNav) {
+      dispatch(toggleSidebar(false));
+    }
+  }, [isMobileNav]);
+
   return (
     <Styled.SidebarHeader>
       {isSidebarOpen && (

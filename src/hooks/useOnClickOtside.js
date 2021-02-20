@@ -1,14 +1,16 @@
-/**
- * !This hook allows you to detect clicks outside of a specified element.
- */
-
 import { useEffect } from 'react';
 
+/**
+ * This hook allows you to detect clicks outside of a specified element.
+ * @hook
+ * @param {Object} ref
+ * @param {function} handler
+ */
 const useOnClickOutside = (ref, handler) => {
   useEffect(
     () => {
       const listener = (e) => {
-        // Do nothing if clicking ref's element or descendent elements
+        //! Do nothing if clicking ref's element or descendent elements
         if (!ref.current || ref.current.contains(e.target)) {
           return;
         }
