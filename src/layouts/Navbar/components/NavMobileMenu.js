@@ -12,7 +12,7 @@ const NavMenus = () => {
   );
 
   return (
-    <PopupMenu trigger="click" align="bottom">
+    <PopupMenu trigger="click">
       <div>
         <MenuIcon size={30} color="#fff" />
       </div>

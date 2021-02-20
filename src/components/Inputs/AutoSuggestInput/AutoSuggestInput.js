@@ -8,15 +8,15 @@ import * as Styled from './AutoSuggestInput.styles';
 
 /**
  * @typedef PropType
- * @property {number} delay - The delay of debouncing.
- * @property {number} searchAt -The minimum character is needed to api call begins.
- * @property {string} placeholder -The input placeholder.
+ * @property {number} [delay] - The delay of debouncing.
+ * @property {number} [searchAt] -The minimum character is needed to api call begins.
+ * @property {string} [placeholder] -The input placeholder.
  * @property {string} endpoint -The endpoint to search for suggestions.
  * @property {function} onSearchChange -The function to be called on suggestion selection.
  */
 
 /**
- *  Renders an auto suggestion input.
+ *  @description Renders an auto suggestion input.
  * @component
  * @param {PropType} props
  */
