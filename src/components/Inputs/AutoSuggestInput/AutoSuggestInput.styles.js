@@ -55,12 +55,11 @@ const getMenuHeigth = ({ items }) => {
 };
 
 export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
-  width: ${({ hasChildren }) => (hasChildren ? '85%' : '100%')};
+  width: 100%;
   ${getMenuHeigth}
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
   display: none;
-  left: ${({ hasChildren }) => (hasChildren ? '1.6rem' : '0')};
   overflow: hidden;
   z-index: ${GlobalUtilities.zindex.dialog()};
   transition: all 0.7s ease;
@@ -99,6 +98,7 @@ export const ListItems = styled.li`
   align-items: center;
   border: 1px solid #333;
   border-radius: 0.3rem;
+  color: #000;
 `;
 
 export const Error = styled.div`
@@ -115,7 +115,7 @@ export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1rem 0.5rem;
   margin: 0 -1.25rem;
   position: -webkit-sticky; /* Safari */
   position: sticky;

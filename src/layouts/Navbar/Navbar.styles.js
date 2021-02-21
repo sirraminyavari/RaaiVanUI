@@ -86,7 +86,6 @@ export const SearchWrapper = styled.div`
 
 export const SearchContainer = styled.div`
   position: relative;
-  margin: 0 1.5rem;
   :focus-within input {
     width: 16rem;
   }

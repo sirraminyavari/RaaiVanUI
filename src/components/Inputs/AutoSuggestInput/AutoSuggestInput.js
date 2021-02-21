@@ -14,7 +14,9 @@ import * as Styled from './AutoSuggestInput.styles';
  * @property {number} [searchAt] -The minimum character is needed to api call begins.
  * @property {string} [placeholder] -The input placeholder.
  * @property {string} endpoint -The endpoint to search for suggestions.
- * @property {function} onSearchChange -The function to be called on suggestion selection.
+ * @property {boolean} [withMenu] -The parameter that determines if menu is allowed to be shown or not.
+ * @property {function} onItemSelect -A callback function that will fire on suggestion selection.
+ * @property {function} getSuggestedItems -A callback function that will return suggestion items.
  */
 
 /**
@@ -26,9 +28,11 @@ const AutoSuggestInput = (props) => {
   const {
     delay,
     searchAt,
-    onSearchChange,
+    onItemSelect,
+    getSuggestedItems,
     placeholder,
     endpoint,
+    withMenu,
     children,
   } = props;
   const [items, setItems] = useState([]);
@@ -57,12 +61,14 @@ const AutoSuggestInput = (props) => {
           if (response.NodeTypes.length === 0) {
             setHasError(true);
             setItems([{ value: 'موردی یافت نشد!' }]);
+            !withMenu && getSuggestedItems([]);
           } else {
             setItems(
               response.NodeTypes.map((node) => ({
                 value: decode(node.TypeName),
               }))
             );
+            !withMenu && getSuggestedItems(response);
           }
         },
         (error) => {
@@ -70,6 +76,7 @@ const AutoSuggestInput = (props) => {
             setIsSearching(false);
             setHasError(true);
             setItems([{ value: 'خطا در برقراری ارتباط' }]);
+            !withMenu && getSuggestedItems([]);
           }, 2000);
         }
       );
@@ -88,7 +95,7 @@ const AutoSuggestInput = (props) => {
   };
 
   const handleChange = (selection) => {
-    onSearchChange && selection && onSearchChange(selection.value);
+    onItemSelect && selection && onItemSelect(selection.value);
   };
 
   const handleSelection = (selectedItem, stateAndHelpers) => {
@@ -161,46 +168,47 @@ const AutoSuggestInput = (props) => {
               {isSearching && <Loader />}
             </Styled.InputElementWrapper>
           )}
-          <Styled.SuggestMenu
-            {...getMenuProps({
-              className: 'BorderRadius4 ColdBackgroundColor SurroundingShadow',
-            })}
-            {...getRootProps({ refKey: 'ulRef' })}
-            hasChildren={!!children}
-            hasError={hasError}
-            items={items}>
-            <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
-              <Button type="primary">Click me</Button>
-              <Button type="negative">Click me</Button>
-            </Styled.ButtonsContainer>
-            <Styled.ListItemsContainer hasError={hasError} items={items}>
-              {isOpen &&
-                inputValue &&
-                items.map((item, index) => {
-                  return (
-                    <Styled.ListItems
-                      hasError={hasError}
-                      {...getItemProps({
-                        key: index,
-                        className: `${
-                          hasError
-                            ? 'ColdBackgroundColor'
-                            : highlightedIndex === index
-                            ? 'SoftBackgroundColor'
-                            : 'ColdBackgroundColor'
-                        }`,
-                        index,
-                        item,
-                      })}>
-                      {hasError && (
-                        <Styled.Error className="Circle">!</Styled.Error>
-                      )}
-                      {getHighlightedText(item.value, searchTerm)}
-                    </Styled.ListItems>
-                  );
-                })}
-            </Styled.ListItemsContainer>
-          </Styled.SuggestMenu>
+          {withMenu && (
+            <Styled.SuggestMenu
+              {...getMenuProps({
+                className:
+                  'BorderRadius4 ColdBackgroundColor SurroundingShadow',
+              })}
+              {...getRootProps({ refKey: 'ulRef' })}
+              items={items}>
+              <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
+                <Button type="primary">Click me</Button>
+                <Button type="negative">Click me</Button>
+              </Styled.ButtonsContainer>
+              <Styled.ListItemsContainer hasError={hasError} items={items}>
+                {isOpen &&
+                  inputValue &&
+                  items.map((item, index) => {
+                    return (
+                      <Styled.ListItems
+                        hasError={hasError}
+                        {...getItemProps({
+                          key: index,
+                          className: `${
+                            hasError
+                              ? 'ColdBackgroundColor'
+                              : highlightedIndex === index
+                              ? 'SoftBackgroundColor'
+                              : 'ColdBackgroundColor'
+                          }`,
+                          index,
+                          item,
+                        })}>
+                        {hasError && (
+                          <Styled.Error className="Circle">!</Styled.Error>
+                        )}
+                        {getHighlightedText(item.value, searchTerm)}
+                      </Styled.ListItems>
+                    );
+                  })}
+              </Styled.ListItemsContainer>
+            </Styled.SuggestMenu>
+          )}
         </Styled.InputContainer>
       )}
     </Downshift>
@@ -210,15 +218,18 @@ const AutoSuggestInput = (props) => {
 AutoSuggestInput.propTypes = {
   delay: PropTypes.number,
   searchAt: PropTypes.number,
-  onSearchChange: PropTypes.func.isRequired,
+  onItemSelect: PropTypes.func,
+  getSuggestedItems: PropTypes.func,
   placeholder: PropTypes.string,
-  endpoint: PropTypes.string.isRequired,
+  endpoint: PropTypes.string,
+  withMenu: PropTypes.bool,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
 };
 
 AutoSuggestInput.defaultProps = {
   delay: 500,
   searchAt: 3,
+  withMenu: true,
   placeholder: 'جستجو ...',
 };
 
