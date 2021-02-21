@@ -84,7 +84,8 @@ const AutoSuggestInput = (props) => {
   const handleToString = (item) => (item ? item.value : '');
 
   const getHighlightedText = (text, highlight) => {
-    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
+    const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
     return (
       <span>
         {parts.map((part, i) => (
