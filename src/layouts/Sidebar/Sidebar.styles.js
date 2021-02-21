@@ -75,10 +75,10 @@ export const SidebarTitle = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  ${FlexBetween}
   border-bottom: 1px solid #707070;
   margin-bottom: 1rem;
-  padding: 0 0.3rem;
+  padding: 0.3rem;
+  position: relative;
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -90,6 +90,19 @@ export const SearchInput = styled.input.attrs((props) => ({
   color: #fff;
   border: none;
   outline: 0;
+`;
+
+export const SearchList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 1rem;
+`;
+
+export const SearchListItem = styled.div`
+  margin: 0.2rem 0;
+  padding: 0.4rem;
+  color: #fff;
 `;
 
 export const SidebarFooter = styled.div`

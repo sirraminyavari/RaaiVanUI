@@ -34,6 +34,7 @@ const AutoSuggestInput = (props) => {
     endpoint,
     withMenu,
     children,
+    ...rest
   } = props;
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -150,6 +151,7 @@ const AutoSuggestInput = (props) => {
         highlightedIndex,
       }) => (
         <Styled.InputContainer
+          {...rest}
           className={`${!children && 'ColdBackgroundColor'} BorderRadius4`}>
           {children ? (
             <Styled.ComponentWrapper
