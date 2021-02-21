@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useScript from 'hooks/useScript';
 import { isEmpty } from 'helpers/helpers';
 
@@ -10,6 +11,13 @@ const Home = (props) => {
     },
     props.route
   );
+
+  useEffect(() => {
+    const element = document.querySelector('#homeArea');
+    return () => {
+      element.innerHTML = '';
+    };
+  }, [props.route]);
 
   return (
     <div
