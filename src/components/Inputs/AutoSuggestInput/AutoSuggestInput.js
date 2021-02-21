@@ -1,6 +1,8 @@
 import { useState, useEffect, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Downshift from 'downshift';
+import { decode } from 'js-base64';
+import APIHandler from 'apiHelper/APIHandler';
 import useDebounce from 'hooks/useDebounce';
 import Loader from 'components/Loader/Loader';
 import Button from 'components/Buttons/Button';
@@ -36,28 +38,44 @@ const AutoSuggestInput = (props) => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
 
+  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
+
   const fetchItems = (search) => {
-    fetch(`http://localhost:3004/${endpoint}?name_like=${search}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setHasError(false);
-        setTimeout(() => {
-          setIsSearching(false);
-        }, 500);
-        if (data.length === 0) {
-          setHasError(true);
-          setItems([{ value: 'موردی یافت نشد!' }]);
-        } else {
-          setItems(data.map((item) => ({ value: item.name })));
+    try {
+      apiHandler.fetch(
+        {
+          Count: 1000,
+          CheckAccess: true,
+          ParseResults: true,
+          SearchText: search,
+        },
+        (response) => {
+          setHasError(false);
+          setTimeout(() => {
+            setIsSearching(false);
+          }, 500);
+          if (response.NodeTypes.length === 0) {
+            setHasError(true);
+            setItems([{ value: 'موردی یافت نشد!' }]);
+          } else {
+            setItems(
+              response.NodeTypes.map((node) => ({
+                value: decode(node.TypeName),
+              }))
+            );
+          }
+        },
+        (error) => {
+          setTimeout(() => {
+            setIsSearching(false);
+            setHasError(true);
+            setItems([{ value: 'خطا در برقراری ارتباط' }]);
+          }, 2000);
         }
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setIsSearching(false);
-          setHasError(true);
-          setItems([{ value: 'خطا در برقراری ارتباط' }]);
-        }, 2000);
-      });
+      );
+    } catch (err) {
+      console.log({ err });
+    }
   };
 
   const handleReducer = (state, changes) => {
