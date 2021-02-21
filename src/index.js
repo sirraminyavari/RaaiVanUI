@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { PrivateRoute, PublicRoute } from 'utils/RouteHandler';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
-import LogoLoader from 'components/LogoLoader/LogoLoader';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import 'assets/css/index.css';
 
 //TODO: Move to redux Provider

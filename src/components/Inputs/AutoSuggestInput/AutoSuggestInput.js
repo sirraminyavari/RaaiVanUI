@@ -4,7 +4,7 @@ import Downshift from 'downshift';
 import { decode } from 'js-base64';
 import APIHandler from 'apiHelper/APIHandler';
 import useDebounce from 'hooks/useDebounce';
-import Loader from 'components/Loader/Loader';
+import LoadingDots from 'components/Loaders/LoadingDots/LoadingDots';
 import Button from 'components/Buttons/Button';
 import * as Styled from './AutoSuggestInput.styles';
 
@@ -158,7 +158,7 @@ const AutoSuggestInput = (props) => {
               {...getRootProps({ refKey: 'componentRef' })}>
               {cloneElement(children, { ...getInputProps({ placeholder }) })}
               <Styled.LoaderWrapper>
-                {isSearching && <Loader />}
+                {isSearching && <LoadingDots />}
               </Styled.LoaderWrapper>
             </Styled.ComponentWrapper>
           ) : (
@@ -167,7 +167,7 @@ const AutoSuggestInput = (props) => {
               <Styled.Input
                 {...getInputProps({ placeholder, className: 'BorderRadius4' })}
               />
-              {isSearching && <Loader />}
+              {isSearching && <LoadingDots />}
             </Styled.InputElementWrapper>
           )}
           {withMenu && (

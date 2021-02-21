@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
-import LogoLoader from 'components/LogoLoader/LogoLoader';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
 

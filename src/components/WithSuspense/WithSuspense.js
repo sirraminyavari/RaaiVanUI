@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Spinner from 'components/Spinner';
+import Spinner from 'components/Loaders/Spinner/Spinner';
 
 const WithSuspense = ({ component: Component }) => {
   return (
