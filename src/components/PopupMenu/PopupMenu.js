@@ -6,9 +6,8 @@ import useWindowSize from 'hooks/useWindowSize';
 import useOutsideClick from 'hooks/useOutsideClick';
 import usePrevious from 'hooks/usePrevious';
 import useWindowScroll from 'hooks/useWindowScroll';
-import { calculatePosition } from 'helpers/helpers';
 
-const { GlobalUtilities } = window;
+const { GlobalUtilities, jQuery } = window;
 const Empty = (props) => <>{props.children}</>;
 
 const ArrowWidth = 0.8;
@@ -230,3 +229,70 @@ const MenuContent = styled.div`
   opacity: 1;
   ${({ menuStyle }) => menuStyle || ' '}
 `;
+
+/**
+ * @typedef CalculatePositionType
+ *  @property {HTMLElement} contentDom Content element.
+ * @property {HTMLElement} arrowDom Arrow element.
+ * @property {*} positionInfo The position info.
+ * @property {string} align The align parameter.
+ */
+
+/**
+ * @description Calculates an element position .
+ * @param {CalculatePositionType}
+ * @returns {Object} An object of arrow styles and content styles.
+ */
+export const calculatePosition = ({
+  contentDom,
+  arrowDom,
+  align,
+  positionInfo,
+}) => {
+  if (!contentDom || !arrowDom || !positionInfo) return {};
+
+  const contentWidth = jQuery(contentDom)[0].offsetWidth;
+
+  let ret = {
+    arrowStyle: {},
+    contentStyle: {},
+  };
+
+  let _moveOffset = 6,
+    _movement = 0;
+
+  if (positionInfo.leftMovement != 0 && (align == 't' || align == 'b')) {
+    let movedRight = positionInfo.leftMovement > 0;
+    _movement = positionInfo.leftMovement + (movedRight ? 1 : -1) * _moveOffset;
+    let sideMargin = contentWidth / 2 - _movement;
+    if (!movedRight) sideMargin = positionInfo.width - sideMargin - 1;
+
+    ret.contentStyle.direction = movedRight ? 'ltr' : 'rtl';
+
+    if (align == 'b') {
+      ret.arrowStyle.margin =
+        '0px ' +
+        (movedRight ? 0 : sideMargin) +
+        'px 0px ' +
+        (movedRight ? sideMargin : 0) +
+        'px';
+    } else {
+      let curLeft = String(jQuery(arrowDom).css('left'));
+      curLeft = curLeft.length
+        ? Number(curLeft.substr(0, curLeft.length - 2))
+        : 0;
+      ret.arrowStyle.left = curLeft - positionInfo.leftMovement + 'px';
+    }
+  }
+
+  if (positionInfo.topMovement != 0 && (align == 'l' || align == 'r')) {
+    var curTopMargin = String(jQuery(arrowDom).css('marginTop'));
+    curTopMargin = curTopMargin.length
+      ? Number(curTopMargin.substr(0, curTopMargin.length - 2))
+      : 0;
+
+    ret.arrowStyle.marginTop = curTopMargin - positionInfo.topMovement + 'px';
+  }
+
+  return ret;
+};
