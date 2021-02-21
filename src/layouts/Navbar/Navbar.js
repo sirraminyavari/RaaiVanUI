@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
@@ -58,6 +58,7 @@ const Navbar = () => {
       <Styled.SearchWrapper>
         {showInput() ? (
           <AutoSuggestInput
+            style={{ margin: '0 1.5rem' }}
             endpoint="names"
             onSearchChange={(value) => console.log(value)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>

@@ -1,6 +1,7 @@
+import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import Edit from 'components/Icons/EditIcon/Edit';
-import { forwardRef } from 'react';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 const FlexBetween = css`
   display: flex;
@@ -24,7 +25,8 @@ export const CenterIcon = styled.div`
 
 export const SidebarContainer = styled.div`
   height: 100%;
-  width: ${({ width }) => `${width}px`};
+  width: ${({ isSidebarOpen }) =>
+    `${isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
   position: fixed;
   z-index: 100;
   top: 0;
@@ -40,20 +42,24 @@ export const ContentWrapper = styled.div`
   width: ${({ options }) => (options.isSidebarOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
+  bottom: ${({ options }) => (options.isSettingShown ? '-6%' : '0')};
   left: -1.1rem;
   overflow: scroll;
-  margin-bottom: 6vh;
   padding: 0 1.1rem;
-  margin-top: 10vh;
+  margin-top: 4rem;
+  margin-bottom: 5vh;
 `;
 
 export const SidebarHeader = styled.div`
   ${FlexBetween}
-  height: 4.1rem;
-  z-index: 1000;
+  height: 4rem;
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH)}px;
+  z-index: 10;
   padding: 0 1.1rem;
   background-color: #15113c;
+  position: fixed;
+  top: 0;
+  transition: all 0.7s ease;
 `;
 
 export const ToggleArrow = styled.div`
@@ -64,14 +70,15 @@ export const ToggleArrow = styled.div`
 
 export const SidebarTitle = styled.div`
   ${FlexBetween}
-  font-size: 16px;
-  height: 12%;
+  font-size: 1rem;
+  height: 3.7rem;
 `;
 
 export const SearchWrapper = styled.div`
-  ${FlexBetween}
   border-bottom: 1px solid #707070;
   margin-bottom: 1rem;
+  padding: 0.3rem;
+  position: relative;
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -85,12 +92,25 @@ export const SearchInput = styled.input.attrs((props) => ({
   outline: 0;
 `;
 
+export const SearchList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 1rem;
+`;
+
+export const SearchListItem = styled.div`
+  margin: 0.2rem 0;
+  padding: 0.4rem;
+  color: #fff;
+`;
+
 export const SidebarFooter = styled.div`
   background-color: #2b388f;
   height: 6%;
   display: flex;
   position: relative;
-  top: 84%;
+  top: 94%;
   justify-content: center;
   align-items: center;
   color: #fff;
@@ -174,7 +194,7 @@ export const SettingWrapper = styled.div`
   background-color: #171c4d;
   border-radius: 50%;
   padding: 0.3rem;
-  margin-left: -0.5rem;
+  margin-left: -0.1rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
@@ -197,7 +217,8 @@ export const CloseContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   position: relative;
-  height: 70vh;
+  overflow: hidden;
+  height: 73vh;
 `;
 
 const arrowCss = css`
@@ -232,7 +253,7 @@ export const IconListWrap = styled.div`
   position: absolute;
   padding: 0 0.3rem;
   top: 0;
-  left: -1rem;
+  left: -30%;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -257,5 +278,5 @@ export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding-bottom: 3rem;
+  padding: 0 0.3rem 3rem 0.3rem;
 `;

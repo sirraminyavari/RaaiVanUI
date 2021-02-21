@@ -6,7 +6,7 @@ export const NavbarContainer = styled.div`
     `calc(100% - ${
       !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
     }px)`};
-  height: 4.1rem;
+  height: 4rem;
   position: fixed;
   display: flex;
   z-index: 100;
@@ -86,7 +86,6 @@ export const SearchWrapper = styled.div`
 
 export const SearchContainer = styled.div`
   position: relative;
-  margin: 0 1.5rem;
   :focus-within input {
     width: 16rem;
   }
@@ -152,17 +151,13 @@ export const NavMenuContainer = styled.div`
 
 export const MenuOptionsWrapper = styled.div`
   height: 12rem;
-  width: 19rem;
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  width: 17rem;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 0px 1px 10px #333;
   border-radius: 0.5rem;
-  background-color: #fff;
-  z-index: 100;
-  position: absolute;
-  top: 3rem;
-  transition: all 0.7s ease;
+  margin: -10px;
 `;
 
 export const NavMenuOption = styled.div`
