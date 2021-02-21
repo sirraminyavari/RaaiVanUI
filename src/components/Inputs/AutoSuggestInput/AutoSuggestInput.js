@@ -105,7 +105,6 @@ const AutoSuggestInput = (props) => {
     } else {
       setItems([]);
     }
-    console.log(items.length);
   }, [debouncedSearchTerm]);
 
   return (

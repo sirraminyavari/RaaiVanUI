@@ -10,6 +10,9 @@ const FlexBetween = css`
 
 export const InputContainer = styled.div`
   position: relative;
+  &:focus-within ul {
+    display: revert;
+  }
 `;
 
 export const ComponentWrapper = styled.div.attrs((props) => ({
@@ -41,7 +44,7 @@ export const Input = styled.input`
 
 const getMenuHeigth = ({ items }) => {
   if (items.length === 0) {
-    return 'height: 0;';
+    return 'height: 4.3rem;';
   } else {
     if (items.length >= 6) {
       return `height: ${items.length * ITEM_HEIGHT}rem;`;
@@ -56,6 +59,7 @@ export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
   ${getMenuHeigth}
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
+  display: none;
   left: ${({ hasChildren }) => (hasChildren ? '1.6rem' : '0')};
   overflow: hidden;
   z-index: ${GlobalUtilities.zindex.dialog()};
