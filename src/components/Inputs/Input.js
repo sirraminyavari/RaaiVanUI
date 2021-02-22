@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const { GlobalUtilities } = window;
+
 /**
  * @typedef PropType
  * @property {string} type - type of the input e.g. text, password, etc.
  * @property {boolean} invalid - true if the input value is not valid
+ * @property {string} invalid - message the message that is shown if the input value is invalid
  */
 
 /**
@@ -14,7 +17,7 @@ import PropTypes from 'prop-types';
  */
 
 const Input = (props) => {
-  let { type, invalid, className } = props;
+  let { type, invalid, invalidMessage, className, style } = props;
 
   return (
     <input
@@ -22,14 +25,17 @@ const Input = (props) => {
       className={
         'rv-input' + (invalid ? ' rv-input-invalid ' : ' ') + className
       }
-      {...props}
-    />
+      style={GlobalUtilities.extend(style || {}, {
+        position: 'relative',
+      })}
+      {...props}></input>
   );
 };
 
 Input.propTypes = {
   type: PropTypes.string,
   invalid: PropTypes.bool,
+  invalidMessage: PropTypes.string,
 };
 
 Input.defaultProps = {
