@@ -62,7 +62,7 @@ const Navbar = () => {
           <AutoSuggestInput
             style={{ margin: '0 1.5rem' }}
             endpoint="names"
-            onSearchChange={(value) => console.log(value)}
+            onItemSelect={(value) => console.log(value)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
             <NavbarSearchInput />
           </AutoSuggestInput>

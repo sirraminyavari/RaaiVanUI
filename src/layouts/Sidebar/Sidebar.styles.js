@@ -276,3 +276,9 @@ export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
 export const UnderMenuContainer = styled.div`
   padding: 0 0.3rem 3rem 0.3rem;
 `;
+
+export const FilterIconWrapper = styled.div`
+  position: absolute;
+  left: 0.3rem;
+  bottom: 0;
+`;

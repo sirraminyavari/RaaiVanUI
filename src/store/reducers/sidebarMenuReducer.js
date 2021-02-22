@@ -7,7 +7,7 @@ export const sidebarMenuSlice = createSlice({
     nodeTypes: [],
     tree: [],
     openMenuID: [],
-    searchResults: [],
+    searchText: '',
   },
   reducers: {
     setSidebarNodes: (state, action) => {
@@ -38,8 +38,8 @@ export const sidebarMenuSlice = createSlice({
     setReorderedTree: (state, action) => {
       state.tree = action.payload;
     },
-    setSearchResults: (state, action) => {
-      state.searchResults = action.payload;
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
     },
   },
 });

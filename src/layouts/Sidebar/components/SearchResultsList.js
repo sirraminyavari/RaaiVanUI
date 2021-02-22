@@ -1,21 +1,35 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 
-const SearchResultsList = ({ results }) => {
+const { GlobalUtilities } = window;
+
+const SearchResultsList = () => {
+  const { nodeTypes, searchText } = useSelector((state) => state.sidebarItems);
+
   return (
-    <Styled.SearchList>
-      {results?.NodeTypes?.map((res) => {
-        return (
-          <Styled.SearchListItem
-            as={Link}
-            to={`/classes/${res.NodeTypeID}`}
-            key={res.NodeTypeID}>
-            {decode(res.TypeName)}
-          </Styled.SearchListItem>
-        );
-      })}
-    </Styled.SearchList>
+    <Styled.MenuTreeContainer>
+      {nodeTypes
+        .filter((node) =>
+          GlobalUtilities.is_search_match(decode(node.TypeName), searchText)
+        )
+        .map((node) => {
+          return (
+            <Styled.MenuContainer
+              as={Link}
+              to={`/classes/${node.NodeTypeID}`}
+              key={node.NodeTypeID}>
+              <Styled.MenuTitle>
+                <img src={node.IconURL} alt="menu-icon" />
+                <span style={{ marginRight: '5px' }}>
+                  {decode(node.TypeName)}
+                </span>
+              </Styled.MenuTitle>
+            </Styled.MenuContainer>
+          );
+        })}
+    </Styled.MenuTreeContainer>
   );
 };
 

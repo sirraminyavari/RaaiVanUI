@@ -1,36 +1,38 @@
-import { useRef } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import useOnClickOtside from 'hooks/useOnClickOtside';
-import SearchBox from './SearchBox';
-import SearchResultsList from './SearchResultsList';
 import SidebarMenuTrees from './MenuTrees';
 import UnderMenuList from './UnderMenuList';
+import SearchBox from './SearchBox';
+import SearchResultsList from './SearchResultsList';
 
 const SidebarMain = () => {
-  const searchAt = 3;
-  const containerRef = useRef(null);
   const dispatch = useDispatch();
-  const { setSearchResults } = sidebarMenuSlice.actions;
+  const { setSearchText } = sidebarMenuSlice.actions;
+  const searchText = useSelector((state) => state.sidebarItems.searchText);
 
-  const searchResults = useSelector(
-    (state) => state.sidebarItems.searchResults
-  );
+  const showSearch = () => searchText.length >= 3;
 
-  useOnClickOtside(containerRef, () => dispatch(setSearchResults([])));
+  useEffect(() => {
+    //! clean up
+    return () => {
+      dispatch(setSearchText(''));
+    };
+  }, []);
 
   return (
-    <div ref={containerRef}>
-      <SearchBox searchAt={searchAt} />
-      <SearchResultsList results={searchResults} />
-      {searchResults?.length < searchAt + 1 && (
+    <>
+      <SearchBox />
+      {showSearch() ? (
+        <SearchResultsList />
+      ) : (
         <>
           <SidebarMenuTrees />
           <hr />
           <UnderMenuList />
         </>
       )}
-    </div>
+    </>
   );
 };
 
