@@ -31,7 +31,6 @@ export const SidebarContainer = styled.div`
   z-index: 100;
   top: 0;
   right: 0;
-  background-color: #15113c;
   overflow: hidden;
   color: #fff;
   box-shadow: 10px 0px 15px 10px #000;
@@ -56,7 +55,6 @@ export const SidebarHeader = styled.div`
   width: ${({ isSidebarOpen }) => (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH)}px;
   z-index: 10;
   padding: 0 1.1rem;
-  background-color: #15113c;
   position: fixed;
   top: 0;
   transition: all 0.7s ease;
@@ -106,7 +104,6 @@ export const SearchListItem = styled.div`
 `;
 
 export const SidebarFooter = styled.div`
-  background-color: #2b388f;
   height: 6%;
   display: flex;
   position: relative;
@@ -191,7 +188,6 @@ export const ListItemWrapper = styled.div`
 `;
 
 export const SettingWrapper = styled.div`
-  background-color: #171c4d;
   border-radius: 50%;
   padding: 0.3rem;
   margin-left: -0.1rem;

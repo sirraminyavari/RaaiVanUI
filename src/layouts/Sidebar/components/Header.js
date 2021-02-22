@@ -8,6 +8,7 @@ import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
+import { BG_WARMER } from 'constant/Colors';
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const SidebarHeader = () => {
   }, [isMobileNav]);
 
   return (
-    <Styled.SidebarHeader isSidebarOpen={isSidebarOpen}>
+    <Styled.SidebarHeader className={BG_WARMER} isSidebarOpen={isSidebarOpen}>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img src={Logo} width="120" alt="logo-icon" />

@@ -16,7 +16,6 @@ export const NavbarContainer = styled.div`
   left: 0;
   opacity: 1;
   padding: 0 1.5rem;
-  background: #2b388f 0% 0% no-repeat padding-box;
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
 `;

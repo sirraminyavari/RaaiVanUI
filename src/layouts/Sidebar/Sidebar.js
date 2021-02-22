@@ -6,6 +6,7 @@ import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
+import { BG_WARMER } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
   import(
@@ -38,7 +39,9 @@ const Sidebar = () => {
   }, [isSidebarOpen]);
 
   return (
-    <Styled.SidebarContainer isSidebarOpen={isSidebarOpen}>
+    <Styled.SidebarContainer
+      className={BG_WARMER}
+      isSidebarOpen={isSidebarOpen}>
       <SidebarHeader />
       <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
         <Suspense fallback={<LogoLoader size={10} />}>

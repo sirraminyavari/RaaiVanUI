@@ -11,6 +11,7 @@ import {
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
+import { BG_WARM } from 'constant/Colors';
 const NavWideScreenMenu = lazy(() =>
   import(
     /* webpackChunkName: "nav-wide-screen-menu-component"*/ './components/NavWideScreenMenu'
@@ -50,6 +51,7 @@ const Navbar = () => {
 
   return (
     <Styled.NavbarContainer
+      className={BG_WARM}
       isSidebarOpen={isSidebarOpen}
       isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
