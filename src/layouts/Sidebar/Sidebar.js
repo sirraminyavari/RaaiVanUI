@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from './Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
+import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
@@ -35,6 +36,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     dispatch(getSidebarNodes());
+    dispatch(getConfigPanels());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen]);
 

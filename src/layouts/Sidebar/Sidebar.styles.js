@@ -195,13 +195,14 @@ export const SettingWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const SettingList = styled.div`
+export const PanelWrapper = styled.div`
   ${FlexCenter}
   margin: 0.5rem 0;
   margin-right: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  color: #fff;
   :hover {
     background-color: #171c4d;
   }
@@ -281,4 +282,8 @@ export const FilterIconWrapper = styled.div`
   position: absolute;
   left: 0.3rem;
   bottom: 0;
+`;
+
+export const PanelLink = styled.div`
+  margin-right: 0.4rem;
 `;
