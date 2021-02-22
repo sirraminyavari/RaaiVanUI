@@ -11,9 +11,18 @@ export const sidebarMenuSlice = createSlice({
   },
   reducers: {
     setSidebarNodes: (state, action) => {
-      state.nodeTypes = action.payload.NodeTypes;
-      if (state.tree.length !== action.payload.Tree.length) {
-        state.tree = action.payload.Tree;
+      state.nodeTypes = action.payload.NodeTypes.filter((node) => !node.Hidden);
+      if (state.tree.length !== action.payload?.Tree.length) {
+        state.tree = action.payload.Tree.filter((node) => !node.Hidden).map(
+          (tree) => {
+            if (tree.Sub) {
+              let newSub = tree.Sub.filter((s) => !s.Hidden);
+              tree.Sub = newSub;
+              return tree;
+            }
+            return tree;
+          }
+        );
       }
     },
     toggleSidebarMenu: (state, action) => {
