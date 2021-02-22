@@ -23,8 +23,7 @@ export const ComponentWrapper = styled.div.attrs((props) => ({
 `;
 
 export const LoaderWrapper = styled.div`
-  position: absolute;
-  left: 1.6rem;
+  margin: 20px 0;
 `;
 
 export const InputElementWrapper = styled.div.attrs((props) => ({
@@ -60,6 +59,7 @@ export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
   display: none;
+  text-align: center;
   overflow: hidden;
   z-index: ${GlobalUtilities.zindex.dialog()};
   transition: all 0.7s ease;

@@ -4,7 +4,7 @@ import Downshift from 'downshift';
 import { decode } from 'js-base64';
 import APIHandler from 'apiHelper/APIHandler';
 import useDebounce from 'hooks/useDebounce';
-import LoadingDots from 'components/Loaders/LoadingDots/LoadingDots';
+import LoadingIcon from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import Button from 'components/Buttons/Button';
 import * as Styled from './AutoSuggestInput.styles';
 
@@ -157,9 +157,6 @@ const AutoSuggestInput = (props) => {
             <Styled.ComponentWrapper
               {...getRootProps({ refKey: 'componentRef' })}>
               {cloneElement(children, { ...getInputProps({ placeholder }) })}
-              <Styled.LoaderWrapper>
-                {isSearching && <LoadingDots />}
-              </Styled.LoaderWrapper>
             </Styled.ComponentWrapper>
           ) : (
             <Styled.InputElementWrapper
@@ -167,7 +164,6 @@ const AutoSuggestInput = (props) => {
               <Styled.Input
                 {...getInputProps({ placeholder, className: 'BorderRadius4' })}
               />
-              {isSearching && <LoadingDots />}
             </Styled.InputElementWrapper>
           )}
           {withMenu && (
@@ -182,8 +178,14 @@ const AutoSuggestInput = (props) => {
                 <Button type="primary">Click me</Button>
                 <Button type="negative">Click me</Button>
               </Styled.ButtonsContainer>
+              {isSearching && (
+                <Styled.LoaderWrapper>
+                  <LoadingIcon />
+                </Styled.LoaderWrapper>
+              )}
               <Styled.ListItemsContainer hasError={hasError} items={items}>
                 {isOpen &&
+                  !isSearching &&
                   inputValue &&
                   items.map((item, index) => {
                     return (
