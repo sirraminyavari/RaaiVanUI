@@ -3,6 +3,7 @@
  */
 import ArrowDown from 'components/Icons/ArrowDown';
 import React, { useState } from 'react';
+import { ShakeAnimate } from 'views/Auth/elements/Animate.style';
 import {
   Container,
   DomainsList,
@@ -10,6 +11,7 @@ import {
   ListItem,
   Rotater,
   Title,
+  Error,
 } from './AnimatedDropDownList.style';
 
 /**
@@ -18,7 +20,13 @@ import {
  * @param {String} label - Label for DropDown.
  * @callback onSelectItem - Fires when the user clicks on an item of the DropDown List.
  */
-const AnimatedDropDownList = ({ list, label, onSelectItem }) => {
+const AnimatedDropDownList = ({
+  list,
+  label,
+  onSelectItem,
+  error,
+  ...props
+}) => {
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
 
@@ -31,27 +39,30 @@ const AnimatedDropDownList = ({ list, label, onSelectItem }) => {
 
   return (
     <Container>
-      <DropDownButton onClick={onClick}>
-        <Rotater dropedDown={dropedDown}>
-          <ArrowDown color={'#707070'} />
-        </Rotater>
-        <Title className="textarea">{label}</Title>
-      </DropDownButton>
-      <DomainsList dropedDown={dropedDown}>
-        {list.map((x, index) => (
-          <ListItem
-            onClick={() => {
-              // collapse dropdown
-              setDropedDown(!dropedDown);
-              // pass selected Item to its parent
-              onSelectItem(x, index);
-            }}
-            key={index}
-            dropedDown={dropedDown}>
-            {x}
-          </ListItem>
-        ))}
-      </DomainsList>
+      <ShakeAnimate isVisible={error}>
+        <DropDownButton onClick={onClick} error={error}>
+          <Rotater dropedDown={dropedDown}>
+            <ArrowDown color={'#707070'} />
+          </Rotater>
+          <Title className="textarea">{label}</Title>
+        </DropDownButton>
+        <DomainsList dropedDown={dropedDown}>
+          {list.map((x, index) => (
+            <ListItem
+              onClick={() => {
+                // collapse dropdown
+                setDropedDown(!dropedDown);
+                // pass selected Item to its parent
+                onSelectItem(x, index);
+              }}
+              key={index}
+              dropedDown={dropedDown}>
+              {x}
+            </ListItem>
+          ))}
+        </DomainsList>
+      </ShakeAnimate>
+      <Error error={error}>{error}</Error>
     </Container>
   );
 };
