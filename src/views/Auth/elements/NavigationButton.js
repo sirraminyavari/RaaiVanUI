@@ -1,6 +1,7 @@
 /**
  * A component, for handling the navigation
  */
+import Button from 'components/Buttons/Button';
 import LoadingButton from 'components/Buttons/LoadingButton';
 import { RED, RED_HOVER } from 'const/Colors';
 import {
@@ -141,13 +142,22 @@ const NavigationButton = () => {
     <UpToDownAnimate
       isVisible={true}
       style={{ padding: '0.4rem', marginTop: '2rem' }}>
-      <LoadingButton
+      {/* <LoadingButton
         onClick={onNavigate}
         isFetching={isFetching}
         className={buttonTitle(currentRoute).class}
         disabled={disabledButton()}>
         {buttonTitle(currentRoute).label}
-      </LoadingButton>
+      </LoadingButton> */}
+      <Button
+        onClick={onNavigate}
+        type="primary"
+        loading={isFetching}
+        style={{ width: '100%' }}
+        tabIndex="4"
+        disable={disabledButton()}>
+        {buttonTitle(currentRoute).label}
+      </Button>
     </UpToDownAnimate>
   );
 };
