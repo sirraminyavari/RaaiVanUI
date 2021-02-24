@@ -59,7 +59,7 @@ export const loginSlice = createSlice({
     },
   },
   reducers: {
-    login: (state, action) => {
+    loginStart: (state, action) => {
       state.isFetching = true;
     },
     loginSuccess: (state, action) => {
@@ -166,12 +166,16 @@ export const loginSlice = createSlice({
     setOrgDomains: (state, action) => {
       state.orgDomains = action.payload;
     },
+    setOrgDomainsError: (state, action) => {
+      state.orgDomainsError = action.payload;
+    },
     setName: (state, action) => {
       state.name = action.payload;
       state.nameError = null;
     },
     setSelectedOrgDomain: (state, action) => {
       state.selectedDomain = action.payload;
+      state.orgDomainsError = null;
     },
     setNameError: (state, action) => {
       state.nameError = action.payload;
