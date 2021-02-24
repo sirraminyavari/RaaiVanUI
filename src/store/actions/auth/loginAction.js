@@ -4,16 +4,20 @@
 import { loginSlice } from '../../reducers/loginReducer';
 import APIHandler from '../../../apiHelper/APIHandler';
 import { encode } from 'js-base64';
+import stepTwoAction from './stepTwoAction';
+import loggedInAction from './loggedInAction';
 const {
-  login,
-  loginResult,
+  loginStart,
+  loginSuccess,
   loginFailed,
   setPasswordError,
   setEmailError,
+  setOrgDomainsError,
 } = loginSlice.actions;
 
 // Loads 'RVAPI' Class and 'Login' Function.
 const apiHandler = new APIHandler('RVAPI', 'Login');
+const { RVDic } = window.GlobalUtilities;
 
 /**
  * The process of signing in will do here with help of Thunk.
@@ -21,7 +25,9 @@ const apiHandler = new APIHandler('RVAPI', 'Login');
  * @param {String} email -  Email or mobile number entered.
  * @param {String} password - Password entered.
  */
-const loginAction = ({ email, password }) => async (dispatch) => {
+const loginAction = ({ email, password }) => async (dispatch, getState) => {
+  const { login } = getState();
+
   /**
    * After checking email & password,
    * 'signin()' will be called.
@@ -39,12 +45,43 @@ const loginAction = ({ email, password }) => async (dispatch) => {
         (response) => {
           const { Succeed, AuthCookie } = response;
           const { RVAPI, GlobalUtilities } = window;
+          if (response.ErrorText) {
+            dispatch(loginFailed(response.ErrorText));
+
+            console.log(response, 'response error');
+
+            if (response.ErrorText.TwoStepAuthentication)
+              setTimeout(function () {
+                dispatch(stepTwoAction(response.ErrorText.Data || {}));
+              }, 0);
+            else {
+              const needsCaptcha =
+                email.toLowerCase() === 'admin' &&
+                response.RemainingLockoutTime &&
+                !login.Options.UseCaptcha;
+
+              const err = (
+                RVDic?.MSG[response.ErrorText] || response.ErrorText
+              ).replace('[n]', response.RemainingLockoutTime || '');
+
+              if (needsCaptcha) {
+                err = RVDic.Checks.PleaseEnterTheCaptcha;
+                // that.init_captcha();
+              }
+
+              alert(err, null, function () {
+                // that.clear();
+              });
+            }
+          }
           if (Succeed && AuthCookie) {
             // These three following lines should be done to login precdure be completed
-            window.isAuthenticated = true;
-            RVAPI.LoggedIn();
-            GlobalUtilities.set_auth_cookie(AuthCookie);
-            dispatch(loginResult(response));
+            // window.isAuthenticated = true;
+            // RVAPI.LoggedIn();
+            // GlobalUtilities.set_auth_cookie(AuthCookie);
+            // console.log(response, 'response login');
+            // dispatch(loginSuccess(response));
+            dispatch(loggedInAction(response));
           }
         },
         (err) => {
@@ -58,14 +95,21 @@ const loginAction = ({ email, password }) => async (dispatch) => {
       dispatch(loginFailed(err));
     }
   };
-  if (email && password) {
-    dispatch(login());
+  if (
+    email &&
+    password &&
+    (login.orgDomains?.length === 0 || login.selectedDomain)
+  ) {
+    dispatch(loginStart());
     signin();
   } else {
     // Checks if password is null.
     !password && dispatch(setPasswordError('رمز عبور نمیتواند خالی باشد'));
     // Checks if email is null.
     !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
+    login.orgDomains?.length > 1 &&
+      !login.selectedDomain &&
+      dispatch(setOrgDomainsError('یک دامنه را باید انتخاب کنید'));
   }
 };
 export default loginAction;

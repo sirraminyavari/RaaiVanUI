@@ -1,6 +1,7 @@
 /**
  * A button for resending the verification code.
  */
+import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
 import { VERIFICATION_CODE } from 'const/LoginRoutes';
@@ -63,18 +64,26 @@ const ResendCode = () => {
         {resendDisabled && resendVerifyCodeTotalTimeout > 0 ? (
           <CountDownTimer onFinished={onFinished} />
         ) : (
-          <TextButton
+          // <TextButton
+          //   onClick={onResend}
+          //   disabled={resendDisabled}
+          //   isFetching={isFetching}
+          //   style={{
+          //     flexDirection: 'row',
+          //     display: 'flex',
+          //     alignSelf: 'right',
+          //     color: resendDisabled ? LIGHT_BLUE : MAIN_BLUE,
+          //   }}>
+          //   {'ارسال مجدد کد'}
+          // </TextButton>
+          <Button
+            type="secondary-o"
+            disable={resendDisabled}
             onClick={onResend}
-            disabled={resendDisabled}
-            isFetching={isFetching}
-            style={{
-              flexDirection: 'row',
-              display: 'flex',
-              alignSelf: 'right',
-              color: resendDisabled ? LIGHT_BLUE : MAIN_BLUE,
-            }}>
+            style={{ width: '100%' }}
+            loading={isFetching}>
             {'ارسال مجدد کد'}
-          </TextButton>
+          </Button>
         )}
       </Container>
     </UpToDownAnimate>
