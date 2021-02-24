@@ -1,10 +1,11 @@
 import { lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
+import withTheme from 'components/withTheme/withTheme';
 import { getURL } from 'helpers/helpers';
+
 const SidebarManagement = lazy(() =>
   import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
 );
@@ -12,8 +13,8 @@ const SidebarMain = lazy(() =>
   import(/* webpackChunkName: "sidebar-menu-content"*/ './Main')
 );
 
-const SidebarOnOpen = ({ handleSettings }) => {
-  const { isSettingShown } = useSelector((state) => state.theme);
+const SidebarOnOpen = ({ handleSettings, theme }) => {
+  const { isSettingShown } = theme.states;
 
   return (
     <>
@@ -41,4 +42,4 @@ const SidebarOnOpen = ({ handleSettings }) => {
   );
 };
 
-export default SidebarOnOpen;
+export default withTheme(SidebarOnOpen);

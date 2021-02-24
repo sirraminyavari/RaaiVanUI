@@ -1,13 +1,13 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as Styled from './Sidebar.styles';
-import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
 import { BG_WARMER } from 'constant/Colors';
+import withTheme from 'components/withTheme/withTheme';
 
 const SidebarContentOpen = lazy(() =>
   import(
@@ -20,10 +20,10 @@ const SidebarContentClose = lazy(() =>
   )
 );
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = themeSlice.actions;
-  const { isSidebarOpen, isSettingShown } = useSelector((state) => state.theme);
+  const { toggleSidebar, toggleSetting } = props.theme.actions;
+  const { isSidebarOpen, isSettingShown } = props.theme.states;
 
   const handleSettings = () => {
     if (!isSidebarOpen) {
@@ -41,11 +41,9 @@ const Sidebar = () => {
   }, [isSidebarOpen]);
 
   return (
-    <Styled.SidebarContainer
-      className={BG_WARMER}
-      isSidebarOpen={isSidebarOpen}>
+    <Styled.SidebarContainer className={BG_WARMER}>
       <SidebarHeader />
-      <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
+      <Styled.ContentWrapper>
         <Suspense fallback={<LogoLoader size={10} />}>
           {isSidebarOpen ? (
             <SidebarContentOpen handleSettings={handleSettings} />
@@ -59,4 +57,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default withTheme(Sidebar);

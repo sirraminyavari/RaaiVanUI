@@ -1,10 +1,15 @@
+import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
-export const NavbarContainer = styled.div`
-  width: ${({ isSidebarOpen, isMobile }) =>
+export const NavbarContainer = withTheme(styled.div`
+  width: ${({ theme, isMobile }) =>
     `calc(100% - ${
-      !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
+      !isMobile
+        ? theme.states.isSidebarOpen
+          ? OPEN_WIDTH
+          : CLOSE_WIDTH
+        : CLOSE_WIDTH
     }px)`};
   height: 4rem;
   position: fixed;
@@ -18,7 +23,7 @@ export const NavbarContainer = styled.div`
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
-`;
+`);
 
 export const WideScreenMenu = styled.div`
   height: 100%;

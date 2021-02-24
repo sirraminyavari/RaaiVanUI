@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import Edit from 'components/Icons/EditIcon/Edit';
+import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 const FlexBetween = css`
@@ -23,10 +24,10 @@ export const CenterIcon = styled.div`
   ${FlexCenter}
 `;
 
-export const SidebarContainer = styled.div`
+export const SidebarContainer = withTheme(styled.div`
   height: 100%;
-  width: ${({ isSidebarOpen }) =>
-    `${isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
+  width: ${(props) =>
+    `${props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
   position: fixed;
   z-index: 100;
   top: 0;
@@ -35,30 +36,31 @@ export const SidebarContainer = styled.div`
   color: #fff;
   box-shadow: 10px 0px 15px 10px #000;
   transition: all 0.7s ease;
-`;
+`);
 
-export const ContentWrapper = styled.div`
-  width: ${({ options }) => (options.isSidebarOpen ? '110%' : '140%')};
+export const ContentWrapper = withTheme(styled.div`
+  width: ${(props) => (props.theme.states.isSidebarOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: ${({ options }) => (options.isSettingShown ? '-6%' : '0')};
+  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
   left: -1.1rem;
   overflow: scroll;
   padding: 0 1.1rem;
   margin-top: 4rem;
   margin-bottom: 5vh;
-`;
+`);
 
-export const SidebarHeader = styled.div`
+export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
   height: 4rem;
-  width: ${({ isSidebarOpen }) => (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH)}px;
+  width: ${(props) =>
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px;
   z-index: 10;
   padding: 0 1.1rem;
   position: fixed;
   top: 0;
   transition: all 0.7s ease;
-`;
+`);
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
@@ -115,12 +117,16 @@ export const SidebarFooter = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const FooterTitle = styled.span`
+export const FooterIconWrapper = withTheme(styled.div`
+  margin-right: ${(props) => (props.theme.states.isSidebarOpen ? '0' : '3rem')};
+`);
+
+export const FooterTitle = withTheme(styled.span`
   margin-right: 0.5rem;
   position: relative;
-  top: ${({ isSidebarOpen }) => (isSidebarOpen ? '0px' : '100px')};
+  top: ${(props) => (props.theme.states.isSidebarOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
-`;
+`);
 
 //! This solution used because of conflict with DnD props passing down to styled component.
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
@@ -273,10 +279,6 @@ export const MenuTreeContainer = styled.div`
   padding: 0.1rem 0.2rem;
   border-radius: 0.5rem;
   transition: all 0.5s ease;
-`;
-
-export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
-  margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '-2rem')};
 `;
 
 export const UnderMenuContainer = styled.div`

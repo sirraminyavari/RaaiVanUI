@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import withTheme from 'components/withTheme/withTheme';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -23,8 +23,9 @@ const NavMobileMenu = lazy(() =>
   )
 );
 
-const Navbar = () => {
-  const { isSidebarOpen } = useSelector((state) => state.theme);
+const Navbar = (props) => {
+  const { isSidebarOpen } = props.theme.states;
+
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
     query: `(min-width: ${MEDIUM_BOUNDRY})`,
@@ -50,10 +51,7 @@ const Navbar = () => {
   };
 
   return (
-    <Styled.NavbarContainer
-      className={BG_WARM}
-      isSidebarOpen={isSidebarOpen}
-      isMobile={isMobileScreen}>
+    <Styled.NavbarContainer className={BG_WARM} isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
         {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
@@ -75,4 +73,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default withTheme(Navbar);
