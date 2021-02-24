@@ -209,6 +209,11 @@ export const PanelWrapper = styled.div`
   transition: all 0.3s linear;
 `;
 
+export const PanelImage = styled.img`
+  width: 1.2rem;
+  filter: brightness(0) invert(100%);
+`;
+
 export const CloseContentContainer = styled.div`
   display: flex;
   flex-direction: column;
