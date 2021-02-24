@@ -40,7 +40,12 @@ const AnimatedDropDownList = ({ list, label, onSelectItem }) => {
       <DomainsList dropedDown={dropedDown}>
         {list.map((x, index) => (
           <ListItem
-            onClick={() => onSelectItem(x)}
+            onClick={() => {
+              // collapse dropdown
+              setDropedDown(!dropedDown);
+              // pass selected Item to its parent
+              onSelectItem(x, index);
+            }}
             key={index}
             dropedDown={dropedDown}>
             {x}
