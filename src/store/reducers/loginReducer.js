@@ -8,6 +8,7 @@ import {
   VERIFICATION_CODE,
 } from 'const/LoginRoutes';
 
+const { GlobalUtilities } = window;
 export const loginSlice = createSlice({
   name: 'auth',
 
@@ -17,9 +18,10 @@ export const loginSlice = createSlice({
     email: '',
     password: '',
     orgDomains: [],
+    selectedDomain: null,
     name: '',
     family: '',
-    verifyCode: [],
+    verifyCode: null,
     verifyCodeLength: 0,
     verifyCodeToken: null,
     verifyCodeError: null,
@@ -37,14 +39,33 @@ export const loginSlice = createSlice({
     resendVerifyCodeTimeout: null,
     resendVerifyCodeTotalTimeout: null,
     resendVerifyCodeToken: null,
+    isAuthenticated: false,
+    lastLoginModal: false,
+    lastLogins: null,
+    lastLoginMessage: null,
+    captchaToken: null,
+    //
+    Objects: {
+      IsInvited: null,
+      Captcha: null,
+      InvitationID: GlobalUtilities.request_params().get_value('inv'),
+    },
+    Options: {
+      UseCaptcha: null,
+      Title: null,
+      ReloadAfterLogin: null,
+      ReturnURL: null,
+      IgnoreSSO: null,
+    },
   },
   reducers: {
     login: (state, action) => {
       state.isFetching = true;
     },
-    loginResult: (state, action) => {
+    loginSuccess: (state, action) => {
       state.login = action.payload;
       state.isFetching = false;
+      state.isAuthenticated = true;
     },
     loginFailed: (state, action) => {
       state.error = action.payload;
@@ -149,6 +170,9 @@ export const loginSlice = createSlice({
       state.name = action.payload;
       state.nameError = null;
     },
+    setSelectedOrgDomain: (state, action) => {
+      state.selectedDomain = action.payload;
+    },
     setNameError: (state, action) => {
       state.nameError = action.payload;
     },
@@ -184,6 +208,14 @@ export const loginSlice = createSlice({
       state.nameError = null;
       state.familyError = null;
       state.orgDomainsError = null;
+    },
+    showLastLogins: (state, action) => {
+      state.lastLoginModal = true;
+      state.lastLoginMessage = action.payload.message;
+      state.lastLogins = action.payload.lastLogins;
+    },
+    setCaptchaToken: (state, action) => {
+      state.captchaToken = action.payload;
     },
   },
 });
