@@ -48,7 +48,6 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const checkRoute = useCheckRoute('login');
-  console.log(checkRoute, 'checkRoute checkRoute');
 
   useEffect(() => {
     const { GlobalUtilities } = window;
@@ -142,7 +141,6 @@ const Login = () => {
           action: 'homepage',
         })
         .then((token) => {
-          console.log(token, 'tok tok tok');
           dispatch(setCaptchaTokenAction(token));
           // ...
         });
