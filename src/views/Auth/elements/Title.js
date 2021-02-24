@@ -1,6 +1,7 @@
 /**
  * A component for showing the title to user.
  */
+import Heading from 'components/Heading/Heading';
 import H3 from 'components/TypoGraphy/H3';
 import {
   FORGOT_PASSWORD,
@@ -41,11 +42,9 @@ const Title = () => {
 
   return (
     <UpToDownAnimate isVisible={true}>
-      <H3
-        className="textarea rv-title rv-flat-label"
-        style={{ marginTop: '2rem' }}>
+      <Heading type="h5" style={{ marginTop: '2rem' }}>
         {title()}
-      </H3>
+      </Heading>
     </UpToDownAnimate>
   );
 };
