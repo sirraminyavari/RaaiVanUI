@@ -4,9 +4,11 @@
 import Loader from 'components/Loader/Loader';
 import Logo from 'components/Media/Logo';
 import { RESET_PASSWORD } from 'const/LoginRoutes';
+import useCheckRoute from 'hooks/useCheckRoute';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setOrgDomainsAction from 'store/actions/auth/setOrgDomainsAction';
 import ContinueWithGoogle from './elements/ContinueWithGoogle';
@@ -14,6 +16,7 @@ import CreateAccountButton from './elements/CreateAccountButton';
 import Description from './elements/Description';
 import Email from './elements/Email';
 import ForgotPassword from './elements/ForgotPassword';
+import LastLoginsModal from './elements/LastLoginsModal';
 import NameFamily from './elements/NameFamily';
 import NavigationButton from './elements/NavigationButton';
 import OrgDomains from './elements/OrgDomains';
@@ -30,6 +33,7 @@ import {
   Container,
   Maintainer,
 } from './Login.style';
+const { RVGlobal } = window;
 
 /**
  * A mother component for containing the login elements.
@@ -43,9 +47,12 @@ const Login = () => {
   const [oneStepToInitDone, setOneStepToInit] = useState(false);
 
   const dispatch = useDispatch();
+  const checkRoute = useCheckRoute('login');
+  console.log(checkRoute, 'checkRoute checkRoute');
 
   useEffect(() => {
     const { GlobalUtilities } = window;
+
     let files = [{ Root: 'API/', Ext: 'js', Childs: ['RVAPI', 'UsersAPI'] }];
     // if (that.Options.UseCaptcha) files.push("CaptchaImage.js");
     GlobalUtilities.load_files(files, {
@@ -93,23 +100,54 @@ const Login = () => {
           }
 
           // that.initialize(r.Domains || []);
-          dispatch(setOrgDomainsAction(r.Domains));
+          // dispatch(setOrgDomainsAction(r.Domains));
+          dispatch(
+            setOrgDomainsAction([
+              { Value: 'example.com', Title: 'some title' },
+              { Value: 'example2.com', Title: 'some title 2' },
+              { Value: 'example3.com', Title: 'some title 3' },
+              { Value: 'example4.com', Title: 'some title 4' },
+              { Value: 'example5.com', Title: 'some title 5' },
+              { Value: 'example6.com', Title: 'some title 6' },
+              { Value: 'example7.com', Title: 'some title 7' },
+            ])
+          );
           setOneStepToInit(true);
         },
       });
     }
   }, [preinitDone]);
+
+  // After all steps did, it's time to init the reCaptcha.
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js';
-    script.async = true;
-    document.body.appendChild(script);
-
+    // reCaptcha is just for SAAS
+    if (RVGlobal.SAASBasedMultiTenancy) {
+      console.log(RVGlobal.CaptchaSiteKey, 'enable captch');
+      script.src = `https://www.google.com/recaptcha/api.js?render=${RVGlobal.CaptchaSiteKey}`;
+      script.addEventListener('load', handleLoaded);
+      document.body.appendChild(script);
+    }
     return () => {
-      document.body.removeChild(script);
+      // removes reCapctha when component willunmount
+      RVGlobal.SAASBasedMultiTenancy && document.body.removeChild(script);
     };
   }, [oneStepToInitDone]);
 
+  const handleLoaded = (_) => {
+    const { RVGlobal } = window;
+    window.grecaptcha.ready((_) => {
+      window.grecaptcha
+        .execute(RVGlobal.CaptchaSiteKey, {
+          action: 'homepage',
+        })
+        .then((token) => {
+          console.log(token, 'tok tok tok');
+          dispatch(setCaptchaTokenAction(token));
+          // ...
+        });
+    });
+  };
   return (
     <Maintainer className="small-12 medium-12 large-12 row">
       <BackgroundImage />
@@ -129,11 +167,19 @@ const Login = () => {
             <Description />
             <VerificationCode />
             <ResendCode />
+            {RVGlobal.SAASBasedMultiTenancy && (
+              <div
+                className="g-recaptcha"
+                data-sitekey={RVGlobal.CaptchaSiteKey}
+                date-size="invisible"></div>
+            )}
             <NavigationButton />
             <ForgotPassword />
             <Return />
             <ContinueWithGoogle />
             <CreateAccountButton />
+
+            <LastLoginsModal />
           </Box>
         ) : (
           <Center>
