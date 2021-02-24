@@ -46,7 +46,7 @@ const AnimatedInput = ({
   const [passVisible, setPassVisible] = useState(false);
   return (
     <Maintainer {...props}>
-      <ShakeAnimate isVisible={error && true}>
+      <ShakeAnimate isVisible={error}>
         <Container
           error={error}
           style={style}

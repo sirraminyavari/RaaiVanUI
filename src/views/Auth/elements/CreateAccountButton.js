@@ -15,6 +15,7 @@ import {
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import Loader from 'components/Loader/Loader';
+import Button from 'components/Buttons/Button';
 
 const { RVDic } = window;
 /**
@@ -61,13 +62,21 @@ const CreateAccountButton = ({ ...props }) => {
     <UpToDownAnimate
       isVisible={isVisible(currentRoute)}
       style={{ marginTop: '1.5rem' }}>
-      {fetchingFiles ? (
+      {/* {fetchingFiles ? (
         <Loader />
       ) : (
         <Container {...props} onClick={onCreate}>
           {title}
         </Container>
-      )}
+      )} */}
+      <Button
+        type="secondary-o"
+        style={{ fontSize: '1rem' }}
+        loading={fetchingFiles}
+        style={{ width: '100%' }}
+        onClick={onCreate}>
+        {title}
+      </Button>
     </UpToDownAnimate>
   );
 };

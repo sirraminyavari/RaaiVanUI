@@ -1,6 +1,7 @@
 /**
  * A component for navigating the user to procedure to reset his/her account password
  */
+import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { LIGHT_BLUE, RED } from 'const/Colors';
 import { FORGOT_PASSWORD, SIGN_IN, SIGN_IN_COLLAPSED } from 'const/LoginRoutes';
@@ -42,12 +43,21 @@ const ForgotPassword = () => {
       isVisible={isVisible()}
       style={{ flexGrow: '0.8', marginTop: '1.5rem' }}>
       <Container>
-        <TextButton
+        {/* <TextButton
           style={{ fontSize: '1rem' }}
           className="rv-red"
           onClick={onForgot}>
           {RVDic.ForgotMyPassword}
-        </TextButton>
+        </TextButton> */}
+
+        <Button
+          type="secondary-o"
+          style={{ fontSize: '1rem' }}
+          className="rv-red"
+          style={{ width: '100%', textAlign: 'center' }}
+          onClick={onForgot}>
+          {RVDic.ForgotMyPassword}
+        </Button>
         <div
           style={{
             height: '1px',
@@ -66,5 +76,6 @@ export default ForgotPassword;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
 `;
