@@ -7,11 +7,12 @@ import { encode } from 'js-base64';
 import stepTwoAction from './stepTwoAction';
 import loggedInAction from './loggedInAction';
 const {
-  login,
+  loginStart,
   loginSuccess,
   loginFailed,
   setPasswordError,
   setEmailError,
+  setOrgDomainsError,
 } = loginSlice.actions;
 
 // Loads 'RVAPI' Class and 'Login' Function.
@@ -25,6 +26,8 @@ const { RVDic } = window.GlobalUtilities;
  * @param {String} password - Password entered.
  */
 const loginAction = ({ email, password }) => async (dispatch, getState) => {
+  const { login } = getState();
+
   /**
    * After checking email & password,
    * 'signin()' will be called.
@@ -33,8 +36,6 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
    * is being handled with 'RVAPI'.
    */
   const signin = () => {
-    const { login } = getState();
-
     try {
       apiHandler.fetch(
         {
@@ -45,6 +46,10 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
           const { Succeed, AuthCookie } = response;
           const { RVAPI, GlobalUtilities } = window;
           if (response.ErrorText) {
+            dispatch(loginFailed(response.ErrorText));
+
+            console.log(response, 'response error');
+
             if (response.ErrorText.TwoStepAuthentication)
               setTimeout(function () {
                 dispatch(stepTwoAction(response.ErrorText.Data || {}));
@@ -56,7 +61,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
                 !login.Options.UseCaptcha;
 
               const err = (
-                RVDic.MSG[response.ErrorText] || response.ErrorText
+                RVDic?.MSG[response.ErrorText] || response.ErrorText
               ).replace('[n]', response.RemainingLockoutTime || '');
 
               if (needsCaptcha) {
@@ -90,14 +95,21 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
       dispatch(loginFailed(err));
     }
   };
-  if (email && password) {
-    dispatch(login());
+  if (
+    email &&
+    password &&
+    (login.orgDomains?.length === 0 || login.selectedDomain)
+  ) {
+    dispatch(loginStart());
     signin();
   } else {
     // Checks if password is null.
     !password && dispatch(setPasswordError('رمز عبور نمیتواند خالی باشد'));
     // Checks if email is null.
     !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
+    login.orgDomains?.length > 1 &&
+      !login.selectedDomain &&
+      dispatch(setOrgDomainsError('یک دامنه را باید انتخاب کنید'));
   }
 };
 export default loginAction;
