@@ -12,10 +12,16 @@ const { RVDic } = window;
 
 const OrgDomains = () => {
   const dispatch = useDispatch();
-  const { orgDomains, currentRoute, selectedDomain } = useSelector((state) => ({
+  const {
+    orgDomains,
+    currentRoute,
+    selectedDomain,
+    orgDomainsError,
+  } = useSelector((state) => ({
     orgDomains: state.login.orgDomains,
     currentRoute: state.login.currentRoute,
     selectedDomain: state.login.selectedDomain,
+    orgDomainsError: state.login.orgDomainsError,
   }));
 
   // const orgDomains = ['one', 'two', 'three', 'four'];
@@ -24,7 +30,6 @@ const OrgDomains = () => {
    * this function decides to return true or false.
    */
   const isVisible = () => {
-    console.log(orgDomains, 'org *** org ***');
     switch (currentRoute) {
       case SIGN_IN:
       case SIGN_IN_COLLAPSED:
@@ -46,6 +51,7 @@ const OrgDomains = () => {
   return (
     <UpToDownAnimate isVisible={isVisible()} style={{ zIndex: 10 }}>
       <AnimatedDropDownList
+        error={orgDomainsError}
         label={selectedDomain ? selectedDomain?.Title : RVDic.DomainSelect}
         onSelectItem={onSelectItem}
         list={orgDomains.map((x, index) => x?.Title)}
