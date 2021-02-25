@@ -19,7 +19,7 @@ import * as Styled from './AlphanumericInput.styles';
  */
 
 /**
- * Renders an alphanumeric or numeric input.
+ * @description Renders an alphanumeric or numeric input.
  * @type {React.FC<PropType>}
  */
 const AlphanumericInput = forwardRef((props, ref) => {
@@ -33,6 +33,7 @@ const AlphanumericInput = forwardRef((props, ref) => {
     ...rest
   } = props;
 
+  //! Returns input pattern based on props.
   const inputPattern = () => {
     let ml = maxLength;
     let md = maxDecimal;
@@ -49,6 +50,7 @@ const AlphanumericInput = forwardRef((props, ref) => {
     }
   };
 
+  //! Calls when input value changes and pass it to parent component.
   const handleChange = (e) => {
     if (!e.target.validity.valid) return;
     onInputChange && onInputChange(e.target.value);

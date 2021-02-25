@@ -1,3 +1,6 @@
+/**
+ * An Avatar for showing user image and access to lts profile
+ */
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AvatarIcon from 'components/Icons/UserIcon/User';
