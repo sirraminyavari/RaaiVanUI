@@ -1,3 +1,6 @@
+/**
+ * Renders whole navbar area for app.
+ */
 import { lazy, Suspense } from 'react';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
