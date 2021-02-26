@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import CustomCalendar from 'components/CustomCalendar/CustomCalendar';
+// import CustomCalendar from 'components/CustomCalendar/CustomCalendar';
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { getToday, getLanguageDigits } from 'helpers/helpers';
 
 const TestView = () => {
@@ -10,7 +11,7 @@ const TestView = () => {
   }, [selectedDay]);
 
   return (
-    <CustomCalendar
+    <CustomDatePicker
       minimumDate={getToday('fa')}
       maximumDate={{ ...getToday('fa'), day: getToday('fa').day + 7 }}
       value={selectedDay}
