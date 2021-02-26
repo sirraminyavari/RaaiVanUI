@@ -1,3 +1,6 @@
+/**
+ * Renders when sidebar is open.
+ */
 import { lazy } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -19,6 +22,7 @@ const SidebarOnOpen = ({ theme }) => {
   const { isSettingShown } = theme.states;
   const { handleSettings } = theme.actions;
 
+  //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
   };

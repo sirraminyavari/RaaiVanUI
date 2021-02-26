@@ -1,3 +1,6 @@
+/**
+ * Renders Settings or config panel links instead of regular menu in sidebar.
+ */
 import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
 import { Link } from 'react-router-dom';

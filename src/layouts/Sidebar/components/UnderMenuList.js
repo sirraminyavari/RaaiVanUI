@@ -1,3 +1,6 @@
+/**
+ * Renders a list of items under the sidebar menu,
+ */
 import * as Styled from '../Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';

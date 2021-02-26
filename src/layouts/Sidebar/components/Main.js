@@ -1,3 +1,6 @@
+/**
+ * Renders regular sidebar with its menu.
+ */
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -11,6 +14,7 @@ const SidebarMain = () => {
   const { setSearchText } = sidebarMenuSlice.actions;
   const searchText = useSelector((state) => state.sidebarItems.searchText);
 
+  //! If true, Shows search results, Otherwise Shows sidebar menu.
   const showSearch = () => searchText.length >= 3;
 
   useEffect(() => {

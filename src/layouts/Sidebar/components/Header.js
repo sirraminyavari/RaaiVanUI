@@ -1,3 +1,6 @@
+/**
+ * Renders header component for sidebar.
+ */
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import withTheme from 'components/withTheme/withTheme';
@@ -22,7 +25,8 @@ const SidebarHeader = (props) => {
     query: '(max-width: 975px)',
   });
 
-  const toggleMenu = () => {
+  //! Toggle sidebar drawer on click.
+  const toggleDrawer = () => {
     if (isMobileScreen) return;
     dispatch(toggleSidebar(!isSidebarOpen));
     if (isSidebarOpen) {
@@ -43,7 +47,7 @@ const SidebarHeader = (props) => {
           <img src={Logo} width="120" alt="logo-icon" />
         </Link>
       )}
-      <Styled.ToggleArrow onClick={toggleMenu}>
+      <Styled.ToggleArrow onClick={toggleDrawer}>
         <ToggleIcon dir={isSidebarOpen ? '' : 'left'} size={25} color="#fff" />
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>

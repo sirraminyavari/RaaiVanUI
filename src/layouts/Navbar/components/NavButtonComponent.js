@@ -11,7 +11,7 @@ import { getLanguageDigits } from 'helpers/helpers';
  * @typedef BTNType
  * @property {string} title -The title of the button.
  * @property {string} icon -The icon name for the button.
- * @property {string} linkTo -The path that button is link to.
+ * @property {string} linkTo -The path that button is linked to.
  * @property {Object[]} actions -The menu list for buttons that are not link to another page.
  */
 

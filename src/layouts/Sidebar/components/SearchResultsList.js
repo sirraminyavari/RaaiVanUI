@@ -1,3 +1,6 @@
+/**
+ * Renders a list of searched items in sidebar.
+ */
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { decode } from 'js-base64';

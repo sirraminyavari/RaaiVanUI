@@ -1,3 +1,6 @@
+/**
+ * Renders footer component for sidebar.
+ */
 import EditIcon from 'components/Icons/EditIcon/Edit';
 import { BG_WARM } from 'constant/Colors';
 import * as Styled from '../Sidebar.styles';

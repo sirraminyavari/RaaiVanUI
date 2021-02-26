@@ -1,3 +1,6 @@
+/**
+ * Renders when sidebar is closed.
+ */
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,28 +14,35 @@ const SidebarContentClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
+  //! Stores scroll value
   const [scroll, setScroll] = useState(0);
+  //! If true, scroll is at the very bottom, If not, its not!
   const [isDown, setIsDown] = useState(false);
+  //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
   const { nodeTypes } = useSelector((state) => state.sidebarItems);
   const { handleSettings } = theme.actions;
 
   //TODO: Calculate scroll size based on items count
+  //! Calls on every click on chevron down.
   const scrollDown = () => {
     if (isDown) return;
     setScroll((s) => s + 50);
   };
 
+  //! Calls on every click on chevron up.
   const scrollUp = () => {
     if (isUp) return;
     setScroll((s) => s - 50);
   };
 
+  //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
   };
 
+  //! Updates scroll position.
   const handleScroll = () => {
     const diff =
       iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
