@@ -18,6 +18,14 @@ export const themeSlice = createSlice({
     toggleNavSide: (state, action) => {
       state.hasNavSide = action.payload;
     },
+    handleSettings: (state, action) => {
+      if (!state.isSidebarOpen) {
+        state.isSidebarOpen = true;
+        state.isSettingShown = true;
+      } else {
+        state.isSettingShown = !state.isSettingShown;
+      }
+    },
   },
 });
 

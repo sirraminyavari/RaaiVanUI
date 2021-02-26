@@ -1,3 +1,6 @@
+/**
+ * Renders whole sidebar area for non-mobile screens.
+ */
 import { lazy, Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Styled from './Sidebar.styles';
@@ -22,17 +25,7 @@ const SidebarContentClose = lazy(() =>
 
 const Sidebar = (props) => {
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = props.theme.actions;
   const { isSidebarOpen, isSettingShown } = props.theme.states;
-
-  const handleSettings = () => {
-    if (!isSidebarOpen) {
-      dispatch(toggleSidebar(true));
-      dispatch(toggleSetting(true));
-    } else {
-      dispatch(toggleSetting(!isSettingShown));
-    }
-  };
 
   useEffect(() => {
     dispatch(getSidebarNodes());
@@ -45,11 +38,7 @@ const Sidebar = (props) => {
       <SidebarHeader />
       <Styled.ContentWrapper>
         <Suspense fallback={<LogoLoader size={10} />}>
-          {isSidebarOpen ? (
-            <SidebarContentOpen handleSettings={handleSettings} />
-          ) : (
-            <SidebarContentClose handleSettings={handleSettings} />
-          )}
+          {isSidebarOpen ? <SidebarContentOpen /> : <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>
       {!isSettingShown && <SidebarFooter />}
