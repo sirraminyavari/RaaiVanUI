@@ -1,5 +1,9 @@
+/**
+ * A custom calendar for all.
+ */
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Calendar } from 'react-modern-calendar-datepicker';
+import styles from './CustomCalendar.module.css';
 
 /**
  * @typedef DateType
@@ -34,7 +38,14 @@ import { Calendar } from 'react-modern-calendar-datepicker';
  * @param {PropType} props -Props that pass to custom calendar.
  */
 const CustomCalendar = (props) => {
-  return <Calendar shouldHighlightWeekends {...props} />;
+  return (
+    <Calendar
+      shouldHighlightWeekends
+      calendarClassName={styles.calendar}
+      calendarTodayClassName={styles.today}
+      {...props}
+    />
+  );
 };
 
 CustomCalendar.defaultProps = {
