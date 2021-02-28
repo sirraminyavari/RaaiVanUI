@@ -1,29 +1,22 @@
 /**
  * Renders a popup menu for user avatar.
  */
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
-import APIHandler from 'apiHelper/APIHandler';
+import logoutAction from 'store/actions/auth/logoutAction';
 import * as Styled from '../Navbar.styles';
 
 const { RVDic } = window;
 
 const AvatarMenu = () => {
+  const dispatch = useDispatch();
+
   //! Logs user out from application.
   const handleLogout = () => {
-    let logoutHandler = new APIHandler('RVAPI', 'Logout');
-    try {
-      logoutHandler.fetch(
-        {},
-        //TODO: Dispatch an action on logout success
-        (response) => console.log(response),
-        (error) => console.log({ error })
-      );
-    } catch (err) {
-      console.log({ err });
-    }
+    dispatch(logoutAction());
   };
 
   return (
