@@ -1,7 +1,7 @@
-// import { loginSlice } from '../../reducers/loginReducer';
+import { loginSlice } from '../../reducers/loginReducer';
 import APIHandler from 'apiHelper/APIHandler';
 
-// const { logoutSuccess } = loginSlice.actions;
+const { logoutSuccess } = loginSlice.actions;
 const logoutHandler = new APIHandler('RVAPI', 'Logout');
 
 const logoutAction = () => async (dispatch) => {
@@ -9,8 +9,7 @@ const logoutAction = () => async (dispatch) => {
     logoutHandler.fetch(
       {},
       () => {
-        console.log('logged out');
-        //   dispatch(logoutSuccess());
+        dispatch(logoutSuccess());
       },
       (error) => console.log({ error })
     );
