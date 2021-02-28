@@ -12,7 +12,9 @@ export const sidebarMenuSlice = createSlice({
   },
   reducers: {
     setSidebarNodes: (state, action) => {
-      state.nodeTypes = action.payload.NodeTypes.filter((node) => !node.Hidden);
+      state.nodeTypes = action.payload.NodeTypes?.filter(
+        (node) => !node.Hidden
+      );
       if (state.tree.length !== action.payload?.Tree.length) {
         state.tree = action.payload.Tree.filter((node) => !node.Hidden).map(
           (tree) => {
