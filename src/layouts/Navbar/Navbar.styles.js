@@ -184,3 +184,27 @@ export const Arrow = styled.span`
   border-bottom: 0.3rem solid #fff;
   transition: all 0.5s ease;
 `;
+
+export const AvatarMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  alignitems: center;
+`;
+
+export const AvatarMenuItem = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: end;
+  align-items: center;
+  padding: 0.4rem;
+  color: #000;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  &:hover {
+    background-color: gray;
+  }
+`;
+
+export const AvatarMenuTitle = styled.span`
+  padding: 0 0.6rem;
+`;

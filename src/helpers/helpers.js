@@ -10,7 +10,7 @@ export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 /**
  * @description A function to get route url.
  * @param {string} routeName -The route name to call api.
- * @param {string} [params] -An object of route parameters.
+ * @param {Object} [params] -An object of route parameters.
  * @returns {string} The route url path.
  */
 export const getURL = (routeName, params = {}) =>

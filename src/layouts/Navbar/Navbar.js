@@ -9,6 +9,8 @@ import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import withTheme from 'components/withTheme/withTheme';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
+import AvatarMenu from './components/AvatarMenu';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -70,7 +72,12 @@ const Navbar = (props) => {
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
-        <Avatar />
+        <PopupMenu trigger="click">
+          <div>
+            <Avatar />
+          </div>
+          <AvatarMenu />
+        </PopupMenu>
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
