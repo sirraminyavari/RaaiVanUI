@@ -1,0 +1,11 @@
+.calendar {
+  box-shadow: 0 1rem 3rem rgba(156, 136, 255, 0.3);
+}
+
+.today {
+  border: 1px solid green !important;
+}
+
+.today::after {
+  visibility: hidden; /* hide small border under the text */
+}

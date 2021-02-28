@@ -1,3 +1,6 @@
+/**
+ * Renders all menu items at once.
+ */
 import { useSelector, useDispatch } from 'react-redux';
 import SidebarMenuRoot from './MenuRoot';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -11,6 +14,7 @@ const SidebarTrees = () => {
 
   const dispatch = useDispatch();
 
+  //! Calls whenever item dragging is ended and reorders the tree list.
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const newTree = reorder(
@@ -21,6 +25,7 @@ const SidebarTrees = () => {
 
     dispatch(setReorderedTree(newTree));
   };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="sidebar-menu-container" type="parentMenu">

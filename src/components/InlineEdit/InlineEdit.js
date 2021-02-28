@@ -1,24 +1,28 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
-import useKeypress from '../../hooks/useKeypress';
-import useOnClickOutside from '../../hooks/useOnClickOtside';
+import useKeypress from 'hooks/useKeypress';
+import useOnClickOutside from 'hooks/useOnClickOtside';
 import * as Styled from './InlineEdit.styles';
 
 /**
  * @typedef PropType
  * @property {string} text -The editable text.
- * @property {function} onSetText -The function to be called on text edit.
+ * @property {function} onSetText -A function that fires on text edit and
+ * ...returns edited text to parent component.
  */
 
 /**
- *  Renders an inline editable text.
+ *  @description Renders an inline editable text.
  * @component
  * @param {PropType} props
  */
 const InlineEdit = (props) => {
   const { text, onSetText } = props;
+
+  //! If true, Shows input, Otherwise, Shows text.
   const [isInputActive, setIsInputActive] = useState(false);
+  //! Input value default to initial text passed to it.
   const [inputValue, setInputValue] = useState(text);
 
   const wrapperRef = useRef(null);
@@ -74,6 +78,7 @@ const InlineEdit = (props) => {
     [setInputValue]
   );
 
+  //! Activates edit mode when span has been clicked.
   const handleSpanClick = useCallback(() => {
     setIsInputActive(true);
   }, [setIsInputActive]);

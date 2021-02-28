@@ -1,3 +1,6 @@
+/**
+ * Renders a list of navbar buttons for non-mobile screens.
+ */
 import { lazy, Fragment } from 'react';
 import * as Styled from '../Navbar.styles';
 import NavButtonComponent from './NavButtonComponent';

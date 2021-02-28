@@ -1,9 +1,9 @@
-import { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { RVGlobalContext } from 'context/RVGlobalProvider';
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { IsAuthenticated: isAuthenticated } = useContext(RVGlobalContext);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <Route
       {...rest}

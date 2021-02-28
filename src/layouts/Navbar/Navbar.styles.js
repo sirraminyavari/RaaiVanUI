@@ -1,10 +1,15 @@
+import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
-export const NavbarContainer = styled.div`
-  width: ${({ isSidebarOpen, isMobile }) =>
+export const NavbarContainer = withTheme(styled.div`
+  width: ${({ theme, isMobile }) =>
     `calc(100% - ${
-      !isMobile ? (isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH) : CLOSE_WIDTH
+      !isMobile
+        ? theme.states.isSidebarOpen
+          ? OPEN_WIDTH
+          : CLOSE_WIDTH
+        : CLOSE_WIDTH
     }px)`};
   height: 4rem;
   position: fixed;
@@ -16,10 +21,9 @@ export const NavbarContainer = styled.div`
   left: 0;
   opacity: 1;
   padding: 0 1.5rem;
-  background: #2b388f 0% 0% no-repeat padding-box;
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
-`;
+`);
 
 export const WideScreenMenu = styled.div`
   height: 100%;
@@ -179,4 +183,28 @@ export const Arrow = styled.span`
   border-right: 0.3rem solid transparent;
   border-bottom: 0.3rem solid #fff;
   transition: all 0.5s ease;
+`;
+
+export const AvatarMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  alignitems: center;
+`;
+
+export const AvatarMenuItem = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: end;
+  align-items: center;
+  padding: 0.4rem;
+  color: #000;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  &:hover {
+    background-color: gray;
+  }
+`;
+
+export const AvatarMenuTitle = styled.span`
+  padding: 0 0.6rem;
 `;

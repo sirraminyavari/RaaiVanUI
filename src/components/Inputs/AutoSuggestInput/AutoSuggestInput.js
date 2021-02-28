@@ -4,7 +4,7 @@ import Downshift from 'downshift';
 import { decode } from 'js-base64';
 import APIHandler from 'apiHelper/APIHandler';
 import useDebounce from 'hooks/useDebounce';
-import LoadingDots from 'components/Loaders/LoadingDots/LoadingDots';
+import LoadingIcon from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import Button from 'components/Buttons/Button';
 import * as Styled from './AutoSuggestInput.styles';
 
@@ -36,15 +36,20 @@ const AutoSuggestInput = (props) => {
     children,
     ...rest
   } = props;
+  //! Stores suggested items.
   const [items, setItems] = useState([]);
+  //! Stores the term that user searched
   const [searchTerm, setSearchTerm] = useState('');
+  //! If true, Shows Loading component, Otherwise, won't show it.
   const [isSearching, setIsSearching] = useState(false);
+  //! If true, Shows a message to user to inform it that something went wrong.
   const [hasError, setHasError] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
 
   const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
+  //! Fetch new items on every amount of delay or mininum search term.
   const fetchItems = (search) => {
     try {
       apiHandler.fetch(
@@ -86,6 +91,7 @@ const AutoSuggestInput = (props) => {
     }
   };
 
+  //! This function will be called each time downshift sets its internal state.
   const handleReducer = (state, changes) => {
     if (!state.isOpen && state.selectedItem) {
       state.selectedItem.value = '';
@@ -95,10 +101,12 @@ const AutoSuggestInput = (props) => {
     return changes;
   };
 
+  //! Called when the selected item changes.
   const handleChange = (selection) => {
     onItemSelect && selection && onItemSelect(selection.value);
   };
 
+  //! Called when the user selects an item, regardless of the previous selected item.
   const handleSelection = (selectedItem, stateAndHelpers) => {
     if (!selectedItem) return;
     if (hasError) {
@@ -107,8 +115,10 @@ const AutoSuggestInput = (props) => {
     }
   };
 
+  //! Downshift needs a string representation of stored items.
   const handleToString = (item) => (item ? item.value : '');
 
+  //! Highlights searched term inside suggested items.
   const getHighlightedText = (text, highlight) => {
     const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
@@ -157,9 +167,6 @@ const AutoSuggestInput = (props) => {
             <Styled.ComponentWrapper
               {...getRootProps({ refKey: 'componentRef' })}>
               {cloneElement(children, { ...getInputProps({ placeholder }) })}
-              <Styled.LoaderWrapper>
-                {isSearching && <LoadingDots />}
-              </Styled.LoaderWrapper>
             </Styled.ComponentWrapper>
           ) : (
             <Styled.InputElementWrapper
@@ -167,7 +174,6 @@ const AutoSuggestInput = (props) => {
               <Styled.Input
                 {...getInputProps({ placeholder, className: 'BorderRadius4' })}
               />
-              {isSearching && <LoadingDots />}
             </Styled.InputElementWrapper>
           )}
           {withMenu && (
@@ -182,8 +188,14 @@ const AutoSuggestInput = (props) => {
                 <Button type="primary">Click me</Button>
                 <Button type="negative">Click me</Button>
               </Styled.ButtonsContainer>
+              {isSearching && (
+                <Styled.LoaderWrapper>
+                  <LoadingIcon />
+                </Styled.LoaderWrapper>
+              )}
               <Styled.ListItemsContainer hasError={hasError} items={items}>
                 {isOpen &&
+                  !isSearching &&
                   inputValue &&
                   items.map((item, index) => {
                     return (

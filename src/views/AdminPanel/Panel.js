@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 
-const Panel = ({ params }) => {
-  const { name, url, icon } = params;
+const Panel = ({ panel }) => {
+  const { Name, URL, Icon } = panel;
   return (
     <div className="small-12 medium-4 large-3" style={{ padding: '0.1rem' }}>
-      <Link to={`/configuration/${url}`}>
+      <Link to={`/configuration/${URL}`}>
         <div
           className="small-12 medium-12 large-12 rv-border-radius-half rv-air-button"
           style={{ padding: '0.5rem', height: '100%' }}>
@@ -19,7 +19,8 @@ const Panel = ({ params }) => {
             <div id="image" className="small-12 medium-12 large-12">
               <img
                 style={{ width: '6rem', height: '6rem' }}
-                src={`${process.env.PUBLIC_URL}/images/icons/${icon}`}
+                src={`${process.env.PUBLIC_URL}/images/icons/${Icon}`}
+                alt="panel-icon"
               />
             </div>
             <div
@@ -30,7 +31,7 @@ const Panel = ({ params }) => {
                 textTransform: 'capitalize',
               }}>
               <span>
-                {window.RVDic.PRVC[name] || window.RVDic[name] || name}
+                {window.RVDic.PRVC[Name] || window.RVDic[Name] || Name}
               </span>
             </div>
           </div>

@@ -1,43 +1,32 @@
-import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import FilterIcon from 'components/Icons/FilterIcon/Filter';
-import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+/**
+ * Renders a decent search area for sidebar.
+ */
+import { useSelector, useDispatch } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import FilterIcon from 'components/Icons/FilterIcon/Filter';
 import * as Styled from '../Sidebar.styles';
 
-const SearchBox = ({ searchAt }) => {
-  const inputRef = useRef(null);
+const SearchBox = () => {
   const dispatch = useDispatch();
-  const { setSearchResults } = sidebarMenuSlice.actions;
+  const { setSearchText } = sidebarMenuSlice.actions;
+  const searchText = useSelector((state) => state.sidebarItems.searchText);
 
-  const handleInput = () => {
-    if (
-      inputRef.current.value === '' ||
-      !(inputRef.current.value.length > searchAt)
-    ) {
-      dispatch(setSearchResults([]));
-    }
-  };
-
-  const handleSuggestions = (items) => {
-    dispatch(setSearchResults(items));
+  //! Calls on every change that happens at input value
+  //! ...and updates redux state.
+  const handleChange = (e) => {
+    dispatch(setSearchText(e.target.value));
   };
 
   return (
     <Styled.SearchWrapper>
-      <AutoSuggestInput
-        searchAt={searchAt}
-        getSuggestedItems={handleSuggestions}
-        withMenu={false}>
-        <Styled.SearchInput
-          text="جستجو در کلاس  و دسته"
-          onInput={handleInput}
-          ref={inputRef}
-        />
-      </AutoSuggestInput>
-      <div style={{ position: 'absolute', left: '0.3rem', bottom: '0' }}>
+      <Styled.SearchInput
+        text="جستجو در کلاس  و دسته"
+        onChange={handleChange}
+        value={searchText}
+      />
+      <Styled.FilterIconWrapper>
         <FilterIcon />
-      </div>
+      </Styled.FilterIconWrapper>
     </Styled.SearchWrapper>
   );
 };

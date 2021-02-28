@@ -1,3 +1,6 @@
+/**
+ * A component that renders an icon alongside a popup menu in mobile screen.
+ */
 import { Link } from 'react-router-dom';
 import NavButtonsList from './buttonsList';
 import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
