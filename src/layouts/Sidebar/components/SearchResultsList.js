@@ -4,9 +4,31 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { decode } from 'js-base64';
+import { BG_WARM } from 'constant/Colors';
 import * as Styled from '../Sidebar.styles';
 
 const { GlobalUtilities } = window;
+
+//! Highlights some terms inside a text.
+const getHighlightedText = (text, highlight) => {
+  const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
+  return (
+    <span>
+      {parts.map((part, i) => {
+        let isMatch = part.toLowerCase() === highlight.toLowerCase();
+        return (
+          <Styled.HighlightedText
+            key={i}
+            className={isMatch ? BG_WARM : null}
+            isMatch={isMatch}>
+            {part}
+          </Styled.HighlightedText>
+        );
+      })}
+    </span>
+  );
+};
 
 const SearchResultsList = () => {
   const { nodeTypes, searchText } = useSelector((state) => state.sidebarItems);
@@ -26,7 +48,7 @@ const SearchResultsList = () => {
               <Styled.MenuTitle>
                 <img src={node.IconURL} alt="menu-icon" />
                 <span style={{ marginRight: '5px' }}>
-                  {decode(node.TypeName)}
+                  {getHighlightedText(decode(node.TypeName), searchText)}
                 </span>
               </Styled.MenuTitle>
             </Styled.MenuContainer>

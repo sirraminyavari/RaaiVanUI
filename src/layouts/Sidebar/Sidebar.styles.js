@@ -294,3 +294,17 @@ export const FilterIconWrapper = styled.div`
 export const PanelLink = styled.div`
   margin-right: 0.4rem;
 `;
+
+const getHighlightCss = ({ isMatch }) => {
+  return isMatch
+    ? `
+    font-weight: bold;
+    padding: 0 0.2rem;
+    border-radius: 0.5rem;
+    `
+    : null;
+};
+
+export const HighlightedText = styled.span`
+  ${getHighlightCss}
+`;
