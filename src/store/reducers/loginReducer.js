@@ -8,7 +8,7 @@ import {
   VERIFICATION_CODE,
 } from 'const/LoginRoutes';
 
-const { GlobalUtilities } = window;
+const { GlobalUtilities, IsAuthenticated } = window;
 export const loginSlice = createSlice({
   name: 'auth',
 
@@ -39,7 +39,7 @@ export const loginSlice = createSlice({
     resendVerifyCodeTimeout: null,
     resendVerifyCodeTotalTimeout: null,
     resendVerifyCodeToken: null,
-    isAuthenticated: false,
+    isAuthenticated: IsAuthenticated,
     lastLoginModal: false,
     lastLogins: null,
     lastLoginMessage: null,
@@ -144,10 +144,12 @@ export const loginSlice = createSlice({
     signupLoadFilesSuccess: (state, action) => {
       state.fetchingFiles = false;
       state.passwordPolicy = action.payload;
-      state.currentRoute = SIGN_UP_EMAIL;
     },
     signupLoadFilesFailed: (state, action) => {
       state.fetchingFiles = false;
+    },
+    logoutSuccess: (state, action) => {
+      state.isAuthenticated = false;
     },
     setEmail: (state, action) => {
       state.email = action.payload;
@@ -212,6 +214,14 @@ export const loginSlice = createSlice({
       state.nameError = null;
       state.familyError = null;
       state.orgDomainsError = null;
+    },
+    resetAllInputs: (state, action) => {
+      state.password = '';
+      state.verifyCode = '';
+      state.email = '';
+      state.name = '';
+      state.family = '';
+      state.orgDomains = [];
     },
     showLastLogins: (state, action) => {
       state.lastLoginModal = true;
