@@ -4,7 +4,7 @@
 import { Link } from 'react-router-dom';
 import NavButtonsList from './buttonsList';
 import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
-import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
+import NavbarIcons from '../components/NavbarIcons/NavbarIcons';
 import * as Styled from '../Navbar.styles';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 
