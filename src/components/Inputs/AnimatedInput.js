@@ -9,7 +9,7 @@ import {
   Placeholder,
 } from './AnimatedInput.style';
 
-const { GlobalUtilities, RV_RTL } = window;
+const { GlobalUtilities } = window;
 
 /**
  * By user starting to type, placeholder goes on border with some animations
@@ -40,14 +40,13 @@ const AnimatedInput = ({
   ...props
 }) => {
   // True if 'Input' is focused.
-  const [inputFocused, _setFocused] = useState(false);
+  const [inputFocused, _setFocused] = useState(!!value);
 
   /*
   //True if user clicks the 'VisibleMe'.
   //False if user clicks the 'InVisibleMe'.
   const [passVisible, setPassVisible] = useState(false);
   */
-
   const [inputValue, setInputValue] = useState('');
 
   const setFocused = (value) => {
@@ -65,9 +64,6 @@ const AnimatedInput = ({
           <StyledInput
             value={value}
             type={type}
-            style={{
-              [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem',
-            }}
             onFocus={(e) => {
               if (GlobalUtilities.get_type(onFocus) == 'function') onFocus(e);
               setFocused(true);
