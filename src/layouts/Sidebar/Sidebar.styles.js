@@ -1,6 +1,8 @@
+import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import Edit from 'components/Icons/EditIcon/Edit';
-import { forwardRef } from 'react';
+import withTheme from 'components/withTheme/withTheme';
+import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
 const FlexBetween = css`
   display: flex;
@@ -22,39 +24,43 @@ export const CenterIcon = styled.div`
   ${FlexCenter}
 `;
 
-export const SidebarContainer = styled.div`
+export const SidebarContainer = withTheme(styled.div`
   height: 100%;
-  width: ${({ width }) => `${width}px`};
+  width: ${(props) =>
+    `${props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
   position: fixed;
   z-index: 100;
   top: 0;
   right: 0;
-  background-color: #15113c;
   overflow: hidden;
   color: #fff;
   box-shadow: 10px 0px 15px 10px #000;
   transition: all 0.7s ease;
-`;
+`);
 
-export const ContentWrapper = styled.div`
-  width: ${({ options }) => (options.isSidebarOpen ? '110%' : '140%')};
+export const ContentWrapper = withTheme(styled.div`
+  width: ${(props) => (props.theme.states.isSidebarOpen ? '110%' : '140%')};
   position: absolute;
   top: 0;
-  bottom: ${({ options }) => (options.isSettingShown ? '-10vh' : '-3vh')};
+  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
   left: -1.1rem;
   overflow: scroll;
-  margin-bottom: 6vh;
   padding: 0 1.1rem;
-  margin-top: 10vh;
-`;
+  margin-top: 4rem;
+  margin-bottom: 5vh;
+`);
 
-export const SidebarHeader = styled.div`
+export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
-  height: 4.1rem;
-  z-index: 1000;
+  height: 4rem;
+  width: ${(props) =>
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px;
+  z-index: 10;
   padding: 0 1.1rem;
-  background-color: #15113c;
-`;
+  position: fixed;
+  top: 0;
+  transition: all 0.7s ease;
+`);
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
@@ -64,14 +70,15 @@ export const ToggleArrow = styled.div`
 
 export const SidebarTitle = styled.div`
   ${FlexBetween}
-  font-size: 16px;
-  height: 12%;
+  font-size: 1rem;
+  height: 3.7rem;
 `;
 
 export const SearchWrapper = styled.div`
-  ${FlexBetween}
   border-bottom: 1px solid #707070;
   margin-bottom: 1rem;
+  padding: 0.3rem;
+  position: relative;
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -85,12 +92,24 @@ export const SearchInput = styled.input.attrs((props) => ({
   outline: 0;
 `;
 
+export const SearchList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 1rem;
+`;
+
+export const SearchListItem = styled.div`
+  margin: 0.2rem 0;
+  padding: 0.4rem;
+  color: #fff;
+`;
+
 export const SidebarFooter = styled.div`
-  background-color: #2b388f;
   height: 6%;
   display: flex;
   position: relative;
-  top: 84%;
+  top: 94%;
   justify-content: center;
   align-items: center;
   color: #fff;
@@ -98,12 +117,16 @@ export const SidebarFooter = styled.div`
   transition: all 0.7s ease;
 `;
 
-export const FooterTitle = styled.span`
+export const FooterIconWrapper = withTheme(styled.div`
+  margin-right: ${(props) => (props.theme.states.isSidebarOpen ? '0' : '3rem')};
+`);
+
+export const FooterTitle = withTheme(styled.span`
   margin-right: 0.5rem;
   position: relative;
-  top: ${({ isSidebarOpen }) => (isSidebarOpen ? '0px' : '100px')};
+  top: ${(props) => (props.theme.states.isSidebarOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
-`;
+`);
 
 //! This solution used because of conflict with DnD props passing down to styled component.
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
@@ -171,25 +194,30 @@ export const ListItemWrapper = styled.div`
 `;
 
 export const SettingWrapper = styled.div`
-  background-color: #171c4d;
   border-radius: 50%;
   padding: 0.3rem;
-  margin-left: -0.5rem;
+  margin-left: -0.1rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
 
-export const SettingList = styled.div`
+export const PanelWrapper = styled.div`
   ${FlexCenter}
   margin: 0.5rem 0;
   margin-right: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  color: #fff;
   :hover {
     background-color: #171c4d;
   }
   transition: all 0.3s linear;
+`;
+
+export const PanelImage = styled.img`
+  width: 1.2rem;
+  filter: brightness(0) invert(100%);
 `;
 
 export const CloseContentContainer = styled.div`
@@ -197,7 +225,8 @@ export const CloseContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   position: relative;
-  height: 70vh;
+  overflow: hidden;
+  height: 73vh;
 `;
 
 const arrowCss = css`
@@ -232,7 +261,7 @@ export const IconListWrap = styled.div`
   position: absolute;
   padding: 0 0.3rem;
   top: 0;
-  left: -1rem;
+  left: -30%;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -252,10 +281,30 @@ export const MenuTreeContainer = styled.div`
   transition: all 0.5s ease;
 `;
 
-export const EditIcon = styled(Edit).attrs(({ size }) => ({ size }))`
-  margin-left: ${({ isSidebarOpen }) => (isSidebarOpen ? '0' : '-2rem')};
+export const UnderMenuContainer = styled.div`
+  padding: 0 0.3rem 3rem 0.3rem;
 `;
 
-export const UnderMenuContainer = styled.div`
-  padding-bottom: 3rem;
+export const FilterIconWrapper = styled.div`
+  position: absolute;
+  left: 0.3rem;
+  bottom: 0;
+`;
+
+export const PanelLink = styled.div`
+  margin-right: 0.4rem;
+`;
+
+const getHighlightCss = ({ isMatch }) => {
+  return isMatch
+    ? `
+    font-weight: bold;
+    padding: 0 0.2rem;
+    border-radius: 0.5rem;
+    `
+    : null;
+};
+
+export const HighlightedText = styled.span`
+  ${getHighlightCss}
 `;

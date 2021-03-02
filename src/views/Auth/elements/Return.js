@@ -1,6 +1,7 @@
 /**
  * A button for returning to the previous page.
  */
+import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { FORGOT_PASSWORD, SIGN_IN } from 'const/LoginRoutes';
 import React from 'react';
@@ -40,7 +41,10 @@ const Return = () => {
     <UpToDownAnimate
       isVisible={isVisible(currentRoute)}
       style={{ marginTop: '2rem' }}>
-      <TextButton onClick={onReturn}>{RVDic.Return}</TextButton>
+      {/* <TextButton onClick={onReturn}>{RVDic.Return}</TextButton> */}
+      <Button type="secondary-o" style={{ width: '100%' }} onClick={onReturn}>
+        {RVDic.Return}
+      </Button>
     </UpToDownAnimate>
   );
 };

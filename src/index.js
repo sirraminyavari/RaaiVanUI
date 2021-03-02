@@ -1,13 +1,12 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy, StrictMode } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { PrivateRoute, PublicRoute } from 'utils/RouteHandler';
+import PrivateRoute from 'utils/RouteHandler/PrivateRoute';
+import PublicRoute from 'utils/RouteHandler/PublicRoute';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
-import LogoLoader from 'components/LogoLoader/LogoLoader';
-
-//TODO: Move to redux Provider
-import { RVGlobalProvider } from 'context/RVGlobalProvider';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import 'assets/css/index.css';
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
@@ -17,21 +16,19 @@ const Login = lazy(() =>
 );
 
 render(
-  <React.StrictMode>
+  <StrictMode>
     <StoreProvider>
-      <RVGlobalProvider>
-        <ErrorBoundry>
-          <Suspense fallback={<LogoLoader size={10} />}>
-            <Router>
-              <Switch>
-                <PublicRoute exact path="/login" component={Login} />
-                <PrivateRoute path="/" component={MainLayout} />
-              </Switch>
-            </Router>
-          </Suspense>
-        </ErrorBoundry>
-      </RVGlobalProvider>
+      <ErrorBoundry>
+        <Suspense fallback={<LogoLoader size={10} />}>
+          <Router>
+            <Switch>
+              <PublicRoute exact path="/login" component={Login} />
+              <PrivateRoute path="/" component={MainLayout} />
+            </Switch>
+          </Router>
+        </Suspense>
+      </ErrorBoundry>
     </StoreProvider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 );

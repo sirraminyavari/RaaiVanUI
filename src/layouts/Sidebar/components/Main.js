@@ -1,18 +1,41 @@
-import * as Styled from '../Sidebar.styles';
-import FilterIcon from 'components/Icons/FilterIcon/Filter';
+/**
+ * Renders regular sidebar with its menu.
+ */
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import SidebarMenuTrees from './MenuTrees';
 import UnderMenuList from './UnderMenuList';
+import SearchBox from './SearchBox';
+import SearchResultsList from './SearchResultsList';
 
 const SidebarMain = () => {
+  const dispatch = useDispatch();
+  const { setSearchText } = sidebarMenuSlice.actions;
+  const searchText = useSelector((state) => state.sidebarItems.searchText);
+
+  //! If true, Shows search results, Otherwise Shows sidebar menu.
+  const showSearch = () => searchText.length >= 3;
+
+  useEffect(() => {
+    //! clean up
+    return () => {
+      dispatch(setSearchText(''));
+    };
+  }, []);
+
   return (
     <>
-      <Styled.SearchWrapper>
-        <Styled.SearchInput text="جستجو در کلاس  و دسته" />
-        <FilterIcon />
-      </Styled.SearchWrapper>
-      <SidebarMenuTrees />
-      <hr />
-      <UnderMenuList />
+      <SearchBox />
+      {showSearch() ? (
+        <SearchResultsList />
+      ) : (
+        <>
+          <SidebarMenuTrees />
+          <hr />
+          <UnderMenuList />
+        </>
+      )}
     </>
   );
 };

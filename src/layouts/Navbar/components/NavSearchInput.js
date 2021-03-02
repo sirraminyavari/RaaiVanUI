@@ -1,3 +1,6 @@
+/**
+ * Renders a customized search input for navbar.
+ */
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 

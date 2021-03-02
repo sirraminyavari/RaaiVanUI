@@ -27,6 +27,18 @@ const appear = keyframes`
 
   }
 `;
+
+/**
+ * Shakes the children components in Horizontal axis by changing the distance to right
+ */
+const right = keyframes`
+
+  0%   {right: -1%}
+  25%  {right: 1%}
+  50%  {right: -1%}
+  75%  {right: 1%}
+  100% {right: -1%}
+`;
 export const Container = styled.div`
   display: flex;
   width: 100%;
@@ -68,7 +80,7 @@ export const DropDownButton = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 0.75rem;
-  border: 0.5px solid #bac9dc;
+  border: ${({ error }) => (error ? '0.5px solid red' : '0.5px solid #bac9dc')};
   background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 0.3rem;
   margin-top: 1.5rem;
@@ -86,4 +98,28 @@ export const Rotater = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+`;
+export const Error = styled.span`
+  color: red;
+  font-size: 0.75rem;
+  margin-left: 13px;
+  position: relative;
+  text-align: ${RV_Float};
+  margin-top: 3px;
+  opacity: ${({ error }) => (error ? 1 : 0)};
+  max-height: ${({ error }) => (error ? '5rem' : 0)};
+  min-height: ${({ error }) => (error ? '0rem' : '0rem')};
+  transition: max-height 1s, opacity 1s, min-height 1s;
+`;
+export const ShakeAnimate = styled.div`
+  position: relative;
+
+  animation: ${({ isVisible }) =>
+    isVisible &&
+    css`
+      ${right} 0.2s
+    `};
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 `;

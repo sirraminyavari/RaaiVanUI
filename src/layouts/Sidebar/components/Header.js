@@ -1,6 +1,9 @@
+/**
+ * Renders header component for sidebar.
+ */
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
+import { useDispatch } from 'react-redux';
+import withTheme from 'components/withTheme/withTheme';
 import { Link } from 'react-router-dom';
 import Logo from 'assets/images/logo.svg';
 import * as Styled from '../Sidebar.styles';
@@ -8,11 +11,13 @@ import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
+import { BG_WARMER } from 'constant/Colors';
 
-const SidebarHeader = () => {
+const SidebarHeader = (props) => {
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = themeSlice.actions;
-  const { isSidebarOpen } = useSelector((state) => state.theme);
+  const { toggleSidebar, toggleSetting } = props.theme.actions;
+  const { isSidebarOpen } = props.theme.states;
+
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
@@ -20,7 +25,8 @@ const SidebarHeader = () => {
     query: '(max-width: 975px)',
   });
 
-  const toggleMenu = () => {
+  //! Toggle sidebar drawer on click.
+  const toggleDrawer = () => {
     if (isMobileScreen) return;
     dispatch(toggleSidebar(!isSidebarOpen));
     if (isSidebarOpen) {
@@ -35,17 +41,17 @@ const SidebarHeader = () => {
   }, [isMobileNav]);
 
   return (
-    <Styled.SidebarHeader>
+    <Styled.SidebarHeader className={BG_WARMER}>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img src={Logo} width="120" alt="logo-icon" />
         </Link>
       )}
-      <Styled.ToggleArrow onClick={toggleMenu}>
+      <Styled.ToggleArrow onClick={toggleDrawer}>
         <ToggleIcon dir={isSidebarOpen ? '' : 'left'} size={25} color="#fff" />
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );
 };
 
-export default SidebarHeader;
+export default withTheme(SidebarHeader);

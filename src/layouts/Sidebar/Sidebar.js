@@ -1,12 +1,17 @@
+/**
+ * Renders whole sidebar area for non-mobile screens.
+ */
 import { lazy, Suspense, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as Styled from './Sidebar.styles';
-import { themeSlice } from 'store/reducers/themeReducer';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
-import LogoLoader from 'components/LogoLoader/LogoLoader';
+import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import { BG_WARMER } from 'constant/Colors';
+import withTheme from 'components/withTheme/withTheme';
+
 const SidebarContentOpen = lazy(() =>
   import(
     /* webpackChunkName: "sidebar-open-content"*/ './components/ContentOpen'
@@ -18,35 +23,22 @@ const SidebarContentClose = lazy(() =>
   )
 );
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = themeSlice.actions;
-  const { isSidebarOpen, isSettingShown } = useSelector((state) => state.theme);
-
-  const handleSettings = () => {
-    if (!isSidebarOpen) {
-      dispatch(toggleSidebar(true));
-      dispatch(toggleSetting(true));
-    } else {
-      dispatch(toggleSetting(!isSettingShown));
-    }
-  };
+  const { isSidebarOpen, isSettingShown } = props.theme.states;
 
   useEffect(() => {
     dispatch(getSidebarNodes());
+    dispatch(getConfigPanels());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen]);
 
   return (
-    <Styled.SidebarContainer width={isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}>
+    <Styled.SidebarContainer className={BG_WARMER}>
       <SidebarHeader />
-      <Styled.ContentWrapper options={{ isSidebarOpen, isSettingShown }}>
+      <Styled.ContentWrapper>
         <Suspense fallback={<LogoLoader size={10} />}>
-          {isSidebarOpen ? (
-            <SidebarContentOpen handleSettings={handleSettings} />
-          ) : (
-            <SidebarContentClose handleSettings={handleSettings} />
-          )}
+          {isSidebarOpen ? <SidebarContentOpen /> : <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>
       {!isSettingShown && <SidebarFooter />}
@@ -54,4 +46,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default withTheme(Sidebar);

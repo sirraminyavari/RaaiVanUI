@@ -1,5 +1,5 @@
-import { sidebarMenuSlice } from '../../reducers/sidebarMenuReducer';
-import APIHandler from '../../../apiHelper/APIHandler';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import APIHandler from 'apiHelper/APIHandler';
 
 const { setSidebarNodes } = sidebarMenuSlice.actions;
 const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');

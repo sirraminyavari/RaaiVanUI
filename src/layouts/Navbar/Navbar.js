@@ -1,16 +1,22 @@
-import { lazy, Suspense, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+/**
+ * Renders whole navbar area for app.
+ */
+import { lazy, Suspense } from 'react';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import withTheme from 'components/withTheme/withTheme';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
+import AvatarMenu from './components/AvatarMenu';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
+import { BG_WARM } from 'constant/Colors';
 const NavWideScreenMenu = lazy(() =>
   import(
     /* webpackChunkName: "nav-wide-screen-menu-component"*/ './components/NavWideScreenMenu'
@@ -22,8 +28,9 @@ const NavMobileMenu = lazy(() =>
   )
 );
 
-const Navbar = () => {
-  const { isSidebarOpen } = useSelector((state) => state.theme);
+const Navbar = (props) => {
+  const { isSidebarOpen } = props.theme.states;
+
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
     query: `(min-width: ${MEDIUM_BOUNDRY})`,
@@ -49,27 +56,31 @@ const Navbar = () => {
   };
 
   return (
-    <Styled.NavbarContainer
-      isSidebarOpen={isSidebarOpen}
-      isMobile={isMobileScreen}>
+    <Styled.NavbarContainer className={BG_WARM} isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
         {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (
           <AutoSuggestInput
+            style={{ margin: '0 1.5rem' }}
             endpoint="names"
-            onSearchChange={(value) => console.log(value)}
+            onItemSelect={(value) => console.log(value)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
             <NavbarSearchInput />
           </AutoSuggestInput>
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
-        <Avatar />
+        <PopupMenu trigger="click">
+          <div>
+            <Avatar />
+          </div>
+          <AvatarMenu />
+        </PopupMenu>
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
 };
 
-export default Navbar;
+export default withTheme(Navbar);

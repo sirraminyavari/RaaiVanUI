@@ -1,3 +1,6 @@
+/**
+ * Renders sub-menus(branches) for each main(root) menu item.
+ */
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
@@ -9,6 +12,7 @@ import { reorder } from 'helpers/helpers';
 const SidebarMenuBranches = ({ isOpen, menuList }) => {
   const [menus, setMenus] = useState(menuList);
 
+  //! Calls whenever item dragging ended and reorders menu list.
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const newMenus = reorder(

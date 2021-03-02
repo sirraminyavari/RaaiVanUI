@@ -8,6 +8,7 @@ import * as Styled from './Main.styles';
 import { useMediaQuery } from 'react-responsive';
 import SidebarHeader from './Sidebar/components/Header';
 import { MOBILE_BOUNDRY } from 'constant/constants';
+import TestView from 'views/TestView/TestView';
 
 const switchRoutes = (
   <Switch>
@@ -29,6 +30,7 @@ const switchRoutes = (
         />
       );
     })}
+    <Route exact path="/test" component={TestView} />
     <Redirect from="/" to="/teams" />
   </Switch>
 );

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 const { GlobalUtilities } = window;
+const ITEM_HEIGHT = 2.1;
 
 const FlexBetween = css`
   display: flex;
@@ -9,6 +10,9 @@ const FlexBetween = css`
 
 export const InputContainer = styled.div`
   position: relative;
+  &:focus-within ul {
+    display: revert;
+  }
 `;
 
 export const ComponentWrapper = styled.div.attrs((props) => ({
@@ -19,8 +23,7 @@ export const ComponentWrapper = styled.div.attrs((props) => ({
 `;
 
 export const LoaderWrapper = styled.div`
-  position: absolute;
-  left: 1.6rem;
+  margin: 20px 0;
 `;
 
 export const InputElementWrapper = styled.div.attrs((props) => ({
@@ -38,32 +41,64 @@ export const Input = styled.input`
   width: 90%;
 `;
 
-export const List = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
-  width: ${({ hasChildren }) => (hasChildren ? '85%' : '100%')};
-  min-height: ${({ items, hasError }) =>
-    items.length === 0
-      ? '0'
-      : hasError
-      ? '3.5rem'
-      : `${items.length * 2.2 + 4.7}rem`};
-  height: ${({ items }) =>
-    items.length === 0 ? '0' : `${items.length * 2.2}rem`};
+const getMenuHeigth = ({ items }) => {
+  if (items.length === 0) {
+    return 'height: 4.3rem;';
+  } else {
+    if (items.length >= 6) {
+      return `height: ${items.length * ITEM_HEIGHT}rem;`;
+    } else {
+      return `height: ${items.length * ITEM_HEIGHT + 6}rem;`;
+    }
+  }
+};
+
+export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
+  width: 100%;
+  ${getMenuHeigth}
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
-  left: ${({ hasChildren }) => (hasChildren ? '1.6rem' : '0')};
+  display: none;
+  text-align: center;
   overflow: hidden;
   z-index: ${GlobalUtilities.zindex.dialog()};
   transition: all 0.7s ease;
 `;
 
+const getScrollDisplay = ({ items }) => {
+  return items.length * ITEM_HEIGHT < 13 ? 'display: none;' : null;
+};
+
+export const ListItemsContainer = styled.div`
+  position: absolute;
+  max-height: 13.5rem;
+  width: 95%;
+  margin-top: 0.7rem;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    background: #fff;
+    width: 5px;
+    ${getScrollDisplay}
+  }
+  // &:hover {
+  //   &::-webkit-scrollbar-thumb{
+  //     background: red;
+  //   }
+  // }
+  // transition: all 0.7s ease;
+`;
+
 export const ListItems = styled.li`
   cursor: ${({ hasError }) => (hasError ? 'revert' : 'pointer')};
   padding: 0.3rem 0.7rem;
-  margin-left: 1.9rem;
+  margin: 0.3rem 0 0.3rem 0.5rem;
   list-style: none;
   display: flex;
   justify-content: end;
   align-items: center;
+  border: 1px solid #333;
+  border-radius: 0.3rem;
+  color: #000;
 `;
 
 export const Error = styled.div`
@@ -80,21 +115,11 @@ export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1rem 0.5rem;
   margin: 0 -1.25rem;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-`;
-
-export const ListItemsContainer = styled.div`
-  position: absolute;
-  left: -1.25rem;
-  max-height: 16rem;
-  width: 100%;
-  margin-top: 0.7rem;
-  margin-left: 0.3rem;
-  overflow-y: auto;
 `;
 
 const getHighlightCss = ({ isMatch }) => {

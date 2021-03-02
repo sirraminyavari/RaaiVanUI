@@ -1,24 +1,31 @@
+/**
+ * Renders Settings or config panel links instead of regular menu in sidebar.
+ */
+import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
-import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
+import { Link } from 'react-router-dom';
 
-const settingList = [
-  'سطوح محرمانگی',
-  'مدیران سامانه',
-  'پیکربندی نقشه',
-  'فرآیند های ارزیابی دانش',
-  'فرم ها',
-  'درخت های مستندات',
-];
+const { RVDic } = window;
 
 const SidebarManagement = () => {
+  const panels = useSelector((state) => state.sidebarItems.configPanels);
+
   return (
     <>
-      {settingList.map((item, key) => {
+      {panels.map((panel, key) => {
         return (
-          <Styled.SettingList key={key}>
-            <ArrowIcon dir="left" size={20} />
-            <span style={{ marginRight: '5px' }}>{item}</span>
-          </Styled.SettingList>
+          <Styled.PanelWrapper
+            as={Link}
+            to={`/configuration/${panel.URL}`}
+            key={key}>
+            <Styled.PanelImage
+              src={`${process.env.PUBLIC_URL}/images/icons/${panel.Icon}`}
+              alt="panel-icon"
+            />
+            <Styled.PanelLink>
+              {RVDic.PRVC[panel.Name] || RVDic[panel.Name] || panel.Name}
+            </Styled.PanelLink>
+          </Styled.PanelWrapper>
         );
       })}
     </>

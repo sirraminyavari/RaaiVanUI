@@ -7,12 +7,25 @@ export const sidebarMenuSlice = createSlice({
     nodeTypes: [],
     tree: [],
     openMenuID: [],
+    searchText: '',
+    configPanels: [],
   },
   reducers: {
     setSidebarNodes: (state, action) => {
-      state.nodeTypes = action.payload.NodeTypes;
-      if (state.tree.length !== action.payload.Tree.length) {
-        state.tree = action.payload.Tree;
+      state.nodeTypes = action.payload.NodeTypes?.filter(
+        (node) => !node.Hidden
+      );
+      if (state.tree.length !== action.payload?.Tree.length) {
+        state.tree = action.payload.Tree.filter((node) => !node.Hidden).map(
+          (tree) => {
+            if (tree.Sub) {
+              let newSub = tree.Sub.filter((s) => !s.Hidden);
+              tree.Sub = newSub;
+              return tree;
+            }
+            return tree;
+          }
+        );
       }
     },
     toggleSidebarMenu: (state, action) => {
@@ -27,6 +40,12 @@ export const sidebarMenuSlice = createSlice({
     },
     setReorderedTree: (state, action) => {
       state.tree = action.payload;
+    },
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
+    },
+    setConfigPanels: (state, action) => {
+      state.configPanels = action.payload;
     },
   },
 });
