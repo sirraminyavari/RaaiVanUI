@@ -22,8 +22,6 @@ const { GlobalUtilities, RV_RTL } = window;
  * @param {React.CSSProperties} style - Inline style for 'Container'.
  * @param {String} value - Typed value.
  * @param {String} error - If it has value, the Input border changes to RED and shows the 'error' value under it.
- * @param {Boolean} editable - If True, the user can edit the input value by clicking the 'Edit' icon on the left side of Input.
- * @callback onEdit - Fires by clicking the 'Edit' icon.
  * @callback onChange - Fires when the user typing a new char.
  * @param {object} props - Other params that don't include above.
  */
@@ -33,17 +31,22 @@ const AnimatedInput = ({
   style,
   value = '',
   error = null,
+  /*
   editable = false,
   onEdit,
+  */
   onChange,
+  children,
   ...props
 }) => {
   // True if 'Input' is focused.
   const [inputFocused, _setFocused] = useState(false);
 
+  /*
   //True if user clicks the 'VisibleMe'.
   //False if user clicks the 'InVisibleMe'.
   const [passVisible, setPassVisible] = useState(false);
+  */
 
   const [inputValue, setInputValue] = useState('');
 
@@ -53,21 +56,15 @@ const AnimatedInput = ({
     _setFocused(value);
   };
 
-  const hasButton = type === 'password' || editable;
-
   return (
     <>
-      <Container
-        style={style}
-        inputFocused={inputFocused}
-        editable={editable}
-        hasButton={!!hasButton}>
+      <Container style={style} inputFocused={inputFocused}>
         <Label
           className={inputFocused ? 'active' : ''}
           inputFocused={inputFocused}>
           <StyledInput
             value={value}
-            type={passVisible ? 'text' : type}
+            type={type}
             style={{
               [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem',
             }}
@@ -76,7 +73,6 @@ const AnimatedInput = ({
               e.preventDefault();
               setFocused();
             }}
-            disabled={editable}
             onChange={(event) => {
               setInputValue(event.target.value);
               onChange(event.target.value);
@@ -84,27 +80,30 @@ const AnimatedInput = ({
             }}
             error={error}
             onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}>
-            {!hasButton ? null : type === 'password' ? (
-              passVisible ? (
-                <InvisibleIcon
-                  className="rv-gray"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(false)}
-                />
+            {/*
+              !hasButton ? null : type === 'password' ? (
+                passVisible ? (
+                  <InvisibleIcon
+                    className="rv-gray"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setPassVisible(false)}
+                  />
+                ) : (
+                  <VisibleIcon
+                    className="rv-gray"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setPassVisible(true)}
+                  />
+                )
               ) : (
-                <VisibleIcon
-                  className="rv-gray"
+                <Edit
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(true)}
+                  onClick={onEdit}
+                  size={'1.5rem'}
                 />
               )
-            ) : (
-              <Edit
-                style={{ cursor: 'pointer' }}
-                onClick={onEdit}
-                size={'1.5rem'}
-              />
-            )}
+              */}
+            {children}
           </StyledInput>
           <Placeholder
             className={`rv-border-radius-quarter ${
