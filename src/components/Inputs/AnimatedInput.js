@@ -1,7 +1,6 @@
 /**
  * An input component that animates placeholder position
  */
-import Edit from 'components/Icons/Edit';
 import React, { useState } from 'react';
 import {
   Container,
@@ -9,9 +8,6 @@ import {
   Label,
   Placeholder,
 } from './AnimatedInput.style';
-
-import VisibleIcon from '../Icons/VisibleIcon';
-import InvisibleIcon from '../Icons/InVisible';
 
 const { GlobalUtilities, RV_RTL } = window;
 
@@ -22,6 +18,8 @@ const { GlobalUtilities, RV_RTL } = window;
  * @param {React.CSSProperties} style - Inline style for 'Container'.
  * @param {String} value - Typed value.
  * @param {String} error - If it has value, the Input border changes to RED and shows the 'error' value under it.
+ * @callback onFocus - Fires when the input receives the focus.
+ * @callback onBlur - Fires when the loses the focus.
  * @callback onChange - Fires when the user typing a new char.
  * @param {object} props - Other params that don't include above.
  */
@@ -35,6 +33,8 @@ const AnimatedInput = ({
   editable = false,
   onEdit,
   */
+  onFocus,
+  onBlur,
   onChange,
   children,
   ...props
@@ -68,9 +68,13 @@ const AnimatedInput = ({
             style={{
               [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem',
             }}
-            onFocus={() => setFocused(true)}
+            onFocus={(e) => {
+              if (GlobalUtilities.get_type(onFocus) == 'function') onFocus(e);
+              setFocused(true);
+            }}
             onBlur={(e) => {
               e.preventDefault();
+              if (GlobalUtilities.get_type(onBlur) == 'function') onBlur(e);
               setFocused();
             }}
             onChange={(event) => {
@@ -79,7 +83,8 @@ const AnimatedInput = ({
               setFocused();
             }}
             error={error}
-            onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}>
+            onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
+            {...props}>
             {/*
               !hasButton ? null : type === 'password' ? (
                 passVisible ? (
