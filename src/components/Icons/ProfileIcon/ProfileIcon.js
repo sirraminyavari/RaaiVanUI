@@ -1,7 +1,7 @@
-import { RiUserSearchLine } from 'react-icons/ri';
+import { BiUserCircle } from 'react-icons/bi';
 
 const ProfileIcon = (props) => {
-  return <RiUserSearchLine {...props} />;
+  return <BiUserCircle {...props} />;
 };
 
 export default ProfileIcon;

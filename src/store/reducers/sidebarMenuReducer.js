@@ -11,21 +11,21 @@ export const sidebarMenuSlice = createSlice({
     configPanels: [],
   },
   reducers: {
-    setSidebarNodes: (state, action) => {
-      state.nodeTypes = action.payload.NodeTypes?.filter(
-        (node) => !node.Hidden
-      );
-      if (state.tree.length !== action.payload?.Tree.length) {
-        state.tree = action.payload.Tree.filter((node) => !node.Hidden).map(
-          (tree) => {
+    setSidebarNodeTypes: (state, action) => {
+      state.nodeTypes = action.payload.filter((node) => !node.Hidden);
+    },
+    setSidebarTree: (state, action) => {
+      if (state.tree.length !== action.payload.length) {
+        state.tree = action.payload
+          .filter((node) => !node.Hidden)
+          .map((tree) => {
             if (tree.Sub) {
               let newSub = tree.Sub.filter((s) => !s.Hidden);
               tree.Sub = newSub;
               return tree;
             }
             return tree;
-          }
-        );
+          });
       }
     },
     toggleSidebarMenu: (state, action) => {

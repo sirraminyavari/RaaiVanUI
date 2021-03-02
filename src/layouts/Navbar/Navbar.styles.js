@@ -189,6 +189,8 @@ export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   alignitems: center;
+  width: 14rem;
+  padding: 0.5rem 0.7rem;
 `;
 
 export const AvatarMenuItem = styled.div`
@@ -200,11 +202,13 @@ export const AvatarMenuItem = styled.div`
   color: #000;
   border-radius: 0.4rem;
   cursor: pointer;
-  &:hover {
-    background-color: gray;
-  }
 `;
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
+  color: ${({ color }) => color};
+`;
+
+export const Divider = styled.div`
+  margin: 0.5rem 0;
 `;
