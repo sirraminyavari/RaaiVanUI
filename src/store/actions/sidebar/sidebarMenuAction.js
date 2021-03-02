@@ -1,7 +1,7 @@
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import APIHandler from 'apiHelper/APIHandler';
 
-const { setSidebarNodes } = sidebarMenuSlice.actions;
+const { setSidebarNodeTypes, setSidebarTree } = sidebarMenuSlice.actions;
 const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
 const getSidebarNodes = () => async (dispatch) => {
@@ -14,7 +14,12 @@ const getSidebarNodes = () => async (dispatch) => {
         CheckAccess: true,
         ParseResults: true,
       },
-      (response) => dispatch(setSidebarNodes(response)),
+      (response) => {
+        if (response.NodeTypes || response.Tree) {
+          dispatch(setSidebarNodeTypes(response.NodeTypes));
+          dispatch(setSidebarTree(response.Tree));
+        }
+      },
       (error) => console.log({ error })
     );
   } catch (err) {
