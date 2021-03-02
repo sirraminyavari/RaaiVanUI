@@ -82,7 +82,7 @@ const PopupMenu = (props) => {
       if (hideTimeOut) clearTimeout(hideTimeOut);
       hideTimeOut = null;
     };
-  });
+  }, []);
 
   useOutsideClick(
     (e) => {

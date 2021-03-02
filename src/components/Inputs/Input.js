@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const { GlobalUtilities, RV_Float, RV_RevFloat } = window;
+const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
 
 /**
  * @typedef PropType
  * @property {string} type - type of the input e.g. text, password, etc.
  * @property {boolean | string} error - true means there is an error and strgin value means there is an erorr with a message
- * @property {method} onChange - handles the change event of the input
+ * @property {boolean | number} shake - if true or be a positive number, the component will shake for a second
  * @property {object} children - a component that will be rendedred as a button
  */
 
@@ -21,7 +21,7 @@ const { GlobalUtilities, RV_Float, RV_RevFloat } = window;
 const Input = ({
   type,
   error,
-  onChange,
+  shake,
   className,
   style,
   children,
@@ -32,22 +32,26 @@ const Input = ({
   const errorMessage =
     GlobalUtilities.get_type(error) == 'string' ? error : null;
 
+  let shakeTimeout = null;
+
+  const [shaking, setShaking] = useState(false);
+
   useEffect(() => {
-    if (inputRef.current && (window.Object || {}).getOwnPropertyDescriptor) {
-      var descriptor = Object.getOwnPropertyDescriptor(
-        HTMLInputElement.prototype,
-        'value'
-      );
-      var originalSet = descriptor.set;
+    if (!!shake && !!error) doShake();
+  }, [shake]);
 
-      descriptor.set = function () {
-        originalSet.apply(this, arguments);
-        onChange();
-      };
+  useEffect(() => {
+    return () => {
+      if (shakeTimeout) clearTimeout(shakeTimeout);
+    };
+  }, []);
 
-      Object.defineProperty(inputRef.current, 'value', descriptor);
-    }
-  }, [inputRef]);
+  const doShake = () => {
+    setShaking(true);
+    shakeTimeout = setTimeout(() => setShaking(false), 500);
+  };
+
+  const hasButton = GlobalUtilities.get_type(children) == 'json';
 
   return (
     <InputContainer>
@@ -55,17 +59,23 @@ const Input = ({
         ref={inputRef}
         type={type}
         className={
-          'rv-input' + (error ? ' rv-input-invalid ' : ' ') + className
+          'rv-input' +
+          (error ? ' rv-input-invalid ' : ' ') +
+          (shaking ? ' rv-shake ' : ' ') +
+          className
         }
-        style={GlobalUtilities.extend(style || {}, {
-          position: 'relative',
-        })}
-        onChange={onChange}
+        style={GlobalUtilities.extend(
+          style || {},
+          {
+            position: 'relative',
+          },
+          !hasButton
+            ? {}
+            : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
+        )}
         {...props}
       />
-      {GlobalUtilities.get_type(children) == 'json' && (
-        <ButtonContainer>{children}</ButtonContainer>
-      )}
+      {hasButton && <ButtonContainer>{children}</ButtonContainer>}
       {!!errorMessage && (
         <ErrorContainer className="rv-red">{errorMessage}</ErrorContainer>
       )}
@@ -76,12 +86,12 @@ const Input = ({
 Input.propTypes = {
   type: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  onChange: PropTypes.func,
+  shake: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 
 Input.defaultProps = {
   type: 'text',
-  onChange: function (e) {},
+  shake: false,
 };
 
 Input.displayName = 'InputComponent';
