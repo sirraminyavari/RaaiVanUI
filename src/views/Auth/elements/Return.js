@@ -4,7 +4,7 @@
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { FORGOT_PASSWORD, SIGN_IN } from 'const/LoginRoutes';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import styled from 'styled-components';
@@ -13,6 +13,9 @@ import { UpToDownAnimate } from './Animate.style';
 const { RVDic } = window;
 const Return = () => {
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
 
   /**
    * According to 'currentRoute'
@@ -27,8 +30,9 @@ const Return = () => {
         return false;
     }
   };
+
   const { currentRoute } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
+    currentRoute: state.auth.currentRoute,
   }));
   /**
    * By clicking the button, will fire.
@@ -39,6 +43,8 @@ const Return = () => {
 
   return (
     <UpToDownAnimate
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
       isVisible={isVisible(currentRoute)}
       style={{ marginTop: '2rem' }}>
       {/* <TextButton onClick={onReturn}>{RVDic.Return}</TextButton> */}

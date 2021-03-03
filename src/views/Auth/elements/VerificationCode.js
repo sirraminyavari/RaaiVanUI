@@ -13,6 +13,8 @@ const { RV_Float } = window;
 
 const VerificationCode = () => {
   const dispatch = useDispatch();
+  // We use ref to pass component dimensions to 'UpToDownAnimate'
+  const ref = useRef();
   // Index of next char
   const [ind, setIndex] = useState(0);
   // verification code input UI is designed to every char has its cell.
@@ -25,10 +27,10 @@ const VerificationCode = () => {
     verifyCodeError,
     verifyCodeLength,
   } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
-    verifyCode: state.login.verifyCode,
-    verifyCodeError: state.login.verifyCodeError,
-    verifyCodeLength: state.login.verifyCodeLength,
+    currentRoute: state.auth.currentRoute,
+    verifyCode: state.auth.verifyCode,
+    verifyCodeError: state.auth.verifyCodeError,
+    verifyCodeLength: state.auth.verifyCodeLength,
   }));
   // According to verifyCodeLength:
   // Creates an array of '-1' for verification code array.
@@ -113,7 +115,11 @@ const VerificationCode = () => {
   };
 
   return (
-    <UpToDownAnimate isVisible={isVisible()} style={{ marginTop: '2rem' }}>
+    <UpToDownAnimate
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
+      isVisible={isVisible()}
+      style={{ marginTop: '2rem' }}>
       <Container>
         <ShakeAnimate isVisible={verifyCodeError}>
           {inputArray?.length > 0 && isVisible() && <VerifyCodeInputProducer />}

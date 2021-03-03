@@ -1,6 +1,7 @@
 /**
  * A component for inputting email or mobile.
  */
+import Edit from 'components/Icons/Edit';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   FORGOT_PASSWORD,
@@ -11,6 +12,7 @@ import {
   SIGN_UP_PASSWORD,
   VERIFICATION_CODE,
 } from 'const/LoginRoutes';
+import { MAIN_BLUE } from 'constant/Colors';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setEmailAction from 'store/actions/auth/setEmailAction';
@@ -20,12 +22,15 @@ import { UpToDownAnimate } from './Animate.style';
 const { RVDic } = window;
 
 const Email = () => {
-  const ref = useRef(null);
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef(null);
+
   const { currentRoute, email, emailError } = useSelector((state) => ({
-    email: state.login.email,
-    emailError: state.login.emailError,
-    currentRoute: state.login.currentRoute,
+    email: state.auth.email,
+    emailError: state.auth.emailError,
+    currentRoute: state.auth.currentRoute,
   }));
 
   /**
@@ -78,13 +83,12 @@ const Email = () => {
    * user can edit inputted email/mobile or not.
    */
   const diabledEmail = () => {
-    return currentRoute === SIGN_UP_PASSWORD;
+    return currentRoute === VERIFICATION_CODE;
   };
 
   return (
     <UpToDownAnimate
       ref={ref}
-      tabIndex="1"
       isVisible={isVisible()}
       id="email"
       style={{ marginTop: '2.5rem' }}>
@@ -92,11 +96,18 @@ const Email = () => {
         onChange={onEmailChanged}
         value={email}
         placeholder={RVDic.EmailAddress}
-        editable={editable()}
-        onEdit={onEditEmail}
         disabled={diabledEmail()}
         error={emailError}
-        z
+        shake={emailError}
+        children={
+          editable() && (
+            <Edit
+              style={{ cursor: 'pointer', color: MAIN_BLUE }}
+              onClick={onEditEmail}
+              size={'1.5rem'}
+            />
+          )
+        }
       />
     </UpToDownAnimate>
   );

@@ -17,7 +17,6 @@ const {
 
 // Loads 'RVAPI' Class and 'Login' Function.
 const apiHandler = new APIHandler('RVAPI', 'Login');
-const { RVDic } = window.GlobalUtilities;
 
 /**
  * The process of signing in will do here with help of Thunk.
@@ -26,7 +25,7 @@ const { RVDic } = window.GlobalUtilities;
  * @param {String} password - Password entered.
  */
 const loginAction = ({ email, password }) => async (dispatch, getState) => {
-  const { login } = getState();
+  const { auth } = getState();
 
   /**
    * After checking email & password,
@@ -44,9 +43,9 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
         },
         (response) => {
           const { Succeed, AuthCookie } = response;
-          const { RVAPI, GlobalUtilities } = window;
+          const { RVAPI, GlobalUtilities, RVDic } = window;
           if (response.ErrorText) {
-            dispatch(loginFailed(response.ErrorText));
+            dispatch(loginFailed(RVDic.MSG[response.ErrorText]));
 
             console.log(response, 'response error');
 
@@ -58,10 +57,10 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
               const needsCaptcha =
                 email.toLowerCase() === 'admin' &&
                 response.RemainingLockoutTime &&
-                !login.Options.UseCaptcha;
+                !auth.Options.UseCaptcha;
 
               const err = (
-                RVDic?.MSG[response.ErrorText] || response.ErrorText
+                RVDic.MSG[response.ErrorText] || response.ErrorText
               ).replace('[n]', response.RemainingLockoutTime || '');
 
               if (needsCaptcha) {
@@ -69,9 +68,9 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
                 // that.init_captcha();
               }
 
-              alert(err, null, function () {
-                // that.clear();
-              });
+              // alert(err, null, function () {
+              // that.clear();
+              // });
             }
           }
           if (Succeed && AuthCookie) {
@@ -98,7 +97,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
   if (
     email &&
     password &&
-    (login.orgDomains?.length === 0 || login.selectedDomain)
+    (auth.orgDomains?.length === 0 || auth.selectedDomain)
   ) {
     dispatch(loginStart());
     signin();
@@ -107,8 +106,8 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
     !password && dispatch(setPasswordError('رمز عبور نمیتواند خالی باشد'));
     // Checks if email is null.
     !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
-    login.orgDomains?.length > 1 &&
-      !login.selectedDomain &&
+    auth.orgDomains?.length > 1 &&
+      !auth.selectedDomain &&
       dispatch(setOrgDomainsError('یک دامنه را باید انتخاب کنید'));
   }
 };

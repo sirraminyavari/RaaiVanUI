@@ -11,7 +11,7 @@ import {
   SIGN_UP_EMAIL_COLLAPSED,
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { UpToDownAnimate } from './Animate.style';
 
@@ -19,8 +19,10 @@ const { RVDic } = window;
 
 const Title = () => {
   const { currentRoute } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
+    currentRoute: state.auth.currentRoute,
   }));
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
 
   /**
    * According to 'currentRoute'
@@ -41,7 +43,10 @@ const Title = () => {
   };
 
   return (
-    <UpToDownAnimate isVisible={true}>
+    <UpToDownAnimate
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
+      isVisible={true}>
       <Heading type="h5" style={{ marginTop: '2rem' }}>
         {title()}
       </Heading>

@@ -15,8 +15,8 @@ import { CollapseAnimate } from './Animate.style';
  */
 const CountDownTimer = ({ onFinished }) => {
   const { currentRoute, resendCodeTimeout } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
-    resendCodeTimeout: state.login.resendVerifyCodeTimeout,
+    currentRoute: state.auth.currentRoute,
+    resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
   }));
   // resendCodeTimeout changes to milliseconds for better calculation.
   const [timer, setTimer] = useState(resendCodeTimeout * 1000);
