@@ -4,12 +4,10 @@
 import React, { useState } from 'react';
 import {
   Container,
-  StyledInput,
   Label,
   Placeholder,
+  StyledInput,
 } from './AnimatedInput.style';
-
-const { GlobalUtilities } = window;
 
 /**
  * By user starting to type, placeholder goes on border with some animations
@@ -22,6 +20,7 @@ const { GlobalUtilities } = window;
  * @callback onBlur - Fires when the loses the focus.
  * @callback onChange - Fires when the user typing a new char.
  * @param {object} props - Other params that don't include above.
+ * @param {Boolean||setShake(GlobalUtilities.random())} - if True, shakes component for 500ms, with this {setShake(GlobalUtilities.random())} will shake randomly
  */
 const AnimatedInput = ({
   placeholder,
@@ -29,12 +28,7 @@ const AnimatedInput = ({
   style,
   value = '',
   error = null,
-  /*
-  editable = false,
-  onEdit,
-  */
-  onFocus,
-  onBlur,
+  disabled,
   onChange,
   children,
   ...props
@@ -42,79 +36,49 @@ const AnimatedInput = ({
   // True if 'Input' is focused.
   const [inputFocused, _setFocused] = useState(!!value);
 
-  /*
-  //True if user clicks the 'VisibleMe'.
-  //False if user clicks the 'InVisibleMe'.
-  const [passVisible, setPassVisible] = useState(false);
-  */
-  const [inputValue, setInputValue] = useState('');
-
-  const setFocused = (value) => {
-    if (GlobalUtilities.get_type(value) != 'boolean')
-      value = !!inputValue.length;
-    _setFocused(value);
+  /**
+   * Changes input focusing according to input value
+   * @param {Boolean} focused - Defines input should be focus or not.
+   */
+  const setFocused = (focused) => {
+    if (!focused && value?.length === 0) {
+      _setFocused(focused);
+    } else {
+      _setFocused(true);
+    }
   };
 
   return (
-    <>
-      <Container style={style} inputFocused={inputFocused}>
-        <Label
-          className={inputFocused ? 'active' : ''}
-          inputFocused={inputFocused}>
-          <StyledInput
-            value={value}
-            type={type}
-            onFocus={(e) => {
-              if (GlobalUtilities.get_type(onFocus) == 'function') onFocus(e);
-              setFocused(true);
-            }}
-            onBlur={(e) => {
-              e.preventDefault();
-              if (GlobalUtilities.get_type(onBlur) == 'function') onBlur(e);
-              setFocused();
-            }}
-            onChange={(event) => {
-              setInputValue(event.target.value);
-              onChange(event.target.value);
-              setFocused();
-            }}
-            error={error}
-            onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
-            {...props}>
-            {/*
-              !hasButton ? null : type === 'password' ? (
-                passVisible ? (
-                  <InvisibleIcon
-                    className="rv-gray"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setPassVisible(false)}
-                  />
-                ) : (
-                  <VisibleIcon
-                    className="rv-gray"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setPassVisible(true)}
-                  />
-                )
-              ) : (
-                <Edit
-                  style={{ cursor: 'pointer' }}
-                  onClick={onEdit}
-                  size={'1.5rem'}
-                />
-              )
-              */}
-            {children}
-          </StyledInput>
-          <Placeholder
-            className={`rv-border-radius-quarter ${
-              inputFocused ? 'rv-warm' : 'rv-gray'
-            }`}>
-            {placeholder}
-          </Placeholder>
-        </Label>
-      </Container>
-    </>
+    <Container style={style} inputFocused={inputFocused} {...props}>
+      <Label
+        className={inputFocused ? 'active' : ''}
+        inputFocused={inputFocused}>
+        <StyledInput
+          value={value}
+          type={type}
+          disabled={disabled}
+          onFocus={() => {
+            setFocused(true);
+          }}
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
+          onBlur={(e) => {
+            e.preventDefault();
+            setFocused(false);
+          }}
+          error={error}
+          onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}>
+          {children}
+        </StyledInput>
+        <Placeholder
+          className={`rv-border-radius-quarter ${
+            inputFocused ? 'rv-warm' : 'rv-gray'
+          }`}>
+          {placeholder}
+        </Placeholder>
+      </Label>
+    </Container>
   );
 };
 
