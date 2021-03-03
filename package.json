@@ -26,6 +26,7 @@
     "@ckeditor/ckeditor5-mention": "^26.0.0",
     "@ckeditor/ckeditor5-paragraph": "^26.0.0",
     "@ckeditor/ckeditor5-paste-from-office": "^26.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.1",
     "@ckeditor/ckeditor5-remove-format": "^26.0.0",
     "@ckeditor/ckeditor5-special-characters": "^26.0.0",
     "@ckeditor/ckeditor5-table": "^26.0.0",
