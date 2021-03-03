@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://185.239.107.180",
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^3.0.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",

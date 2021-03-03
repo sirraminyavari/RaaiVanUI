@@ -33,6 +33,7 @@ import {
   Container,
   Maintainer,
 } from './Login.style';
+
 const { RVGlobal } = window;
 
 /**
@@ -154,7 +155,6 @@ const Login = () => {
       <div className="small-1 medium-2 large-4" />
       <Container className="small-10 medium-8 large-4">
         <Logo />
-
         {oneStepToInitDone ? (
           <Box>
             <Title />
