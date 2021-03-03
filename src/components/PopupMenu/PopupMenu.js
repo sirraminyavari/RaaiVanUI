@@ -63,7 +63,14 @@ const PopupMenu = (props) => {
   const scrollTop = useWindowScroll();
   const preScrollTop = usePrevious(scrollTop);
 
-  let hideTimeOut = null;
+  const [hideTimeOut, setHideTimeout] = useState(null);
+
+  const clearHideTimeout = () => {
+    if (hideTimeOut) {
+      clearTimeout(hideTimeOut);
+      setHideTimeout(null);
+    }
+  };
 
   useEffect(() => {
     setInfo(
@@ -78,10 +85,7 @@ const PopupMenu = (props) => {
 
   useEffect(() => {
     //cleanup
-    return () => {
-      if (hideTimeOut) clearTimeout(hideTimeOut);
-      hideTimeOut = null;
-    };
+    return () => clearHideTimeout();
   }, []);
 
   useOutsideClick(
@@ -106,9 +110,7 @@ const PopupMenu = (props) => {
     trigger != 'hover'
       ? null
       : () => {
-          if (hideTimeOut) clearTimeout(hideTimeOut);
-          hideTimeOut = null;
-
+          clearHideTimeout();
           setShowMenu(true);
         };
 
@@ -116,7 +118,8 @@ const PopupMenu = (props) => {
     trigger != 'hover'
       ? null
       : () => {
-          hideTimeOut = setTimeout(() => setShowMenu(false), hoverTimeout);
+          const to = setTimeout(() => setShowMenu(false), hoverTimeout);
+          setHideTimeout(to);
         };
   //end of Mouse Events
 

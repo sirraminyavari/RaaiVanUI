@@ -10,6 +10,10 @@ const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
  * @property {string} type - type of the input e.g. text, password, etc.
  * @property {boolean | string} error - true means there is an error and strgin value means there is an erorr with a message
  * @property {boolean | number} shake - if true or be a positive number, the component will shake for a second
+ * @property {method} onAfterChange - fires after a timeout after keydown event
+ * @property {method} onEnter - fires when the user presses Enter key
+ * @property {method} onChangeOrEnter - a combination of 'onAfterChange' & 'onEnter'
+ * @property {number} timeout - determines the timeout for 'onAfterChange' and 'onEnterOrChange' events
  * @property {object} children - a component that will be rendedred as a button
  */
 
@@ -23,6 +27,10 @@ const Input = ({
   type,
   error,
   shake,
+  onAfterChange,
+  onEnter,
+  onChangeOrEnter,
+  timeout,
   className,
   style,
   children,
@@ -36,6 +44,52 @@ const Input = ({
   const shaking = usePeriod(shake, {}) && !!error;
 
   const hasButton = GlobalUtilities.get_type(children) == 'json';
+
+  //handle key down events: onAfterChange, onEnter, onChangeOrEnter
+  const hasKeyDownAction = [onAfterChange, onEnter, onChangeOrEnter].some(
+    (fn) => GlobalUtilities.get_type(fn) === 'function'
+  );
+
+  const hasChangeAction = [onAfterChange, onChangeOrEnter].some(
+    (fn) => GlobalUtilities.get_type(fn) === 'function'
+  );
+
+  const [changeTimeout, setChangeTimeout] = useState(null);
+
+  const clearChangeTimeout = () => {
+    if (changeTimeout) {
+      clearTimeout(changeTimeout);
+      setChangeTimeout(null);
+    }
+  };
+
+  useEffect(() => {
+    return () => clearChangeTimeout();
+  }, []);
+
+  const handleKeyDown = !hasKeyDownAction
+    ? null
+    : (e) => {
+        if (e.which === 17) return; //13: enter, 17: ctrl
+
+        clearChangeTimeout();
+
+        if (e.which === 13) {
+          if (GlobalUtilities.get_type(onEnter) == 'function') onEnter(e);
+          if (GlobalUtilities.get_type(onChangeOrEnter) == 'function')
+            onChangeOrEnter(e);
+        } else if (hasChangeAction) {
+          const to = setTimeout(() => {
+            if (GlobalUtilities.get_type(onAfterChange) == 'function')
+              onAfterChange(e);
+            if (GlobalUtilities.get_type(onChangeOrEnter) == 'function')
+              onChangeOrEnter(e);
+          }, timeout);
+
+          setChangeTimeout(to);
+        }
+      };
+  //end of handle key down events
 
   return (
     <InputContainer>
@@ -57,6 +111,7 @@ const Input = ({
             ? {}
             : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
         )}
+        onKeyDown={handleKeyDown}
         {...props}
       />
       {hasButton && <ButtonContainer>{children}</ButtonContainer>}
@@ -71,11 +126,15 @@ Input.propTypes = {
   type: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   shake: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  onAfterChange: PropTypes.func,
+  onEnter: PropTypes.func,
+  onChangeOrEnter: PropTypes.func,
 };
 
 Input.defaultProps = {
   type: 'text',
   shake: false,
+  timeout: 1000,
 };
 
 Input.displayName = 'InputComponent';

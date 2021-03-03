@@ -68,7 +68,8 @@ const AnimatedInput = ({
             setFocused(false);
           }}
           error={error}
-          onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}>
+          onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
+          {...props}>
           {children}
         </StyledInput>
         <Placeholder
