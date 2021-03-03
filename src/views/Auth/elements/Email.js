@@ -96,6 +96,7 @@ const Email = () => {
         onEdit={onEditEmail}
         disabled={diabledEmail()}
         error={emailError}
+        z
       />
     </UpToDownAnimate>
   );

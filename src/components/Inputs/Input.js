@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import usePeriod from '../../hooks/usePeriod';
 
 const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
 
@@ -32,24 +33,7 @@ const Input = ({
   const errorMessage =
     GlobalUtilities.get_type(error) == 'string' ? error : null;
 
-  let shakeTimeout = null;
-
-  const [shaking, setShaking] = useState(false);
-
-  useEffect(() => {
-    if (!!shake && !!error) doShake();
-  }, [shake]);
-
-  useEffect(() => {
-    return () => {
-      if (shakeTimeout) clearTimeout(shakeTimeout);
-    };
-  }, []);
-
-  const doShake = () => {
-    setShaking(true);
-    shakeTimeout = setTimeout(() => setShaking(false), 500);
-  };
+  const shaking = usePeriod(shake, {}) && !!error;
 
   const hasButton = GlobalUtilities.get_type(children) == 'json';
 
