@@ -17,34 +17,28 @@ const { GlobalUtilities, UsersAPI, RVDic } = window;
  * See @link https://github.com/reduxjs/redux-thunk for more info.
  * @param {String} email - mobile number or email entered.
  */
-const sendResetPsswordLinkAction = ({ email, username }) => async (
-  dispatch
-) => {
+const sendResetPsswordLinkAction = ({ email }) => async (dispatch) => {
   const sendTicket = () => {
     try {
-      // Checks if username is null, alerts to user
-      if (!username) return alert(RVDic.Checks.PleaseEnterYourUserName);
-      else {
-        // Sends reset-password request to server
-        UsersAPI.SetPasswordResetTicket({
-          Email: encode(GlobalUtilities.secure_string(email)),
-          ParseResults: true,
-          ResponseHandler: function (result) {
-            if (result.ErrorText)
-              alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-            else if (result.Succeed) {
-              alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
-              dispatch(sendResetPasswordLinkSuccess());
-            }
-          },
-        });
-      }
+      // Sends reset-password request to server
+      UsersAPI.SetPasswordResetTicket({
+        Email: encode(GlobalUtilities.secure_string(email)),
+        ParseResults: true,
+        ResponseHandler: function (result) {
+          if (result.ErrorText) {
+            dispatch(sendResetPasswordLinkFailed(result.ErrorText));
+            alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+          } else if (result.Succeed) {
+            alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+            dispatch(sendResetPasswordLinkSuccess());
+          }
+        },
+      });
     } catch (err) {
       console.log(err, 'error');
 
       dispatch(sendResetPasswordLinkFailed(err));
     }
-    sendTicket();
   };
   if (email) {
     dispatch(sendResetPasswordLink());

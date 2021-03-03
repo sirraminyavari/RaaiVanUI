@@ -1,6 +1,7 @@
 /**
  * A component for guiding the user to inout the validate password
  */
+import CancelCircle from 'components/Icons/CancelCircle';
 import CheckCircle from 'components/Icons/CheckCircle';
 import H6 from 'components/TypoGraphy/H6';
 import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
@@ -9,6 +10,7 @@ import {
   SIGN_UP_EMAIL,
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
+import { RED } from 'constant/Colors';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -22,10 +24,10 @@ const PasswordValidation = () => {
     isPasswordFocused,
     passwordPolicy,
   } = useSelector((state) => ({
-    password: state.login.password,
-    currentRoute: state.login.currentRoute,
-    isPasswordFocused: state.login.isPasswordFocused,
-    passwordPolicy: state.login.passwordPolicy,
+    password: state.auth.password,
+    currentRoute: state.auth.currentRoute,
+    isPasswordFocused: state.auth.isPasswordFocused,
+    passwordPolicy: state.auth.passwordPolicy,
   }));
   // Checks password field if is focused.
   useEffect(() => {
@@ -51,8 +53,24 @@ const PasswordValidation = () => {
    * @param {Boolean} validator - True, if inputted password passes the current validator
    */
   const ValidatorItems = ({ text, validator }) => {
+    console.log(validator, '<***---');
     return (
       <Items>
+        {validator ? (
+          <CheckCircle
+            style={{
+              fontSize: '0.9rem',
+              color: `${MAIN_BLUE}`,
+            }}
+          />
+        ) : (
+          <CancelCircle
+            style={{
+              fontSize: '0.9rem',
+              color: `${RED}`,
+            }}
+          />
+        )}
         <H6
           style={{
             color: validator ? MAIN_BLUE : LIGHT_BLUE,
@@ -60,11 +78,6 @@ const PasswordValidation = () => {
           }}>
           {text}
         </H6>
-        <CheckCircle
-          style={{
-            color: validator ? `${MAIN_BLUE}` : 'rgba(1,1,1,0)',
-          }}
-        />
       </Items>
     );
   };
@@ -104,8 +117,8 @@ const Container = styled.div`
 const Items = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
+  align-items: center;
+
   margin: 3px;
   padding: 3px;
 `;
