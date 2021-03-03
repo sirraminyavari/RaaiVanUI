@@ -19,7 +19,7 @@ import setEmailAction from 'store/actions/auth/setEmailAction';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import { UpToDownAnimate } from './Animate.style';
 
-const { RVDic } = window;
+const { RVDic, GlobalUtilities } = window;
 
 const Email = () => {
   const dispatch = useDispatch();
@@ -98,7 +98,7 @@ const Email = () => {
         placeholder={RVDic.EmailAddress}
         disabled={diabledEmail()}
         error={emailError}
-        shake={emailError}
+        shake={!emailError ? false : GlobalUtilities.random()}
         children={
           editable() && (
             <Edit

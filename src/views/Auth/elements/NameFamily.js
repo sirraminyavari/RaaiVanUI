@@ -10,7 +10,8 @@ import setNameAction from 'store/actions/auth/setNameAction';
 import styled from 'styled-components';
 import { UpToDownAnimate } from './Animate.style';
 
-const { RVDic } = window;
+const { RVDic, GlobalUtilities } = window;
+
 const NameFamily = () => {
   const dispatch = useDispatch();
 
@@ -85,7 +86,7 @@ const NameFamily = () => {
           placeholder={RVDic.Name}
           style={{ marginLeft: '0.5rem', display: `${display}` }}
           error={nameError}
-          shake={nameError}
+          shake={!nameError ? false : GlobalUtilities.random()}
         />
         <AnimatedInput
           onChange={onFamilyChanged}
@@ -93,7 +94,7 @@ const NameFamily = () => {
           placeholder={RVDic.LastName}
           style={{ marginRight: '0.5rem', display: `${display}` }}
           error={familyError}
-          shake={familyError}
+          shake={!familyError ? false : GlobalUtilities.random()}
         />
       </Container>
     </UpToDownAnimate>
