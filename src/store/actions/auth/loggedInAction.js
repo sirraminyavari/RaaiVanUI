@@ -11,7 +11,7 @@ const { GlobalUtilities, RVDic, RVAPI } = window;
  * @param {Object} result - The response of backend after successful login.
  */
 const loggedInAction = (result) => (dispatch, getState) => {
-  const { login } = getState();
+  const { auth } = getState();
   const { AuthCookie } = result;
 
   // The following steps are necessary to be done
@@ -21,12 +21,12 @@ const loggedInAction = (result) => (dispatch, getState) => {
 
   // It's needed for pure js, maybe removed in future.
   const callback = () => {
-    window.location.href = login.Options.ReturnURL || window.location.href;
+    window.location.href = auth.Options.ReturnURL || window.location.href;
   };
 
   const msg = result.LoginMessage ? decode(result.LoginMessage) : null;
 
-  if (login.Options.ReloadAfterLogin) {
+  if (auth.Options.ReloadAfterLogin) {
     msg =
       (msg || RVDic.MSG.LoggedInSuccessfully) +
       '. ' +

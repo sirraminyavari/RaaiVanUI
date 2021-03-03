@@ -20,34 +20,35 @@ const { GlobalUtilities, UsersAPI, RVDic } = window;
 const sendResetPsswordLinkAction = ({ email, username }) => async (
   dispatch
 ) => {
+  const sendTicket = () => {
+    try {
+      // Checks if username is null, alerts to user
+      if (!username) return alert(RVDic.Checks.PleaseEnterYourUserName);
+      else {
+        // Sends reset-password request to server
+        UsersAPI.SetPasswordResetTicket({
+          Email: encode(GlobalUtilities.secure_string(email)),
+          ParseResults: true,
+          ResponseHandler: function (result) {
+            if (result.ErrorText)
+              alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+            else if (result.Succeed) {
+              alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+              dispatch(sendResetPasswordLinkSuccess());
+            }
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err, 'error');
+
+      dispatch(sendResetPasswordLinkFailed(err));
+    }
+    sendTicket();
+  };
   if (email) {
     dispatch(sendResetPasswordLink());
-    const sendTicket = () => {
-      try {
-        // Checks if username is null, alerts to user
-        if (!username) return alert(RVDic.Checks.PleaseEnterYourUserName);
-        else {
-          // Sends reset-password request to server
-          UsersAPI.SetPasswordResetTicket({
-            Email: encode(GlobalUtilities.secure_string(email)),
-            ParseResults: true,
-            ResponseHandler: function (result) {
-              if (result.ErrorText)
-                alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-              else if (result.Succeed) {
-                alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
-                dispatch(sendResetPasswordLinkSuccess());
-              }
-            },
-          });
-        }
-      } catch (err) {
-        console.log(err, 'error');
-
-        dispatch(sendResetPasswordLinkFailed(err));
-      }
-      sendTicket();
-    };
+    sendTicket();
   } else {
     !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
   }
