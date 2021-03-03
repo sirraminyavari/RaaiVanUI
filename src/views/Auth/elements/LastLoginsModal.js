@@ -1,22 +1,32 @@
 /**
  * A modal for showing the user last logins
  */
+import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
 
 /**
  * By signing in the user, this modal will be shown
  */
 const LastLoginsModal = () => {
+  const dispatch = useDispatch();
+
   const { lastLoginModal, lastLogins } = useSelector((state) => ({
-    lastLoginModal: state.login.lastLoginModal,
-    lastLogins: state.login.lastLogins,
+    lastLoginModal: state.auth.lastLoginModal,
+    lastLogins: state.auth.lastLogins,
   }));
+  /**
+   * By clicking close button, will fire.
+   */
+  const onClose = () => {
+    dispatch(setIsAthunticatedAction(window?.IsAuthenticated));
+  };
 
   return (
-    <Modal contentWidth={'90%'} show={lastLoginModal}>
+    <Modal onClose={onClose} contentWidth={'90%'} show={lastLoginModal}>
       <Row style={{ marginBottom: '3px' }}>
         <div>{'  '} </div>
         <RowItem flex={1}>{'نوع اقدام'}</RowItem>
@@ -25,7 +35,7 @@ const LastLoginsModal = () => {
       </Row>
       {lastLogins?.length > 0 &&
         lastLogins.map((x, index) => (
-          <Row>
+          <Row key={index}>
             <div>{index + 1}.</div>
             <RowItem flex={1}>{x?.Action}</RowItem>
             <RowItem flex={2}>{x?.Date}</RowItem>
