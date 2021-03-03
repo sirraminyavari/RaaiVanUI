@@ -53,7 +53,6 @@ const PasswordValidation = () => {
    * @param {Boolean} validator - True, if inputted password passes the current validator
    */
   const ValidatorItems = ({ text, validator }) => {
-    console.log(validator, '<***---');
     return (
       <Items>
         {validator ? (
