@@ -2,10 +2,10 @@
  * A component, for handling the navigation
  */
 import Button from 'components/Buttons/Button';
-import LoadingButton from 'components/Buttons/LoadingButton';
 import { RED, RED_HOVER } from 'const/Colors';
 import {
   FORGOT_PASSWORD,
+  RESET_PASSWORD,
   RESET_PASSWORD_SENT,
   SIGN_IN,
   SIGN_IN_COLLAPSED,
@@ -15,7 +15,7 @@ import {
   SIGN_UP_SUCCESS,
   VERIFICATION_CODE,
 } from 'const/LoginRoutes';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import loginAction from 'store/actions/auth/loginAction';
 import sendResetPsswordLinkAction from 'store/actions/auth/sendResetPsswordLinkAction';
@@ -27,6 +27,10 @@ import { UpToDownAnimate } from './Animate.style';
 const { RVDic } = window;
 const NavigationButton = () => {
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
+
   const {
     currentRoute,
     email,
@@ -36,13 +40,13 @@ const NavigationButton = () => {
     family,
     passwordPolicy,
   } = useSelector((state) => ({
-    email: state.login.email,
-    password: state.login.password,
-    currentRoute: state.login.currentRoute,
-    isFetching: state.login.isFetching,
-    name: state.login.name,
-    family: state.login.family,
-    passwordPolicy: state.login.passwordPolicy,
+    email: state.auth.email,
+    password: state.auth.password,
+    currentRoute: state.auth.currentRoute,
+    isFetching: state.auth.isFetching,
+    name: state.auth.name,
+    family: state.auth.family,
+    passwordPolicy: state.auth.passwordPolicy,
   }));
   const disabledButton = () => {};
   /**
@@ -81,6 +85,11 @@ const NavigationButton = () => {
       case VERIFICATION_CODE:
         return {
           label: 'مرحله بعدی',
+          class: 'rv-air-button-warm-blue',
+        };
+      case RESET_PASSWORD:
+        return {
+          label: 'بازنشانی رمز عبور',
           class: 'rv-air-button-warm-blue',
         };
       default:
@@ -133,28 +142,18 @@ const NavigationButton = () => {
         break;
     }
   };
-  const login = () => {
-    const { isAuthenticated, RVAPI, GlobalUtilities } = window;
-    isAuthenticated = true;
-  };
 
   return (
     <UpToDownAnimate
       isVisible={true}
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
       style={{ padding: '0.4rem', marginTop: '2rem' }}>
-      {/* <LoadingButton
-        onClick={onNavigate}
-        isFetching={isFetching}
-        className={buttonTitle(currentRoute).class}
-        disabled={disabledButton()}>
-        {buttonTitle(currentRoute).label}
-      </LoadingButton> */}
       <Button
         onClick={onNavigate}
         type="primary"
         loading={isFetching}
         style={{ width: '100%' }}
-        tabIndex="4"
         disable={disabledButton()}>
         {buttonTitle(currentRoute).label}
       </Button>

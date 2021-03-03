@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
-import { MdCancel } from 'react-icons/md';
+import { IoCloseCircle } from 'react-icons/io5';
 
 const CancelCircle = ({ ...props }) => {
-  return <MdCancel {...props} />;
+  return <IoCloseCircle {...props} />;
 };
 export default CancelCircle;

@@ -12,7 +12,7 @@ const { GlobalUtilities, RVDic, RVAPI } = window;
  * @param {Object} data - Comes from backend
  */
 const stepTwoAction = (data) => async (dispatch, getState) => {
-  const { login } = getState();
+  const { auth } = getState();
   const vcd = GlobalUtilities.verification_code_dialog(data, {
     Message: RVDic.MSG.AnAuthenticationCodeHasBeenSentToYourNWithValueM,
     HideCancelButton: true,
@@ -22,7 +22,7 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
       RVAPI.LoginStepTwo({
         Token: d.Token,
         Code: d.Code,
-        InvitationID: login.Objects.InvitationID,
+        InvitationID: auth.Objects.InvitationID,
         ParseResults: true,
         ResponseHandler: function (result) {
           if (result.ErrorText) {

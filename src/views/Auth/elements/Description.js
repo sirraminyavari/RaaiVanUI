@@ -12,17 +12,19 @@ import {
   SIGN_UP_SUCCESS,
   VERIFICATION_CODE,
 } from 'const/LoginRoutes';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CollapseAnimate } from './Animate.style';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { UpToDownAnimate } from './Animate.style';
 
 const Description = () => {
-  const dispatch = useDispatch();
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
+
   const { currentRoute, password, isPasswordFocused } = useSelector(
     (state) => ({
-      password: state.login.password,
-      currentRoute: state.login.currentRoute,
-      isPasswordFocused: state.login.isPasswordFocused,
+      password: state.auth.password,
+      currentRoute: state.auth.currentRoute,
+      isPasswordFocused: state.auth.isPasswordFocused,
     })
   );
   const terms = () => (
@@ -111,8 +113,10 @@ const Description = () => {
   };
 
   return (
-    <CollapseAnimate
+    <UpToDownAnimate
       style={{ marginTop: '2rem' }}
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
       isVisible={isVisible().visible}>
       <H5
         style={{
@@ -121,7 +125,7 @@ const Description = () => {
         }}>
         {isVisible().label}
       </H5>
-    </CollapseAnimate>
+    </UpToDownAnimate>
   );
 };
 

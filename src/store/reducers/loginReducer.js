@@ -14,7 +14,7 @@ export const loginSlice = createSlice({
 
   initialState: {
     isFetching: false,
-    login: null,
+    auth: null,
     email: '',
     password: '',
     orgDomains: [],
@@ -63,9 +63,8 @@ export const loginSlice = createSlice({
       state.isFetching = true;
     },
     loginSuccess: (state, action) => {
-      state.login = action.payload;
+      state.auth = action.payload;
       state.isFetching = false;
-      state.isAuthenticated = true;
     },
     loginFailed: (state, action) => {
       state.error = action.payload;
@@ -109,7 +108,7 @@ export const loginSlice = createSlice({
       state.isFetching = true;
     },
     verificationResult: (state, action) => {
-      // state.login = action.payload;
+      // state.auth = action.payload;
       state.isFetching = false;
     },
     verificationFailed: (state, action) => {
@@ -221,7 +220,7 @@ export const loginSlice = createSlice({
       state.email = '';
       state.name = '';
       state.family = '';
-      state.orgDomains = [];
+      state.selectedDomain = null;
     },
     showLastLogins: (state, action) => {
       state.lastLoginModal = true;
@@ -230,6 +229,9 @@ export const loginSlice = createSlice({
     },
     setCaptchaToken: (state, action) => {
       state.captchaToken = action.payload;
+    },
+    setIsAthunticated: (state, action) => {
+      state.isAuthenticated = action.payload;
     },
   },
 });

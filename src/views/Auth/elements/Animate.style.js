@@ -13,19 +13,25 @@ const up = keyframes`
 
   }
 `;
-const down = keyframes`
+const down = (dimension) => {
+  return keyframes`
   from {
-    top: 0rem;
     z-index:1;
+    top:${dimension?.top - dimension?.height}px;
+    width:${dimension?.width}px;
 
   }
 
   to {
-   top:2rem;
    z-index: -2;
+   top:${20 + dimension?.top}px;
+   width:${-20 + dimension?.width}px;
+
+
 
   }
 `;
+};
 const right = keyframes`
 
   0%   {right: -1%}
@@ -36,25 +42,24 @@ const right = keyframes`
 `;
 // When a component is coming to show, we use this to animate it's coming.
 export const UpToDownAnimate = styled.div`
-  transition: top 1s, opacity 1s, background-color 1s, height 1s, z-index 1s 1s,
-    margin-top 0s 1s, visibility 1s, display 1s;
-  position: relative;
-  width: 80%;
+  transition: top 1s, background-color 1s, height 1s, z-index 1s, width 1s,
+    margin-top 1s, visibility 1s, display 1s, opacity 0.5s;
+  position: ${({ isVisible }) => (isVisible ? 'relative' : 'absolute')};
+  width: ${({ isVisible, dimension }) => (isVisible ? '80%' : '381px')};
   justify-content: center;
-  display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
-  top: ${({ isVisible }) => (isVisible ? `0%` : `20%`)};
-  max-height: ${({ isVisible }) => (isVisible ? '40%' : '0rem')};
+  display: ${({ isVisible }) => (isVisible ? 'flex' : 'flex')};
   min-height: ${({ isVisible }) => (isVisible ? '0rem' : '0rem')};
   z-index: ${({ isVisible }) => (isVisible ? 1 : -2)};
 
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  animation: ${({ isVisible }) =>
+  animation-timing-function: ease-out;
+  animation: ${({ isVisible, dimension }) =>
     isVisible
       ? css`
           ${up} 1s
         `
       : css`
-          ${down} 1s
+          ${down(dimension)} 0.6s
         `};
 `;
 // For collapsing the text we use this.

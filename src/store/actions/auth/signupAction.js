@@ -14,9 +14,9 @@ const { UsersAPI, GlobalUtilities, location, RVDic, RVAPI } = window;
 
 const signupAction = () => async (dispatch, getState) => {
   // comes from redux state
-  const code = getState().login.verifyCode;
+  const code = getState().auth.verifyCode;
   // comes from redux state
-  const confirmationToken = getState().login.verifyCodeToken;
+  const confirmationToken = getState().auth.verifyCodeToken;
   /**
    * After checking verification code,
    * 'signingUp()' will be called.
@@ -33,10 +33,15 @@ const signupAction = () => async (dispatch, getState) => {
         Login: true,
         ParseResults: true,
         ResponseHandler: function (result) {
-          console.log(result, 'signup success');
+          console.log(result, 'signup result');
           if (result.ErrorText) {
             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
             dispatch(signupFailed(result));
+            dispatch(
+              setVerifyCodeError(
+                RVDic.MSG[result.ErrorText] || result.ErrorText
+              )
+            );
           } else if (result.AuthCookie) {
             dispatch(signupSuccess());
 
@@ -53,8 +58,8 @@ const signupAction = () => async (dispatch, getState) => {
     }
   };
   //Checks code length with code length came from password policy.
-  code.length !== getState().login.verifyCodeLength
-    ? dispatch(setVerifyCodeError('کد تایید وارد شده صحیح نیست'))
+  code.length !== getState().auth.verifyCodeLength
+    ? dispatch(setVerifyCodeError(RVDic.MSG['VerificationCodeDidNotMatch']))
     : signingUp();
 };
 export default signupAction;
