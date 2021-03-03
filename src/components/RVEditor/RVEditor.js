@@ -1,16 +1,17 @@
 import React from 'react';
 import useLoadFiles from '../../hooks/useLoadFiles';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import Loader from '../Loader/Loader';
 
 const { RV_Lang } = window;
 
-const RVEditor = () => {
+const RVEditor = ({ data }) => {
   const loaded = useLoadFiles([
     "CKEditor5/ckeditor.js",
     "CKEditor5/translations/fa.js"
   ]);
 
-  if(!loaded) return (<></>);
+  if(!loaded) return (<Loader />);
 
   const { BalloonBlockEditor } = window;
 
@@ -99,7 +100,7 @@ const RVEditor = () => {
     <CKEditor
       editor={BalloonBlockEditor}
       config={editorConfig}
-      data="<p>ramin yavari</p>"
+      data={ data }
       onReady={(editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready to use!', editor);
