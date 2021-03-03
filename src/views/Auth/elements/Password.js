@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import setPassword from 'store/actions/auth/setPassAction';
 import setPasswordFocusAction from 'store/actions/auth/setPasswordFocusAction';
 import { UpToDownAnimate } from './Animate.style';
-const { RVDic } = window;
+const { RVDic, GlobalUtilities } = window;
 
 const Password = () => {
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ const Password = () => {
         placeholder={RVDic.Password}
         type={passVisible ? 'text' : 'password'}
         error={passwordError}
-        shake={passwordError}
+        shake={!passwordError ? false : GlobalUtilities.random()}
         onFocus={onFocus}
         onBlur={onBlur}
         children={
