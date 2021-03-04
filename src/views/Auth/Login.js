@@ -26,6 +26,7 @@ import ResendCode from './elements/ResendCode';
 import Return from './elements/Return';
 import Title from './elements/Title';
 import VerificationCode from './elements/VerificationCode';
+import SignIn from './items/SignIn';
 import {
   BackgroundImage,
   Box,
@@ -157,7 +158,7 @@ const Login = () => {
         <Logo />
         {oneStepToInitDone ? (
           <Box>
-            <Title />
+            {/* <Title />
             <Email />
             <NameFamily />
             <Password />
@@ -172,7 +173,8 @@ const Login = () => {
             <ContinueWithGoogle />
             <CreateAccountButton />
 
-            <LastLoginsModal />
+            <LastLoginsModal /> */}
+            <SignIn />
           </Box>
         ) : (
           <Center>
