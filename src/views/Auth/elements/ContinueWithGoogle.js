@@ -61,28 +61,28 @@ const ContinueWithGoogle = ({ ...props }) => {
   };
 
   return (
-    <UpToDownAnimate
-      ref={ref}
-      dimension={ref?.current?.getBoundingClientRect()}
-      isVisible={isVisible()}
-      style={{ marginTop: '3rem' }}>
-      <GoogleLogin
-        clientId="823176443658-4ku8pma0s4qfodf8hrq360ood9fds29o.apps.googleusercontent.com"
-        buttonText="Continue with Google"
-        render={(renderProps) => (
-          <Container
-            {...props}
-            onClick={renderProps.onClick}
-            disabled={renderProps.disabled}>
-            <Label>Continue with Google</Label>
-            <GoogleIcon style={{ fontSize: '1.4rem' }} />
-          </Container>
-        )}
-        onSuccess={onGoogleSuccess}
-        onFailure={onGoogleFailed}
-        cookiePolicy={'single_host_origin'}
-      />
-    </UpToDownAnimate>
+    // <UpToDownAnimate
+    //   ref={ref}
+    //   dimension={ref?.current?.getBoundingClientRect()}
+    //   isVisible={isVisible()}
+    //   style={{ marginTop: '3rem' }}>
+    <GoogleLogin
+      clientId="823176443658-4ku8pma0s4qfodf8hrq360ood9fds29o.apps.googleusercontent.com"
+      buttonText="Continue with Google"
+      render={(renderProps) => (
+        <Container
+          {...props}
+          onClick={renderProps.onClick}
+          disabled={renderProps.disabled}>
+          <Label>Continue with Google</Label>
+          <GoogleIcon style={{ fontSize: '1.4rem' }} />
+        </Container>
+      )}
+      onSuccess={onGoogleSuccess}
+      onFailure={onGoogleFailed}
+      cookiePolicy={'single_host_origin'}
+    />
+    // </UpToDownAnimate>
   );
 };
 export default ContinueWithGoogle;
