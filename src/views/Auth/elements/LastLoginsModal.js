@@ -18,7 +18,7 @@ const LastLoginsModal = () => {
   const { lastLoginModal, lastLogins, loginMessage } = useSelector((state) => ({
     lastLoginModal: state.auth.lastLoginModal,
     lastLogins: state.auth.lastLogins,
-    loginMessage: state.auth.auth.LoginMessage,
+    loginMessage: state.auth.auth?.LoginMessage,
   }));
   /**
    * By clicking close button, will fire.
@@ -31,7 +31,7 @@ const LastLoginsModal = () => {
     <Modal onClose={onClose} contentWidth={'50%'} show={lastLoginModal}>
       {console.log(loginMessage, 'loginMessage')}
       <Container>
-        <Message>{decode(loginMessage)} </Message>
+        <Message>{loginMessage && decode(loginMessage)} </Message>
 
         <Row style={{ marginBottom: '3px' }}>
           <RowItem flex={1}>{'نوع اقدام'}</RowItem>
