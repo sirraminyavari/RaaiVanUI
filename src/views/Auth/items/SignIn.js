@@ -13,6 +13,8 @@ import VisibleIcon from 'components/Icons/VisibleIcon';
 import Button from 'components/Buttons/Button';
 import { FORGOT_PASSWORD } from 'const/LoginRoutes';
 import LastLoginsModal from '../elements/LastLoginsModal';
+import ContinueWithGoogle from '../elements/ContinueWithGoogle';
+import CreateAccountButton from '../elements/CreateAccountButton';
 
 const { RVDic } = window;
 
@@ -116,6 +118,19 @@ const SignIn = () => {
         }}>
         {RVDic.Login}
       </Button>
+      <ContinueWithGoogle
+        style={{
+          marginBottom: '1rem',
+          marginTop: '1rem',
+        }}
+      />
+      <CreateAccountButton
+        style={{
+          marginBottom: '1rem',
+          marginTop: '1rem',
+        }}
+      />
+
       <LastLoginsModal />
     </Container>
   );
