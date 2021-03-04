@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
 import { decode } from 'js-base64';
+import { useMediaQuery } from 'react-responsive';
 
 /**
  * By signing in the user, this modal will be shown
@@ -26,9 +27,13 @@ const LastLoginsModal = () => {
   const onClose = () => {
     dispatch(setIsAthunticatedAction(window?.IsAuthenticated));
   };
+  const isMediumScreen = useMediaQuery({ query: '(min-width: 1224px)' });
 
   return (
-    <Modal onClose={onClose} contentWidth={'50%'} show={lastLoginModal}>
+    <Modal
+      onClose={onClose}
+      contentWidth={isMediumScreen ? '50%' : '80%'}
+      show={lastLoginModal}>
       {console.log(loginMessage, 'loginMessage')}
       <Container>
         <Message>{loginMessage && decode(loginMessage)} </Message>
