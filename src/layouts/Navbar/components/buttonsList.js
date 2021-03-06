@@ -34,7 +34,7 @@ const NavButtons = [
   },
   {
     id: 4,
-    title: RVDic.Coworkers,
+    title: RVDic.Teams,
     icon: 'teams',
     linkTo: getURL('Applications'),
   },
