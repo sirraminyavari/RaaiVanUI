@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import * as Styled from '../../Navbar.styles';
 
+const { RV_RevFloat } = window;
+
 const MenuItem = (props) => {
   const {
     icon: Icon,
@@ -15,7 +17,7 @@ const MenuItem = (props) => {
       as={linkTo ? Link : 'div'}
       to={linkTo}
       onClick={onClickHandler ?? null}>
-      <Icon size={25} color={iconColor} />
+      <Icon size={25} color={iconColor} dir={RV_RevFloat} />
       <Styled.AvatarMenuTitle color={textColor}>{title}</Styled.AvatarMenuTitle>
     </Styled.AvatarMenuItem>
   );

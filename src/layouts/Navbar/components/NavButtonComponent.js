@@ -34,7 +34,9 @@ const NavButtonComponent = (props) => {
     <Styled.ButtonContainer as={linkTo ? Link : 'div'} to={linkTo}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
-        {badge && <Styled.Badge>{getLanguageDigits('fa', badge)}</Styled.Badge>}
+        {badge && (
+          <Styled.Badge>{getLanguageDigits(undefined, badge)}</Styled.Badge>
+        )}
       </Styled.ButtonIcon>
       <Styled.ButtonTitle>
         {title}
