@@ -55,7 +55,7 @@ const AvatarMenuList = () => {
       {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
         <Checkbox
           changeHandler={handleCheckbox}
-          isChecked={Cookie.get('rv_lang') === 'eng'}
+          isChecked={Cookie.get('rv_lang') === 'en'}
         />
       )}
     </Styled.AvatarMenuContainer>
