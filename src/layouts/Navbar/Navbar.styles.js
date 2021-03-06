@@ -188,7 +188,6 @@ export const Arrow = styled.span`
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  alignitems: center;
   width: 14rem;
   padding: 0.5rem 0.7rem;
 `;
