@@ -1,7 +1,7 @@
 /**
  * A mother component for all login components.
  */
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { RESET_PASSWORD } from 'const/LoginRoutes';
 import useCheckRoute from 'hooks/useCheckRoute';
