@@ -33,6 +33,7 @@ export const WideScreenMenu = styled.div`
 
 export const ButtonContainer = styled.div`
   width: 3.7rem;
+  height: 3.7rem;
   margin: 0rem 0.5rem;
   padding: 0.4rem;
   border-radius: 60%;
