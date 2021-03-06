@@ -178,10 +178,10 @@ export const NavMenuOption = styled.div`
 export const Arrow = styled.span`
   width: 0;
   height: 0;
-  margin: 0 0.1rem;
+  margin: 0 0.2rem;
   border-left: 0.3rem solid transparent;
   border-right: 0.3rem solid transparent;
-  border-bottom: 0.3rem solid #fff;
+  border-top: 0.3rem solid #fff;
   transition: all 0.5s ease;
 `;
 
