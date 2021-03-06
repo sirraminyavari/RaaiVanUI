@@ -5,7 +5,7 @@ const NavButtons = [
   { id: 1, title: RVDic.Home, icon: 'home', linkTo: getURL('Home') },
   {
     id: 2,
-    title: 'پیمایش',
+    title: RVDic.Browser,
     icon: 'direction',
     //TODO: Change link to url
     actions: [

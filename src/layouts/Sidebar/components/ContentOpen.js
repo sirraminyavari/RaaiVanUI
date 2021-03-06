@@ -10,6 +10,8 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import { getURL } from 'helpers/helpers';
 
+const { RV_RevFloat } = window;
+
 const SidebarManagement = lazy(() =>
   import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
 );
@@ -42,7 +44,7 @@ const SidebarOnOpen = ({ theme }) => {
         )}
         <Styled.SettingWrapper onClick={handleOnClick}>
           {isSettingShown ? (
-            <ArrowIcon dir="left" size={20} />
+            <ArrowIcon dir={RV_RevFloat} size={20} />
           ) : (
             <SettingIcon />
           )}

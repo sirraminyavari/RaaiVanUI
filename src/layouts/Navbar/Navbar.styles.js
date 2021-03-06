@@ -2,6 +2,8 @@ import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 
+const { RV_RevFloat } = window;
+
 export const NavbarContainer = withTheme(styled.div`
   width: ${({ theme, isMobile }) =>
     `calc(100% - ${
@@ -18,7 +20,7 @@ export const NavbarContainer = withTheme(styled.div`
   justify-content: space-between;
   align-items: center;
   top: 0;
-  left: 0;
+  ${`${RV_RevFloat}: 0;`}
   opacity: 1;
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
@@ -80,8 +82,8 @@ export const Badge = styled.div`
   background-color: #e2234f;
   position: absolute;
   top: 0.3rem;
-  left: -0.6rem;
-  font-size: 0.7rem;
+  ${`${RV_RevFloat}: -0.6rem;`}
+  font-size: 0.6rem;
 `;
 
 export const SearchWrapper = styled.div`
@@ -115,7 +117,7 @@ export const SearchInput = styled.input`
 
 export const SearchIcon = styled.div`
   position: absolute;
-  left: 0.3rem;
+  ${`${RV_RevFloat}: 0.3rem;`}
   top: 0.3rem;
   font-size: 1.5rem;
   color: #ddd;

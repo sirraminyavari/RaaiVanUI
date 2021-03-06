@@ -13,6 +13,8 @@ import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import { BG_WARMER } from 'constant/Colors';
 
+const { RV_RevFloat, RV_Float } = window;
+
 const SidebarHeader = (props) => {
   const dispatch = useDispatch();
   const { toggleSidebar, toggleSetting } = props.theme.actions;
@@ -48,7 +50,11 @@ const SidebarHeader = (props) => {
         </Link>
       )}
       <Styled.ToggleArrow onClick={toggleDrawer}>
-        <ToggleIcon dir={isSidebarOpen ? '' : 'left'} size={25} color="#fff" />
+        <ToggleIcon
+          dir={isSidebarOpen ? RV_Float : RV_RevFloat}
+          size={25}
+          color="#fff"
+        />
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );
