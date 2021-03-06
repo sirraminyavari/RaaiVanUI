@@ -23,7 +23,7 @@ const AvatarMenuList = () => {
 
   const handleCheckbox = (e) => {
     e.target.checked
-      ? Cookie.set('rv_lang', 'eng')
+      ? Cookie.set('rv_lang', 'en')
       : Cookie.set('rv_lang', 'fa');
     location.reload();
   };
