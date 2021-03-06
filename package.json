@@ -5,7 +5,7 @@
   "proxy": "http://185.239.107.180",
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^3.0.1",
-    "@rasoul678/ckeditor5-custom-classic": "^2.0.0",
+    "@rasoul678/ckeditor5-custom-balloon-block": "file:../ckeditor5/packages/ckeditor5-build-balloon-block",
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
