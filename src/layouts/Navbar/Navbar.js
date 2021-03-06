@@ -10,7 +10,7 @@ import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import withTheme from 'components/withTheme/withTheme';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import AvatarMenu from './components/AvatarMenu';
+import AvatarMenuList from './components/AvatarMenu/AvatarMenuList';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -76,7 +76,7 @@ const Navbar = (props) => {
           <div>
             <Avatar />
           </div>
-          <AvatarMenu />
+          <AvatarMenuList />
         </PopupMenu>
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
