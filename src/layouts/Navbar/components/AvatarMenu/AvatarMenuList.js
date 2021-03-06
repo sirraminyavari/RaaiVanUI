@@ -7,9 +7,11 @@ import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
 import AvatarMenuItem from './AvatarMenuItem';
 import MenuLinkItems from './MenuLinkItems';
+import Checkbox from 'components/Checkbox/Checkbox';
+import Cookie from 'js-cookie';
 import * as Styled from '../../Navbar.styles';
 
-const { RVDic } = window;
+const { RVDic, location } = window;
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,13 @@ const AvatarMenuList = () => {
   //! Logs user out from application.
   const handleLogout = () => {
     dispatch(logoutAction());
+  };
+
+  const handleCheckbox = (e) => {
+    e.target.checked
+      ? Cookie.set('rv_lang', 'eng')
+      : Cookie.set('rv_lang', 'fa');
+    location.reload();
   };
 
   return (
@@ -43,6 +52,12 @@ const AvatarMenuList = () => {
         iconColor="#E2234F"
         textColor="#E2234F"
       />
+      {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
+        <Checkbox
+          changeHandler={handleCheckbox}
+          isChecked={Cookie.get('rv_lang') === 'eng'}
+        />
+      )}
     </Styled.AvatarMenuContainer>
   );
 };
