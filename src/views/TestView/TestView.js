@@ -12,7 +12,11 @@ const TestView = () => {
     <>
       <div style={{ padding: '50px' }}>
         <h2>Using CKEditor 5 build in React</h2>
-        <BalloonBlockEditor data={data} handleDataChange={setData} />
+        <BalloonBlockEditor
+          data={data}
+          handleDataChange={setData}
+          removePlugins={['Heading', 'Link', 'FontColor']}
+        />
       </div>
       <div dangerouslySetInnerHTML={{ __html: data }}></div>
     </>

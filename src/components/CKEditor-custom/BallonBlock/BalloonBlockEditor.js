@@ -3,11 +3,11 @@ import BalloonBlock from '@raaivan/ckeditor5-custom-balloon-block';
 import editorConfig from './config/baseConfig';
 
 const BalloonBlockEditor = (props) => {
-  const { data, handleDataChange } = props;
+  const { data, handleDataChange, removePlugins } = props;
   return (
     <CKEditor
       editor={BalloonBlock}
-      config={editorConfig}
+      config={{ ...editorConfig, removePlugins }}
       data={data}
       onReady={(editor) => {
         // You can store the "editor" and use when it is needed.

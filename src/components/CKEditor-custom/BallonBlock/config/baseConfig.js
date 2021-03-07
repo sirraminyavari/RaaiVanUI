@@ -13,8 +13,6 @@ import blockToolbar from './blockToolbar';
 import imageToolbar from './imageToolbar';
 
 const editorConfiguration = {
-  //! Remove any plugin you want!
-  //   removePlugins: ['Heading', 'Link', 'FontColor'],
   fontFamily: {
     options: fontFamilyOptions,
     supportAllValues: true,
