@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@rasoul678/ckeditor5-custom-classic';
-import BalloonBlockEditor from '@rasoul678/ckeditor5-custom-balloon-block';
-import Helmet from 'react-helmet';
+import BalloonBlockEditor from '@raaivan/ckeditor5-custom-balloon-block';
 
 const TestView = () => {
   const [data, setData] = useState('<p>Hello from CKEditor 5!</p>');
@@ -13,9 +12,6 @@ const TestView = () => {
 
   return (
     <>
-      <Helmet>
-        <script async charset="utf-8" src="//cdn.iframe.ly/embed.js"></script>
-      </Helmet>
       <div style={{ padding: '50px' }}>
         <h2>Using CKEditor 5 build in React</h2>
         <CKEditor
