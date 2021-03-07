@@ -1,33 +1,68 @@
 import React from 'react';
 import useLoadFiles from '../../hooks/useLoadFiles';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import Loader from '../Loader/Loader';
 
 const { RV_Lang } = window;
 
 const RVEditor = ({ data }) => {
   const loaded = useLoadFiles([
-    "CKEditor5/ckeditor.js",
-    "CKEditor5/translations/fa.js"
+    'CKEditor5/ckeditor.js',
+    'CKEditor5/translations/fa.js',
   ]);
 
-  if(!loaded) return (<Loader />);
+  if (!loaded) return <>loading...</>;
 
   const { BalloonBlockEditor } = window;
 
-  let specialCharPlugins = BalloonBlockEditor.builtinPlugins.filter(f => !f.pluginName);
+  let specialCharPlugins = BalloonBlockEditor.builtinPlugins.filter(
+    (f) => !f.pluginName
+  );
 
   const editorConfig = {
     language: RV_Lang,
     plugins: [
-      "Mention", /*function (editor) { that.mention_customization(editor); }, uploadPlugin,*/
-      "Alignment", "Autoformat", "AutoLink", "BlockQuote", "BlockToolbar", "Bold", "Code", "CodeBlock", "Essentials",
-      "FontColor", "FontBackgroundColor", "Heading", "HorizontalLine", "Image", "ImageCaption", "ImageResize",
-      "ImageStyle", "ImageToolbar", "ImageUpload", "SimpleUploadAdapter",
-      "Indent", "IndentBlock", "Italic", "Link", "List", "ListStyle", "MediaEmbed", "MediaEmbedToolbar",
-      "Paragraph", "PasteFromOffice", "RemoveFormat", "SpecialCharacters", "Strikethrough", "Subscript",
-      "Superscript", "Table", "TableCellProperties", "TableProperties", "TableToolbar", "TextTransformation",
-      "Underline"
+      'Mention' /*function (editor) { that.mention_customization(editor); }, uploadPlugin,*/,
+      'Alignment',
+      'Autoformat',
+      'AutoLink',
+      'BlockQuote',
+      'BlockToolbar',
+      'Bold',
+      'Code',
+      'CodeBlock',
+      'Essentials',
+      'FontColor',
+      'FontBackgroundColor',
+      'Heading',
+      'HorizontalLine',
+      'Image',
+      'ImageCaption',
+      'ImageResize',
+      'ImageStyle',
+      'ImageToolbar',
+      'ImageUpload',
+      'SimpleUploadAdapter',
+      'Indent',
+      'IndentBlock',
+      'Italic',
+      'Link',
+      'List',
+      'ListStyle',
+      'MediaEmbed',
+      'MediaEmbedToolbar',
+      'Paragraph',
+      'PasteFromOffice',
+      'RemoveFormat',
+      'SpecialCharacters',
+      'Strikethrough',
+      'Subscript',
+      'Superscript',
+      'Table',
+      'TableCellProperties',
+      'TableProperties',
+      'TableToolbar',
+      'TextTransformation',
+      'Underline',
     ].concat(specialCharPlugins),
     toolbar: {
       items: [
@@ -100,7 +135,7 @@ const RVEditor = ({ data }) => {
     <CKEditor
       editor={BalloonBlockEditor}
       config={editorConfig}
-      data={ data }
+      data={data}
       onReady={(editor) => {
         // You can store the "editor" and use when it is needed.
         console.log('Editor is ready to use!', editor);
