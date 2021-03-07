@@ -1,6 +1,8 @@
 const blockToolbar = [
   'heading',
   '|',
+  'fontFamily',
+  'fontSize',
   'fontBackgroundColor',
   'fontColor',
   '|',

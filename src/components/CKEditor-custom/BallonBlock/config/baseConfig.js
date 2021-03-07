@@ -4,10 +4,29 @@ import {
 } from '../../plugins/mention/MentionCustom';
 import { aparatProvider } from '../../plugins/mediaEmbed/Providers';
 import headingOptions from './headingOptions';
+import {
+  fontFamilyOptions,
+  fontSizeOptions,
+  fontBgColors,
+} from './fontOptions';
 import blockToolbar from './blockToolbar';
 import imageToolbar from './imageToolbar';
 
 const editorConfiguration = {
+  //! Remove any plugin you want!
+  //   removePlugins: ['Heading', 'Link', 'FontColor'],
+  fontFamily: {
+    options: fontFamilyOptions,
+    supportAllValues: true,
+  },
+  fontSize: {
+    options: fontSizeOptions,
+    supportAllValues: true,
+  },
+  fontBackgroundColor: {
+    colors: fontBgColors,
+    columns: 9,
+  },
   blockToolbar,
   toolbar: {
     items: ['bold', 'italic', 'link'],
