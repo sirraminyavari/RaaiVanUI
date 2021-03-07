@@ -41,7 +41,7 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
   /**
    * After checking email,password,name,family validation,
    * 'sendCode()' will be called.
-   * The main procedure of server connecting will occur in 'UsersAPI'.
+   * The main process of server connecting will occur in 'UsersAPI'.
    * Here,just calling some functions occurs.
    */
   const sendCode = () => {
