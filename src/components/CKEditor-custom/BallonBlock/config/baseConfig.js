@@ -11,8 +11,10 @@ import {
 } from './fontOptions';
 import blockToolbar from './blockToolbar';
 import imageToolbar from './imageToolbar';
+import MentionLinks from '../../plugins/mention/MentionLinks';
 
 const editorConfiguration = {
+  extraPlugins: [MentionLinks],
   fontFamily: {
     options: fontFamilyOptions,
     supportAllValues: true,
