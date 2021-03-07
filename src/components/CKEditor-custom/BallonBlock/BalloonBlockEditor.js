@@ -1,5 +1,5 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import BalloonBlock from '@raaivan/ckeditor5-custom-balloon-block';
+import BalloonBlock from '@rasoul678/ckeditor5-custom-balloon-block';
 import editorConfig from './config/baseConfig';
 
 const BalloonBlockEditor = (props) => {
