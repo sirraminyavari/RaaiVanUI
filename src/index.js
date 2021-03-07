@@ -11,8 +11,15 @@ import 'assets/css/index.css';
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
 );
-const Login = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/Login')
+
+const SignIn = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignIn')
+);
+const SignUp = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignUp')
+);
+const VerifyingCode = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/VerifyingCode')
 );
 
 render(
@@ -22,7 +29,13 @@ render(
         <Suspense fallback={<LogoLoader size={10} />}>
           <Router>
             <Switch>
-              <PublicRoute exact path="/login" component={Login} />
+              <PublicRoute exact path="/login" component={SignIn} />
+              <PublicRoute exact path="/register" component={SignUp} />
+              <PublicRoute
+                exact
+                path="/verificationCode"
+                component={VerifyingCode}
+              />
               <PrivateRoute path="/" component={MainLayout} />
             </Switch>
           </Router>
