@@ -5,7 +5,7 @@ import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
 import { VERIFICATION_CODE } from 'const/LoginRoutes';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reSendVerifyCodeAction from 'store/actions/auth/reSendVerifyCodeAction';
 import styled from 'styled-components';
@@ -15,14 +15,17 @@ import { UpToDownAnimate } from './Animate.style';
 const ResendCode = () => {
   const [resendDisabled, setResendDisabled] = useState(true);
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
   const {
     currentRoute,
     isFetching,
     resendVerifyCodeTotalTimeout,
   } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
-    isFetching: state.login.resendVerifyCodeIsFetching,
-    resendVerifyCodeTotalTimeout: state.login.resendVerifyCodeTotalTimeout,
+    currentRoute: state.auth.currentRoute,
+    isFetching: state.auth.resendVerifyCodeIsFetching,
+    resendVerifyCodeTotalTimeout: state.auth.resendVerifyCodeTotalTimeout,
   }));
 
   useEffect(() => {
@@ -58,6 +61,8 @@ const ResendCode = () => {
   };
   return (
     <UpToDownAnimate
+      ref={ref}
+      dimension={ref?.current?.getBoundingClientRect()}
       style={{ marginTop: '3rem', marginBottom: '3rem' }}
       isVisible={isVisible()}>
       <Container>

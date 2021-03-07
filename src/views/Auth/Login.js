@@ -1,7 +1,7 @@
 /**
  * A mother component for all login components.
  */
-import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { RESET_PASSWORD } from 'const/LoginRoutes';
 import useCheckRoute from 'hooks/useCheckRoute';
@@ -26,6 +26,7 @@ import ResendCode from './elements/ResendCode';
 import Return from './elements/Return';
 import Title from './elements/Title';
 import VerificationCode from './elements/VerificationCode';
+import SignIn from './items/SignIn';
 import {
   BackgroundImage,
   Box,
@@ -33,6 +34,7 @@ import {
   Container,
   Maintainer,
 } from './Login.style';
+
 const { RVGlobal } = window;
 
 /**
@@ -47,7 +49,6 @@ const Login = () => {
   const [oneStepToInitDone, setOneStepToInit] = useState(false);
 
   const dispatch = useDispatch();
-  const checkRoute = useCheckRoute('login');
 
   useEffect(() => {
     const { GlobalUtilities } = window;
@@ -61,6 +62,7 @@ const Login = () => {
     });
     console.log(window, '<--- window');
   }, []);
+
   useEffect(() => {
     if (loadDone) {
       const { GlobalUtilities, UsersAPI, RVDic } = window;
@@ -87,6 +89,7 @@ const Login = () => {
       } else setPreinitDone(true);
     }
   }, [loadDone]);
+
   useEffect(() => {
     const { RVAPI, SAASBasedMultiTenancy } = window;
     if (!SAASBasedMultiTenancy) {
@@ -100,30 +103,29 @@ const Login = () => {
 
           // that.initialize(r.Domains || []);
           // dispatch(setOrgDomainsAction(r.Domains));
-          dispatch(
-            setOrgDomainsAction([
-              { Value: 'example.com', Title: 'some title' },
-              { Value: 'example2.com', Title: 'some title 2' },
-              { Value: 'example3.com', Title: 'some title 3' },
-              { Value: 'example4.com', Title: 'some title 4' },
-              { Value: 'example5.com', Title: 'some title 5' },
-              { Value: 'example6.com', Title: 'some title 6' },
-              { Value: 'example7.com', Title: 'some title 7' },
-            ])
-          );
+          // dispatch(
+          //   setOrgDomainsAction([
+          //     { Value: 'example.com', Title: 'some title' },
+          //     { Value: 'example2.com', Title: 'some title 2' },
+          //     { Value: 'example3.com', Title: 'some title 3' },
+          //     { Value: 'example4.com', Title: 'some title 4' },
+          //     { Value: 'example5.com', Title: 'some title 5' },
+          //     { Value: 'example6.com', Title: 'some title 6' },
+          //     { Value: 'example7.com', Title: 'some title 7' },
+          //   ])
+          // );
           setOneStepToInit(true);
         },
       });
     }
   }, [preinitDone]);
 
-  // After all steps did, it's time to init the reCaptcha.
+  // After all steps finished, it's time to init the reCaptcha.
   useEffect(() => {
     const script = document.createElement('script');
     // reCaptcha is just for SAAS
     if (RVGlobal.SAASBasedMultiTenancy) {
-      console.log(RVGlobal.CaptchaSiteKey, 'enable captch');
-      script.src = `https://www.google.com/recaptcha/api.js?render=${RVGlobal.CaptchaSiteKey}`;
+      script.src = RVGlobal.CaptchaURL;
       script.addEventListener('load', handleLoaded);
       document.body.appendChild(script);
     }
@@ -133,17 +135,18 @@ const Login = () => {
     };
   }, [oneStepToInitDone]);
 
-  const handleLoaded = (_) => {
-    const { RVGlobal } = window;
-    window.grecaptcha.ready((_) => {
-      window.grecaptcha
-        .execute(RVGlobal.CaptchaSiteKey, {
-          action: 'homepage',
-        })
-        .then((token) => {
-          dispatch(setCaptchaTokenAction(token));
-          // ...
-        });
+  /**
+   *
+   * By finishing loading the script, will fire.
+   * Sets token to redux store.
+   */
+  const handleLoaded = () => {
+    const { GlobalUtilities } = window;
+    GlobalUtilities.init_recaptcha((captcha) => {
+      captcha.getToken((token) => {
+        //use token
+        dispatch(setCaptchaTokenAction(token));
+      });
     });
   };
   return (
@@ -153,10 +156,9 @@ const Login = () => {
       <div className="small-1 medium-2 large-4" />
       <Container className="small-10 medium-8 large-4">
         <Logo />
-
         {oneStepToInitDone ? (
           <Box>
-            <Title />
+            {/* <Title />
             <Email />
             <NameFamily />
             <Password />
@@ -165,19 +167,14 @@ const Login = () => {
             <Description />
             <VerificationCode />
             <ResendCode />
-            {RVGlobal.SAASBasedMultiTenancy && (
-              <div
-                className="g-recaptcha"
-                data-sitekey={RVGlobal.CaptchaSiteKey}
-                date-size="invisible"></div>
-            )}
             <NavigationButton />
             <ForgotPassword />
             <Return />
             <ContinueWithGoogle />
             <CreateAccountButton />
 
-            <LastLoginsModal />
+            <LastLoginsModal /> */}
+            <SignIn />
           </Box>
         ) : (
           <Center>

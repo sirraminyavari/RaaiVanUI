@@ -5,7 +5,7 @@ import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import { LIGHT_BLUE, RED } from 'const/Colors';
 import { FORGOT_PASSWORD, SIGN_IN, SIGN_IN_COLLAPSED } from 'const/LoginRoutes';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import styled from 'styled-components';
@@ -15,9 +15,14 @@ const { RVDic } = window;
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
+
   const { currentRoute } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
+    currentRoute: state.auth.currentRoute,
   }));
+
   /**
    * According to 'currentRoute'
    * this function decides to return true or false.
@@ -40,7 +45,9 @@ const ForgotPassword = () => {
 
   return (
     <UpToDownAnimate
+      ref={ref}
       isVisible={isVisible()}
+      dimension={ref?.current?.getBoundingClientRect()}
       style={{ flexGrow: '0.8', marginTop: '1.5rem' }}>
       <Container>
         {/* <TextButton

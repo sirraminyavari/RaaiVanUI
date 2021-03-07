@@ -4,7 +4,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
-import NavbarIcons from 'components/Icons/NavbarIcons/NavbarIcons';
+import NavbarIcons from '../components/NavbarIcons/NavbarIcons';
 import { getLanguageDigits } from 'helpers/helpers';
 
 /**
@@ -34,7 +34,9 @@ const NavButtonComponent = (props) => {
     <Styled.ButtonContainer as={linkTo ? Link : 'div'} to={linkTo}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
-        {badge && <Styled.Badge>{getLanguageDigits('fa', badge)}</Styled.Badge>}
+        {badge && (
+          <Styled.Badge>{getLanguageDigits(undefined, badge)}</Styled.Badge>
+        )}
       </Styled.ButtonIcon>
       <Styled.ButtonTitle>
         {title}

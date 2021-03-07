@@ -1,7 +1,12 @@
-import { BiLogOut } from 'react-icons/bi';
+import { RiLogoutCircleLine, RiLogoutCircleRLine } from 'react-icons/ri';
 
-const LogoutIcon = (props) => {
-  return <BiLogOut {...props} />;
+const LogoutIcon = ({ dir: direction, ...rest }) => {
+  switch (direction) {
+    case 'left':
+      return <RiLogoutCircleLine {...rest} />;
+    default:
+      return <RiLogoutCircleRLine {...rest} />;
+  }
 };
 
 export default LogoutIcon;

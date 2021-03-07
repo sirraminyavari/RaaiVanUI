@@ -54,6 +54,7 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
         Password: encode(password),
         InvitationID: reqParams.get_value('inv'),
         ParseResults: true,
+        Captcha: getState().auth.captchaToken,
         ResponseHandler: function (results) {
           if (results.ErrorText) {
             dispatch(sendVerifyCodeFailed());

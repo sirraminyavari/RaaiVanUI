@@ -1,7 +1,7 @@
 /**
  * A @link LoadingButton, with Text UI
  */
-import Loader from 'components/Loader/Loader';
+import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
 import { MAIN_BLUE, MAIN_BLUE_HOVER } from 'const/Colors';
 import React from 'react';
 import styled from 'styled-components';
@@ -24,7 +24,11 @@ const TextButton = ({
   return (
     <>
       {isFetching ? (
-        <Loader {...props} />
+        <>
+          <span style={{ color: 'transparent' }}>1</span>
+          <LoadingIconFlat />
+          <span style={{ color: 'transparent' }}>1</span>
+        </>
       ) : (
         <Button onClick={onClick} {...props}>
           {children}

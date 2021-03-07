@@ -22,11 +22,11 @@ const reSendVerifyCodeAction = () => async (dispatch, getState) => {
    */
   const reSendCode = () => {
     dispatch(reSendVerifyCode());
-    const resendVerifyCodeToken = getState().login.resendVerifyCodeToken;
+    const resendVerifyCodeToken = getState().auth.resendVerifyCodeToken;
     if (resendVerifyCodeToken) {
       try {
         RVAPI.ResendVerificationCode({
-          Token: getState().login.resendVerifyCodeToken,
+          Token: getState().auth.resendVerifyCodeToken,
           ParseResults: true,
           ResponseHandler: function (result) {
             if (result.ErrorText) {

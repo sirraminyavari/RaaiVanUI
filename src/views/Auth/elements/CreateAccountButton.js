@@ -1,21 +1,20 @@
 /**
  * A button for creating a new account.
  */
-import React from 'react';
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import loginRoute from 'store/actions/auth/setLoginRouteAction';
-import { UpToDownAnimate } from './Animate.style';
+import Button from 'components/Buttons/Button';
 import {
-  SIGN_IN,
   FORGOT_PASSWORD,
+  SIGN_IN,
+  SIGN_IN_COLLAPSED,
   SIGN_UP_EMAIL,
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
-import Loader from 'components/Loader/Loader';
-import Button from 'components/Buttons/Button';
+import styled from 'styled-components';
+import { UpToDownAnimate } from './Animate.style';
 
 const { RVDic } = window;
 /**
@@ -24,13 +23,27 @@ const { RVDic } = window;
  */
 const CreateAccountButton = ({ ...props }) => {
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
+
   const { currentRoute, email, fetchingFiles } = useSelector((state) => ({
-    currentRoute: state.login.currentRoute,
-    email: state.login.email,
-    fetchingFiles: state.login.fetchingFiles,
+    currentRoute: state.auth.currentRoute,
+    email: state.auth.email,
+    fetchingFiles: state.auth.fetchingFiles,
   }));
+
   // Button title in sign-in page is different with other pages.
-  const title = currentRoute === SIGN_IN ? RVDic.SignUp : '!حساب کاربری دارم';
+  const title = () => {
+    switch (currentRoute) {
+      case SIGN_IN:
+      case SIGN_IN_COLLAPSED:
+      case FORGOT_PASSWORD:
+        return RVDic.SignUp;
+      default:
+        return '!حساب کاربری دارم';
+    }
+  };
   /**
    * According to 'currentRoute'
    * this function decides to return true or false.
@@ -53,31 +66,32 @@ const CreateAccountButton = ({ ...props }) => {
    * In other pages, touching button, navigates to 'sign-in' page.
    */
   const onCreate = () => {
-    currentRoute === SIGN_IN
-      ? dispatch(signupLoadFilesAction())
-      : dispatch(setLoginRouteAction(SIGN_IN));
+    switch (currentRoute) {
+      case SIGN_IN:
+      case SIGN_IN_COLLAPSED:
+      case FORGOT_PASSWORD:
+        dispatch(signupLoadFilesAction());
+      default:
+        dispatch(setLoginRouteAction(SIGN_IN));
+    }
   };
 
   return (
-    <UpToDownAnimate
-      isVisible={isVisible(currentRoute)}
-      style={{ marginTop: '1.5rem' }}>
-      {/* {fetchingFiles ? (
-        <Loader />
-      ) : (
-        <Container {...props} onClick={onCreate}>
-          {title}
-        </Container>
-      )} */}
-      <Button
-        type="secondary-o"
-        style={{ fontSize: '1rem' }}
-        loading={fetchingFiles}
-        style={{ width: '100%' }}
-        onClick={onCreate}>
-        {title}
-      </Button>
-    </UpToDownAnimate>
+    // <UpToDownAnimate
+    //   ref={ref}
+    //   dimension={ref?.current?.getBoundingClientRect()}
+    //   isVisible={isVisible(currentRoute)}
+    //   style={{ marginTop: '1.5rem' }}>
+
+    <Button
+      type="secondary-o"
+      style={{ fontSize: '1rem' }}
+      loading={fetchingFiles}
+      style={{ width: '100%' }}
+      onClick={onCreate}>
+      {title()}
+    </Button>
+    // </UpToDownAnimate>
   );
 };
 

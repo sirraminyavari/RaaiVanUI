@@ -1,6 +1,8 @@
 /**
  * A component for inputting the password
  */
+import InvisibleIcon from 'components/Icons/InVisible';
+import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   RESET_PASSWORD,
@@ -8,16 +10,28 @@ import {
   SIGN_IN_COLLAPSED,
   SIGN_UP_EMAIL,
 } from 'const/LoginRoutes';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setPassword from 'store/actions/auth/setPassAction';
 import setPasswordFocusAction from 'store/actions/auth/setPasswordFocusAction';
 import { UpToDownAnimate } from './Animate.style';
-
-const { RVDic } = window;
+const { RVDic, GlobalUtilities } = window;
 
 const Password = () => {
   const dispatch = useDispatch();
+
+  // We use ref to pass component dimension to 'UpToDownAnimate'
+  const ref = useRef();
+
+  // If TRUE, typed password will be visible,
+  const [passVisible, setPassVisible] = useState(false);
+
+  const { currentRoute, password, passwordError } = useSelector((state) => ({
+    password: state.auth.password,
+    passwordError: state.auth.passwordError,
+    currentRoute: state.auth.currentRoute,
+  }));
+
   /**
    * According to 'currentRoute'
    * this function decides to return true or false.
@@ -34,11 +48,6 @@ const Password = () => {
     }
   };
 
-  const { currentRoute, password, passwordError } = useSelector((state) => ({
-    password: state.login.password,
-    passwordError: state.login.passwordError,
-    currentRoute: state.login.currentRoute,
-  }));
   /**
    * Synchronously set user inputted value to Redux state
    * @param {String} value - inputted user passowrd
@@ -52,7 +61,6 @@ const Password = () => {
    * if user focuses on password field
    */
   const onFocus = () => {
-    // setPassFocused(true);
     dispatch(setPasswordFocusAction(true));
   };
   /**
@@ -60,25 +68,43 @@ const Password = () => {
    * if user defocuses on password field
    */
   const onBlur = () => {
-    // setPassFocused(false);
-    dispatch(setPasswordFocusAction(false));
+    setTimeout(() => {
+      dispatch(setPasswordFocusAction(true));
+    }, 100);
   };
 
   return (
-    <>
-      <UpToDownAnimate isVisible={isVisible()} style={{ marginTop: '1.5rem' }}>
-        <AnimatedInput
-          onChange={onPasswordChanged}
-          value={password}
-          placeholder={RVDic.Password}
-          type={'password'}
-          error={passwordError}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      </UpToDownAnimate>
-      {/* <PasswordValidation passFocused={passFocused} /> */}
-    </>
+    <UpToDownAnimate
+      ref={ref}
+      isVisible={isVisible()}
+      dimension={ref?.current?.getBoundingClientRect()}
+      style={{ marginTop: '1.5rem' }}>
+      <AnimatedInput
+        onChange={onPasswordChanged}
+        value={password}
+        placeholder={RVDic.Password}
+        type={passVisible ? 'text' : 'password'}
+        error={passwordError}
+        shake={!passwordError ? false : GlobalUtilities.random()}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        children={
+          passVisible ? (
+            <InvisibleIcon
+              className="rv-gray"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPassVisible(false)}
+            />
+          ) : (
+            <VisibleIcon
+              className="rv-gray"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setPassVisible(true)}
+            />
+          )
+        }
+      />
+    </UpToDownAnimate>
   );
 };
 

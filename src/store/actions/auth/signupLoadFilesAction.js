@@ -1,7 +1,9 @@
 /**
  * An action for getting required files during sign up from server.
  */
+import { SIGN_UP_EMAIL } from 'const/LoginRoutes';
 import { loginSlice } from '../../reducers/loginReducer';
+import setLoginRouteAction from './setLoginRouteAction';
 
 const {
   signupLoadFiles,
@@ -20,6 +22,8 @@ const signupLoadFilesAction = () => async (dispatch) => {
           UsersAPI.GetPasswordPolicy({
             ParseResults: true,
             ResponseHandler: function (result) {
+              dispatch(setLoginRouteAction(SIGN_UP_EMAIL));
+
               dispatch(signupLoadFilesSuccess(result));
             },
           });

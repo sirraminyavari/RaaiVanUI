@@ -30,7 +30,7 @@ const ListItem = (props) => {
       </Styled.CenterIcon>
       {badge && (
         <Styled.BadgeWrapper>
-          {getLanguageDigits('fa', badge)}
+          {getLanguageDigits(undefined, badge)}
         </Styled.BadgeWrapper>
       )}
     </Styled.ListItemWrapper>
