@@ -9,7 +9,12 @@ const NavButtons = [
     icon: 'direction',
     //TODO: Change link to url
     actions: [
-      { id: 1, title: RVDic.Browser, icon: 'site', linkTo: '/teams' },
+      {
+        id: 1,
+        title: RVDic.Explorer,
+        icon: 'site',
+        linkTo: getURL('Explorer'),
+      },
       { id: 2, title: RVDic.KnowledgeMap, icon: 'target', linkTo: '/teams' },
     ],
   },
