@@ -1,7 +1,7 @@
 /**
  * An input component that animates placeholder position
  */
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Container,
   Label,
@@ -22,65 +22,72 @@ import {
  * @param {object} props - Other params that don't include above.
  * @param {Boolean||setShake(GlobalUtilities.random())} - if True, shakes component for 500ms, with this {setShake(GlobalUtilities.random())} will shake randomly
  */
-const AnimatedInput = ({
-  placeholder,
-  type = 'text',
-  style,
-  value = '',
-  error = null,
-  disabled,
-  onChange,
-  children,
-  ...props
-}) => {
-  // True if 'Input' is focused.
-  const [inputFocused, _setFocused] = useState(!!value);
+const AnimatedInput = React.forwardRef(
+  (
+    {
+      placeholder,
+      type = 'text',
+      style,
+      value = '',
+      error = null,
+      disabled,
+      onChange,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    // True if 'Input' is focused.
+    const [inputFocused, _setFocused] = useState(!!value);
 
-  /**
-   * Changes input focusing according to input value
-   * @param {Boolean} focused - Defines input should be focus or not.
-   */
-  const setFocused = (focused) => {
-    if (!focused && value?.length === 0) {
-      _setFocused(focused);
-    } else {
-      _setFocused(true);
-    }
-  };
+    /**
+     * Changes input focusing according to input value
+     * @param {Boolean} focused - Defines input should be focus or not.
+     */
+    const setFocused = (focused) => {
+      if (!focused && value?.length === 0) {
+        _setFocused(focused);
+      } else {
+        _setFocused(true);
+      }
+    };
+    const refref = useRef();
 
-  return (
-    <Container style={style} inputFocused={inputFocused} {...props}>
-      <Label
-        className={inputFocused ? 'active' : ''}
-        inputFocused={inputFocused}>
-        <StyledInput
-          value={value}
-          type={type}
-          disabled={disabled}
-          onFocus={() => {
-            setFocused(true);
-          }}
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          onBlur={(e) => {
-            e.preventDefault();
-            setFocused(false);
-          }}
-          error={error}
-          onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
-          {...props}>
-          {children}
-        </StyledInput>
-        <Placeholder
-          className={`rv-border-radius-quarter ${
-            inputFocused ? 'rv-warm' : 'rv-gray'
-          }`}>
-          {placeholder}
-        </Placeholder>
-      </Label>
-    </Container>
-  );
-};
+    return (
+      <Container style={style} inputFocused={inputFocused} {...props}>
+        <Label
+          className={inputFocused ? 'active' : ''}
+          inputFocused={inputFocused}>
+          <StyledInput
+            value={value}
+            type={type}
+            disabled={disabled}
+            ref={ref}
+            onFocus={() => {
+              setFocused(true);
+            }}
+            onChange={(event) => {
+              onChange(event.target.value);
+            }}
+            onBlur={(e) => {
+              e.preventDefault();
+              setFocused(false);
+            }}
+            error={error}
+            onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
+            {...props}>
+            {children}
+          </StyledInput>
+          <Placeholder
+            className={`rv-border-radius-quarter ${
+              inputFocused ? 'rv-warm' : 'rv-gray'
+            }`}>
+            {placeholder}
+          </Placeholder>
+        </Label>
+      </Container>
+    );
+  }
+);
 
 export default AnimatedInput;

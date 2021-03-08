@@ -1,31 +1,14 @@
 /**
  * A mother component for all login components.
  */
-import Loader from 'components/Loader/Loader';
+
+import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
-import { RESET_PASSWORD } from 'const/LoginRoutes';
-import useCheckRoute from 'hooks/useCheckRoute';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
-import setOrgDomainsAction from 'store/actions/auth/setOrgDomainsAction';
-import ContinueWithGoogle from './elements/ContinueWithGoogle';
-import CreateAccountButton from './elements/CreateAccountButton';
-import Description from './elements/Description';
-import Email from './elements/Email';
-import ForgotPassword from './elements/ForgotPassword';
-import LastLoginsModal from './elements/LastLoginsModal';
-import NameFamily from './elements/NameFamily';
-import NavigationButton from './elements/NavigationButton';
-import OrgDomains from './elements/OrgDomains';
-import Password from './elements/Password';
-import PasswordValidation from './elements/PasswordValidation';
-import ResendCode from './elements/ResendCode';
-import Return from './elements/Return';
-import Title from './elements/Title';
-import VerificationCode from './elements/VerificationCode';
 import {
   BackgroundImage,
   Box,
@@ -39,7 +22,7 @@ const { RVGlobal } = window;
 /**
  * A mother component for containing the login elements.
  */
-const Login = () => {
+const Login = ({ children }) => {
   // True, if required files for the login page has been loaded.
   const [loadDone, setLoadDone] = useState(false);
   // True, if activationCode of reset password ticket has been checked.
@@ -48,6 +31,7 @@ const Login = () => {
   const [oneStepToInitDone, setOneStepToInit] = useState(false);
 
   const dispatch = useDispatch();
+  const { push } = useHistory();
 
   useEffect(() => {
     const { GlobalUtilities } = window;
@@ -83,7 +67,9 @@ const Login = () => {
         });
       } else if (passwordTicket) {
         // that.show_reset_password_form(passwordTicket, userName);
-        dispatch(setLoginRouteAction(RESET_PASSWORD));
+        // dispatch(setLoginRouteAction(RESET_PASSWORD));
+        push('/resetPassword');
+
         setPreinitDone(true);
       } else setPreinitDone(true);
     }
@@ -155,9 +141,8 @@ const Login = () => {
       <div className="small-1 medium-2 large-4" />
       <Container className="small-10 medium-8 large-4">
         <Logo />
-        {oneStepToInitDone ? (
-          <Box>
-            <Title />
+        <Box>
+          {/* <Title />
             <Email />
             <NameFamily />
             <Password />
@@ -172,13 +157,16 @@ const Login = () => {
             <ContinueWithGoogle />
             <CreateAccountButton />
 
-            <LastLoginsModal />
-          </Box>
-        ) : (
-          <Center>
-            <Loader />
-          </Center>
-        )}
+            <LastLoginsModal /> */}
+          {/* <SignIn /> */}
+          {oneStepToInitDone ? (
+            children
+          ) : (
+            <Center>
+              <Loader />
+            </Center>
+          )}
+        </Box>
       </Container>
       <div className="small-1 medium-2 large-4" />
     </Maintainer>

@@ -35,18 +35,18 @@ export const Box = styled.div`
   border-radius: 0.8rem;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   transition: all 1s, max-height 1s, min-height 1s, height 1s;
   position: relative;
   margin-top: 3rem;
-  margin-bottom: 5rem;
-  min-height: 10vh;
-  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+  min-height: 50vh;
+  padding-bottom: 1rem;
 `;
+
 export const Center = styled.div`
   display: flex;
-  width: ${({ smallScreen }) => (smallScreen ? '90vw' : '31vw')};
-  height: ${({ smallScreen }) => (smallScreen ? '90vh' : '50vh')};
+  height: 100%;
   align-items: center;
   justify-content: center;
 `;

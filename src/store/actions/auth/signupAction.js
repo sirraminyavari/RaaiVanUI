@@ -20,7 +20,7 @@ const signupAction = () => async (dispatch, getState) => {
   /**
    * After checking verification code,
    * 'signingUp()' will be called.
-   * Here, just calling some functions occurs, the main procedure of connecting to server
+   * Here, just calling some functions occurs, the main process of connecting to server
    * is being handled with 'UsersAPI'.
    */
   const signingUp = () => {

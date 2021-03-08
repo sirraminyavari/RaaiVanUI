@@ -1,47 +1,56 @@
 /**
  * A modal for showing the user last logins
  */
-import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
+import { decode } from 'js-base64';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { useMediaQuery } from 'react-responsive';
 import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
+import styled from 'styled-components';
 
 /**
  * By signing in the user, this modal will be shown
  */
-const LastLoginsModal = () => {
+const LastLoginsModal = ({ isVisible }) => {
   const dispatch = useDispatch();
 
-  const { lastLoginModal, lastLogins } = useSelector((state) => ({
-    lastLoginModal: state.auth.lastLoginModal,
+  const { lastLogins, loginMessage } = useSelector((state) => ({
     lastLogins: state.auth.lastLogins,
+    loginMessage: state.auth.auth?.LoginMessage,
   }));
   /**
    * By clicking close button, will fire.
    */
   const onClose = () => {
-    dispatch(setIsAthunticatedAction(window?.IsAuthenticated));
+    dispatch(setIsAthunticatedAction(true));
   };
+  const isMediumScreen = useMediaQuery({ query: '(min-width: 1224px)' });
 
   return (
-    <Modal onClose={onClose} contentWidth={'90%'} show={lastLoginModal}>
-      <Row style={{ marginBottom: '3px' }}>
-        <div>{'  '} </div>
-        <RowItem flex={1}>{'نوع اقدام'}</RowItem>
-        <RowItem flex={2}>{'زمان'}</RowItem>
-        <RowItem flex={2}>{'آدرس آی پی'}</RowItem>
-      </Row>
-      {lastLogins?.length > 0 &&
-        lastLogins.map((x, index) => (
-          <Row key={index}>
-            <div>{index + 1}.</div>
-            <RowItem flex={1}>{x?.Action}</RowItem>
-            <RowItem flex={2}>{x?.Date}</RowItem>
-            <RowItem flex={2}>{x?.HostAddress}</RowItem>
-          </Row>
-        ))}
+    <Modal
+      onClose={onClose}
+      contentWidth={isMediumScreen ? '50%' : '80%'}
+      show={isVisible}>
+      {console.log(loginMessage, 'loginMessage')}
+      <Container>
+        <Message>{loginMessage && decode(loginMessage)} </Message>
+
+        <Row style={{ marginBottom: '3px' }}>
+          <RowItem flex={1}>{'نوع اقدام'}</RowItem>
+          <RowItem flex={2}>{'زمان'}</RowItem>
+          <RowItem flex={2}>{'آدرس آی پی'}</RowItem>
+        </Row>
+        {lastLogins?.length > 0 &&
+          lastLogins.map((x, index) => (
+            <Row key={index}>
+              <div>{index + 1}.</div>
+              <RowItem flex={1}>{x?.Action}</RowItem>
+              <RowItem flex={2}>{x?.Date}</RowItem>
+              <RowItem flex={2}>{x?.HostAddress}</RowItem>
+            </Row>
+          ))}
+      </Container>
     </Modal>
   );
 };
@@ -52,6 +61,7 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 const RowItem = styled.div`
   display: flex;
@@ -62,4 +72,16 @@ const RowItem = styled.div`
   margin: 3px;
   align-items: center;
   justify-content: center;
+`;
+const Message = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1rem;
+`;
+const Container = styled.div`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 `;

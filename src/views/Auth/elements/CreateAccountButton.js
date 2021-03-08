@@ -18,7 +18,7 @@ import { UpToDownAnimate } from './Animate.style';
 
 const { RVDic } = window;
 /**
- * By clicking this button, user will able to start signing up procedure.
+ * By clicking this button, user will able to start signing up process.
  * @param {object} props - Other params that don't include above.
  */
 const CreateAccountButton = ({ ...props }) => {
@@ -77,27 +77,21 @@ const CreateAccountButton = ({ ...props }) => {
   };
 
   return (
-    <UpToDownAnimate
-      ref={ref}
-      dimension={ref?.current?.getBoundingClientRect()}
-      isVisible={isVisible(currentRoute)}
-      style={{ marginTop: '1.5rem' }}>
-      {/* {fetchingFiles ? (
-        <Loader />
-      ) : (
-        <Container {...props} onClick={onCreate}>
-          {title}
-        </Container>
-      )} */}
-      <Button
-        type="secondary-o"
-        style={{ fontSize: '1rem' }}
-        loading={fetchingFiles}
-        style={{ width: '100%' }}
-        onClick={onCreate}>
-        {title()}
-      </Button>
-    </UpToDownAnimate>
+    // <UpToDownAnimate
+    //   ref={ref}
+    //   dimension={ref?.current?.getBoundingClientRect()}
+    //   isVisible={isVisible(currentRoute)}
+    //   style={{ marginTop: '1.5rem' }}>
+
+    <Button
+      type="secondary-o"
+      style={{ fontSize: '1rem' }}
+      loading={fetchingFiles}
+      style={{ width: '100%' }}
+      onClick={onCreate}>
+      {title()}
+    </Button>
+    // </UpToDownAnimate>
   );
 };
 

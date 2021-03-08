@@ -34,6 +34,7 @@ export const loginSlice = createSlice({
     currentRoute: SIGN_IN,
     passwordPolicy: null,
     fetchingFiles: false,
+    routeHistory: null,
     isPasswordFocused: false,
     resendVerifyCodeIsFetching: false,
     resendVerifyCodeTimeout: null,
@@ -82,6 +83,7 @@ export const loginSlice = createSlice({
       state.resendVerifyCodeTotalTimeout =
         action.payload.VerificationCode.TotalTimeout;
       state.isFetching = false;
+      state.routeHistory = 'verificationCode';
       state.verifyCodeToken = action.payload.VerificationCode.Token;
       state.resendVerifyCodeToken = action.payload.VerificationCode.Token;
       state.currentRoute = VERIFICATION_CODE;
@@ -142,6 +144,7 @@ export const loginSlice = createSlice({
     },
     signupLoadFilesSuccess: (state, action) => {
       state.fetchingFiles = false;
+      state.routeHistory = '/register';
       state.passwordPolicy = action.payload;
     },
     signupLoadFilesFailed: (state, action) => {
