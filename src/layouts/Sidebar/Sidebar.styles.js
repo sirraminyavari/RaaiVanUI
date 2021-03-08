@@ -1,8 +1,9 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
-import Edit from 'components/Icons/EditIcon/Edit';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+
+const { RV_Float, RV_RevFloat } = window;
 
 const FlexBetween = css`
   display: flex;
@@ -31,10 +32,10 @@ export const SidebarContainer = withTheme(styled.div`
   position: fixed;
   z-index: 100;
   top: 0;
-  right: 0;
+  ${`${RV_Float}: 0;`}
   overflow: hidden;
   color: #fff;
-  box-shadow: 10px 0px 15px 10px #000;
+  box-shadow: 1px 0px 15px 1px #000;
   transition: all 0.7s ease;
 `);
 
@@ -43,7 +44,7 @@ export const ContentWrapper = withTheme(styled.div`
   position: absolute;
   top: 0;
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
-  left: -1.1rem;
+  ${`${RV_RevFloat}: -1.1rem;`}
   overflow: scroll;
   padding: 0 1.1rem;
   margin-top: 4rem;
@@ -118,11 +119,12 @@ export const SidebarFooter = styled.div`
 `;
 
 export const FooterIconWrapper = withTheme(styled.div`
-  margin-right: ${(props) => (props.theme.states.isSidebarOpen ? '0' : '3rem')};
+  margin-${RV_Float}: ${(props) =>
+  props.theme.states.isSidebarOpen ? '0' : '3rem'};
 `);
 
 export const FooterTitle = withTheme(styled.span`
-  margin-right: 0.5rem;
+  margin-${RV_Float}: 0.5rem;
   position: relative;
   top: ${(props) => (props.theme.states.isSidebarOpen ? '0px' : '100px')};
   transition: all 0.5s linear;
@@ -148,9 +150,13 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
   }
 `;
 
-export const MenuTitle = styled.div`
+export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
   color: #fff;
+`;
+
+export const MenuTitle = styled.span`
+  margin-${RV_Float}: 0.3rem;
 `;
 
 export const SubMenuContainer = styled.div`
@@ -196,7 +202,7 @@ export const ListItemWrapper = styled.div`
 export const SettingWrapper = styled.div`
   border-radius: 50%;
   padding: 0.3rem;
-  margin-left: -0.1rem;
+  margin-${RV_RevFloat}: -0.1rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
@@ -204,7 +210,7 @@ export const SettingWrapper = styled.div`
 export const PanelWrapper = styled.div`
   ${FlexCenter}
   margin: 0.5rem 0;
-  margin-right: 0.5rem;
+  margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -231,7 +237,7 @@ export const CloseContentContainer = styled.div`
 
 const arrowCss = css`
   position: absolute;
-  right: -0.3rem;
+  ${RV_Float}: -0.3rem;
   font-size: 2.5rem;
 `;
 
@@ -261,7 +267,7 @@ export const IconListWrap = styled.div`
   position: absolute;
   padding: 0 0.3rem;
   top: 0;
-  left: -30%;
+  ${RV_RevFloat}: -30%;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -287,12 +293,12 @@ export const UnderMenuContainer = styled.div`
 
 export const FilterIconWrapper = styled.div`
   position: absolute;
-  left: 0.3rem;
+  ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
 `;
 
 export const PanelLink = styled.div`
-  margin-right: 0.4rem;
+  margin-${RV_Float}: 0.4rem;
 `;
 
 const getHighlightCss = ({ isMatch }) => {

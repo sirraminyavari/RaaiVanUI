@@ -1,12 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const LogoContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  align-items: center;
+  margin: 0.5rem auto;
+  text-align: center;
 `;
 
 export const Image = styled.img`
-  width: ${({ size }) => `${size}rem`};
+  ${({ isSaaS }) =>
+    isSaaS &&
+    css`
+      max-width: 60px;
+    `}
 `;

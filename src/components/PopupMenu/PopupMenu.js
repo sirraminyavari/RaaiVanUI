@@ -275,8 +275,8 @@ export const calculatePosition = ({
   if (positionInfo.leftMovement != 0 && (align == 't' || align == 'b')) {
     let movedRight = positionInfo.leftMovement > 0;
     _movement = positionInfo.leftMovement + (movedRight ? 1 : -1) * _moveOffset;
-    let sideMargin = contentWidth / 2 - _movement;
-    if (!movedRight) sideMargin = positionInfo.width - sideMargin - 1;
+
+    let sideMargin = -2 * _movement + 14;
 
     ret.contentStyle.direction = movedRight ? 'ltr' : 'rtl';
 

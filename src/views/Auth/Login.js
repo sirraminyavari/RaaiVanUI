@@ -1,7 +1,8 @@
 /**
  * A mother component for all login components.
  */
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+
+import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
@@ -162,7 +163,7 @@ const Login = ({ children }) => {
             children
           ) : (
             <Center>
-              <LoadingIconFlat />
+              <Loader />
             </Center>
           )}
         </Box>

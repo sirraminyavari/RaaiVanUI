@@ -10,6 +10,8 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import SidebarMenuBranches from './MenuBranches';
 
+const { RV_RevFloat } = window;
+
 /**
  * @typedef ItemType
  * @property {string} NodeTypeID -The id of the node.
@@ -58,18 +60,14 @@ const SidebarMenuRoot = (props) => {
         forwardedAs={childMenus ? 'div' : Link}
         to={`/classes/${id}`}
         onClick={childMenus ? handleDropdown : null}>
-        <Styled.MenuTitle>
+        <Styled.MenuTitleWrapper>
           {childMenus ? (
-            isOpen() ? (
-              <CaretIcon dir="down" />
-            ) : (
-              <CaretIcon dir="left" />
-            )
+            <CaretIcon dir={isOpen() ? 'down' : RV_RevFloat} />
           ) : (
             <img src={iconImage} alt="menu-icon" />
           )}
-          <span style={{ marginRight: '5px' }}>{decode(title)}</span>
-        </Styled.MenuTitle>
+          <Styled.MenuTitle>{decode(title)}</Styled.MenuTitle>
+        </Styled.MenuTitleWrapper>
         {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
       {childMenus && (

@@ -1,4 +1,9 @@
 import { utils } from 'react-modern-calendar-datepicker';
+import Cookie from 'js-cookie';
+
+export const getLanguage = () => {
+  return Cookie.get('rv_lang') || 'fa';
+};
 
 /**
  * @description A function to capitalize strings.
@@ -45,7 +50,7 @@ export const reorder = (list, startIndex, endIndex) => {
  * @param {('fa' | 'en')} lang -The language of the date.
  * @returns Today's date.
  */
-export const getToday = (lang) => {
+export const getToday = (lang = getLanguage()) => {
   return utils(lang).getToday();
 };
 
@@ -55,7 +60,7 @@ export const getToday = (lang) => {
  * @param {(number:1|2|3|4|5|6|7|8|9|10|11|12)} number -The number of the month.
  * @returns The name of the given month.
  */
-export const getMonthName = (lang, number) => {
+export const getMonthName = (lang = getLanguage(), number) => {
   return utils(lang).getMonthName(number);
 };
 
@@ -65,7 +70,7 @@ export const getMonthName = (lang, number) => {
  * @param {number | string} digit -The Digit to transform to given language.
  * @returns The transformed digit.
  */
-export const getLanguageDigits = (lang, digit) => {
+export const getLanguageDigits = (lang = getLanguage(), digit) => {
   return utils(lang).getLanguageDigits(digit);
 };
 
