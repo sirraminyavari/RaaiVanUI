@@ -1,6 +1,6 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Login from 'views/Auth/Login';
+
 const PublicRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -9,11 +9,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => {
         if (!isAuthenticated) {
-          return (
-            <Login>
-              <Component {...props} />
-            </Login>
-          );
+          return <Component {...props} />;
         } else {
           return (
             <Redirect

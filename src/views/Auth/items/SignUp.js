@@ -184,7 +184,7 @@ const SignUp = () => {
    * Returns user to the login page.
    */
   const onHaveAccount = () => {
-    push('/login');
+    push('/auth/login');
   };
 
   return (
