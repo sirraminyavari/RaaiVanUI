@@ -1,7 +1,12 @@
-import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
-
 const { GlobalUtilities } = window;
+
+if (!window.__FIXEDCKEDITOR) {
+  window.__FIXEDCKEDITOR = true;
+  const stl = document.createElement('style');
+  stl.setAttribute('type', 'text/css');
+  stl.innerHTML = '.ck-content { width: 100%; }';
+  document.head.appendChild(stl);
+}
 
 const CreatePlugin = ({
   button: {
@@ -12,13 +17,22 @@ const CreatePlugin = ({
   },
   onInit,
 }) => {
-  return class extends Plugin {
+  const { BalloonBlockEditor } = window;
+
+  let pluginBase = BalloonBlockEditor.builtinPlugins.filter(
+    (f) => f.pluginName == 'RVPluginBase'
+  );
+
+  if (!pluginBase.length) return;
+  else pluginBase = pluginBase[0];
+
+  return class extends pluginBase.PluginClass {
     init() {
       const editor = this.editor;
 
       if (buttonName) {
         editor.ui.componentFactory.add(buttonName, (locale) => {
-          const view = new ButtonView(locale);
+          const view = new pluginBase.ButtonViewClass(locale);
 
           view.set({ label: buttonTitle, icon: buttonSvg, tooltip: true });
 
@@ -32,7 +46,8 @@ const CreatePlugin = ({
         });
       }
 
-      if (GlobalUtilities.get_type(onInit) == 'function') onInit();
+      if (GlobalUtilities.get_type(onInit) == 'function')
+        onInit({ editor: editor });
     }
   };
 };
