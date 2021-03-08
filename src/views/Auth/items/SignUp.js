@@ -250,6 +250,8 @@ const SignUp = () => {
                 transition: 'opacity 1s',
               }}
               isVisible={passFocused}
+              password={password}
+              passwordPolicy={passwordPolicy}
             />
           )}
 
