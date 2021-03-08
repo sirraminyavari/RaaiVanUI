@@ -7,7 +7,6 @@ import InvisibleIcon from 'components/Icons/InVisible';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import H5 from 'components/TypoGraphy/H5';
 import { LIGHT_BLUE } from 'const/Colors';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +35,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
   const { push } = useHistory();
+
   //If true, the typed password will be shown.
   const [passVisible, setPassVisible] = useState(false);
   //If true, means the password input is focused(to showing the Password validation).
@@ -71,6 +71,7 @@ const SignUp = () => {
     passwordPolicy: state.auth.passwordPolicy,
     routeHistory: state.auth.routeHistory,
   }));
+
   // has two responsibilities.
   // 1- when the component did mount, checks password policy, if it is null, will fetch it.
   // 2- when component will unmount, sets signUpClicked to false.
@@ -88,7 +89,6 @@ const SignUp = () => {
       setSignUpClicked(false);
     };
   }, []);
-
   // By changing routeHistory & signUpClicked,
   // navigates to the address that routeHistory says.
   useEffect(() => {
@@ -279,7 +279,8 @@ const SignUp = () => {
             />
           </RowItems>
           {!passFocused && (
-            <H5
+            <Heading
+              type="h5"
               style={{
                 fontSize: '0.8rem',
                 color: `${LIGHT_BLUE}`,
@@ -296,7 +297,7 @@ const SignUp = () => {
                 </a>
                 {' را خوانده و به آن متعهد هستید '}
               </p>
-            </H5>
+            </Heading>
           )}
           <Button
             onClick={onSendVerifyCode}
