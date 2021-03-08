@@ -19,7 +19,6 @@ const { RVDic } = window;
  * @param {Object} passwordPolicy - The policies, user should occupy while choosing password.
  */
 const PasswordValidation = ({ isVisible, password, passwordPolicy }) => {
-  console.log(passwordPolicy, password, '< - - - - - - -');
   /**
    *
    * @param {Sting} text - message for password validator
