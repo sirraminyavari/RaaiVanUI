@@ -55,7 +55,6 @@ const SignIn = () => {
   }));
 
   useEffect(() => {
-    console.log(emailRef.current, 'email ref');
     emailRef.current?.focus();
   }, []);
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
@@ -97,7 +96,9 @@ const SignIn = () => {
    * navigates to resetPassword page.
    */
   const onForgot = () => {
-    push('/reset_password');
+    dispatch(setEmailAction(''));
+    dispatch(setPasswordAction(''));
+    push('/forgotPassword');
   };
   /**
    * Starts to load sign up necessary files, by dispatching signupLoadFilesAction
@@ -106,9 +107,15 @@ const SignIn = () => {
     setSignUpClicked(true);
     dispatch(signupLoadFilesAction());
   };
+  /**
+   * When the email input is focused, the password input will be focused.
+   */
   const onEmailEnter = () => {
     passRef.current?.focus();
   };
+  /**
+   * When the password input is focused, the sign in process starts.
+   */
   const onPassEnter = () => {
     onSignIn();
   };
