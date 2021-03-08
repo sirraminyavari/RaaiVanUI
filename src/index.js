@@ -11,8 +11,26 @@ import 'assets/css/index.css';
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
 );
-const Login = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/Login')
+
+const SignIn = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignIn')
+);
+const SignUp = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignUp')
+);
+const VerifyingCode = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/VerifyingCode')
+);
+const ForgotPassword = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/ForgotPassword')
+);
+const ResetPasswordVerifying = lazy(() =>
+  import(
+    /* webpackChunkName: "login"*/ 'views/Auth/items/ResetPasswordVerifying'
+  )
+);
+const ResetPassword = lazy(() =>
+  import(/* webpackChunkName: "login"*/ 'views/Auth/items/ResetPassword')
 );
 
 render(
@@ -22,7 +40,28 @@ render(
         <Suspense fallback={<LogoLoader size={10} />}>
           <Router>
             <Switch>
-              <PublicRoute exact path="/login" component={Login} />
+              <PublicRoute exact path="/login" component={SignIn} />
+              <PublicRoute exact path="/register" component={SignUp} />
+              <PublicRoute
+                exact
+                path="/verificationCode"
+                component={VerifyingCode}
+              />
+              <PublicRoute
+                exact
+                path="/forgotPassword"
+                component={ForgotPassword}
+              />
+              <PublicRoute
+                exact
+                path="/resetPasswordVerifying"
+                component={ResetPasswordVerifying}
+              />
+              <PublicRoute
+                exact
+                path="/resetPassword"
+                component={ResetPassword}
+              />
               <PrivateRoute path="/" component={MainLayout} />
             </Switch>
           </Router>

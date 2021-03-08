@@ -10,10 +10,10 @@ const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
  * @property {string} type - type of the input e.g. text, password, etc.
  * @property {boolean | string} error - true means there is an error and strgin value means there is an erorr with a message
  * @property {boolean | number} shake - if true or be a positive number, the component will shake for a second
- * @property {method} onAfterChange - fires after a timeout after keydown event
- * @property {method} onEnter - fires when the user presses Enter key
- * @property {method} onChangeOrEnter - a combination of 'onAfterChange' & 'onEnter'
- * @property {number} timeout - determines the timeout for 'onAfterChange' and 'onEnterOrChange' events
+ * @property {method} afterChangeListener - fires after a timeout after keydown event
+ * @property {method} enterListener - fires when the user presses Enter key
+ * @property {method} changeOrEnterListener - a combination of 'afterChangeListener' & 'enterListener'
+ * @property {number} timeout - determines the timeout for 'afterChangeListener' and 'onEnterOrChange' events
  * @property {object} children - a component that will be rendedred as a button
  */
 
@@ -23,112 +23,118 @@ const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
  * @param {PropType} props
  */
 
-const Input = ({
-  type,
-  error,
-  shake,
-  onAfterChange,
-  onEnter,
-  onChangeOrEnter,
-  timeout,
-  className,
-  style,
-  children,
-  ...props
-}) => {
-  const inputRef = React.createRef();
+const Input = React.forwardRef(
+  (
+    {
+      type,
+      error,
+      shake,
+      afterChangeListener,
+      enterListener,
+      changeOrEnterListener,
+      timeout,
+      className,
+      style,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const errorMessage =
+      GlobalUtilities.get_type(error) == 'string' ? error : null;
 
-  const errorMessage =
-    GlobalUtilities.get_type(error) == 'string' ? error : null;
+    const shaking = usePeriod(shake, {}) && !!error;
 
-  const shaking = usePeriod(shake, {}) && !!error;
+    const hasButton = GlobalUtilities.get_type(children) == 'json';
 
-  const hasButton = GlobalUtilities.get_type(children) == 'json';
+    //handle key down events: afterChangeListener, enterListener, changeOrEnterListener
+    const hasKeyDownAction = [
+      afterChangeListener,
+      enterListener,
+      changeOrEnterListener,
+    ].some((fn) => GlobalUtilities.get_type(fn) === 'function');
 
-  //handle key down events: onAfterChange, onEnter, onChangeOrEnter
-  const hasKeyDownAction = [onAfterChange, onEnter, onChangeOrEnter].some(
-    (fn) => GlobalUtilities.get_type(fn) === 'function'
-  );
+    const hasChangeAction = [afterChangeListener, changeOrEnterListener].some(
+      (fn) => GlobalUtilities.get_type(fn) === 'function'
+    );
 
-  const hasChangeAction = [onAfterChange, onChangeOrEnter].some(
-    (fn) => GlobalUtilities.get_type(fn) === 'function'
-  );
+    const [changeTimeout, setChangeTimeout] = useState(null);
 
-  const [changeTimeout, setChangeTimeout] = useState(null);
+    const clearChangeTimeout = () => {
+      if (changeTimeout) {
+        clearTimeout(changeTimeout);
+        setChangeTimeout(null);
+      }
+    };
 
-  const clearChangeTimeout = () => {
-    if (changeTimeout) {
-      clearTimeout(changeTimeout);
-      setChangeTimeout(null);
-    }
-  };
+    useEffect(() => {
+      return () => clearChangeTimeout();
+    }, []);
 
-  useEffect(() => {
-    return () => clearChangeTimeout();
-  }, []);
+    const handleKeyDown = !hasKeyDownAction
+      ? null
+      : (e) => {
+          if (e.which === 17) return; //13: enter, 17: ctrl
 
-  const handleKeyDown = !hasKeyDownAction
-    ? null
-    : (e) => {
-        if (e.which === 17) return; //13: enter, 17: ctrl
+          clearChangeTimeout();
 
-        clearChangeTimeout();
+          if (e.which === 13) {
+            if (GlobalUtilities.get_type(enterListener) == 'function')
+              enterListener(e);
+            if (GlobalUtilities.get_type(changeOrEnterListener) == 'function')
+              changeOrEnterListener(e);
+          } else if (hasChangeAction) {
+            const to = setTimeout(() => {
+              if (GlobalUtilities.get_type(afterChangeListener) == 'function')
+                afterChangeListener(e);
+              if (GlobalUtilities.get_type(changeOrEnterListener) == 'function')
+                changeOrEnterListener(e);
+            }, timeout);
 
-        if (e.which === 13) {
-          if (GlobalUtilities.get_type(onEnter) == 'function') onEnter(e);
-          if (GlobalUtilities.get_type(onChangeOrEnter) == 'function')
-            onChangeOrEnter(e);
-        } else if (hasChangeAction) {
-          const to = setTimeout(() => {
-            if (GlobalUtilities.get_type(onAfterChange) == 'function')
-              onAfterChange(e);
-            if (GlobalUtilities.get_type(onChangeOrEnter) == 'function')
-              onChangeOrEnter(e);
-          }, timeout);
+            setChangeTimeout(to);
+          }
+        };
+    //end of handle key down events
 
-          setChangeTimeout(to);
-        }
-      };
-  //end of handle key down events
-
-  return (
-    <InputContainer>
-      <input
-        ref={inputRef}
-        type={type}
-        className={
-          'rv-input' +
-          (error ? ' rv-input-invalid ' : ' ') +
-          (shaking ? ' rv-shake ' : ' ') +
-          className
-        }
-        style={GlobalUtilities.extend(
-          style || {},
-          {
-            position: 'relative',
-          },
-          !hasButton
-            ? {}
-            : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
+    return (
+      <InputContainer>
+        <input
+          ref={ref}
+          type={type}
+          className={
+            'rv-input' +
+            (error ? ' rv-input-invalid ' : ' ') +
+            (shaking ? ' rv-shake ' : ' ') +
+            className
+          }
+          style={GlobalUtilities.extend(
+            style || {},
+            {
+              position: 'relative',
+            },
+            !hasButton
+              ? {}
+              : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
+          )}
+          onKeyDown={handleKeyDown}
+          {...props}
+        />
+        {hasButton && <ButtonContainer>{children}</ButtonContainer>}
+        {!!errorMessage && (
+          <ErrorContainer className="rv-red">{errorMessage}</ErrorContainer>
         )}
-        onKeyDown={handleKeyDown}
-        {...props}
-      />
-      {hasButton && <ButtonContainer>{children}</ButtonContainer>}
-      {!!errorMessage && (
-        <ErrorContainer className="rv-red">{errorMessage}</ErrorContainer>
-      )}
-    </InputContainer>
-  );
-};
+      </InputContainer>
+    );
+  }
+);
 
 Input.propTypes = {
   type: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   shake: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  onAfterChange: PropTypes.func,
-  onEnter: PropTypes.func,
-  onChangeOrEnter: PropTypes.func,
+  afterChangeListener: PropTypes.func,
+  enterListener: PropTypes.func,
+  changeOrEnterListener: PropTypes.func,
 };
 
 Input.defaultProps = {

@@ -18,7 +18,7 @@ import { UpToDownAnimate } from './Animate.style';
 
 const { RVDic } = window;
 /**
- * By clicking this button, user will able to start signing up procedure.
+ * By clicking this button, user will able to start signing up process.
  * @param {object} props - Other params that don't include above.
  */
 const CreateAccountButton = ({ ...props }) => {

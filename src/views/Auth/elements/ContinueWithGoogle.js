@@ -87,7 +87,7 @@ const ContinueWithGoogle = ({ ...props }) => {
 };
 export default ContinueWithGoogle;
 
-const Container = styled.button`
+const Container = styled.div`
   width: 90%;
   align-self: center;
   text-align: center;
