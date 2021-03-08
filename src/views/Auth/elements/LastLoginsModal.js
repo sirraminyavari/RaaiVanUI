@@ -1,23 +1,21 @@
 /**
  * A modal for showing the user last logins
  */
-import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
+import { decode } from 'js-base64';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
-import { decode } from 'js-base64';
 import { useMediaQuery } from 'react-responsive';
+import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
+import styled from 'styled-components';
 
 /**
  * By signing in the user, this modal will be shown
  */
-const LastLoginsModal = () => {
+const LastLoginsModal = ({ isVisible }) => {
   const dispatch = useDispatch();
 
-  const { lastLoginModal, lastLogins, loginMessage } = useSelector((state) => ({
-    lastLoginModal: state.auth.lastLoginModal,
+  const { lastLogins, loginMessage } = useSelector((state) => ({
     lastLogins: state.auth.lastLogins,
     loginMessage: state.auth.auth?.LoginMessage,
   }));
@@ -25,7 +23,7 @@ const LastLoginsModal = () => {
    * By clicking close button, will fire.
    */
   const onClose = () => {
-    dispatch(setIsAthunticatedAction(window?.IsAuthenticated));
+    dispatch(setIsAthunticatedAction(true));
   };
   const isMediumScreen = useMediaQuery({ query: '(min-width: 1224px)' });
 
@@ -33,7 +31,7 @@ const LastLoginsModal = () => {
     <Modal
       onClose={onClose}
       contentWidth={isMediumScreen ? '50%' : '80%'}
-      show={lastLoginModal}>
+      show={isVisible}>
       {console.log(loginMessage, 'loginMessage')}
       <Container>
         <Message>{loginMessage && decode(loginMessage)} </Message>

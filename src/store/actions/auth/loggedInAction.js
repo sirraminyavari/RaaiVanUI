@@ -7,7 +7,7 @@ import { decode } from 'js-base64';
 const { loginSuccess, showLastLogins } = loginSlice.actions;
 const { GlobalUtilities, RVDic, RVAPI } = window;
 /**
- * After successful login, this action will be called to completing the signing-in procedure.
+ * After successful login, this action will be called to completing the signing-in process.
  * @param {Object} result - The response of backend after successful login.
  */
 const loggedInAction = (result) => (dispatch, getState) => {

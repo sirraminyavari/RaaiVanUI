@@ -8,7 +8,7 @@ const { setPassword, setEmail } = loginSlice.actions;
 const { GlobalUtilities, RVDic, RVAPI } = window;
 
 /**
- * A procedure should be done if the backend detects two-step verification is needed.
+ * A process should be done if the backend detects two-step verification is needed.
  * @param {Object} data - Comes from backend
  */
 const stepTwoAction = (data) => async (dispatch, getState) => {

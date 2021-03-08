@@ -18,10 +18,13 @@ const Sticker = ({
 
   const [info, setInfo] = useState({});
 
-  const isVisible = useCatchEvent(() => GlobalUtilities.is_visible(mainRef.current), {});
+  const isVisible = useCatchEvent(
+    () => GlobalUtilities.is_visible(mainRef.current),
+    {}
+  );
 
   useEffect(() => {
-    if(isVisible){
+    if (isVisible) {
       setInfo(
         calculatePosition({
           mainDom: mainRef.current,
@@ -79,7 +82,7 @@ const calculatePosition = ({
     width: main[0].offsetWidth,
     height: main[0].offsetHeight,
   });
-  
+
   var actualWidth = sticker[0].offsetWidth;
   var actualHeight = sticker[0].offsetHeight;
   var dir =

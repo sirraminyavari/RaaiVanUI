@@ -1,5 +1,5 @@
 /**
- * A component for navigating the user to procedure to reset his/her account password
+ * A component for navigating the user to process to reset his/her account password
  */
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';

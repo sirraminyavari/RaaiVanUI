@@ -6,7 +6,9 @@ export const LogoContainer = styled.div`
 `;
 
 export const Image = styled.img`
-  ${ ({isSaaS}) => isSaaS && css`
-    max-width:60px;
-  `}
+  ${({ isSaaS }) =>
+    isSaaS &&
+    css`
+      max-width: 60px;
+    `}
 `;

@@ -3,21 +3,19 @@
  */
 import CircularProgress from 'components/Progress/CircularProgress';
 import { MAIN_BLUE } from 'const/Colors';
-import { SIGN_IN, VERIFICATION_CODE } from 'const/LoginRoutes';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { CollapseAnimate } from './Animate.style';
 
 /**
  *
  * @callback - Will fire when timer finishes.
  */
-const CountDownTimer = ({ onFinished }) => {
-  const { currentRoute, resendCodeTimeout } = useSelector((state) => ({
-    currentRoute: state.auth.currentRoute,
+const CountDownTimer = ({ onFinished, ...props }) => {
+  const { resendCodeTimeout } = useSelector((state) => ({
     resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
   }));
+
   // resendCodeTimeout changes to milliseconds for better calculation.
   const [timer, setTimer] = useState(resendCodeTimeout * 1000);
   // the timer that is showing to user.
@@ -26,52 +24,37 @@ const CountDownTimer = ({ onFinished }) => {
   // if True, means timer is visible and should start to working.
   const [timerStarted, setTimerStarted] = useState(false);
 
-  /**
-   * According to 'currentRoute'
-   * this function decides to return true or false.
-   */
-  const isVisible = () => {
-    switch (currentRoute) {
-      case VERIFICATION_CODE:
-      case SIGN_IN:
-        return true;
-      default:
-        return false;
-    }
-  };
   useEffect(() => {
     setTimer(resendCodeTimeout * 1000);
   }, [resendCodeTimeout]);
   useEffect(() => {
     console.log(timer, '*** timer ***', resendCodeTimeout);
 
-    if (isVisible()) {
-      if (timer >= 1000) {
-        setTimeout(() => {
-          setTimer(timer - 1000);
-          // Converts milliseconds to minutes.
-          const minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
-          // Converts milliseconds to seconds.
-          const seconds = Math.floor((timer % (1000 * 60)) / 1000);
-          // Converts one digit time to two digits string
-          const twoDigitMin = minutes >= 10 ? minutes : '0' + minutes;
-          const twoDigitSec = seconds >= 10 ? seconds : '0' + seconds;
-          setStringTime(twoDigitMin + ':' + twoDigitSec);
-          //By checking 'isVisible()' & 'timer' decides to be True.
-          setTimerStarted(true);
-        }, 1000);
-      } else {
-        setStringTime('00' + ':' + '00');
-        timerStarted && onFinished();
-      }
+    if (timer >= 1000) {
+      setTimeout(() => {
+        setTimer(timer - 1000);
+        // Converts milliseconds to minutes.
+        const minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
+        // Converts milliseconds to seconds.
+        const seconds = Math.floor((timer % (1000 * 60)) / 1000);
+        // Converts one digit time to two digits string
+        const twoDigitMin = minutes >= 10 ? minutes : '0' + minutes;
+        const twoDigitSec = seconds >= 10 ? seconds : '0' + seconds;
+        setStringTime(twoDigitMin + ':' + twoDigitSec);
+        //By checking 'isVisible()' & 'timer' decides to be True.
+        setTimerStarted(true);
+      }, 1000);
+    } else {
+      setStringTime('00' + ':' + '00');
+      timerStarted && onFinished();
     }
-  }, [timer, isVisible()]);
+  }, [timer]);
 
   return (
-    <CollapseAnimate isVisible={isVisible()}>
-      <CircularProgress maxValue={resendCodeTimeout} hideLabel />
+    <Maintainer>
+      <CircularProgress maxValue={resendCodeTimeout} hideLabel {...props} />
       <Container className="textarea">{stringTime}</Container>
-    </CollapseAnimate>
+    </Maintainer>
   );
 };
 export default CountDownTimer;
@@ -82,6 +65,13 @@ const Container = styled.div`
   color: ${MAIN_BLUE};
   align-self: center;
   margin-left: 1rem;
+  margin-right: 1rem;
+`;
+const Maintainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 const Indicator = styled.div`
   display: flex;
