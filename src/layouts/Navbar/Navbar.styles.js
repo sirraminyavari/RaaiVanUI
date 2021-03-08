@@ -70,6 +70,7 @@ export const ButtonTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-transform: capitalize;
 `;
 
 export const Badge = styled.div`
@@ -208,6 +209,7 @@ export const AvatarMenuItem = styled.div`
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
+  text-transform: capitalize;
   color: ${({ color }) => color};
 `;
 

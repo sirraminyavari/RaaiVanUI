@@ -19,6 +19,7 @@ const FlexCenter = css`
 export const TitleText = styled.span`
   color: #fff;
   margin: 0.5rem;
+  text-transform: capitalize;
 `;
 
 export const CenterIcon = styled.div`
@@ -299,6 +300,7 @@ export const FilterIconWrapper = styled.div`
 
 export const PanelLink = styled.div`
   margin-${RV_Float}: 0.4rem;
+  text-transform: capitalize;
 `;
 
 const getHighlightCss = ({ isMatch }) => {
