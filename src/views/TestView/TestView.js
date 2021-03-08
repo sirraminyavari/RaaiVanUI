@@ -1,26 +1,25 @@
 import { useState, useEffect } from 'react';
-// import CustomCalendar from 'components/CustomCalendar/CustomCalendar';
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import { getToday, getLanguageDigits } from 'helpers/helpers';
+import BalloonBlockEditor from 'components/CKEditor-custom/BallonBlock/BalloonBlockEditor';
 
 const TestView = () => {
-  const [selectedDay, setSelectedDay] = useState(getToday('fa'));
+  const [data, setData] = useState('<p>Hello from CKEditor 5!</p>');
 
   useEffect(() => {
-    console.log(selectedDay);
-  }, [selectedDay]);
+    console.log(data);
+  }, [data]);
 
   return (
-    <CustomDatePicker
-      minimumDate={getToday('fa')}
-      maximumDate={{ ...getToday('fa'), day: getToday('fa').day + 7 }}
-      value={selectedDay}
-      onChange={setSelectedDay}
-      disabledDays={[{ ...getToday('fa'), day: getToday('fa').day + 3 }]}
-      onDisabledDayError={(disDay) =>
-        alert(`Day: ${getLanguageDigits('fa', disDay.day)} has been clicked`)
-      }
-    />
+    <>
+      <div style={{ padding: '50px' }}>
+        <h2>Using CKEditor 5 build in React</h2>
+        <BalloonBlockEditor
+          data={data}
+          handleDataChange={setData}
+          removePlugins={['Heading', 'Link', 'FontColor']}
+        />
+      </div>
+      <div dangerouslySetInnerHTML={{ __html: data }}></div>
+    </>
   );
 };
 

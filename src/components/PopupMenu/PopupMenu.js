@@ -268,7 +268,7 @@ export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
     let movedRight = positionInfo.leftMovement > 0;
     _movement = positionInfo.leftMovement + (movedRight ? 1 : -1) * _moveOffset;
 
-    let sideMargin = (RV_RTL ? -2 : 2) * _movement + 14;
+    let sideMargin = -2 * _movement + 14;
 
     ret.contentStyle.direction = movedRight ? 'ltr' : 'rtl';
 

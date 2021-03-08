@@ -7,7 +7,7 @@ const LogoLoader = ({ style }) => {
   const loader = isSaas ? cliqmindLoader : inprogressLoader;
 
   return (
-    <Styled.LogoContainer style={ style }>
+    <Styled.LogoContainer style={style}>
       <Styled.Image src={loader} alt="raaivan-logo" />
     </Styled.LogoContainer>
   );
