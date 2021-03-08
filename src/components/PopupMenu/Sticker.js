@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useCatchEvent from '../../hooks/useCatchEvent';
 
 const { GlobalUtilities, jQuery } = window;
 
@@ -10,25 +11,29 @@ const Sticker = ({
   onReposition,
   ...props
 }) => {
-  const mainId = 'r' + GlobalUtilities.random_str(10);
-  const stickerId = 'r' + GlobalUtilities.random_str(10);
+  const mainRef = React.createRef();
+  const stickerRef = React.createRef();
 
   align = String(align).toLowerCase().charAt(0);
 
   const [info, setInfo] = useState({});
 
+  const isVisible = useCatchEvent(() => GlobalUtilities.is_visible(mainRef.current), {});
+
   useEffect(() => {
-    setInfo(
-      calculatePosition({
-        mainDom: document.getElementById(mainId),
-        stickerDom: document.getElementById(stickerId),
-        align,
-        fit,
-        leftOffset,
-        topOffset,
-      })
-    );
-  }, []);
+    if(isVisible){
+      setInfo(
+        calculatePosition({
+          mainDom: mainRef.current,
+          stickerDom: stickerRef.current,
+          align,
+          fit,
+          leftOffset,
+          topOffset,
+        })
+      );
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     if (info.css && GlobalUtilities.get_type(onReposition) == 'function')
@@ -39,9 +44,9 @@ const Sticker = ({
 
   return (
     <>
-      {React.cloneElement(props.children[0], { id: mainId })}
+      {React.cloneElement(props.children[0], { ref: mainRef })}
       {React.cloneElement(props.children[1], {
-        id: stickerId,
+        ref: stickerRef,
         style: GlobalUtilities.extend(
           props.children[1].props.style || {},
           info.css || { opacity: 0 },
@@ -74,7 +79,7 @@ const calculatePosition = ({
     width: main[0].offsetWidth,
     height: main[0].offsetHeight,
   });
-
+  
   var actualWidth = sticker[0].offsetWidth;
   var actualHeight = sticker[0].offsetHeight;
   var dir =
