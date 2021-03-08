@@ -1,6 +1,6 @@
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Routes from 'routes/routes';
+import Routes from 'routes/MainRoutes/Main.routes';
 import Navbar from './Navbar/Navbar';
 import Sidebar from './Sidebar/Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';

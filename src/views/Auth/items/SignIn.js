@@ -98,7 +98,7 @@ const SignIn = () => {
   const onForgot = () => {
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    push('/forgotPassword');
+    push('/auth/forgotPassword');
   };
   /**
    * Starts to load sign up necessary files, by dispatching signupLoadFilesAction
