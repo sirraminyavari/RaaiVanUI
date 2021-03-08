@@ -31,7 +31,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
    * After checking email & password,
    * 'signin()' will be called.
    * 'pass' and 'username' have to be encoded to Base64.
-   * Here, just calling some functions occurs, the main procedure of connecting to server
+   * Here, just calling some functions occurs, the main process of connecting to server
    * is being handled with 'RVAPI'.
    */
   const signin = () => {

@@ -1,27 +1,47 @@
 import React from 'react';
 import useLoadFiles from '../../hooks/useLoadFiles';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import UploadPlugin from './Plugins/Upload/Upload';
+import MentionFeedBuilder from './Plugins/Mention/MentionFeedBuilder';
+import MentionCustomization from './Plugins/Mention/MentionCustomization';
+import LogoLoader from '../Loaders/LogoLoader/LogoLoader';
 
-const { RV_Lang } = window;
+const { RV_Lang, GlobalUtilities } = window;
 
-const RVEditor = ({ data }) => {
+const RVEditor = ({
+  upload: { ownerId: uploadOwnerId, ownerType: uploadOwnerType },
+  data,
+  events: { ready: onReady, change: onChange, blur: onBlur, focus: onFocus },
+}) => {
   const loaded = useLoadFiles([
+    'API/DocsAPI.js',
     'CKEditor5/ckeditor.js',
     'CKEditor5/translations/fa.js',
   ]);
 
-  if (!loaded) return <>loading...</>;
+  if (!loaded) return <LogoLoader />;
 
-  const { BalloonBlockEditor } = window;
+  const { BalloonBlockEditor, DocsAPI } = window;
 
   let specialCharPlugins = BalloonBlockEditor.builtinPlugins.filter(
     (f) => !f.pluginName
   );
 
+  const uploadPlugin = UploadPlugin({
+    ownerId: uploadOwnerId,
+    ownerType: uploadOwnerType,
+  });
+
+  let editor = null;
+
   const editorConfig = {
     language: RV_Lang,
     plugins: [
-      'Mention' /*function (editor) { that.mention_customization(editor); }, uploadPlugin,*/,
+      'Mention',
+      function (editor) {
+        MentionCustomization(editor, {});
+      },
+      uploadPlugin,
       'Alignment',
       'Autoformat',
       'AutoLink',
@@ -119,15 +139,13 @@ const RVEditor = ({ data }) => {
         'tableProperties',
       ],
     },
-    /*
-        mention: { feeds: [that.mention_feed_builder()] },
-        simpleUpload: {
-            uploadUrl: DocsAPI.GetUploadLink({
-                OwnerID: that.Objects.OwnerID,
-                OwnerType: that.Objects.UploadOwnerType
-            })
-        },
-        */
+    mention: { feeds: [MentionFeedBuilder({ getEditor: () => editor })] },
+    simpleUpload: {
+      uploadUrl: DocsAPI.GetUploadLink({
+        OwnerID: uploadOwnerId,
+        OwnerType: uploadOwnerType,
+      }),
+    },
     licenseKey: '',
   };
 
@@ -136,22 +154,29 @@ const RVEditor = ({ data }) => {
       editor={BalloonBlockEditor}
       config={editorConfig}
       data={data}
-      onReady={(editor) => {
-        // You can store the "editor" and use when it is needed.
-        console.log('Editor is ready to use!', editor);
+      onReady={(_editor) => {
+        editor = _editor;
+        if (GlobalUtilities.get_type(onReady) == 'function') onReady(_editor);
       }}
-      onChange={(event, editor) => {
-        const data = editor.getData();
-        console.log({ event, editor, data });
+      onChange={(event, _editor) => {
+        if (GlobalUtilities.get_type(onChange) == 'function')
+          onChange(_editor, event);
       }}
-      onBlur={(event, editor) => {
-        console.log('Blur.', editor);
+      onBlur={(event, _editor) => {
+        if (GlobalUtilities.get_type(onBlur) == 'function')
+          onBlur(_editor, event);
       }}
-      onFocus={(event, editor) => {
-        console.log('Focus.', editor);
+      onFocus={(event, _editor) => {
+        if (GlobalUtilities.get_type(onFocus) == 'function')
+          onFocus(_editor, event);
       }}
     />
   );
 };
 
 export default RVEditor;
+
+RVEditor.defaultProps = {
+  mention: {},
+  upload: {},
+};

@@ -5,48 +5,20 @@ import CancelCircle from 'components/Icons/CancelCircle';
 import CheckCircle from 'components/Icons/CheckCircle';
 import H6 from 'components/TypoGraphy/H6';
 import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
-import {
-  RESET_PASSWORD,
-  SIGN_UP_EMAIL,
-  SIGN_UP_PASSWORD,
-} from 'const/LoginRoutes';
 import { RED } from 'constant/Colors';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import styled from 'styled-components';
 import PasswordValidator from 'utils/Valiation/PasswordValidator';
 import { CollapseAnimate } from './Animate.style';
 
-const PasswordValidation = () => {
-  const {
-    password,
-    currentRoute,
-    isPasswordFocused,
-    passwordPolicy,
-  } = useSelector((state) => ({
-    password: state.auth.password,
-    currentRoute: state.auth.currentRoute,
-    isPasswordFocused: state.auth.isPasswordFocused,
-    passwordPolicy: state.auth.passwordPolicy,
-  }));
-  // Checks password field if is focused.
-  useEffect(() => {
-    isVisible();
-  }, [isPasswordFocused]);
-  /**
-   * According to 'currentRoute'
-   * this function decides to return true or false.
-   */
-  const isVisible = () => {
-    switch (currentRoute) {
-      case SIGN_UP_PASSWORD:
-      case RESET_PASSWORD:
-      case SIGN_UP_EMAIL:
-        return isPasswordFocused;
-      default:
-        return false;
-    }
-  };
+const { RVDic } = window;
+/**
+ *
+ * @param {Boolean} isVisible - If true, password validation will be shown.
+ * @param {String} password - Inputted password.
+ * @param {Object} passwordPolicy - The policies, user should occupy while choosing password.
+ */
+const PasswordValidation = ({ isVisible, password, passwordPolicy }) => {
   /**
    *
    * @param {Sting} text - message for password validator
@@ -82,25 +54,21 @@ const PasswordValidation = () => {
   };
 
   return (
-    <CollapseAnimate style={{ marginTop: '2rem' }} isVisible={isVisible()}>
-      {isVisible() && (
-        <Container>
-          <ValidatorItems
-            text={'حداقل ۸ کارکتر'}
-            validator={PasswordValidator(password, passwordPolicy)?.MinLength}
-          />
-          <ValidatorItems
-            text={'حداقل یک عدد'}
-            validator={
-              PasswordValidator(password, passwordPolicy)?.NonAlphabetic
-            }
-          />
-          <ValidatorItems
-            text={'حداقل یک حرف بزرگ و کوچک'}
-            validator={PasswordValidator(password, passwordPolicy)?.UpperLower}
-          />
-        </Container>
-      )}
+    <CollapseAnimate style={{ marginTop: '1rem' }} isVisible={isVisible}>
+      <Container>
+        <ValidatorItems
+          text={'حداقل ۸ کارکتر'}
+          validator={PasswordValidator(password, passwordPolicy)?.MinLength}
+        />
+        <ValidatorItems
+          text={RVDic.PasswordPolicyNumber}
+          validator={PasswordValidator(password, passwordPolicy)?.NonAlphabetic}
+        />
+        <ValidatorItems
+          text={RVDic.PasswordPolicyUpperLower}
+          validator={PasswordValidator(password, passwordPolicy)?.UpperLower}
+        />
+      </Container>
     </CollapseAnimate>
   );
 };
@@ -111,7 +79,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
 `;
 const Items = styled.div`
   display: flex;

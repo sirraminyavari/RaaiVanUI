@@ -7,7 +7,7 @@ import useOutsideClick from 'hooks/useOutsideClick';
 import usePrevious from 'hooks/usePrevious';
 import useWindowScroll from 'hooks/useWindowScroll';
 
-const { GlobalUtilities, jQuery } = window;
+const { GlobalUtilities, jQuery, RV_RTL } = window;
 const Empty = (props) => <>{props.children}</>;
 
 const ArrowWidth = 0.8;
@@ -75,7 +75,6 @@ const PopupMenu = (props) => {
   useEffect(() => {
     setInfo(
       calculatePosition({
-        contentDom: document.getElementById(menuId),
         arrowDom: document.getElementById(arrowId),
         align: align,
         positionInfo: stickerPos,
@@ -254,15 +253,8 @@ const MenuContent = styled.div`
  * @param {CalculatePositionType}
  * @returns {Object} An object of arrow styles and content styles.
  */
-export const calculatePosition = ({
-  contentDom,
-  arrowDom,
-  align,
-  positionInfo,
-}) => {
-  if (!contentDom || !arrowDom || !positionInfo) return {};
-
-  const contentWidth = jQuery(contentDom)[0].offsetWidth;
+export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
+  if (!arrowDom || !positionInfo) return {};
 
   let ret = {
     arrowStyle: {},
