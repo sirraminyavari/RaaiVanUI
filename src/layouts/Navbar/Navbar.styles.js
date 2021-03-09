@@ -108,7 +108,7 @@ export const SearchInput = styled.input`
   outline: 0;
   color: #333;
   height: 2rem;
-  padding: 0 0.6rem;
+  padding: 0.1rem 0.6rem;
   width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {

@@ -58,6 +58,9 @@ export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
   ${getMenuHeigth}
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
+  top: 1.2rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   display: none;
   text-align: center;
   overflow: hidden;
@@ -96,8 +99,6 @@ export const ListItems = styled.li`
   display: flex;
   justify-content: end;
   align-items: center;
-  border: 1px solid #333;
-  border-radius: 0.3rem;
   color: #000;
 `;
 

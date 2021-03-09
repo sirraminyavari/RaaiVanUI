@@ -184,7 +184,7 @@ const AutoSuggestInput = (props) => {
               })}
               {...getRootProps({ refKey: 'ulRef' })}
               items={items}>
-              <Styled.ButtonsContainer className="ColdBackgroundColor SurroundingShadow">
+              <Styled.ButtonsContainer className="ColdBackgroundColor">
                 <Button type="primary">Click me</Button>
                 <Button type="negative">Click me</Button>
               </Styled.ButtonsContainer>
