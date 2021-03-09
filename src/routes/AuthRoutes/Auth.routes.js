@@ -1,3 +1,6 @@
+/**
+ * Returns a list of authentication routes.
+ */
 import { lazy } from 'react';
 
 const SignIn = lazy(() =>

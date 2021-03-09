@@ -1,3 +1,6 @@
+/**
+ * Returns a list of main layout routes.
+ */
 import { lazy } from 'react';
 import NavbarRoutes from './Navbar.routes';
 import SidebarRoutes from './Sidebar.routes';

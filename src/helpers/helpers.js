@@ -1,6 +1,10 @@
 import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
 
+/**
+ * @description A function to get current language from cookie.
+ * @returns {string} The current language as string.
+ */
 export const getLanguage = () => {
   return Cookie.get('rv_lang') || 'fa';
 };
