@@ -12,21 +12,10 @@ export const sidebarMenuSlice = createSlice({
   },
   reducers: {
     setSidebarNodeTypes: (state, action) => {
-      state.nodeTypes = action.payload.filter((node) => !node.Hidden);
+      state.nodeTypes = action.payload;
     },
     setSidebarTree: (state, action) => {
-      if (state.tree.length !== action.payload.length) {
-        state.tree = action.payload
-          .filter((node) => !node.Hidden)
-          .map((tree) => {
-            if (tree.Sub) {
-              let newSub = tree.Sub.filter((s) => !s.Hidden);
-              tree.Sub = newSub;
-              return tree;
-            }
-            return tree;
-          });
-      }
+      state.tree = action.payload;
     },
     toggleSidebarMenu: (state, action) => {
       let IDs = state.openMenuID;

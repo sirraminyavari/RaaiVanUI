@@ -28,8 +28,10 @@ const Sidebar = (props) => {
   const { isSidebarOpen, isSettingShown } = props.theme.states;
 
   useEffect(() => {
-    dispatch(getSidebarNodes());
-    dispatch(getConfigPanels());
+    if (isSidebarOpen) {
+      dispatch(getSidebarNodes());
+      dispatch(getConfigPanels());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen]);
 

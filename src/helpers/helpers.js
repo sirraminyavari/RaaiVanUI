@@ -1,5 +1,13 @@
 import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
+import { encode, decode } from 'js-base64';
+
+/**
+ * @description A function that accepts some funcs as params and then
+ * ...pipes them together.
+ * @returns Any
+ */
+export const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
 /**
  * @description A function to get current language from cookie.
@@ -7,6 +15,22 @@ import Cookie from 'js-cookie';
  */
 export const getLanguage = () => {
   return Cookie.get('rv_lang') || 'fa';
+};
+
+/**
+ * @description A function that converts a Base64 string to a UTF-8 string..
+ * @returns {string} UTF-8 string.
+ */
+export const decodeBase64 = (string) => {
+  return decode(string);
+};
+
+/**
+ * @description A function that converts a UTF-8-encoded string to a Base64 string.
+ * @returns {string} Base64 string.
+ */
+export const encodeBase64 = (string) => {
+  return encode(string);
 };
 
 /**
