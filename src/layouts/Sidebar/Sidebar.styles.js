@@ -1,9 +1,50 @@
 import { forwardRef } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import sidebarPattern from 'assets/images/sidebar-bg-pattern.svg';
 
 const { RV_Float, RV_RevFloat } = window;
+
+const FooterInAnim = keyframes`
+  from {
+    ${RV_RevFloat}: 15rem;
+  }
+
+  to {
+    ${RV_RevFloat}: 0rem;
+  }
+`;
+
+const FooterOutAnim = keyframes`
+  from {
+    ${RV_RevFloat}: 0rem;
+  }
+
+  to {
+    ${RV_RevFloat}: 15rem;
+  }
+`;
+
+const FooterUpAnim = keyframes`
+  from {
+    top: 5rem;
+  }
+
+  to {
+    top: 0;
+  }
+`;
+
+const FooterDownAnim = keyframes`
+  from {
+    top: 0;
+  }
+
+  to {
+    top: 5rem;
+  }
+`;
 
 const FlexBetween = css`
   display: flex;
@@ -19,6 +60,7 @@ const FlexCenter = css`
 export const TitleText = styled.span`
   color: #fff;
   margin: 0.5rem;
+  text-transform: capitalize;
 `;
 
 export const CenterIcon = styled.div`
@@ -36,6 +78,7 @@ export const SidebarContainer = withTheme(styled.div`
   overflow: hidden;
   color: #fff;
   box-shadow: 1px 0px 15px 1px #000;
+  background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
 `);
 
@@ -45,10 +88,10 @@ export const ContentWrapper = withTheme(styled.div`
   top: 0;
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
   ${`${RV_RevFloat}: -1.1rem;`}
-  overflow: scroll;
-  padding: 0 1.1rem;
+  overflow: auto;
+  padding: 0 1.5rem;
   margin-top: 4rem;
-  margin-bottom: 5vh;
+  margin-bottom: 9vh;
 `);
 
 export const SidebarHeader = withTheme(styled.div`
@@ -57,15 +100,16 @@ export const SidebarHeader = withTheme(styled.div`
   width: ${(props) =>
     props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px;
   z-index: 10;
-  padding: 0 1.1rem;
+  padding: 0 1.3rem;
   position: fixed;
   top: 0;
+  background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
 `);
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
-  margin-left: -0.5rem;
+  margin-${RV_Float}: -0.3rem;
   cursor: pointer;
 `;
 
@@ -108,25 +152,56 @@ export const SearchListItem = styled.div`
 
 export const SidebarFooter = styled.div`
   height: 6%;
-  display: flex;
   position: relative;
   top: 94%;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  cursor: pointer;
   transition: all 0.7s ease;
 `;
 
+export const OpenFooterButton = withTheme(styled.div`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1.4rem;
+  margin-top: -0.6rem;
+  padding: 0.3rem;
+  color: #fff;
+  cursor: pointer;
+  animation: ${(props) =>
+    props.theme.states.isSidebarOpen
+      ? css`
+          ${FooterInAnim} 1s ease 0.1s both
+        `
+      : css`
+          ${FooterOutAnim} 0.3s linear both
+        `};
+`);
+
+export const CloseFooterButton = withTheme(styled.div`
+  position: absolute;
+  color: #fff;
+  ${RV_Float}: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  animation-timing-function: ease;
+  animation: ${(props) =>
+    props.theme.states.isSidebarOpen
+      ? css`
+          ${FooterDownAnim} 0.2s both
+        `
+      : css`
+          ${FooterUpAnim} 0.4s both
+        `};
+`);
+
 export const FooterIconWrapper = withTheme(styled.div`
-  margin-${RV_Float}: ${(props) =>
-  props.theme.states.isSidebarOpen ? '0' : '3rem'};
+  margin-${RV_Float}: 0;
+  margin-top: 0;
 `);
 
 export const FooterTitle = withTheme(styled.span`
   margin-${RV_Float}: 0.5rem;
   position: relative;
-  top: ${(props) => (props.theme.states.isSidebarOpen ? '0px' : '100px')};
+  top: 0;
   transition: all 0.5s linear;
 `);
 
@@ -138,15 +213,15 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
   <DIV {...props} />
 ))`
   ${FlexBetween}
-  border: 0.1rem solid #222;
+  border: 1px solid #222;
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  border-radius: 0.5rem;
   cursor: pointer;
   background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
-    background-color: #19265e;
+    background: rgb(66, 133, 244, 0.4);
+    border: none;
   }
 `;
 
@@ -174,13 +249,12 @@ export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
   margin: 0.3rem 0;
-  border-radius: 0.5rem;
   padding: 0.5rem 1.3rem;
   display: flex;
   color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
-    background-color: #19265e;
+    background: rgb(66, 133, 244, 0.4);
   }
 `;
 
@@ -189,7 +263,7 @@ export const BadgeWrapper = styled.div`
   padding: 0 0.3rem;
   line-height: 1.5rem;
   border-radius: 1rem;
-  background-color: blue;
+  background-color: #2b7be4;
   text-align: center;
   font-size: 0.8rem;
 `;
@@ -201,8 +275,7 @@ export const ListItemWrapper = styled.div`
 
 export const SettingWrapper = styled.div`
   border-radius: 50%;
-  padding: 0.3rem;
-  margin-${RV_RevFloat}: -0.1rem;
+  margin-${RV_RevFloat}: 0.2rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
@@ -212,11 +285,10 @@ export const PanelWrapper = styled.div`
   margin: 0.5rem 0;
   margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
-  border-radius: 0.5rem;
   cursor: pointer;
   color: #fff;
   :hover {
-    background-color: #171c4d;
+    background: rgb(66,133,244, 0.4);
   }
   transition: all 0.3s linear;
 `;
@@ -233,6 +305,8 @@ export const CloseContentContainer = styled.div`
   position: relative;
   overflow: hidden;
   height: 73vh;
+  width: 2rem;
+  margin: -0.55rem;
 `;
 
 const arrowCss = css`
@@ -265,14 +339,13 @@ export const IconListWrap = styled.div`
   height: 100%;
   overflow-y: scroll;
   position: absolute;
-  padding: 0 0.3rem;
   top: 0;
-  ${RV_RevFloat}: -30%;
   box-sizing: content-box;
   text-align: center;
 `;
 
 export const MiniIconWrapper = styled.div`
+  width: 2rem;
   display: block;
   margin: 1rem 0px;
   font-size: 1.6rem;
@@ -299,6 +372,7 @@ export const FilterIconWrapper = styled.div`
 
 export const PanelLink = styled.div`
   margin-${RV_Float}: 0.4rem;
+  text-transform: capitalize;
 `;
 
 const getHighlightCss = ({ isMatch }) => {

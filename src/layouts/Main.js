@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Routes from 'routes/MainRoutes/Main.routes';
@@ -9,6 +10,7 @@ import { useMediaQuery } from 'react-responsive';
 import SidebarHeader from './Sidebar/components/Header';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const switchRoutes = (
   <Switch>
@@ -50,7 +52,9 @@ const Main = () => {
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}>
             <Navbar />
-            <Styled.Content>{switchRoutes}</Styled.Content>
+            <Suspense fallback={<LogoLoader />}>
+              <Styled.Content>{switchRoutes}</Styled.Content>
+            </Suspense>
           </Styled.ContentWrapper>
         </Styled.MainContainer>
       ) : (

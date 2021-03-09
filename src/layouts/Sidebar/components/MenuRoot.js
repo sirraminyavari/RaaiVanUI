@@ -55,6 +55,7 @@ const SidebarMenuRoot = (props) => {
   return (
     <>
       <Styled.MenuContainer
+        className="BorderRadius4"
         isDragging={isDragging}
         {...dragProps}
         forwardedAs={childMenus ? 'div' : Link}

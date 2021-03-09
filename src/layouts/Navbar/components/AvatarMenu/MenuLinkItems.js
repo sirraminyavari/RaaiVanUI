@@ -16,7 +16,7 @@ const MenuLinkItems = [
   },
   {
     id: 2,
-    title: 'مدیریت حساب ها',
+    title: RVDic.AccountManagement,
     linkTo: '#',
     icon: AccountsIcon,
     iconColor: '#2B7BE4',

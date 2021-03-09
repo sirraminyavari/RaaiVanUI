@@ -1,3 +1,7 @@
+/**
+ * Renders a component according to current route if authenticated
+ * ... Otherwise, redirects user to '/auth/login' route.
+ */
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 

@@ -70,6 +70,7 @@ export const ButtonTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-transform: capitalize;
 `;
 
 export const Badge = styled.div`
@@ -107,7 +108,7 @@ export const SearchInput = styled.input`
   outline: 0;
   color: #333;
   height: 2rem;
-  padding: 0 0.6rem;
+  padding: 0.1rem 0.6rem;
   width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {
@@ -208,6 +209,7 @@ export const AvatarMenuItem = styled.div`
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
+  text-transform: capitalize;
   color: ${({ color }) => color};
 `;
 
