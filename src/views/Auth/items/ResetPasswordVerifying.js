@@ -49,7 +49,7 @@ const ResetPasswordVerifying = () => {
     verifyCodeLength: state.auth.verifyCodeLength,
   }));
   useEffect(() => {
-    !verifyCodeToken && push('login');
+    !verifyCodeToken && push('/auth/login');
   }, []);
   // Changing verifyCodeToken means: timer should be reset &
   // reSend button should be disappear.

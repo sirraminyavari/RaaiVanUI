@@ -1,13 +1,12 @@
 /**
  * A mother component for all login components.
  */
-
 import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Switch, Redirect, Route } from 'react-router-dom';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
   BackgroundImage,
@@ -15,14 +14,26 @@ import {
   Center,
   Container,
   Maintainer,
-} from './Login.style';
+} from './AuthView.style';
+import Routes from 'routes/AuthRoutes/Auth.routes';
 
 const { RVGlobal } = window;
+
+const switchRoutes = (
+  <Switch>
+    {Routes.map((route, key) => {
+      const { path, component } = route;
+      return <Route exact path={path} component={component} key={key} />;
+    })}
+
+    <Redirect to="/auth/login" />
+  </Switch>
+);
 
 /**
  * A mother component for containing the login elements.
  */
-const Login = ({ children }) => {
+const AuthView = () => {
   // True, if required files for the login page has been loaded.
   const [loadDone, setLoadDone] = useState(false);
   // True, if activationCode of reset password ticket has been checked.
@@ -68,7 +79,7 @@ const Login = ({ children }) => {
       } else if (passwordTicket) {
         // that.show_reset_password_form(passwordTicket, userName);
         // dispatch(setLoginRouteAction(RESET_PASSWORD));
-        push('/resetPassword');
+        push('/auth/resetPassword');
 
         setPreinitDone(true);
       } else setPreinitDone(true);
@@ -160,7 +171,7 @@ const Login = ({ children }) => {
             <LastLoginsModal /> */}
           {/* <SignIn /> */}
           {oneStepToInitDone ? (
-            children
+            switchRoutes
           ) : (
             <Center>
               <Loader />
@@ -173,4 +184,4 @@ const Login = ({ children }) => {
   );
 };
 
-export default Login;
+export default AuthView;

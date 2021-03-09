@@ -6,31 +6,11 @@ import PublicRoute from 'utils/RouteHandler/PublicRoute';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import AuthView from 'views/Auth/AuthView';
 import 'assets/css/index.css';
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
-);
-
-const SignIn = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignIn')
-);
-const SignUp = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignUp')
-);
-const VerifyingCode = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/items/VerifyingCode')
-);
-const ForgotPassword = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/items/ForgotPassword')
-);
-const ResetPasswordVerifying = lazy(() =>
-  import(
-    /* webpackChunkName: "login"*/ 'views/Auth/items/ResetPasswordVerifying'
-  )
-);
-const ResetPassword = lazy(() =>
-  import(/* webpackChunkName: "login"*/ 'views/Auth/items/ResetPassword')
 );
 
 render(
@@ -40,28 +20,7 @@ render(
         <Suspense fallback={<LogoLoader size={10} />}>
           <Router>
             <Switch>
-              <PublicRoute exact path="/login" component={SignIn} />
-              <PublicRoute exact path="/register" component={SignUp} />
-              <PublicRoute
-                exact
-                path="/verificationCode"
-                component={VerifyingCode}
-              />
-              <PublicRoute
-                exact
-                path="/forgotPassword"
-                component={ForgotPassword}
-              />
-              <PublicRoute
-                exact
-                path="/resetPasswordVerifying"
-                component={ResetPasswordVerifying}
-              />
-              <PublicRoute
-                exact
-                path="/resetPassword"
-                component={ResetPassword}
-              />
+              <PublicRoute path="/auth" component={AuthView} />
               <PrivateRoute path="/" component={MainLayout} />
             </Switch>
           </Router>
