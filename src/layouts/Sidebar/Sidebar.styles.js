@@ -218,6 +218,7 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
   margin: 0.5rem 0;
   padding: 0 0.5rem;
   cursor: pointer;
+  color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);

@@ -42,6 +42,7 @@ const SearchResultsList = () => {
         .map((node) => {
           return (
             <Styled.MenuContainer
+              className="BorderRadius4"
               as={Link}
               to={`/classes/${node.NodeTypeID}`}
               key={node.NodeTypeID}>
