@@ -337,10 +337,10 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 100%;
+  height: 95%;
   overflow-y: scroll;
   position: absolute;
-  top: 0;
+  top: 1rem;
   box-sizing: content-box;
   text-align: center;
 `;
