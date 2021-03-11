@@ -2,7 +2,7 @@ import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
 import AccountsIcon from 'components/Icons/AccountsIcon/AccountsIcon';
 import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
-import ServerIcon from 'components/Icons/ServerIcon/ServerIcon';
+import ApprovalIcon from 'components/Icons/ApprovalIcon/ApprovalIcon';
 
 const { RVDic } = window;
 
@@ -30,16 +30,16 @@ const MenuLinkItems = [
   },
   {
     id: 4,
-    title: 'ورک اسپیس شماره ۱',
+    title: 'نام تیم فعلی',
     linkTo: '#',
-    icon: ServerIcon,
-    iconColor: '#002479',
+    icon: ApprovalIcon,
+    textColor: '#15113C',
   },
   {
     id: 5,
-    title: 'ورک اسپیس کلیک مایند',
+    title: 'نام تیم دیگر',
     linkTo: '#',
-    icon: ServerIcon,
+    icon: ApprovalIcon,
     iconColor: '#707070',
     textColor: '#707070',
   },
