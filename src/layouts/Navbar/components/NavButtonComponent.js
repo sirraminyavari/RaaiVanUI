@@ -1,6 +1,7 @@
 /**
  * A component that renders custom button for navbar.
  */
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
@@ -58,4 +59,4 @@ NavButtonComponent.propTypes = {
 
 NavButtonComponent.displayName = 'NavButtonComponent';
 
-export default NavButtonComponent;
+export default memo(NavButtonComponent);

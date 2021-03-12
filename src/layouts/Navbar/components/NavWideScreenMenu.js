@@ -1,7 +1,7 @@
 /**
  * Renders a list of navbar buttons for non-mobile screens.
  */
-import { lazy, Fragment } from 'react';
+import { lazy, Fragment, memo } from 'react';
 import * as Styled from '../Navbar.styles';
 import NavButtonComponent from './NavButtonComponent';
 import NavButtonsList from './buttonsList';
@@ -11,6 +11,8 @@ const ButtonActions = lazy(() =>
 );
 
 const NavWideScreenMenu = () => {
+  console.count('nav wide screen');
+
   return (
     <Styled.WideScreenMenu>
       {NavButtonsList.map((btn) => {
@@ -33,4 +35,4 @@ const NavWideScreenMenu = () => {
   );
 };
 
-export default NavWideScreenMenu;
+export default memo(NavWideScreenMenu);

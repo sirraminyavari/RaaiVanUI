@@ -1,7 +1,7 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, memo } from 'react';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
@@ -29,6 +29,7 @@ const NavMobileMenu = lazy(() =>
 );
 
 const Navbar = (props) => {
+  console.count('navbar');
   const { isSidebarOpen } = props.theme.states;
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
@@ -83,4 +84,4 @@ const Navbar = (props) => {
   );
 };
 
-export default withTheme(Navbar);
+export default withTheme(memo(Navbar));

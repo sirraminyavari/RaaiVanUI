@@ -41,10 +41,11 @@ const AvatarMenuList = () => {
               iconColor={iconColor}
               textColor={textColor}
             />
-            {(index === 2 || index === 4) && <Styled.Divider />}
+            {index === 2 && <Styled.Divider />}
           </Fragment>
         );
       })}
+      <Styled.Divider />
       <AvatarMenuItem
         title={RVDic.Logout}
         onClickHandler={handleLogout}

@@ -8,6 +8,7 @@ export const sidebarMenuSlice = createSlice({
     tree: [],
     openMenuID: [],
     searchText: '',
+    showSearchResults: false,
     configPanels: [],
   },
   reducers: {
@@ -32,6 +33,11 @@ export const sidebarMenuSlice = createSlice({
     },
     setSearchText: (state, action) => {
       state.searchText = action.payload;
+      if (action.payload.length >= 3) {
+        state.showSearchResults = true;
+      } else {
+        state.showSearchResults = false;
+      }
     },
     setConfigPanels: (state, action) => {
       state.configPanels = action.payload;

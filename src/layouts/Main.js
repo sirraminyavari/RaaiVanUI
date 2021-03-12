@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, memo } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Routes from 'routes/MainRoutes/Main.routes';
@@ -11,6 +11,7 @@ import SidebarHeader from './Sidebar/components/Header';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { createSelector } from 'reselect';
 
 const switchRoutes = (
   <Switch>
@@ -37,8 +38,20 @@ const switchRoutes = (
   </Switch>
 );
 
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const selectHasNavSide = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasNavSide
+);
+
 const Main = () => {
-  const { isSidebarOpen, hasNavSide } = useSelector((state) => state.theme);
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const hasNavSide = useSelector(selectHasNavSide);
+
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
@@ -58,10 +71,10 @@ const Main = () => {
           </Styled.ContentWrapper>
         </Styled.MainContainer>
       ) : (
-        <>{switchRoutes}</>
+        { switchRoutes }
       )}
     </>
   );
 };
 
-export default Main;
+export default memo(Main);

@@ -1,6 +1,7 @@
 /**
  * Renders Main(root) menu item that may or may not has sub-menus(branches).
  */
+import { memo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
@@ -9,8 +10,14 @@ import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import SidebarMenuBranches from './MenuBranches';
+import { createSelector } from 'reselect';
 
 const { RV_RevFloat } = window;
+
+const selectOpenMenuID = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.openMenuID
+);
 
 /**
  * @typedef ItemType
@@ -34,6 +41,7 @@ const { RV_RevFloat } = window;
  * @param {PropType} props
  */
 const SidebarMenuRoot = (props) => {
+  console.log('root');
   const { item, isDragging, dragProps } = props;
 
   const {
@@ -42,12 +50,13 @@ const SidebarMenuRoot = (props) => {
     Sub: childMenus,
     IconURL: iconImage,
   } = item;
-  const { openMenuID } = useSelector((state) => state.sidebarItems);
+
+  const openMenuID = useSelector(selectOpenMenuID);
   const dispatch = useDispatch();
   const { toggleSidebarMenu } = sidebarMenuSlice.actions;
 
   //! Toggle an item's sub-menu.
-  const handleDropdown = () => dispatch(toggleSidebarMenu(id));
+  const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
 
   //! Is true, If an item's sub-menu is open.
   const isOpen = () => openMenuID.includes(id);
@@ -78,4 +87,4 @@ const SidebarMenuRoot = (props) => {
   );
 };
 
-export default SidebarMenuRoot;
+export default memo(SidebarMenuRoot);

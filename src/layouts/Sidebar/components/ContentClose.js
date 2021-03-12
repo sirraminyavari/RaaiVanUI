@@ -28,13 +28,13 @@ const SidebarContentClose = ({ theme }) => {
   //! Calls on every click on chevron down.
   const scrollDown = () => {
     if (isDown) return;
-    setScroll((s) => s + 50);
+    setScroll((s) => s + 55);
   };
 
   //! Calls on every click on chevron up.
   const scrollUp = () => {
     if (isUp) return;
-    setScroll((s) => s - 50);
+    setScroll((s) => s - 55);
   };
 
   //! Toggle settings content on click.
@@ -59,7 +59,11 @@ const SidebarContentClose = ({ theme }) => {
   };
 
   useLayoutEffect(() => {
-    iconListRef.current.scrollTo(0, scroll);
+    iconListRef.current.scrollTo({
+      top: scroll,
+      left: 0,
+      behavior: 'smooth',
+    });
     handleScroll();
   }, [scroll]);
 

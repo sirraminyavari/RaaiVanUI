@@ -209,10 +209,12 @@ export const AvatarMenuItem = styled.div`
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
+  font-size: 1rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
 `;
 
 export const Divider = styled.div`
-  margin: 0.5rem 0;
+  margin: 0.5rem -1.4rem;
+  border-top: 0.1rem solid #ccc;
 `;
