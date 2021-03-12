@@ -235,6 +235,10 @@ export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.3rem;
 `;
 
+export const HighlightedTitle = styled.span`
+  margin-${RV_Float}: 0.4rem;
+`;
+
 export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};

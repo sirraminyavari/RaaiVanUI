@@ -1,37 +1,28 @@
 /**
  * Renders a list of searched items in sidebar.
  */
-import { Link } from 'react-router-dom';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { decode } from 'js-base64';
-import { BG_WARM } from 'constant/Colors';
 import * as Styled from '../Sidebar.styles';
+import { createSelector } from 'reselect';
+import SearchResultItem from './SearchResultItem';
 
 const { GlobalUtilities } = window;
 
-//! Highlights some terms inside a text.
-const getHighlightedText = (text, highlight) => {
-  const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-  const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
-  return (
-    <span>
-      {parts.map((part, i) => {
-        let isMatch = part.toLowerCase() === highlight.toLowerCase();
-        return (
-          <Styled.HighlightedText
-            key={i}
-            className={isMatch ? BG_WARM : null}
-            isMatch={isMatch}>
-            {part}
-          </Styled.HighlightedText>
-        );
-      })}
-    </span>
-  );
-};
+const selectNodeTypes = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.nodeTypes
+);
+
+const selectSearchText = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.searchText
+);
 
 const SearchResultsList = () => {
-  const { nodeTypes, searchText } = useSelector((state) => state.sidebarItems);
+  const nodeTypes = useSelector(selectNodeTypes);
+  const searchText = useSelector(selectSearchText);
 
   return (
     <Styled.MenuTreeContainer>
@@ -41,22 +32,15 @@ const SearchResultsList = () => {
         )
         .map((node) => {
           return (
-            <Styled.MenuContainer
-              className="BorderRadius4"
-              as={Link}
-              to={`/classes/${node.NodeTypeID}`}
-              key={node.NodeTypeID}>
-              <Styled.MenuTitle>
-                <img src={node.IconURL} alt="menu-icon" />
-                <span style={{ marginRight: '5px' }}>
-                  {getHighlightedText(decode(node.TypeName), searchText)}
-                </span>
-              </Styled.MenuTitle>
-            </Styled.MenuContainer>
+            <SearchResultItem
+              node={node}
+              searchText={searchText}
+              key={node.NodeTypeID}
+            />
           );
         })}
     </Styled.MenuTreeContainer>
   );
 };
 
-export default SearchResultsList;
+export default memo(SearchResultsList);

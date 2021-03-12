@@ -1,21 +1,29 @@
 /**
  * Renders all menu items at once.
  */
+import { memo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SidebarMenuRoot from './MenuRoot';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from '../Sidebar.styles';
 import { reorder } from 'helpers/helpers';
+import { createSelector } from 'reselect';
+
+const selectTree = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.tree
+);
 
 const SidebarTrees = () => {
-  const { tree } = useSelector((state) => state.sidebarItems);
+  console.count('trees');
+  const tree = useSelector(selectTree);
   const { setReorderedTree } = sidebarMenuSlice.actions;
 
   const dispatch = useDispatch();
 
   //! Calls whenever item dragging is ended and reorders the tree list.
-  const handleOnDragEnd = (result) => {
+  const handleOnDragEnd = useCallback((result) => {
     if (!result.destination) return;
     const newTree = reorder(
       tree,
@@ -24,7 +32,7 @@ const SidebarTrees = () => {
     );
 
     dispatch(setReorderedTree(newTree));
-  };
+  }, []);
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -63,4 +71,4 @@ const SidebarTrees = () => {
   );
 };
 
-export default SidebarTrees;
+export default memo(SidebarTrees);
