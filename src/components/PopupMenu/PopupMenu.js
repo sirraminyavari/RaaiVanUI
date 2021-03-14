@@ -32,6 +32,7 @@ const ArrowRadius = 0.4;
  * @param {PropType} props
  */
 const PopupMenu = (props) => {
+  const { GlobalUtilities } = window;
   let {
     align,
     arrowClass,

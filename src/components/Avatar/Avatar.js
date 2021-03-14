@@ -18,13 +18,21 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = (props) => {
+  const { GlobalUtilities } = window;
+
   const { radius, userImage } = props;
   return (
     <Styled.AvatarContainer>
+      <span>{GlobalUtilities.random_str()}</span>
       {userImage ? (
-        <Styled.AvatarImage radius={radius} src={userImage} alt="user-avatar" />
+        <Styled.AvatarImage
+          data-testid="avatar-image"
+          radius={radius}
+          src={userImage}
+          alt="user-avatar"
+        />
       ) : (
-        <AvatarIcon size={radius} />
+        <AvatarIcon size={radius} data-testid="avatar-icon" />
       )}
     </Styled.AvatarContainer>
   );
