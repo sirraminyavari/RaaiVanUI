@@ -1,7 +1,7 @@
 /**
  * Renders when sidebar is open.
  */
-import { lazy } from 'react';
+import { lazy, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
@@ -25,9 +25,9 @@ const SidebarOnOpen = ({ theme }) => {
   const { handleSettings } = theme.actions;
 
   //! Toggle settings content on click.
-  const handleOnClick = () => {
+  const handleOnClick = useCallback(() => {
     dispatch(handleSettings());
-  };
+  }, [dispatch]);
 
   return (
     <>

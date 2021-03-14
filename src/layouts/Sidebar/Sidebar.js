@@ -1,8 +1,9 @@
 /**
  * Renders whole sidebar area for non-mobile screens.
  */
-import { lazy, Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { lazy, Suspense, useEffect, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
@@ -10,7 +11,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './components/Header';
 import SidebarFooter from './components/Footer';
 import { BG_WARMER } from 'constant/Colors';
-import withTheme from 'components/withTheme/withTheme';
 
 const SidebarContentOpen = lazy(() =>
   import(
@@ -23,9 +23,21 @@ const SidebarContentClose = lazy(() =>
   )
 );
 
-const Sidebar = (props) => {
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const selectIsSettingShown = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSettingShown
+);
+
+const Sidebar = () => {
+  console.count('side');
   const dispatch = useDispatch();
-  const { isSidebarOpen, isSettingShown } = props.theme.states;
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const isSettingShown = useSelector(selectIsSettingShown);
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -33,7 +45,7 @@ const Sidebar = (props) => {
       dispatch(getConfigPanels());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, dispatch]);
 
   return (
     <Styled.SidebarContainer className={BG_WARMER}>
@@ -48,4 +60,4 @@ const Sidebar = (props) => {
   );
 };
 
-export default withTheme(Sidebar);
+export default memo(Sidebar);
