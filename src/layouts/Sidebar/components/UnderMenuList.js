@@ -8,13 +8,15 @@ import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import ContactIcon from 'components/Icons/ContactIcon/Contact';
 import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';
 
+const { RVDic } = window;
+
 const UnderMenuList = () => {
   return (
     <Styled.UnderMenuContainer>
       <ListItem title="موضوعات نشان شده" icon={BookmarkIcon} badge={55} />
-      <ListItem title="گالری تمپلیت ها" icon={DiamondIcon} />
-      <ListItem title="دانشکاران" icon={ContactIcon} />
-      <ListItem title="گزارشات" icon={StatisticBarIcon} />
+      <ListItem title={RVDic.TemplatesGallery} icon={DiamondIcon} />
+      <ListItem title={RVDic.KnowledgeWorkers} icon={ContactIcon} />
+      <ListItem title={RVDic.Reports} icon={StatisticBarIcon} />
     </Styled.UnderMenuContainer>
   );
 };

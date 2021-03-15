@@ -10,7 +10,7 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import { getURL } from 'helpers/helpers';
 
-const { RV_RevFloat } = window;
+const { RV_RevFloat, RVDic } = window;
 
 const SidebarManagement = lazy(() =>
   import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
@@ -35,7 +35,7 @@ const SidebarOnOpen = ({ theme }) => {
         {isSettingShown ? (
           <Styled.CenterIcon>
             <SettingIcon />
-            <Styled.TitleText>مدیریت تیم</Styled.TitleText>
+            <Styled.TitleText>{RVDic.TeamManagement}</Styled.TitleText>
           </Styled.CenterIcon>
         ) : (
           <Styled.TitleText as={Link} to={getURL('Classes')}>

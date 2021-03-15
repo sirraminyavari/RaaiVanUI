@@ -15,6 +15,7 @@ const SidebarManagement = () => {
       {panels.map((panel, key) => {
         return (
           <Styled.PanelWrapper
+            className="BorderRadius4"
             as={Link}
             to={`/configuration/${panel.URL}`}
             key={key}>

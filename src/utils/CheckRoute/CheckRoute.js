@@ -1,3 +1,7 @@
+/**
+ * Check permissions for given route.
+ * ... Show a component or redirect to a route based on authorization.
+ */
 import { useEffect } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import useCheckRoute from 'hooks/useCheckRoute';
@@ -7,6 +11,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
+  //! Get route permission object based on route name.
   const route = useCheckRoute(name);
   const dispatch = useDispatch();
   const { toggleNavSide } = themeSlice.actions;

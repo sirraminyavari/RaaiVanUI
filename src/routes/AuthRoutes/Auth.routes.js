@@ -1,3 +1,6 @@
+/**
+ * Returns a list of authentication routes.
+ */
 import { lazy } from 'react';
 import SignIn from 'views/Auth/items/SignIn';
 import SignUp from 'views/Auth/items/SignUp';
