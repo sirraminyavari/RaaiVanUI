@@ -1,43 +1,43 @@
+import ReactDOM from 'react-dom';
 import { render, cleanup, screen } from '@testing-library/react';
 import Avatar from './Avatar';
 
-beforeEach(() => {
-  global.GlobalUtilities = {
-    random_str: function () {
-      return 'string';
-    },
-  };
-});
+describe('User Avatar Component Test', () => {
+  let wrapper;
 
-afterEach(() => {
-  delete global.GlobalUtilities;
-  cleanup();
-});
+  beforeEach(() => {
+    wrapper = render(<Avatar />);
+  });
 
-describe('User Avatar Component', () => {
+  afterEach(cleanup);
+
+  it('matches snapshot', () => {
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('renders', () => {
+    expect(wrapper).not.toBeNull();
+  });
+
   it('renders without crashing', () => {
-    render(<Avatar />);
+    const container = document.createElement('div');
+    ReactDOM.render(<Avatar />, container);
+    ReactDOM.unmountComponentAtNode(container);
+  });
+
+  it('renders avatar default icon', () => {
+    const iconElement = screen.getByTestId('avatar-icon');
+    expect(iconElement).toBeInTheDocument();
+
+    // wrapper.debug();
   });
 
   it('renders avatar image', () => {
-    const wrapper = render(<Avatar userImage="url/image" />);
-
-    expect(wrapper).toMatchSnapshot();
+    wrapper = render(<Avatar userImage="url/image" />);
 
     const imgElement = screen.getByTestId('avatar-image');
     expect(imgElement).toBeInTheDocument();
 
-    wrapper.debug();
-  });
-
-  it('renders avatar default icon', () => {
-    const wrapper = render(<Avatar />);
-
-    expect(wrapper).toMatchSnapshot();
-
-    const iconElement = screen.getByTestId('avatar-icon');
-    expect(iconElement).toBeInTheDocument();
-
-    wrapper.debug();
+    // wrapper.debug();
   });
 });

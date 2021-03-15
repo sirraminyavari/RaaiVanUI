@@ -18,12 +18,9 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = (props) => {
-  const { GlobalUtilities } = window;
-
   const { radius, userImage } = props;
   return (
     <Styled.AvatarContainer>
-      <span>{GlobalUtilities.random_str()}</span>
       {userImage ? (
         <Styled.AvatarImage
           data-testid="avatar-image"
