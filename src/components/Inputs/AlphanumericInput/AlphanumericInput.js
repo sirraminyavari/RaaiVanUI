@@ -58,6 +58,7 @@ const AlphanumericInput = forwardRef((props, ref) => {
 
   return (
     <Styled.Input
+      data-testid="alphanumeric-input"
       className="BorderRadius4"
       type="text"
       ref={ref}
