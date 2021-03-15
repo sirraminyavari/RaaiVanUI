@@ -35,7 +35,8 @@ describe('Inline Edit Component Test', () => {
     ReactDOM.unmountComponentAtNode(container);
   });
 
-  it.skip('shows "default text" in span tag without "text" prop', () => {
+  it('shows "default text" without "text" prop', () => {
+    wrapper.rerender(<InlineEdit onSetText={onSetText} />);
     expect(screen.getByTestId('inline-edit-span')).toHaveTextContent(
       'default text'
     );
