@@ -10,8 +10,9 @@ const { resetAllErrors, setLoginRoute, resetAllInputs } = loginSlice.actions;
  */
 const setLoginRouteAction = (params) => (dispatch) => {
   // When current route changes, all the errors will reset.
+
   dispatch(resetAllErrors());
-  dispatch(resetAllInputs());
+
   dispatch(setLoginRoute(params));
 };
 export default setLoginRouteAction;

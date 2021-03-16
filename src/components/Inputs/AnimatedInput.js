@@ -51,13 +51,12 @@ const AnimatedInput = React.forwardRef(
         _setFocused(true);
       }
     };
-    const refref = useRef();
 
     return (
       <Container style={style} inputFocused={inputFocused} {...props}>
         <Label
-          className={inputFocused ? 'active' : ''}
-          inputFocused={inputFocused}>
+          className={inputFocused || value.length > 0 ? 'active' : ''}
+          inputFocused={inputFocused || value.length > 0}>
           <StyledInput
             value={value}
             type={type}
@@ -80,7 +79,7 @@ const AnimatedInput = React.forwardRef(
           </StyledInput>
           <Placeholder
             className={`rv-border-radius-quarter ${
-              inputFocused ? 'rv-warm' : 'rv-gray'
+              inputFocused || value.length > 0 ? 'rv-warm' : 'rv-gray'
             }`}>
             {placeholder}
           </Placeholder>

@@ -14,6 +14,10 @@ import { useHistory } from 'react-router-dom';
 import signupAction from 'store/actions/auth/signupAction';
 import reSendVerifyCodeAction from 'store/actions/auth/reSendVerifyCodeAction';
 import setVerifyCodeAction from 'store/actions/auth/setVerifyCode';
+import { Box } from '../AuthView.style';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
+import setEmailAction from 'store/actions/auth/setEmailAction';
+import setPasswordAction from 'store/actions/auth/setPassAction';
 
 const { RVDic } = window;
 /**
@@ -64,6 +68,8 @@ const VerifyingCode = () => {
   };
   // Fires when the user presses 'sign up' button
   const onSignUp = () => {
+    dispatch(setEmailAction(''));
+    dispatch(setPasswordAction(''));
     dispatch(signupAction());
   };
   // Resend verification code
@@ -76,74 +82,80 @@ const VerifyingCode = () => {
    */
   const onValueChange = (value) => {
     dispatch(setVerifyCodeAction(value));
+    value.filter((x) => x === -1)?.length === 0 && dispatch(signupAction());
+  };
+
+  const onEdit = () => {
+    dispatch(setLoginRouteAction(null));
+    goBack();
   };
 
   return (
-    <Container>
-      <Heading
-        type="h5"
-        style={{
-          textAlign: 'center',
-          ...common_style,
-        }}>
-        {RVDic.Login}
-      </Heading>
-      <RowItems style={common_style}>
+    <Box>
+      <Container>
         <Heading
-          type="h1"
+          type="h5"
           style={{
             textAlign: 'center',
-            color: 'black',
             ...common_style,
           }}>
-          {email}
+          {RVDic.Login}
         </Heading>
-        <Edit
-          style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
-          onClick={goBack}
-        />
-      </RowItems>
-      <Heading type="h3" style={common_style}>
-        {
-          'لطفاً کد تایید حساب خود را، که به شماره موبایل بالا ارسال شده، در کادر زیر وارد نمایید'
-        }
-      </Heading>
+        <RowItems style={common_style}>
+          <Heading
+            type="h1"
+            style={{
+              textAlign: 'center',
+              color: 'black',
+              ...common_style,
+            }}>
+            {email}
+          </Heading>
+          <Edit
+            style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
+            onClick={onEdit}
+          />
+        </RowItems>
+        <Heading type="h3" style={common_style}>
+          {RVDic.Checks.PleaseEnterTheVerificationCode}
+        </Heading>
 
-      <VerificationCode
-        error={verifyCodeError}
-        length={verifyCodeLength}
-        value={verifyCode}
-        onValueChange={onValueChange}
-        style={{ ...common_style, marginBottom: '3rem' }}
-      />
-      {timerFinished ? (
+        <VerificationCode
+          error={verifyCodeError}
+          length={verifyCodeLength}
+          value={verifyCode}
+          onValueChange={onValueChange}
+          style={{ ...common_style, marginBottom: '3rem' }}
+        />
+        {timerFinished ? (
+          <Button
+            onClick={onReSend}
+            type="secondary-o"
+            loading={isFetching}
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              ...common_style,
+            }}>
+            {RVDic.Resend}
+          </Button>
+        ) : (
+          <CountDownTimer onFinished={onFinished} style={common_style} />
+        )}
         <Button
-          onClick={onReSend}
-          type="secondary-o"
+          onClick={onSignUp}
+          type="primary"
           loading={isFetching}
           style={{
             width: '100%',
             textAlign: 'center',
-            ...common_style,
+            marginTop: '3rem',
+            marginBottom: '1rem',
           }}>
-          {RVDic.Resend}
+          {RVDic.SignUp}
         </Button>
-      ) : (
-        <CountDownTimer onFinished={onFinished} style={common_style} />
-      )}
-      <Button
-        onClick={onSignUp}
-        type="primary"
-        loading={isFetching}
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          marginTop: '3rem',
-          marginBottom: '1rem',
-        }}>
-        {RVDic.SignUp}
-      </Button>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 export default VerifyingCode;

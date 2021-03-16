@@ -1,5 +1,5 @@
 /**
- * Verifying code page
+ * Verifying code page for resetting password
  */
 import Heading from 'components/Heading/Heading';
 import Edit from 'components/Icons/Edit';
@@ -11,15 +11,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MAIN_BLUE } from 'const/Colors';
 import Button from 'components/Buttons/Button';
 import { useHistory } from 'react-router-dom';
-import signupAction from 'store/actions/auth/signupAction';
+import resetPasswordAction from 'store/actions/auth/resetPasswordAction';
 import reSendVerifyCodeAction from 'store/actions/auth/reSendVerifyCodeAction';
 import setVerifyCodeAction from 'store/actions/auth/setVerifyCode';
+import { Box } from '../AuthView.style';
+import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 
 const { RVDic } = window;
 /**
  * User by typing the correct verification code, will bring to main page automatically
  */
-const ResetPasswordVerifying = () => {
+const VerifyingResetPassword = () => {
   // True, if the timer finishes.
   const [timerFinished, setTimerFinished] = useState(false);
 
@@ -49,7 +52,16 @@ const ResetPasswordVerifying = () => {
     verifyCodeLength: state.auth.verifyCodeLength,
   }));
   useEffect(() => {
-    !verifyCodeToken && push('/auth/login');
+    const { GlobalUtilities } = window;
+    !email && push('/auth/login');
+
+    // !verifyCodeToken && push('/auth/login');
+    GlobalUtilities.init_recaptcha((captcha) => {
+      captcha.getToken((token) => {
+        //use token
+        dispatch(setCaptchaTokenAction(token));
+      });
+    });
   }, []);
   // Changing verifyCodeToken means: timer should be reset &
   // reSend button should be disappear.
@@ -61,8 +73,8 @@ const ResetPasswordVerifying = () => {
     setTimerFinished(true);
   };
   // Fires when the user presses 'sign up' button
-  const onSignUp = () => {
-    dispatch(signupAction());
+  const onResetPass = () => {
+    dispatch(resetPasswordAction());
   };
   // Resend verification code
   const onReSend = () => {
@@ -73,78 +85,95 @@ const ResetPasswordVerifying = () => {
    * @param {Array<String>} value - verification code input
    */
   const onValueChange = (value) => {
+    console.log(
+      value.filter((x) => x === -1),
+      'code '
+    );
+
     dispatch(setVerifyCodeAction(value));
+    // Checks if all verification code digits entered,
+    // automatically fires 'resetPasswordAction()'
+    value.filter((x) => x === -1)?.length === 0 &&
+      dispatch(resetPasswordAction());
+  };
+  // By clicking on edit button,
+  // user will be routed to last screen to edit it's inputted information
+  const onEdit = () => {
+    dispatch(setLoginRouteAction(null));
+    goBack();
   };
 
   return (
-    <Container>
-      <Heading
-        type="h5"
-        style={{
-          textAlign: 'center',
-          ...common_style,
-        }}>
-        {RVDic.ForgotMyPassword}
-      </Heading>
-      <RowItems style={common_style}>
+    <Box>
+      <Container>
         <Heading
-          type="h1"
+          type="h5"
           style={{
             textAlign: 'center',
-            color: 'black',
             ...common_style,
           }}>
-          {email}
+          {RVDic.ForgotMyPassword}
         </Heading>
-        <Edit
-          style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
-          onClick={goBack}
-        />
-      </RowItems>
-      <Heading type="h3" style={common_style}>
-        {
-          'لطفاً کد رمز دوم حساب خود را، که به آدرس ایمیل بالا .ارسال شده، در کادر زیر وارد نمایید'
-        }
-      </Heading>
+        <RowItems style={common_style}>
+          <Heading
+            type="h1"
+            style={{
+              textAlign: 'center',
+              color: 'black',
+              ...common_style,
+            }}>
+            {email}
+          </Heading>
+          <Edit
+            style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
+            onClick={onEdit}
+          />
+        </RowItems>
+        <Heading type="h3" style={common_style}>
+          {
+            'لطفاً کد تایید حساب خود را، که به شماره موبایل بالا ارسال شده، در کادر زیر وارد نمایید'
+          }
+        </Heading>
 
-      <VerificationCode
-        error={verifyCodeError}
-        length={verifyCodeLength}
-        value={verifyCode}
-        onValueChange={onValueChange}
-        style={{ ...common_style, marginBottom: '3rem' }}
-      />
-      {timerFinished ? (
+        <VerificationCode
+          error={verifyCodeError}
+          length={verifyCodeLength}
+          value={verifyCode}
+          onValueChange={onValueChange}
+          style={{ ...common_style, marginBottom: '3rem' }}
+        />
+        {timerFinished ? (
+          <Button
+            onClick={onReSend}
+            type="secondary-o"
+            loading={isFetching}
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              ...common_style,
+            }}>
+            {RVDic.Resend}
+          </Button>
+        ) : (
+          <CountDownTimer onFinished={onFinished} style={common_style} />
+        )}
         <Button
-          onClick={onReSend}
-          type="secondary-o"
+          onClick={onResetPass}
+          type="primary"
           loading={isFetching}
           style={{
             width: '100%',
             textAlign: 'center',
-            ...common_style,
+            marginTop: '3rem',
+            marginBottom: '1rem',
           }}>
-          {RVDic.Resend}
+          {'تایید'}
         </Button>
-      ) : (
-        <CountDownTimer onFinished={onFinished} style={common_style} />
-      )}
-      <Button
-        onClick={onSignUp}
-        type="primary"
-        loading={isFetching}
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          marginTop: '3rem',
-          marginBottom: '1rem',
-        }}>
-        {RVDic.Login}
-      </Button>
-    </Container>
+      </Container>
+    </Box>
   );
 };
-export default ResetPasswordVerifying;
+export default VerifyingResetPassword;
 
 const Container = styled.div`
   display: flex;
