@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { BsArrowBarRight, BsArrowBarLeft } from 'react-icons/bs';
 
 const SidebarToggleIcon = ({ dir: direction, ...rest }) => {
@@ -9,4 +10,4 @@ const SidebarToggleIcon = ({ dir: direction, ...rest }) => {
   }
 };
 
-export default SidebarToggleIcon;
+export default memo(SidebarToggleIcon);
