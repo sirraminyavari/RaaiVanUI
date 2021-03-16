@@ -81,7 +81,11 @@ const SidebarMenuRoot = (props) => {
         {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
       </Styled.MenuContainer>
       {childMenus && (
-        <SidebarMenuBranches isOpen={isOpen()} menuList={childMenus} />
+        <SidebarMenuBranches
+          parentID={id}
+          isOpen={isOpen()}
+          menuList={childMenus}
+        />
       )}
     </>
   );

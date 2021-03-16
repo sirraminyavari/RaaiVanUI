@@ -43,20 +43,13 @@ const filterHiddens = (nodes) => {
 //! Re-organize nodes and filter them down to fresh list.
 const reorganize = (nodes) => {
   const oldList = Array.from(nodes.prev)
+    //! Filter out brand new nodes.
     .filter(
       (old) => !nodes.next.every((fresh) => fresh.NodeTypeID !== old.NodeTypeID)
     )
     .map((old) => {
-      if (
-        nodes.next.some(
-          (fresh) =>
-            fresh.TypeName !== old.TypeName &&
-            fresh.NodeTypeID === old.NodeTypeID
-        )
-      ) {
-        return nodes.next.find((fresh) => fresh.NodeTypeID === old.NodeTypeID);
-      }
-      return old;
+      //! Subtitute edited node.
+      return nodes.next.find((fresh) => fresh.NodeTypeID === old.NodeTypeID);
     });
   const newList = Array.from(nodes.next).filter(
     (fresh) => !nodes.prev.some((old) => old.NodeTypeID === fresh.NodeTypeID)
@@ -108,10 +101,12 @@ const getSidebarNodes = () => async (dispatch, getState) => {
         ParseResults: true,
       },
       (response) => {
-        //! If and only if any change happens in fresh list then it will dispatch to redux store.
-        if (shouldDispatch(response, sidebarItems)) {
-          dispatch(nodesToDispatch(response, sidebarItems));
-          dispatch(treesToDispatch(response, sidebarItems));
+        if (response.NodeTypes || response.Tree) {
+          //! If and only if any change happens in fresh list then it will dispatch to redux store.
+          if (shouldDispatch(response, sidebarItems)) {
+            dispatch(nodesToDispatch(response, sidebarItems));
+            dispatch(treesToDispatch(response, sidebarItems));
+          }
         }
       },
       (error) => console.log({ error })

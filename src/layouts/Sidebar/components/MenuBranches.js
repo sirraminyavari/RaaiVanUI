@@ -1,31 +1,50 @@
 /**
  * Renders sub-menus(branches) for each main(root) menu item.
  */
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers/helpers';
 
-const SidebarMenuBranches = ({ isOpen, menuList }) => {
-  const [menus, setMenus] = useState(menuList);
+const selectTree = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.tree
+);
+
+const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
+  const dispatch = useDispatch();
+  const tree = useSelector(selectTree);
+  const { setReorderedTree } = sidebarMenuSlice.actions;
 
   //! Calls whenever item dragging ended and reorders menu list.
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-    const newMenus = reorder(
-      menus,
-      result.source.index,
-      result.destination.index
-    );
-    setMenus(newMenus);
+
+    const newTree = tree.map((item) => {
+      if (item.NodeTypeID === parentID) {
+        let cloneItem = Object.assign({}, item);
+        cloneItem.defaultForm = true;
+        cloneItem.Sub = reorder(
+          item.Sub,
+          result.source.index,
+          result.destination.index
+        );
+        return cloneItem;
+      }
+      return item;
+    });
+
+    dispatch(setReorderedTree(newTree));
   };
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="sub-menu-container" type="subMenu">
+      <Droppable droppableId={parentID} type="subMenu">
         {(provided, snapshot) => (
           <Styled.SubMenuContainer
             isOpen={isOpen}
@@ -33,7 +52,7 @@ const SidebarMenuBranches = ({ isOpen, menuList }) => {
             itemsCount={menuList.length}
             {...provided.droppableProps}
             ref={provided.innerRef}>
-            {menus.map((menu, index) => {
+            {menuList.map((menu, index) => {
               return (
                 <Draggable
                   key={menu.NodeTypeID}
