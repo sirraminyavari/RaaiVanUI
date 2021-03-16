@@ -43,20 +43,13 @@ const filterHiddens = (nodes) => {
 //! Re-organize nodes and filter them down to fresh list.
 const reorganize = (nodes) => {
   const oldList = Array.from(nodes.prev)
+    //! Filter out brand new nodes.
     .filter(
       (old) => !nodes.next.every((fresh) => fresh.NodeTypeID !== old.NodeTypeID)
     )
     .map((old) => {
-      if (
-        nodes.next.some(
-          (fresh) =>
-            fresh.TypeName !== old.TypeName &&
-            fresh.NodeTypeID === old.NodeTypeID
-        )
-      ) {
-        return nodes.next.find((fresh) => fresh.NodeTypeID === old.NodeTypeID);
-      }
-      return old;
+      //! Subtitute edited node.
+      return nodes.next.find((fresh) => fresh.NodeTypeID === old.NodeTypeID);
     });
   const newList = Array.from(nodes.next).filter(
     (fresh) => !nodes.prev.some((old) => old.NodeTypeID === fresh.NodeTypeID)
