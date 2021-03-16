@@ -108,10 +108,12 @@ const getSidebarNodes = () => async (dispatch, getState) => {
         ParseResults: true,
       },
       (response) => {
-        //! If and only if any change happens in fresh list then it will dispatch to redux store.
-        if (shouldDispatch(response, sidebarItems)) {
-          dispatch(nodesToDispatch(response, sidebarItems));
-          dispatch(treesToDispatch(response, sidebarItems));
+        if (response.NodeTypes || response.Tree) {
+          //! If and only if any change happens in fresh list then it will dispatch to redux store.
+          if (shouldDispatch(response, sidebarItems)) {
+            dispatch(nodesToDispatch(response, sidebarItems));
+            dispatch(treesToDispatch(response, sidebarItems));
+          }
         }
       },
       (error) => console.log({ error })
