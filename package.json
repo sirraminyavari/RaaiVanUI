@@ -45,7 +45,8 @@
     "build": "react-scripts build",
     "postbuild": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./post_build.ps1",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -71,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^6.7.1",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
     "husky": "^4.3.8",

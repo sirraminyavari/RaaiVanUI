@@ -19,6 +19,9 @@
 # debug.log
 debug.log
 
+# cypress
+/cypress/integration/examples
+
 # misc
 .DS_Store
 .env.local
