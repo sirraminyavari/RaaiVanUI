@@ -2,9 +2,10 @@
  * An action for sending verification code.
  */
 import { encode } from 'js-base64';
-import MobileNumberValidator from 'utils/Valiation/MobileNumberValidator';
-import PasswordValidator from 'utils/Valiation/PasswordValidator';
-import PersianValidator from 'utils/Valiation/PersianValidator';
+import CheckPassword from 'utils/Validation/CheckPassword';
+import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
+import PasswordValidator from 'utils/Validation/PasswordValidator';
+import PersianValidator from 'utils/Validation/PersianValidator';
 import { loginSlice } from '../../reducers/loginReducer';
 const {
   sendVerifyCodeFailed,
@@ -30,14 +31,6 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
   dispatch,
   getState
 ) => {
-  const {
-    MinLength,
-    UpperLower,
-    NonAlphabetic,
-    Number,
-    NonAlphaNumeric,
-  } = PasswordValidator(password, getState().auth?.passwordPolicy);
-
   /**
    * After checking email,password,name,family validation,
    * 'sendCode()' will be called.
@@ -76,7 +69,8 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
   !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
     ? dispatch(setEmailError('!' + 'ایمیل یا شماره موبایل وارد شده صحیح نیست'))
     : // Checks inputted password, with Password Policy comes from server.
-    !(MinLength && UpperLower && NonAlphabetic && Number && NonAlphaNumeric)
+
+    !CheckPassword(password, getState().auth?.passwordPolicy)
     ? dispatch(setPasswordError('الگو رمزعبور وارد شده صحیح نیست'))
     : // Checks inputted name if is Persian with Persian chars.
     !PersianValidator(name)
