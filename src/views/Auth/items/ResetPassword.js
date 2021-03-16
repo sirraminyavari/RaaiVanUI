@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import styled from 'styled-components';
+import { Box } from '../AuthView.style';
 import PasswordValidation from '../elements/PasswordValidation';
 
 const { RVDic } = window;
@@ -80,89 +81,91 @@ const ResetPassword = () => {
   const onChangePassword = () => {};
 
   return (
-    <Container>
-      <Heading
-        type="h5"
-        style={{
-          textAlign: 'center',
-          ...common_style,
-        }}>
-        {RVDic.Login}
-      </Heading>
-      <RowItems style={common_style}>
+    <Box>
+      <Container>
         <Heading
-          type="h1"
+          type="h5"
           style={{
             textAlign: 'center',
-            color: 'black',
             ...common_style,
           }}>
-          {email}
+          {RVDic.Login}
         </Heading>
-        <Edit
-          style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
-          onClick={goBack}
+        <RowItems style={common_style}>
+          <Heading
+            type="h1"
+            style={{
+              textAlign: 'center',
+              color: 'black',
+              ...common_style,
+            }}>
+            {email}
+          </Heading>
+          <Edit
+            style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
+            onClick={goBack}
+          />
+        </RowItems>
+        <AnimatedInput
+          onChange={onPasswordChanged}
+          value={password}
+          placeholder={RVDic.Password}
+          type={passVisible ? 'text' : 'password'}
+          error={passwordError}
+          shake={passwordError && 300}
+          style={common_style}
+          id={'password'}
+          ref={passRef}
+          onBlur={onPassBlur}
+          onFocus={onPassFocus}
+          enterListener={onPassEnter}
         />
-      </RowItems>
-      <AnimatedInput
-        onChange={onPasswordChanged}
-        value={password}
-        placeholder={RVDic.Password}
-        type={passVisible ? 'text' : 'password'}
-        error={passwordError}
-        shake={passwordError && 300}
-        style={common_style}
-        id={'password'}
-        ref={passRef}
-        onBlur={onPassBlur}
-        onFocus={onPassFocus}
-        enterListener={onPassEnter}
-      />
-      <AnimatedInput
-        onChange={onPasswordChanged}
-        value={password}
-        placeholder={RVDic.Password}
-        type={passVisible ? 'text' : 'password'}
-        error={passwordError}
-        shake={passwordError && 300}
-        style={common_style}
-        id={'password'}
-        ref={passRef}
-        onBlur={onPassBlur}
-        onFocus={onPassFocus}
-        enterListener={onPassEnter}
-        children={
-          passVisible ? (
-            <InvisibleIcon
-              className="rv-gray"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setPassVisible(false)}
-            />
-          ) : (
-            <VisibleIcon
-              className="rv-gray"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setPassVisible(true)}
-            />
-          )
-        }
-      />
-      <PasswordValidation
-        style={{
-          opacity: '0',
-          transition: 'opacity 1s',
-        }}
-        isVisible={passFocused}
-      />
-      <Button
-        type="primary"
-        style={{ fontSize: '1rem' }}
-        style={{ width: '100%' }}
-        style={common_style}
-        onClick={onChangePassword}>
-        {RVDic.ChangePassword}
-      </Button>
-    </Container>
+        <AnimatedInput
+          onChange={onPasswordChanged}
+          value={password}
+          placeholder={RVDic.Password}
+          type={passVisible ? 'text' : 'password'}
+          error={passwordError}
+          shake={passwordError && 300}
+          style={common_style}
+          id={'password'}
+          ref={passRef}
+          onBlur={onPassBlur}
+          onFocus={onPassFocus}
+          enterListener={onPassEnter}
+          children={
+            passVisible ? (
+              <InvisibleIcon
+                className="rv-gray"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setPassVisible(false)}
+              />
+            ) : (
+              <VisibleIcon
+                className="rv-gray"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setPassVisible(true)}
+              />
+            )
+          }
+        />
+        <PasswordValidation
+          style={{
+            opacity: '0',
+            transition: 'opacity 1s',
+          }}
+          isVisible={passFocused}
+        />
+        <Button
+          type="primary"
+          style={{ fontSize: '1rem' }}
+          style={{ width: '100%' }}
+          style={common_style}
+          onClick={onChangePassword}>
+          {RVDic.ChangePassword}
+        </Button>
+      </Container>
+    </Box>
   );
 };
 export default ResetPassword;
