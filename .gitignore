@@ -20,7 +20,7 @@
 debug.log
 
 # cypress
-/cypress/integration/examples
+# /cypress/integration/examples
 
 # misc
 .DS_Store
