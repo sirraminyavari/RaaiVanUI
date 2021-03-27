@@ -1,9 +1,8 @@
 /**
  * Renders header component for sidebar.
  */
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import withTheme from 'components/withTheme/withTheme';
+import { useEffect, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Logo from 'assets/images/cliqmind_logo_white.svg';
 import * as Styled from '../Sidebar.styles';
@@ -12,15 +11,23 @@ import { useMediaQuery } from 'react-responsive';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import { BG_WARMER } from 'constant/Colors';
+import { themeSlice } from 'store/reducers/themeReducer';
+import { createSelector } from 'reselect';
 
 const { RV_RevFloat, RV_Float, RVGlobal } = window;
 
 const isSaas = RVGlobal.SAASBasedMultiTenancy;
 
-const SidebarHeader = (props) => {
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const SidebarHeader = () => {
+  // console.count('header');
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = props.theme.actions;
-  const { isSidebarOpen } = props.theme.states;
+  const { toggleSidebar, toggleSetting } = themeSlice.actions;
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
@@ -42,7 +49,7 @@ const SidebarHeader = (props) => {
     if (isMobileNav) {
       dispatch(toggleSidebar(false));
     }
-  }, [isMobileNav]);
+  }, [isMobileNav, dispatch]);
 
   return (
     <Styled.SidebarHeader className={BG_WARMER}>
@@ -66,4 +73,4 @@ const SidebarHeader = (props) => {
   );
 };
 
-export default withTheme(SidebarHeader);
+export default memo(SidebarHeader);

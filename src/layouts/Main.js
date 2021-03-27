@@ -71,7 +71,7 @@ const Main = () => {
           </Styled.ContentWrapper>
         </Styled.MainContainer>
       ) : (
-        { switchRoutes }
+        <>{switchRoutes}</>
       )}
     </>
   );

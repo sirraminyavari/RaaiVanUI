@@ -6,7 +6,13 @@ import Logo from 'components/Media/Logo';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory, Switch, Redirect, Route } from 'react-router-dom';
+import {
+  useHistory,
+  Switch,
+  Redirect,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
   BackgroundImage,
@@ -14,21 +20,13 @@ import {
   Center,
   Container,
   Maintainer,
+  Wrapper,
 } from './AuthView.style';
 import Routes from 'routes/AuthRoutes/Auth.routes';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import styled from 'styled-components';
 
 const { RVGlobal } = window;
-
-const switchRoutes = (
-  <Switch>
-    {Routes.map((route, key) => {
-      const { path, component } = route;
-      return <Route exact path={path} component={component} key={key} />;
-    })}
-
-    <Redirect to="/auth/login" />
-  </Switch>
-);
 
 /**
  * A mother component for containing the login elements.
@@ -43,13 +41,14 @@ const AuthView = () => {
 
   const dispatch = useDispatch();
   const { push } = useHistory();
+  let location = useLocation();
 
   useEffect(() => {
     const { GlobalUtilities } = window;
 
     let files = [{ Root: 'API/', Ext: 'js', Childs: ['RVAPI', 'UsersAPI'] }];
     // if (that.Options.UseCaptcha) files.push("CaptchaImage.js");
-    GlobalUtilities.load_files(files, {
+    GlobalUtilities?.load_files(files, {
       OnLoad: () => {
         setLoadDone(true);
       },
@@ -131,6 +130,32 @@ const AuthView = () => {
     };
   }, [oneStepToInitDone]);
 
+  const switchRoutes = (
+    <Wrapper>
+      <TransitionGroup className="transition-group">
+        {/*
+      This is no different than other usage of
+      <CSSTransition>, just make sure to pass
+      `location` to `Switch` so it can match
+      the old location as it animates out.
+    */}
+
+        <CSSTransition key={location.key} classNames="fade" timeout={1000}>
+          <Switch location={location}>
+            {Routes.map((route, key) => {
+              const { path, component } = route;
+              return (
+                <Route exact path={path} component={component} key={key} />
+              );
+            })}
+
+            <Redirect to="/auth/login" />
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
+    </Wrapper>
+  );
+
   /**
    *
    * By finishing loading the script, will fire.
@@ -152,8 +177,8 @@ const AuthView = () => {
       <div className="small-1 medium-2 large-4" />
       <Container className="small-10 medium-8 large-4">
         <Logo />
-        <Box>
-          {/* <Title />
+        {/* <Box> */}
+        {/* <Title />
             <Email />
             <NameFamily />
             <Password />
@@ -169,15 +194,15 @@ const AuthView = () => {
             <CreateAccountButton />
 
             <LastLoginsModal /> */}
-          {/* <SignIn /> */}
-          {oneStepToInitDone ? (
-            switchRoutes
-          ) : (
-            <Center>
-              <Loader />
-            </Center>
-          )}
-        </Box>
+        {/* <SignIn /> */}
+        {oneStepToInitDone ? (
+          switchRoutes
+        ) : (
+          <Center>
+            <Loader />
+          </Center>
+        )}
+        {/* </Box> */}
       </Container>
       <div className="small-1 medium-2 large-4" />
     </Maintainer>

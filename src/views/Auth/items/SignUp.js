@@ -21,8 +21,11 @@ import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import PasswordValidation from '../elements/PasswordValidation';
+import { decode } from 'js-base64';
+import { Box } from '../AuthView.style';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 
-const { RVDic } = window;
+const { RVDic, RVGlobal } = window;
 /**
  * In this page user can create an account with his/her mobile/email.
  */
@@ -87,13 +90,14 @@ const SignUp = () => {
     });
     return () => {
       setSignUpClicked(false);
+      dispatch(setLoginRouteAction(null));
     };
   }, []);
   // By changing routeHistory & signUpClicked,
   // navigates to the address that routeHistory says.
   useEffect(() => {
-    signUpClicked && routeHistory && push(routeHistory);
-  }, [routeHistory, signUpClicked]);
+    signUpClicked && routeHistory && !isFetching && push(routeHistory);
+  }, [routeHistory, signUpClicked, isFetching]);
 
   /**
    * Synchronously sets inputted email/number to redux state.
@@ -184,24 +188,27 @@ const SignUp = () => {
    * Returns user to the login page.
    */
   const onHaveAccount = () => {
+    dispatch(setEmailAction(''));
+    dispatch(setPasswordAction(''));
     push('/auth/login');
   };
 
   return (
-    <Container>
-      <Heading
-        type="h5"
-        style={{
-          marginTop: '2rem',
-          marginBottom: '2rem',
-          textAlign: 'center',
-        }}>
-        {RVDic.SignUp}
-      </Heading>
+    <Box>
       {fetchingFiles ? (
-        <LoadingIconFlat />
+        <LoadingIconFlat style={{ height: '50vh' }} />
       ) : (
-        <>
+        <Container>
+          <Heading
+            type="h5"
+            style={{
+              marginTop: '2rem',
+              marginBottom: '2rem',
+              textAlign: 'center',
+            }}>
+            {RVDic.SignUp}
+          </Heading>
+
           <AnimatedInput
             onChange={onEmailChanged}
             value={email}
@@ -299,6 +306,7 @@ const SignUp = () => {
                 </a>
                 {' را خوانده و به آن متعهد هستید '}
               </p>
+              {/* {decode(RVGlobal.SystemName)} */}
             </Heading>
           )}
           <Button
@@ -319,11 +327,11 @@ const SignUp = () => {
             style={{ width: '100%' }}
             style={common_style}
             onClick={onHaveAccount}>
-            {'!* I have account'}
+            {RVDic.AlreadyHaveAnAccount}
           </Button>
-        </>
+        </Container>
       )}
-    </Container>
+    </Box>
   );
 };
 export default SignUp;
