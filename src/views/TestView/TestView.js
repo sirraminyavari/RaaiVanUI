@@ -1,25 +1,59 @@
-import { useState, useEffect } from 'react';
-import BalloonBlockEditor from 'components/CKEditor-custom/BallonBlock/BalloonBlockEditor';
+import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import APIHandler from 'apiHelper/APIHandler';
+// import { decode } from 'js-base64';
 
 const TestView = () => {
-  const [data, setData] = useState('<p>Hello from CKEditor 5!</p>');
+  // const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const fetchItems = (search) => {
+    return new Promise((resolve, reject) => {
+      // try {
+      //   apiHandler.fetch(
+      //     {
+      //       Count: 1000,
+      //       CheckAccess: true,
+      //       ParseResults: true,
+      //       SearchText: search,
+      //     },
+      //     (response) =>
+      //       resolve(
+      //         response.NodeTypes.map((node) => ({
+      //           value: decode(node.TypeName),
+      //         }))
+      //       ),
+      //     (error) => reject(error)
+      //   );
+      // } catch (err) {
+      //   reject(err);
+      // }
+
+      try {
+        fetch(`http://localhost:3004/names?q=${search}`)
+          .then((response) => response.json())
+          .then((data) => {
+            resolve(
+              data.map((node) => ({
+                id: node.id,
+                value: node.name,
+              }))
+            );
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return (
-    <>
-      <div style={{ padding: '50px' }}>
-        <h2>Using CKEditor 5 build in React</h2>
-        <BalloonBlockEditor
-          data={data}
-          handleDataChange={setData}
-          removePlugins={['Heading', 'Link', 'FontColor']}
-        />
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: data }}></div>
-    </>
+    <div style={{ padding: '2rem 1rem', width: '500px' }}>
+      <AutoSuggestInput
+        fetchItems={fetchItems}
+        onItemSelect={(item) => console.log(item)}
+      />
+    </div>
   );
 };
 
