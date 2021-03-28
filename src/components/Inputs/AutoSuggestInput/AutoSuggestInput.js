@@ -13,7 +13,9 @@ import * as Styled from './AutoSuggestInput.styles';
  * @property {number} [delay] - The delay of debouncing.
  * @property {number} [searchAt] -The minimum character is needed to api call begins.
  * @property {string} [placeholder] -The input placeholder.
+ * @property {Object[]} [defaultItems] -The default option list for input to select.
  * @property {function} onItemSelect -A callback function that will fire on suggestion selection.
+ * @property {function} fetchItems -A callback function that will fire on input change and fetch suggestion from server.
  */
 
 /**
@@ -29,10 +31,11 @@ const AutoSuggestInput = (props) => {
     placeholder,
     children,
     fetchItems,
+    defaultItems,
     ...rest
   } = props;
   //! Stores suggested items.
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(defaultItems);
   //! Stores the term that user searched
   const [searchTerm, setSearchTerm] = useState('');
   //! If true, Shows Loading component, Otherwise, won't show it.
@@ -44,9 +47,9 @@ const AutoSuggestInput = (props) => {
 
   const getSuggestions = () => {
     if (!fetchItems) return;
+    setIsSearching(true);
     fetchItems(debouncedSearchTerm)
       .then((response) => {
-        console.log(response);
         setHasError(false);
         setTimeout(() => {
           setIsSearching(false);
@@ -78,8 +81,8 @@ const AutoSuggestInput = (props) => {
   };
 
   //! Called when the selected item changes.
-  const handleChange = (selection) => {
-    onItemSelect && selection && onItemSelect(selection);
+  const handleChange = (selectedItem) => {
+    onItemSelect && selectedItem && onItemSelect(selectedItem);
   };
 
   //! Called when the user selects an item, regardless of the previous selected item.
@@ -96,6 +99,7 @@ const AutoSuggestInput = (props) => {
 
   //! Highlights searched term inside suggested items.
   const getHighlightedText = (text, highlight) => {
+    if (searchTerm.length < 1) return text;
     const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
     return (
@@ -112,12 +116,15 @@ const AutoSuggestInput = (props) => {
   };
 
   useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.length >= searchAt) {
-      setIsSearching(true);
+    if (
+      fetchItems &&
+      debouncedSearchTerm &&
+      debouncedSearchTerm.length >= searchAt
+    ) {
       //! Fetch new items on every amount of delay or mininum search term.
       getSuggestions();
     } else {
-      setItems([]);
+      setItems(defaultItems);
     }
   }, [debouncedSearchTerm]);
 
@@ -173,7 +180,7 @@ const AutoSuggestInput = (props) => {
               <Styled.ListItemsContainer hasError={hasError} items={items}>
                 {isOpen &&
                   !isSearching &&
-                  inputValue &&
+                  // inputValue &&
                   items.map((item, index) => {
                     return (
                       <Styled.ListItems
@@ -190,7 +197,7 @@ const AutoSuggestInput = (props) => {
                           index,
                           item,
                         })}>
-                        {hasError && (
+                        {searchTerm.length > 2 && hasError && (
                           <Styled.Error className="Circle">!</Styled.Error>
                         )}
                         {getHighlightedText(item.value, searchTerm)}
@@ -210,17 +217,15 @@ AutoSuggestInput.propTypes = {
   delay: PropTypes.number,
   searchAt: PropTypes.number,
   onItemSelect: PropTypes.func,
-  getSuggestedItems: PropTypes.func,
+  fetchItems: PropTypes.func,
+  defaultItems: PropTypes.array,
   placeholder: PropTypes.string,
-  endpoint: PropTypes.string,
-  withMenu: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
 };
 
 AutoSuggestInput.defaultProps = {
   delay: 500,
   searchAt: 3,
-  withMenu: true,
+  defaultItems: [],
   placeholder: 'جستجو ...',
 };
 

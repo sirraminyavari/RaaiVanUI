@@ -1,8 +1,21 @@
+import { useState } from 'react';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
-import APIHandler from 'apiHelper/APIHandler';
+// import APIHandler from 'apiHelper/APIHandler';
 // import { decode } from 'js-base64';
 
+const defaultValues = [
+  { id: 1, value: 'پیشفرض اول' },
+  { id: 2, value: 'پیشفرض دوم' },
+  { id: 3, value: 'پیشفرض سوم' },
+  { id: 4, value: 'پیشفرض چهارم' },
+  { id: 5, value: 'پیشفرض پنجم' },
+  { id: 6, value: 'پیشفرض ششم' },
+  { id: 7, value: 'پیشفرض هفتم' },
+  { id: 8, value: 'پیشفرض هشتم' },
+];
+
 const TestView = () => {
+  const [selected, setSelected] = useState(null);
   // const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
   const fetchItems = (search) => {
@@ -51,8 +64,10 @@ const TestView = () => {
     <div style={{ padding: '2rem 1rem', width: '500px' }}>
       <AutoSuggestInput
         fetchItems={fetchItems}
-        onItemSelect={(item) => console.log(item)}
+        onItemSelect={(item) => setSelected(item)}
+        // defaultItems={defaultValues}
       />
+      <h3>{selected?.value}</h3>
     </div>
   );
 };
