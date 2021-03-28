@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Downshift from 'downshift';
 import useDebounce from 'hooks/useDebounce';
@@ -29,9 +29,9 @@ const AutoSuggestInput = (props) => {
     searchAt,
     onItemSelect,
     placeholder,
-    children,
     fetchItems,
     defaultItems,
+    children,
     ...rest
   } = props;
   //! Stores suggested items.
@@ -42,8 +42,13 @@ const AutoSuggestInput = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   //! If true, Shows a message to user to inform it that something went wrong.
   const [hasError, setHasError] = useState(false);
-
+  //! Debounce api call to the server based on delay time passed to it.
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
+  //! If true, Shows a modal to user for more advanced options to choose from.
+  const [isModalShown, setIsModalShown] = useState(false);
+
+  //! Toggle advanced suggest options modal.
+  const toggleModal = () => setIsModalShown(!isModalShown);
 
   const getSuggestions = () => {
     if (!fetchItems) return;
@@ -157,9 +162,19 @@ const AutoSuggestInput = (props) => {
                 className: 'BorderRadius4',
                 style: { width: '100%' },
               })}>
-              <DotsIcon size={15} />
+              <DotsIcon
+                size={20}
+                style={{ cursor: 'pointer', padding: '0.1rem' }}
+                className="Circle SoftBackgroundColor WarmBorder"
+                onClick={toggleModal}
+              />
             </Input>
           </Styled.InputElementWrapper>
+          {children &&
+            cloneElement(children, {
+              show: isModalShown,
+              onClose: toggleModal,
+            })}
           {isOpen && (
             <Styled.SuggestMenu
               {...getMenuProps({
