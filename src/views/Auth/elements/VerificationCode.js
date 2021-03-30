@@ -118,8 +118,9 @@ const InputChar = styled.input`
   border-style: solid;
   border-radius: 7px;
   background-color: white;
-  width: ${({ width }) => width};
-  height: 4rem;
+  /* width: ${({ width }) => width}; */
+  width: 3rem;
+  height: 3rem;
   margin: 5px;
   text-align: center;
 `;
@@ -136,4 +137,7 @@ const ErrorMessage = styled.div`
 const Maintainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;

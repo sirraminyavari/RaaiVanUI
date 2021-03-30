@@ -147,6 +147,7 @@ const VerifyingResetPassword = () => {
             onClick={onReSend}
             type="secondary-o"
             loading={isFetching}
+            disable={verifyCode.filter((x) => x === -1)?.length !== 0}
             style={{
               width: '100%',
               textAlign: 'center',

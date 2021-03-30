@@ -11,10 +11,6 @@ const activeCss = css`
   outline: none;
 `;
 
-const hiddenCss = css`
-  display: none;
-`;
-
 const textActiveCss = css`
   ${activeCss}
   cursor: pointer;
@@ -27,26 +23,10 @@ const inputActiveCss = css`
   text-align: ${RV_Float};
 `;
 
-const getSpanTextCss = ({ isInputActive }) => {
-  if (!isInputActive) {
-    return textActiveCss;
-  } else {
-    return hiddenCss;
-  }
-};
-
-const getInputCss = ({ isInputActive }) => {
-  if (isInputActive) {
-    return inputActiveCss;
-  } else {
-    return hiddenCss;
-  }
-};
-
 export const SpanText = styled.span`
-  ${getSpanTextCss}
+  ${textActiveCss}
 `;
 
 export const Input = styled.input`
-  ${getInputCss}
+  ${inputActiveCss}
 `;

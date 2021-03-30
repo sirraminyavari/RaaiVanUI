@@ -98,12 +98,13 @@ const VerifyingCode = () => {
           style={{
             textAlign: 'center',
             ...common_style,
+            marginTop: '2rem',
           }}>
           {RVDic.Login}
         </Heading>
         <RowItems style={common_style}>
           <Heading
-            type="h1"
+            type="h2"
             style={{
               textAlign: 'center',
               color: 'black',
@@ -116,7 +117,7 @@ const VerifyingCode = () => {
             onClick={onEdit}
           />
         </RowItems>
-        <Heading type="h3" style={common_style}>
+        <Heading type="h4" style={common_style}>
           {RVDic.Checks.PleaseEnterTheVerificationCode}
         </Heading>
 
@@ -146,6 +147,7 @@ const VerifyingCode = () => {
           onClick={onSignUp}
           type="primary"
           loading={isFetching}
+          disable={verifyCode.filter((x) => x === -1)?.length !== 0}
           style={{
             width: '100%',
             textAlign: 'center',
