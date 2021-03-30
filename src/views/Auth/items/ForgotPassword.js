@@ -204,7 +204,7 @@ const ForgotPassword = () => {
 
           <Button
             onClick={onSendResetLink}
-            type="primary"
+            type="negative"
             loading={isFetching}
             style={{
               width: '100%',
@@ -216,8 +216,7 @@ const ForgotPassword = () => {
           </Button>
 
           <Button
-            type="submit"
-            className="rv-red"
+            type="secondary-o"
             style={{
               width: '100%',
               textAlign: 'center',
@@ -232,6 +231,7 @@ const ForgotPassword = () => {
             style={{
               marginBottom: '1rem',
               marginTop: '2.5rem',
+              width: '100%',
             }}
           />
           <Button

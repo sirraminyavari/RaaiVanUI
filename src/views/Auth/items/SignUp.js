@@ -295,8 +295,10 @@ const SignUp = () => {
                 color: `${LIGHT_BLUE}`,
                 opacity: `${passFocused ? 0 : 1}`,
                 transition: 'opacity 1s',
+                marginTop: '1rem',
+                marginBottom: '2.5rem',
               }}>
-              <p>
+              {/* <p>
                 {'با ثبت ایمیل در کلیک مایند، شما میپذیرید که '}
                 <a
                   href="http://www.cliqmind.com/%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D9%88-%D8%AA%D8%B9%D9%87%D8%AF%D8%A7%D8%AA/"
@@ -305,22 +307,25 @@ const SignUp = () => {
                   {'قوانین کلیک مایند'}
                 </a>
                 {' را خوانده و به آن متعهد هستید '}
-              </p>
-              {/* {decode(RVGlobal.SystemName)} */}
+              </p> */}
+              {decode(RVGlobal.SystemName)}
             </Heading>
           )}
           <Button
             onClick={onSendVerifyCode}
             type="primary"
             loading={isFetching}
+            disable={!email || !password || !name || !family}
             style={{
               width: '100%',
               textAlign: 'center',
               ...common_style,
+              marginBottom: '2.5rem',
+              fontSize: '1rem',
             }}>
             {RVDic.GetConfirmationCode}
           </Button>
-          <ContinueWithGoogle style={common_style} />
+          <ContinueWithGoogle style={{ width: '100%', common_style }} />
           <Button
             type="secondary-o"
             style={{ fontSize: '1rem' }}
@@ -351,4 +356,4 @@ const RowItems = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-const common_style = { marginBottom: '1rem', marginTop: '1rem' };
+const common_style = { marginBottom: '0.5rem', marginTop: '0.5rem' };
