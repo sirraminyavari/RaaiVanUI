@@ -7,21 +7,18 @@ const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
 //! See if any changes happened in nodes.
 const hasChanged = (newVal, oldVal) => {
-  if (newVal.length !== oldVal.length) return { type: 'length', value: true };
-  return { type: 'prop', value: !newVal.every((id) => oldVal.includes(id)) };
+  if (newVal.length !== oldVal.length) return true;
+  return !newVal.every((item) => oldVal.includes(item));
 };
 
-//! Check if should dispatch to store or not, based on changes.
-const shouldDispatch = (state, response) => {
-  const oldNodeIDs = state.nodeTypes.map((node) => node.NodeTypeID);
-  const oldNodeNames = state.nodeTypes.map((node) => node.TypeName);
-  const newNodeIDs = response.NodeTypes.map((node) => node.NodeTypeID);
-  const newNodeNames = response.NodeTypes.map((node) => node.TypeName);
+//! Check if should dispatch to store or not, based on changes that may or may not happened.
+const shouldDispatch = (response, state) => {
+  const prevIDs = state.nodeTypes.map((node) => node.NodeTypeID);
+  const prevNames = state.nodeTypes.map((node) => node.TypeName);
+  const nextIDs = response.NodeTypes.map((node) => node.NodeTypeID);
+  const nextNames = response.NodeTypes.map((node) => node.TypeName);
 
-  if (
-    hasChanged(newNodeIDs, oldNodeIDs).value ||
-    hasChanged(newNodeNames, oldNodeNames).value
-  )
+  if (hasChanged(nextIDs, prevIDs) || hasChanged(nextNames, prevNames))
     return true;
 
   return false;
@@ -29,7 +26,7 @@ const shouldDispatch = (state, response) => {
 
 //! Filter hidden nodes out.
 const filterHiddens = (nodes) => {
-  return nodes
+  let newFiltered = nodes.next
     .filter((node) => !node.Hidden)
     .map((tree) => {
       if (tree.Sub) {
@@ -39,9 +36,60 @@ const filterHiddens = (nodes) => {
       }
       return tree;
     });
+
+  return { next: newFiltered, prev: nodes.prev };
 };
 
+//! Re-organize nodes and filter them down to fresh list.
+const reorganize = (nodes) => {
+  const oldList = Array.from(nodes.prev)
+    //! Filter out brand new nodes.
+    .filter(
+      (old) => !nodes.next.every((fresh) => fresh.NodeTypeID !== old.NodeTypeID)
+    )
+    .map((old) => {
+      //! Subtitute edited node.
+      return nodes.next.find((fresh) => fresh.NodeTypeID === old.NodeTypeID);
+    });
+  const newList = Array.from(nodes.next).filter(
+    (fresh) => !nodes.prev.some((old) => old.NodeTypeID === fresh.NodeTypeID)
+  );
+  return [...oldList, ...newList];
+};
+
+/**
+ * @description A function that provides re-organized nodes for dispatching to redux store.
+ * @param {Array} next -Fresh nodes fetched from server.
+ * @param {Array} prev -Old nodes from redux store.
+ * @returns An action that dispatches fresh nodes to redux store.
+ */
+const nodesToDispatch = (next, prev) => {
+  return setSidebarNodeTypes(
+    pipe(filterHiddens)({
+      next: next.NodeTypes,
+      prev: prev.nodeTypes,
+    }).next
+  );
+};
+
+/**
+ * @description A function that provides re-organized trees for dispatching to redux store.
+ * @param {Array} next -Fresh tree fetched from server.
+ * @param {Array} prev -Old tree from redux store.
+ * @returns An action that dispatches fresh trees to redux store.
+ */
+const treesToDispatch = (next, prev) => {
+  return setSidebarTree(
+    pipe(filterHiddens, reorganize)({ next: next.Tree, prev: prev.tree })
+  );
+};
+
+/**
+ * @description A function (action) that gets sidebar menu item from server.
+ * @returns -Dispatch to redux store.
+ */
 const getSidebarNodes = () => async (dispatch, getState) => {
+  //! Redux store to compair with fresh list.
   const { sidebarItems } = getState();
   try {
     apiHandler.fetch(
@@ -54,13 +102,10 @@ const getSidebarNodes = () => async (dispatch, getState) => {
       },
       (response) => {
         if (response.NodeTypes || response.Tree) {
-          if (shouldDispatch(sidebarItems, response)) {
-            const nodesToDispatch =
-              pipe(filterHiddens)(response.NodeTypes) || [];
-            const treesToDispatch = pipe(filterHiddens)(response.Tree) || [];
-            console.log({ nodesToDispatch, treesToDispatch });
-            dispatch(setSidebarNodeTypes(nodesToDispatch));
-            dispatch(setSidebarTree(treesToDispatch));
+          //! If and only if any change happens in fresh list then it will dispatch to redux store.
+          if (shouldDispatch(response, sidebarItems)) {
+            dispatch(nodesToDispatch(response, sidebarItems));
+            dispatch(treesToDispatch(response, sidebarItems));
           }
         }
       },

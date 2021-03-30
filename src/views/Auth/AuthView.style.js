@@ -1,12 +1,35 @@
 /**
  * component style sfor the login screen.
  */
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Clouds from './clouds.png';
+
+const toRight = keyframes`
+  from {
+    left: 0rem;
+
+  }
+
+  to {
+    left:100%;
+
+  }
+`;
+const fromLeft = keyframes`
+  from {
+    left: -100%;
+
+  }
+
+  to {
+   left:0rem;
+
+  }
+`;
 export const BackgroundImage = styled.div`
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   background-image: url(${Clouds});
   background-position: center;
   background-repeat: no-repeat;
@@ -17,9 +40,9 @@ export const BackgroundImage = styled.div`
 `;
 
 export const Maintainer = styled.div`
-  width: '100%';
+  width: 100%;
   display: flex;
-  scroll-behavior: smooth;
+  padding-left: calc(100vw - 100%);
 `;
 
 export const Container = styled.div`
@@ -36,17 +59,50 @@ export const Box = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  transition: all 1s, max-height 1s, min-height 1s, height 1s;
+  transition: all 1s, max-height 1s, min-height 1s, height 1s, min-width 0.5s;
   position: relative;
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-bottom: 3rem;
   min-height: 50vh;
+  min-width: 100%;
   padding-bottom: 1rem;
 `;
-
+const time = 1;
 export const Center = styled.div`
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
+`;
+export const Wrapper = styled.div`
+  width: 100%;
+  div.transition-group {
+    position: relative;
+  }
+  .fade-enter {
+    opacity: 0;
+    /* background-color: blueviolet; */
+    animation: ${fromLeft} ${time}s;
+    position: absolute;
+  }
+
+  .fade-enter.fade-enter-active {
+    opacity: 1;
+    position: absolute;
+    transition: opacity ${time}s, min-height ${time}s;
+  }
+
+  .fade-exit {
+    opacity: 1;
+    animation: ${toRight} ${time}s;
+    position: absolute;
+  }
+
+  .fade-exit.fade-exit-active {
+    opacity: 0;
+    position: absolute;
+    transition: opacity ${time}s, min-height ${time}s;
+  }
+  section.route-section {
+  }
 `;

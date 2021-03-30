@@ -1,9 +1,9 @@
-import { createRef } from 'react';
+import { useRef } from 'react';
 import useScript from 'hooks/useScript';
 import { isEmpty } from 'helpers/helpers';
 
 const Home = (props) => {
-  const node = createRef();
+  const node = useRef();
 
   useScript(
     'pageLoadScripts/LoadHome/LoadHome.js',

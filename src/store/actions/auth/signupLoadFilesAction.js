@@ -9,11 +9,14 @@ const {
   signupLoadFiles,
   signupLoadFilesSuccess,
   signupLoadFilesFailed,
+  setEmail,
+  setPassword,
 } = loginSlice.actions;
 const { GlobalUtilities, UsersAPI } = window;
 
-const signupLoadFilesAction = () => async (dispatch) => {
+const signupLoadFilesAction = (destination) => async (dispatch) => {
   dispatch(signupLoadFiles());
+
   try {
     GlobalUtilities.load_files(
       ['API/UsersAPI.js', 'API/CNAPI.js', 'USR/ChangePasswordDialog.js'],
@@ -23,8 +26,9 @@ const signupLoadFilesAction = () => async (dispatch) => {
             ParseResults: true,
             ResponseHandler: function (result) {
               dispatch(setLoginRouteAction(SIGN_UP_EMAIL));
-
-              dispatch(signupLoadFilesSuccess(result));
+              dispatch(setEmail(''));
+              dispatch(setPassword(''));
+              dispatch(signupLoadFilesSuccess({ result, destination }));
             },
           });
         },

@@ -218,6 +218,7 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
   margin: 0.5rem 0;
   padding: 0 0.5rem;
   cursor: pointer;
+  color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
@@ -232,6 +233,10 @@ export const MenuTitleWrapper = styled.div`
 
 export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.3rem;
+`;
+
+export const HighlightedTitle = styled.span`
+  margin-${RV_Float}: 0.4rem;
 `;
 
 export const SubMenuContainer = styled.div`
@@ -336,10 +341,10 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 100%;
+  height: 95%;
   overflow-y: scroll;
   position: absolute;
-  top: 0;
+  top: 1rem;
   box-sizing: content-box;
   text-align: center;
 `;

@@ -11,12 +11,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import loginAction from 'store/actions/auth/loginAction';
 import setEmailAction from 'store/actions/auth/setEmailAction';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
+import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
 import OrgDomains from '../elements/OrgDomains';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { RVDic } = window;
 
@@ -32,6 +35,7 @@ const SignIn = () => {
   // When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   const [signUpClicked, setSignUpClicked] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
+  const [forgotPassClicked, setForgotPassClicked] = useState(false);
 
   const {
     email,
@@ -54,21 +58,25 @@ const SignIn = () => {
     lastLoginModal: state.auth.lastLoginModal,
   }));
 
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, []);
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   useEffect(() => {
+    emailRef.current?.focus();
+
     return () => {
       setSignUpClicked(false);
       setSignInClicked(false);
+      setForgotPassClicked(false);
+      dispatch(setLoginRouteAction(null));
     };
   }, []);
   //First checks 'sign up' button is clicked or not, then checks routeHistory.
   //It's necessary to prevent auto navigating when component rerenders.
   useEffect(() => {
-    signUpClicked && routeHistory && push(routeHistory);
-  }, [routeHistory, signUpClicked]);
+    (signUpClicked || forgotPassClicked) &&
+      !fetchingFiles &&
+      routeHistory &&
+      push(routeHistory);
+  }, [signUpClicked, forgotPassClicked, fetchingFiles]);
 
   /**
    * Synchronously sets inputted email to redux state.
@@ -88,6 +96,15 @@ const SignIn = () => {
    * Sends email & password to server by dispatching 'loginAction'
    */
   const onSignIn = () => {
+    // toast('🦄 Wow so easy!', {
+    //   position: 'top-right',
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
     passRef.current?.blur();
     setSignInClicked(true);
     dispatch(loginAction({ email: email, password: password }));
@@ -96,16 +113,19 @@ const SignIn = () => {
    * navigates to resetPassword page.
    */
   const onForgot = () => {
-    dispatch(setEmailAction(''));
-    dispatch(setPasswordAction(''));
-    push('/auth/forgotPassword');
+    dispatch(signupLoadFilesAction('/auth/forgotPassword'));
+    setForgotPassClicked(true);
+    // push('/auth/forgotPassword');
   };
   /**
    * Starts to load sign up necessary files, by dispatching signupLoadFilesAction
    */
   const onCreateAccount = () => {
     setSignUpClicked(true);
-    dispatch(signupLoadFilesAction());
+    dispatch(setEmailAction(''));
+    dispatch(setPasswordAction(''));
+    dispatch(signupLoadFilesAction('/auth/register'));
+    // push('/auth/register');
   };
   /**
    * When the email input is focused, the password input will be focused.
@@ -121,96 +141,100 @@ const SignIn = () => {
   };
 
   return (
-    <Container onSubmit={onSignIn}>
-      <Heading
-        type="h5"
-        style={{
-          textAlign: 'center',
-          ...common_style,
-        }}>
-        {RVDic.Login}
-      </Heading>
-      <AnimatedInput
-        onChange={onEmailChanged}
-        value={email}
-        placeholder={RVDic.EmailAddress}
-        error={emailError}
-        shake={emailError && 300}
-        style={common_style}
-        id={'email'}
-        ref={emailRef}
-        enterListener={onEmailEnter}
-      />
-      <AnimatedInput
-        onChange={onPasswordChanged}
-        value={password}
-        placeholder={RVDic.Password}
-        type={passVisible ? 'text' : 'password'}
-        error={passwordError}
-        shake={passwordError && 300}
-        style={common_style}
-        id={'password'}
-        ref={passRef}
-        enterListener={onPassEnter}
-        children={
-          passVisible ? (
-            <InvisibleIcon
-              className="rv-gray"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setPassVisible(false)}
-            />
-          ) : (
-            <VisibleIcon
-              className="rv-gray"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setPassVisible(true)}
-            />
-          )
-        }
-      />
-      {/* <OrgDomains style={common_style} /> */}
-      <Button
-        type="submit"
-        className="rv-red"
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          fontSize: '1rem',
-          ...common_style,
-          marginTop: '2rem',
-        }}
-        ref={loginRef}
-        onClick={onForgot}>
-        {RVDic.ForgotMyPassword}
-      </Button>
-      <Button
-        onClick={onSignIn}
-        type="primary"
-        loading={isFetching}
-        style={{
-          width: '100%',
-          textAlign: 'center',
-          ...common_style,
-        }}>
-        {RVDic.Login}
-      </Button>
-      <ContinueWithGoogle
-        style={{
-          marginBottom: '1rem',
-          marginTop: '1rem',
-        }}
-      />
-      <Button
-        type="secondary-o"
-        style={{ fontSize: '1rem' }}
-        loading={fetchingFiles}
-        style={{ width: '100%' }}
-        style={common_style}
-        onClick={onCreateAccount}>
-        {RVDic.SignUp}
-      </Button>
-      <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
-    </Container>
+    <Box>
+      <Container onSubmit={onSignIn}>
+        <Heading
+          type="h5"
+          style={{
+            textAlign: 'center',
+            ...common_style,
+            marginBottom: '1.75rem',
+          }}>
+          {RVDic.Login}
+        </Heading>
+        <AnimatedInput
+          onChange={onEmailChanged}
+          value={email}
+          placeholder={RVDic.EmailAddress}
+          error={emailError}
+          shake={emailError && 300}
+          style={common_style}
+          id={'email'}
+          ref={emailRef}
+          enterListener={onEmailEnter}
+        />
+        <AnimatedInput
+          onChange={onPasswordChanged}
+          value={password}
+          placeholder={RVDic.Password}
+          type={passVisible ? 'text' : 'password'}
+          error={passwordError}
+          shake={passwordError && 300}
+          style={common_style}
+          id={'password'}
+          ref={passRef}
+          enterListener={onPassEnter}
+          children={
+            passVisible ? (
+              <InvisibleIcon
+                className="rv-gray"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setPassVisible(false)}
+              />
+            ) : (
+              <VisibleIcon
+                className="rv-gray"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setPassVisible(true)}
+              />
+            )
+          }
+        />
+        {/* <OrgDomains style={common_style} /> */}
+
+        <Button
+          onClick={onSignIn}
+          // disable={!email || !password}
+          type="primary"
+          loading={isFetching}
+          style={{
+            width: '100%',
+            textAlign: 'center',
+            ...common_style,
+            marginTop: '1.75rem',
+          }}>
+          {RVDic.Login}
+        </Button>
+        <Button
+          type="submit"
+          className="rv-red"
+          style={{
+            width: '100%',
+            textAlign: 'center',
+            ...common_style,
+            marginBottom: '1rem',
+          }}
+          loading={forgotPassClicked && fetchingFiles}
+          onClick={onForgot}>
+          {RVDic.ForgotMyPassword}
+        </Button>
+        <ContinueWithGoogle
+          style={{
+            marginBottom: '0.5rem',
+            marginTop: '2rem',
+          }}
+        />
+        <Button
+          type="secondary-o"
+          style={{ fontSize: '1rem' }}
+          loading={signUpClicked && fetchingFiles}
+          style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
+          onClick={onCreateAccount}>
+          {RVDic.SignUp}
+        </Button>
+        <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
+      </Container>
+    </Box>
   );
 };
 export default SignIn;
@@ -222,6 +246,6 @@ const Container = styled.form`
   padding-top: 1rem;
 `;
 const common_style = {
-  marginBottom: '1rem',
-  marginTop: '1rem',
+  marginBottom: '0.75rem',
+  marginTop: '0.75rem',
 };

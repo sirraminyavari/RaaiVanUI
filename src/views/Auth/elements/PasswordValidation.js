@@ -8,7 +8,7 @@ import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
 import { RED } from 'constant/Colors';
 import React from 'react';
 import styled from 'styled-components';
-import PasswordValidator from 'utils/Valiation/PasswordValidator';
+import PasswordValidator from 'utils/Validation/PasswordValidator';
 import { CollapseAnimate } from './Animate.style';
 
 const { RVDic } = window;
@@ -56,18 +56,54 @@ const PasswordValidation = ({ isVisible, password, passwordPolicy }) => {
   return (
     <CollapseAnimate style={{ marginTop: '1rem' }} isVisible={isVisible}>
       <Container>
-        <ValidatorItems
-          text={'حداقل ۸ کارکتر'}
-          validator={PasswordValidator(password, passwordPolicy)?.MinLength}
-        />
-        <ValidatorItems
-          text={RVDic.PasswordPolicyNumber}
-          validator={PasswordValidator(password, passwordPolicy)?.NonAlphabetic}
-        />
-        <ValidatorItems
-          text={RVDic.PasswordPolicyUpperLower}
-          validator={PasswordValidator(password, passwordPolicy)?.UpperLower}
-        />
+        {passwordPolicy.NewCharacters && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyNewCharacters.replace(
+              '[n]',
+              passwordPolicy.NewCharacters
+            )}
+            validator={
+              PasswordValidator(password, passwordPolicy)?.NewCharacters
+            }
+          />
+        )}
+        {passwordPolicy.NonAlphaNumeric && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyNonAlphaNumeric}
+            validator={
+              PasswordValidator(password, passwordPolicy)?.NonAlphaNumeric
+            }
+          />
+        )}
+        {passwordPolicy.Number && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyNumber}
+            validator={PasswordValidator(password, passwordPolicy)?.Number}
+          />
+        )}
+        {passwordPolicy.MinLength && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyMinLength.replace(
+              '[n]',
+              passwordPolicy.MinLength
+            )}
+            validator={PasswordValidator(password, passwordPolicy)?.MinLength}
+          />
+        )}
+        {passwordPolicy.NonAlphabetic && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyNonAlphabetic}
+            validator={
+              PasswordValidator(password, passwordPolicy)?.NonAlphabetic
+            }
+          />
+        )}
+        {passwordPolicy.UpperLower && (
+          <ValidatorItems
+            text={RVDic.PasswordPolicyUpperLower}
+            validator={PasswordValidator(password, passwordPolicy)?.UpperLower}
+          />
+        )}
       </Container>
     </CollapseAnimate>
   );

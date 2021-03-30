@@ -1,22 +1,24 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, memo } from 'react';
+import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
-import withTheme from 'components/withTheme/withTheme';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import AvatarMenuList from './components/AvatarMenu/AvatarMenuList';
+import { createSelector } from 'reselect';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
 import { BG_WARM } from 'constant/Colors';
+
 const NavWideScreenMenu = lazy(() =>
   import(
     /* webpackChunkName: "nav-wide-screen-menu-component"*/ './components/NavWideScreenMenu'
@@ -28,8 +30,14 @@ const NavMobileMenu = lazy(() =>
   )
 );
 
-const Navbar = (props) => {
-  const { isSidebarOpen } = props.theme.states;
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const Navbar = () => {
+  // console.count('navbar');
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -83,4 +91,4 @@ const Navbar = (props) => {
   );
 };
 
-export default withTheme(Navbar);
+export default memo(Navbar);

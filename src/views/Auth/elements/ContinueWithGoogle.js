@@ -14,6 +14,7 @@ import {
   SIGN_UP_PASSWORD,
 } from 'const/LoginRoutes';
 import GoogleLogin from 'react-google-login';
+import Button from 'components/Buttons/Button';
 
 /**
  * It's not completed.
@@ -70,13 +71,15 @@ const ContinueWithGoogle = ({ ...props }) => {
       clientId="823176443658-4ku8pma0s4qfodf8hrq360ood9fds29o.apps.googleusercontent.com"
       buttonText="Continue with Google"
       render={(renderProps) => (
-        <Container
-          {...props}
+        <Button
+          type={'primary-o'}
           onClick={renderProps.onClick}
+          style={{ width: '100%' }}
+          {...props}
           disabled={renderProps.disabled}>
           <Label>Continue with Google</Label>
-          <GoogleIcon style={{ fontSize: '1.4rem' }} />
-        </Container>
+          <GoogleIcon style={{ fontSize: '1rem' }} />
+        </Button>
       )}
       onSuccess={onGoogleSuccess}
       onFailure={onGoogleFailed}
@@ -96,11 +99,11 @@ const Container = styled.div`
   justify-content: center;
   display: flex;
   border: solid ${MAIN_BLUE} 1px;
-  border-radius: 0.8rem;
-  padding: 0.6rem;
+  border-radius: 0.7rem;
+  padding: 0.4rem;
 `;
 const Label = styled.div`
   color: ${MAIN_BLUE};
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-left: 0.8rem;
 `;
