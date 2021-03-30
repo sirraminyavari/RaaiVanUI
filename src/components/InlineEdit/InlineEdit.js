@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import useKeypress from 'hooks/useKeypress';
-import useOnClickOutside from 'hooks/useOnClickOtside';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 import * as Styled from './InlineEdit.styles';
 
 /**
@@ -85,18 +85,21 @@ const InlineEdit = (props) => {
 
   return (
     <span ref={wrapperRef}>
-      <Styled.SpanText
-        ref={textRef}
-        onClick={handleSpanClick}
-        isInputActive={isInputActive}>
-        {text}
-      </Styled.SpanText>
-      <Styled.Input
-        ref={inputRef}
-        value={inputValue}
-        onChange={handleInputChange}
-        isInputActive={isInputActive}
-      />
+      {isInputActive ? (
+        <Styled.Input
+          data-testid="inline-edit-input"
+          ref={inputRef}
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+      ) : (
+        <Styled.SpanText
+          data-testid="inline-edit-span"
+          ref={textRef}
+          onClick={handleSpanClick}>
+          {text}
+        </Styled.SpanText>
+      )}
     </span>
   );
 };
@@ -104,6 +107,10 @@ const InlineEdit = (props) => {
 InlineEdit.propTypes = {
   text: PropTypes.string.isRequired,
   onSetText: PropTypes.func.isRequired,
+};
+
+InlineEdit.defaultProps = {
+  text: 'default text',
 };
 
 InlineEdit.displayName = 'InlineEditComponent';

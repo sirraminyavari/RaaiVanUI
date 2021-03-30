@@ -20,7 +20,7 @@ const setVerifyCodeAction = (params) => (dispatch, getState) => {
   dispatch(setVerifyCode({ new: params }));
   if (!params.find((x) => x === -1)) {
     console.log(params, 'verify code');
-    dispatch(signupAction());
+    // dispatch(signupAction());
   }
 };
 export default setVerifyCodeAction;

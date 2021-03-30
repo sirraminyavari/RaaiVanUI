@@ -49,7 +49,7 @@ export const loginSlice = createSlice({
     Objects: {
       IsInvited: null,
       Captcha: null,
-      InvitationID: GlobalUtilities.request_params().get_value('inv'),
+      InvitationID: GlobalUtilities?.request_params().get_value('inv'),
     },
     Options: {
       UseCaptcha: null,
@@ -57,6 +57,10 @@ export const loginSlice = createSlice({
       ReloadAfterLogin: null,
       ReturnURL: null,
       IgnoreSSO: null,
+    },
+    resetPasswordAddress: {
+      email: null,
+      phone: null,
     },
   },
   reducers: {
@@ -86,7 +90,6 @@ export const loginSlice = createSlice({
       state.routeHistory = 'verificationCode';
       state.verifyCodeToken = action.payload.VerificationCode.Token;
       state.resendVerifyCodeToken = action.payload.VerificationCode.Token;
-      state.currentRoute = VERIFICATION_CODE;
     },
     sendVerifyCodeFailed: (state, action) => {
       state.isFetching = false;
@@ -122,7 +125,6 @@ export const loginSlice = createSlice({
     },
     signupSuccess: (state, action) => {
       state.isFetching = false;
-      state.currentRoute = SIGN_UP_SUCCESS;
       state.password = '';
       state.email = '';
     },
@@ -134,9 +136,38 @@ export const loginSlice = createSlice({
     },
     sendResetPasswordLinkSuccess: (state, action) => {
       state.isFetching = false;
-      state.currentRoute = RESET_PASSWORD_SENT;
     },
     sendResetPasswordLinkFailed: (state, action) => {
+      state.isFetching = false;
+    },
+    sendResetPasswordTicket: (state, action) => {
+      state.isFetching = true;
+    },
+    sendResetPasswordTicketSuccessAddress: (state, action) => {
+      state.isFetching = false;
+      state.routeHistory = action.payload.route;
+      state.resetPasswordAddress = action.payload?.address && {
+        email: 'aligol20@gmail.com',
+        phone: '09185409343',
+      };
+    },
+    sendResetPasswordTicketSuccessVerification: (state, action) => {
+      console.log(action.payload, 'payload payload');
+
+      state.verifyCodeLength =
+        action.payload?.VerificationCode.VerificationCode.Length;
+      state.resendVerifyCodeTimeout =
+        action.payload.VerificationCode.VerificationCode.Timeout;
+      state.resendVerifyCodeTotalTimeout =
+        action.payload.VerificationCode.VerificationCode.TotalTimeout;
+      state.isFetching = false;
+      state.routeHistory = action.payload.route;
+      state.verifyCodeToken =
+        action.payload.VerificationCode.VerificationCode.Token;
+      state.resendVerifyCodeToken =
+        action.payload.VerificationCode.VerificationCode.Token;
+    },
+    sendResetPasswordTicketFailed: (state, action) => {
       state.isFetching = false;
     },
     signupLoadFiles: (state, action) => {
@@ -144,11 +175,20 @@ export const loginSlice = createSlice({
     },
     signupLoadFilesSuccess: (state, action) => {
       state.fetchingFiles = false;
-      state.routeHistory = '/register';
-      state.passwordPolicy = action.payload;
+      state.routeHistory = action.payload.destination;
+      state.passwordPolicy = action.payload.result;
     },
     signupLoadFilesFailed: (state, action) => {
       state.fetchingFiles = false;
+    },
+    resetPassword: (state, action) => {
+      state.isFetching = true;
+    },
+    resetPasswordSuccess: (state, action) => {
+      state.isFetching = false;
+    },
+    resetPasswordFailed: (state, action) => {
+      state.isFetching = false;
     },
     logoutSuccess: (state, action) => {
       state.isAuthenticated = false;
@@ -204,7 +244,7 @@ export const loginSlice = createSlice({
       state.verifyCodeError = action.payload;
     },
     setLoginRoute: (state, action) => {
-      state.currentRoute = action.payload;
+      state.routeHistory = action.payload;
     },
     setPasswordFocus: (state, action) => {
       state.isPasswordFocused = action.payload;
