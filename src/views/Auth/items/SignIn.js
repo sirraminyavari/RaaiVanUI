@@ -19,6 +19,7 @@ import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
 import OrgDomains from '../elements/OrgDomains';
+import { ToastContainer, toast } from 'react-toastify';
 
 const { RVDic } = window;
 
@@ -95,9 +96,18 @@ const SignIn = () => {
    * Sends email & password to server by dispatching 'loginAction'
    */
   const onSignIn = () => {
-    passRef.current?.blur();
-    setSignInClicked(true);
-    dispatch(loginAction({ email: email, password: password }));
+    toast('🦄 Wow so easy!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    //   passRef.current?.blur();
+    //   setSignInClicked(true);
+    //   dispatch(loginAction({ email: email, password: password }));
   };
   /**
    * navigates to resetPassword page.
@@ -184,6 +194,7 @@ const SignIn = () => {
 
         <Button
           onClick={onSignIn}
+          // disable={!email || !password}
           type="primary"
           loading={isFetching}
           style={{
@@ -200,9 +211,8 @@ const SignIn = () => {
           style={{
             width: '100%',
             textAlign: 'center',
-            fontSize: '1rem',
             ...common_style,
-            marginTop: '1.5rem',
+            marginBottom: '1rem',
           }}
           loading={forgotPassClicked && fetchingFiles}
           onClick={onForgot}>
@@ -210,7 +220,7 @@ const SignIn = () => {
         </Button>
         <ContinueWithGoogle
           style={{
-            marginBottom: '1rem',
+            marginBottom: '0.5rem',
             marginTop: '2rem',
           }}
         />
