@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
-import BalloonBlockEditor from 'components/CKEditor-custom/BallonBlock/BalloonBlockEditor';
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
 const TestView = () => {
-  const [data, setData] = useState('<p>Hello from CKEditor 5!</p>');
+  const [date, setDate] = useState(null);
+
+  const handleDateSelect = (date) => {
+    setDate(date);
+  };
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log(date);
+  }, [date]);
 
   return (
-    <>
-      <div style={{ padding: '50px' }}>
-        <h2>Using CKEditor 5 build in React</h2>
-        <BalloonBlockEditor
-          data={data}
-          handleDataChange={setData}
-          removePlugins={['Heading', 'Link', 'FontColor']}
-        />
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: data }}></div>
-    </>
+    <div style={{ padding: '5px', width: '10rem', margin: '100px' }}>
+      <CustomDatePicker
+        type="jalali"
+        mode="input"
+        value={date}
+        range={false}
+        clearButton={true}
+        onDateSelect={handleDateSelect}
+      />
+    </div>
   );
 };
 
