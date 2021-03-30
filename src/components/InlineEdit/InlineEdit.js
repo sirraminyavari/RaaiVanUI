@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import useKeypress from 'hooks/useKeypress';
-import useOnClickOutside from 'hooks/useOnClickOtside';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 import * as Styled from './InlineEdit.styles';
 
 /**
