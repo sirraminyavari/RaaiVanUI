@@ -96,18 +96,18 @@ const SignIn = () => {
    * Sends email & password to server by dispatching 'loginAction'
    */
   const onSignIn = () => {
-    toast('🦄 Wow so easy!', {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    //   passRef.current?.blur();
-    //   setSignInClicked(true);
-    //   dispatch(loginAction({ email: email, password: password }));
+    // toast('🦄 Wow so easy!', {
+    //   position: 'top-right',
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
+    passRef.current?.blur();
+    setSignInClicked(true);
+    dispatch(loginAction({ email: email, password: password }));
   };
   /**
    * navigates to resetPassword page.
