@@ -147,7 +147,9 @@ const VerifyingCode = () => {
           onClick={onSignUp}
           type="primary"
           loading={isFetching}
-          disable={verifyCode.filter((x) => x === -1)?.length !== 0}
+          disable={
+            verifyCode ? verifyCode.filter((x) => x === -1)?.length !== 0 : true
+          }
           style={{
             width: '100%',
             textAlign: 'center',
