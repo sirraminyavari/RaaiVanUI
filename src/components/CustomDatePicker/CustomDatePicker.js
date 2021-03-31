@@ -1,14 +1,15 @@
 /**
  * A custom date picker for all.
  */
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker, { Calendar } from 'react-modern-calendar-datepicker';
+import moment from 'jalali-moment';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
-import { getLanguageDigits } from 'helpers/helpers';
+import { getLanguageDigits, mergeRefs } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
 
 /**
@@ -42,6 +43,7 @@ import styles from './CustomDatePicker.module.css';
  * @property {string | {from: string, to: string}} value - The date picker value.
  * @property {function} onDateSelect - The date picker callback function.
  * @property {boolean} clearButton - The date picker caclear button.
+ * @property {('small' | 'medium' | 'large')} size - The date picker size.
  */
 
 /**
@@ -56,19 +58,76 @@ const CustomDatePicker = (props) => {
     mode,
     range,
     value,
+    size,
     onDateSelect,
     clearButton,
     ...rest
   } = props;
-  const [selectedDay, setSelectedDay] = useState(value);
-  const [buttonText, setButtonText] = useState(label);
+
+  const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
 
-  const handleClear = () => {
-    setSelectedDay('');
-    setButtonText(label);
+  const inputRef = useRef();
+
+  const dateStringToObject = (item) => {
+    let dateString;
+    if (!item) return;
+    if (['jalali', 'lunar'].includes(type)) {
+      dateString = moment(item, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD');
+    } else {
+      dateString = item;
+    }
+    return dateString.split('/').reduce((prev, str, index) => {
+      let keys = ['year', 'month', 'day'];
+      let numeric = parseInt(str);
+      prev[keys[index]] = numeric;
+      return prev;
+    }, {});
   };
 
+  const dateObjectToString = (item) => {
+    if (!item) return;
+    const dateString = `${item.year}/${item.month}/${item.day}`;
+    const serverFormat = moment
+      .from(dateString, 'fa', 'YYYY/MM/DD')
+      .format('YYYY/MM/DD');
+    return serverFormat;
+  };
+
+  const toSingleOrRangeObject = (date, format) => {
+    if (range || Array.isArray(date)) {
+      return {
+        from: format(date[0]),
+        to: format(date[1]),
+      };
+    }
+    return format(date);
+  };
+
+  const toSingleOrRangeString = (date, format) => {
+    console.log(date);
+    if (range || Array.isArray(date)) {
+      return [format(date.from), format(date.to)];
+    }
+    return format(date);
+  };
+
+  useEffect(() => {
+    console.log(toSingleOrRangeObject(value, dateStringToObject), 'hook');
+    setSelectedDate(toSingleOrRangeObject(value, dateStringToObject));
+  }, []);
+
+  const handleClear = () => {
+    if (range) {
+      setSelectedDate({ from: null, to: null });
+    } else {
+      setSelectedDate(null);
+    }
+    onDateSelect(null);
+    // inputRef.current.value = '';
+  };
+
+  //! Renders a clear button for datepicker.
   const ClearButton = () => {
     return (
       <Button
@@ -80,33 +139,49 @@ const CustomDatePicker = (props) => {
     );
   };
 
+  //! toggle calendar in "button" mode.
   const toggleCalendar = () => {
     setIsCalendarShown(!isCalendarShown);
   };
 
+  //! Format date for showing to user.
   const formatDate = (date) => {
-    if (date === null) return;
+    if (!date) return;
     if (date === '') return date;
-    if (['jalali', 'lunar'].includes(type)) {
-      const formatedDate = `${getLanguageDigits(
-        'fa',
-        date.year
-      )}/${getLanguageDigits('fa', date.month)}/${getLanguageDigits(
-        'fa',
-        date.day
-      )}`;
-      return formatedDate;
-    }
+    // if (['jalali', 'lunar'].includes(type)) {
+    //   const formatedDate = `${getLanguageDigits(
+    //     'fa',
+    //     date.year
+    //   )}/${getLanguageDigits('fa', date.month)}/${getLanguageDigits(
+    //     'fa',
+    //     date.day
+    //   )}`;
+    //   return formatedDate;
+    // }
     return `${date.year}/${date.month}/${date.day}`;
   };
 
+  //! Handle change on date selection, Calls whenever date has been selected or reselected.
   const handleChange = (selectedDay) => {
-    console.log(selectedDay);
-    onDateSelect(selectedDay);
-    setButtonText(formatDate(selectedDay));
-    setSelectedDay(selectedDay);
+    // console.log(selectedDay);
+    onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
+    setSelectedDate(selectedDay);
+    // inputRef.current.value = formatDate(selectedDay);
   };
 
+  //! Calls whwnever user fills the input manually.
+  const handleInputChange = (e) => {
+    // console.log(e.target.validity.valid)
+    // if (!e.target.validity.valid) return;
+    console.log(e.target.value);
+    setSelectedDate({
+      year: e.target.value,
+      month: e.target.value,
+      day: e.target.value,
+    });
+  };
+
+  //! Get datepicker locale prop based on "type" passed to this component.
   const getLocale = (type) => {
     switch (type) {
       case '‫‪gregorian‬‬':
@@ -118,19 +193,22 @@ const CustomDatePicker = (props) => {
     }
   };
 
+  //! Switch between "DatePicker" and "Calendar" component based on "mode" prop passed to this component.
   switch (mode) {
     case 'button':
       return (
         <>
-          <Button onClick={toggleCalendar}>{buttonText}</Button>
+          <Button onClick={toggleCalendar}>
+            {formatDate(selectedDate) || label}
+          </Button>
           {isCalendarShown && (
             <OnClickAway onAway={toggleCalendar}>
               <Calendar
                 renderFooter={() => (clearButton ? <ClearButton /> : null)}
                 onChange={handleChange}
-                value={selectedDay}
+                value={selectedDate}
                 shouldHighlightWeekends
-                calendarClassName={styles.Calendar}
+                calendarClassName={styles[`${size}Calendar`]}
                 locale={getLocale(type)}
                 {...rest}
               />
@@ -144,18 +222,19 @@ const CustomDatePicker = (props) => {
         <DatePicker
           renderInput={({ ref }) => (
             <Input
-              // readOnly
-              value={formatDate(selectedDay)}
+              // pattern=""
               placeholder={label}
+              onChange={handleInputChange}
+              value={formatDate(selectedDate)}
               style={{ textAlign: 'center' }}
-              ref={ref}
+              ref={mergeRefs(inputRef, ref)}
             />
           )}
           renderFooter={() => (clearButton ? <ClearButton /> : null)}
           onChange={handleChange}
-          value={selectedDay}
+          value={selectedDate}
           shouldHighlightWeekends
-          calendarClassName={styles.Calendar}
+          calendarClassName={styles[`${size}Calendar`]}
           locale={getLocale(type)}
           {...rest}
         />
@@ -167,6 +246,9 @@ CustomDatePicker.defaultProps = {
   label: 'انتخاب تاریخ',
   range: false,
   clearButton: false,
+  size: 'medium',
 };
+
+CustomDatePicker.displayName = 'CustomDatePicker';
 
 export default CustomDatePicker;
