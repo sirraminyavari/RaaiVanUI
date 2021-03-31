@@ -44,6 +44,7 @@ import styles from './CustomDatePicker.module.css';
  * @property {function} onDateSelect - The date picker callback function.
  * @property {boolean} clearButton - The date picker caclear button.
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
+ * @property {string} format - The date picker format.
  */
 
 /**
@@ -61,6 +62,7 @@ const CustomDatePicker = (props) => {
     size,
     onDateSelect,
     clearButton,
+    format,
     ...rest
   } = props;
 
@@ -69,11 +71,12 @@ const CustomDatePicker = (props) => {
 
   const inputRef = useRef();
 
+  //! Change server value to datepicker friendly object.
   const dateStringToObject = (item) => {
     let dateString;
     if (!item) return;
     if (['jalali', 'lunar'].includes(type)) {
-      dateString = moment(item, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD');
+      dateString = moment(item, 'YYYY/MM/DD').locale('fa').format(format);
     } else {
       dateString = item;
     }
@@ -85,38 +88,46 @@ const CustomDatePicker = (props) => {
     }, {});
   };
 
+  //! Change datepicker object to server friendly string.
   const dateObjectToString = (item) => {
     if (!item) return;
     const dateString = `${item.year}/${item.month}/${item.day}`;
-    const serverFormat = moment
-      .from(dateString, 'fa', 'YYYY/MM/DD')
-      .format('YYYY/MM/DD');
-    return serverFormat;
+    if (type === 'jalali') {
+      const serverFormat = moment
+        .from(dateString, 'fa', 'YYYY/MM/DD')
+        .format(format);
+      return serverFormat;
+    }
+    return dateString;
   };
 
-  const toSingleOrRangeObject = (date, format) => {
+  //! Alter between range or single datepicker based on "range" prop for use in component.
+  const toSingleOrRangeObject = (date, toObject) => {
+    if (!date && range) return { from: null, to: null };
     if (range || Array.isArray(date)) {
       return {
-        from: format(date[0]),
-        to: format(date[1]),
+        from: toObject(date[0]),
+        to: toObject(date[1]),
       };
     }
-    return format(date);
+    return toObject(date);
   };
 
-  const toSingleOrRangeString = (date, format) => {
-    console.log(date);
+  //! Alter between array of strings or a single string based on "range" prop for sending to server.
+  const toSingleOrRangeString = (date, toString) => {
     if (range || Array.isArray(date)) {
-      return [format(date.from), format(date.to)];
+      return [toString(date.from), toString(date.to)];
     }
-    return format(date);
+    return toString(date);
   };
 
+  //! Set date for use in datepicker.
   useEffect(() => {
     console.log(toSingleOrRangeObject(value, dateStringToObject), 'hook');
     setSelectedDate(toSingleOrRangeObject(value, dateStringToObject));
   }, []);
 
+  //! Clear out datepicker values and component selection.
   const handleClear = () => {
     if (range) {
       setSelectedDate({ from: null, to: null });
@@ -146,24 +157,20 @@ const CustomDatePicker = (props) => {
 
   //! Format date for showing to user.
   const formatDate = (date) => {
-    if (!date) return;
-    if (date === '') return date;
-    // if (['jalali', 'lunar'].includes(type)) {
-    //   const formatedDate = `${getLanguageDigits(
-    //     'fa',
-    //     date.year
-    //   )}/${getLanguageDigits('fa', date.month)}/${getLanguageDigits(
-    //     'fa',
-    //     date.day
-    //   )}`;
-    //   return formatedDate;
-    // }
+    if (!date || Object.values(date).includes(null)) return label;
+    if (range) {
+      if (['jalali', 'lunar'].includes(type)) {
+        return `از: ${date.from.year}/${date.from.month}/${date.from.day} تا: ${date.to.year}/${date.to.month}/${date.to.day}`;
+      }
+      return `From: ${date.from.year}/${date.from.month}/${date.from.day}, To: ${date.to.year}/${date.to.month}/${date.to.day}`;
+    }
     return `${date.year}/${date.month}/${date.day}`;
   };
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
   const handleChange = (selectedDay) => {
     // console.log(selectedDay);
+    //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
     // inputRef.current.value = formatDate(selectedDay);
@@ -198,8 +205,8 @@ const CustomDatePicker = (props) => {
     case 'button':
       return (
         <>
-          <Button onClick={toggleCalendar}>
-            {formatDate(selectedDate) || label}
+          <Button style={{ width: '15rem' }} onClick={toggleCalendar}>
+            {formatDate(selectedDate)}
           </Button>
           {isCalendarShown && (
             <OnClickAway onAway={toggleCalendar}>
@@ -209,6 +216,7 @@ const CustomDatePicker = (props) => {
                 value={selectedDate}
                 shouldHighlightWeekends
                 calendarClassName={styles[`${size}Calendar`]}
+                calendarTodayClassName={styles.todayDate}
                 locale={getLocale(type)}
                 {...rest}
               />
@@ -222,11 +230,11 @@ const CustomDatePicker = (props) => {
         <DatePicker
           renderInput={({ ref }) => (
             <Input
-              // pattern=""
+              readOnly
               placeholder={label}
               onChange={handleInputChange}
               value={formatDate(selectedDate)}
-              style={{ textAlign: 'center' }}
+              style={{ textAlign: 'center', minWidth: '15rem' }}
               ref={mergeRefs(inputRef, ref)}
             />
           )}
@@ -235,6 +243,7 @@ const CustomDatePicker = (props) => {
           value={selectedDate}
           shouldHighlightWeekends
           calendarClassName={styles[`${size}Calendar`]}
+          calendarTodayClassName={styles.todayDate}
           locale={getLocale(type)}
           {...rest}
         />
@@ -247,6 +256,7 @@ CustomDatePicker.defaultProps = {
   range: false,
   clearButton: false,
   size: 'medium',
+  format: 'YYYY/MM/DD',
 };
 
 CustomDatePicker.displayName = 'CustomDatePicker';

@@ -9,3 +9,7 @@
 .largeCalendar {
   font-size: 0.65rem !important;
 }
+
+.todayDate {
+  border: 0.15rem solid #e27312 !important;
+}

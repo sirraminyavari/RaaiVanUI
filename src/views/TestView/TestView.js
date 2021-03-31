@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
 const TestView = () => {
-  const [date, setDate] = useState('2021/05/15');
+  const [date, setDate] = useState(null);
 
   const handleDateSelect = (date) => {
     setDate(date);
@@ -16,8 +16,9 @@ const TestView = () => {
     <div style={{ padding: '5px', width: '10rem', margin: '100px' }}>
       <CustomDatePicker
         type="jalali"
-        mode="button"
+        mode="input"
         value={date}
+        range={true}
         clearButton={true}
         size="medium"
         onDateSelect={handleDateSelect}
