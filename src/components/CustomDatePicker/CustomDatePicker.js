@@ -11,6 +11,7 @@ import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
 import { getLanguageDigits, mergeRefs } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
+import NumberFormat from 'react-number-format';
 
 /**
  * @typedef DateType
@@ -227,29 +228,79 @@ const CustomDatePicker = (props) => {
 
     default:
       return (
-        <DatePicker
-          renderInput={({ ref }) => (
-            <Input
-              readOnly
-              placeholder={label}
-              onChange={handleInputChange}
-              value={formatDate(selectedDate)}
-              style={{ textAlign: 'center', minWidth: '15rem' }}
-              ref={mergeRefs(inputRef, ref)}
-            />
-          )}
-          renderFooter={() => (clearButton ? <ClearButton /> : null)}
-          onChange={handleChange}
-          value={selectedDate}
-          shouldHighlightWeekends
-          calendarClassName={styles[`${size}Calendar`]}
-          calendarTodayClassName={styles.todayDate}
-          locale={getLocale(type)}
-          {...rest}
-        />
+        <>
+          <DatePicker
+            renderInput={({ ref }) => (
+              // <Input
+              //   readOnly
+              //   placeholder={label}
+              //   onChange={handleInputChange}
+              //   value={formatDate(selectedDate)}
+              //   style={{ textAlign: 'center', minWidth: '15rem' }}
+              //   ref={mergeRefs(inputRef, ref)}
+              // />
+              <NumberFormat
+                placeholder={label}
+                value={formatDate(selectedDate)}
+                customInput={Input}
+                format={CustomFormat}
+                style={{ textAlign: 'center', minWidth: '17rem' }}
+                ref={ref}
+              />
+            )}
+            renderFooter={() => (clearButton ? <ClearButton /> : null)}
+            onChange={handleChange}
+            value={selectedDate}
+            shouldHighlightWeekends
+            calendarClassName={styles[`${size}Calendar`]}
+            calendarTodayClassName={styles.todayDate}
+            locale={getLocale(type)}
+            {...rest}
+          />
+        </>
       );
   }
 };
+
+function limit(val, max) {
+  if (val.length === 1 && val[0] > max[0]) {
+    val = '0' + val;
+  }
+
+  if (val.length === 2) {
+    if (Number(val) === 0) {
+      val = '01';
+
+      //this can happen when user paste number
+    } else if (val > max) {
+      val = max;
+    }
+  }
+
+  return val;
+}
+
+function CustomFormat(val) {
+  console.log(val);
+  let fromYear = val.substring(0, 4);
+  let fromMonth = limit(val.substring(4, 6), '12');
+  let fromDay = limit(val.substring(6, 8), '30');
+
+  let toYear = val.substring(8, 12);
+  let toMonth = limit(val.substring(12, 14), '12');
+  let toDay = limit(val.substring(14, 16), '30');
+
+  return (
+    'از تاریخ: ' +
+    fromYear +
+    (fromMonth.length ? '/' + fromMonth : '') +
+    (fromDay.length ? '/' + fromDay : '') +
+    '  تا تاریخ: ' +
+    (toYear.length ? toYear : '') +
+    (toMonth.length ? '/' + toMonth : '') +
+    (toDay.length ? '/' + toDay : '')
+  );
+}
 
 CustomDatePicker.defaultProps = {
   label: 'انتخاب تاریخ',
