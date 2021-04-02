@@ -9,7 +9,7 @@ import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
-import { mergeRefs } from 'helpers/helpers';
+import { mergeRefs, getLanguageDigits } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
 
 /**
@@ -134,6 +134,9 @@ const CustomDatePicker = (props) => {
       setSelectedDate(null);
     }
     onDateSelect(null);
+    if (mode === 'input') {
+      inputRef.current.value = '';
+    }
   };
 
   //! Renders a clear button for datepicker.
@@ -153,10 +156,11 @@ const CustomDatePicker = (props) => {
     setIsCalendarShown(!isCalendarShown);
   };
 
-  //! Format date for showing to user.
+  //? when user picks date from datepicker
+  //! Formats date for showing to user.
   const formatDate = (date) => {
     if (!date || Object.values(date).some((param) => param === null))
-      return label;
+      return mode === 'button' ? label : '';
     if (range) {
       let from = `${date.from.year}/${date.from.month}/${date.from.day}`;
       let to = `${date.to.year}/${date.to.month}/${date.to.day}`;
@@ -165,7 +169,7 @@ const CustomDatePicker = (props) => {
       }
       return `From: ${from}, To: ${to}`;
     }
-    return `${date.year}/${date.month}/${date.day}`;
+    return `تاریخ: ${date.year}/${date.month}/${date.day}`;
   };
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
@@ -174,35 +178,68 @@ const CustomDatePicker = (props) => {
     //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
+    if (mode === 'input') {
+      inputRef.current.value = formatDate(selectedDay);
+    }
   };
 
   //! Calls whwnever user fills the input manually.
   const handleInputChange = (e) => {
     let val = e.target.value;
+    const value = (val.match(/\d/g) || ['']).join('');
     let date;
     let maxYear = type === 'jalali' ? '1450' : '2070';
 
     let from = {
-      year: Number(limit(val.substring(0, 4), maxYear, type)),
-      month: Number(limit(val.substring(4, 6), '12')),
-      day: Number(limit(val.substring(6, 8), '30')),
+      year: Number(limit(value.substring(0, 4), maxYear, type)),
+      month: Number(limit(value.substring(4, 6), '12')),
+      day: Number(limit(value.substring(6, 8), '30')),
     };
 
     let to = {
-      year: Number(limit(val.substring(8, 12), maxYear, type)),
-      month: Number(limit(val.substring(12, 14), '12')),
-      day: Number(limit(val.substring(14, 16), '30')),
+      year: Number(limit(value.substring(8, 12), maxYear, type)),
+      month: Number(limit(value.substring(12, 14), '12')),
+      day: Number(limit(value.substring(14, 16), '30')),
     };
 
+    //! Provide proper format to the datepicker based on "range" prop.
     if (range) {
       date = { from, to };
     } else {
       date = from;
     }
-    // inputRef.current.value = value;
-    if (val.length === (range ? 16 : 8)) {
-      console.log(date);
-      setSelectedDate(date);
+
+    console.log(date);
+
+    //! Updates datepicker and state values whenever input has got the right value.
+    if (range) {
+      if (value.length === 16) {
+        //! Updates datepicker state
+        setSelectedDate(date);
+        //! Updates to server data
+        onDateSelect(toSingleOrRangeString(date, dateObjectToString));
+      } else {
+        setSelectedDate('');
+        onDateSelect(null);
+      }
+    } else {
+      if (value.length === 8) {
+        //! Updates datepicker state
+        setSelectedDate(date);
+        //! Updates to server data
+        onDateSelect(toSingleOrRangeString(date, dateObjectToString));
+      } else {
+        setSelectedDate('');
+        onDateSelect(null);
+      }
+    }
+
+    //! Updates input value on every single input change.
+    inputRef.current.value = customFormat(value, type, range);
+
+    //! Clear datepicker and state values if input has been empty by user.
+    if (value.length === 0) {
+      handleClear();
     }
   };
 
@@ -250,9 +287,8 @@ const CustomDatePicker = (props) => {
             renderInput={({ ref }) => (
               <Input
                 placeholder={label}
-                maxLength={range ? '16' : '8'}
+                maxLength={range ? '42' : '17'}
                 onChange={handleInputChange}
-                // value={formatDate(selectedDate)}
                 style={{ textAlign: 'center', minWidth: '17rem' }}
                 ref={mergeRefs(inputRef, ref)}
               />
@@ -271,6 +307,8 @@ const CustomDatePicker = (props) => {
   }
 };
 
+//! Checks year, month and day values to insure that user
+//! do not exceed from logic.
 function limit(val, max, type) {
   if (val.length === 1 && val[0] > max[0]) {
     val = '0' + val;
@@ -308,24 +346,45 @@ function limit(val, max, type) {
   return val;
 }
 
-function CustomFormat(val, type) {
-  let fromYear = limit(val.substring(0, 4), '1450', '1350', { type });
+//? when user types date to input field.
+//! Adds some custom mask to input value.
+function customFormat(val, type, range) {
+  let fromYear = limit(val.substring(0, 4), '1450', type);
   let fromMonth = limit(val.substring(4, 6), '12');
   let fromDay = limit(val.substring(6, 8), '30');
 
-  let toYear = limit(val.substring(8, 12), '1450', '1350', { type });
+  let toYear = limit(val.substring(8, 12), '1450', type);
   let toMonth = limit(val.substring(12, 14), '12');
   let toDay = limit(val.substring(14, 16), '30');
 
+  //! See if "range" is true or false and
+  //! format the input value based on its value
+  if (range) {
+    if (val.length > 8) {
+      return (
+        'از تاریخ: ' +
+        fromYear +
+        (fromMonth.length ? '/' + fromMonth : '') +
+        (fromDay.length ? '/' + fromDay : '') +
+        '  تا تاریخ: ' +
+        (toYear.length ? toYear : '') +
+        (toMonth.length ? '/' + toMonth : '') +
+        (toDay.length ? '/' + toDay : '')
+      );
+    } else {
+      return (
+        'از تاریخ: ' +
+        fromYear +
+        (fromMonth.length ? '/' + fromMonth : '') +
+        (fromDay.length ? '/' + fromDay : '')
+      );
+    }
+  }
   return (
-    'از تاریخ: ' +
+    'تاریخ: ' +
     fromYear +
     (fromMonth.length ? '/' + fromMonth : '') +
-    (fromDay.length ? '/' + fromDay : '') +
-    '  تا تاریخ: ' +
-    (toYear.length ? toYear : '') +
-    (toMonth.length ? '/' + toMonth : '') +
-    (toDay.length ? '/' + toDay : '')
+    (fromDay.length ? '/' + fromDay : '')
   );
 }
 
