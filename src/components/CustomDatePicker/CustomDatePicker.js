@@ -9,9 +9,8 @@ import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
-import { getLanguageDigits, mergeRefs } from 'helpers/helpers';
+import { mergeRefs } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
-import NumberFormat from 'react-number-format';
 
 /**
  * @typedef DateType
@@ -107,8 +106,8 @@ const CustomDatePicker = (props) => {
     if (!date && range) return { from: null, to: null };
     if (range || Array.isArray(date)) {
       return {
-        from: toObject(date[0]),
-        to: toObject(date[1]),
+        from: toObject(date.from),
+        to: toObject(date.to),
       };
     }
     return toObject(date);
@@ -117,14 +116,13 @@ const CustomDatePicker = (props) => {
   //! Alter between array of strings or a single string based on "range" prop for sending to server.
   const toSingleOrRangeString = (date, toString) => {
     if (range || Array.isArray(date)) {
-      return [toString(date.from), toString(date.to)];
+      return { from: toString(date.from), to: toString(date.to) };
     }
     return toString(date);
   };
 
   //! Set date for use in datepicker.
   useEffect(() => {
-    console.log(toSingleOrRangeObject(value, dateStringToObject), 'hook');
     setSelectedDate(toSingleOrRangeObject(value, dateStringToObject));
   }, []);
 
@@ -136,7 +134,6 @@ const CustomDatePicker = (props) => {
       setSelectedDate(null);
     }
     onDateSelect(null);
-    // inputRef.current.value = '';
   };
 
   //! Renders a clear button for datepicker.
@@ -158,12 +155,15 @@ const CustomDatePicker = (props) => {
 
   //! Format date for showing to user.
   const formatDate = (date) => {
-    if (!date || Object.values(date).includes(null)) return label;
+    if (!date || Object.values(date).some((param) => param === null))
+      return label;
     if (range) {
+      let from = `${date.from.year}/${date.from.month}/${date.from.day}`;
+      let to = `${date.to.year}/${date.to.month}/${date.to.day}`;
       if (['jalali', 'lunar'].includes(type)) {
-        return `از: ${date.from.year}/${date.from.month}/${date.from.day} تا: ${date.to.year}/${date.to.month}/${date.to.day}`;
+        return `از تاریخ: ${from} تا تاریخ: ${to}`;
       }
-      return `From: ${date.from.year}/${date.from.month}/${date.from.day}, To: ${date.to.year}/${date.to.month}/${date.to.day}`;
+      return `From: ${from}, To: ${to}`;
     }
     return `${date.year}/${date.month}/${date.day}`;
   };
@@ -174,19 +174,36 @@ const CustomDatePicker = (props) => {
     //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
-    // inputRef.current.value = formatDate(selectedDay);
   };
 
   //! Calls whwnever user fills the input manually.
   const handleInputChange = (e) => {
-    // console.log(e.target.validity.valid)
-    // if (!e.target.validity.valid) return;
-    console.log(e.target.value);
-    setSelectedDate({
-      year: e.target.value,
-      month: e.target.value,
-      day: e.target.value,
-    });
+    let val = e.target.value;
+    let date;
+    let maxYear = type === 'jalali' ? '1450' : '2070';
+
+    let from = {
+      year: Number(limit(val.substring(0, 4), maxYear, type)),
+      month: Number(limit(val.substring(4, 6), '12')),
+      day: Number(limit(val.substring(6, 8), '30')),
+    };
+
+    let to = {
+      year: Number(limit(val.substring(8, 12), maxYear, type)),
+      month: Number(limit(val.substring(12, 14), '12')),
+      day: Number(limit(val.substring(14, 16), '30')),
+    };
+
+    if (range) {
+      date = { from, to };
+    } else {
+      date = from;
+    }
+    // inputRef.current.value = value;
+    if (val.length === (range ? 16 : 8)) {
+      console.log(date);
+      setSelectedDate(date);
+    }
   };
 
   //! Get datepicker locale prop based on "type" passed to this component.
@@ -206,7 +223,7 @@ const CustomDatePicker = (props) => {
     case 'button':
       return (
         <>
-          <Button style={{ width: '15rem' }} onClick={toggleCalendar}>
+          <Button style={{ minWidth: '16rem' }} onClick={toggleCalendar}>
             {formatDate(selectedDate)}
           </Button>
           {isCalendarShown && (
@@ -231,21 +248,13 @@ const CustomDatePicker = (props) => {
         <>
           <DatePicker
             renderInput={({ ref }) => (
-              // <Input
-              //   readOnly
-              //   placeholder={label}
-              //   onChange={handleInputChange}
-              //   value={formatDate(selectedDate)}
-              //   style={{ textAlign: 'center', minWidth: '15rem' }}
-              //   ref={mergeRefs(inputRef, ref)}
-              // />
-              <NumberFormat
+              <Input
                 placeholder={label}
-                value={formatDate(selectedDate)}
-                customInput={Input}
-                format={CustomFormat}
+                maxLength={range ? '16' : '8'}
+                onChange={handleInputChange}
+                // value={formatDate(selectedDate)}
                 style={{ textAlign: 'center', minWidth: '17rem' }}
-                ref={ref}
+                ref={mergeRefs(inputRef, ref)}
               />
             )}
             renderFooter={() => (clearButton ? <ClearButton /> : null)}
@@ -262,7 +271,7 @@ const CustomDatePicker = (props) => {
   }
 };
 
-function limit(val, max) {
+function limit(val, max, type) {
   if (val.length === 1 && val[0] > max[0]) {
     val = '0' + val;
   }
@@ -277,16 +286,34 @@ function limit(val, max) {
     }
   }
 
+  if (val.length === 4) {
+    if (type === 'jalali') {
+      if (Number(val) < 1350) {
+        val = '1350';
+      }
+      if (Number(val) > 1450) {
+        val = '1450';
+      }
+    }
+    if (type === '‫‪gregorian‬‬') {
+      if (Number(val) < 1970) {
+        val = '1970';
+      }
+      if (Number(val) > 2070) {
+        val = '2070';
+      }
+    }
+  }
+
   return val;
 }
 
-function CustomFormat(val) {
-  console.log(val);
-  let fromYear = val.substring(0, 4);
+function CustomFormat(val, type) {
+  let fromYear = limit(val.substring(0, 4), '1450', '1350', { type });
   let fromMonth = limit(val.substring(4, 6), '12');
   let fromDay = limit(val.substring(6, 8), '30');
 
-  let toYear = val.substring(8, 12);
+  let toYear = limit(val.substring(8, 12), '1450', '1350', { type });
   let toMonth = limit(val.substring(12, 14), '12');
   let toDay = limit(val.substring(14, 16), '30');
 
