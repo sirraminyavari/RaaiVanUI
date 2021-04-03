@@ -1,25 +1,81 @@
-import { useState, useEffect } from 'react';
-import BalloonBlockEditor from 'components/CKEditor-custom/BallonBlock/BalloonBlockEditor';
+import { useMemo } from 'react';
+import styled from 'styled-components';
+import CustomTable from 'components/CustomTable/CustomTable';
+import makeData from './makeData';
+
+const Styles = styled.div`
+  padding: 1rem;
+
+  table {
+    direction: ltr;
+    border-spacing: 0;
+    border: 1px solid black;
+
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+      text-align: center;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
+`;
 
 const TestView = () => {
-  const [data, setData] = useState('<p>Hello from CKEditor 5!</p>');
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Info',
+        columns: [
+          {
+            Header: 'First Name',
+            accessor: 'firstName',
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName',
+          },
+          {
+            Header: 'Age',
+            accessor: 'age',
+          },
+          {
+            Header: 'Visits',
+            accessor: 'visits',
+          },
+          {
+            Header: 'Status',
+            accessor: 'status',
+          },
+          {
+            Header: 'Profile Progress',
+            accessor: 'progress',
+          },
+        ],
+      },
+    ],
+    []
+  );
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const data = useMemo(() => makeData(10), []);
 
   return (
-    <>
-      <div style={{ padding: '50px' }}>
-        <h2>Using CKEditor 5 build in React</h2>
-        <BalloonBlockEditor
-          data={data}
-          handleDataChange={setData}
-          removePlugins={['Heading', 'Link', 'FontColor']}
-        />
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: data }}></div>
-    </>
+    <Styles>
+      <CustomTable columns={columns} data={data} />
+    </Styles>
   );
 };
 
