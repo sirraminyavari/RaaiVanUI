@@ -54,7 +54,7 @@ import styles from './CustomDatePicker.module.css';
  */
 const CustomDatePicker = (props) => {
   const {
-    label,
+    label = props.type === 'jalali' ? 'انتخاب تاریخ ...' : 'Pick a date ...',
     type,
     mode,
     range,
@@ -161,15 +161,27 @@ const CustomDatePicker = (props) => {
   const formatDate = (date) => {
     if (!date || Object.values(date).some((param) => param === null))
       return mode === 'button' ? label : '';
+    let formLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
+    let toLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
+    let atLabel = type === 'jalali' ? 'تاریخ: ' : 'Date: ';
     if (range) {
-      let from = `${date.from.year}/${date.from.month}/${date.from.day}`;
-      let to = `${date.to.year}/${date.to.month}/${date.to.day}`;
-      if (['jalali', 'lunar'].includes(type)) {
-        return `از تاریخ: ${from} تا تاریخ: ${to}`;
-      }
-      return `From: ${from}, To: ${to}`;
+      let fromDate = `${date.from.year}/${checkDigit(
+        date.from.month
+      )}/${checkDigit(date.from.day)}`;
+      let toDate = `${date.to.year}/${checkDigit(date.to.month)}/${checkDigit(
+        date.to.day
+      )}`;
+
+      return formLabel + fromDate + toLabel + toDate;
+    } else {
+      return `${atLabel} ${date.year}/${checkDigit(date.month)}/${checkDigit(
+        date.day
+      )}`;
     }
-    return `تاریخ: ${date.year}/${date.month}/${date.day}`;
+
+    function checkDigit(digit) {
+      return digit < 10 ? `0${digit}` : digit;
+    }
   };
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
@@ -187,6 +199,8 @@ const CustomDatePicker = (props) => {
   const handleInputChange = (e) => {
     let val = e.target.value;
     const value = (val.match(/\d/g) || ['']).join('');
+    // const test = (val.match(/[\u06F0-\u06F90-9]+/g) || ['']).join('');
+    // console.log(test, 'test');
     let date;
     let maxYear = type === 'jalali' ? '1450' : '2070';
 
@@ -349,11 +363,16 @@ function limit(val, max, type) {
 //? when user types date to input field.
 //! Adds some custom mask to input value.
 function customFormat(val, type, range) {
-  let fromYear = limit(val.substring(0, 4), '1450', type);
+  let maxYear = type === 'jalali' ? '1450' : '2070';
+  let formDateLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
+  let toDateLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
+  let atDateLabel = type === 'jalali' ? 'تاریخ: ' : 'Date: ';
+
+  let fromYear = limit(val.substring(0, 4), maxYear, type);
   let fromMonth = limit(val.substring(4, 6), '12');
   let fromDay = limit(val.substring(6, 8), '30');
 
-  let toYear = limit(val.substring(8, 12), '1450', type);
+  let toYear = limit(val.substring(8, 12), maxYear, type);
   let toMonth = limit(val.substring(12, 14), '12');
   let toDay = limit(val.substring(14, 16), '30');
 
@@ -362,18 +381,18 @@ function customFormat(val, type, range) {
   if (range) {
     if (val.length > 8) {
       return (
-        'از تاریخ: ' +
+        formDateLabel +
         fromYear +
         (fromMonth.length ? '/' + fromMonth : '') +
         (fromDay.length ? '/' + fromDay : '') +
-        '  تا تاریخ: ' +
+        toDateLabel +
         (toYear.length ? toYear : '') +
         (toMonth.length ? '/' + toMonth : '') +
         (toDay.length ? '/' + toDay : '')
       );
     } else {
       return (
-        'از تاریخ: ' +
+        formDateLabel +
         fromYear +
         (fromMonth.length ? '/' + fromMonth : '') +
         (fromDay.length ? '/' + fromDay : '')
@@ -381,7 +400,7 @@ function customFormat(val, type, range) {
     }
   }
   return (
-    'تاریخ: ' +
+    atDateLabel +
     fromYear +
     (fromMonth.length ? '/' + fromMonth : '') +
     (fromDay.length ? '/' + fromDay : '')
@@ -389,7 +408,6 @@ function customFormat(val, type, range) {
 }
 
 CustomDatePicker.defaultProps = {
-  label: 'انتخاب تاریخ',
   range: false,
   clearButton: false,
   size: 'medium',
