@@ -170,8 +170,9 @@ const AutoSuggestInput = (props) => {
               />
             </Input>
           </Styled.InputElementWrapper>
-          {children &&
-            cloneElement(children, {
+          {isModalShown &&
+            children &&
+            children({
               show: isModalShown,
               onClose: toggleModal,
             })}

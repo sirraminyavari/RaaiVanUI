@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, lazy } from 'react';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import APIHandler from 'apiHelper/APIHandler';
 import { decode } from 'js-base64';
-import Modal from 'components/Modal/Modal';
+
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
+);
 
 const defaultValues = [
   { id: 1, value: 'پیشفرض اول' },
@@ -17,7 +20,7 @@ const defaultValues = [
 
 const TestView = () => {
   //! If true, Shows a modal to user for more advanced options to choose from.
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(false);
   const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
   const fetchItems = (search) => {
@@ -41,24 +44,6 @@ const TestView = () => {
       } catch (err) {
         reject(err);
       }
-
-      // try {
-      //   fetch(`http://localhost:3004/names?q=${search}`)
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       resolve(
-      //         data.map((node) => ({
-      //           id: node.id,
-      //           value: node.name,
-      //         }))
-      //       );
-      //     })
-      //     .catch((err) => {
-      //       reject(err);
-      //     });
-      // } catch (error) {
-      //   reject(error);
-      // }
     });
   };
 
@@ -69,7 +54,11 @@ const TestView = () => {
         onItemSelect={(item) => setSelected(item)}
         // defaultItems={defaultValues}
       >
-        <Modal>hello modal</Modal>
+        {({ show, onClose }) => (
+          <Modal show={show} onClose={onClose}>
+            hello modal
+          </Modal>
+        )}
       </AutoSuggestInput>
       <h3>{selected?.value}</h3>
     </div>
