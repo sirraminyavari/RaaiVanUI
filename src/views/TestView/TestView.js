@@ -1,81 +1,34 @@
-import { useMemo } from 'react';
-import styled from 'styled-components';
+import { useMemo, useState } from 'react';
 import CustomTable from 'components/CustomTable/CustomTable';
-import makeData from './makeData';
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    direction: ltr;
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      text-align: center;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;
+import tableData from './tableData';
+import tableCulomns from './tableCulomns';
 
 const TestView = () => {
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Info',
-        columns: [
-          {
-            Header: 'First Name',
-            accessor: 'firstName',
-          },
-          {
-            Header: 'Last Name',
-            accessor: 'lastName',
-          },
-          {
-            Header: 'Age',
-            accessor: 'age',
-          },
-          {
-            Header: 'Visits',
-            accessor: 'visits',
-          },
-          {
-            Header: 'Status',
-            accessor: 'status',
-          },
-          {
-            Header: 'Profile Progress',
-            accessor: 'progress',
-          },
-        ],
-      },
-    ],
-    []
-  );
+  const [data, setData] = useState(() => tableData);
+  const columns = useMemo(() => tableCulomns, []);
 
-  const data = useMemo(() => makeData(10), []);
+  const updateCellData = (rowIndex, columnId, value) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...row,
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
 
   return (
-    <Styles>
-      <CustomTable columns={columns} data={data} />
-    </Styles>
+    <div>
+      <CustomTable
+        columns={columns}
+        data={data}
+        updateCellData={updateCellData}
+      />
+    </div>
   );
 };
 
