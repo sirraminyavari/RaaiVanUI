@@ -31,13 +31,18 @@ const EditableCell = ({
   }
 
   return (
-    <Input
-      style={{ textAlign: 'center', width: 'auto' }}
-      className="SoftBackgroundColor"
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-    />
+    <div>
+      <Input
+        style={{
+          textAlign: 'center',
+          width: '100%',
+          backgroundColor: 'inherit',
+        }}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+    </div>
   );
 };
 

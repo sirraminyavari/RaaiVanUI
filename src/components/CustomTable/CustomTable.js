@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
-import { useTable } from 'react-table';
+import { useTable, useBlockLayout, useResizeColumns } from 'react-table';
 import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
+import Button from 'components/Buttons/Button';
 
 const CustomTable = ({ columns, data, updateCellData }) => {
   const defaultColumn = useMemo(
     () => ({
+      minWidth: 100,
+      width: 150,
+      maxWidth: 500,
       // And also our default editable cell
       Cell: EditableCell,
     }),
@@ -19,46 +23,64 @@ const CustomTable = ({ columns, data, updateCellData }) => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-    defaultColumn,
-    updateCellData,
-  });
+    resetResizing,
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn,
+      updateCellData,
+    },
+    useBlockLayout,
+    useResizeColumns
+  );
 
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
-      <table {...getTableProps()}>
-        <thead>
+      <Button
+        style={{ display: 'inline-block' }}
+        disable={false}
+        onClick={resetResizing}>
+        Reset Resizing
+      </Button>
+      <div {...getTableProps()} className="table">
+        <div>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <div {...column.getHeaderProps()} className="th">
+                  {column.render('Header')}
+                  <div
+                    {...column.getResizerProps()}
+                    className={`resizer ${
+                      column.isResizing ? 'isResizing' : ''
+                    }`}
+                  />
+                </div>
               ))}
-            </tr>
+            </div>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </div>
+        <div {...getTableBodyProps()}>
           {rows.map((row, i) => {
             prepareRow(row);
             return (
-              <tr
-                {...row.getRowProps({
-                  className: i % 2 === 0 ? 'SoftBackgroundColor' : '',
-                })}>
+              <div
+                {...row.getRowProps({})}
+                className={`${i % 2 === 0 ? 'SoftBackgroundColor' : ''} tr`}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>
+                    <div {...cell.getCellProps()} className="td">
                       {cell.render('Cell', { editable: true })}
-                    </td>
+                    </div>
                   );
                 })}
-              </tr>
+              </div>
             );
           })}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </Styled.TableContainer>
   );
 };
