@@ -3,6 +3,7 @@ import { useTable, useBlockLayout, useResizeColumns } from 'react-table';
 import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
+import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 
 const defaultPropGetter = () => ({});
 
@@ -37,6 +38,7 @@ const CustomTable = ({
     rows,
     prepareRow,
     resetResizing,
+    state,
   } = useTable(
     {
       columns,
@@ -47,8 +49,30 @@ const CustomTable = ({
       setSelectedCell,
     },
     useBlockLayout,
-    useResizeColumns
+    useResizeColumns,
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        //! Make a column for deletion
+        {
+          id: 'deletion',
+          Header: () => <div>اقدامات</div>,
+          Cell: ({ row }) => (
+            <div className="middle">
+              <DeleteRowIcon
+                style={{ cursor: 'pointer' }}
+                onClick={() => console.log(row)}
+                size={25}
+              />
+            </div>
+          ),
+          width: 60,
+        },
+        ...columns,
+      ]);
+    }
   );
+
+  console.log(state);
 
   //! Render the UI for your table
   return (
