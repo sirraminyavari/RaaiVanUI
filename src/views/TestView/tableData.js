@@ -1,7 +1,7 @@
 const fakeData = [
   {
-    firstName: 'نفر اول',
-    lastName: 'نفر اول',
+    firstName: 'نام اول',
+    lastName: 'نام خانوادگی اول',
     country: 'ایران',
     city: 'طهران',
     age: 33,
@@ -9,8 +9,8 @@ const fakeData = [
     progress: '67 %',
   },
   {
-    firstName: 'نفر دوم',
-    lastName: 'نفر دوم',
+    firstName: 'نام دوم',
+    lastName: 'نام خانوادگی دوم',
     country: 'ایران',
     city: 'طهران',
     age: 27,
@@ -18,8 +18,8 @@ const fakeData = [
     progress: '90 %',
   },
   {
-    firstName: 'نفر سوم',
-    lastName: 'نفر سوم',
+    firstName: 'نام سوم',
+    lastName: 'نام خانوادگی سوم',
     country: 'ایران',
     city: 'طهران',
     age: 50,

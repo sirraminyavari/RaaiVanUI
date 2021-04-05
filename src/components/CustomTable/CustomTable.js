@@ -1,10 +1,23 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTable, useBlockLayout, useResizeColumns } from 'react-table';
 import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
 
-const CustomTable = ({ columns, data, updateCellData }) => {
+const defaultPropGetter = () => ({});
+
+const CustomTable = ({
+  editable: isEditable,
+  columns,
+  data,
+  updateCellData,
+  getCellProps = defaultPropGetter,
+  getHeaderProps = defaultPropGetter,
+  getColumnProps = defaultPropGetter,
+  getRowProps = defaultPropGetter,
+}) => {
+  const [selectedCell, setSelectedCell] = useState(null);
+
   const defaultColumn = useMemo(
     () => ({
       minWidth: 100,
@@ -30,6 +43,8 @@ const CustomTable = ({ columns, data, updateCellData }) => {
       data,
       defaultColumn,
       updateCellData,
+      selectedCell,
+      setSelectedCell,
     },
     useBlockLayout,
     useResizeColumns
@@ -49,7 +64,12 @@ const CustomTable = ({ columns, data, updateCellData }) => {
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
-                <div {...column.getHeaderProps()} className="th">
+                <div
+                  {...column.getHeaderProps([
+                    getColumnProps(column),
+                    getHeaderProps(column),
+                  ])}
+                  className="th">
                   {column.render('Header')}
                   <div
                     {...column.getResizerProps()}
@@ -67,12 +87,20 @@ const CustomTable = ({ columns, data, updateCellData }) => {
             prepareRow(row);
             return (
               <div
-                {...row.getRowProps({})}
+                {...row.getRowProps(getRowProps(row))}
                 className={`${i % 2 === 0 ? 'SoftBackgroundColor' : ''} tr`}>
                 {row.cells.map((cell) => {
                   return (
-                    <div {...cell.getCellProps()} className="td">
-                      {cell.render('Cell', { editable: true })}
+                    <div
+                      {...cell.getCellProps([
+                        {
+                          ...getCellProps(cell),
+                          ...getColumnProps(cell.column),
+                          onClick: () => setSelectedCell(cell),
+                        },
+                      ])}
+                      className="td">
+                      {cell.render('Cell', { editable: !!isEditable })}
                     </div>
                   );
                 })}

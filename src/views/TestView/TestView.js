@@ -24,9 +24,27 @@ const TestView = () => {
   return (
     <div>
       <CustomTable
+        editable
         columns={columns}
         data={data}
         updateCellData={updateCellData}
+        getCellProps={(cell) => ({
+          onClick: () => console.log(cell),
+          style: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        })}
+        getHeaderProps={(column) => ({
+          onClick: () => console.log('Header!'),
+        })}
+        getColumnProps={(column) => ({
+          onClick: () => console.log('Column!'),
+        })}
+        getRowProps={(row) => ({
+          onClick: console.log('Row!'),
+        })}
       />
     </div>
   );
