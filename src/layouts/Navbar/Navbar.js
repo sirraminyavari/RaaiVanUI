@@ -75,7 +75,7 @@ const Navbar = () => {
             endpoint="names"
             onItemSelect={(value) => console.log(value)}
             placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
-            <NavbarSearchInput />
+            {/* <NavbarSearchInput /> */}
           </AutoSuggestInput>
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
