@@ -156,7 +156,7 @@ const SignIn = () => {
           onChange={onEmailChanged}
           value={email}
           placeholder={RVDic.EmailAddress}
-          error={emailError}
+          error={emailError && true}
           shake={emailError && 300}
           style={common_style}
           id={'email'}
@@ -230,7 +230,7 @@ const SignIn = () => {
           loading={signUpClicked && fetchingFiles}
           style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
           onClick={onCreateAccount}>
-          {RVDic.SignUp}
+          {RVDic.CreateAccount}
         </Button>
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
       </Container>
@@ -248,4 +248,5 @@ const Container = styled.form`
 const common_style = {
   marginBottom: '0.75rem',
   marginTop: '0.75rem',
+  fontSize: '0.8rem',
 };

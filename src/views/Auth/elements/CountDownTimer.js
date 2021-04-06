@@ -52,7 +52,12 @@ const CountDownTimer = ({ onFinished, ...props }) => {
 
   return (
     <Maintainer>
-      <CircularProgress maxValue={resendCodeTimeout} hideLabel {...props} />
+      <CircularProgress
+        maxValue={resendCodeTimeout}
+        hideLabel
+        {...props}
+        color={MAIN_BLUE}
+      />
       <Container className="textarea">{stringTime}</Container>
     </Maintainer>
   );
@@ -61,7 +66,7 @@ export default CountDownTimer;
 
 const Container = styled.div`
   display: flex;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: ${MAIN_BLUE};
   align-self: center;
   margin-left: 1rem;

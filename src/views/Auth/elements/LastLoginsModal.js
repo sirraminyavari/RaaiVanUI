@@ -32,7 +32,6 @@ const LastLoginsModal = ({ isVisible }) => {
       onClose={onClose}
       contentWidth={isMediumScreen ? '50%' : '80%'}
       show={isVisible}>
-      {console.log(loginMessage, 'loginMessage')}
       <Container>
         <Message>{loginMessage && decode(loginMessage)} </Message>
 

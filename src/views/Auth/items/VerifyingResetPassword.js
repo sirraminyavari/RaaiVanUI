@@ -36,6 +36,7 @@ const VerifyingResetPassword = () => {
     verifyCode,
     verifyCodeError,
     verifyCodeLength,
+    resendVerifyCodeIsFetching,
   } = useSelector((state) => ({
     email: state.auth.email,
     emailError: state.auth.emailError,
@@ -50,6 +51,7 @@ const VerifyingResetPassword = () => {
     verifyCode: state.auth.verifyCode,
     verifyCodeError: state.auth.verifyCodeError,
     verifyCodeLength: state.auth.verifyCodeLength,
+    resendVerifyCodeIsFetching: state.auth.resendVerifyCodeIsFetching,
   }));
   useEffect(() => {
     const { GlobalUtilities } = window;
@@ -111,12 +113,13 @@ const VerifyingResetPassword = () => {
           style={{
             textAlign: 'center',
             ...common_style,
-          }}>
+          }}
+          className={'rv-distant'}>
           {RVDic.ForgotMyPassword}
         </Heading>
         <RowItems style={common_style}>
           <Heading
-            type="h1"
+            type="h2"
             style={{
               textAlign: 'center',
               color: 'black',
@@ -129,10 +132,8 @@ const VerifyingResetPassword = () => {
             onClick={onEdit}
           />
         </RowItems>
-        <Heading type="h3" style={common_style}>
-          {
-            'لطفاً کد تایید حساب خود را، که به شماره موبایل بالا ارسال شده، در کادر زیر وارد نمایید'
-          }
+        <Heading type="h4" style={common_style}>
+          {RVDic.Checks.PleaseEnterTheVerificationCode}
         </Heading>
 
         <VerificationCode
@@ -146,8 +147,12 @@ const VerifyingResetPassword = () => {
           <Button
             onClick={onReSend}
             type="secondary-o"
-            loading={isFetching}
-            disable={verifyCode.filter((x) => x === -1)?.length !== 0}
+            loading={resendVerifyCodeIsFetching}
+            disable={
+              verifyCode
+                ? verifyCode.filter((x) => x === -1)?.length !== 0
+                : true
+            }
             style={{
               width: '100%',
               textAlign: 'center',
@@ -168,7 +173,7 @@ const VerifyingResetPassword = () => {
             marginTop: '3rem',
             marginBottom: '1rem',
           }}>
-          {'تایید'}
+          {RVDic.Login}
         </Button>
       </Container>
     </Box>
@@ -183,6 +188,7 @@ const Container = styled.div`
   width: 80%;
   height: 100%;
   justify-content: space-between;
+  padding-top: 1rem;
 `;
 const RowItems = styled.div`
   display: flex;
@@ -193,6 +199,7 @@ const RowItems = styled.div`
   width: 100%;
 `;
 const common_style = {
-  marginBottom: '1rem',
-  marginTop: '1rem',
+  marginBottom: '0.75rem',
+  marginTop: '0.75rem',
+  fontSize: '0.8rem',
 };

@@ -189,6 +189,7 @@ export const loginSlice = createSlice({
     },
     resetPasswordFailed: (state, action) => {
       state.isFetching = false;
+      state.verifyCodeError = action.payload;
     },
     logoutSuccess: (state, action) => {
       state.isAuthenticated = false;
