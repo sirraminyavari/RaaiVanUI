@@ -27,6 +27,9 @@ const Modal = ({
 
   useEffect(() => {
     setShowState(show);
+    if (!!show) {
+      _setDisposed(false);
+    }
   }, [show]);
 
   useEffect(() => {

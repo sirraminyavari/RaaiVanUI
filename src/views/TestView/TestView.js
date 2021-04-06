@@ -1,32 +1,67 @@
-import { useState, useEffect } from 'react';
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import PageWrapper from 'components/PageWrapper/PageWrapper';
+import { useState, lazy } from 'react';
+import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import APIHandler from 'apiHelper/APIHandler';
+import { decode } from 'js-base64';
+
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
+);
+
+const defaultValues = [
+  { id: 1, value: 'پیشفرض اول' },
+  { id: 2, value: 'پیشفرض دوم' },
+  { id: 3, value: 'پیشفرض سوم' },
+  { id: 4, value: 'پیشفرض چهارم' },
+  { id: 5, value: 'پیشفرض پنجم' },
+  { id: 6, value: 'پیشفرض ششم' },
+  { id: 7, value: 'پیشفرض هفتم' },
+  { id: 8, value: 'پیشفرض هشتم' },
+];
 
 const TestView = () => {
-  const [date, setDate] = useState(null);
+  //! If true, Shows a modal to user for more advanced options to choose from.
+  const [selected, setSelected] = useState(false);
+  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
-  const handleDateSelect = (date) => {
-    setDate(date);
+  const fetchItems = (search) => {
+    return new Promise((resolve, reject) => {
+      try {
+        apiHandler.fetch(
+          {
+            Count: 1000,
+            CheckAccess: true,
+            ParseResults: true,
+            SearchText: search,
+          },
+          (response) =>
+            resolve(
+              response.NodeTypes.map((node) => ({
+                value: decode(node.TypeName),
+              }))
+            ),
+          (error) => reject(error)
+        );
+      } catch (err) {
+        reject(err);
+      }
+    });
   };
 
-  useEffect(() => {
-    console.log(date, 'to server');
-  }, [date]);
-
   return (
-    <PageWrapper title="Raaivan | development">
-      <div style={{ padding: '5px', width: '10rem', margin: '100px' }}>
-        <CustomDatePicker
-          type="jalali"
-          mode="input"
-          value={date}
-          range={true}
-          clearButton={true}
-          size="medium"
-          onDateSelect={handleDateSelect}
-        />
-      </div>
-    </PageWrapper>
+    <div style={{ padding: '2rem 1rem', width: '500px' }}>
+      <AutoSuggestInput
+        fetchItems={fetchItems}
+        onItemSelect={(item) => setSelected(item)}
+        // defaultItems={defaultValues}
+      >
+        {({ show, onClose }) => (
+          <Modal show={show} onClose={onClose}>
+            hello modal
+          </Modal>
+        )}
+      </AutoSuggestInput>
+      <h3>{selected?.value}</h3>
+    </div>
   );
 };
 
