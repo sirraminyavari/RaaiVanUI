@@ -5,6 +5,7 @@ import {
   useResizeColumns,
   useSortBy,
 } from 'react-table';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
@@ -19,11 +20,18 @@ const CustomTable = ({
   columns,
   data,
   updateCellData,
+  reorderData,
   getCellProps = defaultPropGetter,
   getColumnProps = defaultPropGetter,
   getRowProps = defaultPropGetter,
 }) => {
   const [selectedCell, setSelectedCell] = useState(null);
+
+  const handleDragEnd = (result) => {
+    const { source, destination } = result;
+    if (!destination) return;
+    reorderData(source.index, destination.index);
+  };
 
   const renderCell = (cell) => {
     switch (cell.column.dataType) {
@@ -71,6 +79,7 @@ const CustomTable = ({
       updateCellData,
       selectedCell,
       setSelectedCell,
+      reorderData,
     },
     useBlockLayout,
     useResizeColumns,
@@ -138,32 +147,56 @@ const CustomTable = ({
             </div>
           ))}
         </div>
-        <div {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="table-body">
+            {(provided, snapshot) => (
               <div
-                {...row.getRowProps(getRowProps(row))}
-                className={`${i % 2 === 0 ? 'SoftBackgroundColor' : ''} tr`}>
-                {row.cells.map((cell) => {
+                {...getTableBodyProps()}
+                ref={provided.innerRef}
+                {...provided.droppableProps}>
+                {rows.map((row, i) => {
+                  prepareRow(row);
                   return (
+                    // <Draggable
+                    //   draggableId={row.original.id}
+                    //   key={row.original.id}
+                    //   index={row.index}
+                    //   >
+                    //   {(provided, snapshot) => {
+                    // return (
                     <div
-                      {...cell.getCellProps([
-                        {
-                          ...getCellProps(cell),
-                          ...getColumnProps(cell.column),
-                          onClick: () => setSelectedCell(cell),
-                        },
-                      ])}
-                      className="td">
-                      {renderCell(cell)}
+                      {...row.getRowProps(getRowProps(row))}
+                      {...provided.draggableProps}
+                      ref={provided.innerRef}
+                      isDragging={snapshot.isDragging}
+                      className={`${
+                        i % 2 === 0 ? 'SoftBackgroundColor' : ''
+                      } tr`}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <div
+                            {...cell.getCellProps([
+                              {
+                                ...getCellProps(cell),
+                                ...getColumnProps(cell.column),
+                                onClick: () => setSelectedCell(cell),
+                              },
+                            ])}
+                            className="td">
+                            {renderCell(cell)}
+                          </div>
+                        );
+                      })}
                     </div>
+                    // );
+                    //   }}
+                    // </Draggable>
                   );
                 })}
               </div>
-            );
-          })}
-        </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </Styled.TableContainer>
   );
