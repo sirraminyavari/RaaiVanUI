@@ -57,3 +57,9 @@ export const TableContainer = styled.div`
     }
   }
 `;
+
+export const HeaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

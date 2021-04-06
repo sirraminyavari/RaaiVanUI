@@ -1,10 +1,16 @@
 import { useMemo, useState } from 'react';
-import { useTable, useBlockLayout, useResizeColumns } from 'react-table';
+import {
+  useTable,
+  useBlockLayout,
+  useResizeColumns,
+  useSortBy,
+} from 'react-table';
 import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
 import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+import Arrow from 'components/Icons/ArrowIcons/Arrow';
 
 const defaultPropGetter = () => ({});
 
@@ -14,7 +20,6 @@ const CustomTable = ({
   data,
   updateCellData,
   getCellProps = defaultPropGetter,
-  getHeaderProps = defaultPropGetter,
   getColumnProps = defaultPropGetter,
   getRowProps = defaultPropGetter,
 }) => {
@@ -23,8 +28,16 @@ const CustomTable = ({
   const renderCell = (cell) => {
     switch (cell.column.dataType) {
       case 'date':
+        console.log(cell);
         return cell.render(
-          <CustomDatePicker label="انتخاب تاریخ" value={cell.value} />
+          <CustomDatePicker
+            label="انتخاب تاریخ"
+            mode="input"
+            type="jalali"
+            range={false}
+            size="small"
+            value={cell.value}
+          />
         );
       default:
         return cell.render('Cell', { editable: !!isEditable });
@@ -61,6 +74,7 @@ const CustomTable = ({
     },
     useBlockLayout,
     useResizeColumns,
+    useSortBy,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         //! Make a column for deletion
@@ -69,13 +83,11 @@ const CustomTable = ({
           dataType: 'actions',
           Header: () => <div>اقدامات</div>,
           Cell: ({ row }) => (
-            <div className="middle">
-              <DeleteRowIcon
-                style={{ cursor: 'pointer' }}
-                onClick={() => console.log(row)}
-                size={25}
-              />
-            </div>
+            <DeleteRowIcon
+              style={{ cursor: 'pointer' }}
+              onClick={() => console.log(row)}
+              size={25}
+            />
           ),
           width: 60,
         },
@@ -99,12 +111,22 @@ const CustomTable = ({
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column) => (
                 <div
-                  {...column.getHeaderProps([
-                    getColumnProps(column),
-                    getHeaderProps(column),
-                  ])}
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
                   className="th">
-                  {column.render('Header')}
+                  <Styled.HeaderWrapper>
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <Arrow dir="down" size={20} />
+                        ) : (
+                          <Arrow dir="up" size={20} />
+                        )
+                      ) : (
+                        ''
+                      )}
+                    </span>
+                  </Styled.HeaderWrapper>
                   <div
                     {...column.getResizerProps()}
                     className={`resizer ${
