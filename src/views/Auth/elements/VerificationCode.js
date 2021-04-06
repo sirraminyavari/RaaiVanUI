@@ -105,7 +105,6 @@ export default VerificationCode;
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
   justify-content: center;
   flex-direction: column;
 `;
@@ -129,6 +128,7 @@ const ErrorMessage = styled.div`
   text-align: ${RV_Float};
   font-size: 0.7rem;
   margin-top: 3px;
+  margin: 5px;
   opacity: ${({ error }) => (error ? 1 : 0)};
   max-height: ${({ error }) => (error ? '5rem' : 0)};
   min-height: ${({ error }) => (error ? '0rem' : '0rem')};

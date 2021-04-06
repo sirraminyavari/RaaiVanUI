@@ -136,7 +136,8 @@ const ForgotPassword = () => {
       ) : (
         <Container onSubmit={onSendResetLink}>
           <Heading
-            type="h6"
+            type="h5"
+            className={'rv-distant'}
             style={{
               textAlign: 'center',
               ...common_style,
@@ -222,7 +223,7 @@ const ForgotPassword = () => {
               textAlign: 'center',
               fontSize: '1rem',
               ...common_style,
-              marginTop: '1.5rem',
+              marginTop: '0.75rem',
             }}
             onClick={onReturn}>
             {RVDic.Return}
@@ -241,7 +242,7 @@ const ForgotPassword = () => {
             style={{ width: '100%' }}
             style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}
             onClick={onCreateAccount}>
-            {RVDic.SignUp}
+            {RVDic.CreateAccount}
           </Button>
         </Container>
       )}
@@ -261,4 +262,5 @@ const Container = styled.form`
 const common_style = {
   marginBottom: '0.75rem',
   marginTop: '0.75rem',
+  fontSize: '0.8rem',
 };
