@@ -18,7 +18,7 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = (props) => {
-  const { radius, userImage } = props;
+  const { radius, userImage, color } = props;
   return (
     <Styled.AvatarContainer>
       {userImage ? (
@@ -29,7 +29,7 @@ const Avatar = (props) => {
           alt="user-avatar"
         />
       ) : (
-        <AvatarIcon size={radius} data-testid="avatar-icon" />
+        <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
       )}
     </Styled.AvatarContainer>
   );

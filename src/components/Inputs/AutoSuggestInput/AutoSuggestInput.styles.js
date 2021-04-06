@@ -8,7 +8,7 @@ const FlexBetween = css`
   align-items: center;
 `;
 
-export const InputContainer = styled.div`
+export const AutoSuggestContainer = styled.div`
   position: relative;
   &:focus-within ul {
     display: revert;
@@ -30,32 +30,29 @@ export const InputElementWrapper = styled.div.attrs((props) => ({
   ref: props.inputwrapperRef,
 }))`
   ${FlexBetween}
-  width: 15.5rem;
+  width: 100%;
 `;
 
-export const Input = styled.input`
-  border: 0 solid #fff;
-  outline: none;
-  flex-grow: 1;
-  padding: 0.4rem;
-  width: 90%;
-`;
+// export const Input = styled.input`
+//   border: 0 solid #fff;
+//   outline: none;
+//   flex-grow: 1;
+//   padding: 0.4rem;
+//   width: 100%;
+// `;
 
 const getMenuHeigth = ({ items }) => {
   if (items.length === 0) {
     return 'height: 4.3rem;';
   } else {
-    if (items.length >= 6) {
-      return `height: ${items.length * ITEM_HEIGHT}rem;`;
-    } else {
-      return `height: ${items.length * ITEM_HEIGHT + 6}rem;`;
-    }
+    return `height: ${items.length * ITEM_HEIGHT + 6.5}rem;`;
   }
 };
 
 export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
   width: 100%;
   ${getMenuHeigth}
+  max-height: 19.5rem;
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
   top: 1.2rem;

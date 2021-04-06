@@ -1,11 +1,11 @@
 import { useState, useEffect, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Downshift from 'downshift';
-import { decode } from 'js-base64';
-import APIHandler from 'apiHelper/APIHandler';
 import useDebounce from 'hooks/useDebounce';
 import LoadingIcon from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import Button from 'components/Buttons/Button';
+import Input from 'components/Inputs/Input';
+import DotsIcon from 'components/Icons/Dots/Dots';
 import * as Styled from './AutoSuggestInput.styles';
 
 /**
@@ -13,10 +13,9 @@ import * as Styled from './AutoSuggestInput.styles';
  * @property {number} [delay] - The delay of debouncing.
  * @property {number} [searchAt] -The minimum character is needed to api call begins.
  * @property {string} [placeholder] -The input placeholder.
- * @property {string} endpoint -The endpoint to search for suggestions.
- * @property {boolean} [withMenu] -The parameter that determines if menu is allowed to be shown or not.
+ * @property {Object[]} [defaultItems] -The default option list for input to select.
  * @property {function} onItemSelect -A callback function that will fire on suggestion selection.
- * @property {function} getSuggestedItems -A callback function that will return suggestion items.
+ * @property {function} fetchItems -A callback function that will fire on input change and fetch suggestion from server.
  */
 
 /**
@@ -29,66 +28,51 @@ const AutoSuggestInput = (props) => {
     delay,
     searchAt,
     onItemSelect,
-    getSuggestedItems,
     placeholder,
-    endpoint,
-    withMenu,
+    fetchItems,
+    defaultItems,
     children,
     ...rest
   } = props;
   //! Stores suggested items.
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(defaultItems);
   //! Stores the term that user searched
   const [searchTerm, setSearchTerm] = useState('');
   //! If true, Shows Loading component, Otherwise, won't show it.
   const [isSearching, setIsSearching] = useState(false);
   //! If true, Shows a message to user to inform it that something went wrong.
   const [hasError, setHasError] = useState(false);
-
+  //! Debounce api call to the server based on delay time passed to it.
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
+  //! If true, Shows a modal to user for more advanced options to choose from.
+  const [isModalShown, setIsModalShown] = useState(false);
 
-  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
+  //! Toggle advanced suggest options modal.
+  const toggleModal = () => setIsModalShown(!isModalShown);
 
-  //! Fetch new items on every amount of delay or mininum search term.
-  const fetchItems = (search) => {
-    try {
-      apiHandler.fetch(
-        {
-          Count: 1000,
-          CheckAccess: true,
-          ParseResults: true,
-          SearchText: search,
-        },
-        (response) => {
-          setHasError(false);
-          setTimeout(() => {
-            setIsSearching(false);
-          }, 500);
-          if (response.NodeTypes.length === 0) {
-            setHasError(true);
-            setItems([{ value: 'موردی یافت نشد!' }]);
-            !withMenu && getSuggestedItems([]);
-          } else {
-            setItems(
-              response.NodeTypes.map((node) => ({
-                value: decode(node.TypeName),
-              }))
-            );
-            !withMenu && getSuggestedItems(response);
-          }
-        },
-        (error) => {
-          setTimeout(() => {
-            setIsSearching(false);
-            setHasError(true);
-            setItems([{ value: 'خطا در برقراری ارتباط' }]);
-            !withMenu && getSuggestedItems([]);
-          }, 2000);
+  const getSuggestions = () => {
+    if (!fetchItems) return;
+    setIsSearching(true);
+    fetchItems(debouncedSearchTerm)
+      .then((response) => {
+        setHasError(false);
+        setTimeout(() => {
+          setIsSearching(false);
+        }, 500);
+        if (response.length === 0) {
+          setHasError(true);
+          setItems([{ value: 'موردی یافت نشد!' }]);
+        } else {
+          setItems(response);
         }
-      );
-    } catch (err) {
-      console.log({ err });
-    }
+      })
+      .catch((err) => {
+        setTimeout(() => {
+          setIsSearching(false);
+          setHasError(true);
+          setItems([{ value: 'خطا در برقراری ارتباط' }]);
+        }, 2000);
+      });
   };
 
   //! This function will be called each time downshift sets its internal state.
@@ -102,8 +86,8 @@ const AutoSuggestInput = (props) => {
   };
 
   //! Called when the selected item changes.
-  const handleChange = (selection) => {
-    onItemSelect && selection && onItemSelect(selection.value);
+  const handleChange = (selectedItem) => {
+    onItemSelect && selectedItem && onItemSelect(selectedItem);
   };
 
   //! Called when the user selects an item, regardless of the previous selected item.
@@ -120,6 +104,7 @@ const AutoSuggestInput = (props) => {
 
   //! Highlights searched term inside suggested items.
   const getHighlightedText = (text, highlight) => {
+    if (searchTerm.length < 1) return text;
     const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
     return (
@@ -136,11 +121,15 @@ const AutoSuggestInput = (props) => {
   };
 
   useEffect(() => {
-    if (debouncedSearchTerm && debouncedSearchTerm.length >= searchAt) {
-      setIsSearching(true);
-      fetchItems(debouncedSearchTerm);
+    if (
+      fetchItems &&
+      debouncedSearchTerm &&
+      debouncedSearchTerm.length >= searchAt
+    ) {
+      //! Fetch new items on every amount of delay or mininum search term.
+      getSuggestions();
     } else {
-      setItems([]);
+      setItems(defaultItems);
     }
   }, [debouncedSearchTerm]);
 
@@ -160,23 +149,34 @@ const AutoSuggestInput = (props) => {
         inputValue,
         highlightedIndex,
       }) => (
-        <Styled.InputContainer
+        <Styled.AutoSuggestContainer
           {...rest}
-          className={`${!children && 'ColdBackgroundColor'} BorderRadius4`}>
-          {children ? (
-            <Styled.ComponentWrapper
-              {...getRootProps({ refKey: 'componentRef' })}>
-              {cloneElement(children, { ...getInputProps({ placeholder }) })}
-            </Styled.ComponentWrapper>
-          ) : (
-            <Styled.InputElementWrapper
-              {...getRootProps({ refKey: 'inputwrapperRef' })}>
-              <Styled.Input
-                {...getInputProps({ placeholder, className: 'BorderRadius4' })}
+          className="ColdBackgroundColor BorderRadius4">
+          <Styled.InputElementWrapper
+            {...getRootProps({
+              refKey: 'inputwrapperRef',
+            })}>
+            <Input
+              {...getInputProps({
+                placeholder,
+                className: 'BorderRadius4',
+                style: { width: '100%' },
+              })}>
+              <DotsIcon
+                size={20}
+                style={{ cursor: 'pointer', padding: '0.1rem' }}
+                className="Circle SoftBackgroundColor WarmBorder"
+                onClick={toggleModal}
               />
-            </Styled.InputElementWrapper>
-          )}
-          {withMenu && (
+            </Input>
+          </Styled.InputElementWrapper>
+          {isModalShown &&
+            children &&
+            children({
+              show: isModalShown,
+              onClose: toggleModal,
+            })}
+          {isOpen && (
             <Styled.SuggestMenu
               {...getMenuProps({
                 className:
@@ -185,8 +185,8 @@ const AutoSuggestInput = (props) => {
               {...getRootProps({ refKey: 'ulRef' })}
               items={items}>
               <Styled.ButtonsContainer className="ColdBackgroundColor">
-                <Button type="primary">Click me</Button>
-                <Button type="negative">Click me</Button>
+                <Button type="primary">do sth</Button>
+                <Button type="negative">do sth. else</Button>
               </Styled.ButtonsContainer>
               {isSearching && (
                 <Styled.LoaderWrapper>
@@ -196,14 +196,14 @@ const AutoSuggestInput = (props) => {
               <Styled.ListItemsContainer hasError={hasError} items={items}>
                 {isOpen &&
                   !isSearching &&
-                  inputValue &&
+                  // inputValue &&
                   items.map((item, index) => {
                     return (
                       <Styled.ListItems
                         hasError={hasError}
                         {...getItemProps({
                           key: index,
-                          className: `${
+                          className: `SoftBorder BorderRadius4 ${
                             hasError
                               ? 'ColdBackgroundColor'
                               : highlightedIndex === index
@@ -213,7 +213,7 @@ const AutoSuggestInput = (props) => {
                           index,
                           item,
                         })}>
-                        {hasError && (
+                        {searchTerm.length > 2 && hasError && (
                           <Styled.Error className="Circle">!</Styled.Error>
                         )}
                         {getHighlightedText(item.value, searchTerm)}
@@ -223,7 +223,7 @@ const AutoSuggestInput = (props) => {
               </Styled.ListItemsContainer>
             </Styled.SuggestMenu>
           )}
-        </Styled.InputContainer>
+        </Styled.AutoSuggestContainer>
       )}
     </Downshift>
   );
@@ -233,17 +233,15 @@ AutoSuggestInput.propTypes = {
   delay: PropTypes.number,
   searchAt: PropTypes.number,
   onItemSelect: PropTypes.func,
-  getSuggestedItems: PropTypes.func,
+  fetchItems: PropTypes.func,
+  defaultItems: PropTypes.array,
   placeholder: PropTypes.string,
-  endpoint: PropTypes.string,
-  withMenu: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
 };
 
 AutoSuggestInput.defaultProps = {
   delay: 500,
   searchAt: 3,
-  withMenu: true,
+  defaultItems: [],
   placeholder: 'جستجو ...',
 };
 
