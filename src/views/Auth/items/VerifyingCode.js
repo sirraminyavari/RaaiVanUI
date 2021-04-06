@@ -107,9 +107,9 @@ const VerifyingCode = () => {
             type="h2"
             style={{
               textAlign: 'center',
-              color: 'black',
               ...common_style,
-            }}>
+            }}
+            className={'rv-distant'}>
             {email}
           </Heading>
           <Edit
@@ -147,7 +147,9 @@ const VerifyingCode = () => {
           onClick={onSignUp}
           type="primary"
           loading={isFetching}
-          disable={verifyCode.filter((x) => x === -1)?.length !== 0}
+          disable={
+            verifyCode ? verifyCode.filter((x) => x === -1)?.length !== 0 : true
+          }
           style={{
             width: '100%',
             textAlign: 'center',

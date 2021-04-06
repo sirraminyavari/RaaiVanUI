@@ -1,8 +1,8 @@
 /**
  * An action for sending a link to reset the password.
  */
-import { loginSlice } from '../../reducers/loginReducer';
 import { encode } from 'js-base64';
+import { loginSlice } from '../../reducers/loginReducer';
 
 const {
   sendResetPasswordLink,
@@ -12,6 +12,7 @@ const {
 } = loginSlice.actions;
 
 const { GlobalUtilities, UsersAPI, RVDic } = window;
+
 /**
  * Sending reset pass request with help of Thunk.
  * See @link https://github.com/reduxjs/redux-thunk for more info.

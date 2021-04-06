@@ -55,6 +55,7 @@ const AnimatedInput = React.forwardRef(
     return (
       <Container style={style} inputFocused={inputFocused} {...props}>
         <Label
+          error={error}
           className={inputFocused || value.length > 0 ? 'active' : ''}
           inputFocused={inputFocused || value.length > 0}>
           <StyledInput

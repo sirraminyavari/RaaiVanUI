@@ -26,18 +26,13 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
         ParseResults: true,
         ResponseHandler: function (result) {
           if (result.ErrorText) {
-            alert(
-              RVDic.MSG[result.ErrorText] || result.ErrorText,
-              null,
-              function () {
-                // that.clear();
-                dispatch(setPassword(''));
-                dispatch(setEmail(''));
+            alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+            // that.clear();
+            dispatch(setPassword(''));
+            dispatch(setEmail(''));
 
-                done(false);
-                if (result.CodeDisposed) vcd.Close();
-              }
-            );
+            done(false);
+            if (result.CodeDisposed) vcd.Close();
           } else if (result.Succeed) {
             done(true);
             // that.logged_in(result);
