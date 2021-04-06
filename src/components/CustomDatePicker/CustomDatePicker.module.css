@@ -1,7 +1,15 @@
-.input {
-  padding: 0.3rem;
-  border: 0.15rem solid #333;
-  border-radius: 0.4rem;
-  outline: none;
-  font-size: 1rem;
+.smallCalendar {
+  font-size: 0.45rem !important;
+}
+
+.mediumCalendar {
+  font-size: 0.55rem !important;
+}
+
+.largeCalendar {
+  font-size: 0.65rem !important;
+}
+
+.todayDate {
+  border: 0.15rem solid #e27312 !important;
 }
