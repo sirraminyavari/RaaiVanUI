@@ -40,7 +40,7 @@ const resolveValues = ({ type, darkBackground }) => {
     h2: { class: 'rv-dark-gray', size: '1.1rem', weight: '500' },
     h3: { class: 'rv-dark-gray', size: '1.1rem', weight: '300' },
     h4: { class: 'rv-warm', size: '1rem' },
-    h5: { class: 'rv-dark-gray', size: '1rem', weight: '200' },
+    h5: { class: 'rv-distant', size: '1rem', weight: '200' },
     h6: { class: 'rv-gray', size: '0.8rem', weight: '200' },
   };
 
