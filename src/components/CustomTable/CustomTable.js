@@ -4,6 +4,7 @@ import * as Styled from './CustomTable.styles';
 import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
 import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
 const defaultPropGetter = () => ({});
 
@@ -18,6 +19,17 @@ const CustomTable = ({
   getRowProps = defaultPropGetter,
 }) => {
   const [selectedCell, setSelectedCell] = useState(null);
+
+  const renderCell = (cell) => {
+    switch (cell.column.dataType) {
+      case 'date':
+        return cell.render(
+          <CustomDatePicker label="انتخاب تاریخ" value={cell.value} />
+        );
+      default:
+        return cell.render('Cell', { editable: !!isEditable });
+    }
+  };
 
   const defaultColumn = useMemo(
     () => ({
@@ -38,7 +50,6 @@ const CustomTable = ({
     rows,
     prepareRow,
     resetResizing,
-    state,
   } = useTable(
     {
       columns,
@@ -55,6 +66,7 @@ const CustomTable = ({
         //! Make a column for deletion
         {
           id: 'deletion',
+          dataType: 'actions',
           Header: () => <div>اقدامات</div>,
           Cell: ({ row }) => (
             <div className="middle">
@@ -71,8 +83,6 @@ const CustomTable = ({
       ]);
     }
   );
-
-  console.log(state);
 
   //! Render the UI for your table
   return (
@@ -124,7 +134,7 @@ const CustomTable = ({
                         },
                       ])}
                       className="td">
-                      {cell.render('Cell', { editable: !!isEditable })}
+                      {renderCell(cell)}
                     </div>
                   );
                 })}

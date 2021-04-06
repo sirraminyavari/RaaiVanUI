@@ -303,7 +303,11 @@ const CustomDatePicker = (props) => {
                 placeholder={label}
                 maxLength={range ? '42' : '17'}
                 onChange={handleInputChange}
-                style={{ textAlign: 'center', minWidth: '17rem' }}
+                style={{
+                  textAlign: 'center',
+                  width: '100%',
+                  backgroundColor: 'inherit',
+                }}
                 ref={mergeRefs(inputRef, ref)}
               />
             )}

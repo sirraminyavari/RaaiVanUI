@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
+// import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
 //! Create an editable cell renderer
 const EditableCell = ({
   value: initialValue,
   row: { index },
-  column: { id },
+  column: { id, dataType },
   updateCellData, //! This is a custom function that we supplied to our table instance
   editable,
   selectedCell, //! This is what we select for inline edit in cell.
   setSelectedCell, //!
 }) => {
-  // console.log(index, id);
+  // console.log(dataType);
   //! We need to keep and update the state of the cell normally
   const [value, setValue] = useState(initialValue);
 
@@ -33,6 +34,10 @@ const EditableCell = ({
   if (!editable) {
     return `${initialValue}`;
   }
+
+  // if(dataType === 'date'){
+  //   return <CustomDatePicker />
+  // }
 
   if (
     !!selectedCell &&

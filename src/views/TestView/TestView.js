@@ -1,66 +1,51 @@
-import { useState, lazy } from 'react';
-import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
-import APIHandler from 'apiHelper/APIHandler';
-import { decode } from 'js-base64';
-
-const Modal = lazy(() =>
-  import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
-);
-
-const defaultValues = [
-  { id: 1, value: 'پیشفرض اول' },
-  { id: 2, value: 'پیشفرض دوم' },
-  { id: 3, value: 'پیشفرض سوم' },
-  { id: 4, value: 'پیشفرض چهارم' },
-  { id: 5, value: 'پیشفرض پنجم' },
-  { id: 6, value: 'پیشفرض ششم' },
-  { id: 7, value: 'پیشفرض هفتم' },
-  { id: 8, value: 'پیشفرض هشتم' },
-];
+import { useMemo, useState } from 'react';
+import CustomTable from 'components/CustomTable/CustomTable';
+import tableData from './tableData';
+import tableCulomns from './tableCulomns';
 
 const TestView = () => {
-  //! If true, Shows a modal to user for more advanced options to choose from.
-  const [selected, setSelected] = useState(false);
-  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
+  const [data, setData] = useState(() => tableData);
+  const columns = useMemo(() => tableCulomns, []);
 
-  const fetchItems = (search) => {
-    return new Promise((resolve, reject) => {
-      try {
-        apiHandler.fetch(
-          {
-            Count: 1000,
-            CheckAccess: true,
-            ParseResults: true,
-            SearchText: search,
-          },
-          (response) =>
-            resolve(
-              response.NodeTypes.map((node) => ({
-                value: decode(node.TypeName),
-              }))
-            ),
-          (error) => reject(error)
-        );
-      } catch (err) {
-        reject(err);
-      }
-    });
+  const updateCellData = (rowIndex, columnId, value) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...row,
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
   };
 
   return (
-    <div style={{ padding: '2rem 1rem', width: '500px' }}>
-      <AutoSuggestInput
-        fetchItems={fetchItems}
-        onItemSelect={(item) => setSelected(item)}
-        // defaultItems={defaultValues}
-      >
-        {({ show, onClose }) => (
-          <Modal show={show} onClose={onClose}>
-            hello modal
-          </Modal>
-        )}
-      </AutoSuggestInput>
-      <h3>{selected?.value}</h3>
+    <div>
+      <CustomTable
+        editable
+        columns={columns}
+        data={data}
+        updateCellData={updateCellData}
+        getCellProps={(cell) => ({
+          onClick: () => console.log(cell),
+          style: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        })}
+        getHeaderProps={(column) => ({
+          onClick: () => console.log('Header!'),
+        })}
+        getColumnProps={(column) => ({
+          onClick: () => console.log('Column!'),
+        })}
+        getRowProps={(row) => ({
+          onClick: console.log('Row!'),
+        })}
+      />
     </div>
   );
 };
