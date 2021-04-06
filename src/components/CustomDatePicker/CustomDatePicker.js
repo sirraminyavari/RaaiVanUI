@@ -9,7 +9,7 @@ import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
-import { mergeRefs, getLanguageDigits } from 'helpers/helpers';
+import { mergeRefs, getToday } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
 
 /**
@@ -31,8 +31,6 @@ import styles from './CustomDatePicker.module.css';
  * @typedef PropType
  * @type {Object}
  * @property {(DateType | DateType[] | RangeType)} value - The value of the calendar .
- * @property {function} onChange -A function to get selected day(s).
- * @property {DateType} minimumDate - Minimum date that a user is allowed to select.
  * @property {DateType} maximumDate - Maximum date that a user is allowed to select.
  * @property {DateType[]} disabledDays - Dates that are disabled and could not be selected.
  * @property {function} onDisabledDayError - A function that fires when the user clicks on disabled date.
@@ -45,6 +43,7 @@ import styles from './CustomDatePicker.module.css';
  * @property {boolean} clearButton - The date picker caclear button.
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
  * @property {string} format - The date picker format.
+ * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
  */
 
 /**
@@ -63,6 +62,7 @@ const CustomDatePicker = (props) => {
     onDateSelect,
     clearButton,
     format,
+    fromToday,
     ...rest
   } = props;
 
@@ -71,12 +71,20 @@ const CustomDatePicker = (props) => {
 
   const inputRef = useRef();
 
+  const dateEngToPer = (date) => {
+    return moment(date, format).locale('fa').format(format);
+  };
+
+  const datePerToEng = (date) => {
+    return moment.from(date, 'fa', format).format(format);
+  };
+
   //! Change server value to datepicker friendly object.
   const dateStringToObject = (item) => {
-    let dateString;
+    let dateString = item;
     if (!item) return;
     if (['jalali', 'lunar'].includes(type)) {
-      dateString = moment(item, 'YYYY/MM/DD').locale('fa').format(format);
+      dateString = dateEngToPer(item);
     } else {
       dateString = item;
     }
@@ -93,9 +101,7 @@ const CustomDatePicker = (props) => {
     if (!item) return;
     const dateString = `${item.year}/${item.month}/${item.day}`;
     if (type === 'jalali') {
-      const serverFormat = moment
-        .from(dateString, 'fa', 'YYYY/MM/DD')
-        .format(format);
+      const serverFormat = datePerToEng(dateString);
       return serverFormat;
     }
     return dateString;
@@ -124,6 +130,19 @@ const CustomDatePicker = (props) => {
   //! Set date for use in datepicker.
   useEffect(() => {
     setSelectedDate(toSingleOrRangeObject(value, dateStringToObject));
+    if (value) {
+      let initialVal;
+      if (range) {
+        initialVal = (dateEngToPer(value.from) + dateEngToPer(value.to))
+          .match(/\d/g)
+          .join('');
+      } else {
+        initialVal = (dateEngToPer(value).match(/\d/g) || ['']).join('');
+      }
+      if (mode === 'input') {
+        inputRef.current.value = customFormat(initialVal, type, range);
+      }
+    }
   }, []);
 
   //! Clear out datepicker values and component selection.
@@ -186,7 +205,6 @@ const CustomDatePicker = (props) => {
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
   const handleChange = (selectedDay) => {
-    // console.log(selectedDay);
     //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
@@ -199,8 +217,6 @@ const CustomDatePicker = (props) => {
   const handleInputChange = (e) => {
     let val = e.target.value;
     const value = (val.match(/\d/g) || ['']).join('');
-    // const test = (val.match(/[\u06F0-\u06F90-9]+/g) || ['']).join('');
-    // console.log(test, 'test');
     let date;
     let maxYear = type === 'jalali' ? '1450' : '2070';
 
@@ -222,8 +238,6 @@ const CustomDatePicker = (props) => {
     } else {
       date = from;
     }
-
-    console.log(date);
 
     //! Updates datepicker and state values whenever input has got the right value.
     if (range) {
@@ -283,6 +297,7 @@ const CustomDatePicker = (props) => {
                 renderFooter={() => (clearButton ? <ClearButton /> : null)}
                 onChange={handleChange}
                 value={selectedDate}
+                minimumDate={fromToday ? getToday() : null}
                 shouldHighlightWeekends
                 calendarClassName={styles[`${size}Calendar`]}
                 calendarTodayClassName={styles.todayDate}
@@ -310,6 +325,7 @@ const CustomDatePicker = (props) => {
             renderFooter={() => (clearButton ? <ClearButton /> : null)}
             onChange={handleChange}
             value={selectedDate}
+            minimumDate={fromToday ? getToday() : null}
             shouldHighlightWeekends
             calendarClassName={styles[`${size}Calendar`]}
             calendarTodayClassName={styles.todayDate}
@@ -363,6 +379,7 @@ function limit(val, max, type) {
 //? when user types date to input field.
 //! Adds some custom mask to input value.
 function customFormat(val, type, range) {
+  val = (val.match(/\d/g) || ['']).join('');
   let maxYear = type === 'jalali' ? '1450' : '2070';
   let formDateLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
   let toDateLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
