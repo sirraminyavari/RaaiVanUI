@@ -8,8 +8,13 @@ import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import AuthView from 'views/Auth/AuthView';
 import 'assets/css/index.css';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
+
+
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
 );
@@ -28,6 +33,7 @@ render(
       <ErrorBoundry>
         <Suspense fallback={<LogoLoader size={10} />}>
           <Router>
+            <ScrollToTop />
             <Switch>
               <PublicRoute path="/auth" component={AuthView} />
               <PrivateRoute path="/" component={MainLayout} />

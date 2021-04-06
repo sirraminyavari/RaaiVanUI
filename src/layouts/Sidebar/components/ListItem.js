@@ -3,7 +3,6 @@
  */
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getLanguageDigits } from 'helpers/helpers';
 import * as Styled from '../Sidebar.styles';
 
 /**
@@ -28,11 +27,7 @@ const ListItem = (props) => {
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>
       </Styled.CenterIcon>
-      {badge && (
-        <Styled.BadgeWrapper>
-          {getLanguageDigits(undefined, badge)}
-        </Styled.BadgeWrapper>
-      )}
+      {badge && <Styled.BadgeWrapper>{badge}</Styled.BadgeWrapper>}
     </Styled.ListItemWrapper>
   );
 };

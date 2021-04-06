@@ -1,10 +1,12 @@
-import { useEffect, forwardRef } from 'react';
+import { useEffect, forwardRef, useRef } from 'react';
 
 const OnClickAway = forwardRef((props, ref) => {
   const { onAway, children, ...rest } = props;
 
+  const containerRef = useRef();
+
   const handleClick = (e) => {
-    if (ref.current.contains(e.target)) return;
+    if (containerRef.current.contains(e.target)) return;
     onAway();
   };
 
@@ -16,7 +18,7 @@ const OnClickAway = forwardRef((props, ref) => {
   }, []);
 
   return (
-    <div ref={ref} {...rest}>
+    <div ref={containerRef} {...rest}>
       {children}
     </div>
   );

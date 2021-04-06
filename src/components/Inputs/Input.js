@@ -117,7 +117,7 @@ const Input = React.forwardRef(
               : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
           )}
           onKeyDown={handleKeyDown}
-          autocomplete="off"
+          autoComplete="off"
           {...props}
         />
         {hasButton && <ButtonContainer>{children}</ButtonContainer>}

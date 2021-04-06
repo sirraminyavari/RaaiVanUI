@@ -111,3 +111,25 @@ export const getLanguageDigits = (lang = getLanguage(), digit) => {
 export const isBeforeDate = (day1, day2) => {
   return utils().isBeforeDate(day1, day2);
 };
+
+/**
+ * @description Essentially, you have a component you're building that
+ * needs a local ref on some element; but you also want to allow the parent
+ * to pass a ref as well; and maintain both refs on a single element.
+ * @param {any} refs -Refs.
+ * @returns A single callback ref.
+ */
+export const mergeRefs = (...refs) => {
+  const filteredRefs = refs.filter(Boolean);
+  if (!filteredRefs.length) return null;
+  if (filteredRefs.length === 0) return filteredRefs[0];
+  return (inst) => {
+    for (const ref of filteredRefs) {
+      if (typeof ref === 'function') {
+        ref(inst);
+      } else if (ref) {
+        ref.current = inst;
+      }
+    }
+  };
+};
