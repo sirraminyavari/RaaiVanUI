@@ -149,50 +149,46 @@ const CustomTable = ({
         </div>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="table-body">
-            {(provided, snapshot) => (
+            {(provided, _) => (
               <div
-                {...getTableBodyProps()}
                 ref={provided.innerRef}
-                {...provided.droppableProps}>
+                {...provided.droppableProps}
+                {...getTableBodyProps()}>
                 {rows.map((row, i) => {
                   prepareRow(row);
                   return (
-                    // <Draggable
-                    //   draggableId={row.original.id}
-                    //   key={row.original.id}
-                    //   index={row.index}
-                    //   >
-                    //   {(provided, snapshot) => {
-                    // return (
-                    <div
-                      {...row.getRowProps(getRowProps(row))}
-                      {...provided.draggableProps}
-                      ref={provided.innerRef}
-                      isDragging={snapshot.isDragging}
-                      className={`${
-                        i % 2 === 0 ? 'SoftBackgroundColor' : ''
-                      } tr`}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <div
-                            {...cell.getCellProps([
-                              {
-                                ...getCellProps(cell),
-                                ...getColumnProps(cell.column),
-                                onClick: () => setSelectedCell(cell),
-                              },
-                            ])}
-                            className="td">
-                            {renderCell(cell)}
-                          </div>
-                        );
-                      })}
-                    </div>
-                    // );
-                    //   }}
-                    // </Draggable>
+                    <Draggable
+                      draggableId={row.original.id}
+                      key={row.original.id}
+                      index={row.index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          isDragging={snapshot.isDragging}
+                          {...row.getRowProps(getRowProps(row))} //! react-table props always must come after dnd props to work properly
+                          className={`${
+                            i % 2 === 0 ? 'SoftBackgroundColor' : ''
+                          } tr`}>
+                          {row.cells.map((cell) => (
+                            <div
+                              {...cell.getCellProps([
+                                {
+                                  ...getCellProps(cell),
+                                  ...getColumnProps(cell.column),
+                                  onClick: () => setSelectedCell(cell),
+                                },
+                              ])}
+                              className="td">
+                              {renderCell(cell)}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Draggable>
                   );
                 })}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>

@@ -1,5 +1,6 @@
 const fakeData = [
   {
+    id: '1',
     firstName: 'نام اول',
     lastName: 'نام خانوادگی اول',
     country: 'ایران',
@@ -9,6 +10,7 @@ const fakeData = [
     progress: '67 %',
   },
   {
+    id: '2',
     firstName: 'نام دوم',
     lastName: 'نام خانوادگی دوم',
     country: 'ایران',
@@ -18,6 +20,7 @@ const fakeData = [
     progress: '90 %',
   },
   {
+    id: '3',
     firstName: 'نام سوم',
     lastName: 'نام خانوادگی سوم',
     country: 'ایران',

@@ -45,6 +45,7 @@ const TestView = () => {
         getRowProps={(row) => ({
           onClick: console.log('Row!'),
         })}
+        reorderData={() => console.log('data reordered!')}
       />
     </div>
   );
