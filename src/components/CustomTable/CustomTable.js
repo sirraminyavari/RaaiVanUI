@@ -7,10 +7,9 @@ import {
 } from 'react-table';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
-import EditableCell from './EditableCell';
+// import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
-import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+// import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
 
 const defaultPropGetter = () => ({});
@@ -34,26 +33,26 @@ const CustomTable = ({
     reorderData(source.index, destination.index);
   };
 
-  const renderCell = (cell) => {
-    switch (cell.column.dataType) {
-      case 'date':
-        console.log(cell);
-        return cell.render(
-          <CustomDatePicker
-            label="انتخاب تاریخ"
-            mode="input"
-            type="jalali"
-            range={false}
-            size="small"
-            value={cell.value}
-            style={{ color: 'white' }}
-            inputStyle={{ color: 'inherit' }}
-          />
-        );
-      default:
-        return cell.render('Cell', { editable: !!isEditable });
-    }
-  };
+  // const renderCell = (cell) => {
+  //   switch (cell.column.dataType) {
+  //     case 'date':
+  //       console.log(cell);
+  //       return cell.render(
+  //         <CustomDatePicker
+  //           label="انتخاب تاریخ"
+  //           mode="input"
+  //           type="jalali"
+  //           range={false}
+  //           size="small"
+  //           value={cell.value}
+  //           style={{ color: 'white' }}
+  //           inputStyle={{ color: 'inherit' }}
+  //         />
+  //       );
+  //     default:
+  //       return cell.render('Cell', { editable: !!isEditable });
+  //   }
+  // };
 
   const defaultColumn = useMemo(
     () => ({
@@ -61,7 +60,7 @@ const CustomTable = ({
       width: 150,
       maxWidth: 500,
       // And also our default editable cell
-      Cell: EditableCell,
+      // Cell: EditableCell,
     }),
     []
   );
@@ -87,26 +86,26 @@ const CustomTable = ({
     },
     useBlockLayout,
     useResizeColumns,
-    useSortBy,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        //! Make a column for deletion
-        {
-          id: 'deletion',
-          dataType: 'actions',
-          Header: () => <div>اقدامات</div>,
-          Cell: ({ row }) => (
-            <DeleteRowIcon
-              style={{ cursor: 'pointer' }}
-              onClick={() => removeRow(row.index)}
-              size={25}
-            />
-          ),
-          width: 60,
-        },
-        ...columns,
-      ]);
-    }
+    useSortBy
+    // (hooks) => {
+    //   hooks.visibleColumns.push((columns) => [
+    //     //! Make a column for deletion
+    //     {
+    //       id: 'deletion',
+    //       dataType: 'actions',
+    //       Header: 'اقدامات',
+    //       Cell: ({ row }) => (
+    //         <DeleteRowIcon
+    //           style={{ cursor: 'pointer' }}
+    //           onClick={() => removeRow(row.index)}
+    //           size={25}
+    //         />
+    //       ),
+    //       width: 60,
+    //     },
+    //     ...columns,
+    //   ]);
+    // }
   );
 
   //! Render the UI for your table
@@ -175,7 +174,9 @@ const CustomTable = ({
                             ...getRowProps(row),
                             ...provided.draggableProps,
                           })} //! react-table props always must come after dnd props to work properly
-                          className="tr">
+                          className={`${
+                            i % 2 === 0 ? 'SoftBackgroundColor' : ''
+                          } tr`}>
                           {row.cells.map((cell) => (
                             <div
                               {...cell.getCellProps([
@@ -186,7 +187,7 @@ const CustomTable = ({
                                 },
                               ])}
                               className="td">
-                              {renderCell(cell)}
+                              {cell.render('Cell', { editable: !!isEditable })}
                             </div>
                           ))}
                         </Styled.Tr>

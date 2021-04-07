@@ -51,6 +51,7 @@ const EditableCell = ({
             textAlign: 'center',
             width: '100%',
             backgroundColor: 'inherit',
+            color: 'inherit',
           }}
           value={value}
           onChange={onChange}

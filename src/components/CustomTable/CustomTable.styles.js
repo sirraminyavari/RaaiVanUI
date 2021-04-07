@@ -17,8 +17,8 @@ export const TableContainer = styled.div`
 
     .tr {
       :hover {
-        background-color: #333;
-        color: white;
+        background-color: #bbb;
+        color: black;
       }
 
       :last-child {
@@ -72,4 +72,5 @@ export const HeaderWrapper = styled.div`
 
 export const Tr = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? '#333' : '')};
+  color: ${({ isDragging }) => (isDragging ? '#fff' : '')};
 `;
