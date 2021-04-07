@@ -16,6 +16,11 @@ export const TableContainer = styled.div`
     margin: 0.5rem 0;
 
     .tr {
+      :hover {
+        background-color: #333;
+        color: white;
+      }
+
       :last-child {
         td {
           border-bottom: 0;
@@ -29,6 +34,7 @@ export const TableContainer = styled.div`
       padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
+      border-left: 1px solid black;
       text-align: center;
       position: relative;
 
@@ -62,4 +68,8 @@ export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const Tr = styled.div`
+  background-color: ${({ isDragging }) => (isDragging ? '#333' : '')};
 `;

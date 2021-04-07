@@ -6,7 +6,7 @@ const fakeData = [
     country: 'ایران',
     city: 'طهران',
     age: 33,
-    dateOfBirth: '2020/01/18',
+    dateOfBirth: { data: '2020/01/18', dataType: 'date' },
     progress: '67 %',
   },
   {
@@ -16,7 +16,7 @@ const fakeData = [
     country: 'ایران',
     city: 'طهران',
     age: 27,
-    dateOfBirth: '2018/05/22',
+    dateOfBirth: { data: '2018/05/22', dataType: 'date' },
     progress: '90 %',
   },
   {
@@ -26,7 +26,7 @@ const fakeData = [
     country: 'ایران',
     city: 'طهران',
     age: 50,
-    dateOfBirth: '2008/11/02',
+    dateOfBirth: { data: '2008/11/02', dataType: 'date' },
     progress: '100 %',
   },
 ];

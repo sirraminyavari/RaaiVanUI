@@ -21,6 +21,17 @@ const TestView = () => {
     );
   };
 
+  const removeRow = (rowIndex) => {
+    setData((old) => old.filter((row, index) => index !== rowIndex));
+  };
+
+  const reorderData = (startIndex, endIndex) => {
+    const newData = [...data];
+    const [movedRow] = newData.splice(startIndex, 1);
+    newData.splice(endIndex, 0, movedRow);
+    setData(newData);
+  };
+
   return (
     <div>
       <CustomTable
@@ -28,6 +39,8 @@ const TestView = () => {
         columns={columns}
         data={data}
         updateCellData={updateCellData}
+        reorderData={reorderData}
+        removeRow={removeRow}
         getCellProps={(cell) => ({
           onClick: () => console.log(cell),
           style: {
@@ -43,9 +56,8 @@ const TestView = () => {
           onClick: () => console.log('Column!'),
         })}
         getRowProps={(row) => ({
-          onClick: console.log('Row!'),
+          onClick: console.log('Row selected!'),
         })}
-        reorderData={() => console.log('data reordered!')}
       />
     </div>
   );

@@ -20,6 +20,7 @@ const CustomTable = ({
   columns,
   data,
   updateCellData,
+  removeRow,
   reorderData,
   getCellProps = defaultPropGetter,
   getColumnProps = defaultPropGetter,
@@ -45,6 +46,8 @@ const CustomTable = ({
             range={false}
             size="small"
             value={cell.value}
+            style={{ color: 'white' }}
+            inputStyle={{ color: 'inherit' }}
           />
         );
       default:
@@ -77,6 +80,7 @@ const CustomTable = ({
       data,
       defaultColumn,
       updateCellData,
+      removeRow,
       selectedCell,
       setSelectedCell,
       reorderData,
@@ -94,7 +98,7 @@ const CustomTable = ({
           Cell: ({ row }) => (
             <DeleteRowIcon
               style={{ cursor: 'pointer' }}
-              onClick={() => console.log(row)}
+              onClick={() => removeRow(row.index)}
               size={25}
             />
           ),
@@ -117,7 +121,7 @@ const CustomTable = ({
       <div {...getTableProps()} className="table">
         <div>
           {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+            <div {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <div
                   {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -162,14 +166,16 @@ const CustomTable = ({
                       key={row.original.id}
                       index={row.index}>
                       {(provided, snapshot) => (
-                        <div
+                        <Styled.Tr
                           ref={provided.innerRef}
-                          {...provided.draggableProps}
+                          isSomethingDragging={snapshot.draggingOver}
                           isDragging={snapshot.isDragging}
-                          {...row.getRowProps(getRowProps(row))} //! react-table props always must come after dnd props to work properly
-                          className={`${
-                            i % 2 === 0 ? 'SoftBackgroundColor' : ''
-                          } tr`}>
+                          {...provided.dragHandleProps}
+                          {...row.getRowProps({
+                            ...getRowProps(row),
+                            ...provided.draggableProps,
+                          })} //! react-table props always must come after dnd props to work properly
+                          className="tr">
                           {row.cells.map((cell) => (
                             <div
                               {...cell.getCellProps([
@@ -183,7 +189,7 @@ const CustomTable = ({
                               {renderCell(cell)}
                             </div>
                           ))}
-                        </div>
+                        </Styled.Tr>
                       )}
                     </Draggable>
                   );

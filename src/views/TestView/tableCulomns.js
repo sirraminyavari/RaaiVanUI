@@ -26,13 +26,20 @@ const tableCulomns = [
   },
   {
     Header: 'تاریخ تولد',
-    accessor: 'dateOfBirth',
+    accessor: (row) => row.dateOfBirth.data,
     dataType: 'date',
   },
   {
     Header: 'پیشرفت پروفایل',
-    accessor: 'progress',
+    accessor: (row) => {
+      console.log(row, 'accessor');
+      return row.progress;
+    },
     dataType: 'string',
+    Cell: (row) => {
+      console.log(row, 'cell');
+      return row.value;
+    },
   },
 ];
 

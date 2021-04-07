@@ -44,6 +44,8 @@ import styles from './CustomDatePicker.module.css';
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
  * @property {string} format - The date picker format.
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
+ * @property {Object} inputStyle - Style for input.
+ * @property {Object} buttonStyle - Style for button.
  */
 
 /**
@@ -63,6 +65,8 @@ const CustomDatePicker = (props) => {
     clearButton,
     format,
     fromToday,
+    inputStyle,
+    buttonStyle,
     ...rest
   } = props;
 
@@ -288,7 +292,9 @@ const CustomDatePicker = (props) => {
     case 'button':
       return (
         <>
-          <Button style={{ minWidth: '16rem' }} onClick={toggleCalendar}>
+          <Button
+            style={{ minWidth: '16rem', ...buttonStyle }}
+            onClick={toggleCalendar}>
             {formatDate(selectedDate)}
           </Button>
           {isCalendarShown && (
@@ -322,6 +328,7 @@ const CustomDatePicker = (props) => {
                   textAlign: 'center',
                   width: '100%',
                   backgroundColor: 'inherit',
+                  ...inputStyle,
                 }}
                 ref={mergeRefs(inputRef, ref)}
               />
