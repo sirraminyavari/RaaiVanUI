@@ -13,6 +13,10 @@ export const TableContainer = styled.div`
     overflow-x: auto;
     margin: 0.5rem 0;
 
+    .tbody {
+      min-height: 2rem;
+    }
+
     .tr {
       :hover {
         background-color: #bbb;
@@ -59,6 +63,19 @@ export const TableContainer = styled.div`
         border-right: 0;
       }
     }
+  }
+
+  .pagination {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+
+  .middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 

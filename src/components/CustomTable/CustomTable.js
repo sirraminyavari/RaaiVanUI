@@ -4,13 +4,13 @@ import {
   useFlexLayout,
   useResizeColumns,
   useSortBy,
+  usePagination,
 } from 'react-table';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
-// import EditableCell from './EditableCell';
 import Button from 'components/Buttons/Button';
-// import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
+import Pagination from './Pagination';
 
 const defaultPropGetter = () => ({});
 
@@ -47,9 +47,18 @@ const CustomTable = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
+    page,
     resetResizing,
+    canPreviousPage, //! Pagination
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize }, //! End of Pagination
   } = useTable(
     {
       columns,
@@ -60,10 +69,12 @@ const CustomTable = ({
       selectedCell,
       setSelectedCell,
       reorderData,
+      initialState: { pageIndex: 0, pageSize: 5 },
     },
     useFlexLayout,
     useResizeColumns,
-    useSortBy
+    useSortBy,
+    usePagination
   );
 
   //! Render the UI for your table
@@ -112,10 +123,11 @@ const CustomTable = ({
           <Droppable droppableId="table-body">
             {(provided, _) => (
               <div
+                className="tbody"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 {...getTableBodyProps()}>
-                {rows.map((row, i) => {
+                {page.map((row, i) => {
                   prepareRow(row);
                   return (
                     <Draggable
@@ -159,6 +171,18 @@ const CustomTable = ({
           </Droppable>
         </DragDropContext>
       </div>
+      <Pagination
+        canNextPage={canNextPage}
+        canPreviousPage={canPreviousPage}
+        gotoPage={gotoPage}
+        nextPage={nextPage}
+        pageCount={pageCount}
+        pageIndex={pageIndex}
+        pageOptions={pageOptions}
+        pageSize={pageSize}
+        previousPage={previousPage}
+        setPageSize={setPageSize}
+      />
     </Styled.TableContainer>
   );
 };
