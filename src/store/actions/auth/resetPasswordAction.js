@@ -26,10 +26,16 @@ const resetPasswordAction = () => async (dispatch, getState) => {
         VerificationToken: confirmationToken,
         Code: code.join(''),
         Login: true,
-        ResponseHandler: function (result) {
+        ResponseHandler: function (response) {
+          const result = response && JSON.parse(response);
           console.log(result, 'error for final reset step');
+
           if (result.ErrorText) {
-            dispatch(resetPasswordFailed(result.ErrorText));
+            dispatch(
+              resetPasswordFailed(
+                RVDic.MSG[result.ErrorText] || result.ErrorText
+              )
+            );
           } else {
             dispatch(resetPasswordSuccess());
             RVAPI.LoggedIn();

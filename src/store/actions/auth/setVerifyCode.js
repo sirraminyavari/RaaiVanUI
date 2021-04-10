@@ -16,7 +16,7 @@ const setVerifyCodeAction = (params) => (dispatch, getState) => {
   // so verificaton code is setted in type of array.
   const state = getState();
   const previous =
-    state.auth.verifyCode.length === 0 ? params : state.auth.verifyCode;
+    state.auth.verifyCode?.length === 0 ? params : state.auth.verifyCode;
   dispatch(setVerifyCode({ new: params }));
   if (!params.find((x) => x === -1)) {
     console.log(params, 'verify code');

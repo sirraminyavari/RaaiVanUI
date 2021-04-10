@@ -112,6 +112,7 @@ const SignUp = () => {
    */
   const onPasswordChanged = (value) => {
     dispatch(setPasswordAction(value));
+    setPassFocused(true);
   };
   /**
    * Synchronously sets inputted name to redux state.
@@ -193,6 +194,13 @@ const SignUp = () => {
     push('/auth/login');
   };
 
+  const passVisibility = (value) => {
+    setPassVisible(value);
+    setTimeout(() => {
+      setPassFocused(true);
+    }, 101);
+  };
+
   return (
     <Box>
       {fetchingFiles ? (
@@ -205,8 +213,9 @@ const SignUp = () => {
               marginTop: '2rem',
               marginBottom: '2rem',
               textAlign: 'center',
-            }}>
-            {RVDic.SignUp}
+            }}
+            className={'rv-distant'}>
+            {RVDic.CreateAccount}
           </Heading>
 
           <AnimatedInput
@@ -239,13 +248,13 @@ const SignUp = () => {
                 <InvisibleIcon
                   className="rv-gray"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(false)}
+                  onClick={() => passVisibility(false)}
                 />
               ) : (
                 <VisibleIcon
                   className="rv-gray"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(true)}
+                  onClick={() => passVisibility(true)}
                 />
               )
             }
@@ -289,10 +298,9 @@ const SignUp = () => {
           </RowItems>
           {!passFocused && (
             <Heading
-              type="h5"
+              type="h6"
               style={{
                 fontSize: '0.8rem',
-                color: `${LIGHT_BLUE}`,
                 opacity: `${passFocused ? 0 : 1}`,
                 transition: 'opacity 1s',
                 marginTop: '1rem',
@@ -308,7 +316,11 @@ const SignUp = () => {
                 </a>
                 {' را خوانده و به آن متعهد هستید '}
               </p> */}
-              {decode(RVGlobal.SystemName)}
+              {/* {decode(RVGlobal.SystemName)} */}
+              {RVDic.Checks.YouMustAgreeWithTermsAndConditions.replace(
+                '[n]',
+                decode(RVGlobal.SystemName)
+              ).replace('[m]', decode(RVGlobal.SystemName))}
             </Heading>
           )}
           <Button
@@ -321,7 +333,6 @@ const SignUp = () => {
               textAlign: 'center',
               ...common_style,
               marginBottom: '2.5rem',
-              fontSize: '1rem',
             }}>
             {RVDic.GetConfirmationCode}
           </Button>
@@ -356,4 +367,8 @@ const RowItems = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-const common_style = { marginBottom: '0.5rem', marginTop: '0.5rem' };
+const common_style = {
+  marginBottom: '0.5rem',
+  marginTop: '0.5rem',
+  fontSize: '0.8rem',
+};

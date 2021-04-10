@@ -96,9 +96,9 @@ const ResetPassword = () => {
             type="h1"
             style={{
               textAlign: 'center',
-              color: 'black',
               ...common_style,
-            }}>
+            }}
+            className={'rv-distant'}>
             {email}
           </Heading>
           <Edit
