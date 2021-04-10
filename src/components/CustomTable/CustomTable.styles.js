@@ -30,6 +30,11 @@ export const TableContainer = styled.div`
       }
     }
 
+    .th {
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+
     .th,
     .td {
       margin: 0;

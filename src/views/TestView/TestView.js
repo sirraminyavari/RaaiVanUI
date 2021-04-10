@@ -55,6 +55,25 @@ const TestView = () => {
     setData(newData);
   };
 
+  const removeAll = () => {
+    setData([]);
+  };
+
+  const addRow = () => {
+    const newRecord = {
+      id: '10',
+      firstName: 'نام دهم',
+      lastName: 'نام خانوادگی دهم',
+      country: 'ایران',
+      city: 'طهران',
+      age: 50,
+      dateOfBirth: '2008/11/02',
+      progress: 100,
+    };
+    const newData = [...data, newRecord];
+    setData(newData);
+  };
+
   return (
     <div>
       <CustomTable
@@ -64,6 +83,9 @@ const TestView = () => {
         updateCellData={updateCellData}
         reorderData={reorderData}
         removeRow={removeRow}
+        addRow={addRow}
+        isFetching={false}
+        removeAll={removeAll}
         getCellProps={(cell) => ({
           onClick: () => console.log(cell),
           style: {

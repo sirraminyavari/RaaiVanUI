@@ -11,15 +11,19 @@ import * as Styled from './CustomTable.styles';
 import Button from 'components/Buttons/Button';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import Pagination from './Pagination';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const defaultPropGetter = () => ({});
 
 const CustomTable = ({
   editable: isEditable,
+  isFetching,
   columns,
   data,
   updateCellData,
   removeRow,
+  removeAll,
+  addRow,
   reorderData,
   getCellProps = defaultPropGetter,
   getColumnProps = defaultPropGetter,
@@ -66,6 +70,8 @@ const CustomTable = ({
       defaultColumn,
       updateCellData,
       removeRow,
+      removeAll,
+      addRow,
       selectedCell,
       setSelectedCell,
       reorderData,
@@ -80,12 +86,20 @@ const CustomTable = ({
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
-      <Button
-        style={{ display: 'inline-block' }}
-        disable={false}
-        onClick={resetResizing}>
-        Reset Resizing
-      </Button>
+      <div>
+        <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
+          Reset Resizing
+        </Button>
+        <Button style={{ display: 'inline-block' }} onClick={addRow}>
+          Add new record
+        </Button>
+        <Button
+          style={{ display: 'inline-block' }}
+          type="negative"
+          onClick={removeAll}>
+          Clear all
+        </Button>
+      </div>
       <div {...getTableProps()} className="table">
         <div>
           {headerGroups.map((headerGroup) => (
@@ -166,6 +180,7 @@ const CustomTable = ({
                   );
                 })}
                 {provided.placeholder}
+                {isFetching && <LogoLoader />}
               </div>
             )}
           </Droppable>
