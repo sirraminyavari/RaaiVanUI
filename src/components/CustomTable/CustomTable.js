@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   useTable,
-  useBlockLayout,
+  useFlexLayout,
   useResizeColumns,
   useSortBy,
 } from 'react-table';
@@ -33,34 +33,11 @@ const CustomTable = ({
     reorderData(source.index, destination.index);
   };
 
-  // const renderCell = (cell) => {
-  //   switch (cell.column.dataType) {
-  //     case 'date':
-  //       console.log(cell);
-  //       return cell.render(
-  //         <CustomDatePicker
-  //           label="انتخاب تاریخ"
-  //           mode="input"
-  //           type="jalali"
-  //           range={false}
-  //           size="small"
-  //           value={cell.value}
-  //           style={{ color: 'white' }}
-  //           inputStyle={{ color: 'inherit' }}
-  //         />
-  //       );
-  //     default:
-  //       return cell.render('Cell', { editable: !!isEditable });
-  //   }
-  // };
-
   const defaultColumn = useMemo(
     () => ({
       minWidth: 100,
       width: 150,
       maxWidth: 500,
-      // And also our default editable cell
-      // Cell: EditableCell,
     }),
     []
   );
@@ -84,28 +61,9 @@ const CustomTable = ({
       setSelectedCell,
       reorderData,
     },
-    useBlockLayout,
+    useFlexLayout,
     useResizeColumns,
     useSortBy
-    // (hooks) => {
-    //   hooks.visibleColumns.push((columns) => [
-    //     //! Make a column for deletion
-    //     {
-    //       id: 'deletion',
-    //       dataType: 'actions',
-    //       Header: 'اقدامات',
-    //       Cell: ({ row }) => (
-    //         <DeleteRowIcon
-    //           style={{ cursor: 'pointer' }}
-    //           onClick={() => removeRow(row.index)}
-    //           size={25}
-    //         />
-    //       ),
-    //       width: 60,
-    //     },
-    //     ...columns,
-    //   ]);
-    // }
   );
 
   //! Render the UI for your table

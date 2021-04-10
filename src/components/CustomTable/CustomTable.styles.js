@@ -4,11 +4,9 @@ export const TableContainer = styled.div`
   padding: 1rem;
   display: block;
   margin: 1rem;
-  max-width: 100%;
   border: 0.15rem solid black;
 
   .table {
-    width: 100%;
     border-spacing: 0;
     border: 0.15rem solid black;
     border-radius: 0.5rem;
