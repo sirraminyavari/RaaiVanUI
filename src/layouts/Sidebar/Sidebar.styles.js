@@ -235,6 +235,12 @@ export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.3rem;
 `;
 
+export const MenuItemImage = styled.img`
+  max-width: 1.8rem;
+  // background-color: #fff;
+  border-radius: 50%;
+`;
+
 export const HighlightedTitle = styled.span`
   margin-${RV_Float}: 0.4rem;
 `;
