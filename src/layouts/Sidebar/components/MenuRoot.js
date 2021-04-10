@@ -12,6 +12,8 @@ import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import SidebarMenuBranches from './MenuBranches';
 import { createSelector } from 'reselect';
 
+// import FallbackImage from 'assets/images/cliqmind_mini.png'
+
 const { RV_RevFloat } = window;
 
 const selectOpenMenuID = createSelector(
@@ -74,7 +76,7 @@ const SidebarMenuRoot = (props) => {
           {childMenus ? (
             <CaretIcon dir={isOpen() ? 'down' : RV_RevFloat} />
           ) : (
-            <img src={iconImage} alt="menu-icon" />
+            <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
           <Styled.MenuTitle>{decode(title)}</Styled.MenuTitle>
         </Styled.MenuTitleWrapper>

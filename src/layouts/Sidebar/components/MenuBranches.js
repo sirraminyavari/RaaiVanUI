@@ -11,6 +11,8 @@ import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers/helpers';
 
+// import FallbackImage from 'assets/images/cliqmind_mini.png'
+
 const selectTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.tree
@@ -71,7 +73,11 @@ const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
                       {menu.IconName &&
                         SidebarIcons[menu.IconName]({ size: 20 })}
                       {menu.IconURL && (
-                        <img src={menu.IconURL} alt="sub-menu-icon" />
+                        <Styled.MenuItemImage
+                          src={menu.IconURL}
+                          style={{ maxWidth: '1.3rem' }}
+                          alt="sub-menu-icon"
+                        />
                       )}
                       <span style={{ margin: '0 10px' }}>
                         {decode(menu.TypeName)}

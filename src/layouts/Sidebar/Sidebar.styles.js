@@ -235,6 +235,12 @@ export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.3rem;
 `;
 
+export const MenuItemImage = styled.img`
+  max-width: 1.8rem;
+  // background-color: #fff;
+  border-radius: 50%;
+`;
+
 export const HighlightedTitle = styled.span`
   margin-${RV_Float}: 0.4rem;
 `;
@@ -261,16 +267,6 @@ export const SubMenu = styled(
   &:hover {
     background: rgb(66, 133, 244, 0.4);
   }
-`;
-
-export const BadgeWrapper = styled.div`
-  height: 1.3rem;
-  padding: 0 0.3rem;
-  line-height: 1.5rem;
-  border-radius: 1rem;
-  background-color: #2b7be4;
-  text-align: center;
-  font-size: 0.8rem;
 `;
 
 export const ListItemWrapper = styled.div`
