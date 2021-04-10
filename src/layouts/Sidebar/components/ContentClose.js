@@ -10,6 +10,8 @@ import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 
+// import FallbackImage from 'assets/images/cliqmind_mini.png';
+
 const SidebarContentClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
@@ -88,7 +90,13 @@ const SidebarContentClose = ({ theme }) => {
                   to={`/classes/${NodeTypeID}`}
                   key={key}>
                   {IconName && SidebarIcons[IconName]()}
-                  {IconURL && <img src={IconURL} alt="sidebar-icon" />}
+                  {IconURL && (
+                    <Styled.MenuItemImage
+                      src={IconURL}
+                      style={{ maxWidth: '2rem' }}
+                      alt="sidebar-icon-closed"
+                    />
+                  )}
                 </Styled.MiniIconWrapper>
               );
             })}

@@ -73,18 +73,10 @@ export const ButtonTitle = styled.div`
   text-transform: capitalize;
 `;
 
-export const Badge = styled.div`
-  height: 1.3rem;
-  min-width: 1.3rem;
-  padding: 0.1rem;
-  line-height: 1.1rem;
-  border-radius: 50%;
-  border: 0.15rem solid #2b388f;
-  background-color: #e2234f;
+export const BadgeWrapper = styled.div`
   position: absolute;
   top: 0.3rem;
-  ${`${RV_RevFloat}: -0.6rem;`}
-  font-size: 0.6rem;
+  ${`${RV_RevFloat}: 0.7rem;`}
 `;
 
 export const SearchWrapper = styled.div`
