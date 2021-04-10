@@ -112,6 +112,7 @@ const SignUp = () => {
    */
   const onPasswordChanged = (value) => {
     dispatch(setPasswordAction(value));
+    setPassFocused(true);
   };
   /**
    * Synchronously sets inputted name to redux state.
@@ -193,6 +194,13 @@ const SignUp = () => {
     push('/auth/login');
   };
 
+  const passVisibility = (value) => {
+    setPassVisible(value);
+    setTimeout(() => {
+      setPassFocused(true);
+    }, 101);
+  };
+
   return (
     <Box>
       {fetchingFiles ? (
@@ -240,13 +248,13 @@ const SignUp = () => {
                 <InvisibleIcon
                   className="rv-gray"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(false)}
+                  onClick={() => passVisibility(false)}
                 />
               ) : (
                 <VisibleIcon
                   className="rv-gray"
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(true)}
+                  onClick={() => passVisibility(true)}
                 />
               )
             }
