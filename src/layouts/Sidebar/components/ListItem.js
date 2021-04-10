@@ -4,6 +4,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Sidebar.styles';
+import Badge from 'components/Badge/Badge';
 
 /**
  * @typedef PropType
@@ -27,7 +28,7 @@ const ListItem = (props) => {
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>
       </Styled.CenterIcon>
-      {badge && <Styled.BadgeWrapper>{badge}</Styled.BadgeWrapper>}
+      {badge && <Badge color="#2b7be4" value={badge} withBorder />}
     </Styled.ListItemWrapper>
   );
 };

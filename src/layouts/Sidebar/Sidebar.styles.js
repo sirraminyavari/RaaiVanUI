@@ -263,16 +263,6 @@ export const SubMenu = styled(
   }
 `;
 
-export const BadgeWrapper = styled.div`
-  height: 1.3rem;
-  padding: 0 0.3rem;
-  line-height: 1.5rem;
-  border-radius: 1rem;
-  background-color: #2b7be4;
-  text-align: center;
-  font-size: 0.8rem;
-`;
-
 export const ListItemWrapper = styled.div`
   ${FlexBetween}
   color: #fff;
