@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import CustomTable from 'components/CustomTable/CustomTable';
 import tableData from './tableData';
-import makeCulomns from './makeColumns';
+import makeCulomns from 'components/CustomTable/makeColumns';
 import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
+import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -20,6 +21,7 @@ const TestView = () => {
     () =>
       makeCulomns(headers, {
         delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
+        view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
       }),
     []
   );

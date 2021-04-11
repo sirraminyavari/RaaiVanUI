@@ -14,6 +14,7 @@ import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
+import Modal from 'components/Modal/Modal';
 
 const defaultPropGetter = () => ({});
 
@@ -35,11 +36,20 @@ const CustomTable = ({
     message: '',
     type: '',
   });
+  const [modal, setModal] = useState({ show: false, title: '', type: '' });
 
   const restoreConfirmState = () => {
     setConfirm({
       show: false,
       message: '',
+      type: '',
+    });
+  };
+
+  const restoreModalState = () => {
+    setModal({
+      show: false,
+      title: '',
       type: '',
     });
   };
@@ -56,7 +66,24 @@ const CustomTable = ({
         type: 'deleteRow',
       });
     }
+    if (selectedCell.column.id === 'view-row') {
+      console.log(selectedCell);
+      setModal({
+        show: true,
+        type: 'view-row',
+        title: 'نمایش جزئیات ردیف',
+      });
+    }
   }, [selectedCell]);
+
+  const getModalContent = () => {
+    let viewColumns = columns.filter((column) => {
+      return Object.keys(column).includes('Header');
+    });
+    console.log(viewColumns[0].accessor);
+
+    return selectedCell?.row.original[viewColumns[0].accessor];
+  };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -91,6 +118,10 @@ const CustomTable = ({
 
   const handleOnCancel = () => {
     restoreConfirmState();
+  };
+
+  const handleOnModalClose = () => {
+    restoreModalState();
   };
 
   const defaultColumn = useMemo(
@@ -149,6 +180,13 @@ const CustomTable = ({
         onClose={handleOnCancel}>
         <H5>{confirm.message}</H5>
       </Confirm>
+      <Modal
+        contentWidth="75%"
+        show={modal.show}
+        title={modal.title}
+        onClose={handleOnModalClose}>
+        {getModalContent()}
+      </Modal>
       <div>
         <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
           Reset Resizing

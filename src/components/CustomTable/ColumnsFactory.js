@@ -28,15 +28,18 @@ const getCell = (type) => {
 };
 
 const makeColumns = (headers, actions) => {
-  let tableColumns = [];
+  let actionColumns = [];
   if (actions && Object.keys(actions).length !== 0) {
-    const deleteCell = {
-      id: 'delete-row',
-      dataType: 'actions',
-      Cell: () => actions.delete(),
-      width: 40,
-    };
-    tableColumns.push(deleteCell);
+    Object.keys(actions).forEach((action, index) => {
+      const customColumn = {
+        id: `${action}-row`,
+        dataType: 'actions',
+        Cell: () => actions[action](),
+        width: 40,
+        maxWidth: 40,
+      };
+      actionColumns.push(customColumn);
+    });
   }
   console.log(headers, 'make columns');
   const dataCulomns = headers.map((header) => {
@@ -47,7 +50,7 @@ const makeColumns = (headers, actions) => {
     };
   });
 
-  return tableColumns.concat(dataCulomns);
+  return actionColumns.concat(dataCulomns);
 };
 
 export default makeColumns;
