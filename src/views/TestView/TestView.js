@@ -2,6 +2,7 @@ import { useState, lazy } from 'react';
 import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import APIHandler from 'apiHelper/APIHandler';
 import { decode } from 'js-base64';
+import ItemProducer from 'components/ItemProducer/ItemProducer';
 
 const Modal = lazy(() =>
   import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
@@ -20,7 +21,6 @@ const defaultValues = [
 
 const TestView = () => {
   //! If true, Shows a modal to user for more advanced options to choose from.
-  const [selected, setSelected] = useState(false);
   const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
   const fetchItems = (search) => {
@@ -33,12 +33,18 @@ const TestView = () => {
             ParseResults: true,
             SearchText: search,
           },
-          (response) =>
+          (response) => {
+            // console.log(response, 'rs res res');
             resolve(
-              response.NodeTypes.map((node) => ({
+              response.NodeTypes.map((node, index) => ({
+                id: node.NodeTypeID,
                 value: decode(node.TypeName),
+                index: index,
+                AdditionalID: node.AdditionalID,
               }))
-            ),
+            );
+          },
+
           (error) => reject(error)
         );
       } catch (err) {
@@ -48,20 +54,12 @@ const TestView = () => {
   };
 
   return (
-    <div style={{ padding: '2rem 1rem', width: '500px' }}>
-      <AutoSuggestInput
-        fetchItems={fetchItems}
-        onItemSelect={(item) => setSelected(item)}
-        // defaultItems={defaultValues}
-      >
-        {({ show, onClose }) => (
-          <Modal show={show} onClose={onClose}>
-            hello modal
-          </Modal>
-        )}
-      </AutoSuggestInput>
-      <h3>{selected?.value}</h3>
-    </div>
+    <ItemProducer
+      fetchItems={fetchItems}
+      type={'text'}
+      style={{ backgroundColor: 'white' }}
+      onItems={(data) => console.log(data, 'items')}
+    />
   );
 };
 
