@@ -38,10 +38,10 @@ const NavButtonComponent = (props) => {
         {badge && (
           <Styled.BadgeWrapper>
             <Badge
-              style={{ height: '1.3rem' }}
+              style={{ height: '1.4rem', borderWidth: '0.15rem' }}
               value={badge}
               color="#e2234f"
-              withBorder
+              className="rv-warm-border"
             />
           </Styled.BadgeWrapper>
         )}
