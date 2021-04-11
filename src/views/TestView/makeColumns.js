@@ -31,11 +31,10 @@ const makeColumns = (headers, actions) => {
   let tableColumns = [];
   if (actions && Object.keys(actions).length !== 0) {
     const deleteCell = {
-      id: 'actions',
+      id: 'delete-row',
       dataType: 'actions',
-      Header: 'اقدامات',
-      Cell: ({ row }) => actions.delete(row.index),
-      width: 60,
+      Cell: () => actions.delete(),
+      width: 40,
     };
     tableColumns.push(deleteCell);
   }

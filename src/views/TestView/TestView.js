@@ -1,8 +1,8 @@
-import { useState, lazy } from 'react';
-import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
-import APIHandler from 'apiHelper/APIHandler';
-import { decode } from 'js-base64';
-import ItemProducer from 'components/ItemProducer/ItemProducer';
+import { useMemo, useState } from 'react';
+import CustomTable from 'components/CustomTable/CustomTable';
+import tableData from './tableData';
+import makeCulomns from './makeColumns';
+import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -15,46 +15,80 @@ const headers = [
 ];
 
 const TestView = () => {
-  //! If true, Shows a modal to user for more advanced options to choose from.
-  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
+  const [data, setData] = useState(() => tableData);
+  const columns = useMemo(
+    () =>
+      makeCulomns(headers, {
+        delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
+      }),
+    []
+  );
 
-  const fetchItems = (search) => {
-    return new Promise((resolve, reject) => {
-      try {
-        apiHandler.fetch(
-          {
-            Count: 1000,
-            CheckAccess: true,
-            ParseResults: true,
-            SearchText: search,
-          },
-          (response) => {
-            // console.log(response, 'rs res res');
-            resolve(
-              response.NodeTypes.map((node, index) => ({
-                id: node.NodeTypeID,
-                value: decode(node.TypeName),
-                index: index,
-                AdditionalID: node.AdditionalID,
-              }))
-            );
-          },
+  const updateCellData = (rowIndex, columnId, value) => {
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...row,
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
 
-          (error) => reject(error)
-        );
-      } catch (err) {
-        reject(err);
-      }
-    });
+  const removeRow = (rowIndex) => {
+    setData((old) => old.filter((row, index) => index !== rowIndex));
+  };
+
+  const reorderData = (startIndex, endIndex) => {
+    const newData = [...data];
+    const [movedRow] = newData.splice(startIndex, 1);
+    newData.splice(endIndex, 0, movedRow);
+    setData(newData);
+  };
+
+  const removeAll = () => {
+    setData([]);
+  };
+
+  const addRow = () => {
+    const newRecord = {
+      id: '10',
+      firstName: 'نام دهم',
+      lastName: 'نام خانوادگی دهم',
+      country: 'ایران',
+      city: 'طهران',
+      age: 50,
+      dateOfBirth: '2008/11/02',
+      progress: 100,
+    };
+    const newData = [...data, newRecord];
+    setData(newData);
   };
 
   return (
-    <ItemProducer
-      fetchItems={fetchItems}
-      type={'text'}
-      style={{ backgroundColor: 'white' }}
-      onItems={(data) => console.log(data, 'items')}
-    />
+    <div>
+      <CustomTable
+        editable
+        columns={columns}
+        data={data}
+        updateCellData={updateCellData}
+        reorderData={reorderData}
+        removeRow={removeRow}
+        addRow={addRow}
+        isFetching={false}
+        removeAll={removeAll}
+        getCellProps={(cell) => ({
+          style: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        })}
+      />
+    </div>
   );
 };
 

@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+/**
+ * Renders a confirm modal.
+ */
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 import Button from '../Buttons/Button';
+import { WindowContext } from 'context/WindowProvider';
 
-const { GlobalUtilities, RVDic, RV_RTL } = window;
-
-const Confirm = ({ onConfirm, ...props }) => {
+const Confirm = ({ onConfirm, onCancel, onClose, ...props }) => {
   const [showState, setShowState] = useState(props.show !== false);
+  const { GlobalUtilities, RVDic, RV_RTL } = useContext(WindowContext);
+
+  //! Fires when user confirm the message.
+  const handleOnConfirm = () => {
+    if (GlobalUtilities.get_type(onConfirm) === 'function') onConfirm();
+    setShowState(false);
+  };
+
+  //! Fires when user change its mind and do not confirm the message.
+  const handleOnCancel = () => {
+    if (GlobalUtilities.get_type(onConfirm) === 'function') onCancel();
+    setShowState(false);
+  };
+
+  //! Fires when user close the confirm modal with red cross icon.
+  const handleOnClose = () => {
+    if (GlobalUtilities.get_type(onConfirm) === 'function') onClose();
+  };
 
   return (
     <Modal
@@ -14,6 +34,7 @@ const Confirm = ({ onConfirm, ...props }) => {
       middle={true}
       titleClass="RedColor"
       show={showState}
+      onClose={handleOnClose}
       {...props}>
       <Message>{props.children}</Message>
       <ButtonsContainer>
@@ -26,10 +47,7 @@ const Confirm = ({ onConfirm, ...props }) => {
             },
             RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
           )}
-          onClick={() => {
-            if (GlobalUtilities.get_type(onConfirm) == 'function') onConfirm();
-            setShowState(false);
-          }}>
+          onClick={handleOnConfirm}>
           {RVDic.Confirm}
         </Button>
         <Button
@@ -38,7 +56,7 @@ const Confirm = ({ onConfirm, ...props }) => {
             flex: '0 0 auto',
             width: '6rem',
           }}
-          onClick={() => setShowState(false)}>
+          onClick={handleOnCancel}>
           {RVDic.Cancel}
         </Button>
       </ButtonsContainer>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -12,6 +12,8 @@ import Button from 'components/Buttons/Button';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import Confirm from 'components/Modal/Confirm';
+import H5 from 'components/TypoGraphy/H5';
 
 const defaultPropGetter = () => ({});
 
@@ -26,10 +28,35 @@ const CustomTable = ({
   addRow,
   reorderData,
   getCellProps = defaultPropGetter,
-  getColumnProps = defaultPropGetter,
-  getRowProps = defaultPropGetter,
 }) => {
   const [selectedCell, setSelectedCell] = useState(null);
+  const [confirm, setConfirm] = useState({
+    show: false,
+    message: '',
+    type: '',
+  });
+
+  const restoreConfirmState = () => {
+    setConfirm({
+      show: false,
+      message: '',
+      type: '',
+    });
+  };
+
+  useEffect(() => {
+    if (!selectedCell) return;
+    if (selectedCell.column.id === 'delete-row') {
+      console.log(selectedCell);
+      setConfirm({
+        show: true,
+        message: `آیا از پاک کردن ردیف شماره ${
+          selectedCell.row.index + 1
+        } اطمینان دارید؟`,
+        type: 'deleteRow',
+      });
+    }
+  }, [selectedCell]);
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -37,9 +64,38 @@ const CustomTable = ({
     reorderData(source.index, destination.index);
   };
 
+  const handleClearAll = () => {
+    setConfirm({
+      show: true,
+      message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
+      type: 'clearAll',
+    });
+  };
+
+  const handleOnConfirm = () => {
+    switch (confirm.type) {
+      case 'clearAll':
+        restoreConfirmState();
+        removeAll();
+        return;
+      case 'deleteRow':
+        restoreConfirmState();
+        removeRow(selectedCell.row.index);
+        return;
+
+      default:
+        restoreConfirmState();
+        return;
+    }
+  };
+
+  const handleOnCancel = () => {
+    restoreConfirmState();
+  };
+
   const defaultColumn = useMemo(
     () => ({
-      minWidth: 100,
+      minWidth: 40,
       width: 150,
       maxWidth: 500,
     }),
@@ -86,6 +142,13 @@ const CustomTable = ({
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
+      <Confirm
+        show={confirm.show}
+        onConfirm={handleOnConfirm}
+        onCancel={handleOnCancel}
+        onClose={handleOnCancel}>
+        <H5>{confirm.message}</H5>
+      </Confirm>
       <div>
         <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
           Reset Resizing
@@ -96,7 +159,7 @@ const CustomTable = ({
         <Button
           style={{ display: 'inline-block' }}
           type="negative"
-          onClick={removeAll}>
+          onClick={handleClearAll}>
           Clear all
         </Button>
       </div>
@@ -155,7 +218,6 @@ const CustomTable = ({
                           isDragging={snapshot.isDragging}
                           {...provided.dragHandleProps}
                           {...row.getRowProps({
-                            ...getRowProps(row),
                             ...provided.draggableProps,
                           })} //! react-table props always must come after dnd props to work properly
                           className={`${
@@ -166,7 +228,6 @@ const CustomTable = ({
                               {...cell.getCellProps([
                                 {
                                   ...getCellProps(cell),
-                                  ...getColumnProps(cell.column),
                                   onClick: () => setSelectedCell(cell),
                                 },
                               ])}
