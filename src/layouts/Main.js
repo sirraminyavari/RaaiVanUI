@@ -12,6 +12,7 @@ import { MOBILE_BOUNDRY } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { createSelector } from 'reselect';
+import RasoulView from 'views/Rasoul/Rasoul';
 
 const switchRoutes = (
   <Switch>
@@ -34,6 +35,7 @@ const switchRoutes = (
       );
     })}
     <Route exact path="/test" component={TestView} />
+    <Route exact path="/rasoul" component={RasoulView} />
     <Redirect from="/" to="/teams" />
   </Switch>
 );

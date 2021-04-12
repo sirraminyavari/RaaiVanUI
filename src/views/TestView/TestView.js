@@ -1,103 +1,65 @@
-import { useMemo, useState } from 'react';
-import CustomTable from 'components/CustomTable/CustomTable';
-import tableData from './tableData';
-import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
-import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
+import { useState, lazy } from 'react';
+import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import APIHandler from 'apiHelper/APIHandler';
+import { decode } from 'js-base64';
+import ItemProducer from 'components/ItemProducer/ItemProducer';
 
-const headers = [
-  { firstName: 'نام', dataType: 'string' },
-  { lastName: 'نام خانوادگی', dataType: 'string' },
-  { country: 'کشور', dataType: 'string' },
-  { city: 'شهر', dataType: 'string' },
-  { age: 'سن', dataType: 'integer' },
-  { dateOfBirth: 'تاریخ تولد', dataType: 'date' },
-  { progress: 'پیشرفت پروفایل', dataType: 'integer' },
+const Modal = lazy(() =>
+  import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
+);
+
+const defaultValues = [
+  { id: 1, value: 'پیشفرض اول' },
+  { id: 2, value: 'پیشفرض دوم' },
+  { id: 3, value: 'پیشفرض سوم' },
+  { id: 4, value: 'پیشفرض چهارم' },
+  { id: 5, value: 'پیشفرض پنجم' },
+  { id: 6, value: 'پیشفرض ششم' },
+  { id: 7, value: 'پیشفرض هفتم' },
+  { id: 8, value: 'پیشفرض هشتم' },
 ];
 
 const TestView = () => {
-  const [isFetching, setIsFetching] = useState(true);
-  const [data, setData] = useState([]);
+  //! If true, Shows a modal to user for more advanced options to choose from.
+  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
-  setTimeout(() => {
-    setData(tableData);
-    setIsFetching(false);
-  }, 2000);
+  const fetchItems = (search) => {
+    return new Promise((resolve, reject) => {
+      try {
+        apiHandler.fetch(
+          {
+            Count: 1000,
+            CheckAccess: true,
+            ParseResults: true,
+            SearchText: search,
+          },
+          (response) => {
+            // console.log(response, 'rs res res');
+            resolve(
+              response.NodeTypes.map((node, index) => ({
+                id: node.NodeTypeID,
+                value: decode(node.TypeName),
+                index: index,
+                AdditionalID: node.AdditionalID,
+              }))
+            );
+          },
 
-  const columns = useMemo(
-    () =>
-      ColumnsFactory(headers, {
-        delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
-        view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
-      }),
-    []
-  );
-
-  const updateCellData = (rowIndex, columnId, value) => {
-    setData((old) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...row,
-            [columnId]: value,
-          };
-        }
-        return row;
-      })
-    );
-  };
-
-  const removeRow = (rowIndex) => {
-    setData((old) => old.filter((row, index) => index !== rowIndex));
-  };
-
-  const reorderData = (startIndex, endIndex) => {
-    const newData = [...data];
-    const [movedRow] = newData.splice(startIndex, 1);
-    newData.splice(endIndex, 0, movedRow);
-    setData(newData);
-  };
-
-  const removeAll = () => {
-    setData([]);
-  };
-
-  const addRow = () => {
-    const newRecord = {
-      id: '10',
-      firstName: 'نام دهم',
-      lastName: 'نام خانوادگی دهم',
-      country: 'ایران',
-      city: 'طهران',
-      age: 50,
-      dateOfBirth: '2008/11/02',
-      progress: 100,
-    };
-    const newData = [...data, newRecord];
-    setData(newData);
+          (error) => reject(error)
+        );
+      } catch (err) {
+        reject(err);
+      }
+    });
   };
 
   return (
-    <div>
-      <CustomTable
-        editable
-        columns={columns}
-        data={data}
-        updateCellData={updateCellData}
-        reorderData={reorderData}
-        removeRow={removeRow}
-        addRow={addRow}
-        isFetching={isFetching}
-        removeAll={removeAll}
-        getCellProps={(cell) => ({
-          style: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-        })}
-      />
-    </div>
+    <ItemProducer
+      fetchItems={fetchItems}
+      type={'text'}
+      style={{ backgroundColor: 'white' }}
+      onItems={(data) => console.log(data, 'items')}
+    />
   );
 };
 
