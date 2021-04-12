@@ -1,9 +1,14 @@
 import { useMemo, useState } from 'react';
+
+//! CustomTable
 import CustomTable from 'components/CustomTable/CustomTable';
 import tableData from './tableData';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
 import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
+
+//! Dropzone
+import CustomeDropzone from 'components/CustomDropzone/CustomeDropzone';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -97,6 +102,7 @@ const RasoulView = () => {
           },
         })}
       />
+      <CustomeDropzone accept="image/*" />
     </div>
   );
 };
