@@ -1,5 +1,7 @@
 import EditableCell from 'components/CustomTable/EditableCell';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+import AcceptIcon from 'components/Icons/TickIcon/Tick';
+import RejectIcon from 'components/Icons/CloseIcon/CloseIcon';
 
 const getCell = (type) => {
   switch (type) {
@@ -27,13 +29,26 @@ const getCell = (type) => {
   }
 };
 
+const footer = [
+  {
+    icon: <AcceptIcon size={25} color="green" style={{ cursor: 'pointer' }} />,
+  },
+  {
+    icon: <RejectIcon size={20} color="red" style={{ cursor: 'pointer' }} />,
+  },
+];
+
 const makeColumns = (headers, actions) => {
   let actionColumns = [];
   if (actions && Object.keys(actions).length !== 0) {
     Object.keys(actions).forEach((action, index) => {
       const customColumn = {
         id: `${action}-row`,
+        index,
         dataType: 'actions',
+        Footer: (row) => {
+          return footer[index].icon;
+        },
         Cell: () => actions[action](),
         width: 40,
         maxWidth: 40,
@@ -46,6 +61,10 @@ const makeColumns = (headers, actions) => {
     return {
       Header: Object.values(header)[0],
       accessor: Object.keys(header)[0],
+      Footer: (row) => {
+        // console.log(row, 'footer')
+        return Object.values(header)[0];
+      },
       ...getCell(header.dataType),
     };
   });
@@ -54,21 +73,3 @@ const makeColumns = (headers, actions) => {
 };
 
 export default makeColumns;
-
-// {
-//   Header: 'تاریخ تولد',
-//   accessor: (row) => row.dateOfBirth,
-//   dataType: 'date',
-// },
-// {
-//   Header: 'پیشرفت پروفایل',
-//   accessor: (row) => {
-//     console.log(row, 'accessor');
-//     return row.progress;
-//   },
-//   dataType: 'string',
-//   Cell: (row) => {
-//     console.log(row, 'cell');
-//     return row.value;
-//   },
-// },

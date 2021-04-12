@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import CustomTable from 'components/CustomTable/CustomTable';
 import tableData from './tableData';
-import makeCulomns from 'components/CustomTable/makeColumns';
+import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
 import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
@@ -16,10 +16,17 @@ const headers = [
 ];
 
 const TestView = () => {
-  const [data, setData] = useState(() => tableData);
+  const [isFetching, setIsFetching] = useState(true);
+  const [data, setData] = useState([]);
+
+  setTimeout(() => {
+    setData(tableData);
+    setIsFetching(false);
+  }, 2000);
+
   const columns = useMemo(
     () =>
-      makeCulomns(headers, {
+      ColumnsFactory(headers, {
         delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
         view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
       }),
@@ -80,7 +87,7 @@ const TestView = () => {
         reorderData={reorderData}
         removeRow={removeRow}
         addRow={addRow}
-        isFetching={false}
+        isFetching={isFetching}
         removeAll={removeAll}
         getCellProps={(cell) => ({
           style: {

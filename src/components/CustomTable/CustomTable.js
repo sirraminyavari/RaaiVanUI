@@ -37,6 +37,7 @@ const CustomTable = ({
     type: '',
   });
   const [modal, setModal] = useState({ show: false, title: '', type: '' });
+  const [showFooter, setShowFooter] = useState(false);
 
   const restoreConfirmState = () => {
     setConfirm({
@@ -80,8 +81,6 @@ const CustomTable = ({
     let viewColumns = columns.filter((column) => {
       return Object.keys(column).includes('Header');
     });
-    console.log(viewColumns[0].accessor);
-
     return selectedCell?.row.original[viewColumns[0].accessor];
   };
 
@@ -138,6 +137,7 @@ const CustomTable = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    footerGroups,
     prepareRow,
     page,
     resetResizing,
@@ -170,6 +170,27 @@ const CustomTable = ({
     usePagination
   );
 
+  const handleAddRow = () => {
+    setShowFooter(true);
+  };
+
+  const handleFooterClick = (column) => {
+    if (column.dataType === 'actions') {
+      if (column.index === 0) {
+        console.log('accept');
+        addRow();
+
+        setTimeout(() => {
+          gotoPage(pageCount - 1);
+          setShowFooter(false);
+        }, 500);
+      } else {
+        console.log('reject');
+        setShowFooter(false);
+      }
+    }
+  };
+
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
@@ -191,7 +212,7 @@ const CustomTable = ({
         <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
           Reset Resizing
         </Button>
-        <Button style={{ display: 'inline-block' }} onClick={addRow}>
+        <Button style={{ display: 'inline-block' }} onClick={handleAddRow}>
           Add new record
         </Button>
         <Button
@@ -284,6 +305,22 @@ const CustomTable = ({
             )}
           </Droppable>
         </DragDropContext>
+        {showFooter && (
+          <div className="footer">
+            {footerGroups.map((group) => (
+              <tr {...group.getFooterGroupProps()}>
+                {group.headers.map((column) => (
+                  <td
+                    {...column.getFooterProps({
+                      onClick: () => handleFooterClick(column),
+                    })}>
+                    {column.render('Footer')}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </div>
+        )}
       </div>
       <Pagination
         canNextPage={canNextPage}

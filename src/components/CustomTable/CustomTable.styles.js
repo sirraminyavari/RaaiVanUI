@@ -17,6 +17,20 @@ export const TableContainer = styled.div`
       min-height: 2rem;
     }
 
+    .footer {
+      tr:first-child {
+        td {
+          border-top: 2px solid black;
+          min-height: 3rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      font-weight: bolder;
+      text-align: center;
+    }
+
     .tr {
       :hover {
         background-color: #bbb;
