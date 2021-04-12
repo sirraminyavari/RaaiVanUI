@@ -2,6 +2,7 @@ import EditableCell from 'components/CustomTable/EditableCell';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import AcceptIcon from 'components/Icons/TickIcon/Tick';
 import RejectIcon from 'components/Icons/CloseIcon/CloseIcon';
+import Input from 'components/Inputs/Input';
 
 const getCell = (type) => {
   switch (type) {
@@ -26,6 +27,44 @@ const getCell = (type) => {
 
     default:
       return;
+  }
+};
+
+const getFooter = (type) => {
+  switch (type) {
+    case 'string':
+      return {
+        Footer: (
+          <Input style={{ width: '100%', borderColor: '#333' }} type="text" />
+        ),
+      };
+    case 'integer':
+      return {
+        Footer: (
+          <Input style={{ width: '100%', borderColor: '#333' }} type="number" />
+        ),
+      };
+
+    case 'date':
+      return {
+        Footer: () => (
+          <CustomDatePicker
+            label="انتخاب تاریخ"
+            mode="input"
+            type="jalali"
+            range={false}
+            size="small"
+            value={null}
+            style={{ color: 'white' }}
+            inputStyle={{ color: 'inherit' }}
+          />
+        ),
+      };
+
+    default:
+      return {
+        Footer: type,
+      };
   }
 };
 
@@ -61,10 +100,7 @@ const makeColumns = (headers, actions) => {
     return {
       Header: Object.values(header)[0],
       accessor: Object.keys(header)[0],
-      Footer: (row) => {
-        // console.log(row, 'footer')
-        return Object.values(header)[0];
-      },
+      ...getFooter(header.dataType),
       ...getCell(header.dataType),
     };
   });
