@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom Dropzone Component Test matches snapshot 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="sc-bdfBwQ hrLASB"
+        tabindex="0"
+      >
+        <div
+          class="sc-gsTCUz dbQMNh"
+        >
+          <svg
+            color="#fff"
+            fill="currentColor"
+            height="30"
+            stroke="currentColor"
+            stroke-width="0"
+            style="color: rgb(255, 255, 255);"
+            viewBox="0 0 24 24"
+            width="30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g>
+              <path
+                d="M0 0h24v24H0z"
+                fill="none"
+              />
+              <path
+                d="M12 12.586l4.243 4.242-1.415 1.415L13 16.415V22h-2v-5.587l-1.828 1.83-1.415-1.415L12 12.586zM12 2a7.001 7.001 0 0 1 6.954 6.194 5.5 5.5 0 0 1-.953 10.784L18 17a6 6 0 0 0-11.996-.225L6 17v1.978a5.5 5.5 0 0 1-.954-10.784A7 7 0 0 1 12 2z"
+              />
+            </g>
+          </svg>
+        </div>
+        <div
+          class="sc-dlfnbm eKRbBI"
+        >
+          <input
+            autocomplete="off"
+            multiple=""
+            style="display: none;"
+            tabindex="-1"
+            type="file"
+          />
+          <p>
+            برای انتخاب فایل آنها را بگیرید و اینجا رها کنید و یا درون باکس کلیک کنید...
+          </p>
+        </div>
+      </div>
+      <aside
+        class="sc-hKgILt kPbuTm"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="sc-bdfBwQ hrLASB"
+      tabindex="0"
+    >
+      <div
+        class="sc-gsTCUz dbQMNh"
+      >
+        <svg
+          color="#fff"
+          fill="currentColor"
+          height="30"
+          stroke="currentColor"
+          stroke-width="0"
+          style="color: rgb(255, 255, 255);"
+          viewBox="0 0 24 24"
+          width="30"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g>
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M12 12.586l4.243 4.242-1.415 1.415L13 16.415V22h-2v-5.587l-1.828 1.83-1.415-1.415L12 12.586zM12 2a7.001 7.001 0 0 1 6.954 6.194 5.5 5.5 0 0 1-.953 10.784L18 17a6 6 0 0 0-11.996-.225L6 17v1.978a5.5 5.5 0 0 1-.954-10.784A7 7 0 0 1 12 2z"
+            />
+          </g>
+        </svg>
+      </div>
+      <div
+        class="sc-dlfnbm eKRbBI"
+      >
+        <input
+          autocomplete="off"
+          multiple=""
+          style="display: none;"
+          tabindex="-1"
+          type="file"
+        />
+        <p>
+          برای انتخاب فایل آنها را بگیرید و اینجا رها کنید و یا درون باکس کلیک کنید...
+        </p>
+      </div>
+    </div>
+    <aside
+      class="sc-hKgILt kPbuTm"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

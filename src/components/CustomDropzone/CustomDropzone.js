@@ -7,8 +7,32 @@ import { useDropzone } from 'react-dropzone';
 import * as Styled from './CustomDropzone.styles';
 import UploadFileIcon from 'components/Icons/UploadFileIcon/UploadFile';
 
-const CustomeDropzone = (props) => {
-  const { accept, maxFiles, maxEachSize, maxAllSize, onError } = props;
+/**
+ * @typedef PropType
+ * @property {string} accept -The accepted file format.
+ * @property {number} maxFiles -The maximum number of files that can be uploaded.
+ * @property {number} maxEachSize -The maximum size of each file.
+ * @property {number} maxAllSize -The maximum size of all files.
+ * @property {function} onError -A callback function that will fire on file upload exception.
+ * @property {Object} containerProps -The props passed to dropzone container.
+ * @property {Object} inputProps -The props passed to input.
+ */
+
+/**
+ *  @description Renders a file upload component.
+ * @component
+ * @param {PropType} props
+ */
+const CustomDropzone = (props) => {
+  const {
+    accept,
+    maxFiles,
+    maxEachSize,
+    maxAllSize,
+    onError,
+    containerProps,
+    inputProps,
+  } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
 
@@ -140,12 +164,13 @@ const CustomeDropzone = (props) => {
 
   return (
     <>
-      <Styled.DropzoneContainer {...getRootProps({ refKey: 'innerRef' })}>
+      <Styled.DropzoneContainer
+        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
         <Styled.UploadIconWrapper>
           <UploadFileIcon size={30} color="#fff" />
         </Styled.UploadIconWrapper>
         <Styled.InputWrapper>
-          <input {...getInputProps()} />
+          <input {...getInputProps(inputProps)} />
           {isDragActive ? (
             <p>فایل های انتخابی را در این باکس رها کنید...</p>
           ) : (
@@ -164,4 +189,16 @@ const CustomeDropzone = (props) => {
   );
 };
 
-export default CustomeDropzone;
+CustomDropzone.propTypes = {
+  accept: PropTypes.string,
+  maxFiles: PropTypes.number,
+  maxEachSize: PropTypes.number,
+  maxAllSize: PropTypes.number,
+  onError: PropTypes.func,
+  containerProps: PropTypes.object,
+  inputProps: PropTypes.object,
+};
+
+CustomDropzone.displayName = 'CustomDropzoneComponent';
+
+export default CustomDropzone;

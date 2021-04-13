@@ -8,7 +8,7 @@ import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 //! Dropzone
-import CustomeDropzone from 'components/CustomDropzone/CustomDropzone';
+import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -105,7 +105,7 @@ const RasoulView = () => {
           },
         })}
       />
-      <CustomeDropzone
+      <CustomDropzone
         accept="image/*"
         maxFiles={5}
         maxEachSize={5}
