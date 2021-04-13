@@ -84,6 +84,9 @@ const RasoulView = () => {
 
   return (
     <div>
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Rasoul's window
+      </div>
       <CustomTable
         editable
         columns={columns}

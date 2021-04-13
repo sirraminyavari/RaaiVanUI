@@ -12,7 +12,9 @@ import { MOBILE_BOUNDRY } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { createSelector } from 'reselect';
-import RasoulView from 'views/Rasoul/Rasoul';
+import RasoulView from 'views/DevsView/Rasoul/Rasoul';
+import AliView from 'views/DevsView/Ali/Ali';
+import RaminView from 'views/DevsView/Ramin/Ramin';
 
 const switchRoutes = (
   <Switch>
@@ -34,8 +36,11 @@ const switchRoutes = (
         />
       );
     })}
+    {/* Just in dev mode and won't render in production  */}
     <Route exact path="/test" component={TestView} />
     <Route exact path="/rasoul" component={RasoulView} />
+    <Route exact path="/ali" component={AliView} />
+    <Route exact path="/ramin" component={RaminView} />
     <Redirect from="/" to="/teams" />
   </Switch>
 );
