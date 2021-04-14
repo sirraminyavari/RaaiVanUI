@@ -1,11 +1,20 @@
 import ReactDOM from 'react-dom';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import CustomDropzone from './CustomDropzone';
+import {
+  flushPromises,
+  createDataTransferWithFiles,
+  createFile,
+} from './testUtils';
 
 describe('Custom Dropzone Component Test', () => {
   let wrapper;
+  let files;
 
   beforeEach(() => {
+    global.URL.createObjectURL = jest.fn();
+
+    files = [createFile('file.pdf', 1024, 'application/pdf')];
     wrapper = render(<CustomDropzone />);
   });
 
@@ -87,16 +96,90 @@ describe('Custom Dropzone Component Test', () => {
     debug();
   });
 
-  it('runs the onClick callback handler provided to the root props getter', () => {
+  it('runs the custom callback handlers provided to the root props getter', async () => {
+    const event = createDataTransferWithFiles(files);
+
     const rootProps = {
       onClick: jest.fn(),
+      onDrop: jest.fn(),
     };
 
-    const { container } = render(<CustomDropzone containerProps={rootProps} />);
+    const ui = <CustomDropzone containerProps={rootProps} />;
+
+    const { container, rerender } = render(ui);
 
     const dropzone = container.querySelector('div');
 
     fireEvent.click(dropzone);
     expect(rootProps.onClick).toHaveBeenCalled();
+
+    //TODO: window.GlobalUtilities problem here.
+    // fireEvent.drop(dropzone, event);
+    // await flushPromises(rerender, ui);
+    // expect(rootProps.onDrop).toHaveBeenCalled();
+  });
+
+  it('runs the custom callback handlers provided to the input props getter', async () => {
+    const inputProps = {
+      onClick: jest.fn(),
+      onChange: jest.fn(),
+    };
+
+    const ui = <CustomDropzone inputProps={inputProps} />;
+
+    const { container, rerender } = render(ui);
+
+    const input = container.querySelector('input');
+
+    fireEvent.click(input);
+    await flushPromises(rerender, ui);
+    expect(inputProps.onClick).toHaveBeenCalled();
+
+    fireEvent.change(input);
+    await flushPromises(rerender, ui);
+    expect(inputProps.onChange).toHaveBeenCalled();
+  });
+
+  it('runs no callback handlers if {disabled} is true', () => {
+    const rootProps = {
+      onClick: jest.fn(),
+      onKeyDown: jest.fn(),
+      onFocus: jest.fn(),
+      onBlur: jest.fn(),
+    };
+
+    const inputProps = {
+      onClick: jest.fn(),
+      onChange: jest.fn(),
+    };
+
+    const { container } = render(
+      <CustomDropzone
+        disabled
+        inputProps={inputProps}
+        containerProps={rootProps}
+      />
+    );
+
+    const dropzone = container.querySelector('div');
+
+    fireEvent.click(dropzone);
+    expect(rootProps.onClick).not.toHaveBeenCalled();
+
+    fireEvent.focus(dropzone);
+    fireEvent.keyDown(dropzone);
+    expect(rootProps.onFocus).not.toHaveBeenCalled();
+    expect(rootProps.onKeyDown).not.toHaveBeenCalled();
+
+    fireEvent.blur(dropzone);
+    expect(rootProps.onBlur).not.toHaveBeenCalled();
+
+    const input = container.querySelector('input');
+
+    fireEvent.click(input);
+    expect(inputProps.onClick).not.toHaveBeenCalled();
+
+    fireEvent.change(input);
+    expect(inputProps.onChange).not.toHaveBeenCalled();
   });
 });
