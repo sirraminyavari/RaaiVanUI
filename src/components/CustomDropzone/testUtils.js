@@ -1,6 +1,6 @@
-import { fireEvent } from '@testing-library/react';
+import { act, fireEvent, waitFor } from '@testing-library/react';
 
-//! Provides file for tests.
+//! Provides mock file for tests.
 export const createFile = (name, size, type) => {
   const file = new File([], name, { type });
 
@@ -41,4 +41,26 @@ export const fireDragLeave = (node, data) => {
 //! Dispatches an event on drop.
 export const fireDrop = (node, data) => {
   dispatchEvt(node, 'drop', data);
+};
+
+export const flushPromises = async (rerender, ui) => {
+  await act(() => waitFor(() => rerender(ui)));
+};
+
+//! The DataTransfer object is used to hold the data that is being dragged during a drag and drop operation.
+//! It may hold one or more data items, each of one or more data types.
+//! See: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer
+export const createDataTransferWithFiles = (files = []) => {
+  return {
+    dataTransfer: {
+      files,
+      items: files.map((file) => ({
+        kind: 'file',
+        size: file.size,
+        type: file.type,
+        getAsFile: () => file,
+      })),
+      types: ['Files'],
+    },
+  };
 };

@@ -10,6 +10,9 @@ import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 //! Dropzone
 import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 
+//! ProgressBar
+import ProgressBar from 'components/ProgressBar/ProgressBar';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -87,7 +90,7 @@ const RasoulView = () => {
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>
         Rasoul's window
       </div>
-      <CustomTable
+      {/* <CustomTable
         editable
         columns={columns}
         data={data}
@@ -104,14 +107,17 @@ const RasoulView = () => {
             alignItems: 'center',
           },
         })}
-      />
+      /> */}
       <CustomDropzone
-        accept="image/*"
-        maxFiles={5}
-        maxEachSize={5}
-        maxAllSize={10}
+        accept=".pdf"
+        maxFiles={2}
+        maxEachSize={1}
+        maxAllSize={5}
         onError={(error) => console.log(error)}
+        nodeId="40aa835f-751c-4786-86af-fec04f45d262"
+        // disabled
       />
+      {/* <ProgressBar label='Label' progress={100} /> */}
     </div>
   );
 };

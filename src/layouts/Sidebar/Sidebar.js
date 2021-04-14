@@ -34,7 +34,6 @@ const selectIsSettingShown = createSelector(
 );
 
 const Sidebar = () => {
-  console.count('side');
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const isSettingShown = useSelector(selectIsSettingShown);

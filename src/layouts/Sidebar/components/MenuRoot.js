@@ -43,7 +43,6 @@ const selectOpenMenuID = createSelector(
  * @param {PropType} props
  */
 const SidebarMenuRoot = (props) => {
-  console.log('root');
   const { item, isDragging, dragProps } = props;
 
   const {

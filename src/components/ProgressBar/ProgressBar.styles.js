@@ -12,17 +12,16 @@ export const ProgressBarWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.6rem 0 0 0;
 `;
 
 export const ProgressBar = styled.div`
   border-radius: 1rem;
-  margin: 0.5rem 0.5rem 0.2rem 1rem;
+  margin: 0.5rem 0.5rem 0.2rem 0.5rem;
   box-shadow: 0px 0px 2px #000;
-  position: relative;
   flex-grow: 1;
-  //   overflow: hidden;
-  height: 0.5rem;
+  overflow: hidden;
+  height: 0.9rem;
+  color: #fff;
 `;
 
 export const Percentage = styled.div`
@@ -35,4 +34,6 @@ export const Bar = styled.div`
   background-color: ${({ color }) => color};
   width: ${({ progress }) => `${progress}%`};
   height: 100%;
+  font-weight: bold;
+  transition: all 0.5s ease;
 `;

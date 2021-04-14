@@ -25,10 +25,9 @@ const ProgressBar = (props) => {
       <Styled.ProgressBarWrapper>
         {progress === 100 && <ApprovalIcon size={20} />}
         <Styled.ProgressBar>
-          <Styled.Percentage progress={progress}>
-            {`${progress}`}
-          </Styled.Percentage>
-          <Styled.Bar progress={progress} color={barColor} />
+          <Styled.Bar
+            progress={progress}
+            color={barColor}>{` % ${progress}`}</Styled.Bar>
         </Styled.ProgressBar>
       </Styled.ProgressBarWrapper>
     </Styled.ProgressBarContainer>

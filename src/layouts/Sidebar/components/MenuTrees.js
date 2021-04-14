@@ -16,7 +16,6 @@ const selectTree = createSelector(
 );
 
 const SidebarTrees = () => {
-  console.count('trees');
   const tree = useSelector(selectTree);
   const { setReorderedTree } = sidebarMenuSlice.actions;
 

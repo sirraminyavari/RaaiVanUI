@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 import * as Styled from './CustomDropzone.styles';
 import UploadFileIcon from 'components/Icons/UploadFileIcon/UploadFile';
+import APIHandler from 'apiHelper/APIHandler';
+import axios from 'axios';
+import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 /**
  * @typedef PropType
@@ -16,6 +19,8 @@ import UploadFileIcon from 'components/Icons/UploadFileIcon/UploadFile';
  * @property {function} onError -A callback function that will fire on file upload exception.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
+ * @property {string} [nodeId] -Node id.
+ * @property {boolean} disabled -A flag that will disable dropzone area.
  */
 
 /**
@@ -32,9 +37,13 @@ const CustomDropzone = (props) => {
     onError,
     containerProps,
     inputProps,
+    nodeId,
+    disabled,
   } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [bar, setBar] = useState({});
+  const apiHandler = new APIHandler('DocsAPI', 'GetUploadLink');
 
   const sizeInMB = (sizeInBytes) =>
     Number((sizeInBytes / (1024 * 1024)).toFixed(2));
@@ -49,28 +58,72 @@ const CustomDropzone = (props) => {
     return null;
   };
 
+  useEffect(() => {
+    if (errors.length) {
+      errors.forEach((err) => {
+        window.alert(err.message);
+      });
+    }
+  }, [errors]);
+
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(
       acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
+          uploadPercentage: 0,
         })
       )
     );
+
+    console.log(acceptedFiles);
     //! Do something with the files
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
 
-      reader.readAsDataURL(file);
+    acceptedFiles.reduce(async (previousPromise, accepted) => {
+      await previousPromise;
 
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onload = () => {
-        //! Do whatever you want with the file contents
-        const fileURL = reader.result;
-        // console.log(fileURL);
-      };
-    });
+      return new Promise((resolve, reject) => {
+        apiHandler.url(
+          {
+            OwnerID: nodeId,
+            OwnerType: 'Node',
+          },
+          (response) => {
+            let uploadURL = response.slice(5);
+            let formData = new FormData();
+            formData.append('file', accepted);
+
+            let options = {
+              onUploadProgress: (progressEvent) => {
+                const { loaded, total } = progressEvent;
+                let percentage = Math.floor((loaded * 100) / total);
+
+                setBar({
+                  name: accepted.name,
+                  uploadPercentage: percentage,
+                  description: `${sizeInMB(loaded)}MB of ${sizeInMB(total)}MB`,
+                });
+
+                if (percentage === 100) {
+                  setFiles((c) =>
+                    c.map((file) => {
+                      if (file.name === accepted.name) {
+                        file.uploadPercentage = 100;
+                        return file;
+                      }
+                      return file;
+                    })
+                  );
+                  setBar({});
+                  resolve();
+                }
+              },
+            };
+            axios.post(uploadURL, formData, options);
+          }
+        );
+      });
+    }, Promise.resolve());
   }, []);
 
   const {
@@ -84,6 +137,7 @@ const CustomDropzone = (props) => {
     onDrop,
     accept,
     maxFiles,
+    disabled: !!disabled,
     validator: customValidator,
     // noKeyboard: true,
     // noClick: true,
@@ -138,13 +192,15 @@ const CustomDropzone = (props) => {
     }
   };
 
-  const thumbs = files.map((file) => (
-    <Styled.Thumb key={file.name}>
-      <Styled.ThumbInner>
-        <Styled.ThumbImage src={file.preview} alt="thumb-dropzone" />
-      </Styled.ThumbInner>
-    </Styled.Thumb>
-  ));
+  const thumbs = files
+    .filter((file) => file.name.endsWith('.jpeg') || file.name.endsWith('.png'))
+    .map((file) => (
+      <Styled.Thumb key={file.name}>
+        <Styled.ThumbInner>
+          <Styled.ThumbImage src={file.preview} alt="thumb-dropzone" />
+        </Styled.ThumbInner>
+      </Styled.Thumb>
+    ));
 
   useEffect(() => {
     handlErrors();
@@ -175,8 +231,7 @@ const CustomDropzone = (props) => {
             <p>فایل های انتخابی را در این باکس رها کنید...</p>
           ) : (
             <p>
-              برای انتخاب فایل آنها را بگیرید و اینجا رها کنید و یا درون باکس
-              کلیک کنید...
+              برای انتخاب فایل آنها را بگیرید و درون باکس رها و یا کلیک کنید...
             </p>
           )}
         </Styled.InputWrapper>
@@ -184,6 +239,19 @@ const CustomDropzone = (props) => {
       <Styled.ThumbsContainer>{thumbs}</Styled.ThumbsContainer>
       {errors.map((error, index) => {
         return <p style={{ color: 'red' }}>{error.message}</p>;
+      })}
+      {files.map((file, index, self) => {
+        if (file.name === bar.name) {
+          return (
+            <ProgressBar
+              progress={bar.uploadPercentage}
+              label={`${bar.name}(${bar.description})`}
+            />
+          );
+        }
+        return (
+          <ProgressBar progress={file.uploadPercentage} label={file.name} />
+        );
       })}
     </>
   );
@@ -197,6 +265,12 @@ CustomDropzone.propTypes = {
   onError: PropTypes.func,
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
+  nodeId: PropTypes.string,
+  disabled: PropTypes.bool,
+};
+
+CustomDropzone.defaultProps = {
+  nodeId: '',
 };
 
 CustomDropzone.displayName = 'CustomDropzoneComponent';
