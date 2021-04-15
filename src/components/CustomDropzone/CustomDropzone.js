@@ -21,6 +21,9 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
  * @property {Object} inputProps -The props passed to input.
  * @property {string} [nodeId] -Node id.
  * @property {boolean} disabled -A flag that will disable dropzone area.
+ * @property {string[]} exceptions -All formats that are not allowed to be uploaded.
+ * {exceptions} prop has priority over {accept} prop.
+ * If a format is defined forbidden in exceptions, component will throw error even if it is accepted.
  */
 
 /**
@@ -39,6 +42,7 @@ const CustomDropzone = (props) => {
     inputProps,
     nodeId,
     disabled,
+    exceptions,
   } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -49,13 +53,27 @@ const CustomDropzone = (props) => {
     Number((sizeInBytes / (1024 * 1024)).toFixed(2));
 
   const customValidator = (file) => {
-    if (sizeInMB(file.size) > maxEachSize) {
+    const fileFormat = file.name.split('.').pop();
+    const fileSize = file.size;
+    const fileName = file.name;
+
+    //! Compare file size against maximum allowed size for each file.
+    if (sizeInMB(fileSize) > maxEachSize) {
       return {
         code: 'file-too-large',
-        message: `حجم فایل ${file.name} بزرگتر از حد مجاز (${maxEachSize} مگابایت)است.`,
+        message: `حجم فایل ${fileName} بزرگتر از حد مجاز (${maxEachSize} مگابایت)است.`,
       };
     }
-    return null;
+
+    //! See if file format is allowed or not.
+    if (exceptions && exceptions.includes(fileFormat)) {
+      return {
+        code: 'not-allowed-format',
+        message: `فایل با فرمت ${fileFormat} مجاز نمی باشد.`,
+      };
+    }
+
+    return null; //! file is clean and there is no error.
   };
 
   useEffect(() => {
@@ -119,7 +137,7 @@ const CustomDropzone = (props) => {
                 }
               },
             };
-            axios.post(uploadURL, formData, options);
+            // axios.post(uploadURL, formData, options);
           }
         );
       });
@@ -132,7 +150,7 @@ const CustomDropzone = (props) => {
     isDragActive,
     fileRejections,
     acceptedFiles,
-    open,
+    // open,
   } = useDropzone({
     onDrop,
     accept,
@@ -190,10 +208,23 @@ const CustomDropzone = (props) => {
         setErrors((c) => c.concat(totalSizeError));
       }
     }
+
+    if (
+      fileRejections.some(
+        (file) => file.errors[0].code === 'not-allowed-format'
+      )
+    ) {
+      setErrors((c) =>
+        c.concat({
+          code: fileRejections[0].errors[0].code,
+          message: fileRejections[0].errors[0].message,
+        })
+      );
+    }
   };
 
   const thumbs = files
-    .filter((file) => file.name.endsWith('.jpeg') || file.name.endsWith('.png'))
+    .filter((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png'))
     .map((file) => (
       <Styled.Thumb key={file.name}>
         <Styled.ThumbInner>
@@ -267,6 +298,7 @@ CustomDropzone.propTypes = {
   inputProps: PropTypes.object,
   nodeId: PropTypes.string,
   disabled: PropTypes.bool,
+  exceptions: PropTypes.array,
 };
 
 CustomDropzone.defaultProps = {

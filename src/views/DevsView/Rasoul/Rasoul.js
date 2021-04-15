@@ -90,7 +90,11 @@ const RasoulView = () => {
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>
         Rasoul's window
       </div>
-      {/* <CustomTable
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Table Component
+      </div>
+      <CustomTable
         editable
         columns={columns}
         data={data}
@@ -107,9 +111,14 @@ const RasoulView = () => {
             alignItems: 'center',
           },
         })}
-      /> */}
+      />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Dropzone Component
+      </div>
       <CustomDropzone
-        accept=".pdf"
+        accept="image/*"
+        exceptions={['pdf', 'jpg']}
         maxFiles={2}
         maxEachSize={1}
         maxAllSize={5}
@@ -117,7 +126,13 @@ const RasoulView = () => {
         nodeId="40aa835f-751c-4786-86af-fec04f45d262"
         // disabled
       />
-      {/* <ProgressBar label='Label' progress={100} /> */}
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Progressbar Component
+      </div>
+      <ProgressBar label="Label" progress={100} />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>End of view</div>
     </div>
   );
 };

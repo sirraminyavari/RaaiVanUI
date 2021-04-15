@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import CustomDropzone from './CustomDropzone';
+import { useDropzone } from 'react-dropzone';
+import { renderHook } from '@testing-library/react-hooks';
 import {
   flushPromises,
   createDataTransferWithFiles,
@@ -153,7 +155,7 @@ describe('Custom Dropzone Component Test', () => {
       onChange: jest.fn(),
     };
 
-    const { container } = render(
+    const { container, debug } = render(
       <CustomDropzone
         disabled
         inputProps={inputProps}
@@ -181,5 +183,42 @@ describe('Custom Dropzone Component Test', () => {
 
     fireEvent.change(input);
     expect(inputProps.onChange).not.toHaveBeenCalled();
+
+    // debug();
+  });
+
+  test('{rootRef, inputRef} are exposed', () => {
+    const { result } = renderHook(() => useDropzone());
+    const { rootRef, inputRef, getRootProps, getInputProps } = result.current;
+
+    const { container } = render(
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+      </div>
+    );
+
+    expect(container.querySelector('div')).toEqual(rootRef.current);
+    expect(container.querySelector('input')).toEqual(inputRef.current);
+  });
+
+  test('{tabindex} is 0 if {disabled} is false', () => {
+    const { container, debug } = render(<CustomDropzone />);
+    expect(container.querySelector('div')).toHaveAttribute('tabindex', '0');
+
+    // debug();
+  });
+
+  test('{tabindex} is not set if {disabled} is true', () => {
+    const { container, rerender, debug } = render(<CustomDropzone />);
+
+    expect(container.querySelector('div')).toHaveAttribute('tabindex', '0');
+
+    // debug();
+
+    rerender(<CustomDropzone disabled />);
+
+    expect(container.querySelector('div')).not.toHaveAttribute('tabindex');
+
+    // debug();
   });
 });
