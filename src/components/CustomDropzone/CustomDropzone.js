@@ -15,7 +15,7 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
  * @property {string} accept -The accepted file format.
  * @property {number} maxFiles -The maximum number of files that can be uploaded.
  * @property {number} maxEachSize -The maximum size of each file.
- * @property {number} maxAllSize -The maximum size of all files.
+ * @property {number} maxTotalSize -The maximum size of all files.
  * @property {function} onError -A callback function that will fire on file upload exception.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
@@ -36,7 +36,7 @@ const CustomDropzone = (props) => {
     accept,
     maxFiles,
     maxEachSize,
-    maxAllSize,
+    maxTotalSize,
     onError,
     containerProps,
     inputProps,
@@ -49,9 +49,11 @@ const CustomDropzone = (props) => {
   const [bar, setBar] = useState({});
   const apiHandler = new APIHandler('DocsAPI', 'GetUploadLink');
 
+  //! Converts bytes to mega bytes
   const sizeInMB = (sizeInBytes) =>
     Number((sizeInBytes / (1024 * 1024)).toFixed(2));
 
+  //! Custom validator
   const customValidator = (file) => {
     const fileFormat = file.name.split('.').pop();
     const fileSize = file.size;
@@ -76,6 +78,7 @@ const CustomDropzone = (props) => {
     return null; //! file is clean and there is no error.
   };
 
+  //! Sets toastify alert for each error.
   useEffect(() => {
     if (errors.length) {
       errors.forEach((err) => {
@@ -84,64 +87,93 @@ const CustomDropzone = (props) => {
     }
   }, [errors]);
 
+  //! Fires on drop event.
   const onDrop = useCallback((acceptedFiles) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-          uploadPercentage: 0,
-        })
-      )
-    );
+    const totalSize = acceptedFiles
+      .map((file) => file.size)
+      .reduce((sum, size) => sum + sizeInMB(size), 0);
 
-    console.log(acceptedFiles);
-    //! Do something with the files
+    if (totalSize > maxTotalSize) {
+      //! Creates maximum total size error.
+      const totalSizeError = {
+        code: 'total-size-exception',
+        message: `حجم کل فایل ها بیشتر از حد مجاز (${maxTotalSize} مگابایت) است.`,
+      };
+      // setFiles((files) => {
+      //   files.length = 0;
+      //   return files;
+      // });
+      setErrors((c) => c.concat(totalSizeError));
+    } else {
+      //! Sets accepted files and assign new properties.
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+            uploadPercentage: 0,
+          })
+        )
+      );
+      console.log(acceptedFiles);
+      //! Do something with the files
 
-    acceptedFiles.reduce(async (previousPromise, accepted) => {
-      await previousPromise;
+      //! Uploads accepted files asynchronous.
+      acceptedFiles.reduce(async (previousPromise, accepted) => {
+        await previousPromise;
 
-      return new Promise((resolve, reject) => {
-        apiHandler.url(
-          {
-            OwnerID: nodeId,
-            OwnerType: 'Node',
-          },
-          (response) => {
-            let uploadURL = response.slice(5);
-            let formData = new FormData();
-            formData.append('file', accepted);
+        return new Promise((resolve, reject) => {
+          //! Get upload link.
+          apiHandler.url(
+            {
+              OwnerID: nodeId,
+              OwnerType: 'Node',
+            },
+            (response) => {
+              let uploadURL = response.slice(5);
+              //! Prepare upload data
+              let formData = new FormData();
+              formData.append('file', accepted);
 
-            let options = {
-              onUploadProgress: (progressEvent) => {
-                const { loaded, total } = progressEvent;
-                let percentage = Math.floor((loaded * 100) / total);
+              //! Keep track of upload progress.
+              let options = {
+                onUploadProgress: (progressEvent) => {
+                  const { loaded, total } = progressEvent;
+                  let percentage = Math.floor((loaded * 100) / total);
 
-                setBar({
-                  name: accepted.name,
-                  uploadPercentage: percentage,
-                  description: `${sizeInMB(loaded)}MB of ${sizeInMB(total)}MB`,
-                });
+                  //! Sets current progress bar values.
+                  setBar({
+                    name: accepted.name,
+                    uploadPercentage: percentage,
+                    description: `${sizeInMB(loaded)}MB of ${sizeInMB(
+                      total
+                    )}MB`,
+                  });
 
-                if (percentage === 100) {
-                  setFiles((c) =>
-                    c.map((file) => {
-                      if (file.name === accepted.name) {
-                        file.uploadPercentage = 100;
+                  //! Executes if upload progress is over.
+                  if (percentage === 100) {
+                    //! Sets upload percentage property of just finished file to 100.
+                    setFiles((c) =>
+                      c.map((file) => {
+                        if (file.name === accepted.name) {
+                          file.uploadPercentage = 100;
+                          return file;
+                        }
                         return file;
-                      }
-                      return file;
-                    })
-                  );
-                  setBar({});
-                  resolve();
-                }
-              },
-            };
-            // axios.post(uploadURL, formData, options);
-          }
-        );
-      });
-    }, Promise.resolve());
+                      })
+                    );
+                    //! Empty finished progress bar.
+                    setBar({});
+                    resolve();
+                  }
+                },
+              };
+              //! Post file to server.
+              // axios.post(uploadURL, formData, options);
+            }
+          );
+        });
+      }, Promise.resolve());
+    }
   }, []);
 
   const {
@@ -161,7 +193,9 @@ const CustomDropzone = (props) => {
     // noClick: true,
   });
 
+  //! Handle errors thrown from dropzone and validator.
   const handlErrors = () => {
+    //! Maximum file number error.
     if (fileRejections.length) {
       // console.log(fileRejections);
       if (
@@ -175,6 +209,7 @@ const CustomDropzone = (props) => {
         );
       }
 
+      //! Maximum file size error.
       if (
         fileRejections.some((file) => file.errors[0].code === 'file-too-large')
       ) {
@@ -196,19 +231,7 @@ const CustomDropzone = (props) => {
       }
     }
 
-    if (acceptedFiles.length) {
-      const totalSize = acceptedFiles
-        .map((file) => file.size)
-        .reduce((sum, size) => sum + sizeInMB(size), 0);
-      if (totalSize > maxAllSize) {
-        const totalSizeError = {
-          code: 'total-size-exception',
-          message: `حجم کل فایل ها بیشتر از حد مجاز (${maxAllSize} مگابایت) است.`,
-        };
-        setErrors((c) => c.concat(totalSizeError));
-      }
-    }
-
+    //! Format exceptions error.
     if (
       fileRejections.some(
         (file) => file.errors[0].code === 'not-allowed-format'
@@ -223,6 +246,7 @@ const CustomDropzone = (props) => {
     }
   };
 
+  //! Prepares thumbnail images.
   const thumbs = files
     .filter((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png'))
     .map((file) => (
@@ -237,7 +261,7 @@ const CustomDropzone = (props) => {
     handlErrors();
     //! Clearn up
     return () => {
-      // Make sure to revoke the data uris to avoid memory leaks
+      //! Make sure to revoke the data uris to avoid memory leaks
       files.forEach((file) => URL.revokeObjectURL(file.preview));
       setErrors([]);
     };
@@ -292,7 +316,7 @@ CustomDropzone.propTypes = {
   accept: PropTypes.string,
   maxFiles: PropTypes.number,
   maxEachSize: PropTypes.number,
-  maxAllSize: PropTypes.number,
+  maxTotalSize: PropTypes.number,
   onError: PropTypes.func,
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
