@@ -20,7 +20,8 @@ window._alert = window.alert;
 window.alert = function (txt, type = '') {
   toast(txt, {
     type,
-    position: RV_Float === 'right' ? 'bottom-right' : 'bottom-left',
+    position: RV_RTL ? 'bottom-left' : 'bottom-right',
+    className: 'rv-font-default',
   });
 };
 

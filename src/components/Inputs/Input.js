@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import usePeriod from '../../hooks/usePeriod';
-
-const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
+import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * @typedef PropType
@@ -40,10 +39,14 @@ const Input = React.forwardRef(
     },
     ref
   ) => {
+    const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = useContext(
+      WindowContext
+    );
+
     const errorMessage =
       GlobalUtilities.get_type(error) == 'string' ? error : null;
 
-    const shaking = usePeriod(shake, {}) && !!error;
+    const shaking = usePeriod(shake, {}, GlobalUtilities) && !!error;
 
     const hasButton = GlobalUtilities.get_type(children) == 'json';
 
@@ -120,9 +123,15 @@ const Input = React.forwardRef(
           autoComplete="off"
           {...props}
         />
-        {hasButton && <ButtonContainer>{children}</ButtonContainer>}
+        {hasButton && (
+          <ButtonContainer RV_RevFloat={RV_RevFloat}>
+            {children}
+          </ButtonContainer>
+        )}
         {!!errorMessage && (
-          <ErrorContainer className="rv-red">{errorMessage}</ErrorContainer>
+          <ErrorContainer RV_Float={RV_Float} className="rv-red">
+            {errorMessage}
+          </ErrorContainer>
         )}
       </InputContainer>
     );
@@ -158,11 +167,11 @@ export const ButtonContainer = styled.div`
   display: flex;
   top: 0;
   bottom: 0;
-  ${RV_RevFloat}: 0.5rem;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
   z-index: 2;
+  ${({ RV_RevFloat }) => `${RV_RevFloat}:'0.5rem'`}
 `;
 
 const ErrorContainer = styled.div`
@@ -170,5 +179,5 @@ const ErrorContainer = styled.div`
   bottom: -1rem;
   height: 1rem;
   font-size: 0.6rem;
-  ${RV_Float}: 0.5rem;
+  ${({ RV_Float }) => `${RV_Float}:'0.5rem'`}
 `;
