@@ -118,7 +118,7 @@ const RasoulView = () => {
       </div>
       <CustomDropzone
         accept=".pdf"
-        // exceptions={['pdf', 'jpg']}
+        exceptions={['jpg']}
         maxFiles={3}
         maxEachSize={1}
         maxTotalSize={1}

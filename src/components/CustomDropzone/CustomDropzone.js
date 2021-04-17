@@ -168,7 +168,7 @@ const CustomDropzone = (props) => {
                 },
               };
               //! Post file to server.
-              // axios.post(uploadURL, formData, options);
+              axios.post(uploadURL, formData, options);
             }
           );
         });

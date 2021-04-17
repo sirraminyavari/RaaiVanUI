@@ -162,9 +162,9 @@
       jQuery(document).ready(function () {
         jQuery(document).foundation();
 
-        // GlobalUtilities.js = function (params) {
-        //   return "/load/scripts/" + ((params || {}).Name || params || "");
-        // };
+        GlobalUtilities.js = function (params) {
+          return "/load/scripts/" + ((params || {}).Name || params || "");
+        };
 
         for (var i in (window.RVGlobal || {}).Modules || {})
           RVGlobal.Modules[String(i).toLowerCase()] = RVGlobal.Modules[i];
