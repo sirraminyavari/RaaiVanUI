@@ -8,7 +8,10 @@ import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
 import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 //! Dropzone
-import CustomeDropzone from 'components/CustomDropzone/CustomeDropzone';
+import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+
+//! ProgressBar
+import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -87,6 +90,10 @@ const RasoulView = () => {
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>
         Rasoul's window
       </div>
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Table Component
+      </div>
       <CustomTable
         editable
         columns={columns}
@@ -105,7 +112,27 @@ const RasoulView = () => {
           },
         })}
       />
-      <CustomeDropzone accept="image/*" />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Dropzone Component
+      </div>
+      <CustomDropzone
+        accept=".pdf"
+        exceptions={['jpg']}
+        maxFiles={3}
+        maxEachSize={1}
+        maxTotalSize={1}
+        onError={(error) => console.log(error)}
+        nodeId="40aa835f-751c-4786-86af-fec04f45d262"
+        // disabled
+      />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Custom Progressbar Component
+      </div>
+      <ProgressBar label="Label" progress={100} />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>End of view</div>
     </div>
   );
 };

@@ -95,7 +95,7 @@ const makeColumns = (headers, actions) => {
       actionColumns.push(customColumn);
     });
   }
-  console.log(headers, 'make columns');
+  // console.log(headers, 'make columns');
   const dataCulomns = headers.map((header) => {
     return {
       Header: Object.values(header)[0],

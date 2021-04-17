@@ -16,7 +16,6 @@ const selectShowSearchResults = createSelector(
 );
 
 const SidebarMain = () => {
-  console.count('main');
   const dispatch = useDispatch();
   const { setSearchText } = sidebarMenuSlice.actions;
   const showSearchResults = useSelector(selectShowSearchResults);

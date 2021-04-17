@@ -1,14 +1,14 @@
 import { getToday, getLanguageDigits } from 'helpers/helpers';
 import { utils } from 'react-modern-calendar-datepicker';
 
-console.log(
-  new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-    day: 'numeric',
-    month: 'long',
-    weekday: 'long',
-    year: 'numeric',
-  }).format(Date.now())
-);
+// console.log(
+//   new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+//     day: 'numeric',
+//     month: 'long',
+//     weekday: 'long',
+//     year: 'numeric',
+//   }).format(Date.now())
+// );
 
 export const lunar = {
   // months list by order

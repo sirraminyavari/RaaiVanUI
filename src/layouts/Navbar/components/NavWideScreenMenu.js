@@ -11,8 +11,6 @@ const ButtonActions = lazy(() =>
 );
 
 const NavWideScreenMenu = () => {
-  console.count('nav wide screen');
-
   return (
     <Styled.WideScreenMenu>
       {NavButtonsList.map((btn) => {
