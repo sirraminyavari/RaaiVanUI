@@ -19,7 +19,8 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
  * @property {function} onError -A callback function that will fire on file upload exception.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
- * @property {string} [nodeId] -Node id.
+ * @property {string} [ownerId] -The id of file owner.
+ * @property {string} [ownerType] -The type of file owner.
  * @property {boolean} disabled -A flag that will disable dropzone area.
  * @property {string[]} exceptions -All formats that are not allowed to be uploaded.
  * {exceptions} prop has priority over {accept} prop.
@@ -40,7 +41,8 @@ const CustomDropzone = (props) => {
     onError,
     containerProps,
     inputProps,
-    nodeId,
+    ownerId,
+    ownerType,
     disabled,
     exceptions,
   } = props;
@@ -125,8 +127,8 @@ const CustomDropzone = (props) => {
           //! Get upload link.
           apiHandler.url(
             {
-              OwnerID: nodeId,
-              OwnerType: 'Node',
+              OwnerID: ownerId,
+              OwnerType: ownerType,
             },
             (response) => {
               let uploadURL = response.slice(5);
@@ -181,11 +183,11 @@ const CustomDropzone = (props) => {
     getInputProps,
     isDragActive,
     fileRejections,
-    acceptedFiles,
+    // acceptedFiles,
     // open,
   } = useDropzone({
     onDrop,
-    accept,
+    accept: accept.join(', '),
     maxFiles,
     disabled: !!disabled,
     validator: customValidator,
@@ -320,13 +322,15 @@ CustomDropzone.propTypes = {
   onError: PropTypes.func,
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
-  nodeId: PropTypes.string,
+  ownerId: PropTypes.string,
+  ownerType: PropTypes.string,
   disabled: PropTypes.bool,
   exceptions: PropTypes.array,
 };
 
 CustomDropzone.defaultProps = {
-  nodeId: '',
+  ownerId: '',
+  ownerType: 'Node',
 };
 
 CustomDropzone.displayName = 'CustomDropzoneComponent';

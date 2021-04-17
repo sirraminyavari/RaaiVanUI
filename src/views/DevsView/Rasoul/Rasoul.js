@@ -117,13 +117,14 @@ const RasoulView = () => {
         Custom Dropzone Component
       </div>
       <CustomDropzone
-        accept=".pdf"
+        accept={['image/*', '.pdf']}
         exceptions={['jpg']}
         maxFiles={3}
         maxEachSize={1}
         maxTotalSize={1}
         onError={(error) => console.log(error)}
-        nodeId="40aa835f-751c-4786-86af-fec04f45d262"
+        ownerId="40aa835f-751c-4786-86af-fec04f45d262"
+        ownerType="Node"
         // disabled
       />
       <hr />
