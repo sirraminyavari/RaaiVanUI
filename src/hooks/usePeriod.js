@@ -5,15 +5,13 @@
 
 import { useState, useEffect } from 'react';
 
-const { GlobalUtilities } = window;
-
-const check = (value) => {
-  return (
-    value === true || (GlobalUtilities.get_type(value) == 'number' && value > 0)
-  );
-};
-
-const usePeriod = (value, { duration = 500 }) => {
+const usePeriod = (value, { duration = 500 }, GlobalUtilities) => {
+  const check = (value) => {
+    return (
+      value === true ||
+      (GlobalUtilities.get_type(value) == 'number' && value > 0)
+    );
+  };
   const [inPeriod, setInPeriod] = useState(check(value));
 
   let to = null;
