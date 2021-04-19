@@ -49,6 +49,7 @@ const resolveClass = ({ type, disable }) => {
     'secondary-o': 'rv-action-button-secondary-o',
     negative: 'rv-action-button-negative',
     'negative-o': 'rv-action-button-negative-o',
+    'negative-secondary-o': 'rv-action-button-negative-so',
   };
 
   return dic[type] || resolveClass({ type: 'primary' });
