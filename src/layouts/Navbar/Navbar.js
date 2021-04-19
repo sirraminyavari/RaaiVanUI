@@ -1,7 +1,7 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense, memo } from 'react';
+import { lazy, Suspense, memo, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './components/NavSearchInput';
@@ -17,6 +17,7 @@ import {
   MOBILE_BOUNDRY,
 } from 'constant/constants';
 import { BG_WARM } from 'constant/Colors';
+import { WindowContext } from 'context/WindowProvider';
 
 const NavWideScreenMenu = lazy(() =>
   import(
@@ -36,6 +37,7 @@ const selectIsSidebarOpen = createSelector(
 
 const Navbar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const { RV_Direction } = useContext(WindowContext);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -70,7 +72,27 @@ const Navbar = () => {
         {showInput() ? (
           <NavbarSearchInput placeholder="جستجو در مطالب،کاربران،ابزارها و ..." />
         ) : (
-          <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
+          <PopupMenu
+            menuStyle={{
+              padding: 0,
+              border: 0,
+              backgroundColor: 'transparent',
+              paddingTop: '0.2rem',
+            }}
+            trigger="click">
+            <div>
+              <SearchIcon
+                size={30}
+                color="#fff"
+                style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
+              />
+            </div>
+            <NavbarSearchInput
+              style={{ direction: RV_Direction, boxShadow: '0 0 0.3rem #333' }}
+              autoFocus
+              placeholder="جستجو در مطالب،کاربران،ابزارها و ..."
+            />
+          </PopupMenu>
         )}
         <PopupMenu trigger="click">
           <div>

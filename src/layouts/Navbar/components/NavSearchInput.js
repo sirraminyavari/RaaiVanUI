@@ -2,22 +2,48 @@
  * Renders a customized search input for navbar.
  */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { encode } from 'js-base64';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
 const NavSearchInput = (props) => {
+  const history = useHistory();
   const [searchText, setSearchText] = useState('');
 
+  //! The path that input is link to.
+  let searchPath = `/dosearch/${encode(
+    searchText !== '' ? searchText : 'جستجو'
+  )}`;
+
+  //! Set search text.
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
+  //! Clear input field after redirection.
+  const handleClearSearch = () => {
+    setSearchText('');
+  };
+
+  //! Redirect to search path on input enter.
+  const handleInputEnter = (e) => {
+    if (e.key === 'Enter') {
+      history.push(searchPath);
+      handleClearSearch();
+    }
+  };
+
   return (
     <Styled.SearchContainer>
-      <Styled.SearchInput onChange={handleInputChange} type="search" {...props}>
-        <Styled.SearchWrapper as={Link} to={`/dosearch/${searchText}`}>
-          <SearchIcon size={22} color="#BAC9DC" />
+      <Styled.SearchInput
+        value={searchText}
+        onChange={handleInputChange}
+        onKeyPress={handleInputEnter}
+        type="search"
+        {...props}>
+        <Styled.SearchWrapper as={Link} to={searchPath}>
+          <SearchIcon size={22} color="#BAC9DC" onClick={handleClearSearch} />
         </Styled.SearchWrapper>
       </Styled.SearchInput>
     </Styled.SearchContainer>

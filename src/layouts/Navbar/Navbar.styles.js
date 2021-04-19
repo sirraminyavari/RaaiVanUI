@@ -17,7 +17,7 @@ export const NavbarContainer = withTheme(styled.div`
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: 100;
+  z-index: 1000;
   justify-content: space-between;
   align-items: center;
   top: 0;
