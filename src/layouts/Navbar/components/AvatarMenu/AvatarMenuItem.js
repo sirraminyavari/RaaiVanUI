@@ -17,7 +17,7 @@ const MenuItem = (props) => {
       as={linkTo ? Link : 'div'}
       to={linkTo}
       onClick={onClickHandler ?? null}>
-      <Icon size={25} color={iconColor} dir={RV_RevFloat} />
+      <Icon size={22} color={iconColor} dir={RV_RevFloat} />
       <Styled.AvatarMenuTitle color={textColor}>{title}</Styled.AvatarMenuTitle>
     </Styled.AvatarMenuItem>
   );

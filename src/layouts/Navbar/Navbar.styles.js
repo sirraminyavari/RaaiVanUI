@@ -26,6 +26,10 @@ export const NavbarContainer = withTheme(styled.div`
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
+
+  .triangle {
+    display: none;
+  }
 `);
 
 export const WideScreenMenu = styled.div`
@@ -35,11 +39,11 @@ export const WideScreenMenu = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
-  width: 3.7rem;
-  height: 3.7rem;
-  margin: 0rem 0.5rem;
-  padding: 0.4rem;
-  border-radius: 60%;
+  width: 4.7rem;
+  height: auto;
+  margin: -0.17rem 0rem;
+  padding: 0.5rem;
+  border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
   display: flex;
   position: relative;
   flex-direction: column;
@@ -190,8 +194,10 @@ export const Arrow = styled.span`
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 14rem;
-  padding: 0.5rem 0.7rem;
+  width: auto;
+  min-width: 11rem;
+  max-width: 14rem;
+  padding: 0rem 0.7rem;
 `;
 
 export const AvatarMenuItem = styled.div`
@@ -207,7 +213,7 @@ export const AvatarMenuItem = styled.div`
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
 `;
