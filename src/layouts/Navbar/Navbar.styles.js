@@ -1,6 +1,7 @@
 import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import Input from 'components/Inputs/Input';
 
 const { RV_RevFloat } = window;
 
@@ -82,29 +83,34 @@ export const BadgeWrapper = styled.div`
 export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
+  color: inherit;
 `;
 
 export const SearchContainer = styled.div`
+  margin: 0 1rem;
   position: relative;
   :focus-within input {
     width: 16rem;
   }
-  :focus-within div {
-    color: #2b7be4;
+  :focus-within svg {
+    color: #2b7be4 !important;
   }
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled(Input)`
   border: none;
   border-radius: 0.3rem;
   outline: 0;
-  color: #333;
+  color: #000;
   height: 2rem;
   padding: 0.1rem 0.6rem;
   width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {
     color: transparent;
+  }
+  ::placeholder {
+    color: #bac9dc;
   }
 `;
 

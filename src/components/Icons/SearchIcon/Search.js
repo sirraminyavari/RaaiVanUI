@@ -1,7 +1,7 @@
-import { MdSearch } from 'react-icons/md';
+import { BiSearch } from 'react-icons/bi';
 
 const SearchIcon = (props) => {
-  return <MdSearch {...props} />;
+  return <BiSearch {...props} />;
 };
 
 export default SearchIcon;

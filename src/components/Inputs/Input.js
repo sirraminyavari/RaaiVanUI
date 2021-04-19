@@ -171,7 +171,7 @@ export const ButtonContainer = styled.div`
   align-items: center;
   font-size: 1.5rem;
   z-index: 2;
-  ${({ RV_RevFloat }) => `${RV_RevFloat}:'0.5rem'`}
+  ${({ RV_RevFloat }) => `${RV_RevFloat}: 0.5rem;`}
 `;
 
 const ErrorContainer = styled.div`

@@ -8,7 +8,6 @@ import NavbarSearchInput from './components/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import AvatarMenuList from './components/AvatarMenu/AvatarMenuList';
 import { createSelector } from 'reselect';
@@ -36,7 +35,6 @@ const selectIsSidebarOpen = createSelector(
 );
 
 const Navbar = () => {
-  // console.count('navbar');
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
@@ -70,13 +68,7 @@ const Navbar = () => {
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (
-          <AutoSuggestInput
-            style={{ margin: '0 1.5rem' }}
-            endpoint="names"
-            onItemSelect={(value) => console.log(value)}
-            placeholder={'جستجو در مطالب،کاربران،ابزارها و ...'}>
-            {/* <NavbarSearchInput /> */}
-          </AutoSuggestInput>
+          <NavbarSearchInput placeholder="جستجو در مطالب،کاربران،ابزارها و ..." />
         ) : (
           <SearchIcon size={30} color="#fff" style={{ margin: '0 1.5rem' }} />
         )}
