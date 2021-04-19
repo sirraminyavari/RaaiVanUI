@@ -13,6 +13,10 @@ import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 //! ProgressBar
 import ProgressBar from 'components/ProgressBar/ProgressBar';
 
+//! Tree
+import Tree from 'components/Tree/Tree';
+import treeData from './treeData';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -132,6 +136,11 @@ const RasoulView = () => {
         Custom Progressbar Component
       </div>
       <ProgressBar label="Label" progress={100} />
+      <hr />
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
+        Tree Component
+      </div>
+      <Tree data={treeData} />
       <hr />
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>End of view</div>
     </div>
