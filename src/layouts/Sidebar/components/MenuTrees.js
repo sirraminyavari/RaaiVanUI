@@ -55,7 +55,7 @@ const SidebarTrees = () => {
                       <SidebarMenuRoot
                         item={item}
                         isDragging={snapshot.isDragging}
-                        dragProps={provided.dragHandleProps}
+                        dragHandleProps={provided.dragHandleProps}
                       />
                     </div>
                   )}

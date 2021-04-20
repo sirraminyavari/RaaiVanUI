@@ -238,17 +238,13 @@ export const FooterTitle = withTheme(styled.span`
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
 const DIV = styled.div``;
 
-export const MenuContainer = styled(({ isDragging, ...props }) => (
-  <DIV {...props} />
-))`
+export const MenuContainer = styled.div`
   ${FlexBetween}
   border: 1px solid #222;
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  cursor: pointer;
-  color: #fff;
-  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
+  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
     border: none;
@@ -258,10 +254,14 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
   color: #fff;
+  width: 100%;
 `;
 
 export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
+  color: #fff;
+  display: inline-block;
+  width: 100%;
 `;
 
 export const MenuItemImage = styled.img`
@@ -281,8 +281,7 @@ export const SubMenuContainer = styled.div`
   margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
   border-radius: 0.5rem;
-  background-color: ${({ isDraggingOver }) =>
-    isDraggingOver ? '#383388' : 'inherit'};
+  background-color: inherit;
   transition: all 0.5s ease;
 `;
 
@@ -292,8 +291,10 @@ export const SubMenu = styled(
   margin: 0;
   padding: 0.5rem 1.3rem;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #fff;
-  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
+  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
   }
@@ -306,6 +307,10 @@ export const SubMenu = styled(
 export const ListItemWrapper = styled.div`
   ${FlexBetween}
   color: #fff;
+`;
+
+export const DragIconWrapper = styled.div`
+  line-height: 0.5rem;
 `;
 
 export const SettingWrapper = styled.div`
@@ -389,8 +394,7 @@ export const MiniIconWrapper = styled.div`
 `;
 
 export const MenuTreeContainer = styled.div`
-  background-color: ${({ isDraggingOver }) =>
-    isDraggingOver ? '#383388' : 'inherit'};
+  background-color: inherit;
   padding: 0.1rem 0.2rem;
   border-radius: 0.5rem;
   transition: all 0.5s ease;

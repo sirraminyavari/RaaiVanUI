@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import { reorder } from 'helpers/helpers';
+import DragIcon from 'components/Icons/DragIcon/Drag';
 
 // import FallbackImage from 'assets/images/cliqmind_mini.png'
 
@@ -50,7 +51,6 @@ const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
         {(provided, snapshot) => (
           <Styled.SubMenuContainer
             isOpen={isOpen}
-            isDraggingOver={snapshot.isDraggingOver}
             itemsCount={menuList.length}
             {...provided.droppableProps}
             ref={provided.innerRef}>
@@ -66,22 +66,28 @@ const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
                       forwardedAs={Link}
                       to={`/classes/${menu.NodeTypeID}`}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       ref={provided.innerRef}
                       style={{ ...provided.draggableProps.style }}
                       isDragging={snapshot.isDragging}>
-                      {menu.IconName &&
-                        SidebarIcons[menu.IconName]({ size: 20 })}
-                      {menu.IconURL && (
-                        <Styled.MenuItemImage
-                          src={menu.IconURL}
-                          style={{ maxWidth: '1.3rem' }}
-                          alt="sub-menu-icon"
-                        />
-                      )}
-                      <span style={{ margin: '0 10px' }}>
-                        {decode(menu.TypeName)}
-                      </span>
+                      <div>
+                        {menu.IconName &&
+                          SidebarIcons[menu.IconName]({ size: 20 })}
+                        {menu.IconURL && (
+                          <Styled.MenuItemImage
+                            src={menu.IconURL}
+                            style={{ maxWidth: '1.3rem' }}
+                            alt="sub-menu-icon"
+                          />
+                        )}
+                        <span style={{ margin: '0 10px' }}>
+                          {decode(menu.TypeName)}
+                        </span>
+                      </div>
+                      <Styled.DragIconWrapper
+                        {...provided.dragHandleProps}
+                        style={{ cursor: 'row-resize' }}>
+                        <DragIcon />
+                      </Styled.DragIconWrapper>
                     </Styled.SubMenu>
                   )}
                 </Draggable>

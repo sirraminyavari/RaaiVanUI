@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
-import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
+import DragIcon from 'components/Icons/DragIcon/Drag';
 import SidebarMenuBranches from './MenuBranches';
 import { createSelector } from 'reselect';
 
@@ -43,7 +43,7 @@ const selectOpenMenuID = createSelector(
  * @param {PropType} props
  */
 const SidebarMenuRoot = (props) => {
-  const { item, isDragging, dragProps } = props;
+  const { item, isDragging, dragHandleProps } = props;
 
   const {
     NodeTypeID: id,
@@ -64,22 +64,26 @@ const SidebarMenuRoot = (props) => {
 
   return (
     <>
-      <Styled.MenuContainer
-        className="BorderRadius4"
-        isDragging={isDragging}
-        {...dragProps}
-        forwardedAs={childMenus ? 'div' : Link}
-        to={`/classes/${id}`}
-        onClick={childMenus ? handleDropdown : null}>
+      <Styled.MenuContainer className="BorderRadius4" isDragging={isDragging}>
         <Styled.MenuTitleWrapper>
           {childMenus ? (
-            <CaretIcon dir={isOpen() ? 'down' : RV_RevFloat} />
+            <CaretIcon
+              size={20}
+              dir={isOpen() ? 'down' : RV_RevFloat}
+              onClick={handleDropdown}
+            />
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
-          <Styled.MenuTitle>{decode(title)}</Styled.MenuTitle>
+          <Styled.MenuTitle as={Link} to={`/classes/${id}`}>
+            {decode(title)}
+          </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
-        {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
+        <Styled.DragIconWrapper
+          {...dragHandleProps}
+          style={{ cursor: 'row-resize' }}>
+          <DragIcon />
+        </Styled.DragIconWrapper>
       </Styled.MenuContainer>
       {childMenus && (
         <SidebarMenuBranches
