@@ -1,4 +1,4 @@
-import { useState, useEffect, cloneElement } from 'react';
+import { useState, useEffect, cloneElement, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Sticker from './Sticker';
@@ -6,6 +6,7 @@ import useWindowSize from 'hooks/useWindowSize';
 import useOutsideClick from 'hooks/useOutsideClick';
 import usePrevious from 'hooks/usePrevious';
 import useWindowScroll from 'hooks/useWindowScroll';
+import { WindowContext } from 'context/WindowProvider';
 
 const { GlobalUtilities, jQuery, RV_RTL } = window;
 const Empty = (props) => <>{props.children}</>;
@@ -32,7 +33,7 @@ const ArrowRadius = 0.4;
  * @param {PropType} props
  */
 const PopupMenu = (props) => {
-  const { GlobalUtilities } = window;
+  const { GlobalUtilities } = useContext(WindowContext);
   let {
     align,
     arrowClass,

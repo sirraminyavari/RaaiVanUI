@@ -28,7 +28,9 @@ const ListItem = (props) => {
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>
       </Styled.CenterIcon>
-      {badge && <Badge color="#2b7be4" value={badge} withBorder />}
+      {badge && (
+        <Badge color="#2b7be4" value={badge} style={{ fontSize: '0.8rem' }} />
+      )}
     </Styled.ListItemWrapper>
   );
 };
