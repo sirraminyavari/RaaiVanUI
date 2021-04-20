@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
-import sidebarPattern from 'assets/images/sidebar-bg-pattern.svg';
+import sidebarPattern from 'assets/images/pattern_soft.svg';
 
 const { RV_Float, RV_RevFloat } = window;
 
