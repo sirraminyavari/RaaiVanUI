@@ -15,9 +15,6 @@ const {
   setPasswordError,
 } = loginSlice.actions;
 
-const { GlobalUtilities, UsersAPI, RVDic } = window;
-const reqParams = GlobalUtilities.request_params();
-
 /**
  * Sending reset pass request with help of Thunk.
  * See @link https://github.com/reduxjs/redux-thunk for more info.
@@ -27,6 +24,9 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
   dispatch,
   getState
 ) => {
+  const { GlobalUtilities, UsersAPI, RVDic } = window;
+  const reqParams = GlobalUtilities.request_params();
+
   const captchaToken = getState().auth.captchaToken;
 
   const sendTicket = () => {
