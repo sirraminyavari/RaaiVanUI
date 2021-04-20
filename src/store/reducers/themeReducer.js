@@ -7,6 +7,7 @@ export const themeSlice = createSlice({
     isSidebarOpen: false,
     isSettingShown: false,
     hasNavSide: false,
+    activePath: '',
   },
   reducers: {
     toggleSidebar: (state, action) => {
@@ -17,6 +18,9 @@ export const themeSlice = createSlice({
     },
     toggleNavSide: (state, action) => {
       state.hasNavSide = action.payload;
+    },
+    setActivePath: (state, action) => {
+      state.activePath = action.payload;
     },
     handleSettings: (state, action) => {
       if (!state.isSidebarOpen) {

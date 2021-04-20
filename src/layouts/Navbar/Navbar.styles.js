@@ -1,6 +1,7 @@
 import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import Input from 'components/Inputs/Input';
 
 const { RV_RevFloat } = window;
 
@@ -16,7 +17,7 @@ export const NavbarContainer = withTheme(styled.div`
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: 100;
+  z-index: 1000;
   justify-content: space-between;
   align-items: center;
   top: 0;
@@ -25,6 +26,10 @@ export const NavbarContainer = withTheme(styled.div`
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
+
+  .triangle {
+    display: none;
+  }
 `);
 
 export const WideScreenMenu = styled.div`
@@ -34,11 +39,11 @@ export const WideScreenMenu = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
-  width: 3.7rem;
-  height: 3.7rem;
-  margin: 0rem 0.5rem;
-  padding: 0.4rem;
-  border-radius: 60%;
+  width: 4.7rem;
+  height: auto;
+  margin: -0.17rem 0rem;
+  padding: 0.5rem;
+  border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
   display: flex;
   position: relative;
   flex-direction: column;
@@ -82,29 +87,34 @@ export const BadgeWrapper = styled.div`
 export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
+  color: inherit;
 `;
 
 export const SearchContainer = styled.div`
+  margin: 0 1rem;
   position: relative;
   :focus-within input {
     width: 16rem;
   }
-  :focus-within div {
-    color: #2b7be4;
+  :focus-within svg {
+    color: #2b7be4 !important;
   }
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled(Input)`
   border: none;
   border-radius: 0.3rem;
   outline: 0;
-  color: #333;
+  color: #000;
   height: 2rem;
   padding: 0.1rem 0.6rem;
   width: 14rem;
   transition: all 0.6s ease;
   :focus::placeholder {
     color: transparent;
+  }
+  ::placeholder {
+    color: #bac9dc;
   }
 `;
 
@@ -184,8 +194,10 @@ export const Arrow = styled.span`
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 14rem;
-  padding: 0.5rem 0.7rem;
+  width: auto;
+  min-width: 11rem;
+  max-width: 14rem;
+  padding: 0rem 0.7rem;
 `;
 
 export const AvatarMenuItem = styled.div`
@@ -201,7 +213,7 @@ export const AvatarMenuItem = styled.div`
 
 export const AvatarMenuTitle = styled.span`
   padding: 0 0.6rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
 `;

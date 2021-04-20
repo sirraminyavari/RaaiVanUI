@@ -10,6 +10,7 @@ export const WindowProvider = ({ children }) => {
     RV_Float,
     RV_RevFloat,
     RVDic,
+    RV_Direction,
   } = window;
 
   return (
@@ -21,6 +22,7 @@ export const WindowProvider = ({ children }) => {
         RV_Float,
         RV_RevFloat,
         RVDic,
+        RV_Direction,
       }}>
       {children}
     </WindowContext.Provider>

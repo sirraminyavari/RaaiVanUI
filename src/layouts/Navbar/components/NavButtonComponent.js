@@ -2,6 +2,7 @@
  * A component that renders custom button for navbar.
  */
 import { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
@@ -28,11 +29,19 @@ import Badge from 'components/Badge/Badge';
  * @param {PropType} props
  */
 const NavButtonComponent = (props) => {
+  const { activePath } = useSelector((store) => store.theme);
   const { title, icon, linkTo, actions } = props.btnProps;
   const { badge } = props;
 
+  const isActive = () => {
+    return linkTo === activePath;
+  };
+
   return (
-    <Styled.ButtonContainer as={linkTo ? Link : 'div'} to={linkTo}>
+    <Styled.ButtonContainer
+      isActive={isActive()}
+      as={linkTo ? Link : 'div'}
+      to={linkTo}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
         {badge && (
