@@ -93,7 +93,6 @@ const SidebarContentClose = ({ theme }) => {
                   {IconURL && (
                     <Styled.MenuItemImage
                       src={IconURL}
-                      style={{ maxWidth: '2rem' }}
                       alt="sidebar-icon-closed"
                     />
                   )}

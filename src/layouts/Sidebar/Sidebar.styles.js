@@ -232,13 +232,13 @@ export const MenuTitleWrapper = styled.div`
 `;
 
 export const MenuTitle = styled.span`
-  margin-${RV_Float}: 0.3rem;
+  margin-${RV_Float}: 0.6rem;
 `;
 
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
-  // background-color: #fff;
   border-radius: 50%;
+  border: 0.12rem solid #fff;
 `;
 
 export const HighlightedTitle = styled.span`
@@ -337,10 +337,11 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 95%;
+  height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   position: absolute;
-  top: 1rem;
+  top: 0;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -348,7 +349,7 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 1rem 0px;
+  margin: 1rem 0;
   font-size: 1.6rem;
   color: #fff;
 `;
