@@ -1,7 +1,7 @@
 /**
  * Renders header component for sidebar.
  */
-import { useEffect, memo } from 'react';
+import { useEffect, memo, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Logo from 'assets/images/cliqmind_logo_white.svg';
@@ -13,10 +13,7 @@ import { MOBILE_BOUNDRY } from 'constant/constants';
 import { BG_WARMER } from 'constant/Colors';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { createSelector } from 'reselect';
-
-const { RV_RevFloat, RV_Float, RVGlobal } = window;
-
-const isSaas = RVGlobal.SAASBasedMultiTenancy;
+import { WindowContext } from 'context/WindowProvider';
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -24,10 +21,12 @@ const selectIsSidebarOpen = createSelector(
 );
 
 const SidebarHeader = () => {
-  // console.count('header');
   const dispatch = useDispatch();
   const { toggleSidebar, toggleSetting } = themeSlice.actions;
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const { RV_RevFloat, RV_Float, RVGlobal } = useContext(WindowContext);
+
+  const isSaas = RVGlobal.SAASBasedMultiTenancy;
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,

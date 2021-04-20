@@ -1,7 +1,7 @@
 /**
  * Renders Main(root) menu item that may or may not has sub-menus(branches).
  */
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
@@ -11,14 +11,16 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import SidebarMenuBranches from './MenuBranches';
 import { createSelector } from 'reselect';
-
-// import FallbackImage from 'assets/images/cliqmind_mini.png'
-
-const { RV_RevFloat } = window;
+import { WindowContext } from 'context/WindowProvider';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.openMenuID
+);
+
+const selectSidebarContent = createSelector(
+  (state) => state.theme,
+  (theme) => theme.sidebarContent
 );
 
 /**
@@ -53,8 +55,10 @@ const SidebarMenuRoot = (props) => {
   } = item;
 
   const openMenuID = useSelector(selectOpenMenuID);
+  const sidebarContent = useSelector(selectSidebarContent);
   const dispatch = useDispatch();
   const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+  const { RV_RevFloat } = useContext(WindowContext);
 
   //! Toggle an item's sub-menu.
   const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
@@ -79,11 +83,13 @@ const SidebarMenuRoot = (props) => {
             {decode(title)}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
-        <Styled.DragIconWrapper
-          {...dragHandleProps}
-          style={{ cursor: 'row-resize' }}>
-          <DragIcon />
-        </Styled.DragIconWrapper>
+        {sidebarContent === 'manage' && (
+          <Styled.DragIconWrapper
+            {...dragHandleProps}
+            style={{ cursor: 'row-resize' }}>
+            <DragIcon />
+          </Styled.DragIconWrapper>
+        )}
       </Styled.MenuContainer>
       {childMenus && (
         <SidebarMenuBranches

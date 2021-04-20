@@ -257,6 +257,10 @@ export const MenuTitleWrapper = styled.div`
   width: 100%;
 `;
 
+export const SubMenuTitleWrapper = styled.span`
+  margin: 0 0.4rem;
+`;
+
 export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
   color: #fff;

@@ -12,16 +12,20 @@ import { decode } from 'js-base64';
 import { reorder } from 'helpers/helpers';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 
-// import FallbackImage from 'assets/images/cliqmind_mini.png'
-
 const selectTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.tree
 );
 
+const selectSidebarContent = createSelector(
+  (state) => state.theme,
+  (theme) => theme.sidebarContent
+);
+
 const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
   const dispatch = useDispatch();
   const tree = useSelector(selectTree);
+  const sidebarContent = useSelector(selectSidebarContent);
   const { setReorderedTree } = sidebarMenuSlice.actions;
 
   //! Calls whenever item dragging ended and reorders menu list.
@@ -79,15 +83,17 @@ const SidebarMenuBranches = ({ isOpen, menuList, parentID }) => {
                             alt="sub-menu-icon"
                           />
                         )}
-                        <span style={{ margin: '0 10px' }}>
+                        <Styled.SubMenuTitleWrapper>
                           {decode(menu.TypeName)}
-                        </span>
+                        </Styled.SubMenuTitleWrapper>
                       </div>
-                      <Styled.DragIconWrapper
-                        {...provided.dragHandleProps}
-                        style={{ cursor: 'row-resize' }}>
-                        <DragIcon />
-                      </Styled.DragIconWrapper>
+                      {sidebarContent === 'manage' && (
+                        <Styled.DragIconWrapper
+                          {...provided.dragHandleProps}
+                          style={{ cursor: 'row-resize' }}>
+                          <DragIcon />
+                        </Styled.DragIconWrapper>
+                      )}
                     </Styled.SubMenu>
                   )}
                 </Draggable>
