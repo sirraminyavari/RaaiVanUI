@@ -18,7 +18,7 @@ const NavButtonActions = (props) => {
   const { actions } = props;
 
   return (
-    <Styled.ButtonActionsContainer optionCount={actions.length}>
+    <Styled.ButtonActionsContainer>
       {actions.map((action) => {
         return (
           <Styled.ButtonAction as={Link} to={action.linkTo} key={action.id}>

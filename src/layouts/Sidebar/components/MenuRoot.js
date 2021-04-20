@@ -1,24 +1,26 @@
 /**
  * Renders Main(root) menu item that may or may not has sub-menus(branches).
  */
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
 import * as Styled from '../Sidebar.styles';
 import { decode } from 'js-base64';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
-import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
+import DragIcon from 'components/Icons/DragIcon/Drag';
 import SidebarMenuBranches from './MenuBranches';
 import { createSelector } from 'reselect';
-
-// import FallbackImage from 'assets/images/cliqmind_mini.png'
-
-const { RV_RevFloat } = window;
+import { WindowContext } from 'context/WindowProvider';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.openMenuID
+);
+
+const selectSidebarContent = createSelector(
+  (state) => state.theme,
+  (theme) => theme.sidebarContent
 );
 
 /**
@@ -43,7 +45,7 @@ const selectOpenMenuID = createSelector(
  * @param {PropType} props
  */
 const SidebarMenuRoot = (props) => {
-  const { item, isDragging, dragProps } = props;
+  const { item, isDragging, dragHandleProps } = props;
 
   const {
     NodeTypeID: id,
@@ -53,8 +55,10 @@ const SidebarMenuRoot = (props) => {
   } = item;
 
   const openMenuID = useSelector(selectOpenMenuID);
+  const sidebarContent = useSelector(selectSidebarContent);
   const dispatch = useDispatch();
   const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+  const { RV_RevFloat } = useContext(WindowContext);
 
   //! Toggle an item's sub-menu.
   const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
@@ -64,22 +68,28 @@ const SidebarMenuRoot = (props) => {
 
   return (
     <>
-      <Styled.MenuContainer
-        className="BorderRadius4"
-        isDragging={isDragging}
-        {...dragProps}
-        forwardedAs={childMenus ? 'div' : Link}
-        to={`/classes/${id}`}
-        onClick={childMenus ? handleDropdown : null}>
+      <Styled.MenuContainer className="BorderRadius4" isDragging={isDragging}>
         <Styled.MenuTitleWrapper>
           {childMenus ? (
-            <CaretIcon dir={isOpen() ? 'down' : RV_RevFloat} />
+            <CaretIcon
+              size={20}
+              dir={isOpen() ? 'down' : RV_RevFloat}
+              onClick={handleDropdown}
+            />
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
-          <Styled.MenuTitle>{decode(title)}</Styled.MenuTitle>
+          <Styled.MenuTitle as={Link} to={`/classes/${id}`}>
+            {decode(title)}
+          </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
-        {childMenus && !isOpen() && <ShowMoreIcon dir="vertical" />}
+        {sidebarContent === 'manage' && (
+          <Styled.DragIconWrapper
+            {...dragHandleProps}
+            style={{ cursor: 'row-resize' }}>
+            <DragIcon />
+          </Styled.DragIconWrapper>
+        )}
       </Styled.MenuContainer>
       {childMenus && (
         <SidebarMenuBranches

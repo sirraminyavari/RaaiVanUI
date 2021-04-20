@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
-import sidebarPattern from 'assets/images/sidebar-bg-pattern.svg';
+import sidebarPattern from 'assets/images/pattern_soft.svg';
 
 const { RV_Float, RV_RevFloat } = window;
 
@@ -107,6 +107,10 @@ export const SidebarHeader = withTheme(styled.div`
   transition: all 0.7s ease;
 `);
 
+export const OpenContentWrapper = styled.div`
+  max-width: 13.5rem;
+`;
+
 export const ToggleArrow = styled.div`
   height: 1.5rem;
   margin-${RV_Float}: -0.3rem;
@@ -124,6 +128,18 @@ export const SearchWrapper = styled.div`
   margin-bottom: 1rem;
   padding: 0.3rem;
   position: relative;
+
+  :focus-within svg {
+    color: #fff;
+  }
+
+  // :focus-within div:first-child {
+  //   display: revert;
+  // }
+
+  :focus-within ::placeholder {
+    color: #fff;
+  }
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -132,9 +148,22 @@ export const SearchInput = styled.input.attrs((props) => ({
 }))`
   width: 100%;
   background-color: inherit;
-  color: #fff;
   border: none;
   outline: 0;
+  ${({ isTyping }) =>
+    isTyping
+      ? `
+      transform: translate(-1.5rem);
+      width: 80%;
+      `
+      : null}
+
+  ::placeholder {
+    color: #bac9dc;
+    opacity: 50;
+  }
+
+  transition: all 0.3s ease;
 `;
 
 export const SearchList = styled.div`
@@ -209,17 +238,13 @@ export const FooterTitle = withTheme(styled.span`
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
 const DIV = styled.div``;
 
-export const MenuContainer = styled(({ isDragging, ...props }) => (
-  <DIV {...props} />
-))`
+export const MenuContainer = styled.div`
   ${FlexBetween}
   border: 1px solid #222;
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  cursor: pointer;
-  color: #fff;
-  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
+  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
     border: none;
@@ -229,49 +254,67 @@ export const MenuContainer = styled(({ isDragging, ...props }) => (
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
   color: #fff;
+  width: 100%;
+`;
+
+export const SubMenuTitleWrapper = styled.span`
+  margin: 0 0.4rem;
 `;
 
 export const MenuTitle = styled.span`
-  margin-${RV_Float}: 0.3rem;
+  margin-${RV_Float}: 0.6rem;
+  color: #fff;
+  display: inline-block;
+  width: 100%;
 `;
 
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
-  // background-color: #fff;
   border-radius: 50%;
+  border: 0.12rem solid #fff;
 `;
 
 export const HighlightedTitle = styled.span`
-  margin-${RV_Float}: 0.4rem;
+  margin-${RV_Float}: 0.6rem;
 `;
 
 export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
+  margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
   border-radius: 0.5rem;
-  background-color: ${({ isDraggingOver }) =>
-    isDraggingOver ? '#383388' : 'inherit'};
+  background-color: inherit;
   transition: all 0.5s ease;
 `;
 
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0.3rem 0;
+  margin: 0;
   padding: 0.5rem 1.3rem;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #fff;
-  background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
+  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
+  }
+
+  &:last-child {
+    margin: 0 0 1.5rem 0;
   }
 `;
 
 export const ListItemWrapper = styled.div`
   ${FlexBetween}
   color: #fff;
+`;
+
+export const DragIconWrapper = styled.div`
+  line-height: 0.5rem;
 `;
 
 export const SettingWrapper = styled.div`
@@ -337,10 +380,11 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 95%;
+  height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   position: absolute;
-  top: 1rem;
+  top: 0;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -348,14 +392,13 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 1rem 0px;
+  margin: 1rem 0;
   font-size: 1.6rem;
   color: #fff;
 `;
 
 export const MenuTreeContainer = styled.div`
-  background-color: ${({ isDraggingOver }) =>
-    isDraggingOver ? '#383388' : 'inherit'};
+  background-color: inherit;
   padding: 0.1rem 0.2rem;
   border-radius: 0.5rem;
   transition: all 0.5s ease;
@@ -369,6 +412,18 @@ export const FilterIconWrapper = styled.div`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
+  color: #bac9dc;
+  opacity: 50;
+`;
+
+export const CancelIconWrapper = styled.div`
+  position: absolute;
+  ${`${RV_Float}: 0.5rem;`}
+  bottom: 0.1rem;
+  color: #bac9dc;
+  opacity: 50;
+  cursor: pointer;
+  display: ${({ isTyping }) => (isTyping ? 'revert' : 'none')};
 `;
 
 export const PanelLink = styled.div`

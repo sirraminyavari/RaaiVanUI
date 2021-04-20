@@ -128,8 +128,8 @@ export const SearchIcon = styled.div`
 
 export const ButtonActionsContainer = styled.div`
   width: 12rem;
-  height: ${({ optionCount }) => `${optionCount * 2.8}rem`};
-  padding: 0.7rem;
+  height: auto;
+  padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
   background-color: #fff;
@@ -143,10 +143,10 @@ export const ButtonAction = styled.div`
   color: #000;
   border-radius: 0.3rem;
   margin: 0.3rem 0;
-  padding: 0 0.3rem;
+  padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
   :hover {
-    background-color: #d3d3d3;
+    background-color: #f4f8fe;
   }
 `;
 

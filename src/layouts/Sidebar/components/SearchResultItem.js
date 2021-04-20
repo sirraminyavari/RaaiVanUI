@@ -37,7 +37,7 @@ const SearchResultItem = ({ node, searchText }) => {
       to={`/classes/${NodeTypeID}`}
       key={NodeTypeID}>
       <Styled.MenuTitle>
-        <img src={IconURL} alt="menu-icon" />
+        <Styled.MenuItemImage src={IconURL} alt="menu-icon" />
         <Styled.HighlightedTitle>
           {getHighlightedText(decode(TypeName), searchText)}
         </Styled.HighlightedTitle>
