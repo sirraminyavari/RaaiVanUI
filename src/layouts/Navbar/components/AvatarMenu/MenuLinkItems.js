@@ -1,6 +1,6 @@
 import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
-import AccountsIcon from 'components/Icons/AccountsIcon/AccountsIcon';
+import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
 import ApprovalIcon from 'components/Icons/ApprovalIcon/ApprovalIcon';
 
@@ -18,7 +18,7 @@ const MenuLinkItems = [
     id: 2,
     title: RVDic.AccountManagement,
     linkTo: '#',
-    icon: AccountsIcon,
+    icon: AccountManIcon,
     iconColor: '#2B7BE4',
   },
   {
