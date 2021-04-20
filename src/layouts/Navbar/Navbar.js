@@ -48,7 +48,6 @@ const Navbar = () => {
 
   useEffect(() => {
     dispatch(setActivePath(location.pathname));
-    console.log(location);
   }, [location, dispatch]);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });

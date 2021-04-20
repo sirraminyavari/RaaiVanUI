@@ -30,7 +30,7 @@ const SidebarOnOpen = ({ theme }) => {
   }, [dispatch]);
 
   return (
-    <>
+    <Styled.OpenContentWrapper>
       <Styled.SidebarTitle>
         {isSettingShown ? (
           <Styled.CenterIcon>
@@ -51,7 +51,7 @@ const SidebarOnOpen = ({ theme }) => {
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       {isSettingShown ? <SidebarManagement /> : <SidebarMain />}
-    </>
+    </Styled.OpenContentWrapper>
   );
 };
 

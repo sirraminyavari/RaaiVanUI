@@ -107,6 +107,10 @@ export const SidebarHeader = withTheme(styled.div`
   transition: all 0.7s ease;
 `);
 
+export const OpenContentWrapper = styled.div`
+  max-width: 13.5rem;
+`;
+
 export const ToggleArrow = styled.div`
   height: 1.5rem;
   margin-${RV_Float}: -0.3rem;
@@ -124,6 +128,18 @@ export const SearchWrapper = styled.div`
   margin-bottom: 1rem;
   padding: 0.3rem;
   position: relative;
+
+  :focus-within svg {
+    color: #fff;
+  }
+
+  // :focus-within div:first-child {
+  //   display: revert;
+  // }
+
+  :focus-within ::placeholder {
+    color: #fff;
+  }
 `;
 
 export const SearchInput = styled.input.attrs((props) => ({
@@ -132,9 +148,22 @@ export const SearchInput = styled.input.attrs((props) => ({
 }))`
   width: 100%;
   background-color: inherit;
-  color: #fff;
   border: none;
   outline: 0;
+  ${({ isTyping }) =>
+    isTyping
+      ? `
+      transform: translate(-1.5rem);
+      width: 80%;
+      `
+      : null}
+
+  ::placeholder {
+    color: #bac9dc;
+    opacity: 50;
+  }
+
+  transition: all 0.3s ease;
 `;
 
 export const SearchList = styled.div`
@@ -242,13 +271,14 @@ export const MenuItemImage = styled.img`
 `;
 
 export const HighlightedTitle = styled.span`
-  margin-${RV_Float}: 0.4rem;
+  margin-${RV_Float}: 0.6rem;
 `;
 
 export const SubMenuContainer = styled.div`
   max-height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
+  margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
   border-radius: 0.5rem;
   background-color: ${({ isDraggingOver }) =>
@@ -259,13 +289,17 @@ export const SubMenuContainer = styled.div`
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0.3rem 0;
+  margin: 0;
   padding: 0.5rem 1.3rem;
   display: flex;
   color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#15113c' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
+  }
+
+  &:last-child {
+    margin: 0 0 1.5rem 0;
   }
 `;
 
@@ -370,6 +404,18 @@ export const FilterIconWrapper = styled.div`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
+  color: #bac9dc;
+  opacity: 50;
+`;
+
+export const CancelIconWrapper = styled.div`
+  position: absolute;
+  ${`${RV_Float}: 0.5rem;`}
+  bottom: 0.1rem;
+  color: #bac9dc;
+  opacity: 50;
+  cursor: pointer;
+  display: ${({ isTyping }) => (isTyping ? 'revert' : 'none')};
 `;
 
 export const PanelLink = styled.div`
