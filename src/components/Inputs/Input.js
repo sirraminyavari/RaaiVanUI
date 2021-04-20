@@ -22,6 +22,7 @@ import { WindowContext } from '../../context/WindowProvider';
  * @param {PropType} props
  */
 
+const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
 const Input = React.forwardRef(
   (
     {
@@ -39,10 +40,6 @@ const Input = React.forwardRef(
     },
     ref
   ) => {
-    const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = useContext(
-      WindowContext
-    );
-
     const errorMessage =
       GlobalUtilities.get_type(error) == 'string' ? error : null;
 
@@ -123,15 +120,9 @@ const Input = React.forwardRef(
           autoComplete="off"
           {...props}
         />
-        {hasButton && (
-          <ButtonContainer RV_RevFloat={RV_RevFloat}>
-            {children}
-          </ButtonContainer>
-        )}
+        {hasButton && <ButtonContainer>{children}</ButtonContainer>}
         {!!errorMessage && (
-          <ErrorContainer RV_Float={RV_Float} className="rv-red">
-            {errorMessage}
-          </ErrorContainer>
+          <ErrorContainer className="rv-red">{errorMessage}</ErrorContainer>
         )}
       </InputContainer>
     );
@@ -171,7 +162,7 @@ export const ButtonContainer = styled.div`
   align-items: center;
   font-size: 1.5rem;
   z-index: 2;
-  ${({ RV_RevFloat }) => `${RV_RevFloat}:'0.5rem'`}
+  ${RV_RevFloat}:0.5rem
 `;
 
 const ErrorContainer = styled.div`
@@ -179,5 +170,5 @@ const ErrorContainer = styled.div`
   bottom: -1rem;
   height: 1rem;
   font-size: 0.6rem;
-  ${({ RV_Float }) => `${RV_Float}:'0.5rem'`}
+  ${RV_Float}:0.5rem
 `;

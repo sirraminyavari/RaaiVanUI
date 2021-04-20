@@ -17,8 +17,14 @@ const { RVDic } = window;
  * @param {Boolean} isVisible - If true, password validation will be shown.
  * @param {String} password - Inputted password.
  * @param {Object} passwordPolicy - The policies, user should occupy while choosing password.
+ * @param {Boolean} resetingPass - If true, checks password for new chars
  */
-const PasswordValidation = ({ isVisible, password, passwordPolicy }) => {
+const PasswordValidation = ({
+  isVisible,
+  password,
+  passwordPolicy,
+  resetingPass,
+}) => {
   /**
    *
    * @param {Sting} text - message for password validator
@@ -54,9 +60,9 @@ const PasswordValidation = ({ isVisible, password, passwordPolicy }) => {
   };
 
   return (
-    <CollapseAnimate style={{ marginTop: '1rem' }} isVisible={isVisible}>
+    <CollapseAnimate style={{ marginBottom: '1rem' }} isVisible={isVisible}>
       <Container>
-        {passwordPolicy.NewCharacters && (
+        {passwordPolicy.NewCharacters && resetingPass && (
           <ValidatorItems
             text={RVDic.PasswordPolicyNewCharacters.replace(
               '[n]',
@@ -121,6 +127,6 @@ const Items = styled.div`
   flex-direction: row;
   align-items: center;
 
-  margin: 3px;
-  padding: 3px;
+  margin: 3px 0px 3px 3px;
+  padding: 3px 0px 3px 3px;
 `;

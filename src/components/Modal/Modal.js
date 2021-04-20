@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import usePrevious from '../../hooks/usePrevious';
 import CloseIcon from '../Icons/CloseIcon/CloseIcon';
 import styled from 'styled-components';
-
-const { GlobalUtilities } = window;
+import { WindowContext } from '../../context/WindowProvider';
 
 const Modal = ({
   title,
@@ -17,6 +16,7 @@ const Modal = ({
   titleClass,
   ...props
 }) => {
+  const { GlobalUtilities } = useContext(WindowContext);
   const [componentId, __dontCallMe] = useState(
     'r' + GlobalUtilities.random_str(10)
   );
@@ -47,6 +47,7 @@ const Modal = ({
     <></>
   ) : (
     <Container
+      GlobalUtilities={GlobalUtilities}
       id={componentId}
       className={`RevDirection ${showState ? 'rv-fade-in' : 'rv-fade-out'}`}
       noBackground={noBackground}
@@ -105,7 +106,7 @@ const Container = styled.div`
   margin: auto;
   width: 100%;
   overflow: auto;
-  z-index: ${GlobalUtilities.zindex.dialog()};
+  z-index: ${({ GlobalUtilities }) => GlobalUtilities.zindex.dialog()};
   ${({ middle }) => middle && `justify-content: center; padding-bottom:15vh;`}
   ${({ noBackground }) => !noBackground && `background: rgba(0, 0, 0, 0.75);`}
 `;

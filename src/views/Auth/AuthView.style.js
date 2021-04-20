@@ -58,6 +58,7 @@ export const Box = styled.div`
   border-radius: 0.8rem;
   flex-direction: column;
   align-items: center;
+  align-self: center;
   justify-content: space-between;
   transition: all 1s, max-height 1s, min-height 1s, height 1s, min-width 0.5s;
   position: relative;
@@ -75,7 +76,8 @@ export const Center = styled.div`
   justify-content: center;
 `;
 export const Wrapper = styled.div`
-  width: 100%;
+  width: 90%;
+
   div.transition-group {
     position: relative;
   }

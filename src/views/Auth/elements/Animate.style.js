@@ -65,7 +65,7 @@ export const UpToDownAnimate = styled.div`
 // For collapsing the text we use this.
 export const CollapseAnimate = styled.div`
   position: relative;
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};

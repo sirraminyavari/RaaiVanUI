@@ -4,7 +4,7 @@
 import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { decode } from 'js-base64';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   useHistory,
@@ -25,13 +25,21 @@ import {
 import Routes from 'routes/AuthRoutes/Auth.routes';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-
-const { RVGlobal } = window;
+import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * A mother component for containing the login elements.
  */
 const AuthView = () => {
+  const {
+    RVGlobal,
+    GlobalUtilities,
+    UsersAPI,
+    RVDic,
+    RVAPI,
+    SAASBasedMultiTenancy,
+  } = window;
+
   // True, if required files for the login page has been loaded.
   const [loadDone, setLoadDone] = useState(false);
   // True, if activationCode of reset password ticket has been checked.
@@ -44,8 +52,6 @@ const AuthView = () => {
   let location = useLocation();
 
   useEffect(() => {
-    const { GlobalUtilities } = window;
-
     let files = [{ Root: 'API/', Ext: 'js', Childs: ['RVAPI', 'UsersAPI'] }];
     // if (that.Options.UseCaptcha) files.push("CaptchaImage.js");
     GlobalUtilities?.load_files(files, {
@@ -53,12 +59,10 @@ const AuthView = () => {
         setLoadDone(true);
       },
     });
-    console.log(window, '<--- window');
   }, []);
 
   useEffect(() => {
     if (loadDone) {
-      const { GlobalUtilities, UsersAPI, RVDic } = window;
       const reqParams = GlobalUtilities.request_params();
       const activationCode = reqParams.get_value('ac');
       const userName = reqParams.get_value('un');
@@ -86,7 +90,6 @@ const AuthView = () => {
   }, [loadDone]);
 
   useEffect(() => {
-    const { RVAPI, SAASBasedMultiTenancy } = window;
     if (!SAASBasedMultiTenancy) {
       RVAPI.GetDomains({
         ParseResults: true,
@@ -163,6 +166,7 @@ const AuthView = () => {
    */
   const handleLoaded = () => {
     const { GlobalUtilities } = window;
+
     GlobalUtilities.init_recaptcha((captcha) => {
       captcha.getToken((token) => {
         //use token
