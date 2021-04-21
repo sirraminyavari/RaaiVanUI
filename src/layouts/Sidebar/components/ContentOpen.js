@@ -1,81 +1,46 @@
 /**
  * Renders when sidebar is open.
  */
-import { lazy, useCallback, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { lazy } from 'react';
+import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
-import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
-import SettingIcon from 'components/Icons/SettingIcon/Setting';
-import withTheme from 'components/withTheme/withTheme';
-import { getURL } from 'helpers/helpers';
 import { createSelector } from 'reselect';
-import { WindowContext } from 'context/WindowProvider';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
   (theme) => theme.sidebarContent
 );
 
-const selectTeamName = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
-);
-
-const SidebarManagement = lazy(() =>
-  import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
+const SidebarSetting = lazy(() =>
+  import(/* webpackChunkName: "sidebar-setting-content"*/ './ContentSetting')
 );
 const SidebarMain = lazy(() =>
-  import(/* webpackChunkName: "sidebar-menu-content"*/ './Main')
+  import(/* webpackChunkName: "sidebar-main-content"*/ './ContentMain')
+);
+
+const SidebarManage = lazy(() =>
+  import(/* webpackChunkName: "sidebar-manage-content"*/ './ContentManage')
 );
 
 const getSidebarContent = (title) => {
   switch (title) {
+    case 'setting':
+      return <SidebarSetting />;
     case 'manage':
-      return <SidebarManagement />;
-
+      return <SidebarManage />;
     default:
       return <SidebarMain />;
   }
 };
 
-const SidebarOnOpen = ({ theme }) => {
-  const dispatch = useDispatch();
-  const { isSettingShown } = theme.states;
-  const { handleSettings } = theme.actions;
-  const sidebarContent = useSelector(selectSidebarContent);
-  const selectedTeam = useSelector(selectTeamName);
-  const { RV_RevFloat, RVDic } = useContext(WindowContext);
-
-  //! Toggle settings content on click.
-  const handleOnClick = useCallback(() => {
-    dispatch(handleSettings());
-  }, [dispatch]);
+const SidebarOnOpen = () => {
+  const contentTitle = useSelector(selectSidebarContent);
 
   return (
     <Styled.OpenContentWrapper>
-      <Styled.SidebarTitle>
-        {isSettingShown ? (
-          <Styled.CenterIcon>
-            <SettingIcon />
-            <Styled.TitleText>{RVDic.TeamManagement}</Styled.TitleText>
-          </Styled.CenterIcon>
-        ) : (
-          <Styled.TitleText as={Link} to={getURL('Classes')}>
-            {selectedTeam}
-          </Styled.TitleText>
-        )}
-        <Styled.SettingWrapper onClick={handleOnClick}>
-          {isSettingShown ? (
-            <ArrowIcon dir={RV_RevFloat} size={20} />
-          ) : (
-            <SettingIcon />
-          )}
-        </Styled.SettingWrapper>
-      </Styled.SidebarTitle>
-      {getSidebarContent(sidebarContent)}
+      {getSidebarContent(contentTitle)}
     </Styled.OpenContentWrapper>
   );
 };
 
-export default withTheme(SidebarOnOpen);
+export default SidebarOnOpen;

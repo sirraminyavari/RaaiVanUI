@@ -8,7 +8,7 @@ import useCheckRoute from 'hooks/useCheckRoute';
 import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { decode } from 'js-base64';
+import { decodeBase64 } from 'helpers/helpers';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   useEffect(() => {
     if (route.Application) {
-      const appName = decode(route.Application.Title);
+      const appName = decodeBase64(route.Application.Title);
       dispatch(setSelectedTeam(appName));
     }
   }, [route]);
