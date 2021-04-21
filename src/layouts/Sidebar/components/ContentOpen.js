@@ -17,6 +17,11 @@ const selectSidebarContent = createSelector(
   (theme) => theme.sidebarContent
 );
 
+const selectTeamName = createSelector(
+  (state) => state.theme,
+  (theme) => theme.selectedTeam
+);
+
 const SidebarManagement = lazy(() =>
   import(/* webpackChunkName: "sidebar-setting-content"*/ './Management')
 );
@@ -39,6 +44,7 @@ const SidebarOnOpen = ({ theme }) => {
   const { isSettingShown } = theme.states;
   const { handleSettings } = theme.actions;
   const sidebarContent = useSelector(selectSidebarContent);
+  const selectedTeam = useSelector(selectTeamName);
   const { RV_RevFloat, RVDic } = useContext(WindowContext);
 
   //! Toggle settings content on click.
@@ -56,7 +62,7 @@ const SidebarOnOpen = ({ theme }) => {
           </Styled.CenterIcon>
         ) : (
           <Styled.TitleText as={Link} to={getURL('Classes')}>
-            تیم شاهین
+            {selectedTeam}
           </Styled.TitleText>
         )}
         <Styled.SettingWrapper onClick={handleOnClick}>

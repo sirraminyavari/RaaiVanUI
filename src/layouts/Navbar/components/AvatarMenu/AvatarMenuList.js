@@ -10,15 +10,18 @@ import MenuLinkItems from './MenuLinkItems';
 import Checkbox from 'components/Checkbox/Checkbox';
 import Cookie from 'js-cookie';
 import * as Styled from '../../Navbar.styles';
+import { themeSlice } from 'store/reducers/themeReducer';
 
 const { RVDic, location } = window;
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
+  const { setSelectedTeam } = themeSlice.actions;
 
   //! Logs user out from application.
   const handleLogout = () => {
     dispatch(logoutAction());
+    dispatch(setSelectedTeam(null));
   };
 
   const handleCheckbox = (e) => {
