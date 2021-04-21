@@ -234,10 +234,6 @@ export const FooterTitle = withTheme(styled.span`
   transition: all 0.5s linear;
 `);
 
-//! This solution used because of conflict with DnD props passing down to styled component.
-//! Use ''forwardedAs'' instead of ''as'' in this solution.
-const DIV = styled.div``;
-
 export const MenuContainer = styled.div`
   ${FlexBetween}
   border: 1px solid #222;
@@ -288,6 +284,10 @@ export const SubMenuContainer = styled.div`
   background-color: inherit;
   transition: all 0.5s ease;
 `;
+
+//! This solution used because of conflict with DnD props passing down to styled component.
+//! Use ''forwardedAs'' instead of ''as'' in this solution.
+const DIV = styled.div``;
 
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)

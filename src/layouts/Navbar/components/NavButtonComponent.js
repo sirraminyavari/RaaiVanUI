@@ -40,7 +40,7 @@ const NavButtonComponent = (props) => {
   return (
     <Styled.ButtonContainer
       isActive={isActive()}
-      as={linkTo ? Link : 'div'}
+      forwardedAs={linkTo ? Link : 'div'}
       to={linkTo}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
