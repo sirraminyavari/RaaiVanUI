@@ -3,7 +3,7 @@
  */
 import { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../Sidebar.styles';
 import { Link } from 'react-router-dom';
 import { WindowContext } from 'context/WindowProvider';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';

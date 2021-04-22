@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../Sidebar.styles';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { themeSlice } from 'store/reducers/themeReducer';
-import SidebarMenuTrees from './MenuTrees';
+import EditableTree from '../sidebarTree/editableTree/E-Tree';
 
 const SidebarManageContent = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const SidebarManageContent = () => {
           <CancelIcon size={16} />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      <SidebarMenuTrees />
+      <EditableTree />
     </>
   );
 };

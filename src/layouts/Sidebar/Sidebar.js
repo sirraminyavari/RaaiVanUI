@@ -14,12 +14,12 @@ import { BG_WARMER } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-open-content"*/ './components/ContentOpen'
+    /* webpackChunkName: "sidebar-open-content"*/ './components/SidebarOpen'
   )
 );
 const SidebarContentClose = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-close-content"*/ './components/ContentClose'
+    /* webpackChunkName: "sidebar-close-content"*/ './components/SidebarClose'
   )
 );
 

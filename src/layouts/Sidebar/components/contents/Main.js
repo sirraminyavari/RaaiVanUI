@@ -6,14 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { themeSlice } from 'store/reducers/themeReducer';
-import SidebarMenuTrees from './MenuTrees';
-import UnderMenuList from './UnderMenuList';
-import SearchBox from './SearchBox';
-import SearchResultsList from './SearchResultsList';
+import ReadableTree from '../sidebarTree/readableTree/R-Tree';
+import UnderMenuList from '../UnderMenuList';
+import SearchBox from '../SearchBox';
+import SearchResultsList from '../SearchResultsList';
 import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import { getURL } from 'helpers/helpers';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../Sidebar.styles';
 
 const selectShowSearchResults = createSelector(
   (state) => state.sidebarItems,
@@ -61,7 +61,7 @@ const SidebarMainContent = () => {
         <SearchResultsList />
       ) : (
         <>
-          <SidebarMenuTrees />
+          <ReadableTree />
           <hr />
           <UnderMenuList />
         </>

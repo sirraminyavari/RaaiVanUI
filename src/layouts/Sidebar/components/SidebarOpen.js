@@ -12,14 +12,14 @@ const selectSidebarContent = createSelector(
 );
 
 const SidebarSetting = lazy(() =>
-  import(/* webpackChunkName: "sidebar-setting-content"*/ './ContentSetting')
+  import(/* webpackChunkName: "sidebar-setting-content"*/ './contents/Setting')
 );
 const SidebarMain = lazy(() =>
-  import(/* webpackChunkName: "sidebar-main-content"*/ './ContentMain')
+  import(/* webpackChunkName: "sidebar-main-content"*/ './contents/Main')
 );
 
 const SidebarManage = lazy(() =>
-  import(/* webpackChunkName: "sidebar-manage-content"*/ './ContentManage')
+  import(/* webpackChunkName: "sidebar-manage-content"*/ './contents/Manage')
 );
 
 const getSidebarContent = (title) => {

@@ -80,6 +80,19 @@ export const SidebarContainer = withTheme(styled.div`
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
+
+  .subMenuContainer {
+    overflow: hidden;
+    margin: -0.3rem 0 0 0;
+    padding: 0 0.3rem;
+    border-radius: 0.5rem;
+    background-color: inherit;
+    transition: all 0.5s ease;
+
+    &.close {
+      height: 0;
+    }
+  }
 `);
 
 export const ContentWrapper = withTheme(styled.div`
@@ -275,7 +288,7 @@ export const HighlightedTitle = styled.span`
 `;
 
 export const SubMenuContainer = styled.div`
-  max-height: ${({ isOpen, itemsCount }) =>
+  height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
@@ -301,10 +314,6 @@ export const SubMenu = styled(
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
-  }
-
-  &:last-child {
-    margin: 0 0 1.5rem 0;
   }
 `;
 

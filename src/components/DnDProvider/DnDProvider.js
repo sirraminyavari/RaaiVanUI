@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
  * @property {Object[]} list - Dnd list.
  * @property {string} droppableId -The id of droppable area.
  * @property {string} droppableType -The type of droppable area.
+ * @property {string} droppableClass -Classes that apply to droppable area.
+ * @property {Object} droppableStyle -Styles that apply to droppable area.
  * @property {function} onDragEnd -A callback function that will fire on drag end event.
  */
 
@@ -18,16 +20,25 @@ import PropTypes from 'prop-types';
  * @param {PropType} props
  */
 const DnDProvider = (props) => {
-  const { list, onDragEnd, droppableId, droppableType, children } = props;
+  const {
+    list,
+    onDragEnd,
+    droppableId,
+    droppableType,
+    droppableClass,
+    droppableStyle,
+    children,
+  } = props;
 
-  const handleOnDragEnd = (result) => {
-    onDragEnd(result);
-  };
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={droppableId} type={droppableType}>
         {(provided, snapshot) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            style={{ ...droppableStyle }}
+            className={droppableClass}
+            {...provided.droppableProps}
+            ref={provided.innerRef}>
             {list?.map((item, index) => {
               return (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -59,6 +70,8 @@ DnDProvider.propTypes = {
   list: PropTypes.array,
   droppableId: PropTypes.string,
   droppableType: PropTypes.string,
+  droppableClass: PropTypes.string,
+  droppableStyle: PropTypes.object,
   onDragEnd: PropTypes.func,
 };
 

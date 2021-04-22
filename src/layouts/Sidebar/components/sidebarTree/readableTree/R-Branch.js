@@ -5,22 +5,16 @@ import { memo, useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { Link } from 'react-router-dom';
-import * as Styled from '../Sidebar.styles';
-import { decode } from 'js-base64';
+import * as Styled from '../../../Sidebar.styles';
+import { decodeBase64 } from 'helpers/helpers';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import SidebarMenuBranches from './MenuBranches';
+import ReadableSubBranches from './R-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.openMenuID
-);
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
 );
 
 /**
@@ -34,9 +28,6 @@ const selectSidebarContent = createSelector(
 /**
  * @typedef PropType
  * @property {ItemType} item - The main menu item.
- * @property {boolean} isDragging -A boolean that determines if item is dragging or not.
- * @property {*} dragProps -The props that are provided from react-beautiful-dnd
- * ...and passed to menu item.
  */
 
 /**
@@ -44,8 +35,8 @@ const selectSidebarContent = createSelector(
  * @component
  * @param {PropType} props
  */
-const SidebarMenuRoot = (props) => {
-  const { item, isDragging, dragHandleProps } = props;
+const ReadableBranch = (props) => {
+  const { item } = props;
 
   const {
     NodeTypeID: id,
@@ -55,7 +46,6 @@ const SidebarMenuRoot = (props) => {
   } = item;
 
   const openMenuID = useSelector(selectOpenMenuID);
-  const sidebarContent = useSelector(selectSidebarContent);
   const dispatch = useDispatch();
   const { toggleSidebarMenu } = sidebarMenuSlice.actions;
   const { RV_RevFloat } = useContext(WindowContext);
@@ -68,7 +58,7 @@ const SidebarMenuRoot = (props) => {
 
   return (
     <>
-      <Styled.MenuContainer className="BorderRadius4" isDragging={isDragging}>
+      <Styled.MenuContainer className="BorderRadius4">
         <Styled.MenuTitleWrapper>
           {childMenus ? (
             <CaretIcon
@@ -80,19 +70,12 @@ const SidebarMenuRoot = (props) => {
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
           <Styled.MenuTitle as={Link} to={`/classes/${id}`}>
-            {decode(title)}
+            {decodeBase64(title)}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
-        {sidebarContent === 'manage' && (
-          <Styled.DragIconWrapper
-            {...dragHandleProps}
-            style={{ cursor: 'row-resize' }}>
-            <DragIcon />
-          </Styled.DragIconWrapper>
-        )}
       </Styled.MenuContainer>
       {childMenus && (
-        <SidebarMenuBranches
+        <ReadableSubBranches
           parentID={id}
           isOpen={isOpen()}
           menuList={childMenus}
@@ -102,4 +85,4 @@ const SidebarMenuRoot = (props) => {
   );
 };
 
-export default memo(SidebarMenuRoot);
+export default memo(ReadableBranch);
