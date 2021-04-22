@@ -8,6 +8,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import AuthView from 'views/Auth/AuthView';
 import 'assets/css/index.css';
 import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 
@@ -21,14 +22,13 @@ window.alert = function (txt, type = '') {
   toast(txt, {
     type,
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
-    className: 'rv-font-default',
   });
 };
 
 const App = () => {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer bodyClassName="rv-font-default" />
 
       <StoreProvider>
         <ErrorBoundry>

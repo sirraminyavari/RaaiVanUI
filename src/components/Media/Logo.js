@@ -16,7 +16,7 @@ const Logo = () => {
   const lang = Cookies.get('rv_lang'); // => 'value'
 
   return (
-    <Container>
+    <Container href="https://cliqmind.com">
       {/* <Image src={isSaas ? RVGlobal.LogoURL : RVGlobal.LogoMiniURL} /> */}
       <Image src={lang ? cliqmind_logo_white_en : cliqmind_logo_white} />
     </Container>
@@ -24,7 +24,7 @@ const Logo = () => {
 };
 export default Logo;
 
-const Container = styled.div`
+const Container = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -123,6 +123,14 @@ const ForgotPassword = () => {
   const onPasswordChanged = (value) => {
     dispatch(setPasswordAction(value));
   };
+  /**
+   * When the password input is blurred, the password validator will be hidden.
+   */
+  const onPassBlurred = () => {
+    setTimeout(() => {
+      setPassFocused(false);
+    }, 100);
+  };
 
   return (
     <Box>
@@ -162,6 +170,7 @@ const ForgotPassword = () => {
             style={common_style}
             type={passVisible ? 'text' : 'password'}
             onFocus={onPassFocus}
+            onBlur={onPassBlurred}
             id={'password'}
             children={
               passVisible ? (
@@ -228,22 +237,24 @@ const ForgotPassword = () => {
             onClick={onReturn}>
             {RVDic.Return}
           </Button>
-          <ContinueWithGoogle
-            style={{
-              marginBottom: '1rem',
-              marginTop: '2.5rem',
-              width: '100%',
-            }}
-          />
-          <Button
-            type="secondary-o"
-            style={{ fontSize: '1rem' }}
-            loading={fetchingFiles}
-            style={{ width: '100%' }}
-            style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}
-            onClick={onCreateAccount}>
-            {RVDic.CreateAccount}
-          </Button>
+          <Hiddener isVisible={email.length === 0}>
+            <ContinueWithGoogle
+              style={{
+                marginBottom: '1rem',
+                marginTop: '2.5rem',
+                width: '100%',
+              }}
+            />
+            <Button
+              type="secondary-o"
+              style={{ fontSize: '1rem' }}
+              loading={fetchingFiles}
+              style={{ width: '100%' }}
+              style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}
+              onClick={onCreateAccount}>
+              {RVDic.CreateAccount}
+            </Button>
+          </Hiddener>
         </Container>
       )}
     </Box>
@@ -264,3 +275,8 @@ const common_style = {
   marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
+const Hiddener = styled.div`
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
+  transition: opacity 0.7s, max-height 1s;
+`;

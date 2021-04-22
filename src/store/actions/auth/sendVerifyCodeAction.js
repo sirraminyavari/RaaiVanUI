@@ -7,6 +7,7 @@ import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
 import PersianValidator from 'utils/Validation/PersianValidator';
 import { loginSlice } from '../../reducers/loginReducer';
+
 const {
   sendVerifyCodeFailed,
   sendVerifyCodeSuccess,
@@ -17,8 +18,6 @@ const {
   setFamilyError,
 } = loginSlice.actions;
 
-const { GlobalUtilities, UsersAPI, RVDic } = window;
-const reqParams = GlobalUtilities.request_params();
 /**
  * Sending request for verification code thanks to Thunk
  * See @link https://github.com/reduxjs/redux-thunk for more info.
@@ -31,6 +30,9 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
   dispatch,
   getState
 ) => {
+  const { GlobalUtilities, UsersAPI, RVDic } = window;
+  const reqParams = GlobalUtilities.request_params();
+
   /**
    * After checking email,password,name,family validation,
    * 'sendCode()' will be called.

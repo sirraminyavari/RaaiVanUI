@@ -112,10 +112,9 @@ const VerifyingCode = () => {
             className={'rv-distant'}>
             {email}
           </Heading>
-          <Edit
-            style={{ fontSize: '1.5rem', color: MAIN_BLUE }}
-            onClick={onEdit}
-          />
+          <button onClick={onEdit}>
+            <Edit style={{ fontSize: '1.5rem', color: MAIN_BLUE }} />
+          </button>
         </RowItems>
         <Heading type="h4" style={common_style}>
           {RVDic.Checks.PleaseEnterTheVerificationCode}

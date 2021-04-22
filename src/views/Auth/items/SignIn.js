@@ -206,8 +206,7 @@ const SignIn = () => {
           {RVDic.Login}
         </Button>
         <Button
-          type="submit"
-          className="rv-red"
+          type="negative-secondary-o"
           style={{
             width: '100%',
             textAlign: 'center',
@@ -218,20 +217,22 @@ const SignIn = () => {
           onClick={onForgot}>
           {RVDic.ForgotMyPassword}
         </Button>
-        <ContinueWithGoogle
-          style={{
-            marginBottom: '0.5rem',
-            marginTop: '2rem',
-          }}
-        />
-        <Button
-          type="secondary-o"
-          style={{ fontSize: '1rem' }}
-          loading={signUpClicked && fetchingFiles}
-          style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
-          onClick={onCreateAccount}>
-          {RVDic.CreateAccount}
-        </Button>
+        <Hiddener isVisible={email.length === 0}>
+          <ContinueWithGoogle
+            style={{
+              marginBottom: '0.5rem',
+              marginTop: '2rem',
+            }}
+          />
+          <Button
+            type="secondary-o"
+            style={{ fontSize: '1rem' }}
+            loading={signUpClicked && fetchingFiles}
+            style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
+            onClick={onCreateAccount}>
+            {RVDic.CreateAccount}
+          </Button>
+        </Hiddener>
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
       </Container>
     </Box>
@@ -250,3 +251,8 @@ const common_style = {
   marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
+const Hiddener = styled.div`
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
+  transition: opacity 0.7s, max-height 1s;
+`;

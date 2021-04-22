@@ -30,6 +30,10 @@ const { RVDic, RVGlobal } = window;
  * In this page user can create an account with his/her mobile/email.
  */
 const SignUp = () => {
+  const splitted_terms = RVDic.Checks.YouMustAgreeWithTermsAndConditions.split(
+    '[m]'
+  );
+
   // To handle inputs focus
   const emailRef = useRef();
   const passRef = useRef();
@@ -317,10 +321,14 @@ const SignUp = () => {
                 {' را خوانده و به آن متعهد هستید '}
               </p> */}
               {/* {decode(RVGlobal.SystemName)} */}
-              {RVDic.Checks.YouMustAgreeWithTermsAndConditions.replace(
-                '[n]',
-                decode(RVGlobal.SystemName)
-              ).replace('[m]', decode(RVGlobal.SystemName))}
+              {splitted_terms[0].replace('[n]', decode(RVGlobal.SystemName))}
+              <a
+                href="http://www.cliqmind.com/%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D9%88-%D8%AA%D8%B9%D9%87%D8%AF%D8%A7%D8%AA/"
+                target="_blank"
+                style={{ color: 'blue' }}>
+                {decode(RVGlobal.SystemName)}
+              </a>
+              {splitted_terms[1].replace('[m]', '')}
             </Heading>
           )}
           <Button
@@ -336,15 +344,17 @@ const SignUp = () => {
             }}>
             {RVDic.GetConfirmationCode}
           </Button>
-          <ContinueWithGoogle style={{ width: '100%', common_style }} />
-          <Button
-            type="secondary-o"
-            style={{ fontSize: '1rem' }}
-            style={{ width: '100%' }}
-            style={common_style}
-            onClick={onHaveAccount}>
-            {RVDic.AlreadyHaveAnAccount}
-          </Button>
+          <Hiddener isVisible={email.length === 0}>
+            <ContinueWithGoogle style={{ width: '100%', common_style }} />
+            <Button
+              type="secondary-o"
+              style={{ fontSize: '1rem' }}
+              style={{ width: '100%' }}
+              style={common_style}
+              onClick={onHaveAccount}>
+              {RVDic.AlreadyHaveAnAccount}
+            </Button>
+          </Hiddener>
         </Container>
       )}
     </Box>
@@ -372,3 +382,8 @@ const common_style = {
   marginTop: '0.5rem',
   fontSize: '0.8rem',
 };
+const Hiddener = styled.div`
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
+  transition: opacity 0.7s, max-height 1s;
+`;
