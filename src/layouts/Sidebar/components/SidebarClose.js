@@ -9,6 +9,7 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
+import { themeSlice } from 'store/reducers/themeReducer';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const SidebarOnClose = ({ theme }) => {
 
   const { nodeTypes } = useSelector((state) => state.sidebarItems);
   const { handleSettings } = theme.actions;
+  const { setSidebarContent } = themeSlice.actions;
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -39,6 +41,7 @@ const SidebarOnClose = ({ theme }) => {
   //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
+    dispatch(setSidebarContent('setting'));
   };
 
   //! Updates scroll position.

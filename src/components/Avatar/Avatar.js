@@ -18,9 +18,9 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = (props) => {
-  const { radius, userImage, color } = props;
+  const { radius, userImage, color, ...rest } = props;
   return (
-    <Styled.AvatarContainer>
+    <Styled.AvatarContainer {...rest}>
       {userImage ? (
         <Styled.AvatarImage
           data-testid="avatar-image"

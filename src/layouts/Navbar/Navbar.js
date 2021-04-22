@@ -112,7 +112,7 @@ const Navbar = () => {
           `}
           trigger="click">
           <div>
-            <Avatar />
+            <Avatar style={{ cursor: 'pointer' }} />
           </div>
           <AvatarMenuList />
         </PopupMenu>
