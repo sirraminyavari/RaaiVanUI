@@ -8,13 +8,21 @@ import useCheckRoute from 'hooks/useCheckRoute';
 import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { decodeBase64 } from 'helpers/helpers';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
   //! Get route permission object based on route name.
   const route = useCheckRoute(name);
   const dispatch = useDispatch();
-  const { toggleNavSide } = themeSlice.actions;
+  const { toggleNavSide, setSelectedTeam } = themeSlice.actions;
+
+  useEffect(() => {
+    if (route.Application) {
+      const appName = decodeBase64(route.Application.Title);
+      dispatch(setSelectedTeam(appName));
+    }
+  }, [route]);
 
   useEffect(() => {
     dispatch(toggleNavSide(hasNavSide));

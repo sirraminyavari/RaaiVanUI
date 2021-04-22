@@ -4,7 +4,8 @@
 import { useEffect, memo, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Logo from 'assets/images/cliqmind_logo_white.svg';
+import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
+import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
 import * as Styled from '../Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
@@ -24,7 +25,7 @@ const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { toggleSidebar, toggleSetting } = themeSlice.actions;
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const { RV_RevFloat, RV_Float, RVGlobal } = useContext(WindowContext);
+  const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useContext(WindowContext);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
 
@@ -55,7 +56,7 @@ const SidebarHeader = () => {
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img
-            src={isSaas ? Logo : RVGlobal.LogoURL}
+            src={isSaas ? (RV_RTL ? Logo_Fa : Logo_En) : RVGlobal.LogoURL}
             width={isSaas ? '120' : '60'}
             alt="logo-icon"
           />

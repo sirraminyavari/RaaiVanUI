@@ -14,12 +14,12 @@ import { BG_WARMER } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-open-content"*/ './components/ContentOpen'
+    /* webpackChunkName: "sidebar-open-content"*/ './components/SidebarOpen'
   )
 );
 const SidebarContentClose = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-close-content"*/ './components/ContentClose'
+    /* webpackChunkName: "sidebar-close-content"*/ './components/SidebarClose'
   )
 );
 
@@ -28,15 +28,15 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
-const selectIsSettingShown = createSelector(
+const selectSidebarContent = createSelector(
   (state) => state.theme,
-  (theme) => theme.isSettingShown
+  (theme) => theme.sidebarContent
 );
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const isSettingShown = useSelector(selectIsSettingShown);
+  const sidebarContent = useSelector(selectSidebarContent);
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -54,7 +54,7 @@ const Sidebar = () => {
           {isSidebarOpen ? <SidebarContentOpen /> : <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>
-      {!isSettingShown && <SidebarFooter />}
+      {sidebarContent !== 'manage' && <SidebarFooter />}
     </Styled.SidebarContainer>
   );
 };

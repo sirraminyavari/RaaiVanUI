@@ -15,9 +15,12 @@ const NavMenus = () => {
   );
 
   return (
-    <PopupMenu trigger="click">
+    <PopupMenu
+      arrowClass="no-arrow"
+      menuStyle={`border: 0; margin: 0.8rem 0.2rem;`}
+      trigger="click">
       <div>
-        <MenuIcon size={30} color="#fff" />
+        <MenuIcon size={30} color="#fff" style={{ cursor: 'pointer' }} />
       </div>
       <Styled.MenuOptionsWrapper>
         {flattenedNavButtons.map((btn, index) => {

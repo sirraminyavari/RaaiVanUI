@@ -80,6 +80,19 @@ export const SidebarContainer = withTheme(styled.div`
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
+
+  .subMenuContainer {
+    overflow: hidden;
+    margin: -0.3rem 0 0 0;
+    padding: 0 0.3rem;
+    border-radius: 0.5rem;
+    background-color: inherit;
+    transition: all 0.5s ease;
+
+    &.close {
+      height: 0;
+    }
+  }
 `);
 
 export const ContentWrapper = withTheme(styled.div`
@@ -234,10 +247,6 @@ export const FooterTitle = withTheme(styled.span`
   transition: all 0.5s linear;
 `);
 
-//! This solution used because of conflict with DnD props passing down to styled component.
-//! Use ''forwardedAs'' instead of ''as'' in this solution.
-const DIV = styled.div``;
-
 export const MenuContainer = styled.div`
   ${FlexBetween}
   border: 1px solid #222;
@@ -279,7 +288,7 @@ export const HighlightedTitle = styled.span`
 `;
 
 export const SubMenuContainer = styled.div`
-  max-height: ${({ isOpen, itemsCount }) =>
+  height: ${({ isOpen, itemsCount }) =>
     isOpen ? `${itemsCount * 2.8}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
@@ -288,6 +297,10 @@ export const SubMenuContainer = styled.div`
   background-color: inherit;
   transition: all 0.5s ease;
 `;
+
+//! This solution used because of conflict with DnD props passing down to styled component.
+//! Use ''forwardedAs'' instead of ''as'' in this solution.
+const DIV = styled.div``;
 
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
@@ -301,10 +314,6 @@ export const SubMenu = styled(
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(66, 133, 244, 0.4);
-  }
-
-  &:last-child {
-    margin: 0 0 1.5rem 0;
   }
 `;
 

@@ -27,7 +27,7 @@ export const NavbarContainer = withTheme(styled.div`
   box-shadow: 0 3px 10px #00000029;
   transition: all 0.7s ease;
 
-  .triangle {
+  .no-arrow {
     display: none;
   }
 `);
@@ -38,7 +38,12 @@ export const WideScreenMenu = styled.div`
   display: flex;
 `;
 
-export const ButtonContainer = styled.div`
+//! Due to this error >>>> "React does not recognize the {prop} prop on a DOM element"
+const DIV = styled.div``;
+
+export const ButtonContainer = styled(({ isActive, ...props }) => (
+  <DIV {...props} />
+))`
   width: 4.7rem;
   height: auto;
   margin: -0.17rem 0rem;
@@ -167,6 +172,7 @@ export const MenuOptionsWrapper = styled.div`
   align-items: center;
   box-shadow: 0px 1px 10px #333;
   border-radius: 0.5rem;
+  background-color: #fff;
   margin: -10px;
 `;
 

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Divider from './Divider';
 
 //! CustomTable
 import CustomTable from 'components/CustomTable/CustomTable';
@@ -16,6 +17,10 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
 //! Tree
 import Tree from 'components/Tree/Tree';
 import treeData from './treeData';
+
+//! DnDProvider
+import DnDProvider from 'components/DnDProvider/DnDProvider';
+import dndData from './dndData';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -91,13 +96,8 @@ const RasoulView = () => {
 
   return (
     <div>
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
-        Rasoul's window
-      </div>
-      <hr />
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
-        Custom Table Component
-      </div>
+      <div style={{ textAlign: 'center', fontSize: '2rem' }}>Rasoul's view</div>
+      <Divider title="Custom Table Component" />
       <CustomTable
         editable
         columns={columns}
@@ -116,10 +116,7 @@ const RasoulView = () => {
           },
         })}
       />
-      <hr />
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
-        Custom Dropzone Component
-      </div>
+      <Divider title="Custom Dropzone Component" />
       <CustomDropzone
         accept={['image/*', '.pdf']}
         exceptions={['jpg']}
@@ -131,18 +128,21 @@ const RasoulView = () => {
         ownerType="Node"
         // disabled
       />
-      <hr />
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
-        Custom Progressbar Component
-      </div>
+      <Divider title="Custom Progressbar Component" />
       <ProgressBar label="Label" progress={100} />
-      <hr />
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>
-        Tree Component
-      </div>
+      <Divider title="Tree Component" />
       <Tree data={treeData} />
-      <hr />
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>End of view</div>
+      <Divider title="DnDProvider Component" />
+      <DnDProvider
+        list={dndData}
+        droppableId="droppable"
+        onDragEnd={(result) => console.log(result)}>
+        {({ isDragging, dragHandleProps, item }) => {
+          console.log(isDragging);
+          return <h3 {...dragHandleProps}>{item.title}</h3>;
+        }}
+      </DnDProvider>
+      <Divider title="End of view" />
     </div>
   );
 };

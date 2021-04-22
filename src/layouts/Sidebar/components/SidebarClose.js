@@ -9,10 +9,9 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
+import { themeSlice } from 'store/reducers/themeReducer';
 
-// import FallbackImage from 'assets/images/cliqmind_mini.png';
-
-const SidebarContentClose = ({ theme }) => {
+const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
@@ -25,8 +24,8 @@ const SidebarContentClose = ({ theme }) => {
 
   const { nodeTypes } = useSelector((state) => state.sidebarItems);
   const { handleSettings } = theme.actions;
+  const { setSidebarContent } = themeSlice.actions;
 
-  //TODO: Calculate scroll size based on items count
   //! Calls on every click on chevron down.
   const scrollDown = () => {
     if (isDown) return;
@@ -42,6 +41,7 @@ const SidebarContentClose = ({ theme }) => {
   //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
+    dispatch(setSidebarContent('setting'));
   };
 
   //! Updates scroll position.
@@ -109,4 +109,4 @@ const SidebarContentClose = ({ theme }) => {
   );
 };
 
-export default withTheme(SidebarContentClose);
+export default withTheme(SidebarOnClose);

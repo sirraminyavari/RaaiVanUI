@@ -12,7 +12,7 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 /**
  * @typedef PropType
- * @property {string} accept -The accepted file format.
+ * @property {string[]} accept -The accepted file format.
  * @property {number} maxFiles -The maximum number of files that can be uploaded.
  * @property {number} maxEachSize -The maximum size of each file.
  * @property {number} maxTotalSize -The maximum size of all files.
@@ -315,7 +315,7 @@ const CustomDropzone = (props) => {
 };
 
 CustomDropzone.propTypes = {
-  accept: PropTypes.string,
+  accept: PropTypes.array,
   maxFiles: PropTypes.number,
   maxEachSize: PropTypes.number,
   maxTotalSize: PropTypes.number,

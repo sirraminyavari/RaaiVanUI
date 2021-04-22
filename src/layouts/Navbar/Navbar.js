@@ -1,7 +1,7 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense, memo, useContext, useEffect, useState } from 'react';
+import { lazy, Suspense, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
@@ -19,7 +19,6 @@ import {
   MOBILE_BOUNDRY,
 } from 'constant/constants';
 import { BG_WARM } from 'constant/Colors';
-import { WindowContext } from 'context/WindowProvider';
 
 const NavWideScreenMenu = lazy(() =>
   import(
@@ -42,9 +41,10 @@ const selectIsSidebarOpen = createSelector(
 const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-
+  //!
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const { RV_Direction } = useContext(WindowContext);
+
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     dispatch(setActivePath(location.pathname));
@@ -65,13 +65,21 @@ const Navbar = () => {
   const showInput = () => {
     if (!isSidebarOpen && (isMediumScreen || isWideScreen)) return true;
     if (isSidebarOpen && isWideScreen) return true;
-    return false;
+    return showSearch;
   };
 
   const showMobileNav = () => {
     if (!isSidebarOpen && isMobileScreen) return true;
     if (isSidebarOpen && isMobileNav) return true;
-    return false;
+    return showSearch;
+  };
+
+  const handleShowSearch = () => {
+    setShowSearch(true);
+  };
+
+  const handleHideSearch = () => {
+    setShowSearch(false);
   };
 
   return (
@@ -81,41 +89,30 @@ const Navbar = () => {
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (
-          <NavbarSearchInput placeholder="جستجو در مطالب،کاربران،ابزارها و ..." />
+          <NavbarSearchInput
+            onBlur={handleHideSearch}
+            autoFocus={showSearch}
+            placeholder="جستجو در مطالب،کاربران،ابزارها و ..."
+          />
         ) : (
-          <PopupMenu
-            menuStyle={{
-              padding: 0,
-              border: 0,
-              backgroundColor: 'transparent',
-              paddingTop: '0.2rem',
-            }}
-            trigger="click">
-            <div>
-              <SearchIcon
-                size={30}
-                color="#fff"
-                style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
-              />
-            </div>
-            <NavbarSearchInput
-              style={{ direction: RV_Direction, boxShadow: '0 0 0.3rem #333' }}
-              autoFocus
-              placeholder="جستجو در مطالب،کاربران،ابزارها و ..."
-            />
-          </PopupMenu>
+          <SearchIcon
+            size={30}
+            color="#fff"
+            style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
+            onClick={handleShowSearch}
+          />
         )}
         <PopupMenu
-          arrowClass="triangle"
-          menuStyle={{
-            border: 0,
-            margin: '0.5rem 0.15rem',
-            backgroundColor: '#fff',
-            boxShadow: '0 0 0.3rem #333',
-          }}
+          arrowClass="no-arrow"
+          menuStyle={`
+            border: 0;
+            margin: 0.5rem 0.15rem;
+            background-color: #fff;
+            box-shadow: 0 0 0.3rem #333;
+          `}
           trigger="click">
           <div>
-            <Avatar />
+            <Avatar style={{ cursor: 'pointer' }} />
           </div>
           <AvatarMenuList />
         </PopupMenu>

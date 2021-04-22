@@ -9,6 +9,7 @@ export const themeSlice = createSlice({
     hasNavSide: false,
     activePath: '',
     sidebarContent: 'main',
+    selectedTeam: null,
   },
   reducers: {
     toggleSidebar: (state, action) => {
@@ -25,6 +26,9 @@ export const themeSlice = createSlice({
     },
     setSidebarContent: (state, action) => {
       state.sidebarContent = action.payload;
+    },
+    setSelectedTeam: (state, action) => {
+      state.selectedTeam = action.payload;
     },
     handleSettings: (state, action) => {
       if (!state.isSidebarOpen) {

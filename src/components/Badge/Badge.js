@@ -7,7 +7,7 @@ import * as Styled from './Badge.styles';
 /**
  * @typedef PropType
  * @type {Object}
- * @property {string} value - The value of the badge.
+ * @property {nubmer} value - The value of the badge.
  * @property {string} color - The background color of the badge.
  * @property {boolean} withBorder - The border indicator.
  */
@@ -27,7 +27,7 @@ const Badge = (props) => {
 };
 
 Badge.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.number,
   color: PropTypes.string,
   withBorder: PropTypes.bool,
 };

@@ -18,7 +18,7 @@ const NavWideScreenMenu = () => {
           <Fragment key={btn.id}>
             {btn.actions ? (
               <PopupMenu
-                menuStyle={{ border: 0, backgroundColor: 'transparent' }}
+                menuStyle={`border: 0; background-color: transparent;`}
                 trigger="hover"
                 align="bottom">
                 <div>
