@@ -64,7 +64,7 @@ export const ContentWrapper = withTheme(styled.div`
   overflow: auto;
   padding: 0 1.5rem;
   margin-top: 4rem;
-  margin-bottom: 9vh;
+  margin-bottom: ${({ isManage }) => (isManage ? '18vh' : '9vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
@@ -181,6 +181,13 @@ export const FooterIconWrapper = withTheme(styled.div`
   margin-${RV_Float}: 0;
   margin-top: 0;
 `);
+
+export const PlusIconWrapper = styled.div`
+  position: absolute;
+  left: 1.5rem;
+  bottom: 3rem;
+  cursor: pointer;
+`;
 
 export const FooterTitle = withTheme(styled.span`
   margin-${RV_Float}: 0.5rem;

@@ -48,7 +48,7 @@ const Sidebar = () => {
   return (
     <Styled.SidebarContainer className={BG_WARMER}>
       <SidebarHeader />
-      <Styled.ContentWrapper>
+      <Styled.ContentWrapper isManage={isManageContent}>
         <Suspense fallback={<LogoLoader size={10} />}>
           {isSidebarOpen ? (
             <SidebarContentOpen />
@@ -58,9 +58,7 @@ const Sidebar = () => {
         </Suspense>
       </Styled.ContentWrapper>
       {isSidebarOpen ? (
-        !isManageContent ? (
-          <SidebarFooter />
-        ) : null
+        <SidebarFooter />
       ) : isMainContent ? (
         <SidebarFooter />
       ) : null}
