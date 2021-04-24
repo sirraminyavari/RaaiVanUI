@@ -26,12 +26,13 @@ const EditableTree = () => {
 
   //! Calls whenever item dragging is ended and reorders the tree list.
   const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const newTree = reorder(
-      tree,
-      result.source.index,
-      result.destination.index
-    );
+    const { source, destination } = result;
+
+    console.log({ source, destination });
+
+    if (!destination) return;
+
+    const newTree = reorder(tree, source.index, destination.index);
 
     dispatch(setReorderedTree(newTree));
   };

@@ -101,6 +101,7 @@ const getSidebarNodes = () => async (dispatch, getState) => {
         ParseResults: true,
       },
       (response) => {
+        console.log(response);
         if (response.NodeTypes || response.Tree) {
           //! If and only if any change happens in fresh list then it will dispatch to redux store.
           if (shouldDispatch(response, sidebarItems)) {

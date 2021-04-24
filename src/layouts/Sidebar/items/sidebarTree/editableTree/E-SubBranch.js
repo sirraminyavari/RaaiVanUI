@@ -30,17 +30,17 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
 
   //! Calls whenever item dragging ended and reorders menu list.
   const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
+    const { source, destination } = result;
+
+    console.log({ source, destination });
+
+    if (!destination) return;
 
     const newTree = tree.map((item) => {
       if (item.NodeTypeID === parentID) {
         let cloneItem = Object.assign({}, item);
         cloneItem.defaultForm = true;
-        cloneItem.Sub = reorder(
-          item.Sub,
-          result.source.index,
-          result.destination.index
-        );
+        cloneItem.Sub = reorder(item.Sub, source.index, destination.index);
         return cloneItem;
       }
       return item;
