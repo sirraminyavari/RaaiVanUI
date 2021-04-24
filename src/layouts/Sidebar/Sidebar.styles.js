@@ -1,50 +1,10 @@
 import { forwardRef } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 
 const { RV_Float, RV_RevFloat } = window;
-
-const FooterInAnim = keyframes`
-  from {
-    ${RV_RevFloat}: 15rem;
-  }
-
-  to {
-    ${RV_RevFloat}: 0rem;
-  }
-`;
-
-const FooterOutAnim = keyframes`
-  from {
-    ${RV_RevFloat}: 0rem;
-  }
-
-  to {
-    ${RV_RevFloat}: 15rem;
-  }
-`;
-
-const FooterUpAnim = keyframes`
-  from {
-    top: 5rem;
-  }
-
-  to {
-    top: 0;
-  }
-`;
-
-const FooterDownAnim = keyframes`
-  from {
-    top: 0;
-  }
-
-  to {
-    top: 5rem;
-  }
-`;
 
 const FlexBetween = css`
   display: flex;
@@ -196,10 +156,9 @@ export const SidebarFooter = styled.div`
   height: 6%;
   position: relative;
   top: 94%;
-  transition: all 0.7s ease;
 `;
 
-export const OpenFooterButton = withTheme(styled.div`
+export const FooterButton = styled.div`
   display: flex;
   position: relative;
   justify-content: center;
@@ -209,31 +168,7 @@ export const OpenFooterButton = withTheme(styled.div`
   padding: 0.3rem;
   color: #fff;
   cursor: pointer;
-  animation: ${(props) =>
-    props.theme.states.isSidebarOpen
-      ? css`
-          ${FooterInAnim} 1s ease 0.1s both
-        `
-      : css`
-          ${FooterOutAnim} 0.3s linear both
-        `};
-`);
-
-export const CloseFooterButton = withTheme(styled.div`
-  position: absolute;
-  color: #fff;
-  ${RV_Float}: 0.5rem;
-  padding: 0.3rem 0.5rem;
-  animation-timing-function: ease;
-  animation: ${(props) =>
-    props.theme.states.isSidebarOpen
-      ? css`
-          ${FooterDownAnim} 0.2s both
-        `
-      : css`
-          ${FooterUpAnim} 0.4s both
-        `};
-`);
+`;
 
 export const FooterIconWrapper = withTheme(styled.div`
   margin-${RV_Float}: 0;
@@ -245,6 +180,8 @@ export const FooterTitle = withTheme(styled.span`
   position: relative;
   top: 0;
   transition: all 0.5s linear;
+  display: ${(props) =>
+    props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
 
 export const MenuContainer = styled.div`

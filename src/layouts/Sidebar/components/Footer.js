@@ -1,37 +1,42 @@
 /**
  * Renders footer component for sidebar.
  */
-import { useSelector, useDispatch } from 'react-redux';
+import { memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from 'components/Icons/EditIcon/Edit';
-import { BG_WARM } from 'constant/Colors';
 import * as Styled from '../Sidebar.styles';
-import withTheme from 'components/withTheme/withTheme';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { createSelector } from 'reselect';
 
-const SidebarFooter = (props) => {
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const SidebarFooter = () => {
   const dispatch = useDispatch();
-  const { setSidebarContent } = themeSlice.actions;
+  const { setSidebarContent, toggleSidebar } = themeSlice.actions;
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
   const handleOnClick = () => {
     dispatch(setSidebarContent('manage'));
+    if (!isSidebarOpen) {
+      dispatch(toggleSidebar(true));
+    }
   };
+
   return (
     <Styled.SidebarFooter>
-      <Styled.OpenFooterButton
-        className={`${
-          props.theme.states.isSidebarOpen ? BG_WARM : ''
-        } BorderRadius4`}
+      <Styled.FooterButton
+        className={`${isSidebarOpen ? 'WarmBorder' : ''} BorderRadius4`}
         onClick={handleOnClick}>
         <Styled.FooterIconWrapper>
           <EditIcon size={20} />
         </Styled.FooterIconWrapper>
         <Styled.FooterTitle>مدیریت دسته و کلاس ها</Styled.FooterTitle>
-      </Styled.OpenFooterButton>
-      <Styled.CloseFooterButton className={`${BG_WARM} Circle`}>
-        <EditIcon size={20} />
-      </Styled.CloseFooterButton>
+      </Styled.FooterButton>
     </Styled.SidebarFooter>
   );
 };
 
-export default withTheme(SidebarFooter);
+export default memo(SidebarFooter);
