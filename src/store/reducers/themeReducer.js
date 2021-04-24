@@ -33,7 +33,6 @@ export const themeSlice = createSlice({
     handleSettings: (state, action) => {
       if (!state.isSidebarOpen) {
         state.isSidebarOpen = true;
-        state.isSettingShown = true;
       } else {
         state.isSettingShown = !state.isSettingShown;
       }

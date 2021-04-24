@@ -69,7 +69,10 @@ const ReadableBranch = (props) => {
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
-          <Styled.MenuTitle as={Link} to={`/classes/${id}`}>
+          <Styled.MenuTitle
+            onClick={handleDropdown}
+            as={Link}
+            to={`/classes/${id}`}>
             {decodeBase64(title)}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>

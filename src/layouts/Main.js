@@ -7,7 +7,7 @@ import Sidebar from './Sidebar/Sidebar';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
 import { useMediaQuery } from 'react-responsive';
-import SidebarHeader from './Sidebar/components/Header';
+import SidebarHeader from './Sidebar/items/Header';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';

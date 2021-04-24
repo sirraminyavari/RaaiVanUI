@@ -200,9 +200,15 @@ export const MenuContainer = styled.div`
   background-color: ${({ isDragging, isOpen }) =>
     isDragging ? '#2B388F' : isOpen ? 'rgb(43,123,228, 0.2)' : 'inherit'};
   border-color: ${({ isOpen }) => (isOpen ? '#2b7be4' : '#222')};
+
   &:hover {
     background: rgb(43, 123, 228, 0.2);
     border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
+  }
+
+  &:hover > div > div: nth-child(1) {
+    color: #e2234f;
+    display: revert !important;
   }
 `;
 
@@ -261,6 +267,11 @@ export const SubMenu = styled(
   &:hover {
     background: rgb(43, 123, 228, 0.2);
   }
+
+  &:hover > div > div:first-child {
+    color: #e2234f;
+    display: revert !important;
+  }
 `;
 
 export const ListItemWrapper = styled.div`
@@ -269,6 +280,20 @@ export const ListItemWrapper = styled.div`
 `;
 
 export const DragIconWrapper = styled.div`
+  line-height: 0.5rem;
+  cursor: row-resize !important;
+`;
+
+export const TrashIconWrapper = styled.div`
+  cursor: pointer;
+  margin: 0 0.3rem;
+  display: none;
+`;
+
+export const ActionsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   line-height: 0.5rem;
 `;
 
