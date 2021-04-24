@@ -62,7 +62,7 @@ const SidebarMainContent = () => {
       ) : (
         <>
           <ReadableTree />
-          <hr />
+          <Styled.Divider />
           <UnderMenuList />
         </>
       )}

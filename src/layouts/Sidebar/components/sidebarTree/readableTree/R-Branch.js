@@ -58,7 +58,7 @@ const ReadableBranch = (props) => {
 
   return (
     <>
-      <Styled.MenuContainer className="BorderRadius4">
+      <Styled.MenuContainer isOpen={isOpen()} className="BorderRadius4">
         <Styled.MenuTitleWrapper>
           {childMenus ? (
             <CaretIcon

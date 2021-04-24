@@ -102,7 +102,13 @@ export const SearchWrapper = styled.div`
   padding: 0.3rem;
   position: relative;
 
+  svg {
+    opacity: 70%;
+    color: #bac9dc;
+  }
+
   :focus-within svg {
+    opacity: 100%;
     color: #fff;
   }
 
@@ -112,6 +118,7 @@ export const SearchWrapper = styled.div`
 
   :focus-within ::placeholder {
     color: #fff;
+    opacity: 100%;
   }
 `;
 
@@ -133,7 +140,7 @@ export const SearchInput = styled.input.attrs((props) => ({
 
   ::placeholder {
     color: #bac9dc;
-    opacity: 50;
+    opacity: 70%;
   }
 
   transition: all 0.3s ease;
@@ -190,10 +197,12 @@ export const MenuContainer = styled.div`
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
+  background-color: ${({ isDragging, isOpen }) =>
+    isDragging ? '#2B388F' : isOpen ? 'rgb(43,123,228, 0.2)' : 'inherit'};
+  border-color: ${({ isOpen }) => (isOpen ? '#2b7be4' : '#222')};
   &:hover {
-    background: rgb(66, 133, 244, 0.4);
-    border: none;
+    background: rgb(43, 123, 228, 0.2);
+    border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
   }
 `;
 
@@ -226,7 +235,7 @@ export const HighlightedTitle = styled.span`
 
 export const SubMenuContainer = styled.div`
   height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 2.8}rem` : '0'};
+    isOpen ? `${itemsCount * 2.35}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
@@ -242,15 +251,15 @@ const DIV = styled.div``;
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0;
-  padding: 0.5rem 1.3rem;
+  margin: 0 0.5rem 0 0;
+  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
-    background: rgb(66, 133, 244, 0.4);
+    background: rgb(43, 123, 228, 0.2);
   }
 `;
 
@@ -366,8 +375,6 @@ export const CancelIconWrapper = styled.div`
   position: absolute;
   ${`${RV_Float}: 0.5rem;`}
   bottom: 0.1rem;
-  color: #bac9dc;
-  opacity: 50;
   cursor: pointer;
   display: ${({ isTyping }) => (isTyping ? 'revert' : 'none')};
 `;
@@ -389,4 +396,9 @@ const getHighlightCss = ({ isMatch }) => {
 
 export const HighlightedText = styled.span`
   ${getHighlightCss}
+`;
+
+export const Divider = styled.hr`
+  border-color: #2b388f;
+  margin: 1rem 0;
 `;
