@@ -18,7 +18,6 @@ const textActiveCss = css`
 
 const inputActiveCss = css`
   ${activeCss}
-  padding: 0.3rem;
   border-bottom: 0.15rem solid #fff;
   text-align: ${RV_Float};
 `;
@@ -29,4 +28,6 @@ export const SpanText = styled.span`
 
 export const Input = styled.input`
   ${inputActiveCss}
+  display: inline-block;
+  width: 100%;
 `;

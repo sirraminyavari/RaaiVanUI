@@ -11,6 +11,8 @@ import EditableSubBranch from './E-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
+import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import InlineEdit from 'components/InlineEdit/InlineEdit';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -59,26 +61,42 @@ const EditableBranch = (props) => {
   //! Is true, If an item's sub-menu is open.
   const isOpen = () => openMenuID.includes(id);
 
+  const handleOnTrashClick = (e) => {
+    e.stopPropagation();
+    console.log('delete menu');
+  };
+
   return (
     <>
-      <Styled.MenuContainer className="BorderRadius4" isDragging={isDragging}>
+      <Styled.MenuContainer
+        isOpen={isOpen()}
+        className="BorderRadius4"
+        isDragging={isDragging}>
         <Styled.MenuTitleWrapper>
           {childMenus ? (
             <CaretIcon
+              onClick={handleDropdown}
               size={20}
               dir={isOpen() ? 'down' : RV_RevFloat}
-              onClick={handleDropdown}
             />
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
-          <Styled.MenuTitle>{decodeBase64(title)}</Styled.MenuTitle>
+          <Styled.MenuTitle>
+            <InlineEdit
+              text={decodeBase64(title)}
+              onSetText={(text) => console.log(text)}
+            />
+          </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
-        <Styled.DragIconWrapper
-          {...dragHandleProps}
-          style={{ cursor: 'row-resize' }}>
-          <DragIcon />
-        </Styled.DragIconWrapper>
+        <Styled.ActionsWrapper>
+          <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+            <TrashIcon />
+          </Styled.TrashIconWrapper>
+          <Styled.DragIconWrapper {...dragHandleProps}>
+            <DragIcon />
+          </Styled.DragIconWrapper>
+        </Styled.ActionsWrapper>
       </Styled.MenuContainer>
       {childMenus && (
         <EditableSubBranch

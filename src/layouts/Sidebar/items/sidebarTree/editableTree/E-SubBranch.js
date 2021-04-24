@@ -9,7 +9,9 @@ import * as Styled from '../../../Sidebar.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import { reorder } from 'helpers/helpers';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import DnDProvider from '../../../../../components/DnDProvider/DnDProvider';
+import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import DnDProvider from 'components/DnDProvider/DnDProvider';
+import InlineEdit from 'components/InlineEdit/InlineEdit';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
@@ -28,17 +30,17 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
 
   //! Calls whenever item dragging ended and reorders menu list.
   const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
+    const { source, destination } = result;
+
+    console.log({ source, destination });
+
+    if (!destination) return;
 
     const newTree = tree.map((item) => {
       if (item.NodeTypeID === parentID) {
         let cloneItem = Object.assign({}, item);
         cloneItem.defaultForm = true;
-        cloneItem.Sub = reorder(
-          item.Sub,
-          result.source.index,
-          result.destination.index
-        );
+        cloneItem.Sub = reorder(item.Sub, source.index, destination.index);
         return cloneItem;
       }
       return item;
@@ -47,17 +49,21 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
     dispatch(setReorderedTree(newTree));
   };
 
+  const handleOnTrashClick = (e) => {
+    console.log('delete item');
+  };
+
   return (
     <DnDProvider
       droppableClass="subMenuContainer"
-      droppableStyle={{ height: isOpen ? `${menuList.length * 2.8}rem` : 0 }}
+      droppableStyle={{ height: isOpen ? `${menuList.length * 2.35}rem` : 0 }}
       list={listWithId}
       droppableId={parentID}
       onDragEnd={handleOnDragEnd}>
       {({ isDragging, dragHandleProps, item }) => {
         return (
           <Styled.SubMenu className="BorderRadius4" isDragging={isDragging}>
-            <div>
+            <div style={{ display: 'flex' }}>
               {item.IconName && SidebarIcons[item.IconName]({ size: 20 })}
               {item.IconURL && (
                 <Styled.MenuItemImage
@@ -67,14 +73,20 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
                 />
               )}
               <Styled.SubMenuTitleWrapper>
-                {decodeBase64(item.TypeName)}
+                <InlineEdit
+                  text={decodeBase64(item.TypeName)}
+                  onSetText={(text) => console.log(text)}
+                />
               </Styled.SubMenuTitleWrapper>
             </div>
-            <Styled.DragIconWrapper
-              {...dragHandleProps}
-              style={{ cursor: 'row-resize' }}>
-              <DragIcon />
-            </Styled.DragIconWrapper>
+            <Styled.ActionsWrapper>
+              <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+                <TrashIcon />
+              </Styled.TrashIconWrapper>
+              <Styled.DragIconWrapper {...dragHandleProps}>
+                <DragIcon />
+              </Styled.DragIconWrapper>
+            </Styled.ActionsWrapper>
           </Styled.SubMenu>
         );
       }}

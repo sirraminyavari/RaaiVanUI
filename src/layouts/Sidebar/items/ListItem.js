@@ -29,7 +29,16 @@ const ListItem = (props) => {
         <Styled.TitleText>{title}</Styled.TitleText>
       </Styled.CenterIcon>
       {badge && (
-        <Badge color="#2b7be4" value={badge} style={{ fontSize: '0.8rem' }} />
+        <Badge
+          color="#2b7be4"
+          value={badge}
+          style={{
+            fontSize: '0.75rem',
+            lineHeight: '0.9rem',
+            padding: '0.2rem',
+            minWidth: '1.25rem',
+          }}
+        />
       )}
     </Styled.ListItemWrapper>
   );

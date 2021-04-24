@@ -8,19 +8,15 @@ import * as Styled from './Sidebar.styles';
 import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import SidebarHeader from './components/Header';
-import SidebarFooter from './components/Footer';
+import SidebarHeader from './items/Header';
+import SidebarFooter from './items/Footer';
 import { BG_WARMER } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
-  import(
-    /* webpackChunkName: "sidebar-open-content"*/ './components/SidebarOpen'
-  )
+  import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
 );
 const SidebarContentClose = lazy(() =>
-  import(
-    /* webpackChunkName: "sidebar-close-content"*/ './components/SidebarClose'
-  )
+  import(/* webpackChunkName: "sidebar-close-content"*/ './items/SidebarClose')
 );
 
 const selectIsSidebarOpen = createSelector(
@@ -46,15 +42,26 @@ const Sidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen, dispatch]);
 
+  const isMainContent = sidebarContent === 'main';
+  const isManageContent = sidebarContent === 'manage';
+
   return (
     <Styled.SidebarContainer className={BG_WARMER}>
       <SidebarHeader />
-      <Styled.ContentWrapper>
+      <Styled.ContentWrapper isManage={isManageContent}>
         <Suspense fallback={<LogoLoader size={10} />}>
-          {isSidebarOpen ? <SidebarContentOpen /> : <SidebarContentClose />}
+          {isSidebarOpen ? (
+            <SidebarContentOpen />
+          ) : isMainContent ? (
+            <SidebarContentClose />
+          ) : null}
         </Suspense>
       </Styled.ContentWrapper>
-      {sidebarContent !== 'manage' && <SidebarFooter />}
+      {isSidebarOpen ? (
+        <SidebarFooter />
+      ) : isMainContent ? (
+        <SidebarFooter />
+      ) : null}
     </Styled.SidebarContainer>
   );
 };

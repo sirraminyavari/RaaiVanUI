@@ -84,7 +84,7 @@ const InlineEdit = (props) => {
   }, [setIsInputActive]);
 
   return (
-    <span ref={wrapperRef}>
+    <div ref={wrapperRef}>
       {isInputActive ? (
         <Styled.Input
           data-testid="inline-edit-input"
@@ -100,7 +100,7 @@ const InlineEdit = (props) => {
           {text}
         </Styled.SpanText>
       )}
-    </span>
+    </div>
   );
 };
 

@@ -1,50 +1,10 @@
 import { forwardRef } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 
 const { RV_Float, RV_RevFloat } = window;
-
-const FooterInAnim = keyframes`
-  from {
-    ${RV_RevFloat}: 15rem;
-  }
-
-  to {
-    ${RV_RevFloat}: 0rem;
-  }
-`;
-
-const FooterOutAnim = keyframes`
-  from {
-    ${RV_RevFloat}: 0rem;
-  }
-
-  to {
-    ${RV_RevFloat}: 15rem;
-  }
-`;
-
-const FooterUpAnim = keyframes`
-  from {
-    top: 5rem;
-  }
-
-  to {
-    top: 0;
-  }
-`;
-
-const FooterDownAnim = keyframes`
-  from {
-    top: 0;
-  }
-
-  to {
-    top: 5rem;
-  }
-`;
 
 const FlexBetween = css`
   display: flex;
@@ -104,7 +64,7 @@ export const ContentWrapper = withTheme(styled.div`
   overflow: auto;
   padding: 0 1.5rem;
   margin-top: 4rem;
-  margin-bottom: 9vh;
+  margin-bottom: ${({ isManage }) => (isManage ? '18vh' : '9vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
@@ -142,7 +102,13 @@ export const SearchWrapper = styled.div`
   padding: 0.3rem;
   position: relative;
 
+  svg {
+    opacity: 70%;
+    color: #bac9dc;
+  }
+
   :focus-within svg {
+    opacity: 100%;
     color: #fff;
   }
 
@@ -152,6 +118,7 @@ export const SearchWrapper = styled.div`
 
   :focus-within ::placeholder {
     color: #fff;
+    opacity: 100%;
   }
 `;
 
@@ -173,7 +140,7 @@ export const SearchInput = styled.input.attrs((props) => ({
 
   ::placeholder {
     color: #bac9dc;
-    opacity: 50;
+    opacity: 70%;
   }
 
   transition: all 0.3s ease;
@@ -196,10 +163,9 @@ export const SidebarFooter = styled.div`
   height: 6%;
   position: relative;
   top: 94%;
-  transition: all 0.7s ease;
 `;
 
-export const OpenFooterButton = withTheme(styled.div`
+export const FooterButton = styled.div`
   display: flex;
   position: relative;
   justify-content: center;
@@ -209,42 +175,27 @@ export const OpenFooterButton = withTheme(styled.div`
   padding: 0.3rem;
   color: #fff;
   cursor: pointer;
-  animation: ${(props) =>
-    props.theme.states.isSidebarOpen
-      ? css`
-          ${FooterInAnim} 1s ease 0.1s both
-        `
-      : css`
-          ${FooterOutAnim} 0.3s linear both
-        `};
-`);
-
-export const CloseFooterButton = withTheme(styled.div`
-  position: absolute;
-  color: #fff;
-  ${RV_Float}: 0.5rem;
-  padding: 0.3rem 0.5rem;
-  animation-timing-function: ease;
-  animation: ${(props) =>
-    props.theme.states.isSidebarOpen
-      ? css`
-          ${FooterDownAnim} 0.2s both
-        `
-      : css`
-          ${FooterUpAnim} 0.4s both
-        `};
-`);
+`;
 
 export const FooterIconWrapper = withTheme(styled.div`
   margin-${RV_Float}: 0;
   margin-top: 0;
 `);
 
+export const PlusIconWrapper = styled.div`
+  position: absolute;
+  left: 1.5rem;
+  bottom: 3rem;
+  cursor: pointer;
+`;
+
 export const FooterTitle = withTheme(styled.span`
   margin-${RV_Float}: 0.5rem;
   position: relative;
   top: 0;
   transition: all 0.5s linear;
+  display: ${(props) =>
+    props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
 
 export const MenuContainer = styled.div`
@@ -253,10 +204,18 @@ export const MenuContainer = styled.div`
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
+  background-color: ${({ isDragging, isOpen }) =>
+    isDragging ? '#2B388F' : isOpen ? 'rgb(43,123,228, 0.2)' : 'inherit'};
+  border-color: ${({ isOpen }) => (isOpen ? '#2b7be4' : '#222')};
+
   &:hover {
-    background: rgb(66, 133, 244, 0.4);
-    border: none;
+    background: rgb(43, 123, 228, 0.2);
+    border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
+  }
+
+  &:hover > div > div: nth-child(1) {
+    color: #e2234f;
+    display: revert !important;
   }
 `;
 
@@ -289,7 +248,7 @@ export const HighlightedTitle = styled.span`
 
 export const SubMenuContainer = styled.div`
   height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 2.8}rem` : '0'};
+    isOpen ? `${itemsCount * 2.35}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
@@ -305,15 +264,20 @@ const DIV = styled.div``;
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0;
-  padding: 0.5rem 1.3rem;
+  margin: 0 0.5rem 0 0;
+  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
-    background: rgb(66, 133, 244, 0.4);
+    background: rgb(43, 123, 228, 0.2);
+  }
+
+  &:hover > div > div:first-child {
+    color: #e2234f;
+    display: revert !important;
   }
 `;
 
@@ -323,6 +287,20 @@ export const ListItemWrapper = styled.div`
 `;
 
 export const DragIconWrapper = styled.div`
+  line-height: 0.5rem;
+  cursor: row-resize !important;
+`;
+
+export const TrashIconWrapper = styled.div`
+  cursor: pointer;
+  margin: 0 0.3rem;
+  display: none;
+`;
+
+export const ActionsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   line-height: 0.5rem;
 `;
 
@@ -429,8 +407,6 @@ export const CancelIconWrapper = styled.div`
   position: absolute;
   ${`${RV_Float}: 0.5rem;`}
   bottom: 0.1rem;
-  color: #bac9dc;
-  opacity: 50;
   cursor: pointer;
   display: ${({ isTyping }) => (isTyping ? 'revert' : 'none')};
 `;
@@ -452,4 +428,9 @@ const getHighlightCss = ({ isMatch }) => {
 
 export const HighlightedText = styled.span`
   ${getHighlightCss}
+`;
+
+export const Divider = styled.hr`
+  border-color: #2b388f;
+  margin: 1rem 0;
 `;
