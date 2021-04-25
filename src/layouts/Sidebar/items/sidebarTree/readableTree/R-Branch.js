@@ -51,7 +51,10 @@ const ReadableBranch = (props) => {
   const { RV_RevFloat } = useContext(WindowContext);
 
   //! Toggle an item's sub-menu.
-  const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
+  const handleDropdown = useCallback(
+    () => childMenus && dispatch(toggleSidebarMenu(id)),
+    []
+  );
 
   //! Is true, If an item's sub-menu is open.
   const isOpen = () => openMenuID.includes(id);
