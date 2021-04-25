@@ -34,9 +34,7 @@ const ListItem = (props) => {
           value={badge}
           style={{
             fontSize: '0.75rem',
-            lineHeight: '0.9rem',
-            padding: '0.2rem',
-            minWidth: '1.25rem',
+            lineHeight: '1.65rem',
           }}
         />
       )}

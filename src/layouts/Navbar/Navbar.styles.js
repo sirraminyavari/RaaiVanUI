@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import Input from 'components/Inputs/Input';
 
-const { RV_RevFloat } = window;
+const { RV_RevFloat, RV_Float } = window;
 
 export const NavbarContainer = withTheme(styled.div`
   width: ${({ theme, isMobile }) =>
@@ -86,7 +86,7 @@ export const ButtonTitle = styled.div`
 export const BadgeWrapper = styled.div`
   position: absolute;
   top: 0.3rem;
-  ${`${RV_RevFloat}: 0.7rem;`}
+  ${`${RV_Float}: 0.7rem;`}
 `;
 
 export const SearchWrapper = styled.div`

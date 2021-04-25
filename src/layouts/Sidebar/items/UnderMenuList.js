@@ -13,7 +13,7 @@ const { RVDic } = window;
 const UnderMenuList = () => {
   return (
     <Styled.UnderMenuContainer>
-      <ListItem title="موضوعات نشان شده" icon={BookmarkIcon} badge={167} />
+      <ListItem title="موضوعات نشان شده" icon={BookmarkIcon} badge={67} />
       <ListItem title={RVDic.TemplatesGallery} icon={DiamondIcon} />
       <ListItem title={RVDic.KnowledgeWorkers} icon={ContactIcon} />
       <ListItem title={RVDic.Reports} icon={StatisticBarIcon} />
