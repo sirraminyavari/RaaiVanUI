@@ -6,6 +6,7 @@ export const sidebarMenuSlice = createSlice({
   initialState: {
     nodeTypes: [],
     tree: [],
+    editingTree: [],
     openMenuID: [],
     searchText: '',
     showSearchResults: false,
@@ -29,7 +30,7 @@ export const sidebarMenuSlice = createSlice({
       }
     },
     setReorderedTree: (state, action) => {
-      state.tree = action.payload;
+      state.editingTree = action.payload;
     },
     setSearchText: (state, action) => {
       state.searchText = action.payload;
@@ -41,6 +42,9 @@ export const sidebarMenuSlice = createSlice({
     },
     setConfigPanels: (state, action) => {
       state.configPanels = action.payload;
+    },
+    setEditingTree: (state, action) => {
+      state.editingTree = action.payload;
     },
   },
 });
