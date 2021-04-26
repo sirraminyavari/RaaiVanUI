@@ -5,6 +5,7 @@ import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import { Link } from 'react-router-dom';
 import * as Styled from '../../../Sidebar.styles';
 import { decodeBase64 } from 'helpers/helpers';
+import { C_WHITE } from 'constant/Colors';
 
 const ReadableSubBranch = ({ isOpen, menuList }) => {
   return (
@@ -13,7 +14,7 @@ const ReadableSubBranch = ({ isOpen, menuList }) => {
         return (
           <Styled.SubMenu
             key={menu.NodeTypeID}
-            className="BorderRadius4"
+            className={`${C_WHITE} BorderRadius4`}
             forwardedAs={Link}
             to={`/classes/${menu.NodeTypeID}`}>
             <div>

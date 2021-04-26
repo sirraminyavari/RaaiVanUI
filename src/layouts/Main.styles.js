@@ -10,7 +10,11 @@ export const ContentWrapper = styled.div`
     isSidebarOpen,
     isMobile,
   }) =>
-    !isMobile ? (isSidebarOpen ? `${OPEN_WIDTH}px` : `${CLOSE_WIDTH}px`) : '0'};
+    !isMobile
+      ? isSidebarOpen
+        ? `${OPEN_WIDTH}rem`
+        : `${CLOSE_WIDTH}rem`
+      : '0'};
   height: 100vh;
   transition: all 0.7s ease;
 `;

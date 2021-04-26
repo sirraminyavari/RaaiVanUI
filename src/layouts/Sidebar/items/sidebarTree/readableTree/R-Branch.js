@@ -11,6 +11,7 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ReadableSubBranches from './R-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
+import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -73,6 +74,7 @@ const ReadableBranch = (props) => {
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
           <Styled.MenuTitle
+            className={C_WHITE}
             onClick={handleDropdown}
             as={Link}
             to={`/classes/${id}`}>

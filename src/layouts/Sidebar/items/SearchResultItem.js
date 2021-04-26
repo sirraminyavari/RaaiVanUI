@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { BG_WARM } from 'constant/Colors';
+import { BG_WARM, C_WHITE } from 'constant/Colors';
 import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 
@@ -36,7 +36,7 @@ const SearchResultItem = ({ node, searchText }) => {
       as={Link}
       to={`/classes/${NodeTypeID}`}
       key={NodeTypeID}>
-      <Styled.MenuTitle>
+      <Styled.MenuTitle className={C_WHITE}>
         <Styled.MenuItemImage src={IconURL} alt="menu-icon" />
         <Styled.HighlightedTitle>
           {getHighlightedText(decode(TypeName), searchText)}

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Sidebar.styles';
 import Badge from 'components/Badge/Badge';
+import { C_WHITE } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -23,7 +24,7 @@ const ListItem = (props) => {
   const { icon: Icon, title, badge, linkTo = '#' } = props;
 
   return (
-    <Styled.ListItemWrapper as={Link} to={linkTo}>
+    <Styled.ListItemWrapper className={C_WHITE} as={Link} to={linkTo}>
       <Styled.CenterIcon>
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>

@@ -18,7 +18,6 @@ const FlexCenter = css`
 `;
 
 export const TitleText = styled.span`
-  color: #fff;
   margin: 0.5rem;
   text-transform: capitalize;
 `;
@@ -36,7 +35,6 @@ export const SidebarContainer = withTheme(styled.div`
   top: 0;
   ${`${RV_Float}: 0;`}
   overflow: hidden;
-  color: #fff;
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
@@ -156,11 +154,10 @@ export const SearchList = styled.div`
   margin: 0 1rem;
 `;
 
-export const SearchListItem = styled.div`
-  margin: 0.2rem 0;
-  padding: 0.4rem;
-  color: #fff;
-`;
+// export const SearchListItem = styled.div`
+//   margin: 0.2rem 0;
+//   padding: 0.4rem;
+// `;
 
 export const SidebarFooter = styled.div`
   height: 6%;
@@ -176,7 +173,6 @@ export const FooterButton = styled.div`
   margin: 0 2.5rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
-  color: #fff;
   cursor: pointer;
 `;
 
@@ -216,6 +212,7 @@ export const MenuContainer = styled.div`
     border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
   }
 
+  //TODO: add on hover color class.
   &:hover > div > div: nth-child(1) {
     color: #e2234f;
     display: revert !important;
@@ -224,7 +221,6 @@ export const MenuContainer = styled.div`
 
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
-  color: #fff;
   width: 100%;
 `;
 
@@ -234,15 +230,17 @@ export const SubMenuTitleWrapper = styled.span`
 
 export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
-  color: #fff;
   display: inline-block;
   width: 100%;
 `;
 
+//TODO: fallback image.
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
+  max-height: 1.8rem;
   border-radius: 50%;
   border: 0.12rem solid #fff;
+  overflow: hidden;
 `;
 
 export const HighlightedTitle = styled.span`
@@ -273,12 +271,12 @@ export const SubMenu = styled(
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
   }
 
+  //TODO: add on hover color class.
   &:hover > div > div:first-child {
     color: #e2234f;
     display: revert !important;
@@ -287,7 +285,6 @@ export const SubMenu = styled(
 
 export const ListItemWrapper = styled.div`
   ${FlexBetween}
-  color: #fff;
 `;
 
 export const DragIconWrapper = styled.div`
@@ -321,7 +318,6 @@ export const PanelWrapper = styled.div`
   margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
-  color: #fff;
   :hover {
     background: rgb(66,133,244, 0.4);
   }
@@ -354,14 +350,12 @@ const arrowCss = css`
 
 export const Up = styled.div`
   ${arrowCss}
-  color: ${({ isUp }) => (isUp ? '#444' : '#fff')};
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0;
 `;
 
 export const Down = styled.div`
   ${arrowCss}
-  color: ${({ isDown }) => (isDown ? '#444' : '#fff')};
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: -20px;
 `;
@@ -387,7 +381,6 @@ export const MiniIconWrapper = styled.div`
   display: block;
   margin: 1rem 0;
   font-size: 1.6rem;
-  color: #fff;
 `;
 
 export const MenuTreeContainer = styled.div`
@@ -405,8 +398,8 @@ export const FilterIconWrapper = styled.div`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
+  //TODO: new color.
   color: #bac9dc;
-  opacity: 50;
 `;
 
 export const CancelIconWrapper = styled.div`
