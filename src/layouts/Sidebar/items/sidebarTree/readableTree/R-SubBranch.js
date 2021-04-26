@@ -13,7 +13,7 @@ const ReadableSubBranch = ({ isOpen, menuList }) => {
         return (
           <Styled.SubMenu
             key={menu.NodeTypeID}
-            className="BorderRadius4 subMenu"
+            className="BorderRadius4"
             forwardedAs={Link}
             to={`/classes/${menu.NodeTypeID}`}>
             <div>

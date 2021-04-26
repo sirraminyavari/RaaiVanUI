@@ -3,6 +3,7 @@ import EditIcon from 'components/Icons/EditIcon/Edit';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { setEditableTrees } from 'store/actions/sidebar/sidebarMenuAction';
 
 const selectIsSidebarOpen = createSelector(
@@ -14,9 +15,11 @@ const ManageButton = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const { setSidebarContent, toggleSidebar } = themeSlice.actions;
+  const { closeOpenMenus } = sidebarMenuSlice.actions;
 
   const handleManageButton = () => {
     dispatch(setEditableTrees());
+    dispatch(closeOpenMenus());
     dispatch(setSidebarContent('manage'));
     if (!isSidebarOpen) {
       dispatch(toggleSidebar(true));

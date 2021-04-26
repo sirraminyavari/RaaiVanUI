@@ -10,7 +10,7 @@ import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import AvatarMenuList from './components/AvatarMenu/AvatarMenuList';
+import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
 import { createSelector } from 'reselect';
 import { themeSlice } from 'store/reducers/themeReducer';
 import {

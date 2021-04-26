@@ -4,7 +4,7 @@ import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 
-const { RV_Float, RV_RevFloat } = window;
+const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
 const FlexBetween = css`
   display: flex;
@@ -133,7 +133,7 @@ export const SearchInput = styled.input.attrs((props) => ({
   ${({ isTyping }) =>
     isTyping
       ? `
-      transform: translate(-1.5rem);
+      transform: translate(${RV_RTL ? '-1.5rem' : '1.5rem'});
       width: 80%;
       `
       : null}
@@ -190,7 +190,7 @@ export const PlusIconWrapper = styled.div`
 `;
 
 export const FooterTitle = withTheme(styled.span`
-  margin-${RV_Float}: 0.5rem;
+  margin: 0 0.5rem;
   position: relative;
   top: 0;
   transition: all 0.5s linear;
@@ -264,8 +264,9 @@ const DIV = styled.div``;
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0 0.5rem 0 0;
-  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
+  margin-${RV_Float}: 0.5rem;
+  padding: 0.4rem;
+  padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

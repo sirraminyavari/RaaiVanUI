@@ -29,6 +29,9 @@ export const sidebarMenuSlice = createSlice({
         state.openMenuID.push(action.payload);
       }
     },
+    closeOpenMenus: (state, action) => {
+      state.openMenuID = [];
+    },
     setReorderedTree: (state, action) => {
       state.editingTree = action.payload;
     },
