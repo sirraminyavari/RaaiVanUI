@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { encodeBase64 } from 'helpers/helpers';
 
 //! Sidebar Menu Slice
 export const sidebarMenuSlice = createSlice({
@@ -9,6 +10,7 @@ export const sidebarMenuSlice = createSlice({
     editingTree: [],
     openMenuID: [],
     searchText: '',
+    isCreatingNode: false,
     showSearchResults: false,
     configPanels: [],
   },
@@ -48,6 +50,34 @@ export const sidebarMenuSlice = createSlice({
     },
     setEditingTree: (state, action) => {
       state.editingTree = action.payload;
+    },
+    setNewNode: (state, action) => {
+      let newNode = {
+        NodeTypeID: 'new',
+        TypeName: encodeBase64('ایجاد دسته جدید'),
+        edited: false,
+        deleted: false,
+        created: false,
+        creating: true,
+        moved: false,
+      };
+      state.editingTree = [...state.editingTree, newNode];
+      state.isCreatingNode = true;
+    },
+    createNewNode: (state, action) => {
+      state.editingTree = state.editingTree.map((t) => {
+        if (t.NodeTypeID === 'new') {
+          return Object.assign({}, t, { created: true, creating: false });
+        }
+        return t;
+      });
+      state.isCreatingNode = false;
+    },
+    cancelNewNode: (state, action) => {
+      state.editingTree = state.editingTree.filter((t) => {
+        return t.NodeTypeID !== 'new';
+      });
+      state.isCreatingNode = false;
     },
   },
 });

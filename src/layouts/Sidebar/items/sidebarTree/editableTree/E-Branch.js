@@ -12,9 +12,11 @@ import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import TickIcon from 'components/Icons/TickIcon/Tick';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import H5 from 'components/TypoGraphy/H5';
 import Confirm from 'components/Modal/Confirm';
+import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -24,6 +26,11 @@ const selectOpenMenuID = createSelector(
 const selectTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.editingTree
+);
+
+const selectIsCreatingNode = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.isCreatingNode
 );
 
 /**
@@ -59,8 +66,13 @@ const EditableBranch = (props) => {
 
   const openMenuID = useSelector(selectOpenMenuID);
   const tree = useSelector(selectTree);
+  const isCreating = useSelector(selectIsCreatingNode);
   const dispatch = useDispatch();
-  const { toggleSidebarMenu, setEditingTree } = sidebarMenuSlice.actions;
+  const {
+    toggleSidebarMenu,
+    setEditingTree,
+    createNewNode,
+  } = sidebarMenuSlice.actions;
   const { RV_RevFloat } = useContext(WindowContext);
   const [confirm, setConfirm] = useState({
     show: false,
@@ -96,17 +108,23 @@ const EditableBranch = (props) => {
   };
 
   const handleChangeTitle = (title) => {
-    let editedTree = tree.map((node) => {
-      if (node.NodeTypeID === id) {
-        let editedNode = Object.assign({}, node, {
-          TypeName: encodeBase64(title),
-          edited: true,
-        });
-        return editedNode;
-      }
-      return node;
-    });
-    dispatch(setEditingTree(editedTree));
+    if (!isCreating) {
+      let editedTree = tree.map((node) => {
+        if (node.NodeTypeID === id) {
+          let editedNode = Object.assign({}, node, {
+            TypeName: encodeBase64(title),
+            edited: true,
+          });
+          return editedNode;
+        }
+        return node;
+      });
+      dispatch(setEditingTree(editedTree));
+    }
+  };
+
+  const handleOnTickClick = () => {
+    dispatch(createNewNode());
   };
 
   return (
@@ -136,16 +154,25 @@ const EditableBranch = (props) => {
             <InlineEdit
               text={decodeBase64(title)}
               onSetText={handleChangeTitle}
+              isActive={item.creating}
             />
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
-          <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
-            <TrashIcon />
-          </Styled.TrashIconWrapper>
-          <Styled.DragIconWrapper {...dragHandleProps}>
-            <DragIcon />
-          </Styled.DragIconWrapper>
+          {item.creating ? (
+            <Styled.TickIconWrapper onClick={handleOnTickClick}>
+              <TickIcon size={20} className={C_WHITE} />
+            </Styled.TickIconWrapper>
+          ) : (
+            <>
+              <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+                <TrashIcon />
+              </Styled.TrashIconWrapper>
+              <Styled.DragIconWrapper {...dragHandleProps}>
+                <DragIcon />
+              </Styled.DragIconWrapper>
+            </>
+          )}
         </Styled.ActionsWrapper>
       </Styled.MenuContainer>
       {childMenus && (

@@ -186,6 +186,7 @@ export const PlusIconWrapper = styled.div`
   ${RV_RevFloat}: 2.5rem;
   bottom: 3rem;
   cursor: pointer;
+  transform: ${({ isCreating }) => (isCreating ? 'rotate(45deg)' : '')};
 `;
 
 export const FooterTitle = withTheme(styled.span`
@@ -296,6 +297,10 @@ export const TrashIconWrapper = styled.div`
   cursor: pointer;
   margin: 0 0.3rem;
   display: none;
+`;
+
+export const TickIconWrapper = styled.div`
+  cursor: pointer;
 `;
 
 export const ActionsWrapper = styled.div`

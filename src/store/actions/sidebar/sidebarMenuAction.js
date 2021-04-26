@@ -105,6 +105,7 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
         ParseResults: true,
       },
       (response) => {
+        console.log(response);
         if (response.NodeTypes || response.Tree) {
           //! If and only if any change happens in fresh list then it will dispatch to redux store.
           if (shouldDispatch(response, sidebarItems)) {
@@ -144,7 +145,6 @@ export const setEditableTrees = (mode = '') => (dispatch, getState) => {
         const exNode = Object.assign({}, t, {
           edited: false,
           deleted: false,
-          created: false,
           moved: false,
         });
         return exNode;

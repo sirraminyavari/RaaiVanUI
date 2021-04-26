@@ -8,6 +8,7 @@ import * as Styled from './InlineEdit.styles';
 /**
  * @typedef PropType
  * @property {string} text -The editable text.
+ * @property {boolean} [isActive] -Determines if input is active or not.
  * @property {function} onSetText -A function that fires on text edit and
  * ...returns edited text to parent component.
  */
@@ -18,10 +19,10 @@ import * as Styled from './InlineEdit.styles';
  * @param {PropType} props
  */
 const InlineEdit = (props) => {
-  const { text, onSetText } = props;
+  const { text, onSetText, isActive } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
-  const [isInputActive, setIsInputActive] = useState(false);
+  const [isInputActive, setIsInputActive] = useState(isActive);
   //! Input value default to initial text passed to it.
   const [inputValue, setInputValue] = useState(text);
 
@@ -111,6 +112,7 @@ InlineEdit.propTypes = {
 
 InlineEdit.defaultProps = {
   text: 'default text',
+  isActive: false,
 };
 
 InlineEdit.displayName = 'InlineEditComponent';
