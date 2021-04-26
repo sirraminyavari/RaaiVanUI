@@ -71,9 +71,9 @@ const SidebarOnClose = ({ theme }) => {
 
   return (
     <>
-      <Styled.SidebarTitle>
+      <Styled.SidebarTitle style={{ marginRight: '3.4rem' }}>
         <Styled.SettingWrapper onClick={handleOnClick}>
-          <SettingIcon />
+          <SettingIcon size={22} />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>

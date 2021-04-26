@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import Input from 'components/Inputs/Input';
 
-const { RV_RevFloat, RV_Float } = window;
+const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
 
 export const NavbarContainer = withTheme(styled.div`
   width: ${({ theme, isMobile }) =>
@@ -13,11 +13,11 @@ export const NavbarContainer = withTheme(styled.div`
           ? OPEN_WIDTH
           : CLOSE_WIDTH
         : CLOSE_WIDTH
-    }px)`};
+    }rem)`};
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: 1000;
+  z-index: ${GlobalUtilities.zindex.alert()};
   justify-content: space-between;
   align-items: center;
   top: 0;

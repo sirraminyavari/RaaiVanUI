@@ -30,7 +30,7 @@ export const CenterIcon = styled.div`
 export const SidebarContainer = withTheme(styled.div`
   height: 100%;
   width: ${(props) =>
-    `${props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   position: fixed;
   z-index: 100;
   top: 0;
@@ -71,9 +71,9 @@ export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
   height: 4rem;
   width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px;
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   z-index: 10;
-  padding: 0 1.3rem;
+  padding: 0 2.3rem;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
@@ -81,12 +81,15 @@ export const SidebarHeader = withTheme(styled.div`
 `);
 
 export const OpenContentWrapper = styled.div`
-  max-width: 13.5rem;
+  max-width: 17.8rem;
+  margin: 0;
+  margin-${RV_RevFloat}: 1.3rem;
+  margin-${RV_Float}: 2rem;
 `;
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
-  margin-${RV_Float}: -0.3rem;
+  margin-${RV_Float}: 0.7rem;
   cursor: pointer;
 `;
 
@@ -170,7 +173,7 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 1.4rem;
+  margin: 0 2.5rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
   color: #fff;
@@ -184,7 +187,7 @@ export const FooterIconWrapper = withTheme(styled.div`
 
 export const PlusIconWrapper = styled.div`
   position: absolute;
-  left: 1.5rem;
+  ${RV_RevFloat}: 2.5rem;
   bottom: 3rem;
   cursor: pointer;
 `;
@@ -338,7 +341,9 @@ export const CloseContentContainer = styled.div`
   overflow: hidden;
   height: 73vh;
   width: 2rem;
-  margin: -0.55rem;
+  margin: 0;
+  margin-right: 3rem;
+  margin-top: -0.55rem;
 `;
 
 const arrowCss = css`
