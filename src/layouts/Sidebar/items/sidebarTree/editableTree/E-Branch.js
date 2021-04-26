@@ -1,22 +1,36 @@
 /**
  * Renders Main(root) menu item that may or may not has sub-menus(branches).
  */
-import { memo, useCallback, useContext } from 'react';
+import { memo, useCallback, useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from '../../../Sidebar.styles';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import EditableSubBranch from './E-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import TickIcon from 'components/Icons/TickIcon/Tick';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
+import H5 from 'components/TypoGraphy/H5';
+import Confirm from 'components/Modal/Confirm';
+import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.openMenuID
+);
+
+const selectTree = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.editingTree
+);
+
+const selectIsCreatingNode = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.isCreatingNode
 );
 
 /**
@@ -51,9 +65,19 @@ const EditableBranch = (props) => {
   } = item;
 
   const openMenuID = useSelector(selectOpenMenuID);
+  const tree = useSelector(selectTree);
+  const isCreating = useSelector(selectIsCreatingNode);
   const dispatch = useDispatch();
-  const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+  const {
+    toggleSidebarMenu,
+    setEditingTree,
+    createNewNode,
+  } = sidebarMenuSlice.actions;
   const { RV_RevFloat } = useContext(WindowContext);
+  const [confirm, setConfirm] = useState({
+    show: false,
+    message: '',
+  });
 
   //! Toggle an item's sub-menu.
   const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
@@ -63,11 +87,55 @@ const EditableBranch = (props) => {
 
   const handleOnTrashClick = (e) => {
     e.stopPropagation();
-    console.log('delete menu');
+    setConfirm({
+      show: true,
+      message: `آیا از پاک کردن موضوع "${decodeBase64(title)}" اطمینان دارید؟`,
+    });
+  };
+
+  const handleOnDeleteCancel = () => {
+    setConfirm({
+      show: false,
+      message: '',
+    });
+  };
+
+  const handleOnDeleteConfirm = () => {
+    let editedTree = tree.filter((node) => {
+      return node.NodeTypeID !== id;
+    });
+    dispatch(setEditingTree(editedTree));
+  };
+
+  const handleChangeTitle = (title) => {
+    if (!isCreating) {
+      let editedTree = tree.map((node) => {
+        if (node.NodeTypeID === id) {
+          let editedNode = Object.assign({}, node, {
+            TypeName: encodeBase64(title),
+            edited: true,
+          });
+          return editedNode;
+        }
+        return node;
+      });
+      dispatch(setEditingTree(editedTree));
+    }
+  };
+
+  const handleOnTickClick = () => {
+    dispatch(createNewNode());
   };
 
   return (
     <>
+      <Confirm
+        show={confirm.show}
+        onConfirm={handleOnDeleteConfirm}
+        onCancel={handleOnDeleteCancel}
+        onClose={handleOnDeleteCancel}>
+        <H5>{confirm.message}</H5>
+      </Confirm>
       <Styled.MenuContainer
         isOpen={isOpen()}
         className="BorderRadius4"
@@ -85,17 +153,26 @@ const EditableBranch = (props) => {
           <Styled.MenuTitle>
             <InlineEdit
               text={decodeBase64(title)}
-              onSetText={(text) => console.log(text)}
+              onSetText={handleChangeTitle}
+              isActive={item.creating}
             />
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
-          <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
-            <TrashIcon />
-          </Styled.TrashIconWrapper>
-          <Styled.DragIconWrapper {...dragHandleProps}>
-            <DragIcon />
-          </Styled.DragIconWrapper>
+          {item.creating ? (
+            <Styled.TickIconWrapper onClick={handleOnTickClick}>
+              <TickIcon size={20} className={C_WHITE} />
+            </Styled.TickIconWrapper>
+          ) : (
+            <>
+              <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+                <TrashIcon />
+              </Styled.TrashIconWrapper>
+              <Styled.DragIconWrapper {...dragHandleProps}>
+                <DragIcon />
+              </Styled.DragIconWrapper>
+            </>
+          )}
         </Styled.ActionsWrapper>
       </Styled.MenuContainer>
       {childMenus && (

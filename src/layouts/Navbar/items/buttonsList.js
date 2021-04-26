@@ -61,7 +61,7 @@ const NavButtons = [
     icon: 'notifications',
     // TODO: change link to notifications
     linkTo: '/notifications',
-    badge: 99,
+    badge: 100,
   },
 ];
 

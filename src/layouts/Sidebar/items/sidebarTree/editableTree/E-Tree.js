@@ -5,13 +5,13 @@ import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import EditableBranch from './E-Branch';
 import { createSelector } from 'reselect';
-import DnDProvider from '../../../../../components/DnDProvider/DnDProvider';
+import DnDProvider from 'components/DnDProvider/DnDProvider';
 import { reorder } from 'helpers/helpers';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.tree
+  (sidebarItems) => sidebarItems.editingTree
 );
 
 const EditableTree = () => {
@@ -19,9 +19,9 @@ const EditableTree = () => {
   const tree = useSelector(selectTree);
   const { setReorderedTree } = sidebarMenuSlice.actions;
 
-  const listWithId = tree.map((t) => {
-    const withId = Object.assign({}, t, { id: t.NodeTypeID });
-    return withId;
+  const extendedTree = tree.map((t) => {
+    const exNode = Object.assign({}, t, { id: t.NodeTypeID });
+    return exNode;
   });
 
   //! Calls whenever item dragging is ended and reorders the tree list.
@@ -39,7 +39,7 @@ const EditableTree = () => {
 
   return (
     <DnDProvider
-      list={listWithId}
+      list={extendedTree}
       droppableId="editable-menu"
       onDragEnd={handleOnDragEnd}>
       {({ isDragging, dragHandleProps, item }) => {

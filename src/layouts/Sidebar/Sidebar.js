@@ -5,12 +5,12 @@ import { lazy, Suspense, useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
-import getSidebarNodes from 'store/actions/sidebar/sidebarMenuAction';
+import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
-import SidebarFooter from './items/Footer';
-import { BG_WARMER } from 'constant/Colors';
+import SidebarFooter from './items/footer/Footer';
+import { BG_WARMER, C_WHITE } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
@@ -46,7 +46,7 @@ const Sidebar = () => {
   const isManageContent = sidebarContent === 'manage';
 
   return (
-    <Styled.SidebarContainer className={BG_WARMER}>
+    <Styled.SidebarContainer className={`${BG_WARMER} ${C_WHITE}`}>
       <SidebarHeader />
       <Styled.ContentWrapper isManage={isManageContent}>
         <Suspense fallback={<LogoLoader size={10} />}>

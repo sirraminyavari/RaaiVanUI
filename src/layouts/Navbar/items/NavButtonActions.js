@@ -3,7 +3,7 @@
  */
 import { Link } from 'react-router-dom';
 import * as Styled from '../Navbar.styles';
-import NavbarIcons from '../components/NavbarIcons/NavbarIcons';
+import NavbarIcons from './NavbarIcons/NavbarIcons';
 
 /**
  * @typedef PropType

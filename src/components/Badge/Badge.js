@@ -19,9 +19,11 @@ import * as Styled from './Badge.styles';
  */
 const Badge = (props) => {
   const { value, color, ...rest } = props;
+  const srtValue = value + '';
+  const valLength = srtValue.length;
   return (
-    <Styled.BadgeWrapper color={color} {...rest}>
-      {value}
+    <Styled.BadgeWrapper length={valLength} color={color} {...rest}>
+      {valLength < 3 ? srtValue : '+99'}
     </Styled.BadgeWrapper>
   );
 };

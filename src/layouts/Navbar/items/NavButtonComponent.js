@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
-import NavbarIcons from '../components/NavbarIcons/NavbarIcons';
+import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
 
 /**
@@ -47,7 +47,7 @@ const NavButtonComponent = (props) => {
         {badge && (
           <Styled.BadgeWrapper>
             <Badge
-              style={{ height: '1.4rem', borderWidth: '0.15rem' }}
+              style={{ borderWidth: '0.1rem' }}
               value={badge}
               color="#e2234f"
               className="rv-warm-border"

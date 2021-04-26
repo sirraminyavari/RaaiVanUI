@@ -5,12 +5,12 @@ import { lazy, Suspense, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
-import NavbarSearchInput from './components/NavSearchInput';
+import NavbarSearchInput from './items/NavSearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import AvatarMenuList from './components/AvatarMenu/AvatarMenuList';
+import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
 import { createSelector } from 'reselect';
 import { themeSlice } from 'store/reducers/themeReducer';
 import {
@@ -22,12 +22,12 @@ import { BG_WARM } from 'constant/Colors';
 
 const NavWideScreenMenu = lazy(() =>
   import(
-    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './components/NavWideScreenMenu'
+    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './items/NavWideScreenMenu'
   )
 );
 const NavMobileMenu = lazy(() =>
   import(
-    /* webpackChunkName: "nav-mobile-menu-component"*/ './components/NavMobileMenu'
+    /* webpackChunkName: "nav-mobile-menu-component"*/ './items/NavMobileMenu'
   )
 );
 

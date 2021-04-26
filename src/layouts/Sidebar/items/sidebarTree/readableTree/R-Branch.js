@@ -11,6 +11,7 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ReadableSubBranches from './R-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
+import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -51,7 +52,10 @@ const ReadableBranch = (props) => {
   const { RV_RevFloat } = useContext(WindowContext);
 
   //! Toggle an item's sub-menu.
-  const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
+  const handleDropdown = useCallback(
+    () => childMenus && dispatch(toggleSidebarMenu(id)),
+    []
+  );
 
   //! Is true, If an item's sub-menu is open.
   const isOpen = () => openMenuID.includes(id);
@@ -70,6 +74,7 @@ const ReadableBranch = (props) => {
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
           <Styled.MenuTitle
+            className={C_WHITE}
             onClick={handleDropdown}
             as={Link}
             to={`/classes/${id}`}>

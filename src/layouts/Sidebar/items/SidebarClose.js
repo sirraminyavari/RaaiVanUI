@@ -10,6 +10,7 @@ import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { C_GRAY, C_RED, C_WHITE } from 'constant/Colors';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -71,13 +72,13 @@ const SidebarOnClose = ({ theme }) => {
 
   return (
     <>
-      <Styled.SidebarTitle>
+      <Styled.SidebarTitle style={{ marginRight: '3.4rem' }}>
         <Styled.SettingWrapper onClick={handleOnClick}>
-          <SettingIcon />
+          <SettingIcon size={22} />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        <Styled.Up onClick={scrollUp} isUp={isUp}>
+        <Styled.Up onClick={scrollUp} className={isUp ? C_GRAY : C_WHITE}>
           <ChevronIcon dir="up" />
         </Styled.Up>
         <Styled.IconListContainer>
@@ -101,7 +102,7 @@ const SidebarOnClose = ({ theme }) => {
             })}
           </Styled.IconListWrap>
         </Styled.IconListContainer>
-        <Styled.Down onClick={scrollDown} isDown={isDown}>
+        <Styled.Down onClick={scrollDown} className={isDown ? C_GRAY : C_WHITE}>
           <ChevronIcon dir="down" />
         </Styled.Down>
       </Styled.CloseContentContainer>

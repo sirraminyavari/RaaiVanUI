@@ -53,6 +53,8 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
     console.log('delete item');
   };
 
+  const handleChangeTitle = (title) => {};
+
   return (
     <DnDProvider
       droppableClass="subMenuContainer"
@@ -75,7 +77,7 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
               <Styled.SubMenuTitleWrapper>
                 <InlineEdit
                   text={decodeBase64(item.TypeName)}
-                  onSetText={(text) => console.log(text)}
+                  onSetText={handleChangeTitle}
                 />
               </Styled.SubMenuTitleWrapper>
             </div>

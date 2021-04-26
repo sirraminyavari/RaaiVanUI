@@ -3,7 +3,7 @@
  */
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { encode } from 'js-base64';
+import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
@@ -12,7 +12,7 @@ const NavSearchInput = (props) => {
   const [searchText, setSearchText] = useState('');
 
   //! The path that input is link to.
-  let searchPath = `/dosearch/${encode(
+  let searchPath = `/dosearch/${encodeBase64(
     searchText !== '' ? searchText : 'جستجو'
   )}`;
 

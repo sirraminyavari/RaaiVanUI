@@ -4,7 +4,7 @@ import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 
-const { RV_Float, RV_RevFloat } = window;
+const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
 const FlexBetween = css`
   display: flex;
@@ -18,7 +18,6 @@ const FlexCenter = css`
 `;
 
 export const TitleText = styled.span`
-  color: #fff;
   margin: 0.5rem;
   text-transform: capitalize;
 `;
@@ -30,13 +29,12 @@ export const CenterIcon = styled.div`
 export const SidebarContainer = withTheme(styled.div`
   height: 100%;
   width: ${(props) =>
-    `${props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px`};
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   position: fixed;
   z-index: 100;
   top: 0;
   ${`${RV_Float}: 0;`}
   overflow: hidden;
-  color: #fff;
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
   transition: all 0.7s ease;
@@ -71,9 +69,9 @@ export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
   height: 4rem;
   width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}px;
+    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   z-index: 10;
-  padding: 0 1.3rem;
+  padding: 0 2.3rem;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
@@ -81,12 +79,15 @@ export const SidebarHeader = withTheme(styled.div`
 `);
 
 export const OpenContentWrapper = styled.div`
-  max-width: 13.5rem;
+  max-width: 17.8rem;
+  margin: 0;
+  margin-${RV_RevFloat}: 1.3rem;
+  margin-${RV_Float}: 2rem;
 `;
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
-  margin-${RV_Float}: -0.3rem;
+  margin-${RV_Float}: 0.7rem;
   cursor: pointer;
 `;
 
@@ -133,7 +134,7 @@ export const SearchInput = styled.input.attrs((props) => ({
   ${({ isTyping }) =>
     isTyping
       ? `
-      transform: translate(-1.5rem);
+      transform: translate(${RV_RTL ? '-1.5rem' : '1.5rem'});
       width: 80%;
       `
       : null}
@@ -153,11 +154,10 @@ export const SearchList = styled.div`
   margin: 0 1rem;
 `;
 
-export const SearchListItem = styled.div`
-  margin: 0.2rem 0;
-  padding: 0.4rem;
-  color: #fff;
-`;
+// export const SearchListItem = styled.div`
+//   margin: 0.2rem 0;
+//   padding: 0.4rem;
+// `;
 
 export const SidebarFooter = styled.div`
   height: 6%;
@@ -170,10 +170,9 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 1.4rem;
+  margin: 0 2.5rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
-  color: #fff;
   cursor: pointer;
 `;
 
@@ -184,13 +183,14 @@ export const FooterIconWrapper = withTheme(styled.div`
 
 export const PlusIconWrapper = styled.div`
   position: absolute;
-  left: 1.5rem;
+  ${RV_RevFloat}: 2.5rem;
   bottom: 3rem;
   cursor: pointer;
+  transform: ${({ isCreating }) => (isCreating ? 'rotate(45deg)' : '')};
 `;
 
 export const FooterTitle = withTheme(styled.span`
-  margin-${RV_Float}: 0.5rem;
+  margin: 0 0.5rem;
   position: relative;
   top: 0;
   transition: all 0.5s linear;
@@ -213,6 +213,7 @@ export const MenuContainer = styled.div`
     border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
   }
 
+  //TODO: add on hover color class.
   &:hover > div > div: nth-child(1) {
     color: #e2234f;
     display: revert !important;
@@ -221,7 +222,6 @@ export const MenuContainer = styled.div`
 
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
-  color: #fff;
   width: 100%;
 `;
 
@@ -231,15 +231,17 @@ export const SubMenuTitleWrapper = styled.span`
 
 export const MenuTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
-  color: #fff;
   display: inline-block;
   width: 100%;
 `;
 
+//TODO: fallback image.
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
+  max-height: 1.8rem;
   border-radius: 50%;
   border: 0.12rem solid #fff;
+  overflow: hidden;
 `;
 
 export const HighlightedTitle = styled.span`
@@ -264,17 +266,18 @@ const DIV = styled.div``;
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-  margin: 0 0.5rem 0 0;
-  padding: 0.4rem 1.4rem 0.4rem 0.4rem;
+  margin-${RV_Float}: 0.5rem;
+  padding: 0.4rem;
+  padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #fff;
   background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
   }
 
+  //TODO: add on hover color class.
   &:hover > div > div:first-child {
     color: #e2234f;
     display: revert !important;
@@ -283,7 +286,6 @@ export const SubMenu = styled(
 
 export const ListItemWrapper = styled.div`
   ${FlexBetween}
-  color: #fff;
 `;
 
 export const DragIconWrapper = styled.div`
@@ -295,6 +297,10 @@ export const TrashIconWrapper = styled.div`
   cursor: pointer;
   margin: 0 0.3rem;
   display: none;
+`;
+
+export const TickIconWrapper = styled.div`
+  cursor: pointer;
 `;
 
 export const ActionsWrapper = styled.div`
@@ -317,7 +323,6 @@ export const PanelWrapper = styled.div`
   margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
-  color: #fff;
   :hover {
     background: rgb(66,133,244, 0.4);
   }
@@ -337,7 +342,9 @@ export const CloseContentContainer = styled.div`
   overflow: hidden;
   height: 73vh;
   width: 2rem;
-  margin: -0.55rem;
+  margin: 0;
+  margin-right: 3rem;
+  margin-top: -0.55rem;
 `;
 
 const arrowCss = css`
@@ -348,14 +355,12 @@ const arrowCss = css`
 
 export const Up = styled.div`
   ${arrowCss}
-  color: ${({ isUp }) => (isUp ? '#444' : '#fff')};
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0;
 `;
 
 export const Down = styled.div`
   ${arrowCss}
-  color: ${({ isDown }) => (isDown ? '#444' : '#fff')};
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: -20px;
 `;
@@ -381,7 +386,6 @@ export const MiniIconWrapper = styled.div`
   display: block;
   margin: 1rem 0;
   font-size: 1.6rem;
-  color: #fff;
 `;
 
 export const MenuTreeContainer = styled.div`
@@ -399,8 +403,8 @@ export const FilterIconWrapper = styled.div`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
+  //TODO: new color.
   color: #bac9dc;
-  opacity: 50;
 `;
 
 export const CancelIconWrapper = styled.div`

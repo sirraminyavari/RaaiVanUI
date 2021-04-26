@@ -1,6 +1,7 @@
 import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
 import { encode, decode } from 'js-base64';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @description A function that accepts some funcs as params and then
@@ -132,4 +133,8 @@ export const mergeRefs = (...refs) => {
       }
     }
   };
+};
+
+export const getUUID = () => {
+  return uuidv4();
 };
