@@ -1,69 +1,124 @@
 /**
- * A DropDown with minimal animation in opening and closing time
+ * A DropDown with minimal animation in opening and closing time.
  */
-import ArrowDown from 'components/Icons/ArrowDown';
 import React, { useState } from 'react';
-import { ShakeAnimate } from 'views/Auth/elements/Animate.style';
 import {
+  ArrowIcon,
   Container,
-  DomainsList,
+  ItemList,
   DropDownButton,
-  ListItem,
+  Label,
+  Maintainer,
   Rotater,
-  Title,
-  Error,
 } from './AnimatedDropDownList.style';
+import DropDownItem from './DropDownItem';
+import PropTypes from 'prop-types';
 
 /**
  *
- * @param {Array} list - Array of DropDown listItems.
- * @param {String} label - Label for DropDown.
+ * @param {[
+ * {
+ *  icon: Component,
+ *  label: String,
+ *  value: any,
+ *  color: hex|rgb,
+ * }
+ * ]} data - Array of DropDown listItems.
+ * @param  {{
+ *  icon: Component,
+ *  label: String,
+ *  value: any,
+ *  color: hex|rgb,
+ * }} defaultValue - The default value for showing on the dropdown, when still nothing is selected.
+ * @param {Boolean} hiddenSelectedItem - If True, removes selected item from  the drop-down list.
+ * @param {{
+ * button: CSSProperties,
+ * label: CSSProperties,
+ * item: CSSProperties,
+ * container: CSSProperties,
+ * itemContainer: CSSProperties,
+ * }} customStyle - For applying the style in each segment.
  * @callback onSelectItem - Fires when the user clicks on an item of the DropDown List.
  */
 const AnimatedDropDownList = ({
-  list,
-  label,
+  data,
   onSelectItem,
-  error,
-  ...props
+  defaultValue,
+  customStyle = {
+    button: null,
+    label: null,
+    item: null,
+    container: null,
+    itemContainer: null,
+  },
+  hiddenSelectedItem,
 }) => {
+  const { button, label, item, container, itemContainer } = customStyle;
+
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
 
   /**
-   * Calls,By clicking on every 'ListItem'
+   * Close/Open drop-down
    */
   const onClick = () => {
     setDropedDown(!dropedDown);
   };
 
+  /**
+   * Calls,By clicking on every 'ListItem'
+   * Passes selected Item to the up!
+   */
+  const onClickItem = (item, index) => {
+    onSelectItem(item);
+    setDropedDown(!dropedDown);
+  };
+  /**
+   *
+   * @returns Items in the drop-down list
+   */
+  const renderList = () => {
+    const list = hiddenSelectedItem
+      ? data.filter((raw) => raw.value !== defaultValue.value)
+      : data;
+    return (
+      <ItemList style={{ ...itemContainer }} dropedDown={dropedDown}>
+        {list.map((x, index) => (
+          <DropDownItem
+            onSelectItem={() => onClickItem(x, index)}
+            item={x}
+            key={index}
+            itemStyle={item}
+          />
+        ))}
+      </ItemList>
+    );
+  };
+
   return (
     <Container>
-      <ShakeAnimate isVisible={error}>
-        <DropDownButton onClick={onClick} error={error}>
-          <Rotater dropedDown={dropedDown}>
-            <ArrowDown color={'#707070'} />
-          </Rotater>
-          <Title className="textarea">{label}</Title>
-        </DropDownButton>
-        <DomainsList dropedDown={dropedDown}>
-          {list.map((x, index) => (
-            <ListItem
-              onClick={() => {
-                // collapse dropdown
-                setDropedDown(!dropedDown);
-                // pass selected Item to its parent
-                onSelectItem(x, index);
-              }}
-              key={index}
-              dropedDown={dropedDown}>
-              {x}
-            </ListItem>
-          ))}
-        </DomainsList>
-      </ShakeAnimate>
-      <Error error={error}>{error}</Error>
+      <DropDownButton style={{ ...container }}>
+        <Maintainer style={{ ...label }}>
+          {defaultValue.icon}
+          <Label color={defaultValue.color}>{defaultValue.label}</Label>
+        </Maintainer>
+        <Rotater
+          dropedDown={dropedDown}
+          onClick={onClick}
+          style={{ ...button }}>
+          <ArrowIcon color={'#2B7BE4'} dropedDown={dropedDown} />
+        </Rotater>
+      </DropDownButton>
+      {renderList()}
     </Container>
   );
+};
+
+AnimatedDropDownList.propTypes = {
+  data: PropTypes.array.isRequired,
+  onSelectItem: PropTypes.func.isRequired,
+  defaultValue: PropTypes.object.isRequired,
+  hiddenSelectedItem: PropTypes.bool,
+  customStyle: PropTypes.object,
 };
 export default AnimatedDropDownList;
