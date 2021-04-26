@@ -276,6 +276,7 @@ const common_style = {
   fontSize: '0.8rem',
 };
 const Hiddener = styled.div`
+  width: 100%;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
   transition: opacity 0.7s, max-height 1s;

@@ -378,11 +378,12 @@ const RowItems = styled.div`
   width: 100%;
 `;
 const common_style = {
-  marginBottom: '0.5rem',
-  marginTop: '0.5rem',
+  marginBottom: '0.75rem',
+  marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
 const Hiddener = styled.div`
+  width: 100%;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
   transition: opacity 0.7s, max-height 1s;
