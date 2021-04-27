@@ -24,6 +24,7 @@ import PasswordValidation from '../elements/PasswordValidation';
 import { decode } from 'js-base64';
 import { Box } from '../AuthView.style';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
+import { GlobalParams, Urls } from 'const/GlobalParams';
 
 const { RVDic, RVGlobal } = window;
 /**
@@ -310,23 +311,15 @@ const SignUp = () => {
                 marginTop: '1rem',
                 marginBottom: '2.5rem',
               }}>
-              {/* <p>
-                {'با ثبت ایمیل در کلیک مایند، شما میپذیرید که '}
-                <a
-                  href="http://www.cliqmind.com/%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D9%88-%D8%AA%D8%B9%D9%87%D8%AF%D8%A7%D8%AA/"
-                  target="_blank"
-                  style={{ color: 'blue' }}>
-                  {'قوانین کلیک مایند'}
-                </a>
-                {' را خوانده و به آن متعهد هستید '}
-              </p> */}
-              {/* {decode(RVGlobal.SystemName)} */}
               {splitted_terms[0].replace('[n]', decode(RVGlobal.SystemName))}
               <a
-                href="http://www.cliqmind.com/%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D9%88-%D8%AA%D8%B9%D9%87%D8%AF%D8%A7%D8%AA/"
+                href={GlobalParams.TermsAndConditionsURL}
                 target="_blank"
                 style={{ color: 'blue' }}>
-                {decode(RVGlobal.SystemName)}
+                {RVDic.TermsAndConditionsOfN.replace(
+                  '[n]',
+                  decode(RVGlobal.SystemName)
+                )}
               </a>
               {splitted_terms[1].replace('[m]', '')}
             </Heading>
