@@ -18,7 +18,7 @@ import {
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
-import { BG_WARM } from 'constant/Colors';
+import { TBG_WARM } from 'constant/Colors';
 
 const NavWideScreenMenu = lazy(() =>
   import(
@@ -83,7 +83,7 @@ const Navbar = () => {
   };
 
   return (
-    <Styled.NavbarContainer className={BG_WARM} isMobile={isMobileScreen}>
+    <Styled.NavbarContainer className={TBG_WARM} isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
         {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>

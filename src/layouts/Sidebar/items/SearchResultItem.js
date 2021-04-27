@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { BG_WARM, C_WHITE } from 'constant/Colors';
+import { TBG_WARM, C_WHITE } from 'constant/Colors';
 import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 
@@ -18,7 +18,7 @@ const getHighlightedText = (text, highlight) => {
         return (
           <Styled.HighlightedText
             key={index}
-            className={isMatch ? BG_WARM : null}
+            className={isMatch ? TBG_WARM : null}
             isMatch={isMatch}>
             {part}
           </Styled.HighlightedText>

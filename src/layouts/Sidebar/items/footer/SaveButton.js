@@ -1,5 +1,5 @@
 import * as Styled from '../../Sidebar.styles';
-import { BG_WARM } from 'constant/Colors';
+import { TBG_WARM } from 'constant/Colors';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -19,7 +19,7 @@ const SaveButton = () => {
 
   return (
     <Styled.FooterButton
-      className={`${BG_WARM}`}
+      className={`${TBG_WARM}`}
       style={{ margin: '-0.2rem 0 0 0 ', padding: '0.8rem' }}
       onClick={handleSaveButton}>
       <Styled.FooterTitle>ثبت ویرایش</Styled.FooterTitle>
