@@ -1,5 +1,4 @@
-import ReactDOM from 'react-dom';
-import { render, cleanup, screen, fireEvent } from '@testing-library/react';
+import { cleanup, render, screen, fireEvent } from 'utils/TestUtils/TestUtils';
 import AutoSuggestInput from './AutoSuggestInput';
 
 describe('AutoSuggest Input Component Test', () => {
