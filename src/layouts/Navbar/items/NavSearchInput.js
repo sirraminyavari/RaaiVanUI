@@ -43,7 +43,7 @@ const NavSearchInput = (props) => {
         type="search"
         {...props}>
         <Styled.SearchWrapper as={Link} to={searchPath}>
-          <SearchIcon size={22} color="#BAC9DC" onClick={handleClearSearch} />
+          <SearchIcon size={22} color="#bac9dc" onClick={handleClearSearch} />
         </Styled.SearchWrapper>
       </Styled.SearchInput>
     </Styled.SearchContainer>

@@ -11,7 +11,6 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import ReadableSubBranches from './R-SubBranch';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
-import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -58,23 +57,22 @@ const ReadableBranch = (props) => {
   );
 
   //! Is true, If an item's sub-menu is open.
-  const isOpen = () => openMenuID.includes(id);
+  const isOpen = openMenuID.includes(id);
 
   return (
     <>
-      <Styled.MenuContainer isOpen={isOpen()} className="BorderRadius4">
+      <Styled.MenuContainer isOpen={isOpen}>
         <Styled.MenuTitleWrapper>
           {childMenus ? (
             <CaretIcon
               size={20}
-              dir={isOpen() ? 'down' : RV_RevFloat}
+              dir={isOpen ? 'down' : RV_RevFloat}
               onClick={handleDropdown}
             />
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
           <Styled.MenuTitle
-            className={C_WHITE}
             onClick={handleDropdown}
             as={Link}
             to={`/classes/${id}`}>
@@ -85,7 +83,7 @@ const ReadableBranch = (props) => {
       {childMenus && (
         <ReadableSubBranches
           parentID={id}
-          isOpen={isOpen()}
+          isOpen={isOpen}
           menuList={childMenus}
         />
       )}

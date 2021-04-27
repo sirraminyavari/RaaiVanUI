@@ -9,7 +9,6 @@ import { WindowContext } from 'context/WindowProvider';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { C_WHITE } from 'constant/Colors';
 
 const SidebarSettingContent = () => {
   const dispatch = useDispatch();
@@ -36,7 +35,6 @@ const SidebarSettingContent = () => {
       {panels.map((panel, key) => {
         return (
           <Styled.PanelWrapper
-            className={`${C_WHITE} BorderRadius4`}
             as={Link}
             to={`/configuration/${panel.URL}`}
             key={key}>

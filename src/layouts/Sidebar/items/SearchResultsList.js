@@ -1,14 +1,13 @@
 /**
  * Renders a list of searched items in sidebar.
  */
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
-
-const { GlobalUtilities } = window;
+import { WindowContext } from 'context/WindowProvider';
 
 const selectNodeTypes = createSelector(
   (state) => state.sidebarItems,
@@ -23,6 +22,8 @@ const selectSearchText = createSelector(
 const SearchResultsList = () => {
   const nodeTypes = useSelector(selectNodeTypes);
   const searchText = useSelector(selectSearchText);
+
+  const { GlobalUtilities } = useContext(WindowContext);
 
   return (
     <Styled.MenuTreeContainer>

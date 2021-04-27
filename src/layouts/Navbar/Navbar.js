@@ -18,7 +18,7 @@ import {
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
 } from 'constant/constants';
-import { TBG_WARM } from 'constant/Colors';
+import { BG_WHITE, C_WHITE } from 'constant/Colors';
 
 const NavWideScreenMenu = lazy(() =>
   import(
@@ -83,7 +83,7 @@ const Navbar = () => {
   };
 
   return (
-    <Styled.NavbarContainer className={TBG_WARM} isMobile={isMobileScreen}>
+    <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
         {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
       </Suspense>
@@ -97,17 +97,17 @@ const Navbar = () => {
         ) : (
           <SearchIcon
             size={30}
-            color="#fff"
+            className={C_WHITE}
             style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
             onClick={handleShowSearch}
           />
         )}
         <PopupMenu
           arrowClass="no-arrow"
+          menuClass={BG_WHITE}
           menuStyle={`
             border: 0;
             margin: 0.5rem 0.15rem;
-            background-color: #fff;
             box-shadow: 0 0 0.3rem #333;
           `}
           trigger="click">

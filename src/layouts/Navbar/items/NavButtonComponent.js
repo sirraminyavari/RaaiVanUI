@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
+import { TBO_WARM, BG_RED } from 'constant/Colors';
 
 /**
  * @typedef BTNType
@@ -47,10 +48,9 @@ const NavButtonComponent = (props) => {
         {badge && (
           <Styled.BadgeWrapper>
             <Badge
-              style={{ borderWidth: '0.1rem' }}
+              style={{ borderWidth: '0.15rem' }}
               value={badge}
-              color="#e2234f"
-              className="rv-warm-border"
+              className={`${TBO_WARM} ${BG_RED}`}
             />
           </Styled.BadgeWrapper>
         )}

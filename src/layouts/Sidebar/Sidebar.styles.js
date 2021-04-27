@@ -3,6 +3,18 @@ import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
+import {
+  TBO_WARM,
+  TC_DISTANT,
+  C_WHITE,
+  TBO_DEFAULT,
+  BO_GRAY_DARK,
+  C_RED,
+  BO_GRAY,
+  TBG_WARM,
+  C_GRAY,
+  TBG_VERYWARM,
+} from 'constant/Colors';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -17,7 +29,7 @@ const FlexCenter = css`
   place-items: center;
 `;
 
-export const TitleText = styled.span`
+export const TitleText = styled.span.attrs({ className: C_WHITE })`
   margin: 0.5rem;
   text-transform: capitalize;
 `;
@@ -26,7 +38,9 @@ export const CenterIcon = styled.div`
   ${FlexCenter}
 `;
 
-export const SidebarContainer = withTheme(styled.div`
+export const SidebarContainer = withTheme(styled.div.attrs({
+  className: `${TBG_VERYWARM} ${C_WHITE}`,
+})`
   height: 100%;
   width: ${(props) =>
     props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
@@ -97,8 +111,14 @@ export const SidebarTitle = styled.div`
   height: 3.7rem;
 `;
 
-export const SearchWrapper = styled.div`
-  border-bottom: 1px solid #707070;
+export const SearchWrapper = styled.div.attrs({
+  className: BO_GRAY,
+})`
+  border-width: 1px;
+  border-style: solid;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
   margin-bottom: 1rem;
   padding: 0.3rem;
   position: relative;
@@ -198,24 +218,24 @@ export const FooterTitle = withTheme(styled.span`
     props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
 
-export const MenuContainer = styled.div`
+export const MenuContainer = styled.div.attrs((props) => ({
+  className: `BorderRadius4 ${props.isOpen ? TBO_DEFAULT : BO_GRAY_DARK}`,
+}))`
   ${FlexBetween}
-  border: 1px solid #222;
+  border-width: 1px;
+  border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
   background-color: ${({ isDragging, isOpen }) =>
     isDragging ? '#2B388F' : isOpen ? 'rgb(43,123,228, 0.2)' : 'inherit'};
-  border-color: ${({ isOpen }) => (isOpen ? '#2b7be4' : '#222')};
 
   &:hover {
     background: rgb(43, 123, 228, 0.2);
-    border: ${({ isOpen }) => (isOpen ? '1px solid #2b7be4' : 'none')};
+    border: ${({ isOpen }) => (isOpen ? 'initial' : 'none')};
   }
 
-  //TODO: add on hover color class.
   &:hover > div > div: nth-child(1) {
-    color: #e2234f;
     display: revert !important;
   }
 `;
@@ -229,7 +249,7 @@ export const SubMenuTitleWrapper = styled.span`
   margin: 0 0.4rem;
 `;
 
-export const MenuTitle = styled.span`
+export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
@@ -240,7 +260,7 @@ export const MenuItemImage = styled.img`
   max-width: 1.8rem;
   max-height: 1.8rem;
   border-radius: 50%;
-  border: 0.12rem solid #fff;
+  border: 0.12rem solid;
   overflow: hidden;
 `;
 
@@ -261,7 +281,9 @@ export const SubMenuContainer = styled.div`
 
 //! This solution used because of conflict with DnD props passing down to styled component.
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
-const DIV = styled.div``;
+const DIV = styled.div.attrs({
+  className: `${C_WHITE} BorderRadius4`,
+})``;
 
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
@@ -277,14 +299,16 @@ export const SubMenu = styled(
     background: rgb(43, 123, 228, 0.2);
   }
 
-  //TODO: add on hover color class.
-  &:hover > div > div:first-child {
-    color: #e2234f;
-    display: revert !important;
-  }
+  //! Child classes style
+  // &:hover > div > div:first-child {
+  //   color: #e2234f;
+  //   display: revert !important;
+  // }
 `;
 
-export const ListItemWrapper = styled.div`
+export const ListItemWrapper = styled.div.attrs({
+  className: C_WHITE,
+})`
   ${FlexBetween}
 `;
 
@@ -293,7 +317,7 @@ export const DragIconWrapper = styled.div`
   cursor: row-resize !important;
 `;
 
-export const TrashIconWrapper = styled.div`
+export const TrashIconWrapper = styled.div.attrs({ className: C_RED })`
   cursor: pointer;
   margin: 0 0.3rem;
   display: none;
@@ -317,7 +341,9 @@ export const SettingWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const PanelWrapper = styled.div`
+export const PanelWrapper = styled.div.attrs({
+  className: `${C_WHITE} BorderRadius4`,
+})`
   ${FlexCenter}
   margin: 0.5rem 0;
   margin-${RV_Float}: 0.5rem;
@@ -353,13 +379,17 @@ const arrowCss = css`
   font-size: 2.5rem;
 `;
 
-export const Up = styled.div`
+export const Up = styled.div.attrs((props) => ({
+  className: props.isUp ? C_GRAY : C_WHITE,
+}))`
   ${arrowCss}
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0;
 `;
 
-export const Down = styled.div`
+export const Down = styled.div.attrs((props) => ({
+  className: props.isDown ? C_GRAY : C_WHITE,
+}))`
   ${arrowCss}
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: -20px;
@@ -399,12 +429,10 @@ export const UnderMenuContainer = styled.div`
   padding: 0 0.3rem 3rem 0.3rem;
 `;
 
-export const FilterIconWrapper = styled.div`
+export const FilterIconWrapper = styled.div.attrs({ className: TC_DISTANT })`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
-  //TODO: new color.
-  color: #bac9dc;
 `;
 
 export const CancelIconWrapper = styled.div`
@@ -430,11 +458,12 @@ const getHighlightCss = ({ isMatch }) => {
     : null;
 };
 
-export const HighlightedText = styled.span`
+export const HighlightedText = styled.span.attrs((props) => ({
+  className: props.isMatch && TBG_WARM,
+}))`
   ${getHighlightCss}
 `;
 
-export const Divider = styled.hr`
-  border-color: #2b388f;
+export const Divider = styled.hr.attrs({ className: TBO_WARM })`
   margin: 1rem 0;
 `;

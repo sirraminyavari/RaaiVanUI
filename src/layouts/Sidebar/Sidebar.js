@@ -10,7 +10,6 @@ import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
-import { TBG_VERYWARM, C_WHITE } from 'constant/Colors';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
@@ -46,7 +45,7 @@ const Sidebar = () => {
   const isManageContent = sidebarContent === 'manage';
 
   return (
-    <Styled.SidebarContainer className={`${TBG_VERYWARM} ${C_WHITE}`}>
+    <Styled.SidebarContainer>
       <SidebarHeader />
       <Styled.ContentWrapper isManage={isManageContent}>
         <Suspense fallback={<LogoLoader size={10} />}>

@@ -4,6 +4,7 @@
 import { Link } from 'react-router-dom';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
+import { TC_DEFAULT } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -22,7 +23,7 @@ const NavButtonActions = (props) => {
       {actions.map((action) => {
         return (
           <Styled.ButtonAction as={Link} to={action.linkTo} key={action.id}>
-            {NavbarIcons[action.icon]({ color: '#2B7BE4', size: 20 })}
+            {NavbarIcons[action.icon]({ className: TC_DEFAULT, size: 20 })}
             <Styled.ActionTitle>{action.title}</Styled.ActionTitle>
           </Styled.ButtonAction>
         );

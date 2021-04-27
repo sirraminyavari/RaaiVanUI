@@ -2,10 +2,13 @@ import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import Input from 'components/Inputs/Input';
+import { TBG_WARM } from 'constant/Colors';
 
 const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
 
-export const NavbarContainer = withTheme(styled.div`
+export const NavbarContainer = withTheme(styled.div.attrs({
+  className: TBG_WARM,
+})`
   width: ${({ theme, isMobile }) =>
     `calc(100% - ${
       !isMobile

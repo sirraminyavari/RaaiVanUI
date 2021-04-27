@@ -3,7 +3,6 @@
  */
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { TBG_WARM, C_WHITE } from 'constant/Colors';
 import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 
@@ -16,10 +15,7 @@ const getHighlightedText = (text, highlight) => {
       {parts.map((part, index) => {
         let isMatch = part.toLowerCase() === highlight.toLowerCase();
         return (
-          <Styled.HighlightedText
-            key={index}
-            className={isMatch ? TBG_WARM : null}
-            isMatch={isMatch}>
+          <Styled.HighlightedText key={index} isMatch={isMatch}>
             {part}
           </Styled.HighlightedText>
         );
@@ -36,7 +32,7 @@ const SearchResultItem = ({ node, searchText }) => {
       as={Link}
       to={`/classes/${NodeTypeID}`}
       key={NodeTypeID}>
-      <Styled.MenuTitle className={C_WHITE}>
+      <Styled.MenuTitle>
         <Styled.MenuItemImage src={IconURL} alt="menu-icon" />
         <Styled.HighlightedTitle>
           {getHighlightedText(decode(TypeName), searchText)}

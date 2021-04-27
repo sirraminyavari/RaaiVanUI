@@ -8,7 +8,6 @@ import * as Styled from './Badge.styles';
  * @typedef PropType
  * @type {Object}
  * @property {nubmer} value - The value of the badge.
- * @property {string} color - The background color of the badge.
  * @property {boolean} withBorder - The border indicator.
  */
 
@@ -22,7 +21,7 @@ const Badge = (props) => {
   const srtValue = value + '';
   const valLength = srtValue.length;
   return (
-    <Styled.BadgeWrapper length={valLength} color={color} {...rest}>
+    <Styled.BadgeWrapper length={valLength} {...rest}>
       {valLength < 3 ? srtValue : '+99'}
     </Styled.BadgeWrapper>
   );
@@ -30,7 +29,6 @@ const Badge = (props) => {
 
 Badge.propTypes = {
   value: PropTypes.number,
-  color: PropTypes.string,
   withBorder: PropTypes.bool,
 };
 
