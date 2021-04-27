@@ -40,24 +40,27 @@ const right = keyframes`
   100% {right: -1%}
 `;
 export const Container = styled.div`
-  display: flex;
+  position: relative;
   width: 100%;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
 `;
-export const DomainsList = styled.div`
-  max-height: ${({ dropedDown }) => (dropedDown ? 'auto' : 'auto')};
-  transition: max-height 0.5s, display 0.5s;
+export const ItemList = styled.div`
+  max-height: auto;
+  transition: max-height 0.5s, display 0.5s, opacity 0.5s;
   flex-direction: column;
   position: absolute;
-  top: 4rem;
+  top: 3rem;
+  opacity: ${({ dropedDown }) => (dropedDown ? '1' : '0')};
   width: 100%;
   display: flex;
   z-index: 1;
   border: ${({ dropedDown }) => (dropedDown ? '0.5px' : '0px')} solid #bac9dc;
-  border-bottom-left-radius: 0.3rem;
+  border-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   border-top-width: 0px;
   background-color: white;
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
 export const ListItem = styled.div`
@@ -79,25 +82,35 @@ export const DropDownButton = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0.75rem;
-  border: ${({ error }) => (error ? '0.5px solid red' : '0.5px solid #bac9dc')};
-  background: #ffffff 0% 0% no-repeat padding-box;
-  border-radius: 0.3rem;
-  margin-top: 1.5rem;
+  background: #f3f7fd 0% 0% no-repeat padding-box;
+  border-radius: 0.5rem;
+
   width: 100%;
   align-items: center;
+`;
+export const Divider = styled.div`
+  width: 0.1px;
+  height: 100%;
+  background-color: white;
 `;
 export const Title = styled.div`
   color: #707070;
 `;
-export const ArrowIcon = styled(ArrowDown)``;
-export const Rotater = styled.div`
+export const ArrowIcon = styled(ArrowDown)`
   transform: ${({ dropedDown }) =>
     dropedDown ? 'rotate(180deg)' : `rotate(0deg)`};
   transition: transform 0.5s;
+`;
+export const Rotater = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
+  background-color: #bac9dc;
+  height: 100%;
+  padding: 0.75rem;
+  border-right: 2px solid white;
+  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
 `;
 export const Error = styled.span`
   color: red;
@@ -122,4 +135,15 @@ export const ShakeAnimate = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+`;
+export const Maintainer = styled.button`
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem;
+  align-items: center;
+  min-height: 2.5rem;
+`;
+export const Label = styled.div`
+  color: ${({ color }) => color};
+  padding-right: 0.7rem;
 `;

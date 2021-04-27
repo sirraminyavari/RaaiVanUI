@@ -2,6 +2,7 @@
  * component style sfor the login screen.
  */
 import styled, { css, keyframes } from 'styled-components';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Clouds from './clouds.png';
 
 const toRight = keyframes`
@@ -64,7 +65,7 @@ export const Box = styled.div`
   position: relative;
   margin-top: 2rem;
   margin-bottom: 3rem;
-  min-height: 50vh;
+  min-height: 20vh;
   min-width: 100%;
   padding-bottom: 1rem;
 `;
@@ -76,7 +77,8 @@ export const Center = styled.div`
   justify-content: center;
 `;
 export const Wrapper = styled.div`
-  width: 90%;
+  width: ${() =>
+    DimensionHelper().isTabletOrMobile ? '23.75rem' : '26.75rem'};
 
   div.transition-group {
     position: relative;
