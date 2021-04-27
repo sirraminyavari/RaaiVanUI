@@ -9,7 +9,7 @@ import ManageButton from './ManageButton';
 import SaveButton from './SaveButton';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { createSelector } from 'reselect';
-import { C_RED } from 'constant/Colors';
+import { C_RED, TC_DEFAULT } from 'constant/Colors';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -44,8 +44,7 @@ const SidebarFooter = () => {
           <CirclePlusIcon
             onClick={handleOnClick}
             size={30}
-            color="#2B7BE4"
-            className={isCreatingNode && C_RED}
+            className={isCreatingNode ? C_RED : TC_DEFAULT}
           />
         </Styled.PlusIconWrapper>
       )}
