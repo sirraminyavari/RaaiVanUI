@@ -106,7 +106,7 @@ const AnimatedDropDownList = ({
           dropedDown={dropedDown}
           onClick={onClick}
           style={{ ...button }}>
-          <ArrowIcon color={'#2B7BE4'} dropedDown={dropedDown} />
+          <ArrowIcon className="rv-distant" dropedDown={dropedDown} />
         </Rotater>
       </DropDownButton>
       {renderList()}

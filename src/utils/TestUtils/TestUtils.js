@@ -1,33 +1,16 @@
 import { render } from '@testing-library/react';
-import { WindowContext } from 'context/WindowProvider';
 import React from 'react';
-import { GlobalUtilities as Global } from './GlobalUtilities';
-import { RVDic as dic } from './fa';
+import { BrowserRouter as Router } from 'react-router-dom';
+import StoreProvider from 'store/StoreProvider';
 
 const AllTheProviders = ({ children }) => {
-  global.GlobalUtilities = Global;
-  global.RVDic = dic;
-
-  const {
-    RVGlobal,
-    RV_RTL,
-    RV_Float,
-    RV_RevFloat,
-    RVDic,
-    GlobalUtilities,
-  } = global;
+  require('./GlobalUtilities');
+  require('../../../public/load/scripts/jQuery/jquery.js');
+  // require('http://185.239.107.180/api/rv/language_dictionary');
   return (
-    <WindowContext.Provider
-      value={{
-        RVGlobal,
-        GlobalUtilities,
-        RV_RTL,
-        RV_Float,
-        RV_RevFloat,
-        RVDic,
-      }}>
-      {children}
-    </WindowContext.Provider>
+    <StoreProvider>
+      <Router>{children}</Router>
+    </StoreProvider>
   );
 };
 
