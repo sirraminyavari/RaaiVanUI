@@ -11,7 +11,6 @@ import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { useMediaQuery } from 'react-responsive';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
-import { TBG_VERYWARM } from 'constant/Colors';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
@@ -52,7 +51,7 @@ const SidebarHeader = () => {
   }, [isMobileNav, dispatch]);
 
   return (
-    <Styled.SidebarHeader className={TBG_VERYWARM}>
+    <Styled.SidebarHeader>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img
@@ -63,11 +62,7 @@ const SidebarHeader = () => {
         </Link>
       )}
       <Styled.ToggleArrow onClick={toggleDrawer}>
-        <ToggleIcon
-          dir={isSidebarOpen ? RV_Float : RV_RevFloat}
-          size={25}
-          color="#fff"
-        />
+        <ToggleIcon dir={isSidebarOpen ? RV_Float : RV_RevFloat} size={25} />
       </Styled.ToggleArrow>
     </Styled.SidebarHeader>
   );

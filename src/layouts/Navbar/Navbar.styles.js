@@ -2,10 +2,13 @@ import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import Input from 'components/Inputs/Input';
+import { TBG_WARM, TC_DEFAULT, TC_WARM, C_GRAY } from 'constant/Colors';
 
 const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
 
-export const NavbarContainer = withTheme(styled.div`
+export const NavbarContainer = withTheme(styled.div.attrs({
+  className: TBG_WARM,
+})`
   width: ${({ theme, isMobile }) =>
     `calc(100% - ${
       !isMobile
@@ -131,15 +134,116 @@ export const SearchIcon = styled.div`
   color: #ddd;
 `;
 
-export const ButtonActionsContainer = styled.div`
+export const FixActionsContainer = styled.div`
   width: 12rem;
   height: auto;
   padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
-  background-color: #fff;
+  background-color: #fcfcfd;
+  border-radius: 0.6rem;
+  box-shadow: 1px 3px 20px #2b7be44d;
+`;
+
+export const AlertActionsContainer = styled.div`
+  width: 23rem;
+  height: auto;
+  min-height: 3rem;
+  padding: 1rem;
+  padding-bottom: 0;
+  margin: -0.7rem 0;
+  overflow: hidden;
+  background-color: #fcfcfd;
+  border-radius: 0.6rem;
+  box-shadow: 1px 3px 20px #2b7be44d;
+`;
+
+export const AlertListContainer = styled.div`
+  width: 100%;
+  height: auto;
+  margin: 0;
+  margin-bottom: 1.7rem;
+  padding: 0;
+`;
+
+export const EmptyAlert = styled.div`
+  text-align: center;
+`;
+
+export const AlertItemContainer = styled.div`
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  max-height: 6rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 0.5px solid #bac9dc;
   border-radius: 0.5rem;
-  box-shadow: 0px 1px 15px #9e9fff;
+`;
+
+export const AlertContentWrapper = styled.div`
+  height: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-right: 1rem;
+  padding: 0.3rem 0;
+`;
+
+export const AlertMessageWrapper = styled.div.attrs({
+  className: TC_WARM,
+})`
+  max-height: 2.2rem;
+  overflow: hidden;
+`;
+
+export const AlertTimeWrapper = styled.div.attrs({
+  className: C_GRAY,
+})`
+  font-size: 0.7rem;
+`;
+
+export const AlertFooterContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  bottom: 1rem;
+`;
+
+export const AlertFooterCheckWrapper = styled.div.attrs({
+  className: TC_DEFAULT,
+})`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+export const AlertFooterNavigation = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AlertFooterArrowWrapper = styled.div.attrs({
+  className: TC_DEFAULT,
+})`
+  min-width: 1.4rem;
+  padding: 0.1rem;
+  margin: 0 0.2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e6f4f1;
+  cursor: pointer;
 `;
 
 export const ButtonAction = styled.div`

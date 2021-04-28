@@ -1,16 +1,18 @@
 /**
  * Renders a list of items under the sidebar menu,
  */
+import { useContext } from 'react';
 import * as Styled from '../Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import ContactIcon from 'components/Icons/ContactIcon/Contact';
 import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';
-
-const { RVDic } = window;
+import { WindowContext } from 'context/WindowProvider';
 
 const UnderMenuList = () => {
+  const { RVDic } = useContext(WindowContext);
+
   return (
     <Styled.UnderMenuContainer>
       <ListItem title="موضوعات نشان شده" icon={BookmarkIcon} badge={67} />

@@ -7,7 +7,7 @@ import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
-const NavSearchInput = (props) => {
+const SearchInput = (props) => {
   const history = useHistory();
   const [searchText, setSearchText] = useState('');
 
@@ -43,11 +43,11 @@ const NavSearchInput = (props) => {
         type="search"
         {...props}>
         <Styled.SearchWrapper as={Link} to={searchPath}>
-          <SearchIcon size={22} color="#BAC9DC" onClick={handleClearSearch} />
+          <SearchIcon size={22} color="#bac9dc" onClick={handleClearSearch} />
         </Styled.SearchWrapper>
       </Styled.SearchInput>
     </Styled.SearchContainer>
   );
 };
 
-export default NavSearchInput;
+export default SearchInput;

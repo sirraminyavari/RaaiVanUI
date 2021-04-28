@@ -64,7 +64,7 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
       onDragEnd={handleOnDragEnd}>
       {({ isDragging, dragHandleProps, item }) => {
         return (
-          <Styled.SubMenu className="BorderRadius4" isDragging={isDragging}>
+          <Styled.SubMenu isDragging={isDragging}>
             <div style={{ display: 'flex' }}>
               {item.IconName && SidebarIcons[item.IconName]({ size: 20 })}
               {item.IconURL && (

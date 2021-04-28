@@ -6,7 +6,7 @@ export const AvatarContainer = styled.div`
   border-radius: 50%;
   overflow: hidden;
   color: #fff;
-  border: 0.2rem solid #fff;
+  border: 0.2rem solid ${({ color }) => (!!color ? color : '#fff')};
 `;
 
 export const AvatarImage = styled.img`

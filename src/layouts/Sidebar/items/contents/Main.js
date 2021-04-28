@@ -14,7 +14,6 @@ import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import { getURL } from 'helpers/helpers';
 import * as Styled from '../../Sidebar.styles';
-import { C_WHITE } from 'constant/Colors';
 
 const selectShowSearchResults = createSelector(
   (state) => state.sidebarItems,
@@ -50,7 +49,7 @@ const SidebarMainContent = () => {
   return (
     <>
       <Styled.SidebarTitle>
-        <Styled.TitleText className={C_WHITE} as={Link} to={getURL('Classes')}>
+        <Styled.TitleText as={Link} to={getURL('Classes')}>
           {selectedTeam}
         </Styled.TitleText>
         <Styled.SettingWrapper onClick={handleOnClick}>

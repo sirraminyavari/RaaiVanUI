@@ -12,11 +12,10 @@ import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import TickIcon from 'components/Icons/TickIcon/Tick';
+import CheckIcon from 'components/Icons/CheckIcons/Check';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import H5 from 'components/TypoGraphy/H5';
 import Confirm from 'components/Modal/Confirm';
-import { C_WHITE } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -83,7 +82,7 @@ const EditableBranch = (props) => {
   const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
 
   //! Is true, If an item's sub-menu is open.
-  const isOpen = () => openMenuID.includes(id);
+  const isOpen = openMenuID.includes(id);
 
   const handleOnTrashClick = (e) => {
     e.stopPropagation();
@@ -136,16 +135,13 @@ const EditableBranch = (props) => {
         onClose={handleOnDeleteCancel}>
         <H5>{confirm.message}</H5>
       </Confirm>
-      <Styled.MenuContainer
-        isOpen={isOpen()}
-        className="BorderRadius4"
-        isDragging={isDragging}>
+      <Styled.MenuContainer isOpen={isOpen} isDragging={isDragging}>
         <Styled.MenuTitleWrapper>
           {childMenus ? (
             <CaretIcon
               onClick={handleDropdown}
               size={20}
-              dir={isOpen() ? 'down' : RV_RevFloat}
+              dir={isOpen ? 'down' : RV_RevFloat}
             />
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
@@ -161,7 +157,7 @@ const EditableBranch = (props) => {
         <Styled.ActionsWrapper>
           {item.creating ? (
             <Styled.TickIconWrapper onClick={handleOnTickClick}>
-              <TickIcon size={20} className={C_WHITE} />
+              <CheckIcon size={20} />
             </Styled.TickIconWrapper>
           ) : (
             <>
@@ -178,7 +174,7 @@ const EditableBranch = (props) => {
       {childMenus && (
         <EditableSubBranch
           parentID={id}
-          isOpen={isOpen()}
+          isOpen={isOpen}
           menuList={childMenus}
         />
       )}

@@ -10,6 +10,7 @@ import * as Styled from './Avatar.styles';
  * @type {Object}
  * @property {number} [radius] - The radius of the avatar's circule.
  * @property {string} userImage - User's image for avatar.
+ * @property {string} color - The color of Avatar.
  */
 
 /**
@@ -20,7 +21,7 @@ import * as Styled from './Avatar.styles';
 const Avatar = (props) => {
   const { radius, userImage, color, ...rest } = props;
   return (
-    <Styled.AvatarContainer {...rest}>
+    <Styled.AvatarContainer color={color} {...rest}>
       {userImage ? (
         <Styled.AvatarImage
           data-testid="avatar-image"
@@ -39,6 +40,7 @@ Avatar.propTypes = {
   radius: PropTypes.number,
   userImage: PropTypes.string,
   linkTo: PropTypes.string,
+  color: PropTypes.string,
 };
 
 Avatar.defaultProps = {
