@@ -5,7 +5,7 @@ import { lazy, Suspense, memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
-import NavbarSearchInput from './items/NavSearchInput';
+import NavbarSearchInput from './items/SearchInput';
 import * as Styled from './Navbar.styles';
 import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
@@ -20,14 +20,14 @@ import {
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 
-const NavWideScreenMenu = lazy(() =>
+const WideScreenMenu = lazy(() =>
   import(
-    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './items/NavWideScreenMenu'
+    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './items/ScreenMenu'
   )
 );
-const NavMobileMenu = lazy(() =>
+const MobileMenu = lazy(() =>
   import(
-    /* webpackChunkName: "nav-mobile-menu-component"*/ './items/NavMobileMenu'
+    /* webpackChunkName: "nav-mobile-menu-component"*/ './items/MobileMenu'
   )
 );
 
@@ -85,7 +85,7 @@ const Navbar = () => {
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
-        {showMobileNav() ? <NavMobileMenu /> : <NavWideScreenMenu />}
+        {showMobileNav() ? <MobileMenu /> : <WideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (

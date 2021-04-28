@@ -12,7 +12,7 @@ import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import TickIcon from 'components/Icons/TickIcon/Tick';
+import CheckIcon from 'components/Icons/CheckIcons/Check';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import H5 from 'components/TypoGraphy/H5';
 import Confirm from 'components/Modal/Confirm';
@@ -157,7 +157,7 @@ const EditableBranch = (props) => {
         <Styled.ActionsWrapper>
           {item.creating ? (
             <Styled.TickIconWrapper onClick={handleOnTickClick}>
-              <TickIcon size={20} />
+              <CheckIcon size={20} />
             </Styled.TickIconWrapper>
           ) : (
             <>

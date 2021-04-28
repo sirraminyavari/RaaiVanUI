@@ -9,18 +9,24 @@ import * as Styled from '../Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
 import { TBO_WARM, BG_RED } from 'constant/Colors';
+import { createSelector } from 'reselect';
+
+const selectNavAlerts = createSelector(
+  (state) => state.navbarAlert,
+  (navbarAlert) => navbarAlert.alertsList
+);
 
 /**
  * @typedef BTNType
  * @property {string} title -The title of the button.
  * @property {string} icon -The icon name for the button.
  * @property {string} linkTo -The path that button is linked to.
- * @property {Object[]} actions -The menu list for buttons that are not link to another page.
  */
 
 /**
  * @typedef PropType
  * @property {number} badge -The badge next to icon.
+ * @property {boolean} withArrow -A flag that determines if a navbar item should have arrow or not.
  * @property {BTNType} btnProps
  */
 
@@ -29,18 +35,18 @@ import { TBO_WARM, BG_RED } from 'constant/Colors';
  * @component
  * @param {PropType} props
  */
-const NavButtonComponent = (props) => {
+const MenuItem = (props) => {
   const { activePath } = useSelector((store) => store.theme);
-  const { title, icon, linkTo, actions } = props.btnProps;
-  const { badge } = props;
+  const alerts = useSelector(selectNavAlerts);
+  const { title, icon, linkTo } = props.btnProps;
+  const { badge, withArrow } = props;
 
-  const isActive = () => {
-    return linkTo === activePath;
-  };
+  const isActive = linkTo === activePath;
 
   return (
     <Styled.ButtonContainer
-      isActive={isActive()}
+      style={{ cursor: withArrow ? '' : 'pointer' }}
+      isActive={isActive}
       forwardedAs={linkTo ? Link : 'div'}
       to={linkTo}>
       <Styled.ButtonIcon>
@@ -49,7 +55,7 @@ const NavButtonComponent = (props) => {
           <Styled.BadgeWrapper>
             <Badge
               style={{ borderWidth: '0.15rem' }}
-              value={badge}
+              value={alerts.length}
               className={`${TBO_WARM} ${BG_RED}`}
             />
           </Styled.BadgeWrapper>
@@ -57,14 +63,15 @@ const NavButtonComponent = (props) => {
       </Styled.ButtonIcon>
       <Styled.ButtonTitle>
         {title}
-        {actions && <Styled.Arrow />}
+        {!!withArrow && <Styled.Arrow />}
       </Styled.ButtonTitle>
     </Styled.ButtonContainer>
   );
 };
 
-NavButtonComponent.propTypes = {
+MenuItem.propTypes = {
   badge: PropTypes.number,
+  withArrow: PropTypes.bool,
   btnProps: PropTypes.shape({
     title: PropTypes.string,
     icon: PropTypes.string,
@@ -73,6 +80,10 @@ NavButtonComponent.propTypes = {
   }),
 };
 
-NavButtonComponent.displayName = 'NavButtonComponent';
+MenuItem.defaultProps = {
+  withArrow: false,
+};
 
-export default memo(NavButtonComponent);
+MenuItem.displayName = 'NavButtonComponent';
+
+export default memo(MenuItem);

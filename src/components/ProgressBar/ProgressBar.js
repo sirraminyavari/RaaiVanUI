@@ -1,7 +1,7 @@
 /**
  * Renders a linear progress bar.
  */
-import TickIcon from 'components/Icons/TickIcon/Tick';
+import CheckIcon from 'components/Icons/CheckIcons/Check';
 import CancelIcon from 'components/Icons/CancelCircle';
 import * as Styled from './ProgressBar.styles';
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ const ProgressBar = (props) => {
     <Styled.ProgressBarContainer>
       {label}
       <Styled.ProgressBarWrapper>
-        {+progress === 100 && <TickIcon size={20} />}
+        {+progress === 100 && <CheckIcon size={20} />}
         {/* {![0, 100].includes(+progress) && (
           <CancelIcon
             className={C_RED}

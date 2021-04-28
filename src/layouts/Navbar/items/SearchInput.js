@@ -7,7 +7,7 @@ import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 
-const NavSearchInput = (props) => {
+const SearchInput = (props) => {
   const history = useHistory();
   const [searchText, setSearchText] = useState('');
 
@@ -50,4 +50,4 @@ const NavSearchInput = (props) => {
   );
 };
 
-export default NavSearchInput;
+export default SearchInput;

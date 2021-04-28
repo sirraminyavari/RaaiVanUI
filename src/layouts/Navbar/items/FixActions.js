@@ -19,16 +19,16 @@ const NavButtonActions = (props) => {
   const { actions } = props;
 
   return (
-    <Styled.ButtonActionsContainer>
+    <Styled.FixActionsContainer>
       {actions.map((action) => {
         return (
-          <Styled.ButtonAction as={Link} to={action.linkTo} key={action.id}>
+          <Styled.ButtonAction as={Link} to={action.linkTo} key={action.index}>
             {NavbarIcons[action.icon]({ className: TC_DEFAULT, size: 20 })}
             <Styled.ActionTitle>{action.title}</Styled.ActionTitle>
           </Styled.ButtonAction>
         );
       })}
-    </Styled.ButtonActionsContainer>
+    </Styled.FixActionsContainer>
   );
 };
 

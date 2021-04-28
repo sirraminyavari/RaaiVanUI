@@ -1,6 +1,6 @@
 import EditableCell from 'components/CustomTable/EditableCell';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import AcceptIcon from 'components/Icons/TickIcon/Tick';
+import AcceptIcon from 'components/Icons/CheckIcons/Check';
 import RejectIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Input from 'components/Inputs/Input';
 
