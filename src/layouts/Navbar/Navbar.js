@@ -108,7 +108,8 @@ const Navbar = () => {
           menuStyle={`
             border: 0;
             margin: 0.5rem 0.15rem;
-            box-shadow: 0 0 0.3rem #333;
+            box-shadow: 1px 3px 20px #2B7BE44D;
+            border-radius: 0.6rem;
           `}
           trigger="click">
           <div>

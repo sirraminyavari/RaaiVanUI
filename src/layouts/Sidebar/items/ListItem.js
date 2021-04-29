@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Sidebar.styles';
 import Badge from 'components/Badge/Badge';
+import { TBG_DEFAULT } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -30,7 +31,7 @@ const ListItem = (props) => {
       </Styled.CenterIcon>
       {badge && (
         <Badge
-          color="#2b7be4"
+          className={TBG_DEFAULT}
           value={badge}
           style={{
             fontSize: '0.75rem',

@@ -17,7 +17,7 @@ import * as Styled from './Badge.styles';
  * @param {PropType} props -Props that pass to badge.
  */
 const Badge = (props) => {
-  const { value, color, ...rest } = props;
+  const { value, ...rest } = props;
   const srtValue = value + '';
   const valLength = srtValue.length;
   return (

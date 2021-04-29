@@ -6,6 +6,7 @@ import * as Styled from '../Navbar.styles';
 import MenuItem from './MenuItem';
 import NavButtonsList from './buttonsList';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
+
 const FixActions = lazy(() =>
   import(/* webpackChunkName: "nav-fix-actions"*/ './FixActions')
 );
@@ -17,9 +18,9 @@ const WideScreenMenu = () => {
   return (
     <Styled.WideScreenMenu>
       {NavButtonsList.map((btn) => {
-        const { actions, badge } = btn;
+        const { actions, badge, index } = btn;
         return (
-          <Fragment key={btn.id}>
+          <Fragment key={index}>
             {actions ? (
               <PopupMenu
                 menuStyle={`border: 0; background-color: transparent;`}

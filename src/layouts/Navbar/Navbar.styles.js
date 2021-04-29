@@ -2,7 +2,16 @@ import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
 import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
 import Input from 'components/Inputs/Input';
-import { TBG_WARM, TC_DEFAULT, TC_WARM, C_GRAY } from 'constant/Colors';
+import {
+  TBG_WARM,
+  TC_DEFAULT,
+  TC_WARM,
+  C_GRAY,
+  BG_GRAY_LIGHT,
+  TBO_DISTANT,
+  C_GRAY_DARK,
+  C_BLACK,
+} from 'constant/Colors';
 
 const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
 
@@ -58,23 +67,25 @@ export const ButtonContainer = styled(({ isActive, ...props }) => (
   justify-content: space-around;
   align-items: center;
   &:hover {
+    // TODO: color class not found
     background-color: #27499f;
   }
   &:hover span {
     transform: rotateX(180deg);
   }
 `;
-
 export const ButtonIcon = styled.div`
   text-align: center;
   position: relative;
   font-size: 1.3rem;
+  // TODO: color class not found
   color: #e6f4f1;
 `;
 
 export const ButtonTitle = styled.div`
   font-size: 0.7rem;
   font-weight: bold;
+  // TODO: color class not found
   color: #e6f4f1;
   opacity: 1;
   position: relative;
@@ -113,7 +124,6 @@ export const SearchInput = styled(Input)`
   border: none;
   border-radius: 0.3rem;
   outline: 0;
-  color: #000;
   height: 2rem;
   padding: 0.1rem 0.6rem;
   width: 14rem;
@@ -134,18 +144,21 @@ export const SearchIcon = styled.div`
   color: #ddd;
 `;
 
-export const FixActionsContainer = styled.div`
+export const FixActionsContainer = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   width: 12rem;
   height: auto;
   padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
-  background-color: #fcfcfd;
   border-radius: 0.6rem;
   box-shadow: 1px 3px 20px #2b7be44d;
 `;
 
-export const AlertActionsContainer = styled.div`
+export const AlertActionsContainer = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   width: 23rem;
   height: auto;
   min-height: 3rem;
@@ -153,7 +166,6 @@ export const AlertActionsContainer = styled.div`
   padding-bottom: 0;
   margin: -0.7rem 0;
   overflow: hidden;
-  background-color: #fcfcfd;
   border-radius: 0.6rem;
   box-shadow: 1px 3px 20px #2b7be44d;
 `;
@@ -170,7 +182,9 @@ export const EmptyAlert = styled.div`
   text-align: center;
 `;
 
-export const AlertItemContainer = styled.div`
+export const AlertItemContainer = styled.div.attrs({
+  className: TBO_DISTANT,
+})`
   width: 100%;
   height: 5rem;
   display: flex;
@@ -179,7 +193,6 @@ export const AlertItemContainer = styled.div`
   max-height: 6rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-  border: 0.5px solid #bac9dc;
   border-radius: 0.5rem;
 `;
 
@@ -242,19 +255,22 @@ export const AlertFooterArrowWrapper = styled.div.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
+  //TODO: substitiute with class bg (not found)
   background-color: #e6f4f1;
   cursor: pointer;
 `;
 
-export const ButtonAction = styled.div`
+export const ButtonAction = styled.div.attrs({
+  className: C_GRAY_DARK,
+})`
   display: flex;
   place-items: center;
-  color: #000;
   border-radius: 0.3rem;
   margin: 0.3rem 0;
   padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
   :hover {
+    //TODO: substitiute with class bg (not found)
     background-color: #f4f8fe;
   }
 `;
@@ -268,19 +284,22 @@ export const NavMenuContainer = styled.div`
   position: relative;
 `;
 
-export const MenuOptionsWrapper = styled.div`
+export const MenuOptionsWrapper = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   height: 12rem;
   width: 17rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  box-shadow: 0px 1px 10px #333;
+  box-shadow: 1px 3px 20px #2b7be44d;
   border-radius: 0.5rem;
-  background-color: #fff;
   margin: -10px;
 `;
 
-export const NavMenuOption = styled.div`
+export const NavMenuOption = styled.div.attrs({
+  className: TC_WARM,
+})`
   width: 33%;
   height: 33%;
   text-align: center;
@@ -288,7 +307,7 @@ export const NavMenuOption = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #000;
+  position: relative;
 `;
 
 export const Arrow = styled.span`
@@ -310,13 +329,14 @@ export const AvatarMenuContainer = styled.div`
   padding: 0rem 0.7rem;
 `;
 
-export const AvatarMenuItem = styled.div`
+export const AvatarMenuItem = styled.div.attrs({
+  className: C_BLACK,
+})`
   display: flex;
   flex-direction: row-reverse;
   justify-content: end;
   align-items: center;
   padding: 0.4rem;
-  color: #000;
   border-radius: 0.4rem;
   cursor: pointer;
 `;

@@ -6,8 +6,8 @@ const { RV_RevFloat } = window;
 const MenuItem = (props) => {
   const {
     icon: Icon,
-    iconColor,
-    textColor,
+    iconClass,
+    textClass,
     linkTo,
     onClickHandler,
     title,
@@ -17,8 +17,10 @@ const MenuItem = (props) => {
       as={linkTo ? Link : 'div'}
       to={linkTo}
       onClick={onClickHandler ?? null}>
-      <Icon size={22} color={iconColor} dir={RV_RevFloat} />
-      <Styled.AvatarMenuTitle color={textColor}>{title}</Styled.AvatarMenuTitle>
+      <Icon size={22} className={iconClass} dir={RV_RevFloat} />
+      <Styled.AvatarMenuTitle className={textClass}>
+        {title}
+      </Styled.AvatarMenuTitle>
     </Styled.AvatarMenuItem>
   );
 };
