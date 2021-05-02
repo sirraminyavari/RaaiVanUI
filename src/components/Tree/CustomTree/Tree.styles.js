@@ -11,6 +11,7 @@ export const TreeContainer = styled.ul`
 
 export const TreeNodeContainer = styled.li`
   padding: 0.5rem 1.5rem;
+  cursor: pointer;
 `;
 
 export const LabelWrapper = styled.div`
@@ -18,8 +19,9 @@ export const LabelWrapper = styled.div`
   justify-content: start;
 `;
 
-export const CaretWrapper = styled.div`
+export const IconWrapper = styled.div`
   display: flex;
   justify-content: start;
+  align-items: center;
   ${({ isVisible }) => (isVisible ? 'transform: rotate(-45deg);' : '')}
 `;

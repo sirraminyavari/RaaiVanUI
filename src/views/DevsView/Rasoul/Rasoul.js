@@ -14,13 +14,19 @@ import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 //! ProgressBar
 import ProgressBar from 'components/ProgressBar/ProgressBar';
 
-//! Tree
-import Tree from 'components/Tree/Tree';
-import treeData from './treeData';
+//! Custom Tree
+import DnDTree from 'components/Tree/CustomTree/DnDTree';
+import { customTreeData } from './treeData';
+
+//! Atlasian Tree
+import AtlasianTree from 'components/Tree/AtlasianTree/AtlasianTree';
 
 //! DnDProvider
 import DnDProvider from 'components/DnDProvider/DnDProvider';
 import dndData from './dndData';
+
+//! Multi Column DnD
+import MultiDnD from 'components/MultiColumnDnD/MultiColumnDnD';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -130,10 +136,15 @@ const RasoulView = () => {
       />
       <Divider title="Custom Progressbar Component" />
       <ProgressBar label="Label" progress={100} />
-      <Divider title="Tree Component" />
-      <Tree data={treeData} />
-      <Divider title="DnDProvider Component" />
-      <DnDProvider
+      <Divider title="Custom Tree Component(broken dnd)" />
+      <DnDTree data={customTreeData} />
+      <Divider title="Atlasian Tree Component(with dnd)" />
+      <AtlasianTree />
+      <Divider title="Multi column dnd" />
+      <MultiDnD />
+
+      {/* <Divider title="DnDProvider Component" /> */}
+      {/* <DnDProvider
         list={dndData}
         droppableId="droppable"
         onDragEnd={(result) => console.log(result)}>
@@ -141,7 +152,7 @@ const RasoulView = () => {
           console.log(isDragging);
           return <h3 {...dragHandleProps}>{item.title}</h3>;
         }}
-      </DnDProvider>
+      </DnDProvider> */}
       <Divider title="End of view" />
     </div>
   );

@@ -1,4 +1,4 @@
-const treeData = [
+export const customTreeData = [
   {
     key: '0',
     label: 'گروه اول',
@@ -48,5 +48,3 @@ const treeData = [
     children: [],
   },
 ];
-
-export default treeData;

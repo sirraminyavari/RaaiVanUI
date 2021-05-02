@@ -2,8 +2,9 @@
   "name": "raaivan-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://185.239.107.180",
+  "proxy": "http://45.82.136.166",
   "dependencies": {
+    "@atlaskit/tree": "^8.2.0",
     "@ckeditor/ckeditor5-react": "^3.0.1",
     "@rasoul678/ckeditor5-custom-balloon-block": "^2.0.0",
     "@reduxjs/toolkit": "^1.5.0",
