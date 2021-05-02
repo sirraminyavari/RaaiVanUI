@@ -16,6 +16,11 @@ const selectNavAlerts = createSelector(
   (navbarAlert) => navbarAlert.alertsList
 );
 
+const selectActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 /**
  * @typedef BTNType
  * @property {string} title -The title of the button.
@@ -25,7 +30,7 @@ const selectNavAlerts = createSelector(
 
 /**
  * @typedef PropType
- * @property {number} badge -The badge next to icon.
+ * @property {boolean} badge -The badge next to icon.
  * @property {boolean} withArrow -A flag that determines if a navbar item should have arrow or not.
  * @property {BTNType} btnProps
  */
@@ -36,12 +41,13 @@ const selectNavAlerts = createSelector(
  * @param {PropType} props
  */
 const MenuItem = (props) => {
-  const { activePath } = useSelector((store) => store.theme);
+  const activePath = useSelector(selectActivePath);
   const alerts = useSelector(selectNavAlerts);
   const { title, icon, linkTo } = props.btnProps;
   const { badge, withArrow } = props;
 
   const isActive = linkTo === activePath;
+  const hasBadge = badge && alerts.length > 0;
 
   return (
     <Styled.ButtonContainer
@@ -51,7 +57,7 @@ const MenuItem = (props) => {
       to={linkTo}>
       <Styled.ButtonIcon>
         {NavbarIcons[icon]()}
-        {badge && (
+        {hasBadge && (
           <Styled.BadgeWrapper>
             <Badge
               style={{ borderWidth: '0.15rem' }}
@@ -70,7 +76,7 @@ const MenuItem = (props) => {
 };
 
 MenuItem.propTypes = {
-  badge: PropTypes.number,
+  badge: PropTypes.bool,
   withArrow: PropTypes.bool,
   btnProps: PropTypes.shape({
     title: PropTypes.string,

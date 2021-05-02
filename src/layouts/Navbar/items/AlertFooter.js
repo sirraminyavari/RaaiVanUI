@@ -10,21 +10,27 @@ const selectCurrentPage = createSelector(
   (navbarAlert) => navbarAlert.currentPage
 );
 
+/**
+ * Renders a footer component for alerts menu.
+ */
 const AlertFooter = () => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const { setNextPage, setPrevPage, setReadAll } = navAlertSlice.actions;
 
+  //! Marks all alerts as read.
   const handleReadAll = () => {
     console.log('mark all as read');
     dispatch(setReadAll());
   };
 
+  //! Sets next alert page.
   const handleNextPage = () => {
     console.log('next page');
     dispatch(setNextPage());
   };
 
+  //! Sets previous alert page.
   const handlePrevPage = () => {
     console.log('previous page');
     dispatch(setPrevPage());

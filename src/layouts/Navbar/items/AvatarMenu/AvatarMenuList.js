@@ -1,7 +1,7 @@
 /**
  * Renders a popup menu for user avatar.
  */
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
@@ -11,11 +11,12 @@ import Checkbox from 'components/Checkbox/Checkbox';
 import Cookie from 'js-cookie';
 import * as Styled from '../../Navbar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
-
-const { RVDic, location } = window;
+import { C_RED } from 'constant/Colors';
+import { WindowContext } from 'context/WindowProvider';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
+  const { RVDic } = useContext(WindowContext);
   const { setSelectedTeam } = themeSlice.actions;
 
   //! Logs user out from application.
@@ -28,21 +29,21 @@ const AvatarMenuList = () => {
     e.target.checked
       ? Cookie.set('rv_lang', 'en')
       : Cookie.set('rv_lang', 'fa');
-    location.reload();
+    window.location.reload();
   };
 
   return (
     <Styled.AvatarMenuContainer>
       {MenuLinkItems.map((item, index) => {
-        const { id, title, linkTo, icon, iconColor, textColor } = item;
+        const { id, title, linkTo, icon, iconClass, textClass } = item;
         return (
           <Fragment key={id}>
             <AvatarMenuItem
               title={title}
               linkTo={linkTo}
               icon={icon}
-              iconColor={iconColor}
-              textColor={textColor}
+              iconClass={iconClass}
+              textClass={textClass}
             />
             {index === 2 && <Styled.Divider />}
           </Fragment>
@@ -53,8 +54,8 @@ const AvatarMenuList = () => {
         title={RVDic.Logout}
         onClickHandler={handleLogout}
         icon={LogoutIcon}
-        iconColor="#E2234F"
-        textColor="#E2234F"
+        iconClass={C_RED}
+        textClass={C_RED}
       />
       {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
         <Checkbox

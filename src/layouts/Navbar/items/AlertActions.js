@@ -24,8 +24,10 @@ const AlertActions = () => {
   const offset = useSelector(selectOffset);
   const perPage = useSelector(selectPerPage);
 
+  //! Chunks alerts list based on current page and per page values.
   const slicedAlerts = alerts.slice(offset, offset + perPage);
 
+  //! Checks if there is any alert to show or not.
   const hasAlert = slicedAlerts.length;
 
   return (
