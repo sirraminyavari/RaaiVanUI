@@ -9,7 +9,8 @@ export const Container = styled.div`
   background-color: white;
   margin: 3px;
   justify-content: space-between;
-  border: 0.05rem solid #bac9dc;
+  border-width: 0.05rem;
+  border-style: solid;
   max-width: 100%;
   width: 100%;
   transition: max-width 0.5s;
@@ -26,7 +27,7 @@ export const RightSide = styled.div`
 export const Divider = styled.div`
   height: 80%;
   width: 0.05rem;
-  background-color: #bac9dc;
+  /* background-color: #bac9dc; */
   /* border: 0.5px solid #bac9dc; */
   opacity: 1;
 `;

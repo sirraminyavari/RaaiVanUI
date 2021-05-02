@@ -11,7 +11,7 @@ const SubjectCreator = ({ firstName, lastName, userProfile }) => {
     <Container>
       <Profile src={userProfile} isSaas={isSaas} />
       {isSaas && (
-        <ProducerName>
+        <ProducerName className="rv-gray">
           {firstName}
           {lastName}
         </ProducerName>
@@ -27,7 +27,7 @@ const Profile = styled.img`
   border-radius: 1.5rem;
 `;
 const ProducerName = styled.div`
-  color: #707070;
+  /* color: #707070; */
   margin-right: 0.5rem;
 `;
 const Container = styled.div`

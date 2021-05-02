@@ -5,10 +5,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SubjectDate = ({ date }) => {
-  return <Date>{date}</Date>;
+  return <Date className="rv-gray">{date}</Date>;
 };
 export default SubjectDate;
 
 const Date = styled.div`
-  color: #707070;
+  /* color: #707070; */
 `;

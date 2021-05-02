@@ -46,7 +46,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-      <Container onClick={onClick}>
+      <Container className="rv-border-distant" onClick={onClick}>
         <RightSide>
           <div>
             <SubjectIcon iconUrl={IconURL} />
@@ -57,7 +57,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
             <SubjectDate date={CreationDate} />
           </div>
         </RightSide>
-        <Divider />
+        <Divider className="rv-bg-color-distant" />
         <LeftSide>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />

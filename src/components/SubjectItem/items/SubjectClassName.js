@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SubjectClassName = ({ className }) => {
-  return <ClassName>{className}</ClassName>;
+  return <ClassName className="rv-default">{className}</ClassName>;
 };
 export default SubjectClassName;
 
@@ -14,7 +14,7 @@ const ClassName = styled.div`
   border-radius: 13px;
   height: 1.5rem;
   border-radius: 0.75rem;
-  color: #2b7be4;
+  /* color: #2b7be4; */
   padding: 0 1rem 0 1rem;
   display: flex;
   align-items: center;

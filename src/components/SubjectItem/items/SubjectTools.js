@@ -18,14 +18,14 @@ const SubjectTools = ({ removable, editable, ...props }) => {
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
           onClick={onEdit}>
-          <EditIcon size={30} color={'#bac9dc'} />
+          <EditIcon className="rv-distant" size={30} />
         </button>
       )}
       {removable && (
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
           onClick={onDelete}>
-          <TrashIcon size={30} color={'#bac9dc'} />
+          <TrashIcon size={30} className="rv-distant" />
         </button>
       )}
       <button
@@ -35,7 +35,7 @@ const SubjectTools = ({ removable, editable, ...props }) => {
           marginLeft: '2.5rem',
         }}
         onClick={onBookmark}>
-        <BookmarkIcon size={30} color={'#bac9dc'} />
+        <BookmarkIcon size={30} className="rv-distant" />
       </button>
     </Tools>
   );

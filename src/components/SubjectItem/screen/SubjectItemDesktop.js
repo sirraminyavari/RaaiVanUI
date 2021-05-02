@@ -47,12 +47,12 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
         onChecked={(value) => onChecked(value, item)}
       />
 
-      <Container onClick={onClick}>
+      <Container className="rv-border-distant" onClick={onClick}>
         <RightSide>
           <SubjectIcon iconUrl={IconURL} />
           <SubjectDate date={CreationDate} />
         </RightSide>
-        <Divider />
+        <Divider className="rv-bg-color-distant" />
         <LeftSide>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />
