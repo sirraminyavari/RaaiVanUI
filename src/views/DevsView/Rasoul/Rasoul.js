@@ -28,6 +28,9 @@ import dndData from './dndData';
 //! Multi Column DnD
 import MultiDnD from 'components/MultiColumnDnD/MultiColumnDnD';
 
+//! Custom Date Picker
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -142,6 +145,28 @@ const RasoulView = () => {
       <AtlasianTree />
       <Divider title="Multi column dnd" />
       <MultiDnD />
+      <Divider title="Custom Date Picker" />
+      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div>
+          <CustomDatePicker
+            label=" انتخاب تاریخ جلالی"
+            mode="button"
+            type="jalali"
+            clearButton
+            fromToday
+            onDateSelect={(date) => console.log(date)}
+          />
+        </div>
+        <div>
+          <CustomDatePicker
+            label="english date"
+            mode="input"
+            type="‫‪gregorian‬‬"
+            clearButton
+            onDateSelect={(date) => console.log(date)}
+          />
+        </div>
+      </div>
 
       {/* <Divider title="DnDProvider Component" /> */}
       {/* <DnDProvider

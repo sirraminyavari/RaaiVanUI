@@ -2,8 +2,10 @@
  * A custom date picker for all.
  */
 import { useState, useRef, useEffect } from 'react';
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import DatePicker, { Calendar } from 'react-modern-calendar-datepicker';
+import '@rasoul678/react-modern-calendar-datepicker/lib/DatePicker.css';
+import DatePicker, {
+  Calendar,
+} from '@rasoul678/react-modern-calendar-datepicker';
 import moment from 'jalali-moment';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
