@@ -6,10 +6,9 @@ import { createSelector } from 'reselect';
 import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from '../../../Sidebar.styles';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { reorder } from 'helpers/helpers';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import DnDProvider from 'components/DnDProvider/DnDProvider';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 
@@ -21,7 +20,7 @@ const selectTree = createSelector(
 const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
   const dispatch = useDispatch();
   const tree = useSelector(selectTree);
-  const { setReorderedTree } = sidebarMenuSlice.actions;
+  const { setSidebarTree } = sidebarMenuSlice.actions;
 
   const listWithId = menuList.map((t) => {
     const withId = Object.assign({}, t, { id: t.NodeTypeID });
@@ -46,14 +45,32 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
       return item;
     });
 
-    dispatch(setReorderedTree(newTree));
+    dispatch(setSidebarTree(newTree));
   };
 
-  const handleOnTrashClick = (e) => {
-    console.log('delete item');
-  };
+  const handleChangeTitle = (title, item) => {
+    const isParent = (node) => node.NodeTypeID === item.ParentID;
+    let parentNode = tree.find(isParent);
 
-  const handleChangeTitle = (title) => {};
+    let editedTree = tree.map((node) => {
+      if (isParent(node)) {
+        let cloneItem = Object.assign({}, parentNode);
+        cloneItem.defaultForm = true;
+        cloneItem.Sub = cloneItem.Sub.map((child) => {
+          if (child.NodeTypeID === item.NodeTypeID) {
+            let cloneChild = Object.assign({}, child);
+            cloneChild.TypeName = encodeBase64(title);
+            return cloneChild;
+          }
+          return child;
+        });
+        return cloneItem;
+      }
+      return node;
+    });
+
+    dispatch(setSidebarTree(editedTree));
+  };
 
   return (
     <DnDProvider
@@ -82,9 +99,6 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
               </Styled.SubMenuTitleWrapper>
             </div>
             <Styled.ActionsWrapper>
-              <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
-                <TrashIcon />
-              </Styled.TrashIconWrapper>
               <Styled.DragIconWrapper {...dragHandleProps}>
                 <DragIcon />
               </Styled.DragIconWrapper>

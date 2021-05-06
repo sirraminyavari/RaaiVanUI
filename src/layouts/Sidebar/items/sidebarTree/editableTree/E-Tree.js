@@ -11,13 +11,13 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.editingTree
+  (sidebarItems) => sidebarItems.tree
 );
 
 const EditableTree = () => {
   const dispatch = useDispatch();
   const tree = useSelector(selectTree);
-  const { setReorderedTree } = sidebarMenuSlice.actions;
+  const { setSidebarTree } = sidebarMenuSlice.actions;
 
   const extendedTree = tree.map((t) => {
     const exNode = Object.assign({}, t, { id: t.NodeTypeID });
@@ -34,7 +34,7 @@ const EditableTree = () => {
 
     const newTree = reorder(tree, source.index, destination.index);
 
-    dispatch(setReorderedTree(newTree));
+    dispatch(setSidebarTree(newTree));
   };
 
   return (

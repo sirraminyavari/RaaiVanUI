@@ -47,6 +47,7 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   position: fixed;
   z-index: 100;
   top: 0;
+  resize: horizontal;
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
@@ -76,7 +77,7 @@ export const ContentWrapper = withTheme(styled.div`
   overflow: auto;
   padding: 0 1.5rem;
   margin-top: 4rem;
-  margin-bottom: ${({ isManage }) => (isManage ? '18vh' : '9vh')};
+  margin-bottom: ${({ isMainContent }) => (isMainContent ? '10vh' : '3vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
@@ -85,7 +86,7 @@ export const SidebarHeader = withTheme(styled.div`
   width: ${(props) =>
     props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   z-index: 10;
-  padding: 0 2.3rem;
+  padding: 0 1.4rem;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
@@ -93,10 +94,10 @@ export const SidebarHeader = withTheme(styled.div`
 `);
 
 export const OpenContentWrapper = styled.div`
-  max-width: 17.8rem;
+  width: 90%;
   margin: 0;
-  margin-${RV_RevFloat}: 1.3rem;
-  margin-${RV_Float}: 2rem;
+  margin-${RV_RevFloat}: 0.7rem;
+  margin-${RV_Float}: 0.9rem;
 `;
 
 export const ToggleArrow = styled.div`
@@ -190,7 +191,7 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 2.5rem;
+  margin: 0 1.7rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
   cursor: pointer;
@@ -200,14 +201,6 @@ export const FooterIconWrapper = withTheme(styled.div`
   margin-${RV_Float}: 0;
   margin-top: 0;
 `);
-
-export const PlusIconWrapper = styled.div`
-  position: absolute;
-  ${RV_RevFloat}: 2.5rem;
-  bottom: 3rem;
-  cursor: pointer;
-  transform: ${({ isCreating }) => (isCreating ? 'rotate(45deg)' : '')};
-`;
 
 export const FooterTitle = withTheme(styled.span`
   margin: 0 0.5rem;
@@ -235,14 +228,18 @@ export const MenuContainer = styled.div.attrs((props) => ({
     border: ${({ isOpen }) => (isOpen ? 'initial' : 'none')};
   }
 
-  &:hover > div > div: nth-child(1) {
+  &:hover > div > div:first-child {
+    display: revert !important;
+  }
+
+  &:focus-within > div > div:first-child {
     display: revert !important;
   }
 `;
 
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
-  width: 100%;
+  width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
 `;
 
 export const SubMenuTitleWrapper = styled.span`
@@ -253,6 +250,9 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 //TODO: fallback image.
@@ -458,9 +458,7 @@ const getHighlightCss = ({ isMatch }) => {
     : null;
 };
 
-export const HighlightedText = styled.span.attrs((props) => ({
-  className: props.isMatch && TBG_WARM,
-}))`
+export const HighlightedText = styled.span`
   ${getHighlightCss}
 `;
 

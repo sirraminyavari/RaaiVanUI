@@ -42,12 +42,11 @@ const Sidebar = () => {
   }, [isSidebarOpen, dispatch]);
 
   const isMainContent = sidebarContent === 'main';
-  const isManageContent = sidebarContent === 'manage';
 
   return (
     <Styled.SidebarContainer>
       <SidebarHeader />
-      <Styled.ContentWrapper isManage={isManageContent}>
+      <Styled.ContentWrapper isMainContent={isMainContent}>
         <Suspense fallback={<LogoLoader size={10} />}>
           {isSidebarOpen ? (
             <SidebarContentOpen />

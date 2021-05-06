@@ -2,11 +2,7 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import APIHandler from 'apiHelper/APIHandler';
 import { pipe } from 'helpers/helpers';
 
-const {
-  setSidebarNodeTypes,
-  setSidebarTree,
-  setEditingTree,
-} = sidebarMenuSlice.actions;
+const { setSidebarNodeTypes, setSidebarTree } = sidebarMenuSlice.actions;
 const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
 //! See if any changes happened in nodes.
@@ -118,38 +114,5 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
     );
   } catch (err) {
     console.log({ err });
-  }
-};
-
-/**
- * @description A function (action) that provides editing tree.
- * @returns -Dispatch to redux store.
- */
-export const setEditableTrees = (mode = '') => (dispatch, getState) => {
-  //! Redux store to get trees.
-  const { sidebarItems } = getState();
-  const { editingTree, tree } = sidebarItems;
-
-  switch (mode) {
-    case 'save':
-      dispatch(setSidebarTree(editingTree));
-      dispatch(setEditingTree([]));
-      break;
-
-    case 'abort':
-      dispatch(setEditingTree([]));
-      break;
-
-    default:
-      let extendedTree = tree.map((t) => {
-        const exNode = Object.assign({}, t, {
-          edited: false,
-          deleted: false,
-          moved: false,
-        });
-        return exNode;
-      });
-      dispatch(setEditingTree(extendedTree));
-      break;
   }
 };

@@ -1,5 +1,10 @@
 import styled, { css } from 'styled-components';
+import { BO_WHITE } from 'constant/Colors';
 const { RV_Float } = window;
+
+export const InlineEditContainer = styled.div`
+  width: 100%;
+`;
 
 const activeCss = css`
   font: inherit;
@@ -7,27 +12,23 @@ const activeCss = css`
   text-align: inherit;
   padding: 0;
   background: none;
-  border: none;
   outline: none;
-`;
-
-const textActiveCss = css`
-  ${activeCss}
-  cursor: pointer;
-`;
-
-const inputActiveCss = css`
-  ${activeCss}
-  border-bottom: 0.15rem solid #fff;
-  text-align: ${RV_Float};
+  display: inline-block;
 `;
 
 export const SpanText = styled.span`
-  ${textActiveCss}
+  ${activeCss}
+  border: none;
+  cursor: pointer;
 `;
 
-export const Input = styled.input`
-  ${inputActiveCss}
-  display: inline-block;
+export const Input = styled.input.attrs({
+  className: BO_WHITE,
+})`
+  ${activeCss}
+  text-align: ${RV_Float};
   width: 100%;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
 `;
