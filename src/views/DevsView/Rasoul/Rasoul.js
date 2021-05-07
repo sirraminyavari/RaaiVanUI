@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import Divider from './Divider';
 
 //! CustomTable
@@ -31,6 +31,9 @@ import MultiDnD from 'components/MultiColumnDnD/MultiColumnDnD';
 //! Custom Date Picker
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
+//! Resizable
+import Resizeable from 'components/Resizable/Resizable';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -41,9 +44,16 @@ const headers = [
   { progress: 'پیشرفت پروفایل', dataType: 'integer' },
 ];
 
+const initialSize = {
+  width: 400,
+  height: 400,
+};
+
 const RasoulView = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [data, setData] = useState([]);
+  const [size, setSize] = useState(initialSize);
+  const [showSize, setShowSize] = useState(initialSize);
 
   setTimeout(() => {
     setData(tableData);
@@ -58,6 +68,20 @@ const RasoulView = () => {
       }),
     []
   );
+
+  const handleOnResizeEnd = (size) => {
+    setSize(size);
+    console.log(size, 'resize ended');
+  };
+
+  const handleOnResizeStart = (size) => {
+    console.log(size, 'resize started');
+  };
+
+  const handleOnResizing = (size) => {
+    setShowSize(size);
+    console.log(size, 'resizing');
+  };
 
   const updateCellData = (rowIndex, columnId, value) => {
     setData((old) =>
@@ -178,6 +202,28 @@ const RasoulView = () => {
           return <h3 {...dragHandleProps}>{item.title}</h3>;
         }}
       </DnDProvider> */}
+      <Divider title="Resizable Component" />
+      <Resizeable
+        resizeHandles={['s', 'w', 'n', 'e']}
+        minConstraints={{ width: 300, height: 100 }}
+        maxConstraints={{ width: 500, height: 400 }}
+        size={size}
+        onResizing={handleOnResizing}
+        onResizeStart={handleOnResizeStart}
+        onResizeEnd={handleOnResizeEnd}>
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'yellow',
+            fontSize: '1.5rem',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {`width: ${showSize.width}, height: ${showSize.height}`}
+        </div>
+      </Resizeable>
       <Divider title="End of view" />
     </div>
   );
