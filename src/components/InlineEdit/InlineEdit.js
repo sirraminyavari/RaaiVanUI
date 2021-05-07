@@ -10,7 +10,7 @@ import * as Styled from './InlineEdit.styles';
  * @property {string} text -The editable text.
  * @property {boolean} [isActive] -Determines if input is active or not.
  * @property {function} onSetText -A function that fires on text edit and
- * ...returns edited text to parent component.
+ * @property {Object} styles -An Object of styles for input and text.
  */
 
 /**
@@ -19,12 +19,14 @@ import * as Styled from './InlineEdit.styles';
  * @param {PropType} props
  */
 const InlineEdit = (props) => {
-  const { text, onSetText, isActive } = props;
+  const { text, onSetText, isActive, styles } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
   const [isInputActive, setIsInputActive] = useState(isActive);
   //! Input value default to initial text passed to it.
   const [inputValue, setInputValue] = useState(text);
+
+  const initialValue = useRef(text);
 
   const wrapperRef = useRef(null);
   const textRef = useRef(null);
@@ -36,24 +38,32 @@ const InlineEdit = (props) => {
   //! Check to see if the user clicked outside of this component
   useOnClickOutside(wrapperRef, () => {
     if (isInputActive) {
-      onSetText(inputValue);
+      if (inputValue) {
+        onSetText(inputValue);
+      } else {
+        setInputValue(initialValue.current);
+      }
       setIsInputActive(false);
     }
   });
 
   const onEnter = useCallback(() => {
     if (enter) {
-      onSetText(inputValue);
+      if (inputValue) {
+        onSetText(inputValue);
+      } else {
+        setInputValue(initialValue.current);
+      }
       setIsInputActive(false);
     }
   }, [enter, inputValue, onSetText]);
 
   const onEscape = useCallback(() => {
     if (esc) {
-      setInputValue(text);
+      setInputValue(initialValue.current);
       setIsInputActive(false);
     }
-  }, [esc, text]);
+  }, [esc]);
 
   //! Focus the cursor in the input field on edit start
   useEffect(() => {
@@ -69,7 +79,7 @@ const InlineEdit = (props) => {
       //! If Escape is pressed, revert the text and close the editor
       onEscape();
     }
-  }, [onEnter, onEscape, isInputActive]); //! watch the Enter and Escape key presses
+  }, [onEnter, onEscape, isInputActive, inputValue]); //! watch the Enter and Escape key presses
 
   const handleInputChange = useCallback(
     (e) => {
@@ -85,9 +95,10 @@ const InlineEdit = (props) => {
   }, [setIsInputActive]);
 
   return (
-    <div ref={wrapperRef}>
+    <Styled.InlineEditContainer ref={wrapperRef}>
       {isInputActive ? (
         <Styled.Input
+          style={styles.inputStyle}
           data-testid="inline-edit-input"
           ref={inputRef}
           value={inputValue}
@@ -95,24 +106,31 @@ const InlineEdit = (props) => {
         />
       ) : (
         <Styled.SpanText
+          style={styles.textStyle}
           data-testid="inline-edit-span"
           ref={textRef}
           onClick={handleSpanClick}>
           {inputValue}
         </Styled.SpanText>
       )}
-    </div>
+    </Styled.InlineEditContainer>
   );
 };
 
 InlineEdit.propTypes = {
   text: PropTypes.string.isRequired,
   onSetText: PropTypes.func.isRequired,
+  isActive: PropTypes.bool,
+  styles: PropTypes.objectOf({
+    textStyle: PropTypes.object,
+    inputStyle: PropTypes.object,
+  }),
 };
 
 InlineEdit.defaultProps = {
   text: 'default text',
   isActive: false,
+  styles: {},
 };
 
 InlineEdit.displayName = 'InlineEditComponent';

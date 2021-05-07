@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { setEditableTrees } from 'store/actions/sidebar/sidebarMenuAction';
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -18,7 +17,6 @@ const ManageButton = () => {
   const { closeOpenMenus } = sidebarMenuSlice.actions;
 
   const handleManageButton = () => {
-    dispatch(setEditableTrees());
     dispatch(closeOpenMenus());
     dispatch(setSidebarContent('manage'));
     if (!isSidebarOpen) {
@@ -33,7 +31,7 @@ const ManageButton = () => {
       <Styled.FooterIconWrapper>
         <EditIcon size={20} />
       </Styled.FooterIconWrapper>
-      <Styled.FooterTitle>مدیریت دسته و کلاس ها</Styled.FooterTitle>
+      <Styled.FooterTitle>مدیریت دسته و قالب ها</Styled.FooterTitle>
     </Styled.FooterButton>
   );
 };

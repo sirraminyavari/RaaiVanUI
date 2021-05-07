@@ -3,14 +3,15 @@ import * as Styled from '../../Sidebar.styles';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { themeSlice } from 'store/reducers/themeReducer';
 import EditableTree from '../sidebarTree/editableTree/E-Tree';
-import { setEditableTrees } from 'store/actions/sidebar/sidebarMenuAction';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 
 const SidebarManageContent = () => {
   const dispatch = useDispatch();
   const { setSidebarContent } = themeSlice.actions;
+  const { closeOpenMenus } = sidebarMenuSlice.actions;
 
   const handleOnClick = () => {
-    dispatch(setEditableTrees('abort'));
+    dispatch(closeOpenMenus());
     dispatch(setSidebarContent('main'));
   };
 

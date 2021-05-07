@@ -1,7 +1,7 @@
 /**
  * Renders Main(root) menu item that may or may not has sub-menus(branches).
  */
-import { memo, useCallback, useContext, useState } from 'react';
+import { memo, useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import * as Styled from '../../../Sidebar.styles';
@@ -12,10 +12,8 @@ import { createSelector } from 'reselect';
 import { WindowContext } from 'context/WindowProvider';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import CheckIcon from 'components/Icons/CheckIcons/Check';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
-import H5 from 'components/TypoGraphy/H5';
-import Confirm from 'components/Modal/Confirm';
+import { TC_DISTANT } from 'constant/Colors';
 
 const selectOpenMenuID = createSelector(
   (state) => state.sidebarItems,
@@ -24,12 +22,12 @@ const selectOpenMenuID = createSelector(
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.editingTree
+  (sidebarItems) => sidebarItems.tree
 );
 
-const selectIsCreatingNode = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.isCreatingNode
+const selectSidebarContent = createSelector(
+  (state) => state.theme,
+  (theme) => theme.sidebarContent
 );
 
 /**
@@ -65,18 +63,12 @@ const EditableBranch = (props) => {
 
   const openMenuID = useSelector(selectOpenMenuID);
   const tree = useSelector(selectTree);
-  const isCreating = useSelector(selectIsCreatingNode);
+  const sidebarContent = useSelector(selectSidebarContent);
   const dispatch = useDispatch();
-  const {
-    toggleSidebarMenu,
-    setEditingTree,
-    createNewNode,
-  } = sidebarMenuSlice.actions;
+  const { toggleSidebarMenu, setSidebarTree } = sidebarMenuSlice.actions;
   const { RV_RevFloat } = useContext(WindowContext);
-  const [confirm, setConfirm] = useState({
-    show: false,
-    message: '',
-  });
+
+  const isManageContent = sidebarContent === 'manage';
 
   //! Toggle an item's sub-menu.
   const handleDropdown = useCallback(() => dispatch(toggleSidebarMenu(id)), []);
@@ -86,63 +78,37 @@ const EditableBranch = (props) => {
 
   const handleOnTrashClick = (e) => {
     e.stopPropagation();
-    setConfirm({
-      show: true,
-      message: `آیا از پاک کردن موضوع "${decodeBase64(title)}" اطمینان دارید؟`,
-    });
-  };
-
-  const handleOnDeleteCancel = () => {
-    setConfirm({
-      show: false,
-      message: '',
-    });
-  };
-
-  const handleOnDeleteConfirm = () => {
-    let editedTree = tree.filter((node) => {
+    let filteredTree = tree.filter((node) => {
       return node.NodeTypeID !== id;
     });
-    dispatch(setEditingTree(editedTree));
+    dispatch(setSidebarTree(filteredTree));
   };
 
   const handleChangeTitle = (title) => {
-    if (!isCreating) {
-      let editedTree = tree.map((node) => {
-        if (node.NodeTypeID === id) {
-          let editedNode = Object.assign({}, node, {
-            TypeName: encodeBase64(title),
-            edited: true,
-          });
-          return editedNode;
-        }
-        return node;
-      });
-      dispatch(setEditingTree(editedTree));
-    }
-  };
-
-  const handleOnTickClick = () => {
-    dispatch(createNewNode());
+    let editedTree = tree.map((node) => {
+      if (node.NodeTypeID === id) {
+        let editedNode = Object.assign({}, node, {
+          TypeName: encodeBase64(title),
+        });
+        return editedNode;
+      }
+      return node;
+    });
+    dispatch(setSidebarTree(editedTree));
   };
 
   return (
     <>
-      <Confirm
-        show={confirm.show}
-        onConfirm={handleOnDeleteConfirm}
-        onCancel={handleOnDeleteCancel}
-        onClose={handleOnDeleteCancel}>
-        <H5>{confirm.message}</H5>
-      </Confirm>
       <Styled.MenuContainer isOpen={isOpen} isDragging={isDragging}>
-        <Styled.MenuTitleWrapper>
+        <Styled.MenuTitleWrapper isManageContent={isManageContent}>
           {childMenus ? (
-            <CaretIcon
-              onClick={handleDropdown}
-              size={20}
-              dir={isOpen ? 'down' : RV_RevFloat}
-            />
+            <Styled.CaretIconWrapper>
+              <CaretIcon
+                onClick={handleDropdown}
+                size={20}
+                dir={isOpen ? 'down' : RV_RevFloat}
+              />
+            </Styled.CaretIconWrapper>
           ) : (
             <Styled.MenuItemImage src={iconImage} alt="menu-icon" />
           )}
@@ -150,25 +116,27 @@ const EditableBranch = (props) => {
             <InlineEdit
               text={decodeBase64(title)}
               onSetText={handleChangeTitle}
-              isActive={item.creating}
+              styles={{
+                textStyle: {
+                  width: '100%',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  marginTop: '0.5rem',
+                },
+              }}
             />
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
-          {item.creating ? (
-            <Styled.TickIconWrapper onClick={handleOnTickClick}>
-              <CheckIcon size={20} />
-            </Styled.TickIconWrapper>
-          ) : (
-            <>
-              <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
-                <TrashIcon />
-              </Styled.TrashIconWrapper>
-              <Styled.DragIconWrapper {...dragHandleProps}>
-                <DragIcon />
-              </Styled.DragIconWrapper>
-            </>
+          {childMenus && (
+            <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+              <TrashIcon />
+            </Styled.TrashIconWrapper>
           )}
+          <Styled.DragIconWrapper {...dragHandleProps}>
+            <DragIcon className={TC_DISTANT} />
+          </Styled.DragIconWrapper>
         </Styled.ActionsWrapper>
       </Styled.MenuContainer>
       {childMenus && (

@@ -21,18 +21,22 @@ import * as Styled from './Avatar.styles';
 const Avatar = (props) => {
   const { radius, userImage, color, ...rest } = props;
   return (
-    <Styled.AvatarContainer color={color} {...rest}>
+    <>
       {userImage ? (
-        <Styled.AvatarImage
-          data-testid="avatar-image"
-          radius={radius}
-          src={userImage}
-          alt="user-avatar"
-        />
+        <Styled.AvatarContainer color={color} {...rest}>
+          <Styled.AvatarImage
+            data-testid="avatar-image"
+            radius={radius}
+            src={userImage}
+            alt="user-avatar"
+          />
+        </Styled.AvatarContainer>
       ) : (
-        <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
+        <Styled.AvatarIconWrapper>
+          <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
+        </Styled.AvatarIconWrapper>
       )}
-    </Styled.AvatarContainer>
+    </>
   );
 };
 

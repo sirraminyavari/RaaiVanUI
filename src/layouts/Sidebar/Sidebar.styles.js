@@ -47,6 +47,7 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   position: fixed;
   z-index: 100;
   top: 0;
+  resize: horizontal;
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
@@ -76,7 +77,7 @@ export const ContentWrapper = withTheme(styled.div`
   overflow: auto;
   padding: 0 1.5rem;
   margin-top: 4rem;
-  margin-bottom: ${({ isManage }) => (isManage ? '18vh' : '9vh')};
+  margin-bottom: ${({ isMainContent }) => (isMainContent ? '10vh' : '3vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
@@ -85,7 +86,7 @@ export const SidebarHeader = withTheme(styled.div`
   width: ${(props) =>
     props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
   z-index: 10;
-  padding: 0 2.3rem;
+  padding: 0 1.4rem;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
@@ -93,10 +94,10 @@ export const SidebarHeader = withTheme(styled.div`
 `);
 
 export const OpenContentWrapper = styled.div`
-  max-width: 17.8rem;
+  width: 90%;
   margin: 0;
-  margin-${RV_RevFloat}: 1.3rem;
-  margin-${RV_Float}: 2rem;
+  margin-${RV_RevFloat}: 0.7rem;
+  margin-${RV_Float}: 0.9rem;
 `;
 
 export const ToggleArrow = styled.div`
@@ -190,7 +191,7 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 2.5rem;
+  margin: 0 1.7rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
   cursor: pointer;
@@ -200,14 +201,6 @@ export const FooterIconWrapper = withTheme(styled.div`
   margin-${RV_Float}: 0;
   margin-top: 0;
 `);
-
-export const PlusIconWrapper = styled.div`
-  position: absolute;
-  ${RV_RevFloat}: 2.5rem;
-  bottom: 3rem;
-  cursor: pointer;
-  transform: ${({ isCreating }) => (isCreating ? 'rotate(45deg)' : '')};
-`;
 
 export const FooterTitle = withTheme(styled.span`
   margin: 0 0.5rem;
@@ -235,30 +228,47 @@ export const MenuContainer = styled.div.attrs((props) => ({
     border: ${({ isOpen }) => (isOpen ? 'initial' : 'none')};
   }
 
-  &:hover > div > div: nth-child(1) {
+  &:hover > div > div:first-child {
+    display: revert !important;
+  }
+
+  &:focus-within > div > div:first-child {
     display: revert !important;
   }
 `;
 
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
-  width: 100%;
+  width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
 `;
 
-export const SubMenuTitleWrapper = styled.span`
+export const SubMenuTitleWrapper = styled.div`
   margin: 0 0.4rem;
+  width: 85%;
+  display: flex;
+  align-items: center;
 `;
 
 export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const CaretIconWrapper = styled.div`
+  display: inline-block;
+  margin-top: 0.5rem;
 `;
 
 //TODO: fallback image.
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
+  min-width: 1.75rem;
   max-height: 1.8rem;
+  width: 1.8rem;
   border-radius: 50%;
   border: 0.12rem solid;
   overflow: hidden;
@@ -288,8 +298,9 @@ const DIV = styled.div.attrs({
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
+margin: 0.2rem 0;
   margin-${RV_Float}: 0.5rem;
-  padding: 0.4rem;
+  padding: 0 0.4rem;
   padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
@@ -314,7 +325,9 @@ export const ListItemWrapper = styled.div.attrs({
 
 export const DragIconWrapper = styled.div`
   line-height: 0.5rem;
-  cursor: row-resize !important;
+  cursor: move; /* fallback: no url() support or images disabled */
+  cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
+    all-scroll !important;
 `;
 
 export const TrashIconWrapper = styled.div.attrs({ className: C_RED })`
@@ -458,9 +471,7 @@ const getHighlightCss = ({ isMatch }) => {
     : null;
 };
 
-export const HighlightedText = styled.span.attrs((props) => ({
-  className: props.isMatch && TBG_WARM,
-}))`
+export const HighlightedText = styled.span`
   ${getHighlightCss}
 `;
 
