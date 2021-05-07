@@ -242,8 +242,11 @@ export const MenuTitleWrapper = styled.div`
   width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
 `;
 
-export const SubMenuTitleWrapper = styled.span`
+export const SubMenuTitleWrapper = styled.div`
   margin: 0 0.4rem;
+  width: 85%;
+  display: flex;
+  align-items: center;
 `;
 
 export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
@@ -255,10 +258,17 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   text-overflow: ellipsis;
 `;
 
+export const CaretIconWrapper = styled.div`
+  display: inline-block;
+  margin-top: 0.5rem;
+`;
+
 //TODO: fallback image.
 export const MenuItemImage = styled.img`
   max-width: 1.8rem;
+  min-width: 1.75rem;
   max-height: 1.8rem;
+  width: 1.8rem;
   border-radius: 50%;
   border: 0.12rem solid;
   overflow: hidden;
@@ -288,8 +298,9 @@ const DIV = styled.div.attrs({
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
+margin: 0.2rem 0;
   margin-${RV_Float}: 0.5rem;
-  padding: 0.4rem;
+  padding: 0 0.4rem;
   padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
@@ -314,7 +325,9 @@ export const ListItemWrapper = styled.div.attrs({
 
 export const DragIconWrapper = styled.div`
   line-height: 0.5rem;
-  cursor: row-resize !important;
+  cursor: move; /* fallback: no url() support or images disabled */
+  cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
+    all-scroll !important;
 `;
 
 export const TrashIconWrapper = styled.div.attrs({ className: C_RED })`

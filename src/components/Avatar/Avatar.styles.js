@@ -6,11 +6,16 @@ export const AvatarContainer = styled.div`
   border-radius: 50%;
   overflow: hidden;
   color: #fff;
-  border: 0.2rem solid ${({ color }) => (!!color ? color : '#fff')};
+  border: 0.15rem solid ${({ color }) => (!!color ? color : '#fff')};
 `;
 
 export const AvatarImage = styled.img`
   width: ${({ radius }) => `${radius}px`};
   height: ${({ radius }) => `${radius}px`};
   border-radius: 50%;
+`;
+
+export const AvatarIconWrapper = styled.div`
+  display: flex;
+  place-items: center;
 `;

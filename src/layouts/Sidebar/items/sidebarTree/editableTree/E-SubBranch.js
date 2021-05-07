@@ -49,6 +49,7 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
   };
 
   const handleChangeTitle = (title, item) => {
+    console.log(item);
     const isParent = (node) => node.NodeTypeID === item.ParentID;
     let parentNode = tree.find(isParent);
 
@@ -75,14 +76,15 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
   return (
     <DnDProvider
       droppableClass="subMenuContainer"
-      droppableStyle={{ height: isOpen ? `${menuList.length * 2.35}rem` : 0 }}
+      droppableStyle={{ height: isOpen ? `${menuList.length * 2.5}rem` : 0 }}
       list={listWithId}
       droppableId={parentID}
       onDragEnd={handleOnDragEnd}>
       {({ isDragging, dragHandleProps, item }) => {
         return (
           <Styled.SubMenu isDragging={isDragging}>
-            <div style={{ display: 'flex' }}>
+            <div
+              style={{ display: 'flex', width: '85%', alignItems: 'center' }}>
               {item.IconName && SidebarIcons[item.IconName]({ size: 20 })}
               {item.IconURL && (
                 <Styled.MenuItemImage
@@ -94,7 +96,16 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
               <Styled.SubMenuTitleWrapper>
                 <InlineEdit
                   text={decodeBase64(item.TypeName)}
-                  onSetText={handleChangeTitle}
+                  onSetText={(title) => handleChangeTitle(title, item)}
+                  styles={{
+                    textStyle: {
+                      width: '100%',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      marginTop: '0.5rem',
+                    },
+                  }}
                 />
               </Styled.SubMenuTitleWrapper>
             </div>

@@ -1,5 +1,3 @@
-import { BiUserCircle } from 'react-icons/bi';
-
 const ProfileIcon = (props) => {
   return (
     <svg
