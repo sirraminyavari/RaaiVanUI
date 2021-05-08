@@ -3,7 +3,8 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Routes from 'routes/MainRoutes/Main.routes';
 import Navbar from './Navbar/Navbar';
-import Sidebar from './Sidebar/Sidebar';
+import OpenSidebar from './Sidebar/Sidebar-Open';
+import CloseSidebar from './Sidebar/Sidebar-Close';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './Main.styles';
 import { useMediaQuery } from 'react-responsive';
@@ -67,7 +68,15 @@ const Main = () => {
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          {!isMobileScreen ? <Sidebar /> : <SidebarHeader />}
+          {!isMobileScreen ? (
+            isSidebarOpen ? (
+              <OpenSidebar />
+            ) : (
+              <CloseSidebar />
+            )
+          ) : (
+            <SidebarHeader />
+          )}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}>

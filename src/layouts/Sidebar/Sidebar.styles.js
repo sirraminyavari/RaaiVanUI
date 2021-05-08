@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import { CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import {
   TBO_WARM,
@@ -11,7 +11,6 @@ import {
   BO_GRAY_DARK,
   C_RED,
   BO_GRAY,
-  TBG_WARM,
   C_GRAY,
   TBG_VERYWARM,
 } from 'constant/Colors';
@@ -38,21 +37,35 @@ export const CenterIcon = styled.div`
   ${FlexCenter}
 `;
 
+const openSidebar = css`
+  width: 100%;
+`;
+
+const closeSidebar = css`
+  width: ${CLOSE_WIDTH}rem;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+`;
+
+const getSidebarCss = (props) => {
+  const { isSidebarOpen } = props.theme.states;
+  if (isSidebarOpen) {
+    return openSidebar;
+  } else {
+    return closeSidebar;
+  }
+};
+
 export const SidebarContainer = withTheme(styled.div.attrs({
   className: `${TBG_VERYWARM} ${C_WHITE}`,
 })`
   height: 100%;
-  width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  resize: horizontal;
+  ${getSidebarCss}
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
-  transition: all 0.7s ease;
 
   .subMenuContainer {
     overflow: hidden;
@@ -69,35 +82,46 @@ export const SidebarContainer = withTheme(styled.div.attrs({
 `);
 
 export const ContentWrapper = withTheme(styled.div`
-  width: ${(props) => (props.theme.states.isSidebarOpen ? '110%' : '140%')};
+  width: ${(props) => (props.theme.states.isSidebarOpen ? '111%' : '180%')};
   position: absolute;
   top: 0;
-  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
+  ${(props) => !props.theme.states.isSidebarOpen && 'right: 0rem;'}
+  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   ${`${RV_RevFloat}: -1.1rem;`}
   overflow: auto;
-  padding: 0 1.5rem;
+  padding: 0 0.5rem;
   margin-top: 4rem;
+  margin-right: -2.5rem;
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '10vh' : '3vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
   height: 4rem;
-  width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
+  width: ${(props) => {
+    const {
+      isSidebarOpen,
+      sidebarCurrentWidth,
+      sidebarCloseWidth,
+    } = props.theme.states;
+    return isSidebarOpen
+      ? `${sidebarCurrentWidth / 16}rem`
+      : `${sidebarCloseWidth / 16}rem`;
+  }};
   z-index: 10;
-  padding: 0 1.4rem;
+  padding: 0 1%;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
-  transition: all 0.7s ease;
 `);
 
 export const OpenContentWrapper = styled.div`
-  width: 90%;
+  width: 95%;
   margin: 0;
-  margin-${RV_RevFloat}: 0.7rem;
-  margin-${RV_Float}: 0.9rem;
+  position: relative;
+  right: 3%;
+  padding: 0 5% 0 0.7rem;
+  margin-${RV_Float}: 0;
 `;
 
 export const ToggleArrow = styled.div`
@@ -191,7 +215,7 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 1.7rem;
+  margin: 0 1.2rem 0 1.3rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
   cursor: pointer;
@@ -280,7 +304,7 @@ export const HighlightedTitle = styled.span`
 
 export const SubMenuContainer = styled.div`
   height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 2.35}rem` : '0'};
+    isOpen ? `${itemsCount * 2.6}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
@@ -298,16 +322,18 @@ const DIV = styled.div.attrs({
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-margin: 0.2rem 0;
+  margin: 0.2rem 0;
   margin-${RV_Float}: 0.5rem;
-  padding: 0 0.4rem;
+  padding: 0.2rem 0.4rem;
   padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
+  background-color: ${({ isActive }) =>
+    isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
   &:hover {
-    background: rgb(43, 123, 228, 0.2);
+    background: ${({ isActive }) =>
+      isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
   }
 
   //! Child classes style
@@ -388,7 +414,7 @@ export const CloseContentContainer = styled.div`
 
 const arrowCss = css`
   position: absolute;
-  ${RV_Float}: -0.3rem;
+  ${RV_Float}: -0.2rem;
   font-size: 2.5rem;
 `;
 
@@ -397,7 +423,11 @@ export const Up = styled.div.attrs((props) => ({
 }))`
   ${arrowCss}
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
-  top: 0;
+  top: 0.3rem;
+  height: 2rem;
+  width: auto;
+  display: flex;
+  align-items: center;
 `;
 
 export const Down = styled.div.attrs((props) => ({
@@ -405,7 +435,11 @@ export const Down = styled.div.attrs((props) => ({
 }))`
   ${arrowCss}
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
-  bottom: -20px;
+  bottom: 0.2rem;
+  height: 2rem;
+  width: auto;
+  display: flex;
+  align-items: center;
 `;
 
 export const IconListContainer = styled.div`
@@ -415,11 +449,11 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 100%;
+  height: 92%;
   overflow-y: scroll;
   overflow-x: hidden;
   position: absolute;
-  top: 0;
+  top: 1rem;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -427,7 +461,7 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 1rem 0;
+  margin: 0.4rem 0;
   font-size: 1.6rem;
 `;
 

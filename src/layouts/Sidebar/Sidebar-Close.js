@@ -1,5 +1,5 @@
 /**
- * Renders whole sidebar area for non-mobile screens.
+ * Renders close sidebar area for non-mobile screens.
  */
 import { lazy, Suspense, useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +11,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 
-const SidebarContentOpen = lazy(() =>
-  import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
-);
 const SidebarContentClose = lazy(() =>
   import(/* webpackChunkName: "sidebar-close-content"*/ './items/SidebarClose')
 );
@@ -28,7 +25,7 @@ const selectSidebarContent = createSelector(
   (theme) => theme.sidebarContent
 );
 
-const Sidebar = () => {
+const CloseSidebar = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const sidebarContent = useSelector(selectSidebarContent);
@@ -48,20 +45,12 @@ const Sidebar = () => {
       <SidebarHeader />
       <Styled.ContentWrapper isMainContent={isMainContent}>
         <Suspense fallback={<LogoLoader size={10} />}>
-          {isSidebarOpen ? (
-            <SidebarContentOpen />
-          ) : isMainContent ? (
-            <SidebarContentClose />
-          ) : null}
+          {isMainContent && <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>
-      {isSidebarOpen ? (
-        <SidebarFooter />
-      ) : isMainContent ? (
-        <SidebarFooter />
-      ) : null}
+      {isMainContent && <SidebarFooter />}
     </Styled.SidebarContainer>
   );
 };
 
-export default memo(Sidebar);
+export default memo(CloseSidebar);
