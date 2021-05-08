@@ -15,13 +15,14 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
   const route = useCheckRoute(name);
   const dispatch = useDispatch();
-  const { toggleNavSide, setSelectedTeam } = themeSlice.actions;
+  const { toggleNavSide, setSelectedTeam, setActivePath } = themeSlice.actions;
 
   useEffect(() => {
     if (route.Application) {
       const appName = decodeBase64(route.Application.Title);
       dispatch(setSelectedTeam(appName));
     }
+    dispatch(setActivePath(location.pathname));
   }, [route]);
 
   useEffect(() => {

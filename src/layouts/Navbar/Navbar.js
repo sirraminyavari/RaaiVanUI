@@ -1,9 +1,8 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense, memo, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { lazy, Suspense, memo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
 import * as Styled from './Navbar.styles';
@@ -12,7 +11,6 @@ import SearchIcon from 'components/Icons/SearchIcon/Search';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
 import { createSelector } from 'reselect';
-import { themeSlice } from 'store/reducers/themeReducer';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
@@ -31,24 +29,15 @@ const MobileMenu = lazy(() =>
   )
 );
 
-const { setActivePath } = themeSlice.actions;
-
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
   (theme) => theme.isSidebarOpen
 );
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const location = useLocation();
-  //!
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
   const [showSearch, setShowSearch] = useState(false);
-
-  useEffect(() => {
-    dispatch(setActivePath(location.pathname));
-  }, [location, dispatch]);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({

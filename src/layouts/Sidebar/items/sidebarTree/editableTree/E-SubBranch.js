@@ -76,7 +76,7 @@ const EditableSubBranch = ({ isOpen, menuList, parentID }) => {
   return (
     <DnDProvider
       droppableClass="subMenuContainer"
-      droppableStyle={{ height: isOpen ? `${menuList.length * 2.5}rem` : 0 }}
+      droppableStyle={{ height: isOpen ? `${menuList.length * 3}rem` : 0 }}
       list={listWithId}
       droppableId={parentID}
       onDragEnd={handleOnDragEnd}>

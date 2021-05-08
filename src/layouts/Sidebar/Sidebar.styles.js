@@ -304,7 +304,7 @@ export const HighlightedTitle = styled.span`
 
 export const SubMenuContainer = styled.div`
   height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 2.35}rem` : '0'};
+    isOpen ? `${itemsCount * 2.6}rem` : '0'};
   overflow: hidden;
   margin: -0.3rem 0 0 0;
   padding: 0 0.3rem;
@@ -322,16 +322,18 @@ const DIV = styled.div.attrs({
 export const SubMenu = styled(
   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
 )`
-margin: 0.2rem 0;
+  margin: 0.2rem 0;
   margin-${RV_Float}: 0.5rem;
-  padding: 0 0.4rem;
+  padding: 0.2rem 0.4rem;
   padding-${RV_Float}: 1.4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ isDragging }) => (isDragging ? '#2B388F' : 'inherit')};
+  background-color: ${({ isActive }) =>
+    isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
   &:hover {
-    background: rgb(43, 123, 228, 0.2);
+    background: ${({ isActive }) =>
+      isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
   }
 
   //! Child classes style
