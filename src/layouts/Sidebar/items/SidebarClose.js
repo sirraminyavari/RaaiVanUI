@@ -10,6 +10,8 @@ import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
+import { decodeBase64 } from 'helpers/helpers';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -72,9 +74,18 @@ const SidebarOnClose = ({ theme }) => {
   return (
     <>
       <Styled.SidebarTitle style={{ marginRight: '3.4rem' }}>
-        <Styled.SettingWrapper onClick={handleOnClick}>
-          <SettingIcon size={22} />
-        </Styled.SettingWrapper>
+        <PopupMenu
+          arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
+          menuStyle="border: 0; padding: 0.3rem 1rem; margin: 1rem; background-color: #333;"
+          trigger="hover"
+          align="left">
+          <div>
+            <Styled.SettingWrapper onClick={handleOnClick}>
+              <SettingIcon size={22} />
+            </Styled.SettingWrapper>
+          </div>
+          <div>تنظیمات</div>
+        </PopupMenu>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
         <Styled.Up isUp={isUp} onClick={scrollUp}>
@@ -83,20 +94,29 @@ const SidebarOnClose = ({ theme }) => {
         <Styled.IconListContainer>
           <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}>
             {nodeTypes.map((node, key) => {
-              let { IconURL, IconName, NodeTypeID } = node;
+              let { IconURL, IconName, NodeTypeID, TypeName } = node;
               return (
-                <Styled.MiniIconWrapper
-                  as={Link}
-                  to={`/classes/${NodeTypeID}`}
-                  key={key}>
-                  {IconName && SidebarIcons[IconName]()}
-                  {IconURL && (
-                    <Styled.MenuItemImage
-                      src={IconURL}
-                      alt="sidebar-icon-closed"
-                    />
-                  )}
-                </Styled.MiniIconWrapper>
+                <PopupMenu
+                  arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
+                  menuStyle="border: 0; padding: 0.4rem 1rem; margin: 1rem; background-color: #333;"
+                  trigger="hover"
+                  align="left">
+                  <div>
+                    <Styled.MiniIconWrapper
+                      as={Link}
+                      to={`/classes/${NodeTypeID}`}
+                      key={key}>
+                      {IconName && SidebarIcons[IconName]()}
+                      {IconURL && (
+                        <Styled.MenuItemImage
+                          src={IconURL}
+                          alt="sidebar-icon-closed"
+                        />
+                      )}
+                    </Styled.MiniIconWrapper>
+                  </div>
+                  <div>{decodeBase64(TypeName)}</div>
+                </PopupMenu>
               );
             })}
           </Styled.IconListWrap>

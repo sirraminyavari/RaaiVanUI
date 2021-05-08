@@ -20,6 +20,7 @@ const ArrowRadius = 0.4;
  * @property {string} arrowClass -The Classe for arrow element.
  * @property {string} [menuClass] -The Classe for menu container.
  * @property {string} menuStyle -The style for menu container.
+ * @property {string} arrowStyle -The style for arrow.
  * @property {string} leftOffset -The left offset.
  * @property {string} topOffset -The top offset.
  * @property {('hover' | 'click')} trigger -The popup menu show option.
@@ -37,6 +38,7 @@ const PopupMenu = (props) => {
   let {
     align,
     arrowClass,
+    arrowStyle,
     menuClass,
     menuStyle,
     fit /* if true, the menu width will be equal to the reference component */,
@@ -150,7 +152,7 @@ const PopupMenu = (props) => {
               id={arrowId}
               className={arrowClass || menuClass}
               style={info.arrowStyle || {}}
-              arrowStyle={menuStyle}
+              arrowStyle={arrowStyle}
               align={align}
             />
           </ArrowContainer>
@@ -172,6 +174,7 @@ PopupMenu.propTypes = {
   menuClass: PropTypes.string,
   arrowClass: PropTypes.string,
   menuStyle: PropTypes.string,
+  arrowStyle: PropTypes.string,
   leftOffset: PropTypes.string,
   topOffset: PropTypes.string,
   trigger: PropTypes.oneOf(['hover', 'click']).isRequired,
