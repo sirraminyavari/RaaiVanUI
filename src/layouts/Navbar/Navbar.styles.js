@@ -22,7 +22,7 @@ export const NavbarContainer = withTheme(styled.div.attrs({
     `calc(100% - ${
       !isMobile
         ? theme.states.isSidebarOpen
-          ? OPEN_WIDTH
+          ? theme.states.sidebarCurrentWidth / 16
           : CLOSE_WIDTH
         : CLOSE_WIDTH
     }rem)`};
@@ -37,7 +37,7 @@ export const NavbarContainer = withTheme(styled.div.attrs({
   opacity: 1;
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
-  transition: all 0.7s ease;
+  // transition: all 0.7s ease;
 
   .no-arrow {
     display: none;

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import { CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import {
   TBO_WARM,
@@ -11,7 +11,6 @@ import {
   BO_GRAY_DARK,
   C_RED,
   BO_GRAY,
-  TBG_WARM,
   C_GRAY,
   TBG_VERYWARM,
 } from 'constant/Colors';
@@ -38,21 +37,35 @@ export const CenterIcon = styled.div`
   ${FlexCenter}
 `;
 
+const openSidebar = css`
+  width: 100%;
+`;
+
+const closeSidebar = css`
+  width: ${CLOSE_WIDTH}rem;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+`;
+
+const getSidebarCss = (props) => {
+  const { isSidebarOpen } = props.theme.states;
+  if (isSidebarOpen) {
+    return openSidebar;
+  } else {
+    return closeSidebar;
+  }
+};
+
 export const SidebarContainer = withTheme(styled.div.attrs({
   className: `${TBG_VERYWARM} ${C_WHITE}`,
 })`
   height: 100%;
-  width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  resize: horizontal;
+  ${getSidebarCss}
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
-  transition: all 0.7s ease;
 
   .subMenuContainer {
     overflow: hidden;
@@ -69,35 +82,46 @@ export const SidebarContainer = withTheme(styled.div.attrs({
 `);
 
 export const ContentWrapper = withTheme(styled.div`
-  width: ${(props) => (props.theme.states.isSidebarOpen ? '110%' : '140%')};
+  width: ${(props) => (props.theme.states.isSidebarOpen ? '111%' : '180%')};
   position: absolute;
   top: 0;
+  ${(props) => !props.theme.states.isSidebarOpen && 'right: 0rem;'}
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
   ${`${RV_RevFloat}: -1.1rem;`}
   overflow: auto;
-  padding: 0 1.5rem;
+  padding: 0 0.5rem;
   margin-top: 4rem;
+  margin-right: -2.5rem;
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '10vh' : '3vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`
   ${FlexBetween}
   height: 4rem;
-  width: ${(props) =>
-    props.theme.states.isSidebarOpen ? OPEN_WIDTH : CLOSE_WIDTH}rem;
+  width: ${(props) => {
+    const {
+      isSidebarOpen,
+      sidebarCurrentWidth,
+      sidebarCloseWidth,
+    } = props.theme.states;
+    return isSidebarOpen
+      ? `${sidebarCurrentWidth / 16}rem`
+      : `${sidebarCloseWidth / 16}rem`;
+  }};
   z-index: 10;
-  padding: 0 1.4rem;
+  padding: 0 1%;
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
-  transition: all 0.7s ease;
 `);
 
 export const OpenContentWrapper = styled.div`
-  width: 90%;
+  width: 95%;
   margin: 0;
-  margin-${RV_RevFloat}: 0.7rem;
-  margin-${RV_Float}: 0.9rem;
+  position: relative;
+  right: 3%;
+  padding: 0 5% 0 0.7rem;
+  margin-${RV_Float}: 0;
 `;
 
 export const ToggleArrow = styled.div`
@@ -191,7 +215,7 @@ export const FooterButton = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-  margin: 0 1.7rem;
+  margin: 0 1.2rem 0 1.3rem;
   margin-top: -0.6rem;
   padding: 0.3rem;
   cursor: pointer;

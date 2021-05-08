@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 
 export const ResizableConatiner = styled.div`
-  width: ${({ size }) => (size?.width ? `${size.width / 16}` : '12.5')}rem;
-  height: ${({ size }) => (size?.height ? `${size.height / 16}` : '12.5')}rem;
+  width: ${({ size }) => (size?.width ? `${size.width / 16}rem` : '100%')};
+  height: ${({ size }) => (size?.height ? `${size.height / 16}rem` : '100%')};
   min-width: ${({ minW }) => ` ${minW / 16}`}rem;
   max-width: ${({ maxW }) => `${maxW / 16}`}rem;
   min-height: ${({ minH }) => `${minH / 16}`}rem;
   max-height: ${({ maxH }) => `${maxH / 16}`}rem;
   position: relative;
+  overflow: hidden;
+  box-shadow: 1px 0px 15px 1px #000;
 `;
 
 const getResizerCss = ({ handle }) => {

@@ -16,6 +16,7 @@ const Resizable = (props) => {
     minConstraints,
     maxConstraints,
     resizerClass,
+    resizableStyles,
   } = props;
 
   let prevX;
@@ -60,7 +61,7 @@ const Resizable = (props) => {
     }
 
     //! Calls on resizing.
-    onResizing({ width: newWidth, height: newHeight });
+    onResizing && onResizing({ width: newWidth, height: newHeight });
 
     //! Update mouse position.
     prevX = e.clientX;
@@ -72,7 +73,7 @@ const Resizable = (props) => {
     window.removeEventListener('mouseup', onMouseUp);
 
     //! Calls at the end of resizing.
-    onResizeEnd({ width: newWidth, height: newHeight });
+    onResizeEnd && onResizeEnd({ width: newWidth, height: newHeight });
   };
 
   //! On mouse down user grabs the resizer and begins the resizing operation.
@@ -85,7 +86,7 @@ const Resizable = (props) => {
     const rect = containerRef.current.getBoundingClientRect();
 
     //! Calls at the begining of resizing.
-    onResizeStart({ width: rect.width, height: rect.height });
+    onResizeStart && onResizeStart({ width: rect.width, height: rect.height });
 
     //! Add mouse move and mouse up events to window.
     window.addEventListener('mousemove', onMouseMove);
@@ -99,7 +100,8 @@ const Resizable = (props) => {
       minH={minConstraints?.height}
       maxH={maxConstraints?.height}
       ref={containerRef}
-      size={size}>
+      size={size}
+      style={resizableStyles}>
       {resizeHandles.map((handle, index) => {
         return (
           <Resizer
