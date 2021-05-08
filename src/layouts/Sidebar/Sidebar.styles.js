@@ -86,7 +86,7 @@ export const ContentWrapper = withTheme(styled.div`
   position: absolute;
   top: 0;
   ${(props) => !props.theme.states.isSidebarOpen && 'right: 0rem;'}
-  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '0')};
+  bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   ${`${RV_RevFloat}: -1.1rem;`}
   overflow: auto;
   padding: 0 0.5rem;
@@ -414,7 +414,7 @@ export const CloseContentContainer = styled.div`
 
 const arrowCss = css`
   position: absolute;
-  ${RV_Float}: -0.3rem;
+  ${RV_Float}: -0.2rem;
   font-size: 2.5rem;
 `;
 
@@ -423,7 +423,11 @@ export const Up = styled.div.attrs((props) => ({
 }))`
   ${arrowCss}
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
-  top: 0;
+  top: 0.3rem;
+  height: 2rem;
+  width: auto;
+  display: flex;
+  align-items: center;
 `;
 
 export const Down = styled.div.attrs((props) => ({
@@ -431,7 +435,11 @@ export const Down = styled.div.attrs((props) => ({
 }))`
   ${arrowCss}
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
-  bottom: -20px;
+  bottom: 0.2rem;
+  height: 2rem;
+  width: auto;
+  display: flex;
+  align-items: center;
 `;
 
 export const IconListContainer = styled.div`
@@ -441,11 +449,11 @@ export const IconListContainer = styled.div`
 `;
 
 export const IconListWrap = styled.div`
-  height: 100%;
+  height: 92%;
   overflow-y: scroll;
   overflow-x: hidden;
   position: absolute;
-  top: 0;
+  top: 1rem;
   box-sizing: content-box;
   text-align: center;
 `;
@@ -453,7 +461,7 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 1rem 0;
+  margin: 0.4rem 0;
   font-size: 1.6rem;
 `;
 

@@ -31,13 +31,13 @@ const SidebarOnClose = ({ theme }) => {
   //! Calls on every click on chevron down.
   const scrollDown = () => {
     if (isDown) return;
-    setScroll((s) => s + 55);
+    setScroll((s) => s + 45);
   };
 
   //! Calls on every click on chevron up.
   const scrollUp = () => {
     if (isUp) return;
-    setScroll((s) => s - 55);
+    setScroll((s) => s - 45);
   };
 
   //! Toggle settings content on click.
