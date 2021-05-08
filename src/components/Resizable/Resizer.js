@@ -2,9 +2,15 @@ import { forwardRef } from 'react';
 import * as Styled from './Resizable.styles';
 
 const Resizer = forwardRef((props, ref) => {
-  const { position, id } = props;
+  const { handle, id, onMouseDown, resizerClass } = props;
   return (
-    <Styled.Resizer id={id} ref={ref} position={position}></Styled.Resizer>
+    <Styled.Resizer
+      onMouseDown={onMouseDown}
+      id={id}
+      ref={ref}
+      handle={handle}
+      className={resizerClass}
+    />
   );
 });
 

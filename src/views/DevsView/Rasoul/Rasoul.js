@@ -45,7 +45,7 @@ const headers = [
 ];
 
 const initialSize = {
-  width: 400,
+  width: 200,
   height: 400,
 };
 
@@ -205,8 +205,8 @@ const RasoulView = () => {
       <Divider title="Resizable Component" />
       <Resizeable
         resizeHandles={['s', 'w', 'n', 'e']}
-        minConstraints={{ width: 300, height: 100 }}
-        maxConstraints={{ width: 500, height: 400 }}
+        minConstraints={{ width: 100, height: 100 }}
+        maxConstraints={{ width: 500, height: 500 }}
         size={size}
         onResizing={handleOnResizing}
         onResizeStart={handleOnResizeStart}

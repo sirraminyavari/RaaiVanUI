@@ -1,4 +1,7 @@
-import { useLayoutEffect, useRef } from 'react';
+/**
+ * Renders a resizable component.
+ */
+import { useRef } from 'react';
 import * as Styled from './Resizable.styles';
 import Resizer from './Resizer';
 
@@ -12,32 +15,14 @@ const Resizable = (props) => {
     onResizeEnd,
     minConstraints,
     maxConstraints,
+    resizerClass,
   } = props;
 
   let prevX;
   let prevY;
 
   const containerRef = useRef();
-
   const currentResizer = useRef(null);
-
-  const upRef = useRef();
-  const downRef = useRef();
-  const leftRef = useRef();
-  const rightRef = useRef();
-
-  const getRef = (handle) => {
-    switch (handle) {
-      case 'n':
-        return upRef;
-      case 's':
-        return downRef;
-      case 'e':
-        return rightRef;
-      default:
-        return leftRef;
-    }
-  };
 
   let newHeight;
   let newWidth;
@@ -46,32 +31,38 @@ const Resizable = (props) => {
     const rect = containerRef.current.getBoundingClientRect();
     const resizerID = currentResizer.current.id;
 
+    //! User grabs the north {n} resizer.
     if (resizerID === 'n') {
       newHeight = rect.height + (prevY - e.clientY);
       newWidth = rect.width;
       containerRef.current.style.height = `${newHeight}px`;
     }
 
+    //! User grabs the west {w} resizer.
     if (resizerID === 'w') {
       newWidth = rect.width + (prevX - e.clientX);
       newHeight = rect.height;
       containerRef.current.style.width = `${newWidth}px`;
     }
 
+    //! User grabs the south {s} resizer.
     if (resizerID === 's') {
       newHeight = rect.height - (prevY - e.clientY);
       newWidth = rect.width;
       containerRef.current.style.height = `${newHeight}px`;
     }
 
+    //! User grabs the east {e} resizer.
     if (resizerID === 'e') {
       newWidth = rect.width - (prevX - e.clientX);
       newHeight = rect.height;
       containerRef.current.style.width = `${newWidth}px`;
     }
 
+    //! Calls on resizing.
     onResizing({ width: newWidth, height: newHeight });
 
+    //! Update mouse position.
     prevX = e.clientX;
     prevY = e.clientY;
   };
@@ -79,43 +70,43 @@ const Resizable = (props) => {
   const onMouseUp = (e) => {
     window.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('mouseup', onMouseUp);
+
+    //! Calls at the end of resizing.
     onResizeEnd({ width: newWidth, height: newHeight });
   };
 
+  //! On mouse down user grabs the resizer and begins the resizing operation.
   const onMouseDown = (e) => {
+    //! Store mouse position.
     prevX = e.clientX;
     prevY = e.clientY;
 
-    currentResizer.current = e.target;
+    currentResizer.current = e.target; //! The current resizer that user is using.
     const rect = containerRef.current.getBoundingClientRect();
 
+    //! Calls at the begining of resizing.
     onResizeStart({ width: rect.width, height: rect.height });
 
+    //! Add mouse move and mouse up events to window.
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
   };
-
-  useLayoutEffect(() => {
-    upRef.current.addEventListener('mousedown', onMouseDown);
-    downRef.current.addEventListener('mousedown', onMouseDown);
-    leftRef.current.addEventListener('mousedown', onMouseDown);
-    rightRef.current.addEventListener('mousedown', onMouseDown);
-  }, []);
 
   return (
     <Styled.ResizableConatiner
       minW={minConstraints?.width}
       maxW={maxConstraints?.width}
       minH={minConstraints?.height}
-      maxH={minConstraints?.height}
+      maxH={maxConstraints?.height}
       ref={containerRef}
       size={size}>
       {resizeHandles.map((handle, index) => {
         return (
           <Resizer
+            onMouseDown={onMouseDown}
             id={handle}
-            ref={getRef(handle)}
-            position={handle}
+            handle={handle}
+            resizerClass={resizerClass}
             key={index}
           />
         );
