@@ -170,7 +170,12 @@ const RasoulView = () => {
       <Divider title="Multi column dnd" />
       <MultiDnD />
       <Divider title="Custom Date Picker" />
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          height: '400px',
+        }}>
         <div>
           <CustomDatePicker
             label=" انتخاب تاریخ جلالی"
@@ -186,6 +191,16 @@ const RasoulView = () => {
             label="english date"
             mode="input"
             type="‫‪gregorian‬‬"
+            clearButton
+            onDateSelect={(date) => console.log(date)}
+          />
+        </div>
+        <div>
+          <CustomDatePicker
+            label=" انتخاب تاریخ با بازه زمانی"
+            mode="button"
+            type="jalali"
+            range
             clearButton
             onDateSelect={(date) => console.log(date)}
           />
@@ -224,6 +239,7 @@ const RasoulView = () => {
           {`width: ${showSize.width}, height: ${showSize.height}`}
         </div>
       </Resizeable>
+      <div style={{ marginBottom: '10rem' }}></div>
       <Divider title="End of view" />
     </div>
   );
