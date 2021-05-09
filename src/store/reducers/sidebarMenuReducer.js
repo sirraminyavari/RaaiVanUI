@@ -6,6 +6,7 @@ export const sidebarMenuSlice = createSlice({
   initialState: {
     nodeTypes: [],
     tree: [],
+    dndTree: {},
     openMenuID: [],
     searchText: '',
     showSearchResults: false,
@@ -17,6 +18,9 @@ export const sidebarMenuSlice = createSlice({
     },
     setSidebarTree: (state, action) => {
       state.tree = action.payload;
+    },
+    setSidebarDnDTree: (state, action) => {
+      state.dndTree = action.payload;
     },
     toggleSidebarMenu: (state, action) => {
       let IDs = state.openMenuID;

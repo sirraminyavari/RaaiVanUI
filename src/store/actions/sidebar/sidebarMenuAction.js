@@ -1,8 +1,12 @@
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import APIHandler from 'apiHelper/APIHandler';
-import { pipe } from 'helpers/helpers';
+import { pipe, decodeBase64 } from 'helpers/helpers';
 
-const { setSidebarNodeTypes, setSidebarTree } = sidebarMenuSlice.actions;
+const {
+  setSidebarNodeTypes,
+  setSidebarTree,
+  setSidebarDnDTree,
+} = sidebarMenuSlice.actions;
 const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
 
 //! See if any changes happened in nodes.
@@ -84,6 +88,61 @@ const treesToDispatch = (next, prev) => {
   );
 };
 
+const getChildrenIds = (trees) => {
+  return trees.map((tree) => tree.NodeTypeID);
+};
+
+const provideItems = (data) => {
+  const items = data.NodeTypes;
+  const appId = data.AppID;
+
+  return items.reduce((prevItems, item, _, self) => {
+    const itemChildrens = self.filter((i) => i.ParentID === item.NodeTypeID);
+
+    const extendedItem = {
+      id: item.NodeTypeID,
+      parent: item.ParentID || appId,
+      children: getChildrenIds(itemChildrens),
+      hasChildren: !!itemChildrens.length,
+      isExpanded: false,
+      isChildrenLoading: false,
+      isEditable: true,
+      isDeleted: false,
+      isCategory: !!item.isCategory,
+      data: {
+        title: decodeBase64(item.TypeName),
+        iconURL: item.IconURL,
+      },
+    };
+    return { ...prevItems, [item.NodeTypeID]: extendedItem };
+  }, {});
+};
+
+const provideDnDTree = (data) => {
+  const rootChildren = getChildrenIds(
+    data.NodeTypes.filter((node) => (!!node.ParentID ? false : true))
+  );
+  const restItems = provideItems(data);
+  return {
+    rootId: data.AppID,
+    items: {
+      [data.AppID]: {
+        id: data.AppID,
+        parent: 'root',
+        children: rootChildren,
+        hasChildren: true,
+        isExpanded: true,
+        isChildrenLoading: false,
+        isDeleted: false,
+        data: {
+          title: 'root',
+        },
+      },
+      ...restItems,
+    },
+  };
+};
+
 /**
  * @description A function (action) that gets sidebar menu item from server.
  * @returns -Dispatch to redux store.
@@ -107,6 +166,7 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
           if (shouldDispatch(response, sidebarItems)) {
             dispatch(nodesToDispatch(response, sidebarItems));
             dispatch(treesToDispatch(response, sidebarItems));
+            dispatch(setSidebarDnDTree(provideDnDTree(response)));
           }
         }
       },

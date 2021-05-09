@@ -115,14 +115,12 @@ export const SidebarHeader = withTheme(styled.div`
   background-image: url(${sidebarPattern});
 `);
 
-export const OpenContentWrapper = styled.div`
-  width: 95%;
-  margin: 0;
+export const OpenContentWrapper = withTheme(styled.div`
+  width: ${(props) => props.theme.states.sidebarCurrentWidth}px;
   position: relative;
-  right: 3%;
-  padding: 0 5% 0 0.7rem;
-  margin-${RV_Float}: 0;
-`;
+  right: 2%;
+  padding: 0 7% 0 4%;
+`);
 
 export const ToggleArrow = styled.div`
   height: 1.5rem;
@@ -236,20 +234,21 @@ export const FooterTitle = withTheme(styled.span`
 `);
 
 export const MenuContainer = styled.div.attrs((props) => ({
-  className: `BorderRadius4 ${props.isOpen ? TBO_DEFAULT : BO_GRAY_DARK}`,
+  className: `BorderRadius4 ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}`,
 }))`
   ${FlexBetween}
   border-width: 1px;
   border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
+  margin-right: ${({ margin }) => `${margin}px`};
   padding: 0 0.5rem;
-  background-color: ${({ isDragging, isOpen }) =>
-    isDragging ? '#2B388F' : isOpen ? 'rgb(43,123,228, 0.2)' : 'inherit'};
+  background-color: ${({ isExpanded }) =>
+    isExpanded ? 'rgb(43,123,228, 0.2)' : 'inherit'};
 
   &:hover {
     background: rgb(43, 123, 228, 0.2);
-    border: ${({ isOpen }) => (isOpen ? 'initial' : 'none')};
+    border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
   }
 
   &:hover > div > div:first-child {

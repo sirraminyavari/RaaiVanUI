@@ -1,4 +1,5 @@
-import { useMemo, useState, useRef } from 'react';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Divider from './Divider';
 
 //! CustomTable
@@ -18,8 +19,12 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
 import DnDTree from 'components/Tree/CustomTree/DnDTree';
 import { customTreeData } from './treeData';
 
-//! Atlasian Tree
-import AtlasianTree from 'components/Tree/AtlasianTree/AtlasianTree';
+//! DragAndDropTree Tree
+import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
+// import { DnDTreeData } from './treeData';
+import DragIcon from 'components/Icons/DragIcon/Drag';
+import CaretIcon from 'components/Icons/CaretIcons/Caret';
+import InlineEdit from 'components/InlineEdit/InlineEdit';
 
 //! DnDProvider
 import DnDProvider from 'components/DnDProvider/DnDProvider';
@@ -49,11 +54,80 @@ const initialSize = {
   height: 400,
 };
 
+const getIcon = (item, onExpand, onCollapse) => {
+  if (item.children && item.children.length > 0) {
+    return item.isExpanded ? (
+      <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
+    ) : (
+      <CaretIcon size={20} onClick={() => onExpand(item.id)} dir="left" />
+    );
+  }
+  return null;
+};
+
 const RasoulView = () => {
+  const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
   const [isFetching, setIsFetching] = useState(true);
   const [data, setData] = useState([]);
+  const [tree, setTree] = useState(DnDTreeData);
   const [size, setSize] = useState(initialSize);
   const [showSize, setShowSize] = useState(initialSize);
+
+  const PADDING_PER_LEVEL = 32;
+
+  const handleMutateTree = (tree) => {
+    setTree(tree);
+  };
+
+  //! Render custom item.
+  const handleRenderItem = ({
+    item,
+    onExpand,
+    onCollapse,
+    provided,
+    depth,
+    snapshot,
+  }) => {
+    const isDragging = snapshot.isDragging;
+    const hasChildren = item.hasChildren;
+    const isEditable = item.isEditable;
+    return (
+      <div ref={provided.innerRef} {...provided.draggableProps}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            margin: '0.7rem 0',
+            backgroundColor: '#333',
+            color: '#fff',
+            padding: '0.5rem 1rem',
+            borderRadius: 5,
+            position: 'relative',
+            right: `${PADDING_PER_LEVEL * depth}px`,
+          }}>
+          <div {...provided.dragHandleProps}>
+            <DragIcon />
+          </div>
+          {!isDragging && <span>{getIcon(item, onExpand, onCollapse)}</span>}
+          <div>
+            {isEditable ? (
+              <InlineEdit
+                text={item.data ? item.data.title : ''}
+                onSetText={(text) => console.log(text)}
+              />
+            ) : (
+              <span
+                style={{
+                  margin: hasChildren ? '0 0.3rem' : '0 0.7rem',
+                }}>
+                {item.data ? item.data.title : ''}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   setTimeout(() => {
     setData(tableData);
@@ -166,7 +240,16 @@ const RasoulView = () => {
       <Divider title="Custom Tree Component(broken dnd)" />
       <DnDTree data={customTreeData} />
       <Divider title="Atlasian Tree Component(with dnd)" />
-      <AtlasianTree />
+      <div style={{ width: '50%', margin: 'auto' }}>
+        <DragAndDropTree
+          excludeDrag={['1-2-2']}
+          excludeDrop={['1', '1-2']}
+          paddingPerLevel={PADDING_PER_LEVEL}
+          tree={tree}
+          onMutateTree={handleMutateTree}
+          renderItem={handleRenderItem}
+        />
+      </div>
       <Divider title="Multi column dnd" />
       <MultiDnD />
       <Divider title="Custom Date Picker" />
@@ -192,6 +275,16 @@ const RasoulView = () => {
             mode="input"
             type="‫‪gregorian‬‬"
             clearButton
+            onDateSelect={(date) => console.log(date)}
+          />
+        </div>
+        <div>
+          <CustomDatePicker
+            label="انتخاب تاریخ با بازه زمانی"
+            mode="input"
+            type="jalali"
+            clearButton
+            range
             onDateSelect={(date) => console.log(date)}
           />
         </div>
