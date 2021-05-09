@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Divider from './Divider';
 
 //! CustomTable
@@ -20,7 +21,7 @@ import { customTreeData } from './treeData';
 
 //! DragAndDropTree Tree
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
-import { DnDTreeData } from './treeData';
+// import { DnDTreeData } from './treeData';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
@@ -65,6 +66,7 @@ const getIcon = (item, onExpand, onCollapse) => {
 };
 
 const RasoulView = () => {
+  const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
   const [isFetching, setIsFetching] = useState(true);
   const [data, setData] = useState([]);
   const [tree, setTree] = useState(DnDTreeData);

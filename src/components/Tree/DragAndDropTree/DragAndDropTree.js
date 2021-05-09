@@ -11,21 +11,6 @@ const DragAndDropTree = (props) => {
     renderItem,
   } = props;
 
-  // const handleOnDelete = (item) => {
-  //   alert(`${item.data.title} has been deleted`);
-
-  //   const itemParent = Object.values(tree.items).find(
-  //     (i) => i.id === item.parent
-  //   );
-
-  //   const treeDeletedOnItem = mutateTree(tree, item.id, { isDeleted: true });
-  //   const treeRemovedOnParent = mutateTree(treeDeletedOnItem, item.parent, {
-  //     children: itemParent.children.filter((child) => child !== item.id),
-  //   });
-
-  //   setTree(treeRemovedOnParent);
-  // };
-
   const handleOnExpand = (itemId) => {
     onMutateTree(mutateTree(tree, itemId, { isExpanded: true }));
   };
@@ -49,21 +34,6 @@ const DragAndDropTree = (props) => {
     onMutateTree(newTree);
   };
 
-  // //! Filter deleted items out.
-  // const filterTree = (tree) => {
-  //   const itemsList = Object.values(tree.items).filter((item) => {
-  //     return !item.isDeleted;
-  //   });
-
-  //   const newItems = itemsList.reduce((items, value) => {
-  //     return Object.assign({}, items, { [value.id]: value });
-  //   }, {});
-
-  //   const filteredTree = { ...tree, items: newItems };
-
-  //   return filteredTree;
-  // };
-
   return (
     <Tree
       tree={tree}
@@ -80,7 +50,7 @@ const DragAndDropTree = (props) => {
 
 DragAndDropTree.propTypes = {
   paddingPerLevel: PropTypes.number,
-  data: PropTypes.object,
+  tree: PropTypes.object,
   onMutateData: PropTypes.func,
   excludeDrop: PropTypes.array,
   excludeDrag: PropTypes.array,
