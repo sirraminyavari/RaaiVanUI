@@ -10,6 +10,7 @@ const {
 
 const getNodesAPI = new APIHandler('CNAPI', 'GetNodeTypes');
 const renameNodeAPI = new APIHandler('CNAPI', 'RenameNodeType');
+const removeNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -30,11 +31,11 @@ const provideItems = (data) => {
       parent: item.ParentID || appId,
       children: getChildrenIds(itemChildrens),
       hasChildren: !!itemChildrens.length,
+      isCategory: !!item.IsCategory,
       isExpanded: false,
       isChildrenLoading: false,
       isEditable: true,
       isDeleted: false,
-      isCategory: !!item.isCategory,
       data: {
         title: decodeBase64(item.TypeName),
         iconURL: item.IconURL,
@@ -46,7 +47,10 @@ const provideItems = (data) => {
 
 const provideDnDTree = (data) => {
   const rootChildren = getChildrenIds(
-    data.NodeTypes.filter((node) => (!!node.ParentID ? false : true))
+    data.NodeTypes.filter((node) => {
+      if (node.ParentID) return false;
+      return true;
+    })
   );
   const restItems = provideItems(data);
   return {
@@ -57,6 +61,7 @@ const provideDnDTree = (data) => {
         parent: 'root',
         children: rootChildren,
         hasChildren: true,
+        isCategory: true,
         isExpanded: true,
         isChildrenLoading: false,
         isDeleted: false,
@@ -102,7 +107,7 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
 };
 
 /**
- * @description A function (action) that rename the sidebar menu item.
+ * @description A function (action) that renames the sidebar menu item.
  * @returns -Dispatch to redux store.
  */
 export const renameSidebarNode = (nodeId, nodeName) => async (
@@ -114,6 +119,30 @@ export const renameSidebarNode = (nodeId, nodeName) => async (
       {
         NodeTypeID: nodeId,
         Name: encodeBase64(nodeName),
+      },
+      (response) => {
+        dispatch(getSidebarNodes());
+      },
+      (error) => console.log({ error })
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that removes the sidebar menu item.
+ * @returns -Dispatch to redux store.
+ */
+export const removeSidebarNode = (nodeId, hierarchy = false) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    removeNodeAPI.fetch(
+      {
+        NodeTypeID: nodeId,
+        RemoveHierarchy: hierarchy,
       },
       (response) => {
         dispatch(getSidebarNodes());

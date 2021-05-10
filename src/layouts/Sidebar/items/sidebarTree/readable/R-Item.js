@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const PADDING_PER_LEVEL = 27;
 
 const getIcon = (item, onExpand, onCollapse) => {
-  if (item.children && item.children.length > 0) {
+  if (item.isCategory) {
     return item.isExpanded ? (
       <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
     ) : (
@@ -54,7 +54,7 @@ const ReadableBranch = (props) => {
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper>
-          {item.hasChildren ? (
+          {item.isCategory ? (
             <Styled.CaretIconWrapper>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
