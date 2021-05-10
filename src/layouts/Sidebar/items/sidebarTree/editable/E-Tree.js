@@ -8,6 +8,10 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import EditableItem from './E-Item';
 import { WindowContext } from 'context/WindowProvider';
+import {
+  moveSidebarNode,
+  reorderSidebarNode,
+} from 'store/actions/sidebar/sidebarMenuAction';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
@@ -17,14 +21,24 @@ const selectTree = createSelector(
 const EditableTree = () => {
   const dispatch = useDispatch();
   const tree = useSelector(selectTree);
+
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
   const { RVGlobal } = useContext(WindowContext);
 
   const isSaaS = RVGlobal.SAASBasedMultiTenancy;
 
   //! Mutate tree.
-  const handleMutateTree = (tree) => {
-    dispatch(setSidebarDnDTree(tree));
+  const handleOnMutateTree = (newTree) => {
+    dispatch(setSidebarDnDTree(newTree));
+  };
+
+  const handleOnMoveItem = (newTree, source, destination) => {
+    if (source.parentId === destination.parentId) {
+      dispatch(reorderSidebarNode(newTree, source, destination));
+    } else {
+      dispatch(moveSidebarNode(newTree, source, destination));
+    }
+    dispatch(setSidebarDnDTree(newTree));
   };
 
   //! Render custom item.
@@ -44,7 +58,8 @@ const EditableTree = () => {
     <DragAndDropTree
       indentPerLevel={0}
       tree={tree}
-      onMutateTree={handleMutateTree}
+      onMutateTree={handleOnMutateTree}
+      onMoveItem={handleOnMoveItem}
       renderItem={handleRenderItem}
       excludeDrop={isSaaS ? excludDropIds : []}
       excludeDragDrop={isSaaS && { from: categories, to: categories }}

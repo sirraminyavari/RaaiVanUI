@@ -19,8 +19,11 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   useEffect(() => {
     if (route.Application) {
-      const appName = decodeBase64(route.Application.Title);
-      dispatch(setSelectedTeam(appName));
+      const application = {
+        name: decodeBase64(route.Application.Title),
+        id: route.Application.ApplicationID,
+      };
+      dispatch(setSelectedTeam(application));
     }
     dispatch(setActivePath(location.pathname));
   }, [route]);

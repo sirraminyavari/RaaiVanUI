@@ -20,7 +20,7 @@ const selectShowSearchResults = createSelector(
   (sidebarItems) => sidebarItems.showSearchResults
 );
 
-const selectTeamName = createSelector(
+const selectTeam = createSelector(
   (state) => state.theme,
   (theme) => theme.selectedTeam
 );
@@ -32,7 +32,7 @@ const SidebarMainContent = () => {
   const { setSidebarContent } = themeSlice.actions;
 
   const showSearchResults = useSelector(selectShowSearchResults);
-  const selectedTeam = useSelector(selectTeamName);
+  const selectedTeam = useSelector(selectTeam);
 
   //! Change sidebar content on click.
   const handleOnClick = useCallback(() => {
@@ -50,7 +50,7 @@ const SidebarMainContent = () => {
     <>
       <Styled.SidebarTitle>
         <Styled.TitleText as={Link} to={getURL('Classes')}>
-          {selectedTeam}
+          {selectedTeam.name}
         </Styled.TitleText>
         <Styled.SettingWrapper onClick={handleOnClick}>
           <SettingIcon />

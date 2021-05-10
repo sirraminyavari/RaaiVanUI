@@ -6,6 +6,7 @@ import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
  * @property {object} tree - Tree data needed for component.
  * @property {number} [indentPerLevel] -The indentation for each level of tree.
  * @property {function} onMutateTree -A callback function that fires on every tree mutation.
+ * @property {function} onMoveItem -A callback function that fires when item moves on tree.
  * @property {function} renderItem -A callback function that renders a custom item for tree.
  * @property {array} excludeDrag -An array of items that are NOT draggable at all.
  * @property {array} excludeDrop -An array of items that are NOT dropable at all.
@@ -24,6 +25,7 @@ const DragAndDropTree = (props) => {
     tree,
     indentPerLevel,
     onMutateTree,
+    onMoveItem,
     excludeDrag,
     excludeDrop,
     excludeDragDrop,
@@ -51,19 +53,20 @@ const DragAndDropTree = (props) => {
     if (excludeDrop && excludeDrop.includes(destination.parentId)) return;
 
     //! Make an item non-draggable.
-    const draggingId = tree.items[source.parentId].children[source.index];
-    if (excludeDrag && excludeDrag.includes(draggingId)) return;
+    const sourceId = tree.items[source.parentId].children[source.index];
+    if (excludeDrag && excludeDrag.includes(sourceId)) return;
 
-    //! Forbidden from one list of items to other.
+    //! Forbidden from one list of items to another.
     if (
       excludeDragDrop &&
-      excludeDragDrop.from.includes(draggingId) &&
+      excludeDragDrop.from.includes(sourceId) &&
       excludeDragDrop.to.includes(destination.parentId)
     )
       return;
 
     const newTree = moveItemOnTree(tree, source, destination);
-    onMutateTree(newTree);
+    source.id = sourceId;
+    onMoveItem(newTree, source, destination);
   };
 
   return (
@@ -84,6 +87,7 @@ DragAndDropTree.propTypes = {
   indentPerLevel: PropTypes.number,
   tree: PropTypes.object,
   onMutateTree: PropTypes.func,
+  onMoveItem: PropTypes.func,
   excludeDrop: PropTypes.array,
   excludeDrag: PropTypes.array,
   excludeDragDrop: PropTypes.object,

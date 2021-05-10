@@ -14,7 +14,7 @@ import { mutateTree } from '@atlaskit/tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import {
   renameSidebarNode,
-  removeSidebarNode,
+  deleteSidebarNode,
 } from 'store/actions/sidebar/sidebarMenuAction';
 
 const PADDING_PER_LEVEL = 27;
@@ -82,7 +82,7 @@ const EditableBranch = (props) => {
       children: itemParent.children.filter((child) => child !== item.id),
     });
     dispatch(setSidebarDnDTree(treeRemovedOnParent));
-    dispatch(removeSidebarNode(item.id));
+    dispatch(deleteSidebarNode(item.id));
   };
 
   const handleChangeTitle = (title) => {

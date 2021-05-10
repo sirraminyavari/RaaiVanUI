@@ -97,6 +97,7 @@ const SidebarOnClose = ({ theme }) => {
               let { IconURL, IconName, NodeTypeID, TypeName } = node;
               return (
                 <PopupMenu
+                  key={key}
                   arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
                   menuStyle="border: 0; padding: 0.4rem 1rem; margin: 1rem; background-color: #333;"
                   trigger="hover"
@@ -104,8 +105,7 @@ const SidebarOnClose = ({ theme }) => {
                   <div>
                     <Styled.MiniIconWrapper
                       as={Link}
-                      to={`/classes/${NodeTypeID}`}
-                      key={key}>
+                      to={`/classes/${NodeTypeID}`}>
                       {IconName && SidebarIcons[IconName]()}
                       {IconURL && (
                         <Styled.MenuItemImage

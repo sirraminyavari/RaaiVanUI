@@ -10,7 +10,9 @@ const {
 
 const getNodesAPI = new APIHandler('CNAPI', 'GetNodeTypes');
 const renameNodeAPI = new APIHandler('CNAPI', 'RenameNodeType');
-const removeNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
+const deleteNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
+const moveNodeAPI = new APIHandler('CNAPI', 'MoveNodeType');
+const reorderNodesAPI = new APIHandler('CNAPI', 'SetNodeTypeOrder');
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -134,15 +136,76 @@ export const renameSidebarNode = (nodeId, nodeName) => async (
  * @description A function (action) that removes the sidebar menu item.
  * @returns -Dispatch to redux store.
  */
-export const removeSidebarNode = (nodeId, hierarchy = false) => async (
+export const deleteSidebarNode = (nodeId, hierarchy = false) => async (
   dispatch,
   getState
 ) => {
   try {
-    removeNodeAPI.fetch(
+    deleteNodeAPI.fetch(
       {
         NodeTypeID: nodeId,
         RemoveHierarchy: hierarchy,
+      },
+      (response) => {
+        dispatch(getSidebarNodes());
+      },
+      (error) => console.log({ error })
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that moves item on sidebar tree.
+ * @returns -Dispatch to redux store.
+ */
+export const moveSidebarNode = (newTree, source, destination) => async (
+  dispatch,
+  getState
+) => {
+  //! Redux store.
+  const { theme } = getState();
+  const { selectedTeam } = theme;
+  let parentId = null; //! Item is at root level.
+
+  //! Check if item moved to root or not.
+  if (destination.parentId !== selectedTeam.id) {
+    parentId = destination.parentId; //! Item is NOT at root level.
+  }
+
+  const nodeId = source.id;
+
+  try {
+    moveNodeAPI.fetch(
+      {
+        NodeTypeID: nodeId,
+        ParentID: parentId,
+      },
+      (response) => {
+        dispatch(getSidebarNodes());
+      },
+      (error) => console.log({ error })
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that reorder items on sidebar tree.
+ * @returns -Dispatch to redux store.
+ */
+export const reorderSidebarNode = (newTree, source, destination) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const nodeIds = newTree.items[source.parentId].children.join('|');
+
+    reorderNodesAPI.fetch(
+      {
+        NodeTypeIDs: nodeIds,
       },
       (response) => {
         dispatch(getSidebarNodes());
