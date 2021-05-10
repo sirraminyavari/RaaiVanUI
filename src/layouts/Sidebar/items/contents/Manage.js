@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import * as Styled from '../../Sidebar.styles';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { themeSlice } from 'store/reducers/themeReducer';
-import EditableTree from '../sidebarTree/editableTree/new/E-Tree-new';
+import EditableTree from '../sidebarTree/editable/E-Tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 
 const SidebarManageContent = () => {

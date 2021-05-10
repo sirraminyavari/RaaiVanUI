@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Styled from '../../../../Sidebar.styles';
+import * as Styled from '../../../Sidebar.styles';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { createSelector } from 'reselect';
 import DragIcon from 'components/Icons/DragIcon/Drag';
@@ -12,6 +12,7 @@ import InlineEdit from 'components/InlineEdit/InlineEdit';
 import { TC_DISTANT } from 'constant/Colors';
 import { mutateTree } from '@atlaskit/tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { renameSidebarNode } from 'store/actions/sidebar/sidebarMenuAction';
 
 const PADDING_PER_LEVEL = 27;
 
@@ -85,6 +86,7 @@ const EditableBranch = (props) => {
       data: { ...item.data, title },
     });
     dispatch(setSidebarDnDTree(treeEditedOnItem));
+    dispatch(renameSidebarNode(item.id, title));
   };
 
   return (
