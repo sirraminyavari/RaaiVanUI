@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Styled from '../../../../Sidebar.styles';
+import * as Styled from '../../../Sidebar.styles';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { createSelector } from 'reselect';
 import DragIcon from 'components/Icons/DragIcon/Drag';
@@ -12,11 +12,15 @@ import InlineEdit from 'components/InlineEdit/InlineEdit';
 import { TC_DISTANT } from 'constant/Colors';
 import { mutateTree } from '@atlaskit/tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import {
+  renameSidebarNode,
+  deleteSidebarNode,
+} from 'store/actions/sidebar/sidebarMenuAction';
 
 const PADDING_PER_LEVEL = 27;
 
 const getIcon = (item, onExpand, onCollapse) => {
-  if (item.children && item.children.length > 0) {
+  if ((item.children && item.children.length > 0) || item.isCategory) {
     return item.isExpanded ? (
       <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
     ) : (
@@ -78,6 +82,7 @@ const EditableBranch = (props) => {
       children: itemParent.children.filter((child) => child !== item.id),
     });
     dispatch(setSidebarDnDTree(treeRemovedOnParent));
+    dispatch(deleteSidebarNode(item.id));
   };
 
   const handleChangeTitle = (title) => {
@@ -85,6 +90,7 @@ const EditableBranch = (props) => {
       data: { ...item.data, title },
     });
     dispatch(setSidebarDnDTree(treeEditedOnItem));
+    dispatch(renameSidebarNode(item.id, title));
   };
 
   return (
@@ -95,7 +101,7 @@ const EditableBranch = (props) => {
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper isManageContent={isManageContent}>
-          {item.hasChildren ? (
+          {item.isCategory || item.hasChildren ? (
             <Styled.CaretIconWrapper>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
@@ -119,7 +125,7 @@ const EditableBranch = (props) => {
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
-          {item.hasChildren && (
+          {item.isCategory && (
             <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
               <TrashIcon />
             </Styled.TrashIconWrapper>

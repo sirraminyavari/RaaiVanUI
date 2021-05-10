@@ -6,14 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
-import EditableItem from './E-Branch.new';
+import ReadableItem from './R-Item';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.dndTree
 );
 
-const EditableTree = () => {
+const ReadableTree = () => {
   const dispatch = useDispatch();
   const tree = useSelector(selectTree);
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
@@ -25,12 +25,11 @@ const EditableTree = () => {
 
   //! Render custom item.
   const handleRenderItem = (itemProps) => {
-    return <EditableItem itemProps={itemProps} />;
+    return <ReadableItem itemProps={itemProps} />;
   };
 
   return (
     <DragAndDropTree
-      paddingPerLevel={0}
       tree={tree}
       onMutateTree={handleMutateTree}
       renderItem={handleRenderItem}
@@ -38,4 +37,4 @@ const EditableTree = () => {
   );
 };
 
-export default memo(EditableTree);
+export default memo(ReadableTree);

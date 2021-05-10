@@ -20,7 +20,7 @@ export const themeSlice = createSlice({
     hasNavSide: false,
     activePath: '',
     sidebarContent: 'main',
-    selectedTeam: null,
+    selectedTeam: { name: null, id: null },
     allTeams: [],
     sidebarOpenWidth: 320,
     sidebarCurrentWidth: 320,
