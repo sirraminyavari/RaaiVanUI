@@ -16,6 +16,8 @@ import {
   renameSidebarNode,
   deleteSidebarNode,
 } from 'store/actions/sidebar/sidebarMenuAction';
+import { toast, ToastContainer } from 'react-toastify';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
 
 const PADDING_PER_LEVEL = 27;
 
@@ -74,6 +76,8 @@ const EditableBranch = (props) => {
 
   const handleOnTrashClick = (e) => {
     e.stopPropagation();
+    const deleteMSG = `دسته "${item.data.title}" حذف خواهد شد`;
+    UndoToast({ type: 'dark', autoClose: 5000, message: deleteMSG });
     const itemParent = Object.values(tree.items).find(
       (x) => x.id === item.parent
     );
@@ -82,7 +86,7 @@ const EditableBranch = (props) => {
       children: itemParent.children.filter((child) => child !== item.id),
     });
     dispatch(setSidebarDnDTree(treeRemovedOnParent));
-    dispatch(deleteSidebarNode(item.id));
+    // dispatch(deleteSidebarNode(item.id));
   };
 
   const handleChangeTitle = (title) => {
@@ -135,6 +139,18 @@ const EditableBranch = (props) => {
           </Styled.DragIconWrapper>
         </Styled.ActionsWrapper>
       </Styled.MenuContainer>
+      {/* <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <ToastContainer /> */}
     </>
   );
 };
