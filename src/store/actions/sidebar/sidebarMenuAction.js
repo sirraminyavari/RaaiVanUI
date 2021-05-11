@@ -12,7 +12,7 @@ const getNodesAPI = new APIHandler('CNAPI', 'GetNodeTypes');
 const renameNodeAPI = new APIHandler('CNAPI', 'RenameNodeType');
 const deleteNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
 const moveNodeAPI = new APIHandler('CNAPI', 'MoveNodeType');
-const reorderNodesAPI = new APIHandler('CNAPI', 'SetNodeTypeOrder');
+const reorderNodesAPI = new APIHandler('CNAPI', 'SetNodeTypesOrder');
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -38,6 +38,7 @@ const provideItems = (data) => {
       isChildrenLoading: false,
       isEditable: true,
       isDeleted: false,
+      isEditing: false,
       data: {
         title: decodeBase64(item.TypeName),
         iconURL: item.IconURL,
@@ -208,9 +209,12 @@ export const reorderSidebarNode = (newTree, source, destination) => async (
         NodeTypeIDs: nodeIds,
       },
       (response) => {
-        dispatch(getSidebarNodes());
+        console.log(response);
       },
-      (error) => console.log({ error })
+      (error) => {
+        console.log({ error });
+        dispatch(getSidebarNodes());
+      }
     );
   } catch (err) {
     console.log({ err });

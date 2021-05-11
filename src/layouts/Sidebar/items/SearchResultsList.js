@@ -3,15 +3,14 @@
  */
 import { memo, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { decode } from 'js-base64';
 import * as Styled from '../Sidebar.styles';
 import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
 import { WindowContext } from 'context/WindowProvider';
 
-const selectNodeTypes = createSelector(
+const selectDnDTree = createSelector(
   (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.nodeTypes
+  (sidebarItems) => sidebarItems.dndTree
 );
 
 const selectSearchText = createSelector(
@@ -20,23 +19,28 @@ const selectSearchText = createSelector(
 );
 
 const SearchResultsList = () => {
-  const nodeTypes = useSelector(selectNodeTypes);
+  const dndTree = useSelector(selectDnDTree);
   const searchText = useSelector(selectSearchText);
 
   const { GlobalUtilities } = useContext(WindowContext);
 
+  const nodes = Object.values(dndTree.items).filter((node) => {
+    if (!!node.isCategory) return false;
+    return true;
+  });
+
   return (
     <Styled.MenuTreeContainer>
-      {nodeTypes
+      {nodes
         .filter((node) =>
-          GlobalUtilities.is_search_match(decode(node.TypeName), searchText)
+          GlobalUtilities.is_search_match(node.data.title, searchText)
         )
         .map((node) => {
           return (
             <SearchResultItem
               node={node}
               searchText={searchText}
-              key={node.NodeTypeID}
+              key={node.id}
             />
           );
         })}

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-
-const { GlobalUtilities, RV_RTL } = window;
+import { WindowContext } from 'context/WindowProvider';
 
 const CircularProgress = ({
   size = '2rem',
@@ -29,6 +28,10 @@ const CircularProgress = ({
     maxValue = 100;
   }
 
+  let timeout;
+
+  const { GlobalUtilities, RV_RTL } = useContext(WindowContext);
+
   const [value, setValue] = useState(
     auto ? (countDown ? maxValue : minValue) : progress
   );
@@ -44,9 +47,18 @@ const CircularProgress = ({
   if (auto) {
     let newValue = countDown ? value - 1 : value + 1;
     if (newValue >= minValue && newValue <= maxValue) {
-      setTimeout(() => setValue(newValue), 1000);
+      timeout = setTimeout(() => setValue(newValue), 1000);
     }
   }
+
+  useEffect(() => {
+    //! Clean up.
+    return () => {
+      clearTimeout(timeout);
+      //! Reset timer to zero on unmount.
+      onUpdate(value);
+    };
+  }, []);
 
   let progressValue =
     isNaN(+value) || value < minValue

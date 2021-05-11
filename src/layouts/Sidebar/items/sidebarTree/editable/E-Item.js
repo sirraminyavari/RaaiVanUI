@@ -16,8 +16,11 @@ import {
   renameSidebarNode,
   deleteSidebarNode,
 } from 'store/actions/sidebar/sidebarMenuAction';
+import { toast, ToastContainer } from 'react-toastify';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
-const PADDING_PER_LEVEL = 27;
+const INDENT_PER_LEVEL = 27;
 
 const getIcon = (item, onExpand, onCollapse) => {
   if ((item.children && item.children.length > 0) || item.isCategory) {
@@ -72,31 +75,113 @@ const EditableBranch = (props) => {
 
   const isManageContent = sidebarContent === 'manage';
 
-  const handleOnTrashClick = (e) => {
-    e.stopPropagation();
-    const itemParent = Object.values(tree.items).find(
-      (x) => x.id === item.parent
-    );
-    const treeDeletedOnItem = mutateTree(tree, item.id, { isDeleted: true });
-    const treeRemovedOnParent = mutateTree(treeDeletedOnItem, item.parent, {
-      children: itemParent.children.filter((child) => child !== item.id),
-    });
-    dispatch(setSidebarDnDTree(treeRemovedOnParent));
+  const handleOnClose = (type, title = '') => {
+    if (type === 'delete') {
+      console.log('have no time, just delete it!');
+      dispatch(deleteSidebarNode(item.id));
+    }
+
+    if (type === 'edit' && title) {
+      console.log('have no time, just edit it!');
+      dispatch(renameSidebarNode(item.id, title));
+    }
+  };
+
+  const CloseButton = ({ closeToast, onClose }) => {
+    const OnCloseClick = () => {
+      onClose();
+      closeToast();
+    };
+    return <CloseIcon size={18} color="#000" onClick={OnCloseClick} />;
+  };
+
+  const deleteTimeUpdate = (t) => {
+    if (t !== 0) return;
+    console.log('time is over and delete');
     dispatch(deleteSidebarNode(item.id));
   };
 
-  const handleChangeTitle = (title) => {
+  const editTimerUpdate = (t, title) => {
+    if (t !== 0) return;
+    console.log('time is over and apply edit');
+    dispatch(renameSidebarNode(item.id, title));
+  };
+
+  const undoDelete = () => {
+    console.log('undo delete');
+    const undoDeleteOnItem = mutateTree(tree, item.id, { isDeleted: false });
+    dispatch(setSidebarDnDTree(undoDeleteOnItem));
+  };
+
+  const undoEdit = () => {
+    console.log('undo edit');
+    const undoEditOnItem = mutateTree(tree, item.id, {
+      isEditing: false,
+    });
+    dispatch(setSidebarDnDTree(undoEditOnItem));
+  };
+
+  const onItemDelete = (e) => {
+    e.stopPropagation();
+
+    const deleteMSG = `دسته "${item.data.title}" حذف خواهد شد`;
+    const deleteToast = UndoToast({
+      type: 'error',
+      autoClose: 5000,
+      message: deleteMSG,
+      onUndo: undoDelete,
+      onTimeUpdate: deleteTimeUpdate,
+      closeButton: ({ closeToast }) => (
+        <CloseButton
+          closeToast={closeToast}
+          onClose={() => handleOnClose('delete')}
+        />
+      ),
+      toastId: `delete-${item.id}`,
+    });
+
+    const itemParent = Object.values(tree.items).find(
+      (x) => x.id === item.parent
+    );
+
+    const deleteOnItem = mutateTree(tree, item.id, { isDeleted: true });
+    const removeOnParent = mutateTree(deleteOnItem, item.parent, {
+      children: itemParent.children.filter((child) => child !== item.id),
+    });
+    dispatch(setSidebarDnDTree(removeOnParent));
+  };
+
+  const onEditTitle = (title) => {
+    const trimedTitle = title.trim();
+    if (trimedTitle === item.data.title) return;
+
+    const editMSG = `نام "${item.data.title}" به "${trimedTitle}" تغییر خواهد کرد`;
+    const editToast = UndoToast({
+      type: 'info',
+      autoClose: 5000,
+      message: editMSG,
+      onUndo: undoEdit,
+      onTimeUpdate: (time) => editTimerUpdate(time, trimedTitle),
+      closeButton: ({ closeToast }) => (
+        <CloseButton
+          closeToast={closeToast}
+          onClose={() => handleOnClose('edit', trimedTitle)}
+        />
+      ),
+      toastId: `edit-${item.id}`,
+    });
+
+    //TODO: shallow and deep state change.
     const treeEditedOnItem = mutateTree(tree, item.id, {
-      data: { ...item.data, title },
+      isEditing: true,
     });
     dispatch(setSidebarDnDTree(treeEditedOnItem));
-    dispatch(renameSidebarNode(item.id, title));
   };
 
   return (
     <>
       <Styled.MenuContainer
-        margin={depth === 0 ? 0 : `${PADDING_PER_LEVEL * depth}`}
+        margin={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item.isExpanded}
         ref={provided.innerRef}
         {...provided.draggableProps}>
@@ -111,7 +196,7 @@ const EditableBranch = (props) => {
           <Styled.MenuTitle>
             <InlineEdit
               text={item.data ? item.data.title : ''}
-              onSetText={handleChangeTitle}
+              onSetText={onEditTitle}
               styles={{
                 textStyle: {
                   width: '100%',
@@ -126,7 +211,7 @@ const EditableBranch = (props) => {
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
           {item.isCategory && (
-            <Styled.TrashIconWrapper onClick={handleOnTrashClick}>
+            <Styled.TrashIconWrapper onClick={onItemDelete}>
               <TrashIcon />
             </Styled.TrashIconWrapper>
           )}
