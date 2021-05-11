@@ -10,7 +10,9 @@ import UndoMSG from './UndoMessage';
  * @property {string} message - Message to show in toast.
  * @property {function} onUndo - A callback function that fires whenever user cancel the action.
  * @property {function} onClose - A callback function that fires when toast has been closed.
- * @property {function} onTimeEnd - A callback function that fires when time is over.
+ * @property {function} onTimeUpdate - A callback function that fires on countdown time update.
+ * @property {function} closeButton - A custom close button for toast.
+ * @property {number | string} toastId - A custom close id for toast.
  */
 
 /**
@@ -26,7 +28,9 @@ const UndoToast = (props) => {
     message,
     onUndo,
     onClose,
-    onTimeEnd,
+    onTimeUpdate,
+    closeButton,
+    toastId,
   } = props;
 
   const UndoMessage = (
@@ -34,7 +38,7 @@ const UndoToast = (props) => {
       onUndo={onUndo}
       time={autoClose}
       message={message}
-      onTimeEnd={onTimeEnd}
+      onTimeUpdate={onTimeUpdate}
     />
   );
 
@@ -47,6 +51,8 @@ const UndoToast = (props) => {
     draggable: true,
     progress: undefined,
     onClose: onClose,
+    closeButton: closeButton,
+    toastId: toastId,
   };
 
   if (!!type) {
@@ -63,7 +69,9 @@ UndoToast.propTypes = {
   message: PropTypes.string,
   onUndo: PropTypes.func,
   onClose: PropTypes.func,
-  onTimeEnd: PropTypes.func,
+  onTimeUpdate: PropTypes.func,
+  closeButton: PropTypes.elementType,
+  toastId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 UndoToast.displayName = 'UndoToastComponent';

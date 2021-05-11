@@ -6,12 +6,10 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
-import SidebarIcons from 'components/Icons/SidebarIcons/SidebarIcons';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64 } from 'helpers/helpers';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -24,9 +22,14 @@ const SidebarOnClose = ({ theme }) => {
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
-  const { nodeTypes } = useSelector((state) => state.sidebarItems);
+  const { dndTree } = useSelector((state) => state.sidebarItems);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
+
+  const nodes = Object.values(dndTree.items).filter((node) => {
+    if (!!node.isCategory) return false;
+    return true;
+  });
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -93,8 +96,8 @@ const SidebarOnClose = ({ theme }) => {
         </Styled.Up>
         <Styled.IconListContainer>
           <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}>
-            {nodeTypes.map((node, key) => {
-              let { IconURL, IconName, NodeTypeID, TypeName } = node;
+            {nodes.map((node, key) => {
+              const { data, id } = node;
               return (
                 <PopupMenu
                   key={key}
@@ -103,19 +106,16 @@ const SidebarOnClose = ({ theme }) => {
                   trigger="hover"
                   align="left">
                   <div>
-                    <Styled.MiniIconWrapper
-                      as={Link}
-                      to={`/classes/${NodeTypeID}`}>
-                      {IconName && SidebarIcons[IconName]()}
-                      {IconURL && (
+                    <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
+                      {data.iconURL && (
                         <Styled.MenuItemImage
-                          src={IconURL}
+                          src={data.iconURL}
                           alt="sidebar-icon-closed"
                         />
                       )}
                     </Styled.MiniIconWrapper>
                   </div>
-                  <div>{decodeBase64(TypeName)}</div>
+                  <div>{data.title}</div>
                 </PopupMenu>
               );
             })}

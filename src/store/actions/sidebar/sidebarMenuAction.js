@@ -38,6 +38,7 @@ const provideItems = (data) => {
       isChildrenLoading: false,
       isEditable: true,
       isDeleted: false,
+      isEditing: false,
       data: {
         title: decodeBase64(item.TypeName),
         iconURL: item.IconURL,

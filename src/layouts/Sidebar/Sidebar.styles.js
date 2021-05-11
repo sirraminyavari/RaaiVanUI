@@ -92,7 +92,7 @@ export const ContentWrapper = withTheme(styled.div`
   padding: 0 0.5rem;
   margin-top: 4rem;
   margin-right: -2.5rem;
-  margin-bottom: ${({ isMainContent }) => (isMainContent ? '10vh' : '3vh')};
+  margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
 `);
 
 export const SidebarHeader = withTheme(styled.div`

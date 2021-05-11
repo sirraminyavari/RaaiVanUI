@@ -55,8 +55,10 @@ const CircularProgress = ({
     //! Clean up.
     return () => {
       clearTimeout(timeout);
+      //! Reset timer to zero on unmount.
+      onUpdate(value);
     };
-  });
+  }, []);
 
   let progressValue =
     isNaN(+value) || value < minValue

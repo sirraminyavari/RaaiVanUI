@@ -50,7 +50,7 @@ const SidebarMainContent = () => {
     <>
       <Styled.SidebarTitle>
         <Styled.TitleText as={Link} to={getURL('Classes')}>
-          {selectedTeam.name}
+          {selectedTeam?.name}
         </Styled.TitleText>
         <Styled.SettingWrapper onClick={handleOnClick}>
           <SettingIcon />
