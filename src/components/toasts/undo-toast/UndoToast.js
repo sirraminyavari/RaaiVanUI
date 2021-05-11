@@ -8,6 +8,9 @@ import UndoMSG from './UndoMessage';
  * @property {('top-left' | 'top-center' | 'top-right' | 'bottom-right' | 'bottom-center' | 'bottom-left')} position - Position of  the toast.
  * @property {number} autoClose - Tosat will be closed at that miliseconds. Default to 5000 ms.
  * @property {string} message - Message to show in toast.
+ * @property {function} onUndo - A callback function that fires whenever user cancel the action.
+ * @property {function} onClose - A callback function that fires when toast has been closed.
+ * @property {function} onTimeEnd - A callback function that fires when time is over.
  */
 
 /**
@@ -16,15 +19,24 @@ import UndoMSG from './UndoMessage';
  * @param {PropType} props
  */
 const UndoToast = (props) => {
-  const { type, autoClose, position, message } = props;
+  const {
+    type,
+    autoClose,
+    position,
+    message,
+    onUndo,
+    onClose,
+    onTimeEnd,
+  } = props;
 
-  const handleOnToastClose = () => {
-    console.log('closed');
-  };
-
-  const handleOnUndo = () => {
-    console.log('undo');
-  };
+  const UndoMessage = (
+    <UndoMSG
+      onUndo={onUndo}
+      time={autoClose}
+      message={message}
+      onTimeEnd={onTimeEnd}
+    />
+  );
 
   const toastOptions = {
     position: position || 'bottom-left',
@@ -34,19 +46,13 @@ const UndoToast = (props) => {
     pauseOnHover: false,
     draggable: true,
     progress: undefined,
-    onClose: handleOnToastClose,
+    onClose: onClose,
   };
 
   if (!!type) {
-    return toast[type](
-      <UndoMSG onUndo={handleOnUndo} time={autoClose} message={message} />,
-      toastOptions
-    );
+    return toast[type](UndoMessage, toastOptions);
   } else {
-    return toast(
-      <UndoMSG onUndo={handleOnUndo} time={autoClose} message={message} />,
-      toastOptions
-    );
+    return toast(UndoMessage, toastOptions);
   }
 };
 
@@ -55,6 +61,9 @@ UndoToast.propTypes = {
   position: PropTypes.string,
   autoClose: PropTypes.number,
   message: PropTypes.string,
+  onUndo: PropTypes.func,
+  onClose: PropTypes.func,
+  onTimeEnd: PropTypes.func,
 };
 
 UndoToast.displayName = 'UndoToastComponent';

@@ -74,19 +74,38 @@ const EditableBranch = (props) => {
 
   const isManageContent = sidebarContent === 'manage';
 
+  const handleOnTimeEnd = () => {
+    console.log('time ended and delete');
+    dispatch(deleteSidebarNode(item.id));
+  };
+
+  const handleOnToastUndo = () => {
+    console.log('undo delete');
+    const undoDeleteOnItem = mutateTree(tree, item.id, { isDeleted: false });
+    dispatch(setSidebarDnDTree(undoDeleteOnItem));
+  };
+
   const handleOnTrashClick = (e) => {
     e.stopPropagation();
+
     const deleteMSG = `دسته "${item.data.title}" حذف خواهد شد`;
-    UndoToast({ type: 'dark', autoClose: 5000, message: deleteMSG });
+    UndoToast({
+      type: 'dark',
+      autoClose: 5000,
+      message: deleteMSG,
+      onUndo: handleOnToastUndo,
+      onTimeEnd: handleOnTimeEnd,
+    });
+
     const itemParent = Object.values(tree.items).find(
       (x) => x.id === item.parent
     );
-    const treeDeletedOnItem = mutateTree(tree, item.id, { isDeleted: true });
-    const treeRemovedOnParent = mutateTree(treeDeletedOnItem, item.parent, {
+
+    const deleteOnItem = mutateTree(tree, item.id, { isDeleted: true });
+    const removeOnParent = mutateTree(deleteOnItem, item.parent, {
       children: itemParent.children.filter((child) => child !== item.id),
     });
-    dispatch(setSidebarDnDTree(treeRemovedOnParent));
-    // dispatch(deleteSidebarNode(item.id));
+    dispatch(setSidebarDnDTree(removeOnParent));
   };
 
   const handleChangeTitle = (title) => {

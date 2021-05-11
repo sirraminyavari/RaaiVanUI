@@ -3,16 +3,22 @@ import * as Styled from './UndoToast.styles';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 
 const UndoMessage = (props) => {
-  const { onUndo, closeToast, time, message } = props;
+  const { onUndo, closeToast, time, message, onTimeEnd } = props;
 
-  const handleOnClick = () => {
+  const handleOnUndoClick = () => {
     onUndo();
     closeToast();
   };
 
+  const handleTimerUpdate = (t) => {
+    if (t === 0) {
+      onTimeEnd && onTimeEnd();
+    }
+  };
+
   return (
     <Styled.ToastMessageContainer>
-      <Styled.UndoIconWrapper onClick={handleOnClick}>
+      <Styled.UndoIconWrapper onClick={handleOnUndoClick}>
         <UndoIcon size={20} />
       </Styled.UndoIconWrapper>
       <span
@@ -29,6 +35,7 @@ const UndoMessage = (props) => {
           color="red"
           textColor="#fff"
           textSize="1rem"
+          onUpdate={handleTimerUpdate}
         />
       </div>
     </Styled.ToastMessageContainer>
