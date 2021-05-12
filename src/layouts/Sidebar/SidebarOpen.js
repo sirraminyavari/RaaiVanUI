@@ -16,7 +16,7 @@ import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
 import { WindowContext } from 'context/WindowProvider';
 
 const SidebarContentOpen = lazy(() =>
-  import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
+  import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
 );
 
 const selectIsSidebarOpen = createSelector(

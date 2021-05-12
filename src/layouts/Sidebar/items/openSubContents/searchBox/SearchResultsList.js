@@ -3,7 +3,7 @@
  */
 import { memo, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../../Sidebar.styles';
 import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
 import { WindowContext } from 'context/WindowProvider';

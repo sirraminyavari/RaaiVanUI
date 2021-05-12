@@ -12,7 +12,7 @@ import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 
 const SidebarContentClose = lazy(() =>
-  import(/* webpackChunkName: "sidebar-close-content"*/ './items/SidebarClose')
+  import(/* webpackChunkName: "sidebar-close-content"*/ './items/ContentClose')
 );
 
 const selectTeam = createSelector(

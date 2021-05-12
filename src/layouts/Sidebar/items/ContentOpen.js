@@ -13,15 +13,17 @@ const selectSidebarContent = createSelector(
 
 const SidebarSetting = lazy(() =>
   import(
-    /* webpackChunkName: "sidebar-setting-content"*/ './contents/setting/Setting'
+    /* webpackChunkName: "sidebar-setting-content"*/ './openSubContents/setting/Setting'
   )
 );
 const SidebarMain = lazy(() =>
-  import(/* webpackChunkName: "sidebar-main-content"*/ './contents/Main')
+  import(/* webpackChunkName: "sidebar-main-content"*/ './openSubContents/Main')
 );
 
 const SidebarManage = lazy(() =>
-  import(/* webpackChunkName: "sidebar-manage-content"*/ './contents/Manage')
+  import(
+    /* webpackChunkName: "sidebar-manage-content"*/ './openSubContents/Manage'
+  )
 );
 
 const getSidebarContent = (content) => {
