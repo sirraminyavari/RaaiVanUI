@@ -20,10 +20,16 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
+const selectTeam = createSelector(
+  (state) => state.theme,
+  (theme) => theme.selectedTeam
+);
+
 const SidebarHeader = () => {
   const dispatch = useDispatch();
-  const { toggleSidebar, toggleSetting } = themeSlice.actions;
+  const { toggleSidebar } = themeSlice.actions;
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const selectedTeam = useSelector(selectTeam);
   const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useContext(WindowContext);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
@@ -35,17 +41,19 @@ const SidebarHeader = () => {
     query: '(max-width: 975px)',
   });
 
+  const isTeamSelected = !!selectedTeam?.id;
+
   //! Toggle sidebar drawer on click.
   const toggleDrawer = () => {
     if (isMobileScreen) return;
-    dispatch(toggleSidebar(!isSidebarOpen));
-    if (isSidebarOpen) {
-      dispatch(toggleSetting(false));
-    }
+    isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
   };
 
   useEffect(() => {
     if (isMobileNav) {
+      dispatch(toggleSidebar(false));
+    }
+    if (!isTeamSelected) {
       dispatch(toggleSidebar(false));
     }
   }, [isMobileNav, dispatch]);

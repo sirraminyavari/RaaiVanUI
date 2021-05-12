@@ -1,6 +1,6 @@
-import { Suspense, memo } from 'react';
+import { Suspense, memo, useEffect } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Routes from 'routes/MainRoutes/Main.routes';
 import Navbar from './Navbar/Navbar';
 import OpenSidebar from './Sidebar/Sidebar-Open';
@@ -16,6 +16,7 @@ import { createSelector } from 'reselect';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
+import { themeSlice } from 'store/reducers/themeReducer';
 
 const switchRoutes = (
   <Switch>
@@ -59,10 +60,19 @@ const selectHasNavSide = createSelector(
 const Main = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const hasNavSide = useSelector(selectHasNavSide);
+  const dispatch = useDispatch();
+  const { setSelectedTeam, setSidebarContent } = themeSlice.actions;
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSelectedTeam({ name: null, id: null }));
+      dispatch(setSidebarContent({ current: 'main', prev: '' }));
+    };
+  }, []);
 
   return (
     <>

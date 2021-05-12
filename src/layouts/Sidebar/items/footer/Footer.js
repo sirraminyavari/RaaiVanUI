@@ -15,7 +15,7 @@ const selectSidebarContent = createSelector(
 const SidebarFooter = () => {
   const sidebarContent = useSelector(selectSidebarContent);
 
-  const isMainContent = sidebarContent === 'main';
+  const isMainContent = sidebarContent.current === 'main';
 
   return (
     <Styled.SidebarFooter>

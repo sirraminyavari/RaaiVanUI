@@ -18,7 +18,7 @@ const SidebarSettingContent = () => {
   const panels = useSelector((state) => state.sidebarItems.configPanels);
 
   const handleOnClick = () => {
-    dispatch(setSidebarContent('main'));
+    dispatch(setSidebarContent({ current: 'main', prev: 'setting' }));
   };
 
   return (
@@ -32,22 +32,24 @@ const SidebarSettingContent = () => {
           <ArrowIcon dir={RV_RevFloat} size={20} />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
-      {panels.map((panel, key) => {
-        return (
-          <Styled.PanelWrapper
-            as={Link}
-            to={`/configuration/${panel.URL}`}
-            key={key}>
-            <Styled.PanelImage
-              src={`${process.env.PUBLIC_URL}/images/icons/${panel.Icon}`}
-              alt="panel-icon"
-            />
-            <Styled.PanelLink>
-              {RVDic.PRVC[panel.Name] || RVDic[panel.Name] || panel.Name}
-            </Styled.PanelLink>
-          </Styled.PanelWrapper>
-        );
-      })}
+      <Styled.PanelListWrapper>
+        {panels.map((panel, key) => {
+          return (
+            <Styled.PanelWrapper
+              as={Link}
+              to={`/configuration/${panel.URL}`}
+              key={key}>
+              <Styled.PanelImage
+                src={`${process.env.PUBLIC_URL}/images/icons/${panel.Icon}`}
+                alt="panel-icon"
+              />
+              <Styled.PanelLink>
+                {RVDic.PRVC[panel.Name] || RVDic[panel.Name] || panel.Name}
+              </Styled.PanelLink>
+            </Styled.PanelWrapper>
+          );
+        })}
+      </Styled.PanelListWrapper>
     </>
   );
 };

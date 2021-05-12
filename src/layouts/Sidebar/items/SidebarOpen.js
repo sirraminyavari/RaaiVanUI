@@ -34,11 +34,11 @@ const getSidebarContent = (title) => {
 };
 
 const SidebarOnOpen = () => {
-  const contentTitle = useSelector(selectSidebarContent);
+  const content = useSelector(selectSidebarContent);
 
   return (
     <Styled.OpenContentWrapper>
-      {getSidebarContent(contentTitle)}
+      {getSidebarContent(content.current)}
     </Styled.OpenContentWrapper>
   );
 };

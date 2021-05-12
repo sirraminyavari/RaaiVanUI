@@ -18,7 +18,7 @@ const ManageButton = () => {
 
   const handleManageButton = () => {
     dispatch(closeOpenMenus());
-    dispatch(setSidebarContent('manage'));
+    dispatch(setSidebarContent({ current: 'manage', prev: 'main' }));
     if (!isSidebarOpen) {
       dispatch(toggleSidebar(true));
     }

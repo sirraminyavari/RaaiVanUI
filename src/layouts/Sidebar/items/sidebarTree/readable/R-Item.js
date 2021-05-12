@@ -6,7 +6,7 @@ import * as Styled from '../../../Sidebar.styles';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { Link } from 'react-router-dom';
 
-const PADDING_PER_LEVEL = 27;
+const INDENT_PER_LEVEL = 27;
 
 const getIcon = (item, onExpand, onCollapse) => {
   if (item.isCategory) {
@@ -49,7 +49,7 @@ const ReadableBranch = (props) => {
   return (
     <>
       <Styled.MenuContainer
-        margin={depth === 0 ? 0 : `${PADDING_PER_LEVEL * depth}`}
+        margin={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item.isExpanded}
         ref={provided.innerRef}
         {...provided.draggableProps}>

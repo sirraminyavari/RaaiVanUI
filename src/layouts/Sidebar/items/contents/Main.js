@@ -36,7 +36,7 @@ const SidebarMainContent = () => {
 
   //! Change sidebar content on click.
   const handleOnClick = useCallback(() => {
-    dispatch(setSidebarContent('setting'));
+    dispatch(setSidebarContent({ current: 'setting', prev: 'main' }));
   }, [dispatch]);
 
   useEffect(() => {

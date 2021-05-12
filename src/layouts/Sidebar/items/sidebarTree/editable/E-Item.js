@@ -73,7 +73,7 @@ const EditableBranch = (props) => {
   const dispatch = useDispatch();
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
-  const isManageContent = sidebarContent === 'manage';
+  const isManageContent = sidebarContent.current === 'manage';
 
   const handleOnClose = (type, title = '') => {
     if (type === 'delete') {

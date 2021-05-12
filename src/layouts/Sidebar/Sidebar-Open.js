@@ -1,7 +1,7 @@
 /**
  * Renders open sidebar area for non-mobile screens.
  */
-import { lazy, Suspense, useEffect, memo } from 'react';
+import { lazy, Suspense, useEffect, memo, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
@@ -13,6 +13,7 @@ import SidebarFooter from './items/footer/Footer';
 import Resizable from 'components/Resizable/Resizable';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
+import { WindowContext } from 'context/WindowProvider';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/SidebarOpen')
@@ -39,6 +40,7 @@ const OpenSidebar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const sidebarContent = useSelector(selectSidebarContent);
   const sidebarOpenWidth = useSelector(selectOpenWidth);
+  const { RV_RTL } = useContext(WindowContext);
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -48,7 +50,7 @@ const OpenSidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen, dispatch]);
 
-  const isMainContent = sidebarContent === 'main';
+  const isMainContent = sidebarContent.current === 'main';
 
   const handleOnResizeEnd = (size) => {
     dispatch(setOpenWidth(size.width));
@@ -69,7 +71,7 @@ const OpenSidebar = () => {
       size={{ width: sidebarOpenWidth }}
       minConstraints={{ width: MIN_WIDTH }}
       maxConstraints={{ width: MAX_WIDTH }}
-      resizeHandles={['w']}
+      resizeHandles={RV_RTL ? ['w'] : ['e']}
       onResizing={handleOnResizing}
       onResizeEnd={handleOnResizeEnd}>
       <Styled.SidebarContainer>

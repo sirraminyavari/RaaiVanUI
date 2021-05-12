@@ -12,7 +12,7 @@ const SidebarManageContent = () => {
 
   const handleOnClick = () => {
     dispatch(closeOpenMenus());
-    dispatch(setSidebarContent('main'));
+    dispatch(setSidebarContent({ current: 'main', prev: 'manage' }));
   };
 
   return (

@@ -15,9 +15,9 @@ const SidebarContentClose = lazy(() =>
   import(/* webpackChunkName: "sidebar-close-content"*/ './items/SidebarClose')
 );
 
-const selectIsSidebarOpen = createSelector(
+const selectTeam = createSelector(
   (state) => state.theme,
-  (theme) => theme.isSidebarOpen
+  (theme) => theme.selectedTeam
 );
 
 const selectSidebarContent = createSelector(
@@ -27,28 +27,26 @@ const selectSidebarContent = createSelector(
 
 const CloseSidebar = () => {
   const dispatch = useDispatch();
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const selectedTeam = useSelector(selectTeam);
   const sidebarContent = useSelector(selectSidebarContent);
 
   useEffect(() => {
-    if (isSidebarOpen) {
-      dispatch(getSidebarNodes());
-      dispatch(getConfigPanels());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSidebarOpen, dispatch]);
+    dispatch(getSidebarNodes());
+    dispatch(getConfigPanels());
+  }, []);
 
-  const isMainContent = sidebarContent === 'main';
+  const isMainContent = sidebarContent.current === 'main';
+  const isTeamSelected = !!selectedTeam?.id;
 
   return (
     <Styled.SidebarContainer>
       <SidebarHeader />
       <Styled.ContentWrapper isMainContent={isMainContent}>
-        <Suspense fallback={<LogoLoader size={10} />}>
-          {isMainContent && <SidebarContentClose />}
+        <Suspense fallback={<LogoLoader size={5} />}>
+          {isTeamSelected && isMainContent && <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>
-      {isMainContent && <SidebarFooter />}
+      {isTeamSelected && isMainContent && <SidebarFooter />}
     </Styled.SidebarContainer>
   );
 };
