@@ -402,6 +402,19 @@ export const PanelWrapper = styled.div.attrs({
   transition: all 0.3s linear;
 `;
 
+export const SettingItemWrapper = styled.div.attrs({
+  className: `${C_WHITE} BorderRadius4`,
+})`
+  ${FlexCenter}
+  margin: 0.5rem 0;
+  margin-${RV_Float}: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  :hover {
+    background: rgba(43,56,143, 0.4);
+  }
+`;
+
 export const PanelImage = styled.img`
   width: 1.2rem;
   filter: brightness(0) invert(100%);
@@ -499,6 +512,11 @@ export const CancelIconWrapper = styled.div`
 `;
 
 export const PanelLink = styled.div`
+  margin-${RV_Float}: 0.4rem;
+  text-transform: capitalize;
+`;
+
+export const SettingItemTitle = styled.div`
   margin-${RV_Float}: 0.4rem;
   text-transform: capitalize;
 `;

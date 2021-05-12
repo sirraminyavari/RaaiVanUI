@@ -82,8 +82,6 @@ const provideDnDTree = (data) => {
  * @returns -Dispatch to redux store.
  */
 export const getSidebarNodes = () => async (dispatch, getState) => {
-  //! Redux store.
-  const { sidebarItems } = getState();
   try {
     getNodesAPI.fetch(
       {
@@ -95,7 +93,7 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
       },
       (response) => {
         if (response.NodeTypes || response.Tree) {
-          console.log(filterHiddenNodes(response.NodeTypes));
+          console.log(response);
 
           dispatch(setSidebarNodeTypes(filterHiddenNodes(response.NodeTypes)));
           dispatch(setSidebarTree(response.Tree));
