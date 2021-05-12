@@ -254,6 +254,9 @@ export const MenuContainer = styled.div.attrs((props) => ({
   background-color: ${({ isExpanded }) =>
     isExpanded ? 'rgb(43,123,228, 0.2)' : 'inherit'};
 
+  //TODO: add class on select color.
+  // rgba(43,56,143, 0.4)
+
   &:hover {
     background: rgb(43, 123, 228, 0.2);
     border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};

@@ -24,8 +24,10 @@ const SidebarManage = lazy(() =>
   import(/* webpackChunkName: "sidebar-manage-content"*/ './contents/Manage')
 );
 
-const getSidebarContent = (title) => {
-  switch (title) {
+const getSidebarContent = (content) => {
+  const rootContent = content.split('-')[0];
+
+  switch (rootContent) {
     case 'setting':
       return <SidebarSetting />;
     case 'manage':

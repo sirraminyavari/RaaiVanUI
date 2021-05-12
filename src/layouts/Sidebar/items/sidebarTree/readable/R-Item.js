@@ -7,13 +7,18 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { Link } from 'react-router-dom';
 
 const INDENT_PER_LEVEL = 27;
+const { RV_RevFloat } = window;
 
 const getIcon = (item, onExpand, onCollapse) => {
   if (item.isCategory) {
     return item.isExpanded ? (
       <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
     ) : (
-      <CaretIcon size={20} onClick={() => onExpand(item.id)} dir="left" />
+      <CaretIcon
+        size={20}
+        onClick={() => onExpand(item.id)}
+        dir={RV_RevFloat}
+      />
     );
   }
   return null;

@@ -69,7 +69,6 @@ const Main = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(setSelectedTeam({ name: null, id: null }));
       dispatch(setSidebarContent({ current: 'main', prev: '' }));
     };
   }, []);
