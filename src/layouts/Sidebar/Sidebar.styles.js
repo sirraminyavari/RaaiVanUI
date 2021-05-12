@@ -251,12 +251,12 @@ export const MenuContainer = styled.div.attrs((props) => ({
   margin: 0.5rem 0;
   margin-right: ${({ margin }) => `${margin}px`};
   padding: 0 0.5rem;
-  background-color: ${({ isExpanded }) =>
-    isExpanded ? 'rgb(43,123,228, 0.2)' : 'inherit'};
-
-  //TODO: add class on select color.
-  // rgba(43,56,143, 0.4)
-
+  background-color: ${({ isExpanded, isSelected }) =>
+    isExpanded
+      ? 'rgb(43,123,228, 0.2)'
+      : isSelected
+      ? 'rgba(43,56,143, 0.4)'
+      : 'inherit'};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
     border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
@@ -355,9 +355,13 @@ export const SubMenu = styled(
 `;
 
 export const ListItemWrapper = styled.div.attrs({
-  className: C_WHITE,
+  className: `${C_WHITE} BorderRadius4`,
 })`
   ${FlexBetween}
+  padding: 0 0.5rem;
+  &:hover {
+    background: rgb(43, 123, 228, 0.2);
+  }
 `;
 
 export const DragIconWrapper = styled.div`

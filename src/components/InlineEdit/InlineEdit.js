@@ -121,7 +121,7 @@ InlineEdit.propTypes = {
   text: PropTypes.string.isRequired,
   onSetText: PropTypes.func.isRequired,
   isActive: PropTypes.bool,
-  styles: PropTypes.objectOf({
+  styles: PropTypes.shape({
     textStyle: PropTypes.object,
     inputStyle: PropTypes.object,
   }),

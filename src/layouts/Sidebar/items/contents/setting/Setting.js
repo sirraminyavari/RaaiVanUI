@@ -107,7 +107,7 @@ const SidebarSettingContent = () => {
           <Styled.TitleText>{getContentTitle(currentContent)}</Styled.TitleText>
         </Styled.CenterIcon>
         <Styled.SettingWrapper onClick={handleOnClick}>
-          <ArrowIcon dir={RV_RevFloat} size={20} />
+          <ArrowIcon dir={RV_RevFloat} size={25} />
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       <Styled.PanelListWrapper>

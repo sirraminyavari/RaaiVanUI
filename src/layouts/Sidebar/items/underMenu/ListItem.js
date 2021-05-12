@@ -3,7 +3,7 @@
  */
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../Sidebar.styles';
 import Badge from 'components/Badge/Badge';
 import { TBG_DEFAULT } from 'constant/Colors';
 
