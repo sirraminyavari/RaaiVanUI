@@ -83,16 +83,22 @@ export const SidebarContainer = withTheme(styled.div.attrs({
 `);
 
 export const ContentWrapper = withTheme(styled.div`
-  width: ${(props) => (props.theme.states.isSidebarOpen ? '111%' : '180%')};
+  width: 100%;
   position: absolute;
   top: 0;
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
-  ${RV_RTL ? 'left: -1.1rem;' : 'right: 0;'}
   overflow: auto;
-  padding: 0 0.5rem;
   margin-top: 4rem;
-  margin-right: -2.5rem;
+  padding: 0
+    ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0.9rem')};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
+  ::-webkit-scrollbar {
+    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+  }
+  * {
+    -ms-overflow-style: none; /*! IE and Edge */
+    scrollbar-width: none; /*! Firefox */
+  }
 `);
 
 export const SidebarHeader = withTheme(styled.div.attrs({
@@ -111,18 +117,17 @@ export const SidebarHeader = withTheme(styled.div.attrs({
       : `${sidebarCloseWidth / 16}rem`;
   }};
   z-index: 10;
-  padding: 0 1%;
+  padding: 0
+    ${(props) => (props.theme.states.isSidebarOpen ? '1.4rem' : '0.8rem')};
   position: fixed;
   top: 0;
   background-image: url(${sidebarPattern});
 `);
 
-export const OpenContentWrapper = withTheme(styled.div`
-  width: ${(props) => props.theme.states.sidebarCurrentWidth}px;
+export const OpenContentWrapper = styled.div`
+  width: 100%;
   position: relative;
-  right: 2%;
-  padding: 0 7% 0 4%;
-`);
+`;
 
 export const ToggleArrow = styled.div.attrs({
   className: C_WHITE,
@@ -132,15 +137,12 @@ export const ToggleArrow = styled.div.attrs({
   cursor: pointer;
 `;
 
-export const SidebarTitle = withTheme(styled.div`
+export const SidebarTitle = styled.div`
   ${FlexBetween}
   font-size: 1rem;
   height: 3.7rem;
-  margin-${RV_Float}: ${(props) => {
-  const { isSidebarOpen } = props.theme.states;
-  return isSidebarOpen ? '0' : RV_RTL ? '3rem' : '1.5rem';
-}};
-`);
+  margin-${RV_Float}: 0.5rem;
+`;
 
 export const SearchWrapper = styled.div.attrs({
   className: BO_GRAY,
@@ -245,11 +247,12 @@ export const MenuContainer = styled.div.attrs((props) => ({
   className: `BorderRadius4 ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}`,
 }))`
   ${FlexBetween}
+  width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
   border-width: 1px;
   border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
-  margin-right: ${({ margin }) => `${margin}px`};
+  margin-right: ${({ indentStep }) => `${indentStep}px`};
   padding: 0 0.5rem;
   background-color: ${({ isExpanded, isSelected }) =>
     isExpanded
@@ -390,7 +393,6 @@ export const ActionsWrapper = styled.div`
 
 export const SettingWrapper = styled.div`
   border-radius: 50%;
-  margin-${RV_RevFloat}: 0.2rem;
   line-height: 0.5rem;
   cursor: pointer;
 `;
@@ -439,7 +441,6 @@ export const CloseContentContainer = styled.div`
   height: 73vh;
   width: 2rem;
   margin: 0;
-  margin-${RV_Float}: ${RV_RTL ? '2.5rem' : '1.2rem'};
   margin-top: -0.55rem;
 `;
 
@@ -504,7 +505,7 @@ export const MenuTreeContainer = styled.div`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding: 0 0.3rem 3rem 0.3rem;
+  padding: 0 0 3rem 0;
 `;
 
 export const FilterIconWrapper = styled.div.attrs({ className: TC_DISTANT })`
@@ -550,5 +551,5 @@ export const Divider = styled.hr.attrs({ className: TBO_WARM })`
 `;
 
 export const PanelListWrapper = styled.div`
-  margin-${RV_Float}: -1rem;
+  width: 100%;
 `;

@@ -41,6 +41,7 @@ const EditableTree = () => {
     dispatch(setSidebarDnDTree(newTree));
   };
 
+  //TODO: fix style.
   //! Render custom item.
   const handleRenderItem = (itemProps) => {
     return <EditableItem itemProps={itemProps} />;

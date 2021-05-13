@@ -117,7 +117,7 @@ const EditableBranch = (props) => {
   return (
     <>
       <Styled.MenuContainer
-        margin={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
+        indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item.isExpanded}
         ref={provided.innerRef}
         {...provided.draggableProps}>

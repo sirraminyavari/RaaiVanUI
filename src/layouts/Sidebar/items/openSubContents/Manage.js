@@ -19,7 +19,7 @@ const SidebarManageContent = () => {
   };
 
   return (
-    <div style={{ marginLeft: '3%' }}>
+    <>
       <Styled.SidebarTitle>
         <Styled.CenterIcon>
           <Styled.TitleText>ویرایش نوار راهبری</Styled.TitleText>
@@ -29,7 +29,7 @@ const SidebarManageContent = () => {
         </Styled.SettingWrapper>
       </Styled.SidebarTitle>
       <EditableTree />
-    </div>
+    </>
   );
 };
 
