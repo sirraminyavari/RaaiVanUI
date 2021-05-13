@@ -2,7 +2,7 @@
  * Renders a list of items under the sidebar menu,
  */
 import { useContext } from 'react';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';

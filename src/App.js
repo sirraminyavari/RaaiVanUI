@@ -15,7 +15,7 @@ import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
 
 const MainLayout = lazy(() =>
-  import(/* webpackChunkName: "layout-main"*/ 'layouts/Main')
+  import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
 window._alert = window.alert;
 window.alert = function (txt, type = '') {

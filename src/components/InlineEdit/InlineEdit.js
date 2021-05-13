@@ -22,7 +22,7 @@ const InlineEdit = (props) => {
   const { text, onSetText, isActive, styles } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
-  const [isInputActive, setIsInputActive] = useState(isActive);
+  const [isInputActive, setIsInputActive] = useState(!!isActive);
   //! Input value default to initial text passed to it.
   const [inputValue, setInputValue] = useState(text);
 
@@ -34,6 +34,10 @@ const InlineEdit = (props) => {
 
   const enter = useKeypress('Enter');
   const esc = useKeypress('Escape');
+
+  useEffect(() => {
+    setInputValue(text);
+  }, [text]);
 
   //! Check to see if the user clicked outside of this component
   useOnClickOutside(wrapperRef, () => {
@@ -121,7 +125,7 @@ InlineEdit.propTypes = {
   text: PropTypes.string.isRequired,
   onSetText: PropTypes.func.isRequired,
   isActive: PropTypes.bool,
-  styles: PropTypes.objectOf({
+  styles: PropTypes.shape({
     textStyle: PropTypes.object,
     inputStyle: PropTypes.object,
   }),

@@ -1,7 +1,7 @@
 /**
  * Renders when sidebar is closed.
  */
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
@@ -10,10 +10,14 @@ import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
+import { WindowContext } from 'context/WindowProvider';
+import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
+
+  const { RV_RevFloat, RVDic } = useContext(WindowContext);
 
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
@@ -26,10 +30,7 @@ const SidebarOnClose = ({ theme }) => {
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
 
-  const nodes = Object.values(dndTree.items).filter((node) => {
-    if (!!node.isCategory) return false;
-    return true;
-  });
+  const nodes = (dndTree.items && Object.values(dndTree.items)) || [];
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -46,7 +47,9 @@ const SidebarOnClose = ({ theme }) => {
   //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
-    dispatch(setSidebarContent('setting'));
+    dispatch(
+      setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
+    );
   };
 
   //! Updates scroll position.
@@ -76,18 +79,18 @@ const SidebarOnClose = ({ theme }) => {
 
   return (
     <>
-      <Styled.SidebarTitle style={{ marginRight: '3.4rem' }}>
+      <Styled.SidebarTitle>
         <PopupMenu
           arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
           menuStyle="border: 0; padding: 0.3rem 1rem; margin: 1rem; background-color: #333;"
           trigger="hover"
-          align="left">
+          align={RV_RevFloat}>
           <div>
             <Styled.SettingWrapper onClick={handleOnClick}>
               <SettingIcon size={22} />
             </Styled.SettingWrapper>
           </div>
-          <div>تنظیمات</div>
+          <div style={{ fontSize: '0.9rem' }}>{RVDic.Settings}</div>
         </PopupMenu>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
@@ -104,7 +107,7 @@ const SidebarOnClose = ({ theme }) => {
                   arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
                   menuStyle="border: 0; padding: 0.4rem 1rem; margin: 1rem; background-color: #333;"
                   trigger="hover"
-                  align="left">
+                  align={RV_RevFloat}>
                   <div>
                     <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
                       {data.iconURL && (

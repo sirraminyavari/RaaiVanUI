@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import * as Styled from '../../Sidebar.styles';
 import ManageButton from './ManageButton';
 import { createSelector } from 'reselect';
+import { MAIN_CONTENT } from 'constant/constants';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -15,7 +16,7 @@ const selectSidebarContent = createSelector(
 const SidebarFooter = () => {
   const sidebarContent = useSelector(selectSidebarContent);
 
-  const isMainContent = sidebarContent === 'main';
+  const isMainContent = sidebarContent.current === MAIN_CONTENT;
 
   return (
     <Styled.SidebarFooter>

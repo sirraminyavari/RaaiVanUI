@@ -13,6 +13,7 @@ import {
   BO_GRAY,
   C_GRAY,
   TBG_VERYWARM,
+  BO_WHITE,
 } from 'constant/Colors';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
@@ -85,9 +86,8 @@ export const ContentWrapper = withTheme(styled.div`
   width: ${(props) => (props.theme.states.isSidebarOpen ? '111%' : '180%')};
   position: absolute;
   top: 0;
-  ${(props) => !props.theme.states.isSidebarOpen && 'right: 0rem;'}
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
-  ${`${RV_RevFloat}: -1.1rem;`}
+  ${RV_RTL ? 'left: -1.1rem;' : 'right: 0;'}
   overflow: auto;
   padding: 0 0.5rem;
   margin-top: 4rem;
@@ -95,7 +95,9 @@ export const ContentWrapper = withTheme(styled.div`
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
 `);
 
-export const SidebarHeader = withTheme(styled.div`
+export const SidebarHeader = withTheme(styled.div.attrs({
+  className: TBG_VERYWARM,
+})`
   ${FlexBetween}
   height: 4rem;
   width: ${(props) => {
@@ -122,17 +124,23 @@ export const OpenContentWrapper = withTheme(styled.div`
   padding: 0 7% 0 4%;
 `);
 
-export const ToggleArrow = styled.div`
+export const ToggleArrow = styled.div.attrs({
+  className: C_WHITE,
+})`
   height: 1.5rem;
   margin-${RV_Float}: 0.7rem;
   cursor: pointer;
 `;
 
-export const SidebarTitle = styled.div`
+export const SidebarTitle = withTheme(styled.div`
   ${FlexBetween}
   font-size: 1rem;
   height: 3.7rem;
-`;
+  margin-${RV_Float}: ${(props) => {
+  const { isSidebarOpen } = props.theme.states;
+  return isSidebarOpen ? '0' : RV_RTL ? '3rem' : '1.5rem';
+}};
+`);
 
 export const SearchWrapper = styled.div.attrs({
   className: BO_GRAY,
@@ -243,9 +251,12 @@ export const MenuContainer = styled.div.attrs((props) => ({
   margin: 0.5rem 0;
   margin-right: ${({ margin }) => `${margin}px`};
   padding: 0 0.5rem;
-  background-color: ${({ isExpanded }) =>
-    isExpanded ? 'rgb(43,123,228, 0.2)' : 'inherit'};
-
+  background-color: ${({ isExpanded, isSelected }) =>
+    isExpanded
+      ? 'rgb(43,123,228, 0.2)'
+      : isSelected
+      ? 'rgba(43,56,143, 0.4)'
+      : 'inherit'};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
     border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
@@ -286,14 +297,15 @@ export const CaretIconWrapper = styled.div`
   margin-top: 0.5rem;
 `;
 
-//TODO: fallback image.
-export const MenuItemImage = styled.img`
+export const MenuItemImage = styled.img.attrs({
+  className: BO_WHITE,
+})`
   max-width: 1.8rem;
   min-width: 1.75rem;
   max-height: 1.8rem;
   width: 1.8rem;
+  height: 1.8rem;
   border-radius: 50%;
-  border: 0.12rem solid;
   overflow: hidden;
 `;
 
@@ -343,9 +355,13 @@ export const SubMenu = styled(
 `;
 
 export const ListItemWrapper = styled.div.attrs({
-  className: C_WHITE,
+  className: `${C_WHITE} BorderRadius4`,
 })`
   ${FlexBetween}
+  padding: 0 0.5rem;
+  &:hover {
+    background: rgb(43, 123, 228, 0.2);
+  }
 `;
 
 export const DragIconWrapper = styled.div`
@@ -387,8 +403,24 @@ export const PanelWrapper = styled.div.attrs({
   margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
+  background-color: ${({ isSelected }) =>
+    isSelected ? 'rgba(43,56,143, 0.2)' : 'inherit'};
   :hover {
-    background: rgb(66,133,244, 0.4);
+    background-color: rgb(43, 123, 228, 0.2);
+  }
+  transition: all 0.3s linear;
+`;
+
+export const SettingItemWrapper = styled.div.attrs({
+  className: `${C_WHITE} BorderRadius4`,
+})`
+  ${FlexCenter}
+  margin: 0.5rem 0;
+  margin-${RV_Float}: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  :hover {
+    background-color: rgb(43, 123, 228, 0.2);
   }
   transition: all 0.3s linear;
 `;
@@ -407,7 +439,7 @@ export const CloseContentContainer = styled.div`
   height: 73vh;
   width: 2rem;
   margin: 0;
-  margin-right: 3rem;
+  margin-${RV_Float}: ${RV_RTL ? '2.5rem' : '1.2rem'};
   margin-top: -0.55rem;
 `;
 
@@ -494,6 +526,11 @@ export const PanelLink = styled.div`
   text-transform: capitalize;
 `;
 
+export const SettingItemTitle = styled.div`
+  margin-${RV_Float}: 0.4rem;
+  text-transform: capitalize;
+`;
+
 const getHighlightCss = ({ isMatch }) => {
   return isMatch
     ? `
@@ -510,4 +547,8 @@ export const HighlightedText = styled.span`
 
 export const Divider = styled.hr.attrs({ className: TBO_WARM })`
   margin: 1rem 0;
+`;
+
+export const PanelListWrapper = styled.div`
+  margin-${RV_Float}: -1rem;
 `;

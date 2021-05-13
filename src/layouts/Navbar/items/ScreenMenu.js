@@ -23,7 +23,8 @@ const WideScreenMenu = () => {
           <Fragment key={index}>
             {actions ? (
               <PopupMenu
-                menuStyle={`border: 0; background-color: transparent;`}
+                arrowStyle="display: none;"
+                menuStyle="border: 0; background-color: transparent;"
                 trigger={actions.length ? 'hover' : 'click'}
                 align="bottom">
                 <div>

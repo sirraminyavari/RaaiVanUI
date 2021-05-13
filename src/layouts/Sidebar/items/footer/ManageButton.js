@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -18,7 +19,9 @@ const ManageButton = () => {
 
   const handleManageButton = () => {
     dispatch(closeOpenMenus());
-    dispatch(setSidebarContent('manage'));
+    dispatch(
+      setSidebarContent({ current: MANAGE_CONTENT, prev: MAIN_CONTENT })
+    );
     if (!isSidebarOpen) {
       dispatch(toggleSidebar(true));
     }

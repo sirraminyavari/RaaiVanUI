@@ -56,7 +56,7 @@ const CircularProgress = ({
     return () => {
       clearTimeout(timeout);
       //! Reset timer to zero on unmount.
-      onUpdate(value);
+      onUpdate && onUpdate(value);
     };
   }, []);
 

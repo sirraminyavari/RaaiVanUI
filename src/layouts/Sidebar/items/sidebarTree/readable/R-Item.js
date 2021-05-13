@@ -3,21 +3,24 @@
  */
 import { memo } from 'react';
 import * as Styled from '../../../Sidebar.styles';
-import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { Link } from 'react-router-dom';
+import { mutateTree } from '@atlaskit/tree';
+import { createSelector } from 'reselect';
+import { useDispatch, useSelector } from 'react-redux';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import getIcon from '../getItemIcon';
 
-const PADDING_PER_LEVEL = 27;
+const INDENT_PER_LEVEL = 27;
 
-const getIcon = (item, onExpand, onCollapse) => {
-  if (item.isCategory) {
-    return item.isExpanded ? (
-      <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
-    ) : (
-      <CaretIcon size={20} onClick={() => onExpand(item.id)} dir="left" />
-    );
-  }
-  return null;
-};
+const selectTree = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.dndTree
+);
+
+const selectActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
 
 /**
  * @typedef ItemType
@@ -25,7 +28,6 @@ const getIcon = (item, onExpand, onCollapse) => {
  * @property {function} onExpand -The callback function that calls on item expand.
  * @property {function} onCollapse -The callback function that calls on item collapse.
  * @property {*} provided -Provided by dnd.
- * @property {*} snapshot -Provided by dnd.
  * @property {number} depth -Depth of item on tree.
  */
 
@@ -41,16 +43,30 @@ const getIcon = (item, onExpand, onCollapse) => {
  */
 const ReadableBranch = (props) => {
   const { itemProps } = props;
+  const tree = useSelector(selectTree);
+  const activePath = useSelector(selectActivePath);
+  const dispatch = useDispatch();
+  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
-  const { item, onExpand, onCollapse, provided, depth, snapshot } = itemProps;
+  const { item, onExpand, onCollapse, provided, depth } = itemProps;
 
-  const handleOnClick = () => {};
+  //! Expand tree on click.
+  const handleOnClick = () => {
+    if (item.isCategory && !item.isExpanded) {
+      const mutatedTree = mutateTree(tree, item.id, { isExpanded: true });
+      dispatch(setSidebarDnDTree(mutatedTree));
+    }
+  };
+
+  //! Check if selected item is active.
+  const isSelected = activePath === `/classes/${item.id}`;
 
   return (
     <>
       <Styled.MenuContainer
-        margin={depth === 0 ? 0 : `${PADDING_PER_LEVEL * depth}`}
+        margin={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item.isExpanded}
+        isSelected={isSelected}
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper>

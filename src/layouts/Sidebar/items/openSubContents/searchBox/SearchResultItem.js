@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from '../../../Sidebar.styles';
 
 //! Highlights some terms inside a text.
 const getHighlightedText = (text, highlight) => {

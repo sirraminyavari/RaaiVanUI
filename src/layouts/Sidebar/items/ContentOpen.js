@@ -5,6 +5,7 @@ import { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
 import { createSelector } from 'reselect';
+import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -12,21 +13,27 @@ const selectSidebarContent = createSelector(
 );
 
 const SidebarSetting = lazy(() =>
-  import(/* webpackChunkName: "sidebar-setting-content"*/ './contents/Setting')
+  import(
+    /* webpackChunkName: "sidebar-setting-content"*/ './openSubContents/setting/Setting'
+  )
 );
 const SidebarMain = lazy(() =>
-  import(/* webpackChunkName: "sidebar-main-content"*/ './contents/Main')
+  import(/* webpackChunkName: "sidebar-main-content"*/ './openSubContents/Main')
 );
 
 const SidebarManage = lazy(() =>
-  import(/* webpackChunkName: "sidebar-manage-content"*/ './contents/Manage')
+  import(
+    /* webpackChunkName: "sidebar-manage-content"*/ './openSubContents/Manage'
+  )
 );
 
-const getSidebarContent = (title) => {
-  switch (title) {
-    case 'setting':
+const getSidebarContent = (content) => {
+  const rootContent = content.split('-')[0];
+
+  switch (rootContent) {
+    case SETTING_CONTENT:
       return <SidebarSetting />;
-    case 'manage':
+    case MANAGE_CONTENT:
       return <SidebarManage />;
     default:
       return <SidebarMain />;
@@ -34,11 +41,11 @@ const getSidebarContent = (title) => {
 };
 
 const SidebarOnOpen = () => {
-  const contentTitle = useSelector(selectSidebarContent);
+  const content = useSelector(selectSidebarContent);
 
   return (
     <Styled.OpenContentWrapper>
-      {getSidebarContent(contentTitle)}
+      {getSidebarContent(content.current)}
     </Styled.OpenContentWrapper>
   );
 };

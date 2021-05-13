@@ -4,6 +4,7 @@ import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { themeSlice } from 'store/reducers/themeReducer';
 import EditableTree from '../sidebarTree/editable/E-Tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
 
 const SidebarManageContent = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,9 @@ const SidebarManageContent = () => {
 
   const handleOnClick = () => {
     dispatch(closeOpenMenus());
-    dispatch(setSidebarContent('main'));
+    dispatch(
+      setSidebarContent({ current: MAIN_CONTENT, prev: MANAGE_CONTENT })
+    );
   };
 
   return (
