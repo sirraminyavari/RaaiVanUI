@@ -403,8 +403,10 @@ export const PanelWrapper = styled.div.attrs({
   margin-${RV_Float}: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
+  background-color: ${({ isSelected }) =>
+    isSelected ? 'rgba(43,56,143, 0.2)' : 'inherit'};
   :hover {
-    background: rgb(66,133,244, 0.4);
+    background-color: rgb(43, 123, 228, 0.2);
   }
   transition: all 0.3s linear;
 `;
@@ -418,8 +420,9 @@ export const SettingItemWrapper = styled.div.attrs({
   padding: 0.5rem;
   cursor: pointer;
   :hover {
-    background: rgba(43,56,143, 0.4);
+    background-color: rgb(43, 123, 228, 0.2);
   }
+  transition: all 0.3s linear;
 `;
 
 export const PanelImage = styled.img`

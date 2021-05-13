@@ -8,16 +8,28 @@ import useCheckRoute from 'hooks/useCheckRoute';
 import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { decodeBase64 } from 'helpers/helpers';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
-  const location = useLocation();
   //! Get route permission object based on route name.
   const route = useCheckRoute(name);
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { toggleNavSide, setSelectedTeam, setActivePath } = themeSlice.actions;
+
+  console.log(route);
+
+  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+  const {
+    toggleNavSide,
+    setSelectedTeam,
+    setActivePath,
+    setSidebarContent,
+    toggleSidebar,
+  } = themeSlice.actions;
 
   useEffect(() => {
+    //! Set selected team.
     if (route.Application) {
       const application = {
         name: decodeBase64(route.Application.Title),
@@ -25,6 +37,16 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       };
       dispatch(setSelectedTeam(application));
     }
+
+    //! Reset team to null if user is authenticated but has not selected a team yet.
+    if (route.IsAuthenticated && !route.AppID) {
+      dispatch(toggleSidebar(false)); //! Close sidebar.
+      dispatch(setSelectedTeam({ name: null, id: null })); //! Clear selected team.
+      dispatch(setSidebarContent({ current: 'main', prev: '' })); //! Reset sidebar content to default.
+      dispatch(setSidebarDnDTree({})); //! Clear sidebar tree items.
+    }
+
+    //! Set active path.
     dispatch(setActivePath(location.pathname));
   }, [route]);
 

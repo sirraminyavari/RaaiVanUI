@@ -11,6 +11,7 @@ import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { WindowContext } from 'context/WindowProvider';
+import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -46,7 +47,9 @@ const SidebarOnClose = ({ theme }) => {
   //! Toggle settings content on click.
   const handleOnClick = () => {
     dispatch(handleSettings());
-    dispatch(setSidebarContent({ current: 'setting', prev: 'main' }));
+    dispatch(
+      setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
+    );
   };
 
   //! Updates scroll position.

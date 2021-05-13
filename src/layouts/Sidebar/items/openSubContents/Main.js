@@ -14,6 +14,7 @@ import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import { getURL } from 'helpers/helpers';
 import * as Styled from '../../Sidebar.styles';
+import { SETTING_CONTENT, MAIN_CONTENT } from 'constant/constants';
 
 const selectShowSearchResults = createSelector(
   (state) => state.sidebarItems,
@@ -36,7 +37,9 @@ const SidebarMainContent = () => {
 
   //! Change sidebar content on click.
   const handleOnClick = useCallback(() => {
-    dispatch(setSidebarContent({ current: 'setting', prev: 'main' }));
+    dispatch(
+      setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
+    );
   }, [dispatch]);
 
   useEffect(() => {

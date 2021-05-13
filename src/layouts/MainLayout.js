@@ -16,7 +16,6 @@ import { createSelector } from 'reselect';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
-import { themeSlice } from 'store/reducers/themeReducer';
 
 const switchRoutes = (
   <Switch>
@@ -60,18 +59,10 @@ const selectHasNavSide = createSelector(
 const Main = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const hasNavSide = useSelector(selectHasNavSide);
-  const dispatch = useDispatch();
-  const { setSelectedTeam, setSidebarContent } = themeSlice.actions;
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-
-  useEffect(() => {
-    return () => {
-      dispatch(setSidebarContent({ current: 'main', prev: '' }));
-    };
-  }, []);
 
   return (
     <>

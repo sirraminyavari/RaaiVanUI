@@ -10,6 +10,7 @@ import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
+import { MAIN_CONTENT } from 'constant/constants';
 
 const SidebarContentClose = lazy(() =>
   import(/* webpackChunkName: "sidebar-close-content"*/ './items/ContentClose')
@@ -35,7 +36,7 @@ const CloseSidebar = () => {
     dispatch(getConfigPanels());
   }, []);
 
-  const isMainContent = sidebarContent.current === 'main';
+  const isMainContent = sidebarContent.current === MAIN_CONTENT;
   const isTeamSelected = !!selectedTeam?.id;
 
   return (

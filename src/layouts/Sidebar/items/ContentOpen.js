@@ -5,6 +5,7 @@ import { lazy } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from '../Sidebar.styles';
 import { createSelector } from 'reselect';
+import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -30,9 +31,9 @@ const getSidebarContent = (content) => {
   const rootContent = content.split('-')[0];
 
   switch (rootContent) {
-    case 'setting':
+    case SETTING_CONTENT:
       return <SidebarSetting />;
-    case 'manage':
+    case MANAGE_CONTENT:
       return <SidebarManage />;
     default:
       return <SidebarMain />;

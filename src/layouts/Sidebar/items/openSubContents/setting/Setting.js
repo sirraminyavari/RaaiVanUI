@@ -8,18 +8,19 @@ import { WindowContext } from 'context/WindowProvider';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { themeSlice } from 'store/reducers/themeReducer';
-import SettingItem from './SettingItem';
-import TeamSetting from './items/team-settings/TeamSettings';
+import SettingItems from './SettingItem';
+import TeamSettings from './items/team-settings/TeamSettings';
 import { createSelector } from 'reselect';
 import iconList from './iconList';
 import EditableTree from '../../sidebarTree/editable/E-Tree';
-
-const settingItems = [
-  { id: '1', title: 'تنظیمات تیم', icon: 'setting-team' },
-  { id: '2', title: 'مدیریت کاربران', icon: 'setting-users' },
-  { id: '3', title: 'مدیریت قالب ها', icon: 'setting-classes' },
-  { id: '4', title: 'تنظیمات آگاه سازی', icon: 'setting-notifs' },
-];
+import {
+  MAIN_CONTENT,
+  SETTING_CONTENT,
+  SETT_CLASSES_CONTENT,
+  SETT_NOTIFS_CONTENT,
+  SETT_TEAM_CONTENT,
+  SETT_USERS_CONTENT,
+} from 'constant/constants';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -31,22 +32,21 @@ const SidebarSettingContent = () => {
   const { RV_RevFloat, RVDic } = useContext(WindowContext);
   const selectedContent = useSelector(selectSidebarContent);
   const { setSidebarContent } = themeSlice.actions;
-  const panels = useSelector((state) => state.sidebarItems.configPanels);
 
   const currentContent = selectedContent.current;
   const previousContent = selectedContent.prev;
 
   const getContentTitle = (content) => {
-    const contentTitle = content.split('-')[1];
+    const splitTitle = (title) => title.split('-')[1];
 
-    switch (contentTitle) {
-      case 'team':
+    switch (splitTitle(content)) {
+      case splitTitle(SETT_TEAM_CONTENT):
         return 'تنظیمات تیم';
-      case 'users':
+      case splitTitle(SETT_USERS_CONTENT):
         return 'مدیریت کاربران';
-      case 'classes':
+      case splitTitle(SETT_CLASSES_CONTENT):
         return 'مدیریت قالب ها';
-      case 'notifs':
+      case splitTitle(SETT_NOTIFS_CONTENT):
         return 'تنظیمات آگاه سازی';
       default:
         return RVDic.TeamManagement;
@@ -54,7 +54,7 @@ const SidebarSettingContent = () => {
   };
 
   const getContentIcon = (content) => {
-    if (content === 'setting') {
+    if (content === SETTING_CONTENT) {
       return <SettingIcon />;
     } else {
       return iconList[content]({ size: 22 });
@@ -63,30 +63,26 @@ const SidebarSettingContent = () => {
 
   const getSettingContent = (content) => {
     switch (content) {
-      case 'setting-team':
-        return panels.map((panel, key) => (
-          <TeamSetting key={key} panel={panel} />
-        ));
-      case 'setting-users':
+      case SETT_TEAM_CONTENT:
+        return <TeamSettings />;
+      case SETT_USERS_CONTENT:
         return 'users';
-      case 'setting-classes':
+      case SETT_CLASSES_CONTENT:
         return <EditableTree />;
-      case 'setting-notifs':
+      case SETT_NOTIFS_CONTENT:
         return 'notifs';
       default:
-        return settingItems.map((item) => (
-          <SettingItem key={item.id} item={item} />
-        ));
+        return <SettingItems />;
     }
   };
 
   //! Handle back arrow click.
   const handleOnClick = () => {
-    if (currentContent === 'setting') {
+    if (currentContent === SETTING_CONTENT) {
       dispatch(
         setSidebarContent({
-          current: 'main',
-          prev: 'setting',
+          current: MAIN_CONTENT,
+          prev: SETTING_CONTENT,
         })
       );
     } else {

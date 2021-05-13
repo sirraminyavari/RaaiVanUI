@@ -12,7 +12,7 @@ import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 import Resizable from 'components/Resizable/Resizable';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
+import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
 import { WindowContext } from 'context/WindowProvider';
 
 const SidebarContentOpen = lazy(() =>
@@ -50,7 +50,7 @@ const OpenSidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSidebarOpen, dispatch]);
 
-  const isMainContent = sidebarContent.current === 'main';
+  const isMainContent = sidebarContent.current === MAIN_CONTENT;
 
   const handleOnResizeEnd = (size) => {
     dispatch(setOpenWidth(size.width));

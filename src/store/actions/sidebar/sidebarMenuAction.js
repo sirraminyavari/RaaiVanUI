@@ -13,6 +13,7 @@ const renameNodeAPI = new APIHandler('CNAPI', 'RenameNodeType');
 const deleteNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
 const moveNodeAPI = new APIHandler('CNAPI', 'MoveNodeType');
 const reorderNodesAPI = new APIHandler('CNAPI', 'SetNodeTypesOrder');
+const recoverNodeAPI = new APIHandler('CNAPI', 'RecoverNodeType');
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -208,6 +209,30 @@ export const reorderSidebarNode = (newTree, source, destination) => async (
       },
       (response) => {
         console.log(response);
+      },
+      (error) => {
+        console.log({ error });
+        dispatch(getSidebarNodes());
+      }
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that recover deleted items to sidebar tree.
+ * @returns -Dispatch to redux store.
+ */
+export const recoverSidebarNode = (nodeId) => async (dispatch, getState) => {
+  try {
+    recoverNodeAPI.fetch(
+      {
+        NodeTypeID: nodeId,
+      },
+      (response) => {
+        console.log(response);
+        dispatch(getSidebarNodes());
       },
       (error) => {
         console.log({ error });

@@ -135,6 +135,10 @@ export const mergeRefs = (...refs) => {
   };
 };
 
+/**
+ * @description Creates a universal user ID(UUID).
+ * @returns String.
+ */
 export const getUUID = () => {
   return uuidv4();
 };

@@ -3,30 +3,14 @@
  */
 import { memo } from 'react';
 import * as Styled from '../../../Sidebar.styles';
-import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { Link } from 'react-router-dom';
 import { mutateTree } from '@atlaskit/tree';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import getIcon from '../getItemIcon';
 
 const INDENT_PER_LEVEL = 27;
-const { RV_RevFloat } = window;
-
-const getIcon = (item, onExpand, onCollapse) => {
-  if (item.isCategory) {
-    return item.isExpanded ? (
-      <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
-    ) : (
-      <CaretIcon
-        size={20}
-        onClick={() => onExpand(item.id)}
-        dir={RV_RevFloat}
-      />
-    );
-  }
-  return null;
-};
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
@@ -44,7 +28,6 @@ const selectActivePath = createSelector(
  * @property {function} onExpand -The callback function that calls on item expand.
  * @property {function} onCollapse -The callback function that calls on item collapse.
  * @property {*} provided -Provided by dnd.
- * @property {*} snapshot -Provided by dnd.
  * @property {number} depth -Depth of item on tree.
  */
 
@@ -65,8 +48,9 @@ const ReadableBranch = (props) => {
   const dispatch = useDispatch();
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
-  const { item, onExpand, onCollapse, provided, depth, snapshot } = itemProps;
+  const { item, onExpand, onCollapse, provided, depth } = itemProps;
 
+  //! Expand tree on click.
   const handleOnClick = () => {
     if (item.isCategory && !item.isExpanded) {
       const mutatedTree = mutateTree(tree, item.id, { isExpanded: true });
@@ -74,6 +58,7 @@ const ReadableBranch = (props) => {
     }
   };
 
+  //! Check if selected item is active.
   const isSelected = activePath === `/classes/${item.id}`;
 
   return (
