@@ -64,7 +64,7 @@ const ReadableBranch = (props) => {
   return (
     <>
       <Styled.MenuContainer
-        margin={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
+        indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item.isExpanded}
         isSelected={isSelected}
         ref={provided.innerRef}

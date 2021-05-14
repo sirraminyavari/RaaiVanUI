@@ -30,6 +30,7 @@ const ReadableTree = () => {
 
   return (
     <DragAndDropTree
+      indentPerLevel={0}
       tree={tree}
       onMutateTree={handleMutateTree}
       renderItem={handleRenderItem}
