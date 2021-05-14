@@ -207,11 +207,6 @@ export const SearchList = styled.div`
   margin: 0 1rem;
 `;
 
-// export const SearchListItem = styled.div`
-//   margin: 0.2rem 0;
-//   padding: 0.4rem;
-// `;
-
 export const SidebarFooter = styled.div`
   height: 6%;
   position: relative;
@@ -252,8 +247,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
   border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
-  margin-right: ${({ indentStep }) => `${indentStep}px`};
-  padding: 0 0.5rem;
+  margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
   background-color: ${({ isExpanded, isSelected }) =>
     isExpanded
       ? 'rgb(43,123,228, 0.2)'
@@ -277,6 +271,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
 export const MenuTitleWrapper = styled.div`
   ${FlexCenter}
   width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
+  padding: 0 0.5rem;
 `;
 
 export const SubMenuTitleWrapper = styled.div`

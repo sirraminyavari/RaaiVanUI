@@ -19,9 +19,13 @@ const SidebarFooter = () => {
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 
   return (
-    <Styled.SidebarFooter>
-      {isMainContent && <ManageButton />}
-    </Styled.SidebarFooter>
+    <>
+      {isMainContent && (
+        <Styled.SidebarFooter>
+          <ManageButton />
+        </Styled.SidebarFooter>
+      )}
+    </>
   );
 };
 
