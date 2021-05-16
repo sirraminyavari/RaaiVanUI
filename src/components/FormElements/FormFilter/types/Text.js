@@ -1,8 +1,11 @@
 import Input from '../../../Inputs/Input';
 
 const TextType = (props) => {
+  const { onChange, data } = props;
+  console.log(data);
+
   const handleOnChange = (e) => {
-    props.onChange(e.target.value);
+    onChange(e.target.value);
   };
 
   return (

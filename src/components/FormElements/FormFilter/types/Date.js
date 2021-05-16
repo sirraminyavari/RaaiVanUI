@@ -1,8 +1,11 @@
 import DatePicker from '../../../CustomDatePicker/CustomDatePicker';
 
 const DateType = (props) => {
+  const { onChange, data } = props;
+  console.log(data);
+
   const handleOnDateSelect = (v) => {
-    props.onChange(v);
+    onChange(v);
   };
 
   return (

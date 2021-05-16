@@ -1,28 +1,38 @@
-import { cloneElement, Children } from 'react';
+import { Fragment } from 'react';
 import TextType from './types/Text';
 import DateType from './types/Date';
+import SuggestType from './types/Suggest';
+import RadioType from './types/Radio';
+import * as Styled from './FormFilter.styles';
 
 const FormFilter = (props) => {
+  const { filters } = props;
+
   const handleOnChange = (value) => {
     console.log(value);
   };
 
-  const getChild = (type) => {
-    return Children.map(props.children, (child) => {
-      if (child.type?.name !== type) return null;
-      return cloneElement(child, { onChange: handleOnChange });
-    });
-  };
-
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {getChild('DateType')}
-      {getChild('TextType')}
-    </div>
+    <Styled.FormFilterContainer>
+      <div>فیلترهای پیشرفته</div>
+      {filters.map((filter, key) => {
+        return (
+          <Fragment key={key}>
+            {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+              FormFilter[filter.Type]({
+                onChange: handleOnChange,
+                data: filter,
+              })}
+          </Fragment>
+        );
+      })}
+    </Styled.FormFilterContainer>
   );
 };
 
+FormFilter.SuggestType = SuggestType;
 FormFilter.TextType = TextType;
 FormFilter.DateType = DateType;
+FormFilter.RadioType = RadioType;
 
 export default FormFilter;
