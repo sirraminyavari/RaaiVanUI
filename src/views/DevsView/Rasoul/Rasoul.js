@@ -42,6 +42,7 @@ import Resizeable from 'components/Resizable/Resizable';
 //! FormElements
 import FormEdit from 'components/FormElements/FormEdit/FormEdit';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
+import filters from './filtersObject';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -208,7 +209,21 @@ const RasoulView = () => {
   return (
     <div>
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>Rasoul's view</div>
+      <Divider title="FormEdit Component" />
+      <FormEdit>
+        {({ onChange }) => {
+          //! Render an edit form here.
+          return <FormEdit.TextType onChange={onChange} />;
+        }}
+      </FormEdit>
+
+      <Divider title="FormFilter Component" />
+      <FormFilter filters={filters}>
+        <FormFilter.DateType />
+        <FormFilter.TextType />
+      </FormFilter>
       <Divider title="Custom Table Component" />
+
       <CustomTable
         editable
         columns={columns}
@@ -336,21 +351,6 @@ const RasoulView = () => {
           {`width: ${showSize.width}, height: ${showSize.height}`}
         </div>
       </Resizeable> */}
-      <Divider title="FormEdit Component" />
-      <FormEdit>
-        {({ onChange }) => {
-          //! Render an edit form here.
-          return <FormEdit.TextType onChange={onChange} />;
-        }}
-        {/* <FormEdit.DateType />
-        <FormEdit.TextType /> */}
-      </FormEdit>
-
-      <Divider title="FormFilter Component" />
-      <FormFilter>
-        <FormFilter.DateType />
-        <FormFilter.TextType />
-      </FormFilter>
 
       <div style={{ marginBottom: '10rem' }}></div>
       <Divider title="End of view" />

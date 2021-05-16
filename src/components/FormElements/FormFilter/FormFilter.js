@@ -1,30 +1,28 @@
-import { Component, cloneElement, Children } from 'react';
+import { cloneElement, Children } from 'react';
 import TextType from './types/Text';
 import DateType from './types/Date';
 
-class FormFilter extends Component {
-  static TextType = TextType;
-  static DateType = DateType;
-
-  handleOnChange = (value) => {
+const FormFilter = (props) => {
+  const handleOnChange = (value) => {
     console.log(value);
   };
 
-  #getChild = (type) => {
-    return Children.map(this.props.children, (child) => {
-      if (child.type.name !== type) return null;
-      return cloneElement(child, { onChange: this.handleOnChange });
+  const getChild = (type) => {
+    return Children.map(props.children, (child) => {
+      if (child.type?.name !== type) return null;
+      return cloneElement(child, { onChange: handleOnChange });
     });
   };
 
-  render() {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {this.#getChild('DateType')}
-        {this.#getChild('TextType')}
-      </div>
-    );
-  }
-}
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      {getChild('DateType')}
+      {getChild('TextType')}
+    </div>
+  );
+};
+
+FormFilter.TextType = TextType;
+FormFilter.DateType = DateType;
 
 export default FormFilter;
