@@ -218,8 +218,8 @@ const RasoulView = () => {
       </FormEdit>
 
       <Divider title="FormFilter Component" />
-      <div style={{ width: '50%', margin: 'auto' }}>
-        <FormFilter filters={filters} />
+      <div style={{ width: '40%', margin: 'auto' }}>
+        <FormFilter filters={filters} onFilter={(v) => console.log(v)} />
       </div>
       <Divider title="Custom Table Component" />
 

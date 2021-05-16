@@ -12,3 +12,16 @@ export const FormFilterContainer = styled.div`
   border-radius: 10px;
   padding: 1.5rem;
 `;
+
+export const FormFilterHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+`;
+
+export const FormFilterTitle = styled.div`
+  font-size: 1.1rem;
+  color: #002479;
+`;

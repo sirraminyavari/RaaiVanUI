@@ -1,10 +1,10 @@
 import * as Styled from './types.styles';
 
-const Radio = (props) => {
+const RadioType = (props) => {
   const { onChange, data } = props;
 
   const handleOnChange = (e) => {
-    onChange(e.target.value);
+    onChange({ type: 'RadioType', value: e.target.value });
   };
 
   return (
@@ -31,4 +31,4 @@ const Radio = (props) => {
   );
 };
 
-export default Radio;
+export default RadioType;
