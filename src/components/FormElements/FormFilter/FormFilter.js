@@ -1,4 +1,5 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useContext } from 'react';
+import { WindowContext } from 'context/WindowProvider';
 import TextType from './types/Text';
 import DateType from './types/Date';
 import SuggestType from './types/Suggest';
@@ -7,9 +8,11 @@ import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
 
 const FormFilter = (props) => {
   const { filters, onFilter } = props;
+  const { RVDic } = useContext(WindowContext);
 
   const initState = filters.map((filter) => ({
     type: filter.Type,
@@ -51,9 +54,13 @@ const FormFilter = (props) => {
           </Fragment>
         );
       })}
+      <Styled.FilterToggleContainer>
+        <Styled.FilterToggleTitle>{RVDic.ExactSearch}</Styled.FilterToggleTitle>
+        <ToggleButton onToggle={(v) => console.log(v)} />
+      </Styled.FilterToggleContainer>
       <FilterButton
         onClick={handleOnFilterClick}
-        style={{ width: '50%', margin: '3rem 0 0 0', fontSize: '1rem' }}
+        style={{ width: '50%', margin: '1rem 0 0 0', fontSize: '1rem' }}
         type="primary-o">
         اعمال فیلتر
       </FilterButton>

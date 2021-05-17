@@ -25,3 +25,18 @@ export const FormFilterTitle = styled.div`
   font-size: 1.1rem;
   color: #002479;
 `;
+
+export const FilterToggleContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem 0;
+`;
+
+export const FilterToggleTitle = styled.span`
+  font-size: 0.9rem;
+  color: #707070;
+  margin: 0 0.5rem;
+  text-transform: capitalize;
+`;

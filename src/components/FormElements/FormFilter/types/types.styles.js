@@ -39,6 +39,7 @@ export const SuggestTitleWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin: 0.5rem 0;
 `;
 
 export const AutoSuggestTitle = styled.div`
@@ -67,12 +68,13 @@ export const DatePickerWrapper = styled.div`
 `;
 
 export const DatePicker = styled.div`
-  margin: auto;
+  // width: 100%;
 `;
 
 export const DateSpanTitle = styled.div`
   font-size: 1rem;
   color: #262261;
+  text-transform: capitalize;
 `;
 
 //! Text styles

@@ -4,6 +4,9 @@ const { RV_Float } = window;
 
 export const ToggleLabel = styled.label`
   display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ToggleInput = styled.input`
@@ -58,8 +61,8 @@ export const ToggleButton = styled.span`
   box-sizing: initial;
   display: inline-block;
   outline: 0;
-  width: 2.6rem;
-  height: 1.3rem;
+  width: 2rem;
+  height: 1rem;
   position: relative;
   cursor: pointer;
   user-select: none;
