@@ -1,9 +1,9 @@
 import { Fragment, useState, useContext } from 'react';
 import { WindowContext } from 'context/WindowProvider';
-import TextType from './types/Text';
-import DateType from './types/Date';
-import SuggestType from './types/Suggest';
-import RadioType from './types/Radio';
+import TextType from './types/TextType';
+import DateType from './types/DateType';
+import SuggestType from './types/SuggestType';
+import RadioType from './types/RadioType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';

@@ -342,6 +342,7 @@ const CustomDatePicker = (props) => {
             shouldHighlightWeekends
             calendarClassName={styles[`${size}Calendar`]}
             calendarTodayClassName={styles.todayDate}
+            wrapperClassName={styles.DatePicker}
             locale={getLocale(type)}
             {...rest}
           />

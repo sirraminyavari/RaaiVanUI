@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+const { RV_Float, RV_RTL } = window;
 
 //! Radio styles.
 export const RadioContainer = styled.div`
@@ -68,10 +69,12 @@ export const DatePickerWrapper = styled.div`
 `;
 
 export const DatePicker = styled.div`
-  // width: 100%;
+  flex-grow: 1;
+  margin-${RV_Float}: 1rem;
 `;
 
 export const DateSpanTitle = styled.div`
+  ${!RV_RTL && 'min-width: 2.6rem'};
   font-size: 1rem;
   color: #262261;
   text-transform: capitalize;
