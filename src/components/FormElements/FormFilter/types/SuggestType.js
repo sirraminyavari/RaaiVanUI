@@ -4,7 +4,6 @@ import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
 
 const SuggestType = (props) => {
   const { onChange, data } = props;
-  console.log(data);
 
   const handleOnItemSelect = (v) => {
     onChange({ type: 'SuggestType', value: v });

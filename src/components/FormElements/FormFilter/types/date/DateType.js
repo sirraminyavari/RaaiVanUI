@@ -1,27 +1,46 @@
-import { useContext } from 'react';
-import DatePicker from '../../../CustomDatePicker/CustomDatePicker';
-import * as Styled from './types.styles';
+import { useContext, useState, useEffect } from 'react';
+import DatePicker from '../../../../CustomDatePicker/CustomDatePicker';
+import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
 
 const DateType = (props) => {
   const { onChange, data } = props;
   const { RVDic } = useContext(WindowContext);
-  console.log(data);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
 
-  const handleOnDateSelect = (v) => {
-    onChange({ type: 'DateType', value: v });
+  const onDateFrom = (from) => {
+    setFrom(from);
   };
+
+  const onDateTo = (to) => {
+    setTo(to);
+  };
+
+  useEffect(() => {
+    if (from && to) {
+      onChange({
+        type: 'Date',
+        value: { DateFrom: from, DateTo: to },
+      });
+    } else {
+      onChange({
+        type: 'Date',
+        value: null,
+      });
+    }
+  }, [from, to]);
 
   return (
     <Styled.DateContainer>
-      <Styled.DateTitle>تاریخ وارد شده در فیلد</Styled.DateTitle>
+      <Styled.DateTitle>{data.Title}</Styled.DateTitle>
       <Styled.DatePickerWrapper>
         <Styled.DateSpanTitle>{RVDic.From}</Styled.DateSpanTitle>
         <Styled.DatePicker>
           <DatePicker
             size="small"
             clearButton
-            onDateSelect={handleOnDateSelect}
+            onDateSelect={onDateFrom}
             mode="input"
             type="jalali"
             label={RVDic.DateSelect}
@@ -34,7 +53,7 @@ const DateType = (props) => {
           <DatePicker
             size="small"
             clearButton
-            onDateSelect={handleOnDateSelect}
+            onDateSelect={onDateTo}
             mode="input"
             type="jalali"
             label={RVDic.DateSelect}

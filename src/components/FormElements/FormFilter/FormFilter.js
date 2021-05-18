@@ -1,9 +1,10 @@
 import { Fragment, useState, useContext } from 'react';
 import { WindowContext } from 'context/WindowProvider';
-import TextType from './types/TextType';
-import DateType from './types/DateType';
+import TextType from './types/text/TextType';
+import DateType from './types/date/DateType';
 import SuggestType from './types/SuggestType';
-import RadioType from './types/RadioType';
+import SelectType from './types/select/SelectType';
+import NumericType from './types/numeric/NumericType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
@@ -14,32 +15,32 @@ const FormFilter = (props) => {
   const { filters, onFilter } = props;
   const { RVDic } = useContext(WindowContext);
 
-  const initState = filters.map((filter) => ({
-    type: filter.Type,
-    value: null,
-  }));
+  const initState = filters.reduce((state, filter) => {
+    return { ...state, [filter.Type]: null };
+  }, {});
 
-  const [valuse, setvalues] = useState(initState);
+  const [values, setvalues] = useState(initState);
 
-  const handleOnChange = (value) => {
-    setvalues((oldValues) =>
-      oldValues.map((ov) => {
-        if (ov.type === value.type) {
-          return value;
-        }
-        return ov;
-      })
-    );
+  //! Calls on every filter type change.
+  const handleOnChange = (filter) => {
+    setvalues((oldValues) => ({ ...oldValues, [filter.type]: filter.value }));
+  };
+  console.table(values);
+
+  //! Clalls when user clicks on filter button.
+  const handleOnFilterClick = () => {
+    onFilter && onFilter(values);
   };
 
-  const handleOnFilterClick = () => {
-    onFilter && onFilter(valuse);
+  //! clear the filter form.
+  const clearFilter = () => {
+    setvalues(initState);
   };
 
   return (
     <Styled.FormFilterContainer>
       <Styled.FormFilterHeader>
-        <UndoIcon style={{ cursor: 'pointer' }} />
+        <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
         <Styled.FormFilterTitle>فیلترهای پیشرفته</Styled.FormFilterTitle>
         <CloseIcon color="red" size={18} style={{ cursor: 'pointer' }} />
       </Styled.FormFilterHeader>
@@ -68,9 +69,10 @@ const FormFilter = (props) => {
   );
 };
 
-FormFilter.SuggestType = SuggestType;
-FormFilter.TextType = TextType;
-FormFilter.DateType = DateType;
-FormFilter.RadioType = RadioType;
+FormFilter.Checkbox = SuggestType;
+FormFilter.Text = TextType;
+FormFilter.Date = DateType;
+FormFilter.Select = SelectType;
+FormFilter.Numeric = NumericType;
 
 export default FormFilter;
