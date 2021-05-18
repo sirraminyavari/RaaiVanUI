@@ -39,6 +39,11 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 //! Resizable
 import Resizeable from 'components/Resizable/Resizable';
 
+//! FormElements
+import FormEdit from 'components/FormElements/FormEdit/FormEdit';
+import FormFilter from 'components/FormElements/FormFilter/FormFilter';
+import filters from './filtersObject';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -204,7 +209,20 @@ const RasoulView = () => {
   return (
     <div>
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>Rasoul's view</div>
+      <Divider title="FormEdit Component" />
+      <FormEdit>
+        {({ onChange }) => {
+          //! Render an edit form here.
+          return <FormEdit.TextType onChange={onChange} />;
+        }}
+      </FormEdit>
+
+      <Divider title="FormFilter Component" />
+      <div style={{ width: '40%', margin: 'auto' }}>
+        <FormFilter filters={filters} onFilter={(v) => console.log(v)} />
+      </div>
       <Divider title="Custom Table Component" />
+
       <CustomTable
         editable
         columns={columns}
@@ -237,10 +255,10 @@ const RasoulView = () => {
       />
       <Divider title="Custom Progressbar Component" />
       <ProgressBar label="Label" progress={100} />
-      <Divider title="Custom Tree Component(broken dnd)" />
-      <DnDTree data={customTreeData} />
-      <Divider title="Atlasian Tree Component(with dnd)" />
-      <div style={{ width: '50%', margin: 'auto' }}>
+      {/* <Divider title="Custom Tree Component(broken dnd)" />
+      <DnDTree data={customTreeData} /> */}
+      {/* <Divider title="Atlasian Tree Component(with dnd)" /> */}
+      {/* <div style={{ width: '50%', margin: 'auto' }}>
         <DragAndDropTree
           excludeDrag={['1-2-2']}
           excludeDrop={['1', '1-2']}
@@ -249,9 +267,9 @@ const RasoulView = () => {
           onMutateTree={handleMutateTree}
           renderItem={handleRenderItem}
         />
-      </div>
-      <Divider title="Multi column dnd" />
-      <MultiDnD />
+      </div> */}
+      {/* <Divider title="Multi column dnd" />
+      <MultiDnD /> */}
       <Divider title="Custom Date Picker" />
       <div
         style={{
@@ -310,7 +328,7 @@ const RasoulView = () => {
           return <h3 {...dragHandleProps}>{item.title}</h3>;
         }}
       </DnDProvider> */}
-      <Divider title="Resizable Component" />
+      {/* <Divider title="Resizable Component" />
       <Resizeable
         resizeHandles={['s', 'w', 'n', 'e']}
         minConstraints={{ width: 100, height: 100 }}
@@ -331,7 +349,8 @@ const RasoulView = () => {
           }}>
           {`width: ${showSize.width}, height: ${showSize.height}`}
         </div>
-      </Resizeable>
+      </Resizeable> */}
+
       <div style={{ marginBottom: '10rem' }}></div>
       <Divider title="End of view" />
     </div>
