@@ -2,7 +2,7 @@ import { Fragment, useState, useContext } from 'react';
 import { WindowContext } from 'context/WindowProvider';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
-import SuggestType from './types/SuggestType';
+import CheckboxType from './types/checkbox/CheckboxType';
 import SelectType from './types/select/SelectType';
 import NumericType from './types/numeric/NumericType';
 import * as Styled from './FormFilter.styles';
@@ -25,7 +25,7 @@ const FormFilter = (props) => {
   const handleOnChange = (filter) => {
     setvalues((oldValues) => ({ ...oldValues, [filter.type]: filter.value }));
   };
-  console.table(values);
+  console.log(values);
 
   //! Clalls when user clicks on filter button.
   const handleOnFilterClick = () => {
@@ -69,7 +69,7 @@ const FormFilter = (props) => {
   );
 };
 
-FormFilter.Checkbox = SuggestType;
+FormFilter.Checkbox = CheckboxType;
 FormFilter.Text = TextType;
 FormFilter.Date = DateType;
 FormFilter.Select = SelectType;

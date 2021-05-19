@@ -31,22 +31,35 @@ export const SelectLabel = styled.label`
   margin: 0 0.5rem;
 `;
 
-//! AutoSuggest styles.
-export const AutoSuggestContainer = styled.div`
+//! Checkbox styles.
+export const CheckboxContainer = styled.div`
   width: 100%;
   margin: 1rem 0;
 `;
-export const SuggestTitleWrapper = styled.div`
+export const CheckboxTitleWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin: 0.5rem 0;
 `;
 
-export const AutoSuggestTitle = styled.div`
+export const CheckboxTitle = styled.div`
   color: #262261;
   font-size: 1rem;
   margin: 0 0.5rem;
+`;
+
+export const CheckboxOptionsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.5rem 0;
+  user-select: none;
+`;
+
+export const CheckboxOptionsLabel = styled.label`
+  margin: 0 0.5rem;
+  cursor: pointer;
 `;
 
 //! Date styles

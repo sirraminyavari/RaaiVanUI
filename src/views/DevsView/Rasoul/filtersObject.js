@@ -5,8 +5,16 @@ const filters = [
     ElementID: '1',
     Title: 'موضوعات مشابه',
     Type: 'Checkbox',
-    info:
-      '{ AutoSuggestMode: "boolean", Options: ["array of base64 encoded string values"] }',
+    Info: encodeBase64(
+      JSON.stringify({
+        AutoSuggestMode: false,
+        Options: [
+          { value: 'انتخاب اول', title: 'انتخاب اول', group: 'options' },
+          { value: 'انتخاب دوم', title: 'انتخاب دوم', group: 'options' },
+          { value: 'انتخاب سوم', title: 'انتخاب سوم', group: 'options' },
+        ],
+      })
+    ),
   },
   {
     ElementID: '2',
