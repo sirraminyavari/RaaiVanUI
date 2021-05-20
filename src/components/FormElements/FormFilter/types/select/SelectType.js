@@ -1,33 +1,31 @@
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import Radio from './Radio';
-import Select from './Select';
+import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
 const SelectType = (props) => {
   const { onChange, data } = props;
 
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
 
-  const handleOnChange = (e) => {
-    const text = e.target.value;
+  const handleOnChange = (items) => {
     const value = {
-      TextItems: [encodeBase64(e.target.value)],
+      TextItems: items.map((item) => encodeBase64(item)),
       Exact: false,
     };
 
     onChange({
       type: 'Select',
-      value: !!text ? value : null,
+      value: !!items.length ? value : null,
     });
   };
 
   return (
-    <Styled.SelectContainer onChange={handleOnChange}>
+    <Styled.SelectContainer>
       <Styled.SelectTitle>{data.Title}</Styled.SelectTitle>
       {AutoSuggestMode ? (
-        <Select options={Options} />
+        <div>Auto Suggest</div>
       ) : (
-        <Radio options={Options} />
+        <Checkbox options={Options} onSelect={handleOnChange} />
       )}
     </Styled.SelectContainer>
   );

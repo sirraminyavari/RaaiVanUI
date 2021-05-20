@@ -5,6 +5,8 @@ import DateType from './types/date/DateType';
 import CheckboxType from './types/checkbox/CheckboxType';
 import SelectType from './types/select/SelectType';
 import NumericType from './types/numeric/NumericType';
+import UserType from './types/user/UserType';
+import NodeType from './types/node/NodeType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
@@ -74,5 +76,7 @@ FormFilter.Text = TextType;
 FormFilter.Date = DateType;
 FormFilter.Select = SelectType;
 FormFilter.Numeric = NumericType;
+FormFilter.User = UserType;
+FormFilter.Node = NodeType;
 
 export default FormFilter;

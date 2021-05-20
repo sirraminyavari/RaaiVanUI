@@ -1,17 +1,18 @@
-import AutoSuggest from '../../../../Inputs/AutoSuggestInput/AutoSuggestInput';
+import { useCallback } from 'react';
+import AutoSuggest from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import * as Styled from '../types.styles';
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
-import { decodeBase64 } from 'helpers/helpers';
-import Checkbox from './Checkbox';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
 const CheckboxType = (props) => {
   const { onChange, data } = props;
 
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
 
-  const handleOnItemSelect = (items) => {
+  const handleOnItemSelect = useCallback((items) => {
     const value = {
-      TextItems: items,
+      TextItems: items.map((item) => encodeBase64(item)),
       Exact: false,
       Or: false,
     };
@@ -20,7 +21,7 @@ const CheckboxType = (props) => {
       type: 'Checkbox',
       value: !!items.length ? value : null,
     });
-  };
+  }, []);
 
   return (
     <Styled.CheckboxContainer>

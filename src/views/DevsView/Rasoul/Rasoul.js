@@ -209,13 +209,13 @@ const RasoulView = () => {
   return (
     <div>
       <div style={{ textAlign: 'center', fontSize: '2rem' }}>Rasoul's view</div>
-      <Divider title="FormEdit Component" />
+      {/* <Divider title="FormEdit Component" />
       <FormEdit>
         {({ onChange }) => {
           //! Render an edit form here.
           return <FormEdit.TextType onChange={onChange} />;
         }}
-      </FormEdit>
+      </FormEdit> */}
 
       <Divider title="FormFilter Component" />
       <div style={{ width: '40%', margin: 'auto' }}>

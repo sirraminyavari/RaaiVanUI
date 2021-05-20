@@ -35,7 +35,9 @@ export const SelectLabel = styled.label`
 export const CheckboxContainer = styled.div`
   width: 100%;
   margin: 1rem 0;
+  color: #262261;
 `;
+
 export const CheckboxTitleWrapper = styled.div`
   display: flex;
   justify-content: flex-start;

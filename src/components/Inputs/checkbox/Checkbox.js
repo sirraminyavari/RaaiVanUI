@@ -1,11 +1,10 @@
-import { encodeBase64 } from 'helpers/helpers';
 import { useState, useEffect } from 'react';
-import * as Styled from '../types.styles';
+import * as Styled from './Checkbox.styles';
 
 const Checkbox = ({ options, onSelect }) => {
   const [checks, setChecks] = useState([]);
 
-  const handleOnClick = (e) => {
+  const handleOnChange = (e) => {
     const value = e.target.value;
     if (checks.includes(value)) {
       setChecks((oldChecks) => oldChecks.filter((c) => c !== value));
@@ -15,27 +14,23 @@ const Checkbox = ({ options, onSelect }) => {
   };
 
   useEffect(() => {
-    onSelect(checks.map((check) => encodeBase64(check)));
+    onSelect(checks);
   }, [checks]);
 
   return (
-    <div onChange={handleOnClick}>
+    <Styled.CheckboxContainer onChange={handleOnChange}>
       {options.map((option) => {
+        const { value, title, group } = option;
         return (
           <Styled.CheckboxOptionsWrapper>
-            <input
-              type="checkbox"
-              id={option.value}
-              name={option.value}
-              value={option.value}
-            />
-            <Styled.CheckboxOptionsLabel for={option.value}>
-              {option.title}
+            <input type="checkbox" id={group + '-' + value} value={value} />
+            <Styled.CheckboxOptionsLabel htmlFor={group + '-' + value}>
+              {title}
             </Styled.CheckboxOptionsLabel>
           </Styled.CheckboxOptionsWrapper>
         );
       })}
-    </div>
+    </Styled.CheckboxContainer>
   );
 };
 
