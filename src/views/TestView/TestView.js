@@ -5,6 +5,12 @@ import { decode } from 'js-base64';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import styled from 'styled-components';
+import EditorJS from '@editorjs/editorjs';
+import ReactDOM from 'react-dom';
+import { Editor, EditorState } from 'draft-js';
+import 'draft-js/dist/Draft.css';
+import MainEditor from 'components/Editor/MainEditor';
+import NodeList from 'components/NodeList/NodeList';
 
 const Modal = lazy(() =>
   import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
@@ -52,10 +58,19 @@ const itemInput = {
 };
 
 const TestView = () => {
+  new EditorJS({
+    /**
+     * Id of Element that should contain Editor instance
+     */
+    holder: 'editorjs',
+  });
   //! If true, Shows a modal to user for more advanced options to choose from.
-  const apiHandler = new APIHandler('CNAPI', 'GetNodeTypes');
+  const apiHandler = new APIHandler('CNAPI', 'GetNodeInfo');
 
   const [selectMode, setSelectMode] = useState(false);
+  const [editorState, setEditorState] = useState({
+    editorState: EditorState.createEmpty(),
+  });
 
   const fetchItems = (search) => {
     return new Promise((resolve, reject) => {
@@ -104,6 +119,8 @@ const TestView = () => {
         item={itemInput}
         isSaas={true}
       />
+      <NodeList />
+      <MainEditor />
     </Container>
   );
 };

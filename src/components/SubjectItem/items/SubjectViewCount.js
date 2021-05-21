@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const SubjectViewCount = ({ count }) => {
   return (
     <ViewCount className="rv-default">
-      <Eye className="rv-default" style={{ marginLeft: '0.5rem' }} />
+      <Eye className="rv-default" style={{ margin: '0 0.5rem 0 0.5rem' }} />
       {count}
     </ViewCount>
   );
@@ -21,5 +21,5 @@ const ViewCount = styled.div`
   /* color: #2b7be4; */
   align-self: center;
   justify-content: center;
-  margin-right: 0.5rem;
+  margin: 0 0.5rem 0 0.5rem;
 `;

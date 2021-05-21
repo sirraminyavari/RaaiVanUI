@@ -4,7 +4,7 @@
 import ArrowDown from 'components/Icons/ArrowDown';
 import styled, { css, keyframes } from 'styled-components';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RTL } = window;
 
 // opacity goes from 1 to 0 when component is disappearing
 const disappear = keyframes`
@@ -54,7 +54,7 @@ export const ItemList = styled.div`
   opacity: ${({ dropedDown }) => (dropedDown ? '1' : '0')};
   width: 100%;
   display: flex;
-  z-index: 1;
+  z-index: ${({ dropedDown }) => (dropedDown ? 1 : -1)};
   border: ${({ dropedDown }) => (dropedDown ? '0.5px' : '0px')} solid #bac9dc;
   border-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
@@ -80,7 +80,7 @@ export const ListItem = styled.div`
 `;
 export const DropDownButton = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${() => (RV_RTL ? 'row' : 'row-reverse')};
   justify-content: space-between;
   background: #f3f7fd 0% 0% no-repeat padding-box;
   border-radius: 0.5rem;
@@ -138,12 +138,12 @@ export const ShakeAnimate = styled.div`
 `;
 export const Maintainer = styled.button`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${() => (RV_RTL ? 'row' : 'row-reverse')};
   padding: 0.5rem;
   align-items: center;
   min-height: 2.5rem;
 `;
 export const Label = styled.div`
   color: ${({ color }) => color};
-  padding-right: 0.7rem;
+  padding: ${() => (RV_RTL ? '0 0.7rem 0 0.7rem' : '0 0.7rem 0 0.7rem')};
 `;

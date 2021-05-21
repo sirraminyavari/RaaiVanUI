@@ -14,7 +14,7 @@ import { WindowContext } from '../../context/WindowProvider';
  */
 
 const Heading = ({ type, darkBackground, className, ...props }) => {
-  const { GlobalUtilities } = useContext(WindowContext);
+  const { GlobalUtilities } = window;
   const values = resolveValues({ type, darkBackground, GlobalUtilities });
 
   return (
