@@ -70,6 +70,28 @@ const filters = [
     Type: 'File',
     Info: {},
   },
+  {
+    ElementID: '10',
+    Title: 'فیلتر فرم',
+    Type: 'Form',
+    Info: {
+      filters: [
+        {
+          ElementID: '3',
+          Title: 'تاریخ وارد شده در فیلد',
+          Type: 'Date',
+          Info: null,
+        },
+        { ElementID: '4', Title: 'فیلتر نمونه متنی', Type: 'Text', Info: {} },
+        {
+          ElementID: '5',
+          Title: 'انتخاب بازه اعداد',
+          Type: 'Numeric',
+          Info: {},
+        },
+      ],
+    },
+  },
 ];
 
 export default filters;

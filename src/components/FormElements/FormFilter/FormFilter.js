@@ -9,6 +9,7 @@ import UserType from './types/user/UserType';
 import NodeType from './types/node/NodeType';
 import FileType from './types/file/FileType';
 import BinaryType from './types/binary/BinaryType';
+import FormType from './types/form/FormType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
@@ -82,5 +83,6 @@ FormFilter.User = UserType;
 FormFilter.Node = NodeType;
 FormFilter.Binary = BinaryType;
 FormFilter.File = FileType;
+FormFilter.Form = FormType;
 
 export default FormFilter;

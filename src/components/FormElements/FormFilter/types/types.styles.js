@@ -180,6 +180,18 @@ export const FileContainer = styled.div`
 
 export const FileTitle = styled.div`
   font-size: 1rem;
-  color: #2b2727;
+  color: #262261;
+  margin: 1rem 0;
+`;
+
+//! Form styles
+export const FormContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1.5rem;
+`;
+
+export const FormTitle = styled.div`
+  font-size: 1rem;
+  color: #262261;
   margin: 1rem 0;
 `;
