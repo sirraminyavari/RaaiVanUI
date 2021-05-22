@@ -2,7 +2,7 @@ import * as Styled from '../types.styles';
 import { encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
-const TextType = (props) => {
+const FileType = (props) => {
   const { onChange, data } = props;
 
   const handleOnItemSelect = (items) => {
@@ -14,21 +14,21 @@ const TextType = (props) => {
     };
 
     onChange({
-      type: 'Text',
+      type: 'File',
       value: textItems.length ? value : null,
     });
   };
 
   return (
-    <Styled.TextContainer>
-      <Styled.TextTitle>{data.Title}</Styled.TextTitle>
+    <Styled.FileContainer>
+      <Styled.FileTitle>{data.Title}</Styled.FileTitle>
       <ItemProducer
         isDragDisabled={true}
         onItems={handleOnItemSelect}
         style={{ width: '100%' }}
       />
-    </Styled.TextContainer>
+    </Styled.FileContainer>
   );
 };
 
-export default TextType;
+export default FileType;

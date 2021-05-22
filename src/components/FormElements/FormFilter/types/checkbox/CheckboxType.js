@@ -1,7 +1,5 @@
 import { useCallback } from 'react';
-import AutoSuggest from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import * as Styled from '../types.styles';
-import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
@@ -25,16 +23,9 @@ const CheckboxType = (props) => {
 
   return (
     <Styled.CheckboxContainer>
-      <Styled.CheckboxTitleWrapper>
-        <AtSignIcon />
-        <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
-      </Styled.CheckboxTitleWrapper>
+      <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
       {AutoSuggestMode ? (
-        <AutoSuggest
-          defaultItems={Options}
-          onItemSelect={handleOnItemSelect}
-          placeholder="موضوع مورد نظر خود را انتخاب نمایید"
-        />
+        <div>Checkbox</div>
       ) : (
         <Checkbox options={Options} onSelect={handleOnItemSelect} />
       )}

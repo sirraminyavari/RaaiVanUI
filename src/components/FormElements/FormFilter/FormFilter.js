@@ -7,6 +7,8 @@ import SelectType from './types/select/SelectType';
 import NumericType from './types/numeric/NumericType';
 import UserType from './types/user/UserType';
 import NodeType from './types/node/NodeType';
+import FileType from './types/file/FileType';
+import BinaryType from './types/binary/BinaryType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
@@ -21,11 +23,11 @@ const FormFilter = (props) => {
     return { ...state, [filter.Type]: null };
   }, {});
 
-  const [values, setvalues] = useState(initState);
+  const [values, setValues] = useState(initState);
 
   //! Calls on every filter type change.
   const handleOnChange = (filter) => {
-    setvalues((oldValues) => ({ ...oldValues, [filter.type]: filter.value }));
+    setValues((oldValues) => ({ ...oldValues, [filter.type]: filter.value }));
   };
   console.log(values);
 
@@ -36,7 +38,7 @@ const FormFilter = (props) => {
 
   //! clear the filter form.
   const clearFilter = () => {
-    setvalues(initState);
+    setValues(initState);
   };
 
   return (
@@ -78,5 +80,7 @@ FormFilter.Select = SelectType;
 FormFilter.Numeric = NumericType;
 FormFilter.User = UserType;
 FormFilter.Node = NodeType;
+FormFilter.Binary = BinaryType;
+FormFilter.File = FileType;
 
 export default FormFilter;

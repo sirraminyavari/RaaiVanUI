@@ -1,21 +1,29 @@
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
+import APIHandler from 'apiHelper/APIHandler';
+import * as Styled from '../types.styles';
 
 const UserType = (props) => {
   const { onChange, data } = props;
   const { MultiSelect } = JSON.parse(decodeBase64(data.Info));
+  const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
 
-  const fetchUsers = () => {
+  const fetchUsers = (searchText) => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve([
-          { id: '1', value: 'user one' },
-          { id: '2', value: 'user two' },
-          { id: '3', value: 'user three' },
-          { id: '4', value: 'user four' },
-          { id: '5', value: 'user five' },
-        ]);
-      }, 2000);
+      getUsersAPI.fetch(
+        {
+          SearchText: encodeBase64(searchText),
+          Count: 20,
+        },
+        (response) => {
+          const users = response.Users.map((user) => ({
+            id: user.UserID,
+            value: decodeBase64(user.FullName),
+          }));
+          resolve(users);
+        },
+        (error) => reject(error)
+      );
     });
   };
 
@@ -28,8 +36,8 @@ const UserType = (props) => {
   };
 
   return (
-    <div style={{ width: '100%' }}>
-      <div>{data.Title}</div>
+    <Styled.UserContainer>
+      <Styled.UserTitle>{data.Title}</Styled.UserTitle>
       <ItemProducer
         type="autosuggest"
         fetchItems={fetchUsers}
@@ -37,7 +45,7 @@ const UserType = (props) => {
         onItems={handleSelectUsers}
         style={{ width: '100%' }}
       />
-    </div>
+    </Styled.UserContainer>
   );
 };
 

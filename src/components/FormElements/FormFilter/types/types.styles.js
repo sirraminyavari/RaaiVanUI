@@ -137,3 +137,49 @@ export const NumberSpanTitle = styled.div`
   color: #262261;
   text-transform: capitalize;
 `;
+
+//! Node styles
+export const NodeContainer = styled.div`
+  width: 100%;
+  margin: 1rem 0;
+  color: #262261;
+`;
+
+export const NodeTitleWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.5rem 0;
+`;
+
+export const NodeTitle = styled.div`
+  color: #262261;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+`;
+
+//! User styles
+
+export const UserContainer = styled.div`
+  width: 100%;
+  margin: 1rem 0;
+  color: #262261;
+`;
+
+export const UserTitle = styled.div`
+  color: #262261;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+`;
+
+//! File styles
+export const FileContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1.5rem;
+`;
+
+export const FileTitle = styled.div`
+  font-size: 1rem;
+  color: #2b2727;
+  margin: 1rem 0;
+`;

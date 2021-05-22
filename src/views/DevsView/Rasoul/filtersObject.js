@@ -3,7 +3,7 @@ import { encodeBase64 } from 'helpers/helpers';
 const filters = [
   {
     ElementID: '1',
-    Title: 'موضوعات مشابه',
+    Title: 'انتخاب چند گزینه ای',
     Type: 'Checkbox',
     Info: encodeBase64(
       JSON.stringify({
@@ -42,17 +42,33 @@ const filters = [
   },
   {
     ElementID: '7',
-    Title: 'انتخاب کلاس',
+    Title: 'موضوعات مشابه',
     Type: 'Node',
     Info: encodeBase64(
       JSON.stringify({
         MultiSelect: false,
         NodeTypes: [
-          { NodeTypeID: '1', NodeType: 'first node' },
-          { NodeTypeID: '2', NodeType: 'second node' },
+          {
+            NodeTypeID: '88ee70b3-38b7-4b9d-ba25-8cff1c4b512d',
+            NodeType: 'گروه مخاطب جدید',
+          },
         ],
       })
     ),
+  },
+  {
+    ElementID: '8',
+    Title: 'انتخاب دودویی',
+    Type: 'Binary',
+    Info: encodeBase64(
+      JSON.stringify({ Yes: encodeBase64('Yes'), No: encodeBase64('No') })
+    ),
+  },
+  {
+    ElementID: '9',
+    Title: 'انتخاب فایل',
+    Type: 'File',
+    Info: {},
   },
 ];
 

@@ -23,7 +23,7 @@ const SelectType = (props) => {
     <Styled.SelectContainer>
       <Styled.SelectTitle>{data.Title}</Styled.SelectTitle>
       {AutoSuggestMode ? (
-        <div>Auto Suggest</div>
+        <div>Radio check</div>
       ) : (
         <Checkbox options={Options} onSelect={handleOnChange} />
       )}
