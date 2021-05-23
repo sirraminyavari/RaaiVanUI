@@ -31,22 +31,37 @@ export const SelectLabel = styled.label`
   margin: 0 0.5rem;
 `;
 
-//! AutoSuggest styles.
-export const AutoSuggestContainer = styled.div`
+//! Checkbox styles.
+export const CheckboxContainer = styled.div`
   width: 100%;
   margin: 1rem 0;
+  color: #262261;
 `;
-export const SuggestTitleWrapper = styled.div`
+
+export const CheckboxTitleWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin: 0.5rem 0;
 `;
 
-export const AutoSuggestTitle = styled.div`
+export const CheckboxTitle = styled.div`
   color: #262261;
   font-size: 1rem;
   margin: 0 0.5rem;
+`;
+
+export const CheckboxOptionsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.5rem 0;
+  user-select: none;
+`;
+
+export const CheckboxOptionsLabel = styled.label`
+  margin: 0 0.5rem;
+  cursor: pointer;
 `;
 
 //! Date styles
@@ -121,4 +136,62 @@ export const NumberSpanTitle = styled.div`
   font-size: 1rem;
   color: #262261;
   text-transform: capitalize;
+`;
+
+//! Node styles
+export const NodeContainer = styled.div`
+  width: 100%;
+  margin: 1rem 0;
+  color: #262261;
+`;
+
+export const NodeTitleWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.5rem 0;
+`;
+
+export const NodeTitle = styled.div`
+  color: #262261;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+`;
+
+//! User styles
+
+export const UserContainer = styled.div`
+  width: 100%;
+  margin: 1rem 0;
+  color: #262261;
+`;
+
+export const UserTitle = styled.div`
+  color: #262261;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+`;
+
+//! File styles
+export const FileContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1.5rem;
+`;
+
+export const FileTitle = styled.div`
+  font-size: 1rem;
+  color: #262261;
+  margin: 1rem 0;
+`;
+
+//! Form styles
+export const FormContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1.5rem;
+`;
+
+export const FormTitle = styled.div`
+  font-size: 1rem;
+  color: #262261;
+  margin: 1rem 0;
 `;

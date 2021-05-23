@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
 import { encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
-const TextType = (props) => {
-  const { onChange, data } = props;
+const FileType = (props) => {
+  const { onChange, data, value } = props;
   const [items, setItems] = useState([]);
 
   const handleOnItemSelect = (items) => {
@@ -33,15 +33,15 @@ const TextType = (props) => {
   }, [items]);
 
   return (
-    <Styled.TextContainer>
-      <Styled.TextTitle>{data.Title}</Styled.TextTitle>
+    <Styled.FileContainer>
+      <Styled.FileTitle>{data.Title}</Styled.FileTitle>
       <ItemProducer
         isDragDisabled={true}
         onItems={handleOnItemSelect}
         style={{ width: '100%' }}
       />
-    </Styled.TextContainer>
+    </Styled.FileContainer>
   );
 };
 
-export default TextType;
+export default FileType;

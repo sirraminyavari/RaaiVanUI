@@ -19,20 +19,16 @@ const NumericType = (props) => {
   };
 
   useEffect(() => {
-    if (from && to) {
-      onChange({
-        type: 'Numeric',
-        value: {
-          FloatFrom: from,
-          FloatTo: to,
-        },
-      });
-    } else {
-      onChange({
-        type: 'Numeric',
-        value: null,
-      });
-    }
+    const id = data.ElementID;
+    const FloatFrom = !!from ? +from : null;
+    const FloatTo = !!to ? +to : null;
+
+    const JSONValue = from || to ? { FloatFrom, FloatTo } : null;
+
+    onChange({
+      id,
+      value: { FloatFrom, FloatTo, JSONValue },
+    });
   }, [from, to]);
 
   return (

@@ -1,26 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
-const SelectType = (props) => {
+const CheckboxType = (props) => {
   const { onChange, data, value } = props;
+
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
   const [items, setItems] = useState([]);
 
-  const handleOnChange = (item) => {
+  const handleOnItemSelect = useCallback((item) => {
     if (!item.isChecked) {
       setItems((oldItems) => oldItems.filter((c) => c !== item.value));
     } else {
       setItems((oldItems) => [...oldItems, item.value]);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const id = data.ElementID;
+    const textItems = items.map((item) => encodeBase64(item));
     const JSONValue = {
-      TextItems: items.map((item) => encodeBase64(item)),
+      TextItems: textItems,
       Exact: false,
+      Or: false,
     };
 
     onChange({
@@ -28,6 +31,7 @@ const SelectType = (props) => {
       value: {
         TextItems: items,
         Exact: false,
+        Or: false,
         JSONValue: !items.length ? null : JSONValue,
       },
     });
@@ -40,19 +44,19 @@ const SelectType = (props) => {
   }, [value]);
 
   return (
-    <Styled.SelectContainer>
-      <Styled.SelectTitle>{data.Title}</Styled.SelectTitle>
+    <Styled.CheckboxContainer>
+      <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
       {AutoSuggestMode ? (
-        <div>Radio check</div>
+        <div>Checkbox</div>
       ) : (
         <Checkbox
           options={Options}
-          onSelect={handleOnChange}
+          onSelect={handleOnItemSelect}
           selecteds={value?.TextItems}
         />
       )}
-    </Styled.SelectContainer>
+    </Styled.CheckboxContainer>
   );
 };
 
-export default SelectType;
+export default CheckboxType;
