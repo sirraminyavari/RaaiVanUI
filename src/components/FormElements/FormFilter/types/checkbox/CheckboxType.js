@@ -4,13 +4,17 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
 const CheckboxType = (props) => {
-  const { onChange, data } = props;
+  const { onChange, data, value } = props;
 
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
   const [items, setItems] = useState([]);
 
-  const handleOnItemSelect = useCallback((items) => {
-    setItems(items);
+  const handleOnItemSelect = useCallback((item) => {
+    if (!item.isChecked) {
+      setItems((oldItems) => oldItems.filter((c) => c !== item.value));
+    } else {
+      setItems((oldItems) => [...oldItems, item.value]);
+    }
   }, []);
 
   useEffect(() => {
@@ -33,13 +37,23 @@ const CheckboxType = (props) => {
     });
   }, [items]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setItems([]);
+    }
+  }, [value]);
+
   return (
     <Styled.CheckboxContainer>
       <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
       {AutoSuggestMode ? (
         <div>Checkbox</div>
       ) : (
-        <Checkbox options={Options} onSelect={handleOnItemSelect} />
+        <Checkbox
+          options={Options}
+          onSelect={handleOnItemSelect}
+          selecteds={value?.TextItems}
+        />
       )}
     </Styled.CheckboxContainer>
   );

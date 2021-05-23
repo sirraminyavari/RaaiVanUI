@@ -4,7 +4,7 @@ import { encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
 const FileType = (props) => {
-  const { onChange, data } = props;
+  const { onChange, data, value } = props;
   const [items, setItems] = useState([]);
 
   const handleOnItemSelect = (items) => {

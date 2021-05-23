@@ -1,29 +1,24 @@
-import { useState, useEffect } from 'react';
 import * as Styled from './Checkbox.styles';
 
-const Checkbox = ({ options, onSelect }) => {
-  const [checks, setChecks] = useState([]);
-
+const Checkbox = ({ options, onSelect, selecteds }) => {
   const handleOnChange = (e) => {
+    const isChecked = e.target.checked;
     const value = e.target.value;
-    if (checks.includes(value)) {
-      setChecks((oldChecks) => oldChecks.filter((c) => c !== value));
-    } else {
-      setChecks((oldChecks) => [...oldChecks, value]);
-    }
+    onSelect({ value, isChecked });
   };
-
-  useEffect(() => {
-    onSelect(checks);
-  }, [checks]);
 
   return (
     <Styled.CheckboxContainer onChange={handleOnChange}>
-      {options.map((option) => {
+      {options.map((option, key) => {
         const { value, title, group } = option;
         return (
-          <Styled.CheckboxOptionsWrapper>
-            <input type="checkbox" id={group + '-' + value} value={value} />
+          <Styled.CheckboxOptionsWrapper key={key}>
+            <input
+              type="checkbox"
+              id={group + '-' + value}
+              value={value}
+              checked={selecteds?.includes(value)}
+            />
             <Styled.CheckboxOptionsLabel htmlFor={group + '-' + value}>
               {title}
             </Styled.CheckboxOptionsLabel>

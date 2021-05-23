@@ -60,6 +60,7 @@ const FormFilter = (props) => {
                   FormFilter[filter.Type]({
                     onChange: handleOnChange,
                     data: filter,
+                    value: values[filter.ElementID],
                   })}
               </Fragment>
             );
