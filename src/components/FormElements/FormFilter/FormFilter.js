@@ -10,6 +10,7 @@ import NodeType from './types/node/NodeType';
 import FileType from './types/file/FileType';
 import BinaryType from './types/binary/BinaryType';
 import FormType from './types/form/FormType';
+import MultiLevelType from './types/multiLevel/MultiLevelType';
 import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
@@ -93,5 +94,6 @@ FormFilter.Node = NodeType;
 FormFilter.Binary = BinaryType;
 FormFilter.File = FileType;
 FormFilter.Form = FormType;
+FormFilter.MultiLevel = MultiLevelType;
 
 export default FormFilter;

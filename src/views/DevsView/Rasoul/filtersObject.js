@@ -39,6 +39,18 @@ const filters = [
   },
   { ElementID: 'Text_id', Title: 'فیلتر نمونه متنی', Type: 'Text', Info: {} },
   {
+    ElementID: 'MultiLevel_id',
+    Title: 'انتخاب چند سطحی',
+    Type: 'MultiLevel',
+    Info: {
+      NodeType: {
+        ID: '37b1cd1d-60d3-4b0a-afd1-d1823be4ba6c',
+        Name: 'province/city',
+      },
+      Levels: ['province', 'city'],
+    },
+  },
+  {
     ElementID: 'Numeric_id',
     Title: 'انتخاب بازه اعداد',
     Type: 'Numeric',
