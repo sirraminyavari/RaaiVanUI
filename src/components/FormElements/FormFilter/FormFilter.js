@@ -1,4 +1,4 @@
-import { Fragment, useState, useContext } from 'react';
+import { Fragment, useState, useContext, Children, useCallback } from 'react';
 import { WindowContext } from 'context/WindowProvider';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
@@ -17,60 +17,68 @@ import FilterButton from 'components/Buttons/Button';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 
 const FormFilter = (props) => {
-  const { filters, onFilter } = props;
+  const { filters, onFilter, children } = props;
   const { RVDic } = useContext(WindowContext);
 
-  const initState = filters.reduce((state, filter) => {
-    return { ...state, [filter.Type]: null };
-  }, {});
+  // const initState = filters.reduce((state, filter) => {
+  //   return { ...state, [filter.ElementID]: null };
+  // }, {});
 
-  const [values, setValues] = useState(initState);
+  const [values, setValues] = useState({});
 
   //! Calls on every filter type change.
-  const handleOnChange = (filter) => {
-    setValues((oldValues) => ({ ...oldValues, [filter.type]: filter.value }));
-  };
+  const handleOnChange = useCallback((filter) => {
+    setValues((oldValues) => ({ ...oldValues, [filter.id]: filter.value }));
+  }, []);
   console.log(values);
 
   //! Clalls when user clicks on filter button.
-  const handleOnFilterClick = () => {
+  const handleOnFilterClick = useCallback(() => {
     onFilter && onFilter(values);
-  };
+  }, []);
 
   //! clear the filter form.
   const clearFilter = () => {
-    setValues(initState);
+    setValues({});
   };
 
   return (
-    <Styled.FormFilterContainer>
-      <Styled.FormFilterHeader>
-        <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
-        <Styled.FormFilterTitle>فیلترهای پیشرفته</Styled.FormFilterTitle>
-        <CloseIcon color="red" size={18} style={{ cursor: 'pointer' }} />
-      </Styled.FormFilterHeader>
-      {filters.map((filter, key) => {
-        return (
-          <Fragment key={key}>
-            {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-              FormFilter[filter.Type]({
-                onChange: handleOnChange,
-                data: filter,
-              })}
-          </Fragment>
-        );
-      })}
-      <Styled.FilterToggleContainer>
-        <Styled.FilterToggleTitle>{RVDic.ExactSearch}</Styled.FilterToggleTitle>
-        <ToggleButton onToggle={(v) => console.log(v)} />
-      </Styled.FilterToggleContainer>
-      <FilterButton
-        onClick={handleOnFilterClick}
-        style={{ width: '50%', margin: '1rem 0 0 0', fontSize: '1rem' }}
-        type="primary-o">
-        اعمال فیلتر
-      </FilterButton>
-    </Styled.FormFilterContainer>
+    <>
+      {children ? (
+        <div>{Children.only(children({ onChange: handleOnChange }))}</div>
+      ) : (
+        <Styled.FormFilterContainer>
+          <Styled.FormFilterHeader>
+            <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
+            <Styled.FormFilterTitle>فیلترهای پیشرفته</Styled.FormFilterTitle>
+            <CloseIcon color="red" size={18} style={{ cursor: 'pointer' }} />
+          </Styled.FormFilterHeader>
+          {filters.map((filter, key) => {
+            return (
+              <Fragment key={key}>
+                {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+                  FormFilter[filter.Type]({
+                    onChange: handleOnChange,
+                    data: filter,
+                  })}
+              </Fragment>
+            );
+          })}
+          <Styled.FilterToggleContainer>
+            <Styled.FilterToggleTitle>
+              {RVDic.ExactSearch}
+            </Styled.FilterToggleTitle>
+            <ToggleButton onToggle={(v) => console.log(v)} />
+          </Styled.FilterToggleContainer>
+          <FilterButton
+            onClick={handleOnFilterClick}
+            style={{ width: '50%', margin: '1rem 0 0 0', fontSize: '1rem' }}
+            type="primary-o">
+            اعمال فیلتر
+          </FilterButton>
+        </Styled.FormFilterContainer>
+      )}
+    </>
   );
 };
 

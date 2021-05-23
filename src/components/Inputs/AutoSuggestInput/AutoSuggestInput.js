@@ -1,4 +1,4 @@
-import { useState, useEffect, cloneElement } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Downshift from 'downshift';
 import useDebounce from 'hooks/useDebounce';
@@ -7,6 +7,7 @@ import Button from 'components/Buttons/Button';
 import Input from 'components/Inputs/Input';
 import DotsIcon from 'components/Icons/Dots/Dots';
 import * as Styled from './AutoSuggestInput.styles';
+import { WindowContext } from 'context/WindowProvider';
 
 /**
  * @typedef PropType
@@ -16,6 +17,7 @@ import * as Styled from './AutoSuggestInput.styles';
  * @property {Object[]} [defaultItems] -The default option list for input to select.
  * @property {function} onItemSelect -A callback function that will fire on suggestion selection.
  * @property {function} fetchItems -A callback function that will fire on input change and fetch suggestion from server.
+ * @property {boolean} withButtons -If true, shows buttons in menu.
  */
 
 /**
@@ -32,6 +34,7 @@ const AutoSuggestInput = (props) => {
     fetchItems,
     defaultItems,
     children,
+    withButtons,
     ...rest
   } = props;
   //! Stores suggested items.
@@ -46,6 +49,8 @@ const AutoSuggestInput = (props) => {
   const debouncedSearchTerm = useDebounce(searchTerm, delay);
   //! If true, Shows a modal to user for more advanced options to choose from.
   const [isModalShown, setIsModalShown] = useState(false);
+
+  const { RVDic } = useContext(WindowContext);
 
   //! Toggle advanced suggest options modal.
   const toggleModal = () => setIsModalShown(!isModalShown);
@@ -158,7 +163,7 @@ const AutoSuggestInput = (props) => {
             })}>
             <Input
               {...getInputProps({
-                placeholder,
+                placeholder: placeholder || RVDic.Search,
                 className: 'BorderRadius4',
                 style: { width: '100%' },
               })}>
@@ -183,11 +188,14 @@ const AutoSuggestInput = (props) => {
                   'BorderRadius4 ColdBackgroundColor SurroundingShadow',
               })}
               {...getRootProps({ refKey: 'ulRef' })}
-              items={items}>
-              <Styled.ButtonsContainer className="ColdBackgroundColor">
-                <Button type="primary">do sth</Button>
-                <Button type="negative">do sth. else</Button>
-              </Styled.ButtonsContainer>
+              items={items}
+              hasButton={!!withButtons}>
+              {!!withButtons && (
+                <Styled.ButtonsContainer className="ColdBackgroundColor">
+                  <Button type="primary">do sth</Button>
+                  <Button type="negative">do sth. else</Button>
+                </Styled.ButtonsContainer>
+              )}
               {isSearching && (
                 <Styled.LoaderWrapper>
                   <LoadingIcon />
@@ -236,13 +244,13 @@ AutoSuggestInput.propTypes = {
   fetchItems: PropTypes.func,
   defaultItems: PropTypes.array,
   placeholder: PropTypes.string,
+  withButtons: PropTypes.bool,
 };
 
 AutoSuggestInput.defaultProps = {
   delay: 500,
   searchAt: 3,
   defaultItems: [],
-  placeholder: 'جستجو ...',
 };
 
 AutoSuggestInput.displayName = 'AutoSuggestInput';

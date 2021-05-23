@@ -1,23 +1,36 @@
+import { useEffect, useState } from 'react';
 import * as Styled from '../types.styles';
 import { encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
 const TextType = (props) => {
   const { onChange, data } = props;
+  const [items, setItems] = useState([]);
 
   const handleOnItemSelect = (items) => {
+    setItems(items);
+  };
+
+  useEffect(() => {
+    const id = data.ElementID;
     const textItems = items.map((item) => encodeBase64(item));
-    const value = {
+    const JSONValue = {
       TextItems: textItems,
       Exact: false,
       Or: false,
     };
 
     onChange({
-      type: 'Text',
-      value: textItems.length ? value : null,
+      id,
+      value: {
+        TextItems: items,
+        Exact: false,
+        Or: false,
+        Data: items,
+        JSONValue: !items.length ? null : JSONValue,
+      },
     });
-  };
+  }, [items]);
 
   return (
     <Styled.TextContainer>

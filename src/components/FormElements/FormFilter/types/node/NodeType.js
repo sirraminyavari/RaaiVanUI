@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
@@ -8,6 +9,7 @@ const NodeType = (props) => {
   const { onChange, data } = props;
   const { MultiSelect, NodeTypes } = JSON.parse(decodeBase64(data.Info));
   const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+  const [items, setItems] = useState([]);
 
   const fetchNodes = (searchText) => {
     const nodeTypeIds = NodeTypes.map((node) => node.NodeTypeID).join('|');
@@ -36,12 +38,22 @@ const NodeType = (props) => {
   };
 
   const handleSelectNodes = (nodes) => {
-    const value = { GuidItems: nodes.map((node) => node.id) };
-    onChange({
-      type: 'Node',
-      value: nodes.length ? value : null,
-    });
+    setItems(nodes);
   };
+
+  useEffect(() => {
+    const id = data.ElementID;
+    const nodeIds = items.map((node) => node.id);
+    const JSONValue = { GuidItems: nodeIds };
+    onChange({
+      id,
+      value: {
+        GuidItems: !items.length ? null : nodeIds.join('|'),
+        Data: items,
+        JSONValue: !items.length ? null : JSONValue,
+      },
+    });
+  }, [items]);
 
   return (
     <Styled.NodeContainer>

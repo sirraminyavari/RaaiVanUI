@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
@@ -7,19 +7,31 @@ const CheckboxType = (props) => {
   const { onChange, data } = props;
 
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
+  const [items, setItems] = useState([]);
 
   const handleOnItemSelect = useCallback((items) => {
-    const value = {
-      TextItems: items.map((item) => encodeBase64(item)),
+    setItems(items);
+  }, []);
+
+  useEffect(() => {
+    const id = data.ElementID;
+    const textItems = items.map((item) => encodeBase64(item));
+    const JSONValue = {
+      TextItems: textItems,
       Exact: false,
       Or: false,
     };
 
     onChange({
-      type: 'Checkbox',
-      value: !!items.length ? value : null,
+      id,
+      value: {
+        TextItems: items,
+        Exact: false,
+        Or: false,
+        JSONValue: !items.length ? null : JSONValue,
+      },
     });
-  }, []);
+  }, [items]);
 
   return (
     <Styled.CheckboxContainer>

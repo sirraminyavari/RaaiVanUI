@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import APIHandler from 'apiHelper/APIHandler';
@@ -7,6 +8,7 @@ const UserType = (props) => {
   const { onChange, data } = props;
   const { MultiSelect } = JSON.parse(decodeBase64(data.Info));
   const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
+  const [items, setItems] = useState([]);
 
   const fetchUsers = (searchText) => {
     return new Promise((resolve, reject) => {
@@ -28,12 +30,23 @@ const UserType = (props) => {
   };
 
   const handleSelectUsers = (users) => {
-    const value = { GuidItems: users.map((user) => user.id) };
-    onChange({
-      type: 'User',
-      value: users.length ? value : null,
-    });
+    setItems(users);
   };
+
+  useEffect(() => {
+    const id = data.ElementID;
+    const userIds = items.map((user) => user.id);
+    const JSONValue = { GuidItems: userIds };
+
+    onChange({
+      id,
+      value: {
+        GuidItems: !items.length ? null : userIds.join('|'),
+        Data: items,
+        JSONValue: !items.length ? null : JSONValue,
+      },
+    });
+  }, [items]);
 
   return (
     <Styled.UserContainer>

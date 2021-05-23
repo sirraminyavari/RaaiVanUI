@@ -18,17 +18,18 @@ const DateType = (props) => {
   };
 
   useEffect(() => {
-    if (from && to) {
-      onChange({
-        type: 'Date',
-        value: { DateFrom: from, DateTo: to },
-      });
-    } else {
-      onChange({
-        type: 'Date',
-        value: null,
-      });
-    }
+    const id = data.ElementID;
+    const JSONValue = from || to ? { DateFrom: from, DateTo: to } : null;
+
+    onChange({
+      id,
+      value: {
+        DateFrom: from,
+        DateTo: to,
+        Data: { From: from, To: to },
+        JSONValue,
+      },
+    });
   }, [from, to]);
 
   return (

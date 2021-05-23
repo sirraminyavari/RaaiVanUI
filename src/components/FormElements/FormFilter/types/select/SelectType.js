@@ -1,23 +1,33 @@
+import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 
 const SelectType = (props) => {
   const { onChange, data } = props;
-
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
+  const [items, setItems] = useState([]);
 
   const handleOnChange = (items) => {
-    const value = {
+    setItems(items);
+  };
+
+  useEffect(() => {
+    const id = data.ElementID;
+    const JSONValue = {
       TextItems: items.map((item) => encodeBase64(item)),
       Exact: false,
     };
 
     onChange({
-      type: 'Select',
-      value: !!items.length ? value : null,
+      id,
+      value: {
+        TextItems: items,
+        Exact: false,
+        JSONValue: !items.length ? null : JSONValue,
+      },
     });
-  };
+  }, [items]);
 
   return (
     <Styled.SelectContainer>
