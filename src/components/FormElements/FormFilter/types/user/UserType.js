@@ -50,7 +50,7 @@ const UserType = (props) => {
 
   return (
     <Styled.UserContainer>
-      <Styled.UserTitle>{data.Title}</Styled.UserTitle>
+      <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
       <ItemProducer
         type="autosuggest"
         fetchItems={fetchUsers}

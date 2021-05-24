@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as Styled from '../types.styles';
-import { encodeBase64 } from 'helpers/helpers';
+import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
 const TextType = (props) => {
@@ -34,7 +34,7 @@ const TextType = (props) => {
 
   return (
     <Styled.TextContainer>
-      <Styled.TextTitle>{data.Title}</Styled.TextTitle>
+      <Styled.TextTitle>{decodeBase64(data.Title)}</Styled.TextTitle>
       <ItemProducer
         isDragDisabled={true}
         onItems={handleOnItemSelect}

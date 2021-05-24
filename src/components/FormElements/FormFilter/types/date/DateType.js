@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import DatePicker from '../../../../CustomDatePicker/CustomDatePicker';
 import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
+import { decodeBase64 } from 'helpers/helpers';
 
 const DateType = (props) => {
   const { onChange, data, value } = props;
@@ -34,7 +35,7 @@ const DateType = (props) => {
 
   return (
     <Styled.DateContainer>
-      <Styled.DateTitle>{data.Title}</Styled.DateTitle>
+      <Styled.DateTitle>{decodeBase64(data.Title)}</Styled.DateTitle>
       <Styled.DatePickerWrapper>
         <Styled.DateSpanTitle>{RVDic.From}</Styled.DateSpanTitle>
         <Styled.DatePicker>

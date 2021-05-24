@@ -2,6 +2,7 @@ import Input from '../../../../Inputs/Input';
 import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
 import { useContext, useEffect, useState } from 'react';
+import { decodeBase64 } from 'helpers/helpers';
 
 const NumericType = (props) => {
   const { RVDic } = useContext(WindowContext);
@@ -33,7 +34,7 @@ const NumericType = (props) => {
 
   return (
     <Styled.NumericContainer>
-      <Styled.NumericTitle>{data.Title}</Styled.NumericTitle>
+      <Styled.NumericTitle>{decodeBase64(data.Title)}</Styled.NumericTitle>
       <Styled.NumericWrapper>
         <Styled.NumberSpanTitle>{RVDic.From}</Styled.NumberSpanTitle>
         <Styled.Numeric>

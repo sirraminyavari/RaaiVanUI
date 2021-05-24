@@ -7,6 +7,11 @@ const CheckboxType = (props) => {
   const { onChange, data, value } = props;
 
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
+  const options = Options.map((option) => ({
+    value: decodeBase64(option),
+    title: decodeBase64(option),
+    group: 'select',
+  }));
   const [items, setItems] = useState([]);
 
   const handleOnItemSelect = useCallback((item) => {
@@ -45,9 +50,13 @@ const CheckboxType = (props) => {
 
   return (
     <Styled.CheckboxContainer>
-      <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
+      <Styled.CheckboxTitle>{decodeBase64(data.Title)}</Styled.CheckboxTitle>
       {AutoSuggestMode ? (
-        <div>Checkbox</div>
+        <Checkbox
+          options={options}
+          onSelect={handleOnItemSelect}
+          selecteds={value?.TextItems}
+        />
       ) : (
         <Checkbox
           options={Options}

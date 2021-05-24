@@ -18,7 +18,7 @@ import FilterButton from 'components/Buttons/Button';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 
 const FormFilter = (props) => {
-  const { filters, onFilter, children } = props;
+  const { filters, onFilter, children, onCloseFilter } = props;
   const { RVDic } = useContext(WindowContext);
 
   // const initState = filters.reduce((state, filter) => {
@@ -28,9 +28,9 @@ const FormFilter = (props) => {
   const [values, setValues] = useState({});
 
   //! Calls on every filter type change.
-  const handleOnChange = useCallback((filter) => {
+  const handleOnChange = (filter) => {
     setValues((oldValues) => ({ ...oldValues, [filter.id]: filter.value }));
-  }, []);
+  };
   console.log(values);
 
   //! Clalls when user clicks on filter button.
@@ -43,6 +43,11 @@ const FormFilter = (props) => {
     setValues({});
   };
 
+  //! Close form filter.
+  const closeFormFilter = () => {
+    onCloseFilter();
+  };
+
   return (
     <>
       {children ? (
@@ -52,7 +57,12 @@ const FormFilter = (props) => {
           <Styled.FormFilterHeader>
             <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
             <Styled.FormFilterTitle>فیلترهای پیشرفته</Styled.FormFilterTitle>
-            <CloseIcon color="red" size={18} style={{ cursor: 'pointer' }} />
+            <CloseIcon
+              color="red"
+              size={18}
+              style={{ cursor: 'pointer' }}
+              onClick={closeFormFilter}
+            />
           </Styled.FormFilterHeader>
           {filters.map((filter, key) => {
             return (

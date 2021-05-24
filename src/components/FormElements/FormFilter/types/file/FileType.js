@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
-import { encodeBase64 } from 'helpers/helpers';
+import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 
 const FileType = (props) => {
@@ -34,7 +34,7 @@ const FileType = (props) => {
 
   return (
     <Styled.FileContainer>
-      <Styled.FileTitle>{data.Title}</Styled.FileTitle>
+      <Styled.FileTitle>{decodeBase64(data.Title)}</Styled.FileTitle>
       <ItemProducer
         isDragDisabled={true}
         onItems={handleOnItemSelect}

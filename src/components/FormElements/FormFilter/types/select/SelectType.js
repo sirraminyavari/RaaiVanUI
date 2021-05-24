@@ -6,6 +6,11 @@ import Checkbox from 'components/Inputs/checkbox/Checkbox';
 const SelectType = (props) => {
   const { onChange, data, value } = props;
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
+  const options = Options.map((option) => ({
+    value: decodeBase64(option),
+    title: decodeBase64(option),
+    group: 'select',
+  }));
   const [items, setItems] = useState([]);
 
   const handleOnChange = (item) => {
@@ -41,12 +46,12 @@ const SelectType = (props) => {
 
   return (
     <Styled.SelectContainer>
-      <Styled.SelectTitle>{data.Title}</Styled.SelectTitle>
+      <Styled.SelectTitle>{decodeBase64(data.Title)}</Styled.SelectTitle>
       {AutoSuggestMode ? (
         <div>Radio check</div>
       ) : (
         <Checkbox
-          options={Options}
+          options={options}
           onSelect={handleOnChange}
           selecteds={value?.TextItems}
         />

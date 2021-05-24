@@ -42,7 +42,7 @@ const BinaryType = (props) => {
 
   return (
     <Styled.UserContainer>
-      <Styled.UserTitle>{data.Title}</Styled.UserTitle>
+      <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
       <Radio
         options={options}
         onSelect={handleOnBinarySelect}
