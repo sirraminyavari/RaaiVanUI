@@ -47,6 +47,7 @@ const DateType = (props) => {
             label={RVDic.DateSelect}
             value={value?.DateFrom}
             shouldClear={!!from && value === undefined}
+            maximumDate={to ?? null}
           />
         </Styled.DatePicker>
       </Styled.DatePickerWrapper>
@@ -62,6 +63,7 @@ const DateType = (props) => {
             label={RVDic.DateSelect}
             value={value?.DateTo}
             shouldClear={!!to && value === undefined}
+            minimumDate={from ?? null}
           />
         </Styled.DatePicker>
       </Styled.DatePickerWrapper>

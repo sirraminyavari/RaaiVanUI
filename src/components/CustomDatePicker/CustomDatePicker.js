@@ -303,12 +303,24 @@ const CustomDatePicker = (props) => {
     }
   };
 
-  const getMinDate = () => {
-    //TODO: minimum date.
-  };
+  // console.log(dateEngToPer('2021/03/12').split('/'));
 
-  const getMaxDate = () => {
-    //TODO: maximum date.
+  const getMinOrMaxDate = (date) => {
+    if (type === 'jalali') {
+      const perDate = dateEngToPer(date).split('/');
+      return {
+        year: +perDate[0],
+        month: +perDate[1],
+        day: +perDate[2],
+      };
+    } else {
+      const engDate = date.split('/');
+      return {
+        year: +engDate[0],
+        month: +engDate[1],
+        day: +engDate[2],
+      };
+    }
   };
 
   //! Switch between "DatePicker" and "Calendar" component based on "mode" prop passed to this component.
@@ -332,9 +344,13 @@ const CustomDatePicker = (props) => {
                 onChange={handleChange}
                 value={selectedDate}
                 minimumDate={
-                  fromToday ? getToday() : minimumDate ? getMinDate() : null
+                  fromToday
+                    ? getToday()
+                    : minimumDate
+                    ? getMinOrMaxDate(minimumDate)
+                    : null
                 }
-                maximumDate={minimumDate ? getMaxDate() : null}
+                maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
                 shouldHighlightWeekends
                 calendarClassName={styles[`${size}Calendar`]}
                 calendarTodayClassName="todayDate"
@@ -368,9 +384,13 @@ const CustomDatePicker = (props) => {
             onChange={handleChange}
             value={selectedDate}
             minimumDate={
-              fromToday ? getToday() : minimumDate ? getMinDate() : null
+              fromToday
+                ? getToday()
+                : minimumDate
+                ? getMinOrMaxDate(minimumDate)
+                : null
             }
-            maximumDate={minimumDate ? getMaxDate() : null}
+            maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
             shouldHighlightWeekends
             calendarClassName={styles[`${size}Calendar`]}
             calendarTodayClassName={styles.todayDate}
