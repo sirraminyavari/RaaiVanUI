@@ -13,6 +13,7 @@ import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
 import { mergeRefs, getToday } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
+import * as Styled from './CustomDatePicker.styles';
 
 /**
  * @typedef DateType
@@ -50,10 +51,11 @@ import styles from './CustomDatePicker.module.css';
  * @property {Object} inputStyle - Style for input.
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
+ * @property {*} customButton - A custom button for date picker.
  */
 
 /**
- *  @description Renders a custom date picker.
+ * @description Renders a custom date picker.
  * @component
  * @param {PropType} props -Props that pass to custom date picker.
  */
@@ -74,6 +76,7 @@ const CustomDatePicker = (props) => {
     buttonStyle,
     maximumDate,
     minimumDate,
+    customButton: CustomButton,
     ...rest
   } = props;
 
@@ -312,12 +315,16 @@ const CustomDatePicker = (props) => {
   switch (mode) {
     case 'button':
       return (
-        <>
-          <Button
-            style={{ minWidth: '16rem', ...buttonStyle }}
-            onClick={toggleCalendar}>
-            {formatDate(selectedDate)}
-          </Button>
+        <Styled.CalendarConatiner>
+          {!!CustomButton ? (
+            <CustomButton onClick={toggleCalendar} />
+          ) : (
+            <Button
+              style={{ minWidth: '16rem', ...buttonStyle }}
+              onClick={toggleCalendar}>
+              {formatDate(selectedDate)}
+            </Button>
+          )}
           {isCalendarShown && (
             <OnClickAway onAway={toggleCalendar}>
               <Calendar
@@ -330,13 +337,13 @@ const CustomDatePicker = (props) => {
                 maximumDate={minimumDate ? getMaxDate() : null}
                 shouldHighlightWeekends
                 calendarClassName={styles[`${size}Calendar`]}
-                calendarTodayClassName={styles.todayDate}
+                calendarTodayClassName="todayDate"
                 locale={getLocale(type)}
                 {...rest}
               />
             </OnClickAway>
           )}
-        </>
+        </Styled.CalendarConatiner>
       );
 
     default:
