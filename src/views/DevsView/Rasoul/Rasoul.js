@@ -306,14 +306,27 @@ const RasoulView = () => {
             onDateSelect={(date) => console.log(date)}
           />
         </div>
-        <div>
+        <div style={{ width: '150px', maxWidth: '150px' }}>
           <CustomDatePicker
             label=" انتخاب تاریخ با بازه زمانی"
             mode="button"
+            customButton={({ onClick }) => (
+              <div
+                onClick={onClick}
+                style={{
+                  padding: '5px',
+                  border: '1px solid #333',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                }}>
+                custom button
+              </div>
+            )}
             type="jalali"
             range
             clearButton
             onDateSelect={(date) => console.log(date)}
+            size="small"
           />
         </div>
       </div>
