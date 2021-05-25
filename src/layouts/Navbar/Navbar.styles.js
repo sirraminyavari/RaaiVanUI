@@ -277,6 +277,7 @@ export const ButtonAction = styled.div.attrs({
 
 export const ActionTitle = styled.span`
   margin: 0.3rem 0.5rem;
+  text-transform: capitalize;
 `;
 
 export const NavMenuContainer = styled.div`

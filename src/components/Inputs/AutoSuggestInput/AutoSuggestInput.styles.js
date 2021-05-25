@@ -41,11 +41,11 @@ export const InputElementWrapper = styled.div.attrs((props) => ({
 //   width: 100%;
 // `;
 
-const getMenuHeigth = ({ items }) => {
+const getMenuHeigth = ({ items, hasButton }) => {
   if (items.length === 0) {
-    return 'height: 4.3rem;';
+    return `height: ${hasButton ? '4.3rem' : '0'};`;
   } else {
-    return `height: ${items.length * ITEM_HEIGHT + 6.5}rem;`;
+    return `height: ${items.length * ITEM_HEIGHT + (hasButton ? 6.5 : 2)}rem;`;
   }
 };
 

@@ -32,6 +32,9 @@ const FlexCenter = css`
 export const TitleText = styled.span.attrs({ className: C_WHITE })`
   margin: 0.5rem;
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const CenterIcon = styled.div`
@@ -67,6 +70,9 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
   background-image: url(${sidebarPattern});
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 
   .subMenuContainer {
     overflow: hidden;
@@ -520,6 +526,9 @@ export const CancelIconWrapper = styled.div`
 export const PanelLink = styled.div`
   margin-${RV_Float}: 0.4rem;
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const SettingItemTitle = styled.div`

@@ -13,6 +13,7 @@ import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
 import { mergeRefs, getToday } from 'helpers/helpers';
 import styles from './CustomDatePicker.module.css';
+import * as Styled from './CustomDatePicker.styles';
 
 /**
  * @typedef DateType
@@ -33,7 +34,8 @@ import styles from './CustomDatePicker.module.css';
  * @typedef PropType
  * @type {Object}
  * @property {(DateType | DateType[] | RangeType)} value - The value of the calendar .
- * @property {DateType} maximumDate - Maximum date that a user is allowed to select.
+ * @property {string} maximumDate - Maximum date that a user is allowed to select.
+ * @property {string} minimumDate - Minimum date that a user is allowed to select.
  * @property {DateType[]} disabledDays - Dates that are disabled and could not be selected.
  * @property {function} onDisabledDayError - A function that fires when the user clicks on disabled date.
  * @property {('jalali' | '‫‪gregorian‬‬' | 'lunar')} type - Type of date picker.
@@ -48,10 +50,12 @@ import styles from './CustomDatePicker.module.css';
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
  * @property {Object} inputStyle - Style for input.
  * @property {Object} buttonStyle - Style for button.
+ * @property {boolean} shouldClear - If true, clear the date.
+ * @property {*} customButton - A custom button for date picker.
  */
 
 /**
- *  @description Renders a custom date picker.
+ * @description Renders a custom date picker.
  * @component
  * @param {PropType} props -Props that pass to custom date picker.
  */
@@ -65,10 +69,14 @@ const CustomDatePicker = (props) => {
     size,
     onDateSelect,
     clearButton,
+    shouldClear,
     format,
     fromToday,
     inputStyle,
     buttonStyle,
+    maximumDate,
+    minimumDate,
+    customButton: CustomButton,
     ...rest
   } = props;
 
@@ -163,6 +171,12 @@ const CustomDatePicker = (props) => {
       inputRef.current.value = '';
     }
   };
+
+  useEffect(() => {
+    if (shouldClear) {
+      handleClear();
+    }
+  }, [shouldClear]);
 
   //! Renders a clear button for datepicker.
   const ClearButton = () => {
@@ -289,32 +303,47 @@ const CustomDatePicker = (props) => {
     }
   };
 
+  const getMinDate = () => {
+    //TODO: minimum date.
+  };
+
+  const getMaxDate = () => {
+    //TODO: maximum date.
+  };
+
   //! Switch between "DatePicker" and "Calendar" component based on "mode" prop passed to this component.
   switch (mode) {
     case 'button':
       return (
-        <>
-          <Button
-            style={{ minWidth: '16rem', ...buttonStyle }}
-            onClick={toggleCalendar}>
-            {formatDate(selectedDate)}
-          </Button>
+        <Styled.CalendarConatiner>
+          {!!CustomButton ? (
+            <CustomButton onClick={toggleCalendar} />
+          ) : (
+            <Button
+              style={{ minWidth: '16rem', ...buttonStyle }}
+              onClick={toggleCalendar}>
+              {formatDate(selectedDate)}
+            </Button>
+          )}
           {isCalendarShown && (
             <OnClickAway onAway={toggleCalendar}>
               <Calendar
                 renderFooter={() => (clearButton ? <ClearButton /> : null)}
                 onChange={handleChange}
                 value={selectedDate}
-                minimumDate={fromToday ? getToday() : null}
+                minimumDate={
+                  fromToday ? getToday() : minimumDate ? getMinDate() : null
+                }
+                maximumDate={minimumDate ? getMaxDate() : null}
                 shouldHighlightWeekends
                 calendarClassName={styles[`${size}Calendar`]}
-                calendarTodayClassName={styles.todayDate}
+                calendarTodayClassName="todayDate"
                 locale={getLocale(type)}
                 {...rest}
               />
             </OnClickAway>
           )}
-        </>
+        </Styled.CalendarConatiner>
       );
 
     default:
@@ -338,10 +367,14 @@ const CustomDatePicker = (props) => {
             renderFooter={() => (clearButton ? <ClearButton /> : null)}
             onChange={handleChange}
             value={selectedDate}
-            minimumDate={fromToday ? getToday() : null}
+            minimumDate={
+              fromToday ? getToday() : minimumDate ? getMinDate() : null
+            }
+            maximumDate={minimumDate ? getMaxDate() : null}
             shouldHighlightWeekends
             calendarClassName={styles[`${size}Calendar`]}
             calendarTodayClassName={styles.todayDate}
+            wrapperClassName={styles.DatePicker}
             locale={getLocale(type)}
             {...rest}
           />
@@ -440,6 +473,7 @@ function customFormat(val, type, range) {
 CustomDatePicker.defaultProps = {
   range: false,
   clearButton: false,
+  shouldClear: false,
   size: 'medium',
   format: 'YYYY/MM/DD',
 };
