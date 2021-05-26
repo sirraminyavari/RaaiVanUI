@@ -256,7 +256,11 @@ const RasoulView = () => {
       <Divider title="FormFilter Component" />
       <div style={{ width: '40%', margin: 'auto' }}>
         {!!filters.length && (
-          <FormFilter filters={filters} onFilter={(v) => console.log(v)} />
+          <FormFilter
+            formName="فیلترهای پیشرفته"
+            filters={filters}
+            onFilter={(v) => console.log(v)}
+          />
         )}
       </div>
       <Divider title="Custom Table Component" />

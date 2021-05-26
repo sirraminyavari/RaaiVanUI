@@ -1,5 +1,4 @@
-import { Fragment, useState, useContext, Children, useCallback } from 'react';
-import { WindowContext } from 'context/WindowProvider';
+import { Fragment, useState, Children } from 'react';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
 import CheckboxType from './types/checkbox/CheckboxType';
@@ -15,28 +14,33 @@ import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
-import ToggleButton from 'components/Buttons/Toggle/Toggle';
 
 const FormFilter = (props) => {
-  const { filters, onFilter, children, onCloseFilter } = props;
-  const { RVDic } = useContext(WindowContext);
+  const {
+    filters,
+    onFilter,
+    children,
+    onCloseFilter,
+    formName,
+    filterValues,
+  } = props;
 
   // const initState = filters.reduce((state, filter) => {
   //   return { ...state, [filter.ElementID]: null };
   // }, {});
 
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState(filterValues || {});
 
   //! Calls on every filter type change.
   const handleOnChange = (filter) => {
     setValues((oldValues) => ({ ...oldValues, [filter.id]: filter.value }));
   };
-  console.log(values);
+  // console.log(values);
 
   //! Clalls when user clicks on filter button.
-  const handleOnFilterClick = useCallback(() => {
+  const handleOnFilterClick = () => {
     onFilter && onFilter(values);
-  }, []);
+  };
 
   //! clear the filter form.
   const clearFilter = () => {
@@ -56,7 +60,7 @@ const FormFilter = (props) => {
         <Styled.FormFilterContainer>
           <Styled.FormFilterHeader>
             <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
-            <Styled.FormFilterTitle>فیلترهای پیشرفته</Styled.FormFilterTitle>
+            <Styled.FormFilterTitle>{formName}</Styled.FormFilterTitle>
             <CloseIcon
               color="red"
               size={18}
@@ -76,12 +80,6 @@ const FormFilter = (props) => {
               </Fragment>
             );
           })}
-          <Styled.FilterToggleContainer>
-            <Styled.FilterToggleTitle>
-              {RVDic.ExactSearch}
-            </Styled.FilterToggleTitle>
-            <ToggleButton onToggle={(v) => console.log(v)} />
-          </Styled.FilterToggleContainer>
           <FilterButton
             onClick={handleOnFilterClick}
             style={{ width: '50%', margin: '1rem 0 0 0', fontSize: '1rem' }}

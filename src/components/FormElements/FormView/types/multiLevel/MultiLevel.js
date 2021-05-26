@@ -1,5 +1,7 @@
+import { Fragment } from 'react';
 import ArrowIcon from 'components/Icons/ArrowIcons/DoubleArrow';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { decodeBase64 } from 'helpers/helpers';
 
 const MultiLevel = (props) => {
   const { items, levels } = props;
@@ -26,12 +28,12 @@ const MultiLevel = (props) => {
             />
             {levels.map((level, key) => {
               return (
-                <>
-                  <div key={key} style={{ margin: '10px' }}>
-                    {level} : {item[level]}
+                <Fragment key={key}>
+                  <div style={{ margin: '10px' }}>
+                    {level} : {decodeBase64(item[level].value.Name)}
                   </div>
                   {levels.length > key + 1 && <ArrowIcon dir="left" />}
-                </>
+                </Fragment>
               );
             })}
           </div>

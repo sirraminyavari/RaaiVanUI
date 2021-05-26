@@ -7,16 +7,43 @@ import { decodeBase64 } from 'helpers/helpers';
 import APIHandler from 'apiHelper/APIHandler';
 
 const FormType = (props) => {
-  const { onChange, data } = props;
+  const { onChange, data, value } = props;
   const [isModalShown, setIsModalShown] = useState(false);
   const [filters, setFilters] = useState([]);
+  const [filterValues, setFilterValues] = useState({});
 
-  const { FormID, ElementID } = data;
+  const getButtonTitle = () => {
+    const filtersCount = Object.values(filterValues).length;
+    if (filtersCount) {
+      return `${filtersCount} فیلتر انتخاب شده, برای تغییر کلیک کنید.`;
+    } else {
+      return 'هیچ فیلتری انتخاب نشده, برای تغییر کلیک کنید';
+    }
+  };
+
+  const { Info, ElementID } = data;
+  const { FormID, FormName } = JSON.parse(decodeBase64(Info));
+  // console.log(data, 'formType');
 
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
-  const toggleModal = () => {
-    setIsModalShown((m) => !m);
+  const openModal = () => {
+    setIsModalShown(true);
+  };
+
+  const closeModal = () => {
+    setIsModalShown(false);
+  };
+
+  const handleOnFilter = (filters) => {
+    const filtersObject = Object.entries(filters)
+      .filter((filter) => filter[1].JSONValue !== null)
+      .reduce((filterObject, array) => {
+        return { ...filterObject, [array[0]]: array[1] };
+      }, {});
+
+    setFilterValues(filtersObject);
+    setIsModalShown(false);
   };
 
   useEffect(() => {
@@ -24,7 +51,6 @@ const FormType = (props) => {
       {
         FormID,
         OwnerID: ElementID,
-        ConsiderElementLimits: true,
       },
       (response) => {
         // const groupingElements = response.Elements.filter((el) => {
@@ -37,16 +63,32 @@ const FormType = (props) => {
     );
   }, []);
 
+  useEffect(() => {
+    const id = data.ElementID;
+    const JSONValue = !filterValues.length ? null : filterValues;
+
+    onChange({
+      id,
+      value: { JSONValue },
+    });
+  }, [filterValues]);
+
   return (
     <Styled.FormContainer>
       <Styled.FormTitle>{decodeBase64(data.Title)}</Styled.FormTitle>
-      <Button onClick={toggleModal}>show modal</Button>
+      <Button onClick={openModal}>{getButtonTitle()}</Button>
       <Modal
         title={decodeBase64(data.Title)}
         show={isModalShown}
+        onClose={closeModal}
         contentWidth="50%">
         {filters.length && (
-          <FormFilter filters={filters} onFilter={(v) => console.log(v)} />
+          <FormFilter
+            formName={decodeBase64(FormName)}
+            filters={filters}
+            onFilter={handleOnFilter}
+            filterValues={value.JSONValue}
+          />
         )}
       </Modal>
     </Styled.FormContainer>

@@ -7,8 +7,8 @@ import { decodeBase64 } from 'helpers/helpers';
 const DateType = (props) => {
   const { onChange, data, value } = props;
   const { RVDic } = useContext(WindowContext);
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
+  const [from, setFrom] = useState(value?.DateFrom);
+  const [to, setTo] = useState(value?.DateTo);
 
   const onDateFrom = (from) => {
     setFrom(from);
@@ -46,7 +46,7 @@ const DateType = (props) => {
             mode="input"
             type="jalali"
             label={RVDic.DateSelect}
-            value={value?.DateFrom}
+            value={from}
             shouldClear={!!from && value === undefined}
             maximumDate={to ?? null}
           />
@@ -62,7 +62,7 @@ const DateType = (props) => {
             mode="input"
             type="jalali"
             label={RVDic.DateSelect}
-            value={value?.DateTo}
+            value={to}
             shouldClear={!!to && value === undefined}
             minimumDate={from ?? null}
           />

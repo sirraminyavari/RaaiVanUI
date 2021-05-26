@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
+import ExactFilter from '../../items/ExactToggle';
 
 const SelectType = (props) => {
   const { onChange, data, value } = props;
@@ -12,6 +13,7 @@ const SelectType = (props) => {
     group: 'select',
   }));
   const [items, setItems] = useState([]);
+  const [exact, setExact] = useState(false);
 
   const handleOnChange = (item) => {
     if (!item.isChecked) {
@@ -21,18 +23,22 @@ const SelectType = (props) => {
     }
   };
 
+  const handleExactFilter = (exactValue) => {
+    setExact(exactValue);
+  };
+
   useEffect(() => {
     const id = data.ElementID;
     const JSONValue = {
       TextItems: items.map((item) => encodeBase64(item)),
-      Exact: false,
+      Exact: exact,
     };
 
     onChange({
       id,
       value: {
         TextItems: items,
-        Exact: false,
+        Exact: exact,
         JSONValue: !items.length ? null : JSONValue,
       },
     });
@@ -56,6 +62,7 @@ const SelectType = (props) => {
           selecteds={value?.TextItems}
         />
       )}
+      <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
     </Styled.SelectContainer>
   );
 };
