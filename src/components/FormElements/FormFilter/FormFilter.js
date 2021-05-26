@@ -25,17 +25,12 @@ const FormFilter = (props) => {
     filterValues,
   } = props;
 
-  // const initState = filters.reduce((state, filter) => {
-  //   return { ...state, [filter.ElementID]: null };
-  // }, {});
-
   const [values, setValues] = useState(filterValues || {});
 
   //! Calls on every filter type change.
   const handleOnChange = (filter) => {
     setValues((oldValues) => ({ ...oldValues, [filter.id]: filter.value }));
   };
-  // console.log(values);
 
   //! Clalls when user clicks on filter button.
   const handleOnFilterClick = () => {

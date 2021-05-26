@@ -10,10 +10,12 @@ const FormType = (props) => {
   const { onChange, data, value } = props;
   const [isModalShown, setIsModalShown] = useState(false);
   const [filters, setFilters] = useState([]);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState(value || {});
 
   const getButtonTitle = () => {
-    const filtersCount = Object.values(filterValues).length;
+    const filtersCount = Object.values(filterValues).filter(
+      (filter) => !!filter.JSONValue
+    ).length;
     if (filtersCount) {
       return `${filtersCount} فیلتر انتخاب شده, برای تغییر کلیک کنید.`;
     } else {
@@ -23,8 +25,6 @@ const FormType = (props) => {
 
   const { Info, ElementID } = data;
   const { FormID, FormName } = JSON.parse(decodeBase64(Info));
-  // console.log(data, 'formType');
-
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
   const openModal = () => {
@@ -36,11 +36,12 @@ const FormType = (props) => {
   };
 
   const handleOnFilter = (filters) => {
-    const filtersObject = Object.entries(filters)
-      .filter((filter) => filter[1].JSONValue !== null)
-      .reduce((filterObject, array) => {
+    const filtersObject = Object.entries(filters).reduce(
+      (filterObject, array) => {
         return { ...filterObject, [array[0]]: array[1] };
-      }, {});
+      },
+      {}
+    );
 
     setFilterValues(filtersObject);
     setIsModalShown(false);
@@ -65,12 +66,9 @@ const FormType = (props) => {
 
   useEffect(() => {
     const id = data.ElementID;
-    const JSONValue = !filterValues.length ? null : filterValues;
+    const value = filterValues;
 
-    onChange({
-      id,
-      value: { JSONValue },
-    });
+    onChange({ id, value });
   }, [filterValues]);
 
   return (
@@ -87,7 +85,7 @@ const FormType = (props) => {
             formName={decodeBase64(FormName)}
             filters={filters}
             onFilter={handleOnFilter}
-            filterValues={value.JSONValue}
+            filterValues={filterValues}
           />
         )}
       </Modal>

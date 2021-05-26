@@ -54,7 +54,7 @@ const FileType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
-  }, [items]);
+  }, [items, exact, or]);
 
   return (
     <Styled.FileContainer>

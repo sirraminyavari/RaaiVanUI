@@ -12,8 +12,8 @@ const SelectType = (props) => {
     title: decodeBase64(option),
     group: 'select',
   }));
-  const [items, setItems] = useState([]);
-  const [exact, setExact] = useState(false);
+  const [items, setItems] = useState(!!value ? value.TextItems : []);
+  const [exact, setExact] = useState(!!value ? value.Exact : false);
 
   const handleOnChange = (item) => {
     if (!item.isChecked) {
@@ -31,24 +31,18 @@ const SelectType = (props) => {
     const id = data.ElementID;
     const JSONValue = {
       TextItems: items.map((item) => encodeBase64(item)),
-      Exact: exact,
+      Exact: !items.length ? false : exact,
     };
 
     onChange({
       id,
       value: {
         TextItems: items,
-        Exact: exact,
+        Exact: !items.length ? false : exact,
         JSONValue: !items.length ? null : JSONValue,
       },
     });
-  }, [items]);
-
-  useEffect(() => {
-    if (value === undefined) {
-      setItems([]);
-    }
-  }, [value]);
+  }, [items, exact]);
 
   return (
     <Styled.SelectContainer>

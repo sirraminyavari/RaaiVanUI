@@ -21,8 +21,8 @@ const MultiLevelType = (props) => {
   const [nodes, setNodes] = useState([]);
   const [isModalShown, setIsModalShown] = useState(false);
   const [viewItems, setViewItems] = useState([]);
-  const [exact, setExact] = useState(false);
-  const [or, setOr] = useState(true);
+  const [exact, setExact] = useState(value ? value.Exact : false);
+  const [or, setOr] = useState(value ? value.Or : true);
 
   const orOptions = [
     { value: 'or', title: RVDic.Or },
@@ -64,6 +64,15 @@ const MultiLevelType = (props) => {
     setViewItems((items) => [...items, values]);
   };
 
+  const handleItemRemove = (removingItem) => {
+    const lastLevel = [...levels].pop();
+    const removingId = removingItem[lastLevel].value.NodeID;
+    const newViewItems = viewItems.filter(
+      (item) => item[lastLevel].value.NodeID !== removingId
+    );
+    setViewItems(newViewItems);
+  };
+
   useEffect(() => {
     const id = data.ElementID;
     const lastLevel = levels.pop();
@@ -85,12 +94,22 @@ const MultiLevelType = (props) => {
         JSONValue: !viewItems.length ? null : JSONValue,
       },
     });
-  }, [viewItems]);
+  }, [viewItems, exact, or]);
+
+  useEffect(() => {
+    if (value === undefined) {
+      setViewItems([]);
+    }
+  }, [value]);
 
   return (
     <Styled.UserContainer>
       <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
-      <FormView.MultiLevel items={viewItems} levels={levels} />
+      <FormView.MultiLevel
+        items={viewItems}
+        levels={levels}
+        onItemRemove={handleItemRemove}
+      />
       <Button onClick={handleOnAdd}>{RVDic.Add}</Button>
       <div
         style={{

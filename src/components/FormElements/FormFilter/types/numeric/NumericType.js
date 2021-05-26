@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Input from '../../../../Inputs/Input';
 import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
@@ -6,17 +7,34 @@ import { decodeBase64 } from 'helpers/helpers';
 
 const NumericType = (props) => {
   const { RVDic } = useContext(WindowContext);
-  const { onChange, data } = props;
+  const { onChange, data, value } = props;
 
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
+  const [from, setFrom] = useState(!!value ? value.FloatFrom : null);
+  const [to, setTo] = useState(!!value ? value.FloatTo : null);
+
+  const fromInputRef = useRef();
+  const toInputRef = useRef();
 
   const onNumberFrom = (e) => {
-    setFrom(e.target.value);
+    const floatFrom = e.target.value;
+    if (!!to && +floatFrom > to) {
+      setFrom(to);
+      fromInputRef.current.value = to;
+    } else {
+      setFrom(floatFrom);
+      fromInputRef.current.value = floatFrom;
+    }
   };
 
   const onNumberTo = (e) => {
-    setTo(e.target.value);
+    const floatTo = e.target.value;
+    if (!!from && +floatTo < from) {
+      setTo(from);
+      toInputRef.current.value = from;
+    } else {
+      setTo(floatTo);
+      toInputRef.current.value = floatTo;
+    }
   };
 
   useEffect(() => {
@@ -32,6 +50,16 @@ const NumericType = (props) => {
     });
   }, [from, to]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      fromInputRef.current.value = null;
+      toInputRef.current.value = null;
+    } else {
+      fromInputRef.current.value = value.FloatFrom;
+      toInputRef.current.value = value.FloatTo;
+    }
+  }, [value]);
+
   return (
     <Styled.NumericContainer>
       <Styled.NumericTitle>{decodeBase64(data.Title)}</Styled.NumericTitle>
@@ -42,6 +70,8 @@ const NumericType = (props) => {
             style={{ width: '100%' }}
             onChange={onNumberFrom}
             type="number"
+            ref={fromInputRef}
+            max={to}
           />
         </Styled.Numeric>
       </Styled.NumericWrapper>
@@ -52,6 +82,8 @@ const NumericType = (props) => {
             style={{ width: '100%' }}
             onChange={onNumberTo}
             type="number"
+            ref={toInputRef}
+            min={from}
           />
         </Styled.Numeric>
       </Styled.NumericWrapper>

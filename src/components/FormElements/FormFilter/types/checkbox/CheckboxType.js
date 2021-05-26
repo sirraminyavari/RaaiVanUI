@@ -16,9 +16,9 @@ const CheckboxType = (props) => {
     title: decodeBase64(option),
     group: 'select',
   }));
-  const [items, setItems] = useState([]);
-  const [exact, setExact] = useState(false);
-  const [or, setOr] = useState(true);
+  const [items, setItems] = useState(value ? value.TextItems : []);
+  const [exact, setExact] = useState(value ? value.Exact : false);
+  const [or, setOr] = useState(value ? value.Or : true);
 
   const orOptions = [
     { value: 'or', title: RVDic.Or },

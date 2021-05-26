@@ -7,10 +7,10 @@ import OrFilter from '../../items/OrAndSelect';
 import { WindowContext } from 'context/WindowProvider';
 
 const TextType = (props) => {
-  const { onChange, data } = props;
-  const [items, setItems] = useState([]);
-  const [exact, setExact] = useState(false);
-  const [or, setOr] = useState(true);
+  const { onChange, data, value } = props;
+  const [items, setItems] = useState(value ? value.TextItems : []);
+  const [exact, setExact] = useState(value ? value.Exact : false);
+  const [or, setOr] = useState(value ? value.Or : true);
   const { RVDic } = useContext(WindowContext);
 
   const orOptions = [
@@ -52,7 +52,7 @@ const TextType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
-  }, [items]);
+  }, [items, exact, or]);
 
   return (
     <Styled.TextContainer>

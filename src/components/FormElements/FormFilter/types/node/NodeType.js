@@ -45,6 +45,7 @@ const NodeType = (props) => {
     const id = data.ElementID;
     const nodeIds = items.map((node) => node.id);
     const JSONValue = { GuidItems: nodeIds };
+
     onChange({
       id,
       value: {

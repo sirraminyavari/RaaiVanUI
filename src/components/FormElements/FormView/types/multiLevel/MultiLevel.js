@@ -4,10 +4,10 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { decodeBase64 } from 'helpers/helpers';
 
 const MultiLevel = (props) => {
-  const { items, levels } = props;
+  const { items, levels, onItemRemove } = props;
 
-  const onCloseClick = (index) => {
-    console.log(index);
+  const handleRemoveItem = (item) => {
+    onItemRemove && onItemRemove(item);
   };
 
   return (
@@ -24,7 +24,7 @@ const MultiLevel = (props) => {
             <CloseIcon
               color="red"
               style={{ cursor: 'pointer' }}
-              onClick={() => onCloseClick(key)}
+              onClick={() => handleRemoveItem(item)}
             />
             {levels.map((level, key) => {
               return (
