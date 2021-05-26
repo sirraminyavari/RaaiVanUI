@@ -6,7 +6,7 @@ import Radio from '../../../../Inputs/radio/Radio';
 const BinaryType = (props) => {
   const { onChange, data, value } = props;
   const { Yes, No } = JSON.parse(decodeBase64(data.Info));
-  const [bitValue, setBitValue] = useState(null);
+  const [bitValue, setBitValue] = useState(!!value ? value.Data : null);
 
   const options = [
     { value: 'yes', title: decodeBase64(Yes), group: 'binaryFilter' },
@@ -30,19 +30,14 @@ const BinaryType = (props) => {
   }, [bitValue]);
 
   useEffect(() => {
-    // const id = data.ElementID;
     if (value === undefined) {
       setBitValue(null);
-      // onChange({
-      //   id,
-      //   value: { Bit: null, Data: null, JSONValue: null },
-      // });
     }
   }, [value]);
 
   return (
     <Styled.UserContainer>
-      <Styled.UserTitle>{data.Title}</Styled.UserTitle>
+      <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
       <Radio
         options={options}
         onSelect={handleOnBinarySelect}

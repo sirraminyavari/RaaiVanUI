@@ -4,7 +4,7 @@ import * as Styled from './Select.styles';
 const Select = (props) => {
   const {
     options,
-    defaulyOption,
+    defaultOption,
     name,
     selectedOption,
     selectStyles,
@@ -13,9 +13,11 @@ const Select = (props) => {
 
   return (
     <Styled.Select name={name} style={selectStyles}>
-      <Styled.Option value="" style={optionStyles}>
-        {defaulyOption}
-      </Styled.Option>
+      {!!defaultOption && (
+        <Styled.Option value="" style={optionStyles}>
+          {defaultOption}
+        </Styled.Option>
+      )}
       {options.map((option, index) => {
         return (
           <Styled.Option
@@ -33,7 +35,7 @@ const Select = (props) => {
 
 Select.propTypes = {
   options: PropTypes.array.isRequired,
-  defaulyOption: PropTypes.string,
+  defaultOption: PropTypes.string,
   name: PropTypes.string,
   selectedOption: PropTypes.number,
   selectStyles: PropTypes.object,

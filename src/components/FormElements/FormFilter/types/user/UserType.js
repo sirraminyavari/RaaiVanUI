@@ -5,7 +5,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import * as Styled from '../types.styles';
 
 const UserType = (props) => {
-  const { onChange, data } = props;
+  const { onChange, data, value } = props;
   const { MultiSelect } = JSON.parse(decodeBase64(data.Info));
   const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
   const [items, setItems] = useState([]);
@@ -50,7 +50,7 @@ const UserType = (props) => {
 
   return (
     <Styled.UserContainer>
-      <Styled.UserTitle>{data.Title}</Styled.UserTitle>
+      <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
       <ItemProducer
         type="autosuggest"
         fetchItems={fetchUsers}

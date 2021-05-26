@@ -45,6 +45,7 @@ const NodeType = (props) => {
     const id = data.ElementID;
     const nodeIds = items.map((node) => node.id);
     const JSONValue = { GuidItems: nodeIds };
+
     onChange({
       id,
       value: {
@@ -59,7 +60,7 @@ const NodeType = (props) => {
     <Styled.NodeContainer>
       <Styled.NodeTitleWrapper>
         <AtSignIcon />
-        <Styled.NodeTitle>{data.Title}</Styled.NodeTitle>
+        <Styled.NodeTitle>{decodeBase64(data.Title)}</Styled.NodeTitle>
       </Styled.NodeTitleWrapper>
       <ItemProducer
         type="autosuggest"

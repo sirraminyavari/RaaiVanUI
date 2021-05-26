@@ -2,11 +2,18 @@ import { useState, useEffect } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
+import ExactFilter from '../../items/ExactToggle';
 
 const SelectType = (props) => {
   const { onChange, data, value } = props;
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
-  const [items, setItems] = useState([]);
+  const options = Options.map((option) => ({
+    value: decodeBase64(option),
+    title: decodeBase64(option),
+    group: 'select',
+  }));
+  const [items, setItems] = useState(!!value ? value.TextItems : []);
+  const [exact, setExact] = useState(!!value ? value.Exact : false);
 
   const handleOnChange = (item) => {
     if (!item.isChecked) {
@@ -16,41 +23,40 @@ const SelectType = (props) => {
     }
   };
 
+  const handleExactFilter = (exactValue) => {
+    setExact(exactValue);
+  };
+
   useEffect(() => {
     const id = data.ElementID;
     const JSONValue = {
       TextItems: items.map((item) => encodeBase64(item)),
-      Exact: false,
+      Exact: !items.length ? false : exact,
     };
 
     onChange({
       id,
       value: {
         TextItems: items,
-        Exact: false,
+        Exact: !items.length ? false : exact,
         JSONValue: !items.length ? null : JSONValue,
       },
     });
-  }, [items]);
-
-  useEffect(() => {
-    if (value === undefined) {
-      setItems([]);
-    }
-  }, [value]);
+  }, [items, exact]);
 
   return (
     <Styled.SelectContainer>
-      <Styled.SelectTitle>{data.Title}</Styled.SelectTitle>
+      <Styled.SelectTitle>{decodeBase64(data.Title)}</Styled.SelectTitle>
       {AutoSuggestMode ? (
         <div>Radio check</div>
       ) : (
         <Checkbox
-          options={Options}
+          options={options}
           onSelect={handleOnChange}
           selecteds={value?.TextItems}
         />
       )}
+      <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
     </Styled.SelectContainer>
   );
 };

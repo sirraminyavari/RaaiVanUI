@@ -1,13 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
+import ExactFilter from '../../items/ExactToggle';
+import OrFilter from '../../items/OrAndSelect';
+import { WindowContext } from 'context/WindowProvider';
 
 const CheckboxType = (props) => {
   const { onChange, data, value } = props;
 
+  const { RVDic } = useContext(WindowContext);
   const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(data.Info));
-  const [items, setItems] = useState([]);
+  const options = Options.map((option) => ({
+    value: decodeBase64(option),
+    title: decodeBase64(option),
+    group: 'select',
+  }));
+  const [items, setItems] = useState(value ? value.TextItems : []);
+  const [exact, setExact] = useState(value ? value.Exact : false);
+  const [or, setOr] = useState(value ? value.Or : true);
+
+  const orOptions = [
+    { value: 'or', title: RVDic.Or },
+    { value: 'and', title: RVDic.And },
+  ];
 
   const handleOnItemSelect = useCallback((item) => {
     if (!item.isChecked) {
@@ -17,25 +33,37 @@ const CheckboxType = (props) => {
     }
   }, []);
 
+  const handleExactFilter = (exactValue) => {
+    setExact(exactValue);
+  };
+
+  const handleOrFilter = (orValue) => {
+    if (orValue === 'or') {
+      setOr(true);
+    } else {
+      setOr(false);
+    }
+  };
+
   useEffect(() => {
     const id = data.ElementID;
     const textItems = items.map((item) => encodeBase64(item));
     const JSONValue = {
       TextItems: textItems,
-      Exact: false,
-      Or: false,
+      Exact: exact,
+      Or: or,
     };
 
     onChange({
       id,
       value: {
         TextItems: items,
-        Exact: false,
-        Or: false,
+        Exact: exact,
+        Or: or,
         JSONValue: !items.length ? null : JSONValue,
       },
     });
-  }, [items]);
+  }, [items, exact, or]);
 
   useEffect(() => {
     if (value === undefined) {
@@ -45,9 +73,13 @@ const CheckboxType = (props) => {
 
   return (
     <Styled.CheckboxContainer>
-      <Styled.CheckboxTitle>{data.Title}</Styled.CheckboxTitle>
+      <Styled.CheckboxTitle>{decodeBase64(data.Title)}</Styled.CheckboxTitle>
       {AutoSuggestMode ? (
-        <div>Checkbox</div>
+        <Checkbox
+          options={options}
+          onSelect={handleOnItemSelect}
+          selecteds={value?.TextItems}
+        />
       ) : (
         <Checkbox
           options={Options}
@@ -55,6 +87,20 @@ const CheckboxType = (props) => {
           selecteds={value?.TextItems}
         />
       )}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <OrFilter
+          options={orOptions}
+          selectedOption={!!or ? 0 : 1}
+          name="checkbox-or-filter"
+          onSelect={handleOrFilter}
+        />
+        <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
+      </div>
     </Styled.CheckboxContainer>
   );
 };

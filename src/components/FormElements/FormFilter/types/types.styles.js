@@ -105,6 +105,8 @@ export const TextTitle = styled.div`
   font-size: 1rem;
   color: #2b2727;
   margin: 1rem 0;
+  text-align: justify;
+  text-justify: inter-word;
 `;
 
 //! Numeric styles
