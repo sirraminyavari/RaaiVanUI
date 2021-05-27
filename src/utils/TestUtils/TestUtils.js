@@ -4,8 +4,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import StoreProvider from 'store/StoreProvider';
 
 const AllTheProviders = ({ children }) => {
-  require('./GlobalUtilities');
-  require('../../../public/load/scripts/jQuery/jquery.js');
+  // const bh = require('../../../public/load/scripts/jQuery/jquery');
+  // const gb = require('../../../public/load/scripts/GlobalUtilities');
+  const prefix = '../../../public/load/scripts/';
+
+  const jq = require(prefix + 'jQuery/jquery');
+  const gu = require(prefix + 'GlobalUtilities');
   // require('http://185.239.107.180/api/rv/language_dictionary');
   return (
     <StoreProvider>

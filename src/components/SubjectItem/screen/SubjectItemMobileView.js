@@ -15,6 +15,7 @@ import SubjectViewCount from '../items/SubjectViewCount';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 
 import { Container, RightSide, Divider, Root } from './SubjectItem.style';
+const { RV_RTL } = window;
 
 /**
  *
@@ -75,7 +76,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
               />
             )}
           </Maintainer>
-          {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />}
+          {/* {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />} */}
         </LeftSide>
       </Container>
     </Root>
@@ -94,7 +95,7 @@ const Main = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: space-evenly;
-  padding-right: 0.75rem;
+  padding: ${() => (RV_RTL ? '0 0.75rem 0 0' : '0 0 0 0.75rem')};
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -109,5 +110,5 @@ const Maintainer = styled.div`
   flex-grow: 1;
   width: 100%;
   margin: 1rem 3px 0 3px;
-  padding-right: 1rem;
+  padding: ${() => (RV_RTL ? '0 1rem 0 0' : '0 0 0 1rem')}; ;
 `;

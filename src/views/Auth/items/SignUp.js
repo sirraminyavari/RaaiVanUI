@@ -26,7 +26,7 @@ import { Box } from '../AuthView.style';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import { GlobalParams, Urls } from 'const/GlobalParams';
 
-const { RVDic, RVGlobal } = window;
+const { RVDic, RVGlobal, RV_RTL } = window;
 /**
  * In this page user can create an account with his/her mobile/email.
  */
@@ -277,13 +277,18 @@ const SignUp = () => {
           )}
 
           <RowItems>
+            {console.log(RV_RTL, 'RV_RTL')}
             <AnimatedInput
               onChange={onNameChanged}
               value={name}
               placeholder={RVDic.Name}
               error={nameError}
               shake={nameError && 300}
-              style={{ marginLeft: '1rem', ...common_style }}
+              style={
+                RV_RTL
+                  ? { marginLeft: '1rem', ...common_style }
+                  : { marginRight: '1rem', ...common_style }
+              }
               id={'name'}
               ref={nameRef}
               enterListener={onNameEnter}
@@ -293,7 +298,11 @@ const SignUp = () => {
               value={family}
               placeholder={RVDic.LastName}
               error={familyError}
-              style={{ marginRight: '1rem', ...common_style }}
+              style={
+                RV_RTL
+                  ? { marginRight: '1rem', ...common_style }
+                  : { marginLeft: '1rem', ...common_style }
+              }
               shake={familyError && 300}
               style={common_style}
               id={'family'}

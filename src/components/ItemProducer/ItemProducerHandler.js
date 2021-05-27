@@ -19,19 +19,21 @@ import {
  * @param {'text'|'autosuggest'} type - type of item producer
  * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
+ * @param {[{}]} savedData - An array of items that saved in past.
  */
 const ItemProducerHandler = ({
   autoSuggestItem,
   type,
   onItems,
   isDragDisabled,
+  savedData,
 }) => {
   // Defines the index of item should be removed (is usefull for disappearing animation ).
   const [removeIndex, setRemoveIndex] = useState(-1);
   // Defines the index of the new item(we detect to animate the correct item when it is being produced).
   const [newIndex, setNewIndex] = useState(-1);
   // array of produced items
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(savedData?.length > 0 ? savedData : []);
 
   // when the component will mount, if passed 'type'='text' produces an empty item.
   useEffect(() => {

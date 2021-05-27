@@ -13,17 +13,19 @@ import ItemProducerHandler from './ItemProducerHandler';
  * @param {'text'|'autosuggest'} type - type of item producer
  * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
+ * @param {[{}]} savedData - An array of items that saved in past.
+
  */
 const ItemProducer = ({
   type = 'text',
   onItems,
   fetchItems,
   isDragDisabled,
+  savedData,
   ...props
 }) => {
   // selected item with 'AutoSuggestInput' will set here.
   const [selected, setSelected] = useState(false);
-
   return (
     <Container {...props}>
       {type === 'autosuggest' && (
@@ -39,6 +41,7 @@ const ItemProducer = ({
         type={type}
         isDragDisabled={isDragDisabled}
         onItems={onItems}
+        savedData={savedData}
       />
     </Container>
   );

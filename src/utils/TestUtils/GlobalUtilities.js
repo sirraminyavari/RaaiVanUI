@@ -4750,6 +4750,162 @@ export const GlobalUtilities = {
   },
 };
 
+export const DynamicFileUtilities = {
+  AddedFiles: {},
+
+  _create_js_file_object: function (fileName, data, callback) {
+    callback = callback || function () {};
+
+    var scriptTag = document.createElement('script');
+    scriptTag.setAttribute('type', 'text/javascript');
+
+    if (data) scriptTag.innerHTML = data;
+    else {
+      scriptTag.onload = scriptTag.onreadystatechange = function () {
+        callback(true);
+      };
+      scriptTag.onerror = function () {
+        callback(false);
+      };
+      scriptTag.setAttribute('src', fileName);
+    }
+
+    return scriptTag;
+  },
+
+  _create_css_file_object: function (fileName, data) {
+    var linkTag = document.createElement('link');
+    linkTag.setAttribute('rel', 'stylesheet');
+    linkTag.setAttribute('type', 'text/css');
+    linkTag.setAttribute(
+      'href',
+      fileName + '?timeStamp=' + new Date().getTime()
+    );
+
+    return linkTag;
+  },
+
+  load_js: function (fileName, callback) {
+    callback = callback || function () {};
+
+    fileName = String(fileName).toLowerCase();
+
+    if (DynamicFileUtilities.AddedFiles[fileName]) {
+      var fl = DynamicFileUtilities.AddedFiles[fileName];
+      if (fl.Exists) return callback(true);
+
+      var _interval = setInterval(() => {
+        if (!fl.Exists && !fl.Error) return;
+        clearInterval(_interval);
+        callback(fl.Exists);
+      }, 50);
+
+      return;
+    }
+
+    DynamicFileUtilities.AddedFiles[fileName] = {
+      Exists: false,
+      Error: false,
+    };
+
+    document.getElementsByTagName('head')[0].appendChild(
+      DynamicFileUtilities._create_js_file_object(
+        fileName,
+        null,
+        function (loaded) {
+          if (loaded) DynamicFileUtilities.AddedFiles[fileName].Exists = true;
+          else DynamicFileUtilities.AddedFiles[fileName].Error = true;
+
+          callback(loaded);
+        }
+      )
+    );
+  },
+
+  load_css: function (fileName, callback) {
+    callback = callback || function () {};
+
+    fileName = String(fileName).toLowerCase();
+    if (DynamicFileUtilities.AddedFiles[fileName]) return callback(true);
+    DynamicFileUtilities.AddedFiles[fileName] = { Exists: false };
+
+    document
+      .getElementsByTagName('head')[0]
+      .appendChild(DynamicFileUtilities._create_css_file_object(fileName));
+
+    DynamicFileUtilities.AddedFiles[fileName] = { Exists: true };
+    callback(true);
+  },
+
+  remove_css: function (fileName) {
+    var linkTags = document.getElementsByTagName('link');
+    for (var i = 0; i < linkTags.length; ++i)
+      if (linkTags[i].getAttribute('href') == fileName)
+        linkTags[i].parentNode.removeChild(linkTags[i]);
+  },
+
+  replace_css: function (oldFileName, newFileName) {
+    oldFileName = oldFileName.toLowerCase();
+    var linkTags = document.getElementsByTagName('link');
+    for (var i = 0; i < linkTags.length; ++i) {
+      var href = String(linkTags[i].getAttribute('href')).toLowerCase();
+      if (href.indexOf('?') >= 0) href = href.substr(0, href.indexOf('?'));
+      if (href.indexOf(oldFileName) >= 0 || oldFileName.indexOf(href) >= 0)
+        linkTags[i].parentNode.replaceChild(
+          DynamicFileUtilities._create_css_file_object(newFileName),
+          linkTags[i]
+        );
+    }
+  },
+
+  _init_added_items: (function () {
+    var inited = false;
+
+    return function () {
+      if (inited) return;
+      inited = true;
+
+      var _scripts = document.getElementsByTagName('script');
+      for (var i = 0; i < _scripts.length; ++i) {
+        var _attr = _scripts.item(i).getAttribute('src');
+        if (_attr) _attr = String(_attr).toLowerCase();
+        if (_attr && !DynamicFileUtilities.AddedFiles[_attr])
+          DynamicFileUtilities.AddedFiles[_attr] = { Exists: true };
+      }
+
+      var _links = document.getElementsByTagName('link');
+      for (var i = 0; i < _links.length; ++i) {
+        var _attr = _links.item(i).getAttribute('href');
+        if (_attr) _attr = String(_attr).toLowerCase();
+        if (_attr && !DynamicFileUtilities.AddedFiles[_attr])
+          DynamicFileUtilities.AddedFiles[_attr] = { Exists: true };
+      }
+    };
+  })(),
+
+  files_exist: function (files) {
+    DynamicFileUtilities._init_added_items();
+
+    if (GlobalUtilities.get_type(files) != 'array') files = [files];
+
+    for (var i = 0, lnt = files.length; i < lnt; ++i) {
+      var fileName = String(files[i].File || files[i] || '').toLowerCase();
+
+      if (!DynamicFileUtilities.AddedFiles[fileName]) return false;
+      else if (DynamicFileUtilities.AddedFiles[fileName].Exists) continue;
+      else if (
+        GlobalUtilities.get_type(
+          DynamicFileUtilities.AddedFiles[fileName].Exists
+        ) == 'boolean' &&
+        !DynamicFileUtilities.AddedFiles[fileName].Exists
+      )
+        return false;
+    }
+
+    return true;
+  },
+};
+
 //////////////////////////////////////////////////
 //////////--> end of GlobalUtilities <--//////////
 //////////////////////////////////////////////////

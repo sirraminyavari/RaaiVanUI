@@ -15,14 +15,12 @@ const SubjectCheckBox = ({ onChecked, selectMode }) => {
   };
 
   return (
-    <>
-      <CheckBox
-        selectMode={selectMode}
-        type="checkbox"
-        defaultChecked={checked}
-        onChange={onCheckChange}
-      />
-    </>
+    <CheckBox
+      selectMode={selectMode}
+      type="checkbox"
+      defaultChecked={checked}
+      onChange={onCheckChange}
+    />
   );
 };
 export default SubjectCheckBox;
@@ -56,8 +54,8 @@ const disappear = keyframes`
 
 const CheckBox = styled.input`
   transform: ${({ selectMode }) => (selectMode ? 'scale(2)' : 'scale(0)')};
-  margin: ${({ selectMode }) => (selectMode ? '1rem' : '0')};
-  max-width: ${({ selectMode }) => (selectMode ? '3rem' : '0')};
+  margin: ${({ selectMode }) => (selectMode ? '1rem' : '0rem')};
+  max-width: ${({ selectMode }) => (selectMode ? '3rem' : '0rem')};
   animation: ${({ selectMode }) =>
     selectMode
       ? css`
@@ -66,4 +64,6 @@ const CheckBox = styled.input`
       : css`
           ${disappear} 0.5s
         `};
+  background-color: yellowgreen;
+  width: ${({ selectMode }) => !selectMode && '0rem'};
 `;

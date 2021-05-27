@@ -22,6 +22,9 @@ import { Container, Divider, RightSide, Root } from './SubjectItem.style';
  * @callback onChecked -  By changing the checkbox state,
    checkbox state and the selected item will pass to up.
  */
+
+const { RV_RTL } = window;
+
 const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
   const {
     Name,
@@ -78,7 +81,7 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
                 removable={UserStatus.Removable}
               />
 
-              <SubjectStatus style={{ width: '16.1rem' }} />
+              {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
             </>
           )}
           <SubjectCreator
@@ -107,7 +110,7 @@ const Main = styled.div`
   flex-direction: column;
   height: 100%;
   justify-content: space-evenly;
-  margin-right: 1.75rem;
+  margin: ${() => (RV_RTL ? '0 1.75rem 0 0' : '0 0 0 1.75rem')};
   max-width: 70%;
 `;
 
