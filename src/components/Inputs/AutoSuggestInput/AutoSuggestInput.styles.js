@@ -31,15 +31,19 @@ export const InputElementWrapper = styled.div.attrs((props) => ({
 }))`
   ${FlexBetween}
   width: 100%;
-`;
 
-// export const Input = styled.input`
-//   border: 0 solid #fff;
-//   outline: none;
-//   flex-grow: 1;
-//   padding: 0.4rem;
-//   width: 100%;
-// `;
+  input {
+    width: 100%;
+  }
+
+  .show-results {
+    border-color: #dfe9f5;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: #fff;
+    box-shadow: 1px 3px 5px #2b7be44d;
+  }
+`;
 
 const getMenuHeigth = ({ items, hasButton }) => {
   if (items.length === 0) {
@@ -52,17 +56,24 @@ const getMenuHeigth = ({ items, hasButton }) => {
 export const SuggestMenu = styled.ul.attrs((props) => ({ ref: props.ulRef }))`
   width: 100%;
   ${getMenuHeigth}
-  max-height: 19.5rem;
+  max-height: ${({ hasButton }) => (hasButton ? '19.5rem' : '15rem')};
   padding: ${({ items }) => (items.length === 0 ? '0' : '0 0.6rem')};
   position: absolute;
   top: 1.2rem;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dfe9f5;
+  border-top-color: #fff;
+  ${({ items }) => !items.length && 'border: none;'}
+  ${({ items }) => items.length && 'box-shadow: 1px 3px 5px #2b7be44d;'}
   display: none;
   text-align: center;
   overflow: hidden;
   z-index: ${GlobalUtilities.zindex.dialog()};
   transition: all 0.7s ease;
+  }
 `;
 
 const getScrollDisplay = ({ items }) => {
@@ -89,14 +100,18 @@ export const ListItemsContainer = styled.div`
 `;
 
 export const ListItems = styled.li`
+  width: 95%;
   cursor: ${({ hasError }) => (hasError ? 'revert' : 'pointer')};
   padding: 0.3rem 0.7rem;
   margin: 0.3rem 0 0.3rem 0.5rem;
   list-style: none;
   display: flex;
-  justify-content: end;
+  justify-content: start;
   align-items: center;
-  color: #000;
+  color: #707070;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Error = styled.div`
