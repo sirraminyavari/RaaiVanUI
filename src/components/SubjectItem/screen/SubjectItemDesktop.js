@@ -81,7 +81,7 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
                 removable={UserStatus.Removable}
               />
 
-              <SubjectStatus style={{ width: '16.1rem' }} />
+              {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
             </>
           )}
           <SubjectCreator

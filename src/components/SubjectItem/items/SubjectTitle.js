@@ -6,9 +6,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SubjectTitle = ({ title, AdditionalID }) => {
+  const titleReducer = (text) => text;
   return (
     <Title>
-      <Heading type={'h1'}>{title}</Heading>
+      <Heading type={'h2'}>{titleReducer(title)}</Heading>
       <Heading type={'h6'}>{AdditionalID}</Heading>
     </Title>
   );

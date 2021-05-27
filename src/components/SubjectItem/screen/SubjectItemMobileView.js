@@ -76,7 +76,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
               />
             )}
           </Maintainer>
-          {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />}
+          {/* {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />} */}
         </LeftSide>
       </Container>
     </Root>

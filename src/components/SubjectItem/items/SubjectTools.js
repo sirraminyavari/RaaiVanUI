@@ -1,7 +1,7 @@
 /**
  * A 'component' for rendering the tools for editting the item.
  */
-import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
+import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import EditIcon from 'components/Icons/EditIcon/Edit';
 import TrashIcon from 'components/Icons/TrashIcon';
 import React from 'react';
