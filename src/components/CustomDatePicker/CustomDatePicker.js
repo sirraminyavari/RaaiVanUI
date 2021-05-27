@@ -12,7 +12,7 @@ import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
 import { mergeRefs, getToday } from 'helpers/helpers';
-import styles from './CustomDatePicker.module.css';
+// import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
 
 /**
@@ -352,8 +352,8 @@ const CustomDatePicker = (props) => {
                 }
                 maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
                 shouldHighlightWeekends
-                calendarClassName={styles[`${size}Calendar`]}
-                calendarTodayClassName="todayDate"
+                calendarClassName={`${size}-calendar`}
+                calendarTodayClassName="today-date"
                 locale={getLocale(type)}
                 {...rest}
               />
@@ -364,7 +364,7 @@ const CustomDatePicker = (props) => {
 
     default:
       return (
-        <>
+        <Styled.CalendarConatiner>
           <DatePicker
             renderInput={({ ref }) => (
               <Input
@@ -392,13 +392,13 @@ const CustomDatePicker = (props) => {
             }
             maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
             shouldHighlightWeekends
-            calendarClassName={styles[`${size}Calendar`]}
-            calendarTodayClassName={styles.todayDate}
-            wrapperClassName={styles.DatePicker}
+            calendarClassName={`${size}-calendar`}
+            calendarTodayClassName="today-date"
+            wrapperClassName="date-picker"
             locale={getLocale(type)}
             {...rest}
           />
-        </>
+        </Styled.CalendarConatiner>
       );
   }
 };

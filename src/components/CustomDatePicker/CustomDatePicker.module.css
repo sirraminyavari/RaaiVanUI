@@ -1,13 +1,22 @@
 .smallCalendar {
   font-size: 0.45rem !important;
+  position: absolute !important;
+  left: 50% !important;
+  margin-left: -7.5rem !important;
 }
 
 .mediumCalendar {
   font-size: 0.55rem !important;
+  position: absolute !important;
+  left: 50% !important;
+  margin-left: -9rem !important;
 }
 
 .largeCalendar {
   font-size: 0.65rem !important;
+  position: absolute !important;
+  left: 50% !important;
+  margin-left: -10.5rem !important;
 }
 
 .todayDate {

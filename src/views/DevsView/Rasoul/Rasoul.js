@@ -348,7 +348,7 @@ const RasoulView = () => {
             onDateSelect={(date) => console.log(date)}
           />
         </div>
-        <div style={{ width: '150px', maxWidth: '150px' }}>
+        <div>
           <CustomDatePicker
             label=" انتخاب تاریخ با بازه زمانی"
             mode="button"
