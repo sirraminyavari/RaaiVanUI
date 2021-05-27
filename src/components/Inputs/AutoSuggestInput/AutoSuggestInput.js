@@ -164,8 +164,9 @@ const AutoSuggestInput = (props) => {
             <Input
               {...getInputProps({
                 placeholder: placeholder || RVDic.Search,
-                className: 'BorderRadius4',
-                style: { width: '100%' },
+                className: `BorderRadius4 ${
+                  !!items.length && isOpen && 'show-results'
+                }`,
               })}>
               <DotsIcon
                 size={20}
@@ -184,8 +185,7 @@ const AutoSuggestInput = (props) => {
           {isOpen && (
             <Styled.SuggestMenu
               {...getMenuProps({
-                className:
-                  'BorderRadius4 ColdBackgroundColor SurroundingShadow',
+                className: 'BorderRadius4 ColdBackgroundColor',
               })}
               {...getRootProps({ refKey: 'ulRef' })}
               items={items}
@@ -211,20 +211,21 @@ const AutoSuggestInput = (props) => {
                         hasError={hasError}
                         {...getItemProps({
                           key: index,
-                          className: `SoftBorder BorderRadius4 ${
-                            hasError
-                              ? 'ColdBackgroundColor'
-                              : highlightedIndex === index
-                              ? 'SoftBackgroundColor'
-                              : 'ColdBackgroundColor'
-                          }`,
+                          // className: `BorderRadius4 ${
+                          //   hasError
+                          //     ? 'ColdBackgroundColor'
+                          //     : highlightedIndex === index
+                          //     ? 'SoftBackgroundColor'
+                          //     : 'ColdBackgroundColor'
+                          // }`,
                           index,
                           item,
                         })}>
-                        {searchTerm.length > 2 && hasError && (
+                        {/* {searchTerm.length > 2 && hasError && (
                           <Styled.Error className="Circle">!</Styled.Error>
-                        )}
-                        {getHighlightedText(item.value, searchTerm)}
+                        )} */}
+                        {/* {getHighlightedText(item.value, searchTerm)} */}
+                        {item.value}
                       </Styled.ListItems>
                     );
                   })}
