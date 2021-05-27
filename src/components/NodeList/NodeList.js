@@ -3,23 +3,29 @@ import APIHandler from 'apiHelper/APIHandler';
 import useCheckRoute from 'hooks/useCheckRoute';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { MdDone } from 'react-icons/md';
-import SimpleListViewr from 'components/SimpleListViewer/SimpleListViewer';
+import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import { data } from 'jquery';
+import { encode } from 'js-base64';
 
 const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 
 const { GlobalUtilities } = window;
 
-const NodeList = () => {
+const NodeList = ({ searchText, dateFilter }) => {
   const [nodes, setNodes] = useState([]);
   const [dataCount, setDataCount] = useState(0);
   const fetchData = (count = 20, lowerBoundary = 0, done) => {
+    console.log(dateFilter, 'dateFilter ');
+
     getNodesAPI.fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
         NodeTypeId: '0033c52b-9871-4197-9b7d-ab45203cb4ee',
+        SearchText: encode(searchText),
+        CreationDateFrom: dateFilter?.from,
+        CreationDateTo: dateFilter?.to,
       },
       (response) => {
         console.log(response, 'response');
@@ -61,16 +67,13 @@ const NodeList = () => {
     );
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
   return (
     <>
-      <SimpleListViewr
+      <SimpleListViewer
         fetchMethod={fetchData}
+        extraData={[searchText, dateFilter]}
         infiniteLoop={true}
         onEndReached={() => {
           console.log('Im reached end');

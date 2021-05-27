@@ -51,7 +51,7 @@ import * as Styled from './CustomDatePicker.styles';
  * @property {Object} inputStyle - Style for input.
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
- * @property {*} customButton - A custom button for date picker.
+ * @property {*} CustomButton - A custom button for date picker.
  */
 
 /**
@@ -76,7 +76,7 @@ const CustomDatePicker = (props) => {
     buttonStyle,
     maximumDate,
     minimumDate,
-    customButton: CustomButton,
+    CustomButton: CustomButton,
     ...rest
   } = props;
 

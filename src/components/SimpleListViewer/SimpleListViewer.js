@@ -2,16 +2,18 @@ import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import React, { useEffect, useRef, useState } from 'react';
 
-const SimpleListViewr = ({
+const SimpleListViewer = ({
   fetchMethod,
   renderItem,
   pageSize = 20,
   onEndReached,
+  extraData,
 }) => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const container = useRef();
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
 
@@ -30,6 +32,19 @@ const SimpleListViewr = ({
       window.removeEventListener('scroll', handleScroll, true);
     };
   }, []);
+  useEffect(() => {
+    setIsFetching(true);
+    setData([]);
+
+    fetchMethod(pageSize, 0, (data, total) => {
+      console.log(data, 'simple list viewer', total);
+      if (data) {
+        setData(data);
+        setTotal(total);
+        setIsFetching(false);
+      }
+    });
+  }, [extraData]);
 
   const fetchMore = () => {
     if (total > data.length) {
@@ -70,11 +85,18 @@ const SimpleListViewr = ({
   };
 
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        width: '100%',
+      }}>
       {isFetching && data.length === 0 ? (
         <Heading type={'h4'}>{'درحال دریافت اطلاعات'}</Heading>
       ) : data && data.length > 0 && renderItem ? (
-        <div ref={container} onScroll={handleScroll}>
+        <div style={{ width: '100%' }} ref={container} onScroll={handleScroll}>
           {data.map((x) => renderItem(x))}
         </div>
       ) : (
@@ -83,11 +105,15 @@ const SimpleListViewr = ({
       {console.log(data.length, '****')}
 
       {data.length > 0 && data.length < total && (
-        <Button loading={isFetching} disable={isFetching} onClick={fetchMore}>
+        <Button
+          loading={isFetching}
+          disable={isFetching}
+          onClick={fetchMore}
+          style={{ maxWidth: '30%', alignSelf: 'center' }}>
           {'بیشتر'}
         </Button>
       )}
-    </>
+    </div>
   );
 };
-export default SimpleListViewr;
+export default SimpleListViewer;

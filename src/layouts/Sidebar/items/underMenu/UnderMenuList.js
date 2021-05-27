@@ -4,7 +4,7 @@
 import { useContext } from 'react';
 import * as Styled from '../../Sidebar.styles';
 import ListItem from './ListItem';
-import BookmarkIcon from 'components/Icons/BookmarkIcon/Bookmark';
+import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import ContactIcon from 'components/Icons/ContactIcon/Contact';
 import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';

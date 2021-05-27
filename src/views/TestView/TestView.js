@@ -11,10 +11,12 @@ import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import MainEditor from 'components/Editor/MainEditor';
 import NodeList from 'components/NodeList/NodeList';
+import AdvanceSearch from 'components/AdvanceSearch/AdvanceSearch';
 
 const Modal = lazy(() =>
   import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
 );
+const NodeId = '0033c52b-9871-4197-9b7d-ab45203cb4ee';
 
 const itemInput = {
   NodeID: '3d7c7551-3a1f-4e9d-8d83-72bd41cd6972',
@@ -109,7 +111,16 @@ const TestView = () => {
         type={'autosuggest'}
         style={{ backgroundColor: 'white' }}
         onItems={(data) => console.log(data, 'items')}
+        savedData={[
+          { id: '1', value: '2' },
+          { id: '2', value: '2v' },
+          { id: '3', value: 'x2' },
+          { id: '4', value: '2s' },
+          { id: '5', value: '2c' },
+          { id: '6', value: '2a' },
+        ]}
       />
+      {/* 
       <button onClick={() => setSelectMode(!selectMode)}>
         {'select mode'}
       </button>
@@ -120,7 +131,10 @@ const TestView = () => {
         isSaas={true}
       />
       <NodeList />
-      <MainEditor />
+      <MainEditor /> */}
+      <AdvanceSearch NodeId={NodeId}>
+        <NodeList />
+      </AdvanceSearch>
     </Container>
   );
 };

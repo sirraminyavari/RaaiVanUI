@@ -50,6 +50,7 @@ const AnimatedDropDownList = ({
     item: null,
     container: null,
     itemContainer: null,
+    arrowIconColor: null,
   },
   hiddenSelectedItem,
 }) => {
@@ -106,7 +107,11 @@ const AnimatedDropDownList = ({
           dropedDown={dropedDown}
           onClick={onClick}
           style={{ ...button }}>
-          <ArrowIcon className="rv-default" dropedDown={dropedDown} />
+          <ArrowIcon
+            className="rv-default"
+            dropedDown={dropedDown}
+            color={customStyle.arrowIconColor}
+          />
         </Rotater>
       </DropDownButton>
       {renderList()}
