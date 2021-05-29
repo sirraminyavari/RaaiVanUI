@@ -6,11 +6,11 @@ import Select from '../../../Inputs/select/Select';
  * @property {array} options - An array of options for select.
  * @property {string} name - Name of the select group.
  * @property {number} selectedOption - Index of option that is selected by default.
- * @property {fynction} onSelect - A callback function that fires on item select.
+ * @property {function} onSelect - A callback function that fires on item select.
  */
 
 /**
- *  @description Renders an 'Or' select component.
+ *  @description Renders an 'OrAnd' select component.
  * @component
  * @param {PropType} props -Props that pass to select.
  */

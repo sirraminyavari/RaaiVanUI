@@ -1,20 +1,37 @@
-import { useRef } from 'react';
-import Input from '../../../../Inputs/Input';
+/**
+ * Renders a numeric filter.
+ */
+import { useContext, useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+import Input from 'components/Inputs/Input';
 import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
-import { useContext, useEffect, useState } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 
-const NumericType = (props) => {
-  const { RVDic } = useContext(WindowContext);
-  const { onChange, data, value } = props;
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {Object} value - Value of component.
+ * @property {Object} data - Meta data needed for component.
+ * @property {function} onChange - A callback function that fires when value changes.
+ */
 
-  const [from, setFrom] = useState(!!value ? value.FloatFrom : null);
-  const [to, setTo] = useState(!!value ? value.FloatTo : null);
+/**
+ *  @description Renders a numeric type component.
+ * @component
+ * @param {PropType} props -Props that are passed to component.
+ */
+const NumericType = (props) => {
+  const { onChange, data, value } = props;
+  const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
   const fromInputRef = useRef();
   const toInputRef = useRef();
+  const { RVDic } = useContext(WindowContext);
+  const [from, setFrom] = useState(!!value ? value.FloatFrom : null);
+  const [to, setTo] = useState(!!value ? value.FloatTo : null);
 
+  //! Set 'from' number on input change.
   const onNumberFrom = (e) => {
     const floatFrom = e.target.value;
     if (!!to && +floatFrom > to) {
@@ -26,6 +43,7 @@ const NumericType = (props) => {
     }
   };
 
+  //! Set 'to' number on input change.
   const onNumberTo = (e) => {
     const floatTo = e.target.value;
     if (!!from && +floatTo < from) {
@@ -38,12 +56,13 @@ const NumericType = (props) => {
   };
 
   useEffect(() => {
-    const id = data.ElementID;
+    const id = ElementID;
     const FloatFrom = !!from ? +from : null;
     const FloatTo = !!to ? +to : null;
 
     const JSONValue = from || to ? { FloatFrom, FloatTo } : null;
 
+    //! Send back value to parent.
     onChange({
       id,
       value: { FloatFrom, FloatTo, JSONValue },
@@ -62,7 +81,7 @@ const NumericType = (props) => {
 
   return (
     <Styled.NumericContainer>
-      <Styled.NumericTitle>{decodeBase64(data.Title)}</Styled.NumericTitle>
+      <Styled.NumericTitle>{decodeBase64(Title)}</Styled.NumericTitle>
       <Styled.NumericWrapper>
         <Styled.NumberSpanTitle>{RVDic.From}</Styled.NumberSpanTitle>
         <Styled.Numeric>
@@ -90,5 +109,13 @@ const NumericType = (props) => {
     </Styled.NumericContainer>
   );
 };
+
+NumericType.propTypes = {
+  onChange: PropTypes.func,
+  data: PropTypes.object,
+  value: PropTypes.object,
+};
+
+NumericType.displayName = 'FilterNumericComponent';
 
 export default NumericType;

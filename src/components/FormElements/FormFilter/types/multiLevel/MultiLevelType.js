@@ -1,4 +1,8 @@
+/**
+ * Renders a multi level filter.
+ */
 import { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
 import APIHandler from 'apiHelper/APIHandler';
 import * as Styled from '../types.styles';
@@ -10,9 +14,24 @@ import FormView from 'components/FormElements/FormView/FormView';
 import ExactFilter from '../../items/ExactToggle';
 import OrFilter from '../../items/OrAndSelect';
 
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {Object} value - Value of component.
+ * @property {Object} data - Meta data needed for component.
+ * @property {function} onChange - A callback function that fires when value changes.
+ */
+
+/**
+ *  @description Renders a multi level type component.
+ * @component
+ * @param {PropType} props -Props that are passed to component.
+ */
 const MultiLevelType = (props) => {
   const { onChange, data, value } = props;
-  const { NodeType, Levels } = JSON.parse(decodeBase64(data.Info));
+  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+
+  const { NodeType, Levels } = JSON.parse(decodeBase64(Info));
   const levels = Levels.map((level) => decodeBase64(level));
   const nodeType = { id: NodeType.ID, name: decodeBase64(NodeType.Name) };
   const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
@@ -24,15 +43,18 @@ const MultiLevelType = (props) => {
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
 
+  //! Options for 'OrAnd' select;
   const orOptions = [
     { value: 'or', title: RVDic.Or },
     { value: 'and', title: RVDic.And },
   ];
 
+  //! Fires on 'Exact' toggle change.
   const handleExactFilter = (exactValue) => {
     setExact(exactValue);
   };
 
+  //! Fires on 'OrAnd' change.
   const handleOrFilter = (orValue) => {
     if (orValue === 'or') {
       setOr(true);
@@ -41,6 +63,7 @@ const MultiLevelType = (props) => {
     }
   };
 
+  //! Fetch nodes for form fill.
   useEffect(() => {
     getChildNodesAPI.fetch(
       { NodeTypeID: nodeType.id },
@@ -51,19 +74,23 @@ const MultiLevelType = (props) => {
     );
   }, []);
 
+  //! Show modal and form fill to add item.
   const handleOnAdd = () => {
     setIsModalShown(true);
   };
 
-  const handleModalClose = () => {
+  //! Close modal.
+  const handleCloseModal = () => {
     setIsModalShown(false);
   };
 
+  //! Add item to view items.
   const handleOnSelect = (values) => {
-    handleModalClose();
+    handleCloseModal();
     setViewItems((items) => [...items, values]);
   };
 
+  //! Fires on item remove.
   const handleItemRemove = (removingItem) => {
     const lastLevel = [...levels].pop();
     const removingId = removingItem[lastLevel].value.NodeID;
@@ -74,7 +101,7 @@ const MultiLevelType = (props) => {
   };
 
   useEffect(() => {
-    const id = data.ElementID;
+    const id = ElementID;
     const lastLevel = levels.pop();
     const encodedItems = viewItems.map((item) => item[lastLevel].value.Name);
     const decodedItems = encodedItems.map((item) => decodeBase64(item));
@@ -85,6 +112,7 @@ const MultiLevelType = (props) => {
       Or: or,
     };
 
+    //! Send back value to parent.
     onChange({
       id,
       value: {
@@ -96,6 +124,7 @@ const MultiLevelType = (props) => {
     });
   }, [viewItems, exact, or]);
 
+  //! Clear component value.
   useEffect(() => {
     if (value === undefined) {
       setViewItems([]);
@@ -104,7 +133,7 @@ const MultiLevelType = (props) => {
 
   return (
     <Styled.UserContainer>
-      <Styled.UserTitle>{decodeBase64(data.Title)}</Styled.UserTitle>
+      <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
       <FormView.MultiLevel
         items={viewItems}
         levels={levels}
@@ -120,14 +149,14 @@ const MultiLevelType = (props) => {
         <OrFilter
           options={orOptions}
           selectedOption={!!or ? 0 : 1}
-          name="checkbox-or-filter"
+          name="multilevel-or-filter"
           onSelect={handleOrFilter}
         />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
       <Modal
-        onClose={handleModalClose}
-        title={decodeBase64(data.Title)}
+        onClose={handleCloseModal}
+        title={decodeBase64(Title)}
         show={isModalShown}
         contentWidth="50%">
         <FormFill.MultiLevel
@@ -139,5 +168,13 @@ const MultiLevelType = (props) => {
     </Styled.UserContainer>
   );
 };
+
+MultiLevelType.propTypes = {
+  onChange: PropTypes.func,
+  data: PropTypes.object,
+  value: PropTypes.object,
+};
+
+MultiLevelType.displayName = 'FilterMultiLevelComponent';
 
 export default MultiLevelType;

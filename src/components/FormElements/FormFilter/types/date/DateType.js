@@ -1,27 +1,46 @@
 import { useContext, useState, useEffect } from 'react';
-import DatePicker from '../../../../CustomDatePicker/CustomDatePicker';
+import PropTypes from 'prop-types';
+import DatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from '../types.styles';
 import { WindowContext } from 'context/WindowProvider';
 import { decodeBase64 } from 'helpers/helpers';
 
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {Object} value - Value of component.
+ * @property {Object} data - Meta data needed for component.
+ * @property {function} onChange - A callback function that fires when value changes.
+ */
+
+/**
+ *  @description Renders a date type component.
+ * @component
+ * @param {PropType} props -Props that are passed to component.
+ */
 const DateType = (props) => {
   const { onChange, data, value } = props;
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic, RV_Lang } = useContext(WindowContext);
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
 
+  const { ElementID, Title } = data; //! Meta data to feed component.
+
+  //! Fires on date select and sets 'from' date.
   const onDateFrom = (from) => {
     setFrom(from);
   };
 
+  //! Fires on date select and sets 'to' date.
   const onDateTo = (to) => {
     setTo(to);
   };
 
   useEffect(() => {
-    const id = data.ElementID;
+    const id = ElementID;
     const JSONValue = from || to ? { DateFrom: from, DateTo: to } : null;
 
+    //! Send back value to parent on select.
     onChange({
       id,
       value: {
@@ -35,7 +54,7 @@ const DateType = (props) => {
 
   return (
     <Styled.DateContainer>
-      <Styled.DateTitle>{decodeBase64(data.Title)}</Styled.DateTitle>
+      <Styled.DateTitle>{decodeBase64(Title)}</Styled.DateTitle>
       <Styled.DatePickerWrapper>
         <Styled.DateSpanTitle>{RVDic.From}</Styled.DateSpanTitle>
         <Styled.DatePicker>
@@ -44,7 +63,7 @@ const DateType = (props) => {
             clearButton
             onDateSelect={onDateFrom}
             mode="input"
-            type="jalali"
+            type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
             label={RVDic.DateSelect}
             value={from}
             shouldClear={!!from && value === undefined}
@@ -60,7 +79,7 @@ const DateType = (props) => {
             clearButton
             onDateSelect={onDateTo}
             mode="input"
-            type="jalali"
+            type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
             label={RVDic.DateSelect}
             value={to}
             shouldClear={!!to && value === undefined}
@@ -71,5 +90,13 @@ const DateType = (props) => {
     </Styled.DateContainer>
   );
 };
+
+DateType.propTypes = {
+  onChange: PropTypes.func,
+  data: PropTypes.object,
+  value: PropTypes.object,
+};
+
+DateType.displayName = 'FilterDateComponent';
 
 export default DateType;
