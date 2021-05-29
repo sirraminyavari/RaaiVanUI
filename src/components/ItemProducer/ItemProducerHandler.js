@@ -195,7 +195,7 @@ const ItemProducerHandler = ({
                             : index === newIndex && 'addMe'
                         }
                         ref={provided.innerRef}>
-                        <DragIcon color={'grey'} />
+                        {isDragDisabled && <DragIcon color={'grey'} />}
                         <Container>
                           {type === 'text' ? (
                             <Input
