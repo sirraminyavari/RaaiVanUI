@@ -8,9 +8,9 @@ import { WindowContext } from 'context/WindowProvider';
 
 const TextType = (props) => {
   const { onChange, data, value } = props;
-  const [items, setItems] = useState(value ? value.TextItems : []);
-  const [exact, setExact] = useState(value ? value.Exact : false);
-  const [or, setOr] = useState(value ? value.Or : true);
+  const [items, setItems] = useState(!!value ? value.TextItems : []);
+  const [exact, setExact] = useState(!!value ? value.Exact : false);
+  const [or, setOr] = useState(!!value ? value.Or : true);
   const { RVDic } = useContext(WindowContext);
 
   const orOptions = [
@@ -61,6 +61,7 @@ const TextType = (props) => {
         isDragDisabled={true}
         onItems={handleOnItemSelect}
         style={{ width: '100%' }}
+        savedData={items}
       />
       <div
         style={{

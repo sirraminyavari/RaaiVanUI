@@ -44,6 +44,12 @@ const SelectType = (props) => {
     });
   }, [items, exact]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setItems([]);
+    }
+  }, [value]);
+
   return (
     <Styled.SelectContainer>
       <Styled.SelectTitle>{decodeBase64(data.Title)}</Styled.SelectTitle>
