@@ -1,7 +1,8 @@
-import { BsFillPlusCircleFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsPlusCircle } from 'react-icons/bs';
 
 const PlusIcon = (props) => {
-  return <BsFillPlusCircleFill {...props} />;
+  const { fill, ...rest } = props;
+  return !!fill ? <BsPlusCircleFill {...rest} /> : <BsPlusCircle {...rest} />;
 };
 
 export default PlusIcon;

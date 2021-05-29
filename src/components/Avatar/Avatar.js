@@ -32,7 +32,7 @@ const Avatar = (props) => {
           />
         </Styled.AvatarContainer>
       ) : (
-        <Styled.AvatarIconWrapper>
+        <Styled.AvatarIconWrapper {...rest}>
           <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
         </Styled.AvatarIconWrapper>
       )}
