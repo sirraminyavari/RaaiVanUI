@@ -1,21 +1,23 @@
-import useScript from 'hooks/useScript';
-import { isEmpty } from 'helpers/helpers';
+import styled from 'styled-components';
+import NodeList from 'components/NodeList/NodeList';
+import AdvanceSearch from 'components/AdvanceSearch/AdvanceSearch';
 
-const AdvancedSearch = (props) => {
-  useScript(
-    'pageLoadScripts/LoadAdvancedSearch/LoadAdvancedSearch.js',
-    'LoadAdvancedSearch.js',
-    (advancedsearch) => {
-      !isEmpty(advancedsearch) && window.loadAdvancedSearch(advancedsearch);
-    },
-    props.route
-  );
+const AdvancedSearchView = (props) => {
+  const { match } = props;
+  const NodeId = match.params.id;
+
   return (
-    <div
-      id="classesArea"
-      className="small-12 medium-12 large-12 row"
-      style={{ margin: '0rem 0rem 5rem 0rem', padding: '0vw 8vw' }}></div>
+    <Container>
+      <AdvanceSearch NodeId={NodeId}>
+        <NodeList />
+      </AdvanceSearch>
+    </Container>
   );
 };
 
-export default AdvancedSearch;
+export default AdvancedSearchView;
+
+const Container = styled.div`
+  background-color: #fcfcfd;
+  height: 100vh;
+`;
