@@ -1,37 +1,29 @@
+import { useSelector } from 'react-redux';
 import * as Styled from '../../../Teams.styles';
 import Team from './Team';
 import NewTeam from './NewTeam';
-import SettingIcon from 'components/Icons/SettingIcon/Setting';
-import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import SpaceHeader from './SpcaeHeader';
+import { createSelector } from 'reselect';
 
-const Space = ({ space }) => {
+const selectApplications = createSelector(
+  (state) => state.applications,
+  (applications) => applications.applications
+);
+
+const WorkSpace = ({ space }) => {
+  const teams = useSelector(selectApplications);
+
   return (
     <Styled.SpaceConatiner>
-      <Styled.SpaceHeader>
-        <div style={{ color: '#2B2727', fontSize: '1rem', fontWeight: 'bold' }}>
-          {space.title}
-        </div>
-        {space.role === 'admin' && (
-          <div
-            style={{
-              width: '3rem',
-              display: 'flex',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            <TrashIcon color="#BAC9DC" />
-            <SettingIcon color="#BAC9DC" />
-          </div>
-        )}
-      </Styled.SpaceHeader>
+      <SpaceHeader space={space} />
       <Styled.TeamListConatiner>
-        {space.teams.map((team) => {
+        {teams.map((team) => {
           return <Team team={team} />;
         })}
-        <NewTeam />
+        {space.role === 'admin' && <NewTeam />}
       </Styled.TeamListConatiner>
     </Styled.SpaceConatiner>
   );
 };
 
-export default Space;
+export default WorkSpace;
