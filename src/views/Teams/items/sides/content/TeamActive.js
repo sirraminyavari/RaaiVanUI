@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { forwardRef, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as Styled from '../../../Teams.styles';
@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import APIHandler from 'apiHelper/APIHandler';
 
-const ActiveTeam = ({ team }) => {
+const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { Title, Description, Users: appUsers, IconURL, ApplicationID } = team;
@@ -92,6 +92,7 @@ const ActiveTeam = ({ team }) => {
 
   return (
     <Styled.TeamConatiner
+      ref={ref}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -107,7 +108,7 @@ const ActiveTeam = ({ team }) => {
           question="آیا از حذف تیم اطمینان دارید؟"
         />
       </DeleteConfirm>
-      <Styled.DragIconWrapper>
+      <Styled.DragIconWrapper {...dragHandle}>
         <DragIcon />
       </Styled.DragIconWrapper>
       <Styled.TeamContentWrapper>
@@ -183,6 +184,6 @@ const ActiveTeam = ({ team }) => {
       </Styled.TeamContentWrapper>
     </Styled.TeamConatiner>
   );
-};
+});
 
 export default ActiveTeam;

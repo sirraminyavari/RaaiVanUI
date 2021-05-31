@@ -23,5 +23,5 @@ export const ContentWrapper = withTheme(styled.div`
 `);
 
 export const Content = styled.div`
-  margin-top: 100px;
+  margin-top: 5rem;
 `;

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, forwardRef } from 'react';
 import * as Styled from '../../../Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
@@ -8,15 +8,15 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
 import { WindowContext } from 'context/WindowProvider';
 
-const InactiveTeam = ({ team }) => {
+const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const { Title, Description, Users: appUsers, IconURL } = team;
   const { TotalCount, Users } = appUsers;
   const { RVGlobal } = useContext(WindowContext);
   const { IsSystemAdmin } = RVGlobal;
 
   return (
-    <Styled.TeamConatiner>
-      <Styled.DragIconWrapper>
+    <Styled.TeamConatiner ref={ref}>
+      <Styled.DragIconWrapper {...dragHandle}>
         <DragIcon />
       </Styled.DragIconWrapper>
       <Styled.TeamContentWrapper>
@@ -102,6 +102,6 @@ const InactiveTeam = ({ team }) => {
       </Styled.TeamContentWrapper>
     </Styled.TeamConatiner>
   );
-};
+});
 
 export default InactiveTeam;

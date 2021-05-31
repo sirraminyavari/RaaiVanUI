@@ -58,7 +58,7 @@ export const SpaceListConatiner = styled.div`
 
 export const SpaceConatiner = styled.div`
   width: 100%;
-  margin: 2rem 0 1rem 0;
+  margin: 0.5rem 0 1rem 0;
 `;
 
 export const SpaceHeaderContainer = styled.div`
@@ -132,16 +132,16 @@ export const SettingIconWrapper = styled.div`
 export const TeamListConatiner = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 export const TeamConatiner = styled.div`
   width: 100%;
-  height: 13rem;
+  height: 12rem;
   border: ${({ isNew }) =>
     !!isNew ? '2px dashed #BAC9DC;' : '1px solid #bac9dc;'}
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   position: relative;
 
   .team-extra-users {

@@ -9,9 +9,15 @@ const Welcome = () => {
       <div
         style={{
           width: '250px',
+          marginTop: '1.5rem',
           aspectRatio: '1',
           border: '1px solid #333',
-        }}></div>
+          borderRadius: '10px',
+          textAlign: 'center',
+          lineHeight: '15rem',
+        }}>
+        Image
+      </div>
       <div style={{ margin: '1rem 0 3rem 0' }}>
         <span style={{ color: '#707070', fontSize: '1rem' }}>
           به کلیک مایند خوش آمدید!
