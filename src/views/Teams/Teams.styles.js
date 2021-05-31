@@ -273,3 +273,13 @@ export const NewTeamLabel = styled.div`
   margin: 1rem 0 0 0;
   color: #bac9dc;
 `;
+
+export const WelcomeSide = styled.div`
+  width: 50%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
