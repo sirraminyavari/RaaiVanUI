@@ -31,7 +31,13 @@ const SpcaeHeader = ({ space }) => {
         onConfirm={handleSpaceDelete}
         confirmText="حذف دایمی"
         cancelText="بازگشت">
-        <DeleteConfirmMSG title={space.title} />
+        <DeleteConfirmMSG
+          title={space.title}
+          icon={SpaceIcon}
+          question="آیا از حذف فضای کاری اطمینان دارید؟"
+          warning="با حذف فضای کاری، دسترسی به اطلاعات آن برای هیچ کاربری ممکن نخواهد بود و
+          فضای کاری به صورت دائمی حذف خواهد شد!"
+        />
       </DeleteConfirm>
       <Styled.SpaceHeaderTitle>
         <SpaceIcon color="#2B7BE4" />

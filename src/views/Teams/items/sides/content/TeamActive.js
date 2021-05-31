@@ -1,24 +1,96 @@
+import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Styled from '../../../Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import Button from 'components/Buttons/Button';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
+import { WindowContext } from 'context/WindowProvider';
+import DeleteConfirm from 'components/Modal/Confirm';
+import DeleteConfirmMSG from './DeleteConfirmMSG';
+import {
+  removeApplication,
+  recycleApplication,
+} from 'store/actions/applications/ApplicationsAction';
+import { toast } from 'react-toastify';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
 
-const Team = ({ team }) => {
-  const { Title, Description, Users: appUsers, isActive, IconURL } = team;
+const ActiveTeam = ({ team }) => {
+  const dispatch = useDispatch();
+  const { Title, Description, Users: appUsers, IconURL, ApplicationID } = team;
   const { TotalCount, Users } = appUsers;
+  const { RVGlobal, RVDic } = useContext(WindowContext);
+  const { IsSystemAdmin } = RVGlobal;
+  const [isConfirmShown, setIsConfirmShown] = useState(false);
+
+  const onTrashClick = () => {
+    handleTeamDelete();
+    // setIsConfirmShown(true);
+  };
+
+  const handleCancelDelete = () => {
+    if (isConfirmShown) {
+      setIsConfirmShown(false);
+    }
+  };
+
+  const undoTeamDelete = (appId) => {
+    dispatch(recycleApplication(appId, console.log));
+  };
+
+  const onRemoveDone = (removedAppId) => {
+    const deleteMSG = 'تیم حذف خواهد شد';
+    UndoToast({
+      type: 'error',
+      autoClose: 5000,
+      message: deleteMSG,
+      onUndo: () => undoTeamDelete(removedAppId),
+      toastId: `delete-${removedAppId}`,
+    });
+  };
+
+  const onRemoveError = (error) => {
+    const toastOptions = {
+      position: 'bottom-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    };
+    toast(RVDic.MSG[error] || error, toastOptions);
+  };
+
+  const handleTeamDelete = () => {
+    dispatch(removeApplication(ApplicationID, onRemoveDone, onRemoveError));
+    setIsConfirmShown(false);
+  };
+
   return (
     <Styled.TeamConatiner>
+      <DeleteConfirm
+        title="حذف تیم "
+        show={isConfirmShown}
+        onCancel={handleCancelDelete}
+        onClose={handleCancelDelete}
+        onConfirm={handleTeamDelete}
+        confirmText="حذف دایمی"
+        cancelText="بازگشت">
+        <DeleteConfirmMSG
+          title={decodeBase64(Title)}
+          question="آیا از حذف تیم اطمینان دارید؟"
+        />
+      </DeleteConfirm>
       <Styled.DragIconWrapper>
         <DragIcon />
       </Styled.DragIconWrapper>
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>
-            <Avatar radius={60} style={{ width: '70px' }} userImage={IconURL} />
+            <Avatar radius={45} style={{ width: '50px' }} userImage={IconURL} />
           </div>
           <Styled.TeamTitle>{decodeBase64(Title)}</Styled.TeamTitle>
           <Styled.TeamExcerpt>
@@ -30,7 +102,7 @@ const Team = ({ team }) => {
         <Styled.TeamFooterConatiner>
           <Styled.TeamAvatarsWrapper>
             {Users?.map((user, index) => {
-              if (index > 0) return null;
+              if (index > 3) return null;
               return (
                 <Avatar
                   key={index}
@@ -44,19 +116,19 @@ const Team = ({ team }) => {
                 />
               );
             })}
-            {TotalCount > 1 && (
+            {TotalCount > 4 && (
               <PopupMenu
                 align="top"
                 arrowClass="hidden-arrow"
                 menuClass="extra-users-popup">
                 <Styled.ExtraUsersWrapper>
                   <Badge
-                    showText={`${TotalCount - 1}+`}
+                    showText={`${TotalCount - 4}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
                 <div className="non-scroll">
-                  {Users?.filter((user, index) => index > 0 && user).map(
+                  {Users?.filter((user, index) => index > 3 && user).map(
                     (user) => {
                       return (
                         <Styled.ExtraUserItem>
@@ -79,16 +151,10 @@ const Team = ({ team }) => {
               </PopupMenu>
             )}
           </Styled.TeamAvatarsWrapper>
-          {isActive ? (
+          {IsSystemAdmin && (
             <Styled.TeamTrashWrapper>
-              <TrashIcon />
+              <TrashIcon onClick={onTrashClick} />
             </Styled.TeamTrashWrapper>
-          ) : (
-            <Button
-              type="primary-o"
-              style={{ height: '1.5rem', width: '5rem' }}>
-              فعال سازی
-            </Button>
           )}
         </Styled.TeamFooterConatiner>
       </Styled.TeamContentWrapper>
@@ -96,4 +162,4 @@ const Team = ({ team }) => {
   );
 };
 
-export default Team;
+export default ActiveTeam;

@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from '../../../Teams.styles';
-import Team from './Team';
+import ActiveTeam from './TeamActive';
+import InactiveTeam from './TeamInactive';
 import NewTeam from './NewTeam';
 import SpaceHeader from './SpcaeHeader';
 import { createSelector } from 'reselect';
+import { WindowContext } from 'context/WindowProvider';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -12,15 +15,20 @@ const selectApplications = createSelector(
 
 const WorkSpace = ({ space }) => {
   const teams = useSelector(selectApplications);
+  const { RVGlobal } = useContext(WindowContext);
+  const { IsSystemAdmin } = RVGlobal;
 
   return (
     <Styled.SpaceConatiner>
       <SpaceHeader space={space} />
       <Styled.TeamListConatiner>
-        {teams.map((team) => {
-          return <Team team={team} />;
+        {teams.map((team, key) => {
+          if (key === 0) {
+            return <InactiveTeam key={key} team={team} />;
+          }
+          return <ActiveTeam key={key} team={team} />;
         })}
-        {space.role === 'admin' && <NewTeam />}
+        {IsSystemAdmin && <NewTeam />}
       </Styled.TeamListConatiner>
     </Styled.SpaceConatiner>
   );

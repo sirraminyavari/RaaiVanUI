@@ -131,7 +131,7 @@ export const SettingIconWrapper = styled.div`
 
 export const TeamListConatiner = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1rem;
 `;
 
@@ -153,6 +153,11 @@ export const TeamConatiner = styled.div`
     color: #2B7BE4;
     line-height: 2rem;
     user-select: none;
+  }
+
+  .inactive{
+    background-color: #F6F6F7;
+    color: #B8B8B8;
   }
 
   .hidden-arrow{
