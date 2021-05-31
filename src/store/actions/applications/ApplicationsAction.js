@@ -1,6 +1,6 @@
 import { ApplicationsSlice } from '../../reducers/applicationsReducer';
 import APIHandler from 'apiHelper/APIHandler';
-// import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const {
   setApplications,
@@ -11,6 +11,7 @@ const {
 const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
 const removeApplicationAPI = new APIHandler('RVAPI', 'RemoveApplication');
 const recycleApplicationAPI = new APIHandler('RVAPI', 'RecycleApplication');
+const createApplicationAPI = new APIHandler('RVAPI', 'CreateApplication');
 
 /**
  * @description A function (action) that gets applications list from server.
@@ -70,12 +71,35 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
  * @description A function (action) that recycles deleted application from server.
  * @returns -Dispatch to redux store.
  */
-export const recycleApplication = (appId, done, error) => async (dispatch) => {
+export const recycleApplication = (appId, done) => async (dispatch) => {
   try {
     recycleApplicationAPI.fetch(
       { ApplicationID: appId, ParseResults: true },
       (response) => {
         if (response.Succeed) {
+          done && done(response);
+          dispatch(getApplications());
+        }
+      },
+      (error) => console.log({ error })
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that creates a new application.
+ * @returns -Dispatch to redux store.
+ */
+export const createApplication = (title, done, error) => async (dispatch) => {
+  try {
+    createApplicationAPI.fetch(
+      { Title: encodeBase64(title), ParseResults: true },
+      (response) => {
+        if (response.ErrorText) {
+          error && error(response.ErrorText);
+        } else if (response.Succeed) {
           done && done(response);
           dispatch(getApplications());
         }

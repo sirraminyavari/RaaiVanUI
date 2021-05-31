@@ -29,7 +29,7 @@ export const ModalButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 2rem 0 1rem 0;
+  margin: 0rem 0 1rem 0;
 `;
 
 export const ModalButtonText = styled.span`
@@ -143,7 +143,6 @@ export const TeamConatiner = styled.div`
   border-radius: 10px;
   padding: 1rem;
   position: relative;
-  // cursor: pointer;
 
   .team-extra-users {
     background-color: #E6F4F1;
@@ -271,6 +270,6 @@ export const NewTeamWrapper = styled.div`
 `;
 
 export const NewTeamLabel = styled.div`
-  margin: 1rem 0;
+  margin: 1rem 0 0 0;
   color: #bac9dc;
 `;

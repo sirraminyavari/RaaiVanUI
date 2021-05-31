@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as Styled from '../../../Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
@@ -16,16 +17,20 @@ import {
 } from 'store/actions/applications/ApplicationsAction';
 import { toast } from 'react-toastify';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
+import APIHandler from 'apiHelper/APIHandler';
 
 const ActiveTeam = ({ team }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { Title, Description, Users: appUsers, IconURL, ApplicationID } = team;
   const { TotalCount, Users } = appUsers;
   const { RVGlobal, RVDic } = useContext(WindowContext);
   const { IsSystemAdmin } = RVGlobal;
   const [isConfirmShown, setIsConfirmShown] = useState(false);
+  const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
 
-  const onTrashClick = () => {
+  const onTrashClick = (e) => {
+    e.stopPropagation();
     handleTeamDelete();
     // setIsConfirmShown(true);
   };
@@ -69,8 +74,26 @@ const ActiveTeam = ({ team }) => {
     setIsConfirmShown(false);
   };
 
+  const handleTeamSelect = () => {
+    try {
+      selectTeamAPI.fetch(
+        { ApplicationID, ParseResults: true },
+        (response) => {
+          if (response.Succeed) {
+            history.push('/home');
+          }
+        },
+        (error) => console.log(error)
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Styled.TeamConatiner>
+    <Styled.TeamConatiner
+      style={{ cursor: 'pointer' }}
+      onClick={handleTeamSelect}>
       <DeleteConfirm
         title="حذف تیم "
         show={isConfirmShown}

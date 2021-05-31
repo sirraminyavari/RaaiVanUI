@@ -1,14 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import * as Styled from '../../../Teams.styles';
-import Modal from 'components/Modal/Modal';
-import Input from 'components/Inputs/Input';
-import { WindowContext } from 'context/WindowProvider';
+import CreateModal from './CreateModal';
 
 const Header = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [spaceName, setSpaceName] = useState(null);
-  const { RVDic } = useContext(WindowContext);
 
   const handleAddSpace = () => {
     setIsModalShown(true);
@@ -28,29 +25,14 @@ const Header = () => {
 
   return (
     <Styled.HeaderContainer>
-      <Modal
-        contentWidth="40%"
-        title="ایجاد فضای کاری جدید"
-        show={isModalShown}
-        onClose={handleCancelCreate}>
-        <Styled.ModalContentWrapper>
-          <Input
-            style={{ width: '100%', margin: '2rem 0' }}
-            onChange={handleInputChange}
-          />
-          <Styled.ModalButtonsWrapper>
-            <Button style={{ width: '7rem' }} onClick={handleSpaceCreate}>
-              <Styled.ModalButtonText>{RVDic.Save}</Styled.ModalButtonText>
-            </Button>
-            <Button
-              type="negative-o"
-              style={{ width: '7rem' }}
-              onClick={handleCancelCreate}>
-              <Styled.ModalButtonText>{RVDic.Return}</Styled.ModalButtonText>
-            </Button>
-          </Styled.ModalButtonsWrapper>
-        </Styled.ModalContentWrapper>
-      </Modal>
+      <CreateModal
+        isOpen={isModalShown}
+        onInputChange={handleInputChange}
+        onCancleCreate={handleCancelCreate}
+        onCreate={handleSpaceCreate}
+        modalTitle="ایجاد فضای کاری جدید"
+        modalWidth="40%"
+      />
       <Styled.HeaderTitle>فضاهای کاری شما</Styled.HeaderTitle>
       <Button style={{ width: '10rem' }} onClick={handleAddSpace}>
         + ساخت فضای جدید
