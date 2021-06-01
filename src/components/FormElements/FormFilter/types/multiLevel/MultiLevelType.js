@@ -116,6 +116,7 @@ const MultiLevelType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'multilevel',
         TextItems: decodedItems,
         Exact: exact,
         Or: or,

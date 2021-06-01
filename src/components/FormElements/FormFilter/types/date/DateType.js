@@ -44,6 +44,7 @@ const DateType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'date',
         DateFrom: from,
         DateTo: to,
         Data: { From: from, To: to },

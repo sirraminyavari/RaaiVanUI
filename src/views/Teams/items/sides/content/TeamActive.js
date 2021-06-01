@@ -11,13 +11,14 @@ import { decodeBase64 } from 'helpers/helpers';
 import { WindowContext } from 'context/WindowProvider';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
+import { toast } from 'react-toastify';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
+import APIHandler from 'apiHelper/APIHandler';
+import useHover from 'hooks/useHover';
 import {
   removeApplication,
   recycleApplication,
 } from 'store/actions/applications/ApplicationsAction';
-import { toast } from 'react-toastify';
-import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import APIHandler from 'apiHelper/APIHandler';
 
 const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const { IsSystemAdmin } = RVGlobal;
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
+  const [trashRef, isTrashHovered] = useHover();
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -126,7 +128,7 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
         <Styled.TeamFooterConatiner>
           <Styled.TeamAvatarsWrapper>
             {Users?.map((user, index) => {
-              if (index > 3) return null;
+              if (index > 0) return null;
               return (
                 <Avatar
                   key={index}
@@ -140,19 +142,19 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
                 />
               );
             })}
-            {TotalCount > 4 && (
+            {TotalCount > 1 && (
               <PopupMenu
                 align="top"
                 arrowClass="hidden-arrow"
                 menuClass="extra-users-popup">
                 <Styled.ExtraUsersWrapper>
                   <Badge
-                    showText={`${TotalCount - 4}+`}
+                    showText={`${TotalCount - 1}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
                 <div className="non-scroll">
-                  {Users?.filter((user, index) => index > 3 && user).map(
+                  {Users?.filter((user, index) => index > 0 && user).map(
                     (user) => {
                       return (
                         <Styled.ExtraUserItem>
@@ -176,7 +178,7 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
             )}
           </Styled.TeamAvatarsWrapper>
           {IsSystemAdmin && (
-            <Styled.TeamTrashWrapper>
+            <Styled.TeamTrashWrapper isHovered={isTrashHovered} ref={trashRef}>
               <TrashIcon onClick={onTrashClick} />
             </Styled.TeamTrashWrapper>
           )}

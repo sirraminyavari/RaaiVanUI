@@ -29,7 +29,7 @@ const FormType = (props) => {
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [filters, setFilters] = useState([]);
-  const [filterValues, setFilterValues] = useState(value || {});
+  const [filterValues, setFilterValues] = useState(value?.JSONValue || {});
 
   const { FormID, FormName } = JSON.parse(decodeBase64(Info));
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
@@ -90,7 +90,13 @@ const FormType = (props) => {
     const value = filterValues;
 
     //! Send back value to parent on filter.
-    onChange({ id, value });
+    onChange({
+      id,
+      value: {
+        Type: 'form',
+        JSONValue: value,
+      },
+    });
   }, [filterValues]);
 
   return (

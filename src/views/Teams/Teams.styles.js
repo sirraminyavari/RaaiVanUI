@@ -1,4 +1,11 @@
 import styled, { css } from 'styled-components';
+import {
+  TC_DISTANT,
+  TBO_DISTANT,
+  BO_WHITE,
+  C_GRAY,
+  C_RED,
+} from 'constant/Colors';
 
 export const ViewContainer = styled.div`
   background-color: #fcfcfd;
@@ -249,15 +256,12 @@ export const ExtraUserTitle = styled.span`
   color: #707070;
 `;
 
-export const TeamTrashWrapper = styled.div`
+export const TeamTrashWrapper = styled.div.attrs((props) => ({
+  className: props.isHovered ? C_RED : TC_DISTANT,
+}))`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #bac9dc;
-
-  :hover svg {
-    color: #e2234f !important;
-  }
 `;
 
 export const NewTeamWrapper = styled.div`
@@ -269,9 +273,10 @@ export const NewTeamWrapper = styled.div`
   align-items: center;
 `;
 
-export const NewTeamLabel = styled.div`
+export const NewTeamLabel = styled.div.attrs({
+  className: TC_DISTANT,
+})`
   margin: 1rem 0 0 0;
-  color: #bac9dc;
 `;
 
 export const WelcomeSide = styled.div`
@@ -282,4 +287,32 @@ export const WelcomeSide = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+export const WelcomeMSGContainer = styled.div`
+  margin: 1rem 0 2rem 0;
+`;
+
+export const SocialMediaContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0 0 0;
+`;
+
+export const IconWrapper = styled.div.attrs((props) => ({
+  className: `${TC_DISTANT} ${props.isHovered ? TBO_DISTANT : BO_WHITE}`,
+}))`
+  margin: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+export const WelcomeMessage = styled.span.attrs({
+  className: C_GRAY,
+})`
+  font-size: 1rem;
 `;

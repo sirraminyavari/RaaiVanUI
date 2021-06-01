@@ -70,6 +70,7 @@ const FileType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'file',
         TextItems: items,
         Exact: exact,
         Or: or,

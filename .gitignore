@@ -11,11 +11,6 @@
 # production
 /build
 
-# load folder
-/public/load/css
-/public/load/fonts
-/public/load/scripts
-
 # debug.log
 debug.log
 

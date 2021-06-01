@@ -70,6 +70,7 @@ const NodeType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'node',
         GuidItems: !items.length ? null : nodeIds.join('|'),
         Data: items,
         JSONValue: !items.length ? null : JSONValue,

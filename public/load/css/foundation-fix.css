@@ -1,0 +1,13 @@
+﻿select {
+    background-position:left 0.5rem center;
+    margin-bottom:0rem;
+    padding:0.2rem;
+}
+
+.button {
+    margin-bottom:0rem;
+}
+
+textarea {
+    min-height:1rem;
+}

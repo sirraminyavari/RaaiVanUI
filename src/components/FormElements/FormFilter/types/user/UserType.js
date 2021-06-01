@@ -62,6 +62,7 @@ const UserType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'user',
         GuidItems: !items.length ? null : userIds.join('|'),
         Data: items,
         JSONValue: !items.length ? null : JSONValue,

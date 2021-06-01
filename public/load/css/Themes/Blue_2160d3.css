@@ -1,0 +1,33 @@
+/* 
+Codes: {
+    "color": "#2160d3",
+    "reverse": "#de9f2c",
+    "verysoft": "#c9d9f7",
+    "soft": "#9dbaf0",
+    "warm": "#205cca",
+    "verywarm": "#1e58c1",
+    "warmborder": "#466bae",
+    "softborder": "#0959eb",
+    "actionbutton": "#2160d3",
+    "highlytransparentwarm": "rgba(9, 89, 235, 0.06)",
+    "verytransparentwarm": "rgba(9, 89, 235, 0.1)",
+    "mediumtransparentwarm": "rgba(9, 89, 235, 0.5)",
+    "transparentwarm": "rgba(9, 89, 235, 0.7)"
+}
+*/
+
+:root {
+    --rv-color: #2160d3;
+    --rv-color-reverse: #de9f2c;
+    --rv-color-verysoft: #c9d9f7;
+    --rv-color-soft: #9dbaf0;
+    --rv-color-warm: #205cca;
+    --rv-color-verywarm: #1e58c1;
+    --rv-color-warmborder: #466bae;
+    --rv-color-softborder: #0959eb;
+    --rv-color-actionbutton: #2160d3;
+    --rv-color-highlytransparentwarm: rgba(9, 89, 235, 0.06);
+    --rv-color-verytransparentwarm: rgba(9, 89, 235, 0.1);
+    --rv-color-mediumtransparentwarm: rgba(9, 89, 235, 0.5);
+    --rv-color-transparentwarm: rgba(9, 89, 235, 0.7);
+}

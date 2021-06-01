@@ -57,15 +57,19 @@ const NumericType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const FloatFrom = !!from ? +from : null;
-    const FloatTo = !!to ? +to : null;
-
-    const JSONValue = from || to ? { FloatFrom, FloatTo } : null;
+    const floatFrom = !!from ? +from : null;
+    const floatTo = !!to ? +to : null;
+    const jsonValue = from || to ? { floatFrom, floatTo } : null;
 
     //! Send back value to parent.
     onChange({
       id,
-      value: { FloatFrom, FloatTo, JSONValue },
+      value: {
+        Tyep: 'numeric',
+        FloatFrom: floatFrom,
+        FloatTo: floatTo,
+        JSONValue: jsonValue,
+      },
     });
   }, [from, to]);
 

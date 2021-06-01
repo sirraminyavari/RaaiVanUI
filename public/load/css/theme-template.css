@@ -1,0 +1,33 @@
+﻿/* 
+Codes: {
+    "color": "[color]",
+    "reverse": "[reverse]",
+    "verysoft": "[verysoft]",
+    "soft": "[soft]",
+    "warm": "[warm]",
+    "verywarm": "[verywarm]",
+    "warmborder": "[warmborder]",
+    "softborder": "[softborder]",
+    "actionbutton": "[actionbutton]",
+    "highlytransparentwarm": "[highlytransparentwarm]",
+    "verytransparentwarm": "[verytransparentwarm]",
+    "mediumtransparentwarm": "[mediumtransparentwarm]",
+    "transparentwarm": "[transparentwarm]"
+}
+*/
+
+:root {
+    --rv-color: [color];
+    --rv-color-reverse: [reverse];
+    --rv-color-verysoft: [verysoft];
+    --rv-color-soft: [soft];
+    --rv-color-warm: [warm];
+    --rv-color-verywarm: [verywarm];
+    --rv-color-warmborder: [warmborder];
+    --rv-color-softborder: [softborder];
+    --rv-color-actionbutton: [actionbutton];
+    --rv-color-highlytransparentwarm: [highlytransparentwarm];
+    --rv-color-verytransparentwarm: [verytransparentwarm];
+    --rv-color-mediumtransparentwarm: [mediumtransparentwarm];
+    --rv-color-transparentwarm: [transparentwarm];
+}

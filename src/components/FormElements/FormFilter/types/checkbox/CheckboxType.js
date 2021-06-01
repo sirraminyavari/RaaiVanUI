@@ -82,6 +82,7 @@ const CheckboxType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'checkbox',
         TextItems: items,
         Exact: exact,
         Or: or,

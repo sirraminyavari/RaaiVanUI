@@ -45,6 +45,7 @@ const BinaryType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'binary',
         Bit: bitValue === null ? null : bitValue === 'yes',
         Data: bitValue,
         JSONValue: bitValue === null ? null : { Bit: bitValue === 'yes' },

@@ -60,6 +60,7 @@ const SelectType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'select',
         TextItems: items,
         Exact: !items.length ? false : exact,
         JSONValue: !items.length ? null : JSONValue,

@@ -1,0 +1,19 @@
+﻿.Direction { direction: ltr; }
+.RevDirection { direction: rtl; }
+.Float {float:left;}
+.RevFloat{float:right;}
+.TextAlign{text-align:left;}
+.RevTextAlign{text-align:right;}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  text-align:left;
+}
+input::-moz-placeholder, textarea::-moz-placeholder { /* Firefox 19+ */
+  text-align:left;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* IE 10+ */
+  text-align:left;
+}
+input:-moz-placeholder, textarea:-moz-placeholder { /* Firefox 18- */
+  text-align:left;
+}

@@ -69,6 +69,7 @@ const TextType = (props) => {
     onChange({
       id,
       value: {
+        Type: 'text',
         TextItems: items,
         Exact: exact,
         Or: or,

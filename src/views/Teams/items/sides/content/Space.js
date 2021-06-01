@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from '../../../Teams.styles';
 import ActiveTeam from './TeamActive';
-import InactiveTeam from './TeamInactive';
+// import InactiveTeam from './TeamInactive';
 import NewTeam from './NewTeam';
 import SpaceHeader from './SpcaeHeader';
 import { createSelector } from 'reselect';
@@ -64,21 +64,6 @@ const WorkSpace = ({ space }) => {
                     {(provided, snapshot) => {
                       let isDragging = snapshot.isDragging;
                       let dragHandleProps = provided.dragHandleProps;
-
-                      if (key === 0) {
-                        return (
-                          <div
-                            {...provided.draggableProps}
-                            ref={provided.innerRef}
-                            style={{ ...provided.draggableProps.style }}>
-                            <InactiveTeam
-                              key={key}
-                              team={team}
-                              dragHandle={dragHandleProps}
-                            />
-                          </div>
-                        );
-                      }
                       return (
                         <div
                           {...provided.draggableProps}
@@ -96,7 +81,7 @@ const WorkSpace = ({ space }) => {
                 );
               })}
               {IsSystemAdmin && <NewTeam />}
-              {/* {provided.placeholder} */}
+              {provided.placeholder}
             </Styled.TeamListConatiner>
           )}
         </Droppable>
