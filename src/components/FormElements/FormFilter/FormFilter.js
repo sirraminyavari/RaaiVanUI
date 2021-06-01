@@ -1,4 +1,8 @@
+/**
+ * Renders a filter form elements.
+ */
 import { Fragment, useState, Children } from 'react';
+import PropTypes from 'prop-types';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
 import CheckboxType from './types/checkbox/CheckboxType';
@@ -15,6 +19,21 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
 
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {array} filters - A list of filters.
+ * @property {string} formName - The title of the form.
+ * @property {function} onFilter - A callback function that fires on filter click.
+ * @property {function} onCloseFilter - A callback function that fires on close button click.
+ * @property {Object} filterValues - The value for each filter type.
+ */
+
+/**
+ *  @description Renders form filter elements component.
+ * @component
+ * @param {PropType} props -Props that are passed to component.
+ */
 const FormFilter = (props) => {
   const {
     filters,
@@ -98,5 +117,15 @@ FormFilter.Binary = BinaryType;
 FormFilter.File = FileType;
 FormFilter.Form = FormType;
 FormFilter.MultiLevel = MultiLevelType;
+
+FormFilter.propTypes = {
+  filters: PropTypes.array,
+  formName: PropTypes.string,
+  filterValues: PropTypes.object,
+  onFilter: PropTypes.func,
+  onCloseFilter: PropTypes.func,
+};
+
+FormFilter.displayName = 'FilterFormElements';
 
 export default FormFilter;

@@ -7,7 +7,15 @@ import Modal from './Modal';
 import Button from '../Buttons/Button';
 import { WindowContext } from 'context/WindowProvider';
 
-const Confirm = ({ onConfirm, onCancel, onClose, ...props }) => {
+const Confirm = ({
+  onConfirm,
+  onCancel,
+  onClose,
+  confirmText,
+  cancelText,
+  title,
+  ...props
+}) => {
   const [showState, setShowState] = useState(props.show !== false);
   const { GlobalUtilities, RVDic, RV_RTL } = useContext(WindowContext);
 
@@ -30,6 +38,7 @@ const Confirm = ({ onConfirm, onCancel, onClose, ...props }) => {
 
   return (
     <Modal
+      title={title}
       contentClass="small-8 medium-6 large-4"
       middle={true}
       titleClass="RedColor"
@@ -48,7 +57,7 @@ const Confirm = ({ onConfirm, onCancel, onClose, ...props }) => {
             RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
           )}
           onClick={handleOnConfirm}>
-          {RVDic.Confirm}
+          {confirmText ?? RVDic.Confirm}
         </Button>
         <Button
           type="primary-o"
@@ -57,7 +66,7 @@ const Confirm = ({ onConfirm, onCancel, onClose, ...props }) => {
             width: '6rem',
           }}
           onClick={handleOnCancel}>
-          {RVDic.Cancel}
+          {cancelText ?? RVDic.Cancel}
         </Button>
       </ButtonsContainer>
     </Modal>

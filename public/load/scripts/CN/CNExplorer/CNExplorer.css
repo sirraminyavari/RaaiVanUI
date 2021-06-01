@@ -1,0 +1,72 @@
+﻿@media screen and (min-width: 64em) { 
+    .cn-explorer-item-large { 
+        width: 22vw; 
+    } 
+}
+
+@media screen and (min-width: 40em) and (max-width: 63.9375em) { 
+    .cn-explorer-item-medium { 
+        width: 28vw; 
+    } 
+}
+
+@media screen and (max-width: 39.9375em) { 
+    .cn-explorer-item-small { 
+        width: 46vw; 
+    } 
+}
+
+.cn-explorer-path-item {
+    cursor:pointer;
+    padding:0.2rem 0.5rem 0.2rem 0.5rem; 
+    margin:0.2rem;
+    border-style:solid;
+    border-width:1px;
+    border-color:transparent;
+    border-radius:0.2rem;
+    -moz-border-radius:0.2rem;
+    -webkit-border-radius:0.2rem;
+    -o-border-radius:0.2rem;
+}
+
+.cn-explorer-path-root {
+    color:white;
+    background-color:rgb(120,120,120);
+}
+
+.cn-explorer-path-root:hover, .cn-explorer-path-root:active {
+    background-color:rgb(80,80,80);
+}
+
+.cn-explorer-path-folder-type {
+    background-color:rgb(240,240,240);
+}
+
+.cn-explorer-path-folder-type:hover, .cn-explorer-path-folder-type:active {
+    background-color:rgb(220,220,220);
+}
+
+.cn-explorer-path-folder {
+    border-color:rgb(180,180,180);
+}
+
+.cn-explorer-path-folder:hover, .cn-explorer-path-folder:active {
+    background-color:rgb(245,245,245);
+}
+
+.cn-explorer-nav {
+    cursor:pointer;
+    color:rgb(220,220,220);
+}
+
+.cn-explorer-nav:hover {
+    color:rgb(80,80,80);
+}
+
+.cn-explorer-nav-disabled {
+    cursor:default;
+}
+
+.cn-explorer-nav-disabled:hover {
+    color:rgb(220,220,220);
+}

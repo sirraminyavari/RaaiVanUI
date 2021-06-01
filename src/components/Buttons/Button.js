@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
 
 const { GlobalUtilities } = window;
@@ -11,30 +11,33 @@ const { GlobalUtilities } = window;
  * @property { bool } disable determines if the button is disabled and so, cannot be clicked
  * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
-const Button = ({ type, loading, disable, onClick, ...props }) => {
-  return (
-    <div
-      className={
-        'rv-border-radius-half rv-action-button-base ' +
-        resolveClass({ type, disable }) +
-        ' ' +
-        (props.className || ' ')
-      }
-      style={props.style}
-      onClick={disable || loading ? null : onClick}
-      {...props}>
-      {!loading ? (
-        props.children
-      ) : (
-        <>
-          <span style={{ color: 'transparent' }}>1</span>
-          <LoadingIconFlat />
-          <span style={{ color: 'transparent' }}>1</span>
-        </>
-      )}
-    </div>
-  );
-};
+const Button = forwardRef(
+  ({ type, loading, disable, onClick, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={
+          'rv-border-radius-half rv-action-button-base ' +
+          resolveClass({ type, disable }) +
+          ' ' +
+          (props.className || ' ')
+        }
+        style={props.style}
+        onClick={disable || loading ? null : onClick}
+        {...props}>
+        {!loading ? (
+          props.children
+        ) : (
+          <>
+            <span style={{ color: 'transparent' }}>1</span>
+            <LoadingIconFlat />
+            <span style={{ color: 'transparent' }}>1</span>
+          </>
+        )}
+      </div>
+    );
+  }
+);
 
 export default Button;
 

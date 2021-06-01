@@ -1,0 +1,23 @@
+﻿p {
+    padding-top: 10px;
+    line-height:22px;
+    text-align:justify;
+}
+a {
+    text-decoration: none;
+    color: #007DDA;
+}
+table {
+    width: 100%;
+}
+img {
+    page-break-after: always;
+}
+code {
+    background-color: #EFEFEF;
+    border-color: red;
+    border-width: 1em;
+    border-style: solid;
+    padding-top: 14px;
+    margin: 6px auto 6px auto;
+}

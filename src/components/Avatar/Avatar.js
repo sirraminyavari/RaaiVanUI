@@ -11,6 +11,8 @@ import * as Styled from './Avatar.styles';
  * @property {number} [radius] - The radius of the avatar's circule.
  * @property {string} userImage - User's image for avatar.
  * @property {string} color - The color of Avatar.
+ * @property {object} imageStyles - Styles for image.
+ * @property {string} imageClasses - Classes for image.
  */
 
 /**
@@ -19,7 +21,14 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = (props) => {
-  const { radius, userImage, color, ...rest } = props;
+  const {
+    radius,
+    userImage,
+    color,
+    imageStyles,
+    imageClasses,
+    ...rest
+  } = props;
   return (
     <>
       {userImage ? (
@@ -29,10 +38,12 @@ const Avatar = (props) => {
             radius={radius}
             src={userImage}
             alt="user-avatar"
+            style={imageStyles}
+            className={imageClasses}
           />
         </Styled.AvatarContainer>
       ) : (
-        <Styled.AvatarIconWrapper>
+        <Styled.AvatarIconWrapper {...rest}>
           <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
         </Styled.AvatarIconWrapper>
       )}
