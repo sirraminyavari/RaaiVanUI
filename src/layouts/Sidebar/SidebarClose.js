@@ -1,12 +1,10 @@
 /**
  * Renders close sidebar area for non-mobile screens.
  */
-import { lazy, Suspense, useEffect, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { lazy, Suspense, memo } from 'react';
+import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
@@ -27,14 +25,8 @@ const selectSidebarContent = createSelector(
 );
 
 const CloseSidebar = () => {
-  const dispatch = useDispatch();
   const selectedTeam = useSelector(selectTeam);
   const sidebarContent = useSelector(selectSidebarContent);
-
-  useEffect(() => {
-    dispatch(getSidebarNodes());
-    dispatch(getConfigPanels());
-  }, []);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
   const isTeamSelected = !!selectedTeam?.id;

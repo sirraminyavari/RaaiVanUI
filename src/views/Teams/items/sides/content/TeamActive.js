@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as Styled from '../../../Teams.styles';
@@ -19,12 +19,20 @@ import {
   removeApplication,
   recycleApplication,
 } from 'store/actions/applications/ApplicationsAction';
+import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
+import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 
-const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
+const ActiveTeam = ({ team, dragHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { Title, Description, Users: appUsers, IconURL, ApplicationID } = team;
-  const { TotalCount, Users } = appUsers;
+  const {
+    Title: appTitle,
+    Description: appDescription,
+    Users: appUsers,
+    IconURL: appIcon,
+    ApplicationID: appId,
+  } = team;
+  const { TotalCount: totalUsers, Users: usersList } = appUsers;
   const { RVGlobal, RVDic } = useContext(WindowContext);
   const { IsSystemAdmin } = RVGlobal;
   const [isConfirmShown, setIsConfirmShown] = useState(false);
@@ -72,17 +80,23 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   };
 
   const handleTeamDelete = () => {
-    dispatch(removeApplication(ApplicationID, onRemoveDone, onRemoveError));
+    dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
     setIsConfirmShown(false);
+  };
+
+  const onGetNodes = () => {
+    history.push('/home');
   };
 
   const handleTeamSelect = () => {
     try {
       selectTeamAPI.fetch(
-        { ApplicationID, ParseResults: true },
+        { ApplicationID: appId, ParseResults: true },
         (response) => {
           if (response.Succeed) {
-            history.push('/home');
+            window.RVGlobal.ApplicationID = appId;
+            dispatch(getSidebarNodes(onGetNodes));
+            dispatch(getConfigPanels());
           }
         },
         (error) => console.log(error)
@@ -94,7 +108,6 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
 
   return (
     <Styled.TeamConatiner
-      ref={ref}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -106,7 +119,7 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
         confirmText="حذف دایمی"
         cancelText="بازگشت">
         <DeleteConfirmMSG
-          title={decodeBase64(Title)}
+          title={decodeBase64(appTitle)}
           question="آیا از حذف تیم اطمینان دارید؟"
         />
       </DeleteConfirm>
@@ -116,46 +129,49 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>
-            <Avatar radius={45} style={{ width: '50px' }} userImage={IconURL} />
+            <Avatar radius={45} style={{ width: '50px' }} userImage={appIcon} />
           </div>
-          <Styled.TeamTitle>{decodeBase64(Title)}</Styled.TeamTitle>
+          <Styled.TeamTitle>{decodeBase64(appTitle)}</Styled.TeamTitle>
           <Styled.TeamExcerpt>
-            {!!Description
-              ? decodeBase64(Description)
+            {!!appDescription
+              ? decodeBase64(appDescription)
               : 'کلیک مایند. مغز تیم شما!'}
           </Styled.TeamExcerpt>
         </Styled.TeamDescription>
         <Styled.TeamFooterConatiner>
           <Styled.TeamAvatarsWrapper>
-            {Users?.map((user, index) => {
-              if (index > 0) return null;
-              return (
-                <Avatar
-                  key={index}
-                  userImage={user.ProfileImageURL}
-                  radius={32}
-                  style={{
-                    position: 'relative',
-                    right: `${-index * 9}px`,
-                    zIndex: 10 - index,
-                  }}
-                />
-              );
-            })}
-            {TotalCount > 1 && (
+            {usersList
+              ?.filter((_, index) => index > 0)
+              .map((user, index) => {
+                return (
+                  <Avatar
+                    key={index}
+                    userImage={user.ProfileImageURL}
+                    radius={32}
+                    style={{
+                      position: 'relative',
+                      right: `${-index * 9}px`,
+                      zIndex: 10 - index,
+                    }}
+                  />
+                );
+              })}
+            {totalUsers > 1 && (
               <PopupMenu
+                trigger="hover"
                 align="top"
                 arrowClass="hidden-arrow"
                 menuClass="extra-users-popup">
                 <Styled.ExtraUsersWrapper>
                   <Badge
-                    showText={`${TotalCount - 1}+`}
+                    showText={`${totalUsers - 1}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
                 <div className="non-scroll">
-                  {Users?.filter((user, index) => index > 0 && user).map(
-                    (user) => {
+                  {usersList
+                    ?.filter((user, index) => index > 0 && user)
+                    .map((user) => {
                       return (
                         <Styled.ExtraUserItem>
                           <Avatar
@@ -171,8 +187,7 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
                           </Styled.ExtraUserTitle>
                         </Styled.ExtraUserItem>
                       );
-                    }
-                  )}
+                    })}
                 </div>
               </PopupMenu>
             )}
@@ -186,6 +201,6 @@ const ActiveTeam = forwardRef(({ team, dragHandle }, ref) => {
       </Styled.TeamContentWrapper>
     </Styled.TeamConatiner>
   );
-});
+};
 
 export default ActiveTeam;
