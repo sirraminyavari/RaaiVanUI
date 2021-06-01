@@ -1,12 +1,10 @@
 /**
  * Renders open sidebar area for non-mobile screens.
  */
-import { lazy, Suspense, useEffect, memo, useContext } from 'react';
+import { lazy, Suspense, memo, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
@@ -17,11 +15,6 @@ import { WindowContext } from 'context/WindowProvider';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
-);
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
 );
 
 const selectSidebarContent = createSelector(
@@ -37,18 +30,9 @@ const selectOpenWidth = createSelector(
 const OpenSidebar = () => {
   const dispatch = useDispatch();
   const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const sidebarContent = useSelector(selectSidebarContent);
   const sidebarOpenWidth = useSelector(selectOpenWidth);
   const { RV_RTL } = useContext(WindowContext);
-
-  useEffect(() => {
-    if (isSidebarOpen) {
-      dispatch(getSidebarNodes());
-      dispatch(getConfigPanels());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSidebarOpen, dispatch]);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

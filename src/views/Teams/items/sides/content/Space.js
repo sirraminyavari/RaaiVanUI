@@ -55,12 +55,12 @@ const WorkSpace = ({ space }) => {
             <Styled.TeamListConatiner
               {...provided.droppableProps}
               ref={provided.innerRef}>
-              {teams.map((team, key) => {
+              {teams.map((team, index) => {
                 return (
                   <Draggable
                     key={team.ApplicationID}
-                    draggableId={team.ApplicationID}
-                    index={key}>
+                    draggableId={team.Title}
+                    index={index}>
                     {(provided, snapshot) => {
                       let isDragging = snapshot.isDragging;
                       let dragHandleProps = provided.dragHandleProps;
@@ -70,7 +70,6 @@ const WorkSpace = ({ space }) => {
                           ref={provided.innerRef}
                           style={{ ...provided.draggableProps.style }}>
                           <ActiveTeam
-                            key={key}
                             team={team}
                             dragHandle={dragHandleProps}
                           />

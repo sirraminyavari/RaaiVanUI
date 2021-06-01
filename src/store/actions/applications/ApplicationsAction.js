@@ -17,10 +17,7 @@ const createApplicationAPI = new APIHandler('RVAPI', 'CreateApplication');
  * @description A function (action) that gets applications list from server.
  * @returns -Dispatch to redux store.
  */
-export const getApplications = (archive = false) => async (
-  dispatch,
-  getState
-) => {
+export const getApplications = (archive = false) => async (dispatch) => {
   try {
     getApplicationsAPI.fetch(
       { Archive: archive, ParseResults: true },

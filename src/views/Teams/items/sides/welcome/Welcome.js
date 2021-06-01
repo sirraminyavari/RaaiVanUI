@@ -12,17 +12,9 @@ const Welcome = () => {
 
   return (
     <Styled.WelcomeSide>
-      <div
-        style={{
-          width: '250px',
-          marginTop: '3rem',
-          aspectRatio: '1',
-          borderRadius: '10px',
-          textAlign: 'center',
-          lineHeight: '15rem',
-        }}>
+      <Styled.WorkspaceImageWrapper>
         <img src={WorkspaceImage} alt="team-workspace" />
-      </div>
+      </Styled.WorkspaceImageWrapper>
       <Styled.WelcomeMSGContainer>
         <Styled.WelcomeMessage>به کلیک مایند خوش آمدید!</Styled.WelcomeMessage>
       </Styled.WelcomeMSGContainer>

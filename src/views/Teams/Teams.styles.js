@@ -1,16 +1,20 @@
 import styled, { css } from 'styled-components';
 import {
   TC_DISTANT,
+  TC_DEFAULT,
   TBO_DISTANT,
   BO_WHITE,
   C_GRAY,
   C_RED,
+  C_GRAY_DARK,
+  BG_GRAY_LIGHT,
 } from 'constant/Colors';
 
-export const ViewContainer = styled.div`
-  background-color: #fcfcfd;
+export const ViewContainer = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   box-shadow: 1px 5px 15px #0000001f;
-  border-radius: 10px;
+  border-radius: 0.7rem;
   margin: 1rem;
   padding: 1rem 2rem;
   display: flex;
@@ -44,8 +48,9 @@ export const ModalButtonText = styled.span`
   font-weight: bold;
 `;
 
-export const HeaderTitle = styled.span`
-  color: #707070;
+export const HeaderTitle = styled.span.attrs({
+  className: C_GRAY,
+})`
   font-size: 1rem;
 `;
 
@@ -76,34 +81,38 @@ export const SpaceHeaderContainer = styled.div`
   margin: 1rem 0;
 `;
 
-export const SpaceHeaderTitle = styled.div`
+export const SpaceHeaderTitle = styled.div.attrs({
+  className: C_GRAY_DARK,
+})`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 1rem;
-  color: #2b2727;
   font-size: 1rem;
   font-weight: bold;
 `;
 
-export const ConfirmSpaceTitle = styled.div`
+export const ConfirmSpaceTitle = styled.div.attrs({
+  className: C_GRAY,
+})`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 1rem;
-  color: #707070;
 `;
 
-export const ConfirmQuestion = styled.div`
+export const ConfirmQuestion = styled.div.attrs({
+  className: C_GRAY_DARK,
+})`
   margin: 3rem 0 1rem 0;
   font-size: 0.9rem;
   font-weight: bold;
-  color: #2b2727;
 `;
 
-export const ConfirmWarning = styled.div`
+export const ConfirmWarning = styled.div.attrs({
+  className: C_RED,
+})`
   font-size: 0.8rem;
-  color: #e2234f;
 `;
 
 export const SpaceHeaderActions = styled.div`
@@ -116,24 +125,19 @@ export const SpaceHeaderActions = styled.div`
 const IconWrapperCss = css`
   display: flex;
   align-items: center;
-  color: #bac9dc;
   cursor: pointer;
 `;
 
-export const TrashIconWrapper = styled.div`
+export const TrashIconWrapper = styled.div.attrs((props) => ({
+  className: props.isHovered ? C_RED : TC_DISTANT,
+}))`
   ${IconWrapperCss}
-
-  :hover svg {
-    color: #e2234f !important;
-  }
 `;
 
-export const SettingIconWrapper = styled.div`
+export const SettingIconWrapper = styled.div.attrs((props) => ({
+  className: props.isHovered ? TC_DEFAULT : TC_DISTANT,
+}))`
   ${IconWrapperCss}
-
-  :hover svg {
-    color: #2b7be4 !important;
-  }
 `;
 
 export const TeamListConatiner = styled.div`
@@ -146,8 +150,8 @@ export const TeamConatiner = styled.div`
   width: 100%;
   height: 12rem;
   border: ${({ isNew }) =>
-    !!isNew ? '2px dashed #BAC9DC;' : '1px solid #bac9dc;'}
-  border-radius: 10px;
+    !!isNew ? '2px dashed #bac9dc;' : '1px solid #bac9dc;'}
+  border-radius: 0.7rem;
   padding: 0.5rem 1rem;
   position: relative;
 
@@ -176,7 +180,7 @@ export const TeamConatiner = styled.div`
     margin: 0;
     padding: 1rem;
     border: 0;
-    box-shadow: 1px 1px 5px #333;
+    box-shadow: 1px 3px 20px #2b7be44d;
     position: relative;
     background-color: #fff;
     right: 7.7rem;
@@ -214,16 +218,18 @@ export const TeamDescription = styled.div`
   flex-grow: 1;
 `;
 
-export const TeamTitle = styled.div`
+export const TeamTitle = styled.div.attrs({
+  classNAme: C_GRAY_DARK,
+})`
   font-size: 1rem;
   margin: 0.5rem 0;
-  color: #2b2727;
 `;
 
-export const TeamExcerpt = styled.div`
+export const TeamExcerpt = styled.div.attrs({
+  className: C_GRAY,
+})`
   font-size: 0.8rem;
   margin: 0.5rem 0;
-  color: #707070;
 `;
 
 export const TeamFooterConatiner = styled.div`
@@ -240,7 +246,6 @@ export const TeamAvatarsWrapper = styled.div`
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  //TODO: fix it
   left: 0;
 `;
 
@@ -251,9 +256,10 @@ export const ExtraUserItem = styled.div`
   margin: 0 0 0.5rem 0;
 `;
 
-export const ExtraUserTitle = styled.span`
+export const ExtraUserTitle = styled.span.attrs({
+  className: C_GRAY,
+})`
   margin: 0 0.5rem;
-  color: #707070;
 `;
 
 export const TeamTrashWrapper = styled.div.attrs((props) => ({
@@ -287,6 +293,11 @@ export const WelcomeSide = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+export const WorkspaceImageWrapper = styled.div`
+  width: 16rem;
+  margin-top: 3rem;
+  aspect-ratio: 1;
 `;
 
 export const WelcomeMSGContainer = styled.div`

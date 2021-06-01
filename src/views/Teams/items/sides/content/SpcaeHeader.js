@@ -5,9 +5,12 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
+import useHover from 'hooks/useHover';
 
 const SpcaeHeader = ({ space }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
+  const [settingRef, isSettingHovered] = useHover();
+  const [trashRef, isTrashHovered] = useHover();
 
   const onTrashClick = () => {
     setIsConfirmShown(true);
@@ -45,10 +48,12 @@ const SpcaeHeader = ({ space }) => {
       </Styled.SpaceHeaderTitle>
       {space.role === 'admin' && (
         <Styled.SpaceHeaderActions>
-          <Styled.TrashIconWrapper>
+          <Styled.TrashIconWrapper ref={trashRef} isHovered={isTrashHovered}>
             <TrashIcon size={12} onClick={onTrashClick} />
           </Styled.TrashIconWrapper>
-          <Styled.SettingIconWrapper>
+          <Styled.SettingIconWrapper
+            ref={settingRef}
+            isHovered={isSettingHovered}>
             <SettingIcon size={16} onClick={handleSpaceSetting} />
           </Styled.SettingIconWrapper>
         </Styled.SpaceHeaderActions>

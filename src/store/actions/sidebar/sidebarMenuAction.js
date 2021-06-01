@@ -82,7 +82,7 @@ const provideDnDTree = (data) => {
  * @description A function (action) that gets sidebar menu item from server.
  * @returns -Dispatch to redux store.
  */
-export const getSidebarNodes = () => async (dispatch, getState) => {
+export const getSidebarNodes = (done, error) => async (dispatch, getState) => {
   try {
     getNodesAPI.fetch(
       {
@@ -95,13 +95,16 @@ export const getSidebarNodes = () => async (dispatch, getState) => {
       (response) => {
         if (response.NodeTypes || response.Tree) {
           console.log(response);
-
+          done && done();
           dispatch(setSidebarNodeTypes(filterHiddenNodes(response.NodeTypes)));
           dispatch(setSidebarTree(response.Tree));
           dispatch(setSidebarDnDTree(provideDnDTree(response)));
         }
       },
-      (error) => console.log({ error })
+      (error) => {
+        console.log({ error });
+        error && error();
+      }
     );
   } catch (err) {
     console.log({ err });

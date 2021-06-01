@@ -22,6 +22,9 @@ export const ApplicationsSlice = createSlice({
       const newApplications = state.applications.push(action.payload);
       state.applications = newApplications;
     },
+    clearApplications: (state, action) => {
+      state.applications = [];
+    },
   },
 });
 
