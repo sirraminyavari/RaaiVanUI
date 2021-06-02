@@ -59,7 +59,8 @@ const NumericType = (props) => {
     const id = ElementID;
     const floatFrom = !!from ? +from : null;
     const floatTo = !!to ? +to : null;
-    const jsonValue = from || to ? { floatFrom, floatTo } : null;
+    const jsonValue =
+      from || to ? { FloatFrom: floatFrom, FloatTo: floatTo } : null;
 
     //! Send back value to parent.
     onChange({
