@@ -46,6 +46,10 @@ import FormEdit from 'components/FormElements/FormEdit/FormEdit';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 // import filters from './filtersObject';
 
+//! DnDGrid
+import DnDGrid from './items/DnDGrid';
+import list from './items/gridData';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -85,34 +89,34 @@ const RasoulView = () => {
   const GetFormAPI = new APIHandler('FGAPI', 'GetOwnerForm');
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
-  useEffect(() => {
-    GetFormAPI.fetch(
-      { OwnerID: '546b88b9-676b-4eea-b6fb-7eca3b24b404' },
-      (result) => {
-        console.log(result);
-        const formId = result.FormID;
-        const formTitle = decodeBase64(result.Title);
-        setForm({ formId, formTitle });
-        GetFormElementsAPI.fetch(
-          {
-            FormID: formId,
-            OwnerID: '546b88b9-676b-4eea-b6fb-7eca3b24b404',
-            ConsiderElementLimits: true,
-          },
-          (response) => {
-            // const groupingElements = response.Elements.filter((el) => {
-            //   return ['Select', 'Binary'].some((item) => item === el.Type);
-            // });
-            const filters = response.Elements;
-            setFilters(filters);
-            console.log(filters);
-          },
-          (error) => console.log(error)
-        );
-      },
-      (error) => console.log(error)
-    );
-  }, []);
+  // useEffect(() => {
+  //   GetFormAPI.fetch(
+  //     { OwnerID: '546b88b9-676b-4eea-b6fb-7eca3b24b404' },
+  //     (result) => {
+  //       console.log(result);
+  //       const formId = result.FormID;
+  //       const formTitle = decodeBase64(result.Title);
+  //       setForm({ formId, formTitle });
+  //       GetFormElementsAPI.fetch(
+  //         {
+  //           FormID: formId,
+  //           OwnerID: '546b88b9-676b-4eea-b6fb-7eca3b24b404',
+  //           ConsiderElementLimits: true,
+  //         },
+  //         (response) => {
+  //           // const groupingElements = response.Elements.filter((el) => {
+  //           //   return ['Select', 'Binary'].some((item) => item === el.Type);
+  //           // });
+  //           const filters = response.Elements;
+  //           setFilters(filters);
+  //           console.log(filters);
+  //         },
+  //         (error) => console.log(error)
+  //       );
+  //     },
+  //     (error) => console.log(error)
+  //   );
+  // }, []);
 
   const PADDING_PER_LEVEL = 32;
 
@@ -253,7 +257,7 @@ const RasoulView = () => {
         }}
       </FormEdit> */}
 
-      <Divider title="FormFilter Component" />
+      {/* <Divider title="FormFilter Component" />
       <div style={{ width: '40%', margin: 'auto' }}>
         {!!filters.length && (
           <FormFilter
@@ -262,7 +266,12 @@ const RasoulView = () => {
             onFilter={(v) => console.log(v)}
           />
         )}
+      </div> */}
+      <Divider title="DnDGrid Component" />
+      <div>
+        <DnDGrid list={list} />
       </div>
+
       <Divider title="Custom Table Component" />
 
       <CustomTable
