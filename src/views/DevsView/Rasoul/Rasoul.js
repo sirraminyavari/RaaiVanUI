@@ -50,6 +50,8 @@ import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import DnDGrid from './items/DnDGrid';
 import list from './items/gridData';
 
+import DnDGridList from 'components/DnDGrid/DnDGrid';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -270,6 +272,10 @@ const RasoulView = () => {
       <Divider title="DnDGrid Component" />
       <div>
         <DnDGrid list={list} />
+      </div>
+
+      <div>
+        <DnDGridList />
       </div>
 
       <Divider title="Custom Table Component" />
