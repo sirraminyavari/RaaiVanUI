@@ -8,7 +8,7 @@ import {
   TC_WARM,
   C_GRAY,
   BG_GRAY_LIGHT,
-  TBO_DISTANT,
+  BO_DISTANT,
   C_GRAY_DARK,
   C_BLACK,
 } from 'constant/Colors';
@@ -183,7 +183,7 @@ export const EmptyAlert = styled.div`
 `;
 
 export const AlertItemContainer = styled.div.attrs({
-  className: TBO_DISTANT,
+  className: BO_DISTANT,
 })`
   width: 100%;
   height: 5rem;

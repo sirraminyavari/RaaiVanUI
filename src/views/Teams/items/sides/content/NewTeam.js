@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
 import * as Styled from '../../../Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import { useState } from 'react';
 import CreateModal from './CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
-import { useMediaQuery } from 'react-responsive';
 
 const NewTeam = () => {
   const [isModalShown, setIsModalShown] = useState(false);
@@ -14,20 +14,23 @@ const NewTeam = () => {
     query: '(max-width: 970px)',
   });
 
+  //! Show add new team modal.
   const handleAddTeam = () => {
     setIsModalShown(true);
   };
 
+  //! Close modal and cancel add team proccess.
   const handleCancelCreate = () => {
     setIsModalShown(false);
     setTeamName(null);
   };
 
   const handleInputChange = (e) => {
-    const spaceName = e.target.value;
-    setTeamName(spaceName);
+    const inputValue = e.target.value;
+    setTeamName(inputValue);
   };
 
+  //! Add team and call api.
   const handleTeamCreate = () => {
     if (!!teamName) {
       dispatch(createApplication(teamName, console.log));
@@ -50,7 +53,7 @@ const NewTeam = () => {
         modalWidth="40%"
       />
       <Styled.NewTeamWrapper>
-        <PlusIcon size={40} color="#BAC9DC" />
+        <PlusIcon size={40} />
         <Styled.NewTeamLabel>
           <span>ایجاد تیم جدید</span>
         </Styled.NewTeamLabel>

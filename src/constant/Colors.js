@@ -12,6 +12,18 @@ export const LIGHT_BLUE = '#BAC9DC';
 /**
  * @description Color
  * @mode Independent
+ * @color (#eef0f5)
+ */
+export const C_FREEZED = 'rv-freezed';
+/**
+ * @description Color
+ * @mode Independent
+ * @color (#bac9dc)
+ */
+export const C_DISTANT = 'rv-distant';
+/**
+ * @description Color
+ * @mode Independent
  * @color (#ffffff)
  */
 export const C_WHITE = 'rv-white';
@@ -80,6 +92,12 @@ export const TC_DEFAULT = 'rv-default';
 /**
  * @description Color
  * @mode Theme
+ * @color (#2b7be433)
+ */
+export const TC_VERY_TRANSPARENT = 'rv-verytransparent';
+/**
+ * @description Color
+ * @mode Theme
  * @color (#d4841b)
  */
 export const TC_REVERSE = 'rv-reverse';
@@ -89,6 +107,12 @@ export const TC_REVERSE = 'rv-reverse';
  * @color (#dfe9f5)
  */
 export const TC_SOFT = 'rv-soft';
+/**
+ * @description Color
+ * @mode Theme
+ * @color (#f3f7fd)
+ */
+export const TC_VERY_SOFT = 'rv-verysoft';
 /**
  * @description Color
  * @mode Theme
@@ -110,9 +134,9 @@ export const TC_VERYWARM = 'rv-verywarm';
 /**
  * @description Color
  * @mode Theme
- * @color (#bac9dc)
+ * @color (#2b388f33)
  */
-export const TC_DISTANT = 'rv-distant';
+export const TC_VERY_TRANSPARENT_WARM = 'rv-verytransparentwarm';
 
 //* #################################
 //* ######### End of color classes #########
@@ -123,6 +147,18 @@ export const TC_DISTANT = 'rv-distant';
 //! #################################
 
 //! Independent
+/**
+ * @description Background color
+ * @mode Independent
+ * @color (#bac9dc)
+ */
+export const BG_DISTANT = 'rv-bg-color-distant';
+/**
+ * @description Background color
+ * @mode Independent
+ * @color (#eef0f5)
+ */
+export const BG_FREEZED = 'rv-bg-color-freezed';
 /**
  * @description Background color
  * @mode Independent
@@ -192,6 +228,12 @@ export const BG_RED_WARM = 'rv-bg-color-warm-red';
  */
 export const TBG_DEFAULT = 'rv-bg-color-default';
 /**
+ * @description Color
+ * @mode Theme
+ * @color (#2b7be433)
+ */
+export const TBG_VERY_TRANSPARENT = 'rv-bg-color-verytransparent';
+/**
  * @description Background color
  * @mode Theme
  * @color (#d4841b)
@@ -203,6 +245,12 @@ export const TBG_REVERSE = 'rv-bg-color-reverse';
  * @color (#dfe9f5)
  */
 export const TBG_SOFT = 'rv-bg-color-soft';
+/**
+ * @description Background color
+ * @mode Theme
+ * @color (#f3f7fd)
+ */
+export const TBG_VERY_SOFT = 'rv-bg-color-verysoft';
 /**
  * @description Background color
  * @mode Theme
@@ -222,11 +270,11 @@ export const TBG_WARM = 'rv-bg-color-warm';
  */
 export const TBG_VERYWARM = 'rv-bg-color-verywarm';
 /**
- * @description Background color
+ * @description Color
  * @mode Theme
- * @color  (#bac9dc)
+ * @color (#2b388f33)
  */
-export const TBG_DISTANT = 'rv-bg-color-distant';
+export const TBG_VERY_TRANSPARENT_WARM = 'rv-bg-color-verytransparentwarm';
 
 //! #################################
 //! ####### End of background classes #######
@@ -237,6 +285,18 @@ export const TBG_DISTANT = 'rv-bg-color-distant';
 //? #################################
 
 //! Independent
+/**
+ * @description Border color
+ * @mode Independent
+ * @color (#bac9dc)
+ */
+export const BO_DISTANT = 'rv-border-distant';
+/**
+ * @description Border color
+ * @mode Independent
+ * @color (#eef0f5)
+ */
+export const BO_FREEZED = 'rv-border-freezed';
 /**
  * @description Border color
  * @mode Independent
@@ -308,6 +368,12 @@ export const TBO_DEFAULT = 'rv-border-default';
 /**
  * @description Border color
  * @mode Theme
+ * @color (#2b7be433)
+ */
+export const TBO_VERY_TRANSPARENT = 'rv-border-verytransparent';
+/**
+ * @description Border color
+ * @mode Theme
  * @color (#d4841b)
  */
 export const TBO_REVERSE = 'rv-border-reverse';
@@ -317,6 +383,12 @@ export const TBO_REVERSE = 'rv-border-reverse';
  * @color (#dfe9f5)
  */
 export const TBO_SOFT = 'rv-border-soft';
+/**
+ * @description Border color
+ * @mode Theme
+ * @color (#f3f7fd)
+ */
+export const TBO_VERY_SOFT = 'rv-border-verysoft';
 /**
  * @description Border color
  * @mode Theme
@@ -338,9 +410,9 @@ export const TBO_VERYWARM = 'rv-border-verywarm';
 /**
  * @description Border color
  * @mode Theme
- * @color (#bac9dc)
+ * @color (#2b388f33)
  */
-export const TBO_DISTANT = 'rv-border-distant';
+export const TBO_VERY_TRANSPARENT_WARM = 'rv-border-verytransparentwarm';
 
 //? #################################
 //? ######## End of border classes #########

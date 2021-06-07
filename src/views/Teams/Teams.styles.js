@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 import {
-  TC_DISTANT,
+  C_DISTANT,
   TC_DEFAULT,
-  TBO_DISTANT,
+  BO_DISTANT,
   BO_WHITE,
   C_GRAY,
   C_RED,
@@ -129,21 +129,18 @@ const IconWrapperCss = css`
 `;
 
 export const TrashIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? C_RED : TC_DISTANT,
+  className: props.isHovered ? C_RED : C_DISTANT,
 }))`
   ${IconWrapperCss}
 `;
 
 export const SettingIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? TC_DEFAULT : TC_DISTANT,
+  className: props.isHovered ? TC_DEFAULT : C_DISTANT,
 }))`
   ${IconWrapperCss}
 `;
 
 export const TeamListConatiner = styled.div`
-  // display: grid;
-  // grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  // gap: 0.5rem;
   white-space: wrap;
   &:after {
     content: '';
@@ -281,14 +278,16 @@ export const ExtraUserTitle = styled.span.attrs({
 `;
 
 export const TeamTrashWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? C_RED : TC_DISTANT,
+  className: props.isHovered ? C_RED : C_DISTANT,
 }))`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-export const NewTeamWrapper = styled.div`
+export const NewTeamWrapper = styled.div.attrs({
+  className: C_DISTANT,
+})`
   width: 100%;
   height: 100%;
   display: flex;
@@ -298,7 +297,7 @@ export const NewTeamWrapper = styled.div`
 `;
 
 export const NewTeamLabel = styled.div.attrs({
-  className: TC_DISTANT,
+  className: C_DISTANT,
 })`
   margin: 1rem 0 0 0;
 `;
@@ -330,7 +329,7 @@ export const SocialMediaContainer = styled.div`
 `;
 
 export const IconWrapper = styled.div.attrs((props) => ({
-  className: `${TC_DISTANT} ${props.isHovered ? TBO_DISTANT : BO_WHITE}`,
+  className: `${C_DISTANT} ${props.isHovered ? BO_DISTANT : BO_WHITE}`,
 }))`
   margin: 0 0.5rem;
   display: flex;

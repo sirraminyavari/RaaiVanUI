@@ -6,16 +6,21 @@ import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import useHover from 'hooks/useHover';
+import useWindow from 'hooks/useWindowContext';
+import { TC_DEFAULT } from 'constant/Colors';
 
 const SpcaeHeader = ({ space }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [settingRef, isSettingHovered] = useHover();
   const [trashRef, isTrashHovered] = useHover();
+  const { RVDic } = useWindow();
 
+  //! Show space delete confirmation.
   const onTrashClick = () => {
     setIsConfirmShown(true);
   };
 
+  //! Cancel space deletion.
   const handleCancelDelete = () => {
     setIsConfirmShown(false);
   };
@@ -33,7 +38,7 @@ const SpcaeHeader = ({ space }) => {
         onClose={handleCancelDelete}
         onConfirm={handleSpaceDelete}
         confirmText="حذف دایمی"
-        cancelText="بازگشت">
+        cancelText={RVDic.Return}>
         <DeleteConfirmMSG
           title={space.title}
           icon={SpaceIcon}
@@ -43,7 +48,7 @@ const SpcaeHeader = ({ space }) => {
         />
       </DeleteConfirm>
       <Styled.SpaceHeaderTitle>
-        <SpaceIcon color="#2B7BE4" />
+        <SpaceIcon className={TC_DEFAULT} />
         <span style={{ margin: '1rem' }}>{space.title}</span>
       </Styled.SpaceHeaderTitle>
       {space.role === 'admin' && (
