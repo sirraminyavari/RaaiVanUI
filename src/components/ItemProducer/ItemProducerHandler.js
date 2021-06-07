@@ -20,6 +20,7 @@ import {
  * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
  * @param {[{}]} savedData - An array of items that saved in past.
+ * @param {number} resetMe - By changing the value, items will reset.
  */
 const ItemProducerHandler = ({
   autoSuggestItem,
@@ -27,6 +28,7 @@ const ItemProducerHandler = ({
   onItems,
   isDragDisabled,
   savedData,
+  resetMe,
 }) => {
   // Defines the index of item should be removed (is usefull for disappearing animation ).
   const [removeIndex, setRemoveIndex] = useState(-1);
@@ -34,6 +36,8 @@ const ItemProducerHandler = ({
   const [newIndex, setNewIndex] = useState(-1);
   // array of produced items
   const [items, setItems] = useState(savedData?.length > 0 ? savedData : []);
+  // if True, animation of resetting the list will be shown.
+  const [resetDone, setResetDone] = useState(false);
 
   // when the component will mount, if passed 'type'='text' produces an empty item.
   useEffect(() => {
@@ -46,6 +50,17 @@ const ItemProducerHandler = ({
       ]);
     }
   }, []);
+  // Listens to 'resetMe' value. by it changes, makes 'resetDone' true for 500ms.
+  useEffect(() => {
+    if (resetMe !== 0) {
+      setResetDone(true);
+      setTimeout(() => {
+        setResetDone(false);
+
+        setItems([]);
+      }, 500);
+    }
+  }, [resetMe]);
   //
   useEffect(() => {
     // Checks type of component and autoSuggestItem is not null
@@ -175,6 +190,15 @@ const ItemProducerHandler = ({
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}>
               {items.map((x, index) => {
+                console.log(
+                  index === removeIndex
+                    ? 'removeMe'
+                    : index === newIndex
+                    ? 'addMe'
+                    : resetMe && 'resetMe',
+                  resetMe,
+                  '<**********'
+                );
                 return (
                   <Draggable
                     isDragDisabled={isDragDisabled}
@@ -186,13 +210,16 @@ const ItemProducerHandler = ({
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         isDragging={snapshot.isDragging}
+                        items={items}
                         // By checking the condition of the list that is increasing or decreasing,
                         // and checking the index of the item that is removed or added
                         // decides to passes 'addMe' or 'removeMe' class to the 'Maintaner'
                         className={
                           index === removeIndex
                             ? 'removeMe'
-                            : index === newIndex && 'addMe'
+                            : index === newIndex
+                            ? 'addMe'
+                            : resetDone && 'resetMe'
                         }
                         ref={provided.innerRef}>
                         {isDragDisabled && <DragIcon color={'grey'} />}

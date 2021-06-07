@@ -15,7 +15,7 @@ export const Container = styled.div`
   width: 100%;
   transition: max-width 0.5s;
 `;
-export const RightSide = styled.div`
+export const IconContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 7.5rem;

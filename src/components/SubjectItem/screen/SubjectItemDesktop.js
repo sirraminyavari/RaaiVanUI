@@ -13,7 +13,7 @@ import SubjectStatus from '../items/SubjectStatus';
 import SubjectTitle from '../items/SubjectTitle';
 import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
-import { Container, Divider, RightSide, Root } from './SubjectItem.style';
+import { Container, Divider, IconContent, Root } from './SubjectItem.style';
 
 /**
  *
@@ -25,7 +25,7 @@ import { Container, Divider, RightSide, Root } from './SubjectItem.style';
 
 const { RV_RTL } = window;
 
-const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
+const SubjectItemDesktop = ({ item, selectMode, onChecked, onClick }) => {
   const {
     Name,
     IconURL,
@@ -38,10 +38,10 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
-  /**
-   * By clicking on the item will fire.
-   */
-  const onClick = () => {};
+  // /**
+  //  * By clicking on the item will fire.
+  //  */
+  // const onClick = () => {};
 
   return (
     <Root>
@@ -51,19 +51,19 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
       />
 
       <Container className="rv-border-distant" onClick={onClick}>
-        <RightSide>
+        <IconContent>
           <SubjectIcon iconUrl={IconURL} />
           <SubjectDate date={CreationDate} />
-        </RightSide>
+        </IconContent>
         <Divider className="rv-bg-color-distant" />
-        <LeftSide>
+        <MainContent>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />
 
             {isSaas && (
               <Details>
                 <SubjectClassName className={decode(NodeType)} />
-                <SubjectViewCount count={UserStatus.VisitsCount} />
+                {!isSaas && <SubjectViewCount count={UserStatus.VisitsCount} />}
 
                 <div
                   style={{
@@ -85,11 +85,11 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
             </>
           )}
           <SubjectCreator
-            userProfile={Creator.ProfileImageURL}
+            userProfile={Creator?.ProfileImageURL}
             firstName={decode(Creator.FirstName)}
             lastName={decode(Creator.LastName)}
           />
-        </LeftSide>
+        </MainContent>
       </Container>
     </Root>
   );
@@ -97,7 +97,7 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked }) => {
 
 export default SubjectItemDesktop;
 
-const LeftSide = styled.div`
+const MainContent = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: row;
@@ -111,7 +111,6 @@ const Main = styled.div`
   height: 100%;
   justify-content: space-evenly;
   margin: ${() => (RV_RTL ? '0 1.75rem 0 0' : '0 0 0 1.75rem')};
-  max-width: 70%;
 `;
 
 const Details = styled.div`
