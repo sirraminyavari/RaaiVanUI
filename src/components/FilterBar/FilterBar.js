@@ -1,26 +1,20 @@
-import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
-import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
+/**
+ * A component for applying the simple search tools.
+ */
+import APIHandler from 'apiHelper/APIHandler';
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
+import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
-import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import EmptyCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
 import Filter from 'components/Icons/FilterIcon/Filter';
+import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
-import SearchIcon from 'components/Icons/SearchIcon/Search';
-import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Input from 'components/Inputs/Input';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineSearch } from 'react-icons/ai';
-import { ShadowButton, BottomRow, Container, TopRow } from './FilterBar.style';
-import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
-import EditIcon from 'components/Icons/EditIcon/Edit';
-import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
-import AddIcon from 'components/Icons/AddIcon/AddIcon';
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import APIHandler from 'apiHelper/APIHandler';
-import { decode } from 'js-base64';
+import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 
 const data = [
   {
@@ -44,6 +38,22 @@ const checkNodeCreationAccess = new APIHandler(
 const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 const formElements = new APIHandler('FGAPI', 'GetFormElements');
 
+const defaultDropDownLabel = {
+  icon: <AddIcon color={'white'} />,
+  label: 'سند مارکتینگ جدید',
+  value: 'b',
+  color: 'white',
+};
+/**
+ *
+ * @callback onSearch - By typing some thing in the search input will fire.
+ * @callback onByDate - By picking some date will fire.
+ * @param {Boolean} - If True, AdvancedSearch button will be in the clicked mode.
+ * @callback - By clicking the AdvancedSearch button will fire.
+ * @param {String} - Id for nodeType.
+ * @callback onFormElements - By fetching it,Passes formElement to up
+ * @returns
+ */
 const FilterBar = ({
   onSearch,
   onByStatus,
@@ -52,78 +62,128 @@ const FilterBar = ({
   onByBookmarked,
   advancedSearch,
   onAdvanecedSearch,
-  NodeId,
+  nodeTypeId,
+  onFormElements,
 }) => {
+  // Typed value in search input.
   const [searchText, setSearchText] = useState('');
+  // if True, filters Bookmarked nodes(under develop)
   const [bookmarked, setBookmarked] = useState(false);
+  // if True, filters nodes created by specific people(under develop)
   const [people, setPeople] = useState(false);
+  // if has value, filters node that is in the period of the selected date.
   const [date, setDate] = useState(null);
-  const [creationData, setCreationData] = useState([]);
+  // Creating dropdown content.
+  const [market, setMarket] = useState(null);
+  // if True, side bar filter will appear.
   const [advancedButton, setAdvancedButton] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({
-    icon: <AddIcon color={'white'} />,
-    label: 'سند مارکتینگ جدید',
-    value: 'b',
-    color: 'white',
-  });
-  const getCreationAcces = () =>
-    checkNodeCreationAccess.fetch({ NodeTypeID: NodeId }, (dt) => {
+  // selected item for creating type.
+  const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
+
+  // By mounting component at the first time, fetches creation access.
+  useEffect(() => {
+    getCreationAccess();
+  }, []);
+  /**
+   * Gets user access for creating document.
+   * @returns
+   */
+  const getCreationAccess = () =>
+    checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
+      const newMarketingHistoryRaw = localStorage.getItem(nodeTypeId);
+      const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
+      // Checks if the user has selection history set it for default.
+      // By clicking the dropdown label.
+      // selected item in past will fire.
+      if (newMarketingHistory) {
+        const findLastChoose = data.find(
+          (x) => x.value === newMarketingHistory
+        );
+        if (findLastChoose) {
+          setSelectedItem({
+            ...selectedItem,
+            icon: React.cloneElement(findLastChoose?.icon, { color: 'white' }),
+            value: findLastChoose.value,
+          });
+        }
+      }
+      // If the user has access can choose between two items.
       if (dt.Result) {
-        console.log('creation access', dt);
-        setCreationData(data);
+        // setCreationData(data);
+        setMarket(data);
       } else {
-        setCreationData([data[1]]);
+        setMarket([data[0]]);
       }
       getOwnerForm();
     });
+
+  // Fetchs formElements according to formId that obtained from 'getOwnerForm' and 'nodeTypeId' passed to component
+  const getFormElements = (formId) => {
+    formElements.fetch(
+      {
+        FormID: formId,
+        OwnerID: nodeTypeId,
+        ConsiderElementLimits: true,
+      },
+      (result) => {
+        let groupingElements = ((result || {}).Elements || []).filter((e) =>
+          ['Select', 'Binary'].some((i) => i == e.Type)
+        );
+        let filters = (result || {}).Elements || [];
+        onFormElements(filters);
+      }
+    );
+  };
+  // Fetches formElements according to passed 'nodeTypeId'
   const getOwnerForm = () => {
-    ownerForm.fetch({ OwnerID: NodeId }, (result) => {
+    ownerForm.fetch({ OwnerID: nodeTypeId }, (result) => {
       let formId = (result || {}).FormID;
       // let formTitle = decode((result || {}).Title);
-      console.log('formId', result);
 
       if (formId) {
         //form filters is enabled
         setAdvancedButton(true);
+        getFormElements(formId);
       }
     });
   };
 
-  useEffect(() => {
-    getCreationAcces();
-  }, []);
-
+  // By clicking on the dropdown items will fire.
   const onSelectItem = (item) => {
-    setSelectedItem(item);
+    localStorage.setItem(nodeTypeId, JSON.stringify(item.value));
+    setSelectedItem({
+      icon: React.cloneElement(item.icon, { color: 'white' }),
+      label: item.label,
+      value: item.value,
+      color: 'white',
+    });
   };
+  // By typing in the search input will fire
   const onTextSearch = (e) => {
     setSearchText(e.target.value);
   };
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     onSearch(searchText);
-  //     console.log(searchText, 'called after 1s');
-  //   }, [1000]);
-  // }, [searchText]);
 
   return (
     <Container>
       <TopRow>
-        <AnimatedDropDownList
-          data={data}
-          onSelectItem={onSelectItem}
-          defaultValue={selectedItem}
-          hiddenSelectedItem={false}
-          customStyle={{
-            button: { backgroundColor: '#2B388F' },
-            label: {
-              backgroundColor: '#2B7BE4',
-              borderTopRightRadius: '0.5rem',
-              borderBottomRightRadius: '0.5rem',
-            },
-            arrowIconColor: 'white',
-          }}
-        />
+        {market?.length > 0 && (
+          <AnimatedDropDownList
+            data={market}
+            onSelectItem={onSelectItem}
+            defaultValue={selectedItem}
+            hiddenSelectedItem={false}
+            onClickLabel={() => console.log('label clicked!')}
+            customStyle={{
+              button: { backgroundColor: '#2B388F' },
+              label: {
+                backgroundColor: '#2B7BE4',
+                borderTopRightRadius: '0.5rem',
+                borderBottomRightRadius: '0.5rem',
+              },
+              arrowIconColor: 'white',
+            }}
+          />
+        )}
       </TopRow>
       <BottomRow>
         <Input
@@ -133,7 +193,7 @@ const FilterBar = ({
           placeholder={
             'جستجو در اسناد مارکتینگ (عنوان ، کد رهگیری ، کلمات کلیدی)'
           }
-          style={{ width: '27rem', marginRight: '3rem' }}
+          style={{ width: '60%', marginRight: '3rem' }}
         />
 
         <ShadowButton

@@ -3,21 +3,14 @@
  */
 import React from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import AdvanceSearchDesktop from './AdvanceSearchDesktop';
+import AdvanceSearchDesktop from './AdvancedSearchDesktop';
 import AdvanceSearchMobile from './AdvanceSearchMobile';
 
 /**
  * According to screen dimension returns the suitable component.
- * @param {any} -  the all component props
- * @returns
+ * @param {any} -  the all component props.
  */
 const AdvanceSearch = ({ ...props }) => {
-  console.log(
-    DimensionHelper().isTabletOrMobile,
-    'desktop is loading ****',
-    props
-  );
-
   return (
     <>
       {/* If True, will render MobileView component */}

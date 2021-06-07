@@ -10,7 +10,7 @@ const SubjectCreator = ({ firstName, lastName, userProfile }) => {
   return (
     <Container>
       <Profile src={userProfile} isSaas={isSaas} />
-      {isSaas && (
+      {!isSaas && (
         <ProducerName className="rv-gray">
           {firstName}
           {lastName}

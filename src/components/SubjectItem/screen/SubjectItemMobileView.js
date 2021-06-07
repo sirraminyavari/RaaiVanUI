@@ -14,7 +14,7 @@ import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 
-import { Container, RightSide, Divider, Root } from './SubjectItem.style';
+import { Container, IconContent, Divider, Root } from './SubjectItem.style';
 const { RV_RTL } = window;
 
 /**
@@ -24,7 +24,7 @@ const { RV_RTL } = window;
  * @callback onChecked -  By changing the checkbox state,
    checkbox state and the selected item will pass to up.
  */
-const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
+const SubjectItemMobileView = ({ item, selectMode, onChecked, onClick }) => {
   const {
     Name,
     IconURL,
@@ -36,10 +36,10 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
   } = item;
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
-  /**
-   * By clicking on the item will fire.
-   */
-  const onClick = () => {};
+  // /**
+  //  * By clicking on the item will fire.
+  //  */
+  // const onClick = () => {};
 
   return (
     <Root>
@@ -48,7 +48,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
         onChecked={(value) => onChecked(value, item)}
       />
       <Container className="rv-border-distant" onClick={onClick}>
-        <RightSide>
+        <IconContent>
           <div>
             <SubjectIcon iconUrl={IconURL} />
             <SubjectClassName className={decode(NodeType)} />
@@ -57,15 +57,15 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
             <SubjectViewCount count={UserStatus.VisitsCount} />
             <SubjectDate date={CreationDate} />
           </div>
-        </RightSide>
+        </IconContent>
         <Divider className="rv-bg-color-distant" />
-        <LeftSide>
+        <MainContent>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />
           </Main>
           <Maintainer>
             <SubjectCreator
-              userProfile={Creator.ProfileImageURL}
+              userProfile={Creator?.ProfileImageURL}
               firstName={decode(Creator.FirstName)}
               lastName={decode(Creator.LastName)}
             />
@@ -77,7 +77,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
             )}
           </Maintainer>
           {/* {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />} */}
-        </LeftSide>
+        </MainContent>
       </Container>
     </Root>
   );
@@ -85,7 +85,7 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked }) => {
 
 export default SubjectItemMobileView;
 
-const LeftSide = styled.div`
+const MainContent = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
