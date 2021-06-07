@@ -93,7 +93,6 @@ const NodeList = ({ searchText, dateFilter, nodeTypeId, formFilters }) => {
         }}
         renderItem={(x, index) => (
           <>
-            {console.log(x, 'X X X ')}
             {x.Creator && (
               <SubjectItem
                 key={index}
