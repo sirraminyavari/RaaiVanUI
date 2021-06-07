@@ -141,19 +141,34 @@ export const SettingIconWrapper = styled.div.attrs((props) => ({
 `;
 
 export const TeamListConatiner = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 0.5rem;
+  // display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  // gap: 0.5rem;
+  white-space: wrap;
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
 `;
 
 export const TeamConatiner = styled.div`
-  width: 100%;
-  height: 12rem;
+  width: calc(100% / ${({ isMobile }) => (isMobile ? 1 : 2)} - 0.15rem);
+  height: 11.5rem;
   border: ${({ isNew }) =>
     !!isNew ? '2px dashed #bac9dc;' : '1px solid #bac9dc;'}
   border-radius: 0.7rem;
   padding: 0.5rem 1rem;
   position: relative;
+  float: left;
+  background-color: #fff;
+  margin-bottom: 0.3rem;
+  :nth-child(2n+1){
+    margin-right: 0.15rem;
+  }
+  :nth-child(2n){
+    margin-left: 0.15rem;
+  }
 
   .team-extra-users {
     background-color: #E6F4F1;
@@ -205,6 +220,9 @@ export const DragIconWrapper = styled.div`
   position: absolute;
   top: 0.6rem;
   left: 0.2rem;
+  cursor: move; /* fallback: no url() support or images disabled */
+  cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
+    all-scroll !important;
 `;
 
 export const TeamContentWrapper = styled.div`

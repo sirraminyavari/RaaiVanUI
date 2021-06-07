@@ -47,12 +47,14 @@ import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 // import filters from './filtersObject';
 
 //! DnDGrid
-import DnDGrid from './items/DnDGrid';
-import list from './items/gridData';
+// import DnDGrid from './items/DnDGrid';
+// import list from './items/gridData';
 
-import DnDGridList from 'components/DnDGrid/DnDGrid';
+// import DnDGridList from 'components/DnDGrid/DnDGrid';
 
-import DnDMuuri from 'components/DnDMuuri/DnDMuuri';
+// import DnDMuuri from 'components/DnDMuuri/DnDMuuri';
+
+import DnDSortable from 'components/DnDSortable/SortableComponent';
 
 const headers = [
   { firstName: 'نام', dataType: 'string' },
@@ -272,12 +274,16 @@ const RasoulView = () => {
         )}
       </div> */}
       <Divider title="DnDGrid Component" />
-      <div>
+      {/* <div>
         <DnDGrid list={list} />
-      </div>
+      </div> */}
+
+      {/* <div>
+        <DnDGridList />
+      </div> */}
 
       <div>
-        <DnDGridList />
+        <DnDSortable />
       </div>
 
       {/* <DnDMuuri /> */}

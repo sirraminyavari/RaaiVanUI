@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { SortableHandle } from 'react-sortable-hoc';
 import * as Styled from '../../../Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
@@ -21,8 +22,15 @@ import {
 } from 'store/actions/applications/ApplicationsAction';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
+import { useMediaQuery } from 'react-responsive';
 
-const ActiveTeam = ({ team, dragHandle }) => {
+const Handle = SortableHandle(({ tabIndex }) => (
+  <Styled.DragIconWrapper tabIndex={tabIndex}>
+    <DragIcon />
+  </Styled.DragIconWrapper>
+));
+
+const ActiveTeam = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const {
@@ -38,6 +46,9 @@ const ActiveTeam = ({ team, dragHandle }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
   const [trashRef, isTrashHovered] = useHover();
+  const isMobileScreen = useMediaQuery({
+    query: '(max-width: 970px)',
+  });
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -108,6 +119,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
 
   return (
     <Styled.TeamConatiner
+      isMobile={isMobileScreen}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -123,9 +135,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
           question="آیا از حذف تیم اطمینان دارید؟"
         />
       </DeleteConfirm>
-      <Styled.DragIconWrapper {...dragHandle}>
-        <DragIcon />
-      </Styled.DragIconWrapper>
+      {hasHandle && <Handle />}
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>
@@ -173,7 +183,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
                     ?.filter((user, index) => index > 0 && user)
                     .map((user) => {
                       return (
-                        <Styled.ExtraUserItem>
+                        <Styled.ExtraUserItem key={user.UserID}>
                           <Avatar
                             color="#333"
                             userImage={user.ProfileImageURL}

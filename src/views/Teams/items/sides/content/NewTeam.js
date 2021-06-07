@@ -4,11 +4,15 @@ import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import { useState } from 'react';
 import CreateModal from './CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
+import { useMediaQuery } from 'react-responsive';
 
 const NewTeam = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [teamName, setTeamName] = useState(null);
   const dispatch = useDispatch();
+  const isMobileScreen = useMediaQuery({
+    query: '(max-width: 970px)',
+  });
 
   const handleAddTeam = () => {
     setIsModalShown(true);
@@ -34,6 +38,7 @@ const NewTeam = () => {
   return (
     <Styled.TeamConatiner
       isNew
+      isMobile={isMobileScreen}
       onClick={handleAddTeam}
       style={{ cursor: 'pointer' }}>
       <CreateModal
