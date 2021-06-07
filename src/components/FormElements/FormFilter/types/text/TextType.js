@@ -1,14 +1,14 @@
 /**
  * Renders a text filter.
  */
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import ExactFilter from '../../items/ExactToggle';
 import OrFilter from '../../items/OrAndSelect';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -29,8 +29,9 @@ const TextType = (props) => {
 
   const [items, setItems] = useState(!!value ? value.TextItems : []);
   const [exact, setExact] = useState(!!value ? value.Exact : false);
+  const [resetValue, setResetValue] = useState(null);
   const [or, setOr] = useState(!!value ? value.Or : true);
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic, GlobalUtilities } = useWindow();
 
   //! Options for 'OrAnd' select;
   const orOptions = [
@@ -79,6 +80,12 @@ const TextType = (props) => {
     });
   }, [items, exact, or]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setResetValue(GlobalUtilities.random());
+    }
+  }, [value]);
+
   return (
     <Styled.TextContainer>
       <Styled.TextTitle>{decodeBase64(Title)}</Styled.TextTitle>
@@ -87,6 +94,7 @@ const TextType = (props) => {
         onItems={handleOnItemSelect}
         style={{ width: '100%' }}
         savedData={items}
+        resetMe={resetValue}
       />
       <div
         style={{
