@@ -46,6 +46,16 @@ import FormEdit from 'components/FormElements/FormEdit/FormEdit';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 // import filters from './filtersObject';
 
+//! DnDGrid
+// import DnDGrid from './items/DnDGrid';
+// import list from './items/gridData';
+
+// import DnDGridList from 'components/DnDGrid/DnDGrid';
+
+// import DnDMuuri from 'components/DnDMuuri/DnDMuuri';
+
+import DnDSortable from 'components/DnDSortable/SortableComponent';
+
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -263,9 +273,24 @@ const RasoulView = () => {
           />
         )}
       </div>
+      <Divider title="DnDGrid Component" />
+      {/* <div>
+        <DnDGrid list={list} />
+      </div> */}
+
+      {/* <div>
+        <DnDGridList />
+      </div> */}
+
+      <div>
+        <DnDSortable />
+      </div>
+
+      {/* <DnDMuuri /> */}
+
       <Divider title="Custom Table Component" />
 
-      <CustomTable
+      {/* <CustomTable
         editable
         columns={columns}
         data={data}
@@ -282,9 +307,9 @@ const RasoulView = () => {
             alignItems: 'center',
           },
         })}
-      />
+      /> */}
       <Divider title="Custom Dropzone Component" />
-      <CustomDropzone
+      {/* <CustomDropzone
         accept={['image/*', '.pdf']}
         exceptions={['jpg']}
         maxFiles={3}
@@ -294,7 +319,7 @@ const RasoulView = () => {
         ownerId="40aa835f-751c-4786-86af-fec04f45d262"
         ownerType="Node"
         // disabled
-      />
+      /> */}
       <Divider title="Custom Progressbar Component" />
       <ProgressBar label="Label" progress={100} />
       {/* <Divider title="Custom Tree Component(broken dnd)" />

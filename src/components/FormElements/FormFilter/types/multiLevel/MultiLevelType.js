@@ -1,18 +1,18 @@
 /**
  * Renders a multi level filter.
  */
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
 import APIHandler from 'apiHelper/APIHandler';
 import * as Styled from '../types.styles';
 import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
-import { WindowContext } from 'context/WindowProvider';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import FormView from 'components/FormElements/FormView/FormView';
 import ExactFilter from '../../items/ExactToggle';
 import OrFilter from '../../items/OrAndSelect';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -35,7 +35,7 @@ const MultiLevelType = (props) => {
   const levels = Levels.map((level) => decodeBase64(level));
   const nodeType = { id: NodeType.ID, name: decodeBase64(NodeType.Name) };
   const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
 
   const [nodes, setNodes] = useState([]);
   const [isModalShown, setIsModalShown] = useState(false);

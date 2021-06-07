@@ -1,6 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { SortableHandle } from 'react-sortable-hoc';
+import { toast } from 'react-toastify';
+import { useMediaQuery } from 'react-responsive';
 import * as Styled from '../../../Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
@@ -8,10 +11,8 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
-import { WindowContext } from 'context/WindowProvider';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
-import { toast } from 'react-toastify';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import APIHandler from 'apiHelper/APIHandler';
 import useHover from 'hooks/useHover';
@@ -21,10 +22,26 @@ import {
 } from 'store/actions/applications/ApplicationsAction';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
+import useWindow from 'hooks/useWindowContext';
 
-const ActiveTeam = ({ team, dragHandle }) => {
+const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
+
+const SortHandle = SortableHandle(({ tabIndex }) => (
+  <Styled.DragIconWrapper tabIndex={tabIndex}>
+    <DragIcon />
+  </Styled.DragIconWrapper>
+));
+
+const ActiveTeam = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { RVGlobal, RVDic } = useWindow();
+  const [isConfirmShown, setIsConfirmShown] = useState(false);
+  const [trashRef, isTrashHovered] = useHover();
+  const isMobileScreen = useMediaQuery({
+    query: '(max-width: 970px)',
+  });
+
   const {
     Title: appTitle,
     Description: appDescription,
@@ -33,11 +50,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
     ApplicationID: appId,
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
-  const { RVGlobal, RVDic } = useContext(WindowContext);
   const { IsSystemAdmin } = RVGlobal;
-  const [isConfirmShown, setIsConfirmShown] = useState(false);
-  const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
-  const [trashRef, isTrashHovered] = useHover();
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -51,10 +64,12 @@ const ActiveTeam = ({ team, dragHandle }) => {
     }
   };
 
+  //! Undo team delete.
   const undoTeamDelete = (appId) => {
     dispatch(recycleApplication(appId, console.log));
   };
 
+  //! Toastify user on team delete.
   const onRemoveDone = (removedAppId) => {
     const deleteMSG = 'تیم حذف خواهد شد';
     UndoToast({
@@ -66,6 +81,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
     });
   };
 
+  //! Inform user on team remove error.
   const onRemoveError = (error) => {
     const toastOptions = {
       position: 'bottom-left',
@@ -79,15 +95,18 @@ const ActiveTeam = ({ team, dragHandle }) => {
     toast(RVDic.MSG[error] || error, toastOptions);
   };
 
+  //! Delete team with api on server.
   const handleTeamDelete = () => {
     dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
     setIsConfirmShown(false);
   };
 
+  //! Redirect user to home page on team select.
   const onGetNodes = () => {
     history.push('/home');
   };
 
+  //! Select a team.
   const handleTeamSelect = () => {
     try {
       selectTeamAPI.fetch(
@@ -108,6 +127,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
 
   return (
     <Styled.TeamConatiner
+      isMobile={isMobileScreen}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -117,15 +137,13 @@ const ActiveTeam = ({ team, dragHandle }) => {
         onClose={handleCancelDelete}
         onConfirm={handleTeamDelete}
         confirmText="حذف دایمی"
-        cancelText="بازگشت">
+        cancelText={RVDic.Return}>
         <DeleteConfirmMSG
           title={decodeBase64(appTitle)}
           question="آیا از حذف تیم اطمینان دارید؟"
         />
       </DeleteConfirm>
-      <Styled.DragIconWrapper {...dragHandle}>
-        <DragIcon />
-      </Styled.DragIconWrapper>
+      {hasHandle && <SortHandle />}
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>
@@ -173,7 +191,7 @@ const ActiveTeam = ({ team, dragHandle }) => {
                     ?.filter((user, index) => index > 0 && user)
                     .map((user) => {
                       return (
-                        <Styled.ExtraUserItem>
+                        <Styled.ExtraUserItem key={user.UserID}>
                           <Avatar
                             color="#333"
                             userImage={user.ProfileImageURL}

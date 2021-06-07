@@ -2,7 +2,7 @@
  * Renders menu item that may or may not have sub-menus(branches).
  */
 import { memo } from 'react';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { Link } from 'react-router-dom';
 import { mutateTree } from '@atlaskit/tree';
 import { createSelector } from 'reselect';

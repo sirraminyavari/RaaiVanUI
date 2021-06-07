@@ -1,12 +1,12 @@
 /**
  * Renders a list of searched items in sidebar.
  */
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from '../../../Sidebar.styles';
 import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const selectDnDTree = createSelector(
   (state) => state.sidebarItems,
@@ -21,8 +21,7 @@ const selectSearchText = createSelector(
 const SearchResultsList = () => {
   const dndTree = useSelector(selectDnDTree);
   const searchText = useSelector(selectSearchText);
-
-  const { GlobalUtilities } = useContext(WindowContext);
+  const { GlobalUtilities } = useWindow();
 
   const nodes = Object.values(dndTree.items).filter((node) => {
     if (!!node.isCategory) return false;

@@ -7,10 +7,12 @@ const Header = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [spaceName, setSpaceName] = useState(null);
 
+  //! Add new space.
   const handleAddSpace = () => {
     setIsModalShown(true);
   };
 
+  //! Cancel new space creation.
   const handleCancelCreate = () => {
     setIsModalShown(false);
     setSpaceName(null);
@@ -21,6 +23,7 @@ const Header = () => {
     setSpaceName(spaceName);
   };
 
+  //! Create new space .
   const handleSpaceCreate = () => {};
 
   return (

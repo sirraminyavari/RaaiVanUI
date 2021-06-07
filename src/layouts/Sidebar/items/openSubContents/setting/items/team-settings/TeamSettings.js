@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import * as Styled from '../../../../../Sidebar.styles';
-import { WindowContext } from 'context/WindowProvider';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
+import useWindow from 'hooks/useWindowContext';
 
 const selectConfigPanels = createSelector(
   (state) => state.sidebarItems,
@@ -16,7 +15,7 @@ const selectActivePath = createSelector(
 );
 
 const TeamSettings = () => {
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
   const panels = useSelector(selectConfigPanels);
   const activePath = useSelector(selectActivePath);
 

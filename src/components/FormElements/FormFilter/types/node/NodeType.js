@@ -8,6 +8,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
 import APIHandler from 'apiHelper/APIHandler';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -29,6 +30,8 @@ const NodeType = (props) => {
   const { MultiSelect, NodeTypes } = JSON.parse(decodeBase64(Info));
   const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
   const [items, setItems] = useState([]);
+  const [resetValue, setResetValue] = useState(null);
+  const { GlobalUtilities } = useWindow();
 
   //! Fetch nodes based on nodeTypes passed to component.
   const fetchNodes = (searchText) => {
@@ -78,6 +81,12 @@ const NodeType = (props) => {
     });
   }, [items]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setResetValue(GlobalUtilities.random());
+    }
+  }, [value]);
+
   return (
     <Styled.NodeContainer>
       <Styled.NodeTitleWrapper>
@@ -90,6 +99,7 @@ const NodeType = (props) => {
         isDragDisabled={true}
         onItems={handleSelectNodes}
         style={{ width: '100%' }}
+        resetMe={resetValue}
       />
     </Styled.NodeContainer>
   );
