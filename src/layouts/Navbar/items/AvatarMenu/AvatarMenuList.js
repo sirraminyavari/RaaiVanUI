@@ -1,21 +1,21 @@
 /**
  * Renders a popup menu for user avatar.
  */
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
+import Cookie from 'js-cookie';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
 import AvatarMenuItem from './AvatarMenuItem';
 import MenuLinkItems from './MenuLinkItems';
 import Checkbox from 'components/Checkbox/Checkbox';
-import Cookie from 'js-cookie';
 import * as Styled from '../../Navbar.styles';
 import { C_RED } from 'constant/Colors';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
 
   //! Logs user out from application.
   const handleLogout = () => {

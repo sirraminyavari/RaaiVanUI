@@ -1,8 +1,9 @@
 /**
  * A component that renders an icon alongside a popup menu in mobile screen.
  */
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import NavButtonsList from './buttonsList';
 import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
@@ -10,9 +11,7 @@ import * as Styled from '../Navbar.styles';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { BG_RED, C_WHITE, TC_WARM } from 'constant/Colors';
 import Badge from 'components/Badge/Badge';
-import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const selectNavAlerts = createSelector(
   (state) => state.navbarAlert,
@@ -21,7 +20,7 @@ const selectNavAlerts = createSelector(
 
 const NavMenus = () => {
   const alerts = useSelector(selectNavAlerts);
-  const { RV_Float } = useContext(WindowContext);
+  const { RV_Float } = useWindow();
 
   //! Make a flat list from a nested list.
   const flattenedButtons = NavButtonsList.reduce(

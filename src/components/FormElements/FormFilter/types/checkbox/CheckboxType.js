@@ -1,14 +1,14 @@
 /**
  * Renders a checkbox filter.
  */
-import { useCallback, useEffect, useState, useContext } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 import ExactFilter from '../../items/ExactToggle';
 import OrFilter from '../../items/OrAndSelect';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -27,7 +27,7 @@ const CheckboxType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
   const [items, setItems] = useState(value ? value.TextItems : []);
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);

@@ -1,12 +1,12 @@
 /**
  * Renders a numeric filter.
  */
-import { useContext, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Input from 'components/Inputs/Input';
 import * as Styled from '../types.styles';
-import { WindowContext } from 'context/WindowProvider';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -27,7 +27,7 @@ const NumericType = (props) => {
 
   const fromInputRef = useRef();
   const toInputRef = useRef();
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
   const [from, setFrom] = useState(!!value ? value.FloatFrom : null);
   const [to, setTo] = useState(!!value ? value.FloatTo : null);
 

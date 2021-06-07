@@ -1,18 +1,17 @@
 /**
  * Renders Settings or config panel links instead of regular menu in sidebar.
  */
-import { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import * as Styled from '../../../Sidebar.styles';
-import { WindowContext } from 'context/WindowProvider';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { themeSlice } from 'store/reducers/themeReducer';
 import SettingItems from './SettingItem';
 import TeamSettings from './items/team-settings/TeamSettings';
-import { createSelector } from 'reselect';
 import iconList from './iconList';
 import EditableTree from '../../sidebarTree/editable/E-Tree';
+import useWindow from 'hooks/useWindowContext';
 import {
   MAIN_CONTENT,
   SETTING_CONTENT,
@@ -29,7 +28,7 @@ const selectSidebarContent = createSelector(
 
 const SidebarSettingContent = () => {
   const dispatch = useDispatch();
-  const { RV_RevFloat, RVDic } = useContext(WindowContext);
+  const { RV_RevFloat, RVDic } = useWindow();
   const selectedContent = useSelector(selectSidebarContent);
   const { setSidebarContent } = themeSlice.actions;
 

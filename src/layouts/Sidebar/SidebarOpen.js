@@ -1,7 +1,7 @@
 /**
  * Renders open sidebar area for non-mobile screens.
  */
-import { lazy, Suspense, memo, useContext } from 'react';
+import { lazy, Suspense, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
@@ -11,7 +11,7 @@ import SidebarFooter from './items/footer/Footer';
 import Resizable from 'components/Resizable/Resizable';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
@@ -32,7 +32,7 @@ const OpenSidebar = () => {
   const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
   const sidebarContent = useSelector(selectSidebarContent);
   const sidebarOpenWidth = useSelector(selectOpenWidth);
-  const { RV_RTL } = useContext(WindowContext);
+  const { RV_RTL } = useWindow();
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

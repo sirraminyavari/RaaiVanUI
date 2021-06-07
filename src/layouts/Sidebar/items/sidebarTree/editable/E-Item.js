@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { createSelector } from 'reselect';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';

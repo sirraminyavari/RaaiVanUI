@@ -1,9 +1,9 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from '../types.styles';
-import { WindowContext } from 'context/WindowProvider';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -20,7 +20,7 @@ import { decodeBase64 } from 'helpers/helpers';
  */
 const DateType = (props) => {
   const { onChange, data, value } = props;
-  const { RVDic, RV_Lang } = useContext(WindowContext);
+  const { RVDic, RV_Lang } = useWindow();
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
 
