@@ -35,10 +35,12 @@ export const TopRow = styled.div`
   justify-content: center;
   align-self: flex-end;
   min-height: 10rem;
+  margin: 0 1rem 0 1rem;
 `;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 66rem;
+  width: 100%;
+  padding-left: 2rem;
 `;

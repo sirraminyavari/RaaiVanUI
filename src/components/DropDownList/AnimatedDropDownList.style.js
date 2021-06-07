@@ -31,19 +31,20 @@ const appear = keyframes`
 /**
  * Shakes the children components in Horizontal axis by changing the distance to right
  */
-const right = keyframes`
+// const right = keyframes`
 
-  0%   {right: -1%}
-  25%  {right: 1%}
-  50%  {right: -1%}
-  75%  {right: 1%}
-  100% {right: -1%}
-`;
+//   0%   {right: -1%}
+//   25%  {right: 1%}
+//   50%  {right: -1%}
+//   75%  {right: 1%}
+//   100% {right: -1%}
+// `;
 export const Container = styled.div`
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
+  min-width: 5rem;
 `;
 export const ItemList = styled.div`
   max-height: auto;
@@ -80,7 +81,7 @@ export const ListItem = styled.div`
 `;
 export const DropDownButton = styled.div`
   display: flex;
-  flex-direction: ${() => (RV_RTL ? 'row' : 'row-reverse')};
+  flex-direction: ${() => (RV_RTL ? 'row' : 'row')};
   justify-content: space-between;
   background: #f3f7fd 0% 0% no-repeat padding-box;
   border-radius: 0.5rem;
@@ -124,18 +125,18 @@ export const Error = styled.span`
   min-height: ${({ error }) => (error ? '0rem' : '0rem')};
   transition: max-height 1s, opacity 1s, min-height 1s;
 `;
-export const ShakeAnimate = styled.div`
-  position: relative;
+// export const ShakeAnimate = styled.div`
+//   position: relative;
 
-  animation: ${({ isVisible }) =>
-    isVisible &&
-    css`
-      ${right} 0.2s
-    `};
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-`;
+//   animation: ${({ isVisible }) =>
+//     isVisible &&
+//     css`
+//       ${right} 0.2s
+//     `};
+//   width: 100%;
+//   display: flex;
+//   flex-direction: row;
+// `;
 export const Maintainer = styled.button`
   display: flex;
   flex-direction: ${() => (RV_RTL ? 'row' : 'row-reverse')};

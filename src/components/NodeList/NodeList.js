@@ -1,48 +1,56 @@
-import React, { useEffect, useState } from 'react';
 import APIHandler from 'apiHelper/APIHandler';
-import useCheckRoute from 'hooks/useCheckRoute';
-import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
-import { MdDone } from 'react-icons/md';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
-import { data } from 'jquery';
+import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { encode } from 'js-base64';
+import React, { useEffect, useState } from 'react';
 
 const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
+const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
+const { RVAPI } = window;
 
-const { GlobalUtilities } = window;
+/**
+ *
+ * @param {String} searchText - a string for searching in the nodes title
+ * @param {Object} dateFilter - selected date for finding nodes in that period time
+ * @param {String} nodeTypeId - Id of nodeType.
+ * @param {Object} formFilters - object of objects of filters
+ * @returns
+ */
+const NodeList = ({ searchText, dateFilter, nodeTypeId, formFilters }) => {
+  // to refresh the list value by changing the data, its value will change
+  const [extraData, setExtraData] = useState(false);
 
-const NodeList = ({ searchText, dateFilter }) => {
-  const [nodes, setNodes] = useState([]);
-  const [dataCount, setDataCount] = useState(0);
-  const fetchData = (count = 20, lowerBoundary = 0, done) => {
-    console.log(dateFilter, 'dateFilter ');
+  // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
+  useEffect(() => {
+    setExtraData(!extraData);
+  }, [searchText, dateFilter, nodeTypeId, formFilters]);
 
+  // method for fetchin nodes
+  const fetchData = (count = 20, lowerBoundary = 1, done) => {
     getNodesAPI.fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
-        NodeTypeId: '0033c52b-9871-4197-9b7d-ab45203cb4ee',
+        NodeTypeID: nodeTypeId,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
+        FormFilters: formFilters,
       },
       (response) => {
-        console.log(response, 'response');
-
         if (response.Nodes) {
           // setDataCount(response.TotalCount);
           const nodeIds = response.Nodes.map((x) => x.NodeID);
           nodeIds.join('|');
-          console.log(nodeIds.join('|'), 'nodeIds');
-
+          // method for fetching the  complementary info about each node
           getNodeInfoAPI.fetch(
             {
               NodeIDs: nodeIds.join('|'),
-              Description: true,
+              Description: !isSaas,
               Creator: true,
-              LikesCount: true,
-              VisitsCount: true,
+              LikesCount: !isSaas,
+              VisitsCount: !isSaas,
               ParseResults: true,
             },
             (restInfo) => {
@@ -69,22 +77,36 @@ const NodeList = ({ searchText, dateFilter }) => {
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
+  const onClick = (nodeId) => {
+    // objectUrl({ NodeID: nodeId });
+    console.log(nodeId, 'node Id ');
+    RVAPI.NodePageURL({ NodeID: nodeId });
+  };
   return (
     <>
       <SimpleListViewer
         fetchMethod={fetchData}
-        extraData={[searchText, dateFilter]}
+        extraData={extraData}
         infiniteLoop={true}
         onEndReached={() => {
           console.log('Im reached end');
         }}
-        renderItem={(x) => (
-          <SubjectItem
-            onChecked={(value, item) => console.log(value, item, 'onChecked')}
-            selectMode={false}
-            item={x}
-            isSaas={true}
-          />
+        renderItem={(x, index) => (
+          <>
+            {console.log(x, 'X X X ')}
+            {x.Creator && (
+              <SubjectItem
+                key={index}
+                onChecked={(value, item) =>
+                  console.log(value, item, 'onChecked')
+                }
+                selectMode={false}
+                item={x}
+                isSaas={isSaas}
+                onClick={() => onClick(x.NodeID)}
+              />
+            )}
+          </>
         )}
       />
       {/* {nodes.length > 0 &&

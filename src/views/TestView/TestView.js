@@ -11,12 +11,12 @@ import { Editor, EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import MainEditor from 'components/Editor/MainEditor';
 import NodeList from 'components/NodeList/NodeList';
-import AdvanceSearch from 'components/AdvanceSearch/AdvanceSearch';
+import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 
 const Modal = lazy(() =>
   import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
 );
-const NodeId = '0033c52b-9871-4197-9b7d-ab45203cb4ee';
+const NodeId = '546b88b9-676b-4eea-b6fb-7eca3b24b404';
 
 const itemInput = {
   NodeID: '3d7c7551-3a1f-4e9d-8d83-72bd41cd6972',
@@ -60,16 +60,24 @@ const itemInput = {
 };
 
 const TestView = () => {
-  new EditorJS({
-    /**
-     * Id of Element that should contain Editor instance
-     */
-    holder: 'editorjs',
-  });
+  // new EditorJS({
+  //   /**
+  //    * Id of Element that should contain Editor instance
+  //    */
+  //   holder: 'editorjs',
+  // });
   //! If true, Shows a modal to user for more advanced options to choose from.
   const apiHandler = new APIHandler('CNAPI', 'GetNodeInfo');
 
-  const [selectMode, setSelectMode] = useState(false);
+  const [savedData, setSavedData] = useState([
+    { id: '1', value: '2' },
+    { id: '2', value: '2v' },
+    { id: '3', value: 'x2' },
+    { id: '4', value: '2s' },
+    { id: '5', value: '2c' },
+    { id: '6', value: '2a' },
+  ]);
+  const [resetItems, setResetItems] = useState(0);
   const [editorState, setEditorState] = useState({
     editorState: EditorState.createEmpty(),
   });
@@ -106,19 +114,21 @@ const TestView = () => {
 
   return (
     <Container>
+      <button
+        onClick={() => {
+          setResetItems(1);
+        }}>
+        reset items
+      </button>
+      {console.log(resetItems, 'resetItems')}
       <ItemProducer
         fetchItems={fetchItems}
-        type={'autosuggest'}
+        type={'text'}
         style={{ backgroundColor: 'white' }}
         onItems={(data) => console.log(data, 'items')}
-        savedData={[
-          { id: '1', value: '2' },
-          { id: '2', value: '2v' },
-          { id: '3', value: 'x2' },
-          { id: '4', value: '2s' },
-          { id: '5', value: '2c' },
-          { id: '6', value: '2a' },
-        ]}
+        resetMe={resetItems}
+        savedData={savedData}
+        // onResetDone={() => setResetItems(false)}
       />
       {/* 
       <button onClick={() => setSelectMode(!selectMode)}>
@@ -132,9 +142,9 @@ const TestView = () => {
       />
       <NodeList />
       <MainEditor /> */}
-      <AdvanceSearch NodeId={NodeId}>
+      {/* <AdvanceSearch NodeId={NodeId}>
         <NodeList />
-      </AdvanceSearch>
+      </AdvanceSearch> */}
     </Container>
   );
 };

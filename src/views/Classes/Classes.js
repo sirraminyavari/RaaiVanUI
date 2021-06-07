@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import NodeList from 'components/NodeList/NodeList';
-import AdvanceSearch from 'components/AdvanceSearch/AdvanceSearch';
+import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 
 const AdvancedSearchView = (props) => {
   const { match } = props;
-  const NodeId = match.params.id;
+  const NodeTypeID = match.params.id;
 
   return (
     <Container>
-      <AdvanceSearch NodeId={NodeId}>
-        <NodeList />
+      <AdvanceSearch nodeTypeId={NodeTypeID}>
+        <NodeList nodeTypeId={NodeTypeID} />
       </AdvanceSearch>
     </Container>
   );

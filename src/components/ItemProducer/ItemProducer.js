@@ -14,6 +14,7 @@ import ItemProducerHandler from './ItemProducerHandler';
  * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
  * @param {[{}]} savedData - An array of items that saved in past.
+ * @param {number} resetMe - by changing the value, items will reset.
 
  */
 const ItemProducer = ({
@@ -22,6 +23,7 @@ const ItemProducer = ({
   fetchItems,
   isDragDisabled,
   savedData,
+  resetMe,
   ...props
 }) => {
   // selected item with 'AutoSuggestInput' will set here.
@@ -42,6 +44,7 @@ const ItemProducer = ({
         isDragDisabled={isDragDisabled}
         onItems={onItems}
         savedData={savedData}
+        resetMe={resetMe}
       />
     </Container>
   );

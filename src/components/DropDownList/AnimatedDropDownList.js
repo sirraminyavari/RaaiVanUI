@@ -53,6 +53,7 @@ const AnimatedDropDownList = ({
     arrowIconColor: null,
   },
   hiddenSelectedItem,
+  onClickLabel,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
 
@@ -99,7 +100,7 @@ const AnimatedDropDownList = ({
   return (
     <Container>
       <DropDownButton style={{ ...container }}>
-        <Maintainer style={{ ...label }}>
+        <Maintainer onClick={onClickLabel} style={{ ...label }}>
           {defaultValue.icon}
           <Label color={defaultValue.color}>{defaultValue.label}</Label>
         </Maintainer>

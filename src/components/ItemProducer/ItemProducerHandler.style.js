@@ -24,6 +24,20 @@ const disappear = keyframes`
    padding: 0px;
   } 
 `;
+const reset = keyframes`
+   from {
+    opacity: 1;
+    height:2rem;
+    padding: 5px;
+  }
+
+  to {
+   opacity:0;
+   height:1rem;
+   padding: 0px;
+
+  } 
+`;
 
 export const Maintainer = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? '#D5D5FF' : '#F4F4F4')};
@@ -31,8 +45,10 @@ export const Maintainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  opacity: 1;
   padding: 5px;
   width: 100%;
+  transition: opacity 1s;
 
   &.removeMe {
     animation: ${disappear};
@@ -41,6 +57,10 @@ export const Maintainer = styled.div`
   &.addMe {
     animation: ${appear};
     animation-duration: 0.8s;
+  }
+  &.resetMe {
+    animation: ${reset};
+    animation-duration: 0.6s;
   }
 `;
 export const Container = styled.div`
