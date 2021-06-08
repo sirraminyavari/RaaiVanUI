@@ -3,14 +3,14 @@
  */
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { themeSlice } from 'store/reducers/themeReducer';
 import SettingItems from './SettingItem';
 import TeamSettings from './items/team-settings/TeamSettings';
 import iconList from './iconList';
-import EditableTree from '../../sidebarTree/editable/E-Tree';
+import EditableTree from 'layouts/Sidebar/items/sidebarTree/editable/EditableTree';
 import useWindow from 'hooks/useWindowContext';
 import {
   MAIN_CONTENT,
