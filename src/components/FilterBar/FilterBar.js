@@ -15,6 +15,7 @@ import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import Input from 'components/Inputs/Input';
 import React, { useEffect, useState } from 'react';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import Breadcrumb from './Breadcrumb';
 
 const data = [
   {
@@ -165,6 +166,7 @@ const FilterBar = ({
 
   return (
     <Container>
+      <Breadcrumb />
       <TopRow>
         {market?.length > 0 && (
           <AnimatedDropDownList
