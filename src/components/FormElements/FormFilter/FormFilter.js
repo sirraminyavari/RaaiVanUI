@@ -18,6 +18,7 @@ import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
+import { C_DISTANT, C_RED } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -76,35 +77,35 @@ const FormFilter = (props) => {
             <UndoIcon
               style={{ cursor: 'pointer', transform: 'scaleX(-1)' }}
               onClick={clearFilter}
+              className={C_DISTANT}
+              size={16}
             />
             <Styled.FormFilterTitle>{formName}</Styled.FormFilterTitle>
             <CloseIcon
-              color="red"
-              size={18}
+              size={16}
               style={{ cursor: 'pointer' }}
               onClick={closeFormFilter}
+              className={C_RED}
             />
           </Styled.FormFilterHeader>
           <Styled.FiltersWrapper>
-            <div style={{ marginTop: '98rem' }}>
-              {filters.map((filter, key) => {
-                return (
-                  <Fragment key={key}>
-                    {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                      FormFilter[filter.Type]({
-                        onChange: handleOnChange,
-                        data: filter,
-                        value: values[filter.ElementID],
-                      })}
-                  </Fragment>
-                );
-              })}
-            </div>
+            {filters.map((filter, key) => {
+              return (
+                <Fragment key={key}>
+                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+                    FormFilter[filter.Type]({
+                      onChange: handleOnChange,
+                      data: filter,
+                      value: values[filter.ElementID],
+                    })}
+                </Fragment>
+              );
+            })}
           </Styled.FiltersWrapper>
           <Styled.FilterButtonWrapper>
             <FilterButton
               onClick={handleOnFilterClick}
-              style={{ width: '40%', fontSize: '1rem' }}
+              style={{ width: '50%', fontSize: '1rem' }}
               type="primary-o">
               اعمال فیلتر
             </FilterButton>

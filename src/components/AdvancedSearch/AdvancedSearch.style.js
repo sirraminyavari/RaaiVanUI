@@ -21,18 +21,21 @@ export const Maintainer = styled.div`
   transition: min-width 0.5s;
 `;
 export const SideFilter = styled.div`
-  display: flex;
-  overflow-y: auto;
-  width: 30%;
-  max-width: ${({ isEnabled }) => (isEnabled ? '30%' : '0')};
-  background-color: white;
-  box-shadow: 1px 3px 20px #ababab;
-  border-radius: 1rem;
-  margin-right: 1rem;
-  transition: max-width 0.5s;
-  max-height: 90vh;
-  align-items: flex-start;
-  justify-content: center;
+  // display: flex;
+  // overflow-y: auto;
+  // width: 30%;
+  // max-width: ${({ isEnabled }) => (isEnabled ? '30%' : '0')};
+  // background-color: white;
+  // box-shadow: 1px 3px 20px #ababab;
+  // border-radius: 1rem;
+  // margin-right: 1rem;
+  // transition: max-width 0.5s;
+  // max-height: 90vh;
+  // align-items: flex-start;
+  // justify-content: center;
+  height: 85vh;
+  padding: 0 0.5rem 0 1rem;
+  // min-width: 25rem;
 `;
 export const TopFilter = styled.div`
   height: 15rem;
