@@ -1,17 +1,16 @@
 /**
  * Renders a list of items under the sidebar menu,
  */
-import { useContext } from 'react';
 import * as Styled from '../../Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import ContactIcon from 'components/Icons/ContactIcon/Contact';
 import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const UnderMenuList = () => {
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic } = useWindow();
 
   return (
     <Styled.UnderMenuContainer>

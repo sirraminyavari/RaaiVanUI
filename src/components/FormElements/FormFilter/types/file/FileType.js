@@ -1,14 +1,14 @@
 /**
  * Renders a file filter.
  */
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import ExactFilter from '../../items/ExactToggle';
 import OrFilter from '../../items/OrAndSelect';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -27,10 +27,11 @@ const FileType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title } = data; //! Meta data to feed component.
 
-  const { RVDic } = useContext(WindowContext);
+  const { RVDic, GlobalUtilities } = useWindow();
   const [items, setItems] = useState(value ? value.TextItems : []);
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
+  const [resetValue, setResetValue] = useState(null);
 
   //! Options for 'OrAnd' select;
   const orOptions = [
@@ -80,6 +81,12 @@ const FileType = (props) => {
     });
   }, [items, exact, or]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setResetValue(GlobalUtilities.random());
+    }
+  }, [value]);
+
   return (
     <Styled.FileContainer>
       <Styled.FileTitle>{decodeBase64(Title)}</Styled.FileTitle>
@@ -87,6 +94,7 @@ const FileType = (props) => {
         isDragDisabled={true}
         onItems={handleOnItemSelect}
         style={{ width: '100%' }}
+        resetMe={resetValue}
       />
       <div
         style={{

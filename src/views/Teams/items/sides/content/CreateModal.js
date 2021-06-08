@@ -2,10 +2,11 @@ import * as Styled from '../../../Teams.styles';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
 import Input from 'components/Inputs/Input';
-import { WindowContext } from 'context/WindowProvider';
-import { useContext } from 'react';
+import useWindow from 'hooks/useWindowContext';
 
 const CreateModal = (props) => {
+  const { RVDic } = useWindow();
+
   const {
     isOpen,
     onCancleCreate,
@@ -14,7 +15,6 @@ const CreateModal = (props) => {
     modalTitle,
     modalWidth,
   } = props;
-  const { RVDic } = useContext(WindowContext);
 
   return (
     <Modal

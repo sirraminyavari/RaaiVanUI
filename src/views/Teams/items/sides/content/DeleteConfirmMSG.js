@@ -1,3 +1,4 @@
+import { TC_DEFAULT } from 'constant/Colors';
 import * as Styled from '../../../Teams.styles';
 
 const DeleteConfirmMSG = (props) => {
@@ -5,7 +6,7 @@ const DeleteConfirmMSG = (props) => {
   return (
     <div style={{ margin: '0 2.5rem' }}>
       <Styled.ConfirmSpaceTitle>
-        {Icon && <Icon size={22} color="#2B7BE4" />}
+        {Icon && <Icon size={22} className={TC_DEFAULT} />}
         <span style={{ margin: '0.5rem' }}>{title}</span>
       </Styled.ConfirmSpaceTitle>
       {question && <Styled.ConfirmQuestion>{question}</Styled.ConfirmQuestion>}

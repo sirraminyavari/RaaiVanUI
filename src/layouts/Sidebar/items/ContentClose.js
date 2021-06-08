@@ -1,7 +1,7 @@
 /**
  * Renders when sidebar is closed.
  */
-import { useState, useRef, useLayoutEffect, useContext } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
@@ -10,14 +10,14 @@ import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { WindowContext } from 'context/WindowProvider';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
+import useWindow from 'hooks/useWindowContext';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
-  const { RV_RevFloat, RVDic } = useContext(WindowContext);
+  const { RV_RevFloat, RVDic } = useWindow();
 
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);

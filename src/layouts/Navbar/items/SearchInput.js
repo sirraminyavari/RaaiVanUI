@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { TC_DISTANT } from 'constant/Colors';
+import { C_DISTANT } from 'constant/Colors';
 
 const SearchInput = (props) => {
   const history = useHistory();
@@ -46,7 +46,7 @@ const SearchInput = (props) => {
         <Styled.SearchWrapper as={Link} to={searchPath}>
           <SearchIcon
             size={22}
-            className={TC_DISTANT}
+            className={C_DISTANT}
             onClick={handleClearSearch}
           />
         </Styled.SearchWrapper>

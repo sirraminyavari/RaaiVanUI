@@ -7,6 +7,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import APIHandler from 'apiHelper/APIHandler';
 import * as Styled from '../types.styles';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -28,6 +29,8 @@ const UserType = (props) => {
 
   const { MultiSelect } = JSON.parse(decodeBase64(Info));
   const [items, setItems] = useState([]);
+  const [resetValue, setResetValue] = useState(null);
+  const { GlobalUtilities } = useWindow();
 
   //! Fetch users based on search text.
   const fetchUsers = (searchText) => {
@@ -70,6 +73,12 @@ const UserType = (props) => {
     });
   }, [items]);
 
+  useEffect(() => {
+    if (value === undefined) {
+      setResetValue(GlobalUtilities.random());
+    }
+  }, [value]);
+
   return (
     <Styled.UserContainer>
       <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
@@ -79,6 +88,7 @@ const UserType = (props) => {
         isDragDisabled={true}
         onItems={handleSelectUsers}
         style={{ width: '100%' }}
+        resetMe={resetValue}
       />
     </Styled.UserContainer>
   );

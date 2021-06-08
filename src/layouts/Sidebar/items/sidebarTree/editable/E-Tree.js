@@ -1,13 +1,13 @@
 /**
  * Renders all menu items at once.
  */
-import { memo, useContext } from 'react';
+import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import EditableItem from './E-Item';
-import { WindowContext } from 'context/WindowProvider';
+import useWindow from 'hooks/useWindowContext';
 import {
   moveSidebarNode,
   reorderSidebarNode,
@@ -23,7 +23,7 @@ const EditableTree = () => {
   const tree = useSelector(selectTree);
 
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
-  const { RVGlobal } = useContext(WindowContext);
+  const { RVGlobal } = useWindow();
 
   const isSaaS = RVGlobal.SAASBasedMultiTenancy;
 

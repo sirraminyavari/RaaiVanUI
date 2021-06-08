@@ -3,12 +3,12 @@
  */
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { createSelector } from 'reselect';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
-import { TC_DISTANT } from 'constant/Colors';
+import { C_DISTANT } from 'constant/Colors';
 import { MANAGE_CONTENT } from 'constant/constants';
 import { mutateTree } from '@atlaskit/tree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -152,7 +152,7 @@ const EditableBranch = (props) => {
             </Styled.TrashIconWrapper>
           )}
           <Styled.DragIconWrapper {...provided.dragHandleProps}>
-            <DragIcon className={TC_DISTANT} />
+            <DragIcon className={C_DISTANT} />
           </Styled.DragIconWrapper>
         </Styled.ActionsWrapper>
       </Styled.MenuContainer>

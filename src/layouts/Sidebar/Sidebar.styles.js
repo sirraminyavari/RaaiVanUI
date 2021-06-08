@@ -5,7 +5,7 @@ import { CLOSE_WIDTH } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import {
   TBO_WARM,
-  TC_DISTANT,
+  C_DISTANT,
   C_WHITE,
   TBO_DEFAULT,
   BO_GRAY_DARK,
@@ -509,7 +509,7 @@ export const UnderMenuContainer = styled.div`
   padding: 0 0 3rem 0;
 `;
 
-export const FilterIconWrapper = styled.div.attrs({ className: TC_DISTANT })`
+export const FilterIconWrapper = styled.div.attrs({ className: C_DISTANT })`
   position: absolute;
   ${`${RV_RevFloat}: 0.3rem;`}
   bottom: 0;
