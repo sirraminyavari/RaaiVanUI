@@ -1,7 +1,7 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense, memo, useState } from 'react';
+import { lazy, Suspense, memo, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
@@ -17,7 +17,7 @@ import {
   MOBILE_BOUNDRY,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
-import useWindow from 'hooks/useWindowContext';
+import APIHandler from 'apiHelper/APIHandler';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -38,9 +38,8 @@ const selectIsSidebarOpen = createSelector(
 const Navbar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const [showSearch, setShowSearch] = useState(false);
-  const { RVGlobal } = useWindow();
-
-  const userImage = RVGlobal.CurrentUser.ProfileImageURL;
+  const [currentUser, setCurrentUser] = useState(null);
+  const getGlobalParamsAPI = new APIHandler('RVAPI', 'GetGlobalParams');
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -73,6 +72,14 @@ const Navbar = () => {
     setShowSearch(false);
   };
 
+  useEffect(() => {
+    getGlobalParamsAPI.fetch(
+      {},
+      (response) => setCurrentUser(response.CurrentUser),
+      (error) => console.log(error)
+    );
+  }, []);
+
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
@@ -104,7 +111,10 @@ const Navbar = () => {
           `}
           trigger="click">
           <div>
-            <Avatar userImage={userImage} style={{ cursor: 'pointer' }} />
+            <Avatar
+              userImage={currentUser?.ProfileImageURL}
+              style={{ cursor: 'pointer' }}
+            />
           </div>
           <AvatarMenuList />
         </PopupMenu>
