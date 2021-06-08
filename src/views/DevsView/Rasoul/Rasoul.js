@@ -254,7 +254,19 @@ const RasoulView = () => {
 
   return (
     <div>
-      <div style={{ textAlign: 'center', fontSize: '2rem' }}>Rasoul's view</div>
+      <div style={{ width: '40%', margin: 'auto', height: '85vh' }}>
+        {!!filters.length && (
+          <FormFilter
+            formName="فیلترهای پیشرفته"
+            filters={filters}
+            onFilter={(v) => console.log(v)}
+          />
+        )}
+      </div>
+      <div
+        style={{ textAlign: 'center', fontSize: '2rem', marginTop: '15rem' }}>
+        Rasoul's view
+      </div>
       {/* <Divider title="FormEdit Component" />
       <FormEdit>
         {({ onChange }) => {
@@ -264,7 +276,7 @@ const RasoulView = () => {
       </FormEdit> */}
 
       <Divider title="FormFilter Component" />
-      <div style={{ width: '40%', margin: 'auto' }}>
+      {/* <div style={{ width: '40%', margin: 'auto', height: '50vh' }}>
         {!!filters.length && (
           <FormFilter
             formName="فیلترهای پیشرفته"
@@ -272,7 +284,7 @@ const RasoulView = () => {
             onFilter={(v) => console.log(v)}
           />
         )}
-      </div>
+      </div> */}
       <Divider title="DnDGrid Component" />
       {/* <div>
         <DnDGrid list={list} />
