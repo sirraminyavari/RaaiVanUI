@@ -17,6 +17,7 @@ import {
   MOBILE_BOUNDRY,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
+import useWindow from 'hooks/useWindowContext';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -36,8 +37,10 @@ const selectIsSidebarOpen = createSelector(
 
 const Navbar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-
   const [showSearch, setShowSearch] = useState(false);
+  const { RVGlobal } = useWindow();
+
+  const userImage = RVGlobal.CurrentUser.ProfileImageURL;
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -46,7 +49,6 @@ const Navbar = () => {
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-
   const isMobileNav = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -102,7 +104,7 @@ const Navbar = () => {
           `}
           trigger="click">
           <div>
-            <Avatar style={{ cursor: 'pointer' }} />
+            <Avatar userImage={userImage} style={{ cursor: 'pointer' }} />
           </div>
           <AvatarMenuList />
         </PopupMenu>

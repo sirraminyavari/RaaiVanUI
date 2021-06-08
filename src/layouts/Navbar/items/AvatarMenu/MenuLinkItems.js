@@ -2,8 +2,7 @@ import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
 import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
-import ApprovalIcon from 'components/Icons/ApprovalIcon/ApprovalIcon';
-import { TC_DEFAULT, TC_VERYWARM, C_GRAY } from 'constant/Colors';
+import { TC_DEFAULT } from 'constant/Colors';
 
 const { RVDic } = window;
 
@@ -28,21 +27,6 @@ const MenuLinkItems = [
     linkTo: '#',
     icon: QuestionIcon,
     iconClass: TC_DEFAULT,
-  },
-  {
-    id: 4,
-    title: 'نام تیم فعلی',
-    linkTo: '#',
-    icon: ApprovalIcon,
-    textClass: TC_VERYWARM,
-  },
-  {
-    id: 5,
-    title: 'نام تیم دیگر',
-    linkTo: '#',
-    icon: ApprovalIcon,
-    iconClass: C_GRAY,
-    textClass: C_GRAY,
   },
 ];
 

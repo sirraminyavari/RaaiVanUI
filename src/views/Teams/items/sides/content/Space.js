@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import ActiveTeam from './TeamActive';
 import NewTeam from './NewTeam';
 import SpaceHeader from './SpcaeHeader';
