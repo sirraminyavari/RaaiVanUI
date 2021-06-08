@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
-import EditableItem from './E-Item';
+import EditableItem from './EditableItem';
 import useWindow from 'hooks/useWindowContext';
 import {
   moveSidebarNode,
@@ -41,7 +41,6 @@ const EditableTree = () => {
     dispatch(setSidebarDnDTree(newTree));
   };
 
-  //TODO: fix style.
   //! Render custom item.
   const handleRenderItem = (itemProps) => {
     return <EditableItem itemProps={itemProps} />;

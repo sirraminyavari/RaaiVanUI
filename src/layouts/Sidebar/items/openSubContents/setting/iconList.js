@@ -1,7 +1,7 @@
-import TeamIcon from '../../../../../components/Icons/GroupIcon/Group';
-import UsersIcon from '../../../../../components/Icons/UsersIcon/Users';
-import ClassesIcon from '../../../../../components/Icons/TuneIcon/Tune';
-import AlertIcon from '../../../../../components/Icons/NotificationsIcon/NotificationsIcon';
+import TeamIcon from 'components/Icons/GroupIcon/Group';
+import UsersIcon from 'components/Icons/UsersIcon/Users';
+import ClassesIcon from 'components/Icons/TuneIcon/Tune';
+import AlertIcon from 'components/Icons/NotificationsIcon/NotificationsIcon';
 import {
   SETT_CLASSES_CONTENT,
   SETT_NOTIFS_CONTENT,

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { themeSlice } from 'store/reducers/themeReducer';
-import ReadableTree from '../sidebarTree/readable/R-Tree';
+import ReadableTree from '../sidebarTree/readable/ReadableTree';
 import UnderMenuList from '../underMenu/UnderMenuList';
 import SearchBox from '../openSubContents/searchBox/SearchBox';
 import SearchResultsList from '../openSubContents/searchBox/SearchResultsList';

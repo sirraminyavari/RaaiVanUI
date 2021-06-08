@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
-import ReadableItem from './R-Item';
+import ReadableItem from './ReadableItem';
 
 const selectTree = createSelector(
   (state) => state.sidebarItems,
