@@ -4,8 +4,8 @@ import {
   SortableElement,
   SortableHandle,
 } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
 import styled from 'styled-components';
+import { reorder } from 'helpers/helpers';
 
 const Handle = SortableHandle(({ tabIndex }) => (
   <div tabIndex={tabIndex} style={{ width: '20px' }}>
@@ -120,7 +120,7 @@ function App() {
   ]);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setPhotos(arrayMove(photos, oldIndex, newIndex));
+    setPhotos(reorder(photos, oldIndex, newIndex));
   };
 
   return (
