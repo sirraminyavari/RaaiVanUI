@@ -139,17 +139,18 @@ export const renameSidebarNode = (nodeId, nodeName) => async (
  * @description A function (action) that removes the sidebar menu item.
  * @returns -Dispatch to redux store.
  */
-export const deleteSidebarNode = (nodeId, hierarchy = false) => async (
-  dispatch,
-  getState
+export const deleteSidebarNode = (node, hierarchy = false, done) => async (
+  dispatch
 ) => {
   try {
     deleteNodeAPI.fetch(
       {
-        NodeTypeID: nodeId,
+        NodeTypeID: node.id,
         RemoveHierarchy: hierarchy,
       },
       (response) => {
+        console.log(response);
+        done(node);
         dispatch(getSidebarNodes());
       },
       (error) => console.log({ error })
@@ -227,15 +228,41 @@ export const reorderSidebarNode = (newTree, source, destination) => async (
  * @description A function (action) that recover deleted items to sidebar tree.
  * @returns -Dispatch to redux store.
  */
-export const recoverSidebarNode = (nodeId) => async (dispatch, getState) => {
+export const recoverSidebarNode = (node) => async (dispatch, getState) => {
   try {
     recoverNodeAPI.fetch(
       {
-        NodeTypeID: nodeId,
+        NodeTypeID: node.id,
       },
       (response) => {
         console.log(response);
-        dispatch(getSidebarNodes());
+        if (node.hasChildren) {
+          const promises = node.children.map((child) => {
+            return new Promise((resolve, reject) => {
+              try {
+                moveNodeAPI.fetch(
+                  {
+                    NodeTypeID: child,
+                    ParentID: node.id,
+                  },
+                  (response) => {
+                    resolve(response);
+                  },
+                  (error) => reject(error)
+                );
+              } catch (err) {
+                reject(err);
+              }
+            });
+          });
+
+          Promise.allSettled(promises).then((result) => {
+            console.log(result);
+            dispatch(getSidebarNodes());
+          });
+        } else {
+          dispatch(getSidebarNodes());
+        }
       },
       (error) => {
         console.log({ error });
