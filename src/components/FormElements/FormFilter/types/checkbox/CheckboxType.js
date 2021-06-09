@@ -87,8 +87,8 @@ const CheckboxType = (props) => {
   }, [value]);
 
   return (
-    <Styled.CheckboxContainer>
-      <Styled.CheckboxTitle>{decodeBase64(Title)}</Styled.CheckboxTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       {AutoSuggestMode ? (
         <Checkbox
           options={options}
@@ -111,7 +111,7 @@ const CheckboxType = (props) => {
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
-    </Styled.CheckboxContainer>
+    </Styled.FilterContainer>
   );
 };
 

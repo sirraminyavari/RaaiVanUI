@@ -77,7 +77,7 @@ const TextType = (props) => {
   }, [value]);
 
   return (
-    <Styled.TextContainer>
+    <Styled.FilterContainer>
       <Styled.TextTitle>{decodeBase64(Title)}</Styled.TextTitle>
       <ItemProducer
         isDragDisabled={true}
@@ -95,7 +95,7 @@ const TextType = (props) => {
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
-    </Styled.TextContainer>
+    </Styled.FilterContainer>
   );
 };
 

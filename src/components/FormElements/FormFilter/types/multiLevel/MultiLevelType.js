@@ -123,8 +123,8 @@ const MultiLevelType = (props) => {
   }, [value]);
 
   return (
-    <Styled.UserContainer>
-      <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <FormView.MultiLevel
         items={viewItems}
         levels={levels}
@@ -151,7 +151,7 @@ const MultiLevelType = (props) => {
           nodes={nodes}
         />
       </Modal>
-    </Styled.UserContainer>
+    </Styled.FilterContainer>
   );
 };
 

@@ -54,8 +54,8 @@ const DateType = (props) => {
   }, [from, to]);
 
   return (
-    <Styled.DateContainer>
-      <Styled.DateTitle>{decodeBase64(Title)}</Styled.DateTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Styled.DatePickerWrapper>
         <Styled.DateSpanTitle>{RVDic.From}</Styled.DateSpanTitle>
         <Styled.DatePicker>
@@ -88,7 +88,7 @@ const DateType = (props) => {
           />
         </Styled.DatePicker>
       </Styled.DatePickerWrapper>
-    </Styled.DateContainer>
+    </Styled.FilterContainer>
   );
 };
 

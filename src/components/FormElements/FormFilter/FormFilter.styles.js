@@ -5,6 +5,7 @@ import {
   TBG_DEFAULT,
   C_WHITE,
   TC_DEFAULT,
+  TC_VERYWARM,
 } from 'constant/Colors';
 import styled from 'styled-components';
 
@@ -65,9 +66,10 @@ export const FormFilterHeader = styled.div.attrs({
   border-top-right-radius: 0.6rem;
 `;
 
-export const FormFilterTitle = styled.div`
+export const FormFilterTitle = styled.div.attrs({
+  className: TC_VERYWARM,
+})`
   font-size: 1.1rem;
-  color: #002479;
 `;
 
 export const FilterToggleContainer = styled.div`

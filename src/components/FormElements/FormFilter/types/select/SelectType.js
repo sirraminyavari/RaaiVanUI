@@ -77,7 +77,7 @@ const SelectType = (props) => {
 
   return (
     <Styled.SelectContainer>
-      <Styled.SelectTitle>{decodeBase64(Title)}</Styled.SelectTitle>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       {AutoSuggestMode ? (
         <div>Radio check</div>
       ) : (

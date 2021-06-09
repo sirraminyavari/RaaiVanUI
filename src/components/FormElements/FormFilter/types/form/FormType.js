@@ -3,7 +3,7 @@
  */
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FormFilter from '../../FormFilter';
+import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
 import * as Styled from '../types.styles';
@@ -31,7 +31,7 @@ const FormType = (props) => {
   const [filters, setFilters] = useState([]);
   const [filterValues, setFilterValues] = useState(value?.JSONValue || {});
 
-  const { FormID, FormName } = JSON.parse(decodeBase64(Info));
+  const { FormID } = JSON.parse(decodeBase64(Info));
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
   //! Set button title based on selected filters count.
@@ -75,9 +75,6 @@ const FormType = (props) => {
         OwnerID: ElementID,
       },
       (response) => {
-        // const groupingElements = response.Elements.filter((el) => {
-        //   return ['Select', 'Binary'].some((item) => item === el.Type);
-        // });
         const filters = response.Elements;
         setFilters(filters);
       },
@@ -100,8 +97,8 @@ const FormType = (props) => {
   }, [filterValues]);
 
   return (
-    <Styled.FormContainer>
-      <Styled.FormTitle>{decodeBase64(Title)}</Styled.FormTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Button onClick={openModal}>{getButtonTitle()}</Button>
       <Modal
         title={decodeBase64(Title)}
@@ -110,7 +107,6 @@ const FormType = (props) => {
         contentWidth="40%">
         {filters.length && (
           <FormFilter
-            // formName={decodeBase64(FormName)}
             filters={filters}
             onFilter={handleOnFilter}
             filterValues={filterValues}
@@ -122,7 +118,7 @@ const FormType = (props) => {
           />
         )}
       </Modal>
-    </Styled.FormContainer>
+    </Styled.FilterContainer>
   );
 };
 

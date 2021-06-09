@@ -78,8 +78,8 @@ const FileType = (props) => {
   }, [value]);
 
   return (
-    <Styled.FileContainer>
-      <Styled.FileTitle>{decodeBase64(Title)}</Styled.FileTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <ItemProducer
         isDragDisabled={true}
         onItems={handleOnItemSelect}
@@ -95,7 +95,7 @@ const FileType = (props) => {
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
-    </Styled.FileContainer>
+    </Styled.FilterContainer>
   );
 };
 
