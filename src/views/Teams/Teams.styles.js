@@ -150,7 +150,7 @@ export const TeamListConatiner = styled.div`
 `;
 
 export const TeamConatiner = styled.div`
-  width: calc(100% / ${({ isMobile }) => (isMobile ? 1 : 2)} - 0.15rem);
+  width: calc(100% / ${({ isMobile }) => (isMobile ? 1 : 2)} - 0.5rem);
   height: 11.5rem;
   border: ${({ isNew }) =>
     !!isNew ? '2px dashed #bac9dc;' : '1px solid #bac9dc;'}
@@ -159,12 +159,12 @@ export const TeamConatiner = styled.div`
   position: relative;
   float: left;
   background-color: #fff;
-  margin-bottom: 0.3rem;
+  margin-bottom: 1rem;
   :nth-child(2n+1){
-    margin-right: 0.15rem;
+    margin-right: 0.5rem;
   }
   :nth-child(2n){
-    margin-left: 0.15rem;
+    margin-left: 0.5rem;
   }
 
   .team-extra-users {

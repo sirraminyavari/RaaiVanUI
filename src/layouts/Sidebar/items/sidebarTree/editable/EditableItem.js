@@ -64,9 +64,9 @@ const EditableBranch = (props) => {
 
   const isManageContent = sidebarContent.current === MANAGE_CONTENT;
 
-  const undoDelete = (nodeId) => {
+  const undoDelete = (node) => {
     console.log('undo delete');
-    dispatch(recoverSidebarNode(nodeId));
+    dispatch(recoverSidebarNode(node));
   };
 
   const undoEdit = () => {
@@ -74,18 +74,20 @@ const EditableBranch = (props) => {
     dispatch(renameSidebarNode(item.id, item.data.title));
   };
 
-  const onItemDelete = (e) => {
-    e.stopPropagation();
-
-    const deleteMSG = `دسته "${item.data.title}" حذف خواهد شد`;
+  const onDeleteDone = (node) => {
+    const deleteMSG = `دسته "${node.data.title}" حذف خواهد شد`;
     const deleteToast = UndoToast({
       type: 'error',
-      autoClose: 5000,
+      autoClose: 10000,
       message: deleteMSG,
-      onUndo: () => undoDelete(item.id),
-      toastId: `delete-${item.id}`,
+      onUndo: () => undoDelete(node),
+      toastId: `delete-${node.id}`,
     });
+  };
 
+  const onItemDelete = (e) => {
+    e.stopPropagation();
+    console.log(item);
     const itemParent = Object.values(tree.items).find(
       (x) => x.id === item.parent
     );
@@ -95,7 +97,7 @@ const EditableBranch = (props) => {
       children: itemParent.children.filter((child) => child !== item.id),
     });
     dispatch(setSidebarDnDTree(removeOnParent));
-    dispatch(deleteSidebarNode(item.id));
+    dispatch(deleteSidebarNode(item, false, onDeleteDone));
   };
 
   const onEditTitle = (title) => {

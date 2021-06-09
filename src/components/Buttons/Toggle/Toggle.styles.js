@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { BG_DISTANT, TBG_DEFAULT, BO_FREEZED } from 'constant/Colors';
 
 const { RV_Float } = window;
 
@@ -32,7 +33,6 @@ export const ToggleInput = styled.input`
 const getCheckedCss = (props) => {
   return props.isChecked
     ? css`
-        background: #86d993;
         &::after {
           left: 50%;
         }
@@ -44,7 +44,6 @@ const getCheckedCss = (props) => {
         }
       `
     : css`
-        background: #bac9dc;
         &::after {
           right: 50%;
         }
@@ -57,7 +56,9 @@ const getCheckedCss = (props) => {
       `;
 };
 
-export const ToggleButton = styled.span`
+export const ToggleButton = styled.span.attrs((props) => ({
+  className: `${props.isChecked ? TBG_DEFAULT : BG_DISTANT} ${BO_FREEZED}`,
+}))`
   box-sizing: initial;
   display: inline-block;
   outline: 0;
@@ -66,11 +67,10 @@ export const ToggleButton = styled.span`
   position: relative;
   cursor: pointer;
   user-select: none;
-  background: #fbfbfb;
   border-radius: 4em;
   padding: 4px;
   transition: all 0.4s ease;
-  border: 2px solid #e8eae9;
+  // border: 2px solid #e8eae9;
 
   &::after {
     ${RV_Float}: 0;
@@ -80,7 +80,7 @@ export const ToggleButton = styled.span`
     width: 50%;
     height: 100%;
     border-radius: 4em;
-    background: #fbfbfb;
+    background-color: #fbfbfb;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
       padding 0.3s ease, margin 0.3s ease;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);

@@ -1,7 +1,7 @@
 import { getURL } from 'helpers/helpers';
 import { lazy } from 'react';
 const Teams = lazy(() =>
-  import(/* webpackChunkName: "teams-view"*/ 'views/Teams/Teams-new')
+  import(/* webpackChunkName: "teams-view"*/ 'views/Teams/Teams')
 );
 const Home = lazy(() =>
   import(/* webpackChunkName: "home-view"*/ 'views/Home/Home')

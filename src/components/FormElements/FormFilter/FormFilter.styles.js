@@ -1,24 +1,61 @@
+import { BG_WHITE, BG_GRAY_LIGHT, C_GRAY } from 'constant/Colors';
 import styled from 'styled-components';
 
-export const FormFilterContainer = styled.div`
+export const FormFilterContainer = styled.div.attrs({
+  className: `${BG_GRAY_LIGHT}`,
+})`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fcfcfd;
   box-shadow: 1px 3px 15px #00000026;
   border: 0.5px solid #e6f4f1;
-  border-radius: 10px;
-  padding: 1.5rem;
+  border-radius: 0.6rem;
 `;
 
-export const FormFilterHeader = styled.div`
+export const FiltersWrapper = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  overflow: scroll;
+
+  ::-webkit-scrollbar {
+    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+  }
+  * {
+    -ms-overflow-style: none; /*! IE and Edge */
+    scrollbar-width: none; /*! Firefox */
+  }
+`;
+
+export const FilterButtonWrapper = styled.div.attrs({
+  className: BG_WHITE,
+})`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
+`;
+
+export const FormFilterHeader = styled.div.attrs({
+  className: BG_WHITE,
+})`
+  width: 100%;
+  min-height: 3.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  padding: 0 1.5rem;
+  border-top-left-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
 `;
 
 export const FormFilterTitle = styled.div`
@@ -34,9 +71,10 @@ export const FilterToggleContainer = styled.div`
   margin: 1rem 0;
 `;
 
-export const FilterToggleTitle = styled.span`
+export const FilterToggleTitle = styled.span.attrs({
+  className: C_GRAY,
+})`
   font-size: 0.9rem;
-  color: #707070;
   margin: 0 0.5rem;
   text-transform: capitalize;
 `;

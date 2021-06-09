@@ -1,5 +1,6 @@
 import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
+import { C_DISTANT } from 'constant/Colors';
 
 export const ShadowButton = styled(Button)`
   box-shadow: ${({ isEnabled }) => isEnabled && '1px 3px 20px #2b7be44d'};
@@ -43,4 +44,24 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   padding-left: 2rem;
+  position: relative;
+`;
+
+export const BreadcrumbContainer = styled.div`
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+`;
+
+export const BreadcrumbItem = styled.span.attrs({
+  className: C_DISTANT,
+})`
+  padding: 0 0.2rem;
+  display: inline-block;
+  font-size: 0.9rem;
+  user-select: none;
+
+  :hover {
+    color: #000;
+  }
 `;
