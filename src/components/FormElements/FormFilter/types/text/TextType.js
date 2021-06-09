@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
-import ExactFilter from '../../items/ExactToggle';
-import OrFilter from '../../items/OrAndSelect';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
 
 /**
@@ -29,15 +29,9 @@ const TextType = (props) => {
 
   const [items, setItems] = useState(!!value ? value.TextItems : []);
   const [exact, setExact] = useState(!!value ? value.Exact : false);
-  const [resetValue, setResetValue] = useState(null);
   const [or, setOr] = useState(!!value ? value.Or : true);
-  const { RVDic, GlobalUtilities } = useWindow();
-
-  //! Options for 'OrAnd' select;
-  const orOptions = [
-    { value: 'or', title: RVDic.Or },
-    { value: 'and', title: RVDic.And },
-  ];
+  const [resetValue, setResetValue] = useState(null);
+  const { GlobalUtilities } = useWindow();
 
   const handleOnItemSelect = (items) => {
     setItems(items);
@@ -48,13 +42,9 @@ const TextType = (props) => {
     setExact(exactValue);
   };
 
-  //! Fires on 'OrAnd' change.
+  //! Fires on 'OrAnd' toggle change.
   const handleOrFilter = (orValue) => {
-    if (orValue === 'or') {
-      setOr(true);
-    } else {
-      setOr(false);
-    }
+    setOr(orValue);
   };
 
   useEffect(() => {
@@ -102,12 +92,7 @@ const TextType = (props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <OrFilter
-          options={orOptions}
-          selectedOption={!!or ? 0 : 1}
-          name="text-or-filter"
-          onSelect={handleOrFilter}
-        />
+        <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
     </Styled.TextContainer>

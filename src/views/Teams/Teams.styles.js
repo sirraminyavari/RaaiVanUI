@@ -2,12 +2,11 @@ import styled, { css } from 'styled-components';
 import {
   C_DISTANT,
   TC_DEFAULT,
-  BO_DISTANT,
-  BO_WHITE,
   C_GRAY,
   C_RED,
   C_GRAY_DARK,
   BG_GRAY_LIGHT,
+  BG_WHITE,
 } from 'constant/Colors';
 
 export const ViewContainer = styled.div.attrs({
@@ -78,7 +77,7 @@ export const SpaceHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0;
+  margin: 1rem 0 0.2rem 0;
 `;
 
 export const SpaceHeaderTitle = styled.div.attrs({
@@ -126,18 +125,22 @@ const IconWrapperCss = css`
   display: flex;
   align-items: center;
   cursor: pointer;
+  border-radius: 50%;
 `;
 
 export const TrashIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? C_RED : C_DISTANT,
+  className: props.isHovered ? C_RED : C_DISTANT + ' ' + BG_WHITE,
 }))`
   ${IconWrapperCss}
+  padding: 0.5rem;
 `;
 
 export const SettingIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? TC_DEFAULT : C_DISTANT,
+  className: props.isHovered ? TC_DEFAULT : C_DISTANT + ' ' + BG_WHITE,
 }))`
   ${IconWrapperCss}
+  padding: 0.4rem;
+  margin: 0 0.2rem;
 `;
 
 export const TeamListConatiner = styled.div`
@@ -160,6 +163,7 @@ export const TeamConatiner = styled.div`
   float: left;
   background-color: #fff;
   margin-bottom: 1rem;
+  overflow: hidden;
   :nth-child(2n+1){
     margin-right: 0.5rem;
   }
@@ -220,6 +224,7 @@ export const DragIconWrapper = styled.div`
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
     all-scroll !important;
+  z-index: 1000;
 `;
 
 export const TeamContentWrapper = styled.div`
@@ -329,7 +334,7 @@ export const SocialMediaContainer = styled.div`
 `;
 
 export const IconWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${props.isHovered ? BO_DISTANT : BO_WHITE}`,
+  className: props.isHovered ? TC_DEFAULT : C_DISTANT,
 }))`
   margin: 0 0.5rem;
   display: flex;
@@ -343,4 +348,11 @@ export const WelcomeMessage = styled.span.attrs({
   className: C_GRAY,
 })`
   font-size: 1rem;
+`;
+
+export const TeamPattern = styled.img`
+  width: 7rem;
+  position: absolute;
+  top: -1.65rem;
+  left: -0.7rem;
 `;

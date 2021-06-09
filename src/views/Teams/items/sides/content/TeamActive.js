@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { SortableHandle } from 'react-sortable-hoc';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
@@ -23,6 +23,7 @@ import {
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
+import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
 
@@ -144,6 +145,7 @@ const ActiveTeam = ({ team, hasHandle }) => {
         />
       </DeleteConfirm>
       {hasHandle && <SortHandle />}
+      <Styled.TeamPattern src={TeamPatternDefault} alt="team-pattern" />
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>

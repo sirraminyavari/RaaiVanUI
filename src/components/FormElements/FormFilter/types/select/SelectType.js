@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
-import ExactFilter from '../../items/ExactToggle';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
 
 /**
  * @typedef PropType

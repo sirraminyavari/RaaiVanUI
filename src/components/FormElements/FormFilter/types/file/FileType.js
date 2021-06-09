@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { encodeBase64, decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
-import ExactFilter from '../../items/ExactToggle';
-import OrFilter from '../../items/OrAndSelect';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
 
 /**
@@ -27,17 +27,11 @@ const FileType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title } = data; //! Meta data to feed component.
 
-  const { RVDic, GlobalUtilities } = useWindow();
+  const { GlobalUtilities } = useWindow();
   const [items, setItems] = useState(value ? value.TextItems : []);
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
   const [resetValue, setResetValue] = useState(null);
-
-  //! Options for 'OrAnd' select;
-  const orOptions = [
-    { value: 'or', title: RVDic.Or },
-    { value: 'and', title: RVDic.And },
-  ];
 
   //! Fires on item select.
   const handleOnItemSelect = (items) => {
@@ -49,13 +43,9 @@ const FileType = (props) => {
     setExact(exactValue);
   };
 
-  //! Fires on 'OrAnd' change.
+  //! Fires on 'OrAnd' toggle change.
   const handleOrFilter = (orValue) => {
-    if (orValue === 'or') {
-      setOr(true);
-    } else {
-      setOr(false);
-    }
+    setOr(orValue);
   };
 
   useEffect(() => {
@@ -102,12 +92,7 @@ const FileType = (props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <OrFilter
-          options={orOptions}
-          selectedOption={!!or ? 0 : 1}
-          name="file-or-filter"
-          onSelect={handleOrFilter}
-        />
+        <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
     </Styled.FileContainer>
