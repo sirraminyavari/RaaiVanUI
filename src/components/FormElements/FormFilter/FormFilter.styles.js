@@ -40,7 +40,7 @@ export const FilterButtonWrapper = styled.div.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   border-bottom-left-radius: 0.6rem;
   border-bottom-right-radius: 0.6rem;
 `;
