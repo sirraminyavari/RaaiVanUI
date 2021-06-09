@@ -107,13 +107,18 @@ const FormType = (props) => {
         title={decodeBase64(Title)}
         show={isModalShown}
         onClose={closeModal}
-        contentWidth="50%">
+        contentWidth="40%">
         {filters.length && (
           <FormFilter
-            formName={decodeBase64(FormName)}
+            // formName={decodeBase64(FormName)}
             filters={filters}
             onFilter={handleOnFilter}
             filterValues={filterValues}
+            containerStyles={{
+              border: '0',
+              boxShadow: 'none',
+              backgroundColor: '#fff',
+            }}
           />
         )}
       </Modal>
