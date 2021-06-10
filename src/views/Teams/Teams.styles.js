@@ -7,6 +7,7 @@ import {
   C_GRAY_DARK,
   BG_GRAY_LIGHT,
   BG_WHITE,
+  BO_DISTANT,
 } from 'constant/Colors';
 
 export const ViewContainer = styled.div.attrs({
@@ -152,45 +153,62 @@ export const TeamListConatiner = styled.div`
   }
 `;
 
-export const TeamConatiner = styled.div`
-  width: calc(100% / ${({ isMobile }) => (isMobile ? 1 : 2)} - 0.5rem);
+const getBorderCss = (props) => {
+  return props.isNew
+    ? css`
+        border-width: 2px;
+        border-style: dashed;
+      `
+    : css`
+        border-width: 1px;
+        border-style: solid;
+      `;
+};
+
+export const TeamConatiner = styled.div.attrs({
+  className: BG_WHITE + ' ' + BO_DISTANT,
+})`
+  width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
   height: 11.5rem;
-  border: ${({ isNew }) =>
-    !!isNew ? '2px dashed #bac9dc;' : '1px solid #bac9dc;'}
+  ${getBorderCss}
   border-radius: 0.7rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   position: relative;
   float: left;
-  background-color: #fff;
   margin-bottom: 1rem;
   overflow: hidden;
-  :nth-child(2n+1){
-    margin-right: 0.5rem;
-  }
-  :nth-child(2n){
-    margin-left: 0.5rem;
-  }
+  user-select: none;
+  ${({ isMobile }) =>
+    !isMobile &&
+    `
+    :nth-child(2n+1){
+      margin-right: 0.5rem;
+    }
+    :nth-child(2n){
+      margin-left: 0.5rem;
+    }
+  `}
 
   .team-extra-users {
-    background-color: #E6F4F1;
+    background-color: #e6f4f1;
     width: 2rem;
     height: 2rem;
     font-size: 0.8rem;
-    color: #2B7BE4;
+    color: #2b7be4;
     line-height: 2rem;
     user-select: none;
   }
 
-  .inactive{
-    background-color: #F6F6F7;
-    color: #B8B8B8;
+  .inactive {
+    background-color: #f6f6f7;
+    color: #b8b8b8;
   }
 
-  .hidden-arrow{
+  .hidden-arrow {
     display: none;
   }
 
-  .extra-users-popup{
+  .extra-users-popup {
     width: 13rem;
     height: 12rem;
     margin: 0;
@@ -203,7 +221,7 @@ export const TeamConatiner = styled.div`
     bottom: -2.9rem;
   }
 
-  .non-scroll{
+  .non-scroll {
     height: 100%;
     overflow: scroll;
 
@@ -220,7 +238,7 @@ export const TeamConatiner = styled.div`
 export const DragIconWrapper = styled.div`
   position: absolute;
   top: 0.6rem;
-  left: 0.2rem;
+  ${({ dir }) => dir}: 0.2rem;
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
     all-scroll !important;
@@ -266,7 +284,7 @@ export const TeamAvatarsWrapper = styled.div`
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  left: 0;
+  ${({ dir }) => dir}: 0;
 `;
 
 export const ExtraUserItem = styled.div`
@@ -354,5 +372,6 @@ export const TeamPattern = styled.img`
   width: 7rem;
   position: absolute;
   top: -1.65rem;
-  left: -0.7rem;
+  ${({ dir }) => dir}: -0.7rem;
+  ${({ rtl }) => !rtl && 'transform: scaleX(-1);'}
 `;
