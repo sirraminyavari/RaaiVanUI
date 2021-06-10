@@ -30,6 +30,8 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
   // formElements passed from 'FormFilter'
   const [formElements, setFormElements] = useState(null);
 
+  const [totalFound, setTotalFound] = useState(null);
+
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
@@ -62,13 +64,15 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
             onSearch={setSearchText}
             onByDate={setDateFilter}
             onFormElements={setFormElements}
+            totalFound={totalFound}
           />
         </TopFilter>
-        <div>
+        <div style={{ paddingRight: '2rem', paddingLeft: '2rem' }}>
           {React.cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,
             formFilters: formFilters,
+            onTotalFound: setTotalFound,
           })}
         </div>
       </Maintainer>
