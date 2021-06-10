@@ -18,6 +18,7 @@ import * as Styled from './FormFilter.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
+import { C_DISTANT, C_RED } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -73,33 +74,42 @@ const FormFilter = (props) => {
       ) : (
         <Styled.FormFilterContainer>
           <Styled.FormFilterHeader>
-            <UndoIcon style={{ cursor: 'pointer' }} onClick={clearFilter} />
+            <UndoIcon
+              style={{ cursor: 'pointer', transform: 'scaleX(-1)' }}
+              onClick={clearFilter}
+              className={C_DISTANT}
+              size={16}
+            />
             <Styled.FormFilterTitle>{formName}</Styled.FormFilterTitle>
             <CloseIcon
-              color="red"
-              size={18}
+              size={16}
               style={{ cursor: 'pointer' }}
               onClick={closeFormFilter}
+              className={C_RED}
             />
           </Styled.FormFilterHeader>
-          {filters.map((filter, key) => {
-            return (
-              <Fragment key={key}>
-                {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                  FormFilter[filter.Type]({
-                    onChange: handleOnChange,
-                    data: filter,
-                    value: values[filter.ElementID],
-                  })}
-              </Fragment>
-            );
-          })}
-          <FilterButton
-            onClick={handleOnFilterClick}
-            style={{ width: '50%', margin: '1rem 0 0 0', fontSize: '1rem' }}
-            type="primary-o">
-            اعمال فیلتر
-          </FilterButton>
+          <Styled.FiltersWrapper>
+            {filters.map((filter, key) => {
+              return (
+                <Fragment key={key}>
+                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+                    FormFilter[filter.Type]({
+                      onChange: handleOnChange,
+                      data: filter,
+                      value: values[filter.ElementID],
+                    })}
+                </Fragment>
+              );
+            })}
+          </Styled.FiltersWrapper>
+          <Styled.FilterButtonWrapper>
+            <FilterButton
+              onClick={handleOnFilterClick}
+              style={{ width: '50%', fontSize: '1rem' }}
+              type="primary-o">
+              اعمال فیلتر
+            </FilterButton>
+          </Styled.FilterButtonWrapper>
         </Styled.FormFilterContainer>
       )}
     </>

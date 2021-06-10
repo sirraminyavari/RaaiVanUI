@@ -76,16 +76,16 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
           })}
         </div>
       </Maintainer>
-      <SideFilter isEnabled={isAdvancedSearch}>
-        {isAdvancedSearch && formElements && (
+      {isAdvancedSearch && formElements && (
+        <SideFilter>
           <FormFilter
-            formName={'فیلتر های پیشرفته'}
+            formName="فیلتر های پیشرفته"
             filters={formElements}
             onFilter={normalizeSearchElements}
             onCloseFilter={() => setIsAdvancedSearch(false)}
           />
-        )}
-      </SideFilter>
+        </SideFilter>
+      )}
     </Container>
   );
 };

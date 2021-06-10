@@ -18,6 +18,7 @@ import React, { useEffect, useState } from 'react';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import Breadcrumb from './Breadcrumb';
 
 const data = [
   {
@@ -176,6 +177,7 @@ const FilterBar = ({
 
   return (
     <Container>
+      <Breadcrumb />
       <TopRow>
         {totalFound + 'مورد'}
 
