@@ -8,19 +8,21 @@ export const ShadowButton = styled(Button)`
   background-color: white;
   border-width: 0.06rem;
   padding: 0.5rem;
-  border-color: ${({ isEnabled }) => (isEnabled ? '#BAC9DC' : 'white')};
+  /* border-color: ${({ isEnabled }) => (isEnabled ? '#BAC9DC' : 'white')}; */
   border-style: solid;
   transition: border-color 0.5s, box-shadow 0.5s;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: ${({ isEnabled }) => (isEnabled ? '#2B7BE4' : '#BAC9DC')};
+  cursor: pointer;
+  /* color: ${({ isEnabled }) => (isEnabled ? '#2B7BE4' : '#BAC9DC')}; */
   /* :hover {
     border-width: 0.06rem;
     border-color: #bac9dc;
     border-style: solid;
   } */
+  /* ${({ isEnabled }) => isEnabled && 'rv-border-warm-red'} */
 `;
 export const BottomRow = styled.div`
   display: flex;
@@ -35,15 +37,15 @@ export const TopRow = styled.div`
   align-items: center;
   width: 100%;
   align-self: flex-end;
-  margin: 1rem 1rem 1rem 0rem;
+  margin: 3rem 1rem 1rem 0rem;
   justify-content: space-between;
 `;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
-  padding-left: 2rem;
+  padding: 0 2rem 0 2rem;
   position: relative;
 `;
 

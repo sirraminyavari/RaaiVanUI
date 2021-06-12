@@ -54,8 +54,10 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
     });
   };
   return (
-    <Container RV_RTL={RV_RTL}>
-      <Maintainer fullWidth={isAdvancedSearch}>
+    <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
+      <Maintainer
+        className={'rv-bg-color-light-gray'}
+        fullWidth={isAdvancedSearch}>
         <TopFilter>
           <FilterBar
             nodeTypeId={nodeTypeId}

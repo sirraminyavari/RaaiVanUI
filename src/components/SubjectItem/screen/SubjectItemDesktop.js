@@ -1,6 +1,7 @@
 /**
  * 'SubjectItem' for the time that the screen is big.
  */
+import { getURL } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -23,9 +24,15 @@ import { Container, Divider, IconContent, Root } from './SubjectItem.style';
    checkbox state and the selected item will pass to up.
  */
 
-const { RV_RTL } = window;
+const { RV_RTL, RVAPI } = window;
 
-const SubjectItemDesktop = ({ item, selectMode, onChecked, onClick }) => {
+const SubjectItemDesktop = ({
+  item,
+  selectMode,
+  onChecked,
+  onClick,
+  parentNodeType,
+}) => {
   const {
     Name,
     IconURL,
@@ -34,8 +41,10 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked, onClick }) => {
     AdditionalID,
     UserStatus,
     Creator,
+    NodeID,
+    NodeTypeID,
   } = item;
-
+  const [isHover, setIsHover] = useState(false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   // /**
@@ -49,32 +58,37 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked, onClick }) => {
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-
-      <Container className="rv-border-distant" onClick={onClick}>
+      {console.log(isSaas, 'is saas')}
+      <Container
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        href={RVAPI.NodePageURL({ NodeID: NodeID })}
+        className="rv-border-freezed">
         <IconContent>
           <SubjectIcon iconUrl={IconURL} />
           <SubjectDate date={CreationDate} />
         </IconContent>
-        <Divider className="rv-bg-color-distant" />
+        <Divider className="rv-bg-color-freezed" />
         <MainContent>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />
-
             {isSaas && (
               <Details>
-                <SubjectClassName className={decode(NodeType)} />
+                {parentNodeType !== NodeTypeID && (
+                  <SubjectClassName className={decode(NodeType)} />
+                )}
                 {!isSaas && <SubjectViewCount count={UserStatus.VisitsCount} />}
 
-                <div
+                {/* <div
                   style={{
                     display: 'flex',
                     flexGrow: 1,
                   }}
-                />
+                /> */}
               </Details>
             )}
           </Main>
-          {isSaas && (
+          {isSaas && isHover && (
             <>
               <SubjectTools
                 editable={UserStatus.Editable}
@@ -85,6 +99,7 @@ const SubjectItemDesktop = ({ item, selectMode, onChecked, onClick }) => {
             </>
           )}
           <SubjectCreator
+            style={{ padding: RV_RTL ? '0 0rem 0 2rem' : '0 2rem 0 0 ' }}
             userProfile={Creator?.ProfileImageURL}
             firstName={decode(Creator.FirstName)}
             lastName={decode(Creator.LastName)}
@@ -109,12 +124,13 @@ const Main = styled.div`
   flex-grow: 1;
   flex-direction: column;
   height: 100%;
-  justify-content: space-evenly;
+  align-items: center;
+  justify-content: center;
   margin: ${() => (RV_RTL ? '0 1.75rem 0 0' : '0 0 0 1.75rem')};
 `;
 
 const Details = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 `;

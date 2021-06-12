@@ -19,6 +19,7 @@ import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Breadcrumb from './Breadcrumb';
+import Heading from 'components/Heading/Heading';
 
 const data = [
   {
@@ -179,7 +180,7 @@ const FilterBar = ({
     <Container>
       <Breadcrumb />
       <TopRow>
-        {totalFound + 'مورد'}
+        {totalFound && <Heading type={'h6'}>{totalFound + ' مورد'}</Heading>}
 
         {market?.length > 0 && (
           <AnimatedDropDownList
@@ -207,6 +208,7 @@ const FilterBar = ({
       <BottomRow>
         <AnimatedInput
           value={searchText}
+          placholderClass={'rv-distant'}
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           placeholder={
@@ -214,8 +216,8 @@ const FilterBar = ({
               ? 'جستجو'
               : 'جستجو در اسناد مارکتینگ (عنوان ، کد رهگیری ، کلمات کلیدی)'
           }
-          children={<Search color={'#BAC9DC'} />}
-          style={{ maxWidth: '40%' }}
+          children={<Search className={'rv-distant'} />}
+          style={{ maxWidth: '40%', placeholderColor: 'red' }}
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <ShadowButton
@@ -223,13 +225,18 @@ const FilterBar = ({
             onMouseEnter={() => setBookmarkHover(true)}
             onMouseLeave={() => setBookmarkHover(false)}
             onClick={() => onAdvanecedSearch(!advancedSearch)}
-            isEnabled={bookmarked}>
+            isEnabled={bookmarked}
+            className={
+              bookmarked
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
             {bookmarked ? (
-              <FilledBookmarkIcon size={'1rem'} color={'#2B7BE4'} />
+              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
             ) : (
               <OutLineBookmarkIcon
-                size={'1rem'}
-                color={bookmarkHover ? '#2B7BE4' : '#BAC9DC'}
+                size={'1.5rem'}
+                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
               />
             )}
           </ShadowButton>
@@ -246,13 +253,21 @@ const FilterBar = ({
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                isEnabled={date}>
+                isEnabled={date}
+                className={
+                  date
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
                 {date ? (
-                  <FilledCalendarIcon size={'1rem'} color={'#2B7BE4'} />
+                  <FilledCalendarIcon
+                    size={'1.5rem'}
+                    className={'rv-default'}
+                  />
                 ) : (
                   <EmptyCalendarIcon
-                    size={'1rem'}
-                    color={dateHover ? '#2B7BE4' : '#BAC9DC'}
+                    size={'1.5rem'}
+                    className={dateHover ? 'rv-default' : 'rv-distant'}
                   />
                 )}
               </ShadowButton>
@@ -268,10 +283,21 @@ const FilterBar = ({
             onClick={() => onAdvanecedSearch(!advancedSearch)}
             onMouseEnter={() => setPeopleHover(true)}
             onMouseLeave={() => setPeopleHover(false)}
-            isEnabled={people}>
+            isEnabled={people}
+            className={
+              people
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
             <PersonIcon
-              size={'1rem'}
-              color={people ? '#2B7BE4' : peopleHover ? '#2B7BE4' : '#BAC9DC'}
+              size={'1.5rem'}
+              className={
+                people
+                  ? 'rv-default'
+                  : peopleHover
+                  ? 'rv-default'
+                  : 'rv-distant'
+              }
             />
           </ShadowButton>
 
@@ -280,20 +306,26 @@ const FilterBar = ({
               style={{
                 marginRight: '0.5rem',
                 minWidth: '7rem',
-                color: advancedSearch || filterHover ? '#2B7BE4' : '#BAC9DC',
+                color:
+                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
               }}
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={() => onAdvanecedSearch(!advancedSearch)}
-              isEnabled={advancedSearch}>
+              isEnabled={advancedSearch}
+              className={
+                advancedSearch
+                  ? 'rv-border-distant rv-default'
+                  : 'rv-border-white rv-distant'
+              }>
               <Filter
-                size={'1rem'}
-                color={
+                size={'1.5rem'}
+                className={
                   advancedSearch
-                    ? '#2B7BE4'
+                    ? 'rv-default'
                     : filterHover
-                    ? '#2B7BE4'
-                    : '#BAC9DC'
+                    ? 'rv-default'
+                    : 'rv-distant'
                 }
                 style={{ marginLeft: '0.5rem' }}
               />

@@ -8,7 +8,7 @@ export const Container = styled.div`
   height: 100%;
   align-items: flex-start;
   justify-content: center;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
 `;
 export const Maintainer = styled.div`
   width: 65%;
@@ -20,7 +20,7 @@ export const Maintainer = styled.div`
   display: flex;
   flex-direction: column; */
   transition: min-width 0.5s;
-  background-color: #fcfcfd;
+  /* background-color: #fcfcfd; */
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;
 `;
@@ -37,7 +37,7 @@ export const SideFilter = styled.div`
   // max-height: 90vh;
   // align-items: flex-start;
   // justify-content: center;
-  height: 85vh;
+  height: 100vh;
   padding: 0 0.5rem 0 1rem;
   // min-width: 25rem;
 `;

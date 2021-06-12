@@ -5,12 +5,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SubjectClassName = ({ className }) => {
-  return <ClassName className="rv-default">{className}</ClassName>;
+  return (
+    <ClassName className="rv-default rv-bg-color-verysoft">
+      {className}
+    </ClassName>
+  );
 };
 export default SubjectClassName;
 
 const ClassName = styled.div`
-  background-color: #f3f7fd;
+  /* background-color: #f3f7fd; */
   border-radius: 13px;
   height: 1.5rem;
   border-radius: 0.75rem;
