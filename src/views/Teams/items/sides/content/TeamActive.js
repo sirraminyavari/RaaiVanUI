@@ -40,7 +40,7 @@ const SortHandle = SortableHandle(({ tabIndex }) => {
 const ActiveTeam = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { RVGlobal, RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [trashRef, isTrashHovered] = useHover();
   const isMobileScreen = useMediaQuery({
@@ -53,9 +53,9 @@ const ActiveTeam = ({ team, hasHandle }) => {
     Users: appUsers,
     IconURL: appIcon,
     ApplicationID: appId,
+    Removable: isRemovable,
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
-  const { IsSystemAdmin } = RVGlobal;
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -133,6 +133,8 @@ const ActiveTeam = ({ team, hasHandle }) => {
   return (
     <Styled.TeamConatiner
       isMobile={isMobileScreen}
+      dir={RV_Float}
+      revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -221,7 +223,7 @@ const ActiveTeam = ({ team, hasHandle }) => {
               </PopupMenu>
             )}
           </Styled.TeamAvatarsWrapper>
-          {IsSystemAdmin && (
+          {isRemovable && (
             <Styled.TeamTrashWrapper isHovered={isTrashHovered} ref={trashRef}>
               <TrashIcon onClick={onTrashClick} />
             </Styled.TeamTrashWrapper>

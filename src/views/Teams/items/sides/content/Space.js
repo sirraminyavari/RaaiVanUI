@@ -7,7 +7,6 @@ import NewTeam from './NewTeam';
 import SpaceHeader from './SpcaeHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
-import useWindow from 'hooks/useWindowContext';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -19,8 +18,6 @@ const selectApplications = createSelector(
 const WorkSpace = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
-  const { RVGlobal } = useWindow();
-  const { IsSystemAdmin } = RVGlobal;
 
   const SortableItem = SortableElement((props) => {
     const { team, shouldUseDragHandle } = props;
@@ -39,7 +36,7 @@ const WorkSpace = ({ space }) => {
             {...restProps}
           />
         ))}
-        {IsSystemAdmin && <NewTeam />}
+        <NewTeam />
       </Styled.TeamListConatiner>
     );
   });

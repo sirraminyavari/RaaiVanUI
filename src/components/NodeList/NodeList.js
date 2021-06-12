@@ -3,6 +3,7 @@ import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
@@ -90,32 +91,36 @@ const NodeList = ({
   };
   return (
     <>
-      <SimpleListViewer
-        fetchMethod={fetchData}
-        extraData={extraData}
-        infiniteLoop={true}
-        onEndReached={() => {
-          console.log('Im reached end');
-        }}
-        onTotal={onTotalFound}
-        renderItem={(x, index) => (
-          <>
-            {x.Creator && (
-              <SubjectItem
-                key={index}
-                onChecked={(value, item) =>
-                  console.log(value, item, 'onChecked')
-                }
-                parentNodeType={nodeTypeId}
-                selectMode={false}
-                item={x}
-                isSaas={isSaas}
-                onClick={() => onClick(x.NodeID)}
-              />
-            )}
-          </>
-        )}
-      />
+      {nodeTypeId ? (
+        <SimpleListViewer
+          fetchMethod={fetchData}
+          extraData={extraData}
+          infiniteLoop={true}
+          onEndReached={() => {
+            console.log('Im reached end');
+          }}
+          onTotal={onTotalFound}
+          renderItem={(x, index) => (
+            <>
+              {x.Creator && (
+                <SubjectItem
+                  key={index}
+                  onChecked={(value, item) =>
+                    console.log(value, item, 'onChecked')
+                  }
+                  parentNodeType={nodeTypeId}
+                  selectMode={false}
+                  item={x}
+                  isSaas={isSaas}
+                  onClick={() => onClick(x.NodeID)}
+                />
+              )}
+            </>
+          )}
+        />
+      ) : (
+        <LogoLoader />
+      )}
       {/* {nodes.length > 0 &&
         nodes.map((x) => (
           <SubjectItem

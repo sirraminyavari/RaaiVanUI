@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { decodeBase64 } from 'helpers/helpers';
-import { getApplications } from 'store/actions/applications/ApplicationsAction';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.

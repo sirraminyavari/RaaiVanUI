@@ -174,18 +174,18 @@ export const TeamConatiner = styled.div.attrs({
   border-radius: 0.7rem;
   padding: 0.5rem;
   position: relative;
-  float: left;
+  float: ${({ revDir }) => revDir};
   margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
-  ${({ isMobile }) =>
+  ${({ isMobile, dir, revDir }) =>
     !isMobile &&
     `
     :nth-child(2n+1){
-      margin-right: 0.5rem;
+      margin-${dir}: 0.5rem;
     }
     :nth-child(2n){
-      margin-left: 0.5rem;
+      margin-${revDir}: 0.5rem;
     }
   `}
 
