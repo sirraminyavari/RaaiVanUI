@@ -8,7 +8,7 @@ const AdvancedSearchView = (props) => {
 
   return (
     <Container>
-      <AdvanceSearch nodeTypeId={NodeTypeID}>
+      <AdvanceSearch nodeTypeId={NodeTypeID} hierarchy={props.route.Hierarchy}>
         <NodeList nodeTypeId={NodeTypeID} />
       </AdvanceSearch>
     </Container>
