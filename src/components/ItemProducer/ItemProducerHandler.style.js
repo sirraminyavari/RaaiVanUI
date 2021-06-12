@@ -40,7 +40,7 @@ const reset = keyframes`
 `;
 
 export const Maintainer = styled.div`
-  background-color: ${({ isDragging }) => (isDragging ? '#D5D5FF' : '#F4F4F4')};
+  background-color: ${({ isDragging }) => isDragging && '#D5D5FF'};
   margin-top: 0.3rem;
   display: flex;
   align-items: center;

@@ -13,9 +13,13 @@ import Filter from 'components/Icons/FilterIcon/Filter';
 import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import Input from 'components/Inputs/Input';
+import Search from 'components/Icons/SearchIcon/Search';
 import React, { useEffect, useState } from 'react';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Breadcrumb from './Breadcrumb';
+import Heading from 'components/Heading/Heading';
 
 const data = [
   {
@@ -65,6 +69,7 @@ const FilterBar = ({
   onAdvanecedSearch,
   nodeTypeId,
   onFormElements,
+  totalFound,
 }) => {
   // Typed value in search input.
   const [searchText, setSearchText] = useState('');
@@ -80,6 +85,13 @@ const FilterBar = ({
   const [advancedButton, setAdvancedButton] = useState(false);
   // selected item for creating type.
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
+
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+
+  const [filterHover, setFilterHover] = useState(false);
+  const [dateHover, setDateHover] = useState(false);
+  const [peopleHover, setPeopleHover] = useState(false);
+  const [bookmarkHover, setBookmarkHover] = useState(false);
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
@@ -153,8 +165,8 @@ const FilterBar = ({
   const onSelectItem = (item) => {
     localStorage.setItem(nodeTypeId, JSON.stringify(item.value));
     setSelectedItem({
+      ...selectedItem,
       icon: React.cloneElement(item.icon, { color: 'white' }),
-      label: item.label,
       value: item.value,
       color: 'white',
     });
@@ -168,6 +180,8 @@ const FilterBar = ({
     <Container>
       <Breadcrumb />
       <TopRow>
+        {totalFound && <Heading type={'h6'}>{totalFound + ' مورد'}</Heading>}
+
         {market?.length > 0 && (
           <AnimatedDropDownList
             data={market}
@@ -176,7 +190,9 @@ const FilterBar = ({
             hiddenSelectedItem={false}
             onClickLabel={() => console.log('label clicked!')}
             customStyle={{
-              button: { backgroundColor: '#2B388F' },
+              button: {
+                backgroundColor: isDropDownOpen ? '#2B388F' : '#2B7BE4',
+              },
               label: {
                 backgroundColor: '#2B7BE4',
                 borderTopRightRadius: '0.5rem',
@@ -184,77 +200,139 @@ const FilterBar = ({
               },
               arrowIconColor: 'white',
             }}
+            onDropDownOpen={setIsDropDownOpen}
           />
         )}
       </TopRow>
+
       <BottomRow>
-        <Input
+        <AnimatedInput
           value={searchText}
+          placholderClass={'rv-distant'}
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           placeholder={
-            'جستجو در اسناد مارکتینگ (عنوان ، کد رهگیری ، کلمات کلیدی)'
+            DimensionHelper().isTabletOrMobile
+              ? 'جستجو'
+              : 'جستجو در اسناد مارکتینگ (عنوان ، کد رهگیری ، کلمات کلیدی)'
           }
-          style={{ width: '60%', marginRight: '3rem' }}
+          children={<Search className={'rv-distant'} />}
+          style={{ maxWidth: '40%', placeholderColor: 'red' }}
         />
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <ShadowButton
+            style={commonStyle}
+            onMouseEnter={() => setBookmarkHover(true)}
+            onMouseLeave={() => setBookmarkHover(false)}
+            onClick={() => onAdvanecedSearch(!advancedSearch)}
+            isEnabled={bookmarked}
+            className={
+              bookmarked
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
+            {bookmarked ? (
+              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+            ) : (
+              <OutLineBookmarkIcon
+                size={'1.5rem'}
+                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+              />
+            )}
+          </ShadowButton>
 
-        <ShadowButton
-          style={commonStyle}
-          onClick={() => onAdvanecedSearch(!advancedSearch)}
-          isEnabled={bookmarked}>
-          {bookmarked ? (
-            <FilledBookmarkIcon size={'1rem'} color={'#2B7BE4'} />
-          ) : (
-            <OutLineBookmarkIcon size={'1rem'} color={'#BAC9DC'} />
-          )}
-        </ShadowButton>
+          <CustomDatePicker
+            label=" انتخاب تاریخ جلالی"
+            mode="button"
+            type="jalali"
+            clearButton
+            range
+            CustomButton={({ onClick }) => (
+              <ShadowButton
+                onClick={onClick}
+                onMouseEnter={() => setDateHover(true)}
+                onMouseLeave={() => setDateHover(false)}
+                style={commonStyle}
+                isEnabled={date}
+                className={
+                  date
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                {date ? (
+                  <FilledCalendarIcon
+                    size={'1.5rem'}
+                    className={'rv-default'}
+                  />
+                ) : (
+                  <EmptyCalendarIcon
+                    size={'1.5rem'}
+                    className={dateHover ? 'rv-default' : 'rv-distant'}
+                  />
+                )}
+              </ShadowButton>
+            )}
+            onDateSelect={(value) => {
+              console.log(date, 'date');
+              setDate(value);
+              onByDate(value);
+            }}
+          />
+          <ShadowButton
+            style={commonStyle}
+            onClick={() => onAdvanecedSearch(!advancedSearch)}
+            onMouseEnter={() => setPeopleHover(true)}
+            onMouseLeave={() => setPeopleHover(false)}
+            isEnabled={people}
+            className={
+              people
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
+            <PersonIcon
+              size={'1.5rem'}
+              className={
+                people
+                  ? 'rv-default'
+                  : peopleHover
+                  ? 'rv-default'
+                  : 'rv-distant'
+              }
+            />
+          </ShadowButton>
 
-        <CustomDatePicker
-          label=" انتخاب تاریخ جلالی"
-          mode="button"
-          type="jalali"
-          clearButton
-          range
-          CustomButton={({ onClick }) => (
+          {advancedButton && (
             <ShadowButton
-              onClick={onClick}
-              style={commonStyle}
-              isEnabled={date}>
-              {date ? (
-                <FilledCalendarIcon size={'1rem'} color={'#2B7BE4'} />
-              ) : (
-                <EmptyCalendarIcon size={'1rem'} color={'#BAC9DC'} />
-              )}
+              style={{
+                marginRight: '0.5rem',
+                minWidth: '7rem',
+                color:
+                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
+              }}
+              onMouseEnter={() => setFilterHover(true)}
+              onMouseLeave={() => setFilterHover(false)}
+              onClick={() => onAdvanecedSearch(!advancedSearch)}
+              isEnabled={advancedSearch}
+              className={
+                advancedSearch
+                  ? 'rv-border-distant rv-default'
+                  : 'rv-border-white rv-distant'
+              }>
+              <Filter
+                size={'1.5rem'}
+                className={
+                  advancedSearch
+                    ? 'rv-default'
+                    : filterHover
+                    ? 'rv-default'
+                    : 'rv-distant'
+                }
+                style={{ marginLeft: '0.5rem' }}
+              />
+              {'پیشرفته'}
             </ShadowButton>
           )}
-          onDateSelect={(value) => {
-            console.log(date, 'date');
-            setDate(value);
-            onByDate(value);
-          }}
-        />
-        <ShadowButton
-          style={commonStyle}
-          onClick={() => onAdvanecedSearch(!advancedSearch)}
-          isEnabled={people}>
-          <PersonIcon size={'1rem'} color={people ? '#2B7BE4' : '#BAC9DC'} />
-        </ShadowButton>
-
-        {advancedButton && (
-          <ShadowButton
-            style={{
-              marginRight: '0.5rem',
-              minWidth: '7rem',
-            }}
-            onClick={() => onAdvanecedSearch(!advancedSearch)}
-            isEnabled={advancedSearch}>
-            <Filter
-              size={'1rem'}
-              color={advancedSearch ? '#2B7BE4' : '#BAC9DC'}
-            />
-            {'فیلتر   پیشرفته'}
-          </ShadowButton>
-        )}
+        </div>
       </BottomRow>
     </Container>
   );

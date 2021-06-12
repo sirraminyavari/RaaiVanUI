@@ -41,10 +41,13 @@ const appear = keyframes`
 // `;
 export const Container = styled.div`
   position: relative;
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   flex-direction: row;
   min-width: 5rem;
+  /* box-shadow: 1px 3px 20px #ababab; */
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 100rem;
 `;
 export const ItemList = styled.div`
   max-height: auto;

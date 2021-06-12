@@ -1,7 +1,7 @@
 /**
  * A 'component' for rendering the tools for editting the item.
  */
-import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
+import BookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import EditIcon from 'components/Icons/EditIcon/Edit';
 import TrashIcon from 'components/Icons/TrashIcon';
 import React from 'react';
@@ -28,6 +28,7 @@ const SubjectTools = ({ removable, editable, ...props }) => {
           <TrashIcon size={30} className="rv-distant" />
         </button>
       )}
+
       <button
         style={{
           width: '1rem',

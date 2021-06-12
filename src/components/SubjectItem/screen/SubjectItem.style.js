@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-export const Container = styled.div`
+export const Container = styled.a`
   border-radius: 0.75rem;
   display: flex;
   height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};

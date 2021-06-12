@@ -30,6 +30,8 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
   // formElements passed from 'FormFilter'
   const [formElements, setFormElements] = useState(null);
 
+  const [totalFound, setTotalFound] = useState(null);
+
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
@@ -52,8 +54,10 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
     });
   };
   return (
-    <Container RV_RTL={RV_RTL}>
-      <Maintainer fullWidth={isAdvancedSearch}>
+    <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
+      <Maintainer
+        className={'rv-bg-color-light-gray'}
+        fullWidth={isAdvancedSearch}>
         <TopFilter>
           <FilterBar
             nodeTypeId={nodeTypeId}
@@ -62,13 +66,15 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
             onSearch={setSearchText}
             onByDate={setDateFilter}
             onFormElements={setFormElements}
+            totalFound={totalFound}
           />
         </TopFilter>
-        <div>
+        <div style={{ paddingRight: '2rem', paddingLeft: '2rem' }}>
           {React.cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,
             formFilters: formFilters,
+            onTotalFound: setTotalFound,
           })}
         </div>
       </Maintainer>

@@ -22,6 +22,7 @@ const SimpleListViewer = ({
   pageSize = 20,
   infiniteLoop,
   extraData,
+  onTotal,
 }) => {
   // fetched data
   const [data, setData] = useState([]);
@@ -45,6 +46,7 @@ const SimpleListViewer = ({
         setData(data);
         setTotal(total);
         setIsFetching(false);
+        onTotal(total);
       }
     });
 

@@ -15,7 +15,7 @@ import SubjectViewCount from '../items/SubjectViewCount';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 
 import { Container, IconContent, Divider, Root } from './SubjectItem.style';
-const { RV_RTL } = window;
+const { RV_RTL, RVAPI } = window;
 
 /**
  *
@@ -24,7 +24,13 @@ const { RV_RTL } = window;
  * @callback onChecked -  By changing the checkbox state,
    checkbox state and the selected item will pass to up.
  */
-const SubjectItemMobileView = ({ item, selectMode, onChecked, onClick }) => {
+const SubjectItemMobileView = ({
+  item,
+  selectMode,
+  onChecked,
+  onClick,
+  parentNodeType,
+}) => {
   const {
     Name,
     IconURL,
@@ -33,6 +39,8 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked, onClick }) => {
     AdditionalID,
     UserStatus,
     Creator,
+    NodeID,
+    NodeTypeID,
   } = item;
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
@@ -47,18 +55,22 @@ const SubjectItemMobileView = ({ item, selectMode, onChecked, onClick }) => {
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-      <Container className="rv-border-distant" onClick={onClick}>
+      <Container
+        href={RVAPI.NodePageURL({ NodeID: NodeID })}
+        className="rv-border-freezed">
         <IconContent>
           <div>
             <SubjectIcon iconUrl={IconURL} />
-            <SubjectClassName className={decode(NodeType)} />
+            {parentNodeType !== NodeTypeID && (
+              <SubjectClassName className={decode(NodeType)} />
+            )}
           </div>
           <div>
             <SubjectViewCount count={UserStatus.VisitsCount} />
             <SubjectDate date={CreationDate} />
           </div>
         </IconContent>
-        <Divider className="rv-bg-color-distant" />
+        <Divider className="rv-bg-color-freezed" />
         <MainContent>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />

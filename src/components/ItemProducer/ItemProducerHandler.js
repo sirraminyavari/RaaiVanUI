@@ -190,15 +190,6 @@ const ItemProducerHandler = ({
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}>
               {items.map((x, index) => {
-                console.log(
-                  index === removeIndex
-                    ? 'removeMe'
-                    : index === newIndex
-                    ? 'addMe'
-                    : resetMe && 'resetMe',
-                  resetMe,
-                  '<**********'
-                );
                 return (
                   <Draggable
                     isDragDisabled={isDragDisabled}
