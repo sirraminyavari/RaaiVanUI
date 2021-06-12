@@ -17,8 +17,7 @@ import {
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
-  const { RV_RTL, RV_RevFloat } = useWindow();
+const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
   // if True, filter for will apear.
@@ -55,6 +54,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
   };
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
+      {console.log(hierarchy, 'hierarchy*')}
       <Maintainer
         isAdvancedShow={isAdvancedSearch}
         className={'rv-bg-color-light-gray'}
@@ -68,6 +68,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
             onByDate={setDateFilter}
             onFormElements={setFormElements}
             totalFound={totalFound}
+            hierarchy={hierarchy}
           />
         </TopFilter>
         <div style={{ paddingRight: '2rem', paddingLeft: '2rem' }}>

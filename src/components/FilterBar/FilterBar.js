@@ -20,6 +20,8 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Breadcrumb from './Breadcrumb';
 import Heading from 'components/Heading/Heading';
+import useCheckRoute from 'hooks/useCheckRoute';
+import { decode } from 'js-base64';
 
 const data = [
   {
@@ -70,6 +72,7 @@ const FilterBar = ({
   nodeTypeId,
   onFormElements,
   totalFound,
+  hierarchy,
 }) => {
   // Typed value in search input.
   const [searchText, setSearchText] = useState('');
@@ -176,11 +179,36 @@ const FilterBar = ({
     setSearchText(e.target.value);
   };
 
+  const checkRoute = useCheckRoute();
+
   return (
     <Container>
       <Breadcrumb />
       <TopRow>
-        {totalFound && <Heading type={'h6'}>{totalFound + ' مورد'}</Heading>}
+        {console.log(hierarchy, 'hierarchy')}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          {hierarchy && hierarchy.length > 0 && hierarchy[0]?.IconURL && (
+            <img
+              style={{ height: '3rem', aspectRatio: 1 }}
+              src={hierarchy[0]?.IconURL}
+            />
+          )}
+          {hierarchy && hierarchy.length > 0 && hierarchy[0]?.TypeName && (
+            <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
+              {decode(hierarchy[0].TypeName)}
+            </Heading>
+          )}
+          {totalFound && (
+            <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
+              {totalFound + ' مورد'}
+            </Heading>
+          )}
+        </div>
 
         {market?.length > 0 && (
           <AnimatedDropDownList

@@ -42,7 +42,7 @@ const NodeList = ({
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
-        FormFilters: formFilters,
+        FormFilters: encode(JSON.stringify(formFilters)),
       },
       (response) => {
         if (response.Nodes) {
