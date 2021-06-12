@@ -1,10 +1,10 @@
 /**
  * A component for advanced searching
  */
+import { useState, Component, cloneElement } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
-import React, { useState } from 'react';
-import { Component } from 'react';
+import useWindow from 'hooks/useWindowContext';
 import {
   Container,
   Maintainer,
@@ -12,13 +12,13 @@ import {
   TopFilter,
 } from './AdvancedSearch.style';
 
-const { RV_RTL } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
 const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
+  const { RV_RTL, RV_RevFloat } = useWindow();
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
   // if True, filter for will apear.
@@ -56,6 +56,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
       <Maintainer
+        isAdvancedShow={isAdvancedSearch}
         className={'rv-bg-color-light-gray'}
         fullWidth={isAdvancedSearch}>
         <TopFilter>
@@ -70,7 +71,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
           />
         </TopFilter>
         <div style={{ paddingRight: '2rem', paddingLeft: '2rem' }}>
-          {React.cloneElement(children, {
+          {cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,
             formFilters: formFilters,
@@ -79,7 +80,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId }) => {
         </div>
       </Maintainer>
       {isAdvancedSearch && formElements && (
-        <SideFilter>
+        <SideFilter dir={RV_RevFloat} rtl={RV_RTL}>
           <FormFilter
             formName="فیلتر های پیشرفته"
             filters={formElements}

@@ -1,6 +1,6 @@
-import { ApplicationsSlice } from '../../reducers/applicationsReducer';
+import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import APIHandler from 'apiHelper/APIHandler';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64, saveLocalStorage } from 'helpers/helpers';
 
 const {
   setApplications,
@@ -12,25 +12,39 @@ const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
 const removeApplicationAPI = new APIHandler('RVAPI', 'RemoveApplication');
 const recycleApplicationAPI = new APIHandler('RVAPI', 'RecycleApplication');
 const createApplicationAPI = new APIHandler('RVAPI', 'CreateApplication');
+const getGlobalParamsAPI = new APIHandler('RVAPI', 'GetGlobalParams');
 
 /**
  * @description A function (action) that gets applications list from server.
  * @returns -Dispatch to redux store.
  */
-export const getApplications = (archive = false) => async (dispatch) => {
+export const getApplications = (archive = false) => async (
+  dispatch,
+  getState
+) => {
+  const { applications } = getState();
+
   try {
     getApplicationsAPI.fetch(
       { Archive: archive, ParseResults: true },
       (response) => {
-        // console.log(response)
         if (response.Applications) {
           const users = response.ApplicationUsers;
           const applicationsWithUsers = response.Applications.map((app) => {
             app.Users = users[app.ApplicationID];
             return app;
           });
-          console.log(applicationsWithUsers);
           dispatch(setApplications(applicationsWithUsers));
+          getGlobalParamsAPI.fetch(
+            {},
+            (response) => {
+              saveLocalStorage(
+                response.CurrentUser.UserID,
+                applicationsWithUsers
+              );
+            },
+            (error) => console.log(error)
+          );
         }
       },
       (error) => console.log({ error })

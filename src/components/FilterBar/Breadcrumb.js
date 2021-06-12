@@ -1,35 +1,43 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import { BreadcrumbContainer, BreadcrumbItem } from './FilterBar.style';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
-const Breadcrumb = () => {
-  const hierarchy = [
-    {
-      ID: '37b1cd1d-60d3-4b0a-afd1-d1823be4ba6c',
-      Name: encodeBase64('تیم شاهین'),
-    },
-    {
-      ID: '37b1cd1d-60d3-4b0a-afd1-d1823be4ba6c',
-      Name: encodeBase64('بازاریابی'),
-    },
-    {
-      ID: '37b1cd1d-60d3-4b0a-afd1-d1823be4ba6c',
-      Name: encodeBase64('اسناد مارکتینگ'),
-    },
-  ];
+const selectedTeam = createSelector(
+  (state) => state.theme,
+  (theme) => theme.selectedTeam
+);
+
+const Breadcrumb = (props) => {
+  const { hierarchy } = props;
+  const { RV_RevFloat, RV_Float } = useWindow();
+  const selectedApp = useSelector(selectedTeam);
 
   return (
-    <BreadcrumbContainer>
-      {hierarchy.map((item, index, self) => {
+    <BreadcrumbContainer dir={RV_Float}>
+      <BreadcrumbItem as={Link} to="/classes">
+        {selectedApp.name}
+        {!!hierarchy?.length && (
+          <ChevronIcon
+            style={{ verticalAlign: 'middle' }}
+            size={18}
+            dir={RV_RevFloat}
+          />
+        )}
+      </BreadcrumbItem>
+      {hierarchy?.map((item, index, self) => {
+        const { NodeTypeID: id, TypeName: name } = item;
         return (
-          <BreadcrumbItem as={Link} to={`/classes/${item.ID}`}>
-            {decodeBase64(item.Name)}
+          <BreadcrumbItem as={Link} to={`/classes/${id}`}>
+            {decodeBase64(name)}
             {self.length - 1 !== index && (
               <ChevronIcon
                 style={{ verticalAlign: 'middle' }}
                 size={18}
-                dir="left"
+                dir={RV_RevFloat}
               />
             )}
           </BreadcrumbItem>
