@@ -18,6 +18,7 @@ import {
  * @param {String} nodeTypeId - required for fetching node list
  */
 const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
+  const { RV_RTL, RV_RevFloat } = useWindow();
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
   // if True, filter for will apear.

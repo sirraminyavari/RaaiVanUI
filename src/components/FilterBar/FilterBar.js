@@ -183,7 +183,7 @@ const FilterBar = ({
 
   return (
     <Container>
-      <Breadcrumb />
+      <Breadcrumb hierarchy={hierarchy} />
       <TopRow>
         {console.log(hierarchy, 'hierarchy')}
         <div
