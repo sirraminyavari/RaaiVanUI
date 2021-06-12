@@ -5,9 +5,10 @@ export const Container = styled.div`
   ${({ RV_RTL }) =>
     RV_RTL ? 'flex-direction:row' : 'flex-direction:row-reverse'}
   width: 100%;
-  height: 100%;
-  justify-content: flex-start;
-  /* background-color: #ffffff; */
+  min-height: 100%;
+  align-items: flex-start;
+  justify-content: center;
+
 `;
 export const Maintainer = styled.div`
   width: calc(
@@ -15,13 +16,15 @@ export const Maintainer = styled.div`
   );
   // min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')};
 
-  height: 100%;
-  margin: 0 1rem;
+  min-height: 99%;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+
   /* align-items: center;
   display: flex;
   flex-direction: column; */
   transition: min-width 0.5s;
-  /* background-color: #fcfcfd; */
+  /* background-color: red; */
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;
 `;

@@ -7,13 +7,13 @@ import TrashIcon from 'components/Icons/TrashIcon';
 import React from 'react';
 import styled from 'styled-components';
 
-const SubjectTools = ({ removable, editable, ...props }) => {
+const SubjectTools = ({ removable, editable, isHover, ...props }) => {
   const onEdit = () => {};
   const onDelete = () => {};
   const onBookmark = () => {};
 
   return (
-    <Tools {...props}>
+    <Tools isHover={isHover} {...props}>
       {editable && (
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
@@ -47,4 +47,5 @@ const Tools = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  z-index: ${({ isHover }) => !isHover && -10};
 `;
