@@ -88,9 +88,10 @@ const SubjectItemDesktop = ({
               </Details>
             )}
           </Main>
-          {isSaas && isHover && (
+          {isSaas && (
             <>
               <SubjectTools
+                isHover={isHover}
                 editable={UserStatus.Editable}
                 removable={UserStatus.Removable}
               />
@@ -124,7 +125,7 @@ const Main = styled.div`
   flex-grow: 1;
   flex-direction: column;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin: ${() => (RV_RTL ? '0 1.75rem 0 0' : '0 0 0 1.75rem')};
 `;

@@ -178,8 +178,9 @@ const FilterBar = ({
     });
   };
   // By typing in the search input will fire
-  const onTextSearch = (e) => {
-    setSearchText(e.target.value);
+  const onTextSearch = (value) => {
+    // console.log(e, ' e e e e e');
+    setSearchText(value);
   };
 
   const checkRoute = useCheckRoute();
