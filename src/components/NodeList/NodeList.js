@@ -17,7 +17,13 @@ const { RVAPI } = window;
  * @param {Object} formFilters - object of objects of filters
  * @returns
  */
-const NodeList = ({ searchText, dateFilter, nodeTypeId, formFilters }) => {
+const NodeList = ({
+  searchText,
+  dateFilter,
+  nodeTypeId,
+  formFilters,
+  onTotalFound,
+}) => {
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
 
@@ -79,7 +85,7 @@ const NodeList = ({ searchText, dateFilter, nodeTypeId, formFilters }) => {
 
   const onClick = (nodeId) => {
     // objectUrl({ NodeID: nodeId });
-    console.log(nodeId, 'node Id ');
+    console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
     RVAPI.NodePageURL({ NodeID: nodeId });
   };
   return (
@@ -91,15 +97,16 @@ const NodeList = ({ searchText, dateFilter, nodeTypeId, formFilters }) => {
         onEndReached={() => {
           console.log('Im reached end');
         }}
+        onTotal={onTotalFound}
         renderItem={(x, index) => (
           <>
-            {console.log(x, 'X X X ')}
             {x.Creator && (
               <SubjectItem
                 key={index}
                 onChecked={(value, item) =>
                   console.log(value, item, 'onChecked')
                 }
+                parentNodeType={nodeTypeId}
                 selectMode={false}
                 item={x}
                 isSaas={isSaas}

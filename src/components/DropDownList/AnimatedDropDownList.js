@@ -54,6 +54,7 @@ const AnimatedDropDownList = ({
   },
   hiddenSelectedItem,
   onClickLabel,
+  onDropDownOpen,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
 
@@ -65,6 +66,7 @@ const AnimatedDropDownList = ({
    */
   const onClick = () => {
     setDropedDown(!dropedDown);
+    onDropDownOpen(!dropedDown);
   };
 
   /**

@@ -58,7 +58,7 @@ const Container = styled.div`
   justify-content: flex-start;
   width: 50vw;
   padding: 0px 7px 7px 7px;
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; */
   border-radius: 0px 0px 7px 7px;
   border: 0px solid grey;
 `;

@@ -33,6 +33,7 @@ const AnimatedInput = React.forwardRef(
       disabled,
       onChange,
       children,
+      placholderClass,
       ...props
     },
     ref
@@ -79,8 +80,12 @@ const AnimatedInput = React.forwardRef(
             {children}
           </StyledInput>
           <Placeholder
-            className={`rv-border-radius-quarter ${
-              inputFocused || value.length > 0 ? 'rv-warm' : 'rv-gray'
+            className={`rv-border-radius-quarter rv-distant ${
+              inputFocused || value.length > 0
+                ? 'rv-warm'
+                : placholderClass
+                ? placholderClass
+                : 'rv-gray'
             }`}>
             {placeholder}
           </Placeholder>

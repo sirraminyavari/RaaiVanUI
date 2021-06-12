@@ -4,11 +4,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SubjectCreator = ({ firstName, lastName, userProfile }) => {
+const SubjectCreator = ({ firstName, lastName, userProfile, style }) => {
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   return (
-    <Container>
+    <Container style={style}>
       <Profile src={userProfile} isSaas={isSaas} />
       {!isSaas && (
         <ProducerName className="rv-gray">
@@ -22,7 +22,7 @@ const SubjectCreator = ({ firstName, lastName, userProfile }) => {
 export default SubjectCreator;
 
 const Profile = styled.img`
-  width: ${({ isSaas }) => (isSaas ? '2rem' : '3rem')};
+  width: ${({ isSaas }) => (isSaas ? '3rem' : '3rem')};
   aspect-ratio: 1;
   border-radius: 1.5rem;
 `;
