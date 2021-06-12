@@ -6,6 +6,7 @@ export const ApplicationsSlice = createSlice({
 
   initialState: {
     applications: [],
+    currentUser: null,
   },
 
   reducers: {
@@ -24,6 +25,9 @@ export const ApplicationsSlice = createSlice({
     },
     clearApplications: (state, action) => {
       state.applications = [];
+    },
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload;
     },
   },
 });

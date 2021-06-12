@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
-import ExactFilter from '../../items/ExactToggle';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
 
 /**
  * @typedef PropType
@@ -77,7 +77,7 @@ const SelectType = (props) => {
 
   return (
     <Styled.SelectContainer>
-      <Styled.SelectTitle>{decodeBase64(Title)}</Styled.SelectTitle>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       {AutoSuggestMode ? (
         <div>Radio check</div>
       ) : (

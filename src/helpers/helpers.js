@@ -142,3 +142,32 @@ export const mergeRefs = (...refs) => {
 export const getUUID = () => {
   return uuidv4();
 };
+
+/**
+ * @description Load a local storage object by a given key.
+ * @returns Object or undefined.
+ */
+export const loadLocalStorage = (key) => {
+  try {
+    const serializedStorage = localStorage.getItem(key);
+    //! If user privacy mode does not allow the use of local storage.
+    if (serializedStorage === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedStorage);
+  } catch (error) {
+    return undefined;
+  }
+};
+
+/**
+ * @description Save a state to local storage by a key.
+ */
+export const saveLocalStorage = (key, state) => {
+  try {
+    const serializedStorage = JSON.stringify(state);
+    localStorage.setItem(key, serializedStorage);
+  } catch (error) {
+    console.log('Save to local storage failed!');
+  }
+};

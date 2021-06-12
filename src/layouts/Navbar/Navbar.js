@@ -2,7 +2,7 @@
  * Renders whole navbar area for app.
  */
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
 import * as Styled from './Navbar.styles';
@@ -18,6 +18,7 @@ import {
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 import APIHandler from 'apiHelper/APIHandler';
+import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -30,15 +31,23 @@ const MobileMenu = lazy(() =>
   )
 );
 
+const { setCurrentUser } = ApplicationsSlice.actions;
+
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
   (theme) => theme.isSidebarOpen
 );
 
+const selectCurrentUser = createSelector(
+  (state) => state.applications,
+  (applications) => applications.currentUser
+);
+
 const Navbar = () => {
+  const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const currentUser = useSelector(selectCurrentUser);
   const [showSearch, setShowSearch] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const getGlobalParamsAPI = new APIHandler('RVAPI', 'GetGlobalParams');
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
@@ -75,7 +84,9 @@ const Navbar = () => {
   useEffect(() => {
     getGlobalParamsAPI.fetch(
       {},
-      (response) => setCurrentUser(response.CurrentUser),
+      (response) => {
+        dispatch(setCurrentUser(response.CurrentUser));
+      },
       (error) => console.log(error)
     );
   }, []);

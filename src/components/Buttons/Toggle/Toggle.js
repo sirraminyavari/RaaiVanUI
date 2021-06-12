@@ -2,8 +2,9 @@
  * Renders a toggle button.
  */
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, cloneElement } from 'react';
 import * as Styled from './Toggle.styles';
+import useToggle from 'hooks/useToggle';
 
 /**
  * @typedef PropType
@@ -18,25 +19,25 @@ import * as Styled from './Toggle.styles';
  * @param {PropType} props -Props that pass to Toggle.
  */
 const Toggle = (props) => {
-  const { onToggle, initialCheck, ...rest } = props;
-  const [isChecked, setIsChecked] = useState(initialCheck);
+  const { onToggle, initialCheck, children, ...rest } = props;
+  const [isOn, setToggle] = useToggle(initialCheck);
 
   const toggle = () => {
-    setIsChecked((checked) => !checked);
+    setToggle();
   };
 
   useEffect(() => {
-    onToggle && onToggle(isChecked);
-  }, [isChecked]);
+    onToggle && onToggle(isOn);
+  }, [isOn]);
 
   return (
     <Styled.ToggleLabel>
-      <Styled.ToggleInput
-        type="checkbox"
-        checked={isChecked}
-        onClick={toggle}
-      />
-      <Styled.ToggleButton isChecked={isChecked} {...rest} />
+      <Styled.ToggleInput type="checkbox" checked={isOn} onClick={toggle} />
+      {!!children ? (
+        cloneElement(children, { isChecked: isOn })
+      ) : (
+        <Styled.ToggleButton isChecked={isOn} {...rest} />
+      )}
     </Styled.ToggleLabel>
   );
 };

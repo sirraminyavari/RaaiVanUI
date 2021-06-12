@@ -88,10 +88,12 @@ const NodeType = (props) => {
   }, [value]);
 
   return (
-    <Styled.NodeContainer>
+    <Styled.FilterContainer>
       <Styled.NodeTitleWrapper>
         <AtSignIcon />
-        <Styled.NodeTitle>{decodeBase64(Title)}</Styled.NodeTitle>
+        <Styled.FilterTitle style={{ margin: '0.5rem' }}>
+          {decodeBase64(Title)}
+        </Styled.FilterTitle>
       </Styled.NodeTitleWrapper>
       <ItemProducer
         type="autosuggest"
@@ -101,7 +103,7 @@ const NodeType = (props) => {
         style={{ width: '100%' }}
         resetMe={resetValue}
       />
-    </Styled.NodeContainer>
+    </Styled.FilterContainer>
   );
 };
 

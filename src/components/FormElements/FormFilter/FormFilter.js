@@ -28,6 +28,7 @@ import { C_DISTANT, C_RED } from 'constant/Colors';
  * @property {function} onFilter - A callback function that fires on filter click.
  * @property {function} onCloseFilter - A callback function that fires on close button click.
  * @property {Object} filterValues - The value for each filter type.
+ * @property {Object} containerStyles - The styles for form container.
  */
 
 /**
@@ -43,6 +44,7 @@ const FormFilter = (props) => {
     onCloseFilter,
     formName,
     filterValues,
+    containerStyles,
   } = props;
 
   const [values, setValues] = useState(filterValues || {});
@@ -72,22 +74,24 @@ const FormFilter = (props) => {
       {children ? (
         <div>{Children.only(children({ onChange: handleOnChange }))}</div>
       ) : (
-        <Styled.FormFilterContainer>
-          <Styled.FormFilterHeader>
-            <UndoIcon
-              style={{ cursor: 'pointer', transform: 'scaleX(-1)' }}
-              onClick={clearFilter}
-              className={C_DISTANT}
-              size={16}
-            />
-            <Styled.FormFilterTitle>{formName}</Styled.FormFilterTitle>
-            <CloseIcon
-              size={16}
-              style={{ cursor: 'pointer' }}
-              onClick={closeFormFilter}
-              className={C_RED}
-            />
-          </Styled.FormFilterHeader>
+        <Styled.FormFilterContainer style={containerStyles}>
+          {!!formName && (
+            <Styled.FormFilterHeader>
+              <UndoIcon
+                style={{ cursor: 'pointer', transform: 'scaleX(-1)' }}
+                onClick={clearFilter}
+                className={C_DISTANT}
+                size={16}
+              />
+              <Styled.FormFilterTitle>{formName}</Styled.FormFilterTitle>
+              <CloseIcon
+                size={16}
+                style={{ cursor: 'pointer' }}
+                onClick={closeFormFilter}
+                className={C_RED}
+              />
+            </Styled.FormFilterHeader>
+          )}
           <Styled.FiltersWrapper>
             {filters.map((filter, key) => {
               return (
@@ -134,6 +138,7 @@ FormFilter.propTypes = {
   filterValues: PropTypes.object,
   onFilter: PropTypes.func,
   onCloseFilter: PropTypes.func,
+  containerStyles: PropTypes.object,
 };
 
 FormFilter.displayName = 'FilterFormElements';
