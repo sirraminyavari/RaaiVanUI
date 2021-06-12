@@ -146,6 +146,9 @@ const FilterBar = ({
           ['Select', 'Binary'].some((i) => i == e.Type)
         );
         let filters = (result || {}).Elements || [];
+        if (filters.length > 0) {
+          setAdvancedButton(true);
+        }
         onFormElements(filters);
       }
     );
@@ -158,7 +161,7 @@ const FilterBar = ({
 
       if (formId) {
         //form filters is enabled
-        setAdvancedButton(true);
+        // setAdvancedButton(true);
         getFormElements(formId);
       }
     });
