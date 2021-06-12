@@ -1,4 +1,12 @@
-import { BG_WHITE, BG_GRAY_LIGHT, C_GRAY } from 'constant/Colors';
+import {
+  BG_WHITE,
+  BG_GRAY_LIGHT,
+  C_GRAY,
+  TBG_DEFAULT,
+  C_WHITE,
+  TC_DEFAULT,
+  TC_VERYWARM,
+} from 'constant/Colors';
 import styled from 'styled-components';
 
 export const FormFilterContainer = styled.div.attrs({
@@ -58,9 +66,10 @@ export const FormFilterHeader = styled.div.attrs({
   border-top-right-radius: 0.6rem;
 `;
 
-export const FormFilterTitle = styled.div`
+export const FormFilterTitle = styled.div.attrs({
+  className: TC_VERYWARM,
+})`
   font-size: 1.1rem;
-  color: #002479;
 `;
 
 export const FilterToggleContainer = styled.div`
@@ -76,5 +85,33 @@ export const FilterToggleTitle = styled.span.attrs({
 })`
   font-size: 0.9rem;
   margin: 0 0.5rem;
+  text-transform: capitalize;
+`;
+
+export const OrAndButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 6rem;
+  height: 2.2rem;
+  border: 1px solid #bac9dc;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+`;
+
+export const OrAndOption = styled.div.attrs((props) => ({
+  className: props.isChecked
+    ? `${TBG_DEFAULT} ${C_WHITE}`
+    : `${BG_WHITE} ${TC_DEFAULT}`,
+}))`
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  height: 100%;
   text-transform: capitalize;
 `;

@@ -80,8 +80,8 @@ const UserType = (props) => {
   }, [value]);
 
   return (
-    <Styled.UserContainer>
-      <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <ItemProducer
         type="autosuggest"
         fetchItems={fetchUsers}
@@ -90,7 +90,7 @@ const UserType = (props) => {
         style={{ width: '100%' }}
         resetMe={resetValue}
       />
-    </Styled.UserContainer>
+    </Styled.FilterContainer>
   );
 };
 

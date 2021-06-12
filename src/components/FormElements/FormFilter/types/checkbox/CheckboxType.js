@@ -6,9 +6,8 @@ import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
-import ExactFilter from '../../items/ExactToggle';
-import OrFilter from '../../items/OrAndSelect';
-import useWindow from 'hooks/useWindowContext';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 
 /**
  * @typedef PropType
@@ -27,7 +26,6 @@ const CheckboxType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const { RVDic } = useWindow();
   const [items, setItems] = useState(value ? value.TextItems : []);
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
@@ -39,12 +37,6 @@ const CheckboxType = (props) => {
     title: decodeBase64(option),
     group: 'checkbox-filter',
   }));
-
-  //! Options for 'OrAnd' select;
-  const orOptions = [
-    { value: 'or', title: RVDic.Or },
-    { value: 'and', title: RVDic.And },
-  ];
 
   //! Fires on checkbox value change.
   const handleOnItemSelect = useCallback((item) => {
@@ -60,13 +52,9 @@ const CheckboxType = (props) => {
     setExact(exactValue);
   };
 
-  //! Fires on 'OrAnd' change.
+  //! Fires on 'OrAnd' toggle change.
   const handleOrFilter = (orValue) => {
-    if (orValue === 'or') {
-      setOr(true);
-    } else {
-      setOr(false);
-    }
+    setOr(orValue);
   };
 
   useEffect(() => {
@@ -99,8 +87,8 @@ const CheckboxType = (props) => {
   }, [value]);
 
   return (
-    <Styled.CheckboxContainer>
-      <Styled.CheckboxTitle>{decodeBase64(Title)}</Styled.CheckboxTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       {AutoSuggestMode ? (
         <Checkbox
           options={options}
@@ -120,15 +108,10 @@ const CheckboxType = (props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <OrFilter
-          options={orOptions}
-          selectedOption={!!or ? 0 : 1}
-          name="checkbox-or-filter"
-          onSelect={handleOrFilter}
-        />
+        <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
-    </Styled.CheckboxContainer>
+    </Styled.FilterContainer>
   );
 };
 

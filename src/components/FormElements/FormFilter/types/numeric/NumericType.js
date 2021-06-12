@@ -85,8 +85,8 @@ const NumericType = (props) => {
   }, [value]);
 
   return (
-    <Styled.NumericContainer>
-      <Styled.NumericTitle>{decodeBase64(Title)}</Styled.NumericTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Styled.NumericWrapper>
         <Styled.NumberSpanTitle>{RVDic.From}</Styled.NumberSpanTitle>
         <Styled.Numeric>
@@ -111,7 +111,7 @@ const NumericType = (props) => {
           />
         </Styled.Numeric>
       </Styled.NumericWrapper>
-    </Styled.NumericContainer>
+    </Styled.FilterContainer>
   );
 };
 

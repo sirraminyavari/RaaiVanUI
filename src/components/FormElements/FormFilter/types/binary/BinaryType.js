@@ -61,14 +61,14 @@ const BinaryType = (props) => {
   }, [value]);
 
   return (
-    <Styled.UserContainer>
-      <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Radio
         options={options}
         onSelect={handleOnBinarySelect}
         selected={value?.Data}
       />
-    </Styled.UserContainer>
+    </Styled.FilterContainer>
   );
 };
 

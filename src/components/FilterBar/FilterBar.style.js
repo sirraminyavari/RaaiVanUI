@@ -51,7 +51,7 @@ export const Container = styled.div`
 
 export const BreadcrumbContainer = styled.div`
   position: absolute;
-  right: 2rem;
+  ${({ dir }) => dir}: 2rem;
   top: 1rem;
 `;
 

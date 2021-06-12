@@ -8,14 +8,18 @@ export const Container = styled.div`
   min-height: 100%;
   align-items: flex-start;
   justify-content: center;
+
 `;
 export const Maintainer = styled.div`
-  width: 65%;
-  min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')};
+  width: calc(
+    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 26rem' : '100%')}
+  );
+  // min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')};
 
   min-height: 99%;
   margin-right: 1rem;
   margin-bottom: 1rem;
+
   /* align-items: center;
   display: flex;
   flex-direction: column; */
@@ -27,7 +31,6 @@ export const Maintainer = styled.div`
 export const SideFilter = styled.div`
   // display: flex;
   // overflow-y: auto;
-  // width: 30%;
   // max-width: ${({ isEnabled }) => (isEnabled ? '30%' : '0')};
   // background-color: white;
   // box-shadow: 1px 3px 20px #ababab;
@@ -37,8 +40,12 @@ export const SideFilter = styled.div`
   // max-height: 90vh;
   // align-items: flex-start;
   // justify-content: center;
-  height: 100vh;
-  padding: 0 0.5rem 0 1rem;
+  width: 25rem;
+  position: fixed;
+  top: 5rem;
+  ${({ dir }) => dir}: 0;
+  height: calc(100vh - 5.5rem);
+  padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   // min-width: 25rem;
 `;
 export const TopFilter = styled.div`
