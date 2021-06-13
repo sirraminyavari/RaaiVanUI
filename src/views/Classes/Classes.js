@@ -5,36 +5,27 @@ import { useEffect, useState } from 'react';
 import { isEmpty } from 'helpers/helpers';
 
 const AdvancedSearchView = (props) => {
-  const { route, match } = props;
-  const [searchStates, setSearchStates] = useState({
+  const { route } = props;
+  const [advancedProps, setAdvancedProps] = useState({
     nodeId: null,
     hierarchy: [],
   });
-  // console.log(props.route?.NodeTypes[0].NodeTypeID, NodeTypeID);
 
   useEffect(() => {
     if (!isEmpty(route)) {
-      console.log(route);
-      setSearchStates({
-        nodeId: match.params.id,
+      setAdvancedProps({
+        nodeId: route.NodeTypes.length ? route.NodeTypes[0].NodeTypeID : null,
         hierarchy: route.Hierarchy,
       });
     }
-
-    return () => {
-      setSearchStates({
-        nodeId: null,
-        hierarchy: [],
-      });
-    };
   }, [route]);
 
   return (
     <Container>
       <AdvanceSearch
-        nodeTypeId={searchStates.nodeId}
-        hierarchy={searchStates.hierarchy}>
-        <NodeList nodeTypeId={searchStates.nodeId} />
+        nodeTypeId={advancedProps.nodeId}
+        hierarchy={advancedProps.hierarchy}>
+        <NodeList nodeTypeId={advancedProps.nodeId} />
       </AdvanceSearch>
     </Container>
   );

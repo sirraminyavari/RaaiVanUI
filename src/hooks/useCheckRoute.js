@@ -17,20 +17,22 @@ const useCheckRoute = (name) => {
   const apiHandler = new APIHandler('RVAPI', 'CheckRoute');
 
   useEffect(() => {
-    const checkTimeout = setTimeout(() => {
-      apiHandler.fetch(
-        { RouteName: name, Parameters: params, ParseResults: true },
-        (response) => setResult(response),
-        (error) => console.log(error)
-      );
-    }, 1000);
+    const prevURL = window.location.href;
+    apiHandler.fetch(
+      { RouteName: name, Parameters: params, ParseResults: true },
+      (response) => {
+        const currentURL = window.location.href;
+        prevURL === currentURL && setResult(response);
+      },
+      (error) => console.log(error)
+    );
 
     return () => {
-      clearTimeout(checkTimeout);
       setResult({});
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, routeParams, queryParams]);
+
   return result;
 };
 

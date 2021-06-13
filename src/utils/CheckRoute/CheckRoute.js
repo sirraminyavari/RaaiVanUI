@@ -17,8 +17,6 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  console.log(route);
-
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
   const {
     toggleNavSide,
