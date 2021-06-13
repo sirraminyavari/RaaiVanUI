@@ -1,5 +1,5 @@
 import Header from './ContentHeader';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import WorkSpace from './Space';
 
 const spaces = [

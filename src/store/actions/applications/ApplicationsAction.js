@@ -18,12 +18,7 @@ const getGlobalParamsAPI = new APIHandler('RVAPI', 'GetGlobalParams');
  * @description A function (action) that gets applications list from server.
  * @returns -Dispatch to redux store.
  */
-export const getApplications = (archive = false) => async (
-  dispatch,
-  getState
-) => {
-  const { applications } = getState();
-
+export const getApplications = (archive = false) => async (dispatch) => {
   try {
     getApplicationsAPI.fetch(
       { Archive: archive, ParseResults: true },
@@ -34,14 +29,30 @@ export const getApplications = (archive = false) => async (
             app.Users = users[app.ApplicationID];
             return app;
           });
-          dispatch(setApplications(applicationsWithUsers));
-          getGlobalParamsAPI.fetch(
-            {},
+          getApplicationsAPI.fetch(
+            { Archive: true, ParseResults: true },
             (response) => {
-              saveLocalStorage(
-                response.CurrentUser.UserID,
-                applicationsWithUsers
-              );
+              if (response.Applications) {
+                dispatch(
+                  setApplications([
+                    ...applicationsWithUsers,
+                    {
+                      ApplicationID: 'archived-apps',
+                      archives: response.Applications,
+                    },
+                  ])
+                );
+                getGlobalParamsAPI.fetch(
+                  {},
+                  (response) => {
+                    saveLocalStorage(
+                      response.CurrentUser.UserID,
+                      applicationsWithUsers
+                    );
+                  },
+                  (error) => console.log(error)
+                );
+              }
             },
             (error) => console.log(error)
           );

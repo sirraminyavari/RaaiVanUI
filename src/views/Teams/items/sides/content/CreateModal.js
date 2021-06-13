@@ -1,8 +1,9 @@
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
-import Input from 'components/Inputs/Input';
 import useWindow from 'hooks/useWindowContext';
+import { TC_DEFAULT, C_GRAY, BG_GRAY_LIGHT } from 'constant/Colors';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
 
 const CreateModal = (props) => {
   const { RVDic } = useWindow();
@@ -11,21 +12,29 @@ const CreateModal = (props) => {
     isOpen,
     onCancleCreate,
     onInputChange,
+    inputValue,
     onCreate,
     modalTitle,
     modalWidth,
+    placeholder,
   } = props;
 
   return (
     <Modal
+      titleClass={TC_DEFAULT}
       contentWidth={modalWidth}
+      contentClass="teams-modal"
+      titleContainerClass={BG_GRAY_LIGHT}
       title={modalTitle}
       show={isOpen}
       onClose={onCancleCreate}>
       <Styled.ModalContentWrapper>
-        <Input
-          style={{ width: '100%', margin: '2rem 0' }}
+        <AnimatedInput
+          value={inputValue}
+          placholderClass={C_GRAY}
           onChange={onInputChange}
+          placeholder={placeholder}
+          style={{ width: '100%', margin: '2rem 0' }}
         />
         <Styled.ModalButtonsWrapper>
           <Button style={{ width: '7rem' }} onClick={onCreate}>

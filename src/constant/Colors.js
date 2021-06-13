@@ -48,7 +48,7 @@ export const C_GRAY_DARK = 'rv-dark-gray';
 /**
  * @description Color
  * @mode Independent
- * @color (#fcfcfc)
+ * @color (#fcfcfd)
  */
 export const C_GRAY_LIGHT = 'rv-light-gray';
 /**
@@ -186,7 +186,7 @@ export const BG_GRAY_DARK = 'rv-bg-color-dark-gray';
 /**
  * @description Background color
  * @mode Independent
- * @color (#fcfcfc)
+ * @color (#fcfcfd)
  */
 export const BG_GRAY_LIGHT = 'rv-bg-color-light-gray';
 /**
@@ -324,7 +324,7 @@ export const BO_GRAY_DARK = 'rv-border-dark-gray';
 /**
  * @description Border color
  * @mode Independent
- * @color (#fcfcfc)
+ * @color (#fcfcfd)
  */
 export const BO_GRAY_LIGHT = 'rv-border-light-gray';
 /**

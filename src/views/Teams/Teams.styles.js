@@ -58,6 +58,10 @@ export const ContentSide = styled.div`
   width: 50%;
   height: 100%;
   margin: 0;
+
+  .teams-modal {
+    margin-top: 35vh;
+  }
 `;
 
 export const SpaceListConatiner = styled.div`
@@ -90,6 +94,10 @@ export const SpaceHeaderTitle = styled.div.attrs({
   height: 1rem;
   font-size: 1rem;
   font-weight: bold;
+`;
+
+export const ConfirmSpaceWrapper = styled.div`
+  margin: 0 2.5rem;
 `;
 
 export const ConfirmSpaceTitle = styled.div.attrs({
@@ -306,6 +314,8 @@ export const TeamTrashWrapper = styled.div.attrs((props) => ({
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.5rem;
+  border-radius: 50%;
 `;
 
 export const NewTeamWrapper = styled.div.attrs({
@@ -319,8 +329,26 @@ export const NewTeamWrapper = styled.div.attrs({
   align-items: center;
 `;
 
+export const ArchivedWrapper = styled.div.attrs({
+  className: C_DISTANT,
+})`
+  width: 100%;
+  height: 90%;
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+`;
+
 export const NewTeamLabel = styled.div.attrs({
   className: C_DISTANT,
+})`
+  margin: 1rem 0 0 0;
+`;
+
+export const ArchivedTeamsLabel = styled.div.attrs({
+  className: C_GRAY,
 })`
   margin: 1rem 0 0 0;
 `;

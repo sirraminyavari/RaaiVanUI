@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import CreateModal from './CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
 
 const NewTeam = () => {
   const [isModalShown, setIsModalShown] = useState(false);
-  const [teamName, setTeamName] = useState(null);
+  const [teamName, setTeamName] = useState('');
   const dispatch = useDispatch();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -22,11 +22,10 @@ const NewTeam = () => {
   //! Close modal and cancel add team proccess.
   const handleCancelCreate = () => {
     setIsModalShown(false);
-    setTeamName(null);
+    setTeamName('');
   };
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
+  const handleInputChange = (inputValue) => {
     setTeamName(inputValue);
   };
 
@@ -47,10 +46,12 @@ const NewTeam = () => {
       <CreateModal
         isOpen={isModalShown}
         onInputChange={handleInputChange}
+        inputValue={teamName}
         onCancleCreate={handleCancelCreate}
         onCreate={handleTeamCreate}
         modalTitle="ایجاد تیم جدید"
-        modalWidth="40%"
+        modalWidth="35%"
+        placeholder="نام تیم جدید"
       />
       <Styled.NewTeamWrapper>
         <PlusIcon size={40} />
