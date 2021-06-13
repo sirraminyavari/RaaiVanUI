@@ -1,6 +1,6 @@
 /*! Works on Firefox */
 * {
-  scrollbar-width: thin;
+  scrollbar-width: thick;
   scrollbar-color: #f1f1f1 #999;
   scrollbar-shadow-color: #999;
 }
@@ -37,6 +37,6 @@
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
+} */

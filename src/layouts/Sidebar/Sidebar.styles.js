@@ -98,12 +98,11 @@ export const ContentWrapper = withTheme(styled.div`
   padding: 0
     ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0.9rem')};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
+
+  -ms-overflow-style: none; /*! IE and Edge */
+  scrollbar-width: none; /*! Firefox */
   ::-webkit-scrollbar {
     display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
-  }
-  * {
-    -ms-overflow-style: none; /*! IE and Edge */
-    scrollbar-width: none; /*! Firefox */
   }
 `);
 

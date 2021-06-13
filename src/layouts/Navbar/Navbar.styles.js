@@ -11,6 +11,8 @@ import {
   BO_DISTANT,
   C_GRAY_DARK,
   C_BLACK,
+  C_FREEZED,
+  BG_FREEZED,
 } from 'constant/Colors';
 
 const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
@@ -57,15 +59,16 @@ export const ButtonContainer = styled(({ isActive, ...props }) => (
   <DIV {...props} />
 ))`
   width: 4.7rem;
-  height: auto;
-  margin: -0.17rem 0rem;
-  padding: 0.5rem;
-  border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
+  height: 111%;
   display: flex;
   position: relative;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  top: -0.2rem;
+  padding: 0.5rem;
+  border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
+
   &:hover {
     // TODO: color class not found
     background-color: #27499f;
@@ -74,19 +77,19 @@ export const ButtonContainer = styled(({ isActive, ...props }) => (
     transform: rotateX(180deg);
   }
 `;
-export const ButtonIcon = styled.div`
+export const ButtonIcon = styled.div.attrs({
+  className: C_FREEZED,
+})`
   text-align: center;
   position: relative;
   font-size: 1.3rem;
-  // TODO: color class not found
-  color: #e6f4f1;
 `;
 
-export const ButtonTitle = styled.div`
+export const ButtonTitle = styled.div.attrs({
+  className: C_FREEZED,
+})`
   font-size: 0.7rem;
   font-weight: bold;
-  // TODO: color class not found
-  color: #e6f4f1;
   opacity: 1;
   position: relative;
   bottom: 5px;
@@ -246,7 +249,7 @@ export const AlertFooterNavigation = styled.div`
 `;
 
 export const AlertFooterArrowWrapper = styled.div.attrs({
-  className: TC_DEFAULT,
+  className: TC_DEFAULT + ' ' + BG_FREEZED,
 })`
   min-width: 1.4rem;
   padding: 0.1rem;
@@ -255,8 +258,7 @@ export const AlertFooterArrowWrapper = styled.div.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
-  //TODO: substitiute with class bg (not found)
-  background-color: #e6f4f1;
+  // background-color: #e6f4f1;
   cursor: pointer;
 `;
 
@@ -270,8 +272,7 @@ export const ButtonAction = styled.div.attrs({
   padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
   :hover {
-    //TODO: substitiute with class bg (not found)
-    background-color: #f4f8fe;
+    background-color: #eef0f5;
   }
 `;
 
