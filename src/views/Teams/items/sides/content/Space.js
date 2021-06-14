@@ -4,10 +4,10 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import * as Styled from 'views/Teams/Teams.styles';
 import ActiveTeam from './TeamActive';
 import NewTeam from './NewTeam';
+import ArchivedTeams from './ArchivedTeams';
 import SpaceHeader from './SpcaeHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
-import useWindow from 'hooks/useWindowContext';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -19,11 +19,13 @@ const selectApplications = createSelector(
 const WorkSpace = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
-  const { RVGlobal } = useWindow();
-  const { IsSystemAdmin } = RVGlobal;
 
   const SortableItem = SortableElement((props) => {
     const { team, shouldUseDragHandle } = props;
+    if (team.ApplicationID === 'archived-apps') {
+      return <ArchivedTeams team={team} hasHandle={shouldUseDragHandle} />;
+    }
+
     return <ActiveTeam team={team} hasHandle={shouldUseDragHandle} />;
   });
 
@@ -31,15 +33,19 @@ const WorkSpace = ({ space }) => {
     const { teams, ...restProps } = props;
     return (
       <Styled.TeamListConatiner>
-        {teams.map((team, index) => (
-          <SortableItem
-            key={`item-${team.ApplicationID}`}
-            index={index}
-            team={team}
-            {...restProps}
-          />
-        ))}
-        {IsSystemAdmin && <NewTeam />}
+        {teams.map((team, index) => {
+          console.log(teams);
+          return (
+            <SortableItem
+              key={`item-${team.ApplicationID}`}
+              index={index}
+              team={team}
+              {...restProps}
+            />
+          );
+        })}
+
+        <NewTeam />
       </Styled.TeamListConatiner>
     );
   });

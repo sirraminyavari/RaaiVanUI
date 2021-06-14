@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { SortableHandle } from 'react-sortable-hoc';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Teams/Teams.styles';
-import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
@@ -24,23 +22,14 @@ import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
+import SortHandle from './SortHandle';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
-
-const SortHandle = SortableHandle(({ tabIndex }) => {
-  const { RV_RevFloat } = useWindow();
-
-  return (
-    <Styled.DragIconWrapper dir={RV_RevFloat} tabIndex={tabIndex}>
-      <DragIcon />
-    </Styled.DragIconWrapper>
-  );
-});
 
 const ActiveTeam = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { RVGlobal, RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [trashRef, isTrashHovered] = useHover();
   const isMobileScreen = useMediaQuery({
@@ -53,9 +42,9 @@ const ActiveTeam = ({ team, hasHandle }) => {
     Users: appUsers,
     IconURL: appIcon,
     ApplicationID: appId,
+    Removable: isRemovable,
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
-  const { IsSystemAdmin } = RVGlobal;
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -133,6 +122,8 @@ const ActiveTeam = ({ team, hasHandle }) => {
   return (
     <Styled.TeamConatiner
       isMobile={isMobileScreen}
+      dir={RV_Float}
+      revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
@@ -221,9 +212,12 @@ const ActiveTeam = ({ team, hasHandle }) => {
               </PopupMenu>
             )}
           </Styled.TeamAvatarsWrapper>
-          {IsSystemAdmin && (
-            <Styled.TeamTrashWrapper isHovered={isTrashHovered} ref={trashRef}>
-              <TrashIcon onClick={onTrashClick} />
+          {isRemovable && (
+            <Styled.TeamTrashWrapper
+              onClick={onTrashClick}
+              isHovered={isTrashHovered}
+              ref={trashRef}>
+              <TrashIcon />
             </Styled.TeamTrashWrapper>
           )}
         </Styled.TeamFooterConatiner>

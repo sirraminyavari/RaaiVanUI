@@ -54,6 +54,9 @@ const ChangePassword = lazy(() =>
     /* webpackChunkName: "change-password-view"*/ 'views/ChangePassword/ChangePassword'
   )
 );
+const Onboarding = lazy(() =>
+  import(/* webpackChunkName: "onboarding-view"*/ 'views/Onboarding/Onboarding')
+);
 
 const routes = [
   ...NavbarRoutes,
@@ -155,6 +158,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: NetworkView,
+  },
+  {
+    path: '/onboarding',
+    name: 'onboarding',
+    exact: true,
+    hasNavSide: false,
+    component: Onboarding,
   },
 ];
 

@@ -14,6 +14,7 @@ const Modal = ({
   contentClass,
   contentWidth,
   titleClass,
+  titleContainerClass,
   ...props
 }) => {
   const { GlobalUtilities } = useContext(WindowContext);
@@ -67,7 +68,8 @@ const Modal = ({
             <></>
           ) : (
             <>
-              <TitleContainer className="rv-border-radius-half rv-ignore-bottom-radius">
+              <TitleContainer
+                className={`rv-border-radius-half rv-ignore-bottom-radius ${titleContainerClass}`}>
                 {!stick && <EmptyTitleSide />}
                 <TitleArea
                   className={`${titleClass ? titleClass : 'WarmColor'}`}>
