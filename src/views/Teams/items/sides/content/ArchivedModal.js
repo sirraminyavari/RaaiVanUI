@@ -1,55 +1,61 @@
+import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Styled from 'views/Teams/Teams.styles';
 import Modal from 'components/Modal/Modal';
 import { TC_DEFAULT, BO_FREEZED, BG_GRAY_LIGHT } from 'constant/Colors';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import Avatar from 'components/Avatar/Avatar';
+import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
 
 const ArchivedModal = (props) => {
-  const { isOpen, onArchiveClose, modalTitle, modalWidth, archives } = props;
+  const dispatch = useDispatch();
+  const {
+    isOpen,
+    onModalClose,
+    modalTitle,
+    modalWidth,
+    archives,
+    contentClass,
+  } = props;
+
+  const onRecycleDone = (message) => {
+    console.log(message);
+  };
+
+  const recycleTeam = (teamId) => {
+    dispatch(recycleApplication(teamId, onRecycleDone, false));
+  };
 
   return (
     <Modal
       titleClass={TC_DEFAULT}
       contentWidth={modalWidth}
+      contentClass={contentClass}
       titleContainerClass={BG_GRAY_LIGHT}
       title={modalTitle}
       show={isOpen}
-      onClose={onArchiveClose}>
-      <Styled.ModalContentWrapper>
+      onClose={onModalClose}>
+      <Styled.ModalContentWrapper onScroll={(e) => console.log(e)}>
         {archives.map((archive, index, self) => {
           return (
-            <>
-              <div
-                key={archive.ApplicationID}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '1rem 0',
-                }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    flexGrow: 1,
-                  }}>
+            <Fragment key={archive.ApplicationID}>
+              <Styled.ArchivedTeamWrapper>
+                <Styled.ArchivedTeamDescription>
                   <Avatar radius={30} userImage={archive.IconURL} />
-                  <span style={{ margin: '0 1rem' }}>
+                  <Styled.ArchivedTeamTitle>
                     {decodeBase64(archive.Title)}
-                  </span>
-                </div>
-                <div>
-                  <Button
-                    type="primary-o"
-                    style={{ height: '1.5rem', width: '5rem' }}>
-                    فعال سازی
-                  </Button>
-                </div>
-              </div>
+                  </Styled.ArchivedTeamTitle>
+                </Styled.ArchivedTeamDescription>
+                <Button
+                  onClick={() => recycleTeam(archive.ApplicationID)}
+                  type="primary-o"
+                  style={{ height: '1.5rem', width: '5rem' }}>
+                  فعال سازی
+                </Button>
+              </Styled.ArchivedTeamWrapper>
               {self.length !== index + 1 && <hr className={BO_FREEZED} />}
-            </>
+            </Fragment>
           );
         })}
       </Styled.ModalContentWrapper>

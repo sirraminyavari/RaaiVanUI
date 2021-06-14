@@ -13,6 +13,7 @@ import {
 export const ViewContainer = styled.div.attrs({
   className: BG_GRAY_LIGHT,
 })`
+  min-height: 100vh;
   box-shadow: 1px 5px 15px #0000001f;
   border-radius: 0.7rem;
   margin: 1rem;
@@ -20,6 +21,17 @@ export const ViewContainer = styled.div.attrs({
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  .archived-teams {
+    max-height: 87vh;
+    overflow: scroll;
+
+    ::-webkit-scrollbar {
+      display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+    }
+    -ms-overflow-style: none; /*! IE and Edge */
+    scrollbar-width: none; /*! Firefox */
+  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -34,6 +46,24 @@ export const HeaderContainer = styled.div`
 export const ModalContentWrapper = styled.div`
   width: 100%;
   padding: 0 5%;
+`;
+
+export const ArchivedTeamWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.9rem 0;
+`;
+
+export const ArchivedTeamDescription = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+`;
+
+export const ArchivedTeamTitle = styled.span`
+  margin: 0 1rem;
 `;
 
 export const ModalButtonsWrapper = styled.div`
@@ -334,7 +364,6 @@ export const ArchivedWrapper = styled.div.attrs({
 })`
   width: 100%;
   height: 90%;
-  margin: 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -354,7 +383,10 @@ export const ArchivedTeamsLabel = styled.div.attrs({
 `;
 
 export const WelcomeSide = styled.div`
-  width: 50%;
+  width: 45%;
+  position: fixed;
+  ${({ dir }) => dir}: 0;
+  top: 2.5rem;
   height: 100%;
   margin: 0;
   display: flex;

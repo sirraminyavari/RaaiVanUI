@@ -17,6 +17,8 @@ const logoutAction = () => async (dispatch) => {
         dispatch(setSelectedTeam(null));
         dispatch(clearApplications());
         delete window.RVGlobal.ApplicationID;
+        delete window.RVGlobal.CurrentUser;
+        delete window.RVGlobal.CurrentUserID;
       },
       (error) => console.log({ error })
     );
