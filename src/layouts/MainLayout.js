@@ -1,6 +1,6 @@
-import { Suspense, memo, useEffect } from 'react';
+import { Suspense, memo } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Routes from 'routes/MainRoutes/Main.routes';
@@ -16,6 +16,8 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
+import 'assets/css/scrollbar.css';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const switchRoutes = (
   <Switch>
@@ -77,14 +79,16 @@ const Main = () => {
           ) : (
             <SidebarHeader />
           )}
-          <Styled.ContentWrapper
-            isSidebarOpen={isSidebarOpen}
-            isMobile={isMobileScreen}>
-            <Navbar />
-            <Suspense fallback={<LogoLoader />}>
-              <Styled.Content>{switchRoutes}</Styled.Content>
-            </Suspense>
-          </Styled.ContentWrapper>
+          <PerfectScrollbar>
+            <Styled.ContentWrapper
+              isSidebarOpen={isSidebarOpen}
+              isMobile={isMobileScreen}>
+              <Navbar />
+              <Suspense fallback={<LogoLoader />}>
+                <Styled.Content>{switchRoutes}</Styled.Content>
+              </Suspense>
+            </Styled.ContentWrapper>
+          </PerfectScrollbar>
         </Styled.MainContainer>
       ) : (
         <>{switchRoutes}</>
