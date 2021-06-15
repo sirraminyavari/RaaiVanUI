@@ -9,6 +9,8 @@ import { useMediaQuery } from 'react-responsive';
 import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
 import styled from 'styled-components';
 
+const { RVDic } = window;
+
 /**
  * By signing in the user, this modal will be shown
  */
@@ -34,17 +36,20 @@ const LastLoginsModal = ({ isVisible }) => {
       show={isVisible}>
       <Container>
         <Message>{loginMessage && decode(loginMessage)} </Message>
+        <Message>{RVDic.LastLogins} </Message>
 
         <Row style={{ marginBottom: '3px' }}>
-          <RowItem flex={1}>{'نوع اقدام'}</RowItem>
-          <RowItem flex={2}>{'زمان'}</RowItem>
-          <RowItem flex={2}>{'آدرس آی پی'}</RowItem>
+          <RowItem flex={1}>{RVDic.Action}</RowItem>
+          <RowItem flex={2}>{RVDic.OnDate}</RowItem>
+          <RowItem flex={2}>{RVDic.FromAddress}</RowItem>
         </Row>
         {lastLogins?.length > 0 &&
           lastLogins.map((x, index) => (
             <Row key={index}>
               <div>{index + 1}.</div>
-              <RowItem flex={1}>{x?.Action}</RowItem>
+              <RowItem flex={1}>
+                {x?.Action == 'Login' ? RVDic.Login : RVDic.FailedLogin}
+              </RowItem>
               <RowItem flex={2}>{x?.Date}</RowItem>
               <RowItem flex={2}>{x?.HostAddress}</RowItem>
             </Row>

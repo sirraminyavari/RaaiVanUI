@@ -15,7 +15,7 @@ export const Maintainer = styled.div`
   );
   // min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')};
 
-  min-height: 99%;
+  min-height: calc(100vh - 2rem);
   margin-right: 1rem;
   margin-bottom: 1rem;
 

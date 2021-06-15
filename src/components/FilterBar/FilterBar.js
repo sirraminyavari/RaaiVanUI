@@ -244,7 +244,7 @@ const FilterBar = ({
           <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
             {getTypeName()}
           </Heading>
-          {totalFound && (
+          {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
               {RVDic.NItems.replace('[n]', totalFound)}
             </Heading>

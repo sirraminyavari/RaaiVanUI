@@ -80,6 +80,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // GlobalUtilities.set_auth_cookie(AuthCookie);
             // console.log(response, 'response login');
             // dispatch(loginSuccess(response));
+            console.log(response, 'response login');
             dispatch(loggedInAction(response));
           }
         },
