@@ -6,6 +6,7 @@ import APIHandler from '../../../apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import stepTwoAction from './stepTwoAction';
 import loggedInAction from './loggedInAction';
+import setAuthUserAction from './setAuthUserAction';
 const {
   loginStart,
   loginSuccess,
@@ -82,6 +83,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // dispatch(loginSuccess(response));
             console.log(response, 'response login');
             dispatch(loggedInAction(response));
+            dispatch(setAuthUserAction(response.User));
           }
         },
         (err) => {

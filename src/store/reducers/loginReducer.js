@@ -62,6 +62,7 @@ export const loginSlice = createSlice({
       email: null,
       phone: null,
     },
+    authUser: window.RVGlobal?.CurrentUser || null,
   },
   reducers: {
     loginStart: (state, action) => {
@@ -276,6 +277,9 @@ export const loginSlice = createSlice({
     },
     setIsAthunticated: (state, action) => {
       state.isAuthenticated = action.payload;
+    },
+    setAuthUser: (state, action) => {
+      state.authUser = action.payload;
     },
   },
 });

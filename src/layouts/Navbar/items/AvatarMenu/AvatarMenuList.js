@@ -60,6 +60,7 @@ const AvatarMenuList = () => {
       <Styled.Divider />
       {teams?.map((team) => {
         const { ApplicationID, Title, IconURL } = team;
+        if (['archived-apps', 'add-app'].includes(ApplicationID)) return null;
         return (
           <AvatarMenuItem
             key={ApplicationID}

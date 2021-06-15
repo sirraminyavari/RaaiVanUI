@@ -1,17 +1,19 @@
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import Button from 'components/Buttons/Button';
 import TwitterIcon from 'components/Icons/SocialMediaIcons/Twitter';
 import LinkedIcon from 'components/Icons/SocialMediaIcons/LinkedIn';
 import useHover from 'hooks/useHover';
 import WorkspaceImage from 'assets/images/workspace.png';
+import useWindow from 'hooks/useWindowContext';
 
 const Welcome = () => {
+  const { RV_RevFloat } = useWindow();
   const [buttonRef, isButtonHovered] = useHover();
   const [twitterRef, isTwitterHovered] = useHover();
   const [linkedinRef, isLinkedinHovered] = useHover();
 
   return (
-    <Styled.WelcomeSide>
+    <Styled.WelcomeSide dir={RV_RevFloat}>
       <Styled.WorkspaceImageWrapper>
         <img src={WorkspaceImage} alt="team-workspace" />
       </Styled.WorkspaceImageWrapper>

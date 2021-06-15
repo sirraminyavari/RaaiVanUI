@@ -1,24 +1,23 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import APIHandler from 'apiHelper/APIHandler';
-import { decodeBase64, encodeBase64, saveLocalStorage } from 'helpers/helpers';
+import { encodeBase64, saveLocalStorage } from 'helpers/helpers';
 
-const {
-  setApplications,
-  deleteApplication,
-  addApplication,
-} = ApplicationsSlice.actions;
+const { setApplications, deleteApplication } = ApplicationsSlice.actions;
 
 const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
 const removeApplicationAPI = new APIHandler('RVAPI', 'RemoveApplication');
 const recycleApplicationAPI = new APIHandler('RVAPI', 'RecycleApplication');
 const createApplicationAPI = new APIHandler('RVAPI', 'CreateApplication');
-const getGlobalParamsAPI = new APIHandler('RVAPI', 'GetGlobalParams');
 
 /**
  * @description A function (action) that gets applications list from server.
  * @returns -Dispatch to redux store.
  */
-export const getApplications = (archive = false) => async (dispatch) => {
+export const getApplications = (archive = false) => async (
+  dispatch,
+  getState
+) => {
+  const { auth } = getState();
   try {
     getApplicationsAPI.fetch(
       { Archive: archive, ParseResults: true },
@@ -40,18 +39,12 @@ export const getApplications = (archive = false) => async (dispatch) => {
                       ApplicationID: 'archived-apps',
                       archives: response.Applications,
                     },
+                    // {
+                    //   ApplicationID: 'add-app',
+                    // },
                   ])
                 );
-                getGlobalParamsAPI.fetch(
-                  {},
-                  (response) => {
-                    saveLocalStorage(
-                      response.CurrentUser.UserID,
-                      applicationsWithUsers
-                    );
-                  },
-                  (error) => console.log(error)
-                );
+                saveLocalStorage(auth.authUser.UserID, applicationsWithUsers);
               }
             },
             (error) => console.log(error)
@@ -80,6 +73,7 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
         } else if (response.Succeed) {
           done && done(appId);
           dispatch(deleteApplication(appId));
+          dispatch(getApplications());
         }
       },
       (error) => console.log({ error })
@@ -93,14 +87,16 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
  * @description A function (action) that recycles deleted application from server.
  * @returns -Dispatch to redux store.
  */
-export const recycleApplication = (appId, done) => async (dispatch) => {
+export const recycleApplication = (appId, done, refresh = true) => async (
+  dispatch
+) => {
   try {
     recycleApplicationAPI.fetch(
       { ApplicationID: appId, ParseResults: true },
       (response) => {
         if (response.Succeed) {
           done && done(response);
-          dispatch(getApplications());
+          refresh && dispatch(getApplications());
         }
       },
       (error) => console.log({ error })

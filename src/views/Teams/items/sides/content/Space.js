@@ -26,6 +26,10 @@ const WorkSpace = ({ space }) => {
       return <ArchivedTeams team={team} hasHandle={shouldUseDragHandle} />;
     }
 
+    if (team.ApplicationID === 'add-app') {
+      return <NewTeam />;
+    }
+
     return <ActiveTeam team={team} hasHandle={shouldUseDragHandle} />;
   });
 
@@ -34,7 +38,6 @@ const WorkSpace = ({ space }) => {
     return (
       <Styled.TeamListConatiner>
         {teams.map((team, index) => {
-          console.log(teams);
           return (
             <SortableItem
               key={`item-${team.ApplicationID}`}
