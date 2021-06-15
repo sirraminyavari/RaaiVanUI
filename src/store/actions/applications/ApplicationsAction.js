@@ -39,9 +39,9 @@ export const getApplications = (archive = false) => async (
                       ApplicationID: 'archived-apps',
                       archives: response.Applications,
                     },
-                    // {
-                    //   ApplicationID: 'add-app',
-                    // },
+                    {
+                      ApplicationID: 'add-app',
+                    },
                   ])
                 );
                 saveLocalStorage(auth.authUser.UserID, applicationsWithUsers);
