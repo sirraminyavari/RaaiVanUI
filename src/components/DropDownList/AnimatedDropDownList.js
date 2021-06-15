@@ -10,6 +10,7 @@ import {
   Label,
   Maintainer,
   Rotater,
+  Divider,
 } from './AnimatedDropDownList.style';
 import DropDownItem from './DropDownItem';
 import PropTypes from 'prop-types';
@@ -52,11 +53,27 @@ const AnimatedDropDownList = ({
     itemContainer: null,
     arrowIconColor: null,
   },
+  customClass = {
+    buttonClass: null,
+    labelClass: null,
+    itemClass: null,
+    containerClass: null,
+    itemContainerClass: null,
+    arrowIconColorClass: null,
+  },
   hiddenSelectedItem,
   onClickLabel,
   onDropDownOpen,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
+  const {
+    buttonClass,
+    labelClass,
+    itemClass,
+    containerClass,
+    itemContainerClass,
+    arrowIconColorClass,
+  } = customClass;
 
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
@@ -86,13 +103,17 @@ const AnimatedDropDownList = ({
       ? data.filter((raw) => raw.value !== defaultValue.value)
       : data;
     return (
-      <ItemList style={{ ...itemContainer }} dropedDown={dropedDown}>
+      <ItemList
+        style={{ ...itemContainer }}
+        dropedDown={dropedDown}
+        className={itemContainerClass}>
         {list.map((x, index) => (
           <DropDownItem
             onSelectItem={() => onClickItem(x, index)}
             item={x}
             key={index}
             itemStyle={item}
+            className={itemClass}
           />
         ))}
       </ItemList>
@@ -101,19 +122,24 @@ const AnimatedDropDownList = ({
 
   return (
     <Container>
-      <DropDownButton style={{ ...container }}>
-        <Maintainer onClick={onClickLabel} style={{ ...label }}>
+      <DropDownButton className={containerClass} style={{ ...container }}>
+        <Maintainer
+          className={labelClass}
+          onClick={onClickLabel}
+          style={{ ...label }}>
           {defaultValue.icon}
           <Label color={defaultValue.color}>{defaultValue.label}</Label>
         </Maintainer>
+        <Divider className={'rv-bg-color-white'} />
         <Rotater
           dropedDown={dropedDown}
           onClick={onClick}
-          style={{ ...button }}>
+          style={{ ...button }}
+          className={buttonClass}>
           <ArrowIcon
-            className="rv-default"
             dropedDown={dropedDown}
             color={customStyle.arrowIconColor}
+            className={arrowIconColorClass}
           />
         </Rotater>
       </DropDownButton>

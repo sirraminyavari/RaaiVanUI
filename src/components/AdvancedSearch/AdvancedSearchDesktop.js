@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import { useState, Component, cloneElement } from 'react';
+import React, { useState, Component, cloneElement } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
@@ -29,8 +29,10 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
   const [dateFilter, setDateFilter] = useState(null);
   // formElements passed from 'FormFilter'
   const [formElements, setFormElements] = useState(null);
-
+  // total items found
   const [totalFound, setTotalFound] = useState(null);
+  // By changing 'forceReload', an useEffect in 'NodeList' will be called and forces to fetch again.
+  const [forceReload, setForceReload] = useState(false);
 
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
@@ -53,6 +55,11 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
       return temp;
     });
   };
+
+  // change 'forceReload' to work as a trigger in 'NodeList'
+  const forceFetch = () => {
+    setForceReload(!forceReload);
+  };
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
       {console.log(hierarchy, 'hierarchy*')}
@@ -70,13 +77,15 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
             onFormElements={setFormElements}
             totalFound={totalFound}
             hierarchy={hierarchy}
+            onForceFetch={forceFetch}
           />
         </TopFilter>
-        <div style={{ paddingRight: '2rem', paddingLeft: '2rem' }}>
-          {cloneElement(children, {
+        <div style={{ padding: '0 2rem 0 2rem' }}>
+          {React.cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,
             formFilters: formFilters,
+            forceFetch: forceReload,
             onTotalFound: setTotalFound,
           })}
         </div>

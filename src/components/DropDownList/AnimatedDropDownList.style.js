@@ -84,18 +84,17 @@ export const ListItem = styled.div`
 `;
 export const DropDownButton = styled.div`
   display: flex;
-  flex-direction: ${() => (RV_RTL ? 'row' : 'row')};
+  ${RV_RTL ? 'flex-direction:row-reverse' : 'flex-direction:row-reverse'};
   justify-content: space-between;
   background: #f3f7fd 0% 0% no-repeat padding-box;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
 
   width: 100%;
   align-items: center;
 `;
 export const Divider = styled.div`
-  width: 0.1px;
+  width: 2px;
   height: 100%;
-  background-color: white;
 `;
 export const Title = styled.div`
   color: #707070;
@@ -109,12 +108,8 @@ export const Rotater = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  background-color: #bac9dc;
   height: 100%;
   padding: 0.75rem;
-  border-right: 2px solid white;
-  border-bottom-left-radius: 0.5rem;
-  border-top-left-radius: 0.5rem;
 `;
 export const Error = styled.span`
   color: red;
