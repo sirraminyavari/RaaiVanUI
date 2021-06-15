@@ -2,8 +2,10 @@
  * A component for applying the simple search tools.
  */
 import APIHandler from 'apiHelper/APIHandler';
+import Button from 'components/Buttons/Button';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
+import Heading from 'components/Heading/Heading';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
@@ -12,29 +14,28 @@ import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon
 import Filter from 'components/Icons/FilterIcon/Filter';
 import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
-import Input from 'components/Inputs/Input';
 import Search from 'components/Icons/SearchIcon/Search';
-import React, { useEffect, useState } from 'react';
-import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import Modal from 'components/Modal/Modal';
+import { decode, encode } from 'js-base64';
+import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from './Breadcrumb';
-import Heading from 'components/Heading/Heading';
-import useCheckRoute from 'hooks/useCheckRoute';
-import { decode } from 'js-base64';
+import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 
+const { RVDic, RVAPI, RV_RTL } = window;
 const data = [
   {
-    icon: <FlashIcon color={'#2B7BE4'} />,
-    label: 'افزودن فوری',
-    value: 'a',
-    color: '#2B7BE4',
+    icon: <FlashIcon className={'rv-default'} />,
+    label: RVDic.AddQuickly,
+    value: 'urgentAction',
+    colorClass: 'rv-default',
   },
   {
-    icon: <AddIcon color={'#2B7BE4'} />,
-    label: 'ثبت کامل اطلاعات',
-    value: 'b',
-    color: '#2B7BE4',
+    icon: <AddIcon className={'rv-default'} />,
+    label: RVDic.AddWithDetails,
+    value: 'completeAction',
+    colorClass: 'rv-default',
   },
 ];
 
@@ -44,13 +45,9 @@ const checkNodeCreationAccess = new APIHandler(
 );
 const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 const formElements = new APIHandler('FGAPI', 'GetFormElements');
+const newNodePage = new APIHandler('RVAPI', 'NewNodePageURL');
+const addNode = new APIHandler('CNAPI', 'AddNode');
 
-const defaultDropDownLabel = {
-  icon: <AddIcon color={'white'} />,
-  label: 'سند مارکتینگ جدید',
-  value: 'b',
-  color: 'white',
-};
 /**
  *
  * @callback onSearch - By typing some thing in the search input will fire.
@@ -73,7 +70,18 @@ const FilterBar = ({
   onFormElements,
   totalFound,
   hierarchy,
+  onForceFetch,
 }) => {
+  const defaultDropDownLabel = {
+    icon: <AddIcon color={'white'} />,
+    label: RVDic?.NewN?.replace(
+      '[n]',
+      !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
+    ),
+    value: null,
+    color: 'white',
+  };
+
   // Typed value in search input.
   const [searchText, setSearchText] = useState('');
   // if True, filters Bookmarked nodes(under develop)
@@ -88,41 +96,58 @@ const FilterBar = ({
   const [advancedButton, setAdvancedButton] = useState(false);
   // selected item for creating type.
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
-
+  // if True, means DropDown is open
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-
+  // if True, means mouse hovers the filter button.
   const [filterHover, setFilterHover] = useState(false);
+  // if True, means mouse hovers the date button.
   const [dateHover, setDateHover] = useState(false);
+  // if True, means mouse hovers the people button.
   const [peopleHover, setPeopleHover] = useState(false);
+  // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
+  // if true, means the modal for creating urgent subject is open
+  const [isUrgentModalOpen, setUrgentModalOpen] = useState(false);
+  // user inputs for creating urgent subject item.
+  const [urgentInput, setUrgentInput] = useState('');
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
     getCreationAccess();
   }, []);
+  // Gets typeName by retrieving it from the hierarchy.
+  const getTypeName = () => {
+    return !_.isEmpty(hierarchy) ? decode(hierarchy[0].TypeName) : '';
+  };
+  // By changing 'hierarchy' will fire.
+  useEffect(() => {
+    if (_.isArray(hierarchy)) {
+      const newMarketingHistoryRaw = localStorage.getItem(nodeTypeId);
+      const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
+      // Checks if the user has selection history set it for default.
+      // By clicking the dropdown label.
+      // selected item in past will fire.
+      const findLastChoose =
+        newMarketingHistory &&
+        data.find((x) => x.value === newMarketingHistory);
+      console.log(getTypeName(), 'getTypeName');
+      setSelectedItem({
+        ...selectedItem,
+        label: RVDic.NewN.replace('[n]', getTypeName()),
+        icon:
+          _.isObject(findLastChoose) &&
+          React.cloneElement(findLastChoose?.icon, { color: 'white' }),
+        value: _.isObject(findLastChoose) && findLastChoose.value,
+      });
+    }
+  }, [hierarchy]);
+
   /**
    * Gets user access for creating document.
    * @returns
    */
   const getCreationAccess = () =>
     checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
-      const newMarketingHistoryRaw = localStorage.getItem(nodeTypeId);
-      const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
-      // Checks if the user has selection history set it for default.
-      // By clicking the dropdown label.
-      // selected item in past will fire.
-      if (newMarketingHistory) {
-        const findLastChoose = data.find(
-          (x) => x.value === newMarketingHistory
-        );
-        if (findLastChoose) {
-          setSelectedItem({
-            ...selectedItem,
-            icon: React.cloneElement(findLastChoose?.icon, { color: 'white' }),
-            value: findLastChoose.value,
-          });
-        }
-      }
       // If the user has access can choose between two items.
       if (dt.Result) {
         // setCreationData(data);
@@ -176,39 +201,52 @@ const FilterBar = ({
       value: item.value,
       color: 'white',
     });
+
+    if (item.value === 'completeAction') {
+      window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+    } else if (item.value === 'urgentAction') {
+      setUrgentModalOpen(true);
+    }
   };
   // By typing in the search input will fire
-  const onTextSearch = (e) => {
-    setSearchText(e.target.value);
+  const onTextSearch = (value) => {
+    setSearchText(value);
   };
-
-  const checkRoute = useCheckRoute();
-
+  // will fire if user choose create urgent.
+  const onCreateUrgent = () => {
+    setUrgentModalOpen(false);
+    addNode.fetch(
+      { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
+      (response) => {
+        setUrgentInput('');
+        console.log(response, 'response');
+        onForceFetch();
+      }
+    );
+  };
   return (
     <Container>
       <Breadcrumb hierarchy={hierarchy} />
       <TopRow>
-        {console.log(hierarchy, 'hierarchy')}
+        {console.log(hierarchy, 'hierarchy', _.isEmpty(hierarchy))}
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          {hierarchy && hierarchy.length > 0 && hierarchy[0]?.IconURL && (
+          {!_.isEmpty(hierarchy) && hierarchy[0].IconURL && (
             <img
               style={{ height: '3rem', aspectRatio: 1 }}
               src={hierarchy[0]?.IconURL}
             />
           )}
-          {hierarchy && hierarchy.length > 0 && hierarchy[0]?.TypeName && (
-            <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
-              {decode(hierarchy[0].TypeName)}
-            </Heading>
-          )}
-          {totalFound && (
+          <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
+            {getTypeName()}
+          </Heading>
+          {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
-              {totalFound + ' مورد'}
+              {RVDic.NItems.replace('[n]', totalFound)}
             </Heading>
           )}
         </div>
@@ -219,17 +257,19 @@ const FilterBar = ({
             onSelectItem={onSelectItem}
             defaultValue={selectedItem}
             hiddenSelectedItem={false}
-            onClickLabel={() => console.log('label clicked!')}
-            customStyle={{
-              button: {
-                backgroundColor: isDropDownOpen ? '#2B388F' : '#2B7BE4',
-              },
-              label: {
-                backgroundColor: '#2B7BE4',
-                borderTopRightRadius: '0.5rem',
-                borderBottomRightRadius: '0.5rem',
-              },
-              arrowIconColor: 'white',
+            onClickLabel={() => onSelectItem(selectedItem)}
+            customClass={{
+              labelClass: RV_RTL
+                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius'
+                : 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius',
+              buttonClass: isDropDownOpen
+                ? `rv-bg-color-warm rv-border-radius-half ${
+                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
+                  }`
+                : `rv-bg-color-default rv-border-radius-half ${
+                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
+                  }`,
+              arrowIconColorClass: 'rv-white',
             }}
             onDropDownOpen={setIsDropDownOpen}
           />
@@ -239,16 +279,32 @@ const FilterBar = ({
       <BottomRow>
         <AnimatedInput
           value={searchText}
-          placholderClass={'rv-distant'}
+          placeholderClass={'rv-distant'}
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
+          style={{ maxWidth: '60%' }}
           placeholder={
-            DimensionHelper().isTabletOrMobile
-              ? 'جستجو'
-              : 'جستجو در اسناد مارکتینگ (عنوان ، کد رهگیری ، کلمات کلیدی)'
+            RVDic.SearchInN.replace(
+              '[n]',
+
+              getTypeName()
+            ) +
+            ' (' +
+            RVDic.Title +
+            ' - ' +
+            RVDic.AdditionalID +
+            ' - ' +
+            RVDic.Keywords +
+            ')'
           }
-          children={<Search className={'rv-distant'} />}
-          style={{ maxWidth: '40%', placeholderColor: 'red' }}
+          children={
+            <Search
+              style={{
+                transform: `${RV_RTL ? 'rotate(0deg)' : 'rotate(90deg)'}`,
+              }}
+              className={'rv-distant'}
+            />
+          }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <ShadowButton
@@ -360,11 +416,35 @@ const FilterBar = ({
                 }
                 style={{ marginLeft: '0.5rem' }}
               />
-              {'پیشرفته'}
+              {RVDic.Advanced}
             </ShadowButton>
           )}
         </div>
       </BottomRow>
+      <div
+        style={{
+          display: 'flex',
+          width: '80vw',
+          backgroundColor: 'red',
+        }}>
+        <Modal
+          contentWidth="50%"
+          onClose={() => setUrgentModalOpen(false)}
+          show={isUrgentModalOpen}>
+          <AnimatedInput
+            placeholder={'Input something'}
+            value={urgentInput}
+            onChange={setUrgentInput}
+          />
+          <Button
+            disable={!urgentInput}
+            onClick={onCreateUrgent}
+            style={{ margin: '2rem' }}
+            type={'primary'}>
+            {'Confirm'}
+          </Button>
+        </Modal>
+      </div>
     </Container>
   );
 };

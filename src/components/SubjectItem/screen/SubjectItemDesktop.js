@@ -30,8 +30,8 @@ const SubjectItemDesktop = ({
   item,
   selectMode,
   onChecked,
-  onClick,
   parentNodeType,
+  onReload,
 }) => {
   const {
     Name,
@@ -43,6 +43,7 @@ const SubjectItemDesktop = ({
     Creator,
     NodeID,
     NodeTypeID,
+    LikeStatus,
   } = item;
   const [isHover, setIsHover] = useState(false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
@@ -50,7 +51,10 @@ const SubjectItemDesktop = ({
   // /**
   //  * By clicking on the item will fire.
   //  */
-  // const onClick = () => {};
+  const onClick = () => {
+    console.log('clicked');
+    window.open(RVAPI.NodePageURL({ NodeID: NodeID }));
+  };
 
   return (
     <Root>
@@ -58,11 +62,11 @@ const SubjectItemDesktop = ({
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-      {console.log(isSaas, 'is saas')}
+      {/* {console.log(item, 'item')} */}
       <Container
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        href={RVAPI.NodePageURL({ NodeID: NodeID })}
+        onClick={onClick}
         className="rv-border-freezed">
         <IconContent>
           <SubjectIcon iconUrl={IconURL} />
@@ -88,11 +92,15 @@ const SubjectItemDesktop = ({
               </Details>
             )}
           </Main>
-          {isSaas && isHover && (
+          {isSaas && (
             <>
               <SubjectTools
+                isHover={isHover}
                 editable={UserStatus.Editable}
                 removable={UserStatus.Removable}
+                isLiked={LikeStatus}
+                nodeId={NodeID}
+                reload={onReload}
               />
 
               {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
@@ -124,7 +132,7 @@ const Main = styled.div`
   flex-grow: 1;
   flex-direction: column;
   height: 100%;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin: ${() => (RV_RTL ? '0 1.75rem 0 0' : '0 0 0 1.75rem')};
 `;

@@ -14,13 +14,14 @@ const SubjectClassName = ({ className }) => {
 export default SubjectClassName;
 
 const ClassName = styled.div`
-  /* background-color: #f3f7fd; */
   border-radius: 13px;
-  height: 1.5rem;
+  /* height: 1.5rem; */
   border-radius: 0.75rem;
   /* color: #2b7be4; */
-  padding: 0 1rem 0 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  margin: 0.5rem 0 0.5rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: flex-start;
 `;

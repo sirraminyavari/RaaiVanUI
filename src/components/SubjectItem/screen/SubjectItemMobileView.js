@@ -28,7 +28,7 @@ const SubjectItemMobileView = ({
   item,
   selectMode,
   onChecked,
-  onClick,
+  onReload,
   parentNodeType,
 }) => {
   const {
@@ -41,13 +41,16 @@ const SubjectItemMobileView = ({
     Creator,
     NodeID,
     NodeTypeID,
+    LikeStatus,
   } = item;
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
   // /**
   //  * By clicking on the item will fire.
   //  */
-  // const onClick = () => {};
+  const onClick = () => {
+    window.open(RVAPI.NodePageURL({ NodeID: NodeID }));
+  };
 
   return (
     <Root>
@@ -55,9 +58,7 @@ const SubjectItemMobileView = ({
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-      <Container
-        href={RVAPI.NodePageURL({ NodeID: NodeID })}
-        className="rv-border-freezed">
+      <Container onClick={onClick} className="rv-border-freezed">
         <IconContent>
           <div>
             <SubjectIcon iconUrl={IconURL} />
@@ -81,10 +82,13 @@ const SubjectItemMobileView = ({
               firstName={decode(Creator.FirstName)}
               lastName={decode(Creator.LastName)}
             />
-            {!isSaas && (
+            {isSaas && (
               <SubjectTools
                 editable={UserStatus.Editable}
                 removable={UserStatus.Removable}
+                isLiked={LikeStatus}
+                nodeId={NodeID}
+                reload={onReload}
               />
             )}
           </Maintainer>

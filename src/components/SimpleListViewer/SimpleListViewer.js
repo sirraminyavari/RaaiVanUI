@@ -41,11 +41,12 @@ const SimpleListViewer = ({
 
     setIsFetching(true);
 
-    fetchMethod(pageSize, 0, (data, total) => {
+    fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
       if (data) {
         setData(data);
         setTotal(total);
         setIsFetching(false);
+        console.log(total, 'nodeTypeId Simple', nodeTypeId);
         onTotal(total);
       }
     });
@@ -90,11 +91,14 @@ const SimpleListViewer = ({
     setIsFetching(true);
     setData([]);
 
-    fetchMethod(pageSize, 1, (data, total) => {
+    fetchMethod(pageSize, 1, (data, total, nodeTypeId) => {
       if (data) {
+        console.log(total, 'nodeTypeId Simple new', nodeTypeId);
+
         setData(data);
         setTotal(total);
         setIsFetching(false);
+        onTotal(total);
       }
     });
   }, [extraData]);

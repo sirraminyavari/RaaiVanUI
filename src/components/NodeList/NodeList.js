@@ -22,6 +22,7 @@ const NodeList = ({
   dateFilter,
   nodeTypeId,
   formFilters,
+  forceFetch,
   onTotalFound,
 }) => {
   // to refresh the list value by changing the data, its value will change
@@ -29,11 +30,13 @@ const NodeList = ({
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
+    onTotalFound(null);
     setExtraData(!extraData);
-  }, [searchText, dateFilter, nodeTypeId, formFilters]);
+  }, [searchText, dateFilter, nodeTypeId, formFilters, forceFetch]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
+    console.log(nodeTypeId, 'nodeTypeId Node');
     getNodesAPI.fetch(
       {
         Count: count,
@@ -58,6 +61,7 @@ const NodeList = ({
               LikesCount: !isSaas,
               VisitsCount: !isSaas,
               ParseResults: true,
+              LikeStatus: true,
             },
             (restInfo) => {
               const complementeryNodes = response.Nodes.map((x) => {
@@ -68,7 +72,7 @@ const NodeList = ({
                 };
               });
               if (done) {
-                done(complementeryNodes, response.TotalCount);
+                done(complementeryNodes, response.TotalCount, nodeTypeId);
               }
             },
             (error) => {
@@ -87,6 +91,9 @@ const NodeList = ({
     // objectUrl({ NodeID: nodeId });
     console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
     RVAPI.NodePageURL({ NodeID: nodeId });
+  };
+  const onReload = () => {
+    setExtraData(!extraData);
   };
   return (
     <>
@@ -111,6 +118,7 @@ const NodeList = ({
                 item={x}
                 isSaas={isSaas}
                 onClick={() => onClick(x.NodeID)}
+                onReload={onReload}
               />
             )}
           </>

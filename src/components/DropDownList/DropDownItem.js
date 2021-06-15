@@ -17,14 +17,14 @@ import { Label, Maintainer } from './AnimatedDropDownList.style';
  * @returns - Renders item in the drop-down
  */
 const DropDownItem = ({ item, onSelectItem, itemStyle }) => {
-  const { icon, label, color, hidden } = item;
+  const { icon, label, colorClass, hidden } = item;
 
   return (
     <>
       {!hidden && (
         <Maintainer style={{ ...itemStyle }} onClick={onSelectItem}>
           {<div style={{ width: '1rem', height: '1rem' }}>{icon}</div>}
-          <Label color={color}>{label}</Label>
+          <Label className={colorClass}>{label}</Label>
         </Maintainer>
       )}
     </>
