@@ -10,8 +10,8 @@ import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import FormView from 'components/FormElements/FormView/FormView';
-import ExactFilter from '../../items/ExactToggle';
-import OrFilter from '../../items/OrAndSelect';
+import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
 
 /**
@@ -43,24 +43,14 @@ const MultiLevelType = (props) => {
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
 
-  //! Options for 'OrAnd' select;
-  const orOptions = [
-    { value: 'or', title: RVDic.Or },
-    { value: 'and', title: RVDic.And },
-  ];
-
   //! Fires on 'Exact' toggle change.
   const handleExactFilter = (exactValue) => {
     setExact(exactValue);
   };
 
-  //! Fires on 'OrAnd' change.
+  //! Fires on 'OrAnd' toggle change.
   const handleOrFilter = (orValue) => {
-    if (orValue === 'or') {
-      setOr(true);
-    } else {
-      setOr(false);
-    }
+    setOr(orValue);
   };
 
   //! Fetch nodes for form fill.
@@ -133,8 +123,8 @@ const MultiLevelType = (props) => {
   }, [value]);
 
   return (
-    <Styled.UserContainer>
-      <Styled.UserTitle>{decodeBase64(Title)}</Styled.UserTitle>
+    <Styled.FilterContainer>
+      <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <FormView.MultiLevel
         items={viewItems}
         levels={levels}
@@ -147,12 +137,7 @@ const MultiLevelType = (props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <OrFilter
-          options={orOptions}
-          selectedOption={!!or ? 0 : 1}
-          name="multilevel-or-filter"
-          onSelect={handleOrFilter}
-        />
+        <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
       <Modal
@@ -166,7 +151,7 @@ const MultiLevelType = (props) => {
           nodes={nodes}
         />
       </Modal>
-    </Styled.UserContainer>
+    </Styled.FilterContainer>
   );
 };
 

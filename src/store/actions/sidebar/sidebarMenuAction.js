@@ -235,31 +235,22 @@ export const recoverSidebarNode = (node) => async (dispatch, getState) => {
         NodeTypeID: node.id,
       },
       (response) => {
-        console.log(response);
         if (node.hasChildren) {
-          const promises = node.children.map((child) => {
-            return new Promise((resolve, reject) => {
-              try {
-                moveNodeAPI.fetch(
-                  {
-                    NodeTypeID: child,
-                    ParentID: node.id,
-                  },
-                  (response) => {
-                    resolve(response);
-                  },
-                  (error) => reject(error)
-                );
-              } catch (err) {
-                reject(err);
-              }
-            });
-          });
-
-          Promise.allSettled(promises).then((result) => {
-            console.log(result);
-            dispatch(getSidebarNodes());
-          });
+          const nodeTypeIds = node.children.join('|');
+          try {
+            moveNodeAPI.fetch(
+              {
+                NodeTypeID: nodeTypeIds,
+                ParentID: node.id,
+              },
+              () => {
+                dispatch(getSidebarNodes());
+              },
+              (error) => console.log(error)
+            );
+          } catch (err) {
+            console.log({ err });
+          }
         } else {
           dispatch(getSidebarNodes());
         }

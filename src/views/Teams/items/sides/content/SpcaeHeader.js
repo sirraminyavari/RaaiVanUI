@@ -53,13 +53,17 @@ const SpcaeHeader = ({ space }) => {
       </Styled.SpaceHeaderTitle>
       {space.role === 'admin' && (
         <Styled.SpaceHeaderActions>
-          <Styled.TrashIconWrapper ref={trashRef} isHovered={isTrashHovered}>
-            <TrashIcon size={12} onClick={onTrashClick} />
+          <Styled.TrashIconWrapper
+            ref={trashRef}
+            isHovered={isTrashHovered}
+            onClick={onTrashClick}>
+            <TrashIcon size={12} />
           </Styled.TrashIconWrapper>
           <Styled.SettingIconWrapper
             ref={settingRef}
-            isHovered={isSettingHovered}>
-            <SettingIcon size={16} onClick={handleSpaceSetting} />
+            isHovered={isSettingHovered}
+            onClick={handleSpaceSetting}>
+            <SettingIcon size={16} />
           </Styled.SettingIconWrapper>
         </Styled.SpaceHeaderActions>
       )}

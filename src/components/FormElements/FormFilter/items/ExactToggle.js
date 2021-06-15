@@ -3,7 +3,7 @@
  */
 import { useContext } from 'react';
 import * as Styled from '../FormFilter.styles';
-import ToggleButton from '../../../Buttons/Toggle/Toggle';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { WindowContext } from 'context/WindowProvider';
 
 /**

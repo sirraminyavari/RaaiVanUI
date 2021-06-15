@@ -226,7 +226,7 @@ const FilterBar = ({
   };
   return (
     <Container>
-      <Breadcrumb />
+      <Breadcrumb hierarchy={hierarchy} />
       <TopRow>
         <div
           style={{

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { SortableHandle } from 'react-sortable-hoc';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
@@ -23,19 +23,24 @@ import {
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
+import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
 
-const SortHandle = SortableHandle(({ tabIndex }) => (
-  <Styled.DragIconWrapper tabIndex={tabIndex}>
-    <DragIcon />
-  </Styled.DragIconWrapper>
-));
+const SortHandle = SortableHandle(({ tabIndex }) => {
+  const { RV_RevFloat } = useWindow();
+
+  return (
+    <Styled.DragIconWrapper dir={RV_RevFloat} tabIndex={tabIndex}>
+      <DragIcon />
+    </Styled.DragIconWrapper>
+  );
+});
 
 const ActiveTeam = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { RVGlobal, RVDic } = useWindow();
+  const { RVGlobal, RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [trashRef, isTrashHovered] = useHover();
   const isMobileScreen = useMediaQuery({
@@ -144,6 +149,12 @@ const ActiveTeam = ({ team, hasHandle }) => {
         />
       </DeleteConfirm>
       {hasHandle && <SortHandle />}
+      <Styled.TeamPattern
+        dir={RV_RevFloat}
+        rtl={RV_RTL}
+        src={TeamPatternDefault}
+        alt="team-pattern"
+      />
       <Styled.TeamContentWrapper>
         <Styled.TeamDescription>
           <div>
@@ -159,7 +170,7 @@ const ActiveTeam = ({ team, hasHandle }) => {
         <Styled.TeamFooterConatiner>
           <Styled.TeamAvatarsWrapper>
             {usersList
-              ?.filter((_, index) => index > 0)
+              ?.filter((_, index) => index < 4)
               .map((user, index) => {
                 return (
                   <Avatar
@@ -168,27 +179,27 @@ const ActiveTeam = ({ team, hasHandle }) => {
                     radius={32}
                     style={{
                       position: 'relative',
-                      right: `${-index * 9}px`,
+                      [RV_Float]: `${-index * 9}px`,
                       zIndex: 10 - index,
                     }}
                   />
                 );
               })}
-            {totalUsers > 1 && (
+            {totalUsers > 4 && (
               <PopupMenu
                 trigger="hover"
                 align="top"
                 arrowClass="hidden-arrow"
                 menuClass="extra-users-popup">
-                <Styled.ExtraUsersWrapper>
+                <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
                   <Badge
-                    showText={`${totalUsers - 1}+`}
+                    showText={`${totalUsers - 4}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
                 <div className="non-scroll">
                   {usersList
-                    ?.filter((user, index) => index > 0 && user)
+                    ?.filter((user, index) => index > 3 && user)
                     .map((user) => {
                       return (
                         <Styled.ExtraUserItem key={user.UserID}>
