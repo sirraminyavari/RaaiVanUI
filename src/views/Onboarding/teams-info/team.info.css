@@ -1,0 +1,9 @@
+.team-info-action {
+  margin-top: 4rem;
+  text-align: center;
+}
+.team-info-action button {
+  height: 48px;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}

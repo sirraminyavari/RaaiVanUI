@@ -1,0 +1,19 @@
+.sidebar {
+  flex-basis: 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: start;
+  padding: 2rem;
+}
+.onboarding-sidbar-steps {
+  margin-top: 45px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.onboarding-sidbar-steps div {
+  color: white;
+}

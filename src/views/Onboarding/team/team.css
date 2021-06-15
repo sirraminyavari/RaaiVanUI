@@ -1,0 +1,42 @@
+.team-page {
+  justify-content: center;
+  align-items: center;
+}
+.team-name-selection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.team-name-selection div {
+  margin-left: 10px;
+}
+.make-team-wrapper {
+  text-align: center;
+  height: 64px;
+}
+.make-team-btn {
+  height: 48px;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  transition: all 0.25s ease-in-out;
+}
+.action-seperator {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.action-seperator h1 {
+  position: absolute;
+  margin: auto;
+  background-color: white;
+  width: 64px;
+  text-align: center;
+}
+.team-invitation-block {
+  max-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

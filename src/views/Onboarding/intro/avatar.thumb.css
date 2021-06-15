@@ -1,0 +1,32 @@
+.thumbnail {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eeeeee;
+  margin-left: 26px;
+}
+.thumbnail img {
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+}
+.thumbnail .remove {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.75);
+  height: 80px;
+  width: 80px;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: display 0.4s ease-in-out;
+}
+.thumbnail .hide {
+  display: none;
+  transition: display 0.4s ease-in-out;
+}
