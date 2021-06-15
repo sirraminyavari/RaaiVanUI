@@ -74,9 +74,9 @@ const FilterBar = ({
 }) => {
   const defaultDropDownLabel = {
     icon: <AddIcon color={'white'} />,
-    label: RVDic.NewN.replace(
+    label: RVDic?.NewN?.replace(
       '[n]',
-      _.isArray(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
+      !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
     ),
     value: null,
     color: 'white',
@@ -117,7 +117,7 @@ const FilterBar = ({
   }, []);
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return _.isArray(hierarchy) ? decode(hierarchy[0].TypeName) : '';
+    return !_.isEmpty(hierarchy) ? decode(hierarchy[0].TypeName) : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
@@ -228,13 +228,14 @@ const FilterBar = ({
     <Container>
       <Breadcrumb hierarchy={hierarchy} />
       <TopRow>
+        {console.log(hierarchy, 'hierarchy', _.isEmpty(hierarchy))}
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          {_.isArray(hierarchy) && hierarchy[0].IconURL && (
+          {!_.isEmpty(hierarchy) && hierarchy[0].IconURL && (
             <img
               style={{ height: '3rem', aspectRatio: 1 }}
               src={hierarchy[0]?.IconURL}
