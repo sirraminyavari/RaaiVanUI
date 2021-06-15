@@ -16,8 +16,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
-import 'assets/css/scrollbar.css';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const switchRoutes = (
   <Switch>
@@ -79,7 +78,7 @@ const Main = () => {
           ) : (
             <SidebarHeader />
           )}
-          <PerfectScrollbar>
+          <PerfectScrollBar>
             <Styled.ContentWrapper
               isSidebarOpen={isSidebarOpen}
               isMobile={isMobileScreen}>
@@ -88,7 +87,7 @@ const Main = () => {
                 <Styled.Content>{switchRoutes}</Styled.Content>
               </Suspense>
             </Styled.ContentWrapper>
-          </PerfectScrollbar>
+          </PerfectScrollBar>
         </Styled.MainContainer>
       ) : (
         <>{switchRoutes}</>
