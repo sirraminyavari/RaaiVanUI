@@ -30,11 +30,13 @@ const NodeList = ({
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
+    onTotalFound(null);
     setExtraData(!extraData);
   }, [searchText, dateFilter, nodeTypeId, formFilters, forceFetch]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
+    console.log(nodeTypeId, 'nodeTypeId Node');
     getNodesAPI.fetch(
       {
         Count: count,
@@ -70,7 +72,7 @@ const NodeList = ({
                 };
               });
               if (done) {
-                done(complementeryNodes, response.TotalCount);
+                done(complementeryNodes, response.TotalCount, nodeTypeId);
               }
             },
             (error) => {

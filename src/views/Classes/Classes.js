@@ -3,7 +3,7 @@ import NodeList from 'components/NodeList/NodeList';
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import { useEffect, useState } from 'react';
 import { isEmpty } from 'helpers/helpers';
-
+import _ from 'lodash';
 const AdvancedSearchView = (props) => {
   const { route } = props;
   const [advancedProps, setAdvancedProps] = useState({
@@ -19,11 +19,17 @@ const AdvancedSearchView = (props) => {
       });
     }
   }, [route]);
+  useEffect(() => {
+    console.log(advancedProps, 'advancedProps');
+  }, [advancedProps]);
 
   return (
     <Container>
       <AdvanceSearch
-        nodeTypeId={advancedProps.nodeId}
+        nodeTypeId={
+          !_.isEmpty(advancedProps.hierarchy) &&
+          advancedProps.hierarchy[0]?.NodeTypeID
+        }
         hierarchy={advancedProps.hierarchy}>
         <NodeList nodeTypeId={advancedProps.nodeId} />
       </AdvanceSearch>
