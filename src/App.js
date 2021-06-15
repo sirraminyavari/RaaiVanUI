@@ -1,4 +1,6 @@
 import { Suspense, lazy } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import PrivateRoute from 'utils/RouteHandler/PrivateRoute';
 import PublicRoute from 'utils/RouteHandler/PublicRoute';
@@ -6,11 +8,8 @@ import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import AuthView from 'views/Auth/AuthView';
-import 'assets/css/index.css';
-import { ToastContainer, toast } from 'react-toastify';
-
-import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
+// import 'assets/css/index.css';
 
 const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
 
