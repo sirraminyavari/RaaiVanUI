@@ -48,7 +48,7 @@ const WorkSpace = ({ space }) => {
           );
         })}
 
-        <NewTeam />
+        {/* <NewTeam /> */}
       </Styled.TeamListConatiner>
     );
   });

@@ -12,7 +12,7 @@ import { getApplications } from 'store/actions/applications/ApplicationsAction';
 const ArchivedTeams = ({ team, hasHandle }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
-  const { RV_RevFloat, RV_RTL } = useWindow();
+  const { RV_RevFloat, RV_RTL, RV_Float } = useWindow();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -30,6 +30,8 @@ const ArchivedTeams = ({ team, hasHandle }) => {
   return (
     <Styled.TeamConatiner
       isMobile={isMobileScreen}
+      dir={RV_Float}
+      revDir={RV_RevFloat}
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
