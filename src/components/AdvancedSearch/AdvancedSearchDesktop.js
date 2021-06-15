@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import { useState, Component, cloneElement } from 'react';
+import React, { useState, Component, cloneElement } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
