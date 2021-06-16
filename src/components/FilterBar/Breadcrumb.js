@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import { BreadcrumbContainer, BreadcrumbItem } from './FilterBar.style';
@@ -12,6 +12,7 @@ const selectedTeam = createSelector(
 );
 
 const Breadcrumb = (props) => {
+  const params = useParams();
   const { hierarchy } = props;
   const { RV_RevFloat, RV_Float } = useWindow();
   const selectedApp = useSelector(selectedTeam);
@@ -30,8 +31,9 @@ const Breadcrumb = (props) => {
       </BreadcrumbItem>
       {hierarchy?.map((item, index, self) => {
         const { NodeTypeID: id, TypeName: name } = item;
+        const type = params.id === id ? 'div' : Link;
         return (
-          <BreadcrumbItem as={Link} to={`/classes/${id}`}>
+          <BreadcrumbItem as={type} to={`/classes/${id}`}>
             {decodeBase64(name)}
             {self.length - 1 !== index && (
               <ChevronIcon
