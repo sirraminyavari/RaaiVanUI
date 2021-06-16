@@ -125,6 +125,7 @@ const FilterBar = ({
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
+    console.log(nodeType, 'nodeType***');
     if (nodeType) {
       getCreationAccess();
 

@@ -40,13 +40,14 @@ const SimpleListViewer = ({
     window.addEventListener('scroll', handleScroll, true);
 
     setIsFetching(true);
+    console.log('nodeTypes****#mounted');
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
       if (data) {
         setData(data);
         setTotal(total);
         setIsFetching(false);
-        console.log(total, 'nodeTypeId Simple', nodeTypeId);
+        console.log(nodeTypeId, 'nodeTypes****#');
         onTotal(total);
       }
     });
@@ -90,6 +91,7 @@ const SimpleListViewer = ({
   useEffect(() => {
     setIsFetching(true);
     setData([]);
+    console.log(extraData, 'nodeTypes****#$%extraData');
 
     fetchMethod(pageSize, 1, (data, total, nodeTypeId) => {
       if (data) {
@@ -97,6 +99,7 @@ const SimpleListViewer = ({
         setTotal(total);
         setIsFetching(false);
         onTotal(total);
+        console.log(nodeTypeId, 'nodeTypes****#$');
       }
     });
   }, [extraData]);
