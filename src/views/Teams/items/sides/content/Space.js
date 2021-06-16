@@ -8,6 +8,7 @@ import ArchivedTeams from './ArchivedTeams';
 import SpaceHeader from './SpcaeHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -37,16 +38,20 @@ const WorkSpace = ({ space }) => {
     const { teams, ...restProps } = props;
     return (
       <Styled.TeamListConatiner>
-        {teams.map((team, index) => {
-          return (
-            <SortableItem
-              key={`item-${team.ApplicationID}`}
-              index={index}
-              team={team}
-              {...restProps}
-            />
-          );
-        })}
+        {!!teams.length ? (
+          teams.map((team, index) => {
+            return (
+              <SortableItem
+                key={`item-${team.ApplicationID}`}
+                index={index}
+                team={team}
+                {...restProps}
+              />
+            );
+          })
+        ) : (
+          <LogoLoader />
+        )}
 
         {/* <NewTeam /> */}
       </Styled.TeamListConatiner>

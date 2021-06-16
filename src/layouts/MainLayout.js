@@ -16,7 +16,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+// import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const switchRoutes = (
   <Switch>
@@ -78,16 +78,14 @@ const Main = () => {
           ) : (
             <SidebarHeader />
           )}
-          <PerfectScrollBar>
-            <Styled.ContentWrapper
-              isSidebarOpen={isSidebarOpen}
-              isMobile={isMobileScreen}>
-              <Navbar />
-              <Suspense fallback={<LogoLoader />}>
-                <Styled.Content>{switchRoutes}</Styled.Content>
-              </Suspense>
-            </Styled.ContentWrapper>
-          </PerfectScrollBar>
+          <Styled.ContentWrapper
+            isSidebarOpen={isSidebarOpen}
+            isMobile={isMobileScreen}>
+            <Navbar />
+            <Suspense fallback={<LogoLoader />}>
+              <Styled.Content>{switchRoutes}</Styled.Content>
+            </Suspense>
+          </Styled.ContentWrapper>
         </Styled.MainContainer>
       ) : (
         <>{switchRoutes}</>
