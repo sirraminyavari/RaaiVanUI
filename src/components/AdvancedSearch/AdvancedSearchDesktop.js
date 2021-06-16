@@ -10,6 +10,7 @@ import {
   Maintainer,
   SideFilter,
   TopFilter,
+  Space,
 } from './AdvancedSearch.style';
 
 /**
@@ -17,7 +18,9 @@ import {
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
+const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
+  console.log(nodeType, 'nodeType');
+  const nodeTypeId = nodeType?.NodeTypeID;
   const { RV_RTL, RV_RevFloat } = useWindow();
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
@@ -62,7 +65,6 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
   };
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
-      {console.log(hierarchy, 'hierarchy*')}
       <Maintainer
         isAdvancedShow={isAdvancedSearch}
         className={'rv-bg-color-light-gray'}
@@ -77,6 +79,7 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
             onFormElements={setFormElements}
             totalFound={totalFound}
             hierarchy={hierarchy}
+            nodeType={nodeType}
             onForceFetch={forceFetch}
           />
         </TopFilter>
@@ -90,16 +93,28 @@ const AdvanceSearchDesktop = ({ children, nodeTypeId, hierarchy }) => {
           })}
         </div>
       </Maintainer>
-      {isAdvancedSearch && formElements && (
-        <SideFilter dir={RV_RevFloat} rtl={RV_RTL}>
-          <FormFilter
-            formName="فیلتر های پیشرفته"
-            filters={formElements}
-            onFilter={normalizeSearchElements}
-            onCloseFilter={() => setIsAdvancedSearch(false)}
-          />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          // width: '25rem',
+        }}>
+        <Space isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        <SideFilter
+          isEnabled={isAdvancedSearch && formElements}
+          dir={RV_RevFloat}
+          rtl={RV_RTL}>
+          {isAdvancedSearch && formElements && (
+            <FormFilter
+              formName="فیلتر های پیشرفته"
+              filters={formElements}
+              onFilter={normalizeSearchElements}
+              onCloseFilter={() => setIsAdvancedSearch(false)}
+            />
+          )}
         </SideFilter>
-      )}
+      </div>
     </Container>
   );
 };
