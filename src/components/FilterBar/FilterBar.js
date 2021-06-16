@@ -125,8 +125,8 @@ const FilterBar = ({
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
-    console.log(nodeType, 'nodeType***');
-    if (nodeType) {
+    console.log(nodeType, 'nodeType***!!!', nodeTypeId);
+    if (nodeTypeId) {
       getCreationAccess();
 
       const newMarketingHistoryRaw = localStorage.getItem(
@@ -149,7 +149,7 @@ const FilterBar = ({
         value: _.isObject(findLastChoose) && findLastChoose.value,
       });
     }
-  }, [nodeType]);
+  }, [nodeTypeId]);
 
   /**
    * Gets user access for creating document.
@@ -185,6 +185,8 @@ const FilterBar = ({
         let filters = result && result?.Elements;
         if (filters && filters.length > 0) {
           setAdvancedButton(true);
+        } else {
+          setAdvancedButton(false);
         }
         onFormElements(filters);
       }
@@ -453,7 +455,7 @@ const FilterBar = ({
           onClose={() => setUrgentModalOpen(false)}
           show={isUrgentModalOpen}>
           <AnimatedInput
-            placeholder={'Input something'}
+            placeholder={RVDic.Title}
             value={urgentInput}
             onChange={setUrgentInput}
           />
@@ -462,7 +464,7 @@ const FilterBar = ({
             onClick={onCreateUrgent}
             style={{ margin: '2rem' }}
             type={'primary'}>
-            {'Confirm'}
+            {RVDic.Confirm}
           </Button>
         </Modal>
       </div>
