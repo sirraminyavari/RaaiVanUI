@@ -53,20 +53,20 @@
   background-color: transparent;
 }
 
-.ps:hover > .ps__rail-x,
+/* .ps:hover > .ps__rail-x, */
+/* .ps--focus > .ps__rail-x, */
+/* .ps--scrolling-x > .ps__rail-x, */
 .ps:hover > .ps__rail-y,
-.ps--focus > .ps__rail-x,
 .ps--focus > .ps__rail-y,
-.ps--scrolling-x > .ps__rail-x,
 .ps--scrolling-y > .ps__rail-y {
   opacity: 0.6;
 }
 
-.ps .ps__rail-x:hover,
+/* .ps .ps__rail-x:hover, */
+/* .ps .ps__rail-x:focus, */
+/* .ps .ps__rail-x.ps--clicking, */
 .ps .ps__rail-y:hover,
-.ps .ps__rail-x:focus,
 .ps .ps__rail-y:focus,
-.ps .ps__rail-x.ps--clicking,
 .ps .ps__rail-y.ps--clicking {
   background-color: #eee;
   opacity: 0.9;

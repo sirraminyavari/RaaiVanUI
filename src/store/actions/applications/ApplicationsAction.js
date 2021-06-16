@@ -1,8 +1,16 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import APIHandler from 'apiHelper/APIHandler';
-import { encodeBase64, saveLocalStorage } from 'helpers/helpers';
+import {
+  encodeBase64,
+  saveLocalStorage,
+  loadLocalStorage,
+} from 'helpers/helpers';
 
-const { setApplications, deleteApplication } = ApplicationsSlice.actions;
+const {
+  setApplications,
+  deleteApplication,
+  addApplication,
+} = ApplicationsSlice.actions;
 
 const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
 const removeApplicationAPI = new APIHandler('RVAPI', 'RemoveApplication');
@@ -24,7 +32,7 @@ export const getApplications = (archive = false) => async (
       (response) => {
         if (response.Applications) {
           const users = response.ApplicationUsers;
-          const applicationsWithUsers = response.Applications.map((app) => {
+          const appsWithUsers = response.Applications.map((app) => {
             app.Users = users[app.ApplicationID];
             return app;
           });
@@ -32,19 +40,25 @@ export const getApplications = (archive = false) => async (
             { Archive: true, ParseResults: true },
             (response) => {
               if (response.Applications) {
-                dispatch(
-                  setApplications([
-                    ...applicationsWithUsers,
-                    {
-                      ApplicationID: 'archived-apps',
-                      archives: response.Applications,
-                    },
-                    {
-                      ApplicationID: 'add-app',
-                    },
-                  ])
+                const archives = response.Applications;
+                const archivedList = [
+                  { ApplicationID: 'archived-apps', archives },
+                ];
+                const localApps = loadLocalStorage(
+                  'apps_' + auth.authUser.UserID
                 );
-                saveLocalStorage(auth.authUser.UserID, applicationsWithUsers);
+                if (
+                  localApps === undefined ||
+                  localApps?.length - 2 !== appsWithUsers.length
+                ) {
+                  dispatch(
+                    setApplications([
+                      ...appsWithUsers,
+                      ...archivedList,
+                      { ApplicationID: 'add-app' },
+                    ])
+                  );
+                }
               }
             },
             (error) => console.log(error)
@@ -118,8 +132,12 @@ export const createApplication = (title, done, error) => async (dispatch) => {
         if (response.ErrorText) {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
+          console.log(response);
           done && done(response);
-          dispatch(getApplications());
+          const app = response.Application;
+          const appUsers = response.ApplicationUsers;
+          app.Users = appUsers;
+          dispatch(addApplication(app));
         }
       },
       (error) => console.log({ error })
