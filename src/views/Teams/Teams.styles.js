@@ -21,6 +21,8 @@ export const ViewContainer = styled.div.attrs({
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  position: fixed;
+  top: 4rem;
 
   .archived-teams {
     max-height: 87vh;
@@ -80,8 +82,12 @@ export const HeaderTitle = styled.span.attrs({
 
 export const ContentSide = styled.div`
   width: 50%;
-  height: 100%;
+  height: calc(100vh - 7rem);
   margin: 0;
+  padding-bottom: 2rem;
+  margin-left: -0.5rem;
+  padding-left: 0.5rem;
+  overflow: hidden;
 
   .teams-modal {
     margin-top: 35vh;
@@ -90,15 +96,17 @@ export const ContentSide = styled.div`
 
 export const SpaceListConatiner = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  // overflow: scroll;
 `;
 
 export const SpaceConatiner = styled.div`
   width: 100%;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0 0 1rem 0;
 `;
 
 export const SpaceHeaderContainer = styled.div`
