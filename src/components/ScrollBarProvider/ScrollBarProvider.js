@@ -6,7 +6,7 @@ import 'assets/css/scrollbar/scrollbar.css';
 const RTLSupport = lazy(() => import('./RTLSupport'));
 const LTRSupport = lazy(() => import('./LTRSupport'));
 
-const ScrollBarProvider = ({ children }) => {
+const ScrollBarProvider = ({ children, ...restProps }) => {
   const { RV_RTL } = useWindow();
 
   return (
@@ -15,7 +15,7 @@ const ScrollBarProvider = ({ children }) => {
         {RV_RTL ? <RTLSupport /> : <LTRSupport />}
       </Suspense> */}
 
-      <PerfectScrollbar>{children}</PerfectScrollbar>
+      <PerfectScrollbar {...restProps}>{children}</PerfectScrollbar>
     </>
   );
 };

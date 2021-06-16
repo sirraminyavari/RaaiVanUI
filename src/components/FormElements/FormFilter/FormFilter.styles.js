@@ -31,14 +31,6 @@ export const FiltersWrapper = styled.div`
   align-items: center;
   padding: 0 1.5rem;
   overflow: scroll;
-
-  ::-webkit-scrollbar {
-    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
-  }
-  * {
-    -ms-overflow-style: none; /*! IE and Edge */
-    scrollbar-width: none; /*! Firefox */
-  }
 `;
 
 export const FilterButtonWrapper = styled.div.attrs({

@@ -25,12 +25,6 @@ export const ViewContainer = styled.div.attrs({
   .archived-teams {
     max-height: 87vh;
     overflow: scroll;
-
-    ::-webkit-scrollbar {
-      display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
-    }
-    -ms-overflow-style: none; /*! IE and Edge */
-    scrollbar-width: none; /*! Firefox */
   }
 `;
 
