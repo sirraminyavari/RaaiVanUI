@@ -10,8 +10,8 @@ export const Container = styled.div`
   justify-content: center;
 `;
 export const Maintainer = styled.div`
-  max-width: calc(
-    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 29rem' : '100%')}
+  width: calc(
+    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 27rem' : '100%')}
   );
   /* min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')}; */
 
