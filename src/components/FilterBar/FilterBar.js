@@ -121,7 +121,7 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName && decode(nodeType?.TypeName);
+    return nodeType?.TypeName ? decode(nodeType?.TypeName) : null;
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
@@ -303,18 +303,20 @@ const FilterBar = ({
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
           placeholder={
-            RVDic.SearchInN.replace(
-              '[n]',
+            getTypeName()
+              ? RVDic.SearchInN.replace(
+                  '[n]',
 
-              getTypeName()
-            ) +
-            ' (' +
-            RVDic.Title +
-            ' - ' +
-            RVDic.AdditionalID +
-            ' - ' +
-            RVDic.Keywords +
-            ')'
+                  getTypeName()
+                ) +
+                ' (' +
+                RVDic.Title +
+                ' - ' +
+                RVDic.AdditionalID +
+                ' - ' +
+                RVDic.Keywords +
+                ')'
+              : RVDic.Search
           }
           children={
             <Search
