@@ -31,7 +31,13 @@ const AdvancedSearchView = (props) => {
         }
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={advancedProps.hierarchy}>
-        <NodeList nodeTypeId={advancedProps.nodeTypeId} />
+        <NodeList
+          nodeTypeId={
+            (route?.NodeTypes || []).length
+              ? route.NodeTypes[0]?.NodeTypeID
+              : null
+          }
+        />
       </AdvanceSearch>
     </Container>
   );
