@@ -7,21 +7,20 @@ import _ from 'lodash';
 const AdvancedSearchView = (props) => {
   const { route } = props;
   const [advancedProps, setAdvancedProps] = useState({
-    nodeId: null,
+    nodeTypeId: null,
     hierarchy: [],
   });
 
   useEffect(() => {
     if (!isEmpty(route)) {
       setAdvancedProps({
-        nodeId: route.NodeTypes.length ? route.NodeTypes[0].NodeTypeID : null,
+        nodeTypeId: route.NodeTypes.length
+          ? route.NodeTypes[0].NodeTypeID
+          : null,
         hierarchy: route.Hierarchy,
       });
     }
   }, [route]);
-  useEffect(() => {
-    console.log(advancedProps, 'advancedProps');
-  }, [advancedProps]);
 
   return (
     <Container>
@@ -30,8 +29,9 @@ const AdvancedSearchView = (props) => {
           !_.isEmpty(advancedProps.hierarchy) &&
           advancedProps.hierarchy[0]?.NodeTypeID
         }
+        nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={advancedProps.hierarchy}>
-        <NodeList nodeTypeId={advancedProps.nodeId} />
+        <NodeList nodeTypeId={advancedProps.nodeTypeId} />
       </AdvanceSearch>
     </Container>
   );

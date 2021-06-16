@@ -36,7 +36,6 @@ const NodeList = ({
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log(nodeTypeId, 'nodeTypeId Node');
     getNodesAPI.fetch(
       {
         Count: count,
