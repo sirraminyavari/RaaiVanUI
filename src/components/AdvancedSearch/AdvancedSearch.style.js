@@ -11,7 +11,7 @@ export const Container = styled.div`
 `;
 export const Maintainer = styled.div`
   width: calc(
-    ${({ isAdvancedShow }) => (isAdvancedShow ? '100vw - 31rem' : '100%')}
+    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 27rem' : '100%')}
   );
   /* min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')}; */
 

@@ -121,11 +121,12 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName && decode(nodeType?.TypeName);
+    return nodeType?.TypeName ? decode(nodeType?.TypeName) : null;
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
-    if (nodeType) {
+    console.log(nodeType, 'nodeType***!!!', nodeTypeId);
+    if (nodeTypeId) {
       getCreationAccess();
 
       const newMarketingHistoryRaw = localStorage.getItem(
@@ -148,7 +149,7 @@ const FilterBar = ({
         value: _.isObject(findLastChoose) && findLastChoose.value,
       });
     }
-  }, [nodeType]);
+  }, [nodeTypeId]);
 
   /**
    * Gets user access for creating document.
@@ -184,6 +185,8 @@ const FilterBar = ({
         let filters = result && result?.Elements;
         if (filters && filters.length > 0) {
           setAdvancedButton(true);
+        } else {
+          setAdvancedButton(false);
         }
         onFormElements(filters);
       }
@@ -302,18 +305,20 @@ const FilterBar = ({
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
           placeholder={
-            RVDic.SearchInN.replace(
-              '[n]',
+            getTypeName()
+              ? RVDic.SearchInN.replace(
+                  '[n]',
 
-              getTypeName()
-            ) +
-            ' (' +
-            RVDic.Title +
-            ' - ' +
-            RVDic.AdditionalID +
-            ' - ' +
-            RVDic.Keywords +
-            ')'
+                  getTypeName()
+                ) +
+                ' (' +
+                RVDic.Title +
+                ' - ' +
+                RVDic.AdditionalID +
+                ' - ' +
+                RVDic.Keywords +
+                ')'
+              : RVDic.Search
           }
           children={
             <Search
@@ -450,7 +455,7 @@ const FilterBar = ({
           onClose={() => setUrgentModalOpen(false)}
           show={isUrgentModalOpen}>
           <AnimatedInput
-            placeholder={'Input something'}
+            placeholder={RVDic.Title}
             value={urgentInput}
             onChange={setUrgentInput}
           />
@@ -459,7 +464,7 @@ const FilterBar = ({
             onClick={onCreateUrgent}
             style={{ margin: '2rem' }}
             type={'primary'}>
-            {'Confirm'}
+            {RVDic.Confirm}
           </Button>
         </Modal>
       </div>

@@ -24,6 +24,10 @@ const AdvancedSearchView = (props) => {
 
   return (
     <Container>
+      {console.log(
+        (route?.NodeTypes || []).length ? route.NodeTypes[0]?.NodeTypeID : null,
+        'nodeTypes****'
+      )}
       <AdvanceSearch
         nodeTypeId={
           !_.isEmpty(advancedProps.hierarchy) &&
