@@ -1,40 +1,14 @@
-import styled from 'styled-components';
-import NodeList from 'components/NodeList/NodeList';
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
-import { useEffect, useState } from 'react';
-import { isEmpty } from 'helpers/helpers';
-import _ from 'lodash';
+import NodeList from 'components/NodeList/NodeList';
+import styled from 'styled-components';
 const AdvancedSearchView = (props) => {
   const { route } = props;
-  const [advancedProps, setAdvancedProps] = useState({
-    nodeTypeId: null,
-    hierarchy: [],
-  });
-
-  useEffect(() => {
-    if (!isEmpty(route)) {
-      setAdvancedProps({
-        nodeTypeId: route.NodeTypes.length
-          ? route.NodeTypes[0].NodeTypeID
-          : null,
-        hierarchy: route.Hierarchy,
-      });
-    }
-  }, [route]);
 
   return (
     <Container>
-      {console.log(
-        (route?.NodeTypes || []).length ? route.NodeTypes[0]?.NodeTypeID : null,
-        'nodeTypes****'
-      )}
       <AdvanceSearch
-        nodeTypeId={
-          !_.isEmpty(advancedProps.hierarchy) &&
-          advancedProps.hierarchy[0]?.NodeTypeID
-        }
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
-        hierarchy={advancedProps.hierarchy}>
+        hierarchy={route?.Hierarchy || []}>
         <NodeList
           nodeTypeId={
             (route?.NodeTypes || []).length

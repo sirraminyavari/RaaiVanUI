@@ -37,57 +37,53 @@ const NodeList = ({
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
     console.log(nodeTypeId, 'nodeTypes****#$%');
-    if (nodeTypeId) {
-      getNodesAPI.fetch(
-        {
-          Count: count,
-          LowerBoundary: lowerBoundary,
-          NodeTypeID: nodeTypeId,
-          SearchText: encode(searchText),
-          CreationDateFrom: dateFilter?.from,
-          CreationDateTo: dateFilter?.to,
-          FormFilters: encode(JSON.stringify(formFilters)),
-        },
-        (response) => {
-          if (response.Nodes) {
-            // setDataCount(response.TotalCount);
+    getNodesAPI.fetch(
+      {
+        Count: count,
+        LowerBoundary: lowerBoundary,
+        NodeTypeID: nodeTypeId,
+        SearchText: encode(searchText),
+        CreationDateFrom: dateFilter?.from,
+        CreationDateTo: dateFilter?.to,
+        FormFilters: encode(JSON.stringify(formFilters)),
+      },
+      (response) => {
+        if (response.Nodes) {
+          // setDataCount(response.TotalCount);
 
-            const nodeIds = response.Nodes.map((x) => x.NodeID);
-            nodeIds.join('|');
-            // method for fetching the  complementary info about each node
-            getNodeInfoAPI.fetch(
-              {
-                NodeIDs: nodeIds.join('|'),
-                Description: !isSaas,
-                Creator: true,
-                LikesCount: !isSaas,
-                VisitsCount: !isSaas,
-                ParseResults: true,
-                LikeStatus: true,
-              },
-              (restInfo) => {
-                const complementeryNodes = response.Nodes.map((x) => {
-                  const foundedNode = restInfo.find(
-                    (y) => y.NodeID === x.NodeID
-                  );
-                  return {
-                    ...x,
-                    ...foundedNode,
-                  };
-                });
-                if (done) {
-                  done(complementeryNodes, response.TotalCount, nodeTypeId);
-                }
-              },
-              (error) => {
-                console.log(error, 'response');
+          const nodeIds = response.Nodes.map((x) => x.NodeID);
+          nodeIds.join('|');
+          // method for fetching the  complementary info about each node
+          getNodeInfoAPI.fetch(
+            {
+              NodeIDs: nodeIds.join('|'),
+              Description: !isSaas,
+              Creator: true,
+              LikesCount: !isSaas,
+              VisitsCount: !isSaas,
+              ParseResults: true,
+              LikeStatus: true,
+            },
+            (restInfo) => {
+              const complementeryNodes = response.Nodes.map((x) => {
+                const foundedNode = restInfo.find((y) => y.NodeID === x.NodeID);
+                return {
+                  ...x,
+                  ...foundedNode,
+                };
+              });
+              if (done) {
+                done(complementeryNodes, response.TotalCount, nodeTypeId);
               }
-            );
-          }
-        },
-        (error) => console.log('error', error)
-      );
-    }
+            },
+            (error) => {
+              console.log(error, 'response');
+            }
+          );
+        }
+      },
+      (error) => console.log('error', error)
+    );
   };
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');

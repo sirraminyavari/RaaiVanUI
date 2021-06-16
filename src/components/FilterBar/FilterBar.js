@@ -121,7 +121,7 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName ? decode(nodeType?.TypeName) : null;
+    return nodeType?.TypeName ? decode(nodeType?.TypeName) : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
@@ -246,6 +246,36 @@ const FilterBar = ({
       onAdvanecedSearch(!advancedSearch);
     }, 500);
   };
+
+  const placeHolderText = () => {
+    console.log(getTypeName(), 'getTypeName');
+    if (getTypeName() !== '') {
+      return (
+        RVDic.SearchInN.replace(
+          '[n]',
+
+          getTypeName()
+        ) +
+        ' (' +
+        RVDic.Title +
+        ' - ' +
+        RVDic.AdditionalID +
+        ' - ' +
+        RVDic.Keywords +
+        ')'
+      );
+    }
+    return (
+      RVDic.Search +
+      ' (' +
+      RVDic.Title +
+      ' - ' +
+      RVDic.AdditionalID +
+      ' - ' +
+      RVDic.Keywords +
+      ')'
+    );
+  };
   return (
     <Container>
       <Breadcrumb hierarchy={hierarchy} />
@@ -304,22 +334,7 @@ const FilterBar = ({
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={
-            getTypeName()
-              ? RVDic.SearchInN.replace(
-                  '[n]',
-
-                  getTypeName()
-                ) +
-                ' (' +
-                RVDic.Title +
-                ' - ' +
-                RVDic.AdditionalID +
-                ' - ' +
-                RVDic.Keywords +
-                ')'
-              : RVDic.Search
-          }
+          placeholder={placeHolderText()}
           children={
             <Search
               style={{
