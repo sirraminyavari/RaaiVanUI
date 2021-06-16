@@ -93,8 +93,6 @@ const SimpleListViewer = ({
 
     fetchMethod(pageSize, 1, (data, total, nodeTypeId) => {
       if (data) {
-        console.log(total, 'nodeTypeId Simple new', nodeTypeId);
-
         setData(data);
         setTotal(total);
         setIsFetching(false);
