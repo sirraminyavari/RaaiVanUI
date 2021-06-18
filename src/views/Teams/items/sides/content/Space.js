@@ -1,14 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import * as Styled from 'views/Teams/Teams.styles';
-import ActiveTeam from './TeamActive';
-import NewTeam from './NewTeam';
-import ArchivedTeams from './ArchivedTeams';
 import SpaceHeader from './SpcaeHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Flipper, Flipped } from 'react-flip-toolkit';
+import DragItem from './DragTeam';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -21,59 +22,41 @@ const WorkSpace = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
 
-  const SortableItem = SortableElement((props) => {
-    const { team, shouldUseDragHandle } = props;
-    if (team.ApplicationID === 'archived-apps') {
-      return <ArchivedTeams team={team} hasHandle={shouldUseDragHandle} />;
-    }
-
-    if (team.ApplicationID === 'add-app') {
-      return <NewTeam />;
-    }
-
-    return <ActiveTeam team={team} hasHandle={shouldUseDragHandle} />;
-  });
-
-  const SortableList = SortableContainer((props) => {
-    const { teams, ...restProps } = props;
-    return (
-      <Styled.TeamListConatiner>
-        {!!teams.length ? (
-          teams.map((team, index) => {
-            return (
-              <SortableItem
-                key={`item-${team.ApplicationID}`}
-                index={index}
-                team={team}
-                {...restProps}
-              />
-            );
-          })
-        ) : (
-          <LogoLoader />
-        )}
-
-        {/* <NewTeam /> */}
-      </Styled.TeamListConatiner>
-    );
-  });
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    const reorderedTeams = reorder(teams, oldIndex, newIndex);
-
-    dispatch(setApplications(reorderedTeams));
+  const moveCard = (dragIndex, hoverIndex) => {
+    const reordered = reorder(teams, dragIndex, hoverIndex);
+    dispatch(setApplications(reordered));
   };
+
+  let flipId = '';
+  teams.forEach((team) => {
+    flipId += team.ApplicationID;
+  });
 
   return (
     <Styled.SpaceConatiner>
       <SpaceHeader space={space} />
-      <SortableList
-        shouldUseDragHandle={true}
-        useDragHandle
-        axis="xy"
-        teams={teams}
-        onSortEnd={onSortEnd}
-      />
+      <DndProvider backend={HTML5Backend}>
+        <Flipper flipKey={flipId} spring="stiff">
+          <Styled.TeamListConatiner>
+            {teams.length !== 0 ? (
+              teams.map((team, index) => {
+                return (
+                  <Flipped key={team.ApplicationID} flipId={team.ApplicationID}>
+                    <DragItem
+                      team={team}
+                      key={team.ApplicationID}
+                      index={index}
+                      moveCard={moveCard}
+                    />
+                  </Flipped>
+                );
+              })
+            ) : (
+              <LogoLoader />
+            )}
+          </Styled.TeamListConatiner>
+        </Flipper>
+      </DndProvider>
     </Styled.SpaceConatiner>
   );
 };
