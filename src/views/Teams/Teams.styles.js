@@ -17,12 +17,10 @@ export const ViewContainer = styled.div.attrs({
   box-shadow: 1px 5px 15px #0000001f;
   border-radius: 0.7rem;
   margin: 1rem;
-  padding: 1rem 2rem;
+  padding: 0 2rem 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  position: fixed;
-  top: 4rem;
 
   .archived-teams {
     max-height: 87vh;
@@ -30,13 +28,19 @@ export const ViewContainer = styled.div.attrs({
   }
 `;
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   padding: 0;
   margin: 0;
   width: 100%;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 3rem;
+  z-index: 1000;
 `;
 
 export const ModalContentWrapper = styled.div`
@@ -66,7 +70,7 @@ export const ModalButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 0rem 0 1rem 0;
+  margin: 0 0 1rem 0;
 `;
 
 export const ModalButtonText = styled.span`
@@ -82,12 +86,8 @@ export const HeaderTitle = styled.span.attrs({
 
 export const ContentSide = styled.div`
   width: 50%;
-  height: calc(100vh - 7rem);
+  height: 100%;
   margin: 0;
-  padding-bottom: 2rem;
-  margin-left: -0.5rem;
-  padding-left: 0.5rem;
-  overflow: hidden;
 
   .teams-modal {
     margin-top: 35vh;
@@ -96,12 +96,10 @@ export const ContentSide = styled.div`
 
 export const SpaceListConatiner = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  // overflow: scroll;
 `;
 
 export const SpaceConatiner = styled.div`
@@ -114,7 +112,7 @@ export const SpaceHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0 0.2rem 0;
+  margin: 0 0 0.2rem 0;
 `;
 
 export const SpaceHeaderTitle = styled.div.attrs({
@@ -282,7 +280,7 @@ export const DragIconWrapper = styled.div`
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
     all-scroll !important;
-  z-index: 1000;
+  z-index: 100;
 `;
 
 export const TeamContentWrapper = styled.div`

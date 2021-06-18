@@ -1,7 +1,6 @@
 import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import WorkSpace from './Space';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const spaces = [
   {
@@ -16,13 +15,11 @@ const ContentSide = () => {
   return (
     <Styled.ContentSide>
       <Header />
-      <PerfectScrollBar>
-        <Styled.SpaceListConatiner>
-          {spaces.map((space, key) => (
-            <WorkSpace key={key} space={space} />
-          ))}
-        </Styled.SpaceListConatiner>
-      </PerfectScrollBar>
+      <Styled.SpaceListConatiner>
+        {spaces.map((space, key) => (
+          <WorkSpace key={key} space={space} />
+        ))}
+      </Styled.SpaceListConatiner>
     </Styled.ContentSide>
   );
 };
