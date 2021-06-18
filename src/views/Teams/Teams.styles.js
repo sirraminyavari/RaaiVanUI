@@ -203,6 +203,16 @@ const getBorderCss = (props) => {
       `;
 };
 
+const getDragCss = (props) => {
+  return (
+    props.isDragging &&
+    css`
+      opacity: 0.3;
+      border: 0.15rem dashed #777;
+    `
+  );
+};
+
 export const TeamConatiner = styled.div.attrs({
   className: BG_WHITE + ' ' + BO_DISTANT,
 })`
@@ -216,6 +226,7 @@ export const TeamConatiner = styled.div.attrs({
   margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
+  ${getDragCss}
   ${({ isMobile, dir, revDir }) =>
     !isMobile &&
     `

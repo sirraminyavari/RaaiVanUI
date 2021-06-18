@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -26,7 +26,7 @@ import SortHandle from './SortHandle';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
 
-const ActiveTeam = ({ team, hasHandle }) => {
+const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
@@ -121,6 +121,8 @@ const ActiveTeam = ({ team, hasHandle }) => {
 
   return (
     <Styled.TeamConatiner
+      ref={ref}
+      isDragging={isDragging}
       isMobile={isMobileScreen}
       dir={RV_Float}
       revDir={RV_RevFloat}
@@ -139,14 +141,14 @@ const ActiveTeam = ({ team, hasHandle }) => {
           question="آیا از حذف تیم اطمینان دارید؟"
         />
       </DeleteConfirm>
-      {hasHandle && <SortHandle />}
+      <SortHandle />
       <Styled.TeamPattern
         dir={RV_RevFloat}
         rtl={RV_RTL}
         src={TeamPatternDefault}
         alt="team-pattern"
       />
-      <Styled.TeamContentWrapper>
+      <Styled.TeamContentWrapper isDragging={isDragging}>
         <Styled.TeamDescription>
           <div>
             <Avatar radius={45} style={{ width: '50px' }} userImage={appIcon} />
@@ -224,6 +226,6 @@ const ActiveTeam = ({ team, hasHandle }) => {
       </Styled.TeamContentWrapper>
     </Styled.TeamConatiner>
   );
-};
+});
 
 export default ActiveTeam;
