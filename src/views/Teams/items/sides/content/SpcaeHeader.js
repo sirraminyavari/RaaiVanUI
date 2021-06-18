@@ -49,7 +49,7 @@ const SpcaeHeader = ({ space }) => {
       </DeleteConfirm>
       <Styled.SpaceHeaderTitle>
         <SpaceIcon className={TC_DEFAULT} />
-        <span style={{ margin: '1rem' }}>{space.title}</span>
+        <span style={{ margin: ' 0 1rem' }}>{space.title}</span>
       </Styled.SpaceHeaderTitle>
       {space.role === 'admin' && (
         <Styled.SpaceHeaderActions>
