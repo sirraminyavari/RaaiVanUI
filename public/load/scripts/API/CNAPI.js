@@ -1497,11 +1497,19 @@
 
     /* end of Service */
 
+    GetTemplateTags: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/GetTemplateTags?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return CNAPI._send(url, params, queryString);
+    },
+
     GetTemplates: function (params) {
         params = params || {};
 
         var url = CNAPI.ResponseURL + "/GetTemplates?timeStamp=" + new Date().getTime();
-        var queryString = "";
+        var queryString = (params.TagID ? "&TagID=" + params.TagID : "");
         return CNAPI._send(url, params, queryString);
     },
 
@@ -1510,6 +1518,14 @@
 
         var url = CNAPI.ResponseURL + "/GetTemplateJSON?timeStamp=" + new Date().getTime();
         var queryString = (params.NodeTypeID ? "&NodeTypeID=" + params.NodeTypeID : "");
+        return CNAPI._send(url, params, queryString);
+    },
+
+    GetTemplateStatus: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/GetTemplateStatus?timeStamp=" + new Date().getTime();
+        var queryString = (params.Template ? "&Template=" + params.Template : "");
         return CNAPI._send(url, params, queryString);
     },
 
