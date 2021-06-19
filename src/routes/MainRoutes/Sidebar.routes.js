@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { getURL } from 'helpers/helpers';
 import ConfigRoutes from './Config.routes';
 const Profile = lazy(() =>
-  import(/* webpackChunkName: "profile-view"*/ 'views/Profile/Profile')
+  import(/* webpackChunkName: "profile-view"*/ 'views/Profile/Profile-Security')
 );
 const Reports = lazy(() =>
   import(/* webpackChunkName: "reports-view"*/ 'views/Reports/Reports')

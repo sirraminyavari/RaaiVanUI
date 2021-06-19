@@ -17,11 +17,19 @@ import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import Search from 'components/Icons/SearchIcon/Search';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Modal from 'components/Modal/Modal';
+import { decodeBase64 } from 'helpers/helpers';
 import { decode, encode } from 'js-base64';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import Breadcrumb from './Breadcrumb';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+
+const selectedTeam = createSelector(
+  (state) => state.theme,
+  (theme) => theme.selectedTeam
+);
 
 const { RVDic, RVAPI, RV_RTL } = window;
 
@@ -113,6 +121,7 @@ const FilterBar = ({
   const [isUrgentModalOpen, setUrgentModalOpen] = useState(false);
   // user inputs for creating urgent subject item.
   const [urgentInput, setUrgentInput] = useState('');
+  const selectedApp = useSelector(selectedTeam);
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
@@ -276,9 +285,21 @@ const FilterBar = ({
       ')'
     );
   };
+
+  const extendedHierarchy = hierarchy.map((level) => ({
+    id: level.NodeTypeID,
+    title: decodeBase64(level.TypeName),
+    linkTo: `/classes/${level.NodeTypeID}`,
+  }));
+
+  const breadcrumbItems = [
+    { id: selectedApp.id, title: selectedApp.name, linkTo: '/classes' },
+    ...extendedHierarchy,
+  ];
+
   return (
     <Container>
-      <Breadcrumb hierarchy={hierarchy} />
+      <Breadcrumb items={breadcrumbItems} />
       <TopRow>
         <div
           style={{
