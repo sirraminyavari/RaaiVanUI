@@ -33,7 +33,7 @@ const Breadcrumb = (props) => {
         const { NodeTypeID: id, TypeName: name } = item;
         const type = params.id === id ? 'div' : Link;
         return (
-          <BreadcrumbItem as={type} to={`/classes/${id}`}>
+          <BreadcrumbItem key={id} as={type} to={`/classes/${id}`}>
             {decodeBase64(name)}
             {self.length - 1 !== index && (
               <ChevronIcon

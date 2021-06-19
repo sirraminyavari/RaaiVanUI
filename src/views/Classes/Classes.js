@@ -2,9 +2,15 @@ import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
 import styled from 'styled-components';
 import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { useEffect } from 'react';
 
 const AdvancedSearchView = (props) => {
   const { route } = props;
+
+  useEffect(() => {
+    console.count('Classes view render time(s)');
+    console.log(props.route);
+  }, [props.route]);
 
   return (
     <PerfectScrollBar>
