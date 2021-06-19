@@ -9,7 +9,8 @@ import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, isEmpty } from 'helpers/helpers';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
@@ -53,7 +54,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
-  if (route.ServiceUnavailable) {
+  if (isEmpty(route)) {
+    return <LogoLoader />;
+  } else if (route.ServiceUnavailable) {
     return <Exception message="Service Unavailable" />;
   } else if (route.NoApplicationFound) {
     return <Exception message="No Application Found" />;
