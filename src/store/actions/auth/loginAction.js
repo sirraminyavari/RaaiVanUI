@@ -6,6 +6,7 @@ import APIHandler from '../../../apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import stepTwoAction from './stepTwoAction';
 import loggedInAction from './loggedInAction';
+import setAuthUserAction from './setAuthUserAction';
 const {
   loginStart,
   loginSuccess,
@@ -80,7 +81,9 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // GlobalUtilities.set_auth_cookie(AuthCookie);
             // console.log(response, 'response login');
             // dispatch(loginSuccess(response));
+            console.log(response, 'response login');
             dispatch(loggedInAction(response));
+            dispatch(setAuthUserAction(response.User));
           }
         },
         (err) => {

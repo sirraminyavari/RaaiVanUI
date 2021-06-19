@@ -3,9 +3,14 @@ import './template.slider.css';
 import ArrowUp from '../arrows/up.png';
 import ArrowDown from '../arrows/down.png';
 import TemplateCard from './template.card';
+import APIHandler from 'apiHelper/APIHandler';
 
 const TemplateSlider = () => {
   const templates = [1, 2, 3, 4, 5];
+
+  // useEffect(() => {
+  //   APIHandler("", "").fetch()
+  // })
 
   const [index, setIndex] = useState(0);
   const templateTrack = useRef();

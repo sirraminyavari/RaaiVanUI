@@ -1,7 +1,7 @@
 /**
  * A component for viewing the subject's item.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import AdvanceSearchDesktop from './AdvancedSearchDesktop';
 import AdvanceSearchMobile from './AdvanceSearchMobile';
@@ -11,6 +11,11 @@ import AdvanceSearchMobile from './AdvanceSearchMobile';
  * @param {any} -  the all component props.
  */
 const AdvanceSearch = ({ ...props }) => {
+  console.log(
+    props?.hierarchy,
+    'advancedSearch render' + new Date().getTime(),
+    props?.nodeType
+  );
   return (
     <>
       {/* If True, will render MobileView component */}

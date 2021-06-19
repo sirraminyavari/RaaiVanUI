@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import DashedLine from '../dashed.line';
+import { useBeforeunload, useOnLoad } from '../hook/hooks';
+import { team_on_exit, team_on_start } from '../message';
 import './team.css';
 import TeamsSlider from './teams.slider';
 
 const Team = () => {
   const { info, dispatch } = useContext(StepperContext);
+
+  useOnLoad(team_on_start);
+
+  useBeforeunload(team_on_exit);
 
   return (
     <div className="team-page">

@@ -1,12 +1,37 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Avatar from './avatar';
 import { StepperContext } from '../context/stepper.context';
 import './intro.css';
 import '../styles.css';
 import AvatarThumb from './avatar.thumb';
-
+import { encode } from 'js-base64';
+import APIHandler from 'apiHelper/APIHandler';
+import { intro_on_start, intro_on_exit } from '../message';
+import { useBeforeunload, useOnLoad } from '../hook/hooks';
 const Intro = (props) => {
   const { info, dispatch } = useContext(StepperContext);
+
+  // log loadin component to server
+  useOnLoad(intro_on_start);
+
+  // log exit component to server
+  useBeforeunload(intro_on_exit);
+
+  const save = () => {
+    new APIHandler('UsersAPI', 'SetFirstAndLastName').fetch(
+      {
+        FirstName: encode(info.firstName),
+        LastName: encode(info.lastName),
+      },
+      (res) => {
+        console.log(res);
+        dispatch({ type: 'NEXT_STEP' });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
 
   return (
     <div className="intro-container">
@@ -54,7 +79,7 @@ const Intro = (props) => {
               'ActionButton',
               (info.firstName === '' || info.lastName === '') && 'deactive',
             ].join(' ')}
-            onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+            onClick={() => save()}>
             {'بزن بریم!'}
           </button>
         </div>

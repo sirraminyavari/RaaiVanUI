@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Teams/Teams.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
@@ -6,10 +7,12 @@ import ArchivedModal from './ArchivedModal';
 import SortHandle from './SortHandle';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
+import { getApplications } from 'store/actions/applications/ApplicationsAction';
 
 const ArchivedTeams = ({ team, hasHandle }) => {
+  const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
-  const { RV_RevFloat, RV_RTL } = useWindow();
+  const { RV_RevFloat, RV_RTL, RV_Float } = useWindow();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -19,21 +22,25 @@ const ArchivedTeams = ({ team, hasHandle }) => {
     setIsModalShown(true);
   };
 
-  const handleArchiveClose = () => {
+  const handleCloseArchived = () => {
     setIsModalShown(false);
+    dispatch(getApplications());
   };
 
   return (
     <Styled.TeamConatiner
       isMobile={isMobileScreen}
+      dir={RV_Float}
+      revDir={RV_RevFloat}
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
         isOpen={isModalShown}
         modalTitle="تیم های آرشیو شده"
         modalWidth="35%"
+        contentClass={'archived-teams'}
         archives={team.archives}
-        onArchiveClose={handleArchiveClose}
+        onModalClose={handleCloseArchived}
       />
       {hasHandle && <SortHandle />}
       <Styled.TeamPattern

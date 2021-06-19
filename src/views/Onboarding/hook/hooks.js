@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import APIHandler from 'apiHelper/APIHandler';
+import { encode } from 'js-base64';
 
 export const useOutsideClick = (ref, callback, when) => {
   const savedCallback = useRef(callback);
@@ -20,4 +22,22 @@ export const useOutsideClick = (ref, callback, when) => {
       return () => document.removeEventListener('click', handler);
     }
   }, [when]);
+};
+
+export const useOnLoad = (data) => {
+  useEffect(() => {
+    new APIHandler('RVAPI', 'Log').fetch({ data: encode(data) }, (res) =>
+      console.log(res)
+    );
+  });
+};
+
+export const useBeforeunload = (data) => {
+  useEffect(() => {
+    window.addEventListener('beforeunload', () => {
+      new APIHandler('RVAPI', 'Log').fetch({ data: encode(data) });
+    });
+
+    return () => window.removeEventListener('beforeunload', () => {});
+  });
 };

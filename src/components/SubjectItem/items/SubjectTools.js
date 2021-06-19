@@ -45,7 +45,7 @@ const SubjectTools = ({
   };
 
   return (
-    <Tools isHover={isHover} {...props}>
+    <Tools isHover={isHover} isLiked={isLiked} {...props}>
       {editable && (
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
@@ -66,6 +66,7 @@ const SubjectTools = ({
           width: '1rem',
           marginRight: '1.7rem',
           marginLeft: '2.5rem',
+          display: isLiked ? 'block' : !isHover ? 'none' : 'block',
         }}
         type={'secondary-o'}
         onClick={onBookmark}>
@@ -87,5 +88,6 @@ const Tools = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  z-index: ${({ isHover }) => (isHover === undefined ? 1 : !isHover ? -10 : 1)};
+  /* z-index: ${({ isHover, isLiked }) =>
+    isHover === undefined ? 1 : isLiked ? 1 : !isHover ? -10 : 1}; */
 `;

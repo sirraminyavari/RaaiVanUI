@@ -13,22 +13,34 @@ import {
 export const ViewContainer = styled.div.attrs({
   className: BG_GRAY_LIGHT,
 })`
+  min-height: 100vh;
   box-shadow: 1px 5px 15px #0000001f;
   border-radius: 0.7rem;
   margin: 1rem;
-  padding: 1rem 2rem;
+  padding: 0 2rem 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  .archived-teams {
+    max-height: 87vh;
+    overflow: scroll;
+  }
 `;
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div.attrs({
+  className: BG_GRAY_LIGHT,
+})`
   padding: 0;
   margin: 0;
   width: 100%;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 3rem;
+  z-index: 1000;
 `;
 
 export const ModalContentWrapper = styled.div`
@@ -36,11 +48,29 @@ export const ModalContentWrapper = styled.div`
   padding: 0 5%;
 `;
 
+export const ArchivedTeamWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.9rem 0;
+`;
+
+export const ArchivedTeamDescription = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+`;
+
+export const ArchivedTeamTitle = styled.span`
+  margin: 0 1rem;
+`;
+
 export const ModalButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 0rem 0 1rem 0;
+  margin: 0 0 1rem 0;
 `;
 
 export const ModalButtonText = styled.span`
@@ -74,7 +104,7 @@ export const SpaceListConatiner = styled.div`
 
 export const SpaceConatiner = styled.div`
   width: 100%;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0 0 1rem 0;
 `;
 
 export const SpaceHeaderContainer = styled.div`
@@ -82,7 +112,7 @@ export const SpaceHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0 0.2rem 0;
+  margin: 0 0 0.2rem 0;
 `;
 
 export const SpaceHeaderTitle = styled.div.attrs({
@@ -173,6 +203,16 @@ const getBorderCss = (props) => {
       `;
 };
 
+const getDragCss = (props) => {
+  return (
+    props.isDragging &&
+    css`
+      opacity: 0.3;
+      border: 0.15rem dashed #777;
+    `
+  );
+};
+
 export const TeamConatiner = styled.div.attrs({
   className: BG_WHITE + ' ' + BO_DISTANT,
 })`
@@ -182,18 +222,19 @@ export const TeamConatiner = styled.div.attrs({
   border-radius: 0.7rem;
   padding: 0.5rem;
   position: relative;
-  float: ${({ revDir }) => revDir};
+  float: ${({ dir }) => dir};
   margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
+  ${getDragCss}
   ${({ isMobile, dir, revDir }) =>
     !isMobile &&
     `
     :nth-child(2n+1){
-      margin-${dir}: 0.5rem;
+      margin-${revDir}: 0.5rem;
     }
     :nth-child(2n){
-      margin-${revDir}: 0.5rem;
+      margin-${dir}: 0.5rem;
     }
   `}
 
@@ -250,7 +291,7 @@ export const DragIconWrapper = styled.div`
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
     all-scroll !important;
-  z-index: 1000;
+  z-index: 100;
 `;
 
 export const TeamContentWrapper = styled.div`
@@ -334,7 +375,6 @@ export const ArchivedWrapper = styled.div.attrs({
 })`
   width: 100%;
   height: 90%;
-  margin: 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -354,7 +394,10 @@ export const ArchivedTeamsLabel = styled.div.attrs({
 `;
 
 export const WelcomeSide = styled.div`
-  width: 50%;
+  width: 45%;
+  position: fixed;
+  ${({ dir }) => dir}: 0;
+  top: 2.5rem;
   height: 100%;
   margin: 0;
   display: flex;

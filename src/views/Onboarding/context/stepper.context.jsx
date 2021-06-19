@@ -2,11 +2,11 @@ import React, { createContext, useReducer, useState } from 'react';
 import { stepperReducer } from './stepper.reducer';
 
 export const StepperContext = createContext();
-
+const avatr = window.RVGlobal?.CurrentUser?.ProfileImageURL;
 const initialInfo = {
   firstName: '',
   lastName: '',
-  avatar: undefined,
+  avatar: avatr,
   teamName: '',
   step: 0,
   members: '',

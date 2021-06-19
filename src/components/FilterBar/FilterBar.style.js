@@ -62,6 +62,7 @@ export const BreadcrumbItem = styled.span.attrs({
   display: inline-block;
   font-size: 0.9rem;
   user-select: none;
+  cursor: pointer;
 
   :hover {
     color: #000;

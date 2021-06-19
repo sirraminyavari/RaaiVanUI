@@ -19,6 +19,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
 import { C_DISTANT, C_RED } from 'constant/Colors';
+import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 /**
  * @typedef PropType
@@ -92,20 +93,22 @@ const FormFilter = (props) => {
               />
             </Styled.FormFilterHeader>
           )}
-          <Styled.FiltersWrapper>
-            {filters.map((filter, key) => {
-              return (
-                <Fragment key={key}>
-                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                    FormFilter[filter.Type]({
-                      onChange: handleOnChange,
-                      data: filter,
-                      value: values[filter.ElementID],
-                    })}
-                </Fragment>
-              );
-            })}
-          </Styled.FiltersWrapper>
+          <PerfectScrollBar>
+            <Styled.FiltersWrapper>
+              {filters.map((filter, key) => {
+                return (
+                  <Fragment key={key}>
+                    {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+                      FormFilter[filter.Type]({
+                        onChange: handleOnChange,
+                        data: filter,
+                        value: values[filter.ElementID],
+                      })}
+                  </Fragment>
+                );
+              })}
+            </Styled.FiltersWrapper>
+          </PerfectScrollBar>
           <Styled.FilterButtonWrapper>
             <FilterButton
               onClick={handleOnFilterClick}

@@ -1,33 +1,33 @@
-import styled from 'styled-components';
-import NodeList from 'components/NodeList/NodeList';
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
-import { useEffect, useState } from 'react';
-import { isEmpty } from 'helpers/helpers';
+import NodeList from 'components/NodeList/NodeList';
+import styled from 'styled-components';
+import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { useEffect } from 'react';
 
 const AdvancedSearchView = (props) => {
   const { route } = props;
-  const [advancedProps, setAdvancedProps] = useState({
-    nodeId: null,
-    hierarchy: [],
-  });
 
   useEffect(() => {
-    if (!isEmpty(route)) {
-      setAdvancedProps({
-        nodeId: route.NodeTypes.length ? route.NodeTypes[0].NodeTypeID : null,
-        hierarchy: route.Hierarchy,
-      });
-    }
-  }, [route]);
+    console.count('Classes view render time(s)');
+    console.log(props.route);
+  }, [props.route]);
 
   return (
-    <Container>
-      <AdvanceSearch
-        nodeTypeId={advancedProps.nodeId}
-        hierarchy={advancedProps.hierarchy}>
-        <NodeList nodeTypeId={advancedProps.nodeId} />
-      </AdvanceSearch>
-    </Container>
+    <PerfectScrollBar>
+      <Container>
+        <AdvanceSearch
+          nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
+          hierarchy={route?.Hierarchy || []}>
+          <NodeList
+            nodeTypeId={
+              (route?.NodeTypes || []).length
+                ? route.NodeTypes[0]?.NodeTypeID
+                : null
+            }
+          />
+        </AdvanceSearch>
+      </Container>
+    </PerfectScrollBar>
   );
 };
 

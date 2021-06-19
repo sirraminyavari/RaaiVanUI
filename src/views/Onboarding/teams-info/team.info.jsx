@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import Select from './select';
 import FieldSelection from './field.selection';
 import Option from './option';
 import './team.info.css';
+import APIHandler from 'apiHelper/APIHandler';
 
 const TeamInfo = () => {
   const options = [
@@ -18,6 +19,11 @@ const TeamInfo = () => {
   ];
   const { info, dispatch } = useContext(StepperContext);
 
+  useEffect(() => {
+    new APIHandler('CNAPI', 'GetTemplateTags').fetch({}, (res) => {
+      console.log(res);
+    });
+  });
   const selectMembers = (value) => {
     dispatch({ type: 'SET_TEAM_MEMBERS', members: value });
   };

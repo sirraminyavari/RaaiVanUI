@@ -5,11 +5,13 @@ import * as Styled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import CreateModal from './CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
+import useWindow from 'hooks/useWindowContext';
 
 const NewTeam = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [teamName, setTeamName] = useState('');
   const dispatch = useDispatch();
+  const { RV_RevFloat, RV_Float } = useWindow();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -41,6 +43,8 @@ const NewTeam = () => {
     <Styled.TeamConatiner
       isNew
       isMobile={isMobileScreen}
+      dir={RV_Float}
+      revDir={RV_RevFloat}
       onClick={handleAddTeam}
       style={{ cursor: 'pointer' }}>
       <CreateModal

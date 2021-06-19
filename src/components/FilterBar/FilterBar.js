@@ -24,6 +24,8 @@ import Breadcrumb from './Breadcrumb';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 
 const { RVDic, RVAPI, RV_RTL } = window;
+
+const LOCAL_STORAGE_PRE_TEXT = 'addNode_';
 const data = [
   {
     icon: <FlashIcon className={'rv-default'} />,
@@ -71,6 +73,7 @@ const FilterBar = ({
   totalFound,
   hierarchy,
   onForceFetch,
+  nodeType,
 }) => {
   const defaultDropDownLabel = {
     icon: <AddIcon color={'white'} />,
@@ -115,14 +118,20 @@ const FilterBar = ({
   useEffect(() => {
     getCreationAccess();
   }, []);
+
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return !_.isEmpty(hierarchy) ? decode(hierarchy[0].TypeName) : '';
+    return nodeType?.TypeName ? decode(nodeType?.TypeName) : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
-    if (_.isArray(hierarchy)) {
-      const newMarketingHistoryRaw = localStorage.getItem(nodeTypeId);
+    console.log(nodeType, 'nodeType***!!!', nodeTypeId);
+    if (nodeTypeId) {
+      getCreationAccess();
+
+      const newMarketingHistoryRaw = localStorage.getItem(
+        LOCAL_STORAGE_PRE_TEXT + nodeTypeId
+      );
       const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
       // Checks if the user has selection history set it for default.
       // By clicking the dropdown label.
@@ -140,7 +149,7 @@ const FilterBar = ({
         value: _.isObject(findLastChoose) && findLastChoose.value,
       });
     }
-  }, [hierarchy]);
+  }, [nodeTypeId]);
 
   /**
    * Gets user access for creating document.
@@ -152,9 +161,10 @@ const FilterBar = ({
       if (dt.Result) {
         // setCreationData(data);
         setMarket(data);
-      } else {
-        setMarket([data[0]]);
       }
+      //  else {
+      //   setMarket([data[0]]);
+      // }
       getOwnerForm();
     });
 
@@ -167,12 +177,16 @@ const FilterBar = ({
         ConsiderElementLimits: true,
       },
       (result) => {
+        console.log(result, 'result***');
+
         let groupingElements = ((result || {}).Elements || []).filter((e) =>
           ['Select', 'Binary'].some((i) => i == e.Type)
         );
-        let filters = (result || {}).Elements || [];
-        if (filters.length > 0) {
+        let filters = result && result?.Elements;
+        if (filters && filters.length > 0) {
           setAdvancedButton(true);
+        } else {
+          setAdvancedButton(false);
         }
         onFormElements(filters);
       }
@@ -194,7 +208,10 @@ const FilterBar = ({
 
   // By clicking on the dropdown items will fire.
   const onSelectItem = (item) => {
-    localStorage.setItem(nodeTypeId, JSON.stringify(item.value));
+    localStorage.setItem(
+      LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
+      JSON.stringify(item.value)
+    );
     setSelectedItem({
       ...selectedItem,
       icon: React.cloneElement(item.icon, { color: 'white' }),
@@ -224,34 +241,68 @@ const FilterBar = ({
       }
     );
   };
+  const onAdvancedFilterClick = () => {
+    setTimeout(() => {
+      onAdvanecedSearch(!advancedSearch);
+    }, 500);
+  };
+
+  const placeHolderText = () => {
+    console.log(getTypeName(), 'getTypeName');
+    if (getTypeName() !== '') {
+      return (
+        RVDic.SearchInN.replace(
+          '[n]',
+
+          getTypeName()
+        ) +
+        ' (' +
+        RVDic.Title +
+        ' - ' +
+        RVDic.AdditionalID +
+        ' - ' +
+        RVDic.Keywords +
+        ')'
+      );
+    }
+    return (
+      RVDic.Search +
+      ' (' +
+      RVDic.Title +
+      ' - ' +
+      RVDic.AdditionalID +
+      ' - ' +
+      RVDic.Keywords +
+      ')'
+    );
+  };
   return (
     <Container>
       <Breadcrumb hierarchy={hierarchy} />
       <TopRow>
-        {console.log(hierarchy, 'hierarchy', _.isEmpty(hierarchy))}
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          {!_.isEmpty(hierarchy) && hierarchy[0].IconURL && (
+          {nodeType?.IconURL && (
             <img
               style={{ height: '3rem', aspectRatio: 1 }}
-              src={hierarchy[0]?.IconURL}
+              src={nodeType?.IconURL}
             />
           )}
           <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
             {getTypeName()}
           </Heading>
-          {totalFound && (
+          {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
               {RVDic.NItems.replace('[n]', totalFound)}
             </Heading>
           )}
         </div>
 
-        {market?.length > 0 && (
+        {(market || []).length > 0 && (
           <AnimatedDropDownList
             data={market}
             onSelectItem={onSelectItem}
@@ -283,20 +334,7 @@ const FilterBar = ({
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={
-            RVDic.SearchInN.replace(
-              '[n]',
-
-              getTypeName()
-            ) +
-            ' (' +
-            RVDic.Title +
-            ' - ' +
-            RVDic.AdditionalID +
-            ' - ' +
-            RVDic.Keywords +
-            ')'
-          }
+          placeholder={placeHolderText()}
           children={
             <Search
               style={{
@@ -398,7 +436,7 @@ const FilterBar = ({
               }}
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
-              onClick={() => onAdvanecedSearch(!advancedSearch)}
+              onClick={onAdvancedFilterClick}
               isEnabled={advancedSearch}
               className={
                 advancedSearch
@@ -432,7 +470,7 @@ const FilterBar = ({
           onClose={() => setUrgentModalOpen(false)}
           show={isUrgentModalOpen}>
           <AnimatedInput
-            placeholder={'Input something'}
+            placeholder={RVDic.Title}
             value={urgentInput}
             onChange={setUrgentInput}
           />
@@ -441,7 +479,7 @@ const FilterBar = ({
             onClick={onCreateUrgent}
             style={{ margin: '2rem' }}
             type={'primary'}>
-            {'Confirm'}
+            {RVDic.Confirm}
           </Button>
         </Modal>
       </div>
