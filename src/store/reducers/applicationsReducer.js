@@ -9,7 +9,8 @@ export const ApplicationsSlice = createSlice({
   name: 'applications',
 
   initialState: {
-    applications: loadLocalStorage(appsKey) || [],
+    applications: [],
+    isFetching: false,
   },
 
   reducers: {
@@ -42,6 +43,9 @@ export const ApplicationsSlice = createSlice({
     },
     clearApplications: (state, action) => {
       state.applications = [];
+    },
+    setFetchingApps: (state, action) => {
+      state.isFetching = action.payload;
     },
   },
 });

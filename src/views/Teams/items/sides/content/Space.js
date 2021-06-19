@@ -18,27 +18,30 @@ const selectApplications = createSelector(
   (applications) => applications.applications
 );
 
+const selectIsFetchingApps = createSelector(
+  (state) => state.applications,
+  (applications) => applications.isFetching
+);
+
 const WorkSpace = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
+  const isFetching = useSelector(selectIsFetchingApps);
 
   const moveCard = (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
     dispatch(setApplications(reordered));
   };
 
-  let flipId = '';
-  teams.forEach((team) => {
-    flipId += team.ApplicationID;
-  });
-
   return (
     <Styled.SpaceConatiner>
       <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
-        <Flipper flipKey={flipId} spring="stiff">
+        <Flipper flipKey={space.id} spring="stiff">
           <Styled.TeamListConatiner>
-            {teams.length !== 0 ? (
+            {teams.length === 0 && isFetching ? (
+              <LogoLoader />
+            ) : (
               teams.map((team, index) => {
                 return (
                   <Flipped key={team.ApplicationID} flipId={team.ApplicationID}>
@@ -51,8 +54,6 @@ const WorkSpace = ({ space }) => {
                   </Flipped>
                 );
               })
-            ) : (
-              <LogoLoader />
             )}
           </Styled.TeamListConatiner>
         </Flipper>
