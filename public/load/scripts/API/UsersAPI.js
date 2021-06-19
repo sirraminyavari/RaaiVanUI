@@ -226,6 +226,14 @@
         return UsersAPI._send(url, params, queryString);
     },
 
+    GetCurrentInvitations: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/GetCurrentInvitations?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return UsersAPI._send(url, params, queryString);
+    },
+
     SetPasswordResetTicket: function (params) {
         params = params || {};
 

@@ -224,6 +224,25 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    SetApplicationSize: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/SetApplicationSize?timeStamp=" + new Date().getTime();
+        var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "") +
+            (params.Size ? "&Size=" + params.Size : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    SetApplicationFieldOfExpertise: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/SetApplicationFieldOfExpertise?timeStamp=" + new Date().getTime();
+        var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "") +
+            (params.FieldID ? "&FieldID=" + params.FieldID : "") +
+            (params.FieldName ? "&FieldName=" + params.FieldName : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
     RemoveApplication: function (params) {
         params = params || {};
 
@@ -574,5 +593,13 @@
 
         var url = RVAPI.ResponseURL + "/GetAllNotifications?timeStamp=" + new Date().getTime();
         return RVAPI._send(url, params, "");
+    },
+
+    Log: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/Log?timeStamp=" + new Date().getTime();
+        var queryString = (params.Data ? "&Data=" + params.Data : "");
+        return RVAPI._send(url, params, queryString);
     }
 };
