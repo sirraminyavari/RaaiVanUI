@@ -9,13 +9,13 @@ import {
   BG_WHITE,
   BO_DISTANT,
 } from 'constant/Colors';
+import { BO_RADIUS_CIRCLE, BO_RADIUS_UNIT } from 'constant/constants';
 
-export const ViewContainer = styled.div.attrs({
-  className: BG_GRAY_LIGHT,
+export const TeamsViewContainer = styled.div.attrs({
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
 })`
   min-height: 100vh;
   box-shadow: 1px 5px 15px #0000001f;
-  border-radius: 0.7rem;
   margin: 1rem;
   padding: 0 2rem 1rem 2rem;
   display: flex;
@@ -214,12 +214,11 @@ const getDragCss = (props) => {
 };
 
 export const TeamConatiner = styled.div.attrs({
-  className: BG_WHITE + ' ' + BO_DISTANT,
+  className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_UNIT}`,
 })`
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
   height: 11.5rem;
   ${getBorderCss}
-  border-radius: 0.7rem;
   padding: 0.5rem;
   position: relative;
   float: ${({ dir }) => dir};
@@ -350,13 +349,12 @@ export const ExtraUserTitle = styled.span.attrs({
 `;
 
 export const TeamTrashWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? C_RED : C_DISTANT,
+  className: `${props.isHovered ? C_RED : C_DISTANT} ${BO_RADIUS_CIRCLE}`,
 }))`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  border-radius: 50%;
 `;
 
 export const NewTeamWrapper = styled.div.attrs({
@@ -423,13 +421,12 @@ export const SocialMediaContainer = styled.div`
 `;
 
 export const IconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? TC_DEFAULT : C_DISTANT,
+  className: `${props.isHovered ? TC_DEFAULT : C_DISTANT} ${BO_RADIUS_CIRCLE}`,
 }))`
   margin: 0 0.5rem;
   display: flex;
   align-items: center;
   padding: 0.5rem;
-  border-radius: 50%;
   cursor: pointer;
 `;
 

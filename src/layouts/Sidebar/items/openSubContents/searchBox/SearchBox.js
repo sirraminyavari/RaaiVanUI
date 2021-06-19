@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import FilterIcon from 'components/Icons/FilterIcon/Filter';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 
 const SearchBox = () => {
   const dispatch = useDispatch();

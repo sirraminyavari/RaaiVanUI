@@ -21,10 +21,10 @@ const TeamsView = () => {
   }, []);
 
   return (
-    <Styled.ViewContainer>
+    <Styled.TeamsViewContainer>
       <ContentSide />
       <WelcomeSide />
-    </Styled.ViewContainer>
+    </Styled.TeamsViewContainer>
   );
 };
 

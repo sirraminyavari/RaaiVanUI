@@ -1,6 +1,13 @@
 import withTheme from 'components/withTheme/withTheme';
 import styled from 'styled-components';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import {
+  OPEN_WIDTH,
+  CLOSE_WIDTH,
+  BO_RADIUS_QUARTER,
+  BO_RADIUS_UNIT,
+  BO_RADIUS_HALF,
+  BO_RADIUS_CIRCLE,
+} from 'constant/constants';
 import Input from 'components/Inputs/Input';
 import {
   TBG_WARM,
@@ -125,7 +132,6 @@ export const SearchContainer = styled.div`
 
 export const SearchInput = styled(Input)`
   border: none;
-  border-radius: 0.3rem;
   outline: 0;
   height: 2rem;
   padding: 0.1rem 0.6rem;
@@ -148,19 +154,18 @@ export const SearchIcon = styled.div`
 `;
 
 export const FixActionsContainer = styled.div.attrs({
-  className: BG_GRAY_LIGHT,
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   width: 12rem;
   height: auto;
   padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
-  border-radius: 0.6rem;
   box-shadow: 1px 3px 20px #2b7be44d;
 `;
 
 export const AlertActionsContainer = styled.div.attrs({
-  className: BG_GRAY_LIGHT,
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   width: 23rem;
   height: auto;
@@ -169,7 +174,6 @@ export const AlertActionsContainer = styled.div.attrs({
   padding-bottom: 0;
   margin: -0.7rem 0;
   overflow: hidden;
-  border-radius: 0.6rem;
   box-shadow: 1px 3px 20px #2b7be44d;
 `;
 
@@ -186,7 +190,7 @@ export const EmptyAlert = styled.div`
 `;
 
 export const AlertItemContainer = styled.div.attrs({
-  className: BO_DISTANT,
+  className: `${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
   width: 100%;
   height: 5rem;
@@ -196,7 +200,6 @@ export const AlertItemContainer = styled.div.attrs({
   max-height: 6rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-  border-radius: 0.5rem;
 `;
 
 export const AlertContentWrapper = styled.div`
@@ -249,25 +252,22 @@ export const AlertFooterNavigation = styled.div`
 `;
 
 export const AlertFooterArrowWrapper = styled.div.attrs({
-  className: TC_DEFAULT + ' ' + BG_FREEZED,
+  className: `${TC_DEFAULT} ${BG_FREEZED} ${BO_RADIUS_CIRCLE}`,
 })`
   min-width: 1.4rem;
   padding: 0.1rem;
   margin: 0 0.2rem;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  // background-color: #e6f4f1;
   cursor: pointer;
 `;
 
 export const ButtonAction = styled.div.attrs({
-  className: C_GRAY_DARK,
+  className: `${C_GRAY_DARK} ${BO_RADIUS_HALF}`,
 })`
   display: flex;
   place-items: center;
-  border-radius: 0.3rem;
   margin: 0.3rem 0;
   padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
@@ -287,7 +287,7 @@ export const NavMenuContainer = styled.div`
 `;
 
 export const MenuOptionsWrapper = styled.div.attrs({
-  className: BG_GRAY_LIGHT,
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   height: 12rem;
   width: 17rem;
@@ -295,7 +295,6 @@ export const MenuOptionsWrapper = styled.div.attrs({
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 1px 3px 20px #2b7be44d;
-  border-radius: 0.5rem;
   margin: -10px;
 `;
 
@@ -339,7 +338,6 @@ export const AvatarMenuItem = styled.div.attrs({
   justify-content: end;
   align-items: center;
   padding: 0.4rem;
-  border-radius: 0.4rem;
   cursor: pointer;
 `;
 
