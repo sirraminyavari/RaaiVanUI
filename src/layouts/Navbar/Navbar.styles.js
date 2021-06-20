@@ -62,7 +62,7 @@ export const WideScreenMenu = styled.div`
 //! Due to this error >>>> "React does not recognize the {prop} prop on a DOM element"
 const DIV = styled.div``;
 
-export const ButtonContainer = styled(({ isActive, ...props }) => (
+export const ButtonContainer = styled(({ isActive, ref, ...props }) => (
   <DIV {...props} />
 ))`
   width: 4.7rem;
@@ -76,10 +76,10 @@ export const ButtonContainer = styled(({ isActive, ...props }) => (
   padding: 0.5rem;
   border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
 
-  &:hover {
-    // TODO: color class not found
-    background-color: #27499f;
-  }
+  // &:hover {
+  //   background-color: #27499f;
+  // }
+
   &:hover span {
     transform: rotateX(180deg);
   }
