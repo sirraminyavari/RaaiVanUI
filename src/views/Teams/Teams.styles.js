@@ -439,7 +439,7 @@ export const WelcomeMessage = styled.span.attrs({
 export const TeamPattern = styled.img`
   width: 7rem;
   position: absolute;
-  top: -1.65rem;
-  ${({ dir }) => dir}: -0.7rem;
+  top: 0;
+  ${({ dir }) => dir}: 0;
   ${({ rtl }) => !rtl && 'transform: scaleX(-1);'}
 `;

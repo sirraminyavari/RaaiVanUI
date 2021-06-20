@@ -27,7 +27,7 @@ const ChangePassword = () => {
       },
       (error) => console.log(error)
     );
-  });
+  }, []);
 
   const handleCurrentPass = (currentPass) => {
     setCurrentPass(currentPass);

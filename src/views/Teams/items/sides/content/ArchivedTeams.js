@@ -6,7 +6,7 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import ArchivedModal from './ArchivedModal';
 import SortHandle from './SortHandle';
 import useWindow from 'hooks/useWindowContext';
-import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
+import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 
 const ArchivedTeams = ({ team, hasHandle }) => {

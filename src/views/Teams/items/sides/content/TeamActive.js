@@ -21,7 +21,7 @@ import {
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
-import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
+import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
