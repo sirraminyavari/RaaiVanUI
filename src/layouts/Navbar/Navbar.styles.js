@@ -349,6 +349,8 @@ export const AvatarMenuTitle = styled.span`
 `;
 
 export const Divider = styled.div`
-  margin: 0.5rem -2rem 0.5rem -0.5rem;
+  margin: 0.5rem;
+  margin-${RV_Float}: -2rem;
+  margin-${RV_RevFloat}: -0.7rem;
   border-top: 0.1rem solid #ccc;
 `;

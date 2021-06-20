@@ -94,15 +94,14 @@ export const getSidebarNodes = (done, error) => async (dispatch, getState) => {
       },
       (response) => {
         if (response.NodeTypes || response.Tree) {
-          console.log(response);
           done && done();
           dispatch(setSidebarNodeTypes(filterHiddenNodes(response.NodeTypes)));
           dispatch(setSidebarTree(response.Tree));
           dispatch(setSidebarDnDTree(provideDnDTree(response)));
         }
       },
-      (error) => {
-        console.log({ error });
+      (err) => {
+        console.log({ err });
         error && error();
       }
     );

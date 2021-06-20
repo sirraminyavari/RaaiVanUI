@@ -18,7 +18,7 @@ import {
   BO_RADIUS_HALF,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
-import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
+import useWindow from 'hooks/useWindowContext';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -30,8 +30,6 @@ const MobileMenu = lazy(() =>
     /* webpackChunkName: "nav-mobile-menu-component"*/ './items/MobileMenu'
   )
 );
-
-const { setCurrentUser } = ApplicationsSlice.actions;
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -47,6 +45,7 @@ const Navbar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
+  const { RV_Float } = useWindow();
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -106,7 +105,8 @@ const Navbar = () => {
             border: 0;
             margin: 0.5rem 1.2rem;
             box-shadow: 1px 3px 20px #2B7BE44D;
-            padding: 0.7rem 2rem 0.7rem 0.7rem;
+            padding: 0.7rem;
+            padding-${RV_Float}: 2rem;
           `}
           trigger="click">
           <div>
