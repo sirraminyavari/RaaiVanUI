@@ -1,42 +1,97 @@
+import { useState, useEffect } from 'react';
 import LockIcon from 'components/Icons/LockIcon/LockIcon';
 import { TC_DEFAULT } from 'constant/Colors';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import FieldError from './FieldError';
 import Button from 'components/Buttons/Button';
 import * as Styled from './Profile.styles';
 import useWindow from 'hooks/useWindowContext';
+import PasswordValidation from 'views/Auth/elements/PasswordValidation';
+import { API_Provider } from 'helpers/helpers';
+import { USERS_API, GET_PASS_POLICY } from 'constant/apiConstants';
 
 const ChangePassword = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
+  const [passwordPolicy, setPasswordPolicy] = useState(null);
+  const [currentPass, setCurrentPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [newPassConfirm, setNewPassConfirm] = useState('');
+  const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
+
+  const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
+
+  useEffect(() => {
+    getPasswordPolicyAPI.fetch(
+      { ParseResults: true },
+      (response) => {
+        setPasswordPolicy(response);
+      },
+      (error) => console.log(error)
+    );
+  });
+
+  const handleCurrentPass = (currentPass) => {
+    setCurrentPass(currentPass);
+  };
+
+  const handleNewPass = (newPass) => {
+    setNewPass(newPass);
+  };
+
+  const handleNewPassConfirm = (newPassConfirm) => {
+    setNewPassConfirm(newPassConfirm);
+  };
 
   return (
-    <div
-      style={{
-        flexGrow: 1,
-      }}>
+    <Styled.ContentWrapper>
       <Styled.FieldTitleWrapper>
         <LockIcon
           size={22}
           className={TC_DEFAULT}
           style={{ verticalAlign: 'middle' }}
         />
-        <Styled.ChangePassTitle>تغییر رمز عبور</Styled.ChangePassTitle>
+        <Styled.ChangePassTitle>{RVDic.ChangePassword}</Styled.ChangePassTitle>
       </Styled.FieldTitleWrapper>
+      {!isSaas && (
+        <AnimatedInput
+          onChange={handleCurrentPass}
+          value={currentPass}
+          placeholder={RVDic.CurrentPassword}
+          style={{ marginBottom: '1rem', width: '70%' }}
+        />
+      )}
       <AnimatedInput
-        placeholder="رمز عبور جدید"
-        style={{ margin: '2rem 0 1rem 0', width: '70%' }}
-      />
-      <AnimatedInput
-        placeholder="تکرار رمز عبور جدید"
+        onChange={handleNewPass}
+        value={newPass}
+        placeholder={RVDic.NewPassword}
         style={{ marginBottom: '1rem', width: '70%' }}
       />
-      <FieldError error="حداقل ۸ کاراکتر" />
-      <FieldError error="هم کاراکتر حرف و هم عدد" />
-      <FieldError error="حداقل یک حرف بزرگ و کوچک" />
-      <Button style={{ width: '7rem', marginTop: '4rem', fontSize: '1rem' }}>
+      <AnimatedInput
+        onChange={handleNewPassConfirm}
+        value={newPassConfirm}
+        placeholder={RVDic.RepeatNewPassword}
+        style={{ marginBottom: '1rem', width: '70%' }}
+      />
+      {!!passwordPolicy && (
+        <PasswordValidation
+          style={{
+            opacity: '0',
+            transition: 'opacity 1s',
+          }}
+          isVisible={true}
+          password={newPass}
+          passwordPolicy={passwordPolicy}
+        />
+      )}
+      <Button
+        style={{
+          width: '8rem',
+          position: 'fixed',
+          fontSize: '1rem',
+          bottom: '0.5rem',
+        }}>
         {RVDic.Save}
       </Button>
-    </div>
+    </Styled.ContentWrapper>
   );
 };
 

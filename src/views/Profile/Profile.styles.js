@@ -42,10 +42,15 @@ export const ProfileContentWrapper = styled.div`
   margin-top: 5rem;
 `;
 
+export const ContentWrapper = styled.div`
+  flex-grow: 1;
+`;
+
 export const FieldTitleWrapper = styled.div`
   dispaly: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 2rem;
 `;
 
 export const ChangePassTitle = styled.span.attrs({

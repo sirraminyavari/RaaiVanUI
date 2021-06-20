@@ -24,17 +24,16 @@ const TwoFactorAuthentication = () => {
   };
 
   return (
-    <div
-      style={{
-        flexGrow: 1,
-      }}>
+    <Styled.ContentWrapper>
       <Styled.FieldTitleWrapper>
         <KeyIcon
           size={22}
           className={TC_DEFAULT}
           style={{ verticalAlign: 'middle' }}
         />
-        <Styled.ChangePassTitle>ورود دو مرحله ای</Styled.ChangePassTitle>
+        <Styled.ChangePassTitle>
+          {RVDic.TwoStepAuthentication}
+        </Styled.ChangePassTitle>
       </Styled.FieldTitleWrapper>
 
       <TwoFactorToggle
@@ -42,7 +41,7 @@ const TwoFactorAuthentication = () => {
         isChecked={isTwoFactorOn}
       />
       <TwoFactorOptions options={options} enabled={isTwoFactorOn} />
-    </div>
+    </Styled.ContentWrapper>
   );
 };
 
