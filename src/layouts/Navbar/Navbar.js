@@ -15,6 +15,7 @@ import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
+  BO_RADIUS_HALF,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
@@ -100,16 +101,17 @@ const Navbar = () => {
         )}
         <PopupMenu
           arrowClass="no-arrow"
-          menuClass={BG_WHITE}
+          menuClass={`${BG_WHITE} ${BO_RADIUS_HALF}`}
           menuStyle={`
             border: 0;
-            margin: 0.5rem 0.15rem;
+            margin: 0.5rem 1.2rem;
             box-shadow: 1px 3px 20px #2B7BE44D;
-            border-radius: 0.6rem;
+            padding: 0.7rem 2rem 0.7rem 0.7rem;
           `}
           trigger="click">
           <div>
             <Avatar
+              radius={35}
               userImage={authUser?.ProfileImageURL}
               style={{ cursor: 'pointer' }}
             />

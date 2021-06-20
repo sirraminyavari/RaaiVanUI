@@ -9,7 +9,11 @@ import {
   BG_WHITE,
   BO_DISTANT,
 } from 'constant/Colors';
-import { BO_RADIUS_CIRCLE, BO_RADIUS_UNIT } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  BO_RADIUS_UNIT,
+} from 'constant/constants';
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -68,7 +72,7 @@ export const ArchivedTeamTitle = styled.span`
 
 export const ModalButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   margin: 0 0 1rem 0;
 `;
@@ -91,6 +95,12 @@ export const ContentSide = styled.div`
 
   .teams-modal {
     margin-top: 35vh;
+  }
+
+  .teams-modal-header {
+    height: 4.5rem;
+    min-height: 4.5rem;
+    max-height: 4.5rem;
   }
 `;
 
@@ -214,12 +224,12 @@ const getDragCss = (props) => {
 };
 
 export const TeamConatiner = styled.div.attrs({
-  className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_UNIT}`,
+  className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
-  height: 11.5rem;
+  height: 12.7rem;
   ${getBorderCss}
-  padding: 0.5rem;
+  padding: 0.5rem 1.5rem;
   position: relative;
   float: ${({ dir }) => dir};
   margin-bottom: 1rem;
@@ -285,12 +295,13 @@ export const TeamConatiner = styled.div.attrs({
 
 export const DragIconWrapper = styled.div`
   position: absolute;
-  top: 0.6rem;
-  ${({ dir }) => dir}: 0.2rem;
+  top: -0.1rem;
+  ${({ dir }) => dir}: -0.2rem;
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
     all-scroll !important;
   z-index: 100;
+  padding: 0.5rem;
 `;
 
 export const TeamContentWrapper = styled.div`
@@ -309,6 +320,7 @@ export const TeamTitle = styled.div.attrs({
 })`
   font-size: 1rem;
   margin: 0.5rem 0;
+  font-weight: 500;
 `;
 
 export const TeamExcerpt = styled.div.attrs({
@@ -322,6 +334,7 @@ export const TeamFooterConatiner = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 2rem;
 `;
 
 export const TeamAvatarsWrapper = styled.div`
@@ -404,20 +417,20 @@ export const WelcomeSide = styled.div`
   align-items: center;
 `;
 export const WorkspaceImageWrapper = styled.div`
-  width: 16rem;
+  width: 18rem;
   margin-top: 3rem;
   aspect-ratio: 1;
 `;
 
 export const WelcomeMSGContainer = styled.div`
-  margin: 1rem 0 2rem 0;
+  margin: 1rem 0 1.5rem 0;
 `;
 
 export const SocialMediaContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1.5rem 0 0 0;
+  margin: 1rem 0 0 0;
 `;
 
 export const IconWrapper = styled.div.attrs((props) => ({

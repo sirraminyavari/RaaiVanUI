@@ -327,7 +327,7 @@ export const AvatarMenuContainer = styled.div`
   width: auto;
   min-width: 11rem;
   max-width: 14rem;
-  padding: 0rem 0.7rem;
+  // padding: 0rem 0.7rem;
 `;
 
 export const AvatarMenuItem = styled.div.attrs({
@@ -337,7 +337,7 @@ export const AvatarMenuItem = styled.div.attrs({
   flex-direction: row-reverse;
   justify-content: end;
   align-items: center;
-  padding: 0.4rem;
+  padding: 0.4rem 0;
   cursor: pointer;
 `;
 
@@ -349,6 +349,6 @@ export const AvatarMenuTitle = styled.span`
 `;
 
 export const Divider = styled.div`
-  margin: 0.5rem -1.4rem;
+  margin: 0.5rem -2rem 0.5rem -0.5rem;
   border-top: 0.1rem solid #ccc;
 `;
