@@ -2,6 +2,7 @@ import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
 import { encode, decode } from 'js-base64';
 import { v4 as uuidv4 } from 'uuid';
+import APIHandler from 'apiHelper/APIHandler';
 
 /**
  * @description A function that accepts some funcs as params and then
@@ -170,4 +171,12 @@ export const saveLocalStorage = (key, state) => {
   } catch (error) {
     console.log('Save to local storage failed!');
   }
+};
+
+/**
+ * @description Provides API handler.
+ * @returns An instance of APIHandler class;
+ */
+export const API_Provider = (apiClass, apiFunction) => {
+  return new APIHandler(apiClass, apiFunction);
 };
