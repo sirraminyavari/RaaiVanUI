@@ -4,7 +4,7 @@ const Option = (props) => {
   const { id, value, toggleSelection, children, onSelect } = props;
 
   const select = () => {
-    onSelect(value);
+    onSelect({ value, id });
     toggleSelection();
   };
 

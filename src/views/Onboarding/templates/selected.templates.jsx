@@ -1,15 +1,44 @@
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
+import './selected.templates.css';
+import SelectedTemplatesBox from './selected.templates.box';
 
 const SelectedTemplates = () => {
   const { info } = useContext(StepperContext);
 
+  const layers = info.templates.map((x, index) => {
+    if (index === 0) return;
+    const offset = `${index * -5}px`;
+    const zIndex = 100 - index;
+    return (
+      <SelectedTemplatesBox
+        key="x.id"
+        zIndex={zIndex}
+        show={false}
+        translateX={offset}
+        translateY={offset}
+      />
+    );
+  });
   return (
     <div
       style={{ width: '600px', height: '330px' }}
       className="selected-template-container">
-      selected
+      {info.templates.length === 0 && (
+        <div className="no-template-selected">{'قالبی فعال نکردید'}</div>
+      )}
+      {info.templates.length !== 0 && (
+        <div>
+          <SelectedTemplatesBox
+            zIndex="100"
+            show={true}
+            translateX="0"
+            translateY="0"
+          />
+          {layers}
+        </div>
+      )}
     </div>
   );
 };

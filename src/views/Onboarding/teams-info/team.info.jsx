@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import Select from './select';
 import FieldSelection from './field.selection';
 import Option from './option';
 import './team.info.css';
 import APIHandler from 'apiHelper/APIHandler';
+import { decode, encode } from 'js-base64';
 
 const TeamInfo = () => {
   const options = [
@@ -12,24 +13,56 @@ const TeamInfo = () => {
     { id: 1, value: '10 - 20' },
     { id: 2, value: 'بیشتر از 20' },
   ];
-  const fields = [
-    { id: 10, value: 'برنامه نویسی تحت وب' },
-    { id: 11, value: 'فنی مهندسی' },
-    { id: 22, value: ' طراحی رابط کاربری و تجربه کاربری ' },
-  ];
   const { info, dispatch } = useContext(StepperContext);
+  const [fields, setFields] = useState([]);
 
   useEffect(() => {
     new APIHandler('CNAPI', 'GetTemplateTags').fetch({}, (res) => {
-      console.log(res);
+      const tags = (res.Tags || []).map((x) => ({
+        id: x.NodeID,
+        value: decode(x.Name),
+      }));
+      setFields(tags);
     });
-  });
-  const selectMembers = (value) => {
+  }, []);
+  const selectMembers = ({ value, id }) => {
     dispatch({ type: 'SET_TEAM_MEMBERS', members: value });
   };
 
-  const selectField = (value) => {
-    dispatch({ type: 'SET_FIELD', field: value });
+  const selectField = ({ value, id }) => {
+    dispatch({ type: 'SET_FIELD', field: { value, id } });
+  };
+
+  const save = () => {
+    const rvapiSetApplicationSize = new APIHandler(
+      'RVAPI',
+      'SetApplicationSize'
+    );
+    const rvapiSetApplicationFieldOfExpertise = new APIHandler(
+      'RVAPI',
+      'SetApplicationFieldOfExpertise'
+    );
+
+    rvapiSetApplicationSize.fetch(
+      {
+        ApplicationID: info.applicationId,
+        Size: encode(info.members),
+      },
+      (res) => {
+        rvapiSetApplicationFieldOfExpertise.fetch(
+          {
+            ApplicationID: info.applicationId,
+            FieldID: info.field.id,
+            FieldName: info.field.value,
+          },
+          (res) => {
+            if (!!res.Succeed) {
+              dispatch({ type: 'NEXT_STEP' });
+            }
+          }
+        );
+      }
+    );
   };
 
   return (
@@ -59,7 +92,7 @@ const TeamInfo = () => {
             <FieldSelection
               placeholder="زمینه کاریت چیه؟"
               name="field"
-              value={info.field}>
+              value={info.field.value}>
               {fields.map((x) => (
                 <Option
                   key={x.id}
@@ -77,9 +110,7 @@ const TeamInfo = () => {
 
       <div className="team-info-action">
         {info.field !== '' && info.members !== '' && (
-          <button
-            className="ActionButton"
-            onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+          <button className="ActionButton" onClick={() => save()}>
             واسه من چی داری؟
           </button>
         )}

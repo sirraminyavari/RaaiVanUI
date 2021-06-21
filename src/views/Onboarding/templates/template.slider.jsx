@@ -4,39 +4,28 @@ import ArrowUp from '../arrows/up.png';
 import ArrowDown from '../arrows/down.png';
 import TemplateCard from './template.card';
 import APIHandler from 'apiHelper/APIHandler';
-import { getUUID } from 'helpers/helpers';
+import { StepperContext } from '../context/stepper.context';
+import { decode } from 'js-base64';
 
 const TemplateSlider = () => {
-  const templates = [
-    {
-      id: 1,
-      title: '',
-      icon: 'Time',
-      url: 'http://time.is',
-    },
-    {
-      id: 2,
-      title: '',
-      icon: 'React',
-      url: 'https://reactjs.org/',
-    },
-    {
-      id: 3,
-      title: '',
-      icon: '',
-      url: 'http://time.is',
-    },
-    {
-      id: 4,
-      title: '',
-      icon: '',
-      url: 'https://reactjs.org/',
-    },
-  ];
+  const { info } = useContext(StepperContext);
+  const [templates, setTemplates] = useState([]);
 
-  // useEffect(() => {
-  //   APIHandler("", "").fetch()
-  // })
+  useEffect(() => {
+    new APIHandler('CNAPI', 'GetTemplates').fetch(
+      {
+        TagID: info.field.id,
+      },
+      (res) => {
+        const _templates = res.Templates.map((x) => ({
+          ...x,
+          id: x.NodeTypeID,
+          name: decode(x.TypeName),
+        }));
+        setTemplates(_templates);
+      }
+    );
+  }, []);
 
   const [index, setIndex] = useState(0);
   const templateTrack = useRef();

@@ -7,6 +7,7 @@ import './team.css';
 import TeamsSlider from './teams.slider';
 import APIHandler from 'apiHelper/APIHandler';
 import { encode, decode } from 'js-base64';
+import { result } from 'lodash';
 
 const Team = () => {
   const { info, dispatch } = useContext(StepperContext);
@@ -18,18 +19,37 @@ const Team = () => {
   useBeforeunload(team_on_exit);
 
   const saveName = () => {
-    new APIHandler('RVAPI', 'CreateApplication').fetch(
+    const rvapiCreate = new APIHandler('RVAPI', 'CreateApplication');
+    const rvapiSelect = new APIHandler('RVAPI', 'SelectApplication');
+
+    rvapiCreate.fetch(
       {
         Title: encode(name),
       },
       (res) => {
         console.log(res);
-        if (res.Application) {
-          dispatch({
-            type: 'SET_TEAM_NAME',
-            teamName: name,
-            applicationId: res.Application.ApplicationId,
-          });
+        const succeed = !!res.Succeed;
+        const app = res.Application;
+        if (succeed) {
+          rvapiSelect.fetch(
+            {
+              ApplicationID: app.ApplicationID,
+            },
+            (response) => {
+              if (response.Succeed) {
+                (window.RVGlobal || {}).ApplicationID = app.ApplicationID;
+                (window.RVGlobal || {}).IsSystemAdmin = response.IsSystemAdmin;
+
+                dispatch({
+                  type: 'SET_TEAM_NAME',
+                  teamName: name,
+                  applicationId: app.ApplicationID,
+                });
+              }
+            }
+          );
+        } else {
+          // alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
         }
       }
     );
@@ -37,6 +57,7 @@ const Team = () => {
 
   useEffect(() => {
     new APIHandler('UsersAPI', 'GetCurrentInvitations').fetch({}, (res) => {
+      console.log(res);
       if (!res.NoApplicationFound) {
       }
     });
