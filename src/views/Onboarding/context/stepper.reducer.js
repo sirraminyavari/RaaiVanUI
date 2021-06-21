@@ -1,8 +1,8 @@
 const toggleTemplate = (state, template) => {
-  const exist = state.templates.includes(template);
+  const exist = state.templates.find((x) => x.id === template.id);
 
   if (exist) {
-    const filtered = state.templates.filter((x) => x !== template);
+    const filtered = state.templates.filter((x) => x.id !== template.id);
     return { ...state, templates: filtered };
   } else {
     return { ...state, templates: [...state.templates, template] };
@@ -18,7 +18,12 @@ export const stepperReducer = (state, action) => {
     case 'SET_AVATAR':
       return { ...state, avatar: action.avatar };
     case 'SET_TEAM_NAME':
-      return { ...state, teamName: action.teamName };
+      return {
+        ...state,
+        teamName: action.teamName,
+        applicationId: action.applicationId,
+        step: state.step + 1,
+      };
     case 'REMOVE_AVATAR':
       return { ...state, avatar: '' };
     case 'SET_TEAM_MEMBERS':
@@ -29,6 +34,8 @@ export const stepperReducer = (state, action) => {
       return { ...state, step: state.step + 1 };
     case 'TOGGLE_TEMPLATE':
       return toggleTemplate(state, action.template);
+    case 'TOGGLE_LOADING':
+      return { ...state, loading: !state.loading };
     default:
       return state;
   }

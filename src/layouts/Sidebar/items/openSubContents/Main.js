@@ -13,7 +13,7 @@ import SearchResultsList from '../openSubContents/searchBox/SearchResultsList';
 import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import { getURL } from 'helpers/helpers';
-import * as Styled from '../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { SETTING_CONTENT, MAIN_CONTENT } from 'constant/constants';
 
 const selectShowSearchResults = createSelector(

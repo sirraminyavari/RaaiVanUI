@@ -7,7 +7,7 @@ const TemplateCard = ({ item }) => {
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    const exist = info.templates.includes(item);
+    const exist = info.templates.find((x) => x.id === item.id);
     setSelected(exist);
   }, [info]);
 

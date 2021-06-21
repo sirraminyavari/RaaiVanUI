@@ -4,16 +4,16 @@ import Loading from './loading.animation.gif';
 import { StepperContext } from './context/stepper.context';
 
 const FinalStep = () => {
-  const { dispatch } = useContext(StepperContext);
-  const [loading, setLoading] = useState(false);
+  const { info, dispatch } = useContext(StepperContext);
+  // const [loading, setLoading] = useState(false);
 
   const letsGo = () => {
-    setLoading(true);
+    dispatch({ type: 'TOGGLE_LOADING' });
     dispatch({ type: 'NEXT_STEP' });
   };
   return (
     <div className="final-step">
-      {!loading && (
+      {!info.loading && (
         <div>
           <h1>خدا قوت!</h1>
           <h1>آماده‌ای بریم توی محیط کلیک‌مایند؟</h1>
@@ -25,7 +25,7 @@ const FinalStep = () => {
         </div>
       )}
 
-      {loading && (
+      {info.loading && (
         <div>
           <div className="loading">
             <img src={Loading} />

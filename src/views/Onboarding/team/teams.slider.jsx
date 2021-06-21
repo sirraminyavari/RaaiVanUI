@@ -1,41 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './teams.slider.css';
-import { decode } from 'js-base64';
-
 import ArrowRight from '../arrows/right.png';
 import ArrowLeft from '../arrows/left.png';
 import TeamCard from './team.card';
-import APIHandler from 'apiHelper/APIHandler';
 
-const TeamsSlider = () => {
-  const teamsInvitedTo = [
-    { id: 1, name: 'تیم شاهین', avatar: '' },
-    { id: 2, name: 'تیم بارسلونا', avatar: '' },
-    // { id: 3, name: 'تیم واچرز', avatar: '' },
-    // { id: 4, name: 'تیم واچرز', avatar: '' },
-    // { id: 5, name: 'تیم واچرز', avatar: '' },
-  ];
-
-  const [index, setIndex] = useState(0);
+const TeamsSlider = ({ teamsInvitedTo }) => {
+  const [index, setIndex] = useState(1);
   const [showPrevBtn, setShowPrevBtn] = useState(false);
   const [showNextBtn, setShowNextBtn] = useState(false);
   const track = useRef();
 
-  useEffect(() => {
-    new APIHandler('UsersAPI', 'GetCurrentInvitations').fetch({}, (res) => {
-      if (!res.NoApplicationFound) {
-      }
-    });
-  }, []);
-
   const btnDisplay = () => {
-    if (index <= track.current.offsetWidth / 200) {
+    console.log(track);
+    if (track.current.scrollWidth > index * track.current.offsetWidth) {
       setShowNextBtn(true);
     } else {
       setShowNextBtn(false);
     }
 
-    if (index > 0) {
+    if (index > 1) {
       setShowPrevBtn(true);
     } else {
       setShowPrevBtn(false);
@@ -43,7 +26,7 @@ const TeamsSlider = () => {
   };
 
   const next = () => {
-    if (index <= track.current.offsetWidth / 200) {
+    if (track.current.scrollWidth > index * track.current.offsetWidth) {
       setIndex(index + 1);
     }
   };
@@ -58,7 +41,7 @@ const TeamsSlider = () => {
 
   useEffect(() => {
     btnDisplay();
-    track.current.style.transform = `translateX(${index * 200}px)`;
+    track.current.style.transform = `translateX(${(index - 1) * 200}px)`;
   }, [index]);
 
   const teams = teamsInvitedTo.map((x) => (

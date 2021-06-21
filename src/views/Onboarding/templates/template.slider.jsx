@@ -4,9 +4,35 @@ import ArrowUp from '../arrows/up.png';
 import ArrowDown from '../arrows/down.png';
 import TemplateCard from './template.card';
 import APIHandler from 'apiHelper/APIHandler';
+import { getUUID } from 'helpers/helpers';
 
 const TemplateSlider = () => {
-  const templates = [1, 2, 3, 4, 5];
+  const templates = [
+    {
+      id: 1,
+      title: '',
+      icon: 'Time',
+      url: 'http://time.is',
+    },
+    {
+      id: 2,
+      title: '',
+      icon: 'React',
+      url: 'https://reactjs.org/',
+    },
+    {
+      id: 3,
+      title: '',
+      icon: '',
+      url: 'http://time.is',
+    },
+    {
+      id: 4,
+      title: '',
+      icon: '',
+      url: 'https://reactjs.org/',
+    },
+  ];
 
   // useEffect(() => {
   //   APIHandler("", "").fetch()
@@ -41,7 +67,7 @@ const TemplateSlider = () => {
       <div className="template-carousel-container">
         <div className="template-track" ref={templateTrack}>
           {templates.map((x) => (
-            <TemplateCard key={x} item={x} />
+            <TemplateCard key={x.id} item={x} />
           ))}
         </div>
       </div>

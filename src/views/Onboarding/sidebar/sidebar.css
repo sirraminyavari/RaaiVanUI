@@ -17,3 +17,25 @@
 .onboarding-sidbar-steps div {
   color: white;
 }
+.sidebar-skeleton {
+  height: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  transition: all 1s linear;
+  animation-delay: 0;
+  animation-name: sidebar-skeleton-loading;
+  animation-duration: 1.5s;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+}
+@keyframes sidebar-skeleton-loading {
+  from {
+    background-color: #241c64;
+  }
+  to {
+    background-color: #4f43a7;
+  }
+}

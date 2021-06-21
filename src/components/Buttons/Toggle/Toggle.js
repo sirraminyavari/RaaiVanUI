@@ -2,7 +2,7 @@
  * Renders a toggle button.
  */
 import PropTypes from 'prop-types';
-import { useState, useEffect, cloneElement } from 'react';
+import { useEffect, cloneElement } from 'react';
 import * as Styled from './Toggle.styles';
 import useToggle from 'hooks/useToggle';
 
@@ -23,7 +23,7 @@ const Toggle = (props) => {
   const [isOn, setToggle] = useToggle(initialCheck);
 
   const toggle = () => {
-    setToggle();
+    setToggle((toggle) => !toggle);
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Toggle = (props) => {
 
   return (
     <Styled.ToggleLabel>
-      <Styled.ToggleInput type="checkbox" checked={isOn} onClick={toggle} />
+      <Styled.ToggleInput type="checkbox" checked={isOn} onChange={toggle} />
       {!!children ? (
         cloneElement(children, { isChecked: isOn })
       ) : (

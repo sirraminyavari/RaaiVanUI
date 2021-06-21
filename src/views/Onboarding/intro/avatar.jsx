@@ -42,7 +42,7 @@ const Avatar = (props) => {
               'https://ponisha.ir/usercontent/500281/avatar-e34f2f863290a0251605612a90ae3b94.jpg',
           })
         }>
-        <UploadIcon color={uploadBtnColor}></UploadIcon>
+        {false && <UploadIcon color={uploadBtnColor}></UploadIcon>}
       </div>
     </div>
   );

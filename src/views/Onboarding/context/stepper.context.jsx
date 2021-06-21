@@ -8,10 +8,13 @@ const initialInfo = {
   lastName: '',
   avatar: avatr,
   teamName: '',
+  applicationId: undefined,
+  iconURL: undefined,
   step: 0,
   members: '',
   field: '',
   templates: [],
+  loading: false,
 };
 
 const StepperContextProvider = ({ children }) => {
