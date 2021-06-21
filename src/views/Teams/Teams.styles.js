@@ -454,5 +454,8 @@ export const TeamPattern = styled.img`
   position: absolute;
   top: 0;
   ${({ dir }) => dir}: 0;
-  ${({ rtl }) => !rtl && 'transform: scaleX(-1);'}
+  ${({ rtl }) =>
+    !rtl &&
+    `-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);`}
 `;
