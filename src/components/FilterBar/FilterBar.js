@@ -74,6 +74,7 @@ const FilterBar = ({
   hierarchy,
   onForceFetch,
   nodeType,
+  onCreateUrgent,
 }) => {
   const defaultDropDownLabel = {
     icon: <AddIcon color={'white'} />,
@@ -161,10 +162,9 @@ const FilterBar = ({
       if (dt.Result) {
         // setCreationData(data);
         setMarket(data);
+      } else {
+        setMarket(null);
       }
-      //  else {
-      //   setMarket([data[0]]);
-      // }
       getOwnerForm();
     });
 
@@ -208,21 +208,24 @@ const FilterBar = ({
 
   // By clicking on the dropdown items will fire.
   const onSelectItem = (item) => {
-    localStorage.setItem(
-      LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
-      JSON.stringify(item.value)
-    );
-    setSelectedItem({
-      ...selectedItem,
-      icon: React.cloneElement(item.icon, { color: 'white' }),
-      value: item.value,
-      color: 'white',
-    });
+    if (item && item.value) {
+      localStorage.setItem(
+        LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
+        JSON.stringify(item.value)
+      );
+      setSelectedItem({
+        ...selectedItem,
+        icon: React.cloneElement(item.icon, { color: 'white' }),
+        value: item.value,
+        color: 'white',
+      });
 
-    if (item.value === 'completeAction') {
-      window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
-    } else if (item.value === 'urgentAction') {
-      setUrgentModalOpen(true);
+      if (item.value === 'completeAction') {
+        window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+      } else if (item.value === 'urgentAction') {
+        // setUrgentModalOpen(true);
+        onCreateUrgent();
+      }
     }
   };
   // By typing in the search input will fire
@@ -230,17 +233,17 @@ const FilterBar = ({
     setSearchText(value);
   };
   // will fire if user choose create urgent.
-  const onCreateUrgent = () => {
-    setUrgentModalOpen(false);
-    addNode.fetch(
-      { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
-      (response) => {
-        setUrgentInput('');
-        console.log(response, 'response');
-        onForceFetch();
-      }
-    );
-  };
+  // const onCreateUrgent = () => {
+  //   setUrgentModalOpen(false);
+  //   addNode.fetch(
+  //     { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
+  //     (response) => {
+  //       setUrgentInput('');
+  //       console.log(response, 'response');
+  //       onForceFetch();
+  //     }
+  //   );
+  // };
   const onAdvancedFilterClick = () => {
     setTimeout(() => {
       onAdvanecedSearch(!advancedSearch);
@@ -309,6 +312,9 @@ const FilterBar = ({
             defaultValue={selectedItem}
             hiddenSelectedItem={false}
             onClickLabel={() => onSelectItem(selectedItem)}
+            customStyle={{
+              label: { minWidth: '8rem' },
+            }}
             customClass={{
               labelClass: RV_RTL
                 ? 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius'
@@ -465,7 +471,7 @@ const FilterBar = ({
           width: '80vw',
           backgroundColor: 'red',
         }}>
-        <Modal
+        {/* <Modal
           contentWidth="50%"
           onClose={() => setUrgentModalOpen(false)}
           show={isUrgentModalOpen}>
@@ -481,7 +487,7 @@ const FilterBar = ({
             type={'primary'}>
             {RVDic.Confirm}
           </Button>
-        </Modal>
+        </Modal> */}
       </div>
     </Container>
   );
