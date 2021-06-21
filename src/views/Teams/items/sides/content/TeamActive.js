@@ -8,7 +8,7 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64, getURL, setRVGlobal } from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
@@ -105,7 +105,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           if (response.Succeed) {
             const homeURL = getURL('Home');
             history.push(homeURL);
-            window.RVGlobal.ApplicationID = appId;
+            setRVGlobal({
+              ApplicationID: appId,
+              IsSystemAdmin: response.IsSystemAdmin,
+            });
             dispatch(getSidebarNodes());
             dispatch(getConfigPanels());
           }
