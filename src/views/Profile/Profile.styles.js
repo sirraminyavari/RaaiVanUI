@@ -1,16 +1,18 @@
+import styled from 'styled-components';
 import {
   BG_GRAY_LIGHT,
   TC_WARM,
   C_GRAY_DARK,
   BO_DISTANT,
-  C_DISTANT,
-  BG_RED,
+  TC_DEFAULT,
+  BG_GRAY_DARK,
+  BG_FREEZED,
 } from 'constant/Colors';
-import { BO_RADIUS_CIRCLE, BO_RADIUS_UNIT } from 'constant/constants';
-import styled from 'styled-components';
+import { BO_RADIUS_HALF, BO_RADIUS_UNIT } from 'constant/constants';
+import sidebarPattern from 'assets/images/pattern_soft.svg';
 
 export const ProfileViewContainer = styled.div.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   min-height: calc(100vh - 5.5rem);
   box-shadow: 1px 5px 15px #0000001f;
@@ -33,6 +35,19 @@ export const ProfileTitle = styled.span.attrs({
   font-weight: bold;
 `;
 
+export const ChooseThemeTitle = styled.div.attrs({
+  className: C_GRAY_DARK,
+})`
+  margin: 2.2rem 0 1rem 0;
+  font-size: 1rem;
+`;
+
+export const PreviewGroups = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+`;
+
 export const ProfileContentWrapper = styled.div`
   min-height: calc(100vh - 5.5rem);
   display: grid;
@@ -44,6 +59,11 @@ export const ProfileContentWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
   flex-grow: 1;
+
+  .profile-security-toggle {
+    width: 70%;
+    margin: 2rem 0;
+  }
 `;
 
 export const FieldTitleWrapper = styled.div`
@@ -61,22 +81,6 @@ export const ChangePassTitle = styled.span.attrs({
   margin: 0.5rem;
 `;
 
-export const TwoFactorToggleContainer = styled.div`
-  width: 70%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2rem 0;
-`;
-
-export const TwoFactorToggleTitle = styled.span.attrs({
-  className: C_GRAY_DARK,
-})`
-  font-size: 0.9rem;
-  margin: 0 0.5rem;
-  text-transform: capitalize;
-`;
-
 export const TwoFactorOptionsWrapper = styled.div.attrs({
   className: `${BO_DISTANT} ${BO_RADIUS_UNIT} ${C_GRAY_DARK}`,
 })`
@@ -85,23 +89,77 @@ export const TwoFactorOptionsWrapper = styled.div.attrs({
   ${({ enabled }) => !enabled && 'opacity: 0.5;'}
 `;
 
-export const ErrorContainer = styled.div`
+export const CustomizationView = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 1rem;
+
+  .profile-theme-toggle {
+    margin: 0.5rem 0;
+  }
+
+  .profile-theme-setting {
+    width: 25%;
+    min-height: 10rem;
+    margin: 0;
+    margin-${({ dir }) => dir}: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    left: 1rem;
+  }
 `;
 
-export const ErrorIconWrapper = styled.div.attrs({
-  className: `${BG_RED} ${BO_RADIUS_CIRCLE}`,
+export const ThemeSettingTitle = styled.span.attrs({
+  className: TC_DEFAULT,
 })`
-  padding: 0.2rem;
-  height: 1rem;
-  width: 1rem;
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  font-size: 1rem;
+  margin-bottom: 2rem;
 `;
 
-export const ErrorMessage = styled.span.attrs({
-  className: C_DISTANT,
+export const ThemePreviewContainer = styled.div.attrs((props) => ({
+  className: `${BO_RADIUS_HALF} ${
+    props.isDark ? BG_GRAY_DARK : BG_FREEZED
+  } ${BO_DISTANT}`,
+}))`
+  width: 100%;
+  height: 10rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+`;
+
+export const NavbarPreview = styled.div`
+  width: 100%;
+  height: 2rem;
+  position: absolute;
+  background-color: ${({ previewColor }) => previewColor};
+  top: 0;
+`;
+
+export const SidebarPreview = styled.div`
+  width: ${({ isClose }) => (isClose ? '10%' : '30%')};
+  height: 100%;
+  background-color: ${({ previewColor }) => previewColor};
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
+  position: absolute;
+  ${({ dir }) => dir}: 0;
+`;
+
+export const PreviewSelectionWrapper = styled.div.attrs({
+  className: `${TC_DEFAULT}`,
 })`
-  margin: 0.3rem 0.5rem;
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: ${({ isOpen }) => (isOpen ? '70%' : '90%')};
+  height: calc(100% - 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 `;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';

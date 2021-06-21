@@ -1,10 +1,9 @@
-import { Suspense, memo } from 'react';
+import { Suspense, memo, lazy } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Routes from 'routes/MainRoutes/Main.routes';
-import Navbar from './Navbar/Navbar';
 import OpenSidebar from './Sidebar/SidebarOpen';
 import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
@@ -16,7 +15,18 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
+import useWindow from 'hooks/useWindowContext';
 // import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+
+const Navbar = lazy(() =>
+  import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
+);
+
+const NavbarInitial = lazy(() =>
+  import(
+    /* webpackChunkName: "nav-not-selected-team-component"*/ './Navbar/NavbarInitial'
+  )
+);
 
 const switchRoutes = (
   <Switch>
@@ -57,31 +67,49 @@ const selectHasNavSide = createSelector(
   (theme) => theme.hasNavSide
 );
 
+const selectedApp = createSelector(
+  (state) => state.theme,
+  (theme) => theme.selectedTeam
+);
+
 const Main = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const hasNavSide = useSelector(selectHasNavSide);
+  const selectedTeam = useSelector(selectedApp);
+  const { RVGlobal } = useWindow();
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
+  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam.id;
+
+  const getSidebar = () => {
+    if (isTeamSelected) {
+      if (!isMobileScreen) {
+        if (isSidebarOpen) {
+          return <OpenSidebar />;
+        } else {
+          return <CloseSidebar />;
+        }
+      } else {
+        return <SidebarHeader />;
+      }
+    }
+    return null;
+  };
+
   return (
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          {!isMobileScreen ? (
-            isSidebarOpen ? (
-              <OpenSidebar />
-            ) : (
-              <CloseSidebar />
-            )
-          ) : (
-            <SidebarHeader />
-          )}
+          {getSidebar()}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}>
-            <Navbar />
+            <Suspense fallback={<></>}>
+              {isTeamSelected ? <Navbar /> : <NavbarInitial />}
+            </Suspense>
             <Suspense fallback={<LogoLoader />}>
               <Styled.Content>{switchRoutes}</Styled.Content>
             </Suspense>

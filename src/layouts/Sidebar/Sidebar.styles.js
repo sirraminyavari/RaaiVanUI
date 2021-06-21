@@ -1,10 +1,8 @@
-import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_QUARTER,
-  BO_RADIUS_UNIT,
   CLOSE_WIDTH,
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
@@ -74,23 +72,12 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
-  background-image: url(${sidebarPattern});
+  ${({ theme }) =>
+    theme.states.themeSettings.hasSidebarPattern &&
+    `background-image: url(${sidebarPattern});`}
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-
-  // .subMenuContainer {
-  //   overflow: hidden;
-  //   margin: -0.3rem 0 0 0;
-  //   padding: 0 0.3rem;
-  //   border-radius: 0.5rem;
-  //   background-color: inherit;
-  //   transition: all 0.5s ease;
-
-  //   &.close {
-  //     height: 0;
-  //   }
-  // }
 `);
 
 export const ContentWrapper = withTheme(styled.div`

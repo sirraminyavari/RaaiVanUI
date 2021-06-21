@@ -3,7 +3,7 @@ import LockIcon from 'components/Icons/LockIcon/LockIcon';
 import { TC_DEFAULT } from 'constant/Colors';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
-import * as Styled from './Profile.styles';
+import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import PasswordValidation from 'views/Auth/elements/PasswordValidation';
 import { API_Provider } from 'helpers/helpers';
@@ -20,13 +20,17 @@ const ChangePassword = () => {
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
   useEffect(() => {
-    getPasswordPolicyAPI.fetch(
-      { ParseResults: true },
-      (response) => {
-        setPasswordPolicy(response);
-      },
-      (error) => console.log(error)
-    );
+    try {
+      getPasswordPolicyAPI.fetch(
+        { ParseResults: true },
+        (response) => {
+          setPasswordPolicy(response);
+        },
+        (error) => console.log(error)
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   const handleCurrentPass = (currentPass) => {

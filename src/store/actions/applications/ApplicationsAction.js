@@ -1,6 +1,13 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import APIHandler from 'apiHelper/APIHandler';
 import { encodeBase64, loadLocalStorage } from 'helpers/helpers';
+import { API_Provider } from 'helpers/helpers';
+import {
+  RV_API,
+  GET_APPLICATIONS,
+  REMOVE_APPLICATION,
+  RECYCLE_APPLICATION,
+  CREATE_APPLICATION,
+} from 'constant/apiConstants';
 
 const {
   setApplications,
@@ -9,10 +16,10 @@ const {
   setFetchingApps,
 } = ApplicationsSlice.actions;
 
-const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
-const removeApplicationAPI = new APIHandler('RVAPI', 'RemoveApplication');
-const recycleApplicationAPI = new APIHandler('RVAPI', 'RecycleApplication');
-const createApplicationAPI = new APIHandler('RVAPI', 'CreateApplication');
+const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
+const removeApplicationAPI = API_Provider(RV_API, REMOVE_APPLICATION);
+const recycleApplicationAPI = API_Provider(RV_API, RECYCLE_APPLICATION);
+const createApplicationAPI = API_Provider(RV_API, CREATE_APPLICATION);
 
 /**
  * @description A function (action) that gets applications list from server.

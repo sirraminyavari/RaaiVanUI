@@ -8,7 +8,7 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64, getURL, setRVGlobal } from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
@@ -45,6 +45,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Removable: isRemovable,
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
+
+  if (usersList.length !== totalUsers) {
+    console.log(usersList.length, totalUsers);
+  }
 
   const onTrashClick = (e) => {
     e.stopPropagation();
@@ -105,7 +109,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           if (response.Succeed) {
             const homeURL = getURL('Home');
             history.push(homeURL);
-            window.RVGlobal.ApplicationID = appId;
+            setRVGlobal({
+              ApplicationID: appId,
+              IsSystemAdmin: response.IsSystemAdmin,
+            });
             dispatch(getSidebarNodes());
             dispatch(getConfigPanels());
           }
@@ -176,7 +183,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   />
                 );
               })}
-            {totalUsers > 4 && (
+            {usersList.length > 4 && (
               <PopupMenu
                 trigger="hover"
                 align="top"
@@ -184,7 +191,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 menuClass="extra-users-popup">
                 <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
                   <Badge
-                    showText={`${totalUsers - 4}+`}
+                    showText={`${usersList.length - 4}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
