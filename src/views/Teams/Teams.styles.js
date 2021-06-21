@@ -345,7 +345,7 @@ export const TeamAvatarsWrapper = styled.div`
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  ${({ dir }) => dir}: 0;
+  ${({ dir }) => dir}: 1.5rem;
 `;
 
 export const ExtraUserItem = styled.div`

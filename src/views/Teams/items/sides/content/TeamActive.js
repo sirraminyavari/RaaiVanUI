@@ -46,6 +46,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
+  if (usersList.length !== totalUsers) {
+    console.log(usersList.length, totalUsers);
+  }
+
   const onTrashClick = (e) => {
     e.stopPropagation();
     handleTeamDelete();
@@ -179,7 +183,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   />
                 );
               })}
-            {totalUsers > 4 && (
+            {usersList.length > 4 && (
               <PopupMenu
                 trigger="hover"
                 align="top"
@@ -187,7 +191,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 menuClass="extra-users-popup">
                 <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
                   <Badge
-                    showText={`${totalUsers - 4}+`}
+                    showText={`${usersList.length - 4}+`}
                     className="team-extra-users"
                   />
                 </Styled.ExtraUsersWrapper>
