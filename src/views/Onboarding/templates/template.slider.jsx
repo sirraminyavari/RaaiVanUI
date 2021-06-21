@@ -9,7 +9,11 @@ import { decode } from 'js-base64';
 
 const TemplateSlider = () => {
   const { info } = useContext(StepperContext);
+  const [showPrevBtn, setShowPrevBtn] = useState(false);
+  const [showNextBtn, setShowNextBtn] = useState(false);
   const [templates, setTemplates] = useState([]);
+  const [index, setIndex] = useState(0);
+  const templateTrack = useRef();
 
   useEffect(() => {
     new APIHandler('CNAPI', 'GetTemplates').fetch(
@@ -27,11 +31,29 @@ const TemplateSlider = () => {
     );
   }, []);
 
-  const [index, setIndex] = useState(0);
-  const templateTrack = useRef();
+  const btnDisplay = () => {
+    console.log(templateTrack);
+    if (
+      templateTrack.current.scrollHeight >
+      index * templateTrack.current.offsetWidth
+    ) {
+      setShowNextBtn(true);
+    } else {
+      setShowNextBtn(false);
+    }
+
+    if (index > 1) {
+      setShowPrevBtn(true);
+    } else {
+      setShowPrevBtn(false);
+    }
+  };
 
   const next = () => {
-    if (index < templateTrack.current.offsetWidth / 300 + 1) {
+    if (
+      templateTrack.current.scrollHeight >
+      index * templateTrack.current.offsetWidth
+    ) {
       setIndex(index + 1);
     }
   };
@@ -45,13 +67,20 @@ const TemplateSlider = () => {
   const selectTeam = (team) => {};
 
   useEffect(() => {
-    templateTrack.current.style.transform = `translateY(-${index * 300}px)`;
+    btnDisplay();
+    templateTrack.current.style.transform = `translateY(-${
+      (index - 1) * 300
+    }px)`;
   }, [index]);
+
+  useEffect(() => {
+    btnDisplay();
+  }, [templates]);
 
   return (
     <div className="template-slider">
       <div className="template-prev-btn template-prev-align">
-        <img src={ArrowUp} alt="" onClick={() => prev()} />
+        {showPrevBtn && <img src={ArrowUp} alt="" onClick={() => prev()} />}
       </div>
       <div className="template-carousel-container">
         <div className="template-track" ref={templateTrack}>
@@ -61,7 +90,7 @@ const TemplateSlider = () => {
         </div>
       </div>
       <div className="template-next-btn template-next-align">
-        <img src={ArrowDown} alt="" onClick={() => next()} />
+        {showNextBtn && <img src={ArrowDown} alt="" onClick={() => next()} />}
       </div>
     </div>
   );

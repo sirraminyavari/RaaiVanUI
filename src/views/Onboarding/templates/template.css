@@ -17,10 +17,11 @@
   display: flex;
 }
 .templates-action {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
   height: 100px;
-  line-height: 100px;
-  text-align: center;
 }
 .templates-action button {
   height: 48px;
@@ -29,4 +30,7 @@
 }
 .selected-template-container {
   position: relative;
+}
+.disabled-button {
+  color: #bdbdbd;
 }

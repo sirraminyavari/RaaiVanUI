@@ -24,11 +24,29 @@ const Template = () => {
       </div>
 
       <div className="templates-action">
-        <button
-          className="ActionButton"
-          onClick={() => dispatch({ type: 'NEXT_STEP' })}>
-          فعال کن و برو مرحله بعد
-        </button>
+        {info.templates.length === 0 && (
+          <div>
+            <button className="disabled-button">فعال کن و برو مرحله بعد</button>
+
+            <button
+              className="ActionButton"
+              onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+              از این مرحله رد شو
+            </button>
+          </div>
+        )}
+
+        {info.templates.length !== 0 && (
+          <div>
+            <button
+              className="ActionButton"
+              onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+              فعال کن و برو مرحله بعد
+            </button>
+
+            <button className="disabled-button">از این مرحله رد شو</button>
+          </div>
+        )}
       </div>
     </div>
   );
