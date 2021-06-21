@@ -42,9 +42,6 @@ export const HeaderContainer = styled.div.attrs({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 3rem;
-  z-index: 1000;
 `;
 
 export const ModalContentWrapper = styled.div`
@@ -117,12 +114,18 @@ export const SpaceConatiner = styled.div`
   margin: 0 0 1rem 0;
 `;
 
-export const SpaceHeaderContainer = styled.div`
+export const SpaceHeaderContainer = styled.div.attrs({
+  className: `${BG_GRAY_LIGHT}`,
+})`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 0 0.2rem 0;
+  position: sticky;
+  top: 4rem;
+  z-index: 200;
+  padding: 1rem 0;
 `;
 
 export const SpaceHeaderTitle = styled.div.attrs({
