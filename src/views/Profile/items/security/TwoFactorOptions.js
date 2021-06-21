@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import RadioSelect from 'components/Inputs/radio/Radio';
-import * as Styled from './Profile.styles';
+import * as Styled from 'views/Profile/Profile.styles';
 
 const TwoFactorOptions = ({ options, enabled }) => {
   const [selected, setSelected] = useState('');

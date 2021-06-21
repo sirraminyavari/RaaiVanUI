@@ -18,7 +18,7 @@ import useToggle from 'hooks/useToggle';
  * @component
  * @param {PropType} props -Props that pass to Toggle.
  */
-const Toggle = (props) => {
+const ToggleButton = (props) => {
   const { onToggle, initialCheck, children, ...rest } = props;
   const [isOn, setToggle] = useToggle(initialCheck);
 
@@ -42,13 +42,15 @@ const Toggle = (props) => {
   );
 };
 
-Toggle.propTypes = {
+ToggleButton.propTypes = {
   onToggle: PropTypes.func,
   initialCheck: PropTypes.bool,
 };
 
-Toggle.defaultProps = {
+ToggleButton.defaultProps = {
   initialCheck: false,
 };
 
-export default Toggle;
+ToggleButton.displayName = 'ToggleButtonComponent';
+
+export default ToggleButton;

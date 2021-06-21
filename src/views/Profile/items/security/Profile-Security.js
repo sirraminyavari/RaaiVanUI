@@ -1,6 +1,5 @@
-import * as Styled from './Profile.styles';
+import * as Styled from 'views/Profile/Profile.styles';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
-import KeyIcon from 'components/Icons/KeyIcon/KeyIcon';
 import ChangePasswordContent from './ChangePassword';
 import TwoFactorAuthContent from './TwoFactorAuth';
 
