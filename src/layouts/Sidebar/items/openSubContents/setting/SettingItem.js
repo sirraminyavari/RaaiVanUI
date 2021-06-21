@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
-import * as Styled from '../../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import iconList from './iconList';
 import {
   SETTING_CONTENT,

@@ -3,7 +3,7 @@
  */
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
-import * as Styled from '../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ManageButton from './ManageButton';
 import { createSelector } from 'reselect';
 import { MAIN_CONTENT } from 'constant/constants';

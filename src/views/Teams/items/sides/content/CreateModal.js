@@ -24,7 +24,7 @@ const CreateModal = (props) => {
       titleClass={TC_DEFAULT}
       contentWidth={modalWidth}
       contentClass="teams-modal"
-      titleContainerClass={BG_GRAY_LIGHT}
+      titleContainerClass={`${BG_GRAY_LIGHT} teams-modal-header`}
       title={modalTitle}
       show={isOpen}
       onClose={onCancleCreate}>
@@ -37,12 +37,14 @@ const CreateModal = (props) => {
           style={{ width: '100%', margin: '2rem 0' }}
         />
         <Styled.ModalButtonsWrapper>
-          <Button style={{ width: '7rem' }} onClick={onCreate}>
+          <Button
+            style={{ width: '7rem', margin: '0 2rem' }}
+            onClick={onCreate}>
             <Styled.ModalButtonText>{RVDic.Save}</Styled.ModalButtonText>
           </Button>
           <Button
             type="negative-o"
-            style={{ width: '7rem' }}
+            style={{ width: '7rem', margin: '0 2rem' }}
             onClick={onCancleCreate}>
             <Styled.ModalButtonText>{RVDic.Return}</Styled.ModalButtonText>
           </Button>

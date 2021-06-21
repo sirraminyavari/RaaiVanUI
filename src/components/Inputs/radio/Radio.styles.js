@@ -11,6 +11,7 @@ export const RadioOptionWrapper = styled.div`
 
   input[type='radio']:checked + label {
     font-weight: bold;
+    ${({ selectedStyle }) => selectedStyle}
   }
 `;
 

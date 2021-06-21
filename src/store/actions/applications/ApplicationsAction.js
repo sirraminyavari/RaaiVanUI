@@ -1,15 +1,12 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import APIHandler from 'apiHelper/APIHandler';
-import {
-  encodeBase64,
-  saveLocalStorage,
-  loadLocalStorage,
-} from 'helpers/helpers';
+import { encodeBase64, loadLocalStorage } from 'helpers/helpers';
 
 const {
   setApplications,
   deleteApplication,
   addApplication,
+  setFetchingApps,
 } = ApplicationsSlice.actions;
 
 const getApplicationsAPI = new APIHandler('RVAPI', 'GetApplications');
@@ -27,6 +24,7 @@ export const getApplications = (archive = false) => async (
 ) => {
   const { auth } = getState();
   try {
+    dispatch(setFetchingApps(true));
     getApplicationsAPI.fetch(
       { Archive: archive, ParseResults: true },
       (response) => {
@@ -39,26 +37,25 @@ export const getApplications = (archive = false) => async (
           getApplicationsAPI.fetch(
             { Archive: true, ParseResults: true },
             (response) => {
-              if (response.Applications) {
-                const archives = response.Applications;
-                const archivedList = [
-                  { ApplicationID: 'archived-apps', archives },
-                ];
-                const localApps = loadLocalStorage(
-                  'apps_' + auth.authUser.UserID
+              dispatch(setFetchingApps(false));
+              const archives = response.Applications || [];
+              const archivedList = !!archives.length
+                ? [{ ApplicationID: 'archived-apps', archives }]
+                : [];
+              const localApps = loadLocalStorage(
+                'apps_' + auth.authUser.UserID
+              );
+              if (
+                localApps === undefined ||
+                localApps?.length - 2 !== appsWithUsers.length
+              ) {
+                dispatch(
+                  setApplications([
+                    ...appsWithUsers,
+                    ...archivedList,
+                    { ApplicationID: 'add-app' },
+                  ])
                 );
-                if (
-                  localApps === undefined ||
-                  localApps?.length - 2 !== appsWithUsers.length
-                ) {
-                  dispatch(
-                    setApplications([
-                      ...appsWithUsers,
-                      ...archivedList,
-                      { ApplicationID: 'add-app' },
-                    ])
-                  );
-                }
               }
             },
             (error) => console.log(error)

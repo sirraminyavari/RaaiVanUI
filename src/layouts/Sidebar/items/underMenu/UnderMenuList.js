@@ -1,7 +1,7 @@
 /**
  * Renders a list of items under the sidebar menu,
  */
-import * as Styled from '../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';

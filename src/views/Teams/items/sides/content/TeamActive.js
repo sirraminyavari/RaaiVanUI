@@ -8,7 +8,7 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
@@ -21,7 +21,7 @@ import {
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
-import TeamPatternDefault from 'assets/images/team-card-pattern.svg';
+import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
 
 const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
@@ -95,20 +95,18 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsConfirmShown(false);
   };
 
-  //! Redirect user to home page on team select.
-  const onGetNodes = () => {
-    history.push('/home');
-  };
-
   //! Select a team.
   const handleTeamSelect = () => {
+    // history.push('/home');
     try {
       selectTeamAPI.fetch(
         { ApplicationID: appId, ParseResults: true },
         (response) => {
           if (response.Succeed) {
+            const homeURL = getURL('Home');
+            history.push(homeURL);
             window.RVGlobal.ApplicationID = appId;
-            dispatch(getSidebarNodes(onGetNodes));
+            dispatch(getSidebarNodes());
             dispatch(getConfigPanels());
           }
         },

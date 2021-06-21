@@ -1,4 +1,4 @@
-import * as Styled from '../../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import EditIcon from 'components/Icons/EditIcon/Edit';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';

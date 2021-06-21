@@ -1,7 +1,12 @@
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
-import { CLOSE_WIDTH } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_QUARTER,
+  BO_RADIUS_UNIT,
+  CLOSE_WIDTH,
+} from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import {
   TBO_WARM,
@@ -74,18 +79,18 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 
-  .subMenuContainer {
-    overflow: hidden;
-    margin: -0.3rem 0 0 0;
-    padding: 0 0.3rem;
-    border-radius: 0.5rem;
-    background-color: inherit;
-    transition: all 0.5s ease;
+  // .subMenuContainer {
+  //   overflow: hidden;
+  //   margin: -0.3rem 0 0 0;
+  //   padding: 0 0.3rem;
+  //   border-radius: 0.5rem;
+  //   background-color: inherit;
+  //   transition: all 0.5s ease;
 
-    &.close {
-      height: 0;
-    }
-  }
+  //   &.close {
+  //     height: 0;
+  //   }
+  // }
 `);
 
 export const ContentWrapper = withTheme(styled.div`
@@ -244,7 +249,9 @@ export const FooterTitle = withTheme(styled.span`
 `);
 
 export const MenuContainer = styled.div.attrs((props) => ({
-  className: `BorderRadius4 ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}`,
+  className: `${BO_RADIUS_QUARTER} ${
+    props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK
+  }`,
 }))`
   ${FlexBetween}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
@@ -301,14 +308,13 @@ export const CaretIconWrapper = styled.div`
 `;
 
 export const MenuItemImage = styled.img.attrs({
-  className: BO_WHITE,
+  className: `${BO_WHITE} ${BO_RADIUS_CIRCLE}`,
 })`
   max-width: 1.8rem;
   min-width: 1.75rem;
   max-height: 1.8rem;
   width: 1.8rem;
   height: 1.8rem;
-  border-radius: 50%;
   overflow: hidden;
 `;
 
@@ -316,49 +322,49 @@ export const HighlightedTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
 `;
 
-export const SubMenuContainer = styled.div`
-  height: ${({ isOpen, itemsCount }) =>
-    isOpen ? `${itemsCount * 2.6}rem` : '0'};
-  overflow: hidden;
-  margin: -0.3rem 0 0 0;
-  padding: 0 0.3rem;
-  border-radius: 0.5rem;
-  background-color: inherit;
-  transition: all 0.5s ease;
-`;
+// export const SubMenuContainer = styled.div`
+//   height: ${({ isOpen, itemsCount }) =>
+//     isOpen ? `${itemsCount * 2.6}rem` : '0'};
+//   overflow: hidden;
+//   margin: -0.3rem 0 0 0;
+//   padding: 0 0.3rem;
+//   border-radius: 0.5rem;
+//   background-color: inherit;
+//   transition: all 0.5s ease;
+// `;
 
 //! This solution used because of conflict with DnD props passing down to styled component.
 //! Use ''forwardedAs'' instead of ''as'' in this solution.
-const DIV = styled.div.attrs({
-  className: `${C_WHITE} BorderRadius4`,
-})``;
+// const DIV = styled.div.attrs({
+//   className: `${C_WHITE} BorderRadius4`,
+// })``;
 
-export const SubMenu = styled(
-  forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
-)`
-  margin: 0.2rem 0;
-  margin-${RV_Float}: 0.5rem;
-  padding: 0.2rem 0.4rem;
-  padding-${RV_Float}: 1.4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${({ isActive }) =>
-    isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
-  &:hover {
-    background: ${({ isActive }) =>
-      isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
-  }
+// export const SubMenu = styled(
+//   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
+// )`
+//   margin: 0.2rem 0;
+//   margin-${RV_Float}: 0.5rem;
+//   padding: 0.2rem 0.4rem;
+//   padding-${RV_Float}: 1.4rem;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   background-color: ${({ isActive }) =>
+//     isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
+//   &:hover {
+//     background: ${({ isActive }) =>
+//       isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
+//   }
 
-  //! Child classes style
-  // &:hover > div > div:first-child {
-  //   color: #e2234f;
-  //   display: revert !important;
-  // }
-`;
+//   //! Child classes style
+//   // &:hover > div > div:first-child {
+//   //   color: #e2234f;
+//   //   display: revert !important;
+//   // }
+// `;
 
 export const ListItemWrapper = styled.div.attrs({
-  className: `${C_WHITE} BorderRadius4`,
+  className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
 })`
   ${FlexBetween}
   padding: 0 0.5rem;
@@ -391,14 +397,15 @@ export const ActionsWrapper = styled.div`
   line-height: 0.5rem;
 `;
 
-export const SettingWrapper = styled.div`
-  border-radius: 50%;
+export const SettingWrapper = styled.div.attrs({
+  className: BO_RADIUS_CIRCLE,
+})`
   line-height: 0.5rem;
   cursor: pointer;
 `;
 
 export const PanelWrapper = styled.div.attrs({
-  className: `${C_WHITE} BorderRadius4`,
+  className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
 })`
   ${FlexCenter}
   margin: 0.5rem 0;
@@ -414,7 +421,7 @@ export const PanelWrapper = styled.div.attrs({
 `;
 
 export const SettingItemWrapper = styled.div.attrs({
-  className: `${C_WHITE} BorderRadius4`,
+  className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
 })`
   ${FlexCenter}
   margin: 0.5rem 0;
@@ -500,7 +507,6 @@ export const MiniIconWrapper = styled.div`
 export const MenuTreeContainer = styled.div`
   background-color: inherit;
   padding: 0.1rem 0.2rem;
-  border-radius: 0.5rem;
   transition: all 0.5s ease;
 `;
 
@@ -540,7 +546,6 @@ const getHighlightCss = ({ isMatch }) => {
     ? `
     font-weight: bold;
     padding: 0 0.2rem;
-    border-radius: 0.5rem;
     `
     : null;
 };
