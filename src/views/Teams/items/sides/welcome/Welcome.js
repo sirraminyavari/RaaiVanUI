@@ -46,6 +46,7 @@ const Welcome = () => {
           width: '8rem',
           textAlign: 'center',
           borderColor: !isButtonHovered && '#fff',
+          backgroundColor: '#fcfcfd',
         }}>
         بلاگ کلیک مایند
       </Button>

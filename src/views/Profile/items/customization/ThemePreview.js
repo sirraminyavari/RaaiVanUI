@@ -1,10 +1,11 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { API_Provider } from 'helpers/helpers';
 import { USERS_API, SET_THEME } from 'constant/apiConstants';
+import { themeSlice } from 'store/reducers/themeReducer';
 
 const selectThemeSettings = createSelector(
   (state) => state.theme,
@@ -17,9 +18,11 @@ const selectCurrentThemes = createSelector(
 );
 
 const setThemeAPI = API_Provider(USERS_API, SET_THEME);
+const { setCurrentTheme } = themeSlice.actions;
 
 const ThemePreview = ({ preview }) => {
-  const { RV_Float } = useWindow();
+  const dispatch = useDispatch();
+  const { RV_Float, RVAPI, RVGlobal, DynamicFileUtilities } = useWindow();
   const { hasSidebarPattern, isSidebarCollapsed, isDarkMode } = useSelector(
     selectThemeSettings
   );
@@ -34,7 +37,13 @@ const ThemePreview = ({ preview }) => {
         { Theme: Name },
         (response) => {
           if (response.Succeed) {
-            window.location.reload();
+            const currentThemeURL = RVAPI.ThemeURL({
+              Name: RVGlobal.Theme || 'Default',
+            });
+            const newThemeURL = RVAPI.ThemeURL({ Name });
+            DynamicFileUtilities.replace_css(currentThemeURL, newThemeURL);
+            RVGlobal.Theme = Name;
+            dispatch(setCurrentTheme(Name));
           }
         },
         (error) => console.log(error)

@@ -101,7 +101,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   //! Select a team.
   const handleTeamSelect = () => {
-    // history.push('/home');
     try {
       selectTeamAPI.fetch(
         { ApplicationID: appId, ParseResults: true },

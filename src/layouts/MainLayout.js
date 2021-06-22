@@ -16,6 +16,7 @@ import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
 import useWindow from 'hooks/useWindowContext';
+import { NavbarContainer } from './Navbar/Navbar.styles';
 // import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const Navbar = lazy(() =>
@@ -107,7 +108,7 @@ const Main = () => {
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}>
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
               {isTeamSelected ? <Navbar /> : <NavbarInitial />}
             </Suspense>
             <Suspense fallback={<LogoLoader />}>
