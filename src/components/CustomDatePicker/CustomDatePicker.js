@@ -14,6 +14,17 @@ import { lunar } from './customLocals';
 import { mergeRefs, getToday } from 'helpers/helpers';
 // import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
+import RefreshIcon from 'components/Icons/UndoIcon/Undo';
+import { TBG_DEFAULT } from 'constant/Colors';
+
+const buttonsCommonStyles = {
+  padding: '0.3rem 0',
+  fontSize: '1.2em',
+  fontWeight: 'bold',
+  minHeight: '2.5em',
+  width: '24%',
+  backgroundColor: 'transparent',
+};
 
 /**
  * @typedef DateType
@@ -52,6 +63,7 @@ import * as Styled from './CustomDatePicker.styles';
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
+ * @property {string} headerTitle - The headeer title.
  */
 
 /**
@@ -77,6 +89,7 @@ const CustomDatePicker = (props) => {
     maximumDate,
     minimumDate,
     CustomButton: CustomButton,
+    headerTitle,
     ...rest
   } = props;
 
@@ -181,12 +194,35 @@ const CustomDatePicker = (props) => {
   //! Renders a clear button for datepicker.
   const ClearButton = () => {
     return (
-      <Button
-        onClick={handleClear}
-        type="negative-o"
-        style={{ padding: '0.3rem', fontSize: '1.5em' }}>
-        پاک کردن تاریخ
-      </Button>
+      <>
+        <Styled.CalendarHeaderContainer size={size}>
+          <Styled.HeaderWrapper>
+            <Styled.CalendarTitle>{headerTitle}</Styled.CalendarTitle>
+            <Styled.RefreshIconWrapper onClick={handleClear}>
+              <RefreshIcon size={12} />
+            </Styled.RefreshIconWrapper>
+          </Styled.HeaderWrapper>
+        </Styled.CalendarHeaderContainer>
+        <Styled.FooterButtonsContainer>
+          <Button type="primary-o" style={{ ...buttonsCommonStyles }}>
+            امروز
+          </Button>
+          <Button type="primary-o" style={{ ...buttonsCommonStyles }}>
+            دیروز
+          </Button>
+          <Button type="primary-o" style={{ ...buttonsCommonStyles }}>
+            ۷ روز گذشته
+          </Button>
+          <Button
+            type="primary-o"
+            style={{
+              ...buttonsCommonStyles,
+              width: '25%',
+            }}>
+            ۳۰ روز گذشته
+          </Button>
+        </Styled.FooterButtonsContainer>
+      </>
     );
   };
 
@@ -353,8 +389,11 @@ const CustomDatePicker = (props) => {
                 maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
                 shouldHighlightWeekends
                 calendarClassName={`${size}-calendar`}
-                calendarTodayClassName="today-date"
+                calendarTodayClassName={`${TBG_DEFAULT} today-date`}
                 locale={getLocale(type)}
+                calendarRangeStartClassName="start"
+                calendarRangeEndClassName="end"
+                calendarRangeBetweenClassName="between"
                 {...rest}
               />
             </OnClickAway>
@@ -496,6 +535,7 @@ CustomDatePicker.defaultProps = {
   shouldClear: false,
   size: 'medium',
   format: 'YYYY/MM/DD',
+  headerTitle: 'header title',
 };
 
 CustomDatePicker.displayName = 'CustomDatePicker';

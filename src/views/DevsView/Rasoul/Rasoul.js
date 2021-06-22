@@ -371,6 +371,7 @@ const RasoulView = () => {
             type="‫‪gregorian‬‬"
             clearButton
             onDateSelect={(date) => console.log(date)}
+            size="large"
           />
         </div>
         <div>
@@ -404,6 +405,7 @@ const RasoulView = () => {
             clearButton
             onDateSelect={(date) => console.log(date)}
             size="small"
+            headerTitle="عنوان تقویم"
           />
         </div>
       </div>
