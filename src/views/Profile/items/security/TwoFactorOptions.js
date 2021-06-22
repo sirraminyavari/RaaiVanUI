@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RadioSelect from 'components/Inputs/radio/Radio';
 import * as Styled from 'views/Profile/Profile.styles';
 
 const TwoFactorOptions = ({ options, enabled }) => {
   const [selected, setSelected] = useState('');
+
   const handleOnSelect = (radioValue) => {
+    setSelected(radioValue);
+  };
+
+  useEffect(() => {
     if (!enabled) {
       setSelected('');
       return;
     }
-    setSelected(radioValue);
-  };
+  }, [enabled]);
+
   return (
     <Styled.TwoFactorOptionsWrapper enabled={enabled}>
       <div style={{ marginBottom: '2rem' }}>
