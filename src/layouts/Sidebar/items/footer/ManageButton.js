@@ -1,5 +1,5 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import EditIcon from 'components/Icons/EditIcon/Edit';
+import EditIcon from 'components/Icons/EditIcons/Edit';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';

@@ -8,8 +8,13 @@ import {
   BG_GRAY_DARK,
   BG_FREEZED,
 } from 'constant/Colors';
-import { BO_RADIUS_HALF, BO_RADIUS_UNIT } from 'constant/constants';
+import {
+  BO_RADIUS_HALF,
+  BO_RADIUS_UNIT,
+  IGNORE_RADIUS_BOTTOM,
+} from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
+import Clouds from 'assets/images/clouds.png';
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -162,4 +167,89 @@ export const PreviewSelectionWrapper = styled.div.attrs({
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+`;
+
+export const ProfileHeader = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${IGNORE_RADIUS_BOTTOM}`,
+})`
+  position: relative;
+  top: 0;
+  border: 1px solid #333;
+  width: 100%;
+  left: 0;
+  height: 12rem;
+  background-image: url(${Clouds});
+  background-position: bottom;
+  background-repeat: no-repeat;
+
+  .profile-avatar {
+    background-color: #333;
+    border-radius: 50%;
+  }
+
+  :hover > div {
+    opacity: 1;
+  }
+`;
+
+export const AvatarPencilWrapper = styled.div`
+  width: 1.6rem;
+  height: 1.6rem;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 4.5rem;
+  border-radius: 50%;
+  padding: 0.15rem 0.1rem 0 0;
+  background-color: blue;
+  border: 2px solid #fff;
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+`;
+
+export const HeaderPencilWrapper = styled.div`
+  width: 1.6rem;
+  height: 1.6rem;
+  position: absolute;
+  bottom: 1rem;
+  left: 1.5rem;
+  border-radius: 50%;
+  padding: 0.15rem 0.1rem 0 0;
+  background-color: blue;
+  border: 2px solid #fff;
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+`;
+
+export const ProfileAvatarWrapper = styled.div`
+  position: absolute;
+  bottom: -2rem;
+  right: 1.5rem;
+  border-radius: 50%;
+  padding: 1rem;
+
+  :hover {
+    div {
+      opacity: 1;
+    }
+    ~ div {
+      opacity: 0;
+    }
+  }
+`;
+
+export const MainWrapper = styled.div`
+  margin: 1.5rem;
+  height: 100vh;
+`;
+export const ProfileInfoWrapper = styled.div`
+  width: 27%;
+  margin-top: 2rem;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 6rem;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 0.5px solid #bac9dc;
+  border-radius: 7px;
 `;
