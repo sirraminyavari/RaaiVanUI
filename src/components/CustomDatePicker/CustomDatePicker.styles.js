@@ -1,10 +1,18 @@
+import styled, { css } from 'styled-components';
 import { BG_GRAY_LIGHT, BG_WHITE, C_RED, TC_VERYWARM } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
   IGNORE_RADIUS_BOTTOM,
 } from 'constant/constants';
-import styled, { css } from 'styled-components';
+import {
+  CV_BLACK,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_VERYWARM,
+  TCV_VERY_TRANSPARENT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 
 export const CalendarConatiner = styled.div`
   position: relative;
@@ -19,27 +27,76 @@ export const CalendarConatiner = styled.div`
     z-index: 100;
   }
 
+  .Calendar {
+    box-shadow: 0px 10px 40px #2023314d;
+  }
+
   .Calendar__header {
     padding-top: 2.5rem;
   }
 
+  .Calendar__monthText {
+    color: ${TCV_VERYWARM} !important;
+    font-size: 1.1rem;
+  }
+
+  .Calendar__yearText {
+    color: ${TCV_WARM} !important;
+    font-size: 1.1rem;
+  }
+
+  .Calendar__yearSelectorAnimationWrapper {
+    height: 75% !important;
+  }
+
+  .Calendar__monthSelector {
+    position: relative;
+    top: 0.15rem;
+    height: 94%;
+  }
+  .Calendar__yearSelectorWrapper {
+    position: relative;
+    top: 0.2rem;
+    height: 93%;
+  }
+
+  .Calendar__monthSelectorItemText {
+    font-size: 0.8rem;
+  }
+
+  .Calendar__monthSelectorItem.-active button {
+    background-color: ${TCV_DEFAULT} !important;
+  }
+
+  .Calendar__yearSelectorItem.-active button {
+    background-color: ${TCV_DEFAULT} !important;
+  }
+
+  .Calendar__yearSelectorText {
+    font-size: 0.8rem;
+  }
+
   .today-date {
-    color: #fff !important;
+    color: ${CV_WHITE} !important;
+    background-color: ${TCV_VERYWARM} !important;
+  }
+
+  .selected-date {
+    background-color: ${TCV_DEFAULT} !important;
   }
 
   .today-date::after {
     visibility: hidden; /* hide small border under the text */
   }
 
-  .start {
-    background-color: #2b7be4 !important;
+  .date-range-start,
+  .date-range-end {
+    background-color: ${TCV_DEFAULT} !important;
   }
-  .end {
-    background-color: #2b7be4 !important;
-  }
-  .between {
-    background-color: #2b7be433 !important;
-    color: #000 !important;
+
+  .date-range-between {
+    background-color: ${TCV_VERY_TRANSPARENT} !important;
+    color: ${CV_BLACK} !important;
   }
 
   .small-calendar {
@@ -122,4 +179,7 @@ export const FooterButtonsContainer = styled.div`
   justify-content: space-between;
   align-tems: center;
   padding: 0.7rem !important;
+  position: absolute;
+  bottom: -0.3rem;
+  width: 100%;
 `;
