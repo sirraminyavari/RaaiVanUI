@@ -13,7 +13,6 @@ import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import APIHandler from 'apiHelper/APIHandler';
-import useHover from 'hooks/useHover';
 import {
   removeApplication,
   recycleApplication,
@@ -31,7 +30,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const history = useHistory();
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
-  const [trashRef, isTrashHovered] = useHover();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -219,10 +217,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             )}
           </Styled.TeamAvatarsWrapper>
           {isRemovable && (
-            <Styled.TeamTrashWrapper
-              onClick={onTrashClick}
-              isHovered={isTrashHovered}
-              ref={trashRef}>
+            <Styled.TeamTrashWrapper onClick={onTrashClick}>
               <TrashIcon />
             </Styled.TeamTrashWrapper>
           )}

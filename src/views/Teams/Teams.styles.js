@@ -14,6 +14,7 @@ import {
   BO_RADIUS_HALF,
   BO_RADIUS_UNIT,
 } from 'constant/constants';
+import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -181,18 +182,24 @@ const IconWrapperCss = css`
 `;
 
 export const TrashIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? C_RED : C_DISTANT + ' ' + BG_WHITE,
+  className: `${C_DISTANT} ${BG_WHITE}`,
 }))`
   ${IconWrapperCss}
   padding: 0.5rem;
+  :hover {
+    color: ${CV_RED} !important;
+  }
 `;
 
 export const SettingIconWrapper = styled.div.attrs((props) => ({
-  className: props.isHovered ? TC_DEFAULT : C_DISTANT + ' ' + BG_WHITE,
+  className: `${C_DISTANT} ${BG_WHITE}`,
 }))`
   ${IconWrapperCss}
   padding: 0.4rem;
   margin: 0 0.2rem;
+  :hover {
+    color: ${TCV_DEFAULT} !important;
+  }
 `;
 
 export const TeamListConatiner = styled.div`
@@ -221,7 +228,7 @@ const getDragCss = (props) => {
     props.isDragging &&
     css`
       opacity: 0.3;
-      border: 0.15rem dashed #777;
+      border: 0.15rem dashed ${TCV_DEFAULT};
     `
   );
 };
@@ -365,12 +372,15 @@ export const ExtraUserTitle = styled.span.attrs({
 `;
 
 export const TeamTrashWrapper = styled.div.attrs((props) => ({
-  className: `${props.isHovered ? C_RED : C_DISTANT} ${BO_RADIUS_CIRCLE}`,
+  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
 }))`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+  :hover {
+    color: ${CV_RED} !important;
+  }
 `;
 
 export const NewTeamWrapper = styled.div.attrs({
@@ -436,14 +446,17 @@ export const SocialMediaContainer = styled.div`
   margin: 1rem 0 0 0;
 `;
 
-export const IconWrapper = styled.div.attrs((props) => ({
-  className: `${props.isHovered ? TC_DEFAULT : C_DISTANT} ${BO_RADIUS_CIRCLE}`,
-}))`
+export const IconWrapper = styled.div.attrs({
+  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
+})`
   margin: 0 0.5rem;
   display: flex;
   align-items: center;
   padding: 0.5rem;
   cursor: pointer;
+  :hover {
+    color: #2b7be4;
+  }
 `;
 
 export const WelcomeMessage = styled.span.attrs({

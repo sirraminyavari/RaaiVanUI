@@ -35,6 +35,11 @@ export const CalendarConatiner = styled.div`
     padding-top: 2.5rem;
   }
 
+  .Calendar__weekDays {
+    color: ${TCV_VERYWARM} !important;
+    font-weight: bold;
+  }
+
   .Calendar__monthText {
     color: ${TCV_VERYWARM} !important;
     font-size: 1.1rem;
@@ -64,11 +69,50 @@ export const CalendarConatiner = styled.div`
     font-size: 0.8rem;
   }
 
+  .Calendar__yearSelectorItem button {
+    height: 1.4rem;
+    border-radius: 0.25rem;
+    line-height: 1.5rem !important;
+  }
+
+  .Calendar__monthSelectorItem button {
+    height: 1.4rem;
+    border-radius: 0.25rem;
+  }
+
   .Calendar__monthSelectorItem.-active button {
     background-color: ${TCV_DEFAULT} !important;
   }
 
   .Calendar__yearSelectorItem.-active button {
+    background-color: ${TCV_DEFAULT} !important;
+    :hover {
+      background-color: ${TCV_DEFAULT} !important;
+    }
+  }
+
+  .Calendar__yearSelectorItem button:hover {
+    background-color: ${TCV_VERY_TRANSPARENT} !important;
+  }
+
+  .Calendar__monthSelectorItem button:hover {
+    background-color: ${TCV_VERY_TRANSPARENT} !important;
+  }
+
+  .Calendar__day:hover {
+    background-color: ${TCV_VERY_TRANSPARENT} !important;
+  }
+
+  .Calendar__day.-selectedStart:hover,
+  .Calendar__day.-selectedEnd:hover {
+    background-color: ${TCV_DEFAULT} !important;
+  }
+
+  .Calendar__day.today-date:hover {
+    background-color: ${TCV_VERYWARM} !important;
+  }
+
+  .Calendar__day.selected-date:hover {
     background-color: ${TCV_DEFAULT} !important;
   }
 

@@ -6,12 +6,11 @@ import useHover from 'hooks/useHover';
 import WorkspaceImage from 'assets/images/workspace.png';
 import useWindow from 'hooks/useWindowContext';
 import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
+import { CV_GRAY_LIGHT } from 'constant/CssVariables';
 
 const Welcome = () => {
   const { RV_RevFloat } = useWindow();
   const [buttonRef, isButtonHovered] = useHover();
-  const [twitterRef, isTwitterHovered] = useHover();
-  const [linkedinRef, isLinkedinHovered] = useHover();
 
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
@@ -46,21 +45,15 @@ const Welcome = () => {
           width: '8rem',
           textAlign: 'center',
           borderColor: !isButtonHovered && '#fff',
-          backgroundColor: '#fcfcfd',
+          backgroundColor: CV_GRAY_LIGHT,
         }}>
         بلاگ کلیک مایند
       </Button>
       <Styled.SocialMediaContainer>
-        <Styled.IconWrapper
-          ref={twitterRef}
-          isHovered={isTwitterHovered}
-          onClick={openTwitter}>
+        <Styled.IconWrapper onClick={openTwitter}>
           <TwitterIcon size={20} />
         </Styled.IconWrapper>
-        <Styled.IconWrapper
-          ref={linkedinRef}
-          isHovered={isLinkedinHovered}
-          onClick={openLinkedin}>
+        <Styled.IconWrapper onClick={openLinkedin}>
           <LinkedIcon size={20} />
         </Styled.IconWrapper>
       </Styled.SocialMediaContainer>
