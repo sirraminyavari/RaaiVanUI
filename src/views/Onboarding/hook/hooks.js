@@ -26,9 +26,7 @@ export const useOutsideClick = (ref, callback, when) => {
 
 export const useOnLoad = (data) => {
   useEffect(() => {
-    new APIHandler('RVAPI', 'Log').fetch({ data: encode(data) }, (res) =>
-      console.log(res)
-    );
+    new APIHandler('RVAPI', 'Log').fetch({ data: encode(data) }, (res) => {});
   });
 };
 

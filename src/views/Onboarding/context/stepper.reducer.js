@@ -1,7 +1,9 @@
 const toggleTemplate = (state, template) => {
   const exist = state.templates.find((x) => x.id === template.id);
 
-  if (exist) {
+  console.log(exist);
+
+  if (!!exist) {
     const filtered = state.templates.filter((x) => x.id !== template.id);
     return { ...state, templates: filtered };
   } else {
@@ -34,6 +36,11 @@ export const stepperReducer = (state, action) => {
       return { ...state, step: state.step + 1 };
     case 'TOGGLE_TEMPLATE':
       return toggleTemplate(state, action.template);
+    case 'ACTIVATE_TEMPLATE':
+      return {
+        ...state,
+        activatedTemplates: [...state.activatedTemplates, action.template],
+      };
     case 'TOGGLE_LOADING':
       return { ...state, loading: !state.loading };
     default:

@@ -1,11 +1,71 @@
+import APIHandler from 'apiHelper/APIHandler';
 import React, { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import SelectedTemplates from './selected.templates';
 import './template.css';
 import TemplateSlider from './template.slider';
+import { useBeforeunload, useOnLoad } from '../hook/hooks';
+import {
+  template_selection_on_start,
+  template_selection_on_exit,
+  template_selection_on_skip,
+} from '../message';
+import { encode } from 'js-base64';
 
+const activateTemplate = (x) => {
+  const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
+  const activator = new APIHandler('CNAPI', 'ActivateTemplate');
+
+  return new Promise((resolve, reject) => {
+    handler.fetch(
+      {
+        NodeTypeID: x.id,
+      },
+      (content) => {
+        console.log(content);
+        activator.fetch(
+          {
+            Template: content,
+          },
+          (res) => {
+            if (!!res.Succedd) {
+              resolve(res);
+            } else {
+              reject(res);
+            }
+          }
+        );
+      }
+    );
+  });
+};
 const Template = () => {
   const { info, dispatch } = useContext(StepperContext);
+
+  useOnLoad(template_selection_on_start);
+  useBeforeunload(template_selection_on_exit);
+
+  const activate = () => {
+    info.templates.forEach(async (x) => {
+      try {
+        await activateTemplate(x);
+        dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
+      } catch (e) {
+        console.log('an error happend');
+        dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
+      }
+    });
+    dispatch({ type: 'NEXT_STEP' });
+  };
+
+  const skip = () => {
+    new APIHandler('RVAPI', 'Log').fetch(
+      { data: encode(template_selection_on_skip) },
+      (res) => {
+        dispatch({ type: 'NEXT_STEP' });
+      }
+    );
+  };
 
   return (
     <div className="template-part">
@@ -28,9 +88,7 @@ const Template = () => {
           <div>
             <button className="disabled-button">فعال کن و برو مرحله بعد</button>
 
-            <button
-              className="ActionButton"
-              onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+            <button className="ActionButton" onClick={() => skip()}>
               از این مرحله رد شو
             </button>
           </div>
@@ -38,9 +96,7 @@ const Template = () => {
 
         {info.templates.length !== 0 && (
           <div>
-            <button
-              className="ActionButton"
-              onClick={() => dispatch({ type: 'NEXT_STEP' })}>
+            <button className="ActionButton" onClick={() => activate()}>
               فعال کن و برو مرحله بعد
             </button>
 

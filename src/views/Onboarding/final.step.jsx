@@ -2,14 +2,22 @@ import React, { useContext, useState } from 'react';
 import './final.step.css';
 import Loading from './loading.animation.gif';
 import { StepperContext } from './context/stepper.context';
+import APIHandler from 'apiHelper/APIHandler';
+import { encode } from 'js-base64';
+import { finish_on_start } from './message';
 
 const FinalStep = () => {
   const { info, dispatch } = useContext(StepperContext);
   // const [loading, setLoading] = useState(false);
 
   const letsGo = () => {
-    dispatch({ type: 'TOGGLE_LOADING' });
-    dispatch({ type: 'NEXT_STEP' });
+    new APIHandler('RVAPI', 'Log').fetch(
+      { data: encode(finish_on_start) },
+      (res) => {
+        dispatch({ type: 'NEXT_STEP' });
+        dispatch({ type: 'TOGGLE_LOADING' });
+      }
+    );
   };
   return (
     <div className="final-step">

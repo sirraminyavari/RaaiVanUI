@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import './selected.templates.css';
 import SelectedTemplatesBox from './selected.templates.box';
+import { v4 as uuidv4 } from 'uuid';
 
 const SelectedTemplates = () => {
   const { info } = useContext(StepperContext);
@@ -13,7 +14,7 @@ const SelectedTemplates = () => {
     const zIndex = 100 - index;
     return (
       <SelectedTemplatesBox
-        key="x.id"
+        key={uuidv4()}
         zIndex={zIndex}
         show={false}
         translateX={offset}

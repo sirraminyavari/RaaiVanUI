@@ -44,7 +44,7 @@
 }
 .select-box.active {
   display: block;
-  max-height: 400px;
+  max-height: 150px;
   overflow-y: auto;
   z-index: 0;
 }

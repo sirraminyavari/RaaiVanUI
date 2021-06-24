@@ -51,3 +51,15 @@ export const template_selection_on_exit = JSON.stringify({
   category: 'main_onboarding',
   action: 'exited',
 });
+
+export const template_selection_on_skip = JSON.stringify({
+  stage: 'template_selection',
+  category: 'main_onboarding',
+  action: 'skipped',
+});
+
+export const finish_on_start = JSON.stringify({
+  stage: 'finish',
+  category: 'main_onboarding',
+  action: 'started',
+});

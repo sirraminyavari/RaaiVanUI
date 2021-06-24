@@ -12,8 +12,9 @@ const initialInfo = {
   iconURL: undefined,
   step: 0,
   members: '',
-  field: '',
+  field: { value: '' },
   templates: [],
+  activatedTemplates: [],
   loading: false,
 };
 

@@ -6,6 +6,8 @@ import Option from './option';
 import './team.info.css';
 import APIHandler from 'apiHelper/APIHandler';
 import { decode, encode } from 'js-base64';
+import { useOnLoad, useBeforeunload } from '../hook/hooks';
+import { team_spec_on_start, team_spec_on_exit } from '../message';
 
 const TeamInfo = () => {
   const options = [
@@ -15,6 +17,9 @@ const TeamInfo = () => {
   ];
   const { info, dispatch } = useContext(StepperContext);
   const [fields, setFields] = useState([]);
+
+  useOnLoad(team_spec_on_start);
+  useBeforeunload(team_spec_on_exit);
 
   useEffect(() => {
     new APIHandler('CNAPI', 'GetTemplateTags').fetch({}, (res) => {
@@ -66,7 +71,7 @@ const TeamInfo = () => {
   };
 
   return (
-    <div>
+    <div class="team-info-selection-box">
       <div className="team-name-selection noselect">
         <div className="h3">{`تیم ${info.teamName} از`}</div>
         <div>

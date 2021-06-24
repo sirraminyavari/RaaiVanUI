@@ -6,6 +6,7 @@ import TemplateCard from './template.card';
 import APIHandler from 'apiHelper/APIHandler';
 import { StepperContext } from '../context/stepper.context';
 import { decode } from 'js-base64';
+import { v4 as uuidv4 } from 'uuid';
 
 const TemplateSlider = () => {
   const { info } = useContext(StepperContext);
@@ -21,12 +22,14 @@ const TemplateSlider = () => {
         TagID: info.field.id,
       },
       (res) => {
-        const _templates = res.Templates.map((x) => ({
-          ...x,
-          id: x.NodeTypeID,
-          name: decode(x.TypeName),
-        }));
-        setTemplates(_templates);
+        if (!!res.Templates) {
+          const _templates = res.Templates.map((x) => ({
+            ...x,
+            id: x.NodeTypeID,
+            name: decode(x.TypeName),
+          }));
+          setTemplates(_templates);
+        }
       }
     );
   }, []);
@@ -64,8 +67,6 @@ const TemplateSlider = () => {
     }
   };
 
-  const selectTeam = (team) => {};
-
   useEffect(() => {
     btnDisplay();
     templateTrack.current.style.transform = `translateY(-${
@@ -84,9 +85,8 @@ const TemplateSlider = () => {
       </div>
       <div className="template-carousel-container">
         <div className="template-track" ref={templateTrack}>
-          {templates.map((x) => (
-            <TemplateCard key={x.id} item={x} />
-          ))}
+          {templates.length !== 0 &&
+            templates.map((x) => <TemplateCard key={uuidv4()} item={x} />)}
         </div>
       </div>
       <div className="template-next-btn template-next-align">

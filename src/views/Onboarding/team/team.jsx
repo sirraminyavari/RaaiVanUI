@@ -7,7 +7,6 @@ import './team.css';
 import TeamsSlider from './teams.slider';
 import APIHandler from 'apiHelper/APIHandler';
 import { encode, decode } from 'js-base64';
-import { result } from 'lodash';
 
 const Team = () => {
   const { info, dispatch } = useContext(StepperContext);
@@ -27,7 +26,6 @@ const Team = () => {
         Title: encode(name),
       },
       (res) => {
-        console.log(res);
         const succeed = !!res.Succeed;
         const app = res.Application;
         if (succeed) {
