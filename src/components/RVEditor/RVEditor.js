@@ -13,8 +13,6 @@ const RVEditor = ({
   data,
   events: { ready: onReady, change: onChange, blur: onBlur, focus: onFocus },
 }) => {
-  const x = 2;
-
   const loaded = useLoadFiles([
     'API/DocsAPI.js',
     'CKEditor5/ckeditor.js',
