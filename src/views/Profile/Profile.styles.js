@@ -7,6 +7,7 @@ import {
   TC_DEFAULT,
   BG_GRAY_DARK,
   BG_FREEZED,
+  TBG_DEFAULT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_HALF,
@@ -15,6 +16,7 @@ import {
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import Clouds from 'assets/images/clouds.png';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -200,8 +202,8 @@ export const AvatarPencilWrapper = styled.div`
   right: 4.5rem;
   border-radius: 50%;
   padding: 0.15rem 0.1rem 0 0;
-  background-color: blue;
-  border: 2px solid #fff;
+  background-color: ${TCV_DEFAULT};
+  border: 2px solid rgba(255, 255, 255, 0.9);
   opacity: 0;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -215,7 +217,7 @@ export const HeaderPencilWrapper = styled.div`
   left: 1.5rem;
   border-radius: 50%;
   padding: 0.15rem 0.1rem 0 0;
-  background-color: blue;
+  background-color: ${TCV_DEFAULT};
   border: 2px solid #fff;
   opacity: 0;
   cursor: pointer;
@@ -225,7 +227,7 @@ export const HeaderPencilWrapper = styled.div`
 export const ProfileAvatarWrapper = styled.div`
   position: absolute;
   bottom: -2rem;
-  right: 1.5rem;
+  right: 1rem;
   border-radius: 50%;
   padding: 1rem;
 

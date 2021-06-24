@@ -49,7 +49,7 @@ export const NavbarContainer = withTheme(styled.div.attrs({
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: ${GlobalUtilities.zindex.alert()};
+  z-index: 900;
   justify-content: space-between;
   align-items: center;
   top: 0;
