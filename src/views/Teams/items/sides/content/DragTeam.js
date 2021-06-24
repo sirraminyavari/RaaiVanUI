@@ -106,7 +106,7 @@ const DragItem = forwardRef(
       getNode: () => elementRef.current,
     }));
     if (team.ApplicationID === 'add-app') {
-      return <NewTeam ref={elementRef} />;
+      return <NewTeam />;
     }
     if (team.ApplicationID === 'archived-apps') {
       return <ArchivedTeams team={team} />;

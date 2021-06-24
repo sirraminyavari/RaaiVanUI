@@ -6,6 +6,8 @@ export const WindowProvider = ({ children }) => {
   const {
     RVGlobal,
     GlobalUtilities,
+    DynamicFileUtilities,
+    RVAPI,
     RV_RTL,
     RV_Float,
     RV_RevFloat,
@@ -18,6 +20,8 @@ export const WindowProvider = ({ children }) => {
       value={{
         RVGlobal,
         GlobalUtilities,
+        DynamicFileUtilities,
+        RVAPI,
         RV_RTL,
         RV_Float,
         RV_RevFloat,

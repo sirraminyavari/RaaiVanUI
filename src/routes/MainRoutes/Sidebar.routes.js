@@ -3,7 +3,7 @@ import { getURL } from 'helpers/helpers';
 import ConfigRoutes from './Config.routes';
 const Profile = lazy(() =>
   import(
-    /* webpackChunkName: "profile-view"*/ 'views/Profile/items/customization/Profile-Customization'
+    /* webpackChunkName: "profile-view"*/ 'views/Profile/items/main/Profile-Main'
   )
 );
 const Reports = lazy(() =>

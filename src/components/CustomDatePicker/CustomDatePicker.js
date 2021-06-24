@@ -14,6 +14,17 @@ import { lunar } from './customLocals';
 import { mergeRefs, getToday } from 'helpers/helpers';
 // import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
+import RefreshIcon from 'components/Icons/UndoIcon/Undo';
+import useWindow from 'hooks/useWindowContext';
+
+const buttonsCommonStyles = {
+  padding: '0.3rem 0',
+  fontSize: '1.2em',
+  fontWeight: 'bold',
+  minHeight: '2.5em',
+  width: '24%',
+  backgroundColor: 'transparent',
+};
 
 /**
  * @typedef DateType
@@ -52,6 +63,7 @@ import * as Styled from './CustomDatePicker.styles';
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
+ * @property {string} headerTitle - The headeer title.
  */
 
 /**
@@ -64,7 +76,7 @@ const CustomDatePicker = (props) => {
     label = props.type === 'jalali' ? 'انتخاب تاریخ ...' : 'Pick a date ...',
     type,
     mode,
-    range,
+    range: initRange,
     value,
     size,
     onDateSelect,
@@ -77,13 +89,22 @@ const CustomDatePicker = (props) => {
     maximumDate,
     minimumDate,
     CustomButton: CustomButton,
+    headerTitle,
     ...rest
   } = props;
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
-
+  const [range, setRange] = useState(initRange);
   const inputRef = useRef();
+  const { RVDic } = useWindow();
+
+  const footerButtonList = [
+    { id: '1', title: RVDic.Today, dateSpan: '1' },
+    { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
+    { id: '3', title: '۷ روز گذشه', dateSpan: '7' },
+    { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
+  ];
 
   const dateEngToPer = (date) => {
     return moment(date, format).locale('fa').format(format);
@@ -122,9 +143,9 @@ const CustomDatePicker = (props) => {
   };
 
   //! Alter between range or single datepicker based on "range" prop for use in component.
-  const toSingleOrRangeObject = (date, toObject) => {
+  const toSingleOrRangeObject = (date, toObject, r = range) => {
     if (!date && range) return { from: null, to: null };
-    if (range || Array.isArray(date)) {
+    if (r || Array.isArray(date)) {
       return {
         from: toObject(date.from),
         to: toObject(date.to),
@@ -172,6 +193,101 @@ const CustomDatePicker = (props) => {
     }
   };
 
+  /**
+   * Format raw new Date().
+   * @param {string} date
+   * @returns string date like "yyyy/mm/dd"
+   */
+  const formatRawDate = (date) => {
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    if (day < 10) {
+      day = '0' + day;
+    }
+    if (month < 10) {
+      month = '0' + month;
+    }
+    date = `${year}/${month}/${day}`;
+    return date;
+  };
+
+  /**
+   * Calculates the last nth days.
+   * @param {number} span
+   * @returns An array of last nth days.
+   */
+  const LastNthDays = (span) => {
+    const result = [];
+    for (let i = 0; i < span; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      result.push(formatRawDate(d));
+    }
+
+    return result;
+  };
+
+  const handleFooterClick = (e) => {
+    const dateSpan = e.target.dataset.span;
+    let date;
+    let showDate;
+
+    switch (dateSpan) {
+      case '-1':
+        setRange(false);
+        date = LastNthDays(2);
+        onDateSelect(date[1]);
+        showDate = toSingleOrRangeObject(date[1], dateStringToObject, false);
+        if (mode === 'input') {
+          inputRef.current.value = formatDate(showDate, false);
+        }
+        // console.log(showDate);
+        break;
+      case '7':
+        setRange(true);
+        date = LastNthDays(7);
+        onDateSelect({ from: date[6], to: date[0] });
+        showDate = toSingleOrRangeObject(
+          { from: date[6], to: date[0] },
+          dateStringToObject,
+          true
+        );
+        if (mode === 'input') {
+          inputRef.current.value = formatDate(showDate, true);
+        }
+        // console.log(showDate);
+        break;
+      case '30':
+        setRange(true);
+        date = LastNthDays(30);
+        onDateSelect({ from: date[29], to: date[0] });
+        showDate = toSingleOrRangeObject(
+          { from: date[29], to: date[0] },
+          dateStringToObject,
+          true
+        );
+        if (mode === 'input') {
+          inputRef.current.value = formatDate(showDate, true);
+        }
+        // console.log(showDate);
+        break;
+
+      default:
+        setRange(false);
+        date = LastNthDays(1);
+        onDateSelect(date[0]);
+        showDate = toSingleOrRangeObject(date[0], dateStringToObject, false);
+        if (mode === 'input') {
+          inputRef.current.value = formatDate(showDate, false);
+        }
+        // console.log(showDate);
+        break;
+    }
+
+    setSelectedDate(showDate);
+  };
+
   useEffect(() => {
     if (shouldClear) {
       handleClear();
@@ -181,12 +297,30 @@ const CustomDatePicker = (props) => {
   //! Renders a clear button for datepicker.
   const ClearButton = () => {
     return (
-      <Button
-        onClick={handleClear}
-        type="negative-o"
-        style={{ padding: '0.3rem', fontSize: '1.5em' }}>
-        پاک کردن تاریخ
-      </Button>
+      <>
+        <Styled.CalendarHeaderContainer size={size}>
+          <Styled.HeaderWrapper>
+            <Styled.CalendarTitle>{headerTitle}</Styled.CalendarTitle>
+            <Styled.RefreshIconWrapper onClick={handleClear}>
+              <RefreshIcon size={12} />
+            </Styled.RefreshIconWrapper>
+          </Styled.HeaderWrapper>
+        </Styled.CalendarHeaderContainer>
+        <Styled.FooterButtonsContainer>
+          {footerButtonList?.map((footer) => {
+            return (
+              <Button
+                key={footer.id}
+                data-span={footer.dateSpan}
+                onClick={handleFooterClick}
+                type="primary-o"
+                style={{ ...buttonsCommonStyles }}>
+                {footer.title}
+              </Button>
+            );
+          })}
+        </Styled.FooterButtonsContainer>
+      </>
     );
   };
 
@@ -197,13 +331,13 @@ const CustomDatePicker = (props) => {
 
   //? when user picks date from datepicker
   //! Formats date for showing to user.
-  const formatDate = (date) => {
+  const formatDate = (date, r = range) => {
     if (!date || Object.values(date).some((param) => param === null))
       return mode === 'button' ? label : '';
     let formLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
     let toLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
     let atLabel = type === 'jalali' ? 'تاریخ: ' : 'Date: ';
-    if (range) {
+    if (r) {
       let fromDate = `${date.from.year}/${checkDigit(
         date.from.month
       )}/${checkDigit(date.from.day)}`;
@@ -225,6 +359,7 @@ const CustomDatePicker = (props) => {
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
   const handleChange = (selectedDay) => {
+    // console.log(selectedDay, 'selectedDay');
     //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
@@ -233,7 +368,7 @@ const CustomDatePicker = (props) => {
     }
   };
 
-  //! Calls whwnever user fills the input manually.
+  //! Calls whenever user fills the input manually.
   const handleInputChange = (e) => {
     let val = e.target.value;
     const value = (val.match(/\d/g) || ['']).join('');
@@ -355,6 +490,10 @@ const CustomDatePicker = (props) => {
                 calendarClassName={`${size}-calendar`}
                 calendarTodayClassName="today-date"
                 locale={getLocale(type)}
+                calendarRangeStartClassName="date-range-start"
+                calendarRangeEndClassName="date-range-end"
+                calendarRangeBetweenClassName="date-range-between"
+                calendarSelectedDayClassName="selected-date"
                 {...rest}
               />
             </OnClickAway>
@@ -394,6 +533,10 @@ const CustomDatePicker = (props) => {
             shouldHighlightWeekends
             calendarClassName={`${size}-calendar`}
             calendarTodayClassName="today-date"
+            calendarRangeStartClassName="date-range-start"
+            calendarRangeEndClassName="date-range-end"
+            calendarRangeBetweenClassName="date-range-between"
+            calendarSelectedDayClassName="selected-date"
             wrapperClassName="date-picker"
             locale={getLocale(type)}
             {...rest}
@@ -496,6 +639,7 @@ CustomDatePicker.defaultProps = {
   shouldClear: false,
   size: 'medium',
   format: 'YYYY/MM/DD',
+  headerTitle: 'header title',
 };
 
 CustomDatePicker.displayName = 'CustomDatePicker';

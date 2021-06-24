@@ -17,8 +17,10 @@ const options = [
 
 const TwoFactorAuthentication = () => {
   const { RVDic } = useWindow();
+  //! If true, Show two factor option box.
   const [isTwoFactorOn, setIsTwoFactorOn] = useState(false);
 
+  //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
     setIsTwoFactorOn(toggleValue);
   };
