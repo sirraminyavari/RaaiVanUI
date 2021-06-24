@@ -15,6 +15,7 @@ import { mergeRefs, getToday } from 'helpers/helpers';
 // import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
 import RefreshIcon from 'components/Icons/UndoIcon/Undo';
+import useWindow from 'hooks/useWindowContext';
 
 const buttonsCommonStyles = {
   padding: '0.3rem 0',
@@ -24,13 +25,6 @@ const buttonsCommonStyles = {
   width: '24%',
   backgroundColor: 'transparent',
 };
-
-const footerButtonList = [
-  { id: '1', title: 'امروز', dateSpan: '1' },
-  { id: '2', title: 'دیروز', dateSpan: '-1' },
-  { id: '3', title: '۷ روز گذشه', dateSpan: '7' },
-  { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
-];
 
 /**
  * @typedef DateType
@@ -102,8 +96,15 @@ const CustomDatePicker = (props) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const [range, setRange] = useState(initRange);
-
   const inputRef = useRef();
+  const { RVDic } = useWindow();
+
+  const footerButtonList = [
+    { id: '1', title: RVDic.Today, dateSpan: '1' },
+    { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
+    { id: '3', title: '۷ روز گذشه', dateSpan: '7' },
+    { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
+  ];
 
   const dateEngToPer = (date) => {
     return moment(date, format).locale('fa').format(format);
@@ -241,7 +242,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, false);
         }
-        console.log(showDate);
+        // console.log(showDate);
         break;
       case '7':
         setRange(true);
@@ -255,7 +256,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, true);
         }
-        console.log(showDate);
+        // console.log(showDate);
         break;
       case '30':
         setRange(true);
@@ -269,7 +270,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, true);
         }
-        console.log(showDate);
+        // console.log(showDate);
         break;
 
       default:
@@ -280,7 +281,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, false);
         }
-        console.log(showDate);
+        // console.log(showDate);
         break;
     }
 
@@ -292,24 +293,6 @@ const CustomDatePicker = (props) => {
       handleClear();
     }
   }, [shouldClear]);
-
-  // const print = (e) => {
-  //   console.log(e);
-  //   setRange(true);
-  // };
-
-  // useEffect(() => {
-  //   const calendarDays = document.querySelectorAll('div.Calendar__day');
-  //   calendarDays.forEach((c) => {
-  //     c.addEventListener('mousedown', print);
-  //   });
-
-  //   return () => {
-  //     calendarDays.forEach((c) => {
-  //       c.removeEventListener('mousedown', print);
-  //     });
-  //   };
-  // });
 
   //! Renders a clear button for datepicker.
   const ClearButton = () => {
@@ -324,7 +307,7 @@ const CustomDatePicker = (props) => {
           </Styled.HeaderWrapper>
         </Styled.CalendarHeaderContainer>
         <Styled.FooterButtonsContainer>
-          {footerButtonList.map((footer, index, self) => {
+          {footerButtonList?.map((footer) => {
             return (
               <Button
                 key={footer.id}
@@ -376,7 +359,7 @@ const CustomDatePicker = (props) => {
 
   //! Handle change on date selection, Calls whenever date has been selected or reselected.
   const handleChange = (selectedDay) => {
-    console.log(selectedDay, 'selectedDay');
+    // console.log(selectedDay, 'selectedDay');
     //! Prepare datepicker value/s for sending to server.
     onDateSelect(toSingleOrRangeString(selectedDay, dateObjectToString));
     setSelectedDate(selectedDay);
@@ -550,6 +533,10 @@ const CustomDatePicker = (props) => {
             shouldHighlightWeekends
             calendarClassName={`${size}-calendar`}
             calendarTodayClassName="today-date"
+            calendarRangeStartClassName="date-range-start"
+            calendarRangeEndClassName="date-range-end"
+            calendarRangeBetweenClassName="date-range-between"
+            calendarSelectedDayClassName="selected-date"
             wrapperClassName="date-picker"
             locale={getLocale(type)}
             {...rest}

@@ -52,10 +52,6 @@ import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 
 // import DnDGridList from 'components/DnDGrid/DnDGrid';
 
-// import DnDMuuri from 'components/DnDMuuri/DnDMuuri';
-
-import DnDSortable from 'components/DnDSortable/SortableComponent';
-
 const headers = [
   { firstName: 'نام', dataType: 'string' },
   { lastName: 'نام خانوادگی', dataType: 'string' },
@@ -293,10 +289,6 @@ const RasoulView = () => {
       {/* <div>
         <DnDGridList />
       </div> */}
-
-      <div>{/* <DnDSortable /> */}</div>
-
-      {/* <DnDMuuri /> */}
 
       <Divider title="Custom Table Component" />
 
