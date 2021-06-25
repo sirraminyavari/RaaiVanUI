@@ -8,22 +8,18 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL, setRVGlobal } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import APIHandler from 'apiHelper/APIHandler';
 import {
   removeApplication,
   recycleApplication,
+  selectApplication,
 } from 'store/actions/applications/ApplicationsAction';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
-
-const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
@@ -97,28 +93,17 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsConfirmShown(false);
   };
 
+  const onSelectDone = () => {
+    const homeURL = getURL('Home');
+    history.push(homeURL);
+  };
+
+  //TODO: error handling
+  const onSelectError = () => {};
+
   //! Select a team.
   const handleTeamSelect = () => {
-    try {
-      selectTeamAPI.fetch(
-        { ApplicationID: appId, ParseResults: true },
-        (response) => {
-          if (response.Succeed) {
-            const homeURL = getURL('Home');
-            history.push(homeURL);
-            setRVGlobal({
-              ApplicationID: appId,
-              IsSystemAdmin: response.IsSystemAdmin,
-            });
-            dispatch(getSidebarNodes());
-            dispatch(getConfigPanels());
-          }
-        },
-        (error) => console.log(error)
-      );
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(selectApplication(appId, onSelectDone, onSelectError));
   };
 
   return (

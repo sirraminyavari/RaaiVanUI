@@ -71,3 +71,10 @@ export const RECYCLE_APPLICATION = 'RecycleApplication';
  * @class 'RVAPI'
  */
 export const CREATE_APPLICATION = 'CreateApplication';
+
+/**
+ * @description 'SelectApplication'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SELECT_APPLICATION = 'SelectApplication';

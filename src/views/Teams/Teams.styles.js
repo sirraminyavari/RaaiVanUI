@@ -419,9 +419,11 @@ export const ArchivedTeamsLabel = styled.div.attrs({
 
 export const WelcomeSide = styled.div`
   width: 45%;
-  position: fixed;
+  // position: fixed;
+  position: sticky;
   ${({ dir }) => dir}: 0;
-  top: 2.5rem;
+  // top: 2.5rem;
+  top: 5rem;
   height: 100%;
   margin: 0;
   display: flex;

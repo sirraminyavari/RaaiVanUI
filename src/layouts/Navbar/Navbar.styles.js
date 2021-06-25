@@ -21,6 +21,7 @@ import {
   C_FREEZED,
   BG_FREEZED,
 } from 'constant/Colors';
+import { TCV_VERY_TRANSPARENT } from 'constant/CssVariables';
 
 const { RV_RevFloat, RV_Float, GlobalUtilities, RV_RTL } = window;
 
@@ -87,9 +88,9 @@ export const ButtonContainer = styled(({ isActive, ref, ...props }) => (
   padding: 0.5rem;
   border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
 
-  // &:hover {
-  //   background-color: #27499f;
-  // }
+  &:hover {
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
 
   &:hover span {
     transform: rotateX(180deg);
@@ -368,6 +369,11 @@ export const AvatarMenuContainer = styled.div`
   min-width: 11rem;
   max-width: 14rem;
   // padding: 0rem 0.7rem;
+`;
+
+export const AvatarTeamsListWrapper = styled.div`
+  max-height: calc(100vh - 18rem);
+  overflow: scroll;
 `;
 
 export const AvatarMenuItem = styled.div.attrs({
