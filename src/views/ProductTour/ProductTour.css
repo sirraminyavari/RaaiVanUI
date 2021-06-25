@@ -1,0 +1,21 @@
+.helper {
+  /* position: relative; */
+  direction: rtl;
+  line-height: 1.3;
+  /* color: #ca1111 !important; */
+}
+.mask {
+  color: var(rv-color-verywarm);
+  opacity: 0.8;
+}
+.CustomHelper__wrapper {
+  display: flex;
+  background-color: #f8f8f8;
+  max-width: 490px;
+  border-radius: 6px;
+}
+.reactour__close {
+  position: fixed !important;
+  right: 90% !important;
+  top: 15px;
+}
