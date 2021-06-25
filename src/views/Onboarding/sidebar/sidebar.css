@@ -6,6 +6,16 @@
   align-items: start;
   padding: 2rem;
 }
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.logo {
+  margin-top: -20px;
+  width: 120px;
+  height: 35px;
+}
 .onboarding-sidbar-steps {
   margin-top: 45px;
   padding-right: 10px;
@@ -16,9 +26,9 @@
 }
 .onboarding-sidbar-steps div {
   color: white;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 30px;
-  font-size: 14px;
+  font-size: 2em;
 }
 .sidebar-skeleton {
   height: 20px;

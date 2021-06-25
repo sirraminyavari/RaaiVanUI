@@ -1,21 +1,67 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './final.step.css';
-import Loading from './loading.animation.gif';
+import Loading from '../../assets/images/loading_cliqmind.gif';
 import { StepperContext } from './context/stepper.context';
 import APIHandler from 'apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
 
+const activateTemplate = (x, appId) => {
+  const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
+  const activator = new APIHandler('CNAPI', 'ActivateTemplate');
+
+  return new Promise((resolve, reject) => {
+    handler.fetch(
+      {
+        NodeTypeID: x.id,
+      },
+      (content) => {
+        activator.fetch(
+          {
+            Template: content,
+          },
+          (res) => {
+            console.log(res);
+            if (!!res.Succedd) {
+              resolve(res);
+            } else {
+              reject(res);
+            }
+          }
+        );
+      }
+    );
+  });
+};
+
 const FinalStep = () => {
   const { info, dispatch } = useContext(StepperContext);
   // const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (info.templates.length !== 0) {
+      dispatch({ type: 'TOGGLE_LOADING' });
+      info.templates.forEach(async (x, index) => {
+        try {
+          await activateTemplate(x, info.applicationId);
+          dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
+        } catch (e) {
+          console.log('an error happend');
+        }
+        if (index === info.templates.length - 1) {
+          dispatch({ type: 'TOGGLE_LOADING' });
+          dispatch({ type: 'NEXT_STEP' });
+        }
+      });
+    } else {
+    }
+  }, []);
 
   const letsGo = () => {
     new APIHandler('RVAPI', 'Log').fetch(
       { data: encode(finish_on_start) },
       (res) => {
-        dispatch({ type: 'NEXT_STEP' });
-        dispatch({ type: 'TOGGLE_LOADING' });
+        // redirect to clickmind workspace
       }
     );
   };

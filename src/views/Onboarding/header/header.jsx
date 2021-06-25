@@ -11,10 +11,10 @@ const Header = () => {
       <HeaderThumbnail />
 
       <div style={{ flexGrow: 1 }}></div>
-
+      {/* 
       {info.loading && <HeaderSkeleton />}
 
-      {info.loading && <HeaderSkeleton />}
+      {info.loading && <HeaderSkeleton />} */}
     </div>
   );
 };

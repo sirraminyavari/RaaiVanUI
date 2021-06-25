@@ -70,18 +70,18 @@ const Intro = (props) => {
               className="rv-input"
               placeholder="نام خانوادگی"
             />
-          </div>
-        </div>
 
-        <div className={'intro-action'}>
-          <button
-            className={[
-              'ActionButton',
-              (info.firstName === '' || info.lastName === '') && 'deactive',
-            ].join(' ')}
-            onClick={() => save()}>
-            {'بزن بریم!'}
-          </button>
+            <div className={'intro-action'}>
+              <button
+                className={[
+                  'ActionButton',
+                  (info.firstName === '' || info.lastName === '') && 'deactive',
+                ].join(' ')}
+                onClick={() => save()}>
+                {'بزن بریم!'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

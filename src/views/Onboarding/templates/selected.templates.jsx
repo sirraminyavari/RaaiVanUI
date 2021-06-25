@@ -10,7 +10,7 @@ const SelectedTemplates = () => {
 
   const layers = info.templates.map((x, index) => {
     if (index === 0) return;
-    const offset = `${index * -5}px`;
+    const offset = `${index * -8}px`;
     const zIndex = 100 - index;
     return (
       <SelectedTemplatesBox

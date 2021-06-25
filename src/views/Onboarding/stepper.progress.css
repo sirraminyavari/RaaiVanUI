@@ -48,5 +48,5 @@
   background-color: #757575;
 }
 .dot-after {
-  background-color: #2b7be4;
+  background-color: var(--rv-color-lightwarm);
 }

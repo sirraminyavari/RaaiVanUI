@@ -71,7 +71,7 @@ const TeamInfo = () => {
   };
 
   return (
-    <div class="team-info-selection-box">
+    <div className="team-info-selection-box">
       <div className="team-name-selection noselect">
         <div className="h3">{`تیم ${info.teamName} از`}</div>
         <div>

@@ -39,6 +39,7 @@ const activateTemplate = (x) => {
     );
   });
 };
+
 const Template = () => {
   const { info, dispatch } = useContext(StepperContext);
 
@@ -46,15 +47,14 @@ const Template = () => {
   useBeforeunload(template_selection_on_exit);
 
   const activate = () => {
-    info.templates.forEach(async (x) => {
-      try {
-        await activateTemplate(x);
-        dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
-      } catch (e) {
-        console.log('an error happend');
-        dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
-      }
-    });
+    // info.templates.forEach(async (x) => {
+    //   try {
+    //     await activateTemplate(x);
+    //     dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
+    //   } catch (e) {
+    //     console.log('an error happend');
+    //   }
+    // });
     dispatch({ type: 'NEXT_STEP' });
   };
 
@@ -78,31 +78,43 @@ const Template = () => {
       </div>
 
       <div className="template-selection-block">
-        <TemplateSlider />
+        <div>
+          <TemplateSlider />
+          {info.templates.length !== 0 && (
+            <div className="select-templates-number">
+              <span>{info.templates.length}</span>
+              <span>قالب انتخاب شده</span>
+            </div>
+          )}
+        </div>
 
-        <SelectedTemplates />
-      </div>
+        <div>
+          <SelectedTemplates />
 
-      <div className="templates-action">
-        {info.templates.length === 0 && (
-          <div>
-            <button className="disabled-button">فعال کن و برو مرحله بعد</button>
+          <div className="templates-action">
+            {info.templates.length === 0 && (
+              <div>
+                <button className="disabled-button">
+                  فعال کن و برو مرحله بعد
+                </button>
 
-            <button className="ActionButton" onClick={() => skip()}>
-              از این مرحله رد شو
-            </button>
+                <button className="ActionButton" onClick={() => skip()}>
+                  از این مرحله رد شو
+                </button>
+              </div>
+            )}
+
+            {info.templates.length !== 0 && (
+              <div>
+                <button className="ActionButton" onClick={() => activate()}>
+                  فعال کن و برو مرحله بعد
+                </button>
+
+                <button className="disabled-button">از این مرحله رد شو</button>
+              </div>
+            )}
           </div>
-        )}
-
-        {info.templates.length !== 0 && (
-          <div>
-            <button className="ActionButton" onClick={() => activate()}>
-              فعال کن و برو مرحله بعد
-            </button>
-
-            <button className="disabled-button">از این مرحله رد شو</button>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

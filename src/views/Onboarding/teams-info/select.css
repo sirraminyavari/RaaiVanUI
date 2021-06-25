@@ -44,13 +44,14 @@
 }
 .select-box.active {
   display: block;
-  max-height: 150px;
+  max-height: 270px;
   overflow-y: auto;
   z-index: 0;
 }
 .select-box .option {
   margin: 0;
   padding: 6px 12px;
+  font-size: 1.3rem;
 }
 .selected {
   margin: 0;
