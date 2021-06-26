@@ -398,6 +398,7 @@ const FilterBar = ({
             type="jalali"
             clearButton
             range
+            headerTitle="فیلتر تاریخ ایجاد"
             CustomButton={({ onClick }) => (
               <ShadowButton
                 onClick={onClick}

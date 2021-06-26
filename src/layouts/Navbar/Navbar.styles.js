@@ -1,5 +1,5 @@
 import withTheme from 'components/withTheme/withTheme';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   OPEN_WIDTH,
   CLOSE_WIDTH,
@@ -21,24 +21,36 @@ import {
   C_FREEZED,
   BG_FREEZED,
 } from 'constant/Colors';
+import { TCV_VERY_TRANSPARENT } from 'constant/CssVariables';
 
-const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
+const { RV_RevFloat, RV_Float, GlobalUtilities, RV_RTL } = window;
+
+const getNavbarWidth = ({ theme, isMobile }) => {
+  if (!!theme.states.selectedTeam?.id) {
+    return css`
+      width: calc(
+        100% -
+          ${!isMobile
+            ? theme.states.isSidebarOpen
+              ? theme.states.sidebarCurrentWidth / 16
+              : CLOSE_WIDTH
+            : CLOSE_WIDTH}rem
+      );
+    `;
+  }
+  return css`
+    width: 100%;
+  `;
+};
 
 export const NavbarContainer = withTheme(styled.div.attrs({
   className: TBG_WARM,
 })`
-  width: ${({ theme, isMobile }) =>
-    `calc(100% - ${
-      !isMobile
-        ? theme.states.isSidebarOpen
-          ? theme.states.sidebarCurrentWidth / 16
-          : CLOSE_WIDTH
-        : CLOSE_WIDTH
-    }rem)`};
+  ${getNavbarWidth}
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: ${GlobalUtilities.zindex.alert()};
+  z-index: 900;
   justify-content: space-between;
   align-items: center;
   top: 0;
@@ -76,9 +88,9 @@ export const ButtonContainer = styled(({ isActive, ref, ...props }) => (
   padding: 0.5rem;
   border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
 
-  // &:hover {
-  //   background-color: #27499f;
-  // }
+  &:hover {
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
 
   &:hover span {
     transform: rotateX(180deg);
@@ -117,6 +129,35 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   color: inherit;
+`;
+
+export const ExitAndHelpWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: inherit;
+`;
+
+export const ExitIconWrapper = styled.div.attrs({
+  className: `${C_FREEZED} ${BO_RADIUS_CIRCLE}`,
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${RV_RTL &&
+  `-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);`}
+  cursor: pointer;
+  padding: 0.5rem;
+`;
+
+export const QuestionIconWrapper = styled.div.attrs({
+  className: `${C_FREEZED} ${BO_RADIUS_CIRCLE}`,
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.85rem 0.75rem;
 `;
 
 export const SearchContainer = styled.div`
@@ -328,6 +369,11 @@ export const AvatarMenuContainer = styled.div`
   min-width: 11rem;
   max-width: 14rem;
   // padding: 0rem 0.7rem;
+`;
+
+export const AvatarTeamsListWrapper = styled.div`
+  max-height: calc(100vh - 18rem);
+  overflow: scroll;
 `;
 
 export const AvatarMenuItem = styled.div.attrs({

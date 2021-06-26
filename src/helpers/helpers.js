@@ -180,3 +180,12 @@ export const saveLocalStorage = (key, state) => {
 export const API_Provider = (apiClass, apiFunction) => {
   return new APIHandler(apiClass, apiFunction);
 };
+
+/**
+ * @description Sets RVGlobal properties.
+ */
+export const setRVGlobal = (params = {}) => {
+  for (const param in params) {
+    window.RVGlobal[param] = params[param];
+  }
+};
