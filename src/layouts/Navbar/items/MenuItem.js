@@ -1,16 +1,15 @@
 /**
  * A component that renders custom button for navbar.
  */
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
-import { TBO_WARM, BG_RED, TBG_VERY_TRANSPARENT } from 'constant/Colors';
+import { TBO_WARM, BG_RED } from 'constant/Colors';
 import { createSelector } from 'reselect';
-// import useHover from 'hooks/useHover';
 
 const selectNavAlerts = createSelector(
   (state) => state.navbarAlert,
@@ -42,30 +41,17 @@ const selectActivePath = createSelector(
  * @param {PropType} props
  */
 const MenuItem = (props) => {
-  // const [itemRef, isItemHovered] = useHover();
-  const [isItemHovered, setIsItemHovered] = useState(false);
   const activePath = useSelector(selectActivePath);
   const alerts = useSelector(selectNavAlerts);
   const { title, icon, linkTo } = props.btnProps;
   const { badge, withArrow } = props;
-
-  const handleMouseEnter = () => {
-    setIsItemHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsItemHovered(false);
-  };
 
   const isActive = linkTo === activePath;
   const hasBadge = badge && alerts.length > 0;
 
   return (
     <Styled.ButtonContainer
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       style={{ cursor: withArrow ? 'default' : 'pointer' }}
-      className={isItemHovered && TBG_VERY_TRANSPARENT}
       isActive={isActive}
       forwardedAs={linkTo ? Link : 'div'}
       to={linkTo}>

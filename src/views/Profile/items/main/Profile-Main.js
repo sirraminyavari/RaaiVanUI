@@ -7,6 +7,8 @@ import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import Modal from 'components/Modal/Modal';
 import ImageCropper from './items/ImageCropper';
 import Clouds from 'assets/images/clouds.png';
+import UserInfos from './items/UserInfos';
+import HeaderStatus from './items/HeaderStatus';
 
 const selectAuthUser = createSelector(
   (state) => state.auth,
@@ -73,7 +75,10 @@ const ProfileMain = () => {
         </Styled.HeaderPencilWrapper>
       </Styled.ProfileHeader>
       <Styled.MainWrapper>
-        <Styled.ProfileInfoWrapper>profile info</Styled.ProfileInfoWrapper>
+        <UserInfos />
+        <div>
+          <HeaderStatus />
+        </div>
       </Styled.MainWrapper>
     </Styled.ProfileViewContainer>
   );

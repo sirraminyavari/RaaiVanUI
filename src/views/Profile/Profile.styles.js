@@ -8,15 +8,18 @@ import {
   BG_GRAY_DARK,
   BG_FREEZED,
   TBG_DEFAULT,
+  C_GRAY,
 } from 'constant/Colors';
 import {
+  BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
+  BO_RADIUS_QUARTER,
   BO_RADIUS_UNIT,
   IGNORE_RADIUS_BOTTOM,
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import Clouds from 'assets/images/clouds.png';
-import { TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -176,7 +179,6 @@ export const ProfileHeader = styled.div.attrs({
 })`
   position: relative;
   top: 0;
-  border: 1px solid #333;
   width: 100%;
   left: 0;
   height: 12rem;
@@ -194,41 +196,44 @@ export const ProfileHeader = styled.div.attrs({
   }
 `;
 
-export const AvatarPencilWrapper = styled.div`
+export const AvatarPencilWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
   width: 1.6rem;
   height: 1.6rem;
   position: absolute;
   bottom: 0.5rem;
   right: 4.5rem;
-  border-radius: 50%;
   padding: 0.15rem 0.1rem 0 0;
   background-color: ${TCV_DEFAULT};
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  border: 2px solid ${CV_DISTANT};
   opacity: 0;
   cursor: pointer;
   transition: all 0.3s ease;
 `;
 
-export const HeaderPencilWrapper = styled.div`
+export const HeaderPencilWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
   width: 1.6rem;
   height: 1.6rem;
   position: absolute;
   bottom: 1rem;
   left: 1.5rem;
-  border-radius: 50%;
   padding: 0.15rem 0.1rem 0 0;
   background-color: ${TCV_DEFAULT};
-  border: 2px solid #fff;
+  border: 2px solid ${CV_DISTANT};
   opacity: 0;
   cursor: pointer;
   transition: all 0.3s ease;
 `;
 
-export const ProfileAvatarWrapper = styled.div`
+export const ProfileAvatarWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
   position: absolute;
   bottom: -2rem;
-  right: 1rem;
-  border-radius: 50%;
+  right: 1.75rem;
   padding: 1rem;
 
   :hover {
@@ -242,16 +247,72 @@ export const ProfileAvatarWrapper = styled.div`
 `;
 
 export const MainWrapper = styled.div`
-  margin: 1.5rem;
+  margin: 2.5rem 1.5rem;
   height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: start;
+  gap: 1.5rem;
+
+  @media only screen and (max-width: 900px) {
+    grid-template-columns: 1fr 1.8fr;
+  }
+
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content;
+  }
 `;
-export const ProfileInfoWrapper = styled.div`
-  width: 27%;
-  margin-top: 2rem;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 6rem;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  border: 0.5px solid #bac9dc;
-  border-radius: 7px;
+export const ProfileInfoWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
+})`
+  // margin-top: 2rem;
+  // position: sticky;
+  // position: -webkit-sticky;
+  // top: 6rem;
+  padding: 1rem 1.5rem;
+`;
+
+export const UsenameWrapper = styled.div.attrs({
+  className: `${C_GRAY_DARK}`,
+})`
+  font-size: 1.5rem;
+  font-weight: 500;
+`;
+
+export const SectionTitle = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  font-size: 0.9rem;
+  margin-top: 2.5rem;
+`;
+
+export const HeaderStatusContainer = styled.div.attrs({
+  className: `${BO_DISTANT} ${BO_RADIUS_QUARTER}`,
+})`
+  display: flex;
+  justify-content: space-between;
+  aligni-items: center;
+  padding: 0.5rem 0;
+`;
+
+export const StatusWrapper = styled.div.attrs({
+  className: ``,
+})`
+  text-align: center;
+  width: 33%;
+  max-height: 3rem;
+  min-height: 3rem;
+  color: ${CV_GRAY};
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const StatusCount = styled.span.attrs({
+  className: `${TC_DEFAULT}`,
+})`
+  font-size: 1.1rem;
+  margin: 0 1rem;
 `;

@@ -1,33 +1,37 @@
 import { useState, forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
+import { createSelector } from 'reselect';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL, setRVGlobal } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import APIHandler from 'apiHelper/APIHandler';
 import {
   removeApplication,
   recycleApplication,
+  selectApplication,
 } from 'store/actions/applications/ApplicationsAction';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
-const selectTeamAPI = new APIHandler('RVAPI', 'SelectApplication');
+const selectingApp = createSelector(
+  (state) => state.applications,
+  (applications) => applications.selectingApp
+);
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const isMobileScreen = useMediaQuery({
@@ -97,28 +101,17 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsConfirmShown(false);
   };
 
+  const onSelectDone = () => {
+    const homeURL = getURL('Home');
+    history.push(homeURL);
+  };
+
+  //TODO: error handling
+  const onSelectError = () => {};
+
   //! Select a team.
   const handleTeamSelect = () => {
-    try {
-      selectTeamAPI.fetch(
-        { ApplicationID: appId, ParseResults: true },
-        (response) => {
-          if (response.Succeed) {
-            const homeURL = getURL('Home');
-            history.push(homeURL);
-            setRVGlobal({
-              ApplicationID: appId,
-              IsSystemAdmin: response.IsSystemAdmin,
-            });
-            dispatch(getSidebarNodes());
-            dispatch(getConfigPanels());
-          }
-        },
-        (error) => console.log(error)
-      );
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(selectApplication(appId, onSelectDone, onSelectError));
   };
 
   return (
@@ -150,79 +143,87 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         src={TeamPatternDefault}
         alt="team-pattern"
       />
-      <Styled.TeamContentWrapper isDragging={isDragging}>
-        <Styled.TeamDescription>
-          <div>
-            <Avatar radius={45} style={{ width: '50px' }} userImage={appIcon} />
-          </div>
-          <Styled.TeamTitle>{decodeBase64(appTitle)}</Styled.TeamTitle>
-          <Styled.TeamExcerpt>
-            {!!appDescription
-              ? decodeBase64(appDescription)
-              : 'کلیک مایند. مغز تیم شما!'}
-          </Styled.TeamExcerpt>
-        </Styled.TeamDescription>
-        <Styled.TeamFooterConatiner>
-          <Styled.TeamAvatarsWrapper>
-            {usersList
-              ?.filter((_, index) => index < 4)
-              .map((user, index) => {
-                return (
-                  <Avatar
-                    key={index}
-                    userImage={user.ProfileImageURL}
-                    radius={32}
-                    style={{
-                      position: 'relative',
-                      [RV_Float]: `${-index * 9}px`,
-                      zIndex: 10 - index,
-                    }}
-                  />
-                );
-              })}
-            {usersList.length > 4 && (
-              <PopupMenu
-                trigger="hover"
-                align="top"
-                arrowClass="hidden-arrow"
-                menuClass="extra-users-popup">
-                <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
-                  <Badge
-                    showText={`${usersList.length - 4}+`}
-                    className="team-extra-users"
-                  />
-                </Styled.ExtraUsersWrapper>
-                <div className="non-scroll">
-                  {usersList
-                    ?.filter((user, index) => index > 3 && user)
-                    .map((user) => {
-                      return (
-                        <Styled.ExtraUserItem key={user.UserID}>
-                          <Avatar
-                            color="#333"
-                            userImage={user.ProfileImageURL}
-                            style={{ width: '30px' }}
-                            radius={25}
-                          />
-                          <Styled.ExtraUserTitle>
-                            {`${decodeBase64(user.FirstName)} ${decodeBase64(
-                              user.LastName
-                            )}`}
-                          </Styled.ExtraUserTitle>
-                        </Styled.ExtraUserItem>
-                      );
-                    })}
-                </div>
-              </PopupMenu>
+      {isSelecting && selectingAppId === appId ? (
+        <LogoLoader style={{ marginTop: '2.5rem' }} />
+      ) : (
+        <Styled.TeamContentWrapper isDragging={isDragging}>
+          <Styled.TeamDescription>
+            <div>
+              <Avatar
+                radius={45}
+                style={{ width: '50px' }}
+                userImage={appIcon}
+              />
+            </div>
+            <Styled.TeamTitle>{decodeBase64(appTitle)}</Styled.TeamTitle>
+            <Styled.TeamExcerpt>
+              {!!appDescription
+                ? decodeBase64(appDescription)
+                : 'کلیک مایند. مغز تیم شما!'}
+            </Styled.TeamExcerpt>
+          </Styled.TeamDescription>
+          <Styled.TeamFooterConatiner>
+            <Styled.TeamAvatarsWrapper>
+              {usersList
+                ?.filter((_, index) => index < 4)
+                .map((user, index) => {
+                  return (
+                    <Avatar
+                      key={index}
+                      userImage={user.ProfileImageURL}
+                      radius={32}
+                      style={{
+                        position: 'relative',
+                        [RV_Float]: `${-index * 9}px`,
+                        zIndex: 10 - index,
+                      }}
+                    />
+                  );
+                })}
+              {usersList.length > 4 && (
+                <PopupMenu
+                  trigger="hover"
+                  align="top"
+                  arrowClass="hidden-arrow"
+                  menuClass="extra-users-popup">
+                  <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
+                    <Badge
+                      showText={`${usersList.length - 4}+`}
+                      className="team-extra-users"
+                    />
+                  </Styled.ExtraUsersWrapper>
+                  <div className="non-scroll">
+                    {usersList
+                      ?.filter((user, index) => index > 3 && user)
+                      .map((user) => {
+                        return (
+                          <Styled.ExtraUserItem key={user.UserID}>
+                            <Avatar
+                              color="#333"
+                              userImage={user.ProfileImageURL}
+                              style={{ width: '30px' }}
+                              radius={25}
+                            />
+                            <Styled.ExtraUserTitle>
+                              {`${decodeBase64(user.FirstName)} ${decodeBase64(
+                                user.LastName
+                              )}`}
+                            </Styled.ExtraUserTitle>
+                          </Styled.ExtraUserItem>
+                        );
+                      })}
+                  </div>
+                </PopupMenu>
+              )}
+            </Styled.TeamAvatarsWrapper>
+            {isRemovable && (
+              <Styled.TeamTrashWrapper onClick={onTrashClick}>
+                <TrashIcon />
+              </Styled.TeamTrashWrapper>
             )}
-          </Styled.TeamAvatarsWrapper>
-          {isRemovable && (
-            <Styled.TeamTrashWrapper onClick={onTrashClick}>
-              <TrashIcon />
-            </Styled.TeamTrashWrapper>
-          )}
-        </Styled.TeamFooterConatiner>
-      </Styled.TeamContentWrapper>
+          </Styled.TeamFooterConatiner>
+        </Styled.TeamContentWrapper>
+      )}
     </Styled.TeamConatiner>
   );
 });
