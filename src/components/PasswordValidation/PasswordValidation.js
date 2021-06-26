@@ -9,7 +9,7 @@ import { RED } from 'constant/Colors';
 import React from 'react';
 import styled from 'styled-components';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
-import { CollapseAnimate } from './Animate.style';
+// import { CollapseAnimate } from '../../views/Auth/elements/Animate.style';
 
 const { RVDic } = window;
 /**
@@ -35,20 +35,23 @@ const PasswordValidation = ({
       <Items>
         {validator ? (
           <CheckCircle
+            className={'rv-default'}
             style={{
               fontSize: '0.9rem',
-              color: `${MAIN_BLUE}`,
+              // color: `${MAIN_BLUE}`,
             }}
           />
         ) : (
           <CancelCircle
+            className={'rv-red'}
             style={{
               fontSize: '0.9rem',
-              color: `${RED}`,
+              // color: `${RED}`,
             }}
           />
         )}
         <H6
+          // className={validator ? 'rv-default' : 'rv-distant'}
           style={{
             color: validator ? MAIN_BLUE : LIGHT_BLUE,
             marginRight: '7px',
@@ -129,4 +132,15 @@ const Items = styled.div`
 
   margin: 3px 0px 3px 3px;
   padding: 3px 0px 3px 3px;
+`;
+export const CollapseAnimate = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  max-height: ${({ isVisible }) => (isVisible ? '15%' : '0')};
+  min-height: ${({ isVisible }) => (isVisible ? '0%' : '0%')};
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  transition: max-height 1s, opacity 1s, min-height 1s;
 `;
