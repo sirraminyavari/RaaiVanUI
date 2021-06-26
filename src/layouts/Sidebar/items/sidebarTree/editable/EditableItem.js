@@ -55,7 +55,14 @@ const selectTree = createSelector(
 const EditableBranch = (props) => {
   const { itemProps } = props;
 
-  const { item, onExpand, onCollapse, provided, depth, snapshot } = itemProps;
+  const {
+    item,
+    onExpand,
+    onCollapse,
+    provided,
+    depth,
+    // snapshot
+  } = itemProps;
 
   const sidebarContent = useSelector(selectSidebarContent);
   const tree = useSelector(selectTree);
@@ -76,7 +83,7 @@ const EditableBranch = (props) => {
 
   const onDeleteDone = (node) => {
     const deleteMSG = `دسته "${node.data.title}" حذف خواهد شد`;
-    const deleteToast = UndoToast({
+    UndoToast({
       type: 'error',
       autoClose: 10000,
       message: deleteMSG,
@@ -106,7 +113,7 @@ const EditableBranch = (props) => {
 
     const editMSG = `نام "${item.data.title}" به "${trimedTitle}" تغییر خواهد کرد`;
 
-    const editToast = UndoToast({
+    UndoToast({
       type: 'info',
       autoClose: 5000,
       message: editMSG,

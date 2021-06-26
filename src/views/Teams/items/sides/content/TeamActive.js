@@ -46,7 +46,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     ApplicationID: appId,
     Removable: isRemovable,
   } = team;
-  const { TotalCount: totalUsers, Users: usersList } = appUsers;
+  const {
+    // TotalCount: totalUsers,
+    Users: usersList,
+  } = appUsers;
 
   // if (usersList.length !== totalUsers) {
   //   console.log(usersList.length, totalUsers);

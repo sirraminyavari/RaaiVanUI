@@ -24,7 +24,7 @@ import useWindow from 'hooks/useWindowContext';
  */
 const UserType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data; //! Meta data to feed component.
   const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
 
   // const { MultiSelect } = JSON.parse(decodeBase64(Info));

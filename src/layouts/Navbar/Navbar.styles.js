@@ -1,10 +1,7 @@
 import withTheme from 'components/withTheme/withTheme';
 import styled, { css } from 'styled-components';
 import {
-  OPEN_WIDTH,
   CLOSE_WIDTH,
-  BO_RADIUS_QUARTER,
-  BO_RADIUS_UNIT,
   BO_RADIUS_HALF,
   BO_RADIUS_CIRCLE,
 } from 'constant/constants';
@@ -23,7 +20,7 @@ import {
 } from 'constant/Colors';
 import { TCV_VERY_TRANSPARENT } from 'constant/CssVariables';
 
-const { RV_RevFloat, RV_Float, GlobalUtilities, RV_RTL } = window;
+const { RV_RevFloat, RV_Float, RV_RTL } = window;
 
 const getNavbarWidth = ({ theme, isMobile }) => {
   if (!!theme.states.selectedTeam?.id) {

@@ -88,7 +88,7 @@ const CustomDatePicker = (props) => {
     buttonStyle,
     maximumDate,
     minimumDate,
-    CustomButton: CustomButton,
+    CustomButton,
     headerTitle,
     ...rest
   } = props;

@@ -108,22 +108,22 @@ const AutoSuggestInput = (props) => {
   const handleToString = (item) => (item ? item.value : '');
 
   //! Highlights searched term inside suggested items.
-  const getHighlightedText = (text, highlight) => {
-    if (searchTerm.length < 1) return text;
-    const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-    const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
-    return (
-      <span>
-        {parts.map((part, i) => (
-          <Styled.HighlightedText
-            key={i}
-            isMatch={part.toLowerCase() === highlight.toLowerCase()}>
-            {part}
-          </Styled.HighlightedText>
-        ))}
-      </span>
-    );
-  };
+  // const getHighlightedText = (text, highlight) => {
+  //   if (searchTerm.length < 1) return text;
+  //   const sanitized = highlight.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  //   const parts = text.split(new RegExp(`(${sanitized})`, 'gi'));
+  //   return (
+  //     <span>
+  //       {parts.map((part, i) => (
+  //         <Styled.HighlightedText
+  //           key={i}
+  //           isMatch={part.toLowerCase() === highlight.toLowerCase()}>
+  //           {part}
+  //         </Styled.HighlightedText>
+  //       ))}
+  //     </span>
+  //   );
+  // };
 
   useEffect(() => {
     if (
@@ -136,6 +136,7 @@ const AutoSuggestInput = (props) => {
     } else {
       setItems(defaultItems);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
 
   return (

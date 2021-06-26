@@ -1,4 +1,4 @@
-import Header from './ContentHeader';
+// import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import WorkSpace from './Space';
 

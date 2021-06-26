@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'views/Teams/Teams.styles';
-import SpaceHeader from './SpcaeHeader';
+// import SpaceHeader from './SpcaeHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';

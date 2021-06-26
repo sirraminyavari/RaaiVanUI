@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import {
   C_DISTANT,
-  TC_DEFAULT,
   C_GRAY,
   C_RED,
   C_GRAY_DARK,
@@ -17,8 +16,6 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
-  CV_GRAY,
-  CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
 } from 'constant/CssVariables';

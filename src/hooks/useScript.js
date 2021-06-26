@@ -20,6 +20,7 @@ const useScript = (src, id, callback, params) => {
       const scriptTag = document.getElementById(id);
       document.body.removeChild(scriptTag);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, params]);
 };
 
