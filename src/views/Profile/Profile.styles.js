@@ -7,7 +7,7 @@ import {
   TC_DEFAULT,
   BG_GRAY_DARK,
   BG_FREEZED,
-  TBG_DEFAULT,
+  // TBG_DEFAULT,
   C_GRAY,
 } from 'constant/Colors';
 import {

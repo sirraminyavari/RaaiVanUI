@@ -40,6 +40,7 @@ const SidebarMainContent = () => {
     dispatch(
       setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const SidebarMainContent = () => {
     return () => {
       dispatch(setSearchText(''));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return (

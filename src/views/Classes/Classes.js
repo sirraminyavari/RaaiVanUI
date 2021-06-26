@@ -8,8 +8,8 @@ const AdvancedSearchView = (props) => {
   const { route } = props;
 
   useEffect(() => {
-    console.count('Classes view render time(s)');
-    console.log(props.route);
+    // console.count('Classes view render time(s)');
+    // console.log(props.route);
   }, [props.route]);
 
   return (

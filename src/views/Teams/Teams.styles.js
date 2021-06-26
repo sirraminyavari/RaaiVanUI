@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import {
   C_DISTANT,
-  TC_DEFAULT,
   C_GRAY,
   C_RED,
   C_GRAY_DARK,
@@ -17,8 +16,6 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
-  CV_GRAY,
-  CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
 } from 'constant/CssVariables';
@@ -115,6 +112,8 @@ export const SpaceListConatiner = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  //TODO: remove it when space exists.
+  margin-top: 2rem;
 `;
 
 export const SpaceConatiner = styled.div`
@@ -451,11 +450,25 @@ export const WelcomeSide = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
+
 export const WorkspaceImageWrapper = styled.div`
   width: 18rem;
   margin-top: 3rem;
   aspect-ratio: 1;
+`;
+
+export const WorkspaceImage = styled.img`
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 export const WelcomeMSGContainer = styled.div`

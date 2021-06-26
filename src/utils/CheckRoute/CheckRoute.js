@@ -47,6 +47,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
     //! Set active path.
     dispatch(setActivePath(location.pathname));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   useEffect(() => {

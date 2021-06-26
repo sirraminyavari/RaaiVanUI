@@ -28,6 +28,7 @@ const ToggleButton = (props) => {
 
   useEffect(() => {
     onToggle && onToggle(isOn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOn]);
 
   return (

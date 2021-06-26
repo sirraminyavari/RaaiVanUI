@@ -80,6 +80,7 @@ const FormType = (props) => {
       },
       (error) => console.log(error)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -94,6 +95,7 @@ const FormType = (props) => {
         JSONValue: value,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterValues]);
 
   return (
