@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
-import PasswordValidation from '../elements/PasswordValidation';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 
 const { RVDic } = window;
 
