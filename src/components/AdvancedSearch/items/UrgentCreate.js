@@ -1,14 +1,15 @@
 import React from 'react';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import UrgentCreateDesktop from './UrgentCreateDesktop';
 import UrgentCreateMobile from './UrgentCreateMobile';
 
 /**
- * Here,just decides to return MobileView or DesktopView
+ * Here, decides to return MobileView or DesktopView
  */
 const UrgentCreate = ({ ...props }) => {
   return (
     <>
-      {DiensionHelper().isTabletOrMobile ? (
+      {DimensionHelper().isTabletOrMobile ? (
         <UrgentCreateMobile {...props} />
       ) : (
         <UrgentCreateDesktop {...props} />
