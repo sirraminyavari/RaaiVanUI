@@ -2459,6 +2459,9 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         GlobalUtilities.load_files([RVGlobal.CaptchaURL], {
             OnLoad: function () {
+                var arr = document.getElementsByClassName('grecaptcha-badge');
+                if (arr.length) arr[0].style.visibility = "visible";
+
                 callback({
                     getToken: function (done) {
                         if (GlobalUtilities.get_type(done) != "function") done = function () { };
@@ -2467,6 +2470,10 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
                             grecaptcha.execute(RVGlobal.CaptchaSiteKey, { action: 'submit' })
                                 .then(token => done(token));
                         });
+                    },
+                    hide: () => {
+                        var arr2 = document.getElementsByClassName('grecaptcha-badge');
+                        if (arr2.length) arr2[0].style.visibility = "hidden";
                     }
                 });
             }
