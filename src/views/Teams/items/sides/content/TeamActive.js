@@ -48,9 +48,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   } = team;
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
-  if (usersList.length !== totalUsers) {
-    console.log(usersList.length, totalUsers);
-  }
+  // if (usersList.length !== totalUsers) {
+  //   console.log(usersList.length, totalUsers);
+  // }
 
   const onTrashClick = (e) => {
     e.stopPropagation();

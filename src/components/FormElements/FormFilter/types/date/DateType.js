@@ -51,6 +51,7 @@ const DateType = (props) => {
         JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to]);
 
   return (

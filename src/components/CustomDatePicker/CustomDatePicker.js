@@ -178,6 +178,7 @@ const CustomDatePicker = (props) => {
         inputRef.current.value = customFormat(initialVal, type, range);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //! Clear out datepicker values and component selection.
@@ -292,6 +293,7 @@ const CustomDatePicker = (props) => {
     if (shouldClear) {
       handleClear();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldClear]);
 
   //! Renders a clear button for datepicker.

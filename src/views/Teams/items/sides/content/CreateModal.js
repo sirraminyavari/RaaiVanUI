@@ -31,7 +31,7 @@ const CreateModal = (props) => {
       <Styled.ModalContentWrapper>
         <AnimatedInput
           value={inputValue}
-          placholderClass={C_GRAY}
+          placeholderClass={C_GRAY}
           onChange={onInputChange}
           placeholder={placeholder}
           style={{ width: '100%', margin: '2rem 0' }}

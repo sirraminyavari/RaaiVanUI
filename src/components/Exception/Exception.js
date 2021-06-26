@@ -10,7 +10,11 @@ const Exception = ({ message }) => {
           height: '100%',
         }}>
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <img src={window.RVGlobal.LogoURL} style={{ maxWidth: '20rem' }} />
+          <img
+            src={window.RVGlobal.LogoURL}
+            style={{ maxWidth: '20rem' }}
+            alt="exception"
+          />
         </div>
         <div style={{ fontSize: '2rem', marginBottom: '1rem', color: 'blue' }}>
           <span>{message}</span>

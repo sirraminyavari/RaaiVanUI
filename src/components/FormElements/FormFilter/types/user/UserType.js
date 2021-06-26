@@ -27,7 +27,7 @@ const UserType = (props) => {
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
   const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
 
-  const { MultiSelect } = JSON.parse(decodeBase64(Info));
+  // const { MultiSelect } = JSON.parse(decodeBase64(Info));
   const [items, setItems] = useState([]);
   const [resetValue, setResetValue] = useState(null);
   const { GlobalUtilities } = useWindow();
@@ -71,12 +71,14 @@ const UserType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     if (value === undefined) {
       setResetValue(GlobalUtilities.random());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

@@ -35,7 +35,7 @@ const WorkSpace = ({ space }) => {
 
   return (
     <Styled.SpaceConatiner>
-      <SpaceHeader space={space} />
+      {/* <SpaceHeader space={space} /> */}
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.id} spring="stiff">
           <Styled.TeamListConatiner>

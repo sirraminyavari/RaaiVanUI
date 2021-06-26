@@ -14,7 +14,7 @@ const spaces = [
 const ContentSide = () => {
   return (
     <Styled.ContentSide>
-      <Header />
+      {/* <Header /> */}
       <Styled.SpaceListConatiner>
         {spaces.map((space, key) => (
           <WorkSpace key={key} space={space} />
