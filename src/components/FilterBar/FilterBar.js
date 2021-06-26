@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 
 const selectedTeam = createSelector(
   (state) => state.theme,
@@ -149,7 +150,6 @@ const FilterBar = ({
       const findLastChoose =
         newMarketingHistory &&
         data.find((x) => x.value === newMarketingHistory);
-      console.log(getTypeName(), 'getTypeName');
       setSelectedItem({
         ...selectedItem,
         label: RVDic.NewN.replace('[n]', getTypeName()),
@@ -260,7 +260,6 @@ const FilterBar = ({
   };
 
   const placeHolderText = () => {
-    console.log(getTypeName(), 'getTypeName');
     if (getTypeName() !== '') {
       return (
         RVDic.SearchInN.replace(
@@ -377,7 +376,7 @@ const FilterBar = ({
             onMouseEnter={() => setBookmarkHover(true)}
             onMouseLeave={() => setBookmarkHover(false)}
             onClick={() => onAdvanecedSearch(!advancedSearch)}
-            isEnabled={bookmarked}
+            $isEnabled={bookmarked}
             className={
               bookmarked
                 ? 'rv-border-distant rv-default'
@@ -405,7 +404,7 @@ const FilterBar = ({
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                isEnabled={date}
+                $isEnabled={date}
                 className={
                   date
                     ? 'rv-border-distant rv-default'
@@ -430,28 +429,32 @@ const FilterBar = ({
               onByDate(value);
             }}
           />
-          <ShadowButton
-            style={commonStyle}
-            onClick={() => onAdvanecedSearch(!advancedSearch)}
-            onMouseEnter={() => setPeopleHover(true)}
-            onMouseLeave={() => setPeopleHover(false)}
-            isEnabled={people}
-            className={
-              people
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            <PersonIcon
-              size={'1.5rem'}
-              className={
-                people
-                  ? 'rv-default'
-                  : peopleHover
-                  ? 'rv-default'
-                  : 'rv-distant'
-              }
-            />
-          </ShadowButton>
+          <PeoplePicker
+            buttonComponent={
+              <ShadowButton
+                style={commonStyle}
+                // onClick={onClick}
+                onMouseEnter={() => setPeopleHover(true)}
+                onMouseLeave={() => setPeopleHover(false)}
+                $isEnabled={people}
+                className={
+                  people
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                <PersonIcon
+                  size={'1.5rem'}
+                  className={
+                    people
+                      ? 'rv-default'
+                      : peopleHover
+                      ? 'rv-default'
+                      : 'rv-distant'
+                  }
+                />
+              </ShadowButton>
+            }
+          />
 
           {advancedButton && (
             <ShadowButton
@@ -464,7 +467,7 @@ const FilterBar = ({
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={onAdvancedFilterClick}
-              isEnabled={advancedSearch}
+              $isEnabled={advancedSearch}
               className={
                 advancedSearch
                   ? 'rv-border-distant rv-default'

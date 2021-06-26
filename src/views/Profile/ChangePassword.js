@@ -5,7 +5,7 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import * as Styled from './Profile.styles';
 import useWindow from 'hooks/useWindowContext';
-import PasswordValidation from 'views/Auth/elements/PasswordValidation';
+import PasswordValidation from 'components/PasswordValidation/PasswordValidation';
 import { API_Provider } from 'helpers/helpers';
 import { USERS_API, GET_PASS_POLICY } from 'constant/apiConstants';
 
