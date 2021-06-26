@@ -1,4 +1,4 @@
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
 import * as Styled from 'views/Profile/Profile.styles';
 
 const HeaderStatus = () => {

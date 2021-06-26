@@ -25,6 +25,7 @@ const SettingItem = () => {
   //! Change sidebar content on click.
   const onSettingItemClick = useCallback((current) => {
     dispatch(setSidebarContent({ current, prev: SETTING_CONTENT }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -15,6 +15,7 @@ const OnClickAway = forwardRef((props, ref) => {
     return () => {
       document.removeEventListener('mousedown', handleClick);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

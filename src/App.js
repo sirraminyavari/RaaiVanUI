@@ -11,7 +11,7 @@ import AuthView from 'views/Auth/AuthView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 // import 'assets/css/index.css';
 
-const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
+const { RV_RTL } = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import usePeriod from '../../hooks/usePeriod';
-import { WindowContext } from '../../context/WindowProvider';
+// import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * @typedef PropType

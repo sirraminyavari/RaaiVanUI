@@ -62,6 +62,7 @@ const MultiLevelType = (props) => {
       },
       (error) => console.log(error)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //! Show modal and form fill to add item.
@@ -113,6 +114,7 @@ const MultiLevelType = (props) => {
         JSONValue: !viewItems.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewItems, exact, or]);
 
   //! Clear component value.

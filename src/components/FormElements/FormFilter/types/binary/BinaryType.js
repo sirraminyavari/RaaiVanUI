@@ -51,6 +51,7 @@ const BinaryType = (props) => {
         JSONValue: bitValue === null ? null : { Bit: bitValue === 'yes' },
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bitValue]);
 
   //! Clear component value.

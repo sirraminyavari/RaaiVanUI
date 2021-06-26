@@ -32,7 +32,7 @@ const Welcome = () => {
   return (
     <Styled.WelcomeSide dir={RV_RevFloat}>
       <Styled.WorkspaceImageWrapper>
-        <img src={WorkspaceImage} alt="team-workspace" />
+        <Styled.WorkspaceImage src={WorkspaceImage} alt="team-workspace" />
       </Styled.WorkspaceImageWrapper>
       <Styled.WelcomeMSGContainer>
         <Styled.WelcomeMessage>به کلیک مایند خوش آمدید!</Styled.WelcomeMessage>

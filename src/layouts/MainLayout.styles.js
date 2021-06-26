@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import { CLOSE_WIDTH } from 'constant/constants';
 import withTheme from 'components/withTheme/withTheme';
 
 export const MainContainer = styled.div`

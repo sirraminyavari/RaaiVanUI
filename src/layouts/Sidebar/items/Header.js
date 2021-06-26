@@ -56,6 +56,7 @@ const SidebarHeader = () => {
     if (!isTeamSelected) {
       dispatch(toggleSidebar(false));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobileNav, dispatch]);
 
   return (

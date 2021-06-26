@@ -23,7 +23,7 @@ import useWindow from 'hooks/useWindowContext';
  */
 const NumericType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data; //! Meta data to feed component.
 
   const fromInputRef = useRef();
   const toInputRef = useRef();
@@ -72,6 +72,7 @@ const NumericType = (props) => {
         JSONValue: jsonValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to]);
 
   useEffect(() => {
