@@ -11,7 +11,6 @@
         jiva: {
             Labels: { ID: "", Title: "" },
             get_url: function (tag) {
-                var x = 2;
                 //var str1 = Base64.decode("2K/Ys9iq2YjYsdin2YTYudmF2YQg2YfYp9uMINis2KfZhdi5");
                 var str1 = Base64.decode("2K/Ys9iq2YjYsdin2YTYudmF2YQg2YfYpw==");
                 var str2 = Base64.decode("2LPYsdmK2KfZhA==");
