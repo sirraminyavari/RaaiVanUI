@@ -37,3 +37,6 @@ export const Root = styled.div`
   align-items: center;
   width: 100%;
 `;
+export const InputMode = styled.div`
+  background-color: green;
+`;

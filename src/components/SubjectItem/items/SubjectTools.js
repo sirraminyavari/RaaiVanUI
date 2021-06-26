@@ -6,7 +6,7 @@ import Button from 'components/Buttons/Button';
 import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
-import EditIcon from 'components/Icons/EditIcon/Edit';
+import EditIcon from 'components/Icons/EditIcons/Edit';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import TrashIcon from 'components/Icons/TrashIcon';

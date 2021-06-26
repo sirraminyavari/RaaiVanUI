@@ -32,6 +32,7 @@ const SubjectItemDesktop = ({
   onChecked,
   parentNodeType,
   onReload,
+  onBookmark,
 }) => {
   const {
     Name,
@@ -101,6 +102,7 @@ const SubjectItemDesktop = ({
                 isLiked={LikeStatus}
                 nodeId={NodeID}
                 reload={onReload}
+                onBookmarLocally={onBookmark && onBookmark}
               />
 
               {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}

@@ -28,12 +28,16 @@ const NodeList = ({
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
 
+  const [bookmarkedList, setBookmarkedList] = useState([]);
+
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
     setExtraData(!extraData);
   }, [searchText, dateFilter, nodeTypeId, formFilters, forceFetch]);
-
+  useEffect(() => {
+    console.log(bookmarkedList, 'bookmarkedList updated');
+  }, [bookmarkedList]);
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
     console.log(nodeTypeId, 'nodeTypes****#$%');
@@ -46,6 +50,7 @@ const NodeList = ({
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
         FormFilters: encode(JSON.stringify(formFilters)),
+        UseNodeTypeHierarchy: true,
       },
       (response) => {
         if (response.Nodes) {
@@ -74,6 +79,11 @@ const NodeList = ({
               });
               if (done) {
                 done(complementeryNodes, response.TotalCount, nodeTypeId);
+                setBookmarkedList(
+                  complementeryNodes
+                    .filter((x) => x.LikeStatus)
+                    .map((y) => y.NodeID)
+                );
               }
             },
             (error) => {
@@ -96,6 +106,23 @@ const NodeList = ({
   const onReload = () => {
     setExtraData(!extraData);
   };
+  const onBookmark = (nodeId) => {
+    // const nodeIndex = bookmarkedList.findIndex((y) => y === nodeId);
+    const nodeIndex = bookmarkedList.indexOf(nodeId);
+
+    if (nodeIndex > -1) {
+      let tempList = bookmarkedList;
+      console.log('unlike', nodeIndex, nodeId);
+
+      tempList = tempList.filter((item) => item !== nodeId);
+
+      setBookmarkedList(tempList);
+    } else {
+      console.log('like', nodeIndex, nodeId);
+
+      setBookmarkedList([...bookmarkedList, nodeId]);
+    }
+  };
   return (
     <>
       <SimpleListViewer
@@ -116,24 +143,19 @@ const NodeList = ({
                 }
                 parentNodeType={nodeTypeId}
                 selectMode={false}
-                item={x}
+                item={{
+                  ...x,
+                  LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+                }}
                 isSaas={isSaas}
                 onClick={() => onClick(x.NodeID)}
                 onReload={onReload}
+                onBookmark={onBookmark}
               />
             )}
           </>
         )}
       />
-      {/* {nodes.length > 0 &&
-        nodes.map((x) => (
-          <SubjectItem
-            onChecked={(value, item) => console.log(value, item, 'onChecked')}
-            selectMode={false}
-            item={x}
-            isSaas={true}
-          />
-        ))} */}
     </>
   );
 };
