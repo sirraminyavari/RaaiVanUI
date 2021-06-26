@@ -29,6 +29,7 @@ const ArchivedTeams = ({ team, hasHandle }) => {
 
   return (
     <Styled.TeamConatiner
+      isArchive
       isMobile={isMobileScreen}
       dir={RV_Float}
       revDir={RV_RevFloat}

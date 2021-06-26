@@ -17,6 +17,7 @@ const {
   deleteApplication,
   addApplication,
   setFetchingApps,
+  setSelectingApp,
 } = ApplicationsSlice.actions;
 
 const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
@@ -160,6 +161,12 @@ export const createApplication = (title, done, error) => async (dispatch) => {
  */
 export const selectApplication = (appId, done, error) => async (dispatch) => {
   try {
+    dispatch(
+      setSelectingApp({
+        isSelecting: true,
+        selectingAppId: appId,
+      })
+    );
     selectApplicationAPI.fetch(
       { ApplicationID: appId },
       (response) => {
@@ -174,10 +181,30 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           dispatch(getSidebarNodes());
           dispatch(getConfigPanels());
         }
+        dispatch(
+          setSelectingApp({
+            isSelecting: false,
+            selectingAppId: null,
+          })
+        );
       },
-      (error) => console.log({ error })
+      (error) => {
+        console.log({ error });
+        dispatch(
+          setSelectingApp({
+            isSelecting: false,
+            selectingAppId: null,
+          })
+        );
+      }
     );
   } catch (err) {
     console.log({ err });
+    dispatch(
+      setSelectingApp({
+        isSelecting: false,
+        selectingAppId: null,
+      })
+    );
   }
 };

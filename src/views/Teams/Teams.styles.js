@@ -14,7 +14,14 @@ import {
   BO_RADIUS_HALF,
   BO_RADIUS_UNIT,
 } from 'constant/constants';
-import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_GRAY,
+  CV_GRAY_LIGHT,
+  CV_RED,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -212,15 +219,27 @@ export const TeamListConatiner = styled.div`
 `;
 
 const getBorderCss = (props) => {
-  return props.isNew
-    ? css`
-        border-width: 2px;
-        border-style: dashed;
-      `
-    : css`
-        border-width: 1px;
-        border-style: solid;
-      `;
+  if (props.isNew) {
+    return css`
+      border-width: 2px;
+      border-style: dashed;
+    `;
+  }
+  if (props.isArchive) {
+    return css`
+      border: none;
+      :hover {
+        border: 1px solid ${CV_DISTANT};
+      }
+    `;
+  }
+  return css`
+    border-width: 1px;
+    border-style: solid;
+    :hover {
+      border-color: ${TCV_DEFAULT};
+    }
+  `;
 };
 
 const getDragCss = (props) => {
@@ -245,6 +264,7 @@ export const TeamConatiner = styled.div.attrs({
   margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
+  ${({ isArchive }) => isArchive && `background-color: ${CV_FREEZED};`}
   ${getDragCss}
   ${({ isMobile, dir, revDir }) =>
     !isMobile &&
@@ -305,7 +325,7 @@ export const TeamConatiner = styled.div.attrs({
 
 export const DragIconWrapper = styled.div`
   position: absolute;
-  top: -0.1rem;
+  top: 0.15rem;
   ${({ dir }) => dir}: -0.2rem;
   cursor: move; /* fallback: no url() support or images disabled */
   cursor: url('https://www.google.com/intl/en_ALL/mapfiles/openhand.cur'),
@@ -395,7 +415,7 @@ export const NewTeamWrapper = styled.div.attrs({
 `;
 
 export const ArchivedWrapper = styled.div.attrs({
-  className: C_DISTANT,
+  className: C_RED,
 })`
   width: 100%;
   height: 90%;
@@ -403,6 +423,7 @@ export const ArchivedWrapper = styled.div.attrs({
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
+  font-size: 1rem;
 `;
 
 export const NewTeamLabel = styled.div.attrs({
@@ -412,7 +433,7 @@ export const NewTeamLabel = styled.div.attrs({
 `;
 
 export const ArchivedTeamsLabel = styled.div.attrs({
-  className: C_GRAY,
+  className: C_RED,
 })`
   margin: 1rem 0 0 0;
 `;

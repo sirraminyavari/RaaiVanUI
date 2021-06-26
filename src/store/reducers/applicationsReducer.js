@@ -11,6 +11,7 @@ export const ApplicationsSlice = createSlice({
   initialState: {
     applications: [],
     isFetching: false,
+    selectingApp: { isSelecting: false, selectingAppId: null },
   },
 
   reducers: {
@@ -46,6 +47,9 @@ export const ApplicationsSlice = createSlice({
     },
     setFetchingApps: (state, action) => {
       state.isFetching = action.payload;
+    },
+    setSelectingApp: (state, action) => {
+      state.selectingApp = action.payload;
     },
   },
 });
