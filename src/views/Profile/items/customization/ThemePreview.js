@@ -7,9 +7,19 @@ import { API_Provider } from 'helpers/helpers';
 import { USERS_API, SET_THEME } from 'constant/apiConstants';
 import { themeSlice } from 'store/reducers/themeReducer';
 
-const selectThemeSettings = createSelector(
+const selectIsCollapsed = createSelector(
   (state) => state.theme,
-  (theme) => theme.themeSettings
+  (theme) => theme.isSidebarCollapsed
+);
+
+const selectHasPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
+);
+
+const selectIsDarkMode = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isDarkMode
 );
 
 const selectCurrentThemes = createSelector(
@@ -23,9 +33,9 @@ const { setCurrentTheme } = themeSlice.actions;
 const ThemePreview = ({ preview }) => {
   const dispatch = useDispatch();
   const { RV_Float, RVAPI, RVGlobal, DynamicFileUtilities } = useWindow();
-  const { hasSidebarPattern, isSidebarCollapsed, isDarkMode } = useSelector(
-    selectThemeSettings
-  );
+  const hasPattern = useSelector(selectHasPattern);
+  const isSidebarCollapsed = useSelector(selectIsCollapsed);
+  const isDarkMode = useSelector(selectIsDarkMode);
   const currentTheme = useSelector(selectCurrentThemes);
 
   const { Codes, Name } = preview;
@@ -57,10 +67,10 @@ const ThemePreview = ({ preview }) => {
     <Styled.ThemePreviewContainer
       isDark={isDarkMode}
       onClick={handleSelectTheme}>
-      <Styled.NavbarPreview previewColor={Codes.warm} />
+      <Styled.NavbarPreview previewColor={Codes?.warm} />
       <Styled.SidebarPreview
-        previewColor={Codes.verywarm}
-        hasPattern={hasSidebarPattern}
+        previewColor={Codes?.verywarm}
+        hasPattern={hasPattern}
         isClose={!isSidebarCollapsed}
         dir={RV_Float}
       />

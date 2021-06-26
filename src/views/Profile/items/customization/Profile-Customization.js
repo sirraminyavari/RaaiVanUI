@@ -42,9 +42,11 @@ const ProfileCustomization = () => {
   const handleMenuCollapse = (toggleValue) => {
     dispatch(setSidebarCollapse(toggleValue));
   };
+
   const handlePattern = (toggleValue) => {
     dispatch(setSidebarPattern(toggleValue));
   };
+
   const handleDarkMode = (toggleValue) => {
     dispatch(setDarkMode(toggleValue));
   };
@@ -52,7 +54,9 @@ const ProfileCustomization = () => {
   useEffect(() => {
     dispatch(getThemes());
     dispatch(getCurrentTheme());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Styled.CustomizationView dir={RV_Float}>
       <Styled.ProfileViewContainer style={{ width: '72%', margin: '0' }}>
@@ -61,8 +65,8 @@ const ProfileCustomization = () => {
           <Styled.ProfileTitle>شخصی سازی</Styled.ProfileTitle>
           <Styled.ChooseThemeTitle>انتخاب پوسته</Styled.ChooseThemeTitle>
           <Styled.PreviewGroups>
-            {allThemes.map((preview) => (
-              <ThemePreview preview={preview} />
+            {allThemes.map((preview, key) => (
+              <ThemePreview key={key} preview={preview} />
             ))}
           </Styled.PreviewGroups>
         </Styled.ProfileTitleWrapper>
