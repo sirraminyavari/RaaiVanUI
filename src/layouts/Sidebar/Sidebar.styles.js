@@ -56,15 +56,15 @@ const closeSidebar = css`
 `;
 
 const getSidebarCss = (props) => {
-  const { isSidebarOpen } = props.theme.states;
-  if (isSidebarOpen) {
+  const { isOpen } = props;
+  if (isOpen) {
     return openSidebar;
   } else {
     return closeSidebar;
   }
 };
 
-export const SidebarContainer = withTheme(styled.div.attrs({
+export const SidebarContainer = styled.div.attrs({
   className: `${TBG_VERYWARM} ${C_WHITE}`,
 })`
   height: 100%;
@@ -72,13 +72,12 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
-  ${({ theme }) =>
-    theme.states.themeSettings.hasSidebarPattern &&
-    `background-image: url(${sidebarPattern});`}
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-`);
+`;
 
 export const ContentWrapper = withTheme(styled.div`
   width: 100%;

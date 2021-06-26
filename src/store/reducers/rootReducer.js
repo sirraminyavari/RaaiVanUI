@@ -5,16 +5,20 @@ import auth from './loginReducer';
 import sidebarItems from './sidebarMenuReducer';
 import navbarAlert from './navbarAlertReducer';
 import applications from './applicationsReducer';
-//import reducers here
+//! import reducers here
+
+const VERSION_REDUCER_KEY = 'raaivanVersion';
 
 const rootReducer = combineReducers({
+  //! This reducer will be used to store the version.
+  [VERSION_REDUCER_KEY]: (state = {}) => state,
   theme,
   domains,
   auth,
   sidebarItems,
   navbarAlert,
   applications,
-  // add reducers
+  //! add reducers.
 });
 
 export default rootReducer;

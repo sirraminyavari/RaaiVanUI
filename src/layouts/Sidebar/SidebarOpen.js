@@ -27,11 +27,23 @@ const selectOpenWidth = createSelector(
   (theme) => theme.sidebarOpenWidth
 );
 
+const selectHasPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
+);
+
+const selectisSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
 const OpenSidebar = () => {
   const dispatch = useDispatch();
   const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
   const sidebarContent = useSelector(selectSidebarContent);
   const sidebarOpenWidth = useSelector(selectOpenWidth);
+  const isOpen = useSelector(selectisSidebarOpen);
+  const hasPattern = useSelector(selectHasPattern);
   const { RV_RTL } = useWindow();
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
@@ -58,7 +70,7 @@ const OpenSidebar = () => {
       resizeHandles={RV_RTL ? ['w'] : ['e']}
       onResizing={handleOnResizing}
       onResizeEnd={handleOnResizeEnd}>
-      <Styled.SidebarContainer>
+      <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
         <SidebarHeader />
         <Styled.ContentWrapper isMainContent={isMainContent}>
           <Suspense fallback={<LogoLoader size={10} />}>
