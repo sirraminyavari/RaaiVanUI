@@ -1,7 +1,7 @@
 /**
  * A DropDown with minimal animation in opening and closing time.
  */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ArrowIcon,
   Container,
@@ -78,6 +78,27 @@ const AnimatedDropDownList = ({
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
 
+  const buttonRef = useRef();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+        // onClick();
+        console.log('outside clicked');
+        onDropDownOpen(false);
+
+        setDropedDown(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [buttonRef]);
+
   /**
    * Close/Open drop-down
    */
@@ -91,6 +112,7 @@ const AnimatedDropDownList = ({
    * Passes selected Item to the up!
    */
   const onClickItem = (item, index) => {
+    console.log('clicked', item);
     onSelectItem(item);
     setDropedDown(!dropedDown);
   };
@@ -105,7 +127,7 @@ const AnimatedDropDownList = ({
     return (
       <ItemList
         style={{ ...itemContainer }}
-        dropedDown={dropedDown}
+        $dropedDown={dropedDown}
         className={itemContainerClass}>
         {list.map((x, index) => (
           <DropDownItem
@@ -121,7 +143,7 @@ const AnimatedDropDownList = ({
   };
 
   return (
-    <Container>
+    <Container ref={buttonRef}>
       <DropDownButton className={containerClass} style={{ ...container }}>
         <Maintainer
           className={labelClass}
@@ -132,12 +154,12 @@ const AnimatedDropDownList = ({
         </Maintainer>
         <Divider className={'rv-bg-color-white'} />
         <Rotater
-          dropedDown={dropedDown}
+          $dropedDown={dropedDown}
           onClick={onClick}
           style={{ ...button }}
           className={buttonClass}>
           <ArrowIcon
-            dropedDown={dropedDown}
+            $dropedDown={dropedDown}
             color={customStyle.arrowIconColor}
             className={arrowIconColorClass}
           />
