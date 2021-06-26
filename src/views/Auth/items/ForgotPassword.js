@@ -17,7 +17,7 @@ import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
-import PasswordValidation from '../elements/PasswordValidation';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import InvisibleIcon from 'components/Icons/InVisible';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';

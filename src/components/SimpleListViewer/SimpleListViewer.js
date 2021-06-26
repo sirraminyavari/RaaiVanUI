@@ -144,7 +144,9 @@ const SimpleListViewer = ({
         <LogoLoader />
       ) : data && data.length > 0 && renderItem ? (
         <div style={{ width: '100%' }} ref={container} onScroll={handleScroll}>
-          {data.map((x, index) => renderItem(x, index))}
+          {data.map((x, index) => (
+            <div key={index}>{renderItem(x, index)}</div>
+          ))}
         </div>
       ) : (
         <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>

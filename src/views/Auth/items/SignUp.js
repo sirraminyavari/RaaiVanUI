@@ -20,7 +20,7 @@ import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
-import PasswordValidation from '../elements/PasswordValidation';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { decode } from 'js-base64';
 import { Box } from '../AuthView.style';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';

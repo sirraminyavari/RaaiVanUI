@@ -11,8 +11,15 @@ import {
   SideFilter,
   TopFilter,
   Space,
+  UrgentInput,
 } from './AdvancedSearch.style';
+import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
+import Button from 'components/Buttons/Button';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import UrgentCreate from './items/UrgentCreate';
 
+const { RVDic } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
@@ -36,6 +43,8 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const [totalFound, setTotalFound] = useState(null);
   // By changing 'forceReload', an useEffect in 'NodeList' will be called and forces to fetch again.
   const [forceReload, setForceReload] = useState(false);
+
+  const [urgentCreate, setUrgentCreate] = useState(false);
 
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
@@ -63,6 +72,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const forceFetch = () => {
     setForceReload(!forceReload);
   };
+  const onCreateUrgent = () => {
+    setUrgentCreate(!urgentCreate);
+  };
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
       <Maintainer
@@ -80,10 +92,22 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             totalFound={totalFound}
             hierarchy={hierarchy}
             nodeType={nodeType}
+            onCreateUrgent={onCreateUrgent}
             onForceFetch={forceFetch}
           />
         </TopFilter>
         <div style={{ padding: '0 2rem 0 2rem' }}>
+          <UrgentCreate
+            onDismiss={onCreateUrgent}
+            hierarchy={hierarchy}
+            isVisible={urgentCreate}
+            nodeTypeId={nodeTypeId}
+            onForceFetch={forceFetch}
+            dataFetched={totalFound}
+            nodeType={nodeType}
+          />
+          {console.log(totalFound, 'totlFound')}
+
           {React.cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,
@@ -100,9 +124,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           flexDirection: 'column',
           // width: '25rem',
         }}>
-        <Space isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
         <SideFilter
-          isEnabled={isAdvancedSearch && formElements}
+          $isEnabled={isAdvancedSearch && formElements}
           dir={RV_RevFloat}
           rtl={RV_RTL}>
           {isAdvancedSearch && formElements && (
