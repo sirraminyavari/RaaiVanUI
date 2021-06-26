@@ -30,6 +30,7 @@ const SubjectItemMobileView = ({
   onChecked,
   onReload,
   parentNodeType,
+  onBookmark,
 }) => {
   const {
     Name,
@@ -89,6 +90,8 @@ const SubjectItemMobileView = ({
                 isLiked={LikeStatus}
                 nodeId={NodeID}
                 reload={onReload}
+                onBookmarLocally={onBookmark && onBookmark}
+                isHover={true}
               />
             )}
           </Maintainer>
