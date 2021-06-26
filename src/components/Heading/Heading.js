@@ -13,7 +13,7 @@ import { WindowContext } from '../../context/WindowProvider';
  * @property { bool } darkBackground determines if the heading is rendered on a dark background or not
  */
 
-const Heading = ({ type, darkBackground, className, ...props }) => {
+const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
   const { GlobalUtilities } = window;
   const values = resolveValues({ type, darkBackground, GlobalUtilities });
 
