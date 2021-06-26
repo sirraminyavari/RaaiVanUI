@@ -369,6 +369,7 @@
             (GlobalUtilities.get_type(params.IsDocument) == "boolean" ? "&IsDocument=" + params.IsDocument : "") +
             (GlobalUtilities.get_type(params.IsKnowledge) == "boolean" ? "&IsKnowledge=" + params.IsKnowledge : "") +
             (GlobalUtilities.get_type(params.IsMine) == "boolean" ? "&IsMine=" + params.IsMine : "") +
+            (params.CreatorUserID ? "&CreatorUserID=" + params.CreatorUserID : "") +
             (GlobalUtilities.get_type(params.Archive) == "boolean" ? "&Archive=" + params.Archive : "") +
             (GlobalUtilities.get_type(params.Searchable) == "boolean" ? "&Searchable=" + params.Searchable : "") +
             (params.CreatedFromNDaysAgo ? "&CreatedFromNDaysAgo=" + params.CreatedFromNDaysAgo : "") +
