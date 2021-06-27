@@ -112,6 +112,7 @@ const InlineEdit = (props) => {
         <Styled.SpanText
           style={styles.textStyle}
           data-testid="inline-edit-span"
+          id="inline-edit"
           ref={textRef}
           onClick={handleSpanClick}>
           {inputValue}

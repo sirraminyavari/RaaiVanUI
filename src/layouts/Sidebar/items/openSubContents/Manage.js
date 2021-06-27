@@ -18,6 +18,8 @@ const SidebarManageContent = () => {
     );
   };
 
+  // TODO: add RVDic
+
   return (
     <>
       <Styled.SidebarTitle>

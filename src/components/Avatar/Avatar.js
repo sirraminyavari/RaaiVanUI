@@ -55,8 +55,9 @@ const Avatar = forwardRef((props, ref) => {
 Avatar.propTypes = {
   radius: PropTypes.number,
   userImage: PropTypes.string,
-  linkTo: PropTypes.string,
   color: PropTypes.string,
+  imageClasses: PropTypes.string,
+  imageStyles: PropTypes.object,
 };
 
 Avatar.defaultProps = {

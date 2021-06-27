@@ -7,9 +7,10 @@ import WorkspaceImage from 'assets/images/workspace.png';
 import useWindow from 'hooks/useWindowContext';
 import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
 import { CV_GRAY_LIGHT } from 'constant/CssVariables';
+import { getSystemName } from 'helpers/helpers';
 
 const Welcome = () => {
-  const { RV_RevFloat } = useWindow();
+  const { RV_RevFloat, RVDic } = useWindow();
   const [buttonRef, isButtonHovered] = useHover();
 
   const openInNewTab = (url) => {
@@ -29,13 +30,20 @@ const Welcome = () => {
     openInNewTab(CLIQMIND_URL);
   };
 
+  const welcomeMSG = RVDic.WelcomeToRaaiVan.replace(
+    '[RaaiVan]',
+    getSystemName()
+  );
+
+  const blogTitle = RVDic.RaaiVanBlog.replace('[RaaiVan]', getSystemName());
+
   return (
     <Styled.WelcomeSide dir={RV_RevFloat}>
       <Styled.WorkspaceImageWrapper>
         <Styled.WorkspaceImage src={WorkspaceImage} alt="team-workspace" />
       </Styled.WorkspaceImageWrapper>
       <Styled.WelcomeMSGContainer>
-        <Styled.WelcomeMessage>به کلیک مایند خوش آمدید!</Styled.WelcomeMessage>
+        <Styled.WelcomeMessage>{welcomeMSG}</Styled.WelcomeMessage>
       </Styled.WelcomeMSGContainer>
       <Button
         onClick={openCliqmind}
@@ -47,7 +55,7 @@ const Welcome = () => {
           borderColor: !isButtonHovered && '#fff',
           backgroundColor: CV_GRAY_LIGHT,
         }}>
-        بلاگ کلیک مایند
+        {blogTitle}
       </Button>
       <Styled.SocialMediaContainer>
         <Styled.IconWrapper onClick={openTwitter}>

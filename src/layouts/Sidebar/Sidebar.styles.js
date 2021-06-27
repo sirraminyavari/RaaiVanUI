@@ -230,6 +230,7 @@ export const FooterTitle = withTheme(styled.span`
   position: relative;
   top: 0;
   transition: all 0.5s linear;
+  text-transform: capitalize;
   display: ${(props) =>
     props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);

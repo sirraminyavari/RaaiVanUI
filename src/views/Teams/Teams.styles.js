@@ -18,6 +18,7 @@ import {
   CV_FREEZED,
   CV_RED,
   TCV_DEFAULT,
+  TCV_VERYWARM,
 } from 'constant/CssVariables';
 
 export const TeamsViewContainer = styled.div.attrs({
@@ -277,11 +278,11 @@ export const TeamConatiner = styled.div.attrs({
   `}
 
   .team-extra-users {
-    background-color: #e6f4f1;
+    background-color: ${CV_FREEZED};
     width: 2rem;
     height: 2rem;
     font-size: 0.8rem;
-    color: #2b7be4;
+    color: ${TCV_DEFAULT};
     line-height: 2rem;
     user-select: none;
   }
@@ -297,28 +298,21 @@ export const TeamConatiner = styled.div.attrs({
 
   .extra-users-popup {
     width: 13rem;
-    height: 12rem;
+    max-height: 11rem;
     margin: 0;
-    padding: 1rem;
+    padding: 0.7rem 1rem 0.7rem 0.2rem;
     border: 0;
     box-shadow: 1px 3px 20px #2b7be44d;
     position: relative;
     background-color: #fff;
     right: 7.7rem;
     bottom: -2.9rem;
+    overflow: hidden;
   }
 
-  .non-scroll {
-    height: 100%;
+  .scroll {
+    max-height: 9rem;
     overflow: scroll;
-
-    ::-webkit-scrollbar {
-      display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
-    }
-    * {
-      -ms-overflow-style: none; /*! IE and Edge */
-      scrollbar-width: none; /*! Firefox */
-    }
   }
 `;
 
@@ -374,14 +368,14 @@ export const TeamAvatarsWrapper = styled.div`
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  ${({ dir }) => dir}: 1.5rem;
+  ${({ dir }) => dir}: 1.7rem;
 `;
 
 export const ExtraUserItem = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 0 0 0.5rem 0;
+  margin: 0.2rem 0;
 `;
 
 export const ExtraUserTitle = styled.span.attrs({
@@ -390,15 +384,29 @@ export const ExtraUserTitle = styled.span.attrs({
   margin: 0 0.5rem;
 `;
 
-export const TeamTrashWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
-}))`
+const teamActionCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+`;
+
+export const TeamTrashWrapper = styled.div.attrs((props) => ({
+  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
+}))`
+  ${teamActionCSS}
   :hover {
     color: ${CV_RED} !important;
+  }
+`;
+
+export const TeamExitWrapper = styled.div.attrs((props) => ({
+  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
+}))`
+  ${teamActionCSS}
+  transform: scaleX(-1);
+  :hover {
+    color: ${TCV_VERYWARM} !important;
   }
 `;
 
@@ -499,6 +507,7 @@ export const WelcomeMessage = styled.span.attrs({
   className: C_GRAY,
 })`
   font-size: 1rem;
+  text-transform: capitalize;
 `;
 
 export const TeamPattern = styled.img`

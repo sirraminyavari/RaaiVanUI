@@ -1,11 +1,12 @@
 /**
  * Renders when sidebar is open.
  */
-import { lazy } from 'react';
-import { useSelector } from 'react-redux';
-import * as Styled from '../Sidebar.styles';
+import { lazy, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
+import * as Styled from '../Sidebar.styles';
 import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
+import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -41,7 +42,13 @@ const getSidebarContent = (content) => {
 };
 
 const SidebarOnOpen = () => {
+  const dispatch = useDispatch();
   const content = useSelector(selectSidebarContent);
+
+  useEffect(() => {
+    dispatch(getFavoriteNodesCount());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Styled.OpenContentWrapper>

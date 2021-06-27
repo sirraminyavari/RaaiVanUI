@@ -11,6 +11,7 @@ export const sidebarMenuSlice = createSlice({
     searchText: '',
     showSearchResults: false,
     configPanels: [],
+    favoriteNodesCount: 0,
   },
   reducers: {
     setSidebarNodeTypes: (state, action) => {
@@ -45,6 +46,9 @@ export const sidebarMenuSlice = createSlice({
     },
     setConfigPanels: (state, action) => {
       state.configPanels = action.payload;
+    },
+    setFavoriteNodesCount: (state, action) => {
+      state.favoriteNodesCount = action.payload;
     },
   },
 });
