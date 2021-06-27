@@ -94,11 +94,13 @@ const Template = () => {
           <div className="templates-action">
             {info.templates.length === 0 && (
               <div>
-                <button className="disabled-button">
+                <button className="disabled-button-inverted">
                   فعال کن و برو مرحله بعد
                 </button>
 
-                <button className="ActionButton" onClick={() => skip()}>
+                <button
+                  className="action-button-inverted"
+                  onClick={() => skip()}>
                   از این مرحله رد شو
                 </button>
               </div>

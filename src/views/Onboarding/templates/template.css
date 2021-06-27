@@ -34,7 +34,18 @@
   position: relative;
 }
 .disabled-button {
-  color: #bdbdbd;
+  color: var(--rv-color-distant);
+}
+.disabled-button-inverted {
+  background-color: var(--rv-color-distant);
+  color: white;
+  border-radius: 8px;
+  cursor: auto;
+}
+.action-button-inverted {
+  color: var(--rv-color-lightwarm);
+  background-color: white;
+  border-radius: 8px;
 }
 .select-templates-number {
   display: flex;

@@ -6,7 +6,6 @@ import WelcomeSide from './items/sides/welcome/Welcome';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import useLocalStorage from 'hooks/useLocalStorage';
-import ProductTour from '../ProductTour/ProductTour';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -22,13 +21,10 @@ const TeamsView = () => {
   }, []);
 
   return (
-    <div>
-      <Styled.TeamsViewContainer>
-        <ContentSide />
-        <WelcomeSide />
-      </Styled.TeamsViewContainer>
-      <ProductTour />
-    </div>
+    <Styled.TeamsViewContainer>
+      <ContentSide />
+      <WelcomeSide />
+    </Styled.TeamsViewContainer>
   );
 };
 

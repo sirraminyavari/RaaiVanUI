@@ -1,25 +1,34 @@
 import Tour from 'reactour';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, useContext } from 'react';
 import './ProductTour.css';
 import TourBox from './TourBox';
 import { stepsText } from './_messages';
+import { StepperContext } from 'views/Onboarding/context/stepper.context';
 
 const ProductTour = () => {
-  const [isTourOpen, setIsTourOpen] = useState(false);
+  // const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const { info, dispatch } = useContext(StepperContext);
+
+  const setIsTourOpen = () => {
+    dispatch({ type: 'TOGGLE_TOUR' });
+  };
 
   return (
-    <Tour
-      maskClassName="mask"
-      className="helper"
-      steps={steps}
-      isOpen={isTourOpen}
-      rounded={5}
-      showNumber={false}
-      showButtons={false}
-      showNavigation={false}
-      showCloseButton={true}
-      onRequestClose={() => setIsTourOpen(false)}
-    />
+    <Suspense fallback={React.Fragment}>
+      <Tour
+        maskClassName="mask"
+        className="helper"
+        steps={steps}
+        isOpen={info.openTour}
+        rounded={5}
+        showNumber={false}
+        showButtons={false}
+        showNavigation={false}
+        showCloseButton={true}
+        onRequestClose={() => setIsTourOpen(false)}
+      />
+    </Suspense>
   );
 };
 const steps = [
@@ -47,7 +56,7 @@ const steps = [
     position: 'bottom',
   },
   {
-    selector: '.TC_DEFAULT',
+    selector: '[data-tut="reactour__second"]',
     content: ({ goTo }) => (
       <TourBox goTo={goTo} current={2} total={4} guidance={stepsText[1]} />
     ),

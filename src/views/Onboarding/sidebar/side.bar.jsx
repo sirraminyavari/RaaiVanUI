@@ -3,9 +3,8 @@ import { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import './sidebar.css';
 import SidebarLogo from './sidebar.logo.png';
-import SidebarSkeleton from './sidebar.skeleton';
+import SidebarLoader from './sidebar.loader';
 import { v4 as uuidv4 } from 'uuid';
-import Loader from './loader.gif';
 
 const SideBar = (props) => {
   const { info } = useContext(StepperContext);
@@ -13,37 +12,24 @@ const SideBar = (props) => {
   //const activatedTemplates = info.activatedTemplates.map(x => <div key={ uuidv4() }>{x.title}</div>)
   return (
     <div className="sidebar rv-bg-color-verywarm">
-      <div className="logo-container">
+      <div className="logo-container" data-tut="reactour__second">
         <img src={SidebarLogo} className="logo" />
       </div>
-      {!info.loading && (
-        <div className="onboarding-sidbar-steps">
-          {info.teamName !== '' && <div>{info.teamName}</div>}
+      <div className="onboarding-sidbar-steps" data-tut="reactour__third">
+        {info.teamName !== '' && (
+          <div style={{ fontWeight: '300' }}>{info.teamName}</div>
+        )}
 
-          <div>
-            {info.activatedTemplates.map((x) => (
-              <div key={uuidv4()} className="sidebar-selected-templates">
-                <img src={Loader}></img>
-                <div>{x.name}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* {info.field !== '' && (
-            <div>
-              <div>{info.field.value}</div>
-              <div>
-                {info.activatedTemplates.map((x) => (
-                  <div key={uuidv4()} className="sidebar-selected-templates">
-                    <img src={Loader}></img>
-                    <div>{x.name}</div>
-                  </div>
-                ))}
-              </div>
+        <div style={{ marginTop: '10px' }}>
+          {info.activatedTemplates.length !== 0 && <div>مدیریت محصول</div>}
+          {info.activatedTemplates.map((x) => (
+            <div key={uuidv4()} className="sidebar-selected-templates">
+              <SidebarLoader key={uuidv4()} />
+              <div className="title">{x.name}</div>
             </div>
-          )} */}
+          ))}
         </div>
-      )}
+      </div>
 
       {/* {info.loading && (
         <div className="onboarding-sidbar-steps">

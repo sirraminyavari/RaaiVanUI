@@ -9,7 +9,7 @@ import { decode } from 'js-base64';
 import { v4 as uuidv4 } from 'uuid';
 
 const TemplateSlider = () => {
-  const { info } = useContext(StepperContext);
+  const { info, dispatch } = useContext(StepperContext);
   const [showPrevBtn, setShowPrevBtn] = useState(false);
   const [showNextBtn, setShowNextBtn] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -28,6 +28,7 @@ const TemplateSlider = () => {
             id: x.NodeTypeID,
             name: decode(x.TypeName),
           }));
+          dispatch({ type: 'TEMPLATE_PREVIEW', template: _templates[0] });
           setTemplates(_templates);
         }
       }
@@ -35,11 +36,7 @@ const TemplateSlider = () => {
   }, []);
 
   const btnDisplay = () => {
-    console.log(templateTrack);
-    if (
-      templateTrack.current.scrollHeight >
-      index * templateTrack.current.offsetWidth
-    ) {
+    if (index < templates.length) {
       setShowNextBtn(true);
     } else {
       setShowNextBtn(false);
@@ -53,10 +50,7 @@ const TemplateSlider = () => {
   };
 
   const next = () => {
-    if (
-      templateTrack.current.scrollHeight >
-      index * templateTrack.current.offsetWidth
-    ) {
+    if (index < templates.length) {
       setIndex(index + 1);
     }
   };
@@ -68,9 +62,10 @@ const TemplateSlider = () => {
   };
 
   useEffect(() => {
+    dispatch({ type: 'TEMPLATE_PREVIEW', template: templates[index - 1] });
     btnDisplay();
     templateTrack.current.style.transform = `translateY(-${
-      (index - 1) * 300
+      (index - 1) * 150
     }px)`;
   }, [index]);
 

@@ -10,19 +10,24 @@ const activateTemplate = (x, appId) => {
   const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
   const activator = new APIHandler('CNAPI', 'ActivateTemplate');
 
+  console.log('template: ');
+  console.log(x);
   return new Promise((resolve, reject) => {
     handler.fetch(
       {
         NodeTypeID: x.id,
       },
       (content) => {
+        console.log('content: ');
+        console.log(content);
         activator.fetch(
           {
-            Template: content,
+            Template: JSON.stringify(content.Template),
           },
           (res) => {
+            console.log('final response: ');
             console.log(res);
-            if (!!res.Succedd) {
+            if (!!res.Succeed) {
               resolve(res);
             } else {
               reject(res);
@@ -45,12 +50,12 @@ const FinalStep = () => {
         try {
           await activateTemplate(x, info.applicationId);
           dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
+          if (index === info.templates.length - 1) {
+            dispatch({ type: 'TOGGLE_LOADING' });
+            dispatch({ type: 'NEXT_STEP' });
+          }
         } catch (e) {
           console.log('an error happend');
-        }
-        if (index === info.templates.length - 1) {
-          dispatch({ type: 'TOGGLE_LOADING' });
-          dispatch({ type: 'NEXT_STEP' });
         }
       });
     } else {
@@ -62,13 +67,14 @@ const FinalStep = () => {
       { data: encode(finish_on_start) },
       (res) => {
         // redirect to clickmind workspace
+        dispatch({ type: 'TOGGLE_TOUR' });
       }
     );
   };
   return (
     <div className="final-step">
       {!info.loading && (
-        <div>
+        <div data-tut="reactour__first">
           <h1>خدا قوت!</h1>
           <h1>آماده‌ای بریم توی محیط کلیک‌مایند؟</h1>
           <div className="final-action">

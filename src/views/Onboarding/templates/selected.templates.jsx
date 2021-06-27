@@ -26,20 +26,19 @@ const SelectedTemplates = () => {
     <div
       style={{ width: '600px', height: '330px' }}
       className="selected-template-container">
-      {info.templates.length === 0 && (
+      {/* {info.templates.length === 0 && (
         <div className="no-template-selected">{'قالبی فعال نکردید'}</div>
-      )}
-      {info.templates.length !== 0 && (
-        <div>
-          <SelectedTemplatesBox
-            zIndex="100"
-            show={true}
-            translateX="0"
-            translateY="0"
-          />
-          {layers}
-        </div>
-      )}
+      )} */}
+
+      <div>
+        <SelectedTemplatesBox
+          zIndex="100"
+          show={true}
+          translateX="0"
+          translateY="0"
+        />
+        {layers}
+      </div>
     </div>
   );
 };

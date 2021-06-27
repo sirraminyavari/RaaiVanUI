@@ -14,8 +14,10 @@ const initialInfo = {
   members: '',
   field: { value: '' },
   templates: [],
+  templatePreview: undefined,
   activatedTemplates: [],
   loading: false,
+  openTuor: false,
 };
 
 const StepperContextProvider = ({ children }) => {

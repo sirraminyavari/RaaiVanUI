@@ -41,8 +41,12 @@ export const stepperReducer = (state, action) => {
         ...state,
         activatedTemplates: [...state.activatedTemplates, action.template],
       };
+    case 'TEMPLATE_PREVIEW':
+      return { ...state, templatePreview: action.template };
     case 'TOGGLE_LOADING':
       return { ...state, loading: !state.loading };
+    case 'TOGGLE_TOUR':
+      return { ...state, openTour: !state.openTour };
     default:
       return state;
   }
