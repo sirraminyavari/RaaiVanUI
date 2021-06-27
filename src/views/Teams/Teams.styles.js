@@ -376,6 +376,7 @@ export const ExtraUserItem = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin: 0.2rem 0;
+  position: relative;
 `;
 
 export const ExtraUserTitle = styled.span.attrs({

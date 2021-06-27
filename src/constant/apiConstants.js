@@ -106,6 +106,12 @@ export const SET_VARIABLE = 'SetVariable';
  * @class 'RVAPI'
  */
 export const GET_VARIABLE = 'GetVariable';
+/**
+ * @description 'RemoveUserFromApplication'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_USER_FROM_APPLICATION = 'RemoveUserFromApplication';
 
 //* #################################
 //* ############ CNAPI ################

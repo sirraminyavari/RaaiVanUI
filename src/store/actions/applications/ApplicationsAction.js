@@ -14,6 +14,7 @@ import {
   UNSUBSCRIBE_APPLICATION,
   GET_VARIABLE,
   SET_VARIABLE,
+  REMOVE_USER_FROM_APPLICATION,
 } from 'constant/apiConstants';
 
 const {
@@ -36,6 +37,10 @@ const unsubscribeFromApplicationAPI = API_Provider(
 );
 const getApplicationsOrderAPI = API_Provider(RV_API, GET_VARIABLE);
 const setApplicationsOrderAPI = API_Provider(RV_API, SET_VARIABLE);
+const removeUserFromApplicationAPI = API_Provider(
+  RV_API,
+  REMOVE_USER_FROM_APPLICATION
+);
 
 /**
  * @description A function (action) that gets NOT archived applications list from server.
@@ -264,6 +269,31 @@ export const unsubscribeFromApplication = (appId, done, error) => async (
   try {
     unsubscribeFromApplicationAPI.fetch(
       { ApplicationID: appId },
+      (response) => {
+        if (response.ErrorText) {
+          error && error(response.ErrorText);
+        } else if (response.Succeed) {
+          done && done(response);
+          dispatch(getApplications());
+        }
+      },
+      (error) => console.log({ error })
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that removes a user in an application.
+ * @returns -Dispatch to redux store.
+ */
+export const removeUserFromApplication = (appId, userId, done, error) => async (
+  dispatch
+) => {
+  try {
+    removeUserFromApplicationAPI.fetch(
+      { ApplicationID: appId, UserID: userId },
       (response) => {
         if (response.ErrorText) {
           error && error(response.ErrorText);
