@@ -1,11 +1,15 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import Heading from 'components/Heading/Heading';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
+import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
+import { C_DISTANT } from 'constant/Colors';
+import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import React, { useEffect, useRef, useState } from 'react';
 import PeopleItem from './PeopleItem';
@@ -15,6 +19,9 @@ import {
   PeopleBody,
   PeopleList,
   PickedList,
+  JustMeSaved,
+  SearchInput,
+  ResetContainer,
 } from './PepolePicker.style';
 import PickedPeopleItem from './PickedPeopleItem';
 
@@ -22,50 +29,57 @@ const { RVDic, RV_RTL } = window;
 
 const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
 
-const PeoplePicker = ({ buttonComponent }) => {
+const PeoplePicker = ({
+  buttonComponent,
+  onByMe,
+  onByPeople,
+  isByMe,
+  pickedPeople,
+}) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [peopleList, setPeopleList] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [choosedPeople, setChoosedPeople] = useState([]);
+  const [isJustMe, setIsJustMe] = useState(false);
 
   const pickerRef = useRef();
 
-  //   useEffect(() => {
-  //     function handleClickOutside(event) {
-  //       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-  //         // onClick();
-  //         console.log('outside clicked');
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        // onClick();
+        console.log('outside clicked');
 
-  //         setPickerVisible(false);
-  //       }
-  //     }
+        setPickerVisible(false);
+      }
+    }
 
-  //     // Bind the event listener
-  //     document.addEventListener('mousedown', handleClickOutside);
-  //     return () => {
-  //       // Unbind the event listener on clean up
-  //       document.removeEventListener('mousedown', handleClickOutside);
-  //     };
-  //   }, [pickerRef]);
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [pickerRef]);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    console.log(choosedPeople, 'choosedPeople');
-  }, [choosedPeople]);
+  useEffect(() => {}, [choosedPeople]);
 
   const onChoose = (item) => {
-    const choosedIndex = choosedPeople.indexOf((x) => x.id === item.id);
-    if (choosedIndex === -1) {
-      let temp_list = choosedPeople;
-      temp_list.push(item);
-      console.log(temp_list, 'temp');
-      setChoosedPeople(temp_list);
-    }
+    onByPeople && onByPeople(item);
+    setPickerVisible(false);
+    // const choosedIndex = choosedPeople.indexOf((x) => x.id === item.id);
+    // if (choosedIndex === -1) {
+    //   let temp_list = choosedPeople;
+    //   temp_list.push(item);
+    //   console.log(temp_list, 'temp');
+    //   setChoosedPeople(temp_list);
+    // }
   };
 
   const onPicker = () => {
@@ -104,6 +118,13 @@ const PeoplePicker = ({ buttonComponent }) => {
   const onFetchAgain = () => {
     setExtraData(!extraData);
   };
+  const onJustMe = (e) => {
+    console.log(e, 'setIsJustMe');
+    setIsJustMe(e);
+  };
+  const onInput = (event) => {
+    setSearchInput(event?.target?.value);
+  };
 
   return (
     <Container ref={pickerRef}>
@@ -113,12 +134,24 @@ const PeoplePicker = ({ buttonComponent }) => {
       ) : (
         React.cloneElement(buttonComponent, { onClick: onPicker })
       )}
-      {console.log(choosedPeople, 'choosedPeople')}
 
       <PeopleBody
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
-        <Apply_Picked>
+        <ResetContainer>
+          <Heading type={'H6'}>{RVDic.ResetPassword}</Heading>
+          <UndoIcon
+            style={{
+              cursor: 'pointer',
+              transform: 'scaleX(-1)',
+              marginRight: '1rem',
+            }}
+            onClick={() => onChoose(null)}
+            className={C_DISTANT}
+            size={16}
+          />
+        </ResetContainer>
+        {/* <Apply_Picked>
           <PickedList>
             {choosedPeople &&
               choosedPeople.length > 0 &&
@@ -137,26 +170,32 @@ const PeoplePicker = ({ buttonComponent }) => {
               ))}
           </PickedList>
           <Button type={'o-primary'}>{RVDic.Add}</Button>
-        </Apply_Picked>
-        <AnimatedInput
+        </Apply_Picked> */}
+
+        <SearchInput
           placeholder={RVDic.Search + ' ' + RVDic.In + ' ' + RVDic.Teams}
-          style={{ width: '100%' }}
-          onChange={setSearchInput}
+          onChange={onInput}
+          className={'rv-border-warm-red'}
           value={searchInput}
+          disabled={false}
           afterChangeListener={onFetchAgain}
+          style={{ borderColor: CV_DISTANT }}
           children={
             <SearchIcon
               style={{
+                marginTop: '1rem',
                 transform: `${RV_RTL ? 'rotate(0deg)' : 'rotate(90deg)'}`,
               }}
               className={'rv-distant'}
             />
           }
         />
-        {/* <JustMeSaved>
-          <switch />
-          <Heading type={'H4'}>{'فقط آن چه من ثبت کرده ام'}</Heading>
-        </JustMeSaved> */}
+        {console.log(isByMe, 'isByMe')}
+        <JustMeSaved>
+          <Heading type={'H6'}>{'فقط آن چه من ثبت کرده ام'}</Heading>
+
+          <ToggleButton onToggle={onByMe} initialCheck={!!isByMe} />
+        </JustMeSaved>
         <PeopleList>
           <PerfectScrollBar>
             <SimpleListViewer
@@ -165,9 +204,14 @@ const PeoplePicker = ({ buttonComponent }) => {
               onEndReached={() => {
                 console.log('Im reached end');
               }}
-              onTotal={(total) => console.log(total, 'total found')}
+              onTotal={(total) => {}}
               renderItem={(x, index) => (
-                <PeopleItem onClick={onChoose} item={x} key={index} />
+                <PeopleItem
+                  pickedPeople={pickedPeople?.id === x.id}
+                  onClick={onChoose}
+                  item={x}
+                  key={index}
+                />
               )}
             />
           </PerfectScrollBar>

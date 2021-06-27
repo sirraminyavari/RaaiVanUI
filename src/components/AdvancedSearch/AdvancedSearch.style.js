@@ -9,6 +9,7 @@ export const Container = styled.div`
   min-height: 100%;
   align-items: flex-start;
   justify-content: center;
+  padding: 2rem 2rem 2rem 2rem;
 `;
 export const Maintainer = styled.div`
   width: calc(

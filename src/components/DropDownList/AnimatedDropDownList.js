@@ -145,14 +145,6 @@ const AnimatedDropDownList = ({
   return (
     <Container ref={buttonRef}>
       <DropDownButton className={containerClass} style={{ ...container }}>
-        <Maintainer
-          className={labelClass}
-          onClick={onClickLabel}
-          style={{ ...label }}>
-          {defaultValue.icon}
-          <Label color={defaultValue.color}>{defaultValue.label}</Label>
-        </Maintainer>
-        <Divider className={'rv-bg-color-white'} />
         <Rotater
           $dropedDown={dropedDown}
           onClick={onClick}
@@ -164,6 +156,14 @@ const AnimatedDropDownList = ({
             className={arrowIconColorClass}
           />
         </Rotater>
+        <Divider className={'rv-bg-color-white'} />
+        <Maintainer
+          className={labelClass}
+          onClick={onClickLabel}
+          style={{ ...label }}>
+          {defaultValue.icon}
+          <Label color={defaultValue.color}>{defaultValue.label}</Label>
+        </Maintainer>
       </DropDownButton>
       {renderList()}
     </Container>
