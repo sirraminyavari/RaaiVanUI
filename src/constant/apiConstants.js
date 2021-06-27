@@ -93,6 +93,20 @@ export const MODIFY_APPLICATION = 'ModifyApplication';
  */
 export const UNSUBSCRIBE_APPLICATION = 'UnsubscribeFromApplication';
 
+/**
+ * @description 'SetVariable'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SET_VARIABLE = 'SetVariable';
+
+/**
+ * @description 'GetVariable'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const GET_VARIABLE = 'GetVariable';
+
 //* #################################
 //* ############ CNAPI ################
 //* #################################
