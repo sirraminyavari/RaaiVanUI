@@ -1,5 +1,5 @@
 import Input from 'components/Inputs/Input';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT, TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -15,8 +15,8 @@ export const PeopleBody = styled.div`
   top: 3rem;
   left: -1rem;
   box-shadow: 1px 3px 20px ${CV_DISTANT};
-  padding: 0rem 1.5rem 0rem 1.5rem;
-  min-width: 16rem;
+  padding: 0rem 0.75rem 0rem 0.75rem;
+  min-width: 12.5rem;
 `;
 export const Apply_Picked = styled.div`
   display: flex;
@@ -27,7 +27,28 @@ export const Apply_Picked = styled.div`
   margin: 1rem 0 1rem 0;
   position: relative;
 `;
-export const SearchInput = styled(Input)``;
+export const SearchInput = styled(Input)`
+  border-width: 0 0 1px 0;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  border-radius: 0;
+  width: 100%;
+  ::placeholder {
+    color: ${CV_DISTANT};
+  }
+`;
+export const ResetContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: flex-end;
+  z-index: 10;
+  margin: 0.5rem 0.75rem 0 0.75rem;
+`;
 
 export const PeopleItemContent = styled.button`
   display: flex;
@@ -36,6 +57,11 @@ export const PeopleItemContent = styled.button`
   min-height: 1.5rem;
   margin: 0.5rem 0 0.5rem 0;
   width: 12.5rem;
+  border-style: solid;
+  border-width: 1px;
+  padding: 0.3rem;
+  border-color: ${({ pickedPeople }) =>
+    pickedPeople ? TCV_DEFAULT : CV_WHITE};
 `;
 
 export const Avatar = styled.img`
@@ -57,6 +83,10 @@ export const JustMeSaved = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
+  margin: 1rem 0.75rem 0 0.75rem;
 `;
 export const PickedList = styled.div`
   display: flex;
