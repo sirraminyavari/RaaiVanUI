@@ -473,7 +473,7 @@
                         jQuery(_elems["totalCount"]).fadeOut(100);
 
                         var reqParams = that.get_request_params() || {};
-
+                        
                         CNAPI.GetNodes(GlobalUtilities.extend(options || {}, reqParams, {
                             UseNodeTypeHierarchy: !reqParams.FormFilters && ((that.Objects.NodeTypeIDs || []).length == 1),
                             ParseResults: true,

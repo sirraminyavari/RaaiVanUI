@@ -88,7 +88,8 @@
                                     var repNewPass = elems["repNewPassInput"].value;
 
                                     if (!curPass) return alert(RVDic.PleaseEnterYourCurrentPassword, { Timeout: 20000 });
-                                    else if (!check_policy(newPass)) return alert(RVDic.MSG.PasswordPolicyDidntMeet, { Timeout: 20000 });
+                                    else if (!policyChecker.check(elems["newPassInput"].value, elems["curPassInput"].value))
+                                        return alert(RVDic.MSG.PasswordPolicyDidntMeet, { Timeout: 20000 });
                                     else if (newPass != repNewPass) return alert(RVDic.Checks.PasswordsDoesntMatch, { Timeout: 20000 });
 
                                     btn.Processing = true;

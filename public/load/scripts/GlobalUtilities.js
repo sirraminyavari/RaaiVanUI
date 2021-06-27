@@ -2470,14 +2470,15 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
                             grecaptcha.execute(RVGlobal.CaptchaSiteKey, { action: 'submit' })
                                 .then(token => done(token));
                         });
-                    },
-                    hide: () => {
-                        var arr2 = document.getElementsByClassName('grecaptcha-badge');
-                        if (arr2.length) arr2[0].style.visibility = "hidden";
                     }
                 });
             }
         });
+    },
+
+    hide_recaptcha: function () {
+        var arr2 = document.getElementsByClassName('grecaptcha-badge');
+        if (arr2.length) arr2[0].style.visibility = "hidden";
     },
 
     get_side_panel: function (rev, done) {

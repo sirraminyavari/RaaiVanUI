@@ -266,23 +266,23 @@
                                 Childs: [
                                     {
                                         Type: "img", Name: "Image", Style: "width:2rem; height:2rem;",
-                                        Attributes: [{ Name: "src", Value: GlobalUtilities.icon(areFriends ? "Cancel32.png" : (friendRequestSenderUserId == "" ? "CAdd32.png" : (friendRequestSenderUserId == currentUserId ? "Accept32.png" : "Cancel32.png"))) }]
+                                        Attributes: [{ Name: "src", Value: GlobalUtilities.icon(areFriends ? "Cancel32.png" : (!friendRequestSenderUserId ? "CAdd32.png" : (friendRequestSenderUserId == currentUserId ? "Accept32.png" : "Cancel32.png"))) }]
                                     }
                                 ]
                             },
                             {
                                 Type: "div", Name: "TextDiv", Class: "rv-circle",
                                 Style: "display:inline-block; color:black; line-height:2rem; font-weight:bold;",
-                                Childs: [{ Type: "text", TextValue: areFriends ? RVDic.Unfriend : (friendRequestSenderUserId == "" ? RVDic.FriendRequest : (friendRequestSenderUserId == currentUserId ? RVDic.AcceptRequest : RVDic.CancelRequest)) }]
+                                Childs: [{ Type: "text", TextValue: areFriends ? RVDic.Unfriend : (!friendRequestSenderUserId ? RVDic.FriendRequest : (friendRequestSenderUserId == currentUserId ? RVDic.AcceptRequest : RVDic.CancelRequest)) }]
                             }
                         ]
                     }
                 ], elems["friendship"]);
 
-                var imageOverName = areFriends ? "Cancel32-Over.png" : (friendRequestSenderUserId == "" ? "CAdd32-Over.png" :
+                var imageOverName = areFriends ? "Cancel32-Over.png" : (!friendRequestSenderUserId ? "CAdd32-Over.png" :
                     (friendRequestSenderUserId == currentUserId ? "Accept32-Over.png" : "Cancel32-Over.png"));
 
-                var imageName = areFriends ? "Cancel32.png" : (friendRequestSenderUserId == "" ? "CAdd32.png" :
+                var imageName = areFriends ? "Cancel32.png" : (!friendRequestSenderUserId ? "CAdd32.png" :
                     (friendRequestSenderUserId == currentUserId ? "Accept32.png" : "Cancel32.png"));
 
                 fsElem["MainDiv"].onmouseover = function () { fsElem["Image"].setAttribute("src", GlobalUtilities.icon(imageOverName)); }
@@ -290,13 +290,13 @@
 
                 fsElem["MainDiv"].onclick = function (e) {
                     var set_title = function () {
-                        fsElem["TextDiv"].innerHTML = areFriends ? RVDic.Unfriend : (friendRequestSenderUserId == "" ? RVDic.FriendRequest :
+                        fsElem["TextDiv"].innerHTML = areFriends ? RVDic.Unfriend : (!friendRequestSenderUserId ? RVDic.FriendRequest :
                             (friendRequestSenderUserId == currentUserId ? RVDic.AcceptRequest : RVDic.CancelRequest));
 
-                        var newImage = areFriends ? "Cancel32.png" : (friendRequestSenderUserId == "" ? "CAdd32.png" :
+                        var newImage = areFriends ? "Cancel32.png" : (!friendRequestSenderUserId ? "CAdd32.png" :
                             (friendRequestSenderUserId == currentUserId ? "Accept32.png" : "Cancel32.png"));
 
-                        var newImageOver = areFriends ? "Cancel32-Over.png" : (friendRequestSenderUserId == "" ? "CAdd32-Over.png" :
+                        var newImageOver = areFriends ? "Cancel32-Over.png" : (!friendRequestSenderUserId ? "CAdd32-Over.png" :
                             (friendRequestSenderUserId == currentUserId ? "Accept32-Over.png" : "Cancel32-Over.png"));
 
                         fsElem["Image"].setAttribute("src", GlobalUtilities.icon(newImage));
@@ -306,7 +306,7 @@
 
                     GlobalUtilities.block(fsElem["MainDiv"]);
 
-                    if (areFriends || (friendRequestSenderUserId != "" && friendRequestSenderUserId != currentUserId)) {
+                    if (areFriends || (!!friendRequestSenderUserId && (friendRequestSenderUserId != currentUserId))) {
                         UsersAPI.RejectFriend({
                             UserID: userId, ParseResults: true,
                             ResponseHandler: function (result) {
@@ -321,7 +321,7 @@
                             }
                         });
                     }
-                    else if (friendRequestSenderUserId == "") {
+                    else if (!friendRequestSenderUserId) {
                         UsersAPI.SendFriendRequest({
                             UserID: userId, ParseResults: true,
                             ResponseHandler: function (result) {

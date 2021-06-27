@@ -115,6 +115,8 @@
 
         _initialize: function () {
             var that = this;
+            
+            if (that.ContainerDiv) that.ContainerDiv.innerHTML = "";
 
             var elems = GlobalUtilities.create_nested_elements([{
                 Type: "div", Class: "small-12 medium-12 large-12", Style: "display:flex; flex-flow:column; height:100%;",
