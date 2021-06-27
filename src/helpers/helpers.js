@@ -189,3 +189,12 @@ export const setRVGlobal = (params = {}) => {
     window.RVGlobal[param] = params[param];
   }
 };
+
+/**
+ * @description Gets system name.
+ */
+export const getSystemName = () => {
+  return (window.RVGlobal || {}).SAASBasedMultiTenancy
+    ? window.RVDic.CliqMind
+    : decodeBase64((window.RVGlobal || {}).SystemName) || window.RVDic.RaaiVan;
+};

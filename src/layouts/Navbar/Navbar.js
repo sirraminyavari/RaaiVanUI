@@ -45,7 +45,7 @@ const Navbar = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
-  const { RV_Float } = useWindow();
+  const { RV_Float, RVDic } = useWindow();
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -78,6 +78,8 @@ const Navbar = () => {
     setShowSearch(false);
   };
 
+  const SearchPlaceholder = RVDic.SearchInN.replace('[n]', RVDic.Team);
+
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
@@ -88,7 +90,7 @@ const Navbar = () => {
           <NavbarSearchInput
             onBlur={handleHideSearch}
             autoFocus={showSearch}
-            placeholder="جستجو در مطالب،کاربران،ابزارها و ..."
+            placeholder={SearchPlaceholder}
           />
         ) : (
           <SearchIcon

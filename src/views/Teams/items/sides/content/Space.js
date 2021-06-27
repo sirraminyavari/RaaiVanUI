@@ -10,6 +10,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from './DragTeam';
+import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -30,6 +31,7 @@ const WorkSpace = ({ space }) => {
 
   const moveCard = (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
+    dispatch(setApplicationsOrder(reordered));
     dispatch(setApplications(reordered));
   };
 

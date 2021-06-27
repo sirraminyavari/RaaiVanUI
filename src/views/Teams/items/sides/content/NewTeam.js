@@ -11,7 +11,7 @@ const NewTeam = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [teamName, setTeamName] = useState('');
   const dispatch = useDispatch();
-  const { RV_RevFloat, RV_Float } = useWindow();
+  const { RV_RevFloat, RV_Float, RVDic } = useWindow();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -39,6 +39,11 @@ const NewTeam = () => {
     }
   };
 
+  const createNewTeamTitle = RVDic.CreateN.replace(
+    '[n]',
+    RVDic.NewN.replace('[n]', RVDic.Team)
+  );
+
   return (
     <Styled.TeamConatiner
       isNew
@@ -53,14 +58,14 @@ const NewTeam = () => {
         inputValue={teamName}
         onCancleCreate={handleCancelCreate}
         onCreate={handleTeamCreate}
-        modalTitle="ایجاد تیم جدید"
+        modalTitle={createNewTeamTitle}
         modalWidth="35%"
-        placeholder="نام تیم جدید"
+        placeholder="نام تیم جدید" //TODO: add RVDic
       />
       <Styled.NewTeamWrapper>
         <PlusIcon size={40} />
         <Styled.NewTeamLabel>
-          <span>ایجاد تیم جدید</span>
+          <span>{createNewTeamTitle}</span>
         </Styled.NewTeamLabel>
       </Styled.NewTeamWrapper>
     </Styled.TeamConatiner>

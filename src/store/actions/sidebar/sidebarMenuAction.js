@@ -1,19 +1,30 @@
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import APIHandler from 'apiHelper/APIHandler';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64, API_Provider } from 'helpers/helpers';
+import {
+  CN_API,
+  GET_FAVORITE_NODES_COUNT,
+  GET_NODE_TYPES,
+  RENAME_NODE_TYPE,
+  REMOVE_NODE_TYPE,
+  MOVE_NODE_TYPE,
+  SET_NODE_TYPE_ORDER,
+  RECOVER_NODE_TYPE,
+} from 'constant/apiConstants';
 
 const {
   setSidebarNodeTypes,
   setSidebarTree,
   setSidebarDnDTree,
+  setFavoriteNodesCount,
 } = sidebarMenuSlice.actions;
 
-const getNodesAPI = new APIHandler('CNAPI', 'GetNodeTypes');
-const renameNodeAPI = new APIHandler('CNAPI', 'RenameNodeType');
-const deleteNodeAPI = new APIHandler('CNAPI', 'RemoveNodeType');
-const moveNodeAPI = new APIHandler('CNAPI', 'MoveNodeType');
-const reorderNodesAPI = new APIHandler('CNAPI', 'SetNodeTypesOrder');
-const recoverNodeAPI = new APIHandler('CNAPI', 'RecoverNodeType');
+const getNodesAPI = API_Provider(CN_API, GET_NODE_TYPES);
+const renameNodeAPI = API_Provider(CN_API, RENAME_NODE_TYPE);
+const deleteNodeAPI = API_Provider(CN_API, REMOVE_NODE_TYPE);
+const moveNodeAPI = API_Provider(CN_API, MOVE_NODE_TYPE);
+const reorderNodesAPI = API_Provider(CN_API, SET_NODE_TYPE_ORDER);
+const recoverNodeAPI = API_Provider(CN_API, RECOVER_NODE_TYPE);
+const getFavoriteNodesCountAPI = API_Provider(CN_API, GET_FAVORITE_NODES_COUNT);
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -257,6 +268,30 @@ export const recoverSidebarNode = (node) => async (dispatch, getState) => {
       (error) => {
         console.log({ error });
         dispatch(getSidebarNodes());
+      }
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that gets favorite nodes count.
+ * @returns -Dispatch to redux store.
+ */
+export const getFavoriteNodesCount = () => async (dispatch) => {
+  try {
+    getFavoriteNodesCountAPI.fetch(
+      {},
+      (response) => {
+        const favoriteNodesCount = ((response || {}).NodeTypes || []).reduce(
+          (acc, cur) => acc + cur.Count,
+          0
+        );
+        dispatch(setFavoriteNodesCount(favoriteNodesCount));
+      },
+      (error) => {
+        console.log({ error });
       }
     );
   } catch (err) {
