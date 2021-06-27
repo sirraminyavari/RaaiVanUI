@@ -84,6 +84,8 @@ const FilterBar = ({
   onForceFetch,
   nodeType,
   onCreateUrgent,
+  onByMe,
+  isByMe,
 }) => {
   const defaultDropDownLabel = {
     icon: <AddIcon color={'white'} />,
@@ -259,6 +261,11 @@ const FilterBar = ({
     }, 500);
   };
 
+  const onPeople = (item) => {
+    setPeople(item);
+    onByPeople(item);
+  };
+
   const placeHolderText = () => {
     if (getTypeName() !== '') {
       return (
@@ -308,6 +315,7 @@ const FilterBar = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            marginTop: '1.5rem',
           }}>
           {nodeType?.IconURL && (
             <img
@@ -337,14 +345,14 @@ const FilterBar = ({
             }}
             customClass={{
               labelClass: RV_RTL
-                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius'
-                : 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius',
+                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
               buttonClass: isDropDownOpen
                 ? `rv-bg-color-warm rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
+                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
                   }`
                 : `rv-bg-color-default rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
+                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
                   }`,
               arrowIconColorClass: 'rv-white',
             }}
@@ -360,7 +368,7 @@ const FilterBar = ({
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={placeHolderText()}
+          placeholder={RVDic.Search}
           children={
             <Search
               style={{
@@ -431,22 +439,26 @@ const FilterBar = ({
             }}
           />
           <PeoplePicker
+            onByMe={onByMe}
+            onByPeople={onPeople}
+            isByMe={isByMe}
+            pickedPeople={people}
             buttonComponent={
               <ShadowButton
                 style={commonStyle}
                 // onClick={onClick}
                 onMouseEnter={() => setPeopleHover(true)}
                 onMouseLeave={() => setPeopleHover(false)}
-                $isEnabled={people}
+                $isEnabled={people || isByMe}
                 className={
-                  people
+                  isByMe || people
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
                 <PersonIcon
                   size={'1.5rem'}
                   className={
-                    people
+                    isByMe || people
                       ? 'rv-default'
                       : peopleHover
                       ? 'rv-default'

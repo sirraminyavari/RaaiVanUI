@@ -1,3 +1,4 @@
+import { CV_DISTANT } from 'constant/CssVariables';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
@@ -9,11 +10,15 @@ export const Container = styled.a`
   background-color: white;
   margin: 3px;
   justify-content: space-between;
-  border-width: 0.05rem;
+  border-width: 0.1rem;
   border-style: solid;
   max-width: 100%;
   width: 100%;
   transition: max-width 0.5s;
+  :hover {
+    border-width: 0.2rem;
+    border-color: ${CV_DISTANT};
+  }
 `;
 export const IconContent = styled.div`
   display: flex;

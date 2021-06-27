@@ -12,7 +12,7 @@ const { GlobalUtilities } = window;
  * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
 const Button = forwardRef(
-  ({ type, loading, disable, onClick, ...props }, ref) => {
+  ({ type, loading, disable = false, onClick, ...props }, ref) => {
     return (
       <div
         ref={ref}

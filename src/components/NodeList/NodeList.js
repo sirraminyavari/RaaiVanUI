@@ -24,6 +24,8 @@ const NodeList = ({
   formFilters,
   forceFetch,
   onTotalFound,
+  isByMe,
+  byPeople,
 }) => {
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
@@ -33,14 +35,20 @@ const NodeList = ({
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
+    console.log(byPeople, 'byPeople', isByMe);
     setExtraData(!extraData);
-  }, [searchText, dateFilter, nodeTypeId, formFilters, forceFetch]);
-  useEffect(() => {
-    console.log(bookmarkedList, 'bookmarkedList updated');
-  }, [bookmarkedList]);
+  }, [
+    isByMe,
+    byPeople,
+    searchText,
+    dateFilter,
+    nodeTypeId,
+    formFilters,
+    forceFetch,
+  ]);
+
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log(nodeTypeId, 'nodeTypes****#$%');
     getNodesAPI.fetch(
       {
         Count: count,
@@ -51,6 +59,8 @@ const NodeList = ({
         CreationDateTo: dateFilter?.to,
         FormFilters: encode(JSON.stringify(formFilters)),
         UseNodeTypeHierarchy: true,
+        IsMine: isByMe,
+        CreatorUserID: byPeople?.id,
       },
       (response) => {
         if (response.Nodes) {

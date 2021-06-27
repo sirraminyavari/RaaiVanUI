@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import React, { useState, Component, cloneElement } from 'react';
+import React, { useState, Component, cloneElement, useEffect } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
@@ -46,6 +46,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
 
   const [urgentCreate, setUrgentCreate] = useState(false);
 
+  const [isByMe, setIsByMe] = useState(false);
+  const [byPeople, setByPeople] = useState(null);
+
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
@@ -75,6 +78,15 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const onCreateUrgent = () => {
     setUrgentCreate(!urgentCreate);
   };
+  const onByMe = () => {
+    setIsByMe(!isByMe);
+  };
+  const onByPeople = (item) => {
+    console.log(item, 'on by people');
+    setIsByMe(false);
+
+    setByPeople(item);
+  };
   return (
     <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
       <Maintainer
@@ -94,6 +106,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             nodeType={nodeType}
             onCreateUrgent={onCreateUrgent}
             onForceFetch={forceFetch}
+            onByMe={onByMe}
+            onByPeople={onByPeople}
+            isByMe={isByMe}
           />
         </TopFilter>
         <div style={{ padding: '0 2rem 0 2rem' }}>
@@ -113,6 +128,8 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             dateFilter: dateFilter,
             formFilters: formFilters,
             forceFetch: forceReload,
+            isByMe: isByMe,
+            byPeople: byPeople,
             onTotalFound: setTotalFound,
           })}
         </div>
@@ -131,7 +148,7 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           rtl={RV_RTL}>
           {isAdvancedSearch && formElements && (
             <FormFilter
-              formName="فیلتر های پیشرفته"
+              formName="$فیلترهای پیشرفته"
               filters={formElements}
               onFilter={normalizeSearchElements}
               onCloseFilter={() => setIsAdvancedSearch(false)}
