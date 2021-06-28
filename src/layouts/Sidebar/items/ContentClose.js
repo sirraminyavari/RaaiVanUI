@@ -12,6 +12,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ const SidebarOnClose = ({ theme }) => {
         </Styled.Up>
         <Styled.IconListContainer>
           <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}>
+            {/* <PerfectScrollbar> */}
             {nodes.map((node, key) => {
               const { data, id } = node;
               return (
@@ -122,6 +124,7 @@ const SidebarOnClose = ({ theme }) => {
                 </PopupMenu>
               );
             })}
+            {/* </PerfectScrollbar> */}
           </Styled.IconListWrap>
         </Styled.IconListContainer>
         <Styled.Down isDown={isDown} onClick={scrollDown}>

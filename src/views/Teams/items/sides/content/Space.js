@@ -44,7 +44,7 @@ const WorkSpace = ({ space }) => {
             {teams.length === 0 && isFetching ? (
               <LogoLoader />
             ) : (
-              teams.map((team, index) => {
+              teams?.map((team, index) => {
                 return (
                   <Flipped
                     key={team?.ApplicationID}

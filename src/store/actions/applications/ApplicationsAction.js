@@ -124,7 +124,7 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
         } else if (response.Succeed) {
           done && done(appId);
           dispatch(deleteApplication(appId));
-          // dispatch(getApplications());
+          dispatch(getApplications());
         }
       },
       (error) => console.log({ error })

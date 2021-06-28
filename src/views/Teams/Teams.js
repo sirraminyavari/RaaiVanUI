@@ -4,6 +4,7 @@ import * as Styled from './Teams.styles';
 import ContentSide from './items/sides/content/Content';
 import WelcomeSide from './items/sides/welcome/Welcome';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
+// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const TeamsView = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,12 @@ const TeamsView = () => {
   }, []);
 
   return (
+    // <PerfectScrollbar>
     <Styled.TeamsViewContainer>
       <ContentSide />
       <WelcomeSide />
     </Styled.TeamsViewContainer>
+    // </PerfectScrollbar>
   );
 };
 

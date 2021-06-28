@@ -148,6 +148,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const handleRemoveUser = (userId) => {
     dispatch(removeUserFromApplication(appId, userId));
+    setUsers((oldUsers) => oldUsers.filter((user) => user.UserID !== userId));
   };
 
   const onGetUsers = (users) => {
