@@ -91,3 +91,6 @@
   -ms-user-select: none;
   user-select: none;
 }
+.ActionButton {
+  font-size: 1.2rem;
+}

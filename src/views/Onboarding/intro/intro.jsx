@@ -36,8 +36,8 @@ const Intro = (props) => {
   return (
     <div className="intro-container">
       <div className="intro-wrapper">
-        <h1>به کلیک‌مایند خوش اومدی!</h1>
-        <p>
+        <h1 style={{ fontSize: '1.5rem' }}>به کلیک‌مایند خوش اومدی!</h1>
+        <p style={{ fontSize: '1.2rem' }}>
           قبل از این که کار با کلیک‌مایند رو شروع کنی لازمه چند تا نکته رو بهت
           بگم و چند تا چیز رو با هم تنظیم کنیم:
         </p>

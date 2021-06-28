@@ -7,7 +7,7 @@ const SidbarLoader = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-    }, 5000);
+    }, 4000);
     return () => clearTimeout(timer);
   });
 

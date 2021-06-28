@@ -25,6 +25,7 @@ const SideBar = (props) => {
           {info.activatedTemplates.map((x) => (
             <div key={uuidv4()} className="sidebar-selected-templates">
               <SidebarLoader key={uuidv4()} />
+              <img src={x.IconURL} />
               <div className="title">{x.name}</div>
             </div>
           ))}
