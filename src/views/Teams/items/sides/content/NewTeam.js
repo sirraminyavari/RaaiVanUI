@@ -44,6 +44,8 @@ const NewTeam = () => {
     RVDic.NewN.replace('[n]', RVDic.Team)
   );
 
+  const newTeamName = RVDic.NewN.replace('[n]', RVDic.TeamName);
+
   return (
     <Styled.TeamConatiner
       isNew
@@ -60,7 +62,7 @@ const NewTeam = () => {
         onCreate={handleTeamCreate}
         modalTitle={createNewTeamTitle}
         modalWidth="35%"
-        placeholder="نام تیم جدید" //TODO: add RVDic
+        placeholder={newTeamName}
       />
       <Styled.NewTeamWrapper>
         <PlusIcon size={40} />

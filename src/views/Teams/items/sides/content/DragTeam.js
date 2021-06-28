@@ -100,15 +100,15 @@ const DragItem = forwardRef(
       draggedId = getItem.ApplicationID;
     }
 
-    const isDragging = draggedId === team.ApplicationID;
+    const isDragging = draggedId === team?.ApplicationID;
 
     useImperativeHandle(ref, () => ({
       getNode: () => elementRef.current,
     }));
-    if (team.ApplicationID === 'add-app') {
+    if (team?.ApplicationID === 'add-app') {
       return <NewTeam />;
     }
-    if (team.ApplicationID === 'archived-apps') {
+    if (team?.ApplicationID === 'archived-apps') {
       return <ArchivedTeams team={team} />;
     }
 

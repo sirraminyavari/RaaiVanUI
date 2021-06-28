@@ -1,4 +1,4 @@
-import { useState, forwardRef } from 'react';
+import { useState, forwardRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -20,6 +20,7 @@ import {
   modifyApplication,
   unsubscribeFromApplication,
   removeUserFromApplication,
+  getApplicationUsers,
 } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
@@ -61,11 +62,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
-
-  //TODO: fix bug
-  if (usersList.length !== totalUsers) {
-    console.log(usersList.length, totalUsers);
-  }
+  const [users, setUsers] = useState(usersList);
 
   const handleEditTeam = (title) => {
     setAppTitle(title);
@@ -153,6 +150,15 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(removeUserFromApplication(appId, userId));
   };
 
+  const onGetUsers = (users) => {
+    setUsers(users);
+  };
+
+  useEffect(() => {
+    dispatch(getApplicationUsers(appId, '', onGetUsers));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Styled.TeamConatiner
       ref={ref}
@@ -189,7 +195,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               gap: '0.2rem',
               marginTop: '1rem',
             }}>
-            {usersList.map((user) => {
+            {users.map((user) => {
               const isAuthUser =
                 ((window.RVGlobal || {}).CurrentUser || {}).UserID ===
                 user.UserID;
@@ -267,7 +273,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           </Styled.TeamDescription>
           <Styled.TeamFooterConatiner>
             <Styled.TeamAvatarsWrapper onClick={openTeamUsers}>
-              {usersList
+              {users
                 ?.filter((_, index) => index < 4)
                 .map((user, index) => {
                   return (
@@ -284,7 +290,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     />
                   );
                 })}
-              {usersList.length > 4 && (
+              {users.length > 4 && (
                 <PopupMenu
                   trigger="hover"
                   align="top"
@@ -292,13 +298,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   menuClass="extra-users-popup">
                   <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
                     <Badge
-                      showText={`${usersList.length - 4}+`}
+                      showText={`${totalUsers - 4}+`}
                       className="team-extra-users"
                     />
                   </Styled.ExtraUsersWrapper>
-                  {/* <div className="scroll"> */}
                   <PerfectScrollbar className="scroll">
-                    {usersList
+                    {users
                       ?.filter((user, index) => index > 3 && user)
                       .map((user) => {
                         const fullName = `${decodeBase64(
@@ -317,7 +322,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                         );
                       })}
                   </PerfectScrollbar>
-                  {/* </div> */}
                 </PopupMenu>
               )}
             </Styled.TeamAvatarsWrapper>

@@ -28,6 +28,13 @@ export const GET_THEME = 'GetTheme';
  */
 export const SET_THEME = 'SetTheme';
 
+/**
+ * @description 'GetApplicationUsers'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_APPLICATION_USERS = 'GetApplicationUsers';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

@@ -6,7 +6,7 @@ export const MainContainer = styled.div`
   direction: ${window.RV_Direction};
   .sidebar-resizer {
     &:hover {
-      background-color: red;
+      background-color: #fff;
     }
   }
 `;
