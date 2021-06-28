@@ -5,6 +5,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { API_Provider, setRVGlobal } from 'helpers/helpers';
 import {
   RV_API,
+  USERS_API,
   GET_APPLICATIONS,
   REMOVE_APPLICATION,
   RECYCLE_APPLICATION,
@@ -15,6 +16,7 @@ import {
   GET_VARIABLE,
   SET_VARIABLE,
   REMOVE_USER_FROM_APPLICATION,
+  GET_APPLICATION_USERS,
 } from 'constant/apiConstants';
 
 const {
@@ -41,6 +43,7 @@ const removeUserFromApplicationAPI = API_Provider(
   RV_API,
   REMOVE_USER_FROM_APPLICATION
 );
+const getApplicationUsersAPI = API_Provider(USERS_API, GET_APPLICATION_USERS);
 
 /**
  * @description A function (action) that gets NOT archived applications list from server.
@@ -52,10 +55,10 @@ export const getApplications = () => async (dispatch) => {
     getApplicationsAPI.fetch(
       { Archive: false },
       (response) => {
-        if (response.Applications) {
-          const users = response.ApplicationUsers;
+        if (response?.Applications) {
+          const users = response?.ApplicationUsers;
           const appsWithUsers = response.Applications.map((app) => {
-            app.Users = users[app.ApplicationID];
+            app.Users = users[app?.ApplicationID];
             return app;
           });
           dispatch(
@@ -80,14 +83,14 @@ export const getApplications = () => async (dispatch) => {
 export const getArchivedApplications = () => async (dispatch, getState) => {
   const { applications } = getState();
   const userApps = applications.applications.filter(
-    (app) => !['archived-apps', 'add-app'].includes(app.ApplicationID)
+    (app) => !['archived-apps', 'add-app'].includes(app?.ApplicationID)
   );
   try {
     getApplicationsAPI.fetch(
       { Archive: true },
       (response) => {
-        if (response.Applications) {
-          const archives = response.Applications || [];
+        if (response?.Applications) {
+          const archives = response?.Applications || [];
           const archivedList = [{ ApplicationID: 'archived-apps', archives }];
           if (!!archives.length) {
             dispatch(
@@ -121,7 +124,7 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
         } else if (response.Succeed) {
           done && done(appId);
           dispatch(deleteApplication(appId));
-          dispatch(getApplications());
+          // dispatch(getApplications());
         }
       },
       (error) => console.log({ error })
@@ -326,12 +329,11 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
         const orderedIds = (
           window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {}
         ).Order;
-        const orderedApps = orderedIds.map((id) => {
-          const appObject = unorderedApps.find(
-            (app) => app.ApplicationID === id
+        const orderedApps = orderedIds
+          .filter((id) => unorderedApps.some((app) => app.ApplicationID === id))
+          .map(
+            (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
           );
-          return appObject;
-        });
         dispatch(setApplications(orderedApps));
         dispatch(getArchivedApplications());
       },
@@ -375,5 +377,34 @@ export const setApplicationsOrder = (orderedApps, done, error) => async (
   } catch (err) {
     error && error();
     console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that get users of an application from server.
+ * @param {String} appId
+ * @param {String} text
+ * @param {Function} done
+ * @param {Function} error
+ * @returns -Dispatch to redux store.
+ */
+export const getApplicationUsers = (appId, text = '', done, error) => async (
+  dispatch
+) => {
+  try {
+    getApplicationUsersAPI.fetch(
+      {
+        ApplicationID: appId,
+        SearchText: text,
+      },
+      (response) => {
+        done && done(response.Users);
+      },
+      (err) => {
+        error && error(err);
+      }
+    );
+  } catch (err) {
+    error && error(err);
   }
 };

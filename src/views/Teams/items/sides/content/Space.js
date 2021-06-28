@@ -46,10 +46,12 @@ const WorkSpace = ({ space }) => {
             ) : (
               teams.map((team, index) => {
                 return (
-                  <Flipped key={team.ApplicationID} flipId={team.ApplicationID}>
+                  <Flipped
+                    key={team?.ApplicationID}
+                    flipId={team?.ApplicationID}>
                     <DragItem
                       team={team}
-                      key={team.ApplicationID}
+                      key={team?.ApplicationID}
                       index={index}
                       moveCard={moveCard}
                     />
