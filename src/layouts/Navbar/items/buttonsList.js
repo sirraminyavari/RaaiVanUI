@@ -18,7 +18,7 @@ const NavButtons = [
         index: 2,
         title: RVDic.KnowledgeMap,
         icon: 'target',
-        linkTo: getURL('Applications'),
+        linkTo: getURL('Graph'),
       },
     ],
   },
