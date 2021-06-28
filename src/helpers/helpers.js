@@ -1,6 +1,5 @@
 import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
-import { encode, decode } from 'js-base64';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 
@@ -24,7 +23,7 @@ export const getLanguage = () => {
  * @returns {string} UTF-8 string.
  */
 export const decodeBase64 = (string) => {
-  return decode(string);
+  return window.Base64.decode(string);
 };
 
 /**
@@ -32,7 +31,7 @@ export const decodeBase64 = (string) => {
  * @returns {string} Base64 string.
  */
 export const encodeBase64 = (string) => {
-  return encode(string);
+  return window.Base64.encode(string);
 };
 
 /**
