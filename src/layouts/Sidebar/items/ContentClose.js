@@ -12,7 +12,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
-// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -53,30 +53,44 @@ const SidebarOnClose = ({ theme }) => {
     );
   };
 
-  //! Updates scroll position.
-  const handleScroll = () => {
-    const diff =
-      iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
-    const isScrollDown = iconListRef.current.scrollTop === diff;
-    const isScrollUp = iconListRef.current.scrollTop === 0;
-    setIsDown(isScrollDown);
-    setIsUp(isScrollUp);
-    if (isScrollDown) {
-      setScroll(diff);
-    }
-    if (isScrollUp) {
-      setScroll(0);
-    }
+  // //! Updates scroll position.
+  // const handleScroll = () => {
+  //   const diff =
+  //     iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
+  //   const isScrollDown = iconListRef.current.scrollTop === diff;
+  //   const isScrollUp = iconListRef.current.scrollTop === 0;
+  //   setIsDown(isScrollDown);
+  //   setIsUp(isScrollUp);
+  //   if (isScrollDown) {
+  //     setScroll(diff);
+  //   }
+  //   if (isScrollUp) {
+  //     setScroll(0);
+  //   }
+  // };
+
+  // useLayoutEffect(() => {
+  //   iconListRef.current.scrollTo({
+  //     top: scroll,
+  //     left: 0,
+  //     behavior: 'smooth',
+  //   });
+  //   handleScroll();
+  // }, [scroll]);
+  const handleScrollUp = () => {
+    setIsUp(false);
+    setIsDown(false);
   };
 
-  useLayoutEffect(() => {
-    iconListRef.current.scrollTo({
-      top: scroll,
-      left: 0,
-      behavior: 'smooth',
-    });
-    handleScroll();
-  }, [scroll]);
+  const handleScrollStart = () => {
+    setIsUp(true);
+    setIsDown(false);
+  };
+
+  const handleScrollEnd = () => {
+    setIsUp(false);
+    setIsDown(true);
+  };
 
   return (
     <>
@@ -99,15 +113,24 @@ const SidebarOnClose = ({ theme }) => {
           <ChevronIcon dir="up" />
         </Styled.Up>
         <Styled.IconListContainer>
-          <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}>
-            {/* <PerfectScrollbar> */}
+          {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
+          <PerfectScrollbar
+            onYReachStart={handleScrollStart}
+            onYReachEnd={handleScrollEnd}
+            onScrollUp={handleScrollUp}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+            }}>
             {nodes.map((node, key) => {
               const { data, id } = node;
               return (
                 <PopupMenu
                   key={key}
-                  arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
-                  menuStyle="border: 0; padding: 0.4rem 1rem; margin: 1rem; background-color: #333;"
+                  arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 0rem; border: 0;"
+                  menuStyle="border: 0; padding: 0.4rem 1rem; background-color: #333; position: absolute;top: -1rem;width: max-content;"
                   trigger="hover"
                   align={RV_RevFloat}>
                   <div>
@@ -124,8 +147,8 @@ const SidebarOnClose = ({ theme }) => {
                 </PopupMenu>
               );
             })}
-            {/* </PerfectScrollbar> */}
-          </Styled.IconListWrap>
+          </PerfectScrollbar>
+          {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
         <Styled.Down isDown={isDown} onClick={scrollDown}>
           <ChevronIcon dir="down" />
