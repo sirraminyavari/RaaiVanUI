@@ -93,21 +93,21 @@ const FormFilter = (props) => {
               />
             </Styled.FormFilterHeader>
           )}
-          <PerfectScrollBar>
-            <Styled.FiltersWrapper>
-              {filters.map((filter, key) => {
-                return (
-                  <Fragment key={key}>
-                    {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                      FormFilter[filter.Type]({
-                        onChange: handleOnChange,
-                        data: filter,
-                        value: values[filter.ElementID],
-                      })}
-                  </Fragment>
-                );
-              })}
-            </Styled.FiltersWrapper>
+          <PerfectScrollBar style={{ padding: '1.5rem', width: '100%' }}>
+            {/* <Styled.FiltersWrapper> */}
+            {filters.map((filter, key) => {
+              return (
+                <Fragment key={key}>
+                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
+                    FormFilter[filter.Type]({
+                      onChange: handleOnChange,
+                      data: filter,
+                      value: values[filter.ElementID],
+                    })}
+                </Fragment>
+              );
+            })}
+            {/* </Styled.FiltersWrapper> */}
           </PerfectScrollBar>
           <Styled.FilterButtonWrapper>
             <FilterButton
