@@ -377,7 +377,7 @@ const FilterBar = ({
           </ShadowButton>
 
           <CustomDatePicker
-            label=" انتخاب تاریخ جلالی"
+            label={RVDic.SelectDate}
             mode="button"
             type="jalali"
             clearButton
