@@ -54,8 +54,6 @@ const checkNodeCreationAccess = new APIHandler(
 );
 const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 const formElements = new APIHandler('FGAPI', 'GetFormElements');
-const newNodePage = new APIHandler('RVAPI', 'NewNodePageURL');
-const addNode = new APIHandler('CNAPI', 'AddNode');
 
 /**
  *
@@ -68,11 +66,10 @@ const addNode = new APIHandler('CNAPI', 'AddNode');
  * @returns
  */
 const FilterBar = ({
+  nodeType,
   onSearch,
-  onByStatus,
   onByDate,
   onByPeople,
-  onByBookmarked,
   advancedSearch,
   onAdvanecedSearch,
   nodeTypeId,
@@ -80,10 +77,11 @@ const FilterBar = ({
   totalFound,
   hierarchy,
   onForceFetch,
-  nodeType,
   onCreateUrgent,
   onByMe,
   isByMe,
+  onByStatus,
+  onByBookmarked,
 }) => {
   const defaultDropDownLabel = {
     icon: <AddIcon color={'white'} />,
@@ -119,11 +117,24 @@ const FilterBar = ({
   const [peopleHover, setPeopleHover] = useState(false);
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
-  // if true, means the modal for creating urgent subject is open
-  const [isUrgentModalOpen, setUrgentModalOpen] = useState(false);
-  // user inputs for creating urgent subject item.
-  const [urgentInput, setUrgentInput] = useState('');
+
   const selectedApp = useSelector(selectedTeam);
+
+  /**
+   * Gets user access for creating document.
+   * @returns
+   */
+  const getCreationAccess = () =>
+    checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
+      // If the user has access can choose between two items.
+      if (dt.Result) {
+        // setCreationData(data);
+        setMarket(data);
+      } else {
+        setMarket(null);
+      }
+      getOwnerForm();
+    });
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
@@ -160,22 +171,6 @@ const FilterBar = ({
     }
   }, [nodeTypeId]);
 
-  /**
-   * Gets user access for creating document.
-   * @returns
-   */
-  const getCreationAccess = () =>
-    checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
-      // If the user has access can choose between two items.
-      if (dt.Result) {
-        // setCreationData(data);
-        setMarket(data);
-      } else {
-        setMarket(null);
-      }
-      getOwnerForm();
-    });
-
   // Fetchs formElements according to formId that obtained from 'getOwnerForm' and 'nodeTypeId' passed to component
   const getFormElements = (formId) => {
     formElements.fetch(
@@ -185,9 +180,6 @@ const FilterBar = ({
         ConsiderElementLimits: true,
       },
       (result) => {
-        let groupingElements = ((result || {}).Elements || []).filter((e) =>
-          ['Select', 'Binary'].some((i) => i == e.Type)
-        );
         let filters = result && result?.Elements;
         if (filters && filters.length > 0) {
           setAdvancedButton(true);
@@ -249,34 +241,34 @@ const FilterBar = ({
     onByPeople(item);
   };
 
-  const placeHolderText = () => {
-    if (getTypeName() !== '') {
-      return (
-        RVDic.SearchInN.replace(
-          '[n]',
+  // const placeHolderText = () => {
+  //   if (getTypeName() !== '') {
+  //     return (
+  //       RVDic.SearchInN.replace(
+  //         '[n]',
 
-          getTypeName()
-        ) +
-        ' (' +
-        RVDic.Title +
-        ' - ' +
-        RVDic.AdditionalID +
-        ' - ' +
-        RVDic.Keywords +
-        ')'
-      );
-    }
-    return (
-      RVDic.Search +
-      ' (' +
-      RVDic.Title +
-      ' - ' +
-      RVDic.AdditionalID +
-      ' - ' +
-      RVDic.Keywords +
-      ')'
-    );
-  };
+  //         getTypeName()
+  //       ) +
+  //       ' (' +
+  //       RVDic.Title +
+  //       ' - ' +
+  //       RVDic.AdditionalID +
+  //       ' - ' +
+  //       RVDic.Keywords +
+  //       ')'
+  //     );
+  //   }
+  //   return (
+  //     RVDic.Search +
+  //     ' (' +
+  //     RVDic.Title +
+  //     ' - ' +
+  //     RVDic.AdditionalID +
+  //     ' - ' +
+  //     RVDic.Keywords +
+  //     ')'
+  //   );
+  // };
 
   const extendedHierarchy = hierarchy.map((level) => ({
     id: level.NodeTypeID,
@@ -302,6 +294,7 @@ const FilterBar = ({
           }}>
           {nodeType?.IconURL && (
             <img
+              alt={''}
               style={{ height: '3rem', aspectRatio: 1 }}
               src={nodeType?.IconURL}
             />
@@ -384,7 +377,7 @@ const FilterBar = ({
           </ShadowButton>
 
           <CustomDatePicker
-            label=" انتخاب تاریخ جلالی"
+            label={RVDic.SelectDate}
             mode="button"
             type="jalali"
             clearButton

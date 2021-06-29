@@ -4,7 +4,7 @@
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Maintainer,

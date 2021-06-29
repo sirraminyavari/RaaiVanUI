@@ -7,7 +7,8 @@ import InvisibleIcon from 'components/Icons/InVisible';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { LIGHT_BLUE } from 'const/Colors';
+import { GlobalParams } from 'const/GlobalParams';
+import { decode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -15,16 +16,14 @@ import sendVerifyCodeAction from 'store/actions/auth/sendVerifyCodeAction';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import setEmailAction from 'store/actions/auth/setEmailAction';
 import setFamilyAction from 'store/actions/auth/setFamilyAction';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setNameAction from 'store/actions/auth/setNameAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
-import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
-import { decode } from 'js-base64';
 import { Box } from '../AuthView.style';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
-import { GlobalParams, Urls } from 'const/GlobalParams';
+import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 
 const { RVDic, RVGlobal, RV_RTL } = window;
 /**
@@ -304,7 +303,6 @@ const SignUp = () => {
                   : { marginLeft: '1rem', ...common_style }
               }
               shake={familyError && 300}
-              style={common_style}
               id={'family'}
               ref={familyRef}
               enterListener={onFamilyEnter}
@@ -324,6 +322,7 @@ const SignUp = () => {
               <a
                 href={GlobalParams.TermsAndConditionsURL}
                 target="_blank"
+                rel="noreferrer"
                 style={{ color: 'blue' }}>
                 {RVDic.TermsAndConditionsOfN.replace(
                   '[n]',
@@ -350,9 +349,7 @@ const SignUp = () => {
             <ContinueWithGoogle style={{ width: '100%', common_style }} />
             <Button
               type="secondary-o"
-              style={{ fontSize: '1rem' }}
-              style={{ width: '100%' }}
-              style={common_style}
+              style={{ ...common_style, fontSize: '1rem', width: '100%' }}
               onClick={onHaveAccount}>
               {RVDic.AlreadyHaveAnAccount}
             </Button>

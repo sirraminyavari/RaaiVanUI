@@ -11,15 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import loginAction from 'store/actions/auth/loginAction';
 import setEmailAction from 'store/actions/auth/setEmailAction';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
-import OrgDomains from '../elements/OrgDomains';
-import { ToastContainer, toast } from 'react-toastify';
 
 const { RVDic } = window;
 
@@ -27,7 +24,6 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const passRef = useRef();
   const emailRef = useRef();
-  const loginRef = useRef();
 
   const { push } = useHistory();
   // If true, typed password will be visible
@@ -217,9 +213,12 @@ const SignIn = () => {
           />
           <Button
             type="secondary-o"
-            style={{ fontSize: '1rem' }}
             loading={signUpClicked && fetchingFiles}
-            style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
+            style={{
+              marginBottom: '1.5rem',
+              marginTop: '0.5rem',
+              fontSize: '1rem',
+            }}
             onClick={onCreateAccount}>
             {RVDic.CreateAccount}
           </Button>

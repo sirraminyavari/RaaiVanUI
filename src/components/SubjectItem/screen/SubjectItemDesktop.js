@@ -67,7 +67,7 @@ const SubjectItemDesktop = ({
       <Container
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        href={RVAPI.NodePageURL({ NodeID: NodeID })}
+        to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
           <SubjectIcon iconUrl={IconURL} />

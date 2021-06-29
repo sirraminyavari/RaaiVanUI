@@ -3,24 +3,23 @@
  */
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
+import InvisibleIcon from 'components/Icons/InVisible';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import sendResetPsswordLinkAction from 'store/actions/auth/sendResetPsswordLinkAction';
 import sendResetPsswordTicketAction from 'store/actions/auth/sendResetPsswordTicketAction';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import setEmailAction from 'store/actions/auth/setEmailAction';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
-import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
-import InvisibleIcon from 'components/Icons/InVisible';
-import VisibleIcon from 'components/Icons/VisibleIcon';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 
 const { RVDic } = window;
 
@@ -247,10 +246,13 @@ const ForgotPassword = () => {
             />
             <Button
               type="secondary-o"
-              style={{ fontSize: '1rem' }}
               loading={fetchingFiles}
-              style={{ width: '100%' }}
-              style={{ marginTop: '0.5rem', marginBottom: '1.5rem' }}
+              style={{
+                marginTop: '0.5rem',
+                marginBottom: '1.5rem',
+                width: '100%',
+                fontSize: '1rem',
+              }}
               onClick={onCreateAccount}>
               {RVDic.CreateAccount}
             </Button>

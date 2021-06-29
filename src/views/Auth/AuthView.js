@@ -4,28 +4,25 @@
 import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
 import { decode } from 'js-base64';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  useHistory,
-  Switch,
   Redirect,
   Route,
+  Switch,
+  useHistory,
   useLocation,
 } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import Routes from 'routes/AuthRoutes/Auth.routes';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
   BackgroundImage,
-  Box,
   Center,
   Container,
   Maintainer,
   Wrapper,
 } from './AuthView.style';
-import Routes from 'routes/AuthRoutes/Auth.routes';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
-import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * A mother component for containing the login elements.

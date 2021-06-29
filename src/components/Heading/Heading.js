@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { WindowContext } from '../../context/WindowProvider';
+import React from 'react';
 
 /**
  * @typedef props input properties
@@ -33,7 +32,7 @@ const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
 export default Heading;
 
 const resolveValues = ({ type, darkBackground, GlobalUtilities }) => {
-  if (GlobalUtilities.get_type(type) == 'string') type = type.toLowerCase();
+  if (GlobalUtilities.get_type(type) === 'string') type = type.toLowerCase();
 
   const dic = {
     h1: { class: 'rv-warm', size: '1.4rem', weight: 'bold' },

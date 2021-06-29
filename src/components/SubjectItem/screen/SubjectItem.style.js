@@ -1,8 +1,9 @@
 import { CV_DISTANT } from 'constant/CssVariables';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-export const Container = styled.a`
+export const Container = styled(Link)`
   border-radius: 0.75rem;
   display: flex;
   height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
