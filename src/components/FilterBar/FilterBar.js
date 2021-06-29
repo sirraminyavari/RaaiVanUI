@@ -2,7 +2,7 @@
  * A component for applying the simple search tools.
  */
 import APIHandler from 'apiHelper/APIHandler';
-import Button from 'components/Buttons/Button';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
 import Heading from 'components/Heading/Heading';
@@ -16,16 +16,14 @@ import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import Search from 'components/Icons/SearchIcon/Search';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import Modal from 'components/Modal/Modal';
+import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import { decodeBase64 } from 'helpers/helpers';
-import { decode, encode } from 'js-base64';
+import { decode } from 'js-base64';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
-import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 
 const selectedTeam = createSelector(
   (state) => state.theme,
@@ -138,7 +136,6 @@ const FilterBar = ({
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
-    console.log(nodeType, 'nodeType***!!!', nodeTypeId);
     if (nodeTypeId) {
       getCreationAccess();
 
@@ -188,8 +185,6 @@ const FilterBar = ({
         ConsiderElementLimits: true,
       },
       (result) => {
-        console.log(result, 'result***');
-
         let groupingElements = ((result || {}).Elements || []).filter((e) =>
           ['Select', 'Binary'].some((i) => i == e.Type)
         );
@@ -243,22 +238,10 @@ const FilterBar = ({
   const onTextSearch = (value) => {
     setSearchText(value);
   };
-  // will fire if user choose create urgent.
-  // const onCreateUrgent = () => {
-  //   setUrgentModalOpen(false);
-  //   addNode.fetch(
-  //     { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
-  //     (response) => {
-  //       setUrgentInput('');
-  //       console.log(response, 'response');
-  //       onForceFetch();
-  //     }
-  //   );
-  // };
   const onAdvancedFilterClick = () => {
     setTimeout(() => {
       onAdvanecedSearch(!advancedSearch);
-    }, 500);
+    }, 0);
   };
 
   const onPeople = (item) => {
@@ -502,30 +485,6 @@ const FilterBar = ({
           )}
         </div>
       </BottomRow>
-      <div
-        style={{
-          display: 'flex',
-          width: '80vw',
-          backgroundColor: 'red',
-        }}>
-        {/* <Modal
-          contentWidth="50%"
-          onClose={() => setUrgentModalOpen(false)}
-          show={isUrgentModalOpen}>
-          <AnimatedInput
-            placeholder={RVDic.Title}
-            value={urgentInput}
-            onChange={setUrgentInput}
-          />
-          <Button
-            disable={!urgentInput}
-            onClick={onCreateUrgent}
-            style={{ margin: '2rem' }}
-            type={'primary'}>
-            {RVDic.Confirm}
-          </Button>
-        </Modal> */}
-      </div>
     </Container>
   );
 };

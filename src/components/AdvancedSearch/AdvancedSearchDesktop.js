@@ -1,22 +1,17 @@
 /**
  * A component for advanced searching
  */
-import React, { useState, Component, cloneElement, useEffect } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
+import React, { Component, useState } from 'react';
 import {
   Container,
   Maintainer,
   SideFilter,
-  TopFilter,
   Space,
-  UrgentInput,
+  TopFilter,
 } from './AdvancedSearch.style';
-import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
-import AnimatedInput from 'components/Inputs/AnimatedInput';
-import Button from 'components/Buttons/Button';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UrgentCreate from './items/UrgentCreate';
 
 const { RVDic } = window;
@@ -26,7 +21,6 @@ const { RVDic } = window;
  * @param {String} nodeTypeId - required for fetching node list
  */
 const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
-  console.log(nodeType, 'nodeType');
   const nodeTypeId = nodeType?.NodeTypeID;
   const { RV_RTL, RV_RevFloat } = useWindow();
   // if has a char, will find it.
@@ -78,17 +72,19 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const onCreateUrgent = () => {
     setUrgentCreate(!urgentCreate);
   };
-  const onByMe = () => {
-    setIsByMe(!isByMe);
+  const onByMe = (e) => {
+    setIsByMe(e);
   };
   const onByPeople = (item) => {
-    console.log(item, 'on by people');
     setIsByMe(false);
 
     setByPeople(item);
   };
   return (
-    <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
+    <Container
+      isAdvancedShow={isAdvancedSearch}
+      className={'rv-bg-color-white'}
+      RV_RTL={RV_RTL}>
       <Maintainer
         isAdvancedShow={isAdvancedSearch}
         className={'rv-bg-color-light-gray'}
@@ -121,7 +117,6 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             dataFetched={totalFound}
             nodeType={nodeType}
           />
-          {console.log(totalFound, 'totlFound')}
 
           {React.cloneElement(children, {
             searchText: searchText,
@@ -148,7 +143,7 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           rtl={RV_RTL}>
           {isAdvancedSearch && formElements && (
             <FormFilter
-              formName="$فیلترهای پیشرفته"
+              formName={RVDic.AdvancedFilters}
               filters={formElements}
               onFilter={normalizeSearchElements}
               onCloseFilter={() => setIsAdvancedSearch(false)}

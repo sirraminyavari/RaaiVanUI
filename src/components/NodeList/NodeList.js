@@ -35,7 +35,6 @@ const NodeList = ({
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
-    console.log(byPeople, 'byPeople', isByMe);
     setExtraData(!extraData);
   }, [
     isByMe,
