@@ -25,6 +25,7 @@ const {
   addApplication,
   setFetchingApps,
   setSelectingApp,
+  setArchivedApplications,
 } = ApplicationsSlice.actions;
 
 const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
@@ -61,12 +62,8 @@ export const getApplications = () => async (dispatch) => {
             app.Users = users[app?.ApplicationID];
             return app;
           });
-          dispatch(
-            getApplicationsOrder([
-              ...appsWithUsers,
-              { ApplicationID: 'add-app' },
-            ])
-          );
+          dispatch(getApplicationsOrder(appsWithUsers));
+          dispatch(getArchivedApplications());
         }
       },
       (error) => console.log({ error })
@@ -80,26 +77,15 @@ export const getApplications = () => async (dispatch) => {
  * @description A function (action) that gets archived applications list from server.
  * @returns -Dispatch to redux store.
  */
-export const getArchivedApplications = () => async (dispatch, getState) => {
-  const { applications } = getState();
-  const userApps = applications.applications.filter(
-    (app) => !['archived-apps', 'add-app'].includes(app?.ApplicationID)
-  );
+export const getArchivedApplications = () => async (dispatch) => {
   try {
     getApplicationsAPI.fetch(
       { Archive: true },
       (response) => {
         if (response?.Applications) {
           const archives = response?.Applications || [];
-          const archivedList = [{ ApplicationID: 'archived-apps', archives }];
           if (!!archives.length) {
-            dispatch(
-              setApplications([
-                ...userApps,
-                ...archivedList,
-                { ApplicationID: 'add-app' },
-              ])
-            );
+            dispatch(setArchivedApplications(archives));
           }
         }
       },
@@ -114,7 +100,11 @@ export const getArchivedApplications = () => async (dispatch, getState) => {
  * @description A function (action) that removes an application from server.
  * @returns -Dispatch to redux store.
  */
-export const removeApplication = (appId, done, error) => async (dispatch) => {
+export const removeApplication = (appId, done, error) => async (
+  dispatch,
+  getState
+) => {
+  const { applications } = getState();
   try {
     removeApplicationAPI.fetch(
       { ApplicationID: appId },
@@ -123,8 +113,13 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
           done && done(appId);
-          dispatch(deleteApplication(appId));
-          dispatch(getApplications());
+          const newApps = applications.userApps.filter(
+            (app) => app.ApplicationID !== appId
+          );
+          dispatch(deleteApplication(newApps));
+          dispatch(setApplicationsOrder(newApps));
+          // dispatch(getApplications());
+          dispatch(getArchivedApplications());
         }
       },
       (error) => console.log({ error })
@@ -139,14 +134,21 @@ export const removeApplication = (appId, done, error) => async (dispatch) => {
  * @returns -Dispatch to redux store.
  */
 export const recycleApplication = (appId, done, refresh = true) => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
+  const { applications } = getState();
   try {
     recycleApplicationAPI.fetch(
       { ApplicationID: appId },
       (response) => {
         if (response.Succeed) {
           done && done(response);
+          // console.log(response);
+          const newArchivedApps = applications.userArchivedApps.filter(
+            (app) => app.ApplicationID !== appId
+          );
+          dispatch(setArchivedApplications(newArchivedApps));
           refresh && dispatch(getApplications());
         }
       },
@@ -161,7 +163,11 @@ export const recycleApplication = (appId, done, refresh = true) => async (
  * @description A function (action) that creates a new application.
  * @returns -Dispatch to redux store.
  */
-export const createApplication = (title, done, error) => async (dispatch) => {
+export const createApplication = (title, done, error) => async (
+  dispatch,
+  getState
+) => {
+  const { applications } = getState();
   try {
     createApplicationAPI.fetch(
       { Title: encodeBase64(title) },
@@ -170,10 +176,12 @@ export const createApplication = (title, done, error) => async (dispatch) => {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
           done && done(response);
-          const app = response.Application;
+          const createdApp = response.Application;
           const appUsers = response.ApplicationUsers;
-          app.Users = appUsers;
-          dispatch(addApplication(app));
+          createdApp.Users = appUsers;
+          const newApps = [...applications.userApps, createdApp];
+          dispatch(addApplication(newApps));
+          dispatch(setApplicationsOrder(newApps));
         }
       },
       (error) => console.log({ error })
@@ -329,13 +337,19 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
         const orderedIds = (
           window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {}
         ).Order;
+        // console.log(orderedIds);
+        // console.log(unorderedApps);
         const orderedApps = orderedIds
           .filter((id) => unorderedApps.some((app) => app.ApplicationID === id))
           .map(
             (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
           );
-        dispatch(setApplications(orderedApps));
-        dispatch(getArchivedApplications());
+
+        const extraApps = unorderedApps.filter(
+          (app) => !orderedIds.some((id) => app.ApplicationID === id)
+        );
+        dispatch(setApplications([...orderedApps, ...extraApps]));
+        // dispatch(setApplicationsOrder(unorderedApps));
       },
       (error) => console.log({ error })
     );
@@ -354,11 +368,9 @@ export const setApplicationsOrder = (orderedApps, done, error) => async (
   const sortVariableName = `ApplicationsOrder_${
     ((window.RVGlobal || {}).CurrentUser || {}).UserID
   }`;
-  const userAppIds = orderedApps
-    .filter((app) => !['archived-apps', 'add-app'].includes(app.ApplicationID))
-    .map((app) => app.ApplicationID);
-
+  const userAppIds = orderedApps.map((app) => app.ApplicationID);
   const sortVariableValue = encodeBase64(JSON.stringify({ Order: userAppIds }));
+
   try {
     setApplicationsOrderAPI.fetch(
       {

@@ -20,11 +20,11 @@ const ArchivedModal = (props) => {
   } = props;
 
   const onRecycleDone = (message) => {
-    console.log(message);
+    // console.log(message);
   };
 
   const recycleTeam = (teamId) => {
-    dispatch(recycleApplication(teamId, onRecycleDone, false));
+    dispatch(recycleApplication(teamId, onRecycleDone, true));
   };
 
   return (
@@ -37,7 +37,7 @@ const ArchivedModal = (props) => {
       show={isOpen}
       onClose={onModalClose}>
       <Styled.ModalContentWrapper onScroll={(e) => console.log(e)}>
-        {archives.map((archive, index, self) => {
+        {archives?.map((archive, index, self) => {
           return (
             <Fragment key={archive.ApplicationID}>
               <Styled.ArchivedTeamWrapper>

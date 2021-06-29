@@ -35,6 +35,13 @@ export const SET_THEME = 'SetTheme';
  */
 export const GET_APPLICATION_USERS = 'GetApplicationUsers';
 
+/**
+ * @description 'InviteUser'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const INVITE_USER = 'InviteUser';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
