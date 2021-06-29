@@ -13,12 +13,13 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
-  const { RV_RevFloat, RVDic } = useWindow();
+  const { RV_Float, RVDic } = useWindow();
 
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
@@ -95,18 +96,16 @@ const SidebarOnClose = ({ theme }) => {
   return (
     <>
       <Styled.SidebarTitle>
-        <PopupMenu
-          arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
-          menuStyle="border: 0; padding: 0.3rem 1rem; margin: 1rem; background-color: #333;"
-          trigger="hover"
-          align={RV_RevFloat}>
-          <div>
-            <Styled.SettingWrapper onClick={handleOnClick}>
-              <SettingIcon size={22} />
-            </Styled.SettingWrapper>
-          </div>
-          <div style={{ fontSize: '0.9rem' }}>{RVDic.Settings}</div>
-        </PopupMenu>
+        <Tooltip
+          tipId="sidebar-setting-icon"
+          place={RV_Float}
+          renderContent={() => (
+            <div style={{ fontSize: '0.9rem' }}>{RVDic.Settings}</div>
+          )}>
+          <Styled.SettingWrapper onClick={handleOnClick}>
+            <SettingIcon size={22} />
+          </Styled.SettingWrapper>
+        </Tooltip>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
         <Styled.Up isUp={isUp} onClick={scrollUp}>
@@ -127,24 +126,20 @@ const SidebarOnClose = ({ theme }) => {
             {nodes.map((node, key) => {
               const { data, id } = node;
               return (
-                <PopupMenu
+                <Tooltip
                   key={key}
-                  arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 0rem; border: 0;"
-                  menuStyle="border: 0; padding: 0.4rem 1rem; background-color: #333; position: absolute;top: -1rem;width: max-content;"
-                  trigger="hover"
-                  align={RV_RevFloat}>
-                  <div>
-                    <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
-                      {data.iconURL && (
-                        <Styled.MenuItemImage
-                          src={data.iconURL}
-                          alt="sidebar-icon-closed"
-                        />
-                      )}
-                    </Styled.MiniIconWrapper>
-                  </div>
-                  <div>{data.title}</div>
-                </PopupMenu>
+                  tipId={id}
+                  place={RV_Float}
+                  renderContent={() => data.title}>
+                  <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
+                    {data.iconURL && (
+                      <Styled.MenuItemImage
+                        src={data.iconURL}
+                        alt="sidebar-icon-closed"
+                      />
+                    )}
+                  </Styled.MiniIconWrapper>
+                </Tooltip>
               );
             })}
           </PerfectScrollbar>

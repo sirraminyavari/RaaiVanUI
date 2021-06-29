@@ -344,6 +344,12 @@ export const TeamTitle = styled.div.attrs({
   font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 500;
+  .inline-edit-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
 `;
 
 export const TeamExcerpt = styled.div.attrs({

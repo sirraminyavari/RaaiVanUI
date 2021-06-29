@@ -355,7 +355,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             </div>
             {isEditable ? (
               <Styled.TeamTitle>
-                <InlineEdit text={appTitle} onSetText={handleEditTeam} />
+                <InlineEdit
+                  text={appTitle}
+                  onSetText={handleEditTeam}
+                  textClasses="inline-edit-truncate"
+                />
               </Styled.TeamTitle>
             ) : (
               <Styled.TeamTitle>{appTitle}</Styled.TeamTitle>

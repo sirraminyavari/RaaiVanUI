@@ -6,6 +6,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -14,7 +15,7 @@ const selectIsSidebarOpen = createSelector(
 
 const ManageButton = () => {
   const dispatch = useDispatch();
-  const { RVDic } = useWindow();
+  const { RVDic, RV_Float } = useWindow();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const { setSidebarContent, toggleSidebar } = themeSlice.actions;
   const { closeOpenMenus } = sidebarMenuSlice.actions;
@@ -33,9 +34,16 @@ const ManageButton = () => {
     <Styled.FooterButton
       className={`${isSidebarOpen && 'WarmBorder'}  BorderRadius4 `}
       onClick={handleManageButton}>
-      <Styled.FooterIconWrapper>
-        <EditIcon size={20} />
-      </Styled.FooterIconWrapper>
+      <Tooltip
+        tipId="sidebar-footer-icon"
+        place={RV_Float}
+        effect="solid"
+        disable={isSidebarOpen}
+        renderContent={() => RVDic.TemplateManagement}>
+        <Styled.FooterIconWrapper>
+          <EditIcon size={20} />
+        </Styled.FooterIconWrapper>
+      </Tooltip>
       <Styled.FooterTitle>{RVDic.TemplateManagement}</Styled.FooterTitle>
     </Styled.FooterButton>
   );
