@@ -6,7 +6,10 @@ import Heading from 'components/Heading/Heading';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import React, { useEffect, useRef, useState } from 'react';
 import { Component } from 'react';
+import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 
+const { RVDic } = window;
 /**
  *
  * @param {function} fetchMethod - the method that component uses to fetch list.
@@ -35,10 +38,7 @@ const SimpleListViewer = ({
 
   const container = useRef();
 
-  // At the first time that the component mounts, fetches data
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, true);
-
+  const fetchThem = () => {
     setIsFetching(true);
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
@@ -49,9 +49,16 @@ const SimpleListViewer = ({
         onTotal(total);
       }
     });
+  };
+
+  // At the first time that the component mounts, fetches data
+  useEffect(() => {
+    // window.addEventListener('scroll', handleScroll, true);
+
+    fetchThem();
 
     return () => {
-      window.removeEventListener('scroll', handleScroll, true);
+      // window.removeEventListener('scroll', handleScroll, true);
     };
   }, []);
 
@@ -87,17 +94,8 @@ const SimpleListViewer = ({
 
   // forces to fetch list again
   useEffect(() => {
-    setIsFetching(true);
     setData([]);
-
-    fetchMethod(pageSize, 1, (data, total, nodeTypeId) => {
-      if (data) {
-        setData(data);
-        setTotal(total);
-        setIsFetching(false);
-        onTotal(total);
-      }
-    });
+    fetchThem();
   }, [extraData]);
 
   // fetches more data if is available
@@ -116,14 +114,48 @@ const SimpleListViewer = ({
     const lastScrollY = window.scrollY;
     const screenY = window.screenY;
     const elementHeight = container.current?.clientHeight;
-
+    console.log(
+      lastScrollY,
+      'lastScrollY',
+      elementHeight,
+      'elementHeight',
+      screenY,
+      'screenY'
+    );
     if (
       elementHeight - lastScrollY < 500 &&
       infiniteLoop &&
       scrollDir === 'scrolling down' &&
-      !isFetching
+      !isFetching &&
+      data.length > 0 &&
+      data.length < total
     ) {
       // fetchMore();
+    }
+  };
+  //   onscrollend: function (element, params, done) {
+  //     if (typeof (element) != "object") element = document.getElementById(element);
+  //     params = params || {};
+  //     if (GlobalUtilities.get_type(done) != "function") return;
+
+  //     var _offset = +(params.Offset ? params.Offset : 0);
+  //     if (isNaN(_offset) || _offset < 0) _offset = 0;
+
+  //     if (element === document || element === window || element === document.body)
+  //         return jQuery(window).scroll(function () { if (jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height() - _offset) done(); });
+
+  //     jQuery(element).bind('scroll', function () {
+  //         var scrollTop = jQuery(this).scrollTop();
+  //         var scrollPosition = scrollTop + jQuery(this).outerHeight();
+  //         var divTotalHeight = GlobalUtilities.total_height(element);
+
+  //         if ((params.Top && scrollTop >= 0 && scrollTop <= _offset) || (!params.Top && scrollPosition >= (divTotalHeight - _offset))) done();
+  //     });
+  // },
+  const onEndReached = () => {
+    if (!isFetching && data.length > 0 && data.length < total) {
+      fetchMore();
+      console.log(total, 'on End Reached***', isFetching, data.length);
     }
   };
 
@@ -139,23 +171,34 @@ const SimpleListViewer = ({
       {isFetching && data.length === 0 ? (
         <LogoLoader />
       ) : data && data.length > 0 && renderItem ? (
-        <div style={{ width: '100%' }} ref={container} onScroll={handleScroll}>
-          {data.map((x, index) => (
-            <div key={index}>{renderItem(x, index)}</div>
-          ))}
+        <div style={{ width: '100%' }} ref={container}>
+          <PerfectScrollBar onYReachEnd={onEndReached}>
+            {data.map((x, index) => (
+              <div key={index}>{renderItem(x, index)}</div>
+            ))}
+          </PerfectScrollBar>
         </div>
       ) : (
         <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>
       )}
-
-      {data.length > 0 && data.length < total && (
-        <Button
-          loading={isFetching}
-          disable={isFetching}
-          onClick={fetchMore}
-          style={{ maxWidth: '30%', alignSelf: 'center' }}>
-          {'بیشتر'}
-        </Button>
+      {infiniteLoop && isFetching && data.length > 0 ? (
+        <>
+          <span style={{ color: 'transparent' }}>1</span>
+          <LoadingIconFlat className={'rv-default'} />
+          <span style={{ color: 'transparent' }}>1</span>
+        </>
+      ) : (
+        <>
+          {data.length > 0 && data.length < total && (
+            <Button
+              loading={isFetching || infiniteLoop}
+              disable={isFetching}
+              onClick={fetchMore}
+              style={{ maxWidth: '30%', alignSelf: 'center' }}>
+              {RVDic.More}
+            </Button>
+          )}
+        </>
       )}
     </div>
   );
