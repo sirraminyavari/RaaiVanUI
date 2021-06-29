@@ -11,11 +11,6 @@ import AdvanceSearchMobile from './AdvanceSearchMobile';
  * @param {any} -  the all component props.
  */
 const AdvanceSearch = ({ ...props }) => {
-  console.log(
-    props?.hierarchy,
-    'advancedSearch render' + new Date().getTime(),
-    props?.nodeType
-  );
   return (
     <>
       {/* If True, will render MobileView component */}

@@ -1,29 +1,24 @@
 import APIHandler from 'apiHelper/APIHandler';
-import Button from 'components/Buttons/Button';
-import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import Heading from 'components/Heading/Heading';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
-import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
+import Toggle from 'components/Toggle/Toggle';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import React, { useEffect, useRef, useState } from 'react';
 import PeopleItem from './PeopleItem';
 import {
-  Apply_Picked,
   Container,
+  JustMeSaved,
   PeopleBody,
   PeopleList,
-  PickedList,
-  JustMeSaved,
-  SearchInput,
   ResetContainer,
+  SearchInput,
 } from './PepolePicker.style';
-import PickedPeopleItem from './PickedPeopleItem';
 
 const { RVDic, RV_RTL } = window;
 
@@ -33,16 +28,14 @@ const PeoplePicker = ({
   buttonComponent,
   onByMe,
   onByPeople,
-  isByMe,
+  isByMe = false,
   pickedPeople,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [peopleList, setPeopleList] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [choosedPeople, setChoosedPeople] = useState([]);
-  const [isJustMe, setIsJustMe] = useState(false);
 
   const pickerRef = useRef();
 
@@ -68,8 +61,6 @@ const PeoplePicker = ({
     fetchUsers();
   }, []);
 
-  useEffect(() => {}, [choosedPeople]);
-
   const onChoose = (item) => {
     onByPeople && onByPeople(item);
     setPickerVisible(false);
@@ -94,8 +85,6 @@ const PeoplePicker = ({
         LowerBoundary: lowerBoundary,
       },
       (response) => {
-        console.log(response, 'response');
-
         const users = response.Users.map((user) => ({
           id: user?.UserID,
           name: decodeBase64(user?.FullName),
@@ -103,10 +92,8 @@ const PeoplePicker = ({
         }));
         //   resolve(users);
         if (done) {
-          console.log(done, 'done');
           done(users);
         }
-        setPeopleList(users);
         setIsFetching(false);
       },
       (error) => {
@@ -118,18 +105,19 @@ const PeoplePicker = ({
   const onFetchAgain = () => {
     setExtraData(!extraData);
   };
-  const onJustMe = (e) => {
-    console.log(e, 'setIsJustMe');
-    setIsJustMe(e);
-  };
+
   const onInput = (event) => {
     setSearchInput(event?.target?.value);
+  };
+  const onByMeSelect = (e) => {
+    console.log(e, 'eeee');
+    onByMe(e);
   };
 
   return (
     <Container ref={pickerRef}>
       {/* {buttonComponent} */}
-      {isFetching ? (
+      {isFetching && isPickerVisible ? (
         <LogoLoader />
       ) : (
         React.cloneElement(buttonComponent, { onClick: onPicker })
@@ -139,7 +127,7 @@ const PeoplePicker = ({
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
         <ResetContainer>
-          <Heading type={'H6'}>{RVDic.ResetPassword}</Heading>
+          <Heading type={'H6'}>{RVDic.Reset}</Heading>
           <UndoIcon
             style={{
               cursor: 'pointer',
@@ -190,11 +178,13 @@ const PeoplePicker = ({
             />
           }
         />
-        {console.log(isByMe, 'isByMe')}
         <JustMeSaved>
-          <Heading type={'H6'}>{'فقط آن چه من ثبت کرده ام'}</Heading>
-
-          <ToggleButton onToggle={onByMe} initialCheck={!!isByMe} />
+          <Toggle
+            isChecked={isByMe}
+            onToggle={onByMeSelect}
+            titleClass={'rv-warm'}
+            title={'فقط آن چه من ثبت کرده ام'}
+          />
         </JustMeSaved>
         <PeopleList>
           <PerfectScrollBar>

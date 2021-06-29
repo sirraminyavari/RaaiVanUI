@@ -18,7 +18,7 @@ const loggedInAction = (result) => (dispatch, getState) => {
   window.isAuthenticated = true;
   RVAPI.LoggedIn();
   GlobalUtilities.set_auth_cookie(AuthCookie);
-
+  GlobalUtilities.hide_recaptcha();
   // It's needed for pure js, maybe removed in future.
   const callback = () => {
     window.location.href = auth.Options.ReturnURL || window.location.href;

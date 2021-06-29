@@ -17,6 +17,7 @@ export const PeopleBody = styled.div`
   box-shadow: 1px 3px 20px ${CV_DISTANT};
   padding: 0rem 0.75rem 0rem 0.75rem;
   min-width: 12.5rem;
+  z-index: 100;
 `;
 export const Apply_Picked = styled.div`
   display: flex;
