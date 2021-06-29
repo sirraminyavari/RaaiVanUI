@@ -1,60 +1,48 @@
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
+
+export const Fixer = styled.div`
+  background-color: green;
+  overflow: scroll;
+`;
+
 export const Container = styled.div`
   display: flex;
   ${({ RV_RTL }) =>
     RV_RTL ? 'flex-direction:row' : 'flex-direction:row-reverse'}
   width: 100%;
-  min-height: 100%;
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
+  overflow: scroll;
 `;
 export const Maintainer = styled.div`
   width: calc(
-    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 27rem' : '100%')}
+    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
-  /* min-width: ${({ fullWidth }) => (fullWidth ? '65%' : '95%')}; */
-
-  min-height: calc(100vh - 2rem);
+  top: 7rem;
+  left: calc(${({ isAdvancedShow }) => (isAdvancedShow ? ' 25rem' : '2rem')});
+  height: calc(100vh - 5rem);
+  bottom: 2rem;
+  max-height: 100%;
   margin-right: 1rem;
-  margin-bottom: 1rem;
-
-  /* align-items: center;
-  display: flex;
-  flex-direction: column; */
-  transition: min-width 0.5s, width 0.5s;
+  overflow: scroll;
+  transition: min-width 0.5s, width 0.5s, left 0.5s;
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;
 `;
 export const SideFilter = styled.div`
-  // display: flex;
-  // overflow-y: auto;
-  // max-width: ${({ $isEnabled }) => ($isEnabled ? '30%' : '0')};
-  // background-color: white;
-  // box-shadow: 1px 3px 20px #ababab;
-  // border-radius: 1rem;
-  // margin-right: 1rem;
-  // transition: max-width 0.5s;
-  // max-height: 90vh;
-  // align-items: flex-start;
-  // justify-content: center;
-  /* width: 25rem; */
-
   position: fixed;
-  top: 5rem;
+  top: 7rem;
   ${({ dir }) => dir}: 0;
-  height: calc(100vh - 5.5rem);
+  height: calc(100vh - 5rem);
   padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
   transition: width 0.5s, opacity 0.5s;
-
-  // min-width: 25rem;
 `;
 export const Space = styled.div`
-  /* width: 25rem; */
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
   ${({ dir }) => dir}: 0;
   height: 1rem;
