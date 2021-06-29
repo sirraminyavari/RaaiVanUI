@@ -10,7 +10,7 @@ export const Container = styled.a`
   background-color: white;
   margin: 3px;
   justify-content: space-between;
-  border-width: 0.1rem;
+  border-width: 0.2rem;
   border-style: solid;
   max-width: 100%;
   width: 100%;
@@ -18,6 +18,7 @@ export const Container = styled.a`
   :hover {
     border-width: 0.2rem;
     border-color: ${CV_DISTANT};
+    height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
   }
 `;
 export const IconContent = styled.div`

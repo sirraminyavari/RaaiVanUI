@@ -65,7 +65,7 @@ const NodeList = ({
         if (response.Nodes) {
           // setDataCount(response.TotalCount);
 
-          const nodeIds = response.Nodes.map((x) => x.NodeID);
+          const nodeIds = response?.Nodes.map((x) => x?.NodeID);
           nodeIds.join('|');
           // method for fetching the  complementary info about each node
           getNodeInfoAPI.fetch(
@@ -79,8 +79,10 @@ const NodeList = ({
               LikeStatus: true,
             },
             (restInfo) => {
-              const complementeryNodes = response.Nodes.map((x) => {
-                const foundedNode = restInfo.find((y) => y.NodeID === x.NodeID);
+              const complementeryNodes = response?.Nodes.map((x) => {
+                const foundedNode = restInfo?.find(
+                  (y) => y.NodeID === x.NodeID
+                );
                 return {
                   ...x,
                   ...foundedNode,
@@ -90,8 +92,8 @@ const NodeList = ({
                 done(complementeryNodes, response.TotalCount, nodeTypeId);
                 setBookmarkedList(
                   complementeryNodes
-                    .filter((x) => x.LikeStatus)
-                    .map((y) => y.NodeID)
+                    ?.filter((x) => x.LikeStatus)
+                    ?.map((y) => y.NodeID)
                 );
               }
             },

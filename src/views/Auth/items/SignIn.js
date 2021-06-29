@@ -66,7 +66,7 @@ const SignIn = () => {
       setSignUpClicked(false);
       setSignInClicked(false);
       setForgotPassClicked(false);
-      dispatch(setLoginRouteAction(null));
+      // dispatch(setLoginRouteAction(null));
     };
   }, []);
   //First checks 'sign up' button is clicked or not, then checks routeHistory.
@@ -96,15 +96,6 @@ const SignIn = () => {
    * Sends email & password to server by dispatching 'loginAction'
    */
   const onSignIn = () => {
-    // toast('🦄 Wow so easy!', {
-    //   position: 'top-right',
-    //   autoClose: 5000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    // });
     passRef.current?.blur();
     setSignInClicked(true);
     dispatch(loginAction({ email: email, password: password }));
