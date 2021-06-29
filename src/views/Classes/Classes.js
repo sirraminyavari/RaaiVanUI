@@ -1,7 +1,6 @@
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
 import { useEffect } from 'react';
-import styled from 'styled-components';
 
 const AdvancedSearchView = (props) => {
   const { route } = props;
@@ -24,9 +23,3 @@ const AdvancedSearchView = (props) => {
 };
 
 export default AdvancedSearchView;
-
-const Container = styled.div`
-  background-color: red;
-  height: 100vh;
-  position: fixed;
-`;

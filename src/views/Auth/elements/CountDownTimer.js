@@ -45,7 +45,8 @@ const CountDownTimer = ({ onFinished, ...props }) => {
         setTimerStarted(true);
       }, 1000);
     } else {
-      setStringTime('00' + ':' + '00');
+      const stringTime = '00' + ':' + '00';
+      setStringTime(stringTime);
       timerStarted && onFinished();
     }
   }, [timer]);
@@ -77,18 +78,4 @@ const Maintainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-`;
-const Indicator = styled.div`
-  display: flex;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: green;
-  background-image:
-        /* 10% = 126deg = 90 + ( 360 * .1 ) */ linear-gradient(
-      126deg,
-      transparent 50%,
-      white 50%
-    ),
-    linear-gradient(180deg, white 50%, transparent 50%);
 `;

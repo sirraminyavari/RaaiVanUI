@@ -48,7 +48,7 @@ const LastLoginsModal = ({ isVisible }) => {
             <Row key={index}>
               <div>{index + 1}.</div>
               <RowItem flex={1}>
-                {x?.Action == 'Login' ? RVDic.Login : RVDic.FailedLogin}
+                {x?.Action === 'Login' ? RVDic.Login : RVDic.FailedLogin}
               </RowItem>
               <RowItem flex={2}>{x?.Date}</RowItem>
               <RowItem flex={2}>{x?.HostAddress}</RowItem>

@@ -9,9 +9,7 @@ import Cookies from 'js-cookie';
 
 const Logo = () => {
   // Access to logo src.
-  const { RVGlobal } = window;
   // Defines project is enterprise or not.
-  const isSaas = RVGlobal?.SAASBasedMultiTenancy;
 
   const lang = Cookies.get('rv_lang'); // => 'value'
 

@@ -43,7 +43,7 @@ export default Button;
 
 const resolveClass = ({ type, disable }) => {
   if (disable) type = 'disabled';
-  if (GlobalUtilities.get_type(type) == 'string') type = type.toLowerCase();
+  if (GlobalUtilities.get_type(type) === 'string') type = type.toLowerCase();
 
   const dic = {
     disabled: 'rv-action-button-disabled',

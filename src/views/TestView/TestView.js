@@ -1,17 +1,10 @@
-import { useState, lazy } from 'react';
-import AutoSuggestInput from 'components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import APIHandler from 'apiHelper/APIHandler';
-import { decode } from 'js-base64';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
-import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
-import styled from 'styled-components';
-import EditorJS from '@editorjs/editorjs';
-import ReactDOM from 'react-dom';
-import { Editor, EditorState } from 'draft-js';
+import { EditorState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
-import MainEditor from 'components/Editor/MainEditor';
-import NodeList from 'components/NodeList/NodeList';
-import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
+import { decode } from 'js-base64';
+import { lazy, useState } from 'react';
+import styled from 'styled-components';
 
 const Modal = lazy(() =>
   import(/* webpackChunkName: "autosuggest-modal" */ 'components/Modal/Modal')
