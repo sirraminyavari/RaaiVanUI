@@ -91,7 +91,6 @@ const steps = [
     },
     position: 'top',
   },
-  // ...
 ];
 
 export default ProductTour;
