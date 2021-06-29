@@ -9,7 +9,12 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import {
+  decodeBase64,
+  getURL,
+  encodeBase64,
+  API_Provider,
+} from 'helpers/helpers';
 import DeleteConfirm from 'components/Modal/Confirm';
 import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
@@ -32,20 +37,30 @@ import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import Modal from 'components/Modal/Modal';
 import { CV_DISTANT, CV_FREEZED, CV_RED } from 'constant/CssVariables';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
+import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import Button from 'components/Buttons/Button';
+import AnimatedInpit from 'components/Inputs/AnimatedInput';
 
 const selectingApp = createSelector(
   (state) => state.applications,
   (applications) => applications.selectingApp
 );
 
+const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
+
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL, GlobalUtilities } = useWindow();
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
+  const [isInviteShown, setIsInviteShown] = useState(false);
+  const [inviteName, setInviteName] = useState('');
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteMessage, setInviteMessage] = useState('');
+  const [isInviteActive, setInviteActive] = useState(false);
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -63,6 +78,14 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
   const [users, setUsers] = useState(usersList);
+
+  useEffect(() => {
+    if (!!inviteName && !!inviteEmail) {
+      setInviteActive(true);
+    } else {
+      setInviteActive(false);
+    }
+  }, [inviteName, inviteEmail]);
 
   const handleEditTeam = (title) => {
     setAppTitle(title);
@@ -146,12 +169,53 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsModalShown(false);
   };
 
+  const handleCloseInvitation = () => {
+    setIsInviteShown(false);
+    setInviteName('');
+    setInviteEmail('');
+    setInviteMessage('');
+  };
+
+  const handleNameValue = (value) => {
+    setInviteName(value);
+  };
+
+  const handleEmailValue = (value) => {
+    setInviteEmail(value);
+  };
+
+  const handleInviteMessage = (e) => {
+    setInviteMessage(e.target.value);
+  };
+
   const handleRemoveUser = (userId) => {
     dispatch(removeUserFromApplication(appId, userId));
+    setUsers((oldUsers) => oldUsers.filter((user) => user.UserID !== userId));
   };
 
   const onGetUsers = (users) => {
     setUsers(users);
+  };
+
+  const handleShowInvitation = () => {
+    setIsInviteShown(true);
+  };
+
+  const inviteUser = () => {
+    inviteUserAPI.fetch(
+      {
+        ApplicationID: appId,
+        Email: encodeBase64(GlobalUtilities.secure_string(inviteEmail)),
+        FullName: encodeBase64(GlobalUtilities.secure_string(inviteName)),
+        MessageText: encodeBase64(GlobalUtilities.secure_string(inviteMessage)),
+      },
+      (response) => {
+        if (response.Succeed) {
+          setIsInviteShown(false);
+        }
+      },
+      (err) => console.log(err)
+    );
   };
 
   useEffect(() => {
@@ -182,12 +246,42 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         />
       </DeleteConfirm>
       <Modal
+        show={isInviteShown}
+        onClose={handleCloseInvitation}
+        contentWidth="70%"
+        title="دعوت از دوستان">
+        <AnimatedInpit
+          value={inviteName}
+          placeholder="نام"
+          onChange={handleNameValue}
+          style={{ marginBottom: '1.5rem' }}
+        />
+        <AnimatedInpit
+          value={inviteEmail}
+          placeholder="ایمیل"
+          onChange={handleEmailValue}
+          style={{ marginBottom: '1.5rem' }}
+        />
+        <textarea
+          rows="5"
+          value={inviteMessage}
+          style={{ width: '100%', padding: '1rem' }}
+          onChange={handleInviteMessage}
+        />
+        <Button disable={!isInviteActive} onClick={inviteUser}>
+          {RVDic.Invite}
+        </Button>
+      </Modal>
+      <Modal
         show={isModalShown}
         onClose={handleCloseModal}
         contentWidth="70%"
         title="هم تیمی ها">
         <div style={{ textAlign: 'center' }}>
-          <div>{appTitle}</div>
+          {appTitle}
+          <Button onClick={handleShowInvitation}>
+            {RVDic.InviteYourFriendsToRaaiVan.replace('[RaaiVan]', RVDic.Team)}
+          </Button>
           <div
             style={{
               display: 'grid',

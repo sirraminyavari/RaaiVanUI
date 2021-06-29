@@ -9,7 +9,7 @@ import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 
-const ArchivedTeams = ({ team, hasHandle }) => {
+const ArchivedTeams = ({ archives, hasHandle }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL, RV_Float } = useWindow();
@@ -40,7 +40,7 @@ const ArchivedTeams = ({ team, hasHandle }) => {
         modalTitle="تیم های آرشیو شده"
         modalWidth="35%"
         contentClass={'archived-teams'}
-        archives={team.archives}
+        archives={archives}
         onModalClose={handleCloseArchived}
       />
       {hasHandle && <SortHandle />}

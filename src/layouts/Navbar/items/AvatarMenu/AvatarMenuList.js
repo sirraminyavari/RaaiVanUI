@@ -19,7 +19,7 @@ import { selectApplication } from 'store/actions/applications/ApplicationsAction
 
 const selectApplications = createSelector(
   (state) => state.applications,
-  (applications) => applications.applications
+  (applications) => applications.userApps
 );
 
 const selectedApplication = createSelector(
@@ -78,7 +78,6 @@ const AvatarMenuList = () => {
       <Styled.AvatarTeamsListWrapper>
         {teams?.map((team) => {
           const { ApplicationID, Title, IconURL } = team;
-          if (['archived-apps', 'add-app'].includes(ApplicationID)) return null;
           return (
             <AvatarMenuItem
               onClickHandler={() => handleTeamSelect(ApplicationID)}

@@ -5,27 +5,27 @@ export const ApplicationsSlice = createSlice({
   name: 'applications',
 
   initialState: {
-    applications: [],
+    userApps: [],
+    userArchivedApps: [],
     isFetching: false,
     selectingApp: { isSelecting: false, selectingAppId: null },
   },
 
   reducers: {
     setApplications: (state, action) => {
-      state.applications = action.payload;
+      state.userApps = action.payload;
+    },
+    setArchivedApplications: (state, action) => {
+      state.userArchivedApps = action.payload;
     },
     deleteApplication: (state, action) => {
-      const newApplications = state.applications.filter(
-        (app) => app.ApplicationID !== action.payload
-      );
-      state.applications = newApplications;
+      state.userApps = action.payload;
     },
     addApplication: (state, action) => {
-      const appsLength = state.applications.length;
-      state.applications.splice(appsLength - 2, 0, action.payload);
+      state.userApps = action.payload;
     },
     clearApplications: (state, action) => {
-      state.applications = [];
+      state.userApps = [];
     },
     setFetchingApps: (state, action) => {
       state.isFetching = action.payload;

@@ -86,9 +86,11 @@ export const ContentWrapper = withTheme(styled.div`
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   overflow: auto;
   margin-top: 4rem;
-  padding: 0
-    ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0.9rem')};
+  padding: 0 ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0')};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   -ms-overflow-style: none; /*! IE and Edge */
   scrollbar-width: none; /*! Firefox */
@@ -389,6 +391,9 @@ export const SettingWrapper = styled.div.attrs({
 })`
   line-height: 0.5rem;
   cursor: pointer;
+  padding: 0.3rem;
+  position: relative;
+  ${RV_RevFloat}: 0.25rem;
 `;
 
 export const PanelWrapper = styled.div.attrs({
@@ -432,8 +437,8 @@ export const CloseContentContainer = styled.div`
   justify-content: center;
   position: relative;
   overflow: hidden;
-  height: 73vh;
-  width: 2rem;
+  height: calc(100vh - 10rem);
+  width: 4rem;
   margin: 0;
   margin-top: -0.55rem;
 `;
@@ -450,6 +455,7 @@ export const Up = styled.div.attrs((props) => ({
   ${arrowCss}
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0.3rem;
+  ${RV_Float}: 0.7rem;
   height: 2rem;
   width: auto;
   display: flex;
@@ -462,6 +468,7 @@ export const Down = styled.div.attrs((props) => ({
   ${arrowCss}
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: 0.2rem;
+  ${RV_Float}: 0.7rem;
   height: 2rem;
   width: auto;
   display: flex;
@@ -469,9 +476,19 @@ export const Down = styled.div.attrs((props) => ({
 `;
 
 export const IconListContainer = styled.div`
-  height: 90%;
+  height: 85%;
   overflow: hidden;
   position: relative;
+
+  .ps__thumb-y {
+    background-color: #fff !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_RTL ? 'right: -0.3rem !important ' : 'left: 0 !important'};
+  }
 `;
 
 export const IconListWrap = styled.div`
@@ -487,7 +504,7 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 0.4rem 0;
+  // margin: 0.4rem 0;
   font-size: 1.6rem;
 `;
 
