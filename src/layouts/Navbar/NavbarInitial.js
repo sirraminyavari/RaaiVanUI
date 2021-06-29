@@ -10,6 +10,7 @@ import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import useWindow from 'hooks/useWindowContext';
 import logoutAction from 'store/actions/auth/logoutAction';
 import { getURL } from 'helpers/helpers';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const selectActivePath = createSelector(
   (state) => state.theme,
@@ -18,7 +19,7 @@ const selectActivePath = createSelector(
 
 const NavbarInitial = () => {
   const dispatch = useDispatch();
-  const { RVGlobal, RV_RTL } = useWindow();
+  const { RVGlobal, RV_RTL, RVDic } = useWindow();
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
   const activePath = useSelector(selectActivePath);
 
@@ -39,12 +40,20 @@ const NavbarInitial = () => {
         alt="cliqmind-logo"
       />
       <Styled.ExitAndHelpWrapper>
-        <Styled.QuestionIconWrapper as={Link} to={linkTo}>
-          {isHelpmeActive ? <TeamIcon size={27} /> : <QuestionIcon size={22} />}
-        </Styled.QuestionIconWrapper>
-        <Styled.ExitIconWrapper onClick={handleLogout}>
-          <ExitIcon size={30} />
-        </Styled.ExitIconWrapper>
+        <Tooltip tipId="helpme" place="bottom" renderContent={() => RVDic.Help}>
+          <Styled.QuestionIconWrapper as={Link} to={linkTo}>
+            {isHelpmeActive ? (
+              <TeamIcon size={27} />
+            ) : (
+              <QuestionIcon size={22} />
+            )}
+          </Styled.QuestionIconWrapper>
+        </Tooltip>
+        <Tooltip tipId="exit-app" renderContent={() => 'خروج'}>
+          <Styled.ExitIconWrapper onClick={handleLogout}>
+            <ExitIcon size={30} />
+          </Styled.ExitIconWrapper>
+        </Tooltip>
       </Styled.ExitAndHelpWrapper>
     </Styled.NavbarContainer>
   );

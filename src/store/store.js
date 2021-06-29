@@ -17,7 +17,7 @@ import rootReducer from './reducers/rootReducer';
 const MIGRATION_DEBUG = true;
 
 const migrations = {
-  5: (previousVersionState) => ({
+  7: (previousVersionState) => ({
     ...previousVersionState,
     raaivanVersion: {
       lastUpdate: JSON.stringify(new Date()),
@@ -27,12 +27,12 @@ const migrations = {
 
 const persistConfig = {
   key: 'Raaivan',
-  version: 5,
+  version: 7,
   storage,
   debug: true,
   stateReconciler: autoMergeLevel2,
   migrate: createMigrate(migrations, { debug: MIGRATION_DEBUG }),
-  whitelist: ['theme', 'sidebarItems', 'raaivanVersion'],
+  whitelist: ['theme', 'sidebarItems', 'applications', 'raaivanVersion'],
   blacklist: [],
 };
 
