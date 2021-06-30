@@ -339,7 +339,7 @@ export const TeamDescription = styled.div`
 `;
 
 export const TeamTitle = styled.div.attrs({
-  classNAme: C_GRAY_DARK,
+  className: C_GRAY_DARK,
 })`
   font-size: 1rem;
   margin: 0.5rem 0;
@@ -349,6 +349,11 @@ export const TeamTitle = styled.div.attrs({
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    :hover {
+      border: 1px solid ${CV_DISTANT};
+      border-radius: 0.3rem;
+      padding: 0.2rem 0.5rem;
+    }
   }
 `;
 
