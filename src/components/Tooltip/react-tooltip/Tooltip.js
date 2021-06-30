@@ -36,6 +36,7 @@ import ReactTooltip from 'react-tooltip';
  * @property {string} backgroundColor - Sets background color for tooltip.
  * @property {string} borderColor - Sets border color for tooltip.
  * @property {string} arrowColor - Sets arrow color for tooltip.
+ * @property {boolean} clickable - When clickable property is set to true, tooltip can respond to mouse (or touch) events.
  */
 
 /**
@@ -54,6 +55,7 @@ const Tooltip = (props) => {
     event,
     offset,
     multiline,
+    clickable,
     delayHide,
     delayShow,
     className,
@@ -79,6 +81,7 @@ const Tooltip = (props) => {
         event={event}
         offset={offset}
         multiline={!!multiline}
+        clickable={!!clickable}
         delayHide={delayHide}
         delayShow={delayShow}
         className={className}
@@ -102,6 +105,7 @@ Tooltip.propTypes = {
   effect: PropTypes.string,
   event: PropTypes.string,
   multiline: PropTypes.bool,
+  clickable: PropTypes.bool,
   delayHide: PropTypes.number,
   delayShow: PropTypes.number,
   disable: PropTypes.bool,

@@ -31,7 +31,7 @@ export const themeSlice = createSlice({
     currentTheme: null,
     isSidebarCollapsed: true,
     isDarkMode: false,
-    hasSidebarPattern: false,
+    hasSidebarPattern: true,
   },
   reducers: {
     toggleSidebar: (state, action) => {

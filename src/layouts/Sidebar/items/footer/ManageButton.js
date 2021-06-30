@@ -15,7 +15,7 @@ const selectIsSidebarOpen = createSelector(
 
 const ManageButton = () => {
   const dispatch = useDispatch();
-  const { RVDic, RV_Float } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat } = useWindow();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const { setSidebarContent, toggleSidebar } = themeSlice.actions;
   const { closeOpenMenus } = sidebarMenuSlice.actions;
@@ -36,10 +36,15 @@ const ManageButton = () => {
       onClick={handleManageButton}>
       <Tooltip
         tipId="sidebar-footer-icon"
-        place={RV_Float}
+        offset={{ [RV_Float]: -16 }}
+        place={RV_RevFloat}
         effect="solid"
         disable={isSidebarOpen}
-        renderContent={() => RVDic.TemplateManagement}>
+        renderContent={() => (
+          <span style={{ textTransform: 'capitalize' }}>
+            {RVDic.TemplateManagement}
+          </span>
+        )}>
         <Styled.FooterIconWrapper>
           <EditIcon size={20} />
         </Styled.FooterIconWrapper>

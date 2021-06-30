@@ -19,7 +19,7 @@ const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
-  const { RV_Float, RVDic } = useWindow();
+  const { RVDic, RV_RevFloat, RV_Float } = useWindow();
 
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
@@ -98,9 +98,13 @@ const SidebarOnClose = ({ theme }) => {
       <Styled.SidebarTitle>
         <Tooltip
           tipId="sidebar-setting-icon"
-          place={RV_Float}
+          effect="solid"
+          place={RV_RevFloat}
+          offset={{ [RV_Float]: -10 }}
           renderContent={() => (
-            <div style={{ fontSize: '0.9rem' }}>{RVDic.Settings}</div>
+            <span style={{ textTransform: 'capitalize' }}>
+              {RVDic.Settings}
+            </span>
           )}>
           <Styled.SettingWrapper onClick={handleOnClick}>
             <SettingIcon size={22} />
@@ -129,7 +133,9 @@ const SidebarOnClose = ({ theme }) => {
                 <Tooltip
                   key={key}
                   tipId={id}
-                  place={RV_Float}
+                  effect="solid"
+                  offset={{ [RV_Float]: -10 }}
+                  place={RV_RevFloat}
                   renderContent={() => data.title}>
                   <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
                     {data.iconURL && (
