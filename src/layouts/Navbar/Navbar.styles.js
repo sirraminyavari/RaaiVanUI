@@ -18,7 +18,11 @@ import {
   C_FREEZED,
   BG_FREEZED,
 } from 'constant/Colors';
-import { TCV_VERY_TRANSPARENT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_WHITE,
+  TCV_VERY_TRANSPARENT,
+} from 'constant/CssVariables';
 
 const { RV_RevFloat, RV_Float, RV_RTL } = window;
 
@@ -57,8 +61,15 @@ export const NavbarContainer = withTheme(styled.div.attrs({
   box-shadow: 0 3px 10px #00000029;
   // transition: all 0.7s ease;
 
-  .no-arrow {
-    display: none;
+  // .no-arrow {
+  //   display: none;
+  // }
+
+  .avatar-tooltip {
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
+    padding: 0 !important;
   }
 `);
 
@@ -363,21 +374,27 @@ export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: auto;
-  min-width: 11rem;
+  min-width: 12rem;
   max-width: 14rem;
-  // padding: 0rem 0.7rem;
+  margin: 0.5rem;
+  margin-${RV_Float}: 1rem;
+  margin-${RV_RevFloat}: 0;
+
+  .ps__rail-y {
+    ${RV_RTL ? 'right: 13rem !important;' : 'left: 13.3rem !important;'}
+  }
 `;
 
-export const AvatarTeamsListWrapper = styled.div`
-  max-height: calc(100vh - 18rem);
-  overflow: scroll;
-`;
+// export const AvatarTeamsListWrapper = styled.div`
+// max-height: calc(100vh - 18rem);
+// overflow: scroll;
+// margin-bottom: 3rem;
+// `;
 
 export const AvatarMenuItem = styled.div.attrs({
   className: C_BLACK,
 })`
   display: flex;
-  flex-direction: row-reverse;
   justify-content: end;
   align-items: center;
   padding: 0.4rem 0;
@@ -389,11 +406,14 @@ export const AvatarMenuTitle = styled.span`
   font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Divider = styled.div`
   margin: 0.5rem;
-  margin-${RV_Float}: -2rem;
-  margin-${RV_RevFloat}: -0.7rem;
-  border-top: 0.1rem solid #ccc;
+  margin-${RV_Float}: -1rem;
+  margin-${RV_RevFloat}: 0;
+  border-top: 0.1rem solid ${CV_DISTANT};
 `;

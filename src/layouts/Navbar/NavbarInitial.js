@@ -40,7 +40,16 @@ const NavbarInitial = () => {
         alt="cliqmind-logo"
       />
       <Styled.ExitAndHelpWrapper>
-        <Tooltip tipId="helpme" place="bottom" renderContent={() => RVDic.Help}>
+        <Tooltip
+          tipId="helpme"
+          place="bottom"
+          effect="solid"
+          offset={{ top: -3 }}
+          renderContent={() => (
+            <span style={{ textTransform: 'capitalize' }}>
+              {isHelpmeActive ? RVDic.Teams : RVDic.Help}
+            </span>
+          )}>
           <Styled.QuestionIconWrapper as={Link} to={linkTo}>
             {isHelpmeActive ? (
               <TeamIcon size={27} />
@@ -49,7 +58,13 @@ const NavbarInitial = () => {
             )}
           </Styled.QuestionIconWrapper>
         </Tooltip>
-        <Tooltip tipId="exit-app" renderContent={() => 'خروج'}>
+        <Tooltip
+          tipId="exit-app"
+          effect="solid"
+          offset={{ top: -3 }}
+          renderContent={() => (
+            <span style={{ textTransform: 'capitalize' }}>{RVDic.Logout}</span>
+          )}>
           <Styled.ExitIconWrapper onClick={handleLogout}>
             <ExitIcon size={30} />
           </Styled.ExitIconWrapper>

@@ -29,7 +29,7 @@ const getContentMargin = (props) => {
 
 export const ContentWrapper = withTheme(styled.div`
   ${getContentMargin}
-  height: 100vh;
+  height: calc(100vh - 5.5rem);
   transition: all 0.7s ease;
 `);
 
