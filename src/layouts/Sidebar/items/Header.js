@@ -25,11 +25,17 @@ const selectTeam = createSelector(
   (theme) => theme.selectedTeam
 );
 
+const selectHasPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
+);
+
 const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { toggleSidebar } = themeSlice.actions;
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const selectedTeam = useSelector(selectTeam);
+  const hasPattern = useSelector(selectHasPattern);
   const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
@@ -60,7 +66,7 @@ const SidebarHeader = () => {
   }, [isMobileNav, dispatch]);
 
   return (
-    <Styled.SidebarHeader>
+    <Styled.SidebarHeader hasPattern={hasPattern}>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img

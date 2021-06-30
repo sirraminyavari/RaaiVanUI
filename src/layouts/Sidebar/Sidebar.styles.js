@@ -74,9 +74,6 @@ export const SidebarContainer = styled.div.attrs({
   box-shadow: 1px 0px 15px 1px #000;
   ${({ hasPattern }) =>
     hasPattern && `background-image: url(${sidebarPattern});`}
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
 `;
 
 export const ContentWrapper = withTheme(styled.div`
@@ -91,12 +88,6 @@ export const ContentWrapper = withTheme(styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  -ms-overflow-style: none; /*! IE and Edge */
-  scrollbar-width: none; /*! Firefox */
-  ::-webkit-scrollbar {
-    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
-  }
 `);
 
 export const SidebarHeader = withTheme(styled.div.attrs({
@@ -119,7 +110,8 @@ export const SidebarHeader = withTheme(styled.div.attrs({
     ${(props) => (props.theme.states.isSidebarOpen ? '1.4rem' : '0.8rem')};
   position: fixed;
   top: 0;
-  background-image: url(${sidebarPattern});
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
 `);
 
 export const OpenContentWrapper = styled.div`
