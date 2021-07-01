@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
@@ -16,7 +15,6 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
   const [isInviteActive, setInviteActive] = useState(false);
 
   const { RVDic, GlobalUtilities } = useWindow();
-  const dispatch = useDispatch();
 
   const handleCloseInvitation = () => {
     setIsInviteShown(false);

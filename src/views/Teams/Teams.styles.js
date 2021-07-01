@@ -16,10 +16,13 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
+  CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
+
+const { RV_Float } = window;
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -33,8 +36,10 @@ export const TeamsViewContainer = styled.div.attrs({
   align-items: flex-start;
 
   .archived-teams {
-    max-height: 87vh;
-    overflow: scroll;
+    max-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 0;
+    left: calc(50% - 17.5%);
   }
 `;
 
@@ -51,8 +56,16 @@ export const HeaderContainer = styled.div.attrs({
 `;
 
 export const ModalContentWrapper = styled.div`
-  width: 100%;
-  padding: 0 5%;
+  width: calc(100% + 2rem);
+  height: calc(100vh - 9rem);
+  overflow: scroll;
+  margin-top: 2.5rem;
+  margin-${RV_Float}: -1rem;
+  padding: 0 1rem;
+
+  .ps__rail-y {
+    ${RV_Float}: calc(100% - 1rem) !important;
+  }
 `;
 
 export const ArchivedTeamWrapper = styled.div`
@@ -67,10 +80,15 @@ export const ArchivedTeamDescription = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
+  width: calc(100% - 5rem);
 `;
 
 export const ArchivedTeamTitle = styled.span`
   margin: 0 1rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ModalButtonsWrapper = styled.div`
@@ -308,6 +326,15 @@ export const TeamConatiner = styled.div.attrs({
     right: 7.7rem;
     bottom: -2.9rem;
     overflow: hidden;
+  }
+
+  .archived-teams-title {
+    position: fixed;
+    width: 35%;
+    padding: 1rem 0;
+    background-color: ${CV_GRAY_LIGHT};
+    z-index: 1000;
+    ${({ revDir }) => `padding-${revDir}: 0.5rem;`}
   }
 
   .scroll {

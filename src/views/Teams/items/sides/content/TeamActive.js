@@ -240,7 +240,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     />
                   );
                 })}
-              {users.length > 4 && (
+              {users?.length > 4 && (
                 <PopupMenu
                   trigger="hover"
                   align="top"

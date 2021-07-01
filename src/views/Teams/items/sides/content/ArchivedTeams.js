@@ -39,7 +39,7 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
         isOpen={isModalShown}
         modalTitle="تیم های آرشیو شده"
         modalWidth="35%"
-        contentClass={'archived-teams'}
+        contentClass="archived-teams"
         archives={archives}
         onModalClose={handleCloseArchived}
       />

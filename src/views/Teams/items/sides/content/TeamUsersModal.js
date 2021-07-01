@@ -30,6 +30,7 @@ const TeamUsersModal = ({
 
   const handleShowInvitation = useCallback(() => {
     setIsInviteShown(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRemoveUser = (userId) => {
