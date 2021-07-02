@@ -68,6 +68,11 @@ export const ModalContentWrapper = styled.div`
   }
 `;
 
+export const CreateModalWrapper = styled.div`
+  width: 100%;
+  padding: 0 1rem;
+`;
+
 export const ArchivedTeamWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -114,14 +119,15 @@ export const ContentSide = styled.div`
   height: 100%;
   margin: 0;
 
-  .teams-modal {
+  .create-team-modal {
     margin-top: 35vh;
   }
 
-  .teams-modal-header {
-    height: 4.5rem;
-    min-height: 4.5rem;
-    max-height: 4.5rem;
+  .create-team-modal-header {
+    height: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    background-color: ${CV_GRAY_LIGHT};
   }
 `;
 

@@ -23,12 +23,12 @@ const CreateModal = (props) => {
     <Modal
       titleClass={TC_DEFAULT}
       contentWidth={modalWidth}
-      contentClass="teams-modal"
-      titleContainerClass={`${BG_GRAY_LIGHT} teams-modal-header`}
+      contentClass="create-team-modal"
+      titleContainerClass="create-team-modal-header"
       title={modalTitle}
       show={isOpen}
       onClose={onCancleCreate}>
-      <Styled.ModalContentWrapper>
+      <Styled.CreateModalWrapper>
         <AnimatedInput
           value={inputValue}
           placeholderClass={C_GRAY}
@@ -49,7 +49,7 @@ const CreateModal = (props) => {
             <Styled.ModalButtonText>{RVDic.Return}</Styled.ModalButtonText>
           </Button>
         </Styled.ModalButtonsWrapper>
-      </Styled.ModalContentWrapper>
+      </Styled.CreateModalWrapper>
     </Modal>
   );
 };
