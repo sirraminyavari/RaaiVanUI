@@ -18,6 +18,7 @@ import {
   TBG_VERYWARM,
   BO_WHITE,
 } from 'constant/Colors';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -183,8 +184,9 @@ export const SearchInput = styled.input.attrs((props) => ({
       : null}
 
   ::placeholder {
-    color: #bac9dc;
+    color: ${CV_DISTANT};
     opacity: 70%;
+    text-transform: capitalize;
   }
 
   transition: all 0.3s ease;

@@ -190,7 +190,8 @@ export const SearchInput = styled(Input)`
     color: transparent;
   }
   ::placeholder {
-    color: #bac9dc;
+    color: ${CV_DISTANT};
+    text-transform: capitalize;
   }
 `;
 
