@@ -93,4 +93,6 @@
 }
 .ActionButton {
   font-size: 1.2rem;
+  font-weight: bold;
+  /* padding: 1.2rem 3rem; */
 }

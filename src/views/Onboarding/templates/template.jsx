@@ -59,6 +59,7 @@ const Template = () => {
   };
 
   const skip = () => {
+    dispatch({ type: 'CLEAR_TEMPLATES' });
     new APIHandler('RVAPI', 'Log').fetch(
       { data: encode(template_selection_on_skip) },
       (res) => {
@@ -112,7 +113,11 @@ const Template = () => {
                   فعال کن و برو مرحله بعد
                 </button>
 
-                <button className="disabled-button">از این مرحله رد شو</button>
+                <button
+                  className="action-button-inverted"
+                  onClick={() => skip()}>
+                  از این مرحله رد شو
+                </button>
               </div>
             )}
           </div>

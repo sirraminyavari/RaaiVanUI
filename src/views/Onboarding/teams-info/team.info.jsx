@@ -72,53 +72,59 @@ const TeamInfo = () => {
 
   return (
     <div className="team-info-selection-box">
-      <div className="team-name-selection noselect">
-        <div className="h3">{`تیم ${info.teamName} از`}</div>
-        <div>
-          <Select placeholder="تعداد" name="members" value={info.members}>
-            {options.map((x) => (
-              <Option
-                key={x.id}
-                id={x.id}
-                value={x.value}
-                onSelect={selectMembers}>
-                {x.value}
-              </Option>
-            ))}
-          </Select>
-        </div>
-        <div className="h3">{'نفر تشکیل شده،'}</div>
-      </div>
-
-      {info.members !== '' && (
-        <div className="team-name-selection">
-          <div className="h3">{' و حوزه کاری من '}</div>
+      <div style={{ height: '80px' }}>
+        <div className="team-name-selection noselect">
+          <div className="h3">{`تیم ${info.teamName} از`}</div>
           <div>
-            <FieldSelection
-              placeholder="زمینه کاریت چیه؟"
-              name="field"
-              value={info.field.value}>
-              {fields.map((x) => (
+            <Select placeholder="تعداد" name="members" value={info.members}>
+              {options.map((x) => (
                 <Option
                   key={x.id}
                   id={x.id}
                   value={x.value}
-                  onSelect={selectField}>
+                  onSelect={selectMembers}>
                   {x.value}
                 </Option>
               ))}
-            </FieldSelection>
+            </Select>
           </div>
-          <div className="h3">{'هست.'}</div>
+          <div className="h3">{'نفر تشکیل شده،'}</div>
         </div>
-      )}
+      </div>
 
-      <div className="team-info-action">
-        {info.field !== '' && info.members !== '' && (
-          <button className="ActionButton" onClick={() => save()}>
-            واسه من چی داری؟
-          </button>
+      <div style={{ height: '80px' }}>
+        {info.members !== '' && (
+          <div className="team-name-selection">
+            <div className="h3">{' و حوزه کاری من '}</div>
+            <div>
+              <FieldSelection
+                placeholder="زمینه کاریت چیه؟"
+                name="field"
+                value={info.field.value}>
+                {fields.map((x) => (
+                  <Option
+                    key={x.id}
+                    id={x.id}
+                    value={x.value}
+                    onSelect={selectField}>
+                    {x.value}
+                  </Option>
+                ))}
+              </FieldSelection>
+            </div>
+            <div className="h3">{'هست.'}</div>
+          </div>
         )}
+      </div>
+
+      <div style={{ height: '100px' }}>
+        <div className="team-info-action">
+          {info.field !== '' && info.members !== '' && (
+            <button className="ActionButton" onClick={() => save()}>
+              واسه من چی داری؟
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

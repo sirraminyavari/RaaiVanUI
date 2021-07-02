@@ -13,7 +13,9 @@ const Select = ({ placeholder, value, children }) => {
   useOutsideClick(dropdownRef, toggleSelection, active);
 
   return (
-    <div className="select-box-container" style={{ zIndex: 1, width: '150px' }}>
+    <div
+      className="select-box-container"
+      style={{ zIndex: 11, width: '150px' }}>
       <div
         className="selected noselect"
         onClick={() => toggleSelection()}

@@ -61,6 +61,16 @@ const TemplateSlider = () => {
     }
   };
 
+  const move = (e) => {
+    if (e.deltaY > 0) {
+      // scroll up
+      next();
+    } else if (e.deltaY < 0) {
+      // scroll down
+      prev();
+    }
+  };
+
   useEffect(() => {
     dispatch({ type: 'TEMPLATE_PREVIEW', template: templates[index - 1] });
     btnDisplay();
@@ -79,7 +89,10 @@ const TemplateSlider = () => {
         {showPrevBtn && <img src={ArrowUp} alt="" onClick={() => prev()} />}
       </div>
       <div className="template-carousel-container">
-        <div className="template-track" ref={templateTrack}>
+        <div
+          className="template-track"
+          ref={templateTrack}
+          onWheel={(e) => move(e)}>
           {templates.length !== 0 &&
             templates.map((x) => <TemplateCard key={uuidv4()} item={x} />)}
         </div>

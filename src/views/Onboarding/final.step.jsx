@@ -10,23 +10,17 @@ const activateTemplate = (x, appId) => {
   const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
   const activator = new APIHandler('CNAPI', 'ActivateTemplate');
 
-  console.log('template: ');
-  console.log(x);
   return new Promise((resolve, reject) => {
     handler.fetch(
       {
         NodeTypeID: x.id,
       },
       (content) => {
-        console.log('content: ');
-        console.log(content);
         activator.fetch(
           {
             Template: JSON.stringify(content.Template),
           },
           (res) => {
-            console.log('final response: ');
-            console.log(res);
             if (!!res.Succeed) {
               resolve(res);
             } else {

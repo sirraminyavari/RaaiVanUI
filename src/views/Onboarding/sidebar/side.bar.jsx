@@ -2,9 +2,13 @@ import React from 'react';
 import { useContext } from 'react';
 import { StepperContext } from '../context/stepper.context';
 import './sidebar.css';
-import SidebarLogo from './sidebar.logo.png';
+import SidebarLogo from 'assets/images/cliqmind_logo_white.svg';
 import SidebarLoader from './sidebar.loader';
 import { v4 as uuidv4 } from 'uuid';
+import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
+import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
+import ListItem from '../../../layouts/Sidebar/items/underMenu/ListItem';
+import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 
 const SideBar = (props) => {
   const { info } = useContext(StepperContext);
@@ -16,31 +20,38 @@ const SideBar = (props) => {
         <img src={SidebarLogo} className="logo" />
       </div>
       <div className="onboarding-sidbar-steps" data-tut="reactour__third">
-        {info.teamName !== '' && (
-          <div style={{ fontWeight: '300' }}>{info.teamName}</div>
-        )}
+        {info.teamName !== '' && <div className="item">{info.teamName}</div>}
 
-        <div style={{ marginTop: '10px' }}>
-          {info.activatedTemplates.length !== 0 && <div>مدیریت محصول</div>}
-          {info.activatedTemplates.map((x) => (
-            <div key={uuidv4()} className="sidebar-selected-templates">
-              <SidebarLoader key={uuidv4()} />
-              <img src={x.IconURL} />
-              <div className="title">{x.name}</div>
+        <div style={{ marginTop: '15px', width: '100%' }}>
+          {info.activatedTemplates.length !== 0 && (
+            <div className="item">
+              <div className="polygone"></div>
+              <span className="small">مدیریت محصول</span>
             </div>
-          ))}
+          )}
+
+          <div style={{ marginTop: '15px' }}>
+            {info.activatedTemplates.map((x) => (
+              <div key={uuidv4()} className="sidebar-selected-templates">
+                <SidebarLoader key={uuidv4()} />
+                <img src={x.IconURL} />
+                <div className="title">{x.name}</div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {info.step > 3 && (
+          <div style={{ width: '100%' }}>
+            <div className="seperator">
+              <hr />
+            </div>
+
+            <ListItem title="موضوعات نشان شده" icon={FilledBookmarkIcon} />
+            <ListItem title="گالری قالب ها" icon={DiamondIcon} />
+          </div>
+        )}
       </div>
-
-      {/* {info.loading && (
-        <div className="onboarding-sidbar-steps">
-          <SidebarSkeleton width="200px" />
-
-          <SidebarSkeleton width="150px" />
-
-          <SidebarSkeleton width="150px" />
-        </div>
-      )} */}
     </div>
   );
 };
