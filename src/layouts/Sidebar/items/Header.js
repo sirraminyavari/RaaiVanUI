@@ -13,6 +13,7 @@ import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
 
 const selectIsSidebarOpen = createSelector(
@@ -53,6 +54,7 @@ const SidebarHeader = () => {
   const toggleDrawer = () => {
     if (isMobileScreen) return;
     isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
+    dispatch(getSidebarNodes());
   };
 
   useEffect(() => {

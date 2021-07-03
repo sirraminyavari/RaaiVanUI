@@ -1,7 +1,7 @@
 /**
  * Renders regular sidebar with its menu.
  */
-import { useEffect, memo, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -34,6 +34,7 @@ const SidebarMainContent = () => {
 
   const showSearchResults = useSelector(selectShowSearchResults);
   const selectedTeam = useSelector(selectTeam);
+  const tree = useSelector((state) => state.sidebarItems.dndTree);
 
   //! Change sidebar content on click.
   const handleOnClick = useCallback(() => {
@@ -66,7 +67,7 @@ const SidebarMainContent = () => {
         <SearchResultsList />
       ) : (
         <>
-          <ReadableTree />
+          {tree?.items && <ReadableTree />}
           <Styled.Divider />
           <UnderMenuList />
         </>
@@ -75,4 +76,4 @@ const SidebarMainContent = () => {
   );
 };
 
-export default memo(SidebarMainContent);
+export default SidebarMainContent;

@@ -1,7 +1,6 @@
 /**
  * Renders all menu items at once.
  */
-import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -38,4 +37,4 @@ const ReadableTree = () => {
   );
 };
 
-export default memo(ReadableTree);
+export default ReadableTree;
