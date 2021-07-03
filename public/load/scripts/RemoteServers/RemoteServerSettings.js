@@ -13,7 +13,12 @@
             Items: null
         };
 
+        this.Objects = {
+            Items: []
+        };
+
         this.Options = {
+            BatchSize: 2,
             SelectMode: !!params.SelectMode,
             Checkbox: !!params.Checkbox,
             OnSelect: params.OnSelect
@@ -92,6 +97,18 @@
             GlobalUtilities.set_onchangeorenter(that.Interface.SearchInput, function () { that.search(); });
 
             that.set_select_all_checkbox_status();
+
+            var check_one = function (jsonObj) {
+                jsonObj.Check(function (x) {
+                    var arr = that.Objects.Items.filter(i => !i.Checked && (i.Status === null));
+                    if (arr.length) check_one(arr[0]);
+                });
+            };
+            
+            for (var i = 0; i < Math.min(that.Options.BatchSize, (servers || []).length); i++) {
+                var srv = that.get_json_object(servers[i].ID);
+                if (srv) check_one(srv);
+            }
         },
 
         set_select_all_checkbox_status: function () {
@@ -184,6 +201,8 @@
             item = item || {};
             options = options || {};
 
+            var isNew = !!item.ID && !!options.Add2Top;
+            
             var create_view_element = function (p) {
                 p = p || {};
 
@@ -284,11 +303,28 @@
                                 ]
                             },
                             (!item.ID ? null : {
-                                Type: "div", Style: "flex:0 0 auto;",
-                                Childs: [{
-                                    Type: "i", Style: (item.ID ? "" : "display:none;"), Name: "checkButton",
-                                    Attributes: [{ Name: "aria-hidden", Value: true }]
-                                }]
+                                Type: "div", Class: "RevDirection RevTextAlign",
+                                Style: "flex:0 0 auto; display:flex; flex-flow:row; width:2.5rem;",
+                                Childs: [
+                                    {
+                                        Type: "div", Style: "flex:0 0 auto; display: flex; justify-content: center; align-items: center;",
+                                        Childs: [{
+                                            Type: "i", Class: "fa fa-clock-o fa-lg", Name: "checkButton",
+                                            Attributes: [{ Name: "aria-hidden", Value: true }]
+                                        }]
+                                    },
+                                    {
+                                        Type: "div", 
+                                        Style: "flex:0 0 auto; padding-" + RV_RevFloat + ":0.5rem;" + 
+                                            "display:flex; justify-content:center; align-items:center;",
+                                        Childs: [{
+                                            Type: "i", Class: "fa fa-refresh", Name: "refresh",
+                                            Style: "color:blue; cursor:pointer; display:none;", Tooltip: RVDic.Refresh,
+                                            Attributes: [{ Name: "aria-hidden", Value: true }],
+                                            Properties: [{ Name: "onclick", Value: function (e) { e.stopPropagation(); recheck(); } }]
+                                        }]
+                                    }
+                                ]
                             })
                         ]
                     },
@@ -343,6 +379,7 @@
                             else {
                                 jQuery(elems["container"]).fadeOut(500, function () {
                                     this.remove();
+                                    that.Objects.Items = that.Objects.Items.filter(i => i.Item.ID != item.ID);
                                     that.set_search_input_display();
                                 });
                             }
@@ -353,7 +390,12 @@
                 });
             };
 
-            var check_connection = function () {
+            var check_connection = function (callback) {
+                if (GlobalUtilities.get_type(callback) != "function") callback = function () { };
+
+                if ((jsonObj || {}).Checked || !item.ID) return callback(null);
+                else jsonObj.Checked = true;
+
                 checkButton.style.color = "black";
                 checkButton.setAttribute("class", "fa fa-spinner fa-lg fa-pulse");
 
@@ -364,8 +406,27 @@
                 }, function (result) {
                     checkButton.style.color = result ? "green" : "red";
                     checkButton.setAttribute("class", result ? "fa fa-check-circle-o fa-lg" : "fa fa-times fa-lg");
+                    elems["refresh"].style.display = !result ? "block" : "none";
+
+                    jsonObj.Status = result;
+                    callback(jsonObj);
                 });
             };
+
+            var recheck = function () {
+                jsonObj.Status = null;
+                jsonObj.Checked = false;
+                check_connection();
+            };
+
+            var jsonObj = !item.ID ? null : {
+                Item: item,
+                Checked: false,
+                Check: check_connection,
+                Status: null
+            };
+
+            if (!!item.ID) that.Objects.Items.push(jsonObj);
 
             var _set_data = function () {
                 viewArea.innerHTML = "";
@@ -441,7 +502,7 @@
                                     editButton.__Editing = false;
                                     set_things();
 
-                                    check_connection();
+                                    recheck();
                                 }
                                 else if (options.OnSave) {
                                     item.ID = result.Server.ID;
@@ -458,14 +519,19 @@
                 set_things();
             }; //end of _on_edit
 
-            if(editButton) editButton.onclick = _on_edit;
+            if (editButton) editButton.onclick = _on_edit;
 
             if (!item.ID && editButton) _on_edit();
-            else check_connection();
+            else if (isNew) check_connection();
 
             _set_data();
 
             that.set_search_input_display();
+        },
+
+        get_json_object: function (id) {
+            var ret = !id ? null : this.Objects.Items.find(itm => itm.Item.ID == id);
+            return !ret ? null : ret;
         },
 
         get_items_dom: function () {
@@ -476,8 +542,10 @@
             return this.get_items_dom().map(d => d.ItemObject);
         },
 
-        get_checked_items: function () {
-            return this.get_items_dom().filter(d => d.Checked()).map(d => d.ItemObject);
+        get_checked_items: function (connected) {
+            var that = this;
+            var arr = that.get_items_dom().filter(d => d.Checked()).map(d => d.ItemObject);
+            return !connected ? arr : (arr || []).filter(a => (that.get_json_object(a.ID) || {}).Status === true);
         },
 
         check_all: function () {
