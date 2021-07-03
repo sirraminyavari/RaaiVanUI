@@ -28,3 +28,4 @@ yarn-error.log*
 route_info.js
 
 .eslintcache
+package-lock.json

@@ -4,7 +4,9 @@ import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 
-const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+const getNodesAPI = (bookMarked = false) => {
+  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
+};
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -26,6 +28,7 @@ const NodeList = ({
   onTotalFound,
   isByMe,
   byPeople,
+  isBookMarked,
 }) => {
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
@@ -44,11 +47,12 @@ const NodeList = ({
     nodeTypeId,
     formFilters,
     forceFetch,
+    isBookMarked,
   ]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    getNodesAPI.fetch(
+    getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
@@ -97,9 +101,7 @@ const NodeList = ({
                 );
               }
             },
-            (error) => {
-              console.log(error, 'response');
-            }
+            (error) => {}
           );
         }
       },
@@ -109,11 +111,6 @@ const NodeList = ({
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
-  const onClick = (nodeId) => {
-    // objectUrl({ NodeID: nodeId });
-    console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
-    RVAPI.NodePageURL({ NodeID: nodeId });
-  };
   const onReload = () => {
     setExtraData(!extraData);
   };
@@ -123,23 +120,21 @@ const NodeList = ({
 
     if (nodeIndex > -1) {
       let tempList = bookmarkedList;
-      console.log('unlike', nodeIndex, nodeId);
 
       tempList = tempList.filter((item) => item !== nodeId);
 
       setBookmarkedList(tempList);
     } else {
-      console.log('like', nodeIndex, nodeId);
-
       setBookmarkedList([...bookmarkedList, nodeId]);
     }
   };
+
   return (
     <>
       <SimpleListViewer
         fetchMethod={fetchData}
         extraData={extraData}
-        infiniteLoop={true}
+        infiniteLoop={false}
         onEndReached={() => {
           console.log('Im reached end');
         }}
@@ -159,7 +154,6 @@ const NodeList = ({
                   LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
                 }}
                 isSaas={isSaas}
-                onClick={() => onClick(x.NodeID)}
                 onReload={onReload}
                 onBookmark={onBookmark}
               />

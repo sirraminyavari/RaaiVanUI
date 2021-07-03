@@ -1,15 +1,14 @@
 /**
  * An action for Signing in
  */
-import { loginSlice } from '../../reducers/loginReducer';
-import APIHandler from '../../../apiHelper/APIHandler';
 import { encode } from 'js-base64';
-import stepTwoAction from './stepTwoAction';
+import APIHandler from '../../../apiHelper/APIHandler';
+import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
 import setAuthUserAction from './setAuthUserAction';
+import stepTwoAction from './stepTwoAction';
 const {
   loginStart,
-  loginSuccess,
   loginFailed,
   setPasswordError,
   setEmailError,
@@ -44,7 +43,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
         },
         (response) => {
           const { Succeed, AuthCookie } = response;
-          const { RVAPI, GlobalUtilities, RVDic } = window;
+          const { RVDic } = window;
           if (response.ErrorText) {
             dispatch(loginFailed(RVDic.MSG[response.ErrorText]));
 
@@ -60,7 +59,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
                 response.RemainingLockoutTime &&
                 !auth.Options.UseCaptcha;
 
-              const err = (
+              let err = (
                 RVDic.MSG[response.ErrorText] || response.ErrorText
               ).replace('[n]', response.RemainingLockoutTime || '');
 
@@ -81,7 +80,6 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // GlobalUtilities.set_auth_cookie(AuthCookie);
             // console.log(response, 'response login');
             // dispatch(loginSuccess(response));
-            console.log(response, 'response login');
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
           }

@@ -3,7 +3,7 @@
  */
 import { loginSlice } from 'store/reducers/loginReducer';
 
-const { resetAllErrors, setLoginRoute, resetAllInputs } = loginSlice.actions;
+const { resetAllErrors, setLoginRoute } = loginSlice.actions;
 /**
  * By calling this action, the content of the login screen will change without reloading the page.
  * @param {String} params - New route for login that user should see in next step

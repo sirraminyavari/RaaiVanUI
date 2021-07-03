@@ -181,6 +181,9 @@
                 elems["usersArea"].style.maxHeight = "200px";
 
                 elems["usersArea"] = GlobalUtilities.append_scrollbar(elems["usersArea"], {
+                    GetHeight: function () {
+                        return parseInt(jQuery(elems["usersArea"])["0"].scrollHeight || "0");
+                    },
                     Done: function (p) {
                         //GlobalUtilities.onscrollend(p.Scrollee, null, function () { });
                     }

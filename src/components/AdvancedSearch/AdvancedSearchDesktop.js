@@ -37,8 +37,11 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const [totalFound, setTotalFound] = useState(null);
   // By changing 'forceReload', an useEffect in 'NodeList' will be called and forces to fetch again.
   const [forceReload, setForceReload] = useState(false);
+  // if True, filters nodes created by specific people(under develop)
 
   const [urgentCreate, setUrgentCreate] = useState(false);
+
+  const [isBookMarked, setIsBookMarked] = useState(false);
 
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
@@ -49,16 +52,17 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
     Object.keys(value).map((key, index) => {
       if (value[key].Type === 'form') {
         let formTemp = {};
-        Object.keys(value[key].JSONValue).map((miniKey, index) => {
+        Object?.keys(value[key]?.JSONValue)?.map((miniKey, index) => {
           formTemp = {
-            [miniKey]: value[key].JSONValue[miniKey].JSONValue,
+            [miniKey]: value[key]?.JSONValue[miniKey]?.JSONValue,
             ...formTemp,
           };
+          return null;
         });
         temp = { [key]: formTemp, ...temp };
         setFormFilters(temp);
       } else {
-        temp = { [key]: value[key].JSONValue, ...temp };
+        temp = { [key]: value[key]?.JSONValue, ...temp };
         setFormFilters(temp);
       }
       return temp;
@@ -74,12 +78,19 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   };
   const onByMe = (e) => {
     setIsByMe(e);
+    if (e) {
+      setByPeople(null);
+    }
   };
   const onByPeople = (item) => {
     setIsByMe(false);
 
     setByPeople(item);
   };
+  // console.log('children', children);
+  // console.log('nodeType', nodeType);
+  // console.log('hierarchy', hierarchy);
+
   return (
     <Container
       isAdvancedShow={isAdvancedSearch}
@@ -105,6 +116,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             onByMe={onByMe}
             onByPeople={onByPeople}
             isByMe={isByMe}
+            people={byPeople}
+            onByBookmarked={setIsBookMarked}
+            isBookMarked={isBookMarked}
           />
         </TopFilter>
         <div style={{ padding: '0 2rem 0 2rem' }}>
@@ -125,6 +139,7 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             forceFetch: forceReload,
             isByMe: isByMe,
             byPeople: byPeople,
+            isBookMarked: isBookMarked,
             onTotalFound: setTotalFound,
           })}
         </div>

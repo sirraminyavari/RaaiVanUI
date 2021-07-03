@@ -9,7 +9,7 @@ import UrgentCreateMobile from './UrgentCreateMobile';
 const UrgentCreate = ({ ...props }) => {
   return (
     <>
-      {DimensionHelper().isTabletOrMobile ? (
+      {DimensionHelper()?.isTabletOrMobile ? (
         <UrgentCreateMobile {...props} />
       ) : (
         <UrgentCreateDesktop {...props} />

@@ -24,7 +24,7 @@ const loggedInAction = (result) => (dispatch, getState) => {
     window.location.href = auth.Options.ReturnURL || window.location.href;
   };
 
-  const msg = result.LoginMessage ? decode(result.LoginMessage) : null;
+  let msg = result.LoginMessage ? decode(result.LoginMessage) : null;
 
   if (auth.Options.ReloadAfterLogin) {
     msg =
