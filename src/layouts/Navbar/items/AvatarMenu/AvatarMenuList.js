@@ -16,6 +16,7 @@ import useWindow from 'hooks/useWindowContext';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import { CV_RED } from 'constant/CssVariables';
 import { selectApplication } from 'store/actions/applications/ApplicationsAction';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -75,7 +76,8 @@ const AvatarMenuList = () => {
         );
       })}
       <Styled.Divider />
-      <Styled.AvatarTeamsListWrapper>
+      <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 18rem)' }}>
+        {/* <Styled.AvatarTeamsListWrapper> */}
         {teams?.map((team) => {
           const { ApplicationID, Title, IconURL } = team;
           return (
@@ -90,7 +92,8 @@ const AvatarMenuList = () => {
             />
           );
         })}
-      </Styled.AvatarTeamsListWrapper>
+        {/* </Styled.AvatarTeamsListWrapper> */}
+      </PerfectScrollbar>
       <Styled.Divider />
       <AvatarMenuItem
         title={RVDic.Logout}

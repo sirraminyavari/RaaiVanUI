@@ -21,7 +21,13 @@ const MenuItem = (props) => {
       to={linkTo}
       onClick={onClickHandler ?? null}>
       {!!Icon && <Icon size={22} color={iconColor} dir={RV_RevFloat} />}
-      {!!iconURL && <Avatar radius={25} userImage={iconURL} />}
+      {!!iconURL && (
+        <Avatar
+          radius={25}
+          userImage={iconURL}
+          style={{ minWidth: '1.9rem' }}
+        />
+      )}
       <Styled.AvatarMenuTitle className={textClass}>
         {title}
       </Styled.AvatarMenuTitle>

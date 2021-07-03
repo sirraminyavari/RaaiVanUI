@@ -16,10 +16,13 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
+  CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
+
+const { RV_Float } = window;
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -33,8 +36,10 @@ export const TeamsViewContainer = styled.div.attrs({
   align-items: flex-start;
 
   .archived-teams {
-    max-height: 87vh;
-    overflow: scroll;
+    max-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 0;
+    left: calc(50% - 17.5%);
   }
 `;
 
@@ -51,8 +56,21 @@ export const HeaderContainer = styled.div.attrs({
 `;
 
 export const ModalContentWrapper = styled.div`
+  width: calc(100% + 2rem);
+  height: calc(100vh - 9rem);
+  overflow: scroll;
+  margin-top: 2.5rem;
+  margin-${RV_Float}: -1rem;
+  padding: 0 1rem;
+
+  .ps__rail-y {
+    ${RV_Float}: calc(100% - 1rem) !important;
+  }
+`;
+
+export const CreateModalWrapper = styled.div`
   width: 100%;
-  padding: 0 5%;
+  padding: 0 1rem;
 `;
 
 export const ArchivedTeamWrapper = styled.div`
@@ -67,10 +85,15 @@ export const ArchivedTeamDescription = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
+  width: calc(100% - 5rem);
 `;
 
 export const ArchivedTeamTitle = styled.span`
   margin: 0 1rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ModalButtonsWrapper = styled.div`
@@ -96,14 +119,15 @@ export const ContentSide = styled.div`
   height: 100%;
   margin: 0;
 
-  .teams-modal {
+  .create-team-modal {
     margin-top: 35vh;
   }
 
-  .teams-modal-header {
-    height: 4.5rem;
-    min-height: 4.5rem;
-    max-height: 4.5rem;
+  .create-team-modal-header {
+    height: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    background-color: ${CV_GRAY_LIGHT};
   }
 `;
 
@@ -310,6 +334,15 @@ export const TeamConatiner = styled.div.attrs({
     overflow: hidden;
   }
 
+  .archived-teams-title {
+    position: fixed;
+    width: 35%;
+    padding: 1rem 0;
+    background-color: ${CV_GRAY_LIGHT};
+    z-index: 1000;
+    ${({ revDir }) => `padding-${revDir}: 0.5rem;`}
+  }
+
   .scroll {
     max-height: 9rem;
     overflow: scroll;
@@ -339,11 +372,22 @@ export const TeamDescription = styled.div`
 `;
 
 export const TeamTitle = styled.div.attrs({
-  classNAme: C_GRAY_DARK,
+  className: C_GRAY_DARK,
 })`
   font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 500;
+  .inline-edit-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    :hover {
+      border: 1px solid ${CV_DISTANT};
+      border-radius: 0.3rem;
+      padding: 0.2rem 0.5rem;
+    }
+  }
 `;
 
 export const TeamExcerpt = styled.div.attrs({
