@@ -38,13 +38,13 @@ const { RVDic, RVAPI, RV_RTL } = window || {};
 const LOCAL_STORAGE_PRE_TEXT = 'addNode_';
 const data = [
   {
-    icon: <FlashIcon className={'rv-default'} />,
+    icon: <FlashIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
     label: RVDic?.AddQuickly,
     value: 'urgentAction',
     colorClass: 'rv-default',
   },
   {
-    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.5rem' }} />,
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
     label: RVDic?.AddWithDetails,
     value: 'completeAction',
     colorClass: 'rv-default',
@@ -89,7 +89,9 @@ const FilterBar = ({
   isBookMarked,
 }) => {
   const defaultDropDownLabel = {
-    icon: <AddIcon color={'white'} />,
+    icon: (
+      <AddIcon color={'white'} style={{ fontSize: '1.2rem', color: 'red' }} />
+    ),
     label: RVDic?.NewN?.replace(
       '[n]',
       !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
@@ -220,7 +222,7 @@ const FilterBar = ({
         ...selectedItem,
         icon: React.cloneElement(item.icon, {
           color: 'white',
-          fontSize: '1rem',
+          fontSize: '1.2rem',
         }),
         value: item?.value,
         color: CV_WHITE,
