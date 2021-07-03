@@ -4,12 +4,15 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { CV_RED_SOFT } from 'constant/CssVariables';
 import { decode, encode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ButtonContainer,
   CustomInput,
   UrgentInput,
+  UrgentButtonCancel,
+  UrgentIconCancel,
 } from '../AdvancedSearch.style';
 
 const { RVDic } = window;
@@ -46,20 +49,19 @@ const UrgentCreateDesktop = ({
   // Focuses the input when component mounted.
   useEffect(() => {
     if (isVisible || dataFetched !== null) {
-      inputRef.current?.focus();
+      inputRef?.current?.focus();
     }
   }, [isVisible, dataFetched]);
 
   // By clicking 'create' will fire
   const onCreateUrgent = (continueToCreate = false) => {
     continueToCreate ? setIsFetchingContinually(true) : setIsFetching(true);
-    addNode.fetch(
+    addNode?.fetch(
       { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
       (response) => {
         continueToCreate
           ? setIsFetchingContinually(false)
           : setIsFetching(false);
-        console.log(continueToCreate, 'continueToCreate');
         !continueToCreate && onDismiss();
         setUrgentInput('');
         onForceFetch();
@@ -68,7 +70,6 @@ const UrgentCreateDesktop = ({
   };
   // when the user  is inputting some thing will fire
   const onInput = (e) => {
-    console.log(e, 'e');
     setUrgentInput(e?.target?.value);
   };
   // By pressing the enter button will fire
@@ -86,6 +87,7 @@ const UrgentCreateDesktop = ({
         <img
           style={{ height: '4rem', aspectRatio: 1 }}
           src={nodeType?.IconURL}
+          alt={''}
         />
       </div>
       <CustomInput
@@ -100,7 +102,7 @@ const UrgentCreateDesktop = ({
           ' ' +
           RVDic?.NewN?.replace(
             '[n]',
-            hierarchy && hierarchy.length > 0
+            hierarchy && hierarchy?.length > 0
               ? decode(hierarchy[0]?.TypeName)
               : ''
           )
@@ -110,40 +112,67 @@ const UrgentCreateDesktop = ({
       <ButtonContainer>
         <Button
           disable={
-            isFetching || isFetchingContinually || urgentInput.length === 0
+            isFetching || isFetchingContinually || urgentInput?.length === 0
           }
-          style={{ margin: '0 1rem 0 1rem' }}
+          $circleEdges={true}
+          style={{
+            ...urgentButton,
+            cursor:
+              !isFetching ||
+              !isFetchingContinually ||
+              (!urgentInput?.length !== 0 && 'pointer'),
+          }}
           loading={isFetching}
           onClick={() => onCreateUrgent()}
           type={'primary'}>
-          {RVDic.Save}
+          {RVDic?.Save}
         </Button>
 
         <Button
           disable={
             isFetching || isFetchingContinually || urgentInput.length === 0
           }
-          style={{ margin: '0 1rem 0 1rem' }}
+          $circleEdges={true}
+          style={{
+            ...urgentButton,
+            cursor:
+              !isFetching ||
+              !isFetchingContinually ||
+              (!urgentInput?.length !== 0 && 'pointer'),
+          }}
           loading={isFetchingContinually}
           onClick={() => onCreateUrgent(true)}
           type={'primary-o'}>
-          {RVDic.Save + ' ' + RVDic.And + ' ' + RVDic.Next}
+          {RVDic?.Save + ' ' + RVDic?.And + ' ' + RVDic?.Next}
         </Button>
-        <Button
-          className={' rv-border-red rv-border-radius-1'}
-          onClick={onDismiss}
-          style={{
-            borderRadius: '10rem',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '0.7rem',
-            margin: '0 1rem 0 1rem',
-          }}>
-          <CloseIcon style={{ fontSize: '1rem' }} className={'rv-red '} />
-        </Button>
+        <UrgentButtonCancel
+          style={cancelButton}
+          $circleEdges={true}
+          type={'primary-o'}>
+          <UrgentIconCancel
+            onClick={onDismiss}
+            $circleEdges={true}
+            style={urgentCancelIcon}></UrgentIconCancel>
+        </UrgentButtonCancel>
       </ButtonContainer>
     </UrgentInput>
   );
 };
 
 export default UrgentCreateDesktop;
+
+const urgentCancelIcon = {
+  padding: '0.5rem',
+  borderRadius: '10rem',
+  fontSize: '1rem',
+  display: 'flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+};
+const cancelButton = {
+  margin: '0 0.5rem 0 0.5rem',
+};
+const urgentButton = {
+  padding: '0.5rem 1rem 0.5rem 1rem',
+  margin: '0 0.5rem 0 0.5rem',
+};

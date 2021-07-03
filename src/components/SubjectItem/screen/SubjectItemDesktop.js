@@ -1,7 +1,6 @@
 /**
  * 'SubjectItem' for the time that the screen is big.
  */
-import { getURL } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -10,7 +9,6 @@ import SubjectClassName from '../items/SubjectClassName';
 import SubjectCreator from '../items/SubjectCreator';
 import SubjectDate from '../items/SubjectDate';
 import SubjectIcon from '../items/SubjectIcon';
-import SubjectStatus from '../items/SubjectStatus';
 import SubjectTitle from '../items/SubjectTitle';
 import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
@@ -52,10 +50,6 @@ const SubjectItemDesktop = ({
   // /**
   //  * By clicking on the item will fire.
   //  */
-  const onClick = () => {
-    console.log('clicked');
-    window.open(RVAPI.NodePageURL({ NodeID: NodeID }));
-  };
 
   return (
     <Root>
@@ -108,6 +102,7 @@ const SubjectItemDesktop = ({
               {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
             </>
           )}
+          {console.log(LikeStatus && NodeID, 'liked node')}
           <SubjectCreator
             style={{ padding: RV_RTL ? '0 0rem 0 1rem' : '0 1rem 0 0 ' }}
             userProfile={Creator?.ProfileImageURL}

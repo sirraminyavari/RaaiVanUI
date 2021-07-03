@@ -10,7 +10,7 @@ import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
 import { MOBILE_BOUNDRY } from 'constant/constants';
-import TestView from 'views/TestView/TestView';
+// import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
@@ -50,7 +50,7 @@ const switchRoutes = (
       );
     })}
     {/* Just in dev mode and won't render in production  */}
-    <Route exact path="/test" component={TestView} />
+    {/* <Route exact path="/test" component={TestView} /> */}
     <Route exact path="/rasoul" component={RasoulView} />
     <Route exact path="/ali" component={AliView} />
     <Route exact path="/ramin" component={RaminView} />

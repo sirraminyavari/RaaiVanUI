@@ -2,7 +2,7 @@
  * this is a temporary function and will be removed as soon as new UI is developed!
  */
 
-const RegisterNewNode = ({ nodeTypeId }) => {
+const SubmitNewNode = ({ nodeTypeId }) => {
   const { GlobalUtilities, CNAPI } = window;
 
   var _div = GlobalUtilities.create_nested_elements([
@@ -32,7 +32,7 @@ const RegisterNewNode = ({ nodeTypeId }) => {
             ResponseHandler: function (result) {
               result = result || {};
 
-              new RegisterNewNode(_div, {
+              new window.RegisterNewNode(_div, {
                 Service: service,
                 Extensions: result.Extensions || {},
                 Options: {
@@ -54,4 +54,4 @@ const RegisterNewNode = ({ nodeTypeId }) => {
   });
 };
 
-export default RegisterNewNode;
+export default SubmitNewNode;

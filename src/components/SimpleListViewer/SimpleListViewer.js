@@ -5,7 +5,6 @@ import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import React, { useEffect, useRef, useState } from 'react';
-import { Component } from 'react';
 import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 
@@ -110,52 +109,25 @@ const SimpleListViewer = ({
     }
   };
   // under develop
-  const handleScroll = (e) => {
-    const lastScrollY = window.scrollY;
-    const screenY = window.screenY;
-    const elementHeight = container.current?.clientHeight;
-    console.log(
-      lastScrollY,
-      'lastScrollY',
-      elementHeight,
-      'elementHeight',
-      screenY,
-      'screenY'
-    );
-    if (
-      elementHeight - lastScrollY < 500 &&
-      infiniteLoop &&
-      scrollDir === 'scrolling down' &&
-      !isFetching &&
-      data.length > 0 &&
-      data.length < total
-    ) {
-      // fetchMore();
-    }
-  };
-  //   onscrollend: function (element, params, done) {
-  //     if (typeof (element) != "object") element = document.getElementById(element);
-  //     params = params || {};
-  //     if (GlobalUtilities.get_type(done) != "function") return;
+  // const handleScroll = (e) => {
+  //   const lastScrollY = window.scrollY;
+  //   const screenY = window.screenY;
+  //   const elementHeight = container.current?.clientHeight;
+  //   if (
+  //     elementHeight - lastScrollY < 500 &&
+  //     infiniteLoop &&
+  //     scrollDir === 'scrolling down' &&
+  //     !isFetching &&
+  //     data.length > 0 &&
+  //     data.length < total
+  //   ) {
+  //     // fetchMore();
+  //   }
+  // };
 
-  //     var _offset = +(params.Offset ? params.Offset : 0);
-  //     if (isNaN(_offset) || _offset < 0) _offset = 0;
-
-  //     if (element === document || element === window || element === document.body)
-  //         return jQuery(window).scroll(function () { if (jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height() - _offset) done(); });
-
-  //     jQuery(element).bind('scroll', function () {
-  //         var scrollTop = jQuery(this).scrollTop();
-  //         var scrollPosition = scrollTop + jQuery(this).outerHeight();
-  //         var divTotalHeight = GlobalUtilities.total_height(element);
-
-  //         if ((params.Top && scrollTop >= 0 && scrollTop <= _offset) || (!params.Top && scrollPosition >= (divTotalHeight - _offset))) done();
-  //     });
-  // },
   const onEndReached = () => {
     if (!isFetching && data.length > 0 && data.length < total) {
       fetchMore();
-      console.log(total, 'on End Reached***', isFetching, data.length);
     }
   };
 

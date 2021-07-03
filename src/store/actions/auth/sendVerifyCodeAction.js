@@ -4,7 +4,6 @@
 import { encode } from 'js-base64';
 import CheckPassword from 'utils/Validation/CheckPassword';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
-import PasswordValidator from 'utils/Validation/PasswordValidator';
 import PersianValidator from 'utils/Validation/PersianValidator';
 import { loginSlice } from '../../reducers/loginReducer';
 
@@ -69,7 +68,8 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
   };
   // Checks inputted email/mobile
   !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
-    ? dispatch(setEmailError('!' + 'ایمیل یا شماره موبایل وارد شده صحیح نیست'))
+    ? //ask ramin
+      dispatch(setEmailError(`!ایمیل یا شماره موبایل وارد شده صحیح نیست`))
     : // Checks inputted password, with Password Policy comes from server.
 
     !CheckPassword(password, getState().auth?.passwordPolicy)

@@ -112,6 +112,7 @@ const PeoplePicker = ({
   const onByMeSelect = (e) => {
     console.log(e, 'eeee');
     onByMe(e);
+    setPickerVisible(false);
   };
 
   return (

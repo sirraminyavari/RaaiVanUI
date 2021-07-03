@@ -2,19 +2,18 @@
  * 'SubjectItem' for the time that the screen is small/medium.
  */
 import { decode } from 'js-base64';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';
 import SubjectCreator from '../items/SubjectCreator';
 import SubjectDate from '../items/SubjectDate';
 import SubjectIcon from '../items/SubjectIcon';
-import SubjectStatus from '../items/SubjectStatus';
 import SubjectTitle from '../items/SubjectTitle';
 import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
-import SubjectCheckBox from '../items/SubjectCheckBox';
+import { Container, Divider, IconContent, Root } from './SubjectItem.style';
 
-import { Container, IconContent, Divider, Root } from './SubjectItem.style';
 const { RV_RTL, RVAPI } = window;
 
 /**
@@ -49,9 +48,6 @@ const SubjectItemMobileView = ({
   // /**
   //  * By clicking on the item will fire.
   //  */
-  const onClick = () => {
-    window.open(RVAPI.NodePageURL({ NodeID: NodeID }));
-  };
 
   return (
     <Root>
@@ -59,7 +55,9 @@ const SubjectItemMobileView = ({
         selectMode={selectMode}
         onChecked={(value) => onChecked(value, item)}
       />
-      <Container onClick={onClick} className="rv-border-freezed">
+      <Container
+        to={RVAPI.NodePageURL({ NodeID: NodeID })}
+        className="rv-border-freezed">
         <IconContent>
           <div>
             <SubjectIcon iconUrl={IconURL} />

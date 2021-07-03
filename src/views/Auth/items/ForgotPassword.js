@@ -62,8 +62,8 @@ const ForgotPassword = () => {
     const { GlobalUtilities } = window;
 
     !passwordPolicy && dispatch(signupLoadFilesAction());
-    GlobalUtilities.init_recaptcha((captcha) => {
-      captcha.getToken((token) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
         //use token
         dispatch(setCaptchaTokenAction(token));
       });
@@ -77,7 +77,6 @@ const ForgotPassword = () => {
   // By changing routeHistory & signUpClicked,
   // navigates to the address that routeHistory says.
   useEffect(() => {
-    console.log(signUpClicked, !fetchingFiles, routeHistory, '< *** ***');
     signUpClicked && !fetchingFiles && routeHistory && push(routeHistory);
   }, [routeHistory, signUpClicked, fetchingFiles]);
   useEffect(() => {
@@ -149,12 +148,12 @@ const ForgotPassword = () => {
               textAlign: 'center',
               ...common_style,
             }}>
-            {RVDic.ForgotMyPassword}
+            {RVDic?.ForgotMyPassword}
           </Heading>
           <AnimatedInput
             onChange={onEmailChanged}
             value={email}
-            placeholder={RVDic.EmailAddress}
+            placeholder={RVDic?.EmailAddress}
             error={emailError}
             shake={emailError && 300}
             style={{ marginTop: '1.5rem', marginBottom: '0.75rem' }}
@@ -163,7 +162,7 @@ const ForgotPassword = () => {
           <AnimatedInput
             onChange={onPasswordChanged}
             value={password}
-            placeholder={RVDic.NewPassword}
+            placeholder={RVDic?.NewPassword}
             error={passwordError}
             shake={passwordError && 300}
             style={common_style}
@@ -221,7 +220,7 @@ const ForgotPassword = () => {
               ...common_style,
               marginTop: '1.75rem',
             }}>
-            {RVDic.ChangePassword}
+            {RVDic?.ChangePassword}
           </Button>
 
           <Button
@@ -254,7 +253,7 @@ const ForgotPassword = () => {
                 fontSize: '1rem',
               }}
               onClick={onCreateAccount}>
-              {RVDic.CreateAccount}
+              {RVDic?.CreateAccount}
             </Button>
           </Hiddener>
         </Container>

@@ -70,7 +70,8 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
   };
 
   !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
-    ? dispatch(setEmailError('!' + 'ایمیل یا شماره موبایل وارد شده صحیح نیست'))
+    ? //ask ramin
+      dispatch(setEmailError(`!ایمیل یا شماره موبایل وارد شده صحیح نیست`))
     : // Checks inputted password, with Password Policy comes from server.
 
     !CheckPassword(password, getState().auth?.passwordPolicy)

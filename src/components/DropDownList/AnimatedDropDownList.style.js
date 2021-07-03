@@ -2,6 +2,7 @@
  * styled-components related to @link AnimatedDropDownList.
  */
 import ArrowDown from 'components/Icons/ArrowDown';
+import { CV_WHITE } from 'constant/CssVariables';
 import styled, { css, keyframes } from 'styled-components';
 
 const { RV_Float, RV_RTL } = window;
@@ -63,7 +64,9 @@ export const ItemList = styled.div`
   border-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   border-top-width: 0px;
-  background-color: white;
+  background-color: ${CV_WHITE};
+  align-items: ${() => (RV_Float ? 'flex-start' : 'flex-end')};
+
   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
@@ -141,9 +144,12 @@ export const Maintainer = styled.button`
   padding: 0.5rem;
   align-items: center;
   min-height: 2.5rem;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
 `;
 export const Label = styled.div`
   color: ${({ color }) => color};
+  width: 100%;
   padding: ${() => (RV_RTL ? '0 0.7rem 0 0.7rem' : '0 0.7rem 0 0.7rem')};
+  text-align: ${RV_RTL ? 'right' : 'left'};
 `;

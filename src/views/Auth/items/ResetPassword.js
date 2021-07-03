@@ -78,7 +78,7 @@ const ResetPassword = () => {
             textAlign: 'center',
             ...common_style,
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Heading>
         <RowItems style={common_style}>
           <Heading
@@ -98,7 +98,7 @@ const ResetPassword = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}
@@ -112,7 +112,7 @@ const ResetPassword = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}

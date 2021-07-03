@@ -4,7 +4,8 @@ import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 
-const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+const getNodesAPI = (bookMarked = false) =>
+  new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -26,6 +27,7 @@ const NodeList = ({
   onTotalFound,
   isByMe,
   byPeople,
+  isBookMarked,
 }) => {
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
@@ -44,11 +46,12 @@ const NodeList = ({
     nodeTypeId,
     formFilters,
     forceFetch,
+    isBookMarked,
   ]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    getNodesAPI.fetch(
+    getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
@@ -97,9 +100,7 @@ const NodeList = ({
                 );
               }
             },
-            (error) => {
-              console.log(error, 'response');
-            }
+            (error) => {}
           );
         }
       },
@@ -111,7 +112,6 @@ const NodeList = ({
 
   const onClick = (nodeId) => {
     // objectUrl({ NodeID: nodeId });
-    console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
     RVAPI.NodePageURL({ NodeID: nodeId });
   };
   const onReload = () => {
@@ -123,14 +123,11 @@ const NodeList = ({
 
     if (nodeIndex > -1) {
       let tempList = bookmarkedList;
-      console.log('unlike', nodeIndex, nodeId);
 
       tempList = tempList.filter((item) => item !== nodeId);
 
       setBookmarkedList(tempList);
     } else {
-      console.log('like', nodeIndex, nodeId);
-
       setBookmarkedList([...bookmarkedList, nodeId]);
     }
   };
