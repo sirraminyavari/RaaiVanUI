@@ -4,8 +4,9 @@ import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 
-const getNodesAPI = (bookMarked = false) =>
-  new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
+const getNodesAPI = (bookMarked = false) => {
+  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
+};
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -110,10 +111,6 @@ const NodeList = ({
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
-  const onClick = (nodeId) => {
-    // objectUrl({ NodeID: nodeId });
-    RVAPI.NodePageURL({ NodeID: nodeId });
-  };
   const onReload = () => {
     setExtraData(!extraData);
   };
@@ -131,12 +128,13 @@ const NodeList = ({
       setBookmarkedList([...bookmarkedList, nodeId]);
     }
   };
+
   return (
     <>
       <SimpleListViewer
         fetchMethod={fetchData}
         extraData={extraData}
-        infiniteLoop={true}
+        infiniteLoop={false}
         onEndReached={() => {
           console.log('Im reached end');
         }}
@@ -156,7 +154,6 @@ const NodeList = ({
                   LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
                 }}
                 isSaas={isSaas}
-                onClick={() => onClick(x.NodeID)}
                 onReload={onReload}
                 onBookmark={onBookmark}
               />

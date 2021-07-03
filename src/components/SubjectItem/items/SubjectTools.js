@@ -27,15 +27,13 @@ const SubjectTools = ({
 
   const onEdit = () => {};
   const onDelete = () => {};
+
   const onBookmark = (e) => {
     setBookmarkFetching(true);
-    console.log(e, 'like pressed');
-    // e.stopPropagation();
     e.stopPropagation();
+    e.preventDefault();
 
     if (isLiked) {
-      // onBookmarLocally && onBookmarLocally(nodeId);
-
       unlikeNode.fetch({ NodeID: nodeId }, (response) => {
         console.log(response, 'unlike response');
         if (
@@ -45,12 +43,8 @@ const SubjectTools = ({
           onBookmarLocally && onBookmarLocally(nodeId);
         }
         setBookmarkFetching(false);
-
-        // reload();
       });
     } else {
-      // onBookmarLocally && onBookmarLocally(nodeId);
-
       likeNode.fetch({ NodeID: nodeId }, (response) => {
         console.log(response, 'like response');
         if (
@@ -60,8 +54,6 @@ const SubjectTools = ({
           onBookmarLocally && onBookmarLocally(nodeId);
         }
         setBookmarkFetching(false);
-
-        // reload();
       });
     }
   };
