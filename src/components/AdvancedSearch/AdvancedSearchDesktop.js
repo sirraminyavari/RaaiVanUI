@@ -87,6 +87,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
 
     setByPeople(item);
   };
+  // console.log('children', children);
+  // console.log('nodeType', nodeType);
+  // console.log('hierarchy', hierarchy);
 
   return (
     <Container

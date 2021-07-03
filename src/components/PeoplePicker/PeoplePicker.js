@@ -43,7 +43,6 @@ const PeoplePicker = ({
     function handleClickOutside(event) {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
         // onClick();
-        console.log('outside clicked');
 
         setPickerVisible(false);
       }

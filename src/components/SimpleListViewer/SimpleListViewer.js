@@ -100,6 +100,8 @@ const SimpleListViewer = ({
   // fetches more data if is available
   const fetchMore = () => {
     if (total > data.length) {
+      console.log(total, '<===simple list fetch more', data.length);
+
       setIsFetching(true);
 
       fetchMethod(pageSize, data.length + 1, (newData, total) => {
@@ -126,7 +128,7 @@ const SimpleListViewer = ({
   // };
 
   const onEndReached = () => {
-    if (!isFetching && data.length > 0 && data.length < total) {
+    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
       fetchMore();
     }
   };
@@ -163,7 +165,7 @@ const SimpleListViewer = ({
         <>
           {data.length > 0 && data.length < total && (
             <Button
-              loading={isFetching || infiniteLoop}
+              loading={isFetching}
               disable={isFetching}
               onClick={fetchMore}
               style={{ maxWidth: '30%', alignSelf: 'center' }}>
