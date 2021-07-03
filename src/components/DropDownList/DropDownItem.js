@@ -23,7 +23,17 @@ const DropDownItem = ({ item, onSelectItem, itemStyle }) => {
     <>
       {!hidden && (
         <Maintainer style={{ ...itemStyle }} onClick={onSelectItem}>
-          {<div style={{ width: '1rem', height: '1rem' }}>{icon}</div>}
+          {
+            <div
+              style={{
+                alignContent: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              {icon}
+            </div>
+          }
           <Label className={colorClass}>{label}</Label>
         </Maintainer>
       )}
