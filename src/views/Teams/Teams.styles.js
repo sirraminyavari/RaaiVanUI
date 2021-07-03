@@ -16,10 +16,13 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
+  CV_GRAY,
+  CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
+  TCV_WARM,
 } from 'constant/CssVariables';
 
 const { RV_Float } = window;
@@ -303,11 +306,11 @@ export const TeamConatiner = styled.div.attrs({
 
   .team-extra-users {
     background-color: ${CV_FREEZED};
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     font-size: 0.8rem;
     color: ${TCV_DEFAULT};
-    line-height: 2rem;
+    line-height: 2.5rem;
     user-select: none;
   }
 
@@ -377,15 +380,17 @@ export const TeamTitle = styled.div.attrs({
   font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 500;
+
   .inline-edit-truncate {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
+    padding: 0.2rem 0.5rem;
+
     :hover {
       border: 1px solid ${CV_DISTANT};
       border-radius: 0.3rem;
-      padding: 0.2rem 0.5rem;
     }
   }
 `;
@@ -410,9 +415,30 @@ export const TeamAvatarsWrapper = styled.div`
   align-items: center;
 `;
 
+const getPosition = ({ dir, usersCount }) => {
+  if (usersCount < 2) {
+    return `${dir}: 0`;
+  } else {
+    return `${dir}: ${usersCount * 0.35}rem`;
+  }
+};
+
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  ${({ dir }) => dir}: 1.7rem;
+  ${getPosition}
+`;
+
+export const AddUserWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: ${CV_FREEZED};
+  text-align: center;
+  line-height: 3.5rem;
+  ${({ rtl }) => rtl && 'transform: scaleX(-1);'}
+  position: relative;
+  ${getPosition}
 `;
 
 export const ExtraUserItem = styled.div`
@@ -564,4 +590,89 @@ export const TeamPattern = styled.img`
     !rtl &&
     `-webkit-transform: scaleX(-1);
   transform: scaleX(-1);`}
+`;
+
+export const AddUserModalHeader = styled.div`
+  text-align: center;
+  position: relative;
+  width: 3.2rem;
+  margin: auto;
+  color: ${CV_DISTANT};
+`;
+
+export const AddUserPlusSign = styled.span`
+  position: absolute;
+  top: -0.3rem;
+  left: 0;
+  font-weight: bold;
+  font-size: 1rem;
+`;
+
+export const AddUserActionsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+
+  .active-tab {
+    width: 47%;
+    background-color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    color: ${TCV_WARM};
+  }
+
+  .inactive-tab {
+    width: 47%;
+    border-color: #fff;
+    background-color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+
+    :hover {
+      border-color: ${TCV_DEFAULT};
+    }
+  }
+`;
+
+export const InviteContent = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BO_DISTANT}`,
+})`
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+`;
+
+export const GetLinkTitle = styled.span`
+  font-size: 1rem;
+  font-weight: 500;
+  color: ${CV_GRAY_DARK};
+`;
+
+export const GetLinkInfoWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+export const GetLinkInfoTitle = styled.span`
+  font-size: 0.8rem;
+  color: ${CV_DISTANT};
+  margin: 0.3rem;
+`;
+
+export const GetLinkFieldWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.8rem;
+
+  .get-link-input {
+    width: 100%;
+    margin: 0 1rem;
+    text-align: left;
+    color: ${CV_GRAY};
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+  }
 `;

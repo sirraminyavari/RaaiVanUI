@@ -25,7 +25,7 @@ const Button = forwardRef(
           ' rv-action-button-base ' +
           resolveClass({ type, disable }) +
           ' ' +
-          (props.className || ' ')
+          (props.classes || ' ')
         }
         style={props.style}
         onClick={disable || loading ? null : onClick}

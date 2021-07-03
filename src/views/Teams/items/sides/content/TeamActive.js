@@ -30,11 +30,26 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
 import UserInvitationDialog from './UserInviteDialog';
+import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const selectingApp = createSelector(
   (state) => state.applications,
   (applications) => applications.selectingApp
 );
+
+const fakeUsers = [
+  { id: '1', name: 'username' },
+  { id: '2', name: 'username' },
+  { id: '3', name: 'username' },
+  { id: '4', name: 'username' },
+  { id: '5', name: 'username' },
+  { id: '6', name: 'username' },
+  { id: '7', name: 'username' },
+  { id: '8', name: 'username' },
+  { id: '9', name: 'username' },
+  { id: '10', name: 'username' },
+];
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
@@ -144,6 +159,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setUsers(users);
   };
 
+  const handleInviteUser = (e) => {
+    e.stopPropagation();
+    setIsInviteShown(true);
+  };
+
   useEffect(() => {
     dispatch(getApplicationUsers(appId, '', onGetUsers));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,7 +179,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
       <DeleteConfirm
-        title="حذف تیم "
+        title={RVDic.RemoveN.replace('[n]', RVDic.Team)}
         show={isConfirmShown}
         onCancel={handleCancelDelete}
         onClose={handleCancelDelete}
@@ -177,7 +197,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         isModalShown={isModalShown}
         isRemovable={isRemovable}
         setIsModalShown={setIsModalShown}
-        setIsInviteShown={setIsInviteShown}
         setUsers={setUsers}
         users={users}
       />
@@ -222,15 +241,16 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             </Styled.TeamExcerpt>
           </Styled.TeamDescription>
           <Styled.TeamFooterConatiner>
-            <Styled.TeamAvatarsWrapper onClick={openTeamUsers}>
+            <Styled.TeamAvatarsWrapper>
               {users
                 ?.filter((_, index) => index < 4)
                 .map((user, index) => {
                   return (
                     <Avatar
                       key={index}
-                      userImage={user.ProfileImageURL}
-                      radius={32}
+                      onClick={openTeamUsers}
+                      userImage={user?.ProfileImageURL}
+                      radius={38}
                       style={{
                         position: 'relative',
                         [RV_Float]: `${-index * 9}px`,
@@ -240,13 +260,15 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     />
                   );
                 })}
-              {users?.length > 4 && (
+              {users?.length > 4 ? (
                 <PopupMenu
                   trigger="hover"
                   align="top"
                   arrowClass="hidden-arrow"
                   menuClass="extra-users-popup">
-                  <Styled.ExtraUsersWrapper dir={RV_RevFloat}>
+                  <Styled.ExtraUsersWrapper
+                    usersCount={totalUsers}
+                    dir={RV_RevFloat}>
                     <Badge
                       showText={`${totalUsers - 4}+`}
                       className="team-extra-users"
@@ -258,11 +280,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                       .map((user) => {
                         const fullName = `${decodeBase64(
                           user.FirstName
-                        )} ${decodeBase64(user.LastName)}`;
+                        )} ${decodeBase64(user?.LastName)}`;
                         return (
-                          <Styled.ExtraUserItem key={user.UserID}>
+                          <Styled.ExtraUserItem key={user?.UserID}>
                             <Avatar
-                              userImage={user.ProfileImageURL}
+                              userImage={user?.ProfileImageURL}
                               radius={25}
                             />
                             <Styled.ExtraUserTitle>
@@ -271,8 +293,30 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                           </Styled.ExtraUserItem>
                         );
                       })}
+                    {/* {fakeUsers.map((fake) => {
+                      return (
+                        <Styled.ExtraUserItem key={fake.id}>
+                          <Avatar
+                            // userImage={user.ProfileImageURL}
+                            radius={25}
+                            color="#333"
+                          />
+                          <Styled.ExtraUserTitle>
+                            {'fullName'}
+                          </Styled.ExtraUserTitle>
+                        </Styled.ExtraUserItem>
+                      );
+                    })} */}
                   </PerfectScrollbar>
                 </PopupMenu>
+              ) : (
+                <Styled.AddUserWrapper
+                  usersCount={totalUsers}
+                  onClick={handleInviteUser}
+                  rtl={RV_RTL}
+                  dir={RV_RevFloat}>
+                  <UserPlusIcon size={25} color={TCV_DEFAULT} />
+                </Styled.AddUserWrapper>
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable && (

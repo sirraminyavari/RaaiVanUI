@@ -1,8 +1,5 @@
-import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
-import useWindow from 'hooks/useWindowContext';
-import Button from 'components/Buttons/Button';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -19,19 +16,12 @@ const TeamUsersModal = ({
   appId,
   isModalShown,
   setIsModalShown,
-  setIsInviteShown,
 }) => {
-  const { RVDic } = useWindow();
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
     setIsModalShown(false);
   };
-
-  const handleShowInvitation = useCallback(() => {
-    setIsInviteShown(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleRemoveUser = (userId) => {
     dispatch(removeUserFromApplication(appId, userId));
@@ -46,9 +36,6 @@ const TeamUsersModal = ({
       title="هم تیمی ها">
       <div style={{ textAlign: 'center' }}>
         {appTitle}
-        <Button onClick={handleShowInvitation}>
-          {RVDic.InviteYourFriendsToRaaiVan.replace('[RaaiVan]', RVDic.Team)}
-        </Button>
         <div
           style={{
             display: 'grid',

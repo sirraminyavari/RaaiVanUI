@@ -16,8 +16,8 @@ const Breadcrumb = (props) => {
             {title}
             {self.length - 1 !== index && (
               <CaretIcon
-                style={{ verticalAlign: 'middle' }}
-                size={18}
+                style={{ verticalAlign: 'middle', margin: '0 0.2rem' }}
+                size={13}
                 dir={RV_RevFloat}
               />
             )}

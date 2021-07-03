@@ -114,7 +114,7 @@ const Navbar = () => {
           <Avatar
             radius={35}
             userImage={authUser?.ProfileImageURL}
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', minWidth: '2.5rem' }}
           />
         </Tooltip>
         {/* <PopupMenu
