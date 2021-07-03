@@ -374,9 +374,8 @@ export const Arrow = styled.span`
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
-  min-width: 12rem;
-  max-width: 14rem;
+  align-items: flex-start;
+  width: 14rem;
   margin: 0.5rem;
   margin-${RV_Float}: 1rem;
   margin-${RV_RevFloat}: 0;
@@ -396,7 +395,7 @@ export const AvatarMenuItem = styled.div.attrs({
   className: C_BLACK,
 })`
   display: flex;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
   padding: 0.4rem 0;
   cursor: pointer;
@@ -407,6 +406,7 @@ export const AvatarMenuTitle = styled.span`
   font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
+  width: 12rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
