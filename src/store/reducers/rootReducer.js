@@ -1,20 +1,24 @@
 import { combineReducers } from 'redux';
 import theme from './themeReducer';
-import auth from './loginReducer';
 import domains from './domainsReducer';
-import loginRoute from './loginRouteReducer';
-import signup from './signupReducer';
+import auth from './loginReducer';
 import sidebarItems from './sidebarMenuReducer';
-//import reducers here
+import navbarAlert from './navbarAlertReducer';
+import applications from './applicationsReducer';
+//! import reducers here
+
+const VERSION_REDUCER_KEY = 'raaivanVersion';
 
 const rootReducer = combineReducers({
+  //! This reducer will be used to store the version.
+  [VERSION_REDUCER_KEY]: (state = {}) => state,
   theme,
-  auth,
   domains,
-  loginRoute,
-  signup,
+  auth,
   sidebarItems,
-  // add reducers
+  navbarAlert,
+  applications,
+  //! add reducers.
 });
 
 export default rootReducer;

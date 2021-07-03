@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom';
 import useQuery from 'hooks/useQuery';
 import APIHandler from 'apiHelper/APIHandler';
 
+/**
+ * This hook checks every route for permission.
+ * @hook
+ * @param {string} name -The name of the given route.
+ * @returns {Object} The result object
+ */
 const useCheckRoute = (name) => {
   const [result, setResult] = useState({});
   const routeParams = useParams();
@@ -11,9 +17,13 @@ const useCheckRoute = (name) => {
   const apiHandler = new APIHandler('RVAPI', 'CheckRoute');
 
   useEffect(() => {
+    const prevURL = window.location.href;
     apiHandler.fetch(
       { RouteName: name, Parameters: params, ParseResults: true },
-      (response) => setResult(response),
+      (response) => {
+        const currentURL = window.location.href;
+        prevURL === currentURL && setResult(response);
+      },
       (error) => console.log(error)
     );
 
@@ -22,6 +32,7 @@ const useCheckRoute = (name) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, routeParams, queryParams]);
+
   return result;
 };
 

@@ -1,0 +1,52 @@
+﻿#features {
+	margin: auto;
+	width: 460px;
+	font-size: 0.9em;
+}
+.connected, .sortable, .exclude, .handles {
+	margin: auto;
+	padding: 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.sortable.grid {
+	overflow: hidden;
+}
+.connected li, .sortable li, .exclude li, .handles li {
+	list-style:outside none none;
+}
+.handles span {
+	cursor: move;
+}
+li.disabled {
+	opacity: 0.5;
+}
+
+.sortable.grid li {
+	text-align: center;
+}
+li.highlight {
+	background: #FEE25F;
+}
+#connected {
+	width: 440px;
+	overflow: hidden;
+	margin: auto;
+}
+.connected {
+	float: left;
+	width: 200px;
+}
+.connected.no2 {
+	float: right;
+}
+li.sortable-placeholder {
+	border: 1px dashed #CCC;
+    min-width: 100px;
+    min-height: 30px;
+	background: none;
+}

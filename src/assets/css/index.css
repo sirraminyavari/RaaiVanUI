@@ -1,0 +1,42 @@
+/*! Works on Firefox */
+* {
+  scrollbar-width: thick;
+  scrollbar-color: #f1f1f1 #999;
+  scrollbar-shadow-color: #999;
+}
+
+/*! Works on Chrome, Edge, and Safari */
+/*! width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  background: #15113c;
+}
+
+@media screen and (max-width: 800px) {
+  ::-webkit-scrollbar {
+    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+  }
+  * {
+    -ms-overflow-style: none; /*! IE and Edge */
+    scrollbar-width: none; /*! Firefox */
+  }
+}
+
+/*! Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  box-shadow: inset 0 0 5px #999;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 15px;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} */

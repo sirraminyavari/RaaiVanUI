@@ -1,54 +1,145 @@
-import Avatar from 'components/Avatar';
-import NavbarButton from './components/NavbarButton';
-import NavbarSearchInput from './components/NavbarSearchInput';
+/**
+ * Renders whole navbar area for app.
+ */
+import { lazy, Suspense, memo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Avatar from 'components/Avatar/Avatar';
+import NavbarSearchInput from './items/SearchInput';
 import * as Styled from './Navbar.styles';
+import { useMediaQuery } from 'react-responsive';
+import SearchIcon from 'components/Icons/SearchIcon/Search';
+// import PopupMenu from 'components/PopupMenu/PopupMenu';
+import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
+import { createSelector } from 'reselect';
+import {
+  WIDE_BOUNDRY,
+  MEDIUM_BOUNDRY,
+  MOBILE_BOUNDRY,
+  BO_RADIUS_HALF,
+} from 'constant/constants';
+import { BG_WHITE, C_WHITE } from 'constant/Colors';
+import useWindow from 'hooks/useWindowContext';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
-const navButtons = [
-  { id: 1, title: 'خانه', icon: 'home', linkTo: '/home' },
-  {
-    id: 2,
-    title: 'پیمایش',
-    icon: 'direction',
-    options: [
-      { id: 1, optName: 'مرورگر', optIcon: 'site' },
-      { id: 2, optName: 'نقشه گرافیکی', optIcon: 'target' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'پرسش',
-    icon: 'question',
-    options: [
-      { id: 1, optName: 'پرسش جدید', optIcon: 'plus' },
-      { id: 2, optName: 'پرسش ها', optIcon: 'question' },
-    ],
-  },
-  { id: 4, title: 'همکاران', icon: 'teams', linkTo: '/teams' },
-  { id: 5, title: 'پیام ها', icon: 'messages', linkTo: '/messages' },
-  { id: 6, title: 'کارتابل', icon: 'dashboard', linkTo: '/dashboard' },
-  {
-    id: 7,
-    title: 'اعلان ها',
-    icon: 'notifications',
-    linkTo: '/notifications',
-    badge: 99,
-  },
-];
+const WideScreenMenu = lazy(() =>
+  import(
+    /* webpackChunkName: "nav-wide-screen-menu-component"*/ './items/ScreenMenu'
+  )
+);
+const MobileMenu = lazy(() =>
+  import(
+    /* webpackChunkName: "nav-mobile-menu-component"*/ './items/MobileMenu'
+  )
+);
 
-const Navbar = ({ isSidebarOpen }) => {
+const selectIsSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
+const selectAuthUser = createSelector(
+  (state) => state.auth,
+  (auth) => auth.authUser
+);
+
+const Navbar = () => {
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const authUser = useSelector(selectAuthUser);
+  const [showSearch, setShowSearch] = useState(false);
+  const { RVDic, RV_RevFloat } = useWindow();
+
+  const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
+  const isMediumScreen = useMediaQuery({
+    query: `(min-width: ${MEDIUM_BOUNDRY})`,
+  });
+  const isMobileScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
+  const isMobileNav = useMediaQuery({
+    query: '(max-width: 970px)',
+  });
+
+  const showInput = () => {
+    if (!isSidebarOpen && (isMediumScreen || isWideScreen)) return true;
+    if (isSidebarOpen && isWideScreen) return true;
+    return showSearch;
+  };
+
+  const showMobileNav = () => {
+    if (!isSidebarOpen && isMobileScreen) return true;
+    if (isSidebarOpen && isMobileNav) return true;
+    return showSearch;
+  };
+
+  const handleShowSearch = () => {
+    setShowSearch(true);
+  };
+
+  const handleHideSearch = () => {
+    setShowSearch(false);
+  };
+
+  const SearchPlaceholder = RVDic.SearchInN.replace('[n]', RVDic.Team);
+
   return (
-    <Styled.NavbarContainer isSidebarOpen={isSidebarOpen}>
-      <Styled.ButtonsWrapper>
-        {navButtons.map((btn) => {
-          return <NavbarButton btnProps={btn} key={btn.id} />;
-        })}
-      </Styled.ButtonsWrapper>
+    <Styled.NavbarContainer isMobile={isMobileScreen}>
+      <Suspense fallback={<Styled.NavMenuContainer />}>
+        {showMobileNav() ? <MobileMenu /> : <WideScreenMenu />}
+      </Suspense>
       <Styled.SearchWrapper>
-        <NavbarSearchInput />
-        <Avatar radius={32} />
+        {showInput() ? (
+          <NavbarSearchInput
+            onBlur={handleHideSearch}
+            autoFocus={showSearch}
+            placeholder={SearchPlaceholder}
+          />
+        ) : (
+          <SearchIcon
+            size={30}
+            className={C_WHITE}
+            style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
+            onClick={handleShowSearch}
+          />
+        )}
+        <Tooltip
+          tipId="nav-avatar-menu"
+          multiline
+          effect="solid"
+          clickable
+          event="click"
+          arrowColor="transparent"
+          offset={{ [RV_RevFloat]: -102, top: -6 }}
+          className={`${BG_WHITE} ${BO_RADIUS_HALF} avatar-tooltip`}
+          renderContent={() => <AvatarMenuList />}>
+          <Avatar
+            radius={35}
+            userImage={authUser?.ProfileImageURL}
+            style={{ cursor: 'pointer' }}
+          />
+        </Tooltip>
+        {/* <PopupMenu
+          arrowClass="no-arrow"
+          menuClass={`${BG_WHITE} ${BO_RADIUS_HALF}`}
+          menuStyle={`
+            border: 0;
+            margin: 0.5rem 1.2rem;
+            box-shadow: 1px 3px 20px #2B7BE44D;
+            padding: 0.7rem;
+            padding-${RV_Float}: 2rem;
+          `}
+          trigger="click">
+          <div>
+            <Avatar
+              radius={35}
+              userImage={authUser?.ProfileImageURL}
+              style={{ cursor: 'pointer' }}
+            />
+          </div>
+          <AvatarMenuList />
+        </PopupMenu> */}
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

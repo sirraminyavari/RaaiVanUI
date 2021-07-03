@@ -1,0 +1,63 @@
+.editor {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  cursor: text;
+  padding: 16px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ababab;
+  background: #fefefe;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 140px;
+}
+@keyframes suggestions-animation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.mentionSuggestions {
+  animation-name: suggestions-animation;
+  animation-duration: 1s;
+  border-style: solid;
+  border-radius: 0.3rem;
+  border-width: 0px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 13rem;
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+@keyframes item-animation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.suggestion {
+  animation-name: item-animation;
+  animation-duration: 1s;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+.mention {
+  color: green;
+}
+.text {
+  color: black;
+}

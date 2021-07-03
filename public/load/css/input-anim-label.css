@@ -1,0 +1,57 @@
+﻿.input-anim-label-input {
+    position: relative;
+    width: 100%;
+    outline: none;
+    border: solid 1px #95989a;
+    border-radius: 4px;
+    color: #2c3235;
+    letter-spacing: .2px;
+    font-weight: 400;
+    font-size: 16px;
+    resize: none;
+    -webkit-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+.input-anim-label {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.input-anim-label.active .input-anim-label-input-placeholder {
+    top: -10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-size: 11px;
+    line-height: 14px;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.input-anim-label.active .input-anim-label-input:not(:focus):not(:hover) ~ .input-anim-label-input-placeholder {
+    color: rgb(150,150,150);
+}
+
+.input-anim-label-container .input-anim-label-input-placeholder {
+    position: absolute;
+    top: 50%;
+    display: block;
+    padding: 0 10px;
+    white-space: nowrap;
+    letter-spacing: .2px;
+    font-weight: normal;
+    font-size: 16px;
+    -webkit-transition: all, .2s;
+    transition: all, .2s;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

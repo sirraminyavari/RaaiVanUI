@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { SIGN_IN } from 'const/LoginRoutes';
 
 export const loginRouteSlice = createSlice({
   name: 'loginRoute',
 
   initialState: {
-    currentRoute: 'login',
+    currentRoute: SIGN_IN,
   },
   reducers: {
     changeLoginRoute: (state, action) => {

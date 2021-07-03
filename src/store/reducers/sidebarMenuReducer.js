@@ -6,14 +6,22 @@ export const sidebarMenuSlice = createSlice({
   initialState: {
     nodeTypes: [],
     tree: [],
+    dndTree: {},
     openMenuID: [],
+    searchText: '',
+    showSearchResults: false,
+    configPanels: [],
+    favoriteNodesCount: 0,
   },
   reducers: {
-    setSidebarNodes: (state, action) => {
-      state.nodeTypes = action.payload.NodeTypes;
-      if (state.tree.length !== action.payload.Tree.length) {
-        state.tree = action.payload.Tree;
-      }
+    setSidebarNodeTypes: (state, action) => {
+      state.nodeTypes = action.payload;
+    },
+    setSidebarTree: (state, action) => {
+      state.tree = action.payload;
+    },
+    setSidebarDnDTree: (state, action) => {
+      state.dndTree = action.payload;
     },
     toggleSidebarMenu: (state, action) => {
       let IDs = state.openMenuID;
@@ -25,8 +33,22 @@ export const sidebarMenuSlice = createSlice({
         state.openMenuID.push(action.payload);
       }
     },
-    setReorderedTree: (state, action) => {
-      state.tree = action.payload;
+    closeOpenMenus: (state, action) => {
+      state.openMenuID = [];
+    },
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
+      if (action.payload.length >= 3) {
+        state.showSearchResults = true;
+      } else {
+        state.showSearchResults = false;
+      }
+    },
+    setConfigPanels: (state, action) => {
+      state.configPanels = action.payload;
+    },
+    setFavoriteNodesCount: (state, action) => {
+      state.favoriteNodesCount = action.payload;
     },
   },
 });

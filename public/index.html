@@ -154,6 +154,7 @@
 
     <script type="text/javascript" src="%PUBLIC_URL%/load/scripts/API/UsersAPI.js?v=29"></script>
     <script type="text/javascript" src="%PUBLIC_URL%/load/scripts/API/RVAPI.js?v=29"></script>
+    <script type="text/javascript" src="%PUBLIC_URL%/load/scripts/API/CNAPI.js?v=29"></script>
     <script type="text/javascript" src="%PUBLIC_URL%/load/scripts/API/PrivacyAPI.js?v=29"></script>
 
     <script type="text/javascript" src="%PUBLIC_URL%/load/scripts/USR/MasterPageBuilder.js?v=29"></script>
@@ -162,9 +163,9 @@
       jQuery(document).ready(function () {
         jQuery(document).foundation();
 
-        //GlobalUtilities.js = function (params) {
-        //  return "../../load/" + ((params || {}).Name || params || "");
-        //};
+        GlobalUtilities.js = function (params) {
+          return "/load/scripts/" + ((params || {}).Name || params || "");
+        };
 
         for (var i in (window.RVGlobal || {}).Modules || {})
           RVGlobal.Modules[String(i).toLowerCase()] = RVGlobal.Modules[i];
@@ -172,7 +173,8 @@
     </script>
     <title>Raaivan</title>
   </head>
-  <body>
+  <body class="Direction TextAlign">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
 </html>

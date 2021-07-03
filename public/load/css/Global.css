@@ -1,0 +1,904 @@
+﻿:root {
+    --rv-color: #b2d321;
+    --rv-color-reverse: #4d2cde;
+    --rv-color-verysoft: #eef7c9;
+    --rv-color-soft: #e0f09d;
+    --rv-color-warm: #9fbd1e;
+    --rv-color-verywarm: #7a9117;
+    --rv-color-warmborder: #9bae46;
+    --rv-color-softborder: #c1eb09;
+    --rv-color-actionbutton: #b2d321;
+    --rv-color-highlytransparentwarm: rgba(193, 235, 9, 0.06);
+    --rv-color-verytransparentwarm: rgba(193, 235, 9, 0.1);
+    --rv-color-mediumtransparentwarm: rgba(193, 235, 9, 0.5);
+    --rv-color-transparentwarm: rgba(193, 235, 9, 0.7);
+}
+
+body {
+    /* font-family: Tahoma; */
+    font-family: IRANSans;
+    font-size: 10pt;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
+
+a { text-decoration: none; }
+
+textarea { 
+    font-family:IRANSans; 
+    font-size:10pt;
+}
+
+/* Customized */
+
+p { margin: 0px 0px 0px 0px; }
+
+blockquote
+{
+    border:solid 0px #A7A7A7;
+    border-right-width:4px;
+    margin-right:30px;
+    padding-right:20px;
+    font-size:10px;
+    font-style:italic;
+    color:#9F9F9F;
+}
+
+pre > code
+{
+    width:100% !important;
+    max-height:500px;
+    min-height:20px;
+    display:block;
+    background-color:#EFEFEF;
+    border:2px solid #C5C5C5;
+    padding:4px;
+    margin:6px auto 6px auto;
+    overflow:auto;
+    float:left;
+}
+
+/* end of Customized */
+
+.DashedAutoHideBorder
+{
+    border-style:dashed;
+    border-width:1px;
+    border-color:transparent;
+}
+        
+.DashedAutoHideBorder:hover { border-color:rgb(150,150,150); }
+        
+.NormalPadding { padding:4px; }
+
+.BorderRadius2 { border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px; }
+.BorderRadius3 { border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; }
+.BorderRadius4 { border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px; }
+.BorderRadius15 { border-radius:15px; -webkit-border-radius:15px; -moz-border-radius:15px; }
+.Circle { border-radius:100rem; -webkit-border-radius:100rem; -moz-border-radius:100rem; }
+
+.SoftShadow {
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+.HardShadow {
+    box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+    -webkit-box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+}
+
+.SurroundingShadow {
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.SoftTextShadow:hover {
+    text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
+}
+
+.WarmTextShadow:hover{ text-shadow:2px 2px 2px rgba(150, 150, 150, 1); }
+
+.Ellipsis {
+    text-overflow: ellipsis; 
+    display:block; 
+    overflow:hidden; 
+    white-space:nowrap;
+    /* must have width */
+}
+
+/* .FadeContainer
+{
+} */
+
+.FadeContainer:hover .Fade {
+    -webkit-animation: Opacity 0.8s; /* Chrome, Safari, Opera */
+    -webkit-animation-fill-mode: forwards;  /* Chrome, Safari, Opera */
+    
+    animation: Opacity 0.8s;
+    animation-fill-mode: forwards;
+}
+
+.Fade
+{
+    opacity:0;
+}
+
+@-webkit-keyframes Opacity {
+    from { opacity:0;}
+    to{opacity: 1;}
+}
+
+@keyframes Opacity {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+@font-face {
+	font-family: IRANSans;
+	font-style: normal;
+	font-weight: bold;
+	src: url('../fonts/eot/IRANSansWeb_Bold.eot');
+	src: url('../fonts/eot/IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */
+		 url('../fonts/woff2/IRANSansWeb_Bold.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+		 url('../fonts/woff/IRANSansWeb_Bold.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('../fonts/ttf/IRANSansWeb_Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: IRANSans;
+	font-style: normal;
+	font-weight: 500;
+	src: url('../../fonts/eot/IRANSansWeb_Medium.eot');
+	src: url('../../fonts/eot/IRANSansWeb_Medium.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */
+		 url('../../fonts/woff2/IRANSansWeb_Medium.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+		 url('../../fonts/woff/IRANSansWeb_Medium.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('../../fonts/ttf/IRANSansWeb_Medium.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: IRANSans;
+	font-style: normal;
+	font-weight: 300;
+	src: url('../fonts/eot/IRANSansWeb_Light.eot');
+	src: url('../fonts/eot/IRANSansWeb_Light.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */
+		 url('../fonts/woff2/IRANSansWeb_Light.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+		 url('../fonts/woff/IRANSansWeb_Light.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('../fonts/ttf/IRANSansWeb_Light.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: IRANSans;
+	font-style: normal;
+	font-weight: 200;
+	src: url('../fonts/eot/IRANSansWeb_UltraLight.eot');
+	src: url('../fonts/eot/IRANSansWeb_UltraLight.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */
+		 url('../fonts/woff2/IRANSansWeb_UltraLight.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+		 url('../fonts/woff/IRANSansWeb_UltraLight.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('../fonts/ttf/IRANSansWeb_UltraLight.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: IRANSans;
+	font-style: normal;
+	font-weight: normal;
+	src: url('../fonts/eot/IRANSansWeb.eot');
+	src: url('../fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'),  /* IE6-8 */
+		 url('../fonts/woff2/IRANSansWeb.woff2') format('woff2'),  /* FF39+,Chrome36+, Opera24+*/
+		 url('../fonts/woff/IRANSansWeb.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+		 url('../fonts/ttf/IRANSansWeb.ttf') format('truetype');
+}
+
+.WarmBorder {
+    border: solid 1px var(--rv-color-warm);
+}
+
+.SoftBorder {
+    border: solid 1px var(--rv-color-softborder);
+}
+
+.WarmColor {
+    color: var(--rv-color-verywarm);
+}
+
+.WarmBackgroundColor {
+    background: var(--rv-color-warm);
+    /*
+	background: -webkit-gradient(linear, left top, left bottom, from(var(--rv-color-soft)), to(var(--rv-color-warm)));
+	background: -moz-linear-gradient(top,  var(--rv-color-soft),  var(--rv-color-warm));
+    */
+    /* background: -webkit-gradient(linear, left top, left bottom, from(var(--rv-color-warm)), to(var(--rv-color-warm)));
+    background: -moz-linear-gradient(top, var(--rv-color-warm), var(--rv-color-warm)); */
+}
+
+.SoftBackgroundColor {
+    background-color: var(--rv-color-verysoft);
+}
+
+.ColdBackgroundColor {
+    background-color: #fff;
+}
+
+.TextInput {
+    height: 24px;
+    font-size: 18px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(172, 172, 172) rgb(197, 197, 197) rgb(197, 197, 197);
+    border-radius: 3px;
+    /* font: 81.25%/1 tahoma,helvetica,sans-serif; */
+    font: 81.25%/1 IRANSans;
+    color: rgb(51, 51, 51);
+}
+
+.TextInput:hover {
+    border-color: rgb(122, 122, 122) rgb(147, 147, 147) rgb(147, 147, 147);
+}
+
+.TextInput:focus {
+    border-color: var(--rv-color-warm);
+}
+
+.ActionButton {
+    text-transform: capitalize;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid var(--rv-color-warmborder);
+    padding: 4px;
+    /*font: 13px/100% Tahoma;*/
+    font: 13px/100%;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    background-color: var(--rv-color-actionbutton);
+    background-image: -moz-linear-gradient(center top, var(--rv-color-actionbutton), var(--rv-color-actionbutton));
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.ActionButton:hover {
+    box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+    -webkit-box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+}
+
+.ActionButton:active {
+    box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+    -webkit-box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+}
+
+.AppButton {
+    cursor: pointer;
+    border-bottom: 1px solid var(--rv-color-warmborder);
+    padding: 4px;
+    font: 11px/100% IRANSans;
+    text-shadow: 0 2px 2px rgba(95,95,95,.3);
+    color: #000000;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.AppButton:hover {
+    box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+    -webkit-box-shadow: 1px 1px 1px rgba(95, 95, 95, 0.5);
+}
+
+.AppButton:active {
+    box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+    -webkit-box-shadow: 2px 2px 2px rgba(95, 95, 95, 0.5);
+}
+
+.SpaceItem {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    -webkit-box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+    -moz-box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+    box-shadow: 5px 5px 5px rgba(95, 95, 95, 0.5);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.rv-text-shadow {
+    text-shadow: 0 1px 2px rgba(95,95,95,.4);
+}
+
+.rv-border-radius-quarter {
+    border-radius:0.25rem;
+    -moz-border-radius:0.25rem;
+    -webkit-border-radius:0.25rem;
+}
+
+.rv-border-radius-half {
+    border-radius:0.5rem;
+    -moz-border-radius:0.5rem;
+    -webkit-border-radius:0.5rem;
+}
+
+.rv-border-radius-1 {
+    border-radius:1rem;
+    -moz-border-radius:1rem;
+    -webkit-border-radius:1rem;
+}
+
+.rv-ignore-top-radius {
+    border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+}
+
+.rv-ignore-left-radius {
+    border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+}
+
+.rv-ignore-bottom-radius {
+    border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+}
+
+.rv-ignore-right-radius {
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+}
+
+.rv-ignore-top-right-radius {
+    border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+}
+
+.rv-ignore-bottom-right-radius {
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+}
+
+.rv-ignore-top-left-radius {
+    border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+}
+
+.rv-ignore-bottom-left-radius {
+    border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+}
+
+.rv-circle {
+    border-radius:100rem;
+    -moz-border-radius:100rem;
+    -webkit-border-radius:100rem;
+}
+
+.rv-gray {
+    color:rgb(120,120,120) !important;
+}
+
+.rv-dark-gray {
+    color:rgb(50,50,50) !important;
+}
+
+.rv-light-gray {
+    color:rgb(220,220,220) !important;
+}
+
+.rv-green {
+    color:limegreen !important;
+}
+
+.rv-red {
+    color:red !important;
+}
+
+.rv-selectable-title {
+    cursor:pointer;
+    color:black;
+}
+
+.rv-selectable-title:hover {
+    color:blue;
+}
+
+.rv-trim-vertical-margins > :first-child {
+    margin-top:0rem !important;
+}
+
+.rv-trim-vertical-margins > :last-child {
+    margin-bottom:0rem !important;
+}
+
+.rv-page {
+    position:relative;
+    width:100%; 
+    min-height:100vh; 
+    padding-top:4rem; 
+    padding-bottom:1rem;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:rgb(200,200,200);
+	padding-left:12vw;
+	padding-right:12vw;
+}
+
+.rv-form {
+    margin:0rem;
+    margin-bottom:5rem;
+    padding:0vw 6vw;
+}
+
+.rv-content-section {
+    margin-top:4.5rem;
+}
+
+.rv-flat-label {
+    color: rgb(100,100,100);
+    font-size: 0.8rem;
+}
+
+.rv-input {
+    color: rgb(51, 51, 51);
+    padding: 0.3rem;
+    border-width: 0.1rem;
+    border-color: var(--rv-color-soft) var(--rv-color-soft) var(--rv-color-soft);
+    border-style: solid;
+    border-radius: 0.3rem;
+    -moz-border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+}
+
+.rv-input:hover {
+    border-color: var(--rv-color-warm) var(--rv-color-warm) var(--rv-color-warm);
+}
+
+.rv-input:focus {
+    border-color: var(--rv-color-warmborder);
+}
+
+.rv-input-simple {
+    color: rgb(51, 51, 51);
+    padding: 0 0.3rem;
+    border-width: 0 0 1px 0;
+    border-color: rgb(240, 240, 240);
+    border-style: solid;
+}
+
+.rv-input-simple:hover {
+    border-color: var(--rv-color-soft) var(--rv-color-soft) var(--rv-color-soft);
+}
+
+.rv-input-simple:focus {
+    border-color: var(--rv-color-warm);
+}
+
+.rv-icon-button {
+    cursor: pointer;
+    color: var(--rv-color-warm);
+}
+
+.rv-icon-button:hover {
+    color: var(--rv-color-softborder);
+}
+
+.rv-icon-button:active {
+    color: var(--rv-color-warmborder);
+}
+
+.rv-air-button {
+    text-transform: capitalize;
+    text-align: center;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: black;
+    background-color: var(--rv-color-verytransparentwarm);
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0.1rem;
+}
+
+.rv-air-button:hover {
+    color: white;
+    background-color: var(--rv-color-mediumtransparentwarm);
+}
+
+.rv-air-button:active {
+    background-color: var(--rv-color-transparentwarm);
+}
+
+.rv-air-button-base {
+    text-transform: capitalize;
+    text-align: center;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: black;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0.1rem;
+}
+
+.rv-air-button-black {
+    background-color:rgba(0,0,0,0.1);
+}
+
+.rv-air-button-black:hover {
+    color:white !important;
+    background-color:rgba(0,0,0,0.5);
+}
+
+.rv-air-button-black:active {
+    background-color:rgba(0,0,0,0.7);
+}
+
+.rv-air-button-gray {
+    background-color: rgba(120,120,120,0.1);
+}
+
+.rv-air-button-gray:hover {
+    color: white !important;
+    background-color: rgba(120,120,120,0.5);
+}
+
+.rv-air-button-gray:active {
+    background-color: rgba(120,120,120,0.7);
+}
+
+.rv-air-button-white {
+    text-align:center;
+    cursor:pointer;
+    padding:0.2rem 0.5rem;
+    color:black;
+    background-color:rgba(255,255,255,0.5);
+    border-style:solid;
+    border-color:transparent;
+    border-width:0.1rem;
+}
+
+.rv-air-button-white:hover {
+    background-color:rgba(255,255,255,0.7);
+}
+
+.rv-air-button-white:active {
+    background-color:rgba(255, 255, 255, 0.9);
+}
+
+.rv-air-button-soft-green {
+    background-color:rgba(100, 255, 0, 0.1);
+}
+
+.rv-air-button-soft-green:hover {
+    background-color:rgba(100, 255, 0, 0.3);
+}
+
+.rv-air-button-soft-green:active {
+    background-color:rgba(100, 255, 0, 0.5);
+}
+
+.rv-air-button-green {
+    background-color:rgba(126, 196, 41, 0.9);
+}
+
+.rv-air-button-green:hover {
+    background-color: rgba(126, 196, 41, 0.7);
+}
+
+.rv-air-button-green:active {
+    background-color: rgba(126, 196, 41, 0.6);
+}
+
+.rv-air-button-soft-red {
+    background-color:rgba(255, 102, 51, 0.1);
+}
+
+.rv-air-button-soft-red:hover {
+    background-color:rgba(255, 102, 51, 0.3);
+}
+
+.rv-air-button-soft-red:active {
+    background-color:rgba(255, 102, 51, 0.5);
+}
+
+.rv-air-button-red {
+    background-color:rgba(255, 102, 51, 0.5);
+}
+
+.rv-air-button-red:hover {
+    background-color:rgba(255, 102, 51, 0.7);
+}
+
+.rv-air-button-red:active {
+    background-color:rgba(189, 233, 0, 0.9);
+}
+
+.rv-air-button-soft-blue {
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.rv-air-button-soft-blue:hover {
+    background-color: rgba(26, 115, 232, 0.3);
+}
+
+.rv-air-button-soft-blue:active {
+    background-color: rgba(26, 115, 232, 0.5);
+}
+
+.rv-air-button-blue {
+    background-color: rgba(26, 115, 232, 0.5);
+}
+
+.rv-air-button-blue:hover {
+    background-color: rgba(26, 115, 232, 0.7);
+}
+
+.rv-air-button-blue:active {
+    background-color: rgba(26, 115, 232, 0.9);
+}
+
+.rv-white-button {
+    text-align: center;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: black;
+    background-color: white;
+    border-style: solid;
+    border-color: var(--rv-color-softborder);
+    border-width: 0.1rem;
+}
+
+.rv-tab {
+    text-align: center;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: black;
+    background-color: var(--rv-color-verytransparentwarm);
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0.1rem;
+}
+
+.rv-tab:hover {
+    color: white;
+    background-color: var(--rv-color-mediumtransparentwarm);
+}
+
+.rv-tab:active {
+    background-color: var(--rv-color-transparentwarm);
+}
+
+.rv-tab-selected {
+    text-align: center;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    color: black;
+    background-color: white;
+    border-style: solid;
+    border-color: var(--rv-color-softborder);
+    border-width: 0.1rem;
+}
+
+.rv-tab-disabled {
+    text-align: center;
+    cursor: not-allowed;
+    padding: 0.2rem 0.5rem;
+    color: rgb(150,150,150);
+    background-color: var(--rv-color-highlytransparentwarm);
+    border-style: solid;
+    border-color: var(--rv-color-verywarm);
+    border-width: 0.1rem;
+}
+
+.rv-bg-color-trans-white
+{
+    background-color: transparent;
+}
+
+.rv-bg-color-trans-white:hover, .rv-bg-color-trans-white:active
+{
+    background-color: white;
+}
+
+.rv-bg-color-trans-white-opaque {
+    background-color: transparent;
+}
+
+.rv-bg-color-trans-white-opaque:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.rv-bg-color-trans-white-opaque:active {
+    background-color: rgba(255,255,255,0.4);
+}
+
+.rv-bg-color-trans-soft {
+    background-color: transparent;
+}
+
+.rv-bg-color-trans-soft:hover, .rv-bg-color-trans-soft:active {
+    background-color: var(--rv-color-verysoft);
+}
+
+.rv-bg-color-softer-soft {
+    background-color: var(--rv-color-verysoft);
+}
+
+.rv-bg-color-softer-soft:hover, .rv-bg-color-softer-soft:active {
+    background-color: var(--rv-color-soft);
+}
+
+.rv-bg-color-white-softer {
+    background-color: white;
+}
+
+.rv-bg-color-white-softer:hover, .rv-bg-color-white-softer:active {
+    background-color: var(--rv-color-verysoft);
+}
+
+.rv-bg-color-warm-soft {
+    background-color: var(--rv-color-warm);
+    color: white;
+}
+
+.rv-bg-color-warm-soft:hover, .rv-bg-color-warm-soft:active {
+    background-color: var(--rv-color-soft);
+    color: black;
+}
+
+.rv-link 
+{
+    color:black;
+    cursor: pointer;
+}
+
+.rv-link:hover 
+{
+    color: blue;
+}
+
+.rv-color-soft-warm {
+    color: var(--rv-color-soft);
+}
+
+.rv-color-soft-warm:hover {
+    color: var(--rv-color-warm);
+}
+
+.rv-placeholder-align-center::-webkit-input-placeholder { text-align:center; }
+.rv-placeholder-align-center::-moz-placeholder { text-align:center; }
+
+.rv-placeholder-align-left::-webkit-input-placeholder { text-align: left; }
+.rv-placeholder-align-left::-moz-placeholder { text-align: left; }
+
+.rv-placeholder-align-right::-webkit-input-placeholder { text-align: right; }
+.rv-placeholder-align-right::-moz-placeholder { text-align: right; }
+
+.rv-title {
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.rv-hover-zindex:hover {
+    z-index: 1;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 1cm 1cm;
+
+    @bottom-center {
+    }
+}
+
+@media print {
+    .rv-not-printable {
+        display:none;
+        visibility:hidden;
+    }
+
+    .rv-form {
+        margin-bottom:0;
+        padding:0;
+    }
+
+    .rv-content-section {
+        margin-top:0;
+    }
+}
+
+
+/* rv-switch */
+.rv-switch {
+    position: relative;
+    display: inline-block;
+    /*width: 70px;
+    height: 39px;*/
+}
+
+.rv-switch-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.rv-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.rv-switch-slider:before {
+    position: absolute;
+    content: "";
+    top:4px;
+    right:50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.rv-switch-slider-mini:before {
+    position: absolute;
+    content: "";
+    top: 2px;
+    right: 50%;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.rv-switch-input:checked + .rv-switch-slider {
+    background-color: var(--rv-color-warm);
+}
+
+.rv-switch-input:focus + .rv-switch-slider {
+    box-shadow: 0 0 1px var(--rv-color-warm);
+}
+
+.rv-switch-input:checked + .rv-switch-slider:before {
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+.rv-switch-slider.rv-switch-round {
+    border-radius: 100rem;
+}
+
+.rv-switch-slider.rv-switch-round:before {
+    border-radius: 50%;
+}
+/* end of rv-switch */

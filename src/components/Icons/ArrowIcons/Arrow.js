@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   BsArrowUp,
   BsArrowDown,
@@ -16,6 +17,12 @@ const ArrowIcon = ({ dir: direction, ...rest }) => {
     default:
       return <BsArrowRight {...rest} />;
   }
+};
+
+ArrowIcon.propTypes = {
+  dir: PropTypes.string,
+  size: PropTypes.number,
+  color: PropTypes.string,
 };
 
 export default ArrowIcon;

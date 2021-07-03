@@ -1,151 +1,138 @@
 /**
  * An input component that animates placeholder position
  */
-import React, { useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Container,
+  Label,
+  Placeholder,
+  StyledInput,
+} from './AnimatedInput.style';
 
-const { RV_Float } = window;
+/**
+ * By user starting to type, placeholder goes on border with some animations
+ * @param {String} placeholder -  Placeholder for input.
+ * @param {String} type - Defines type of input e.g: password, email,...
+ * @param {React.CSSProperties} style - Inline style for 'Container'.
+ * @param {String} value - Typed value.
+ * @param {String} error - If it has value, the Input border changes to RED and shows the 'error' value under it.
+ * @callback onFocus - Fires when the input receives the focus.
+ * @callback onBlur - Fires when the loses the focus.
+ * @callback onChange - Fires when the user typing a new char.
+ * @param {object} props - Other params that don't include above.
+ * @param {Boolean||setShake(GlobalUtilities.random())} - if True, shakes component for 500ms, with this {setShake(GlobalUtilities.random())} will shake randomly
+ */
+const AnimatedInput = React.forwardRef(
+  (
+    {
+      placeholder,
+      type = 'text',
+      style,
+      value = '',
+      error = null,
+      disabled,
+      onChange,
+      children,
+      placeholderClass,
+      ...props
+    },
+    ref
+  ) => {
+    // True if 'Input' is focused.
+    const [inputFocused, _setFocused] = useState(!!value);
+    const [placeHolderState, setPlaceHolderState] = useState(placeholder);
 
-const AnimatedInput = ({
-  placeholder,
-  type = 'text',
-  style,
-  onChange,
-  value = '',
-  error,
-}) => {
-  const [inputFocused, setFocused] = useState(false);
-  const [passVisible, setPassVisible] = useState(false);
+    const labelRef = useRef();
+    const placeHolderRef = useRef();
+    const childrenRef = useRef();
+    /**
+     * Changes input focusing according to input value
+     * @param {Boolean} focused - Defines input should be focus or not.
+     */
+    useEffect(() => {
+      normalizePlaceHolder();
+    }, [labelRef?.current?.offsetWidth]);
 
-  return (
-    <Container error={error} style={style}>
-      {type === 'password' &&
-        (!passVisible ? (
-          <VisibleMe onClick={() => setPassVisible(true)} />
-        ) : (
-          <InVisibleMe onClick={() => setPassVisible(false)} />
-        ))}
-      <Label inputFocused={inputFocused}>
-        <Input
-          id={'animated_input'}
-          value={value}
-          type={passVisible ? 'text' : type}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          error={error}></Input>
-        <Span value={value} inputFocused={inputFocused}>
-          {placeholder}
-        </Span>
-      </Label>
+    const setFocused = (focused) => {
+      if (!focused && value?.length === 0) {
+        _setFocused(focused);
+      } else {
+        _setFocused(true);
+      }
+    };
+    const normalizePlaceHolder = () => {
+      if (
+        labelRef?.current?.offsetWidth -
+          placeHolderRef?.current?.offsetWidth -
+          childrenRef?.current?.offsetWidth <
+        10
+      ) {
+        setPlaceHolderState(placeHolderState.slice(0, -1));
+      } else {
+        setPlaceHolderState(placeholder);
+      }
+    };
+    return (
+      <Container style={style} inputFocused={inputFocused} {...props}>
+        <Label
+          ref={labelRef}
+          error={error}
+          className={inputFocused || value.length > 0 ? 'active ' : ''}
+          inputFocused={inputFocused || value.length > 0}>
+          <StyledInput
+            value={value}
+            type={type}
+            disabled={disabled}
+            ref={ref}
+            onFocus={() => {
+              setFocused(true);
+            }}
+            onChange={(event) => {
+              onChange(event.target.value);
+            }}
+            onBlur={(e) => {
+              e.preventDefault();
+              setFocused(false);
+            }}
+            error={error}
+            onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
+            {...props}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              ref={childrenRef}>
+              {children}
+            </div>
+          </StyledInput>
 
-      {error && <Error>!</Error>}
-    </Container>
-  );
-};
+          <Placeholder
+            ref={placeHolderRef}
+            inputFocused={inputFocused}
+            maxWidth={labelRef?.current?.offsetWidth}
+            style={{ display: 'flex' }}
+            className={`rv-border-radius-quarter rv-distant ${
+              inputFocused || value.length > 0
+                ? 'rv-warm'
+                : placeholderClass
+                ? placeholderClass
+                : 'rv-distant'
+            }`}>
+            {placeHolderState}
+          </Placeholder>
+        </Label>
+      </Container>
+    );
+  }
+);
 
 export default AnimatedInput;
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 13px;
-  width: 90%;
-  align-self: center;
-  flex-direction: row;
-  border: ${({ error }) => (error ? 'solid 0.5px red' : 'solid 0.9px #bac9dc')};
-  border-radius: 7px;
-`;
-
-const Label = styled.label`
-  position: relative;
-  display: block;
-  width: 100%;
-  border-radius: 7px;
-
-  ${({ inputFocused }) =>
-    inputFocused &&
-    `
-    background-color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    font-size: 11px;
-    line-height: 14px;
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-   
-
-    `};
-`;
-
-const Input = styled.input`
-  position: relative;
-  width: 100%;
-  outline: none;
-  padding: 11px 0px 10px 11px;
-  color: #2c3235;
-  letter-spacing: 0.2px;
-  font-weight: 400;
-  font-size: 16px;
-  resize: none;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-  text-align: ${RV_Float};
-  padding-right: 13px;
-  border: none;
-  border-radius: 7px;
-`;
-
-const Span = styled.span`
-  position: absolute;
-  top: 50%;
-  display: block;
-  padding: 0 10px;
-  white-space: nowrap;
-  letter-spacing: 0.2px;
-  font-weight: normal;
-  font-size: 16px;
-  -webkit-transition: all, 0.2s;
-  transition: all, 0.2s;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  pointer-events: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border-radius: 0.25rem;
-  -moz-border-radius: 0.25rem;
-  -webkit-border-radius: 0.25rem;
-  text-align: ${RV_Float};
-  width: 100%;
-  top: ${({ inputFocused }) => (inputFocused ? `-9px` : `50%`)};
-  color: ${({ inputFocused, value }) =>
-    inputFocused ? `black` : value.length > 0 ? 'rgba(0,0,0,0)' : `#707070`};
-  font-size: ${({ inputFocused }) => (inputFocused ? `11px` : `16px`)};
-`;
-const Error = styled.span`
-  color: red;
-  font-size: 23px;
-  margin-left: 13px;
-  position: relative;
-  left: 1px;
-`;
-const VisibleMe = styled(AiFillEye)`
-  color: grey;
-  font-size: 23px;
-  position: relative;
-  left: 3px;
-  z-index: 3;
-`;
-const InVisibleMe = styled(AiFillEyeInvisible)`
-  color: grey;
-  font-size: 23px;
-  position: relative;
-  z-index: 3;
-  left: 3px;
-`;
+// ${
+//   placeHolderRef?.current?.offsetWidth -
+//     labelRef?.current?.offsetWidth -
+//     childrenRef?.current?.offsetWidth >
+//     10 && 'Ellipsis'
+// }

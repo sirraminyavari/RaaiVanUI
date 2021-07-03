@@ -1,22 +1,27 @@
-import useScript from 'hooks/useScript';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import * as Styled from './Teams.styles';
+import ContentSide from './items/sides/content/Content';
+import WelcomeSide from './items/sides/welcome/Welcome';
+import { getApplications } from 'store/actions/applications/ApplicationsAction';
+// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
-const Teams = () => {
-  useScript(
-    'pageLoadScripts/LoadApplications/LoadApplications.js',
-    'LoadApplications.js',
-    () => {
-      window.loadApplications();
-    }
-  );
+const TeamsView = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getApplications());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <>
-      <div
-        id="appsArea"
-        className="small-12 medium-12 large-12 row"
-        style={{ margin: '0rem 0rem 5rem 0rem', padding: '0vw 8vw' }}></div>
-    </>
+    // <PerfectScrollbar>
+    <Styled.TeamsViewContainer>
+      <ContentSide />
+      <WelcomeSide />
+    </Styled.TeamsViewContainer>
+    // </PerfectScrollbar>
   );
 };
 
-export default Teams;
+export default TeamsView;

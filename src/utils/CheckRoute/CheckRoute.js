@@ -1,22 +1,63 @@
+/**
+ * Check permissions for given route.
+ * ... Show a component or redirect to a route based on authorization.
+ */
 import { useEffect } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import useCheckRoute from 'hooks/useCheckRoute';
 import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { decodeBase64, isEmpty } from 'helpers/helpers';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
-  const location = useLocation();
+  //! Get route permission object based on route name.
   const route = useCheckRoute(name);
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { toggleNavSide } = themeSlice.actions;
+
+  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+  const {
+    toggleNavSide,
+    setSelectedTeam,
+    setActivePath,
+    setSidebarContent,
+    toggleSidebar,
+  } = themeSlice.actions;
+
+  useEffect(() => {
+    //! Set selected team.
+    if (route.Application) {
+      const application = {
+        name: decodeBase64(route.Application.Title),
+        id: route.Application.ApplicationID,
+      };
+      dispatch(setSelectedTeam(application));
+    }
+
+    //! Reset team to null if user is authenticated but has not selected a team yet.
+    if (route.IsAuthenticated && !route.AppID) {
+      dispatch(toggleSidebar(false)); //! Close sidebar.
+      dispatch(setSelectedTeam({ name: null, id: null })); //! Clear selected team.
+      dispatch(setSidebarContent({ current: 'main', prev: '' })); //! Reset sidebar content to default.
+      dispatch(setSidebarDnDTree({})); //! Clear sidebar tree items.
+    }
+
+    //! Set active path.
+    dispatch(setActivePath(location.pathname));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
 
   useEffect(() => {
     dispatch(toggleNavSide(hasNavSide));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
-  if (route.ServiceUnavailable) {
+  if (isEmpty(route)) {
+    return <LogoLoader />;
+  } else if (route.ServiceUnavailable) {
     return <Exception message="Service Unavailable" />;
   } else if (route.NoApplicationFound) {
     return <Exception message="No Application Found" />;
