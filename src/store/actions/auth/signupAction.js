@@ -47,6 +47,7 @@ const signupAction = () => async (dispatch, getState) => {
 
             RVAPI.LoggedIn();
             GlobalUtilities.set_auth_cookie(result.AuthCookie);
+            //ask ramin
             location.href = location.href;
           }
         },

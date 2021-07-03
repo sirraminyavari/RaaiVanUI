@@ -3,7 +3,7 @@
  */
 import Button from 'components/Buttons/Button';
 import GoogleIcon from 'components/Icons/GoogleIcon';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
 import styled from 'styled-components';
@@ -57,7 +57,7 @@ const ContinueWithGoogle = ({ ...props }) => {
 export default ContinueWithGoogle;
 
 const Label = styled.div`
-  color: ${CV_DISTANT};
+  color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   margin-left: 0.8rem;
 `;

@@ -9,19 +9,19 @@ const { GlobalUtilities } = window;
  * @property { string } type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
  * @property { bool } loading determines if the button is in the state of processing or loading and thus cannot be clicked
  * @property { bool } disable determines if the button is disabled and so, cannot be clicked
- * @property { bool } circleEdges if equals true, the border-radius will be circle shaped
+ * @property { bool } $circleEdges if equals true, the border-radius will be circle shaped
  * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
 const Button = forwardRef(
   (
-    { type, loading, disable = false, circleEdges = false, onClick, ...props },
+    { type, loading, disable = false, $circleEdges = false, onClick, ...props },
     ref
   ) => {
     return (
       <div
         ref={ref}
         className={
-          (circleEdges ? 'rv-circle' : 'rv-border-radius-half') +
+          ($circleEdges ? 'rv-circle' : 'rv-border-radius-half') +
           ' rv-action-button-base ' +
           resolveClass({ type, disable }) +
           ' ' +
