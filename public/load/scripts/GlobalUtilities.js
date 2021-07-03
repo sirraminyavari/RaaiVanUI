@@ -683,7 +683,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
             if (params.AutoHeight === false) return jQuery(elems["main"]).nanoScroller();
 
             var newHeight = get_height();
-
+            
             if ((height == newHeight) || !GlobalUtilities.is_visible(elems["__"])) return;
             height = newHeight;
 

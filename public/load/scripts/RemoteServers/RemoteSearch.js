@@ -16,6 +16,8 @@
         };
 
         this.Options = {
+            DefaultNodeTypeID: "ntid",
+            BatchSize: 2,
             Count: 10
         };
 
@@ -119,17 +121,43 @@
             that.start_search();
         },
 
+        get_search_text: function () {
+            var that = this;
+
+            return GlobalUtilities.trim(that.Interface.SearchInput.value).toLowerCase();
+        },
+
+        get_search_id: function (searchText) {
+            var that = this;
+
+            if (!searchText) return;
+
+            if (that.__PREVIOUS_SEARCH_TEAXT == searchText) return that.__SEARCH_ID;
+            else {
+                that.__PREVIOUS_SEARCH_TEAXT = searchText;
+                that.__SEARCH_ID = GlobalUtilities.random()
+                return that.__SEARCH_ID;
+            }
+        },
+
+        validate_search: function (searchId, nodeTypeId, lowerBoundary) {
+            var that = this;
+            
+            return !!lowerBoundary || (nodeTypeId != that.Options.DefaultNodeTypeID) ||
+                (that.get_search_id(that.get_search_text()) == searchId);
+        },
+
         start_search: function () {
             var that = this;
 
             that.Interface.Results.innerHTML = "";
 
-            var searchText = GlobalUtilities.trim(that.Interface.SearchInput.value);
+            var searchText = that.get_search_text();
             var grouping = that.Interface.GroupSwitch.checked;
 
             if (!searchText) return;
 
-            var items = that.Objects.ServersList.get_checked_items();
+            var items = that.Objects.ServersList.get_checked_items(true);
 
             items.filter(i => !that.Objects.RequestHandlers.some(r => r.Server.ID == i.ID))
                 .forEach(i => {
@@ -144,17 +172,45 @@
                     that.Objects.RequestHandlers.push({ Server: i, Request: reqObj });
                 });
 
+            var searchParams = {
+                SearchText: searchText,
+                SearchID: that.get_search_id(searchText),
+                RequestHandler: null,
+                LowerBoundary: 0
+            };
+
+            var iterate = function (arrItems) {
+                var iterLength = Math.min((arrItems || []).length, that.Options.BatchSize);
+                var cur = (arrItems || []).slice(0, iterLength);
+                var next = (arrItems || []).length > iterLength ? arrItems.slice(iterLength) : [];
+
+                cur.forEach(rh => {
+                    that.search(GlobalUtilities.extend({}, searchParams, { RequestHandler: rh }), result => {
+                        var expand = items.length == 1;
+
+                        if (grouping) that.add_group_results(rh.Server, result, searchParams, expand);
+                        else that.show_results(that.Interface.Results, result, rh.Server, true, searchParams);
+
+                        var nextCopy = next;
+                        next = [];
+                        iterate(nextCopy);
+                    });
+                });
+            };
+
+            iterate(items.map(i => that.Objects.RequestHandlers.filter(r => r.Server.ID == i.ID)[0]));
+
+            /*
             items.map(i => that.Objects.RequestHandlers.filter(r => r.Server.ID == i.ID)[0])
                 .forEach(rh => {
-                    var searchParams = { SearchText: searchText, RequestHandler: rh, LowerBoundary: 0 };
-
-                    that.search(searchParams, result => {
+                    that.search(GlobalUtilities.extend({}, searchParams, { RequestHandler: rh }), result => {
                         var expand = items.length == 1;
 
                         if (grouping) that.add_group_results(rh.Server, result, searchParams, expand);
                         else that.show_results(that.Interface.Results, result, rh.Server, true, searchParams);
                     });
                 });
+            */
         },
 
         search: function (params, callback) {
@@ -163,10 +219,14 @@
 
             var text = GlobalUtilities.trim(params.SearchText || " ").toLowerCase();
             var requestHandler = params.RequestHandler;
-            var nodeTypeId = params.NodeTypeID || "ntid";
+            var nodeTypeId = params.NodeTypeID || that.Options.DefaultNodeTypeID;
             var lowerBoundary = params.LowerBoundary;
 
             if (!lowerBoundary) lowerBoundary = 0;
+
+            if (!that.validate_search(params.SearchID, nodeTypeId, lowerBoundary)) return;
+
+            if (!!lowerBoundary && (nodeTypeId != that.Options.DefaultNodeTypeID) && (that.get_search_id(that.get_search_text()) != params.SearchID)) return;
 
             var dic = that.__RESULTS_DIC = that.__RESULTS_DIC || {};
             var sIdDic = dic[requestHandler.Server.ID] = dic[requestHandler.Server.ID] || {};
@@ -191,6 +251,8 @@
                 RequestHandler: requestHandler.Request,
                 ParseResults: true,
                 ResponseHandler: function (result) {
+                    if (!that.validate_search(params.SearchID, nodeTypeId, lowerBoundary)) return;
+
                     txtDic[lowerBoundary] = result;
                     callback(result);
                 }
