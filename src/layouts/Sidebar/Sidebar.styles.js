@@ -18,7 +18,7 @@ import {
   TBG_VERYWARM,
   BO_WHITE,
 } from 'constant/Colors';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -33,12 +33,16 @@ const FlexCenter = css`
   place-items: center;
 `;
 
-export const TitleText = styled.span.attrs({ className: C_WHITE })`
-  margin: 0.5rem;
-  text-transform: capitalize;
+const TruncateTextCss = css`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+export const TitleText = styled.span.attrs({ className: C_WHITE })`
+  margin: 0.5rem;
+  text-transform: capitalize;
+  ${TruncateTextCss}
 `;
 
 export const CenterIcon = styled.div`
@@ -149,12 +153,12 @@ export const SearchWrapper = styled.div.attrs({
 
   svg {
     opacity: 70%;
-    color: #bac9dc;
+    color: ${CV_DISTANT};
   }
 
   :focus-within svg {
     opacity: 100%;
-    color: #fff;
+    color: ${CV_WHITE};
   }
 
   // :focus-within div:first-child {
@@ -162,8 +166,8 @@ export const SearchWrapper = styled.div.attrs({
   // }
 
   :focus-within ::placeholder {
-    color: #fff;
-    opacity: 100%;
+    color: ${CV_WHITE};
+    opacity: 1;
   }
 `;
 
@@ -280,9 +284,7 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+${TruncateTextCss}
 `;
 
 export const CaretIconWrapper = styled.div`
@@ -304,47 +306,6 @@ export const MenuItemImage = styled.img.attrs({
 export const HighlightedTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
 `;
-
-// export const SubMenuContainer = styled.div`
-//   height: ${({ isOpen, itemsCount }) =>
-//     isOpen ? `${itemsCount * 2.6}rem` : '0'};
-//   overflow: hidden;
-//   margin: -0.3rem 0 0 0;
-//   padding: 0 0.3rem;
-//   border-radius: 0.5rem;
-//   background-color: inherit;
-//   transition: all 0.5s ease;
-// `;
-
-//! This solution used because of conflict with DnD props passing down to styled component.
-//! Use ''forwardedAs'' instead of ''as'' in this solution.
-// const DIV = styled.div.attrs({
-//   className: `${C_WHITE} BorderRadius4`,
-// })``;
-
-// export const SubMenu = styled(
-//   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
-// )`
-//   margin: 0.2rem 0;
-//   margin-${RV_Float}: 0.5rem;
-//   padding: 0.2rem 0.4rem;
-//   padding-${RV_Float}: 1.4rem;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   background-color: ${({ isActive }) =>
-//     isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
-//   &:hover {
-//     background: ${({ isActive }) =>
-//       isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
-//   }
-
-//   //! Child classes style
-//   // &:hover > div > div:first-child {
-//   //   color: #e2234f;
-//   //   display: revert !important;
-//   // }
-// `;
 
 export const ListItemWrapper = styled.div.attrs({
   className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
@@ -387,7 +348,7 @@ export const SettingWrapper = styled.div.attrs({
   cursor: pointer;
   padding: 0.3rem;
   position: relative;
-  ${RV_RevFloat}: 0.25rem;
+  ${({ isClose }) => !!isClose && `${RV_RevFloat}: 0.25rem;`}
 `;
 
 export const PanelWrapper = styled.div.attrs({
@@ -475,7 +436,7 @@ export const IconListContainer = styled.div`
   position: relative;
 
   .ps__thumb-y {
-    background-color: #fff !important;
+    background-color: ${CV_WHITE} !important;
   }
   .ps__rail-y:hover {
     background-color: transparent !important;
@@ -529,9 +490,7 @@ export const CancelIconWrapper = styled.div`
 export const PanelLink = styled.div`
   margin-${RV_Float}: 0.4rem;
   text-transform: capitalize;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+${TruncateTextCss}
 `;
 
 export const SettingItemTitle = styled.div`

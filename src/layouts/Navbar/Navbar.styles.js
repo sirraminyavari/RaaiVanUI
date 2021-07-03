@@ -20,7 +20,9 @@ import {
 } from 'constant/Colors';
 import {
   CV_DISTANT,
+  CV_FREEZED,
   CV_WHITE,
+  TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 
@@ -175,7 +177,7 @@ export const SearchContainer = styled.div`
     width: 16rem;
   }
   :focus-within svg {
-    color: #2b7be4 !important;
+    color: ${TCV_DEFAULT} !important;
   }
 `;
 
@@ -200,7 +202,7 @@ export const SearchIcon = styled.div`
   ${`${RV_RevFloat}: 0.3rem;`}
   top: 0.3rem;
   font-size: 1.5rem;
-  color: #ddd;
+  color: ${CV_DISTANT};
 `;
 
 export const FixActionsContainer = styled.div.attrs({
@@ -211,7 +213,7 @@ export const FixActionsContainer = styled.div.attrs({
   padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
 
 export const AlertActionsContainer = styled.div.attrs({
@@ -224,7 +226,7 @@ export const AlertActionsContainer = styled.div.attrs({
   padding-bottom: 0;
   margin: -0.7rem 0;
   overflow: hidden;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
 
 export const AlertListContainer = styled.div`
@@ -322,7 +324,7 @@ export const ButtonAction = styled.div.attrs({
   padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
   :hover {
-    background-color: #eef0f5;
+    background-color: ${CV_FREEZED};
   }
 `;
 
@@ -344,7 +346,7 @@ export const MenuOptionsWrapper = styled.div.attrs({
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   margin: -10px;
 `;
 
@@ -367,16 +369,15 @@ export const Arrow = styled.span`
   margin: 0 0.2rem;
   border-left: 0.3rem solid transparent;
   border-right: 0.3rem solid transparent;
-  border-top: 0.3rem solid #fff;
+  border-top: 0.3rem solid ${CV_WHITE};
   transition: all 0.5s ease;
 `;
 
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
-  min-width: 12rem;
-  max-width: 14rem;
+  align-items: flex-start;
+  width: 14rem;
   margin: 0.5rem;
   margin-${RV_Float}: 1rem;
   margin-${RV_RevFloat}: 0;
@@ -396,7 +397,7 @@ export const AvatarMenuItem = styled.div.attrs({
   className: C_BLACK,
 })`
   display: flex;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
   padding: 0.4rem 0;
   cursor: pointer;
@@ -407,6 +408,7 @@ export const AvatarMenuTitle = styled.span`
   font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
+  width: 12rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

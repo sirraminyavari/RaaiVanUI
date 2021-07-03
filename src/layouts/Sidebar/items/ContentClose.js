@@ -106,7 +106,7 @@ const SidebarOnClose = ({ theme }) => {
               {RVDic.Settings}
             </span>
           )}>
-          <Styled.SettingWrapper onClick={handleOnClick}>
+          <Styled.SettingWrapper isClose onClick={handleOnClick}>
             <SettingIcon size={22} />
           </Styled.SettingWrapper>
         </Tooltip>
