@@ -18,7 +18,7 @@ import {
   TBG_VERYWARM,
   BO_WHITE,
 } from 'constant/Colors';
-import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
+import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -152,12 +152,10 @@ export const SearchWrapper = styled.div.attrs({
   position: relative;
 
   svg {
-    opacity: 70%;
-    color: ${CV_DISTANT};
+    color: ${CV_FREEZED};
   }
 
   :focus-within svg {
-    opacity: 100%;
     color: ${CV_WHITE};
   }
 
@@ -167,7 +165,6 @@ export const SearchWrapper = styled.div.attrs({
 
   :focus-within ::placeholder {
     color: ${CV_WHITE};
-    opacity: 1;
   }
 `;
 
@@ -188,8 +185,7 @@ export const SearchInput = styled.input.attrs((props) => ({
       : null}
 
   ::placeholder {
-    color: ${CV_DISTANT};
-    opacity: 70%;
+    color: ${CV_FREEZED};
     text-transform: capitalize;
   }
 

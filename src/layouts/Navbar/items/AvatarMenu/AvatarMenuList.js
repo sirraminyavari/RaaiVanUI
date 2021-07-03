@@ -76,7 +76,7 @@ const AvatarMenuList = () => {
         );
       })}
       <Styled.Divider />
-      <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 18rem)' }}>
+      <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 26rem)' }}>
         {/* <Styled.AvatarTeamsListWrapper> */}
         {teams?.map((team) => {
           const { ApplicationID, Title, IconURL } = team;
