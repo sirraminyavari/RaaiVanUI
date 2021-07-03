@@ -62,8 +62,8 @@ export const TopFilter = styled.div`
 
 export const UrgentIconCancel = styled(CloseIcon)`
   color: ${CV_RED_SOFT};
-  width: 100%;
-  height: 100%;
+  width: 2rem;
+  height: 2rem;
 
   :hover {
     color: ${CV_RED};
