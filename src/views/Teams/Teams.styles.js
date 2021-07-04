@@ -25,7 +25,7 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RTL } = window;
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -332,7 +332,7 @@ export const TeamConatiner = styled.div.attrs({
     box-shadow: 1px 3px 20px #2b7be44d;
     position: relative;
     background-color: #fff;
-    right: 7.7rem;
+    ${RV_Float}: 7.7rem;
     bottom: -2.9rem;
     overflow: hidden;
   }
@@ -351,7 +351,7 @@ export const TeamConatiner = styled.div.attrs({
     padding-${RV_Float}: 0.5rem;
 
     .ps__rail-y {
-      ${RV_Float}: -0.35rem !important;
+      ${RV_Float}: ${RV_RTL ? '-0.35rem' : '-0.1rem'} !important;
     }
   }
 `;
@@ -657,6 +657,11 @@ export const InviteContent = styled.div.attrs({
 })`
   margin-top: 1.5rem;
   padding: 1.5rem;
+
+  .send-invitation-button {
+    width: 8rem;
+    margin-${RV_Float}: auto;
+  }
 `;
 
 export const GetLinkTitle = styled.span`

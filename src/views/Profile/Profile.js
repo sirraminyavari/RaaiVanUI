@@ -9,7 +9,7 @@ const Profile = (props) => {
     'pageLoadScripts/LoadProfile/LoadProfile.js',
     'LoadProfile.js',
     (user) => {
-      !isEmpty(user) && !node.current.firstChild && window.loadProfile(user);
+      !isEmpty(user) && !node?.current?.firstChild && window.loadProfile(user);
     },
     props.route
   );

@@ -9,7 +9,7 @@ const Home = (props) => {
     'pageLoadScripts/LoadHome/LoadHome.js',
     'LoadHome.js',
     (home) => {
-      !isEmpty(home) && !node.current.firstChild && window.loadHome(home);
+      !isEmpty(home) && !node?.current?.firstChild && window.loadHome(home);
     },
     props.route
   );

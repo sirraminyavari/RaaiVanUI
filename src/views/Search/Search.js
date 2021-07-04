@@ -9,7 +9,9 @@ const Search = (props) => {
     'pageLoadScripts/LoadSearch/LoadSearch.js',
     'LoadSearch.js',
     (search) => {
-      !isEmpty(search) && !node.current.firstChild && window.loadSearch(search);
+      !isEmpty(search) &&
+        !node?.current?.firstChild &&
+        window.loadSearch(search);
     },
     props.route
   );

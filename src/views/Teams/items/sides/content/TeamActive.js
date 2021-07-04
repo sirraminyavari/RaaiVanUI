@@ -38,18 +38,18 @@ const selectingApp = createSelector(
   (applications) => applications.selectingApp
 );
 
-const fakeUsers = [
-  { id: '1', name: 'username' },
-  { id: '2', name: 'username' },
-  { id: '3', name: 'username' },
-  { id: '4', name: 'username' },
-  { id: '5', name: 'username' },
-  { id: '6', name: 'username' },
-  { id: '7', name: 'username' },
-  { id: '8', name: 'username' },
-  { id: '9', name: 'username' },
-  { id: '10', name: 'username' },
-];
+// const fakeUsers = [
+//   { id: '1', name: 'username' },
+//   { id: '2', name: 'username' },
+//   { id: '3', name: 'username' },
+//   { id: '4', name: 'username' },
+//   { id: '5', name: 'username' },
+//   { id: '6', name: 'username' },
+//   { id: '7', name: 'username' },
+//   { id: '8', name: 'username' },
+//   { id: '9', name: 'username' },
+//   { id: '10', name: 'username' },
+// ];
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
@@ -300,7 +300,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                           return (
                             <Styled.ExtraUserItem
                               key={user?.UserID}
-                              style={{ marginBottom: isLast ? '3rem' : '0' }}>
+                              style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
                               <Avatar
                                 userImage={user?.ProfileImageURL}
                                 radius={25}
@@ -316,7 +316,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                         return (
                           <Styled.ExtraUserItem
                             key={fake.id}
-                            style={{ marginBottom: isLast ? '3rem' : '0' }}>
+                            style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
                             <Avatar
                               radius={25}
                               color="#333"

@@ -210,7 +210,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
         <Button
           loading={isSending}
           onClick={handleSendInvitations}
-          style={{ width: '8rem', marginRight: 'auto' }}
+          classes="send-invitation-button"
           disable={isSendDisabled}>
           {RVDic.Send}
         </Button>

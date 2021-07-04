@@ -15,11 +15,21 @@ import * as Styled from './Checkbox.styles';
  * @param {PropType} props
  */
 const Checkbox = (props) => {
-  const { isChecked, changeHandler } = props;
+  const { isChecked, changeHandler, title } = props;
   return (
     <Styled.CheckboxContainer>
-      <label>Eng:</label>
+      <label
+        htmlFor="checkbox-component"
+        style={{
+          color: '#000',
+          cursor: 'pointer',
+          textTransform: 'capitalize',
+        }}>
+        {`${title} :`}
+      </label>
       <input
+        id="checkbox-component"
+        style={{ margin: '0 0.5rem', cursor: 'pointer' }}
         type="checkbox"
         defaultChecked={isChecked}
         onChange={changeHandler}
