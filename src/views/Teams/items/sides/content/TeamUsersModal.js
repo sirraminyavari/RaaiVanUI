@@ -25,41 +25,41 @@ const TeamUsersModal = ({
 
   const handleRemoveUser = (userId) => {
     dispatch(removeUserFromApplication(appId, userId));
-    setUsers((oldUsers) => oldUsers.filter((user) => user.UserID !== userId));
+    setUsers((oldUsers) => oldUsers.filter((user) => user?.UserID !== userId));
   };
 
   return (
     <Modal
       show={isModalShown}
       onClose={handleCloseModal}
-      contentWidth="60%"
+      contentWidth="40%"
       title="هم تیمی ها">
       <div style={{ textAlign: 'center' }}>
         {appTitle}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: '1fr',
             gap: '0.2rem',
             marginTop: '1rem',
           }}>
-          {users.map((user) => {
+          {users?.map((user) => {
             const isAuthUser =
               ((window.RVGlobal || {}).CurrentUser || {}).UserID ===
-              user.UserID;
-            const fullName = `${decodeBase64(user.FirstName)} ${decodeBase64(
-              user.LastName
+              user?.UserID;
+            const fullName = `${decodeBase64(user?.FirstName)} ${decodeBase64(
+              user?.LastName
             )}`;
-            const userName = decodeBase64(user.UserName);
+            const userName = decodeBase64(user?.UserName);
             return (
               <Styled.ExtraUserItem
-                key={user.UserID}
+                key={user?.UserID}
                 className={BO_RADIUS_QUARTER}
                 style={{
                   border: `1px solid ${CV_DISTANT}`,
                   padding: '0.2rem 0.5rem',
                 }}>
-                <Avatar userImage={user.ProfileImageURL} radius={25} />
+                <Avatar userImage={user?.ProfileImageURL} radius={25} />
                 <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
                 <Styled.ExtraUserTitle
                   className={BO_RADIUS_QUARTER}
@@ -73,7 +73,7 @@ const TeamUsersModal = ({
                 </Styled.ExtraUserTitle>
                 {isRemovable && !isAuthUser && (
                   <CloseIcon
-                    onClick={() => handleRemoveUser(user.UserID)}
+                    onClick={() => handleRemoveUser(user?.UserID)}
                     color={CV_RED}
                     style={{
                       position: 'absolute',

@@ -671,6 +671,8 @@ export const GetLinkFieldWrapper = styled.div`
     margin: 0 1rem;
     text-align: left;
     color: ${CV_GRAY};
+    background-color: ${CV_FREEZED};
+    border-color: ${CV_DISTANT};
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 1rem;
