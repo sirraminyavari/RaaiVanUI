@@ -102,7 +102,6 @@ const SubjectItemDesktop = ({
               {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
             </>
           )}
-          {console.log(LikeStatus && NodeID, 'liked node')}
           <SubjectCreator
             style={{ padding: RV_RTL ? '0 0rem 0 1rem' : '0 1rem 0 0 ' }}
             userProfile={Creator?.ProfileImageURL}
