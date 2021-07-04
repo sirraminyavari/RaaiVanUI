@@ -87,9 +87,6 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
 
     setByPeople(item);
   };
-  // console.log('children', children);
-  // console.log('nodeType', nodeType);
-  // console.log('hierarchy', hierarchy);
 
   return (
     <Container
@@ -131,7 +128,6 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
             dataFetched={totalFound}
             nodeType={nodeType}
           />
-
           {React.cloneElement(children, {
             searchText: searchText,
             dateFilter: dateFilter,

@@ -142,6 +142,8 @@ const UrgentCreateMobile = ({
               alignItems: 'center',
               padding: '0.7rem',
               margin: '0 1rem 0 1rem',
+              height: '2rem',
+              width: '2rem',
             }}>
             <CloseIcon style={{ fontSize: '1rem' }} className={'rv-red '} />
           </Button>

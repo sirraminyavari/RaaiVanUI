@@ -1,8 +1,10 @@
 import APIHandler from 'apiHelper/APIHandler';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
+import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
+import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 
 const getNodesAPI = (bookMarked = false) => {
   return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
@@ -19,21 +21,25 @@ const { RVAPI } = window;
  * @param {Object} formFilters - object of objects of filters
  * @returns
  */
-const NodeList = ({
-  searchText,
-  dateFilter,
-  nodeTypeId,
-  formFilters,
-  forceFetch,
-  onTotalFound,
-  isByMe,
-  byPeople,
-  isBookMarked,
-}) => {
+const NodeList = (props) => {
+  const {
+    searchText,
+    dateFilter,
+    nodeTypeId,
+    formFilters,
+    forceFetch,
+    onTotalFound,
+    isByMe,
+    byPeople,
+    isBookMarked,
+  } = props || {};
+
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
+  useTraceUpdate(props);
+  const preExtraData = usePrevious(extraData);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
@@ -52,6 +58,8 @@ const NodeList = ({
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
+    console.log('fetch called');
+
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
@@ -130,38 +138,34 @@ const NodeList = ({
   };
 
   return (
-    <>
-      <SimpleListViewer
-        fetchMethod={fetchData}
-        extraData={extraData}
-        infiniteLoop={false}
-        onEndReached={() => {
-          console.log('Im reached end');
-        }}
-        onTotal={onTotalFound}
-        renderItem={(x, index) => (
-          <>
-            {x.Creator && (
-              <SubjectItem
-                key={index}
-                onChecked={(value, item) =>
-                  console.log(value, item, 'onChecked')
-                }
-                parentNodeType={nodeTypeId}
-                selectMode={false}
-                item={{
-                  ...x,
-                  LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
-                }}
-                isSaas={isSaas}
-                onReload={onReload}
-                onBookmark={onBookmark}
-              />
-            )}
-          </>
-        )}
-      />
-    </>
+    <SimpleListViewer
+      fetchMethod={fetchData}
+      extraData={extraData}
+      infiniteLoop={false}
+      onEndReached={() => {
+        console.log('Im reached end');
+      }}
+      onTotal={onTotalFound}
+      renderItem={(x, index) => (
+        <>
+          {x.Creator && (
+            <SubjectItem
+              key={index}
+              onChecked={(value, item) => console.log(value, item, 'onChecked')}
+              parentNodeType={nodeTypeId}
+              selectMode={false}
+              item={{
+                ...x,
+                LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+              }}
+              isSaas={isSaas}
+              onReload={onReload}
+              onBookmark={onBookmark}
+            />
+          )}
+        </>
+      )}
+    />
   );
 };
 export default NodeList;
