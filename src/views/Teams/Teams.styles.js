@@ -325,9 +325,9 @@ export const TeamConatiner = styled.div.attrs({
 
   .extra-users-popup {
     width: 13rem;
-    max-height: 11rem;
+    max-height: 11.4rem;
     margin: 0;
-    padding: 0.7rem 1rem 0.7rem 0.2rem;
+    padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
     box-shadow: 1px 3px 20px #2b7be44d;
     position: relative;
@@ -346,9 +346,13 @@ export const TeamConatiner = styled.div.attrs({
     ${({ revDir }) => `padding-${revDir}: 0.5rem;`}
   }
 
-  .scroll {
-    max-height: 9rem;
-    overflow: scroll;
+  .extra-users-scrollbar {
+    max-height: 8.2rem;
+    padding-${RV_Float}: 0.5rem;
+
+    .ps__rail-y {
+      ${RV_Float}: -0.35rem !important;
+    }
   }
 `;
 
@@ -428,6 +432,18 @@ export const ExtraUsersWrapper = styled.div`
   ${getPosition}
 `;
 
+export const ExtraUsersPopupHeader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: ${TCV_DEFAULT};
+  margin: 0.1rem 0.55rem;
+`;
+
+export const ExtraUsersPopupTitle = styled.span`
+  margin: 0 0.5rem;
+`;
+
 export const AddUserWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
@@ -445,7 +461,8 @@ export const ExtraUserItem = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 0.2rem 0;
+  margin: 0.45rem 0;
+  padding-${RV_Float}: 0.2rem;
   position: relative;
 `;
 

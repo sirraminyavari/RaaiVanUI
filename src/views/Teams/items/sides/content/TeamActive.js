@@ -274,40 +274,61 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                       className="team-extra-users"
                     />
                   </Styled.ExtraUsersWrapper>
-                  <PerfectScrollbar className="scroll">
-                    {users
-                      ?.filter((user, index) => index > 3 && user)
-                      .map((user) => {
-                        const fullName = `${decodeBase64(
-                          user.FirstName
-                        )} ${decodeBase64(user?.LastName)}`;
+                  <div>
+                    <Styled.ExtraUsersPopupHeader onClick={handleInviteUser}>
+                      <Styled.AddUserWrapper
+                        style={{
+                          width: '2rem',
+                          height: '2rem',
+                          lineHeight: '2.5rem',
+                        }}
+                        rtl={RV_RTL}>
+                        <UserPlusIcon size={16} color={TCV_DEFAULT} />
+                      </Styled.AddUserWrapper>
+                      <Styled.ExtraUsersPopupTitle>
+                        افزودن هم تیمی جدید
+                      </Styled.ExtraUsersPopupTitle>
+                    </Styled.ExtraUsersPopupHeader>
+                    <PerfectScrollbar className="extra-users-scrollbar">
+                      {users
+                        ?.filter((user, index) => index > 3 && user)
+                        .map((user, i, self) => {
+                          const fullName = `${decodeBase64(
+                            user.FirstName
+                          )} ${decodeBase64(user?.LastName)}`;
+                          const isLast = self.length === i + 1;
+                          return (
+                            <Styled.ExtraUserItem
+                              key={user?.UserID}
+                              style={{ marginBottom: isLast ? '3rem' : '0' }}>
+                              <Avatar
+                                userImage={user?.ProfileImageURL}
+                                radius={25}
+                              />
+                              <Styled.ExtraUserTitle>
+                                {fullName}
+                              </Styled.ExtraUserTitle>
+                            </Styled.ExtraUserItem>
+                          );
+                        })}
+                      {/* {fakeUsers.map((fake, index) => {
+                        const isLast = fakeUsers.length === index + 1;
                         return (
-                          <Styled.ExtraUserItem key={user?.UserID}>
+                          <Styled.ExtraUserItem
+                            key={fake.id}
+                            style={{ marginBottom: isLast ? '3rem' : '0' }}>
                             <Avatar
-                              userImage={user?.ProfileImageURL}
                               radius={25}
+                              color="#333"
                             />
                             <Styled.ExtraUserTitle>
-                              {fullName}
+                              {'fullName'}
                             </Styled.ExtraUserTitle>
                           </Styled.ExtraUserItem>
                         );
-                      })}
-                    {/* {fakeUsers.map((fake) => {
-                      return (
-                        <Styled.ExtraUserItem key={fake.id}>
-                          <Avatar
-                            // userImage={user.ProfileImageURL}
-                            radius={25}
-                            color="#333"
-                          />
-                          <Styled.ExtraUserTitle>
-                            {'fullName'}
-                          </Styled.ExtraUserTitle>
-                        </Styled.ExtraUserItem>
-                      );
-                    })} */}
-                  </PerfectScrollbar>
+                      })} */}
+                    </PerfectScrollbar>
+                  </div>
                 </PopupMenu>
               ) : (
                 <Styled.AddUserWrapper
