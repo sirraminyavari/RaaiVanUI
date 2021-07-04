@@ -232,14 +232,13 @@ export const FooterTitle = withTheme(styled.span`
 `);
 
 export const MenuContainer = styled.div.attrs((props) => ({
-  className: `${BO_RADIUS_QUARTER} ${
-    props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK
-  }`,
+  // ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}
+  className: `${BO_RADIUS_QUARTER}`,
 }))`
   ${FlexBetween}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
-  border-width: 1px;
-  border-style: solid;
+  // border-width: 1px;
+  // border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
   margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
@@ -251,7 +250,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
       : 'inherit'};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
-    border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
+    // border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
   }
 
   &:hover > div > div:first-child {

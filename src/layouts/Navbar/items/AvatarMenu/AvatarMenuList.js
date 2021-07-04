@@ -31,7 +31,7 @@ const selectedApplication = createSelector(
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { RVDic } = useWindow();
+  const { RVDic, RV_RTL } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
 
@@ -104,6 +104,7 @@ const AvatarMenuList = () => {
       />
       {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
         <Checkbox
+          title={RV_RTL ? 'انگلیسی' : 'english'}
           changeHandler={handleCheckbox}
           isChecked={Cookie.get('rv_lang') === 'en'}
         />

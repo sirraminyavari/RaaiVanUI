@@ -10,8 +10,6 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64, getURL } from 'helpers/helpers';
-import DeleteConfirm from 'components/Modal/Confirm';
-import DeleteConfirmMSG from './DeleteConfirmMSG';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import {
   removeApplication,
@@ -31,34 +29,36 @@ import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
 import UserInvitationDialog from './UserInviteDialog';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
-import { TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
+import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
 const selectingApp = createSelector(
   (state) => state.applications,
   (applications) => applications.selectingApp
 );
 
-const fakeUsers = [
-  { id: '1', name: 'username' },
-  { id: '2', name: 'username' },
-  { id: '3', name: 'username' },
-  { id: '4', name: 'username' },
-  { id: '5', name: 'username' },
-  { id: '6', name: 'username' },
-  { id: '7', name: 'username' },
-  { id: '8', name: 'username' },
-  { id: '9', name: 'username' },
-  { id: '10', name: 'username' },
-];
+// const fakeUsers = [
+//   { id: '1', name: 'username' },
+//   { id: '2', name: 'username' },
+//   { id: '3', name: 'username' },
+//   { id: '4', name: 'username' },
+//   { id: '5', name: 'username' },
+//   { id: '6', name: 'username' },
+//   { id: '7', name: 'username' },
+//   { id: '8', name: 'username' },
+//   { id: '9', name: 'username' },
+//   { id: '10', name: 'username' },
+// ];
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
-  const [isConfirmShown, setIsConfirmShown] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -83,38 +83,17 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(modifyApplication(appId, title));
   };
 
-  const onTrashClick = (e) => {
-    e.stopPropagation();
-    handleTeamDelete();
-    // setIsConfirmShown(true);
-  };
-
-  const onExitTeamClick = (e) => {
-    e.stopPropagation();
-    !isRemovable && dispatch(unsubscribeFromApplication(appId));
-  };
-
-  const handleCancelDelete = () => {
-    if (isConfirmShown) {
-      setIsConfirmShown(false);
-    }
-  };
-
-  //! Undo team delete.
-  const undoTeamDelete = (appId) => {
-    dispatch(recycleApplication(appId, console.log));
-  };
-
-  //! Toastify user on team delete.
+  //! Inform user on team delete.
   const onRemoveDone = (removedAppId) => {
     const deleteMSG = 'تیم حذف خواهد شد';
     UndoToast({
-      type: 'error',
-      autoClose: 5000,
+      autoClose: 7000,
       message: deleteMSG,
       onUndo: () => undoTeamDelete(removedAppId),
       toastId: `delete-${removedAppId}`,
+      closeButton: <CloseIcon color={CV_RED} />,
     });
+    setIsDeleting(false);
   };
 
   //! Inform user on team remove error.
@@ -129,12 +108,24 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       progress: undefined,
     };
     toast(RVDic.MSG[error] || error, toastOptions);
+    setIsDeleting(false);
   };
 
-  //! Delete team with api on server.
-  const handleTeamDelete = () => {
+  //! Delete team.
+  const handleTeamDelete = (e) => {
+    e.stopPropagation();
+    setIsDeleting(true);
     dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
-    setIsConfirmShown(false);
+  };
+
+  const onExitTeamClick = (e) => {
+    e.stopPropagation();
+    !isRemovable && dispatch(unsubscribeFromApplication(appId));
+  };
+
+  //! Undo team delete.
+  const undoTeamDelete = (appId) => {
+    dispatch(recycleApplication(appId, () => {}, true));
   };
 
   const onSelectDone = () => {
@@ -147,11 +138,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Select a team.
   const handleTeamSelect = (e) => {
     if (e.target.id === 'inline-edit') return;
+    if (isDeleting) return;
     dispatch(selectApplication(appId, onSelectDone, onSelectError));
   };
 
   const openTeamUsers = (e) => {
     e.stopPropagation();
+    if (isDeleting) return;
     setIsModalShown(true);
   };
 
@@ -161,6 +154,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const handleInviteUser = (e) => {
     e.stopPropagation();
+    if (isDeleting) return;
     setIsInviteShown(true);
   };
 
@@ -178,33 +172,24 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
-      <DeleteConfirm
-        title={RVDic.RemoveN.replace('[n]', RVDic.Team)}
-        show={isConfirmShown}
-        onCancel={handleCancelDelete}
-        onClose={handleCancelDelete}
-        onConfirm={handleTeamDelete}
-        confirmText="حذف دایمی"
-        cancelText={RVDic.Return}>
-        <DeleteConfirmMSG
-          title={appTitle}
-          question="آیا از حذف تیم اطمینان دارید؟"
+      {!isDeleting && (
+        <TeamUsersModal
+          appId={appId}
+          appTitle={appTitle}
+          isModalShown={isModalShown}
+          isRemovable={isRemovable}
+          setIsModalShown={setIsModalShown}
+          setUsers={setUsers}
+          users={users}
         />
-      </DeleteConfirm>
-      <TeamUsersModal
-        appId={appId}
-        appTitle={appTitle}
-        isModalShown={isModalShown}
-        isRemovable={isRemovable}
-        setIsModalShown={setIsModalShown}
-        setUsers={setUsers}
-        users={users}
-      />
-      <UserInvitationDialog
-        appId={appId}
-        isInviteShown={isInviteShown}
-        setIsInviteShown={setIsInviteShown}
-      />
+      )}
+      {!isDeleting && (
+        <UserInvitationDialog
+          appId={appId}
+          isInviteShown={isInviteShown}
+          setIsInviteShown={setIsInviteShown}
+        />
+      )}
       <SortHandle />
       <Styled.TeamPattern
         dir={RV_RevFloat}
@@ -224,7 +209,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 userImage={appIcon}
               />
             </div>
-            {isEditable ? (
+            {!isDeleting && isEditable ? (
               <Styled.TeamTitle>
                 <InlineEdit
                   text={appTitle}
@@ -274,40 +259,61 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                       className="team-extra-users"
                     />
                   </Styled.ExtraUsersWrapper>
-                  <PerfectScrollbar className="scroll">
-                    {users
-                      ?.filter((user, index) => index > 3 && user)
-                      .map((user) => {
-                        const fullName = `${decodeBase64(
-                          user.FirstName
-                        )} ${decodeBase64(user?.LastName)}`;
+                  <div>
+                    <Styled.ExtraUsersPopupHeader onClick={handleInviteUser}>
+                      <Styled.AddUserWrapper
+                        style={{
+                          width: '2rem',
+                          height: '2rem',
+                          lineHeight: '2.5rem',
+                        }}
+                        rtl={RV_RTL}>
+                        <UserPlusIcon size={16} color={TCV_DEFAULT} />
+                      </Styled.AddUserWrapper>
+                      <Styled.ExtraUsersPopupTitle>
+                        افزودن هم تیمی جدید
+                      </Styled.ExtraUsersPopupTitle>
+                    </Styled.ExtraUsersPopupHeader>
+                    <PerfectScrollbar className="extra-users-scrollbar">
+                      {users
+                        ?.filter((user, index) => index > 3 && user)
+                        .map((user, i, self) => {
+                          const fullName = `${decodeBase64(
+                            user.FirstName
+                          )} ${decodeBase64(user?.LastName)}`;
+                          const isLast = self.length === i + 1;
+                          return (
+                            <Styled.ExtraUserItem
+                              key={user?.UserID}
+                              style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
+                              <Avatar
+                                userImage={user?.ProfileImageURL}
+                                radius={25}
+                              />
+                              <Styled.ExtraUserTitle>
+                                {fullName}
+                              </Styled.ExtraUserTitle>
+                            </Styled.ExtraUserItem>
+                          );
+                        })}
+                      {/* {fakeUsers.map((fake, index) => {
+                        const isLast = fakeUsers.length === index + 1;
                         return (
-                          <Styled.ExtraUserItem key={user?.UserID}>
+                          <Styled.ExtraUserItem
+                            key={fake.id}
+                            style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
                             <Avatar
-                              userImage={user?.ProfileImageURL}
                               radius={25}
+                              color="#333"
                             />
                             <Styled.ExtraUserTitle>
-                              {fullName}
+                              {'fullName'}
                             </Styled.ExtraUserTitle>
                           </Styled.ExtraUserItem>
                         );
-                      })}
-                    {/* {fakeUsers.map((fake) => {
-                      return (
-                        <Styled.ExtraUserItem key={fake.id}>
-                          <Avatar
-                            // userImage={user.ProfileImageURL}
-                            radius={25}
-                            color="#333"
-                          />
-                          <Styled.ExtraUserTitle>
-                            {'fullName'}
-                          </Styled.ExtraUserTitle>
-                        </Styled.ExtraUserItem>
-                      );
-                    })} */}
-                  </PerfectScrollbar>
+                      })} */}
+                    </PerfectScrollbar>
+                  </div>
                 </PopupMenu>
               ) : (
                 <Styled.AddUserWrapper
@@ -320,8 +326,15 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable && (
-              <Styled.TeamTrashWrapper onClick={onTrashClick}>
-                <TrashIcon />
+              <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
+                {isDeleting ? (
+                  <LoadingIconCircle
+                    style={{ maxWidth: '1.5rem', maxHeight: '1.5rem' }}
+                    color={TCV_DEFAULT}
+                  />
+                ) : (
+                  <TrashIcon />
+                )}
               </Styled.TeamTrashWrapper>
             )}
             {!isRemovable && (

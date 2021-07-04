@@ -7,6 +7,7 @@ import {
   BG_GRAY_LIGHT,
   BG_WHITE,
   BO_DISTANT,
+  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -20,12 +21,13 @@ import {
   CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
+  CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
   TCV_WARM,
 } from 'constant/CssVariables';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RTL } = window;
 
 export const TeamsViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -264,6 +266,7 @@ const getBorderCss = (props) => {
     border-width: 1px;
     border-style: solid;
     :hover {
+      border-width: 2.5px;
       border-color: ${TCV_DEFAULT};
     }
   `;
@@ -325,14 +328,14 @@ export const TeamConatiner = styled.div.attrs({
 
   .extra-users-popup {
     width: 13rem;
-    max-height: 11rem;
+    max-height: 11.4rem;
     margin: 0;
-    padding: 0.7rem 1rem 0.7rem 0.2rem;
+    padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
-    box-shadow: 1px 3px 20px #2b7be44d;
+    box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT};
     position: relative;
-    background-color: #fff;
-    right: 7.7rem;
+    background-color: ${CV_WHITE};
+    ${RV_Float}: 7.7rem;
     bottom: -2.9rem;
     overflow: hidden;
   }
@@ -346,9 +349,13 @@ export const TeamConatiner = styled.div.attrs({
     ${({ revDir }) => `padding-${revDir}: 0.5rem;`}
   }
 
-  .scroll {
-    max-height: 9rem;
-    overflow: scroll;
+  .extra-users-scrollbar {
+    max-height: 8.2rem;
+    padding-${RV_Float}: 0.5rem;
+
+    .ps__rail-y {
+      ${RV_Float}: ${RV_RTL ? '-0.35rem' : '-0.1rem'} !important;
+    }
   }
 `;
 
@@ -428,6 +435,18 @@ export const ExtraUsersWrapper = styled.div`
   ${getPosition}
 `;
 
+export const ExtraUsersPopupHeader = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: ${TCV_DEFAULT};
+  margin: 0.1rem 0.55rem;
+`;
+
+export const ExtraUsersPopupTitle = styled.span`
+  margin: 0 0.5rem;
+`;
+
 export const AddUserWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
@@ -445,7 +464,8 @@ export const ExtraUserItem = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 0.2rem 0;
+  margin: 0.45rem 0;
+  padding-${RV_Float}: 0.2rem;
   position: relative;
 `;
 
@@ -640,6 +660,11 @@ export const InviteContent = styled.div.attrs({
 })`
   margin-top: 1.5rem;
   padding: 1.5rem;
+
+  .send-invitation-button {
+    width: 8rem;
+    margin-${RV_Float}: auto;
+  }
 `;
 
 export const GetLinkTitle = styled.span`
@@ -671,6 +696,8 @@ export const GetLinkFieldWrapper = styled.div`
     margin: 0 1rem;
     text-align: left;
     color: ${CV_GRAY};
+    background-color: ${CV_FREEZED};
+    border-color: ${CV_DISTANT};
     padding-left: 1rem;
     padding-right: 1rem;
     font-size: 1rem;
