@@ -31,9 +31,9 @@ const SideBar = (props) => {
           )}
 
           <div style={{ marginTop: '15px' }}>
-            {info.activatedTemplates.map((x) => (
-              <div key={uuidv4()} className="sidebar-selected-templates">
-                <SidebarLoader key={uuidv4()} />
+            {info.activatedTemplates.map((x, index) => (
+              <div key={index} className="sidebar-selected-templates">
+                <SidebarLoader key={index} />
                 <img src={x.IconURL} />
                 <div className="title">{x.name}</div>
               </div>

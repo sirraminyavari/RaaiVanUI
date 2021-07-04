@@ -38,6 +38,7 @@ const FinalStep = () => {
   // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let delay = undefined;
     if (info.templates.length !== 0) {
       dispatch({ type: 'TOGGLE_LOADING' });
       info.templates.forEach(async (x, index) => {
@@ -45,8 +46,10 @@ const FinalStep = () => {
           await activateTemplate(x, info.applicationId);
           dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
           if (index === info.templates.length - 1) {
-            dispatch({ type: 'TOGGLE_LOADING' });
-            dispatch({ type: 'NEXT_STEP' });
+            delay = setTimeout(() => {
+              dispatch({ type: 'TOGGLE_LOADING' });
+              dispatch({ type: 'NEXT_STEP' });
+            }, 4000);
           }
         } catch (e) {
           console.log('an error happend');
@@ -54,6 +57,10 @@ const FinalStep = () => {
       });
     } else {
     }
+
+    return () => {
+      if (delay) clearTimeout(delay);
+    };
   }, []);
 
   const letsGo = () => {
