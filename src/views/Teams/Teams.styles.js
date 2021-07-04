@@ -7,6 +7,7 @@ import {
   BG_GRAY_LIGHT,
   BG_WHITE,
   BO_DISTANT,
+  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -20,6 +21,7 @@ import {
   CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
+  CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
   TCV_WARM,
@@ -264,6 +266,7 @@ const getBorderCss = (props) => {
     border-width: 1px;
     border-style: solid;
     :hover {
+      border-width: 2.5px;
       border-color: ${TCV_DEFAULT};
     }
   `;
@@ -329,9 +332,9 @@ export const TeamConatiner = styled.div.attrs({
     margin: 0;
     padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
-    box-shadow: 1px 3px 20px #2b7be44d;
+    box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT};
     position: relative;
-    background-color: #fff;
+    background-color: ${CV_WHITE};
     ${RV_Float}: 7.7rem;
     bottom: -2.9rem;
     overflow: hidden;

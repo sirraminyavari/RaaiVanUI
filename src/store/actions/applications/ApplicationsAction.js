@@ -105,6 +105,10 @@ export const removeApplication = (appId, done, error) => async (
   getState
 ) => {
   const { applications } = getState();
+  const newApps = applications.userApps.filter(
+    (app) => app.ApplicationID !== appId
+  );
+
   try {
     removeApplicationAPI.fetch(
       { ApplicationID: appId },
@@ -113,19 +117,18 @@ export const removeApplication = (appId, done, error) => async (
           error && error(response.ErrorText);
         } else if (response.Succeed) {
           done && done(appId);
-          const newApps = applications.userApps.filter(
-            (app) => app.ApplicationID !== appId
-          );
           dispatch(deleteApplication(newApps));
           dispatch(setApplicationsOrder(newApps));
           // dispatch(getApplications());
           dispatch(getArchivedApplications());
         }
       },
-      (error) => console.log({ error })
+      (err) => {
+        error && error(err);
+      }
     );
   } catch (err) {
-    console.log({ err });
+    error && error(err);
   }
 };
 
