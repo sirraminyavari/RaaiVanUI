@@ -5,6 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Routes from 'routes/MainRoutes/Main.routes';
 import OpenSidebar from './Sidebar/SidebarOpen';
+import OpenSidebarMobile from './Sidebar/SidebarOpenMobile';
 import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './MainLayout.styles';
@@ -51,9 +52,14 @@ const switchRoutes = (
     })}
     {/* Just in dev mode and won't render in production  */}
     {/* <Route exact path="/test" component={TestView} /> */}
-    <Route exact path="/rasoul" component={RasoulView} />
-    <Route exact path="/ali" component={AliView} />
-    <Route exact path="/ramin" component={RaminView} />
+    {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
+      <>
+        <Route exact path="/rasoul" component={RasoulView} />
+        <Route exact path="/ali" component={AliView} />
+        <Route exact path="/ramin" component={RaminView} />
+      </>
+    )}
+
     <Redirect from="/" to="/teams" />
   </Switch>
 );
@@ -94,7 +100,7 @@ const Main = () => {
           return <CloseSidebar />;
         }
       } else {
-        return <SidebarHeader />;
+        return isSidebarOpen ? <OpenSidebarMobile /> : <SidebarHeader />;
       }
     }
     return null;
