@@ -65,7 +65,7 @@ const Navbar = () => {
     return showSearch;
   };
 
-  const showMobileNav = () => {
+  const getNavMenu = () => {
     if (!isSidebarOpen && isMobileScreen) return true;
     if (isSidebarOpen && isMobileNav) return true;
     return showSearch;
@@ -84,7 +84,7 @@ const Navbar = () => {
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
-        {showMobileNav() ? <MobileMenu /> : <WideScreenMenu />}
+        {getNavMenu() ? <MobileMenu /> : <WideScreenMenu />}
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (

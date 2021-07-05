@@ -69,7 +69,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     return (
       <Redirect
         to={{
-          pathname: '/login',
+          pathname: '/auth',
           state: { from: props.location },
         }}
       />

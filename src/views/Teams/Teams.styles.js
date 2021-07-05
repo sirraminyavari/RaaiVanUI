@@ -632,7 +632,7 @@ export const AddUserActionsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
 
   .active-tab {
     width: 47%;
