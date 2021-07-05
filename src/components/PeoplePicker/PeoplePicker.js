@@ -35,7 +35,6 @@ const PeoplePicker = ({
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [choosedPeople, setChoosedPeople] = useState([]);
 
   const pickerRef = useRef();
 
@@ -183,7 +182,8 @@ const PeoplePicker = ({
             isChecked={isByMe}
             onToggle={onByMeSelect}
             titleClass={'rv-warm'}
-            title={'فقط آن چه من ثبت کرده ام'}
+            title={'$فقط آن چه من ثبت کرده ام'}
+            titleStyle={{ fontSize: '0.8rem' }}
           />
         </JustMeSaved>
         <PeopleList>

@@ -34,6 +34,7 @@ const AnimatedInput = React.forwardRef(
       onChange,
       children,
       placeholderClass,
+      placeholderFocusedClass,
       ...props
     },
     ref
@@ -72,6 +73,11 @@ const AnimatedInput = React.forwardRef(
         setPlaceHolderState(placeholder);
       }
     };
+
+    const PlaceHolderClassFocused = placeholderFocusedClass
+      ? placeholderFocusedClass
+      : 'rv-warm';
+    const PlaceHolderClass = placeholderClass ? placeholderClass : 'rv-distant';
     return (
       <Container style={style} inputFocused={inputFocused} {...props}>
         <Label
@@ -115,10 +121,8 @@ const AnimatedInput = React.forwardRef(
             style={{ display: 'flex' }}
             className={`rv-border-radius-quarter rv-distant ${
               inputFocused || value.length > 0
-                ? 'rv-warm'
-                : placeholderClass
-                ? placeholderClass
-                : 'rv-distant'
+                ? PlaceHolderClassFocused
+                : PlaceHolderClass
             }`}>
             {placeHolderState}
           </Placeholder>

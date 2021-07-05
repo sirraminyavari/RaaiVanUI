@@ -30,6 +30,14 @@ const SimpleListViewer = ({
   extraData = false,
   onTotal,
 }) => {
+  useTraceUpdate({
+    fetchMethod,
+    renderItem,
+    pageSize,
+    infiniteLoop,
+    extraData,
+    onTotal,
+  });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
@@ -165,7 +173,11 @@ const SimpleListViewer = ({
               loading={isFetching}
               disable={isFetching}
               onClick={fetchMore}
-              style={{ maxWidth: '30%', alignSelf: 'center' }}>
+              style={{
+                maxWidth: '30%',
+                alignSelf: 'center',
+                margin: '0.5rem 0 0.5rem 0',
+              }}>
               {RVDic.More}
             </Button>
           )}

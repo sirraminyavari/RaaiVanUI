@@ -28,6 +28,8 @@ export const Maintainer = styled.div`
   left: calc(${({ isAdvancedShow }) => (isAdvancedShow ? ' 25rem' : '2rem')});
   height: calc(100vh - 9rem);
   bottom: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
   max-height: 100%;
   margin-right: 1rem;
   overflow: scroll;
@@ -139,7 +141,7 @@ export const ButtonContainer = styled.div`
   min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '50%')};
 `;
 export const CustomInput = styled(Input)`
-  min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '40%')};
+  min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '90%')};
   border-width: 0;
   border-bottom-width: 1px;
   border-color: ${CV_DISTANT};
@@ -147,5 +149,7 @@ export const CustomInput = styled(Input)`
   margin: 0rem 1rem 0 1rem;
   ::placeholder {
     color: ${CV_DISTANT};
+    font-size: 1.1rem;
+    font-weight: 500;
   }
 `;

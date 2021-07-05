@@ -72,6 +72,7 @@ const NodeList = (props) => {
         UseNodeTypeHierarchy: true,
         IsMine: isByMe,
         CreatorUserID: byPeople?.id,
+        VisitsCount: true,
       },
       (response) => {
         if (response.Nodes) {
