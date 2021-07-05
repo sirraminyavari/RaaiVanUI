@@ -48,7 +48,7 @@ const NavMenus = () => {
           const { badge, linkTo, title, icon } = btn;
           const hasBadge = badge && alerts.length > 0;
           return (
-            <Styled.NavMenuOption as={Link} to={linkTo} key={index}>
+            <Styled.NavMenuOption as={Link} to={linkTo ?? '#'} key={index}>
               {NavbarIcons[icon]({ className: TC_WARM, size: 20 })}
               {title}
               {hasBadge && (
