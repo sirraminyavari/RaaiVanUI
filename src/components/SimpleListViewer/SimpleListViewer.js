@@ -30,6 +30,14 @@ const SimpleListViewer = ({
   extraData = false,
   onTotal,
 }) => {
+  useTraceUpdate({
+    fetchMethod,
+    renderItem,
+    pageSize,
+    infiniteLoop,
+    extraData,
+    onTotal,
+  });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
@@ -149,13 +157,16 @@ const SimpleListViewer = ({
           </PerfectScrollBar>
         </div>
       ) : (
-        <EmptyState />
-        // <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>
+        <>
+          <EmptyState />
+          <Heading type={'h4'}>{RVDic.NothingToDisplay}</Heading>
+        </>
       )}
       {infiniteLoop && isFetching && data.length > 0 ? (
         <>
           <span style={{ color: 'transparent' }}>1</span>
           <LoadingIconFlat className={'rv-default'} />
+
           <span style={{ color: 'transparent' }}>1</span>
         </>
       ) : (
@@ -165,7 +176,11 @@ const SimpleListViewer = ({
               loading={isFetching}
               disable={isFetching}
               onClick={fetchMore}
-              style={{ maxWidth: '30%', alignSelf: 'center' }}>
+              style={{
+                maxWidth: '30%',
+                alignSelf: 'center',
+                margin: '0.5rem 0 0.5rem 0',
+              }}>
               {RVDic.More}
             </Button>
           )}

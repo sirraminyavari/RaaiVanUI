@@ -88,6 +88,8 @@ const FilterBar = ({
   onByBookmarked,
   isBookMarked,
 }) => {
+  const teamName = useSelector((state) => state?.theme?.selectedTeam?.name);
+
   const defaultDropDownLabel = {
     icon: (
       <AddIcon color={'white'} style={{ fontSize: '1.2rem', color: 'red' }} />
@@ -150,7 +152,11 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName ? decode(nodeType?.TypeName) : '';
+    return nodeType?.TypeName
+      ? decode(nodeType?.TypeName)
+      : teamName
+      ? teamName
+      : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
@@ -358,6 +364,7 @@ const FilterBar = ({
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
           placeholder={RVDic?.Search}
+          placeholderFocusedClass={'rv-default'}
           children={
             <Search
               style={{
@@ -368,27 +375,6 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => setBookmarkHover(true)}
-            onMouseLeave={() => setBookmarkHover(false)}
-            onClick={() => onByBookmarked(!isBookMarked)}
-            $isEnabled={isBookMarked}
-            className={
-              isBookMarked
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            {isBookMarked ? (
-              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-            ) : (
-              <OutLineBookmarkIcon
-                size={'1.5rem'}
-                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-              />
-            )}
-          </ShadowButton>
-
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"
@@ -426,6 +412,27 @@ const FilterBar = ({
               onByDate(value);
             }}
           />
+          <ShadowButton
+            style={commonStyle}
+            onMouseEnter={() => setBookmarkHover(true)}
+            onMouseLeave={() => setBookmarkHover(false)}
+            onClick={() => onByBookmarked(!isBookMarked)}
+            $isEnabled={isBookMarked}
+            className={
+              isBookMarked
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
+            {isBookMarked ? (
+              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+            ) : (
+              <OutLineBookmarkIcon
+                size={'1.5rem'}
+                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+              />
+            )}
+          </ShadowButton>
+
           <PeoplePicker
             onByMe={onByMe}
             onByPeople={onPeople}

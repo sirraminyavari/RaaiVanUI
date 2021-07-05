@@ -42,6 +42,7 @@ const SubjectItemMobileView = ({
     NodeID,
     NodeTypeID,
     LikeStatus,
+    VisitsCount,
   } = item;
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
@@ -66,7 +67,7 @@ const SubjectItemMobileView = ({
             )}
           </div>
           <div>
-            <SubjectViewCount count={UserStatus.VisitsCount} />
+            <SubjectViewCount count={VisitsCount} />
             <SubjectDate date={CreationDate} />
           </div>
         </IconContent>

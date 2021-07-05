@@ -43,6 +43,7 @@ const SubjectItemDesktop = ({
     NodeID,
     NodeTypeID,
     LikeStatus,
+    VisitsCount,
   } = item;
   const [isHover, setIsHover] = useState(false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
@@ -76,7 +77,7 @@ const SubjectItemDesktop = ({
                 {parentNodeType !== NodeTypeID && (
                   <SubjectClassName className={decode(NodeType)} />
                 )}
-                {!isSaas && <SubjectViewCount count={UserStatus.VisitsCount} />}
+                {!isSaas && <SubjectViewCount count={VisitsCount} />}
 
                 {/* <div
                   style={{
