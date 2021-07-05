@@ -243,7 +243,8 @@ const FilterBar = ({
         onCreateUrgent();
       }
     } else {
-      SubmitNewNode(nodeTypeId);
+      // SubmitNewNode(nodeTypeId);
+      push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
     }
   };
   // By typing in the search input will fire

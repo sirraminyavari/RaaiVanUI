@@ -160,7 +160,7 @@ const PeoplePicker = ({
         </Apply_Picked> */}
 
         <SearchInput
-          placeholder={RVDic.Search + ' ' + RVDic.In + ' ' + RVDic.Teams}
+          placeholder={RVDic.SearchUsers}
           onChange={onInput}
           className={'rv-border-warm-red'}
           value={searchInput}

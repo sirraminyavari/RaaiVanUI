@@ -159,7 +159,9 @@ const SimpleListViewer = ({
       ) : (
         <>
           <EmptyState />
-          <Heading type={'h4'}>{RVDic.NothingToDisplay}</Heading>
+          <Heading type={'h4'} style={{ textAlign: 'center' }}>
+            {RVDic.NothingToDisplay}
+          </Heading>
         </>
       )}
       {infiniteLoop && isFetching && data.length > 0 ? (
