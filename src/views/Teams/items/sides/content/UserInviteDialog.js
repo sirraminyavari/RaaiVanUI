@@ -14,7 +14,6 @@ import UserInviteField from './UserInviteField';
 import { encodeBase64, API_Provider, getSystemName } from 'helpers/helpers';
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { ValidationError } from 'yup';
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
@@ -75,7 +74,6 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
       setIsSending(false);
       setSendDisabled(true);
     }
-    console.log(Object.values(inviteValues).every((v) => !!v.validation.mail));
   }, [inviteValues]);
 
   useEffect(() => {
