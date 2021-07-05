@@ -10,8 +10,6 @@ import {
   TBO_WARM,
   C_DISTANT,
   C_WHITE,
-  TBO_DEFAULT,
-  BO_GRAY_DARK,
   C_RED,
   BO_GRAY,
   C_GRAY,
@@ -81,6 +79,21 @@ export const SidebarContainer = styled.div.attrs({
     hasPattern && `background-image: url(${sidebarPattern});`}
 `;
 
+export const SidebarMobileContainer = styled.div.attrs({
+  className: `${TBG_VERYWARM} ${C_WHITE}`,
+})`
+  height: 100%;
+  width: 70vw;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  ${`${RV_Float}: 0;`}
+  overflow: hidden;
+  box-shadow: 1px 0px 15px 1px #000;
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
+`;
+
 export const ContentWrapper = withTheme(styled.div`
   width: 100%;
   position: absolute;
@@ -95,21 +108,36 @@ export const ContentWrapper = withTheme(styled.div`
   align-items: center;
 `);
 
+const getHeaderWidth = (props) => {
+  const {
+    isSidebarOpen,
+    sidebarCurrentWidth,
+    sidebarCloseWidth,
+  } = props.theme.states;
+  const openWidth = css`
+    width: ${sidebarCurrentWidth / 16}rem;
+  `;
+  const closeWidth = css`
+    width: ${sidebarCloseWidth / 16}rem;
+  `;
+
+  const openMobileWidth = css`
+    width: 70vw;
+  `;
+
+  if (isSidebarOpen) {
+    return props.isMobile ? openMobileWidth : openWidth;
+  } else {
+    return closeWidth;
+  }
+};
+
 export const SidebarHeader = withTheme(styled.div.attrs({
   className: TBG_VERYWARM,
 })`
   ${FlexBetween}
   height: 4rem;
-  width: ${(props) => {
-    const {
-      isSidebarOpen,
-      sidebarCurrentWidth,
-      sidebarCloseWidth,
-    } = props.theme.states;
-    return isSidebarOpen
-      ? `${sidebarCurrentWidth / 16}rem`
-      : `${sidebarCloseWidth / 16}rem`;
-  }};
+  ${getHeaderWidth}
   z-index: 10;
   padding: 0
     ${(props) => (props.theme.states.isSidebarOpen ? '1.4rem' : '0.8rem')};
