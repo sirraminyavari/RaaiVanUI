@@ -5,7 +5,7 @@ import useWindow from 'hooks/useWindowContext';
 
 const UserInviteField = ({ fieldIndex, onFieldChange }) => {
   const [name, setName] = useState('');
-  const [mail, setMail] = useState('');
+  const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
   const { RVDic } = useWindow();
 
@@ -14,14 +14,8 @@ const UserInviteField = ({ fieldIndex, onFieldChange }) => {
     email: yup.string().email(),
   });
 
-  inviteFieldSchema
-    .isValid({
-      email: mail,
-    })
-    .then((valid) => setIsEmailValid(valid));
-
   const handleMailValue = (mailValue) => {
-    setMail(mailValue);
+    setEmail(mailValue);
   };
 
   const handleNameValue = (nameValue) => {
@@ -29,15 +23,17 @@ const UserInviteField = ({ fieldIndex, onFieldChange }) => {
   };
 
   useEffect(() => {
+    const isEmailValid = inviteFieldSchema.isValidSync({ email });
     onFieldChange &&
       onFieldChange({
         fieldIndex,
         name,
-        mail,
+        mail: email,
         validation: { mail: isEmailValid },
       });
+    setIsEmailValid(isEmailValid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, mail]);
+  }, [name, email]);
 
   return (
     <div
@@ -48,10 +44,10 @@ const UserInviteField = ({ fieldIndex, onFieldChange }) => {
         margin: '1.5rem 0',
       }}>
       <AnimatedInput
-        value={mail}
+        value={email}
         onChange={handleMailValue}
         placeholder={RVDic.Email}
-        error={!!mail.length && !isEmailValid && RVDic.MSG.EmailIsNotValid}
+        error={!!email.length && !isEmailValid && RVDic.MSG.EmailIsNotValid}
         shake={300}
       />
       <AnimatedInput
