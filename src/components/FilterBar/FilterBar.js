@@ -235,8 +235,8 @@ const FilterBar = ({
       });
 
       if (item.value === 'completeAction') {
-        // push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
-        SubmitNewNode(nodeTypeId);
+        push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+        // SubmitNewNode(nodeTypeId);
         // window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
       } else if (item?.value === 'urgentAction') {
         // setUrgentModalOpen(true);
