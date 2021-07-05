@@ -108,6 +108,8 @@
                 };
             };
 
+            var hasFixedParent = !!GlobalUtilities.get_fixed_parent(that.Container);
+
             var elems = GlobalUtilities.create_nested_elements([
                 {
                     Type: "div", Class: "small-12 medium-12 large-12",
@@ -165,7 +167,8 @@
                         { Type: "div", Class: "small-12 medium-12 large-12", Name: "wfarea", Style: "display:none;" },
                         {
                             Type: "div", Class: "rv-border-radius-quarter", Name: "buttonsArea",
-                            Style: "position:fixed; bottom:0rem; left:6vw; right:6vw; padding:1rem 10rem; text-align:center;" +
+                            Style: "position:fixed; bottom:0rem; left:6vw; " + (hasFixedParent ? "right:6vw;" : "") +
+                                "padding:1rem 10rem; text-align:center;" +
                                 "background-color:rgb(245,245,245); box-shadow:0px 0px 10px; height:4rem; display:none;",
                             Childs: [
                                 {
@@ -224,6 +227,14 @@
                     ]
                 }
             ], that.Container);
+
+            if (!hasFixedParent) {
+                setInterval(() => {
+                    var cw = jQuery(that.Container).width();
+                    //var windowWidth = window.innerWidth;
+                    jQuery(elems["buttonsArea"]).animate({ width: cw + "px" });
+                }, 1000);
+            }
             
             that.Interface.Buttons = elems["buttonsArea"];
             that.Interface.BottomTabTitle = elems["bottomTabTitle"];
