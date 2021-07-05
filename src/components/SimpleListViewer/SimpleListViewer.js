@@ -157,13 +157,16 @@ const SimpleListViewer = ({
           </PerfectScrollBar>
         </div>
       ) : (
-        <EmptyState />
-        // <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>
+        <>
+          <EmptyState />
+          <Heading type={'h4'}>{RVDic.NothingToDisplay}</Heading>
+        </>
       )}
       {infiniteLoop && isFetching && data.length > 0 ? (
         <>
           <span style={{ color: 'transparent' }}>1</span>
           <LoadingIconFlat className={'rv-default'} />
+
           <span style={{ color: 'transparent' }}>1</span>
         </>
       ) : (

@@ -182,7 +182,7 @@ const PeoplePicker = ({
             isChecked={isByMe}
             onToggle={onByMeSelect}
             titleClass={'rv-warm'}
-            title={'$فقط آن چه من ثبت کرده ام'}
+            title={RVDic.Myself}
             titleStyle={{ fontSize: '0.8rem' }}
           />
         </JustMeSaved>
