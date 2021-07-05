@@ -229,7 +229,9 @@
             ], that.Container);
 
             if (!hasFixedParent) {
-                setInterval(() => {
+                var widthInterval = setInterval(() => {
+                    if (!GlobalUtilities.is_element_in_document(elems["buttonsArea"])) return clearInterval(widthInterval);
+
                     var cw = jQuery(that.Container).width();
                     //var windowWidth = window.innerWidth;
                     jQuery(elems["buttonsArea"]).animate({ width: cw + "px" });
