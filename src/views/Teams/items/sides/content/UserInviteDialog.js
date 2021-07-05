@@ -11,9 +11,10 @@ import Input from 'components/Inputs/Input';
 import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import UserInviteField from './UserInviteField';
-import { encodeBase64, API_Provider } from 'helpers/helpers';
+import { encodeBase64, API_Provider, getSystemName } from 'helpers/helpers';
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { ValidationError } from 'yup';
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
@@ -63,11 +64,18 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
 
   useEffect(() => {
     if (!!Object.keys(inviteValues).length) {
-      setSendDisabled(false);
+      if (
+        Object.values(inviteValues).every((v) => v.validation.mail === true)
+      ) {
+        setSendDisabled(false);
+      } else {
+        setSendDisabled(true);
+      }
     } else {
       setIsSending(false);
       setSendDisabled(true);
     }
+    console.log(Object.values(inviteValues).every((v) => !!v.validation.mail));
   }, [inviteValues]);
 
   useEffect(() => {
@@ -136,7 +144,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
       show={isInviteShown}
       onClose={handleCloseInvitation}
       contentWidth="50%"
-      title="دعوت هم تیمی جدید">
+      title={RVDic.InviteNewTeamMate}>
       <Styled.AddUserModalHeader>
         <Styled.AddUserPlusSign>+</Styled.AddUserPlusSign>
         <UsersGroupIcon size={40} />
@@ -147,7 +155,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
           type="primary-o"
           classes={currentContent === GET_LINK ? 'active-tab' : 'inactive-tab'}>
           <LinkIcon size={20} />
-          <span style={{ margin: '0 0.5rem' }}>دریافت لینک دعوت</span>
+          <span style={{ margin: '0 0.5rem' }}>{RVDic.GetInvitationLink}</span>
         </Button> */}
         {/* <Button
           onClick={activateSendLink}
@@ -156,7 +164,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
             currentContent === SEND_LINK ? 'active-tab' : 'inactive-tab'
           }>
           <MailIcon fill size={20} />
-          <span style={{ margin: '0 0.5rem' }}>ارسال دعوتنامه</span>
+          <span style={{ margin: '0 0.5rem' }}>{RVDic.SendInvitations}</span>
         </Button> */}
         <div
           style={{
@@ -169,7 +177,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
             color: TCV_WARM,
           }}>
           <MailIcon fill size={20} />
-          <span style={{ margin: '0 0.5rem' }}>ارسال دعوتنامه</span>
+          <span style={{ margin: '0 0.5rem' }}>{RVDic.SendInvitations}</span>
         </div>
       </Styled.AddUserActionsWrapper>
       {/* {currentContent === GET_LINK && (
@@ -196,12 +204,15 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
       {/* {currentContent === SEND_LINK && ( */}
       <Styled.InviteContent>
         <Styled.GetLinkTitle>
-          هم‌تیمی های خود را به کلیک‌مایند دعوت کنید
+          {RVDic.InviteYourTeamMatesToRaaiVan.replace(
+            '[RaaiVan]',
+            getSystemName()
+          )}
         </Styled.GetLinkTitle>
         <Styled.GetLinkInfoWrapper>
           <InfoIcon color={CV_DISTANT} size={16} />
           <Styled.GetLinkInfoTitle>
-            برای ارسال دعوت‌نامه به هم‌تیمی جدید، ایمیل او را وارد کنید
+            {RVDic.Checks.EnterYourNewTeamMateEmailToSendInvitation}
           </Styled.GetLinkInfoTitle>
         </Styled.GetLinkInfoWrapper>
         <UserInviteField fieldIndex={1} onFieldChange={handleFieldChange} />
