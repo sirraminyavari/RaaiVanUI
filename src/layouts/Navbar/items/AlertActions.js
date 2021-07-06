@@ -1,49 +1,69 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../Navbar.styles';
 import AlertFooter from './AlertFooter';
 import AlertItem from './AlertItem';
 import { createSelector } from 'reselect';
+import {
+  getNotificationsCount,
+  getNotificationsList,
+  setNotificationsAsSeen,
+} from 'store/actions/global/NotificationActions';
 
-const selectNavAlerts = createSelector(
-  (state) => state.navbarAlert,
-  (navbarAlert) => navbarAlert.alertsList
+const selectNotificatios = createSelector(
+  (state) => state.notifications,
+  (notifications) => notifications.notificationsList
 );
 
 const selectOffset = createSelector(
-  (state) => state.navbarAlert,
-  (navbarAlert) => navbarAlert.offset
+  (state) => state.notifications,
+  (notifications) => notifications.offset
 );
 
 const selectPerPage = createSelector(
-  (state) => state.navbarAlert,
-  (navbarAlert) => navbarAlert.perPage
+  (state) => state.notifications,
+  (notifications) => notifications.perPage
 );
 
 const AlertActions = () => {
-  const alerts = useSelector(selectNavAlerts);
+  const dispatch = useDispatch();
+  const notifications = useSelector(selectNotificatios);
   const offset = useSelector(selectOffset);
   const perPage = useSelector(selectPerPage);
 
   //! Chunks alerts list based on current page and per page values.
-  const slicedAlerts = alerts.slice(offset, offset + perPage);
+  const slicedNotifs = notifications.slice(offset, offset + perPage);
 
-  //! Checks if there is any alert to show or not.
-  const hasAlert = slicedAlerts.length;
+  useEffect(() => {
+    dispatch(getNotificationsCount());
+    dispatch(getNotificationsList());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const checkUnseen = (notif) => notif.Seen === false;
+    const hasUnseenNotifs = slicedNotifs.some(checkUnseen);
+    const unseenNotifsId = slicedNotifs
+      .filter(checkUnseen)
+      .map((notif) => notif.NotificationID);
+    if (hasUnseenNotifs) {
+      dispatch(setNotificationsAsSeen(unseenNotifsId));
+    }
+  }, [slicedNotifs, dispatch]);
 
   return (
     <Styled.AlertActionsContainer>
-      {hasAlert ? (
+      {slicedNotifs.length ? (
         <>
           <Styled.AlertListContainer>
-            {slicedAlerts.map((alert, index) => (
-              <AlertItem alert={alert} key={index} />
+            {slicedNotifs?.map((alert) => (
+              <AlertItem alert={alert} key={alert.NotificationID} />
             ))}
           </Styled.AlertListContainer>
           <AlertFooter />
         </>
       ) : (
         <Styled.EmptyAlert>
-          در حال حاضر اعلان خوانده نشده وجود ندارد
+          در حال حاضر اعلانی برای خواندن وجود ندارد
         </Styled.EmptyAlert>
       )}
     </Styled.AlertActionsContainer>

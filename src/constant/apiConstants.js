@@ -177,3 +177,40 @@ export const SET_NODE_TYPE_ORDER = 'SetNodeTypesOrder';
  * @class 'CNAPI'
  */
 export const RECOVER_NODE_TYPE = 'RecoverNodeType';
+
+//* #################################
+//* ############ NotificationsAPI ########
+//* #################################
+/**
+ * @description 'NotificationsAPI'
+ * @mode API class
+ */
+export const NOTIFICATIONS_API = 'NotificationsAPI';
+
+/**
+ * @description 'GetNotificationsCount'
+ * @mode API function
+ * @class 'NotificationsAPI'
+ */
+export const GET_NOTIFS_COUNT = 'GetNotificationsCount';
+
+/**
+ * @description 'GetNotifications'
+ * @mode API function
+ * @class 'NotificationsAPI'
+ */
+export const GET_NOTIFS_LIST = 'GetNotifications';
+
+/**
+ * @description 'SetNotificationsAsSeen'
+ * @mode API function
+ * @class 'NotificationsAPI'
+ */
+export const SET_NOTIFS_AS_SEEN = 'SetNotificationsAsSeen';
+
+/**
+ * @description 'RemoveNotification'
+ * @mode API function
+ * @class 'NotificationsAPI'
+ */
+export const REMOVE_NOTIFICATION = 'RemoveNotification';

@@ -44,7 +44,8 @@ export const TeamsViewContainer = styled.div.attrs({
     max-height: calc(100vh - 4.5rem);
     position: fixed;
     top: 0;
-    left: calc(50% - 17.5%);
+    left: 0;
+    right: 0;
   }
 `;
 
@@ -356,6 +357,10 @@ export const TeamConatiner = styled.div.attrs({
     .ps__rail-y {
       ${RV_Float}: ${RV_RTL ? '-0.35rem' : '-0.1rem'} !important;
     }
+  }
+
+  .invite-modal-container {
+    margin-top: 4rem;
   }
 `;
 

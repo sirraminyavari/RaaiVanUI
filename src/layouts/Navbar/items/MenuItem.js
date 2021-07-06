@@ -5,15 +5,15 @@ import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { createSelector } from 'reselect';
 import * as Styled from '../Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
 import { TBO_WARM, BG_RED } from 'constant/Colors';
-import { createSelector } from 'reselect';
 
-const selectNavAlerts = createSelector(
-  (state) => state.navbarAlert,
-  (navbarAlert) => navbarAlert.alertsList
+const selectNotificationsCount = createSelector(
+  (state) => state.notifications,
+  (notifications) => notifications.notificationsCount
 );
 
 const selectActivePath = createSelector(
@@ -42,12 +42,12 @@ const selectActivePath = createSelector(
  */
 const MenuItem = (props) => {
   const activePath = useSelector(selectActivePath);
-  const alerts = useSelector(selectNavAlerts);
+  const notifsCount = useSelector(selectNotificationsCount);
   const { title, icon, linkTo } = props.btnProps;
   const { badge, withArrow } = props;
 
   const isActive = linkTo === activePath;
-  const hasBadge = badge && alerts.length > 0;
+  const hasBadge = badge && notifsCount > 0;
 
   return (
     <Styled.ButtonContainer
@@ -61,7 +61,7 @@ const MenuItem = (props) => {
           <Styled.BadgeWrapper>
             <Badge
               style={{ borderWidth: '0.15rem' }}
-              value={alerts.length}
+              value={notifsCount + 1}
               className={`${TBO_WARM} ${BG_RED}`}
             />
           </Styled.BadgeWrapper>

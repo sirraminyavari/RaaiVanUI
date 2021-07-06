@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import Modal from 'components/Modal/Modal';
 import UsersGroupIcon from 'components/Icons/UsersGroupIcon/UsersGroup';
 import MailIcon from 'components/Icons/MailIcon/MailIcon';
@@ -14,6 +15,7 @@ import UserInviteField from './UserInviteField';
 import { encodeBase64, API_Provider, getSystemName } from 'helpers/helpers';
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
@@ -30,6 +32,19 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
   const [isSending, setIsSending] = useState(false);
   const [inviteValues, setInviteValues] = useState({});
   const [sendingIndecies, setSendingIndecies] = useState([]);
+
+  const { isTabletOrMobile } = DimensionHelper();
+  const isMobileScreen = useMediaQuery({ query: '(max-width: 600px)' });
+
+  const getModalWidth = () => {
+    if (isMobileScreen) {
+      return '95%';
+    } else if (isTabletOrMobile) {
+      return '75%';
+    } else {
+      return '50%';
+    }
+  };
 
   const handleCloseInvitation = () => {
     setIsInviteShown(false);
@@ -141,7 +156,8 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
     <Modal
       show={isInviteShown}
       onClose={handleCloseInvitation}
-      contentWidth="50%"
+      contentWidth={getModalWidth()}
+      contentClass="invite-modal-container"
       title={RVDic.InviteNewTeamMate}>
       <Styled.AddUserModalHeader>
         <Styled.AddUserPlusSign>+</Styled.AddUserPlusSign>

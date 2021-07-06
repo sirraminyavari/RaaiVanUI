@@ -21,6 +21,7 @@ import {
 import {
   CV_DISTANT,
   CV_FREEZED,
+  CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
@@ -252,6 +253,18 @@ export const AlertItemContainer = styled.div.attrs({
   max-height: 6rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
+  position: relative;
+`;
+
+export const AlertItemCloseIcon = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  color: ${CV_RED};
+  position: absolute;
+  top: 0.3rem;
+  ${RV_RevFloat}: 0rem;
+  padding: 0.1rem 0.25rem;
+  cursor: pointer;
 `;
 
 export const AlertContentWrapper = styled.div`
@@ -261,7 +274,7 @@ export const AlertContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  margin-right: 1rem;
+  margin-${RV_Float}: 1rem;
   padding: 0.3rem 0;
 `;
 
@@ -282,7 +295,7 @@ export const AlertFooterContainer = styled.div`
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   bottom: 1rem;
