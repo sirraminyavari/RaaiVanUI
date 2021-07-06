@@ -5,6 +5,7 @@ import { loginSlice } from '../../reducers/loginReducer';
 import { encode } from 'js-base64';
 import CheckPassword from 'utils/Validation/CheckPassword';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
+import { getCaptchaToken } from 'helpers/helpers';
 
 const {
   sendResetPasswordTicket,
@@ -27,7 +28,9 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
   const { GlobalUtilities, UsersAPI, RVDic } = window;
   const reqParams = GlobalUtilities.request_params();
 
-  const captchaToken = getState().auth.captchaToken;
+  const captchaToken = await getCaptchaToken();
+
+  // const captchaToken = getState().auth.captchaToken;
 
   const sendTicket = () => {
     dispatch(sendResetPasswordTicket());

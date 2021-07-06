@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import loggedInAction from 'store/actions/auth/loggedInAction';
 import styled from 'styled-components';
 import APIHandler from 'apiHelper/APIHandler';
+import { getCaptchaToken } from 'helpers/helpers';
 
 /**
  * It's not completed.
@@ -20,10 +21,6 @@ const ContinueWithGoogle = ({ ...props }) => {
   // We use ref to pass component dimension to 'UpToDownAnimate'
 
   const { RVDic, RVGlobal, GlobalUtilities } = window;
-
-  const { captchaToken } = useSelector((state) => ({
-    captchaToken: state?.auth?.captchaToken,
-  }));
 
   const dispatch = useDispatch();
 
@@ -36,8 +33,10 @@ const ContinueWithGoogle = ({ ...props }) => {
    * @param {Object} event - params comes from google api
    * will fire if continuing with google is a success
    */
-  const onGoogleSuccess = (event) => {
+  const onGoogleSuccess = async (event) => {
     const gProfile = event?.profileObj;
+
+    const captchaToken = await getCaptchaToken();
 
     googleSignInAPI.fetch(
       {
