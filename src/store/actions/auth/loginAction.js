@@ -45,7 +45,14 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
           const { Succeed, AuthCookie } = response;
           const { RVDic } = window;
           if (response.ErrorText) {
-            dispatch(loginFailed(RVDic.MSG[response.ErrorText]));
+            dispatch(
+              loginFailed(
+                (RVDic.MSG[response?.ErrorText] || response?.ErrorText).replace(
+                  '[n]',
+                  response?.RemainingLockoutTime || ' '
+                )
+              )
+            );
 
             console.log(response, 'response error');
 
