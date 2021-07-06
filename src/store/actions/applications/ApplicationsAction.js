@@ -1,8 +1,8 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import {
-  getNotificationsCount,
-  getNotificationsList,
-} from 'store/actions/global/NotificationActions';
+// import {
+//   getNotificationsCount,
+//   getNotificationsList,
+// } from 'store/actions/global/NotificationActions';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
@@ -343,21 +343,31 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
     getApplicationsOrderAPI.fetch(
       { Name: sortVariableName, ApplicationIndependent: true },
       (response) => {
-        const orderedIds =
-          (window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {})
-            .Order || [];
-        // console.log(orderedIds);
-        // console.log(unorderedApps);
-        const orderedApps = orderedIds
-          .filter((id) => unorderedApps.some((app) => app.ApplicationID === id))
-          .map(
-            (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
-          );
+        dispatch(setFetchingApps(false));
+        if (!response.Value) {
+          //! New user.
+          dispatch(setApplications(unorderedApps));
+          dispatch(setArchivedApplications([]));
+        } else {
+          const orderedIds =
+            (window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {})
+              .Order || [];
+          // console.log(orderedIds);
+          // console.log(unorderedApps);
+          const orderedApps = orderedIds
+            .filter((id) =>
+              unorderedApps.some((app) => app.ApplicationID === id)
+            )
+            .map(
+              (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
+            );
 
-        const extraApps = unorderedApps.filter(
-          (app) => !orderedIds.some((id) => app.ApplicationID === id)
-        );
-        dispatch(setApplications([...orderedApps, ...extraApps]));
+          const extraApps = unorderedApps.filter(
+            (app) => !orderedIds.some((id) => app.ApplicationID === id)
+          );
+          dispatch(setApplications([...orderedApps, ...extraApps]));
+        }
+
         // dispatch(setApplicationsOrder(unorderedApps));
       },
       (error) => console.log({ error })
