@@ -19,11 +19,23 @@ export const notificationsSlice = createSlice({
         state.currentPage = state.currentPage + 1;
         state.offset = state.currentPage * state.perPage;
       }
+      if (state.totalPage === state.currentPage + 1) {
+        state.isLastPage = true;
+      }
+      if (state.totalPage > state.currentPage + 1) {
+        state.isFirstPage = false;
+      }
     },
     setPrevPage: (state, actioon) => {
       if (state.currentPage > 0) {
         state.currentPage = state.currentPage - 1;
         state.offset = state.currentPage * state.perPage;
+      }
+      if (state.currentPage === 0) {
+        state.isFirstPage = true;
+      }
+      if (state.totalPage > state.currentPage + 1) {
+        state.isLastPage = false;
       }
     },
     setReadAll: (state, actioon) => {
@@ -36,7 +48,9 @@ export const notificationsSlice = createSlice({
     },
     setNotificationsList: (state, action) => {
       state.notificationsList = action.payload;
-      state.totalPage = Math.ceil((action.payload || []).length / 3);
+      state.totalPage = Math.ceil(
+        (action.payload || []).length / state.perPage
+      );
     },
   },
 });
