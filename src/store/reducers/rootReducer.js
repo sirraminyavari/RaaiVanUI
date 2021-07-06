@@ -3,7 +3,7 @@ import theme from './themeReducer';
 import domains from './domainsReducer';
 import auth from './loginReducer';
 import sidebarItems from './sidebarMenuReducer';
-import navbarAlert from './navbarAlertReducer';
+import notifications from './notificationsReducer';
 import applications from './applicationsReducer';
 //! import reducers here
 
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   domains,
   auth,
   sidebarItems,
-  navbarAlert,
+  notifications,
   applications,
   //! add reducers.
 });

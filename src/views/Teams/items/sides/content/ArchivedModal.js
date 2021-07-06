@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Styled from 'views/Teams/Teams.styles';
 import Modal from 'components/Modal/Modal';
-import { TC_DEFAULT, BO_FREEZED, BG_GRAY_LIGHT } from 'constant/Colors';
+import { TC_DEFAULT, BO_FREEZED } from 'constant/Colors';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import Avatar from 'components/Avatar/Avatar';

@@ -1,25 +1,30 @@
 /**
  * Renders whole navbar area for app.
  */
-import { lazy, Suspense, memo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { lazy, Suspense, memo, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
+import { useMediaQuery } from 'react-responsive';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
 import * as Styled from './Navbar.styles';
-import { useMediaQuery } from 'react-responsive';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-// import PopupMenu from 'components/PopupMenu/PopupMenu';
 import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
-import { createSelector } from 'reselect';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
   BO_RADIUS_HALF,
+  GET_NOTIFS_INTERVAL,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import useInterval from 'hooks/useInterval';
+import {
+  getNotificationsCount,
+  getNotificationsList,
+} from 'store/actions/global/NotificationActions';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -43,10 +48,19 @@ const selectAuthUser = createSelector(
 );
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat } = useWindow();
+
+  const getNotifs = () => {
+    dispatch(getNotificationsCount());
+    dispatch(getNotificationsList());
+  };
+
+  useInterval(getNotifs, GET_NOTIFS_INTERVAL);
+  useEffect(getNotifs, [dispatch]);
 
   const isWideScreen = useMediaQuery({ query: `(min-width: ${WIDE_BOUNDRY})` });
   const isMediumScreen = useMediaQuery({
@@ -117,26 +131,6 @@ const Navbar = () => {
             style={{ cursor: 'pointer', minWidth: '2.5rem' }}
           />
         </Tooltip>
-        {/* <PopupMenu
-          arrowClass="no-arrow"
-          menuClass={`${BG_WHITE} ${BO_RADIUS_HALF}`}
-          menuStyle={`
-            border: 0;
-            margin: 0.5rem 1.2rem;
-            box-shadow: 1px 3px 20px #2B7BE44D;
-            padding: 0.7rem;
-            padding-${RV_Float}: 2rem;
-          `}
-          trigger="click">
-          <div>
-            <Avatar
-              radius={35}
-              userImage={authUser?.ProfileImageURL}
-              style={{ cursor: 'pointer' }}
-            />
-          </div>
-          <AvatarMenuList />
-        </PopupMenu> */}
       </Styled.SearchWrapper>
     </Styled.NavbarContainer>
   );
