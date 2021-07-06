@@ -2,6 +2,8 @@ export const WIDE_BOUNDRY = '1200px';
 export const MEDIUM_BOUNDRY = '1020px';
 export const MOBILE_BOUNDRY = '600px';
 
+export const GET_NOTIFS_INTERVAL = 15000;
+
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';
 export const CLOSE_WIDTH = '4';

@@ -1,4 +1,8 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
+import {
+  getNotificationsCount,
+  getNotificationsList,
+} from 'store/actions/global/NotificationActions';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
@@ -219,6 +223,8 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           });
           dispatch(getSidebarNodes());
           dispatch(getConfigPanels());
+          // dispatch(getNotificationsCount());
+          // dispatch(getNotificationsList());
         }
         dispatch(
           setSelectingApp({
