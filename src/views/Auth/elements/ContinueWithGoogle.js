@@ -4,8 +4,11 @@
 import Button from 'components/Buttons/Button';
 import GoogleIcon from 'components/Icons/GoogleIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
+import { Base64 } from 'js-base64';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
+import { useDispatch, useSelector } from 'react-redux';
+import loggedInAction from 'store/actions/auth/loggedInAction';
 import styled from 'styled-components';
 
 /**
@@ -15,7 +18,15 @@ import styled from 'styled-components';
 const ContinueWithGoogle = ({ ...props }) => {
   // We use ref to pass component dimension to 'UpToDownAnimate'
 
-  const { RVDic, RVGlobal } = window;
+  const { RVDic, RVGlobal, UsersAPI, GlobalUtilities } = window;
+
+  const { captchaToken } = useSelector((state) => ({
+    captchaToken: state?.auth?.captchaToken,
+  }));
+
+  const dispatch = useDispatch();
+
+  const reqParams = GlobalUtilities.request_params();
 
   /**
    *
@@ -23,9 +34,27 @@ const ContinueWithGoogle = ({ ...props }) => {
    * will fire if continuing with google is a success
    */
   const onGoogleSuccess = (event) => {
-    console.log(event);
-    console.log('change route');
-    // dispatch(setLoginRouteAction(SIGN_IN));
+    const gProfile = event?.profileObj;
+    UsersAPI.SignInWithGoogle({
+      Captcha: captchaToken,
+      GoogleToken: event?.tokenObj?.id_token,
+      Email: gProfile?.email,
+      FirstName: Base64.encode(gProfile?.givenName),
+      LastName: Base64.encode(gProfile?.familyName),
+      GoogleID: gProfile?.googleId,
+      ImageURL: gProfile?.imageUrl,
+      InvitationID: reqParams.get_value('inv'),
+      ResponseHandler: function (response) {
+        const result = JSON.parse(response);
+        console.log('result', result);
+
+        if (result.ErrorText) {
+          alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+        } else if (result.Succeed) {
+          dispatch(loggedInAction(result));
+        }
+      },
+    });
   };
 
   /**
