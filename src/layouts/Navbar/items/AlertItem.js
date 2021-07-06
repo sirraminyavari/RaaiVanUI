@@ -7,6 +7,7 @@ import { decodeBase64, getURL } from 'helpers/helpers';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { removeNotification } from 'store/actions/global/NotificationActions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const { GlobalUtilities, RVDic } = window;
 
@@ -78,6 +79,11 @@ function renderTitle(notification) {
 
   title = reactStringReplace(title, '[user]', (match, index) => (
     <Link
+      style={{
+        color: TCV_DEFAULT,
+        fontWeight: '500',
+        textTransform: 'capitalize',
+      }}
       key={notification.NotificationID}
       to={getURL('User', { UserID: (notification.Sender || {}).UserID })}>
       {GlobalUtilities.convert_numbers_to_persian(fullname)}
@@ -138,7 +144,10 @@ function renderTitle(notification) {
 
   for (const [key, value] of Object.entries(options)) {
     let theTag = (match, index) => (
-      <Link key={index} to={value.url}>
+      <Link
+        style={{ color: TCV_DEFAULT, fontWeight: '500' }}
+        key={index}
+        to={value.url}>
         {value.title}
       </Link>
     );

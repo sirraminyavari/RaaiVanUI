@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import * as Styled from '../Navbar.styles';
 import AlertFooter from './AlertFooter';
 import AlertItem from './AlertItem';
-import { createSelector } from 'reselect';
 import {
   getNotificationsCount,
   getNotificationsList,
   setNotificationsAsSeen,
 } from 'store/actions/global/NotificationActions';
+import { notificationsSlice } from 'store/reducers/notificationsReducer';
+
+const { setPrevPage } = notificationsSlice.actions;
 
 const selectNotificatios = createSelector(
   (state) => state.notifications,
@@ -40,19 +43,22 @@ const AlertActions = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const checkUnseen = (notif) => notif.Seen === false;
-    const hasUnseenNotifs = slicedNotifs.some(checkUnseen);
+    const isUnseen = (notif) => notif.Seen === false;
+    const hasUnseenNotifs = slicedNotifs.some(isUnseen);
     const unseenNotifsId = slicedNotifs
-      .filter(checkUnseen)
+      .filter(isUnseen)
       .map((notif) => notif.NotificationID);
     if (hasUnseenNotifs) {
       dispatch(setNotificationsAsSeen(unseenNotifsId));
+    }
+    if (slicedNotifs.length === 0) {
+      dispatch(setPrevPage());
     }
   }, [slicedNotifs, dispatch]);
 
   return (
     <Styled.AlertActionsContainer>
-      {slicedNotifs.length ? (
+      {notifications.length ? (
         <>
           <Styled.AlertListContainer>
             {slicedNotifs?.map((alert) => (

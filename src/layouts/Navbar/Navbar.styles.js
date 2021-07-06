@@ -326,6 +326,7 @@ export const AlertFooterArrowWrapper = styled.div.attrs({
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  user-select: none;
 `;
 
 export const ButtonAction = styled.div.attrs({
