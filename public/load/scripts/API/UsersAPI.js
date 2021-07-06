@@ -152,7 +152,12 @@
         var url = UsersAPI.ResponseURL + "/SignInWithGoogle?timeStamp=" + new Date().getTime();
         var queryString = (params.GoogleToken ? "&GoogleToken=" + params.GoogleToken : "") +
             (params.Captcha ? "&Captcha=" + params.Captcha : "") +
-            (params.InvitationID ? "&InvitationID=" + params.InvitationID : "");
+            (params.InvitationID ? "&InvitationID=" + params.InvitationID : "") +
+            (params.Email ? "&Email=" + params.Email : "") +
+            (params.FirstName ? "&FirstName=" + params.FirstName : "") +
+            (params.LastName ? "&LastName=" + params.LastName : "") +
+            (params.GoogleID ? "&GoogleID=" + params.GoogleID : "") +
+            (params.ImageURL ? "&ImageURL=" + params.ImageURL : "");
         return UsersAPI._send(url, params, queryString);
     },
 
