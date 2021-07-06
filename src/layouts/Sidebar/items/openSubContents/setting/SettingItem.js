@@ -32,12 +32,12 @@ const SettingItem = () => {
 
   return (
     <>
-      {settingItems.map((item) => {
+      {settingItems?.map((item) => {
         return (
           <Styled.SettingItemWrapper
-            onClick={() => onSettingItemClick(item.icon)}>
-            {iconList[item.icon]({ size: 20 })}
-            <Styled.SettingItemTitle>{item.title}</Styled.SettingItemTitle>
+            onClick={() => onSettingItemClick(item?.icon)}>
+            {iconList[item?.icon]({ size: 20 })}
+            <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
           </Styled.SettingItemWrapper>
         );
       })}
