@@ -49,7 +49,7 @@ const WorkSpace = ({ space }) => {
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.id} spring="stiff">
           <Styled.TeamListConatiner>
-            {teams.length === 0 && isFetching ? (
+            {teams?.length === 0 && isFetching ? (
               <LogoLoader />
             ) : (
               <>

@@ -1,6 +1,6 @@
 import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
-import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
+// import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 

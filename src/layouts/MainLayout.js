@@ -89,7 +89,7 @@ const Main = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
-  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam.id;
+  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam?.id;
 
   const getSidebar = () => {
     if (isTeamSelected) {
