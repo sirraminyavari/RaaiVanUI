@@ -343,9 +343,9 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
     getApplicationsOrderAPI.fetch(
       { Name: sortVariableName, ApplicationIndependent: true },
       (response) => {
-        const orderedIds = (
-          window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {}
-        ).Order;
+        const orderedIds =
+          (window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {})
+            .Order || [];
         // console.log(orderedIds);
         // console.log(unorderedApps);
         const orderedApps = orderedIds
