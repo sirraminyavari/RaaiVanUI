@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import * as yup from 'yup';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import useWindow from 'hooks/useWindowContext';
 
@@ -7,12 +6,7 @@ const UserInviteField = ({ fieldIndex, onFieldChange }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
-  const { RVDic } = useWindow();
-
-  const inviteFieldSchema = yup.object().shape({
-    name: yup.string(),
-    email: yup.string().email(),
-  });
+  const { RVDic, GlobalUtilities } = useWindow();
 
   const handleMailValue = (mailValue) => {
     setEmail(mailValue);
@@ -23,7 +17,7 @@ const UserInviteField = ({ fieldIndex, onFieldChange }) => {
   };
 
   useEffect(() => {
-    const isEmailValid = inviteFieldSchema.isValidSync({ email });
+    const isEmailValid = GlobalUtilities.is_valid_email(email);
     onFieldChange &&
       onFieldChange({
         fieldIndex,
