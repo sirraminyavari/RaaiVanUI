@@ -10,6 +10,8 @@ import GoogleLogin from 'react-google-login';
 import { useDispatch, useSelector } from 'react-redux';
 import loggedInAction from 'store/actions/auth/loggedInAction';
 import styled from 'styled-components';
+import APIHandler from 'apiHelper/APIHandler';
+import { getCaptchaToken } from 'helpers/helpers';
 
 /**
  * It's not completed.
@@ -18,34 +20,36 @@ import styled from 'styled-components';
 const ContinueWithGoogle = ({ ...props }) => {
   // We use ref to pass component dimension to 'UpToDownAnimate'
 
-  const { RVDic, RVGlobal, UsersAPI, GlobalUtilities } = window;
-
-  const { captchaToken } = useSelector((state) => ({
-    captchaToken: state?.auth?.captchaToken,
-  }));
+  const { RVDic, RVGlobal, GlobalUtilities } = window;
 
   const dispatch = useDispatch();
 
   const reqParams = GlobalUtilities.request_params();
+
+  const googleSignInAPI = new APIHandler('UsersAPI', 'SignInWithGoogle');
 
   /**
    *
    * @param {Object} event - params comes from google api
    * will fire if continuing with google is a success
    */
-  const onGoogleSuccess = (event) => {
+  const onGoogleSuccess = async (event) => {
     const gProfile = event?.profileObj;
-    UsersAPI.SignInWithGoogle({
-      Captcha: captchaToken,
-      GoogleToken: event?.tokenObj?.id_token,
-      Email: gProfile?.email,
-      FirstName: Base64.encode(gProfile?.givenName),
-      LastName: Base64.encode(gProfile?.familyName),
-      GoogleID: gProfile?.googleId,
-      ImageURL: gProfile?.imageUrl,
-      InvitationID: reqParams.get_value('inv'),
-      ResponseHandler: function (response) {
-        const result = JSON.parse(response);
+
+    const captchaToken = await getCaptchaToken();
+
+    googleSignInAPI.fetch(
+      {
+        Captcha: captchaToken,
+        GoogleToken: event?.tokenObj?.id_token,
+        Email: gProfile?.email,
+        FirstName: Base64.encode(gProfile?.givenName),
+        LastName: Base64.encode(gProfile?.familyName),
+        GoogleID: gProfile?.googleId,
+        ImageURL: gProfile?.imageUrl,
+        InvitationID: reqParams.get_value('inv'),
+      },
+      (result) => {
         console.log('result', result);
 
         if (result.ErrorText) {
@@ -53,8 +57,8 @@ const ContinueWithGoogle = ({ ...props }) => {
         } else if (result.Succeed) {
           dispatch(loggedInAction(result));
         }
-      },
-    });
+      }
+    );
   };
 
   /**
