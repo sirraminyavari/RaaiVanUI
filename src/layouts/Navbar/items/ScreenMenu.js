@@ -17,7 +17,7 @@ const AlertActions = lazy(() =>
 const WideScreenMenu = () => {
   return (
     <Styled.WideScreenMenu>
-      {NavButtonsList.map((btn) => {
+      {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
         return (
           <Fragment key={index}>
@@ -34,7 +34,7 @@ const WideScreenMenu = () => {
                     badge={badge}
                   />
                 </div>
-                {actions.length ? (
+                {actions?.length ? (
                   <FixActions actions={actions} />
                 ) : (
                   <AlertActions />

@@ -33,7 +33,7 @@ const EditableTree = () => {
   };
 
   const handleOnMoveItem = (newTree, source, destination) => {
-    if (source.parentId === destination.parentId) {
+    if (source?.parentId === destination?.parentId) {
       dispatch(reorderSidebarNode(newTree, source, destination));
     } else {
       dispatch(moveSidebarNode(newTree, source, destination));

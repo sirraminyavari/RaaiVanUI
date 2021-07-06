@@ -62,7 +62,7 @@ const AvatarMenuList = () => {
 
   return (
     <Styled.AvatarMenuContainer>
-      {menuLinkItems.map((item) => {
+      {menuLinkItems?.map((item) => {
         const { id, title, linkTo, icon, iconColor, textClass } = item;
         return (
           <AvatarMenuItem

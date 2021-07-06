@@ -111,7 +111,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
         setSendingIndecies((v) => v.filter((item) => item !== fieldIndex));
 
         if (response.Succeed) {
-          const successMessage = `دعوت برای ${mail} ارسال شد`;
+          const successMessage = `دعوت به ایمیل ${mail} ارسال شد`;
           InfoToast({
             type: 'info',
             autoClose: 5000,

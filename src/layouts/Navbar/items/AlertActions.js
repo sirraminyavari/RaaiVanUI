@@ -43,26 +43,26 @@ const AlertActions = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const isUnseen = (notif) => notif.Seen === false;
-    const hasUnseenNotifs = slicedNotifs.some(isUnseen);
+    const isUnseen = (notif) => notif?.Seen === false;
+    const hasUnseenNotifs = slicedNotifs?.some(isUnseen);
     const unseenNotifsId = slicedNotifs
       .filter(isUnseen)
-      .map((notif) => notif.NotificationID);
+      .map((notif) => notif?.NotificationID);
     if (hasUnseenNotifs) {
       dispatch(setNotificationsAsSeen(unseenNotifsId));
     }
-    if (slicedNotifs.length === 0) {
+    if (slicedNotifs?.length === 0) {
       dispatch(setPrevPage());
     }
   }, [slicedNotifs, dispatch]);
 
   return (
     <Styled.AlertActionsContainer>
-      {notifications.length ? (
+      {notifications?.length ? (
         <>
           <Styled.AlertListContainer>
             {slicedNotifs?.map((alert) => (
-              <AlertItem alert={alert} key={alert.NotificationID} />
+              <AlertItem alert={alert} key={alert?.NotificationID} />
             ))}
           </Styled.AlertListContainer>
           <AlertFooter />
