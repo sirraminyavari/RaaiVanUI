@@ -197,3 +197,18 @@ export const getSystemName = () => {
     ? window.RVDic.CliqMind
     : decodeBase64((window.RVGlobal || {}).SystemName) || window.RVDic.RaaiVan;
 };
+
+/**
+ * @description Gets a new captcha token
+ */
+
+const { GlobalUtilities } = window;
+export const getCaptchaToken = async () => {
+  return new Promise((resolve) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
+        resolve(token);
+      });
+    });
+  });
+};
