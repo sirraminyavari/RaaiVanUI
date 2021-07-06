@@ -11,13 +11,13 @@ export const Container = styled(Link)`
   background-color: white;
   margin: 3px;
   justify-content: space-between;
-  border-width: 0.1rem;
+  border-width: 0.05rem;
   border-style: solid;
   max-width: 100%;
   width: 100%;
   transition: max-width 0.5s;
   :hover {
-    border-width: 0.2rem;
+    border-width: 0.1rem;
     border-color: ${TCV_DEFAULT};
     height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
   }
