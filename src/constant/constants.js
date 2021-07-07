@@ -4,6 +4,14 @@ export const MOBILE_BOUNDRY = '600px';
 
 export const GET_NOTIFS_INTERVAL = 15000;
 
+export const FORBIDDEN_ROUTES_IN_SAAS = [
+  'newquestion',
+  'questions',
+  'graph',
+  'explorer',
+  'dashboard',
+];
+
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';
 export const CLOSE_WIDTH = '4';

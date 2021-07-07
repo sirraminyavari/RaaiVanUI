@@ -10,7 +10,7 @@ import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
-import { MOBILE_BOUNDRY } from 'constant/constants';
+import { MOBILE_BOUNDRY, FORBIDDEN_ROUTES_IN_SAAS } from 'constant/constants';
 // import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
@@ -30,10 +30,17 @@ const NavbarInitial = lazy(() =>
   )
 );
 
+const { RVGlobal } = window;
+
 const switchRoutes = (
   <Switch>
     {Routes.map((route, key) => {
       const { exact, path, component, name, hasNavSide } = route;
+      const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+
+      if (isSaas && FORBIDDEN_ROUTES_IN_SAAS.includes(name)) {
+        return <Redirect key={key} to="/teams" />;
+      }
       return (
         <Route
           key={key}
