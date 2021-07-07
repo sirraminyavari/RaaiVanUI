@@ -334,11 +334,11 @@ export const TeamConatiner = styled.div.attrs({
     padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
     box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT};
-    position: relative;
+    // position: relative;
     background-color: ${CV_WHITE};
-    ${RV_Float}: 7.7rem;
-    bottom: -2.9rem;
-    overflow: hidden;
+    // ${RV_Float}: 7.7rem;
+    // bottom: -2.9rem;
+    // overflow: hidden;
   }
 
   .archived-teams-title {
@@ -423,16 +423,16 @@ export const TeamFooterConatiner = styled.div`
 
 export const TeamAvatarsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 `;
 
 const getPosition = ({ dir, usersCount }) => {
-  if (usersCount < 2) {
-    return `${dir}: 0`;
-  } else {
-    return `${dir}: ${usersCount * 0.35}rem`;
-  }
+  // if (usersCount < 2) {
+  //   return `${dir}: 0`;
+  // } else {
+  return `${dir}: ${usersCount * 0}rem`;
+  // }
 };
 
 export const ExtraUsersWrapper = styled.div`
