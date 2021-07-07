@@ -22,27 +22,30 @@ import { decode } from 'js-base64';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import SubmitNewNode from 'apiHelper/SubmitNewNode';
+import { CV_WHITE } from 'constant/CssVariables';
 
 const selectedTeam = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state?.theme,
+  (theme) => theme?.selectedTeam
 );
 
-const { RVDic, RVAPI, RV_RTL } = window;
+const { RVDic, RVAPI, RV_RTL } = window || {};
 
 const LOCAL_STORAGE_PRE_TEXT = 'addNode_';
 const data = [
   {
-    icon: <FlashIcon className={'rv-default'} />,
-    label: RVDic.AddQuickly,
+    icon: <FlashIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
+    label: RVDic?.AddQuickly,
     value: 'urgentAction',
     colorClass: 'rv-default',
   },
   {
-    icon: <AddIcon className={'rv-default'} />,
-    label: RVDic.AddWithDetails,
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
+    label: RVDic?.AddWithDetails,
     value: 'completeAction',
     colorClass: 'rv-default',
   },
@@ -80,11 +83,17 @@ const FilterBar = ({
   onCreateUrgent,
   onByMe,
   isByMe,
+  people,
   onByStatus,
   onByBookmarked,
+  isBookMarked,
 }) => {
+  const teamName = useSelector((state) => state?.theme?.selectedTeam?.name);
+
   const defaultDropDownLabel = {
-    icon: <AddIcon color={'white'} />,
+    icon: (
+      <AddIcon color={'white'} style={{ fontSize: '1.2rem', color: 'red' }} />
+    ),
     label: RVDic?.NewN?.replace(
       '[n]',
       !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
@@ -96,9 +105,8 @@ const FilterBar = ({
   // Typed value in search input.
   const [searchText, setSearchText] = useState('');
   // if True, filters Bookmarked nodes(under develop)
-  const [bookmarked, setBookmarked] = useState(false);
-  // if True, filters nodes created by specific people(under develop)
-  const [people, setPeople] = useState(false);
+  // const [bookmarked, setBookmarked] = useState(false);
+
   // if has value, filters node that is in the period of the selected date.
   const [date, setDate] = useState(null);
   // Creating dropdown content.
@@ -119,15 +127,16 @@ const FilterBar = ({
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
   const selectedApp = useSelector(selectedTeam);
+  const { push } = useHistory();
 
   /**
    * Gets user access for creating document.
    * @returns
    */
   const getCreationAccess = () =>
-    checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
+    checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
       // If the user has access can choose between two items.
-      if (dt.Result) {
+      if (dt?.Result) {
         // setCreationData(data);
         setMarket(data);
       } else {
@@ -143,30 +152,34 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName ? decode(nodeType?.TypeName) : '';
+    return nodeType?.TypeName
+      ? decode(nodeType?.TypeName)
+      : teamName
+      ? teamName
+      : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
     if (nodeTypeId) {
       getCreationAccess();
 
-      const newMarketingHistoryRaw = localStorage.getItem(
+      const newMarketingHistoryRaw = localStorage?.getItem(
         LOCAL_STORAGE_PRE_TEXT + nodeTypeId
       );
-      const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
+      const newMarketingHistory = JSON?.parse(newMarketingHistoryRaw);
       // Checks if the user has selection history set it for default.
       // By clicking the dropdown label.
       // selected item in past will fire.
       const findLastChoose =
         newMarketingHistory &&
-        data.find((x) => x.value === newMarketingHistory);
+        data?.find((x) => x?.value === newMarketingHistory);
       setSelectedItem({
         ...selectedItem,
-        label: RVDic.NewN.replace('[n]', getTypeName()),
+        label: RVDic?.NewN?.replace('[n]', getTypeName()),
         icon:
           _.isObject(findLastChoose) &&
           React.cloneElement(findLastChoose?.icon, { color: 'white' }),
-        value: _.isObject(findLastChoose) && findLastChoose.value,
+        value: _.isObject(findLastChoose) && findLastChoose?.value,
       });
     }
   }, [nodeTypeId]);
@@ -181,7 +194,7 @@ const FilterBar = ({
       },
       (result) => {
         let filters = result && result?.Elements;
-        if (filters && filters.length > 0) {
+        if (filters && filters?.length > 0) {
           setAdvancedButton(true);
         } else {
           setAdvancedButton(false);
@@ -192,8 +205,8 @@ const FilterBar = ({
   };
   // Fetches formElements according to passed 'nodeTypeId'
   const getOwnerForm = () => {
-    ownerForm.fetch({ OwnerID: nodeTypeId }, (result) => {
-      let formId = (result || {}).FormID;
+    ownerForm?.fetch({ OwnerID: nodeTypeId }, (result) => {
+      let formId = (result || {})?.FormID;
       // let formTitle = decode((result || {}).Title);
 
       if (formId) {
@@ -206,24 +219,32 @@ const FilterBar = ({
 
   // By clicking on the dropdown items will fire.
   const onSelectItem = (item) => {
-    if (item && item.value) {
-      localStorage.setItem(
+    if (item && item?.value) {
+      localStorage?.setItem(
         LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
-        JSON.stringify(item.value)
+        JSON?.stringify(item?.value)
       );
       setSelectedItem({
         ...selectedItem,
-        icon: React.cloneElement(item.icon, { color: 'white' }),
-        value: item.value,
-        color: 'white',
+        icon: React.cloneElement(item.icon, {
+          color: 'white',
+          fontSize: '1.2rem',
+        }),
+        value: item?.value,
+        color: CV_WHITE,
       });
 
       if (item.value === 'completeAction') {
-        window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
-      } else if (item.value === 'urgentAction') {
+        push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+        // SubmitNewNode(nodeTypeId);
+        // window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+      } else if (item?.value === 'urgentAction') {
         // setUrgentModalOpen(true);
         onCreateUrgent();
       }
+    } else {
+      // SubmitNewNode(nodeTypeId);
+      push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
     }
   };
   // By typing in the search input will fire
@@ -237,7 +258,6 @@ const FilterBar = ({
   };
 
   const onPeople = (item) => {
-    setPeople(item);
     onByPeople(item);
   };
 
@@ -270,14 +290,14 @@ const FilterBar = ({
   //   );
   // };
 
-  const extendedHierarchy = hierarchy.map((level) => ({
-    id: level.NodeTypeID,
-    title: decodeBase64(level.TypeName),
-    linkTo: `/classes/${level.NodeTypeID}`,
+  const extendedHierarchy = hierarchy?.map((level) => ({
+    id: level?.NodeTypeID,
+    title: decodeBase64(level?.TypeName),
+    linkTo: `/classes/${level?.NodeTypeID}`,
   }));
 
   const breadcrumbItems = [
-    { id: selectedApp.id, title: selectedApp.name, linkTo: '/classes' },
+    { id: selectedApp?.id, title: selectedApp?.name, linkTo: '/classes' },
     ...extendedHierarchy,
   ];
 
@@ -304,7 +324,7 @@ const FilterBar = ({
           </Heading>
           {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
-              {RVDic.NItems.replace('[n]', totalFound)}
+              {RVDic?.NItems?.replace('[n]', totalFound)}
             </Heading>
           )}
         </div>
@@ -344,7 +364,8 @@ const FilterBar = ({
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={RVDic.Search}
+          placeholder={RVDic?.Search}
+          placeholderFocusedClass={'rv-default'}
           children={
             <Search
               style={{
@@ -355,29 +376,8 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => setBookmarkHover(true)}
-            onMouseLeave={() => setBookmarkHover(false)}
-            onClick={() => onAdvanecedSearch(!advancedSearch)}
-            $isEnabled={bookmarked}
-            className={
-              bookmarked
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            {bookmarked ? (
-              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-            ) : (
-              <OutLineBookmarkIcon
-                size={'1.5rem'}
-                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-              />
-            )}
-          </ShadowButton>
-
           <CustomDatePicker
-            label={RVDic.SelectDate}
+            label={RVDic?.SelectDate}
             mode="button"
             type="jalali"
             clearButton
@@ -409,11 +409,31 @@ const FilterBar = ({
               </ShadowButton>
             )}
             onDateSelect={(value) => {
-              console.log(date, 'date');
               setDate(value);
               onByDate(value);
             }}
           />
+          <ShadowButton
+            style={commonStyle}
+            onMouseEnter={() => setBookmarkHover(true)}
+            onMouseLeave={() => setBookmarkHover(false)}
+            onClick={() => onByBookmarked(!isBookMarked)}
+            $isEnabled={isBookMarked}
+            className={
+              isBookMarked
+                ? 'rv-border-distant rv-default'
+                : 'rv-border-white rv-distant'
+            }>
+            {isBookMarked ? (
+              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+            ) : (
+              <OutLineBookmarkIcon
+                size={'1.5rem'}
+                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+              />
+            )}
+          </ShadowButton>
+
           <PeoplePicker
             onByMe={onByMe}
             onByPeople={onPeople}
@@ -473,7 +493,7 @@ const FilterBar = ({
                 }
                 style={{ marginLeft: '0.5rem' }}
               />
-              {RVDic.Advanced}
+              {RVDic?.Advanced}
             </ShadowButton>
           )}
         </div>

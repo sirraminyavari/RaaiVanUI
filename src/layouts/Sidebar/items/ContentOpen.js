@@ -52,7 +52,7 @@ const SidebarOnOpen = () => {
 
   return (
     <Styled.OpenContentWrapper>
-      {getSidebarContent(content.current)}
+      {getSidebarContent(content?.current)}
     </Styled.OpenContentWrapper>
   );
 };

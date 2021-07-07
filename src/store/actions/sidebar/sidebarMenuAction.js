@@ -2,6 +2,7 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { decodeBase64, encodeBase64, API_Provider } from 'helpers/helpers';
 import {
   CN_API,
+  PRIVACY_API,
   GET_FAVORITE_NODES_COUNT,
   GET_NODE_TYPES,
   RENAME_NODE_TYPE,
@@ -9,6 +10,7 @@ import {
   MOVE_NODE_TYPE,
   SET_NODE_TYPE_ORDER,
   RECOVER_NODE_TYPE,
+  CHECK_AUTHORITY,
 } from 'constant/apiConstants';
 
 const {
@@ -16,6 +18,7 @@ const {
   setSidebarTree,
   setSidebarDnDTree,
   setFavoriteNodesCount,
+  setUnderMenuList,
 } = sidebarMenuSlice.actions;
 
 const getNodesAPI = API_Provider(CN_API, GET_NODE_TYPES);
@@ -25,6 +28,7 @@ const moveNodeAPI = API_Provider(CN_API, MOVE_NODE_TYPE);
 const reorderNodesAPI = API_Provider(CN_API, SET_NODE_TYPE_ORDER);
 const recoverNodeAPI = API_Provider(CN_API, RECOVER_NODE_TYPE);
 const getFavoriteNodesCountAPI = API_Provider(CN_API, GET_FAVORITE_NODES_COUNT);
+const getUnderMenuPermissionsAPI = API_Provider(PRIVACY_API, CHECK_AUTHORITY);
 
 //! Filter hidden nodes out.
 const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
@@ -289,6 +293,30 @@ export const getFavoriteNodesCount = () => async (dispatch) => {
           0
         );
         dispatch(setFavoriteNodesCount(favoriteNodesCount));
+      },
+      (error) => {
+        console.log({ error });
+      }
+    );
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+/**
+ * @description A function (action) that gets favorite nodes count.
+ * @returns -Dispatch to redux store.
+ */
+export const getUnderMenuPermissions = (permissions) => async (dispatch) => {
+  try {
+    getUnderMenuPermissionsAPI.fetch(
+      { Permissions: permissions.join('|') },
+      (response) => {
+        const permissionList =
+          Object.keys(response).filter(
+            (item) => permissions.includes(item) && !!response[item]
+          ) || [];
+        dispatch(setUnderMenuList(permissionList));
       },
       (error) => {
         console.log({ error });

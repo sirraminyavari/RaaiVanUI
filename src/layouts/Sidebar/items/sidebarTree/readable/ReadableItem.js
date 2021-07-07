@@ -1,7 +1,6 @@
 /**
  * Renders menu item that may or may not have sub-menus(branches).
  */
-import { memo } from 'react';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { Link } from 'react-router-dom';
 import { mutateTree } from '@atlaskit/tree';
@@ -52,36 +51,36 @@ const ReadableBranch = (props) => {
 
   //! Expand tree on click.
   const handleOnClick = () => {
-    if (item.isCategory && !item.isExpanded) {
-      const mutatedTree = mutateTree(tree, item.id, { isExpanded: true });
+    if (item?.isCategory && !item?.isExpanded) {
+      const mutatedTree = mutateTree(tree, item?.id, { isExpanded: true });
       dispatch(setSidebarDnDTree(mutatedTree));
     }
   };
 
   //! Check if selected item is active.
-  const isSelected = activePath === `/classes/${item.id}`;
+  const isSelected = activePath === `/classes/${item?.id}`;
 
   return (
     <>
       <Styled.MenuContainer
         indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
-        isExpanded={item.isExpanded}
+        isExpanded={item?.isExpanded}
         isSelected={isSelected}
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper>
-          {item.isCategory ? (
+          {item?.isCategory ? (
             <Styled.CaretIconWrapper>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage src={item.data.iconURL} alt="menu-icon" />
+            <Styled.MenuItemImage src={item?.data?.iconURL} alt="menu-icon" />
           )}
           <Styled.MenuTitle
             onClick={handleOnClick}
             as={Link}
-            to={`/classes/${item.id}`}>
-            {item.data.title}
+            to={`/classes/${item?.id}`}>
+            {item?.data?.title}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
       </Styled.MenuContainer>
@@ -89,4 +88,4 @@ const ReadableBranch = (props) => {
   );
 };
 
-export default memo(ReadableBranch);
+export default ReadableBranch;

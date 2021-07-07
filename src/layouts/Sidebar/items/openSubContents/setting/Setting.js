@@ -40,7 +40,7 @@ const SidebarSettingContent = () => {
 
     switch (splitTitle(content)) {
       case splitTitle(SETT_TEAM_CONTENT):
-        return RVDic.TeamSettings;
+        return RVDic.Settings;
       case splitTitle(SETT_USERS_CONTENT):
         return RVDic.UserManagement;
       case splitTitle(SETT_CLASSES_CONTENT):

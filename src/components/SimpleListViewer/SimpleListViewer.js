@@ -5,9 +5,11 @@ import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import React, { useEffect, useRef, useState } from 'react';
-import { Component } from 'react';
 import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import useTraceUpdate from 'utils/TraceHelper/traceHelper';
+import usePrevious from 'hooks/usePrevious';
+import EmptyState from 'components/EmptyState/EmptyState';
 
 const { RVDic } = window;
 /**
@@ -19,14 +21,23 @@ const { RVDic } = window;
  * @param {Boolean} extraData - A trigger for waking up the list to refresh itself by fetching the list.
  * @returns
  */
+
 const SimpleListViewer = ({
   fetchMethod,
   renderItem,
   pageSize = 20,
   infiniteLoop,
-  extraData,
+  extraData = false,
   onTotal,
 }) => {
+  useTraceUpdate({
+    fetchMethod,
+    renderItem,
+    pageSize,
+    infiniteLoop,
+    extraData,
+    onTotal,
+  });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
@@ -35,6 +46,7 @@ const SimpleListViewer = ({
   const [isFetching, setIsFetching] = useState(false);
 
   const [scrollDir, setScrollDir] = useState('scrolling down');
+  const preExtraData = usePrevious(extraData);
 
   const container = useRef();
 
@@ -42,25 +54,16 @@ const SimpleListViewer = ({
     setIsFetching(true);
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
-      if (data) {
-        setData(data);
-        setTotal(total);
-        setIsFetching(false);
-        onTotal(total);
-      }
+      //ask ramin
+      console.log(data, 'data***');
+      setData(data);
+      setTotal(total);
+      setIsFetching(false);
+      onTotal(total);
     });
   };
 
   // At the first time that the component mounts, fetches data
-  useEffect(() => {
-    // window.addEventListener('scroll', handleScroll, true);
-
-    fetchThem();
-
-    return () => {
-      // window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, []);
 
   // under develop
   useEffect(() => {
@@ -95,7 +98,9 @@ const SimpleListViewer = ({
   // forces to fetch list again
   useEffect(() => {
     setData([]);
-    fetchThem();
+    if (preExtraData !== undefined) {
+      fetchThem();
+    }
   }, [extraData]);
 
   // fetches more data if is available
@@ -110,52 +115,25 @@ const SimpleListViewer = ({
     }
   };
   // under develop
-  const handleScroll = (e) => {
-    const lastScrollY = window.scrollY;
-    const screenY = window.screenY;
-    const elementHeight = container.current?.clientHeight;
-    console.log(
-      lastScrollY,
-      'lastScrollY',
-      elementHeight,
-      'elementHeight',
-      screenY,
-      'screenY'
-    );
-    if (
-      elementHeight - lastScrollY < 500 &&
-      infiniteLoop &&
-      scrollDir === 'scrolling down' &&
-      !isFetching &&
-      data.length > 0 &&
-      data.length < total
-    ) {
-      // fetchMore();
-    }
-  };
-  //   onscrollend: function (element, params, done) {
-  //     if (typeof (element) != "object") element = document.getElementById(element);
-  //     params = params || {};
-  //     if (GlobalUtilities.get_type(done) != "function") return;
+  // const handleScroll = (e) => {
+  //   const lastScrollY = window.scrollY;
+  //   const screenY = window.screenY;
+  //   const elementHeight = container.current?.clientHeight;
+  //   if (
+  //     elementHeight - lastScrollY < 500 &&
+  //     infiniteLoop &&
+  //     scrollDir === 'scrolling down' &&
+  //     !isFetching &&
+  //     data.length > 0 &&
+  //     data.length < total
+  //   ) {
+  //     // fetchMore();
+  //   }
+  // };
 
-  //     var _offset = +(params.Offset ? params.Offset : 0);
-  //     if (isNaN(_offset) || _offset < 0) _offset = 0;
-
-  //     if (element === document || element === window || element === document.body)
-  //         return jQuery(window).scroll(function () { if (jQuery(window).scrollTop() + jQuery(window).height() >= jQuery(document).height() - _offset) done(); });
-
-  //     jQuery(element).bind('scroll', function () {
-  //         var scrollTop = jQuery(this).scrollTop();
-  //         var scrollPosition = scrollTop + jQuery(this).outerHeight();
-  //         var divTotalHeight = GlobalUtilities.total_height(element);
-
-  //         if ((params.Top && scrollTop >= 0 && scrollTop <= _offset) || (!params.Top && scrollPosition >= (divTotalHeight - _offset))) done();
-  //     });
-  // },
   const onEndReached = () => {
-    if (!isFetching && data.length > 0 && data.length < total) {
+    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
       fetchMore();
-      console.log(total, 'on End Reached***', isFetching, data.length);
     }
   };
 
@@ -179,22 +157,32 @@ const SimpleListViewer = ({
           </PerfectScrollBar>
         </div>
       ) : (
-        <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>
+        <>
+          <EmptyState />
+          <Heading type={'h4'} style={{ textAlign: 'center' }}>
+            {RVDic.NothingToDisplay}
+          </Heading>
+        </>
       )}
       {infiniteLoop && isFetching && data.length > 0 ? (
         <>
           <span style={{ color: 'transparent' }}>1</span>
           <LoadingIconFlat className={'rv-default'} />
+
           <span style={{ color: 'transparent' }}>1</span>
         </>
       ) : (
         <>
           {data.length > 0 && data.length < total && (
             <Button
-              loading={isFetching || infiniteLoop}
+              loading={isFetching}
               disable={isFetching}
               onClick={fetchMore}
-              style={{ maxWidth: '30%', alignSelf: 'center' }}>
+              style={{
+                maxWidth: '30%',
+                alignSelf: 'center',
+                margin: '0.5rem 0 0.5rem 0',
+              }}>
               {RVDic.More}
             </Button>
           )}
@@ -203,4 +191,5 @@ const SimpleListViewer = ({
     </div>
   );
 };
+
 export default SimpleListViewer;

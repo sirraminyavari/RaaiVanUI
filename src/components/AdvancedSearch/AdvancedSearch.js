@@ -13,7 +13,8 @@ const AdvanceSearch = ({ ...props }) => {
   return (
     <>
       {/* If True, will render MobileView component */}
-      {DimensionHelper().isTabletOrMobile ? (
+
+      {DimensionHelper()?.isTabletOrMobile ? (
         <AdvanceSearchDesktop {...props} />
       ) : (
         <AdvanceSearchDesktop {...props} />

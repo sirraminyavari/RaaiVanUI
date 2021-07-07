@@ -1,7 +1,6 @@
 /**
  * Renders menu item that may or may not have sub-menus(branches).
  */
-import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { createSelector } from 'reselect';
@@ -72,36 +71,33 @@ const EditableBranch = (props) => {
   const isManageContent = sidebarContent.current === MANAGE_CONTENT;
 
   const undoDelete = (node) => {
-    console.log('undo delete');
     dispatch(recoverSidebarNode(node));
   };
 
   const undoEdit = () => {
-    console.log('undo edit');
-    dispatch(renameSidebarNode(item.id, item.data.title));
+    dispatch(renameSidebarNode(item?.id, item?.data?.title));
   };
 
   const onDeleteDone = (node) => {
-    const deleteMSG = `دسته "${node.data.title}" حذف خواهد شد`;
+    const deleteMSG = `دسته "${node?.data?.title}" حذف خواهد شد`;
     UndoToast({
       type: 'error',
       autoClose: 10000,
       message: deleteMSG,
       onUndo: () => undoDelete(node),
-      toastId: `delete-${node.id}`,
+      toastId: `delete-${node?.id}`,
     });
   };
 
   const onItemDelete = (e) => {
     e.stopPropagation();
-    console.log(item);
-    const itemParent = Object.values(tree.items).find(
-      (x) => x.id === item.parent
+    const itemParent = Object.values(tree?.items).find(
+      (x) => x.id === item?.parent
     );
 
-    const deleteOnItem = mutateTree(tree, item.id, { isDeleted: true });
-    const removeOnParent = mutateTree(deleteOnItem, item.parent, {
-      children: itemParent.children.filter((child) => child !== item.id),
+    const deleteOnItem = mutateTree(tree, item?.id, { isDeleted: true });
+    const removeOnParent = mutateTree(deleteOnItem, item?.parent, {
+      children: itemParent.children.filter((child) => child !== item?.id),
     });
     dispatch(setSidebarDnDTree(removeOnParent));
     dispatch(deleteSidebarNode(item, false, onDeleteDone));
@@ -109,38 +105,38 @@ const EditableBranch = (props) => {
 
   const onEditTitle = (title) => {
     const trimedTitle = title.trim();
-    if (trimedTitle === item.data.title) return;
+    if (trimedTitle === item?.data?.title) return;
 
-    const editMSG = `نام "${item.data.title}" به "${trimedTitle}" تغییر خواهد کرد`;
+    const editMSG = `نام "${item?.data?.title}" به "${trimedTitle}" تغییر خواهد کرد`;
 
     UndoToast({
       type: 'info',
       autoClose: 5000,
       message: editMSG,
       onUndo: undoEdit,
-      toastId: `edit-${item.id}`,
+      toastId: `edit-${item?.id}`,
     });
-    dispatch(renameSidebarNode(item.id, trimedTitle));
+    dispatch(renameSidebarNode(item?.id, trimedTitle));
   };
 
   return (
     <>
       <Styled.MenuContainer
         indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
-        isExpanded={item.isExpanded}
+        isExpanded={item?.isExpanded}
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper isManageContent={isManageContent}>
-          {item.isCategory || item.hasChildren ? (
+          {item?.isCategory || item?.hasChildren ? (
             <Styled.CaretIconWrapper>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage src={item.data.iconURL} alt="menu-icon" />
+            <Styled.MenuItemImage src={item?.data?.iconURL} alt="menu-icon" />
           )}
           <Styled.MenuTitle>
             <InlineEdit
-              text={item.data ? item.data.title : ''}
+              text={item?.data ? item?.data?.title : ''}
               onSetText={onEditTitle}
               styles={{
                 textStyle: {
@@ -155,7 +151,7 @@ const EditableBranch = (props) => {
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
         <Styled.ActionsWrapper>
-          {item.isCategory && (
+          {item?.isCategory && (
             <Styled.TrashIconWrapper onClick={onItemDelete}>
               <TrashIcon />
             </Styled.TrashIconWrapper>
@@ -169,4 +165,4 @@ const EditableBranch = (props) => {
   );
 };
 
-export default memo(EditableBranch);
+export default EditableBranch;

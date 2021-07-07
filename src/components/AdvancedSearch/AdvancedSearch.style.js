@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
+import Button from 'components/Buttons/Button';
+import { CV_RED_SOFT, CV_DISTANT, CV_RED } from 'constant/CssVariables';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
 export const Fixer = styled.div`
   background-color: green;
@@ -23,8 +26,10 @@ export const Maintainer = styled.div`
   );
   top: 7rem;
   left: calc(${({ isAdvancedShow }) => (isAdvancedShow ? ' 25rem' : '2rem')});
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 9rem);
   bottom: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
   max-height: 100%;
   margin-right: 1rem;
   overflow: scroll;
@@ -36,7 +41,7 @@ export const SideFilter = styled.div`
   position: fixed;
   top: 7rem;
   ${({ dir }) => dir}: 0;
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 9rem);
   padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
@@ -57,10 +62,33 @@ export const TopFilter = styled.div`
   display: flex;
 `;
 
+export const UrgentIconCancel = styled(CloseIcon)`
+  color: ${CV_RED_SOFT};
+  width: 2rem;
+  height: 2rem;
+
+  :hover {
+    color: ${CV_RED};
+  }
+`;
+export const UrgentButtonCancel = styled(Button)`
+  border-color: ${CV_RED_SOFT};
+  border-radius: 10rem;
+  border-width: 1px;
+  border-style: solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :hover {
+    border-color: ${CV_RED};
+  }
+`;
+
 export const UrgentInput = styled.div`
   border-radius: 0.75rem;
   display: flex;
-  height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
+  height: ${() => (DimensionHelper()?.isTabletOrMobile ? '13rem' : '7.5rem')};
   align-items: center;
   background-color: white;
   margin: 3px;
@@ -107,12 +135,21 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: ${() =>
-    DimensionHelper().isTabletOrMobile ? 'center' : 'flex-end'};
+    DimensionHelper()?.isTabletOrMobile ? 'center' : 'flex-end'};
   align-items: center;
 
-  min-width: ${() => (DimensionHelper().isTabletOrMobile ? '90%' : '30%')};
+  min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '50%')};
 `;
 export const CustomInput = styled(Input)`
-  min-width: ${() => (DimensionHelper().isTabletOrMobile ? '90%' : '30%')};
+  min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '90%')};
   border-width: 0;
+  border-bottom-width: 1px;
+  border-color: ${CV_DISTANT};
+  border-radius: 0;
+  margin: 0rem 1rem 0 1rem;
+  ::placeholder {
+    color: ${CV_DISTANT};
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
 `;

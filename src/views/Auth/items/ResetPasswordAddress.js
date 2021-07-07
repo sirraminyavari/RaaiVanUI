@@ -10,15 +10,10 @@ const ResetPasswordAddress = () => {
     phone: state.auth.resetPasswordAddress?.phone,
   }));
   const hideString = (value, index, replacement) => {
-    console.log(
-      value.substr(0, index),
-      'v v v ',
-      value.substr(index + replacement.length)
-    );
     return (
-      value.substr(0, index) +
+      value?.substr(0, index) +
       replacement +
-      value.substr(index + replacement.length)
+      value?.substr(index + replacement?.length)
     );
   };
 

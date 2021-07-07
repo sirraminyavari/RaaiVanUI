@@ -20,12 +20,19 @@ import ToggleButton from 'components/Buttons/Toggle/Toggle';
  * @component
  * @param {PropType} props -Props that pass to Toggle.
  */
-const Toggle = (props) => {
-  const { onToggle, isChecked, title, containerClass, titleClass } = props;
+const Toggle = ({
+  onToggle,
+  isChecked,
+  title,
+  containerClass,
+  titleClass,
+  titleStyle,
+}) => {
+  // const { onToggle, isChecked, title, containerClass, titleClass } = props;
 
   return (
     <Styled.ToggleContainer className={containerClass}>
-      <Styled.ToggleTitleWrapper className={titleClass}>
+      <Styled.ToggleTitleWrapper className={titleClass} style={titleStyle}>
         {title}
       </Styled.ToggleTitleWrapper>
       <ToggleButton onToggle={onToggle} initialCheck={!!isChecked} />

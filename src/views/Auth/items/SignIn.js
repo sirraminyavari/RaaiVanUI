@@ -56,7 +56,7 @@ const SignIn = () => {
 
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   useEffect(() => {
-    emailRef.current?.focus();
+    emailRef?.current?.focus();
 
     return () => {
       setSignUpClicked(false);
@@ -118,7 +118,7 @@ const SignIn = () => {
    * When the email input is focused, the password input will be focused.
    */
   const onEmailEnter = () => {
-    passRef.current?.focus();
+    passRef?.current?.focus();
   };
   /**
    * When the password input is focused, the sign in process starts.
@@ -137,12 +137,12 @@ const SignIn = () => {
             ...common_style,
             marginBottom: '1.75rem',
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Heading>
         <AnimatedInput
           onChange={onEmailChanged}
           value={email}
-          placeholder={RVDic.EmailAddress}
+          placeholder={RVDic?.EmailAddress}
           error={emailError && true}
           shake={emailError && 300}
           style={common_style}
@@ -153,7 +153,7 @@ const SignIn = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}
@@ -202,7 +202,7 @@ const SignIn = () => {
           }}
           loading={forgotPassClicked && fetchingFiles}
           onClick={onForgot}>
-          {RVDic.ForgotMyPassword}
+          {RVDic?.ForgotMyPassword}
         </Button>
         <Hiddener isVisible={email.length === 0}>
           <ContinueWithGoogle
@@ -220,7 +220,7 @@ const SignIn = () => {
               fontSize: '1rem',
             }}
             onClick={onCreateAccount}>
-            {RVDic.CreateAccount}
+            {RVDic?.CreateAccount}
           </Button>
         </Hiddener>
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />

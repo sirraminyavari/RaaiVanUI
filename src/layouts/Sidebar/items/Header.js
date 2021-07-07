@@ -13,6 +13,7 @@ import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { getURL } from 'helpers/helpers';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
 
 const selectIsSidebarOpen = createSelector(
@@ -43,30 +44,24 @@ const SidebarHeader = () => {
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-  const isMobileNav = useMediaQuery({
-    query: '(max-width: 975px)',
-  });
 
   const isTeamSelected = !!selectedTeam?.id;
 
   //! Toggle sidebar drawer on click.
   const toggleDrawer = () => {
-    if (isMobileScreen) return;
     isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
+    dispatch(getSidebarNodes());
   };
 
   useEffect(() => {
-    if (isMobileNav) {
-      dispatch(toggleSidebar(false));
-    }
     if (!isTeamSelected) {
       dispatch(toggleSidebar(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileNav, dispatch]);
+  }, [dispatch]);
 
   return (
-    <Styled.SidebarHeader hasPattern={hasPattern}>
+    <Styled.SidebarHeader isMobile={isMobileScreen} hasPattern={hasPattern}>
       {isSidebarOpen && (
         <Link to={getURL('Home')}>
           <img

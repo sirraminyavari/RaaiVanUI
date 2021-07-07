@@ -5,12 +5,13 @@ import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Routes from 'routes/MainRoutes/Main.routes';
 import OpenSidebar from './Sidebar/SidebarOpen';
+import OpenSidebarMobile from './Sidebar/SidebarOpenMobile';
 import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
-import { MOBILE_BOUNDRY } from 'constant/constants';
-import TestView from 'views/TestView/TestView';
+import { MOBILE_BOUNDRY, FORBIDDEN_ROUTES_IN_SAAS } from 'constant/constants';
+// import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
@@ -29,10 +30,17 @@ const NavbarInitial = lazy(() =>
   )
 );
 
+const { RVGlobal } = window;
+
 const switchRoutes = (
   <Switch>
     {Routes.map((route, key) => {
       const { exact, path, component, name, hasNavSide } = route;
+      const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+
+      if (isSaas && FORBIDDEN_ROUTES_IN_SAAS.includes(name)) {
+        return <Redirect key={key} to="/teams" />;
+      }
       return (
         <Route
           key={key}
@@ -50,10 +58,15 @@ const switchRoutes = (
       );
     })}
     {/* Just in dev mode and won't render in production  */}
-    <Route exact path="/test" component={TestView} />
-    <Route exact path="/rasoul" component={RasoulView} />
-    <Route exact path="/ali" component={AliView} />
-    <Route exact path="/ramin" component={RaminView} />
+    {/* <Route exact path="/test" component={TestView} /> */}
+    {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
+      <>
+        <Route exact path="/rasoul" component={RasoulView} />
+        <Route exact path="/ali" component={AliView} />
+        <Route exact path="/ramin" component={RaminView} />
+      </>
+    )}
+
     <Redirect from="/" to="/teams" />
   </Switch>
 );
@@ -83,7 +96,7 @@ const Main = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
-  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam.id;
+  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam?.id;
 
   const getSidebar = () => {
     if (isTeamSelected) {
@@ -94,7 +107,7 @@ const Main = () => {
           return <CloseSidebar />;
         }
       } else {
-        return <SidebarHeader />;
+        return isSidebarOpen ? <OpenSidebarMobile /> : <SidebarHeader />;
       }
     }
     return null;

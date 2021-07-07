@@ -60,19 +60,19 @@ const AuthView = () => {
 
   useEffect(() => {
     if (loadDone) {
-      const reqParams = GlobalUtilities.request_params();
-      const activationCode = reqParams.get_value('ac');
-      const userName = reqParams.get_value('un');
-      const passwordTicket = reqParams.get_value('pt');
+      const reqParams = GlobalUtilities?.request_params();
+      const activationCode = reqParams?.get_value('ac');
+      const userName = reqParams?.get_value('un');
+      const passwordTicket = reqParams?.get_value('pt');
 
       if (activationCode) {
-        UsersAPI.ActivateTemporaryUser({
+        UsersAPI?.ActivateTemporaryUser({
           ActivationCode: activationCode,
           ResponseHandler: function (responseText) {
-            const result = JSON.parse(responseText);
-            if (result.Succeed)
-              alert(RVDic.MSG[result.Succeed], { Timeout: 30000 });
-            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText]);
+            const result = JSON?.parse(responseText);
+            if (result?.Succeed)
+              alert(RVDic?.MSG[result?.Succeed], { Timeout: 30000 });
+            if (result?.ErrorText) alert(RVDic?.MSG[result?.ErrorText]);
             setPreinitDone(true);
           },
         });
@@ -88,12 +88,12 @@ const AuthView = () => {
 
   useEffect(() => {
     if (!SAASBasedMultiTenancy) {
-      RVAPI.GetDomains({
+      RVAPI?.GetDomains({
         ParseResults: true,
         ResponseHandler: function (r) {
           for (var i = 0, lnt = (r.Domains || []).length; i < lnt; ++i) {
-            r.Domains[i].Value = decode(r.Domains[i].Value);
-            r.Domains[i].Text = decode(r.Domains[i].Text);
+            r.Domains[i].Value = decode(r?.Domains[i].Value);
+            r.Domains[i].Text = decode(r?.Domains[i].Text);
           }
 
           // that.initialize(r.Domains || []);
@@ -117,16 +117,16 @@ const AuthView = () => {
 
   // After all steps finished, it's time to init the reCaptcha.
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document?.createElement('script');
     // reCaptcha is just for SAAS
     if (RVGlobal.SAASBasedMultiTenancy) {
-      script.src = RVGlobal.CaptchaURL;
-      script.addEventListener('load', handleLoaded);
-      document.body.appendChild(script);
+      script.src = RVGlobal?.CaptchaURL;
+      script?.addEventListener('load', handleLoaded);
+      document?.body?.appendChild(script);
     }
     return () => {
       // removes reCapctha when component willunmount
-      RVGlobal.SAASBasedMultiTenancy && document.body.removeChild(script);
+      RVGlobal?.SAASBasedMultiTenancy && document?.body?.removeChild(script);
     };
   }, [oneStepToInitDone]);
 
@@ -140,9 +140,9 @@ const AuthView = () => {
       the old location as it animates out.
     */}
 
-        <CSSTransition key={location.key} classNames="fade" timeout={1000}>
+        <CSSTransition key={location?.key} classNames="fade" timeout={1000}>
           <Switch location={location}>
-            {Routes.map((route, key) => {
+            {Routes?.map((route, key) => {
               const { path, component } = route;
               return (
                 <Route exact path={path} component={component} key={key} />
@@ -164,8 +164,8 @@ const AuthView = () => {
   const handleLoaded = () => {
     const { GlobalUtilities } = window;
 
-    GlobalUtilities.init_recaptcha((captcha) => {
-      captcha.getToken((token) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
         //use token
         dispatch(setCaptchaTokenAction(token));
       });

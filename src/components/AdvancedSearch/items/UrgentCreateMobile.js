@@ -44,20 +44,19 @@ const UrgentCreateMobile = ({
   // Focuses the input when component mounted.
   useEffect(() => {
     if (isVisible) {
-      inputRef.current?.focus();
+      inputRef?.current?.focus();
     }
   }, [isVisible]);
 
   // By clicking 'create' will fire
   const onCreateUrgent = (continueToCreate = false) => {
     continueToCreate ? setIsFetchingContinually(true) : setIsFetching(true);
-    addNode.fetch(
+    addNode?.fetch(
       { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
       (response) => {
         continueToCreate
           ? setIsFetchingContinually(false)
           : setIsFetching(false);
-        console.log(continueToCreate, 'continueToCreate');
         !continueToCreate && onDismiss();
         setUrgentInput('');
         onForceFetch();
@@ -67,7 +66,6 @@ const UrgentCreateMobile = ({
 
   // when the user  is inputting some thing will fire
   const onInput = (e) => {
-    console.log(e, 'e');
     setUrgentInput(e?.target?.value);
   };
 
@@ -86,6 +84,7 @@ const UrgentCreateMobile = ({
         <img
           style={{ height: '4rem', aspectRatio: 1 }}
           src={nodeType?.IconURL}
+          alt={''}
         />
       </div>
       <MainContentMobile>
@@ -97,11 +96,11 @@ const UrgentCreateMobile = ({
           disabled={dataFetched === null}
           onKeyUp={onKeyUp}
           placeholder={
-            RVDic.Title +
+            RVDic?.Title +
             ' ' +
             RVDic?.NewN?.replace(
               '[n]',
-              hierarchy && hierarchy.length > 0
+              hierarchy && hierarchy?.length > 0
                 ? decode(hierarchy[0]?.TypeName)
                 : ''
             )
@@ -110,35 +109,41 @@ const UrgentCreateMobile = ({
 
         <ButtonContainer>
           <Button
+            type={'primary-o'}
             disable={
               isFetching || isFetchingContinually || urgentInput.length === 0
             }
+            $circleEdges={true}
             style={{ margin: '0 1rem 0 1rem' }}
             loading={isFetching}
-            onClick={() => onCreateUrgent()}
-            type={'primary'}>
-            {RVDic.Save}
+            onClick={() => onCreateUrgent()}>
+            {RVDic?.Save}
           </Button>
 
           <Button
             disable={
-              isFetching || isFetchingContinually || urgentInput.length === 0
+              isFetching || isFetchingContinually || urgentInput?.length === 0
             }
+            type={'primary-o'}
+            $circleEdges={true}
             style={{ margin: '0 1rem 0 1rem' }}
             loading={isFetchingContinually}
-            onClick={() => onCreateUrgent(true)}
-            type={'primary-o'}>
-            {RVDic.Save + ' ' + RVDic.And + ' ' + RVDic.Next}
+            onClick={() => onCreateUrgent(true)}>
+            {RVDic?.Save + ' ' + RVDic?.And + ' ' + RVDic?.Next}
           </Button>
           <Button
             className={' rv-border-red rv-border-radius-1'}
             onClick={onDismiss}
+            $circleEdges={true}
+            type={'primary-o'}
             style={{
               borderRadius: '10rem',
               display: 'flex',
               alignItems: 'center',
               padding: '0.7rem',
               margin: '0 1rem 0 1rem',
+              height: '2rem',
+              width: '2rem',
             }}>
             <CloseIcon style={{ fontSize: '1rem' }} className={'rv-red '} />
           </Button>

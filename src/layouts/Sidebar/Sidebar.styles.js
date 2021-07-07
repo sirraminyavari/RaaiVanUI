@@ -10,15 +10,13 @@ import {
   TBO_WARM,
   C_DISTANT,
   C_WHITE,
-  TBO_DEFAULT,
-  BO_GRAY_DARK,
   C_RED,
   BO_GRAY,
   C_GRAY,
   TBG_VERYWARM,
   BO_WHITE,
 } from 'constant/Colors';
-import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
+import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -81,6 +79,21 @@ export const SidebarContainer = styled.div.attrs({
     hasPattern && `background-image: url(${sidebarPattern});`}
 `;
 
+export const SidebarMobileContainer = styled.div.attrs({
+  className: `${TBG_VERYWARM} ${C_WHITE}`,
+})`
+  height: 100%;
+  width: 70vw;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  ${`${RV_Float}: 0;`}
+  overflow: hidden;
+  box-shadow: 1px 0px 15px 1px #000;
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
+`;
+
 export const ContentWrapper = withTheme(styled.div`
   width: 100%;
   position: absolute;
@@ -95,21 +108,36 @@ export const ContentWrapper = withTheme(styled.div`
   align-items: center;
 `);
 
+const getHeaderWidth = (props) => {
+  const {
+    isSidebarOpen,
+    sidebarCurrentWidth,
+    sidebarCloseWidth,
+  } = props.theme.states;
+  const openWidth = css`
+    width: ${sidebarCurrentWidth / 16}rem;
+  `;
+  const closeWidth = css`
+    width: ${sidebarCloseWidth / 16}rem;
+  `;
+
+  const openMobileWidth = css`
+    width: 70vw;
+  `;
+
+  if (isSidebarOpen) {
+    return props.isMobile ? openMobileWidth : openWidth;
+  } else {
+    return closeWidth;
+  }
+};
+
 export const SidebarHeader = withTheme(styled.div.attrs({
   className: TBG_VERYWARM,
 })`
   ${FlexBetween}
   height: 4rem;
-  width: ${(props) => {
-    const {
-      isSidebarOpen,
-      sidebarCurrentWidth,
-      sidebarCloseWidth,
-    } = props.theme.states;
-    return isSidebarOpen
-      ? `${sidebarCurrentWidth / 16}rem`
-      : `${sidebarCloseWidth / 16}rem`;
-  }};
+  ${getHeaderWidth}
   z-index: 10;
   padding: 0
     ${(props) => (props.theme.states.isSidebarOpen ? '1.4rem' : '0.8rem')};
@@ -152,12 +180,10 @@ export const SearchWrapper = styled.div.attrs({
   position: relative;
 
   svg {
-    opacity: 70%;
-    color: ${CV_DISTANT};
+    color: ${CV_FREEZED};
   }
 
   :focus-within svg {
-    opacity: 100%;
     color: ${CV_WHITE};
   }
 
@@ -167,7 +193,6 @@ export const SearchWrapper = styled.div.attrs({
 
   :focus-within ::placeholder {
     color: ${CV_WHITE};
-    opacity: 1;
   }
 `;
 
@@ -188,8 +213,7 @@ export const SearchInput = styled.input.attrs((props) => ({
       : null}
 
   ::placeholder {
-    color: ${CV_DISTANT};
-    opacity: 70%;
+    color: ${CV_FREEZED};
     text-transform: capitalize;
   }
 
@@ -236,14 +260,13 @@ export const FooterTitle = withTheme(styled.span`
 `);
 
 export const MenuContainer = styled.div.attrs((props) => ({
-  className: `${BO_RADIUS_QUARTER} ${
-    props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK
-  }`,
+  // ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}
+  className: `${BO_RADIUS_QUARTER}`,
 }))`
   ${FlexBetween}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
-  border-width: 1px;
-  border-style: solid;
+  // border-width: 1px;
+  // border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
   margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
@@ -255,7 +278,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
       : 'inherit'};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
-    border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
+    // border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
   }
 
   &:hover > div > div:first-child {

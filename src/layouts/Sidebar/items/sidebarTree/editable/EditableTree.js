@@ -33,7 +33,7 @@ const EditableTree = () => {
   };
 
   const handleOnMoveItem = (newTree, source, destination) => {
-    if (source.parentId === destination.parentId) {
+    if (source?.parentId === destination?.parentId) {
       dispatch(reorderSidebarNode(newTree, source, destination));
     } else {
       dispatch(moveSidebarNode(newTree, source, destination));
@@ -46,13 +46,15 @@ const EditableTree = () => {
     return <EditableItem itemProps={itemProps} />;
   };
 
-  const excludDropIds = Object.values(tree.items)
-    .filter((item) => !item.isCategory)
-    .map((item) => item.id);
+  const excludDropIds =
+    Object.values(tree?.items || {})
+      .filter((item) => !item?.isCategory)
+      .map((item) => item?.id) || [];
 
-  const categories = Object.values(tree.items)
-    .filter((item) => item.isCategory && item.parent !== 'root')
-    .map((item) => item.id);
+  const categories =
+    Object.values(tree?.items || {})
+      .filter((item) => item?.isCategory && item?.parent !== 'root')
+      .map((item) => item?.id) || [];
 
   return (
     <DragAndDropTree

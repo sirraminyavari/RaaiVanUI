@@ -28,8 +28,6 @@ const CountDownTimer = ({ onFinished, ...props }) => {
     setTimer(resendCodeTimeout * 1000);
   }, [resendCodeTimeout]);
   useEffect(() => {
-    console.log(timer, '*** timer ***', resendCodeTimeout);
-
     if (timer >= 1000) {
       setTimeout(() => {
         setTimer(timer - 1000);

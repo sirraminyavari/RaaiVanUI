@@ -1,5 +1,12 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
+// import {
+//   getNotificationsCount,
+//   getNotificationsList,
+// } from 'store/actions/global/NotificationActions';
+import {
+  getSidebarNodes,
+  getUnderMenuPermissions,
+} from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { API_Provider, setRVGlobal } from 'helpers/helpers';
@@ -105,6 +112,10 @@ export const removeApplication = (appId, done, error) => async (
   getState
 ) => {
   const { applications } = getState();
+  const newApps = applications.userApps.filter(
+    (app) => app.ApplicationID !== appId
+  );
+
   try {
     removeApplicationAPI.fetch(
       { ApplicationID: appId },
@@ -113,19 +124,18 @@ export const removeApplication = (appId, done, error) => async (
           error && error(response.ErrorText);
         } else if (response.Succeed) {
           done && done(appId);
-          const newApps = applications.userApps.filter(
-            (app) => app.ApplicationID !== appId
-          );
           dispatch(deleteApplication(newApps));
           dispatch(setApplicationsOrder(newApps));
           // dispatch(getApplications());
           dispatch(getArchivedApplications());
         }
       },
-      (error) => console.log({ error })
+      (err) => {
+        error && error(err);
+      }
     );
   } catch (err) {
-    console.log({ err });
+    error && error(err);
   }
 };
 
@@ -216,6 +226,9 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           });
           dispatch(getSidebarNodes());
           dispatch(getConfigPanels());
+          dispatch(getUnderMenuPermissions(['Reports']));
+          // dispatch(getNotificationsCount());
+          // dispatch(getNotificationsList());
         }
         dispatch(
           setSelectingApp({
@@ -334,21 +347,31 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
     getApplicationsOrderAPI.fetch(
       { Name: sortVariableName, ApplicationIndependent: true },
       (response) => {
-        const orderedIds = (
-          window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {}
-        ).Order;
-        // console.log(orderedIds);
-        // console.log(unorderedApps);
-        const orderedApps = orderedIds
-          .filter((id) => unorderedApps.some((app) => app.ApplicationID === id))
-          .map(
-            (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
-          );
+        dispatch(setFetchingApps(false));
+        if (!response.Value) {
+          //! New user.
+          dispatch(setApplications(unorderedApps));
+          dispatch(setArchivedApplications([]));
+        } else {
+          const orderedIds =
+            (window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {})
+              .Order || [];
+          // console.log(orderedIds);
+          // console.log(unorderedApps);
+          const orderedApps = orderedIds
+            .filter((id) =>
+              unorderedApps.some((app) => app.ApplicationID === id)
+            )
+            .map(
+              (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
+            );
 
-        const extraApps = unorderedApps.filter(
-          (app) => !orderedIds.some((id) => app.ApplicationID === id)
-        );
-        dispatch(setApplications([...orderedApps, ...extraApps]));
+          const extraApps = unorderedApps.filter(
+            (app) => !orderedIds.some((id) => app.ApplicationID === id)
+          );
+          dispatch(setApplications([...orderedApps, ...extraApps]));
+        }
+
         // dispatch(setApplicationsOrder(unorderedApps));
       },
       (error) => console.log({ error })

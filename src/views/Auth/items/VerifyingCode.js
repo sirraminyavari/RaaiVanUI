@@ -82,7 +82,7 @@ const VerifyingCode = () => {
    */
   const onValueChange = (value) => {
     dispatch(setVerifyCodeAction(value));
-    value.filter((x) => x === -1)?.length === 0 && dispatch(signupAction());
+    value?.filter((x) => x === -1)?.length === 0 && dispatch(signupAction());
   };
 
   const onEdit = () => {
@@ -100,7 +100,7 @@ const VerifyingCode = () => {
             ...common_style,
             marginTop: '2rem',
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Heading>
         <RowItems style={common_style}>
           <Heading
@@ -117,7 +117,7 @@ const VerifyingCode = () => {
           </button>
         </RowItems>
         <Heading type="h4" style={common_style}>
-          {RVDic.Checks.PleaseEnterTheVerificationCode}
+          {RVDic?.Checks?.PleaseEnterTheVerificationCode}
         </Heading>
 
         <VerificationCode
@@ -147,7 +147,9 @@ const VerifyingCode = () => {
           type="primary"
           loading={isFetching}
           disable={
-            verifyCode ? verifyCode.filter((x) => x === -1)?.length !== 0 : true
+            verifyCode
+              ? verifyCode?.filter((x) => x === -1)?.length !== 0
+              : true
           }
           style={{
             width: '100%',
@@ -155,7 +157,7 @@ const VerifyingCode = () => {
             marginTop: '3rem',
             marginBottom: '1rem',
           }}>
-          {RVDic.SignUp}
+          {RVDic?.SignUp}
         </Button>
       </Container>
     </Box>

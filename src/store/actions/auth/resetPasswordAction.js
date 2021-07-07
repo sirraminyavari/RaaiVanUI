@@ -40,6 +40,7 @@ const resetPasswordAction = () => async (dispatch, getState) => {
             dispatch(resetPasswordSuccess());
             RVAPI.LoggedIn();
             GlobalUtilities.set_auth_cookie(result.AuthCookie);
+            //ask ramin
             location.href = location.href;
           }
         },

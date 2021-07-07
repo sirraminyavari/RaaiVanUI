@@ -82,9 +82,8 @@ const AnimatedDropDownList = ({
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+      if (buttonRef?.current && !buttonRef?.current?.contains(event?.target)) {
         // onClick();
-        console.log('outside clicked');
         onDropDownOpen(false);
 
         setDropedDown(false);
@@ -92,10 +91,10 @@ const AnimatedDropDownList = ({
     }
 
     // Bind the event listener
-    document.addEventListener('mousedown', handleClickOutside);
+    document?.addEventListener('mousedown', handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener('mousedown', handleClickOutside);
+      document?.removeEventListener('mousedown', handleClickOutside);
     };
   }, [buttonRef]);
 
@@ -112,7 +111,6 @@ const AnimatedDropDownList = ({
    * Passes selected Item to the up!
    */
   const onClickItem = (item, index) => {
-    console.log('clicked', item);
     onSelectItem(item);
     setDropedDown(!dropedDown);
   };
@@ -122,14 +120,14 @@ const AnimatedDropDownList = ({
    */
   const renderList = () => {
     const list = hiddenSelectedItem
-      ? data.filter((raw) => raw.value !== defaultValue.value)
+      ? data?.filter((raw) => raw?.value !== defaultValue?.value)
       : data;
     return (
       <ItemList
         style={{ ...itemContainer }}
         $dropedDown={dropedDown}
         className={itemContainerClass}>
-        {list.map((x, index) => (
+        {list?.map((x, index) => (
           <DropDownItem
             onSelectItem={() => onClickItem(x, index)}
             item={x}
@@ -152,7 +150,7 @@ const AnimatedDropDownList = ({
           className={buttonClass}>
           <ArrowIcon
             $dropedDown={dropedDown}
-            color={customStyle.arrowIconColor}
+            color={customStyle?.arrowIconColor}
             className={arrowIconColorClass}
           />
         </Rotater>
@@ -161,8 +159,8 @@ const AnimatedDropDownList = ({
           className={labelClass}
           onClick={onClickLabel}
           style={{ ...label }}>
-          {defaultValue.icon}
-          <Label color={defaultValue.color}>{defaultValue.label}</Label>
+          {defaultValue?.icon}
+          <Label color={defaultValue.color}>{defaultValue?.label}</Label>
         </Maintainer>
       </DropDownButton>
       {renderList()}

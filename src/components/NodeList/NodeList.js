@@ -1,10 +1,14 @@
 import APIHandler from 'apiHelper/APIHandler';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
+import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
+import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 
-const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+const getNodesAPI = (bookMarked = false) => {
+  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
+};
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -17,20 +21,25 @@ const { RVAPI } = window;
  * @param {Object} formFilters - object of objects of filters
  * @returns
  */
-const NodeList = ({
-  searchText,
-  dateFilter,
-  nodeTypeId,
-  formFilters,
-  forceFetch,
-  onTotalFound,
-  isByMe,
-  byPeople,
-}) => {
+const NodeList = (props) => {
+  const {
+    searchText,
+    dateFilter,
+    nodeTypeId,
+    formFilters,
+    forceFetch,
+    onTotalFound,
+    isByMe,
+    byPeople,
+    isBookMarked,
+  } = props || {};
+
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
+  useTraceUpdate(props);
+  const preExtraData = usePrevious(extraData);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
@@ -44,11 +53,14 @@ const NodeList = ({
     nodeTypeId,
     formFilters,
     forceFetch,
+    isBookMarked,
   ]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    getNodesAPI.fetch(
+    console.log('fetch called');
+
+    getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
@@ -60,6 +72,7 @@ const NodeList = ({
         UseNodeTypeHierarchy: true,
         IsMine: isByMe,
         CreatorUserID: byPeople?.id,
+        VisitsCount: true,
       },
       (response) => {
         if (response.Nodes) {
@@ -97,9 +110,7 @@ const NodeList = ({
                 );
               }
             },
-            (error) => {
-              console.log(error, 'response');
-            }
+            (error) => {}
           );
         }
       },
@@ -109,11 +120,6 @@ const NodeList = ({
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
-  const onClick = (nodeId) => {
-    // objectUrl({ NodeID: nodeId });
-    console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
-    RVAPI.NodePageURL({ NodeID: nodeId });
-  };
   const onReload = () => {
     setExtraData(!extraData);
   };
@@ -123,51 +129,44 @@ const NodeList = ({
 
     if (nodeIndex > -1) {
       let tempList = bookmarkedList;
-      console.log('unlike', nodeIndex, nodeId);
 
       tempList = tempList.filter((item) => item !== nodeId);
 
       setBookmarkedList(tempList);
     } else {
-      console.log('like', nodeIndex, nodeId);
-
       setBookmarkedList([...bookmarkedList, nodeId]);
     }
   };
+
   return (
-    <>
-      <SimpleListViewer
-        fetchMethod={fetchData}
-        extraData={extraData}
-        infiniteLoop={true}
-        onEndReached={() => {
-          console.log('Im reached end');
-        }}
-        onTotal={onTotalFound}
-        renderItem={(x, index) => (
-          <>
-            {x.Creator && (
-              <SubjectItem
-                key={index}
-                onChecked={(value, item) =>
-                  console.log(value, item, 'onChecked')
-                }
-                parentNodeType={nodeTypeId}
-                selectMode={false}
-                item={{
-                  ...x,
-                  LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
-                }}
-                isSaas={isSaas}
-                onClick={() => onClick(x.NodeID)}
-                onReload={onReload}
-                onBookmark={onBookmark}
-              />
-            )}
-          </>
-        )}
-      />
-    </>
+    <SimpleListViewer
+      fetchMethod={fetchData}
+      extraData={extraData}
+      infiniteLoop={false}
+      onEndReached={() => {
+        console.log('Im reached end');
+      }}
+      onTotal={onTotalFound}
+      renderItem={(x, index) => (
+        <>
+          {x.Creator && (
+            <SubjectItem
+              key={index}
+              onChecked={(value, item) => console.log(value, item, 'onChecked')}
+              parentNodeType={nodeTypeId}
+              selectMode={false}
+              item={{
+                ...x,
+                LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+              }}
+              isSaas={isSaas}
+              onReload={onReload}
+              onBookmark={onBookmark}
+            />
+          )}
+        </>
+      )}
+    />
   );
 };
 export default NodeList;

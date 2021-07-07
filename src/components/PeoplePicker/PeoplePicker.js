@@ -35,7 +35,6 @@ const PeoplePicker = ({
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [choosedPeople, setChoosedPeople] = useState([]);
 
   const pickerRef = useRef();
 
@@ -43,7 +42,6 @@ const PeoplePicker = ({
     function handleClickOutside(event) {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
         // onClick();
-        console.log('outside clicked');
 
         setPickerVisible(false);
       }
@@ -112,6 +110,7 @@ const PeoplePicker = ({
   const onByMeSelect = (e) => {
     console.log(e, 'eeee');
     onByMe(e);
+    setPickerVisible(false);
   };
 
   return (
@@ -161,7 +160,7 @@ const PeoplePicker = ({
         </Apply_Picked> */}
 
         <SearchInput
-          placeholder={RVDic.Search + ' ' + RVDic.In + ' ' + RVDic.Teams}
+          placeholder={RVDic.SearchUsers}
           onChange={onInput}
           className={'rv-border-warm-red'}
           value={searchInput}
@@ -183,7 +182,8 @@ const PeoplePicker = ({
             isChecked={isByMe}
             onToggle={onByMeSelect}
             titleClass={'rv-warm'}
-            title={'فقط آن چه من ثبت کرده ام'}
+            title={RVDic.Myself}
+            titleStyle={{ fontSize: '0.8rem' }}
           />
         </JustMeSaved>
         <PeopleList>

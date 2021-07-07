@@ -127,7 +127,7 @@ const SidebarOnClose = ({ theme }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            {nodes.map((node, key) => {
+            {nodes?.map((node, key) => {
               const { data, id } = node;
               return (
                 <Tooltip
