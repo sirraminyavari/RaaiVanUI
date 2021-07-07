@@ -1,8 +1,8 @@
 /**
  * Renders a list of items under the sidebar menu,
  */
-// import { useSelector } from 'react-redux';
-// import { createSelector } from 'reselect';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ListItem from './ListItem';
 // import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
@@ -14,12 +14,17 @@ import { getURL } from 'helpers/helpers';
 
 // const selectFavoriteNodesCount = createSelector(
 //   (state) => state.sidebarItems,
-//   (theme) => theme.favoriteNodesCount
+//   (sidebarItems) => sidebarItems.favoriteNodesCount
 // );
+const selectUnderMenuList = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.underMenuList
+);
 
 const UnderMenuList = () => {
   const { RVDic } = useWindow();
   // const favoriteNodesCount = useSelector(selectFavoriteNodesCount);
+  const items = useSelector(selectUnderMenuList);
 
   return (
     <Styled.UnderMenuContainer>
@@ -30,11 +35,16 @@ const UnderMenuList = () => {
       />
       <ListItem title={RVDic.TemplatesGallery} icon={DiamondIcon} />
       <ListItem title={RVDic.KnowledgeWorkers} icon={ContactIcon} /> */}
-      <ListItem
-        title={RVDic.Reports}
-        icon={StatisticBarIcon}
-        linkTo={getURL('Reports')}
-      />
+      {items?.map((item, key) => {
+        return (
+          <ListItem
+            key={key}
+            title={RVDic[item]}
+            icon={StatisticBarIcon}
+            linkTo={getURL(item)}
+          />
+        );
+      })}
     </Styled.UnderMenuContainer>
   );
 };
