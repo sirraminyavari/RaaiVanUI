@@ -124,7 +124,9 @@ const Navbar = () => {
           arrowColor="transparent"
           offset={{ [RV_RevFloat]: -102, top: -6 }}
           className={`${BG_WHITE} ${BO_RADIUS_HALF} avatar-tooltip`}
-          renderContent={() => <AvatarMenuList />}>
+          renderContent={() => {
+            return <AvatarMenuList />;
+          }}>
           <Avatar
             radius={35}
             userImage={authUser?.ProfileImageURL}

@@ -214,3 +214,20 @@ export const SET_NOTIFS_AS_SEEN = 'SetNotificationsAsSeen';
  * @class 'NotificationsAPI'
  */
 export const REMOVE_NOTIFICATION = 'RemoveNotification';
+
+//* #################################
+//* ############ PrivacyAPI ############
+//* #################################
+
+/**
+ * @description 'PrivacyAPI'
+ * @mode API class
+ */
+export const PRIVACY_API = 'PrivacyAPI';
+
+/**
+ * @description 'CheckAuthority'
+ * @mode API function
+ * @class 'PrivacyAPI'
+ */
+export const CHECK_AUTHORITY = 'CheckAuthority';
