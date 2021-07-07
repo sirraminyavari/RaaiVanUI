@@ -18,10 +18,10 @@ const SettingItem = () => {
   const { RVDic } = useWindow();
 
   const settingItems = [
-    { id: '1', title: RVDic.TeamSettings, icon: SETT_TEAM_CONTENT },
-    { id: '2', title: RVDic.UserManagement, icon: SETT_USERS_CONTENT },
+    { id: '1', title: RVDic.Settings, icon: SETT_TEAM_CONTENT },
+    // { id: '2', title: RVDic.UserManagement, icon: SETT_USERS_CONTENT },
     { id: '3', title: RVDic.TemplateManagement, icon: SETT_CLASSES_CONTENT },
-    { id: '4', title: RVDic.NotificationSettings, icon: SETT_NOTIFS_CONTENT },
+    // { id: '4', title: RVDic.NotificationSettings, icon: SETT_NOTIFS_CONTENT },
   ];
 
   //! Change sidebar content on click.
@@ -32,9 +32,10 @@ const SettingItem = () => {
 
   return (
     <>
-      {settingItems?.map((item) => {
+      {settingItems?.map((item, key) => {
         return (
           <Styled.SettingItemWrapper
+            key={key}
             onClick={() => onSettingItemClick(item?.icon)}>
             {iconList[item?.icon]({ size: 20 })}
             <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
