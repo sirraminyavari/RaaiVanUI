@@ -58,7 +58,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   }, [hasNavSide]);
 
   if (isEmpty(route)) {
-    return <LogoLoader style={{ width: '3rem' }} />;
+    return <LogoLoader />;
   } else if (route.ServiceUnavailable) {
     return <Exception message="Service Unavailable" />;
   } else if (route.NoApplicationFound) {
