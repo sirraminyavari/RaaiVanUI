@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const LogoContainer = styled.div`
+  width: 2rem;
   margin: 0.5rem auto;
   text-align: center;
 `;
