@@ -40,6 +40,7 @@ const TruncateTextCss = css`
 export const TitleText = styled.span.attrs({ className: C_WHITE })`
   margin: 0.5rem;
   text-transform: capitalize;
+  user-select: none;
   ${TruncateTextCss}
 `;
 
@@ -204,6 +205,7 @@ export const SearchInput = styled.input.attrs((props) => ({
   background-color: inherit;
   border: none;
   outline: 0;
+  user-select: none;
   ${({ isTyping }) =>
     isTyping
       ? `
@@ -255,6 +257,7 @@ export const FooterTitle = withTheme(styled.span`
   top: 0;
   transition: all 0.5s linear;
   text-transform: capitalize;
+  user-select: none;
   display: ${(props) =>
     props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
@@ -307,6 +310,7 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
+  user-select: none;
 ${TruncateTextCss}
 `;
 
@@ -493,7 +497,7 @@ export const MenuTreeContainer = styled.div`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding: 0 0 3rem 0;
+  padding: 0 0 2.5rem 0;
 `;
 
 export const FilterIconWrapper = styled.div.attrs({ className: C_DISTANT })`

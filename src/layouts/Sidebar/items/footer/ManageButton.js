@@ -4,7 +4,11 @@ import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
+import {
+  MANAGE_CONTENT,
+  MAIN_CONTENT,
+  INTRO_ONBOARD,
+} from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
@@ -13,14 +17,25 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
+const selecteOnboardingName = createSelector(
+  (state) => state.onboarding,
+  (onboarding) => onboarding.name
+);
+
 const ManageButton = () => {
   const dispatch = useDispatch();
   const { RVDic, RV_Float, RV_RevFloat } = useWindow();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const onboardingName = useSelector(selecteOnboardingName);
   const { setSidebarContent, toggleSidebar } = themeSlice.actions;
   const { closeOpenMenus } = sidebarMenuSlice.actions;
 
+  //! Check if onboarding is activated on 'intro' mode.
+  const isIntroOnboarding =
+    !!onboardingName && onboardingName === INTRO_ONBOARD;
+
   const handleManageButton = () => {
+    if (isIntroOnboarding) return;
     dispatch(closeOpenMenus());
     dispatch(
       setSidebarContent({ current: MANAGE_CONTENT, prev: MAIN_CONTENT })
