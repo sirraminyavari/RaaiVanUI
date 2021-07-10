@@ -3,19 +3,22 @@
  */
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { C_DISTANT } from 'constant/Colors';
+import useWindow from 'hooks/useWindowContext';
 
 const SearchInput = (props) => {
   const history = useHistory();
+  const { RVDic } = useWindow();
   const [searchText, setSearchText] = useState('');
 
+  const defaultSearch = encodeURIComponent(RVDic.Search);
+
   //! The path that input is link to.
-  let searchPath = `/dosearch/${encodeBase64(
-    searchText !== '' ? searchText : 'جستجو'
-  )}`;
+  const searchPath = `/dosearch/${
+    searchText !== '' ? encodeURIComponent(searchText) : defaultSearch
+  }?encoding=url`;
 
   //! Set search text.
   const handleInputChange = (e) => {
