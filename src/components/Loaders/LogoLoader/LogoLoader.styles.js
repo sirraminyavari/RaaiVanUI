@@ -10,6 +10,6 @@ export const Image = styled.img`
   ${({ isSaaS }) =>
     isSaaS &&
     css`
-      max-width: 30px;
+      max-width: 2rem;
     `}
 `;
