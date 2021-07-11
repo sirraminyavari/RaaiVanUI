@@ -14,7 +14,7 @@ const SearchInput = (props) => {
   const [searchText, setSearchText] = useState('');
 
   const defaultSearch = encodeURIComponent(RVDic.Search);
-
+  //TODO: change route
   //! The path that input is link to.
   const searchPath = `/dosearch/${
     searchText !== '' ? encodeURIComponent(searchText) : defaultSearch
