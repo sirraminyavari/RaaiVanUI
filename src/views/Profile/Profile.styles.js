@@ -11,6 +11,7 @@ import {
   C_GRAY,
   TBG_DEFAULT,
   BO_FREEZED,
+  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -27,6 +28,7 @@ import {
   CV_GRAY,
   CV_WHITE,
   TCV_DEFAULT,
+  TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat } = window;
@@ -366,6 +368,22 @@ export const TabsContainer = styled.div`
   gap: 0.5rem;
   justify-content: space-between;
   margin-top: 1rem;
+`;
+
+export const MoreTopicsContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER}`,
+})`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: ${({ isOpen }) => (isOpen ? '1rem' : '0')};
+  width: 100%;
+  height: ${({ isOpen }) => (isOpen ? '7.5rem' : '0')};
+  overflow: hidden;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+  transition: all 0.5s ease;
 `;
 
 export const TabItemContainer = styled.div.attrs((props) => ({

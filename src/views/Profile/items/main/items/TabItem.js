@@ -4,7 +4,7 @@ import { CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 
 const TabItem = (props) => {
-  const { isActive, noImage, hasMore, item } = props;
+  const { isActive, noImage, hasMore, item, onTabClick } = props;
 
   const getIcon = () => {
     if (!!noImage) return;
@@ -16,7 +16,7 @@ const TabItem = (props) => {
     );
   };
   return (
-    <Styled.TabItemContainer isActive={isActive}>
+    <Styled.TabItemContainer isActive={isActive} onClick={onTabClick}>
       {getIcon()}
       <Styled.TabItemTitle isActive={isActive}>پروپوزال</Styled.TabItemTitle>
       <Badge
