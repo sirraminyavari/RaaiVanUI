@@ -18,21 +18,23 @@ export const Container = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
-  overflow: scroll;
 `;
-export const Maintainer = styled.div`
+export const Scrollable = styled.div`
+  /* height: calc(100vh - 9rem); */
   width: calc(
     ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
+`;
+export const Maintainer = styled.div`
+  width: 100%;
   top: 7rem;
   left: calc(${({ isAdvancedShow }) => (isAdvancedShow ? ' 25rem' : '2rem')});
-  height: calc(100vh - 9rem);
+  min-height: calc(100vh - 9rem);
   bottom: 2rem;
   padding-bottom: 1rem;
   padding-top: 1rem;
   max-height: 100%;
   margin-right: 1rem;
-  overflow: scroll;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;

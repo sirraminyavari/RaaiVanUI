@@ -142,7 +142,7 @@ const NodeList = (props) => {
     <SimpleListViewer
       fetchMethod={fetchData}
       extraData={extraData}
-      infiniteLoop={false}
+      infiniteLoop={true}
       onEndReached={() => {
         console.log('Im reached end');
       }}
