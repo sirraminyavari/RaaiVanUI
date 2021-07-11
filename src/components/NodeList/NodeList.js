@@ -58,7 +58,7 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called');
+    console.log('fetch called****');
 
     getNodesAPI(isBookMarked).fetch(
       {
@@ -142,7 +142,7 @@ const NodeList = (props) => {
     <SimpleListViewer
       fetchMethod={fetchData}
       extraData={extraData}
-      infiniteLoop={false}
+      infiniteLoop={true}
       onEndReached={() => {
         console.log('Im reached end');
       }}
