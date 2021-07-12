@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Styled from 'views/Teams/Teams.styles';
 import Modal from 'components/Modal/Modal';
@@ -9,9 +9,12 @@ import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
 import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import TeamConfirm from './TeamConfirm';
 
 const ArchivedModal = (props) => {
   const dispatch = useDispatch();
+  const { RVDic } = useWindow();
+
   const {
     isOpen,
     onModalClose,
@@ -20,8 +23,15 @@ const ArchivedModal = (props) => {
     archives,
     contentClass,
   } = props;
+  const [confirm, setConfirm] = useState({
+    team: null,
+    message: '',
+    title: '',
+    isOpen: false,
+  });
 
-  const { RVDic } = useWindow();
+  const resetConfirm = () =>
+    setConfirm({ team: null, message: '', title: '', isOpen: false });
 
   const onRecycleDone = (message) => {
     // console.log(message);
@@ -29,6 +39,24 @@ const ArchivedModal = (props) => {
 
   const recycleTeam = (teamId) => {
     dispatch(recycleApplication(teamId, onRecycleDone, true));
+  };
+
+  const handleRecycle = (archivedTeam) => {
+    const message = RVDic.Confirms.DoYouWantToRecycleTheN.replace(
+      '[n]',
+      `"${decodeBase64(archivedTeam?.Title)}"`
+    );
+    const title = 'بازیافت تیم';
+    setConfirm({ team: archivedTeam, message, title, isOpen: true });
+  };
+
+  const handleConfirmation = () => {
+    recycleTeam(confirm.team?.ApplicationID);
+    resetConfirm();
+  };
+
+  const handleCancelConfirmation = () => {
+    resetConfirm();
   };
 
   return (
@@ -41,6 +69,13 @@ const ArchivedModal = (props) => {
       show={isOpen}
       onClose={onModalClose}>
       <Styled.ModalContentWrapper>
+        <TeamConfirm
+          isOpen={confirm.isOpen}
+          onConfirm={handleConfirmation}
+          onCancel={handleCancelConfirmation}
+          message={confirm.message}
+          title={confirm.title}
+        />
         <PerfectScrollbar
           style={{
             marginLeft: '-1rem',
@@ -62,7 +97,7 @@ const ArchivedModal = (props) => {
                     </Styled.ArchivedTeamTitle>
                   </Styled.ArchivedTeamDescription>
                   <Button
-                    onClick={() => recycleTeam(archive?.ApplicationID)}
+                    onClick={() => handleRecycle(archive)}
                     type="primary-o"
                     style={{
                       height: '1.5rem',
