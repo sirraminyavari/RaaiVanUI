@@ -18,18 +18,19 @@ const MainLayout = lazy(() =>
 );
 window._alert = window.alert;
 window.alert = function (txt, type = '') {
-  console.log('alert called', GlobalUtilities.zindex.alert());
   toast(txt, {
     type,
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
-    style: { zIndex: GlobalUtilities.zindex.alert() },
   });
 };
 
 const App = () => {
   return (
     <ErrorBoundry>
-      <ToastContainer bodyClassName="rv-font-default" />
+      <ToastContainer
+        style={{ zIndex: GlobalUtilities.zindex.alert() }}
+        bodyClassName="rv-font-default"
+      />
 
       <StoreProvider>
         <ErrorBoundry>
