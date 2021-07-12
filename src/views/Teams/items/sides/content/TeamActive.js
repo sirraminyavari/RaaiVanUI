@@ -33,6 +33,11 @@ import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
+import TeamConfirm from './TeamConfirm';
+import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
+
+const EXIT_TEAM_CONFIRM = 'exit-team';
+const DELETE_TEAM_CONFIRM = 'remove-team';
 
 const selectingApp = createSelector(
   (state) => state?.applications,
@@ -53,6 +58,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [confirm, setConfirm] = useState({
+    type: '',
+    message: '',
+    title: '',
+    isOpen: false,
+  });
 
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -71,6 +82,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
   const [users, setUsers] = useState(usersList);
+
+  const resetConfirm = () =>
+    setConfirm({ type: '', message: '', title: '', isOpen: false });
 
   const handleEditTeam = (title) => {
     setAppTitle(title);
@@ -108,13 +122,23 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Delete team.
   const handleTeamDelete = (e) => {
     e.stopPropagation();
-    setIsDeleting(true);
-    dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
+    const message = RVDic.Confirms.DoYouWantToRemoveN.replace(
+      '[n]',
+      `"${decodeBase64(Title)}"`
+    );
+    const title = RVDic.RemoveN.replace('[n]', RVDic.Team);
+    setConfirm({ type: DELETE_TEAM_CONFIRM, message, title, isOpen: true });
   };
 
+  //! Exit from team.
   const onExitTeamClick = (e) => {
     e.stopPropagation();
-    !isRemovable && dispatch(unsubscribeFromApplication(appId));
+    const message = RVDic.Confirms.DoYouWantToLeaveN.replace(
+      '[n]',
+      `"${decodeBase64(Title)}"`
+    );
+    const title = 'خروج از تیم';
+    setConfirm({ type: EXIT_TEAM_CONFIRM, message, title, isOpen: true });
   };
 
   //! Undo team delete.
@@ -157,6 +181,27 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsInviteShown(true);
   };
 
+  const handleConfirmation = () => {
+    switch (confirm.type) {
+      case EXIT_TEAM_CONFIRM:
+        !isRemovable && dispatch(unsubscribeFromApplication(appId));
+        resetConfirm();
+        break;
+      case DELETE_TEAM_CONFIRM:
+        setIsDeleting(true);
+        dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
+        resetConfirm();
+        break;
+
+      default:
+        resetConfirm();
+        break;
+    }
+  };
+  const handleCancelConfirmation = () => {
+    resetConfirm();
+  };
+
   useEffect(() => {
     dispatch(getApplicationUsers(appId, '', onGetUsers));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,6 +216,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
       onClick={handleTeamSelect}>
+      <TeamConfirm
+        isOpen={confirm.isOpen}
+        onConfirm={handleConfirmation}
+        onCancel={handleCancelConfirmation}
+        message={confirm.message}
+        title={confirm.title}
+      />
       {!isDeleting && (
         <TeamUsersModal
           appId={appId}
@@ -309,21 +361,35 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable && (
-              <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
-                {isDeleting ? (
-                  <LoadingIconCircle
-                    style={{ maxWidth: '1.5rem', maxHeight: '1.5rem' }}
-                    color={TCV_DEFAULT}
-                  />
-                ) : (
-                  <TrashIcon />
-                )}
-              </Styled.TeamTrashWrapper>
+              <ToolTip
+                tipId={`delete-team-${appId}`}
+                effect="solid"
+                type="dark"
+                place="bottom"
+                renderContent={() => RVDic.RemoveN.replace('[n]', RVDic.Team)}>
+                <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
+                  {isDeleting ? (
+                    <LoadingIconCircle
+                      style={{ maxWidth: '1.5rem', maxHeight: '1.5rem' }}
+                      color={TCV_DEFAULT}
+                    />
+                  ) : (
+                    <TrashIcon />
+                  )}
+                </Styled.TeamTrashWrapper>
+              </ToolTip>
             )}
             {!isRemovable && (
-              <Styled.TeamExitWrapper onClick={onExitTeamClick}>
-                <ExitIcon size={22} />
-              </Styled.TeamExitWrapper>
+              <ToolTip
+                tipId={`leave-team-${appId}`}
+                effect="solid"
+                type="dark"
+                place="bottom"
+                renderContent={() => RVDic.LeaveN.replace('[n]', RVDic.Team)}>
+                <Styled.TeamExitWrapper onClick={onExitTeamClick}>
+                  <ExitIcon size={22} />
+                </Styled.TeamExitWrapper>
+              </ToolTip>
             )}
           </Styled.TeamFooterConatiner>
         </Styled.TeamContentWrapper>

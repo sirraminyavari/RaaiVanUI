@@ -708,3 +708,8 @@ export const GetLinkFieldWrapper = styled.div`
     font-size: 1rem;
   }
 `;
+
+export const TeamConfirmMessage = styled.span`
+  font-size: 1rem;
+  color: ${CV_GRAY_DARK};
+`;
