@@ -89,7 +89,7 @@ const OpenSidebar = () => {
       <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
         <SidebarHeader />
         <Styled.ContentWrapper isMainContent={isMainContent}>
-          <Suspense fallback={<LogoLoader size={10} />}>
+          <Suspense fallback={<LogoLoader />}>
             <SidebarContentOpen />
           </Suspense>
         </Styled.ContentWrapper>

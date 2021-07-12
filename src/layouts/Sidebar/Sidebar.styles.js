@@ -102,11 +102,22 @@ export const ContentWrapper = withTheme(styled.div`
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   overflow: auto;
   margin-top: 4rem;
-  padding: 0 ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0')};
+  // padding: 0 ${(props) =>
+    props.theme.states.isSidebarOpen ? '1.5rem' : '0'};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .ps__thumb-y {
+    background-color: ${CV_WHITE} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
+  }
 `);
 
 const getHeaderWidth = (props) => {
@@ -148,10 +159,10 @@ export const SidebarHeader = withTheme(styled.div.attrs({
     hasPattern && `background-image: url(${sidebarPattern});`}
 `);
 
-export const OpenContentWrapper = styled.div`
-  width: 100%;
-  position: relative;
-`;
+// export const OpenContentWrapper = styled.div`
+//   width: 100%;
+//   position: relative;
+// `;
 
 export const ToggleArrow = styled.div.attrs({
   className: C_WHITE,
