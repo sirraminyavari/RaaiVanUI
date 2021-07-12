@@ -10,6 +10,7 @@ import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 import usePrevious from 'hooks/usePrevious';
 import EmptyState from 'components/EmptyState/EmptyState';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const { RVDic } = window;
 /**
@@ -133,19 +134,10 @@ const SimpleListViewer = ({
   // };
 
   const onEndReached = () => {
-    console.log('onEndCounter', onEndCounter, 'pageSize', pageSize);
+    console.log('onEndReached****');
+    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
+      console.log('onEnd fetched****');
 
-    if (
-      infiniteLoop &&
-      !isFetching &&
-      data.length > 0 &&
-      data.length < total &&
-      (data.length === onEndCounter * pageSize ||
-        total - data.length < pageSize)
-    ) {
-      setOnEndCounter(onEndCounter + 1);
-
-      console.log('onEndreached', total, 'total', data.length, 'length');
       fetchMore();
     }
   };
@@ -163,9 +155,22 @@ const SimpleListViewer = ({
         <LogoLoader />
       ) : data && data.length > 0 && renderItem ? (
         <div style={{ width: '100%' }} ref={container}>
-          {data.map((x, index) => (
-            <div key={index}>{renderItem(x, index)}</div>
-          ))}
+          <InfiniteScroll
+            dataLength={data.length} //This is important field to render the next data
+            next={onEndReached}
+            hasMore={true}
+            // loader={<h4>Loading...</h4>}
+            // endMessage={
+            //   <p style={{ textAlign: 'center' }}>
+            //     <b>Yay! You have seen it all</b>
+            //   </p>
+            // }
+          >
+            {data.map((x, index) => (
+              <div key={index}>{renderItem(x, index)}</div>
+            ))}
+          </InfiniteScroll>
+
         </div>
       ) : (
         <>

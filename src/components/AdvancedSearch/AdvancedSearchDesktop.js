@@ -12,9 +12,11 @@ import {
   Space,
   TopFilter,
   Scrollable,
+  ScrollProvider,
 } from './AdvancedSearch.style';
 import UrgentCreate from './items/UrgentCreate';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+
 
 const { RVDic } = window;
 /**
@@ -95,58 +97,65 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
       isAdvancedShow={isAdvancedSearch}
       className={'rv-bg-color-white'}
       RV_RTL={RV_RTL}>
-      {/* <PerfectScrollBar style={{ width: '100%' }} scrollingThreshold={1500}> */}
-      <Scrollable isAdvancedShow={isAdvancedSearch}>
-        <Maintainer
-          isAdvancedShow={isAdvancedSearch}
-          className={'rv-bg-color-light-gray'}
-          fullWidth={isAdvancedSearch}>
-          <TopFilter>
-            <FilterBar
-              nodeTypeId={nodeTypeId}
-              advancedSearch={isAdvancedSearch}
-              onAdvanecedSearch={setIsAdvancedSearch}
-              onSearch={setSearchText}
-              onByDate={setDateFilter}
-              onFormElements={setFormElements}
-              totalFound={totalFound}
-              hierarchy={hierarchy}
-              nodeType={nodeType}
-              onCreateUrgent={onCreateUrgent}
-              onForceFetch={forceFetch}
-              onByMe={onByMe}
-              onByPeople={onByPeople}
-              isByMe={isByMe}
-              people={byPeople}
-              onByBookmarked={setIsBookMarked}
-              isBookMarked={isBookMarked}
-            />
-          </TopFilter>
-          <div style={{ padding: '0 2rem 0 2rem' }}>
-            <UrgentCreate
-              onDismiss={onCreateUrgent}
-              hierarchy={hierarchy}
-              isVisible={urgentCreate}
-              nodeTypeId={nodeTypeId}
-              onForceFetch={forceFetch}
-              dataFetched={totalFound}
-              nodeType={nodeType}
-            />
+      <ScrollProvider
+        className={'rv-bg-color-light-gray'}
+        isAdvancedShow={isAdvancedSearch}>
+        <PerfectScrollbar
+          onYReachEnd={(event) => console.log(event, 'on end reached')}
+          className={'rv-border-radius-half'}>
+          <Scrollable isAdvancedShow={isAdvancedSearch}>
+            <Maintainer
+              isAdvancedShow={isAdvancedSearch}
+              className={'rv-bg-color-light-gray'}
+              fullWidth={isAdvancedSearch}>
+              <TopFilter>
+                <FilterBar
+                  nodeTypeId={nodeTypeId}
+                  advancedSearch={isAdvancedSearch}
+                  onAdvanecedSearch={setIsAdvancedSearch}
+                  onSearch={setSearchText}
+                  onByDate={setDateFilter}
+                  onFormElements={setFormElements}
+                  totalFound={totalFound}
+                  hierarchy={hierarchy}
+                  nodeType={nodeType}
+                  onCreateUrgent={onCreateUrgent}
+                  onForceFetch={forceFetch}
+                  onByMe={onByMe}
+                  onByPeople={onByPeople}
+                  isByMe={isByMe}
+                  people={byPeople}
+                  onByBookmarked={setIsBookMarked}
+                  isBookMarked={isBookMarked}
+                />
+              </TopFilter>
+              <div style={{ padding: '0 2rem 0 2rem' }}>
+                <UrgentCreate
+                  onDismiss={onCreateUrgent}
+                  hierarchy={hierarchy}
+                  isVisible={urgentCreate}
+                  nodeTypeId={nodeTypeId}
+                  onForceFetch={forceFetch}
+                  dataFetched={totalFound}
+                  nodeType={nodeType}
+                />
 
-            {React.cloneElement(children, {
-              searchText: searchText,
-              dateFilter: dateFilter,
-              formFilters: formFilters,
-              forceFetch: forceReload,
-              isByMe: isByMe,
-              byPeople: byPeople,
-              isBookMarked: isBookMarked,
-              onTotalFound: setTotalFound,
-            })}
-          </div>
-        </Maintainer>
-      </Scrollable>
-      {/* </PerfectScrollBar> */}
+                {React.cloneElement(children, {
+                  searchText: searchText,
+                  dateFilter: dateFilter,
+                  formFilters: formFilters,
+                  forceFetch: forceReload,
+                  isByMe: isByMe,
+                  byPeople: byPeople,
+                  isBookMarked: isBookMarked,
+                  onTotalFound: setTotalFound,
+                })}
+              </div>
+            </Maintainer>
+          </Scrollable>
+        </PerfectScrollbar>
+      </ScrollProvider>
+
 
       <div
         style={{

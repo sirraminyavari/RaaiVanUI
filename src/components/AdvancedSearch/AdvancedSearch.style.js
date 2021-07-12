@@ -19,27 +19,22 @@ export const Container = styled.div`
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
 `;
-export const Scrollable = styled.div`
-  /* height: calc(100vh - 9rem); */
+export const ScrollProvider = styled.div`
   width: calc(
     ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
-  /* padding-bottom: 1rem; */
-  /* padding-top: 1rem; */
-  margin-right: 1rem;
+
+  box-shadow: 1px 3px 20px #0000001f;
+  border-radius: 1rem;
+`;
+export const Scrollable = styled.div`
+  width: 100%;
 `;
 export const Maintainer = styled.div`
   width: 100%;
-  top: 7rem;
-  left: calc(${({ isAdvancedShow }) => (isAdvancedShow ? ' 25rem' : '2rem')});
   min-height: calc(100vh - 9rem);
-  bottom: 2rem;
-
   max-height: 100%;
-
   transition: min-width 0.5s, width 0.5s, left 0.5s;
-  box-shadow: 1px 3px 20px #0000001f;
-  border-radius: 1rem;
 `;
 export const SideFilter = styled.div`
   position: fixed;
