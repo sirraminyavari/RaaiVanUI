@@ -176,7 +176,6 @@ const NodeList = (props) => {
                 />
               )}
             </>
-
           )}
         />
       ) : (

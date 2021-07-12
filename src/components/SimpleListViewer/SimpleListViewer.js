@@ -2,14 +2,12 @@
  * Simple list viewer with the 'fetchMore' feature.
  */
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import React, { useEffect, useRef, useState } from 'react';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
-import useTraceUpdate from 'utils/TraceHelper/traceHelper';
-import usePrevious from 'hooks/usePrevious';
 import EmptyState from 'components/EmptyState/EmptyState';
+import Heading from 'components/Heading/Heading';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import usePrevious from 'hooks/usePrevious';
+import React, { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const { RVDic } = window;
@@ -137,7 +135,6 @@ const SimpleListViewer = ({
     console.log('onEndReached****');
     if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
       console.log('onEnd fetched****');
-
       fetchMore();
     }
   };
@@ -170,7 +167,6 @@ const SimpleListViewer = ({
               <div key={index}>{renderItem(x, index)}</div>
             ))}
           </InfiniteScroll>
-
         </div>
       ) : (
         <>

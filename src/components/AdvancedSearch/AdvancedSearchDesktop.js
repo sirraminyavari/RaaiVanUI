@@ -17,7 +17,6 @@ import {
 import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
-
 const { RVDic } = window;
 /**
  *
@@ -155,7 +154,6 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           </Scrollable>
         </PerfectScrollbar>
       </ScrollProvider>
-
 
       <div
         style={{

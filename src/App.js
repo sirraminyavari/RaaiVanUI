@@ -11,7 +11,7 @@ import AuthView from 'views/Auth/AuthView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 // import 'assets/css/index.css';
 
-const { RV_RTL } = window;
+const { RV_RTL, GlobalUtilities } = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
@@ -27,7 +27,10 @@ window.alert = function (txt, type = '') {
 const App = () => {
   return (
     <ErrorBoundry>
-      <ToastContainer bodyClassName="rv-font-default" />
+      <ToastContainer
+        style={{ zIndex: GlobalUtilities.zindex.alert() }}
+        bodyClassName="rv-font-default"
+      />
 
       <StoreProvider>
         <ErrorBoundry>
