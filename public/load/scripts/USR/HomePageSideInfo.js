@@ -109,7 +109,7 @@
                         }),
                         (!isSaaS ? null : {
                             Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-quarter rv-air-button",
-                            Style: "margin-top:1rem;", Name: "templates",
+                            Style: "margin-top:1rem; display:none;", Name: "templates",
                             Childs: [{ Type: "text", TextValue: RVDic.TemplatesGallery }]
                         })
                     ]

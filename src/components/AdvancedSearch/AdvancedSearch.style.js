@@ -18,12 +18,12 @@ export const Container = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
-  overflow: scroll;
 `;
 export const ScrollProvider = styled.div`
   width: calc(
     ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
+
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;
 `;

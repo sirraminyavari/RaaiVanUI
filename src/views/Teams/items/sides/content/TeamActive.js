@@ -238,7 +238,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                       radius={38}
                       style={{
                         position: 'relative',
-                        [RV_Float]: `${-index * 9}px`,
+                        // [RV_Float]: `${-index * 9}px`,
                         zIndex: 10 - index,
                       }}
                       imageStyles={{ minWidth: '2.1rem' }}
@@ -253,7 +253,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   menuClass="extra-users-popup">
                   <Styled.ExtraUsersWrapper
                     usersCount={totalUsers}
-                    dir={RV_RevFloat}>
+                    dir={RV_Float}>
                     <Badge
                       showText={`${totalUsers - 4}+`}
                       className="team-extra-users"
@@ -302,10 +302,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                           <Styled.ExtraUserItem
                             key={fake.id}
                             style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
-                            <Avatar
-                              radius={25}
-                              color="#333"
-                            />
+                            <Avatar radius={25} color="#333" />
                             <Styled.ExtraUserTitle>
                               {'fullName'}
                             </Styled.ExtraUserTitle>
@@ -317,7 +314,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </PopupMenu>
               ) : (
                 <Styled.AddUserWrapper
-                  usersCount={totalUsers}
+                  // usersCount={totalUsers}
                   onClick={handleInviteUser}
                   rtl={RV_RTL}
                   dir={RV_RevFloat}>

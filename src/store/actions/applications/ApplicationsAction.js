@@ -3,7 +3,10 @@ import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 //   getNotificationsCount,
 //   getNotificationsList,
 // } from 'store/actions/global/NotificationActions';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
+import {
+  getSidebarNodes,
+  getUnderMenuPermissions,
+} from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { API_Provider, setRVGlobal } from 'helpers/helpers';
@@ -223,6 +226,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           });
           dispatch(getSidebarNodes());
           dispatch(getConfigPanels());
+          dispatch(getUnderMenuPermissions(['Reports']));
           // dispatch(getNotificationsCount());
           // dispatch(getNotificationsList());
         }

@@ -1,10 +1,12 @@
 /**
  * Renders a popup menu for user avatar.
  */
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import { createSelector } from 'reselect';
+import ReactTooltip from 'react-tooltip';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
 import AvatarMenuItem from './AvatarMenuItem';
@@ -17,6 +19,7 @@ import { decodeBase64, getURL } from 'helpers/helpers';
 import { CV_RED } from 'constant/CssVariables';
 import { selectApplication } from 'store/actions/applications/ApplicationsAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -31,9 +34,18 @@ const selectedApplication = createSelector(
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const avatarMenuRef = useRef();
   const { RVDic, RV_RTL } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
+
+  const handleOnClickOutside = (e) => {
+    if (e.target.dataset.testid !== 'avatar-image') {
+      ReactTooltip.hide();
+    }
+  };
+
+  useOnClickOutside(avatarMenuRef, handleOnClickOutside);
 
   //! Logs user out from application.
   const handleLogout = () => {
@@ -61,7 +73,7 @@ const AvatarMenuList = () => {
   };
 
   return (
-    <Styled.AvatarMenuContainer>
+    <Styled.AvatarMenuContainer ref={avatarMenuRef}>
       {menuLinkItems?.map((item) => {
         const { id, title, linkTo, icon, iconColor, textClass } = item;
         return (

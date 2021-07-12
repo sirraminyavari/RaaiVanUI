@@ -9,6 +9,9 @@ import {
   BG_FREEZED,
   // TBG_DEFAULT,
   C_GRAY,
+  TBG_DEFAULT,
+  BO_FREEZED,
+  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -19,7 +22,16 @@ import {
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import Clouds from 'assets/images/clouds.png';
-import { CV_DISTANT, CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_GRAY,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_VERY_TRANSPARENT,
+} from 'constant/CssVariables';
+
+const { RV_Float, RV_RevFloat } = window;
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -247,19 +259,21 @@ export const ProfileAvatarWrapper = styled.div.attrs({
 `;
 
 export const MainWrapper = styled.div`
-  margin: 2.5rem 1.5rem;
-  height: 100vh;
+  margin: 2.5rem 0;
+  padding: 0 1.5rem 0 3rem;
+  height: 100%;
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 25% 75%;
   align-items: start;
   gap: 1.5rem;
 
   @media only screen and (max-width: 900px) {
-    grid-template-columns: 1fr 1.8fr;
+    grid-template-columns: 33% 66%;
   }
 
   @media only screen and (max-width: 700px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     grid-template-rows: min-content;
   }
 `;
@@ -304,7 +318,7 @@ export const StatusWrapper = styled.div.attrs({
   max-height: 3rem;
   min-height: 3rem;
   color: ${CV_GRAY};
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -315,4 +329,139 @@ export const StatusCount = styled.span.attrs({
 })`
   font-size: 1.1rem;
   margin: 0 1rem;
+`;
+
+export const LastTopicsContainer = styled.div`
+  margin-top: 2rem;
+`;
+
+export const LastTopicsList = styled.div`
+  border: 1px solid #333;
+`;
+
+export const LastTopicsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .see-all-topics-button {
+    background-color: transparent;
+    width: 9rem;
+    height: 2rem;
+    border-color: transparent;
+
+    :hover {
+      border-color: ${TCV_DEFAULT};
+    }
+  }
+`;
+
+export const LastTopicsTitle = styled.span`
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: ${CV_GRAY};
+`;
+
+export const TabsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+`;
+
+export const MoreTopicsContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER}`,
+})`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: ${({ isOpen }) => (isOpen ? '1rem' : '0')};
+  width: 100%;
+  height: ${({ isOpen }) => (isOpen ? '7.5rem' : '0')};
+  overflow: hidden;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+  transition: all 0.5s ease;
+`;
+
+export const TabItemContainer = styled.div.attrs((props) => ({
+  className: `${BO_RADIUS_HALF} ${BO_DISTANT} ${props.isActive && TBG_DEFAULT}`,
+}))`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+`;
+
+export const TabItemTitle = styled.span`
+  font-size: 1rem;
+  color: ${({ isActive }) => (isActive ? CV_WHITE : TCV_DEFAULT)};
+  display: inline-block;
+  width: 100%;
+  margin-${RV_Float}: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const TabItemImage = styled.img.attrs({
+  className: BO_RADIUS_CIRCLE,
+})`
+  width: 2rem;
+  min-width: 2rem;
+`;
+
+export const TopicItemWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BO_FREEZED}`,
+})`
+  width: 100%;
+  height: 5rem;
+  margin: 0.5rem 0;
+  padding-${RV_RevFloat}: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .topic-option-orange{
+    color: orange;
+  }
+`;
+
+export const TopicItemIconWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-${RV_RevFloat}: 2px solid ${CV_FREEZED};
+  width: 6rem;
+  height: 80%;
+`;
+
+export const TopicItemContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+export const TopicItemContentTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+`;
+
+export const TopicItemContentActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 `;

@@ -1,26 +1,20 @@
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import permissions from 'views/AdminPanel/permissions';
-import APIHandler from 'apiHelper/APIHandler';
+import { API_Provider } from 'helpers/helpers';
+import { PRIVACY_API, CHECK_AUTHORITY } from 'constant/apiConstants';
 
 const { setConfigPanels } = sidebarMenuSlice.actions;
-const apiHandler = new APIHandler('PrivacyAPI', 'CheckAuthority');
+const checkAuthorityAPI = API_Provider(PRIVACY_API, CHECK_AUTHORITY);
 
 const getConfigPanels = () => async (dispatch) => {
-  let itemNames = [];
-
-  for (let i = 0; i < permissions.length; ++i) {
-    itemNames.push(permissions[i].Name);
-  }
+  let itemNames = permissions?.map((permisson) => permisson.Name);
 
   try {
-    apiHandler.fetch(
-      {
-        Permissions: itemNames.join('|'),
-        ParseResults: true,
-      },
+    checkAuthorityAPI.fetch(
+      { Permissions: itemNames.join('|') },
       (response) => {
-        const panels = permissions.filter(
-          (permission) => response[permission.Name]
+        const panels = permissions?.filter(
+          (permission) => response?.[permission.Name]
         );
         dispatch(setConfigPanels(panels));
       },

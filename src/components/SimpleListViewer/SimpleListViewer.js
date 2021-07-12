@@ -31,20 +31,21 @@ const SimpleListViewer = ({
   extraData = false,
   onTotal,
 }) => {
-  useTraceUpdate({
-    fetchMethod,
-    renderItem,
-    pageSize,
-    infiniteLoop,
-    extraData,
-    onTotal,
-  });
+  // useTraceUpdate({
+  //   fetchMethod,
+  //   renderItem,
+  //   pageSize,
+  //   infiniteLoop,
+  //   extraData,
+  //   onTotal,
+  // });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
   const [total, setTotal] = useState(0);
   // If true, means component is fetching  list
   const [isFetching, setIsFetching] = useState(false);
+  const [onEndCounter, setOnEndCounter] = useState(0);
 
   const [scrollDir, setScrollDir] = useState('scrolling down');
   const preExtraData = usePrevious(extraData);
@@ -56,11 +57,11 @@ const SimpleListViewer = ({
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
       //ask ramin
-      console.log(data, 'data***');
       setData(data);
       setTotal(total);
       setIsFetching(false);
       onTotal(total);
+      setOnEndCounter(onEndCounter + 1);
     });
   };
 
@@ -136,6 +137,7 @@ const SimpleListViewer = ({
     console.log('onEndReached****');
     if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
       console.log('onEnd fetched****');
+
       fetchMore();
     }
   };
@@ -168,6 +170,7 @@ const SimpleListViewer = ({
               <div key={index}>{renderItem(x, index)}</div>
             ))}
           </InfiniteScroll>
+
         </div>
       ) : (
         <>

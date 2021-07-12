@@ -21,20 +21,20 @@ const TeamSettings = () => {
 
   return (
     <>
-      {panels.map((panel, key) => {
-        const isSelected = activePath === `/configuration/${panel.URL}`;
+      {panels?.map((panel, key) => {
+        const isSelected = activePath === `/configuration/${panel?.URL}`;
         return (
           <Styled.PanelWrapper
             key={key}
             isSelected={isSelected}
             as={Link}
-            to={`/configuration/${panel.URL}`}>
+            to={`/configuration/${panel?.URL}`}>
             <Styled.PanelImage
-              src={`${process.env.PUBLIC_URL}/images/icons/${panel.Icon}`}
+              src={`${process.env.PUBLIC_URL}/images/icons/${panel?.Icon}`}
               alt="panel-icon"
             />
             <Styled.PanelLink>
-              {RVDic.PRVC[panel.Name] || RVDic[panel.Name] || panel.Name}
+              {RVDic.PRVC[panel?.Name] || RVDic[panel?.Name] || panel?.Name}
             </Styled.PanelLink>
           </Styled.PanelWrapper>
         );
