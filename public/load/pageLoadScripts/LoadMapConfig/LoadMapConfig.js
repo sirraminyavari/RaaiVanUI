@@ -1,7 +1,7 @@
-window.loadMapConfig = () => {
+window.loadMapConfig = (params) => {
   GlobalUtilities.load_files(["CN/MapManager.js"], {
     OnLoad: function () {
-      new MapManager("mapArea");
+      new MapManager("mapArea", { IdentityFormID: params?.IdentityFormID });
     },
   });
 };

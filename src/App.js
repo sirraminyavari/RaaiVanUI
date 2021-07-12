@@ -26,7 +26,7 @@ window.alert = function (txt, type = '') {
 
 const App = () => {
   return (
-    <>
+    <ErrorBoundry>
       <ToastContainer bodyClassName="rv-font-default" />
 
       <StoreProvider>
@@ -42,7 +42,7 @@ const App = () => {
           </Suspense>
         </ErrorBoundry>
       </StoreProvider>
-    </>
+    </ErrorBoundry>
   );
 };
 

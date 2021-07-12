@@ -7,18 +7,17 @@ import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { C_DISTANT } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
+import { encodeBase64, getURL } from 'helpers/helpers';
 
 const SearchInput = (props) => {
   const history = useHistory();
   const { RVDic } = useWindow();
   const [searchText, setSearchText] = useState('');
 
-  const defaultSearch = encodeURIComponent(RVDic.Search);
-  //TODO: change route
   //! The path that input is link to.
-  const searchPath = `/dosearch/${
-    searchText !== '' ? encodeURIComponent(searchText) : defaultSearch
-  }?encoding=url`;
+  const searchPath = getURL('Search', {
+    SearchText: encodeBase64(!!searchText ? searchText : RVDic.Search),
+  });
 
   //! Set search text.
   const handleInputChange = (e) => {
