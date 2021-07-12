@@ -9,22 +9,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import getIcon from '../getItemIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
+import { getURL } from 'helpers/helpers';
 
 const INDENT_PER_LEVEL = 27;
 
 const selectTree = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.dndTree
+  (state) => state?.sidebarItems,
+  (sidebarItems) => sidebarItems?.dndTree
 );
 
 const selectActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
+  (state) => state?.theme,
+  (theme) => theme?.activePath
 );
 
 const selecteOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
+  (state) => state?.onboarding,
+  (onboarding) => onboarding?.name
 );
 
 /**
@@ -70,7 +71,7 @@ const ReadableBranch = (props) => {
   };
 
   //! Check if selected item is active.
-  const isSelected = activePath === `/classes/${item?.id}`;
+  const isSelected = activePath === getURL('Classes', { NodeTypeID: item?.id });
 
   return (
     <>
@@ -91,7 +92,7 @@ const ReadableBranch = (props) => {
           <Styled.MenuTitle
             onClick={handleOnClick}
             as={!isIntroOnboarding && Link}
-            to={`/classes/${item?.id}`}>
+            to={getURL('Classes', { NodeTypeID: item?.id })}>
             {item?.data?.title}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>

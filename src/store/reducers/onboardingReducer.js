@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Theme Slice
+//! Onboarding Slice
 export const onboardingSlice = createSlice({
   name: 'onboarding',
   initialState: {
-    name: '_',
+    name: '',
     fromStep: 0,
   },
   reducers: {

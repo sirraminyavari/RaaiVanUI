@@ -9,11 +9,11 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { getURL } from 'helpers/helpers';
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const SidebarOnClose = ({ theme }) => {
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
-  const { dndTree } = useSelector((state) => state.sidebarItems);
+  const { dndTree } = useSelector((state) => state?.sidebarItems);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
 
@@ -137,7 +137,9 @@ const SidebarOnClose = ({ theme }) => {
                   offset={{ [RV_Float]: -10 }}
                   place={RV_RevFloat}
                   renderContent={() => data.title}>
-                  <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
+                  <Styled.MiniIconWrapper
+                    as={Link}
+                    to={getURL('Classes', { NodeTypeID: id })}>
                     {data.iconURL && (
                       <Styled.MenuItemImage
                         src={data.iconURL}

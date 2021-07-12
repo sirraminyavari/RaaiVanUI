@@ -32,29 +32,23 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { INTRO_ONBOARD } from 'constant/constants';
 
 const selectingApp = createSelector(
-  (state) => state.applications,
-  (applications) => applications.selectingApp
+  (state) => state?.applications,
+  (applications) => applications?.selectingApp
 );
 
-// const fakeUsers = [
-//   { id: '1', name: 'username' },
-//   { id: '2', name: 'username' },
-//   { id: '3', name: 'username' },
-//   { id: '4', name: 'username' },
-//   { id: '5', name: 'username' },
-//   { id: '6', name: 'username' },
-//   { id: '7', name: 'username' },
-//   { id: '8', name: 'username' },
-//   { id: '9', name: 'username' },
-//   { id: '10', name: 'username' },
-// ];
+const selecteOnboardingName = createSelector(
+  (state) => state?.onboarding,
+  (onboarding) => onboarding?.name
+);
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
+  const onboardingName = useSelector(selecteOnboardingName);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
@@ -130,7 +124,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const onSelectDone = () => {
     const homeURL = getURL('Home');
-    history.push(homeURL);
+    const classesURL = getURL('Classes');
+    if (!!onboardingName && onboardingName === INTRO_ONBOARD) {
+      history.push(classesURL);
+    } else {
+      history.push(homeURL);
+    }
   };
 
   const onSelectError = () => {};
@@ -296,19 +295,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                             </Styled.ExtraUserItem>
                           );
                         })}
-                      {/* {fakeUsers.map((fake, index) => {
-                        const isLast = fakeUsers.length === index + 1;
-                        return (
-                          <Styled.ExtraUserItem
-                            key={fake.id}
-                            style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
-                            <Avatar radius={25} color="#333" />
-                            <Styled.ExtraUserTitle>
-                              {'fullName'}
-                            </Styled.ExtraUserTitle>
-                          </Styled.ExtraUserItem>
-                        );
-                      })} */}
                     </PerfectScrollbar>
                   </div>
                 </PopupMenu>

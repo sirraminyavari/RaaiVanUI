@@ -1,8 +1,5 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-// import {
-//   getNotificationsCount,
-//   getNotificationsList,
-// } from 'store/actions/global/NotificationActions';
+import { onboardingSlice } from 'store/reducers/onboardingReducer';
 import {
   getSidebarNodes,
   getUnderMenuPermissions,
@@ -34,6 +31,8 @@ const {
   setSelectingApp,
   setArchivedApplications,
 } = ApplicationsSlice.actions;
+
+const { onboardingName, onboardingStep } = onboardingSlice.actions;
 
 const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
 const removeApplicationAPI = API_Provider(RV_API, REMOVE_APPLICATION);
@@ -229,6 +228,10 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           dispatch(getUnderMenuPermissions(['Reports']));
           // dispatch(getNotificationsCount());
           // dispatch(getNotificationsList());
+          if (!!response.Onboarding) {
+            dispatch(onboardingName(response.Onboarding?.name || ''));
+            dispatch(onboardingStep(response.Onboarding?.fromStep || 0));
+          }
         }
         dispatch(
           setSelectingApp({
