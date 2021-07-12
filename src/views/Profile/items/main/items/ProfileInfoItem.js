@@ -1,5 +1,4 @@
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
-import React from 'react';
 
 const ProfileInfoItem = ({ icon: Icon, text }) => {
   return (
