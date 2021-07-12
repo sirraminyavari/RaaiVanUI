@@ -174,6 +174,12 @@ export const QuestionIconWrapper = styled.div.attrs({
 export const SearchContainer = styled.div`
   margin: 0 1rem;
   position: relative;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+
   :focus-within input {
     width: 16rem;
   }

@@ -110,9 +110,11 @@ export const getSidebarNodes = (done, error) => async (dispatch, getState) => {
       (response) => {
         if (response.NodeTypes || response.Tree) {
           done && done();
-          dispatch(setSidebarNodeTypes(filterHiddenNodes(response.NodeTypes)));
+          const filteredNodes = filterHiddenNodes(response.NodeTypes);
+          const tree = provideDnDTree(response);
+          dispatch(setSidebarNodeTypes(filteredNodes));
           dispatch(setSidebarTree(response.Tree));
-          dispatch(setSidebarDnDTree(provideDnDTree(response)));
+          dispatch(setSidebarDnDTree(tree));
         }
       },
       (err) => {

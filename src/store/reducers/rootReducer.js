@@ -5,6 +5,7 @@ import auth from './loginReducer';
 import sidebarItems from './sidebarMenuReducer';
 import notifications from './notificationsReducer';
 import applications from './applicationsReducer';
+import onboarding from './onboardingReducer';
 //! import reducers here
 
 const VERSION_REDUCER_KEY = 'raaivanVersion';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   sidebarItems,
   notifications,
   applications,
+  onboarding,
   //! add reducers.
 });
 

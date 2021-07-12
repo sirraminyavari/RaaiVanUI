@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Theme Slice
+//! Onboarding Slice
 export const onboardingSlice = createSlice({
   name: 'onboarding',
   initialState: {
-    name: '_',
+    name: '',
+    newDocMenu: '',
     fromStep: 0,
   },
   reducers: {
@@ -13,6 +14,9 @@ export const onboardingSlice = createSlice({
     },
     onboardingStep: (state, action) => {
       state.fromStep = action.payload;
+    },
+    setNewDocMenu: (state, action) => {
+      state.newDocMenu = action.payload;
     },
   },
 });
