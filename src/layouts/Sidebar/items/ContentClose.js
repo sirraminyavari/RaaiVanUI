@@ -136,13 +136,13 @@ const SidebarOnClose = ({ theme }) => {
                   effect="solid"
                   offset={{ [RV_Float]: -10 }}
                   place={RV_RevFloat}
-                  renderContent={() => data.title}>
+                  renderContent={() => data?.title}>
                   <Styled.MiniIconWrapper
                     as={Link}
                     to={getURL('Classes', { NodeTypeID: id })}>
-                    {data.iconURL && (
+                    {data?.iconURL && (
                       <Styled.MenuItemImage
-                        src={data.iconURL}
+                        src={data?.iconURL}
                         alt="sidebar-icon-closed"
                       />
                     )}
