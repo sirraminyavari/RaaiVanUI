@@ -16,8 +16,7 @@ const { RV_RTL } = window;
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
-window.__alert = window._alert;
-window._alert = window.alert;
+window._alert = window._alert || window.alert;
 window.alert = function (txt, type = '') {
   toast(txt, {
     type,
