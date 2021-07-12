@@ -11,16 +11,18 @@ import AuthView from 'views/Auth/AuthView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 // import 'assets/css/index.css';
 
-const { RV_RTL } = window;
+const { RV_RTL, GlobalUtilities } = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
 window._alert = window.alert;
 window.alert = function (txt, type = '') {
+  console.log('alert called', GlobalUtilities.zindex.alert());
   toast(txt, {
     type,
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
+    style: { zIndex: GlobalUtilities.zindex.alert() },
   });
 };
 
