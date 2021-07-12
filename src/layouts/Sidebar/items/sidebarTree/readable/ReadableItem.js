@@ -8,6 +8,7 @@ import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import getIcon from '../getItemIcon';
+import { INTRO_ONBOARD } from 'constant/constants';
 
 const INDENT_PER_LEVEL = 27;
 
@@ -19,6 +20,11 @@ const selectTree = createSelector(
 const selectActivePath = createSelector(
   (state) => state.theme,
   (theme) => theme.activePath
+);
+
+const selecteOnboardingName = createSelector(
+  (state) => state.onboarding,
+  (onboarding) => onboarding.name
 );
 
 /**
@@ -44,13 +50,19 @@ const ReadableBranch = (props) => {
   const { itemProps } = props;
   const tree = useSelector(selectTree);
   const activePath = useSelector(selectActivePath);
+  const onboardingName = useSelector(selecteOnboardingName);
   const dispatch = useDispatch();
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+
+  //! Check if onboarding is activated on 'intro' mode.
+  const isIntroOnboarding =
+    !!onboardingName && onboardingName === INTRO_ONBOARD;
 
   const { item, onExpand, onCollapse, provided, depth } = itemProps;
 
   //! Expand tree on click.
   const handleOnClick = () => {
+    if (isIntroOnboarding) return;
     if (item?.isCategory && !item?.isExpanded) {
       const mutatedTree = mutateTree(tree, item?.id, { isExpanded: true });
       dispatch(setSidebarDnDTree(mutatedTree));
@@ -78,7 +90,7 @@ const ReadableBranch = (props) => {
           )}
           <Styled.MenuTitle
             onClick={handleOnClick}
-            as={Link}
+            as={!isIntroOnboarding && Link}
             to={`/classes/${item?.id}`}>
             {item?.data?.title}
           </Styled.MenuTitle>

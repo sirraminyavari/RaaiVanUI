@@ -38,7 +38,7 @@ const SearchInput = (props) => {
   };
 
   return (
-    <Styled.SearchContainer>
+    <Styled.SearchContainer data-tut="main-search-box">
       <Styled.SearchInput
         value={searchText}
         onChange={handleInputChange}

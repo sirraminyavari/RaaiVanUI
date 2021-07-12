@@ -51,7 +51,7 @@ const SidebarOnOpen = () => {
   }, []);
 
   return (
-    <Styled.OpenContentWrapper>
+    <Styled.OpenContentWrapper data-tut="categories_and_templates">
       {getSidebarContent(content?.current)}
     </Styled.OpenContentWrapper>
   );

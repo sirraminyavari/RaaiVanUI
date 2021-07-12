@@ -12,6 +12,9 @@ export const FORBIDDEN_ROUTES_IN_SAAS = [
   'dashboard',
 ];
 
+//! Onboarding Phases
+export const INTRO_ONBOARD = 'intro';
+
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';
 export const CLOSE_WIDTH = '4';
