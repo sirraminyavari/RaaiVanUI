@@ -4,7 +4,9 @@ import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
+import IntroNodes from './IntroNodes';
 
 const getNodesAPI = (bookMarked = false) => {
   return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
@@ -39,6 +41,11 @@ const NodeList = (props) => {
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
   useTraceUpdate(props);
+
+  const { onboardingName } = useSelector((state) => ({
+    onboardingName: state.onboarding.name,
+  }));
+
   const preExtraData = usePrevious(extraData);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
@@ -139,34 +146,42 @@ const NodeList = (props) => {
   };
 
   return (
-    <SimpleListViewer
-      fetchMethod={fetchData}
-      extraData={extraData}
-      infiniteLoop={true}
-      onEndReached={() => {
-        console.log('Im reached end');
-      }}
-      onTotal={onTotalFound}
-      renderItem={(x, index) => (
-        <>
-          {x.Creator && (
-            <SubjectItem
-              key={index}
-              onChecked={(value, item) => console.log(value, item, 'onChecked')}
-              parentNodeType={nodeTypeId}
-              selectMode={false}
-              item={{
-                ...x,
-                LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
-              }}
-              isSaas={isSaas}
-              onReload={onReload}
-              onBookmark={onBookmark}
-            />
+    <>
+      {onboardingName !== 'intro' ? (
+        <SimpleListViewer
+          fetchMethod={fetchData}
+          extraData={extraData}
+          infiniteLoop={true}
+          onEndReached={() => {
+            console.log('Im reached end');
+          }}
+          onTotal={onTotalFound}
+          renderItem={(x, index) => (
+            <>
+              {x.Creator && (
+                <SubjectItem
+                  key={index}
+                  onChecked={(value, item) =>
+                    console.log(value, item, 'onChecked')
+                  }
+                  parentNodeType={nodeTypeId}
+                  selectMode={false}
+                  item={{
+                    ...x,
+                    LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+                  }}
+                  isSaas={isSaas}
+                  onReload={onReload}
+                  onBookmark={onBookmark}
+                />
+              )}
+            </>
           )}
-        </>
+        />
+      ) : (
+        <IntroNodes />
       )}
-    />
+    </>
   );
 };
 export default NodeList;
