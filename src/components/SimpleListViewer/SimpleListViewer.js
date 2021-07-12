@@ -2,14 +2,12 @@
  * Simple list viewer with the 'fetchMore' feature.
  */
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import React, { useEffect, useRef, useState } from 'react';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
-import useTraceUpdate from 'utils/TraceHelper/traceHelper';
-import usePrevious from 'hooks/usePrevious';
 import EmptyState from 'components/EmptyState/EmptyState';
+import Heading from 'components/Heading/Heading';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import usePrevious from 'hooks/usePrevious';
+import React, { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const { RVDic } = window;
@@ -31,20 +29,21 @@ const SimpleListViewer = ({
   extraData = false,
   onTotal,
 }) => {
-  useTraceUpdate({
-    fetchMethod,
-    renderItem,
-    pageSize,
-    infiniteLoop,
-    extraData,
-    onTotal,
-  });
+  // useTraceUpdate({
+  //   fetchMethod,
+  //   renderItem,
+  //   pageSize,
+  //   infiniteLoop,
+  //   extraData,
+  //   onTotal,
+  // });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
   const [total, setTotal] = useState(0);
   // If true, means component is fetching  list
   const [isFetching, setIsFetching] = useState(false);
+  const [onEndCounter, setOnEndCounter] = useState(0);
 
   const [scrollDir, setScrollDir] = useState('scrolling down');
   const preExtraData = usePrevious(extraData);
@@ -56,11 +55,11 @@ const SimpleListViewer = ({
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
       //ask ramin
-      console.log(data, 'data***');
       setData(data);
       setTotal(total);
       setIsFetching(false);
       onTotal(total);
+      setOnEndCounter(onEndCounter + 1);
     });
   };
 

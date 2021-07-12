@@ -10,7 +10,7 @@ import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
-import { MOBILE_BOUNDRY } from 'constant/constants';
+import { MOBILE_BOUNDRY, FORBIDDEN_ROUTES_IN_SAAS } from 'constant/constants';
 // import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import RasoulView from 'views/DevsView/Rasoul/Rasoul';
@@ -30,9 +30,18 @@ const NavbarInitial = lazy(() =>
   )
 );
 
+const { RVGlobal } = window;
+
 const switchRoutes = (
   <Switch>
-    {Routes.map((route, key) => {
+    {Routes.filter((route) => {
+      //! Filter out some routes in Saas mode.
+      const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+      if (isSaas && FORBIDDEN_ROUTES_IN_SAAS.includes(route.name)) {
+        return false;
+      }
+      return true;
+    }).map((route, key) => {
       const { exact, path, component, name, hasNavSide } = route;
       return (
         <Route
@@ -50,17 +59,18 @@ const switchRoutes = (
         />
       );
     })}
+
     {/* Just in dev mode and won't render in production  */}
     {/* <Route exact path="/test" component={TestView} /> */}
-    {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
+    {/* {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
       <>
         <Route exact path="/rasoul" component={RasoulView} />
         <Route exact path="/ali" component={AliView} />
         <Route exact path="/ramin" component={RaminView} />
       </>
-    )}
+    )} */}
 
-    <Redirect from="/" to="/teams" />
+    <Redirect from="/*" to="/teams" />
   </Switch>
 );
 

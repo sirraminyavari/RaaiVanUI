@@ -18,7 +18,6 @@ export const Container = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
-  overflow: scroll;
 `;
 export const ScrollProvider = styled.div`
   width: calc(

@@ -1,11 +1,11 @@
 import useScript from 'hooks/useScript';
 
-const MapConfig = () => {
+const MapConfig = (props) => {
   useScript(
     'pageLoadScripts/LoadMapConfig/LoadMapConfig.js',
     'LoadMapConfig.js',
     () => {
-      window.loadMapConfig();
+      window.loadMapConfig(props?.route);
     }
   );
   return (
@@ -15,7 +15,7 @@ const MapConfig = () => {
       style={{
         margin: '0rem',
         marginBottom: '5rem',
-        padding: '0vw 6vw',
+        padding: '0vw 2vw',
       }}></div>
   );
 };
