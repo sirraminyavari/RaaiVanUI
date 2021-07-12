@@ -17,7 +17,7 @@ import rootReducer from './reducers/rootReducer';
 const MIGRATION_DEBUG = true;
 
 const migrations = {
-  10: (previousVersionState) => ({
+  11: (previousVersionState) => ({
     ...previousVersionState,
     raaivanVersion: {
       lastUpdate: JSON.stringify(new Date()),
@@ -27,7 +27,7 @@ const migrations = {
 
 const persistConfig = {
   key: 'Raaivan',
-  version: 10,
+  version: 11,
   storage,
   debug: true,
   stateReconciler: autoMergeLevel2,
