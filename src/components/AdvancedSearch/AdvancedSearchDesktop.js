@@ -102,7 +102,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
         <PerfectScrollbar
           onYReachEnd={(event) => console.log(event, 'on end reached')}
           className={'rv-border-radius-half'}>
-          <Scrollable isAdvancedShow={isAdvancedSearch}>
+          <Scrollable
+            style={{ maxHeight: 'calc(100vh-9rem)' }}
+            isAdvancedShow={isAdvancedSearch}>
             <Maintainer
               isAdvancedShow={isAdvancedSearch}
               className={'rv-bg-color-light-gray'}
