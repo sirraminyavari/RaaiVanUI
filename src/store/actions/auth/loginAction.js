@@ -89,6 +89,8 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // dispatch(loginSuccess(response));
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
+            window.RVGlobal.IsAuthenticated = true;
+            document.location.href = '/teams';
           }
         },
         (err) => {
