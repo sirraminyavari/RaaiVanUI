@@ -12,12 +12,13 @@ import SearchBox from '../openSubContents/searchBox/SearchBox';
 import SearchResultsList from '../openSubContents/searchBox/SearchResultsList';
 import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
-import { getURL } from 'helpers/helpers';
+import { isEmpty } from 'helpers/helpers';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import {
   SETTING_CONTENT,
   MAIN_CONTENT,
   INTRO_ONBOARD,
+  CLASSES_PATH,
 } from 'constant/constants';
 
 const selectShowSearchResults = createSelector(
@@ -70,9 +71,7 @@ const SidebarMainContent = () => {
   return (
     <>
       <Styled.SidebarTitle>
-        <Styled.TitleText
-          as={!isIntroOnboarding && Link}
-          to={getURL('Classes')}>
+        <Styled.TitleText as={!isIntroOnboarding && Link} to={CLASSES_PATH}>
           {selectedTeam?.name}
         </Styled.TitleText>
         <Styled.SettingWrapper onClick={handleOnClick}>
@@ -84,7 +83,7 @@ const SidebarMainContent = () => {
         <SearchResultsList />
       ) : (
         <>
-          {tree?.items && <ReadableTree />}
+          {tree?.items && !isEmpty(tree?.items) && <ReadableTree />}
           <Styled.Divider />
           <UnderMenuList />
         </>

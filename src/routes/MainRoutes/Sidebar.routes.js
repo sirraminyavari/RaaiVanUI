@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 import ConfigRoutes from './Config.routes';
 import {
-  Classes_NAME,
-  Classes_PATH,
-  Classes_WITHID_PATH,
+  CLASSES_NAME,
+  CLASSES_PATH,
+  CLASSES_WITHID_PATH,
   REPORTS_NAME,
   REPORTS_PATH,
   USER_NAME,
@@ -47,15 +47,15 @@ const SidebarRoutes = [
     component: Profile,
   },
   {
-    path: Classes_WITHID_PATH,
-    name: Classes_NAME,
+    path: CLASSES_WITHID_PATH,
+    name: CLASSES_NAME,
     exact: true,
     hasNavSide: true,
     component: Classes,
   },
   {
-    path: Classes_PATH,
-    name: Classes_NAME,
+    path: CLASSES_PATH,
+    name: CLASSES_NAME,
     exact: true,
     hasNavSide: true,
     component: Classes,
