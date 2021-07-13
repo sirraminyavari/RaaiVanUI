@@ -149,7 +149,7 @@ const AuthView = () => {
               );
             })}
 
-            <Redirect to="/auth/login" />
+            <Redirect to="/login" />
           </Switch>
         </CSSTransition>
       </TransitionGroup>
