@@ -20,6 +20,11 @@ import {
   TEAMS_PATH,
   USER_PATH,
 } from 'constant/constants';
+import {
+  getSidebarNodes,
+  getUnderMenuPermissions,
+} from 'store/actions/sidebar/sidebarMenuAction';
+import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
@@ -45,6 +50,13 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         id: route.Application.ApplicationID,
       };
       dispatch(setSelectedTeam(application));
+      dispatch(getSidebarNodes());
+      dispatch(getConfigPanels());
+      dispatch(getUnderMenuPermissions(['Reports']));
+      // if (!!response.Onboarding) {
+      //   dispatch(onboardingName(response.Onboarding?.name || ''));
+      //   dispatch(onboardingStep(response.Onboarding?.fromStep || 0));
+      // }
     }
 
     //! Reset team to null if user is authenticated but has not selected a team yet.

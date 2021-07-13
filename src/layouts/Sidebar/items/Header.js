@@ -54,7 +54,7 @@ const SidebarHeader = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
-  const isTeamSelected = !!selectedTeam?.id;
+  const isTeamSelected = !!selectedTeam?.id && !!RVGlobal?.ApplicationID;
 
   //! Toggle sidebar drawer on click.
   const toggleDrawer = () => {
