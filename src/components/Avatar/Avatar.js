@@ -1,6 +1,7 @@
 /**
  * An Avatar for showing user image and access to lts profile
  */
+import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import AvatarIcon from 'components/Icons/UserIcon/User';
 import * as Styled from './Avatar.styles';
@@ -20,7 +21,7 @@ import * as Styled from './Avatar.styles';
  * @component
  * @param {PropType} props -Props that pass to avatar.
  */
-const Avatar = (props) => {
+const Avatar = forwardRef((props, ref) => {
   const {
     radius,
     userImage,
@@ -32,7 +33,7 @@ const Avatar = (props) => {
   return (
     <>
       {userImage ? (
-        <Styled.AvatarContainer color={color} {...rest}>
+        <Styled.AvatarContainer ref={ref} color={color} {...rest}>
           <Styled.AvatarImage
             data-testid="avatar-image"
             radius={radius}
@@ -43,19 +44,20 @@ const Avatar = (props) => {
           />
         </Styled.AvatarContainer>
       ) : (
-        <Styled.AvatarIconWrapper {...rest}>
+        <Styled.AvatarIconWrapper ref={ref} {...rest}>
           <AvatarIcon size={radius} color={color} data-testid="avatar-icon" />
         </Styled.AvatarIconWrapper>
       )}
     </>
   );
-};
+});
 
 Avatar.propTypes = {
   radius: PropTypes.number,
   userImage: PropTypes.string,
-  linkTo: PropTypes.string,
   color: PropTypes.string,
+  imageClasses: PropTypes.string,
+  imageStyles: PropTypes.object,
 };
 
 Avatar.defaultProps = {

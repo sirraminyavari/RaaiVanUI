@@ -24,15 +24,27 @@ const selectSidebarContent = createSelector(
   (theme) => theme.sidebarContent
 );
 
+const selectHasPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
+);
+
+const selectisSidebarOpen = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isSidebarOpen
+);
+
 const CloseSidebar = () => {
   const selectedTeam = useSelector(selectTeam);
   const sidebarContent = useSelector(selectSidebarContent);
+  const hasPattern = useSelector(selectHasPattern);
+  const isOpen = useSelector(selectisSidebarOpen);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
   const isTeamSelected = !!selectedTeam?.id;
 
   return (
-    <Styled.SidebarContainer>
+    <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
       <SidebarHeader />
       <Styled.ContentWrapper isMainContent={isMainContent}>
         <Suspense fallback={<LogoLoader size={5} />}>

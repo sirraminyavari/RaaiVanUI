@@ -1,6 +1,5 @@
 import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
-import { encode, decode } from 'js-base64';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 
@@ -24,7 +23,7 @@ export const getLanguage = () => {
  * @returns {string} UTF-8 string.
  */
 export const decodeBase64 = (string) => {
-  return decode(string);
+  return window.Base64.decode(string);
 };
 
 /**
@@ -32,7 +31,7 @@ export const decodeBase64 = (string) => {
  * @returns {string} Base64 string.
  */
 export const encodeBase64 = (string) => {
-  return encode(string);
+  return window.Base64.encode(string);
 };
 
 /**
@@ -179,4 +178,37 @@ export const saveLocalStorage = (key, state) => {
  */
 export const API_Provider = (apiClass, apiFunction) => {
   return new APIHandler(apiClass, apiFunction);
+};
+
+/**
+ * @description Sets RVGlobal properties.
+ */
+export const setRVGlobal = (params = {}) => {
+  for (const param in params) {
+    window.RVGlobal[param] = params[param];
+  }
+};
+
+/**
+ * @description Gets system name.
+ */
+export const getSystemName = () => {
+  return (window.RVGlobal || {}).SAASBasedMultiTenancy
+    ? window.RVDic.CliqMind
+    : decodeBase64((window.RVGlobal || {}).SystemName) || window.RVDic.RaaiVan;
+};
+
+/**
+ * @description Gets a new captcha token
+ */
+
+const { GlobalUtilities } = window;
+export const getCaptchaToken = async () => {
+  return new Promise((resolve) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
+        resolve(token);
+      });
+    });
+  });
 };

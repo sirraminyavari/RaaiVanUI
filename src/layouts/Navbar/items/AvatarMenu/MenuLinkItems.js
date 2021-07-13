@@ -1,8 +1,8 @@
 import { getURL } from 'helpers/helpers';
 import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
-import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
+// import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
-import { TC_DEFAULT } from 'constant/Colors';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const { RVDic } = window;
 
@@ -12,21 +12,21 @@ const MenuLinkItems = [
     title: RVDic.Profile,
     linkTo: getURL('User'),
     icon: ProfileIcon,
-    iconClass: TC_DEFAULT,
+    iconColor: TCV_DEFAULT,
   },
-  {
-    id: 2,
-    title: RVDic.AccountManagement,
-    linkTo: '#',
-    icon: AccountManIcon,
-    iconClass: TC_DEFAULT,
-  },
+  // {
+  //   id: 2,
+  //   title: RVDic.AccountManagement,
+  //   linkTo: '#',
+  //   icon: AccountManIcon,
+  //   iconColor: TCV_DEFAULT,
+  // },
   {
     id: 3,
     title: RVDic.Help,
-    linkTo: '#',
+    linkTo: getURL('Help'),
     icon: QuestionIcon,
-    iconClass: TC_DEFAULT,
+    iconColor: TCV_DEFAULT,
   },
 ];
 

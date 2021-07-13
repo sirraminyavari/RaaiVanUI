@@ -15,7 +15,7 @@
   fetch(params, callback, onError) {
     const that = this;
 
-    if (window.GlobalUtilities.get_type(callback) != 'function') {
+    if (window.GlobalUtilities.get_type(callback) !== 'function') {
       console.error('APIHandler.fetch: callback is not a function');
       return callback();
     }
@@ -34,7 +34,7 @@
   url(params, callback) {
     const that = this;
 
-    if (window.GlobalUtilities.get_type(callback) != 'function') {
+    if (window.GlobalUtilities.get_type(callback) !== 'function') {
       console.error('APIHandler.url: callback is not a function');
       return callback();
     }

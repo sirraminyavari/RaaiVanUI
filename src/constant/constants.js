@@ -1,6 +1,19 @@
 export const WIDE_BOUNDRY = '1200px';
 export const MEDIUM_BOUNDRY = '1020px';
-export const MOBILE_BOUNDRY = '800px';
+export const MOBILE_BOUNDRY = '600px';
+
+export const GET_NOTIFS_INTERVAL = 15000;
+
+export const FORBIDDEN_ROUTES_IN_SAAS = [
+  'newquestion',
+  'questions',
+  'graph',
+  'explorer',
+  'dashboard',
+];
+
+//! Onboarding Phases
+export const INTRO_ONBOARD = 'intro';
 
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';

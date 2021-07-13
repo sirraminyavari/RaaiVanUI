@@ -8,14 +8,27 @@ import SortHandle from './SortHandle';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-const ArchivedTeams = ({ team, hasHandle }) => {
+const ArchivedTeams = ({ archives, hasHandle }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL, RV_Float } = useWindow();
-  const isMobileScreen = useMediaQuery({
+  const isMobile = useMediaQuery({
     query: '(max-width: 970px)',
   });
+  const { isTabletOrMobile } = DimensionHelper();
+  const isMobileScreen = useMediaQuery({ query: '(max-width: 600px)' });
+
+  const getModalWidth = () => {
+    if (isMobileScreen) {
+      return '85%';
+    } else if (isTabletOrMobile) {
+      return '70%';
+    } else {
+      return '35%';
+    }
+  };
 
   //! Show add new team modal.
   const handleShowArchived = () => {
@@ -29,7 +42,8 @@ const ArchivedTeams = ({ team, hasHandle }) => {
 
   return (
     <Styled.TeamConatiner
-      isMobile={isMobileScreen}
+      isArchive
+      isMobile={isMobile}
       dir={RV_Float}
       revDir={RV_RevFloat}
       onClick={handleShowArchived}
@@ -37,9 +51,9 @@ const ArchivedTeams = ({ team, hasHandle }) => {
       <ArchivedModal
         isOpen={isModalShown}
         modalTitle="تیم های آرشیو شده"
-        modalWidth="35%"
-        contentClass={'archived-teams'}
-        archives={team.archives}
+        modalWidth={getModalWidth()}
+        contentClass="archived-teams"
+        archives={archives}
         onModalClose={handleCloseArchived}
       />
       {hasHandle && <SortHandle />}

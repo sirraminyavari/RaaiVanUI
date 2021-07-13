@@ -1,7 +1,6 @@
 /**
  * 'SubjectItem' for the time that the screen is big.
  */
-import { getURL } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -10,7 +9,6 @@ import SubjectClassName from '../items/SubjectClassName';
 import SubjectCreator from '../items/SubjectCreator';
 import SubjectDate from '../items/SubjectDate';
 import SubjectIcon from '../items/SubjectIcon';
-import SubjectStatus from '../items/SubjectStatus';
 import SubjectTitle from '../items/SubjectTitle';
 import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
@@ -32,6 +30,7 @@ const SubjectItemDesktop = ({
   onChecked,
   parentNodeType,
   onReload,
+  onBookmark,
 }) => {
   const {
     Name,
@@ -44,6 +43,7 @@ const SubjectItemDesktop = ({
     NodeID,
     NodeTypeID,
     LikeStatus,
+    VisitsCount,
   } = item;
   const [isHover, setIsHover] = useState(false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
@@ -51,10 +51,6 @@ const SubjectItemDesktop = ({
   // /**
   //  * By clicking on the item will fire.
   //  */
-  const onClick = () => {
-    console.log('clicked');
-    window.open(RVAPI.NodePageURL({ NodeID: NodeID }));
-  };
 
   return (
     <Root>
@@ -66,7 +62,7 @@ const SubjectItemDesktop = ({
       <Container
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={onClick}
+        to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
           <SubjectIcon iconUrl={IconURL} />
@@ -81,7 +77,7 @@ const SubjectItemDesktop = ({
                 {parentNodeType !== NodeTypeID && (
                   <SubjectClassName className={decode(NodeType)} />
                 )}
-                {!isSaas && <SubjectViewCount count={UserStatus.VisitsCount} />}
+                {!isSaas && <SubjectViewCount count={VisitsCount} />}
 
                 {/* <div
                   style={{
@@ -101,13 +97,14 @@ const SubjectItemDesktop = ({
                 isLiked={LikeStatus}
                 nodeId={NodeID}
                 reload={onReload}
+                onBookmarLocally={onBookmark && onBookmark}
               />
 
               {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
             </>
           )}
           <SubjectCreator
-            style={{ padding: RV_RTL ? '0 0rem 0 2rem' : '0 2rem 0 0 ' }}
+            style={{ padding: RV_RTL ? '0 0rem 0 1rem' : '0 1rem 0 0 ' }}
             userProfile={Creator?.ProfileImageURL}
             firstName={decode(Creator.FirstName)}
             lastName={decode(Creator.LastName)}

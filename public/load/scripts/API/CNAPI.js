@@ -369,6 +369,7 @@
             (GlobalUtilities.get_type(params.IsDocument) == "boolean" ? "&IsDocument=" + params.IsDocument : "") +
             (GlobalUtilities.get_type(params.IsKnowledge) == "boolean" ? "&IsKnowledge=" + params.IsKnowledge : "") +
             (GlobalUtilities.get_type(params.IsMine) == "boolean" ? "&IsMine=" + params.IsMine : "") +
+            (params.CreatorUserID ? "&CreatorUserID=" + params.CreatorUserID : "") +
             (GlobalUtilities.get_type(params.Archive) == "boolean" ? "&Archive=" + params.Archive : "") +
             (GlobalUtilities.get_type(params.Searchable) == "boolean" ? "&Searchable=" + params.Searchable : "") +
             (params.CreatedFromNDaysAgo ? "&CreatedFromNDaysAgo=" + params.CreatedFromNDaysAgo : "") +
@@ -683,6 +684,9 @@
 
         params.NodeTypeIDs = params.NodeTypeIDs || params.NodeTypeID;
 
+        params.LowerDateLimit = params.LowerDateLimit || params.CreationDateFrom;
+        params.UpperDateLimit = params.UpperDateLimit || params.CreationDateTo;
+
         var url = CNAPI.ResponseURL + "/GetFavoriteNodes?timeStamp=" + new Date().getTime();
         var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
             (params.NodeTypeIDs ? "&NodeTypeIDs=" + params.NodeTypeIDs : "") +
@@ -691,6 +695,9 @@
             (params.SearchText ? "&SearchText=" + params.SearchText : "") +
             (GlobalUtilities.get_type(params.IsDocument) == "boolean" ? "&IsDocument=" + params.IsDocument : "") +
             (params.HasChild ? "&HasChild=" + params.HasChild : "") +
+            (params.RelatedToNodeID ? "&RelatedToNodeID=" + params.RelatedToNodeID : "") +
+            (params.CreatorUserID ? "&CreatorUserID=" + params.CreatorUserID : "") +
+            (params.FormFilters ? "&FormFilters=" + params.FormFilters : "") +
             (params.LowerDateLimit ? "&LowerDateLimit=" + params.LowerDateLimit : "") +
             (params.UpperDateLimit ? "&UpperDateLimit=" + params.UpperDateLimit : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +

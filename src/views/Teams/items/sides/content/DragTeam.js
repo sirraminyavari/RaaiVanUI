@@ -1,8 +1,8 @@
 import React, { useImperativeHandle, useRef, forwardRef } from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import TeamActive from './TeamActive';
-import NewTeam from './NewTeam';
-import ArchivedTeams from './ArchivedTeams';
+// import NewTeam from './NewTeam';
+// import ArchivedTeams from './ArchivedTeams';
 
 // Drag sources and drop targets only interact
 // if they have the same string type.
@@ -100,17 +100,17 @@ const DragItem = forwardRef(
       draggedId = getItem.ApplicationID;
     }
 
-    const isDragging = draggedId === team.ApplicationID;
+    const isDragging = draggedId === team?.ApplicationID;
 
     useImperativeHandle(ref, () => ({
       getNode: () => elementRef.current,
     }));
-    if (team.ApplicationID === 'add-app') {
-      return <NewTeam ref={elementRef} />;
-    }
-    if (team.ApplicationID === 'archived-apps') {
-      return <ArchivedTeams team={team} />;
-    }
+    // if (team?.ApplicationID === 'add-app') {
+    //   return <NewTeam />;
+    // }
+    // if (team?.ApplicationID === 'archived-apps') {
+    //   return <ArchivedTeams archives={team} />;
+    // }
 
     return <TeamActive ref={elementRef} team={team} isDragging={isDragging} />;
   }

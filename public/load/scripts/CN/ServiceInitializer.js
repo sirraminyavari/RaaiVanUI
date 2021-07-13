@@ -115,6 +115,8 @@
 
         _initialize: function () {
             var that = this;
+            
+            if (that.ContainerDiv) that.ContainerDiv.innerHTML = "";
 
             var elems = GlobalUtilities.create_nested_elements([{
                 Type: "div", Class: "small-12 medium-12 large-12", Style: "display:flex; flex-flow:column; height:100%;",
@@ -340,12 +342,10 @@
 
             if (that.Options.OnServiceSelect) that.Options.OnServiceSelect(service);
 
-            var _div = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-10 medium-10 large-10 rv-border-radius-1 SoftBackgroundColor",
-                    Style: "margin:0rem auto 3rem auto; padding:1rem;", Name: "container"
-                }
-            ])["container"];
+            var _div = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-10 large-10 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin:0rem auto 3rem auto; padding:1rem;", Name: "container"
+            }])["container"];
 
             GlobalUtilities.loading(_div);
             var showed = GlobalUtilities.show(_div, { DisableCloseOnClick: true });

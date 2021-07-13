@@ -16,10 +16,10 @@ const SideBar = (props) => {
   //const activatedTemplates = info.activatedTemplates.map(x => <div key={ uuidv4() }>{x.title}</div>)
   return (
     <div className="sidebar rv-bg-color-verywarm">
-      <div className="logo-container" data-tut="reactour__second">
+      <div className="logo-container">
         <img src={SidebarLogo} className="logo" />
       </div>
-      <div className="onboarding-sidbar-steps" data-tut="reactour__third">
+      <div className="onboarding-sidbar-steps">
         {info.teamName !== '' && <div className="item">{info.teamName}</div>}
 
         <div style={{ marginTop: '15px', width: '100%' }}>

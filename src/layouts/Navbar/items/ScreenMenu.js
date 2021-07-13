@@ -6,6 +6,7 @@ import * as Styled from '../Navbar.styles';
 import MenuItem from './MenuItem';
 import NavButtonsList from './buttonsList';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
+import useWindow from 'hooks/useWindowContext';
 
 const FixActions = lazy(() =>
   import(/* webpackChunkName: "nav-fix-actions"*/ './FixActions')
@@ -15,10 +16,17 @@ const AlertActions = lazy(() =>
 );
 
 const WideScreenMenu = () => {
+  const { RVGlobal } = useWindow();
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+
   return (
     <Styled.WideScreenMenu>
-      {NavButtonsList.map((btn) => {
+      {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
+        if (isSaas && [2, 3, 6].includes(btn.index)) {
+          return null;
+        }
+
         return (
           <Fragment key={index}>
             {actions ? (
@@ -34,7 +42,7 @@ const WideScreenMenu = () => {
                     badge={badge}
                   />
                 </div>
-                {actions.length ? (
+                {actions?.length ? (
                   <FixActions actions={actions} />
                 ) : (
                   <AlertActions />

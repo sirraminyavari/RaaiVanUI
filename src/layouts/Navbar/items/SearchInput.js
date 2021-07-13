@@ -3,19 +3,21 @@
  */
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { encodeBase64 } from 'helpers/helpers';
 import * as Styled from '../Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { C_DISTANT } from 'constant/Colors';
+import useWindow from 'hooks/useWindowContext';
+import { encodeBase64, getURL } from 'helpers/helpers';
 
 const SearchInput = (props) => {
   const history = useHistory();
+  const { RVDic } = useWindow();
   const [searchText, setSearchText] = useState('');
 
   //! The path that input is link to.
-  let searchPath = `/dosearch/${encodeBase64(
-    searchText !== '' ? searchText : 'جستجو'
-  )}`;
+  const searchPath = getURL('Search', {
+    SearchText: encodeBase64(!!searchText ? searchText : RVDic.Search),
+  });
 
   //! Set search text.
   const handleInputChange = (e) => {
@@ -36,7 +38,7 @@ const SearchInput = (props) => {
   };
 
   return (
-    <Styled.SearchContainer>
+    <Styled.SearchContainer data-tut="main-search-box">
       <Styled.SearchInput
         value={searchText}
         onChange={handleInputChange}

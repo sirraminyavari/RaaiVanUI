@@ -11,6 +11,8 @@ import * as Styled from './InlineEdit.styles';
  * @property {boolean} [isActive] -Determines if input is active or not.
  * @property {function} onSetText -A function that fires on text edit and
  * @property {Object} styles -An Object of styles for input and text.
+ * @property {string} textClasses -Classes for text.
+ * @property {string} inputClasses -Classes for input.
  */
 
 /**
@@ -19,7 +21,14 @@ import * as Styled from './InlineEdit.styles';
  * @param {PropType} props
  */
 const InlineEdit = (props) => {
-  const { text, onSetText, isActive, styles } = props;
+  const {
+    text,
+    onSetText,
+    isActive,
+    styles,
+    textClasses,
+    inputClasses,
+  } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
   const [isInputActive, setIsInputActive] = useState(!!isActive);
@@ -102,6 +111,7 @@ const InlineEdit = (props) => {
     <Styled.InlineEditContainer ref={wrapperRef}>
       {isInputActive ? (
         <Styled.Input
+          className={inputClasses}
           style={styles.inputStyle}
           data-testid="inline-edit-input"
           ref={inputRef}
@@ -110,8 +120,10 @@ const InlineEdit = (props) => {
         />
       ) : (
         <Styled.SpanText
+          className={textClasses}
           style={styles.textStyle}
           data-testid="inline-edit-span"
+          id="inline-edit"
           ref={textRef}
           onClick={handleSpanClick}>
           {inputValue}
@@ -129,6 +141,8 @@ InlineEdit.propTypes = {
     textStyle: PropTypes.object,
     inputStyle: PropTypes.object,
   }),
+  textClasses: PropTypes.string,
+  inputClasses: PropTypes.string,
 };
 
 InlineEdit.defaultProps = {

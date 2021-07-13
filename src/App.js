@@ -11,12 +11,12 @@ import AuthView from 'views/Auth/AuthView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 // import 'assets/css/index.css';
 
-const { GlobalUtilities, RV_RTL, RV_Float, RV_RevFloat } = window;
+const { RV_RTL, GlobalUtilities } = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
-window._alert = window.alert;
+window._alert = window._alert || window.alert;
 window.alert = function (txt, type = '') {
   toast(txt, {
     type,
@@ -26,8 +26,11 @@ window.alert = function (txt, type = '') {
 
 const App = () => {
   return (
-    <>
-      <ToastContainer bodyClassName="rv-font-default" />
+    <ErrorBoundry>
+      <ToastContainer
+        style={{ zIndex: GlobalUtilities.zindex.alert() }}
+        bodyClassName="rv-font-default"
+      />
 
       <StoreProvider>
         <ErrorBoundry>
@@ -42,7 +45,7 @@ const App = () => {
           </Suspense>
         </ErrorBoundry>
       </StoreProvider>
-    </>
+    </ErrorBoundry>
   );
 };
 

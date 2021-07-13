@@ -15,6 +15,9 @@ const Dashboard = lazy(() =>
 const Search = lazy(() =>
   import(/* webpackChunkName: "search-view"*/ 'views/Search/Search')
 );
+const HelpMe = lazy(() =>
+  import(/* webpackChunkName: "helpme-view"*/ 'views/HelpMe/HelpMe')
+);
 
 const NavbarRoutes = [
   {
@@ -51,6 +54,13 @@ const NavbarRoutes = [
     exact: true,
     hasNavSide: true,
     component: Search,
+  },
+  {
+    path: getURL('Help'),
+    name: 'help',
+    exact: true,
+    hasNavSide: true,
+    component: HelpMe,
   },
 ];
 

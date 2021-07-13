@@ -17,6 +17,7 @@ const Resizable = (props) => {
     maxConstraints,
     resizerClass,
     resizableStyles,
+    disable,
   } = props;
 
   let prevX;
@@ -102,17 +103,18 @@ const Resizable = (props) => {
       ref={containerRef}
       size={size}
       style={resizableStyles}>
-      {resizeHandles.map((handle, index) => {
-        return (
-          <Resizer
-            onMouseDown={onMouseDown}
-            id={handle}
-            handle={handle}
-            resizerClass={resizerClass}
-            key={index}
-          />
-        );
-      })}
+      {!disable &&
+        resizeHandles.map((handle, index) => {
+          return (
+            <Resizer
+              onMouseDown={onMouseDown}
+              id={handle}
+              handle={handle}
+              resizerClass={resizerClass}
+              key={index}
+            />
+          );
+        })}
       {children}
     </Styled.ResizableConatiner>
   );

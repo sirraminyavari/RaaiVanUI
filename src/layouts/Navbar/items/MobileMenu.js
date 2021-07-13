@@ -13,17 +13,17 @@ import { BG_RED, C_WHITE, TC_WARM } from 'constant/Colors';
 import Badge from 'components/Badge/Badge';
 import useWindow from 'hooks/useWindowContext';
 
-const selectNavAlerts = createSelector(
-  (state) => state.navbarAlert,
-  (navbarAlert) => navbarAlert.alertsList
+const selectNotificationsCount = createSelector(
+  (state) => state.notifications,
+  (notifications) => notifications.notificationsCount
 );
 
 const NavMenus = () => {
-  const alerts = useSelector(selectNavAlerts);
+  const notifsCount = useSelector(selectNotificationsCount);
   const { RV_Float } = useWindow();
 
   //! Make a flat list from a nested list.
-  const flattenedButtons = NavButtonsList.reduce(
+  const flattenedButtons = NavButtonsList?.reduce(
     (flatButtons, button) =>
       flatButtons.concat(
         button.actions
@@ -44,11 +44,11 @@ const NavMenus = () => {
         <MenuIcon size={30} className={C_WHITE} style={{ cursor: 'pointer' }} />
       </div>
       <Styled.MenuOptionsWrapper>
-        {flattenedButtons.map((btn, index) => {
+        {flattenedButtons?.map((btn, index) => {
           const { badge, linkTo, title, icon } = btn;
-          const hasBadge = badge && alerts.length > 0;
+          const hasBadge = badge && notifsCount > 0;
           return (
-            <Styled.NavMenuOption as={Link} to={linkTo} key={index}>
+            <Styled.NavMenuOption as={Link} to={linkTo ?? '#'} key={index}>
               {NavbarIcons[icon]({ className: TC_WARM, size: 20 })}
               {title}
               {hasBadge && (
@@ -61,7 +61,7 @@ const NavMenus = () => {
                       width: '1.2rem',
                       height: '1.2rem',
                     }}
-                    value={alerts.length}
+                    value={notifsCount}
                     className={BG_RED}
                   />
                 </Styled.BadgeWrapper>

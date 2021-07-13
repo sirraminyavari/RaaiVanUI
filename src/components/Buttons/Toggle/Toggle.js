@@ -2,7 +2,10 @@
  * Renders a toggle button.
  */
 import PropTypes from 'prop-types';
-import { useEffect, cloneElement } from 'react';
+import {
+  // useEffect,
+  cloneElement,
+} from 'react';
 import * as Styled from './Toggle.styles';
 import useToggle from 'hooks/useToggle';
 
@@ -18,17 +21,19 @@ import useToggle from 'hooks/useToggle';
  * @component
  * @param {PropType} props -Props that pass to Toggle.
  */
-const Toggle = (props) => {
+const ToggleButton = (props) => {
   const { onToggle, initialCheck, children, ...rest } = props;
   const [isOn, setToggle] = useToggle(initialCheck);
 
-  const toggle = () => {
+  const toggle = (e) => {
     setToggle((toggle) => !toggle);
+    onToggle && onToggle(e.target.checked);
   };
 
-  useEffect(() => {
-    onToggle && onToggle(isOn);
-  }, [isOn]);
+  // useEffect(() => {
+  //   onToggle && onToggle(isOn);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isOn]);
 
   return (
     <Styled.ToggleLabel>
@@ -42,13 +47,15 @@ const Toggle = (props) => {
   );
 };
 
-Toggle.propTypes = {
+ToggleButton.propTypes = {
   onToggle: PropTypes.func,
   initialCheck: PropTypes.bool,
 };
 
-Toggle.defaultProps = {
+ToggleButton.defaultProps = {
   initialCheck: false,
 };
 
-export default Toggle;
+ToggleButton.displayName = 'ToggleButtonComponent';
+
+export default ToggleButton;

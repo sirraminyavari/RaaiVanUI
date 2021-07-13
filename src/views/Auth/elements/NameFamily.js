@@ -49,7 +49,6 @@ const NameFamily = () => {
   //Once the 'isVisible()' being TRUE,
   //Instantly 'display' will be 'flex'
   useEffect(() => {
-    console.log(display, 'dis dis dis');
     if (!isVisible()) {
       setTimeout(() => {
         setDisply('none');

@@ -1,22 +1,29 @@
 /**
  * Renders a popup menu for user avatar.
  */
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import { createSelector } from 'reselect';
+import ReactTooltip from 'react-tooltip';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
 import AvatarMenuItem from './AvatarMenuItem';
-import MenuLinkItems from './MenuLinkItems';
+import menuLinkItems from './MenuLinkItems';
 import Checkbox from 'components/Checkbox/Checkbox';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import { C_RED, TC_VERYWARM, C_GRAY } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
+import { CV_RED } from 'constant/CssVariables';
+import { selectApplication } from 'store/actions/applications/ApplicationsAction';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const selectApplications = createSelector(
   (state) => state.applications,
-  (applications) => applications.applications
+  (applications) => applications.userApps
 );
 
 const selectedApplication = createSelector(
@@ -26,9 +33,19 @@ const selectedApplication = createSelector(
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
-  const { RVDic } = useWindow();
+  const history = useHistory();
+  const avatarMenuRef = useRef();
+  const { RVDic, RV_RTL } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
+
+  const handleOnClickOutside = (e) => {
+    if (e.target.dataset.testid !== 'avatar-image') {
+      ReactTooltip.hide();
+    }
+  };
+
+  useOnClickOutside(avatarMenuRef, handleOnClickOutside);
 
   //! Logs user out from application.
   const handleLogout = () => {
@@ -42,44 +59,64 @@ const AvatarMenuList = () => {
     window.location.reload();
   };
 
+  const onSelectDone = () => {
+    const homeURL = getURL('Home');
+    history.push(homeURL);
+  };
+
+  //TODO: error handling
+  const onSelectError = () => {};
+
+  //! Select a team.
+  const handleTeamSelect = (appId) => {
+    dispatch(selectApplication(appId, onSelectDone, onSelectError));
+  };
+
   return (
-    <Styled.AvatarMenuContainer>
-      {MenuLinkItems.map((item) => {
-        const { id, title, linkTo, icon, iconClass, textClass } = item;
+    <Styled.AvatarMenuContainer ref={avatarMenuRef}>
+      {menuLinkItems?.map((item) => {
+        const { id, title, linkTo, icon, iconColor, textClass } = item;
         return (
           <AvatarMenuItem
             key={id}
             title={title}
             linkTo={linkTo}
             icon={icon}
-            iconClass={iconClass}
+            iconColor={iconColor}
             textClass={textClass}
           />
         );
       })}
       <Styled.Divider />
-      {teams?.map((team) => {
-        const { ApplicationID, Title, IconURL } = team;
-        if (['archived-apps', 'add-app'].includes(ApplicationID)) return null;
-        return (
-          <AvatarMenuItem
-            key={ApplicationID}
-            title={decodeBase64(Title)}
-            iconURL={IconURL}
-            textClass={selectedTeam.id === ApplicationID ? TC_VERYWARM : C_GRAY}
-          />
-        );
-      })}
+      <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 26rem)' }}>
+        {/* <Styled.AvatarTeamsListWrapper> */}
+        {teams?.map((team) => {
+          const { ApplicationID, Title, IconURL } = team;
+          return (
+            <AvatarMenuItem
+              onClickHandler={() => handleTeamSelect(ApplicationID)}
+              key={ApplicationID}
+              title={decodeBase64(Title)}
+              iconURL={IconURL}
+              textClass={
+                selectedTeam.id === ApplicationID ? TC_VERYWARM : C_GRAY
+              }
+            />
+          );
+        })}
+        {/* </Styled.AvatarTeamsListWrapper> */}
+      </PerfectScrollbar>
       <Styled.Divider />
       <AvatarMenuItem
         title={RVDic.Logout}
         onClickHandler={handleLogout}
         icon={LogoutIcon}
-        iconClass={C_RED}
+        iconColor={CV_RED}
         textClass={C_RED}
       />
       {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
         <Checkbox
+          title={RV_RTL ? 'انگلیسی' : 'english'}
           changeHandler={handleCheckbox}
           isChecked={Cookie.get('rv_lang') === 'en'}
         />

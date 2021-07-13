@@ -9,18 +9,23 @@ const { GlobalUtilities } = window;
  * @property { string } type the type of the button that can be one of these values: [primary, primary-o, secondary-o, negative, negative-o]
  * @property { bool } loading determines if the button is in the state of processing or loading and thus cannot be clicked
  * @property { bool } disable determines if the button is disabled and so, cannot be clicked
+ * @property { bool } $circleEdges if equals true, the border-radius will be circle shaped
  * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
 const Button = forwardRef(
-  ({ type, loading, disable, onClick, ...props }, ref) => {
+  (
+    { type, loading, disable = false, $circleEdges = false, onClick, ...props },
+    ref
+  ) => {
     return (
       <div
         ref={ref}
         className={
-          'rv-border-radius-half rv-action-button-base ' +
+          ($circleEdges ? 'rv-circle' : 'rv-border-radius-half') +
+          ' rv-action-button-base ' +
           resolveClass({ type, disable }) +
           ' ' +
-          (props.className || ' ')
+          (props.classes || ' ')
         }
         style={props.style}
         onClick={disable || loading ? null : onClick}
@@ -43,7 +48,7 @@ export default Button;
 
 const resolveClass = ({ type, disable }) => {
   if (disable) type = 'disabled';
-  if (GlobalUtilities.get_type(type) == 'string') type = type.toLowerCase();
+  if (GlobalUtilities.get_type(type) === 'string') type = type.toLowerCase();
 
   const dic = {
     disabled: 'rv-action-button-disabled',

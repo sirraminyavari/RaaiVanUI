@@ -13,6 +13,7 @@ import UndoMSG from './UndoMessage';
  * @property {function} onTimeUpdate - A callback function that fires on countdown time update.
  * @property {function} closeButton - A custom close button for toast.
  * @property {number | string} toastId - A custom close id for toast.
+ * @property {Object} progressStyle - Styles that apply to progress bar.
  */
 
 /**
@@ -31,6 +32,7 @@ const UndoToast = (props) => {
     onTimeUpdate,
     closeButton,
     toastId,
+    progressStyle,
   } = props;
 
   const UndoMessage = (
@@ -53,6 +55,7 @@ const UndoToast = (props) => {
     onClose: onClose,
     closeButton: closeButton,
     toastId: toastId,
+    progressStyle: progressStyle,
   };
 
   if (!!type) {
@@ -72,6 +75,7 @@ UndoToast.propTypes = {
   onTimeUpdate: PropTypes.func,
   closeButton: PropTypes.elementType,
   toastId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  progressStyle: PropTypes.object,
 };
 
 UndoToast.displayName = 'UndoToastComponent';

@@ -25,7 +25,7 @@ import useWindow from 'hooks/useWindowContext';
  */
 const TextType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data; //! Meta data to feed component.
 
   const [items, setItems] = useState(!!value ? value.TextItems : []);
   const [exact, setExact] = useState(!!value ? value.Exact : false);
@@ -68,12 +68,14 @@ const TextType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, exact, or]);
 
   useEffect(() => {
     if (value === undefined) {
       setResetValue(GlobalUtilities.random());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

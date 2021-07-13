@@ -3,7 +3,7 @@
  */
 
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
-import EditIcon from 'components/Icons/EditIcon/Edit';
+import EditIcon from 'components/Icons/EditIcons/Edit';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 

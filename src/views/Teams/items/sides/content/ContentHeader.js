@@ -2,10 +2,17 @@ import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import * as Styled from 'views/Teams/Teams.styles';
 import CreateModal from './CreateModal';
+import useWindow from 'hooks/useWindowContext';
 
 const Header = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [spaceName, setSpaceName] = useState('');
+  const { RVDic } = useWindow();
+
+  const RVDicNewWorkspace = RVDic.CreateN.replace(
+    '[n]',
+    RVDic.NewN.replace('[n]', RVDic.Workspace)
+  );
 
   //! Add new space.
   const handleAddSpace = () => {
@@ -33,13 +40,13 @@ const Header = () => {
         inputValue={spaceName}
         onCancleCreate={handleCancelCreate}
         onCreate={handleSpaceCreate}
-        modalTitle="ایجاد فضای کاری جدید"
+        modalTitle={RVDicNewWorkspace}
         modalWidth="35%"
-        placeholder="نام فضای کاری"
+        placeholder={RVDic.WorkspaceName}
       />
-      <Styled.HeaderTitle>فضاهای کاری شما</Styled.HeaderTitle>
+      <Styled.HeaderTitle>{RVDic.YourWorkspaces}</Styled.HeaderTitle>
       <Button style={{ width: '10rem' }} onClick={handleAddSpace}>
-        + ساخت فضای جدید
+        {`+ ${RVDicNewWorkspace} `}
       </Button>
     </Styled.HeaderContainer>
   );

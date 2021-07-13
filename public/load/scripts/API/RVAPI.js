@@ -98,7 +98,8 @@
         params = params || {};
 
         var queryString = (!params.NodeTypeIDs ? "" : "&IDs=" + params.NodeTypeIDs.join(",")) +
-            (!params.RelatedID ? "" : "&RelatedID=" + params.RelatedID);
+            (!params.RelatedID ? "" : "&RelatedID=" + params.RelatedID) +
+            (params.Bookmarked !== true ? "" : "&Bookmarked=true");
 
         if (queryString && (queryString[0] == "&")) queryString = queryString.substr(1);
 

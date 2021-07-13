@@ -27,6 +27,11 @@ export const themeSlice = createSlice({
     sidebarCloseWidth: 64,
     sidebarMinWidth: MIN_WIDTH,
     sidebarMaxWidth: MAX_WIDTH,
+    themes: [],
+    currentTheme: null,
+    isSidebarCollapsed: true,
+    isDarkMode: false,
+    hasSidebarPattern: true,
   },
   reducers: {
     toggleSidebar: (state, action) => {
@@ -59,6 +64,21 @@ export const themeSlice = createSlice({
     },
     setCurrentWidth: (state, action) => {
       state.sidebarCurrentWidth = getWidth(action.payload);
+    },
+    setThemes: (state, action) => {
+      state.themes = action.payload;
+    },
+    setCurrentTheme: (state, action) => {
+      state.currentTheme = action.payload;
+    },
+    setSidebarCollapse: (state, action) => {
+      state.isSidebarCollapsed = action.payload;
+    },
+    setDarkMode: (state, action) => {
+      state.isDarkMode = action.payload;
+    },
+    setSidebarPattern: (state, action) => {
+      state.hasSidebarPattern = action.payload;
     },
   },
 });

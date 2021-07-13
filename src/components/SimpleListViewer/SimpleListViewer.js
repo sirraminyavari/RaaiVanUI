@@ -2,11 +2,15 @@
  * Simple list viewer with the 'fetchMore' feature.
  */
 import Button from 'components/Buttons/Button';
+import EmptyState from 'components/EmptyState/EmptyState';
 import Heading from 'components/Heading/Heading';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import usePrevious from 'hooks/usePrevious';
 import React, { useEffect, useRef, useState } from 'react';
-import { Component } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
+const { RVDic } = window;
 /**
  *
  * @param {function} fetchMethod - the method that component uses to fetch list.
@@ -16,46 +20,50 @@ import { Component } from 'react';
  * @param {Boolean} extraData - A trigger for waking up the list to refresh itself by fetching the list.
  * @returns
  */
+
 const SimpleListViewer = ({
   fetchMethod,
   renderItem,
   pageSize = 20,
   infiniteLoop,
-  extraData,
+  extraData = false,
   onTotal,
 }) => {
+  // useTraceUpdate({
+  //   fetchMethod,
+  //   renderItem,
+  //   pageSize,
+  //   infiniteLoop,
+  //   extraData,
+  //   onTotal,
+  // });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
   const [total, setTotal] = useState(0);
   // If true, means component is fetching  list
   const [isFetching, setIsFetching] = useState(false);
+  const [onEndCounter, setOnEndCounter] = useState(0);
 
   const [scrollDir, setScrollDir] = useState('scrolling down');
+  const preExtraData = usePrevious(extraData);
 
   const container = useRef();
 
-  // At the first time that the component mounts, fetches data
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, true);
-
+  const fetchThem = () => {
     setIsFetching(true);
-    console.log('nodeTypes****#mounted');
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
-      if (data) {
-        setData(data);
-        setTotal(total);
-        setIsFetching(false);
-        console.log(nodeTypeId, 'nodeTypes****#');
-        onTotal(total);
-      }
+      //ask ramin
+      setData(data);
+      setTotal(total);
+      setIsFetching(false);
+      onTotal(total);
+      setOnEndCounter(onEndCounter + 1);
     });
+  };
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, []);
+  // At the first time that the component mounts, fetches data
 
   // under develop
   useEffect(() => {
@@ -89,19 +97,10 @@ const SimpleListViewer = ({
 
   // forces to fetch list again
   useEffect(() => {
-    setIsFetching(true);
     setData([]);
-    console.log(extraData, 'nodeTypes****#$%extraData');
-
-    fetchMethod(pageSize, 1, (data, total, nodeTypeId) => {
-      if (data) {
-        setData(data);
-        setTotal(total);
-        setIsFetching(false);
-        onTotal(total);
-        console.log(nodeTypeId, 'nodeTypes****#$');
-      }
-    });
+    if (preExtraData !== undefined) {
+      fetchThem();
+    }
   }, [extraData]);
 
   // fetches more data if is available
@@ -116,18 +115,27 @@ const SimpleListViewer = ({
     }
   };
   // under develop
-  const handleScroll = (e) => {
-    const lastScrollY = window.scrollY;
-    const screenY = window.screenY;
-    const elementHeight = container.current?.clientHeight;
+  // const handleScroll = (e) => {
+  //   const lastScrollY = window.scrollY;
+  //   const screenY = window.screenY;
+  //   const elementHeight = container.current?.clientHeight;
+  //   if (
+  //     elementHeight - lastScrollY < 500 &&
+  //     infiniteLoop &&
+  //     scrollDir === 'scrolling down' &&
+  //     !isFetching &&
+  //     data.length > 0 &&
+  //     data.length < total
+  //   ) {
+  //     // fetchMore();
+  //   }
+  // };
 
-    if (
-      elementHeight - lastScrollY < 500 &&
-      infiniteLoop &&
-      scrollDir === 'scrolling down' &&
-      !isFetching
-    ) {
-      // fetchMore();
+  const onEndReached = () => {
+    console.log('onEndReached****');
+    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
+      console.log('onEnd fetched****');
+      fetchMore();
     }
   };
 
@@ -143,23 +151,57 @@ const SimpleListViewer = ({
       {isFetching && data.length === 0 ? (
         <LogoLoader />
       ) : data && data.length > 0 && renderItem ? (
-        <div style={{ width: '100%' }} ref={container} onScroll={handleScroll}>
-          {data.map((x, index) => renderItem(x, index))}
+        <div style={{ width: '100%' }} ref={container}>
+          <InfiniteScroll
+            dataLength={data.length} //This is important field to render the next data
+            next={onEndReached}
+            hasMore={true}
+            // loader={<h4>Loading...</h4>}
+            // endMessage={
+            //   <p style={{ textAlign: 'center' }}>
+            //     <b>Yay! You have seen it all</b>
+            //   </p>
+            // }
+          >
+            {data.map((x, index) => (
+              <div key={index}>{renderItem(x, index)}</div>
+            ))}
+          </InfiniteScroll>
         </div>
       ) : (
-        <Heading type={'h4'}>{'داده ای برای نمایش وجود ندارد'}</Heading>
+        <>
+          <EmptyState />
+          <Heading type={'h4'} style={{ textAlign: 'center' }}>
+            {RVDic.NothingToDisplay}
+          </Heading>
+        </>
       )}
+      {infiniteLoop && isFetching && data.length > 0 ? (
+        <>
+          <span style={{ color: 'transparent' }}>1</span>
+          <LoadingIconFlat className={'rv-default'} />
 
-      {data.length > 0 && data.length < total && (
-        <Button
-          loading={isFetching}
-          disable={isFetching}
-          onClick={fetchMore}
-          style={{ maxWidth: '30%', alignSelf: 'center' }}>
-          {'بیشتر'}
-        </Button>
+          <span style={{ color: 'transparent' }}>1</span>
+        </>
+      ) : (
+        <>
+          {data.length > 0 && data.length < total && (
+            <Button
+              loading={isFetching}
+              disable={isFetching}
+              onClick={fetchMore}
+              style={{
+                maxWidth: '30%',
+                alignSelf: 'center',
+                margin: '0.5rem 0 0.5rem 0',
+              }}>
+              {RVDic.More}
+            </Button>
+          )}
+        </>
       )}
     </div>
   );
 };
+
 export default SimpleListViewer;

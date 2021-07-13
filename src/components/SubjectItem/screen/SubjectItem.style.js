@@ -1,7 +1,9 @@
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-export const Container = styled.a`
+export const Container = styled(Link)`
   border-radius: 0.75rem;
   display: flex;
   height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
@@ -14,6 +16,11 @@ export const Container = styled.a`
   max-width: 100%;
   width: 100%;
   transition: max-width 0.5s;
+  :hover {
+    border-width: 0.1rem;
+    border-color: ${TCV_DEFAULT};
+    height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
+  }
 `;
 export const IconContent = styled.div`
   display: flex;
@@ -36,4 +43,7 @@ export const Root = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
+`;
+export const InputMode = styled.div`
+  background-color: green;
 `;

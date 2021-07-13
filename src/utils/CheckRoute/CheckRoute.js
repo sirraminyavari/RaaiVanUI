@@ -9,7 +9,8 @@ import Exception from 'components/Exception/Exception';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { decodeBase64, isEmpty } from 'helpers/helpers';
+import { loginSlice } from 'store/reducers/loginReducer';
+import { decodeBase64, isEmpty, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
@@ -18,6 +19,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const { setIsAthunticated } = loginSlice.actions;
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
   const {
     toggleNavSide,
@@ -47,6 +49,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
     //! Set active path.
     dispatch(setActivePath(location.pathname));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   useEffect(() => {
@@ -65,10 +68,12 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   } else if (route.NullProfileException) {
     return <Exception message="Null Profile Exception" />;
   } else if (route.RedirectToLogin) {
+    dispatch(setIsAthunticated(false));
+    setRVGlobal({ IsAuthenticated: false });
     return (
       <Redirect
         to={{
-          pathname: '/login',
+          pathname: '/auth',
           state: { from: props.location },
         }}
       />

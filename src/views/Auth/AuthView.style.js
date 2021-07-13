@@ -1,7 +1,7 @@
 /**
  * component style sfor the login screen.
  */
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Clouds from './clouds.png';
 

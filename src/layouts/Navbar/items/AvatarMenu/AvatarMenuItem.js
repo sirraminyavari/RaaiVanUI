@@ -7,7 +7,7 @@ const MenuItem = (props) => {
   const { RV_RevFloat } = useWindow();
   const {
     icon: Icon,
-    iconClass,
+    iconColor,
     textClass,
     linkTo,
     onClickHandler,
@@ -20,8 +20,14 @@ const MenuItem = (props) => {
       as={linkTo ? Link : 'div'}
       to={linkTo}
       onClick={onClickHandler ?? null}>
-      {!!Icon && <Icon size={22} className={iconClass} dir={RV_RevFloat} />}
-      {!!iconURL && <Avatar radius={25} userImage={iconURL} />}
+      {!!Icon && <Icon size={22} color={iconColor} dir={RV_RevFloat} />}
+      {!!iconURL && (
+        <Avatar
+          radius={25}
+          userImage={iconURL}
+          style={{ minWidth: '1.9rem' }}
+        />
+      )}
       <Styled.AvatarMenuTitle className={textClass}>
         {title}
       </Styled.AvatarMenuTitle>

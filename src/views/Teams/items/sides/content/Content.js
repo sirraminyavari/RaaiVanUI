@@ -1,4 +1,4 @@
-import Header from './ContentHeader';
+// import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import WorkSpace from './Space';
 
@@ -14,9 +14,9 @@ const spaces = [
 const ContentSide = () => {
   return (
     <Styled.ContentSide>
-      <Header />
+      {/* <Header /> */}
       <Styled.SpaceListConatiner>
-        {spaces.map((space, key) => (
+        {spaces?.map((space, key) => (
           <WorkSpace key={key} space={space} />
         ))}
       </Styled.SpaceListConatiner>
