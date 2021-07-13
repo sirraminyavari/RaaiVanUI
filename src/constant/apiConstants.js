@@ -59,6 +59,13 @@ export const RV_API = 'RVAPI';
 export const GET_THEMES = 'GetThemes';
 
 /**
+ * @description 'CheckRoute'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const CHECK_ROUTE = 'CheckRoute';
+
+/**
  * @description 'GetApplications'
  * @mode API function
  * @class 'RVAPI'

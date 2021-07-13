@@ -4,6 +4,7 @@
  */
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { TEAMS_PATH } from 'constant/constants';
 
 const PublicRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -18,7 +19,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
           return (
             <Redirect
               to={{
-                pathname: '/teams',
+                pathname: TEAMS_PATH,
                 state: { from: props.location },
               }}
             />

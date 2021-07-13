@@ -11,6 +11,12 @@ import AuthView from 'views/Auth/AuthView';
 import LoginView from 'views/Auth/LoginView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
+import {
+  AUTH_PATH,
+  LOGIN_NAME,
+  LOGIN_PATH,
+  ROOT_PATH,
+} from 'constant/constants';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -41,17 +47,17 @@ const App = () => {
               <Switch>
                 <Route
                   exact
-                  path="/login"
+                  path={LOGIN_PATH}
                   render={(props) => (
                     <CheckRoute
                       component={LoginView}
-                      name="login"
+                      name={LOGIN_NAME}
                       props={props}
                     />
                   )}
                 />
-                <PublicRoute path="/auth" component={AuthView} />
-                <PrivateRoute path="/" component={MainLayout} />
+                <PublicRoute path={AUTH_PATH} component={AuthView} />
+                <PrivateRoute path={ROOT_PATH} component={MainLayout} />
               </Switch>
             </Router>
           </Suspense>

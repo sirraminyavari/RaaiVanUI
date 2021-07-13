@@ -12,6 +12,19 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, isEmpty, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import {
+  AUTH_PATH,
+  CHANGE_PASS_PATH,
+  HOME_PATH,
+  MAIN_CONTENT,
+  TEAMS_PATH,
+  USER_PATH,
+} from 'constant/constants';
+import {
+  getSidebarNodes,
+  getUnderMenuPermissions,
+} from 'store/actions/sidebar/sidebarMenuAction';
+import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
@@ -37,13 +50,20 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         id: route.Application.ApplicationID,
       };
       dispatch(setSelectedTeam(application));
+      dispatch(getSidebarNodes());
+      dispatch(getConfigPanels());
+      dispatch(getUnderMenuPermissions(['Reports']));
+      // if (!!response.Onboarding) {
+      //   dispatch(onboardingName(response.Onboarding?.name || ''));
+      //   dispatch(onboardingStep(response.Onboarding?.fromStep || 0));
+      // }
     }
 
     //! Reset team to null if user is authenticated but has not selected a team yet.
     if (route.IsAuthenticated && !route.AppID) {
       dispatch(toggleSidebar(false)); //! Close sidebar.
       dispatch(setSelectedTeam({ name: null, id: null })); //! Clear selected team.
-      dispatch(setSidebarContent({ current: 'main', prev: '' })); //! Reset sidebar content to default.
+      dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' })); //! Reset sidebar content to default.
       dispatch(setSidebarDnDTree({})); //! Clear sidebar tree items.
     }
 
@@ -59,65 +79,65 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   if (isEmpty(route)) {
     return <LogoLoader />;
-  } else if (route.ServiceUnavailable) {
+  } else if (route?.ServiceUnavailable) {
     return <Exception message="Service Unavailable" />;
-  } else if (route.NoApplicationFound) {
+  } else if (route?.NoApplicationFound) {
     return <Exception message="No Application Found" />;
-  } else if (route.AccessDenied) {
+  } else if (route?.AccessDenied) {
     return <Exception message={window.RVDic.MSG.AccessDenied} />;
-  } else if (route.NullProfileException) {
+  } else if (route?.NullProfileException) {
     return <Exception message="Null Profile Exception" />;
-  } else if (route.RedirectToLogin) {
+  } else if (route?.RedirectToLogin) {
     dispatch(setIsAthunticated(false));
     setRVGlobal({ IsAuthenticated: false });
     return (
       <Redirect
         to={{
-          pathname: '/auth',
+          pathname: AUTH_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToHome && location.pathname !== '/home') {
+  } else if (route?.RedirectToHome && location.pathname !== HOME_PATH) {
     return (
       <Redirect
         to={{
-          pathname: '/home',
+          pathname: HOME_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToProfile && location.pathname !== '/user') {
+  } else if (route?.RedirectToProfile && location.pathname !== USER_PATH) {
     const path = route.RedirectToProfile;
     const isString = typeof path === 'string';
     return (
       <Redirect
         to={{
-          pathname: isString ? `/user/${path}` : '/user',
+          pathname: isString ? `${USER_PATH}/${path}` : USER_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToTeams && location.pathname !== '/teams') {
+  } else if (route?.RedirectToTeams && location.pathname !== TEAMS_PATH) {
     return (
       <Redirect
         to={{
-          pathname: '/teams',
+          pathname: TEAMS_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToChangePassword) {
+  } else if (route?.RedirectToChangePassword) {
     return (
       <Redirect
         to={{
-          pathname: '/changepassword',
+          pathname: CHANGE_PASS_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route.RedirectToURL) {
-    const url = route.RedirectToURL;
+  } else if (route?.RedirectToURL) {
+    const url = route?.RedirectToURL;
     window.location.href = url;
   } else {
     return <Component {...props} route={route} />;

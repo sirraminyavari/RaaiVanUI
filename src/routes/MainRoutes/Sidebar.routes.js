@@ -1,6 +1,16 @@
 import { lazy } from 'react';
-import { getURL } from 'helpers/helpers';
 import ConfigRoutes from './Config.routes';
+import {
+  Classes_NAME,
+  Classes_PATH,
+  Classes_WITHID_PATH,
+  REPORTS_NAME,
+  REPORTS_PATH,
+  USER_NAME,
+  USER_PATH,
+  USER_WITHID_PATH,
+} from 'constant/constants';
+
 const Profile = lazy(() =>
   import(
     /* webpackChunkName: "profile-view"*/ 'views/Profile/items/main/Profile-Main'
@@ -16,36 +26,36 @@ const Classes = lazy(() =>
 const SidebarRoutes = [
   ...ConfigRoutes,
   {
-    path: getURL('Reports'),
-    name: 'reports',
+    path: REPORTS_PATH,
+    name: REPORTS_NAME,
     exact: true,
     hasNavSide: true,
     component: Reports,
   },
   {
-    path: getURL('User'),
-    name: 'profile',
+    path: USER_PATH,
+    name: USER_NAME,
     exact: true,
     hasNavSide: true,
     component: Profile,
   },
   {
-    path: getURL('User') + '/:uid',
-    name: 'profile',
+    path: USER_WITHID_PATH,
+    name: USER_NAME,
     exact: true,
     hasNavSide: true,
     component: Profile,
   },
   {
-    path: getURL('Classes') + '/:id',
-    name: 'advanced_search',
+    path: Classes_WITHID_PATH,
+    name: Classes_NAME,
     exact: true,
     hasNavSide: true,
     component: Classes,
   },
   {
-    path: getURL('Classes'),
-    name: 'advanced_search',
+    path: Classes_PATH,
+    name: Classes_NAME,
     exact: true,
     hasNavSide: true,
     component: Classes,
