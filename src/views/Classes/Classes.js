@@ -6,11 +6,12 @@ const AdvancedSearchView = (props) => {
   const { route } = props;
 
   useEffect(() => {}, [props.route]);
-
+  console.log(route, 'route');
   return (
     <AdvanceSearch
       nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
-      hierarchy={route?.Hierarchy || []}>
+      hierarchy={route?.Hierarchy || []}
+      bookmarked={route?.Bookmarked}>
       <NodeList
         nodeTypeId={
           (route?.NodeTypes || []).length

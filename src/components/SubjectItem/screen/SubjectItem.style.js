@@ -21,6 +21,10 @@ export const Container = styled(Link)`
     border-color: ${TCV_DEFAULT};
     height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
   }
+  ${({ $isChecked }) =>
+    $isChecked &&
+    `border-width: 0.1rem; border-color: ${TCV_DEFAULT}; height: ${() =>
+      DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem'}`}
 `;
 export const IconContent = styled.div`
   display: flex;
