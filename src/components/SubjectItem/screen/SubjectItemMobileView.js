@@ -2,7 +2,7 @@
  * 'SubjectItem' for the time that the screen is small/medium.
  */
 import { decode } from 'js-base64';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';
@@ -50,13 +50,16 @@ const SubjectItemMobileView = ({
   //  * By clicking on the item will fire.
   //  */
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const checkHandler = (value) => {
+    onChecked(value, item);
+    setIsChecked(value);
+  };
   return (
     <Root>
-      <SubjectCheckBox
-        selectMode={selectMode}
-        onChecked={(value) => onChecked(value, item)}
-      />
       <Container
+        $isChecked={isChecked}
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
@@ -96,6 +99,7 @@ const SubjectItemMobileView = ({
           </Maintainer>
           {/* {isSaas && <SubjectStatus style={{ marginTop: '2rem' }} />} */}
         </MainContent>
+        <SubjectCheckBox selectMode={selectMode} onChecked={checkHandler} />
       </Container>
     </Root>
   );

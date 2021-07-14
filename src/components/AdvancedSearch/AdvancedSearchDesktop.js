@@ -16,6 +16,7 @@ import {
 } from './AdvancedSearch.style';
 import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { useSelector } from 'react-redux';
 
 const { RVDic } = window;
 /**
@@ -23,9 +24,16 @@ const { RVDic } = window;
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
+const AdvanceSearchDesktop = ({
+  children,
+  nodeType,
+  hierarchy,
+  bookmarked,
+  itemSelectionMode,
+  ...props
+}) => {
   const nodeTypeId = nodeType?.NodeTypeID;
-  const { RV_RTL, RV_RevFloat } = useWindow();
+  const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
   // if True, filter for will apear.
@@ -44,11 +52,15 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
 
   const [urgentCreate, setUrgentCreate] = useState(false);
 
-  const [isBookMarked, setIsBookMarked] = useState(false);
+  // it may be null
+  const [isBookMarked, setIsBookMarked] = useState(bookmarked === true);
 
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
 
+  const { onboardingName } = useSelector((state) => ({
+    onboardingName: state.onboarding.name,
+  }));
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
@@ -95,16 +107,17 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
     <Container
       isAdvancedShow={isAdvancedSearch}
       className={'rv-bg-color-white'}
+      itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}>
       <ScrollProvider
         className={'rv-bg-color-light-gray'}
+        itemSelectionMode={itemSelectionMode}
         isAdvancedShow={isAdvancedSearch}>
         <PerfectScrollbar
           onYReachEnd={(event) => console.log(event, 'on end reached')}
+          style={{ maxHeight: '100vh' }}
           className={'rv-border-radius-half'}>
-          <Scrollable
-            style={{ maxHeight: 'calc(100vh-9rem)' }}
-            isAdvancedShow={isAdvancedSearch}>
+          <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
               isAdvancedShow={isAdvancedSearch}
               className={'rv-bg-color-light-gray'}
@@ -130,7 +143,10 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
                   isBookMarked={isBookMarked}
                 />
               </TopFilter>
-              <div style={{ padding: '0 2rem 0 2rem' }}>
+              <div
+                data-tut={'advanced_search_results'}
+                style={{ padding: '0 2rem 0 2rem' }}
+                {...props}>
                 <UrgentCreate
                   onDismiss={onCreateUrgent}
                   hierarchy={hierarchy}
@@ -163,7 +179,9 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           flexDirection: 'column',
           // width: '25rem',
         }}>
-        <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        {!itemSelectionMode && (
+          <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        )}
         <SideFilter
           $isEnabled={isAdvancedSearch && formElements}
           dir={RV_RevFloat}

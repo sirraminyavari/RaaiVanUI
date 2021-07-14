@@ -46,22 +46,25 @@ const SubjectItemDesktop = ({
     VisitsCount,
   } = item;
   const [isHover, setIsHover] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   // /**
   //  * By clicking on the item will fire.
   //  */
 
+  const checkHandler = (value) => {
+    onChecked(value, item);
+    setIsChecked(value);
+  };
+
   return (
     <Root>
-      <SubjectCheckBox
-        selectMode={selectMode}
-        onChecked={(value) => onChecked(value, item)}
-      />
       {/* {console.log(item, 'item')} */}
       <Container
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
+        $isChecked={isChecked}
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
@@ -110,6 +113,7 @@ const SubjectItemDesktop = ({
             lastName={decode(Creator.LastName)}
           />
         </MainContent>
+        <SubjectCheckBox selectMode={selectMode} onChecked={checkHandler} />
       </Container>
     </Root>
   );

@@ -88,7 +88,14 @@ const FilterBar = ({
   onByBookmarked,
   isBookMarked,
 }) => {
-  const teamName = useSelector((state) => state?.theme?.selectedTeam?.name);
+  const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
+    (state) => ({
+      teamName: state?.theme?.selectedTeam?.name,
+      onboardingName: state?.onboarding?.name,
+      newDocMenu: state?.onboarding?.new_doc_menu,
+      selectedApp: state?.selectedTeam,
+    })
+  );
 
   const defaultDropDownLabel = {
     icon: (
@@ -126,7 +133,6 @@ const FilterBar = ({
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
-  const selectedApp = useSelector(selectedTeam);
   const { push } = useHistory();
 
   /**
@@ -329,7 +335,7 @@ const FilterBar = ({
           )}
         </div>
 
-        {(market || []).length > 0 && (
+        {((market || []).length > 0 || onboardingName === 'intro') && (
           <AnimatedDropDownList
             data={market}
             onSelectItem={onSelectItem}
@@ -339,6 +345,7 @@ const FilterBar = ({
             customStyle={{
               label: { minWidth: '8rem' },
             }}
+            data-tut={'new_doc_menu'}
             customClass={{
               labelClass: RV_RTL
                 ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'

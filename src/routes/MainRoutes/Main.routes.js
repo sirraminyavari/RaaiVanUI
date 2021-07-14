@@ -36,6 +36,7 @@ import {
   USER_SEARCH_NAME,
   USER_SEARCH_PATH,
 } from 'constant/constants';
+import TestView from 'views/TestView/TestView';
 
 const ErrorView = lazy(() =>
   import(/* webpackChunkName: "error-view"*/ 'views/Error/ErrorView')
@@ -198,6 +199,13 @@ const routes = [
     exact: true,
     hasNavSide: false,
     component: Onboarding,
+  },
+  {
+    path: '/ali',
+    name: 'ali',
+    exact: true,
+    hasNavSide: false,
+    component: TestView,
   },
 ];
 

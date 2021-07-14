@@ -18,6 +18,8 @@ export const Container = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 2rem 2rem 2rem;
+
+  ${({ itemSelectionMode }) => itemSelectionMode && 'padding:0'}
 `;
 export const ScrollProvider = styled.div`
   width: calc(
@@ -25,6 +27,8 @@ export const ScrollProvider = styled.div`
   );
   box-shadow: 1px 3px 20px #0000001f;
   border-radius: 1rem;
+  ${({ itemSelectionMode }) =>
+    itemSelectionMode && 'box-shadow: 0px 0px 0px #ffffff'}
 `;
 export const Scrollable = styled.div`
   width: 100%;
