@@ -2,7 +2,7 @@ import Lottie from 'react-lottie';
 
 const EmptyState = () => {
   const defaultOptions = {
-    loop: false,
+    loop: true,
     autoplay: true,
     animationData: require('./error.json'),
     rendererSettings: {
