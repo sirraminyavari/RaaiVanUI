@@ -15,7 +15,7 @@ import { TC_DEFAULT } from 'constant/Colors';
  * @description A component that renders a menu for navbar buttons.
  * @param {PropType} props
  */
-const NavButtonActions = (props) => {
+const NavButtonMenu = (props) => {
   const { actions } = props;
 
   return (
@@ -35,4 +35,4 @@ const NavButtonActions = (props) => {
   );
 };
 
-export default NavButtonActions;
+export default NavButtonMenu;
