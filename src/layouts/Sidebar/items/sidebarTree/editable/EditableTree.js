@@ -13,14 +13,14 @@ import {
   reorderSidebarNode,
 } from 'store/actions/sidebar/sidebarMenuAction';
 
-const selectTree = createSelector(
+const selectSidebarDnDTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.dndTree
 );
 
 const EditableTree = () => {
   const dispatch = useDispatch();
-  const tree = useSelector(selectTree);
+  const dndTree = useSelector(selectSidebarDnDTree);
 
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
   const { RVGlobal } = useWindow();
@@ -47,19 +47,19 @@ const EditableTree = () => {
   };
 
   const excludDropIds =
-    Object.values(tree?.items || {})
+    Object.values(dndTree?.items || {})
       .filter((item) => !item?.isCategory)
       .map((item) => item?.id) || [];
 
   const categories =
-    Object.values(tree?.items || {})
+    Object.values(dndTree?.items || {})
       .filter((item) => item?.isCategory && item?.parent !== 'root')
       .map((item) => item?.id) || [];
 
   return (
     <DragAndDropTree
       indentPerLevel={0}
-      tree={tree}
+      tree={dndTree}
       onMutateTree={handleOnMutateTree}
       onMoveItem={handleOnMoveItem}
       renderItem={handleRenderItem}

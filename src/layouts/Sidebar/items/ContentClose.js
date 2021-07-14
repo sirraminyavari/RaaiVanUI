@@ -4,6 +4,7 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
@@ -13,7 +14,13 @@ import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
-import { getURL } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
+
+//! Gets unfiltered nodes for closed sidebar menu.
+const selectSidebarNodes = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.nodeTypes
+);
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
@@ -28,11 +35,9 @@ const SidebarOnClose = ({ theme }) => {
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
-  const { dndTree } = useSelector((state) => state?.sidebarItems);
+  const sidebarNodes = useSelector(selectSidebarNodes);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
-
-  const nodes = (dndTree.items && Object.values(dndTree.items)) || [];
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -78,6 +83,7 @@ const SidebarOnClose = ({ theme }) => {
   //   });
   //   handleScroll();
   // }, [scroll]);
+
   const handleScrollUp = () => {
     setIsUp(false);
     setIsDown(false);
@@ -92,6 +98,30 @@ const SidebarOnClose = ({ theme }) => {
     setIsUp(false);
     setIsDown(true);
   };
+
+  const checkValidNodes = (node, index, self) => {
+    const nodeParentId = node?.ParentID;
+    const isNodeHidden = !!node.Hidden;
+
+    //! Check if it is hidden or not.
+    if (isNodeHidden) {
+      return false;
+    }
+
+    //! Check if its parent is hidden or not.
+    if (!!nodeParentId) {
+      const parentNode = self.find((item) => item.NodeTypeID === nodeParentId);
+      const isParentHidden = !!parentNode?.Hidden;
+      const isParentCategory = parentNode?.IsCategory;
+      if (isParentHidden || !isParentCategory) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
 
   return (
     <>
@@ -127,22 +157,22 @@ const SidebarOnClose = ({ theme }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            {nodes?.map((node, key) => {
-              const { data, id } = node;
+            {filteredSidebarNodes?.map((node, key) => {
+              const { TypeName, NodeTypeID, IconURL } = node;
               return (
                 <Tooltip
                   key={key}
-                  tipId={id}
+                  tipId={NodeTypeID}
                   effect="solid"
                   offset={{ [RV_Float]: -10 }}
                   place={RV_RevFloat}
-                  renderContent={() => data?.title}>
+                  renderContent={() => decodeBase64(TypeName)}>
                   <Styled.MiniIconWrapper
                     as={Link}
-                    to={getURL('Classes', { NodeTypeID: id })}>
-                    {data?.iconURL && (
+                    to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
+                    {!!IconURL && (
                       <Styled.MenuItemImage
-                        src={data?.iconURL}
+                        src={IconURL}
                         alt="sidebar-icon-closed"
                       />
                     )}

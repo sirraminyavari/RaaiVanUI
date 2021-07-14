@@ -4,7 +4,6 @@
 import { lazy, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from '../Sidebar.styles';
 import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
