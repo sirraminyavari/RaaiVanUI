@@ -3,6 +3,7 @@
  */
 import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
+import { LOGIN_PATH } from 'constant/constants';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -149,7 +150,7 @@ const AuthView = () => {
               );
             })}
 
-            <Redirect to="/auth/login" />
+            <Redirect to={LOGIN_PATH} />
           </Switch>
         </CSSTransition>
       </TransitionGroup>

@@ -88,7 +88,7 @@ const Modal = ({
               </TitleContainer>
             </>
           )}
-          <MainContent>{props.children}</MainContent>
+          <MainContent {...props}>{props.children}</MainContent>
         </ContentSection>
       </ContentContainer>
     </Container>

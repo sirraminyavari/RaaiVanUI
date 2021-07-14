@@ -1,7 +1,7 @@
 /**
  * Returns a list of authentication routes.
  */
-import SignIn from 'views/Auth/items/SignIn';
+// import SignIn from 'views/Auth/items/SignIn';
 import SignUp from 'views/Auth/items/SignUp';
 import VerifyingCode from 'views/Auth/items/VerifyingCode';
 import ForgotPassword from 'views/Auth/items/ForgotPassword';
@@ -10,11 +10,11 @@ import VerifyingResetPassword from 'views/Auth/items/VerifyingResetPassword';
 import ResetPassword from 'views/Auth/items/ResetPassword';
 
 const routes = [
-  {
-    path: '/auth/login',
-    name: 'login',
-    component: SignIn,
-  },
+  // {
+  //   path: '/auth/login',
+  //   name: 'login',
+  //   component: SignIn,
+  // },
   {
     path: '/auth/register',
     name: 'register',

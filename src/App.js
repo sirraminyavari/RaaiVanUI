@@ -1,15 +1,22 @@
 import { Suspense, lazy } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from 'utils/RouteHandler/PrivateRoute';
 import PublicRoute from 'utils/RouteHandler/PublicRoute';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import AuthView from 'views/Auth/AuthView';
+import LoginView from 'views/Auth/LoginView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
-// import 'assets/css/index.css';
+import CheckRoute from 'utils/CheckRoute/CheckRoute';
+import {
+  AUTH_PATH,
+  LOGIN_NAME,
+  LOGIN_PATH,
+  ROOT_PATH,
+} from 'constant/constants';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -34,12 +41,23 @@ const App = () => {
 
       <StoreProvider>
         <ErrorBoundry>
-          <Suspense fallback={<LogoLoader size={10} />}>
+          <Suspense fallback={<LogoLoader />}>
             <Router>
               <ScrollToTop />
               <Switch>
-                <PublicRoute path="/auth" component={AuthView} />
-                <PrivateRoute path="/" component={MainLayout} />
+                <Route
+                  exact
+                  path={LOGIN_PATH}
+                  render={(props) => (
+                    <CheckRoute
+                      component={LoginView}
+                      name={LOGIN_NAME}
+                      props={props}
+                    />
+                  )}
+                />
+                <PublicRoute path={AUTH_PATH} component={AuthView} />
+                <PrivateRoute path={ROOT_PATH} component={MainLayout} />
               </Switch>
             </Router>
           </Suspense>

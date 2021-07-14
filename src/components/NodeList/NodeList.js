@@ -34,6 +34,7 @@ const NodeList = (props) => {
     isByMe,
     byPeople,
     isBookMarked,
+    mode,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
@@ -165,7 +166,7 @@ const NodeList = (props) => {
                     console.log(value, item, 'onChecked')
                   }
                   parentNodeType={nodeTypeId}
-                  selectMode={false}
+                  selectMode={mode === 'ItemSelection'}
                   item={{
                     ...x,
                     LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),

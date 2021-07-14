@@ -176,29 +176,30 @@ const SimpleListViewer = ({
           </Heading>
         </>
       )}
-      {infiniteLoop && isFetching && data.length > 0 ? (
+      {infiniteLoop && isFetching && data.length > 0 && (
         <>
           <span style={{ color: 'transparent' }}>1</span>
           <LoadingIconFlat className={'rv-default'} />
 
           <span style={{ color: 'transparent' }}>1</span>
         </>
-      ) : (
-        <>
-          {data.length > 0 && data.length < total && (
-            <Button
-              loading={isFetching}
-              disable={isFetching}
-              onClick={fetchMore}
-              style={{
-                maxWidth: '30%',
-                alignSelf: 'center',
-                margin: '0.5rem 0 0.5rem 0',
-              }}>
-              {RVDic.More}
-            </Button>
-          )}
-        </>
+
+        // ) : (
+        // <>
+        //   {data.length > 0 && data.length < total && (
+        //     <Button
+        //       loading={isFetching}
+        //       disable={isFetching}
+        //       onClick={fetchMore}
+        //       style={{
+        //         maxWidth: '30%',
+        //         alignSelf: 'center',
+        //         margin: '0.5rem 0 0.5rem 0',
+        //       }}>
+        //       {RVDic.More}
+        //     </Button>
+        //   )}
+        // </>
       )}
     </div>
   );

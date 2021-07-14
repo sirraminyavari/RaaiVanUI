@@ -11,7 +11,7 @@ import AdvanceSearchDesktop from './AdvancedSearchDesktop';
  */
 const AdvanceSearch = ({ ...props }) => {
   return (
-    <>
+    <div style={{ width: '100%' }}>
       {/* If True, will render MobileView component */}
 
       {DimensionHelper()?.isTabletOrMobile ? (
@@ -19,7 +19,7 @@ const AdvanceSearch = ({ ...props }) => {
       ) : (
         <AdvanceSearchDesktop {...props} />
       )}
-    </>
+    </div>
   );
 };
 
