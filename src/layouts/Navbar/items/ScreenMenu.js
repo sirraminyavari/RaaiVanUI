@@ -2,7 +2,7 @@
  * Renders a list of navbar buttons for non-mobile screens.
  */
 import { lazy, Fragment, memo } from 'react';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import MenuItem from './MenuItem';
 import NavButtonsList from './buttonsList';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
@@ -23,7 +23,7 @@ const WideScreenMenu = () => {
     <Styled.WideScreenMenu>
       {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
-        if (isSaas && [2, 3, 6].includes(btn.index)) {
+        if (isSaas && ['2', '3', '6'].includes(btn.index)) {
           return null;
         }
 

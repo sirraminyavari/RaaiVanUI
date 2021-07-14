@@ -122,6 +122,7 @@ const SidebarOnClose = ({ theme }) => {
   };
 
   const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
+  const hasSidebarNodes = !!filteredSidebarNodes.length;
 
   return (
     <>
@@ -142,9 +143,11 @@ const SidebarOnClose = ({ theme }) => {
         </Tooltip>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        <Styled.Up isUp={isUp} onClick={scrollUp}>
-          <ChevronIcon dir="up" />
-        </Styled.Up>
+        {hasSidebarNodes && (
+          <Styled.Up isUp={isUp} onClick={scrollUp}>
+            <ChevronIcon dir="up" />
+          </Styled.Up>
+        )}
         <Styled.IconListContainer>
           {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
           <PerfectScrollbar
@@ -183,9 +186,11 @@ const SidebarOnClose = ({ theme }) => {
           </PerfectScrollbar>
           {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
-        <Styled.Down isDown={isDown} onClick={scrollDown}>
-          <ChevronIcon dir="down" />
-        </Styled.Down>
+        {hasSidebarNodes && (
+          <Styled.Down isDown={isDown} onClick={scrollDown}>
+            <ChevronIcon dir="down" />
+          </Styled.Down>
+        )}
       </Styled.CloseContentContainer>
     </>
   );

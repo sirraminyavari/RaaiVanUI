@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
-import * as Styled from './Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
 import {

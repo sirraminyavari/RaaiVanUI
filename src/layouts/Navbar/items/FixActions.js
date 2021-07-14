@@ -2,7 +2,7 @@
  * A component for showing navbar buttons sub menu.
  */
 import { Link } from 'react-router-dom';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import { TC_DEFAULT } from 'constant/Colors';
 

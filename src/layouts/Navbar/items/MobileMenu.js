@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 import NavButtonsList from './buttonsList';
 import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { BG_RED, C_WHITE, TC_WARM } from 'constant/Colors';
 import Badge from 'components/Badge/Badge';
@@ -20,7 +20,9 @@ const selectNotificationsCount = createSelector(
 
 const NavMenus = () => {
   const notifsCount = useSelector(selectNotificationsCount);
-  const { RV_Float } = useWindow();
+  const { RV_Float, RVGlobal } = useWindow();
+
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
   //! Make a flat list from a nested list.
   const flattenedButtons = NavButtonsList?.reduce(
@@ -44,9 +46,17 @@ const NavMenus = () => {
         <MenuIcon size={30} className={C_WHITE} style={{ cursor: 'pointer' }} />
       </div>
       <Styled.MenuOptionsWrapper>
-        {flattenedButtons?.map((btn, index) => {
-          const { badge, linkTo, title, icon } = btn;
+        {flattenedButtons?.map((btn) => {
+          const { badge, linkTo, title, icon, index } = btn;
           const hasBadge = badge && notifsCount > 0;
+
+          if (
+            isSaas &&
+            ['2', '2-1', '2-2', '3', '3-1', '3-2', '6'].includes(btn.index)
+          ) {
+            return null;
+          }
+
           return (
             <Styled.NavMenuOption as={Link} to={linkTo ?? '#'} key={index}>
               {NavbarIcons[icon]({ className: TC_WARM, size: 20 })}

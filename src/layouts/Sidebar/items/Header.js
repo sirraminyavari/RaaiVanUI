@@ -8,10 +8,9 @@ import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
 import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
-import { getURL } from 'helpers/helpers';
-import { INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
+import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
@@ -74,7 +73,7 @@ const SidebarHeader = () => {
     <Styled.SidebarHeader isMobile={isMobileScreen} hasPattern={hasPattern}>
       {isSidebarOpen && (
         <Link
-          to={getURL('Home')}
+          to={HOME_PATH}
           style={{ pointerEvents: isIntroOnboarding ? 'none' : 'revert' }}>
           <img
             src={isSaas ? (RV_RTL ? Logo_Fa : Logo_En) : RVGlobal.LogoURL}
