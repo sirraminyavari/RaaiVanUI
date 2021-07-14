@@ -14,6 +14,7 @@ import {
   MOBILE_BOUNDRY,
   FORBIDDEN_ROUTES_IN_SAAS,
   INTRO_ONBOARD,
+  TEAMS_PATH,
 } from 'constant/constants';
 // import TestView from 'views/TestView/TestView';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -77,7 +78,7 @@ const switchRoutes = (
       </>
     )} */}
 
-    <Redirect from="/*" to="/teams" />
+    <Redirect from="/*" to={TEAMS_PATH} />
   </Switch>
 );
 

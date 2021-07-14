@@ -1,4 +1,9 @@
-import { BackgroundImage, Container, Maintainer } from './AuthView.style';
+import {
+  BackgroundImage,
+  Container,
+  Maintainer,
+  Wrapper,
+} from './AuthView.style';
 import Logo from 'components/Media/Logo';
 import SignIn from 'views/Auth/items/SignIn';
 
@@ -9,7 +14,9 @@ const LoginView = () => {
       <div className="small-1 medium-2 large-4" />
       <Container className="small-10 medium-8 large-4">
         <Logo />
-        <SignIn />
+        <Wrapper>
+          <SignIn />
+        </Wrapper>
       </Container>
       <div className="small-1 medium-2 large-4" />
     </Maintainer>

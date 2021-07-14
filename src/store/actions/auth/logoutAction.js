@@ -8,11 +8,12 @@ const { setSelectedTeam } = themeSlice.actions;
 const { clearApplications } = ApplicationsSlice.actions;
 const logoutHandler = new APIHandler('RVAPI', 'Logout');
 
-const logoutAction = () => async (dispatch) => {
+const logoutAction = (done, error) => async (dispatch) => {
   try {
     logoutHandler.fetch(
       {},
       () => {
+        done && done();
         dispatch(logoutSuccess());
         dispatch(setSelectedTeam(null));
         dispatch(clearApplications());
@@ -20,9 +21,13 @@ const logoutAction = () => async (dispatch) => {
         delete window.RVGlobal.CurrentUser;
         delete window.RVGlobal.CurrentUserID;
       },
-      (error) => console.log({ error })
+      (err) => {
+        error && error(err);
+        console.log({ err });
+      }
     );
   } catch (err) {
+    error && error(err);
     console.log({ err });
   }
 };

@@ -2,7 +2,7 @@
  * A component for showing navbar buttons sub menu.
  */
 import { Link } from 'react-router-dom';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import { TC_DEFAULT } from 'constant/Colors';
 
@@ -15,7 +15,7 @@ import { TC_DEFAULT } from 'constant/Colors';
  * @description A component that renders a menu for navbar buttons.
  * @param {PropType} props
  */
-const NavButtonActions = (props) => {
+const NavButtonMenu = (props) => {
   const { actions } = props;
 
   return (
@@ -35,4 +35,4 @@ const NavButtonActions = (props) => {
   );
 };
 
-export default NavButtonActions;
+export default NavButtonMenu;

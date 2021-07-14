@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 // import CheckIcon from 'components/Icons/CheckIcons/DoubleCheck';
 import ArrowHead from 'components/Icons/ArrowIcons/ArrowHead';
 import { notificationsSlice } from 'store/reducers/notificationsReducer';
