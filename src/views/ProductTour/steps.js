@@ -14,7 +14,7 @@ export const steps = [
       position: 'bottom',
     },
     {
-      selector: '[data-tut="reactour__first"]',
+      selector: '[data-tut="categories_and_templates"]',
       content: ({ goTo }) => (
         <TourBox goTo={goTo} current={1} total={4} guidance={stepsText[0]} />
       ),
@@ -26,7 +26,7 @@ export const steps = [
       position: 'bottom',
     },
     {
-      selector: '[data-tut="reactour__second"]',
+      selector: '[data-tut="advanced_search_results"]',
       content: ({ goTo }) => (
         <TourBox goTo={goTo} current={2} total={4} guidance={stepsText[1]} />
       ),
@@ -38,7 +38,7 @@ export const steps = [
       position: 'right',
     },
     {
-      selector: '[data-tut="reactour__third"]',
+      selector: '[data-tut="new_doc_menu"]',
       content: ({ goTo }) => (
         <TourBox goTo={goTo} current={3} total={4} guidance={stepsText[2]} />
       ),
@@ -50,7 +50,7 @@ export const steps = [
       position: 'top',
     },
     {
-      selector: '[data-tut="reactour__last"]',
+      selector: '[data-tut="main-search-box"]',
       content: ({ goTo }) => (
         <TourBox goTo={goTo} current={4} total={4} guidance={stepsText[3]} />
       ),

@@ -17,6 +17,7 @@ import {
   LOGIN_PATH,
   ROOT_PATH,
 } from 'constant/constants';
+import ProductTour from 'views/ProductTour/ProductTour';
 
 const { RV_RTL, GlobalUtilities } = window;
 
