@@ -72,9 +72,13 @@ export const getApplications = () => async (dispatch) => {
           dispatch(getArchivedApplications());
         }
       },
-      (error) => console.log({ error })
+      (error) => {
+        dispatch(setFetchingApps(false));
+        console.log({ error });
+      }
     );
   } catch (err) {
+    dispatch(setFetchingApps(false));
     console.log({ err });
   }
 };
@@ -377,9 +381,13 @@ export const getApplicationsOrder = (unorderedApps, done, error) => async (
 
         // dispatch(setApplicationsOrder(unorderedApps));
       },
-      (error) => console.log({ error })
+      (error) => {
+        dispatch(setFetchingApps(false));
+        console.log({ error });
+      }
     );
   } catch (err) {
+    dispatch(setFetchingApps(false));
     console.log({ err });
   }
 };
