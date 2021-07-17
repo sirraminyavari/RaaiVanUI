@@ -64,6 +64,7 @@ const AnimatedDropDownList = ({
   hiddenSelectedItem,
   onClickLabel,
   onDropDownOpen,
+  introMode,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
   const {
@@ -79,6 +80,10 @@ const AnimatedDropDownList = ({
   const [dropedDown, setDropedDown] = useState(false);
 
   const buttonRef = useRef();
+
+  useEffect(() => {
+    setDropedDown(introMode);
+  }, [introMode]);
 
   useEffect(() => {
     function handleClickOutside(event) {

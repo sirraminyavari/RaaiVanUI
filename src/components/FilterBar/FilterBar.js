@@ -341,6 +341,7 @@ const FilterBar = ({
             onSelectItem={onSelectItem}
             defaultValue={selectedItem}
             hiddenSelectedItem={false}
+            introMode={newDocMenu === 'opened'}
             onClickLabel={() => onSelectItem(selectedItem)}
             customStyle={{
               label: { minWidth: '8rem' },
