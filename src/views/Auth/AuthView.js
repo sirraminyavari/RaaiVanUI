@@ -15,6 +15,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+// import useCheckRoute from 'hooks/useCheckRoute';
 import Routes from 'routes/AuthRoutes/Auth.routes';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
@@ -130,6 +131,9 @@ const AuthView = () => {
       RVGlobal?.SAASBasedMultiTenancy && document?.body?.removeChild(script);
     };
   }, [oneStepToInitDone]);
+
+  // const route = useCheckRoute('/login');
+  // console.log(route);
 
   const switchRoutes = (
     <Wrapper>
