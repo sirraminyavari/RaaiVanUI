@@ -12,9 +12,7 @@ import {
 } from 'constant/constants';
 
 const Profile = lazy(() =>
-  import(
-    /* webpackChunkName: "profile-view"*/ 'views/Profile/items/main/Profile-Main'
-  )
+  import(/* webpackChunkName: "profile-view"*/ 'views/Profile/Profile')
 );
 const Reports = lazy(() =>
   import(/* webpackChunkName: "reports-view"*/ 'views/Reports/Reports')
