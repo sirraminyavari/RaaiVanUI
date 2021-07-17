@@ -3,21 +3,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from 'utils/RouteHandler/PrivateRoute';
-import PublicRoute from 'utils/RouteHandler/PublicRoute';
+// import PublicRoute from 'utils/RouteHandler/PublicRoute';
 import StoreProvider from 'store/StoreProvider';
 import ErrorBoundry from 'components/ErrorBoundry/ErrorBoundry';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import AuthView from 'views/Auth/AuthView';
-import LoginView from 'views/Auth/LoginView';
+// import LoginView from 'views/Auth/LoginView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import {
-  AUTH_PATH,
-  LOGIN_NAME,
-  LOGIN_PATH,
-  ROOT_PATH,
-} from 'constant/constants';
-import ProductTour from 'views/ProductTour/ProductTour';
+
+import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -47,17 +42,15 @@ const App = () => {
               <ScrollToTop />
               <Switch>
                 <Route
-                  exact
-                  path={LOGIN_PATH}
+                  path={AUTH_PATH}
                   render={(props) => (
                     <CheckRoute
-                      component={LoginView}
-                      name={LOGIN_NAME}
                       props={props}
+                      name={LOGIN_NAME}
+                      component={AuthView}
                     />
                   )}
                 />
-                <PublicRoute path={AUTH_PATH} component={AuthView} />
                 <PrivateRoute path={ROOT_PATH} component={MainLayout} />
               </Switch>
             </Router>

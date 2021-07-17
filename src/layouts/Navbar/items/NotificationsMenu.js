@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from '../Navbar.styles';
-import AlertFooter from './AlertFooter';
-import AlertItem from './AlertItem';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
+import NotificationsFooter from './NotificationsFooter';
+import NotificationItem from './NotificationItem';
 import {
   getNotificationsCount,
   getNotificationsList,
@@ -62,10 +62,10 @@ const AlertActions = () => {
         <>
           <Styled.AlertListContainer>
             {slicedNotifs?.map((alert) => (
-              <AlertItem alert={alert} key={alert?.NotificationID} />
+              <NotificationItem alert={alert} key={alert?.NotificationID} />
             ))}
           </Styled.AlertListContainer>
-          <AlertFooter />
+          <NotificationsFooter />
         </>
       ) : (
         <Styled.EmptyAlert>

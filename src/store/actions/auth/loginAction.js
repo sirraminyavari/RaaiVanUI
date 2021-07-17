@@ -24,7 +24,10 @@ const apiHandler = new APIHandler('RVAPI', 'Login');
  * @param {String} email -  Email or mobile number entered.
  * @param {String} password - Password entered.
  */
-const loginAction = ({ email, password }) => async (dispatch, getState) => {
+const loginAction = ({ email, password, invitationId }) => async (
+  dispatch,
+  getState
+) => {
   const { auth } = getState();
 
   /**
@@ -35,11 +38,13 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
    * is being handled with 'RVAPI'.
    */
   const signin = () => {
+    console.log(invitationId, 'invitationId***');
     try {
       apiHandler.fetch(
         {
           UserName: encode(email),
           Password: encode(password),
+          InvitationID: invitationId,
         },
         (response) => {
           const { Succeed, AuthCookie } = response;

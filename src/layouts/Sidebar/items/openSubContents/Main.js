@@ -6,13 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { themeSlice } from 'store/reducers/themeReducer';
-import ReadableTree from '../sidebarTree/readable/ReadableTree';
-import UnderMenuList from '../underMenu/UnderMenuList';
-import SearchBox from '../openSubContents/searchBox/SearchBox';
-import SearchResultsList from '../openSubContents/searchBox/SearchResultsList';
+import ReadableTree from 'layouts/Sidebar/items/sidebarTree/readable/ReadableTree';
+import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
+import SearchBox from 'layouts/Sidebar/items/openSubContents/searchBox/SearchBox';
+import SearchResultsList from 'layouts/Sidebar/items/openSubContents/searchBox/SearchResultsList';
 import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
-import { isEmpty } from 'helpers/helpers';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import {
   SETTING_CONTENT,
@@ -44,7 +43,6 @@ const SidebarMainContent = () => {
 
   const showSearchResults = useSelector(selectShowSearchResults);
   const selectedTeam = useSelector(selectTeam);
-  const tree = useSelector((state) => state.sidebarItems.dndTree);
   const onboardingName = useSelector(selecteOnboardingName);
 
   //! Check if onboarding is activated on 'intro' mode.
@@ -83,7 +81,7 @@ const SidebarMainContent = () => {
         <SearchResultsList />
       ) : (
         <>
-          {tree?.items && !isEmpty(tree?.items) && <ReadableTree />}
+          <ReadableTree />
           <Styled.Divider />
           <UnderMenuList />
         </>

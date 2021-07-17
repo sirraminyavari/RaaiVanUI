@@ -8,8 +8,9 @@ import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import ReadableItem from './ReadableItem';
 import OnbordingItem from './OnboardingItem';
 import { INTRO_ONBOARD } from 'constant/constants';
+import { isEmpty } from 'helpers/helpers';
 
-const selectTree = createSelector(
+const selectSidebarDnDTree = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.dndTree
 );
@@ -21,7 +22,7 @@ const selecteOnboardingName = createSelector(
 
 const ReadableTree = () => {
   const dispatch = useDispatch();
-  const tree = useSelector(selectTree);
+  const sidebarDnDTree = useSelector(selectSidebarDnDTree);
   const onboardingName = useSelector(selecteOnboardingName);
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
@@ -42,12 +43,14 @@ const ReadableTree = () => {
   return (
     <>
       {isIntroOnboarding && <OnbordingItem />}
-      <DragAndDropTree
-        indentPerLevel={0}
-        tree={tree}
-        onMutateTree={handleMutateTree}
-        renderItem={handleRenderItem}
-      />
+      {sidebarDnDTree?.items && !isEmpty(sidebarDnDTree?.items) && (
+        <DragAndDropTree
+          indentPerLevel={0}
+          tree={sidebarDnDTree}
+          onMutateTree={handleMutateTree}
+          renderItem={handleRenderItem}
+        />
+      )}
     </>
   );
 };

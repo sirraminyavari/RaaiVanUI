@@ -127,7 +127,7 @@ const EditableBranch = (props) => {
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper isManageContent={isManageContent}>
-          {item?.isCategory || item?.hasChildren ? (
+          {item?.isCategory ? (
             <Styled.CaretIconWrapper>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>

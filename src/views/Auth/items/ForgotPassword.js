@@ -106,7 +106,7 @@ const ForgotPassword = () => {
     setSignUpClicked(true);
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register'));
+    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
   };
   /**
    * When the password input is focused, the password validator will be shown.

@@ -3,7 +3,7 @@
  */
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { C_DISTANT } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';

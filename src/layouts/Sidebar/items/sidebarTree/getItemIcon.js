@@ -29,7 +29,7 @@ const ItemIcon = (item, onExpand, onCollapse) => {
     onCollapse(item.id);
   };
 
-  if ((item.children && item.children.length > 0) || item.isCategory) {
+  if (item.hasChildren || item.isCategory) {
     return item.isExpanded ? (
       <CaretIcon size={20} onClick={handleOnCollapse} dir="down" />
     ) : (

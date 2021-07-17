@@ -4,6 +4,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
+import { decodeBase64, getURL } from 'helpers/helpers';
 
 //! Highlights some terms inside a text.
 const getHighlightedText = (text, highlight) => {
@@ -24,17 +25,17 @@ const getHighlightedText = (text, highlight) => {
 };
 
 const SearchResultItem = ({ node, searchText }) => {
-  const { id, data } = node;
+  const { NodeTypeID, TypeName, IconURL } = node;
   return (
     <Styled.MenuContainer
       className="BorderRadius4"
       as={Link}
-      to={`/classes/${id}`}
-      key={id}>
+      to={getURL('Classes', { NodeTypeID: NodeTypeID })}
+      key={NodeTypeID}>
       <Styled.MenuTitle>
-        <Styled.MenuItemImage src={data.iconURL} alt="menu-icon" />
+        <Styled.MenuItemImage src={IconURL} alt="menu-icon" />
         <Styled.HighlightedTitle>
-          {getHighlightedText(data.title, searchText)}
+          {getHighlightedText(decodeBase64(TypeName), searchText)}
         </Styled.HighlightedTitle>
       </Styled.MenuTitle>
     </Styled.MenuContainer>

@@ -1,20 +1,27 @@
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import { onboardingName, setNewDocMenu } from 'store/reducers/onboardingReducer';
+import {
+  onboardingName,
+  setNewDocMenu,
+  toggleActivation,
+} from 'store/reducers/onboardingReducer';
 import * as Style from './styled';
 
 const TourBox = ({ goTo, current, total, guidance }) => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(onboardingName("intro"));
+    dispatch(onboardingName('intro'));
   }, []);
 
   const next = () => {
-    dispatch(setNewDocMenu("opened"));
-    goTo(current + 1)
-  }
+    dispatch(setNewDocMenu('opened'));
+    goTo(current + 1);
+  };
+
+  const letsGo = () => {
+    dispatch(toggleActivation());
+  };
 
   return (
     <Fragment>
@@ -69,7 +76,7 @@ const TourBox = ({ goTo, current, total, guidance }) => {
               )}
 
               {current === total && (
-                <Style.NextButton onClick={() => goTo(current)}>
+                <Style.NextButton onClick={() => letsGo()}>
                   {' '}
                   عالیه! بزن بریم{' '}
                 </Style.NextButton>
