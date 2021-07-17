@@ -11,7 +11,7 @@ import AuthView from 'views/Auth/AuthView';
 // import LoginView from 'views/Auth/LoginView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import { AUTH_PATH, LOGIN_PATH, ROOT_PATH } from 'constant/constants';
+import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -45,7 +45,7 @@ const App = () => {
                   render={(props) => (
                     <CheckRoute
                       props={props}
-                      name={LOGIN_PATH}
+                      name={LOGIN_NAME}
                       component={AuthView}
                     />
                   )}
