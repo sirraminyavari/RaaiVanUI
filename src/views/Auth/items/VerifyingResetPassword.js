@@ -67,7 +67,7 @@ const VerifyingResetPassword = () => {
   // }, [dispatch, email, push]);
   useEffect(() => {
     const { GlobalUtilities } = window;
-    !email && push('/auth/login');
+    !email && push('/auth/login' + window.location.search);
 
     // !verifyCodeToken && push('/auth/login');
     GlobalUtilities?.init_recaptcha((captcha) => {
