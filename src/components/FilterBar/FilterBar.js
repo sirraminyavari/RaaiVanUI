@@ -92,7 +92,7 @@ const FilterBar = ({
     (state) => ({
       teamName: state?.theme?.selectedTeam?.name,
       onboardingName: state?.onboarding?.name,
-      newDocMenu: state?.onboarding?.new_doc_menu,
+      newDocMenu: state?.onboarding?.newDocMenu,
       selectedApp: state?.selectedTeam,
     })
   );
