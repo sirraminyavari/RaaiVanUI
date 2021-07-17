@@ -217,22 +217,23 @@ const IntroNodes = () => {
   return (
     <div
       style={{
-        backgroundColor: 'red',
         height: '100%',
         width: '100%',
         flex: 1,
       }}>
       {list.map((x, index) => {
-        <SubjectItem
-          key={index}
-          onChecked={(value, item) => console.log(value, item, 'onChecked')}
-          parentNodeType={'6261f696-2432-4307-9813-5288f231e24c'}
-          selectMode={false}
-          item={x}
-          isSaas={false}
-          onReload={() => console.log('onReload')}
-          onBookmark={() => console.log('onBookmark')}
-        />;
+        return (
+          <SubjectItem
+            key={index}
+            onChecked={(value, item) => console.log(value, item, 'onChecked')}
+            parentNodeType={'6261f696-2432-4307-9813-5288f231e24c'}
+            selectMode={false}
+            item={x}
+            isSaas={false}
+            onReload={() => console.log('onReload')}
+            onBookmark={() => console.log('onBookmark')}
+          />
+        );
       })}
     </div>
   );

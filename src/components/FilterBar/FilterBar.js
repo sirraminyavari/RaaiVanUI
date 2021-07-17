@@ -92,7 +92,7 @@ const FilterBar = ({
     (state) => ({
       teamName: state?.theme?.selectedTeam?.name,
       onboardingName: state?.onboarding?.name,
-      newDocMenu: state?.onboarding?.new_doc_menu,
+      newDocMenu: state?.onboarding?.newDocMenu,
       selectedApp: state?.selectedTeam,
     })
   );
@@ -341,6 +341,7 @@ const FilterBar = ({
             onSelectItem={onSelectItem}
             defaultValue={selectedItem}
             hiddenSelectedItem={false}
+            introMode={newDocMenu === 'opened'}
             onClickLabel={() => onSelectItem(selectedItem)}
             customStyle={{
               label: { minWidth: '8rem' },

@@ -195,7 +195,7 @@ const SignUp = () => {
   const onHaveAccount = () => {
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    push('/auth/login');
+    push('/login' + window.location.search);
   };
 
   const passVisibility = (value) => {

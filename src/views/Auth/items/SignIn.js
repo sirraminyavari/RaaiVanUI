@@ -94,13 +94,32 @@ const SignIn = () => {
   const onSignIn = () => {
     passRef.current?.blur();
     setSignInClicked(true);
-    dispatch(loginAction({ email: email, password: password }));
+    const { GlobalUtilities } = window;
+    const reqParams = GlobalUtilities.request_params();
+    const invitationId = reqParams?.get_value('inv');
+    console.log(
+      email,
+      'email',
+      password,
+      'password',
+      invitationId,
+      'invitationId'
+    );
+    dispatch(
+      loginAction({
+        email: email,
+        password: password,
+        invitationId: invitationId,
+      })
+    );
   };
   /**
    * navigates to resetPassword page.
    */
   const onForgot = () => {
-    dispatch(signupLoadFilesAction('/auth/forgotPassword'));
+    dispatch(
+      signupLoadFilesAction('/auth/forgotPassword' + window.location.search)
+    );
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };
@@ -111,7 +130,7 @@ const SignIn = () => {
     setSignUpClicked(true);
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register'));
+    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
     // push('/auth/register');
   };
   /**

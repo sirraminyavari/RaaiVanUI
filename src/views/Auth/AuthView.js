@@ -15,6 +15,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+// import useCheckRoute from 'hooks/useCheckRoute';
 import Routes from 'routes/AuthRoutes/Auth.routes';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
@@ -80,7 +81,7 @@ const AuthView = () => {
       } else if (passwordTicket) {
         // that.show_reset_password_form(passwordTicket, userName);
         // dispatch(setLoginRouteAction(RESET_PASSWORD));
-        push('/auth/resetPassword');
+        push('/auth/resetPassword' + window.location.search);
 
         setPreinitDone(true);
       } else setPreinitDone(true);
@@ -130,6 +131,9 @@ const AuthView = () => {
       RVGlobal?.SAASBasedMultiTenancy && document?.body?.removeChild(script);
     };
   }, [oneStepToInitDone]);
+
+  // const route = useCheckRoute('/login');
+  // console.log(route);
 
   const switchRoutes = (
     <Wrapper>

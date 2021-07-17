@@ -13,12 +13,18 @@ import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, isEmpty, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
-  AUTH_PATH,
   CHANGE_PASS_PATH,
+  FORGOT_PASS_PATH,
   HOME_PATH,
+  LOGIN_PATH,
   MAIN_CONTENT,
+  REGISTER_PATH,
+  RESET_PASS_ADDRESS_PATH,
+  RESET_PASS_PATH,
   TEAMS_PATH,
   USER_PATH,
+  VERIFICATION_PATH,
+  VERIFY_RESET_PATH,
 } from 'constant/constants';
 import {
   getSidebarNodes,
@@ -31,6 +37,8 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const route = useCheckRoute(name);
   const location = useLocation();
   const dispatch = useDispatch();
+
+  // console.log(route);
 
   const { setIsAthunticated } = loginSlice.actions;
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
@@ -77,6 +85,20 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
+  const isAuthView = [
+    FORGOT_PASS_PATH,
+    LOGIN_PATH,
+    REGISTER_PATH,
+    RESET_PASS_ADDRESS_PATH,
+    RESET_PASS_PATH,
+    VERIFICATION_PATH,
+    VERIFY_RESET_PATH,
+  ].includes(location.pathname);
+
+  const isHomeView = location.pathname === HOME_PATH;
+  const isUserView = location.pathname === USER_PATH;
+  const isTeamsView = location.pathname === TEAMS_PATH;
+
   if (isEmpty(route)) {
     return <LogoLoader />;
   } else if (route?.ServiceUnavailable) {
@@ -87,18 +109,18 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     return <Exception message={window.RVDic.MSG.AccessDenied} />;
   } else if (route?.NullProfileException) {
     return <Exception message="Null Profile Exception" />;
-  } else if (route?.RedirectToLogin) {
+  } else if (route?.RedirectToLogin && !isAuthView) {
     dispatch(setIsAthunticated(false));
     setRVGlobal({ IsAuthenticated: false });
     return (
       <Redirect
         to={{
-          pathname: AUTH_PATH,
+          pathname: LOGIN_PATH,
           state: { from: props.location },
         }}
       />
     );
-  } else if (route?.RedirectToHome && location.pathname !== HOME_PATH) {
+  } else if (route?.RedirectToHome && !isHomeView) {
     return (
       <Redirect
         to={{
@@ -107,7 +129,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         }}
       />
     );
-  } else if (route?.RedirectToProfile && location.pathname !== USER_PATH) {
+  } else if (route?.RedirectToProfile && !isUserView) {
     const path = route.RedirectToProfile;
     const isString = typeof path === 'string';
     return (
@@ -118,7 +140,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         }}
       />
     );
-  } else if (route?.RedirectToTeams && location.pathname !== TEAMS_PATH) {
+  } else if (route?.RedirectToTeams && !isTeamsView) {
     return (
       <Redirect
         to={{

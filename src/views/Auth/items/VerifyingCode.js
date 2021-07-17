@@ -54,7 +54,7 @@ const VerifyingCode = () => {
   }));
 
   useEffect(() => {
-    !verifyCodeToken && push('/auth/login');
+    !verifyCodeToken && push('/auth/login' + window.location.search);
   }, []);
   // Changing verifyCodeToken means: timer should be reset &
   // reSend button should be disappear.
