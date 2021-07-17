@@ -80,7 +80,7 @@ const AuthView = () => {
       } else if (passwordTicket) {
         // that.show_reset_password_form(passwordTicket, userName);
         // dispatch(setLoginRouteAction(RESET_PASSWORD));
-        push('/auth/resetPassword');
+        push('/auth/resetPassword' + window.location.search);
 
         setPreinitDone(true);
       } else setPreinitDone(true);

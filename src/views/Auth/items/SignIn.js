@@ -100,7 +100,9 @@ const SignIn = () => {
    * navigates to resetPassword page.
    */
   const onForgot = () => {
-    dispatch(signupLoadFilesAction('/auth/forgotPassword'));
+    dispatch(
+      signupLoadFilesAction('/auth/forgotPassword' + window.location.search)
+    );
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };
@@ -111,7 +113,7 @@ const SignIn = () => {
     setSignUpClicked(true);
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register'));
+    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
     // push('/auth/register');
   };
   /**
