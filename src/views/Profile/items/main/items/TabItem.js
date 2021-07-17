@@ -9,19 +9,27 @@ const TabItem = (props) => {
   const getIcon = () => {
     if (!!noImage) return;
     if (!!hasMore) {
-      return <ShowMoreIcon size={20} color={TCV_DEFAULT} />;
+      return (
+        <ShowMoreIcon size={20} color={isActive ? CV_WHITE : TCV_DEFAULT} />
+      );
     }
     return (
       <Styled.TabItemImage src="../../images/Preview.png" alt="tab-logo" />
     );
   };
+
   return (
-    <Styled.TabItemContainer isActive={isActive} onClick={onTabClick}>
+    <Styled.TabItemContainer
+      hasMore={!!hasMore}
+      isActive={isActive}
+      onClick={onTabClick}>
       {getIcon()}
-      <Styled.TabItemTitle isActive={isActive}>پروپوزال</Styled.TabItemTitle>
+      <Styled.TabItemTitle isActive={isActive}>
+        {item?.title}
+      </Styled.TabItemTitle>
       <Badge
-        value={90}
-        limit={150}
+        value={item?.count}
+        limit={100}
         style={{
           backgroundColor: isActive ? CV_WHITE : TCV_DEFAULT,
           fontSize: '0.8rem',

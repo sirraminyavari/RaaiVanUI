@@ -2,29 +2,27 @@ import { Link } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import LastTopicTabs from './LastTopicsTabs';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
-import TopicItem from './TopicItem';
+import PostItem from './PostItem';
 
-const LastRelatedTopics = () => {
+const LastPosts = () => {
   return (
-    <Styled.LastTopicsContainer>
+    <Styled.LastPostsContainer>
       <Styled.Header>
-        <Styled.Title>آخرین موضوعات مرتبط با من</Styled.Title>
+        <Styled.Title>پست‌های اخیر من</Styled.Title>
         <Button classes="see-all-button">
           <Link to="#" style={{ color: TCV_DEFAULT }}>
             مشاهده همه
           </Link>
         </Button>
       </Styled.Header>
-      <LastTopicTabs />
-      <PerfectScrollbar style={{ maxHeight: '17rem', marginTop: '0.5rem' }}>
+      <PerfectScrollbar style={{ maxHeight: '22rem', marginTop: '0.5rem' }}>
         {[1, 2, 3, 5, 6, 7, 8, 9, 10].map((item, index) => {
-          return <TopicItem key={index} />;
+          return <PostItem key={index} />;
         })}
       </PerfectScrollbar>
-    </Styled.LastTopicsContainer>
+    </Styled.LastPostsContainer>
   );
 };
 
-export default LastRelatedTopics;
+export default LastPosts;
