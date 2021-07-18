@@ -136,8 +136,10 @@ const FilterBar = ({
 
   const { push } = useHistory();
 
-  const isInOnBoarding = onboardingName === INTRO_ONBOARD;
-  const isNewDocOpened = newDocMenu === OPENED;
+  // const isInOnBoarding = onboardingName === INTRO_ONBOARD;
+  const isInOnBoarding = true;
+  // const isNewDocOpened = newDocMenu === OPENED;
+  const isNewDocOpened = true;
   // const isInOnBoarding = false;
 
   /**
@@ -147,7 +149,7 @@ const FilterBar = ({
   const getCreationAccess = () =>
     checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
       // If the user has access can choose between two items.
-      if (dt?.Result || isInOnBoarding) {
+      if (dt?.Result) {
         // setCreationData(data);
         setMarket(data);
       } else {
@@ -159,6 +161,11 @@ const FilterBar = ({
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
     getCreationAccess();
+    if (onboardingName === INTRO_ONBOARD) {
+      console.log(onboardingName, 'onboardingName*********');
+
+      setMarket(data);
+    }
   }, []);
 
   // Gets typeName by retrieving it from the hierarchy.
@@ -339,7 +346,8 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-        {console.log(isInOnBoarding, isNewDocOpened)}
+        {console.log(onboardingName === INTRO_ONBOARD, 'onboardingName')}
+        {console.log(isNewDocOpened === newDocMenu, 'newDocMenu')}
         {itemSelectionMode && market?.length > 0 ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
@@ -347,13 +355,16 @@ const FilterBar = ({
           </Button>
         ) : (
           <div data-tut={'new_doc_menu'}>
-            {market?.length > 0 && (
+            {(market?.length > 0 || onboardingName === INTRO_ONBOARD) && (
               <AnimatedDropDownList
-                data={market}
+                data={onboardingName === INTRO_ONBOARD ? data : market}
                 onSelectItem={onSelectItem}
                 defaultValue={selectedItem}
                 hiddenSelectedItem={false}
-                introMode={isInOnBoarding && isNewDocOpened}
+                introMode={
+                  onboardingName === INTRO_ONBOARD &&
+                  isNewDocOpened === newDocMenu
+                }
                 onClickLabel={() => onSelectItem(selectedItem)}
                 customStyle={{
                   label: { minWidth: '8rem' },
