@@ -4,8 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const onboardingSlice = createSlice({
   name: 'onboarding',
   initialState: {
-    name: '',
-    newDocMenu: '',
+    name: 'intro',
+    newDocMenu: 'opened',
     fromStep: 0,
   },
   reducers: {
