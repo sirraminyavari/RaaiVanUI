@@ -23,7 +23,6 @@ const SubjectCheckBox = ({ onChecked, selectMode }) => {
       selectMode={selectMode}
       defaultChecked={checked}
       onClick={onCheckChange}>
-      {console.log(checked, 'checked')}
       <CustomCheckBox isChecked={checked}>
         {checked && (
           <CheckCircleFilled

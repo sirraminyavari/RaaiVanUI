@@ -1,21 +1,32 @@
 import Heading from 'components/Heading/Heading';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
-import { CV_FREEZED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_FREEZED,
+  CV_RED_WARM,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import React from 'react';
 import styled from 'styled-components';
 
 const { RV_RTL } = window;
-const ClassItem = ({ title, icon, badge }) => {
+const ClassItem = ({ item, title, icon, badge, isSelected, onClick }) => {
   return (
-    <Container RV_RTL={RV_RTL}>
+    <Container
+      onClick={() => onClick(item)}
+      $isSelected={isSelected}
+      RV_RTL={RV_RTL}>
       <Content>
         {/* <Icon /> */}
 
-        <Heading style={{ display: 'flex', alignItems: 'center' }} type={'h6'}>
+        <CustomHeading
+          $isSelected={isSelected}
+          style={{ display: 'flex', alignItems: 'center' }}>
           {title}
-        </Heading>
+        </CustomHeading>
       </Content>
-      <Badge>{badge}</Badge>
+      <Badge $isSelected={isSelected}>{badge}</Badge>
     </Container>
   );
 };
@@ -32,16 +43,18 @@ const Container = styled.div`
   margin: 0 0rem 1rem 0rem;
   width: 100%;
   justify-content: space-between;
+  background-color: ${({ $isSelected }) => ($isSelected ? TCV_WARM : CV_WHITE)};
   ${({ RV_RTL }) =>
     RV_RTL ? 'flex-direction:row' : 'flex-direction:row-reverse'}
 `;
 const Badge = styled.div`
-  background-color: ${TCV_DEFAULT};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? CV_WHITE : TCV_DEFAULT};
   border-radius: 5rem;
   width: 1.5rem;
   height: 1.5rem;
   aspect-ratio: 1;
-  color: ${CV_WHITE};
+  color: ${({ $isSelected }) => ($isSelected ? TCV_DEFAULT : CV_WHITE)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,6 +70,9 @@ const Content = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`;
+const CustomHeading = styled.div`
+  color: ${({ $isSelected }) => ($isSelected ? CV_WHITE : TCV_DEFAULT)};
 `;
 
 export default ClassItem;
