@@ -91,6 +91,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(modifyApplication(appId, title));
   };
 
+  const closeUndoToast = (toastId) => {
+    toast.dismiss(toastId);
+  };
+
   //! Inform user on team delete.
   const onRemoveDone = (removedAppId) => {
     const deleteMSG = 'تیم حذف خواهد شد';
@@ -99,7 +103,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       message: deleteMSG,
       onUndo: () => undoTeamDelete(removedAppId),
       toastId: `delete-${removedAppId}`,
-      closeButton: <CloseIcon color={CV_RED} />,
+      closeButton: (
+        <CloseIcon
+          onClick={() => closeUndoToast(`delete-${removedAppId}`)}
+          color={CV_RED}
+        />
+      ),
     });
     setIsDeleting(false);
   };
