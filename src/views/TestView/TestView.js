@@ -44,7 +44,7 @@ const TestView = () => {
       <Modal
         onClose={onClose}
         contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
-        style={{ padding: '0', height: '90vh' }}
+        style={{ padding: '0', height: '100%' }}
         show={isVisible}>
         <ItemSelection />
       </Modal>

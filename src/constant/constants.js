@@ -15,6 +15,7 @@ export const FORBIDDEN_ROUTES_IN_SAAS = [
 
 //! Onboarding Phases
 export const INTRO_ONBOARD = 'intro';
+export const OPENED = 'opened';
 
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';
@@ -29,7 +30,7 @@ export const SETTING_CONTENT = 'setting';
 
 //! Paths name
 export const ROOT_PATH = '/';
-export const AUTH_PATH = '/auth';
+export const AUTH_PATH = '/(auth|login)';
 export const ERROR_PATH = '/error/:code';
 export const ERROR_NAME = 'error';
 export const NEWNODE_PATH = '/newnode/:id';
@@ -82,6 +83,18 @@ export const TEAMS_PATH = getURL('Applications');
 export const TEAMS_NAME = 'teams';
 export const LOGIN_PATH = getURL('Login');
 export const LOGIN_NAME = 'login';
+export const REGISTER_PATH = '/auth/register';
+export const REGISTER_NAME = 'register';
+export const VERIFICATION_PATH = '/auth/verificationCode';
+export const VERIFICATION_NAME = 'verificationCode';
+export const VERIFY_RESET_PATH = '/auth/verifyingResetPassword';
+export const VERIFY_RESET_NAME = 'verifyingResetPassword';
+export const FORGOT_PASS_PATH = '/auth/forgotPassword';
+export const FORGOT_PASS_NAME = 'forgotPassword';
+export const RESET_PASS_ADDRESS_PATH = '/auth/resetPasswordAddress';
+export const RESET_PASS_ADDRESS_NAME = 'resetPasswordAddress';
+export const RESET_PASS_PATH = '/auth/resetPassword';
+export const RESET_PASS_NAME = 'resetPassword';
 export const CONFIG_PATH = '/configuration';
 export const CONFIG_NAME = 'admin_configuration';
 export const CONFIG_SETTING_PATH = '/configuration/systemsettings';

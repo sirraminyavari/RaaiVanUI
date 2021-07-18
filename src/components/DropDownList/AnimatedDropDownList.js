@@ -64,6 +64,7 @@ const AnimatedDropDownList = ({
   hiddenSelectedItem,
   onClickLabel,
   onDropDownOpen,
+  introMode,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
   const {
@@ -73,12 +74,17 @@ const AnimatedDropDownList = ({
     containerClass,
     itemContainerClass,
     arrowIconColorClass,
+    dividerClass = 'rv-bg-color-white',
   } = customClass;
 
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
 
   const buttonRef = useRef();
+
+  useEffect(() => {
+    setDropedDown(introMode);
+  }, [introMode]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -154,7 +160,7 @@ const AnimatedDropDownList = ({
             className={arrowIconColorClass}
           />
         </Rotater>
-        <Divider className={'rv-bg-color-white'} />
+        <Divider className={dividerClass} />
         <Maintainer
           className={labelClass}
           onClick={onClickLabel}
