@@ -213,7 +213,6 @@ const list = [
   },
 ];
 const IntroNodes = () => {
-  console.log('intro mode xxx');
   return (
     <div
       style={{

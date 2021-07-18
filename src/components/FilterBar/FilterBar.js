@@ -27,6 +27,7 @@ import { createSelector } from 'reselect';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
 import { CV_WHITE } from 'constant/CssVariables';
+import { INTRO_ONBOARD, OPENED } from 'constant/constants';
 
 const selectedTeam = createSelector(
   (state) => state?.theme,
@@ -98,9 +99,7 @@ const FilterBar = ({
   );
 
   const defaultDropDownLabel = {
-    icon: (
-      <AddIcon color={'white'} style={{ fontSize: '1.2rem', color: 'red' }} />
-    ),
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
     label: RVDic?.NewN?.replace(
       '[n]',
       !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
@@ -135,6 +134,10 @@ const FilterBar = ({
 
   const { push } = useHistory();
 
+  const isInOnBoarding = onboardingName === INTRO_ONBOARD;
+  const isNewDocOpened = newDocMenu === OPENED;
+  // const isInOnBoarding = false;
+
   /**
    * Gets user access for creating document.
    * @returns
@@ -142,7 +145,7 @@ const FilterBar = ({
   const getCreationAccess = () =>
     checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
       // If the user has access can choose between two items.
-      if (dt?.Result) {
+      if (dt?.Result || isInOnBoarding) {
         // setCreationData(data);
         setMarket(data);
       } else {
@@ -334,35 +337,40 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-
-        {((market || []).length > 0 || onboardingName === 'intro') && (
-          <AnimatedDropDownList
-            data={market}
-            onSelectItem={onSelectItem}
-            defaultValue={selectedItem}
-            hiddenSelectedItem={false}
-            introMode={newDocMenu === 'opened'}
-            onClickLabel={() => onSelectItem(selectedItem)}
-            customStyle={{
-              label: { minWidth: '8rem' },
-            }}
-            data-tut={'new_doc_menu'}
-            customClass={{
-              labelClass: RV_RTL
-                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
-                : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
-              buttonClass: isDropDownOpen
-                ? `rv-bg-color-warm rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`
-                : `rv-bg-color-default rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`,
-              arrowIconColorClass: 'rv-white',
-            }}
-            onDropDownOpen={setIsDropDownOpen}
-          />
-        )}
+        {console.log(isInOnBoarding, isNewDocOpened)}
+        <div data-tut={'new_doc_menu'}>
+          {market?.length > 0 && (
+            <AnimatedDropDownList
+              data={market}
+              onSelectItem={onSelectItem}
+              defaultValue={selectedItem}
+              hiddenSelectedItem={false}
+              introMode={isInOnBoarding && isNewDocOpened}
+              onClickLabel={() => onSelectItem(selectedItem)}
+              customStyle={{
+                label: { minWidth: '8rem' },
+              }}
+              customClass={{
+                labelClass: RV_RTL
+                  ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                  : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
+                buttonClass: isDropDownOpen
+                  ? `rv-bg-color-warm rv-border-radius-half ${
+                      RV_RTL
+                        ? 'rv-ignore-right-radius'
+                        : 'rv-ignore-left-radius'
+                    }`
+                  : `rv-bg-color-default rv-border-radius-half ${
+                      RV_RTL
+                        ? 'rv-ignore-right-radius'
+                        : 'rv-ignore-left-radius'
+                    }`,
+                arrowIconColorClass: 'rv-white',
+              }}
+              onDropDownOpen={setIsDropDownOpen}
+            />
+          )}
+        </div>
       </TopRow>
 
       <BottomRow>
