@@ -15,7 +15,9 @@ const TourBox = ({ goTo, current, total, guidance }) => {
   }, []);
 
   const next = () => {
-    dispatch(setNewDocMenu('opened'));
+    if (current === 2) {
+      dispatch(setNewDocMenu('opened'));
+    }
     goTo(current + 1);
   };
 
