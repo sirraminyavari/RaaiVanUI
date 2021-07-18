@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from './ItemSelection.style';
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
@@ -6,6 +6,8 @@ import SideItemSelection from './items/SideItemSelection';
 
 const ItemSelection = (props) => {
   const { RV_RTL } = window;
+
+  const [checkedList, setCheckedList] = useState([]);
 
   const route = {
     AccessToken: '7GzPbOsFr2kFliO2GsKg',
@@ -22,15 +24,17 @@ const ItemSelection = (props) => {
     NodeTypes: [],
     RelatedItem: null,
   };
+
   return (
     <Container RV_RTL={RV_RTL}>
-      <SideItemSelection />
+      <SideItemSelection checkedList={checkedList} />
       <AdvanceSearch
         style={{ height: '40vh' }}
         itemSelectionMode={true}
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={route?.Hierarchy || []}>
         <NodeList
+          onCheckList={setCheckedList}
           nodeTypeId={
             (route?.NodeTypes || []).length
               ? route.NodeTypes[0]?.NodeTypeID

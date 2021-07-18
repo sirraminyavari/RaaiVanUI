@@ -3,6 +3,7 @@ import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
+import { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
@@ -35,10 +36,12 @@ const NodeList = (props) => {
     byPeople,
     isBookMarked,
     mode,
+    onCheckList,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
   useTraceUpdate(props);
@@ -63,6 +66,11 @@ const NodeList = (props) => {
     forceFetch,
     isBookMarked,
   ]);
+
+  useEffect(() => {
+    console.log(checkedItems, 'checkedItems');
+    onCheckList && onCheckList(checkedItems);
+  }, [checkedItems]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
@@ -146,6 +154,14 @@ const NodeList = (props) => {
     }
   };
 
+  const onCheckHandler = (value, item) => {
+    if (value) {
+      setCheckedItems([...checkedItems, item]);
+    } else {
+      setCheckedItems(checkedItems.filter((x) => x?.NodeID !== item?.NodeID));
+    }
+  };
+
   return (
     <>
       {onboardingName !== 'intro' ? (
@@ -162,9 +178,7 @@ const NodeList = (props) => {
               {x.Creator && (
                 <SubjectItem
                   key={index}
-                  onChecked={(value, item) =>
-                    console.log(value, item, 'onChecked')
-                  }
+                  onChecked={onCheckHandler}
                   parentNodeType={nodeTypeId}
                   selectMode={mode === 'ItemSelection'}
                   item={{

@@ -141,6 +141,7 @@ const AdvanceSearchDesktop = ({
                   people={byPeople}
                   onByBookmarked={setIsBookMarked}
                   isBookMarked={isBookMarked}
+                  itemSelectionMode={itemSelectionMode}
                 />
               </TopFilter>
               <div
