@@ -74,6 +74,7 @@ const AnimatedDropDownList = ({
     containerClass,
     itemContainerClass,
     arrowIconColorClass,
+    dividerClass = 'rv-bg-color-white',
   } = customClass;
 
   // If True, DropDown shows, if False, DropDown collapses
@@ -159,7 +160,7 @@ const AnimatedDropDownList = ({
             className={arrowIconColorClass}
           />
         </Rotater>
-        <Divider className={'rv-bg-color-white'} />
+        <Divider className={dividerClass} />
         <Maintainer
           className={labelClass}
           onClick={onClickLabel}
