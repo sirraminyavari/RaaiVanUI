@@ -346,8 +346,7 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-        {console.log(onboardingName === INTRO_ONBOARD, 'onboardingName')}
-        {console.log(isNewDocOpened === newDocMenu, 'newDocMenu')}
+
         {itemSelectionMode && market?.length > 0 ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
@@ -362,8 +361,7 @@ const FilterBar = ({
                 defaultValue={selectedItem}
                 hiddenSelectedItem={false}
                 introMode={
-                  onboardingName === INTRO_ONBOARD &&
-                  isNewDocOpened === newDocMenu
+                  onboardingName === INTRO_ONBOARD && newDocMenu === OPENED
                 }
                 onClickLabel={() => onSelectItem(selectedItem)}
                 customStyle={{
