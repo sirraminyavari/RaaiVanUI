@@ -5,6 +5,7 @@ import { StepperContext } from './context/stepper.context';
 import APIHandler from 'apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
+import { useHistory } from 'react-router';
 
 const activateTemplate = (x, appId) => {
   const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
@@ -35,9 +36,10 @@ const activateTemplate = (x, appId) => {
 
 const FinalStep = () => {
   const { info, dispatch } = useContext(StepperContext);
-  // const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
+    let delay = undefined;
     if (info.templates.length !== 0) {
       dispatch({ type: 'TOGGLE_LOADING' });
       info.templates.forEach(async (x, index) => {
@@ -45,8 +47,10 @@ const FinalStep = () => {
           await activateTemplate(x, info.applicationId);
           dispatch({ type: 'ACTIVATE_TEMPLATE', template: x });
           if (index === info.templates.length - 1) {
-            dispatch({ type: 'TOGGLE_LOADING' });
-            dispatch({ type: 'NEXT_STEP' });
+            delay = setTimeout(() => {
+              dispatch({ type: 'TOGGLE_LOADING' });
+              dispatch({ type: 'NEXT_STEP' });
+            }, 4000);
           }
         } catch (e) {
           console.log('an error happend');
@@ -54,6 +58,10 @@ const FinalStep = () => {
       });
     } else {
     }
+
+    return () => {
+      if (delay) clearTimeout(delay);
+    };
   }, []);
 
   const letsGo = () => {
@@ -61,14 +69,15 @@ const FinalStep = () => {
       { data: encode(finish_on_start) },
       (res) => {
         // redirect to clickmind workspace
-        dispatch({ type: 'TOGGLE_TOUR' });
+        // dispatch({ type: 'TOGGLE_TOUR' });
+        history.push('/classes');
       }
     );
   };
   return (
     <div className="final-step">
       {!info.loading && (
-        <div data-tut="reactour__first">
+        <div>
           <h1>خدا قوت!</h1>
           <h1>آماده‌ای بریم توی محیط کلیک‌مایند؟</h1>
           <div className="final-action">

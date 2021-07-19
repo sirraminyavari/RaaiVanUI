@@ -5,7 +5,7 @@ import { StepperContext } from '../context/stepper.context';
 const HeaderThumbnail = () => {
   const { info, dispatch } = useContext(StepperContext);
   return (
-    <div data-tut="reactour__last">
+    <div>
       {info.avatar === undefined && (
         <div className="thumb-placeholder">
           {`${info.firstName.charAt(0)} ${info.lastName.charAt(0)}`}

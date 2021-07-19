@@ -1,8 +1,6 @@
 const toggleTemplate = (state, template) => {
   const exist = state.templates.find((x) => x.id === template.id);
 
-  console.log(exist);
-
   if (!!exist) {
     const filtered = state.templates.filter((x) => x.id !== template.id);
     return { ...state, templates: filtered };

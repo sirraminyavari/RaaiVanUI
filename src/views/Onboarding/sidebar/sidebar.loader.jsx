@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Loader from './loader.gif';
 
 const SidbarLoader = () => {
@@ -7,9 +7,9 @@ const SidbarLoader = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShow(false);
-    }, 4000);
+    }, 3000);
     return () => clearTimeout(timer);
-  });
+  }, []);
 
   return (
     <div style={{ width: '25px' }}>

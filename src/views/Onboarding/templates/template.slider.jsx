@@ -15,6 +15,7 @@ const TemplateSlider = () => {
   const [templates, setTemplates] = useState([]);
   const [index, setIndex] = useState(0);
   const templateTrack = useRef();
+  const [touchStart, setTouchStart] = useState(0);
 
   useEffect(() => {
     new APIHandler('CNAPI', 'GetTemplates').fetch(
@@ -61,6 +62,22 @@ const TemplateSlider = () => {
     }
   };
 
+  const handleTouchStart = (e) => {
+    setTouchStart(e.clientY);
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStart - e.clientY > 100) {
+      // swipe up
+      next();
+    }
+
+    if (touchStart - e.clientY < -100) {
+      // swipe down
+      prev();
+    }
+  };
+
   const move = (e) => {
     if (e.deltaY > 0) {
       // scroll up
@@ -92,6 +109,8 @@ const TemplateSlider = () => {
         <div
           className="template-track"
           ref={templateTrack}
+          onMouseDown={(e) => handleTouchStart(e)}
+          onMouseUp={(e) => handleTouchEnd(e)}
           onWheel={(e) => move(e)}>
           {templates.length !== 0 &&
             templates.map((x) => <TemplateCard key={uuidv4()} item={x} />)}
