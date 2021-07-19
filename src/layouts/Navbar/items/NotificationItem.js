@@ -79,6 +79,7 @@ function renderTitle(notification) {
 
   title = reactStringReplace(title, '[user]', (match, index) => (
     <Link
+      onClick={() => console.log('user-link')}
       style={{
         color: TCV_DEFAULT,
         fontWeight: '500',
@@ -145,6 +146,7 @@ function renderTitle(notification) {
   for (const [key, value] of Object.entries(options)) {
     let theTag = (match, index) => (
       <Link
+        onClick={() => console.log('action-link')}
         style={{ color: TCV_DEFAULT, fontWeight: '500' }}
         key={index}
         to={value.url}>
