@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import {
   removeApplication,
@@ -32,7 +32,6 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { INTRO_ONBOARD } from 'constant/constants';
 import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 
@@ -44,16 +43,10 @@ const selectingApp = createSelector(
   (applications) => applications?.selectingApp
 );
 
-const selecteOnboardingName = createSelector(
-  (state) => state?.onboarding,
-  (onboarding) => onboarding?.name
-);
-
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const onboardingName = useSelector(selecteOnboardingName);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
@@ -155,14 +148,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(recycleApplication(appId, () => {}, true));
   };
 
-  const onSelectDone = () => {
-    const homeURL = getURL('Home');
-    const classesURL = getURL('Classes');
-    if (!!onboardingName && onboardingName === INTRO_ONBOARD) {
-      history.push(classesURL);
-    } else {
-      history.push(homeURL);
-    }
+  const onSelectDone = (path) => {
+    history.push(path);
   };
 
   const onSelectError = () => {};
