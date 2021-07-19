@@ -7,7 +7,6 @@ import {
   BG_GRAY_LIGHT,
   BG_WHITE,
   BO_DISTANT,
-  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -24,6 +23,7 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
+  TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
 
@@ -333,11 +333,11 @@ export const TeamConatiner = styled.div.attrs({
     margin: 0;
     padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
-    box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT};
-    // position: relative;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+    position: relative;
     background-color: ${CV_WHITE};
-    // ${RV_Float}: 7.7rem;
-    // bottom: -2.9rem;
+    ${RV_Float}: 8rem;
+    bottom: -2.8rem;
     // overflow: hidden;
   }
 

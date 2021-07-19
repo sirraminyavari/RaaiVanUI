@@ -328,7 +328,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                           lineHeight: '2.5rem',
                         }}
                         rtl={RV_RTL}>
-                        <UserPlusIcon size={16} color={TCV_DEFAULT} />
+                        <UserPlusIcon
+                          size={16}
+                          color={TCV_DEFAULT}
+                          style={{ marginLeft: '0.3rem' }}
+                        />
                       </Styled.AddUserWrapper>
                       <Styled.ExtraUsersPopupTitle>
                         افزودن هم تیمی جدید
@@ -365,7 +369,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   onClick={handleInviteUser}
                   rtl={RV_RTL}
                   dir={RV_RevFloat}>
-                  <UserPlusIcon size={25} color={TCV_DEFAULT} />
+                  <UserPlusIcon
+                    size={22}
+                    color={TCV_DEFAULT}
+                    style={{ marginLeft: '0.4rem' }}
+                  />
                 </Styled.AddUserWrapper>
               )}
             </Styled.TeamAvatarsWrapper>
