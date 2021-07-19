@@ -14,7 +14,7 @@ const AdvancedSearchView = (props) => {
   useEffect(() => {
     dispatch(toggleActivation());
   }, [props.route]);
-  console.log(route, 'route');
+
   return (
     <Fragment>
       <AdvanceSearch
