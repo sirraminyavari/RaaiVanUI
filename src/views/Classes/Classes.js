@@ -12,7 +12,7 @@ const AdvancedSearchView = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(toggleActivation())
+    dispatch(toggleActivation());
   }, [props.route]);
   console.log(route, 'route');
   return (
@@ -28,8 +28,8 @@ const AdvancedSearchView = (props) => {
               : null
           }
         />
-    </AdvanceSearch>
-    <ProductTour />
+      </AdvanceSearch>
+      <ProductTour />
     </Fragment>
   );
 };
