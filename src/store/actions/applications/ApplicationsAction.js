@@ -22,6 +22,7 @@ import {
   REMOVE_USER_FROM_APPLICATION,
   GET_APPLICATION_USERS,
 } from 'constant/apiConstants';
+import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
 
 const {
   setApplications,
@@ -236,6 +237,9 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           if (!!response.Onboarding) {
             dispatch(onboardingName(response.Onboarding?.Name || ''));
             dispatch(onboardingStep(response.Onboarding?.Step || 0));
+            done && done(CLASSES_PATH);
+          } else {
+            done && done(HOME_PATH);
           }
         }
         dispatch(
