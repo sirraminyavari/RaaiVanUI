@@ -253,6 +253,16 @@ const getBorderCss = (props) => {
     return css`
       border-width: 2px;
       border-style: dashed;
+      :hover {
+        border-color: ${TCV_DEFAULT};
+        & > * {
+          color: ${TCV_DEFAULT};
+        }
+      }
+
+      :hover span {
+        color: ${TCV_DEFAULT};
+      }
     `;
   }
   if (props.isArchive) {
@@ -260,6 +270,7 @@ const getBorderCss = (props) => {
       border: none;
       :hover {
         border: 1px solid ${CV_DISTANT};
+        padding: calc(0.5rem - 1px) calc(1.5rem - 1px);
       }
     `;
   }
@@ -269,6 +280,7 @@ const getBorderCss = (props) => {
     :hover {
       border-width: 2.5px;
       border-color: ${TCV_DEFAULT};
+      padding: calc(0.5rem - 1.5px) calc(1.5rem - 1.5px);
     }
   `;
 };
@@ -288,8 +300,8 @@ export const TeamConatiner = styled.div.attrs({
 })`
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
   height: 12.7rem;
-  ${getBorderCss}
   padding: 0.5rem 1.5rem;
+  ${getBorderCss}
   position: relative;
   float: ${({ dir }) => dir};
   margin-bottom: 1rem;
