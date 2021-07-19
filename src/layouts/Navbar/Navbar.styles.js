@@ -4,6 +4,7 @@ import {
   CLOSE_WIDTH,
   BO_RADIUS_HALF,
   BO_RADIUS_CIRCLE,
+  TEAMS_PATH,
 } from 'constant/constants';
 import Input from 'components/Inputs/Input';
 import {
@@ -31,6 +32,11 @@ const { RV_RevFloat, RV_Float, RV_RTL } = window;
 
 const getNavbarWidth = ({ theme, isMobile }) => {
   if (!!theme.states.selectedTeam?.id) {
+    if (theme.states.activePath === TEAMS_PATH) {
+      return css`
+        width: 100%;
+      `;
+    }
     return css`
       width: calc(
         100% -
