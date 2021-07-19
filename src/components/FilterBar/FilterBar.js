@@ -30,10 +30,7 @@ import { CV_WHITE } from 'constant/CssVariables';
 import { INTRO_ONBOARD, OPENED } from 'constant/constants';
 import Button from 'components/Buttons/Button';
 
-const selectedTeam = createSelector(
-  (state) => state?.theme,
-  (theme) => theme?.selectedTeam
-);
+export const advancedSearchButtonRef = React.createRef();
 
 const { RVDic, RVAPI, RV_RTL } = window || {};
 
@@ -308,7 +305,7 @@ const FilterBar = ({
   }));
 
   const breadcrumbItems = [
-    { id: selectedApp?.id, title: selectedApp?.name, linkTo: '/classes' },
+    { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
     ...extendedHierarchy,
   ];
 
@@ -339,7 +336,6 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-        {console.log(isInOnBoarding, isNewDocOpened)}
         {itemSelectionMode && market?.length > 0 ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
@@ -498,6 +494,7 @@ const FilterBar = ({
                 color:
                   advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
               }}
+              ref={advancedSearchButtonRef}
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={onAdvancedFilterClick}
