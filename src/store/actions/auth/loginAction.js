@@ -1,15 +1,14 @@
 /**
  * An action for Signing in
  */
-import { loginSlice } from '../../reducers/loginReducer';
-import APIHandler from '../../../apiHelper/APIHandler';
 import { encode } from 'js-base64';
-import stepTwoAction from './stepTwoAction';
+import APIHandler from '../../../apiHelper/APIHandler';
+import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
 import setAuthUserAction from './setAuthUserAction';
+import stepTwoAction from './stepTwoAction';
 const {
   loginStart,
-  loginSuccess,
   loginFailed,
   setPasswordError,
   setEmailError,
@@ -25,7 +24,10 @@ const apiHandler = new APIHandler('RVAPI', 'Login');
  * @param {String} email -  Email or mobile number entered.
  * @param {String} password - Password entered.
  */
-const loginAction = ({ email, password }) => async (dispatch, getState) => {
+const loginAction = ({ email, password, invitationId }) => async (
+  dispatch,
+  getState
+) => {
   const { auth } = getState();
 
   /**
@@ -36,17 +38,26 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
    * is being handled with 'RVAPI'.
    */
   const signin = () => {
+    console.log(invitationId, 'invitationId***');
     try {
       apiHandler.fetch(
         {
           UserName: encode(email),
           Password: encode(password),
+          InvitationID: invitationId,
         },
         (response) => {
           const { Succeed, AuthCookie } = response;
-          const { RVAPI, GlobalUtilities, RVDic } = window;
+          const { RVDic } = window;
           if (response.ErrorText) {
-            dispatch(loginFailed(RVDic.MSG[response.ErrorText]));
+            dispatch(
+              loginFailed(
+                (RVDic.MSG[response?.ErrorText] || response?.ErrorText).replace(
+                  '[n]',
+                  response?.RemainingLockoutTime || ' '
+                )
+              )
+            );
 
             console.log(response, 'response error');
 
@@ -60,7 +71,7 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
                 response.RemainingLockoutTime &&
                 !auth.Options.UseCaptcha;
 
-              const err = (
+              let err = (
                 RVDic.MSG[response.ErrorText] || response.ErrorText
               ).replace('[n]', response.RemainingLockoutTime || '');
 
@@ -81,9 +92,10 @@ const loginAction = ({ email, password }) => async (dispatch, getState) => {
             // GlobalUtilities.set_auth_cookie(AuthCookie);
             // console.log(response, 'response login');
             // dispatch(loginSuccess(response));
-            console.log(response, 'response login');
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
+            window.RVGlobal.IsAuthenticated = true;
+            document.location.href = '/teams';
           }
         },
         (err) => {

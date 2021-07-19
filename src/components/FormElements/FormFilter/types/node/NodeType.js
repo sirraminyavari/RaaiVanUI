@@ -27,7 +27,7 @@ const NodeType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const { MultiSelect, NodeTypes } = JSON.parse(decodeBase64(Info));
+  const { NodeTypes } = JSON.parse(decodeBase64(Info));
   const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
   const [items, setItems] = useState([]);
   const [resetValue, setResetValue] = useState(null);
@@ -79,12 +79,14 @@ const NodeType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     if (value === undefined) {
       setResetValue(GlobalUtilities.random());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

@@ -1,27 +1,39 @@
 /**
  * A component for advanced searching
  */
-import React, { useState, Component, cloneElement } from 'react';
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
+import React, { useState } from 'react';
 import {
   Container,
   Maintainer,
   SideFilter,
-  TopFilter,
   Space,
+  TopFilter,
+  Scrollable,
+  ScrollProvider,
 } from './AdvancedSearch.style';
+import UrgentCreate from './items/UrgentCreate';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { useSelector } from 'react-redux';
 
+const { RVDic } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
-  console.log(nodeType, 'nodeType');
+const AdvanceSearchDesktop = ({
+  children,
+  nodeType,
+  hierarchy,
+  bookmarked,
+  itemSelectionMode,
+  ...props
+}) => {
   const nodeTypeId = nodeType?.NodeTypeID;
-  const { RV_RTL, RV_RevFloat } = useWindow();
+  const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
   // if True, filter for will apear.
@@ -36,23 +48,36 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const [totalFound, setTotalFound] = useState(null);
   // By changing 'forceReload', an useEffect in 'NodeList' will be called and forces to fetch again.
   const [forceReload, setForceReload] = useState(false);
+  // if True, filters nodes created by specific people(under develop)
 
+  const [urgentCreate, setUrgentCreate] = useState(false);
+
+  // it may be null
+  const [isBookMarked, setIsBookMarked] = useState(bookmarked === true);
+
+  const [isByMe, setIsByMe] = useState(false);
+  const [byPeople, setByPeople] = useState(null);
+
+  const { onboardingName } = useSelector((state) => ({
+    onboardingName: state.onboarding.name,
+  }));
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
     Object.keys(value).map((key, index) => {
       if (value[key].Type === 'form') {
         let formTemp = {};
-        Object.keys(value[key].JSONValue).map((miniKey, index) => {
+        Object?.keys(value[key]?.JSONValue)?.map((miniKey, index) => {
           formTemp = {
-            [miniKey]: value[key].JSONValue[miniKey].JSONValue,
+            [miniKey]: value[key]?.JSONValue[miniKey]?.JSONValue,
             ...formTemp,
           };
+          return null;
         });
         temp = { [key]: formTemp, ...temp };
         setFormFilters(temp);
       } else {
-        temp = { [key]: value[key].JSONValue, ...temp };
+        temp = { [key]: value[key]?.JSONValue, ...temp };
         setFormFilters(temp);
       }
       return temp;
@@ -63,36 +88,91 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
   const forceFetch = () => {
     setForceReload(!forceReload);
   };
+  const onCreateUrgent = () => {
+    setUrgentCreate(!urgentCreate);
+  };
+  const onByMe = (e) => {
+    setIsByMe(e);
+    if (e) {
+      setByPeople(null);
+    }
+  };
+  const onByPeople = (item) => {
+    setIsByMe(false);
+
+    setByPeople(item);
+  };
+
   return (
-    <Container className={'rv-bg-color-white'} RV_RTL={RV_RTL}>
-      <Maintainer
-        isAdvancedShow={isAdvancedSearch}
+    <Container
+      isAdvancedShow={isAdvancedSearch}
+      className={'rv-bg-color-white'}
+      itemSelectionMode={itemSelectionMode}
+      RV_RTL={RV_RTL}>
+      <ScrollProvider
         className={'rv-bg-color-light-gray'}
-        fullWidth={isAdvancedSearch}>
-        <TopFilter>
-          <FilterBar
-            nodeTypeId={nodeTypeId}
-            advancedSearch={isAdvancedSearch}
-            onAdvanecedSearch={setIsAdvancedSearch}
-            onSearch={setSearchText}
-            onByDate={setDateFilter}
-            onFormElements={setFormElements}
-            totalFound={totalFound}
-            hierarchy={hierarchy}
-            nodeType={nodeType}
-            onForceFetch={forceFetch}
-          />
-        </TopFilter>
-        <div style={{ padding: '0 2rem 0 2rem' }}>
-          {React.cloneElement(children, {
-            searchText: searchText,
-            dateFilter: dateFilter,
-            formFilters: formFilters,
-            forceFetch: forceReload,
-            onTotalFound: setTotalFound,
-          })}
-        </div>
-      </Maintainer>
+        itemSelectionMode={itemSelectionMode}
+        isAdvancedShow={isAdvancedSearch}>
+        <PerfectScrollbar
+          onYReachEnd={(event) => console.log(event, 'on end reached')}
+          style={{ maxHeight: '100vh' }}
+          className={'rv-border-radius-half'}>
+          <Scrollable isAdvancedShow={isAdvancedSearch}>
+            <Maintainer
+              isAdvancedShow={isAdvancedSearch}
+              className={'rv-bg-color-light-gray'}
+              fullWidth={isAdvancedSearch}>
+              <TopFilter>
+                <FilterBar
+                  nodeTypeId={nodeTypeId}
+                  advancedSearch={isAdvancedSearch}
+                  onAdvanecedSearch={setIsAdvancedSearch}
+                  onSearch={setSearchText}
+                  onByDate={setDateFilter}
+                  onFormElements={setFormElements}
+                  totalFound={totalFound}
+                  hierarchy={hierarchy}
+                  nodeType={nodeType}
+                  onCreateUrgent={onCreateUrgent}
+                  onForceFetch={forceFetch}
+                  onByMe={onByMe}
+                  onByPeople={onByPeople}
+                  isByMe={isByMe}
+                  people={byPeople}
+                  onByBookmarked={setIsBookMarked}
+                  isBookMarked={isBookMarked}
+                  itemSelectionMode={itemSelectionMode}
+                />
+              </TopFilter>
+              <div
+                data-tut={'advanced_search_results'}
+                style={{ padding: '0 2rem 0 2rem' }}
+                {...props}>
+                <UrgentCreate
+                  onDismiss={onCreateUrgent}
+                  hierarchy={hierarchy}
+                  isVisible={urgentCreate}
+                  nodeTypeId={nodeTypeId}
+                  onForceFetch={forceFetch}
+                  dataFetched={totalFound}
+                  nodeType={nodeType}
+                />
+
+                {React.cloneElement(children, {
+                  searchText: searchText,
+                  dateFilter: dateFilter,
+                  formFilters: formFilters,
+                  forceFetch: forceReload,
+                  isByMe: isByMe,
+                  byPeople: byPeople,
+                  isBookMarked: isBookMarked,
+                  onTotalFound: setTotalFound,
+                })}
+              </div>
+            </Maintainer>
+          </Scrollable>
+        </PerfectScrollbar>
+      </ScrollProvider>
 
       <div
         style={{
@@ -100,14 +180,16 @@ const AdvanceSearchDesktop = ({ children, nodeType, hierarchy }) => {
           flexDirection: 'column',
           // width: '25rem',
         }}>
-        <Space isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        {!itemSelectionMode && (
+          <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
+        )}
         <SideFilter
-          isEnabled={isAdvancedSearch && formElements}
+          $isEnabled={isAdvancedSearch && formElements}
           dir={RV_RevFloat}
           rtl={RV_RTL}>
           {isAdvancedSearch && formElements && (
             <FormFilter
-              formName="فیلتر های پیشرفته"
+              formName={RVDic.AdvancedFilters}
               filters={formElements}
               onFilter={normalizeSearchElements}
               onCloseFilter={() => setIsAdvancedSearch(false)}

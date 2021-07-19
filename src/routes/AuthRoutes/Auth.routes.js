@@ -1,7 +1,6 @@
 /**
  * Returns a list of authentication routes.
  */
-import { lazy } from 'react';
 import SignIn from 'views/Auth/items/SignIn';
 import SignUp from 'views/Auth/items/SignUp';
 import VerifyingCode from 'views/Auth/items/VerifyingCode';
@@ -9,67 +8,57 @@ import ForgotPassword from 'views/Auth/items/ForgotPassword';
 import ResetPasswordAddress from 'views/Auth/items/ResetPasswordAddress';
 import VerifyingResetPassword from 'views/Auth/items/VerifyingResetPassword';
 import ResetPassword from 'views/Auth/items/ResetPassword';
-
-// const SignIn = lazy(() =>
-//   import(/* webpackChunkName: "login"*/ 'views/Auth/items/SignIn')
-// );
-// const SignUp = lazy(() =>
-//   import(/* webpackChunkName: "register"*/ 'views/Auth/items/SignUp')
-// );
-// const VerifyingCode = lazy(() =>
-//   import(/* webpackChunkName: "verify-code"*/ 'views/Auth/items/VerifyingCode')
-// );
-// const ForgotPassword = lazy(() =>
-//   import(/* webpackChunkName: "forgot-pass"*/ 'views/Auth/items/ForgotPassword')
-// );
-// const ResetPasswordAddress = lazy(() =>
-//   import(
-//     /* webpackChunkName: "forgot-pass"*/ 'views/Auth/items/ResetPasswordAddress'
-//   )
-// );
-// const VerifyingResetPassword = lazy(() =>
-//   import(
-//     /* webpackChunkName: "reset-pass-verify"*/ 'views/Auth/items/VerifyingResetPassword'
-//   )
-// );
-// const ResetPassword = lazy(() =>
-//   import(/* webpackChunkName: "reset-pass"*/ 'views/Auth/items/ResetPassword')
-// );
+import {
+  FORGOT_PASS_NAME,
+  FORGOT_PASS_PATH,
+  LOGIN_NAME,
+  LOGIN_PATH,
+  REGISTER_NAME,
+  REGISTER_PATH,
+  RESET_PASS_ADDRESS_NAME,
+  RESET_PASS_ADDRESS_PATH,
+  RESET_PASS_NAME,
+  RESET_PASS_PATH,
+  VERIFICATION_NAME,
+  VERIFICATION_PATH,
+  VERIFY_RESET_NAME,
+  VERIFY_RESET_PATH,
+} from 'constant/constants';
 
 const routes = [
   {
-    path: '/auth/login',
-    name: 'login',
+    path: LOGIN_PATH,
+    name: LOGIN_NAME,
     component: SignIn,
   },
   {
-    path: '/auth/register',
-    name: 'register',
+    path: REGISTER_PATH,
+    name: REGISTER_NAME,
     component: SignUp,
   },
   {
-    path: '/auth/verificationCode',
-    name: 'verificationCode',
+    path: VERIFICATION_PATH,
+    name: VERIFICATION_NAME,
     component: VerifyingCode,
   },
   {
-    path: '/auth/verifyingResetPassword',
-    name: 'verifyingResetPassword',
+    path: VERIFY_RESET_PATH,
+    name: VERIFY_RESET_NAME,
     component: VerifyingResetPassword,
   },
   {
-    path: '/auth/forgotPassword',
-    name: 'forgotPassword',
+    path: FORGOT_PASS_PATH,
+    name: FORGOT_PASS_NAME,
     component: ForgotPassword,
   },
   {
-    path: '/auth/resetPasswordAddress',
-    name: 'resetPasswordAddress',
+    path: RESET_PASS_ADDRESS_PATH,
+    name: RESET_PASS_ADDRESS_NAME,
     component: ResetPasswordAddress,
   },
   {
-    path: '/auth/resetPassword',
-    name: 'resetPassword',
+    path: RESET_PASS_PATH,
+    name: RESET_PASS_NAME,
     component: ResetPassword,
   },
 ];

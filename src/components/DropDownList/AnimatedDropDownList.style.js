@@ -2,6 +2,7 @@
  * styled-components related to @link AnimatedDropDownList.
  */
 import ArrowDown from 'components/Icons/ArrowDown';
+import { CV_WHITE } from 'constant/CssVariables';
 import styled, { css, keyframes } from 'styled-components';
 
 const { RV_Float, RV_RTL } = window;
@@ -55,15 +56,17 @@ export const ItemList = styled.div`
   flex-direction: column;
   position: absolute;
   top: 3rem;
-  opacity: ${({ dropedDown }) => (dropedDown ? '1' : '0')};
+  opacity: ${({ $dropedDown }) => ($dropedDown ? '1' : '0')};
   width: 100%;
   display: flex;
-  z-index: ${({ dropedDown }) => (dropedDown ? 1 : -1)};
-  border: ${({ dropedDown }) => (dropedDown ? '0.5px' : '0px')} solid #bac9dc;
+  z-index: ${({ $dropedDown }) => ($dropedDown ? 1 : -1)};
+  border: ${({ $dropedDown }) => ($dropedDown ? '0.5px' : '0px')} solid #bac9dc;
   border-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   border-top-width: 0px;
-  background-color: white;
+  background-color: ${CV_WHITE};
+  align-items: ${() => (RV_Float ? 'flex-start' : 'flex-end')};
+
   box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
@@ -71,10 +74,10 @@ export const ListItem = styled.div`
   padding: 0.75rem;
   text-align: ${RV_Float};
   width: 100%;
-  display: ${({ dropedDown }) => (dropedDown ? 'block' : `none`)};
+  display: ${({ $dropedDown }) => ($dropedDown ? 'block' : `none`)};
   transition: display 0.5s, max-height 0.5s, opacity 0.5s;
-  animation: ${({ dropedDown }) =>
-    dropedDown
+  animation: ${({ $dropedDown }) =>
+    $dropedDown
       ? css`
           ${appear} 1s
         `
@@ -100,8 +103,8 @@ export const Title = styled.div`
   color: #707070;
 `;
 export const ArrowIcon = styled(ArrowDown)`
-  transform: ${({ dropedDown }) =>
-    dropedDown ? 'rotate(180deg)' : `rotate(0deg)`};
+  transform: ${({ $dropedDown }) =>
+    $dropedDown ? 'rotate(180deg)' : `rotate(0deg)`};
   transition: transform 0.5s;
 `;
 export const Rotater = styled.div`
@@ -141,8 +144,12 @@ export const Maintainer = styled.button`
   padding: 0.5rem;
   align-items: center;
   min-height: 2.5rem;
+  justify-content: space-between;
+  width: 100%;
 `;
 export const Label = styled.div`
   color: ${({ color }) => color};
+  width: 100%;
   padding: ${() => (RV_RTL ? '0 0.7rem 0 0.7rem' : '0 0.7rem 0 0.7rem')};
+  text-align: ${RV_RTL ? 'right' : 'left'};
 `;

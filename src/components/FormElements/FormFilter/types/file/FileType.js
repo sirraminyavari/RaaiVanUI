@@ -69,12 +69,14 @@ const FileType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, exact, or]);
 
   useEffect(() => {
     if (value === undefined) {
       setResetValue(GlobalUtilities.random());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

@@ -10,31 +10,35 @@ import {
   SETT_TEAM_CONTENT,
   SETT_USERS_CONTENT,
 } from 'constant/constants';
-
-const settingItems = [
-  { id: '1', title: 'تنظیمات تیم', icon: SETT_TEAM_CONTENT },
-  { id: '2', title: 'مدیریت کاربران', icon: SETT_USERS_CONTENT },
-  { id: '3', title: 'مدیریت قالب ها', icon: SETT_CLASSES_CONTENT },
-  { id: '4', title: 'تنظیمات آگاه سازی', icon: SETT_NOTIFS_CONTENT },
-];
+import useWindow from 'hooks/useWindowContext';
 
 const SettingItem = () => {
   const dispatch = useDispatch();
   const { setSidebarContent } = themeSlice.actions;
+  const { RVDic } = useWindow();
+
+  const settingItems = [
+    { id: '1', title: RVDic.Settings, icon: SETT_TEAM_CONTENT },
+    // { id: '2', title: RVDic.UserManagement, icon: SETT_USERS_CONTENT },
+    { id: '3', title: RVDic.TemplateManagement, icon: SETT_CLASSES_CONTENT },
+    // { id: '4', title: RVDic.NotificationSettings, icon: SETT_NOTIFS_CONTENT },
+  ];
 
   //! Change sidebar content on click.
   const onSettingItemClick = useCallback((current) => {
     dispatch(setSidebarContent({ current, prev: SETTING_CONTENT }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      {settingItems.map((item) => {
+      {settingItems?.map((item, key) => {
         return (
           <Styled.SettingItemWrapper
-            onClick={() => onSettingItemClick(item.icon)}>
-            {iconList[item.icon]({ size: 20 })}
-            <Styled.SettingItemTitle>{item.title}</Styled.SettingItemTitle>
+            key={key}
+            onClick={() => onSettingItemClick(item?.icon)}>
+            {iconList[item?.icon]({ size: 20 })}
+            <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
           </Styled.SettingItemWrapper>
         );
       })}

@@ -3,18 +3,24 @@ import theme from './themeReducer';
 import domains from './domainsReducer';
 import auth from './loginReducer';
 import sidebarItems from './sidebarMenuReducer';
-import navbarAlert from './navbarAlertReducer';
+import notifications from './notificationsReducer';
 import applications from './applicationsReducer';
-//import reducers here
+import onboarding from './onboardingReducer';
+//! import reducers here
+
+const VERSION_REDUCER_KEY = 'raaivanVersion';
 
 const rootReducer = combineReducers({
+  //! This reducer will be used to store the version.
+  [VERSION_REDUCER_KEY]: (state = {}) => state,
   theme,
   domains,
   auth,
   sidebarItems,
-  navbarAlert,
+  notifications,
   applications,
-  // add reducers
+  onboarding,
+  //! add reducers.
 });
 
 export default rootReducer;

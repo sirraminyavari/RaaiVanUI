@@ -1,7 +1,7 @@
 /**
  * A component for showing the organization domains in a DropDown list
  */
-import React, { useRef } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setSelectedOrgDomainAction from 'store/actions/auth/setSelectedOrgDomainAction';
 import styled from 'styled-components';
@@ -11,9 +11,6 @@ const { RV_Float } = window;
 
 const OrgDomains = () => {
   const dispatch = useDispatch();
-
-  // We use ref to pass component dimension to 'UpToDownAnimate'
-  const ref = useRef();
 
   const { orgDomains, orgDomainsError } = useSelector((state) => ({
     orgDomains: state.auth.orgDomains,

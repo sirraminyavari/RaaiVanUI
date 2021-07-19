@@ -6,12 +6,12 @@ import useHover from 'hooks/useHover';
 import WorkspaceImage from 'assets/images/workspace.png';
 import useWindow from 'hooks/useWindowContext';
 import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
+import { CV_GRAY_LIGHT } from 'constant/CssVariables';
+import { getSystemName } from 'helpers/helpers';
 
 const Welcome = () => {
-  const { RV_RevFloat } = useWindow();
+  const { RV_RevFloat, RVDic } = useWindow();
   const [buttonRef, isButtonHovered] = useHover();
-  const [twitterRef, isTwitterHovered] = useHover();
-  const [linkedinRef, isLinkedinHovered] = useHover();
 
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
@@ -30,13 +30,20 @@ const Welcome = () => {
     openInNewTab(CLIQMIND_URL);
   };
 
+  const welcomeMSG = RVDic.WelcomeToRaaiVan.replace(
+    '[RaaiVan]',
+    getSystemName()
+  );
+
+  const blogTitle = RVDic.RaaiVanBlog.replace('[RaaiVan]', getSystemName());
+
   return (
     <Styled.WelcomeSide dir={RV_RevFloat}>
       <Styled.WorkspaceImageWrapper>
-        <img src={WorkspaceImage} alt="team-workspace" />
+        <Styled.WorkspaceImage src={WorkspaceImage} alt="team-workspace" />
       </Styled.WorkspaceImageWrapper>
       <Styled.WelcomeMSGContainer>
-        <Styled.WelcomeMessage>به کلیک مایند خوش آمدید!</Styled.WelcomeMessage>
+        <Styled.WelcomeMessage>{welcomeMSG}</Styled.WelcomeMessage>
       </Styled.WelcomeMSGContainer>
       <Button
         onClick={openCliqmind}
@@ -46,20 +53,15 @@ const Welcome = () => {
           width: '8rem',
           textAlign: 'center',
           borderColor: !isButtonHovered && '#fff',
+          backgroundColor: CV_GRAY_LIGHT,
         }}>
-        بلاگ کلیک مایند
+        {blogTitle}
       </Button>
       <Styled.SocialMediaContainer>
-        <Styled.IconWrapper
-          ref={twitterRef}
-          isHovered={isTwitterHovered}
-          onClick={openTwitter}>
+        {/* <Styled.IconWrapper onClick={openTwitter}>
           <TwitterIcon size={20} />
-        </Styled.IconWrapper>
-        <Styled.IconWrapper
-          ref={linkedinRef}
-          isHovered={isLinkedinHovered}
-          onClick={openLinkedin}>
+        </Styled.IconWrapper> */}
+        <Styled.IconWrapper onClick={openLinkedin}>
           <LinkedIcon size={20} />
         </Styled.IconWrapper>
       </Styled.SocialMediaContainer>

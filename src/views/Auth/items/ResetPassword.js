@@ -11,13 +11,13 @@ import { useHistory } from 'react-router-dom';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
-import PasswordValidation from '../elements/PasswordValidation';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 
 const { RVDic } = window;
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
-  const { goBack, push } = useHistory();
+  const { goBack } = useHistory();
   const passRef = useRef();
 
   //If true, the typed password will be shown.
@@ -25,21 +25,10 @@ const ResetPassword = () => {
   //If true, means the password input is focused(to showing the Password validation).
   const [passFocused, setPassFocused] = useState(false);
 
-  const {
-    email,
-    isFetching,
-    verifyCodeToken,
-    verifyCode,
-    verifyCodeError,
-    verifyCodeLength,
-    password,
-    passwordError,
-  } = useSelector((state) => ({
+  const { email, password, passwordError } = useSelector((state) => ({
     email: state.auth.email,
     password: state.auth.password,
     emailError: state.auth.emailError,
-    password: state.auth.password,
-    passwordError: state.auth.passwordError,
     isFetching: state.auth.isFetching,
     fetchingFiles: state.auth.fetchingFiles,
     routeHistory: state.auth.routeHistory,
@@ -89,7 +78,7 @@ const ResetPassword = () => {
             textAlign: 'center',
             ...common_style,
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Heading>
         <RowItems style={common_style}>
           <Heading
@@ -109,7 +98,7 @@ const ResetPassword = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}
@@ -123,7 +112,7 @@ const ResetPassword = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}
@@ -158,9 +147,7 @@ const ResetPassword = () => {
         />
         <Button
           type="primary"
-          style={{ fontSize: '1rem' }}
-          style={{ width: '100%' }}
-          style={common_style}
+          style={{ ...common_style, width: '100%', fontSize: '1rem' }}
           onClick={onChangePassword}>
           {RVDic.ChangePassword}
         </Button>

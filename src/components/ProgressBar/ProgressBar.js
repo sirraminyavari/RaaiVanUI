@@ -2,10 +2,10 @@
  * Renders a linear progress bar.
  */
 import CheckIcon from 'components/Icons/CheckIcons/Check';
-import CancelIcon from 'components/Icons/CancelCircle';
+// import CancelIcon from 'components/Icons/CancelCircle';
 import * as Styled from './ProgressBar.styles';
 import PropTypes from 'prop-types';
-import { C_RED } from 'constant/Colors';
+// import { C_RED } from 'constant/Colors';
 
 /**
  * @typedef PropType
@@ -21,7 +21,12 @@ import { C_RED } from 'constant/Colors';
  * @param {PropType} props
  */
 const ProgressBar = (props) => {
-  const { label, progress, barColor, onCancelProgress } = props;
+  const {
+    label,
+    progress,
+    barColor,
+    // onCancelProgress
+  } = props;
   return (
     <Styled.ProgressBarContainer>
       {label}

@@ -1,10 +1,7 @@
 import withTheme from 'components/withTheme/withTheme';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
-  OPEN_WIDTH,
   CLOSE_WIDTH,
-  BO_RADIUS_QUARTER,
-  BO_RADIUS_UNIT,
   BO_RADIUS_HALF,
   BO_RADIUS_CIRCLE,
 } from 'constant/constants';
@@ -21,24 +18,43 @@ import {
   C_FREEZED,
   BG_FREEZED,
 } from 'constant/Colors';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_RED,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_VERY_TRANSPARENT,
+} from 'constant/CssVariables';
 
-const { RV_RevFloat, RV_Float, GlobalUtilities } = window;
+const { RV_RevFloat, RV_Float, RV_RTL } = window;
+
+const getNavbarWidth = ({ theme, isMobile }) => {
+  if (!!theme.states.selectedTeam?.id) {
+    return css`
+      width: calc(
+        100% -
+          ${!isMobile
+            ? theme.states.isSidebarOpen
+              ? theme.states.sidebarCurrentWidth / 16
+              : CLOSE_WIDTH
+            : CLOSE_WIDTH}rem
+      );
+    `;
+  }
+  return css`
+    width: 100%;
+  `;
+};
 
 export const NavbarContainer = withTheme(styled.div.attrs({
   className: TBG_WARM,
 })`
-  width: ${({ theme, isMobile }) =>
-    `calc(100% - ${
-      !isMobile
-        ? theme.states.isSidebarOpen
-          ? theme.states.sidebarCurrentWidth / 16
-          : CLOSE_WIDTH
-        : CLOSE_WIDTH
-    }rem)`};
+  ${getNavbarWidth}
   height: 4rem;
   position: fixed;
   display: flex;
-  z-index: ${GlobalUtilities.zindex.alert()};
+  z-index: 900;
   justify-content: space-between;
   align-items: center;
   top: 0;
@@ -48,8 +64,15 @@ export const NavbarContainer = withTheme(styled.div.attrs({
   box-shadow: 0 3px 10px #00000029;
   // transition: all 0.7s ease;
 
-  .no-arrow {
-    display: none;
+  // .no-arrow {
+  //   display: none;
+  // }
+
+  .avatar-tooltip {
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
+    padding: 0 !important;
   }
 `);
 
@@ -76,9 +99,9 @@ export const ButtonContainer = styled(({ isActive, ref, ...props }) => (
   padding: 0.5rem;
   border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
 
-  // &:hover {
-  //   background-color: #27499f;
-  // }
+  &:hover {
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
 
   &:hover span {
     transform: rotateX(180deg);
@@ -119,14 +142,49 @@ export const SearchWrapper = styled.div`
   color: inherit;
 `;
 
+export const ExitAndHelpWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: inherit;
+`;
+
+export const ExitIconWrapper = styled.div.attrs({
+  className: `${C_FREEZED} ${BO_RADIUS_CIRCLE}`,
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${RV_RTL &&
+  `-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);`}
+  cursor: pointer;
+  padding: 0.5rem;
+`;
+
+export const QuestionIconWrapper = styled.div.attrs({
+  className: `${C_FREEZED} ${BO_RADIUS_CIRCLE}`,
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.85rem 0.75rem;
+`;
+
 export const SearchContainer = styled.div`
   margin: 0 1rem;
   position: relative;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+
   :focus-within input {
     width: 16rem;
   }
   :focus-within svg {
-    color: #2b7be4 !important;
+    color: ${TCV_DEFAULT} !important;
   }
 `;
 
@@ -141,7 +199,8 @@ export const SearchInput = styled(Input)`
     color: transparent;
   }
   ::placeholder {
-    color: #bac9dc;
+    color: ${CV_DISTANT};
+    text-transform: capitalize;
   }
 `;
 
@@ -150,7 +209,7 @@ export const SearchIcon = styled.div`
   ${`${RV_RevFloat}: 0.3rem;`}
   top: 0.3rem;
   font-size: 1.5rem;
-  color: #ddd;
+  color: ${CV_DISTANT};
 `;
 
 export const FixActionsContainer = styled.div.attrs({
@@ -161,7 +220,7 @@ export const FixActionsContainer = styled.div.attrs({
   padding: 0.5rem;
   margin: -0.7rem;
   overflow: hidden;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
 
 export const AlertActionsContainer = styled.div.attrs({
@@ -174,7 +233,7 @@ export const AlertActionsContainer = styled.div.attrs({
   padding-bottom: 0;
   margin: -0.7rem 0;
   overflow: hidden;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
 
 export const AlertListContainer = styled.div`
@@ -200,6 +259,18 @@ export const AlertItemContainer = styled.div.attrs({
   max-height: 6rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
+  position: relative;
+`;
+
+export const AlertItemCloseIcon = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  color: ${CV_RED};
+  position: absolute;
+  top: 0.3rem;
+  ${RV_RevFloat}: 0rem;
+  padding: 0.1rem 0.25rem;
+  cursor: pointer;
 `;
 
 export const AlertContentWrapper = styled.div`
@@ -209,7 +280,7 @@ export const AlertContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  margin-right: 1rem;
+  margin-${RV_Float}: 1rem;
   padding: 0.3rem 0;
 `;
 
@@ -230,7 +301,7 @@ export const AlertFooterContainer = styled.div`
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
   bottom: 1rem;
@@ -261,6 +332,7 @@ export const AlertFooterArrowWrapper = styled.div.attrs({
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  user-select: none;
 `;
 
 export const ButtonAction = styled.div.attrs({
@@ -272,7 +344,7 @@ export const ButtonAction = styled.div.attrs({
   padding: 0.3rem 0.8rem;
   transition: all 0.5s ease;
   :hover {
-    background-color: #eef0f5;
+    background-color: ${CV_FREEZED};
   }
 `;
 
@@ -294,7 +366,7 @@ export const MenuOptionsWrapper = styled.div.attrs({
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  box-shadow: 1px 3px 20px #2b7be44d;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   margin: -10px;
 `;
 
@@ -317,25 +389,35 @@ export const Arrow = styled.span`
   margin: 0 0.2rem;
   border-left: 0.3rem solid transparent;
   border-right: 0.3rem solid transparent;
-  border-top: 0.3rem solid #fff;
+  border-top: 0.3rem solid ${CV_WHITE};
   transition: all 0.5s ease;
 `;
 
 export const AvatarMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
-  min-width: 11rem;
-  max-width: 14rem;
-  // padding: 0rem 0.7rem;
+  align-items: flex-start;
+  width: 14rem;
+  margin: 0.5rem;
+  margin-${RV_Float}: 1rem;
+  margin-${RV_RevFloat}: 0;
+
+  .ps__rail-y {
+    ${RV_RTL ? 'right: 13rem !important;' : 'left: 13.3rem !important;'}
+  }
 `;
+
+// export const AvatarTeamsListWrapper = styled.div`
+// max-height: calc(100vh - 18rem);
+// overflow: scroll;
+// margin-bottom: 3rem;
+// `;
 
 export const AvatarMenuItem = styled.div.attrs({
   className: C_BLACK,
 })`
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
   padding: 0.4rem 0;
   cursor: pointer;
@@ -346,11 +428,15 @@ export const AvatarMenuTitle = styled.span`
   font-size: 0.85rem;
   text-transform: capitalize;
   color: ${({ color }) => color};
+  width: 12rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Divider = styled.div`
   margin: 0.5rem;
-  margin-${RV_Float}: -2rem;
-  margin-${RV_RevFloat}: -0.7rem;
-  border-top: 0.1rem solid #ccc;
+  margin-${RV_Float}: -1rem;
+  margin-${RV_RevFloat}: 0;
+  border-top: 0.1rem solid ${CV_DISTANT};
 `;

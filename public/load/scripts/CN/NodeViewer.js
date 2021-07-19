@@ -2413,7 +2413,7 @@
                             },
                             {
                                 Type: "div", Style: "margin-top:0.3rem;",
-                                Childs: [{ Type: "text", TextValue: fullname }]
+                                Childs: [{ Type: "text", TextValue: fullname || Base64.decode(item.User.UserName) }]
                             }
                         ]
                     }

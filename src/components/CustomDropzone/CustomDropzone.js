@@ -176,6 +176,7 @@ const CustomDropzone = (props) => {
         });
       }, Promise.resolve());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -267,12 +268,14 @@ const CustomDropzone = (props) => {
       files.forEach((file) => URL.revokeObjectURL(file.preview));
       setErrors([]);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   useEffect(() => {
     if (errors.length) {
       onError(errors);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
 
   return (

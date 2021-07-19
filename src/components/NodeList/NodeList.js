@@ -1,10 +1,17 @@
 import APIHandler from 'apiHelper/APIHandler';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
+import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
+import { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import useTraceUpdate from 'utils/TraceHelper/traceHelper';
+import IntroNodes from './IntroNodes';
 
-const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+const getNodesAPI = (bookMarked = false) => {
+  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
+};
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -17,27 +24,59 @@ const { RVAPI } = window;
  * @param {Object} formFilters - object of objects of filters
  * @returns
  */
-const NodeList = ({
-  searchText,
-  dateFilter,
-  nodeTypeId,
-  formFilters,
-  forceFetch,
-  onTotalFound,
-}) => {
+const NodeList = (props) => {
+  const {
+    searchText,
+    dateFilter,
+    nodeTypeId,
+    formFilters,
+    forceFetch,
+    onTotalFound,
+    isByMe,
+    byPeople,
+    isBookMarked,
+    mode,
+    onCheckList,
+  } = props || {};
+
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const [bookmarkedList, setBookmarkedList] = useState([]);
+  useTraceUpdate(props);
+
+  const { onboardingName } = useSelector((state) => ({
+    onboardingName: state.onboarding.name,
+  }));
+
+  const preExtraData = usePrevious(extraData);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
     setExtraData(!extraData);
-  }, [searchText, dateFilter, nodeTypeId, formFilters, forceFetch]);
+  }, [
+    isByMe,
+    byPeople,
+    searchText,
+    dateFilter,
+    nodeTypeId,
+    formFilters,
+    forceFetch,
+    isBookMarked,
+  ]);
+
+  useEffect(() => {
+    console.log(checkedItems, 'checkedItems');
+    onCheckList && onCheckList(checkedItems);
+  }, [checkedItems]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log(nodeTypeId, 'nodeTypes****#$%');
-    getNodesAPI.fetch(
+    console.log('fetch called****');
+
+    getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
@@ -46,12 +85,16 @@ const NodeList = ({
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
         FormFilters: encode(JSON.stringify(formFilters)),
+        UseNodeTypeHierarchy: true,
+        IsMine: isByMe,
+        CreatorUserID: byPeople?.id,
+        VisitsCount: true,
       },
       (response) => {
         if (response.Nodes) {
           // setDataCount(response.TotalCount);
 
-          const nodeIds = response.Nodes.map((x) => x.NodeID);
+          const nodeIds = response?.Nodes.map((x) => x?.NodeID);
           nodeIds.join('|');
           // method for fetching the  complementary info about each node
           getNodeInfoAPI.fetch(
@@ -65,8 +108,10 @@ const NodeList = ({
               LikeStatus: true,
             },
             (restInfo) => {
-              const complementeryNodes = response.Nodes.map((x) => {
-                const foundedNode = restInfo.find((y) => y.NodeID === x.NodeID);
+              const complementeryNodes = response?.Nodes.map((x) => {
+                const foundedNode = restInfo?.find(
+                  (y) => y.NodeID === x.NodeID
+                );
                 return {
                   ...x,
                   ...foundedNode,
@@ -74,11 +119,14 @@ const NodeList = ({
               });
               if (done) {
                 done(complementeryNodes, response.TotalCount, nodeTypeId);
+                setBookmarkedList(
+                  complementeryNodes
+                    ?.filter((x) => x.LikeStatus)
+                    ?.map((y) => y.NodeID)
+                );
               }
             },
-            (error) => {
-              console.log(error, 'response');
-            }
+            (error) => {}
           );
         }
       },
@@ -88,52 +136,66 @@ const NodeList = ({
 
   // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
-  const onClick = (nodeId) => {
-    // objectUrl({ NodeID: nodeId });
-    console.log(RVAPI.NodePageURL({ NodeID: nodeId }), 'node Id ');
-    RVAPI.NodePageURL({ NodeID: nodeId });
-  };
   const onReload = () => {
     setExtraData(!extraData);
   };
+  const onBookmark = (nodeId) => {
+    // const nodeIndex = bookmarkedList.findIndex((y) => y === nodeId);
+    const nodeIndex = bookmarkedList.indexOf(nodeId);
+
+    if (nodeIndex > -1) {
+      let tempList = bookmarkedList;
+
+      tempList = tempList.filter((item) => item !== nodeId);
+
+      setBookmarkedList(tempList);
+    } else {
+      setBookmarkedList([...bookmarkedList, nodeId]);
+    }
+  };
+
+  const onCheckHandler = (value, item) => {
+    if (value) {
+      setCheckedItems([...checkedItems, item]);
+    } else {
+      setCheckedItems(checkedItems.filter((x) => x?.NodeID !== item?.NodeID));
+    }
+  };
+
   return (
     <>
-      <SimpleListViewer
-        fetchMethod={fetchData}
-        extraData={extraData}
-        infiniteLoop={true}
-        onEndReached={() => {
-          console.log('Im reached end');
-        }}
-        onTotal={onTotalFound}
-        renderItem={(x, index) => (
-          <>
-            {x.Creator && (
-              <SubjectItem
-                key={index}
-                onChecked={(value, item) =>
-                  console.log(value, item, 'onChecked')
-                }
-                parentNodeType={nodeTypeId}
-                selectMode={false}
-                item={x}
-                isSaas={isSaas}
-                onClick={() => onClick(x.NodeID)}
-                onReload={onReload}
-              />
-            )}
-          </>
-        )}
-      />
-      {/* {nodes.length > 0 &&
-        nodes.map((x) => (
-          <SubjectItem
-            onChecked={(value, item) => console.log(value, item, 'onChecked')}
-            selectMode={false}
-            item={x}
-            isSaas={true}
-          />
-        ))} */}
+      {onboardingName !== 'intro' ? (
+        <SimpleListViewer
+          fetchMethod={fetchData}
+          extraData={extraData}
+          infiniteLoop={true}
+          onEndReached={() => {
+            console.log('Im reached end');
+          }}
+          onTotal={onTotalFound}
+          renderItem={(x, index) => (
+            <>
+              {x.Creator && (
+                <SubjectItem
+                  key={index}
+                  onChecked={onCheckHandler}
+                  parentNodeType={nodeTypeId}
+                  selectMode={mode === 'ItemSelection'}
+                  item={{
+                    ...x,
+                    LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+                  }}
+                  isSaas={isSaas}
+                  onReload={onReload}
+                  onBookmark={onBookmark}
+                />
+              )}
+            </>
+          )}
+        />
+      ) : (
+        <IntroNodes />
+      )}
     </>
   );
 };

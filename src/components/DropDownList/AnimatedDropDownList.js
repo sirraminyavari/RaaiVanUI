@@ -1,7 +1,7 @@
 /**
  * A DropDown with minimal animation in opening and closing time.
  */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ArrowIcon,
   Container,
@@ -64,6 +64,7 @@ const AnimatedDropDownList = ({
   hiddenSelectedItem,
   onClickLabel,
   onDropDownOpen,
+  introMode,
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
   const {
@@ -73,10 +74,35 @@ const AnimatedDropDownList = ({
     containerClass,
     itemContainerClass,
     arrowIconColorClass,
+    dividerClass = 'rv-bg-color-white',
   } = customClass;
 
   // If True, DropDown shows, if False, DropDown collapses
   const [dropedDown, setDropedDown] = useState(false);
+
+  const buttonRef = useRef();
+
+  useEffect(() => {
+    setDropedDown(introMode);
+  }, [introMode]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (buttonRef?.current && !buttonRef?.current?.contains(event?.target)) {
+        // onClick();
+        onDropDownOpen(false);
+
+        setDropedDown(false);
+      }
+    }
+
+    // Bind the event listener
+    document?.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document?.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [buttonRef]);
 
   /**
    * Close/Open drop-down
@@ -100,14 +126,14 @@ const AnimatedDropDownList = ({
    */
   const renderList = () => {
     const list = hiddenSelectedItem
-      ? data.filter((raw) => raw.value !== defaultValue.value)
+      ? data?.filter((raw) => raw?.value !== defaultValue?.value)
       : data;
     return (
       <ItemList
         style={{ ...itemContainer }}
-        dropedDown={dropedDown}
+        $dropedDown={dropedDown}
         className={itemContainerClass}>
-        {list.map((x, index) => (
+        {list?.map((x, index) => (
           <DropDownItem
             onSelectItem={() => onClickItem(x, index)}
             item={x}
@@ -121,27 +147,27 @@ const AnimatedDropDownList = ({
   };
 
   return (
-    <Container>
+    <Container ref={buttonRef}>
       <DropDownButton className={containerClass} style={{ ...container }}>
-        <Maintainer
-          className={labelClass}
-          onClick={onClickLabel}
-          style={{ ...label }}>
-          {defaultValue.icon}
-          <Label color={defaultValue.color}>{defaultValue.label}</Label>
-        </Maintainer>
-        <Divider className={'rv-bg-color-white'} />
         <Rotater
-          dropedDown={dropedDown}
+          $dropedDown={dropedDown}
           onClick={onClick}
           style={{ ...button }}
           className={buttonClass}>
           <ArrowIcon
-            dropedDown={dropedDown}
-            color={customStyle.arrowIconColor}
+            $dropedDown={dropedDown}
+            color={customStyle?.arrowIconColor}
             className={arrowIconColorClass}
           />
         </Rotater>
+        <Divider className={dividerClass} />
+        <Maintainer
+          className={labelClass}
+          onClick={onClickLabel}
+          style={{ ...label }}>
+          {defaultValue?.icon}
+          <Label color={defaultValue.color}>{defaultValue?.label}</Label>
+        </Maintainer>
       </DropDownButton>
       {renderList()}
     </Container>

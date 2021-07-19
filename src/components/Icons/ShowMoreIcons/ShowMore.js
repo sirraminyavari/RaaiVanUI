@@ -1,11 +1,11 @@
-import { CgMoreVertical, CgMore } from 'react-icons/cg';
+import { FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi';
 
 const ShowMoreIcon = ({ dir: direction, ...rest }) => {
   switch (direction) {
     case 'vertical':
-      return <CgMoreVertical {...rest} />;
+      return <FiMoreVertical {...rest} />;
     default:
-      return <CgMore {...rest} />;
+      return <FiMoreHorizontal {...rest} />;
   }
 };
 

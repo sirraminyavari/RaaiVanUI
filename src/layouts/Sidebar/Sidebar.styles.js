@@ -1,10 +1,8 @@
-import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
 import withTheme from 'components/withTheme/withTheme';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_QUARTER,
-  BO_RADIUS_UNIT,
   CLOSE_WIDTH,
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
@@ -12,14 +10,13 @@ import {
   TBO_WARM,
   C_DISTANT,
   C_WHITE,
-  TBO_DEFAULT,
-  BO_GRAY_DARK,
   C_RED,
   BO_GRAY,
   C_GRAY,
   TBG_VERYWARM,
   BO_WHITE,
 } from 'constant/Colors';
+import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -34,12 +31,17 @@ const FlexCenter = css`
   place-items: center;
 `;
 
-export const TitleText = styled.span.attrs({ className: C_WHITE })`
-  margin: 0.5rem;
-  text-transform: capitalize;
+const TruncateTextCss = css`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+export const TitleText = styled.span.attrs({ className: C_WHITE })`
+  margin: 0.5rem;
+  text-transform: capitalize;
+  user-select: none;
+  ${TruncateTextCss}
 `;
 
 export const CenterIcon = styled.div`
@@ -58,15 +60,15 @@ const closeSidebar = css`
 `;
 
 const getSidebarCss = (props) => {
-  const { isSidebarOpen } = props.theme.states;
-  if (isSidebarOpen) {
+  const { isOpen } = props;
+  if (isOpen) {
     return openSidebar;
   } else {
     return closeSidebar;
   }
 };
 
-export const SidebarContainer = withTheme(styled.div.attrs({
+export const SidebarContainer = styled.div.attrs({
   className: `${TBG_VERYWARM} ${C_WHITE}`,
 })`
   height: 100%;
@@ -74,24 +76,24 @@ export const SidebarContainer = withTheme(styled.div.attrs({
   ${`${RV_Float}: 0;`}
   overflow: hidden;
   box-shadow: 1px 0px 15px 1px #000;
-  background-image: url(${sidebarPattern});
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
+`;
 
-  // .subMenuContainer {
-  //   overflow: hidden;
-  //   margin: -0.3rem 0 0 0;
-  //   padding: 0 0.3rem;
-  //   border-radius: 0.5rem;
-  //   background-color: inherit;
-  //   transition: all 0.5s ease;
-
-  //   &.close {
-  //     height: 0;
-  //   }
-  // }
-`);
+export const SidebarMobileContainer = styled.div.attrs({
+  className: `${TBG_VERYWARM} ${C_WHITE}`,
+})`
+  height: 100%;
+  width: 70vw;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  ${`${RV_Float}: 0;`}
+  overflow: hidden;
+  box-shadow: 1px 0px 15px 1px #000;
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
+`;
 
 export const ContentWrapper = withTheme(styled.div`
   width: 100%;
@@ -100,44 +102,67 @@ export const ContentWrapper = withTheme(styled.div`
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   overflow: auto;
   margin-top: 4rem;
-  padding: 0
-    ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0.9rem')};
+  // padding: 0 ${(props) =>
+    props.theme.states.isSidebarOpen ? '1.5rem' : '0'};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  -ms-overflow-style: none; /*! IE and Edge */
-  scrollbar-width: none; /*! Firefox */
-  ::-webkit-scrollbar {
-    display: none; /*! Hide scrollbar for Chrome, Safari and Opera */
+  .ps__thumb-y {
+    background-color: ${CV_WHITE} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
   }
 `);
+
+const getHeaderWidth = (props) => {
+  const {
+    isSidebarOpen,
+    sidebarCurrentWidth,
+    sidebarCloseWidth,
+  } = props.theme.states;
+  const openWidth = css`
+    width: ${sidebarCurrentWidth / 16}rem;
+  `;
+  const closeWidth = css`
+    width: ${sidebarCloseWidth / 16}rem;
+  `;
+
+  const openMobileWidth = css`
+    width: 70vw;
+  `;
+
+  if (isSidebarOpen) {
+    return props.isMobile ? openMobileWidth : openWidth;
+  } else {
+    return closeWidth;
+  }
+};
 
 export const SidebarHeader = withTheme(styled.div.attrs({
   className: TBG_VERYWARM,
 })`
   ${FlexBetween}
   height: 4rem;
-  width: ${(props) => {
-    const {
-      isSidebarOpen,
-      sidebarCurrentWidth,
-      sidebarCloseWidth,
-    } = props.theme.states;
-    return isSidebarOpen
-      ? `${sidebarCurrentWidth / 16}rem`
-      : `${sidebarCloseWidth / 16}rem`;
-  }};
+  ${getHeaderWidth}
   z-index: 10;
   padding: 0
     ${(props) => (props.theme.states.isSidebarOpen ? '1.4rem' : '0.8rem')};
   position: fixed;
   top: 0;
-  background-image: url(${sidebarPattern});
+  ${({ hasPattern }) =>
+    hasPattern && `background-image: url(${sidebarPattern});`}
 `);
 
-export const OpenContentWrapper = styled.div`
-  width: 100%;
-  position: relative;
-`;
+// export const OpenContentWrapper = styled.div`
+//   width: 100%;
+//   position: relative;
+// `;
 
 export const ToggleArrow = styled.div.attrs({
   className: C_WHITE,
@@ -167,13 +192,11 @@ export const SearchWrapper = styled.div.attrs({
   position: relative;
 
   svg {
-    opacity: 70%;
-    color: #bac9dc;
+    color: ${CV_FREEZED};
   }
 
   :focus-within svg {
-    opacity: 100%;
-    color: #fff;
+    color: ${CV_WHITE};
   }
 
   // :focus-within div:first-child {
@@ -181,8 +204,7 @@ export const SearchWrapper = styled.div.attrs({
   // }
 
   :focus-within ::placeholder {
-    color: #fff;
-    opacity: 100%;
+    color: ${CV_WHITE};
   }
 `;
 
@@ -194,6 +216,7 @@ export const SearchInput = styled.input.attrs((props) => ({
   background-color: inherit;
   border: none;
   outline: 0;
+  user-select: none;
   ${({ isTyping }) =>
     isTyping
       ? `
@@ -203,8 +226,8 @@ export const SearchInput = styled.input.attrs((props) => ({
       : null}
 
   ::placeholder {
-    color: #bac9dc;
-    opacity: 70%;
+    color: ${CV_FREEZED};
+    text-transform: capitalize;
   }
 
   transition: all 0.3s ease;
@@ -244,19 +267,20 @@ export const FooterTitle = withTheme(styled.span`
   position: relative;
   top: 0;
   transition: all 0.5s linear;
+  text-transform: capitalize;
+  user-select: none;
   display: ${(props) =>
     props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
 
 export const MenuContainer = styled.div.attrs((props) => ({
-  className: `${BO_RADIUS_QUARTER} ${
-    props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK
-  }`,
+  // ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}
+  className: `${BO_RADIUS_QUARTER}`,
 }))`
   ${FlexBetween}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
-  border-width: 1px;
-  border-style: solid;
+  // border-width: 1px;
+  // border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
   margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
@@ -268,7 +292,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
       : 'inherit'};
   &:hover {
     background: rgb(43, 123, 228, 0.2);
-    border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
+    // border: ${({ isExpanded }) => (isExpanded ? 'initial' : 'none')};
   }
 
   &:hover > div > div:first-child {
@@ -297,9 +321,8 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  user-select: none;
+${TruncateTextCss}
 `;
 
 export const CaretIconWrapper = styled.div`
@@ -321,47 +344,6 @@ export const MenuItemImage = styled.img.attrs({
 export const HighlightedTitle = styled.span`
   margin-${RV_Float}: 0.6rem;
 `;
-
-// export const SubMenuContainer = styled.div`
-//   height: ${({ isOpen, itemsCount }) =>
-//     isOpen ? `${itemsCount * 2.6}rem` : '0'};
-//   overflow: hidden;
-//   margin: -0.3rem 0 0 0;
-//   padding: 0 0.3rem;
-//   border-radius: 0.5rem;
-//   background-color: inherit;
-//   transition: all 0.5s ease;
-// `;
-
-//! This solution used because of conflict with DnD props passing down to styled component.
-//! Use ''forwardedAs'' instead of ''as'' in this solution.
-// const DIV = styled.div.attrs({
-//   className: `${C_WHITE} BorderRadius4`,
-// })``;
-
-// export const SubMenu = styled(
-//   forwardRef(({ isDragging, ...props }, ref) => <DIV {...props} ref={ref} />)
-// )`
-//   margin: 0.2rem 0;
-//   margin-${RV_Float}: 0.5rem;
-//   padding: 0.2rem 0.4rem;
-//   padding-${RV_Float}: 1.4rem;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   background-color: ${({ isActive }) =>
-//     isActive ? 'rgba(43,56,143, 0.6)' : 'inherit'};
-//   &:hover {
-//     background: ${({ isActive }) =>
-//       isActive ? 'rgba(43,56,143, 0.6)' : 'rgb(43, 123, 228, 0.2)'};
-//   }
-
-//   //! Child classes style
-//   // &:hover > div > div:first-child {
-//   //   color: #e2234f;
-//   //   display: revert !important;
-//   // }
-// `;
 
 export const ListItemWrapper = styled.div.attrs({
   className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
@@ -402,6 +384,9 @@ export const SettingWrapper = styled.div.attrs({
 })`
   line-height: 0.5rem;
   cursor: pointer;
+  padding: 0.3rem;
+  position: relative;
+  ${({ isClose }) => !!isClose && `${RV_RevFloat}: 0.25rem;`}
 `;
 
 export const PanelWrapper = styled.div.attrs({
@@ -445,8 +430,8 @@ export const CloseContentContainer = styled.div`
   justify-content: center;
   position: relative;
   overflow: hidden;
-  height: 73vh;
-  width: 2rem;
+  height: calc(100vh - 10rem);
+  width: 4rem;
   margin: 0;
   margin-top: -0.55rem;
 `;
@@ -463,6 +448,7 @@ export const Up = styled.div.attrs((props) => ({
   ${arrowCss}
   cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0.3rem;
+  ${RV_Float}: 0.7rem;
   height: 2rem;
   width: auto;
   display: flex;
@@ -475,6 +461,7 @@ export const Down = styled.div.attrs((props) => ({
   ${arrowCss}
   cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: 0.2rem;
+  ${RV_Float}: 0.7rem;
   height: 2rem;
   width: auto;
   display: flex;
@@ -482,9 +469,19 @@ export const Down = styled.div.attrs((props) => ({
 `;
 
 export const IconListContainer = styled.div`
-  height: 90%;
+  height: 85%;
   overflow: hidden;
   position: relative;
+
+  .ps__thumb-y {
+    background-color: ${CV_WHITE} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_RTL ? 'right: -0.3rem !important ' : 'left: 0 !important'};
+  }
 `;
 
 export const IconListWrap = styled.div`
@@ -500,7 +497,7 @@ export const IconListWrap = styled.div`
 export const MiniIconWrapper = styled.div`
   width: 2rem;
   display: block;
-  margin: 0.4rem 0;
+  // margin: 0.4rem 0;
   font-size: 1.6rem;
 `;
 
@@ -511,7 +508,7 @@ export const MenuTreeContainer = styled.div`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding: 0 0 3rem 0;
+  padding: 0 0 2.5rem 0;
 `;
 
 export const FilterIconWrapper = styled.div.attrs({ className: C_DISTANT })`
@@ -531,9 +528,7 @@ export const CancelIconWrapper = styled.div`
 export const PanelLink = styled.div`
   margin-${RV_Float}: 0.4rem;
   text-transform: capitalize;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+${TruncateTextCss}
 `;
 
 export const SettingItemTitle = styled.div`

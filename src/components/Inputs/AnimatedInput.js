@@ -1,7 +1,7 @@
 /**
  * An input component that animates placeholder position
  */
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Container,
   Label,
@@ -34,17 +34,26 @@ const AnimatedInput = React.forwardRef(
       onChange,
       children,
       placeholderClass,
+      placeholderFocusedClass,
       ...props
     },
     ref
   ) => {
     // True if 'Input' is focused.
     const [inputFocused, _setFocused] = useState(!!value);
+    const [placeHolderState, setPlaceHolderState] = useState(placeholder);
 
+    const labelRef = useRef();
+    const placeHolderRef = useRef();
+    const childrenRef = useRef();
     /**
      * Changes input focusing according to input value
      * @param {Boolean} focused - Defines input should be focus or not.
      */
+    useEffect(() => {
+      normalizePlaceHolder();
+    }, [labelRef?.current?.offsetWidth]);
+
     const setFocused = (focused) => {
       if (!focused && value?.length === 0) {
         _setFocused(focused);
@@ -52,12 +61,29 @@ const AnimatedInput = React.forwardRef(
         _setFocused(true);
       }
     };
+    const normalizePlaceHolder = () => {
+      if (
+        labelRef?.current?.offsetWidth -
+          placeHolderRef?.current?.offsetWidth -
+          childrenRef?.current?.offsetWidth <
+        10
+      ) {
+        setPlaceHolderState(placeHolderState.slice(0, -1));
+      } else {
+        setPlaceHolderState(placeholder);
+      }
+    };
 
+    const PlaceHolderClassFocused = placeholderFocusedClass
+      ? placeholderFocusedClass
+      : 'rv-warm';
+    const PlaceHolderClass = placeholderClass ? placeholderClass : 'rv-distant';
     return (
       <Container style={style} inputFocused={inputFocused} {...props}>
         <Label
+          ref={labelRef}
           error={error}
-          className={inputFocused || value.length > 0 ? 'active' : ''}
+          className={inputFocused || value.length > 0 ? 'active ' : ''}
           inputFocused={inputFocused || value.length > 0}>
           <StyledInput
             value={value}
@@ -77,17 +103,28 @@ const AnimatedInput = React.forwardRef(
             error={error}
             onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
             {...props}>
-            {children}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              ref={childrenRef}>
+              {children}
+            </div>
           </StyledInput>
+
           <Placeholder
+            ref={placeHolderRef}
+            inputFocused={inputFocused}
+            maxWidth={labelRef?.current?.offsetWidth}
+            style={{ display: 'flex' }}
             className={`rv-border-radius-quarter rv-distant ${
               inputFocused || value.length > 0
-                ? 'rv-warm'
-                : placeholderClass
-                ? placeholderClass
-                : 'rv-gray'
+                ? PlaceHolderClassFocused
+                : PlaceHolderClass
             }`}>
-            {placeholder}
+            {placeHolderState}
           </Placeholder>
         </Label>
       </Container>
@@ -96,3 +133,10 @@ const AnimatedInput = React.forwardRef(
 );
 
 export default AnimatedInput;
+
+// ${
+//   placeHolderRef?.current?.offsetWidth -
+//     labelRef?.current?.offsetWidth -
+//     childrenRef?.current?.offsetWidth >
+//     10 && 'Ellipsis'
+// }

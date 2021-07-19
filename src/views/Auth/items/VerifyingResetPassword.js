@@ -3,7 +3,7 @@
  */
 import Heading from 'components/Heading/Heading';
 import Edit from 'components/Icons/Edit';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import CountDownTimer from '../elements/CountDownTimer';
 import VerificationCode from '../elements/VerificationCode';
@@ -53,17 +53,30 @@ const VerifyingResetPassword = () => {
     verifyCodeLength: state.auth.verifyCodeLength,
     resendVerifyCodeIsFetching: state.auth.resendVerifyCodeIsFetching,
   }));
+  // const initFetch = useCallback(() => {
+  //   const { GlobalUtilities } = window;
+  //   !email && push('/auth/login');
+
+  //   // !verifyCodeToken && push('/auth/login');
+  //   GlobalUtilities.init_recaptcha((captcha) => {
+  //     captcha.getToken((token) => {
+  //       //use token
+  //       dispatch(setCaptchaTokenAction(token));
+  //     });
+  //   });
+  // }, [dispatch, email, push]);
   useEffect(() => {
     const { GlobalUtilities } = window;
-    !email && push('/auth/login');
+    !email && push('/auth/login' + window.location.search);
 
     // !verifyCodeToken && push('/auth/login');
-    GlobalUtilities.init_recaptcha((captcha) => {
-      captcha.getToken((token) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
         //use token
         dispatch(setCaptchaTokenAction(token));
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // Changing verifyCodeToken means: timer should be reset &
   // reSend button should be disappear.
@@ -88,14 +101,14 @@ const VerifyingResetPassword = () => {
    */
   const onValueChange = (value) => {
     console.log(
-      value.filter((x) => x === -1),
+      value?.filter((x) => x === -1),
       'code '
     );
 
     dispatch(setVerifyCodeAction(value));
     // Checks if all verification code digits entered,
     // automatically fires 'resetPasswordAction()'
-    value.filter((x) => x === -1)?.length === 0 &&
+    value?.filter((x) => x === -1)?.length === 0 &&
       dispatch(resetPasswordAction());
   };
   // By clicking on edit button,
@@ -115,7 +128,7 @@ const VerifyingResetPassword = () => {
             ...common_style,
           }}
           className={'rv-distant'}>
-          {RVDic.ForgotMyPassword}
+          {RVDic?.ForgotMyPassword}
         </Heading>
         <RowItems style={common_style}>
           <Heading
@@ -132,7 +145,7 @@ const VerifyingResetPassword = () => {
           </button>
         </RowItems>
         <Heading type="h4" style={common_style}>
-          {RVDic.Checks.PleaseEnterTheVerificationCode}
+          {RVDic?.Checks?.PleaseEnterTheVerificationCode}
         </Heading>
 
         <VerificationCode
@@ -149,7 +162,7 @@ const VerifyingResetPassword = () => {
             loading={resendVerifyCodeIsFetching}
             disable={
               verifyCode
-                ? verifyCode.filter((x) => x === -1)?.length !== 0
+                ? verifyCode?.filter((x) => x === -1)?.length !== 0
                 : true
             }
             style={{
@@ -157,7 +170,7 @@ const VerifyingResetPassword = () => {
               textAlign: 'center',
               ...common_style,
             }}>
-            {RVDic.Resend}
+            {RVDic?.Resend}
           </Button>
         ) : (
           <CountDownTimer onFinished={onFinished} style={common_style} />
@@ -172,7 +185,7 @@ const VerifyingResetPassword = () => {
             marginTop: '3rem',
             marginBottom: '1rem',
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Button>
       </Container>
     </Box>

@@ -1,24 +1,35 @@
-import styled from 'styled-components';
-import { OPEN_WIDTH, CLOSE_WIDTH } from 'constant/constants';
+import styled, { css } from 'styled-components';
+import { CLOSE_WIDTH } from 'constant/constants';
 import withTheme from 'components/withTheme/withTheme';
 
 export const MainContainer = styled.div`
   direction: ${window.RV_Direction};
   .sidebar-resizer {
     &:hover {
-      background-color: red;
+      background-color: #fff;
     }
   }
 `;
 
+const getContentMargin = (props) => {
+  const {
+    isMobile,
+    isSidebarOpen,
+    theme: { states },
+  } = props;
+  return css`${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${
+    !isMobile
+      ? isSidebarOpen
+        ? `${states.sidebarCurrentWidth / 16}rem`
+        : `${states.selectedTeam?.id ? CLOSE_WIDTH : 0}rem`
+      : '0'
+  }};
+  `;
+};
+
 export const ContentWrapper = withTheme(styled.div`
-  ${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${(props) =>
-    !props.isMobile
-      ? props.isSidebarOpen
-        ? `${props.theme.states.sidebarCurrentWidth / 16}rem`
-        : `${CLOSE_WIDTH}rem`
-      : '0'};
-  height: 100vh;
+  ${getContentMargin}
+  height: calc(100vh - 5.5rem);
   transition: all 0.7s ease;
 `);
 

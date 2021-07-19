@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { themeSlice } from 'store/reducers/themeReducer';
-import EditableTree from '../sidebarTree/editable/EditableTree';
+import EditableTree from 'layouts/Sidebar/items/sidebarTree/editable/EditableTree';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
 
@@ -17,6 +17,8 @@ const SidebarManageContent = () => {
       setSidebarContent({ current: MAIN_CONTENT, prev: MANAGE_CONTENT })
     );
   };
+
+  // TODO: add RVDic
 
   return (
     <>

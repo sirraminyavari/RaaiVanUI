@@ -3,29 +3,28 @@
  */
 import Loader from 'components/Loaders/LogoLoader/LogoLoader';
 import Logo from 'components/Media/Logo';
+import { LOGIN_PATH } from 'constant/constants';
 import { decode } from 'js-base64';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  useHistory,
-  Switch,
   Redirect,
   Route,
+  Switch,
+  useHistory,
   useLocation,
 } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+// import useCheckRoute from 'hooks/useCheckRoute';
+import Routes from 'routes/AuthRoutes/Auth.routes';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import {
   BackgroundImage,
-  Box,
   Center,
   Container,
   Maintainer,
   Wrapper,
 } from './AuthView.style';
-import Routes from 'routes/AuthRoutes/Auth.routes';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
-import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * A mother component for containing the login elements.
@@ -63,26 +62,26 @@ const AuthView = () => {
 
   useEffect(() => {
     if (loadDone) {
-      const reqParams = GlobalUtilities.request_params();
-      const activationCode = reqParams.get_value('ac');
-      const userName = reqParams.get_value('un');
-      const passwordTicket = reqParams.get_value('pt');
+      const reqParams = GlobalUtilities?.request_params();
+      const activationCode = reqParams?.get_value('ac');
+      const userName = reqParams?.get_value('un');
+      const passwordTicket = reqParams?.get_value('pt');
 
       if (activationCode) {
-        UsersAPI.ActivateTemporaryUser({
+        UsersAPI?.ActivateTemporaryUser({
           ActivationCode: activationCode,
           ResponseHandler: function (responseText) {
-            const result = JSON.parse(responseText);
-            if (result.Succeed)
-              alert(RVDic.MSG[result.Succeed], { Timeout: 30000 });
-            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText]);
+            const result = JSON?.parse(responseText);
+            if (result?.Succeed)
+              alert(RVDic?.MSG[result?.Succeed], { Timeout: 30000 });
+            if (result?.ErrorText) alert(RVDic?.MSG[result?.ErrorText]);
             setPreinitDone(true);
           },
         });
       } else if (passwordTicket) {
         // that.show_reset_password_form(passwordTicket, userName);
         // dispatch(setLoginRouteAction(RESET_PASSWORD));
-        push('/auth/resetPassword');
+        push('/auth/resetPassword' + window.location.search);
 
         setPreinitDone(true);
       } else setPreinitDone(true);
@@ -91,12 +90,12 @@ const AuthView = () => {
 
   useEffect(() => {
     if (!SAASBasedMultiTenancy) {
-      RVAPI.GetDomains({
+      RVAPI?.GetDomains({
         ParseResults: true,
         ResponseHandler: function (r) {
           for (var i = 0, lnt = (r.Domains || []).length; i < lnt; ++i) {
-            r.Domains[i].Value = decode(r.Domains[i].Value);
-            r.Domains[i].Text = decode(r.Domains[i].Text);
+            r.Domains[i].Value = decode(r?.Domains[i].Value);
+            r.Domains[i].Text = decode(r?.Domains[i].Text);
           }
 
           // that.initialize(r.Domains || []);
@@ -120,18 +119,21 @@ const AuthView = () => {
 
   // After all steps finished, it's time to init the reCaptcha.
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document?.createElement('script');
     // reCaptcha is just for SAAS
     if (RVGlobal.SAASBasedMultiTenancy) {
-      script.src = RVGlobal.CaptchaURL;
-      script.addEventListener('load', handleLoaded);
-      document.body.appendChild(script);
+      script.src = RVGlobal?.CaptchaURL;
+      script?.addEventListener('load', handleLoaded);
+      document?.body?.appendChild(script);
     }
     return () => {
       // removes reCapctha when component willunmount
-      RVGlobal.SAASBasedMultiTenancy && document.body.removeChild(script);
+      RVGlobal?.SAASBasedMultiTenancy && document?.body?.removeChild(script);
     };
   }, [oneStepToInitDone]);
+
+  // const route = useCheckRoute('/login');
+  // console.log(route);
 
   const switchRoutes = (
     <Wrapper>
@@ -143,16 +145,16 @@ const AuthView = () => {
       the old location as it animates out.
     */}
 
-        <CSSTransition key={location.key} classNames="fade" timeout={1000}>
+        <CSSTransition key={location?.key} classNames="fade" timeout={1000}>
           <Switch location={location}>
-            {Routes.map((route, key) => {
+            {Routes?.map((route, key) => {
               const { path, component } = route;
               return (
                 <Route exact path={path} component={component} key={key} />
               );
             })}
 
-            <Redirect to="/auth/login" />
+            <Redirect to={LOGIN_PATH} />
           </Switch>
         </CSSTransition>
       </TransitionGroup>
@@ -167,8 +169,8 @@ const AuthView = () => {
   const handleLoaded = () => {
     const { GlobalUtilities } = window;
 
-    GlobalUtilities.init_recaptcha((captcha) => {
-      captcha.getToken((token) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
         //use token
         dispatch(setCaptchaTokenAction(token));
       });

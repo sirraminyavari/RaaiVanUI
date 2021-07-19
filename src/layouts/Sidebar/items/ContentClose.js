@@ -4,20 +4,29 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { decodeBase64, getURL } from 'helpers/helpers';
+
+//! Gets unfiltered nodes for closed sidebar menu.
+const selectSidebarNodes = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.nodeTypes
+);
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const iconListRef = useRef();
 
-  const { RV_RevFloat, RVDic } = useWindow();
+  const { RVDic, RV_RevFloat, RV_Float } = useWindow();
 
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
@@ -26,11 +35,9 @@ const SidebarOnClose = ({ theme }) => {
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
-  const { dndTree } = useSelector((state) => state.sidebarItems);
+  const sidebarNodes = useSelector(selectSidebarNodes);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
-
-  const nodes = (dndTree.items && Object.values(dndTree.items)) || [];
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -52,81 +59,138 @@ const SidebarOnClose = ({ theme }) => {
     );
   };
 
-  //! Updates scroll position.
-  const handleScroll = () => {
-    const diff =
-      iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
-    const isScrollDown = iconListRef.current.scrollTop === diff;
-    const isScrollUp = iconListRef.current.scrollTop === 0;
-    setIsDown(isScrollDown);
-    setIsUp(isScrollUp);
-    if (isScrollDown) {
-      setScroll(diff);
-    }
-    if (isScrollUp) {
-      setScroll(0);
-    }
+  // //! Updates scroll position.
+  // const handleScroll = () => {
+  //   const diff =
+  //     iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
+  //   const isScrollDown = iconListRef.current.scrollTop === diff;
+  //   const isScrollUp = iconListRef.current.scrollTop === 0;
+  //   setIsDown(isScrollDown);
+  //   setIsUp(isScrollUp);
+  //   if (isScrollDown) {
+  //     setScroll(diff);
+  //   }
+  //   if (isScrollUp) {
+  //     setScroll(0);
+  //   }
+  // };
+
+  // useLayoutEffect(() => {
+  //   iconListRef.current.scrollTo({
+  //     top: scroll,
+  //     left: 0,
+  //     behavior: 'smooth',
+  //   });
+  //   handleScroll();
+  // }, [scroll]);
+
+  const handleScrollUp = () => {
+    setIsUp(false);
+    setIsDown(false);
   };
 
-  useLayoutEffect(() => {
-    iconListRef.current.scrollTo({
-      top: scroll,
-      left: 0,
-      behavior: 'smooth',
-    });
-    handleScroll();
-  }, [scroll]);
+  const handleScrollStart = () => {
+    setIsUp(true);
+    setIsDown(false);
+  };
+
+  const handleScrollEnd = () => {
+    setIsUp(false);
+    setIsDown(true);
+  };
+
+  const checkValidNodes = (node, index, self) => {
+    const nodeParentId = node?.ParentID;
+    const isNodeHidden = !!node.Hidden;
+
+    //! Check if it is hidden or not.
+    if (isNodeHidden) {
+      return false;
+    }
+
+    //! Check if its parent is hidden or not.
+    if (!!nodeParentId) {
+      const parentNode = self.find((item) => item.NodeTypeID === nodeParentId);
+      const isParentHidden = !!parentNode?.Hidden;
+      const isParentCategory = parentNode?.IsCategory;
+      if (isParentHidden || !isParentCategory) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
+  const hasSidebarNodes = !!filteredSidebarNodes.length;
 
   return (
     <>
       <Styled.SidebarTitle>
-        <PopupMenu
-          arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
-          menuStyle="border: 0; padding: 0.3rem 1rem; margin: 1rem; background-color: #333;"
-          trigger="hover"
-          align={RV_RevFloat}>
-          <div>
-            <Styled.SettingWrapper onClick={handleOnClick}>
-              <SettingIcon size={22} />
-            </Styled.SettingWrapper>
-          </div>
-          <div style={{ fontSize: '0.9rem' }}>{RVDic.Settings}</div>
-        </PopupMenu>
+        <Tooltip
+          tipId="sidebar-setting-icon"
+          effect="solid"
+          place={RV_RevFloat}
+          offset={{ [RV_Float]: -10 }}
+          renderContent={() => (
+            <span style={{ textTransform: 'capitalize' }}>
+              {RVDic.Settings}
+            </span>
+          )}>
+          <Styled.SettingWrapper isClose onClick={handleOnClick}>
+            <SettingIcon size={22} />
+          </Styled.SettingWrapper>
+        </Tooltip>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        <Styled.Up isUp={isUp} onClick={scrollUp}>
-          <ChevronIcon dir="up" />
-        </Styled.Up>
+        {hasSidebarNodes && (
+          <Styled.Up isUp={isUp} onClick={scrollUp}>
+            <ChevronIcon dir="up" />
+          </Styled.Up>
+        )}
         <Styled.IconListContainer>
-          <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}>
-            {nodes.map((node, key) => {
-              const { data, id } = node;
+          {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
+          <PerfectScrollbar
+            onYReachStart={handleScrollStart}
+            onYReachEnd={handleScrollEnd}
+            onScrollUp={handleScrollUp}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+            }}>
+            {filteredSidebarNodes?.map((node, key) => {
+              const { TypeName, NodeTypeID, IconURL } = node;
               return (
-                <PopupMenu
+                <Tooltip
                   key={key}
-                  arrowStyle="z-index: 10; background-color: #333; width: 1rem; margin: 1rem; border: 0;"
-                  menuStyle="border: 0; padding: 0.4rem 1rem; margin: 1rem; background-color: #333;"
-                  trigger="hover"
-                  align={RV_RevFloat}>
-                  <div>
-                    <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
-                      {data.iconURL && (
-                        <Styled.MenuItemImage
-                          src={data.iconURL}
-                          alt="sidebar-icon-closed"
-                        />
-                      )}
-                    </Styled.MiniIconWrapper>
-                  </div>
-                  <div>{data.title}</div>
-                </PopupMenu>
+                  tipId={NodeTypeID}
+                  effect="solid"
+                  offset={{ [RV_Float]: -10 }}
+                  place={RV_RevFloat}
+                  renderContent={() => decodeBase64(TypeName)}>
+                  <Styled.MiniIconWrapper
+                    as={Link}
+                    to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
+                    {!!IconURL && (
+                      <Styled.MenuItemImage
+                        src={IconURL}
+                        alt="sidebar-icon-closed"
+                      />
+                    )}
+                  </Styled.MiniIconWrapper>
+                </Tooltip>
               );
             })}
-          </Styled.IconListWrap>
+          </PerfectScrollbar>
+          {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
-        <Styled.Down isDown={isDown} onClick={scrollDown}>
-          <ChevronIcon dir="down" />
-        </Styled.Down>
+        {hasSidebarNodes && (
+          <Styled.Down isDown={isDown} onClick={scrollDown}>
+            <ChevronIcon dir="down" />
+          </Styled.Down>
+        )}
       </Styled.CloseContentContainer>
     </>
   );

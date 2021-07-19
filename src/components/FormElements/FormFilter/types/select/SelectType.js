@@ -66,6 +66,7 @@ const SelectType = (props) => {
         JSONValue: !items.length ? null : JSONValue,
       },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, exact]);
 
   //! Clear component value.

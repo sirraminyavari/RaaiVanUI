@@ -683,7 +683,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
             if (params.AutoHeight === false) return jQuery(elems["main"]).nanoScroller();
 
             var newHeight = get_height();
-
+            
             if ((height == newHeight) || !GlobalUtilities.is_visible(elems["__"])) return;
             height = newHeight;
 
@@ -2459,6 +2459,9 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         GlobalUtilities.load_files([RVGlobal.CaptchaURL], {
             OnLoad: function () {
+                var arr = document.getElementsByClassName('grecaptcha-badge');
+                if (arr.length) arr[0].style.visibility = "visible";
+
                 callback({
                     getToken: function (done) {
                         if (GlobalUtilities.get_type(done) != "function") done = function () { };
@@ -2471,6 +2474,11 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
                 });
             }
         });
+    },
+
+    hide_recaptcha: function () {
+        var arr2 = document.getElementsByClassName('grecaptcha-badge');
+        if (arr2.length) arr2[0].style.visibility = "hidden";
     },
 
     get_side_panel: function (rev, done) {

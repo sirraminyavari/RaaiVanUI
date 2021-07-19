@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CircularProgress from 'components/Progress/CircularProgress';
 import * as Styled from './UndoToast.styles';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
+import { CV_BLACK, CV_RED, CV_WHITE } from 'constant/CssVariables';
 
 const UndoMessage = (props) => {
   const { onUndo, closeToast, time, message, onTimeUpdate } = props;
@@ -24,6 +25,7 @@ const UndoMessage = (props) => {
           flexGrow: 1,
           justifySelf: 'start',
           padding: '0.5rem',
+          color: CV_BLACK,
         }}>
         {message}
       </span>
@@ -31,8 +33,8 @@ const UndoMessage = (props) => {
         <div>
           <CircularProgress
             maxValue={time / 1000}
-            color="#000"
-            textColor="#fff"
+            color={CV_RED}
+            textColor={CV_BLACK}
             textSize="1rem"
             onUpdate={onTimeUpdate}
           />

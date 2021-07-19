@@ -7,10 +7,11 @@ import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
 import useWindow from 'hooks/useWindowContext';
+import { decodeBase64 } from 'helpers/helpers';
 
-const selectDnDTree = createSelector(
+const selectSidebarNodes = createSelector(
   (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.dndTree
+  (sidebarItems) => sidebarItems.nodeTypes
 );
 
 const selectSearchText = createSelector(
@@ -19,27 +20,30 @@ const selectSearchText = createSelector(
 );
 
 const SearchResultsList = () => {
-  const dndTree = useSelector(selectDnDTree);
+  const sidebarNodes = useSelector(selectSidebarNodes);
   const searchText = useSelector(selectSearchText);
   const { GlobalUtilities } = useWindow();
 
-  const nodes = Object.values(dndTree.items).filter((node) => {
-    if (!!node.isCategory) return false;
-    return true;
-  });
+  // const nodes = sidebarNodes.filter((node) => {
+  //   if (!!node.IsCategory) return false;
+  //   return true;
+  // });
 
   return (
     <Styled.MenuTreeContainer>
-      {nodes
-        .filter((node) =>
-          GlobalUtilities.is_search_match(node.data.title, searchText)
+      {sidebarNodes
+        ?.filter((node) =>
+          GlobalUtilities.is_search_match(
+            decodeBase64(node?.TypeName),
+            searchText
+          )
         )
         .map((node) => {
           return (
             <SearchResultItem
               node={node}
               searchText={searchText}
-              key={node.id}
+              key={node?.NodeTypeID}
             />
           );
         })}

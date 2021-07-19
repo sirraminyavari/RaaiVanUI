@@ -7,10 +7,15 @@ import styled from 'styled-components';
 
 const SubjectViewCount = ({ count }) => {
   return (
-    <ViewCount className="rv-default">
-      <Eye className="rv-default" style={{ margin: '0 0.5rem 0 0.5rem' }} />
-      {count}
-    </ViewCount>
+    <>
+      {!!count && (
+        <ViewCount className="rv-default">
+          <Eye className="rv-default" style={{ margin: '0 0.5rem 0 0.5rem' }} />
+
+          {count}
+        </ViewCount>
+      )}
+    </>
   );
 };
 export default SubjectViewCount;

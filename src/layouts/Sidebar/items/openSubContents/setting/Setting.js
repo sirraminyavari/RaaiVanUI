@@ -40,13 +40,13 @@ const SidebarSettingContent = () => {
 
     switch (splitTitle(content)) {
       case splitTitle(SETT_TEAM_CONTENT):
-        return 'تنظیمات تیم';
+        return RVDic.Settings;
       case splitTitle(SETT_USERS_CONTENT):
-        return 'مدیریت کاربران';
+        return RVDic.UserManagement;
       case splitTitle(SETT_CLASSES_CONTENT):
-        return 'مدیریت قالب ها';
+        return RVDic.TemplateManagement;
       case splitTitle(SETT_NOTIFS_CONTENT):
-        return 'تنظیمات آگاه سازی';
+        return RVDic.NotificationSettings;
       default:
         return RVDic.TeamManagement;
     }

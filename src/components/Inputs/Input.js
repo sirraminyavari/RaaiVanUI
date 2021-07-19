@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import usePeriod from '../../hooks/usePeriod';
-import { WindowContext } from '../../context/WindowProvider';
+// import { WindowContext } from '../../context/WindowProvider';
 
 /**
  * @typedef PropType
@@ -41,11 +41,11 @@ const Input = React.forwardRef(
     ref
   ) => {
     const errorMessage =
-      GlobalUtilities.get_type(error) == 'string' ? error : null;
+      GlobalUtilities.get_type(error) === 'string' ? error : null;
 
     const shaking = usePeriod(shake, {}, GlobalUtilities) && !!error;
 
-    const hasButton = GlobalUtilities.get_type(children) == 'json';
+    const hasButton = GlobalUtilities.get_type(children) === 'json';
 
     //handle key down events: afterChangeListener, enterListener, changeOrEnterListener
     const hasKeyDownAction = [
@@ -79,15 +79,17 @@ const Input = React.forwardRef(
           clearChangeTimeout();
 
           if (e.which === 13) {
-            if (GlobalUtilities.get_type(enterListener) == 'function')
+            if (GlobalUtilities.get_type(enterListener) === 'function')
               enterListener(e);
-            if (GlobalUtilities.get_type(changeOrEnterListener) == 'function')
+            if (GlobalUtilities.get_type(changeOrEnterListener) === 'function')
               changeOrEnterListener(e);
           } else if (hasChangeAction) {
             const to = setTimeout(() => {
-              if (GlobalUtilities.get_type(afterChangeListener) == 'function')
+              if (GlobalUtilities.get_type(afterChangeListener) === 'function')
                 afterChangeListener(e);
-              if (GlobalUtilities.get_type(changeOrEnterListener) == 'function')
+              if (
+                GlobalUtilities.get_type(changeOrEnterListener) === 'function'
+              )
                 changeOrEnterListener(e);
             }, timeout);
 

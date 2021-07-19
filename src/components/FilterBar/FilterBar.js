@@ -2,7 +2,7 @@
  * A component for applying the simple search tools.
  */
 import APIHandler from 'apiHelper/APIHandler';
-import Button from 'components/Buttons/Button';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
 import Heading from 'components/Heading/Heading';
@@ -16,34 +16,38 @@ import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import Search from 'components/Icons/SearchIcon/Search';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import Modal from 'components/Modal/Modal';
+import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import { decodeBase64 } from 'helpers/helpers';
-import { decode, encode } from 'js-base64';
+import { decode } from 'js-base64';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import SubmitNewNode from 'apiHelper/SubmitNewNode';
+import { CV_WHITE } from 'constant/CssVariables';
+import { INTRO_ONBOARD, OPENED } from 'constant/constants';
+import Button from 'components/Buttons/Button';
 
 const selectedTeam = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state?.theme,
+  (theme) => theme?.selectedTeam
 );
 
-const { RVDic, RVAPI, RV_RTL } = window;
+const { RVDic, RVAPI, RV_RTL } = window || {};
 
 const LOCAL_STORAGE_PRE_TEXT = 'addNode_';
 const data = [
   {
-    icon: <FlashIcon className={'rv-default'} />,
-    label: RVDic.AddQuickly,
+    icon: <FlashIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
+    label: RVDic?.AddQuickly,
     value: 'urgentAction',
     colorClass: 'rv-default',
   },
   {
-    icon: <AddIcon className={'rv-default'} />,
-    label: RVDic.AddWithDetails,
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
+    label: RVDic?.AddWithDetails,
     value: 'completeAction',
     colorClass: 'rv-default',
   },
@@ -55,8 +59,6 @@ const checkNodeCreationAccess = new APIHandler(
 );
 const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 const formElements = new APIHandler('FGAPI', 'GetFormElements');
-const newNodePage = new APIHandler('RVAPI', 'NewNodePageURL');
-const addNode = new APIHandler('CNAPI', 'AddNode');
 
 /**
  *
@@ -69,11 +71,10 @@ const addNode = new APIHandler('CNAPI', 'AddNode');
  * @returns
  */
 const FilterBar = ({
+  nodeType,
   onSearch,
-  onByStatus,
   onByDate,
   onByPeople,
-  onByBookmarked,
   advancedSearch,
   onAdvanecedSearch,
   nodeTypeId,
@@ -81,10 +82,26 @@ const FilterBar = ({
   totalFound,
   hierarchy,
   onForceFetch,
-  nodeType,
+  onCreateUrgent,
+  onByMe,
+  isByMe,
+  people,
+  onByStatus,
+  onByBookmarked,
+  isBookMarked,
+  itemSelectionMode,
 }) => {
+  const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
+    (state) => ({
+      teamName: state?.theme?.selectedTeam?.name,
+      onboardingName: state?.onboarding?.name,
+      newDocMenu: state?.onboarding?.newDocMenu,
+      selectedApp: state?.selectedTeam,
+    })
+  );
+
   const defaultDropDownLabel = {
-    icon: <AddIcon color={'white'} />,
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
     label: RVDic?.NewN?.replace(
       '[n]',
       !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
@@ -96,9 +113,8 @@ const FilterBar = ({
   // Typed value in search input.
   const [searchText, setSearchText] = useState('');
   // if True, filters Bookmarked nodes(under develop)
-  const [bookmarked, setBookmarked] = useState(false);
-  // if True, filters nodes created by specific people(under develop)
-  const [people, setPeople] = useState(false);
+  // const [bookmarked, setBookmarked] = useState(false);
+
   // if has value, filters node that is in the period of the selected date.
   const [date, setDate] = useState(null);
   // Creating dropdown content.
@@ -117,11 +133,28 @@ const FilterBar = ({
   const [peopleHover, setPeopleHover] = useState(false);
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
-  // if true, means the modal for creating urgent subject is open
-  const [isUrgentModalOpen, setUrgentModalOpen] = useState(false);
-  // user inputs for creating urgent subject item.
-  const [urgentInput, setUrgentInput] = useState('');
-  const selectedApp = useSelector(selectedTeam);
+
+  const { push } = useHistory();
+
+  const isInOnBoarding = onboardingName === INTRO_ONBOARD;
+  const isNewDocOpened = newDocMenu === OPENED;
+  // const isInOnBoarding = false;
+
+  /**
+   * Gets user access for creating document.
+   * @returns
+   */
+  const getCreationAccess = () =>
+    checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
+      // If the user has access can choose between two items.
+      if (dt?.Result || isInOnBoarding) {
+        // setCreationData(data);
+        setMarket(data);
+      } else {
+        setMarket(null);
+      }
+      getOwnerForm();
+    });
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
@@ -130,52 +163,37 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName ? decode(nodeType?.TypeName) : '';
+    return nodeType?.TypeName
+      ? decode(nodeType?.TypeName)
+      : teamName
+      ? teamName
+      : '';
   };
   // By changing 'hierarchy' will fire.
   useEffect(() => {
-    console.log(nodeType, 'nodeType***!!!', nodeTypeId);
     if (nodeTypeId) {
       getCreationAccess();
 
-      const newMarketingHistoryRaw = localStorage.getItem(
+      const newMarketingHistoryRaw = localStorage?.getItem(
         LOCAL_STORAGE_PRE_TEXT + nodeTypeId
       );
-      const newMarketingHistory = JSON.parse(newMarketingHistoryRaw);
+      const newMarketingHistory = JSON?.parse(newMarketingHistoryRaw);
       // Checks if the user has selection history set it for default.
       // By clicking the dropdown label.
       // selected item in past will fire.
       const findLastChoose =
         newMarketingHistory &&
-        data.find((x) => x.value === newMarketingHistory);
-      console.log(getTypeName(), 'getTypeName');
+        data?.find((x) => x?.value === newMarketingHistory);
       setSelectedItem({
         ...selectedItem,
-        label: RVDic.NewN.replace('[n]', getTypeName()),
+        label: RVDic?.NewN?.replace('[n]', getTypeName()),
         icon:
           _.isObject(findLastChoose) &&
           React.cloneElement(findLastChoose?.icon, { color: 'white' }),
-        value: _.isObject(findLastChoose) && findLastChoose.value,
+        value: _.isObject(findLastChoose) && findLastChoose?.value,
       });
     }
   }, [nodeTypeId]);
-
-  /**
-   * Gets user access for creating document.
-   * @returns
-   */
-  const getCreationAccess = () =>
-    checkNodeCreationAccess.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
-      // If the user has access can choose between two items.
-      if (dt.Result) {
-        // setCreationData(data);
-        setMarket(data);
-      }
-      //  else {
-      //   setMarket([data[0]]);
-      // }
-      getOwnerForm();
-    });
 
   // Fetchs formElements according to formId that obtained from 'getOwnerForm' and 'nodeTypeId' passed to component
   const getFormElements = (formId) => {
@@ -186,13 +204,8 @@ const FilterBar = ({
         ConsiderElementLimits: true,
       },
       (result) => {
-        console.log(result, 'result***');
-
-        let groupingElements = ((result || {}).Elements || []).filter((e) =>
-          ['Select', 'Binary'].some((i) => i == e.Type)
-        );
         let filters = result && result?.Elements;
-        if (filters && filters.length > 0) {
+        if (filters && filters?.length > 0) {
           setAdvancedButton(true);
         } else {
           setAdvancedButton(false);
@@ -203,8 +216,8 @@ const FilterBar = ({
   };
   // Fetches formElements according to passed 'nodeTypeId'
   const getOwnerForm = () => {
-    ownerForm.fetch({ OwnerID: nodeTypeId }, (result) => {
-      let formId = (result || {}).FormID;
+    ownerForm?.fetch({ OwnerID: nodeTypeId }, (result) => {
+      let formId = (result || {})?.FormID;
       // let formTitle = decode((result || {}).Title);
 
       if (formId) {
@@ -217,83 +230,85 @@ const FilterBar = ({
 
   // By clicking on the dropdown items will fire.
   const onSelectItem = (item) => {
-    localStorage.setItem(
-      LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
-      JSON.stringify(item.value)
-    );
-    setSelectedItem({
-      ...selectedItem,
-      icon: React.cloneElement(item.icon, { color: 'white' }),
-      value: item.value,
-      color: 'white',
-    });
+    if (item && item?.value) {
+      localStorage?.setItem(
+        LOCAL_STORAGE_PRE_TEXT + nodeTypeId,
+        JSON?.stringify(item?.value)
+      );
+      setSelectedItem({
+        ...selectedItem,
+        icon: React.cloneElement(item.icon, {
+          color: 'white',
+          fontSize: '1.2rem',
+        }),
+        value: item?.value,
+        color: CV_WHITE,
+      });
 
-    if (item.value === 'completeAction') {
-      window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
-    } else if (item.value === 'urgentAction') {
-      setUrgentModalOpen(true);
+      if (item.value === 'completeAction') {
+        push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+        // SubmitNewNode(nodeTypeId);
+        // window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+      } else if (item?.value === 'urgentAction') {
+        // setUrgentModalOpen(true);
+        onCreateUrgent();
+      }
+    } else {
+      // SubmitNewNode(nodeTypeId);
+      push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
     }
   };
   // By typing in the search input will fire
   const onTextSearch = (value) => {
     setSearchText(value);
   };
-  // will fire if user choose create urgent.
-  const onCreateUrgent = () => {
-    setUrgentModalOpen(false);
-    addNode.fetch(
-      { NodeTypeID: nodeTypeId, Name: encode(urgentInput) },
-      (response) => {
-        setUrgentInput('');
-        console.log(response, 'response');
-        onForceFetch();
-      }
-    );
-  };
   const onAdvancedFilterClick = () => {
     setTimeout(() => {
       onAdvanecedSearch(!advancedSearch);
-    }, 500);
+    }, 0);
   };
 
-  const placeHolderText = () => {
-    console.log(getTypeName(), 'getTypeName');
-    if (getTypeName() !== '') {
-      return (
-        RVDic.SearchInN.replace(
-          '[n]',
-
-          getTypeName()
-        ) +
-        ' (' +
-        RVDic.Title +
-        ' - ' +
-        RVDic.AdditionalID +
-        ' - ' +
-        RVDic.Keywords +
-        ')'
-      );
-    }
-    return (
-      RVDic.Search +
-      ' (' +
-      RVDic.Title +
-      ' - ' +
-      RVDic.AdditionalID +
-      ' - ' +
-      RVDic.Keywords +
-      ')'
-    );
+  const onPeople = (item) => {
+    onByPeople(item);
   };
 
-  const extendedHierarchy = hierarchy.map((level) => ({
-    id: level.NodeTypeID,
-    title: decodeBase64(level.TypeName),
-    linkTo: `/classes/${level.NodeTypeID}`,
+  // const placeHolderText = () => {
+  //   if (getTypeName() !== '') {
+  //     return (
+  //       RVDic.SearchInN.replace(
+  //         '[n]',
+
+  //         getTypeName()
+  //       ) +
+  //       ' (' +
+  //       RVDic.Title +
+  //       ' - ' +
+  //       RVDic.AdditionalID +
+  //       ' - ' +
+  //       RVDic.Keywords +
+  //       ')'
+  //     );
+  //   }
+  //   return (
+  //     RVDic.Search +
+  //     ' (' +
+  //     RVDic.Title +
+  //     ' - ' +
+  //     RVDic.AdditionalID +
+  //     ' - ' +
+  //     RVDic.Keywords +
+  //     ')'
+  //   );
+  // };
+
+  const extendedHierarchy = hierarchy?.map((level) => ({
+    id: level?.NodeTypeID,
+    title: decodeBase64(level?.TypeName),
+    linkTo: `/classes/${level?.NodeTypeID}`,
   }));
 
   const breadcrumbItems = [
-    { id: selectedApp.id, title: selectedApp.name, linkTo: '/classes' },
+    { id: selectedApp?.id, title: selectedApp?.name, linkTo: '/classes' },
     ...extendedHierarchy,
   ];
 
@@ -306,9 +321,11 @@ const FilterBar = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            marginTop: '1.5rem',
           }}>
           {nodeType?.IconURL && (
             <img
+              alt={''}
               style={{ height: '3rem', aspectRatio: 1 }}
               src={nodeType?.IconURL}
             />
@@ -318,33 +335,50 @@ const FilterBar = ({
           </Heading>
           {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
-              {RVDic.NItems.replace('[n]', totalFound)}
+              {RVDic?.NItems?.replace('[n]', totalFound)}
             </Heading>
           )}
         </div>
-
-        {(market || []).length > 0 && (
-          <AnimatedDropDownList
-            data={market}
-            onSelectItem={onSelectItem}
-            defaultValue={selectedItem}
-            hiddenSelectedItem={false}
-            onClickLabel={() => onSelectItem(selectedItem)}
-            customClass={{
-              labelClass: RV_RTL
-                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius'
-                : 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius',
-              buttonClass: isDropDownOpen
-                ? `rv-bg-color-warm rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
-                  }`
-                : `rv-bg-color-default rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
-                  }`,
-              arrowIconColorClass: 'rv-white',
-            }}
-            onDropDownOpen={setIsDropDownOpen}
-          />
+        {console.log(isInOnBoarding, isNewDocOpened)}
+        {itemSelectionMode && market?.length > 0 ? (
+          <Button onClick={onCreateUrgent} type={'primary'}>
+            <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
+            <div style={{ margin: '0 1rem 0 1rem' }}>{RVDic?.AddQuickly}</div>
+          </Button>
+        ) : (
+          <div data-tut={'new_doc_menu'}>
+            {market?.length > 0 && (
+              <AnimatedDropDownList
+                data={market}
+                onSelectItem={onSelectItem}
+                defaultValue={selectedItem}
+                hiddenSelectedItem={false}
+                introMode={isInOnBoarding && isNewDocOpened}
+                onClickLabel={() => onSelectItem(selectedItem)}
+                customStyle={{
+                  label: { minWidth: '8rem' },
+                }}
+                customClass={{
+                  labelClass: RV_RTL
+                    ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                    : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
+                  buttonClass: isDropDownOpen
+                    ? `rv-bg-color-warm rv-border-radius-half ${
+                        RV_RTL
+                          ? 'rv-ignore-right-radius'
+                          : 'rv-ignore-left-radius'
+                      }`
+                    : `rv-bg-color-default rv-border-radius-half ${
+                        RV_RTL
+                          ? 'rv-ignore-right-radius'
+                          : 'rv-ignore-left-radius'
+                      }`,
+                  arrowIconColorClass: 'rv-white',
+                }}
+                onDropDownOpen={setIsDropDownOpen}
+              />
+            )}
+          </div>
         )}
       </TopRow>
 
@@ -355,7 +389,8 @@ const FilterBar = ({
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={placeHolderText()}
+          placeholder={RVDic?.Search}
+          placeholderFocusedClass={'rv-default'}
           children={
             <Search
               style={{
@@ -366,40 +401,20 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => setBookmarkHover(true)}
-            onMouseLeave={() => setBookmarkHover(false)}
-            onClick={() => onAdvanecedSearch(!advancedSearch)}
-            isEnabled={bookmarked}
-            className={
-              bookmarked
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            {bookmarked ? (
-              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-            ) : (
-              <OutLineBookmarkIcon
-                size={'1.5rem'}
-                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-              />
-            )}
-          </ShadowButton>
-
           <CustomDatePicker
-            label=" انتخاب تاریخ جلالی"
+            label={RVDic?.SelectDate}
             mode="button"
             type="jalali"
             clearButton
             range
+            headerTitle="فیلتر تاریخ ایجاد"
             CustomButton={({ onClick }) => (
               <ShadowButton
                 onClick={onClick}
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                isEnabled={date}
+                $isEnabled={date}
                 className={
                   date
                     ? 'rv-border-distant rv-default'
@@ -419,33 +434,61 @@ const FilterBar = ({
               </ShadowButton>
             )}
             onDateSelect={(value) => {
-              console.log(date, 'date');
               setDate(value);
               onByDate(value);
             }}
           />
           <ShadowButton
             style={commonStyle}
-            onClick={() => onAdvanecedSearch(!advancedSearch)}
-            onMouseEnter={() => setPeopleHover(true)}
-            onMouseLeave={() => setPeopleHover(false)}
-            isEnabled={people}
+            onMouseEnter={() => setBookmarkHover(true)}
+            onMouseLeave={() => setBookmarkHover(false)}
+            onClick={() => onByBookmarked(!isBookMarked)}
+            $isEnabled={isBookMarked}
             className={
-              people
+              isBookMarked
                 ? 'rv-border-distant rv-default'
                 : 'rv-border-white rv-distant'
             }>
-            <PersonIcon
-              size={'1.5rem'}
-              className={
-                people
-                  ? 'rv-default'
-                  : peopleHover
-                  ? 'rv-default'
-                  : 'rv-distant'
-              }
-            />
+            {isBookMarked ? (
+              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+            ) : (
+              <OutLineBookmarkIcon
+                size={'1.5rem'}
+                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+              />
+            )}
           </ShadowButton>
+
+          <PeoplePicker
+            onByMe={onByMe}
+            onByPeople={onPeople}
+            isByMe={isByMe}
+            pickedPeople={people}
+            buttonComponent={
+              <ShadowButton
+                style={commonStyle}
+                // onClick={onClick}
+                onMouseEnter={() => setPeopleHover(true)}
+                onMouseLeave={() => setPeopleHover(false)}
+                $isEnabled={people || isByMe}
+                className={
+                  isByMe || people
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                <PersonIcon
+                  size={'1.5rem'}
+                  className={
+                    isByMe || people
+                      ? 'rv-default'
+                      : peopleHover
+                      ? 'rv-default'
+                      : 'rv-distant'
+                  }
+                />
+              </ShadowButton>
+            }
+          />
 
           {advancedButton && (
             <ShadowButton
@@ -458,7 +501,7 @@ const FilterBar = ({
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={onAdvancedFilterClick}
-              isEnabled={advancedSearch}
+              $isEnabled={advancedSearch}
               className={
                 advancedSearch
                   ? 'rv-border-distant rv-default'
@@ -475,35 +518,11 @@ const FilterBar = ({
                 }
                 style={{ marginLeft: '0.5rem' }}
               />
-              {RVDic.Advanced}
+              {RVDic?.Advanced}
             </ShadowButton>
           )}
         </div>
       </BottomRow>
-      <div
-        style={{
-          display: 'flex',
-          width: '80vw',
-          backgroundColor: 'red',
-        }}>
-        <Modal
-          contentWidth="50%"
-          onClose={() => setUrgentModalOpen(false)}
-          show={isUrgentModalOpen}>
-          <AnimatedInput
-            placeholder={RVDic.Title}
-            value={urgentInput}
-            onChange={setUrgentInput}
-          />
-          <Button
-            disable={!urgentInput}
-            onClick={onCreateUrgent}
-            style={{ margin: '2rem' }}
-            type={'primary'}>
-            {RVDic.Confirm}
-          </Button>
-        </Modal>
-      </div>
     </Container>
   );
 };

@@ -1,5 +1,19 @@
-import { getURL } from 'helpers/helpers';
 import { lazy } from 'react';
+import {
+  DASHBOARD_NAME,
+  DASHBOARD_PATH,
+  DO_SEARCH_NAME,
+  DO_SEARCH_PATH,
+  HELP_NAME,
+  HELP_PATH,
+  HOME_NAME,
+  HOME_PATH,
+  MESSAGES_NAME,
+  MESSAGES_PATH,
+  TEAMS_NAME,
+  TEAMS_PATH,
+} from 'constant/constants';
+
 const Teams = lazy(() =>
   import(/* webpackChunkName: "teams-view"*/ 'views/Teams/Teams')
 );
@@ -15,42 +29,52 @@ const Dashboard = lazy(() =>
 const Search = lazy(() =>
   import(/* webpackChunkName: "search-view"*/ 'views/Search/Search')
 );
+const HelpMe = lazy(() =>
+  import(/* webpackChunkName: "helpme-view"*/ 'views/HelpMe/HelpMe')
+);
 
 const NavbarRoutes = [
   {
-    path: getURL('Applications'),
-    name: 'teams',
+    path: TEAMS_PATH,
+    name: TEAMS_NAME,
     exact: true,
     hasNavSide: true,
     component: Teams,
   },
   {
-    path: getURL('Home'),
-    name: 'home',
+    path: HOME_PATH,
+    name: HOME_NAME,
     exact: true,
     hasNavSide: true,
     component: Home,
   },
   {
-    path: getURL('Messages'),
-    name: 'messages',
+    path: MESSAGES_PATH,
+    name: MESSAGES_NAME,
     exact: true,
     hasNavSide: true,
     component: Messages,
   },
   {
-    path: getURL('Dashboard'),
-    name: 'dashboard',
+    path: DASHBOARD_PATH,
+    name: DASHBOARD_NAME,
     exact: true,
     hasNavSide: true,
     component: Dashboard,
   },
   {
-    path: '/dosearch/:searchtext',
-    name: 'search',
+    path: DO_SEARCH_PATH,
+    name: DO_SEARCH_NAME,
     exact: true,
     hasNavSide: true,
     component: Search,
+  },
+  {
+    path: HELP_PATH,
+    name: HELP_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: HelpMe,
   },
 ];
 

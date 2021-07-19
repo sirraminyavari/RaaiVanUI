@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useQuery from 'hooks/useQuery';
-import APIHandler from 'apiHelper/APIHandler';
+import { API_Provider } from 'helpers/helpers';
+import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 
 /**
  * This hook checks every route for permission.
@@ -14,7 +15,7 @@ const useCheckRoute = (name) => {
   const routeParams = useParams();
   const queryParams = useQuery();
   const params = { ...routeParams, ...queryParams };
-  const apiHandler = new APIHandler('RVAPI', 'CheckRoute');
+  const apiHandler = API_Provider(RV_API, CHECK_ROUTE);
 
   useEffect(() => {
     const prevURL = window.location.href;

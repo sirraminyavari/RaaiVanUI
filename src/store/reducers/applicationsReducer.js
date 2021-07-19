@@ -1,51 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadLocalStorage, saveLocalStorage } from 'helpers/helpers';
-
-const authUserId = window.RVGlobal?.CurrentUserID;
-const appsKey = 'apps_' + authUserId;
 
 //! Applications Slice
 export const ApplicationsSlice = createSlice({
   name: 'applications',
 
   initialState: {
-    applications: [],
+    userApps: [],
+    userArchivedApps: [],
     isFetching: false,
+    selectingApp: { isSelecting: false, selectingAppId: null },
   },
 
   reducers: {
     setApplications: (state, action) => {
-      state.applications = action.payload;
-      saveLocalStorage(appsKey, action.payload);
+      state.userApps = action.payload;
+    },
+    setArchivedApplications: (state, action) => {
+      state.userArchivedApps = action.payload;
     },
     deleteApplication: (state, action) => {
-      const newApplications = state.applications.filter(
-        (app) => app.ApplicationID !== action.payload
-      );
-      state.applications = newApplications;
-      saveLocalStorage(appsKey, newApplications);
+      state.userApps = action.payload;
     },
     addApplication: (state, action) => {
-      const savedApps = loadLocalStorage(appsKey);
-      if (savedApps !== undefined) {
-        savedApps.splice(savedApps.length - 2, 0, action.payload);
-        state.applications = savedApps;
-        saveLocalStorage(appsKey, savedApps);
-      } else {
-        const newApplications = state.applications.splice(
-          state.applications.length - 2,
-          0,
-          action.payload
-        );
-        state.applications = newApplications;
-        saveLocalStorage(appsKey, newApplications);
-      }
+      state.userApps = action.payload;
     },
     clearApplications: (state, action) => {
-      state.applications = [];
+      state.userApps = [];
     },
     setFetchingApps: (state, action) => {
       state.isFetching = action.payload;
+    },
+    setSelectingApp: (state, action) => {
+      state.selectingApp = action.payload;
     },
   },
 });

@@ -1,6 +1,7 @@
 /**
  * An action for resending the verification code
  */
+import APIHandler from 'apiHelper/APIHandler';
 import { loginSlice } from '../../reducers/loginReducer';
 const {
   reSendVerifyCode,
@@ -9,6 +10,11 @@ const {
 } = loginSlice.actions;
 
 const { RVAPI, RVDic } = window;
+
+const resendVerificationCode = new APIHandler(
+  'RVAPI',
+  'ResendVerificationCode'
+);
 /**
  * The process of resending the verification code will do here with help of Thunk.
  * See @link https://github.com/reduxjs/redux-thunk for more info.
@@ -25,18 +31,20 @@ const reSendVerifyCodeAction = () => async (dispatch, getState) => {
     const resendVerifyCodeToken = getState().auth.resendVerifyCodeToken;
     if (resendVerifyCodeToken) {
       try {
-        RVAPI.ResendVerificationCode({
-          Token: getState().auth.resendVerifyCodeToken,
-          ParseResults: true,
-          ResponseHandler: function (result) {
+        resendVerificationCode.fetch(
+          {
+            Token: getState().auth.resendVerifyCodeToken,
+            ParseResults: true,
+          },
+          (result) => {
             if (result.ErrorText) {
               alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
               dispatch(reSendVerifyCodeFailed(result));
             } else {
               dispatch(reSendVerifyCodeSuccess(result));
             }
-          },
-        });
+          }
+        );
       } catch (err) {
         dispatch(reSendVerifyCodeFailed(err));
       }

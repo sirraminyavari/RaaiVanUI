@@ -7,7 +7,8 @@ import InvisibleIcon from 'components/Icons/InVisible';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { LIGHT_BLUE } from 'const/Colors';
+import { GlobalParams } from 'const/GlobalParams';
+import { decode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -15,16 +16,14 @@ import sendVerifyCodeAction from 'store/actions/auth/sendVerifyCodeAction';
 import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import setEmailAction from 'store/actions/auth/setEmailAction';
 import setFamilyAction from 'store/actions/auth/setFamilyAction';
+import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setNameAction from 'store/actions/auth/setNameAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
-import ContinueWithGoogle from '../elements/ContinueWithGoogle';
-import PasswordValidation from '../elements/PasswordValidation';
-import { decode } from 'js-base64';
+import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { Box } from '../AuthView.style';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
-import { GlobalParams, Urls } from 'const/GlobalParams';
+import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 
 const { RVDic, RVGlobal, RV_RTL } = window;
 /**
@@ -87,8 +86,8 @@ const SignUp = () => {
     const { GlobalUtilities } = window;
 
     !passwordPolicy && dispatch(signupLoadFilesAction());
-    GlobalUtilities.init_recaptcha((captcha) => {
-      captcha.getToken((token) => {
+    GlobalUtilities?.init_recaptcha((captcha) => {
+      captcha?.getToken((token) => {
         //use token
         dispatch(setCaptchaTokenAction(token));
       });
@@ -138,14 +137,14 @@ const SignUp = () => {
    * focus will change to name input
    */
   const onEmailEnter = () => {
-    passRef.current?.focus();
+    passRef?.current?.focus();
   };
   /**
    * When the user is typing in name input and then presses the enter key,
    * focus will change to family input
    */
   const onNameEnter = () => {
-    familyRef.current?.focus();
+    familyRef?.current?.focus();
   };
   /**
    * When the user is typing in family input and then presses the enter key,
@@ -159,7 +158,7 @@ const SignUp = () => {
    * 'onSignUp' will fire.
    */
   const onPassEnter = () => {
-    nameRef.current?.focus();
+    nameRef?.current?.focus();
   };
   /**
    * When the password input is focused, the password validator will be shown.
@@ -196,7 +195,7 @@ const SignUp = () => {
   const onHaveAccount = () => {
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    push('/auth/login');
+    push('/login' + window.location.search);
   };
 
   const passVisibility = (value) => {
@@ -226,7 +225,7 @@ const SignUp = () => {
           <AnimatedInput
             onChange={onEmailChanged}
             value={email}
-            placeholder={RVDic.EmailAddress}
+            placeholder={RVDic?.EmailAddress}
             error={emailError}
             shake={emailError && 300}
             style={common_style}
@@ -238,7 +237,7 @@ const SignUp = () => {
           <AnimatedInput
             onChange={onPasswordChanged}
             value={password}
-            placeholder={RVDic.Password}
+            placeholder={RVDic?.Password}
             type={passVisible ? 'text' : 'password'}
             error={passwordError}
             shake={passwordError && 300}
@@ -277,7 +276,6 @@ const SignUp = () => {
           )}
 
           <RowItems>
-            {console.log(RV_RTL, 'RV_RTL')}
             <AnimatedInput
               onChange={onNameChanged}
               value={name}
@@ -296,7 +294,7 @@ const SignUp = () => {
             <AnimatedInput
               onChange={onFamilyChanged}
               value={family}
-              placeholder={RVDic.LastName}
+              placeholder={RVDic?.LastName}
               error={familyError}
               style={
                 RV_RTL
@@ -304,7 +302,6 @@ const SignUp = () => {
                   : { marginLeft: '1rem', ...common_style }
               }
               shake={familyError && 300}
-              style={common_style}
               id={'family'}
               ref={familyRef}
               enterListener={onFamilyEnter}
@@ -320,17 +317,18 @@ const SignUp = () => {
                 marginTop: '1rem',
                 marginBottom: '2.5rem',
               }}>
-              {splitted_terms[0].replace('[n]', decode(RVGlobal.SystemName))}
+              {splitted_terms[0].replace('[n]', decode(RVGlobal?.SystemName))}
               <a
-                href={GlobalParams.TermsAndConditionsURL}
+                href={GlobalParams?.TermsAndConditionsURL}
                 target="_blank"
+                rel="noreferrer"
                 style={{ color: 'blue' }}>
-                {RVDic.TermsAndConditionsOfN.replace(
+                {RVDic?.TermsAndConditionsOfN.replace(
                   '[n]',
-                  decode(RVGlobal.SystemName)
+                  decode(RVGlobal?.SystemName)
                 )}
               </a>
-              {splitted_terms[1].replace('[m]', '')}
+              {splitted_terms[1]?.replace('[m]', '')}
             </Heading>
           )}
           <Button
@@ -344,17 +342,15 @@ const SignUp = () => {
               ...common_style,
               marginBottom: '2.5rem',
             }}>
-            {RVDic.GetConfirmationCode}
+            {RVDic?.GetConfirmationCode}
           </Button>
           <Hiddener isVisible={email.length === 0}>
             <ContinueWithGoogle style={{ width: '100%', common_style }} />
             <Button
               type="secondary-o"
-              style={{ fontSize: '1rem' }}
-              style={{ width: '100%' }}
-              style={common_style}
+              style={{ ...common_style, fontSize: '1rem', width: '100%' }}
               onClick={onHaveAccount}>
-              {RVDic.AlreadyHaveAnAccount}
+              {RVDic?.AlreadyHaveAnAccount}
             </Button>
           </Hiddener>
         </Container>

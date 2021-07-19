@@ -8,7 +8,6 @@ const ChangePassword = (props) => {
       window.loadChangePass(props.route);
     }
   );
-  console.log(props);
   return (
     <div
       id="contentArea"

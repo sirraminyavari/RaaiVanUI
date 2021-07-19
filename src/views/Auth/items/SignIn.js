@@ -11,15 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import loginAction from 'store/actions/auth/loginAction';
 import setEmailAction from 'store/actions/auth/setEmailAction';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
 import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
-import OrgDomains from '../elements/OrgDomains';
-import { ToastContainer, toast } from 'react-toastify';
 
 const { RVDic } = window;
 
@@ -27,7 +24,6 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const passRef = useRef();
   const emailRef = useRef();
-  const loginRef = useRef();
 
   const { push } = useHistory();
   // If true, typed password will be visible
@@ -60,13 +56,13 @@ const SignIn = () => {
 
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   useEffect(() => {
-    emailRef.current?.focus();
+    emailRef?.current?.focus();
 
     return () => {
       setSignUpClicked(false);
       setSignInClicked(false);
       setForgotPassClicked(false);
-      dispatch(setLoginRouteAction(null));
+      // dispatch(setLoginRouteAction(null));
     };
   }, []);
   //First checks 'sign up' button is clicked or not, then checks routeHistory.
@@ -96,24 +92,34 @@ const SignIn = () => {
    * Sends email & password to server by dispatching 'loginAction'
    */
   const onSignIn = () => {
-    // toast('🦄 Wow so easy!', {
-    //   position: 'top-right',
-    //   autoClose: 5000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    // });
     passRef.current?.blur();
     setSignInClicked(true);
-    dispatch(loginAction({ email: email, password: password }));
+    const { GlobalUtilities } = window;
+    const reqParams = GlobalUtilities.request_params();
+    const invitationId = reqParams?.get_value('inv');
+    console.log(
+      email,
+      'email',
+      password,
+      'password',
+      invitationId,
+      'invitationId'
+    );
+    dispatch(
+      loginAction({
+        email: email,
+        password: password,
+        invitationId: invitationId,
+      })
+    );
   };
   /**
    * navigates to resetPassword page.
    */
   const onForgot = () => {
-    dispatch(signupLoadFilesAction('/auth/forgotPassword'));
+    dispatch(
+      signupLoadFilesAction('/auth/forgotPassword' + window.location.search)
+    );
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };
@@ -124,14 +130,14 @@ const SignIn = () => {
     setSignUpClicked(true);
     dispatch(setEmailAction(''));
     dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register'));
+    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
     // push('/auth/register');
   };
   /**
    * When the email input is focused, the password input will be focused.
    */
   const onEmailEnter = () => {
-    passRef.current?.focus();
+    passRef?.current?.focus();
   };
   /**
    * When the password input is focused, the sign in process starts.
@@ -150,12 +156,12 @@ const SignIn = () => {
             ...common_style,
             marginBottom: '1.75rem',
           }}>
-          {RVDic.Login}
+          {RVDic?.Login}
         </Heading>
         <AnimatedInput
           onChange={onEmailChanged}
           value={email}
-          placeholder={RVDic.EmailAddress}
+          placeholder={RVDic?.EmailAddress}
           error={emailError && true}
           shake={emailError && 300}
           style={common_style}
@@ -166,7 +172,7 @@ const SignIn = () => {
         <AnimatedInput
           onChange={onPasswordChanged}
           value={password}
-          placeholder={RVDic.Password}
+          placeholder={RVDic?.Password}
           type={passVisible ? 'text' : 'password'}
           error={passwordError}
           shake={passwordError && 300}
@@ -215,7 +221,7 @@ const SignIn = () => {
           }}
           loading={forgotPassClicked && fetchingFiles}
           onClick={onForgot}>
-          {RVDic.ForgotMyPassword}
+          {RVDic?.ForgotMyPassword}
         </Button>
         <Hiddener isVisible={email.length === 0}>
           <ContinueWithGoogle
@@ -226,11 +232,14 @@ const SignIn = () => {
           />
           <Button
             type="secondary-o"
-            style={{ fontSize: '1rem' }}
             loading={signUpClicked && fetchingFiles}
-            style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}
+            style={{
+              marginBottom: '1.5rem',
+              marginTop: '0.5rem',
+              fontSize: '1rem',
+            }}
             onClick={onCreateAccount}>
-            {RVDic.CreateAccount}
+            {RVDic?.CreateAccount}
           </Button>
         </Hiddener>
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />

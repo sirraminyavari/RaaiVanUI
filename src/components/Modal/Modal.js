@@ -35,7 +35,7 @@ const Modal = ({
 
   useEffect(() => {
     let disposedRecently = disposed && !prevDisposed;
-    if (disposedRecently && GlobalUtilities.get_type(onClose) == 'function')
+    if (disposedRecently && GlobalUtilities.get_type(onClose) === 'function')
       onClose();
   }, [disposed]);
 
@@ -88,7 +88,7 @@ const Modal = ({
               </TitleContainer>
             </>
           )}
-          <MainContent>{props.children}</MainContent>
+          <MainContent {...props}>{props.children}</MainContent>
         </ContentSection>
       </ContentContainer>
     </Container>

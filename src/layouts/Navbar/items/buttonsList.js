@@ -1,66 +1,75 @@
-import { getURL } from 'helpers/helpers';
+import {
+  DASHBOARD_PATH,
+  EXPLORER_PATH,
+  GRAPH_PATH,
+  HOME_PATH,
+  MESSAGES_PATH,
+  NEW_QUESTION_PATH,
+  QUESTIONS_PATH,
+  TEAMS_PATH,
+} from 'constant/constants';
 const { RVDic } = window;
 
 const NavButtons = [
-  { index: 1, title: RVDic.Home, icon: 'home', linkTo: getURL('Home') },
+  { index: '1', title: RVDic.Home, icon: 'home', linkTo: HOME_PATH },
   {
-    index: 2,
+    index: '2',
     title: RVDic.Navigation,
     icon: 'direction',
     actions: [
       {
-        index: 1,
+        index: '2-1',
         title: RVDic.Explorer,
         icon: 'site',
-        linkTo: getURL('Explorer'),
+        linkTo: EXPLORER_PATH,
       },
       {
-        index: 2,
+        index: '2-2',
         title: RVDic.KnowledgeMap,
         icon: 'target',
-        linkTo: getURL('Applications'),
+        linkTo: GRAPH_PATH,
       },
     ],
   },
   {
-    index: 3,
+    index: '3',
     title: RVDic.Question,
     icon: 'question',
     actions: [
       {
-        index: 1,
+        index: '3-1',
         title: RVDic.NewQuestion,
         icon: 'plus',
-        linkTo: getURL('NewQuestion'),
+        linkTo: NEW_QUESTION_PATH,
       },
       {
-        index: 2,
+        index: '3-2',
         title: RVDic.Questions,
         icon: 'question',
-        linkTo: getURL('Questions'),
+        linkTo: QUESTIONS_PATH,
       },
     ],
   },
   {
-    index: 4,
+    index: '4',
     title: RVDic.Teams,
     icon: 'teams',
-    linkTo: getURL('Applications'),
+    linkTo: TEAMS_PATH,
   },
   {
-    index: 5,
+    index: '5',
     title: RVDic.Messages,
     icon: 'messages',
-    linkTo: getURL('Messages'),
+    linkTo: MESSAGES_PATH,
   },
   {
-    index: 6,
+    index: '6',
     title: RVDic.Dashboard,
     icon: 'dashboard',
-    linkTo: getURL('Dashboard'),
+    linkTo: DASHBOARD_PATH,
   },
   {
-    index: 7,
+    index: '7',
     title: RVDic.Notifications,
     icon: 'notifications',
     actions: [],

@@ -1,49 +1,49 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useEffect, useMemo, useState } from 'react';
+// import { useSelector } from 'react-redux';
 import Divider from './Divider';
-import APIHandler from 'apiHelper/APIHandler';
-import { decodeBase64 } from 'helpers/helpers';
+// import APIHandler from 'apiHelper/APIHandler';
+// import { decodeBase64 } from 'helpers/helpers';
 
 //! CustomTable
-import CustomTable from 'components/CustomTable/CustomTable';
-import tableData from './tableData';
-import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
-import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
+// import CustomTable from 'components/CustomTable/CustomTable';
+// import tableData from './tableData';
+// import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
+// import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
+// import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 //! Dropzone
-import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+// import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 
 //! ProgressBar
 import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 //! Custom Tree
-import DnDTree from 'components/Tree/CustomTree/DnDTree';
-import { customTreeData } from './treeData';
+// import DnDTree from 'components/Tree/CustomTree/DnDTree';
+// import { customTreeData } from './treeData';
 
 //! DragAndDropTree Tree
-import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
+// import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 // import { DnDTreeData } from './treeData';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import CaretIcon from 'components/Icons/CaretIcons/Caret';
-import InlineEdit from 'components/InlineEdit/InlineEdit';
+// import DragIcon from 'components/Icons/DragIcon/Drag';
+// import CaretIcon from 'components/Icons/CaretIcons/Caret';
+// import InlineEdit from 'components/InlineEdit/InlineEdit';
 
 //! DnDProvider
-import DnDProvider from 'components/DnDProvider/DnDProvider';
-import dndData from './dndData';
+// import DnDProvider from 'components/DnDProvider/DnDProvider';
+// import dndData from './dndData';
 
 //! Multi Column DnD
-import MultiDnD from 'components/MultiColumnDnD/MultiColumnDnD';
+// import MultiDnD from 'components/MultiColumnDnD/MultiColumnDnD';
 
 //! Custom Date Picker
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
 //! Resizable
-import Resizeable from 'components/Resizable/Resizable';
+// import Resizeable from 'components/Resizable/Resizable';
 
 //! FormElements
-import FormEdit from 'components/FormElements/FormEdit/FormEdit';
-import FormFilter from 'components/FormElements/FormFilter/FormFilter';
+// import FormEdit from 'components/FormElements/FormEdit/FormEdit';
+// import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 // import filters from './filtersObject';
 
 //! DnDGrid
@@ -52,48 +52,44 @@ import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 
 // import DnDGridList from 'components/DnDGrid/DnDGrid';
 
-// import DnDMuuri from 'components/DnDMuuri/DnDMuuri';
+// const headers = [
+//   { firstName: 'نام', dataType: 'string' },
+//   { lastName: 'نام خانوادگی', dataType: 'string' },
+//   { country: 'کشور', dataType: 'string' },
+//   { city: 'شهر', dataType: 'string' },
+//   { age: 'سن', dataType: 'integer' },
+//   { dateOfBirth: 'تاریخ تولد', dataType: 'date' },
+//   { progress: 'پیشرفت پروفایل', dataType: 'integer' },
+// ];
 
-import DnDSortable from 'components/DnDSortable/SortableComponent';
+// const initialSize = {
+//   width: 200,
+//   height: 400,
+// };
 
-const headers = [
-  { firstName: 'نام', dataType: 'string' },
-  { lastName: 'نام خانوادگی', dataType: 'string' },
-  { country: 'کشور', dataType: 'string' },
-  { city: 'شهر', dataType: 'string' },
-  { age: 'سن', dataType: 'integer' },
-  { dateOfBirth: 'تاریخ تولد', dataType: 'date' },
-  { progress: 'پیشرفت پروفایل', dataType: 'integer' },
-];
-
-const initialSize = {
-  width: 200,
-  height: 400,
-};
-
-const getIcon = (item, onExpand, onCollapse) => {
-  if (item.children && item.children.length > 0) {
-    return item.isExpanded ? (
-      <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
-    ) : (
-      <CaretIcon size={20} onClick={() => onExpand(item.id)} dir="left" />
-    );
-  }
-  return null;
-};
+// const getIcon = (item, onExpand, onCollapse) => {
+//   if (item.children && item.children.length > 0) {
+//     return item.isExpanded ? (
+//       <CaretIcon size={20} onClick={() => onCollapse(item.id)} dir="down" />
+//     ) : (
+//       <CaretIcon size={20} onClick={() => onExpand(item.id)} dir="left" />
+//     );
+//   }
+//   return null;
+// };
 
 const RasoulView = () => {
-  const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
-  const [isFetching, setIsFetching] = useState(true);
-  const [data, setData] = useState([]);
-  const [tree, setTree] = useState(DnDTreeData);
-  const [size, setSize] = useState(initialSize);
-  const [showSize, setShowSize] = useState(initialSize);
-  const [form, setForm] = useState({ formId: null, formTitle: null });
-  const [filters, setFilters] = useState([]);
+  // const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
+  // const [isFetching, setIsFetching] = useState(true);
+  // const [data, setData] = useState([]);
+  // const [tree, setTree] = useState(DnDTreeData);
+  // const [size, setSize] = useState(initialSize);
+  // const [showSize, setShowSize] = useState(initialSize);
+  // const [form, setForm] = useState({ formId: null, formTitle: null });
+  // const [filters, setFilters] = useState([]);
 
-  const GetFormAPI = new APIHandler('FGAPI', 'GetOwnerForm');
-  const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
+  // const GetFormAPI = new APIHandler('FGAPI', 'GetOwnerForm');
+  // const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
   // useEffect(() => {
   //   GetFormAPI.fetch(
@@ -124,133 +120,133 @@ const RasoulView = () => {
   //   );
   // }, []);
 
-  const PADDING_PER_LEVEL = 32;
+  // const PADDING_PER_LEVEL = 32;
 
-  const handleMutateTree = (tree) => {
-    setTree(tree);
-  };
+  // const handleMutateTree = (tree) => {
+  //   setTree(tree);
+  // };
 
   //! Render custom item.
-  const handleRenderItem = ({
-    item,
-    onExpand,
-    onCollapse,
-    provided,
-    depth,
-    snapshot,
-  }) => {
-    const isDragging = snapshot.isDragging;
-    const hasChildren = item.hasChildren;
-    const isEditable = item.isEditable;
-    return (
-      <div ref={provided.innerRef} {...provided.draggableProps}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            margin: '0.7rem 0',
-            backgroundColor: '#333',
-            color: '#fff',
-            padding: '0.5rem 1rem',
-            borderRadius: 5,
-            position: 'relative',
-            right: `${PADDING_PER_LEVEL * depth}px`,
-          }}>
-          <div {...provided.dragHandleProps}>
-            <DragIcon />
-          </div>
-          {!isDragging && <span>{getIcon(item, onExpand, onCollapse)}</span>}
-          <div>
-            {isEditable ? (
-              <InlineEdit
-                text={item.data ? item.data.title : ''}
-                onSetText={(text) => console.log(text)}
-              />
-            ) : (
-              <span
-                style={{
-                  margin: hasChildren ? '0 0.3rem' : '0 0.7rem',
-                }}>
-                {item.data ? item.data.title : ''}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // const handleRenderItem = ({
+  //   item,
+  //   onExpand,
+  //   onCollapse,
+  //   provided,
+  //   depth,
+  //   snapshot,
+  // }) => {
+  //   const isDragging = snapshot.isDragging;
+  //   const hasChildren = item.hasChildren;
+  //   const isEditable = item.isEditable;
+  //   return (
+  //     <div ref={provided.innerRef} {...provided.draggableProps}>
+  //       <div
+  //         style={{
+  //           display: 'flex',
+  //           alignItems: 'center',
+  //           margin: '0.7rem 0',
+  //           backgroundColor: '#333',
+  //           color: '#fff',
+  //           padding: '0.5rem 1rem',
+  //           borderRadius: 5,
+  //           position: 'relative',
+  //           right: `${PADDING_PER_LEVEL * depth}px`,
+  //         }}>
+  //         <div {...provided.dragHandleProps}>
+  //           <DragIcon />
+  //         </div>
+  //         {!isDragging && <span>{getIcon(item, onExpand, onCollapse)}</span>}
+  //         <div>
+  //           {isEditable ? (
+  //             <InlineEdit
+  //               text={item.data ? item.data.title : ''}
+  //               onSetText={(text) => console.log(text)}
+  //             />
+  //           ) : (
+  //             <span
+  //               style={{
+  //                 margin: hasChildren ? '0 0.3rem' : '0 0.7rem',
+  //               }}>
+  //               {item.data ? item.data.title : ''}
+  //             </span>
+  //           )}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
-  setTimeout(() => {
-    setData(tableData);
-    setIsFetching(false);
-  }, 2000);
+  // setTimeout(() => {
+  //   setData(tableData);
+  //   setIsFetching(false);
+  // }, 2000);
 
-  const columns = useMemo(
-    () =>
-      ColumnsFactory(headers, {
-        delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
-        view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
-      }),
-    []
-  );
+  // const columns = useMemo(
+  //   () =>
+  //     ColumnsFactory(headers, {
+  //       delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
+  //       view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
+  //     }),
+  //   []
+  // );
 
-  const handleOnResizeEnd = (size) => {
-    setSize(size);
-    console.log(size, 'resize ended');
-  };
+  // const handleOnResizeEnd = (size) => {
+  //   setSize(size);
+  //   console.log(size, 'resize ended');
+  // };
 
-  const handleOnResizeStart = (size) => {
-    console.log(size, 'resize started');
-  };
+  // const handleOnResizeStart = (size) => {
+  //   console.log(size, 'resize started');
+  // };
 
-  const handleOnResizing = (size) => {
-    setShowSize(size);
-    console.log(size, 'resizing');
-  };
+  // const handleOnResizing = (size) => {
+  //   setShowSize(size);
+  //   console.log(size, 'resizing');
+  // };
 
-  const updateCellData = (rowIndex, columnId, value) => {
-    setData((old) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...row,
-            [columnId]: value,
-          };
-        }
-        return row;
-      })
-    );
-  };
+  // const updateCellData = (rowIndex, columnId, value) => {
+  //   setData((old) =>
+  //     old.map((row, index) => {
+  //       if (index === rowIndex) {
+  //         return {
+  //           ...row,
+  //           [columnId]: value,
+  //         };
+  //       }
+  //       return row;
+  //     })
+  //   );
+  // };
 
-  const removeRow = (rowIndex) => {
-    setData((old) => old.filter((row, index) => index !== rowIndex));
-  };
+  // const removeRow = (rowIndex) => {
+  //   setData((old) => old.filter((row, index) => index !== rowIndex));
+  // };
 
-  const reorderData = (startIndex, endIndex) => {
-    const newData = [...data];
-    const [movedRow] = newData.splice(startIndex, 1);
-    newData.splice(endIndex, 0, movedRow);
-    setData(newData);
-  };
+  // const reorderData = (startIndex, endIndex) => {
+  //   const newData = [...data];
+  //   const [movedRow] = newData.splice(startIndex, 1);
+  //   newData.splice(endIndex, 0, movedRow);
+  //   setData(newData);
+  // };
 
-  const removeAll = () => {
-    setData([]);
-  };
+  // const removeAll = () => {
+  //   setData([]);
+  // };
 
-  const addRow = () => {
-    const newRecord = {
-      id: '10',
-      firstName: 'نام دهم',
-      lastName: 'نام خانوادگی دهم',
-      country: 'ایران',
-      city: 'طهران',
-      age: 50,
-      dateOfBirth: '2008/11/02',
-      progress: 100,
-    };
-    const newData = [...data, newRecord];
-    setData(newData);
-  };
+  // const addRow = () => {
+  //   const newRecord = {
+  //     id: '10',
+  //     firstName: 'نام دهم',
+  //     lastName: 'نام خانوادگی دهم',
+  //     country: 'ایران',
+  //     city: 'طهران',
+  //     age: 50,
+  //     dateOfBirth: '2008/11/02',
+  //     progress: 100,
+  //   };
+  //   const newData = [...data, newRecord];
+  //   setData(newData);
+  // };
 
   return (
     <div>
@@ -293,10 +289,6 @@ const RasoulView = () => {
       {/* <div>
         <DnDGridList />
       </div> */}
-
-      <div>{/* <DnDSortable /> */}</div>
-
-      {/* <DnDMuuri /> */}
 
       <Divider title="Custom Table Component" />
 
@@ -371,6 +363,7 @@ const RasoulView = () => {
             type="‫‪gregorian‬‬"
             clearButton
             onDateSelect={(date) => console.log(date)}
+            size="large"
           />
         </div>
         <div>
@@ -404,6 +397,7 @@ const RasoulView = () => {
             clearButton
             onDateSelect={(date) => console.log(date)}
             size="small"
+            headerTitle="عنوان تقویم"
           />
         </div>
       </div>
