@@ -11,7 +11,6 @@ export const steps = [
         color: '#424242',
         borderRadius: '25px',
       },
-      position: 'bottom',
     },
     {
       selector: '[data-tut="categories_and_templates"]',
@@ -23,7 +22,7 @@ export const steps = [
         color: '#424242',
         borderRadius: '25px',
       },
-      position: 'bottom',
+      position: 'left',
     },
     {
       selector: '[data-tut="advanced_search_results"]',
@@ -35,7 +34,7 @@ export const steps = [
         color: '#424242',
         borderRadius: '25px',
       },
-      position: 'right',
+      position: 'top',
     },
     {
       selector: '[data-tut="new_doc_menu"]',
@@ -47,7 +46,10 @@ export const steps = [
         color: '#424242',
         borderRadius: '25px',
       },
-      position: 'top',
+      highlightedSelectors: ["#list"],
+      mutationObservables: ["#list"],
+      resizeObservables: ["#list"],
+      position: 'right',
     },
     {
       selector: '[data-tut="main-search-box"]',
@@ -59,6 +61,6 @@ export const steps = [
         color: '#424242',
         borderRadius: '25px',
       },
-      position: 'top',
+      position: 'bottom',
     },
   ];
