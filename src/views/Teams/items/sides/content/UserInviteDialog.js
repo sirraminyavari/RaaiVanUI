@@ -21,6 +21,7 @@ const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
 const GET_LINK = 'get-link';
 const SEND_LINK = 'send-link';
+const DEFAULT_INPUT_COUNT = 3;
 
 const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
   const { RVDic, GlobalUtilities } = useWindow();
@@ -32,6 +33,9 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
   const [isSending, setIsSending] = useState(false);
   const [inviteValues, setInviteValues] = useState({});
   const [sendingIndecies, setSendingIndecies] = useState([]);
+  const [inputCount, setInputCount] = useState(DEFAULT_INPUT_COUNT);
+
+  const invitationCount = Object.keys(inviteValues)?.length;
 
   const { isTabletOrMobile } = DimensionHelper();
   const isMobileScreen = useMediaQuery({ query: '(max-width: 600px)' });
@@ -77,7 +81,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
   };
 
   useEffect(() => {
-    if (!!Object.keys(inviteValues).length) {
+    if (!!invitationCount) {
       if (
         Object.values(inviteValues).every((v) => v.validation.mail === true)
       ) {
@@ -89,7 +93,16 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
       setIsSending(false);
       setSendDisabled(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inviteValues]);
+
+  useEffect(() => {
+    if (invitationCount >= DEFAULT_INPUT_COUNT) {
+      setInputCount(invitationCount + 1);
+    } else {
+      setInputCount(DEFAULT_INPUT_COUNT);
+    }
+  }, [invitationCount]);
 
   useEffect(() => {
     if (!isSendDisabled) {
@@ -229,9 +242,15 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, appId }) => {
             {RVDic.Checks.EnterYourNewTeamMateEmailToSendInvitation}
           </Styled.GetLinkInfoTitle>
         </Styled.GetLinkInfoWrapper>
-        <UserInviteField fieldIndex={1} onFieldChange={handleFieldChange} />
-        <UserInviteField fieldIndex={2} onFieldChange={handleFieldChange} />
-        <UserInviteField fieldIndex={3} onFieldChange={handleFieldChange} />
+        {[...Array(inputCount).keys()].map((count, key) => {
+          return (
+            <UserInviteField
+              key={key}
+              fieldIndex={count + 1}
+              onFieldChange={handleFieldChange}
+            />
+          );
+        })}
         <Button
           loading={isSending}
           onClick={handleSendInvitations}
