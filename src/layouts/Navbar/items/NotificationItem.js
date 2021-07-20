@@ -11,8 +11,8 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const { GlobalUtilities, RVDic } = window;
 
-const AlertItem = (props) => {
-  const { alert } = props;
+const NotificationItem = (props) => {
+  const { notif } = props;
   const dispatch = useDispatch();
 
   const onRemoveDone = () => {
@@ -25,37 +25,37 @@ const AlertItem = (props) => {
       type: 'info',
       message: toastMSG,
       autoClose: true,
-      toastId: alert?.NotificationID,
+      toastId: notif?.NotificationID,
     });
   };
 
   const handleDeleteNotif = () => {
     dispatch(
-      removeNotification(alert?.NotificationID, onRemoveDone, onRemoveError)
+      removeNotification(notif?.NotificationID, onRemoveDone, onRemoveError)
     );
   };
 
   return (
-    <Styled.AlertItemContainer>
-      <Styled.AlertItemCloseIcon onClick={handleDeleteNotif}>
+    <Styled.NotifItemContainer>
+      <Styled.NotifItemCloseIcon onClick={handleDeleteNotif}>
         <CloseIcon style={{ verticalAlign: 'middle' }} />
-      </Styled.AlertItemCloseIcon>
-      <div>
+      </Styled.NotifItemCloseIcon>
+      <Styled.NotifAvatarWrapper>
         <Avatar color="#333" />
-      </div>
-      <Styled.AlertContentWrapper>
-        <Styled.AlertMessageWrapper>
-          {renderTitle(alert)}
-        </Styled.AlertMessageWrapper>
-        <Styled.AlertTimeWrapper>
-          {GlobalUtilities.convert_numbers_to_persian(alert.SendDate)}
-        </Styled.AlertTimeWrapper>
-      </Styled.AlertContentWrapper>
-    </Styled.AlertItemContainer>
+      </Styled.NotifAvatarWrapper>
+      <Styled.NotifContentWrapper>
+        <Styled.NotifMessageWrapper>
+          {renderTitle(notif)}
+        </Styled.NotifMessageWrapper>
+        <Styled.NotifTimeWrapper>
+          {GlobalUtilities.convert_numbers_to_persian(notif.SendDate)}
+        </Styled.NotifTimeWrapper>
+      </Styled.NotifContentWrapper>
+    </Styled.NotifItemContainer>
   );
 };
 
-export default AlertItem;
+export default NotificationItem;
 
 function renderTitle(notification) {
   notification = notification || {};

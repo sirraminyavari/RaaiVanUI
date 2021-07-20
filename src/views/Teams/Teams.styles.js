@@ -363,7 +363,7 @@ export const TeamConatiner = styled.div.attrs({
   }
 
   .extra-users-scrollbar {
-    max-height: 8.2rem;
+    height: 8rem;
     padding-${RV_Float}: 0.5rem;
 
     .ps__rail-y {

@@ -24,7 +24,7 @@ import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
 import {
   getNotificationsCount,
-  getNotificationsList,
+  // getNotificationsList,
 } from 'store/actions/global/NotificationActions';
 
 const WideScreenMenu = lazy(() =>
@@ -67,7 +67,7 @@ const Navbar = () => {
 
   const getNotifs = () => {
     dispatch(getNotificationsCount());
-    dispatch(getNotificationsList());
+    // dispatch(getNotificationsList());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);
