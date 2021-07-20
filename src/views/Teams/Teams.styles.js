@@ -440,11 +440,15 @@ export const TeamAvatarsWrapper = styled.div`
 `;
 
 const getPosition = ({ dir, usersCount }) => {
-  // if (usersCount < 2) {
-  //   return `${dir}: 0`;
-  // } else {
-  return `${dir}: ${usersCount * 0}rem`;
-  // }
+  if (usersCount === 4) {
+    return `${dir}: 1.6rem`;
+  } else if (usersCount === 3) {
+    return `${dir}: 1.2rem`;
+  } else if (usersCount === 2) {
+    return `${dir}: 0.6rem`;
+  } else {
+    return `${dir}: 0`;
+  }
 };
 
 export const ExtraUsersWrapper = styled.div`

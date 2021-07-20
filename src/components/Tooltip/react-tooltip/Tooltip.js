@@ -91,7 +91,7 @@ const Tooltip = (props) => {
         arrowColor={arrowColor}
         getContent={!!renderContent && [renderContent, 500]}>
         {!renderContent && (
-          <span>Please provide me content with 'getContent' prop</span>
+          <span>Please provide me content with 'renderContent' prop</span>
         )}
       </ReactTooltip>
     </>

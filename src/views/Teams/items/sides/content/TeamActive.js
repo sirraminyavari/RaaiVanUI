@@ -34,6 +34,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
@@ -75,6 +76,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
   const [users, setUsers] = useState(usersList);
+
+  const shownUsers = users?.filter((_, index) => index < 4);
 
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
@@ -274,24 +277,31 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           </Styled.TeamDescription>
           <Styled.TeamFooterConatiner>
             <Styled.TeamAvatarsWrapper>
-              {users
-                ?.filter((_, index) => index < 4)
-                .map((user, index) => {
-                  return (
+              {shownUsers?.map((user, index) => {
+                const fullName = `${decodeBase64(
+                  user.FirstName
+                )} ${decodeBase64(user.LastName)}`;
+                return (
+                  <Tooltip
+                    tipId={user?.UserID}
+                    key={user?.UserID || index}
+                    effect="solid"
+                    place="bottom"
+                    renderContent={() => fullName}>
                     <Avatar
-                      key={index}
                       onClick={openTeamUsers}
                       userImage={user?.ProfileImageURL}
                       radius={38}
                       style={{
                         position: 'relative',
-                        // [RV_Float]: `${-index * 9}px`,
+                        [RV_Float]: `${-index * 9}px`,
                         zIndex: 10 - index,
                       }}
                       imageStyles={{ minWidth: '2.1rem' }}
                     />
-                  );
-                })}
+                  </Tooltip>
+                );
+              })}
               {users?.length > 4 ? (
                 <PopupMenu
                   trigger="hover"
@@ -313,7 +323,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </PopupMenu>
               ) : (
                 <Styled.AddUserWrapper
-                  // usersCount={totalUsers}
+                  usersCount={shownUsers?.length}
                   onClick={handleInviteUser}
                   rtl={RV_RTL}
                   dir={RV_RevFloat}>
