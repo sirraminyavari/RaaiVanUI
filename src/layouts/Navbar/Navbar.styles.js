@@ -4,6 +4,7 @@ import {
   CLOSE_WIDTH,
   BO_RADIUS_HALF,
   BO_RADIUS_CIRCLE,
+  TEAMS_PATH,
 } from 'constant/constants';
 import Input from 'components/Inputs/Input';
 import {
@@ -12,11 +13,13 @@ import {
   TC_WARM,
   C_GRAY,
   BG_GRAY_LIGHT,
-  BO_DISTANT,
   C_GRAY_DARK,
   C_BLACK,
   C_FREEZED,
   BG_FREEZED,
+  BG_WHITE,
+  C_DISTANT,
+  BO_FREEZED,
 } from 'constant/Colors';
 import {
   CV_DISTANT,
@@ -31,6 +34,11 @@ const { RV_RevFloat, RV_Float, RV_RTL } = window;
 
 const getNavbarWidth = ({ theme, isMobile }) => {
   if (!!theme.states.selectedTeam?.id) {
+    if (theme.states.activePath === TEAMS_PATH) {
+      return css`
+        width: 100%;
+      `;
+    }
     return css`
       width: calc(
         100% -
@@ -223,33 +231,36 @@ export const FixActionsContainer = styled.div.attrs({
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
 
-export const AlertActionsContainer = styled.div.attrs({
+export const NotificationsMenuContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   width: 23rem;
   height: auto;
   min-height: 3rem;
-  padding: 1rem;
   padding-bottom: 0;
   margin: -0.7rem 0;
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+
+  .notifs-scroll-area {
+    height: 16.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0 0.7rem;
+
+    .ps__rail-y {
+      right: -0.3rem !important;
+    }
+  }
 `;
 
-export const AlertListContainer = styled.div`
-  width: 100%;
-  height: auto;
-  margin: 0;
-  margin-bottom: 1.7rem;
-  padding: 0;
-`;
-
-export const EmptyAlert = styled.div`
+export const EmptyNotifs = styled.div`
   text-align: center;
+  line-height: 3rem;
+  font-size: 0.9rem;
 `;
 
-export const AlertItemContainer = styled.div.attrs({
-  className: `${BO_DISTANT} ${BO_RADIUS_HALF}`,
+export const NotifItemContainer = styled.div.attrs({
+  className: `${BO_FREEZED} ${BO_RADIUS_HALF} ${BG_WHITE}`,
 })`
   width: 100%;
   height: 5rem;
@@ -262,7 +273,7 @@ export const AlertItemContainer = styled.div.attrs({
   position: relative;
 `;
 
-export const AlertItemCloseIcon = styled.div.attrs({
+export const NotifItemCloseIcon = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
   color: ${CV_RED};
@@ -273,7 +284,17 @@ export const AlertItemCloseIcon = styled.div.attrs({
   cursor: pointer;
 `;
 
-export const AlertContentWrapper = styled.div`
+export const NotifAvatarWrapper = styled.div`
+  border: 1px solid #fff;
+  border-left-color: ${CV_FREEZED};
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-${RV_RevFloat}: 0.3rem;
+`;
+
+export const NotifContentWrapper = styled.div`
   height: 100%;
   flex-grow: 1;
   display: flex;
@@ -281,39 +302,44 @@ export const AlertContentWrapper = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-${RV_Float}: 1rem;
-  padding: 0.3rem 0;
+  padding: 0;
 `;
 
-export const AlertMessageWrapper = styled.div.attrs({
+export const NotifMessageWrapper = styled.div.attrs({
   className: TC_WARM,
 })`
   max-height: 2.2rem;
   overflow: hidden;
 `;
 
-export const AlertTimeWrapper = styled.div.attrs({
+export const NotifTimeWrapper = styled.div.attrs({
   className: C_GRAY,
 })`
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 `;
 
-export const AlertFooterContainer = styled.div`
-  margin: 0;
-  padding: 0;
+export const NotifHeaderContainer = styled.div`
+  margin: 0.2rem 0;
+  padding: 0.2rem 0.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
-  bottom: 1rem;
 `;
 
-export const AlertFooterCheckWrapper = styled.div.attrs({
-  className: TC_DEFAULT,
+export const CheckAllNotifsWrapper = styled.div.attrs({
+  className: `${TC_DEFAULT} ${BG_WHITE} ${BO_RADIUS_CIRCLE}`,
 })`
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  padding: 0 0.3rem;
+`;
+
+export const UnreadNotifs = styled.span.attrs({
+  className: `${C_DISTANT}`,
+})`
+  font-size: 0.9rem;
 `;
 
 export const AlertFooterNavigation = styled.div`

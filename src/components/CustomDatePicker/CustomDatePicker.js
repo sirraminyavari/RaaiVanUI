@@ -102,7 +102,7 @@ const CustomDatePicker = (props) => {
   const footerButtonList = [
     { id: '1', title: RVDic.Today, dateSpan: '1' },
     { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
-    { id: '3', title: '۷ روز گذشه', dateSpan: '7' },
+    { id: '3', title: '۷ روز گذشته', dateSpan: '7' },
     { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
   ];
 

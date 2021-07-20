@@ -11,6 +11,7 @@ import { notificationsSlice } from 'store/reducers/notificationsReducer';
 const {
   setNotificationsCount,
   setNotificationsList,
+  setIsFetchingNotifsList,
 } = notificationsSlice.actions;
 
 const getNotificationsCountAPI = API_Provider(
@@ -53,17 +54,23 @@ export const getNotificationsCount = () => async (dispatch) => {
  * @description A function (action) that gets notifications list.
  * @returns -Dispatch to redux store.
  */
-export const getNotificationsList = () => async (dispatch) => {
+export const getNotificationsList = (count) => async (dispatch) => {
+  dispatch(setIsFetchingNotifsList(true));
   try {
     getNotificationsListAPI.fetch(
-      { Count: 45 },
+      { Count: count },
       (response) => {
         // console.log(response);
         dispatch(setNotificationsList((response || {}).Notifications));
+        dispatch(setIsFetchingNotifsList(false));
       },
-      (error) => console.log({ error })
+      (error) => {
+        dispatch(setIsFetchingNotifsList(false));
+        console.log({ error });
+      }
     );
   } catch (err) {
+    dispatch(setIsFetchingNotifsList(false));
     console.log({ err });
   }
 };

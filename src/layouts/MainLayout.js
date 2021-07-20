@@ -94,6 +94,11 @@ const selectedApp = createSelector(
   (theme) => theme.selectedTeam
 );
 
+const selectedActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 const selecteOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
@@ -104,6 +109,7 @@ const Main = () => {
   const hasNavSide = useSelector(selectHasNavSide);
   const selectedTeam = useSelector(selectedApp);
   const onboardingName = useSelector(selecteOnboardingName);
+  const activePath = useSelector(selectedActivePath);
   const { RVGlobal } = useWindow();
   const dispatch = useDispatch();
 
@@ -119,6 +125,10 @@ const Main = () => {
 
   const getSidebar = () => {
     if (isTeamSelected) {
+      //! Disable sidebar on teams view.
+      if (activePath === TEAMS_PATH) {
+        return null;
+      }
       //! When 'intro' onboarding mode is active.
       if (isIntroOnboarding) {
         //! Open the sidebar and return 'OpenSidebar'.

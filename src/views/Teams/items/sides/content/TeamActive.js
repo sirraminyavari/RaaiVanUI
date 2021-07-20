@@ -24,7 +24,6 @@ import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
 import UserInvitationDialog from './UserInviteDialog';
@@ -34,6 +33,8 @@ import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
+import ExtraUsersList from './ExtraUsersList';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
@@ -76,12 +77,18 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
   const [users, setUsers] = useState(usersList);
 
+  const shownUsers = users?.filter((_, index) => index < 4);
+
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
 
   const handleEditTeam = (title) => {
     setAppTitle(title);
     dispatch(modifyApplication(appId, title));
+  };
+
+  const closeUndoToast = (toastId) => {
+    toast.dismiss(toastId);
   };
 
   //! Inform user on team delete.
@@ -92,7 +99,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       message: deleteMSG,
       onUndo: () => undoTeamDelete(removedAppId),
       toastId: `delete-${removedAppId}`,
-      closeButton: <CloseIcon color={CV_RED} />,
+      closeButton: (
+        <CloseIcon
+          onClick={() => closeUndoToast(`delete-${removedAppId}`)}
+          color={CV_RED}
+        />
+      ),
     });
     setIsDeleting(false);
   };
@@ -265,24 +277,31 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           </Styled.TeamDescription>
           <Styled.TeamFooterConatiner>
             <Styled.TeamAvatarsWrapper>
-              {users
-                ?.filter((_, index) => index < 4)
-                .map((user, index) => {
-                  return (
+              {shownUsers?.map((user, index) => {
+                const fullName = `${decodeBase64(
+                  user.FirstName
+                )} ${decodeBase64(user.LastName)}`;
+                return (
+                  <Tooltip
+                    tipId={user?.UserID}
+                    key={user?.UserID || index}
+                    effect="solid"
+                    place="bottom"
+                    renderContent={() => fullName}>
                     <Avatar
-                      key={index}
                       onClick={openTeamUsers}
                       userImage={user?.ProfileImageURL}
                       radius={38}
                       style={{
                         position: 'relative',
-                        // [RV_Float]: `${-index * 9}px`,
+                        [RV_Float]: `${-index * 9}px`,
                         zIndex: 10 - index,
                       }}
                       imageStyles={{ minWidth: '2.1rem' }}
                     />
-                  );
-                })}
+                  </Tooltip>
+                );
+              })}
               {users?.length > 4 ? (
                 <PopupMenu
                   trigger="hover"
@@ -297,53 +316,22 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                       className="team-extra-users"
                     />
                   </Styled.ExtraUsersWrapper>
-                  <div>
-                    <Styled.ExtraUsersPopupHeader onClick={handleInviteUser}>
-                      <Styled.AddUserWrapper
-                        style={{
-                          width: '2rem',
-                          height: '2rem',
-                          lineHeight: '2.5rem',
-                        }}
-                        rtl={RV_RTL}>
-                        <UserPlusIcon size={16} color={TCV_DEFAULT} />
-                      </Styled.AddUserWrapper>
-                      <Styled.ExtraUsersPopupTitle>
-                        افزودن هم تیمی جدید
-                      </Styled.ExtraUsersPopupTitle>
-                    </Styled.ExtraUsersPopupHeader>
-                    <PerfectScrollbar className="extra-users-scrollbar">
-                      {users
-                        ?.filter((user, index) => index > 3 && user)
-                        .map((user, i, self) => {
-                          const fullName = `${decodeBase64(
-                            user.FirstName
-                          )} ${decodeBase64(user?.LastName)}`;
-                          const isLast = self.length === i + 1;
-                          return (
-                            <Styled.ExtraUserItem
-                              key={user?.UserID}
-                              style={{ marginBottom: isLast ? '0.5rem' : '0' }}>
-                              <Avatar
-                                userImage={user?.ProfileImageURL}
-                                radius={25}
-                              />
-                              <Styled.ExtraUserTitle>
-                                {fullName}
-                              </Styled.ExtraUserTitle>
-                            </Styled.ExtraUserItem>
-                          );
-                        })}
-                    </PerfectScrollbar>
-                  </div>
+                  <ExtraUsersList
+                    users={users}
+                    handleInviteUser={handleInviteUser}
+                  />
                 </PopupMenu>
               ) : (
                 <Styled.AddUserWrapper
-                  // usersCount={totalUsers}
+                  usersCount={shownUsers?.length}
                   onClick={handleInviteUser}
                   rtl={RV_RTL}
                   dir={RV_RevFloat}>
-                  <UserPlusIcon size={25} color={TCV_DEFAULT} />
+                  <UserPlusIcon
+                    size={22}
+                    color={TCV_DEFAULT}
+                    style={{ marginLeft: '0.4rem' }}
+                  />
                 </Styled.AddUserWrapper>
               )}
             </Styled.TeamAvatarsWrapper>
