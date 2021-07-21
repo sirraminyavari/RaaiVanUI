@@ -235,7 +235,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       )}
       {!isDeleting && (
         <UserInvitationDialog
-          appId={appId}
+          app={team}
           isInviteShown={isInviteShown}
           setIsInviteShown={setIsInviteShown}
         />
