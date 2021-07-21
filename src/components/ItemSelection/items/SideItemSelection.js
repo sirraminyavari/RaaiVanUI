@@ -1,10 +1,16 @@
 import Button from 'components/Buttons/Button';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
-import { CV_GRAY, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_GRAY,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const { RV_RTL } = window || {};
 
@@ -14,6 +20,16 @@ const data = [
   { title: 'نامه صادره', count: 89 },
   { title: 'نامه وارده', count: 53 },
   { title: 'پروپوزال', count: 13 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
   { title: 'تکنولوژی', count: 53 },
 ];
 
@@ -44,7 +60,11 @@ const defaultDropDownLabel = {
   value: 'urgentAction',
   color: TCV_DEFAULT,
 };
-const SideItemSelection = ({ checkedList }) => {
+const SideItemSelection = ({
+  checkedList,
+  onShowSelectedItems,
+  isShowSelected,
+}) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isHovered, setIsDropDownHovered] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -124,24 +144,28 @@ const SideItemSelection = ({ checkedList }) => {
             onDropDownOpen={setIsDropDownOpen}
           />
         </div>
-        {data.map((x) => (
-          <ClassItem
-            onClick={onClassClick}
-            isSelected={selectedClass?.title === x?.title}
-            item={x}
-            title={x?.title}
-            badge={x?.count}
-          />
-        ))}
+        <PerfectScrollbar style={{ maxHeight: '40vh' }}>
+          {data.map((x) => (
+            <ClassItem
+              onClick={onClassClick}
+              isSelected={selectedClass?.title === x?.title}
+              item={x}
+              title={x?.title}
+              badge={x?.count}
+            />
+          ))}
+        </PerfectScrollbar>
       </div>
       <div>
         {checkedList?.length > 0 && (
           <ChoosedItems
+            onClick={onShowSelectedItems}
+            $isShowSelected={isShowSelected}
             className={
               'rv-border-radius-half rv-border-distant rv-bg-color-white rv-default'
             }>
             {'موارد انتخاب شده'}
-            <Badge>{checkedList.length}</Badge>
+            <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>
         )}
         <Button type={'primary'}>{'ثبت ۲ ایتم انتخاب شده'}</Button>
@@ -167,15 +191,18 @@ const ChoosedItems = styled.div`
   justify-content: space-between;
   margin-bottom: 0.7rem;
   align-items: center;
+  background-color: ${({ $isShowSelected }) =>
+    $isShowSelected ? TCV_WARM : CV_WHITE};
+  color: ${({ $isShowSelected }) => ($isShowSelected ? CV_WHITE : TCV_WARM)};
 `;
 const Badge = styled.div`
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? CV_WHITE : TCV_DEFAULT};
+  background-color: ${({ $isShowSelected }) =>
+    $isShowSelected ? CV_WHITE : TCV_DEFAULT};
   border-radius: 5rem;
   width: 1.5rem;
   height: 1.5rem;
   aspect-ratio: 1;
-  color: ${({ $isSelected }) => ($isSelected ? TCV_DEFAULT : CV_WHITE)};
+  color: ${({ $isShowSelected }) => ($isShowSelected ? TCV_DEFAULT : CV_WHITE)};
   display: flex;
   align-items: center;
   justify-content: center;

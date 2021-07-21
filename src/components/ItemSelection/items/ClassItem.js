@@ -40,7 +40,7 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 0.75rem;
-  margin: 0 0rem 1rem 0rem;
+  margin: 0 0rem 0.5rem 0rem;
   width: 100%;
   justify-content: space-between;
   background-color: ${({ $isSelected }) => ($isSelected ? TCV_WARM : CV_WHITE)};
