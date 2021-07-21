@@ -374,6 +374,7 @@ const RasoulView = () => {
             clearButton
             range
             onDateSelect={(date) => console.log(date)}
+            onChangeVisibility={(val) => console.log('show input mode: ' + val)}
           />
         </div>
         <div>
@@ -398,6 +399,9 @@ const RasoulView = () => {
             onDateSelect={(date) => console.log(date)}
             size="small"
             headerTitle="عنوان تقویم"
+            onChangeVisibility={(val) =>
+              console.log('show button mode: ' + val)
+            }
           />
         </div>
       </div>
