@@ -55,6 +55,7 @@ const SimpleListViewer = ({
 
     fetchMethod(pageSize, 0, (data, total, nodeTypeId) => {
       //ask ramin
+      console.log(data, '######');
       setData(data);
       setTotal(total);
       setIsFetching(false);
@@ -99,6 +100,8 @@ const SimpleListViewer = ({
   useEffect(() => {
     setData([]);
     if (preExtraData !== undefined) {
+      console.log(preExtraData, '######');
+
       fetchThem();
     }
   }, [extraData]);

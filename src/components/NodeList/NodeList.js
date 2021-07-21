@@ -35,13 +35,13 @@ const NodeList = (props) => {
     isByMe,
     byPeople,
     isBookMarked,
-    mode,
-    onCheckList,
+    multiSelection,
+    onCheck,
+    itemSelectionMode,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
-  const [checkedItems, setCheckedItems] = useState([]);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
   useTraceUpdate(props);
@@ -54,6 +54,7 @@ const NodeList = (props) => {
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
+    console.log(byPeople, 'byPeople');
     onTotalFound(null);
     setExtraData(!extraData);
   }, [
@@ -67,14 +68,9 @@ const NodeList = (props) => {
     isBookMarked,
   ]);
 
-  useEffect(() => {
-    console.log(checkedItems, 'checkedItems');
-    onCheckList && onCheckList(checkedItems);
-  }, [checkedItems]);
-
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called****');
+    console.log('fetch called****', byPeople);
 
     getNodesAPI(isBookMarked).fetch(
       {
@@ -154,14 +150,6 @@ const NodeList = (props) => {
     }
   };
 
-  const onCheckHandler = (value, item) => {
-    if (value) {
-      setCheckedItems([...checkedItems, item]);
-    } else {
-      setCheckedItems(checkedItems.filter((x) => x?.NodeID !== item?.NodeID));
-    }
-  };
-
   return (
     <>
       {onboardingName !== 'intro' ? (
@@ -178,9 +166,10 @@ const NodeList = (props) => {
               {x.Creator && (
                 <SubjectItem
                   key={index}
-                  onChecked={onCheckHandler}
+                  onChecked={(value, item) => onCheck && onCheck(value, item)}
                   parentNodeType={nodeTypeId}
-                  selectMode={mode === 'ItemSelection'}
+                  selectMode={multiSelection}
+                  liteMode={itemSelectionMode}
                   item={{
                     ...x,
                     LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
@@ -194,7 +183,11 @@ const NodeList = (props) => {
           )}
         />
       ) : (
-        <IntroNodes />
+        <IntroNodes
+          onChecked={(value, item) => onCheck && onCheck(value, item)}
+          selectMode={multiSelection}
+          liteMode={itemSelectionMode}
+        />
       )}
     </>
   );

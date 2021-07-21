@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from './ItemSelection.style';
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
 import SideItemSelection from './items/SideItemSelection';
+import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 
 const ItemSelection = (props) => {
   const { RV_RTL } = window;
+  const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
-  const [checkedList, setCheckedList] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [showSelected, setShowSelected] = useState(false);
 
   const route = {
     AccessToken: '7GzPbOsFr2kFliO2GsKg',
@@ -24,24 +27,61 @@ const ItemSelection = (props) => {
     NodeTypes: [],
     RelatedItem: null,
   };
+  useEffect(() => {
+    console.log(checkedItems, 'checkedItems');
+  }, [checkedItems]);
 
+  const onCheckHandler = (value, item) => {
+    // console.log(value, item, 'v', 't');
+    console.log(item, 'item');
+    if (value) {
+      setCheckedItems([...checkedItems, item]);
+    } else {
+      setCheckedItems(checkedItems.filter((x) => x?.NodeID !== item?.NodeID));
+    }
+  };
+  const onShowSelectedItems = () => {
+    setShowSelected(!showSelected);
+  };
   return (
     <Container RV_RTL={RV_RTL}>
-      <SideItemSelection checkedList={checkedList} />
+      <SideItemSelection
+        onShowSelectedItems={onShowSelectedItems}
+        checkedList={checkedItems}
+        isShowSelected={showSelected}
+      />
       <AdvanceSearch
         style={{ height: '40vh' }}
         itemSelectionMode={true}
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={route?.Hierarchy || []}>
-        <NodeList
-          onCheckList={setCheckedList}
-          nodeTypeId={
-            (route?.NodeTypes || []).length
-              ? route.NodeTypes[0]?.NodeTypeID
-              : null
-          }
-          mode={'ItemSelection'}
-        />
+        {showSelected && checkedItems.length > 0 ? (
+          <>
+            {checkedItems.map((x, index) => (
+              <SubjectItem
+                key={index}
+                onChecked={onCheckHandler}
+                parentNodeType={null}
+                selectMode={true}
+                liteMode={true}
+                isSelected={true}
+                item={x}
+                isSaas={isSaas}
+              />
+            ))}
+          </>
+        ) : (
+          <NodeList
+            onCheck={onCheckHandler}
+            nodeTypeId={
+              (route?.NodeTypes || []).length
+                ? route.NodeTypes[0]?.NodeTypeID
+                : null
+            }
+            itemSelectionMode={true}
+            multiSelection={true}
+          />
+        )}
       </AdvanceSearch>
     </Container>
   );

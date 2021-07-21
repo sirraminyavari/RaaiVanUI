@@ -4,11 +4,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SubjectDate = ({ date }) => {
-  return <Date className="rv-gray">{date}</Date>;
+const SubjectDate = ({ date, liteMode }) => {
+  return (
+    <Date liteMode={liteMode} className="rv-gray">
+      {date}
+    </Date>
+  );
 };
 export default SubjectDate;
 
 const Date = styled.div`
+  font-size: ${({ liteMode }) => liteMode && '0.5rem'};
   /* color: #707070; */
 `;

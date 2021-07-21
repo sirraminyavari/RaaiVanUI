@@ -12,17 +12,20 @@ import AuthView from 'views/Auth/AuthView';
 import ScrollToTop from 'components/ScrollToTop/ScrollToTop';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
+import { CV_WHITE } from 'constant/CssVariables';
 
 const { RV_RTL, GlobalUtilities } = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
-window._alert = window._alert || window.alert;
-window.alert = function (txt, type = '') {
+window._alert = window.alert;
+window.alert = function (txt, ...props) {
   toast(txt, {
-    type,
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
+    style: { backgroundColor: CV_WHITE },
+
+    ...props,
   });
 };
 
