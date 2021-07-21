@@ -131,6 +131,8 @@ const FilterBar = ({
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
+  const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
+
   const { push } = useHistory();
 
   const isInOnBoarding = onboardingName === INTRO_ONBOARD;
@@ -406,7 +408,9 @@ const FilterBar = ({
             headerTitle="فیلتر تاریخ ایجاد"
             CustomButton={({ onClick }) => (
               <ShadowButton
-                onClick={onClick}
+                onClick={() => {
+                  onClick();
+                }}
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
@@ -460,22 +464,23 @@ const FilterBar = ({
             onByPeople={onPeople}
             isByMe={isByMe}
             pickedPeople={people}
+            onVisible={setPeoplePickerVisibility}
             buttonComponent={
               <ShadowButton
                 style={commonStyle}
                 // onClick={onClick}
                 onMouseEnter={() => setPeopleHover(true)}
                 onMouseLeave={() => setPeopleHover(false)}
-                $isEnabled={people || isByMe}
+                $isEnabled={people || isByMe || peoplePickerVisibility}
                 className={
-                  isByMe || people
+                  isByMe || people || peoplePickerVisibility
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
                 <PersonIcon
                   size={'1.5rem'}
                   className={
-                    isByMe || people
+                    isByMe || people || peoplePickerVisibility
                       ? 'rv-default'
                       : peopleHover
                       ? 'rv-default'

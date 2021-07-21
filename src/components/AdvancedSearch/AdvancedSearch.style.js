@@ -2,8 +2,15 @@ import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
-import { CV_RED_SOFT, CV_DISTANT, CV_RED } from 'constant/CssVariables';
+import {
+  CV_RED_SOFT,
+  CV_DISTANT,
+  CV_RED,
+  CV_WHITE,
+} from 'constant/CssVariables';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+
+const { GlobalUtilities } = window;
 
 export const Fixer = styled.div`
   background-color: green;
@@ -154,4 +161,14 @@ export const CustomInput = styled(Input)`
     font-size: 1.1rem;
     font-weight: 500;
   }
+`;
+export const AdvancedFilterDialog = styled.div`
+  position: absolute;
+  background-color: ${CV_WHITE};
+  top: ${({ top }) => top + 53 + 'px'};
+  left: ${({ left }) => left + 'px'};
+  width: 30rem;
+  min-height: 10rem;
+  z-index: ${GlobalUtilities.zindex.alert()};
+  box-shadow: 1px 3px 20px ${CV_DISTANT};
 `;

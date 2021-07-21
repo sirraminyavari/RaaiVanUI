@@ -2,7 +2,7 @@
  * 'SubjectItem' for the time that the screen is big.
  */
 import { decode } from 'js-base64';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';
@@ -31,6 +31,8 @@ const SubjectItemDesktop = ({
   parentNodeType,
   onReload,
   onBookmark,
+  liteMode,
+  isSelected,
 }) => {
   const {
     Name,
@@ -46,12 +48,17 @@ const SubjectItemDesktop = ({
     VisitsCount,
   } = item;
   const [isHover, setIsHover] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(isSelected ? isSelected : false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   // /**
   //  * By clicking on the item will fire.
   //  */
+
+  useEffect(() => {
+    console.log(isSelected, 'isSelected');
+    setIsChecked(isSelected);
+  }, [isSelected]);
 
   const checkHandler = (value) => {
     onChecked(value, item);
@@ -62,20 +69,21 @@ const SubjectItemDesktop = ({
     <Root>
       {/* {console.log(item, 'item')} */}
       <Container
+        liteMode={liteMode}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         $isChecked={isChecked}
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
-          <SubjectIcon iconUrl={IconURL} />
-          <SubjectDate date={CreationDate} />
+          <SubjectIcon liteMode={liteMode} iconUrl={IconURL} />
+          <SubjectDate liteMode={liteMode} date={CreationDate} />
         </IconContent>
         <Divider className="rv-bg-color-freezed" />
         <MainContent>
           <Main>
             <SubjectTitle title={decode(Name)} additionalID={AdditionalID} />
-            {isSaas && (
+            {isSaas && !liteMode && (
               <Details>
                 {parentNodeType !== NodeTypeID && (
                   <SubjectClassName className={decode(NodeType)} />
@@ -113,7 +121,11 @@ const SubjectItemDesktop = ({
             lastName={decode(Creator.LastName)}
           />
         </MainContent>
-        <SubjectCheckBox selectMode={selectMode} onChecked={checkHandler} />
+        <SubjectCheckBox
+          isChecked={isChecked}
+          selectMode={selectMode}
+          onChecked={checkHandler}
+        />
       </Container>
     </Root>
   );
