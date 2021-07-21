@@ -64,6 +64,7 @@ const buttonsCommonStyles = {
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
  * @property {string} headerTitle - The headeer title.
+ * @property {function} onChangeVisibility - A callback function that fires when input is on focus or button is clicked.
  */
 
 /**
@@ -90,6 +91,7 @@ const CustomDatePicker = (props) => {
     minimumDate,
     CustomButton,
     headerTitle,
+    onChangeVisibility,
     ...rest
   } = props;
 
@@ -460,6 +462,24 @@ const CustomDatePicker = (props) => {
     }
   };
 
+  //! Calls when input is on focus.
+  const handleInputFocus = () => {
+    onChangeVisibility && onChangeVisibility(true);
+  };
+
+  //! Calls when input is on blur.
+  const handleInputBlur = () => {
+    onChangeVisibility && onChangeVisibility(false);
+  };
+
+  //! Keep track of date picker visibility on button mode.
+  useEffect(() => {
+    if (mode === 'button') {
+      onChangeVisibility && onChangeVisibility(isCalendarShown);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCalendarShown]);
+
   //! Switch between "DatePicker" and "Calendar" component based on "mode" prop passed to this component.
   switch (mode) {
     case 'button':
@@ -512,6 +532,8 @@ const CustomDatePicker = (props) => {
                 placeholder={label}
                 maxLength={range ? '42' : '17'}
                 onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
                 style={{
                   textAlign: 'center',
                   width: '100%',
