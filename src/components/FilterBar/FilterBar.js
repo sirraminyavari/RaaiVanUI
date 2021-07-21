@@ -132,6 +132,7 @@ const FilterBar = ({
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
   const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
+  const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
 
   const { push } = useHistory();
 
@@ -406,6 +407,7 @@ const FilterBar = ({
             clearButton
             range
             headerTitle="فیلتر تاریخ ایجاد"
+            onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
               <ShadowButton
                 onClick={() => {
@@ -414,9 +416,9 @@ const FilterBar = ({
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                $isEnabled={date}
+                $isEnabled={date || calendarPickerClicked}
                 className={
-                  date
+                  calendarPickerClicked || date
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
@@ -428,7 +430,11 @@ const FilterBar = ({
                 ) : (
                   <EmptyCalendarIcon
                     size={'1.5rem'}
-                    className={dateHover ? 'rv-default' : 'rv-distant'}
+                    className={
+                      calendarPickerClicked || dateHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
                   />
                 )}
               </ShadowButton>
