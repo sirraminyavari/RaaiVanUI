@@ -1,4 +1,4 @@
-import { useState, forwardRef, useEffect } from 'react';
+import { useState, forwardRef, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -35,9 +35,11 @@ import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import HiddenUploadFile from './HiddenUploadFile';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
+const MAX_IMAGE_SIZE = 2000000;
 
 const selectingApp = createSelector(
   (state) => state?.applications,
@@ -47,6 +49,7 @@ const selectingApp = createSelector(
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const uploadFileRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
@@ -67,7 +70,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Title,
     Description: appDescription,
     Users: appUsers,
-    IconURL: appIcon,
+    IconURL,
     ApplicationID: appId,
     Removable: isRemovable,
     Editable: isEditable,
@@ -75,18 +78,22 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
+  const [appIcon, setAppIcon] = useState(IconURL);
   const [users, setUsers] = useState(usersList);
 
   const shownUsers = users?.filter((_, index) => index < 4);
 
+  //! Close confirmation dialoge and reset its values.
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
 
+  //! Edit team title.
   const handleEditTeam = (title) => {
     setAppTitle(title);
     dispatch(modifyApplication(appId, title));
   };
 
+  //! Close undo toast when user clicks on "X" button.
   const closeUndoToast = (toastId) => {
     toast.dismiss(toastId);
   };
@@ -151,10 +158,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(recycleApplication(appId, () => {}, true));
   };
 
+  //! Redirect user to right path when team selection was successful.
   const onSelectDone = (path) => {
     history.push(path);
   };
 
+  //! Fires when team selection has error.
   const onSelectError = () => {};
 
   //! Select a team.
@@ -164,22 +173,26 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(selectApplication(appId, onSelectDone, onSelectError));
   };
 
+  //! Open team users management dialoge.
   const openTeamUsers = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
     setIsModalShown(true);
   };
 
+  //! Get users for each team.
   const onGetUsers = (users) => {
     setUsers(users);
   };
 
+  //! Shows invitation modal.
   const handleInviteUser = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
     setIsInviteShown(true);
   };
 
+  //! Handle Which type of confirmation dialoge should open.
   const handleConfirmation = () => {
     switch (confirm.type) {
       case EXIT_TEAM_CONFIRM:
@@ -197,8 +210,48 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         break;
     }
   };
+
+  //! Fires when user cancel the confirmation.
   const handleCancelConfirmation = () => {
     resetConfirm();
+  };
+
+  //! Once user clicked on team logo, It will open choose image dialoge.
+  const handleClickLogo = (e) => {
+    e.stopPropagation();
+    uploadFileRef.current.click();
+  };
+
+  //! Validates image type for upload.
+  const validateImageUpload = (files) =>
+    files[0]?.type === 'image/png' || files[0]?.type === 'image/jpeg';
+
+  //! Read image file, Set preview image, And upload it to the server.
+  const uploadImage = (event) => {
+    const file = event.target.files[0];
+    if (file.size <= MAX_IMAGE_SIZE) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setAppIcon(e.target.result);
+        //! Load on server.
+        console.log('Make an api call and upload image to the server');
+      };
+    } else {
+      event.target.value = '';
+      console.log('Upload less than 2MB');
+    }
+  };
+
+  //! Fires whenever user chooses an image.
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    if (files.length === 1 && validateImageUpload(files)) {
+      uploadImage(event);
+    } else {
+      event.target.value = '';
+      console.log('Add one image only');
+    }
   };
 
   useEffect(() => {
@@ -252,13 +305,17 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       ) : (
         <Styled.TeamContentWrapper isDragging={isDragging}>
           <Styled.TeamDescription>
-            <div>
+            <Styled.TeamAvatarWrapper onClick={handleClickLogo}>
               <Avatar
                 radius={45}
-                style={{ width: '50px' }}
+                style={{ width: '3.1rem' }}
                 userImage={appIcon}
               />
-            </div>
+            </Styled.TeamAvatarWrapper>
+            <HiddenUploadFile
+              ref={uploadFileRef}
+              onFileChange={handleFileSelect}
+            />
             {!isDeleting && isEditable ? (
               <Styled.TeamTitle>
                 <InlineEdit

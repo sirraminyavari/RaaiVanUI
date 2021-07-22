@@ -398,6 +398,12 @@ export const TeamDescription = styled.div`
   flex-grow: 1;
 `;
 
+export const TeamAvatarWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 3.2rem;
+`;
+
 export const TeamTitle = styled.div.attrs({
   className: C_GRAY_DARK,
 })`
