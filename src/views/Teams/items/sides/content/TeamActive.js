@@ -26,7 +26,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
-import UserInvitationDialog from './UserInviteDialog';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
@@ -36,6 +35,9 @@ import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import HiddenUploadFile from './HiddenUploadFile';
+import { invitationSlice } from 'store/reducers/invitationsReducer';
+
+const { openInvitationModal } = invitationSlice.actions;
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
@@ -53,7 +55,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
-  const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirm, setConfirm] = useState({
     type: '',
@@ -189,7 +190,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const handleInviteUser = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
-    setIsInviteShown(true);
+    dispatch(openInvitationModal(team));
   };
 
   //! Handle Which type of confirmation dialoge should open.
@@ -284,13 +285,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           setIsModalShown={setIsModalShown}
           setUsers={setUsers}
           users={users}
-        />
-      )}
-      {!isDeleting && (
-        <UserInvitationDialog
-          app={team}
-          isInviteShown={isInviteShown}
-          setIsInviteShown={setIsInviteShown}
         />
       )}
       <SortHandle />
