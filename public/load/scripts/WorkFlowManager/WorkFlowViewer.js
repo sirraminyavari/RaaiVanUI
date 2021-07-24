@@ -265,7 +265,7 @@
 
                 return {
                     Type: "div", Name: p.Name,
-                    Class: "small-10 medium-8 large-6 rv-air-button rv-circle rv-bg-color-trans-white",
+                    Class: "small-10 medium-8 large-6 rv-circle rv-bg-color-trans-white",
                     Style: "font-weight:bold; margin:0rem auto 0.4rem auto; text-align:center;" +
                         "padding:0.3rem; cursor:pointer;",
                     Properties: !p.OnClick ? null : [{ Name: "onclick", Value: p.OnClick }],
