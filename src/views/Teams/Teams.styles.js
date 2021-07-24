@@ -255,12 +255,9 @@ const getBorderCss = (props) => {
       border-style: dashed;
       :hover {
         border-color: ${TCV_DEFAULT};
-        & > * {
-          color: ${TCV_DEFAULT};
-        }
       }
 
-      :hover span {
+      :hover > div:first-child > * {
         color: ${TCV_DEFAULT};
       }
     `;

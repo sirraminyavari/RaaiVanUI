@@ -219,7 +219,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Once user clicked on team logo, It will open choose image dialoge.
   const handleClickLogo = (e) => {
     e.stopPropagation();
-    uploadFileRef.current.click();
+    // uploadFileRef.current.click();
   };
 
   //! Validates image type for upload.
