@@ -40,7 +40,8 @@ const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 //! Default input number for user invitation.
 const DEFAULT_INPUT_COUNT = 3;
 
-const UserInviteDialog = ({ setIsInviteShown, isInviteShown, app }) => {
+const UserInviteDialog = (props) => {
+  const { setIsInviteShown, isInviteShown, app } = props;
   const dispatch = useDispatch();
   const { RVDic, GlobalUtilities } = useWindow();
   const teamInvitations = useSelector(selectTeamInvitationList);

@@ -303,7 +303,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       {isSelecting && selectingAppId === appId ? (
         <LogoLoader style={{ marginTop: '2.5rem' }} />
       ) : (
-        <Styled.TeamContentWrapper isDragging={isDragging}>
+        <Styled.TeamContentWrapper>
           <Styled.TeamDescription>
             <Styled.TeamAvatarWrapper onClick={handleClickLogo}>
               <Avatar
@@ -344,6 +344,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     key={user?.UserID || index}
                     effect="solid"
                     place="bottom"
+                    ignoreTip={isDragging}
                     renderContent={() => fullName}>
                     <Avatar
                       onClick={openTeamUsers}
@@ -392,12 +393,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </Styled.AddUserWrapper>
               )}
             </Styled.TeamAvatarsWrapper>
-            {isRemovable && (
+            {isRemovable ? (
               <ToolTip
                 tipId={`delete-team-${appId}`}
                 effect="solid"
                 type="dark"
                 place="bottom"
+                ignoreTip={isDragging}
                 renderContent={() => RVDic.RemoveN.replace('[n]', RVDic.Team)}>
                 <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
                   {isDeleting ? (
@@ -410,13 +412,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   )}
                 </Styled.TeamTrashWrapper>
               </ToolTip>
-            )}
-            {!isRemovable && (
+            ) : (
               <ToolTip
                 tipId={`leave-team-${appId}`}
                 effect="solid"
                 type="dark"
                 place="bottom"
+                ignoreTip={isDragging}
                 renderContent={() => RVDic.LeaveN.replace('[n]', RVDic.Team)}>
                 <Styled.TeamExitWrapper onClick={onExitTeamClick}>
                   <ExitIcon size={22} />
