@@ -25,11 +25,16 @@ import InfoToast from 'components/toasts/info-toast/InfoToast';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { invitationSlice } from 'store/reducers/invitationsReducer';
 
-const { setTeamInvitations } = invitationSlice.actions;
+const { setTeamInvitations, closeInvitationModal } = invitationSlice.actions;
 
 const selectTeamInvitationList = createSelector(
   (state) => state?.invitations,
   (invitations) => invitations?.teamInvitationList
+);
+
+const selectInvitationModal = createSelector(
+  (state) => state?.invitations,
+  (invitations) => invitations?.invitationModal
 );
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
@@ -40,10 +45,11 @@ const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 //! Default input number for user invitation.
 const DEFAULT_INPUT_COUNT = 3;
 
-const UserInviteDialog = ({ setIsInviteShown, isInviteShown, app }) => {
+const UserInviteDialog = () => {
   const dispatch = useDispatch();
   const { RVDic, GlobalUtilities } = useWindow();
   const teamInvitations = useSelector(selectTeamInvitationList);
+  const { isOpen, inviteApp } = useSelector(selectInvitationModal);
 
   // const [invileLink, setInviteLink] = useState(
   //   'https://cliqmind.ir/join/eigpylugn8f7'
@@ -76,7 +82,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, app }) => {
 
   //! Close Modal.
   const handleCloseInvitation = () => {
-    setIsInviteShown(false);
+    dispatch(closeInvitationModal());
   };
 
   //! Copy the invitation link to clipboard.
@@ -145,7 +151,7 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, app }) => {
   const inviteUser = (name = '', mail = '', fieldIndex) => {
     inviteUserAPI.fetch(
       {
-        ApplicationID: app?.ApplicationID,
+        ApplicationID: inviteApp?.ApplicationID,
         Email: encodeBase64(GlobalUtilities.secure_string(mail)),
         FullName: encodeBase64(GlobalUtilities.secure_string(name)),
       },
@@ -197,11 +203,11 @@ const UserInviteDialog = ({ setIsInviteShown, isInviteShown, app }) => {
 
   return (
     <Modal
-      show={isInviteShown}
+      show={isOpen}
       onClose={handleCloseInvitation}
       contentWidth={getModalWidth()}
       contentClass="invite-modal-container"
-      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(app.Title)})`}>
+      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(inviteApp?.Title)})`}>
       <Styled.AddUserModalHeader>
         <Styled.AddUserPlusSign>+</Styled.AddUserPlusSign>
         <UsersGroupIcon size={40} />

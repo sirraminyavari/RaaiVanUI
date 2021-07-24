@@ -1,4 +1,4 @@
-import { useState, forwardRef, useEffect } from 'react';
+import { useState, forwardRef, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -26,7 +26,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
-import UserInvitationDialog from './UserInviteDialog';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
@@ -35,9 +34,14 @@ import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import HiddenUploadFile from './HiddenUploadFile';
+import { invitationSlice } from 'store/reducers/invitationsReducer';
+
+const { openInvitationModal } = invitationSlice.actions;
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
+const MAX_IMAGE_SIZE = 2000000;
 
 const selectingApp = createSelector(
   (state) => state?.applications,
@@ -47,10 +51,10 @@ const selectingApp = createSelector(
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const uploadFileRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
-  const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirm, setConfirm] = useState({
     type: '',
@@ -67,7 +71,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Title,
     Description: appDescription,
     Users: appUsers,
-    IconURL: appIcon,
+    IconURL,
     ApplicationID: appId,
     Removable: isRemovable,
     Editable: isEditable,
@@ -75,18 +79,22 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
   const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
+  const [appIcon, setAppIcon] = useState(IconURL);
   const [users, setUsers] = useState(usersList);
 
   const shownUsers = users?.filter((_, index) => index < 4);
 
+  //! Close confirmation dialoge and reset its values.
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
 
+  //! Edit team title.
   const handleEditTeam = (title) => {
     setAppTitle(title);
     dispatch(modifyApplication(appId, title));
   };
 
+  //! Close undo toast when user clicks on "X" button.
   const closeUndoToast = (toastId) => {
     toast.dismiss(toastId);
   };
@@ -151,10 +159,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(recycleApplication(appId, () => {}, true));
   };
 
+  //! Redirect user to right path when team selection was successful.
   const onSelectDone = (path) => {
     history.push(path);
   };
 
+  //! Fires when team selection has error.
   const onSelectError = () => {};
 
   //! Select a team.
@@ -164,22 +174,26 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     dispatch(selectApplication(appId, onSelectDone, onSelectError));
   };
 
+  //! Open team users management dialoge.
   const openTeamUsers = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
     setIsModalShown(true);
   };
 
+  //! Get users for each team.
   const onGetUsers = (users) => {
     setUsers(users);
   };
 
+  //! Shows invitation modal.
   const handleInviteUser = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
-    setIsInviteShown(true);
+    dispatch(openInvitationModal(team));
   };
 
+  //! Handle Which type of confirmation dialoge should open.
   const handleConfirmation = () => {
     switch (confirm.type) {
       case EXIT_TEAM_CONFIRM:
@@ -197,8 +211,48 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         break;
     }
   };
+
+  //! Fires when user cancel the confirmation.
   const handleCancelConfirmation = () => {
     resetConfirm();
+  };
+
+  //! Once user clicked on team logo, It will open choose image dialoge.
+  const handleClickLogo = (e) => {
+    e.stopPropagation();
+    // uploadFileRef.current.click();
+  };
+
+  //! Validates image type for upload.
+  const validateImageUpload = (files) =>
+    files[0]?.type === 'image/png' || files[0]?.type === 'image/jpeg';
+
+  //! Read image file, Set preview image, And upload it to the server.
+  const uploadImage = (event) => {
+    const file = event.target.files[0];
+    if (file.size <= MAX_IMAGE_SIZE) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setAppIcon(e.target.result);
+        //! Load on server.
+        console.log('Make an api call and upload image to the server');
+      };
+    } else {
+      event.target.value = '';
+      console.log('Upload less than 2MB');
+    }
+  };
+
+  //! Fires whenever user chooses an image.
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    if (files.length === 1 && validateImageUpload(files)) {
+      uploadImage(event);
+    } else {
+      event.target.value = '';
+      console.log('Add one image only');
+    }
   };
 
   useEffect(() => {
@@ -233,13 +287,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           users={users}
         />
       )}
-      {!isDeleting && (
-        <UserInvitationDialog
-          app={team}
-          isInviteShown={isInviteShown}
-          setIsInviteShown={setIsInviteShown}
-        />
-      )}
       <SortHandle />
       <Styled.TeamPattern
         dir={RV_RevFloat}
@@ -250,15 +297,19 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       {isSelecting && selectingAppId === appId ? (
         <LogoLoader style={{ marginTop: '2.5rem' }} />
       ) : (
-        <Styled.TeamContentWrapper isDragging={isDragging}>
+        <Styled.TeamContentWrapper>
           <Styled.TeamDescription>
-            <div>
+            <Styled.TeamAvatarWrapper onClick={handleClickLogo}>
               <Avatar
                 radius={45}
-                style={{ width: '50px' }}
+                style={{ width: '3.1rem' }}
                 userImage={appIcon}
               />
-            </div>
+            </Styled.TeamAvatarWrapper>
+            <HiddenUploadFile
+              ref={uploadFileRef}
+              onFileChange={handleFileSelect}
+            />
             {!isDeleting && isEditable ? (
               <Styled.TeamTitle>
                 <InlineEdit
@@ -287,6 +338,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     key={user?.UserID || index}
                     effect="solid"
                     place="bottom"
+                    ignoreTip={isDragging}
                     renderContent={() => fullName}>
                     <Avatar
                       onClick={openTeamUsers}
@@ -335,12 +387,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </Styled.AddUserWrapper>
               )}
             </Styled.TeamAvatarsWrapper>
-            {isRemovable && (
+            {isRemovable ? (
               <ToolTip
                 tipId={`delete-team-${appId}`}
                 effect="solid"
                 type="dark"
                 place="bottom"
+                ignoreTip={isDragging}
                 renderContent={() => RVDic.RemoveN.replace('[n]', RVDic.Team)}>
                 <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
                   {isDeleting ? (
@@ -353,13 +406,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   )}
                 </Styled.TeamTrashWrapper>
               </ToolTip>
-            )}
-            {!isRemovable && (
+            ) : (
               <ToolTip
                 tipId={`leave-team-${appId}`}
                 effect="solid"
                 type="dark"
                 place="bottom"
+                ignoreTip={isDragging}
                 renderContent={() => RVDic.LeaveN.replace('[n]', RVDic.Team)}>
                 <Styled.TeamExitWrapper onClick={onExitTeamClick}>
                   <ExitIcon size={22} />

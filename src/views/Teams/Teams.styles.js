@@ -255,12 +255,9 @@ const getBorderCss = (props) => {
       border-style: dashed;
       :hover {
         border-color: ${TCV_DEFAULT};
-        & > * {
-          color: ${TCV_DEFAULT};
-        }
       }
 
-      :hover span {
+      :hover > div:first-child > * {
         color: ${TCV_DEFAULT};
       }
     `;
@@ -396,6 +393,12 @@ export const TeamContentWrapper = styled.div`
 
 export const TeamDescription = styled.div`
   flex-grow: 1;
+`;
+
+export const TeamAvatarWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 3.2rem;
 `;
 
 export const TeamTitle = styled.div.attrs({
