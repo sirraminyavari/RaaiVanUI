@@ -238,3 +238,20 @@ export const PRIVACY_API = 'PrivacyAPI';
  * @class 'PrivacyAPI'
  */
 export const CHECK_AUTHORITY = 'CheckAuthority';
+
+//* #################################
+//* ############ DocsAPI ##############
+//* #################################
+
+/**
+ * @description 'DocsAPI'
+ * @mode API class
+ */
+export const DOCS_API = 'DocsAPI';
+
+/**
+ * @description 'UploadIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const UPLOAD_ICON = 'UploadIcon';
