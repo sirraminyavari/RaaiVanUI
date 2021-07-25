@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
+import axios from 'axios';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
@@ -36,9 +37,12 @@ import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import HiddenUploadFile from './HiddenUploadFile';
+import { API_Provider } from 'helpers/helpers';
+import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 // import { invitationSlice } from 'store/reducers/invitationsReducer';
 
 // const { openInvitationModal } = invitationSlice.actions;
+const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
@@ -223,7 +227,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Once user clicked on team logo, It will open choose image dialoge.
   const handleClickLogo = (e) => {
     e.stopPropagation();
-    // uploadFileRef.current.click();
+    uploadFileRef.current.click();
   };
 
   //! Validates image type for upload.
@@ -238,8 +242,25 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       reader.readAsDataURL(file);
       reader.onload = (e) => {
         setAppIcon(e.target.result);
+
         //! Load on server.
-        console.log('Make an api call and upload image to the server');
+        let formData = new FormData();
+        formData.append('file', file);
+
+        getUploadUrlAPI.url(
+          { IconID: appId, Type: 'ApplicationIcon' },
+          (response) => {
+            let uploadURL = response.slice(5);
+
+            //! Post file to the server.
+            axios
+              .post(uploadURL, formData)
+              .then((response) => console.log(response));
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       };
     } else {
       event.target.value = '';
