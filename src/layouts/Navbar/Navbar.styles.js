@@ -81,6 +81,7 @@ export const NavbarContainer = withTheme(styled.div.attrs({
     opacity: 1 !important;
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
     padding: 0 !important;
+    border-radius: 0.8rem !important;
   }
 `);
 
