@@ -134,6 +134,17 @@ const AdvanceSearchDesktop = ({
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
           style={{ maxHeight: '100vh' }}
+          containerRef={(ref) => {
+            if (ref) {
+              ref._getBoundingClientRect = ref.getBoundingClientRect;
+
+              ref.getBoundingClientRect = () => {
+                const original = ref._getBoundingClientRect();
+
+                return { ...original, height: Math.round(original.height) };
+              };
+            }
+          }}
           className={'rv-border-radius-half'}>
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
