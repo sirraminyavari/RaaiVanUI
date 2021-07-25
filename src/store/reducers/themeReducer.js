@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
+import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
 
 const getWidth = (width) => {
   if (width > MAX_WIDTH) {
@@ -19,7 +19,7 @@ export const themeSlice = createSlice({
     isSettingShown: false,
     hasNavSide: false,
     activePath: '',
-    sidebarContent: { current: 'main', prev: '' },
+    sidebarContent: { current: MAIN_CONTENT, prev: '' },
     selectedTeam: { name: null, id: null },
     allTeams: [],
     sidebarOpenWidth: 320,

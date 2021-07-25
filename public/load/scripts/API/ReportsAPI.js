@@ -107,6 +107,24 @@
 
                     ReportsAPI.GetReport(params);
                 }
+            },
+
+            ApplicationsPerformanceReport: {
+                _IconURL: "",
+
+                Get: function (params) {
+                    params = params || {};
+                    params.Parameters = {
+                        TeamIDs: params.TeamIDs || "",
+                        Delimiter: "|",
+                        DateFrom: params.DateFrom || "",
+                        DateMiddle: params.DateMiddle || "",
+                        DateTo: params.DateTo || "",
+                        ParamsOrder: "TeamIDs:String|Delimiter:Char|DateFrom:DateTime|DateMiddle:DateTime|DateTo:DateTime"
+                    };
+
+                    ReportsAPI.GetReport(params);
+                }
             }
         },
         USR: {

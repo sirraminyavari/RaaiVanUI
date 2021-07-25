@@ -4,7 +4,7 @@
 import FilterBar from 'components/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Maintainer,
@@ -13,10 +13,13 @@ import {
   TopFilter,
   Scrollable,
   ScrollProvider,
+  AdvancedFilterDialog,
 } from './AdvancedSearch.style';
 import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
+import { advancedSearchButtonRef } from 'components/FilterBar/FilterBar';
+import _ from 'lodash';
 
 const { RVDic } = window;
 /**
@@ -32,6 +35,8 @@ const AdvanceSearchDesktop = ({
   itemSelectionMode,
   ...props
 }) => {
+  const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
+
   const nodeTypeId = nodeType?.NodeTypeID;
   const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
@@ -61,6 +66,20 @@ const AdvanceSearchDesktop = ({
   const { onboardingName } = useSelector((state) => ({
     onboardingName: state.onboarding.name,
   }));
+
+  useEffect(() => {
+    console.log(bookmarked, 'bookmarked');
+    if (bookmarked === true) {
+      setIsBookMarked(bookmarked);
+    } else {
+      setIsBookMarked(false);
+    }
+  }, [bookmarked]);
+
+  useEffect(() => {
+    const { offsetTop } = advancedSearchButtonRef?.current || {};
+  }, [advancedSearchButtonRef?.current]);
+
   // Creates object with 'JSONValue' param of formElements
   const normalizeSearchElements = (value) => {
     let temp = {};
@@ -110,17 +129,27 @@ const AdvanceSearchDesktop = ({
       itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}>
       <ScrollProvider
-        className={'rv-bg-color-light-gray'}
+        className={'rv-bg-color-light-gray rv-border-radius-half'}
         itemSelectionMode={itemSelectionMode}
-        isAdvancedShow={isAdvancedSearch}>
+        isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
-          onYReachEnd={(event) => console.log(event, 'on end reached')}
           style={{ maxHeight: '100vh' }}
+          containerRef={(ref) => {
+            if (ref) {
+              ref._getBoundingClientRect = ref.getBoundingClientRect;
+
+              ref.getBoundingClientRect = () => {
+                const original = ref._getBoundingClientRect();
+
+                return { ...original, height: Math.round(original.height) };
+              };
+            }
+          }}
           className={'rv-border-radius-half'}>
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
               isAdvancedShow={isAdvancedSearch}
-              className={'rv-bg-color-light-gray'}
+              className={'rv-bg-color-light-gray rv-border-radius-half'}
               fullWidth={isAdvancedSearch}>
               <TopFilter>
                 <FilterBar
@@ -141,6 +170,7 @@ const AdvanceSearchDesktop = ({
                   people={byPeople}
                   onByBookmarked={setIsBookMarked}
                   isBookMarked={isBookMarked}
+                  itemSelectionMode={itemSelectionMode}
                 />
               </TopFilter>
               <div
@@ -182,20 +212,38 @@ const AdvanceSearchDesktop = ({
         {!itemSelectionMode && (
           <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
         )}
-        <SideFilter
-          $isEnabled={isAdvancedSearch && formElements}
-          dir={RV_RevFloat}
-          rtl={RV_RTL}>
-          {isAdvancedSearch && formElements && (
-            <FormFilter
-              formName={RVDic.AdvancedFilters}
-              filters={formElements}
-              onFilter={normalizeSearchElements}
-              onCloseFilter={() => setIsAdvancedSearch(false)}
-            />
-          )}
-        </SideFilter>
+        {!itemSelectionMode && (
+          <SideFilter
+            $isEnabled={isAdvancedSearch && formElements}
+            dir={RV_RevFloat}
+            rtl={RV_RTL}>
+            {isAdvancedSearch && formElements && (
+              <FormFilter
+                formName={RVDic.AdvancedFilters}
+                filters={formElements}
+                onFilter={normalizeSearchElements}
+                onCloseFilter={() => setIsAdvancedSearch(false)}
+              />
+            )}
+          </SideFilter>
+        )}
       </div>
+
+      {isAdvancedSearch && formElements && itemSelectionMode && (
+        <AdvancedFilterDialog
+          className={'rv-border-radius-half'}
+          top={advancedSearchButtonRef?.current?.getBoundingClientRect()?.top}
+          left={
+            advancedSearchButtonRef?.current?.getBoundingClientRect()?.left
+          }>
+          <FormFilter
+            formName={RVDic.AdvancedFilters}
+            filters={formElements}
+            onFilter={normalizeSearchElements}
+            onCloseFilter={() => setIsAdvancedSearch(false)}
+          />
+        </AdvancedFilterDialog>
+      )}
     </Container>
   );
 };

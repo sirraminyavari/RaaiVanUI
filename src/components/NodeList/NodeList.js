@@ -3,6 +3,7 @@ import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
+import { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
@@ -34,7 +35,9 @@ const NodeList = (props) => {
     isByMe,
     byPeople,
     isBookMarked,
-    mode,
+    multiSelection,
+    onCheck,
+    itemSelectionMode,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
@@ -66,8 +69,6 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called****');
-
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
@@ -162,11 +163,10 @@ const NodeList = (props) => {
               {x.Creator && (
                 <SubjectItem
                   key={index}
-                  onChecked={(value, item) =>
-                    console.log(value, item, 'onChecked')
-                  }
+                  onChecked={(value, item) => onCheck && onCheck(value, item)}
                   parentNodeType={nodeTypeId}
-                  selectMode={mode === 'ItemSelection'}
+                  selectMode={multiSelection}
+                  liteMode={itemSelectionMode}
                   item={{
                     ...x,
                     LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
@@ -180,7 +180,11 @@ const NodeList = (props) => {
           )}
         />
       ) : (
-        <IntroNodes />
+        <IntroNodes
+          onChecked={(value, item) => onCheck && onCheck(value, item)}
+          selectMode={multiSelection}
+          liteMode={itemSelectionMode}
+        />
       )}
     </>
   );

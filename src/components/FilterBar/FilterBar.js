@@ -27,11 +27,10 @@ import { createSelector } from 'reselect';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
 import { CV_WHITE } from 'constant/CssVariables';
+import { INTRO_ONBOARD, OPENED } from 'constant/constants';
+import Button from 'components/Buttons/Button';
 
-const selectedTeam = createSelector(
-  (state) => state?.theme,
-  (theme) => theme?.selectedTeam
-);
+export const advancedSearchButtonRef = React.createRef();
 
 const { RVDic, RVAPI, RV_RTL } = window || {};
 
@@ -87,6 +86,7 @@ const FilterBar = ({
   onByStatus,
   onByBookmarked,
   isBookMarked,
+  itemSelectionMode,
 }) => {
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
     (state) => ({
@@ -98,9 +98,7 @@ const FilterBar = ({
   );
 
   const defaultDropDownLabel = {
-    icon: (
-      <AddIcon color={'white'} style={{ fontSize: '1.2rem', color: 'red' }} />
-    ),
+    icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,
     label: RVDic?.NewN?.replace(
       '[n]',
       !_.isEmpty(hierarchy) ? decode(hierarchy[0]?.TypeName) : ''
@@ -133,7 +131,14 @@ const FilterBar = ({
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
+  const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
+  const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
+
   const { push } = useHistory();
+
+  const isInOnBoarding = onboardingName === INTRO_ONBOARD;
+  const isNewDocOpened = newDocMenu === OPENED;
+  // const isInOnBoarding = false;
 
   /**
    * Gets user access for creating document.
@@ -142,7 +147,7 @@ const FilterBar = ({
   const getCreationAccess = () =>
     checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
       // If the user has access can choose between two items.
-      if (dt?.Result) {
+      if (dt?.Result || isInOnBoarding) {
         // setCreationData(data);
         setMarket(data);
       } else {
@@ -303,7 +308,7 @@ const FilterBar = ({
   }));
 
   const breadcrumbItems = [
-    { id: selectedApp?.id, title: selectedApp?.name, linkTo: '/classes' },
+    { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
     ...extendedHierarchy,
   ];
 
@@ -334,34 +339,45 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-
-        {((market || []).length > 0 || onboardingName === 'intro') && (
-          <AnimatedDropDownList
-            data={market}
-            onSelectItem={onSelectItem}
-            defaultValue={selectedItem}
-            hiddenSelectedItem={false}
-            introMode={newDocMenu === 'opened'}
-            onClickLabel={() => onSelectItem(selectedItem)}
-            customStyle={{
-              label: { minWidth: '8rem' },
-            }}
-            data-tut={'new_doc_menu'}
-            customClass={{
-              labelClass: RV_RTL
-                ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
-                : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
-              buttonClass: isDropDownOpen
-                ? `rv-bg-color-warm rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`
-                : `rv-bg-color-default rv-border-radius-half ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`,
-              arrowIconColorClass: 'rv-white',
-            }}
-            onDropDownOpen={setIsDropDownOpen}
-          />
+        {itemSelectionMode && market?.length > 0 ? (
+          <Button onClick={onCreateUrgent} type={'primary'}>
+            <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
+            <div style={{ margin: '0 1rem 0 1rem' }}>{RVDic?.AddQuickly}</div>
+          </Button>
+        ) : (
+          <div data-tut={'new_doc_menu'}>
+            {market?.length > 0 && (
+              <AnimatedDropDownList
+                data={market}
+                onSelectItem={onSelectItem}
+                defaultValue={selectedItem}
+                hiddenSelectedItem={false}
+                introMode={isInOnBoarding && isNewDocOpened}
+                onClickLabel={() => onSelectItem(selectedItem)}
+                customStyle={{
+                  label: { minWidth: '8rem' },
+                }}
+                customClass={{
+                  labelClass: RV_RTL
+                    ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                    : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
+                  buttonClass: isDropDownOpen
+                    ? `rv-bg-color-warm rv-border-radius-half ${
+                        RV_RTL
+                          ? 'rv-ignore-right-radius'
+                          : 'rv-ignore-left-radius'
+                      }`
+                    : `rv-bg-color-default rv-border-radius-half ${
+                        RV_RTL
+                          ? 'rv-ignore-right-radius'
+                          : 'rv-ignore-left-radius'
+                      }`,
+                  arrowIconColorClass: 'rv-white',
+                }}
+                onDropDownOpen={setIsDropDownOpen}
+              />
+            )}
+          </div>
         )}
       </TopRow>
 
@@ -391,15 +407,18 @@ const FilterBar = ({
             clearButton
             range
             headerTitle="فیلتر تاریخ ایجاد"
+            onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
               <ShadowButton
-                onClick={onClick}
+                onClick={() => {
+                  onClick();
+                }}
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                $isEnabled={date}
+                $isEnabled={date || calendarPickerClicked}
                 className={
-                  date
+                  calendarPickerClicked || date
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
@@ -411,7 +430,11 @@ const FilterBar = ({
                 ) : (
                   <EmptyCalendarIcon
                     size={'1.5rem'}
-                    className={dateHover ? 'rv-default' : 'rv-distant'}
+                    className={
+                      calendarPickerClicked || dateHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
                   />
                 )}
               </ShadowButton>
@@ -447,22 +470,23 @@ const FilterBar = ({
             onByPeople={onPeople}
             isByMe={isByMe}
             pickedPeople={people}
+            onVisible={setPeoplePickerVisibility}
             buttonComponent={
               <ShadowButton
                 style={commonStyle}
                 // onClick={onClick}
                 onMouseEnter={() => setPeopleHover(true)}
                 onMouseLeave={() => setPeopleHover(false)}
-                $isEnabled={people || isByMe}
+                $isEnabled={people || isByMe || peoplePickerVisibility}
                 className={
-                  isByMe || people
+                  isByMe || people || peoplePickerVisibility
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
                 <PersonIcon
                   size={'1.5rem'}
                   className={
-                    isByMe || people
+                    isByMe || people || peoplePickerVisibility
                       ? 'rv-default'
                       : peopleHover
                       ? 'rv-default'
@@ -481,6 +505,7 @@ const FilterBar = ({
                 color:
                   advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
               }}
+              ref={advancedSearchButtonRef}
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={onAdvancedFilterClick}

@@ -24,8 +24,9 @@ const selectSidebarNodes = createSelector(
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
-  const iconListRef = useRef();
-
+  const itemRef = useRef();
+  const listRef = useRef();
+  const [hasArrow, setHasArrow] = useState(false);
   const { RVDic, RV_RevFloat, RV_Float } = useWindow();
 
   //! Stores scroll value
@@ -124,6 +125,21 @@ const SidebarOnClose = ({ theme }) => {
   const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
   const hasSidebarNodes = !!filteredSidebarNodes.length;
 
+  useLayoutEffect(() => {
+    const listContainerHeight = listRef?.current?.getBoundingClientRect()
+      ?.height;
+    const itemHeight = itemRef?.current?.getBoundingClientRect()?.height;
+    if (
+      hasSidebarNodes &&
+      itemHeight * filteredSidebarNodes.length > listContainerHeight
+    ) {
+      setHasArrow(true);
+    } else {
+      setHasArrow(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sidebarNodes]);
+
   return (
     <>
       <Styled.SidebarTitle>
@@ -143,12 +159,12 @@ const SidebarOnClose = ({ theme }) => {
         </Tooltip>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        {hasSidebarNodes && (
+        {hasSidebarNodes && hasArrow && (
           <Styled.Up isUp={isUp} onClick={scrollUp}>
             <ChevronIcon dir="up" />
           </Styled.Up>
         )}
-        <Styled.IconListContainer>
+        <Styled.IconListContainer ref={listRef}>
           {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
           <PerfectScrollbar
             onYReachStart={handleScrollStart}
@@ -171,6 +187,7 @@ const SidebarOnClose = ({ theme }) => {
                   place={RV_RevFloat}
                   renderContent={() => decodeBase64(TypeName)}>
                   <Styled.MiniIconWrapper
+                    ref={itemRef}
                     as={Link}
                     to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
                     {!!IconURL && (
@@ -186,7 +203,7 @@ const SidebarOnClose = ({ theme }) => {
           </PerfectScrollbar>
           {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
-        {hasSidebarNodes && (
+        {hasSidebarNodes && hasArrow && (
           <Styled.Down isDown={isDown} onClick={scrollDown}>
             <ChevronIcon dir="down" />
           </Styled.Down>

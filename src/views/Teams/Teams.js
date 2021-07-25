@@ -4,6 +4,7 @@ import * as Styled from './Teams.styles';
 import ContentSide from './items/sides/content/Content';
 import WelcomeSide from './items/sides/welcome/Welcome';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
+// import UserInvitationDialog from 'views/Teams/items/sides/content/UserInviteDialog';
 // import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const TeamsView = () => {
@@ -17,6 +18,7 @@ const TeamsView = () => {
   return (
     // <PerfectScrollbar>
     <Styled.TeamsViewContainer>
+      {/* <UserInvitationDialog /> */}
       <ContentSide />
       <WelcomeSide />
     </Styled.TeamsViewContainer>

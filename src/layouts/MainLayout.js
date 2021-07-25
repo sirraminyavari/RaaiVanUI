@@ -24,6 +24,7 @@ import RaminView from 'views/DevsView/Ramin/Ramin';
 import useWindow from 'hooks/useWindowContext';
 import { NavbarContainer } from './Navbar/Navbar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
+import TestView from 'views/TestView/TestView';
 // import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const { toggleSidebar } = themeSlice.actions;
@@ -39,6 +40,7 @@ const NavbarInitial = lazy(() =>
 );
 
 const { RVGlobal } = window;
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 
 const switchRoutes = (
   <Switch>
@@ -68,15 +70,10 @@ const switchRoutes = (
       );
     })}
 
-    {/* Just in dev mode and won't render in production  */}
-    {/* <Route exact path="/test" component={TestView} /> */}
-    {/* {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
-      <>
-        <Route exact path="/rasoul" component={RasoulView} />
-        <Route exact path="/ali" component={AliView} />
-        <Route exact path="/ramin" component={RaminView} />
-      </>
-    )} */}
+    {isDev && <Route exact path="/test" component={TestView} />}
+    {isDev && <Route exact path="/rasoul" component={RasoulView} />}
+    {isDev && <Route exact path="/ali" component={AliView} />}
+    {isDev && <Route exact path="/ramin" component={RaminView} />}
 
     <Redirect from="/*" to={TEAMS_PATH} />
   </Switch>
@@ -97,6 +94,11 @@ const selectedApp = createSelector(
   (theme) => theme.selectedTeam
 );
 
+const selectedActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 const selecteOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
@@ -107,6 +109,7 @@ const Main = () => {
   const hasNavSide = useSelector(selectHasNavSide);
   const selectedTeam = useSelector(selectedApp);
   const onboardingName = useSelector(selecteOnboardingName);
+  const activePath = useSelector(selectedActivePath);
   const { RVGlobal } = useWindow();
   const dispatch = useDispatch();
 
@@ -122,6 +125,10 @@ const Main = () => {
 
   const getSidebar = () => {
     if (isTeamSelected) {
+      //! Disable sidebar on teams view.
+      if (activePath === TEAMS_PATH) {
+        return null;
+      }
       //! When 'intro' onboarding mode is active.
       if (isIntroOnboarding) {
         //! Open the sidebar and return 'OpenSidebar'.

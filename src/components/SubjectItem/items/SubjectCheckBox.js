@@ -6,8 +6,8 @@ import { CV_FREEZED, TCV_DEFAULT } from 'constant/CssVariables';
 import React, { useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-const SubjectCheckBox = ({ onChecked, selectMode }) => {
-  const [checked, setChecked] = useState(false);
+const SubjectCheckBox = ({ onChecked, selectMode, isChecked }) => {
+  const [checked, setChecked] = useState(isChecked);
   /**
    * Will fire by clicking on the checkbox
    */
@@ -23,7 +23,6 @@ const SubjectCheckBox = ({ onChecked, selectMode }) => {
       selectMode={selectMode}
       defaultChecked={checked}
       onClick={onCheckChange}>
-      {console.log(checked, 'checked')}
       <CustomCheckBox isChecked={checked}>
         {checked && (
           <CheckCircleFilled

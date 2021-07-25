@@ -12,7 +12,7 @@ const NewNode = (props) => {
     <div
       id="nodeArea"
       className="small-12 medium-12 large-12"
-      style={{ padding: '0vw 6vw', marginBottom: '8rem' }}></div>
+      style={{ padding: '0vw 6vw', paddingBottom: '8rem' }}></div>
   );
 };
 

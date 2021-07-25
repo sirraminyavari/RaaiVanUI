@@ -98,7 +98,7 @@ const CheckboxType = (props) => {
         />
       ) : (
         <Checkbox
-          options={Options}
+          options={options}
           onSelect={handleOnItemSelect}
           selecteds={value?.TextItems}
         />

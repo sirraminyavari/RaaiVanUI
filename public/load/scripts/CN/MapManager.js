@@ -17,7 +17,7 @@
             ClassesTree: null,
             Panels: {}
         };
-
+        
         var that = this;
 
         GlobalUtilities.load_files(["API/CNAPI.js", "TreeView/TreeView.js", "TabsManager/TabsManager.js"], {
@@ -441,7 +441,7 @@
                     that.complexes(pages["complexes"], nodeType);
                 }
             });
-
+            
             if (that.Objects.IdentityFormID) {
                 tabs.push({
                     Page: pages["identity"], Title: RVDic.Specifications, FixedPage: true,
