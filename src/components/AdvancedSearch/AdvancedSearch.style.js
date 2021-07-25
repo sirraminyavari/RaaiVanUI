@@ -42,7 +42,7 @@ export const Scrollable = styled.div`
 `;
 export const Maintainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 9rem);
+  height: calc(100vh - 9rem);
   max-height: 100%;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
 `;

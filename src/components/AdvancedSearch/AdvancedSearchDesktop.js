@@ -19,6 +19,7 @@ import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/FilterBar/FilterBar';
+import _ from 'lodash';
 
 const { RVDic } = window;
 /**
@@ -67,8 +68,16 @@ const AdvanceSearchDesktop = ({
   }));
 
   useEffect(() => {
+    console.log(bookmarked, 'bookmarked');
+    if (bookmarked === true) {
+      setIsBookMarked(bookmarked);
+    } else {
+      setIsBookMarked(false);
+    }
+  }, [bookmarked]);
+
+  useEffect(() => {
     const { offsetTop } = advancedSearchButtonRef?.current || {};
-    console.log(offsetTop, 'offsetTop');
   }, [advancedSearchButtonRef?.current]);
 
   // Creates object with 'JSONValue' param of formElements
