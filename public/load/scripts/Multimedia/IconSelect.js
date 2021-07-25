@@ -232,7 +232,7 @@
             };
 
             var uploader = null;
-
+            console.log({ IconID: objectId, Type: iconType });
             var uploadParams = {
                 UploadDataSource: DocsAPI.UploadIcon({ IconID: objectId, Type: iconType }),
                 OnFileAdd: function () { _set_image(GlobalUtilities.icon("Loading-Circle.gif")); },
