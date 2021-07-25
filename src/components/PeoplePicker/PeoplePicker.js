@@ -80,7 +80,6 @@ const PeoplePicker = ({
   };
 
   const fetchUsers = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called');
     getUsersAPI.fetch(
       {
         SearchText: encodeBase64(searchInput),
@@ -88,7 +87,6 @@ const PeoplePicker = ({
         LowerBoundary: lowerBoundary,
       },
       (response) => {
-        console.log(response, 'people ****');
         const users = response.Users.map((user) => ({
           id: user?.UserID,
           name: decodeBase64(user?.FullName),
@@ -184,7 +182,7 @@ const PeoplePicker = ({
             />
           }
         />
-        {/* <JustMeSaved>
+        <JustMeSaved>
           <Toggle
             isChecked={isByMe}
             onToggle={onByMeSelect}
@@ -192,7 +190,7 @@ const PeoplePicker = ({
             title={RVDic.Myself}
             titleStyle={{ fontSize: '0.8rem' }}
           />
-        </JustMeSaved> */}
+        </JustMeSaved>
         <PeopleList>
           <PerfectScrollBar>
             <SimpleListViewer
