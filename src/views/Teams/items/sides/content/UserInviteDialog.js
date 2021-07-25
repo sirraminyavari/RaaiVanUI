@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { createSelector } from 'reselect';
-import { useSelector, useDispatch } from 'react-redux';
+// import { createSelector } from 'reselect';
+// import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import UsersGroupIcon from 'components/Icons/UsersGroupIcon/UsersGroup';
 import MailIcon from 'components/Icons/MailIcon/MailIcon';
@@ -23,19 +23,22 @@ import {
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { invitationSlice } from 'store/reducers/invitationsReducer';
+// import { invitationSlice } from 'store/reducers/invitationsReducer';
 
-const { setTeamInvitations, closeInvitationModal } = invitationSlice.actions;
+// const {
+//   setTeamInvitations,
+//   // closeInvitationModal
+// } = invitationSlice.actions;
 
-const selectTeamInvitationList = createSelector(
-  (state) => state?.invitations,
-  (invitations) => invitations?.teamInvitationList
-);
+// const selectTeamInvitationList = createSelector(
+//   (state) => state?.invitations,
+//   (invitations) => invitations?.teamInvitationList
+// );
 
-const selectInvitationModal = createSelector(
-  (state) => state?.invitations,
-  (invitations) => invitations?.invitationModal
-);
+// const selectInvitationModal = createSelector(
+//   (state) => state?.invitations,
+//   (invitations) => invitations?.invitationModal
+// );
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
@@ -45,11 +48,13 @@ const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 //! Default input number for user invitation.
 const DEFAULT_INPUT_COUNT = 3;
 
-const UserInviteDialog = () => {
-  const dispatch = useDispatch();
+const UserInviteDialog = (props) => {
+  // const dispatch = useDispatch();
   const { RVDic, GlobalUtilities } = useWindow();
-  const teamInvitations = useSelector(selectTeamInvitationList);
-  const { isOpen, inviteApp } = useSelector(selectInvitationModal);
+  // const teamInvitations = useSelector(selectTeamInvitationList);
+  const [inviteValues, setInviteValues] = useState({});
+  // const { isOpen, inviteApp } = useSelector(selectInvitationModal);
+  const { setIsInviteShown, isInviteShown, app } = props;
 
   // const [invileLink, setInviteLink] = useState(
   //   'https://cliqmind.ir/join/eigpylugn8f7'
@@ -64,7 +69,7 @@ const UserInviteDialog = () => {
   //! Keep track of extra input fields.
   const [inputCount, setInputCount] = useState(DEFAULT_INPUT_COUNT);
 
-  const invitationCount = Object.keys(teamInvitations)?.length;
+  const invitationCount = Object.keys(inviteValues)?.length;
 
   //! Keep track of window size.
   const { isTabletOrMobile } = DimensionHelper();
@@ -82,7 +87,8 @@ const UserInviteDialog = () => {
 
   //! Close Modal.
   const handleCloseInvitation = () => {
-    dispatch(closeInvitationModal());
+    setIsInviteShown(false);
+    // dispatch(closeInvitationModal());
   };
 
   //! Copy the invitation link to clipboard.
@@ -102,14 +108,19 @@ const UserInviteDialog = () => {
 
   //! Mangae field input changes.
   const handleFieldChange = (f) => {
-    dispatch(setTeamInvitations({ ...teamInvitations, [f.fieldIndex]: f }));
+    setInviteValues((v) => ({ ...v, [f.fieldIndex]: f }));
+    // dispatch(setTeamInvitations({ ...inviteValues, [f.fieldIndex]: f }));
     setSendingIndecies((v) => [...new Set([...v, f.fieldIndex])]);
 
     //! If there is no email, Remove it from invitation list.
     if (!f?.mail && !f?.name) {
-      const inviteList = { ...teamInvitations };
-      delete inviteList[f.fieldIndex];
-      dispatch(setTeamInvitations(inviteList));
+      // const inviteList = { ...inviteValues };
+      // delete inviteList[f.fieldIndex];
+      // dispatch(setTeamInvitations(inviteList));
+      setInviteValues((v) => {
+        delete v[f.fieldIndex];
+        return v;
+      });
       setSendingIndecies((v) => v.filter((item) => item !== f.fieldIndex));
     }
   };
@@ -117,7 +128,7 @@ const UserInviteDialog = () => {
   useEffect(() => {
     if (!!invitationCount) {
       if (
-        Object.values(teamInvitations).every((v) => v.validation.mail === true)
+        Object.values(inviteValues).every((v) => v.validation.mail === true)
       ) {
         setSendDisabled(false);
       } else {
@@ -128,7 +139,7 @@ const UserInviteDialog = () => {
       setSendDisabled(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [teamInvitations]);
+  }, [inviteValues]);
 
   useEffect(() => {
     if (invitationCount >= DEFAULT_INPUT_COUNT) {
@@ -142,6 +153,8 @@ const UserInviteDialog = () => {
     if (!isSendDisabled) {
       if (!sendingIndecies?.length) {
         setIsSending(false);
+        setIsInviteShown(false);
+        setInviteValues({});
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,7 +164,7 @@ const UserInviteDialog = () => {
   const inviteUser = (name = '', mail = '', fieldIndex) => {
     inviteUserAPI.fetch(
       {
-        ApplicationID: inviteApp?.ApplicationID,
+        ApplicationID: app?.ApplicationID,
         Email: encodeBase64(GlobalUtilities.secure_string(mail)),
         FullName: encodeBase64(GlobalUtilities.secure_string(name)),
       },
@@ -191,7 +204,7 @@ const UserInviteDialog = () => {
 
   //! Calls api for each invitation in list.
   const handleSendInvitations = () => {
-    const fields = Object.values(teamInvitations);
+    const fields = Object.values(inviteValues);
     if (!!fields.length) {
       setIsSending(true);
       fields.forEach((field) => {
@@ -203,11 +216,11 @@ const UserInviteDialog = () => {
 
   return (
     <Modal
-      show={isOpen}
+      show={isInviteShown}
       onClose={handleCloseInvitation}
       contentWidth={getModalWidth()}
       contentClass="invite-modal-container"
-      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(inviteApp?.Title)})`}>
+      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(app?.Title)})`}>
       <Styled.AddUserModalHeader>
         <Styled.AddUserPlusSign>+</Styled.AddUserPlusSign>
         <UsersGroupIcon size={40} />
@@ -283,8 +296,8 @@ const UserInviteDialog = () => {
           return (
             <UserInviteField
               key={key}
-              name={teamInvitations?.[fieldIndex]?.name}
-              email={teamInvitations?.[fieldIndex]?.mail}
+              name={inviteValues?.[fieldIndex]?.name}
+              email={inviteValues?.[fieldIndex]?.mail}
               fieldIndex={fieldIndex}
               onFieldChange={handleFieldChange}
             />
