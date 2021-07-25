@@ -2,10 +2,18 @@
  * Renders an item for list under sidebar menu.
  */
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import Badge from 'components/Badge/Badge';
 import { TBG_DEFAULT } from 'constant/Colors';
+import { INTRO_ONBOARD } from 'constant/constants';
+
+const selecteOnboardingName = createSelector(
+  (state) => state.onboarding,
+  (onboarding) => onboarding.name
+);
 
 /**
  * @typedef PropType
@@ -22,9 +30,14 @@ import { TBG_DEFAULT } from 'constant/Colors';
  */
 const ListItem = (props) => {
   const { icon: Icon, title, badge, linkTo = '#' } = props;
+  const onboardingName = useSelector(selecteOnboardingName);
+
+  //! Check if onboarding is activated on 'intro' mode.
+  const isIntroOnboarding =
+    !!onboardingName && onboardingName === INTRO_ONBOARD;
 
   return (
-    <Styled.ListItemWrapper as={Link} to={linkTo}>
+    <Styled.ListItemWrapper as={!isIntroOnboarding && Link} to={linkTo}>
       <Styled.CenterIcon>
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>

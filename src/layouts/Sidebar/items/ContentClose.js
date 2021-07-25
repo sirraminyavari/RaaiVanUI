@@ -4,21 +4,29 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { decodeBase64, getURL } from 'helpers/helpers';
+
+//! Gets unfiltered nodes for closed sidebar menu.
+const selectSidebarNodes = createSelector(
+  (state) => state.sidebarItems,
+  (sidebarItems) => sidebarItems.nodeTypes
+);
 
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
-  const iconListRef = useRef();
-
+  const itemRef = useRef();
+  const listRef = useRef();
+  const [hasArrow, setHasArrow] = useState(false);
   const { RVDic, RV_RevFloat, RV_Float } = useWindow();
 
   //! Stores scroll value
@@ -28,11 +36,9 @@ const SidebarOnClose = ({ theme }) => {
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
 
-  const { dndTree } = useSelector((state) => state.sidebarItems);
+  const sidebarNodes = useSelector(selectSidebarNodes);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
-
-  const nodes = (dndTree.items && Object.values(dndTree.items)) || [];
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -78,6 +84,7 @@ const SidebarOnClose = ({ theme }) => {
   //   });
   //   handleScroll();
   // }, [scroll]);
+
   const handleScrollUp = () => {
     setIsUp(false);
     setIsDown(false);
@@ -92,6 +99,46 @@ const SidebarOnClose = ({ theme }) => {
     setIsUp(false);
     setIsDown(true);
   };
+
+  const checkValidNodes = (node, index, self) => {
+    const nodeParentId = node?.ParentID;
+    const isNodeHidden = !!node.Hidden;
+
+    //! Check if it is hidden or not.
+    if (isNodeHidden) {
+      return false;
+    }
+
+    //! Check if its parent is hidden or not.
+    if (!!nodeParentId) {
+      const parentNode = self.find((item) => item.NodeTypeID === nodeParentId);
+      const isParentHidden = !!parentNode?.Hidden;
+      const isParentCategory = parentNode?.IsCategory;
+      if (isParentHidden || !isParentCategory) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
+  const hasSidebarNodes = !!filteredSidebarNodes.length;
+
+  useLayoutEffect(() => {
+    const listContainerHeight = listRef?.current?.getBoundingClientRect()
+      ?.height;
+    const itemHeight = itemRef?.current?.getBoundingClientRect()?.height;
+    if (
+      hasSidebarNodes &&
+      itemHeight * filteredSidebarNodes.length > listContainerHeight
+    ) {
+      setHasArrow(true);
+    } else {
+      setHasArrow(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sidebarNodes]);
 
   return (
     <>
@@ -112,10 +159,12 @@ const SidebarOnClose = ({ theme }) => {
         </Tooltip>
       </Styled.SidebarTitle>
       <Styled.CloseContentContainer>
-        <Styled.Up isUp={isUp} onClick={scrollUp}>
-          <ChevronIcon dir="up" />
-        </Styled.Up>
-        <Styled.IconListContainer>
+        {hasSidebarNodes && hasArrow && (
+          <Styled.Up isUp={isUp} onClick={scrollUp}>
+            <ChevronIcon dir="up" />
+          </Styled.Up>
+        )}
+        <Styled.IconListContainer ref={listRef}>
           {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
           <PerfectScrollbar
             onYReachStart={handleScrollStart}
@@ -127,20 +176,23 @@ const SidebarOnClose = ({ theme }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            {nodes?.map((node, key) => {
-              const { data, id } = node;
+            {filteredSidebarNodes?.map((node, key) => {
+              const { TypeName, NodeTypeID, IconURL } = node;
               return (
                 <Tooltip
                   key={key}
-                  tipId={id}
+                  tipId={NodeTypeID}
                   effect="solid"
                   offset={{ [RV_Float]: -10 }}
                   place={RV_RevFloat}
-                  renderContent={() => data.title}>
-                  <Styled.MiniIconWrapper as={Link} to={`/classes/${id}`}>
-                    {data.iconURL && (
+                  renderContent={() => decodeBase64(TypeName)}>
+                  <Styled.MiniIconWrapper
+                    ref={itemRef}
+                    as={Link}
+                    to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
+                    {!!IconURL && (
                       <Styled.MenuItemImage
-                        src={data.iconURL}
+                        src={IconURL}
                         alt="sidebar-icon-closed"
                       />
                     )}
@@ -151,9 +203,11 @@ const SidebarOnClose = ({ theme }) => {
           </PerfectScrollbar>
           {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
-        <Styled.Down isDown={isDown} onClick={scrollDown}>
-          <ChevronIcon dir="down" />
-        </Styled.Down>
+        {hasSidebarNodes && hasArrow && (
+          <Styled.Down isDown={isDown} onClick={scrollDown}>
+            <ChevronIcon dir="down" />
+          </Styled.Down>
+        )}
       </Styled.CloseContentContainer>
     </>
   );

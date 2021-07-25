@@ -8,10 +8,9 @@ import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
 import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
-import * as Styled from '../Sidebar.styles';
+import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
-import { getURL } from 'helpers/helpers';
-import { MOBILE_BOUNDRY } from 'constant/constants';
+import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
@@ -31,24 +30,34 @@ const selectHasPattern = createSelector(
   (theme) => theme.hasSidebarPattern
 );
 
+const selecteOnboardingName = createSelector(
+  (state) => state.onboarding,
+  (onboarding) => onboarding.name
+);
+
 const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { toggleSidebar } = themeSlice.actions;
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const selectedTeam = useSelector(selectTeam);
   const hasPattern = useSelector(selectHasPattern);
+  const onboardingName = useSelector(selecteOnboardingName);
   const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
+  //! Check if onboarding is activated on 'intro' mode.
+  const isIntroOnboarding =
+    !!onboardingName && onboardingName === INTRO_ONBOARD;
 
   const isMobileScreen = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
-  const isTeamSelected = !!selectedTeam?.id;
+  const isTeamSelected = !!selectedTeam?.id && !!RVGlobal?.ApplicationID;
 
   //! Toggle sidebar drawer on click.
   const toggleDrawer = () => {
+    if (isIntroOnboarding) return;
     isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
     dispatch(getSidebarNodes());
   };
@@ -63,7 +72,9 @@ const SidebarHeader = () => {
   return (
     <Styled.SidebarHeader isMobile={isMobileScreen} hasPattern={hasPattern}>
       {isSidebarOpen && (
-        <Link to={getURL('Home')}>
+        <Link
+          to={HOME_PATH}
+          style={{ pointerEvents: isIntroOnboarding ? 'none' : 'revert' }}>
           <img
             src={isSaas ? (RV_RTL ? Logo_Fa : Logo_En) : RVGlobal.LogoURL}
             width={isSaas ? '120' : '60'}

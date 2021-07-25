@@ -102,9 +102,11 @@ _RVRequest.prototype = {
                         ]
                     }])["container"];
 
-                    if ((window.DIFF_TEAM_RESPONSE.Showed || {}).Close) window.DIFF_TEAM_RESPONSE.Showed.Close();
+                    if (!GlobalUtilities.is_visible(window.DIFF_TEAM_RESPONSE)) {
+                        if ((window.DIFF_TEAM_RESPONSE.Showed || {}).Close) window.DIFF_TEAM_RESPONSE.Showed.Close();
 
-                    window.DIFF_TEAM_RESPONSE.Showed = GlobalUtilities.show(window.DIFF_TEAM_RESPONSE, { Stick: true });
+                        window.DIFF_TEAM_RESPONSE.Showed = GlobalUtilities.show(window.DIFF_TEAM_RESPONSE, { Stick: true });
+                    }
                 }
             } catch (e) { }
         }

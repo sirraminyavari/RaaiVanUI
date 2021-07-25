@@ -10,7 +10,12 @@ import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 import Resizable from 'components/Resizable/Resizable';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
+import {
+  MIN_WIDTH,
+  MAX_WIDTH,
+  MAIN_CONTENT,
+  INTRO_ONBOARD,
+} from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 
 const SidebarContentOpen = lazy(() =>
@@ -37,6 +42,11 @@ const selectisSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
+const selecteOnboardingName = createSelector(
+  (state) => state.onboarding,
+  (onboarding) => onboarding.name
+);
+
 const OpenSidebar = () => {
   const dispatch = useDispatch();
   const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
@@ -44,9 +54,14 @@ const OpenSidebar = () => {
   const sidebarOpenWidth = useSelector(selectOpenWidth);
   const isOpen = useSelector(selectisSidebarOpen);
   const hasPattern = useSelector(selectHasPattern);
+  const onboardingName = useSelector(selecteOnboardingName);
   const { RV_RTL } = useWindow();
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
+
+  //! Check if onboarding is activated on 'intro' mode.
+  const isIntroOnboarding =
+    !!onboardingName && onboardingName === INTRO_ONBOARD;
 
   const handleOnResizeEnd = (size) => {
     dispatch(setOpenWidth(size.width));
@@ -58,6 +73,7 @@ const OpenSidebar = () => {
 
   return (
     <Resizable
+      disable={isIntroOnboarding}
       resizableStyles={{
         position: 'fixed',
         top: 0,
@@ -73,7 +89,7 @@ const OpenSidebar = () => {
       <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
         <SidebarHeader />
         <Styled.ContentWrapper isMainContent={isMainContent}>
-          <Suspense fallback={<LogoLoader size={10} />}>
+          <Suspense fallback={<LogoLoader />}>
             <SidebarContentOpen />
           </Suspense>
         </Styled.ContentWrapper>

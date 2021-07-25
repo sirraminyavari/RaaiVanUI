@@ -3,8 +3,11 @@ import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
+import { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
+import IntroNodes from './IntroNodes';
 
 const getNodesAPI = (bookMarked = false) => {
   return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
@@ -32,6 +35,9 @@ const NodeList = (props) => {
     isByMe,
     byPeople,
     isBookMarked,
+    multiSelection,
+    onCheck,
+    itemSelectionMode,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
@@ -39,6 +45,11 @@ const NodeList = (props) => {
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
   useTraceUpdate(props);
+
+  const { onboardingName } = useSelector((state) => ({
+    onboardingName: state.onboarding.name,
+  }));
+
   const preExtraData = usePrevious(extraData);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
@@ -58,8 +69,6 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called');
-
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
@@ -139,34 +148,45 @@ const NodeList = (props) => {
   };
 
   return (
-    <SimpleListViewer
-      fetchMethod={fetchData}
-      extraData={extraData}
-      infiniteLoop={false}
-      onEndReached={() => {
-        console.log('Im reached end');
-      }}
-      onTotal={onTotalFound}
-      renderItem={(x, index) => (
-        <>
-          {x.Creator && (
-            <SubjectItem
-              key={index}
-              onChecked={(value, item) => console.log(value, item, 'onChecked')}
-              parentNodeType={nodeTypeId}
-              selectMode={false}
-              item={{
-                ...x,
-                LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
-              }}
-              isSaas={isSaas}
-              onReload={onReload}
-              onBookmark={onBookmark}
-            />
+    <>
+      {onboardingName !== 'intro' ? (
+        <SimpleListViewer
+          fetchMethod={fetchData}
+          extraData={extraData}
+          infiniteLoop={true}
+          onEndReached={() => {
+            console.log('Im reached end');
+          }}
+          onTotal={onTotalFound}
+          renderItem={(x, index) => (
+            <>
+              {x.Creator && (
+                <SubjectItem
+                  key={index}
+                  onChecked={(value, item) => onCheck && onCheck(value, item)}
+                  parentNodeType={nodeTypeId}
+                  selectMode={multiSelection}
+                  liteMode={itemSelectionMode}
+                  item={{
+                    ...x,
+                    LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
+                  }}
+                  isSaas={isSaas}
+                  onReload={onReload}
+                  onBookmark={onBookmark}
+                />
+              )}
+            </>
           )}
-        </>
+        />
+      ) : (
+        <IntroNodes
+          onChecked={(value, item) => onCheck && onCheck(value, item)}
+          selectMode={multiSelection}
+          liteMode={itemSelectionMode}
+        />
       )}
-    />
+    </>
   );
 };
 export default NodeList;

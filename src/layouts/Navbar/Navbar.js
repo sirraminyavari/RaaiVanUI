@@ -7,15 +7,17 @@ import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import Avatar from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
-import * as Styled from './Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AvatarMenuList from './items/AvatarMenu/AvatarMenuList';
 import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
-  BO_RADIUS_HALF,
   GET_NOTIFS_INTERVAL,
+  TEAMS_PATH,
+  BO_RADIUS_UNIT,
+  BO_RADIUS_QUARTER,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
@@ -23,7 +25,7 @@ import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
 import {
   getNotificationsCount,
-  getNotificationsList,
+  // getNotificationsList,
 } from 'store/actions/global/NotificationActions';
 
 const WideScreenMenu = lazy(() =>
@@ -42,21 +44,31 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
+const selectActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 const selectAuthUser = createSelector(
   (state) => state.auth,
   (auth) => auth.authUser
 );
 
+const NavbarPlaceholder = () => <div />;
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const activePath = useSelector(selectActivePath);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat } = useWindow();
 
+  const isTeamsView = activePath === TEAMS_PATH;
+
   const getNotifs = () => {
     dispatch(getNotificationsCount());
-    dispatch(getNotificationsList());
+    // dispatch(getNotificationsList());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);
@@ -80,9 +92,10 @@ const Navbar = () => {
   };
 
   const getNavMenu = () => {
-    if (!isSidebarOpen && isMobileScreen) return true;
-    if (isSidebarOpen && isMobileNav) return true;
-    return showSearch;
+    if (!isSidebarOpen && isMobileScreen) return <MobileMenu />;
+    if (isSidebarOpen && isMobileNav) return <MobileMenu />;
+    if (showSearch) return <MobileMenu />;
+    return <WideScreenMenu />;
   };
 
   const handleShowSearch = () => {
@@ -98,7 +111,7 @@ const Navbar = () => {
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
-        {getNavMenu() ? <MobileMenu /> : <WideScreenMenu />}
+        {isTeamsView ? <NavbarPlaceholder /> : getNavMenu()}
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (
@@ -123,7 +136,7 @@ const Navbar = () => {
           event="click"
           arrowColor="transparent"
           offset={{ [RV_RevFloat]: -102, top: -6 }}
-          className={`${BG_WHITE} ${BO_RADIUS_HALF} avatar-tooltip`}
+          className="avatar-tooltip"
           renderContent={() => {
             return <AvatarMenuList />;
           }}>

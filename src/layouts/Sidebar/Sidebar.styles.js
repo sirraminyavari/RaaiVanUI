@@ -40,6 +40,7 @@ const TruncateTextCss = css`
 export const TitleText = styled.span.attrs({ className: C_WHITE })`
   margin: 0.5rem;
   text-transform: capitalize;
+  user-select: none;
   ${TruncateTextCss}
 `;
 
@@ -101,11 +102,22 @@ export const ContentWrapper = withTheme(styled.div`
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   overflow: auto;
   margin-top: 4rem;
-  padding: 0 ${(props) => (props.theme.states.isSidebarOpen ? '1.5rem' : '0')};
+  // padding: 0 ${(props) =>
+    props.theme.states.isSidebarOpen ? '1.5rem' : '0'};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .ps__thumb-y {
+    background-color: ${CV_WHITE} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
+  }
 `);
 
 const getHeaderWidth = (props) => {
@@ -147,10 +159,10 @@ export const SidebarHeader = withTheme(styled.div.attrs({
     hasPattern && `background-image: url(${sidebarPattern});`}
 `);
 
-export const OpenContentWrapper = styled.div`
-  width: 100%;
-  position: relative;
-`;
+// export const OpenContentWrapper = styled.div`
+//   width: 100%;
+//   position: relative;
+// `;
 
 export const ToggleArrow = styled.div.attrs({
   className: C_WHITE,
@@ -204,6 +216,7 @@ export const SearchInput = styled.input.attrs((props) => ({
   background-color: inherit;
   border: none;
   outline: 0;
+  user-select: none;
   ${({ isTyping }) =>
     isTyping
       ? `
@@ -255,6 +268,7 @@ export const FooterTitle = withTheme(styled.span`
   top: 0;
   transition: all 0.5s linear;
   text-transform: capitalize;
+  user-select: none;
   display: ${(props) =>
     props.theme.states.isSidebarOpen ? 'revert' : ' none'};
 `);
@@ -307,6 +321,7 @@ export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
+  user-select: none;
 ${TruncateTextCss}
 `;
 
@@ -431,7 +446,7 @@ export const Up = styled.div.attrs((props) => ({
   className: props.isUp ? C_GRAY : C_WHITE,
 }))`
   ${arrowCss}
-  cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
+  // cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0.3rem;
   ${RV_Float}: 0.7rem;
   height: 2rem;
@@ -444,7 +459,7 @@ export const Down = styled.div.attrs((props) => ({
   className: props.isDown ? C_GRAY : C_WHITE,
 }))`
   ${arrowCss}
-  cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
+  // cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: 0.2rem;
   ${RV_Float}: 0.7rem;
   height: 2rem;
@@ -493,7 +508,7 @@ export const MenuTreeContainer = styled.div`
 `;
 
 export const UnderMenuContainer = styled.div`
-  padding: 0 0 3rem 0;
+  padding: 0 0 2.5rem 0;
 `;
 
 export const FilterIconWrapper = styled.div.attrs({ className: C_DISTANT })`

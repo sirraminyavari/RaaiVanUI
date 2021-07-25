@@ -1,19 +1,15 @@
 /**
  * Renders a list of navbar buttons for non-mobile screens.
  */
-import { lazy, Fragment, memo } from 'react';
-import * as Styled from '../Navbar.styles';
+import { Fragment } from 'react';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import MenuItem from './MenuItem';
 import NavButtonsList from './buttonsList';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import useWindow from 'hooks/useWindowContext';
-
-const FixActions = lazy(() =>
-  import(/* webpackChunkName: "nav-fix-actions"*/ './FixActions')
-);
-const AlertActions = lazy(() =>
-  import(/* webpackChunkName: "nav-alert-actions"*/ './AlertActions')
-);
+import NavButtonMenu from './NavButtonMenu';
+import NotificationsMenu from './NotificationsMenu';
+// import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const WideScreenMenu = () => {
   const { RVGlobal } = useWindow();
@@ -23,7 +19,7 @@ const WideScreenMenu = () => {
     <Styled.WideScreenMenu>
       {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
-        if (isSaas && [2, 3, 6].includes(btn.index)) {
+        if (isSaas && ['2', '3', '6'].includes(btn.index)) {
           return null;
         }
 
@@ -43,9 +39,9 @@ const WideScreenMenu = () => {
                   />
                 </div>
                 {actions?.length ? (
-                  <FixActions actions={actions} />
+                  <NavButtonMenu actions={actions} />
                 ) : (
-                  <AlertActions />
+                  <NotificationsMenu />
                 )}
               </PopupMenu>
             ) : (
@@ -54,8 +50,24 @@ const WideScreenMenu = () => {
           </Fragment>
         );
       })}
+      {/* <Tooltip
+        tipId="nav-notifs-menu"
+        multiline
+        clickable
+        event="click"
+        effect="solid"
+        place="bottom"
+        type="dark">
+        <MenuItem
+          btnProps={{
+            title: window.RVDic.Notifications,
+            icon: 'notifications',
+          }}
+          badge={true}
+        />
+      </Tooltip> */}
     </Styled.WideScreenMenu>
   );
 };
 
-export default memo(WideScreenMenu);
+export default WideScreenMenu;

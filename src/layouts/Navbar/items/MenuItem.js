@@ -1,12 +1,12 @@
 /**
  * A component that renders custom button for navbar.
  */
-import { memo } from 'react';
+import { memo, forwardRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
-import * as Styled from '../Navbar.styles';
+import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
 import { TBO_WARM, BG_RED } from 'constant/Colors';
@@ -40,7 +40,7 @@ const selectActivePath = createSelector(
  * @component
  * @param {PropType} props
  */
-const MenuItem = (props) => {
+const MenuItem = forwardRef((props, ref) => {
   const activePath = useSelector(selectActivePath);
   const notifsCount = useSelector(selectNotificationsCount);
   const { title, icon, linkTo } = props.btnProps;
@@ -51,6 +51,7 @@ const MenuItem = (props) => {
 
   return (
     <Styled.ButtonContainer
+      ref={ref}
       style={{ cursor: withArrow ? 'default' : 'pointer' }}
       isActive={isActive}
       forwardedAs={linkTo ? Link : 'div'}
@@ -73,7 +74,7 @@ const MenuItem = (props) => {
       </Styled.ButtonTitle>
     </Styled.ButtonContainer>
   );
-};
+});
 
 MenuItem.propTypes = {
   badge: PropTypes.bool,

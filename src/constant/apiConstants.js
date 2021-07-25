@@ -59,6 +59,13 @@ export const RV_API = 'RVAPI';
 export const GET_THEMES = 'GetThemes';
 
 /**
+ * @description 'CheckRoute'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const CHECK_ROUTE = 'CheckRoute';
+
+/**
  * @description 'GetApplications'
  * @mode API function
  * @class 'RVAPI'
@@ -231,3 +238,20 @@ export const PRIVACY_API = 'PrivacyAPI';
  * @class 'PrivacyAPI'
  */
 export const CHECK_AUTHORITY = 'CheckAuthority';
+
+//* #################################
+//* ############ DocsAPI ##############
+//* #################################
+
+/**
+ * @description 'DocsAPI'
+ * @mode API class
+ */
+export const DOCS_API = 'DocsAPI';
+
+/**
+ * @description 'UploadIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const UPLOAD_ICON = 'UploadIcon';

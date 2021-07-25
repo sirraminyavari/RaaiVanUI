@@ -6,7 +6,12 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 export const Container = styled(Link)`
   border-radius: 0.75rem;
   display: flex;
-  height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
+  height: ${({ liteMode }) =>
+    DimensionHelper().isTabletOrMobile
+      ? '13rem'
+      : liteMode
+      ? '5rem'
+      : '7.5rem'};
   align-items: center;
   background-color: white;
   margin: 3px;
@@ -19,8 +24,17 @@ export const Container = styled(Link)`
   :hover {
     border-width: 0.1rem;
     border-color: ${TCV_DEFAULT};
-    height: ${() => (DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem')};
+    height: ${({ liteMode }) =>
+      DimensionHelper().isTabletOrMobile
+        ? '13rem'
+        : liteMode
+        ? '5rem'
+        : '7.5rem'};
   }
+  ${({ $isChecked }) =>
+    $isChecked &&
+    `border-width: 0.1rem; border-color: ${TCV_DEFAULT}; height: ${() =>
+      DimensionHelper().isTabletOrMobile ? '13rem' : '7.5rem'}`}
 `;
 export const IconContent = styled.div`
   display: flex;

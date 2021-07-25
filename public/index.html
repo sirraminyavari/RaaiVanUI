@@ -179,6 +179,26 @@
             r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
             a.appendChild(r);
           })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+          
+          GlobalUtilities.load_files(["https://www.googletagmanager.com/gtag/js?id=G-JFJN0EFME8"], {
+            OnLoad: function(){
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-JFJN0EFME8');
+            }
+          });
+
+          /* start GOFTINO code */
+          !function(){
+            var i="kwPEkh",a=window,d=document;
+            function g(){
+              var g=d.createElement("script"),s="https://www.goftino.com/widget/"+i,l=localStorage.getItem("goftino_"+i);
+              g.async=!0,g.src=l?s+"?o="+l:s;
+              d.getElementsByTagName("head")[0].appendChild(g);
+            }
+            "complete"===d.readyState?g():a.attachEvent?a.attachEvent("onload",g):a.addEventListener("load",g,!1);}();
+          /* end GOFTINO code */
         }
       });
     </script>

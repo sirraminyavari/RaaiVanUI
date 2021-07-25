@@ -65,8 +65,9 @@ const provideItems = (data) => {
 };
 
 const provideDnDTree = (data) => {
+  const filteredNodes = filterHiddenNodes(data.NodeTypes);
   const rootChildren = getChildrenIds(
-    data.NodeTypes.filter((node) => {
+    filteredNodes?.filter((node) => {
       if (node.ParentID) return false;
       return true;
     })
@@ -110,9 +111,10 @@ export const getSidebarNodes = (done, error) => async (dispatch, getState) => {
       (response) => {
         if (response.NodeTypes || response.Tree) {
           done && done();
-          dispatch(setSidebarNodeTypes(filterHiddenNodes(response.NodeTypes)));
+          const dndTree = provideDnDTree(response);
+          dispatch(setSidebarNodeTypes(response.NodeTypes));
           dispatch(setSidebarTree(response.Tree));
-          dispatch(setSidebarDnDTree(provideDnDTree(response)));
+          dispatch(setSidebarDnDTree(dndTree));
         }
       },
       (err) => {

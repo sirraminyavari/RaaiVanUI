@@ -58,9 +58,9 @@ const Welcome = () => {
         {blogTitle}
       </Button>
       <Styled.SocialMediaContainer>
-        <Styled.IconWrapper onClick={openTwitter}>
+        {/* <Styled.IconWrapper onClick={openTwitter}>
           <TwitterIcon size={20} />
-        </Styled.IconWrapper>
+        </Styled.IconWrapper> */}
         <Styled.IconWrapper onClick={openLinkedin}>
           <LinkedIcon size={20} />
         </Styled.IconWrapper>

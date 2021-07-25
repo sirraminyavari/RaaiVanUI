@@ -6,6 +6,7 @@ import { encode } from 'js-base64';
 import CheckPassword from 'utils/Validation/CheckPassword';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import { getCaptchaToken } from 'helpers/helpers';
+import APIHandler from 'apiHelper/APIHandler';
 
 const {
   sendResetPasswordTicket,
@@ -30,6 +31,10 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
 
   const captchaToken = await getCaptchaToken();
 
+  const setPasswordResetAction = new APIHandler(
+    'UsersAPI',
+    'SetPasswordResetTicket'
+  );
   // const captchaToken = getState().auth.captchaToken;
 
   const sendTicket = () => {
@@ -37,13 +42,15 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
 
     try {
       // Sends reset-password request to server
-      UsersAPI.SetPasswordResetTicket({
-        UserName: encode(GlobalUtilities.secure_string(email)),
-        Password: password,
-        ParseResults: true,
-        Captcha: captchaToken,
-        InvitationID: reqParams.get_value('inv'),
-        ResponseHandler: function (result) {
+      setPasswordResetAction.fetch(
+        {
+          UserName: encode(GlobalUtilities.secure_string(email)),
+          Password: password,
+          ParseResults: true,
+          Captcha: captchaToken,
+          InvitationID: reqParams.get_value('inv'),
+        },
+        (result) => {
           if (result.ErrorText) {
             dispatch(sendResetPasswordTicketFailed(result.ErrorText));
             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
@@ -63,8 +70,8 @@ const sendResetPsswordTicketAction = ({ email, password }) => async (
               })
             );
           }
-        },
-      });
+        }
+      );
     } catch (err) {
       console.log(err, 'error');
 

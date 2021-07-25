@@ -15,7 +15,7 @@
             TitleContainer: null,
             WorkflowArea: null
         };
-        
+
         this.Objects = {
             NodeID: null,
             Name: null,
@@ -48,12 +48,12 @@
             DocumentTreeNode: null,
             OnFinish: params.OnFinish
         }, params.Options || {}, {
-            Modules: (window.RVGlobal || {}).Modules || {},
-            IsSystemAdmin: (window.RVGlobal || {}).IsSystemAdmin
-        });
+                Modules: (window.RVGlobal || {}).Modules || {},
+                IsSystemAdmin: (window.RVGlobal || {}).IsSystemAdmin
+            });
 
         var that = this;
-
+        
         GlobalUtilities.load_files(["API/CNAPI.js", "TeamSelect/TeamSelect.js", "TabsManager/TabsManager.js"], {
             OnLoad: function () { that._init(); }
         });

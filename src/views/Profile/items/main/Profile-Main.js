@@ -9,6 +9,7 @@ import ImageCropper from './items/ImageCropper';
 import Clouds from 'assets/images/clouds.png';
 import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
+import LastTopics from './items/LastTopics';
 
 const selectAuthUser = createSelector(
   (state) => state.auth,
@@ -78,6 +79,7 @@ const ProfileMain = () => {
         <UserInfos />
         <div>
           <HeaderStatus />
+          <LastTopics />
         </div>
       </Styled.MainWrapper>
     </Styled.ProfileViewContainer>

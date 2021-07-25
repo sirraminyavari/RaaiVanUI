@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import * as Styled from 'views/Teams/Teams.styles';
@@ -7,6 +8,8 @@ import { decodeBase64 } from 'helpers/helpers';
 import { CV_DISTANT, CV_FREEZED, CV_RED } from 'constant/CssVariables';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { removeUserFromApplication } from 'store/actions/applications/ApplicationsAction';
+import TeamConfirm from './TeamConfirm';
+import useWindow from 'hooks/useWindowContext';
 
 const TeamUsersModal = ({
   appTitle,
@@ -18,14 +21,43 @@ const TeamUsersModal = ({
   setIsModalShown,
 }) => {
   const dispatch = useDispatch();
+  const { RVDic } = useWindow();
+  const [confirm, setConfirm] = useState({
+    user: null,
+    message: '',
+    title: '',
+    isOpen: false,
+  });
+
+  const resetConfirm = () =>
+    setConfirm({ user: null, message: '', title: '', isOpen: false });
 
   const handleCloseModal = () => {
     setIsModalShown(false);
   };
 
-  const handleRemoveUser = (userId) => {
-    dispatch(removeUserFromApplication(appId, userId));
-    setUsers((oldUsers) => oldUsers.filter((user) => user?.UserID !== userId));
+  const handleRemoveUser = (user) => {
+    const fullName = `${decodeBase64(user.FirstName)} ${decodeBase64(
+      user.LastName
+    )}`;
+    const message = RVDic.Confirms.DoYouWantToRemoveN.replace(
+      '[n]',
+      `"${fullName}"`
+    );
+    const title = 'حذف کاربر از تیم';
+    setConfirm({ user, message, title, isOpen: true });
+  };
+
+  const handleConfirmation = () => {
+    dispatch(removeUserFromApplication(appId, confirm?.user?.UserID));
+    setUsers((oldUsers) =>
+      oldUsers.filter((user) => user?.UserID !== confirm?.user?.UserID)
+    );
+    resetConfirm();
+  };
+
+  const handleCancelConfirmation = () => {
+    resetConfirm();
   };
 
   return (
@@ -34,6 +66,13 @@ const TeamUsersModal = ({
       onClose={handleCloseModal}
       contentWidth="40%"
       title="هم تیمی ها">
+      <TeamConfirm
+        isOpen={confirm.isOpen}
+        onConfirm={handleConfirmation}
+        onCancel={handleCancelConfirmation}
+        message={confirm.message}
+        title={confirm.title}
+      />
       <div style={{ textAlign: 'center' }}>
         {appTitle}
         <div
@@ -73,7 +112,7 @@ const TeamUsersModal = ({
                 </Styled.ExtraUserTitle>
                 {isRemovable && !isAuthUser && (
                   <CloseIcon
-                    onClick={() => handleRemoveUser(user?.UserID)}
+                    onClick={() => handleRemoveUser(user)}
                     color={CV_RED}
                     style={{
                       position: 'absolute',

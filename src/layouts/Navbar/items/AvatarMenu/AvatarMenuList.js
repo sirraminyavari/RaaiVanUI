@@ -15,11 +15,12 @@ import Checkbox from 'components/Checkbox/Checkbox';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import { C_RED, TC_VERYWARM, C_GRAY } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import { CV_RED } from 'constant/CssVariables';
 import { selectApplication } from 'store/actions/applications/ApplicationsAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import { HOME_PATH } from 'constant/constants';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -60,8 +61,7 @@ const AvatarMenuList = () => {
   };
 
   const onSelectDone = () => {
-    const homeURL = getURL('Home');
-    history.push(homeURL);
+    history.push(HOME_PATH);
   };
 
   //TODO: error handling

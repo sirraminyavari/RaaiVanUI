@@ -4,9 +4,9 @@
 import { lazy, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from '../Sidebar.styles';
 import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -51,9 +51,15 @@ const SidebarOnOpen = () => {
   }, []);
 
   return (
-    <Styled.OpenContentWrapper>
+    <PerfectScrollbar
+      style={{
+        width: '100%',
+        position: 'relative',
+        padding: '0 1.5rem',
+      }}
+      data-tut="categories_and_templates">
       {getSidebarContent(content?.current)}
-    </Styled.OpenContentWrapper>
+    </PerfectScrollbar>
   );
 };
 

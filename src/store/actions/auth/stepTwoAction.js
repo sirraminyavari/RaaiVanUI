@@ -1,6 +1,7 @@
 /**
  * An action for step two of signing in
  */
+import APIHandler from 'apiHelper/APIHandler';
 import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
 
@@ -11,6 +12,8 @@ const { GlobalUtilities, RVDic, RVAPI } = window;
  * A process should be done if the backend detects two-step verification is needed.
  * @param {Object} data - Comes from backend
  */
+
+const loginStepTwo = new APIHandler('RVAPI', 'LoginStepTwo');
 const stepTwoAction = (data) => async (dispatch, getState) => {
   const { auth } = getState();
   const vcd = GlobalUtilities.verification_code_dialog(data, {
@@ -19,12 +22,15 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
     Callback: function (d, done) {
       if (!d) return;
 
-      RVAPI.LoginStepTwo({
-        Token: d.Token,
-        Code: d.Code,
-        InvitationID: auth.Objects.InvitationID,
-        ParseResults: true,
-        ResponseHandler: function (result) {
+      loginStepTwo.fetch(
+        {
+          Token: d.Token,
+          Code: d.Code,
+          InvitationID: auth.Objects.InvitationID,
+          ParseResults: true,
+        },
+
+        (result) => {
           if (result.ErrorText) {
             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
             // that.clear();
@@ -39,8 +45,8 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
 
             dispatch(loggedInAction(result));
           }
-        },
-      });
+        }
+      );
     },
   });
 };

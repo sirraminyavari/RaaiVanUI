@@ -5,14 +5,17 @@ import useWindow from 'hooks/useWindowContext';
 
 const Breadcrumb = (props) => {
   const { items } = props;
-  const { RV_RevFloat, RV_Float } = useWindow();
+  const { RV_RevFloat, RV_Float, GlobalUtilities } = useWindow();
 
   return (
     <BreadcrumbContainer dir={RV_Float}>
       {items?.map((item, index, self) => {
         const { id, title, linkTo } = item;
         return (
-          <BreadcrumbItem key={id} as={Link} to={linkTo}>
+          <BreadcrumbItem
+            key={id || GlobalUtilities.random_str(10)}
+            as={Link}
+            to={linkTo}>
             {title}
             {self.length - 1 !== index && (
               <CaretIcon
