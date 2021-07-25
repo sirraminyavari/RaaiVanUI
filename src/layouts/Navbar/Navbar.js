@@ -14,9 +14,10 @@ import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
-  BO_RADIUS_HALF,
   GET_NOTIFS_INTERVAL,
   TEAMS_PATH,
+  BO_RADIUS_UNIT,
+  BO_RADIUS_QUARTER,
 } from 'constant/constants';
 import { BG_WHITE, C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
@@ -135,7 +136,7 @@ const Navbar = () => {
           event="click"
           arrowColor="transparent"
           offset={{ [RV_RevFloat]: -102, top: -6 }}
-          className={`${BG_WHITE} ${BO_RADIUS_HALF} avatar-tooltip`}
+          className="avatar-tooltip"
           renderContent={() => {
             return <AvatarMenuList />;
           }}>

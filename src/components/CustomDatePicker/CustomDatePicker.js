@@ -23,7 +23,7 @@ const buttonsCommonStyles = {
   fontWeight: 'bold',
   minHeight: '2.5em',
   width: '24%',
-  backgroundColor: 'transparent',
+  // backgroundColor: 'transparent',
 };
 
 /**
@@ -98,6 +98,7 @@ const CustomDatePicker = (props) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const [range, setRange] = useState(initRange);
+  const [activeFooter, setActiveFooter] = useState('');
   const inputRef = useRef();
   const { RVDic } = useWindow();
 
@@ -185,6 +186,7 @@ const CustomDatePicker = (props) => {
 
   //! Clear out datepicker values and component selection.
   const handleClear = () => {
+    setActiveFooter('');
     if (range) {
       setSelectedDate({ from: null, to: null });
     } else {
@@ -235,6 +237,8 @@ const CustomDatePicker = (props) => {
     const dateSpan = e.target.dataset.span;
     let date;
     let showDate;
+
+    setActiveFooter(dateSpan);
 
     switch (dateSpan) {
       case '-1':
@@ -312,13 +316,17 @@ const CustomDatePicker = (props) => {
         </Styled.CalendarHeaderContainer>
         <Styled.FooterButtonsContainer>
           {footerButtonList?.map((footer) => {
+            const isFooterActive = activeFooter === footer.dateSpan;
             return (
               <Button
                 key={footer.id}
                 data-span={footer.dateSpan}
                 onClick={handleFooterClick}
-                type="primary-o"
-                style={{ ...buttonsCommonStyles }}>
+                type={isFooterActive ? 'primary' : 'primary-o'}
+                style={{
+                  ...buttonsCommonStyles,
+                  backgroundColor: !isFooterActive && 'transparent',
+                }}>
                 {footer.title}
               </Button>
             );
