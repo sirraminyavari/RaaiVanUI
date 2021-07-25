@@ -8,7 +8,11 @@ import EditIcon from 'components/Icons/EditIcons/Edit';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import TrashIcon from 'components/Icons/TrashIcon';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+
+const { setFavoriteNodesCount } = sidebarMenuSlice.actions;
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
@@ -23,6 +27,11 @@ const SubjectTools = ({
   onBookmarLocally,
   ...props
 }) => {
+  const { favoriteNodesCount } = useSelector((state) => ({
+    favoriteNodesCount: state?.sidebarItems?.favoriteNodesCount,
+  }));
+  const dispatch = useDispatch();
+
   const [bookmarkFetching, setBookmarkFetching] = useState(false);
 
   const onEdit = () => {};
@@ -40,6 +49,8 @@ const SubjectTools = ({
           response?.Succeed &&
           response.Succeed === 'OperationCompletedSuccessfully'
         ) {
+          dispatch(setFavoriteNodesCount(favoriteNodesCount - 1));
+
           onBookmarLocally && onBookmarLocally(nodeId);
         }
         setBookmarkFetching(false);
@@ -51,6 +62,8 @@ const SubjectTools = ({
           response?.Succeed &&
           response.Succeed === 'OperationCompletedSuccessfully'
         ) {
+          dispatch(setFavoriteNodesCount(favoriteNodesCount + 1));
+
           onBookmarLocally && onBookmarLocally(nodeId);
         }
         setBookmarkFetching(false);
