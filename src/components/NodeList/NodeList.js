@@ -54,7 +54,6 @@ const NodeList = (props) => {
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
-    console.log(byPeople, 'byPeople');
     onTotalFound(null);
     setExtraData(!extraData);
   }, [
@@ -70,8 +69,6 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called****', byPeople);
-
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
