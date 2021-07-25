@@ -33,7 +33,7 @@ export const ScrollProvider = styled.div`
     ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
   box-shadow: 1px 3px 20px #0000001f;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   ${({ itemSelectionMode }) =>
     itemSelectionMode && 'box-shadow: 0px 0px 0px #ffffff'}
 `;

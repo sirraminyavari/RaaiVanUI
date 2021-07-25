@@ -129,7 +129,7 @@ const AdvanceSearchDesktop = ({
       itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}>
       <ScrollProvider
-        className={'rv-bg-color-light-gray'}
+        className={'rv-bg-color-light-gray rv-border-radius-half'}
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
@@ -149,7 +149,7 @@ const AdvanceSearchDesktop = ({
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
               isAdvancedShow={isAdvancedSearch}
-              className={'rv-bg-color-light-gray'}
+              className={'rv-bg-color-light-gray rv-border-radius-half'}
               fullWidth={isAdvancedSearch}>
               <TopFilter>
                 <FilterBar
