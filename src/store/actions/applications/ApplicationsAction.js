@@ -1,5 +1,8 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import { onboardingSlice } from 'store/reducers/onboardingReducer';
+import {
+  onboardingSlice,
+  toggleActivation,
+} from 'store/reducers/onboardingReducer';
 import {
   getSidebarNodes,
   getUnderMenuPermissions,
@@ -23,6 +26,7 @@ import {
   GET_APPLICATION_USERS,
 } from 'constant/apiConstants';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
+import { useSelector } from 'react-redux';
 
 const {
   setApplications,
@@ -238,6 +242,10 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
             dispatch(onboardingName(response.Onboarding?.Name || ''));
             dispatch(onboardingStep(response.Onboarding?.Step || 0));
             //the application has been selected, now activate the product tour ::khalafi
+
+            if (response.Onboarding?.Name) {
+              dispatch(toggleActivation());
+            }
             done && done(CLASSES_PATH);
           } else {
             done && done(HOME_PATH);
