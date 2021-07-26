@@ -12,6 +12,7 @@ import {
   TBG_DEFAULT,
   BO_FREEZED,
   TC_VERY_TRANSPARENT,
+  TBG_WARM,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -339,16 +340,17 @@ export const LastTopicsList = styled.div`
   border: 1px solid #333;
 `;
 
-export const LastTopicsHeader = styled.div`
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .see-all-topics-button {
+  .see-all-button {
     background-color: transparent;
     width: 9rem;
-    height: 2rem;
+    height: 1.8rem;
     border-color: transparent;
+    border-radius: 1rem;
 
     :hover {
       border-color: ${TCV_DEFAULT};
@@ -356,7 +358,7 @@ export const LastTopicsHeader = styled.div`
   }
 `;
 
-export const LastTopicsTitle = styled.span`
+export const Title = styled.span`
   font-size: 1.1rem;
   font-weight: 500;
   color: ${CV_GRAY};
@@ -383,11 +385,13 @@ export const MoreTopicsContainer = styled.div.attrs({
   height: ${({ isOpen }) => (isOpen ? '7.5rem' : '0')};
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  transition: all 0.5s ease;
+  transition: all 0.5s ease-in;
 `;
 
 export const TabItemContainer = styled.div.attrs((props) => ({
-  className: `${BO_RADIUS_HALF} ${BO_DISTANT} ${props.isActive && TBG_DEFAULT}`,
+  className: `${BO_RADIUS_HALF} ${BO_DISTANT} ${
+    props.isActive && (props.hasMore ? TBG_WARM : TBG_DEFAULT)
+  }`,
 }))`
   display: flex;
   justify-content: space-between;
@@ -431,6 +435,18 @@ export const TopicItemWrapper = styled.div.attrs({
   }
 `;
 
+export const PostItemWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BO_FREEZED}`,
+})`
+  width: 100%;
+  height: 7rem;
+  margin: 0.5rem 0;
+  padding-${RV_RevFloat}: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const TopicItemIconWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -464,4 +480,8 @@ export const TopicItemContentActions = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100%;
+`;
+
+export const LastPostsContainer = styled.div`
+  margin: 2rem 0;
 `;
