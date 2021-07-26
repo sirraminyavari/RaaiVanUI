@@ -38,23 +38,27 @@ const NodeList = (props) => {
     multiSelection,
     onCheck,
     itemSelectionMode,
+    bookmarked,
   } = props || {};
 
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
-  useTraceUpdate(props);
+  // useTraceUpdate(props);
 
   const { onboardingName } = useSelector((state) => ({
     onboardingName: state.onboarding.name,
   }));
 
   const preExtraData = usePrevious(extraData);
+  const preNodeTypeId = usePrevious(nodeTypeId);
+  const preBookmarked = usePrevious(bookmarked);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
+    // console.log(isBookMarked, 'isBookMarked', bookmarked, 'bookmarked');
     setExtraData(!extraData);
   }, [
     isByMe,
@@ -69,7 +73,9 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    getNodesAPI(isBookMarked).fetch(
+    console.log('fetching', 'isBookMarked', isBookMarked);
+
+    getNodesAPI(isBookMarked || bookmarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
