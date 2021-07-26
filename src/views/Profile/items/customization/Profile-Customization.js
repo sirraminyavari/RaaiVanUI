@@ -9,6 +9,7 @@ import { C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { USER_PATH } from 'constant/constants';
 
 const {
   setSidebarCollapse,
@@ -21,13 +22,23 @@ const selectAllThemes = createSelector(
   (theme) => theme.themes
 );
 
-const selectThemeSettings = createSelector(
+const selectIsSidebarCollapsed = createSelector(
   (state) => state.theme,
-  (theme) => theme.themeSettings
+  (theme) => theme.isSidebarCollapsed
+);
+
+const selectIsDarkMode = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isDarkMode
+);
+
+const selectHasSidebarPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
 );
 
 const breadcrumbItems = [
-  { id: 1, title: 'حساب کاربری', linkTo: '#' },
+  { id: 1, title: 'حساب کاربری', linkTo: USER_PATH },
   { id: 2, title: 'شخصی سازی', linkTo: '#' },
 ];
 
@@ -35,9 +46,9 @@ const ProfileCustomization = () => {
   const dispatch = useDispatch();
   const { RV_Float } = useWindow();
   const allThemes = useSelector(selectAllThemes);
-  const { isSidebarCollapsed, isDarkMode, hasSidebarPattern } = useSelector(
-    selectThemeSettings
-  );
+  const isSidebarCollapsed = useSelector(selectIsSidebarCollapsed);
+  const isDarkMode = useSelector(selectIsDarkMode);
+  const hasSidebarPattern = useSelector(selectHasSidebarPattern);
 
   const handleMenuCollapse = (toggleValue) => {
     dispatch(setSidebarCollapse(toggleValue));

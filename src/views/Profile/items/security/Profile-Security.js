@@ -2,10 +2,11 @@ import * as Styled from 'views/Profile/Profile.styles';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import ChangePasswordContent from './ChangePassword';
 import TwoFactorAuthContent from './TwoFactorAuth';
+import { USER_PATH } from 'constant/constants';
 
 const ProfileSecurity = () => {
   const breadcrumbItems = [
-    { id: 1, title: 'حساب کاربری', linkTo: '#' },
+    { id: 1, title: 'حساب کاربری', linkTo: USER_PATH },
     { id: 2, title: 'ورود  و امنیت', linkTo: '#' },
   ];
   return (
