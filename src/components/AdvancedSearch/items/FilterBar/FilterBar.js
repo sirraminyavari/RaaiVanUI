@@ -86,6 +86,7 @@ const FilterBar = ({
   onByStatus,
   onByBookmarked,
   isBookMarked,
+  bookmarked,
   itemSelectionMode,
 }) => {
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
@@ -451,11 +452,11 @@ const FilterBar = ({
             onClick={() => onByBookmarked(!isBookMarked)}
             $isEnabled={isBookMarked}
             className={
-              isBookMarked
+              bookmarked || isBookMarked
                 ? 'rv-border-distant rv-default'
                 : 'rv-border-white rv-distant'
             }>
-            {isBookMarked ? (
+            {isBookMarked || bookmarked ? (
               <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
             ) : (
               <OutLineBookmarkIcon
