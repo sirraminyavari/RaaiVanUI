@@ -237,6 +237,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           if (!!response.Onboarding) {
             dispatch(onboardingName(response.Onboarding?.Name || ''));
             dispatch(onboardingStep(response.Onboarding?.Step || 0));
+            //the application has been selected, now activate the product tour ::khalafi
             done && done(CLASSES_PATH);
           } else {
             done && done(HOME_PATH);
