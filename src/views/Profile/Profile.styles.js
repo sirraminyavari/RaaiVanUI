@@ -7,11 +7,9 @@ import {
   TC_DEFAULT,
   BG_GRAY_DARK,
   BG_FREEZED,
-  // TBG_DEFAULT,
   C_GRAY,
   TBG_DEFAULT,
   BO_FREEZED,
-  TC_VERY_TRANSPARENT,
   TBG_WARM,
 } from 'constant/Colors';
 import {
@@ -130,7 +128,7 @@ export const CustomizationView = styled.div`
     padding: 1rem;
     text-align: center;
     position: fixed;
-    left: 1rem;
+   ${RV_RevFloat}: 1rem;
   }
 `;
 
@@ -170,6 +168,7 @@ export const SidebarPreview = styled.div`
     hasPattern && `background-image: url(${sidebarPattern});`}
   position: absolute;
   ${({ dir }) => dir}: 0;
+  transition: all 0.7s ease;
 `;
 
 export const PreviewSelectionWrapper = styled.div.attrs({
@@ -177,7 +176,7 @@ export const PreviewSelectionWrapper = styled.div.attrs({
 })`
   position: absolute;
   top: 2rem;
-  left: 0;
+  ${RV_RevFloat}: 0;
   width: ${({ isOpen }) => (isOpen ? '70%' : '90%')};
   height: calc(100% - 2rem);
   display: flex;
@@ -185,6 +184,7 @@ export const PreviewSelectionWrapper = styled.div.attrs({
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+  transition: all 0.7s ease;
 `;
 
 export const ProfileHeader = styled.div.attrs({
