@@ -6,7 +6,7 @@ import { USER_PATH } from 'constant/constants';
 
 const ProfileSecurity = () => {
   const breadcrumbItems = [
-    { id: 1, title: 'حساب کاربری', linkTo: USER_PATH },
+    { id: 1, title: 'حساب کاربری', linkTo: `${USER_PATH}/new` },
     { id: 2, title: 'ورود  و امنیت', linkTo: '#' },
   ];
   return (
