@@ -1,7 +1,7 @@
 /**
  * Renders when sidebar is open.
  */
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import {
@@ -11,6 +11,7 @@ import {
 } from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import usePreventScroll from 'hooks/usePreventScroll';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -54,8 +55,11 @@ const getSidebarContent = (content) => {
 };
 
 const SidebarOnOpen = () => {
+  const containerRef = useRef();
   const dispatch = useDispatch();
   const content = useSelector(selectSidebarContent);
+
+  usePreventScroll(containerRef);
 
   useEffect(() => {
     dispatch(getFavoriteNodesCount());
@@ -70,7 +74,7 @@ const SidebarOnOpen = () => {
         padding: '0 1.5rem',
       }}
       data-tut="categories_and_templates">
-      {getSidebarContent(content?.current)}
+      <div ref={containerRef}>{getSidebarContent(content?.current)}</div>
     </PerfectScrollbar>
   );
 };

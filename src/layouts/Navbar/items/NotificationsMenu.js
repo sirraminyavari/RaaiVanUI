@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
@@ -6,6 +6,7 @@ import NotificationsHeader from './NotificationsHeader';
 import NotificationItem from './NotificationItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import usePreventScroll from 'hooks/usePreventScroll';
 import {
   getNotificationsCount,
   getNotificationsList,
@@ -29,6 +30,8 @@ const NotificationsMenu = () => {
   const isFetchingNotifs = useSelector(selectIsFetchingNotifs);
   const [fetchCount, setFetchCount] = useState(10);
 
+  usePreventScroll(containerRef);
+
   const isUnseen = (notif) => notif?.Seen === false;
   const unseenNotifs = notifications?.filter(isUnseen);
 
@@ -47,17 +50,6 @@ const NotificationsMenu = () => {
     dispatch(getNotificationsCount());
     dispatch(getNotificationsList(fetchCount));
   }, [dispatch, fetchCount]);
-
-  useLayoutEffect(() => {
-    const containerNode = containerRef.current;
-    const preventScroll = (e) => e.preventDefault();
-    containerNode.addEventListener('mousewheel', preventScroll);
-
-    //! Clean up
-    return () => {
-      containerNode.removeEventListener('mousewheel', preventScroll);
-    };
-  }, []);
 
   return (
     <Styled.NotificationsMenuContainer ref={containerRef}>
