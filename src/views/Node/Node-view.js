@@ -14,7 +14,7 @@ const NodeView = (props) => {
     <div
       id="nodeView"
       className="small-12 medium-12 large-12"
-      style={{ padding: '0vw 10vw', marginbottom: '5rem' }}></div>
+      style={{ padding: '0vw 4vw', marginbottom: '5rem' }}></div>
   );
 };
 
