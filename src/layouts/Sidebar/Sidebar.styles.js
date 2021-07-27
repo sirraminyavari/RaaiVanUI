@@ -555,4 +555,5 @@ export const Divider = styled.hr.attrs({ className: TBO_WARM })`
 
 export const PanelListWrapper = styled.div`
   width: 100%;
+  user-select: none;
 `;
