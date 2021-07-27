@@ -15,6 +15,7 @@ import useWindow from 'hooks/useWindowContext';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { decodeBase64, getURL } from 'helpers/helpers';
+import usePreventScroll from 'hooks/usePreventScroll';
 
 //! Gets unfiltered nodes for closed sidebar menu.
 const selectSidebarNodes = createSelector(
@@ -26,19 +27,20 @@ const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const itemRef = useRef();
   const listRef = useRef();
+  const containerRef = useRef();
   const [hasArrow, setHasArrow] = useState(false);
   const { RVDic, RV_RevFloat, RV_Float } = useWindow();
-
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
   //! If true, scroll is at the very bottom, If not, its not!
   const [isDown, setIsDown] = useState(false);
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
-
   const sidebarNodes = useSelector(selectSidebarNodes);
   const { handleSettings } = theme.actions;
   const { setSidebarContent } = themeSlice.actions;
+
+  usePreventScroll(containerRef);
 
   //! Calls on every click on chevron down.
   const scrollDown = () => {
@@ -165,7 +167,6 @@ const SidebarOnClose = ({ theme }) => {
           </Styled.Up>
         )}
         <Styled.IconListContainer ref={listRef}>
-          {/* <Styled.IconListWrap ref={iconListRef} onScroll={handleScroll}> */}
           <PerfectScrollbar
             onYReachStart={handleScrollStart}
             onYReachEnd={handleScrollEnd}
@@ -176,32 +177,33 @@ const SidebarOnClose = ({ theme }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            {filteredSidebarNodes?.map((node, key) => {
-              const { TypeName, NodeTypeID, IconURL } = node;
-              return (
-                <Tooltip
-                  key={key}
-                  tipId={NodeTypeID}
-                  effect="solid"
-                  offset={{ [RV_Float]: -10 }}
-                  place={RV_RevFloat}
-                  renderContent={() => decodeBase64(TypeName)}>
-                  <Styled.MiniIconWrapper
-                    ref={itemRef}
-                    as={Link}
-                    to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
-                    {!!IconURL && (
-                      <Styled.MenuItemImage
-                        src={IconURL}
-                        alt="sidebar-icon-closed"
-                      />
-                    )}
-                  </Styled.MiniIconWrapper>
-                </Tooltip>
-              );
-            })}
+            <div ref={containerRef}>
+              {filteredSidebarNodes?.map((node, key) => {
+                const { TypeName, NodeTypeID, IconURL } = node;
+                return (
+                  <Tooltip
+                    key={key}
+                    tipId={NodeTypeID}
+                    effect="solid"
+                    offset={{ [RV_Float]: -10 }}
+                    place={RV_RevFloat}
+                    renderContent={() => decodeBase64(TypeName)}>
+                    <Styled.MiniIconWrapper
+                      ref={itemRef}
+                      as={Link}
+                      to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
+                      {!!IconURL && (
+                        <Styled.MenuItemImage
+                          src={IconURL}
+                          alt="sidebar-icon-closed"
+                        />
+                      )}
+                    </Styled.MiniIconWrapper>
+                  </Tooltip>
+                );
+              })}
+            </div>
           </PerfectScrollbar>
-          {/* </Styled.IconListWrap> */}
         </Styled.IconListContainer>
         {hasSidebarNodes && hasArrow && (
           <Styled.Down isDown={isDown} onClick={scrollDown}>
