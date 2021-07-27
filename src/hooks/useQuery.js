@@ -25,8 +25,9 @@ const useQuery = () => {
   const [query, setQuery] = useState(getQuery());
 
   useEffect(() => {
+    console.log('called');
     setQuery(getQuery);
-  }, [location.search]);
+  }, [window.location.href]);
 
   return query;
 };
