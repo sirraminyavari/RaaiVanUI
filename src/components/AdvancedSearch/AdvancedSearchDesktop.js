@@ -58,7 +58,7 @@ const AdvanceSearchDesktop = ({
   const [urgentCreate, setUrgentCreate] = useState(false);
 
   // it may be null
-  const [isBookMarked, setIsBookMarked] = useState(false);
+  const [isBookMarked, setIsBookMarked] = useState(null);
 
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
@@ -68,10 +68,18 @@ const AdvanceSearchDesktop = ({
   }));
 
   useEffect(() => {
-    console.log(bookmarked, 'bookmarked');
+    console.log(isBookMarked, 'goh!');
+  }, [isBookMarked]);
+
+  useEffect(() => {
+    // console.log(bookmarked, 'bookmarked');
     if (bookmarked === true) {
+      console.log(bookmarked, 'bookmarked**** ');
+
       setIsBookMarked(bookmarked);
     } else {
+      console.log(bookmarked, 'bookmarked**** _______');
+
       setIsBookMarked(false);
     }
   }, [bookmarked]);

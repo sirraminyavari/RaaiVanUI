@@ -452,11 +452,11 @@ const FilterBar = ({
             onClick={() => onByBookmarked(!isBookMarked)}
             $isEnabled={isBookMarked}
             className={
-              bookmarked || isBookMarked
+              isBookMarked
                 ? 'rv-border-distant rv-default'
                 : 'rv-border-white rv-distant'
             }>
-            {isBookMarked || bookmarked ? (
+            {isBookMarked ? (
               <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
             ) : (
               <OutLineBookmarkIcon
