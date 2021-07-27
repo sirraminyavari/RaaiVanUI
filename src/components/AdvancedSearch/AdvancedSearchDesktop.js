@@ -141,7 +141,6 @@ const AdvanceSearchDesktop = ({
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
-          style={{ maxHeight: '100vh' }}
           containerRef={(ref) => {
             if (ref) {
               ref._getBoundingClientRect = ref.getBoundingClientRect;
@@ -184,7 +183,9 @@ const AdvanceSearchDesktop = ({
               </TopFilter>
               <div
                 data-tut={'advanced_search_results'}
-                style={{ padding: '0 2rem 0 2rem' }}
+                style={{
+                  padding: '0 2rem 2rem 2rem',
+                }}
                 {...props}>
                 <UrgentCreate
                   onDismiss={onCreateUrgent}
