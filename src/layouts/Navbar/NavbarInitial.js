@@ -44,7 +44,7 @@ const NavbarInitial = () => {
   const linkTo = isHelpmeActive ? TEAMS_PATH : HELP_PATH;
 
   return (
-    <Styled.NavbarContainer>
+    <Styled.InitialNavbarContainer>
       <img
         src={isSaas ? (RV_RTL ? Logo_Fa : Logo_En) : RVGlobal.LogoURL}
         width={isSaas ? '120' : '60'}
@@ -86,7 +86,7 @@ const NavbarInitial = () => {
           </Styled.ExitIconWrapper>
         </Tooltip>
       </Styled.ExitAndHelpWrapper>
-    </Styled.NavbarContainer>
+    </Styled.InitialNavbarContainer>
   );
 };
 

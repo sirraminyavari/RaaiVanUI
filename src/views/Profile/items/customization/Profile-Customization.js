@@ -5,10 +5,11 @@ import { getThemes, getCurrentTheme } from 'store/actions/themes/ThemeActions';
 import * as Styled from 'views/Profile/Profile.styles';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import ThemeToggle from 'components/Toggle/Toggle';
-import { C_GRAY_DARK } from 'constant/Colors';
+import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { USER_PATH } from 'constant/constants';
 
 const {
   setSidebarCollapse,
@@ -21,23 +22,33 @@ const selectAllThemes = createSelector(
   (theme) => theme.themes
 );
 
-const selectThemeSettings = createSelector(
+const selectIsSidebarCollapsed = createSelector(
   (state) => state.theme,
-  (theme) => theme.themeSettings
+  (theme) => theme.isSidebarCollapsed
+);
+
+const selectIsDarkMode = createSelector(
+  (state) => state.theme,
+  (theme) => theme.isDarkMode
+);
+
+const selectHasSidebarPattern = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hasSidebarPattern
 );
 
 const breadcrumbItems = [
-  { id: 1, title: 'حساب کاربری', linkTo: '#' },
-  { id: 2, title: 'شخصی سازی', linkTo: '#' },
+  { id: 1, title: 'حساب کاربری', linkTo: `${USER_PATH}/new` },
+  { id: 2, title: 'شخصی سازی', linkTo: '/security' },
 ];
 
 const ProfileCustomization = () => {
   const dispatch = useDispatch();
   const { RV_Float } = useWindow();
   const allThemes = useSelector(selectAllThemes);
-  const { isSidebarCollapsed, isDarkMode, hasSidebarPattern } = useSelector(
-    selectThemeSettings
-  );
+  const isSidebarCollapsed = useSelector(selectIsSidebarCollapsed);
+  const isDarkMode = useSelector(selectIsDarkMode);
+  const hasSidebarPattern = useSelector(selectHasSidebarPattern);
 
   const handleMenuCollapse = (toggleValue) => {
     dispatch(setSidebarCollapse(toggleValue));
@@ -79,17 +90,19 @@ const ProfileCustomization = () => {
           title="منو به صورت پیشفرض باز باشد"
           titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
         />
-        <ThemeToggle
+        {/* <ThemeToggle
           onToggle={handlePattern}
           isChecked={hasSidebarPattern}
           title="نمایش حباب های رنگی"
           titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
-        />
+        /> */}
         <ThemeToggle
+          disable={true}
           onToggle={handleDarkMode}
           isChecked={isDarkMode}
-          title="حالت تاریک"
-          titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
+          title="حالت تاریک (غیر فعال)"
+          //TODO: Change color when dark mode is available.
+          titleClass={`${C_DISTANT} profile-theme-toggle`}
         />
       </Styled.ProfileViewContainer>
     </Styled.CustomizationView>
