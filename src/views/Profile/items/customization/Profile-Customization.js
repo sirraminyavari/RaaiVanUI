@@ -44,11 +44,13 @@ const breadcrumbItems = [
 
 const ProfileCustomization = () => {
   const dispatch = useDispatch();
-  const { RV_Float } = useWindow();
+  const { RV_Float, RVGlobal } = useWindow();
   const allThemes = useSelector(selectAllThemes);
   const isSidebarCollapsed = useSelector(selectIsSidebarCollapsed);
   const isDarkMode = useSelector(selectIsDarkMode);
   const hasSidebarPattern = useSelector(selectHasSidebarPattern);
+
+  const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
   const handleMenuCollapse = (toggleValue) => {
     dispatch(setSidebarCollapse(toggleValue));
@@ -90,12 +92,14 @@ const ProfileCustomization = () => {
           title="منو به صورت پیشفرض باز باشد"
           titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
         />
-        {/* <ThemeToggle
-          onToggle={handlePattern}
-          isChecked={hasSidebarPattern}
-          title="نمایش حباب های رنگی"
-          titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
-        /> */}
+        {!isSaas && (
+          <ThemeToggle
+            onToggle={handlePattern}
+            isChecked={hasSidebarPattern}
+            title="نمایش حباب های رنگی"
+            titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
+          />
+        )}
         <ThemeToggle
           disable={true}
           onToggle={handleDarkMode}
