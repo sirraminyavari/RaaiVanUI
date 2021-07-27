@@ -25,6 +25,7 @@ import {
   CV_DISTANT,
   CV_FREEZED,
   CV_GRAY,
+  CV_GRAY_DARK,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
@@ -382,10 +383,10 @@ export const MoreTopicsContainer = styled.div.attrs({
   margin-top: 0.5rem;
   padding: ${({ isOpen }) => (isOpen ? '1rem' : '0')};
   width: 100%;
-  height: ${({ isOpen }) => (isOpen ? '7.5rem' : '0')};
+  max-height: ${({ isOpen }) => (isOpen ? '10.4rem' : '0')};
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  transition: all 0.5s ease-in;
+  transition: all 0.5s ease;
 `;
 
 export const TabItemContainer = styled.div.attrs((props) => ({
@@ -484,4 +485,38 @@ export const TopicItemContentActions = styled.div`
 
 export const LastPostsContainer = styled.div`
   margin: 2rem 0;
+`;
+
+export const InfoItemWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 2rem;
+  margin: 1rem 0;
+
+  .user-info-inline-edit-container {
+    margin: 0 1rem;
+    flex-grow: 1;
+    color: ${CV_DISTANT};
+    font-size: 1rem;
+    width: 100%;
+    border-bottom: 1px solid ${CV_DISTANT};
+
+    :focus-within {
+      border-bottom: 1px solid ${CV_GRAY_DARK};
+      color: ${CV_GRAY_DARK};
+    }
+  }
+
+  .user-info-inline-edit-text {
+    width: 100%;
+  }
+`;
+
+export const InfoItemText = styled.div`
+  margin: 0 1rem;
+  flex-grow: 1;
+  color: ${CV_DISTANT};
+  font-size: 1rem;
+  width: 100%;
 `;

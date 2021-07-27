@@ -13,6 +13,7 @@ import * as Styled from './InlineEdit.styles';
  * @property {Object} styles -An Object of styles for input and text.
  * @property {string} textClasses -Classes for text.
  * @property {string} inputClasses -Classes for input.
+ * @property {string} containerClasses -Classes for component container.
  */
 
 /**
@@ -28,6 +29,7 @@ const InlineEdit = (props) => {
     styles,
     textClasses,
     inputClasses,
+    containerClasses,
   } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
@@ -108,7 +110,7 @@ const InlineEdit = (props) => {
   }, [setIsInputActive]);
 
   return (
-    <Styled.InlineEditContainer ref={wrapperRef}>
+    <Styled.InlineEditContainer className={containerClasses} ref={wrapperRef}>
       {isInputActive ? (
         <Styled.Input
           className={inputClasses}
@@ -143,6 +145,7 @@ InlineEdit.propTypes = {
   }),
   textClasses: PropTypes.string,
   inputClasses: PropTypes.string,
+  containerClasses: PropTypes.string,
 };
 
 InlineEdit.defaultProps = {

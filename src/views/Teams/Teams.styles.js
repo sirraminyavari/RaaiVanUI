@@ -444,7 +444,7 @@ export const TeamAvatarsWrapper = styled.div`
 
 const getPosition = ({ dir, usersCount }) => {
   if (usersCount === 4) {
-    return `${dir}: 1.6rem`;
+    return `${dir}: 1.7rem`;
   } else if (usersCount === 3) {
     return `${dir}: 1.2rem`;
   } else if (usersCount === 2) {
