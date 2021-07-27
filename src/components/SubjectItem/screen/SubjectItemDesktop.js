@@ -56,7 +56,6 @@ const SubjectItemDesktop = ({
   //  */
 
   useEffect(() => {
-    console.log(isSelected, 'isSelected');
     setIsChecked(isSelected);
   }, [isSelected]);
 

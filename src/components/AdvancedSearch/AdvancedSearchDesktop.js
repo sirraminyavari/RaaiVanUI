@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import FilterBar from 'components/FilterBar/FilterBar';
+import FilterBar from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ import {
 import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
-import { advancedSearchButtonRef } from 'components/FilterBar/FilterBar';
+import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
 
 const { RVDic } = window;
@@ -58,7 +58,7 @@ const AdvanceSearchDesktop = ({
   const [urgentCreate, setUrgentCreate] = useState(false);
 
   // it may be null
-  const [isBookMarked, setIsBookMarked] = useState(bookmarked === true);
+  const [isBookMarked, setIsBookMarked] = useState(null);
 
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
@@ -68,10 +68,18 @@ const AdvanceSearchDesktop = ({
   }));
 
   useEffect(() => {
-    console.log(bookmarked, 'bookmarked');
+    console.log(isBookMarked, 'goh!');
+  }, [isBookMarked]);
+
+  useEffect(() => {
+    // console.log(bookmarked, 'bookmarked');
     if (bookmarked === true) {
+      console.log(bookmarked, 'bookmarked**** ');
+
       setIsBookMarked(bookmarked);
     } else {
+      console.log(bookmarked, 'bookmarked**** _______');
+
       setIsBookMarked(false);
     }
   }, [bookmarked]);
@@ -171,6 +179,7 @@ const AdvanceSearchDesktop = ({
                   onByBookmarked={setIsBookMarked}
                   isBookMarked={isBookMarked}
                   itemSelectionMode={itemSelectionMode}
+                  bookmarked={bookmarked}
                 />
               </TopFilter>
               <div

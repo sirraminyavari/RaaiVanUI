@@ -86,6 +86,7 @@ const FilterBar = ({
   onByStatus,
   onByBookmarked,
   isBookMarked,
+  bookmarked,
   itemSelectionMode,
 }) => {
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
