@@ -54,14 +54,29 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const [isChecking, setIsChecking] = useState(true);
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
-  const queryParams = useQuery();
-  const params = { ...routeParams, ...queryParams };
+  // const queryParams = useQuery();
   // console.count('Check-route: ');
+
+  const getQuery = () => {
+    const queryAll = new URLSearchParams(location.search).toString();
+    const queryList = queryAll.split('&');
+    const qr = queryList.reduce((prev, q) => {
+      let arr = q.split('=');
+      let key = arr[0];
+      let value = arr[1];
+      return { ...prev, [key]: value };
+    }, {});
+
+    return queryAll.length !== 0 ? qr : {};
+  };
 
   useEffect(() => {
     // console.count('Check-route-API: ');
-    setIsChecking(true);
+    const params = { ...routeParams, ...getQuery() };
     const prevURL = window.location.href;
+
+    setIsChecking(true);
+
     checkRouteAPI.fetch(
       { RouteName: name, Parameters: params },
       (response) => {
