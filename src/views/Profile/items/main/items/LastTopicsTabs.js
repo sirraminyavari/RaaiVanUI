@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
+// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
-const MORE_TAB = 'more-classes';
+// const MORE_TAB = 'more-classes';
 
 const items = [
   { id: '1', title: 'پروپوزال', count: 86 },
@@ -62,6 +63,7 @@ const LastTopicsTabs = () => {
           onTabClick={handleMoreTopics}
         />
       </Styled.TabsContainer>
+      {/* <PerfectScrollbar  style={{ maxHeight: '10.4rem'}}> */}
       <Styled.MoreTopicsContainer isOpen={isMoreShown}>
         {sortedItems.map((item, index) => {
           if (index < 3) return null;
@@ -75,6 +77,7 @@ const LastTopicsTabs = () => {
           );
         })}
       </Styled.MoreTopicsContainer>
+      {/* </PerfectScrollbar> */}
     </div>
   );
 };

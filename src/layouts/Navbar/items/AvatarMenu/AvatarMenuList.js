@@ -21,6 +21,7 @@ import { selectApplication } from 'store/actions/applications/ApplicationsAction
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import { HOME_PATH } from 'constant/constants';
+import usePreventScroll from 'hooks/usePreventScroll';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -36,9 +37,12 @@ const AvatarMenuList = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const avatarMenuRef = useRef();
+  const containerRef = useRef();
   const { RVDic, RV_RTL } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
+
+  usePreventScroll(containerRef);
 
   const handleOnClickOutside = (e) => {
     if (e.target.dataset.testid !== 'avatar-image') {
@@ -89,22 +93,22 @@ const AvatarMenuList = () => {
       })}
       <Styled.Divider />
       <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 26rem)' }}>
-        {/* <Styled.AvatarTeamsListWrapper> */}
-        {teams?.map((team) => {
-          const { ApplicationID, Title, IconURL } = team;
-          return (
-            <AvatarMenuItem
-              onClickHandler={() => handleTeamSelect(ApplicationID)}
-              key={ApplicationID}
-              title={decodeBase64(Title)}
-              iconURL={IconURL}
-              textClass={
-                selectedTeam.id === ApplicationID ? TC_VERYWARM : C_GRAY
-              }
-            />
-          );
-        })}
-        {/* </Styled.AvatarTeamsListWrapper> */}
+        <div ref={containerRef}>
+          {teams?.map((team) => {
+            const { ApplicationID, Title, IconURL } = team;
+            return (
+              <AvatarMenuItem
+                onClickHandler={() => handleTeamSelect(ApplicationID)}
+                key={ApplicationID}
+                title={decodeBase64(Title)}
+                iconURL={IconURL}
+                textClass={
+                  selectedTeam.id === ApplicationID ? TC_VERYWARM : C_GRAY
+                }
+              />
+            );
+          })}
+        </div>
       </PerfectScrollbar>
       <Styled.Divider />
       <AvatarMenuItem

@@ -3,7 +3,7 @@ import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import LastTopicTabs from './LastTopicsTabs';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import TopicItem from './TopicItem';
 
 const LastRelatedTopics = () => {
@@ -18,11 +18,11 @@ const LastRelatedTopics = () => {
         </Button>
       </Styled.Header>
       <LastTopicTabs />
-      <PerfectScrollbar style={{ maxHeight: '17rem', marginTop: '0.5rem' }}>
-        {[1, 2, 3, 5, 6, 7, 8, 9, 10].map((item, index) => {
-          return <TopicItem key={index} />;
-        })}
-      </PerfectScrollbar>
+      {/* <PerfectScrollbar style={{ maxHeight: '17rem', marginTop: '0.5rem' }}> */}
+      {[...Array(3).keys()].map((item, index) => {
+        return <TopicItem key={index} />;
+      })}
+      {/* </PerfectScrollbar> */}
     </Styled.LastTopicsContainer>
   );
 };

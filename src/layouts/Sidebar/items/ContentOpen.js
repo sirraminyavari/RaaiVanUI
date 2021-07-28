@@ -1,12 +1,17 @@
 /**
  * Renders when sidebar is open.
  */
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import { MANAGE_CONTENT, SETTING_CONTENT } from 'constant/constants';
+import {
+  MANAGE_CONTENT,
+  PROFILE_CONTENT,
+  SETTING_CONTENT,
+} from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import usePreventScroll from 'hooks/usePreventScroll';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -28,6 +33,12 @@ const SidebarManage = lazy(() =>
   )
 );
 
+const SidebarProfile = lazy(() =>
+  import(
+    /* webpackChunkName: "sidebar-profile-content"*/ './openSubContents/profile/ProfileContent'
+  )
+);
+
 const getSidebarContent = (content) => {
   const rootContent = content.split('-')[0];
 
@@ -36,14 +47,19 @@ const getSidebarContent = (content) => {
       return <SidebarSetting />;
     case MANAGE_CONTENT:
       return <SidebarManage />;
+    case PROFILE_CONTENT:
+      return <SidebarProfile />;
     default:
       return <SidebarMain />;
   }
 };
 
 const SidebarOnOpen = () => {
+  const containerRef = useRef();
   const dispatch = useDispatch();
   const content = useSelector(selectSidebarContent);
+
+  usePreventScroll(containerRef);
 
   useEffect(() => {
     dispatch(getFavoriteNodesCount());
@@ -58,7 +74,7 @@ const SidebarOnOpen = () => {
         padding: '0 1.5rem',
       }}
       data-tut="categories_and_templates">
-      {getSidebarContent(content?.current)}
+      <div ref={containerRef}>{getSidebarContent(content?.current)}</div>
     </PerfectScrollbar>
   );
 };

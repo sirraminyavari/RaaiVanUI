@@ -1,27 +1,28 @@
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import * as Styled from 'views/Profile/Profile.styles';
+import InlineEditInput from 'components/InlineEdit/InlineEdit';
 
-const ProfileInfoItem = ({ icon: Icon, text }) => {
+const ProfileInfoItem = (props) => {
+  const { icon: Icon, text, isAuthUser } = props;
+
+  const handleEditItem = (text) => {
+    console.log(text);
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: '2rem',
-        margin: '1rem 0',
-      }}>
-      <Icon size={18} color={TCV_DEFAULT} />
-      <div
-        style={{
-          margin: '0 1rem',
-          flexGrow: 1,
-          borderBottom: `1px solid ${CV_DISTANT}`,
-          color: CV_DISTANT,
-          fontSize: '1rem',
-        }}>
-        {text}
-      </div>
-    </div>
+    <Styled.InfoItemWrapper>
+      <Icon size={20} color={TCV_DEFAULT} />
+      {isAuthUser ? (
+        <InlineEditInput
+          onSetText={handleEditItem}
+          text={text}
+          containerClasses="user-info-inline-edit-container"
+          textClasses="user-info-inline-edit-text"
+        />
+      ) : (
+        <Styled.InfoItemText>{text}</Styled.InfoItemText>
+      )}
+    </Styled.InfoItemWrapper>
   );
 };
 
