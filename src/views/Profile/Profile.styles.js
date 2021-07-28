@@ -66,8 +66,9 @@ export const ChooseThemeTitle = styled.div.attrs({
 
 export const PreviewGroups = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export const ProfileContentWrapper = styled.div`
@@ -122,10 +123,10 @@ export const CustomizationView = styled.div`
   }
 
   .profile-theme-setting {
-    width: 25%;
+    min-width: 18rem;
     min-height: 10rem;
     margin: 0;
-    margin-${({ dir }) => dir}: 1.5rem;
+    margin-${({ dir }) => dir}: 1rem;
     padding: 1rem;
     text-align: center;
     position: fixed;

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
@@ -11,10 +11,6 @@ import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
 import LastPosts from './items/LastPosts';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { MAIN_CONTENT, PROFILE_CONTENT } from 'constant/constants';
-
-const { setSidebarContent } = themeSlice.actions;
 
 const selectAuthUser = createSelector(
   (state) => state.auth,
@@ -22,7 +18,6 @@ const selectAuthUser = createSelector(
 );
 
 const ProfileMain = () => {
-  const dispatch = useDispatch();
   const authUser = useSelector(selectAuthUser);
   const [cropModal, setCropModal] = useState({
     isShown: false,
@@ -54,16 +49,6 @@ const ProfileMain = () => {
   const handleCloseModal = () => {
     setCropModal((m) => ({ ...m, isShown: false }));
   };
-
-  useEffect(() => {
-    dispatch(
-      setSidebarContent({
-        current: PROFILE_CONTENT,
-        prev: MAIN_CONTENT,
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>

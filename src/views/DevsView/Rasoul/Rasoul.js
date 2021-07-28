@@ -38,6 +38,11 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
 //! Custom Date Picker
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { Link } from 'react-router-dom';
+import {
+  USER_CUSTOMIZATION_PATH,
+  USER_MAIN_PATH,
+  USER_SECURITY_PATH,
+} from 'constant/constants';
 
 //! Resizable
 // import Resizeable from 'components/Resizable/Resizable';
@@ -253,7 +258,7 @@ const RasoulView = () => {
     <div>
       <div style={{ textAlign: 'center', fontSize: '1.2rem' }}>
         <Link
-          to="/user/new"
+          to={USER_MAIN_PATH}
           style={{
             margin: '0 1rem',
             display: 'inline-block',
@@ -262,7 +267,7 @@ const RasoulView = () => {
           پروفایل جدید
         </Link>
         <Link
-          to="/security"
+          to={USER_SECURITY_PATH}
           style={{
             margin: '0 1rem',
             display: 'inline-block',
@@ -271,7 +276,7 @@ const RasoulView = () => {
           امنیت
         </Link>
         <Link
-          to="/customization"
+          to={USER_CUSTOMIZATION_PATH}
           style={{
             margin: '0 1rem',
             display: 'inline-block',
