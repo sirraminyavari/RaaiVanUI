@@ -40,13 +40,13 @@ const NavbarInitial = lazy(() =>
 );
 
 const { RVGlobal } = window;
-const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const isDev = (RVGlobal || {}).IsDev;
+const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
 const switchRoutes = (
   <Switch>
     {Routes.filter((route) => {
       //! Filter out some routes in Saas mode.
-      const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
       if (isSaas && FORBIDDEN_ROUTES_IN_SAAS.includes(route.name)) {
         return false;
       }

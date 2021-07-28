@@ -29,7 +29,7 @@ import {
 
 const { RV_Float, RV_RTL } = window;
 
-export const TeamsViewContainer = styled.div.attrs({
+export const TeamsDesktopViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
 })`
   min-height: 100vh;
@@ -39,6 +39,23 @@ export const TeamsViewContainer = styled.div.attrs({
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  .archived-teams {
+    max-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+`;
+
+export const TeamsMobileViewContainer = styled.div.attrs({
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
+})`
+  min-height: 100vh;
+  box-shadow: 1px 5px 15px #0000001f;
+  margin: 1rem;
+  padding: 0 2rem 1rem 2rem;
 
   .archived-teams {
     max-height: calc(100vh - 4.5rem);
@@ -120,8 +137,25 @@ export const HeaderTitle = styled.span.attrs({
   font-size: 1rem;
 `;
 
-export const ContentSide = styled.div`
+export const DesktopContentSide = styled.div`
   width: 50%;
+  height: 100%;
+  margin: 0;
+
+  .create-team-modal {
+    margin-top: 35vh;
+  }
+
+  .create-team-modal-header {
+    height: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    background-color: ${CV_GRAY_LIGHT};
+  }
+`;
+
+export const MobileContentSide = styled.div`
+  width: 100%;
   height: 100%;
   margin: 0;
 
@@ -247,6 +281,8 @@ export const TeamListConatiner = styled.div`
     display: table;
   }
 `;
+
+export const MobileTeamListConatiner = styled.div``;
 
 const getBorderCss = (props) => {
   if (props.isNew) {
@@ -560,7 +596,7 @@ export const ArchivedTeamsLabel = styled.div.attrs({
   margin: 1rem 0 0 0;
 `;
 
-export const WelcomeSide = styled.div`
+export const DesktopWelcomeSide = styled.div`
   width: 45%;
   // position: fixed;
   position: sticky;
@@ -574,9 +610,16 @@ export const WelcomeSide = styled.div`
   justify-content: center;
   align-items: center;
   user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+`;
+
+export const MobileWelcomeSide = styled.div`
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 `;
 
 export const WorkspaceImageWrapper = styled.div`
