@@ -1,27 +1,23 @@
-import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
-import { themeSlice } from 'store/reducers/themeReducer';
 import {
-  MAIN_CONTENT,
-  PROFILE_CONTENT,
+  HOME_PATH,
   PROFILE_CUSTOMIZATION,
   PROFILE_MISSIONS,
   PROFILE_RESUME,
   PROFILE_SECURITY,
   PROFILE_USER,
   USER_CUSTOMIZATION_PATH,
+  USER_MAIN_PATH,
   USER_SECURITY_PATH,
 } from 'constant/constants';
 import iconList from './iconList';
 
-const { setSidebarContent } = themeSlice.actions;
-
 const ProfileContent = () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const { RV_RevFloat, RVDic, RVGlobal } = useWindow();
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
@@ -31,7 +27,7 @@ const ProfileContent = () => {
       id: '1',
       title: 'اطلاعات کاربری',
       icon: PROFILE_USER,
-      linkTo: '/user/new',
+      linkTo: USER_MAIN_PATH,
     },
     { id: '2', title: RVDic.Resume, icon: PROFILE_RESUME, linkTo: '#' },
     {
@@ -46,7 +42,12 @@ const ProfileContent = () => {
       icon: PROFILE_CUSTOMIZATION,
       linkTo: USER_CUSTOMIZATION_PATH,
     },
-    { id: '5', title: 'ماموریت ها', icon: PROFILE_MISSIONS, linkTo: '/teams' },
+    {
+      id: '5',
+      title: 'ماموریت ها',
+      icon: PROFILE_MISSIONS,
+      linkTo: USER_MAIN_PATH,
+    },
   ];
 
   const hasResumeItem = (item) => {
@@ -57,12 +58,7 @@ const ProfileContent = () => {
   };
 
   const handleOnArrowClick = () => {
-    dispatch(
-      setSidebarContent({
-        current: MAIN_CONTENT,
-        prev: PROFILE_CONTENT,
-      })
-    );
+    history.push(HOME_PATH);
   };
 
   return (
