@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
@@ -46,7 +46,7 @@ const ProfileContent = () => {
       icon: PROFILE_CUSTOMIZATION,
       linkTo: USER_CUSTOMIZATION_PATH,
     },
-    { id: '5', title: 'ماموریت ها', icon: PROFILE_MISSIONS, linkTo: '#' },
+    { id: '5', title: 'ماموریت ها', icon: PROFILE_MISSIONS, linkTo: '/teams' },
   ];
 
   const hasResumeItem = (item) => {
@@ -79,7 +79,7 @@ const ProfileContent = () => {
       <Styled.PanelListWrapper>
         {profileItems?.filter(hasResumeItem)?.map((item, key) => {
           return (
-            <Styled.SettingItemWrapper as={Link} to={item?.linkTo} key={key}>
+            <Styled.SettingItemWrapper as={NavLink} to={item?.linkTo} key={key}>
               {iconList[item?.icon]({ size: 20 })}
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>
