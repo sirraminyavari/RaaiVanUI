@@ -38,9 +38,10 @@ const AvatarMenuList = () => {
   const history = useHistory();
   const avatarMenuRef = useRef();
   const containerRef = useRef();
-  const { RVDic, RV_RTL } = useWindow();
+  const { RVDic, RV_RTL, RVGlobal } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
+  const isDev = (RVGlobal || {}).IsDev;
 
   usePreventScroll(containerRef);
 
@@ -118,7 +119,7 @@ const AvatarMenuList = () => {
         iconColor={CV_RED}
         textClass={C_RED}
       />
-      {(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && (
+      {isDev && (
         <Checkbox
           title={RV_RTL ? 'انگلیسی' : 'english'}
           changeHandler={handleCheckbox}

@@ -31,7 +31,7 @@ const selectIsFetchingApps = createSelector(
   (applications) => applications.isFetching
 );
 
-const WorkSpace = ({ space }) => {
+const DesktopWorkSpace = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
   const archivedApps = useSelector(selectArchivedApplications);
@@ -80,4 +80,4 @@ const WorkSpace = ({ space }) => {
   );
 };
 
-export default WorkSpace;
+export default DesktopWorkSpace;

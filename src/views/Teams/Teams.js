@@ -1,14 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import * as Styled from './Teams.styles';
-import ContentSide from './items/sides/content/Content';
-import WelcomeSide from './items/sides/welcome/Welcome';
+import { useMediaQuery } from 'react-responsive';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
-// import UserInvitationDialog from 'views/Teams/items/sides/content/UserInviteDialog';
-// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { MOBILE_BOUNDRY } from 'constant/constants';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+
+const TeamsDesktopView = lazy(() =>
+  import(/* webpackChunkName: "teams-desktop-view"*/ 'views/Teams/DesktopView')
+);
+
+const TeamsMobileView = lazy(() =>
+  import(/* webpackChunkName: "teams-desktop-view"*/ 'views/Teams/MobileView')
+);
 
 const TeamsView = () => {
   const dispatch = useDispatch();
+
+  const isMobileScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
 
   useEffect(() => {
     dispatch(getApplications());
@@ -16,13 +26,9 @@ const TeamsView = () => {
   }, []);
 
   return (
-    // <PerfectScrollbar>
-    <Styled.TeamsViewContainer>
-      {/* <UserInvitationDialog /> */}
-      <ContentSide />
-      <WelcomeSide />
-    </Styled.TeamsViewContainer>
-    // </PerfectScrollbar>
+    <Suspense fallback={<LogoLoader />}>
+      {isMobileScreen ? <TeamsMobileView /> : <TeamsDesktopView />}
+    </Suspense>
   );
 };
 
