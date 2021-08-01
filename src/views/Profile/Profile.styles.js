@@ -85,7 +85,7 @@ export const ContentWrapper = styled.div`
 
   .profile-security-toggle {
     width: 70%;
-    margin: 2rem 0;
+    margin: 1rem 0 2rem 0;
   }
 `;
 
@@ -93,10 +93,27 @@ export const FieldTitleWrapper = styled.div`
   dispaly: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `;
 
-export const ChangePassTitle = styled.span.attrs({
+export const InputWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+
+  .change-email-id-button {
+    width: 4rem;
+    background: none;
+    border: 0;
+
+    :hover {
+      border: 1px solid ${TCV_DEFAULT};
+    }
+  }
+`;
+
+export const FieldTitle = styled.span.attrs({
   className: C_GRAY_DARK,
 })`
   font-size: 1rem;

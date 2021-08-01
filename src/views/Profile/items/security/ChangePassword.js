@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import LockIcon from 'components/Icons/LockIcon/LockIcon';
+import EmailIcon from 'components/Icons/MailIcon/MailIcon';
 import { TC_DEFAULT } from 'constant/Colors';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
@@ -15,6 +16,7 @@ const ChangePassword = () => {
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [newPassConfirm, setNewPassConfirm] = useState('');
+  const [email, setEmail] = useState('email@cliqmind.com');
   const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
@@ -46,15 +48,41 @@ const ChangePassword = () => {
     setNewPassConfirm(newPassConfirm);
   };
 
+  const handleEmailChange = (email) => {
+    setEmail(email);
+  };
+
   return (
     <Styled.ContentWrapper>
+      <div style={{ marginBottom: '2rem' }}>
+        <Styled.FieldTitleWrapper>
+          <EmailIcon
+            fill
+            size={22}
+            className={TC_DEFAULT}
+            style={{ verticalAlign: 'middle' }}
+          />
+          <Styled.FieldTitle>{RVDic.EMail}</Styled.FieldTitle>
+        </Styled.FieldTitleWrapper>
+        <Styled.InputWrapper>
+          <AnimatedInput
+            onChange={handleEmailChange}
+            value={email}
+            placeholder={RVDic.EMail}
+            style={{ width: '70%' }}
+          />
+          <Button type="primary-o" classes="change-email-id-button">
+            تغییر
+          </Button>
+        </Styled.InputWrapper>
+      </div>
       <Styled.FieldTitleWrapper>
         <LockIcon
           size={22}
           className={TC_DEFAULT}
           style={{ verticalAlign: 'middle' }}
         />
-        <Styled.ChangePassTitle>{RVDic.ChangePassword}</Styled.ChangePassTitle>
+        <Styled.FieldTitle>{RVDic.ChangePassword}</Styled.FieldTitle>
       </Styled.FieldTitleWrapper>
       {!isSaas && (
         <AnimatedInput
@@ -87,7 +115,7 @@ const ChangePassword = () => {
           passwordPolicy={passwordPolicy}
         />
       )}
-      <Button
+      {/* <Button
         style={{
           width: '8rem',
           position: 'fixed',
@@ -95,7 +123,7 @@ const ChangePassword = () => {
           bottom: '0.5rem',
         }}>
         {RVDic.Save}
-      </Button>
+      </Button> */}
     </Styled.ContentWrapper>
   );
 };

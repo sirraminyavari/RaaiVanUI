@@ -5,6 +5,9 @@ import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import TwoFactorOptions from './TwoFactorOptions';
 import TwoFactorToggle from 'components/Toggle/Toggle';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
+import Button from 'components/Buttons/Button';
+import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 
 const options = [
   { value: 'phone', title: 'شماره تماس ۸۵۷****۰۹۳', group: 'two-factor-auth' },
@@ -19,23 +22,47 @@ const TwoFactorAuthentication = () => {
   const { RVDic } = useWindow();
   //! If true, Show two factor option box.
   const [isTwoFactorOn, setIsTwoFactorOn] = useState(false);
+  const [userId, setUserId] = useState('User id in cliqmind');
 
   //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
     setIsTwoFactorOn(toggleValue);
   };
 
+  const handleIDChange = (id) => {
+    setUserId(id);
+  };
+
   return (
     <Styled.ContentWrapper>
+      <div style={{ marginBottom: '2rem' }}>
+        <Styled.FieldTitleWrapper>
+          <AccountManIcon
+            size={22}
+            className={TC_DEFAULT}
+            style={{ verticalAlign: 'middle' }}
+          />
+          <Styled.FieldTitle>آیدی</Styled.FieldTitle>
+        </Styled.FieldTitleWrapper>
+        <Styled.InputWrapper>
+          <AnimatedInput
+            onChange={handleIDChange}
+            value={userId}
+            placeholder="آیدی"
+            style={{ width: '70%' }}
+          />
+          <Button type="primary-o" classes="change-email-id-button">
+            تغییر
+          </Button>
+        </Styled.InputWrapper>
+      </div>
       <Styled.FieldTitleWrapper>
         <KeyIcon
           size={22}
           className={TC_DEFAULT}
           style={{ verticalAlign: 'middle' }}
         />
-        <Styled.ChangePassTitle>
-          {RVDic.TwoStepAuthentication}
-        </Styled.ChangePassTitle>
+        <Styled.FieldTitle>{RVDic.TwoStepAuthentication}</Styled.FieldTitle>
       </Styled.FieldTitleWrapper>
 
       <TwoFactorToggle
