@@ -136,8 +136,9 @@ const ChangePassword = () => {
           passwordPolicy={passwordPolicy}
         />
       )}
-      {newPass && newPassConfirm && newPass === newPassConfirm && (
+      {newPass && (
         <Button
+          disable={newPass !== newPassConfirm}
           style={{
             width: '8rem',
             fontSize: '1rem',

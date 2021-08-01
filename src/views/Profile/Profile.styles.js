@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   BG_GRAY_LIGHT,
   TC_WARM,
@@ -18,6 +18,8 @@ import {
   BO_RADIUS_QUARTER,
   BO_RADIUS_UNIT,
   IGNORE_RADIUS_BOTTOM,
+  IGNORE_RADIUS_LEFT,
+  IGNORE_RADIUS_RIGHT,
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
 import Clouds from 'assets/images/clouds.png';
@@ -31,7 +33,7 @@ import {
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 
-const { RV_Float, RV_RevFloat } = window;
+const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -66,7 +68,7 @@ export const ChooseThemeTitle = styled.div.attrs({
 
 export const PreviewGroups = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 `;
@@ -77,7 +79,7 @@ export const ProfileContentWrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
   position: relative;
-  margin-top: 5rem;
+  margin-top: 3rem;
 `;
 
 export const ContentWrapper = styled.div`
@@ -159,6 +161,11 @@ export const ThemeSettingTitle = styled.span.attrs({
   margin-bottom: 2rem;
 `;
 
+const activePreviewCss = css`
+  border: 0.1rem solid ${TCV_DEFAULT};
+  box-shadow: 2px 3px 15px ${TCV_VERY_TRANSPARENT};
+`;
+
 export const ThemePreviewContainer = styled.div.attrs((props) => ({
   className: `${BO_RADIUS_HALF} ${
     props.isDark ? BG_GRAY_DARK : BG_FREEZED
@@ -169,9 +176,13 @@ export const ThemePreviewContainer = styled.div.attrs((props) => ({
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  box-sizing: content-box;
+  ${({ isActive }) => isActive && activePreviewCss};
 `;
 
-export const NavbarPreview = styled.div`
+export const NavbarPreview = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${IGNORE_RADIUS_BOTTOM}`,
+})`
   width: 100%;
   height: 2rem;
   position: absolute;
@@ -179,7 +190,11 @@ export const NavbarPreview = styled.div`
   top: 0;
 `;
 
-export const SidebarPreview = styled.div`
+export const SidebarPreview = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${
+    RV_RTL ? IGNORE_RADIUS_LEFT : IGNORE_RADIUS_RIGHT
+  }`,
+})`
   width: ${({ isClose }) => (isClose ? '10%' : '30%')};
   height: 100%;
   background-color: ${({ previewColor }) => previewColor};
@@ -534,7 +549,7 @@ export const InfoItemWrapper = styled.div`
 export const InfoItemText = styled.div`
   margin: 0 1rem;
   flex-grow: 1;
-  color: ${CV_DISTANT};
+  color: ${CV_GRAY_DARK};
   font-size: 1rem;
   width: 100%;
 `;

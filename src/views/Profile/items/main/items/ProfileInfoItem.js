@@ -12,7 +12,7 @@ const ProfileInfoItem = (props) => {
   return (
     <Styled.InfoItemWrapper>
       <Icon size={20} color={TCV_DEFAULT} />
-      {isAuthUser ? (
+      {!isAuthUser ? (
         <InlineEditInput
           onSetText={handleEditItem}
           text={text}

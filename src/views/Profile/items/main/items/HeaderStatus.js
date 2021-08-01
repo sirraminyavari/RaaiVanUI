@@ -5,7 +5,7 @@ const HeaderStatus = () => {
   return (
     <Styled.HeaderStatusContainer>
       <Styled.StatusWrapper>
-        <span>موضوعات من</span>
+        <span>تعداد آیتم‌ها</span>
         <Styled.StatusCount>145</Styled.StatusCount>
       </Styled.StatusWrapper>
       <Styled.StatusWrapper
@@ -13,11 +13,11 @@ const HeaderStatus = () => {
           borderLeft: `1px solid ${CV_DISTANT}`,
           borderRight: `1px solid ${CV_DISTANT}`,
         }}>
-        <span>کل پست های من</span>
+        <span>تعداد آیتم‌های مرتبط</span>
         <Styled.StatusCount>99+</Styled.StatusCount>
       </Styled.StatusWrapper>
       <Styled.StatusWrapper>
-        <span>موضوعات نشان شده</span>
+        <span>تعداد موضوعات نشان شده</span>
         <Styled.StatusCount>78</Styled.StatusCount>
       </Styled.StatusWrapper>
     </Styled.HeaderStatusContainer>

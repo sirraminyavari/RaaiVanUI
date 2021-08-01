@@ -19,7 +19,7 @@ const LastRelatedTopics = () => {
       </Styled.Header>
       <LastTopicTabs />
       {/* <PerfectScrollbar style={{ maxHeight: '17rem', marginTop: '0.5rem' }}> */}
-      {[...Array(3).keys()].map((item, index) => {
+      {[...Array(5).keys()].map((item, index) => {
         return <TopicItem key={index} />;
       })}
       {/* </PerfectScrollbar> */}

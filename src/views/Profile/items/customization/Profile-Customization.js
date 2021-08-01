@@ -9,11 +9,7 @@ import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
 import { themeSlice } from 'store/reducers/themeReducer';
-import {
-  USER_CUSTOMIZATION_PATH,
-  USER_MAIN_PATH,
-  USER_PATH,
-} from 'constant/constants';
+import { USER_CUSTOMIZATION_PATH, USER_MAIN_PATH } from 'constant/constants';
 
 const {
   setSidebarCollapse,
