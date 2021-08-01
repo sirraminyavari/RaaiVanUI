@@ -10,7 +10,7 @@ import Clouds from 'assets/images/clouds.png';
 import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
-import LastPosts from './items/LastPosts';
+// import LastPosts from './items/LastPosts';
 
 const selectAuthUser = createSelector(
   (state) => state.auth,
@@ -81,7 +81,7 @@ const ProfileMain = () => {
         <div>
           <HeaderStatus />
           <LastTopics />
-          <LastPosts />
+          {/* <LastPosts /> */}
         </div>
       </Styled.MainWrapper>
     </Styled.ProfileViewContainer>

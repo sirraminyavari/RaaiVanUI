@@ -65,6 +65,7 @@ const ThemePreview = ({ preview }) => {
 
   return (
     <Styled.ThemePreviewContainer
+      isActive={isActive}
       isDark={isDarkMode}
       onClick={handleSelectTheme}>
       <Styled.NavbarPreview previewColor={Codes?.warm} />
