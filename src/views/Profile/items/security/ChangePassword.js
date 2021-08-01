@@ -136,15 +136,15 @@ const ChangePassword = () => {
           passwordPolicy={passwordPolicy}
         />
       )}
-      {/* <Button
-        style={{
-          width: '8rem',
-          position: 'fixed',
-          fontSize: '1rem',
-          bottom: '0.5rem',
-        }}>
-        {RVDic.Save}
-      </Button> */}
+      {newPass && newPassConfirm && newPass === newPassConfirm && (
+        <Button
+          style={{
+            width: '8rem',
+            fontSize: '1rem',
+          }}>
+          {RVDic.Save}
+        </Button>
+      )}
     </Styled.ContentWrapper>
   );
 };
