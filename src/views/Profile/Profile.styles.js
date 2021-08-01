@@ -93,7 +93,7 @@ export const FieldTitleWrapper = styled.div`
   dispaly: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0;
 `;
 
 export const InputWrapper = styled.div`
@@ -537,4 +537,34 @@ export const InfoItemText = styled.div`
   color: ${CV_DISTANT};
   font-size: 1rem;
   width: 100%;
+`;
+
+export const VerificationCodeContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
+})`
+  width: 70%;
+  padding: 1rem;
+`;
+
+export const VerificationForm = styled.form`
+  margin: 1.5rem 0;
+`;
+
+export const VerificationInputsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-direction: row-reverse;
+`;
+
+export const VerificationInputWrapper = styled.div`
+  max-width: 2.2rem;
+`;
+
+export const VerificationFooterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
 `;

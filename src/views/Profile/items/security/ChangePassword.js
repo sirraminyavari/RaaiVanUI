@@ -9,6 +9,7 @@ import useWindow from 'hooks/useWindowContext';
 import PasswordValidation from 'components/PasswordValidation/PasswordValidation';
 import { API_Provider } from 'helpers/helpers';
 import { USERS_API, GET_PASS_POLICY } from 'constant/apiConstants';
+import VerificationCodeHandle from './VerificationCodeHandle';
 
 const ChangePassword = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -17,6 +18,7 @@ const ChangePassword = () => {
   const [newPass, setNewPass] = useState('');
   const [newPassConfirm, setNewPassConfirm] = useState('');
   const [email, setEmail] = useState('email@cliqmind.com');
+  const [isVerificationShown, setIsVerificationShown] = useState(false);
   const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
@@ -52,9 +54,17 @@ const ChangePassword = () => {
     setEmail(email);
   };
 
+  const handleSendCode = () => {
+    setIsVerificationShown(false);
+  };
+
+  const handleTimeout = () => {
+    setIsVerificationShown(false);
+  };
+
   return (
     <Styled.ContentWrapper>
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '0.5rem' }}>
         <Styled.FieldTitleWrapper>
           <EmailIcon
             fill
@@ -71,11 +81,22 @@ const ChangePassword = () => {
             placeholder={RVDic.EMail}
             style={{ width: '70%' }}
           />
-          <Button type="primary-o" classes="change-email-id-button">
+          <Button
+            type="primary-o"
+            classes="change-email-id-button"
+            onClick={() => setIsVerificationShown((v) => !v)}>
             تغییر
           </Button>
         </Styled.InputWrapper>
       </div>
+      {isVerificationShown && (
+        <VerificationCodeHandle
+          onSendCode={handleSendCode}
+          onTimeout={handleTimeout}
+          codeCount={5}
+          countDown={120}
+        />
+      )}
       <Styled.FieldTitleWrapper>
         <LockIcon
           size={22}
