@@ -437,6 +437,13 @@ export const TabItemContainer = styled.div.attrs((props) => ({
   height: 2.5rem;
   padding: 0 0.5rem;
   cursor: pointer;
+
+  .tab-item-tooltip {
+    border-radius: 50%;
+    width: auto;
+    padding: 0.4rem 0.35rem;
+    font-size: 0.9rem;
+  }
 `;
 
 export const TabItemTitle = styled.span`

@@ -8,7 +8,8 @@ import TwoFactorToggle from 'components/Toggle/Toggle';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
-import VerificationCodeHandle from './VerificationCodeHandle';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+// import VerificationCodeHandle from './VerificationCodeHandle';
 
 const options = [
   { value: 'phone', title: 'شماره تماس ۸۵۷****۰۹۳', group: 'two-factor-auth' },
@@ -19,12 +20,14 @@ const options = [
   },
 ];
 
+const acceptedId = 'adminID';
+
 const TwoFactorAuthentication = () => {
   const { RVDic } = useWindow();
   //! If true, Show two factor option box.
   const [isTwoFactorOn, setIsTwoFactorOn] = useState(false);
-  const [userId, setUserId] = useState('User id in cliqmind');
-  const [isVerificationShown, setIsVerificationShown] = useState(false);
+  const [userId, setUserId] = useState('آیدی در دسترس: adminID');
+  // const [isVerificationShown, setIsVerificationShown] = useState(false);
 
   //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
@@ -35,13 +38,13 @@ const TwoFactorAuthentication = () => {
     setUserId(id);
   };
 
-  const handleSendCode = () => {
-    setIsVerificationShown(false);
-  };
+  // const handleSendCode = () => {
+  //   setIsVerificationShown(false);
+  // };
 
-  const handleTimeout = () => {
-    setIsVerificationShown(false);
-  };
+  // const handleTimeout = () => {
+  //   setIsVerificationShown(false);
+  // };
 
   return (
     <Styled.ContentWrapper>
@@ -63,20 +66,26 @@ const TwoFactorAuthentication = () => {
           />
           <Button
             type="primary-o"
+            disable={userId !== acceptedId}
             classes="change-email-id-button"
-            onClick={() => setIsVerificationShown((v) => !v)}>
+            onClick={() => {}}>
             تغییر
           </Button>
         </Styled.InputWrapper>
+        {userId === acceptedId && (
+          <div style={{ marginTop: '0.5rem', color: TCV_DEFAULT }}>
+            این آیدی برای شما در دسترسه :)
+          </div>
+        )}
       </div>
-      {isVerificationShown && (
+      {/* {isVerificationShown && (
         <VerificationCodeHandle
           onSendCode={handleSendCode}
           onTimeout={handleTimeout}
           codeCount={5}
           countDown={120}
         />
-      )}
+      )} */}
       <Styled.FieldTitleWrapper>
         <KeyIcon
           size={22}
