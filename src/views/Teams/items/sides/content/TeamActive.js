@@ -36,7 +36,7 @@ import TeamConfirm from './TeamConfirm';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
-import HiddenUploadFile from './HiddenUploadFile';
+import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
 import { API_Provider } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 // import { invitationSlice } from 'store/reducers/invitationsReducer';

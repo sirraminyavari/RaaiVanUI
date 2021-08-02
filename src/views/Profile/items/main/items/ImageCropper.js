@@ -1,79 +1,57 @@
 import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
-import { getOrientation } from 'get-orientation/browser';
-import { getCroppedImg, getRotatedImage, readFile } from './utils';
+// import { getOrientation } from 'get-orientation/browser';
+import ImageIcon from 'components/Icons/ImageIcon/ImageIcon';
+import Slider from 'components/Slider/Slider';
+import { CV_DISTANT } from 'constant/CssVariables';
+import * as Styled from 'views/Profile/Profile.styles';
 
-const ORIENTATION_TO_ANGLE = {
-  3: 180,
-  6: 90,
-  8: -90,
-};
-
-const ImageCropper = ({ imgSrc, aspect }) => {
-  const [
-    imageSrc,
-    // setImageSrc
-  ] = useState(imgSrc);
+const ImageCropper = ({ imageSrc, aspectRatio, onImgaeCropComplete }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
+  //! Calls on zoom(either by slider or mouse wheel).
+  const handleZoomChange = (zoom) => {
+    setZoom(zoom);
+  };
+
+  //! Calls when image crop changes.
+  const handleCropChange = (crop) => {
+    setCrop(crop);
+  };
+
+  //! Calls when crop image completed.
+  const handleCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    onImgaeCropComplete && onImgaeCropComplete(croppedArea, croppedAreaPixels);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showCroppedImage = useCallback(async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageSrc,
-        croppedAreaPixels,
-        rotation
-      );
-      console.log('done', { croppedImage });
-      setCroppedImage(croppedImage);
-    } catch (e) {
-      console.error(e);
-    }
-  }, [imageSrc, croppedAreaPixels, rotation]);
-
-  const onClose = useCallback(() => {
-    setCroppedImage(null);
-  }, []);
-
-  // const onFileChange = async (e) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const file = e.target.files[0];
-  //     let imageDataUrl = await readFile(file);
-
-  // // apply rotation if needed
-  //     const orientation = await getOrientation(file);
-  //     const rotation = ORIENTATION_TO_ANGLE[orientation];
-  //     if (rotation) {
-  //       imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
-  //     }
-
-  //     setImageSrc(imageDataUrl);
-  //   }
-  // };
-
   return (
-    <div style={{ position: 'relative', height: '200px', width: '100%' }}>
+    <Styled.ImageCropperContainer>
       <Cropper
+        cropShape="round"
+        showGrid={false}
         image={imageSrc}
+        aspect={aspectRatio}
         crop={crop}
-        rotation={rotation}
         zoom={zoom}
-        aspect={aspect}
-        onCropChange={setCrop}
-        onRotationChange={setRotation}
-        onCropComplete={onCropComplete}
-        onZoomChange={setZoom}
+        onCropChange={handleCropChange}
+        onCropComplete={handleCropComplete}
+        onZoomChange={handleZoomChange}
         classes={{ cropAreaClassName: '' }}
       />
-    </div>
+      <Styled.SliderWrapper>
+        <ImageIcon size={32} color={CV_DISTANT} />
+        <Slider
+          value={zoom}
+          min={1}
+          max={3}
+          step={0.1}
+          onChange={(e, zoom) => handleZoomChange(zoom)}
+        />
+        <ImageIcon size={22} color={CV_DISTANT} />
+      </Styled.SliderWrapper>
+    </Styled.ImageCropperContainer>
   );
 };
 
