@@ -44,6 +44,10 @@ export const ProfileViewContainer = styled.div.attrs({
   padding: 1.5rem;
   position: relative;
   user-select: none;
+
+  .profile-image-crop-modal {
+    color: ${TCV_DEFAULT};
+  }
 `;
 
 export const ProfileTitleWrapper = styled.div`
@@ -582,4 +586,33 @@ export const VerificationFooterWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
+`;
+
+export const ImageCropperWrapper = styled.div`
+  widht: 100%;
+  height: 100%;
+  text-align: center;
+`;
+
+export const CropperButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3.5rem;
+`;
+
+export const ImageCropperContainer = styled.div`
+  position: relative;
+  height: 17rem;
+  width: 100%;
+`;
+
+export const SliderWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  top: 18rem;
 `;
