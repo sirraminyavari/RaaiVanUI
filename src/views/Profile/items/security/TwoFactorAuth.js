@@ -46,9 +46,11 @@ const TwoFactorAuthentication = () => {
   //   setIsVerificationShown(false);
   // };
 
+  const isIDButtonActive = userId === acceptedId;
+
   return (
     <Styled.ContentWrapper>
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '2rem', position: 'relative' }}>
         <Styled.FieldTitleWrapper>
           <AccountManIcon
             size={22}
@@ -57,7 +59,7 @@ const TwoFactorAuthentication = () => {
           />
           <Styled.FieldTitle>آیدی</Styled.FieldTitle>
         </Styled.FieldTitleWrapper>
-        <Styled.InputWrapper>
+        <Styled.InputWrapper isIDButtonActive={isIDButtonActive}>
           <AnimatedInput
             onChange={handleIDChange}
             value={userId}
@@ -66,14 +68,20 @@ const TwoFactorAuthentication = () => {
           />
           <Button
             type="primary-o"
-            disable={userId !== acceptedId}
-            classes="change-email-id-button"
+            disable={!isIDButtonActive}
+            classes="change-id-button"
             onClick={() => {}}>
             تغییر
           </Button>
         </Styled.InputWrapper>
-        {userId === acceptedId && (
-          <div style={{ marginTop: '0.5rem', color: TCV_DEFAULT }}>
+        {isIDButtonActive && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '6rem',
+              right: '0.5rem',
+              color: TCV_DEFAULT,
+            }}>
             این آیدی برای شما در دسترسه :)
           </div>
         )}

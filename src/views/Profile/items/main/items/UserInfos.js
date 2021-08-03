@@ -10,8 +10,11 @@ import AdressMapIcon from 'components/Icons/AddressMapIcon/AddressMap';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 
+const ABOUT_ME_TEXT =
+  'فیلد درباره من، اگه ممکنه به صورت چند خطی دربیاد در تعداد کاراکتر بالا. هم موقع ادیت و هم موقع نمایش که با اسم تداخل نداشته باشه';
+
 const UserInfos = () => {
-  const { RVGlobal } = useWindow();
+  const { RVGlobal, RVDic } = useWindow();
   const { FirstName, LastName, JobTitle } = RVGlobal?.CurrentUser;
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
@@ -19,15 +22,24 @@ const UserInfos = () => {
   return (
     <Styled.ProfileInfoWrapper>
       <Styled.UsenameWrapper>{fullName}</Styled.UsenameWrapper>
-      <ProfileInfoItem text="درباره..." icon={InfoIcon} />
+      <ProfileInfoItem
+        multiline
+        placeholder="درباره..."
+        text={ABOUT_ME_TEXT}
+        icon={InfoIcon}
+      />
       <Styled.SectionTitle>راه های ارتباطی</Styled.SectionTitle>
-      <ProfileInfoItem text="09123456789" icon={MobileIcon} />
-      <ProfileInfoItem text="cliqmind@cliqmind.com" icon={MailIcon} />
+      <ProfileInfoItem placeholder="شماره موبایل" text="" icon={MobileIcon} />
+      <ProfileInfoItem placeholder={RVDic.Email} text="" icon={MailIcon} />
       <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
-      <ProfileInfoItem text="نام سازمان" icon={Buldingicon} />
-      <ProfileInfoItem text="نام دپارتمان" icon={SiteMapIcon} />
-      <ProfileInfoItem text={decodeBase64(JobTitle)} icon={BriefcaseIcon} />
-      <ProfileInfoItem text="نام شهر" icon={AdressMapIcon} />
+      <ProfileInfoItem placeholder="نام سازمان" text="" icon={Buldingicon} />
+      <ProfileInfoItem placeholder="نام دپارتمان" text="" icon={SiteMapIcon} />
+      <ProfileInfoItem
+        placeholder="عنوان شغلی"
+        text={decodeBase64(JobTitle)}
+        icon={BriefcaseIcon}
+      />
+      <ProfileInfoItem placeholder="نام شهر" text="" icon={AdressMapIcon} />
     </Styled.ProfileInfoWrapper>
   );
 };

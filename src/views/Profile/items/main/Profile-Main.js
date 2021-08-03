@@ -72,10 +72,14 @@ const ProfileMain = () => {
     }
   };
 
-  const handleSaveCroppedImage = async () => {
-    const croppedImg = await getCroppedImage();
-    setCroppedImage(croppedImg);
-    handleCloseModal();
+  const handleSaveCroppedImage = () => {
+    getCroppedImage()
+      .then((croppedImg) => {
+        // console.log(croppedImg);
+        setCroppedImage(croppedImg);
+        handleCloseModal();
+      })
+      .catch((cropError) => console.log(cropError));
     //! Api call to save cropped image.
   };
 

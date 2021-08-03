@@ -83,7 +83,7 @@ const ChangePassword = () => {
           />
           <Button
             type="primary-o"
-            classes="change-email-id-button"
+            classes="change-email-button"
             onClick={() => setIsVerificationShown((v) => !v)}>
             تغییر
           </Button>
