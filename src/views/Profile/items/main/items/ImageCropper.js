@@ -6,12 +6,18 @@ import Slider from 'components/Slider/Slider';
 import { CV_DISTANT } from 'constant/CssVariables';
 import * as Styled from 'views/Profile/Profile.styles';
 
-const ImageCropper = ({ imageSrc, aspectRatio, onImgaeCropComplete }) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
+const ImageCropper = ({
+  imageSrc,
+  aspectRatio,
+  onImgaeCropComplete,
+  initialCrop = { x: 0, y: 0 },
+}) => {
+  const [crop, setCrop] = useState(initialCrop);
   const [zoom, setZoom] = useState(1);
 
   //! Calls on zoom(either by slider or mouse wheel).
   const handleZoomChange = (zoom) => {
+    // console.log(zoom)
     setZoom(zoom);
   };
 

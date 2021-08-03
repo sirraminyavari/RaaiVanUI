@@ -4,6 +4,7 @@ const createImage = (url) =>
     image.addEventListener('load', () => resolve(image));
     image.addEventListener('error', (error) => reject(error));
     image.src = url;
+    image.crossOrigin = 'Anonymous';
   });
 
 export function readFile(file) {

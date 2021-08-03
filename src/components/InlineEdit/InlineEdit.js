@@ -58,7 +58,6 @@ const InlineEdit = (props) => {
   //! Check to see if the user clicked outside of this component
   useOnClickOutside(wrapperRef, () => {
     if (isInputActive) {
-      console.log('call set text');
       if (inputValue) {
         onSetText(inputValue);
         setIsInputActive(false);
