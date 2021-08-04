@@ -587,9 +587,11 @@ export const InfoItemWrapper = styled.div`
 export const InfoItemText = styled.div`
   margin: 0 1rem;
   flex-grow: 1;
-  color: ${CV_GRAY_DARK};
+  color: ${({ hasText }) => (hasText ? CV_GRAY_DARK : CV_DISTANT)};
   font-size: 1rem;
   width: 100%;
+  text-align: justify;
+  white-space: normal;
 `;
 
 export const VerificationCodeContainer = styled.div.attrs({

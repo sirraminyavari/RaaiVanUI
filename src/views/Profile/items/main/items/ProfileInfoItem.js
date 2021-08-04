@@ -29,7 +29,9 @@ const ProfileInfoItem = (props) => {
           textareaClasses="user-info-inline-edit-textarea"
         />
       ) : (
-        <Styled.InfoItemText>{text}</Styled.InfoItemText>
+        <Styled.InfoItemText hasText={!!infoText}>
+          {!!infoText ? infoText : placeholder}
+        </Styled.InfoItemText>
       )}
     </Styled.InfoItemWrapper>
   );
