@@ -11,34 +11,31 @@ import CropModal from './items/CropModal';
 // import LastPosts from './items/LastPosts';
 
 const ProfileMain = (props) => {
-  const { User, IsOwnPage } = props?.route;
   const {
-    FirstName,
-    LastName,
-    UserName,
+    User,
+    //  IsOwnPage
+  } = props?.route;
+  const {
+    // FirstName,
+    // LastName,
+    // UserName,
     UserID,
     ProfileImageURL,
     HighQualityImageURL,
   } = User;
-  // console.log(props);
+  // console.log(User);
 
   const uploadFileRef = useRef();
   const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
   const [cropModal, setCropModal] = useState({
     isShown: false,
-    title: '',
+    title: 'برش تصویر پروفایل',
     aspect: 1 / 1,
-    imgSrc: null,
+    imgSrc: HighQualityImageURL,
   });
 
   const handleAvatarEdit = () => {
-    setCropModal((m) => ({
-      ...m,
-      isShown: true,
-      title: 'برش تصویر پروفایل',
-      aspect: 1 / 1,
-      imgSrc: HighQualityImageURL,
-    }));
+    setCropModal((m) => ({ ...m, isShown: true }));
   };
 
   const handleHeaderEdit = () => {
@@ -47,6 +44,7 @@ const ProfileMain = (props) => {
 
   const handleCloseModal = () => {
     setCropModal((m) => ({ ...m, isShown: false }));
+    console.log(ProfileImageURL);
   };
 
   //! Fires whenever user chooses an image.
@@ -77,9 +75,11 @@ const ProfileMain = (props) => {
             radius={95}
             className="profile-avatar"
           />
-          <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
-            <PencilIcon color="#fff" size={18} />
-          </Styled.AvatarPencilWrapper>
+          {!!HighQualityImageURL && (
+            <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
+              <PencilIcon color="#fff" size={18} />
+            </Styled.AvatarPencilWrapper>
+          )}
         </Styled.ProfileAvatarWrapper>
         <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
           <AddImageIcon color="#fff" size={18} />

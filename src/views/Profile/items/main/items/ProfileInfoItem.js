@@ -8,7 +8,7 @@ const ProfileInfoItem = (props) => {
   const [infoText, setInfoText] = useState(text);
 
   const handleEditItem = (text) => {
-    console.log(text);
+    // console.log(text);
     setInfoText(text);
   };
 

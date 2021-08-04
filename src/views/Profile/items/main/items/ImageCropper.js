@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
-// import { getOrientation } from 'get-orientation/browser';
 import ImageIcon from 'components/Icons/ImageIcon/ImageIcon';
 import Slider from 'components/Slider/Slider';
 import { CV_DISTANT } from 'constant/CssVariables';
@@ -10,19 +9,20 @@ const ImageCropper = ({
   imageSrc,
   aspectRatio,
   onImgaeCropComplete,
-  initialCrop = { x: 0, y: 0 },
+  initialCroppedAreaPixels,
 }) => {
-  const [crop, setCrop] = useState(initialCrop);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
   //! Calls on zoom(either by slider or mouse wheel).
   const handleZoomChange = (zoom) => {
-    // console.log(zoom)
+    // console.log('zoom', zoom);
     setZoom(zoom);
   };
 
   //! Calls when image crop changes.
   const handleCropChange = (crop) => {
+    // console.log('crop', crop);
     setCrop(crop);
   };
 
@@ -45,6 +45,7 @@ const ImageCropper = ({
         onCropComplete={handleCropComplete}
         onZoomChange={handleZoomChange}
         classes={{ cropAreaClassName: '' }}
+        initialCroppedAreaPixels={initialCroppedAreaPixels}
       />
       <Styled.SliderWrapper>
         <ImageIcon size={32} color={CV_DISTANT} />

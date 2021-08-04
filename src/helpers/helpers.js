@@ -284,7 +284,7 @@ export const setVariable = (variableName, variableValue) => {
  * @returns Promise.
  */
 export const cropIcon = (id, type, x, y, width, height) => {
-  const cropIconAPI = API_Provider(DOCS_API, CROP_ICON);
+  const cropIconAPI = new APIHandler(DOCS_API, CROP_ICON);
 
   return new Promise((resolve, reject) => {
     try {
