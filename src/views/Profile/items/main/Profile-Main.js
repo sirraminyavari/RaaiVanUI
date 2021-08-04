@@ -20,10 +20,11 @@ const ProfileMain = (props) => {
     // LastName,
     // UserName,
     UserID,
+    CoverPhotoURL,
     ProfileImageURL,
     HighQualityImageURL,
   } = User;
-  // console.log(User);
+  console.log(User);
 
   const uploadFileRef = useRef();
   const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
@@ -68,7 +69,7 @@ const ProfileMain = (props) => {
         setCroppedImage={setCroppedImage}
         id={UserID}
       />
-      <Styled.ProfileHeader>
+      <Styled.ProfileHeader coverImage={CoverPhotoURL}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
             userImage={croppedImage}
