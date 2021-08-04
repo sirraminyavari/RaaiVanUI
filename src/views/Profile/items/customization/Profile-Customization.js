@@ -9,7 +9,7 @@ import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { USER_CUSTOMIZATION_PATH, USER_MAIN_PATH } from 'constant/constants';
+import { USER_CUSTOMIZATION_PATH, USER_WITHID_PATH } from 'constant/constants';
 
 const {
   setSidebarCollapse,
@@ -38,7 +38,7 @@ const selectHasSidebarPattern = createSelector(
 );
 
 const breadcrumbItems = [
-  { id: 1, title: 'حساب کاربری', linkTo: USER_MAIN_PATH },
+  { id: 1, title: 'حساب کاربری', linkTo: USER_WITHID_PATH },
   { id: 2, title: 'شخصی سازی', linkTo: USER_CUSTOMIZATION_PATH },
 ];
 

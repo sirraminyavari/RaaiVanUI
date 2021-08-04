@@ -1,12 +1,13 @@
 import { useEffect, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Switch, Redirect, useParams } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import {
   MAIN_CONTENT,
   PROFILE_CONTENT,
   USER_CUSTOMIZATION_PATH,
-  USER_MAIN_PATH,
+  USER_PATH,
   USER_SECURITY_PATH,
+  USER_WITHID_PATH,
 } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
 import profileRoutes from 'routes/MainRoutes/Profile.routes';
@@ -15,19 +16,12 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 const { setSidebarContent } = themeSlice.actions;
 
 const ProfileNew = ({ route }) => {
-  const params = useParams();
   const dispatch = useDispatch();
 
   const switchProfileRoutes = (
     <Switch>
       {profileRoutes.map((PR, key) => {
         const { exact, path, component: Component } = PR;
-        if (
-          !['main', 'security', 'customization'].includes(params?.uid) &&
-          !!params?.uid
-        ) {
-          return <Redirect to={`/user/${params?.uid}`} />;
-        }
         return (
           <Route
             key={key}
@@ -37,7 +31,7 @@ const ProfileNew = ({ route }) => {
           />
         );
       })}
-      <Redirect to={USER_MAIN_PATH} />;
+      <Redirect to={USER_WITHID_PATH} />;
     </Switch>
   );
 
@@ -52,9 +46,12 @@ const ProfileNew = ({ route }) => {
     return () => {
       //! If user still is on profile section, Don't change the sidebar content.
       if (
-        [USER_MAIN_PATH, USER_SECURITY_PATH, USER_CUSTOMIZATION_PATH].includes(
-          window.location.pathname
-        )
+        [
+          USER_PATH,
+          USER_WITHID_PATH,
+          USER_SECURITY_PATH,
+          USER_CUSTOMIZATION_PATH,
+        ].includes(window.location.pathname)
       )
         return;
 

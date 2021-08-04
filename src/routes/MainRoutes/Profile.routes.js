@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 import {
   USER_CUSTOMIZATION_PATH,
-  USER_MAIN_PATH,
   USER_NAME,
   USER_SECURITY_PATH,
+  USER_WITHID_PATH,
 } from 'constant/constants';
 
 const ProfileMainNew = lazy(() =>
@@ -24,13 +24,6 @@ const ProfileCustomization = lazy(() =>
 
 const profileRoutes = [
   {
-    path: USER_MAIN_PATH,
-    name: USER_NAME,
-    exact: true,
-    hasNavSide: true,
-    component: ProfileMainNew,
-  },
-  {
     path: USER_SECURITY_PATH,
     name: USER_NAME,
     exact: true,
@@ -43,6 +36,13 @@ const profileRoutes = [
     exact: true,
     hasNavSide: true,
     component: ProfileCustomization,
+  },
+  {
+    path: USER_WITHID_PATH,
+    name: USER_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: ProfileMainNew,
   },
 ];
 

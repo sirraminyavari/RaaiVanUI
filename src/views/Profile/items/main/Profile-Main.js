@@ -24,7 +24,7 @@ const ProfileMain = (props) => {
     ProfileImageURL,
     HighQualityImageURL,
   } = User;
-  console.log(User);
+  // console.log(User);
 
   const uploadFileRef = useRef();
   const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
