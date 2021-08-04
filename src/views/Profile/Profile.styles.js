@@ -11,6 +11,7 @@ import {
   TBG_DEFAULT,
   BO_FREEZED,
   TBG_WARM,
+  BG_WHITE,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -102,16 +103,30 @@ export const FieldTitleWrapper = styled.div`
   margin: 1.5rem 0;
 `;
 
+const changeButtonCss = css`
+  width: 4rem;
+  background: none;
+  border: 0;
+`;
+
 export const InputWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 3rem;
 
-  .change-email-id-button {
-    width: 4rem;
-    background: none;
-    border: 0;
+  .change-id-button {
+    ${changeButtonCss}
+
+    :hover {
+      ${({ isIDButtonActive }) =>
+        isIDButtonActive && `border: 1px solid ${TCV_DEFAULT};`}
+    }
+  }
+
+  .change-email-button {
+    ${changeButtonCss}
 
     :hover {
       border: 1px solid ${TCV_DEFAULT};
@@ -317,7 +332,7 @@ export const MainWrapper = styled.div`
   }
 `;
 export const ProfileInfoWrapper = styled.div.attrs({
-  className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
+  className: `${BO_RADIUS_QUARTER} ${BO_DISTANT} ${BG_WHITE}`,
 })`
   // margin-top: 2rem;
   // position: sticky;
@@ -341,7 +356,7 @@ export const SectionTitle = styled.div.attrs({
 `;
 
 export const HeaderStatusContainer = styled.div.attrs({
-  className: `${BO_DISTANT} ${BO_RADIUS_QUARTER}`,
+  className: `${BO_DISTANT} ${BO_RADIUS_QUARTER} ${BG_WHITE}`,
 })`
   display: flex;
   justify-content: space-between;
@@ -350,7 +365,7 @@ export const HeaderStatusContainer = styled.div.attrs({
 `;
 
 export const StatusWrapper = styled.div.attrs({
-  className: ``,
+  className: `${BG_WHITE}`,
 })`
   text-align: center;
   width: 33%;
@@ -372,6 +387,7 @@ export const StatusCount = styled.span.attrs({
 
 export const LastTopicsContainer = styled.div`
   margin-top: 2rem;
+  padding-bottom: 2rem;
 `;
 
 export const LastTopicsList = styled.div`
@@ -428,7 +444,7 @@ export const MoreTopicsContainer = styled.div.attrs({
 
 export const TabItemContainer = styled.div.attrs((props) => ({
   className: `${BO_RADIUS_HALF} ${BO_DISTANT} ${
-    props.isActive && (props.hasMore ? TBG_WARM : TBG_DEFAULT)
+    props.isActive ? (props.hasMore ? TBG_WARM : TBG_DEFAULT) : BG_WHITE
   }`,
 }))`
   display: flex;
@@ -465,7 +481,7 @@ export const TabItemImage = styled.img.attrs({
 `;
 
 export const TopicItemWrapper = styled.div.attrs({
-  className: `${BO_RADIUS_HALF} ${BO_FREEZED}`,
+  className: `${BO_RADIUS_HALF} ${BO_FREEZED} ${BG_WHITE}`,
 })`
   width: 100%;
   height: 5rem;
@@ -535,7 +551,7 @@ export const InfoItemWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 2rem;
+  // height:   2rem;
   margin: 1rem 0;
 
   .user-info-inline-edit-container {
@@ -543,7 +559,7 @@ export const InfoItemWrapper = styled.div`
     flex-grow: 1;
     color: ${CV_DISTANT};
     font-size: 1rem;
-    width: 100%;
+    width: 80%;
     border-bottom: 1px solid ${CV_DISTANT};
 
     :focus-within {
@@ -554,6 +570,17 @@ export const InfoItemWrapper = styled.div`
 
   .user-info-inline-edit-text {
     width: 100%;
+    color: ${CV_GRAY_DARK};
+  }
+
+  .user-info-inline-edit-textarea {
+    min-height: 1rem;
+  }
+
+  .user-info-inline-edit-input {
+    ::placeholder {
+      color: ${CV_DISTANT};
+    }
   }
 `;
 

@@ -255,3 +255,10 @@ export const DOCS_API = 'DocsAPI';
  * @class 'DocsAPI'
  */
 export const UPLOAD_ICON = 'UploadIcon';
+
+/**
+ * @description 'CropIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const CROP_ICON = 'CropIcon';

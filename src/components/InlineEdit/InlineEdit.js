@@ -13,7 +13,9 @@ import * as Styled from './InlineEdit.styles';
  * @property {Object} styles -An Object of styles for input and text.
  * @property {string} textClasses -Classes for text.
  * @property {string} inputClasses -Classes for input.
+ * @property {string} inputPlaceholder -Plceholder for input.
  * @property {string} containerClasses -Classes for component container.
+ * @property {boolean} multiline -If exists, will render textarea instead of input.
  */
 
 /**
@@ -29,6 +31,9 @@ const InlineEdit = (props) => {
     styles,
     textClasses,
     inputClasses,
+    textareaClasses,
+    inputPlaceholder,
+    multiline,
     containerClasses,
   } = props;
 
@@ -55,10 +60,15 @@ const InlineEdit = (props) => {
     if (isInputActive) {
       if (inputValue) {
         onSetText(inputValue);
+        setIsInputActive(false);
       } else {
         setInputValue(initialValue.current);
+        if (initialValue.current) {
+          setIsInputActive(false);
+        } else {
+          setIsInputActive(true);
+        }
       }
-      setIsInputActive(false);
     }
   });
 
@@ -111,15 +121,30 @@ const InlineEdit = (props) => {
 
   return (
     <Styled.InlineEditContainer className={containerClasses} ref={wrapperRef}>
-      {isInputActive ? (
-        <Styled.Input
-          className={inputClasses}
-          style={styles.inputStyle}
-          data-testid="inline-edit-input"
-          ref={inputRef}
-          value={inputValue}
-          onChange={handleInputChange}
-        />
+      {isInputActive || !inputValue ? (
+        multiline ? (
+          <Styled.TextAreaInput
+            className={textareaClasses}
+            style={styles.textareaStyle}
+            data-testid="inline-edit-input"
+            ref={inputRef}
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={inputPlaceholder}
+            rows={!!inputValue ? 5 : 1}
+          />
+        ) : (
+          <Styled.Input
+            className={inputClasses}
+            style={styles.inputStyle}
+            data-testid="inline-edit-input"
+            ref={inputRef}
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={inputPlaceholder}
+            onFocus={handleSpanClick}
+          />
+        )
       ) : (
         <Styled.SpanText
           className={textClasses}
@@ -142,9 +167,12 @@ InlineEdit.propTypes = {
   styles: PropTypes.shape({
     textStyle: PropTypes.object,
     inputStyle: PropTypes.object,
+    textareaStyle: PropTypes.object,
   }),
   textClasses: PropTypes.string,
+  textareaClasses: PropTypes.string,
   inputClasses: PropTypes.string,
+  inputPlaceholder: PropTypes.string,
   containerClasses: PropTypes.string,
 };
 
@@ -152,6 +180,8 @@ InlineEdit.defaultProps = {
   text: 'default text',
   isActive: false,
   styles: {},
+  inputPlaceholder: '',
+  multiline: false,
 };
 
 InlineEdit.displayName = 'InlineEditComponent';

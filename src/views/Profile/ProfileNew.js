@@ -14,14 +14,14 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const { setSidebarContent } = themeSlice.actions;
 
-const ProfileNew = () => {
+const ProfileNew = ({ route }) => {
   const params = useParams();
   const dispatch = useDispatch();
 
   const switchProfileRoutes = (
     <Switch>
-      {profileRoutes.map((route, key) => {
-        const { exact, path, component } = route;
+      {profileRoutes.map((PR, key) => {
+        const { exact, path, component: Component } = PR;
         if (
           !['main', 'security', 'customization'].includes(params?.uid) &&
           !!params?.uid
@@ -29,7 +29,12 @@ const ProfileNew = () => {
           return <Redirect to={`/user/${params?.uid}`} />;
         }
         return (
-          <Route key={key} exact={exact} path={path} component={component} />
+          <Route
+            key={key}
+            exact={exact}
+            path={path}
+            render={(props) => <Component {...props} route={route} />}
+          />
         );
       })}
       <Redirect to={USER_MAIN_PATH} />;
