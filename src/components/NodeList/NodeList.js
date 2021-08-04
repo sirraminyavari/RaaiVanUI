@@ -73,7 +73,7 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetching', 'isBookMarked', isBookMarked);
+    console.log('fetching', 'isByMe', isByMe);
 
     getNodesAPI(isBookMarked).fetch(
       {

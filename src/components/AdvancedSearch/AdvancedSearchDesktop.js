@@ -33,6 +33,7 @@ const AdvanceSearchDesktop = ({
   hierarchy,
   bookmarked,
   itemSelectionMode,
+  isProfile,
   ...props
 }) => {
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
@@ -137,7 +138,9 @@ const AdvanceSearchDesktop = ({
       itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}>
       <ScrollProvider
-        className={'rv-bg-color-light-gray rv-border-radius-half'}
+        className={`${
+          itemSelectionMode ? 'rv-bg-color-white' : 'rv-bg-color-light-gray'
+        } rv-border-radius-half`}
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
@@ -155,8 +158,13 @@ const AdvanceSearchDesktop = ({
           className={'rv-border-radius-half'}>
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
+              itemSelectionMode={itemSelectionMode}
               isAdvancedShow={isAdvancedSearch}
-              className={'rv-bg-color-light-gray rv-border-radius-half'}
+              className={`${
+                itemSelectionMode
+                  ? 'rv-bg-color-white'
+                  : 'rv-bg-color-light-gray'
+              } rv-border-radius-half`}
               fullWidth={isAdvancedSearch}>
               <TopFilter>
                 <FilterBar
@@ -179,6 +187,7 @@ const AdvanceSearchDesktop = ({
                   isBookMarked={isBookMarked}
                   itemSelectionMode={itemSelectionMode}
                   bookmarked={bookmarked}
+                  isProfile={isProfile}
                 />
               </TopFilter>
               <div
@@ -202,7 +211,7 @@ const AdvanceSearchDesktop = ({
                   dateFilter: dateFilter,
                   formFilters: formFilters,
                   forceFetch: forceReload,
-                  isByMe: isByMe,
+                  isByMe: isProfile ? true : isByMe,
                   byPeople: byPeople,
                   isBookMarked: isBookMarked,
                   onTotalFound: setTotalFound,

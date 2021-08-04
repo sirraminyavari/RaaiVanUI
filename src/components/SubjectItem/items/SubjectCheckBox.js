@@ -123,4 +123,7 @@ const CustomCheckBox = styled.div`
       : css`
           ${deselect} 0.5s
         `};
+  :hover {
+    border-color: ${TCV_DEFAULT};
+  }
 `;
