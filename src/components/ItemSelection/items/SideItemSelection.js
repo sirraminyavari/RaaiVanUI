@@ -96,33 +96,33 @@ const SideItemSelection = ({
             onClickLabel={() => onSelectItem(selectedItem)}
             customStyle={{
               label: { minWidth: '8rem' },
-              container: { backgroundColor: CV_WHITE },
+              container: { backgroundColor: CV_GRAY_LIGHT },
               button: RV_RTL
                 ? {
-                    borderBottomLeftRadius: '10rem',
-                    borderTopLeftRadius: '10rem',
+                    borderBottomLeftRadius: '1rem',
+                    borderTopLeftRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0px 0.5px 0.5px'
                       : '0 0 0 0',
                   }
                 : {
-                    borderBottomRightRadius: '10rem',
-                    borderTopRightRadius: '10rem',
+                    borderBottomRightRadius: '1rem',
+                    borderTopRightRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0.5px 0.5px 0px'
                       : '0 0 0 0',
                   },
               label: RV_RTL
                 ? {
-                    borderBottomRightRadius: '10rem',
-                    borderTopRightRadius: '10rem',
+                    borderBottomRightRadius: '1rem',
+                    borderTopRightRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0.5px 0.5px 0px'
                       : '0 0 0 0',
                   }
                 : {
-                    borderBottomLeftRadius: '10rem',
-                    borderTopLeftRadius: '10rem',
+                    borderBottomLeftRadius: '1rem',
+                    borderTopLeftRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0px 0.5px 0.5px'
                       : '0 0 0 0',

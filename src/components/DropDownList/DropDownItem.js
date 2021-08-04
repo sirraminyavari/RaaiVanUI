@@ -16,13 +16,16 @@ import { Label, Maintainer } from './AnimatedDropDownList.style';
  * @callback onSelectItem - will fire by clicking on the item.
  * @returns - Renders item in the drop-down
  */
-const DropDownItem = ({ item, onSelectItem, itemStyle }) => {
+const DropDownItem = ({ item, onSelectItem, itemStyle, $dropedDown }) => {
   const { icon, label, colorClass, hidden } = item;
 
   return (
     <>
       {!hidden && (
-        <Maintainer style={{ ...itemStyle }} onClick={onSelectItem}>
+        <Maintainer
+          $dropedDown={$dropedDown}
+          style={{ ...itemStyle }}
+          onClick={onSelectItem}>
           {
             <div
               style={{

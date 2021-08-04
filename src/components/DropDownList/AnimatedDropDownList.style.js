@@ -147,7 +147,7 @@ export const Maintainer = styled.button`
   justify-content: space-between;
   width: 100%;
   :hover {
-    background-color: ${TCV_VERY_SOFT};
+    background-color: ${({ $dropedDown }) => $dropedDown && TCV_VERY_SOFT};
   }
 `;
 export const Label = styled.div`
