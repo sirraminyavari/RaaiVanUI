@@ -24,7 +24,8 @@ export const Container = styled.div`
   width: 100%;
   align-items: flex-start;
   justify-content: center;
-  max-height: calc(100vh - 11rem);
+  max-height: ${({ itemSelectionMode }) =>
+    itemSelectionMode ? 'calc(100vh - 13rem)' : 'calc(100vh - 11rem)'};
   padding: 2rem 2rem 2rem 2rem;
 
   ${({ itemSelectionMode }) => itemSelectionMode && 'padding:0'}
@@ -44,7 +45,8 @@ export const Scrollable = styled.div`
 `;
 export const Maintainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 9rem);
+  min-height: ${({ itemSelectionMode }) =>
+    itemSelectionMode ? 'calc(100vh - 13rem)' : 'calc(100vh - 9rem)'};
   max-height: 100%;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
 `;

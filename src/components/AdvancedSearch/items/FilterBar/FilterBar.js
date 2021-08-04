@@ -26,7 +26,7 @@ import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
-import { CV_WHITE } from 'constant/CssVariables';
+import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import { INTRO_ONBOARD, OPENED } from 'constant/constants';
 import Button from 'components/Buttons/Button';
 
@@ -88,6 +88,7 @@ const FilterBar = ({
   isBookMarked,
   bookmarked,
   itemSelectionMode,
+  isProfile,
 }) => {
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
     (state) => ({
@@ -315,7 +316,7 @@ const FilterBar = ({
 
   return (
     <Container>
-      <Breadcrumb items={breadcrumbItems} />
+      {!itemSelectionMode && <Breadcrumb items={breadcrumbItems} />}
       <TopRow>
         <div
           style={{
@@ -340,45 +341,58 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-        {itemSelectionMode && market?.length > 0 ? (
+        {isProfile && (
+          <Button style={{ color: CV_RED }} type={'secondary-o'}>
+            {RVDic.Return}
+          </Button>
+        )}
+
+        {/* Don't forget to add this for urgent create in itemSelection mode
+          && market?.length > 0
+          */}
+        {itemSelectionMode ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
             <div style={{ margin: '0 1rem 0 1rem' }}>{RVDic?.AddQuickly}</div>
           </Button>
         ) : (
-          <div data-tut={'new_doc_menu'}>
-            {market?.length > 0 && (
-              <AnimatedDropDownList
-                data={market}
-                onSelectItem={onSelectItem}
-                defaultValue={selectedItem}
-                hiddenSelectedItem={false}
-                introMode={isInOnBoarding && isNewDocOpened}
-                onClickLabel={() => onSelectItem(selectedItem)}
-                customStyle={{
-                  label: { minWidth: '8rem' },
-                }}
-                customClass={{
-                  labelClass: RV_RTL
-                    ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
-                    : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
-                  buttonClass: isDropDownOpen
-                    ? `rv-bg-color-warm rv-border-radius-half ${
-                        RV_RTL
-                          ? 'rv-ignore-right-radius'
-                          : 'rv-ignore-left-radius'
-                      }`
-                    : `rv-bg-color-default rv-border-radius-half ${
-                        RV_RTL
-                          ? 'rv-ignore-right-radius'
-                          : 'rv-ignore-left-radius'
-                      }`,
-                  arrowIconColorClass: 'rv-white',
-                }}
-                onDropDownOpen={setIsDropDownOpen}
-              />
+          <>
+            {!isProfile && (
+              <div data-tut={'new_doc_menu'}>
+                {market?.length > 0 && (
+                  <AnimatedDropDownList
+                    data={market}
+                    onSelectItem={onSelectItem}
+                    defaultValue={selectedItem}
+                    hiddenSelectedItem={false}
+                    introMode={isInOnBoarding && isNewDocOpened}
+                    onClickLabel={() => onSelectItem(selectedItem)}
+                    customStyle={{
+                      label: { minWidth: '8rem' },
+                    }}
+                    customClass={{
+                      labelClass: RV_RTL
+                        ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                        : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
+                      buttonClass: isDropDownOpen
+                        ? `rv-bg-color-warm rv-border-radius-half ${
+                            RV_RTL
+                              ? 'rv-ignore-right-radius'
+                              : 'rv-ignore-left-radius'
+                          }`
+                        : `rv-bg-color-default rv-border-radius-half ${
+                            RV_RTL
+                              ? 'rv-ignore-right-radius'
+                              : 'rv-ignore-left-radius'
+                          }`,
+                      arrowIconColorClass: 'rv-white',
+                    }}
+                    onDropDownOpen={setIsDropDownOpen}
+                  />
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
       </TopRow>
 
@@ -465,38 +479,39 @@ const FilterBar = ({
               />
             )}
           </ShadowButton>
-
-          <PeoplePicker
-            onByMe={onByMe}
-            onByPeople={onPeople}
-            isByMe={isByMe}
-            pickedPeople={people}
-            onVisible={setPeoplePickerVisibility}
-            buttonComponent={
-              <ShadowButton
-                style={commonStyle}
-                // onClick={onClick}
-                onMouseEnter={() => setPeopleHover(true)}
-                onMouseLeave={() => setPeopleHover(false)}
-                $isEnabled={people || isByMe || peoplePickerVisibility}
-                className={
-                  isByMe || people || peoplePickerVisibility
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }>
-                <PersonIcon
-                  size={'1.5rem'}
+          {!isProfile && (
+            <PeoplePicker
+              onByMe={onByMe}
+              onByPeople={onPeople}
+              isByMe={isByMe}
+              pickedPeople={people}
+              onVisible={setPeoplePickerVisibility}
+              buttonComponent={
+                <ShadowButton
+                  style={commonStyle}
+                  // onClick={onClick}
+                  onMouseEnter={() => setPeopleHover(true)}
+                  onMouseLeave={() => setPeopleHover(false)}
+                  $isEnabled={people || isByMe || peoplePickerVisibility}
                   className={
                     isByMe || people || peoplePickerVisibility
-                      ? 'rv-default'
-                      : peopleHover
-                      ? 'rv-default'
-                      : 'rv-distant'
-                  }
-                />
-              </ShadowButton>
-            }
-          />
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
+                  }>
+                  <PersonIcon
+                    size={'1.5rem'}
+                    className={
+                      isByMe || people || peoplePickerVisibility
+                        ? 'rv-default'
+                        : peopleHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
+                  />
+                </ShadowButton>
+              }
+            />
+          )}
 
           {advancedButton && (
             <ShadowButton

@@ -2,6 +2,7 @@ import Button from 'components/Buttons/Button';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
 import {
   CV_GRAY,
+  CV_GRAY_LIGHT,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_WARM,
@@ -12,7 +13,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
-const { RV_RTL } = window || {};
+const { RV_RTL, RVDic } = window || {};
 
 const data = [
   { title: 'درس آموخته سنجه محور', count: 13 },
@@ -82,7 +83,7 @@ const SideItemSelection = ({
 
   return (
     <Container>
-      <div>
+      <SideContent>
         <div
           onMouseEnter={() => setIsDropDownHovered(true)}
           onMouseLeave={() => setIsDropDownHovered(false)}
@@ -144,7 +145,19 @@ const SideItemSelection = ({
             onDropDownOpen={setIsDropDownOpen}
           />
         </div>
-        <PerfectScrollbar style={{ maxHeight: '40vh' }}>
+        <PerfectScrollbar
+          style={{ maxHeight: '60vh', height: '60%' }}
+          containerRef={(ref) => {
+            if (ref) {
+              ref._getBoundingClientRect = ref.getBoundingClientRect;
+
+              ref.getBoundingClientRect = () => {
+                const original = ref._getBoundingClientRect();
+
+                return { ...original, height: Math.round(original.height) };
+              };
+            }
+          }}>
           {data.map((x) => (
             <ClassItem
               onClick={onClassClick}
@@ -155,8 +168,8 @@ const SideItemSelection = ({
             />
           ))}
         </PerfectScrollbar>
-      </div>
-      <div>
+      </SideContent>
+      <div style={{ marginTop: '2rem' }}>
         {checkedList?.length > 0 && (
           <ChoosedItems
             onClick={onShowSelectedItems}
@@ -168,7 +181,7 @@ const SideItemSelection = ({
             <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>
         )}
-        <Button type={'primary'}>{'ثبت ۲ ایتم انتخاب شده'}</Button>
+        <Button type={'primary'}>{RVDic.Confirm}</Button>
       </div>
     </Container>
   );
@@ -183,7 +196,8 @@ const Container = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin: 0rem 1rem 0rem 1rem;
-  padding: 1rem 0 1rem 0rem;
+  padding: 1rem 1rem 1rem 1rem;
+  background-color: ${CV_GRAY_LIGHT};
 `;
 const ChoosedItems = styled.div`
   padding: 0.6rem 1rem 0.6rem 1rem;
@@ -206,4 +220,9 @@ const Badge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+const SideContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;

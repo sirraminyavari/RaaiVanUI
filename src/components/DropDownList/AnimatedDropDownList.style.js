@@ -2,7 +2,7 @@
  * styled-components related to @link AnimatedDropDownList.
  */
 import ArrowDown from 'components/Icons/ArrowDown';
-import { CV_WHITE } from 'constant/CssVariables';
+import { CV_WHITE, TCV_VERY_SOFT } from 'constant/CssVariables';
 import styled, { css, keyframes } from 'styled-components';
 
 const { RV_Float, RV_RTL } = window;
@@ -146,6 +146,9 @@ export const Maintainer = styled.button`
   min-height: 2.5rem;
   justify-content: space-between;
   width: 100%;
+  :hover {
+    background-color: ${TCV_VERY_SOFT};
+  }
 `;
 export const Label = styled.div`
   color: ${({ color }) => color};

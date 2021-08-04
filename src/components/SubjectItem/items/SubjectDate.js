@@ -14,6 +14,6 @@ const SubjectDate = ({ date, liteMode }) => {
 export default SubjectDate;
 
 const Date = styled.div`
-  font-size: ${({ liteMode }) => liteMode && '0.5rem'};
+  font-size: ${({ liteMode }) => liteMode && '0.8rem'};
   /* color: #707070; */
 `;
