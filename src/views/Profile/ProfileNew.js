@@ -7,7 +7,6 @@ import {
   USER_CUSTOMIZATION_PATH,
   USER_PATH,
   USER_SECURITY_PATH,
-  USER_WITHID_PATH,
 } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
 import profileRoutes from 'routes/MainRoutes/Profile.routes';
@@ -15,13 +14,30 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const { setSidebarContent } = themeSlice.actions;
 
-const ProfileNew = ({ route }) => {
+const ProfileNew = (props) => {
+  const { route } = props;
   const dispatch = useDispatch();
+
+  const userId = props?.match?.params?.uid;
+  const pathName = props?.location?.pathname;
+
+  const isProfileOwner = route?.IsOwnPage;
+  const isValidProfilePath = [
+    USER_SECURITY_PATH,
+    USER_CUSTOMIZATION_PATH,
+  ].includes(pathName);
+
+  // console.log(isProfileOwner);
 
   const switchProfileRoutes = (
     <Switch>
       {profileRoutes.map((PR, key) => {
         const { exact, path, component: Component } = PR;
+
+        if (!!userId && !isValidProfilePath && isProfileOwner) {
+          return <Redirect key={key} to={USER_PATH} />;
+        }
+
         return (
           <Route
             key={key}
@@ -31,27 +47,32 @@ const ProfileNew = ({ route }) => {
           />
         );
       })}
-      <Redirect to={USER_WITHID_PATH} />;
     </Switch>
   );
 
   useEffect(() => {
-    dispatch(
-      setSidebarContent({
-        current: PROFILE_CONTENT,
-        prev: MAIN_CONTENT,
-      })
-    );
+    if (isProfileOwner) {
+      dispatch(
+        setSidebarContent({
+          current: PROFILE_CONTENT,
+          prev: MAIN_CONTENT,
+        })
+      );
+    } else {
+      dispatch(
+        setSidebarContent({
+          current: MAIN_CONTENT,
+          prev: PROFILE_CONTENT,
+        })
+      );
+    }
 
     return () => {
-      //! If user still is on profile section, Don't change the sidebar content.
+      //! If user still is on auth profile section, Don't change the sidebar content.
       if (
-        [
-          USER_PATH,
-          USER_WITHID_PATH,
-          USER_SECURITY_PATH,
-          USER_CUSTOMIZATION_PATH,
-        ].includes(window.location.pathname)
+        [USER_PATH, USER_CUSTOMIZATION_PATH, USER_SECURITY_PATH].includes(
+          window?.location?.pathname
+        )
       )
         return;
 

@@ -32,7 +32,7 @@ const SidebarRoutes = [
   {
     path: USER_WITHID_PATH,
     name: USER_NAME,
-    exact: true,
+    exact: false,
     hasNavSide: true,
     component: ProfileNew,
   },
