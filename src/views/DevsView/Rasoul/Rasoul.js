@@ -40,8 +40,8 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { Link } from 'react-router-dom';
 import {
   USER_CUSTOMIZATION_PATH,
-  USER_MAIN_PATH,
   USER_SECURITY_PATH,
+  USER_WITHID_PATH,
 } from 'constant/constants';
 
 //! Resizable
@@ -258,7 +258,7 @@ const RasoulView = () => {
     <div>
       <div style={{ textAlign: 'center', fontSize: '1.2rem' }}>
         <Link
-          to={USER_MAIN_PATH}
+          to={USER_WITHID_PATH}
           style={{
             margin: '0 1rem',
             display: 'inline-block',

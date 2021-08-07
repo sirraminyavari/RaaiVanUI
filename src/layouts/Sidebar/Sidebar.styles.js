@@ -557,7 +557,7 @@ export const PanelListWrapper = styled.div`
   width: 100%;
   user-select: none;
 
-  .active {
+  .avtive-profile-navlink {
     background-color: rgba(43, 56, 143, 0.4);
   }
 `;

@@ -1,4 +1,4 @@
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
@@ -11,13 +11,14 @@ import {
   PROFILE_SECURITY,
   PROFILE_USER,
   USER_CUSTOMIZATION_PATH,
-  USER_MAIN_PATH,
   USER_SECURITY_PATH,
+  USER_PATH,
 } from 'constant/constants';
 import iconList from './iconList';
 
 const ProfileContent = () => {
   const history = useHistory();
+  const location = useLocation();
   const { RV_RevFloat, RVDic, RVGlobal } = useWindow();
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
@@ -27,7 +28,7 @@ const ProfileContent = () => {
       id: '1',
       title: 'اطلاعات کاربری',
       icon: PROFILE_USER,
-      linkTo: USER_MAIN_PATH,
+      linkTo: USER_PATH,
     },
     { id: '2', title: RVDic.Resume, icon: PROFILE_RESUME, linkTo: '#' },
     {
@@ -46,7 +47,7 @@ const ProfileContent = () => {
       id: '5',
       title: 'ماموریت ها',
       icon: PROFILE_MISSIONS,
-      linkTo: USER_MAIN_PATH,
+      linkTo: USER_PATH,
     },
   ];
 
@@ -74,8 +75,13 @@ const ProfileContent = () => {
       </Styled.SidebarTitle>
       <Styled.PanelListWrapper>
         {profileItems?.filter(hasResumeItem)?.map((item, key) => {
+          const isActiveNav = location.pathname === item.linkTo;
           return (
-            <Styled.SettingItemWrapper as={NavLink} to={item?.linkTo} key={key}>
+            <Styled.SettingItemWrapper
+              className={isActiveNav && 'avtive-profile-navlink'}
+              as={NavLink}
+              to={item?.linkTo}
+              key={key}>
               {iconList[item?.icon]({ size: 20 })}
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>

@@ -6,25 +6,27 @@ import TabItem from './TabItem';
 const DEFAULT_TAB = 'all-classes';
 // const MORE_TAB = 'more-classes';
 
-const items = [
-  { id: '1', title: 'پروپوزال', count: 86 },
-  { id: '2', title: 'تکنولوژی', count: 45 },
-  { id: '3', title: 'درس آموخته حادثه محور', count: 88 },
-  { id: '4', title: 'نامه‌های صادره', count: 32 },
-  { id: '5', title: 'درس آموخته سنجه محور', count: 117 },
-  { id: '6', title: 'نامه‌های وارده', count: 22 },
-  { id: '7', title: 'نامه‌های وارده', count: 22 },
-  { id: '8', title: 'نامه‌های وارده', count: 22 },
-  { id: '9', title: 'نامه‌های وارده', count: 22 },
-  { id: '10', title: 'نامه‌های وارده', count: 22 },
-  { id: '11', title: 'نامه‌های وارده', count: 22 },
-];
-
-const LastTopicsTabs = () => {
+const LastTopicsTabs = ({ relatedNodes }) => {
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
 
-  const sortedItems = items.slice().sort((a, b) => b.count - a.count);
+  const allNodesCount = relatedNodes?.NodeTypes?.reduce(
+    (acc, prev) => acc + prev?.Count,
+    0
+  );
+
+  const sortedNodes = relatedNodes?.NodeTypes?.slice().sort(
+    (a, b) => b.Count - a.Count
+  );
+
+  const moreNodesCount = sortedNodes
+    ?.filter((node, index) => {
+      if (index < 3) return false;
+      return true;
+    })
+    ?.reduce((acc, prev) => acc + prev?.Count, 0);
+
+  console.log(moreNodesCount);
 
   const handleMoreTopics = () => {
     setIsMoreShown((v) => !v);
@@ -32,7 +34,7 @@ const LastTopicsTabs = () => {
   };
 
   const handleItemClick = (item) => {
-    setActiveTab(item.id);
+    setActiveTab(item?.NodeTypeID);
     //! API call
   };
 
@@ -40,38 +42,40 @@ const LastTopicsTabs = () => {
     <div>
       <Styled.TabsContainer>
         <TabItem
-          item={{ title: 'همه کلاس ها', count: 500 }}
+          item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
           isActive={activeTab === DEFAULT_TAB}
           noImage
           onTabClick={() => setActiveTab(DEFAULT_TAB)}
         />
-        {sortedItems.map((item, index) => {
+        {sortedNodes?.map((item, index) => {
           if (index > 2) return null;
           return (
             <TabItem
               item={item}
-              key={index}
-              isActive={activeTab === item.id}
+              key={item?.NodeTypeID}
+              isActive={activeTab === item?.NodeTypeID}
               onTabClick={() => handleItemClick(item)}
             />
           );
         })}
-        <TabItem
-          item={{ title: 'مشاهده همه', count: 300 }}
-          isActive={isMoreShown}
-          hasMore
-          onTabClick={handleMoreTopics}
-        />
+        {!!moreNodesCount && (
+          <TabItem
+            item={{ NodeType: 'مشاهده همه', Count: moreNodesCount }}
+            isActive={isMoreShown}
+            hasMore
+            onTabClick={handleMoreTopics}
+          />
+        )}
       </Styled.TabsContainer>
       {/* <PerfectScrollbar  style={{ maxHeight: '10.4rem'}}> */}
       <Styled.MoreTopicsContainer isOpen={isMoreShown}>
-        {sortedItems.map((item, index) => {
+        {sortedNodes?.map((item, index) => {
           if (index < 3) return null;
           return (
             <TabItem
               item={item}
-              key={index}
-              isActive={activeTab === item.id}
+              key={item?.NodeTypeID}
+              isActive={activeTab === item?.NodeTypeID}
               onTabClick={() => handleItemClick(item)}
             />
           );

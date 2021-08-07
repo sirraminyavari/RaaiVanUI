@@ -32,6 +32,7 @@ const TextType = (props) => {
   const [or, setOr] = useState(!!value ? value.Or : true);
   const [resetValue, setResetValue] = useState(null);
   const { GlobalUtilities } = useWindow();
+  console.log(items);
 
   const handleOnItemSelect = (items) => {
     setItems(items);
@@ -49,7 +50,7 @@ const TextType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const textItems = items.map((item) => encodeBase64(item));
+    const textItems = items.map((item) => encodeBase64(item.value));
     const JSONValue = {
       TextItems: textItems,
       Exact: exact,

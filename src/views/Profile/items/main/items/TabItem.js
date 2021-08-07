@@ -3,6 +3,9 @@ import Badge from 'components/Badge/Badge';
 import { CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import ShowMoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { decodeBase64 } from 'helpers/helpers';
+
+const BADGE_LIMIT_COUNT = 100;
 
 const TabItem = (props) => {
   const { isActive, noImage, hasMore, item, onTabClick } = props;
@@ -26,18 +29,19 @@ const TabItem = (props) => {
       onClick={onTabClick}>
       {getIcon()}
       <Styled.TabItemTitle isActive={isActive}>
-        {item?.title}
+        {decodeBase64(item?.NodeType)}
       </Styled.TabItemTitle>
       <Tooltip
-        tipId={`profile-tab-${item?.title}`}
+        tipId={`profile-tab-${decodeBase64(item?.NodeType)}`}
         effect="solid"
         place="top"
-        ignoreTip={item?.title !== 'همه کلاس ها'}
+        disable={item?.Count < BADGE_LIMIT_COUNT}
+        ignoreTip={decodeBase64(item?.NodeType) !== 'همه قالب ها'}
         className="tab-item-tooltip"
-        renderContent={() => item?.count}>
+        renderContent={() => item?.Count}>
         <Badge
-          value={item?.count}
-          limit={100}
+          value={item?.Count}
+          limit={BADGE_LIMIT_COUNT}
           style={{
             backgroundColor: isActive ? CV_WHITE : TCV_DEFAULT,
             fontSize: '0.8rem',

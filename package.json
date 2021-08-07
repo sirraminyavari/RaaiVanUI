@@ -19,7 +19,6 @@
     "dompurify": "^2.2.6",
     "downshift": "^6.1.0",
     "draft-js": "^0.11.7",
-    "get-orientation": "^1.1.2",
     "http-proxy-middleware": "^1.0.6",
     "jalali-moment": "^3.3.10",
     "jquery": "^1.12.4",

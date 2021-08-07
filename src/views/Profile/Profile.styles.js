@@ -23,7 +23,7 @@ import {
   IGNORE_RADIUS_RIGHT,
 } from 'constant/constants';
 import sidebarPattern from 'assets/images/pattern_soft.svg';
-import Clouds from 'assets/images/clouds.png';
+// import Clouds from 'assets/images/clouds.png';
 import {
   CV_DISTANT,
   CV_FREEZED,
@@ -34,7 +34,7 @@ import {
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 
-const { RV_Float, RV_RevFloat, RV_RTL } = window;
+const { RV_Float, RV_RevFloat, RV_RTL, GlobalUtilities } = window;
 
 export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
@@ -240,6 +240,7 @@ export const PreviewSelectionWrapper = styled.div.attrs({
   transition: all 0.7s ease;
 `;
 
+const defaultCover = GlobalUtilities.icon('DefaultCoverPhoto.jpg');
 export const ProfileHeader = styled.div.attrs({
   className: `${BO_RADIUS_HALF} ${IGNORE_RADIUS_BOTTOM}`,
 })`
@@ -248,7 +249,8 @@ export const ProfileHeader = styled.div.attrs({
   width: 100%;
   left: 0;
   height: 12rem;
-  background-image: url(${Clouds});
+  background-image: url(${({ coverImage }) => coverImage || defaultCover});
+  background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
 
@@ -339,6 +341,7 @@ export const ProfileInfoWrapper = styled.div.attrs({
   // position: -webkit-sticky;
   // top: 6rem;
   padding: 1rem 1.5rem;
+  min-height: 100vh;
 `;
 
 export const UsenameWrapper = styled.div.attrs({
@@ -346,6 +349,7 @@ export const UsenameWrapper = styled.div.attrs({
 })`
   font-size: 1.5rem;
   font-weight: 500;
+  margin-bottom: 2rem;
 `;
 
 export const SectionTitle = styled.div.attrs({
@@ -457,8 +461,10 @@ export const TabItemContainer = styled.div.attrs((props) => ({
   .tab-item-tooltip {
     border-radius: 50%;
     width: auto;
+    min-width: 2.2rem;
     padding: 0.4rem 0.35rem;
     font-size: 0.9rem;
+    text-align: center;
   }
 `;
 

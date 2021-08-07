@@ -87,9 +87,10 @@ export const REPORTS_PATH = getURL('Reports');
 export const REPORTS_NAME = 'reports';
 export const USER_PATH = getURL('User');
 export const USER_WITHID_PATH = getURL('User', { UserID: ':uid?' });
-export const USER_MAIN_PATH = '/profile/main';
-export const USER_SECURITY_PATH = '/profile/security';
-export const USER_CUSTOMIZATION_PATH = '/profile/customization';
+export const USER_SECURITY_PATH = getURL('User', { UserID: 'security' });
+export const USER_CUSTOMIZATION_PATH = getURL('User', {
+  UserID: 'customization',
+});
 export const USER_NAME = 'profile';
 export const CLASSES_PATH = getURL('Classes');
 export const CLASSES_WITHID_PATH = getURL('Classes', { NodeTypeID: ':id' });

@@ -8,7 +8,7 @@ const ProfileInfoItem = (props) => {
   const [infoText, setInfoText] = useState(text);
 
   const handleEditItem = (text) => {
-    console.log(text);
+    // console.log(text);
     setInfoText(text);
   };
 
@@ -17,7 +17,7 @@ const ProfileInfoItem = (props) => {
       <div>
         <Icon size={20} color={TCV_DEFAULT} />
       </div>
-      {!isAuthUser ? (
+      {isAuthUser ? (
         <InlineEditInput
           onSetText={handleEditItem}
           text={infoText}
