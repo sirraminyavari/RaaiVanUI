@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
@@ -9,12 +9,11 @@ import LastTopics from './items/LastTopics';
 import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
 import CropModal from './items/CropModal';
 // import LastPosts from './items/LastPosts';
+import { getRelatedNodesAbstract } from 'apiHelper/apiFunctions';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const ProfileMain = (props) => {
-  const {
-    User,
-    //  IsOwnPage
-  } = props?.route;
+  const { User, IsOwnPage } = props?.route;
   const {
     // FirstName,
     // LastName,
@@ -24,7 +23,7 @@ const ProfileMain = (props) => {
     ProfileImageURL,
     HighQualityImageURL,
   } = User;
-  // console.log(User);
+  // console.log(User, IsOwnPage);
 
   const uploadFileRef = useRef();
   const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
@@ -34,6 +33,9 @@ const ProfileMain = (props) => {
     aspect: 1 / 1,
     imgSrc: HighQualityImageURL,
   });
+
+  const [relatedNodes, setRelatedNodes] = useState({});
+  const [isFetchingRelatedNodes, setIsFetchingRelatedNodes] = useState(true);
 
   const handleAvatarEdit = () => {
     setCropModal((m) => ({ ...m, isShown: true }));
@@ -45,7 +47,7 @@ const ProfileMain = (props) => {
 
   const handleCloseModal = () => {
     setCropModal((m) => ({ ...m, isShown: false }));
-    console.log(ProfileImageURL);
+    // console.log(ProfileImageURL);
   };
 
   //! Fires whenever user chooses an image.
@@ -61,22 +63,38 @@ const ProfileMain = (props) => {
     // }
   };
 
+  useEffect(() => {
+    getRelatedNodesAbstract(UserID)
+      .then((res) => {
+        setIsFetchingRelatedNodes(false);
+        console.log(res);
+        setRelatedNodes(res);
+      })
+      .catch((err) => {
+        setIsFetchingRelatedNodes(false);
+        console.log(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      <CropModal
-        cropModal={cropModal}
-        handleCloseModal={handleCloseModal}
-        setCroppedImage={setCroppedImage}
-        id={UserID}
-      />
+      {!!HighQualityImageURL && (
+        <CropModal
+          cropModal={cropModal}
+          handleCloseModal={handleCloseModal}
+          setCroppedImage={setCroppedImage}
+          id={UserID}
+        />
+      )}
       <Styled.ProfileHeader coverImage={CoverPhotoURL}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={croppedImage}
+            userImage={croppedImage + `?timestamp: ${new Date()}`}
             radius={95}
             className="profile-avatar"
           />
-          {!!HighQualityImageURL && (
+          {!!HighQualityImageURL && IsOwnPage && (
             <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
               <PencilIcon color="#fff" size={18} />
             </Styled.AvatarPencilWrapper>
@@ -91,10 +109,17 @@ const ProfileMain = (props) => {
         </Styled.HeaderPencilWrapper>
       </Styled.ProfileHeader>
       <Styled.MainWrapper>
-        <UserInfos />
+        <UserInfos user={User} isAuthUser={IsOwnPage} />
         <div>
-          <HeaderStatus />
-          <LastTopics />
+          <HeaderStatus
+            user={User}
+            relatedNodesCount={relatedNodes?.TotalRelationsCount}
+          />
+          {isFetchingRelatedNodes ? (
+            <LogoLoader />
+          ) : (
+            <LastTopics relatedNodes={relatedNodes} />
+          )}
           {/* <LastPosts /> */}
         </div>
       </Styled.MainWrapper>

@@ -2,13 +2,6 @@ import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
-import {
-  CROP_ICON,
-  DOCS_API,
-  GET_VARIABLE,
-  RV_API,
-  SET_VARIABLE,
-} from 'constant/apiConstants';
 
 /**
  * @description A function that accepts some funcs as params and then
@@ -217,95 +210,5 @@ export const getCaptchaToken = async () => {
         resolve(token);
       });
     });
-  });
-};
-
-/**
- * @description Get variable.
- *  @param {string} variableName -The name of the variable that we want to fetch.
- */
-export const getVariable = (variableName) => {
-  const getVariableAPI = API_Provider(RV_API, GET_VARIABLE);
-
-  return new Promise((resolve, reject) => {
-    try {
-      getVariableAPI.fetch(
-        { Name: variableName, ApplicationIndependent: true },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Set variable.
- *  @param {String} variableName -The name of the variable that we want to set.
- *  @param {Object} variableValue -The value of the variable that we want to set.
- */
-export const setVariable = (variableName, variableValue) => {
-  const setVariableAPI = API_Provider(RV_API, SET_VARIABLE);
-
-  return new Promise((resolve, reject) => {
-    try {
-      setVariableAPI.fetch(
-        {
-          Name: variableName,
-          Value: decodeBase64(JSON.stringify(variableValue)),
-          ApplicationIndependent: true,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Crop icon.
- * @param {String} id
- * @param {String} type
- * @param {Number} x
- * @param {Number} y
- * @param {Number} width
- * @param {Number} height
- * @returns Promise.
- */
-export const cropIcon = (id, type, x, y, width, height) => {
-  const cropIconAPI = new APIHandler(DOCS_API, CROP_ICON);
-
-  return new Promise((resolve, reject) => {
-    try {
-      cropIconAPI.fetch(
-        {
-          IconID: id,
-          Type: type,
-          X: x,
-          Y: y,
-          Width: width,
-          Height: height,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
   });
 };

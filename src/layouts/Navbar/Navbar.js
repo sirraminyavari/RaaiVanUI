@@ -142,7 +142,7 @@ const Navbar = () => {
           }}>
           <Avatar
             radius={35}
-            userImage={authUser?.ProfileImageURL}
+            userImage={authUser?.ProfileImageURL + `?timestamp: ${new Date()}`}
             style={{ cursor: 'pointer', minWidth: '2.5rem' }}
           />
         </Tooltip>

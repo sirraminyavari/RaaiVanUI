@@ -17,7 +17,7 @@ const ProfileInfoItem = (props) => {
       <div>
         <Icon size={20} color={TCV_DEFAULT} />
       </div>
-      {!isAuthUser ? (
+      {isAuthUser ? (
         <InlineEditInput
           onSetText={handleEditItem}
           text={infoText}

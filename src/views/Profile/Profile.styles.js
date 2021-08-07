@@ -341,6 +341,7 @@ export const ProfileInfoWrapper = styled.div.attrs({
   // position: -webkit-sticky;
   // top: 6rem;
   padding: 1rem 1.5rem;
+  min-height: 100vh;
 `;
 
 export const UsenameWrapper = styled.div.attrs({
@@ -348,6 +349,7 @@ export const UsenameWrapper = styled.div.attrs({
 })`
   font-size: 1.5rem;
   font-weight: 500;
+  margin-bottom: 2rem;
 `;
 
 export const SectionTitle = styled.div.attrs({
@@ -459,8 +461,10 @@ export const TabItemContainer = styled.div.attrs((props) => ({
   .tab-item-tooltip {
     border-radius: 50%;
     width: auto;
+    min-width: 2.2rem;
     padding: 0.4rem 0.35rem;
     font-size: 0.9rem;
+    text-align: center;
   }
 `;
 

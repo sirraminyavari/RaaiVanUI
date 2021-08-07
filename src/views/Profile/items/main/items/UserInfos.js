@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import ProfileInfoItem from './ProfileInfoItem';
 import InfoIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
@@ -9,37 +10,90 @@ import BriefcaseIcon from 'components/Icons/BriefcaseIcon/BriefcaseIcon';
 import AdressMapIcon from 'components/Icons/AddressMapIcon/AddressMap';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
+import { getUser } from 'apiHelper/apiFunctions';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
-const ABOUT_ME_TEXT =
-  'فیلد درباره من، اگه ممکنه به صورت چند خطی دربیاد در تعداد کاراکتر بالا. هم موقع ادیت و هم موقع نمایش که با اسم تداخل نداشته باشه';
-
-const UserInfos = () => {
-  const { RVGlobal, RVDic } = useWindow();
-  const { FirstName, LastName, JobTitle } = RVGlobal?.CurrentUser;
+const UserInfos = (props) => {
+  const [userInfos, setUserInfos] = useState({});
+  const [isFetchingInfos, setIsFetchingInfos] = useState(true);
+  const { user, isAuthUser } = props;
+  const {
+    // RVGlobal,
+    RVDic,
+  } = useWindow();
+  const { FirstName, LastName, UserID } = user;
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
+
+  useEffect(() => {
+    getUser(UserID)
+      .then((res) => {
+        // console.log(res);
+        setUserInfos(res);
+        setIsFetchingInfos(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsFetchingInfos(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Styled.ProfileInfoWrapper>
       <Styled.UsenameWrapper>{fullName}</Styled.UsenameWrapper>
-      <ProfileInfoItem
-        multiline
-        placeholder="درباره..."
-        text={ABOUT_ME_TEXT}
-        icon={InfoIcon}
-      />
-      <Styled.SectionTitle>راه های ارتباطی</Styled.SectionTitle>
-      <ProfileInfoItem placeholder="شماره موبایل" text="" icon={MobileIcon} />
-      <ProfileInfoItem placeholder={RVDic.Email} text="" icon={MailIcon} />
-      <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
-      <ProfileInfoItem placeholder="نام سازمان" text="" icon={Buldingicon} />
-      <ProfileInfoItem placeholder="نام دپارتمان" text="" icon={SiteMapIcon} />
-      <ProfileInfoItem
-        placeholder="عنوان شغلی"
-        text={decodeBase64(JobTitle)}
-        icon={BriefcaseIcon}
-      />
-      <ProfileInfoItem placeholder="نام شهر" text="" icon={AdressMapIcon} />
+
+      {isFetchingInfos ? (
+        <LogoLoader />
+      ) : (
+        <>
+          <ProfileInfoItem
+            multiline
+            isAuthUser={isAuthUser}
+            placeholder="درباره..."
+            text=""
+            icon={InfoIcon}
+          />
+          <Styled.SectionTitle>راه های ارتباطی</Styled.SectionTitle>
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder="شماره موبایل"
+            text={decodeBase64(userInfos?.PhoneNumbers?.[0]?.PhoneNumber)}
+            icon={MobileIcon}
+          />
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder={RVDic.Email}
+            text={decodeBase64(userInfos?.Emails?.[0]?.Email)}
+            icon={MailIcon}
+          />
+          <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder="نام سازمان"
+            text=""
+            icon={Buldingicon}
+          />
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder="نام دپارتمان"
+            text=""
+            icon={SiteMapIcon}
+          />
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder="عنوان شغلی"
+            text={decodeBase64(userInfos?.JobTitle)}
+            icon={BriefcaseIcon}
+          />
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder="نام شهر"
+            text=""
+            icon={AdressMapIcon}
+          />
+        </>
+      )}
     </Styled.ProfileInfoWrapper>
   );
 };

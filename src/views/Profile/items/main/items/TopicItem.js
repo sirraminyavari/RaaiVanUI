@@ -58,7 +58,7 @@ const defaultDropDownLabel = {
   percentage: STEP_4,
 };
 
-const TopicItem = () => {
+const TopicItem = ({ item }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
 
@@ -90,7 +90,7 @@ const TopicItem = () => {
   return (
     <Styled.TopicItemWrapper>
       <Styled.TopicItemIconWrapper>
-        <img width={50} src="../../images/Preview.png" alt="topic-item-logo" />
+        <img width={50} src={item?.IconURL} alt="topic-item-logo" />
         <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395/09/06</span>
       </Styled.TopicItemIconWrapper>
       <Styled.TopicItemContentWrapper>
@@ -124,7 +124,11 @@ const TopicItem = () => {
               arrowIconColorClass: `${TC_DEFAULT}`,
             }}
           />
-          <Avatar color="#333" />
+          <Avatar
+            color="#333"
+            style={{ minWidth: '2.5rem' }}
+            userImage={item?.Creator?.ProfileImageURL}
+          />
         </Styled.TopicItemContentActions>
       </Styled.TopicItemContentWrapper>
     </Styled.TopicItemWrapper>

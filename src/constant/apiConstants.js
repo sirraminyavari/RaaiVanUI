@@ -42,6 +42,13 @@ export const GET_APPLICATION_USERS = 'GetApplicationUsers';
  */
 export const INVITE_USER = 'InviteUser';
 
+/**
+ * @description 'GetUser'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_USER = 'GetUser';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
@@ -184,6 +191,31 @@ export const SET_NODE_TYPE_ORDER = 'SetNodeTypesOrder';
  * @class 'CNAPI'
  */
 export const RECOVER_NODE_TYPE = 'RecoverNodeType';
+/**
+ * @description 'GetIntellectualPropertiesCount'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_INTELLECTUAL_PROPERTIES_COUNT =
+  'GetIntellectualPropertiesCount';
+/**
+ * @description 'GetRelatedNodesAbstract'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_RELATED_NODES_ABSTRACT = 'GetRelatedNodesAbstract';
+/**
+ * @description 'GetNodes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODES = 'GetNodes';
+/**
+ * @description 'GetNodeInfo'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODE_INFO = 'GetNodeInfo';
 
 //* #################################
 //* ############ NotificationsAPI ########
