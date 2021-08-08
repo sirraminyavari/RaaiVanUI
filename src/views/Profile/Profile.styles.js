@@ -32,6 +32,7 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
+  TCV_WARM,
 } from 'constant/CssVariables';
 
 const { RV_Float, RV_RevFloat, RV_RTL, GlobalUtilities } = window;
@@ -524,6 +525,11 @@ export const TopicItemIconWrapper = styled.div`
   height: 80%;
 `;
 
+export const TopicItemCreationDate = styled.span`
+  font-size: 0.7rem;
+  color: ${CV_GRAY};
+`;
+
 export const TopicItemContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -532,7 +538,7 @@ export const TopicItemContentWrapper = styled.div`
   height: 100%;
 `;
 
-export const TopicItemContentTitle = styled.div`
+export const TopicItemTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -540,6 +546,12 @@ export const TopicItemContentTitle = styled.div`
   width: 100%;
   height: 100%;
   padding: 0 1rem;
+`;
+
+export const TopicItemTitle = styled.span`
+  font-size: 1rem;
+  font-weight: 500;
+  color: ${TCV_WARM};
 `;
 
 export const TopicItemContentActions = styled.div`

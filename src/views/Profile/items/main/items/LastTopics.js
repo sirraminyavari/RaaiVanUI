@@ -9,6 +9,7 @@ import TopicItem from './TopicItem';
 import { API_Provider } from 'helpers/helpers';
 import { CN_API, GET_NODES, GET_NODE_INFO } from 'constant/apiConstants';
 import EmptyState from 'components/EmptyState/EmptyState';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const getNodesAPI = API_Provider(CN_API, GET_NODES);
 const getNodeInfoAPI = API_Provider(CN_API, GET_NODE_INFO);
@@ -61,29 +62,51 @@ const getNodeInfo = (nodeIds = '') => {
 const LastRelatedTopics = ({ relatedNodes }) => {
   const { NodeTypes } = relatedNodes;
   const [nodes, setNodes] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   const firstFive = (node, index) => index < SHOW_NODES_COUNT;
   const firstFiveNodes = nodes?.filter(firstFive);
 
-  useEffect(() => {
-    if (!NodeTypes) return;
-    const nodeTypeIds = NodeTypes?.map((nodeType) => nodeType?.NodeTypeID).join(
-      '|'
-    );
+  const provideNodes = (nodeTypeIds) => {
+    setIsFetching(true);
     getNodes(nodeTypeIds)
       .then((response) => {
         // console.log(response);
         if (!!response?.Nodes && !!response?.Nodes.length) {
           const nodeIds = response?.Nodes.map((node) => node?.NodeID).join('|');
           getNodeInfo(nodeIds)
-            .then((response) => {
-              setNodes(response);
-              console.log(response);
+            .then((restInfo) => {
+              setIsFetching(false);
+              const complementeryNodes = response?.Nodes.map((x) => {
+                const foundedNode = restInfo?.find(
+                  (y) => y.NodeID === x.NodeID
+                );
+                return {
+                  ...x,
+                  ...foundedNode,
+                };
+              });
+              setNodes(complementeryNodes);
+              console.log(complementeryNodes);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              setIsFetching(false);
+              console.log(err);
+            });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsFetching(false);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (!NodeTypes) return;
+    const nodeTypeIds = NodeTypes?.map((nodeType) => nodeType?.NodeTypeID).join(
+      '|'
+    );
+    provideNodes(nodeTypeIds);
   }, [NodeTypes]);
 
   return (
@@ -96,11 +119,17 @@ const LastRelatedTopics = ({ relatedNodes }) => {
           </Link>
         </Button>
       </Styled.Header>
-      <LastTopicTabs relatedNodes={relatedNodes} />
-      {firstFiveNodes?.map((item) => {
-        return <TopicItem key={item.NodeID} item={item} />;
-      })}
-      {!NodeTypes?.length && <EmptyState />}
+      <LastTopicTabs relatedNodes={relatedNodes} provideNodes={provideNodes} />
+      {isFetching ? (
+        <LogoLoader />
+      ) : (
+        <>
+          {firstFiveNodes?.map((item) => {
+            return <TopicItem key={item.NodeID} item={item} />;
+          })}
+          {!NodeTypes?.length && <EmptyState />}
+        </>
+      )}
     </Styled.LastTopicsContainer>
   );
 };
