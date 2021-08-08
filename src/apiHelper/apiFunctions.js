@@ -16,6 +16,10 @@ import {
   SET_PHONE_NUMBER,
   EDIT_PHONE_NUMBER,
   SET_JOB_TITLE,
+  SET_ABOUT_ME,
+  SET_ORGANIZATION,
+  SET_DEPARTMENT,
+  SET_CITY,
 } from 'constant/apiConstants';
 
 /**
@@ -366,6 +370,122 @@ export const setJobTitle = (userId, jobTitle) => {
         {
           UserID: userId,
           JobTitle: encodeBase64(jobTitle),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set about me.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} text -The about me text for user.
+ *  @returns Promise.
+ */
+export const setAboutMe = (userId, text) => {
+  const setAboutMeAPI = API_Provider(USERS_API, SET_ABOUT_ME);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setAboutMeAPI.fetch(
+        {
+          UserID: userId,
+          Text: encodeBase64(text),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set organization.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} organization -The organization that user works in.
+ *  @returns Promise.
+ */
+export const setOrganization = (userId, organization) => {
+  const setOrganizationAPI = API_Provider(USERS_API, SET_ORGANIZATION);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setOrganizationAPI.fetch(
+        {
+          UserID: userId,
+          Organization: encodeBase64(organization),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set department.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} department -The department that user works in.
+ *  @returns Promise.
+ */
+export const setDepartment = (userId, department) => {
+  const setDepartmentAPI = API_Provider(USERS_API, SET_DEPARTMENT);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setDepartmentAPI.fetch(
+        {
+          UserID: userId,
+          Department: encodeBase64(department),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set city.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} city -The city that user lives in.
+ *  @returns Promise.
+ */
+export const setCity = (userId, city) => {
+  const setCityAPI = API_Provider(USERS_API, SET_CITY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setCityAPI.fetch(
+        {
+          UserID: userId,
+          City: encodeBase64(city),
         },
         (response) => {
           resolve(response);

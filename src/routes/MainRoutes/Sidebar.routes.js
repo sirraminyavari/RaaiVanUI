@@ -10,8 +10,11 @@ import {
   USER_WITHID_PATH,
 } from 'constant/constants';
 
-const ProfileNew = lazy(() =>
-  import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/ProfileNew')
+// const ProfileNew = lazy(() =>
+//   import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/ProfileNew')
+// );
+const ProfileOld = lazy(() =>
+  import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/Profile')
 );
 const Reports = lazy(() =>
   import(/* webpackChunkName: "reports-view"*/ 'views/Reports/Reports')
@@ -34,7 +37,7 @@ const SidebarRoutes = [
     name: USER_NAME,
     exact: false,
     hasNavSide: true,
-    component: ProfileNew,
+    component: ProfileOld,
   },
   {
     path: CLASSES_WITHID_PATH,
