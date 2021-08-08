@@ -27,6 +27,18 @@ export const MAX_WIDTH = 400;
 export const MAIN_CONTENT = 'main';
 export const MANAGE_CONTENT = 'manage';
 export const SETTING_CONTENT = 'setting';
+export const PROFILE_CONTENT = 'profile';
+export const SETT_USERS_CONTENT = 'setting-users';
+export const SETT_TEAM_CONTENT = 'setting-team';
+export const SETT_NOTIFS_CONTENT = 'setting-notifs';
+export const SETT_CLASSES_CONTENT = 'setting-classes';
+
+//! Sidebar profile items
+export const PROFILE_USER = 'user';
+export const PROFILE_RESUME = 'resume';
+export const PROFILE_SECURITY = 'security';
+export const PROFILE_CUSTOMIZATION = 'customization';
+export const PROFILE_MISSIONS = 'missions';
 
 //! Paths name
 export const ROOT_PATH = '/';
@@ -74,7 +86,11 @@ export const HELP_NAME = 'help';
 export const REPORTS_PATH = getURL('Reports');
 export const REPORTS_NAME = 'reports';
 export const USER_PATH = getURL('User');
-export const USER_WITHID_PATH = getURL('User', { UserID: ':uid' });
+export const USER_WITHID_PATH = getURL('User', { UserID: ':uid?' });
+export const USER_SECURITY_PATH = getURL('User', { UserID: 'security' });
+export const USER_CUSTOMIZATION_PATH = getURL('User', {
+  UserID: 'customization',
+});
 export const USER_NAME = 'profile';
 export const CLASSES_PATH = getURL('Classes');
 export const CLASSES_WITHID_PATH = getURL('Classes', { NodeTypeID: ':id' });
@@ -128,12 +144,6 @@ export const CONFIG_REMOTE_SERVER_PATH = '/configuration/remoteservers';
 export const CONFIG_REMOTE_SERVER_NAME = 'admin_remoteservers';
 export const CONFIG_HELP_PATH = '/configuration/help';
 export const CONFIG_HELP_NAME = 'admin_help';
-
-//! Sidebar contents
-export const SETT_USERS_CONTENT = 'setting-users';
-export const SETT_TEAM_CONTENT = 'setting-team';
-export const SETT_NOTIFS_CONTENT = 'setting-notifs';
-export const SETT_CLASSES_CONTENT = 'setting-classes';
 
 //! Border radius classes
 /**

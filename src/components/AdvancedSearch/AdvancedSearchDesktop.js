@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import FilterBar from 'components/FilterBar/FilterBar';
+import FilterBar from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
 import useWindow from 'hooks/useWindowContext';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ import {
 import UrgentCreate from './items/UrgentCreate';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
-import { advancedSearchButtonRef } from 'components/FilterBar/FilterBar';
+import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
 
 const { RVDic } = window;
@@ -33,6 +33,7 @@ const AdvanceSearchDesktop = ({
   hierarchy,
   bookmarked,
   itemSelectionMode,
+  isProfile,
   ...props
 }) => {
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
@@ -58,7 +59,7 @@ const AdvanceSearchDesktop = ({
   const [urgentCreate, setUrgentCreate] = useState(false);
 
   // it may be null
-  const [isBookMarked, setIsBookMarked] = useState(bookmarked === true);
+  const [isBookMarked, setIsBookMarked] = useState(null);
 
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
@@ -68,10 +69,18 @@ const AdvanceSearchDesktop = ({
   }));
 
   useEffect(() => {
-    console.log(bookmarked, 'bookmarked');
+    console.log(isBookMarked, 'goh!');
+  }, [isBookMarked]);
+
+  useEffect(() => {
+    // console.log(bookmarked, 'bookmarked');
     if (bookmarked === true) {
+      console.log(bookmarked, 'bookmarked**** ');
+
       setIsBookMarked(bookmarked);
     } else {
+      console.log(bookmarked, 'bookmarked**** _______');
+
       setIsBookMarked(false);
     }
   }, [bookmarked]);
@@ -129,11 +138,12 @@ const AdvanceSearchDesktop = ({
       itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}>
       <ScrollProvider
-        className={'rv-bg-color-light-gray rv-border-radius-half'}
+        className={`${
+          itemSelectionMode ? 'rv-bg-color-white' : 'rv-bg-color-light-gray'
+        } rv-border-radius-half`}
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
         <PerfectScrollbar
-          style={{ maxHeight: '100vh' }}
           containerRef={(ref) => {
             if (ref) {
               ref._getBoundingClientRect = ref.getBoundingClientRect;
@@ -148,8 +158,13 @@ const AdvanceSearchDesktop = ({
           className={'rv-border-radius-half'}>
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
+              itemSelectionMode={itemSelectionMode}
               isAdvancedShow={isAdvancedSearch}
-              className={'rv-bg-color-light-gray rv-border-radius-half'}
+              className={`${
+                itemSelectionMode
+                  ? 'rv-bg-color-white'
+                  : 'rv-bg-color-light-gray'
+              } rv-border-radius-half`}
               fullWidth={isAdvancedSearch}>
               <TopFilter>
                 <FilterBar
@@ -171,11 +186,15 @@ const AdvanceSearchDesktop = ({
                   onByBookmarked={setIsBookMarked}
                   isBookMarked={isBookMarked}
                   itemSelectionMode={itemSelectionMode}
+                  bookmarked={bookmarked}
+                  isProfile={isProfile}
                 />
               </TopFilter>
               <div
                 data-tut={'advanced_search_results'}
-                style={{ padding: '0 2rem 0 2rem' }}
+                style={{
+                  padding: '0 2rem 2rem 2rem',
+                }}
                 {...props}>
                 <UrgentCreate
                   onDismiss={onCreateUrgent}
@@ -192,7 +211,7 @@ const AdvanceSearchDesktop = ({
                   dateFilter: dateFilter,
                   formFilters: formFilters,
                   forceFetch: forceReload,
-                  isByMe: isByMe,
+                  isByMe: isProfile ? true : isByMe,
                   byPeople: byPeople,
                   isBookMarked: isBookMarked,
                   onTotalFound: setTotalFound,

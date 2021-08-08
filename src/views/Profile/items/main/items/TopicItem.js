@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   CV_GRAY,
   CV_RED,
@@ -9,40 +10,42 @@ import {
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
-import PieCircleIcon from 'components/Icons/PieCircle/Circle';
+import PieChart from 'components/PieChart/PieChart';
 import { BG_FREEZED, C_RED, TC_DEFAULT, TC_VERYWARM } from 'constant/Colors';
 import {
   BO_RADIUS_QUARTER,
   IGNORE_RADIUS_LEFT,
   IGNORE_RADIUS_RIGHT,
 } from 'constant/constants';
+import { decodeBase64, getURL } from 'helpers/helpers';
 
 const STEP_1 = 25;
 const STEP_2 = 50;
-const STEP_3 = 73;
-const STEP_4 = 85;
+const STEP_3 = 75;
+const STEP_4 = 90;
+const PIE_SIZE = 1.2;
 
 const options = [
   {
-    icon: <PieCircleIcon percentage={STEP_1} color={CV_RED} />,
+    icon: <PieChart size={PIE_SIZE} percentage={STEP_1} color={CV_RED} />,
     label: 'جلسات توجیهی اولیه با مشتری',
     colorClass: C_RED,
     percentage: STEP_1,
   },
   {
-    icon: <PieCircleIcon percentage={STEP_2} color={TCV_DEFAULT} />,
+    icon: <PieChart size={PIE_SIZE} percentage={STEP_2} color={TCV_DEFAULT} />,
     label: 'در حین رسیدگی',
     colorClass: TC_DEFAULT,
     percentage: STEP_2,
   },
   {
-    icon: <PieCircleIcon percentage={STEP_3} color="orange" />,
+    icon: <PieChart size={PIE_SIZE} percentage={STEP_3} color="orange" />,
     label: ' مراحل پایانی کار',
     colorClass: 'topic-option-orange',
     percentage: STEP_3,
   },
   {
-    icon: <PieCircleIcon percentage={STEP_4} color={TCV_VERYWARM} />,
+    icon: <PieChart size={PIE_SIZE} percentage={STEP_4} color={TCV_VERYWARM} />,
     label: 'در دست اقدام مدیریت',
     colorClass: TC_VERYWARM,
     percentage: STEP_4,
@@ -50,14 +53,14 @@ const options = [
 ];
 
 const defaultDropDownLabel = {
-  icon: <PieCircleIcon percentage={STEP_4} color={TCV_VERYWARM} />,
+  icon: <PieChart size={PIE_SIZE} percentage={STEP_4} color={TCV_VERYWARM} />,
   label: 'در دست اقدام مدیریت',
   value: null,
   color: `${TCV_VERYWARM}`,
   percentage: STEP_4,
 };
 
-const TopicItem = () => {
+const TopicItem = ({ item }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
 
@@ -89,19 +92,22 @@ const TopicItem = () => {
   return (
     <Styled.TopicItemWrapper>
       <Styled.TopicItemIconWrapper>
-        <img width={50} src="../../images/Preview.png" alt="topic-item-logo" />
-        <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395/09/06</span>
+        <img width={50} src={item?.IconURL} alt="topic-item-logo" />
+        <Styled.TopicItemCreationDate>
+          {item?.CreationDate}
+        </Styled.TopicItemCreationDate>
       </Styled.TopicItemIconWrapper>
       <Styled.TopicItemContentWrapper>
-        <Styled.TopicItemContentTitle>
-          <span
-            style={{ fontSize: '1rem', fontWeight: '500', color: TCV_WARM }}>
-            نامه دستورالعمل ساختار شکست پروژه
-          </span>
+        <Styled.TopicItemTitleWrapper
+          as={Link}
+          to={getURL('Node', { NodeID: item?.NodeID })}>
+          <Styled.TopicItemTitle>
+            {decodeBase64(item?.Name)}
+          </Styled.TopicItemTitle>
           <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395960182</span>
-        </Styled.TopicItemContentTitle>
+        </Styled.TopicItemTitleWrapper>
         <Styled.TopicItemContentActions>
-          <AnimatedDropDownList
+          {/* <AnimatedDropDownList
             data={options.filter(
               (opt) => opt.percentage !== selectedItem.percentage
             )}
@@ -122,8 +128,12 @@ const TopicItem = () => {
               buttonClass: `${BG_FREEZED} ${BO_RADIUS_QUARTER} ${IGNORE_RADIUS_RIGHT}`,
               arrowIconColorClass: `${TC_DEFAULT}`,
             }}
+          /> */}
+          <Avatar
+            color="#333"
+            style={{ minWidth: '2.75rem' }}
+            userImage={item?.Creator?.ProfileImageURL}
           />
-          <Avatar color="#333" />
         </Styled.TopicItemContentActions>
       </Styled.TopicItemContentWrapper>
     </Styled.TopicItemWrapper>

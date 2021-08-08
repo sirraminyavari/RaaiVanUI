@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useRef } from 'react';
 import * as Styled from 'views/Teams/Teams.styles';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
@@ -6,21 +6,13 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
+import usePreventScroll from 'hooks/usePreventScroll';
 
 const ExtraUsersList = ({ handleInviteUser, users }) => {
-  const { RV_RTL } = useWindow();
   const containerRef = useRef();
+  const { RV_RTL } = useWindow();
 
-  useLayoutEffect(() => {
-    const containerNode = containerRef.current;
-    const preventScroll = (e) => e.preventDefault();
-    containerNode.addEventListener('mousewheel', preventScroll);
-
-    //! Clean up
-    return () => {
-      containerNode.removeEventListener('mousewheel', preventScroll);
-    };
-  }, []);
+  usePreventScroll(containerRef);
 
   return (
     <div ref={containerRef}>

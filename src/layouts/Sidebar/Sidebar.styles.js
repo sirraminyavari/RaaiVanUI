@@ -555,4 +555,9 @@ export const Divider = styled.hr.attrs({ className: TBO_WARM })`
 
 export const PanelListWrapper = styled.div`
   width: 100%;
+  user-select: none;
+
+  .avtive-profile-navlink {
+    background-color: rgba(43, 56, 143, 0.4);
+  }
 `;

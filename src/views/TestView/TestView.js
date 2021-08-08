@@ -37,18 +37,21 @@ const TestView = () => {
   };
 
   return (
-    <Container>
-      <button onClick={() => setIsVisible(true)}>{'open modal'}</button>
-
-      {/* <MainEditor />  */}
-      <Modal
-        onClose={onClose}
-        contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
-        style={{ padding: '0', height: '100%' }}
-        show={isVisible}>
-        <ItemSelection />
-      </Modal>
-    </Container>
+    <>
+      {/* <RelatedMeItems /> */}
+      <Container>
+        <button onClick={() => setIsVisible(true)}>{'open modal'}</button>
+        <Modal
+          onClose={onClose}
+          contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
+          style={{ padding: '0', height: '50%' }}
+          stick
+          show={isVisible}>
+          <ItemSelection onClose={() => setIsVisible(false)} />
+        </Modal>
+        {/* <MainEditor />  */}
+      </Container>
+    </>
   );
 };
 
@@ -56,5 +59,6 @@ export default TestView;
 
 const Container = styled.div`
   background-color: #fcfcfd;
-  height: 100vh;
+  overflow: hidden;
+  height: 30vh;
 `;

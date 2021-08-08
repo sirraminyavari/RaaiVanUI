@@ -55,10 +55,7 @@ const getNavbarWidth = ({ theme, isMobile }) => {
   `;
 };
 
-export const NavbarContainer = withTheme(styled.div.attrs({
-  className: TBG_WARM,
-})`
-  ${getNavbarWidth}
+const commonNavCss = css`
   height: 4rem;
   position: fixed;
   display: flex;
@@ -66,15 +63,17 @@ export const NavbarContainer = withTheme(styled.div.attrs({
   justify-content: space-between;
   align-items: center;
   top: 0;
-  ${`${RV_RevFloat}: 0;`}
+  ${RV_RevFloat}: 0;
   opacity: 1;
   padding: 0 1.5rem;
   box-shadow: 0 3px 10px #00000029;
-  // transition: all 0.7s ease;
+`;
 
-  // .no-arrow {
-  //   display: none;
-  // }
+export const NavbarContainer = withTheme(styled.div.attrs({
+  className: TBG_WARM,
+})`
+  ${getNavbarWidth}
+  ${commonNavCss}
 
   .avatar-tooltip {
     background-color: ${CV_WHITE} !important;
@@ -84,6 +83,13 @@ export const NavbarContainer = withTheme(styled.div.attrs({
     border-radius: 0.8rem !important;
   }
 `);
+
+export const InitialNavbarContainer = styled.div.attrs({
+  className: TBG_WARM,
+})`
+  width: 100%;
+  ${commonNavCss}
+`;
 
 export const WideScreenMenu = styled.div`
   height: 100%;

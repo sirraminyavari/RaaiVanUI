@@ -42,6 +42,76 @@ export const GET_APPLICATION_USERS = 'GetApplicationUsers';
  */
 export const INVITE_USER = 'InviteUser';
 
+/**
+ * @description 'GetUser'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_USER = 'GetUser';
+
+/**
+ * @description 'EditEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_EMAIL_ADDRESS = 'EditEmailAddress';
+
+/**
+ * @description 'SetEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_EMAIL_ADDRESS = 'SetEmailAddress';
+
+/**
+ * @description 'SetPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PHONE_NUMBER = 'SetPhoneNumber';
+
+/**
+ * @description 'EditPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_PHONE_NUMBER = 'EditPhoneNumber';
+
+/**
+ * @description 'SetJobTitle'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_JOB_TITLE = 'SetJobTitle';
+
+/**
+ * @description 'SetAboutMe'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ABOUT_ME = 'SetAboutMe';
+
+/**
+ * @description 'SetOrganization'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ORGANIZATION = 'SetOrganization';
+
+/**
+ * @description 'SetDepartment'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_DEPARTMENT = 'SetDepartment';
+
+/**
+ * @description 'SetCity'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_CITY = 'SetCity';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
@@ -184,6 +254,31 @@ export const SET_NODE_TYPE_ORDER = 'SetNodeTypesOrder';
  * @class 'CNAPI'
  */
 export const RECOVER_NODE_TYPE = 'RecoverNodeType';
+/**
+ * @description 'GetIntellectualPropertiesCount'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_INTELLECTUAL_PROPERTIES_COUNT =
+  'GetIntellectualPropertiesCount';
+/**
+ * @description 'GetRelatedNodesAbstract'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_RELATED_NODES_ABSTRACT = 'GetRelatedNodesAbstract';
+/**
+ * @description 'GetNodes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODES = 'GetNodes';
+/**
+ * @description 'GetNodeInfo'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODE_INFO = 'GetNodeInfo';
 
 //* #################################
 //* ############ NotificationsAPI ########
@@ -255,3 +350,10 @@ export const DOCS_API = 'DocsAPI';
  * @class 'DocsAPI'
  */
 export const UPLOAD_ICON = 'UploadIcon';
+
+/**
+ * @description 'CropIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const CROP_ICON = 'CropIcon';

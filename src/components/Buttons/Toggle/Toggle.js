@@ -14,6 +14,7 @@ import useToggle from 'hooks/useToggle';
  * @type {Object}
  * @property {function} onToggle - The callback function that fires on toggle.
  * @property {boolean} initialCheck - The initial toggle value.
+ * @property {boolean} disable - If true, button is disabled.
  */
 
 /**
@@ -22,10 +23,11 @@ import useToggle from 'hooks/useToggle';
  * @param {PropType} props -Props that pass to Toggle.
  */
 const ToggleButton = (props) => {
-  const { onToggle, initialCheck, children, ...rest } = props;
+  const { onToggle, initialCheck, children, disable, ...rest } = props;
   const [isOn, setToggle] = useToggle(initialCheck);
 
   const toggle = (e) => {
+    if (!!disable) return;
     setToggle((toggle) => !toggle);
     onToggle && onToggle(e.target.checked);
   };
@@ -50,10 +52,12 @@ const ToggleButton = (props) => {
 ToggleButton.propTypes = {
   onToggle: PropTypes.func,
   initialCheck: PropTypes.bool,
+  disable: PropTypes.bool,
 };
 
 ToggleButton.defaultProps = {
   initialCheck: false,
+  disable: false,
 };
 
 ToggleButton.displayName = 'ToggleButtonComponent';

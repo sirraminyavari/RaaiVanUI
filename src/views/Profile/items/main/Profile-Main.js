@@ -1,85 +1,126 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
+import { useRef, useState, useEffect } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
-import Modal from 'components/Modal/Modal';
-import ImageCropper from './items/ImageCropper';
-import Clouds from 'assets/images/clouds.png';
+import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
+import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
+import CropModal from './items/CropModal';
+// import LastPosts from './items/LastPosts';
+import { getRelatedNodesAbstract } from 'apiHelper/apiFunctions';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
-const selectAuthUser = createSelector(
-  (state) => state.auth,
-  (auth) => auth.authUser
-);
+const ProfileMain = (props) => {
+  const { User, IsOwnPage } = props?.route;
+  const {
+    // FirstName,
+    // LastName,
+    // UserName,
+    UserID,
+    CoverPhotoURL,
+    ProfileImageURL,
+    HighQualityImageURL,
+  } = User;
+  // console.log(User, IsOwnPage);
 
-const ProfileMain = () => {
-  const authUser = useSelector(selectAuthUser);
+  const uploadFileRef = useRef();
+  const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
   const [cropModal, setCropModal] = useState({
     isShown: false,
-    title: '',
+    title: 'برش تصویر پروفایل',
     aspect: 1 / 1,
-    imgSrc: null,
+    imgSrc: HighQualityImageURL,
   });
 
+  const [relatedNodes, setRelatedNodes] = useState({});
+  const [isFetchingRelatedNodes, setIsFetchingRelatedNodes] = useState(true);
+
   const handleAvatarEdit = () => {
-    setCropModal((m) => ({
-      ...m,
-      isShown: true,
-      title: 'Crop avatar',
-      aspect: 1 / 1,
-      imgSrc: authUser?.ProfileImageURL,
-    }));
+    setCropModal((m) => ({ ...m, isShown: true }));
   };
 
   const handleHeaderEdit = () => {
-    setCropModal((m) => ({
-      ...m,
-      isShown: true,
-      title: 'Crop header',
-      aspect: 5 / 1,
-      imgSrc: Clouds,
-    }));
+    uploadFileRef.current.click();
   };
 
   const handleCloseModal = () => {
     setCropModal((m) => ({ ...m, isShown: false }));
+    // console.log(ProfileImageURL);
   };
+
+  //! Fires whenever user chooses an image.
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    console.log(files);
+
+    // if (files.length === 1 && validateImageUpload(files)) {
+    //   uploadImage(event);
+    // } else {
+    //   event.target.value = '';
+    //   console.log('Add one image only');
+    // }
+  };
+
+  useEffect(() => {
+    getRelatedNodesAbstract(UserID)
+      .then((res) => {
+        setIsFetchingRelatedNodes(false);
+        console.log(res);
+        setRelatedNodes(res);
+      })
+      .catch((err) => {
+        setIsFetchingRelatedNodes(false);
+        console.log(err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      <Modal
-        show={cropModal?.isShown}
-        onClose={handleCloseModal}
-        contentWidth="70%"
-        title={cropModal?.title}>
-        <div style={{ widht: '100%', height: '100%', textAlign: 'center' }}>
-          <ImageCropper imgSrc={cropModal?.imgSrc} aspect={cropModal?.aspect} />
-        </div>
-      </Modal>
-      <Styled.ProfileHeader>
+      {!!HighQualityImageURL && (
+        <CropModal
+          cropModal={cropModal}
+          handleCloseModal={handleCloseModal}
+          setCroppedImage={setCroppedImage}
+          id={UserID}
+        />
+      )}
+      <Styled.ProfileHeader coverImage={CoverPhotoURL}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={authUser?.ProfileImageURL}
+            userImage={croppedImage + `?timestamp: ${new Date()}`}
             radius={95}
             className="profile-avatar"
           />
-          <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
-            <PencilIcon color="#fff" size={18} />
-          </Styled.AvatarPencilWrapper>
+          {!!HighQualityImageURL && IsOwnPage && (
+            <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
+              <PencilIcon color="#fff" size={18} />
+            </Styled.AvatarPencilWrapper>
+          )}
         </Styled.ProfileAvatarWrapper>
-        <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
-          <PencilIcon color="#fff" size={18} />
-        </Styled.HeaderPencilWrapper>
+        {/* <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
+          <AddImageIcon color="#fff" size={18} />
+          <HiddenUploadFile
+            ref={uploadFileRef}
+            onFileChange={handleFileSelect}
+          />
+        </Styled.HeaderPencilWrapper> */}
       </Styled.ProfileHeader>
       <Styled.MainWrapper>
-        <UserInfos />
+        <UserInfos user={User} isAuthUser={IsOwnPage} />
         <div>
-          <HeaderStatus />
-          <LastTopics />
+          <HeaderStatus
+            user={User}
+            relatedNodesCount={relatedNodes?.TotalRelationsCount}
+          />
+          {isFetchingRelatedNodes ? (
+            <LogoLoader />
+          ) : (
+            <LastTopics relatedNodes={relatedNodes} />
+          )}
+          {/* <LastPosts /> */}
         </div>
       </Styled.MainWrapper>
     </Styled.ProfileViewContainer>

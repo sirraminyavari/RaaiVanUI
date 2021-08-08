@@ -20,6 +20,8 @@ export const SpanText = styled.span`
   ${activeCss}
   border: none;
   cursor: pointer;
+  text-align: justify;
+  white-space: normal;
 `;
 
 export const Input = styled.input.attrs({
@@ -31,4 +33,17 @@ export const Input = styled.input.attrs({
   border-top: 0;
   border-left: 0;
   border-right: 0;
+`;
+
+export const TextAreaInput = styled.textarea.attrs({
+  className: BO_WHITE,
+})`
+  ${activeCss}
+  // text-align: ${RV_Float};
+  width: 100%;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  text-align: justify;
+  white-space: normal;
 `;
