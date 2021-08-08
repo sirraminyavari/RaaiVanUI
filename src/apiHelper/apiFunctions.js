@@ -1,4 +1,4 @@
-import { API_Provider, decodeBase64 } from 'helpers/helpers';
+import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import {
   CROP_ICON,
   DOCS_API,
@@ -11,6 +11,11 @@ import {
   GET_FAVORITE_NODES_COUNT,
   GET_INTELLECTUAL_PROPERTIES_COUNT,
   GET_RELATED_NODES_ABSTRACT,
+  EDIT_EMAIL_ADDRESS,
+  SET_EMAIL_ADDRESS,
+  SET_PHONE_NUMBER,
+  EDIT_PHONE_NUMBER,
+  SET_JOB_TITLE,
 } from 'constant/apiConstants';
 
 /**
@@ -215,6 +220,152 @@ export const getRelatedNodesAbstract = (id) => {
           InTags: true,
           OutTags: true,
           ParseResults: true,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Edit email address.
+ *  @param {String} emailId -The id of the email.
+ *  @param {String} emailAddress -The address of the email.
+ *  @returns Promise.
+ */
+export const editEmailAddress = (emailId, emailAddress) => {
+  const editEmailAddressAPI = API_Provider(USERS_API, EDIT_EMAIL_ADDRESS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      editEmailAddressAPI.fetch(
+        {
+          EmailID: emailId,
+          Address: encodeBase64(emailAddress),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set email address.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} emailAddress -The address of the email.
+ *  @returns Promise.
+ */
+export const setEmailAddress = (userId, emailAddress) => {
+  const setEmailAddressAPI = API_Provider(USERS_API, SET_EMAIL_ADDRESS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setEmailAddressAPI.fetch(
+        {
+          UserID: userId,
+          Address: encodeBase64(emailAddress),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set phone number.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} phoneNumber -The phone number.
+ *  @returns Promise.
+ */
+export const setPhoneNumber = (userId, phoneNumber) => {
+  const setPhoneNumberAPI = API_Provider(USERS_API, SET_PHONE_NUMBER);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setPhoneNumberAPI.fetch(
+        {
+          UserID: userId,
+          PhoneNumber: encodeBase64(phoneNumber),
+          PhoneNumberType: 'Mobile',
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Edit phone number.
+ *  @param {String} numberId -The id of the phone number.
+ *  @param {String} phoneNumber -The new phone number.
+ *  @returns Promise.
+ */
+export const editPhoneNumber = (numberId, phoneNumber) => {
+  const editPhoneNumberAPI = API_Provider(USERS_API, EDIT_PHONE_NUMBER);
+
+  return new Promise((resolve, reject) => {
+    try {
+      editPhoneNumberAPI.fetch(
+        {
+          NumberID: numberId,
+          PhoneNumber: encodeBase64(phoneNumber),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set phone number.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} jobTitle -The job title of the user.
+ *  @returns Promise.
+ */
+export const setJobTitle = (userId, jobTitle) => {
+  const setJobTitleAPI = API_Provider(USERS_API, SET_JOB_TITLE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setJobTitleAPI.fetch(
+        {
+          UserID: userId,
+          JobTitle: encodeBase64(jobTitle),
         },
         (response) => {
           resolve(response);
