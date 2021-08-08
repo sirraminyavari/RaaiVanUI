@@ -18,6 +18,10 @@ import {
   setPhoneNumber,
   editPhoneNumber,
   setJobTitle,
+  setAboutMe,
+  setCity,
+  setDepartment,
+  setOrganization,
 } from 'apiHelper/apiFunctions';
 
 const UserInfos = (props) => {
@@ -35,7 +39,9 @@ const UserInfos = (props) => {
   const lastEmail = userInfos?.Emails?.at(-1);
   const mainEmailId = userInfos?.MainEmailID;
   const isMainEmail = mainEmailId === lastEmail?.EmailID;
+  const firstPhoneNumber = userInfos?.PhoneNumbers?.at(0);
 
+  //! Get info for user in question.
   useEffect(() => {
     getUser(UserID)
       .then((res) => {
@@ -52,14 +58,16 @@ const UserInfos = (props) => {
 
   //! Edit phone number of the user.
   const handleEditMobile = (mobile) => {
-    // if(){
-
-    // }else{
-
-    // }
-    setPhoneNumber(UserID, mobile)
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
+    if (!!firstPhoneNumber) {
+      const numberId = firstPhoneNumber?.NumberID;
+      editPhoneNumber(numberId, mobile)
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    } else {
+      setPhoneNumber(UserID, mobile)
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    }
   };
 
   //! Edit email address of the user.
@@ -84,6 +92,38 @@ const UserInfos = (props) => {
       .catch((err) => console.log(err));
   };
 
+  //! Edit About me of the user.
+  const handleEditAboutMe = (text) => {
+    // console.log(text);
+    setAboutMe(UserID, text)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
+  //! Edit user city.
+  const handleEditCity = (city) => {
+    // console.log(city);
+    setCity(UserID, city)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
+  //! Edit user Department.
+  const handleEditDepartment = (department) => {
+    // console.log(department);
+    setDepartment(UserID, department)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
+  //! Edit user Organization.
+  const handleEditOrganization = (organization) => {
+    // console.log(organization);
+    setOrganization(UserID, organization)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Styled.ProfileInfoWrapper>
       <Styled.UsenameWrapper>{fullName}</Styled.UsenameWrapper>
@@ -96,14 +136,15 @@ const UserInfos = (props) => {
             multiline
             isAuthUser={isAuthUser}
             placeholder="درباره..."
-            text=""
+            text={decodeBase64(userInfos?.AboutMe)}
             icon={InfoIcon}
+            onEdit={handleEditAboutMe}
           />
           <Styled.SectionTitle>راه های ارتباطی</Styled.SectionTitle>
           <ProfileInfoItem
             isAuthUser={isAuthUser}
-            placeholder="شماره موبایل"
-            text={decodeBase64(userInfos?.PhoneNumbers?.[0]?.PhoneNumber)}
+            placeholder={RVDic.Mobile}
+            text={decodeBase64(firstPhoneNumber?.Number)}
             icon={MobileIcon}
             onEdit={handleEditMobile}
           />
@@ -119,14 +160,16 @@ const UserInfos = (props) => {
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder="نام سازمان"
-            text=""
+            text={decodeBase64(userInfos?.Organization)}
             icon={Buldingicon}
+            onEdit={handleEditOrganization}
           />
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder="نام دپارتمان"
-            text=""
+            text={decodeBase64(userInfos?.Department)}
             icon={SiteMapIcon}
+            onEdit={handleEditDepartment}
           />
           <ProfileInfoItem
             isAuthUser={isAuthUser}
@@ -138,8 +181,9 @@ const UserInfos = (props) => {
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder="نام شهر"
-            text=""
+            text={decodeBase64(userInfos?.City)}
             icon={AdressMapIcon}
+            onEdit={handleEditCity}
           />
         </>
       )}

@@ -84,6 +84,34 @@ export const EDIT_PHONE_NUMBER = 'EditPhoneNumber';
  */
 export const SET_JOB_TITLE = 'SetJobTitle';
 
+/**
+ * @description 'SetAboutMe'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ABOUT_ME = 'SetAboutMe';
+
+/**
+ * @description 'SetOrganization'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ORGANIZATION = 'SetOrganization';
+
+/**
+ * @description 'SetDepartment'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_DEPARTMENT = 'SetDepartment';
+
+/**
+ * @description 'SetCity'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_CITY = 'SetCity';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
