@@ -146,8 +146,8 @@ const InlineEdit = (props) => {
     [setInputValue]
   );
 
-  //! Activates edit mode when span has been clicked.
-  const handleSpanClick = useCallback(() => {
+  //! Activates edit mode on clicked.
+  const handleActivateInput = useCallback(() => {
     setIsInputActive(true);
   }, [setIsInputActive]);
 
@@ -162,6 +162,7 @@ const InlineEdit = (props) => {
             ref={inputRef}
             value={inputValue}
             onChange={handleInputChange}
+            onClick={handleActivateInput}
             placeholder={inputPlaceholder}
             rows={!!inputValue ? 5 : 1}
           />
@@ -174,7 +175,7 @@ const InlineEdit = (props) => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder={inputPlaceholder}
-            onFocus={handleSpanClick}
+            onFocus={handleActivateInput}
           />
         )
       ) : (
@@ -184,7 +185,7 @@ const InlineEdit = (props) => {
           data-testid="inline-edit-span"
           id="inline-edit"
           ref={textRef}
-          onClick={handleSpanClick}>
+          onClick={handleActivateInput}>
           {inputValue}
         </Styled.SpanText>
       )}
