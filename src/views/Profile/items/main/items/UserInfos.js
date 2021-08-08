@@ -113,6 +113,7 @@ const UserInfos = (props) => {
             text={isMainEmail ? '' : decodeBase64(lastEmail?.Email)}
             icon={MailIcon}
             onEdit={handleEditEmail}
+            type="email"
           />
           <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
           <ProfileInfoItem
