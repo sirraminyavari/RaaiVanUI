@@ -444,6 +444,15 @@
 
     // Profile
 
+    SetUserName: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetUserName?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.UserName ? "&UserName=" + params.UserName : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
     SetFirstAndLastName: function (params) {
         params = params || {};
 
@@ -454,12 +463,39 @@
         return UsersAPI._send(url, params, queryString);
     },
 
-    SetUserName: function (params) {
+    SetFirstName: function (params) {
         params = params || {};
 
-        var url = UsersAPI.ResponseURL + "/SetUserName?timeStamp=" + new Date().getTime();
+        var url = UsersAPI.ResponseURL + "/SetFirstName?timeStamp=" + new Date().getTime();
         var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
-            (params.UserName ? "&UserName=" + params.UserName : "");
+            (params.FirstName ? "&FirstName=" + params.FirstName : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SetLastName: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetLastName?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.LastName ? "&LastName=" + params.LastName : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SetAboutMe: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetAboutMe?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.Text ? "&Text=" + params.Text : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SetCity: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetCity?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.City ? "&City=" + params.City : "");
         return UsersAPI._send(url, params, queryString);
     },
 
@@ -477,6 +513,24 @@
 
         var url = UsersAPI.ResponseURL + "/UnlockUser?timeStamp=" + new Date().getTime();
         var queryString = (params.UserID ? "&UserID=" + params.UserID : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SetOrganization: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetOrganization?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.Organization ? "&Organization=" + params.Organization : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SetDepartment: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetDepartment?timeStamp=" + new Date().getTime();
+        var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.Department ? "&Department=" + params.Department : "");
         return UsersAPI._send(url, params, queryString);
     },
 
