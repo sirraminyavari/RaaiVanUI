@@ -12,18 +12,29 @@ import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import { getUser } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import {
+  setEmailAddress,
+  editEmailAddress,
+  setPhoneNumber,
+  editPhoneNumber,
+  setJobTitle,
+} from 'apiHelper/apiFunctions';
 
 const UserInfos = (props) => {
+  const { user, isAuthUser } = props;
   const [userInfos, setUserInfos] = useState({});
   const [isFetchingInfos, setIsFetchingInfos] = useState(true);
-  const { user, isAuthUser } = props;
   const {
     // RVGlobal,
     RVDic,
   } = useWindow();
   const { FirstName, LastName, UserID } = user;
+  console.log(userInfos);
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
+  const lastEmail = userInfos?.Emails?.at(-1);
+  const mainEmailId = userInfos?.MainEmailID;
+  const isMainEmail = mainEmailId === lastEmail?.EmailID;
 
   useEffect(() => {
     getUser(UserID)
@@ -38,6 +49,40 @@ const UserInfos = (props) => {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  //! Edit phone number of the user.
+  const handleEditMobile = (mobile) => {
+    // if(){
+
+    // }else{
+
+    // }
+    setPhoneNumber(UserID, mobile)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
+
+  //! Edit email address of the user.
+  const handleEditEmail = (email) => {
+    // console.log(email);
+    if (isMainEmail) {
+      setEmailAddress(UserID, email)
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    } else {
+      const emailId = lastEmail?.EmailID;
+      editEmailAddress(emailId, email)
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  //! Edit job title of the user.
+  const handleEditJobTilte = (jobTitle) => {
+    setJobTitle(UserID, jobTitle)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Styled.ProfileInfoWrapper>
@@ -60,12 +105,15 @@ const UserInfos = (props) => {
             placeholder="شماره موبایل"
             text={decodeBase64(userInfos?.PhoneNumbers?.[0]?.PhoneNumber)}
             icon={MobileIcon}
+            onEdit={handleEditMobile}
           />
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder={RVDic.Email}
-            text={decodeBase64(userInfos?.Emails?.[0]?.Email)}
+            text={isMainEmail ? '' : decodeBase64(lastEmail?.Email)}
             icon={MailIcon}
+            onEdit={handleEditEmail}
+            type="email"
           />
           <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
           <ProfileInfoItem
@@ -85,6 +133,7 @@ const UserInfos = (props) => {
             placeholder="عنوان شغلی"
             text={decodeBase64(userInfos?.JobTitle)}
             icon={BriefcaseIcon}
+            onEdit={handleEditJobTilte}
           />
           <ProfileInfoItem
             isAuthUser={isAuthUser}

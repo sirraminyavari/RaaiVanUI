@@ -49,6 +49,41 @@ export const INVITE_USER = 'InviteUser';
  */
 export const GET_USER = 'GetUser';
 
+/**
+ * @description 'EditEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_EMAIL_ADDRESS = 'EditEmailAddress';
+
+/**
+ * @description 'SetEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_EMAIL_ADDRESS = 'SetEmailAddress';
+
+/**
+ * @description 'SetPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PHONE_NUMBER = 'SetPhoneNumber';
+
+/**
+ * @description 'EditPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_PHONE_NUMBER = 'EditPhoneNumber';
+
+/**
+ * @description 'SetJobTitle'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_JOB_TITLE = 'SetJobTitle';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

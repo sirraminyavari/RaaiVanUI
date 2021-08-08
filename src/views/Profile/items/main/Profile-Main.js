@@ -100,13 +100,13 @@ const ProfileMain = (props) => {
             </Styled.AvatarPencilWrapper>
           )}
         </Styled.ProfileAvatarWrapper>
-        <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
+        {/* <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
           <AddImageIcon color="#fff" size={18} />
           <HiddenUploadFile
             ref={uploadFileRef}
             onFileChange={handleFileSelect}
           />
-        </Styled.HeaderPencilWrapper>
+        </Styled.HeaderPencilWrapper> */}
       </Styled.ProfileHeader>
       <Styled.MainWrapper>
         <UserInfos user={User} isAuthUser={IsOwnPage} />

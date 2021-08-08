@@ -31,24 +31,24 @@ const ProfileContent = () => {
       linkTo: USER_PATH,
     },
     { id: '2', title: RVDic.Resume, icon: PROFILE_RESUME, linkTo: '#' },
-    {
-      id: '3',
-      title: ' ورود و امنیت',
-      icon: PROFILE_SECURITY,
-      linkTo: USER_SECURITY_PATH,
-    },
+    // {
+    //   id: '3',
+    //   title: ' ورود و امنیت',
+    //   icon: PROFILE_SECURITY,
+    //   linkTo: USER_SECURITY_PATH,
+    // },
     {
       id: '4',
       title: 'شخصی سازی',
       icon: PROFILE_CUSTOMIZATION,
       linkTo: USER_CUSTOMIZATION_PATH,
     },
-    {
-      id: '5',
-      title: 'ماموریت ها',
-      icon: PROFILE_MISSIONS,
-      linkTo: USER_PATH,
-    },
+    // {
+    //   id: '5',
+    //   title: 'ماموریت ها',
+    //   icon: PROFILE_MISSIONS,
+    //   linkTo: USER_PATH,
+    // },
   ];
 
   const hasResumeItem = (item) => {

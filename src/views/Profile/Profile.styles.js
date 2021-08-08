@@ -29,6 +29,7 @@ import {
   CV_FREEZED,
   CV_GRAY,
   CV_GRAY_DARK,
+  CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
@@ -571,6 +572,7 @@ export const InfoItemWrapper = styled.div`
   align-items: center;
   // height:   2rem;
   margin: 1rem 0;
+  position: relative;
 
   .user-info-inline-edit-container {
     margin: 0 1rem;
@@ -600,6 +602,14 @@ export const InfoItemWrapper = styled.div`
       color: ${CV_DISTANT};
     }
   }
+`;
+
+export const InfoItemError = styled.div`
+  position: absolute;
+  top: 2rem;
+  ${RV_Float}: 2.3rem;
+  font-size: 0.7rem;
+  color: ${CV_RED};
 `;
 
 export const InfoItemText = styled.div`

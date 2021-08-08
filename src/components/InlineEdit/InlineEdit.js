@@ -4,17 +4,20 @@ import DOMPurify from 'dompurify';
 import useKeypress from 'hooks/useKeypress';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import * as Styled from './InlineEdit.styles';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
  * @property {string} text -The editable text.
  * @property {boolean} [isActive] -Determines if input is active or not.
- * @property {function} onSetText -A function that fires on text edit and
+ * @property {function} onSetText -A function that fires on text edit.
+ * @property {function} onChange -A function that fires on text change.
  * @property {Object} styles -An Object of styles for input and text.
  * @property {string} textClasses -Classes for text.
  * @property {string} inputClasses -Classes for input.
  * @property {string} inputPlaceholder -Plceholder for input.
  * @property {string} containerClasses -Classes for component container.
+ * @property {string} type -The type of the input.
  * @property {boolean} multiline -If exists, will render textarea instead of input.
  */
 
@@ -27,6 +30,7 @@ const InlineEdit = (props) => {
   const {
     text,
     onSetText,
+    onChange,
     isActive,
     styles,
     textClasses,
@@ -35,12 +39,17 @@ const InlineEdit = (props) => {
     inputPlaceholder,
     multiline,
     containerClasses,
+    type,
   } = props;
 
   //! If true, Shows input, Otherwise, Shows text.
   const [isInputActive, setIsInputActive] = useState(!!isActive);
   //! Input value default to initial text passed to it.
   const [inputValue, setInputValue] = useState(text);
+  const [hasInputError, setHasInputError] = useState(false);
+  const { GlobalUtilities, RVDic } = useWindow();
+
+  const emailErrorMSG = RVDic.MSG.EmailIsNotValid;
 
   const initialValue = useRef(text);
 
@@ -59,10 +68,17 @@ const InlineEdit = (props) => {
   useOnClickOutside(wrapperRef, () => {
     if (isInputActive) {
       if (inputValue) {
-        onSetText(inputValue);
+        if (!hasInputError) {
+          onSetText(inputValue);
+        } else {
+          type === 'email' &&
+            onChange &&
+            onChange({ value: initialValue.current, error: emailErrorMSG });
+        }
         setIsInputActive(false);
       } else {
         setInputValue(initialValue.current);
+        onChange && onChange({ value: initialValue.current, error: null });
         if (initialValue.current) {
           setIsInputActive(false);
         } else {
@@ -75,7 +91,9 @@ const InlineEdit = (props) => {
   const onEnter = useCallback(() => {
     if (enter) {
       if (inputValue) {
-        onSetText(inputValue);
+        if (!hasInputError) {
+          onSetText(inputValue);
+        }
       } else {
         setInputValue(initialValue.current);
       }
@@ -87,6 +105,7 @@ const InlineEdit = (props) => {
     if (esc) {
       setInputValue(initialValue.current);
       setIsInputActive(false);
+      onChange && onChange({ value: initialValue.current, error: null });
     }
   }, [esc]);
 
@@ -108,14 +127,27 @@ const InlineEdit = (props) => {
 
   const handleInputChange = useCallback(
     (e) => {
+      const value = e.target.value;
+      const isEmailValid = GlobalUtilities.is_valid_email(value);
+
+      if (type === 'email') {
+        if (!isEmailValid) {
+          setHasInputError(true);
+          onChange && onChange({ value, error: emailErrorMSG });
+        } else {
+          setHasInputError(false);
+          onChange && onChange({ value, error: null });
+        }
+      }
+
       //! Sanitize the input value
-      setInputValue(DOMPurify.sanitize(e.target.value));
+      setInputValue(DOMPurify.sanitize(value));
     },
     [setInputValue]
   );
 
-  //! Activates edit mode when span has been clicked.
-  const handleSpanClick = useCallback(() => {
+  //! Activates edit mode on clicked.
+  const handleActivateInput = useCallback(() => {
     setIsInputActive(true);
   }, [setIsInputActive]);
 
@@ -130,6 +162,7 @@ const InlineEdit = (props) => {
             ref={inputRef}
             value={inputValue}
             onChange={handleInputChange}
+            onClick={handleActivateInput}
             placeholder={inputPlaceholder}
             rows={!!inputValue ? 5 : 1}
           />
@@ -142,7 +175,7 @@ const InlineEdit = (props) => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder={inputPlaceholder}
-            onFocus={handleSpanClick}
+            onFocus={handleActivateInput}
           />
         )
       ) : (
@@ -152,7 +185,7 @@ const InlineEdit = (props) => {
           data-testid="inline-edit-span"
           id="inline-edit"
           ref={textRef}
-          onClick={handleSpanClick}>
+          onClick={handleActivateInput}>
           {inputValue}
         </Styled.SpanText>
       )}
@@ -163,6 +196,7 @@ const InlineEdit = (props) => {
 InlineEdit.propTypes = {
   text: PropTypes.string.isRequired,
   onSetText: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   isActive: PropTypes.bool,
   styles: PropTypes.shape({
     textStyle: PropTypes.object,
@@ -174,6 +208,7 @@ InlineEdit.propTypes = {
   inputClasses: PropTypes.string,
   inputPlaceholder: PropTypes.string,
   containerClasses: PropTypes.string,
+  type: PropTypes.string,
 };
 
 InlineEdit.defaultProps = {
@@ -182,6 +217,7 @@ InlineEdit.defaultProps = {
   styles: {},
   inputPlaceholder: '',
   multiline: false,
+  type: '',
 };
 
 InlineEdit.displayName = 'InlineEditComponent';
