@@ -6,7 +6,7 @@ import TabItem from './TabItem';
 const DEFAULT_TAB = 'all-classes';
 // const MORE_TAB = 'more-classes';
 
-const LastTopicsTabs = ({ relatedNodes }) => {
+const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
 
@@ -35,7 +35,16 @@ const LastTopicsTabs = ({ relatedNodes }) => {
 
   const handleItemClick = (item) => {
     setActiveTab(item?.NodeTypeID);
-    //! API call
+    //! API call.
+    provideNodes(item?.NodeTypeID);
+  };
+
+  const handleClickAll = () => {
+    setActiveTab(DEFAULT_TAB);
+    const nodeTypeIds = relatedNodes?.NodeTypes?.map(
+      (nodeType) => nodeType?.NodeTypeID
+    ).join('|');
+    provideNodes(nodeTypeIds);
   };
 
   return (
@@ -45,7 +54,7 @@ const LastTopicsTabs = ({ relatedNodes }) => {
           item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
           isActive={activeTab === DEFAULT_TAB}
           noImage
-          onTabClick={() => setActiveTab(DEFAULT_TAB)}
+          onTabClick={handleClickAll}
         />
         {sortedNodes?.map((item, index) => {
           if (index > 2) return null;

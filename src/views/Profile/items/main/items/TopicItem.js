@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   CV_GRAY,
   CV_RED,
@@ -16,6 +17,7 @@ import {
   IGNORE_RADIUS_LEFT,
   IGNORE_RADIUS_RIGHT,
 } from 'constant/constants';
+import { decodeBase64, getURL } from 'helpers/helpers';
 
 const STEP_1 = 25;
 const STEP_2 = 50;
@@ -91,18 +93,21 @@ const TopicItem = ({ item }) => {
     <Styled.TopicItemWrapper>
       <Styled.TopicItemIconWrapper>
         <img width={50} src={item?.IconURL} alt="topic-item-logo" />
-        <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395/09/06</span>
+        <Styled.TopicItemCreationDate>
+          {item?.CreationDate}
+        </Styled.TopicItemCreationDate>
       </Styled.TopicItemIconWrapper>
       <Styled.TopicItemContentWrapper>
-        <Styled.TopicItemContentTitle>
-          <span
-            style={{ fontSize: '1rem', fontWeight: '500', color: TCV_WARM }}>
-            نامه دستورالعمل ساختار شکست پروژه
-          </span>
+        <Styled.TopicItemTitleWrapper
+          as={Link}
+          to={getURL('Node', { NodeID: item?.NodeID })}>
+          <Styled.TopicItemTitle>
+            {decodeBase64(item?.Name)}
+          </Styled.TopicItemTitle>
           <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395960182</span>
-        </Styled.TopicItemContentTitle>
+        </Styled.TopicItemTitleWrapper>
         <Styled.TopicItemContentActions>
-          <AnimatedDropDownList
+          {/* <AnimatedDropDownList
             data={options.filter(
               (opt) => opt.percentage !== selectedItem.percentage
             )}
@@ -123,10 +128,10 @@ const TopicItem = ({ item }) => {
               buttonClass: `${BG_FREEZED} ${BO_RADIUS_QUARTER} ${IGNORE_RADIUS_RIGHT}`,
               arrowIconColorClass: `${TC_DEFAULT}`,
             }}
-          />
+          /> */}
           <Avatar
             color="#333"
-            style={{ minWidth: '2.5rem' }}
+            style={{ minWidth: '2.75rem' }}
             userImage={item?.Creator?.ProfileImageURL}
           />
         </Styled.TopicItemContentActions>
