@@ -486,7 +486,7 @@
             var name = params.Name;
             var help = params.Help;
             var type = params.Type;
-            var info = JSON.parse(Base64.decode(params.Info) || "{}") || {};
+            var info = GlobalUtilities.to_json(Base64.decode(params.Info) || "{}") || {};
             var weight = params.Weight;
             var sequenceNumber = +params.SequenceNumber;
             if (isNaN(sequenceNumber)) sequenceNumber = 0;
