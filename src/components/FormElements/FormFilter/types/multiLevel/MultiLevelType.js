@@ -31,11 +31,12 @@ const MultiLevelType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const { NodeType, Levels } = JSON.parse(decodeBase64(Info));
+  const { RVDic, GlobalUtilities } = useWindow();
+
+  const { NodeType, Levels } = GlobalUtilities.to_json(decodeBase64(Info));
   const levels = Levels.map((level) => decodeBase64(level));
   const nodeType = { id: NodeType.ID, name: decodeBase64(NodeType.Name) };
   const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
-  const { RVDic } = useWindow();
 
   const [nodes, setNodes] = useState([]);
   const [isModalShown, setIsModalShown] = useState(false);

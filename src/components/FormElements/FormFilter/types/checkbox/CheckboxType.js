@@ -8,6 +8,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
 import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -30,7 +31,11 @@ const CheckboxType = (props) => {
   const [exact, setExact] = useState(value ? value.Exact : false);
   const [or, setOr] = useState(value ? value.Or : true);
 
-  const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(Info));
+  const { GlobalUtilities } = useWindow();
+
+  const { Options, AutoSuggestMode } = GlobalUtilities.to_json(
+    decodeBase64(Info)
+  );
   //! Checkbox options.
   const options = Options.map((option) => ({
     value: decodeBase64(option),

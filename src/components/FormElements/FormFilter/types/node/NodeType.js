@@ -27,11 +27,12 @@ const NodeType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const { NodeTypes } = JSON.parse(decodeBase64(Info));
+  const { GlobalUtilities } = useWindow();
+
+  const { NodeTypes } = GlobalUtilities.to_json(decodeBase64(Info));
   const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
   const [items, setItems] = useState([]);
   const [resetValue, setResetValue] = useState(null);
-  const { GlobalUtilities } = useWindow();
 
   //! Fetch nodes based on nodeTypes passed to component.
   const fetchNodes = (searchText) => {

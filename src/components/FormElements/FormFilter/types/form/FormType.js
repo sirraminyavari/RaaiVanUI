@@ -9,6 +9,7 @@ import Button from 'components/Buttons/Button';
 import * as Styled from '../types.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import APIHandler from 'apiHelper/APIHandler';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -31,7 +32,9 @@ const FormType = (props) => {
   const [filters, setFilters] = useState([]);
   const [filterValues, setFilterValues] = useState(value?.JSONValue || {});
 
-  const { FormID } = JSON.parse(decodeBase64(Info));
+  const { GlobalUtilities } = useWindow();
+
+  const { FormID } = GlobalUtilities.to_json(decodeBase64(Info));
   const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
 
   //! Set button title based on selected filters count.

@@ -7,6 +7,7 @@ import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -22,9 +23,13 @@ import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
  * @param {PropType} props -Props that are passed to component.
  */
 const SelectType = (props) => {
+  const { RVDic, GlobalUtilities } = useWindow();
+
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
-  const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(Info));
+  const { Options, AutoSuggestMode } = GlobalUtilities.to_json(
+    decodeBase64(Info)
+  );
 
   const [items, setItems] = useState(!!value ? value.TextItems : []);
   const [exact, setExact] = useState(!!value ? value.Exact : false);
