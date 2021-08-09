@@ -136,7 +136,7 @@ const FilterBar = ({
   const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
 
-  const { push } = useHistory();
+  const { goBack, push } = useHistory();
 
   const isInOnBoarding = onboardingName === INTRO_ONBOARD;
   const isNewDocOpened = newDocMenu === OPENED;
@@ -342,7 +342,10 @@ const FilterBar = ({
           )}
         </div>
         {isProfile && (
-          <Button style={{ color: CV_RED }} type={'secondary-o'}>
+          <Button
+            onClick={() => goBack()}
+            style={{ color: CV_RED }}
+            type={'secondary-o'}>
             {RVDic.Return}
           </Button>
         )}
@@ -350,6 +353,7 @@ const FilterBar = ({
         {/* Don't forget to add this for urgent create in itemSelection mode
           && market?.length > 0
           */}
+
         {itemSelectionMode ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />

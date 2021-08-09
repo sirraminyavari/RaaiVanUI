@@ -36,6 +36,7 @@ const UrgentCreateDesktop = ({
   onForceFetch,
   dataFetched,
   nodeType,
+  itemSelectionMode,
 }) => {
   // user inputs for creating urgent subject item.
   const [urgentInput, setUrgentInput] = useState('');
@@ -81,6 +82,7 @@ const UrgentCreateDesktop = ({
 
   return (
     <UrgentInput
+      liteMode={itemSelectionMode}
       isVisible={isVisible}
       className={'rv-border-default rv-border-radius-half'}>
       <div style={{ width: '7.5rem' }}>

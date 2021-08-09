@@ -17,6 +17,7 @@ const {
 
 // Loads 'RVAPI' Class and 'Login' Function.
 const apiHandler = new APIHandler('RVAPI', 'Login');
+const { RVGlobal } = window || {};
 
 /**
  * The process of signing in will do here with help of Thunk.
@@ -90,8 +91,9 @@ const loginAction = ({ email, password, invitationId }) => async (
             // window.isAuthenticated = true;
             // RVAPI.LoggedIn();
             // GlobalUtilities.set_auth_cookie(AuthCookie);
-            // console.log(response, 'response login');
+            console.log(response, 'response login ***');
             // dispatch(loginSuccess(response));
+            (RVGlobal || {}).CurrentUser = response.User;
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
             window.RVGlobal.IsAuthenticated = true;
