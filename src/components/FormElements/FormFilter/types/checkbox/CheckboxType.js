@@ -33,11 +33,11 @@ const CheckboxType = (props) => {
 
   const { GlobalUtilities } = useWindow();
 
-  const { Options, AutoSuggestMode } = GlobalUtilities.to_json(
-    decodeBase64(Info)
-  );
+  const { Options, AutoSuggestMode } =
+    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+
   //! Checkbox options.
-  const options = Options.map((option) => ({
+  const options = (Options || []).map((option) => ({
     value: decodeBase64(option),
     title: decodeBase64(option),
     group: 'checkbox-filter',
