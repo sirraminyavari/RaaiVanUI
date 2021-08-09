@@ -20,8 +20,12 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
+import { LastTopicsList } from 'views/Profile/Profile.styles';
+import LastRelatedTopics from 'views/Profile/items/main/items/LastTopics';
+import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
+import APIHandler from 'apiHelper/APIHandler';
 
-const { RVDic } = window;
+const { RVDic, RVGlobal } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
@@ -34,11 +38,15 @@ const AdvanceSearchDesktop = ({
   bookmarked,
   itemSelectionMode,
   isProfile,
+  onApplyNodeType,
   ...props
 }) => {
+  const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
+
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
 
   const nodeTypeId = nodeType?.NodeTypeID;
+  console.log(nodeTypeId, 'nodeTypeId');
   const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
@@ -64,13 +72,17 @@ const AdvanceSearchDesktop = ({
   const [isByMe, setIsByMe] = useState(false);
   const [byPeople, setByPeople] = useState(null);
 
+  const [relatedNodes, setRelatedNodes] = useState([]);
+
   const { onboardingName } = useSelector((state) => ({
     onboardingName: state.onboarding.name,
   }));
 
   useEffect(() => {
-    console.log(isBookMarked, 'goh!');
-  }, [isBookMarked]);
+    if (isProfile) {
+      getRelatedNodes();
+    }
+  }, []);
 
   useEffect(() => {
     // console.log(bookmarked, 'bookmarked');
@@ -129,6 +141,24 @@ const AdvanceSearchDesktop = ({
     setIsByMe(false);
 
     setByPeople(item);
+  };
+  const getRelatedNodes = () => {
+    getNodeInfoAPI.fetch(
+      {
+        NodeID: RVGlobal?.CurrentUser?.UserID,
+        In: true,
+        Out: true,
+        InTags: true,
+        OutTags: true,
+        ParseResults: true,
+      },
+      (response) => {
+        console.log(response, 'related nodes');
+        if (response && response.NodeTypes) {
+          setRelatedNodes(response);
+        }
+      }
+    );
   };
 
   return (
@@ -196,6 +226,13 @@ const AdvanceSearchDesktop = ({
                   padding: '0 2rem 2rem 2rem',
                 }}
                 {...props}>
+                {isProfile && (
+                  <LastTopicsTabs
+                    provideNodes={onApplyNodeType && onApplyNodeType}
+                    relatedNodes={relatedNodes}
+                  />
+                )}
+
                 <UrgentCreate
                   onDismiss={onCreateUrgent}
                   hierarchy={hierarchy}
@@ -204,6 +241,7 @@ const AdvanceSearchDesktop = ({
                   onForceFetch={forceFetch}
                   dataFetched={totalFound}
                   nodeType={nodeType}
+                  itemSelectionMode={itemSelectionMode}
                 />
 
                 {React.cloneElement(children, {

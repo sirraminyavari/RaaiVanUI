@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Modal from 'components/Modal/Modal';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
+import RelatedMeItems from 'views/Profile/items/main/RelatedMeItems';
 
 const TestView = () => {
   // new EditorJS({
@@ -38,8 +39,8 @@ const TestView = () => {
 
   return (
     <>
-      {/* <RelatedMeItems /> */}
-      <Container>
+      <RelatedMeItems />
+      {/* <Container>
         <button onClick={() => setIsVisible(true)}>{'open modal'}</button>
         <Modal
           onClose={onClose}
@@ -49,8 +50,8 @@ const TestView = () => {
           show={isVisible}>
           <ItemSelection onClose={() => setIsVisible(false)} />
         </Modal>
-        {/* <MainEditor />  */}
-      </Container>
+      </Container> */}
+      {/* <MainEditor />  */}
     </>
   );
 };

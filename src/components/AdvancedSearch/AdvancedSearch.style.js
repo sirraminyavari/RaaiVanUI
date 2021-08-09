@@ -112,7 +112,8 @@ export const UrgentInput = styled.div`
   align-self: center;
   flex-direction: row;
   padding: 0 2rem 0 2rem;
-  max-height: ${({ isVisible }) => (isVisible ? '13rem' : '0rem')};
+  max-height: ${({ isVisible, liteMode }) =>
+    isVisible ? (liteMode ? '5rem' : '13rem') : '0rem'};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: max-width 0.5s, max-height 0.5s, opacity 0.5s;
 `;

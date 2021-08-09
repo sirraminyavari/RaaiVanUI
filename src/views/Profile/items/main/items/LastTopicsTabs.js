@@ -30,13 +30,12 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
 
   const handleMoreTopics = () => {
     setIsMoreShown((v) => !v);
-    console.log('click');
   };
 
   const handleItemClick = (item) => {
     setActiveTab(item?.NodeTypeID);
     //! API call.
-    provideNodes(item?.NodeTypeID);
+    provideNodes(item?.NodeTypeID, item);
   };
 
   const handleClickAll = () => {

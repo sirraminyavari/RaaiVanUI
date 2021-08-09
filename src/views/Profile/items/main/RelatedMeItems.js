@@ -1,22 +1,25 @@
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
-import React from 'react';
+import React, { useState } from 'react';
 
 const RelatedMeItems = (props) => {
   const { route } = props;
+  const [nodeType, setNodeType] = useState(null);
+
+  const onNodeTypeChange = (data, item) => {
+    console.log(data, 'node type changed', item, 'item', route);
+    setNodeType(item);
+  };
 
   return (
     <AdvanceSearch
-      nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
+      nodeType={nodeType ? nodeType : null}
       hierarchy={route?.Hierarchy || []}
       bookmarked={route?.Bookmarked}
+      onApplyNodeType={onNodeTypeChange}
       isProfile={true}>
       <NodeList
-        nodeTypeId={
-          (route?.NodeTypes || []).length
-            ? route.NodeTypes[0]?.NodeTypeID
-            : null
-        }
+        nodeTypeId={nodeType ? nodeType : null}
         bookmarked={route?.Bookmarked}
       />
     </AdvanceSearch>
