@@ -100,6 +100,8 @@
 var UTF8 = {
     //public method for UTF-8 encoding
     encode: function (string) {
+        if (GlobalUtilities.get_type(string) != "string") return string;
+
         string = string.replace(/\r\n/g, "\n");
         var utftext = "";
 
