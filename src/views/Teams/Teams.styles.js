@@ -27,7 +27,7 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 
-const { RV_Float, RV_RTL } = window;
+const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
 export const TeamsDesktopViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
@@ -492,7 +492,7 @@ const getPosition = ({ dir, usersCount }) => {
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  ${getPosition}
+  ${RV_RevFloat}: 1.7rem;
 `;
 
 export const ExtraUsersPopupHeader = styled.div`

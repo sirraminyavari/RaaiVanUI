@@ -391,9 +391,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   align="top"
                   arrowClass="hidden-arrow"
                   menuClass="extra-users-popup">
-                  <Styled.ExtraUsersWrapper
-                    usersCount={totalUsers}
-                    dir={RV_Float}>
+                  <Styled.ExtraUsersWrapper>
                     <Badge
                       showText={`${totalUsers - 4}+`}
                       className="team-extra-users"
