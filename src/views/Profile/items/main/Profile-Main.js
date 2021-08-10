@@ -118,7 +118,11 @@ const ProfileMain = (props) => {
           {isFetchingRelatedNodes ? (
             <LogoLoader />
           ) : (
-            <LastTopics relatedNodes={relatedNodes} />
+            <LastTopics
+              user={User}
+              isAuthUser={IsOwnPage}
+              relatedNodes={relatedNodes}
+            />
           )}
           {/* <LastPosts /> */}
         </div>

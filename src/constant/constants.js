@@ -87,6 +87,9 @@ export const REPORTS_PATH = getURL('Reports');
 export const REPORTS_NAME = 'reports';
 export const USER_PATH = getURL('User');
 export const USER_WITHID_PATH = getURL('User', { UserID: ':uid?' });
+export const USER_MORE_RELATED_TOPICS_PATH = getURL('User', {
+  UserID: 'relatedtopics',
+});
 export const USER_SECURITY_PATH = getURL('User', { UserID: 'security' });
 export const USER_CUSTOMIZATION_PATH = getURL('User', {
   UserID: 'customization',

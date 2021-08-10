@@ -10,6 +10,7 @@ import { API_Provider } from 'helpers/helpers';
 import { CN_API, GET_NODES, GET_NODE_INFO } from 'constant/apiConstants';
 import EmptyState from 'components/EmptyState/EmptyState';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
 
 const getNodesAPI = API_Provider(CN_API, GET_NODES);
 const getNodeInfoAPI = API_Provider(CN_API, GET_NODE_INFO);
@@ -59,10 +60,14 @@ const getNodeInfo = (nodeIds = '') => {
   });
 };
 
-const LastRelatedTopics = ({ relatedNodes }) => {
+const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   const { NodeTypes } = relatedNodes;
   const [nodes, setNodes] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+
+  const relatedTopicsLink = `${USER_MORE_RELATED_TOPICS_PATH}${
+    isAuthUser ? '' : `/${user.UserID}`
+  }`;
 
   const firstFive = (node, index) => index < SHOW_NODES_COUNT;
   const firstFiveNodes = nodes?.filter(firstFive);
@@ -114,7 +119,7 @@ const LastRelatedTopics = ({ relatedNodes }) => {
       <Styled.Header>
         <Styled.Title>آخرین موضوعات مرتبط با من</Styled.Title>
         <Button classes="see-all-button">
-          <Link to="#" style={{ color: TCV_DEFAULT }}>
+          <Link to={relatedTopicsLink} style={{ color: TCV_DEFAULT }}>
             مشاهده همه
           </Link>
         </Button>
