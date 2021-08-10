@@ -90,6 +90,12 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         setIsChecking(false);
       }
     );
+
+    //? Due to memory leak error in check route.
+    //! Clean up.
+    return () => {
+      setRoute({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
 
