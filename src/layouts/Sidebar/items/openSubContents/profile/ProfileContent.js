@@ -6,7 +6,7 @@ import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import {
   HOME_PATH,
   PROFILE_CUSTOMIZATION,
-  PROFILE_MISSIONS,
+  // PROFILE_MISSIONS,
   PROFILE_RESUME,
   PROFILE_SECURITY,
   PROFILE_USER,
@@ -31,12 +31,12 @@ const ProfileContent = () => {
       linkTo: USER_PATH,
     },
     { id: '2', title: RVDic.Resume, icon: PROFILE_RESUME, linkTo: '#' },
-    // {
-    //   id: '3',
-    //   title: ' ورود و امنیت',
-    //   icon: PROFILE_SECURITY,
-    //   linkTo: USER_SECURITY_PATH,
-    // },
+    {
+      id: '3',
+      title: ' ورود و امنیت',
+      icon: PROFILE_SECURITY,
+      linkTo: USER_SECURITY_PATH,
+    },
     {
       id: '4',
       title: 'شخصی سازی',

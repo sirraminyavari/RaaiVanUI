@@ -5,6 +5,7 @@ import {
   MAIN_CONTENT,
   PROFILE_CONTENT,
   USER_CUSTOMIZATION_PATH,
+  USER_MORE_RELATED_TOPICS_PATH,
   USER_PATH,
   USER_SECURITY_PATH,
 } from 'constant/constants';
@@ -27,14 +28,21 @@ const ProfileNew = (props) => {
     USER_CUSTOMIZATION_PATH,
   ].includes(pathName);
 
-  // console.log(isProfileOwner);
+  const isRelatedMeTopicsPath = pathName.includes(
+    USER_MORE_RELATED_TOPICS_PATH
+  );
 
   const switchProfileRoutes = (
     <Switch>
       {profileRoutes.map((PR, key) => {
         const { exact, path, component: Component } = PR;
 
-        if (!!userId && !isValidProfilePath && isProfileOwner) {
+        if (
+          !!userId &&
+          !isValidProfilePath &&
+          !isRelatedMeTopicsPath &&
+          isProfileOwner
+        ) {
           return <Redirect key={key} to={USER_PATH} />;
         }
 
@@ -47,10 +55,23 @@ const ProfileNew = (props) => {
           />
         );
       })}
+      <Redirect to={USER_PATH} />
     </Switch>
   );
 
+  const showProfileMenu = [
+    USER_PATH,
+    USER_CUSTOMIZATION_PATH,
+    USER_SECURITY_PATH,
+  ].includes(window?.location?.pathname);
+
   useEffect(() => {
+    if (
+      window?.location?.pathname.includes(USER_MORE_RELATED_TOPICS_PATH) &&
+      userId
+    )
+      return;
+
     if (isProfileOwner) {
       dispatch(
         setSidebarContent({
@@ -69,12 +90,7 @@ const ProfileNew = (props) => {
 
     return () => {
       //! If user still is on auth profile section, Don't change the sidebar content.
-      if (
-        [USER_PATH, USER_CUSTOMIZATION_PATH, USER_SECURITY_PATH].includes(
-          window?.location?.pathname
-        )
-      )
-        return;
+      if (showProfileMenu) return;
 
       dispatch(
         setSidebarContent({

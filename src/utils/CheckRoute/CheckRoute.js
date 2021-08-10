@@ -30,7 +30,7 @@ import {
   getUnderMenuPermissions,
 } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
-import useQuery from 'hooks/useQuery';
+// import useQuery from 'hooks/useQuery';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 
@@ -85,7 +85,10 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         prevURL === currentURL && setRoute(response);
         setIsChecking(false);
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error);
+        setIsChecking(false);
+      }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
