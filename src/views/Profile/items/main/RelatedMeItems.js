@@ -7,7 +7,7 @@ const RelatedMeItems = (props) => {
   const [nodeType, setNodeType] = useState(null);
 
   const onNodeTypeChange = (data, item) => {
-    console.log(data, 'node type changed', item, 'item', nodeType?.nodeTypeID);
+    console.log(route, 'route', item, 'item');
     setNodeType(item);
   };
 
