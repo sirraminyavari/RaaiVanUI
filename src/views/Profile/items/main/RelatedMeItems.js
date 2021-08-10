@@ -7,7 +7,7 @@ const RelatedMeItems = (props) => {
   const [nodeType, setNodeType] = useState(null);
 
   const onNodeTypeChange = (data, item) => {
-    console.log(data, 'node type changed', item, 'item', route);
+    console.log(data, 'node type changed', item, 'item', nodeType?.nodeTypeID);
     setNodeType(item);
   };
 
@@ -19,7 +19,7 @@ const RelatedMeItems = (props) => {
       onApplyNodeType={onNodeTypeChange}
       isProfile={true}>
       <NodeList
-        nodeTypeId={nodeType ? nodeType : null}
+        nodeTypeId={nodeType?.NodeTypeID ? nodeType?.NodeTypeID : null}
         bookmarked={route?.Bookmarked}
       />
     </AdvanceSearch>
