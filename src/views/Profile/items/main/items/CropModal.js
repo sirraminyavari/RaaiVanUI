@@ -40,14 +40,20 @@ const CropModal = (props) => {
         setInitCropDimensions({ x, y, width, height });
       })
       .catch((error) => console.log(error));
+
+    //? Due to memory leak error in crop modal.
+    //! Clean up.
+    return () => {
+      setInitCropDimensions(null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cropModal]);
 
   //! Get high quality image source.
   useEffect(() => {
-    createImage(cropModal?.imgSrc).then((img) => {
-      // console.log(img.width, img.height);
-    });
+    // createImage(cropModal?.imgSrc).then((img) => {
+    // console.log(img.width, img.height);
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -45,6 +45,13 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
         setIntellectualCounts(intellectualCount);
       })
       .catch((err) => console.log(err));
+
+    //? Due to memory leak error in component.
+    //! Clean up.
+    return () => {
+      setFavoriteNodes(0);
+      setIntellectualCounts(0);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

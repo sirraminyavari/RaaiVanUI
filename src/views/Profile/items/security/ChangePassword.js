@@ -35,6 +35,12 @@ const ChangePassword = () => {
     } catch (err) {
       console.log(err);
     }
+
+    //? Due to memory leak error in component.
+    //! Clean up.
+    return () => {
+      setPasswordPolicy(null);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
