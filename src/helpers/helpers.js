@@ -212,3 +212,13 @@ export const getCaptchaToken = async () => {
     });
   });
 };
+
+/**
+ * @description Validates file upload type.
+ * @param {Array} files -List of files
+ * @param {Array} types - A list of file types.
+ * @returns Boolean
+ */
+export const validateFileUpload = (files, types) => {
+  return types.includes(files[0]?.type);
+};

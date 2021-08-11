@@ -16,17 +16,13 @@ import {
   MOBILE_BOUNDRY,
   GET_NOTIFS_INTERVAL,
   TEAMS_PATH,
-  BO_RADIUS_UNIT,
-  BO_RADIUS_QUARTER,
 } from 'constant/constants';
-import { BG_WHITE, C_WHITE } from 'constant/Colors';
+import { C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
-import {
-  getNotificationsCount,
-  // getNotificationsList,
-} from 'store/actions/global/NotificationActions';
+import { getNotificationsCount } from 'store/actions/global/NotificationActions';
+import defaultProfileImage from 'assets/images/default-profile-photo.png';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -54,6 +50,8 @@ const selectAuthUser = createSelector(
   (auth) => auth.authUser
 );
 
+const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
+
 const NavbarPlaceholder = () => <div />;
 
 const Navbar = () => {
@@ -64,11 +62,15 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat } = useWindow();
 
+  const profileImage =
+    authUser?.ProfileImageURL === UNKNOWN_IMAGE
+      ? defaultProfileImage
+      : authUser?.ProfileImageURL + `?timestamp: ${new Date().getTime()}`;
+
   const isTeamsView = activePath === TEAMS_PATH;
 
   const getNotifs = () => {
     dispatch(getNotificationsCount());
-    // dispatch(getNotificationsList());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);
@@ -142,7 +144,7 @@ const Navbar = () => {
           }}>
           <Avatar
             radius={35}
-            userImage={authUser?.ProfileImageURL + `?timestamp: ${new Date()}`}
+            userImage={profileImage}
             style={{ cursor: 'pointer', minWidth: '2.5rem' }}
           />
         </Tooltip>

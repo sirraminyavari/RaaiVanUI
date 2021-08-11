@@ -298,6 +298,12 @@ export const HeaderPencilWrapper = styled.div.attrs({
   transition: all 0.3s ease;
 `;
 
+export const HeaderCoverLoader = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+
 export const ProfileAvatarWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
