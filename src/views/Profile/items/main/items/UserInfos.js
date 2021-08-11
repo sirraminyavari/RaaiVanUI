@@ -36,10 +36,11 @@ const UserInfos = (props) => {
   console.log(userInfos);
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
-  const lastEmail = userInfos?.Emails?.at(-1);
+  const emailList = userInfos?.Emails || [];
+  const [lastEmail] = emailList.slice(-1);
   const mainEmailId = userInfos?.MainEmailID;
   const isMainEmail = mainEmailId === lastEmail?.EmailID;
-  const firstPhoneNumber = userInfos?.PhoneNumbers?.at(0);
+  const [firstPhoneNumber] = userInfos?.PhoneNumbers || [];
 
   //! Get info for user in question.
   useEffect(() => {
@@ -66,6 +67,7 @@ const UserInfos = (props) => {
   const handleEditMobile = (mobile) => {
     if (!!firstPhoneNumber) {
       const numberId = firstPhoneNumber?.NumberID;
+      console.log(numberId, mobile);
       editPhoneNumber(numberId, mobile)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
