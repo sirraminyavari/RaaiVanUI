@@ -23,17 +23,17 @@ import useWindow from 'hooks/useWindowContext';
  */
 const NumericType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
   const fromInputRef = useRef();
   const toInputRef = useRef();
   const { RVDic } = useWindow();
-  const [from, setFrom] = useState(!!value ? value.FloatFrom : null);
-  const [to, setTo] = useState(!!value ? value.FloatTo : null);
+  const [from, setFrom] = useState(!!value ? value?.FloatFrom : null);
+  const [to, setTo] = useState(!!value ? value?.FloatTo : null);
 
   //! Set 'from' number on input change.
   const onNumberFrom = (e) => {
-    const floatFrom = e.target.value;
+    const floatFrom = e.target?.value;
     if (!!to && +floatFrom > to) {
       setFrom(to);
       fromInputRef.current.value = to;
@@ -45,7 +45,7 @@ const NumericType = (props) => {
 
   //! Set 'to' number on input change.
   const onNumberTo = (e) => {
-    const floatTo = e.target.value;
+    const floatTo = e.target?.value;
     if (!!from && +floatTo < from) {
       setTo(from);
       toInputRef.current.value = from;
@@ -89,7 +89,7 @@ const NumericType = (props) => {
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Styled.NumericWrapper>
-        <Styled.NumberSpanTitle>{RVDic.From}</Styled.NumberSpanTitle>
+        <Styled.NumberSpanTitle>{RVDic?.From}</Styled.NumberSpanTitle>
         <Styled.Numeric>
           <Input
             style={{ width: '100%' }}
@@ -101,7 +101,7 @@ const NumericType = (props) => {
         </Styled.Numeric>
       </Styled.NumericWrapper>
       <Styled.NumericWrapper>
-        <Styled.NumberSpanTitle>{RVDic.To}</Styled.NumberSpanTitle>
+        <Styled.NumberSpanTitle>{RVDic?.To}</Styled.NumberSpanTitle>
         <Styled.Numeric>
           <Input
             style={{ width: '100%' }}
