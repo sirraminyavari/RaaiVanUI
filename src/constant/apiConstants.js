@@ -119,6 +119,20 @@ export const SET_DEPARTMENT = 'SetDepartment';
  */
 export const SET_CITY = 'SetCity';
 
+/**
+ * @description 'SetFirstName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_FIRST_NAME = 'SetFirstName';
+
+/**
+ * @description 'SetLastName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_LAST_NAME = 'SetLastName';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

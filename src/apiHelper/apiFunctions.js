@@ -23,6 +23,8 @@ import {
   FG_API,
   GET_FORM_ELEMENTS,
   GET_CHILD_NODES,
+  SET_FIRST_NAME,
+  SET_LAST_NAME,
 } from 'constant/apiConstants';
 
 /**
@@ -303,9 +305,10 @@ export const setEmailAddress = (userId, emailAddress) => {
  * @description Set phone number.
  *  @param {String} userId -The id of the user.
  *  @param {String} phoneNumber -The phone number.
+ *  @param {String} numberType -Type of the phone number.
  *  @returns Promise.
  */
-export const setPhoneNumber = (userId, phoneNumber) => {
+export const setPhoneNumber = (userId, phoneNumber, numberType = 'Mobile') => {
   const setPhoneNumberAPI = API_Provider(USERS_API, SET_PHONE_NUMBER);
 
   return new Promise((resolve, reject) => {
@@ -314,7 +317,7 @@ export const setPhoneNumber = (userId, phoneNumber) => {
         {
           UserID: userId,
           PhoneNumber: encodeBase64(phoneNumber),
-          PhoneNumberType: 'Mobile',
+          PhoneNumberType: numberType,
         },
         (response) => {
           resolve(response);
@@ -333,9 +336,14 @@ export const setPhoneNumber = (userId, phoneNumber) => {
  * @description Edit phone number.
  *  @param {String} numberId -The id of the phone number.
  *  @param {String} phoneNumber -The new phone number.
+ *  @param {String} numberType -Type of the phone number.
  *  @returns Promise.
  */
-export const editPhoneNumber = (numberId, phoneNumber) => {
+export const editPhoneNumber = (
+  numberId,
+  phoneNumber,
+  numberType = 'Mobile'
+) => {
   const editPhoneNumberAPI = API_Provider(USERS_API, EDIT_PHONE_NUMBER);
 
   return new Promise((resolve, reject) => {
@@ -344,6 +352,7 @@ export const editPhoneNumber = (numberId, phoneNumber) => {
         {
           NumberID: numberId,
           PhoneNumber: encodeBase64(phoneNumber),
+          PhoneNumberType: numberType,
         },
         (response) => {
           resolve(response);
@@ -545,6 +554,64 @@ export const getChildNodes = (nodeTypeId) => {
       getChildNodesAPI.fetch(
         {
           NodeTypeID: nodeTypeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set user first name.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} firstName -The first name of the user.
+ *  @returns Promise.
+ */
+export const setFirstName = (userId = '', firstName) => {
+  const setFirstNameAPI = API_Provider(USERS_API, SET_FIRST_NAME);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setFirstNameAPI.fetch(
+        {
+          UserID: userId,
+          FirstName: encodeBase64(firstName),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set user last name.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} lastName -The last name of the user.
+ *  @returns Promise.
+ */
+export const setLastName = (userId = '', lastName) => {
+  const setLastNameAPI = API_Provider(USERS_API, SET_LAST_NAME);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setLastNameAPI.fetch(
+        {
+          UserID: userId,
+          LastName: encodeBase64(lastName),
         },
         (response) => {
           resolve(response);

@@ -22,18 +22,21 @@ import {
   setCity,
   setDepartment,
   setOrganization,
+  setFirstName,
+  setLastName,
 } from 'apiHelper/apiFunctions';
 
 const UserInfos = (props) => {
   const { user, isAuthUser } = props;
   const [userInfos, setUserInfos] = useState({});
   const [isFetchingInfos, setIsFetchingInfos] = useState(true);
-  const {
-    // RVGlobal,
-    RVDic,
-  } = useWindow();
+  const { RVGlobal, RVDic } = useWindow();
   const { FirstName, LastName, UserID } = user || {};
-  console.log(userInfos);
+  // console.log(userInfos);
+
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
+  const isAdminAndNotSaas = isAdmin && !isSaas;
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
   const emailList = userInfos?.Emails || [];
@@ -67,7 +70,7 @@ const UserInfos = (props) => {
   const handleEditMobile = (mobile) => {
     if (!!firstPhoneNumber) {
       const numberId = firstPhoneNumber?.NumberID;
-      console.log(numberId, mobile);
+      // console.log(numberId, mobile);
       editPhoneNumber(numberId, mobile)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
@@ -110,6 +113,7 @@ const UserInfos = (props) => {
 
   //! Edit user city.
   const handleEditCity = (city) => {
+    if (!isSaas) return;
     // console.log(city);
     setCity(UserID, city)
       .then((response) => console.log(response))
@@ -118,6 +122,7 @@ const UserInfos = (props) => {
 
   //! Edit user Department.
   const handleEditDepartment = (department) => {
+    if (!isSaas) return;
     // console.log(department);
     setDepartment(UserID, department)
       .then((response) => console.log(response))
@@ -126,15 +131,57 @@ const UserInfos = (props) => {
 
   //! Edit user Organization.
   const handleEditOrganization = (organization) => {
+    if (!isSaas) return;
     // console.log(organization);
     setOrganization(UserID, organization)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
+  //! Edit user first name.
+  const handleEditFirstName = (firstName) => {
+    setFirstName(UserID, firstName)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  //! Edit user last name.
+  const handleEditLastName = (lastName) => {
+    setLastName(UserID, lastName)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <Styled.ProfileInfoWrapper>
-      <Styled.UsenameWrapper>{fullName}</Styled.UsenameWrapper>
+      {isAuthUser || isAdminAndNotSaas ? (
+        <div style={{ marginBottom: '2rem' }}>
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder={RVDic?.FirstName}
+            text={decodeBase64(FirstName)}
+            onEdit={handleEditFirstName}
+            inlineTextClass="inline-text-profile-info-name"
+          />
+          <ProfileInfoItem
+            isAuthUser={isAuthUser}
+            placeholder={RVDic?.LastName}
+            text={decodeBase64(LastName)}
+            onEdit={handleEditLastName}
+            inlineTextClass="inline-text-profile-info-name"
+          />
+        </div>
+      ) : (
+        <Styled.UsenameWrapper>{fullName}</Styled.UsenameWrapper>
+      )}
 
       {isFetchingInfos ? (
         <LogoLoader />
@@ -165,20 +212,24 @@ const UserInfos = (props) => {
             type="email"
           />
           <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
-          <ProfileInfoItem
-            isAuthUser={isAuthUser}
-            placeholder="نام سازمان"
-            text={decodeBase64(userInfos?.Organization)}
-            icon={Buldingicon}
-            onEdit={handleEditOrganization}
-          />
-          <ProfileInfoItem
-            isAuthUser={isAuthUser}
-            placeholder="نام دپارتمان"
-            text={decodeBase64(userInfos?.Department)}
-            icon={SiteMapIcon}
-            onEdit={handleEditDepartment}
-          />
+          {isSaas && (
+            <ProfileInfoItem
+              isAuthUser={isAuthUser}
+              placeholder="نام سازمان"
+              text={decodeBase64(userInfos?.Organization)}
+              icon={Buldingicon}
+              onEdit={handleEditOrganization}
+            />
+          )}
+          {isSaas && (
+            <ProfileInfoItem
+              isAuthUser={isAuthUser}
+              placeholder="نام دپارتمان"
+              text={decodeBase64(userInfos?.Department)}
+              icon={SiteMapIcon}
+              onEdit={handleEditDepartment}
+            />
+          )}
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder="عنوان شغلی"
@@ -186,13 +237,15 @@ const UserInfos = (props) => {
             icon={BriefcaseIcon}
             onEdit={handleEditJobTilte}
           />
-          <ProfileInfoItem
-            isAuthUser={isAuthUser}
-            placeholder="نام شهر"
-            text={decodeBase64(userInfos?.City)}
-            icon={AdressMapIcon}
-            onEdit={handleEditCity}
-          />
+          {isSaas && (
+            <ProfileInfoItem
+              isAuthUser={isAuthUser}
+              placeholder="نام شهر"
+              text={decodeBase64(userInfos?.City)}
+              icon={AdressMapIcon}
+              onEdit={handleEditCity}
+            />
+          )}
         </>
       )}
     </Styled.ProfileInfoWrapper>

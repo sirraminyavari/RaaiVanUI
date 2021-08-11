@@ -104,7 +104,9 @@ const TopicItem = ({ item }) => {
           <Styled.TopicItemTitle>
             {decodeBase64(item?.Name)}
           </Styled.TopicItemTitle>
-          <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>1395960182</span>
+          <span style={{ fontSize: '0.7rem', color: CV_GRAY }}>
+            {decodeBase64(item?.AdditionalID)}
+          </span>
         </Styled.TopicItemTitleWrapper>
         <Styled.TopicItemContentActions>
           {/* <AnimatedDropDownList
