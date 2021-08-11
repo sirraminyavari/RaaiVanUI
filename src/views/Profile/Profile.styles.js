@@ -344,6 +344,11 @@ export const ProfileInfoWrapper = styled.div.attrs({
   // top: 6rem;
   padding: 1rem 1.5rem;
   min-height: 100vh;
+
+  .inline-text-profile-info-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
 `;
 
 export const UsenameWrapper = styled.div.attrs({

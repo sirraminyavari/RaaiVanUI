@@ -26,7 +26,7 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
     })
     ?.reduce((acc, prev) => acc + prev?.Count, 0);
 
-  console.log(moreNodesCount);
+  // console.log(moreNodesCount);
 
   const handleMoreTopics = () => {
     setIsMoreShown((v) => !v);

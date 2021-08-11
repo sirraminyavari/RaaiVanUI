@@ -14,12 +14,15 @@ const ProfileInfoItem = (props) => {
     multiline,
     onEdit,
     type,
+    inlineInputClass,
+    inlineTextClass,
   } = props;
   const [infoText, setInfoText] = useState(text);
   const [error, setError] = useState('');
 
-  const isAdminAndNotSaas =
-    RVGlobal?.IsSystemAdmin && !RVGlobal?.SAASBasedMultiTenancy;
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
+  const isAdminAndNotSaas = isAdmin && !isSaas;
 
   const handleEditItem = (text) => {
     // console.log(text);
@@ -38,9 +41,11 @@ const ProfileInfoItem = (props) => {
 
   return (
     <Styled.InfoItemWrapper>
-      <div>
-        <Icon size={20} color={TCV_DEFAULT} />
-      </div>
+      {Icon && (
+        <div>
+          <Icon size={20} color={TCV_DEFAULT} />
+        </div>
+      )}
       {isAuthUser || isAdminAndNotSaas ? (
         <InlineEditInput
           onSetText={handleEditItem}
@@ -48,8 +53,8 @@ const ProfileInfoItem = (props) => {
           text={infoText}
           type={type}
           containerClasses="user-info-inline-edit-container"
-          textClasses="user-info-inline-edit-text"
-          inputClasses="user-info-inline-edit-input"
+          textClasses={`user-info-inline-edit-text ${inlineTextClass}`}
+          inputClasses={`user-info-inline-edit-input ${inlineInputClass}`}
           inputPlaceholder={placeholder}
           multiline={!!multiline}
           textareaClasses="user-info-inline-edit-textarea"

@@ -67,7 +67,7 @@ const ProfileMain = (props) => {
     getRelatedNodesAbstract(UserID)
       .then((res) => {
         setIsFetchingRelatedNodes(false);
-        console.log(res);
+        // console.log(res);
         setRelatedNodes(res);
       })
       .catch((err) => {

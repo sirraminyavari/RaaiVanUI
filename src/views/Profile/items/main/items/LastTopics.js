@@ -92,7 +92,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
                 };
               });
               setNodes(complementeryNodes);
-              console.log(complementeryNodes);
+              // console.log(complementeryNodes);
             })
             .catch((err) => {
               setIsFetching(false);
@@ -107,7 +107,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   };
 
   useEffect(() => {
-    if (!NodeTypes) return;
+    if (!NodeTypes?.length) return;
     const nodeTypeIds = NodeTypes?.map((nodeType) => nodeType?.NodeTypeID).join(
       '|'
     );
