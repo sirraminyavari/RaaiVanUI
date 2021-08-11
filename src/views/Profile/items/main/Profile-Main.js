@@ -22,7 +22,7 @@ const ProfileMain = (props) => {
     CoverPhotoURL,
     ProfileImageURL,
     HighQualityImageURL,
-  } = User;
+  } = User || {};
   // console.log(User, IsOwnPage);
 
   const uploadFileRef = useRef();
@@ -74,6 +74,12 @@ const ProfileMain = (props) => {
         setIsFetchingRelatedNodes(false);
         console.log(err);
       });
+
+    //? Due to memory leak error in component.
+    //! Clean up.
+    return () => {
+      setRelatedNodes({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

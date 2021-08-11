@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { C_BLACK } from 'constant/Colors';
+import {
+  FLEX_CSC,
+  FLEX_RCB,
+  FLEX_RCC,
+  FLEX_RCS,
+} from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RTL } = window;
 
@@ -17,17 +23,13 @@ export const FilterContainer = styled.div`
 //! Select styles.
 export const SelectContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  ${FLEX_CSC}
   margin: 1rem 0;
   color: #262261;
 `;
 
 export const SelectOptionWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  ${FLEX_RCC}
   margin: 0.3rem 0;
 
   input[type='radio']:checked + label {
@@ -41,16 +43,12 @@ export const SelectLabel = styled.label`
 
 //! Checkbox styles.
 export const CheckboxTitleWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  ${FLEX_RCS}
   margin: 0.5rem 0;
 `;
 
 export const CheckboxOptionsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  ${FLEX_RCS}
   margin: 0.5rem 0;
   user-select: none;
 `;
@@ -62,9 +60,7 @@ export const CheckboxOptionsLabel = styled.label`
 
 //! Date styles
 export const DatePickerWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${FLEX_RCB}
   margin: 1rem 0;
 `;
 
@@ -90,11 +86,13 @@ export const TextTitle = styled.div.attrs({
   text-justify: inter-word;
 `;
 
+export const ExactOrFiltersWrapper = styled.div`
+  ${FLEX_RCB}
+`;
+
 //! Numeric styles
 export const NumericWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${FLEX_RCB}
   margin: 1rem 0;
 `;
 
@@ -112,8 +110,6 @@ export const NumberSpanTitle = styled.div`
 
 //! Node styles
 export const NodeTitleWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  ${FLEX_RCS}
   margin: 0.5rem 0;
 `;

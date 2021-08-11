@@ -32,7 +32,7 @@ const UserInfos = (props) => {
     // RVGlobal,
     RVDic,
   } = useWindow();
-  const { FirstName, LastName, UserID } = user;
+  const { FirstName, LastName, UserID } = user || {};
   console.log(userInfos);
 
   const fullName = `${decodeBase64(FirstName)} ${decodeBase64(LastName)}`;
@@ -53,6 +53,12 @@ const UserInfos = (props) => {
         console.log(err);
         setIsFetchingInfos(false);
       });
+
+    //? Due to memory leak error in component.
+    //! Clean up.
+    return () => {
+      setUserInfos({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

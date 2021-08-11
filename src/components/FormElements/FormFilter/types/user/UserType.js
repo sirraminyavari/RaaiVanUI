@@ -5,9 +5,10 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
-import APIHandler from 'apiHelper/APIHandler';
+import { API_Provider } from 'helpers/helpers';
 import * as Styled from '../types.styles';
 import useWindow from 'hooks/useWindowContext';
+import { GET_USERS, USERS_API } from 'constant/apiConstants';
 
 /**
  * @typedef PropType
@@ -24,8 +25,8 @@ import useWindow from 'hooks/useWindowContext';
  */
 const UserType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title } = data; //! Meta data to feed component.
-  const getUsersAPI = new APIHandler('UsersAPI', 'GetUsers');
+  const { ElementID, Title } = data || {}; //! Meta data to feed component.
+  const getUsersAPI = API_Provider(USERS_API, GET_USERS);
 
   // const { MultiSelect } = JSON.parse(decodeBase64(Info));
   const [items, setItems] = useState([]);
@@ -41,9 +42,9 @@ const UserType = (props) => {
           Count: 20,
         },
         (response) => {
-          const users = response.Users.map((user) => ({
-            id: user.UserID,
-            value: decodeBase64(user.FullName),
+          const users = response?.Users?.map((user) => ({
+            id: user?.UserID,
+            value: decodeBase64(user?.FullName),
           }));
           resolve(users);
         },
@@ -58,7 +59,7 @@ const UserType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const userIds = items.map((user) => user.id);
+    const userIds = items?.map((user) => user?.id);
     const JSONValue = { GuidItems: userIds };
 
     //! Send back value to parent on select.
@@ -66,9 +67,9 @@ const UserType = (props) => {
       id,
       value: {
         Type: 'user',
-        GuidItems: !items.length ? null : userIds.join('|'),
+        GuidItems: !items?.length ? null : userIds.join('|'),
         Data: items,
-        JSONValue: !items.length ? null : JSONValue,
+        JSONValue: !items?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

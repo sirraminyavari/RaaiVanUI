@@ -59,12 +59,6 @@ const ProfileNew = (props) => {
     </Switch>
   );
 
-  const showProfileMenu = [
-    USER_PATH,
-    USER_CUSTOMIZATION_PATH,
-    USER_SECURITY_PATH,
-  ].includes(window?.location?.pathname);
-
   useEffect(() => {
     if (
       window?.location?.pathname.includes(USER_MORE_RELATED_TOPICS_PATH) &&
@@ -89,6 +83,12 @@ const ProfileNew = (props) => {
     }
 
     return () => {
+      const showProfileMenu = [
+        USER_PATH,
+        USER_CUSTOMIZATION_PATH,
+        USER_SECURITY_PATH,
+      ].includes(window?.location?.pathname);
+
       //! If user still is on auth profile section, Don't change the sidebar content.
       if (showProfileMenu) return;
 

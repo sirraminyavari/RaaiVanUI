@@ -50,6 +50,13 @@ export const INVITE_USER = 'InviteUser';
 export const GET_USER = 'GetUser';
 
 /**
+ * @description 'GetUsers'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_USERS = 'GetUsers';
+
+/**
  * @description 'EditEmailAddress'
  * @mode API function
  * @class 'UsersAPI'
@@ -280,6 +287,13 @@ export const GET_NODES = 'GetNodes';
  */
 export const GET_NODE_INFO = 'GetNodeInfo';
 
+/**
+ * @description 'GetChildNodes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_CHILD_NODES = 'GetChildNodes';
+
 //* #################################
 //* ############ NotificationsAPI ########
 //* #################################
@@ -357,3 +371,20 @@ export const UPLOAD_ICON = 'UploadIcon';
  * @class 'DocsAPI'
  */
 export const CROP_ICON = 'CropIcon';
+
+//* #################################
+//* ############ FGAPI ###############
+//* #################################
+
+/**
+ * @description 'FGAPI'
+ * @mode API class
+ */
+export const FG_API = 'FGAPI';
+
+/**
+ * @description 'GetFormElements'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const GET_FORM_ELEMENTS = 'GetFormElements';

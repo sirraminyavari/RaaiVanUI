@@ -20,6 +20,9 @@ import {
   SET_ORGANIZATION,
   SET_DEPARTMENT,
   SET_CITY,
+  FG_API,
+  GET_FORM_ELEMENTS,
+  GET_CHILD_NODES,
 } from 'constant/apiConstants';
 
 /**
@@ -486,6 +489,62 @@ export const setCity = (userId, city) => {
         {
           UserID: userId,
           City: encodeBase64(city),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get form elements.
+ *  @param {String} formId -The id of the form.
+ *  @param {String} ownerId -The id of the form owner.
+ *  @returns Promise.
+ */
+export const getFormElements = (formId, ownerId) => {
+  const getFormElementsAPI = API_Provider(FG_API, GET_FORM_ELEMENTS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getFormElementsAPI.fetch(
+        {
+          FormID: formId,
+          OwnerID: ownerId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get child nodes.
+ *  @param {String} nodeTypeId -The id of the node type.
+ *  @returns Promise.
+ */
+export const getChildNodes = (nodeTypeId) => {
+  const getChildNodesAPI = API_Provider(CN_API, GET_CHILD_NODES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getChildNodesAPI.fetch(
+        {
+          NodeTypeID: nodeTypeId,
         },
         (response) => {
           resolve(response);

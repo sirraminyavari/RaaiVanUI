@@ -24,7 +24,7 @@ import useWindow from 'hooks/useWindowContext';
 const BinaryType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
-  const [bitValue, setBitValue] = useState(!!value ? value.Data : null);
+  const [bitValue, setBitValue] = useState(!!value ? value?.Data : null);
 
   const { GlobalUtilities } = useWindow();
 

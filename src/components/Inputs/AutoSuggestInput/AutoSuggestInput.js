@@ -64,7 +64,7 @@ const AutoSuggestInput = (props) => {
         setTimeout(() => {
           setIsSearching(false);
         }, 500);
-        if (response.length === 0) {
+        if (response?.length === 0) {
           setHasError(true);
           setItems([{ value: 'موردی یافت نشد!' }]);
         } else {
@@ -129,13 +129,19 @@ const AutoSuggestInput = (props) => {
     if (
       fetchItems &&
       debouncedSearchTerm &&
-      debouncedSearchTerm.length >= searchAt
+      debouncedSearchTerm?.length >= searchAt
     ) {
       //! Fetch new items on every amount of delay or mininum search term.
       getSuggestions();
     } else {
       setItems(defaultItems);
     }
+
+    //? Due to memory leak error.
+    //! Clean up.
+    return () => {
+      setItems([]);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
 

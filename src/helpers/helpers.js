@@ -3,6 +3,8 @@ import Cookie from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 
+const { GlobalUtilities } = window;
+
 /**
  * @description A function that accepts some funcs as params and then
  * ...pipes them together.
@@ -154,7 +156,7 @@ export const loadLocalStorage = (key) => {
     if (serializedStorage === null) {
       return undefined;
     }
-    return JSON.parse(serializedStorage);
+    return GlobalUtilities.to_json(serializedStorage) || {};
   } catch (error) {
     return undefined;
   }
@@ -201,8 +203,6 @@ export const getSystemName = () => {
 /**
  * @description Gets a new captcha token
  */
-
-const { GlobalUtilities } = window;
 export const getCaptchaToken = async () => {
   return new Promise((resolve) => {
     GlobalUtilities?.init_recaptcha((captcha) => {

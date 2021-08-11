@@ -25,12 +25,12 @@ import useWindow from 'hooks/useWindowContext';
  */
 const FileType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
   const { GlobalUtilities } = useWindow();
-  const [items, setItems] = useState(value ? value.TextItems : []);
-  const [exact, setExact] = useState(value ? value.Exact : false);
-  const [or, setOr] = useState(value ? value.Or : true);
+  const [items, setItems] = useState(value ? value?.TextItems : []);
+  const [exact, setExact] = useState(value ? value?.Exact : false);
+  const [or, setOr] = useState(value ? value?.Or : true);
   const [resetValue, setResetValue] = useState(null);
 
   //! Fires on item select.
@@ -50,7 +50,7 @@ const FileType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const textItems = items.map((item) => encodeBase64(item));
+    const textItems = items?.map((item) => encodeBase64(item));
     const JSONValue = {
       TextItems: textItems,
       Exact: exact,
@@ -66,7 +66,7 @@ const FileType = (props) => {
         Exact: exact,
         Or: or,
         Data: items,
-        JSONValue: !items.length ? null : JSONValue,
+        JSONValue: !items?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

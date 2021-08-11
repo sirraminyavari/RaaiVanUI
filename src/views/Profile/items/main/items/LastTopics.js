@@ -66,7 +66,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   const [isFetching, setIsFetching] = useState(false);
 
   const relatedTopicsLink = `${USER_MORE_RELATED_TOPICS_PATH}${
-    isAuthUser ? '' : `/${user.UserID}`
+    isAuthUser ? '' : `/${user?.UserID}`
   }`;
 
   const firstFive = (node, index) => index < SHOW_NODES_COUNT;
@@ -112,6 +112,12 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
       '|'
     );
     provideNodes(nodeTypeIds);
+
+    //? Due to memory leak error in component.
+    //! Clean up.
+    return () => {
+      setNodes([]);
+    };
   }, [NodeTypes]);
 
   return (
