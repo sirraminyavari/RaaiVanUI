@@ -58,7 +58,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const history = useHistory();
   const uploadFileRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -68,6 +68,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     title: '',
     isOpen: false,
   });
+
+  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
 
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -195,7 +197,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Shows invitation modal.
   const handleInviteUser = (e) => {
     e.stopPropagation();
-    if (isDeleting) return;
+    if (isDeleting || !isAdmin) return;
     setIsInviteShown(true);
     // dispatch(openInvitationModal(team));
   };
@@ -352,7 +354,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 <InlineEdit
                   text={appTitle}
                   onSetText={handleEditTeam}
-                  textClasses="inline-edit-truncate"
+                  textClasses="team-inline-edit-text"
                 />
               </Styled.TeamTitle>
             ) : (
@@ -409,17 +411,19 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   />
                 </PopupMenu>
               ) : (
-                <Styled.AddUserWrapper
-                  usersCount={shownUsers?.length}
-                  onClick={handleInviteUser}
-                  rtl={RV_RTL}
-                  dir={RV_RevFloat}>
-                  <UserPlusIcon
-                    size={22}
-                    color={TCV_DEFAULT}
-                    style={{ marginLeft: '0.4rem' }}
-                  />
-                </Styled.AddUserWrapper>
+                isAdmin && (
+                  <Styled.AddUserWrapper
+                    usersCount={shownUsers?.length}
+                    onClick={handleInviteUser}
+                    rtl={RV_RTL}
+                    dir={RV_RevFloat}>
+                    <UserPlusIcon
+                      size={22}
+                      color={TCV_DEFAULT}
+                      style={{ marginLeft: '0.4rem' }}
+                    />
+                  </Styled.AddUserWrapper>
+                )
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable ? (

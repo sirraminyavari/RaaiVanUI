@@ -444,11 +444,11 @@ export const TeamTitle = styled.div.attrs({
   margin: 0.5rem 0;
   font-weight: 500;
 
-  .inline-edit-truncate {
+  .team-inline-edit-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+    width: 50%;
     padding: 0.2rem 0.5rem;
 
     :hover {
