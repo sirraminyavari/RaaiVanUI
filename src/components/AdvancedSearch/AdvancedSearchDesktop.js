@@ -243,17 +243,17 @@ const AdvanceSearchDesktop = ({
                   nodeType={nodeType}
                   itemSelectionMode={itemSelectionMode}
                 />
-
-                {React.cloneElement(children, {
-                  searchText: searchText,
-                  dateFilter: dateFilter,
-                  formFilters: formFilters,
-                  forceFetch: forceReload,
-                  isByMe: isProfile ? true : isByMe,
-                  byPeople: byPeople,
-                  isBookMarked: isBookMarked,
-                  onTotalFound: setTotalFound,
-                })}
+                {children &&
+                  React.cloneElement(children, {
+                    searchText: searchText,
+                    dateFilter: dateFilter,
+                    formFilters: formFilters,
+                    forceFetch: forceReload,
+                    isByMe: isProfile ? true : isByMe,
+                    byPeople: byPeople,
+                    isBookMarked: isBookMarked,
+                    onTotalFound: setTotalFound,
+                  })}
               </div>
             </Maintainer>
           </Scrollable>
