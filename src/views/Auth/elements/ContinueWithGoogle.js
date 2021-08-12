@@ -57,6 +57,8 @@ const ContinueWithGoogle = ({ ...props }) => {
         } else if (result.Succeed) {
           (RVGlobal || {}).CurrentUser = result?.User;
 
+          console.log(result, 'result google');
+
           dispatch(loggedInAction(result));
         }
       }

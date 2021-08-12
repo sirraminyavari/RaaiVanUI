@@ -10,7 +10,7 @@ const {
   setVerifyCodeError,
 } = loginSlice.actions;
 
-const { UsersAPI, GlobalUtilities, location, RVDic, RVAPI } = window;
+const { UsersAPI, GlobalUtilities, location, RVDic, RVAPI, RVGlobal } = window;
 
 const signupAction = () => async (dispatch, getState) => {
   // comes from redux state
@@ -43,8 +43,9 @@ const signupAction = () => async (dispatch, getState) => {
               )
             );
           } else if (result.AuthCookie) {
-            dispatch(signupSuccess());
+            (RVGlobal || {}).CurrentUser = result?.User;
 
+            dispatch(signupSuccess());
             RVAPI.LoggedIn();
             GlobalUtilities.set_auth_cookie(result.AuthCookie);
             //ask ramin
