@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
 // import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
@@ -9,6 +9,15 @@ const DEFAULT_TAB = 'all-classes';
 const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
+
+  useEffect(() => {
+    if (relatedNodes) {
+      const nodeTypeIds = relatedNodes?.NodeTypes?.map(
+        (nodeType) => nodeType?.NodeTypeID
+      ).join('|');
+      provideNodes(nodeTypeIds);
+    }
+  }, [relatedNodes]);
 
   const allNodesCount = relatedNodes?.NodeTypes?.reduce(
     (acc, prev) => acc + prev?.Count,

@@ -38,6 +38,7 @@ const NodeList = (props) => {
     multiSelection,
     onCheck,
     itemSelectionMode,
+    nodeTypeIds,
   } = props || {};
   useTraceUpdate(props);
 
@@ -80,6 +81,7 @@ const NodeList = (props) => {
         Count: count,
         LowerBoundary: lowerBoundary,
         NodeTypeID: nodeTypeId,
+        NodeTypeIDs: nodeTypeIds,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
