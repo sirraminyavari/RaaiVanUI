@@ -1,9 +1,14 @@
 import AdvanceSearch from 'components/AdvancedSearch/AdvancedSearch';
 import NodeList from 'components/NodeList/NodeList';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+const { RVDic, RVGlobal } = window || {};
 
 const RelatedMeItems = (props) => {
   const { route } = props;
+
+  const params = useParams();
   const [nodeType, setNodeType] = useState(null);
   const [nodeTypeIds, setNodeTypeIds] = useState(null);
 
@@ -18,6 +23,8 @@ const RelatedMeItems = (props) => {
     }
   };
 
+  const userId = params?.uid || RVGlobal?.CurrentUser?.UserID;
+
   return (
     <>
       <AdvanceSearch
@@ -29,12 +36,12 @@ const RelatedMeItems = (props) => {
         {(nodeTypeIds || nodeType) && (
           <NodeList
             nodeTypeId={nodeType?.NodeTypeID ? nodeType?.NodeTypeID : null}
-            nodeTypeIds={nodeTypeIds}
             bookmarked={route?.Bookmarked}
+            relatedToNodeId={userId}
           />
         )}
       </AdvanceSearch>
-      {console.log(nodeTypeIds, '****** nodeTypeIds', nodeType, 'nodeType')}
+      {console.log(route, 'route')}
     </>
   );
 };
