@@ -3102,7 +3102,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         if (isSaaS) {
             elems["container"].innerHTML = '<lottie-player src="' + GlobalUtilities.icon(iconName) + '" background="transparent" ' +
-                'speed="1"  style="width: 60px; height: 60px;" loop autoplay></lottie-player>';
+                'speed="1" style="width: 5rem; height: 5rem;" loop autoplay></lottie-player>';
         }
 
         return { Destroy: function () { jQuery(elems["container"]).remove(); } };
