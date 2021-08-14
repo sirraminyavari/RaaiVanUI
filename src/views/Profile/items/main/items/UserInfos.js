@@ -49,7 +49,7 @@ const UserInfos = (props) => {
   useEffect(() => {
     getUser(UserID)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         setUserInfos(res);
         setIsFetchingInfos(false);
       })

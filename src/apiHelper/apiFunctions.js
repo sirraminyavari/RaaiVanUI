@@ -25,6 +25,7 @@ import {
   GET_CHILD_NODES,
   SET_FIRST_NAME,
   SET_LAST_NAME,
+  CROP_PROFILE_IMAGE,
 } from 'constant/apiConstants';
 
 /**
@@ -86,14 +87,13 @@ export const setVariable = (variableName, variableValue) => {
  * @description Crop icon.
  * @param {String} id
  * @param {String} type
- * @param {Number} x
- * @param {Number} y
- * @param {Number} width
- * @param {Number} height
+ * @param {Object} cropArea
  * @returns Promise.
  */
-export const cropIcon = (id, type, x, y, width, height) => {
+export const cropIcon = (id, type, cropArea) => {
   const cropIconAPI = API_Provider(DOCS_API, CROP_ICON);
+  const { x: X, y: Y, width: Width, height: Height } = cropArea;
+  console.log(cropArea);
 
   return new Promise((resolve, reject) => {
     try {
@@ -101,10 +101,44 @@ export const cropIcon = (id, type, x, y, width, height) => {
         {
           IconID: id,
           Type: type,
-          X: x,
-          Y: y,
-          Width: width,
-          Height: height,
+          X,
+          Y,
+          Width,
+          Height,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Crop profile image.
+ * @param {String} id
+ * @param {Object} cropArea
+ * @returns Promise.
+ */
+export const cropProfileImage = (id, cropArea) => {
+  const cropProfileImageAPI = API_Provider(DOCS_API, CROP_PROFILE_IMAGE);
+  const { x: X, y: Y, width: Width, height: Height } = cropArea;
+  console.log(cropArea);
+
+  return new Promise((resolve, reject) => {
+    try {
+      cropProfileImageAPI.fetch(
+        {
+          UserID: id,
+          X,
+          Y,
+          Width,
+          Height,
         },
         (response) => {
           resolve(response);

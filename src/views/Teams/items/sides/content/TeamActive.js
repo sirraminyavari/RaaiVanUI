@@ -8,6 +8,7 @@ import axios from 'axios';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
@@ -226,8 +227,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     resetConfirm();
   };
 
-  //! Once user clicked on team logo, It will open choose image dialoge.
-  const handleClickLogo = (e) => {
+  //! Once user clicked on team edit button, It will open choose image dialoge.
+  const handleChangeLogo = (e) => {
+    if (!isAdmin) return;
     e.stopPropagation();
     uploadFileRef.current.click();
   };
@@ -338,17 +340,22 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       ) : (
         <Styled.TeamContentWrapper>
           <Styled.TeamDescription>
-            <Styled.TeamAvatarWrapper onClick={handleClickLogo}>
+            <Styled.TeamAvatarWrapper>
+              {isAdmin && (
+                <Styled.TeamEditWrapper onClick={handleChangeLogo}>
+                  <AddImageIcon color="#fff" size={18} />
+                  <HiddenUploadFile
+                    ref={uploadFileRef}
+                    onFileChange={handleFileSelect}
+                  />
+                </Styled.TeamEditWrapper>
+              )}
               <Avatar
                 radius={45}
                 style={{ width: '3.1rem' }}
-                userImage={appIcon}
+                userImage={appIcon + `?timeStamp=${new Date().getTime()}`}
               />
             </Styled.TeamAvatarWrapper>
-            <HiddenUploadFile
-              ref={uploadFileRef}
-              onFileChange={handleFileSelect}
-            />
             {!isDeleting && isEditable ? (
               <Styled.TeamTitle>
                 <InlineEdit

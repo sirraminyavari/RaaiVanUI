@@ -65,7 +65,7 @@ const Navbar = () => {
   const profileImage =
     authUser?.ProfileImageURL === UNKNOWN_IMAGE
       ? defaultProfileImage
-      : authUser?.ProfileImageURL + `?timestamp: ${new Date().getTime()}`;
+      : authUser?.ProfileImageURL + `?timeStamp=${new Date().getTime()}`;
 
   const isTeamsView = activePath === TEAMS_PATH;
 

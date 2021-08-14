@@ -8,16 +8,18 @@ import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
 import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
-import CropModal from './items/CropModal';
+import EditModal from './items/EditModal';
 // import LastPosts from './items/LastPosts';
 import { getRelatedNodesAbstract } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { API_Provider, validateFileUpload } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
+import { getCroppedImg, readFile } from './items/cropUtils';
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
+const allowedTypes = ['image/png', 'image/jpeg'];
 
 const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
 
@@ -31,7 +33,7 @@ const ProfileMain = (props) => {
     CoverPhotoURL,
     HighQualityCoverPhotoURL,
     ProfileImageURL,
-    HighQualityImageURL,
+    // HighQualityImageURL,
   } = User || {};
   // console.log(User, IsOwnPage);
 
@@ -42,30 +44,34 @@ const ProfileMain = (props) => {
   const profileImage =
     ProfileImageURL === UNKNOWN_IMAGE ? defaultProfileImage : ProfileImageURL;
 
-  const uploadFileRef = useRef();
+  const coverUploadRef = useRef();
+  const avatarUploadRef = useRef();
   const [coverPhoto, setCoverPhoto] = useState(coverImage);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
-  const [croppedImage, setCroppedImage] = useState(profileImage);
-  const [cropModal, setCropModal] = useState({
+  const [profilePhoto, setProfilePhoto] = useState(profileImage);
+  // const [avatarCropSrc, setAvatarCropSrc] = useState(null);
+  const [editModal, setEditModal] = useState({
     isShown: false,
     title: 'برش تصویر پروفایل',
     aspect: 1 / 1,
-    imgSrc: HighQualityImageURL,
+    imgSrc: null,
+    file: null,
   });
 
   const [relatedNodes, setRelatedNodes] = useState({});
   const [isFetchingRelatedNodes, setIsFetchingRelatedNodes] = useState(true);
 
   const handleAvatarEdit = () => {
-    setCropModal((m) => ({ ...m, isShown: true }));
+    avatarUploadRef.current.click();
   };
 
   const handleHeaderEdit = () => {
-    uploadFileRef.current.click();
+    coverUploadRef.current.click();
   };
 
   const handleCloseModal = () => {
-    setCropModal((m) => ({ ...m, isShown: false }));
+    setEditModal((m) => ({ ...m, isShown: false, imgSrc: null, file: null }));
+    // setAvatarCropSrc(null);
     // console.log(ProfileImageURL);
   };
 
@@ -121,10 +127,28 @@ const ProfileMain = (props) => {
   //! Fires whenever user chooses an image for profile cover photo.
   const handleCoverSelect = (event) => {
     const files = event.target.files;
-    const allowedTypes = ['image/png', 'image/jpeg'];
 
     if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
       uploadImage(event);
+    } else {
+      event.target.value = '';
+      console.log('Add one image only');
+    }
+  };
+
+  //! Fires whenever user chooses an image for profile avatar photo.
+  const handleAvatarSelect = async (event) => {
+    const files = event.target.files;
+
+    if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
+      let imageDataUrl = await readFile(files[0]);
+      // setAvatarCropSrc(imageDataUrl);
+      setEditModal((m) => ({
+        ...m,
+        isShown: true,
+        imgSrc: imageDataUrl,
+        file: files[0],
+      }));
     } else {
       event.target.value = '';
       console.log('Add one image only');
@@ -153,24 +177,26 @@ const ProfileMain = (props) => {
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      {!!HighQualityImageURL && (
-        <CropModal
-          cropModal={cropModal}
-          handleCloseModal={handleCloseModal}
-          setCroppedImage={setCroppedImage}
-          id={UserID}
-        />
-      )}
+      <EditModal
+        modalProps={editModal}
+        handleCloseModal={handleCloseModal}
+        setCroppedImage={setProfilePhoto}
+        id={UserID}
+      />
       <Styled.ProfileHeader coverImage={coverPhoto}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={croppedImage + `?timestamp=${new Date().getTime()}`}
+            userImage={profilePhoto + `?timestamp=${new Date().getTime()}`}
             radius={95}
             className="profile-avatar"
           />
-          {!!HighQualityImageURL && IsOwnPage && (
+          {IsOwnPage && (
             <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
               <PencilIcon color="#fff" size={18} />
+              <HiddenUploadFile
+                ref={avatarUploadRef}
+                onFileChange={handleAvatarSelect}
+              />
             </Styled.AvatarPencilWrapper>
           )}
         </Styled.ProfileAvatarWrapper>
@@ -182,7 +208,7 @@ const ProfileMain = (props) => {
           <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
             <AddImageIcon color="#fff" size={18} />
             <HiddenUploadFile
-              ref={uploadFileRef}
+              ref={coverUploadRef}
               onFileChange={handleCoverSelect}
             />
           </Styled.HeaderPencilWrapper>

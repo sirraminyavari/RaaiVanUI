@@ -134,7 +134,10 @@ const TopicItem = ({ item }) => {
           <Avatar
             color="#333"
             style={{ minWidth: '2.75rem' }}
-            userImage={item?.Creator?.ProfileImageURL}
+            userImage={
+              item?.Creator?.ProfileImageURL +
+              `?timeStamp=${new Date().getTime()}`
+            }
           />
         </Styled.TopicItemContentActions>
       </Styled.TopicItemContentWrapper>
