@@ -314,6 +314,8 @@ const FilterBar = ({
     ...extendedHierarchy,
   ];
 
+  const isProfile_all = () => (isProfile && nodeType === null) || !isProfile;
+
   return (
     <Container>
       {!itemSelectionMode && <Breadcrumb items={breadcrumbItems} />}
@@ -419,50 +421,54 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <CustomDatePicker
-            label={RVDic?.SelectDate}
-            mode="button"
-            type="jalali"
-            clearButton
-            range
-            headerTitle="فیلتر تاریخ ایجاد"
-            onChangeVisibility={setCalendarPickerClicked}
-            CustomButton={({ onClick }) => (
-              <ShadowButton
-                onClick={() => {
-                  onClick();
-                }}
-                onMouseEnter={() => setDateHover(true)}
-                onMouseLeave={() => setDateHover(false)}
-                style={commonStyle}
-                $isEnabled={date || calendarPickerClicked}
-                className={
-                  calendarPickerClicked || date
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }>
-                {date ? (
-                  <FilledCalendarIcon
-                    size={'1.5rem'}
-                    className={'rv-default'}
-                  />
-                ) : (
-                  <EmptyCalendarIcon
-                    size={'1.5rem'}
-                    className={
-                      calendarPickerClicked || dateHover
-                        ? 'rv-default'
-                        : 'rv-distant'
-                    }
-                  />
-                )}
-              </ShadowButton>
-            )}
-            onDateSelect={(value) => {
-              setDate(value);
-              onByDate(value);
-            }}
-          />
+          {console.log(isProfile_all(), 'isProfile_all', '&&&&&&&&&')}
+          {isProfile_all() && (
+            <CustomDatePicker
+              label={RVDic?.SelectDate}
+              mode="button"
+              type="jalali"
+              clearButton
+              range
+              headerTitle="فیلتر تاریخ ایجاد"
+              onChangeVisibility={setCalendarPickerClicked}
+              CustomButton={({ onClick }) => (
+                <ShadowButton
+                  onClick={() => {
+                    onClick();
+                  }}
+                  onMouseEnter={() => setDateHover(true)}
+                  onMouseLeave={() => setDateHover(false)}
+                  style={commonStyle}
+                  $isEnabled={date || calendarPickerClicked}
+                  className={
+                    calendarPickerClicked || date
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
+                  }>
+                  {date ? (
+                    <FilledCalendarIcon
+                      size={'1.5rem'}
+                      className={'rv-default'}
+                    />
+                  ) : (
+                    <EmptyCalendarIcon
+                      size={'1.5rem'}
+                      className={
+                        calendarPickerClicked || dateHover
+                          ? 'rv-default'
+                          : 'rv-distant'
+                      }
+                    />
+                  )}
+                </ShadowButton>
+              )}
+              onDateSelect={(value) => {
+                setDate(value);
+                onByDate(value);
+              }}
+            />
+          )}
+
           <ShadowButton
             style={commonStyle}
             onMouseEnter={() => setBookmarkHover(true)}
@@ -517,38 +523,39 @@ const FilterBar = ({
             />
           )}
 
-          {advancedButton && (
-            <ShadowButton
-              style={{
-                marginRight: '0.5rem',
-                minWidth: '7rem',
-                color:
-                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
-              }}
-              ref={advancedSearchButtonRef}
-              onMouseEnter={() => setFilterHover(true)}
-              onMouseLeave={() => setFilterHover(false)}
-              onClick={onAdvancedFilterClick}
-              $isEnabled={advancedSearch}
-              className={
-                advancedSearch
-                  ? 'rv-border-distant rv-default'
-                  : 'rv-border-white rv-distant'
-              }>
-              <Filter
-                size={'1.5rem'}
+          {advancedButton ||
+            (isProfile_all() && (
+              <ShadowButton
+                style={{
+                  marginRight: '0.5rem',
+                  minWidth: '7rem',
+                  color:
+                    advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
+                }}
+                ref={advancedSearchButtonRef}
+                onMouseEnter={() => setFilterHover(true)}
+                onMouseLeave={() => setFilterHover(false)}
+                onClick={onAdvancedFilterClick}
+                $isEnabled={advancedSearch}
                 className={
                   advancedSearch
-                    ? 'rv-default'
-                    : filterHover
-                    ? 'rv-default'
-                    : 'rv-distant'
-                }
-                style={{ marginLeft: '0.5rem' }}
-              />
-              {RVDic?.Advanced}
-            </ShadowButton>
-          )}
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                <Filter
+                  size={'1.5rem'}
+                  className={
+                    advancedSearch
+                      ? 'rv-default'
+                      : filterHover
+                      ? 'rv-default'
+                      : 'rv-distant'
+                  }
+                  style={{ marginLeft: '0.5rem' }}
+                />
+                {RVDic?.Advanced}
+              </ShadowButton>
+            ))}
         </div>
       </BottomRow>
     </Container>
