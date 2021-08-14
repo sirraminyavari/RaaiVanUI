@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import KeyIcon from 'components/Icons/KeyIcon/KeyIcon';
 import { TC_DEFAULT } from 'constant/Colors';
 import * as Styled from 'views/Profile/Profile.styles';
@@ -9,6 +9,9 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
+import { checkUserName, changeUserName } from 'apiHelper/apiFunctions';
+import useDebounce from 'hooks/useDebounce';
 // import VerificationCodeHandle from './VerificationCodeHandle';
 
 const options = [
@@ -20,13 +23,16 @@ const options = [
   },
 ];
 
-const acceptedId = 'adminID';
-
-const TwoFactorAuthentication = () => {
+const TwoFactorAuthentication = ({ user }) => {
   const { RVDic } = useWindow();
+  const { UserName, UserID } = user || {};
+
   //! If true, Show two factor option box.
   const [isTwoFactorOn, setIsTwoFactorOn] = useState(false);
-  const [userId, setUserId] = useState('آیدی در دسترس: adminID');
+  const [userName, setUserName] = useState(decodeBase64(UserName));
+  const [isValidUserName, setIsValidUserName] = useState(false);
+  const [isCheckingUserName, setIsCheckingUserName] = useState(false);
+  const debouncedUserName = useDebounce(userName, 500);
   // const [isVerificationShown, setIsVerificationShown] = useState(false);
 
   //! Toggle two factor options.
@@ -34,8 +40,40 @@ const TwoFactorAuthentication = () => {
     setIsTwoFactorOn(toggleValue);
   };
 
-  const handleIDChange = (id) => {
-    setUserId(id);
+  const handleUserNameChange = (userName) => {
+    setUserName(userName);
+    setIsValidUserName(false);
+  };
+
+  useEffect(() => {
+    if (!debouncedUserName) return;
+    if (decodeBase64(UserName) !== debouncedUserName.trim()) {
+      setIsCheckingUserName(true);
+      checkUserName(debouncedUserName)
+        .then((response) => {
+          setIsValidUserName(!response);
+          setIsCheckingUserName(false);
+          // console.log(response);
+        })
+        .catch((error) => {
+          setIsCheckingUserName(false);
+          console.log(error);
+        });
+    } else {
+      setIsValidUserName(false);
+    }
+
+    //! Clean up.
+    return () => {
+      setIsValidUserName(false);
+    };
+  }, [debouncedUserName, UserName]);
+
+  const handleSaveUserName = () => {
+    if (!isValidUserName || isCheckingUserName || !userName) return;
+    changeUserName(UserID, userName)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
   };
 
   // const handleSendCode = () => {
@@ -46,8 +84,6 @@ const TwoFactorAuthentication = () => {
   //   setIsVerificationShown(false);
   // };
 
-  const isIDButtonActive = userId === acceptedId;
-
   return (
     <Styled.ContentWrapper>
       <div style={{ marginBottom: '2rem', position: 'relative' }}>
@@ -57,28 +93,29 @@ const TwoFactorAuthentication = () => {
             className={TC_DEFAULT}
             style={{ verticalAlign: 'middle' }}
           />
-          <Styled.FieldTitle>آیدی</Styled.FieldTitle>
+          <Styled.FieldTitle>{RVDic.UserName}</Styled.FieldTitle>
         </Styled.FieldTitleWrapper>
-        <Styled.InputWrapper isIDButtonActive={isIDButtonActive}>
+        <Styled.InputWrapper isIDButtonActive={isValidUserName}>
           <AnimatedInput
-            onChange={handleIDChange}
-            value={userId}
-            placeholder="آیدی"
+            onChange={handleUserNameChange}
+            value={userName}
+            placeholder={RVDic.UserName}
             style={{ width: '70%' }}
           />
           <Button
+            loading={isCheckingUserName}
             type="primary-o"
-            disable={!isIDButtonActive}
+            disable={!isValidUserName}
             classes="change-id-button"
-            onClick={() => {}}>
+            onClick={handleSaveUserName}>
             تغییر
           </Button>
         </Styled.InputWrapper>
-        {isIDButtonActive && (
+        {isValidUserName && (
           <div
             style={{
               position: 'absolute',
-              top: '6rem',
+              top: '7rem',
               right: '0.5rem',
               color: TCV_DEFAULT,
             }}>

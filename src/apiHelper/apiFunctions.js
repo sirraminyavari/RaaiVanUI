@@ -26,6 +26,10 @@ import {
   SET_FIRST_NAME,
   SET_LAST_NAME,
   CROP_PROFILE_IMAGE,
+  CHANGE_PASSWORD,
+  GET_PASS_POLICY,
+  CHECK_USER_NAME,
+  SET_USER_NAME,
 } from 'constant/apiConstants';
 
 /**
@@ -647,6 +651,112 @@ export const setLastName = (userId = '', lastName) => {
           UserID: userId,
           LastName: encodeBase64(lastName),
         },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Change user password.
+ *  @param {String} userId -The id of the user.
+ *  @param {String} currentPassword -The current password of the user.
+ *  @param {String} newPassword -The new password of the user.
+ *  @returns Promise.
+ */
+export const changeUserPassword = (userId, currentPassword, newPassword) => {
+  const changeUserPasswordAPI = API_Provider(USERS_API, CHANGE_PASSWORD);
+
+  return new Promise((resolve, reject) => {
+    try {
+      changeUserPasswordAPI.fetch(
+        {
+          UserID: userId,
+          CurrentPassword: encodeBase64(currentPassword),
+          NewPassword: encodeBase64(newPassword),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get password policy.
+ *  @returns Promise.
+ */
+export const getPasswordPolicy = () => {
+  const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getPasswordPolicyAPI.fetch(
+        {},
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Check userName.
+ * @param {String} userName -The userName.
+ *  @returns Promise.
+ */
+export const checkUserName = (userName) => {
+  const checkUserNameAPI = API_Provider(USERS_API, CHECK_USER_NAME);
+
+  return new Promise((resolve, reject) => {
+    try {
+      checkUserNameAPI.fetch(
+        { UserName: decodeBase64(userName) },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Change userName.
+ * @param {String} userId -The user id.
+ * @param {String} userName -The userName.
+ *  @returns Promise.
+ */
+export const changeUserName = (userId, userName) => {
+  const setUserNameAPI = API_Provider(USERS_API, SET_USER_NAME);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setUserNameAPI.fetch(
+        { UserID: userId, UserName: decodeBase64(userName) },
         (response) => {
           resolve(response);
         },

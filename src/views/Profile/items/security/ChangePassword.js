@@ -7,34 +7,27 @@ import Button from 'components/Buttons/Button';
 import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import PasswordValidation from 'components/PasswordValidation/PasswordValidation';
-import { API_Provider } from 'helpers/helpers';
-import { USERS_API, GET_PASS_POLICY } from 'constant/apiConstants';
 import VerificationCodeHandle from './VerificationCodeHandle';
+import { getPasswordPolicy } from 'apiHelper/apiFunctions';
 
-const ChangePassword = () => {
+const commonInputStyles = { marginBottom: '1rem', width: '70%' };
+
+const ChangePassword = ({ user }) => {
   const { RVDic, RVGlobal } = useWindow();
+  // const { UserName } = user || {};
   const [passwordPolicy, setPasswordPolicy] = useState(null);
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [newPassConfirm, setNewPassConfirm] = useState('');
   const [email, setEmail] = useState('email@cliqmind.com');
   const [isVerificationShown, setIsVerificationShown] = useState(false);
-  const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
   useEffect(() => {
-    try {
-      getPasswordPolicyAPI.fetch(
-        { ParseResults: true },
-        (response) => {
-          setPasswordPolicy(response);
-        },
-        (error) => console.log(error)
-      );
-    } catch (err) {
-      console.log(err);
-    }
+    getPasswordPolicy()
+      .then((response) => setPasswordPolicy(response))
+      .catch((error) => console.log(error));
 
     //? Due to memory leak error in component.
     //! Clean up.
@@ -66,6 +59,14 @@ const ChangePassword = () => {
 
   const handleTimeout = () => {
     setIsVerificationShown(false);
+  };
+
+  const handleSavePassword = () => {
+    if (isSaas) {
+      //! send verification code.
+    } else {
+      //! If user is 'NOT' in saas mode.
+    }
   };
 
   return (
@@ -116,20 +117,20 @@ const ChangePassword = () => {
           onChange={handleCurrentPass}
           value={currentPass}
           placeholder={RVDic.CurrentPassword}
-          style={{ marginBottom: '1rem', width: '70%' }}
+          style={commonInputStyles}
         />
       )}
       <AnimatedInput
         onChange={handleNewPass}
         value={newPass}
         placeholder={RVDic.NewPassword}
-        style={{ marginBottom: '1rem', width: '70%' }}
+        style={commonInputStyles}
       />
       <AnimatedInput
         onChange={handleNewPassConfirm}
         value={newPassConfirm}
         placeholder={RVDic.RepeatNewPassword}
-        style={{ marginBottom: '1rem', width: '70%' }}
+        style={commonInputStyles}
       />
       {!!passwordPolicy && (
         <PasswordValidation
@@ -144,6 +145,7 @@ const ChangePassword = () => {
       )}
       {newPass && (
         <Button
+          onClick={handleSavePassword}
           disable={newPass !== newPassConfirm}
           style={{
             width: '8rem',

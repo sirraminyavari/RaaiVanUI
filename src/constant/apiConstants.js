@@ -133,6 +133,27 @@ export const SET_FIRST_NAME = 'SetFirstName';
  */
 export const SET_LAST_NAME = 'SetLastName';
 
+/**
+ * @description 'ChangePassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const CHANGE_PASSWORD = 'ChangePassword';
+
+/**
+ * @description 'CheckUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const CHECK_USER_NAME = 'CheckUserName';
+
+/**
+ * @description 'SetUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_USER_NAME = 'SetUserName';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
