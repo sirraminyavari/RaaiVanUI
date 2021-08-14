@@ -1,8 +1,10 @@
 import { useEffect, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import {
   MAIN_CONTENT,
+  MOBILE_BOUNDRY,
   PROFILE_CONTENT,
   USER_CUSTOMIZATION_PATH,
   USER_MORE_RELATED_TOPICS_PATH,
@@ -13,7 +15,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import profileRoutes from 'routes/MainRoutes/Profile.routes';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
-const { setSidebarContent } = themeSlice.actions;
+const { setSidebarContent, toggleSidebar } = themeSlice.actions;
 
 const ProfileNew = (props) => {
   const { route } = props;
@@ -31,6 +33,10 @@ const ProfileNew = (props) => {
   const isRelatedMeTopicsPath = pathName.includes(
     USER_MORE_RELATED_TOPICS_PATH
   );
+
+  const isMobileScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
 
   const switchProfileRoutes = (
     <Switch>
@@ -73,6 +79,7 @@ const ProfileNew = (props) => {
           prev: MAIN_CONTENT,
         })
       );
+      !isMobileScreen && dispatch(toggleSidebar(true));
     } else {
       dispatch(
         setSidebarContent({

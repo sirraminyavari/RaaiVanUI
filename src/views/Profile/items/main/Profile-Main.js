@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
@@ -16,6 +17,7 @@ import { API_Provider, validateFileUpload } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getCroppedImg, readFile } from './items/cropUtils';
+import { MOBILE_BOUNDRY } from 'constant/constants';
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
@@ -37,8 +39,12 @@ const ProfileMain = (props) => {
   } = User || {};
   // console.log(User, IsOwnPage);
 
+  const isMobileView = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
+
   const coverImage = !!HighQualityCoverPhotoURL
-    ? HighQualityCoverPhotoURL + `?timestamp=${new Date().getTime()}`
+    ? HighQualityCoverPhotoURL + `?timeStamp=${new Date().getTime()}`
     : CoverPhotoURL;
 
   const profileImage =
@@ -214,9 +220,9 @@ const ProfileMain = (props) => {
           </Styled.HeaderPencilWrapper>
         )}
       </Styled.ProfileHeader>
-      <Styled.MainWrapper>
+      <Styled.MainWrapper isMobileView={isMobileView}>
         <UserInfos user={User} isAuthUser={IsOwnPage} />
-        <div>
+        <main>
           <HeaderStatus
             user={User}
             relatedNodesCount={relatedNodes?.TotalRelationsCount}
@@ -231,7 +237,7 @@ const ProfileMain = (props) => {
             />
           )}
           {/* <LastPosts /> */}
-        </div>
+        </main>
       </Styled.MainWrapper>
     </Styled.ProfileViewContainer>
   );

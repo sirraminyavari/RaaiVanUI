@@ -145,17 +145,12 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
               return <TopicItem key={item.NodeID} item={item} />;
             })
           ) : (
-            <div style={{ marginTop: '2rem' }}>
+            <Styled.EmptyStateWrapper>
               <EmptyState />
-              <div
-                style={{
-                  fontSize: '1rem',
-                  textAlign: 'center',
-                  color: TCV_DEFAULT,
-                }}>
+              <Styled.EmptyStateMessage>
                 موضوعی مرتبط با شما یافت نشد
-              </div>
-            </div>
+              </Styled.EmptyStateMessage>
+            </Styled.EmptyStateWrapper>
           )}
         </>
       )}
