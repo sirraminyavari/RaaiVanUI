@@ -61,7 +61,7 @@ const getNodeInfo = (nodeIds = '') => {
 };
 
 const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
-  const { NodeTypes } = relatedNodes;
+  const { NodeTypes } = relatedNodes || {};
   const [nodes, setNodes] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
@@ -130,15 +130,33 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
           </Link>
         </Button>
       </Styled.Header>
-      <LastTopicTabs relatedNodes={relatedNodes} provideNodes={provideNodes} />
+      {!!NodeTypes?.length && (
+        <LastTopicTabs
+          relatedNodes={relatedNodes}
+          provideNodes={provideNodes}
+        />
+      )}
       {isFetching ? (
         <LogoLoader />
       ) : (
         <>
-          {firstFiveNodes?.map((item) => {
-            return <TopicItem key={item.NodeID} item={item} />;
-          })}
-          {!NodeTypes?.length && <EmptyState />}
+          {!!NodeTypes?.length ? (
+            firstFiveNodes?.map((item) => {
+              return <TopicItem key={item.NodeID} item={item} />;
+            })
+          ) : (
+            <div style={{ marginTop: '2rem' }}>
+              <EmptyState />
+              <div
+                style={{
+                  fontSize: '1rem',
+                  textAlign: 'center',
+                  color: TCV_DEFAULT,
+                }}>
+                موضوعی مرتبط با شما یافت نشد
+              </div>
+            </div>
+          )}
         </>
       )}
     </Styled.LastTopicsContainer>

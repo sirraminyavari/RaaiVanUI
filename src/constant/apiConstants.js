@@ -386,6 +386,13 @@ export const UPLOAD_ICON = 'UploadIcon';
  */
 export const CROP_ICON = 'CropIcon';
 
+/**
+ * @description 'CropProfileImage'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const CROP_PROFILE_IMAGE = 'CropProfileImage';
+
 //* #################################
 //* ############ FGAPI ###############
 //* #################################

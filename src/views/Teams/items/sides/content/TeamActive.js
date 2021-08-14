@@ -8,6 +8,7 @@ import axios from 'axios';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
@@ -58,7 +59,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const history = useHistory();
   const uploadFileRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const { RVDic, RV_Float, RV_RevFloat, RV_RTL } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -68,6 +69,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     title: '',
     isOpen: false,
   });
+
+  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
 
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -195,7 +198,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Shows invitation modal.
   const handleInviteUser = (e) => {
     e.stopPropagation();
-    if (isDeleting) return;
+    if (isDeleting || !isAdmin) return;
     setIsInviteShown(true);
     // dispatch(openInvitationModal(team));
   };
@@ -224,8 +227,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     resetConfirm();
   };
 
-  //! Once user clicked on team logo, It will open choose image dialoge.
-  const handleClickLogo = (e) => {
+  //! Once user clicked on team edit button, It will open choose image dialoge.
+  const handleChangeLogo = (e) => {
+    if (!isAdmin) return;
     e.stopPropagation();
     uploadFileRef.current.click();
   };
@@ -336,23 +340,28 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       ) : (
         <Styled.TeamContentWrapper>
           <Styled.TeamDescription>
-            <Styled.TeamAvatarWrapper onClick={handleClickLogo}>
+            <Styled.TeamAvatarWrapper>
+              {isAdmin && (
+                <Styled.TeamEditWrapper onClick={handleChangeLogo}>
+                  <AddImageIcon color="#fff" size={18} />
+                  <HiddenUploadFile
+                    ref={uploadFileRef}
+                    onFileChange={handleFileSelect}
+                  />
+                </Styled.TeamEditWrapper>
+              )}
               <Avatar
                 radius={45}
                 style={{ width: '3.1rem' }}
-                userImage={appIcon}
+                userImage={appIcon + `?timeStamp=${new Date().getTime()}`}
               />
             </Styled.TeamAvatarWrapper>
-            <HiddenUploadFile
-              ref={uploadFileRef}
-              onFileChange={handleFileSelect}
-            />
             {!isDeleting && isEditable ? (
               <Styled.TeamTitle>
                 <InlineEdit
                   text={appTitle}
                   onSetText={handleEditTeam}
-                  textClasses="inline-edit-truncate"
+                  textClasses="team-inline-edit-text"
                 />
               </Styled.TeamTitle>
             ) : (
@@ -409,17 +418,19 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   />
                 </PopupMenu>
               ) : (
-                <Styled.AddUserWrapper
-                  usersCount={shownUsers?.length}
-                  onClick={handleInviteUser}
-                  rtl={RV_RTL}
-                  dir={RV_RevFloat}>
-                  <UserPlusIcon
-                    size={22}
-                    color={TCV_DEFAULT}
-                    style={{ marginLeft: '0.4rem' }}
-                  />
-                </Styled.AddUserWrapper>
+                isAdmin && (
+                  <Styled.AddUserWrapper
+                    usersCount={shownUsers?.length}
+                    onClick={handleInviteUser}
+                    rtl={RV_RTL}
+                    dir={RV_RevFloat}>
+                    <UserPlusIcon
+                      size={22}
+                      color={TCV_DEFAULT}
+                      style={{ marginLeft: '0.4rem' }}
+                    />
+                  </Styled.AddUserWrapper>
+                )
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable ? (

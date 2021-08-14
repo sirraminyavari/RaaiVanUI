@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
@@ -7,10 +8,20 @@ import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
 import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
-import CropModal from './items/CropModal';
+import EditModal from './items/EditModal';
 // import LastPosts from './items/LastPosts';
 import { getRelatedNodesAbstract } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { API_Provider, validateFileUpload } from 'helpers/helpers';
+import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
+import defaultProfileImage from 'assets/images/default-profile-photo.png';
+import { getCroppedImg, readFile } from './items/cropUtils';
+
+const MAX_IMAGE_SIZE = 5000000;
+const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
+const allowedTypes = ['image/png', 'image/jpeg'];
+
+const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
 
 const ProfileMain = (props) => {
   const { User, IsOwnPage } = props?.route;
@@ -20,47 +31,128 @@ const ProfileMain = (props) => {
     // UserName,
     UserID,
     CoverPhotoURL,
+    HighQualityCoverPhotoURL,
     ProfileImageURL,
-    HighQualityImageURL,
+    // HighQualityImageURL,
   } = User || {};
   // console.log(User, IsOwnPage);
 
-  const uploadFileRef = useRef();
-  const [croppedImage, setCroppedImage] = useState(ProfileImageURL);
-  const [cropModal, setCropModal] = useState({
+  const coverImage = !!HighQualityCoverPhotoURL
+    ? HighQualityCoverPhotoURL + `?timestamp=${new Date().getTime()}`
+    : CoverPhotoURL;
+
+  const profileImage =
+    ProfileImageURL === UNKNOWN_IMAGE ? defaultProfileImage : ProfileImageURL;
+
+  const coverUploadRef = useRef();
+  const avatarUploadRef = useRef();
+  const [coverPhoto, setCoverPhoto] = useState(coverImage);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState(profileImage);
+  // const [avatarCropSrc, setAvatarCropSrc] = useState(null);
+  const [editModal, setEditModal] = useState({
     isShown: false,
     title: 'برش تصویر پروفایل',
     aspect: 1 / 1,
-    imgSrc: HighQualityImageURL,
+    imgSrc: null,
+    file: null,
   });
 
   const [relatedNodes, setRelatedNodes] = useState({});
   const [isFetchingRelatedNodes, setIsFetchingRelatedNodes] = useState(true);
 
   const handleAvatarEdit = () => {
-    setCropModal((m) => ({ ...m, isShown: true }));
+    avatarUploadRef.current.click();
   };
 
   const handleHeaderEdit = () => {
-    uploadFileRef.current.click();
+    coverUploadRef.current.click();
   };
 
   const handleCloseModal = () => {
-    setCropModal((m) => ({ ...m, isShown: false }));
+    setEditModal((m) => ({ ...m, isShown: false, imgSrc: null, file: null }));
+    // setAvatarCropSrc(null);
     // console.log(ProfileImageURL);
   };
 
-  //! Fires whenever user chooses an image.
-  const handleFileSelect = (event) => {
-    const files = event.target.files;
-    console.log(files);
+  //! Read image file, Set preview image, And upload it to the server.
+  const uploadImage = (event) => {
+    const file = event.target.files[0];
+    //! If file size doesn't exceed maximum size, then proceed.
+    if (file.size <= MAX_IMAGE_SIZE) {
+      const reader = new FileReader();
 
-    // if (files.length === 1 && validateImageUpload(files)) {
-    //   uploadImage(event);
-    // } else {
-    //   event.target.value = '';
-    //   console.log('Add one image only');
-    // }
+      reader.readAsDataURL(file);
+
+      reader.onload = (e) => {
+        //! Load on server.
+        let formData = new FormData();
+        formData.append('file', file);
+
+        //! Get upload url.
+        getUploadUrlAPI.url(
+          { IconID: UserID, Type: 'CoverPhoto' },
+          (response) => {
+            let uploadURL = response.slice(5);
+            const config = {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            };
+            setIsUploadingCover(true);
+            //! Post file to the server.
+            axios
+              .post(uploadURL, formData, config)
+              .then((response) => {
+                setCoverPhoto(e.target.result);
+                setIsUploadingCover(false);
+                console.log(response);
+              })
+              .catch((error) => {
+                console.log(error);
+                setIsUploadingCover(false);
+              });
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      };
+    } else {
+      event.target.value = '';
+      console.log('Upload less than 5MB please.');
+    }
+  };
+
+  //! Fires whenever user chooses an image for profile cover photo.
+  const handleCoverSelect = (event) => {
+    const files = event.target.files;
+
+    if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
+      uploadImage(event);
+    } else {
+      event.target.value = '';
+      console.log('Add one image only');
+    }
+  };
+
+  //! Fires whenever user chooses an image for profile avatar photo.
+  const handleAvatarSelect = async (event) => {
+    const files = event.target.files;
+
+    if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
+      let imageDataUrl = await readFile(files[0]);
+      // setAvatarCropSrc(imageDataUrl);
+      setEditModal((m) => ({
+        ...m,
+        isShown: true,
+        imgSrc: imageDataUrl,
+        file: files[0],
+      }));
+    } else {
+      event.target.value = '';
+      console.log('Add one image only');
+    }
   };
 
   useEffect(() => {
@@ -85,34 +177,42 @@ const ProfileMain = (props) => {
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      {!!HighQualityImageURL && (
-        <CropModal
-          cropModal={cropModal}
-          handleCloseModal={handleCloseModal}
-          setCroppedImage={setCroppedImage}
-          id={UserID}
-        />
-      )}
-      <Styled.ProfileHeader coverImage={CoverPhotoURL}>
+      <EditModal
+        modalProps={editModal}
+        handleCloseModal={handleCloseModal}
+        setCroppedImage={setProfilePhoto}
+        id={UserID}
+      />
+      <Styled.ProfileHeader coverImage={coverPhoto}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={croppedImage + `?timestamp: ${new Date()}`}
+            userImage={profilePhoto + `?timestamp=${new Date().getTime()}`}
             radius={95}
             className="profile-avatar"
           />
-          {!!HighQualityImageURL && IsOwnPage && (
+          {IsOwnPage && (
             <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
               <PencilIcon color="#fff" size={18} />
+              <HiddenUploadFile
+                ref={avatarUploadRef}
+                onFileChange={handleAvatarSelect}
+              />
             </Styled.AvatarPencilWrapper>
           )}
         </Styled.ProfileAvatarWrapper>
-        {/* <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
-          <AddImageIcon color="#fff" size={18} />
-          <HiddenUploadFile
-            ref={uploadFileRef}
-            onFileChange={handleFileSelect}
-          />
-        </Styled.HeaderPencilWrapper> */}
+        {isUploadingCover ? (
+          <Styled.HeaderCoverLoader>
+            <LogoLoader lottieWidth="3rem" />
+          </Styled.HeaderCoverLoader>
+        ) : (
+          <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
+            <AddImageIcon color="#fff" size={18} />
+            <HiddenUploadFile
+              ref={coverUploadRef}
+              onFileChange={handleCoverSelect}
+            />
+          </Styled.HeaderPencilWrapper>
+        )}
       </Styled.ProfileHeader>
       <Styled.MainWrapper>
         <UserInfos user={User} isAuthUser={IsOwnPage} />

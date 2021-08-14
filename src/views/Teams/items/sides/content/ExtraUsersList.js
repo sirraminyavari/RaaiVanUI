@@ -10,30 +10,34 @@ import usePreventScroll from 'hooks/usePreventScroll';
 
 const ExtraUsersList = ({ handleInviteUser, users }) => {
   const containerRef = useRef();
-  const { RV_RTL } = useWindow();
+  const { RV_RTL, RVGlobal } = useWindow();
+
+  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
 
   usePreventScroll(containerRef);
 
   return (
     <div ref={containerRef}>
-      <Styled.ExtraUsersPopupHeader onClick={handleInviteUser}>
-        <Styled.AddUserWrapper
-          style={{
-            width: '2rem',
-            height: '2rem',
-            lineHeight: '2.5rem',
-          }}
-          rtl={RV_RTL}>
-          <UserPlusIcon
-            size={16}
-            color={TCV_DEFAULT}
-            style={{ marginLeft: '0.3rem' }}
-          />
-        </Styled.AddUserWrapper>
-        <Styled.ExtraUsersPopupTitle>
-          افزودن هم تیمی جدید
-        </Styled.ExtraUsersPopupTitle>
-      </Styled.ExtraUsersPopupHeader>
+      {isAdmin && (
+        <Styled.ExtraUsersPopupHeader onClick={handleInviteUser}>
+          <Styled.AddUserWrapper
+            style={{
+              width: '2rem',
+              height: '2rem',
+              lineHeight: '2.5rem',
+            }}
+            rtl={RV_RTL}>
+            <UserPlusIcon
+              size={16}
+              color={TCV_DEFAULT}
+              style={{ marginLeft: '0.3rem' }}
+            />
+          </Styled.AddUserWrapper>
+          <Styled.ExtraUsersPopupTitle>
+            افزودن هم تیمی جدید
+          </Styled.ExtraUsersPopupTitle>
+        </Styled.ExtraUsersPopupHeader>
+      )}
       <PerfectScrollbar className="extra-users-scrollbar">
         {users
           ?.filter((user, index) => index > 3 && user)

@@ -435,6 +435,27 @@ export const TeamAvatarWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
   width: 3.2rem;
+  position: relative;
+
+  :hover > div {
+    opacity: 1;
+  }
+`;
+
+export const TeamEditWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 1.6rem;
+  height: 1.6rem;
+  position: absolute;
+  bottom: 0;
+  right: 2rem;
+  padding: 0.15rem 0.1rem 0 0;
+  background-color: ${TCV_DEFAULT};
+  border: 2px solid ${CV_DISTANT};
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
 `;
 
 export const TeamTitle = styled.div.attrs({
@@ -444,11 +465,11 @@ export const TeamTitle = styled.div.attrs({
   margin: 0.5rem 0;
   font-weight: 500;
 
-  .inline-edit-truncate {
+  .team-inline-edit-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+    width: 50%;
     padding: 0.2rem 0.5rem;
 
     :hover {

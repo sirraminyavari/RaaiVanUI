@@ -4,7 +4,7 @@ import * as Styled from './LogoLoader.styles';
 import LogoLottieMaker from 'components/LottieMaker/LottieMaker';
 import animationData from 'assets/lotties/loading.json';
 
-const LogoLoader = ({ style }) => {
+const LogoLoader = ({ style, lottieWidth = '5rem' }) => {
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   return (
@@ -14,7 +14,7 @@ const LogoLoader = ({ style }) => {
           animationJSON={animationData}
           loop
           autoplay
-          width="5rem"
+          width={lottieWidth}
         />
       ) : (
         <Styled.Image src={inprogressLoader} alt="cliqmind-logo" />
