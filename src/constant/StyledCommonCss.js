@@ -43,6 +43,30 @@ export const FLEX_CCB = css`
 
 /**
  * @description 'Flex'
+ * @Direction 'C'olumn
+ * @Align flex-'S'tart
+ * @Justify space-'A'round
+ */
+export const FLEX_CSA = css`
+  ${FLEX_COLUMN}
+  align-items: flex-start;
+  justify-content: space-around;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'R'ow
+ * @Align 'C'enter
+ * @Justify space-'A'round
+ */
+export const FLEX_RCA = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
+
+/**
+ * @description 'Flex'
  * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify 'C'enter
@@ -86,5 +110,17 @@ export const FLEX_RCE = css`
 export const FLEX_RCB = css`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'R'ow
+ * @Align flex-'S'tart
+ * @Justify space-'B'etween
+ */
+export const FLEX_RSB = css`
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
 `;

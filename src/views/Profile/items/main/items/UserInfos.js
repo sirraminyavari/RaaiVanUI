@@ -49,7 +49,7 @@ const UserInfos = (props) => {
   useEffect(() => {
     getUser(UserID)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserInfos(res);
         setIsFetchingInfos(false);
       })
@@ -67,80 +67,98 @@ const UserInfos = (props) => {
   }, []);
 
   //! Edit phone number of the user.
-  const handleEditMobile = (mobile) => {
+  const handleEditMobile = (newMobile) => {
+    const prevMobileNumber = decodeBase64(firstPhoneNumber?.Number);
     if (!!firstPhoneNumber) {
+      if (prevMobileNumber === newMobile.trim()) return;
       const numberId = firstPhoneNumber?.NumberID;
       // console.log(numberId, mobile);
-      editPhoneNumber(numberId, mobile)
+      editPhoneNumber(numberId, newMobile)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
     } else {
-      setPhoneNumber(UserID, mobile)
+      setPhoneNumber(UserID, newMobile)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
     }
   };
 
   //! Edit email address of the user.
-  const handleEditEmail = (email) => {
+  const handleEditEmail = (newEmail) => {
+    const prevEmail = decodeBase64(lastEmail?.Email);
+    if (prevEmail === newEmail.trim()) return;
     // console.log(email);
     if (isMainEmail) {
-      setEmailAddress(UserID, email)
+      setEmailAddress(UserID, newEmail)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
     } else {
       const emailId = lastEmail?.EmailID;
-      editEmailAddress(emailId, email)
+      editEmailAddress(emailId, newEmail)
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
     }
   };
 
   //! Edit job title of the user.
-  const handleEditJobTilte = (jobTitle) => {
-    setJobTitle(UserID, jobTitle)
+  const handleEditJobTilte = (newJobTitle) => {
+    const prevJobTitle = decodeBase64(userInfos?.JobTitle);
+    if (prevJobTitle === newJobTitle.trim()) return;
+
+    setJobTitle(UserID, newJobTitle)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
-  //! Edit About me of the user.
-  const handleEditAboutMe = (text) => {
-    // console.log(text);
-    setAboutMe(UserID, text)
+  //! Edit about me of the user.
+  const handleEditAboutMe = (newAboutMe) => {
+    const prevAboutMe = decodeBase64(userInfos?.AboutMe);
+    if (prevAboutMe === newAboutMe.trim()) return;
+
+    setAboutMe(UserID, newAboutMe)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
   //! Edit user city.
-  const handleEditCity = (city) => {
+  const handleEditCity = (newCity) => {
     if (!isSaas) return;
-    // console.log(city);
-    setCity(UserID, city)
+    const prevCity = decodeBase64(userInfos?.City);
+    if (prevCity === newCity.trim()) return;
+
+    setCity(UserID, newCity)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
   //! Edit user Department.
-  const handleEditDepartment = (department) => {
+  const handleEditDepartment = (newDepartment) => {
     if (!isSaas) return;
-    // console.log(department);
-    setDepartment(UserID, department)
+    const prevDepartment = decodeBase64(userInfos?.Department);
+    if (prevDepartment === newDepartment.trim()) return;
+
+    setDepartment(UserID, newDepartment)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
   //! Edit user Organization.
-  const handleEditOrganization = (organization) => {
+  const handleEditOrganization = (newOrganization) => {
     if (!isSaas) return;
-    // console.log(organization);
-    setOrganization(UserID, organization)
+    const prevOrganization = decodeBase64(userInfos?.Organization);
+    if (prevOrganization === newOrganization.trim()) return;
+
+    setOrganization(UserID, newOrganization)
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
   //! Edit user first name.
-  const handleEditFirstName = (firstName) => {
-    setFirstName(UserID, firstName)
+  const handleEditFirstName = (newFirstName) => {
+    const prevFirstName = decodeBase64(FirstName);
+    if (prevFirstName === newFirstName.trim()) return;
+
+    setFirstName(UserID, newFirstName)
       .then((response) => {
         console.log(response);
       })
@@ -150,8 +168,11 @@ const UserInfos = (props) => {
   };
 
   //! Edit user last name.
-  const handleEditLastName = (lastName) => {
-    setLastName(UserID, lastName)
+  const handleEditLastName = (newLastName) => {
+    const prevLastName = decodeBase64(LastName);
+    if (prevLastName === newLastName.trim()) return;
+
+    setLastName(UserID, newLastName)
       .then((response) => {
         console.log(response);
       })
