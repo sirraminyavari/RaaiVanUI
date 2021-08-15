@@ -24,7 +24,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
-import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import {
+  BackButton,
+  BottomRow,
+  Container,
+  ShadowButton,
+  TopRow,
+} from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import { INTRO_ONBOARD, OPENED } from 'constant/constants';
@@ -335,7 +341,7 @@ const FilterBar = ({
             />
           )}
           <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
-            {getTypeName()}
+            {isProfile ? RVDic.RelatedNodes : getTypeName()}
           </Heading>
           {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
@@ -344,12 +350,13 @@ const FilterBar = ({
           )}
         </div>
         {isProfile && (
-          <Button
+          <BackButton
+            className={'rv-border-radius-half'}
             onClick={() => goBack()}
-            style={{ color: CV_RED }}
+            style={{ color: CV_RED, padding: '0.5rem' }}
             type={'secondary-o'}>
             {RVDic.Return}
-          </Button>
+          </BackButton>
         )}
 
         {/* Don't forget to add this for urgent create in itemSelection mode
@@ -422,73 +429,73 @@ const FilterBar = ({
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           {console.log(isProfile_all(), 'isProfile_all', '&&&&&&&&&')}
-          {isProfile_all() && (
-            <CustomDatePicker
-              label={RVDic?.SelectDate}
-              mode="button"
-              type="jalali"
-              clearButton
-              range
-              headerTitle="فیلتر تاریخ ایجاد"
-              onChangeVisibility={setCalendarPickerClicked}
-              CustomButton={({ onClick }) => (
-                <ShadowButton
-                  onClick={() => {
-                    onClick();
-                  }}
-                  onMouseEnter={() => setDateHover(true)}
-                  onMouseLeave={() => setDateHover(false)}
-                  style={commonStyle}
-                  $isEnabled={date || calendarPickerClicked}
-                  className={
-                    calendarPickerClicked || date
-                      ? 'rv-border-distant rv-default'
-                      : 'rv-border-white rv-distant'
-                  }>
-                  {date ? (
-                    <FilledCalendarIcon
-                      size={'1.5rem'}
-                      className={'rv-default'}
-                    />
-                  ) : (
-                    <EmptyCalendarIcon
-                      size={'1.5rem'}
-                      className={
-                        calendarPickerClicked || dateHover
-                          ? 'rv-default'
-                          : 'rv-distant'
-                      }
-                    />
-                  )}
-                </ShadowButton>
-              )}
-              onDateSelect={(value) => {
-                setDate(value);
-                onByDate(value);
-              }}
-            />
-          )}
 
-          <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => setBookmarkHover(true)}
-            onMouseLeave={() => setBookmarkHover(false)}
-            onClick={() => onByBookmarked(!isBookMarked)}
-            $isEnabled={isBookMarked}
-            className={
-              isBookMarked
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            {isBookMarked ? (
-              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-            ) : (
-              <OutLineBookmarkIcon
-                size={'1.5rem'}
-                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-              />
+          <CustomDatePicker
+            label={RVDic?.SelectDate}
+            mode="button"
+            type="jalali"
+            clearButton
+            range
+            headerTitle="فیلتر تاریخ ایجاد"
+            onChangeVisibility={setCalendarPickerClicked}
+            CustomButton={({ onClick }) => (
+              <ShadowButton
+                onClick={() => {
+                  onClick();
+                }}
+                onMouseEnter={() => setDateHover(true)}
+                onMouseLeave={() => setDateHover(false)}
+                style={commonStyle}
+                $isEnabled={date || calendarPickerClicked}
+                className={
+                  calendarPickerClicked || date
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                {date ? (
+                  <FilledCalendarIcon
+                    size={'1.5rem'}
+                    className={'rv-default'}
+                  />
+                ) : (
+                  <EmptyCalendarIcon
+                    size={'1.5rem'}
+                    className={
+                      calendarPickerClicked || dateHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
+                  />
+                )}
+              </ShadowButton>
             )}
-          </ShadowButton>
+            onDateSelect={(value) => {
+              setDate(value);
+              onByDate(value);
+            }}
+          />
+          {!isProfile && (
+            <ShadowButton
+              style={commonStyle}
+              onMouseEnter={() => setBookmarkHover(true)}
+              onMouseLeave={() => setBookmarkHover(false)}
+              onClick={() => onByBookmarked(!isBookMarked)}
+              $isEnabled={isBookMarked}
+              className={
+                isBookMarked
+                  ? 'rv-border-distant rv-default'
+                  : 'rv-border-white rv-distant'
+              }>
+              {isBookMarked ? (
+                <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+              ) : (
+                <OutLineBookmarkIcon
+                  size={'1.5rem'}
+                  className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+                />
+              )}
+            </ShadowButton>
+          )}
           {!isProfile && (
             <PeoplePicker
               onByMe={onByMe}

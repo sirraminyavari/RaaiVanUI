@@ -134,9 +134,9 @@ export default SubjectItemDesktop;
 
 const MainContent = styled.div`
   display: flex;
-  flex-grow: 1;
   flex-direction: row;
   align-items: center;
+  width: 90%;
   padding: 0 0.5rem 0 0.5rem;
 `;
 const Main = styled.div`
