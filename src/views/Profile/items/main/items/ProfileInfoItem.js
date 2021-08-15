@@ -53,6 +53,7 @@ const ProfileInfoItem = (props) => {
             initialValue={infoText}
             simpleMode={true}
             getValue={handleEditItem}
+            placeholder={placeholder}
           />
         ) : (
           <InlineEditInput

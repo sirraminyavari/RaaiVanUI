@@ -18,6 +18,7 @@ import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getCroppedImg, readFile, createImage } from './items/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
+import useWindow from 'hooks/useWindowContext';
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
@@ -42,6 +43,7 @@ const ProfileMain = (props) => {
   const isMobileView = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
+  const { RVDic } = useWindow();
 
   const coverImage = !!HighQualityCoverPhotoURL
     ? HighQualityCoverPhotoURL + `?timeStamp=${new Date().getTime()}`
@@ -58,7 +60,7 @@ const ProfileMain = (props) => {
   // const [avatarCropSrc, setAvatarCropSrc] = useState(null);
   const [editModal, setEditModal] = useState({
     isShown: false,
-    title: 'برش تصویر پروفایل',
+    title: RVDic.CropImage,
     aspect: 1 / 1,
     imgSrc: null,
     file: null,

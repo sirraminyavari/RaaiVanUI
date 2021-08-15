@@ -211,12 +211,12 @@ const UserInfos = (props) => {
           <ProfileInfoItem
             multiline
             isAuthUser={isAuthUser}
-            placeholder="درباره..."
+            placeholder={RVDic.AboutMe}
             text={decodeBase64(userInfos?.AboutMe)}
             icon={InfoIcon}
             onEdit={handleEditAboutMe}
           />
-          <Styled.SectionTitle>راه های ارتباطی</Styled.SectionTitle>
+          <Styled.SectionTitle>{RVDic.ContactInfo}</Styled.SectionTitle>
           <ProfileInfoItem
             isAuthUser={isAuthUser}
             placeholder={RVDic.Mobile}
@@ -236,7 +236,7 @@ const UserInfos = (props) => {
           {isSaas && (
             <ProfileInfoItem
               isAuthUser={isAuthUser}
-              placeholder="نام سازمان"
+              placeholder={RVDic.Organization}
               text={decodeBase64(userInfos?.Organization)}
               icon={Buldingicon}
               onEdit={handleEditOrganization}
@@ -245,7 +245,7 @@ const UserInfos = (props) => {
           {isSaas && (
             <ProfileInfoItem
               isAuthUser={isAuthUser}
-              placeholder="نام دپارتمان"
+              placeholder={RVDic.Department}
               text={decodeBase64(userInfos?.Department)}
               icon={SiteMapIcon}
               onEdit={handleEditDepartment}
@@ -253,7 +253,7 @@ const UserInfos = (props) => {
           )}
           <ProfileInfoItem
             isAuthUser={isAuthUser}
-            placeholder="عنوان شغلی"
+            placeholder={RVDic.JobTitle}
             text={decodeBase64(userInfos?.JobTitle)}
             icon={BriefcaseIcon}
             onEdit={handleEditJobTilte}
@@ -261,7 +261,7 @@ const UserInfos = (props) => {
           {isSaas && (
             <ProfileInfoItem
               isAuthUser={isAuthUser}
-              placeholder="نام شهر"
+              placeholder={RVDic.City}
               text={decodeBase64(userInfos?.City)}
               icon={AdressMapIcon}
               onEdit={handleEditCity}

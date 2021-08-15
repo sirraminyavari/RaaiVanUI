@@ -67,7 +67,7 @@ const VerificationCodeHandle = (props) => {
         color={CV_RED}
         onClick={onTimeout}
       />
-      <span>کد تایید ارسال شده را وارد کنید:</span>
+      <span>{RVDic.Checks.PleaseEnterTheVerificationCode}</span>
       <Styled.VerificationForm onInput={handleInputForm}>
         <Styled.VerificationInputsContainer>
           {inputsArray?.map((key) => (

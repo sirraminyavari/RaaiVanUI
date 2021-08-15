@@ -2,7 +2,12 @@ import React, { useState, useRef } from 'react';
 
 import { Wrapper, StyledTextArea, Beautifier } from './TextArea.style';
 
-const TextArea = ({ initialValue, simpleMode = false, getValue }) => {
+const TextArea = ({
+  initialValue,
+  simpleMode = false,
+  getValue,
+  placeholder = '',
+}) => {
   const [value, setValue] = useState(initialValue ?? '');
   const [height, setHeight] = useState(0);
   const ref = useRef(null);
@@ -50,6 +55,7 @@ const TextArea = ({ initialValue, simpleMode = false, getValue }) => {
         }}
       />
       <StyledTextArea
+        placeholder={placeholder}
         className={simpleMode ? 'rv-input-simple' : 'rv-input'}
         height={height}
         value={value}

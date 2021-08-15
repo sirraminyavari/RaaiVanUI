@@ -11,6 +11,7 @@ import { CN_API, GET_NODES, GET_NODE_INFO } from 'constant/apiConstants';
 import EmptyState from 'components/EmptyState/EmptyState';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
+import useWindow from 'hooks/useWindowContext';
 
 const getNodesAPI = API_Provider(CN_API, GET_NODES);
 const getNodeInfoAPI = API_Provider(CN_API, GET_NODE_INFO);
@@ -64,6 +65,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   const { NodeTypes } = relatedNodes || {};
   const [nodes, setNodes] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const { RVDic } = useWindow();
 
   const relatedTopicsLink = `${USER_MORE_RELATED_TOPICS_PATH}${
     isAuthUser ? '' : `/${user?.UserID}`
@@ -126,7 +128,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
         <Styled.Title>آخرین موضوعات مرتبط با من</Styled.Title>
         <Button classes="see-all-button">
           <Link to={relatedTopicsLink} style={{ color: TCV_DEFAULT }}>
-            مشاهده همه
+            {RVDic.ShowAll}
           </Link>
         </Button>
       </Styled.Header>
