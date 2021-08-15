@@ -8,19 +8,23 @@ import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import PasswordValidation from 'components/PasswordValidation/PasswordValidation';
 import VerificationCodeHandle from './VerificationCodeHandle';
-import { getPasswordPolicy } from 'apiHelper/apiFunctions';
+import { getPasswordPolicy, changeUserPassword } from 'apiHelper/apiFunctions';
+import PasswordValidator from 'utils/Validation/PasswordValidator';
 
 const commonInputStyles = { marginBottom: '1rem', width: '70%' };
 
 const ChangePassword = ({ user }) => {
   const { RVDic, RVGlobal } = useWindow();
-  // const { UserName } = user || {};
+  const { UserID } = user || {};
   const [passwordPolicy, setPasswordPolicy] = useState(null);
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [newPassConfirm, setNewPassConfirm] = useState('');
   const [email, setEmail] = useState('email@cliqmind.com');
-  const [isVerificationShown, setIsVerificationShown] = useState(false);
+  const [hasEmailVerification, setHasEmailVerification] = useState(false);
+  const [hasPassVerification, setHasPassVerification] = useState(false);
+  const [isPolicyShown, setIsPolicyShown] = useState(false);
+  const [canSavePass, setCanSavePass] = useState(false);
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
@@ -54,20 +58,56 @@ const ChangePassword = ({ user }) => {
   };
 
   const handleSendCode = () => {
-    setIsVerificationShown(false);
+    setHasEmailVerification(false);
   };
 
-  const handleTimeout = () => {
-    setIsVerificationShown(false);
+  const showPassPolicy = () => {
+    setIsPolicyShown(true);
+  };
+
+  const hidePassPolicy = () => {
+    setIsPolicyShown(false);
+  };
+
+  const handleEmailTimeout = () => {
+    setHasEmailVerification(false);
+  };
+
+  const handlePassTimeout = () => {
+    setHasPassVerification(false);
   };
 
   const handleSavePassword = () => {
+    setNewPass('');
+    setNewPassConfirm('');
+    // if (!currentPass || !newPass || !newPassConfirm) return;
     if (isSaas) {
       //! send verification code.
+      console.log('In Saas');
+      setHasPassVerification(true);
     } else {
       //! If user is 'NOT' in saas mode.
+      console.log('Not in Saas');
+      changeUserPassword(UserID, currentPass, newPass)
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
     }
   };
+
+  //! Keep track of the new password, And check if it is valid or not.
+  useEffect(() => {
+    if (!!passwordPolicy) {
+      const isPassValid = Object.values(
+        PasswordValidator(newPass, passwordPolicy)
+      ).every(Boolean);
+
+      setCanSavePass(isPassValid);
+    }
+
+    return () => {
+      setCanSavePass(false);
+    };
+  }, [newPass, passwordPolicy]);
 
   return (
     <Styled.ContentWrapper>
@@ -91,15 +131,15 @@ const ChangePassword = ({ user }) => {
           <Button
             type="primary-o"
             classes="change-email-button"
-            onClick={() => setIsVerificationShown((v) => !v)}>
+            onClick={() => setHasEmailVerification((v) => !v)}>
             تغییر
           </Button>
         </Styled.InputWrapper>
       </div>
-      {isVerificationShown && (
+      {hasEmailVerification && (
         <VerificationCodeHandle
           onSendCode={handleSendCode}
-          onTimeout={handleTimeout}
+          onTimeout={handleEmailTimeout}
           codeCount={5}
           countDown={120}
         />
@@ -114,6 +154,7 @@ const ChangePassword = ({ user }) => {
       </Styled.FieldTitleWrapper>
       {!isSaas && (
         <AnimatedInput
+          type="password"
           onChange={handleCurrentPass}
           value={currentPass}
           placeholder={RVDic.CurrentPassword}
@@ -121,18 +162,30 @@ const ChangePassword = ({ user }) => {
         />
       )}
       <AnimatedInput
+        type="password"
         onChange={handleNewPass}
+        onFocus={showPassPolicy}
+        onBlur={hidePassPolicy}
         value={newPass}
         placeholder={RVDic.NewPassword}
         style={commonInputStyles}
       />
       <AnimatedInput
+        type="password"
         onChange={handleNewPassConfirm}
         value={newPassConfirm}
         placeholder={RVDic.RepeatNewPassword}
         style={commonInputStyles}
       />
-      {!!passwordPolicy && (
+      {hasPassVerification && (
+        <VerificationCodeHandle
+          onSendCode={handleSendCode}
+          onTimeout={handlePassTimeout}
+          codeCount={5}
+          countDown={120}
+        />
+      )}
+      {!!passwordPolicy && isPolicyShown && (
         <PasswordValidation
           style={{
             opacity: '0',
@@ -143,13 +196,14 @@ const ChangePassword = ({ user }) => {
           passwordPolicy={passwordPolicy}
         />
       )}
-      {newPass && (
+      {newPassConfirm && !hasPassVerification && (
         <Button
           onClick={handleSavePassword}
-          disable={newPass !== newPassConfirm}
+          disable={!canSavePass || newPass !== newPassConfirm}
           style={{
             width: '8rem',
             fontSize: '1rem',
+            marginTop: '1rem',
           }}>
           {RVDic.Save}
         </Button>

@@ -628,6 +628,7 @@ export const VerificationCodeContainer = styled.div.attrs({
 })`
   width: 70%;
   padding: 1rem;
+  position: relative;
 `;
 
 export const VerificationForm = styled.form`
