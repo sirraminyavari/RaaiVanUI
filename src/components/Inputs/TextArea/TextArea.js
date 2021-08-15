@@ -2,8 +2,8 @@ import React, { useState, useRef } from 'react';
 
 import { Wrapper, StyledTextArea, Beautifier } from './TextArea.style';
 
-const TextArea = () => {
-  const [value, setValue] = useState('');
+const TextArea = ({ initialValue, simpleMode = false }) => {
+  const [value, setValue] = useState(initialValue ?? '');
   const [height, setHeight] = useState(0);
   const ref = useRef(null);
 
@@ -15,6 +15,7 @@ const TextArea = () => {
         .getComputedStyle(domElem, '')
         .getPropertyValue('height')
     );
+
     elmMargin =
       parseInt(
         document.defaultView
@@ -37,11 +38,17 @@ const TextArea = () => {
 
   return (
     <Wrapper>
-      <Beautifier ref={ref} textContent={value} />
+      <Beautifier
+        ref={ref}
+        textContent={value + '&shy;'}
+        afterChange={() => {
+          if (ref?.current) setHeight(outerHeight(ref.current));
+        }}
+      />
       <StyledTextArea
-        className="rv-input"
+        className={simpleMode ? 'rv-input-simple' : 'rv-input'}
         height={height}
-        onChange={(e) => updateValue(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
       />
     </Wrapper>
   );

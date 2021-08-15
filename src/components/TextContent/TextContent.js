@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const TextContent = React.forwardRef(
-  ({ textContent, className, style }, ref) => {
+  ({ textContent, className, style, afterChange }, ref) => {
     if (!textContent) textContent = '';
+
+    useEffect(() => {
+      (afterChange || (() => {}))();
+    });
 
     let htmlContent = textContent
       .replace(/</g, '&lt;')
