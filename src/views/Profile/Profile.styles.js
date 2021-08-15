@@ -480,7 +480,7 @@ export const TabItemTitle = styled.span`
   color: ${({ isActive }) => (isActive ? CV_WHITE : TCV_DEFAULT)};
   display: inline-block;
   width: 100%;
-  margin-${RV_Float}: 0.5rem;
+  padding: 0 0.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
