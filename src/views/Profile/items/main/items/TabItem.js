@@ -49,7 +49,9 @@ const TabItem = (props) => {
             minWidth: '1.5rem',
             maxWidth: '1.5rem',
             color: isActive ? TCV_DEFAULT : CV_WHITE,
-            lineHeight: '1.7rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         />
       </Tooltip>

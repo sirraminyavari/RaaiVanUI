@@ -3086,12 +3086,12 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         params = params || {};
 
         var isSaaS = (window.RVGlobal || {}).SAASBasedMultiTenancy;
-        var iconName = isSaaS ? "loading-cliqmind.gif" : "loading_progress_bar.gif";
+        var iconName = isSaaS ? "loading.json" : "loading_progress_bar.gif";
         
         var elems = GlobalUtilities.create_nested_elements([{
             Type: "div", Name: "container",
             Style: (GlobalUtilities.get_type(params.Style) == "string" ? params.Style : "margin:0.5rem auto;"),
-            Childs: [{
+            Childs: isSaaS ? [] : [{
                 Type: "div", Style: "text-align:center;",
                 Childs: [{
                     Type: "img", Style: (isSaaS ? "max-width:60px;" : ""),
@@ -3099,6 +3099,11 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
                 }]
             }]
         }], element);
+
+        if (isSaaS) {
+            elems["container"].innerHTML = '<lottie-player src="' + GlobalUtilities.icon(iconName) + '" background="transparent" ' +
+                'speed="1" style="width: 5rem; height: 5rem; margin:0 auto;" loop autoplay></lottie-player>';
+        }
 
         return { Destroy: function () { jQuery(elems["container"]).remove(); } };
     },

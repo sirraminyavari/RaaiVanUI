@@ -39,6 +39,7 @@ const NodeList = (props) => {
     onCheck,
     itemSelectionMode,
     nodeTypeIds,
+    relatedToNodeId,
   } = props || {};
   useTraceUpdate(props);
 
@@ -74,14 +75,14 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetching', 'isByMe', isByMe);
+    console.log('fetching', 'relatedToNodeId', relatedToNodeId);
 
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
         NodeTypeID: nodeTypeId,
-        NodeTypeIDs: nodeTypeIds,
+        RelatedToNodeID: relatedToNodeId,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
