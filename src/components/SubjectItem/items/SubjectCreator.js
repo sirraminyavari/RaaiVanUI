@@ -22,9 +22,12 @@ const SubjectCreator = ({ firstName, lastName, userProfile, style }) => {
 export default SubjectCreator;
 
 const Profile = styled.img`
-  width: ${({ isSaas }) => (isSaas ? '3rem' : '3rem')};
-  aspect-ratio: 1;
+  max-width: 3rem;
+  max-height: 3rem;
   border-radius: 1.5rem;
+  display: block;
+  width: auto;
+  height: auto;
 `;
 const ProducerName = styled.div`
   /* color: #707070; */
@@ -34,4 +37,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
 `;

@@ -1,7 +1,7 @@
 import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_RED } from 'constant/CssVariables';
 
 export const ShadowButton = styled(Button)`
   box-shadow: ${({ $isEnabled }) => $isEnabled && `1px 3px 20px ${CV_DISTANT}`};
@@ -67,5 +67,14 @@ export const BreadcrumbItem = styled.span.attrs({
 
   :hover {
     color: #000;
+  }
+`;
+
+export const BackButton = styled(Button)`
+  :hover {
+    border-width: 0.05rem;
+    border-style: solid;
+    border-color: ${CV_RED};
+    padding: 0.5rem;
   }
 `;
