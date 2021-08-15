@@ -16,7 +16,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { API_Provider, validateFileUpload } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
-import { getCroppedImg, readFile } from './items/cropUtils';
+import { getCroppedImg, readFile, createImage } from './items/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 
 const MAX_IMAGE_SIZE = 5000000;
@@ -148,6 +148,8 @@ const ProfileMain = (props) => {
 
     if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
       let imageDataUrl = await readFile(files[0]);
+      let image = await createImage(imageDataUrl);
+      console.log(image.width, image.height);
       // setAvatarCropSrc(imageDataUrl);
       setEditModal((m) => ({
         ...m,

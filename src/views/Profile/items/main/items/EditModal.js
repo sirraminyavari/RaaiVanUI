@@ -10,6 +10,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { decodeBase64 } from 'helpers/helpers';
 import {
   cropProfileImage,
+  cropIcon,
   getVariable,
   setVariable,
 } from 'apiHelper/apiFunctions';
@@ -119,40 +120,50 @@ const EditModal = (props) => {
       .then((response) => {
         console.log(response);
         setIsSavingImage(false);
-        //! Save cropped profile dimensions on the server.
-        cropProfileImage(id, croppedAreaPixels)
-          .then((res) => {
-            console.log('crop response: ', res);
-            const newImageURL =
-              res.ImageURL + `?timeStamp=${new Date().getTime()}`;
-            setCroppedImage(newImageURL);
-            dispatch(
-              setAuthUser({
-                ...window.RVGlobal?.CurrentUser,
-                ProfileImageURL: newImageURL,
-              })
-            );
-            // let newDimensions = {
-            //   X: x,
-            //   Y: y,
-            //   Width: width,
-            //   Height: height,
-            // };
-            setIsSavingImage(false);
-            // setVariable(dimensionsVariableName, newDimensions).then((response) => {
-            //   // console.log('set variable response: ', response);
-            //   setIsSavingImage(false);
-            // });
+        const newImageURL =
+          response.data.Message.ImageURL + `?timeStamp=${new Date().getTime()}`;
+        setCroppedImage(newImageURL);
+        dispatch(
+          setAuthUser({
+            ...window.RVGlobal?.CurrentUser,
+            ProfileImageURL: newImageURL,
           })
-          .catch((err) => {
-            dispatch(
-              setAuthUser({
-                ...window.RVGlobal?.CurrentUser,
-                ProfileImageURL: response.data.Message.ImageURL,
-              })
-            );
-            console.log(err);
-          });
+        );
+        console.log(croppedAreaPixels);
+        //! Save cropped profile dimensions on the server.
+        // cropIcon(id, 'ProfileImage', croppedAreaPixels)
+        //   .then((res) => {
+        //     console.log('crop response: ', res);
+        //     const newImageURL =
+        //       res.ImageURL + `?timeStamp=${new Date().getTime()}`;
+        //     setCroppedImage(newImageURL);
+        //     dispatch(
+        //       setAuthUser({
+        //         ...window.RVGlobal?.CurrentUser,
+        //         ProfileImageURL: newImageURL,
+        //       })
+        //     );
+        //     // let newDimensions = {
+        //     //   X: x,
+        //     //   Y: y,
+        //     //   Width: width,
+        //     //   Height: height,
+        //     // };
+        //     setIsSavingImage(false);
+        //     // setVariable(dimensionsVariableName, newDimensions).then((response) => {
+        //     //   // console.log('set variable response: ', response);
+        //     //   setIsSavingImage(false);
+        //     // });
+        //   })
+        //   .catch((err) => {
+        //     dispatch(
+        //       setAuthUser({
+        //         ...window.RVGlobal?.CurrentUser,
+        //         ProfileImageURL: response.data.Message.ImageURL,
+        //       })
+        //     );
+        //     console.log(err);
+        //   });
       })
       .catch((error) => {
         setIsSavingImage(false);
@@ -162,7 +173,15 @@ const EditModal = (props) => {
 
   //! Fires when user changes the image crop area.
   const handleImageCropComplete = (croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
+    const { x, y, width, height } = croppedAreaPixels;
+    const truncatedCropArea = {
+      x: Math.trunc(x),
+      y: Math.trunc(y),
+      width: Math.trunc(width),
+      height: Math.trunc(height),
+    };
+    console.log(truncatedCropArea);
+    setCroppedAreaPixels(truncatedCropArea);
   };
 
   return (
