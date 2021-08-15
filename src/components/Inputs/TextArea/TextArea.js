@@ -2,10 +2,14 @@ import React, { useState, useRef } from 'react';
 
 import { Wrapper, StyledTextArea, Beautifier } from './TextArea.style';
 
-const TextArea = ({ initialValue, simpleMode = false }) => {
+const TextArea = ({ initialValue, simpleMode = false, getValue }) => {
   const [value, setValue] = useState(initialValue ?? '');
   const [height, setHeight] = useState(0);
   const ref = useRef(null);
+
+  const handleOnBlur = () => {
+    getValue && getValue(value);
+  };
 
   const outerHeight = (domElem) => {
     var elmHeight, elmMargin;
@@ -48,6 +52,8 @@ const TextArea = ({ initialValue, simpleMode = false }) => {
       <StyledTextArea
         className={simpleMode ? 'rv-input-simple' : 'rv-input'}
         height={height}
+        value={value}
+        onBlur={handleOnBlur}
         onChange={(e) => setValue(e.target.value)}
       />
     </Wrapper>
