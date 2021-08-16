@@ -286,6 +286,25 @@
         return UsersAPI._send(url, params, queryString);
     },
 
+    ModifyEmailTicket: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/ModifyEmailTicket?timeStamp=" + new Date().getTime();
+        var queryString = (params.EmailID ? "&EmailID=" + params.EmailID : "") +
+            (params.Address ? "&Address=" + params.Address : "") +
+            (params.Captcha ? "&Captcha=" + params.Captcha : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    ModifyEmail: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/ModifyEmail?timeStamp=" + new Date().getTime();
+        var queryString = (params.VerificationToken ? "&VerificationToken=" + params.VerificationToken : "") +
+            (params.Code ? "&Code=" + params.Code : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
     SetTheme: function (params) {
         params = params || {};
 
@@ -299,6 +318,26 @@
 
         var url = UsersAPI.ResponseURL + "/GetTheme?timeStamp=" + new Date().getTime();
         return UsersAPI._send(url, params, "");
+    },
+
+    SetVerificationCodeMedia: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetVerificationCodeMedia?timeStamp=" + new Date().getTime();
+        var queryString = (params.Media ? "&Media=" + params.Media : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    SaveUserSettingsItem: function (params) {
+        params = params || {};
+
+        var type = GlobalUtilities.get_type(params.Value);
+
+        var url = UsersAPI.ResponseURL + "/SaveUserSettingsItem?timeStamp=" + new Date().getTime();
+        var queryString = (params.Name ? "&Name=" + params.Name : "") + 
+            (type != "undefined" ? "&Value=" + params.Value : "") +
+            ("&Type=" + type);
+        return UsersAPI._send(url, params, queryString);
     },
 
     UpdateFriendSuggestions: function (params) {

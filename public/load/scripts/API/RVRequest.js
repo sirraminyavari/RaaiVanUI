@@ -167,6 +167,8 @@ _RVRequest.prototype = {
                 callback(true);
             }
             else {
+                console.log(GlobalUtilities.extend({ Response: data }, settings, { Password: "****" }));
+
                 rs.AuthenticationFailed = true;
                 callback(false);
             }
