@@ -1315,8 +1315,8 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
     is_search_match: function (text, searchText) {
         if ((GlobalUtilities.get_type(text) != "string") || (GlobalUtilities.get_type(searchText) != "string")) return false;
 
-        text = GlobalUtilities.trim(text);
-        searchText = GlobalUtilities.trim(searchText);
+        text = GlobalUtilities.trim(text).toLowerCase();
+        searchText = GlobalUtilities.trim(searchText).toLowerCase();
 
         if (!searchText) return true;
 
