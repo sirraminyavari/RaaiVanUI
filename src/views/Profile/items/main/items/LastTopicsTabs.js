@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
+import useWindow from 'hooks/useWindowContext';
 // import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
@@ -9,6 +10,7 @@ const DEFAULT_TAB = 'all-classes';
 const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
+  const { RVDic } = useWindow();
 
   useEffect(() => {
     if (relatedNodes) {
@@ -52,7 +54,7 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
     const nodeTypeIds = relatedNodes?.NodeTypes?.map(
       (nodeType) => nodeType?.NodeTypeID
     ).join('|');
-    provideNodes(nodeTypeIds);
+    provideNodes(nodeTypeIds, { NodeTypeID: DEFAULT_TAB });
   };
 
   return (
@@ -77,7 +79,7 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
         })}
         {!!moreNodesCount && (
           <TabItem
-            item={{ NodeType: 'مشاهده همه', Count: moreNodesCount }}
+            item={{ NodeType: RVDic.ShowAll, Count: moreNodesCount }}
             isActive={isMoreShown}
             hasMore
             onTabClick={handleMoreTopics}

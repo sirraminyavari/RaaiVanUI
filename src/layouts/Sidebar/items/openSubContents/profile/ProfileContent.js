@@ -33,13 +33,13 @@ const ProfileContent = () => {
     { id: '2', title: RVDic.Resume, icon: PROFILE_RESUME, linkTo: '#' },
     {
       id: '3',
-      title: ' ورود و امنیت',
+      title: RVDic.Security + ' ' + RVDic.And + ' ' + RVDic.Authentication,
       icon: PROFILE_SECURITY,
       linkTo: USER_SECURITY_PATH,
     },
     {
       id: '4',
-      title: 'شخصی سازی',
+      title: RVDic.Personalization,
       icon: PROFILE_CUSTOMIZATION,
       linkTo: USER_CUSTOMIZATION_PATH,
     },
@@ -67,7 +67,7 @@ const ProfileContent = () => {
       <Styled.SidebarTitle>
         <Styled.CenterIcon>
           <SettingIcon />
-          <Styled.TitleText>حساب کاربری</Styled.TitleText>
+          <Styled.TitleText>{RVDic.Profile}</Styled.TitleText>
         </Styled.CenterIcon>
         <Styled.SettingWrapper onClick={handleOnArrowClick}>
           <ArrowIcon dir={RV_RevFloat} size={25} />

@@ -576,7 +576,8 @@ export const InfoItemWrapper = styled.div`
   position: relative;
 
   .user-info-inline-edit-container {
-    margin: 0 1rem;
+    margin: 0;
+    margin-${RV_Float}: 1rem;
     flex-grow: 1;
     color: ${CV_DISTANT};
     font-size: 1rem;
@@ -595,7 +596,7 @@ export const InfoItemWrapper = styled.div`
   }
 
   .user-info-inline-edit-textarea {
-    min-height: 1rem;
+    width: calc(100% - 2.2rem);
   }
 
   .user-info-inline-edit-input {
@@ -628,6 +629,7 @@ export const VerificationCodeContainer = styled.div.attrs({
 })`
   width: 70%;
   padding: 1rem;
+  position: relative;
 `;
 
 export const VerificationForm = styled.form`

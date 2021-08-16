@@ -4,6 +4,8 @@ import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 import Timer from './Timer';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { CV_RED } from 'constant/CssVariables';
 
 const VerificationCodeHandle = (props) => {
   const { codeCount, countDown, onSendCode, onTimeout } = props;
@@ -35,7 +37,9 @@ const VerificationCodeHandle = (props) => {
   const handleInputChange = () => {};
 
   const handleSendCode = () => {
-    onSendCode && onSendCode();
+    isButtonActive &&
+      onSendCode &&
+      onSendCode(Object.values(inputValues).join(''));
   };
 
   const handlePaste = (e) => {
@@ -56,7 +60,16 @@ const VerificationCodeHandle = (props) => {
 
   return (
     <Styled.VerificationCodeContainer>
-      <span>کد تایید ارسال شده را وارد کنید:</span>
+      <CloseIcon
+        style={{
+          position: 'absolute',
+          left: '0.5rem',
+          cursor: 'pointer',
+        }}
+        color={CV_RED}
+        onClick={onTimeout}
+      />
+      <span>{RVDic.Checks.PleaseEnterTheVerificationCode}</span>
       <Styled.VerificationForm onInput={handleInputForm}>
         <Styled.VerificationInputsContainer>
           {inputsArray?.map((key) => (

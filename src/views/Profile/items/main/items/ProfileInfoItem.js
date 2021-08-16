@@ -3,6 +3,7 @@ import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import * as Styled from 'views/Profile/Profile.styles';
 import InlineEditInput from 'components/InlineEdit/InlineEdit';
 import useWindow from 'hooks/useWindowContext';
+import TextArea from 'components/Inputs/TextArea/TextArea';
 
 const ProfileInfoItem = (props) => {
   const { RVGlobal } = useWindow();
@@ -47,18 +48,25 @@ const ProfileInfoItem = (props) => {
         </div>
       )}
       {isAuthUser || isAdminAndNotSaas ? (
-        <InlineEditInput
-          onSetText={handleEditItem}
-          onChange={handleInlineEditChange}
-          text={infoText}
-          type={type}
-          containerClasses="user-info-inline-edit-container"
-          textClasses={`user-info-inline-edit-text ${inlineTextClass}`}
-          inputClasses={`user-info-inline-edit-input ${inlineInputClass}`}
-          inputPlaceholder={placeholder}
-          multiline={!!multiline}
-          textareaClasses="user-info-inline-edit-textarea"
-        />
+        !!multiline ? (
+          <TextArea
+            initialValue={infoText}
+            simpleMode={true}
+            getValue={handleEditItem}
+            placeholder={placeholder}
+          />
+        ) : (
+          <InlineEditInput
+            onSetText={handleEditItem}
+            onChange={handleInlineEditChange}
+            text={infoText}
+            type={type}
+            containerClasses="user-info-inline-edit-container"
+            textClasses={`user-info-inline-edit-text ${inlineTextClass}`}
+            inputClasses={`user-info-inline-edit-input ${inlineInputClass}`}
+            inputPlaceholder={placeholder}
+          />
+        )
       ) : (
         <Styled.InfoItemText hasText={!!infoText}>
           {!!infoText ? infoText : placeholder}
