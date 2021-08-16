@@ -13,6 +13,8 @@ import {
   changeUserPassword,
   resetUserPassword,
   setUserPassword,
+  resetUserEmail,
+  modifyUserEmail,
 } from 'apiHelper/apiFunctions';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
 import { decodeBase64 } from 'helpers/helpers';
@@ -40,7 +42,11 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     DEFAULT_VERIFICATION
   );
 
+  let currentEmailId = Emails?.[0]?.EmailID;
+  let currentEmailAddress = decodeBase64(Emails?.[0]?.Email);
+
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+  const isSameEmailAddress = currentEmailAddress === email;
 
   useEffect(() => {
     setEmail(decodeBase64(Emails?.[0]?.Email));
@@ -80,10 +86,25 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     setEmail(email);
   };
 
+  //! Send verification code to change email.
   const handleSendEmailCode = (code) => {
-    console.log(code);
+    // console.log(code);
+    modifyUserEmail(code, emailVerification?.code.Token)
+      .then((response) => {
+        // console.log(response);
+        if (response.ErrorText) {
+          alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+        }
+        if (response.Succeed) {
+          setEmailVerification(DEFAULT_VERIFICATION);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  //! Send verification code to change password.
   const handleSendPassCode = (code) => {
     // console.log(code);
     setUserPassword(code, passVerification?.code.Token)
@@ -115,9 +136,34 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     setPassVerification(DEFAULT_VERIFICATION);
   };
 
+  const handleEmailBlur = () => {
+    if (!email) {
+      setEmail(currentEmailAddress);
+    }
+  };
+
+  //! Send code to user for email modification.
+  const handleChangeEmail = () => {
+    if (isSameEmailAddress) return;
+
+    resetUserEmail(currentEmailId, email, captchaToken)
+      .then((response) => {
+        console.log(response);
+        if (response?.ErrorText) {
+          alert(RVDic.MSG[response?.ErrorText] || response?.ErrorText);
+        } else {
+          setEmailVerification({
+            isShown: true,
+            code: response?.VerificationCode,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleSavePassword = () => {
-    setNewPass('');
-    setNewPassConfirm('');
     if (!newPass || !newPassConfirm) return;
     //! Change password in Saas mode.
     if (isSaas) {
@@ -126,13 +172,15 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       resetUserPassword(email, newPass, captchaToken)
         .then((response) => {
           // console.log(response);
-          if (response.ErrorText) {
-            alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
-          } else if (response.VerificationCode) {
+          if (response?.ErrorText) {
+            alert(RVDic.MSG[response?.ErrorText] || response?.ErrorText);
+          } else if (response?.VerificationCode) {
+            setNewPass('');
+            setNewPassConfirm('');
             alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
             setPassVerification({
               isShown: true,
-              code: response.VerificationCode,
+              code: response?.VerificationCode,
             });
           }
         })
@@ -175,17 +223,19 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           />
           <Styled.FieldTitle>{RVDic.EMail}</Styled.FieldTitle>
         </Styled.FieldTitleWrapper>
-        <Styled.InputWrapper>
+        <Styled.InputWrapper isButtonActive={!isSameEmailAddress}>
           <AnimatedInput
+            onBlur={handleEmailBlur}
             onChange={handleEmailChange}
             value={email}
             placeholder={RVDic.EMail}
             style={{ width: '70%' }}
           />
           <Button
+            disable={emailVerification.isShown || isSameEmailAddress}
             type="primary-o"
-            classes="change-email-button"
-            onClick={() => setEmailVerification({ isShown: true, code: {} })}>
+            classes="change-button"
+            onClick={handleChangeEmail}>
             تغییر
           </Button>
         </Styled.InputWrapper>
