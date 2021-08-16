@@ -6,6 +6,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 export const Container = styled(Link)`
   border-radius: 0.75rem;
   display: flex;
+
   min-height: ${({ liteMode }) =>
     DimensionHelper().isTabletOrMobile
       ? '13rem'
@@ -24,7 +25,7 @@ export const Container = styled(Link)`
   :hover {
     border-width: 0.1rem;
     border-color: ${TCV_DEFAULT};
-    height: ${({ liteMode }) =>
+    min-height: ${({ liteMode }) =>
       DimensionHelper().isTabletOrMobile
         ? '13rem'
         : liteMode

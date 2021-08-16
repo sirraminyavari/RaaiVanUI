@@ -112,6 +112,8 @@ const MainContent = styled.div`
   flex-grow: 1;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
+  min-height: 13rem;
 `;
 const Main = styled.div`
   flex-direction: column;
@@ -127,10 +129,10 @@ const Main = styled.div`
 const Maintainer = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   flex-grow: 1;
   width: 100%;
-  margin: 1rem 3px 0 3px;
-  padding: ${() => (RV_RTL ? '0 1rem 0 0' : '0 0 0 1rem')}; ;
+  margin: 1rem 3px 0.8rem 3px;
+  padding: ${() => (RV_RTL ? '0 1rem 0 0' : '0 0 0 1rem')};
 `;

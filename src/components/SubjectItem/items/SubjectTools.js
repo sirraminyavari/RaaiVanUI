@@ -88,33 +88,44 @@ const SubjectTools = ({
         </button>
       )}
 
-      <button
-        style={{
-          width: '2rem',
-          marginRight: '0.7rem',
-          marginLeft: '0.7rem',
-          display: isLiked ? 'flex' : !isHover ? 'none' : 'flex',
-          alignContent: 'center',
-        }}
-        type={'secondary-o'}
-        onClick={onBookmark}>
-        {bookmarkFetching ? (
-          <LoadingIconCircle
-            style={{
-              display: 'flex',
-              justifySelf: 'center',
-            }}
-            className="rv-default"
-          />
-        ) : isLiked ? (
-          <FilledBookmarkIcon size={'4rem'} className={'rv-default'} />
-        ) : (
-          <OutLineBookmarkIcon
-            size={'4rem'}
-            className={isHover ? 'rv-default' : 'rv-distant'}
-          />
-        )}
-      </button>
+      {!isHover ? (
+        <div
+          style={{
+            width: '2rem',
+            marginRight: '0.7rem',
+            marginLeft: '0.7rem',
+            alignContent: 'center',
+          }}
+        />
+      ) : (
+        <button
+          style={{
+            width: '2rem',
+            marginRight: '0.7rem',
+            marginLeft: '0.7rem',
+            display: isLiked ? 'flex' : 'flex',
+            alignContent: 'center',
+          }}
+          type={'secondary-o'}
+          onClick={onBookmark}>
+          {bookmarkFetching ? (
+            <LoadingIconCircle
+              style={{
+                display: 'flex',
+                justifySelf: 'center',
+              }}
+              className="rv-default"
+            />
+          ) : isLiked ? (
+            <FilledBookmarkIcon size={'4rem'} className={'rv-default'} />
+          ) : (
+            <OutLineBookmarkIcon
+              size={'4rem'}
+              className={isHover ? 'rv-default' : 'rv-distant'}
+            />
+          )}
+        </button>
+      )}
     </Tools>
   );
 };

@@ -25,4 +25,5 @@ const ClassName = styled.div`
   align-items: center;
   justify-content: center;
   align-self: flex-start;
+  text-align: center;
 `;
