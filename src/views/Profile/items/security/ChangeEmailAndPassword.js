@@ -8,25 +8,43 @@ import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import PasswordValidation from 'components/PasswordValidation/PasswordValidation';
 import VerificationCodeHandle from './VerificationCodeHandle';
-import { getPasswordPolicy, changeUserPassword } from 'apiHelper/apiFunctions';
+import {
+  getPasswordPolicy,
+  changeUserPassword,
+  resetUserPassword,
+  setUserPassword,
+} from 'apiHelper/apiFunctions';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
+import { decodeBase64 } from 'helpers/helpers';
 
 const commonInputStyles = { marginBottom: '1rem', width: '70%' };
+const DEFAULT_VERIFICATION = {
+  isShown: false,
+  code: {},
+};
 
-const ChangePassword = ({ user }) => {
+const ChangeEmailAndPassword = ({ user, captchaToken }) => {
   const { RVDic, RVGlobal } = useWindow();
-  const { UserID } = user || {};
+  const { UserID, Emails } = user || {};
   const [passwordPolicy, setPasswordPolicy] = useState(null);
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [newPassConfirm, setNewPassConfirm] = useState('');
-  const [email, setEmail] = useState('email@cliqmind.com');
-  const [hasEmailVerification, setHasEmailVerification] = useState(false);
-  const [hasPassVerification, setHasPassVerification] = useState(false);
+  const [email, setEmail] = useState('');
   const [isPolicyShown, setIsPolicyShown] = useState(false);
   const [canSavePass, setCanSavePass] = useState(false);
+  const [emailVerification, setEmailVerification] = useState(
+    DEFAULT_VERIFICATION
+  );
+  const [passVerification, setPassVerification] = useState(
+    DEFAULT_VERIFICATION
+  );
 
-  const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+
+  useEffect(() => {
+    setEmail(decodeBase64(Emails?.[0]?.Email));
+  }, [Emails]);
 
   useEffect(() => {
     getPasswordPolicy()
@@ -57,8 +75,23 @@ const ChangePassword = ({ user }) => {
     setEmail(email);
   };
 
-  const handleSendCode = () => {
-    setHasEmailVerification(false);
+  const handleSendEmailCode = (code) => {
+    console.log(code);
+  };
+
+  const handleSendPassCode = (code) => {
+    // console.log(code);
+    setUserPassword(code, passVerification?.code.Token)
+      .then((response) => {
+        // console.log(response);
+        if (response.ErrorText) {
+          alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+        }
+        if (response.Succeed) {
+          setPassVerification(DEFAULT_VERIFICATION);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   const showPassPolicy = () => {
@@ -70,21 +103,37 @@ const ChangePassword = ({ user }) => {
   };
 
   const handleEmailTimeout = () => {
-    setHasEmailVerification(false);
+    setEmailVerification(DEFAULT_VERIFICATION);
   };
 
   const handlePassTimeout = () => {
-    setHasPassVerification(false);
+    setPassVerification(DEFAULT_VERIFICATION);
   };
 
   const handleSavePassword = () => {
     setNewPass('');
     setNewPassConfirm('');
-    // if (!currentPass || !newPass || !newPassConfirm) return;
+    if (!newPass || !newPassConfirm) return;
+    //! Change password in Saas mode.
     if (isSaas) {
       //! send verification code.
       console.log('In Saas');
-      setHasPassVerification(true);
+      resetUserPassword(email, newPass, captchaToken)
+        .then((response) => {
+          // console.log(response);
+          if (response.ErrorText) {
+            alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+          } else if (response.VerificationCode) {
+            alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+            setPassVerification({
+              isShown: true,
+              code: response.VerificationCode,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       //! If user is 'NOT' in saas mode.
       console.log('Not in Saas');
@@ -131,17 +180,17 @@ const ChangePassword = ({ user }) => {
           <Button
             type="primary-o"
             classes="change-email-button"
-            onClick={() => setHasEmailVerification((v) => !v)}>
+            onClick={() => setEmailVerification({ isShown: true, code: {} })}>
             تغییر
           </Button>
         </Styled.InputWrapper>
       </div>
-      {hasEmailVerification && (
+      {emailVerification?.isShown && (
         <VerificationCodeHandle
-          onSendCode={handleSendCode}
+          onSendCode={handleSendEmailCode}
           onTimeout={handleEmailTimeout}
-          codeCount={5}
-          countDown={120}
+          codeCount={emailVerification?.code?.Length}
+          countDown={emailVerification?.code?.Timeout}
         />
       )}
       <Styled.FieldTitleWrapper>
@@ -177,12 +226,12 @@ const ChangePassword = ({ user }) => {
         placeholder={RVDic.RepeatNewPassword}
         style={commonInputStyles}
       />
-      {hasPassVerification && (
+      {passVerification?.isShown && (
         <VerificationCodeHandle
-          onSendCode={handleSendCode}
+          onSendCode={handleSendPassCode}
           onTimeout={handlePassTimeout}
-          codeCount={5}
-          countDown={120}
+          codeCount={passVerification?.code?.Length}
+          countDown={passVerification?.code?.Timeout}
         />
       )}
       {!!passwordPolicy && isPolicyShown && (
@@ -196,7 +245,7 @@ const ChangePassword = ({ user }) => {
           passwordPolicy={passwordPolicy}
         />
       )}
-      {newPassConfirm && !hasPassVerification && (
+      {newPassConfirm && !passVerification.isShown && (
         <Button
           onClick={handleSavePassword}
           disable={!canSavePass || newPass !== newPassConfirm}
@@ -212,4 +261,4 @@ const ChangePassword = ({ user }) => {
   );
 };
 
-export default ChangePassword;
+export default ChangeEmailAndPassword;

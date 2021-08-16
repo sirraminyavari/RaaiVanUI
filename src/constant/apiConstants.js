@@ -154,6 +154,20 @@ export const CHECK_USER_NAME = 'CheckUserName';
  */
 export const SET_USER_NAME = 'SetUserName';
 
+/**
+ * @description 'SetPasswordResetTicket'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PASSWORD_RESET_TICKET = 'SetPasswordResetTicket';
+
+/**
+ * @description 'SetPassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PASSWORD = 'SetPassword';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

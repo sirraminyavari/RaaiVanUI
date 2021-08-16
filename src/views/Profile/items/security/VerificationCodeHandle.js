@@ -37,7 +37,9 @@ const VerificationCodeHandle = (props) => {
   const handleInputChange = () => {};
 
   const handleSendCode = () => {
-    onSendCode && onSendCode();
+    isButtonActive &&
+      onSendCode &&
+      onSendCode(Object.values(inputValues).join(''));
   };
 
   const handlePaste = (e) => {

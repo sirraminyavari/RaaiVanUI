@@ -1,4 +1,9 @@
-import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
+import {
+  API_Provider,
+  decodeBase64,
+  encodeBase64,
+  getCaptchaToken,
+} from 'helpers/helpers';
 import {
   CROP_ICON,
   DOCS_API,
@@ -30,7 +35,10 @@ import {
   GET_PASS_POLICY,
   CHECK_USER_NAME,
   SET_USER_NAME,
+  SET_PASSWORD_RESET_TICKET,
+  SET_PASSWORD,
 } from 'constant/apiConstants';
+const { GlobalUtilities } = window;
 
 /**
  * @description Get variable.
@@ -757,6 +765,70 @@ export const changeUserName = (userId, userName) => {
     try {
       setUserNameAPI.fetch(
         { UserID: userId, UserName: decodeBase64(userName) },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Reset user password.
+ * @param {String} email -The user email.
+ * @param {String} password -The user new password.
+ * @param {String} captchaToken -The captcha token.
+ *  @returns Promise.
+ */
+export const resetUserPassword = (email, password, captchaToken) => {
+  const resetUserPasswordAPI = API_Provider(
+    USERS_API,
+    SET_PASSWORD_RESET_TICKET
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      resetUserPasswordAPI.fetch(
+        {
+          UserName: encodeBase64(GlobalUtilities.secure_string(email)),
+          Password: password,
+          Captcha: captchaToken,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set user password.
+ * @param {String} code -The code that has been send to user.
+ * @param {String} confirmationToken -The confirmation token.
+ *  @returns Promise.
+ */
+export const setUserPassword = (code, confirmationToken) => {
+  const setUserPasswordAPI = API_Provider(USERS_API, SET_PASSWORD);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setUserPasswordAPI.fetch(
+        {
+          VerificationToken: confirmationToken,
+          Code: code,
+          Login: true,
+        },
         (response) => {
           resolve(response);
         },

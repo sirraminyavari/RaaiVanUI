@@ -220,7 +220,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
     selectApplicationAPI.fetch(
       { ApplicationID: appId },
       (response) => {
-        console.log(response);
+        // console.log(response);
         if (response.ErrorText) {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
