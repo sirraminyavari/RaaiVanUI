@@ -18,8 +18,9 @@ const ClassName = styled.div`
   /* height: 1.5rem; */
   border-radius: 0.75rem;
   /* color: #2b7be4; */
+  min-width: 7.5rem;
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
