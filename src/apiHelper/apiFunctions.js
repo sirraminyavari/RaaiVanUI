@@ -39,6 +39,7 @@ import {
   SET_PASSWORD,
   MODIFY_EMAIL_TICKET,
   MODIFY_EMAIL,
+  SAVE_USER_SETTINGS_ITEM,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -890,6 +891,38 @@ export const modifyUserEmail = (code, confirmationToken) => {
         {
           VerificationToken: confirmationToken,
           Code: code,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Save user settings item.
+ * @param {String} name -The name of the setting item.
+ * @param {String | Number | Boolean} value -The value of the setting item.
+ *  @returns Promise.
+ */
+export const saveUserSettings = (name, value) => {
+  const saveUserSettingsAPI = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
+
+  const normalizedValue =
+    GlobalUtilities.get_type(value) === 'string' ? encodeBase64(value) : value;
+
+  return new Promise((resolve, reject) => {
+    try {
+      saveUserSettingsAPI.fetch(
+        {
+          Name: name,
+          Value: normalizedValue,
         },
         (response) => {
           resolve(response);

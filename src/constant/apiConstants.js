@@ -182,6 +182,13 @@ export const MODIFY_EMAIL = 'ModifyEmail';
  */
 export const SET_PASSWORD = 'SetPassword';
 
+/**
+ * @description 'SaveUserSettingsItem'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SAVE_USER_SETTINGS_ITEM = 'SaveUserSettingsItem';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

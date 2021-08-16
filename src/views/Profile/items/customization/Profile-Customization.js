@@ -1,4 +1,4 @@
-import { useEffect, memo } from 'react';
+import { useEffect, memo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { getThemes, getCurrentTheme } from 'store/actions/themes/ThemeActions';
@@ -9,7 +9,12 @@ import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { USER_CUSTOMIZATION_PATH, USER_PATH } from 'constant/constants';
+import {
+  SIDEBAR_WINDOW,
+  USER_CUSTOMIZATION_PATH,
+  USER_PATH,
+} from 'constant/constants';
+import { saveUserSettings } from 'apiHelper/apiFunctions';
 
 const {
   setSidebarCollapse,
@@ -44,6 +49,7 @@ const ProfileCustomization = () => {
   const isSidebarCollapsed = useSelector(selectIsSidebarCollapsed);
   const isDarkMode = useSelector(selectIsDarkMode);
   const hasSidebarPattern = useSelector(selectHasSidebarPattern);
+  const [isSavingMenuSetting, setIsSavingMenuSetting] = useState(false);
 
   const PAGE_TITLE = RVDic.Personalization;
 
@@ -52,10 +58,24 @@ const ProfileCustomization = () => {
     { id: 2, title: PAGE_TITLE, linkTo: USER_CUSTOMIZATION_PATH },
   ];
 
-  const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
   const handleMenuCollapse = (toggleValue) => {
     dispatch(setSidebarCollapse(toggleValue));
+    // console.log(toggleValue);
+    setIsSavingMenuSetting(true);
+    saveUserSettings(SIDEBAR_WINDOW, toggleValue)
+      .then((response) => {
+        console.log(response);
+        setIsSavingMenuSetting(false);
+        if (response.ErrorText) {
+          alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+        }
+      })
+      .catch((error) => {
+        setIsSavingMenuSetting(false);
+        console.log(error);
+      });
   };
 
   const handlePattern = (toggleValue) => {
@@ -95,6 +115,7 @@ const ProfileCustomization = () => {
           {RVDic.ThemeSettings}
         </Styled.ThemeSettingTitle>
         <ThemeToggle
+          disable={isSavingMenuSetting}
           onToggle={handleMenuCollapse}
           isChecked={isSidebarCollapsed}
           title="منو به صورت پیشفرض باز باشد"

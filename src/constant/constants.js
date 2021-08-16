@@ -17,6 +17,9 @@ export const FORBIDDEN_ROUTES_IN_SAAS = [
 export const INTRO_ONBOARD = 'intro';
 export const OPENED = 'opened';
 
+//! User settings item name
+export const SIDEBAR_WINDOW = 'SidebarWindow';
+
 //! Sidebar widths.
 export const OPEN_WIDTH = '20';
 export const CLOSE_WIDTH = '4';
