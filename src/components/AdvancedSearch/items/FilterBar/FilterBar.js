@@ -33,7 +33,12 @@ import {
 } from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
-import { INTRO_ONBOARD, OPENED } from 'constant/constants';
+import {
+  INTRO_ONBOARD,
+  OPENED,
+  USER_MORE_RELATED_TOPICS_PATH,
+  USER_WITHID_PATH,
+} from 'constant/constants';
 import Button from 'components/Buttons/Button';
 
 export const advancedSearchButtonRef = React.createRef();
@@ -315,10 +320,19 @@ const FilterBar = ({
     linkTo: `/classes/${level?.NodeTypeID}`,
   }));
 
-  const breadcrumbItems = [
-    { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
-    ...extendedHierarchy,
-  ];
+  const breadcrumbItems = isProfile
+    ? [
+        { id: 1, title: RVDic.Profile, linkTo: USER_WITHID_PATH },
+        {
+          id: 2,
+          title: RVDic.RelatedNodes,
+          linkTo: USER_MORE_RELATED_TOPICS_PATH,
+        },
+      ]
+    : [
+        { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
+        ...extendedHierarchy,
+      ];
 
   const isProfile_all = () => (isProfile && nodeType === null) || !isProfile;
 
