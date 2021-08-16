@@ -63,12 +63,12 @@ const SubjectItemMobileView = ({
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed">
         <IconContent>
-          <div>
-            <SubjectIcon iconUrl={IconURL} />
-            {parentNodeType !== NodeTypeID && (
-              <SubjectClassName className={decode(NodeType)} />
-            )}
-          </div>
+          {/* <div> */}
+          <SubjectIcon iconUrl={IconURL} />
+          {parentNodeType !== NodeTypeID && (
+            <SubjectClassName className={decode(NodeType)} />
+          )}
+          {/* </div> */}
           <div>
             <SubjectViewCount count={VisitsCount} />
             <SubjectDate date={CreationDate} />
