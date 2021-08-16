@@ -139,7 +139,7 @@ const TwoFactorAuthentication = ({ user }) => {
           />
           <Styled.FieldTitle>{RVDic.UserName}</Styled.FieldTitle>
         </Styled.FieldTitleWrapper>
-        <Styled.InputWrapper isIDButtonActive={isValidUserName}>
+        <Styled.InputWrapper isButtonActive={isValidUserName}>
           <AnimatedInput
             onBlur={handleUserNameBlur}
             onChange={handleUserNameChange}
@@ -151,7 +151,7 @@ const TwoFactorAuthentication = ({ user }) => {
             loading={isCheckingUserName || isSavingUserName}
             type="primary-o"
             disable={!isValidUserName}
-            classes="change-id-button"
+            classes="change-button"
             onClick={handleSaveUserName}>
             تغییر
           </Button>

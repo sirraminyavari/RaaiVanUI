@@ -2,7 +2,7 @@ import {
   API_Provider,
   decodeBase64,
   encodeBase64,
-  getCaptchaToken,
+  // getCaptchaToken,
 } from 'helpers/helpers';
 import {
   CROP_ICON,
@@ -37,6 +37,9 @@ import {
   SET_USER_NAME,
   SET_PASSWORD_RESET_TICKET,
   SET_PASSWORD,
+  MODIFY_EMAIL_TICKET,
+  MODIFY_EMAIL,
+  SAVE_USER_SETTINGS_ITEM,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -828,6 +831,98 @@ export const setUserPassword = (code, confirmationToken) => {
           VerificationToken: confirmationToken,
           Code: code,
           Login: true,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Reset user email.
+ * @param {String} emailId -The user email id.
+ * @param {String} Address -The user email address.
+ * @param {String} captchaToken -The captcha token.
+ *  @returns Promise.
+ */
+export const resetUserEmail = (emailId, Address, captchaToken) => {
+  const resetUserEmailAPI = API_Provider(USERS_API, MODIFY_EMAIL_TICKET);
+
+  return new Promise((resolve, reject) => {
+    try {
+      resetUserEmailAPI.fetch(
+        {
+          EmailID: emailId,
+          Address: encodeBase64(Address),
+          Captcha: captchaToken,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Modify user email.
+ * @param {String} code -The code that has been send to user.
+ * @param {String} confirmationToken -The confirmation token.
+ *  @returns Promise.
+ */
+export const modifyUserEmail = (code, confirmationToken) => {
+  const modifyUserEmailAPI = API_Provider(USERS_API, MODIFY_EMAIL);
+
+  return new Promise((resolve, reject) => {
+    try {
+      modifyUserEmailAPI.fetch(
+        {
+          VerificationToken: confirmationToken,
+          Code: code,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Save user settings item.
+ * @param {String} name -The name of the setting item.
+ * @param {String | Number | Boolean} value -The value of the setting item.
+ *  @returns Promise.
+ */
+export const saveUserSettings = (name, value) => {
+  const saveUserSettingsAPI = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
+
+  const normalizedValue =
+    GlobalUtilities.get_type(value) === 'string' ? encodeBase64(value) : value;
+
+  return new Promise((resolve, reject) => {
+    try {
+      saveUserSettingsAPI.fetch(
+        {
+          Name: name,
+          Value: normalizedValue,
         },
         (response) => {
           resolve(response);

@@ -124,20 +124,12 @@ export const InputWrapper = styled.div`
   gap: 1rem;
   margin-bottom: 3rem;
 
-  .change-id-button {
+  .change-button {
     ${changeButtonCss}
 
     :hover {
-      ${({ isIDButtonActive }) =>
-        isIDButtonActive && `border: 1px solid ${TCV_DEFAULT};`}
-    }
-  }
-
-  .change-email-button {
-    ${changeButtonCss}
-
-    :hover {
-      border: 1px solid ${TCV_DEFAULT};
+      ${({ isButtonActive }) =>
+        isButtonActive && `border: 1px solid ${TCV_DEFAULT};`}
     }
   }
 `;

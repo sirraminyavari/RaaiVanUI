@@ -162,11 +162,32 @@ export const SET_USER_NAME = 'SetUserName';
 export const SET_PASSWORD_RESET_TICKET = 'SetPasswordResetTicket';
 
 /**
+ * @description 'ModifyEmailTicket'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const MODIFY_EMAIL_TICKET = 'ModifyEmailTicket';
+
+/**
+ * @description 'ModifyEmail'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const MODIFY_EMAIL = 'ModifyEmail';
+
+/**
  * @description 'SetPassword'
  * @mode API function
  * @class 'UsersAPI'
  */
 export const SET_PASSWORD = 'SetPassword';
+
+/**
+ * @description 'SaveUserSettingsItem'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SAVE_USER_SETTINGS_ITEM = 'SaveUserSettingsItem';
 
 //* #################################
 //* ############ RVAPI ################
