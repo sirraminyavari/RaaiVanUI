@@ -54,7 +54,7 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
     const nodeTypeIds = relatedNodes?.NodeTypes?.map(
       (nodeType) => nodeType?.NodeTypeID
     ).join('|');
-    provideNodes(nodeTypeIds);
+    provideNodes(nodeTypeIds, { NodeTypeID: DEFAULT_TAB });
   };
 
   return (

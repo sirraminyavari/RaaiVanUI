@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
@@ -16,6 +16,7 @@ import useWindow from 'hooks/useWindowContext';
 const getNodesAPI = API_Provider(CN_API, GET_NODES);
 const getNodeInfoAPI = API_Provider(CN_API, GET_NODE_INFO);
 const SHOW_NODES_COUNT = 5;
+const DEFAULT_TAB = 'all-classes';
 
 const getNodes = (nodeTypeIds = '', nodeTypeId = '', relatedToId = '') => {
   return new Promise((resolve, reject) => {
@@ -66,6 +67,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   const [nodes, setNodes] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const { RVDic } = useWindow();
+  const tabRef = useRef(null);
 
   const relatedTopicsLink = `${USER_MORE_RELATED_TOPICS_PATH}${
     isAuthUser ? '' : `/${user?.UserID}`
@@ -74,11 +76,15 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   const firstFive = (node, index) => index < SHOW_NODES_COUNT;
   const firstFiveNodes = nodes?.filter(firstFive);
 
-  const provideNodes = (nodeTypeIds) => {
+  const provideNodes = (nodeTypeIds, item) => {
+    const tabId = item?.NodeTypeID;
+    tabRef.current = tabId;
     setIsFetching(true);
     getNodes(nodeTypeIds)
       .then((response) => {
         // console.log(response);
+        const isSameTab = tabRef.current === tabId;
+        if (!isSameTab) return;
         if (!!response?.Nodes && !!response?.Nodes.length) {
           const nodeIds = response?.Nodes.map((node) => node?.NodeID).join('|');
           getNodeInfo(nodeIds)
@@ -113,7 +119,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
     const nodeTypeIds = NodeTypes?.map((nodeType) => nodeType?.NodeTypeID).join(
       '|'
     );
-    provideNodes(nodeTypeIds);
+    provideNodes(nodeTypeIds, { NodeTypeID: DEFAULT_TAB });
 
     //? Due to memory leak error in component.
     //! Clean up.

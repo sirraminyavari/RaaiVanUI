@@ -44,6 +44,11 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
 
   useEffect(() => {
     setEmail(decodeBase64(Emails?.[0]?.Email));
+
+    //! Clean up.
+    return () => {
+      setEmail('');
+    };
   }, [Emails]);
 
   useEffect(() => {
