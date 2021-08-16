@@ -4,6 +4,7 @@
 import Heading from 'components/Heading/Heading';
 import React from 'react';
 import styled from 'styled-components';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const SubjectTitle = ({ title, AdditionalID }) => {
   const titleReducer = (text) => text;
@@ -18,7 +19,8 @@ export default SubjectTitle;
 
 const Title = styled.div`
   display: flex;
-  flex-grow: 1;
   align-self: flex-start;
   align-items: center;
+  margin: ${() =>
+    DimensionHelper().isTabletOrMobile ? '0 0.5rem 0 0.5rem' : '0'};
 `;

@@ -6,7 +6,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 export const Container = styled(Link)`
   border-radius: 0.75rem;
   display: flex;
-  height: ${({ liteMode }) =>
+  min-height: ${({ liteMode }) =>
     DimensionHelper().isTabletOrMobile
       ? '13rem'
       : liteMode
@@ -39,7 +39,7 @@ export const Container = styled(Link)`
 export const IconContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 7.5rem;
+  width: 8.5rem;
   height: 100%;
   border-radius: 0.5rem;
   justify-content: space-evenly;

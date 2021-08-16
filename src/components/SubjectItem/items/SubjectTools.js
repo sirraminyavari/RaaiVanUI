@@ -91,8 +91,8 @@ const SubjectTools = ({
       <button
         style={{
           width: '2rem',
-          marginRight: '2.5rem',
-          marginLeft: '2.5rem',
+          marginRight: '0.7rem',
+          marginLeft: '0.7rem',
           display: isLiked ? 'flex' : !isHover ? 'none' : 'flex',
           alignContent: 'center',
         }}
