@@ -12,6 +12,8 @@ import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import { checkUserName, changeUserName } from 'apiHelper/apiFunctions';
 import useDebounce from 'hooks/useDebounce';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { TOAST_TIMEOUT } from 'constant/constants';
 // import VerificationCodeHandle from './VerificationCodeHandle';
 
 const options = [
@@ -40,6 +42,28 @@ const TwoFactorAuthentication = ({ user }) => {
   });
   const debouncedUserName = useDebounce(userName, 500);
   // const [isVerificationShown, setIsVerificationShown] = useState(false);
+
+  /**
+   * @description Provides an appropriate message according to RVDics.
+   * @param {String} msg
+   * @returns A string message.
+   */
+  const getMessage = (msg) => {
+    return RVDic.MSG[msg] || msg;
+  };
+
+  /**
+   * @description Renders a toast.
+   * @param {('error' | 'info' | 'success' | 'warning' | 'dark')} type -The type of the toast.
+   * @param {String} message -The message of the toast.
+   */
+  const renderToast = (type, message) => {
+    return InfoToast({
+      type,
+      autoClose: TOAST_TIMEOUT,
+      message: getMessage(message),
+    });
+  };
 
   //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
@@ -101,15 +125,19 @@ const TwoFactorAuthentication = ({ user }) => {
       .then((response) => {
         setIsSavingUserName(false);
         if (response.Succeed) {
-          //! Show modal if needed!
+          const successMSG = 'نام کاربری با موفقیت تغییر کرد';
+          renderToast('success', successMSG);
         }
         if (response.ErrorText) {
-          setError(RVDic.MSG[response.ErrorText]);
+          let resError = response.ErrorText;
+          setError(() => getMessage(resError));
+          renderToast('error', resError);
         }
       })
       .catch((error) => {
         setIsSavingUserName(false);
         setError(error);
+        renderToast('error', error);
       });
   };
 
