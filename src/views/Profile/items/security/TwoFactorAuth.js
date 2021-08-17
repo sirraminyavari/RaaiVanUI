@@ -36,7 +36,6 @@ const TwoFactorAuthentication = ({ user }) => {
     text: '',
   });
   const debouncedUserName = useDebounce(userName, 500);
-  // const [isVerificationShown, setIsVerificationShown] = useState(false);
 
   const provideOptions = () => {
     const options = [];

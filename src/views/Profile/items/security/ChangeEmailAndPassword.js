@@ -75,6 +75,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     });
   };
 
+  //! Fill the email input with the current email.
   useEffect(() => {
     setEmail(decodeBase64(Emails?.[0]?.Email));
 
@@ -84,6 +85,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     };
   }, [Emails]);
 
+  //! Get password policy from server.
   useEffect(() => {
     getPasswordPolicy()
       .then((response) => setPasswordPolicy(response))
@@ -97,18 +99,22 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //! Fires whenever user fill the current password input.
   const handleCurrentPass = (currentPass) => {
     setCurrentPass(currentPass);
   };
 
+  //! Fires whenever user changes the new password input.
   const handleNewPass = (newPass) => {
     setNewPass(newPass);
   };
 
+  //! Fires whenever user changes the password confirmation input.
   const handleNewPassConfirm = (newPassConfirm) => {
     setNewPassConfirm(newPassConfirm);
   };
 
+  //! Fires whenever user changes the email input.
   const handleEmailChange = (email) => {
     setEmail(email);
   };
@@ -159,14 +165,17 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     setIsPolicyShown(false);
   };
 
+  //! Hide email verification code area on timeout.
   const handleEmailTimeout = () => {
     setEmailVerification(DEFAULT_VERIFICATION);
   };
 
+  //! Hide password verification code area on timeout.
   const handlePassTimeout = () => {
     setPassVerification(DEFAULT_VERIFICATION);
   };
 
+  //! Fallback to user current email if email input is empty and on blur.
   const handleEmailBlur = () => {
     if (!email) {
       setEmail(currentEmailAddress);
@@ -197,6 +206,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       });
   };
 
+  //! Reset user password.
   const handleSavePassword = () => {
     if (!newPass || !newPassConfirm) return;
     if (isSaas) {
