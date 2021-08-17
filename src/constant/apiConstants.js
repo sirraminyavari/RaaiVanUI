@@ -189,6 +189,13 @@ export const SET_PASSWORD = 'SetPassword';
  */
 export const SAVE_USER_SETTINGS_ITEM = 'SaveUserSettingsItem';
 
+/**
+ * @description 'SetVerificationCodeMedia'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_VERIFICATION_CODE_MEDIA = 'SetVerificationCodeMedia';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

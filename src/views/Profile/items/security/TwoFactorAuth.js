@@ -10,27 +10,22 @@ import Button from 'components/Buttons/Button';
 import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import { checkUserName, changeUserName } from 'apiHelper/apiFunctions';
+import {
+  checkUserName,
+  changeUserName,
+  setVerificationCodeMedia,
+} from 'apiHelper/apiFunctions';
 import useDebounce from 'hooks/useDebounce';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { TOAST_TIMEOUT } from 'constant/constants';
-// import VerificationCodeHandle from './VerificationCodeHandle';
-
-const options = [
-  { value: 'phone', title: 'شماره تماس ۸۵۷****۰۹۳', group: 'two-factor-auth' },
-  {
-    value: 'email',
-    title: 'ایمیل admin******@gmail.com',
-    group: 'two-factor-auth',
-  },
-];
 
 const TwoFactorAuthentication = ({ user }) => {
   const { RVDic } = useWindow();
-  const { UserName, UserID } = user || {};
+  const { UserName, UserID, VerificationCodeMedia, Emails, PhoneNumbers } =
+    user || {};
 
   //! If true, Show two factor option box.
-  const [isTwoFactorOn, setIsTwoFactorOn] = useState(false);
+  const [isTwoFactorOn, setIsTwoFactorOn] = useState(!!VerificationCodeMedia);
   const [userName, setUserName] = useState(decodeBase64(UserName));
   //! See if user name is already taken or not..
   const [isValidUserName, setIsValidUserName] = useState(false);
@@ -42,6 +37,27 @@ const TwoFactorAuthentication = ({ user }) => {
   });
   const debouncedUserName = useDebounce(userName, 500);
   // const [isVerificationShown, setIsVerificationShown] = useState(false);
+
+  const provideOptions = () => {
+    const options = [];
+    if (!!Emails?.length) {
+      options.push({
+        value: 'Email',
+        title: `${RVDic.Email} : ${decodeBase64(Emails?.[0].Email)}`,
+        group: 'two-factor-auth',
+      });
+    }
+    if (!!PhoneNumbers?.length) {
+      options.push({
+        value: 'SMS',
+        title: `${RVDic.PhoneNumber} : ${decodeBase64(
+          PhoneNumbers?.[0].Number
+        )}`,
+        group: 'two-factor-auth',
+      });
+    }
+    return options;
+  };
 
   /**
    * @description Provides an appropriate message according to RVDics.
@@ -68,6 +84,17 @@ const TwoFactorAuthentication = ({ user }) => {
   //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
     setIsTwoFactorOn(toggleValue);
+    if (toggleValue) {
+      //! Turn on code media area.
+      setVerificationCodeMedia('On')
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+    } else {
+      //! Turn off code media area.
+      setVerificationCodeMedia()
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+    }
   };
 
   //! Set error state for user name field.
@@ -148,13 +175,12 @@ const TwoFactorAuthentication = ({ user }) => {
     }
   };
 
-  // const handleSendCode = () => {
-  //   setIsVerificationShown(false);
-  // };
-
-  // const handleTimeout = () => {
-  //   setIsVerificationShown(false);
-  // };
+  const handleMediaSelection = (media) => {
+    // console.log(media);
+    setVerificationCodeMedia(media)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  };
 
   return (
     <Styled.ContentWrapper>
@@ -194,14 +220,6 @@ const TwoFactorAuthentication = ({ user }) => {
           {userNameMessage?.text}
         </div>
       </div>
-      {/* {isVerificationShown && (
-        <VerificationCodeHandle
-          onSendCode={handleSendCode}
-          onTimeout={handleTimeout}
-          codeCount={5}
-          countDown={120}
-        />
-      )} */}
       <Styled.FieldTitleWrapper>
         <KeyIcon
           size={22}
@@ -217,7 +235,12 @@ const TwoFactorAuthentication = ({ user }) => {
         title="استفاده از ورود دو مرحله ای"
         containerClass="profile-security-toggle"
       />
-      <TwoFactorOptions options={options} enabled={isTwoFactorOn} />
+      <TwoFactorOptions
+        media={VerificationCodeMedia}
+        options={provideOptions()}
+        enabled={isTwoFactorOn}
+        onSelectOption={handleMediaSelection}
+      />
     </Styled.ContentWrapper>
   );
 };

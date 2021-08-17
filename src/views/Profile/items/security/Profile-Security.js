@@ -50,6 +50,7 @@ const ProfileSecurity = ({ route }) => {
     return () => {
       //! remove reCapctha on clean up.
       isSaas && document?.body?.removeChild(script);
+      isSaas && GlobalUtilities.hide_recaptcha();
     };
   }, []);
 

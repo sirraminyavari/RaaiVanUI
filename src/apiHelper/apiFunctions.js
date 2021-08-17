@@ -40,6 +40,7 @@ import {
   MODIFY_EMAIL_TICKET,
   MODIFY_EMAIL,
   SAVE_USER_SETTINGS_ITEM,
+  SET_VERIFICATION_CODE_MEDIA,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -708,7 +709,7 @@ export const changeUserPassword = (userId, currentPassword, newPassword) => {
 
 /**
  * @description Get password policy.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const getPasswordPolicy = () => {
   const getPasswordPolicyAPI = API_Provider(USERS_API, GET_PASS_POLICY);
@@ -733,7 +734,7 @@ export const getPasswordPolicy = () => {
 /**
  * @description Check userName.
  * @param {String} userName -The userName.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const checkUserName = (userName) => {
   const checkUserNameAPI = API_Provider(USERS_API, CHECK_USER_NAME);
@@ -759,7 +760,7 @@ export const checkUserName = (userName) => {
  * @description Change userName.
  * @param {String} userId -The user id.
  * @param {String} userName -The userName.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const changeUserName = (userId, userName) => {
   const setUserNameAPI = API_Provider(USERS_API, SET_USER_NAME);
@@ -786,7 +787,7 @@ export const changeUserName = (userId, userName) => {
  * @param {String} email -The user email.
  * @param {String} password -The user new password.
  * @param {String} captchaToken -The captcha token.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const resetUserPassword = (email, password, captchaToken) => {
   const resetUserPasswordAPI = API_Provider(
@@ -819,7 +820,7 @@ export const resetUserPassword = (email, password, captchaToken) => {
  * @description Set user password.
  * @param {String} code -The code that has been send to user.
  * @param {String} confirmationToken -The confirmation token.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const setUserPassword = (code, confirmationToken) => {
   const setUserPasswordAPI = API_Provider(USERS_API, SET_PASSWORD);
@@ -850,7 +851,7 @@ export const setUserPassword = (code, confirmationToken) => {
  * @param {String} emailId -The user email id.
  * @param {String} Address -The user email address.
  * @param {String} captchaToken -The captcha token.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const resetUserEmail = (emailId, Address, captchaToken) => {
   const resetUserEmailAPI = API_Provider(USERS_API, MODIFY_EMAIL_TICKET);
@@ -880,7 +881,7 @@ export const resetUserEmail = (emailId, Address, captchaToken) => {
  * @description Modify user email.
  * @param {String} code -The code that has been send to user.
  * @param {String} confirmationToken -The confirmation token.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const modifyUserEmail = (code, confirmationToken) => {
   const modifyUserEmailAPI = API_Provider(USERS_API, MODIFY_EMAIL);
@@ -909,7 +910,7 @@ export const modifyUserEmail = (code, confirmationToken) => {
  * @description Save user settings item.
  * @param {String} name -The name of the setting item.
  * @param {String | Number | Boolean} value -The value of the setting item.
- *  @returns Promise.
+ * @returns Promise.
  */
 export const saveUserSettings = (name, value) => {
   const saveUserSettingsAPI = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
@@ -923,6 +924,36 @@ export const saveUserSettings = (name, value) => {
         {
           Name: name,
           Value: normalizedValue,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set verification code media.
+ * @param {String} media -The media type.
+ * @returns Promise.
+ */
+export const setVerificationCodeMedia = (media = '') => {
+  const setVerificationCodeMediaAPI = API_Provider(
+    USERS_API,
+    SET_VERIFICATION_CODE_MEDIA
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      setVerificationCodeMediaAPI.fetch(
+        {
+          Media: media,
         },
         (response) => {
           resolve(response);
