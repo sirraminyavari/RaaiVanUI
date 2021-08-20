@@ -29,7 +29,6 @@ export const themeSlice = createSlice({
     sidebarMaxWidth: MAX_WIDTH,
     themes: [],
     currentTheme: null,
-    isSidebarCollapsed: true,
     isDarkMode: false,
     hasSidebarPattern: true,
   },
@@ -70,9 +69,6 @@ export const themeSlice = createSlice({
     },
     setCurrentTheme: (state, action) => {
       state.currentTheme = action.payload;
-    },
-    setSidebarCollapse: (state, action) => {
-      state.isSidebarCollapsed = action.payload;
     },
     setDarkMode: (state, action) => {
       state.isDarkMode = action.payload;

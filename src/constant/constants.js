@@ -4,6 +4,7 @@ export const MEDIUM_BOUNDRY = '1020px';
 export const MOBILE_BOUNDRY = '600px';
 
 export const GET_NOTIFS_INTERVAL = 15000;
+export const TOAST_TIMEOUT = 5000;
 
 export const FORBIDDEN_ROUTES_IN_SAAS = [
   'newquestion',

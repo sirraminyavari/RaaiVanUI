@@ -34,12 +34,13 @@ import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import TeamConfirm from './TeamConfirm';
-import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
 import { API_Provider } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
+import { SIDEBAR_WINDOW } from 'constant/constants';
+import { themeSlice } from 'store/reducers/themeReducer';
 // import { invitationSlice } from 'store/reducers/invitationsReducer';
 
 // const { openInvitationModal } = invitationSlice.actions;
@@ -48,6 +49,8 @@ const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
 const MAX_IMAGE_SIZE = 2000000;
+
+const { toggleSidebar } = themeSlice.actions;
 
 const selectingApp = createSelector(
   (state) => state?.applications,
@@ -71,6 +74,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   });
 
   const isAdmin = (RVGlobal || {}).IsSystemAdmin;
+  const currentUser = (RVGlobal || {}).CurrentUser;
 
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -171,6 +175,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Redirect user to right path when team selection was successful.
   const onSelectDone = (path) => {
     history.push(path);
+    if (!!currentUser?.Settings?.[SIDEBAR_WINDOW]) {
+      //! Open sidebar by default.
+      dispatch(toggleSidebar(true));
+    }
   };
 
   //! Fires when team selection has error.
@@ -434,7 +442,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               )}
             </Styled.TeamAvatarsWrapper>
             {isRemovable ? (
-              <ToolTip
+              <Tooltip
                 tipId={`delete-team-${appId}`}
                 effect="solid"
                 type="dark"
@@ -451,9 +459,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     <TrashIcon />
                   )}
                 </Styled.TeamTrashWrapper>
-              </ToolTip>
+              </Tooltip>
             ) : (
-              <ToolTip
+              <Tooltip
                 tipId={`leave-team-${appId}`}
                 effect="solid"
                 type="dark"
@@ -463,7 +471,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 <Styled.TeamExitWrapper onClick={onExitTeamClick}>
                   <ExitIcon size={22} />
                 </Styled.TeamExitWrapper>
-              </ToolTip>
+              </Tooltip>
             )}
           </Styled.TeamFooterConatiner>
         </Styled.TeamContentWrapper>

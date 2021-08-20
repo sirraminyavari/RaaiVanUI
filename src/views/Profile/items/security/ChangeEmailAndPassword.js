@@ -18,6 +18,8 @@ import {
 } from 'apiHelper/apiFunctions';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
 import { decodeBase64 } from 'helpers/helpers';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { TOAST_TIMEOUT } from 'constant/constants';
 
 const commonInputStyles = { marginBottom: '1rem', width: '70%' };
 const DEFAULT_VERIFICATION = {
@@ -48,6 +50,32 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
   const isSameEmailAddress = currentEmailAddress === email;
 
+  const emailSuccessMSG = 'پست الکترونیک با موفقیت تغییر کرد';
+  const passSuccessMSG = 'رمز عبور با موفقیت تغییر کرد';
+
+  /**
+   * @description Provides an appropriate message according to RVDics.
+   * @param {String} msg
+   * @returns A string message.
+   */
+  const getMessage = (msg) => {
+    return RVDic.MSG[msg] || msg;
+  };
+
+  /**
+   * @description Renders a toast.
+   * @param {('error' | 'info' | 'success' | 'warning' | 'dark')} type -The type of the toast.
+   * @param {String} message -The message of the toast.
+   */
+  const renderToast = (type, message) => {
+    return InfoToast({
+      type,
+      autoClose: TOAST_TIMEOUT,
+      message: getMessage(message),
+    });
+  };
+
+  //! Fill the email input with the current email.
   useEffect(() => {
     setEmail(decodeBase64(Emails?.[0]?.Email));
 
@@ -57,6 +85,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     };
   }, [Emails]);
 
+  //! Get password policy from server.
   useEffect(() => {
     getPasswordPolicy()
       .then((response) => setPasswordPolicy(response))
@@ -70,18 +99,22 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //! Fires whenever user fill the current password input.
   const handleCurrentPass = (currentPass) => {
     setCurrentPass(currentPass);
   };
 
+  //! Fires whenever user changes the new password input.
   const handleNewPass = (newPass) => {
     setNewPass(newPass);
   };
 
+  //! Fires whenever user changes the password confirmation input.
   const handleNewPassConfirm = (newPassConfirm) => {
     setNewPassConfirm(newPassConfirm);
   };
 
+  //! Fires whenever user changes the email input.
   const handleEmailChange = (email) => {
     setEmail(email);
   };
@@ -93,14 +126,15 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       .then((response) => {
         // console.log(response);
         if (response.ErrorText) {
-          alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+          renderToast('error', response?.ErrorText);
         }
         if (response.Succeed) {
           setEmailVerification(DEFAULT_VERIFICATION);
+          renderToast('success', emailSuccessMSG);
         }
       })
       .catch((error) => {
-        console.log(error);
+        renderToast('error', error);
       });
   };
 
@@ -111,13 +145,16 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       .then((response) => {
         // console.log(response);
         if (response.ErrorText) {
-          alert(RVDic.MSG[response.ErrorText] || response.ErrorText);
+          renderToast('error', response?.ErrorText);
         }
         if (response.Succeed) {
           setPassVerification(DEFAULT_VERIFICATION);
+          renderToast('success', passSuccessMSG);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        renderToast('error', error);
+      });
   };
 
   const showPassPolicy = () => {
@@ -128,14 +165,17 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
     setIsPolicyShown(false);
   };
 
+  //! Hide email verification code area on timeout.
   const handleEmailTimeout = () => {
     setEmailVerification(DEFAULT_VERIFICATION);
   };
 
+  //! Hide password verification code area on timeout.
   const handlePassTimeout = () => {
     setPassVerification(DEFAULT_VERIFICATION);
   };
 
+  //! Fallback to user current email if email input is empty and on blur.
   const handleEmailBlur = () => {
     if (!email) {
       setEmail(currentEmailAddress);
@@ -148,10 +188,13 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
 
     resetUserEmail(currentEmailId, email, captchaToken)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response?.ErrorText) {
-          alert(RVDic.MSG[response?.ErrorText] || response?.ErrorText);
-        } else {
+          renderToast('error', response?.ErrorText);
+        } else if (response?.VerificationCode) {
+          const successMSG = 'AnEmailContainingEmailResetLinkSentToYou';
+          renderToast('success', successMSG);
+
           setEmailVerification({
             isShown: true,
             code: response?.VerificationCode,
@@ -159,25 +202,30 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        renderToast('error', error);
       });
   };
 
+  //! Reset user password.
   const handleSavePassword = () => {
     if (!newPass || !newPassConfirm) return;
-    //! Change password in Saas mode.
     if (isSaas) {
-      //! send verification code.
-      console.log('In Saas');
+      //! Change password in Saas mode.
+      //! Send verification code.
+      // console.log('In Saas');
       resetUserPassword(email, newPass, captchaToken)
         .then((response) => {
           // console.log(response);
           if (response?.ErrorText) {
-            alert(RVDic.MSG[response?.ErrorText] || response?.ErrorText);
+            renderToast('error', response?.ErrorText);
           } else if (response?.VerificationCode) {
+            //! Reset change password fields.
             setNewPass('');
             setNewPassConfirm('');
-            alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+
+            const successMSG = 'AnEmailContainingPasswordResetLinkSentToYou';
+            renderToast('success', successMSG);
+
             setPassVerification({
               isShown: true,
               code: response?.VerificationCode,
@@ -185,14 +233,24 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           }
         })
         .catch((error) => {
-          console.log(error);
+          renderToast('error', error);
         });
     } else {
-      //! If user is 'NOT' in saas mode.
-      console.log('Not in Saas');
+      //! If user is 'NOT' in saas mode, Just regular straightforward modification.
+      // console.log('Not in Saas');
       changeUserPassword(UserID, currentPass, newPass)
-        .then((response) => console.log(response))
-        .catch((error) => console.log(error));
+        .then((response) => {
+          // console.log(response);
+          if (response?.ErrorText) {
+            renderToast('error', response?.ErrorText);
+          }
+          if (response?.Succeed) {
+            renderToast('success', passSuccessMSG);
+          }
+        })
+        .catch((error) => {
+          renderToast('error', error);
+        });
     }
   };
 
