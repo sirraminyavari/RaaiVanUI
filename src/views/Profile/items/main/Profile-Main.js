@@ -64,6 +64,7 @@ const ProfileMain = (props) => {
     aspect: 1 / 1,
     imgSrc: null,
     file: null,
+    imgOrig: null,
   });
 
   const [relatedNodes, setRelatedNodes] = useState({});
@@ -78,7 +79,14 @@ const ProfileMain = (props) => {
   };
 
   const handleCloseModal = () => {
-    setEditModal((m) => ({ ...m, isShown: false, imgSrc: null, file: null }));
+    setEditModal((m) => ({
+      ...m,
+      isShown: false,
+      imgSrc: null,
+      file: null,
+      imgOrig: null,
+    }));
+    avatarUploadRef.current.value = '';
     // setAvatarCropSrc(null);
     // console.log(ProfileImageURL);
   };
@@ -151,13 +159,13 @@ const ProfileMain = (props) => {
     if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
       let imageDataUrl = await readFile(files[0]);
       let image = await createImage(imageDataUrl);
-      console.log(image.width, image.height);
       // setAvatarCropSrc(imageDataUrl);
       setEditModal((m) => ({
         ...m,
         isShown: true,
         imgSrc: imageDataUrl,
         file: files[0],
+        imgOrig: image,
       }));
     } else {
       event.target.value = '';
@@ -196,7 +204,7 @@ const ProfileMain = (props) => {
       <Styled.ProfileHeader coverImage={coverPhoto}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={profilePhoto + `?timestamp=${new Date().getTime()}`}
+            userImage={profilePhoto + `?timeStamp=${new Date().getTime()}`}
             radius={95}
             className="profile-avatar"
           />

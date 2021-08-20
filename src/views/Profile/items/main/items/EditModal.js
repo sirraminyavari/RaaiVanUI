@@ -122,48 +122,49 @@ const EditModal = (props) => {
         setIsSavingImage(false);
         const newImageURL =
           response.data.Message.ImageURL + `?timeStamp=${new Date().getTime()}`;
-        setCroppedImage(newImageURL);
-        dispatch(
-          setAuthUser({
-            ...window.RVGlobal?.CurrentUser,
-            ProfileImageURL: newImageURL,
-          })
-        );
+        // setCroppedImage(newImageURL);
+        // dispatch(
+        //   setAuthUser({
+        //     ...window.RVGlobal?.CurrentUser,
+        //     ProfileImageURL: newImageURL,
+        //   })
+        // );
         console.log(croppedAreaPixels);
         //! Save cropped profile dimensions on the server.
-        // cropIcon(id, 'ProfileImage', croppedAreaPixels)
-        //   .then((res) => {
-        //     console.log('crop response: ', res);
-        //     const newImageURL =
-        //       res.ImageURL + `?timeStamp=${new Date().getTime()}`;
-        //     setCroppedImage(newImageURL);
-        //     dispatch(
-        //       setAuthUser({
-        //         ...window.RVGlobal?.CurrentUser,
-        //         ProfileImageURL: newImageURL,
-        //       })
-        //     );
-        //     // let newDimensions = {
-        //     //   X: x,
-        //     //   Y: y,
-        //     //   Width: width,
-        //     //   Height: height,
-        //     // };
-        //     setIsSavingImage(false);
-        //     // setVariable(dimensionsVariableName, newDimensions).then((response) => {
-        //     //   // console.log('set variable response: ', response);
-        //     //   setIsSavingImage(false);
-        //     // });
-        //   })
-        //   .catch((err) => {
-        //     dispatch(
-        //       setAuthUser({
-        //         ...window.RVGlobal?.CurrentUser,
-        //         ProfileImageURL: response.data.Message.ImageURL,
-        //       })
-        //     );
-        //     console.log(err);
-        //   });
+        cropIcon(id, 'ProfileImage', croppedAreaPixels)
+          .then((res) => {
+            console.log('crop response: ', res);
+            const newImageURL =
+              res.ImageURL + `?timeStamp=${new Date().getTime()}`;
+
+            setCroppedImage(newImageURL);
+            dispatch(
+              setAuthUser({
+                ...window.RVGlobal?.CurrentUser,
+                ProfileImageURL: newImageURL,
+              })
+            );
+            // let newDimensions = {
+            //   X: x,
+            //   Y: y,
+            //   Width: width,
+            //   Height: height,
+            // };
+            setIsSavingImage(false);
+            // setVariable(dimensionsVariableName, newDimensions).then((response) => {
+            //   // console.log('set variable response: ', response);
+            //   setIsSavingImage(false);
+            // });
+          })
+          .catch((err) => {
+            dispatch(
+              setAuthUser({
+                ...window.RVGlobal?.CurrentUser,
+                ProfileImageURL: response.data.Message.ImageURL,
+              })
+            );
+            console.log(err);
+          });
       })
       .catch((error) => {
         setIsSavingImage(false);
@@ -172,15 +173,22 @@ const EditModal = (props) => {
   };
 
   //! Fires when user changes the image crop area.
-  const handleImageCropComplete = (croppedAreaPixels) => {
-    const { x, y, width, height } = croppedAreaPixels;
+  const handleImageCropComplete = (croppedArea, croppedAreaPixels) => {
+    // console.log(modalProps.imgOrig.width, modalProps.imgOrig.height);
+    const xRatio = modalProps.imgOrig.width / 595;
+    const yRatio = modalProps.imgOrig.height / 335;
+
     const truncatedCropArea = {
-      x: Math.trunc(x),
-      y: Math.trunc(y),
-      width: Math.trunc(width),
-      height: Math.trunc(height),
+      x: Math.ceil(croppedAreaPixels.x / xRatio),
+      y: Math.trunc(croppedAreaPixels.y / yRatio),
+      width: Math.trunc(croppedAreaPixels.width / yRatio),
+      height: Math.trunc(croppedAreaPixels.height / yRatio),
     };
-    console.log(truncatedCropArea);
+    // console.log({ croppedAreaPixels });
+    // console.log({ croppedArea });
+    // console.log({ truncatedCropArea });
+    // console.log({ xRatio });
+
     setCroppedAreaPixels(truncatedCropArea);
   };
 
