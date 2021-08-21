@@ -21,6 +21,7 @@ const selecteOnboardingName = createSelector(
  * @property {string} title -The title of item.
  * @property {number} badge -The badge for item.
  * @property {string} linkTo -The path that item is linked to.
+ * @property {function} onClick -Fires when item gets clicked.
  */
 
 /**
@@ -29,7 +30,7 @@ const selecteOnboardingName = createSelector(
  * @param {PropType} props
  */
 const ListItem = (props) => {
-  const { icon: Icon, title, badge, linkTo = '#' } = props;
+  const { icon: Icon, title, badge, linkTo = '#', onClick } = props;
   const onboardingName = useSelector(selecteOnboardingName);
 
   //! Check if onboarding is activated on 'intro' mode.
@@ -37,7 +38,10 @@ const ListItem = (props) => {
     !!onboardingName && onboardingName === INTRO_ONBOARD;
 
   return (
-    <Styled.ListItemWrapper as={!isIntroOnboarding && Link} to={linkTo}>
+    <Styled.ListItemWrapper
+      onClick={onClick}
+      as={!isIntroOnboarding && !onClick && Link}
+      to={linkTo}>
       <Styled.CenterIcon>
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>
