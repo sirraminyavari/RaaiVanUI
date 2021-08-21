@@ -1,4 +1,9 @@
-import { BG_GRAY_LIGHT, C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
+import {
+  BG_GRAY_LIGHT,
+  BO_DISTANT,
+  C_DISTANT,
+  C_GRAY_DARK,
+} from 'constant/Colors';
 import { BO_RADIUS_HALF, IGNORE_RADIUS_LEFT } from 'constant/constants';
 import { CV_BLACK } from 'constant/CssVariables';
 import { FLEX_RCB } from 'constant/StyledCommonCss';
@@ -28,7 +33,12 @@ export const GalleryListContainer = styled.div.attrs({
 export const GalleryMainContainer = styled.div`
   width: 75%;
   height: 100%;
-  padding: 1rem;
+  padding: 0.7rem;
+
+  .swiper-container {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 export const ModalTitle = styled.div.attrs({
@@ -44,4 +54,11 @@ export const SuggestionListTitle = styled.div.attrs({
   font-size: 1rem;
   font-weight: 500;
   margin: 1rem 0;
+`;
+
+export const TemplateCardContainer = styled.div.attrs({
+  className: `${BO_DISTANT} ${BO_RADIUS_HALF}`,
+})`
+  width: 99%;
+  height: 8.5rem;
 `;

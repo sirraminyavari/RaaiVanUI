@@ -59,6 +59,7 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1",
     "suneditor-react": "^2.16.3",
+    "swiper": "^6.8.3",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },

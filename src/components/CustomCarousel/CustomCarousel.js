@@ -11,10 +11,10 @@ const CustomCarousel = ({ children }) => {
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: false,
-    rtl: true,
+    // rtl: true,
   };
 
-  if (!children) return <></>;
+  // if (!children) return <></>;
 
   return <Slider {...settings}>{children}</Slider>;
 };

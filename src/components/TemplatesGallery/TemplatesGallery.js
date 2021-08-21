@@ -2,7 +2,8 @@ import Modal from '../Modal/Modal';
 import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
 import TemplateSuggestionList from './TemplateSuggestionList';
-import CustomCarousel from 'components/CustomCarousel/CustomCarousel';
+import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
+import TemplateCard from './TemplateCard';
 
 const TemplatesGallery = (props) => {
   const { RVDic } = useWindow();
@@ -21,15 +22,16 @@ const TemplatesGallery = (props) => {
             <TemplateSuggestionList />
           </Styled.GalleryListContainer>
           <Styled.GalleryMainContainer>
-            <CustomCarousel>
-              {[1, 2, 3, 4, 5, 6].map((item, index) => {
-                return (
-                  <div key={index}>
-                    <h1>{item}</h1>
-                  </div>
-                );
+            <div>more info</div>
+            <CustomSwiper
+              grabCursor
+              freeMode
+              slidesPerView={3}
+              spaceBetween={15}>
+              {[...Array(10).keys()].map((item, index) => {
+                return <TemplateCard index={item + 1} key={index} />;
               })}
-            </CustomCarousel>
+            </CustomSwiper>
           </Styled.GalleryMainContainer>
         </Styled.ModalContentWrapper>
       </Modal>
