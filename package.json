@@ -53,6 +53,8 @@
     "react-toastify": "^7.0.3",
     "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.1",
+    "reactour": "^1.18.6",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "reselect": "^4.0.0",
     "styled-components": "^5.2.1",

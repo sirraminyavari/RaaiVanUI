@@ -1,13 +1,5 @@
-const Onboarding = () => {
-  return (
-    <div
-      style={{
-        textAlign: 'center',
-        width: '100vw',
-      }}>
-      <h1>Onboarding</h1>
-    </div>
-  );
-};
+import Stepper from './stepper';
+
+const Onboarding = () => <Stepper />;
 
 export default Onboarding;

@@ -130,6 +130,7 @@ const AnimatedDropDownList = ({
       : data;
     return (
       <ItemList
+        id={'list'}
         style={{ ...itemContainer }}
         $dropedDown={dropedDown}
         className={itemContainerClass}>
