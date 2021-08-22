@@ -10,8 +10,6 @@ window.loadProfile = (params) => {
     : Base64.decode(window.RVGlobal.CurrentUser.FirstName) +
       " " +
       Base64.decode(window.RVGlobal.CurrentUser.LastName);
-
-  document.title = userFullname + " - " + document.title;
   //end of Set document title
 
   //Fill first & last name alert

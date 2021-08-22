@@ -9,6 +9,7 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import useWindow from 'hooks/useWindowContext';
 import NavButtonMenu from './NavButtonMenu';
 import NotificationsMenu from './NotificationsMenu';
+// import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const WideScreenMenu = () => {
   const { RVGlobal } = useWindow();
@@ -49,6 +50,22 @@ const WideScreenMenu = () => {
           </Fragment>
         );
       })}
+      {/* <Tooltip
+        tipId="nav-notifs-menu"
+        multiline
+        clickable
+        event="click"
+        effect="solid"
+        place="bottom"
+        type="dark">
+        <MenuItem
+          btnProps={{
+            title: window.RVDic.Notifications,
+            icon: 'notifications',
+          }}
+          badge={true}
+        />
+      </Tooltip> */}
     </Styled.WideScreenMenu>
   );
 };

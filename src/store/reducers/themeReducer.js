@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
+import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
 
 const getWidth = (width) => {
   if (width > MAX_WIDTH) {
@@ -19,7 +19,7 @@ export const themeSlice = createSlice({
     isSettingShown: false,
     hasNavSide: false,
     activePath: '',
-    sidebarContent: { current: 'main', prev: '' },
+    sidebarContent: { current: MAIN_CONTENT, prev: '' },
     selectedTeam: { name: null, id: null },
     allTeams: [],
     sidebarOpenWidth: 320,
@@ -29,7 +29,6 @@ export const themeSlice = createSlice({
     sidebarMaxWidth: MAX_WIDTH,
     themes: [],
     currentTheme: null,
-    isSidebarCollapsed: true,
     isDarkMode: false,
     hasSidebarPattern: true,
   },
@@ -70,9 +69,6 @@ export const themeSlice = createSlice({
     },
     setCurrentTheme: (state, action) => {
       state.currentTheme = action.payload;
-    },
-    setSidebarCollapse: (state, action) => {
-      state.isSidebarCollapsed = action.payload;
     },
     setDarkMode: (state, action) => {
       state.isDarkMode = action.payload;

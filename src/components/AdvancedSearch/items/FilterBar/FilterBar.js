@@ -24,10 +24,21 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createSelector } from 'reselect';
-import { BottomRow, Container, ShadowButton, TopRow } from './FilterBar.style';
+import {
+  BackButton,
+  BottomRow,
+  Container,
+  ShadowButton,
+  TopRow,
+} from './FilterBar.style';
 import SubmitNewNode from 'apiHelper/SubmitNewNode';
-import { CV_WHITE } from 'constant/CssVariables';
-import { INTRO_ONBOARD, OPENED } from 'constant/constants';
+import { CV_RED, CV_WHITE } from 'constant/CssVariables';
+import {
+  INTRO_ONBOARD,
+  OPENED,
+  USER_MORE_RELATED_TOPICS_PATH,
+  USER_WITHID_PATH,
+} from 'constant/constants';
 import Button from 'components/Buttons/Button';
 
 export const advancedSearchButtonRef = React.createRef();
@@ -86,7 +97,9 @@ const FilterBar = ({
   onByStatus,
   onByBookmarked,
   isBookMarked,
+  bookmarked,
   itemSelectionMode,
+  isProfile,
 }) => {
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
     (state) => ({
@@ -131,7 +144,10 @@ const FilterBar = ({
   // if True, means mouse hovers the bookmark button.
   const [bookmarkHover, setBookmarkHover] = useState(false);
 
-  const { push } = useHistory();
+  const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
+  const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
+
+  const { goBack, push } = useHistory();
 
   // const isInOnBoarding = onboardingName === INTRO_ONBOARD;
   const isInOnBoarding = true;
@@ -311,14 +327,25 @@ const FilterBar = ({
     linkTo: `/classes/${level?.NodeTypeID}`,
   }));
 
-  const breadcrumbItems = [
-    { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
-    ...extendedHierarchy,
-  ];
+  const breadcrumbItems = isProfile
+    ? [
+        { id: 1, title: RVDic.Profile, linkTo: USER_WITHID_PATH },
+        {
+          id: 2,
+          title: RVDic.RelatedNodes,
+          linkTo: USER_MORE_RELATED_TOPICS_PATH,
+        },
+      ]
+    : [
+        { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
+        ...extendedHierarchy,
+      ];
+
+  const isProfile_all = () => (isProfile && nodeType === null) || !isProfile;
 
   return (
     <Container>
-      <Breadcrumb items={breadcrumbItems} />
+      {!itemSelectionMode && <Breadcrumb items={breadcrumbItems} />}
       <TopRow>
         <div
           style={{
@@ -335,7 +362,7 @@ const FilterBar = ({
             />
           )}
           <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
-            {getTypeName()}
+            {isProfile ? RVDic.RelatedNodes : getTypeName()}
           </Heading>
           {!_.isNull(totalFound) && (
             <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
@@ -343,47 +370,63 @@ const FilterBar = ({
             </Heading>
           )}
         </div>
-        {itemSelectionMode && market?.length > 0 ? (
+        {isProfile && (
+          <BackButton
+            className={'rv-border-radius-half'}
+            onClick={() => goBack()}
+            style={{ color: CV_RED, padding: '0.5rem' }}
+            type={'secondary-o'}>
+            {RVDic.Return}
+          </BackButton>
+        )}
+
+        {/* Don't forget to add this for urgent create in itemSelection mode
+          && market?.length > 0
+          */}
+
+        {itemSelectionMode ? (
           <Button onClick={onCreateUrgent} type={'primary'}>
             <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
             <div style={{ margin: '0 1rem 0 1rem' }}>{RVDic?.AddQuickly}</div>
           </Button>
         ) : (
-          <div data-tut={'new_doc_menu'}>
-            {(market?.length > 0 || onboardingName === INTRO_ONBOARD) && (
-              <AnimatedDropDownList
-                data={onboardingName === INTRO_ONBOARD ? data : market}
-                onSelectItem={onSelectItem}
-                defaultValue={selectedItem}
-                hiddenSelectedItem={false}
-                introMode={
-                  onboardingName === INTRO_ONBOARD && newDocMenu === OPENED
-                }
-                onClickLabel={() => onSelectItem(selectedItem)}
-                customStyle={{
-                  label: { minWidth: '8rem' },
-                }}
-                customClass={{
-                  labelClass: RV_RTL
-                    ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
-                    : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
-                  buttonClass: isDropDownOpen
-                    ? `rv-bg-color-warm rv-border-radius-half ${
-                        RV_RTL
-                          ? 'rv-ignore-right-radius'
-                          : 'rv-ignore-left-radius'
-                      }`
-                    : `rv-bg-color-default rv-border-radius-half ${
-                        RV_RTL
-                          ? 'rv-ignore-right-radius'
-                          : 'rv-ignore-left-radius'
-                      }`,
-                  arrowIconColorClass: 'rv-white',
-                }}
-                onDropDownOpen={setIsDropDownOpen}
-              />
+          <>
+            {!isProfile && (
+              <div data-tut={'new_doc_menu'}>
+                {market?.length > 0 && (
+                  <AnimatedDropDownList
+                    data={market}
+                    onSelectItem={onSelectItem}
+                    defaultValue={selectedItem}
+                    hiddenSelectedItem={false}
+                    introMode={isInOnBoarding && isNewDocOpened}
+                    onClickLabel={() => onSelectItem(selectedItem)}
+                    customStyle={{
+                      label: { minWidth: '8rem' },
+                    }}
+                    customClass={{
+                      labelClass: RV_RTL
+                        ? 'rv-bg-color-default rv-border-radius-half rv-ignore-left-radius'
+                        : 'rv-bg-color-default rv-border-radius-half rv-ignore-right-radius',
+                      buttonClass: isDropDownOpen
+                        ? `rv-bg-color-warm rv-border-radius-half ${
+                            RV_RTL
+                              ? 'rv-ignore-right-radius'
+                              : 'rv-ignore-left-radius'
+                          }`
+                        : `rv-bg-color-default rv-border-radius-half ${
+                            RV_RTL
+                              ? 'rv-ignore-right-radius'
+                              : 'rv-ignore-left-radius'
+                          }`,
+                      arrowIconColorClass: 'rv-white',
+                    }}
+                    onDropDownOpen={setIsDropDownOpen}
+                  />
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
       </TopRow>
 
@@ -406,6 +449,8 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {console.log(isProfile_all(), 'isProfile_all', '&&&&&&&&&')}
+
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"
@@ -413,15 +458,18 @@ const FilterBar = ({
             clearButton
             range
             headerTitle="فیلتر تاریخ ایجاد"
+            onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
               <ShadowButton
-                onClick={onClick}
+                onClick={() => {
+                  onClick();
+                }}
                 onMouseEnter={() => setDateHover(true)}
                 onMouseLeave={() => setDateHover(false)}
                 style={commonStyle}
-                $isEnabled={date}
+                $isEnabled={date || calendarPickerClicked}
                 className={
-                  date
+                  calendarPickerClicked || date
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
                 }>
@@ -433,7 +481,11 @@ const FilterBar = ({
                 ) : (
                   <EmptyCalendarIcon
                     size={'1.5rem'}
-                    className={dateHover ? 'rv-default' : 'rv-distant'}
+                    className={
+                      calendarPickerClicked || dateHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
                   />
                 )}
               </ShadowButton>
@@ -443,90 +495,95 @@ const FilterBar = ({
               onByDate(value);
             }}
           />
-          <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => setBookmarkHover(true)}
-            onMouseLeave={() => setBookmarkHover(false)}
-            onClick={() => onByBookmarked(!isBookMarked)}
-            $isEnabled={isBookMarked}
-            className={
-              isBookMarked
-                ? 'rv-border-distant rv-default'
-                : 'rv-border-white rv-distant'
-            }>
-            {isBookMarked ? (
-              <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-            ) : (
-              <OutLineBookmarkIcon
-                size={'1.5rem'}
-                className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-              />
-            )}
-          </ShadowButton>
-
-          <PeoplePicker
-            onByMe={onByMe}
-            onByPeople={onPeople}
-            isByMe={isByMe}
-            pickedPeople={people}
-            buttonComponent={
-              <ShadowButton
-                style={commonStyle}
-                // onClick={onClick}
-                onMouseEnter={() => setPeopleHover(true)}
-                onMouseLeave={() => setPeopleHover(false)}
-                $isEnabled={people || isByMe}
-                className={
-                  isByMe || people
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }>
-                <PersonIcon
-                  size={'1.5rem'}
-                  className={
-                    isByMe || people
-                      ? 'rv-default'
-                      : peopleHover
-                      ? 'rv-default'
-                      : 'rv-distant'
-                  }
-                />
-              </ShadowButton>
-            }
-          />
-
-          {advancedButton && (
+          {!isProfile && (
             <ShadowButton
-              style={{
-                marginRight: '0.5rem',
-                minWidth: '7rem',
-                color:
-                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
-              }}
-              ref={advancedSearchButtonRef}
-              onMouseEnter={() => setFilterHover(true)}
-              onMouseLeave={() => setFilterHover(false)}
-              onClick={onAdvancedFilterClick}
-              $isEnabled={advancedSearch}
+              style={commonStyle}
+              onMouseEnter={() => setBookmarkHover(true)}
+              onMouseLeave={() => setBookmarkHover(false)}
+              onClick={() => onByBookmarked(!isBookMarked)}
+              $isEnabled={isBookMarked}
               className={
-                advancedSearch
+                isBookMarked
                   ? 'rv-border-distant rv-default'
                   : 'rv-border-white rv-distant'
               }>
-              <Filter
-                size={'1.5rem'}
-                className={
-                  advancedSearch
-                    ? 'rv-default'
-                    : filterHover
-                    ? 'rv-default'
-                    : 'rv-distant'
-                }
-                style={{ marginLeft: '0.5rem' }}
-              />
-              {RVDic?.Advanced}
+              {isBookMarked ? (
+                <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
+              ) : (
+                <OutLineBookmarkIcon
+                  size={'1.5rem'}
+                  className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+                />
+              )}
             </ShadowButton>
           )}
+          {!isProfile && (
+            <PeoplePicker
+              onByMe={onByMe}
+              onByPeople={onPeople}
+              isByMe={isByMe}
+              pickedPeople={people}
+              onVisible={setPeoplePickerVisibility}
+              buttonComponent={
+                <ShadowButton
+                  style={commonStyle}
+                  // onClick={onClick}
+                  onMouseEnter={() => setPeopleHover(true)}
+                  onMouseLeave={() => setPeopleHover(false)}
+                  $isEnabled={people || isByMe || peoplePickerVisibility}
+                  className={
+                    isByMe || people || peoplePickerVisibility
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
+                  }>
+                  <PersonIcon
+                    size={'1.5rem'}
+                    className={
+                      isByMe || people || peoplePickerVisibility
+                        ? 'rv-default'
+                        : peopleHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
+                  />
+                </ShadowButton>
+              }
+            />
+          )}
+
+          {advancedButton ||
+            (isProfile_all() && (
+              <ShadowButton
+                style={{
+                  marginRight: '0.5rem',
+                  minWidth: '7rem',
+                  color:
+                    advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
+                }}
+                ref={advancedSearchButtonRef}
+                onMouseEnter={() => setFilterHover(true)}
+                onMouseLeave={() => setFilterHover(false)}
+                onClick={onAdvancedFilterClick}
+                $isEnabled={advancedSearch}
+                className={
+                  advancedSearch
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }>
+                <Filter
+                  size={'1.5rem'}
+                  className={
+                    advancedSearch
+                      ? 'rv-default'
+                      : filterHover
+                      ? 'rv-default'
+                      : 'rv-distant'
+                  }
+                  style={{ marginLeft: '0.5rem' }}
+                />
+                {RVDic?.Advanced}
+              </ShadowButton>
+            ))}
         </div>
       </BottomRow>
     </Container>

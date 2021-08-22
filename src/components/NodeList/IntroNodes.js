@@ -212,7 +212,7 @@ const list = [
     WFState: '',
   },
 ];
-const IntroNodes = () => {
+const IntroNodes = ({ selectMode, liteMode, onChecked }) => {
   return (
     <div
       style={{
@@ -224,9 +224,10 @@ const IntroNodes = () => {
         return (
           <SubjectItem
             key={index}
-            onChecked={(value, item) => console.log(value, item, 'onChecked')}
+            selectMode={selectMode}
+            liteMode={liteMode}
+            onChecked={onChecked}
             parentNodeType={'6261f696-2432-4307-9813-5288f231e24c'}
-            selectMode={false}
             item={x}
             isSaas={false}
             onReload={() => console.log('onReload')}

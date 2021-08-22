@@ -7,22 +7,27 @@ import { useLocation } from 'react-router-dom';
  * @returns {Object} The object of all query params at a location as key-value pair.
  */
 const useQuery = () => {
-  const [query, setQuery] = useState({});
   const location = useLocation();
-  useEffect(() => {
+
+  const getQuery = () => {
     const queryAll = new URLSearchParams(location.search).toString();
     const queryList = queryAll.split('&');
-    const query = queryList.reduce((prev, q) => {
+    const qr = queryList.reduce((prev, q) => {
       let arr = q.split('=');
       let key = arr[0];
       let value = arr[1];
       return { ...prev, [key]: value };
     }, {});
 
-    if (queryAll.length !== 0) {
-      setQuery(query);
-    }
-  }, [location.search]);
+    return queryAll.length !== 0 ? qr : {};
+  };
+
+  const [query, setQuery] = useState(getQuery());
+
+  useEffect(() => {
+    console.log('called');
+    setQuery(getQuery);
+  }, [window.location.href]);
 
   return query;
 };

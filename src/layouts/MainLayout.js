@@ -40,13 +40,13 @@ const NavbarInitial = lazy(() =>
 );
 
 const { RVGlobal } = window;
-const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const isDev = (RVGlobal || {}).IsDev;
+const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
 const switchRoutes = (
   <Switch>
     {Routes.filter((route) => {
       //! Filter out some routes in Saas mode.
-      const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
       if (isSaas && FORBIDDEN_ROUTES_IN_SAAS.includes(route.name)) {
         return false;
       }
@@ -94,6 +94,11 @@ const selectedApp = createSelector(
   (theme) => theme.selectedTeam
 );
 
+const selectedActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 const selecteOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
@@ -104,6 +109,7 @@ const Main = () => {
   const hasNavSide = useSelector(selectHasNavSide);
   const selectedTeam = useSelector(selectedApp);
   const onboardingName = useSelector(selecteOnboardingName);
+  const activePath = useSelector(selectedActivePath);
   const { RVGlobal } = useWindow();
   const dispatch = useDispatch();
 
@@ -119,6 +125,10 @@ const Main = () => {
 
   const getSidebar = () => {
     if (isTeamSelected) {
+      //! Disable sidebar on teams view.
+      if (activePath === TEAMS_PATH) {
+        return null;
+      }
       //! When 'intro' onboarding mode is active.
       if (isIntroOnboarding) {
         //! Open the sidebar and return 'OpenSidebar'.

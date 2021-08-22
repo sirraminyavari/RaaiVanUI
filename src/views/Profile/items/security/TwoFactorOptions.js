@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import RadioSelect from 'components/Inputs/radio/Radio';
 import * as Styled from 'views/Profile/Profile.styles';
 
-const TwoFactorOptions = ({ options, enabled }) => {
-  const [selected, setSelected] = useState('');
+const TwoFactorOptions = ({ options, enabled, media, onSelectOption }) => {
+  const [selected, setSelected] = useState(!!media ? media : '');
 
   const handleOnSelect = (radioValue) => {
     setSelected(radioValue);
+    onSelectOption && onSelectOption(radioValue);
   };
 
   useEffect(() => {

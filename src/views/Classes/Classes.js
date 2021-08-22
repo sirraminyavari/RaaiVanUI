@@ -10,28 +10,22 @@ const AdvancedSearchView = (props) => {
   const { route } = props;
   const { onboardingName } = useSelector((state) => state.onboarding);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(toggleActivation());
-  }, [props.route]);
-  console.log(route, 'route');
+  useEffect(() => {}, [props.route]);
+  console.log('classes render');
   return (
-    <Fragment>
-      <AdvanceSearch
-        nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
-        hierarchy={route?.Hierarchy || []}
-        bookmarked={route?.Bookmarked}>
-        <NodeList
-          nodeTypeId={
-            (route?.NodeTypes || []).length
-              ? route.NodeTypes[0]?.NodeTypeID
-              : null
-          }
-        />
-      </AdvanceSearch>
-      <ProductTour />
-    </Fragment>
+    <AdvanceSearch
+      nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
+      hierarchy={route?.Hierarchy || []}
+      bookmarked={route?.Bookmarked}>
+      <NodeList
+        nodeTypeId={
+          (route?.NodeTypes || []).length
+            ? route.NodeTypes[0]?.NodeTypeID
+            : null
+        }
+        bookmarked={route?.Bookmarked}
+      />
+    </AdvanceSearch>
   );
 };
 

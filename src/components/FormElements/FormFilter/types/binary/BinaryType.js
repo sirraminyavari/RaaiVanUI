@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from '../types.styles';
 import Radio from 'components/Inputs/radio/Radio';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -23,10 +24,12 @@ import Radio from 'components/Inputs/radio/Radio';
 const BinaryType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
-  const [bitValue, setBitValue] = useState(!!value ? value.Data : null);
+  const [bitValue, setBitValue] = useState(!!value ? value?.Data : null);
+
+  const { GlobalUtilities } = useWindow();
 
   //! Binary titles.
-  const { Yes, No } = JSON.parse(decodeBase64(Info));
+  const { Yes, No } = GlobalUtilities.to_json(decodeBase64(Info));
 
   //! Binary options.
   const options = [

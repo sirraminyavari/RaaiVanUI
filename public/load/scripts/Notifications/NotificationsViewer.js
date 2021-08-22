@@ -161,19 +161,6 @@
             var that = this;
             notification = notification || {};
 
-            var x = {
-                "NotificationID": "10088", "UserID": "6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7",
-                "SubjectID": "37ea970f-54f1-43fa-a01b-7b324fa77091", "RefItemID": "6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7",
-                "SubjectName": "", "SubjectType": "Post", "Action": "Post", "SendDate": "11:58 1399/04/04",
-                "Description": "2LPZhNin2YUg2KjYsSDYudmE24zaqdmF", "Info": {}, "UserStatus": "Owner",
-                "Seen": true, "ViewDate": "1399/04/04",
-                "Sender": {
-                    "UserID": "1b0030f9-3c33-468c-9ed9-46cbc66d5e88",
-                    "UserName": "bS5hYmJhc3Np", "FirstName": "2YXbjNmE2KfYrw==", "LastName": "2LnYqNin2LPbjA==",
-                    "JobTitle": "2b7YtNiq24zYqNin2YYg2YbYsdmFINin2YHYstin2LE="
-                }
-            }
-
             var dicEntry = ((RVDic.NTFN || {}).SubjectType_Action || {})[notification.SubjectType + "_" + notification.Action] || {};
             var title = ((dicEntry.Audience || {})[notification.UserStatus] || {}).Notif || dicEntry.Notif;
 
@@ -301,9 +288,8 @@
             var that = this;
 
             NotificationsAPI.GetNotificationsCount({
-                ResponseHandler: function (responseText) {
-                    var result = JSON.parse(responseText);
-
+                ParseResults: true,
+                ResponseHandler: function (result) {
                     if (result.Destroy) {
                         that._destroy();
                         return;

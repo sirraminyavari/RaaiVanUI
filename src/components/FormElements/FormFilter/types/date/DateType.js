@@ -24,7 +24,7 @@ const DateType = (props) => {
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
 
-  const { ElementID, Title } = data; //! Meta data to feed component.
+  const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
   //! Fires on date select and sets 'from' date.
   const onDateFrom = (from) => {
@@ -58,7 +58,7 @@ const DateType = (props) => {
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Styled.DatePickerWrapper>
-        <Styled.DateSpanTitle>{RVDic.From}</Styled.DateSpanTitle>
+        <Styled.DateSpanTitle>{RVDic?.From}</Styled.DateSpanTitle>
         <Styled.DatePicker>
           <DatePicker
             size="small"
@@ -66,7 +66,7 @@ const DateType = (props) => {
             onDateSelect={onDateFrom}
             mode="input"
             type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
-            label={RVDic.DateSelect}
+            label={RVDic?.DateSelect}
             value={from}
             shouldClear={!!from && value === undefined}
             maximumDate={to ?? null}
@@ -74,7 +74,7 @@ const DateType = (props) => {
         </Styled.DatePicker>
       </Styled.DatePickerWrapper>
       <Styled.DatePickerWrapper>
-        <Styled.DateSpanTitle>{RVDic.To}</Styled.DateSpanTitle>
+        <Styled.DateSpanTitle>{RVDic?.To}</Styled.DateSpanTitle>
         <Styled.DatePicker>
           <DatePicker
             size="small"
@@ -82,7 +82,7 @@ const DateType = (props) => {
             onDateSelect={onDateTo}
             mode="input"
             type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
-            label={RVDic.DateSelect}
+            label={RVDic?.DateSelect}
             value={to}
             shouldClear={!!to && value === undefined}
             minimumDate={from ?? null}

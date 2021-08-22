@@ -14,17 +14,15 @@ import {
   WIDE_BOUNDRY,
   MEDIUM_BOUNDRY,
   MOBILE_BOUNDRY,
-  BO_RADIUS_HALF,
   GET_NOTIFS_INTERVAL,
+  TEAMS_PATH,
 } from 'constant/constants';
-import { BG_WHITE, C_WHITE } from 'constant/Colors';
+import { C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
-import {
-  getNotificationsCount,
-  getNotificationsList,
-} from 'store/actions/global/NotificationActions';
+import { getNotificationsCount } from 'store/actions/global/NotificationActions';
+import defaultProfileImage from 'assets/images/default-profile-photo.png';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -42,21 +40,37 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
+const selectActivePath = createSelector(
+  (state) => state.theme,
+  (theme) => theme.activePath
+);
+
 const selectAuthUser = createSelector(
   (state) => state.auth,
   (auth) => auth.authUser
 );
 
+const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
+
+const NavbarPlaceholder = () => <div />;
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const activePath = useSelector(selectActivePath);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat } = useWindow();
 
+  const profileImage =
+    authUser?.ProfileImageURL === UNKNOWN_IMAGE
+      ? defaultProfileImage
+      : authUser?.ProfileImageURL + `?timeStamp=${new Date().getTime()}`;
+
+  const isTeamsView = activePath === TEAMS_PATH;
+
   const getNotifs = () => {
     dispatch(getNotificationsCount());
-    dispatch(getNotificationsList());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);
@@ -80,9 +94,10 @@ const Navbar = () => {
   };
 
   const getNavMenu = () => {
-    if (!isSidebarOpen && isMobileScreen) return true;
-    if (isSidebarOpen && isMobileNav) return true;
-    return showSearch;
+    if (!isSidebarOpen && isMobileScreen) return <MobileMenu />;
+    if (isSidebarOpen && isMobileNav) return <MobileMenu />;
+    if (showSearch) return <MobileMenu />;
+    return <WideScreenMenu />;
   };
 
   const handleShowSearch = () => {
@@ -98,7 +113,7 @@ const Navbar = () => {
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
       <Suspense fallback={<Styled.NavMenuContainer />}>
-        {getNavMenu() ? <MobileMenu /> : <WideScreenMenu />}
+        {isTeamsView ? <NavbarPlaceholder /> : getNavMenu()}
       </Suspense>
       <Styled.SearchWrapper>
         {showInput() ? (
@@ -123,13 +138,13 @@ const Navbar = () => {
           event="click"
           arrowColor="transparent"
           offset={{ [RV_RevFloat]: -102, top: -6 }}
-          className={`${BG_WHITE} ${BO_RADIUS_HALF} avatar-tooltip`}
+          className="avatar-tooltip"
           renderContent={() => {
             return <AvatarMenuList />;
           }}>
           <Avatar
             radius={35}
-            userImage={authUser?.ProfileImageURL}
+            userImage={profileImage}
             style={{ cursor: 'pointer', minWidth: '2.5rem' }}
           />
         </Tooltip>

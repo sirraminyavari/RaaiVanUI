@@ -7,6 +7,7 @@ import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -22,25 +23,28 @@ import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
  * @param {PropType} props -Props that are passed to component.
  */
 const SelectType = (props) => {
-  const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
-  const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(Info));
+  const { RVDic, GlobalUtilities } = useWindow();
 
-  const [items, setItems] = useState(!!value ? value.TextItems : []);
-  const [exact, setExact] = useState(!!value ? value.Exact : false);
+  const { onChange, data, value } = props;
+  const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
+  const { Options, AutoSuggestMode } =
+    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+
+  const [items, setItems] = useState(!!value ? value?.TextItems : []);
+  const [exact, setExact] = useState(!!value ? value?.Exact : false);
 
   //! Select options.
-  const options = Options.map((option) => ({
+  const options = Options?.map((option) => ({
     value: decodeBase64(option),
     title: decodeBase64(option),
     group: 'select-filter',
   }));
 
   const handleOnChange = (item) => {
-    if (!item.isChecked) {
-      setItems((oldItems) => oldItems.filter((c) => c !== item.value));
+    if (!item?.isChecked) {
+      setItems((oldItems) => oldItems.filter((c) => c !== item?.value));
     } else {
-      setItems((oldItems) => [...oldItems, item.value]);
+      setItems((oldItems) => [...oldItems, item?.value]);
     }
   };
 
@@ -52,8 +56,8 @@ const SelectType = (props) => {
   useEffect(() => {
     const id = ElementID;
     const JSONValue = {
-      TextItems: items.map((item) => encodeBase64(item)),
-      Exact: !items.length ? false : exact,
+      TextItems: items?.map((item) => encodeBase64(item)),
+      Exact: !items?.length ? false : exact,
     };
 
     //! Send back value to parent on select.
@@ -62,7 +66,7 @@ const SelectType = (props) => {
       value: {
         Type: 'select',
         TextItems: items,
-        Exact: !items.length ? false : exact,
+        Exact: !items?.length ? false : exact,
         JSONValue: !items.length ? null : JSONValue,
       },
     });

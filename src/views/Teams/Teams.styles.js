@@ -7,7 +7,6 @@ import {
   BG_GRAY_LIGHT,
   BG_WHITE,
   BO_DISTANT,
-  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
@@ -24,12 +23,13 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
+  TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
 
-const { RV_Float, RV_RTL } = window;
+const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
-export const TeamsViewContainer = styled.div.attrs({
+export const TeamsDesktopViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
 })`
   min-height: 100vh;
@@ -39,6 +39,23 @@ export const TeamsViewContainer = styled.div.attrs({
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  .archived-teams {
+    max-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+`;
+
+export const TeamsMobileViewContainer = styled.div.attrs({
+  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
+})`
+  min-height: 100vh;
+  box-shadow: 1px 5px 15px #0000001f;
+  margin: 1rem;
+  padding: 0 2rem 1rem 2rem;
 
   .archived-teams {
     max-height: calc(100vh - 4.5rem);
@@ -120,8 +137,25 @@ export const HeaderTitle = styled.span.attrs({
   font-size: 1rem;
 `;
 
-export const ContentSide = styled.div`
+export const DesktopContentSide = styled.div`
   width: 50%;
+  height: 100%;
+  margin: 0;
+
+  .create-team-modal {
+    margin-top: 35vh;
+  }
+
+  .create-team-modal-header {
+    height: 4rem;
+    min-height: 4rem;
+    max-height: 4rem;
+    background-color: ${CV_GRAY_LIGHT};
+  }
+`;
+
+export const MobileContentSide = styled.div`
+  width: 100%;
   height: 100%;
   margin: 0;
 
@@ -248,11 +282,20 @@ export const TeamListConatiner = styled.div`
   }
 `;
 
+export const MobileTeamListConatiner = styled.div``;
+
 const getBorderCss = (props) => {
   if (props.isNew) {
     return css`
       border-width: 2px;
       border-style: dashed;
+      :hover {
+        border-color: ${TCV_DEFAULT};
+      }
+
+      :hover > div:first-child > * {
+        color: ${TCV_DEFAULT};
+      }
     `;
   }
   if (props.isArchive) {
@@ -260,6 +303,7 @@ const getBorderCss = (props) => {
       border: none;
       :hover {
         border: 1px solid ${CV_DISTANT};
+        padding: calc(0.5rem - 1px) calc(1.5rem - 1px);
       }
     `;
   }
@@ -269,6 +313,7 @@ const getBorderCss = (props) => {
     :hover {
       border-width: 2.5px;
       border-color: ${TCV_DEFAULT};
+      padding: calc(0.5rem - 1.5px) calc(1.5rem - 1.5px);
     }
   `;
 };
@@ -288,8 +333,8 @@ export const TeamConatiner = styled.div.attrs({
 })`
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
   height: 12.7rem;
-  ${getBorderCss}
   padding: 0.5rem 1.5rem;
+  ${getBorderCss}
   position: relative;
   float: ${({ dir }) => dir};
   margin-bottom: 1rem;
@@ -333,11 +378,11 @@ export const TeamConatiner = styled.div.attrs({
     margin: 0;
     padding: 0.7rem 0.2rem 0.7rem 0.2rem;
     border: 0;
-    box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT};
-    // position: relative;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+    position: relative;
     background-color: ${CV_WHITE};
-    // ${RV_Float}: 7.7rem;
-    // bottom: -2.9rem;
+    ${RV_Float}: 8rem;
+    bottom: -2.8rem;
     // overflow: hidden;
   }
 
@@ -351,7 +396,7 @@ export const TeamConatiner = styled.div.attrs({
   }
 
   .extra-users-scrollbar {
-    max-height: 8.2rem;
+    height: 8rem;
     padding-${RV_Float}: 0.5rem;
 
     .ps__rail-y {
@@ -386,6 +431,33 @@ export const TeamDescription = styled.div`
   flex-grow: 1;
 `;
 
+export const TeamAvatarWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 3.2rem;
+  position: relative;
+
+  :hover > div {
+    opacity: 1;
+  }
+`;
+
+export const TeamEditWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  width: 1.6rem;
+  height: 1.6rem;
+  position: absolute;
+  bottom: 0;
+  right: 2rem;
+  padding: 0.15rem 0.1rem 0 0;
+  background-color: ${TCV_DEFAULT};
+  border: 2px solid ${CV_DISTANT};
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+`;
+
 export const TeamTitle = styled.div.attrs({
   className: C_GRAY_DARK,
 })`
@@ -393,11 +465,11 @@ export const TeamTitle = styled.div.attrs({
   margin: 0.5rem 0;
   font-weight: 500;
 
-  .inline-edit-truncate {
+  .team-inline-edit-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+    width: 50%;
     padding: 0.2rem 0.5rem;
 
     :hover {
@@ -428,16 +500,20 @@ export const TeamAvatarsWrapper = styled.div`
 `;
 
 const getPosition = ({ dir, usersCount }) => {
-  // if (usersCount < 2) {
-  //   return `${dir}: 0`;
-  // } else {
-  return `${dir}: ${usersCount * 0}rem`;
-  // }
+  if (usersCount === 4) {
+    return `${dir}: 1.7rem`;
+  } else if (usersCount === 3) {
+    return `${dir}: 1.2rem`;
+  } else if (usersCount === 2) {
+    return `${dir}: 0.6rem`;
+  } else {
+    return `${dir}: 0`;
+  }
 };
 
 export const ExtraUsersWrapper = styled.div`
   position: relative;
-  ${getPosition}
+  ${RV_RevFloat}: 1.7rem;
 `;
 
 export const ExtraUsersPopupHeader = styled.div`
@@ -541,7 +617,7 @@ export const ArchivedTeamsLabel = styled.div.attrs({
   margin: 1rem 0 0 0;
 `;
 
-export const WelcomeSide = styled.div`
+export const DesktopWelcomeSide = styled.div`
   width: 45%;
   // position: fixed;
   position: sticky;
@@ -555,9 +631,16 @@ export const WelcomeSide = styled.div`
   justify-content: center;
   align-items: center;
   user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+`;
+
+export const MobileWelcomeSide = styled.div`
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 `;
 
 export const WorkspaceImageWrapper = styled.div`

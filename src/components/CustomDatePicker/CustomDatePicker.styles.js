@@ -148,6 +148,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -7.5rem !important;
+    height: 19.8rem;
   }
 
   .medium-calendar {
@@ -155,6 +156,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -9rem !important;
+    height: 23.2rem;
   }
 
   .large-calendar {
@@ -162,6 +164,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -10.5rem !important;
+    height: 26.5rem;
   }
 `;
 
@@ -224,6 +227,6 @@ export const FooterButtonsContainer = styled.div`
   align-tems: center;
   padding: 0.7rem !important;
   position: absolute;
-  bottom: -0.3rem;
+  bottom: -2.3rem;
   width: 100%;
 `;

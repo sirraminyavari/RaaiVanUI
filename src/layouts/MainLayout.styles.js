@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { CLOSE_WIDTH } from 'constant/constants';
+import { CLOSE_WIDTH, TEAMS_PATH } from 'constant/constants';
 import withTheme from 'components/withTheme/withTheme';
 
 export const MainContainer = styled.div`
@@ -17,6 +17,7 @@ const getContentMargin = (props) => {
     isSidebarOpen,
     theme: { states },
   } = props;
+  if (states.activePath === TEAMS_PATH) return;
   return css`${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${
     !isMobile
       ? isSidebarOpen

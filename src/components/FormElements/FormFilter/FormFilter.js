@@ -52,7 +52,7 @@ const FormFilter = (props) => {
 
   //! Calls on every filter type change.
   const handleOnChange = (filter) => {
-    setValues((oldValues) => ({ ...oldValues, [filter.id]: filter.value }));
+    setValues((oldValues) => ({ ...oldValues, [filter?.id]: filter?.value }));
   };
 
   //! Clalls when user clicks on filter button.

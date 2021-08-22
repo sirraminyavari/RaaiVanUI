@@ -47,7 +47,7 @@ const CloseSidebar = () => {
     <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
       <SidebarHeader />
       <Styled.ContentWrapper isMainContent={isMainContent}>
-        <Suspense fallback={<LogoLoader size={5} />}>
+        <Suspense fallback={<LogoLoader lottieWidth="3rem" />}>
           {isTeamSelected && isMainContent && <SidebarContentClose />}
         </Suspense>
       </Styled.ContentWrapper>

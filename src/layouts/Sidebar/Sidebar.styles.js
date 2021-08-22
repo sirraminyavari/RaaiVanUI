@@ -446,7 +446,7 @@ export const Up = styled.div.attrs((props) => ({
   className: props.isUp ? C_GRAY : C_WHITE,
 }))`
   ${arrowCss}
-  cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
+  // cursor: ${({ isUp }) => (isUp ? 'revert' : 'pointer')};
   top: 0.3rem;
   ${RV_Float}: 0.7rem;
   height: 2rem;
@@ -459,7 +459,7 @@ export const Down = styled.div.attrs((props) => ({
   className: props.isDown ? C_GRAY : C_WHITE,
 }))`
   ${arrowCss}
-  cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
+  // cursor: ${({ isDown }) => (isDown ? 'revert' : 'pointer')};
   bottom: 0.2rem;
   ${RV_Float}: 0.7rem;
   height: 2rem;
@@ -555,4 +555,9 @@ export const Divider = styled.hr.attrs({ className: TBO_WARM })`
 
 export const PanelListWrapper = styled.div`
   width: 100%;
+  user-select: none;
+
+  .avtive-profile-navlink {
+    background-color: rgba(43, 56, 143, 0.4);
+  }
 `;

@@ -44,7 +44,10 @@
                         NodeID: that.Objects.NodeID, ParseResults: true,
                         ResponseHandler: function (result) {
                             var node = result || {};
-                            document.title = GlobalUtilities.convert_numbers_to_persian(Base64.decode(node.Name.Value) + " - " + document.title);
+
+                            if (!(window.RVGlobal || {}).SAASBasedMultiTenancy)
+                                document.title = GlobalUtilities.convert_numbers_to_persian(Base64.decode(node.Name.Value) + " - " + document.title);
+
                             that.Objects.NoContentService = node.NoContentService;
                             that._initialize(node);
                         }

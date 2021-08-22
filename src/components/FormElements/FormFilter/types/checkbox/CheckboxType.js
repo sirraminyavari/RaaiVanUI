@@ -8,6 +8,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Checkbox from 'components/Inputs/checkbox/Checkbox';
 import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
 import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @typedef PropType
@@ -26,13 +27,17 @@ const CheckboxType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
 
-  const [items, setItems] = useState(value ? value.TextItems : []);
-  const [exact, setExact] = useState(value ? value.Exact : false);
-  const [or, setOr] = useState(value ? value.Or : true);
+  const [items, setItems] = useState(value ? value?.TextItems : []);
+  const [exact, setExact] = useState(value ? value?.Exact : false);
+  const [or, setOr] = useState(value ? value?.Or : true);
 
-  const { Options, AutoSuggestMode } = JSON.parse(decodeBase64(Info));
+  const { GlobalUtilities } = useWindow();
+
+  const { Options, AutoSuggestMode } =
+    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+
   //! Checkbox options.
-  const options = Options.map((option) => ({
+  const options = (Options || []).map((option) => ({
     value: decodeBase64(option),
     title: decodeBase64(option),
     group: 'checkbox-filter',
@@ -40,10 +45,10 @@ const CheckboxType = (props) => {
 
   //! Fires on checkbox value change.
   const handleOnItemSelect = useCallback((item) => {
-    if (!item.isChecked) {
-      setItems((oldItems) => oldItems.filter((c) => c !== item.value));
+    if (!item?.isChecked) {
+      setItems((oldItems) => oldItems.filter((c) => c !== item?.value));
     } else {
-      setItems((oldItems) => [...oldItems, item.value]);
+      setItems((oldItems) => [...oldItems, item?.value]);
     }
   }, []);
 
@@ -59,7 +64,7 @@ const CheckboxType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const textItems = items.map((item) => encodeBase64(item));
+    const textItems = items?.map((item) => encodeBase64(item));
     const JSONValue = {
       TextItems: textItems,
       Exact: exact,
@@ -74,7 +79,7 @@ const CheckboxType = (props) => {
         TextItems: items,
         Exact: exact,
         Or: or,
-        JSONValue: !items.length ? null : JSONValue,
+        JSONValue: !items?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,20 +103,15 @@ const CheckboxType = (props) => {
         />
       ) : (
         <Checkbox
-          options={Options}
+          options={options}
           onSelect={handleOnItemSelect}
           selecteds={value?.TextItems}
         />
       )}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+      <Styled.ExactOrFiltersWrapper>
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
-      </div>
+      </Styled.ExactOrFiltersWrapper>
     </Styled.FilterContainer>
   );
 };

@@ -2,15 +2,14 @@
  * Check permissions for given route.
  * ... Show a component or redirect to a route based on authorization.
  */
-import { useEffect } from 'react';
-import { Redirect, useLocation } from 'react-router-dom';
-import useCheckRoute from 'hooks/useCheckRoute';
-import Exception from 'components/Exception/Exception';
+import { useEffect, useState, useRef } from 'react';
+import { Redirect, useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Exception from 'components/Exception/Exception';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { loginSlice } from 'store/reducers/loginReducer';
-import { decodeBase64, isEmpty, setRVGlobal } from 'helpers/helpers';
+import { decodeBase64, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
   CHANGE_PASS_PATH,
@@ -31,24 +30,74 @@ import {
   getUnderMenuPermissions,
 } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
+// import useQuery from 'hooks/useQuery';
+import { API_Provider } from 'helpers/helpers';
+import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
+
+const { setIsAthunticated } = loginSlice.actions;
+const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+const {
+  toggleNavSide,
+  setSelectedTeam,
+  setActivePath,
+  setSidebarContent,
+  toggleSidebar,
+} = themeSlice.actions;
+
+const checkRouteAPI = API_Provider(RV_API, CHECK_ROUTE);
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
-  const route = useCheckRoute(name);
   const location = useLocation();
   const dispatch = useDispatch();
+  const [route, setRoute] = useState({});
+  const [isChecking, setIsChecking] = useState(true);
+  const urlRef = useRef(window.location.href);
+  const routeParams = useParams();
+  // const queryParams = useQuery();
+  // console.count('Check-route: ');
 
-  // console.log(route);
+  const getQuery = () => {
+    const queryAll = new URLSearchParams(location.search).toString();
+    const queryList = queryAll.split('&');
+    const qr = queryList.reduce((prev, q) => {
+      let arr = q.split('=');
+      let key = arr[0];
+      let value = arr[1];
+      return { ...prev, [key]: value };
+    }, {});
 
-  const { setIsAthunticated } = loginSlice.actions;
-  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
-  const {
-    toggleNavSide,
-    setSelectedTeam,
-    setActivePath,
-    setSidebarContent,
-    toggleSidebar,
-  } = themeSlice.actions;
+    return queryAll.length !== 0 ? qr : {};
+  };
+
+  useEffect(() => {
+    // console.count('Check-route-API: ');
+    const params = { ...routeParams, ...getQuery() };
+    const prevURL = window.location.href;
+
+    setIsChecking(true);
+
+    checkRouteAPI.fetch(
+      { RouteName: name, Parameters: params },
+      (response) => {
+        const currentURL = window.location.href;
+        urlRef.current = currentURL;
+        prevURL === currentURL && setRoute(response);
+        setIsChecking(false);
+      },
+      (error) => {
+        console.log(error);
+        setIsChecking(false);
+      }
+    );
+
+    //? Due to memory leak error in check route.
+    //! Clean up.
+    return () => {
+      setRoute({});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href]);
 
   useEffect(() => {
     //! Set selected team.
@@ -99,7 +148,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const isUserView = location.pathname === USER_PATH;
   const isTeamsView = location.pathname === TEAMS_PATH;
 
-  if (isEmpty(route)) {
+  if (isChecking) {
     return <LogoLoader />;
   } else if (route?.ServiceUnavailable) {
     return <Exception message="Service Unavailable" />;
@@ -162,7 +211,13 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     const url = route?.RedirectToURL;
     window.location.href = url;
   } else {
-    return <Component {...props} route={route} />;
+    const isUrlChanged = urlRef.current === window.location.href;
+    if (!isUrlChanged) {
+      return <LogoLoader />;
+    } else {
+      // console.count('Page-mount-count: ');
+      return <Component {...props} route={route} />;
+    }
   }
 };
 

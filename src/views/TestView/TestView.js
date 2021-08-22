@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Modal from 'components/Modal/Modal';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
+import RelatedMeItems from 'views/Profile/items/main/RelatedMeItems';
 
 const TestView = () => {
   // new EditorJS({
@@ -37,18 +38,21 @@ const TestView = () => {
   };
 
   return (
-    <Container>
-      <button onClick={() => setIsVisible(true)}>{'open modal'}</button>
-
+    <>
+      <RelatedMeItems />
+      {/* <Container>
+        <button onClick={() => setIsVisible(true)}>{'open modal'}</button>
+        <Modal
+          onClose={onClose}
+          contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
+          style={{ padding: '0', height: '50%' }}
+          stick
+          show={isVisible}>
+          <ItemSelection onClose={() => setIsVisible(false)} />
+        </Modal>
+      </Container> */}
       {/* <MainEditor />  */}
-      <Modal
-        onClose={onClose}
-        contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
-        style={{ padding: '0', height: '100%' }}
-        show={isVisible}>
-        <ItemSelection />
-      </Modal>
-    </Container>
+    </>
   );
 };
 
@@ -56,5 +60,6 @@ export default TestView;
 
 const Container = styled.div`
   background-color: #fcfcfd;
-  height: 100vh;
+  overflow: hidden;
+  height: 30vh;
 `;

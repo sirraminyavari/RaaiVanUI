@@ -35,26 +35,32 @@ const NodeList = (props) => {
     isByMe,
     byPeople,
     isBookMarked,
-    mode,
-    onCheckList,
+    multiSelection,
+    onCheck,
+    itemSelectionMode,
+    nodeTypeIds,
+    relatedToNodeId,
   } = props || {};
+  useTraceUpdate(props);
 
   // to refresh the list value by changing the data, its value will change
   const [extraData, setExtraData] = useState(false);
-  const [checkedItems, setCheckedItems] = useState([]);
 
   const [bookmarkedList, setBookmarkedList] = useState([]);
-  useTraceUpdate(props);
+  // useTraceUpdate(props);
 
   const { onboardingName } = useSelector((state) => ({
     onboardingName: state.onboarding.name,
   }));
 
   const preExtraData = usePrevious(extraData);
+  const preIsBookMarked = usePrevious(isBookMarked);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
     onTotalFound(null);
+    // console.log(isBookMarked, 'isBookMarked', bookmarked, 'bookmarked');
+
     setExtraData(!extraData);
   }, [
     isByMe,
@@ -67,20 +73,16 @@ const NodeList = (props) => {
     isBookMarked,
   ]);
 
-  useEffect(() => {
-    console.log(checkedItems, 'checkedItems');
-    onCheckList && onCheckList(checkedItems);
-  }, [checkedItems]);
-
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetch called****');
+    console.log('fetching', 'relatedToNodeId', relatedToNodeId);
 
     getNodesAPI(isBookMarked).fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
         NodeTypeID: nodeTypeId,
+        RelatedToNodeID: relatedToNodeId,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
         CreationDateTo: dateFilter?.to,
@@ -154,14 +156,6 @@ const NodeList = (props) => {
     }
   };
 
-  const onCheckHandler = (value, item) => {
-    if (value) {
-      setCheckedItems([...checkedItems, item]);
-    } else {
-      setCheckedItems(checkedItems.filter((x) => x?.NodeID !== item?.NodeID));
-    }
-  };
-
   return (
     <>
       {onboardingName !== 'intro' ? (
@@ -178,9 +172,10 @@ const NodeList = (props) => {
               {x.Creator && (
                 <SubjectItem
                   key={index}
-                  onChecked={onCheckHandler}
+                  onChecked={(value, item) => onCheck && onCheck(value, item)}
                   parentNodeType={nodeTypeId}
-                  selectMode={mode === 'ItemSelection'}
+                  selectMode={multiSelection}
+                  liteMode={itemSelectionMode}
                   item={{
                     ...x,
                     LikeStatus: bookmarkedList.find((y) => y === x?.NodeID),
@@ -194,7 +189,11 @@ const NodeList = (props) => {
           )}
         />
       ) : (
-        <IntroNodes />
+        <IntroNodes
+          onChecked={(value, item) => onCheck && onCheck(value, item)}
+          selectMode={multiSelection}
+          liteMode={itemSelectionMode}
+        />
       )}
     </>
   );

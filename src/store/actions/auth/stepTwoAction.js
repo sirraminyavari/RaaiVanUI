@@ -6,7 +6,7 @@ import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
 
 const { setPassword, setEmail } = loginSlice.actions;
-const { GlobalUtilities, RVDic, RVAPI } = window;
+const { GlobalUtilities, RVDic, RVAPI, RVGlobal } = window;
 
 /**
  * A process should be done if the backend detects two-step verification is needed.
@@ -40,6 +40,8 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
             done(false);
             if (result.CodeDisposed) vcd.Close();
           } else if (result.Succeed) {
+            (RVGlobal || {}).CurrentUser = result?.User;
+
             done(true);
             // that.logged_in(result);
 

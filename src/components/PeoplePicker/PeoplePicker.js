@@ -30,6 +30,7 @@ const PeoplePicker = ({
   onByPeople,
   isByMe = false,
   pickedPeople,
+  onVisible,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -37,7 +38,9 @@ const PeoplePicker = ({
   const [searchInput, setSearchInput] = useState('');
 
   const pickerRef = useRef();
-
+  useEffect(() => {
+    onVisible(isPickerVisible);
+  }, [isPickerVisible]);
   useEffect(() => {
     function handleClickOutside(event) {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
@@ -56,7 +59,8 @@ const PeoplePicker = ({
   }, [pickerRef]);
 
   useEffect(() => {
-    fetchUsers();
+    // fetchUsers();
+    setExtraData(!extraData);
   }, []);
 
   const onChoose = (item) => {
@@ -125,15 +129,16 @@ const PeoplePicker = ({
       <PeopleBody
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
-        <ResetContainer>
-          <Heading type={'H6'}>{RVDic.Reset}</Heading>
+        <ResetContainer onClick={() => onChoose(null)}>
+          <Heading cursor={'pointer'} type={'H6'}>
+            {RVDic.Reset}
+          </Heading>
           <UndoIcon
             style={{
               cursor: 'pointer',
               transform: 'scaleX(-1)',
               marginRight: '1rem',
             }}
-            onClick={() => onChoose(null)}
             className={C_DISTANT}
             size={16}
           />
@@ -195,14 +200,16 @@ const PeoplePicker = ({
                 console.log('Im reached end');
               }}
               onTotal={(total) => {}}
-              renderItem={(x, index) => (
-                <PeopleItem
-                  pickedPeople={pickedPeople?.id === x.id}
-                  onClick={onChoose}
-                  item={x}
-                  key={index}
-                />
-              )}
+              renderItem={(x, index) => {
+                return (
+                  <PeopleItem
+                    pickedPeople={pickedPeople?.id === x.id}
+                    onClick={onChoose}
+                    item={x}
+                    key={index}
+                  />
+                );
+              }}
             />
           </PerfectScrollBar>
         </PeopleList>

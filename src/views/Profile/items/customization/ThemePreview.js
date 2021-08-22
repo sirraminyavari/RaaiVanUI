@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'views/Profile/Profile.styles';
@@ -6,11 +7,12 @@ import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { API_Provider } from 'helpers/helpers';
 import { USERS_API, SET_THEME } from 'constant/apiConstants';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { CustomSettingContext } from './Profile-Customization';
 
-const selectIsCollapsed = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarCollapsed
-);
+// const selectIsCollapsed = createSelector(
+//   (state) => state.theme,
+//   (theme) => theme.isSidebarCollapsed
+// );
 
 const selectHasPattern = createSelector(
   (state) => state.theme,
@@ -34,9 +36,10 @@ const ThemePreview = ({ preview }) => {
   const dispatch = useDispatch();
   const { RV_Float, RVAPI, RVGlobal, DynamicFileUtilities } = useWindow();
   const hasPattern = useSelector(selectHasPattern);
-  const isSidebarCollapsed = useSelector(selectIsCollapsed);
+  // const isSidebarCollapsed = useSelector(selectIsCollapsed);
   const isDarkMode = useSelector(selectIsDarkMode);
   const currentTheme = useSelector(selectCurrentThemes);
+  const { isSidebarCollapsed } = useContext(CustomSettingContext);
 
   const { Codes, Name } = preview;
   const isActive = currentTheme === Name;
@@ -65,6 +68,7 @@ const ThemePreview = ({ preview }) => {
 
   return (
     <Styled.ThemePreviewContainer
+      isActive={isActive}
       isDark={isDarkMode}
       onClick={handleSelectTheme}>
       <Styled.NavbarPreview previewColor={Codes?.warm} />

@@ -141,6 +141,7 @@ const AnimatedDropDownList = ({
             key={index}
             itemStyle={item}
             className={itemClass}
+            $dropedDown={dropedDown}
           />
         ))}
       </ItemList>

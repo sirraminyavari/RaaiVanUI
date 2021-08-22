@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
@@ -9,25 +9,17 @@ const selectConfigPanels = createSelector(
   (sidebarItems) => sidebarItems.configPanels
 );
 
-const selectActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
-);
-
 const TeamSettings = () => {
   const { RVDic } = useWindow();
   const panels = useSelector(selectConfigPanels);
-  const activePath = useSelector(selectActivePath);
 
   return (
     <>
       {panels?.map((panel, key) => {
-        const isSelected = activePath === `/configuration/${panel?.URL}`;
         return (
           <Styled.PanelWrapper
             key={key}
-            isSelected={isSelected}
-            as={Link}
+            as={NavLink}
             to={`/configuration/${panel?.URL}`}>
             <Styled.PanelImage
               src={`${process.env.PUBLIC_URL}/images/icons/${panel?.Icon}`}

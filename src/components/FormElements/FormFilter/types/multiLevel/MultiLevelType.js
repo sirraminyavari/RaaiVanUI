@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
-import APIHandler from 'apiHelper/APIHandler';
 import * as Styled from '../types.styles';
 import Button from 'components/Buttons/Button';
 import Modal from 'components/Modal/Modal';
@@ -13,6 +12,7 @@ import FormView from 'components/FormElements/FormView/FormView';
 import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
 import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
+import { getChildNodes } from 'apiHelper/apiFunctions';
 
 /**
  * @typedef PropType
@@ -29,19 +29,20 @@ import useWindow from 'hooks/useWindowContext';
  */
 const MultiLevelType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
 
-  const { NodeType, Levels } = JSON.parse(decodeBase64(Info));
-  const levels = Levels.map((level) => decodeBase64(level));
-  const nodeType = { id: NodeType.ID, name: decodeBase64(NodeType.Name) };
-  const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
+
+  const { NodeType, Levels } =
+    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+  const levels = Levels?.map((level) => decodeBase64(level));
+  const nodeType = { id: NodeType?.ID, name: decodeBase64(NodeType?.Name) };
 
   const [nodes, setNodes] = useState([]);
   const [isModalShown, setIsModalShown] = useState(false);
   const [viewItems, setViewItems] = useState([]);
-  const [exact, setExact] = useState(value ? value.Exact : false);
-  const [or, setOr] = useState(value ? value.Or : true);
+  const [exact, setExact] = useState(value ? value?.Exact : false);
+  const [or, setOr] = useState(value ? value?.Or : true);
 
   //! Fires on 'Exact' toggle change.
   const handleExactFilter = (exactValue) => {
@@ -55,13 +56,19 @@ const MultiLevelType = (props) => {
 
   //! Fetch nodes for form fill.
   useEffect(() => {
-    getChildNodesAPI.fetch(
-      { NodeTypeID: nodeType.id },
-      (response) => {
-        setNodes(response.Nodes);
-      },
-      (error) => console.log(error)
-    );
+    getChildNodes(nodeType?.id)
+      .then((response) => {
+        setNodes(response?.Nodes || []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    //? Due to memory leak error.
+    //! Clean up.
+    return () => {
+      setNodes([]);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,9 +91,9 @@ const MultiLevelType = (props) => {
   //! Fires on item remove.
   const handleItemRemove = (removingItem) => {
     const lastLevel = [...levels].pop();
-    const removingId = removingItem[lastLevel].value.NodeID;
+    const removingId = removingItem[lastLevel]?.value?.NodeID;
     const newViewItems = viewItems.filter(
-      (item) => item[lastLevel].value.NodeID !== removingId
+      (item) => item[lastLevel]?.value?.NodeID !== removingId
     );
     setViewItems(newViewItems);
   };
@@ -94,8 +101,8 @@ const MultiLevelType = (props) => {
   useEffect(() => {
     const id = ElementID;
     const lastLevel = levels.pop();
-    const encodedItems = viewItems.map((item) => item[lastLevel].value.Name);
-    const decodedItems = encodedItems.map((item) => decodeBase64(item));
+    const encodedItems = viewItems?.map((item) => item[lastLevel]?.value?.Name);
+    const decodedItems = encodedItems?.map((item) => decodeBase64(item));
 
     const JSONValue = {
       TextItems: encodedItems,
@@ -111,7 +118,7 @@ const MultiLevelType = (props) => {
         TextItems: decodedItems,
         Exact: exact,
         Or: or,
-        JSONValue: !viewItems.length ? null : JSONValue,
+        JSONValue: !viewItems?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,7 +139,7 @@ const MultiLevelType = (props) => {
         levels={levels}
         onItemRemove={handleItemRemove}
       />
-      <Button onClick={handleOnAdd}>{RVDic.Add}</Button>
+      <Button onClick={handleOnAdd}>{RVDic?.Add}</Button>
       <div
         style={{
           display: 'flex',

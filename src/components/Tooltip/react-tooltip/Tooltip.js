@@ -36,7 +36,8 @@ import ReactTooltip from 'react-tooltip';
  * @property {string} backgroundColor - Sets background color for tooltip.
  * @property {string} borderColor - Sets border color for tooltip.
  * @property {string} arrowColor - Sets arrow color for tooltip.
- * @property {boolean} clickable - When clickable property is set to true, tooltip can respond to mouse (or touch) events.
+ * @property {boolean} clickable - When 'clickable' property is set to true, tooltip can respond to mouse (or touch) events.
+ * @property {boolean} ignoreTip - When 'ignoreTip' property is set to true, component just renders the children prop and ignores the tooltip.
  */
 
 /**
@@ -64,7 +65,12 @@ const Tooltip = (props) => {
     borderColor,
     arrowColor,
     renderContent,
+    ignoreTip,
   } = props;
+
+  if (!!ignoreTip) {
+    return children;
+  }
 
   return (
     <>
@@ -91,7 +97,7 @@ const Tooltip = (props) => {
         arrowColor={arrowColor}
         getContent={!!renderContent && [renderContent, 500]}>
         {!renderContent && (
-          <span>Please provide me content with 'getContent' prop</span>
+          <span>Please provide me content with 'renderContent' prop</span>
         )}
       </ReactTooltip>
     </>
@@ -115,6 +121,7 @@ Tooltip.propTypes = {
   borderColor: PropTypes.string,
   arrowColor: PropTypes.string,
   renderContent: PropTypes.func,
+  ignoreTip: PropTypes.bool,
 };
 
 Tooltip.defaultProps = {
@@ -122,6 +129,7 @@ Tooltip.defaultProps = {
   type: 'dark',
   effect: 'float',
   event: '', //! Empty means 'hover' event.
+  ignoreTip: false,
 };
 
 Tooltip.displayName = 'CustomeTooltip';

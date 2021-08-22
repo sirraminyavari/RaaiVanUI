@@ -1,79 +1,81 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
-import NotificationsFooter from './NotificationsFooter';
+import NotificationsHeader from './NotificationsHeader';
 import NotificationItem from './NotificationItem';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
+import usePreventScroll from 'hooks/usePreventScroll';
 import {
   getNotificationsCount,
   getNotificationsList,
   setNotificationsAsSeen,
 } from 'store/actions/global/NotificationActions';
-import { notificationsSlice } from 'store/reducers/notificationsReducer';
-
-const { setPrevPage } = notificationsSlice.actions;
 
 const selectNotificatios = createSelector(
   (state) => state.notifications,
   (notifications) => notifications.notificationsList
 );
 
-const selectOffset = createSelector(
+const selectIsFetchingNotifs = createSelector(
   (state) => state.notifications,
-  (notifications) => notifications.offset
+  (notifications) => notifications.isFetchingNotifsList
 );
 
-const selectPerPage = createSelector(
-  (state) => state.notifications,
-  (notifications) => notifications.perPage
-);
-
-const AlertActions = () => {
+const NotificationsMenu = () => {
   const dispatch = useDispatch();
+  const containerRef = useRef();
   const notifications = useSelector(selectNotificatios);
-  const offset = useSelector(selectOffset);
-  const perPage = useSelector(selectPerPage);
+  const isFetchingNotifs = useSelector(selectIsFetchingNotifs);
+  const [fetchCount, setFetchCount] = useState(10);
 
-  //! Chunks alerts list based on current page and per page values.
-  const slicedNotifs = notifications.slice(offset, offset + perPage);
+  usePreventScroll(containerRef);
 
-  useEffect(() => {
-    dispatch(getNotificationsCount());
-    dispatch(getNotificationsList());
-  }, [dispatch]);
+  const isUnseen = (notif) => notif?.Seen === false;
+  const unseenNotifs = notifications?.filter(isUnseen);
 
-  useEffect(() => {
-    const isUnseen = (notif) => notif?.Seen === false;
-    const hasUnseenNotifs = slicedNotifs?.some(isUnseen);
-    const unseenNotifsId = slicedNotifs
-      .filter(isUnseen)
-      .map((notif) => notif?.NotificationID);
+  const handleReachEnd = () => {
+    const hasUnseenNotifs = !!unseenNotifs?.length;
+    const unseenNotifsId = unseenNotifs?.map((notif) => notif?.NotificationID);
     if (hasUnseenNotifs) {
       dispatch(setNotificationsAsSeen(unseenNotifsId));
     }
-    if (slicedNotifs?.length === 0) {
-      dispatch(setPrevPage());
-    }
-  }, [slicedNotifs, dispatch]);
+    if (isFetchingNotifs) return;
+    if (notifications.length < fetchCount) return;
+    setFetchCount((c) => c + 10);
+  };
+
+  useEffect(() => {
+    dispatch(getNotificationsCount());
+    dispatch(getNotificationsList(fetchCount));
+  }, [dispatch, fetchCount]);
 
   return (
-    <Styled.AlertActionsContainer>
+    <Styled.NotificationsMenuContainer ref={containerRef}>
       {notifications?.length ? (
         <>
-          <Styled.AlertListContainer>
-            {slicedNotifs?.map((alert) => (
-              <NotificationItem alert={alert} key={alert?.NotificationID} />
-            ))}
-          </Styled.AlertListContainer>
-          <NotificationsFooter />
+          <NotificationsHeader unseenCount={unseenNotifs?.length} />
+          <PerfectScrollbar
+            onYReachEnd={handleReachEnd}
+            className="notifs-scroll-area">
+            {notifications?.map((notif) => {
+              return (
+                <NotificationItem notif={notif} key={notif?.NotificationID} />
+              );
+            })}
+            <div style={{ textAlign: 'center' }}>
+              {isFetchingNotifs && <LoadingIconFlat />}
+            </div>
+          </PerfectScrollbar>
         </>
       ) : (
-        <Styled.EmptyAlert>
+        <Styled.EmptyNotifs>
           در حال حاضر اعلانی برای خواندن وجود ندارد
-        </Styled.EmptyAlert>
+        </Styled.EmptyNotifs>
       )}
-    </Styled.AlertActionsContainer>
+    </Styled.NotificationsMenuContainer>
   );
 };
 
-export default AlertActions;
+export default NotificationsMenu;

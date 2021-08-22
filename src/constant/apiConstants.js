@@ -42,6 +42,160 @@ export const GET_APPLICATION_USERS = 'GetApplicationUsers';
  */
 export const INVITE_USER = 'InviteUser';
 
+/**
+ * @description 'GetUser'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_USER = 'GetUser';
+
+/**
+ * @description 'GetUsers'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_USERS = 'GetUsers';
+
+/**
+ * @description 'EditEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_EMAIL_ADDRESS = 'EditEmailAddress';
+
+/**
+ * @description 'SetEmailAddress'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_EMAIL_ADDRESS = 'SetEmailAddress';
+
+/**
+ * @description 'SetPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PHONE_NUMBER = 'SetPhoneNumber';
+
+/**
+ * @description 'EditPhoneNumber'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const EDIT_PHONE_NUMBER = 'EditPhoneNumber';
+
+/**
+ * @description 'SetJobTitle'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_JOB_TITLE = 'SetJobTitle';
+
+/**
+ * @description 'SetAboutMe'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ABOUT_ME = 'SetAboutMe';
+
+/**
+ * @description 'SetOrganization'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_ORGANIZATION = 'SetOrganization';
+
+/**
+ * @description 'SetDepartment'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_DEPARTMENT = 'SetDepartment';
+
+/**
+ * @description 'SetCity'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_CITY = 'SetCity';
+
+/**
+ * @description 'SetFirstName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_FIRST_NAME = 'SetFirstName';
+
+/**
+ * @description 'SetLastName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_LAST_NAME = 'SetLastName';
+
+/**
+ * @description 'ChangePassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const CHANGE_PASSWORD = 'ChangePassword';
+
+/**
+ * @description 'CheckUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const CHECK_USER_NAME = 'CheckUserName';
+
+/**
+ * @description 'SetUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_USER_NAME = 'SetUserName';
+
+/**
+ * @description 'SetPasswordResetTicket'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PASSWORD_RESET_TICKET = 'SetPasswordResetTicket';
+
+/**
+ * @description 'ModifyEmailTicket'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const MODIFY_EMAIL_TICKET = 'ModifyEmailTicket';
+
+/**
+ * @description 'ModifyEmail'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const MODIFY_EMAIL = 'ModifyEmail';
+
+/**
+ * @description 'SetPassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_PASSWORD = 'SetPassword';
+
+/**
+ * @description 'SaveUserSettingsItem'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SAVE_USER_SETTINGS_ITEM = 'SaveUserSettingsItem';
+
+/**
+ * @description 'SetVerificationCodeMedia'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_VERIFICATION_CODE_MEDIA = 'SetVerificationCodeMedia';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
@@ -184,6 +338,38 @@ export const SET_NODE_TYPE_ORDER = 'SetNodeTypesOrder';
  * @class 'CNAPI'
  */
 export const RECOVER_NODE_TYPE = 'RecoverNodeType';
+/**
+ * @description 'GetIntellectualPropertiesCount'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_INTELLECTUAL_PROPERTIES_COUNT =
+  'GetIntellectualPropertiesCount';
+/**
+ * @description 'GetRelatedNodesAbstract'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_RELATED_NODES_ABSTRACT = 'GetRelatedNodesAbstract';
+/**
+ * @description 'GetNodes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODES = 'GetNodes';
+/**
+ * @description 'GetNodeInfo'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODE_INFO = 'GetNodeInfo';
+
+/**
+ * @description 'GetChildNodes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_CHILD_NODES = 'GetChildNodes';
 
 //* #################################
 //* ############ NotificationsAPI ########
@@ -238,3 +424,51 @@ export const PRIVACY_API = 'PrivacyAPI';
  * @class 'PrivacyAPI'
  */
 export const CHECK_AUTHORITY = 'CheckAuthority';
+
+//* #################################
+//* ############ DocsAPI ##############
+//* #################################
+
+/**
+ * @description 'DocsAPI'
+ * @mode API class
+ */
+export const DOCS_API = 'DocsAPI';
+
+/**
+ * @description 'UploadIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const UPLOAD_ICON = 'UploadIcon';
+
+/**
+ * @description 'CropIcon'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const CROP_ICON = 'CropIcon';
+
+/**
+ * @description 'CropProfileImage'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const CROP_PROFILE_IMAGE = 'CropProfileImage';
+
+//* #################################
+//* ############ FGAPI ###############
+//* #################################
+
+/**
+ * @description 'FGAPI'
+ * @mode API class
+ */
+export const FG_API = 'FGAPI';
+
+/**
+ * @description 'GetFormElements'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const GET_FORM_ELEMENTS = 'GetFormElements';

@@ -380,6 +380,7 @@
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +
             (params.FormFilters ? "&FormFilters=" + params.FormFilters : "") +
             (params.MatchAllFilters ? "&MatchAllFilters=" + params.MatchAllFilters : "") +
+            (params.FetchCounts ? "&FetchCounts=" + params.FetchCounts : "") +
             (params.GroupByElementID ? "&GroupByElementID=" + params.GroupByElementID : "") +
             (params.HasChild ? "&HasChild=" + params.HasChild : "") + "&text=";
         return CNAPI._send(url, params, queryString);

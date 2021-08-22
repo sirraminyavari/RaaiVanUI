@@ -1,12 +1,19 @@
 import Button from 'components/Buttons/Button';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
-import { CV_GRAY, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_GRAY,
+  CV_GRAY_LIGHT,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
-const { RV_RTL } = window || {};
+const { RV_RTL, RVDic } = window || {};
 
 const data = [
   { title: 'درس آموخته سنجه محور', count: 13 },
@@ -14,6 +21,16 @@ const data = [
   { title: 'نامه صادره', count: 89 },
   { title: 'نامه وارده', count: 53 },
   { title: 'پروپوزال', count: 13 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
+  { title: 'تکنولوژی', count: 53 },
   { title: 'تکنولوژی', count: 53 },
 ];
 
@@ -44,7 +61,11 @@ const defaultDropDownLabel = {
   value: 'urgentAction',
   color: TCV_DEFAULT,
 };
-const SideItemSelection = ({ checkedList }) => {
+const SideItemSelection = ({
+  checkedList,
+  onShowSelectedItems,
+  isShowSelected,
+}) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isHovered, setIsDropDownHovered] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -62,7 +83,7 @@ const SideItemSelection = ({ checkedList }) => {
 
   return (
     <Container>
-      <div>
+      <SideContent>
         <div
           onMouseEnter={() => setIsDropDownHovered(true)}
           onMouseLeave={() => setIsDropDownHovered(false)}
@@ -75,33 +96,33 @@ const SideItemSelection = ({ checkedList }) => {
             onClickLabel={() => onSelectItem(selectedItem)}
             customStyle={{
               label: { minWidth: '8rem' },
-              container: { backgroundColor: CV_WHITE },
+              container: { backgroundColor: CV_GRAY_LIGHT },
               button: RV_RTL
                 ? {
-                    borderBottomLeftRadius: '10rem',
-                    borderTopLeftRadius: '10rem',
+                    borderBottomLeftRadius: '1rem',
+                    borderTopLeftRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0px 0.5px 0.5px'
                       : '0 0 0 0',
                   }
                 : {
-                    borderBottomRightRadius: '10rem',
-                    borderTopRightRadius: '10rem',
+                    borderBottomRightRadius: '1rem',
+                    borderTopRightRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0.5px 0.5px 0px'
                       : '0 0 0 0',
                   },
               label: RV_RTL
                 ? {
-                    borderBottomRightRadius: '10rem',
-                    borderTopRightRadius: '10rem',
+                    borderBottomRightRadius: '1rem',
+                    borderTopRightRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0.5px 0.5px 0px'
                       : '0 0 0 0',
                   }
                 : {
-                    borderBottomLeftRadius: '10rem',
-                    borderTopLeftRadius: '10rem',
+                    borderBottomLeftRadius: '1rem',
+                    borderTopLeftRadius: '1rem',
                     borderWidth: isDropDownHovered
                       ? '0.5px 0px 0.5px 0.5px'
                       : '0 0 0 0',
@@ -124,27 +145,43 @@ const SideItemSelection = ({ checkedList }) => {
             onDropDownOpen={setIsDropDownOpen}
           />
         </div>
-        {data.map((x) => (
-          <ClassItem
-            onClick={onClassClick}
-            isSelected={selectedClass?.title === x?.title}
-            item={x}
-            title={x?.title}
-            badge={x?.count}
-          />
-        ))}
-      </div>
-      <div>
+        <PerfectScrollbar
+          style={{ maxHeight: '60vh', height: '60%' }}
+          containerRef={(ref) => {
+            if (ref) {
+              ref._getBoundingClientRect = ref.getBoundingClientRect;
+
+              ref.getBoundingClientRect = () => {
+                const original = ref._getBoundingClientRect();
+
+                return { ...original, height: Math.round(original.height) };
+              };
+            }
+          }}>
+          {data.map((x) => (
+            <ClassItem
+              onClick={onClassClick}
+              isSelected={selectedClass?.title === x?.title}
+              item={x}
+              title={x?.title}
+              badge={x?.count}
+            />
+          ))}
+        </PerfectScrollbar>
+      </SideContent>
+      <div style={{ marginTop: '2rem' }}>
         {checkedList?.length > 0 && (
           <ChoosedItems
+            onClick={onShowSelectedItems}
+            $isShowSelected={isShowSelected}
             className={
               'rv-border-radius-half rv-border-distant rv-bg-color-white rv-default'
             }>
             {'موارد انتخاب شده'}
-            <Badge>{checkedList.length}</Badge>
+            <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>
         )}
-        <Button type={'primary'}>{'ثبت ۲ ایتم انتخاب شده'}</Button>
+        <Button type={'primary'}>{RVDic.Confirm}</Button>
       </div>
     </Container>
   );
@@ -159,7 +196,8 @@ const Container = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin: 0rem 1rem 0rem 1rem;
-  padding: 1rem 0 1rem 0rem;
+  padding: 1rem 1rem 1rem 1rem;
+  background-color: ${CV_GRAY_LIGHT};
 `;
 const ChoosedItems = styled.div`
   padding: 0.6rem 1rem 0.6rem 1rem;
@@ -167,16 +205,24 @@ const ChoosedItems = styled.div`
   justify-content: space-between;
   margin-bottom: 0.7rem;
   align-items: center;
+  background-color: ${({ $isShowSelected }) =>
+    $isShowSelected ? TCV_WARM : CV_WHITE};
+  color: ${({ $isShowSelected }) => ($isShowSelected ? CV_WHITE : TCV_WARM)};
 `;
 const Badge = styled.div`
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? CV_WHITE : TCV_DEFAULT};
+  background-color: ${({ $isShowSelected }) =>
+    $isShowSelected ? CV_WHITE : TCV_DEFAULT};
   border-radius: 5rem;
   width: 1.5rem;
   height: 1.5rem;
   aspect-ratio: 1;
-  color: ${({ $isSelected }) => ($isSelected ? TCV_DEFAULT : CV_WHITE)};
+  color: ${({ $isShowSelected }) => ($isShowSelected ? TCV_DEFAULT : CV_WHITE)};
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+const SideContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;

@@ -23,7 +23,7 @@ const buttonsCommonStyles = {
   fontWeight: 'bold',
   minHeight: '2.5em',
   width: '24%',
-  backgroundColor: 'transparent',
+  // backgroundColor: 'transparent',
 };
 
 /**
@@ -64,6 +64,7 @@ const buttonsCommonStyles = {
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
  * @property {string} headerTitle - The headeer title.
+ * @property {function} onChangeVisibility - A callback function that fires when input is on focus or button is clicked.
  */
 
 /**
@@ -90,19 +91,21 @@ const CustomDatePicker = (props) => {
     minimumDate,
     CustomButton,
     headerTitle,
+    onChangeVisibility,
     ...rest
   } = props;
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const [range, setRange] = useState(initRange);
+  const [activeFooter, setActiveFooter] = useState('');
   const inputRef = useRef();
   const { RVDic } = useWindow();
 
   const footerButtonList = [
     { id: '1', title: RVDic.Today, dateSpan: '1' },
     { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
-    { id: '3', title: '۷ روز گذشه', dateSpan: '7' },
+    { id: '3', title: '۷ روز گذشته', dateSpan: '7' },
     { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
   ];
 
@@ -183,6 +186,7 @@ const CustomDatePicker = (props) => {
 
   //! Clear out datepicker values and component selection.
   const handleClear = () => {
+    setActiveFooter('');
     if (range) {
       setSelectedDate({ from: null, to: null });
     } else {
@@ -233,6 +237,8 @@ const CustomDatePicker = (props) => {
     const dateSpan = e.target.dataset.span;
     let date;
     let showDate;
+
+    setActiveFooter(dateSpan);
 
     switch (dateSpan) {
       case '-1':
@@ -310,13 +316,17 @@ const CustomDatePicker = (props) => {
         </Styled.CalendarHeaderContainer>
         <Styled.FooterButtonsContainer>
           {footerButtonList?.map((footer) => {
+            const isFooterActive = activeFooter === footer.dateSpan;
             return (
               <Button
                 key={footer.id}
                 data-span={footer.dateSpan}
                 onClick={handleFooterClick}
-                type="primary-o"
-                style={{ ...buttonsCommonStyles }}>
+                type={isFooterActive ? 'primary' : 'primary-o'}
+                style={{
+                  ...buttonsCommonStyles,
+                  backgroundColor: !isFooterActive && 'transparent',
+                }}>
                 {footer.title}
               </Button>
             );
@@ -460,6 +470,24 @@ const CustomDatePicker = (props) => {
     }
   };
 
+  //! Calls when input is on focus.
+  const handleInputFocus = () => {
+    onChangeVisibility && onChangeVisibility(true);
+  };
+
+  //! Calls when input is on blur.
+  const handleInputBlur = () => {
+    onChangeVisibility && onChangeVisibility(false);
+  };
+
+  //! Keep track of date picker visibility on button mode.
+  useEffect(() => {
+    if (mode === 'button') {
+      onChangeVisibility && onChangeVisibility(isCalendarShown);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCalendarShown]);
+
   //! Switch between "DatePicker" and "Calendar" component based on "mode" prop passed to this component.
   switch (mode) {
     case 'button':
@@ -512,6 +540,8 @@ const CustomDatePicker = (props) => {
                 placeholder={label}
                 maxLength={range ? '42' : '17'}
                 onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
                 style={{
                   textAlign: 'center',
                   width: '100%',

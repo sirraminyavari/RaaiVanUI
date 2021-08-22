@@ -7,8 +7,9 @@ import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
-import APIHandler from 'apiHelper/APIHandler';
+import { API_Provider } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
+import { CN_API, GET_NODES } from 'constant/apiConstants';
 
 /**
  * @typedef PropType
@@ -25,17 +26,18 @@ import useWindow from 'hooks/useWindowContext';
  */
 const NodeType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
 
-  const { NodeTypes } = JSON.parse(decodeBase64(Info));
-  const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+  const { GlobalUtilities } = useWindow();
+
+  const { NodeTypes } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
+  const getNodesAPI = API_Provider(CN_API, GET_NODES);
   const [items, setItems] = useState([]);
   const [resetValue, setResetValue] = useState(null);
-  const { GlobalUtilities } = useWindow();
 
   //! Fetch nodes based on nodeTypes passed to component.
   const fetchNodes = (searchText) => {
-    const nodeTypeIds = NodeTypes.map((node) => node.NodeTypeID).join('|');
+    const nodeTypeIds = NodeTypes?.map((node) => node?.NodeTypeID).join('|');
     return new Promise((resolve, reject) => {
       getNodesAPI.fetch(
         {
@@ -50,8 +52,8 @@ const NodeType = (props) => {
         },
         (response) => {
           const nodes = response.Nodes.map((node) => ({
-            id: node.NodeID,
-            value: decodeBase64(node.Name),
+            id: node?.NodeID,
+            value: decodeBase64(node?.Name),
           }));
           resolve(nodes);
         },
@@ -66,7 +68,7 @@ const NodeType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const nodeIds = items.map((node) => node.id);
+    const nodeIds = items?.map((node) => node?.id);
     const JSONValue = { GuidItems: nodeIds };
 
     //! Send back value to parent on select.
@@ -74,9 +76,9 @@ const NodeType = (props) => {
       id,
       value: {
         Type: 'node',
-        GuidItems: !items.length ? null : nodeIds.join('|'),
+        GuidItems: !items?.length ? null : nodeIds.join('|'),
         Data: items,
-        JSONValue: !items.length ? null : JSONValue,
+        JSONValue: !items?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

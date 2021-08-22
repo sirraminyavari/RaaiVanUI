@@ -2,8 +2,15 @@ import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
-import { CV_RED_SOFT, CV_DISTANT, CV_RED } from 'constant/CssVariables';
+import {
+  CV_RED_SOFT,
+  CV_DISTANT,
+  CV_RED,
+  CV_WHITE,
+} from 'constant/CssVariables';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+
+const { GlobalUtilities } = window;
 
 export const Fixer = styled.div`
   background-color: green;
@@ -17,6 +24,8 @@ export const Container = styled.div`
   width: 100%;
   align-items: flex-start;
   justify-content: center;
+  max-height: ${({ itemSelectionMode }) =>
+    itemSelectionMode ? 'calc(100vh - 13rem)' : 'calc(100vh - 11rem)'};
   padding: 2rem 2rem 2rem 2rem;
 
   ${({ itemSelectionMode }) => itemSelectionMode && 'padding:0'}
@@ -25,8 +34,9 @@ export const ScrollProvider = styled.div`
   width: calc(
     ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
   );
+
   box-shadow: 1px 3px 20px #0000001f;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   ${({ itemSelectionMode }) =>
     itemSelectionMode && 'box-shadow: 0px 0px 0px #ffffff'}
 `;
@@ -35,7 +45,8 @@ export const Scrollable = styled.div`
 `;
 export const Maintainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 9rem);
+  min-height: ${({ itemSelectionMode }) =>
+    itemSelectionMode ? 'calc(100vh - 13rem)' : 'calc(100vh - 9rem)'};
   max-height: 100%;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
 `;
@@ -101,7 +112,8 @@ export const UrgentInput = styled.div`
   align-self: center;
   flex-direction: row;
   padding: 0 2rem 0 2rem;
-  max-height: ${({ isVisible }) => (isVisible ? '13rem' : '0rem')};
+  max-height: ${({ isVisible, liteMode }) =>
+    isVisible ? (liteMode ? '5rem' : '13rem') : '0rem'};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: max-width 0.5s, max-height 0.5s, opacity 0.5s;
 `;
@@ -154,4 +166,14 @@ export const CustomInput = styled(Input)`
     font-size: 1.1rem;
     font-weight: 500;
   }
+`;
+export const AdvancedFilterDialog = styled.div`
+  position: absolute;
+  background-color: ${CV_WHITE};
+  top: ${({ top }) => top + 53 + 'px'};
+  left: ${({ left }) => left + 'px'};
+  width: 30rem;
+  min-height: 10rem;
+  z-index: ${GlobalUtilities.zindex.alert()};
+  box-shadow: 1px 3px 20px ${CV_DISTANT};
 `;

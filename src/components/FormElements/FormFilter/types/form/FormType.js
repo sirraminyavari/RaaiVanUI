@@ -8,7 +8,8 @@ import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
 import * as Styled from '../types.styles';
 import { decodeBase64 } from 'helpers/helpers';
-import APIHandler from 'apiHelper/APIHandler';
+import useWindow from 'hooks/useWindowContext';
+import { getFormElements } from 'apiHelper/apiFunctions';
 
 /**
  * @typedef PropType
@@ -25,19 +26,20 @@ import APIHandler from 'apiHelper/APIHandler';
  */
 const FormType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data; //! Meta data to feed component.
+  const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [filters, setFilters] = useState([]);
   const [filterValues, setFilterValues] = useState(value?.JSONValue || {});
 
-  const { FormID } = JSON.parse(decodeBase64(Info));
-  const GetFormElementsAPI = new APIHandler('FGAPI', 'GetFormElements');
+  const { GlobalUtilities } = useWindow();
+
+  const { FormID } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
 
   //! Set button title based on selected filters count.
   const getButtonTitle = () => {
     const filtersCount = Object.values(filterValues).filter(
-      (filter) => !!filter.JSONValue
+      (filter) => !!filter?.JSONValue
     ).length;
     if (filtersCount) {
       return `${filtersCount} فیلتر انتخاب شده, برای تغییر کلیک کنید.`;
@@ -69,17 +71,20 @@ const FormType = (props) => {
 
   //! Fetch filters and passes them to form.
   useEffect(() => {
-    GetFormElementsAPI.fetch(
-      {
-        FormID,
-        OwnerID: ElementID,
-      },
-      (response) => {
-        const filters = response.Elements;
-        setFilters(filters);
-      },
-      (error) => console.log(error)
-    );
+    getFormElements(FormID, ElementID)
+      .then((response) => {
+        const filtersList = response?.Elements || [];
+        setFilters(filtersList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    //? Due to memory leak error.
+    //! Clean up.
+    return () => {
+      setFilters([]);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,7 +112,7 @@ const FormType = (props) => {
         show={isModalShown}
         onClose={closeModal}
         contentWidth="40%">
-        {filters.length && (
+        {filters?.length && (
           <FormFilter
             filters={filters}
             onFilter={handleOnFilter}
