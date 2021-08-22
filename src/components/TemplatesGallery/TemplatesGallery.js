@@ -3,6 +3,9 @@ import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
 import TemplateSuggestionList from './TemplateSuggestionList';
 import MainContent from './contents/Main';
+import Button from 'components/Buttons/Button';
+import AddIcon from 'components/Icons/AddIcon/AddIcon';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const TemplatesGallery = (props) => {
   const { RVDic } = useWindow();
@@ -19,6 +22,21 @@ const TemplatesGallery = (props) => {
           <Styled.GalleryListContainer>
             <Styled.ModalTitle>{RVDic.TemplatesGallery}</Styled.ModalTitle>
             <TemplateSuggestionList />
+            <Styled.AddTemplateButtonWrapper>
+              <AddIcon
+                size={22}
+                color={TCV_DEFAULT}
+                className="add-template-icon"
+              />
+              <Button
+                type="primary-o"
+                style={{
+                  position: 'relative',
+                  bottom: '-1rem',
+                }}>
+                ساخت تمپلیت
+              </Button>
+            </Styled.AddTemplateButtonWrapper>
           </Styled.GalleryListContainer>
           <Styled.GalleryInfosContainer>
             <MainContent />

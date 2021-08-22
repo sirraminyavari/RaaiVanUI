@@ -15,7 +15,7 @@ import {
 import { FLEX_RCB, FLEX_RSB } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
-const { RV_RevFloat } = window;
+const { RV_RevFloat, GlobalUtilities } = window;
 
 export const TemplateGalleryContainer = styled.div`
   user-select: none;
@@ -37,6 +37,18 @@ export const GalleryListContainer = styled.div.attrs({
   width: 25%;
   padding: 1rem;
   height: 100%;
+  position: relative;
+`;
+
+export const AddTemplateButtonWrapper = styled.div`
+  position: relative;
+
+  .add-template-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+    z-index: ${GlobalUtilities.zindex.alert()};
+  }
 `;
 
 export const GalleryInfosContainer = styled.div`
