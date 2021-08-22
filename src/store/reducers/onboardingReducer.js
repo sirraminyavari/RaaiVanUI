@@ -7,7 +7,7 @@ export const onboardingSlice = createSlice({
     name: '',
     newDocMenu: '',
     fromStep: 0,
-    active: false
+    active: false,
   },
   reducers: {
     onboardingName: (state, action) => {
@@ -21,10 +21,15 @@ export const onboardingSlice = createSlice({
     },
     toggleActivation: (state) => {
       state.active = !state.active;
-    }
+    },
   },
 });
 
-export const { onboardingName, onboardingStep, setNewDocMenu, toggleActivation } = onboardingSlice.actions;
+export const {
+  onboardingName,
+  onboardingStep,
+  setNewDocMenu,
+  toggleActivation,
+} = onboardingSlice.actions;
 
 export default onboardingSlice.reducer;

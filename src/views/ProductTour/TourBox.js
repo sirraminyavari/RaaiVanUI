@@ -16,13 +16,14 @@ const TourBox = ({ goTo, current, total, guidance }) => {
 
   const next = () => {
     if (current === 2) {
+      window.scrollTo(0, 0);
       dispatch(setNewDocMenu('opened'));
     }
     goTo(current + 1);
   };
 
   const letsGo = () => {
-    dispatch(toggleActivation());
+    window.location.reload();
   };
 
   return (

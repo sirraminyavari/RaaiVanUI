@@ -1,5 +1,8 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import { onboardingSlice } from 'store/reducers/onboardingReducer';
+import {
+  onboardingSlice,
+  toggleActivation,
+} from 'store/reducers/onboardingReducer';
 import {
   getSidebarNodes,
   getUnderMenuPermissions,
@@ -22,6 +25,8 @@ import {
   REMOVE_USER_FROM_APPLICATION,
   GET_APPLICATION_USERS,
 } from 'constant/apiConstants';
+import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
+import { useSelector } from 'react-redux';
 
 const {
   setApplications,
@@ -219,6 +224,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
     selectApplicationAPI.fetch(
       { ApplicationID: appId },
       (response) => {
+        console.log(response);
         if (response.ErrorText) {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
@@ -233,8 +239,16 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           // dispatch(getNotificationsCount());
           // dispatch(getNotificationsList());
           if (!!response.Onboarding) {
-            dispatch(onboardingName(response.Onboarding?.name || ''));
-            dispatch(onboardingStep(response.Onboarding?.fromStep || 0));
+            dispatch(onboardingName(response.Onboarding?.Name || ''));
+            dispatch(onboardingStep(response.Onboarding?.Step || 0));
+            //the application has been selected, now activate the product tour ::khalafi
+
+            if (response.Onboarding?.Name) {
+              dispatch(toggleActivation());
+            }
+            done && done(CLASSES_PATH);
+          } else {
+            done && done(HOME_PATH);
           }
         }
         dispatch(

@@ -70,7 +70,7 @@ const FinalStep = () => {
       (res) => {
         // redirect to clickmind workspace
         // dispatch({ type: 'TOGGLE_TOUR' });
-        history.push("/classes");
+        history.push('/classes');
       }
     );
   };

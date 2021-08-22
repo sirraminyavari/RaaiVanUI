@@ -1,15 +1,13 @@
 import Tour from 'reactour';
 import React, { Suspense } from 'react';
 import './ProductTour.css';
-import { steps } from './steps'
+import { steps } from './steps';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleActivation } from 'store/reducers/onboardingReducer';
 
 const ProductTour = () => {
-
-  const { active, fromStep } = useSelector(state => state.onboarding);
+  const { active, fromStep } = useSelector((state) => state.onboarding);
   const dispatch = useDispatch();
-
 
   return (
     <Suspense fallback={React.Fragment}>
@@ -17,9 +15,9 @@ const ProductTour = () => {
         maskClassName="mask"
         className="helper"
         steps={steps}
-        isOpen={ active }
+        isOpen={active}
         rounded={5}
-        startAt={ fromStep }
+        startAt={fromStep}
         showNumber={false}
         showButtons={false}
         showNavigation={false}
