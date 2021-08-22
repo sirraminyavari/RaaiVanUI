@@ -44,12 +44,14 @@ const UnderMenuList = () => {
 
   return (
     <Styled.UnderMenuContainer>
-      {isGalleryModalOpen && (
-        <TemplatesGalleryModal
-          onModalClose={handleCloseModal}
-          isOpen={isGalleryModalOpen}
-        />
-      )}
+      <Suspense fallback={<></>}>
+        {isGalleryModalOpen && (
+          <TemplatesGalleryModal
+            onModalClose={handleCloseModal}
+            isOpen={isGalleryModalOpen}
+          />
+        )}
+      </Suspense>
       <ListItem
         title={RVDic.BookmarkedSubjects}
         icon={BookmarkIcon}
