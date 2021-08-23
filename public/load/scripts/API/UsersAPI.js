@@ -335,8 +335,9 @@
 
         var url = UsersAPI.ResponseURL + "/SaveUserSettingsItem?timeStamp=" + new Date().getTime();
         var queryString = (params.Name ? "&Name=" + params.Name : "") + 
-            (type != "undefined" ? "&Value=" + params.Value : "") +
+            ((type != "undefined") && (type != "null") ? "&Value=" + params.Value : "") +
             ("&Type=" + type);
+        console.log(queryString);
         return UsersAPI._send(url, params, queryString);
     },
 
