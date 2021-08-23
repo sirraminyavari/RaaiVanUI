@@ -119,6 +119,10 @@
         return "../../usersearch";
     },
 
+    OnboardingPageURL: function (params) {
+        return "../../onboarding";
+    },
+
     SearchPageURL: function (params) {
         return "../../dosearch" + (!(params || {}).SearchText ? "" : "/" + params.SearchText.replace(/\//g, '_').replace(/\+/g, '~'));
     },
