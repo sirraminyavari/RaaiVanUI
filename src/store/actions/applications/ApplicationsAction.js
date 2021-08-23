@@ -147,7 +147,7 @@ export const removeApplication = (appId, done, error) => async (
  * @description A function (action) that recycles deleted application from server.
  * @returns -Dispatch to redux store.
  */
-export const recycleApplication = (appId, done, refresh = true) => async (
+export const recycleApplication = (appId, done, error) => async (
   dispatch,
   getState
 ) => {
@@ -156,20 +156,25 @@ export const recycleApplication = (appId, done, refresh = true) => async (
     recycleApplicationAPI.fetch(
       { ApplicationID: appId },
       (response) => {
-        if (response.Succeed) {
+        if (response?.Succeed) {
           done && done(response);
           // console.log(response);
           const newArchivedApps = applications.userArchivedApps.filter(
             (app) => app.ApplicationID !== appId
           );
           dispatch(setArchivedApplications(newArchivedApps));
-          refresh && dispatch(getApplications());
+        }
+
+        if (response?.ErrorText) {
+          error && error(response?.ErrorText);
         }
       },
-      (error) => console.log({ error })
+      (err) => {
+        error && error(err);
+      }
     );
   } catch (err) {
-    console.log({ err });
+    error && error(err.message);
   }
 };
 

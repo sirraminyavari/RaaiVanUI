@@ -3,7 +3,7 @@ import Cookie from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 
-const { GlobalUtilities } = window;
+const { GlobalUtilities, RVAPI } = window;
 
 /**
  * @description A function that accepts some funcs as params and then
@@ -50,7 +50,7 @@ export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
  * @returns {string} The route url path.
  */
 export const getURL = (routeName, params = {}) =>
-  window.RVAPI[`${capitalize(routeName)}PageURL`](params).slice(5);
+  RVAPI[`${capitalize(routeName)}PageURL`](params).slice(5);
 
 /**
  * @description Check if an object is empty or not.

@@ -138,6 +138,12 @@ const UserInviteDialog = (props) => {
       setIsSending(false);
       setSendDisabled(true);
     }
+
+    //! Clean up.
+    return () => {
+      setIsSending(false);
+      setSendDisabled(true);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inviteValues]);
 
@@ -147,6 +153,11 @@ const UserInviteDialog = (props) => {
     } else {
       setInputCount(DEFAULT_INPUT_COUNT);
     }
+
+    //! Clean up.
+    return () => {
+      setInputCount(DEFAULT_INPUT_COUNT);
+    };
   }, [invitationCount]);
 
   useEffect(() => {

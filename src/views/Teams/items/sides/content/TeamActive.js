@@ -1,4 +1,4 @@
-import { useState, forwardRef, useEffect, useRef } from 'react';
+import { useState, forwardRef, useEffect, useRef, lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -28,7 +28,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
-import UserInvitationDialog from './UserInviteDialog';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
@@ -41,7 +40,13 @@ import { API_Provider } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import { SIDEBAR_WINDOW } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
+// import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 // import { invitationSlice } from 'store/reducers/invitationsReducer';
+
+import UserInvitationDialog from './UserInviteDialog';
+// const UserInvitationDialog = lazy(() =>
+//   import(/* webpackChunkName: "user-invitation-modal"*/ './UserInviteDialog')
+// );
 
 // const { openInvitationModal } = invitationSlice.actions;
 const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
@@ -329,6 +334,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           users={users}
         />
       )}
+      {/* <Suspense fallback={<ModalFallbackLoader />}> */}
       {!isDeleting && (
         <UserInvitationDialog
           app={team}
@@ -336,6 +342,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           setIsInviteShown={setIsInviteShown}
         />
       )}
+      {/* </Suspense> */}
+
       <SortHandle />
       <Styled.TeamPattern
         dir={RV_RevFloat}
