@@ -12,6 +12,7 @@ import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';
 import useWindow from 'hooks/useWindowContext';
 import { getURL } from 'helpers/helpers';
+import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 
 const TemplatesGalleryModal = lazy(() =>
   import(
@@ -44,7 +45,7 @@ const UnderMenuList = () => {
 
   return (
     <Styled.UnderMenuContainer>
-      <Suspense fallback={<></>}>
+      <Suspense fallback={<ModalFallbackLoader />}>
         {isGalleryModalOpen && (
           <TemplatesGalleryModal
             onModalClose={handleCloseModal}
