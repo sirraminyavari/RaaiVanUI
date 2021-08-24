@@ -46,7 +46,12 @@ const TemplateGalleryMain = () => {
 
       <Styled.MainContentSwiperSection>
         <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
-        <CustomSwiper grabCursor freeMode slidesPerView={3} spaceBetween={10}>
+        <CustomSwiper
+          grabCursor
+          scrollbar
+          freeMode
+          slidesPerView={3}
+          spaceBetween={10}>
           {[...Array(10).keys()].map((item, index) => {
             return <TemplateCard index={item + 1} key={index} />;
           })}

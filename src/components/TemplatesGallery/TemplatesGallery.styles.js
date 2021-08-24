@@ -11,6 +11,8 @@ import {
   CV_BLACK,
   CV_DISTANT,
   CV_GRAY,
+  CV_RED,
+  CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
   TCV_WARM,
@@ -67,6 +69,20 @@ export const GalleryInfosContainer = styled.div`
   .swiper-container {
     width: 100%;
     height: 100%;
+  }
+
+  .template-description-scrollbar {
+    max-height: 100%;
+
+    .ps__thumb-y {
+      background-color: ${CV_BLACK} !important;
+    }
+    .ps__rail-y:hover {
+      background-color: transparent !important;
+    }
+    .ps__rail-y {
+      ${RV_Float}: 0rem !important;
+    }
   }
 `;
 
@@ -300,8 +316,37 @@ export const SubCategoryContainer = styled.div`
 `;
 
 export const TemplateDescriptionContainer = styled.div`
+  max-height: 100%;
+
+  .ps__thumb-y {
+    background-color: ${CV_BLACK} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
+  }
+`;
+
+export const TemplateDescriptionWrapper = styled.div`
   position: relative;
   ${FLEX_CCC}
+
+  .template-back-button {
+    width: 5rem;
+    height: 1.4rem;
+    margin: 1rem 0 2rem 0;
+    position: absolute;
+    top: -0.5rem;
+    border-color: transparent;
+    background-color: transparent;
+    ${RV_RevFloat}: 1rem;
+
+    :hover {
+      border-color: ${CV_RED};
+    }
+  }
 `;
 
 export const TemplateTitleInDescription = styled.div`
@@ -311,6 +356,40 @@ export const TemplateTitleInDescription = styled.div`
 `;
 
 export const TemplatePhotosWrapper = styled.div`
-  width: 60%;
+  width: 70%;
   height: 16rem;
+
+  .swiper-pagination {
+    bottom: 0.3rem !important;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: ${TCV_DEFAULT};
+  }
+
+  .swiper-pagination-bullet {
+    width: 1.2rem;
+    height: 1.2rem;
+    text-align: center;
+    line-height: 1.4rem;
+    font-size: 0.8rem;
+    color: ${CV_BLACK};
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .swiper-pagination-bullet-active {
+    color: ${CV_WHITE};
+    background: ${TCV_DEFAULT};
+  }
+`;
+
+export const TemplateDescription = styled.div`
+  text-align: justify;
+  text-justify: inter-word;
+  padding: 0 3rem;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+  color: ${CV_DISTANT};
 `;
