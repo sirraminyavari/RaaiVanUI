@@ -2,18 +2,26 @@ import {
   BG_GRAY_LIGHT,
   BO_DISTANT,
   C_DISTANT,
+  C_GRAY,
   C_GRAY_DARK,
   TC_DEFAULT,
 } from 'constant/Colors';
 import { BO_RADIUS_HALF, IGNORE_RADIUS_LEFT } from 'constant/constants';
 import {
   CV_BLACK,
+  CV_DISTANT,
   CV_GRAY,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
+  TCV_WARM,
 } from 'constant/CssVariables';
-import { FLEX_RCB, FLEX_RSB } from 'constant/StyledCommonCss';
-import styled from 'styled-components';
+import {
+  FLEX_CCC,
+  FLEX_RCB,
+  FLEX_RCS,
+  FLEX_RSB,
+} from 'constant/StyledCommonCss';
+import styled, { css } from 'styled-components';
 
 const { RV_RevFloat, GlobalUtilities, RV_Float } = window;
 
@@ -95,11 +103,21 @@ export const SuggestionListTitle = styled.div.attrs({
   margin: 1rem 0;
 `;
 
+const getWidth = ({ mode }) => {
+  switch (mode) {
+    case 'category':
+      return 'width: 100%;';
+
+    default:
+      return 'width: 89%;';
+  }
+};
+
 export const TemplateCardContainer = styled.div.attrs({
   className: `${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
-  width: 89%;
-  height: 7.5rem;
+  ${getWidth}
+  max-height: 9rem;
   padding: 0.7rem;
   position: relative;
 
@@ -192,6 +210,10 @@ export const MainContentSwiperSection = styled.div.attrs({
 })`
   position: relative;
   bottom: 2rem;
+
+  .swiper-scrollbar {
+    bottom: 0rem !important;
+  }
 `;
 
 export const MainContentImageWrapper = styled.div`
@@ -205,4 +227,90 @@ export const MainContentImageWrapper = styled.div`
     -o-user-drag: none;
     user-drag: none;
   }
+`;
+
+export const TemplateItemWrapper = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
+  margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
+  ${FLEX_RCS}
+  padding: 0.3rem 0;
+  cursor: pointer;
+`;
+
+export const TemplateIconWrapper = styled.span`
+  color: ${({ isExpanded }) => (isExpanded ? TCV_DEFAULT : '')};
+`;
+
+export const TemplateItemTitle = styled.span`
+  margin-${RV_Float}: 0.2rem;
+  ${({ isSelected }) => isSelected && `color: ${TCV_DEFAULT};`}
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const CategoryContentContainer = styled.div`
+  margin-top: 2.5rem;
+  height: calc(100% - 2.5rem);
+`;
+const commonTitleStyle = css`
+  color: ${TCV_WARM};
+  font-size: 1.2rem;
+  font-weight: 500;
+`;
+export const CategoryTitle = styled.div`
+  ${commonTitleStyle}
+  margin-bottom: 1rem;
+`;
+
+export const CategoryDescription = styled.div`
+  color: ${CV_DISTANT};
+  height: 7rem;
+  font-size: 0.9rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const SubCategoryContainer = styled.div`
+  height: calc(100% - 10rem);
+  padding: 0.5rem;
+
+  .template-sub-category-scroll {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+
+    .ps__thumb-y {
+      background-color: ${CV_BLACK} !important;
+    }
+    .ps__rail-y:hover {
+      background-color: transparent !important;
+    }
+    .ps__rail-y {
+      ${RV_Float}: 0rem !important;
+    }
+  }
+`;
+
+export const TemplateDescriptionContainer = styled.div`
+  position: relative;
+  ${FLEX_CCC}
+`;
+
+export const TemplateTitleInDescription = styled.div`
+  text-align: center;
+  margin: 2.5rem 0 1rem 0;
+  ${commonTitleStyle}
+`;
+
+export const TemplatePhotosWrapper = styled.div`
+  width: 60%;
+  height: 16rem;
 `;

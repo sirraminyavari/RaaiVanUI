@@ -2,7 +2,9 @@ import Modal from '../Modal/Modal';
 import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
 import TemplateSuggestionList from './TemplateSuggestionList';
-import MainContent from './contents/Main';
+import MainContent from './contents/main/Main';
+import CategoryContent from './contents/category/Category';
+import DescriptionContent from './contents/template-description/TemplateDescription';
 import Button from 'components/Buttons/Button';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
@@ -39,7 +41,9 @@ const TemplatesGallery = (props) => {
             </Styled.AddTemplateButtonWrapper>
           </Styled.GalleryListContainer>
           <Styled.GalleryInfosContainer>
-            <MainContent />
+            {/* <MainContent /> */}
+            {/* <CategoryContent /> */}
+            <DescriptionContent />
           </Styled.GalleryInfosContainer>
         </Styled.ModalContentWrapper>
       </Modal>

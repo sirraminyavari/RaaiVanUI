@@ -1,9 +1,9 @@
 import * as Styled from './TemplatesGallery.styles';
 import Badge from 'components/Badge/Badge';
 
-const TemplateCard = ({ template }) => {
+const TemplateCard = ({ template, mode }) => {
   return (
-    <Styled.TemplateCardContainer>
+    <Styled.TemplateCardContainer mode={mode}>
       <Badge showText="مدیریت منابع انسانی" className="template-card-badge" />
       <div>
         <img width={45} src="../../images/Preview.png" alt="template-logo" />

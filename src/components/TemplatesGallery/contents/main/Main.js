@@ -1,7 +1,7 @@
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
-import TemplateCard from '../TemplateCard';
+import TemplateCard from '../../TemplateCard';
 import useWindow from 'hooks/useWindowContext';
-import * as Styled from '../TemplatesGallery.styles';
+import * as Styled from '../../TemplatesGallery.styles';
 import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
