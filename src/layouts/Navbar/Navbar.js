@@ -60,12 +60,12 @@ const Navbar = () => {
   const activePath = useSelector(selectActivePath);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
-  const { RVDic, RV_RevFloat } = useWindow();
+  const { RVDic, RV_RevFloat, GlobalUtilities } = useWindow();
 
   const profileImage =
     authUser?.ProfileImageURL === UNKNOWN_IMAGE
       ? defaultProfileImage
-      : authUser?.ProfileImageURL + `?timeStamp=${new Date().getTime()}`;
+      : GlobalUtilities.add_timestamp(authUser?.ProfileImageURL);
 
   const isTeamsView = activePath === TEAMS_PATH;
 

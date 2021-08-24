@@ -336,20 +336,20 @@ export const TeamConatiner = styled.div.attrs({
   padding: 0.5rem 1.5rem;
   ${getBorderCss}
   position: relative;
-  float: ${({ dir }) => dir};
+  float: ${RV_Float};
   margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
   ${({ isArchive }) => isArchive && `background-color: ${CV_FREEZED};`}
   ${getDragCss}
-  ${({ isMobile, dir, revDir }) =>
+  ${({ isMobile }) =>
     !isMobile &&
     `
     :nth-child(2n+1){
-      margin-${revDir}: 0.5rem;
+      margin-${RV_RevFloat}: 0.5rem;
     }
     :nth-child(2n){
-      margin-${dir}: 0.5rem;
+      margin-${RV_Float}: 0.5rem;
     }
   `}
 
@@ -386,15 +386,6 @@ export const TeamConatiner = styled.div.attrs({
     // overflow: hidden;
   }
 
-  .archived-teams-title {
-    position: fixed;
-    width: 35%;
-    padding: 1rem 0;
-    background-color: ${CV_GRAY_LIGHT};
-    z-index: 1000;
-    ${({ revDir }) => `padding-${revDir}: 0.5rem;`}
-  }
-
   .extra-users-scrollbar {
     height: 8rem;
     padding-${RV_Float}: 0.5rem;
@@ -406,6 +397,16 @@ export const TeamConatiner = styled.div.attrs({
 
   .invite-modal-container {
     margin-top: 4rem;
+  }
+`;
+
+export const ArchivedTeamsModalContainer = styled.div`
+  .archived-teams-title {
+    position: fixed;
+    width: ${({ modalWidth }) => modalWidth};
+    padding: 1rem;
+    background-color: ${CV_GRAY_LIGHT};
+    z-index: 1000;
   }
 `;
 

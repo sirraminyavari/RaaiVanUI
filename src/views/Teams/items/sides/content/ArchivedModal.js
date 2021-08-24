@@ -14,6 +14,8 @@ import TeamConfirm from './TeamConfirm';
 const ArchivedModal = (props) => {
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
+  const [recycledIds, setRecycledIds] = useState([]);
+  const [recyclingIds, setRecyclingIds] = useState([]);
 
   const {
     isOpen,
@@ -23,6 +25,7 @@ const ArchivedModal = (props) => {
     archives,
     contentClass,
   } = props;
+
   const [confirm, setConfirm] = useState({
     team: null,
     message: '',
@@ -33,12 +36,14 @@ const ArchivedModal = (props) => {
   const resetConfirm = () =>
     setConfirm({ team: null, message: '', title: '', isOpen: false });
 
-  const onRecycleDone = (message) => {
-    // console.log(message);
+  const onRecycleDone = (response) => {
+    setRecycledIds((oldIds) => [...oldIds, response?.AppID]);
+    setRecyclingIds((oldIds) => oldIds.filter((id) => id !== response?.AppID));
   };
 
   const recycleTeam = (teamId) => {
-    dispatch(recycleApplication(teamId, onRecycleDone, true));
+    dispatch(recycleApplication(teamId, onRecycleDone));
+    setRecyclingIds((oldIds) => [...oldIds, teamId]);
   };
 
   const handleRecycle = (archivedTeam) => {
@@ -59,61 +64,70 @@ const ArchivedModal = (props) => {
     resetConfirm();
   };
 
+  const handleCloseModal = () => {
+    onModalClose(!!recycledIds.length);
+    setRecycledIds([]);
+    setRecyclingIds([]);
+  };
+
   return (
-    <Modal
-      titleClass={TC_DEFAULT}
-      contentWidth={modalWidth}
-      contentClass={contentClass}
-      titleContainerClass="archived-teams-title"
-      title={modalTitle}
-      show={isOpen}
-      onClose={onModalClose}>
-      <Styled.ModalContentWrapper>
-        <TeamConfirm
-          isOpen={confirm.isOpen}
-          onConfirm={handleConfirmation}
-          onCancel={handleCancelConfirmation}
-          message={confirm.message}
-          title={confirm.title}
-        />
-        <PerfectScrollbar
-          style={{
-            marginLeft: '-1rem',
-            marginRight: '-1rem',
-            padding: '0 1rem',
-          }}>
-          {archives?.map((archive, index, self) => {
-            return (
-              <Fragment key={archive?.ApplicationID}>
-                <Styled.ArchivedTeamWrapper>
-                  <Styled.ArchivedTeamDescription>
-                    <Avatar
-                      radius={30}
-                      userImage={archive?.IconURL}
-                      style={{ minWidth: '2.1rem' }}
-                    />
-                    <Styled.ArchivedTeamTitle>
-                      {decodeBase64(archive?.Title)}
-                    </Styled.ArchivedTeamTitle>
-                  </Styled.ArchivedTeamDescription>
-                  <Button
-                    onClick={() => handleRecycle(archive)}
-                    type="primary-o"
-                    style={{
-                      height: '1.5rem',
-                      minWidth: '5rem',
-                      textTransform: 'capitalize',
-                    }}>
-                    {RVDic?.Activate}
-                  </Button>
-                </Styled.ArchivedTeamWrapper>
-                {self.length !== index + 1 && <hr className={BO_FREEZED} />}
-              </Fragment>
-            );
-          })}
-        </PerfectScrollbar>
-      </Styled.ModalContentWrapper>
-    </Modal>
+    <Styled.ArchivedTeamsModalContainer modalWidth={modalWidth}>
+      <Modal
+        titleClass={TC_DEFAULT}
+        contentWidth={modalWidth}
+        contentClass={contentClass}
+        titleContainerClass="archived-teams-title"
+        title={modalTitle}
+        show={isOpen}
+        onClose={handleCloseModal}>
+        <Styled.ModalContentWrapper>
+          <TeamConfirm
+            isOpen={confirm.isOpen}
+            onConfirm={handleConfirmation}
+            onCancel={handleCancelConfirmation}
+            message={confirm.message}
+            title={confirm.title}
+          />
+          <PerfectScrollbar
+            style={{
+              marginLeft: '-1rem',
+              marginRight: '-1rem',
+              padding: '0 1rem',
+            }}>
+            {archives?.map((archive, index, self) => {
+              return (
+                <Fragment key={archive?.ApplicationID}>
+                  <Styled.ArchivedTeamWrapper>
+                    <Styled.ArchivedTeamDescription>
+                      <Avatar
+                        radius={30}
+                        userImage={archive?.IconURL}
+                        style={{ minWidth: '2.1rem' }}
+                      />
+                      <Styled.ArchivedTeamTitle>
+                        {decodeBase64(archive?.Title)}
+                      </Styled.ArchivedTeamTitle>
+                    </Styled.ArchivedTeamDescription>
+                    <Button
+                      loading={recyclingIds.includes(archive.ApplicationID)}
+                      onClick={() => handleRecycle(archive)}
+                      type="primary-o"
+                      style={{
+                        height: '1.5rem',
+                        minWidth: '5rem',
+                        textTransform: 'capitalize',
+                      }}>
+                      {RVDic?.Activate}
+                    </Button>
+                  </Styled.ArchivedTeamWrapper>
+                  {self.length !== index + 1 && <hr className={BO_FREEZED} />}
+                </Fragment>
+              );
+            })}
+          </PerfectScrollbar>
+        </Styled.ModalContentWrapper>
+      </Modal>
+    </Styled.ArchivedTeamsModalContainer>
   );
 };
 

@@ -350,6 +350,7 @@ export const ListItemWrapper = styled.div.attrs({
 })`
   ${FlexBetween}
   padding: 0 0.5rem;
+  cursor: pointer;
   &:hover {
     background: rgb(43, 123, 228, 0.2);
   }

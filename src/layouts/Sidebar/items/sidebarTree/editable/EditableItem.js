@@ -17,7 +17,7 @@ import {
   recoverSidebarNode,
 } from 'store/actions/sidebar/sidebarMenuAction';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import getIcon from '../getItemIcon';
+import getIcon from 'utils/treeUtils/getItemIcon';
 
 const INDENT_PER_LEVEL = 27;
 

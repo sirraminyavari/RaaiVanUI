@@ -13,7 +13,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 const ArchivedTeams = ({ archives, hasHandle }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
-  const { RV_RevFloat, RV_RTL, RV_Float } = useWindow();
+  const { RV_RevFloat, RV_RTL } = useWindow();
   const isMobile = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -24,9 +24,9 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
     if (isMobileScreen) {
       return '85%';
     } else if (isTabletOrMobile) {
-      return '70%';
+      return '60%';
     } else {
-      return '35%';
+      return '40%';
     }
   };
 
@@ -35,17 +35,17 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
     setIsModalShown(true);
   };
 
-  const handleCloseArchived = () => {
+  const handleCloseArchivedModal = (hasRecycledApps) => {
     setIsModalShown(false);
-    dispatch(getApplications());
+    if (hasRecycledApps) {
+      dispatch(getApplications());
+    }
   };
 
   return (
     <Styled.TeamConatiner
       isArchive
       isMobile={isMobile}
-      dir={RV_Float}
-      revDir={RV_RevFloat}
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
@@ -54,7 +54,7 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
         modalWidth={getModalWidth()}
         contentClass="archived-teams"
         archives={archives}
-        onModalClose={handleCloseArchived}
+        onModalClose={handleCloseArchivedModal}
       />
       {hasHandle && <SortHandle />}
       <Styled.TeamPattern

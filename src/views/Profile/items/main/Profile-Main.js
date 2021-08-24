@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Profile/Profile.styles';
@@ -9,7 +9,6 @@ import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
 import LastTopics from './items/LastTopics';
 import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
-import EditModal from './items/EditModal';
 // import LastPosts from './items/LastPosts';
 import { getRelatedNodesAbstract } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -19,6 +18,11 @@ import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getCroppedImg, readFile, createImage } from './items/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+
+const EditModal = lazy(() =>
+  import(/* webpackChunkName: "edit-profile-image-modal"*/ './items/EditModal')
+);
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
@@ -195,12 +199,17 @@ const ProfileMain = (props) => {
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      <EditModal
-        modalProps={editModal}
-        handleCloseModal={handleCloseModal}
-        setCroppedImage={setProfilePhoto}
-        id={UserID}
-      />
+      <Suspense fallback={<ModalFallbackLoader />}>
+        {editModal?.isShown && (
+          <EditModal
+            modalProps={editModal}
+            handleCloseModal={handleCloseModal}
+            setCroppedImage={setProfilePhoto}
+            id={UserID}
+          />
+        )}
+      </Suspense>
+
       <Styled.ProfileHeader coverImage={coverPhoto}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
