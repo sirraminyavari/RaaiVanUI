@@ -7,7 +7,7 @@ import { mutateTree } from '@atlaskit/tree';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import getIcon from '../getItemIcon';
+import getIcon from 'utils/treeUtils/getItemIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { getURL } from 'helpers/helpers';
 

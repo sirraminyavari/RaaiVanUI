@@ -37,11 +37,11 @@ const selectHasSidebarPattern = createSelector(
 
 export const CustomSettingContext = createContext({});
 
-const ProfileCustomization = () => {
+const ProfileCustomization = ({ route }) => {
   const dispatch = useDispatch();
   const { RV_Float, RVGlobal, RVDic } = useWindow();
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
-  const currentUser = (RVGlobal || {}).CurrentUser;
+  const currentUser = (route || {}).User;
 
   const allThemes = useSelector(selectAllThemes);
   const isDarkMode = useSelector(selectIsDarkMode);

@@ -15,7 +15,7 @@ import {
 import { FLEX_RCB, FLEX_RSB } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
-const { RV_RevFloat, GlobalUtilities } = window;
+const { RV_RevFloat, GlobalUtilities, RV_Float } = window;
 
 export const TemplateGalleryContainer = styled.div`
   user-select: none;
@@ -67,6 +67,24 @@ export const ModalTitle = styled.div.attrs({
 })`
   font-size: 1rem;
   font-weight: 500;
+`;
+
+export const SuggestionListContainer = styled.div`
+  .template-suggestion-list-scrollbar {
+    height: calc(100vh - 15rem);
+    margin-${RV_Float}: -1rem;
+    padding-${RV_Float}: 1.3rem;
+  }
+
+  .ps__thumb-y {
+    background-color: ${CV_BLACK} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
+  }
 `;
 
 export const SuggestionListTitle = styled.div.attrs({

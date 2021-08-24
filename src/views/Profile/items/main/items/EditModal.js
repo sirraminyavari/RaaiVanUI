@@ -6,14 +6,7 @@ import Modal from 'components/Modal/Modal';
 import ImageCropper from './ImageCropper';
 import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { decodeBase64 } from 'helpers/helpers';
-import {
-  cropProfileImage,
-  cropIcon,
-  getVariable,
-  setVariable,
-} from 'apiHelper/apiFunctions';
+import { cropIcon } from 'apiHelper/apiFunctions';
 import { loginSlice } from 'store/reducers/loginReducer';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import { API_Provider } from 'helpers/helpers';
@@ -27,37 +20,11 @@ const ButtonsCommonStyles = { width: '6rem', height: '2rem' };
 
 const EditModal = (props) => {
   const { modalProps, handleCloseModal, setCroppedImage, id } = props;
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
   const dispatch = useDispatch();
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({});
-  // const [initCropDimensions, setInitCropDimensions] = useState(null);
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileURL, setProfileURL] = useState(null);
-
-  //! The variable name for user's profile image  .
-  const dimensionsVariableName = `ImageDimensions_${id}`;
-
-  //! Get image dimension for previous crop.
-  // useEffect(() => {
-  //   getVariable(dimensionsVariableName)
-  //     .then((res) => {
-  //       let imageDimensions = res.Value
-  //         ? JSON.parse(decodeBase64(res.Value))
-  //         : null;
-  //       // console.log('get variable', imageDimensions);
-
-  //       const { X: x, Y: y, Width: width, Height: height } = imageDimensions;
-  //       setInitCropDimensions({ x, y, width, height });
-  //     })
-  //     .catch((error) => console.log(error));
-
-  //   //? Due to memory leak error in crop modal.
-  //   //! Clean up.
-  //   return () => {
-  //     setInitCropDimensions(null);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [modalProps]);
 
   //! Get upload URL.
   useEffect(() => {
@@ -80,34 +47,12 @@ const EditModal = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //! Get cropped image to show the updated(cropped) image to user instantly.
-  // const getCroppedImage = async () => {
-  //   try {
-  //     const croppedImage = await getCroppedImg(
-  //       cropModal?.imgSrc,
-  //       croppedAreaPixels
-  //     );
-  //     return croppedImage;
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   //! Fires on save button click.
   const handleSaveCroppedImage = () => {
     setIsSavingImage(true);
-    // getCroppedImage()
-    //   .then((croppedImg) => {
-    // console.log(croppedImg);
-    //     setCroppedImage(croppedImg);
-    // setCropDimensions(null);
-    // handleCloseModal();
-    //   })
-    //   .catch((cropError) => console.log(cropError));
+
     let formData = new FormData();
-
     formData.append('file', modalProps.file);
-
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -118,53 +63,33 @@ const EditModal = (props) => {
     axios
       .post(profileURL, formData, config)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setIsSavingImage(false);
-        const newImageURL =
-          response.data.Message.ImageURL + `?timeStamp=${new Date().getTime()}`;
-        // setCroppedImage(newImageURL);
-        // dispatch(
-        //   setAuthUser({
-        //     ...window.RVGlobal?.CurrentUser,
-        //     ProfileImageURL: newImageURL,
-        //   })
-        // );
-        console.log(croppedAreaPixels);
         //! Save cropped profile dimensions on the server.
-        cropIcon(id, 'ProfileImage', croppedAreaPixels)
-          .then((res) => {
-            console.log('crop response: ', res);
-            const newImageURL =
-              res.ImageURL + `?timeStamp=${new Date().getTime()}`;
-
-            setCroppedImage(newImageURL);
-            dispatch(
-              setAuthUser({
-                ...window.RVGlobal?.CurrentUser,
-                ProfileImageURL: newImageURL,
-              })
-            );
-            // let newDimensions = {
-            //   X: x,
-            //   Y: y,
-            //   Width: width,
-            //   Height: height,
-            // };
-            setIsSavingImage(false);
-            // setVariable(dimensionsVariableName, newDimensions).then((response) => {
-            //   // console.log('set variable response: ', response);
-            //   setIsSavingImage(false);
-            // });
-          })
-          .catch((err) => {
-            dispatch(
-              setAuthUser({
-                ...window.RVGlobal?.CurrentUser,
-                ProfileImageURL: response.data.Message.ImageURL,
-              })
-            );
-            console.log(err);
-          });
+        if (response?.data?.success) {
+          cropIcon(id, 'ProfileImage', croppedAreaPixels)
+            .then((res) => {
+              // console.log('crop response: ', res);
+              const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
+              setCroppedImage(newImageURL);
+              dispatch(
+                setAuthUser({
+                  ...window.RVGlobal?.CurrentUser,
+                  ProfileImageURL: newImageURL,
+                })
+              );
+              setIsSavingImage(false);
+            })
+            .catch((err) => {
+              dispatch(
+                setAuthUser({
+                  ...window.RVGlobal?.CurrentUser,
+                  ProfileImageURL: response.data.Message.ImageURL,
+                })
+              );
+              console.log(err);
+            });
+        }
       })
       .catch((error) => {
         setIsSavingImage(false);
@@ -174,7 +99,6 @@ const EditModal = (props) => {
 
   //! Fires when user changes the image crop area.
   const handleImageCropComplete = (croppedArea, croppedAreaPixels) => {
-    // console.log(modalProps.imgOrig.width, modalProps.imgOrig.height);
     const xRatio = modalProps.imgOrig.width / 595;
     const yRatio = modalProps.imgOrig.height / 335;
 
@@ -184,10 +108,6 @@ const EditModal = (props) => {
       width: Math.trunc(croppedAreaPixels.width / yRatio),
       height: Math.trunc(croppedAreaPixels.height / yRatio),
     };
-    // console.log({ croppedAreaPixels });
-    // console.log({ croppedArea });
-    // console.log({ truncatedCropArea });
-    // console.log({ xRatio });
 
     setCroppedAreaPixels(truncatedCropArea);
   };
@@ -200,14 +120,9 @@ const EditModal = (props) => {
       titleClass="profile-image-crop-modal"
       title={modalProps?.title}>
       <Styled.ImageCropperWrapper>
-        {/* {!initCropDimensions ? (
-          <LogoLoader />
-        ) : (
-          <> */}
         <ImageCropper
           imageSrc={modalProps?.imgSrc}
           aspectRatio={modalProps?.aspect}
-          // initialCroppedAreaPixels={initCropDimensions}
           onImgaeCropComplete={handleImageCropComplete}
         />
         <Styled.CropperButtonsWrapper>
@@ -225,8 +140,6 @@ const EditModal = (props) => {
             {RVDic.Return}
           </Button>
         </Styled.CropperButtonsWrapper>
-        {/* </>
-        )} */}
       </Styled.ImageCropperWrapper>
     </Modal>
   );
