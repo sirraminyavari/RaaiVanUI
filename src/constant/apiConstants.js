@@ -8,10 +8,11 @@
 export const USERS_API = 'UsersAPI';
 
 /**
- * @description 'GetPasswordPolicy'
+ * @description 'SaveUserSettingsItem'
  * @mode API function
  * @class 'UsersAPI'
  */
+
 export const GET_PASS_POLICY = 'GetPasswordPolicy';
 
 /**

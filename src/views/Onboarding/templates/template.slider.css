@@ -1,0 +1,121 @@
+.template-slider {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 330px;
+  justify-content: space-between;
+  align-items: center;
+}
+.template-carousel-container {
+  width: 250px;
+  height: 300px;
+  overflow: hidden;
+}
+.template-carousel-container .template-track {
+  padding: 74px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  transition: transform 0.4s ease-in-out;
+}
+.template-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 148px;
+  width: 240px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 5px 10px;
+}
+.template-card-container .template-card {
+  height: 138px;
+  width: 220px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+.template-card-container .template-card .badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 18px;
+  width: 18px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*border: 20px solid;*/
+  /* border-radius: 20px; */
+  /*border-color: peru peru transparent transparent ;*/
+  background-color: #2b7be4;
+}
+.template-card-container .template-card .badge-empty {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 18px;
+  width: 18px;
+  border-radius: 100%;
+  border: 1px solid #bababa;
+}
+.template-card-container .template-card .badge-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.template-next-btn,
+.template-prev-btn {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  width: 100%;
+}
+.template-next-align {
+  justify-content: center;
+}
+.template-prev-btn {
+  justify-content: center;
+}
+.template-next-btn img,
+.template-prev-btn img {
+  height: 10px;
+  width: 50px;
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px;
+}
+.card-content img {
+  width: 36px;
+  height: 36px;
+}
+.card-title-block {
+  margin: 10px auto;
+}
+.card-subtitle {
+  font-size: 8px;
+  color: #42a5f5;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: bold;
+}
+.card-discription {
+  font-size: 9px;
+  color: #9e9e9e;
+  font-weight: 500;
+}

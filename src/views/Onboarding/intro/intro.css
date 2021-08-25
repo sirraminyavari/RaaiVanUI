@@ -1,0 +1,75 @@
+.intro-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.intro-wrapper {
+  max-width: 900px;
+}
+.intro-form {
+  margin-top: 64px;
+  display: flex;
+  justify-content: start;
+  align-content: flex-start;
+}
+.name-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-right: 64px;
+  padding: 5px;
+}
+.name-block input {
+  margin-bottom: 2rem;
+}
+.avatar-block {
+  width: 110px;
+}
+.avatar {
+  line-height: 80px;
+  text-align: center;
+  height: 80px;
+  width: 80px;
+  border-radius: 100%;
+  color: white;
+  background-color: #03a9f4;
+  transition: all 0.25s ease-in-out;
+}
+.avatar_hovered {
+  background-color: #303f9f;
+}
+.upload {
+  display: flex;
+  margin-top: 4px;
+  align-items: center;
+  justify-content: center;
+}
+.upload-btn {
+  display: flex;
+  cursor: pointer;
+  width: 100px;
+}
+.upload-btn div {
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+}
+.upload-btn div {
+  margin-right: 8px;
+  font-weight: 500;
+}
+.upload-btn-content {
+  transition: all 0.25s ease-in-out;
+}
+.intro-action {
+  margin-right: -5px;
+  margin-top: 2rem;
+  text-align: center;
+  height: 64px;
+}
+.intro-action button {
+  height: 48px;
+  padding-right: 4rem;
+  padding-left: 4rem;
+}

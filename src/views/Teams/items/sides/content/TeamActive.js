@@ -5,9 +5,11 @@ import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import axios from 'axios';
+import ReactTooltip from 'react-tooltip';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
@@ -40,6 +42,7 @@ import { API_Provider } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import { SIDEBAR_WINDOW } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 // import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 // import { invitationSlice } from 'store/reducers/invitationsReducer';
 
@@ -66,6 +69,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const uploadFileRef = useRef();
+  const actionRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
@@ -77,6 +81,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     title: '',
     isOpen: false,
   });
+
+  const handleOnClickOutside = (e) => {
+    ReactTooltip.hide();
+  };
+
+  useOnClickOutside(actionRef, handleOnClickOutside);
 
   const isAdmin = (RVGlobal || {}).IsSystemAdmin;
   const currentUser = (RVGlobal || {}).CurrentUser;
@@ -296,6 +306,39 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     }
   };
 
+  const handleClickMoreIcon = (e) => {
+    e.stopPropagation();
+  };
+
+  const renderMoreContent = () => {
+    return (
+      <Styled.TeamActionContainer
+        ref={actionRef}
+        data-action={`team-action-${appId}`}>
+        {isRemovable ? (
+          isDeleting ? (
+            <LoadingIconCircle
+              style={{ maxWidth: '1.5rem', maxHeight: '1.5rem' }}
+              color={TCV_DEFAULT}
+            />
+          ) : (
+            <Styled.TeamDeleteWrapper onClick={handleTeamDelete}>
+              <TrashIcon />
+              <span className="team-action-title">
+                {RVDic.RemoveN.replace('[n]', RVDic.Team)}
+              </span>
+            </Styled.TeamDeleteWrapper>
+          )
+        ) : (
+          <Styled.TeamExitWrapper onClick={onExitTeamClick}>
+            <ExitIcon size={22} />
+            <span className="team-action-title">خروج از تیم</span>
+          </Styled.TeamExitWrapper>
+        )}
+      </Styled.TeamActionContainer>
+    );
+  };
+
   useEffect(() => {
     dispatch(getApplicationUsers(appId, '', onGetUsers));
 
@@ -449,38 +492,21 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 )
               )}
             </Styled.TeamAvatarsWrapper>
-            {isRemovable ? (
-              <Tooltip
-                tipId={`delete-team-${appId}`}
-                effect="solid"
-                type="dark"
-                place="bottom"
-                ignoreTip={isDragging}
-                renderContent={() => RVDic.RemoveN.replace('[n]', RVDic.Team)}>
-                <Styled.TeamTrashWrapper onClick={handleTeamDelete}>
-                  {isDeleting ? (
-                    <LoadingIconCircle
-                      style={{ maxWidth: '1.5rem', maxHeight: '1.5rem' }}
-                      color={TCV_DEFAULT}
-                    />
-                  ) : (
-                    <TrashIcon />
-                  )}
-                </Styled.TeamTrashWrapper>
-              </Tooltip>
-            ) : (
-              <Tooltip
-                tipId={`leave-team-${appId}`}
-                effect="solid"
-                type="dark"
-                place="bottom"
-                ignoreTip={isDragging}
-                renderContent={() => RVDic.LeaveN.replace('[n]', RVDic.Team)}>
-                <Styled.TeamExitWrapper onClick={onExitTeamClick}>
-                  <ExitIcon size={22} />
-                </Styled.TeamExitWrapper>
-              </Tooltip>
-            )}
+            <Tooltip
+              tipId={`team-more-action-${appId}`}
+              effect="solid"
+              event="click"
+              clickable
+              place={RV_RevFloat}
+              arrowColor="transparent"
+              backgroundColor="transparent"
+              offset={{ [RV_Float]: 70 }}
+              ignoreTip={isDragging}
+              renderContent={renderMoreContent}>
+              <Styled.MoreIconWrapper onClick={handleClickMoreIcon}>
+                <MoreIcon size={28} className="team-more-icon" />
+              </Styled.MoreIconWrapper>
+            </Tooltip>
           </Styled.TeamFooterConatiner>
         </Styled.TeamContentWrapper>
       )}

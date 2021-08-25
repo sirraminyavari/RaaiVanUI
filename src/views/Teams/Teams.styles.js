@@ -7,10 +7,12 @@ import {
   BG_GRAY_LIGHT,
   BG_WHITE,
   BO_DISTANT,
+  TC_VERY_TRANSPARENT,
 } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
+  BO_RADIUS_QUARTER,
   BO_RADIUS_UNIT,
 } from 'constant/constants';
 import {
@@ -26,6 +28,7 @@ import {
   TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
+import { FLEX_RCS } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
@@ -492,12 +495,31 @@ export const TeamFooterConatiner = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 2rem;
+
+  .team-more-icon {
+    color: ${CV_DISTANT};
+
+    :hover {
+      color: ${TCV_DEFAULT};
+    }
+  }
+
+  .team-more-tooltip {
+    // background-color: ${CV_WHITE} !important;
+    // box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT} !important;
+  }
 `;
 
 export const TeamAvatarsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  ${FLEX_RCS}
+`;
+
+export const MoreIconWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  ${FLEX_RCS}
+  padding: 0.2rem;
+  background-color: ${CV_FREEZED};
 `;
 
 const getPosition = ({ dir, usersCount }) => {
@@ -557,27 +579,39 @@ export const ExtraUserTitle = styled.span.attrs({
   margin: 0 0.5rem;
 `;
 
-const teamActionCSS = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
+export const TeamActionContainer = styled.div.attrs({
+  className: `${C_GRAY} ${BG_WHITE} ${BO_RADIUS_QUARTER}`,
+})`
+  ${FLEX_RCS}
+  cursor: pointer;
+  min-width: 7rem;
+  height: 2.2rem;
+  padding: 0 0.8rem;
+  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+  text-transform: capitalize;
+
+  .team-action-title {
+    margin: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
 `;
 
-export const TeamTrashWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
-}))`
-  ${teamActionCSS}
+export const TeamDeleteWrapper = styled.div`
+  ${FLEX_RCS}
+
   :hover {
     color: ${CV_RED} !important;
   }
 `;
 
-export const TeamExitWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${BO_RADIUS_CIRCLE}`,
-}))`
-  ${teamActionCSS}
-  transform: scaleX(-1);
+export const TeamExitWrapper = styled.div`
+  ${FLEX_RCS}
+
+  & svg {
+    transform: scaleX(-1);
+  }
+
   :hover {
     color: ${TCV_VERYWARM} !important;
   }

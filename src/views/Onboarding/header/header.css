@@ -1,0 +1,49 @@
+.onboarding-header {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 64px;
+  padding: 0 24px;
+}
+.thumb-placeholder {
+  height: 35px;
+  width: 35px;
+  background-color: #03a9f4;
+  border-radius: 100%;
+  color: white;
+  text-align: center;
+  line-height: 45px;
+}
+.thumb-img {
+  box-sizing: border-box;
+  height: 35px;
+  width: 35px;
+  border-radius: 100%;
+  border: 2px solid white;
+  padding: 0;
+}
+.skeleton {
+  height: 35px;
+  width: 35px;
+  margin-left: 15px;
+  border-radius: 100%;
+  transition: all 1s linear;
+  animation-delay: 0;
+  animation-name: loading;
+  animation-duration: 1.5s;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+}
+@keyframes loading {
+  from {
+    background-color: #03a9f4;
+  }
+  to {
+    background-color: #8ad0f1;
+  }
+}

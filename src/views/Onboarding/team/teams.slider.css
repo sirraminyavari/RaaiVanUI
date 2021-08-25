@@ -1,0 +1,72 @@
+.slider {
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+  align-items: center;
+}
+.carousel-container {
+  width: 200px;
+  overflow: hidden;
+}
+.carousel-container .track {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  transform: translateX(200px);
+  transition: transform 0.4s ease-in-out;
+}
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 120px;
+  width: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 10px 5px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.25s ease-in-out;
+}
+.card-container:hover {
+  background-color: whitesmoke;
+}
+.card-container img {
+  height: 48px;
+  width: 48px;
+  border-radius: 100%;
+  margin-bottom: 20px;
+}
+.card-container p {
+  box-sizing: border-box;
+  width: 90px;
+  padding: 2px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  text-align: center;
+}
+.next-btn,
+.prev-btn {
+  display: flex;
+  align-items: center;
+  height: 100px;
+  width: 40px;
+}
+.next-align {
+  justify-content: flex-start;
+}
+.prev-btn {
+  justify-content: flex-end;
+}
+.next-btn img,
+.prev-btn img {
+  height: 40px;
+  width: 12px;
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}

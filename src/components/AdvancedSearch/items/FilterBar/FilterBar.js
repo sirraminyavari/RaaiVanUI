@@ -149,8 +149,10 @@ const FilterBar = ({
 
   const { goBack, push } = useHistory();
 
-  const isInOnBoarding = onboardingName === INTRO_ONBOARD;
-  const isNewDocOpened = newDocMenu === OPENED;
+  // const isInOnBoarding = onboardingName === INTRO_ONBOARD;
+  const isInOnBoarding = true;
+  // const isNewDocOpened = newDocMenu === OPENED;
+  const isNewDocOpened = true;
   // const isInOnBoarding = false;
 
   /**
@@ -160,7 +162,7 @@ const FilterBar = ({
   const getCreationAccess = () =>
     checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {
       // If the user has access can choose between two items.
-      if (dt?.Result || isInOnBoarding) {
+      if (dt?.Result) {
         // setCreationData(data);
         setMarket(data);
       } else {
@@ -172,6 +174,11 @@ const FilterBar = ({
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
     getCreationAccess();
+    if (onboardingName === INTRO_ONBOARD) {
+      console.log(onboardingName, 'onboardingName*********');
+
+      setMarket(data);
+    }
   }, []);
 
   // Gets typeName by retrieving it from the hierarchy.
@@ -442,8 +449,6 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {console.log(isProfile_all(), 'isProfile_all', '&&&&&&&&&')}
-
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"

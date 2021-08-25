@@ -1,6 +1,7 @@
 /**
  * An action for final step of signing up
  */
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
 import { loginSlice } from '../../reducers/loginReducer';
 
 const {
@@ -43,13 +44,14 @@ const signupAction = () => async (dispatch, getState) => {
               )
             );
           } else if (result.AuthCookie) {
-            (RVGlobal || {}).CurrentUser = result?.User;
-
+            // (RVGlobal || {}).CurrentUser = result?.User;
             dispatch(signupSuccess());
-            RVAPI.LoggedIn();
-            GlobalUtilities.set_auth_cookie(result.AuthCookie);
+
             //ask ramin
-            location.href = location.href;
+
+            const newUrl = afterLogin(result);
+
+            location.href = newUrl || location.href;
           }
         },
       });

@@ -1,0 +1,15 @@
+.line-container {
+  position: relative;
+  height: 1px;
+}
+
+.line-container .line {
+  display: block;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image: linear-gradient(to right, transparent 50%, #bac9dc 50%);
+}

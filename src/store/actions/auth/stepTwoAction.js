@@ -2,6 +2,7 @@
  * An action for step two of signing in
  */
 import APIHandler from 'apiHelper/APIHandler';
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
 import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
 
@@ -40,8 +41,7 @@ const stepTwoAction = (data) => async (dispatch, getState) => {
             done(false);
             if (result.CodeDisposed) vcd.Close();
           } else if (result.Succeed) {
-            (RVGlobal || {}).CurrentUser = result?.User;
-
+            // (RVGlobal || {}).CurrentUser = result?.User;
             done(true);
             // that.logged_in(result);
 
