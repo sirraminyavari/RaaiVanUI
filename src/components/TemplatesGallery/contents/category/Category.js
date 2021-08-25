@@ -1,20 +1,24 @@
+import { useContext } from 'react';
 import * as Styled from '../../TemplatesGallery.styles';
 import SubCategoryList from './SubCategoryList';
+import { TemplatesGalleryContext } from '../../TemplatesGallery';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
-const Category = ({ category }) => {
+const Category = () => {
+  const { currentCategory } = useContext(TemplatesGalleryContext);
+
   return (
-    <Styled.CategoryContentContainer>
-      <Styled.CategoryTitle>مدیریت محصول</Styled.CategoryTitle>
-      <Styled.CategoryDescription>
-        این یک نوشته آزمایشی است که به طراحان و برنامه نویسان کمک میکند تا این
-        عزیزان با بهره گیری از این نوشته تستی و آزمایشی بتوانند نمونه تکمیل شده
-        از پروژه و طرح خودشان را به کارفرما نمایش دهند، استفاده از این متن تستی
-        می تواند سرعت پیشرفت پروژه را افزایش دهد، و طراحان به جای تایپ و نگارش
-        متن می توانند تنها با یک کپی و پست این متن را در کادرهای مختلف جایگزین
-        .نمائید.
-      </Styled.CategoryDescription>
-      <SubCategoryList items={[]} />
-    </Styled.CategoryContentContainer>
+    <PerfectScrollbar className="template-category-scrollbar">
+      <Styled.CategoryContentContainer>
+        <Styled.CategoryTitle>
+          {currentCategory?.data?.title}
+        </Styled.CategoryTitle>
+        <Styled.CategoryDescription>
+          {currentCategory?.data?.description}
+        </Styled.CategoryDescription>
+        <SubCategoryList items={[]} />
+      </Styled.CategoryContentContainer>
+    </PerfectScrollbar>
   );
 };
 

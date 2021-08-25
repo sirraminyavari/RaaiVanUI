@@ -27,6 +27,18 @@ import styled, { css } from 'styled-components';
 
 const { RV_RevFloat, GlobalUtilities, RV_Float } = window;
 
+const commonScrollCss = css`
+  .ps__thumb-y {
+    background-color: ${CV_BLACK} !important;
+  }
+  .ps__rail-y:hover {
+    background-color: transparent !important;
+  }
+  .ps__rail-y {
+    ${RV_Float}: 0rem !important;
+  }
+`;
+
 export const TemplateGalleryContainer = styled.div`
   user-select: none;
   .templates-modal-title-container {
@@ -73,16 +85,11 @@ export const GalleryInfosContainer = styled.div`
 
   .template-description-scrollbar {
     max-height: 100%;
+    ${commonScrollCss}
+  }
 
-    .ps__thumb-y {
-      background-color: ${CV_BLACK} !important;
-    }
-    .ps__rail-y:hover {
-      background-color: transparent !important;
-    }
-    .ps__rail-y {
-      ${RV_Float}: 0rem !important;
-    }
+  .template-category-scrollbar {
+    ${commonScrollCss}
   }
 `;
 
@@ -100,15 +107,7 @@ export const SuggestionListContainer = styled.div`
     padding-${RV_Float}: 1.3rem;
   }
 
-  .ps__thumb-y {
-    background-color: ${CV_BLACK} !important;
-  }
-  .ps__rail-y:hover {
-    background-color: transparent !important;
-  }
-  .ps__rail-y {
-    ${RV_Float}: 0rem !important;
-  }
+  ${commonScrollCss}
 `;
 
 export const SuggestionListTitle = styled.div.attrs({
@@ -117,6 +116,7 @@ export const SuggestionListTitle = styled.div.attrs({
   font-size: 0.9rem;
   font-weight: 500;
   margin: 1rem 0;
+  cursor: pointer;
 `;
 
 const getWidth = ({ mode }) => {
@@ -269,7 +269,7 @@ export const TemplateItemTitle = styled.span`
 
 export const CategoryContentContainer = styled.div`
   margin-top: 2.5rem;
-  height: calc(100% - 2.5rem);
+  height: 100%;
 `;
 const commonTitleStyle = css`
   color: ${TCV_WARM};
@@ -278,55 +278,48 @@ const commonTitleStyle = css`
 `;
 export const CategoryTitle = styled.div`
   ${commonTitleStyle}
-  margin-bottom: 1rem;
+  margin:  0 1.5rem 2rem 0;
 `;
 
 export const CategoryDescription = styled.div`
   color: ${CV_DISTANT};
-  height: 7rem;
+  // height: 7rem;
   font-size: 0.9rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0 1.5rem;
+  line-height: 1.5rem;
+  text-align: justify;
+  text-justify: inter-word;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 5;
+  // -webkit-box-orient: vertical;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 `;
 
 export const SubCategoryContainer = styled.div`
   height: calc(100% - 10rem);
   padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0 1.5rem;
 
-  .template-sub-category-scroll {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin: 0 -1rem;
-    padding: 0 1rem;
+  // .template-sub-category-scroll {
+  //   display: grid;
+  //   grid-template-columns: repeat(3, 1fr);
+  //   gap: 1rem;
+  //   margin: 0 -1rem;
+  //   padding: 0 1rem;
 
-    .ps__thumb-y {
-      background-color: ${CV_BLACK} !important;
-    }
-    .ps__rail-y:hover {
-      background-color: transparent !important;
-    }
-    .ps__rail-y {
-      ${RV_Float}: 0rem !important;
-    }
-  }
+  //   ${commonScrollCss}
+  // }
 `;
 
 export const TemplateDescriptionContainer = styled.div`
   max-height: 100%;
 
-  .ps__thumb-y {
-    background-color: ${CV_BLACK} !important;
-  }
-  .ps__rail-y:hover {
-    background-color: transparent !important;
-  }
-  .ps__rail-y {
-    ${RV_Float}: 0rem !important;
-  }
+  ${commonScrollCss}
 `;
 
 export const TemplateDescriptionWrapper = styled.div`
