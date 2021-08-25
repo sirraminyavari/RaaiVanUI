@@ -449,8 +449,6 @@ const FilterBar = ({
           }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {console.log(isProfile_all(), 'isProfile_all', '&&&&&&&&&')}
-
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"

@@ -3,6 +3,7 @@
  */
 import { loginSlice } from '../../reducers/loginReducer';
 import { decode } from 'js-base64';
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
 
 const { loginSuccess, showLastLogins } = loginSlice.actions;
 const { GlobalUtilities, RVDic, RVAPI } = window;
@@ -15,13 +16,12 @@ const loggedInAction = (result) => (dispatch, getState) => {
   const { AuthCookie } = result;
 
   // The following steps are necessary to be done
-  window.isAuthenticated = true;
-  RVAPI.LoggedIn();
-  GlobalUtilities.set_auth_cookie(AuthCookie);
-  GlobalUtilities.hide_recaptcha();
+  window.IsAuthenticated = true;
+
   // It's needed for pure js, maybe removed in future.
   const callback = () => {
-    window.location.href = auth.Options.ReturnURL || window.location.href;
+    window.location.href =
+      afterLogin(result) || auth.Options.ReturnURL || window.location.href;
   };
 
   let msg = result.LoginMessage ? decode(result.LoginMessage) : null;

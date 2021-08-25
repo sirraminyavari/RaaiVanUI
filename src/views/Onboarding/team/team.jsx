@@ -16,7 +16,10 @@ const Team = () => {
   useOnLoad(team_on_start);
 
   useBeforeunload(team_on_exit);
-
+  const saveUserSettingsItem = new APIHandler(
+    'UsersAPI',
+    'SaveUserSettingsItem'
+  );
   const saveName = () => {
     const rvapiCreate = new APIHandler('RVAPI', 'CreateApplication');
     const rvapiSelect = new APIHandler('RVAPI', 'SelectApplication');
@@ -59,6 +62,13 @@ const Team = () => {
       if (!res.NoApplicationFound) {
       }
     });
+    saveUserSettingsItem.fetch(
+      {
+        Name: 'first_team_wizard',
+        Value: true,
+      },
+      (response) => {}
+    );
   }, []);
 
   return (
@@ -83,7 +93,9 @@ const Team = () => {
             'make-team-btn',
             name.length < 3 && 'deactive',
           ].join(' ')}
-          onClick={(e) => saveName()}>
+          onClick={(e) => {
+            saveName();
+          }}>
           {'تیممو بساز!'}
         </button>
       </div>
