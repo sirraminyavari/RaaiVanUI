@@ -62,13 +62,13 @@ const Team = () => {
       if (!res.NoApplicationFound) {
       }
     });
-    saveUserSettingsItem.fetch(
-      {
-        Name: 'first_team_wizard',
-        Value: true,
-      },
-      (response) => {}
-    );
+    // saveUserSettingsItem.fetch(
+    //   {
+    //     Name: 'first_team_wizard',
+    //     Value: true,
+    //   },
+    //   (response) => {}
+    // );
   }, []);
 
   return (
