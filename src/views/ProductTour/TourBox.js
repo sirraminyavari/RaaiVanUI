@@ -16,13 +16,13 @@ const TourBox = ({ goTo, current, total, guidance }) => {
 
   useEffect(() => {
     if (current === 2) {
-      saveUserSettingsItem.fetch(
-        {
-          Name: 'tour_intro',
-          Value: true,
-        },
-        (response) => {}
-      );
+      // saveUserSettingsItem.fetch(
+      //   {
+      //     Name: 'tour_intro',
+      //     Value: true,
+      //   },
+      //   (response) => {}
+      // );
     }
   }, [current]);
 
