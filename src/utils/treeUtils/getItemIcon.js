@@ -20,13 +20,13 @@ const ItemIcon = (item, onExpand, onCollapse) => {
   //! Expand sidebar item on click.
   const handleOnExpand = () => {
     if (isIntroOnboarding) return;
-    onExpand(item.id);
+    onExpand && onExpand(item.id);
   };
 
   //! Collapse sidebar item on click.
   const handleOnCollapse = () => {
     if (isIntroOnboarding) return;
-    onCollapse(item.id);
+    onCollapse && onCollapse(item.id);
   };
 
   if (item.hasChildren || item.isCategory) {

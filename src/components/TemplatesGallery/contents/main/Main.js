@@ -1,7 +1,7 @@
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
-import TemplateCard from '../TemplateCard';
+import TemplateCard from '../../TemplateCard';
 import useWindow from 'hooks/useWindowContext';
-import * as Styled from '../TemplatesGallery.styles';
+import * as Styled from '../../TemplatesGallery.styles';
 import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
@@ -46,7 +46,12 @@ const TemplateGalleryMain = () => {
 
       <Styled.MainContentSwiperSection>
         <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
-        <CustomSwiper grabCursor freeMode slidesPerView={3} spaceBetween={10}>
+        <CustomSwiper
+          grabCursor
+          scrollbar
+          freeMode
+          slidesPerView={3}
+          spaceBetween={10}>
           {[...Array(10).keys()].map((item, index) => {
             return <TemplateCard index={item + 1} key={index} />;
           })}
