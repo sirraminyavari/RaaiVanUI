@@ -1,3 +1,5 @@
+import { SAVE_USER_SETTINGS_ITEM, USERS_API } from 'constant/apiConstants';
+import { API_Provider } from 'helpers/helpers';
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -7,8 +9,22 @@ import {
 } from 'store/reducers/onboardingReducer';
 import * as Style from './styled';
 
+const saveUserSettingsItem = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
+
 const TourBox = ({ goTo, current, total, guidance }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (current === 2) {
+      saveUserSettingsItem.fetch(
+        {
+          Name: 'tour_intro',
+          Value: true,
+        },
+        (response) => {}
+      );
+    }
+  }, [current]);
 
   useEffect(() => {
     dispatch(onboardingName('intro'));

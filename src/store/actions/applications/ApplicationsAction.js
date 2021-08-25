@@ -24,6 +24,7 @@ import {
   SET_VARIABLE,
   REMOVE_USER_FROM_APPLICATION,
   GET_APPLICATION_USERS,
+  SAVE_USER_SETTINGS_ITEM,
 } from 'constant/apiConstants';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
 import { useSelector } from 'react-redux';
@@ -56,7 +57,6 @@ const removeUserFromApplicationAPI = API_Provider(
   REMOVE_USER_FROM_APPLICATION
 );
 const getApplicationUsersAPI = API_Provider(USERS_API, GET_APPLICATION_USERS);
-
 /**
  * @description A function (action) that gets NOT archived applications list from server.
  * @returns -Dispatch to redux store.
@@ -243,12 +243,12 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           dispatch(getUnderMenuPermissions(['Reports']));
           // dispatch(getNotificationsCount());
           // dispatch(getNotificationsList());
-          if (!!response.Onboarding) {
-            dispatch(onboardingName(response.Onboarding?.Name || ''));
-            dispatch(onboardingStep(response.Onboarding?.Step || 0));
+          if (!!response.ProductTour) {
+            dispatch(onboardingName(response.ProductTour?.Name || ''));
+            dispatch(onboardingStep(response.ProductTour?.Step || 0));
             //the application has been selected, now activate the product tour ::khalafi
 
-            if (response.Onboarding?.Name) {
+            if (response.ProductTour?.Name) {
               dispatch(toggleActivation());
             }
             done && done(CLASSES_PATH);

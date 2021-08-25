@@ -1,3 +1,5 @@
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
+
 /**
  * The action for resetting the password in the final step.
  */
@@ -38,10 +40,11 @@ const resetPasswordAction = () => async (dispatch, getState) => {
             );
           } else {
             dispatch(resetPasswordSuccess());
-            RVAPI.LoggedIn();
-            GlobalUtilities.set_auth_cookie(result.AuthCookie);
+            // RVAPI.LoggedIn();
+
+            // GlobalUtilities.set_auth_cookie(result.AuthCookie);
             //ask ramin
-            location.href = location.href;
+            location.href = afterLogin(result) || location.href;
           }
         },
       });

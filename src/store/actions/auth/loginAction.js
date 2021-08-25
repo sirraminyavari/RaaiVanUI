@@ -2,6 +2,8 @@
  * An action for Signing in
  */
 import { encode } from 'js-base64';
+import { useHistory } from 'react-router-dom';
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
 import APIHandler from '../../../apiHelper/APIHandler';
 import { loginSlice } from '../../reducers/loginReducer';
 import loggedInAction from './loggedInAction';
@@ -30,6 +32,7 @@ const loginAction = ({ email, password, invitationId }) => async (
   getState
 ) => {
   const { auth } = getState();
+  // const { goBack, push } = useHistory();
 
   /**
    * After checking email & password,
@@ -93,11 +96,13 @@ const loginAction = ({ email, password, invitationId }) => async (
             // GlobalUtilities.set_auth_cookie(AuthCookie);
             console.log(response, 'response login ***');
             // dispatch(loginSuccess(response));
-            (RVGlobal || {}).CurrentUser = response.User;
+            // (RVGlobal || {}).CurrentUser = response.User;
+
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
             window.RVGlobal.IsAuthenticated = true;
-            document.location.href = '/teams';
+
+            window.location.href = afterLogin(response) || '/teams';
           }
         },
         (err) => {

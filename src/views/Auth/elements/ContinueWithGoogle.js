@@ -12,6 +12,7 @@ import loggedInAction from 'store/actions/auth/loggedInAction';
 import styled from 'styled-components';
 import APIHandler from 'apiHelper/APIHandler';
 import { getCaptchaToken } from 'helpers/helpers';
+import afterLogin from 'utils/OnboardingRoute/afterLogin';
 
 /**
  * It's not completed.
@@ -55,9 +56,8 @@ const ContinueWithGoogle = ({ ...props }) => {
         if (result.ErrorText) {
           alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
         } else if (result.Succeed) {
-          (RVGlobal || {}).CurrentUser = result?.User;
-
           console.log(result, 'result google');
+          // afterLogin(result);
 
           dispatch(loggedInAction(result));
         }
