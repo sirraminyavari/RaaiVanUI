@@ -173,11 +173,12 @@ const FilterBar = ({
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
-    getCreationAccess();
     if (onboardingName === INTRO_ONBOARD) {
       console.log(onboardingName, 'onboardingName*********');
 
       setMarket(data);
+    } else {
+      getCreationAccess();
     }
   }, []);
 
