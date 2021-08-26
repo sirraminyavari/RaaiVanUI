@@ -22,6 +22,7 @@ const ProductTour = () => {
         showButtons={false}
         showNavigation={false}
         showCloseButton={true}
+        closeWithMask={false}
         onRequestClose={() => dispatch(toggleActivation())}
       />
     </Suspense>

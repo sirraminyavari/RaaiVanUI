@@ -1,5 +1,7 @@
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 
+const { RVGlobal } = window;
+const avatar = RVGlobal?.CurrentUser?.ProfileImageURL;
 const list = [
   {
     AdditionalID: 'MTAyOA==',
@@ -11,8 +13,7 @@ const list = [
       UserName: 'YWRtaW4=',
       FirstName: '2YXZh9iv24w=',
       LastName: '2K7ZhNmB24w=',
-      ProfileImageURL:
-        'https://rvtest.s3.ir-thr-at1.arvanstorage.com/Prof…ges/6b/9/6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7.jpg',
+      ProfileImageURL: avatar,
     },
     Description: '',
     ExpertsCount: 0,
@@ -53,8 +54,7 @@ const list = [
       UserName: 'YWRtaW4=',
       FirstName: '2YXZh9iv24w=',
       LastName: '2K7ZhNmB24w=',
-      ProfileImageURL:
-        'https://rvtest.s3.ir-thr-at1.arvanstorage.com/Prof…ges/6b/9/6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7.jpg',
+      ProfileImageURL: avatar,
     },
     Description: '',
     ExpertsCount: 0,
@@ -95,8 +95,7 @@ const list = [
       UserName: 'YWRtaW4=',
       FirstName: '2YXZh9iv24w=',
       LastName: '2K7ZhNmB24w=',
-      ProfileImageURL:
-        'https://rvtest.s3.ir-thr-at1.arvanstorage.com/Prof…ges/6b/9/6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7.jpg',
+      ProfileImageURL: avatar,
     },
     Description: '',
     ExpertsCount: 0,
@@ -137,8 +136,7 @@ const list = [
       UserName: 'YWRtaW4=',
       FirstName: '2YXZh9iv24w=',
       LastName: '2K7ZhNmB24w=',
-      ProfileImageURL:
-        'https://rvtest.s3.ir-thr-at1.arvanstorage.com/Prof…ges/6b/9/6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7.jpg',
+      ProfileImageURL: avatar,
     },
     Description: '',
     ExpertsCount: 0,
@@ -179,8 +177,7 @@ const list = [
       UserName: 'YWRtaW4=',
       FirstName: '2YXZh9iv24w=',
       LastName: '2K7ZhNmB24w=',
-      ProfileImageURL:
-        'https://rvtest.s3.ir-thr-at1.arvanstorage.com/Prof…ges/6b/9/6b9e8414-c1ea-4e59-8aa8-34b4bceb74e7.jpg',
+      ProfileImageURL: avatar,
     },
     Description: '',
     ExpertsCount: 0,
