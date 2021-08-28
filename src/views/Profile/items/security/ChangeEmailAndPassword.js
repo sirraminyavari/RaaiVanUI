@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import LockIcon from 'components/Icons/LockIcon/LockIcon';
 import EmailIcon from 'components/Icons/MailIcon/MailIcon';
-import { TC_DEFAULT } from 'constant/Colors';
+import InvisibleIcon from 'components/Icons/InVisible';
+import VisibleIcon from 'components/Icons/VisibleIcon';
+import { C_GRAY, TC_DEFAULT } from 'constant/Colors';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import * as Styled from 'views/Profile/Profile.styles';
@@ -43,6 +45,11 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
   const [passVerification, setPassVerification] = useState(
     DEFAULT_VERIFICATION
   );
+  const [passVisibility, setPassVisibility] = useState({
+    currentPass: false,
+    newPass: false,
+    confirmPass: false,
+  });
 
   let currentEmailId = Emails?.[0]?.EmailID;
   let currentEmailAddress = decodeBase64(Emails?.[0]?.Email);
@@ -316,29 +323,80 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       </Styled.FieldTitleWrapper>
       {!isSaas && (
         <AnimatedInput
-          type="password"
+          type={passVisibility.currentPass ? 'text' : 'password'}
           onChange={handleCurrentPass}
           value={currentPass}
           placeholder={RVDic.CurrentPassword}
-          style={commonInputStyles}
-        />
+          style={commonInputStyles}>
+          {passVisibility.currentPass ? (
+            <InvisibleIcon
+              className={C_GRAY}
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                setPassVisibility((prev) => ({ ...prev, currentPass: false }))
+              }
+            />
+          ) : (
+            <VisibleIcon
+              className={C_GRAY}
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                setPassVisibility((prev) => ({ ...prev, currentPass: true }))
+              }
+            />
+          )}
+        </AnimatedInput>
       )}
       <AnimatedInput
-        type="password"
+        type={passVisibility.newPass ? 'text' : 'password'}
         onChange={handleNewPass}
         onFocus={showPassPolicy}
         onBlur={hidePassPolicy}
         value={newPass}
         placeholder={RVDic.NewPassword}
-        style={commonInputStyles}
-      />
+        style={commonInputStyles}>
+        {passVisibility.newPass ? (
+          <InvisibleIcon
+            className={C_GRAY}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              setPassVisibility((prev) => ({ ...prev, newPass: false }))
+            }
+          />
+        ) : (
+          <VisibleIcon
+            className={C_GRAY}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              setPassVisibility((prev) => ({ ...prev, newPass: true }))
+            }
+          />
+        )}
+      </AnimatedInput>
       <AnimatedInput
-        type="password"
+        type={passVisibility.confirmPass ? 'text' : 'password'}
         onChange={handleNewPassConfirm}
         value={newPassConfirm}
         placeholder={RVDic.RepeatNewPassword}
-        style={commonInputStyles}
-      />
+        style={commonInputStyles}>
+        {passVisibility.confirmPass ? (
+          <InvisibleIcon
+            className={C_GRAY}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              setPassVisibility((prev) => ({ ...prev, confirmPass: false }))
+            }
+          />
+        ) : (
+          <VisibleIcon
+            className={C_GRAY}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              setPassVisibility((prev) => ({ ...prev, confirmPass: true }))
+            }
+          />
+        )}
+      </AnimatedInput>
       {passVerification?.isShown && (
         <VerificationCodeHandle
           onSendCode={handleSendPassCode}
