@@ -88,10 +88,13 @@ const AnimatedDropDownList = ({
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (buttonRef?.current && !buttonRef?.current?.contains(event?.target)) {
+      if (
+        buttonRef?.current &&
+        !buttonRef?.current?.contains(event?.target) &&
+        !introMode
+      ) {
         // onClick();
         onDropDownOpen(false);
-
         setDropedDown(false);
       }
     }

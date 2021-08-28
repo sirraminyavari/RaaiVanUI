@@ -146,11 +146,12 @@ const FilterBar = ({
 
   const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
+  const [isInOnBoarding, setIsInOnBoarding] = useState(false);
 
   const { goBack, push } = useHistory();
 
   // const isInOnBoarding = onboardingName === INTRO_ONBOARD;
-  const isInOnBoarding = true;
+  // const isInOnBoarding = true;
   // const isNewDocOpened = newDocMenu === OPENED;
   const isNewDocOpened = true;
   // const isInOnBoarding = false;
@@ -173,11 +174,17 @@ const FilterBar = ({
 
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
-    getCreationAccess();
     if (onboardingName === INTRO_ONBOARD) {
-      console.log(onboardingName, 'onboardingName*********');
+      console.log(
+        onboardingName,
+        'onboardingName*********',
+        isInOnBoarding && isNewDocOpened
+      );
+      setIsInOnBoarding(true);
 
       setMarket(data);
+    } else {
+      getCreationAccess();
     }
   }, []);
 
