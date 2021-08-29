@@ -18,8 +18,8 @@ export const TableContainer = styled.div`
     }
 
     .footer {
-      tr:first-child {
-        td {
+      .footer-tr:first-child {
+        .footer-td {
           border-top: 2px solid black;
           min-height: 3rem;
           display: flex;

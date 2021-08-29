@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, memo } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -133,24 +133,7 @@ const CustomTable = ({
   );
 
   //! Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    footerGroups,
-    prepareRow,
-    page,
-    resetResizing,
-    canPreviousPage, //! Pagination
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize }, //! End of Pagination
-  } = useTable(
+  const tableInstance = useTable(
     {
       columns,
       data,
@@ -170,6 +153,35 @@ const CustomTable = ({
     usePagination
   );
 
+  tableInstance.state = {
+    ...tableInstance.state,
+    showFooter,
+  };
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    footerGroups,
+    prepareRow,
+    page,
+    resetResizing,
+    canPreviousPage, //! Start of Pagination.
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state, //! End of Pagination.
+  } = tableInstance;
+
+  //! Get pagination properties from table instance state.
+  const { pageIndex, pageSize } = state;
+
+  // console.log(state);
+
   const handleAddRow = () => {
     setShowFooter(true);
   };
@@ -179,11 +191,8 @@ const CustomTable = ({
       if (column.index === 0) {
         console.log('accept');
         addRow();
-
-        setTimeout(() => {
-          gotoPage(pageCount - 1);
-          setShowFooter(false);
-        }, 500);
+        setShowFooter(false);
+        // gotoPage(pageCount - 1);
       } else {
         console.log('reject');
         setShowFooter(false);
@@ -308,16 +317,17 @@ const CustomTable = ({
         {showFooter && (
           <div className="footer">
             {footerGroups.map((group) => (
-              <tr {...group.getFooterGroupProps()}>
+              <div className="footer-tr" {...group.getFooterGroupProps()}>
                 {group.headers.map((column) => (
-                  <td
+                  <div
+                    className="footer-td"
                     {...column.getFooterProps({
                       onClick: () => handleFooterClick(column),
                     })}>
                     {column.render('Footer')}
-                  </td>
+                  </div>
                 ))}
-              </tr>
+              </div>
             ))}
           </div>
         )}
@@ -338,4 +348,4 @@ const CustomTable = ({
   );
 };
 
-export default CustomTable;
+export default memo(CustomTable);

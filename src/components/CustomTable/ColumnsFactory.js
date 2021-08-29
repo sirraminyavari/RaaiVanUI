@@ -19,6 +19,7 @@ const getCell = (type) => {
             range={false}
             size="small"
             value={row.value}
+            onDateSelect={() => console.log({ row })}
             style={{ color: 'white' }}
             inputStyle={{ color: 'inherit' }}
           />
@@ -35,7 +36,10 @@ const getFooter = (type) => {
     case 'string':
       return {
         Footer: (
-          <Input style={{ width: '100%', borderColor: '#333' }} type="text" />
+          <Input
+            style={{ width: '100%', borderColor: '#333', textAlign: 'center' }}
+            type="text"
+          />
         ),
       };
     case 'integer':
@@ -47,18 +51,21 @@ const getFooter = (type) => {
 
     case 'date':
       return {
-        Footer: () => (
-          <CustomDatePicker
-            label="انتخاب تاریخ"
-            mode="input"
-            type="jalali"
-            range={false}
-            size="small"
-            value={null}
-            style={{ color: 'white' }}
-            inputStyle={{ color: 'inherit' }}
-          />
-        ),
+        Footer: (footer) => {
+          return (
+            <CustomDatePicker
+              label="انتخاب تاریخ"
+              mode="input"
+              type="jalali"
+              range={false}
+              size="small"
+              value={null}
+              onDateSelect={() => console.log({ footer })}
+              style={{ color: 'white' }}
+              inputStyle={{ color: 'inherit' }}
+            />
+          );
+        },
       };
 
     default:

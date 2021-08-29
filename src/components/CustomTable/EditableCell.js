@@ -7,7 +7,7 @@ const EditableCell = ({
   value: initialValue,
   row: { index },
   column: { id, dataType },
-  updateCellData, //! This is a custom function that we supplied to our table instance
+  updateCellData, //! This is a custom function that we supplied to our table instance.
   editable,
   selectedCell, //! This is what we select for inline edit in cell.
   setSelectedCell, //!
