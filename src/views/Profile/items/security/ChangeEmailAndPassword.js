@@ -19,7 +19,7 @@ import {
   modifyUserEmail,
 } from 'apiHelper/apiFunctions';
 import PasswordValidator from 'utils/Validation/PasswordValidator';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { TOAST_TIMEOUT } from 'constant/constants';
 
@@ -73,12 +73,14 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
    * @description Renders a toast.
    * @param {('error' | 'info' | 'success' | 'warning' | 'dark')} type -The type of the toast.
    * @param {String} message -The message of the toast.
+   * @param {String} toastId -The id of the toast.
    */
-  const renderToast = (type, message) => {
+  const renderToast = (type, message, toastId) => {
     return InfoToast({
       type,
       autoClose: TOAST_TIMEOUT,
       message: getMessage(message),
+      toastId,
     });
   };
 
@@ -133,15 +135,15 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       .then((response) => {
         // console.log(response);
         if (response.ErrorText) {
-          renderToast('error', response?.ErrorText);
+          renderToast('error', response?.ErrorText, `email-${code}-error`);
         }
         if (response.Succeed) {
           setEmailVerification(DEFAULT_VERIFICATION);
-          renderToast('success', emailSuccessMSG);
+          renderToast('success', emailSuccessMSG, `email-${code}-success`);
         }
       })
       .catch((error) => {
-        renderToast('error', error);
+        renderToast('error', error, `email-${error?.message}`);
       });
   };
 
@@ -152,15 +154,15 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       .then((response) => {
         // console.log(response);
         if (response.ErrorText) {
-          renderToast('error', response?.ErrorText);
+          renderToast('error', response?.ErrorText, `pass-${code}-error`);
         }
         if (response.Succeed) {
           setPassVerification(DEFAULT_VERIFICATION);
-          renderToast('success', passSuccessMSG);
+          renderToast('success', passSuccessMSG, `pass-${code}-success`);
         }
       })
       .catch((error) => {
-        renderToast('error', error);
+        renderToast('error', error, `pass-${error?.message}`);
       });
   };
 
@@ -197,10 +199,10 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
       .then((response) => {
         // console.log(response);
         if (response?.ErrorText) {
-          renderToast('error', response?.ErrorText);
+          renderToast('error', response?.ErrorText, `email-${email}-error`);
         } else if (response?.VerificationCode) {
           const successMSG = 'AnEmailContainingEmailResetLinkSentToYou';
-          renderToast('success', successMSG);
+          renderToast('success', successMSG, `email-${email}-success`);
 
           setEmailVerification({
             isShown: true,
@@ -209,7 +211,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         }
       })
       .catch((error) => {
-        renderToast('error', error);
+        renderToast('error', error, `email-${email}-error`);
       });
   };
 
@@ -224,14 +226,22 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         .then((response) => {
           // console.log(response);
           if (response?.ErrorText) {
-            renderToast('error', response?.ErrorText);
+            renderToast(
+              'error',
+              response?.ErrorText,
+              `pass-${encodeBase64(newPass)}-error`
+            );
           } else if (response?.VerificationCode) {
             //! Reset change password fields.
             setNewPass('');
             setNewPassConfirm('');
 
             const successMSG = 'AnEmailContainingPasswordResetLinkSentToYou';
-            renderToast('success', successMSG);
+            renderToast(
+              'success',
+              successMSG,
+              `pass-${encodeBase64(newPass)}-success`
+            );
 
             setPassVerification({
               isShown: true,
@@ -240,7 +250,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           }
         })
         .catch((error) => {
-          renderToast('error', error);
+          renderToast('error', error, `pass-${error?.message}`);
         });
     } else {
       //! If user is 'NOT' in saas mode, Just regular straightforward modification.
@@ -249,14 +259,14 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         .then((response) => {
           // console.log(response);
           if (response?.ErrorText) {
-            renderToast('error', response?.ErrorText);
+            renderToast('error', response?.ErrorText, `pass-${UserID}-error`);
           }
           if (response?.Succeed) {
-            renderToast('success', passSuccessMSG);
+            renderToast('success', passSuccessMSG, `pass-${UserID}-success`);
           }
         })
         .catch((error) => {
-          renderToast('error', error);
+          renderToast('error', error, `pass-${error?.message}`);
         });
     }
   };
@@ -311,6 +321,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           onTimeout={handleEmailTimeout}
           codeCount={emailVerification?.code?.Length}
           countDown={emailVerification?.code?.Timeout}
+          immediateSend
         />
       )}
       <Styled.FieldTitleWrapper>
@@ -403,6 +414,7 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           onTimeout={handlePassTimeout}
           codeCount={passVerification?.code?.Length}
           countDown={passVerification?.code?.Timeout}
+          immediateSend
         />
       )}
       {!!passwordPolicy && isPolicyShown && (
