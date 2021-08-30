@@ -59,13 +59,62 @@ import {
 // import DnDGridList from 'components/DnDGrid/DnDGrid';
 
 const headers = [
-  { firstName: 'نام', dataType: 'string' },
-  { lastName: 'نام خانوادگی', dataType: 'string' },
-  { country: 'کشور', dataType: 'string' },
-  { city: 'شهر', dataType: 'string' },
-  { age: 'سن', dataType: 'integer' },
-  { dateOfBirth: 'تاریخ تولد', dataType: 'date' },
-  { progress: 'پیشرفت پروفایل', dataType: 'integer' },
+  {
+    id: '0',
+    title: '#',
+    accessor: 'rowIndex',
+    dataType: 'index',
+    options: { editable: false, disableSort: true },
+  },
+  {
+    id: '1',
+    title: 'نام',
+    accessor: 'firstName',
+    dataType: 'string',
+    options: { editable: true },
+  },
+  {
+    id: '2',
+    title: 'نام خانوادگی',
+    accessor: 'lastName',
+    dataType: 'string',
+    options: { editable: true },
+  },
+  {
+    id: '3',
+    title: 'کشور',
+    accessor: 'country',
+    dataType: 'string',
+    options: { editable: true },
+  },
+  {
+    id: '4',
+    title: 'شهر',
+    accessor: 'city',
+    dataType: 'string',
+    options: { editable: true },
+  },
+  {
+    id: '5',
+    title: 'سن',
+    accessor: 'age',
+    dataType: 'number',
+    options: { editable: true },
+  },
+  {
+    id: '6',
+    title: 'تاریخ تولد',
+    accessor: 'dateOfBirth',
+    dataType: 'date',
+    options: { editable: true },
+  },
+  {
+    id: '7',
+    title: 'پیشرفت',
+    accessor: 'progress',
+    dataType: 'number',
+    options: { editable: true },
+  },
 ];
 
 // const initialSize = {
@@ -348,6 +397,12 @@ const RasoulView = () => {
 
       <CustomTable
         editable
+        pagination={
+          {
+            // perPageCount: [10, 20, 30, 40],
+            // initialPageIndex: 1,
+          }
+        }
         columns={memoizedColumns}
         data={memoizedData}
         updateCellData={memoizedUpdateCellData}

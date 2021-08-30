@@ -1,18 +1,25 @@
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import DoubleArrow from 'components/Icons/ArrowIcons/DoubleArrow';
+import * as Styled from './CustomTable.styles';
 
-const TablePagination = ({
-  gotoPage,
-  previousPage,
-  nextPage,
-  canPreviousPage,
-  canNextPage,
-  pageCount,
-  pageIndex,
-  pageOptions,
-  pageSize,
-  setPageSize,
-}) => {
+const DEFAULT_PAGE_SIZES = [5, 10, 15, 30, 50];
+
+const TablePagination = ({ tableInstance, pagination }) => {
+  const {
+    canPreviousPage, //! Start of Pagination.
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state, //! End of Pagination.
+  } = tableInstance;
+
+  //! Get pagination properties from table instance state.
+  const { pageIndex, pageSize } = state;
+
   const handleStartPage = () => {
     gotoPage(0);
   };
@@ -39,8 +46,8 @@ const TablePagination = ({
   };
 
   return (
-    <div className="pagination">
-      <div className="middle">
+    <Styled.TablePaginationContainer>
+      <Styled.PaginationArrowWrapper>
         <button onClick={handleStartPage} disabled={!canPreviousPage}>
           <DoubleArrow size={25} color={canPreviousPage ? '#000' : '#888'} />
         </button>
@@ -57,7 +64,7 @@ const TablePagination = ({
             color={canNextPage ? '#000' : '#888'}
           />
         </button>
-      </div>
+      </Styled.PaginationArrowWrapper>
       <div style={{ margin: '0.5rem' }}>
         <span>
           صفحه{' '}
@@ -88,13 +95,13 @@ const TablePagination = ({
           borderRadius: '0.3rem',
         }}
         onChange={handleSelectChange}>
-        {[5, 10, 15, 30, 50].map((pageSize) => (
+        {(pagination?.perPageCount || DEFAULT_PAGE_SIZES).map((pageSize) => (
           <option key={pageSize} value={pageSize}>
             {pageSize} ردیف
           </option>
         ))}
       </select>
-    </div>
+    </Styled.TablePaginationContainer>
   );
 };
 

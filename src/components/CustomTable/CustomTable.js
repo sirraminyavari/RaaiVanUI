@@ -15,21 +15,40 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const defaultPropGetter = () => ({});
 
-const CustomTable = ({
-  editable: isEditable,
-  isFetching,
-  columns,
-  data,
-  updateCellData,
-  removeRow,
-  removeAll,
-  addRow,
-  reorderData,
-  getCellProps = defaultPropGetter,
-}) => {
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {boolean} editable - If true table cells are editable.
+ * @property {boolean} isFetching - A flag that indecates that if table's data are provided or not.
+ * @property {object} columns - The core columns configuration object for the entire table.
+ * @property {array} data - The data array that you want to display on the table.
+ */
+
+/**
+ *  @description Renders a custom table component.
+ * @component
+ * @param {PropType} props -Props that passed to custom table.
+ */
+const CustomTable = (props) => {
+  //! Properties that passed to custom table component.
+  const {
+    editable: isEditable,
+    isFetching,
+    columns,
+    data,
+    updateCellData,
+    removeRow,
+    removeAll,
+    addRow,
+    pagination,
+    reorderData,
+    getCellProps = defaultPropGetter,
+  } = props;
+
   const [selectedCell, setSelectedCell] = useState(null);
   const [confirm, setConfirm] = useState({
     show: false,
@@ -132,11 +151,12 @@ const CustomTable = ({
     []
   );
 
-  //! Use the state and functions returned from useTable to build your UI
+  //! Use the state and functions returned from useTable to build your UI.
+  //! Every option you pass to useTable should be memoized either via React.useMemo (for objects) or React.useCallback (for functions).
   const tableInstance = useTable(
     {
-      columns,
-      data,
+      columns, //! Must be memoized (Based on official Docs.).
+      data, //! Must be memoized.
       defaultColumn,
       updateCellData,
       removeRow,
@@ -145,7 +165,10 @@ const CustomTable = ({
       selectedCell,
       setSelectedCell,
       reorderData,
-      initialState: { pageIndex: 0, pageSize: 5 },
+      initialState: {
+        pageIndex: pagination?.initialPageIndex || 0,
+        pageSize: pagination?.perPageCount?.[0] || 5,
+      },
     },
     useFlexLayout,
     useResizeColumns,
@@ -166,19 +189,8 @@ const CustomTable = ({
     prepareRow,
     page,
     resetResizing,
-    canPreviousPage, //! Start of Pagination.
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state, //! End of Pagination.
+    // state, //! Table state.
   } = tableInstance;
-
-  //! Get pagination properties from table instance state.
-  const { pageIndex, pageSize } = state;
 
   // console.log(state);
 
@@ -231,35 +243,32 @@ const CustomTable = ({
           Clear all
         </Button>
       </div>
-      <div {...getTableProps()} className="table">
+      <Styled.Table {...getTableProps()}>
         <div>
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <div
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="th">
-                  <Styled.HeaderWrapper>
+                <Styled.TableHeader
+                  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <Styled.HeaderWrapper canSort={column.canSort}>
                     {column.render('Header')}
-                    <span>
+                    <>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <Arrow dir="down" size={20} />
+                          <Arrow dir="down" color={CV_DISTANT} size={24} />
                         ) : (
-                          <Arrow dir="up" size={20} />
+                          <Arrow dir="up" color={CV_DISTANT} size={24} />
                         )
                       ) : (
                         ''
                       )}
-                    </span>
+                    </>
                   </Styled.HeaderWrapper>
-                  <div
+                  <Styled.TableColumnResizer
+                    isResizing={column.isResizing}
                     {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? 'isResizing' : ''
-                    }`}
                   />
-                </div>
+                </Styled.TableHeader>
               ))}
             </div>
           ))}
@@ -267,8 +276,7 @@ const CustomTable = ({
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="table-body">
             {(provided, _) => (
-              <div
-                className="tbody"
+              <Styled.TableBody
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 {...getTableBodyProps()}>
@@ -288,20 +296,17 @@ const CustomTable = ({
                           {...row.getRowProps({
                             ...provided.draggableProps,
                           })} //! react-table props always must come after dnd props to work properly
-                          className={`${
-                            i % 2 === 0 ? 'SoftBackgroundColor' : ''
-                          } tr`}>
+                        >
                           {row.cells.map((cell) => (
-                            <div
+                            <Styled.TableCell
                               {...cell.getCellProps([
                                 {
                                   ...getCellProps(cell),
                                   onClick: () => setSelectedCell(cell),
                                 },
-                              ])}
-                              className="td">
+                              ])}>
                               {cell.render('Cell', { editable: !!isEditable })}
-                            </div>
+                            </Styled.TableCell>
                           ))}
                         </Styled.Tr>
                       )}
@@ -310,7 +315,7 @@ const CustomTable = ({
                 })}
                 {provided.placeholder}
                 {isFetching && <LogoLoader />}
-              </div>
+              </Styled.TableBody>
             )}
           </Droppable>
         </DragDropContext>
@@ -331,19 +336,8 @@ const CustomTable = ({
             ))}
           </div>
         )}
-      </div>
-      <Pagination
-        canNextPage={canNextPage}
-        canPreviousPage={canPreviousPage}
-        gotoPage={gotoPage}
-        nextPage={nextPage}
-        pageCount={pageCount}
-        pageIndex={pageIndex}
-        pageOptions={pageOptions}
-        pageSize={pageSize}
-        previousPage={previousPage}
-        setPageSize={setPageSize}
-      />
+      </Styled.Table>
+      <Pagination tableInstance={tableInstance} pagination={pagination} />
     </Styled.TableContainer>
   );
 };
