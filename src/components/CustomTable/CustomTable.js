@@ -37,6 +37,7 @@ const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
     editable: isEditable,
+    resizeable: isResizeable,
     isFetching,
     columns,
     data,
@@ -144,9 +145,9 @@ const CustomTable = (props) => {
 
   const defaultColumn = useMemo(
     () => ({
-      minWidth: 40,
-      width: 150,
-      maxWidth: 500,
+      // minWidth: 40,
+      // width: 150,
+      // maxWidth: 500,
     }),
     []
   );
@@ -189,7 +190,7 @@ const CustomTable = (props) => {
     prepareRow,
     page,
     resetResizing,
-    // state, //! Table state.
+    // state,
   } = tableInstance;
 
   // console.log(state);
@@ -264,10 +265,12 @@ const CustomTable = (props) => {
                       )}
                     </>
                   </Styled.HeaderWrapper>
-                  <Styled.TableColumnResizer
-                    isResizing={column.isResizing}
-                    {...column.getResizerProps()}
-                  />
+                  {isResizeable && (
+                    <Styled.TableColumnResizer
+                      isResizing={column.isResizing}
+                      {...column.getResizerProps()}
+                    />
+                  )}
                 </Styled.TableHeader>
               ))}
             </div>

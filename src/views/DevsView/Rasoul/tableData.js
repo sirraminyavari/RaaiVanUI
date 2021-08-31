@@ -1,7 +1,7 @@
 const fakeData = [
   {
     id: '1',
-    firstName: 'نام اول',
+    firstName: ' نام اول نام اول نام اول نام اول نام اول',
     lastName: 'نام خانوادگی اول',
     country: 'ایران',
     city: 'طهران',

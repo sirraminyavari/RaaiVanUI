@@ -64,14 +64,14 @@ const headers = [
     title: '#',
     accessor: 'rowIndex',
     dataType: 'index',
-    options: { editable: false, disableSort: true },
+    options: { editable: false, width: 40, maxWidth: 40, disableSortBy: true },
   },
   {
     id: '1',
-    title: 'نام',
+    title: 'عنوان',
     accessor: 'firstName',
-    dataType: 'string',
-    options: { editable: true },
+    dataType: 'single-select',
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '2',
@@ -397,6 +397,7 @@ const RasoulView = () => {
 
       <CustomTable
         editable
+        resizeable
         pagination={
           {
             // perPageCount: [10, 20, 30, 40],

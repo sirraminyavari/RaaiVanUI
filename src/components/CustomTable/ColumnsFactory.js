@@ -1,4 +1,5 @@
-import { DateCell, InputCell } from './types';
+import { DateCell, InputCell, SingleSelectCell } from './types';
+import { cellTypes } from './tableUtils';
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
@@ -10,14 +11,17 @@ const provideCell = (header) => {
         },
       };
 
-    case 'string':
+    case cellTypes.string:
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
-    case 'number':
+    case cellTypes.number:
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
-    case 'date':
+    case cellTypes.date:
       return { Cell: DateCell };
+
+    case cellTypes.singleSelect:
+      return { Cell: (row) => <SingleSelectCell {...row} header={header} /> };
 
     default:
       return;
@@ -45,19 +49,16 @@ const provideFooter = (header) => {
 //! Provide options for a given column.
 const provideOptions = (header) => {
   switch (header.dataType) {
-    case 'index':
-      return {
-        width: 40,
-        maxWidth: 40,
-        disableSortBy: !!header?.options?.disableSort,
-      };
-    case 'string':
-      return { disableSortBy: !!header?.options?.disableSort };
-    case 'number':
-      return { disableSortBy: !!header?.options?.disableSort };
-
-    case 'date':
-      return { disableSortBy: !!header?.options?.disableSort };
+    case cellTypes.index:
+      return { ...header?.options };
+    case cellTypes.string:
+      return { ...header?.options };
+    case cellTypes.number:
+      return { ...header?.options };
+    case cellTypes.singleSelect:
+      return { ...header?.options };
+    case cellTypes.date:
+      return { ...header?.options };
 
     default:
       return {};

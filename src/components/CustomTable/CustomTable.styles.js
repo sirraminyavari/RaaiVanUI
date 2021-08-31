@@ -80,6 +80,7 @@ export const TableHeader = styled.div.attrs({
   text-align: center;
   position: relative;
   border-bottom: 1px solid ${CV_DISTANT};
+  border-right: 1px solid ${CV_DISTANT};
 `;
 
 export const TableColumnResizer = styled.div.attrs({
