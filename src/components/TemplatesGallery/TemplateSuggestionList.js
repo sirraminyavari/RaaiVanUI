@@ -1,17 +1,20 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import * as Styled from './TemplatesGallery.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import TemplateListItem from './TemplateListItem';
-import treeData from './templateListData';
 import { TemplatesGalleryContext, MAIN_CONTENT } from './TemplatesGallery';
+import { isEmpty } from 'helpers/helpers';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const TemplateSuggestionList = () => {
-  const [tree, setTree] = useState(treeData);
-
-  const { setContent, setCurrentCategory, setCurrentTemplate } = useContext(
-    TemplatesGalleryContext
-  );
+  const {
+    setContent,
+    setCurrentCategory,
+    setCurrentTemplate,
+    tree,
+    setTree,
+  } = useContext(TemplatesGalleryContext);
 
   //! Change content on click.
   const handleClickTitle = () => {
@@ -36,12 +39,16 @@ const TemplateSuggestionList = () => {
         پیشنهاد کلیک‌مایند
       </Styled.SuggestionListTitle>
       <PerfectScrollbar className="template-suggestion-list-scrollbar">
-        <DragAndDropTree
-          indentPerLevel={0}
-          tree={tree}
-          onMutateTree={handleMutateTree}
-          renderItem={handleRenderItem}
-        />
+        {isEmpty(tree) ? (
+          <LogoLoader />
+        ) : (
+          <DragAndDropTree
+            indentPerLevel={0}
+            tree={tree}
+            onMutateTree={handleMutateTree}
+            renderItem={handleRenderItem}
+          />
+        )}
       </PerfectScrollbar>
     </Styled.SuggestionListContainer>
   );

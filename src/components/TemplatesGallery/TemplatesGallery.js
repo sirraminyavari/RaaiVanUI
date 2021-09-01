@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import Modal from '../Modal/Modal';
 import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
@@ -9,6 +9,8 @@ import DescriptionContent from './contents/template-description/TemplateDescript
 import Button from 'components/Buttons/Button';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
+import { getTemplates } from 'apiHelper/apiFunctions';
+import { provideTemplatesForTree } from './templateUtils';
 
 export const MAIN_CONTENT = 'main';
 export const CATEGORY_CONTENT = 'category';
@@ -19,6 +21,8 @@ export const TemplatesGalleryContext = createContext({});
 const TemplatesGallery = (props) => {
   const { RVDic } = useWindow();
   const [content, setContent] = useState({ name: MAIN_CONTENT, data: {} });
+  const [templatesObject, setTemplatesObject] = useState({});
+  const [tree, setTree] = useState({});
   const [currentCategory, setCurrentCategory] = useState(null);
   const [currentTemplate, setCurrentTemplate] = useState(null);
   const { isOpen, onModalClose } = props;
@@ -34,6 +38,15 @@ const TemplatesGallery = (props) => {
     }
   };
 
+  useEffect(() => {
+    getTemplates()
+      .then((response) => {
+        setTree(provideTemplatesForTree(response));
+        setTemplatesObject(response);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <TemplatesGalleryContext.Provider
       value={{
@@ -42,6 +55,9 @@ const TemplatesGallery = (props) => {
         setCurrentCategory,
         currentTemplate,
         setCurrentTemplate,
+        templatesObject,
+        tree,
+        setTree,
       }}>
       <Styled.TemplateGalleryContainer>
         <Modal

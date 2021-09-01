@@ -22,12 +22,12 @@ const TemplateListItem = ({ itemProps }) => {
   const handleClickItem = () => {
     //! Change content.
     if (item?.isCategory) {
-      setContent({ name: CATEGORY_CONTENT, data: { item } });
-      setCurrentCategory(item);
+      setContent({ name: CATEGORY_CONTENT, data: item?.data?.rawData });
+      setCurrentCategory(item?.data?.rawData);
       setCurrentTemplate(null);
     } else {
-      setContent({ name: DESCRIPTIONS_CONTENT, data: { item } });
-      setCurrentTemplate(item);
+      setContent({ name: DESCRIPTIONS_CONTENT, data: item?.data });
+      setCurrentTemplate(item?.data?.rawData);
     }
 
     //! Handle item open and close.
@@ -39,8 +39,8 @@ const TemplateListItem = ({ itemProps }) => {
   };
 
   const itemIsSelected =
-    currentTemplate?.id === item?.id ||
-    (currentCategory?.id === item?.id && !currentTemplate);
+    currentTemplate?.NodeID === item?.id ||
+    (currentCategory?.NodeTypeID === item?.id && !currentTemplate);
 
   return (
     <Styled.TemplateItemWrapper

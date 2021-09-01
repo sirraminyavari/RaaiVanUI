@@ -154,6 +154,7 @@ export const TemplateCardContainer = styled.div.attrs({
 
 export const TemplateCardTitle = styled.div`
   margin: 0.5rem 0;
+  cursor: pointer;
 `;
 
 export const TemplateCardExcerpt = styled.div`

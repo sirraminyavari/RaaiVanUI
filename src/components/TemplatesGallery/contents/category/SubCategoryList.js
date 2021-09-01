@@ -6,8 +6,8 @@ const SubCategoryList = ({ items }) => {
   return (
     <Styled.SubCategoryContainer>
       {/* <PerfectScrollbar className="template-sub-category-scroll"> */}
-      {[...Array(10).keys()].map((item) => {
-        return <TemplateCard mode="category" key={item} />;
+      {items?.map((item) => {
+        return <TemplateCard mode="category" template={item} key={item} />;
       })}
       {/* </PerfectScrollbar> */}
     </Styled.SubCategoryContainer>
