@@ -73,7 +73,7 @@ const getColumnWidth = (data, header) => {
   //   accessor = (d) => d[accessor];
   // }
 
-  const maxWidth = 300;
+  const maxWidth = header?.options?.maxWidth || 300;
   const magicSpacing = 15;
   const cellLength = Math.max(
     ...data.map((row) => `${row?.[header?.accessor]}`.length),

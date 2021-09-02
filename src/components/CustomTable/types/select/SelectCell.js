@@ -36,8 +36,12 @@ const SelectCell = (props) => {
 
   useOnClickOutside(selectRef, handleHideOptions);
 
+  if (!props?.editable) {
+    return selectedOption;
+  }
+
   if (!props?.header?.options?.editable) {
-    return props.value;
+    return selectedOption;
   }
 
   return (

@@ -7,8 +7,10 @@ import {
   CV_GRAY,
   CV_WHITE,
 } from 'constant/CssVariables';
-import { FLEX_RCB, FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
+
+const { RV_RevFloat } = window;
 
 export const TableContainer = styled.div`
   padding: 1rem;
@@ -32,12 +34,13 @@ export const TableContainer = styled.div`
   }
 `;
 
-const getFlexStyles = ({ canSort }) => {
-  return canSort ? FLEX_RCB : FLEX_RCC;
-};
-
 export const HeaderWrapper = styled.div`
-  ${getFlexStyles}
+  ${FLEX_RCC}
+
+  .table-sort-arrow {
+    position: absolute;
+    ${RV_RevFloat}: 0.3rem;
+  }
 `;
 
 export const Tr = styled.div`

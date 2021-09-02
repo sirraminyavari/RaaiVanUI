@@ -2,9 +2,13 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from './DateCell.styles';
 
 const DateCell = (props) => {
-  // console.log('dateCell', props.header);
+  console.log('dateCell', props);
 
   const handleDateSelect = () => {};
+
+  if (!props?.editable) {
+    return <div>{props?.value}</div>;
+  }
 
   if (!props?.header?.options?.editable) {
     return <div>{props?.value}</div>;

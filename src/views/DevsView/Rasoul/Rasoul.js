@@ -94,14 +94,14 @@ const headers = [
     title: 'کشور',
     accessor: 'country',
     dataType: 'string',
-    options: { editable: true },
+    options: { editable: true, minWidth: 100 },
   },
   {
     id: '4',
     title: 'شهر',
     accessor: 'city',
     dataType: 'string',
-    options: { editable: true },
+    options: { editable: true, minWidth: 80 },
   },
   {
     id: '5',
@@ -122,7 +122,7 @@ const headers = [
     title: 'پیشرفت',
     accessor: 'progress',
     dataType: 'number',
-    options: { editable: true, width: 80 },
+    options: { editable: true, width: 100, minWidth: 100 },
   },
 ];
 
@@ -399,14 +399,12 @@ const RasoulView = () => {
       <Divider title="Custom Table Component" />
 
       <CustomTable
-        editable
-        resizeable
-        pagination={
-          {
-            // perPageCount: [10, 20, 30, 40],
-            // initialPageIndex: 1,
-          }
-        }
+        editable //! This prop makes the whole table editable.
+        resizeable //! This prop makes the whole columns of a table editable.
+        // pagination={{
+        //   perPageCount: [10, 20, 30, 40],
+        //   initialPageIndex: 0,
+        // }}
         columns={memoizedColumns}
         data={memoizedData}
         updateCellData={memoizedUpdateCellData}

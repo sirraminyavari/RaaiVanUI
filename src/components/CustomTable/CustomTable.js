@@ -15,7 +15,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 
 const defaultPropGetter = () => ({});
 
@@ -152,6 +152,15 @@ const CustomTable = (props) => {
     []
   );
 
+  const paginationStates = useMemo(() => {
+    return !!pagination
+      ? {
+          pageIndex: pagination?.initialPageIndex || 0,
+          pageSize: pagination?.perPageCount?.[0] || 5,
+        }
+      : {};
+  }, []);
+
   //! Use the state and functions returned from useTable to build your UI.
   //! Every option you pass to useTable should be memoized either via React.useMemo (for objects) or React.useCallback (for functions).
   const tableInstance = useTable(
@@ -167,8 +176,7 @@ const CustomTable = (props) => {
       setSelectedCell,
       reorderData,
       initialState: {
-        pageIndex: pagination?.initialPageIndex || 0,
-        pageSize: pagination?.perPageCount?.[0] || 5,
+        ...paginationStates,
       },
     },
     useFlexLayout,
@@ -256,12 +264,29 @@ const CustomTable = (props) => {
                     <>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <Arrow dir="down" color={CV_DISTANT} size={24} />
+                          <Arrow
+                            dir="down"
+                            color={CV_GRAY_DARK}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
                         ) : (
-                          <Arrow dir="up" color={CV_DISTANT} size={24} />
+                          <Arrow
+                            dir="up"
+                            color={CV_GRAY_DARK}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
                         )
                       ) : (
-                        ''
+                        column.canSort && (
+                          <Arrow
+                            dir="up-down"
+                            color={CV_DISTANT}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
+                        )
                       )}
                     </>
                   </Styled.HeaderWrapper>
@@ -340,7 +365,9 @@ const CustomTable = (props) => {
           </div>
         )}
       </Styled.Table>
-      <Pagination tableInstance={tableInstance} pagination={pagination} />
+      {!!pagination && (
+        <Pagination tableInstance={tableInstance} pagination={pagination} />
+      )}
     </Styled.TableContainer>
   );
 };
