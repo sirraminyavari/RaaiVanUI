@@ -6,7 +6,9 @@ import Button from 'components/Buttons/Button';
 import {
   TemplatesGalleryContext,
   CATEGORY_CONTENT,
+  MAIN_CONTENT,
 } from '../../TemplatesGallery';
+import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateDescription = () => {
   const {
@@ -17,8 +19,13 @@ const TemplateDescription = () => {
   } = useContext(TemplatesGalleryContext);
 
   const handleReturnClick = () => {
-    setContent({ name: CATEGORY_CONTENT, data: { currentCategory } });
-    setCurrentTemplate(null);
+    if (currentCategory) {
+      setContent({ name: CATEGORY_CONTENT, data: { currentCategory } });
+      setCurrentTemplate(null);
+    } else {
+      setContent({ name: MAIN_CONTENT, data: {} });
+      setCurrentTemplate(null);
+    }
   };
 
   return (
@@ -31,7 +38,7 @@ const TemplateDescription = () => {
           بازگشت
         </Button>
         <Styled.TemplateTitleInDescription>
-          {currentTemplate?.data?.title}
+          {decodeBase64(currentTemplate?.Name)}
         </Styled.TemplateTitleInDescription>
         <Styled.TemplatePhotosWrapper>
           <CustomSwiper
@@ -57,7 +64,7 @@ const TemplateDescription = () => {
                     fontSize: '1.5rem',
                     marginRight: '10%',
                   }}>
-                  {currentTemplate?.data?.title}
+                  {decodeBase64(currentTemplate?.Name)}
                 </div>
               );
             })}
@@ -68,7 +75,7 @@ const TemplateDescription = () => {
           استفاده از این قالب
         </Button>
         <Styled.TemplateDescription>
-          {currentTemplate?.data?.description}
+          {currentTemplate?.Description || 'Template Description'}
         </Styled.TemplateDescription>
       </Styled.TemplateDescriptionWrapper>
     </PerfectScrollbar>

@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
 import TemplateCard from '../../TemplateCard';
 import useWindow from 'hooks/useWindowContext';
@@ -6,9 +7,13 @@ import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { CV_DISTANT } from 'constant/CssVariables';
+import { TemplatesGalleryContext } from '../../TemplatesGallery';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { isEmpty } from 'helpers/helpers';
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
+  const { templatesObject } = useContext(TemplatesGalleryContext);
 
   return (
     <div>
@@ -46,16 +51,20 @@ const TemplateGalleryMain = () => {
 
       <Styled.MainContentSwiperSection>
         <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
-        <CustomSwiper
-          grabCursor
-          scrollbar
-          freeMode
-          slidesPerView={3}
-          spaceBetween={10}>
-          {[...Array(10).keys()].map((item, index) => {
-            return <TemplateCard index={item + 1} key={index} />;
-          })}
-        </CustomSwiper>
+        {isEmpty(templatesObject) ? (
+          <LogoLoader />
+        ) : (
+          <CustomSwiper
+            grabCursor
+            scrollbar
+            freeMode
+            slidesPerView={3}
+            spaceBetween={10}>
+            {templatesObject?.Tags?.map((template, index) => {
+              return <TemplateCard template={template} key={index} />;
+            })}
+          </CustomSwiper>
+        )}
       </Styled.MainContentSwiperSection>
     </div>
   );
