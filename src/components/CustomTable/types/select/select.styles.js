@@ -27,11 +27,12 @@ export const SelectedOption = styled.div.attrs({
   className: `${TBG_SOFT} ${BO_RADIUS_QUARTER}`,
 })`
   width: 75%;
-  height: 75%;
+  height: 78%;
   margin: 0.3rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-${RV_Float}: 0.5em;
   ${FLEX_RCS}
 `;
 

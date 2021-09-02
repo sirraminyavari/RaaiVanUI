@@ -6,7 +6,7 @@ import SelectOptions from './SelectOptions';
 import * as Styled from './select.styles';
 
 const SelectCell = (props) => {
-  console.log(props);
+  // console.log(props);
   const selectRef = useRef();
   const [showOptions, setShowOptions] = useState(false);
   const randomNumber = Math.floor(Math.random() * 5) + 1;

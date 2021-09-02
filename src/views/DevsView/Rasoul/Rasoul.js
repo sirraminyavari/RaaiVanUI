@@ -64,18 +64,27 @@ const headers = [
     title: '#',
     accessor: 'rowIndex',
     dataType: 'index',
-    options: { editable: false, width: 40, maxWidth: 40, disableSortBy: true },
+    options: {
+      editable: false,
+      width: 40,
+      maxWidth: 40,
+      disableSortBy: true,
+    },
   },
   {
     id: '1',
     title: 'عنوان',
     accessor: 'firstName',
     dataType: 'single-select',
-    options: { editable: true, disableSortBy: true },
+    options: {
+      editable: true,
+      disableSortBy: true,
+      width: 200,
+    },
   },
   {
     id: '2',
-    title: 'نام خانوادگی',
+    title: 'خانوادگی',
     accessor: 'lastName',
     dataType: 'string',
     options: { editable: true },
@@ -99,7 +108,7 @@ const headers = [
     title: 'سن',
     accessor: 'age',
     dataType: 'number',
-    options: { editable: true },
+    options: { editable: true, width: 80 },
   },
   {
     id: '6',
@@ -113,7 +122,7 @@ const headers = [
     title: 'پیشرفت',
     accessor: 'progress',
     dataType: 'number',
-    options: { editable: true },
+    options: { editable: true, width: 80 },
   },
 ];
 
@@ -246,14 +255,8 @@ const RasoulView = () => {
     };
   }, []);
 
-  const memoizedColumns = useMemo(
-    () =>
-      ColumnsFactory(headers, {
-        delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
-        view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
-      }),
-    []
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedColumns = useMemo(() => ColumnsFactory(headers, data), [data]);
 
   // const handleOnResizeEnd = (size) => {
   //   setSize(size);
@@ -270,7 +273,7 @@ const RasoulView = () => {
   // };
 
   const updateCellData = (rowIndex, columnId, value) => {
-    console.log(value);
+    // console.log(value);
     setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {

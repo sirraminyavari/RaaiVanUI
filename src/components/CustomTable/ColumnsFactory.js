@@ -18,7 +18,7 @@ const provideCell = (header) => {
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
     case cellTypes.date:
-      return { Cell: DateCell };
+      return { Cell: (row) => <DateCell {...row} header={header} /> };
 
     case cellTypes.singleSelect:
       return { Cell: (row) => <SingleSelectCell {...row} header={header} /> };
@@ -47,12 +47,15 @@ const provideFooter = (header) => {
 };
 
 //! Provide options for a given column.
-const provideOptions = (header) => {
+const provideOptions = (header, data) => {
   switch (header.dataType) {
     case cellTypes.index:
       return { ...header?.options };
     case cellTypes.string:
-      return { ...header?.options };
+      return {
+        width: getColumnWidth(data, header),
+        ...header?.options,
+      };
     case cellTypes.number:
       return { ...header?.options };
     case cellTypes.singleSelect:
@@ -61,19 +64,33 @@ const provideOptions = (header) => {
       return { ...header?.options };
 
     default:
-      return {};
+      return { ...header?.options };
   }
 };
 
+const getColumnWidth = (data, header) => {
+  // if (typeof accessor === 'string' || accessor instanceof String) {
+  //   accessor = (d) => d[accessor];
+  // }
+
+  const maxWidth = 300;
+  const magicSpacing = 15;
+  const cellLength = Math.max(
+    ...data.map((row) => `${row?.[header?.accessor]}`.length),
+    header?.title.length
+  );
+  return Math.min(maxWidth, cellLength * magicSpacing);
+};
+
 //! Column factory.
-const makeColumns = (headers) => {
+const makeColumns = (headers, data) => {
   const dataCulomns = headers.map((header) => {
     return {
       Header: header.title,
       accessor: header.accessor,
       ...provideFooter(header),
       ...provideCell(header),
-      ...provideOptions(header),
+      ...provideOptions(header, data),
     };
   });
 

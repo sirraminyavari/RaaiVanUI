@@ -1,22 +1,28 @@
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+import * as Styled from './DateCell.styles';
 
 const DateCell = (props) => {
-  //   console.log('dateCell', props);
+  // console.log('dateCell', props.header);
 
   const handleDateSelect = () => {};
 
+  if (!props?.header?.options?.editable) {
+    return <div>{props?.value}</div>;
+  }
+
   return (
-    <CustomDatePicker
-      label="انتخاب تاریخ"
-      mode="input"
-      type="jalali"
-      range={false}
-      size="small"
-      value={props?.row?.original?.dateOfBirth}
-      onDateSelect={handleDateSelect}
-      style={{ color: 'white' }}
-      inputStyle={{ color: 'inherit' }}
-    />
+    <Styled.DateCellContainer>
+      <CustomDatePicker
+        label="انتخاب تاریخ"
+        mode="input"
+        type="jalali"
+        range={false}
+        size="small"
+        value={props?.row?.original?.dateOfBirth}
+        onDateSelect={handleDateSelect}
+        inputClass="table-date-input"
+      />
+    </Styled.DateCellContainer>
   );
 };
 
