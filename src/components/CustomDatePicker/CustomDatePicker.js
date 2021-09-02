@@ -60,6 +60,7 @@ const buttonsCommonStyles = {
  * @property {string} format - The date picker format.
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
  * @property {Object} inputStyle - Style for input.
+ * @property {String} inputClass - Class for input.
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
@@ -86,6 +87,7 @@ const CustomDatePicker = (props) => {
     format,
     fromToday,
     inputStyle,
+    inputClass,
     buttonStyle,
     maximumDate,
     minimumDate,
@@ -542,6 +544,7 @@ const CustomDatePicker = (props) => {
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
+                className={inputClass}
                 style={{
                   textAlign: 'center',
                   width: '100%',

@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
 // import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 
-//! Create an editable cell renderer
+//! Create an editable cell renderer.
 const EditableCell = ({
   value: initialValue,
   row: { index },
   column: { id, dataType },
-  updateCellData, //! This is a custom function that we supplied to our table instance
+  updateCellData, //! This is a custom function that we supplied to our table instance.
   editable,
   selectedCell, //! This is what we select for inline edit in cell.
   setSelectedCell, //!

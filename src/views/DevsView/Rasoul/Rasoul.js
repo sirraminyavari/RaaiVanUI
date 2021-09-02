@@ -1,15 +1,15 @@
-// import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 // import { useSelector } from 'react-redux';
 import Divider from './Divider';
 // import APIHandler from 'apiHelper/APIHandler';
 // import { decodeBase64 } from 'helpers/helpers';
 
 //! CustomTable
-// import CustomTable from 'components/CustomTable/CustomTable';
-// import tableData from './tableData';
-// import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-// import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
-// import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
+import CustomTable from 'components/CustomTable/CustomTable';
+import tableData from './tableData';
+import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
+import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
+import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 //! Dropzone
 // import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
@@ -58,15 +58,73 @@ import {
 
 // import DnDGridList from 'components/DnDGrid/DnDGrid';
 
-// const headers = [
-//   { firstName: 'نام', dataType: 'string' },
-//   { lastName: 'نام خانوادگی', dataType: 'string' },
-//   { country: 'کشور', dataType: 'string' },
-//   { city: 'شهر', dataType: 'string' },
-//   { age: 'سن', dataType: 'integer' },
-//   { dateOfBirth: 'تاریخ تولد', dataType: 'date' },
-//   { progress: 'پیشرفت پروفایل', dataType: 'integer' },
-// ];
+const headers = [
+  {
+    id: '0',
+    title: '#',
+    accessor: 'rowIndex',
+    dataType: 'index',
+    options: {
+      editable: false,
+      width: 40,
+      maxWidth: 40,
+      disableSortBy: true,
+    },
+  },
+  {
+    id: '1',
+    title: 'عنوان',
+    accessor: 'firstName',
+    dataType: 'single-select',
+    options: {
+      editable: true,
+      disableSortBy: true,
+      width: 200,
+    },
+  },
+  {
+    id: '2',
+    title: 'خانوادگی',
+    accessor: 'lastName',
+    dataType: 'string',
+    options: { editable: true },
+  },
+  {
+    id: '3',
+    title: 'کشور',
+    accessor: 'country',
+    dataType: 'string',
+    options: { editable: true, minWidth: 100 },
+  },
+  {
+    id: '4',
+    title: 'شهر',
+    accessor: 'city',
+    dataType: 'string',
+    options: { editable: true, minWidth: 80 },
+  },
+  {
+    id: '5',
+    title: 'سن',
+    accessor: 'age',
+    dataType: 'number',
+    options: { editable: true, width: 80 },
+  },
+  {
+    id: '6',
+    title: 'تاریخ تولد',
+    accessor: 'dateOfBirth',
+    dataType: 'date',
+    options: { editable: true },
+  },
+  {
+    id: '7',
+    title: 'پیشرفت',
+    accessor: 'progress',
+    dataType: 'number',
+    options: { editable: true, width: 100, minWidth: 100 },
+  },
+];
 
 // const initialSize = {
 //   width: 200,
@@ -85,9 +143,13 @@ import {
 // };
 
 const RasoulView = () => {
+  console.log('render');
   // const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
-  // const [isFetching, setIsFetching] = useState(true);
-  // const [data, setData] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [data, setData] = useState([]);
+
+  const memoizedData = useMemo(() => data, [data]);
+
   // const [tree, setTree] = useState(DnDTreeData);
   // const [size, setSize] = useState(initialSize);
   // const [showSize, setShowSize] = useState(initialSize);
@@ -182,19 +244,19 @@ const RasoulView = () => {
   //   );
   // };
 
-  // setTimeout(() => {
-  //   setData(tableData);
-  //   setIsFetching(false);
-  // }, 2000);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setData(tableData);
+      setIsFetching(false);
+    }, 2000);
 
-  // const columns = useMemo(
-  //   () =>
-  //     ColumnsFactory(headers, {
-  //       delete: () => <DeleteRowIcon size={25} style={{ cursor: 'pointer' }} />,
-  //       view: () => <ViewRowIcon size={25} style={{ cursor: 'pointer' }} />,
-  //     }),
-  //   []
-  // );
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedColumns = useMemo(() => ColumnsFactory(headers, data), [data]);
 
   // const handleOnResizeEnd = (size) => {
   //   setSize(size);
@@ -210,53 +272,62 @@ const RasoulView = () => {
   //   console.log(size, 'resizing');
   // };
 
-  // const updateCellData = (rowIndex, columnId, value) => {
-  //   setData((old) =>
-  //     old.map((row, index) => {
-  //       if (index === rowIndex) {
-  //         return {
-  //           ...row,
-  //           [columnId]: value,
-  //         };
-  //       }
-  //       return row;
-  //     })
-  //   );
-  // };
+  const updateCellData = (rowIndex, columnId, value) => {
+    // console.log(value);
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...row,
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+  };
 
-  // const removeRow = (rowIndex) => {
-  //   setData((old) => old.filter((row, index) => index !== rowIndex));
-  // };
+  const memoizedUpdateCellData = useCallback(updateCellData, []);
 
-  // const reorderData = (startIndex, endIndex) => {
-  //   const newData = [...data];
-  //   const [movedRow] = newData.splice(startIndex, 1);
-  //   newData.splice(endIndex, 0, movedRow);
-  //   setData(newData);
-  // };
+  const removeRow = (rowIndex) => {
+    setData((old) => old.filter((row, index) => index !== rowIndex));
+  };
 
-  // const removeAll = () => {
-  //   setData([]);
-  // };
+  const memoizedRemoveRow = useCallback(removeRow, []);
 
-  // const addRow = () => {
-  //   const newRecord = {
-  //     id: '10',
-  //     firstName: 'نام دهم',
-  //     lastName: 'نام خانوادگی دهم',
-  //     country: 'ایران',
-  //     city: 'طهران',
-  //     age: 50,
-  //     dateOfBirth: '2008/11/02',
-  //     progress: 100,
-  //   };
-  //   const newData = [...data, newRecord];
-  //   setData(newData);
-  // };
+  const reorderData = (startIndex, endIndex) => {
+    const newData = [...data];
+    const [movedRow] = newData.splice(startIndex, 1);
+    newData.splice(endIndex, 0, movedRow);
+    setData(newData);
+  };
+
+  const memoizedReorderData = useCallback(reorderData, []);
+
+  const removeAll = useCallback(() => {
+    setData([]);
+  }, []);
+
+  const addRow = () => {
+    const newRecord = {
+      id: '10',
+      firstName: 'نام دهم',
+      lastName: 'نام خانوادگی دهم',
+      country: 'ایران',
+      city: 'طهران',
+      age: 50,
+      dateOfBirth: '2008/11/02',
+      progress: 100,
+    };
+    const newData = [...data, newRecord];
+    setData(newData);
+  };
+
+  const memoizedAddRow = useCallback(addRow, []);
 
   return (
     <div>
-      <div style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+      {/* <div style={{ textAlign: 'center', fontSize: '1.2rem' }}>
         <Link
           to={USER_WITHID_PATH}
           style={{
@@ -284,7 +355,7 @@ const RasoulView = () => {
           }}>
           شخصی سازی
         </Link>
-      </div>
+      </div> */}
       {/* <div style={{ width: '40%', margin: 'auto', height: '85vh' }}>
         {!!filters.length && (
           <FormFilter
@@ -306,7 +377,7 @@ const RasoulView = () => {
         }}
       </FormEdit> */}
 
-      <Divider title="FormFilter Component" />
+      {/* <Divider title="FormFilter Component" /> */}
       {/* <div style={{ width: '40%', margin: 'auto', height: '50vh' }}>
         {!!filters.length && (
           <FormFilter
@@ -316,7 +387,7 @@ const RasoulView = () => {
           />
         )}
       </div> */}
-      <Divider title="DnDGrid Component" />
+      {/* <Divider title="DnDGrid Component" /> */}
       {/* <div>
         <DnDGrid list={list} />
       </div> */}
@@ -327,14 +398,19 @@ const RasoulView = () => {
 
       <Divider title="Custom Table Component" />
 
-      {/* <CustomTable
-        editable
-        columns={columns}
-        data={data}
-        updateCellData={updateCellData}
-        reorderData={reorderData}
-        removeRow={removeRow}
-        addRow={addRow}
+      <CustomTable
+        editable //! This prop makes the whole table editable.
+        resizeable //! This prop makes the whole columns of a table editable.
+        // pagination={{
+        //   perPageCount: [10, 20, 30, 40],
+        //   initialPageIndex: 0,
+        // }}
+        columns={memoizedColumns}
+        data={memoizedData}
+        updateCellData={memoizedUpdateCellData}
+        reorderData={memoizedReorderData}
+        removeRow={memoizedRemoveRow}
+        addRow={memoizedAddRow}
         isFetching={isFetching}
         removeAll={removeAll}
         getCellProps={(cell) => ({
@@ -344,8 +420,8 @@ const RasoulView = () => {
             alignItems: 'center',
           },
         })}
-      /> */}
-      <Divider title="Custom Dropzone Component" />
+      />
+      {/* <Divider title="Custom Dropzone Component" /> */}
       {/* <CustomDropzone
         accept={['image/*', '.pdf']}
         exceptions={['jpg']}
@@ -357,8 +433,8 @@ const RasoulView = () => {
         ownerType="Node"
         // disabled
       /> */}
-      <Divider title="Custom Progressbar Component" />
-      <ProgressBar label="Label" progress={100} />
+      {/* <Divider title="Custom Progressbar Component" />
+      <ProgressBar label="Label" progress={100} /> */}
       {/* <Divider title="Custom Tree Component(broken dnd)" />
       <DnDTree data={customTreeData} /> */}
       {/* <Divider title="Atlasian Tree Component(with dnd)" /> */}
@@ -374,7 +450,7 @@ const RasoulView = () => {
       </div> */}
       {/* <Divider title="Multi column dnd" />
       <MultiDnD /> */}
-      <Divider title="Custom Date Picker" />
+      {/* <Divider title="Custom Date Picker" />
       <div
         style={{
           display: 'flex',
@@ -439,7 +515,7 @@ const RasoulView = () => {
             }
           />
         </div>
-      </div>
+      </div> */}
 
       {/* <Divider title="DnDProvider Component" /> */}
       {/* <DnDProvider

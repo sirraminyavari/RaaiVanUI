@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, memo } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -15,21 +15,41 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
+import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 
 const defaultPropGetter = () => ({});
 
-const CustomTable = ({
-  editable: isEditable,
-  isFetching,
-  columns,
-  data,
-  updateCellData,
-  removeRow,
-  removeAll,
-  addRow,
-  reorderData,
-  getCellProps = defaultPropGetter,
-}) => {
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {boolean} editable - If true table cells are editable.
+ * @property {boolean} isFetching - A flag that indecates that if table's data are provided or not.
+ * @property {object} columns - The core columns configuration object for the entire table.
+ * @property {array} data - The data array that you want to display on the table.
+ */
+
+/**
+ *  @description Renders a custom table component.
+ * @component
+ * @param {PropType} props -Props that passed to custom table.
+ */
+const CustomTable = (props) => {
+  //! Properties that passed to custom table component.
+  const {
+    editable: isEditable,
+    resizeable: isResizeable,
+    isFetching,
+    columns,
+    data,
+    updateCellData,
+    removeRow,
+    removeAll,
+    addRow,
+    pagination,
+    reorderData,
+    getCellProps = defaultPropGetter,
+  } = props;
+
   const [selectedCell, setSelectedCell] = useState(null);
   const [confirm, setConfirm] = useState({
     show: false,
@@ -125,35 +145,28 @@ const CustomTable = ({
 
   const defaultColumn = useMemo(
     () => ({
-      minWidth: 40,
-      width: 150,
-      maxWidth: 500,
+      // minWidth: 40,
+      // width: 150,
+      // maxWidth: 500,
     }),
     []
   );
 
-  //! Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    footerGroups,
-    prepareRow,
-    page,
-    resetResizing,
-    canPreviousPage, //! Pagination
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize }, //! End of Pagination
-  } = useTable(
+  const paginationStates = useMemo(() => {
+    return !!pagination
+      ? {
+          pageIndex: pagination?.initialPageIndex || 0,
+          pageSize: pagination?.perPageCount?.[0] || 5,
+        }
+      : {};
+  }, []);
+
+  //! Use the state and functions returned from useTable to build your UI.
+  //! Every option you pass to useTable should be memoized either via React.useMemo (for objects) or React.useCallback (for functions).
+  const tableInstance = useTable(
     {
-      columns,
-      data,
+      columns, //! Must be memoized (Based on official Docs.).
+      data, //! Must be memoized.
       defaultColumn,
       updateCellData,
       removeRow,
@@ -162,13 +175,33 @@ const CustomTable = ({
       selectedCell,
       setSelectedCell,
       reorderData,
-      initialState: { pageIndex: 0, pageSize: 5 },
+      initialState: {
+        ...paginationStates,
+      },
     },
     useFlexLayout,
     useResizeColumns,
     useSortBy,
     usePagination
   );
+
+  tableInstance.state = {
+    ...tableInstance.state,
+    showFooter,
+  };
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    footerGroups,
+    prepareRow,
+    page,
+    resetResizing,
+    // state,
+  } = tableInstance;
+
+  // console.log(state);
 
   const handleAddRow = () => {
     setShowFooter(true);
@@ -179,11 +212,8 @@ const CustomTable = ({
       if (column.index === 0) {
         console.log('accept');
         addRow();
-
-        setTimeout(() => {
-          gotoPage(pageCount - 1);
-          setShowFooter(false);
-        }, 500);
+        setShowFooter(false);
+        // gotoPage(pageCount - 1);
       } else {
         console.log('reject');
         setShowFooter(false);
@@ -222,35 +252,51 @@ const CustomTable = ({
           Clear all
         </Button>
       </div>
-      <div {...getTableProps()} className="table">
+      <Styled.Table {...getTableProps()}>
         <div>
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <div
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className="th">
-                  <Styled.HeaderWrapper>
+                <Styled.TableHeader
+                  {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <Styled.HeaderWrapper canSort={column.canSort}>
                     {column.render('Header')}
-                    <span>
+                    <>
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <Arrow dir="down" size={20} />
+                          <Arrow
+                            dir="down"
+                            color={CV_GRAY_DARK}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
                         ) : (
-                          <Arrow dir="up" size={20} />
+                          <Arrow
+                            dir="up"
+                            color={CV_GRAY_DARK}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
                         )
                       ) : (
-                        ''
+                        column.canSort && (
+                          <Arrow
+                            dir="up-down"
+                            color={CV_DISTANT}
+                            size={24}
+                            className="table-sort-arrow"
+                          />
+                        )
                       )}
-                    </span>
+                    </>
                   </Styled.HeaderWrapper>
-                  <div
-                    {...column.getResizerProps()}
-                    className={`resizer ${
-                      column.isResizing ? 'isResizing' : ''
-                    }`}
-                  />
-                </div>
+                  {isResizeable && (
+                    <Styled.TableColumnResizer
+                      isResizing={column.isResizing}
+                      {...column.getResizerProps()}
+                    />
+                  )}
+                </Styled.TableHeader>
               ))}
             </div>
           ))}
@@ -258,8 +304,7 @@ const CustomTable = ({
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="table-body">
             {(provided, _) => (
-              <div
-                className="tbody"
+              <Styled.TableBody
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 {...getTableBodyProps()}>
@@ -279,20 +324,17 @@ const CustomTable = ({
                           {...row.getRowProps({
                             ...provided.draggableProps,
                           })} //! react-table props always must come after dnd props to work properly
-                          className={`${
-                            i % 2 === 0 ? 'SoftBackgroundColor' : ''
-                          } tr`}>
+                        >
                           {row.cells.map((cell) => (
-                            <div
+                            <Styled.TableCell
                               {...cell.getCellProps([
                                 {
                                   ...getCellProps(cell),
                                   onClick: () => setSelectedCell(cell),
                                 },
-                              ])}
-                              className="td">
+                              ])}>
                               {cell.render('Cell', { editable: !!isEditable })}
-                            </div>
+                            </Styled.TableCell>
                           ))}
                         </Styled.Tr>
                       )}
@@ -301,41 +343,33 @@ const CustomTable = ({
                 })}
                 {provided.placeholder}
                 {isFetching && <LogoLoader />}
-              </div>
+              </Styled.TableBody>
             )}
           </Droppable>
         </DragDropContext>
         {showFooter && (
           <div className="footer">
             {footerGroups.map((group) => (
-              <tr {...group.getFooterGroupProps()}>
+              <div className="footer-tr" {...group.getFooterGroupProps()}>
                 {group.headers.map((column) => (
-                  <td
+                  <div
+                    className="footer-td"
                     {...column.getFooterProps({
                       onClick: () => handleFooterClick(column),
                     })}>
                     {column.render('Footer')}
-                  </td>
+                  </div>
                 ))}
-              </tr>
+              </div>
             ))}
           </div>
         )}
-      </div>
-      <Pagination
-        canNextPage={canNextPage}
-        canPreviousPage={canPreviousPage}
-        gotoPage={gotoPage}
-        nextPage={nextPage}
-        pageCount={pageCount}
-        pageIndex={pageIndex}
-        pageOptions={pageOptions}
-        pageSize={pageSize}
-        previousPage={previousPage}
-        setPageSize={setPageSize}
-      />
+      </Styled.Table>
+      {!!pagination && (
+        <Pagination tableInstance={tableInstance} pagination={pagination} />
+      )}
     </Styled.TableContainer>
   );
 };
 
-export default CustomTable;
+export default memo(CustomTable);

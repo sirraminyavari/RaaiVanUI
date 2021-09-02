@@ -1,111 +1,100 @@
-import EditableCell from 'components/CustomTable/EditableCell';
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import AcceptIcon from 'components/Icons/CheckIcons/Check';
-import RejectIcon from 'components/Icons/CloseIcon/CloseIcon';
-import Input from 'components/Inputs/Input';
+import { DateCell, InputCell, SingleSelectCell } from './types';
+import { cellTypes } from './tableUtils';
 
-const getCell = (type) => {
-  switch (type) {
-    case 'string':
-      return { Cell: EditableCell };
-
-    case 'date':
+//! Provide cell for a given column.
+const provideCell = (header) => {
+  switch (header.dataType) {
+    case 'index':
       return {
-        Cell: (row) => (
-          <CustomDatePicker
-            label="انتخاب تاریخ"
-            mode="input"
-            type="jalali"
-            range={false}
-            size="small"
-            value={row.value}
-            style={{ color: 'white' }}
-            inputStyle={{ color: 'inherit' }}
-          />
-        ),
+        Cell: ({ row }) => {
+          return row.index + 1;
+        },
       };
+
+    case cellTypes.string:
+      return { Cell: (row) => <InputCell {...row} header={header} /> };
+
+    case cellTypes.number:
+      return { Cell: (row) => <InputCell {...row} header={header} /> };
+
+    case cellTypes.date:
+      return { Cell: (row) => <DateCell {...row} header={header} /> };
+
+    case cellTypes.singleSelect:
+      return { Cell: (row) => <SingleSelectCell {...row} header={header} /> };
 
     default:
       return;
   }
 };
 
-const getFooter = (type) => {
-  switch (type) {
+//! Provide footer for a given column.
+const provideFooter = (header) => {
+  switch (header.dataType) {
     case 'string':
-      return {
-        Footer: (
-          <Input style={{ width: '100%', borderColor: '#333' }} type="text" />
-        ),
-      };
-    case 'integer':
-      return {
-        Footer: (
-          <Input style={{ width: '100%', borderColor: '#333' }} type="number" />
-        ),
-      };
+      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
+    case 'number':
+      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
 
     case 'date':
-      return {
-        Footer: () => (
-          <CustomDatePicker
-            label="انتخاب تاریخ"
-            mode="input"
-            type="jalali"
-            range={false}
-            size="small"
-            value={null}
-            style={{ color: 'white' }}
-            inputStyle={{ color: 'inherit' }}
-          />
-        ),
-      };
+      return { Footer: DateCell };
 
     default:
       return {
-        Footer: type,
+        Footer: header.dataType,
       };
   }
 };
 
-const footer = [
-  {
-    icon: <AcceptIcon size={25} color="green" style={{ cursor: 'pointer' }} />,
-  },
-  {
-    icon: <RejectIcon size={20} color="red" style={{ cursor: 'pointer' }} />,
-  },
-];
-
-const makeColumns = (headers, actions) => {
-  let actionColumns = [];
-  if (actions && Object.keys(actions).length !== 0) {
-    Object.keys(actions).forEach((action, index) => {
-      const customColumn = {
-        id: `${action}-row`,
-        index,
-        dataType: 'actions',
-        Footer: (row) => {
-          return footer[index].icon;
-        },
-        Cell: () => actions[action](),
-        width: 40,
-        maxWidth: 40,
+//! Provide options for a given column.
+const provideOptions = (header, data) => {
+  switch (header.dataType) {
+    case cellTypes.index:
+      return { ...header?.options };
+    case cellTypes.string:
+      return {
+        width: getColumnWidth(data, header),
+        ...header?.options,
       };
-      actionColumns.push(customColumn);
-    });
+    case cellTypes.number:
+      return { ...header?.options };
+    case cellTypes.singleSelect:
+      return { ...header?.options };
+    case cellTypes.date:
+      return { ...header?.options };
+
+    default:
+      return { ...header?.options };
   }
-  // console.log(headers, 'make columns');
+};
+
+const getColumnWidth = (data, header) => {
+  // if (typeof accessor === 'string' || accessor instanceof String) {
+  //   accessor = (d) => d[accessor];
+  // }
+
+  const maxWidth = header?.options?.maxWidth || 300;
+  const magicSpacing = 15;
+  const cellLength = Math.max(
+    ...data.map((row) => `${row?.[header?.accessor]}`.length),
+    header?.title.length
+  );
+  return Math.min(maxWidth, cellLength * magicSpacing);
+};
+
+//! Column factory.
+const makeColumns = (headers, data) => {
   const dataCulomns = headers.map((header) => {
     return {
-      Header: Object.values(header)[0],
-      accessor: Object.keys(header)[0],
-      ...getFooter(header.dataType),
-      ...getCell(header.dataType),
+      Header: header.title,
+      accessor: header.accessor,
+      ...provideFooter(header),
+      ...provideCell(header),
+      ...provideOptions(header, data),
     };
   });
 
-  return actionColumns.concat(dataCulomns);
+  return dataCulomns;
 };
 
 export default makeColumns;

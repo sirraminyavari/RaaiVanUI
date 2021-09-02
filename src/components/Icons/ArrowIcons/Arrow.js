@@ -4,6 +4,8 @@ import {
   BsArrowDown,
   BsArrowLeft,
   BsArrowRight,
+  BsArrowUpDown,
+  BsArrowLeftRight,
 } from 'react-icons/bs';
 
 const ArrowIcon = ({ dir: direction, ...rest }) => {
@@ -14,6 +16,10 @@ const ArrowIcon = ({ dir: direction, ...rest }) => {
       return <BsArrowUp {...rest} />;
     case 'left':
       return <BsArrowLeft {...rest} />;
+    case 'up-down':
+      return <BsArrowUpDown {...rest} />;
+    case 'left-right':
+      return <BsArrowLeftRight {...rest} />;
     default:
       return <BsArrowRight {...rest} />;
   }
