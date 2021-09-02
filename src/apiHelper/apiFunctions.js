@@ -41,6 +41,7 @@ import {
   MODIFY_EMAIL,
   SAVE_USER_SETTINGS_ITEM,
   SET_VERIFICATION_CODE_MEDIA,
+  GET_TEMPLATES,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -954,6 +955,33 @@ export const setVerificationCodeMedia = (media = '') => {
       setVerificationCodeMediaAPI.fetch(
         {
           Media: media,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get gallery templates.
+ * @param {String} tagId -The id of tag for template(empty to get all).
+ * @returns Promise.
+ */
+export const getTemplates = (tagId = '') => {
+  const getTemplatesAPI = API_Provider(CN_API, GET_TEMPLATES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplatesAPI.fetch(
+        {
+          TagID: tagId,
         },
         (response) => {
           resolve(response);
