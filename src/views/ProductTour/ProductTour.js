@@ -23,7 +23,10 @@ const ProductTour = () => {
         showNavigation={false}
         showCloseButton={true}
         closeWithMask={false}
-        onRequestClose={() => dispatch(toggleActivation())}
+        onRequestClose={() => {
+          dispatch(toggleActivation());
+          window.location.href = window.location.href;
+        }}
       />
     </Suspense>
   );

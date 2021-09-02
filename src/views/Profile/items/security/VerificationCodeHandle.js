@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Input from 'components/Inputs/Input';
 import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
@@ -8,8 +8,9 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CV_RED } from 'constant/CssVariables';
 
 const VerificationCodeHandle = (props) => {
-  const { codeCount, countDown, onSendCode, onTimeout } = props;
+  const { codeCount, countDown, onSendCode, onTimeout, immediateSend } = props;
   const { RVDic } = useWindow();
+  const sendButtonRef = useRef();
   const inputsArray = [...Array(codeCount).keys()];
   const defaultValues = inputsArray.reduce((acc, input) => {
     return { ...acc, [`input-${input + 1}`]: '' };
@@ -58,6 +59,16 @@ const VerificationCodeHandle = (props) => {
     }
   };
 
+  //! Keep track of input values, And send immediately if needed.
+  useEffect(() => {
+    const isAllCompleted = Object.values(inputValues).every(Boolean);
+
+    if (isAllCompleted && !!immediateSend) {
+      sendButtonRef.current.click();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValues]);
+
   return (
     <Styled.VerificationCodeContainer>
       <CloseIcon
@@ -93,6 +104,7 @@ const VerificationCodeHandle = (props) => {
       </Styled.VerificationForm>
       <Styled.VerificationFooterWrapper>
         <Button
+          ref={sendButtonRef}
           onClick={handleSendCode}
           disable={!isButtonActive}
           style={{ width: '5rem', height: '2rem' }}>
