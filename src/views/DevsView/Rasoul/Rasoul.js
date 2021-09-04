@@ -302,7 +302,7 @@ const RasoulView = () => {
     setData(newData);
   };
 
-  const memoizedReorderData = useCallback(reorderData, []);
+  const memoizedReorderData = useCallback(reorderData, [data]);
 
   const removeAll = useCallback(() => {
     setData([]);
@@ -400,7 +400,7 @@ const RasoulView = () => {
 
       <CustomTable
         editable //! This prop makes the whole table editable.
-        resizeable //! This prop makes the whole columns of a table editable.
+        resizable //! This prop makes the whole columns of a table resizable.
         // pagination={{
         //   perPageCount: [10, 20, 30, 40],
         //   initialPageIndex: 0,

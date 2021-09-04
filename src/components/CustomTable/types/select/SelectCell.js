@@ -11,7 +11,7 @@ const SelectCell = (props) => {
   const [showOptions, setShowOptions] = useState(false);
   const randomNumber = Math.floor(Math.random() * 5) + 1;
   const [selectedOption, setSelectedOption] = useState(
-    `گزینه ${randomNumber} انتخاب شد`
+    !!props?.isNew ? null : `گزینه ${randomNumber} انتخاب شد`
   );
 
   const handleSelectOption = (e) => {
@@ -36,7 +36,7 @@ const SelectCell = (props) => {
 
   useOnClickOutside(selectRef, handleHideOptions);
 
-  if (!props?.editable) {
+  if (!props?.editable && !props?.isNew) {
     return selectedOption;
   }
 

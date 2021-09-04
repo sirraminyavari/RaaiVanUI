@@ -31,17 +31,28 @@ const provideCell = (header) => {
 //! Provide footer for a given column.
 const provideFooter = (header) => {
   switch (header.dataType) {
-    case 'string':
-      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
-    case 'number':
-      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
+    case cellTypes.string:
+      return {
+        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+      };
+    case cellTypes.number:
+      return {
+        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+      };
 
-    case 'date':
-      return { Footer: DateCell };
+    case cellTypes.singleSelect:
+      return {
+        Footer: (row) => <SingleSelectCell {...row} header={header} isNew />,
+      };
+
+    case cellTypes.date:
+      return {
+        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
+      };
 
     default:
       return {
-        Footer: header.dataType,
+        Footer: header.title,
       };
   }
 };

@@ -4,9 +4,11 @@ import * as Styled from './DateCell.styles';
 const DateCell = (props) => {
   console.log('dateCell', props);
 
+  const { isNew } = props;
+
   const handleDateSelect = () => {};
 
-  if (!props?.editable) {
+  if (!props?.editable && !isNew) {
     return <div>{props?.value}</div>;
   }
 
@@ -15,14 +17,14 @@ const DateCell = (props) => {
   }
 
   return (
-    <Styled.DateCellContainer>
+    <Styled.DateCellContainer isNew={isNew}>
       <CustomDatePicker
         label="انتخاب تاریخ"
         mode="input"
         type="jalali"
         range={false}
         size="small"
-        value={props?.row?.original?.dateOfBirth}
+        value={!!isNew ? null : props?.row?.original?.dateOfBirth}
         onDateSelect={handleDateSelect}
         inputClass="table-date-input"
       />

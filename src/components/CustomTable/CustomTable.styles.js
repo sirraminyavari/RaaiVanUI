@@ -5,6 +5,8 @@ import {
   CV_DISTANT,
   CV_FREEZED,
   CV_GRAY,
+  CV_GRAY_DARK,
+  CV_RED,
   CV_WHITE,
 } from 'constant/CssVariables';
 import { FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
@@ -13,25 +15,10 @@ import styled from 'styled-components';
 const { RV_RevFloat } = window;
 
 export const TableContainer = styled.div`
-  padding: 1rem;
+  padding: 1rem 2rem;
   display: block;
   margin: 1rem;
   border: 0.15rem solid black;
-
-  .footer {
-    .footer-tr:first-child {
-      .footer-td {
-        border-top: 2px solid black;
-        min-height: 3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 0.5rem;
-      }
-    }
-    font-weight: bolder;
-    text-align: center;
-  }
 `;
 
 export const HeaderWrapper = styled.div`
@@ -44,6 +31,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const Tr = styled.div`
+  position: relative;
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
   // color: ${({ isDragging }) => (isDragging ? CV_WHITE : '')};
 
@@ -51,19 +39,14 @@ export const Tr = styled.div`
     background-color: ${CV_FREEZED};
     color: ${CV_BLACK};
   }
-
-  &:last-child {
-    .td {
-      border-bottom: 0;
-    }
-  }
 `;
 
 export const Table = styled.div.attrs({
   className: `${BO_DISTANT} ${BO_RADIUS_UNIT} ${IGNORE_RADIUS_BOTTOM}`,
 })`
   border-spacing: 0;
-  overflow-x: auto;
+  //TODO: Big big problem.
+  // overflow-x: auto;
   margin: 0.5rem 0;
   user-select: none;
 `;
@@ -84,6 +67,16 @@ export const TableHeader = styled.div.attrs({
   position: relative;
   border-bottom: 1px solid ${CV_DISTANT};
   border-right: 1px solid ${CV_DISTANT};
+
+  :first-child {
+    :first-child {
+      border-right: 0;
+    }
+
+    div:nth-child(2) {
+      display: none !important;
+    }
+  }
 `;
 
 export const TableColumnResizer = styled.div.attrs({
@@ -119,10 +112,6 @@ export const TableCell = styled.div.attrs({
   :first-child {
     border-right: 0;
   }
-
-  :last-child {
-    border-left: 0;
-  }
 `;
 
 export const TablePaginationContainer = styled.div`
@@ -132,4 +121,39 @@ export const TablePaginationContainer = styled.div`
 
 export const PaginationArrowWrapper = styled.div`
   ${FLEX_RCC}
+`;
+
+export const FooterContainer = styled.div`
+  font-weight: bolder;
+  text-align: center;
+`;
+
+export const FooterTr = styled.div`
+  &:first-child {
+    .footer-td {
+      border-top: 2px solid black;
+      min-height: 3rem;
+      padding: 0 0.5rem;
+      ${FLEX_RCC}
+    }
+  }
+`;
+
+export const RowDragHandle = styled.div`
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  transform: translate(0, -50%);
+`;
+
+export const RowDeleteHandle = styled.div`
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translate(0, -50%);
+  cursor: pointer;
+
+  :hover svg {
+    color: ${CV_RED} !important;
+  }
 `;
