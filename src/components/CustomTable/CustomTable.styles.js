@@ -9,7 +9,7 @@ import {
   CV_RED,
   CV_WHITE,
 } from 'constant/CssVariables';
-import { FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 const { RV_RevFloat } = window;
@@ -129,6 +129,8 @@ export const FooterContainer = styled.div`
 `;
 
 export const FooterTr = styled.div`
+  position: relative;
+
   &:first-child {
     .footer-td {
       border-top: 2px solid black;
@@ -146,7 +148,7 @@ export const RowDragHandle = styled.div`
   transform: translate(0, -50%);
 `;
 
-export const RowDeleteHandle = styled.div`
+export const RowActionHandle = styled.div`
   position: absolute;
   left: -1.5rem;
   top: 50%;
@@ -155,5 +157,14 @@ export const RowDeleteHandle = styled.div`
 
   :hover svg {
     color: ${CV_RED} !important;
+  }
+`;
+
+export const TableButtonsContainer = styled.div`
+  .table-add-row-button {
+    display: inline-block;
+    margin: 0 0.5rem;
+    width: 12rem;
+    border-radius: 2rem;
   }
 `;

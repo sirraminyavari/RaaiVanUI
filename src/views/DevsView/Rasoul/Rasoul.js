@@ -84,10 +84,10 @@ const headers = [
   },
   {
     id: '2',
-    title: 'خانوادگی',
+    title: 'نوع برنامه',
     accessor: 'lastName',
-    dataType: 'string',
-    options: { editable: true },
+    dataType: 'multi-select',
+    options: { editable: true, minWidth: 300 },
   },
   {
     id: '3',

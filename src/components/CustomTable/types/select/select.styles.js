@@ -18,7 +18,7 @@ export const SelectCellContainer = styled.div.attrs({
 
   .select-option-caret {
     position: absolute;
-    ${RV_RevFloat}: 0.2rem;
+    ${RV_RevFloat}: 0.4rem;
     cursor: pointer;
   }
 `;
@@ -26,13 +26,15 @@ export const SelectCellContainer = styled.div.attrs({
 export const SelectedOption = styled.div.attrs({
   className: `${TBG_SOFT} ${BO_RADIUS_QUARTER}`,
 })`
-  width: 75%;
+  position: relative;
+  width: max-content;
+  min-width: max-content;
   height: 78%;
   margin: 0.3rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-${RV_Float}: 0.5em;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  padding-${RV_Float}: 1em;
   ${FLEX_RCS}
 `;
 

@@ -1,4 +1,4 @@
-import { DateCell, InputCell, SingleSelectCell } from './types';
+import { DateCell, InputCell, SelectCell } from './types';
 import { cellTypes } from './tableUtils';
 
 //! Provide cell for a given column.
@@ -21,7 +21,12 @@ const provideCell = (header) => {
       return { Cell: (row) => <DateCell {...row} header={header} /> };
 
     case cellTypes.singleSelect:
-      return { Cell: (row) => <SingleSelectCell {...row} header={header} /> };
+      return { Cell: (row) => <SelectCell {...row} header={header} /> };
+
+    case cellTypes.multiSelect:
+      return {
+        Cell: (row) => <SelectCell {...row} header={header} multiSelect />,
+      };
 
     default:
       return;
@@ -42,7 +47,7 @@ const provideFooter = (header) => {
 
     case cellTypes.singleSelect:
       return {
-        Footer: (row) => <SingleSelectCell {...row} header={header} isNew />,
+        Footer: (row) => <SelectCell {...row} header={header} isNew />,
       };
 
     case cellTypes.date:

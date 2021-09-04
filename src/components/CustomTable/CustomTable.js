@@ -12,12 +12,13 @@ import Button from 'components/Buttons/Button';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
-import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 
 const defaultPropGetter = () => ({});
 
@@ -112,13 +113,13 @@ const CustomTable = (props) => {
     reorderData(source.index, destination.index);
   };
 
-  const handleClearAll = () => {
-    setConfirm({
-      show: true,
-      message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
-      type: 'clearAll',
-    });
-  };
+  // const handleClearAll = () => {
+  //   setConfirm({
+  //     show: true,
+  //     message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
+  //     type: 'clearAll',
+  //   });
+  // };
 
   const handleOnConfirm = () => {
     switch (confirm.type) {
@@ -329,10 +330,10 @@ const CustomTable = (props) => {
                             <Styled.RowDragHandle {...provided.dragHandleProps}>
                               <DragIcon />
                             </Styled.RowDragHandle>
-                            <Styled.RowDeleteHandle
+                            <Styled.RowActionHandle
                               onClick={() => console.log('Delete row')}>
                               <TrashIcon color={CV_DISTANT} />
-                            </Styled.RowDeleteHandle>
+                            </Styled.RowActionHandle>
                           </>
                         </Styled.Tr>
                       )}
@@ -358,6 +359,11 @@ const CustomTable = (props) => {
                     {column.render('Footer')}
                   </div>
                 ))}
+                <Styled.RowActionHandle
+                  style={{ left: '-1.7rem' }}
+                  onClick={() => setShowFooter(false)}>
+                  <CloseIcon size={20} color={CV_RED} />
+                </Styled.RowActionHandle>
               </Styled.FooterTr>
             ))}
           </Styled.FooterContainer>
@@ -366,20 +372,25 @@ const CustomTable = (props) => {
       {!!pagination && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
-      <div>
-        <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
+      <Styled.TableButtonsContainer>
+        <Button
+          style={{ display: 'inline-block', margin: '0 0.5rem' }}
+          onClick={resetResizing}>
           Reset Resizing
         </Button>
-        <Button style={{ display: 'inline-block' }} onClick={handleAddRow}>
-          Add new record
-        </Button>
         <Button
+          type="primary-o"
+          classes="table-add-row-button"
+          onClick={handleAddRow}>
+          ایجاد موضوع جدید
+        </Button>
+        {/* <Button
           style={{ display: 'inline-block' }}
           type="negative"
           onClick={handleClearAll}>
           Clear all
-        </Button>
-      </div>
+        </Button> */}
+      </Styled.TableButtonsContainer>
     </Styled.TableContainer>
   );
 };
