@@ -119,10 +119,10 @@ const headers = [
   },
   {
     id: '7',
-    title: 'پیشرفت',
+    title: 'اطلاعات ثبت',
     accessor: 'progress',
-    dataType: 'number',
-    options: { editable: true, width: 100, minWidth: 100 },
+    dataType: 'record-information',
+    options: { editable: true, width: 170, minWidth: 170 },
   },
 ];
 

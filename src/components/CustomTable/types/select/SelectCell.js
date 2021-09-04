@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import CaretIcon from 'components/Icons/ChevronIcons/Chevron';
 import CancelIcon from 'components/Icons/CancelCircle';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
@@ -15,16 +15,18 @@ const SelectCell = (props) => {
     !!props?.isNew ? [] : [`گزینه ${randomNumber} انتخاب شد`]
   );
 
-  const handleSelectOption = (e) => {
+  const handleSelectOption = useCallback((e) => {
     e.stopPropagation();
     const optionName = e.target.getAttribute('data-name');
     if (!!props?.multiSelect) {
-      setSelectedOptions((oldValues) => [...oldValues, optionName]);
+      setSelectedOptions((oldValues) => [
+        ...new Set([...oldValues, optionName]),
+      ]);
     } else {
       setSelectedOptions([optionName]);
     }
-    setShowOptions(false);
-  };
+    !props?.multiSelect && setShowOptions(false);
+  }, []);
 
   const handleShowOprtions = () => {
     setShowOptions(true);
@@ -39,6 +41,17 @@ const SelectCell = (props) => {
     setShowOptions((opt) => !opt);
   };
 
+  const handleRemoveItemSelected = (e, selectedItem) => {
+    e.stopPropagation();
+    setSelectedOptions((oldValues) =>
+      oldValues.filter((item) => item !== selectedItem)
+    );
+  };
+
+  useEffect(() => {
+    !selectedOptions.length && setShowOptions(true);
+  }, [selectedOptions]);
+
   useOnClickOutside(selectRef, handleHideOptions);
 
   if (!props?.editable && !props?.isNew) {
@@ -50,36 +63,28 @@ const SelectCell = (props) => {
   }
 
   return (
-    <Styled.SelectCellContainer ref={selectRef} onClick={handleShowOprtions}>
-      <div
-        style={{
-          width: '90%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-        }}>
+    <Styled.SelectCellContainer
+      isEmpty={!selectedOptions.length}
+      ref={selectRef}
+      onClick={handleShowOprtions}>
+      <Styled.SelectedItemsWrapper>
         {!!selectedOptions.length &&
           selectedOptions.map((selected, index) => {
             return (
               <Styled.SelectedOption key={index}>
                 {!!props?.multiSelect && (
                   <CancelIcon
+                    onClick={(e) => handleRemoveItemSelected(e, selected)}
                     size={18}
                     color={CV_RED}
-                    style={{
-                      position: 'absolute',
-                      top: '-0.3rem',
-                      right: '-0.3rem',
-                      cursor: 'pointer',
-                    }}
+                    className="selected-option-cancel-icon"
                   />
                 )}
                 <span>{selected}</span>
               </Styled.SelectedOption>
             );
           })}
-      </div>
+      </Styled.SelectedItemsWrapper>
 
       <CaretIcon
         onClick={handleClickArrow}
@@ -88,7 +93,12 @@ const SelectCell = (props) => {
         className="select-option-caret"
         dir={showOptions ? 'up' : 'down'}
       />
-      {showOptions && <SelectOptions handleSelectOption={handleSelectOption} />}
+      {showOptions && (
+        <SelectOptions
+          selectedOptions={selectedOptions}
+          handleSelectOption={handleSelectOption}
+        />
+      )}
     </Styled.SelectCellContainer>
   );
 };

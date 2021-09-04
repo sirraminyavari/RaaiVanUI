@@ -5,4 +5,5 @@ export const cellTypes = {
   date: 'date',
   singleSelect: 'single-select',
   multiSelect: 'multi-select',
+  recordInfo: 'record-information',
 };

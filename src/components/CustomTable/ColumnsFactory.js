@@ -1,4 +1,4 @@
-import { DateCell, InputCell, SelectCell } from './types';
+import { DateCell, InputCell, SelectCell, RecordInfoCell } from './types';
 import { cellTypes } from './tableUtils';
 
 //! Provide cell for a given column.
@@ -26,6 +26,11 @@ const provideCell = (header) => {
     case cellTypes.multiSelect:
       return {
         Cell: (row) => <SelectCell {...row} header={header} multiSelect />,
+      };
+
+    case cellTypes.recordInfo:
+      return {
+        Cell: (row) => <RecordInfoCell {...row} header={header} />,
       };
 
     default:

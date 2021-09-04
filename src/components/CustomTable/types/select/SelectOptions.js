@@ -1,30 +1,38 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 import * as Styled from './select.styles';
 
-const SelectOptions = ({ handleSelectOption, options }) => {
+const fakeoptions = [...Array(5).keys()].map(
+  (item) => `گزینه ${item + 1} انتخاب شد`
+);
+
+const SelectOptions = ({ handleSelectOption, selectedOptions, options }) => {
   const containerRef = useRef();
 
   usePreventScroll(containerRef);
 
   return (
-    <Styled.SelectOptionsContainer ref={containerRef}>
+    <Styled.SelectOptionsContainer
+      rowCount={Math.ceil(selectedOptions.length / 2)}
+      ref={containerRef}>
       <PerfectScrollbar
         style={{ maxHeight: '7rem' }}
         className="table-select-options-scroll">
-        {[...Array(5).keys()].map((item) => (
-          <Styled.SelectOptionWrapper
-            data-name={`گزینه ${item + 1} انتخاب شد`}
-            data-value={item}
-            key={item}
-            onClick={handleSelectOption}>
-            {`گزینه ${item + 1} انتخاب شد`}
-          </Styled.SelectOptionWrapper>
-        ))}
+        {fakeoptions
+          .filter((opt) => !selectedOptions.some((s) => opt === s))
+          .map((x, index) => (
+            <Styled.SelectOptionWrapper
+              data-name={x}
+              data-value={index}
+              key={index}
+              onClick={handleSelectOption}>
+              {x}
+            </Styled.SelectOptionWrapper>
+          ))}
       </PerfectScrollbar>
     </Styled.SelectOptionsContainer>
   );
 };
 
-export default SelectOptions;
+export default memo(SelectOptions);
