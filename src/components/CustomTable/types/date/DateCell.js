@@ -2,7 +2,7 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from './DateCell.styles';
 
 const DateCell = (props) => {
-  console.log('dateCell', props);
+  // console.log('dateCell', props);
 
   const { isNew } = props;
 

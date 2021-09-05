@@ -1,105 +1,46 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import CaretIcon from 'components/Icons/ChevronIcons/Chevron';
-import CancelIcon from 'components/Icons/CancelCircle';
-import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
-import useOnClickOutside from 'hooks/useOnClickOutside';
-import SelectOptions from './SelectOptions';
+import { useState } from 'react';
+import Select from 'react-select';
 import * as Styled from './select.styles';
 
 const SelectCell = (props) => {
-  // console.log(props);
-  const selectRef = useRef();
-  const [showOptions, setShowOptions] = useState(false);
-  const randomNumber = Math.floor(Math.random() * 5) + 1;
+  // console.log('select cell ', props);
   const [selectedOptions, setSelectedOptions] = useState(
-    !!props?.isNew ? [] : [`گزینه ${randomNumber} انتخاب شد`]
+    !!props?.isNew
+      ? []
+      : props?.value?.defaultValues?.map((x) => x?.label) || []
   );
 
-  const handleSelectOption = useCallback((e) => {
-    e.stopPropagation();
-    const optionName = e.target.getAttribute('data-name');
-    if (!!props?.multiSelect) {
-      setSelectedOptions((oldValues) => [
-        ...new Set([...oldValues, optionName]),
-      ]);
-    } else {
-      setSelectedOptions([optionName]);
-    }
-    !props?.multiSelect && setShowOptions(false);
-  }, []);
-
-  const handleShowOprtions = () => {
-    setShowOptions(true);
+  const handleSelectChange = (values) => {
+    setSelectedOptions(values);
   };
 
-  const handleHideOptions = () => {
-    setShowOptions(false);
+  const handleOnMenuClose = () => {
+    //! Call api.
+    console.log(selectedOptions);
   };
-
-  const handleClickArrow = (e) => {
-    e.stopPropagation();
-    setShowOptions((opt) => !opt);
-  };
-
-  const handleRemoveItemSelected = (e, selectedItem) => {
-    e.stopPropagation();
-    setSelectedOptions((oldValues) =>
-      oldValues.filter((item) => item !== selectedItem)
-    );
-  };
-
-  useEffect(() => {
-    !selectedOptions.length && setShowOptions(true);
-  }, [selectedOptions]);
-
-  useOnClickOutside(selectRef, handleHideOptions);
 
   if (!props?.editable && !props?.isNew) {
-    return selectedOptions[0];
+    return selectedOptions?.[0].label;
   }
 
   if (!props?.header?.options?.editable) {
-    return selectedOptions[0];
+    return selectedOptions?.[0].label;
   }
 
   return (
-    <Styled.SelectCellContainer
-      isEmpty={!selectedOptions.length}
-      ref={selectRef}
-      onClick={handleShowOprtions}>
-      <Styled.SelectedItemsWrapper>
-        {!!selectedOptions.length &&
-          selectedOptions.map((selected, index) => {
-            return (
-              <Styled.SelectedOption key={index}>
-                {!!props?.multiSelect && (
-                  <CancelIcon
-                    onClick={(e) => handleRemoveItemSelected(e, selected)}
-                    size={18}
-                    color={CV_RED}
-                    className="selected-option-cancel-icon"
-                  />
-                )}
-                <span>{selected}</span>
-              </Styled.SelectedOption>
-            );
-          })}
-      </Styled.SelectedItemsWrapper>
-
-      <CaretIcon
-        onClick={handleClickArrow}
-        size={20}
-        color={TCV_DEFAULT}
-        className="select-option-caret"
-        dir={showOptions ? 'up' : 'down'}
+    <Styled.SelectContainer>
+      <Select
+        defaultValue={props?.value?.defaultValues}
+        isMulti={!!props?.multiSelect}
+        closeMenuOnSelect={!props?.multiSelect}
+        isClearable={false}
+        isSearchable={true}
+        name={props?.header?.title}
+        options={props?.value?.options}
+        onChange={handleSelectChange}
+        onMenuClose={handleOnMenuClose}
       />
-      {showOptions && (
-        <SelectOptions
-          selectedOptions={selectedOptions}
-          handleSelectOption={handleSelectOption}
-        />
-      )}
-    </Styled.SelectCellContainer>
+    </Styled.SelectContainer>
   );
 };
 

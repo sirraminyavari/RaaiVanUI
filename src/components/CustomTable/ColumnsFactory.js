@@ -1,13 +1,25 @@
 import { DateCell, InputCell, SelectCell, RecordInfoCell } from './types';
 import { cellTypes } from './tableUtils';
+import DragIcon from 'components/Icons/DragIcon/Drag';
+// import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
+    case 'action':
+      return {
+        Cell: (cell) => {
+          return (
+            <div style={{ cursor: 'pointer' }} {...cell.dragHandleProps}>
+              <DragIcon />
+            </div>
+          );
+        },
+      };
     case 'index':
       return {
-        Cell: ({ row }) => {
-          return row.index + 1;
+        Cell: (cell) => {
+          return <span>{cell?.row.index + 1}</span>;
         },
       };
 

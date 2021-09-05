@@ -10,8 +10,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Button from 'components/Buttons/Button';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import TrashIcon from 'components/Icons/TrashIcon/Trash';
+// import DragIcon from 'components/Icons/DragIcon/Drag';
+// import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -324,16 +324,19 @@ const CustomTable = (props) => {
                                 ])}>
                                 {cell.render('Cell', {
                                   editable: !!isEditable,
+                                  dragHandleProps: {
+                                    ...provided.dragHandleProps,
+                                  },
                                 })}
                               </Styled.TableCell>
                             ))}
-                            <Styled.RowDragHandle {...provided.dragHandleProps}>
+                            {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
                               <DragIcon />
                             </Styled.RowDragHandle>
                             <Styled.RowActionHandle
                               onClick={() => console.log('Delete row')}>
                               <TrashIcon color={CV_DISTANT} />
-                            </Styled.RowActionHandle>
+                            </Styled.RowActionHandle> */}
                           </>
                         </Styled.Tr>
                       )}

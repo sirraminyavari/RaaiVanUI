@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
 
 const InputCell = (props) => {
-  console.log('inputCell', props);
+  // console.log('inputCell', props);
   const {
     value: initialValue,
     row,

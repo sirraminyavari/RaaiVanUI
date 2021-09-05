@@ -31,24 +31,32 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const Tr = styled.div`
-  position: relative;
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
-  // color: ${({ isDragging }) => (isDragging ? CV_WHITE : '')};
+  border-left: 1px solid ${CV_DISTANT};
+
+  :last-child {
+    > div:not(:first-child) {
+      border-bottom: 1px solid ${CV_DISTANT};
+    }
+  }
 
   &:hover {
-    background-color: ${CV_FREEZED};
-    color: ${CV_BLACK};
+    > div:not(:first-child) {
+      background-color: ${CV_FREEZED};
+      color: ${CV_BLACK};
+    }
   }
 `;
 
 export const Table = styled.div.attrs({
-  className: `${BO_DISTANT} ${BO_RADIUS_UNIT} ${IGNORE_RADIUS_BOTTOM}`,
+  className: ``,
 })`
   border-spacing: 0;
   //TODO: Big big problem.
-  // overflow-x: auto;
+  overflow-x: auto;
   margin: 0.5rem 0;
   user-select: none;
+  border: 0;
 `;
 
 export const TableBody = styled.div.attrs({
@@ -65,14 +73,36 @@ export const TableHeader = styled.div.attrs({
   padding: 0.5rem;
   text-align: center;
   position: relative;
-  border-bottom: 1px solid ${CV_DISTANT};
   border-right: 1px solid ${CV_DISTANT};
 
+  //! Give border to last header.
+  :last-child {
+    border-left: 1px solid ${CV_DISTANT};
+    border-top-left-radius: 0.9rem !important;
+  }
+
+  :not(:first-child) {
+    border-top: 1px solid ${CV_DISTANT};
+    border-bottom: 1px solid ${CV_DISTANT};
+  }
+
+  //! Hide first column border.
   :first-child {
     :first-child {
       border-right: 0;
     }
 
+    //! Hide first column resizer.
+    div:nth-child(2) {
+      display: none !important;
+    }
+  }
+
+  //! Give border radius to second one.
+  :nth-child(2) {
+    border-top-right-radius: 0.9rem !important;
+
+    //! Hide second column resizer.
     div:nth-child(2) {
       display: none !important;
     }
@@ -88,10 +118,10 @@ export const TableColumnResizer = styled.div.attrs({
   height: 100%;
   border-radius: 15%;
   position: absolute;
-  right: -0.11rem;
+  right: -0.13rem;
   top: 0;
   // transform: translateX(-50%);
-  z-index: 1;
+  // z-index: 1;
   //! prevents from scrolling while dragging on touch devices
   touch-action: none;
   ${({ isResizing }) => isResizing && 'background: black;'}
@@ -109,8 +139,9 @@ export const TableCell = styled.div.attrs({
   border-right: 1px solid ${CV_DISTANT};
   // border-left: 1px solid ${CV_DISTANT};
 
-  :first-child {
-    border-right: 0;
+  :nth-child(1) {
+    border-right: 0 !important;
+    border-top: 0 !important;
   }
 `;
 
@@ -142,10 +173,10 @@ export const FooterTr = styled.div`
 `;
 
 export const RowDragHandle = styled.div`
-  position: absolute;
-  right: -1.5rem;
-  top: 50%;
-  transform: translate(0, -50%);
+  // position: absolute;
+  // right: -1.5rem;
+  // top: 50%;
+  // transform: translate(0, -50%);
 `;
 
 export const RowActionHandle = styled.div`

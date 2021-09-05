@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import { CV_BLACK, CV_RED } from 'constant/CssVariables';
 import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
 import { BG_WHITE, BO_DISTANT, TBG_SOFT, TBG_VERY_SOFT } from 'constant/Colors';
-import { FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_RCC } from 'constant/StyledCommonCss';
 
 const { GlobalUtilities, RV_Float, RV_RevFloat } = window;
+export const SelectContainer = styled.div`
+  width: 100%;
+`;
 
+//! Old version.
 export const SelectCellContainer = styled.div.attrs({
   className: `${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`

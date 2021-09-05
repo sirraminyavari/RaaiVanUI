@@ -1,20 +1,21 @@
 import Avatar from 'components/Avatar/Avatar';
 import { CV_BLACK } from 'constant/CssVariables';
+import * as Styled from './RecordInfo.styles';
 
-const RecordInfo = () => {
+const RecordInfo = (props) => {
+  // console.log('record info', props);
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: '1rem',
-      }}>
-      <div>
-        {'23:59'} - {'1399/12/28'}
-      </div>
-      <Avatar color={CV_BLACK} />
-    </div>
+    <Styled.RecordInfoContainer>
+      <div>{props?.value?.recordDate}</div>
+      <Avatar
+        color={CV_BLACK}
+        style={{ width: '2.7rem', minWidth: '2.7rem' }}
+        userImage={
+          props?.value?.userImageURL || window?.RVGlobal?.CurrentUser?.ImageURL
+        }
+      />
+    </Styled.RecordInfoContainer>
   );
 };
 
