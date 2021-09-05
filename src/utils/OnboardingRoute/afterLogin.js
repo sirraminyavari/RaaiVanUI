@@ -3,7 +3,7 @@ const { default: APIHandler } = require('apiHelper/APIHandler');
 const { RVGlobal, GlobalUtilities, RVAPI } = window;
 
 const onboardingPageUrl = new APIHandler('RVAPI', 'OnboardingPageURL');
-const afterLogin = async (response) => {
+const afterLogin = (response) => {
   const { User, AuthCookie, RedirectToOnboarding } = response || {};
 
   (RVGlobal || {}).CurrentUser = User;
