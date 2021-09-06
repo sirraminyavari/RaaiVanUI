@@ -19,14 +19,21 @@ const TemplateCard = ({ template, mode }) => {
     setCurrentTemplate(template);
   };
 
+  const hasTags = template?.Tags?.length;
+
   return (
     <Styled.TemplateCardContainer mode={mode}>
-      <Badge showText="مدیریت منابع انسانی" className="template-card-badge" />
+      {!!hasTags && (
+        <Badge
+          showText={decodeBase64(template?.Tags?.[0]?.Name)}
+          className="template-card-badge"
+        />
+      )}
       <div>
-        <img width={45} src="../../images/Preview.png" alt="template-logo" />
+        <img width={45} src={template?.IconURL} alt="template-logo" />
       </div>
       <Styled.TemplateCardTitle onClick={handleClickCard}>
-        {decodeBase64(template?.Name)}
+        {decodeBase64(template?.TypeName)}
       </Styled.TemplateCardTitle>
       <Styled.TemplateCardExcerpt>
         به دقیق‌ترین شکل ممکن سرمایه ارتباطی تیم‌تان را .حفظ کنید و آن را ارتقاء

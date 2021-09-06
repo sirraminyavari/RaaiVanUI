@@ -144,17 +144,24 @@ export const TemplateCardContainer = styled.div.attrs({
     padding: 0 0.5rem;
     border-radius: 1rem;
     background-color: ${TCV_VERY_TRANSPARENT};
-    width: 8rem;
+    width: auto;
+    max-width: 8rem;
     color: ${TCV_DEFAULT};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    ${FLEX_RCS}
   }
 `;
 
-export const TemplateCardTitle = styled.div`
+export const TemplateCardTitle = styled.div.attrs({
+  className: `${TC_DEFAULT}`,
+})`
   margin: 0.5rem 0;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const TemplateCardExcerpt = styled.div`
