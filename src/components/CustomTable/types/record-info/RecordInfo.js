@@ -7,10 +7,12 @@ const RecordInfo = (props) => {
 
   return (
     <Styled.RecordInfoContainer>
-      <div>{props?.value?.recordDate}</div>
+      <Styled.RecordInfoWrapper>
+        {props?.value?.recordDate}
+      </Styled.RecordInfoWrapper>
       <Avatar
         color={CV_BLACK}
-        style={{ width: '2.7rem', minWidth: '2.7rem' }}
+        className="record-info-avatar"
         userImage={
           props?.value?.userImageURL || window?.RVGlobal?.CurrentUser?.ImageURL
         }

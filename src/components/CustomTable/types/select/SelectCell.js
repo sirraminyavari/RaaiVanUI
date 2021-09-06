@@ -1,3 +1,4 @@
+import { TCV_DEFAULT, TCV_VERY_SOFT } from 'constant/CssVariables';
 import { useState } from 'react';
 import Select from 'react-select';
 import * as Styled from './select.styles';
@@ -24,7 +25,24 @@ const SelectCell = (props) => {
   }
 
   if (!props?.header?.options?.editable) {
-    return selectedOptions?.[0].label;
+    return (
+      <>
+        {selectedOptions.map((item, key) => (
+          <span
+            key={key}
+            style={{
+              display: 'inline-block',
+              backgroundColor: TCV_VERY_SOFT,
+              padding: '0.3rem',
+              margin: '0.2rem',
+              width: 'auto',
+              borderRadius: '0.2rem',
+            }}>
+            {item}
+          </span>
+        ))}
+      </>
+    );
   }
 
   return (
@@ -32,6 +50,7 @@ const SelectCell = (props) => {
       <Select
         defaultValue={props?.value?.defaultValues}
         isMulti={!!props?.multiSelect}
+        hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
         closeMenuOnSelect={!props?.multiSelect}
         isClearable={false}
         isSearchable={true}
@@ -39,6 +58,7 @@ const SelectCell = (props) => {
         options={props?.value?.options}
         onChange={handleSelectChange}
         onMenuClose={handleOnMenuClose}
+        styles={Styled.selectStyles}
       />
     </Styled.SelectContainer>
   );

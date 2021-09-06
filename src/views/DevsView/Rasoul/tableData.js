@@ -4,7 +4,8 @@ const getRecordDate = () => {
     'fa'
   )}`;
 };
-const grades = ['first', 'second', 'third', 'fourth', 'fifth'];
+
+const grades = ['اول', 'دوم', 'سوم', 'چهارم', 'پنجم'];
 
 const singleOptions = grades.map((x) => ({
   value: `single-${x}`,
@@ -16,17 +17,23 @@ const multiOptions = grades.map((x) => ({
   label: `گزینه چند انتخابی ${x}`,
 }));
 
+const binaryOptions = [grades[0], grades[1]].map((x) => ({
+  value: `binary-${x}`,
+  label: `گزینه باینری ${x}`,
+}));
 const getDeafultValues = (count = 1) => {
   let i = 0;
   let defaultValues = [];
   while (i < count) {
     let randomNumber = Math.floor(Math.random() * 5);
     if (count === 1) {
+      //! Single select.
       defaultValues.push({
         value: `single-${grades[randomNumber]}`,
         label: `گزینه تک انتخابی ${grades[randomNumber]}`,
       });
     } else {
+      //! Multi select.
       defaultValues.push({
         value: `multi-${grades[randomNumber]}`,
         label: `گزینه چند انتخابی ${grades[randomNumber]}`,
@@ -34,6 +41,14 @@ const getDeafultValues = (count = 1) => {
     }
 
     i++;
+  }
+  if (count === 0) {
+    //! Binary.
+    let randomNumber = Math.floor(Math.random() * 2);
+    defaultValues.push({
+      value: `binary-${grades[randomNumber]}`,
+      label: `گزینه باینری ${grades[randomNumber]}`,
+    });
   }
   return defaultValues;
 };
@@ -49,6 +64,10 @@ const fakeData = [
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
+    },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -66,6 +85,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -81,6 +104,10 @@ const fakeData = [
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
+    },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -98,6 +125,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -113,6 +144,10 @@ const fakeData = [
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
+    },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -130,6 +165,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -145,6 +184,10 @@ const fakeData = [
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
+    },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -162,6 +205,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -177,6 +224,10 @@ const fakeData = [
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
+    },
+    place: {
+      options: binaryOptions,
+      defaultValues: getDeafultValues(0),
     },
     recordInfo: {
       recordDate: getRecordDate(),

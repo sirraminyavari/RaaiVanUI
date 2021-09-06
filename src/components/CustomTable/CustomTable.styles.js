@@ -130,6 +130,7 @@ export const TableColumnResizer = styled.div.attrs({
 export const TableCell = styled.div.attrs({
   className: ``,
 })`
+  ${FLEX_RCC}
   margin: 0;
   padding: 0.5rem;
   text-align: center;
@@ -163,8 +164,14 @@ export const FooterTr = styled.div`
   position: relative;
 
   &:first-child {
+    border-left: 2px solid ${CV_GRAY_DARK};
+
     .footer-td {
-      border-top: 2px solid black;
+      :not(:first-child) {
+        border: 2px solid ${CV_GRAY_DARK};
+        border-left: 0;
+      }
+
       min-height: 3rem;
       padding: 0 0.5rem;
       ${FLEX_RCC}

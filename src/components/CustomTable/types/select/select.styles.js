@@ -1,10 +1,68 @@
 import styled from 'styled-components';
-import { CV_BLACK, CV_RED } from 'constant/CssVariables';
+import {
+  CV_BLACK,
+  CV_FREEZED,
+  CV_RED,
+  TCV_DEFAULT,
+  TCV_VERY_SOFT,
+} from 'constant/CssVariables';
 import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
 import { BG_WHITE, BO_DISTANT, TBG_SOFT, TBG_VERY_SOFT } from 'constant/Colors';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
 
 const { GlobalUtilities, RV_Float, RV_RevFloat } = window;
+
+export const selectStyles = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: 'inherit',
+  }),
+  option: (styles, { isSelected }) => ({
+    ...styles,
+    backgroundColor: isSelected && TCV_DEFAULT,
+    width: '90%',
+    margin: '0.3rem auto',
+    borderRadius: '0.2rem',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: !isSelected && CV_FREEZED,
+    },
+    ':active': {
+      ...styles[':active'],
+      backgroundColor: isSelected && TCV_DEFAULT,
+    },
+  }),
+  indicatorsContainer: (styles) => ({
+    ...styles,
+    svg: {
+      color: TCV_DEFAULT,
+    },
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    backgroundColor: TCV_VERY_SOFT,
+    padding: '0.2rem',
+    fontSize: '0.9rem',
+    borderRadius: '0.2rem',
+    maxWidth: '95%',
+  }),
+  multiValue: (styles) => ({
+    ...styles,
+    backgroundColor: TCV_VERY_SOFT,
+    padding: '0.1rem',
+    fontSize: '1rem',
+    borderRadius: '0.2rem',
+  }),
+  multiValueRemove: (styles) => ({
+    ...styles,
+    color: CV_BLACK,
+    ':hover': {
+      color: CV_RED,
+      cursor: 'pointer',
+    },
+  }),
+};
+
 export const SelectContainer = styled.div`
   width: 100%;
 `;

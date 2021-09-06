@@ -98,21 +98,28 @@ const headers = [
     title: 'نوع برنامه',
     accessor: 'programType',
     dataType: 'single-select',
-    options: { editable: true, width: 120, disableSortBy: true },
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '4',
     title: 'صنایع مرتبط',
     accessor: 'relatedIndustry',
     dataType: 'multi-select',
-    options: { editable: true, minWidth: 200, disableSortBy: true },
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '5',
+    title: 'محل برگزاری',
+    accessor: 'place',
+    dataType: 'binary',
+    options: { editable: true, disableSortBy: true },
+  },
+  {
+    id: '6',
     title: 'اطلاعات ثبت',
     accessor: 'recordInfo',
     dataType: 'record-information',
-    options: { editable: true, width: 120 },
+    options: { editable: true, width: 150 },
   },
 ];
 
@@ -133,7 +140,7 @@ const headers = [
 // };
 
 const RasoulView = () => {
-  console.log('render');
+  // console.log('render');
   // const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
   const [isFetching, setIsFetching] = useState(true);
   const [data, setData] = useState([]);
@@ -403,13 +410,7 @@ const RasoulView = () => {
         addRow={memoizedAddRow}
         isFetching={isFetching}
         removeAll={removeAll}
-        getCellProps={(cell) => ({
-          style: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-        })}
+        getCellProps={(cell) => ({})}
       />
       {/* <Divider title="Custom Dropzone Component" /> */}
       {/* <CustomDropzone
