@@ -10,12 +10,15 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Button from 'components/Buttons/Button';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
+// import DragIcon from 'components/Icons/DragIcon/Drag';
+// import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Confirm from 'components/Modal/Confirm';
 import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
-import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 
 const defaultPropGetter = () => ({});
 
@@ -37,7 +40,7 @@ const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
     editable: isEditable,
-    resizeable: isResizeable,
+    resizable: isResizable,
     isFetching,
     columns,
     data,
@@ -110,13 +113,13 @@ const CustomTable = (props) => {
     reorderData(source.index, destination.index);
   };
 
-  const handleClearAll = () => {
-    setConfirm({
-      show: true,
-      message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
-      type: 'clearAll',
-    });
-  };
+  // const handleClearAll = () => {
+  //   setConfirm({
+  //     show: true,
+  //     message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
+  //     type: 'clearAll',
+  //   });
+  // };
 
   const handleOnConfirm = () => {
     switch (confirm.type) {
@@ -238,20 +241,6 @@ const CustomTable = (props) => {
         onClose={handleOnModalClose}>
         {getModalContent()}
       </Modal>
-      <div>
-        <Button style={{ display: 'inline-block' }} onClick={resetResizing}>
-          Reset Resizing
-        </Button>
-        <Button style={{ display: 'inline-block' }} onClick={handleAddRow}>
-          Add new record
-        </Button>
-        <Button
-          style={{ display: 'inline-block' }}
-          type="negative"
-          onClick={handleClearAll}>
-          Clear all
-        </Button>
-      </div>
       <Styled.Table {...getTableProps()}>
         <div>
           {headerGroups.map((headerGroup) => (
@@ -290,7 +279,7 @@ const CustomTable = (props) => {
                       )}
                     </>
                   </Styled.HeaderWrapper>
-                  {isResizeable && (
+                  {isResizable && (
                     <Styled.TableColumnResizer
                       isResizing={column.isResizing}
                       {...column.getResizerProps()}
@@ -320,22 +309,35 @@ const CustomTable = (props) => {
                           ref={provided.innerRef}
                           isSomethingDragging={snapshot.draggingOver}
                           isDragging={snapshot.isDragging}
-                          {...provided.dragHandleProps}
                           {...row.getRowProps({
                             ...provided.draggableProps,
                           })} //! react-table props always must come after dnd props to work properly
                         >
-                          {row.cells.map((cell) => (
-                            <Styled.TableCell
-                              {...cell.getCellProps([
-                                {
-                                  ...getCellProps(cell),
-                                  onClick: () => setSelectedCell(cell),
-                                },
-                              ])}>
-                              {cell.render('Cell', { editable: !!isEditable })}
-                            </Styled.TableCell>
-                          ))}
+                          <>
+                            {row.cells.map((cell) => (
+                              <Styled.TableCell
+                                {...cell.getCellProps([
+                                  {
+                                    ...getCellProps(cell),
+                                    onClick: () => setSelectedCell(cell),
+                                  },
+                                ])}>
+                                {cell.render('Cell', {
+                                  editable: !!isEditable,
+                                  dragHandleProps: {
+                                    ...provided.dragHandleProps,
+                                  },
+                                })}
+                              </Styled.TableCell>
+                            ))}
+                            {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
+                              <DragIcon />
+                            </Styled.RowDragHandle>
+                            <Styled.RowActionHandle
+                              onClick={() => console.log('Delete row')}>
+                              <TrashIcon color={CV_DISTANT} />
+                            </Styled.RowActionHandle> */}
+                          </>
                         </Styled.Tr>
                       )}
                     </Draggable>
@@ -348,9 +350,9 @@ const CustomTable = (props) => {
           </Droppable>
         </DragDropContext>
         {showFooter && (
-          <div className="footer">
+          <Styled.FooterContainer>
             {footerGroups.map((group) => (
-              <div className="footer-tr" {...group.getFooterGroupProps()}>
+              <Styled.FooterTr {...group.getFooterGroupProps()}>
                 {group.headers.map((column) => (
                   <div
                     className="footer-td"
@@ -360,14 +362,38 @@ const CustomTable = (props) => {
                     {column.render('Footer')}
                   </div>
                 ))}
-              </div>
+                <Styled.RowActionHandle
+                  style={{ left: '-1.7rem' }}
+                  onClick={() => setShowFooter(false)}>
+                  <CloseIcon size={20} color={CV_RED} />
+                </Styled.RowActionHandle>
+              </Styled.FooterTr>
             ))}
-          </div>
+          </Styled.FooterContainer>
         )}
       </Styled.Table>
       {!!pagination && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
+      <Styled.TableButtonsContainer>
+        <Button
+          style={{ display: 'inline-block', margin: '0 0.5rem' }}
+          onClick={resetResizing}>
+          Reset Resizing
+        </Button>
+        <Button
+          type="primary-o"
+          classes="table-add-row-button"
+          onClick={handleAddRow}>
+          ایجاد موضوع جدید
+        </Button>
+        {/* <Button
+          style={{ display: 'inline-block' }}
+          type="negative"
+          onClick={handleClearAll}>
+          Clear all
+        </Button> */}
+      </Styled.TableButtonsContainer>
     </Styled.TableContainer>
   );
 };

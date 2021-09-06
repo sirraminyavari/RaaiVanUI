@@ -61,68 +61,65 @@ import {
 const headers = [
   {
     id: '0',
+    title: '',
+    accessor: 'rowIAction',
+    dataType: 'action',
+    options: {
+      editable: false,
+      width: 20,
+      maxWidth: 20,
+      disableSortBy: true,
+    },
+  },
+  {
+    id: '1',
     title: '#',
     accessor: 'rowIndex',
     dataType: 'index',
     options: {
       editable: false,
       width: 40,
-      maxWidth: 40,
+      maxWidth: 30,
       disableSortBy: true,
-    },
-  },
-  {
-    id: '1',
-    title: 'عنوان',
-    accessor: 'firstName',
-    dataType: 'single-select',
-    options: {
-      editable: true,
-      disableSortBy: true,
-      width: 200,
     },
   },
   {
     id: '2',
-    title: 'خانوادگی',
-    accessor: 'lastName',
+    title: 'عنوان',
+    accessor: 'title',
     dataType: 'string',
-    options: { editable: true },
+    options: {
+      editable: true,
+      maxWidth: 200,
+    },
   },
   {
     id: '3',
-    title: 'کشور',
-    accessor: 'country',
-    dataType: 'string',
-    options: { editable: true, minWidth: 100 },
+    title: 'نوع برنامه',
+    accessor: 'programType',
+    dataType: 'single-select',
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '4',
-    title: 'شهر',
-    accessor: 'city',
-    dataType: 'string',
-    options: { editable: true, minWidth: 80 },
+    title: 'صنایع مرتبط',
+    accessor: 'relatedIndustry',
+    dataType: 'multi-select',
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '5',
-    title: 'سن',
-    accessor: 'age',
-    dataType: 'number',
-    options: { editable: true, width: 80 },
+    title: 'محل برگزاری',
+    accessor: 'place',
+    dataType: 'binary',
+    options: { editable: true, disableSortBy: true },
   },
   {
     id: '6',
-    title: 'تاریخ تولد',
-    accessor: 'dateOfBirth',
-    dataType: 'date',
-    options: { editable: true },
-  },
-  {
-    id: '7',
-    title: 'پیشرفت',
-    accessor: 'progress',
-    dataType: 'number',
-    options: { editable: true, width: 100, minWidth: 100 },
+    title: 'اطلاعات ثبت',
+    accessor: 'recordInfo',
+    dataType: 'record-information',
+    options: { editable: true, width: 150 },
   },
 ];
 
@@ -143,7 +140,7 @@ const headers = [
 // };
 
 const RasoulView = () => {
-  console.log('render');
+  // console.log('render');
   // const DnDTreeData = useSelector((state) => state.sidebarItems.dndTree);
   const [isFetching, setIsFetching] = useState(true);
   const [data, setData] = useState([]);
@@ -302,7 +299,7 @@ const RasoulView = () => {
     setData(newData);
   };
 
-  const memoizedReorderData = useCallback(reorderData, []);
+  const memoizedReorderData = useCallback(reorderData, [data]);
 
   const removeAll = useCallback(() => {
     setData([]);
@@ -400,7 +397,7 @@ const RasoulView = () => {
 
       <CustomTable
         editable //! This prop makes the whole table editable.
-        resizeable //! This prop makes the whole columns of a table editable.
+        resizable //! This prop makes the whole columns of a table resizable.
         // pagination={{
         //   perPageCount: [10, 20, 30, 40],
         //   initialPageIndex: 0,
@@ -413,13 +410,7 @@ const RasoulView = () => {
         addRow={memoizedAddRow}
         isFetching={isFetching}
         removeAll={removeAll}
-        getCellProps={(cell) => ({
-          style: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          },
-        })}
+        getCellProps={(cell) => ({})}
       />
       {/* <Divider title="Custom Dropzone Component" /> */}
       {/* <CustomDropzone

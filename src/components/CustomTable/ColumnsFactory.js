@@ -1,13 +1,25 @@
-import { DateCell, InputCell, SingleSelectCell } from './types';
+import { DateCell, InputCell, SelectCell, RecordInfoCell } from './types';
 import { cellTypes } from './tableUtils';
+import DragIcon from 'components/Icons/DragIcon/Drag';
+// import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
+    case 'action':
+      return {
+        Cell: (cell) => {
+          return (
+            <div style={{ cursor: 'pointer' }} {...cell.dragHandleProps}>
+              <DragIcon />
+            </div>
+          );
+        },
+      };
     case 'index':
       return {
-        Cell: ({ row }) => {
-          return row.index + 1;
+        Cell: (cell) => {
+          return <span>{cell?.row.index + 1}</span>;
         },
       };
 
@@ -21,7 +33,22 @@ const provideCell = (header) => {
       return { Cell: (row) => <DateCell {...row} header={header} /> };
 
     case cellTypes.singleSelect:
-      return { Cell: (row) => <SingleSelectCell {...row} header={header} /> };
+      return { Cell: (row) => <SelectCell {...row} header={header} /> };
+
+    case cellTypes.multiSelect:
+      return {
+        Cell: (row) => <SelectCell {...row} header={header} multiSelect />,
+      };
+
+    case cellTypes.binary:
+      return {
+        Cell: (row) => <SelectCell {...row} header={header} binary />,
+      };
+
+    case cellTypes.recordInfo:
+      return {
+        Cell: (row) => <RecordInfoCell {...row} header={header} />,
+      };
 
     default:
       return;
@@ -31,55 +58,101 @@ const provideCell = (header) => {
 //! Provide footer for a given column.
 const provideFooter = (header) => {
   switch (header.dataType) {
-    case 'string':
-      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
-    case 'number':
-      return { Footer: (footer) => <InputCell {...footer} header={header} /> };
+    case cellTypes.string:
+      return {
+        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+      };
+    case cellTypes.number:
+      return {
+        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+      };
 
-    case 'date':
-      return { Footer: DateCell };
+    case cellTypes.singleSelect:
+      return {
+        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+      };
+
+    case cellTypes.multiSelect:
+      return {
+        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+      };
+
+    case cellTypes.date:
+      return {
+        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
+      };
 
     default:
       return {
-        Footer: header.dataType,
+        Footer: header.title,
       };
   }
 };
 
 //! Provide options for a given column.
 const provideOptions = (header, data) => {
-  switch (header.dataType) {
-    case cellTypes.index:
-      return { ...header?.options };
-    case cellTypes.string:
-      return {
-        width: getColumnWidth(data, header),
-        ...header?.options,
-      };
-    case cellTypes.number:
-      return { ...header?.options };
-    case cellTypes.singleSelect:
-      return { ...header?.options };
-    case cellTypes.date:
-      return { ...header?.options };
-
-    default:
-      return { ...header?.options };
-  }
+  return {
+    width: getColumnWidth(data, header),
+    ...header?.options,
+  };
 };
 
 const getColumnWidth = (data, header) => {
-  // if (typeof accessor === 'string' || accessor instanceof String) {
-  //   accessor = (d) => d[accessor];
-  // }
+  // console.log(header, data);
+  let maxWidth = header?.options?.maxWidth || 300;
+  let magicSpacing;
+  let cellLength;
 
-  const maxWidth = header?.options?.maxWidth || 300;
-  const magicSpacing = 15;
-  const cellLength = Math.max(
-    ...data.map((row) => `${row?.[header?.accessor]}`.length),
-    header?.title.length
-  );
-  return Math.min(maxWidth, cellLength * magicSpacing);
+  switch (header.dataType) {
+    case cellTypes.string:
+      magicSpacing = 15;
+      cellLength = Math.max(
+        ...data.map((row) => `${row?.[header?.accessor]}`.length),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing);
+
+    case cellTypes.singleSelect:
+      // console.log(data, header);
+      magicSpacing = header?.options?.editable ? 7 : 5;
+      cellLength = Math.max(
+        ...(data?.[0]?.[header?.accessor]?.options?.map(
+          (option) => option?.label?.length
+        ) || []),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing);
+
+    case cellTypes.multiSelect:
+      maxWidth = 1000;
+      magicSpacing = header?.options?.editable ? 7.8 : 5.5;
+      cellLength = Math.max(
+        ...(data?.[0]?.[header?.accessor]?.options?.map(
+          (option) => option?.label?.length
+        ) || []),
+        header?.title.length
+      );
+      const defaultValuesFactor =
+        data?.[0]?.[header?.accessor]?.defaultValues?.length > 1 ? 2 : 1;
+
+      return Math.min(
+        maxWidth,
+        cellLength * defaultValuesFactor * magicSpacing
+      );
+
+    case cellTypes.binary:
+      magicSpacing = header?.options?.editable ? 7.7 : 6;
+      cellLength = Math.max(
+        ...(data?.[0]?.[header?.accessor]?.options?.map(
+          (option) => option?.label?.length
+        ) || []),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing);
+
+    default:
+      return header?.options?.width;
+  }
 };
 
 //! Column factory.
