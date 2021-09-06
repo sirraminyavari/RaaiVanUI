@@ -14,12 +14,14 @@ const Category = () => {
     <PerfectScrollbar className="template-category-scrollbar">
       <Styled.CategoryContentContainer>
         <Styled.CategoryTitle>
-          {decodeBase64(currentCategory?.TypeName)}
+          {decodeBase64(currentCategory?.Name) || 'سایر'}
         </Styled.CategoryTitle>
         <Styled.CategoryDescription>
           {currentCategory?.Description || 'Category Description'}
         </Styled.CategoryDescription>
-        <SubCategoryList items={currentCategory?.Tags} />
+        <SubCategoryList
+          items={currentCategory?.Templates || currentCategory}
+        />
       </Styled.CategoryContentContainer>
     </PerfectScrollbar>
   );
