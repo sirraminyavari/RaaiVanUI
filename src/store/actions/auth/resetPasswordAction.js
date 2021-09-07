@@ -28,7 +28,7 @@ const resetPasswordAction = () => async (dispatch, getState) => {
         VerificationToken: confirmationToken,
         Code: code.join(''),
         Login: true,
-        ResponseHandler: function (response) {
+        ResponseHandler: async (response) => {
           const result = response && JSON.parse(response);
           console.log(result, 'error for final reset step');
 
@@ -44,7 +44,9 @@ const resetPasswordAction = () => async (dispatch, getState) => {
 
             // GlobalUtilities.set_auth_cookie(result.AuthCookie);
             //ask ramin
-            location.href = afterLogin(result) || location.href;
+            const afterLoginResult = await afterLogin(result);
+
+            location.href = afterLoginResult || location.href;
           }
         },
       });

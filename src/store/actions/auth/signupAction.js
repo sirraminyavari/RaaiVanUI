@@ -33,7 +33,7 @@ const signupAction = () => async (dispatch, getState) => {
         Code: code.join(''),
         Login: true,
         ParseResults: true,
-        ResponseHandler: function (result) {
+        ResponseHandler: async (result) => {
           console.log(result, 'signup result');
           if (result.ErrorText) {
             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
@@ -49,9 +49,10 @@ const signupAction = () => async (dispatch, getState) => {
 
             //ask ramin
 
-            const newUrl = afterLogin(result);
+            // const newUrl = afterLogin(result);
+            const afterLoginResult = await afterLogin(result);
 
-            location.href = newUrl || location.href;
+            location.href = afterLoginResult || location.href;
           }
         },
       });

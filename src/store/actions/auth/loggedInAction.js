@@ -19,13 +19,14 @@ const loggedInAction = (result) => (dispatch, getState) => {
   window.IsAuthenticated = true;
 
   // It's needed for pure js, maybe removed in future.
-  const callback = () => {
+  const callback = async () => {
+    const afterLoginResult = await afterLogin(result);
+    console.log(afterLoginResult, 'afterLoginResult');
     window.location.href =
-      afterLogin(result) || auth.Options.ReturnURL || window.location.href;
+      afterLoginResult || auth.Options.ReturnURL || window.location.href;
   };
 
   let msg = result.LoginMessage ? decode(result.LoginMessage) : null;
-
   if (auth.Options.ReloadAfterLogin) {
     msg =
       (msg || RVDic.MSG.LoggedInSuccessfully) +
