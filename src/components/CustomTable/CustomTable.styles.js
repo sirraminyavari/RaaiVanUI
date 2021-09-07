@@ -5,33 +5,20 @@ import {
   CV_DISTANT,
   CV_FREEZED,
   CV_GRAY,
+  CV_GRAY_DARK,
+  CV_RED,
   CV_WHITE,
 } from 'constant/CssVariables';
-import { FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 const { RV_RevFloat } = window;
 
 export const TableContainer = styled.div`
-  padding: 1rem;
+  padding: 1rem 2rem;
   display: block;
   margin: 1rem;
   border: 0.15rem solid black;
-
-  .footer {
-    .footer-tr:first-child {
-      .footer-td {
-        border-top: 2px solid black;
-        min-height: 3rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 0.5rem;
-      }
-    }
-    font-weight: bolder;
-    text-align: center;
-  }
 `;
 
 export const HeaderWrapper = styled.div`
@@ -45,27 +32,31 @@ export const HeaderWrapper = styled.div`
 
 export const Tr = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
-  // color: ${({ isDragging }) => (isDragging ? CV_WHITE : '')};
+  border-left: 1px solid ${CV_DISTANT};
 
-  &:hover {
-    background-color: ${CV_FREEZED};
-    color: ${CV_BLACK};
+  :last-child {
+    > div:not(:first-child) {
+      border-bottom: 1px solid ${CV_DISTANT};
+    }
   }
 
-  &:last-child {
-    .td {
-      border-bottom: 0;
+  &:hover {
+    > div:not(:first-child) {
+      background-color: ${CV_FREEZED};
+      color: ${CV_BLACK};
     }
   }
 `;
 
 export const Table = styled.div.attrs({
-  className: `${BO_DISTANT} ${BO_RADIUS_UNIT} ${IGNORE_RADIUS_BOTTOM}`,
+  className: ``,
 })`
   border-spacing: 0;
+  //TODO: Big big problem.
   overflow-x: auto;
   margin: 0.5rem 0;
   user-select: none;
+  border: 0;
 `;
 
 export const TableBody = styled.div.attrs({
@@ -82,8 +73,40 @@ export const TableHeader = styled.div.attrs({
   padding: 0.5rem;
   text-align: center;
   position: relative;
-  border-bottom: 1px solid ${CV_DISTANT};
   border-right: 1px solid ${CV_DISTANT};
+
+  //! Give border to last header.
+  :last-child {
+    border-left: 1px solid ${CV_DISTANT};
+    border-top-left-radius: 0.9rem !important;
+  }
+
+  :not(:first-child) {
+    border-top: 1px solid ${CV_DISTANT};
+    border-bottom: 1px solid ${CV_DISTANT};
+  }
+
+  //! Hide first column border.
+  :first-child {
+    :first-child {
+      border-right: 0;
+    }
+
+    //! Hide first column resizer.
+    div:nth-child(2) {
+      display: none !important;
+    }
+  }
+
+  //! Give border radius to second one.
+  :nth-child(2) {
+    border-top-right-radius: 0.9rem !important;
+
+    //! Hide second column resizer.
+    div:nth-child(2) {
+      display: none !important;
+    }
+  }
 `;
 
 export const TableColumnResizer = styled.div.attrs({
@@ -95,10 +118,10 @@ export const TableColumnResizer = styled.div.attrs({
   height: 100%;
   border-radius: 15%;
   position: absolute;
-  right: -0.11rem;
+  right: -0.13rem;
   top: 0;
   // transform: translateX(-50%);
-  z-index: 1;
+  // z-index: 1;
   //! prevents from scrolling while dragging on touch devices
   touch-action: none;
   ${({ isResizing }) => isResizing && 'background: black;'}
@@ -107,6 +130,7 @@ export const TableColumnResizer = styled.div.attrs({
 export const TableCell = styled.div.attrs({
   className: ``,
 })`
+  ${FLEX_RCC}
   margin: 0;
   padding: 0.5rem;
   text-align: center;
@@ -116,12 +140,9 @@ export const TableCell = styled.div.attrs({
   border-right: 1px solid ${CV_DISTANT};
   // border-left: 1px solid ${CV_DISTANT};
 
-  :first-child {
-    border-right: 0;
-  }
-
-  :last-child {
-    border-left: 0;
+  :nth-child(1) {
+    border-right: 0 !important;
+    border-top: 0 !important;
   }
 `;
 
@@ -132,4 +153,56 @@ export const TablePaginationContainer = styled.div`
 
 export const PaginationArrowWrapper = styled.div`
   ${FLEX_RCC}
+`;
+
+export const FooterContainer = styled.div`
+  font-weight: bolder;
+  text-align: center;
+`;
+
+export const FooterTr = styled.div`
+  position: relative;
+
+  &:first-child {
+    border-left: 2px solid ${CV_GRAY_DARK};
+
+    .footer-td {
+      :not(:first-child) {
+        border: 2px solid ${CV_GRAY_DARK};
+        border-left: 0;
+      }
+
+      min-height: 3rem;
+      padding: 0 0.5rem;
+      ${FLEX_RCC}
+    }
+  }
+`;
+
+export const RowDragHandle = styled.div`
+  // position: absolute;
+  // right: -1.5rem;
+  // top: 50%;
+  // transform: translate(0, -50%);
+`;
+
+export const RowActionHandle = styled.div`
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translate(0, -50%);
+  cursor: pointer;
+
+  :hover svg {
+    color: ${CV_RED} !important;
+  }
+`;
+
+export const TableButtonsContainer = styled.div`
+  .table-add-row-button {
+    display: inline-block;
+    margin: 0 0.5rem;
+    width: 12rem;
+    border-radius: 2rem;
+  }
 `;

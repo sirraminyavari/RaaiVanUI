@@ -45,61 +45,91 @@ export const parseTemplates = (data) => {
 
 export const provideTemplatesForTree = (data) => {
   const parsedTemplates = parseTemplates(data);
-  const {
-    AllTemplates,
-    //  Tags,
-    //   TemplatesWithoutTag
-  } = parsedTemplates || {};
+  const { AllTemplates, Tags, TemplatesWithoutTag } = parsedTemplates || {};
 
-  //   console.log(parsedTemplates);
+  // console.log(parsedTemplates);
 
   //! Root id for tree (It is required by documentation).
   const rootId = `templates-${data?.AppID || 'list'}`;
 
   //! Provide category ids.
-  const parentIds = AllTemplates?.filter(
-    //! Filter out template without tag.
-    (template) => !!template?.Tags.length
-  )?.map((template) => template?.NodeTypeID);
+  const parentIds = Tags?.map((tag) => tag?.NodeID);
+
+  if (!!TemplatesWithoutTag.length) {
+    parentIds.push(`other-templates-${data?.AppID}`);
+  }
 
   //!Get excluded other templates.
   //   const excludedCategory = AllTemplates?.find((temp) => !temp?.Tags.length);
 
   //! provide categories for tree.
-  const templateCategories = parsedTemplates?.AllTemplates?.reduce(
-    (acc, currentValue) => {
-      const { NodeTypeID: id, TypeName: title, IconURL, Tags } = currentValue;
-      const categoryChildrenIds = Tags?.map((tag) => tag?.NodeID);
+  const templateCategories = Tags?.reduce((acc, currentValue) => {
+    const { NodeID: id, Name: title, Templates } = currentValue;
+    const categoryChildrenIds = Templates?.map((temp) => temp?.NodeTypeID);
 
-      const treeObj = {
-        id,
-        children: categoryChildrenIds,
-        hasChildren: !!Tags.length,
-        isCategory: !!Tags.length,
-        isExpanded: false,
-        isChildrenLoading: false,
-        data: {
-          title: decodeBase64(title),
-          description: 'Category Description',
-          iconURL: IconURL,
-          tags: Tags,
-          rawData: currentValue,
-        },
-      };
+    const treeObj = {
+      id,
+      children: categoryChildrenIds,
+      hasChildren: !!Tags.length,
+      isCategory: !!Tags.length,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: decodeBase64(title),
+        description: 'Category Description',
+        rawData: currentValue,
+      },
+    };
 
-      return { ...acc, [id]: treeObj };
-    },
-    {}
+    return { ...acc, [id]: treeObj };
+  }, {});
+
+  const otherCategoryChildrenIds = TemplatesWithoutTag?.map(
+    (temp) => temp?.NodeTypeID
   );
 
+  //! provide categories without tags.
+  const otherCategory = {
+    [`other-templates-${data?.AppID}`]: {
+      id: `other-templates-${data?.AppID}`,
+      children: otherCategoryChildrenIds,
+      hasChildren: !!TemplatesWithoutTag.length,
+      isCategory: true,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: 'سایر',
+        description: 'Other Categories Description',
+        rawData: TemplatesWithoutTag,
+      },
+    },
+  };
+
   //! provide children for tree.
-  const templateChildren = parsedTemplates?.Tags?.reduce(
+  const templates = AllTemplates?.reduce((acc, currentValue) => {
+    const { NodeTypeID: id, TypeName: title, Tags } = currentValue;
+
+    const treeObj = {
+      id,
+      children: [],
+      hasChildren: false,
+      isCategory: false,
+      isExpanded: false,
+      isChildrenLoading: false,
+      data: {
+        title: decodeBase64(title),
+        description: 'Template Description',
+        rawData: currentValue,
+      },
+    };
+
+    return { ...acc, [id]: treeObj };
+  }, {});
+
+  //! provide children for tree.
+  const templatesWithoutTags = TemplatesWithoutTag?.reduce(
     (acc, currentValue) => {
-      const {
-        NodeID: id,
-        Name: title,
-        //  Templates
-      } = currentValue;
+      const { NodeTypeID: id, TypeName: title, Tags } = currentValue;
 
       const treeObj = {
         id,
@@ -110,7 +140,7 @@ export const provideTemplatesForTree = (data) => {
         isChildrenLoading: false,
         data: {
           title: decodeBase64(title),
-          description: 'Template Description',
+          description: 'Template without tag Description',
           rawData: currentValue,
         },
       };
@@ -135,7 +165,9 @@ export const provideTemplatesForTree = (data) => {
         },
       },
       ...templateCategories,
-      ...templateChildren,
+      ...otherCategory,
+      ...templates,
+      ...templatesWithoutTags,
     },
   };
 

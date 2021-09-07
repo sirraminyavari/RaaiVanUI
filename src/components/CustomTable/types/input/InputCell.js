@@ -5,12 +5,13 @@ const InputCell = (props) => {
   // console.log('inputCell', props);
   const {
     value: initialValue,
-    row: { index },
+    row,
     column: { id },
     updateCellData, //! This is a custom function that we supplied to our table instance.
     editable,
     selectedCell, //! This is what we select for inline edit in cell.
-    setSelectedCell, //!
+    setSelectedCell,
+    isNew,
   } = props;
 
   const [value, setValue] = useState(initialValue);
@@ -23,7 +24,7 @@ const InputCell = (props) => {
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     //! API call to server.
-    updateCellData(index, id, value);
+    updateCellData(row?.index, id, value);
     setSelectedCell(null);
   };
 
@@ -31,6 +32,24 @@ const InputCell = (props) => {
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
+
+  if (!!isNew) {
+    return (
+      <Input
+        onChange={() => {}}
+        onBlur={() => {}}
+        style={{
+          textAlign: 'center',
+          width: '100%',
+          backgroundColor: 'inherit',
+          color: 'inherit',
+        }}
+        type={props.header.dataType}
+        value=""
+        autoFocus
+      />
+    );
+  }
 
   //! Check if 'table' is editable in general or not.
   if (!editable) {
@@ -44,7 +63,7 @@ const InputCell = (props) => {
 
   if (
     !!selectedCell &&
-    index === selectedCell.row.index &&
+    row?.index === selectedCell.row.index &&
     id === selectedCell.column.id
   ) {
     return (

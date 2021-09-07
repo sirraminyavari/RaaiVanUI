@@ -1,63 +1,66 @@
-import { useState, useRef } from 'react';
-import CaretIcon from 'components/Icons/ChevronIcons/Chevron';
-import { TCV_DEFAULT } from 'constant/CssVariables';
-import useOnClickOutside from 'hooks/useOnClickOutside';
-import SelectOptions from './SelectOptions';
+import { TCV_DEFAULT, TCV_VERY_SOFT } from 'constant/CssVariables';
+import { useState } from 'react';
+import Select from 'react-select';
 import * as Styled from './select.styles';
 
 const SelectCell = (props) => {
-  // console.log(props);
-  const selectRef = useRef();
-  const [showOptions, setShowOptions] = useState(false);
-  const randomNumber = Math.floor(Math.random() * 5) + 1;
-  const [selectedOption, setSelectedOption] = useState(
-    `گزینه ${randomNumber} انتخاب شد`
+  // console.log('select cell ', props);
+  const [selectedOptions, setSelectedOptions] = useState(
+    !!props?.isNew
+      ? []
+      : props?.value?.defaultValues?.map((x) => x?.label) || []
   );
 
-  const handleSelectOption = (e) => {
-    e.stopPropagation();
-    const optionName = e.target.getAttribute('data-name');
-    setSelectedOption(optionName);
-    setShowOptions(false);
+  const handleSelectChange = (values) => {
+    setSelectedOptions(values);
   };
 
-  const handleShowOprtions = () => {
-    setShowOptions(true);
+  const handleOnMenuClose = () => {
+    //! Call api.
+    console.log(selectedOptions);
   };
 
-  const handleHideOptions = () => {
-    setShowOptions(false);
-  };
-
-  const handleClickArrow = (e) => {
-    e.stopPropagation();
-    setShowOptions((opt) => !opt);
-  };
-
-  useOnClickOutside(selectRef, handleHideOptions);
-
-  if (!props?.editable) {
-    return selectedOption;
+  if (!props?.editable && !props?.isNew) {
+    return selectedOptions?.[0].label;
   }
 
   if (!props?.header?.options?.editable) {
-    return selectedOption;
+    return (
+      <>
+        {selectedOptions.map((item, key) => (
+          <span
+            key={key}
+            style={{
+              display: 'inline-block',
+              backgroundColor: TCV_VERY_SOFT,
+              padding: '0.3rem',
+              margin: '0.2rem',
+              width: 'auto',
+              borderRadius: '0.2rem',
+            }}>
+            {item}
+          </span>
+        ))}
+      </>
+    );
   }
 
   return (
-    <Styled.SelectCellContainer ref={selectRef} onClick={handleShowOprtions}>
-      {!!selectedOption && (
-        <Styled.SelectedOption>{selectedOption}</Styled.SelectedOption>
-      )}
-      <CaretIcon
-        onClick={handleClickArrow}
-        size={20}
-        color={TCV_DEFAULT}
-        className="select-option-caret"
-        dir={showOptions ? 'up' : 'down'}
+    <Styled.SelectContainer>
+      <Select
+        defaultValue={props?.value?.defaultValues}
+        isMulti={!!props?.multiSelect}
+        hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
+        closeMenuOnSelect={!props?.multiSelect}
+        isClearable={false}
+        isSearchable={true}
+        name={props?.header?.title}
+        options={props?.value?.options}
+        onChange={handleSelectChange}
+        onMenuClose={handleOnMenuClose}
+        styles={Styled.selectStyles}
       />
-      {showOptions && <SelectOptions handleSelectOption={handleSelectOption} />}
-    </Styled.SelectCellContainer>
+    </Styled.SelectContainer>
   );
 };
 

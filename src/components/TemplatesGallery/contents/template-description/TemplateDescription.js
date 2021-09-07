@@ -38,7 +38,7 @@ const TemplateDescription = () => {
           بازگشت
         </Button>
         <Styled.TemplateTitleInDescription>
-          {decodeBase64(currentTemplate?.Name)}
+          {decodeBase64(currentTemplate?.TypeName)}
         </Styled.TemplateTitleInDescription>
         <Styled.TemplatePhotosWrapper>
           <CustomSwiper
@@ -64,7 +64,7 @@ const TemplateDescription = () => {
                     fontSize: '1.5rem',
                     marginRight: '10%',
                   }}>
-                  {decodeBase64(currentTemplate?.Name)}
+                  {decodeBase64(currentTemplate?.TypeName)}
                 </div>
               );
             })}

@@ -10,10 +10,13 @@ import { CV_DISTANT } from 'constant/CssVariables';
 import { TemplatesGalleryContext } from '../../TemplatesGallery';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { isEmpty } from 'helpers/helpers';
+import { parseTemplates } from 'components/TemplatesGallery/templateUtils';
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
   const { templatesObject } = useContext(TemplatesGalleryContext);
+  const parsedTemplates = parseTemplates(templatesObject);
+  const { AllTemplates, Tags, TemplatesWithoutTag } = parsedTemplates || {};
 
   return (
     <div>
@@ -60,7 +63,7 @@ const TemplateGalleryMain = () => {
             freeMode
             slidesPerView={3}
             spaceBetween={10}>
-            {templatesObject?.Tags?.map((template, index) => {
+            {[...AllTemplates]?.map((template, index) => {
               return <TemplateCard template={template} key={index} />;
             })}
           </CustomSwiper>
