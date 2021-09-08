@@ -8,8 +8,8 @@ export const RecordInfoContainer = styled.div`
   gap: 1rem;
 
   .record-info-avatar {
-    width: 2.7rem;
-    min-width: 2.7rem;
+    width: 2.8rem;
+    min-width: 2.8rem;
     height: 2.7rem;
   }
 `;

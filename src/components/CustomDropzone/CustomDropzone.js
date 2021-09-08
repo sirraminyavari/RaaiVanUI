@@ -5,10 +5,10 @@ import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 import * as Styled from './CustomDropzone.styles';
-import UploadFileIcon from 'components/Icons/UploadFileIcon/UploadFile';
-import APIHandler from 'apiHelper/APIHandler';
-import axios from 'axios';
-import ProgressBar from 'components/ProgressBar/ProgressBar';
+import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
+import { errorTypes } from './dropzoneUtils';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 
 /**
  * @typedef PropType
@@ -16,15 +16,16 @@ import ProgressBar from 'components/ProgressBar/ProgressBar';
  * @property {number} maxFiles -The maximum number of files that can be uploaded.
  * @property {number} maxEachSize -The maximum size of each file.
  * @property {number} maxTotalSize -The maximum size of all files.
- * @property {function} onError -A callback function that will fire on file upload exception.
+ * @property {function} onError -A callback function that will fire on file upload error.
+ * @property {function} onUpload -A callback function that will fire on file upload.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
- * @property {string} [ownerId] -The id of file owner.
- * @property {string} [ownerType] -The type of file owner.
+ * @property {Object} placeholders -Placeholders for dropzone input.
  * @property {boolean} disabled -A flag that will disable dropzone area.
- * @property {string[]} exceptions -All formats that are not allowed to be uploaded.
- * {exceptions} prop has priority over {accept} prop.
- * If a format is defined forbidden in exceptions, component will throw error even if it is accepted.
+ * @property {string[]} foramtExceptions -All formats that are not allowed to be uploaded.
+ * @property {Boolean} isUploading -All formats that are not allowed to be uploaded.
+ * {foramtExceptions} prop has priority over {accept} prop.
+ * If a format is defined forbidden in exceptions, component will throw error even if it is inside accept list.
  */
 
 /**
@@ -39,17 +40,24 @@ const CustomDropzone = (props) => {
     maxEachSize,
     maxTotalSize,
     onError,
+    onUpload,
     containerProps,
     inputProps,
-    ownerId,
-    ownerType,
     disabled,
-    exceptions,
+    foramtExceptions,
+    placeholders,
+    isUploading,
   } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [bar, setBar] = useState({});
-  const apiHandler = new APIHandler('DocsAPI', 'GetUploadLink');
+
+  const getIcon = () => {
+    if (isUploading) {
+      return <LoadingCircle color={TCV_DEFAULT} />;
+    } else {
+      return <FileFormatIcon format="upload" size={25} color={TCV_DEFAULT} />;
+    }
+  };
 
   //! Converts bytes to mega bytes
   const sizeInMB = (sizeInBytes) =>
@@ -59,20 +67,19 @@ const CustomDropzone = (props) => {
   const customValidator = (file) => {
     const fileFormat = file.name.split('.').pop();
     const fileSize = file.size;
-    const fileName = file.name;
 
     //! Compare file size against maximum allowed size for each file.
     if (sizeInMB(fileSize) > maxEachSize) {
       return {
-        code: 'file-too-large',
-        message: `حجم فایل ${fileName} بزرگتر از حد مجاز (${maxEachSize} مگابایت)است.`,
+        code: errorTypes.LARGE_FILE_ERROR,
+        message: `حجم فایل بزرگتر از حد مجاز (${maxEachSize} مگابایت)است.`,
       };
     }
 
     //! See if file format is allowed or not.
-    if (exceptions && exceptions.includes(fileFormat)) {
+    if (foramtExceptions && foramtExceptions.includes(fileFormat)) {
       return {
-        code: 'not-allowed-format',
+        code: errorTypes.FORMAT_ERROR,
         message: `فایل با فرمت ${fileFormat} مجاز نمی باشد.`,
       };
     }
@@ -80,101 +87,30 @@ const CustomDropzone = (props) => {
     return null; //! file is clean and there is no error.
   };
 
-  //! Sets toastify alert for each error.
-  useEffect(() => {
-    if (errors.length) {
-      errors.forEach((err) => {
-        window.alert(err.message);
-      });
-    }
-  }, [errors]);
-
   //! Fires on drop event.
   const onDrop = useCallback((acceptedFiles) => {
+    //! Calculate total file size.
     const totalSize = acceptedFiles
       .map((file) => file.size)
       .reduce((sum, size) => sum + sizeInMB(size), 0);
 
+    // //! Set files(For error checking, If any!)
+    setFiles(acceptedFiles);
+
     if (totalSize > maxTotalSize) {
       //! Creates maximum total size error.
       const totalSizeError = {
-        code: 'total-size-exception',
+        code: errorTypes.TOTAL_SIZE_ERROR,
         message: `حجم کل فایل ها بیشتر از حد مجاز (${maxTotalSize} مگابایت) است.`,
       };
-      // setFiles((files) => {
-      //   files.length = 0;
-      //   return files;
-      // });
-      setErrors((c) => c.concat(totalSizeError));
+      setErrors((errors) => [...errors, totalSizeError]);
+      return;
+    } else if (!!errors.length) {
+      return;
     } else {
-      //! Sets accepted files and assign new properties.
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-            uploadPercentage: 0,
-          })
-        )
-      );
-      console.log(acceptedFiles);
+      // console.log(acceptedFiles);
       //! Do something with the files
-
-      //! Uploads accepted files asynchronous.
-      acceptedFiles.reduce(async (previousPromise, accepted) => {
-        await previousPromise;
-
-        return new Promise((resolve, reject) => {
-          //! Get upload link.
-          apiHandler.url(
-            {
-              OwnerID: ownerId,
-              OwnerType: ownerType,
-            },
-            (response) => {
-              let uploadURL = response.slice(5);
-              //! Prepare upload data
-              let formData = new FormData();
-              formData.append('file', accepted);
-
-              //! Keep track of upload progress.
-              let options = {
-                onUploadProgress: (progressEvent) => {
-                  const { loaded, total } = progressEvent;
-                  let percentage = Math.floor((loaded * 100) / total);
-
-                  //! Sets current progress bar values.
-                  setBar({
-                    name: accepted.name,
-                    uploadPercentage: percentage,
-                    description: `${sizeInMB(loaded)}MB of ${sizeInMB(
-                      total
-                    )}MB`,
-                  });
-
-                  //! Executes if upload progress is over.
-                  if (percentage === 100) {
-                    //! Sets upload percentage property of just finished file to 100.
-                    setFiles((c) =>
-                      c.map((file) => {
-                        if (file.name === accepted.name) {
-                          file.uploadPercentage = 100;
-                          return file;
-                        }
-                        return file;
-                      })
-                    );
-                    //! Empty finished progress bar.
-                    setBar({});
-                    resolve();
-                  }
-                },
-              };
-              //! Post file to server.
-              axios.post(uploadURL, formData, options);
-            }
-          );
-        });
-      }, Promise.resolve());
+      onUpload && onUpload(acceptedFiles);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -188,9 +124,9 @@ const CustomDropzone = (props) => {
     // open,
   } = useDropzone({
     onDrop,
-    accept: accept.join(', '),
+    accept: accept?.join(', '),
     maxFiles,
-    disabled: !!disabled,
+    disabled: !!disabled || isUploading,
     validator: customValidator,
     // noKeyboard: true,
     // noClick: true,
@@ -200,24 +136,29 @@ const CustomDropzone = (props) => {
   const handlErrors = () => {
     //! Maximum file number error.
     if (fileRejections.length) {
-      // console.log(fileRejections);
       if (
-        fileRejections.some((file) => file.errors[0].code === 'too-many-files')
+        fileRejections.some(
+          (file) => file?.errors?.[0]?.code === errorTypes.TOO_MANY_FILES_ERROR
+        )
       ) {
-        setErrors((c) =>
-          c.concat({
-            code: fileRejections[0].errors[0].code,
-            message: `تعداد فایل ها بیشتر از حد مجاز (${maxFiles} عدد) است.`,
-          })
-        );
+        const tooManyFilesError = {
+          code: fileRejections?.[0]?.errors?.[0]?.code,
+          message: `تعداد فایل ها بیشتر از حد مجاز (${maxFiles} عدد) است.`,
+        };
+        setErrors((errors) => [...errors, tooManyFilesError]);
       }
 
       //! Maximum file size error.
       if (
-        fileRejections.some((file) => file.errors[0].code === 'file-too-large')
+        fileRejections.some(
+          (file) => file?.errors?.[0]?.code === errorTypes.LARGE_FILE_ERROR
+        )
       ) {
         const fileSizeError = fileRejections
-          .filter((file) => file.errors[0].code !== 'too-many-files')
+          .filter(
+            (file) =>
+              file?.errors?.[0]?.code !== errorTypes.TOO_MANY_FILES_ERROR
+          )
           .map((file) => {
             return {
               code: file.errors[0].code,
@@ -230,90 +171,51 @@ const CustomDropzone = (props) => {
               },
             };
           });
-        setErrors((c) => c.concat(fileSizeError));
+        setErrors((errors) => [...errors, fileSizeError]);
       }
     }
 
     //! Format exceptions error.
     if (
       fileRejections.some(
-        (file) => file.errors[0].code === 'not-allowed-format'
+        (file) => file?.errors?.[0]?.code === errorTypes.FORMAT_ERROR
       )
     ) {
-      setErrors((c) =>
-        c.concat({
-          code: fileRejections[0].errors[0].code,
-          message: fileRejections[0].errors[0].message,
-        })
-      );
+      const notAllowedFormatError = {
+        code: fileRejections?.[0]?.errors?.[0]?.code,
+        message: fileRejections?.[0]?.errors?.[0]?.message,
+      };
+      setErrors((errors) => [...errors, notAllowedFormatError]);
     }
   };
 
-  //! Prepares thumbnail images.
-  const thumbs = files
-    .filter((file) => file.name.endsWith('.jpg') || file.name.endsWith('.png'))
-    .map((file) => (
-      <Styled.Thumb key={file.name}>
-        <Styled.ThumbInner>
-          <Styled.ThumbImage src={file.preview} alt="thumb-dropzone" />
-        </Styled.ThumbInner>
-      </Styled.Thumb>
-    ));
-
+  //! Check for errors everytime files are changed.
   useEffect(() => {
     handlErrors();
-    //! Clearn up
-    return () => {
-      //! Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file) => URL.revokeObjectURL(file.preview));
-      setErrors([]);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
+  //! OnError callback.
   useEffect(() => {
-    if (errors.length) {
+    if (!!errors.length) {
       onError(errors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
 
   return (
-    <>
-      <Styled.DropzoneContainer
-        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
-        <Styled.UploadIconWrapper>
-          <UploadFileIcon size={30} color="#fff" />
-        </Styled.UploadIconWrapper>
-        <Styled.InputWrapper>
-          <input {...getInputProps(inputProps)} />
-          {isDragActive ? (
-            <p>فایل های انتخابی را در این باکس رها کنید...</p>
-          ) : (
-            <p>
-              برای انتخاب فایل آنها را بگیرید و درون باکس رها و یا کلیک کنید...
-            </p>
-          )}
-        </Styled.InputWrapper>
-      </Styled.DropzoneContainer>
-      <Styled.ThumbsContainer>{thumbs}</Styled.ThumbsContainer>
-      {errors.map((error, index) => {
-        return <p style={{ color: 'red' }}>{error.message}</p>;
-      })}
-      {files.map((file, index, self) => {
-        if (file.name === bar.name) {
-          return (
-            <ProgressBar
-              progress={bar.uploadPercentage}
-              label={`${bar.name}(${bar.description})`}
-            />
-          );
-        }
-        return (
-          <ProgressBar progress={file.uploadPercentage} label={file.name} />
-        );
-      })}
-    </>
+    <Styled.DropzoneContainer
+      {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
+      {getIcon()}
+      <Styled.InputWrapper>
+        <input {...getInputProps(inputProps)} />
+        {isDragActive ? (
+          <p>{placeholders?.dragging}</p>
+        ) : (
+          <p>{placeholders?.main}</p>
+        )}
+      </Styled.InputWrapper>
+    </Styled.DropzoneContainer>
   );
 };
 
@@ -323,17 +225,20 @@ CustomDropzone.propTypes = {
   maxEachSize: PropTypes.number,
   maxTotalSize: PropTypes.number,
   onError: PropTypes.func,
+  onUpload: PropTypes.func,
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
-  ownerId: PropTypes.string,
-  ownerType: PropTypes.string,
   disabled: PropTypes.bool,
-  exceptions: PropTypes.array,
+  foramtExceptions: PropTypes.array,
+  placeholders: PropTypes.object,
+  isUploading: PropTypes.bool,
 };
 
 CustomDropzone.defaultProps = {
-  ownerId: '',
-  ownerType: 'Node',
+  placeholders: {
+    main: 'Click or Drag&Drop',
+    dragging: 'Drop here ...',
+  },
 };
 
 CustomDropzone.displayName = 'CustomDropzoneComponent';

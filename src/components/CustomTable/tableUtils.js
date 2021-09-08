@@ -7,4 +7,5 @@ export const cellTypes = {
   multiSelect: 'multi-select',
   binary: 'binary',
   recordInfo: 'record-information',
+  file: 'file',
 };

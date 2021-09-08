@@ -154,12 +154,14 @@ const CustomTable = (props) => {
     }),
     []
   );
+  const pageSize = pagination?.perPageCount?.[0] || 15;
+  const reachedPaginationThreshold = data?.length > pageSize;
 
   const paginationStates = useMemo(() => {
     return !!pagination
       ? {
           pageIndex: pagination?.initialPageIndex || 0,
-          pageSize: pagination?.perPageCount?.[0] || 5,
+          pageSize: pageSize,
         }
       : {};
   }, []);
@@ -372,7 +374,7 @@ const CustomTable = (props) => {
           </Styled.FooterContainer>
         )}
       </Styled.Table>
-      {!!pagination && (
+      {!!pagination && reachedPaginationThreshold && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
       <Styled.TableButtonsContainer>
