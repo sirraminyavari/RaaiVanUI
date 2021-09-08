@@ -1,7 +1,15 @@
-import { DateCell, InputCell, SelectCell, RecordInfoCell } from './types';
+import {
+  DateCell,
+  InputCell,
+  SelectCell,
+  RecordInfoCell,
+  FileCell,
+} from './cellTypes';
 import { cellTypes } from './tableUtils';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-// import * as Styled from './CustomTable.styles';
+import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
+import RowActions from './RowAction';
+import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
@@ -10,17 +18,30 @@ const provideCell = (header) => {
       return {
         Cell: (cell) => {
           return (
-            <div style={{ cursor: 'pointer' }} {...cell.dragHandleProps}>
-              <DragIcon />
-            </div>
+            <ToolTip
+              tipId={`row-${cell?.row?.index}-action-tip`}
+              multiline
+              effect="solid"
+              event="click"
+              place="left"
+              type="dark"
+              disable={!cell?.editable}
+              clickable
+              arrowColor="transparent"
+              className="table-row-action-tooltip"
+              renderContent={() => <RowActions cell={cell} />}>
+              <Styled.RowDragHandleWrapper {...cell.dragHandleProps}>
+                <DragIcon />
+              </Styled.RowDragHandleWrapper>
+            </ToolTip>
           );
         },
       };
     case 'index':
       return {
-        Cell: (cell) => {
-          return <span>{cell?.row.index + 1}</span>;
-        },
+        Cell: (cell) => (
+          <Styled.TableRowIndex>{cell?.row.index + 1}</Styled.TableRowIndex>
+        ),
       };
 
     case cellTypes.string:
@@ -50,6 +71,11 @@ const provideCell = (header) => {
         Cell: (row) => <RecordInfoCell {...row} header={header} />,
       };
 
+    case cellTypes.file:
+      return {
+        Cell: (row) => <FileCell {...row} header={header} />,
+      };
+
     default:
       return;
   }
@@ -77,9 +103,19 @@ const provideFooter = (header) => {
         Footer: (row) => <SelectCell {...row} header={header} isNew />,
       };
 
+    case cellTypes.binary:
+      return {
+        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+      };
+
     case cellTypes.date:
       return {
         Footer: (footer) => <DateCell {...footer} header={header} isNew />,
+      };
+
+    case cellTypes.file:
+      return {
+        Footer: (footer) => <FileCell {...footer} header={header} isNew />,
       };
 
     default:
@@ -92,7 +128,8 @@ const provideFooter = (header) => {
 //! Provide options for a given column.
 const provideOptions = (header, data) => {
   return {
-    width: getColumnWidth(data, header),
+    // width: getColumnWidth(data, header),
+    minWidth: getColumnWidth(data, header),
     ...header?.options,
   };
 };
@@ -121,10 +158,10 @@ const getColumnWidth = (data, header) => {
         ) || []),
         header?.title.length
       );
-      return Math.min(maxWidth, cellLength * magicSpacing);
+      return Math.min(maxWidth, cellLength * magicSpacing + 60);
 
     case cellTypes.multiSelect:
-      maxWidth = 1000;
+      maxWidth = 500;
       magicSpacing = header?.options?.editable ? 7.8 : 5.5;
       cellLength = Math.max(
         ...(data?.[0]?.[header?.accessor]?.options?.map(
@@ -137,7 +174,7 @@ const getColumnWidth = (data, header) => {
 
       return Math.min(
         maxWidth,
-        cellLength * defaultValuesFactor * magicSpacing
+        cellLength * defaultValuesFactor * magicSpacing + 60
       );
 
     case cellTypes.binary:
@@ -146,6 +183,14 @@ const getColumnWidth = (data, header) => {
         ...(data?.[0]?.[header?.accessor]?.options?.map(
           (option) => option?.label?.length
         ) || []),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing + 55);
+
+    case cellTypes.file:
+      magicSpacing = 12;
+      cellLength = Math.max(
+        ...data?.map((row) => row?.[header?.accessor]?.fileTitle?.length),
         header?.title.length
       );
       return Math.min(maxWidth, cellLength * magicSpacing);
