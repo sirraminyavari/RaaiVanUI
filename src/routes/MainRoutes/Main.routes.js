@@ -33,6 +33,8 @@ import {
   QUESTIONS_PATH,
   QUESTION_NAME,
   QUESTION_PATH,
+  TEMPLATES_NAME,
+  TEMPLATES_PATH,
   USER_SEARCH_NAME,
   USER_SEARCH_PATH,
 } from 'constant/constants';
@@ -90,6 +92,11 @@ const ChangePassword = lazy(() =>
 );
 const Onboarding = lazy(() =>
   import(/* webpackChunkName: "onboarding-view"*/ 'views/Onboarding/Onboarding')
+);
+const Templates = lazy(() =>
+  import(
+    /* webpackChunkName: "templates-view"*/ 'views/Templates/Templates-view'
+  )
 );
 
 const routes = [
@@ -192,6 +199,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: NetworkView,
+  },
+  {
+    path: TEMPLATES_PATH,
+    name: TEMPLATES_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: Templates,
   },
   {
     path: ONBOARDING_PATH,

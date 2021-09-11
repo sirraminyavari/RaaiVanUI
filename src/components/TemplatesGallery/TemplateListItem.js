@@ -52,7 +52,11 @@ const TemplateListItem = ({ itemProps }) => {
           {getIcon(item)}
         </Styled.TemplateIconWrapper>
       ) : (
-        <img width={20} src="../../images/Preview.png" alt="template-logo" />
+        <img
+          width={20}
+          src={item?.data?.rawData?.IconURL}
+          alt="template-logo"
+        />
       )}
       <Styled.TemplateItemTitle isSelected={itemIsSelected}>
         {item?.data?.title}

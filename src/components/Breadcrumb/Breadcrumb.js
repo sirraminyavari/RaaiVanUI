@@ -4,11 +4,11 @@ import { BreadcrumbContainer, BreadcrumbItem } from './Breadcrumb.styles';
 import useWindow from 'hooks/useWindowContext';
 
 const Breadcrumb = (props) => {
-  const { items } = props;
+  const { items, className } = props;
   const { RV_RevFloat, RV_Float, GlobalUtilities } = useWindow();
 
   return (
-    <BreadcrumbContainer dir={RV_Float}>
+    <BreadcrumbContainer className={className} dir={RV_Float}>
       {items?.map((item, index, self) => {
         const { id, title, linkTo } = item;
         return (
