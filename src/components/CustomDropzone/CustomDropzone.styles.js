@@ -1,13 +1,17 @@
+import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import { FLEX_RCS } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
-export const DropzoneContainer = styled.div`
-  border: 0.15rem dashed #2b388f;
-  margin: 0 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.3rem;
-  display: flex;
-  justify-content: end;
-  align-items: center;
+export const DropzoneContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER}`,
+})`
+  width: 100%;
+  height: 80%;
+  border: 0.15rem dashed ${TCV_DEFAULT};
+  padding: 0.3rem 0.2rem;
+  cursor: pointer;
+  ${FLEX_RCS}
 `;
 
 export const UploadIconWrapper = styled.div`
@@ -16,12 +20,16 @@ export const UploadIconWrapper = styled.div`
   border-radius: 50%;
   line-height: 0.8rem;
   padding: 0.2rem 0.3rem;
-  background-color: #2b388f;
+  background-color: ${TCV_DEFAULT};
 `;
 
 export const InputWrapper = styled.div`
-  font-size: 1rem;
-  margin: 0 1rem;
+  width: 100%;
+  font-size: 0.8rem;
+  margin-right: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ThumbsContainer = styled.aside`

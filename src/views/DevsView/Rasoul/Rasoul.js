@@ -8,14 +8,14 @@ import Divider from './Divider';
 import CustomTable from 'components/CustomTable/CustomTable';
 import tableData from './tableData';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
-import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
+// import DeleteRowIcon from 'components/Icons/DeleteRowIcon/DeleteRowIcon';
+// import ViewRowIcon from 'components/Icons/ViewIcon/ViewIcon';
 
 //! Dropzone
 // import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
 
 //! ProgressBar
-import ProgressBar from 'components/ProgressBar/ProgressBar';
+// import ProgressBar from 'components/ProgressBar/ProgressBar';
 
 //! Custom Tree
 // import DnDTree from 'components/Tree/CustomTree/DnDTree';
@@ -66,8 +66,7 @@ const headers = [
     dataType: 'action',
     options: {
       editable: false,
-      width: 20,
-      maxWidth: 20,
+      width: 30,
       disableSortBy: true,
     },
   },
@@ -79,7 +78,6 @@ const headers = [
     options: {
       editable: false,
       width: 40,
-      maxWidth: 30,
       disableSortBy: true,
     },
   },
@@ -116,10 +114,17 @@ const headers = [
   },
   {
     id: '6',
+    title: 'فایل مایکروسافت پروژه',
+    accessor: 'microsoftFile',
+    dataType: 'file',
+    options: { editable: true, disableSortBy: true, maxWidth: 200 },
+  },
+  {
+    id: '7',
     title: 'اطلاعات ثبت',
     accessor: 'recordInfo',
     dataType: 'record-information',
-    options: { editable: true, width: 150 },
+    options: { editable: true, minWidth: 220 },
   },
 ];
 
@@ -394,7 +399,6 @@ const RasoulView = () => {
       </div> */}
 
       <Divider title="Custom Table Component" />
-
       <CustomTable
         editable //! This prop makes the whole table editable.
         resizable //! This prop makes the whole columns of a table resizable.
@@ -415,7 +419,7 @@ const RasoulView = () => {
       {/* <Divider title="Custom Dropzone Component" /> */}
       {/* <CustomDropzone
         accept={['image/*', '.pdf']}
-        exceptions={['jpg']}
+        // exceptions={['jpg']}
         maxFiles={3}
         maxEachSize={1}
         maxTotalSize={1}

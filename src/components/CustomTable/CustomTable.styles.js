@@ -1,5 +1,5 @@
-import { BO_DISTANT, C_GRAY } from 'constant/Colors';
-import { BO_RADIUS_UNIT, IGNORE_RADIUS_BOTTOM } from 'constant/constants';
+import styled from 'styled-components';
+import { C_GRAY } from 'constant/Colors';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -8,60 +8,28 @@ import {
   CV_GRAY_DARK,
   CV_RED,
   CV_WHITE,
+  TCV_VERY_TRANSPARENT,
+  TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import { FLEX_CCC, FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
-import styled from 'styled-components';
+import { BO_RADIUS_QUARTER } from 'constant/constants';
 
 const { RV_RevFloat } = window;
 
 export const TableContainer = styled.div`
-  padding: 1rem 2rem;
-  display: block;
-  margin: 1rem;
+  padding: 1rem 0;
+  // margin: 1rem;
   border: 0.15rem solid black;
-`;
-
-export const HeaderWrapper = styled.div`
-  ${FLEX_RCC}
-
-  .table-sort-arrow {
-    position: absolute;
-    ${RV_RevFloat}: 0.3rem;
-  }
-`;
-
-export const Tr = styled.div`
-  background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
-  border-left: 1px solid ${CV_DISTANT};
-
-  :last-child {
-    > div:not(:first-child) {
-      border-bottom: 1px solid ${CV_DISTANT};
-    }
-  }
-
-  &:hover {
-    > div:not(:first-child) {
-      background-color: ${CV_FREEZED};
-      color: ${CV_BLACK};
-    }
-  }
-`;
-
-export const Table = styled.div.attrs({
-  className: ``,
-})`
-  border-spacing: 0;
-  //TODO: Big big problem.
   overflow-x: auto;
-  margin: 0.5rem 0;
-  user-select: none;
-  border: 0;
 `;
 
-export const TableBody = styled.div.attrs({
-  className: ``,
-})`
+export const Table = styled.div`
+  border-spacing: 0;
+  margin: 0.5rem;
+  user-select: none;
+`;
+
+export const TableBody = styled.div`
   min-height: 2rem;
 `;
 
@@ -109,9 +77,45 @@ export const TableHeader = styled.div.attrs({
   }
 `;
 
-export const TableColumnResizer = styled.div.attrs({
-  className: ``,
-})`
+export const HeaderWrapper = styled.div`
+  ${FLEX_RCC}
+
+  .table-sort-arrow {
+    position: absolute;
+    ${RV_RevFloat}: 0.3rem;
+  }
+`;
+
+export const Tr = styled.div`
+  background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
+  border-left: 1px solid ${CV_DISTANT};
+
+  :last-child {
+    > div:not(:first-child) {
+      border-bottom: 1px solid ${CV_DISTANT};
+    }
+  }
+
+  &:hover {
+    > div:not(:first-child) {
+      background-color: ${CV_FREEZED};
+      color: ${CV_BLACK};
+    }
+  }
+
+  .table-row-action-tooltip {
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
+    padding: 0 !important;
+  }
+`;
+
+export const TableRowIndex = styled.span`
+  font-size: 1rem;
+`;
+
+export const TableColumnResizer = styled.div`
   display: inline-block;
   background: ${CV_GRAY};
   width: 0.25rem;
@@ -127,9 +131,7 @@ export const TableColumnResizer = styled.div.attrs({
   ${({ isResizing }) => isResizing && 'background: black;'}
 `;
 
-export const TableCell = styled.div.attrs({
-  className: ``,
-})`
+export const TableCell = styled.div`
   ${FLEX_RCC}
   margin: 0;
   padding: 0.5rem;
@@ -205,4 +207,34 @@ export const TableButtonsContainer = styled.div`
     width: 12rem;
     border-radius: 2rem;
   }
+`;
+
+export const TableRowActionContainer = styled.div`
+  width: 6.5rem;
+  height: auto;
+  color: ${CV_GRAY_DARK};
+  padding: 0.5rem;
+`;
+
+export const TableActionWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER}`,
+})`
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  margin: 0.1rem 0;
+  ${FLEX_RCS}
+  gap: 0.5rem;
+
+  :hover {
+    background-color: ${TCV_VERY_TRANSPARENT_WARM};
+  }
+`;
+
+export const RowDragHandleWrapper = styled.div`
+  cursor: pointer !important;
+  width: 100%;
+  height: calc(100% + 1rem);
+  padding: 0.8rem;
+  ${FLEX_CCC}
 `;
