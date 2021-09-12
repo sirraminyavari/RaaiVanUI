@@ -50,7 +50,7 @@ const loginAction = ({ email, password, invitationId }) => async (
           Password: encode(password),
           InvitationID: invitationId,
         },
-        (response) => {
+        async (response) => {
           const { Succeed, AuthCookie } = response;
           const { RVDic } = window;
           if (response.ErrorText) {
@@ -101,8 +101,9 @@ const loginAction = ({ email, password, invitationId }) => async (
             dispatch(loggedInAction(response));
             dispatch(setAuthUserAction(response.User));
             window.RVGlobal.IsAuthenticated = true;
+            const afterLoginResult = await afterLogin(response);
 
-            window.location.href = afterLogin(response) || '/teams';
+            window.location.href = afterLoginResult || '/teams';
           }
         },
         (err) => {
