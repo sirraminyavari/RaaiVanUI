@@ -6,6 +6,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
 import { useHistory } from 'react-router';
+import { toggleActivation } from 'store/reducers/onboardingReducer';
 
 const activateTemplate = (x, appId) => {
   const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
@@ -65,12 +66,13 @@ const FinalStep = () => {
   }, []);
 
   const letsGo = () => {
+    const { RVAPI } = window;
     new APIHandler('RVAPI', 'Log').fetch(
       { data: encode(finish_on_start) },
       (res) => {
         // redirect to clickmind workspace
-        // dispatch({ type: 'TOGGLE_TOUR' });
-        history.push('/classes');
+        dispatch(toggleActivation());
+        history.push(RVAPI?.ClassesPageURL());
       }
     );
   };
