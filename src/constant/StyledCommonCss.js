@@ -20,6 +20,18 @@ export const FLEX_CSC = css`
 /**
  * @description 'Flex'
  * @Direction 'C'olumn
+ * @Align flex-'E'nd
+ * @Justify 'C'enter
+ */
+export const FLEX_CEC = css`
+  ${FLEX_COLUMN}
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'C'olumn
  * @Align 'C'enter
  * @Justify 'C'enter
  */

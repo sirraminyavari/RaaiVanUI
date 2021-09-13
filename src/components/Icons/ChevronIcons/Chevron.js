@@ -5,16 +5,39 @@ import {
   BsChevronCompactRight,
 } from 'react-icons/bs';
 
-const ChevronIcon = ({ dir: direction, ...rest }) => {
+import {
+  IoIosArrowUp,
+  IoIosArrowDown,
+  IoIosArrowBack,
+  IoIosArrowForward,
+} from 'react-icons/io';
+
+const ChevronIcon = ({ dir: direction, small, ...rest }) => {
   switch (direction) {
     case 'down':
-      return <BsChevronCompactDown {...rest} />;
+      return !!small ? (
+        <IoIosArrowDown {...rest} />
+      ) : (
+        <BsChevronCompactDown {...rest} />
+      );
     case 'up':
-      return <BsChevronCompactUp {...rest} />;
+      return !!small ? (
+        <IoIosArrowUp {...rest} />
+      ) : (
+        <BsChevronCompactUp {...rest} />
+      );
     case 'left':
-      return <BsChevronCompactLeft {...rest} />;
+      return !!small ? (
+        <IoIosArrowBack {...rest} />
+      ) : (
+        <BsChevronCompactLeft {...rest} />
+      );
     default:
-      return <BsChevronCompactRight {...rest} />;
+      return !!small ? (
+        <IoIosArrowForward {...rest} />
+      ) : (
+        <BsChevronCompactRight {...rest} />
+      );
   }
 };
 

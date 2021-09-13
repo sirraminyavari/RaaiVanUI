@@ -2,7 +2,15 @@ import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
-import { CV_GRAY_DARK, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_GRAY_DARK,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_VERYWARM,
+  TCV_WARM,
+} from 'constant/CssVariables';
 
 const { GlobalUtilities } = window;
 
@@ -62,6 +70,11 @@ export const FileLinkWrapper = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 0.2rem;
-  padding: 0 0.5rem;
+  padding: 0 0.3rem;
+  margin-right: 0.3rem;
+  border-right: 1px solid ${CV_DISTANT};
+
+  a {
+    color: ${TCV_VERYWARM};
+  }
 `;

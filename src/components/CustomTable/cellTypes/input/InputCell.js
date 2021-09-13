@@ -1,5 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
+import * as Styled from './InputCell.styles';
 
 const InputCell = (props) => {
   // console.log('inputCell', props);
@@ -17,8 +18,9 @@ const InputCell = (props) => {
   const [value, setValue] = useState(initialValue);
 
   //! Keep track of input change.
-  const handleInputChange = (value) => {
-    setValue(value);
+  const handleInputChange = (e) => {
+    console.log(e.target.value);
+    setValue(e.target.value);
   };
 
   //! We'll only update the external data when the input is blurred.
@@ -47,6 +49,7 @@ const InputCell = (props) => {
         type={props.header.dataType}
         value=""
         autoFocus
+        placeholder="وارد نمایید"
       />
     );
   }
@@ -77,12 +80,17 @@ const InputCell = (props) => {
           color: 'inherit',
         }}
         type={props.header.dataType}
-        value={props?.value}
+        value={value}
         autoFocus
+        placeholder="وارد نمایید"
       />
     );
   } else {
-    return `${initialValue}`;
+    return !!initialValue ? (
+      <span style={{ cursor: 'pointer' }}>{initialValue}</span>
+    ) : (
+      <Styled.EmptyCellShow>وارد نمایید</Styled.EmptyCellShow>
+    );
   }
 };
 

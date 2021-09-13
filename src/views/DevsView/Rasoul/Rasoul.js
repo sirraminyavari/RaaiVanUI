@@ -88,39 +88,54 @@ const headers = [
     dataType: 'string',
     options: {
       editable: true,
+      isRequired: true,
       maxWidth: 200,
     },
   },
   {
     id: '3',
-    title: 'نوع برنامه',
-    accessor: 'programType',
+    title: 'نوع نامه',
+    accessor: 'docType',
     dataType: 'single-select',
     options: { editable: true, disableSortBy: true },
   },
   {
     id: '4',
-    title: 'صنایع مرتبط',
+    title: 'واحدهای مرتبط با نامه',
     accessor: 'relatedIndustry',
     dataType: 'multi-select',
     options: { editable: true, disableSortBy: true },
   },
   {
     id: '5',
-    title: 'محل برگزاری',
+    title: 'تاریخ بازنگری سند',
+    accessor: 'revisionDate',
+    dataType: 'date',
+    options: { editable: true, minWidth: 170 },
+  },
+  {
+    id: '6',
+    title: 'شماره نامه',
+    accessor: 'docNumber',
+    dataType: 'number',
+    options: { editable: true, minWidth: 100 },
+  },
+  {
+    id: '7',
+    title: 'گیرنده نامه',
     accessor: 'place',
     dataType: 'binary',
     options: { editable: true, disableSortBy: true },
   },
   {
-    id: '6',
-    title: 'فایل مایکروسافت پروژه',
+    id: '8',
+    title: 'فایل نامه',
     accessor: 'microsoftFile',
     dataType: 'file',
     options: { editable: true, disableSortBy: true, maxWidth: 200 },
   },
   {
-    id: '7',
+    id: '9',
     title: 'اطلاعات ثبت',
     accessor: 'recordInfo',
     dataType: 'record-information',
@@ -402,10 +417,10 @@ const RasoulView = () => {
       <CustomTable
         editable //! This prop makes the whole table editable.
         resizable //! This prop makes the whole columns of a table resizable.
-        // pagination={{
-        //   perPageCount: [10, 20, 30, 40],
-        //   initialPageIndex: 0,
-        // }}
+        pagination={{
+          perPageCount: [5, 10, 20, 30],
+          initialPageIndex: 0,
+        }}
         columns={memoizedColumns}
         data={memoizedData}
         updateCellData={memoizedUpdateCellData}

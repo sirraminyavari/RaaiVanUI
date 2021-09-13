@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import {
   CV_BLACK,
+  CV_DISTANT,
   CV_FREEZED,
   CV_RED,
+  CV_WHITE,
   TCV_DEFAULT,
-  TCV_VERY_SOFT,
 } from 'constant/CssVariables';
 import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
 import { BG_WHITE, BO_DISTANT, TBG_SOFT, TBG_VERY_SOFT } from 'constant/Colors';
@@ -16,20 +17,25 @@ export const selectStyles = {
   control: (styles) => ({
     ...styles,
     backgroundColor: 'inherit',
+    borderColor: CV_WHITE,
+    ':hover': {
+      borderColor: CV_FREEZED,
+    },
   }),
   option: (styles, { isSelected }) => ({
     ...styles,
-    backgroundColor: isSelected && TCV_DEFAULT,
+    backgroundColor: isSelected && CV_DISTANT,
     width: '90%',
     margin: '0.3rem auto',
     borderRadius: '0.2rem',
+    color: CV_BLACK,
     cursor: 'pointer',
     ':hover': {
       backgroundColor: !isSelected && CV_FREEZED,
     },
     ':active': {
       ...styles[':active'],
-      backgroundColor: isSelected && TCV_DEFAULT,
+      backgroundColor: isSelected && CV_DISTANT,
     },
   }),
   indicatorsContainer: (styles) => ({
@@ -38,9 +44,13 @@ export const selectStyles = {
       color: TCV_DEFAULT,
     },
   }),
+  indicatorSeparator: (styles) => ({
+    ...styles,
+    display: 'none',
+  }),
   singleValue: (styles) => ({
     ...styles,
-    backgroundColor: TCV_VERY_SOFT,
+    backgroundColor: CV_DISTANT,
     padding: '0.2rem',
     fontSize: '0.9rem',
     borderRadius: '0.2rem',
@@ -48,7 +58,7 @@ export const selectStyles = {
   }),
   multiValue: (styles) => ({
     ...styles,
-    backgroundColor: TCV_VERY_SOFT,
+    backgroundColor: CV_DISTANT,
     padding: '0.1rem',
     fontSize: '1rem',
     borderRadius: '0.2rem',
