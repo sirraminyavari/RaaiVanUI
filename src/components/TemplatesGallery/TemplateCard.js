@@ -7,12 +7,12 @@ import {
   DESCRIPTIONS_CONTENT,
 } from './TemplatesGallery';
 
-const TemplateCard = ({ template, mode }) => {
+const TemplateCard = ({ template, mode, containerClass }) => {
   const { setContent, setCurrentTemplate } = useContext(
     TemplatesGalleryContext
   );
 
-  // console.log(template);
+  console.log(template);
 
   const handleClickCard = () => {
     setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
@@ -22,7 +22,7 @@ const TemplateCard = ({ template, mode }) => {
   const hasTags = template?.Tags?.length;
 
   return (
-    <Styled.TemplateCardContainer mode={mode}>
+    <Styled.TemplateCardContainer className={containerClass} mode={mode}>
       {!!hasTags && (
         <Badge
           showText={decodeBase64(template?.Tags?.[0]?.Name)}

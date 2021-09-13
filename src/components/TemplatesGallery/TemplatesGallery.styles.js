@@ -64,12 +64,17 @@ export const GalleryListContainer = styled.div.attrs({
 
 export const AddTemplateButtonWrapper = styled.div`
   position: relative;
+  bottom: -1rem;
+  cursor: pointer;
 
   .add-template-icon {
     position: absolute;
-    top: 1.5rem;
+    top: 0.5rem;
     right: 1rem;
     z-index: ${GlobalUtilities.zindex.alert()};
+  }
+  .add-template-button {
+    background-color: ${CV_WHITE}};
   }
 `;
 
