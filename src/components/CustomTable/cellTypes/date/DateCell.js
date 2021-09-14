@@ -6,25 +6,27 @@ const DateCell = (props) => {
 
   const { isNew } = props;
 
-  const handleDateSelect = () => {};
+  const handleDateSelect = (date) => {
+    console.log(date);
+  };
 
   if (!props?.editable && !isNew) {
-    return <div>{props?.value}</div>;
+    return <div>{props?.value?.date}</div>;
   }
 
   if (!props?.header?.options?.editable) {
-    return <div>{props?.value}</div>;
+    return <div>{props?.value?.date}</div>;
   }
 
   return (
     <Styled.DateCellContainer isNew={isNew}>
       <CustomDatePicker
-        label="انتخاب تاریخ"
+        label="انتخاب کنید"
         mode="input"
         type="jalali"
         range={false}
         size="small"
-        value={!!isNew ? null : props?.row?.original?.dateOfBirth}
+        value={!!isNew ? null : props?.value?.date}
         onDateSelect={handleDateSelect}
         inputClass="table-date-input"
       />

@@ -1,7 +1,7 @@
-import { TCV_DEFAULT, TCV_VERY_SOFT } from 'constant/CssVariables';
 import { useState } from 'react';
-import Select from 'react-select';
 import * as Styled from './select.styles';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import { TCV_VERY_SOFT } from 'constant/CssVariables';
 
 const SelectCell = (props) => {
   // console.log('select cell ', props);
@@ -21,7 +21,7 @@ const SelectCell = (props) => {
   };
 
   if (!props?.editable && !props?.isNew) {
-    return selectedOptions?.[0].label;
+    return selectedOptions?.[0]?.label;
   }
 
   if (!props?.header?.options?.editable) {
@@ -46,21 +46,20 @@ const SelectCell = (props) => {
   }
 
   return (
-    <Styled.SelectContainer>
-      <Select
-        defaultValue={props?.value?.defaultValues}
-        isMulti={!!props?.multiSelect}
-        hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
-        closeMenuOnSelect={!props?.multiSelect}
-        isClearable={false}
-        isSearchable={true}
-        name={props?.header?.title}
-        options={props?.value?.options}
-        onChange={handleSelectChange}
-        onMenuClose={handleOnMenuClose}
-        styles={Styled.selectStyles}
-      />
-    </Styled.SelectContainer>
+    <CustomSelect
+      defaultValue={props?.value?.defaultValues}
+      isMulti={!!props?.multiSelect}
+      hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
+      closeMenuOnSelect={!props?.multiSelect}
+      isClearable={false}
+      isSearchable={true}
+      placeholder="انتخاب کنید"
+      selectName={props?.header?.title}
+      selectOptions={props?.value?.options}
+      onChange={handleSelectChange}
+      onMenuClose={handleOnMenuClose}
+      selectStyles={Styled.selectStyles}
+    />
   );
 };
 

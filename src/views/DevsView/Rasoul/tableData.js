@@ -6,6 +6,11 @@ const getRecordDate = () => {
 };
 
 const grades = ['اول', 'دوم', 'سوم', 'چهارم', 'پنجم'];
+const date = new Date();
+
+const day = date.getDate();
+const month = date.getMonth() + 1;
+const year = date.getFullYear();
 
 const singleOptions = grades.map((x) => ({
   value: `single-${x}`,
@@ -57,7 +62,7 @@ const fakeData = [
   {
     id: '1',
     title: ' این یک نام  طولانی برای تست است. که اینجا نوشته شده است.',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -65,6 +70,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day}`,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -80,15 +89,19 @@ const fakeData = [
   },
   {
     id: '2',
-    title: 'نام دوم',
-    programType: {
+    title: '',
+    docType: {
       options: singleOptions,
-      defaultValues: getDeafultValues(),
+      defaultValues: null,
     },
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: null,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -105,7 +118,7 @@ const fakeData = [
   {
     id: '3',
     title: 'نام سوم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -113,6 +126,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day + 1}`,
+    },
+    docNumber: '',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -129,14 +146,18 @@ const fakeData = [
   {
     id: '4',
     title: 'نام چهارم',
-    programType: {
+    docType: {
       options: singleOptions,
-      defaultValues: getDeafultValues(),
+      defaultValues: null,
     },
     relatedIndustry: {
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day - 1}`,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -153,14 +174,18 @@ const fakeData = [
   {
     id: '5',
     title: 'نام پنجم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
     relatedIndustry: {
       options: multiOptions,
-      defaultValues: getDeafultValues(2),
+      defaultValues: null,
     },
+    revisionDate: {
+      date: `${year}/${month}/${day}`,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -177,7 +202,7 @@ const fakeData = [
   {
     id: '6',
     title: 'نام ششم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -185,6 +210,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: null,
+    },
+    docNumber: '',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -201,7 +230,7 @@ const fakeData = [
   {
     id: '7',
     title: 'نام هفتم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -209,6 +238,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day + 2}`,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -225,7 +258,7 @@ const fakeData = [
   {
     id: '8',
     title: 'نام هشتم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -233,6 +266,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day}`,
+    },
+    docNumber: '123456',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),
@@ -249,7 +286,7 @@ const fakeData = [
   {
     id: '9',
     title: 'نام نهم',
-    programType: {
+    docType: {
       options: singleOptions,
       defaultValues: getDeafultValues(),
     },
@@ -257,6 +294,10 @@ const fakeData = [
       options: multiOptions,
       defaultValues: getDeafultValues(2),
     },
+    revisionDate: {
+      date: `${year}/${month}/${day}`,
+    },
+    docNumber: '',
     place: {
       options: binaryOptions,
       defaultValues: getDeafultValues(0),

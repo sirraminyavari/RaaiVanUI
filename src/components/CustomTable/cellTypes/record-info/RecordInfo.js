@@ -8,14 +8,15 @@ const RecordInfo = (props) => {
   return (
     <Styled.RecordInfoContainer>
       <Styled.RecordInfoWrapper>
-        {props?.value?.recordDate}
+        <Styled.RecordInfoDate>
+          {props?.value?.recordDate}
+        </Styled.RecordInfoDate>
+        <Styled.RecordInfoTimeSpan>۱۵ روز قبل</Styled.RecordInfoTimeSpan>
       </Styled.RecordInfoWrapper>
       <Avatar
         color={CV_BLACK}
         className="record-info-avatar"
-        userImage={
-          props?.value?.userImageURL || window?.RVGlobal?.CurrentUser?.ImageURL
-        }
+        userImage={props?.value?.userImageURL || 'https://i.pravatar.cc/300'}
       />
     </Styled.RecordInfoContainer>
   );
