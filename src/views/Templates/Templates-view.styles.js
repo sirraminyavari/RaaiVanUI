@@ -68,6 +68,12 @@ export const ButtonWrapper = styled.div`
   position: relative;
   cursor: pointer;
 
+  :hover {
+    > div[data-type='archive'] {
+      border: 1px solid ${CV_RED};
+    }
+  }
+
   .add-class-icon {
     position: absolute;
     top: 0.5rem;
@@ -90,10 +96,6 @@ export const ButtonWrapper = styled.div`
     width: 6rem;
     border: 1px solid ${CV_WHITE};
     background-color: ${CV_WHITE};
-
-    :hover {
-      border: 1px solid ${CV_RED};
-    }
   }
 `;
 

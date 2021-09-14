@@ -379,6 +379,20 @@ export const GET_CHILD_NODES = 'GetChildNodes';
  */
 export const GET_TEMPLATES = 'GetTemplates';
 
+/**
+ * @description 'GetChildNodeTypes'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_CHILD_NODE_TYPES = 'GetChildNodeTypes';
+
+/**
+ * @description 'AddNodeType'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const ADD_NODE_TYPE = 'AddNodeType';
+
 //* #################################
 //* ############ NotificationsAPI ########
 //* #################################
