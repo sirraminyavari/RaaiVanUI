@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import CreateModal from './CreateModal';
+import CreateModal from 'components/Modal/types/create/CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 

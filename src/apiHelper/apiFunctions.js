@@ -42,6 +42,8 @@ import {
   SAVE_USER_SETTINGS_ITEM,
   SET_VERIFICATION_CODE_MEDIA,
   GET_TEMPLATES,
+  GET_CHILD_NODE_TYPES,
+  ADD_NODE_TYPE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -982,6 +984,72 @@ export const getTemplates = (tagId = '') => {
       getTemplatesAPI.fetch(
         {
           TagID: tagId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get node types.
+ * @param {String} nodeTypeId -The id of node.
+ * @param {String} count -The number of nodes to fetch.
+ * @param {Boolean} archive - Get archives or not? .
+ * @returns Promise.
+ */
+export const getChildNodeTypes = (
+  nodeTypeId = '',
+  count = '',
+  archive = false
+) => {
+  const getChildNodeTypesAPI = API_Provider(CN_API, GET_CHILD_NODE_TYPES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getChildNodeTypesAPI.fetch(
+        {
+          NodeTypeID: nodeTypeId,
+          Count: count,
+          Archive: archive,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Add node type.
+ * @param {String} name -The name of the node.
+ * @param {String} parentId -The id of the parent of the node.
+ * @param {Boolean} isCategory - is category or not?.
+ * @returns Promise.
+ */
+export const addNodeType = (name, parentId = '', isCategory = true) => {
+  const addNodeTypeAPI = API_Provider(CN_API, ADD_NODE_TYPE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      addNodeTypeAPI.fetch(
+        {
+          Name: encodeBase64(name),
+          ParentID: parentId,
+          IsCategory: isCategory,
         },
         (response) => {
           resolve(response);

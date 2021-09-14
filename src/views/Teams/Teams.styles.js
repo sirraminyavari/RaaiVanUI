@@ -94,11 +94,6 @@ export const ModalContentWrapper = styled.div`
   }
 `;
 
-export const CreateModalWrapper = styled.div`
-  width: 100%;
-  padding: 0 1rem;
-`;
-
 export const ArchivedTeamWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -122,18 +117,6 @@ export const ArchivedTeamTitle = styled.span`
   text-overflow: ellipsis;
 `;
 
-export const ModalButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 0 1rem 0;
-`;
-
-export const ModalButtonText = styled.span`
-  font-size: 0.8rem;
-  font-weight: bold;
-`;
-
 export const HeaderTitle = styled.span.attrs({
   className: C_GRAY,
 })`
@@ -144,34 +127,12 @@ export const DesktopContentSide = styled.div`
   width: 50%;
   height: 100%;
   margin: 0;
-
-  .create-team-modal {
-    margin-top: 35vh;
-  }
-
-  .create-team-modal-header {
-    height: 4rem;
-    min-height: 4rem;
-    max-height: 4rem;
-    background-color: ${CV_GRAY_LIGHT};
-  }
 `;
 
 export const MobileContentSide = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
-
-  .create-team-modal {
-    margin-top: 35vh;
-  }
-
-  .create-team-modal-header {
-    height: 4rem;
-    min-height: 4rem;
-    max-height: 4rem;
-    background-color: ${CV_GRAY_LIGHT};
-  }
 `;
 
 export const SpaceListConatiner = styled.div`

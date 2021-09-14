@@ -12,7 +12,7 @@ const TemplateCard = ({ template, mode, containerClass }) => {
     TemplatesGalleryContext
   );
 
-  console.log(template);
+  // console.log(template);
 
   const handleClickCard = () => {
     setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
