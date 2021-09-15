@@ -8,11 +8,7 @@ const SubCategoryList = ({ items }) => {
       {/* <PerfectScrollbar className="template-sub-category-scroll"> */}
       {items?.map((item) => {
         return (
-          <TemplateCard
-            mode="category"
-            template={item}
-            key={item?.NodeTypeID}
-          />
+          <TemplateCard mode="grid" template={item} key={item?.NodeTypeID} />
         );
       })}
       {/* </PerfectScrollbar> */}

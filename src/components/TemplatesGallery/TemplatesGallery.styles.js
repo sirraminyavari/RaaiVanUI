@@ -126,7 +126,7 @@ export const SuggestionListTitle = styled.div.attrs({
 
 const getWidth = ({ mode }) => {
   switch (mode) {
-    case 'category':
+    case 'grid':
       return 'width: 100%;';
 
     default:

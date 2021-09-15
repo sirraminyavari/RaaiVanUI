@@ -9,12 +9,14 @@ const ClassTemplatesList = ({ itemProps }) => {
       {item?.data?.templates?.map((template, key) => (
         <TemplateCard
           containerClass="class-template-card"
-          mode="category"
+          mode="grid"
           key={key}
           template={template}
         />
       ))}
-      <NewClass />
+      {item?.id !== 'not-categorized-children' && (
+        <NewClass parent={item?.data?.parent} />
+      )}
     </Styled.ClassTemplatesContainer>
   );
 };

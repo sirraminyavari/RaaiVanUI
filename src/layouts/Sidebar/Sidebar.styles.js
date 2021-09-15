@@ -75,6 +75,7 @@ export const SidebarContainer = styled.div.attrs({
   ${getSidebarCss}
   ${`${RV_Float}: 0;`}
   overflow: hidden;
+  user-select: none;
   box-shadow: 1px 0px 15px 1px #000;
   ${({ hasPattern }) =>
     hasPattern && `background-image: url(${sidebarPattern});`}

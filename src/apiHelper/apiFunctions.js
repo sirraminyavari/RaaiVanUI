@@ -44,6 +44,9 @@ import {
   GET_TEMPLATES,
   GET_CHILD_NODE_TYPES,
   ADD_NODE_TYPE,
+  REMOVE_NODE_TYPE,
+  RECOVER_NODE_TYPE,
+  GET_NODE_TYPES,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1034,6 +1037,37 @@ export const getChildNodeTypes = (
 };
 
 /**
+ * @description Get node types.
+ * @param {String} searchText -The text to search for.
+ * @param {String} count -The number of nodes to fetch.
+ * @param {Boolean} archive - Get archives or not? .
+ * @returns Promise.
+ */
+export const getNodeTypes = (searchText, archive = false, count = '') => {
+  const getNodeTypesAPI = API_Provider(CN_API, GET_NODE_TYPES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getNodeTypesAPI.fetch(
+        {
+          Count: count,
+          SearchText: encodeBase64(searchText),
+          Archive: archive,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Add node type.
  * @param {String} name -The name of the node.
  * @param {String} parentId -The id of the parent of the node.
@@ -1050,6 +1084,62 @@ export const addNodeType = (name, parentId = '', isCategory = true) => {
           Name: encodeBase64(name),
           ParentID: parentId,
           IsCategory: isCategory,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Remove node type.
+ * @param {String} nodeId -The id of the node.
+ * @param {Boolean} hierarchy - Should remove hierarchy or not?.
+ * @returns Promise.
+ */
+export const removeNodeType = (nodeId, hierarchy = false) => {
+  const removeNodeTypeAPI = API_Provider(CN_API, REMOVE_NODE_TYPE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeNodeTypeAPI.fetch(
+        {
+          NodeTypeID: nodeId,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recover node type.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const recoverNodeType = (nodeId) => {
+  const recoverNodeTypeAPI = API_Provider(CN_API, RECOVER_NODE_TYPE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recoverNodeTypeAPI.fetch(
+        {
+          NodeTypeID: nodeId,
         },
         (response) => {
           resolve(response);

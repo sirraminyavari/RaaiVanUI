@@ -259,7 +259,7 @@ export const recoverSidebarNode = (node) => async (dispatch, getState) => {
                 NodeTypeID: nodeTypeIds,
                 ParentID: node.id,
               },
-              () => {
+              (response) => {
                 dispatch(getSidebarNodes());
               },
               (error) => console.log(error)
