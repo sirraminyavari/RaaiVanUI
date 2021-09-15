@@ -97,6 +97,10 @@ export const ButtonWrapper = styled.div`
     border: 1px solid ${CV_WHITE};
     background-color: ${CV_WHITE};
   }
+
+  .archives-class-button-active {
+    width: 6rem;
+  }
 `;
 
 export const TemplatesListContainer = styled.div`
@@ -133,6 +137,7 @@ export const ClassTemplatesContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   gap: 1rem;
+  ${({ isSearchList }) => !!isSearchList && 'margin-top: 3rem;'}
 
   .class-template-card {
     cursor: pointer;

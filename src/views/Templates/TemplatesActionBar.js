@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import * as Styled from './Templates-view.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
@@ -8,10 +8,20 @@ import Button from 'components/Buttons/Button';
 import { CV_DISTANT, CV_RED, CV_WHITE } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import { TemplatesViewContext } from './Templates-view';
+import { getChildNodeTypes, getNodeTypes } from 'apiHelper/apiFunctions';
+import provideTree from './provideTreeData';
 
 const TemplatesActionBar = () => {
   const { RVDic } = useWindow();
-  const { setModal, modalTypes } = useContext(TemplatesViewContext);
+  const [loadArchives, setLoadArchives] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const {
+    setModal,
+    modalTypes,
+    setTree,
+    setSearchResult,
+    setIsSearching,
+  } = useContext(TemplatesViewContext);
 
   const handleAddCategory = () => {
     setModal({
@@ -24,9 +34,52 @@ const TemplatesActionBar = () => {
     });
   };
 
-  const handleArchives = () => {
-    console.log('archives');
+  const handleChangeInput = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
   };
+
+  const handleFetchArchives = () => {
+    setLoadArchives((v) => !v);
+  };
+
+  useEffect(() => {
+    getChildNodeTypes('', '', loadArchives)
+      .then((response) => {
+        // console.log({ response });
+        setTree(provideTree(response));
+      })
+      .catch((err) => console.log(err));
+
+    return () => {
+      setTree({});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadArchives]);
+
+  useEffect(() => {
+    if (searchText.length > 2) {
+      setIsSearching(true);
+
+      getNodeTypes(searchText, loadArchives)
+        .then((response) => {
+          setSearchResult(response?.NodeTypes);
+          setIsSearching(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsSearching(false);
+        });
+    } else {
+      setSearchResult([]);
+    }
+
+    return () => {
+      setIsSearching(false);
+      setSearchResult([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText, loadArchives]);
 
   return (
     <Styled.TemplatesActionContainer>
@@ -35,6 +88,7 @@ const TemplatesActionBar = () => {
           type="text"
           style={{ width: '100%' }}
           placeholder="فیلتر بر اساس نام کلاس"
+          onChange={handleChangeInput}
         />
         <SearchIcon
           size={20}
@@ -43,16 +97,20 @@ const TemplatesActionBar = () => {
         />
       </Styled.SearchInputWrapper>
       <Styled.ActionButtonsWrapper>
-        <Styled.ButtonWrapper onClick={handleArchives}>
+        <Styled.ButtonWrapper onClick={handleFetchArchives}>
           <ArchiveIcon
             size={16}
-            color={CV_RED}
+            color={loadArchives ? CV_WHITE : CV_RED}
             className="archives-class-icon"
           />
           <Button
             data-type="archive"
-            classes="archives-class-button"
-            type="negative-o">
+            classes={
+              loadArchives
+                ? 'archives-class-button-active'
+                : 'archives-class-button'
+            }
+            type={loadArchives ? 'negative' : 'negative-o'}>
             {RVDic.Archive}
           </Button>
         </Styled.ButtonWrapper>

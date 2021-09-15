@@ -74,6 +74,7 @@ export const NavbarContainer = withTheme(styled.div.attrs({
 })`
   ${getNavbarWidth}
   ${commonNavCss}
+  user-select: none;
 
   .avatar-tooltip {
     background-color: ${CV_WHITE} !important;

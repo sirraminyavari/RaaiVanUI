@@ -15,16 +15,18 @@ const provideTree = (data) => {
   }
 
   const categoriesForTree = categoryNodes.reduce((acc, current) => {
-    const { NodeTypeID, TypeName, HasChild } = current || {};
+    const { NodeTypeID, TypeName, HasChild, IsArchive } = current || {};
     const nodeForTree = {
       id: NodeTypeID,
       children: [],
       hasChildren: !!HasChild,
       isCategory: true,
+      isArchived: !!IsArchive,
       isExpanded: false,
       isChildrenLoading: false,
       data: {
         title: decodeBase64(TypeName),
+        nodeType: current,
       },
     };
 
