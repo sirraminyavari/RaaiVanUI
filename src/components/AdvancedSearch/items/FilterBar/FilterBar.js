@@ -101,6 +101,8 @@ const FilterBar = ({
   itemSelectionMode,
   isProfile,
 }) => {
+  const history = useHistory();
+
   const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
     (state) => ({
       teamName: state?.theme?.selectedTeam?.name,
@@ -348,7 +350,7 @@ const FilterBar = ({
         ...extendedHierarchy,
       ];
 
-  const isProfile_all = () => (isProfile && nodeType === null) || !isProfile;
+  const isProfile_all = () => (isProfile && nodeType === null) || !!isProfile;
 
   return (
     <Container>
@@ -555,40 +557,48 @@ const FilterBar = ({
               }
             />
           )}
-
-          {advancedButton ||
-            (isProfile_all() && (
-              <ShadowButton
-                style={{
-                  marginRight: '0.5rem',
-                  minWidth: '7rem',
-                  color:
-                    advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
-                }}
-                ref={advancedSearchButtonRef}
-                onMouseEnter={() => setFilterHover(true)}
-                onMouseLeave={() => setFilterHover(false)}
-                onClick={onAdvancedFilterClick}
-                $isEnabled={advancedSearch}
+          {console.log(
+            advancedButton,
+            'advancedButton',
+            isProfile_all(),
+            'isProfile_all',
+            isProfile,
+            'isProfile',
+            !!isProfile,
+            '!isProfile'
+          )}
+          {(advancedButton || isProfile_all()) && (
+            <ShadowButton
+              style={{
+                marginRight: '0.5rem',
+                minWidth: '7rem',
+                color:
+                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
+              }}
+              ref={advancedSearchButtonRef}
+              onMouseEnter={() => setFilterHover(true)}
+              onMouseLeave={() => setFilterHover(false)}
+              onClick={onAdvancedFilterClick}
+              $isEnabled={advancedSearch}
+              className={
+                advancedSearch
+                  ? 'rv-border-distant rv-default'
+                  : 'rv-border-white rv-distant'
+              }>
+              <Filter
+                size={'1.5rem'}
                 className={
                   advancedSearch
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }>
-                <Filter
-                  size={'1.5rem'}
-                  className={
-                    advancedSearch
-                      ? 'rv-default'
-                      : filterHover
-                      ? 'rv-default'
-                      : 'rv-distant'
-                  }
-                  style={{ marginLeft: '0.5rem' }}
-                />
-                {RVDic?.Advanced}
-              </ShadowButton>
-            ))}
+                    ? 'rv-default'
+                    : filterHover
+                    ? 'rv-default'
+                    : 'rv-distant'
+                }
+                style={{ marginLeft: '0.5rem' }}
+              />
+              {RVDic?.Advanced}
+            </ShadowButton>
+          )}
         </div>
       </BottomRow>
     </Container>
