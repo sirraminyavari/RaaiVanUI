@@ -5,11 +5,14 @@ import { useState, useEffect } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import APIHandler from 'apiHelper/APIHandler';
-import Select from 'components/Inputs/select/Select';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import * as Styled from './MultiLevelType.styles';
+
+const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
 
 const MultiLevelType = (props) => {
   const { levels, nodes, onSelect } = props;
-  const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
+  // console.log({ levels, nodes, onSelect });
   const initialState = levels.reduce(
     (levelsObject, currentLevel, index, self) => {
       return {
@@ -33,9 +36,7 @@ const MultiLevelType = (props) => {
   );
 
   //! Calls on input change.
-  const handleChange = (e, level) => {
-    //! Value that user selected.
-    const selectedValue = e.target.value;
+  const handleChange = (selectedValue, level) => {
     //! index of current level in levles array.
     const indexOfLevel = levels.indexOf(level);
     //! Array of next levels.
@@ -99,7 +100,7 @@ const MultiLevelType = (props) => {
       getChildNodesAPI.fetch(
         { NodeID: prevLevel.value.NodeID },
         (response) => {
-          console.log(response);
+          // console.log(response);
           setLevelValues((oldValues) => ({
             ...oldValues,
             [currentLevel.currentLevel]: {
@@ -117,34 +118,33 @@ const MultiLevelType = (props) => {
   return (
     <div>
       {levels.map((level, key) => {
-        const options = levelValues[level].options.map((option) => ({
-          value: decodeBase64(option.Name),
-          title: decodeBase64(option.Name),
+        // console.log(levelValues[level]?.value, level);
+
+        const options = levelValues[level]?.options?.map((option) => ({
+          value: decodeBase64(option?.Name),
+          label: decodeBase64(option?.Name),
         }));
-        const display = !!levelValues[level].options.length ? 'block' : 'none';
+
+        const node = levelValues[level]?.value;
+        const defaultValue = !!node
+          ? {
+              value: decodeBase64(node?.Name),
+              label: decodeBase64(node?.Name),
+            }
+          : null;
+
+        const isShown = !!levelValues[level]?.options.length;
+
         return (
-          <div
-            key={key}
-            onChange={(e) => handleChange(e, level)}
-            style={{
-              margin: '10px',
-              display,
-            }}>
-            <label
-              style={{
-                width: '100px',
-                minWidth: '100px',
-                display: 'inline-block',
-              }}
-              htmlFor={level}>
-              {level}:
-            </label>
-            <Select
-              name={level}
-              options={options}
-              defaultOption="انتخاب کنید"
+          <Styled.SelectWrapper key={key} isShown={isShown}>
+            <Styled.SelectLabel>{level}:</Styled.SelectLabel>
+            <CustomSelect
+              defaultValue={defaultValue}
+              placeholder="انتخاب کنید"
+              selectOptions={options}
+              onChange={(opt) => handleChange(opt?.value, level)}
             />
-          </div>
+          </Styled.SelectWrapper>
         );
       })}
       <Button onClick={handleOnAccept} disable={!isCompleted}>
