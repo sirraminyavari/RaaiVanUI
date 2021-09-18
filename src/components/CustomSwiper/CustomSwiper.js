@@ -23,6 +23,8 @@ const CustomSwiper = (props) => {
     navigation,
     numberBullet,
     autoHideScrollbar,
+    onSliderMove,
+    onSliderTransition,
   } = props;
 
   const customPagination = {
@@ -40,6 +42,14 @@ const CustomSwiper = (props) => {
     return customPagination;
   };
 
+  const handleSliderMove = () => {
+    onSliderMove && onSliderMove();
+  };
+
+  const handleSliderTransition = (value) => {
+    onSliderTransition && onSliderTransition(value);
+  };
+
   return (
     <Swiper
       pagination={!!pagination ? getPagination() : false}
@@ -49,6 +59,9 @@ const CustomSwiper = (props) => {
         watchState: !!pagination,
       }}
       navigation={!!navigation}
+      onSliderMove={handleSliderMove}
+      onSlideChangeTransitionStart={() => handleSliderTransition(true)}
+      onSlideChangeTransitionEnd={() => handleSliderTransition(false)}
       scrollbar={!!scrollbar ? { hide: autoHideScrollbar } : false}
       spaceBetween={spaceBetween}
       freeMode={!!freeMode}>

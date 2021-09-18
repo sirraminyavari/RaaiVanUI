@@ -20,12 +20,20 @@ import {
 import {
   FLEX_CCC,
   FLEX_RCB,
+  FLEX_RCC,
+  FLEX_RCE,
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
 import styled, { css } from 'styled-components';
 
-const { RV_RevFloat, GlobalUtilities, RV_Float } = window;
+const {
+  RV_RevFloat,
+  GlobalUtilities,
+  RV_Float,
+  RV_Direction,
+  RV_RevDirection,
+} = window;
 
 const commonScrollCss = css`
   .ps__thumb-y {
@@ -139,31 +147,92 @@ export const TemplateCardContainer = styled.div.attrs({
 })`
   ${getWidth}
   max-height: 9rem;
+  min-height: 7.5rem;
   padding: 0.7rem;
   position: relative;
 
-  .template-card-badge {
-    position: absolute;
-    ${RV_RevFloat}: 0.7rem;
-    font-size: 0.85rem;
-    padding: 0 0.5rem;
-    border-radius: 1rem;
-    background-color: ${TCV_VERY_TRANSPARENT};
-    width: auto;
-    max-width: 8rem;
-    color: ${TCV_DEFAULT};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    ${FLEX_RCS}
+  .card-tags-tooltip {
+    width: 9rem;
+    height: auto;
+    max-height: 5.5rem;
+    padding: 0.5rem;
+    padding-left: 0;
+    color: ${CV_BLACK};
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
   }
+`;
+
+export const CardBadgeContainer = styled.div`
+  position: absolute;
+  ${RV_RevFloat}: 0.7rem;
+  width: 9rem;
+  max-width: 9rem;
+  color: ${TCV_DEFAULT};
+  ${FLEX_RCE}
+  gap: 0.2rem;
+
+  .more-tags-badge {
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    width: 1.55rem;
+    min-width: 1.55rem;
+    ${FLEX_RCC}
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
+`;
+
+export const CardTagTitle = styled.div`
+  font-size: 0.95rem;
+  padding: 0 0.5rem;
+  border-radius: 1rem;
+  background-color: ${TCV_VERY_TRANSPARENT};
+  width: auto;
+  height: 100%;
+  color: ${TCV_DEFAULT};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const CardTooltipContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  margin: 0;
+
+  .extra-tags-scrollbar {
+    max-height: 5.5rem;
+    direction: ${RV_RevDirection};
+
+    .ps__thumb-y {
+      background-color: ${CV_BLACK} !important;
+      width: 0.3rem;
+    }
+
+    .ps__rail-y {
+      ${RV_RevFloat}: 0.2rem !important;
+    }
+  }
+`;
+
+export const ExtraTagWrapper = styled.div.attrs({
+  className: `${TC_DEFAULT}`,
+})`
+  width: 85%;
+  margin: 0.3rem 0;
+  margin-left: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+  direction: ${RV_Direction};
 `;
 
 export const TemplateCardTitle = styled.div.attrs({
   className: `${TC_DEFAULT}`,
 })`
   margin: 0.5rem 0;
-  cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -242,6 +311,15 @@ export const MainContentSwiperSection = styled.div.attrs({
 
   .swiper-scrollbar {
     bottom: 0rem !important;
+  }
+
+  .swiper-wrapper {
+    height: 10rem;
+  }
+
+  .swiper-container {
+    overflow: inherit;
+    overflow-x: clip;
   }
 `;
 

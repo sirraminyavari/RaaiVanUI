@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
 import TemplateCard from '../../TemplateCard';
 import useWindow from 'hooks/useWindowContext';
@@ -7,16 +7,35 @@ import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { CV_DISTANT } from 'constant/CssVariables';
-import { TemplatesGalleryContext } from '../../TemplatesGallery';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { isEmpty } from 'helpers/helpers';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils';
+import {
+  TemplatesGalleryContext,
+  DESCRIPTIONS_CONTENT,
+} from '../../TemplatesGallery';
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
-  const { templatesObject } = useContext(TemplatesGalleryContext);
+  const [isTransition, setIsTransition] = useState(false);
+  const { templatesObject, setContent, setCurrentTemplate } = useContext(
+    TemplatesGalleryContext
+  );
   const parsedTemplates = parseTemplates(templatesObject);
-  const { AllTemplates, Tags, TemplatesWithoutTag } = parsedTemplates || {};
+  const {
+    AllTemplates,
+    //  Tags,
+    // TemplatesWithoutTag
+  } = parsedTemplates || {};
+
+  const handleClickCard = (template) => {
+    setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
+    setCurrentTemplate(template);
+  };
+
+  const handleSliderTransition = (value) => {
+    setIsTransition(value);
+  };
 
   return (
     <div>
@@ -61,10 +80,18 @@ const TemplateGalleryMain = () => {
             grabCursor
             scrollbar
             freeMode
+            onSliderTransition={handleSliderTransition}
             slidesPerView={3}
             spaceBetween={10}>
             {[...AllTemplates]?.map((template, index) => {
-              return <TemplateCard template={template} key={index} />;
+              return (
+                <TemplateCard
+                  template={template}
+                  key={index}
+                  onClickCard={handleClickCard}
+                  isTransition={isTransition}
+                />
+              );
             })}
           </CustomSwiper>
         )}
