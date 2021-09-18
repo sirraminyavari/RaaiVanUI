@@ -15,12 +15,13 @@ const AdvancedSearchView = (props) => {
   useEffect(() => {
     if (onboardingName === 'intro') dispatch(toggleActivation());
   }, [props.route]);
-  console.log('classes render');
+  console.log('classes render***');
   return (
     <Fragment>
       <AdvanceSearch
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={route?.Hierarchy || []}
+        isProfile={false}
         bookmarked={route?.Bookmarked}>
         <NodeList
           nodeTypeId={
