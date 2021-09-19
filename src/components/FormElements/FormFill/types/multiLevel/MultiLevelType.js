@@ -6,6 +6,37 @@ import Button from 'components/Buttons/Button';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import * as Styled from './MultiLevelType.styles';
 
+/**
+ * @typedef optionType
+ * @type {Object}
+ * @property {string} label -The label for option.
+ * @property {string} value -The value for option.
+ */
+
+/**
+ * @typedef LevelType
+ * @type {Object}
+ * @property {number} id -The id of the level.
+ * @property {string} name -The name of the level.
+ * @property {(string | null)} nextLevelName - The name of the next level.
+ * @property {(string | null)} prevLevelName - The name of the previous level.
+ * @property {optionType[]} options - The options for current level.
+ * @property {(optionType | null)} selected - The options for current level.
+ */
+
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {function} onConfirm - Calls on confirm button click.
+ * @property {function} onChange - Calls on level value chnage.
+ * @property {LevelType[]} levels - The color of Avatar.
+ */
+
+/**
+ *  @description Renders a fill multi level.
+ * @component
+ * @param {PropType} props -Props that pass to component.
+ */
 const MultiLevelType = (props) => {
   const { onConfirm, levels, onChange } = props;
 
