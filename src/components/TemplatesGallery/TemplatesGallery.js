@@ -12,7 +12,7 @@ import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import { getTemplates } from 'apiHelper/apiFunctions';
 import { provideTemplatesForTree } from './templateUtils';
-import { TEMPLATES_PATH } from 'constant/constants';
+import { TEMPLATES_SETTING_PATH } from 'constant/constants';
 
 export const MAIN_CONTENT = 'main';
 export const CATEGORY_CONTENT = 'category';
@@ -58,7 +58,7 @@ const TemplatesGallery = (props) => {
   }, []);
 
   const handleMakeTemplate = () => {
-    history.push(TEMPLATES_PATH);
+    history.push(TEMPLATES_SETTING_PATH);
     onModalClose();
   };
 

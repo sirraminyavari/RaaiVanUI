@@ -33,8 +33,8 @@ import {
   QUESTIONS_PATH,
   QUESTION_NAME,
   QUESTION_PATH,
-  TEMPLATES_NAME,
-  TEMPLATES_PATH,
+  TEMPLATES_SETTING_NAME,
+  TEMPLATES_SETTING_PATH,
   USER_SEARCH_NAME,
   USER_SEARCH_PATH,
 } from 'constant/constants';
@@ -201,8 +201,8 @@ const routes = [
     component: NetworkView,
   },
   {
-    path: TEMPLATES_PATH,
-    name: TEMPLATES_NAME,
+    path: TEMPLATES_SETTING_PATH,
+    name: TEMPLATES_SETTING_NAME,
     exact: true,
     hasNavSide: true,
     component: Templates,

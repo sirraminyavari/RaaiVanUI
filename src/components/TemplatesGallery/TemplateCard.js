@@ -1,43 +1,66 @@
-import { useContext } from 'react';
 import * as Styled from './TemplatesGallery.styles';
 import Badge from 'components/Badge/Badge';
 import { decodeBase64 } from 'helpers/helpers';
-import {
-  TemplatesGalleryContext,
-  DESCRIPTIONS_CONTENT,
-} from './TemplatesGallery';
+import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
+import TooltipContent from './CardTooltipContent';
 
-const TemplateCard = ({ template, mode, containerClass }) => {
-  const { setContent, setCurrentTemplate } = useContext(
-    TemplatesGalleryContext
-  );
+const TemplateCard = ({
+  template,
+  mode,
+  containerClass,
+  onClickCard,
+  isTransition,
+}) => {
+  const [firstTag, ...extraTags] = template?.Tags;
 
-  // console.log(template);
+  const hasTags = !!template?.Tags?.length;
+  const extraTagsLength = extraTags.length;
 
   const handleClickCard = () => {
-    setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
-    setCurrentTemplate(template);
+    if (!isTransition) {
+      onClickCard && onClickCard(template);
+    }
   };
 
-  const hasTags = template?.Tags?.length;
-
   return (
-    <Styled.TemplateCardContainer className={containerClass} mode={mode}>
-      {!!hasTags && (
-        <Badge
-          showText={decodeBase64(template?.Tags?.[0]?.Name)}
-          className="template-card-badge"
-        />
+    <Styled.TemplateCardContainer
+      className={containerClass}
+      mode={mode}
+      onClick={handleClickCard}>
+      {hasTags && (
+        <ToolTip
+          multiline
+          tipId={template?.NodeTypeID}
+          effect="solid"
+          place="top"
+          type="light"
+          clickable
+          delayHide={300}
+          arrowColor="transparent"
+          className="card-tags-tooltip"
+          disable={!extraTagsLength}
+          renderContent={() => <TooltipContent extraTags={extraTags} />}>
+          <Styled.CardBadgeContainer>
+            <Styled.CardTagTitle>
+              {decodeBase64(firstTag?.Name)}
+            </Styled.CardTagTitle>
+            {!!extraTagsLength && (
+              <Badge
+                className="more-tags-badge"
+                showText={`${extraTagsLength}+`}
+              />
+            )}
+          </Styled.CardBadgeContainer>
+        </ToolTip>
       )}
       <div>
         <img width={45} src={template?.IconURL} alt="template-logo" />
       </div>
-      <Styled.TemplateCardTitle onClick={handleClickCard}>
+      <Styled.TemplateCardTitle>
         {decodeBase64(template?.TypeName)}
       </Styled.TemplateCardTitle>
       <Styled.TemplateCardExcerpt>
-        به دقیق‌ترین شکل ممکن سرمایه ارتباطی تیم‌تان را .حفظ کنید و آن را ارتقاء
-        دهید
+        {template?.Description || 'توضیحات مربوط به قالب اینجا قرار می گیرد'}
       </Styled.TemplateCardExcerpt>
     </Styled.TemplateCardContainer>
   );
