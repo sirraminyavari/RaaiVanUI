@@ -1,9 +1,8 @@
 import { useContext } from 'react';
 import { mutateTree } from '@atlaskit/tree';
 import getIcon from 'utils/treeUtils/getItemIcon';
-import * as Styled from './Templates-view.styles';
+import * as Styled from './TemplatesSettings.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
 import { CV_DISTANT } from 'constant/CssVariables';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
@@ -12,7 +11,7 @@ import {
   removeNodeType,
 } from 'apiHelper/apiFunctions';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import { TemplatesViewContext } from './Templates-view';
+import { TemplatesViewContext } from './TemplatesSettings';
 
 const ClassItem = ({ itemProps, tree, setTree }) => {
   const { item, provided } = itemProps;
@@ -37,44 +36,31 @@ const ClassItem = ({ itemProps, tree, setTree }) => {
 
   //! Change tree states after loading children.
   const afterLoadingChildren = (children) => {
-    let treeOptions;
+    const treeOptions = {
+      isExpanded: true,
+      children: [`${item?.id}-children`],
+    };
 
-    if (!!children.length) {
-      treeOptions = {
-        isExpanded: true,
-        isChildrenLoading: false,
-        children: [`${item?.id}-children`],
-      };
-    } else {
-      treeOptions = {
-        isChildrenLoading: false,
-        children: [],
-      };
-    }
     const newTree = mutateTree(tree, item?.id, treeOptions);
 
-    if (children.length) {
-      setTree({
-        ...newTree,
-        items: {
-          ...newTree.items,
-          [`${item?.id}-children`]: {
-            id: `${item?.id}-children`,
-            children: [],
-            hasChildren: false,
-            isCategory: false,
-            isExpanded: false,
-            isChildrenLoading: false,
-            data: {
-              templates: children,
-              parent: item,
-            },
+    setTree({
+      ...newTree,
+      items: {
+        ...newTree.items,
+        [`${item?.id}-children`]: {
+          id: `${item?.id}-children`,
+          children: [],
+          hasChildren: false,
+          isCategory: false,
+          isExpanded: false,
+          isChildrenLoading: false,
+          data: {
+            templates: children,
+            parent: item,
           },
         },
-      });
-    } else {
-      setTree(newTree);
-    }
+      },
+    });
   };
 
   //! Calls on collapse item.
@@ -147,32 +133,25 @@ const ClassItem = ({ itemProps, tree, setTree }) => {
       });
   };
 
-  const handleRecoverCategory = (e) => {
-    e.stopPropagation();
-    console.log('recover');
-    restoreCategory(item?.id);
-  };
-
   return (
     <Styled.ClassItemWrapper ref={provided.innerRef} onClick={handleClickItem}>
-      {item?.isCategory && !item?.isChildrenLoading && getIcon(item)}
-      {item?.isChildrenLoading && (
-        <LogoLoader
-          style={{ position: 'relative', top: '0.2rem' }}
-          lottieWidth={30}
-        />
+      <Styled.ClassItemTitleWrapper>
+        {item?.isCategory && !item?.isChildrenLoading && getIcon(item)}
+        {item?.isChildrenLoading && (
+          <LogoLoader
+            style={{ position: 'relative', top: '0.2rem' }}
+            lottieWidth={30}
+          />
+        )}
+        <Styled.ClassItemTitle isOther={item?.isOther}>
+          {item.data.title}
+        </Styled.ClassItemTitle>
+      </Styled.ClassItemTitleWrapper>
+      {!item?.isOther && (
+        <div className="trash-wrapper" onClick={handleRemoveCategory}>
+          <TrashIcon color={CV_DISTANT} />
+        </div>
       )}
-      <Styled.ClassItemTitle isOther={item?.isOther}>
-        {item.data.title}
-      </Styled.ClassItemTitle>
-      {!item?.isOther &&
-        (item?.isArchived ? (
-          <ArchiveIcon onClick={handleRecoverCategory} />
-        ) : (
-          <div className="trash-wrapper" onClick={handleRemoveCategory}>
-            <TrashIcon color={CV_DISTANT} />
-          </div>
-        ))}
     </Styled.ClassItemWrapper>
   );
 };

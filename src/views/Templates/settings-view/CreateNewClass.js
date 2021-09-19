@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import * as Styled from './Templates-view.styles';
+import * as Styled from './TemplatesSettings.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import { TemplatesViewContext } from './Templates-view';
+import { TemplatesViewContext } from './TemplatesSettings';
 
 const CreateNewClass = ({ parent }) => {
   const { setModal, modalTypes } = useContext(TemplatesViewContext);

@@ -17,6 +17,7 @@ import {
   BO_WHITE,
 } from 'constant/Colors';
 import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
+import { FLEX_RCC } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RevFloat, RV_RTL } = window;
 
@@ -306,7 +307,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
 `;
 
 export const MenuTitleWrapper = styled.div`
-  ${FlexCenter}
+  ${FLEX_RCC}
   width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
   padding: 0 0.5rem;
 `;
@@ -319,10 +320,11 @@ export const SubMenuTitleWrapper = styled.div`
 `;
 
 export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
-  margin-${RV_Float}: 0.6rem;
   display: inline-block;
   width: 100%;
+  margin-${RV_Float}: 0.6rem;
   user-select: none;
+  padding: 0.35rem 0;
 ${TruncateTextCss}
 `;
 
