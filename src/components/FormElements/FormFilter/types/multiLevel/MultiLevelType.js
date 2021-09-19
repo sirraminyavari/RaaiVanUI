@@ -1,7 +1,7 @@
 /**
  * Renders a multi level filter.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from '../types.styles';
@@ -38,7 +38,20 @@ const MultiLevelType = (props) => {
   const levels = Levels?.map((level) => decodeBase64(level));
   const nodeType = { id: NodeType?.ID, name: decodeBase64(NodeType?.Name) };
 
-  const [nodes, setNodes] = useState([]);
+  //! Prepare levels for form fill.
+  const levelsWithoutOption = levels.reduce((levelList, level, index, self) => {
+    const levelObj = {
+      id: index,
+      name: decodeBase64(level),
+      nextLevelName: self[index + 1] ? decodeBase64(self[index + 1]) : null,
+      prevLevelName: !!index ? decodeBase64(self[index - 1]) : null,
+      options: [],
+      selected: null,
+    };
+    return [...levelList, levelObj];
+  }, []);
+
+  const [levelList, setLevelList] = useState(levelsWithoutOption);
   const [isModalShown, setIsModalShown] = useState(false);
   const [viewItems, setViewItems] = useState([]);
   const [exact, setExact] = useState(value ? value?.Exact : false);
@@ -54,22 +67,92 @@ const MultiLevelType = (props) => {
     setOr(orValue);
   };
 
-  //! Fetch nodes for form fill.
-  useEffect(() => {
-    getChildNodes(nodeType?.id)
+  //! Get Nodes(options) for each level.
+  const getOptions = (id, levelIndex) => {
+    const nodeTypeId = !!levelIndex ? '' : id;
+    const nodeId = !!levelIndex ? id : '';
+
+    getChildNodes(nodeTypeId, nodeId)
       .then((response) => {
-        setNodes(response?.Nodes || []);
+        console.log({ response, id, levelIndex });
+        const options = (response?.Nodes || [])?.map((node) => {
+          return {
+            label: decodeBase64(node?.Name),
+            value: node?.NodeID,
+          };
+        });
+        setLevelList((oldLevelList) => {
+          const [levelObject] = oldLevelList.splice(levelIndex, 1);
+
+          const levelWithOptions = { ...levelObject, options };
+
+          oldLevelList.splice(levelIndex, 0, levelWithOptions);
+
+          return oldLevelList;
+        });
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  //! Fetch options for first level of form fill.
+  useEffect(() => {
+    if (nodeType?.id) {
+      getOptions(nodeType?.id, 0);
+    }
 
     //? Due to memory leak error.
     //! Clean up.
     return () => {
-      setNodes([]);
+      setLevelList([]);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //! Keep track of levels and fetch options for other levels of form fill.
+  useEffect(() => {
+    const newLevel = levelList.filter((item) => item.selected === null)[0];
+    const prevLevel = levelList.filter((item) => item.selected !== null).pop();
+
+    if (!!newLevel && !newLevel.options.length) {
+      getOptions(prevLevel?.selected?.value, prevLevel?.id + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [levelList]);
+
+  //! Fires whenever form select changes.
+  const handleChangeFormFill = useCallback((formValue) => {
+    // console.log(formValue);
+    //! index and value of the current level.
+    const { levelIndex, selectedOption } = formValue;
+    //! Get levels after current level.
+    const nextLevels = levelList.slice(levelIndex + 1);
+    //! Set selected value to null for next levels.
+    const nextLevelsWithoutValue = nextLevels?.map((level) => {
+      return { ...level, selected: null };
+    });
+
+    //! Update level list.
+    setLevelList((oldLevelList) => {
+      //! Extract current level.
+      const [levelObject] = oldLevelList.splice(levelIndex, 1);
+      //! Append value to current level.
+      const levelWithValue = {
+        ...levelObject,
+        selected: {
+          value: selectedOption.value,
+          label: selectedOption.label,
+        },
+      };
+
+      //! Add to list again at correct index.
+      oldLevelList.splice(levelIndex, 0, levelWithValue);
+      //! Remove levels from current level on to the end, and add non-value levels.
+      oldLevelList.splice(levelIndex + 1);
+
+      return [...oldLevelList, ...nextLevelsWithoutValue];
+    });
   }, []);
 
   //! Show modal and form fill to add item.
@@ -83,9 +166,9 @@ const MultiLevelType = (props) => {
   };
 
   //! Add item to view items.
-  const handleOnSelect = (values) => {
-    handleCloseModal();
+  const handleOnConfirm = (values) => {
     setViewItems((items) => [...items, values]);
+    handleCloseModal();
   };
 
   //! Fires on item remove.
@@ -149,17 +232,19 @@ const MultiLevelType = (props) => {
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
-      <Modal
-        onClose={handleCloseModal}
-        title={decodeBase64(Title)}
-        show={isModalShown}
-        contentWidth="50%">
-        <FormFill.MultiLevel
-          onSelect={handleOnSelect}
-          levels={levels}
-          nodes={nodes}
-        />
-      </Modal>
+      {levelList && (
+        <Modal
+          onClose={handleCloseModal}
+          title={decodeBase64(Title)}
+          show={isModalShown}
+          contentWidth="50%">
+          <FormFill.MultiLevel
+            onConfirm={handleOnConfirm}
+            onChange={handleChangeFormFill}
+            levels={levelList}
+          />
+        </Modal>
+      )}
     </Styled.FilterContainer>
   );
 };

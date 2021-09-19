@@ -600,9 +600,10 @@ export const getFormElements = (formId, ownerId) => {
 /**
  * @description Get child nodes.
  *  @param {String} nodeTypeId -The id of the node type.
+ *  @param {String} nodeId -The id of the node.
  *  @returns Promise.
  */
-export const getChildNodes = (nodeTypeId) => {
+export const getChildNodes = (nodeTypeId, nodeId = '') => {
   const getChildNodesAPI = API_Provider(CN_API, GET_CHILD_NODES);
 
   return new Promise((resolve, reject) => {
@@ -610,6 +611,7 @@ export const getChildNodes = (nodeTypeId) => {
       getChildNodesAPI.fetch(
         {
           NodeTypeID: nodeTypeId,
+          NodeID: nodeId,
         },
         (response) => {
           resolve(response);
