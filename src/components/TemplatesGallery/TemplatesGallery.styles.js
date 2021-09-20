@@ -4,9 +4,14 @@ import {
   C_DISTANT,
   C_GRAY,
   C_GRAY_DARK,
+  TBG_WARM,
   TC_DEFAULT,
 } from 'constant/Colors';
-import { BO_RADIUS_HALF, IGNORE_RADIUS_LEFT } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  IGNORE_RADIUS_LEFT,
+} from 'constant/constants';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -301,6 +306,15 @@ export const MainSwiperTitle = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 1rem;
+  ${FLEX_RCS}
+  gap: 0.5rem;
+`;
+
+export const SwiperTitleIcon = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE} ${TBG_WARM}`,
+})`
+  padding: 0.2rem;
+  height: 1.5rem;
 `;
 
 export const MainContentSwiperSection = styled.div.attrs({
