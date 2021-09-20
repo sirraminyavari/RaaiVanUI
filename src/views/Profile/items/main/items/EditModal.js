@@ -79,6 +79,7 @@ const EditModal = (props) => {
                 })
               );
               setIsSavingImage(false);
+              handleCloseModal();
             })
             .catch((err) => {
               dispatch(

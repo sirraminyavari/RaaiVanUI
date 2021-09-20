@@ -153,8 +153,8 @@ export const CONFIG_HELP_PATH = '/configuration/help';
 export const CONFIG_HELP_NAME = 'admin_help';
 export const TEMPLATES_SETTING_PATH = '/templates/settings';
 export const TEMPLATES_SETTING_NAME = 'templates-settings';
-export const TEMPLATES_SETTING_ARCHIVE_PATH = '/templates/settings/archived';
-export const TEMPLATES_SETTING_ARCHIVE_NAME = 'templates-settings-archived';
+export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
+export const TEMPLATES_ARCHIVE_NAME = 'templates-archived';
 
 //! Border radius classes
 /**

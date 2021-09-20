@@ -22,6 +22,7 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import { HOME_PATH } from 'constant/constants';
 import usePreventScroll from 'hooks/usePreventScroll';
+import useRouteListener from 'hooks/useRouteListener';
 
 const selectApplications = createSelector(
   (state) => state.applications,
@@ -43,6 +44,7 @@ const AvatarMenuList = () => {
   const selectedTeam = useSelector(selectedApplication);
   const isDev = (RVGlobal || {}).IsDev;
 
+  useRouteListener(ReactTooltip.hide);
   usePreventScroll(containerRef);
 
   const handleOnClickOutside = (e) => {
