@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import APIHandler from 'apiHelper/APIHandler';
 import { getCaptchaToken } from 'helpers/helpers';
 import afterLogin from 'utils/OnboardingRoute/afterLogin';
+import setAuthUserAction from 'store/actions/auth/setAuthUserAction';
 
 /**
  * It's not completed.
@@ -60,6 +61,9 @@ const ContinueWithGoogle = ({ ...props }) => {
           // afterLogin(result);
 
           dispatch(loggedInAction(result));
+          // dispatch(setAuthUserAction(result?.User));
+          // window.RVGlobal.IsAuthenticated = true;
+          // window.location.href = afterLogin(response) || '/teams';
         }
       }
     );

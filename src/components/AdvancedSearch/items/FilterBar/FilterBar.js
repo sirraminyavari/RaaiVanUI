@@ -557,16 +557,7 @@ const FilterBar = ({
               }
             />
           )}
-          {console.log(
-            advancedButton,
-            'advancedButton',
-            isProfile_all(),
-            'isProfile_all',
-            isProfile,
-            'isProfile',
-            !!isProfile,
-            '!isProfile'
-          )}
+
           {(advancedButton || isProfile_all()) && (
             <ShadowButton
               style={{
