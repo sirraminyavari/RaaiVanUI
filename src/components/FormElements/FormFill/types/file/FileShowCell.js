@@ -4,8 +4,12 @@ import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import Avatar from 'components/Avatar/Avatar';
 import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
+import useWindow from 'hooks/useWindowContext';
+import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const FileShowCell = ({ file }) => {
+  const { RVDic } = useWindow();
+
   return (
     <Styled.FileShowContainer>
       <Styled.FileTitleWrapper>
@@ -22,12 +26,30 @@ const FileShowCell = ({ file }) => {
         <Styled.FileSize>۳.۲ مگابایت</Styled.FileSize>
         <Styled.FileLinkWrapper>
           <Link to="/data/API List for Rasoul.pdf" target="_blank" download>
-            دانلود
+            {RVDic.Download}
           </Link>
         </Styled.FileLinkWrapper>
-        <Styled.MoreIconWrapper>
-          <MoreIcon size={22} color={CV_DISTANT} />
-        </Styled.MoreIconWrapper>
+        <ToolTip
+          tipId={`${file}`}
+          clickable
+          multiline
+          effect="solid"
+          event="click"
+          place="left"
+          type="dark"
+          arrowColor="transparent"
+          offset={{ right: 40, bottom: -22 }}
+          renderContent={() => (
+            <div>
+              <div>first</div>
+              <div>second</div>
+              <div>third</div>
+            </div>
+          )}>
+          <Styled.MoreIconWrapper>
+            <MoreIcon size={22} color={CV_DISTANT} />
+          </Styled.MoreIconWrapper>
+        </ToolTip>
       </Styled.FileActionWrapper>
     </Styled.FileShowContainer>
   );

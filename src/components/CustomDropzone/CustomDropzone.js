@@ -103,6 +103,7 @@ const CustomDropzone = (props) => {
 
   //! Fires on drop event.
   const onDrop = useCallback((acceptedFiles) => {
+    setErrors([]);
     //! Calculate total file size.
     const totalSize = acceptedFiles
       .map((file) => file.size)
@@ -185,7 +186,7 @@ const CustomDropzone = (props) => {
               },
             };
           });
-        setErrors((errors) => [...errors, fileSizeError]);
+        setErrors((errors) => [...errors, ...fileSizeError]);
       }
     }
 

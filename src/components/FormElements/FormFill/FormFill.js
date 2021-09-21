@@ -79,6 +79,7 @@ const FormFill = ({ data }) => {
           DateValue_Jalali,
           FloatValue,
           BitValue,
+          Files,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
         const decodeTitle = decodeBase64(Title);
@@ -202,16 +203,20 @@ const FormFill = ({ data }) => {
           case 'File':
             return (
               <FileField
+                key={ElementID}
                 decodeInfo={decodeInfo}
                 decodeTitle={decodeTitle}
                 type={Type}
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
-                value={[]}
+                value={Files}
               />
             );
 
           case 'Form':
+            return null;
+
+          default:
             return null;
         }
       });

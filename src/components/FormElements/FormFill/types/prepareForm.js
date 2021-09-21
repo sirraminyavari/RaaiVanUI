@@ -86,6 +86,18 @@ const prepareForm = (prevForm, elementId, event, type) => {
             : x
         ),
       };
+    case 'File':
+      return {
+        ...prevForm,
+        Elements: Elements?.map((x) =>
+          x?.ElementID === elementId
+            ? {
+                ...x,
+                Files: event,
+              }
+            : x
+        ),
+      };
     default:
       return prevForm;
   }
