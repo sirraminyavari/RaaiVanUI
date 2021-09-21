@@ -25,49 +25,42 @@ const FileField = (props) => {
 
   console.log({ props, infoJSON, value }, 'file field');
 
-  const handleUploadFile = (acceptedFiles) => {
+  //! Upload to server with axios.
+  const uploadFile = (file, url) => {
+    //! Prepare upload data
+    let formData = new FormData();
+    formData.append('file', file);
+
+    //! Post file to the server.
+    return axios.post(url, formData);
+  };
+
+  //! Get upload link and upload file(s).
+  const handleUploadFile = async (acceptedFiles) => {
     // console.log(acceptedFiles);
     if (acceptedFiles?.length) {
-      getUploadLink()
-        .then((response) => {
-          const uploadURL = response.slice(5);
+      const result = await getUploadLink();
+      const uploadURL = result.slice(5);
+      console.log(uploadURL);
 
-          acceptedFiles.reduce(async (previousPromise, file) => {
-            await previousPromise;
+      const promises = acceptedFiles.map((file) => {
+        return uploadFile(file, uploadURL).catch((error) => error);
+      });
 
-            return new Promise((resolve, reject) => {
-              //! Prepare upload data
-              let formData = new FormData();
-              formData.append('file', file);
+      Promise.all(promises)
+        .then((responses) => {
+          if (responses.length) {
+            //! Response data.
+            const datas = responses
+              ?.map((res) => res?.data)
+              ?.filter((data) => data?.success);
 
-              //! Keep track of upload progress.
-              let options = {
-                onUploadProgress: (progressEvent) => {
-                  const { loaded, total } = progressEvent;
-                  let percentage = Math.floor((loaded * 100) / total);
-
-                  //! Executes if upload progress is over.
-                  if (percentage === 100) {
-                    resolve();
-                  }
-                },
-              };
-              //! Post file to server.
-              axios
-                .post(uploadURL, formData, options)
-                .then((response) => console.log(response))
-                .catch((error) => {
-                  //! Axios error.
-                  reject(error);
-                });
-            });
-          }, Promise.resolve());
+            //! Uploaded files.
+            const files = datas.map((data) => data?.AttachedFile);
+            onAnyFieldChanged(elementId, files, type);
+          }
         })
-        .catch((error) => {
-          //! Get upload link error.
-          console.log(error);
-        });
-      // onAnyFieldChanged(elementId, event, type )
+        .catch((error) => console.log(`Error in uploading ${error}`));
     }
   };
 
@@ -83,15 +76,15 @@ const FileField = (props) => {
         <FileShowCell file={1} />
         <FileShowCell file={2} />
         <CustomDropzone
-          maxFiles={1} //! (infoJSON?.MaxCount)
-          maxTotalSize={1} //! (infoJSON?.TotalSize)
+          maxFiles={2} //! (infoJSON?.MaxCount)
+          maxTotalSize={2} //! (infoJSON?.TotalSize)
           maxEachSize={1} //! (infoJSON?.MaxSize)
           accept={['image/*']} //! (infoJSON?.AllowedExtensions)
           onUpload={handleUploadFile}
-          // placeholders={{
-          //   main: 'فایل را بکشید و رها کنید یا کلیک کنید',
-          //   dragging: 'اینجا رها کنید...',
-          // }}
+          placeholders={{
+            main: 'فایل را بکشید و رها کنید یا کلیک کنید',
+            dragging: 'اینجا رها کنید...',
+          }}
           onError={(error) => console.log(error)}
         />
       </Styled.FilesContainer>

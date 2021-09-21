@@ -1,6 +1,7 @@
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
 import {
+  CV_BLACK,
   CV_GRAY,
   CV_WHITE,
   TCV_DEFAULT,
@@ -46,6 +47,15 @@ export const FileTitleWrapper = styled.div`
 export const FileActionWrapper = styled.div`
   ${FLEX_RCA}
   width: 50%;
+
+  .form-fill-file-tooltip {
+    width: 10rem;
+    padding: 0.5rem;
+    color: ${CV_BLACK};
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
+  }
 `;
 
 export const FileSize = styled.div`
@@ -97,4 +107,12 @@ export const FileShowTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+export const FileActionItemWrapper = styled.div`
+  font-size: 0.9rem;
+  ${FLEX_RCS}
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
 `;
