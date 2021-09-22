@@ -246,7 +246,7 @@ const CustomDatePicker = (props) => {
       case '-1':
         setRange(false);
         date = LastNthDays(2);
-        onDateSelect(date[1]);
+        onDateSelect({ form: date[1], to: date[1] });
         showDate = toSingleOrRangeObject(date[1], dateStringToObject, false);
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, false);
@@ -285,7 +285,7 @@ const CustomDatePicker = (props) => {
       default:
         setRange(false);
         date = LastNthDays(1);
-        onDateSelect(date[0]);
+        onDateSelect({ from: date[0], to: date[0] });
         showDate = toSingleOrRangeObject(date[0], dateStringToObject, false);
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, false);

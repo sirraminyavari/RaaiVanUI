@@ -403,23 +403,13 @@ export const CategoryDescription = styled.div`
 `;
 
 export const SubCategoryContainer = styled.div`
-  height: calc(100% - 10rem);
+  // height: calc(100% - 10rem);
   padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 2rem;
   padding: 0 1.5rem;
-
-  // .template-sub-category-scroll {
-  //   display: grid;
-  //   grid-template-columns: repeat(3, 1fr);
-  //   gap: 1rem;
-  //   margin: 0 -1rem;
-  //   padding: 0 1rem;
-
-  //   ${commonScrollCss}
-  // }
 `;
 
 export const TemplateDescriptionContainer = styled.div`
