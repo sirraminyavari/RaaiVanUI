@@ -9,6 +9,7 @@ import {
   TCV_DEFAULT,
   TCV_VERYWARM,
   TCV_WARM,
+  CV_WHITE,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
 
@@ -49,15 +50,31 @@ const SingleSelectField = ({
       // none of react-select's styles are passed to <Control />
       ...provided,
       width: '7rem',
+      borderColor: CV_WHITE,
+      backgroundColor: CV_WHITE,
+      ':focus': {
+        border: 0,
+      },
+    }),
+    singleValue: (styles, { data }) => {
+      return {
+        ...styles,
+        backgroundColor: '#e6f4f1',
+        borderRadius: '0.5rem',
+        padding: '0.3rem',
+      };
+    },
+    menu: (provided) => ({
+      ...provided,
+      borderColor: '#e6f4f1',
     }),
   };
-  console.log(decodeValue, '########', value, normalizedOptions);
   return (
     <FormCell
       iconComponent={<RadioButtonIcon color={CV_GRAY} />}
       title={decodeTitle}
       {...props}>
-      {value ? (
+      {/* {value ? (
         <Selected
           className={'rv-border-radius-half'}
           onClick={() =>
@@ -65,16 +82,16 @@ const SingleSelectField = ({
           }>
           {selectedValue?.label}
         </Selected>
-      ) : (
-        <Select
-          onBlur={() => save(elementId)}
-          options={normalizedOptions}
-          styles={customStyles}
-          value={selectedValue}
-          placeholder={RVDic.Select}
-          onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-        />
-      )}
+      ) : ( */}
+      <Select
+        onBlur={() => save(elementId)}
+        options={normalizedOptions}
+        styles={customStyles}
+        value={selectedValue}
+        placeholder={RVDic.Select}
+        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+      />
+      {/* )} */}
     </FormCell>
   );
 };

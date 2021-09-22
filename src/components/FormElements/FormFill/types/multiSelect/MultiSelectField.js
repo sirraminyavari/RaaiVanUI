@@ -1,9 +1,10 @@
-import { CV_GRAY } from 'constant/CssVariables';
+import { CV_GRAY, CV_WHITE } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
+import styled from 'styled-components';
 
 const MultiSelectField = ({
   value,
@@ -44,27 +45,76 @@ const MultiSelectField = ({
       // none of react-select's styles are passed to <Control />
       ...provided,
       minWidth: '13rem',
+      borderColor: CV_WHITE,
+      backgroundColor: CV_WHITE,
+      ':focus': {
+        borderWidth: 0,
+      },
+      ':hover': {},
+    }),
+    multiValue: (styles, { data }) => {
+      return {
+        ...styles,
+        backgroundColor: '#e6f4f1',
+        borderRadius: '0.5rem',
+        padding: '0.3rem',
+      };
+    },
+    multiValueRemove: (styles, { data }) => {
+      return {
+        ...styles,
+        ':hover': {
+          color: 'red',
+        },
+      };
+    },
+    menu: (provided) => ({
+      ...provided,
+      borderColor: '#e6f4f1',
+      ':hover': {
+        borderWidth: 0,
+      },
     }),
   };
-  console.log(selectedOptions, 'selectedOptions');
-  console.log(decodeValue.split('~'), 'decodeValue.split');
-  console.log(!!decodeValue, 'decodeValue');
+
   return (
     <FormCell
       iconComponent={<CheckBoxIconIo color={CV_GRAY} />}
       title={decodeTitle}
       {...props}>
+      {/* {value && selectedOptions?.length > 0 ? (
+        <SelectedMaintainer>
+          {selectedOptions?.map((x) => (
+            <Selected
+              className={'rv-border-radius-half'}
+              onClick={() => onAnyFieldChanged(elementId, [], type)}>
+              {x?.label}
+            </Selected>
+          ))}
+        </SelectedMaintainer>
+      ) : ( */}
       <Select
         onBlur={() => save(elementId)}
         options={normalizedOptions}
         value={selectedOptions}
         isMulti
+        isClearable={false}
         styles={customStyles}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
         className="basic-multi-select"
         classNamePrefix="select"
       />
+      {/* )} */}
     </FormCell>
   );
 };
 export default MultiSelectField;
+const Selected = styled.div`
+  background-color: #e6f4f1;
+  padding: 0.5rem;
+`;
+const SelectedMaintainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;

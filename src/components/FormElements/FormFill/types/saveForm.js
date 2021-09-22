@@ -7,8 +7,6 @@ const saveFormApi = new APIHandler('FGAPI', 'SaveFormInstanceElements');
 const saveForm = (elements) => {
   let elementsTemp = elements;
 
-  console.log(elements, 'before save');
-
   return new Promise((resolve, reject) => {
     saveFormApi.fetch(
       {
@@ -16,7 +14,6 @@ const saveForm = (elements) => {
         ElementsToClear: '',
       },
       (result) => {
-        console.log(result, 'result from saving');
         if (result.ErrorText) {
           reject(RVDic.MSG[result.ErrorText] || result.ErrorText);
           return alert(RVDic.MSG[result.ErrorText] || result.ErrorText);

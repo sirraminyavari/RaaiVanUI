@@ -24,6 +24,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
         ),
       };
     case 'Numeric':
+      console.log(event, 'numeric***');
       return {
         ...prevForm,
         Elements: Elements?.map((x) =>
@@ -81,7 +82,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
           x?.ElementID === elementId
             ? {
                 ...x,
-                TextValue: encodeBase64(event),
+                TextValue: event,
               }
             : x
         ),

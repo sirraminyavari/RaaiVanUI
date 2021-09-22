@@ -29,12 +29,12 @@ const FormFill = ({ data }) => {
   const onAnyFieldChanged = async (elementId, event, type) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
     setTempForm(readyToUpdate);
-    console.log(readyToUpdate, 'readyToUpdate jish');
+    console.log(readyToUpdate, 'readyToUpdate');
 
     switch (type) {
       case 'Date':
       case 'Binary':
-        saveFieldChanges(readyToUpdate, elementId);
+        await saveFieldChanges(readyToUpdate, elementId);
         break;
       default:
         break;
@@ -45,20 +45,28 @@ const FormFill = ({ data }) => {
       const changedElement = readyToUpdate?.Elements?.find(
         (x) => x?.ElementID === elementId
       );
-      console.log(changedElement, 'changedElement');
 
       const saveResult = await saveForm([changedElement]);
+      console.log(saveResult, 'saveResult');
+
       const freshForm = {
         ...readyToUpdate,
-        Elements: [...readyToUpdate?.Elements, ...saveResult],
+        Elements: readyToUpdate?.Elements?.map((x) =>
+          x?.ElementID === elementId ? saveResult[0] : x
+        ),
       };
-      console.log('freshForm', freshForm);
 
       setSyncTempFormWithBackEnd(freshForm);
       setTempForm(freshForm);
+      alert('saved', {
+        Timeout: 1000,
+      });
     } catch (err) {
       setTempForm(syncTempFormWithBackEnd);
       console.log('failed');
+      alert('failed', {
+        Timeout: 1000,
+      });
     }
   };
 
@@ -95,7 +103,6 @@ const FormFill = ({ data }) => {
             );
 
           case 'Text': {
-            console.log(decodeBase64(TextValue), 'TextValue');
             return (
               <TextField
                 decodeInfo={decodeInfo}
@@ -104,11 +111,13 @@ const FormFill = ({ data }) => {
                 type={Type}
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={decodeBase64(TextValue)}
+                save={(id) => {
+                  saveFieldChanges(tempForm, id);
+                }}
               />
             );
           }
           case 'Select':
-            console.log(TextValue, 'Select TextValue');
             return (
               <SingleSelectField
                 decodeInfo={decodeInfo}
@@ -168,6 +177,7 @@ const FormFill = ({ data }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={FloatValue}
                 number={true}
+                save={(id) => saveFieldChanges(tempForm, id)}
               />
             );
 

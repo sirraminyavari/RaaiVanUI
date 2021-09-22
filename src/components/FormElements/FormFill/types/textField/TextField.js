@@ -31,6 +31,7 @@ const TextField = ({
   decodeInfo,
   type,
   number = false,
+  save,
 }) => {
   const [error, setError] = useState(null);
 
@@ -43,30 +44,31 @@ const TextField = ({
     } else {
       switch (Pattern) {
         case 'email':
-          return !EmailValidator(value) && setError('ایمیل وارد شده صحیح نیست');
+          !EmailValidator(value) && setError('ایمیل وارد شده صحیح نیست');
+          break;
         case 'exactTime':
-          return (
-            !TimeValidator(value, true) && setError('زمان وارد شده صحیح نیست')
-          );
+          !TimeValidator(value, true) && setError('زمان وارد شده صحیح نیست');
+          break;
         case 'time':
-          return !TimeValidator(value) && setError('زمان وارد شده صحیح نیست');
+          !TimeValidator(value) && setError('زمان وارد شده صحیح نیست');
+          break;
         case 'url':
-          return !UrlValidator(value) && setError('لینک وارد شده صحیح نیست');
+          !UrlValidator(value) && setError('لینک وارد شده صحیح نیست');
+          break;
         case 'phone':
-          return (
-            !MobileNumberValidator(value) &&
-            setError('شماره موبایل وارد شده صحیح نیست')
-          );
+          !MobileNumberValidator(value) &&
+            setError('شماره موبایل وارد شده صحیح نیست');
+          break;
         case 'nationalCode':
-          return (
-            (typeof value !== number || value?.length !== 10) &&
-            setError('کدملی وارد شده صحیح نیست')
-          );
+          typeof value !== number ||
+            (value?.length !== 10 && setError('کدملی وارد شده صحیح نیست'));
+          break;
         case 'custom':
-          return (
-            !CustomValidator(value, customPattern) &&
-            setError('الگوی وارد شده صحیح نیست')
-          );
+          !CustomValidator(value, customPattern) &&
+            setError('الگوی وارد شده صحیح نیست');
+          break;
+        default:
+          break;
       }
     }
   };
@@ -81,10 +83,17 @@ const TextField = ({
         placeholder={placeholder}
         error={error}
         afterChangeListener={() => errorHandler(value)}
-        value={value}
+        value={!!value ? value : ''}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-        onBlur={() => errorHandler(value)}
+        onBlur={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('onBlur!!!', new Date());
+          save(elementId);
+        }}
         type={type}
+        style={{ width: number ? '7rem' : '37rem' }}
+        children={null}
       />
     </FormCell>
   );

@@ -28,7 +28,6 @@ const UserSelect = ({
       : [];
   const title =
     value && value?.length > 0 ? decodeBase64(value[0].Name) : RVDic.UserSelect;
-  console.log(decodeInfo, 'decodeInfo*****');
   return (
     <FormCell
       iconComponent={<UserIconIo color={CV_GRAY} />}
