@@ -1,4 +1,5 @@
 import {
+  BG_GRAY,
   BG_GRAY_LIGHT,
   BO_DISTANT,
   C_DISTANT,
@@ -445,6 +446,13 @@ export const TemplateDescriptionWrapper = styled.div`
       border-color: ${CV_RED};
     }
   }
+
+  .activate-template-button {
+    width: 15rem;
+    height: 2rem;
+    margin: 1rem 0 2rem 0;
+    font-size: 1rem;
+  }
 `;
 
 export const TemplateTitleInDescription = styled.div`
@@ -481,6 +489,15 @@ export const TemplatePhotosWrapper = styled.div`
     color: ${CV_WHITE};
     background: ${TCV_DEFAULT};
   }
+`;
+
+export const TemplatePhotoContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BG_GRAY}`,
+})`
+  width: 80%;
+  height: 87%;
+  margin-right: 10%;
+  ${FLEX_RCC}
 `;
 
 export const TemplateDescription = styled.div`

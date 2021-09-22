@@ -1,8 +1,11 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import { useContext, useState } from 'react';
+import { createSelector } from 'reselect';
+import { useSelector } from 'react-redux';
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
-import TemplateCard from '../../TemplateCard';
+import TemplateCard from 'components/TemplatesGallery/TemplateCard';
+import EmptyTemplateCard from 'components/TemplatesGallery/EmptyTemplateCard';
 import useWindow from 'hooks/useWindowContext';
-import * as Styled from '../../TemplatesGallery.styles';
+import * as Styled from 'components/TemplatesGallery/TemplatesGallery.styles';
 import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
@@ -13,28 +16,34 @@ import { parseTemplates } from 'components/TemplatesGallery/templateUtils';
 import {
   TemplatesGalleryContext,
   DESCRIPTIONS_CONTENT,
-} from '../../TemplatesGallery';
+} from 'components/TemplatesGallery/TemplatesGallery';
+
+const selectCurrentApp = createSelector(
+  (state) => state?.applications,
+  (applications) => applications?.currentApp
+);
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
+  const currentApp = useSelector(selectCurrentApp);
   const { templatesObject, setContent, setCurrentTemplate } = useContext(
     TemplatesGalleryContext
   );
-  const parsedTemplates = parseTemplates(templatesObject);
-  const { AllTemplates } = parsedTemplates || {};
+  const { AllTemplates } = parseTemplates(templatesObject);
 
   const [isTransition, setIsTransition] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [swiperList, setSwiperList] = useState([]);
-  const suggestionListRef = useRef();
+  const [searchList, setSearchList] = useState([]);
 
-  useEffect(() => {
-    if (AllTemplates.length) {
-      setSwiperList(AllTemplates);
-      suggestionListRef.current = AllTemplates;
-    }
-  }, [AllTemplates]);
+  const { ID: expertiseId, Name: expertiseName } =
+    currentApp?.FieldOfExpertise || {};
 
+  // ! Prepare suggestions.
+  const cliqMindSuggestions = AllTemplates.filter((template) =>
+    template?.Tags.some((tag) => tag?.NodeID === expertiseId)
+  );
+
+  //! When user clicks on a card.
   const handleClickCard = (template) => {
     setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
     setCurrentTemplate(template);
@@ -44,6 +53,7 @@ const TemplateGalleryMain = () => {
     setIsTransition(value);
   };
 
+  //! Search between all templates.
   const handleSearchTemplates = (e) => {
     const searchValue = e.target.value;
     if (searchValue.length) {
@@ -54,11 +64,11 @@ const TemplateGalleryMain = () => {
             decodeBase64(tag?.Name).match(searchValue)
           )
       );
-      setSwiperList(searchedTemplates);
       setIsSearching(true);
+      setSearchList(searchedTemplates);
     } else {
       setIsSearching(false);
-      setSwiperList(suggestionListRef.current);
+      setSearchList([]);
     }
   };
 
@@ -111,7 +121,7 @@ const TemplateGalleryMain = () => {
 
         {isEmpty(templatesObject) ? (
           <LogoLoader />
-        ) : (
+        ) : isSearching ? (
           <CustomSwiper
             grabCursor
             scrollbar
@@ -119,7 +129,7 @@ const TemplateGalleryMain = () => {
             onSliderTransition={handleSliderTransition}
             slidesPerView={3}
             spaceBetween={10}>
-            {swiperList?.map((template, index) => {
+            {searchList?.map((template, index) => {
               return (
                 <TemplateCard
                   template={template}
@@ -130,6 +140,19 @@ const TemplateGalleryMain = () => {
               );
             })}
           </CustomSwiper>
+        ) : cliqMindSuggestions.length ? (
+          cliqMindSuggestions?.map((template, index) => {
+            return (
+              <TemplateCard
+                template={template}
+                key={index}
+                onClickCard={handleClickCard}
+                isTransition={isTransition}
+              />
+            );
+          })
+        ) : (
+          <EmptyTemplateCard />
         )}
       </Styled.MainContentSwiperSection>
     </div>
