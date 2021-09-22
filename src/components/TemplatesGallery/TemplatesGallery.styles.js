@@ -1,4 +1,5 @@
 import {
+  BG_GRAY,
   BG_GRAY_LIGHT,
   BO_DISTANT,
   C_DISTANT,
@@ -402,23 +403,13 @@ export const CategoryDescription = styled.div`
 `;
 
 export const SubCategoryContainer = styled.div`
-  height: calc(100% - 10rem);
+  // height: calc(100% - 10rem);
   padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 2rem;
   padding: 0 1.5rem;
-
-  // .template-sub-category-scroll {
-  //   display: grid;
-  //   grid-template-columns: repeat(3, 1fr);
-  //   gap: 1rem;
-  //   margin: 0 -1rem;
-  //   padding: 0 1rem;
-
-  //   ${commonScrollCss}
-  // }
 `;
 
 export const TemplateDescriptionContainer = styled.div`
@@ -444,6 +435,13 @@ export const TemplateDescriptionWrapper = styled.div`
     :hover {
       border-color: ${CV_RED};
     }
+  }
+
+  .activate-template-button {
+    width: 15rem;
+    height: 2rem;
+    margin: 1rem 0 2rem 0;
+    font-size: 1rem;
   }
 `;
 
@@ -481,6 +479,15 @@ export const TemplatePhotosWrapper = styled.div`
     color: ${CV_WHITE};
     background: ${TCV_DEFAULT};
   }
+`;
+
+export const TemplatePhotoContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BG_GRAY}`,
+})`
+  width: 80%;
+  height: 87%;
+  margin-right: 10%;
+  ${FLEX_RCC}
 `;
 
 export const TemplateDescription = styled.div`

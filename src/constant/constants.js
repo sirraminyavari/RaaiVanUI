@@ -152,9 +152,9 @@ export const CONFIG_REMOTE_SERVER_NAME = 'admin_remoteservers';
 export const CONFIG_HELP_PATH = '/configuration/help';
 export const CONFIG_HELP_NAME = 'admin_help';
 export const TEMPLATES_SETTING_PATH = '/templates/settings';
-export const TEMPLATES_SETTING_NAME = 'templates-settings';
+export const TEMPLATES_SETTING_NAME = 'admin_configuration';
 export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
-export const TEMPLATES_ARCHIVE_NAME = 'templates-archived';
+export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
 
 //! Border radius classes
 /**
