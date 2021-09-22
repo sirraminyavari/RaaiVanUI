@@ -14,6 +14,7 @@ import BinaryField from './types/binary/BinaryField';
 import UserSelect from './types/userSelect/UserSelect';
 import SubjectField from './types/subjectSelect/SubjectField';
 import DateField from './types/date/DateField';
+import FileField from './types/file/FileField';
 import prepareForm from './types/prepareForm';
 import SeperatorField from './types/seperator/SeperatorField';
 import saveForm from './types/saveForm';
@@ -86,6 +87,7 @@ const FormFill = ({ data }) => {
           DateValue_Jalali,
           FloatValue,
           BitValue,
+          Files,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
         const decodeTitle = decodeBase64(Title);
@@ -209,9 +211,22 @@ const FormFill = ({ data }) => {
             return <SeperatorField decodeTitle={decodeTitle} />;
 
           case 'File':
-            return null;
+            return (
+              <FileField
+                key={ElementID}
+                decodeInfo={decodeInfo}
+                decodeTitle={decodeTitle}
+                type={Type}
+                onAnyFieldChanged={onAnyFieldChanged}
+                elementId={ElementID}
+                value={Files}
+              />
+            );
 
           case 'Form':
+            return null;
+
+          default:
             return null;
         }
       });

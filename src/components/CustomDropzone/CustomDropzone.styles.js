@@ -1,4 +1,4 @@
-import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
+import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import { FLEX_RCS } from 'constant/StyledCommonCss';
 import styled from 'styled-components';

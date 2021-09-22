@@ -11,6 +11,13 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 
 /**
+ * @typedef PlaceholderType
+ * @type {Object}
+ * @property {string} dragging -placeholder for dragging.
+ * @property {string} main -placeholder for main.
+ */
+
+/**
  * @typedef PropType
  * @property {string[]} accept -The accepted file format.
  * @property {number} maxFiles -The maximum number of files that can be uploaded.
@@ -20,7 +27,7 @@ import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
  * @property {function} onUpload -A callback function that will fire on file upload.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
- * @property {Object} placeholders -Placeholders for dropzone input.
+ * @property {PlaceholderType} placeholders -Placeholders for dropzone input.
  * @property {boolean} disabled -A flag that will disable dropzone area.
  * @property {string[]} foramtExceptions -All formats that are not allowed to be uploaded.
  * @property {Boolean} isUploading -All formats that are not allowed to be uploaded.
@@ -55,7 +62,14 @@ const CustomDropzone = (props) => {
     if (isUploading) {
       return <LoadingCircle color={TCV_DEFAULT} />;
     } else {
-      return <FileFormatIcon format="upload" size={25} color={TCV_DEFAULT} />;
+      return (
+        <FileFormatIcon
+          style={{ minWidth: '2rem' }}
+          format="upload"
+          size={25}
+          color={TCV_DEFAULT}
+        />
+      );
     }
   };
 
@@ -89,6 +103,7 @@ const CustomDropzone = (props) => {
 
   //! Fires on drop event.
   const onDrop = useCallback((acceptedFiles) => {
+    setErrors([]);
     //! Calculate total file size.
     const totalSize = acceptedFiles
       .map((file) => file.size)
@@ -171,7 +186,7 @@ const CustomDropzone = (props) => {
               },
             };
           });
-        setErrors((errors) => [...errors, fileSizeError]);
+        setErrors((errors) => [...errors, ...fileSizeError]);
       }
     }
 
@@ -198,7 +213,7 @@ const CustomDropzone = (props) => {
   //! OnError callback.
   useEffect(() => {
     if (!!errors.length) {
-      onError(errors);
+      onError && onError(errors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
@@ -210,9 +225,9 @@ const CustomDropzone = (props) => {
       <Styled.InputWrapper>
         <input {...getInputProps(inputProps)} />
         {isDragActive ? (
-          <p>{placeholders?.dragging}</p>
+          <span>{placeholders?.dragging}</span>
         ) : (
-          <p>{placeholders?.main}</p>
+          <span>{placeholders?.main}</span>
         )}
       </Styled.InputWrapper>
     </Styled.DropzoneContainer>

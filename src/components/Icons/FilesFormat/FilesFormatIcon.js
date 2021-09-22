@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import {
   FaFileCsv,
-  FaFile,
+  FaFileAlt,
   FaFilePdf,
   FaFileArchive,
   FaFileAudio,
@@ -13,11 +13,13 @@ import {
   FaFileWord,
   FaFileUpload,
 } from 'react-icons/fa';
+import { BsFileEarmarkText } from 'react-icons/bs';
 
 /**
  * @typedef PropType
  * @type {Object}
  * @property {('svc' | 'pdf' | 'archive' | 'audio' | 'code' | 'excel' | 'image' | 'powerPoint' | 'video' | 'word' | 'upload')} format - The radius of the avatar's circule.
+ * @property {Boolean} fill - Icon is fill or outlined?.
  */
 
 /**
@@ -26,42 +28,43 @@ import {
  * @param {PropType} props -Props that pass to File.
  */
 const FilesFormatIcon = (props) => {
-  switch (props.format) {
+  const { format, fill, ...rest } = props;
+  switch (format) {
     case 'svc':
-      return <FaFileCsv {...props} />;
+      return <FaFileCsv {...rest} />;
 
     case 'pdf':
-      return <FaFilePdf {...props} />;
+      return <FaFilePdf {...rest} />;
 
     case 'archive':
-      return <FaFileArchive {...props} />;
+      return <FaFileArchive {...rest} />;
 
     case 'audio':
-      return <FaFileAudio {...props} />;
+      return <FaFileAudio {...rest} />;
 
     case 'code':
-      return <FaFileCode {...props} />;
+      return <FaFileCode {...rest} />;
 
     case 'excel':
-      return <FaFileExcel {...props} />;
+      return <FaFileExcel {...rest} />;
 
     case 'image':
-      return <FaFileImage {...props} />;
+      return <FaFileImage {...rest} />;
 
     case 'powerPoint':
-      return <FaFilePowerpoint {...props} />;
+      return <FaFilePowerpoint {...rest} />;
 
     case 'video':
-      return <FaFileVideo {...props} />;
+      return <FaFileVideo {...rest} />;
 
     case 'word':
-      return <FaFileWord {...props} />;
+      return <FaFileWord {...rest} />;
 
     case 'upload':
-      return <FaFileUpload {...props} />;
+      return <FaFileUpload {...rest} />;
 
     default:
-      return <FaFile {...props} />;
+      return !!fill ? <FaFileAlt {...rest} /> : <BsFileEarmarkText {...rest} />;
   }
 };
 
