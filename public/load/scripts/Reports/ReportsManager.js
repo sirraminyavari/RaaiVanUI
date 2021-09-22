@@ -15,7 +15,7 @@
             TabsManager: null,
             Reports: params.Reports
         };
-
+        
         this.Options = {
             Modules: params.Modules
         };
@@ -51,23 +51,34 @@
                 var reportId = that.has_report(_moduleIdentifier, _reportName);
                 if (!reportId) return;
 
+                var config = that.get_report_config(_moduleIdentifier, _reportName) || {};
+
+                var reportTitle = (((RVDic.RPT || {})[_moduleIdentifier] || {})[_reportName] || {})._Title || _reportName;
+                var reportDescription = (((RVDic.RPT || {})[_moduleIdentifier] || {})[_reportName] || {})._Description;
+
                 GlobalUtilities.create_nested_elements([{
                     Type: "div", Class: "small-12 medium-6 large-4", Style: "padding:0.3rem;",
                     Childs: [{
                         Type: "div",
                         Class: "small-12 medium-12 large-12 rv-border-radius-half rv-bg-color-white-softer SoftShadow SoftBorder",
                         Style: "cursor:pointer; padding:1rem; margin-bottom:0.2rem; min-height:4rem; text-align:center;" +
-                            "display:flex; align-items:center; justify-content:center; height:100%; border-color:rgb(220,220,220);",
+                            "display:flex; flex-flow:column; align-items:center; justify-content:center; height:100%;" +
+                            "border-color:rgb(220,220,220); position:relative;",
                         Properties: [{
                             Name: "onclick",
                             Value: function () { that.show_report({ ID: reportId, ModuleIdentifier: _moduleIdentifier, ReportName: _reportName }); }
                         }],
-                        Childs: [{
-                            Type: "text",
-                            TextValue: ((RVDic.RPT && RVDic.RPT[_moduleIdentifier] &&
-                                RVDic.RPT[_moduleIdentifier][_reportName] && RVDic.RPT[_moduleIdentifier][_reportName]._Title) ?
-                                RVDic.RPT[_moduleIdentifier][_reportName]._Title : _reportName)
-                        }]
+                        Childs: [
+                            (!config.HasChart ? null : {
+                                Type: "div", Style: "position:absolute; top:0.5rem;" + RV_RevFloat + ":0.5rem;",
+                                Childs: [{Type: "i", Class: "fa fa-bar-chart-o", Style: "color:rgb(80,80,80);"}]
+                            }),
+                            { Type: "div", Childs: [{ Type: "text", TextValue: reportTitle }] },
+                            (!reportDescription ? null : {
+                                Type: "div", Style: "margin-top:0.5rem; color:rgb(120,120,120); font-size:0.7rem;",
+                                Childs: [{ Type: "text", TextValue: reportDescription }]
+                            })
+                        ]
                     }]
                 }], container);
             }
@@ -204,14 +215,15 @@
             var reportName = params.ReportName || "";
             var showAtStart = params.ShowAtStart === true;
             var initialParams = GlobalUtilities.extend({ Modules: that.Options.Modules }, (params.InitialParams || {}));
+            var hasChart = !!(that.get_report_config(moduleIdentifier, reportName) || {}).HasChart;
             
             GlobalUtilities.load_files(["Reports/ReportOptions/" + moduleIdentifier + "_" + reportName + ".js"], {
                 OnLoad: function () {
-                    var _tt = (RVDic.RPT && RVDic.RPT[moduleIdentifier] &&
+                    var reportTitle = (RVDic.RPT && RVDic.RPT[moduleIdentifier] &&
                         RVDic.RPT[moduleIdentifier][reportName] && RVDic.RPT[moduleIdentifier][reportName]._Title) ?
                         RVDic.RPT[moduleIdentifier][reportName]._Title : reportName;
 
-                    var newPage = that.add_tab(_tt, true, true).Page;
+                    var newPage = that.add_tab(reportTitle, true, true).Page;
 
                     var elems = GlobalUtilities.create_nested_elements([
                         {
@@ -263,23 +275,33 @@
                                         },
                                         {
                                             Type: "div", Class: "small-4 medium-4 large-4 RevDirection RevTextAlign",
+                                            Style: "display:flex; flex-flow:row; align-items:center; justify-content:center;",
                                             Childs: [
                                                 {
-                                                    Type: "div", Style: "display:inline-block;",
-                                                    Childs: [
-                                                        {
-                                                            Type: "img", Style: "max-width:3rem; max-height:3rem; cursor:pointer;",
-                                                            Tooltip: RVDic.ExportToExcel,
-                                                            Attributes: [{ Name: "src", Value: GlobalUtilities.icon("extensions/xlsx.png") }],
-                                                            Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(true); } }]
-                                                        }
-                                                    ]
+                                                    Type: "div", Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;",
+                                                    Childs: [{
+                                                        Type: "i", Class: "fa fa-file-excel-o fa-2x rv-icon-button",
+                                                        Tooltip: RVDic.ExportToExcel,
+                                                        Attributes: [{ Name: "src", Value: GlobalUtilities.icon("extensions/xlsx.png") }],
+                                                        Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(true); } }]
+                                                    }]
                                                 },
+                                                (!hasChart ? null : {
+                                                    Type: "div",
+                                                    Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
+                                                        "padding-" + RV_RevFloat + ":1rem;",
+                                                    Childs: [{
+                                                        Type: "i", Class: "fa fa-bar-chart fa-2x rv-icon-button",
+                                                        Tooltip: RVDic.Chart,
+                                                        Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(null, null, true); } }]
+                                                    }]
+                                                }),
                                                 {
                                                     Type: "div", Name: "countArea",
-                                                    Style: "display:inline-block; color:green; font-weight:bold;" +
-                                                        "margin-top:1rem; margin-" + RV_RevFloat + ":3rem;"
-                                                }
+                                                    Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
+                                                        "color:green; font-weight:bold; margin-" + RV_RevFloat + ":3rem;"
+                                                },
+                                                { Type: "div", Style: "flex:1 1 auto;" }
                                             ]
                                         },
                                     ]
@@ -310,7 +332,7 @@
                         if (!newPage.ShowReport) _interfaceLoaded = true;
                         else newPage.ShowReport();
                     });
-
+                    
                     var reportArea = elems["reportArea"];
                     var clearButton = elems["clearButton"];
                     var countArea = elems["countArea"];
@@ -321,24 +343,57 @@
 
                     var _oldOptions = null;
 
-                    var _show = function (excel, pageNumber, password) {
+                    var _show = async function (excel, pageNumber, chartMode, password) {
                         var _options = _oldOptions = (pageNumber ? _oldOptions : (rop.get_data ? rop.get_data() : {}));
                         if (_options === false) return;
                         _options = _options || {};
 
                         _options.PageNumber = pageNumber;
                         _options.PageSize = 100;
+
+                        if (chartMode && (rop.ChartContainer || {}).Container) {
+                            rop.ChartContainer.Showed = GlobalUtilities.show(rop.ChartContainer.Container);
+                            return;
+                        }
+
+                        var chartDateFrom = rop.chart_date_from ? rop.chart_date_from() : null;
+                        var chartDateTo = rop.chart_date_to ? rop.chart_date_to() : null;
                         
+                        if (chartMode && (!(chartDateFrom || {}).Value || !(chartDateTo || {}).Value))
+                            return alert(RVDic.Checks.PleaseSelectDateBoundaries);
+                        
+                        var chartPeriod = !chartMode ? null : await that.select_bar_chart_period();
+
+                        if (chartMode && !chartPeriod) return;
+
                         var requestParams = {
                             ModuleIdentifier: moduleIdentifier, ReportName: reportName,
-                            Excel: excel, Password: Base64.encode(password), ParseResults: true,
+                            Excel: excel, Password: Base64.encode(password),
+                            ChartMode: chartMode, ChartPeriod: chartPeriod,
+                            ChartDateFrom: (chartDateFrom || {}).Value, ChartDateTo: (chartDateTo || {}).Value, ParseResults: true,
                             ResponseHandler: function (result) {
                                 if (result.ErrorText) {
                                     alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-                                    if (!excel) {
+                                    if (!excel && !chartMode) {
                                         reportArea.innerHTML = "";
                                         GlobalUtilities.unblock(newPage);
                                     }
+                                    return;
+                                }
+
+                                if (chartMode) {
+                                    GlobalUtilities.unblock(newPage);
+
+                                    that.show_bar_chart(rop, result, {
+                                        ModuleIdentifier: moduleIdentifier,
+                                        ReportName: reportName,
+                                        Title: reportTitle,
+                                        Period: chartPeriod,
+                                        DateFrom: chartDateFrom,
+                                        DateTo: chartDateTo,
+                                        ShowReport: () => _preshow()
+                                    });
+
                                     return;
                                 }
                                 
@@ -476,23 +531,21 @@
 
                         for (var _op in _options) requestParams[_op] = _options[_op];
 
-                        if (!excel) {
+                        if (!excel && !chartMode)
                             reportArea.innerHTML = "<div style='text-align:center;'>" + RVDic.CreatingReport + "..." + "</div>";
-                            GlobalUtilities.block(newPage);
-                        }
+
+                        if (!excel) GlobalUtilities.block(newPage);
                         
                         ReportsAPI.Reports[moduleIdentifier][reportName].Get(requestParams);
                     }; //end of 'var _show = function...'
 
-                    var _do = function (excel, pageNumber, hasConfidentiality, done) {
-                        var rp = that.get_report_config(moduleIdentifier, reportName);
-
-                        if (!excel || !hasConfidentiality) _show(excel, pageNumber);
+                    var _do = function (excel, pageNumber, chartMode, hasConfidentiality, done) {
+                        if (!excel || !hasConfidentiality) _show(excel, pageNumber, chartMode);
                         else {
                             new NameDialog({
                                 Title: RVDic.MSG.PasswordNeededToExportFile, InnerTitle: RVDic.Code, ModificationDetection: false,
                                 OnActionCall: function (name, callback) {
-                                    if (name) _show(excel, pageNumber, name);
+                                    if (name) _show(excel, pageNumber, chartMode, name);
                                     callback(true);
                                 }
                             });
@@ -503,17 +556,17 @@
 
                     var processing = false;
 
-                    var _preshow = function (excel, pageNumber) {
+                    var _preshow = function (excel, pageNumber, chartMode) {
                         if (processing) return;
                         processing = true;
 
-                        if (!excel) return _do(excel, pageNumber, null, function () { processing = false; });
+                        if (!excel) return _do(excel, pageNumber, chartMode, null, function () { processing = false; });
 
                         PrivacyAPI.GetConfidentialityLevel({
                             ObjectID: id, ParseResults: true,
                             ResponseHandler: function (result) {
                                 var hasConfidentiality = (result || {}).LevelID && (result.LevelID > 1);
-                                _do(excel, pageNumber, hasConfidentiality, function () { processing = false; });
+                                _do(excel, pageNumber, chartMode, hasConfidentiality, function () { processing = false; });
                             }
                         });
                     };
@@ -809,6 +862,175 @@
                     }
                 });
             };
+        },
+
+        select_bar_chart_period: async () => {
+            var that = this;
+
+            var period = null;
+
+            return new Promise((resolve, reject) => {
+                var _div = GlobalUtilities.create_nested_elements([{
+                    Type: "div", Class: "small-10 medium-7 large-4 rv-border-radius-1 SoftBackgroundColor",
+                    Style: "margin:0 auto; padding:1rem;", Name: "_div",
+                    Childs: [
+                        {
+                            Type: "div", Class: "rv-title",
+                            Childs: [{ Type: "text", TextValue: RVDic.BasedOn + ":" }]
+                        },
+                        {
+                            Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin-top:1rem;",
+                            Childs: ["Year", "Season", "Month"].map(itm => ({
+                                Type: "div", Class: "small-4 medium-4 large-4 rv-border-radius-half rv-bg-color-trans-white",
+                                Style: "height:4rem; display:flex; align-items:center; justify-content:center; cursor:pointer;",
+                                Properties: [{ Name: "onclick", Value: function () { period = itm; showed.Close(); } }],
+                                Childs: [{ Type: "text", TextValue: RVDic[itm] || itm }]
+                            }))
+                        }
+                    ]
+                }])["_div"];
+
+                var showed = GlobalUtilities.show(_div, { OnClose: () => resolve(period) });
+            });
+        },
+
+        get_bar_label: function (periodType, value) {
+            if (isNaN(+value) || (GlobalUtilities.get_type(periodType) != "string") || (value.length < 4)) return value;
+
+            var year = value.substr(0, 4);
+            var datePart = value.length <= 4 ? 0 : +value.substr(4);
+
+            switch (periodType.toLowerCase()) {
+                case "year":
+                    return year;
+                case "season":
+                    return (datePart >= 1) && (datePart <= 4) ? RVDic.X.Season[String(datePart)] + " " + year : value;
+                case "month":
+                    return (datePart >= 1) && (datePart <= 12) ? RVDic.X.Month[String(datePart)] + " " + year : value;
+                default:
+                    return value;
+            }
+        },
+
+        show_bar_chart: function (reportObject, data, options) {
+            var that = this;
+            reportObject = reportObject || {};
+
+            reportObject.ChartContainer = reportObject.ChartContainer || { Container: null, Showed: null };
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin:0 auto; padding:1rem; position:relative;", Name: "container",
+                Childs: [
+                    {
+                        Type: "div", Class: "rv-circle",
+                        Style: "position:absolute; top:0.5rem;" + RV_RevFloat + ":0.5rem; color:white; width:1.5rem; height:1.5rem;" + 
+                            "background-color:red; display:flex; align-items:center; justify-content:center; cursor:pointer;",
+                        Properties: [{
+                            Name: "onclick", Value: () => {
+                                reportObject.ChartContainer.Showed.Close();
+                                reportObject.ChartContainer = null;
+                            }
+                        }],
+                        Childs: [{Type: "i", Class: "fa fa-times"}]
+                    },
+                    { Type: "div", Name: "_div" }
+                ]
+            }]);
+
+            var _div = elems["_div"];
+
+            GlobalUtilities.loading(_div);
+
+            reportObject.ChartContainer.Container = elems["container"];
+            reportObject.ChartContainer.Showed = GlobalUtilities.show(elems["container"]);
+
+            GlobalUtilities.load_files(["Lib/chart.min.js"], {
+                OnLoad: () => that._show_bar_chart(_div, reportObject, data, GlobalUtilities.extend(options || {}, {
+                    Close: () => reportObject.ChartContainer.Showed.Close()
+                }))
+            });
+        },
+
+        _show_bar_chart: function (container, reportObject, data, options) {
+            var that = this;
+            options = options || {};
+            data = data || {};
+            reportObject = reportObject || {};
+
+            container.innerHTML = "";
+            
+            var period = options.Period;
+
+            var elems = GlobalUtilities.create_nested_elements([
+                {
+                    Type: "div", Class: "rv-title",
+                    Childs: [{ Type: "text", TextValue: options.Title }]
+                },
+                {
+                    Type: "div", Class: "rv-border-radius-1", Style: "padding:1rem; background-color:white;",
+                    Childs: [{ Type: "canvas", Name: "chart" }]
+                }
+            ], container);
+
+            var colNames = (data.Columns || []).filter(c => c.ID != "Period").map(c => c.ID);
+            var rowPeriods = (data.Rows || []).map(r => Base64.decode(r.Period));
+            var rowLabels = (data.Rows || []).map(r => that.get_bar_label(period, Base64.decode(r.Period)));
+            var rowColors = (data.Rows || []).map(r => GlobalUtilities.generate_color(Base64.decode(r.Period)));
+
+            var datasets = colNames.map(col => {
+                var dicEntry = (RVDic.RPT[options.ModuleIdentifier] || {})[options.ReportName] || {};
+                
+                return {
+                    label: (dicEntry.BarChart || {})[col] || dicEntry[col] || col,
+                    data: (data.Rows || []).map(r => GlobalUtilities.get_type(r[col]) == "number" ? r[col] : + Base64.decode(r[col])),
+                    backgroundColor: colNames.length == 1 ? rowColors.map(c => c.Color) :
+                        GlobalUtilities.generate_color(Base64.encode(col)).Color,
+                    borderColor: colNames.length == 1 ? rowColors.map(c => c.Dark) :
+                        GlobalUtilities.generate_color(Base64.encode(col)).Dark,
+                    borderWidth: 1
+                };
+            });
+
+            new Chart(elems["chart"].getContext("2d"), {
+                type: 'bar',
+                data: {
+                    labels: rowLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { display: datasets.length > 1 } },
+                    //events: ['click'],
+                    onClick: (e, bar) => {
+                        if (((bar || []).length < 1)) return;
+
+                        var selectedIndex = bar[0].index;
+                        var periodObj = data.ChartPeriods[rowPeriods[selectedIndex]];
+
+                        if (!!periodObj && reportObject.chart_date_from) {
+                            var fromVal = selectedIndex > 0 ? (periodObj.From || {}).Value : (options.DateFrom || {}).Value;
+                            var fromLbl = selectedIndex > 0 ? (periodObj.From || {}).Label : (options.DateFrom || {}).Label;
+
+                            reportObject.chart_date_from(fromVal, fromLbl);
+                        }
+
+                        if (!!periodObj && reportObject.chart_date_to) {
+                            var toVal = selectedIndex < (rowPeriods.length - 1) ?
+                                (periodObj.To || {}).Value : (options.DateTo || {}).Value;
+                            var toLbl = selectedIndex < (rowPeriods.length - 1) ?
+                                (periodObj.To || {}).Label : (options.DateTo || {}).Label;
+                            
+                            reportObject.chart_date_to(toVal, toLbl);
+                        }
+
+                        if (options.Close) options.Close();
+
+                        if (options.ShowReport) options.ShowReport();
+                    }
+                }
+            });
         }
     }
 })();

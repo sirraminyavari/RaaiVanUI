@@ -149,7 +149,8 @@
             (params.ResponseType ? "&ResponseType=" + params.ResponseType : "") +
             (params.RefStateID ? "&RefStateID=" + params.RefStateID : "") +
             (params.DirectorNodeID ? "&DirectorNodeID=" + params.DirectorNodeID : "") +
-            (params.Admin ? "&Admin=" + params.Admin : "");
+            (params.Admin ? "&Admin=" + params.Admin : "") + 
+            (params.DirectorUserID ? "&DirectorUserID=" + params.DirectorUserID : "");
         return WFAPI._send(url, params, queryString);
     },
 

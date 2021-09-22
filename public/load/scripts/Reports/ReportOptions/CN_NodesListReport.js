@@ -268,10 +268,8 @@
             });
         },
 
-        _flatten_filters: function (jsonValue, ownerId) {
+        _get_form_filters: function (jsonValue, ownerId) {
             var that = this;
-
-            if (!ownerId) ownerId = "";
 
             var arr = [];
             var delimiter = "~";
@@ -279,57 +277,41 @@
             for (elementId in (jsonValue || {})) {
                 var fltr = (jsonValue[elementId] || {}).JSONValue;
                 var type = (jsonValue[elementId] || {}).Type;
-                
+
                 if (!fltr) continue;
-                
-                jQuery.each(fltr.TextItems || [], function (ind, val) {
-                    fltr.TextItems[ind] = Base64.decode(fltr.TextItems[ind]);
-                });
 
-                var text = Base64.encode(fltr.Text || "");
-                var textItems = Base64.encode((fltr.TextItems || []).join(delimiter));
-                var or = (GlobalUtilities.get_type(fltr.Or) == "boolean" ? fltr.Or : "");
-                var exact = (GlobalUtilities.get_type(fltr.Exact) == "boolean" ? fltr.Exact : "");
-                var dateFrom = fltr.DateFrom ? fltr.DateFrom : "";
-                var dateTo = fltr.DateTo ? fltr.DateTo : "";
-                var floatFrom = (GlobalUtilities.get_type(fltr.FloatFrom) == "number" ? fltr.FloatFrom : "");
-                var floatTo = (GlobalUtilities.get_type(fltr.FloatTo) == "number" ? fltr.FloatTo : "");
-                var bit = (GlobalUtilities.get_type(fltr.Bit) == "boolean" ? fltr.Bit : "");
-                var guid = fltr.Guid ? fltr.Guid : "";
-                var guidItems = (fltr.GuidItems || []).join(delimiter);
-                var compulsory = (GlobalUtilities.get_type(fltr.Compulsory) == "boolean" ? fltr.Compulsory : "");
-
-                var _vals = elementId + ":" + ownerId + ":" + text + ":" + textItems + ":" + or + ":" + exact +
-                    ":" + dateFrom + ":" + dateTo + ":" + floatFrom + ":" + floatTo + ":" + bit +
-                    ":" + guid + ":" + guidItems + ":" + compulsory;
+                var theFilter = {
+                    ElementID: elementId,
+                    OwnerID: ownerId,
+                    Text: Base64.encode(fltr.Text),
+                    TextItems: Base64.encode((fltr.TextItems || []).map(i => Base64.decode(i)).join(delimiter)),
+                    Or: GlobalUtilities.get_type(fltr.Or) == "boolean" ? fltr.Or : null,
+                    Exact: GlobalUtilities.get_type(fltr.Exact) == "boolean" ? fltr.Exact : null,
+                    DateFrom: fltr.DateFrom,
+                    DateTo: fltr.DateTo,
+                    FloatFrom: GlobalUtilities.get_type(fltr.FloatFrom) == "number" ? fltr.FloatFrom : null,
+                    FloatTo: GlobalUtilities.get_type(fltr.FloatTo) == "number" ? fltr.FloatTo : null,
+                    Bit: GlobalUtilities.get_type(fltr.Bit) == "boolean" ? fltr.Bit : null,
+                    Guid: fltr.Guid,
+                    GuidItems: (fltr.GuidItems || []).join(delimiter),
+                    Compulsory: GlobalUtilities.get_type(fltr.Compulsory) == "boolean" ? fltr.Compulsory : null
+                };
 
                 if (String(type).toLowerCase() == "form") {
-                    var subArr = that._flatten_filters((jsonValue[elementId] || {}).Data, elementId);
+                    var subArr = that._get_form_filters((jsonValue[elementId] || {}).Data, elementId);
 
                     if ((subArr || []).length) {
-                        arr.push(_vals);
+                        arr.push(theFilter);
                         jQuery.each(subArr, function (ind, val) { arr.push(val); });
                     }
                 }
-                else if (text || textItems || dateFrom || dateTo || floatFrom || floatTo ||
-                    bit || (bit === false) || guid || guidItems) {
-                    arr.push(_vals);
+                else if (theFilter.Text || theFilter.TextItems || theFilter.DateFrom || theFilter.DateTo || theFilter.FloatFrom ||
+                    theFilter.FloatTo || theFilter.Bit || (theFilter.Bit === false) || theFilter.Guid || theFilter.GuidItems) {
+                    arr.push(theFilter);
                 }
             }
 
             return arr;
-        },
-
-        _get_form_filters: function () {
-            var that = this;
-            
-            var values = that._flatten_filters(that.Objects.FormFilters) || [];
-            
-            var names = "FormFilterTableType:" + String(values.length) +
-                ":ElementID:OwnerID:Text:TextItems:Or:Exact:DateFrom:DateTo:FloatFrom:FloatTo:Bit:Guid:GuidItems:Compulsory";
-            var types = "Guid:Guid:Base64:Base64:Bool:Bool:DateTime:DateTime:Double:Double:bool:Guid:String:Bool";
-
-            return names + "|" + types + "|" + values.join(":");
         },
 
         set_data: function (params) {
@@ -377,6 +359,27 @@
             var beginDate = !that.Objects.BeginDate ? {} : that.Objects.BeginDate.Get();
             var finishDate = !that.Objects.FinishDate ? {} : that.Objects.FinishDate.Get();
 
+            var formFilters = {
+                Name: "FormFilterTableType",
+                Types: {
+                    ElementID: "Guid",
+                    OwnerID: "Guid",
+                    Text: "Base64",
+                    TextItems: "Base64",
+                    Or: "Bool",
+                    Exact: "Bool",
+                    DateFrom: "DateTime",
+                    DateTo: "DateTime",
+                    FloatFrom: "Double",
+                    FloatTo: "Double",
+                    Bit: "Bool",
+                    Guid: "Guid",
+                    GuidItems: "String",
+                    Compulsory: "Bool"
+                },
+                Items: that._get_form_filters(that.Objects.FormFilters) || []
+            };
+
             return {
                 NodeTypeID: nodeTypeId, _Title_NodeTypeID: nodeType,
                 SearchText: Base64.encode(searchText),
@@ -386,7 +389,7 @@
                 _Title_LowerCreationDateLimit: beginDate.Label,
                 UpperCreationDateLimit: finishDate.Value,
                 _Title_UpperCreationDateLimit: finishDate.Label,
-                FormFilters: that.Objects.FinalJSONFilters || Base64.encode(that._get_form_filters())
+                FormFilters: that.Objects.FinalJSONFilters || Base64.encode(JSON.stringify(formFilters))
             };
         },
 

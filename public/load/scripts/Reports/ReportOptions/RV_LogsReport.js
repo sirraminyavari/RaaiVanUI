@@ -258,10 +258,16 @@
 
             return {
                 UserID: userId, _Title_UserID: fullname,
-                Actions: Base64.encode("StringTableType:" + actions.length + ":Value|String" +
-                    (actions.length > 0 ? "|" + that.Objects.ActionsContainer.get_items_string(":") : "")),
-                IPAddresses: Base64.encode("StringTableType:" + ipAddresses.length + ":Value|String" +
-                    (ipAddresses.length > 0 ? "|" + that.Objects.IPsContainer.get_items_string(":") : "")),
+                Actions: Base64.encode(JSON.stringify({
+                    Name: "StringTableType",
+                    Types: { Value: "Base64" },
+                    Items: actions.map(itm => ({ Value: Base64.encode(itm.ID) }))
+                })),
+                IPAddresses: Base64.encode(JSON.stringify({
+                    Name: "StringTableType",
+                    Types: { Value: "Base64" },
+                    Items: ipAddresses.map(itm => ({ Value: Base64.encode(itm.ID) }))
+                })),
                 Level: that.Objects.LevelSelect[that.Objects.LevelSelect.selectedIndex].title || "",
                 NotAuthorized: that.Objects.NotAuthorizedCheckbox.checked,
                 Anonymous: that.Objects.AnonymousCheckbox.checked,

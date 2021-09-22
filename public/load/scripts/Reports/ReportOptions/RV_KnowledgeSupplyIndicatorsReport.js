@@ -10,7 +10,7 @@
         var that = this;
 
         this.Objects = {
-            NodeTypeSelect: null,
+            ContentTypes: null,
             CreatorNodeTypeSelect: null,
             NodesList: null,
             BeginDate: null,
@@ -27,11 +27,34 @@
             var that = this;
 
             var elems = GlobalUtilities.create_nested_elements([
-                { Type: "div", Class: "small-12 medium-8 large-6", Name: "nodeTypeSelect", Style: "margin-bottom:1rem;" },
-                { Type: "div", Class: "small-12 medium-12 large-12" },
-                { Type: "div", Class: "small-12 medium-8 large-6", Name: "creatorNodeTypeSelect" },
-                { Type: "div", Class: "small-12 medium-12 large-12" },
-                { Type: "div", Class: "small-12 medium-8 large-6", Name: "nodesList", Style: "margin:1rem 0rem;" },
+                {
+                    Type: "div", Class: "small-12 medium-10 large-8",
+                    Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex:0 0 auto; width:8rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.KnowledgeTypes + ":" }]
+                        },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "contentTypes" }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-10 large-8",
+                    Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex:0 0 auto; width:8rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.Creator + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex:1 1 auto;",
+                            Childs: [
+                                { Type: "div", Name: "creatorNodeTypeSelect" },
+                                { Type: "div", Name: "nodesList", Style: "margin:1rem 0rem;" },
+                            ]
+                        }
+                    ]
+                },
                 { Type: "div", Class: "small-12 medium-12 large-12" },
                 {
                     Type: "div", Style: "display:inline-block; margin-" + RV_RevFloat + ":1.5rem;",
@@ -49,10 +72,11 @@
                 { Type: "div", Style: "display:inline-block;", Name: "finishDate" }
             ], that.ContainerDiv);
 
-            that.Objects.NodeTypeSelect = GlobalUtilities.append_autosuggest(elems["nodeTypeSelect"], {
+            that.Objects.ContentTypes = new NewSingleDataContainer(elems["contentTypes"], {
                 InputClass: "rv-input",
-                InputStyle: "width:50%; font-size:0.7rem;",
+                InputStyle: "width:100%; font-size:0.7rem;",
                 InnerTitle: RVDic.NodeTypeSelect + "...",
+                NoButtons: true,
                 AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
                 ResponseParser: function (responseText) {
                     var nodeTypes = JSON.parse(responseText).NodeTypes || [];
@@ -96,11 +120,11 @@
                 }
             });
 
-            GlobalUtilities.append_calendar(elems["beginDate"], null, function (cal) {
+            GlobalUtilities.append_calendar(elems["beginDate"], { ClearButton: true }, function (cal) {
                 that.Objects.BeginDate = cal;
             });
 
-            GlobalUtilities.append_calendar(elems["finishDate"], null, function (cal) {
+            GlobalUtilities.append_calendar(elems["finishDate"], { ClearButton: true }, function (cal) {
                 that.Objects.FinishDate = cal;
             });
 
@@ -113,7 +137,6 @@
             var that = this;
             params = params || {};
 
-            if (params.NodeTypeID) this.Objects.NodeTypeSelect.set_item(params.NodeTypeID.Value || "", params.NodeTypeID.Title || "");
             if (params.CreatorNodeTypeID)
                 this.Objects.CreatorNodeTypeSelect.set_item(params.CreatorNodeTypeID.Value || "", params.CreatorNodeTypeID.Title || "");
 
@@ -127,12 +150,7 @@
         get_data: function () {
             var that = this;
             
-            var index = this.Objects.NodeTypeSelect.selectedIndex;
-            
-            var nodeTypeId = index < 0 ? "" : this.Objects.NodeTypeSelect.values[index];
-            var nodeType = index < 0 ? "" : this.Objects.NodeTypeSelect.keywords[index];
-            
-            index = this.Objects.CreatorNodeTypeSelect.selectedIndex;
+            var index = this.Objects.CreatorNodeTypeSelect.selectedIndex;
             var creatorNodeTypeId = index < 0 ? "" : this.Objects.CreatorNodeTypeSelect.values[index];
             var creatorNodeType = index < 0 ? "" : this.Objects.CreatorNodeTypeSelect.keywords[index];
             
@@ -140,9 +158,17 @@
             var finishDate = (that.Objects.FinishDate || { Get: function () { return {} } }).Get();
             
             return {
-                NodeTypeID: nodeTypeId, _Title_NodeTypeID: nodeType,
+                NodeTypeIDs: Base64.encode(JSON.stringify({
+                    Name: "GuidTableType",
+                    Types: { Value: "Guid" },
+                    Items: that.Objects.ContentTypes.get_items().map((itm) => ({ Value: itm.ID }))
+                })), 
                 CreatorNodeTypeID: creatorNodeTypeId, _Title_CreatorNodeTypeID: creatorNodeType,
-                CreatorNodeIDs: this.Objects.NodesList.get_items_string("|"),
+                CreatorNodeIDs: Base64.encode(JSON.stringify({
+                    Name: "GuidTableType",
+                    Types: { Value: "Guid" },
+                    Items: that.Objects.NodesList.get_items().map((itm) => ({ Value: itm.ID }))
+                })),
                 BeginDate: beginDate.Value || "",
                 _Title_BeginDate: beginDate.Label || "",
                 FinishDate: finishDate.Value || "",
@@ -153,12 +179,29 @@
         clear: function () {
             var that = this;
 
-            this.Objects.NodeTypeSelect.empty();
+            this.Objects.ContentTypes.clear();
             this.Objects.CreatorNodeTypeSelect.empty();
             this.Objects.NodesList.clear();
-            this.Objects.ShowPersonalItemsSelect.selectedIndex = 0;
             if (this.Objects.BeginDate) this.Objects.BeginDate.Clear();
             if (this.Objects.FinishDate) this.Objects.FinishDate.Clear();
+        },
+
+        chart_date_from: function (value, title) {
+            if (value && title) {
+                if (this.Objects.BeginDate)
+                    this.Objects.BeginDate.Set({ Value: value, Label: title });
+            }
+            else
+                return (this.Objects.BeginDate || { Get: function () { return {} } }).Get();
+        },
+
+        chart_date_to: function (value, title) {
+            if (value && title) {
+                if (this.Objects.FinishDate)
+                    this.Objects.FinishDate.Set({ Value: value, Label: title });
+            }
+            else
+                return (this.Objects.FinishDate || { Get: function () { return {} } }).Get();
         }
     }
 })();

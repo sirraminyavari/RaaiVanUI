@@ -229,8 +229,17 @@
             ], that.Interface.TitleArea);
 
             if (params.NodeName) {
-                elems["relatedNode"].innerHTML = "(<span style='color:gray;'>" +
-                    RVDic.RelatedNode + ":</span><span style='padding:0px 2px 0px 2px;'></span>" + params.NodeName + ")";
+                elems["relatedNode"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    { Type: "text", TextValue: "(" },
+                    {
+                        Type: "span", Style: "color:gray;",
+                        Childs: [{ Type: "text", TextValue: RVDic.RelatedNode + ":" }]
+                    },
+                    { Type: "span", Style: "padding:0px 2px 0px 2px;" },
+                    { Type: "text", TextValue: params.NodeName + ")" }
+                ], elems["relatedNode"]);
             }
         },
 
@@ -406,7 +415,7 @@
 
             editButton.onclick = function () {
                 var set_things = function () {
-                    questionBodyArea.innerHTML = GlobalUtilities.convert_numbers_to_persian(questionBody);
+                    GlobalUtilities.set_text(questionBodyArea, GlobalUtilities.convert_numbers_to_persian(questionBody));
                     bodyInput.set_item("", questionBody);
 
                     editArea.style.display = editButton.__Editing ? "flex" : "none";
@@ -541,7 +550,7 @@
                         GlobalUtilities.convert_numbers_to_persian(String(optionsCount)) + "</span>)";
                 }
 
-                elems["btn"].innerHTML = tt;
+                GlobalUtilities.set_text(elems["btn"], tt);
             };
 
             set_button_title();

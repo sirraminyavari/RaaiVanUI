@@ -565,7 +565,64 @@
         var queryString = (params.Count ? "&Count=" + params.Count : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "");
         return FGAPI._send(url, params, queryString);
-    }
+    },
 
     //end of Polls
+
+
+    //APO Maturity Assessment
+
+    GetAPOMaturityAssessmentStatus: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/GetAPOMaturityAssessmentStatus?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return FGAPI._send(url, params, queryString);
+    },
+
+    NewAPOMaturityAssessment: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/NewAPOMaturityAssessment?timeStamp=" + new Date().getTime();
+        var queryString = (params.Period ? "&Period=" + params.Period : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    EditAPOMaturityAssessmentPeriod: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/EditAPOMaturityAssessmentPeriod?timeStamp=" + new Date().getTime();
+        var queryString = (params.PollID ? "&PollID=" + params.PollID : "") +
+            (params.Period ? "&Period=" + params.Period : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    RemoveAPOMaturityAssessment: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/RemoveAPOMaturityAssessment?timeStamp=" + new Date().getTime();
+        var queryString = (params.PollID ? "&PollID=" + params.PollID : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    GetAPOMaturityAssessmentForm: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/GetAPOMaturityAssessmentForm?timeStamp=" + new Date().getTime();
+        var queryString = (params.PollID ? "&PollID=" + params.PollID : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    SaveAPOMaturityAssessmentForm: function (params) {
+        params = params || {};
+
+        (params.Elements || []).forEach(e => e.InstanceID = e.InstanceID || params.InstanceID);
+
+        var url = FGAPI.ResponseURL + "/SaveAPOMaturityAssessmentForm?timeStamp=" + new Date().getTime();
+        var queryString = (params.PollID ? "&PollID=" + params.PollID : "") + 
+            (params.Elements ? "&Elements=" + FGAPI._GetFormElementsQueryString(params.Elements || []) : "");
+        return FGAPI._send(url, params, queryString);
+    }
+
+    //end of API Maturity Assessment
 };

@@ -1286,7 +1286,9 @@
                                     GlobalUtilities.convert_numbers_to_persian(p.Info.Data[i].Max) + ")</span>";
                         }
 
-                        _el["lbl"].innerHTML = ttl;
+                        _el["lbl"].innerHTML = "";
+
+                        GlobalUtilities.create_nested_elements([{ Type: "text", TextValue: ttl }], _el["lbl"]);
                     }
                 }
 
@@ -1969,8 +1971,13 @@
                     elems["nodeType"].style.display = isNodeType ? "flex" : "none";
                     elems["tree"].style.display = isNodeType ? "none" : "flex";
 
-                    if (isNodeType)
-                        elems["nodeType"].innerHTML = Base64.decode((info.NodeType || {}).Name);
+                    if (isNodeType) {
+                        elems["nodeType"].innerHTML = "";
+
+                        GlobalUtilities.create_nested_elements([{
+                            Type: "text", TextValue: Base64.decode((info.NodeType || {}).Name)
+                        }], elems["nodeType"]);
+                    }
                     else {
                         if (!((info || {}).Tree || {}).length) {
                             elems["tree"].innerHTML = "<div style='text-align:center; font-weight:bold;'>" +

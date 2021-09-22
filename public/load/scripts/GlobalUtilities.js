@@ -1573,6 +1573,11 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         return _desc;
     },
 
+    set_text: function (container, text) {
+        container.innerHTML = "";
+        GlobalUtilities.create_nested_elements([{ Type: "text", TextValue: text }], container);
+    },
+
     is_valid_email: function (email) {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);

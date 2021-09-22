@@ -250,8 +250,9 @@
             var editButton = elems["editButton"];
 
             var _set_data = function () {
-                elems["title"].innerHTML = RVDic.Title + ": " + (!media.MessageSubject ? RVDic.NotSet :
-                    GlobalUtilities.convert_numbers_to_persian(media.MessageSubject));
+                GlobalUtilities.set_text(elems["title"], RVDic.Title + ": " + (!media.MessageSubject ? RVDic.NotSet :
+                    GlobalUtilities.convert_numbers_to_persian(media.MessageSubject)));
+
                 GlobalUtilities.append_markup_text(elems["body"], RVDic.MessageText + ": " + (media.MessageText || RVDic.NotSet));
 
                 elems["titleInput"].value = media.MessageSubject;

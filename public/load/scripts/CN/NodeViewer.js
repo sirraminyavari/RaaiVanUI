@@ -554,7 +554,7 @@
                                     params.MembershipStatus = result.Status == "NotSet" ? "" : result.Status;
                                     params.IsMember = result.Status == "Accepted";
                                     
-                                    elems[objNames.TitleName].innerHTML = button_title();
+                                    GlobalUtilities.set_text(elems[objNames.TitleName], button_title());
                                     elems[objNames.IconName].setAttribute("class", button_icon());
                                 }
 
@@ -1624,7 +1624,10 @@
                                 ObjectType: "Node",
                                 OnSave: function (data) {
                                     var confidentialityTitle = Base64.decode(((data || {})[that.Objects.NodeID] || {}).ConfidentialityTitle);
-                                    elems["title"].innerHTML = GlobalUtilities.convert_numbers_to_persian(!confidentialityTitle ? RVDic.NotSet : confidentialityTitle);
+                                    
+                                    GlobalUtilities.set_text(elems["title"],
+                                        GlobalUtilities.convert_numbers_to_persian(!confidentialityTitle ? RVDic.NotSet : confidentialityTitle));
+
                                     showed.Close();
                                 }
                             }
@@ -1676,7 +1679,7 @@
             var treeChildsArea = _el["treeChilds"];
 
             var _set_data = function () {
-                treeTitleArea.innerHTML = docTree.Name;
+                GlobalUtilities.set_text(treeTitleArea, docTree.Name);
                 treeChildsArea.innerHTML = childs.length > 0 ? "" : "<span style='color:gray;'>" + RVDic.NotSet + "</span>";
 
                 var iconName = RV_RTL ? "fa-angle-double-left" : "fa-angle-double-right";

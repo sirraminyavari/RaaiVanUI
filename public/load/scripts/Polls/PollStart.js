@@ -92,7 +92,7 @@
             else if ((params.ElementsCount > 0) && (params.FilledElementsCount == params.ElementsCount))
                 actionButtonTitle = RVDic.Edit + " (" + RVDic.Done + ")";
 
-            elems["actionButton"].innerHTML = GlobalUtilities.convert_numbers_to_persian(actionButtonTitle);
+            GlobalUtilities.set_text(elems["actionButton"], GlobalUtilities.convert_numbers_to_persian(actionButtonTitle));
             //end of set the title of the action button
 
             //set the number of users that have done

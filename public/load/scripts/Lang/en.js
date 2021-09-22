@@ -55,6 +55,7 @@
         "Answers": "answers",
         "AnswersCount": "answers count",
         "AnyChangeWillBeSaved": "any change will be saved",
+        "Applicant": "applicant",
         "ApplyThisEdition": "apply this version",
         "Archive": "archive",
         "AskedByN": "asked by [n]",
@@ -63,10 +64,13 @@
         "Attachments": "attachments",
         "Audiences": "audiences",
         "AudienceType": "audience type",
+        "Authentication": "authentication",
         "Author": "author",
         "Authors": "authors",
         "AutoPositioning": "auto positioning",
+        "Available": "available",
         "Average": "average",
+        "BasedOn": "based on",
         "BeAdmin": "be administrator",
         "BeDefault": "be default",
         "BelongsTo": "belongs to",
@@ -79,7 +83,7 @@
         "Birthdate": "birthdate",
         "Birthday": "birthday",
         "Bookmark": "bookmark",
-        "BookmarkedSubjects": "bookmarked subjects",
+        "BookmarkedSubjects": "bookmarked items",
         "Branch": "major",
         "Browser": "browser",
         "Cancel": "cancel",
@@ -94,6 +98,7 @@
         "Chart": "chart",
         "CheckAll": "check all",
         "ChildNodesCount": "children count",
+        "City": "city",
         "Classification": "classification",
         "Clean": "clean",
         "ClearForm": "clear form",
@@ -131,6 +136,7 @@
         "Confirm": "confirm",
         "ConfirmAndContinue": "confirm and continue",
         "ConfirmationCode": "confirmation code",
+        "ContactInfo": "contact info",
         "ContainsChanges": "contains changes",
         "Content": "content",
         "Contents": "contents",
@@ -150,7 +156,9 @@
         "CreationDate": "creation date",
         "Creator": "author",
         "Creators": "authors",
+        "CropImage": "crop image",
         "CurrentPassword": "current password",
+        "CurrentTheme": "current theme",
         "Custom": "custom",
         "Cut": "cut",
         "Dashboard": "dashboard",
@@ -168,6 +176,7 @@
         "Default": "default",
         "DegreeSelect": "select degree",
         "Demand": "demand",
+        "Department": "department",
         "Description": "description",
         "DescriptionIsEmpty": "there is no description",
         "DigitsCount": "digits count",
@@ -288,6 +297,7 @@
         "GroupRegistration": "group",
         "Groups": "groups",
         "GroupsThatYouAreMemberIn": "groups that you are member in",
+        "GroupType": "group type",
         "Help": "help",
         "Hidden": "hidden",
         "HideDetails": "hide details",
@@ -389,7 +399,7 @@
         "MinContributorsCount": "minimum contributors count",
         "Mobile": "mobile",
         "Modify": "modify",
-        "ModifyNodeAdditionalIDs": "modify subject codes",
+        "ModifyNodeAdditionalIDs": "modify item codes",
         "Month": "month",
         "More": "more",
         "MostUsedTags": "most used tags",
@@ -450,14 +460,14 @@
         "NLikes": "[n] likes",
         "NMutualCoworkers": "[n] mutual friend(s)",
         "No": "no",
-        "Node": "subject",
+        "Node": "item",
         "NodeAndSubNodeExperts": "experts and experts of sub items",
         "NodeAndSubNodeMembers": "members and members of sub groups",
         "NodeType": "template",
         "NodeTypes": "templates",
         "NodeTypeSelect": "select template",
-        "Nodes": "subjects",
-        "NodeSelect": "select subject",
+        "Nodes": "items",
+        "NodeSelect": "select item",
         "NoDocumentExistsInThisPath": "no document exists in this path",
         "NoDocumentTreeFound": "no document tree found",
         "NoFiltersSelected": "no filters selected",
@@ -465,6 +475,7 @@
         "NoOnlineUser": "no one is online",
         "NotActivated": "not activated",
         "NotAuthorizedRequest": "not authorized request",
+        "NotAvailable": "not available",
         "NotCanceled": "not canceled",
         "NotDone": "not done",
         "Note": "note",
@@ -499,6 +510,7 @@
         "Optional": "optional",
         "Options": "options",
         "Or": "or",
+        "Organization": "organization",
         "Other": "other",
         "OtherContactsOfYouOnRaaiVan": "your other acquaintances [RaaiVan]",
         "OtherContributors": "other contributors",
@@ -506,9 +518,9 @@
         "OwnerNodeTypeSelect": "select owner template",
         "Paragraph": "paragraph",
         "ParagraphBody": "paragraph body",
-        "ParentNode": "parent subject",
-        "ParentNodeID": "parent subject id",
-        "ParentNodeSelect": "select parent subject",
+        "ParentNode": "parent item",
+        "ParentNodeID": "parent item id",
+        "ParentNodeSelect": "select parent item",
         "Password": "password",
         "PasswordConfirm": "confirm password",
         "PasswordPolicy": "password strength policies",
@@ -527,6 +539,7 @@
         "Percent": "percent",
         "Permissions": "permissions",
         "PersonalIdentity": "identity",
+        "Personalization": "personalization",
         "PersonalPage": "personal page",
         "PersonalRegistration": "personal",
         "PersonalSettings": "personal settings",
@@ -534,7 +547,7 @@
         "PleaseEnterYourCurrentPassword": "please enter your current password",
         "PleaseFillNecessaryFields": "please fill the necessary field(s)",
         "PleaseSelectFieldType": "please select field type",
-        "PleaseSelectRelatedNodes": "please select related subjects",
+        "PleaseSelectRelatedNodes": "please select related items",
         "PleaseSelectAdminArea": "please select admin area",
         "Poll": "poll",
         "Polls": "polls",
@@ -589,9 +602,9 @@
         "Reject": "reject",
         "Related": "related",
         "RelatedQuestions": "related questions",
-        "RelatedNode": "related subject",
-        "RelatedNodes": "related subjects",
-        "RelatedNodesCount": "related subjects count",
+        "RelatedNode": "related item",
+        "RelatedNodes": "related items",
+        "RelatedNodesCount": "related items count",
         "RelatedNodeTypeSelect": "select related template",
         "RelatedToN": "related to [n]",
         "Relations": "relations",
@@ -602,7 +615,7 @@
         "Remove": "remove",
         "RemoveAll": "remove all",
         "RemoveN": "remove [n]",
-        "RemoveNodes": "remove subjects",
+        "RemoveNodes": "remove items",
         "RemoteServer": "remote server",
         "RemoteServers": "remote servers",
         "Rename": "rename",
@@ -633,6 +646,8 @@
         "SaveAndSend": "save & send",
         "SaveN": "save [n]",
         "SaveSelectedParameters": "save selected parameters",
+        "Season": "season",
+        "Security": "security",
         "ServersList": "servers list",
         "SetAsManager": "set as manager",
         "Score": "score",
@@ -653,13 +668,13 @@
         "SelectedItems": "selected items",
         "SelectedN": "selected [n]",
         "SelectedNodeCurrentlyIsInBelowDashboards": "selecte node currently is in selected dashboards",
-        "SelectedNodes": "selected subjects",
+        "SelectedNodes": "selected items",
         "SelectedUsers": "selected users",
         "SelectFields": "select fields",
         "SelectFriends": "select friends",
         "SelectFromExistingDocuments": "select from existing documents",
         "SelectN": "select [n]",
-        "SelectNodeToSeeRelatedDashboards": "select a subject to see it's current related dashboards",
+        "SelectNodeToSeeRelatedDashboards": "select a item to see it's current related dashboards",
         "SelectOneOfTheMaps": "select one of the maps",
         "SelectTheOwnerOfTheIntellectualProperty": "select the owner of the intellectual property",
         "SelectYourGroups": "select your groups",
@@ -712,7 +727,7 @@
         "ShowReport": "show report",
         "SignInWithGoogle": "sign in with google",
         "SignUp": "sign up",
-        "SimilarNodes": "similar subjects",
+        "SimilarNodes": "similar items",
         "Skill": "skill",
         "SmallerThan": "smaller than",
         "SmallerThanOrEqualTo": "smaller than or equal to",
@@ -735,7 +750,7 @@
         "Status": "status",
         "StoredParameters": "stored parameters",
         "SubCategory": "subcategory",
-        "Subject": "subject",
+        "Subject": "item",
         "SubNodeTypes": "sub-templates",
         "SuccessMessage": "success message",
         "Sum": "sum",
@@ -765,6 +780,7 @@
         "TitleCannotBeEmpty": "title cannot be empty",
         "Theme": "theme",
         "ThemeSelect": "select theme",
+        "ThemeSettings": "theme settings",
         "ThereIsNoDescription": "no description provided",
         "ThereIsNoItemSelected": "there is no item selected",
         "ThereIsNoService": "no service found",
@@ -890,11 +906,12 @@
             "PleaseEnterYourUserName": "please enter your username",
             "PleaseLogin": "please login",
             "PleaseSelectAMap": "please select a map",
+            "PleaseSelectDateBoundaries": "please select date boundaries",
             "PleaseSelectEmploymentType": "please select employment type",
             "PleaseSelectForm": "please select a form",
             "PleaseSelectPhoneType": "please select the type of the phone number",
             "PleaseSelectN": "please select the n",
-            "PleaseSelectNode": "please select a subject",
+            "PleaseSelectNode": "please select a item",
             "PleaseSelectNodeType": "please select a template",
             "PleaseSelectClass": "please select a category",
             "PleaseSelectReceivers": "please select the receivers",
@@ -926,15 +943,15 @@
                 "GMonth": "gregorian month",
                 "GDay": "gregorian day",
                 "RND": "random number",
-                "NCount": "subjects count",
-                "NCountPY": "subjects count in current jalali year",
-                "NCountGY": "subjects count in current gregorian year",
-                "NCountS": "similar subjects count",
-                "NCountSPY": "similar subjects count in current jalali year",
-                "NCountSGY": "similar subjects count in current gregorian year"
+                "NCount": "items count",
+                "NCountPY": "items count in current jalali year",
+                "NCountGY": "items count in current gregorian year",
+                "NCountS": "similar items count",
+                "NCountSPY": "similar items count in current jalali year",
+                "NCountSGY": "similar items count in current gregorian year"
             },
-            "AttachUploadedXMLFile": "attach the uploaded file to the created subject",
-            "JustShowMyNodes": "show only my own subjects",
+            "AttachUploadedXMLFile": "attach the uploaded file to the created item",
+            "JustShowMyNodes": "show only my own items",
             "NodeTypeComplexAdmins": "complex admins of '[Name]' of group type '[NodeType]'",
             "NodeTypeComplexNodes": "complex compartments of '[Name]' of group type '[NodeType]'",
             "NodeTypeComplexes": "complexes of group type '[NodeType]'",
@@ -956,7 +973,7 @@
                 "UniqueMembership": "no user can be member of more than one group",
                 "UniqueAdminMember": "the groups cannot have more than one admin member",
                 "DisableAbstractAndKeywords": "disable abstract and keywords",
-                "DisableFileUpload": "disable direct file upload to the subject",
+                "DisableFileUpload": "disable direct file upload to the item",
                 "DisableRelatedNodesSelect": "disable direct selection of related nodes",
                 "EditableForAdmin": "editable for director",
                 "EditableForCreator": "editable for creator",
@@ -967,7 +984,7 @@
                 "Form": "form",
                 "WorkFlows": "workflows",
                 "DocumentTrees": "document trees",
-                "FreeUsers": "users who can set their own subjects as accepted",
+                "FreeUsers": "users who can set their own items as accepted",
                 "MaxAcceptableAdminLevel": "maximum acceptable director level in hierarchy",
                 "ServiceAdmins": "service admins",
                 "AdminType": {
@@ -1035,14 +1052,14 @@
             "PleaseSelectUsers": "please select the users?",
             "RefuseEvaluationForm": "do you want to refuse to evaluate?",
             "RemoveKnowledgeEvaluator": "do you want to remove the evaluator?",
-            "RemoveKnowledgeTypeQuestionsRelatedNode": "if you remove the subject, all of it's questions will be removed too. do you want to continue?",
+            "RemoveKnowledgeTypeQuestionsRelatedNode": "if you remove the item, all of it's questions will be removed too. do you want to continue?",
             "RemoveMessage": "do you want to remove the message?",
             "RemoveOption": "do you want to remove the option?",
             "RemoveQuestion": "do you want to remove the question?",
             "RemoveThread": "do you want to remove the thread?",
             "RemoveUser": "do you want to remove the user?",
             "RemovingTheTitleCausesRemovingAllOfTheRelatedParagraphs": "if you remove the title, all of it's paragraphs will be removed too",
-            "ThereIsNodeWithSameTitle": "a subject with a similar title already exists. do you want to continue?",
+            "ThereIsNodeWithSameTitle": "a item with a similar title already exists. do you want to continue?",
             "WikiChangeRefreshButtonClick": "do you want the suggested content be added to the editor's content (yes) or substitute it's content (no)?",
             "YouHaveNotAnsweredNQuestionsOfThePoll": "you have not answered to [n] questions of the poll. do you want to save the form?",
             "YouHaveSelectedNothing": "you have selected nothing"
@@ -1066,7 +1083,7 @@
                 "File": "file",
                 "Form": "table",
                 "MultiLevel": "multilevel",
-                "Node": "subject",
+                "Node": "item",
                 "Numeric": "number",
                 "Select": "uniselect",
                 "Separator": "divider",
@@ -1156,10 +1173,10 @@
                     "MinEvaluationsCount": "minimum evaluations count. if the number of the evaluations done reach this number, the process will terminate automatically",
                     "NotSet": "this category doesn't need any evaluations",
                     "KnowledgeAdmin": "director",
-                    "Experts": "experts of the related subjects",
+                    "Experts": "experts of the related items",
                     "AdminMembers": "managers of the related groups",
                     "Members": "members of the related groups",
-                    "ExpertsAndMembers": "experts of the related subjects plus the members of the related groups"
+                    "ExpertsAndMembers": "experts of the related items plus the members of the related groups"
                 },
                 "PreEvaluateByOwner": "pre-evaluation by the owner",
                 "ForceEvaluatorsDescribe": "evaluators must provide a description",
@@ -1171,11 +1188,11 @@
                 "UnhideEvaluations": "the evaluations be visible to the owners",
                 "UnhideNodeCreators": "the owners' name be visible to the evaluators",
                 "NodeSelectType": {
-                    "NodeSelectType": "how the related subjects will be selected",
-                    "Free": "freely select among all of the subjects",
-                    "Fixed": "fixed subjects will be selected automatically",
-                    "Single": "only one subject from candidate subjects",
-                    "Limited": "multiple subjects from candidate subjects"
+                    "NodeSelectType": "how the related items will be selected",
+                    "Free": "freely select among all of the items",
+                    "Fixed": "fixed items will be selected automatically",
+                    "Single": "only one item from candidate items",
+                    "Limited": "multiple items from candidate items"
                 },
                 "SubmissionType": {
                     "SubmissionType": "devolution type",
@@ -1211,7 +1228,7 @@
                     "Keywords": "at least one keyword is required",
                     "Wiki": "the wiki must contain at least one paragraph",
                     "Wiki_Info": "(only if the 'wiki' extension is enabled)",
-                    "RelatedNodes": "at least one related subject must be selected",
+                    "RelatedNodes": "at least one related item must be selected",
                     "Attachments": "at least one file must be attached",
                     "DocumentTree": "the document tree must be selected",
                     "DocumentTree_Info": "(only if the content is considered as document)",
@@ -1219,7 +1236,7 @@
                     "NecessaryFieldsOfForm_Info": "(only if the 'form' extension is enabled)"
                 },
                 "CandidateRelations": {
-                    "CandidateRelations": "candidate related subjects"
+                    "CandidateRelations": "candidate related items"
                 },
                 "AutoMessages": {
                     "AutoMessages": "messages",
@@ -1269,7 +1286,7 @@
             "ActionCompletedInNSeconds": "action completed in [n] seconds",
             "ActiveUsersCountExceededMaxAllowed": "error. the number of active users have exceeded the maximum licensed number",
             "AdditionalIDAlreadyExists": "registration with a duplicate code is not allowed",
-            "AdditionalIDPatternFormElementNotFound": "the following items are required: 1. the form extension should be activated; 2. a form must be selected in service settings; and 3. the form must have at least one field of one of these types: text, paragraph, number, select, subject",
+            "AdditionalIDPatternFormElementNotFound": "the following items are required: 1. the form extension should be activated; 2. a form must be selected in service settings; and 3. the form must have at least one field of one of these types: text, paragraph, number, select, item",
             "AdditionalIDPatternIsNotValid": "code pattern is not valid",
             "AnAuthenticationCodeHasBeenSentToYourNWithValueM": "an authentication code has been sent to your [n], '[m]'",
             "AnEmailContainingActivationLinkSentToYou": "an email containing an activation link has been sent to you",
@@ -1278,10 +1295,12 @@
             "AtLeastOneMembershipAreaMustBeSet": "being the member of at least one group is required",
             "AuthenticationCodeDidNotMatch": "the authentication code did not match",
             "AVerificationCodeHasBeenSentToYourNWithValueM": "a verification code has been sent to your [n], '[m]'",
+            "CannotConnectToTheDatabaseServer": "cannot connect to the database server",
             "CannotChangeTheAdditionalIDOFThisNodeType": "this template's code is not editable",
             "CannotDetermineDirector": "cannot determine the director",
             "CannotFindAdmins": "cannot find any admins",
             "CannotMoveCategoriesToSubLevels": "cannot move categories to sub-levels",
+            "CannotOpenTheDatabase": "cannot open the database",
             "CannotSelectMoreThanNItems": "you cannot select more than [n] items",
             "CannotTransferToChilds": "transfer to children is not allowed",
             "CaptchaIsNotValid": "captcha is not valid",
@@ -1289,6 +1308,7 @@
             "CurrentlyThisStateContainsNItems": "this state currently contains [n] items",
             "CurrentlyThisWorkFlowContainsNItems": "this workflow currently contains [n] items",
             "CurrentPasswordIsWrong": "current password is not valid",
+            "DatabaseLoginFailed": "database login failed",
             "DataStorageFailed": "data storage failed",
             "DateIsNotValid": "date is not valid",
             "EmailAlreadyExists": "this email already exists",
@@ -1328,8 +1348,8 @@
             "MaxAllowedUploadSizeIsNMBs": "maximum allowed total upload size is [n] megabytes",
             "NameAlreadyExists": "name already exists",
             "NoApplicationFound": "no application found",
-            "NodeCreationFailed": "subjection creation failed",
-            "NodeNotFound": "subject not found",
+            "NodeCreationFailed": "item creation failed",
+            "NodeNotFound": "item not found",
             "NodeTypeNotFound": "template not found",
             "NoDirectorIsSet": "the director is not determined",
             "NoDocumentTreeFound": "no document tree found",
@@ -1363,7 +1383,7 @@
             "TheFileIsPasswordProtected": "the file is protected with password",
             "TheInvitationHasBeenUsed": "the invitation code has been used before",
             "TheWikiChangeWouldBeAppliedIfYouWhereInEditMode": "if the paragraph is in the edit mode, the suggested change will substitute the editor content after you click on this button",
-            "TheNodeIsAlreadyInWorkFlow": "the subject is already in a workflow",
+            "TheNodeIsAlreadyInWorkFlow": "the item is already in a workflow",
             "ThereIsAlreadyANodeTypeWithTheSameAdditionalID": "a template with this code already exists",
             "ThereIsNoPollAtTheMoment": "there is no active poll at the moment",
             "TheSelectedItemAlreadyHasANewVersion": "the selected item already has a new version",
@@ -1425,20 +1445,20 @@
             },
             "SubjectType_Action": {
                 "Node_Like": {
-                    "Title": "like a subject",
+                    "Title": "like a item",
                     "Notif": "[user] likes your [subject]",
                     "Audience": {
                         "Owner": {
-                            "Admin": "owner or contributor of the liked subject",
-                            "User": "if you are the owner of the liked subject"
+                            "Admin": "owner or contributor of the liked item",
+                            "User": "if you are the owner of the liked item"
                         },
                         "Member": {
                             "Admin": "member of the liked group",
                             "User": "if you are a member of the liked group"
                         },
                         "Expert": {
-                            "Admin": "the expert of the liked subject",
-                            "User": "if you are an expert of the liked subject"
+                            "Admin": "the expert of the liked item",
+                            "User": "if you are an expert of the liked item"
                         }
                     }
                 },
@@ -1449,7 +1469,7 @@
                     "Audience": {
                         "Member": {
                             "Admin": "member of the group",
-                            "User": "if you are a member of the group that a subject related to it is published"
+                            "User": "if you are a member of the group that a item related to it is published"
                         }
                     }
                 },
@@ -1458,8 +1478,8 @@
                     "Notif": "[user] edited the wiki related to your [subject]",
                     "Audience": {
                         "Owner": {
-                            "Admin": "the owner of the subject that the wiki relates to it",
-                            "User": "if you are the owner or contributor of the subject that it's wiki is edited"
+                            "Admin": "the owner of the item that the wiki relates to it",
+                            "User": "if you are the owner or contributor of the item that it's wiki is edited"
                         },
                         "Member": {
                             "Admin": "the member of the group that the wiki relates to it",
@@ -1467,13 +1487,13 @@
                             "Notif": "[user] edited the wiki related to your [group]"
                         },
                         "Expert": {
-                            "Admin": "the expert of the subject that the wiki relates to it",
-                            "User": "if you are an expert of the subject that it's wiki is edited",
+                            "Admin": "the expert of the item that the wiki relates to it",
+                            "User": "if you are an expert of the item that it's wiki is edited",
                             "Notif": "[user] edited the wiki related to your [expertisedomain]"
                         },
                         "Fan": {
-                            "Admin": "the person who likes the subject that the wiki relates to it",
-                            "User": "if you like a subject that it's wiki is edited",
+                            "Admin": "the person who likes the item that the wiki relates to it",
+                            "User": "if you like a item that it's wiki is edited",
                             "Notif": "[user] edited the wiki related to your favorite [subject]"
                         }
                     }
@@ -1528,8 +1548,8 @@
                     "Notif": "[user] [sent] to you",
                     "Audience": {
                         "Owner": {
-                            "Admin": "the owner of the subject that the post is sent on it",
-                            "User": "if you are the owner of the subject that the post is sent on it"
+                            "Admin": "the owner of the item that the post is sent on it",
+                            "User": "if you are the owner of the item that the post is sent on it"
                         },
                         "Mentioned": {
                             "Admin": "the mentioned person",
@@ -1541,9 +1561,9 @@
                             "User": "if you are a member of the group which the post is sent on it"
                         },
                         "Fan": {
-                            "Admin": "the person who likes the subject which the post is sent on it",
-                            "User": "if you like a subject which the post is sent on it",
-                            "Notif": "[user] [sent] to your favorite subject"
+                            "Admin": "the person who likes the item which the post is sent on it",
+                            "User": "if you like a item which the post is sent on it",
+                            "Notif": "[user] [sent] to your favorite item"
                         }
                     }
                 },
@@ -1553,8 +1573,8 @@
                     "Notif": "[user] [shared] with you",
                     "Audience": {
                         "Owner": {
-                            "Admin": "the owner of the subject which the post is shared on it",
-                            "User": "if you are the owner of the subject which the post is shared on it"
+                            "Admin": "the owner of the item which the post is shared on it",
+                            "User": "if you are the owner of the item which the post is shared on it"
                         },
                         "Mentioned": {
                             "Admin": "the mentioned person",
@@ -1566,9 +1586,9 @@
                             "User": "if you are a member of the group which the post is shared on it"
                         },
                         "Fan": {
-                            "Admin": "the person who likes the subject which the post is shared on it",
-                            "User": "if you like a subject which the post is shared on it",
-                            "Notif": "[user] [shared] on your favorite subject"
+                            "Admin": "the person who likes the item which the post is shared on it",
+                            "User": "if you like a item which the post is shared on it",
+                            "Notif": "[user] [shared] on your favorite item"
                         }
                     }
                 },
@@ -1695,7 +1715,7 @@
                 "Done": "done",
                 "DoneAndInWorkFlow": "done and still in workflow",
                 "DoneAndNotInWorkFlow": "done and workflow terminated",
-                "DoneItems": "done subjects"
+                "DoneItems": "done items"
             }
         },
         "QA": {
@@ -1714,9 +1734,9 @@
             "NewSimilarQuestions": "wait! maybe you can find your answer in one of the below questions",
             "NewDescriptionIntro": "step two: a brief description will help others gain a better understanding of your underlying issue",
             "NewTagsIntro": "step three: keyword selection; we will inform the knowledgable people about your question based on your selected keywords. try to choose the most appropriate ones that have more related questions",
-            "NodeSelectType": "how the related subjects will be selected",
-            "NodeSelectTypeFree": "freely select multiple subjects",
-            "NodeSelectTypeLimited": "select multiple subjects from the candidate subjects",
+            "NodeSelectType": "how the related items will be selected",
+            "NodeSelectTypeFree": "freely select multiple items",
+            "NodeSelectTypeLimited": "select multiple items from the candidate items",
             "PublishAfter": "publish after",
             "PublishAfterRegistration": "registration",
             "PublishAfterInitialCheck": "initial check",
@@ -1743,10 +1763,10 @@
                     "Date": "date & time",
                     "HostAddress": "host address",
                     "HostName": "host name",
-                    "SubjectID": "subject id 1",
-                    "SecondSubjectID": "subject id 2",
-                    "ThirdSubjectID": "subject id 3",
-                    "FourthSubjectID": "subject id 4",
+                    "SubjectID": "item id 1",
+                    "SecondSubjectID": "item id 2",
+                    "ThirdSubjectID": "item id 3",
+                    "FourthSubjectID": "item id 4",
                     "Info": "details",
                     "Level_Dic": {
                         "Debug": "debug",
@@ -1776,42 +1796,54 @@
                     "_Title": "knowledge supply indicators",
                     "GroupName": "group name",
                     "MembersCount": "number of members",
-                    "ContentsCount": "number of subjects",
+                    "FullName": "full name",
+                    "ContentsCount": "number of items",
                     "AverageCollaborationShare": "average contribution share",
-                    "AcceptedCount": "number of accepted subjects",
-                    "AverageAcceptedScore": "average score of accepted subjects",
-                    "PublishedCount": "number of published subjects",
+                    "AcceptedCount": "number of accepted items",
+                    "AverageAcceptedScore": "average score of accepted items",
+                    "PublishedCount": "number of published items",
                     "AnswersCount": "number of the answers sent on the questions",
-                    "WikiChangesCount": "number of wiki paragraph editions"
+                    "WikiChangesCount": "number of wiki paragraph editions",
+                    "BarChart": {
+                        "RegisteredCount": "registered count",
+                        "PublishedCount": "published count"
+                    }
                 },
                 "KnowledgeDemandIndicatorsReport": {
                     "_Title": "knowledge demand indicators",
                     "GroupName": "group name",
                     "MembersCount": "number of members",
+                    "FullName": "full name",
                     "SearchesCount": "number of searches performed",
                     "QuestionsCount": "number of the new questions",
-                    "ContentVisitsCount": "number of subject page visits",
-                    "DistinctContentVisitsCount": "number of distinct subjects visited",
-                    "PostsCount": "number of posts sent on subjects' pages",
-                    "CommentsCount": "number of comments sent on the posts"
+                    "ContentVisitsCount": "number of item page visits",
+                    "DistinctContentVisitsCount": "number of distinct items visited",
+                    "PostsCount": "number of posts sent on items' pages",
+                    "CommentsCount": "number of comments sent on the posts",
+                    "BarChart": {
+                        "VisitsCount": "visits count",
+                        "SearchesCount": "searches count"
+                    }
                 },
                 "SocialContributionIndicatorsReport": {
                     "_Title": "social contribution indicators",
+                    "_Description": "users' contribution in conversations in the social network",
                     "GroupName": "group name",
+                    "FullName": "full name",
                     "MembersCount": "number of members",
-                    "ActiveUsersCount": "number of active users",
-                    "PostsCount": "number of posts sent in social network",
-                    "CommentsCount": "number of comments sent on the posts"
+                    "ActiveUsersCount": "number of active users in the system",
+                    "PostsCount": "number of posts",
+                    "CommentsCount": "number of comments"
                 },
                 "ApplicationsPerformanceReport": {
                     "_Title": "CliqMind teams' performance report",
                     "TeamName": "team name",
                     "MembersCount": "number of menbers",
                     "TotalTEmplatesCount": "total active templates",
-                    "CreatedNodesCount": "created subjects - total",
-                    "CreatedNodesCount_1": "created subjects - first period",
-                    "CreatedNodesCount_2": "created subjects - second period",
-                    "CreatedNodesChange": "created subjects - change percentage",
+                    "CreatedNodesCount": "created items - total",
+                    "CreatedNodesCount_1": "created items - first period",
+                    "CreatedNodesCount_2": "created items - second period",
+                    "CreatedNodesChange": "created items - change percentage",
                     "UsedTemplatesCount": "used templates - total",
                     "UsedTemplatesCount_1": "used templates - first period",
                     "UsedTemplatesCount_2": "used templates - second period",
@@ -1850,6 +1882,15 @@
                         "Temporary": "temporary",
                         "Contract": "contract",
                         "Other": "other"
+                    }
+                },
+                "ActiveUsersReport": {
+                    "_Title": "active users",
+                    "_Description": "users who have logged in at least once in a specific time period",
+                    "UserName": "username",
+                    "FullName": "full name",
+                    "BarChart": {
+                        "TotalCount": "count"
                     }
                 },
                 "MostVisitedItemsReport": {
@@ -1966,13 +2007,13 @@
                     "AN_PersonalPageVisit": "number of profile visits by other users",
                     "Registered": "registered count",
                     "AcceptedCount": "accepted count",
-                    "AcceptedScore": "total score of accepted subjects"
+                    "AcceptedScore": "total score of accepted items"
                 }
             },
             "CN": {
                 "_Title": "map",
                 "NodesListReport": {
-                    "_Title": "subjects' list",
+                    "_Title": "items' list",
                     "Name": "title",
                     "NodeType": "template",
                     "Classification": "classification",
@@ -2003,14 +2044,14 @@
                     }
                 },
                 "MostFavoriteNodesReport": {
-                    "_Title": "most favorite subjects",
+                    "_Title": "most favorite items",
                     "NodeName": "title",
                     "TypeName": "category",
                     "Classification": "classification",
                     "Count": "number of likes"
                 },
                 "CreatorUsersReport": {
-                    "_Title": "subject creators",
+                    "_Title": "item creators",
                     "Name": "full name",
                     "UserName": "username",
                     "Collaboration": "contribution share"
@@ -2036,7 +2077,7 @@
                     "UploadSize": "total size of uploaded files (MB)"
                 },
                 "NodesCreatedNodesReport": {
-                    "_Title": "number of the registered subjects by group members",
+                    "_Title": "number of the registered items by group members",
                     "Node": "title",
                     "NodeType": "template",
                     "Count": "total count",
@@ -2052,7 +2093,7 @@
                     "PersonalOrGroup": "personal/group"
                 },
                 "NodeCreatedNodesReport": {
-                    "_Title": "registered subjects by members of a specific group",
+                    "_Title": "registered items by members of a specific group",
                     "Node": "title",
                     "AdditionalID": "code",
                     "NodeType": "template",
@@ -2082,13 +2123,13 @@
                     }
                 },
                 "NodesOwnNodesReport": {
-                    "_Title": "number of subjects owned by the groups",
+                    "_Title": "number of items owned by the groups",
                     "Node": "title",
                     "NodeType": "template",
                     "Count": "count"
                 },
                 "NodeOwnNodesReport": {
-                    "_Title": "subjects owned by a specific group",
+                    "_Title": "items owned by a specific group",
                     "Node": "title",
                     "AdditionalID": "code",
                     "Classification": "classification",
@@ -2098,13 +2139,13 @@
                     "WorkFlowState": "current workflow state"
                 },
                 "RelatedNodesCountReport": {
-                    "_Title": "number of related subjects",
+                    "_Title": "number of related items",
                     "Name": "title",
                     "AdditionalID": "code",
-                    "Count": "number of related subjects"
+                    "Count": "number of related items"
                 },
                 "RelatedNodesReport": {
-                    "_Title": "list of related subjects",
+                    "_Title": "list of related vs",
                     "Name": "title",
                     "AdditionalID": "code",
                     "NodeType": "template"
@@ -2113,7 +2154,7 @@
                     "_Title": "file download report",
                     "FullName": "full name",
                     "UserName": "username",
-                    "NodeName": "subject title",
+                    "NodeName": "item title",
                     "NodeType": "template",
                     "FileName": "file name",
                     "Extension": "file type",
@@ -2239,7 +2280,7 @@
             "WF": {
                 "_Title": "workflows",
                 "StateNodesCountReport": {
-                    "_Title": "number of subjects in workflow states",
+                    "_Title": "number of items in workflow states",
                     "WorkFlowTitle": "workflow",
                     "NodeType": "template",
                     "StateTitle": "state",
@@ -2247,7 +2288,7 @@
                     "RemovedState": "state is removed"
                 },
                 "NodesWorkFlowStatesReport": {
-                    "_Title": "subjects in a specific workflow state",
+                    "_Title": "items in a specific workflow state",
                     "Name": "title",
                     "AdditionalID": "code",
                     "Classification": "classification",
@@ -2382,7 +2423,8 @@
                 "None": "will be decided later",
                 "RefState": "similar to a previous state",
                 "SendToOwner": "owner",
-                "SpecificNode": "specific role"
+                "SpecificNode": "specific role",
+                "SpecificUser": "specific user"
             },
             "MSG": {
                 "CheckingUserExistanceInActiveDirectoryFailed": "checking user existence in active directory failed",
@@ -2398,6 +2440,28 @@
                 "FileAttachmentFailed": "file attachment failed",
                 "RejectionIsNotAllowed": "rejection is not allowed at this state",
                 "MaxAllowedRejectionsExceeded": "max allowed rejections exceeded"
+            }
+        },
+        "X": {
+            "Season": {
+                "1": "spring",
+                "2": "summer",
+                "3": "autumn",
+                "4": "winter"
+            },
+            "Month": {
+                "1": "January",
+                "2": "February",
+                "3": "March",
+                "4": "April",
+                "5": "May",
+                "6": "June",
+                "7": "July",
+                "8": "August",
+                "9": "September",
+                "10": "October",
+                "11": "November",
+                "12": "December"
             }
         }
     });

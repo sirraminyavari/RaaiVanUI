@@ -138,9 +138,25 @@
                     }
                 ], nodesArea);
 
-                _el["_a"].innerHTML = "<label style='cursor:pointer;'>" + node.Name +
-                    (node.NodeType == "" ? "" : ("<span style='font-size:0.7rem; margin-" + RV_Float +
-                    ":0.4rem;'>(<span style='color:gray;'>" + node.NodeType + "</span>)</span>")) + "</label>";
+                _el["_a"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([{
+                    Type: "label", Style: "cursor:pointer;",
+                    Childs: [
+                        { Type: "text", TextValue: node.Name },
+                        (!node.NodeType ? null : {
+                            Type: "span", Style: "font-size:0.7rem; margin-" + window.RV_Float + ":0.4rem;",
+                            Childs: [
+                                { Type: "text", TextValue: "(" },
+                                {
+                                    Type: "span", Style: "color:gray;",
+                                    Childs: [{ Type: "text", TextValue: node.NodeType }]
+                                },
+                                { Type: "text", TextValue: ")" }
+                            ]
+                        })
+                    ]
+                }], _el["_a"]);
             }
 
             var _set_data = function () {
