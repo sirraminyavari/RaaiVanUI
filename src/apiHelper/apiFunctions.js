@@ -4,6 +4,7 @@ import {
   encodeBase64,
   // getCaptchaToken,
 } from 'helpers/helpers';
+
 import {
   CROP_ICON,
   DOCS_API,
@@ -47,7 +48,8 @@ import {
   REMOVE_NODE_TYPE,
   RECOVER_NODE_TYPE,
   GET_NODE_TYPES,
-  GET_UPLOAD_LINK,
+  GET_TEMPLATES_JSON,
+  ACTIVATE_TEMPLATE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -990,6 +992,60 @@ export const getTemplates = (tagId = '') => {
       getTemplatesAPI.fetch(
         {
           TagID: tagId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get gallery templates JSON.
+ * @param {String} nodeId -The id of node type.
+ * @returns Promise.
+ */
+export const getTemplatesJSON = (nodeId) => {
+  const getTemplatesJSONAPI = API_Provider(CN_API, GET_TEMPLATES_JSON);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplatesJSONAPI.fetch(
+        {
+          NodeTypeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Activate a template.
+ * @param {any} template -The template to be activated.
+ * @returns Promise.
+ */
+export const activateTemplate = (template) => {
+  const activateTemplateAPI = API_Provider(CN_API, ACTIVATE_TEMPLATE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      activateTemplateAPI.fetch(
+        {
+          Template: template,
         },
         (response) => {
           resolve(response);

@@ -266,7 +266,7 @@
             var _set_data = function () {
                 var fullname = GlobalUtilities.trim(firstName + " " + lastName);
                 viewArea.style.color = fullname ? "black" : "transparent";
-                viewArea.innerHTML = fullname ? GlobalUtilities.secure_string(fullname) : "__";
+                GlobalUtilities.set_text(viewArea, fullname ? GlobalUtilities.secure_string(fullname) : "__");
 
                 firstNameInput.value = firstName;
                 lastNameInput.value = lastName;
@@ -343,7 +343,7 @@
             var userNameInput = elems["userNameInput"];
 
             var _set_data = function () {
-                viewArea.innerHTML = GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(userName));
+                GlobalUtilities.set_text(viewArea, GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(userName)));
                 userNameInput.value = userName;
             };
 

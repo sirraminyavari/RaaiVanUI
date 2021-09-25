@@ -1,19 +1,20 @@
 import { useContext, useState, useEffect } from 'react';
-import * as Styled from './Templates-view.styles';
-import SearchIcon from 'components/Icons/SearchIcon/Search';
+import { useHistory } from 'react-router';
+import * as Styled from './TemplatesSettings.styles';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
-import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
-import { CV_DISTANT, CV_RED, CV_WHITE } from 'constant/CssVariables';
+import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
-import { TemplatesViewContext } from './Templates-view';
+import { TemplatesViewContext } from './TemplatesSettings';
 import { getChildNodeTypes, getNodeTypes } from 'apiHelper/apiFunctions';
 import provideTree from './provideTreeData';
+import { TEMPLATES_ARCHIVE_PATH } from 'constant/constants';
+import SearchTemplates from '../items/SearchTemplates';
 
 const TemplatesActionBar = () => {
   const { RVDic } = useWindow();
-  const [loadArchives, setLoadArchives] = useState(false);
+  const history = useHistory();
   const [searchText, setSearchText] = useState('');
   const {
     setModal,
@@ -34,17 +35,20 @@ const TemplatesActionBar = () => {
     });
   };
 
+  //! Calls on search input change.
   const handleChangeInput = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
+    const searchValue = e.target.value;
+    setSearchText(searchValue);
   };
 
-  const handleFetchArchives = () => {
-    setLoadArchives((v) => !v);
+  //! Redirect to archived templates view.
+  const handleGoToArchives = () => {
+    history.push(TEMPLATES_ARCHIVE_PATH);
   };
 
+  //! Get node types and provide tree.
   useEffect(() => {
-    getChildNodeTypes('', '', loadArchives)
+    getChildNodeTypes()
       .then((response) => {
         // console.log({ response });
         setTree(provideTree(response));
@@ -55,13 +59,14 @@ const TemplatesActionBar = () => {
       setTree({});
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadArchives]);
+  }, []);
 
+  //! Search between nodes on search input change.
   useEffect(() => {
     if (searchText.length > 2) {
       setIsSearching(true);
 
-      getNodeTypes(searchText, loadArchives)
+      getNodeTypes(searchText)
         .then((response) => {
           setSearchResult(response?.NodeTypes);
           setIsSearching(false);
@@ -79,38 +84,23 @@ const TemplatesActionBar = () => {
       setSearchResult([]);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchText, loadArchives]);
+  }, [searchText]);
 
   return (
     <Styled.TemplatesActionContainer>
-      <Styled.SearchInputWrapper>
-        <Input
-          type="text"
-          style={{ width: '100%' }}
-          placeholder="فیلتر بر اساس نام کلاس"
-          onChange={handleChangeInput}
-        />
-        <SearchIcon
-          size={20}
-          color={CV_DISTANT}
-          className="templates-view-input-icon"
-        />
-      </Styled.SearchInputWrapper>
+      <SearchTemplates onChange={handleChangeInput} />
       <Styled.ActionButtonsWrapper>
-        <Styled.ButtonWrapper onClick={handleFetchArchives}>
+        <Styled.ButtonWrapper>
           <ArchiveIcon
             size={16}
-            color={loadArchives ? CV_WHITE : CV_RED}
+            color={CV_RED}
             className="archives-class-icon"
           />
           <Button
             data-type="archive"
-            classes={
-              loadArchives
-                ? 'archives-class-button-active'
-                : 'archives-class-button'
-            }
-            type={loadArchives ? 'negative' : 'negative-o'}>
+            classes="archives-class-button"
+            type="negative-o"
+            onClick={handleGoToArchives}>
             {RVDic.Archive}
           </Button>
         </Styled.ButtonWrapper>

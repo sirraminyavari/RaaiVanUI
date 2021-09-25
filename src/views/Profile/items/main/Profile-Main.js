@@ -19,6 +19,7 @@ import { getCroppedImg, readFile, createImage } from './items/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+import { CV_WHITE } from 'constant/CssVariables';
 
 const EditModal = lazy(() =>
   import(/* webpackChunkName: "edit-profile-image-modal"*/ './items/EditModal')
@@ -42,15 +43,15 @@ const ProfileMain = (props) => {
     ProfileImageURL,
     // HighQualityImageURL,
   } = User || {};
-  // console.log(User, IsOwnPage);
+  // console.log({User});
 
   const isMobileView = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
 
   const coverImage = !!HighQualityCoverPhotoURL
-    ? HighQualityCoverPhotoURL + `?timeStamp=${new Date().getTime()}`
+    ? GlobalUtilities.add_timestamp(HighQualityCoverPhotoURL)
     : CoverPhotoURL;
 
   const profileImage =
@@ -213,13 +214,13 @@ const ProfileMain = (props) => {
       <Styled.ProfileHeader coverImage={coverPhoto}>
         <Styled.ProfileAvatarWrapper>
           <Avatar
-            userImage={profilePhoto + `?timeStamp=${new Date().getTime()}`}
+            userImage={GlobalUtilities.add_timestamp(profilePhoto)}
             radius={95}
             className="profile-avatar"
           />
           {IsOwnPage && (
             <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
-              <PencilIcon color="#fff" size={18} />
+              <PencilIcon color={CV_WHITE} size={18} />
               <HiddenUploadFile
                 ref={avatarUploadRef}
                 onFileChange={handleAvatarSelect}

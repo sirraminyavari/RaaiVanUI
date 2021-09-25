@@ -396,16 +396,21 @@
                 if ((jsonObj || {}).Checked || !item.ID) return callback(null);
                 else jsonObj.Checked = true;
 
-                checkButton.style.color = "black";
-                checkButton.setAttribute("class", "fa fa-spinner fa-lg fa-pulse");
+                if (checkButton) {
+                    checkButton.style.color = "black";
+                    checkButton.setAttribute("class", "fa fa-spinner fa-lg fa-pulse");
+                }
 
                 RVRequest.check_remote_connection({
                     BaseURL: Base64.decode(item.URL),
                     UserName: Base64.decode(item.UserName),
                     Password: Base64.decode(item.Password)
                 }, function (result) {
-                    checkButton.style.color = result ? "green" : "red";
-                    checkButton.setAttribute("class", result ? "fa fa-check-circle-o fa-lg" : "fa fa-times fa-lg");
+                    if (checkButton) {
+                        checkButton.style.color = result ? "green" : "red";
+                        checkButton.setAttribute("class", result ? "fa fa-check-circle-o fa-lg" : "fa fa-times fa-lg");
+                    }
+
                     elems["refresh"].style.display = !result ? "block" : "none";
 
                     jsonObj.Status = result;
@@ -462,13 +467,13 @@
 
             var _on_edit = function () {
                 var set_things = function () {
-                    editArea.style.display = editButton.__Editing ? "flex" : "none";
-                    viewArea.style.display = editButton.__Editing ? "none" : "flex";
-                    checkButton.style.display = editButton.__Editing ? "none" : "block";
+                    editArea.style.display = (editButton || {}).__Editing ? "flex" : "none";
+                    viewArea.style.display = (editButton || {}).__Editing ? "none" : "flex";
+                    if (checkButton) checkButton.style.display = (editButton || {}).__Editing ? "none" : "block";
 
                     _set_data();
 
-                    if (item.ID) {
+                    if (item.ID && !!editButton) {
                         editButton.setAttribute("class",
                             "fa fa-" + (editButton.__Editing ? "floppy-o" : "pencil") + " fa-lg rv-icon-button");
 

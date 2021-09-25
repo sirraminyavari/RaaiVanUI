@@ -661,7 +661,7 @@
                         return arr;
                     },
                     OnSelect: function () {
-                        selectedItem.innerHTML = GlobalUtilities.secure_string(this.keywords[this.selectedIndex]);
+                        GlobalUtilities.set_text(selectedItem, GlobalUtilities.secure_string(this.keywords[this.selectedIndex]));
                         itemArea.style.display = "block";
                         selectArea.style.display = "none";
                     }

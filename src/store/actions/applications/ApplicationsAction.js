@@ -24,10 +24,8 @@ import {
   SET_VARIABLE,
   REMOVE_USER_FROM_APPLICATION,
   GET_APPLICATION_USERS,
-  SAVE_USER_SETTINGS_ITEM,
 } from 'constant/apiConstants';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
-import { useSelector } from 'react-redux';
 
 const {
   setApplications,

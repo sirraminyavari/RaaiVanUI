@@ -306,8 +306,15 @@
                         }
                     ], elems["_div"])["container"];
 
-                    _div.innerHTML = "<span style='margin-" + window.RV_RevFloat + ":0.6rem; color:red;'>-</span>" +
-                        GlobalUtilities.convert_numbers_to_persian(Base64.decode(op.Title));
+                    _div.innerHTML = "";
+
+                    GlobalUtilities.create_nested_elements([
+                        {
+                            Type: "span", Style: "margin-" + window.RV_RevFloat + ":0.6rem; color:red;",
+                            Childs: [{ Type: "text", TextValue: "-" }]
+                        },
+                        { Type: "text", TextValue: GlobalUtilities.convert_numbers_to_persian(Base64.decode(op.Title)) }
+                    ], _div);
 
                     _div.AnswerOption = op;
                     

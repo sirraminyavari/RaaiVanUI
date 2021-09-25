@@ -47,6 +47,7 @@ const TemplatesGallery = (props) => {
       .then((response) => {
         setTree(provideTemplatesForTree(response));
         setTemplatesObject(response);
+        // console.log(response);
       })
       .catch((error) => console.log(error));
 

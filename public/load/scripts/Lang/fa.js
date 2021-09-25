@@ -55,6 +55,7 @@
         "Answers": "پاسخ ها",
         "AnswersCount": "تعداد پاسخ ها",
         "AnyChangeWillBeSaved": "همه تغییرات ذخیره می گردند",
+        "Applicant": "متقاضی",
         "ApplyThisEdition": "این ویرایش را اعمال کن",
         "Archive": "آرشیو",
         "AskedByN": "پرسیده شده توسط [n]",
@@ -63,10 +64,13 @@
         "Attachments": "فایل های پیوست",
         "Audiences": "مخاطبان",
         "AudienceType": "نوع مخاطب",
+        "Authentication": "احراز هویت",
         "Author": "نویسنده",
         "Authors": "نویسندگان",
         "AutoPositioning": "جانمایی خودکار",
+        "Available": "در دسترس",
         "Average": "میانگین",
+        "BasedOn": "بر اساس",
         "BeAdmin": "مدیر باشد",
         "BeDefault": "پیش فرض باشد",
         "BelongsTo": "متعلق است به",
@@ -94,6 +98,7 @@
         "Chart": "نمودار",
         "CheckAll": "انتخاب همه",
         "ChildNodesCount": "تعداد موضوعات زیرشاخه",
+        "City": "شهر",
         "Classification": "طبقه بندی",
         "Clean": "پاک کردن",
         "ClearForm": "پاک کردن فرم",
@@ -131,6 +136,7 @@
         "Confirm": "تایید",
         "ConfirmAndContinue": "تایید و ادامه",
         "ConfirmationCode": "کد تایید",
+        "ContactInfo": "اطلاعات تماس",
         "ContainsChanges": "حاوی تغییرات",
         "Content": "محتوا",
         "Contents": "محتوا/مطالب",
@@ -150,7 +156,9 @@
         "CreationDate": "تاریخ ایجاد",
         "Creator": "ثبت کننده",
         "Creators": "ثبت کنندگان",
+        "CropImage": "برش تصویر",
         "CurrentPassword": "رمز عبور کنونی",
+        "CurrentTheme": "پوسته فعلی",
         "Custom": "سفارشی",
         "Cut": "برش",
         "Dashboard": "کارتابل",
@@ -168,6 +176,7 @@
         "Default": "پیش فرض",
         "DegreeSelect": "انتخاب مدرک",
         "Demand": "تقاضا",
+        "Department": "دپارتمان",
         "Description": "شرح",
         "DescriptionIsEmpty": "هیچ توضیحی وارد نشده است",
         "DigitsCount": "تعداد ارقام",
@@ -288,6 +297,7 @@
         "GroupRegistration": "ثبت گروهی",
         "Groups": "گروه ها",
         "GroupsThatYouAreMemberIn": "گروه هایی که شما در آنها عضو هستید",
+        "GroupType": "نوع گروه",
         "Help": "راهنما",
         "Hidden": "پنهان",
         "HideDetails": "پنهان کردن جزییات",
@@ -465,6 +475,7 @@
         "NoOnlineUser": "کسی برخط نیست",
         "NotActivated": "فعال سازی نکرده است",
         "NotAuthorizedRequest": "درخواست غیر مجاز",
+        "NotAvailable": "خارج از دسترس",
         "NotCanceled": "لغو نشده",
         "NotDone": "انجام نشده",
         "Note": "یادداشت",
@@ -499,6 +510,7 @@
         "Optional": "اختیاری",
         "Options": "گزینه ها",
         "Or": "یا",
+        "Organization": "سازمان",
         "Other": "سایر",
         "OtherContactsOfYouOnRaaiVan": "سایر آشنایان شما در [RaaiVan]",
         "OtherContributors": "سایر مشارکت کنندگان",
@@ -527,6 +539,7 @@
         "Percent": "درصد",
         "Permissions": "مجوزها",
         "PersonalIdentity": "شناسنامه",
+        "Personalization": "شخصی سازی",
         "PersonalPage": "صفحه شخصی",
         "PersonalRegistration": "ثبت شخصی",
         "PersonalSettings": "تنظیمات شخصی",
@@ -633,6 +646,8 @@
         "SaveAndSend": "ذخیره و ارسال",
         "SaveN": "ذخیره [n]",
         "SaveSelectedParameters": "ذخیره پارامترهای انتخاب شده",
+        "Season": "فصل",
+        "Security": "امنیت",
         "ServersList": "لیست سرورها",
         "SetAsManager": "تعیین به عنوان مدیر",
         "Score": "امتیاز",
@@ -763,8 +778,9 @@
         "TermsAndConditionsOfN": "قوانین [n]",
         "Title": "عنوان",
         "TitleCannotBeEmpty": "عنوان نمی تواند خالی باشد",
-        "Theme": "تم",
-        "ThemeSelect": "انتخاب قالب",
+        "Theme": "پوسته",
+        "ThemeSelect": "انتخاب پوسته",
+        "ThemeSettings": "تنظیمات پوسته",
         "ThereIsNoDescription": "هیچ توضیحی وارد نشده است",
         "ThereIsNoItemSelected": "هیچ مورد انتخاب شده ای وجود ندارد",
         "ThereIsNoService": "هیچ سرویسی یافت نشد",
@@ -890,6 +906,7 @@
             "PleaseEnterYourUserName": "لطفا نام کاربری خود را وارد کنید",
             "PleaseLogin": "لطفا به سامانه وارد شوید",
             "PleaseSelectAMap": "لطفا یک نقشه را انتخاب فرمایید",
+            "PleaseSelectDateBoundaries": "لطفا محدوده زمانی را مشخص کنید",
             "PleaseSelectEmploymentType": "لطفا نوع استخدام را انتخاب کنید",
             "PleaseSelectForm": "لطفا فرم مورد نظر را انتخاب کنید",
             "PleaseSelectPhoneType": "لطفا نوع شماره تلفن را انتخاب کنید",
@@ -1278,10 +1295,12 @@
             "AtLeastOneMembershipAreaMustBeSet": "عضویت در حداقل یک گروه الزامی است",
             "AuthenticationCodeDidNotMatch": "کد احراز هویت معتبر نمی باشد",
             "AVerificationCodeHasBeenSentToYourNWithValueM": "یک کد تایید به [n] شما، '[m]'، ارسال گردید",
+            "CannotConnectToTheDatabaseServer": "امکان اتصال به سرور پایگاه داده وجود ندارد",
             "CannotChangeTheAdditionalIDOFThisNodeType": "امکان تغییر کد این کلاس وجود ندارد",
             "CannotDetermineDirector": "خطا در تعیین مسئول اقدام",
             "CannotFindAdmins": "هیچ مسئولی یافت نشد",
             "CannotMoveCategoriesToSubLevels": "امکان انتقال دسته ها به سطوح پایین وجود ندارد",
+            "CannotOpenTheDatabase": "امکان اتصال به دیتابیس وجود ندارد",
             "CannotSelectMoreThanNItems": "امکان انتخاب بیش از «[n]» آیتم وجود ندارد",
             "CannotTransferToChilds": "امکان انتقال به شاخه های فرزند وجود ندارد",
             "CaptchaIsNotValid": "کد امنیتی صحیح نمی باشد",
@@ -1289,6 +1308,7 @@
             "CurrentlyThisStateContainsNItems": "هم اکنون [n] آیتم در این وضعیت قرار دارند",
             "CurrentlyThisWorkFlowContainsNItems": "هم اکنون [n] آیتم در این جریان کاری قرار دارند",
             "CurrentPasswordIsWrong": "رمز کنونی معتبر نمی باشد",
+            "DatabaseLoginFailed": "خطا در احراز هویت پایگاه داده",
             "DataStorageFailed": "خطا در ذخیره سازی",
             "DateIsNotValid": "تاریخ معتبر نمی باشد",
             "EmailAlreadyExists": "آدرس پست الکترونیکی هم اکنون در سامانه وجود دارد",
@@ -1776,32 +1796,44 @@
                     "_Title": "شاخص های عرضه دانش",
                     "GroupName": "نام گروه",
                     "MembersCount": "تعداد اعضا",
+                    "FullName": "نام و نام خانوادگی",
                     "ContentsCount": "تعداد دانش تولید شده",
                     "AverageCollaborationShare": "میانگین درصد مشارکت",
                     "AcceptedCount": "تعداد دانش تایید شده",
                     "AverageAcceptedScore": "میانگین امتیاز دانش های تایید شده",
                     "PublishedCount": "تعداد دانش منتشر شده",
                     "AnswersCount": "تعداد پاسخ های ارسال شده بر روی پرسش ها",
-                    "WikiChangesCount": "تعداد پاراگراف های ویرایش شده در دانشنامه ها"
+                    "WikiChangesCount": "تعداد پاراگراف های ویرایش شده در دانشنامه ها",
+                    "BarChart": {
+                        "RegisteredCount": "تعداد ثبت شده",
+                        "PublishedCount": "تعداد منتشر شده"
+                    }
                 },
                 "KnowledgeDemandIndicatorsReport": {
                     "_Title": "شاخص های تقاضای دانش",
                     "GroupName": "نام گروه",
                     "MembersCount": "تعداد اعضا",
+                    "FullName": "نام و نام خانوادگی",
                     "SearchesCount": "تعداد جستجوهای انجام شده",
                     "QuestionsCount": "تعداد پرسش های مطرح شده",
                     "ContentVisitsCount": "تعداد بازدید از صفحات دانش ها",
                     "DistinctContentVisitsCount": "تعداد دانش های مشاهده شده",
                     "PostsCount": "تعداد پست های ارسال شده در صفحات دانش ها",
-                    "CommentsCount": "تعداد نظرات ارسال شده بر روی پست ها"
+                    "CommentsCount": "تعداد نظرات ارسال شده بر روی پست ها",
+                    "BarChart": {
+                        "VisitsCount": "تعداد بازدیدها",
+                        "SearchesCount": "تعداد جستجوها"
+                    }
                 },
                 "SocialContributionIndicatorsReport": {
                     "_Title": "شاخص های مشارکت",
+                    "_Description": "مشارکت کاربران در گفتگوها در شبکه اجتماعی",
                     "GroupName": "نام گروه",
+                    "FullName": "نام و نام خانوادگی",
                     "MembersCount": "تعداد اعضا",
-                    "ActiveUsersCount": "تعداد کاربران فعال",
-                    "PostsCount": "تعداد پست های ارسال شده در شبکه اجتماعی",
-                    "CommentsCount": "تعداد نظرات ارسال شده بر روی پست ها"
+                    "ActiveUsersCount": "تعداد اعضای فعال در سامانه",
+                    "PostsCount": "تعداد پست ها",
+                    "CommentsCount": "تعداد نظرات"
                 },
                 "ApplicationsPerformanceReport": {
                     "_Title": "عملکرد تیم ها در کلیک مایند",
@@ -1850,6 +1882,15 @@
                         "Temporary": "قراردادی",
                         "Contract": "پیمانی",
                         "Other": "سایر"
+                    }
+                },
+                "ActiveUsersReport": {
+                    "_Title": "کاربران فعال",
+                    "_Description": "کاربرانی که در بازه زمانی مشخص حداقل یک بار به سامانه وارد شده اند",
+                    "UserName": "نام کاربری",
+                    "FullName": "نام و نام خانوادگی",
+                    "BarChart": {
+                        "TotalCount": "تعداد"
                     }
                 },
                 "MostVisitedItemsReport": {
@@ -2276,7 +2317,7 @@
                 "OrganizationName": "نام سازمان:",
                 "SystemName": "نام سامانه:",
                 "SystemTitle": "عنوان سامانه (عنوان پیش فرض نمایش داده شده در بخش بالایی صفحات مرورگر):",
-                "DefaultTheme": "قالب پیش فرض:",
+                "DefaultTheme": "پوسته پیش فرض:",
                 "BackgroundColor": "رنگ پیش زمینه:",
                 "ColorfulBubbles": "حباب های رنگی:",
                 "LoginAndSessionManagement": "ورود به سامانه و مدیریت نشست",
@@ -2383,7 +2424,8 @@
                 "None": "بعدا تعیین می شود",
                 "RefState": "مانند وضعیتی در گذشته",
                 "SendToOwner": "ثبت کننده",
-                "SpecificNode": "نقشی معین"
+                "SpecificNode": "نقشی معین",
+                "SpecificUser": "کاربری معین"
             },
             "MSG": {
                 "CheckingUserExistanceInActiveDirectoryFailed": "خطا در بررسی وجود کاربر در اکتیو دایرکتوری",
@@ -2399,6 +2441,28 @@
                 "FileAttachmentFailed": "خطا در پیوست کردن فایل ها",
                 "RejectionIsNotAllowed": "امکان برگشت در این مرحله از جریان کاری وجود ندارد",
                 "MaxAllowedRejectionsExceeded": "تعداد برگشت ها نمی تواند از حداکثر مجاز بیشتر باشد"
+            }
+        },
+        "X": {
+            "Season": {
+                "1": "بهار",
+                "2": "تابستان",
+                "3": "پاییز",
+                "4": "زمستان"
+            },
+            "Month": {
+                "1": "فروردین",
+                "2": "اردیبهشت",
+                "3": "خرداد",
+                "4": "تیر",
+                "5": "مرداد",
+                "6": "شهریور",
+                "7": "مهر",
+                "8": "آبان",
+                "9": "آذر",
+                "10": "دی",
+                "11": "بهمن",
+                "12": "اسفند"
             }
         }
     });

@@ -7,9 +7,9 @@ const CardTooltipContent = ({ extraTags }) => {
   return (
     <Styled.CardTooltipContainer>
       <PerfectScrollbar className="extra-tags-scrollbar">
-        {extraTags?.map((tag) => {
+        {extraTags?.map((tag, index) => {
           return (
-            <Styled.ExtraTagWrapper>
+            <Styled.ExtraTagWrapper key={index}>
               {decodeBase64(tag?.Name)}
             </Styled.ExtraTagWrapper>
           );

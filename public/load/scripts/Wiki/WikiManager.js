@@ -676,7 +676,7 @@
                     titleContainerDiv.Editing = false;
 
                     if (!save) {
-                        titleDiv.innerHTML = titleDiv.MainContent;
+                        GlobalUtilities.set_text(titleDiv, titleDiv.MainContent);
                         btn.classList.remove("fa-floppy-o");
                         btn.classList.add("fa-pencil-square-o");
                         btn.style.marginTop = "0.3rem";
@@ -695,7 +695,7 @@
                         CheckWorkFlowEditPermission: that.Objects.HasWorkFlowEditPermission, ParseResults: true,
                         ResponseHandler: function (result) {
                             if (result.ErrorText) {
-                                titleDiv.innerHTML = theTitle;
+                                GlobalUtilities.set_text(titleDiv, theTitle);
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             }
 
@@ -843,7 +843,7 @@
                 ], childsContainer);
 
                 titleContainerDiv.Paragraphs[childId] = _childElem["childDiv"];
-                _childElem["childDiv"].rename = function (newTitle) { this.innerHTML = newTitle; }
+                _childElem["childDiv"].rename = function (newTitle) { GlobalUtilities.set_text(this, newTitle); };
 
                 if (params.NextID) {
                     var nextChild = titleContainerDiv.Paragraphs[params.NextID];
@@ -1026,7 +1026,7 @@
 
                 if (change.Title) {
                     titleContainer.style.display = "inline-block";
-                    titleContainer.innerHTML = GlobalUtilities.convert_numbers_to_persian(change.Title);
+                    GlobalUtilities.set_text(titleContainer, GlobalUtilities.convert_numbers_to_persian(change.Title));
                 }
 
                 GlobalUtilities.append_markup_text(bodyTextContainer, change.BodyText || "", {
@@ -1705,8 +1705,9 @@
 
                                 titleLabel.MainContent = paragraph.Title = _title;
                                 titleLabel.style.display = paragraph.Title ? "inline-block" : "none";
-                                titleLabel.innerHTML = !paragraph.Title ? "" :
-                                    GlobalUtilities.convert_numbers_to_persian(paragraph.Title || "");
+
+                                GlobalUtilities.set_text(titleLabel, !paragraph.Title ? "" :
+                                    GlobalUtilities.convert_numbers_to_persian(paragraph.Title || ""));
 
                                 bodyTextContainer.innerHTML = "";
 
@@ -1822,7 +1823,7 @@
 
             if (paragraph.Title) {
                 titleLabel.style.display = "inline-block";
-                titleLabel.innerHTML = GlobalUtilities.convert_numbers_to_persian(paragraph.Title || "");
+                GlobalUtilities.set_text(titleLabel, GlobalUtilities.convert_numbers_to_persian(paragraph.Title || ""));
             }
 
             GlobalUtilities.append_markup_text(bodyTextContainer, paragraph.BodyText || "", {
@@ -1852,7 +1853,7 @@
                 if (!editDataOnly) {
                     paragraph.Title = __title;
                     paragraph.BodyText = __body;
-                    titleLabel.innerHTML = paragraph.Title || "";
+                    GlobalUtilities.set_text(titleLabel, paragraph.Title || "");
 
                     GlobalUtilities.append_markup_text(bodyTextContainer, paragraph.BodyText || "", {
                         IsHTML: true,
@@ -2167,7 +2168,7 @@
                 var isNormalDisplay = true;
 
                 var normal_display = function () {
-                    titleArea.innerHTML = GlobalUtilities.secure_string(changeObj.Title);
+                    GlobalUtilities.set_text(titleArea, GlobalUtilities.secure_string(changeObj.Title));
 
                     GlobalUtilities.append_markup_text(bodyArea, changeObj.BodyText, {
                         IsHTML: true,
@@ -2181,7 +2182,7 @@
                         GlobalUtilities.show_text_changes(bodyArea, changeObj.BodyText, nextObj.BodyText);
                     }
                     else {
-                        titleArea.innerHTML = changeObj.Title;
+                        GlobalUtilities.set_text(titleArea, changeObj.Title);
 
                         GlobalUtilities.append_markup_text(bodyArea, changeObj.BodyText, {
                             IsHTML: true,

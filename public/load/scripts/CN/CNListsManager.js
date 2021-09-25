@@ -143,7 +143,9 @@
             var titleInput = elems["titleInput"];
 
             var _set_data = function () {
-                viewArea.innerHTML = GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(list.Name));
+                GlobalUtilities.set_text(viewArea,
+                    GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(list.Name)));
+
                 titleInput.value = list.Name;
             };
 
@@ -220,7 +222,7 @@
             that.__ComplexAdmins = that.__ComplexAdmins || {};
 
             if (that.__ComplexAdmins[listId]) {
-                that.__ComplexAdmins[listId].Title.innerHTML = _name;
+                GlobalUtilities.set_text(that.__ComplexAdmins[listId].Title, _name);
                 return GlobalUtilities.show(that.__ComplexAdmins[listId].Container);
             }
 
@@ -306,7 +308,7 @@
             that.__ComplexNodes = that.__ComplexNodes || {};
 
             if (that.__ComplexNodes[listId]) {
-                that.__ComplexNodes[listId].Title.innerHTML = _name;
+                GlobalUtilities.set_text(that.__ComplexAdmins[listId].Title, _name);
                 return GlobalUtilities.show(that.__ComplexNodes[listId].Container);
             }
 

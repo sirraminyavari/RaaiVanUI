@@ -257,7 +257,7 @@ const getBorderCss = (props) => {
         border-color: ${TCV_DEFAULT};
       }
 
-      :hover > div:first-child > * {
+      :hover > div > * {
         color: ${TCV_DEFAULT};
       }
     `;
@@ -605,6 +605,7 @@ export const NewTeamLabel = styled.div.attrs({
   className: C_DISTANT,
 })`
   margin: 1rem 0 0 0;
+  font-size: 1.2rem;
 `;
 
 export const ArchivedTeamsLabel = styled.div.attrs({

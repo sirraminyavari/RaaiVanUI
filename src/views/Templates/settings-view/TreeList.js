@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import * as Styled from './Templates-view.styles';
+import * as Styled from './TemplatesSettings.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { isEmpty } from 'helpers/helpers';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import TreeCategoryItem from './TreeCategoryItem';
 import TreeTemplatesList from './TreeTemplatesList';
-import { TemplatesViewContext } from './Templates-view';
+import { TemplatesViewContext } from './TemplatesSettings';
 
 const ClassList = () => {
   const { tree, setTree } = useContext(TemplatesViewContext);

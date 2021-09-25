@@ -9,6 +9,7 @@ export const ApplicationsSlice = createSlice({
     userArchivedApps: [],
     isFetching: false,
     selectingApp: { isSelecting: false, selectingAppId: null },
+    currentApp: null,
   },
 
   reducers: {
@@ -32,6 +33,9 @@ export const ApplicationsSlice = createSlice({
     },
     setSelectingApp: (state, action) => {
       state.selectingApp = action.payload;
+    },
+    setCurrentApp: (state, action) => {
+      state.currentApp = action.payload;
     },
   },
 });

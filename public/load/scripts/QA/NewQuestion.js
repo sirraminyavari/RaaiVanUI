@@ -386,7 +386,7 @@
                 }]
             }], container);
 
-            elems["fullname"].innerHTML = fullname;
+            GlobalUtilities.set_text(elems["fullname"], fullname);
             elems["container"].UserInfo = user;
         }
     }

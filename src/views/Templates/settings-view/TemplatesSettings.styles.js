@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 import { BG_GRAY_LIGHT, BO_DISTANT, C_DISTANT, TC_WARM } from 'constant/Colors';
 import { BO_RADIUS_HALF, BO_RADIUS_UNIT } from 'constant/constants';
-import {
-  FLEX_CCC,
-  FLEX_RCB,
-  FLEX_RCC,
-  FLEX_RCS,
-} from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
   CV_RED,
@@ -108,10 +103,11 @@ export const TemplatesListContainer = styled.div`
 `;
 
 export const ClassItemWrapper = styled.div`
-  ${FLEX_RCS}
+  ${FLEX_RCB}
   cursor: pointer;
   margin: 1rem 0;
   width: max-content;
+  min-width: 16rem;
 
   :hover {
     svg:last-child {
@@ -133,11 +129,14 @@ export const ClassItemTitle = styled.div`
   ${({ isOther }) => isOther && `color: ${CV_DISTANT};`}
 `;
 
+export const ClassItemTitleWrapper = styled.div`
+  ${FLEX_RCC}
+`;
+
 export const ClassTemplatesContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   gap: 1rem;
-  ${({ isSearchList }) => !!isSearchList && 'margin-top: 3rem;'}
 
   .class-template-card {
     cursor: pointer;

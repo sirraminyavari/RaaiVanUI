@@ -7,6 +7,7 @@ import { Redirect, useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Exception from 'components/Exception/Exception';
 import { themeSlice } from 'store/reducers/themeReducer';
+import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, setRVGlobal } from 'helpers/helpers';
@@ -35,6 +36,7 @@ import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 
 const { setIsAthunticated } = loginSlice.actions;
+const { setCurrentApp } = ApplicationsSlice.actions;
 const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 const {
   toggleNavSide,
@@ -101,12 +103,13 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   useEffect(() => {
     //! Set selected team.
-    if (route.Application) {
+    if (route?.Application) {
       const application = {
         name: decodeBase64(route.Application.Title),
         id: route.Application.ApplicationID,
       };
       dispatch(setSelectedTeam(application));
+      dispatch(setCurrentApp(route?.Application));
       dispatch(getSidebarNodes());
       dispatch(getConfigPanels());
       dispatch(getUnderMenuPermissions(['Reports']));
@@ -120,6 +123,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     if (route.IsAuthenticated && !route.AppID) {
       dispatch(toggleSidebar(false)); //! Close sidebar.
       dispatch(setSelectedTeam({ name: null, id: null })); //! Clear selected team.
+      dispatch(setCurrentApp(null));
       dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' })); //! Reset sidebar content to default.
       dispatch(setSidebarDnDTree({})); //! Clear sidebar tree items.
     }

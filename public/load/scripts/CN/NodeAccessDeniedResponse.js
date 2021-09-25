@@ -57,8 +57,8 @@
             GlobalUtilities.append_markup_text(elems["publicDesc"], Base64.decode(params.PublicDescription));
 
             var set_button_text = function () {
-                requestButton.innerHTML = hasPendingRequest ? RVDic.CancelRequest :
-                    RVDic.JoinN.replace("[n]", Base64.decode(params.NodeType));
+                GlobalUtilities.set_text(requestButton, hasPendingRequest ? RVDic.CancelRequest :
+                    RVDic.JoinN.replace("[n]", Base64.decode(params.NodeType)));
             };
 
             set_button_text();

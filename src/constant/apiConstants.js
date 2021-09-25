@@ -380,6 +380,20 @@ export const GET_CHILD_NODES = 'GetChildNodes';
 export const GET_TEMPLATES = 'GetTemplates';
 
 /**
+ * @description 'GetTemplatesJSON'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_TEMPLATES_JSON = 'GetTemplateJSON';
+
+/**
+ * @description 'ActivateTemplate'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const ACTIVATE_TEMPLATE = 'ActivateTemplate';
+
+/**
  * @description 'GetChildNodeTypes'
  * @mode API function
  * @class 'CNAPI'
