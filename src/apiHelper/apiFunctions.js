@@ -50,6 +50,7 @@ import {
   GET_NODE_TYPES,
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
+  GET_UPLOAD_LINK,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1199,6 +1200,35 @@ export const recoverNodeType = (nodeId) => {
       recoverNodeTypeAPI.fetch(
         {
           NodeTypeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get upload link.
+ * @param {String} ownerId -The id of owner.
+ * @param {String} ownerType -The type of owner.
+ * @returns Promise.
+ */
+export const getUploadLink = (ownerId = '', ownerType = '') => {
+  const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getUploadLinkAPI.url(
+        {
+          OwnerID: ownerId,
+          OwnerType: ownerType,
         },
         (response) => {
           resolve(response);
