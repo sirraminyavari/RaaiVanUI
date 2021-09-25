@@ -13,7 +13,7 @@ import {
   Space,
 } from '../NodeDetails.style';
 import MainNode from './MainNode';
-import SideColumn from './SideColumn';
+import SideColumn from './sideColumn/SideColumn';
 import TopBar from './topBar/TopBar';
 
 const { RVDic, RVGlobal, RV_RTL, RV_RevFloat } = window;

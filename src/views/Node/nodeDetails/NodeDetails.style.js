@@ -7,8 +7,25 @@ import {
   CV_DISTANT,
   CV_RED,
   CV_WHITE,
+  TCV_VERY_TRANSPARENT,
+  CV_BLACK,
+  TCV_WARM,
 } from 'constant/CssVariables';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { BG_WHITE, C_GRAY, C_GRAY_DARK, TC_WARM } from 'constant/Colors';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  BO_RADIUS_UNIT,
+  IGNORE_RADIUS_BOTTOM,
+} from 'constant/constants';
+import {
+  FLEX_CSC,
+  FLEX_RCB,
+  FLEX_RCC,
+  FLEX_RCE,
+  FLEX_RCS,
+} from 'constant/StyledCommonCss';
 
 const { GlobalUtilities } = window;
 
@@ -51,7 +68,7 @@ export const Side = styled.div`
   padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
-  transition: width 0.5s, opacity 0.5s;
+  // transition: width 0.5s, opacity 0.5s;
 `;
 
 export const TopFilter = styled.div`
@@ -104,8 +121,195 @@ export const Space = styled.div`
 
 export const SideColumnMaintainer = styled.div`
   box-shadow: 1px 3px 20px #0000001f;
-  display: flex;
-  flex: 1;
+  // display: flex;
+  // flex: 1;
   width: 100%;
   height: 100%;
+  user-select: none;
+
+  .node-page-side-scrollbar {
+    padding: 0.5rem 1rem;
+    height: calc(100% - 3rem);
+  }
+`;
+
+export const SideColumnHeader = styled.div.attrs({
+  className: `${BG_WHITE} ${BO_RADIUS_HALF} ${IGNORE_RADIUS_BOTTOM}`,
+})`
+  width: 100%;
+  height: 3rem;
+  padding: 0 0.7rem;
+  ${FLEX_RCB}
+
+  .side-more-action-tooltip {
+    width: 10rem;
+    height: 3rem;
+    padding: 0.5rem;
+    color: ${CV_BLACK};
+    background-color: ${CV_WHITE} !important;
+    opacity: 1 !important;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
+    border-radius: 0.5rem;
+    ${FLEX_RCS}
+  }
+`;
+
+export const SideHeaderIconWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE}`,
+})`
+  padding: 0.25rem;
+  cursor: pointer;
+  ${FLEX_RCC}
+
+  :hover {
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
+`;
+
+export const SideHeaderTitle = styled.div.attrs({
+  className: `${TC_WARM}`,
+})`
+  font-size: 1rem;
+`;
+
+export const SideActionItemWrapper = styled.div`
+  width: 100%;
+  font-size: 1rem;
+  ${FLEX_RCS}
+  gap: 0.5rem;
+  cursor: pointer;
+`;
+
+export const SideInfoContainer = styled.div`
+  width: 100%;
+  ${FLEX_RCS}
+  background-color: inherit;
+  gap: 0.5rem;
+`;
+
+export const InfoImageWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_UNIT} ${BG_WHITE}`,
+})`
+  width: 5rem;
+  min-width: 5rem;
+  height: 5rem;
+  max-height: 5rem;
+  padding: 0.2rem;
+  ${FLEX_RCC}
+`;
+
+export const InfosWrapper = styled.div`
+  width: 100%;
+  padding: 0.2rem;
+  ${FLEX_CSC}
+  gap: 0.3rem;
+`;
+
+export const DocInfoTitle = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  width: 100%;
+  font-size: 1rem;
+`;
+
+export const DocInfoID = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  width: 100%;
+  font-size: 0.8rem;
+`;
+
+export const DocTagsContainer = styled.div`
+  width: 100%;
+  ${FLEX_RCS}
+  flex-wrap: wrap;
+  gap: 0.2rem;
+
+  .doc-tags-badge {
+    font-size: 0.85rem;
+    border-radius: 1rem;
+    width: max-content;
+    padding: 0 0.7rem;
+    ${FLEX_RCC}
+    color: ${TCV_WARM};
+    background-color: ${TCV_VERY_TRANSPARENT};
+  }
+`;
+
+export const DocHistoryLogContainer = styled.div.attrs({
+  className: `${BG_WHITE} ${BO_RADIUS_UNIT}`,
+})`
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  height: 9rem;
+`;
+
+export const DocItemHeader = styled.div`
+  ${FLEX_RCB}
+  cursor: pointer;
+`;
+
+export const ItemHeaderTitle = styled.div.attrs({
+  className: `${C_GRAY_DARK}`,
+})`
+  font-size: 1rem;
+`;
+
+export const LogItemContainer = styled.div`
+  ${FLEX_RCB}
+  gap:  0.2rem;
+  cursor: pointer;
+  margin: 1rem 0;
+
+  .log-item-avatar {
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    border: none;
+  }
+`;
+
+export const LogWrapper = styled.div`
+  width: 45%;
+  ${({ start }) => start && FLEX_RCS}
+  ${({ end }) => end && FLEX_RCE}
+  gap: 0.2rem;
+`;
+export const Line = styled.div`
+  height: 1.3rem;
+  margin: 0 0.5rem;
+  border: none;
+  border-right: 3px solid ${CV_DISTANT};
+`;
+
+export const LogItemTitle = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const LogItemRecordDate = styled.div`
+  direction: ltr;
+  width: 100%;
+`;
+
+export const DocSettingContainer = styled.div.attrs({
+  className: `${BG_WHITE} ${BO_RADIUS_UNIT}`,
+})`
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 0.5rem;
+  height: 6rem;
+`;
+
+export const DocSettingTitle = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  margin: 1rem 0;
+  font-size: 0.8rem;
 `;
