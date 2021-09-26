@@ -322,6 +322,18 @@ export const RENAME_NODE_TYPE = 'RenameNodeType';
  */
 export const REMOVE_NODE_TYPE = 'RemoveNodeType';
 /**
+ * @description 'RemoveNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const REMOVE_NODE = 'RemoveNode';
+/**
+ * @description 'RecycleNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const RECYCLE_NODE = 'RecycleNode';
+/**
  * @description 'MoveNodeType'
  * @mode API function
  * @class 'CNAPI'
@@ -378,6 +390,20 @@ export const GET_CHILD_NODES = 'GetChildNodes';
  * @class 'CNAPI'
  */
 export const GET_TEMPLATES = 'GetTemplates';
+
+/**
+ * @description 'GetTemplatesJSON'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_TEMPLATES_JSON = 'GetTemplateJSON';
+
+/**
+ * @description 'ActivateTemplate'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const ACTIVATE_TEMPLATE = 'ActivateTemplate';
 
 /**
  * @description 'GetChildNodeTypes'

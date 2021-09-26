@@ -364,7 +364,12 @@
                 },
                 HasContent: function () { return !!params.Title; },
                 SetData: function () {
-                    viewElems["view"].innerHTML = GlobalUtilities.get_text_begining(params.Title, 2000) || RVDic.NotSet;
+                    viewElems["view"].innerHTML = "";
+
+                    GlobalUtilities.create_nested_elements([{
+                        Type: "text", TextValue: GlobalUtilities.get_text_begining(params.Title, 2000) || RVDic.NotSet
+                    }], viewElems["view"]);
+
                     editElems["titleInput"].value = params.Title;
                 },
                 OnSave: function (start, done) {

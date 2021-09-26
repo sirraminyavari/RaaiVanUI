@@ -26,7 +26,7 @@ const FileShowCell = ({ file }) => {
         </Styled.FileActionItemWrapper>
         <Styled.FileActionItemWrapper style={{ color: CV_RED }}>
           <TrashIcon size={15} />
-          <div>حذف</div>
+          <div>{RVDic.Remove}</div>
         </Styled.FileActionItemWrapper>
       </div>
     );

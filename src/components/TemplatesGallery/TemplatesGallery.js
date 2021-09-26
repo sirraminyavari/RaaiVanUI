@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import Modal from '../Modal/Modal';
+import Modal from 'components/Modal/Modal';
 import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
 import TemplateSuggestionList from './TemplateSuggestionList';
@@ -47,6 +47,7 @@ const TemplatesGallery = (props) => {
       .then((response) => {
         setTree(provideTemplatesForTree(response));
         setTemplatesObject(response);
+        // console.log(response);
       })
       .catch((error) => console.log(error));
 

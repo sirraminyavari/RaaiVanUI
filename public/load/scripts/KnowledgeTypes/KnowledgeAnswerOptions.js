@@ -211,9 +211,15 @@
                 var value = option.Value;
                 var title = Base64.decode(option.Title);
 
-                viewArea.innerHTML = "<span style='font-weight:bold; margin-" + window.RV_RevFloat + ":0.5rem;'>(" +
-                    GlobalUtilities.convert_numbers_to_persian(String(value)) + ")</span> " +
-                    GlobalUtilities.convert_numbers_to_persian(title);
+                viewArea.innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    {
+                        Type: "span", Style: "font-weight:bold; margin-" + window.RV_RevFloat + ":0.5rem;",
+                        Childs: [{ Type: "text", TextValue: "(" + GlobalUtilities.convert_numbers_to_persian(String(value)) + ")" }]
+                    },
+                    { Type: "text", TextValue: GlobalUtilities.convert_numbers_to_persian(title) }
+                ], viewArea);
 
                 valueInput.value = value;
                 titleInput.value = title;

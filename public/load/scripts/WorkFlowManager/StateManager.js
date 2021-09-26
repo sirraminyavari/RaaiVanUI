@@ -322,9 +322,19 @@
             var _show_tag = function (_tg) {
                 elems["tagView"].style.display = elems["tagRemoveButton"].style.display = "block";
                 elems["tagSelect"].style.display = elems["saveTag"].style.display = "none";
-                elems["tagView"].innerHTML = "<div style='display:inline-block;'>" + RVDic.Tag + ": </div>" +
-                    "<div style='display:inline-block; margin-" + RV_Float + ":0.5rem; font-weight:bold;'>" +
-                    GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(_tg)) + "</div>";
+
+                elems["tagView"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    {
+                        Type: "div", Style: "display:inline-block;",
+                        Childs: [{ Type: "text", TextValue: RVDic.Tag }]
+                    },
+                    {
+                        Type: "div", Style: "display:inline-block; margin-" + RV_Float + ":0.5rem; font-weight:bold;",
+                        Childs: [{ Type: "text", TextValue: GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(_tg)) }]
+                    }
+                ], elems["tagView"]);
             };
 
             var _hide_tag = function () {
@@ -434,7 +444,7 @@
             });
 
             var _set_data = function () {
-                viewArea.innerHTML = !name ? RVDic.NotSet : name;
+                GlobalUtilities.set_text(viewArea, !name ? RVDic.NotSet : name);
                 if (id) pollSelect.set_item(id, name);
             };
 

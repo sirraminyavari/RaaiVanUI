@@ -649,7 +649,7 @@
             var titleInput = _el["titleInput"];
 
             var _set_data = function () {
-                viewArea.innerHTML = GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(title));
+                GlobalUtilities.set_text(viewArea, GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(title)));
                 titleInput.value = title;
             }
 

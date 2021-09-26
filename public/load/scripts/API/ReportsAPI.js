@@ -66,13 +66,13 @@
                 Get: function (params) {
                     params = params || {};
                     params.Parameters = {
-                        NodeTypeID: params.NodeTypeID || "", CreatorNodeTypeID: params.CreatorNodeTypeID || "",
-                        CreatorNodeIDs: params.CreatorNodeIDs || "", Delimiter: "|",
+                        NodeTypeIDs: params.NodeTypeIDs || "", CreatorNodeTypeID: params.CreatorNodeTypeID || "",
+                        CreatorNodeIDs: params.CreatorNodeIDs || "",
                         BeginDate: params.BeginDate || "", FinishDate: params.FinishDate || "",
-                        ParamsOrder: "NodeTypeID:Guid|CreatorNodeTypeID:Guid|CreatorNodeIDs:String|Delimiter:Char" +
+                        ParamsOrder: "NodeTypeIDs:Structure|CreatorNodeTypeID:Guid|CreatorNodeIDs:Structure" +
                             "|BeginDate:DateTime|FinishDate:DateTime"
                     };
-
+                    
                     ReportsAPI.GetReport(params);
                 }
             },
@@ -83,9 +83,10 @@
                 Get: function (params) {
                     params = params || {};
                     params.Parameters = {
-                        CreatorNodeTypeID: params.CreatorNodeTypeID || "", CreatorNodeIDs: params.CreatorNodeIDs || "",
-                        Delimiter: "|", BeginDate: params.BeginDate || "", FinishDate: params.FinishDate || "",
-                        ParamsOrder: "CreatorNodeTypeID:Guid|CreatorNodeIDs:String|Delimiter:Char" +
+                        NodeTypeIDs: params.NodeTypeIDs || "", CreatorNodeTypeID: params.CreatorNodeTypeID || "",
+                        CreatorNodeIDs: params.CreatorNodeIDs || "",
+                        BeginDate: params.BeginDate || "", FinishDate: params.FinishDate || "",
+                        ParamsOrder: "NodeTypeIDs:Structure|CreatorNodeTypeID:Guid|CreatorNodeIDs:Structure" +
                             "|BeginDate:DateTime|FinishDate:DateTime"
                     };
 
@@ -100,8 +101,8 @@
                     params = params || {};
                     params.Parameters = {
                         CreatorNodeTypeID: params.CreatorNodeTypeID || "", CreatorNodeIDs: params.CreatorNodeIDs || "",
-                        Delimiter: "|", BeginDate: params.BeginDate || "", FinishDate: params.FinishDate || "",
-                        ParamsOrder: "CreatorNodeTypeID:Guid|CreatorNodeIDs:String|Delimiter:Char" +
+                        BeginDate: params.BeginDate || "", FinishDate: params.FinishDate || "",
+                        ParamsOrder: "CreatorNodeTypeID:Guid|CreatorNodeIDs:Structure" +
                             "|BeginDate:DateTime|FinishDate:DateTime"
                     };
 
@@ -144,6 +145,21 @@
                             "|UpperBirthDateLimit:Datetime|LowerCreationDateLimit:Datetime|UpperCreationDateLimit:Datetime"
                     };
                     
+                    ReportsAPI.GetReport(params);
+                }
+            },
+
+            ActiveUsersReport: {
+                _IconURL: "",
+
+                Get: function (params) {
+                    params = params || {};
+                    params.Parameters = {
+                        DateFrom: params.DateFrom || "",
+                        DateTo: params.DateTo || "",
+                        ParamsOrder: "DateFrom:Datetime|DateTo:Datetime"
+                    };
+
                     ReportsAPI.GetReport(params);
                 }
             },
@@ -713,11 +729,15 @@
         params.Parameters.ModuleIdentifier = params.ModuleIdentifier;
         params.Parameters.ReportName = params.ReportName;
         params.Parameters.Excel = params.Excel;
-        params.Parameters.RTL = RV_RTL;
-        params.Parameters.Lang = RV_Lang;
+        //params.Parameters.RTL = RV_RTL;
+        //params.Parameters.Lang = RV_Lang;
         params.Parameters.PageNumber = params.PageNumber;
         params.Parameters.PageSize = params.PageSize;
         params.Parameters.PS = params.Password;
+        params.Parameters.ChartMode = params.ChartMode;
+        params.Parameters.ChartDateFrom = params.ChartDateFrom;
+        params.Parameters.ChartDateTo = params.ChartDateTo;
+        params.Parameters.ChartPeriod = params.ChartPeriod;
 
         var url = ReportsAPI.ResponseURL + "/GetReport?timeStamp=" + new Date().getTime();
         var queryString = "";

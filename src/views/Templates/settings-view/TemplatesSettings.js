@@ -1,15 +1,16 @@
 import { useState, createContext, useEffect } from 'react';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
-import * as Styled from './Templates-view.styles';
+import * as Styled from './TemplatesSettings.styles';
 import ActionBar from './TemplatesActionBar';
 import TreeList from './TreeList';
-import SearchList from './SearchList';
+import GridList from '../items/GridList';
 import CreateModal from 'components/Modal/types/create/CreateModal';
 import { addNodeType } from 'apiHelper/apiFunctions';
 import provideTree from './provideTreeData';
 import { getChildNodeTypes } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import useWindow from 'hooks/useWindowContext';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 export const TemplatesViewContext = createContext({});
 
@@ -70,22 +71,36 @@ const TemplatesView = () => {
   const refetchNodes = () => setRefetchFactor(GlobalUtilities.random());
 
   //! Calls after item creation.
-  const afterCreate = () => {
+  const afterCreate = (toastMSG, toastId) => {
     resetModal();
+    refetchNodes();
+    InfoToast({
+      autoClose: true,
+      type: 'info',
+      message: toastMSG,
+      toastId,
+    });
   };
 
   const createNewCategory = (categoryName) => {
     addNodeType(categoryName)
-      .then(() => {
-        afterCreate();
+      .then((response) => {
+        if (response?.Succeed) {
+          const toastMSG = `دسته "${categoryName}" ایجاد گردید`;
+          afterCreate(toastMSG, response?.NodeTypeID);
+        }
       })
       .catch((error) => console.log(error));
   };
 
   const createNewClass = (className, parentId) => {
     addNodeType(className, parentId, false)
-      .then(() => {
-        afterCreate();
+      .then((response) => {
+        console.log(response);
+        if (response?.Succeed) {
+          const toastMSG = `قالب "${className}" ایجاد گردید`;
+          afterCreate(toastMSG, response?.NodeID);
+        }
       })
       .catch((error) => console.log(error));
   };
@@ -133,7 +148,7 @@ const TemplatesView = () => {
         {isSearching ? (
           <LogoLoader style={{ position: 'relative', top: '3rem' }} />
         ) : !!searchResult.length ? (
-          <SearchList />
+          <GridList style={{ marginTop: '2rem' }} templates={searchResult} />
         ) : (
           <TreeList />
         )}

@@ -1,33 +1,49 @@
 import { useContext, useState } from 'react';
+import { createSelector } from 'reselect';
+import { useSelector } from 'react-redux';
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
-import TemplateCard from '../../TemplateCard';
+import TemplateCard from 'components/TemplatesGallery/TemplateCard';
+import EmptyTemplateCard from 'components/TemplatesGallery/EmptyTemplateCard';
 import useWindow from 'hooks/useWindowContext';
-import * as Styled from '../../TemplatesGallery.styles';
+import * as Styled from 'components/TemplatesGallery/TemplatesGallery.styles';
 import GalleryMainImage from 'assets/images/template-gallery.svg';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { isEmpty } from 'helpers/helpers';
+import { decodeBase64, isEmpty } from 'helpers/helpers';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils';
 import {
   TemplatesGalleryContext,
   DESCRIPTIONS_CONTENT,
-} from '../../TemplatesGallery';
+} from 'components/TemplatesGallery/TemplatesGallery';
+
+const selectCurrentApp = createSelector(
+  (state) => state?.applications,
+  (applications) => applications?.currentApp
+);
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
-  const [isTransition, setIsTransition] = useState(false);
+  const currentApp = useSelector(selectCurrentApp);
   const { templatesObject, setContent, setCurrentTemplate } = useContext(
     TemplatesGalleryContext
   );
-  const parsedTemplates = parseTemplates(templatesObject);
-  const {
-    AllTemplates,
-    //  Tags,
-    // TemplatesWithoutTag
-  } = parsedTemplates || {};
+  const { AllTemplates } = parseTemplates(templatesObject);
 
+  const [isTransition, setIsTransition] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchList, setSearchList] = useState([]);
+
+  const { ID: expertiseId, Name: expertiseName } =
+    currentApp?.FieldOfExpertise || {};
+
+  // ! Prepare suggestions.
+  const cliqMindSuggestions = AllTemplates.filter((template) =>
+    template?.Tags.some((tag) => tag?.NodeID === expertiseId)
+  );
+
+  //! When user clicks on a card.
   const handleClickCard = (template) => {
     setContent({ name: DESCRIPTIONS_CONTENT, data: { template } });
     setCurrentTemplate(template);
@@ -35,6 +51,25 @@ const TemplateGalleryMain = () => {
 
   const handleSliderTransition = (value) => {
     setIsTransition(value);
+  };
+
+  //! Search between all templates.
+  const handleSearchTemplates = (e) => {
+    const searchValue = e.target.value;
+    if (searchValue.length) {
+      const searchedTemplates = AllTemplates?.filter(
+        (template) =>
+          decodeBase64(template?.TypeName).match(searchValue) ||
+          template?.Tags.some((tag) =>
+            decodeBase64(tag?.Name).match(searchValue)
+          )
+      );
+      setIsSearching(true);
+      setSearchList(searchedTemplates);
+    } else {
+      setIsSearching(false);
+      setSearchList([]);
+    }
   };
 
   return (
@@ -58,6 +93,7 @@ const TemplateGalleryMain = () => {
               type="text"
               style={{ width: '100%' }}
               placeholder="جستجو در همه قالب‌ها"
+              onChange={handleSearchTemplates}
             />
             <SearchIcon
               size={20}
@@ -72,10 +108,20 @@ const TemplateGalleryMain = () => {
       </Styled.MainContentInfoSection>
 
       <Styled.MainContentSwiperSection>
-        <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
+        {isSearching ? (
+          <Styled.MainSwiperTitle>
+            <Styled.SwiperTitleIcon>
+              <SearchIcon size={18} color={CV_WHITE} />
+            </Styled.SwiperTitleIcon>
+            تمپلیت‌های مرتبط با عنوان عبارت جستجو شده
+          </Styled.MainSwiperTitle>
+        ) : (
+          <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
+        )}
+
         {isEmpty(templatesObject) ? (
           <LogoLoader />
-        ) : (
+        ) : isSearching ? (
           <CustomSwiper
             grabCursor
             scrollbar
@@ -83,7 +129,7 @@ const TemplateGalleryMain = () => {
             onSliderTransition={handleSliderTransition}
             slidesPerView={3}
             spaceBetween={10}>
-            {[...AllTemplates]?.map((template, index) => {
+            {searchList?.map((template, index) => {
               return (
                 <TemplateCard
                   template={template}
@@ -94,6 +140,19 @@ const TemplateGalleryMain = () => {
               );
             })}
           </CustomSwiper>
+        ) : cliqMindSuggestions.length ? (
+          cliqMindSuggestions?.map((template, index) => {
+            return (
+              <TemplateCard
+                template={template}
+                key={index}
+                onClickCard={handleClickCard}
+                isTransition={isTransition}
+              />
+            );
+          })
+        ) : (
+          <EmptyTemplateCard />
         )}
       </Styled.MainContentSwiperSection>
     </div>

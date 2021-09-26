@@ -18,6 +18,7 @@ import {
   IGNORE_RADIUS_RIGHT,
 } from 'constant/constants';
 import { decodeBase64, getURL } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
 const STEP_1 = 25;
 const STEP_2 = 50;
@@ -63,6 +64,11 @@ const defaultDropDownLabel = {
 const TopicItem = ({ item }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
+  const { GlobalUtilities } = useWindow();
+
+  const avatarURL = GlobalUtilities.add_timestamp(
+    item?.Creator?.ProfileImageURL
+  );
 
   const getColor = (percentage) => {
     switch (percentage) {
@@ -134,10 +140,7 @@ const TopicItem = ({ item }) => {
           <Avatar
             color="#333"
             style={{ minWidth: '2.75rem' }}
-            userImage={
-              item?.Creator?.ProfileImageURL +
-              `?timeStamp=${new Date().getTime()}`
-            }
+            userImage={avatarURL}
           />
         </Styled.TopicItemContentActions>
       </Styled.TopicItemContentWrapper>

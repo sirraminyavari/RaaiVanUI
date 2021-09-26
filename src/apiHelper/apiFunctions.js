@@ -4,6 +4,7 @@ import {
   encodeBase64,
   // getCaptchaToken,
 } from 'helpers/helpers';
+
 import {
   CROP_ICON,
   DOCS_API,
@@ -47,7 +48,11 @@ import {
   REMOVE_NODE_TYPE,
   RECOVER_NODE_TYPE,
   GET_NODE_TYPES,
+  GET_TEMPLATES_JSON,
+  ACTIVATE_TEMPLATE,
   GET_UPLOAD_LINK,
+  REMOVE_NODE,
+  RECYCLE_NODE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1005,6 +1010,60 @@ export const getTemplates = (tagId = '') => {
 };
 
 /**
+ * @description Get gallery templates JSON.
+ * @param {String} nodeId -The id of node type.
+ * @returns Promise.
+ */
+export const getTemplatesJSON = (nodeId) => {
+  const getTemplatesJSONAPI = API_Provider(CN_API, GET_TEMPLATES_JSON);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplatesJSONAPI.fetch(
+        {
+          NodeTypeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Activate a template.
+ * @param {any} template -The template to be activated.
+ * @returns Promise.
+ */
+export const activateTemplate = (template) => {
+  const activateTemplateAPI = API_Provider(CN_API, ACTIVATE_TEMPLATE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      activateTemplateAPI.fetch(
+        {
+          Template: template,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.
@@ -1143,6 +1202,62 @@ export const recoverNodeType = (nodeId) => {
       recoverNodeTypeAPI.fetch(
         {
           NodeTypeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Remove node.
+ * @param {String} nodeId -The id of the node.
+ * @param {Boolean} hierarchy - Should remove hierarchy or not?.
+ * @returns Promise.
+ */
+export const removeNode = (nodeId, hierarchy = false) => {
+  const removeNodeAPI = API_Provider(CN_API, REMOVE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recycle node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const recycleNode = (nodeId) => {
+  const recycleNodeAPI = API_Provider(CN_API, RECYCLE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recycleNodeAPI.fetch(
+        {
+          NodeID: nodeId,
         },
         (response) => {
           resolve(response);

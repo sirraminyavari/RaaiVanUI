@@ -70,8 +70,10 @@ const ReadableBranch = (props) => {
     }
   };
 
+  const classURL = getURL('Classes', { NodeTypeID: item?.id });
+
   //! Check if selected item is active.
-  const isSelected = activePath === getURL('Classes', { NodeTypeID: item?.id });
+  const isSelected = activePath === classURL;
 
   return (
     <>
@@ -92,7 +94,7 @@ const ReadableBranch = (props) => {
           <Styled.MenuTitle
             onClick={handleOnClick}
             as={!isIntroOnboarding && Link}
-            to={getURL('Classes', { NodeTypeID: item?.id })}>
+            to={classURL}>
             {item?.data?.title}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>

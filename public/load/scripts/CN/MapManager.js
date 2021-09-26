@@ -825,8 +825,9 @@
             var editButton = elems["editButton"];
 
             var _set_data = function () {
-                elems["viewArea"].innerHTML = GlobalUtilities.get_text_begining(
-                    GlobalUtilities.convert_numbers_to_persian(Base64.decode(node.Name)), 2000);
+                GlobalUtilities.set_text(elems["viewArea"], GlobalUtilities.get_text_begining(
+                    GlobalUtilities.convert_numbers_to_persian(Base64.decode(node.Name)), 2000));
+
                 elems["nameInput"].value = Base64.decode(node.Name);
             };
 

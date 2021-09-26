@@ -92,6 +92,18 @@ export const FLEX_RCC = css`
 /**
  * @description 'Flex'
  * @Direction 'R'ow
+ * @Align flex-'S'tart
+ * @Justify flex-'S'tart
+ */
+export const FLEX_RSS = css`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify flex-'S'tart
  */

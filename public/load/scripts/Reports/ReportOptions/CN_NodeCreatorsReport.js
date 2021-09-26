@@ -150,6 +150,7 @@
             params = params || {};
 
             if (params.NodeTypeID) this.Objects.NodeTypeSelect.set_item(params.NodeTypeID.Value || "", params.NodeTypeID.Title || "");
+
             if (params.ShowPersonalItems) {
                 switch (String(params.ShowPersonalItems.Value).toLowerCase()) {
                     case "true":

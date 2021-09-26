@@ -1,12 +1,18 @@
 import {
+  BG_GRAY,
   BG_GRAY_LIGHT,
   BO_DISTANT,
   C_DISTANT,
   C_GRAY,
   C_GRAY_DARK,
+  TBG_WARM,
   TC_DEFAULT,
 } from 'constant/Colors';
-import { BO_RADIUS_HALF, IGNORE_RADIUS_LEFT } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  IGNORE_RADIUS_LEFT,
+} from 'constant/constants';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -301,6 +307,15 @@ export const MainSwiperTitle = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 1rem;
+  ${FLEX_RCS}
+  gap: 0.5rem;
+`;
+
+export const SwiperTitleIcon = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE} ${TBG_WARM}`,
+})`
+  padding: 0.2rem;
+  height: 1.5rem;
 `;
 
 export const MainContentSwiperSection = styled.div.attrs({
@@ -388,23 +403,13 @@ export const CategoryDescription = styled.div`
 `;
 
 export const SubCategoryContainer = styled.div`
-  height: calc(100% - 10rem);
+  // height: calc(100% - 10rem);
   padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 2rem;
   padding: 0 1.5rem;
-
-  // .template-sub-category-scroll {
-  //   display: grid;
-  //   grid-template-columns: repeat(3, 1fr);
-  //   gap: 1rem;
-  //   margin: 0 -1rem;
-  //   padding: 0 1rem;
-
-  //   ${commonScrollCss}
-  // }
 `;
 
 export const TemplateDescriptionContainer = styled.div`
@@ -430,6 +435,13 @@ export const TemplateDescriptionWrapper = styled.div`
     :hover {
       border-color: ${CV_RED};
     }
+  }
+
+  .activate-template-button {
+    width: 15rem;
+    height: 2rem;
+    margin: 1rem 0 2rem 0;
+    font-size: 1rem;
   }
 `;
 
@@ -467,6 +479,15 @@ export const TemplatePhotosWrapper = styled.div`
     color: ${CV_WHITE};
     background: ${TCV_DEFAULT};
   }
+`;
+
+export const TemplatePhotoContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BG_GRAY}`,
+})`
+  width: 80%;
+  height: 87%;
+  margin-right: 10%;
+  ${FLEX_RCC}
 `;
 
 export const TemplateDescription = styled.div`

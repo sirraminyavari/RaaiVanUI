@@ -69,7 +69,7 @@
             that.ContainerDiv = elems["containerDiv"];
             if ((that.Options.Title || "") != "") {
                 elems["title"].style.marginBottom = "10px;";
-                elems["title"].innerHTML = that.Options.Title;
+                GlobalUtilities.set_text(elems["title"], that.Options.Title);
             }
 
             var SHOWEDDIALOG = GlobalUtilities.show(elems["container"]);
