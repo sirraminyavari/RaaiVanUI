@@ -1,24 +1,26 @@
+import { useContext } from 'react';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import Badge from 'components/Badge/Badge';
+import { decodeBase64 } from 'helpers/helpers';
+import { SideContext } from './SideColumn';
 
-const SideInfo = (props) => {
-  const { itemInfo } = props;
+const SideInfo = () => {
+  const { nodeDetails } = useContext(SideContext);
+
+  const { IconURL, NodeType, AdditionalID } = nodeDetails || {};
+
+  const nameHierarchy = NodeType?.Value.map((val) =>
+    decodeBase64(val?.Name)
+  ).join(' / ');
 
   return (
     <Styled.SideInfoContainer>
       <Styled.InfoImageWrapper>
-        <img
-          src={itemInfo?.imageURL || '../../images/Preview.png'}
-          alt="side-info-avatar"
-        />
+        <img src={IconURL?.Value} alt="side-info-avatar" />
       </Styled.InfoImageWrapper>
       <Styled.InfosWrapper>
-        <Styled.DocInfoTitle>
-          {itemInfo?.Title || 'بازاریابی / اسناد مارکتینگ'}
-        </Styled.DocInfoTitle>
-        <Styled.DocInfoID>
-          {itemInfo?.AdditionalID || '1400035892'}
-        </Styled.DocInfoID>
+        <Styled.DocInfoTitle>{nameHierarchy}</Styled.DocInfoTitle>
+        <Styled.DocInfoID>{AdditionalID}</Styled.DocInfoID>
         <Styled.DocTagsContainer>
           {/* {itemInfo?.Tags?.map(tag => ...)} */}
           <Badge className="doc-tags-badge" showText="فرم" />

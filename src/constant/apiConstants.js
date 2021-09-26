@@ -322,6 +322,18 @@ export const RENAME_NODE_TYPE = 'RenameNodeType';
  */
 export const REMOVE_NODE_TYPE = 'RemoveNodeType';
 /**
+ * @description 'RemoveNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const REMOVE_NODE = 'RemoveNode';
+/**
+ * @description 'RecycleNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const RECYCLE_NODE = 'RecycleNode';
+/**
  * @description 'MoveNodeType'
  * @mode API function
  * @class 'CNAPI'

@@ -78,7 +78,7 @@ const Collctor = ({
           <Space $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL} />
         )}
         <Side $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL}>
-          <SideColumn />
+          <SideColumn setSideColumn={setSideColumn} nodeDetails={nodeDetails} />
         </Side>
       </div>
     </Container>

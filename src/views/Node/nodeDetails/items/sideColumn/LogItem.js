@@ -3,7 +3,7 @@ import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import Avatar from 'components/Avatar/Avatar';
 
 const LogItem = (props) => {
-  const { icon: Icon, title, logData } = props;
+  const { icon: Icon, title, date, user } = props;
 
   return (
     <Styled.LogItemContainer>
@@ -13,11 +13,11 @@ const LogItem = (props) => {
       </Styled.LogWrapper>
       <Styled.LogWrapper end>
         <Styled.LogItemRecordDate>
-          {logData?.RecordDate || '1399/09/20 16:52'}
+          {date || '16:52 1400/06/03'}
         </Styled.LogItemRecordDate>
         <Avatar
           className="log-item-avatar"
-          userImage={'https://i.pravatar.cc/300'}
+          userImage={user?.ProfileImageURL || 'https://i.pravatar.cc/300'}
         />
       </Styled.LogWrapper>
     </Styled.LogItemContainer>

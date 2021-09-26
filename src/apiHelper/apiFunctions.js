@@ -51,6 +51,8 @@ import {
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
   GET_UPLOAD_LINK,
+  REMOVE_NODE,
+  RECYCLE_NODE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1200,6 +1202,62 @@ export const recoverNodeType = (nodeId) => {
       recoverNodeTypeAPI.fetch(
         {
           NodeTypeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Remove node.
+ * @param {String} nodeId -The id of the node.
+ * @param {Boolean} hierarchy - Should remove hierarchy or not?.
+ * @returns Promise.
+ */
+export const removeNode = (nodeId, hierarchy = false) => {
+  const removeNodeAPI = API_Provider(CN_API, REMOVE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recycle node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const recycleNode = (nodeId) => {
+  const recycleNodeAPI = API_Provider(CN_API, RECYCLE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recycleNodeAPI.fetch(
+        {
+          NodeID: nodeId,
         },
         (response) => {
           resolve(response);

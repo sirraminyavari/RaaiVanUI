@@ -25,6 +25,7 @@ import {
   FLEX_RCC,
   FLEX_RCE,
   FLEX_RCS,
+  FLEX_RSS,
 } from 'constant/StyledCommonCss';
 
 const { GlobalUtilities } = window;
@@ -130,6 +131,15 @@ export const SideColumnMaintainer = styled.div`
   .node-page-side-scrollbar {
     padding: 0.5rem 1rem;
     height: calc(100% - 3rem);
+  }
+
+  .node-page-side-modal-header {
+    height: 3rem;
+    padding: 0 0.7rem;
+  }
+
+  .node-page-side-modal-content {
+    max-height: calc(100vh - 4.5rem);
   }
 `;
 
@@ -263,10 +273,10 @@ export const LogItemContainer = styled.div`
   margin: 1rem 0;
 
   .log-item-avatar {
-    width: 2rem;
-    height: 2rem;
-    min-width: 2rem;
-    min-height: 2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    min-width: 2.2rem;
+    min-height: 2.2rem;
     border: none;
   }
 `;
@@ -294,7 +304,6 @@ export const LogItemTitle = styled.div.attrs({
 `;
 
 export const LogItemRecordDate = styled.div`
-  direction: ltr;
   width: 100%;
 `;
 
@@ -305,6 +314,7 @@ export const DocSettingContainer = styled.div.attrs({
   margin-top: 1.2rem;
   padding: 0.5rem;
   height: 6rem;
+  cursor: pointer;
 `;
 
 export const DocSettingTitle = styled.div.attrs({
@@ -312,4 +322,66 @@ export const DocSettingTitle = styled.div.attrs({
 })`
   margin: 1rem 0;
   font-size: 0.8rem;
+`;
+
+export const TimeLineContainer = styled.div`
+  max-height: calc(100vh - 11rem);
+`;
+
+export const TimeLineItemContainer = styled.div`
+  position: relative;
+  width: calc(100% - 2rem);
+  padding: 0 0.8rem 1rem 0;
+  margin-right: 1rem;
+  ${FLEX_RSS}
+
+  //! Circle
+  &::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: -0.7rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    border: 2px solid ${CV_DISTANT};
+  }
+
+  //! Vertical line
+  &::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    right: -0.1rem;
+    height: 3.6rem;
+    border: 1px solid ${CV_DISTANT};
+    ${({ isLast }) => isLast && 'display: none;'}
+  }
+`;
+
+export const TimeLineTitle = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  font-size: 1rem;
+  padding: 0.5rem;
+`;
+export const TimeLineDate = styled.div.attrs({
+  className: `${C_GRAY}`,
+})`
+  padding: 0 0.5rem;
+`;
+
+export const SettingContainer = styled.div`
+  padding: 1rem;
+
+  .side-setting-toggle {
+    margin: 1rem 0;
+    font-weight: 500;
+  }
+`;
+
+export const SecuritySelectWrapper = styled.div`
+  ${FLEX_RCB}
+  gap: 1rem;
+  padding: 0.5rem 1rem;
 `;

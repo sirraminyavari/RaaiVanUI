@@ -34,7 +34,10 @@ const Toggle = ({
 
   return (
     <Styled.ToggleContainer className={containerClass}>
-      <Styled.ToggleTitleWrapper className={titleClass} style={titleStyle}>
+      <Styled.ToggleTitleWrapper
+        disable={!!disable}
+        className={titleClass}
+        style={titleStyle}>
         {title}
       </Styled.ToggleTitleWrapper>
       <ToggleButton
