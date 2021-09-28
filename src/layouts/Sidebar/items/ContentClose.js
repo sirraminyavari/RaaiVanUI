@@ -180,7 +180,6 @@ const SidebarOnClose = ({ theme }) => {
             <div ref={containerRef}>
               {filteredSidebarNodes?.map((node, key) => {
                 const { TypeName, NodeTypeID, IconURL } = node;
-                console.log({ IconURL });
                 return (
                   <Tooltip
                     key={key}

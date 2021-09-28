@@ -434,10 +434,6 @@ export const TabsContainer = styled.div`
 export const MoreTopicsContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER}`,
 })`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
-  gap: 0.5rem;
-  justify-content: space-between;
   margin-top: 0.5rem;
   padding: ${({ isOpen }) => (isOpen ? '1rem' : '0')};
   width: 100%;
@@ -445,6 +441,24 @@ export const MoreTopicsContainer = styled.div.attrs({
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   transition: all 0.5s ease;
+
+  .more-topics-button {
+    width: 35%;
+    height: 2rem;
+    margin: auto;
+    margin-top: 1rem;
+
+    a {
+      color: ${CV_WHITE};
+    }
+  }
+`;
+
+export const MoreTopicsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
+  gap: 0.5rem;
+  justify-content: space-between;
 `;
 
 export const TabItemContainer = styled.div.attrs((props) => ({
@@ -456,6 +470,7 @@ export const TabItemContainer = styled.div.attrs((props) => ({
   height: 2.5rem;
   padding: 0 0.5rem;
   cursor: pointer;
+  ${({ hasMore }) => !!hasMore && 'border: none;'}
 
   .tab-item-tooltip {
     border-radius: 50%;

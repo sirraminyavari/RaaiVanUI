@@ -140,6 +140,8 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
       </Styled.Header>
       {!!NodeTypes?.length && (
         <LastTopicTabs
+          relatedTopicsLink={relatedTopicsLink}
+          showAll
           relatedNodes={relatedNodes}
           provideNodes={provideNodes}
         />

@@ -2,6 +2,7 @@ import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT, CV_RED } from 'constant/CssVariables';
+import { FLEX_RCB } from 'constant/StyledCommonCss';
 
 export const ShadowButton = styled(Button)`
   box-shadow: ${({ $isEnabled }) => $isEnabled && `1px 3px 20px ${CV_DISTANT}`};
@@ -32,6 +33,19 @@ export const BottomRow = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
+
+export const RelatedTopicsContainer = styled.div`
+  ${FLEX_RCB}
+  gap: 1rem;
+`;
+
+export const RelatedTopicsTitle = styled.div.attrs({
+  className: `${C_DISTANT}`,
+})`
+  padding: 0 1rem;
+  border-left: 1px solid ${CV_DISTANT};
+`;
+
 export const TopRow = styled.div`
   display: flex;
   flex-direction: row;
