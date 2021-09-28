@@ -10,6 +10,7 @@ import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import getIcon from 'utils/treeUtils/getItemIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { getURL } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
 const INDENT_PER_LEVEL = 27;
 
@@ -49,6 +50,7 @@ const selecteOnboardingName = createSelector(
  */
 const ReadableBranch = (props) => {
   const { itemProps } = props;
+  const { GlobalUtilities } = useWindow();
   const tree = useSelector(selectTree);
   const activePath = useSelector(selectActivePath);
   const onboardingName = useSelector(selecteOnboardingName);
@@ -89,7 +91,10 @@ const ReadableBranch = (props) => {
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage src={item?.data?.iconURL} alt="menu-icon" />
+            <Styled.MenuItemImage
+              src={GlobalUtilities.add_timestamp(item?.data?.iconURL)}
+              alt="menu-icon"
+            />
           )}
           <Styled.MenuTitle
             onClick={handleOnClick}
