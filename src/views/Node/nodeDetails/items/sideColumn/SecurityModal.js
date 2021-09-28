@@ -1,3 +1,6 @@
+/**
+ * Renders security modal content for node page side.
+ */
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 
@@ -15,8 +18,11 @@ const showItemOptions = [
 ];
 
 const Security = () => {
+  //! Keep track of security select.
   const handleSecurityChange = () => {};
+  //! Keep track of show item show select.
   const handleShowItemChange = () => {};
+  //! Keep track of item edition select.
   const handleEditItemChange = () => {};
 
   return (
