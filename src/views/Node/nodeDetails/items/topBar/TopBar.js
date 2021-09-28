@@ -126,6 +126,7 @@ const TopBar = ({
         <RelatedTopicsContainer>
           <RelatedTopicsTitle>موضوعات مرتبط</RelatedTopicsTitle>
           <LastTopicsTabs
+            floatBox
             provideNodes={onApplyNodeType && onApplyNodeType}
             relatedNodes={relatedNodes}
           />

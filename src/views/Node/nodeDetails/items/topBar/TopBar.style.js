@@ -2,7 +2,7 @@ import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT, CV_RED } from 'constant/CssVariables';
-import { FLEX_RCB } from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
 
 export const ShadowButton = styled(Button)`
   box-shadow: ${({ $isEnabled }) => $isEnabled && `1px 3px 20px ${CV_DISTANT}`};
@@ -44,6 +44,9 @@ export const RelatedTopicsTitle = styled.div.attrs({
 })`
   padding: 0 1rem;
   border-left: 1px solid ${CV_DISTANT};
+  min-width: 8rem;
+  height: 2rem;
+  ${FLEX_RCC}
 `;
 
 export const TopRow = styled.div`

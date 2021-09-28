@@ -11,7 +11,13 @@ const DEFAULT_TAB = 'all-classes';
 // const MORE_TAB = 'more-classes';
 
 const LastTopicsTabs = (props) => {
-  const { relatedNodes, provideNodes, showAll, relatedTopicsLink } = props;
+  const {
+    relatedNodes,
+    provideNodes,
+    showAll,
+    relatedTopicsLink,
+    floatBox,
+  } = props;
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
   // const { RVDic } = useWindow();
@@ -71,7 +77,7 @@ const LastTopicsTabs = (props) => {
   };
 
   return (
-    <div>
+    <Styled.TopicsTabsContainer>
       <Styled.TabsContainer>
         {!!showAll && (
           <TabItem
@@ -102,7 +108,7 @@ const LastTopicsTabs = (props) => {
           />
         )}
       </Styled.TabsContainer>
-      <Styled.MoreTopicsContainer isOpen={isMoreShown}>
+      <Styled.MoreTopicsContainer isOpen={isMoreShown} isFloat={!!floatBox}>
         <Styled.MoreTopicsWrapper>
           {sortedNodes?.map((item, index) => {
             if (index < 3) return null;
@@ -122,7 +128,7 @@ const LastTopicsTabs = (props) => {
           </Button>
         )}
       </Styled.MoreTopicsContainer>
-    </div>
+    </Styled.TopicsTabsContainer>
   );
 };
 
