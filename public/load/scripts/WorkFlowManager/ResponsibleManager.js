@@ -21,7 +21,7 @@
         
         var that = this;
 
-        GlobalUtilities.load_files([{ Root: "API/", Ext: "js", Childs: ["CNAPI", "WFAPI"] }], {
+        GlobalUtilities.load_files([{ Root: "API/", Ext: "js", Childs: ["CNAPI", "WFAPI", "UsersAPI"] }], {
             OnLoad: function () { that.initialize(); }
         });
     }
@@ -32,7 +32,7 @@
 
             that.Objects.State.Director = that.Objects.State.Director || {};
 
-            var types = ["SendToOwner", "ContentAdmin", "SpecificNode", "RefState", "None"];
+            var types = ["SendToOwner", "ContentAdmin", "SpecificNode", "RefState", "SpecificUser", "None"];
 
             var options = [];
 
@@ -120,36 +120,37 @@
 
                 var dr = that.Objects.State.Director || {};
                 var dType = dr.ResponseType;
-
+                
                 GlobalUtilities.create_nested_elements([
                     {
                         Type: "div", Style: "display:inline-block; font-weight:bold;",
                         Childs: [{ Type: "text", TextValue: RVDic.WF.DirectorTypes[dType] }]
                     },
-                    {
+                    ((dType != "SpecificUser") || !dr.FullName ? null : {
                         Type: "div", Class: "rv-air-button rv-border-radius-quarter",
-                        Style: "display:" + ((dType == "SpecificNode") && dr.NodeType ? "inline-block" : "none") + ";" +
-                            "font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
+                        Style: "display:inline-block; font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
+                        Childs: [{ Type: "text", TextValue: RVDic.RoleType + ": " + Base64.decode(dr.FullName) }]
+                    }),
+                    ((dType != "SpecificNode") || !dr.NodeType ? null : {
+                        Type: "div", Class: "rv-air-button rv-border-radius-quarter",
+                        Style: "display:inline-block; font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
                         Childs: [{ Type: "text", TextValue: RVDic.RoleType + ": " + Base64.decode(dr.NodeType) }]
-                    },
-                    {
+                    }),
+                    ((dType != "SpecificNode") || !dr.NodeName ? null : {
                         Type: "div", Class: "rv-air-button rv-border-radius-quarter",
-                        Style: "display:" + ((dType == "SpecificNode") && dr.NodeName ? "inline-block" : "none") + ";" +
-                            "font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
+                        Style: "display:inline-block; font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
                         Childs: [{ Type: "text", TextValue: RVDic.Role + ": " + Base64.decode(dr.NodeName) }]
-                    },
-                    {
+                    }),
+                    (((dType != "SpecificNode") && (dType != "None")) || !dr.Admin ? null : {
                         Type: "div", Class: "rv-air-button rv-border-radius-quarter",
-                        Style: "font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;" +
-                            "display:" + (((dType == "SpecificNode") || (dType == "None")) && dr.Admin ? "inline-block" : "none") + ";",
+                        Style: "display:inline-block; font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
                         Childs: [{ Type: "text", TextValue: RVDic.Admin }]
-                    },
-                    {
+                    }),
+                    ((dType != "RefState") || !dr.RefStateTitle ? null : {
                         Type: "div", Class: "rv-air-button rv-border-radius-quarter",
-                        Style: "display:" + ((dType == "RefState") && dr.RefStateTitle ? "inline-block" : "none") + ";" +
-                            "font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
+                        Style: "display:inline-block; font-size:0.7rem; font-weight:bold; margin-" + RV_Float + ":0.5rem;",
                         Childs: [{ Type: "text", TextValue: RVDic.State + ": " + Base64.decode(dr.RefStateTitle) }]
-                    }
+                    })
                 ], viewArea);
                 
                 for (var i in that.Interface.InfoItems) {
@@ -184,6 +185,9 @@
                         if (!data.NodeTypeID) return alert(RVDic.Checks.PleaseSelectN.replace("[n]", RVDic.RoleType));
                         else if (!data.NodeID) return alert(RVDic.Checks.PleaseSelectN.replace("[n]", RVDic.Role));
                     }
+                    else if (newResponseType == "SpecificUser") {
+                        if (!data.UserID) return alert(RVDic.Checks.PleaseSelectN.replace("[n]", RVDic.User));
+                    }
                     
                     GlobalUtilities.block(that.ContainerDiv);
 
@@ -194,6 +198,7 @@
                         RefStateID: GlobalUtilities.get_type(data.RefStateID) == "undefined" ? dr.RefStateID : data.RefStateID,
                         DirectorNodeID: GlobalUtilities.get_type(data.NodeID) == "undefined" ? dr.NodeID : data.NodeID,
                         Admin: GlobalUtilities.get_type(data.Admin) == "undefined" ? dr.Admin : data.Admin,
+                        DirectorUserID: GlobalUtilities.get_type(data.UserID) == "undefined" ? dr.UserID : data.UserID,
                         ParseResults: true,
                         ResponseHandler: function (result) {
                             if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
@@ -366,6 +371,44 @@
 
                     if (dr.Admin) elems["chbAdmin"].Check({ StopOnChange: true });
                     else elems["chbAdmin"].Uncheck({ StopOnChange: true });
+                }
+            };
+        },
+
+        responsible_info_specificuser: function (container) {
+            var that = this;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 meium-12 large-4", Name: "user"
+            }], container);
+
+            var userSelect = GlobalUtilities.append_autosuggest(elems["user"], {
+                InputClass: "rv-input",
+                InputStyle: "width:100%; font-size:0.7rem;",
+                InnerTitle: RVDic.UserSelect + "...",
+                AjaxDataSource: UsersAPI.GetUsersDataSource(),
+                ResponseParser: function (responseText) {
+                    return (JSON.parse(responseText).Users || []).map(usr => {
+                        var fullname = GlobalUtilities.trim((Base64.decode(usr.FirstName) || " ") + " " +
+                            (Base64.decode(usr.LastName) || " "));
+
+                        return [fullname, usr.UserID];
+                    });
+                }
+            });
+
+            return {
+                get_data: function () {
+                    var index = userSelect.selectedIndex;
+
+                    return {
+                        UserID: index >= 0 ? userSelect.values[index] : null,
+                        FullName: index >= 0 ? Base64.encode(userSelect.keywords[index]) : null
+                    };
+                },
+                set_data: function () {
+                    var dr = that.Objects.State.Director || {};
+                    if (dr.UserID) userSelect.set_item(dr.UserID, Base64.decode(dr.FullName));
                 }
             };
         },

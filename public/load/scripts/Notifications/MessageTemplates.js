@@ -279,8 +279,8 @@
                 bodyTextArea.innerHTML = !_bt ? RVDic.DescriptionIsEmpty : "";
                 if (_bt) GlobalUtilities.append_markup_text(bodyTextArea, _bt);
 
-                infoArea.innerHTML = RVDic.NTFN.AudienceTypes[audienceType] + (audienceType == "SpecificNode" ?
-                    " - " + item.AudienceNodeName + (item.AudienceNodeAdmin === true ? " - " + RVDic.Admin : "") : "");
+                GlobalUtilities.set_text(infoArea, RVDic.NTFN.AudienceTypes[audienceType] + (audienceType == "SpecificNode" ?
+                    " - " + item.AudienceNodeName + (item.AudienceNodeAdmin === true ? " - " + RVDic.Admin : "") : ""));
             };
 
             var _on_edit = function () {

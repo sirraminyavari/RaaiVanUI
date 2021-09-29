@@ -198,10 +198,15 @@
                 that.Objects.IsAddEdgeMode = true;
 
                 jQuery(elems["optionsArea"]).fadeOut(500, function () {
-                    elems["reservedState"].innerHTML = "<span style='color:rgb(80,80,80); font-weight:normal;" +
-                        "margin-" + RV_RevFloat + ":0.5rem;'>" + RVDic.State + ":</span>" +
-                        GlobalUtilities.convert_numbers_to_persian(
-                        GlobalUtilities.secure_string(Base64.decode(that.Objects.Nodes[stateId].Title)));
+                    elems["reservedState"].innerHTML = "";
+
+                    GlobalUtilities.create_nested_elements([
+                        {
+                            Type: "span", Style: "color:rgb(80,80,80); font-weight:normal; margin-" + RV_RevFloat + ":0.5rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.State + ":" }]
+                        },
+                        { Type: "text", TextValue: GlobalUtilities.secure_string(Base64.decode(that.Objects.Nodes[stateId].Title)) }
+                    ], elems["reservedState"]);
 
                     that.set_to_option();
                     jQuery(elems["newEdgeArea"]).fadeIn(500, function () { that.FadingToNewEdge = false; });
@@ -333,9 +338,19 @@
             var stateTitle = Base64.decode((that.Objects.Nodes[nodeId] || {}).Title);
             if (stateTitle) stateTitle = GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.secure_string(stateTitle));
 
-            that.Interface.ToOption.innerHTML = "<span style='color:rgb(80,80,80); font-weight:normal;" +
-                "margin-" + RV_RevFloat + ":0.5rem;'>" + RVDic.Option + ":</span>" +
-                "<span style='" + (stateTitle ? "" : "color:red;") + "'>" + (stateTitle || RVDic.NotSet) + "</span>";
+            that.Interface.ToOption.innerHTML = "";
+
+            GlobalUtilities.create_nested_elements([
+                {
+                    Type: "span", Style: "color:rgb(80,80,80); font-weight:normal; margin-" + RV_RevFloat + ":0.5rem;",
+                    Childs: [{ Type: "text", TextValue: RVDic.Option + ":" }]
+                },
+                {
+                    Type: "span", Style: stateTitle ? "" : "color:red;",
+                    Childs: [{ Type: "text", TextValue: stateTitle || RVDic.NotSet }]
+                }
+            ], that.Interface.ToOption);
+
 
             jQuery(that.Interface.Buttons.AddEdge)[nodeId ? "fadeIn" : "fadeOut"](nodeId ? 500 : 0);
         },

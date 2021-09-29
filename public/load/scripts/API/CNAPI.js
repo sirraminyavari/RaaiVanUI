@@ -358,18 +358,20 @@
         params = params || {};
 
         params.NodeTypeIDs = params.NodeTypeIDs || params.NodeTypeID;
+        params.RelatedToIDs = params.RelatedToIDs || params.RelatedToNodeID;
+        params.CreatorUserIDs = params.CreatorUserIDs || params.CreatorUserID;
 
         var url = CNAPI.ResponseURL + "/GetNodes?timeStamp=" + new Date().getTime();
         var queryString = (params.NodeIDs ? "&NodeIDs=" + params.NodeIDs : "") +
             (params.NodeTypeIDs ? "&NodeTypeIDs=" + params.NodeTypeIDs : "") +
             (GlobalUtilities.get_type(params.UseNodeTypeHierarchy) == "boolean" ?
                 "&UseNodeTypeHierarchy=" + params.UseNodeTypeHierarchy : "") +
-            (params.RelatedToNodeID ? "&RelatedToNodeID=" + params.RelatedToNodeID : "") +
+            (params.RelatedToIDs ? "&RelatedToIDs=" + params.RelatedToIDs : "") +
             (params.SearchText ? "&SearchText=" + params.SearchText : "") +
             (GlobalUtilities.get_type(params.IsDocument) == "boolean" ? "&IsDocument=" + params.IsDocument : "") +
             (GlobalUtilities.get_type(params.IsKnowledge) == "boolean" ? "&IsKnowledge=" + params.IsKnowledge : "") +
             (GlobalUtilities.get_type(params.IsMine) == "boolean" ? "&IsMine=" + params.IsMine : "") +
-            (params.CreatorUserID ? "&CreatorUserID=" + params.CreatorUserID : "") +
+            (params.CreatorUserIDs ? "&CreatorUserIDs=" + params.CreatorUserIDs : "") +
             (GlobalUtilities.get_type(params.Archive) == "boolean" ? "&Archive=" + params.Archive : "") +
             (GlobalUtilities.get_type(params.Searchable) == "boolean" ? "&Searchable=" + params.Searchable : "") +
             (params.CreatedFromNDaysAgo ? "&CreatedFromNDaysAgo=" + params.CreatedFromNDaysAgo : "") +
@@ -378,6 +380,9 @@
             (params.CreationDateTo ? "&CreationDateTo=" + params.CreationDateTo : "") +
             (params.Count ? "&Count=" + params.Count : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +
+            (GlobalUtilities.get_type(params.IsFavorite) == "boolean" ? "&IsFavorite=" + params.IsFavorite : "") +
+            (GlobalUtilities.get_type(params.IsGroup) == "boolean" ? "&IsGroup=" + params.IsGroup : "") +
+            (GlobalUtilities.get_type(params.IsExpertiseDomain) == "boolean" ? "&IsExpertiseDomain=" + params.IsExpertiseDomain : "") +
             (params.FormFilters ? "&FormFilters=" + params.FormFilters : "") +
             (params.MatchAllFilters ? "&MatchAllFilters=" + params.MatchAllFilters : "") +
             (params.FetchCounts ? "&FetchCounts=" + params.FetchCounts : "") +
@@ -696,9 +701,6 @@
             (params.SearchText ? "&SearchText=" + params.SearchText : "") +
             (GlobalUtilities.get_type(params.IsDocument) == "boolean" ? "&IsDocument=" + params.IsDocument : "") +
             (params.HasChild ? "&HasChild=" + params.HasChild : "") +
-            (params.RelatedToNodeID ? "&RelatedToNodeID=" + params.RelatedToNodeID : "") +
-            (params.CreatorUserID ? "&CreatorUserID=" + params.CreatorUserID : "") +
-            (params.FormFilters ? "&FormFilters=" + params.FormFilters : "") +
             (params.LowerDateLimit ? "&LowerDateLimit=" + params.LowerDateLimit : "") +
             (params.UpperDateLimit ? "&UpperDateLimit=" + params.UpperDateLimit : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +

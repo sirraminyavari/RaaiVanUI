@@ -264,7 +264,8 @@
 
             var _set_data = function () {
                 var fullname = GlobalUtilities.trim(firstName + " " + lastName);
-                viewArea.innerHTML = fullname || RVDic.NotSet;
+
+                GlobalUtilities.set_text(viewArea, fullname || RVDic.NotSet);
 
                 firstNameInput.value = firstName;
                 lastNameInput.value = lastName;
@@ -458,8 +459,15 @@
             var editButton = _el["editButton"];
 
             var _set_data = function () {
-                viewArea.innerHTML = "<span>" + RVDic.JobTitle + ":</span><span style='font-weight:bold;" +
-                    "margin-" + RV_Float + ":0.5rem;'>" + (jobTitle || RVDic.NotSet) + "</span>";
+                viewArea.innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    { Type: "span", Childs: [{ Type: "text", TextValue: RVDic.JobTitle + ":" }] },
+                    {
+                        Type: "span", Style: "font-weight:bold; margin-" + RV_Float + ":0.5rem;",
+                        Childs: [{ Type: "text", TextValue: jobTitle || RVDic.NotSet }]
+                    }
+                ], viewArea);
 
                 jobTitleInput.value = jobTitle;
             };
@@ -633,7 +641,7 @@
                 if (!editable) return;
 
                 var set_things = function () {
-                    numberDiv.innerHTML = GlobalUtilities.convert_numbers_to_persian(phoneNumber.Number);
+                    GlobalUtilities.set_text(numberDiv, GlobalUtilities.convert_numbers_to_persian(phoneNumber.Number));
                     numberInput.value = phoneNumber.Number;
                     typeTextDiv.innerHTML = RVDic[phoneNumber.Type] || phoneNumber.Type;
 
@@ -895,7 +903,7 @@
                 if (!editable) return;
 
                 var set_things = function () {
-                    addressTextDiv.innerHTML = GlobalUtilities.convert_numbers_to_persian(email.Email);
+                    GlobalUtilities.set_text(addressTextDiv, GlobalUtilities.convert_numbers_to_persian(email.Email));
                     addressInput.value = email.Email;
 
                     addressTextDiv.style.display = editButton.__Editing ? "none" : "block";

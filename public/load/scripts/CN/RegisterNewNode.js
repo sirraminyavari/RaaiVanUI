@@ -1352,7 +1352,7 @@
                 }
             ], container);
 
-            _el["treeTitle"].innerHTML = tree.Name;
+            GlobalUtilities.set_text(_el["treeTitle"], tree.Name);
 
             var iconName = RV_RTL ? "fa-angle-double-left" : "fa-angle-double-right";
 

@@ -133,7 +133,7 @@
             });
 
             var _set_data = function () {
-                formView.innerHTML = !formTitle ? RVDic.NotSet : formTitle;
+                GlobalUtilities.set_text(formView, !formTitle ? RVDic.NotSet : formTitle);
                 elementLimits.style.display = !formId || that.Options.DisableElementLimits ? "none" : "inline-block";
                 if (formId) formSelect.set_item(formId, formTitle);
             }

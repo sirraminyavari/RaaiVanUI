@@ -223,7 +223,7 @@
             var titleInput = elems["titleInput"];
 
             var _set_data = function () {
-                viewArea.innerHTML = GlobalUtilities.get_text_begining(title, 2000) || RVDic.NotSet;
+                GlobalUtilities.set_text(viewArea, GlobalUtilities.get_text_begining(title, 2000) || RVDic.NotSet);
                 titleInput.value = title;
             };
 

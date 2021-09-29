@@ -431,9 +431,15 @@
                 }
             ], container)["_div"];
 
-            _div.innerHTML = "<span>" + Base64.decode(node.Name) + "</span>" +
-                "<span class='rv-gray' style='margin-" + RV_Float + ":0.3rem;'>(" +
-                Base64.decode(node.NodeType || node.TypeName) + ")</span>";
+            _div.innerHTML = "";
+
+            GlobalUtilities.create_nested_elements([
+                { Type: "span", Childs: [{ Type: "text", TextValue: Base64.decode(node.Name) }] },
+                {
+                    Type: "span", Class: "rv-gray", Style: "margin-" + RV_Float + ":0.3rem;",
+                    Childs: [{ Type: "text", TextValue: "(" + Base64.decode(node.NodeType || node.TypeName) + ")" }]
+                }
+            ], _div);
         },
 
         search_options: function () {

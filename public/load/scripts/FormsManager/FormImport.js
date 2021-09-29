@@ -262,7 +262,7 @@
             };
 
             map.SetName = function () {
-                elems["name"].innerHTML = GlobalUtilities.convert_numbers_to_persian(Base64.decode(map.Value.MapName));
+                GlobalUtilities.set_text(elems["name"], GlobalUtilities.convert_numbers_to_persian(Base64.decode(map.Value.MapName)));
             };
 
             map.UnSelect = function () { elems["checkbox"].uncheck({ StopOnChange: true }); };
@@ -678,7 +678,9 @@
 
                 that.save_map(map, function (m) {
                     jQuery(elems["title"]).fadeIn(0);
-                    elems["title"].innerHTML = GlobalUtilities.convert_numbers_to_persian(Base64.decode(((m || {}).Value || {}).MapName));
+
+                    GlobalUtilities.set_text(elems["title"],
+                        GlobalUtilities.convert_numbers_to_persian(Base64.decode(((m || {}).Value || {}).MapName)));
 
                     onSave(m);
                 });

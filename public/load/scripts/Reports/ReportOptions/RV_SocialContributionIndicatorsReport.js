@@ -118,7 +118,11 @@
 
             return {
                 CreatorNodeTypeID: creatorNodeTypeId, _Title_CreatorNodeTypeID: creatorNodeType,
-                CreatorNodeIDs: this.Objects.NodesList.get_items_string("|"),
+                CreatorNodeIDs: Base64.encode(JSON.stringify({
+                    Name: "GuidTableType",
+                    Types: { Value: "Guid" },
+                    Items: that.Objects.NodesList.get_items().map((itm) => ({ Value: itm.ID }))
+                })),
                 BeginDate: beginDate.Value || "",
                 _Title_BeginDate: beginDate.Label || "",
                 FinishDate: finishDate.Value || "",
@@ -132,6 +136,24 @@
             this.Objects.ShowPersonalItemsSelect.selectedIndex = 0;
             if (this.Objects.BeginDate) this.Objects.BeginDate.Clear();
             if (this.Objects.FinishDate) this.Objects.FinishDate.Clear();
+        },
+
+        chart_date_from: function (value, title) {
+            if (value && title) {
+                if (this.Objects.BeginDate)
+                    this.Objects.BeginDate.Set({ Value: value, Label: title });
+            }
+            else
+                return (this.Objects.BeginDate || { Get: function () { return {} } }).Get();
+        },
+
+        chart_date_to: function (value, title) {
+            if (value && title) {
+                if (this.Objects.FinishDate)
+                    this.Objects.FinishDate.Set({ Value: value, Label: title });
+            }
+            else
+                return (this.Objects.FinishDate || { Get: function () { return {} } }).Get();
         }
     }
 })();

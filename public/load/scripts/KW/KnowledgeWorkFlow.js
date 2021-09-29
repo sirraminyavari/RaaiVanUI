@@ -472,6 +472,7 @@
                 KnowledgeAPI.GetHistory({
                     KnowledgeID: that.Objects.NodeID, ParseResults: true,
                     ResponseHandler: function (results) {
+                        console.log(results);
                         histArea.innerHTML = "";
                         
                         if ((results || []).length) jQuery(_el["line"]).fadeIn(500);

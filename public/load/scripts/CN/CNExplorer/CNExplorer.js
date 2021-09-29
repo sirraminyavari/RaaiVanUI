@@ -2158,7 +2158,7 @@
             theItem = GlobalUtilities.extend(theItem || {}, {
                 Rename: function (newName) {
                     if (_div.nameData) _div.nameData.data = GlobalUtilities.convert_numbers_to_persian(newName);
-                    else if (_div.name) _div.name.innerHTML = GlobalUtilities.convert_numbers_to_persian(newName);
+                    else if (_div.name) GlobalUtilities.set_text(_div.name, GlobalUtilities.convert_numbers_to_persian(newName));
 
                     theItem.Item.Name = newName;
                 },

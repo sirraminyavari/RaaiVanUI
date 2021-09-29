@@ -313,11 +313,20 @@ autosuggest.prototype = {
     },
 
     _set_cell: function (cell, text) {
-        this.__Trimed = this.__Trimed || {};
-        var trimed = this.__Trimed[text] ||
-            (this.__Trimed[text] = GlobalUtilities.trim2pix(text, $(this.field).width() - 10, { Postfix: "..." }));
-        cell.innerHTML = text;
-        if (text != trimed) GlobalUtilities.append_tooltip(cell, text);
+        cell.innerHTML = "";
+
+        text = GlobalUtilities.get_type(text) == "string" ? { pre: text } : text;
+
+        GlobalUtilities.create_nested_elements([
+            (!text.pre ? null : { Type: "text", TextValue: text.pre }),
+            (!text.marked ? null : {
+                Type: "span", Style: "text-decoration:underline;",
+                Childs: [{ Type: "text", TextValue: text.marked }]
+            }),
+            (!text.post ? null : { Type: "text", TextValue: text.post })
+        ], cell);
+
+        GlobalUtilities.append_tooltip(cell, cell.innerText || cell.textContent);
     },
 
     set_selected: function (row, selected) {
@@ -376,15 +385,13 @@ autosuggest.prototype = {
         if (!n || !n.length) return "";
         if (!plen) return n;
 
-        var tobuild = [], c = 0, p = n.search(re);
+        var p = n.search(re);
 
-        tobuild[c++] = n.substr(0, p);
-        tobuild[c++] = "<span style=\"text-decoration: underline;\">";
-        tobuild[c++] = n.substring(p, plen + p);
-        tobuild[c++] = "</span>";
-        tobuild[c++] = n.substring(plen + p, n.length);
-
-        return tobuild.join("");
+        return {
+            pre: n.substr(0, p),
+            marked: n.substring(p, plen + p),
+            post: n.substring(plen + p, n.length)
+        };
     },
 
     build: function () {

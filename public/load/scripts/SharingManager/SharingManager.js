@@ -1285,8 +1285,16 @@
 
             var _set_desc = function (desc) {
                 desc = GlobalUtilities.get_text_begining(Base64.decode(desc), 40, "...");
-                var pre = (isPost ? "" : "<span style='margin-" + RV_RevFloat + ":0.3rem; color:blue;'>" + RVDic.Comment + ":</span>");
-                elems["desc"].innerHTML = pre + GlobalUtilities.convert_numbers_to_persian(desc);
+
+                elems["desc"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    (isPost ? null : {
+                        Type: "span", Style: "margin-" + RV_RevFloat + ":0.3rem; color:blue;",
+                        Childs: [{ Type: "text", TextValue: RVDic.Comment }]
+                    }),
+                    { Type: "text", TextValue: GlobalUtilities.convert_numbers_to_persian(desc) }
+                ], elems["desc"]);
             };
 
             _set_desc(description);
