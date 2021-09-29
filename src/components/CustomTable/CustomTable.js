@@ -53,7 +53,6 @@ const CustomTable = (props) => {
     getCellProps = defaultPropGetter,
   } = props;
 
-  console.log(columns.filter((col) => !!col.isRequired));
   const requiredColumns = columns.filter((col) => !!col.isRequired);
 
   const [selectedCell, setSelectedCell] = useState(null);

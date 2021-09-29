@@ -2,6 +2,7 @@ import { utils } from 'react-modern-calendar-datepicker';
 import Cookie from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
+import moment from 'jalali-moment';
 
 const { GlobalUtilities, RVAPI } = window;
 
@@ -83,6 +84,23 @@ export const reorder = (list, startIndex, endIndex) => {
  */
 export const getToday = (lang = getLanguage()) => {
   return utils(lang).getToday();
+};
+
+/**
+ * @description Get week day.
+ * @param {String} date -The date of the day(eg. 2020/01/01).
+ * @returns Today's date.
+ */
+export const getWeekDay = (date) => {
+  let d = new Date();
+
+  if (date) {
+    d = new Date(date);
+  }
+
+  const weekDay = d.toLocaleString(getLanguage(), { weekday: 'long' });
+
+  return weekDay;
 };
 
 /**
@@ -221,4 +239,26 @@ export const getCaptchaToken = async () => {
  */
 export const validateFileUpload = (files, types) => {
   return types.includes(files[0]?.type);
+};
+
+/**
+ * @description Change english date to persian date.
+ * @param {String} date -English date.
+ * @param {String} [format] - Format of the date.
+ * @returns String
+ */
+export const engToPerDate = (date, format = 'YYYY/MM/DD') => {
+  if (!date) return;
+  return moment(date, format).locale('fa').format(format);
+};
+
+/**
+ * @description Change persian date to english date.
+ * @param {String} date -Persian date.
+ * @param {String} [format] - Format of the date.
+ * @returns String
+ */
+export const perToEngDate = (date, format = 'YYYY/MM/DD') => {
+  if (!date) return;
+  return moment.from(date, 'fa', format).format(format);
 };

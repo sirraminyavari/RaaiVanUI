@@ -1,36 +1,58 @@
+import { useState } from 'react';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from './DateCell.styles';
+import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
+import { engToPerDate, getWeekDay } from 'helpers/helpers';
 
 const DateCell = (props) => {
   // console.log('dateCell', props);
+  const [dateValue, setDateValue] = useState(props?.value?.date);
 
-  const { isNew } = props;
+  const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
+
+  const { isNew, row } = props;
 
   const handleDateSelect = (date) => {
-    console.log(date);
+    // console.log(date);
+    setDateValue(date);
   };
 
   if (!props?.editable && !isNew) {
-    return <div>{props?.value?.date}</div>;
+    return <div>{engToPerDate(dateValue)}</div>;
   }
 
   if (!props?.header?.options?.editable) {
-    return <div>{props?.value?.date}</div>;
+    return <div>{engToPerDate(dateValue)}</div>;
   }
 
   return (
-    <Styled.DateCellContainer isNew={isNew}>
-      <CustomDatePicker
-        label="انتخاب کنید"
-        mode="input"
-        type="jalali"
-        range={false}
-        size="small"
-        value={!!isNew ? null : props?.value?.date}
-        onDateSelect={handleDateSelect}
-        inputClass="table-date-input"
-      />
-    </Styled.DateCellContainer>
+    <ToolTip
+      arrowColor="transparent"
+      backgroundColor="transparent"
+      clickable
+      multiline
+      event="click"
+      effect="solid"
+      type="dark"
+      offset={{ bottom: -150 }}
+      renderContent={() => (
+        <CustomDatePicker
+          label="انتخاب کنید"
+          mode="button"
+          type="jalali"
+          range={false}
+          size="small"
+          justCalendar
+          value={!!isNew ? null : dateValue}
+          onDateSelect={handleDateSelect}
+          inputClass="table-date-input"
+        />
+      )}
+      tipId={`table-date-${row?.index}`}>
+      <Styled.DateCellContainer isNew={isNew}>
+        {dateValue ? showFormat : 'انتخاب کنید'}
+      </Styled.DateCellContainer>
+    </ToolTip>
   );
 };
 

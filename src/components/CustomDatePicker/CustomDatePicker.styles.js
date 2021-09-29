@@ -24,15 +24,16 @@ export const CalendarConatiner = styled.div`
     position: relative;
     display: inline-block;
     width: 100%;
-    z-index: 100;
+    z-index: 3000;
   }
 
   .Calendar {
     box-shadow: 0px 10px 40px #2023314d;
+    color: black !important;
   }
 
   .Calendar__header {
-    padding-top: 2.5rem;
+    ${({ hasFooter }) => hasFooter && 'padding-top: 1.5rem;'}
   }
 
   .Calendar__weekDays {
@@ -148,7 +149,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -7.5rem !important;
-    height: 19.8rem;
+    height: ${({ hasFooter }) => (hasFooter ? '19.8rem' : '15.8rem')};
   }
 
   .medium-calendar {
@@ -156,7 +157,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -9rem !important;
-    height: 23.2rem;
+    height: ${({ hasFooter }) => (hasFooter ? '23.2rem' : '20.2rem')};
   }
 
   .large-calendar {
@@ -164,7 +165,7 @@ export const CalendarConatiner = styled.div`
     position: absolute !important;
     left: 50% !important;
     margin-left: -10.5rem !important;
-    height: 26.5rem;
+    height: ${({ hasFooter }) => (hasFooter ? '26.5rem' : '23.5rem')};
   }
 `;
 
