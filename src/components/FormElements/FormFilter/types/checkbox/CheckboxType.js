@@ -33,8 +33,7 @@ const CheckboxType = (props) => {
 
   const { GlobalUtilities } = useWindow();
 
-  const { Options, AutoSuggestMode } =
-    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+  const { Options } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
 
   //! Checkbox options.
   const options = (Options || []).map((option) => ({
@@ -95,19 +94,11 @@ const CheckboxType = (props) => {
   return (
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      {AutoSuggestMode ? (
-        <Checkbox
-          options={options}
-          onSelect={handleOnItemSelect}
-          selecteds={value?.TextItems}
-        />
-      ) : (
-        <Checkbox
-          options={options}
-          onSelect={handleOnItemSelect}
-          selecteds={value?.TextItems}
-        />
-      )}
+      <Checkbox
+        options={options}
+        onSelect={handleOnItemSelect}
+        selecteds={value?.TextItems}
+      />
       <Styled.ExactOrFiltersWrapper>
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />

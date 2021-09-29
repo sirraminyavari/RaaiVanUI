@@ -8,7 +8,7 @@ import {
   CATEGORY_CONTENT,
   MAIN_CONTENT,
 } from '../../TemplatesGallery';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { activateTemplate, getTemplatesJSON } from 'apiHelper/apiFunctions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
@@ -57,8 +57,9 @@ const TemplateDescription = () => {
     getTemplatesJSON(currentTemplate?.NodeTypeID)
       .then((response) => {
         if (response?.Template) {
+          const template = encodeBase64(JSON.stringify(response?.Template));
           //! Then, activate the template.
-          activateTemplate(response?.Template)
+          activateTemplate(template)
             .then((res) => {
               console.log(res);
               setIsActivating(false);

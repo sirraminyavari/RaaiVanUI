@@ -23,12 +23,11 @@ import useWindow from 'hooks/useWindowContext';
  * @param {PropType} props -Props that are passed to component.
  */
 const SelectType = (props) => {
-  const { RVDic, GlobalUtilities } = useWindow();
+  const { GlobalUtilities } = useWindow();
 
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
-  const { Options, AutoSuggestMode } =
-    GlobalUtilities.to_json(decodeBase64(Info)) || {};
+  const { Options } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
 
   const [items, setItems] = useState(!!value ? value?.TextItems : []);
   const [exact, setExact] = useState(!!value ? value?.Exact : false);
@@ -83,15 +82,11 @@ const SelectType = (props) => {
   return (
     <Styled.SelectContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      {AutoSuggestMode ? (
-        <div>Radio check</div>
-      ) : (
-        <Checkbox
-          options={options}
-          onSelect={handleOnChange}
-          selecteds={value?.TextItems}
-        />
-      )}
+      <Checkbox
+        options={options}
+        onSelect={handleOnChange}
+        selecteds={value?.TextItems}
+      />
       <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
     </Styled.SelectContainer>
   );
