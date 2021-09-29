@@ -371,6 +371,12 @@ export const GET_RELATED_NODES_ABSTRACT = 'GetRelatedNodesAbstract';
  */
 export const GET_NODES = 'GetNodes';
 /**
+ * @description 'GetNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODE = 'GetNode';
+/**
  * @description 'GetNodeInfo'
  * @mode API function
  * @class 'CNAPI'
@@ -418,6 +424,13 @@ export const GET_CHILD_NODE_TYPES = 'GetChildNodeTypes';
  * @class 'CNAPI'
  */
 export const ADD_NODE_TYPE = 'AddNodeType';
+
+/**
+ * @description 'SetNodeSearchability'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const SET_NODE_SEARCHABILITY = 'SetNodeSearchability';
 
 //* #################################
 //* ############ NotificationsAPI ########

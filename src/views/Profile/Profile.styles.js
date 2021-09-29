@@ -403,6 +403,7 @@ export const LastTopicsList = styled.div`
 
 export const Header = styled.header`
   ${FLEX_RCB}
+  margin-bottom: 1rem;
 
   .see-all-button {
     background-color: transparent;
@@ -423,28 +424,60 @@ export const Title = styled.span`
   color: ${CV_GRAY};
 `;
 
+export const TopicsTabsContainer = styled.div`
+  position: relative;
+  user-select: none;
+`;
+
 export const TabsContainer = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
   gap: 0.5rem;
   justify-content: space-between;
-  margin-top: 1rem;
 `;
+
+const getFloatCss = ({ isFloat }) => {
+  return (
+    isFloat &&
+    css`
+      position: absolute;
+      z-index: 3999;
+    `
+  );
+};
 
 export const MoreTopicsContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER}`,
 })`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
-  gap: 0.5rem;
-  justify-content: space-between;
   margin-top: 0.5rem;
   padding: ${({ isOpen }) => (isOpen ? '1rem' : '0')};
   width: 100%;
+  background-color: ${CV_WHITE};
   max-height: ${({ isOpen }) => (isOpen ? '10.4rem' : '0')};
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   transition: all 0.5s ease;
+
+  ${getFloatCss}
+
+  .more-topics-button {
+    width: 35%;
+    height: 2rem;
+    margin: auto;
+    margin-top: 1rem;
+
+    a {
+      color: ${CV_WHITE};
+    }
+  }
+`;
+
+export const MoreTopicsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, auto));
+  gap: 0.5rem;
+  justify-content: space-between;
 `;
 
 export const TabItemContainer = styled.div.attrs((props) => ({
@@ -456,6 +489,7 @@ export const TabItemContainer = styled.div.attrs((props) => ({
   height: 2.5rem;
   padding: 0 0.5rem;
   cursor: pointer;
+  ${({ hasMore }) => !!hasMore && 'border: none;'}
 
   .tab-item-tooltip {
     border-radius: 50%;

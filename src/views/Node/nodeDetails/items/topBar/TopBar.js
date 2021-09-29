@@ -27,6 +27,8 @@ import {
   ViewCount,
   CounterBookmarkContainer,
   Space,
+  RelatedTopicsContainer,
+  RelatedTopicsTitle,
 } from './TopBar.style';
 
 const { RVDic, RVAPI, RV_RTL, RVGlobal } = window || {};
@@ -121,10 +123,14 @@ const TopBar = ({
       </TopRow>
 
       <BottomRow>
-        <LastTopicsTabs
-          provideNodes={onApplyNodeType && onApplyNodeType}
-          relatedNodes={relatedNodes}
-        />
+        <RelatedTopicsContainer>
+          <RelatedTopicsTitle>موضوعات مرتبط</RelatedTopicsTitle>
+          <LastTopicsTabs
+            floatBox
+            provideNodes={onApplyNodeType && onApplyNodeType}
+            relatedNodes={relatedNodes}
+          />
+        </RelatedTopicsContainer>
         <Space />
         <ShadowButton
           onMouseEnter={() => setSideDetailsHover(true)}

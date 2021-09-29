@@ -53,6 +53,8 @@ import {
   GET_UPLOAD_LINK,
   REMOVE_NODE,
   RECYCLE_NODE,
+  SET_NODE_SEARCHABILITY,
+  GET_NODE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1130,6 +1132,33 @@ export const getNodeTypes = (searchText, archive = false, count = '') => {
 };
 
 /**
+ * @description Get node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const getNode = (nodeId) => {
+  const getNodeAPI = API_Provider(CN_API, GET_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Add node type.
  * @param {String} name -The name of the node.
  * @param {String} parentId -The id of the parent of the node.
@@ -1287,6 +1316,35 @@ export const getUploadLink = (ownerId = '', ownerType = '') => {
         {
           OwnerID: ownerId,
           OwnerType: ownerType,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set node searchability.
+ * @param {String} nodeId -The id of node.
+ * @param {Boolean} searchable -Make it searchable or not.
+ * @returns Promise.
+ */
+export const setNodeSearchability = (nodeId, searchable) => {
+  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setNodeSearchabilityAPI.fetch(
+        {
+          NodeID: nodeId,
+          Searchable: searchable,
         },
         (response) => {
           resolve(response);

@@ -1,3 +1,6 @@
+/**
+ * Renders a header for every section in node page side.
+ */
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import { TCV_DEFAULT } from 'constant/CssVariables';

@@ -1,3 +1,6 @@
+/**
+ * Renders header for node age side.
+ */
 import { useContext } from 'react';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import useWindow from 'hooks/useWindowContext';
@@ -81,6 +84,7 @@ const SideHeader = () => {
       });
   };
 
+  //! Provide action for header.
   const Actions = () => {
     return (
       <Styled.SideActionItemWrapper

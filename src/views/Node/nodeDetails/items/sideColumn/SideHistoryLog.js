@@ -1,3 +1,6 @@
+/**
+ * Renders History log section for node page side.
+ */
 import { useContext } from 'react';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import DocItemHeader from './DocItemHeader';
@@ -10,6 +13,7 @@ const SideHistoryLog = () => {
 
   const { CreationDate, Creator } = nodeDetails || {};
 
+  //! Show history log modal on click.
   const handleLogClick = () => {
     setSideModal((prev) => ({
       ...prev,
