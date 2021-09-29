@@ -53,6 +53,9 @@ const CustomTable = (props) => {
     getCellProps = defaultPropGetter,
   } = props;
 
+  console.log(columns.filter((col) => !!col.isRequired));
+  const requiredColumns = columns.filter((col) => !!col.isRequired);
+
   const [selectedCell, setSelectedCell] = useState(null);
   const [confirm, setConfirm] = useState({
     show: false,
@@ -262,9 +265,14 @@ const CustomTable = (props) => {
                   <Styled.TableHeader
                     {...column.getHeaderProps(column.getSortByToggleProps())}>
                     <Styled.HeaderWrapper canSort={column.canSort}>
-                      {column.render('Header')}
-                      {/* <span>*</span>  */}
-                      {console.log(column)}
+                      <div>
+                        {column.render('Header')}
+                        {requiredColumns
+                          .map((col) => col?.Header)
+                          .includes(column?.Header) && (
+                          <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
+                        )}
+                      </div>
                       <>
                         {column.isSorted ? (
                           column.isSortedDesc ? (

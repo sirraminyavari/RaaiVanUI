@@ -150,6 +150,10 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
+export const HeaderAsterisk = styled.span`
+  color: ${CV_RED};
+`;
+
 export const Tr = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
   // :not(:first-child) {
