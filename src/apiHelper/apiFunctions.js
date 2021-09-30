@@ -51,6 +51,10 @@ import {
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
   GET_UPLOAD_LINK,
+  REMOVE_NODE,
+  RECYCLE_NODE,
+  SET_NODE_SEARCHABILITY,
+  GET_NODE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1128,6 +1132,33 @@ export const getNodeTypes = (searchText, archive = false, count = '') => {
 };
 
 /**
+ * @description Get node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const getNode = (nodeId) => {
+  const getNodeAPI = API_Provider(CN_API, GET_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Add node type.
  * @param {String} name -The name of the node.
  * @param {String} parentId -The id of the parent of the node.
@@ -1215,6 +1246,62 @@ export const recoverNodeType = (nodeId) => {
 };
 
 /**
+ * @description Remove node.
+ * @param {String} nodeId -The id of the node.
+ * @param {Boolean} hierarchy - Should remove hierarchy or not?.
+ * @returns Promise.
+ */
+export const removeNode = (nodeId, hierarchy = false) => {
+  const removeNodeAPI = API_Provider(CN_API, REMOVE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recycle node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const recycleNode = (nodeId) => {
+  const recycleNodeAPI = API_Provider(CN_API, RECYCLE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recycleNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Get upload link.
  * @param {String} ownerId -The id of owner.
  * @param {String} ownerType -The type of owner.
@@ -1229,6 +1316,35 @@ export const getUploadLink = (ownerId = '', ownerType = '') => {
         {
           OwnerID: ownerId,
           OwnerType: ownerType,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set node searchability.
+ * @param {String} nodeId -The id of node.
+ * @param {Boolean} searchable -Make it searchable or not.
+ * @returns Promise.
+ */
+export const setNodeSearchability = (nodeId, searchable) => {
+  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setNodeSearchabilityAPI.fetch(
+        {
+          NodeID: nodeId,
+          Searchable: searchable,
         },
         (response) => {
           resolve(response);

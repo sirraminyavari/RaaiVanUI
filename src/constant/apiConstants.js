@@ -322,6 +322,18 @@ export const RENAME_NODE_TYPE = 'RenameNodeType';
  */
 export const REMOVE_NODE_TYPE = 'RemoveNodeType';
 /**
+ * @description 'RemoveNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const REMOVE_NODE = 'RemoveNode';
+/**
+ * @description 'RecycleNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const RECYCLE_NODE = 'RecycleNode';
+/**
  * @description 'MoveNodeType'
  * @mode API function
  * @class 'CNAPI'
@@ -358,6 +370,12 @@ export const GET_RELATED_NODES_ABSTRACT = 'GetRelatedNodesAbstract';
  * @class 'CNAPI'
  */
 export const GET_NODES = 'GetNodes';
+/**
+ * @description 'GetNode'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_NODE = 'GetNode';
 /**
  * @description 'GetNodeInfo'
  * @mode API function
@@ -406,6 +424,13 @@ export const GET_CHILD_NODE_TYPES = 'GetChildNodeTypes';
  * @class 'CNAPI'
  */
 export const ADD_NODE_TYPE = 'AddNodeType';
+
+/**
+ * @description 'SetNodeSearchability'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const SET_NODE_SEARCHABILITY = 'SetNodeSearchability';
 
 //* #################################
 //* ############ NotificationsAPI ########

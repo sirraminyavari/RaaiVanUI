@@ -35,7 +35,7 @@ const Creators = ({ creatorsList }) => {
               {creatorsList?.length === 2 ? (
                 <MultiCreator>
                   <Profile
-                    style={{ zIndex: `${GlobalUtilities.zindex.alert()}` }}
+                    // style={{ zIndex: `${GlobalUtilities.zindex.alert()}` }}
                     src={creatorsList[0].avatar}
                     isSaas={false}
                   />
@@ -89,7 +89,7 @@ const Profile = styled.img`
   border-radius: 1.5rem;
   width: auto;
   height: auto;
-  z-index: ${GlobalUtilities.zindex.alert()};
+  // z-index: ${GlobalUtilities.zindex.alert()};
 `;
 const Others = styled.div`
   width: 2.5rem;

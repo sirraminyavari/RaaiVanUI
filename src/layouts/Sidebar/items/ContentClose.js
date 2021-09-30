@@ -29,7 +29,7 @@ const SidebarOnClose = ({ theme }) => {
   const listRef = useRef();
   const containerRef = useRef();
   const [hasArrow, setHasArrow] = useState(false);
-  const { RVDic, RV_RevFloat, RV_Float } = useWindow();
+  const { RVDic, RV_RevFloat, RV_Float, GlobalUtilities } = useWindow();
   //! Stores scroll value
   const [scroll, setScroll] = useState(0);
   //! If true, scroll is at the very bottom, If not, its not!
@@ -194,7 +194,7 @@ const SidebarOnClose = ({ theme }) => {
                       to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
                       {!!IconURL && (
                         <Styled.MenuItemImage
-                          src={IconURL}
+                          src={GlobalUtilities.add_timestamp(IconURL)}
                           alt="sidebar-icon-closed"
                         />
                       )}

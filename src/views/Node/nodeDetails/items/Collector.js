@@ -1,7 +1,7 @@
 /**
  * A component for advanced searching
  */
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import {
   Container,
@@ -13,8 +13,13 @@ import {
   Space,
 } from '../NodeDetails.style';
 import MainNode from './MainNode';
-import SideColumn from './SideColumn';
 import TopBar from './topBar/TopBar';
+
+const SideColumn = lazy(() =>
+  import(
+    /* webpackChunkName: "node-page-side-column"*/ './sideColumn/SideColumn'
+  )
+);
 
 const { RVDic, RVGlobal, RV_RTL, RV_RevFloat } = window;
 /**
@@ -78,7 +83,14 @@ const Collctor = ({
           <Space $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL} />
         )}
         <Side $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL}>
-          <SideColumn />
+          <Suspense fallback={<div>Loading...</div>}>
+            {sideColumn && (
+              <SideColumn
+                setSideColumn={setSideColumn}
+                nodeDetails={nodeDetails}
+              />
+            )}
+          </Suspense>
         </Side>
       </div>
     </Container>

@@ -18,6 +18,7 @@ import {
 } from 'store/actions/sidebar/sidebarMenuAction';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import getIcon from 'utils/treeUtils/getItemIcon';
+import useWindow from 'hooks/useWindowContext';
 
 const INDENT_PER_LEVEL = 27;
 
@@ -53,6 +54,7 @@ const selectTree = createSelector(
  */
 const EditableBranch = (props) => {
   const { itemProps } = props;
+  const { GlobalUtilities } = useWindow();
 
   const {
     item,
@@ -132,7 +134,10 @@ const EditableBranch = (props) => {
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage src={item?.data?.iconURL} alt="menu-icon" />
+            <Styled.MenuItemImage
+              src={GlobalUtilities.add_timestamp(item?.data?.iconURL)}
+              alt="menu-icon"
+            />
           )}
           <Styled.MenuTitle>
             <InlineEdit
