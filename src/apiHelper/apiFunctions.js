@@ -50,6 +50,7 @@ import {
   GET_NODE_TYPES,
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
+  GET_UPLOAD_LINK,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
