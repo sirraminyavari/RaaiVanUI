@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import getIcon from 'utils/treeUtils/getItemIcon';
 import * as Styled from './TemplatesGallery.styles';
 import {
@@ -15,11 +15,25 @@ const TemplateListItem = ({ itemProps }) => {
     setContent,
     setCurrentCategory,
     setCurrentTemplate,
-    currentTemplate,
-    currentCategory,
+    // currentTemplate,
+    // currentCategory,
   } = useContext(TemplatesGalleryContext);
+  const [isSelected, setIsSelected] = useState(false);
 
-  const handleClickItem = () => {
+  const handleClickIcon = () => {
+    console.log(item);
+
+    //! Handle item open and close.
+    if (item?.isExpanded) {
+      onCollapse(item?.id);
+      item?.isCategory && setIsSelected(false);
+    } else {
+      onExpand(item?.id);
+      item?.isCategory && setIsSelected(true);
+    }
+  };
+
+  const handleClickTitle = () => {
     //! Change content.
     if (item?.isCategory) {
       setContent({ name: CATEGORY_CONTENT, data: item?.data?.rawData });
@@ -30,25 +44,17 @@ const TemplateListItem = ({ itemProps }) => {
       setCurrentTemplate(item?.data?.rawData);
     }
 
-    //! Handle item open and close.
-    if (item?.isExpanded) {
-      onCollapse(item?.id);
-    } else {
-      onExpand(item?.id);
-    }
+    handleClickIcon();
   };
-
-  const itemIsSelected =
-    currentTemplate?.NodeID === item?.id ||
-    (currentCategory?.NodeTypeID === item?.id && !currentTemplate);
 
   return (
     <Styled.TemplateItemWrapper
       indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
-      onClick={handleClickItem}
       ref={provided.innerRef}>
       {item?.isCategory ? (
-        <Styled.TemplateIconWrapper isExpanded={item?.isExpanded}>
+        <Styled.TemplateIconWrapper
+          onClick={handleClickIcon}
+          isExpanded={item?.isExpanded}>
           {getIcon(item)}
         </Styled.TemplateIconWrapper>
       ) : (
@@ -58,7 +64,9 @@ const TemplateListItem = ({ itemProps }) => {
           alt="template-logo"
         />
       )}
-      <Styled.TemplateItemTitle isSelected={itemIsSelected}>
+      <Styled.TemplateItemTitle
+        onClick={handleClickTitle}
+        isSelected={isSelected}>
         {item?.data?.title}
       </Styled.TemplateItemTitle>
     </Styled.TemplateItemWrapper>

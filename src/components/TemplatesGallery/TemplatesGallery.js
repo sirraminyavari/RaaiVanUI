@@ -79,6 +79,7 @@ const TemplatesGallery = (props) => {
         <Modal
           contentWidth="70%"
           titleContainerClass="templates-modal-title-container"
+          contentClass="templates-modal-content"
           show={isOpen}
           onClose={onModalClose}>
           <Styled.ModalContentWrapper>
