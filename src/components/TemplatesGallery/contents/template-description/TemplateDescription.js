@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import * as Styled from '../../TemplatesGallery.styles';
-import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
+// import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import Button from 'components/Buttons/Button';
 import {
@@ -12,6 +12,9 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { activateTemplate, getTemplatesJSON } from 'apiHelper/apiFunctions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import LottieMaker from 'components/LottieMaker/LottieMaker';
+import LottieJson from 'assets/lotties/big-data-analysis.json';
+import Heading from 'components/Heading/Heading';
 
 const TemplateDescription = () => {
   const {
@@ -105,7 +108,11 @@ const TemplateDescription = () => {
         <Styled.TemplateTitleInDescription>
           {decodeBase64(currentTemplate?.TypeName)}
         </Styled.TemplateTitleInDescription>
-        <Styled.TemplatePhotosWrapper>
+        <LottieMaker animationJSON={LottieJson} loop autoplay width={'12rem'} />
+        <Heading type="h4">
+          تمپلیت های قابل ویرایش را بزودی در همین صفحه خواهید دید!
+        </Heading>
+        {/* <Styled.TemplatePhotosWrapper>
           <CustomSwiper
             pagination
             grabCursor
@@ -121,7 +128,7 @@ const TemplateDescription = () => {
               );
             })}
           </CustomSwiper>
-        </Styled.TemplatePhotosWrapper>
+        </Styled.TemplatePhotosWrapper> */}
         <Button
           loading={isActivating}
           onClick={handleActivateTemplate}
@@ -129,7 +136,7 @@ const TemplateDescription = () => {
           استفاده از این قالب
         </Button>
         <Styled.TemplateDescription>
-          {currentTemplate?.Description || 'Template Description'}
+          {decodeBase64(currentTemplate?.Description) || 'Template Description'}
         </Styled.TemplateDescription>
       </Styled.TemplateDescriptionWrapper>
     </PerfectScrollbar>
