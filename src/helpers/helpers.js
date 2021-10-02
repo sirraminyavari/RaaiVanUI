@@ -262,3 +262,22 @@ export const perToEngDate = (date, format = 'YYYY/MM/DD') => {
   if (!date) return;
   return moment.from(date, 'fa', format).format(format);
 };
+
+/**
+ * @description Format localized relative date.
+ * @param {String} value -Date(e.g: '2020-02-02').
+ * @param {String} [local] - The local language.
+ * @returns String
+ */
+export const formatDeltaDays = (value, local = getLanguage()) => {
+  if (!value) return;
+  const date = new Date(value);
+  const deltaDays = (date.getTime() - Date.now()) / (1000 * 3600 * 24);
+  const formatter = new Intl.RelativeTimeFormat(local);
+
+  if (Math.round(deltaDays) === 0) {
+    return window?.RVDic?.Today || 'امروز';
+  }
+
+  return formatter.format(Math.round(deltaDays), 'days');
+};

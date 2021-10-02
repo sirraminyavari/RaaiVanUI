@@ -11,11 +11,14 @@ import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import RowActions from './RowAction';
 import * as Styled from './CustomTable.styles';
 
+const { RV_Float, RV_RevFloat } = window;
+
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
     case 'action':
       return {
+        sticky: 'left',
         Cell: (cell) => {
           return (
             <ToolTip
@@ -23,10 +26,11 @@ const provideCell = (header) => {
               multiline
               effect="solid"
               event="click"
-              place="left"
+              place={RV_RevFloat}
               type="dark"
               disable={!cell?.editable}
               clickable
+              offset={{ [RV_Float]: -27 }}
               arrowColor="transparent"
               className="table-row-action-tooltip"
               renderContent={() => <RowActions cell={cell} />}>
@@ -39,6 +43,7 @@ const provideCell = (header) => {
       };
     case 'index':
       return {
+        sticky: 'left',
         Cell: (cell) => (
           <Styled.TableRowIndex>{cell?.row.index + 1}</Styled.TableRowIndex>
         ),

@@ -6,12 +6,13 @@ import { engToPerDate, getWeekDay } from 'helpers/helpers';
 
 const DateCell = (props) => {
   // console.log('dateCell', props);
+  const { isNew, row } = props;
   const [dateValue, setDateValue] = useState(props?.value?.date);
 
+  //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
 
-  const { isNew, row } = props;
-
+  //! Update date on select.
   const handleDateSelect = (date) => {
     // console.log(date);
     setDateValue(date);
@@ -37,7 +38,6 @@ const DateCell = (props) => {
       offset={{ bottom: -150 }}
       renderContent={() => (
         <CustomDatePicker
-          label="انتخاب کنید"
           mode="button"
           type="jalali"
           range={false}
@@ -45,7 +45,6 @@ const DateCell = (props) => {
           justCalendar
           value={!!isNew ? null : dateValue}
           onDateSelect={handleDateSelect}
-          inputClass="table-date-input"
         />
       )}
       tipId={`table-date-${row?.index}`}>

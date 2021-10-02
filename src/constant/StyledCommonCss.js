@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import { CV_GRAY, CV_GRAY_DARK } from './CssVariables';
 
 const FLEX_COLUMN = css`
   display: flex;
@@ -135,4 +136,32 @@ export const FLEX_RSB = css`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+`;
+
+/**
+ * @description 'Add scrollbar'
+ * @Direction 'Horizontal'
+ */
+export const HorizontalScrollbar = css`
+  scroll-behavior: smooth;
+  scrollbar-height: 0.45rem; /*! Firefox */
+
+  /*! Show scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: block;
+    height: 0.45rem;
+  }
+
+  &::-webkit-scrollbar-track:hover {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${CV_GRAY};
+    border-radius: 1rem;
+
+    :hover {
+      background-color: ${CV_GRAY_DARK};
+    }
+  }
 `;

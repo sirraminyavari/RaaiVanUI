@@ -6,6 +6,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
+import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
@@ -189,7 +190,8 @@ const CustomTable = (props) => {
     useFlexLayout,
     useResizeColumns,
     useSortBy,
-    usePagination
+    usePagination,
+    useSticky
   );
 
   tableInstance.state = {
@@ -250,12 +252,7 @@ const CustomTable = (props) => {
         onClose={handleOnModalClose}>
         {getModalContent()}
       </Modal>
-      <div
-        style={{
-          border: '1px solid #333',
-          overflow: 'auto',
-          marginTop: '3rem',
-        }}>
+      <Styled.TableWrapper>
         <Styled.Table {...getTableProps()}>
           <div>
             {headerGroups.map((headerGroup) => (
@@ -394,7 +391,7 @@ const CustomTable = (props) => {
             </Styled.FooterContainer>
           )}
         </Styled.Table>
-      </div>
+      </Styled.TableWrapper>
       {!!pagination && reachedPaginationThreshold && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
