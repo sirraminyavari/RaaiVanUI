@@ -127,7 +127,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day + 1}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '',
     place: {
@@ -155,7 +155,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day - 1}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '123456',
     place: {
@@ -239,7 +239,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day + 2}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '123456',
     place: {

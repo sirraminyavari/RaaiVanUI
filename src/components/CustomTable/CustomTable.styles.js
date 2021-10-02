@@ -19,10 +19,11 @@ import {
   FLEX_RCC,
   FLEX_RCE,
   FLEX_RCS,
+  HorizontalScrollbar,
 } from 'constant/StyledCommonCss';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 
-const { RV_RevFloat } = window;
+const { RV_RevFloat, RV_Float } = window;
 
 export const selectStyles = {
   control: (styles) => ({
@@ -86,11 +87,34 @@ export const TableContainer = styled.div`
   // overflow-x: auto;
 `;
 
+export const TableWrapper = styled.div`
+  // border: 1px solid #333;
+  overflow-x: scroll;
+  margin-top: 3rem;
+
+  :hover {
+    ${HorizontalScrollbar}
+  }
+`;
+
 export const Table = styled.div`
   border-spacing: 0;
   margin: 0.5rem;
   margin-right: 0;
   user-select: none;
+
+  [data-sticky-td] {
+    position: fixed;
+    ${RV_Float}: 0;
+    background-color: ${CV_WHITE};
+  }
+
+  [data-sticky-last-left-td] {
+    position: fixed;
+    ${RV_Float}: 1.7rem;
+    background-color: ${CV_WHITE};
+    border-left: 1px solid ${CV_DISTANT};
+  }
 `;
 
 export const TableBody = styled.div`
@@ -148,6 +172,10 @@ export const HeaderWrapper = styled.div`
     position: absolute;
     ${RV_RevFloat}: 0.3rem;
   }
+`;
+
+export const HeaderAsterisk = styled.span`
+  color: ${CV_RED};
 `;
 
 export const Tr = styled.div`

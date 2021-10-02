@@ -462,7 +462,7 @@ const FilterBar = ({
             label={RVDic?.SelectDate}
             mode="button"
             type="jalali"
-            clearButton
+            hasFooter
             range
             headerTitle="فیلتر تاریخ ایجاد"
             onChangeVisibility={setCalendarPickerClicked}

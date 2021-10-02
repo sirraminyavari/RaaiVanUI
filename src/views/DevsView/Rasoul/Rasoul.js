@@ -125,7 +125,7 @@ const headers = [
     title: 'گیرنده نامه',
     accessor: 'place',
     dataType: 'binary',
-    options: { editable: true, disableSortBy: true },
+    options: { editable: true, disableSortBy: true, isRequired: true },
   },
   {
     id: '8',
