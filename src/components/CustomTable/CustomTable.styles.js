@@ -92,9 +92,7 @@ export const TableWrapper = styled.div`
   overflow-x: scroll;
   margin-top: 3rem;
 
-  :hover {
-    ${HorizontalScrollbar}
-  }
+  ${HorizontalScrollbar}
 `;
 
 export const Table = styled.div`
