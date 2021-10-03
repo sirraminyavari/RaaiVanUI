@@ -8,12 +8,12 @@ import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
 import { cropIcon } from 'apiHelper/apiFunctions';
 import { loginSlice } from 'store/reducers/loginReducer';
-import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
+import { DOCS_API, UPLOAD_AND_CROP_ICON } from 'constant/apiConstants';
 import { API_Provider } from 'helpers/helpers';
 
 const { setAuthUser } = loginSlice.actions;
 
-const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
+const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
 
 //! Common styles for crop image modal buttons.
 const ButtonsCommonStyles = { width: '6rem', height: '2rem' };
@@ -53,6 +53,18 @@ const EditModal = (props) => {
 
     let formData = new FormData();
     formData.append('file', modalProps.file);
+
+    formData.append('IconID', id);
+    formData.append('Type', 'ProfileImage');
+
+    formData.append('x', croppedAreaPixels?.x || croppedAreaPixels?.X);
+    formData.append('y', croppedAreaPixels?.y || croppedAreaPixels?.Y);
+    formData.append('w', croppedAreaPixels?.width || croppedAreaPixels?.Width);
+    formData.append(
+      'h',
+      croppedAreaPixels?.height || croppedAreaPixels?.Height
+    );
+
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -63,33 +75,23 @@ const EditModal = (props) => {
     axios
       .post(profileURL, formData, config)
       .then((response) => {
-        // console.log(response);
         setIsSavingImage(false);
-        //! Save cropped profile dimensions on the server.
-        if (response?.data?.success) {
-          cropIcon(id, 'ProfileImage', croppedAreaPixels)
-            .then((res) => {
-              // console.log('crop response: ', res);
-              const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-              setCroppedImage(newImageURL);
-              dispatch(
-                setAuthUser({
-                  ...window.RVGlobal?.CurrentUser,
-                  ProfileImageURL: newImageURL,
-                })
-              );
-              setIsSavingImage(false);
-              handleCloseModal();
+
+        let res = response?.data || {};
+
+        if (res.ImageURL) {
+          const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
+          setCroppedImage(newImageURL);
+
+          dispatch(
+            setAuthUser({
+              ...window.RVGlobal?.CurrentUser,
+              ProfileImageURL: newImageURL,
             })
-            .catch((err) => {
-              dispatch(
-                setAuthUser({
-                  ...window.RVGlobal?.CurrentUser,
-                  ProfileImageURL: response.data.Message.ImageURL,
-                })
-              );
-              console.log(err);
-            });
+          );
+
+          setIsSavingImage(false);
+          handleCloseModal();
         }
       })
       .catch((error) => {
