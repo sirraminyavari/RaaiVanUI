@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
-import { FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
-  CV_FREEZED,
   CV_GRAY_DARK,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
-  TCV_WARM,
 } from 'constant/CssVariables';
 
 const { GlobalUtilities } = window;
@@ -19,6 +17,7 @@ export const FileCellContainer = styled.div.attrs({
 })`
   width: 100%;
   height: 90%;
+  max-height: 2.5rem;
   padding: 0 0.5rem;
   ${FLEX_RCB}
 `;
@@ -37,12 +36,12 @@ export const FileInfoWrapper = styled.div`
   a[data-title]:hover::after {
     content: attr(data-title);
     position: absolute;
-    padding: 0.5rem;
+    padding: 0 0.5rem;
     font-size: 0.9rem;
     border-radius: 0.2rem;
     background-color: ${CV_GRAY_DARK};
     color: ${CV_WHITE};
-    top: -2.3rem;
+    top: -2rem;
     z-index: ${GlobalUtilities.zindex.dialog()};
     left: 50%;
     transform: translate(-50%, 0);
@@ -66,6 +65,7 @@ export const FileInfoWrapper = styled.div`
 
 export const FileLinkWrapper = styled.div`
   width: 100%;
+  height: 100%;
   font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
@@ -73,6 +73,7 @@ export const FileLinkWrapper = styled.div`
   padding: 0 0.3rem;
   margin-right: 0.3rem;
   border-right: 1px solid ${CV_DISTANT};
+  line-height: 2rem;
 
   a {
     color: ${TCV_VERYWARM};

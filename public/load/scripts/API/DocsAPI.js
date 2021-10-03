@@ -93,6 +93,20 @@
         return DocsAPI._send(url, params, queryString);
     },
 
+    UploadAndCropIcon: function (params) {
+        params = params || {};
+
+        var url = DocsAPI.UploadHandler + "/UploadAndCropIcon?timeStamp=" + new Date().getTime();
+        var queryString = (params.IconID ? "&IconID=" + params.IconID : "") +
+            (params.UserID ? "&UserID=" + params.UserID : "") +
+            (params.Type ? "&Type=" + params.Type : "") +
+            (GlobalUtilities.get_type(params.X) == "number" ? "&X=" + params.X : "") +
+            (GlobalUtilities.get_type(params.Y) == "number" ? "&Y=" + params.Y : "") +
+            (GlobalUtilities.get_type(+params.Width) == "number" ? "&Width=" + params.Width : "") +
+            (GlobalUtilities.get_type(+params.Height) == "number" ? "&Height=" + params.Height : "");
+        return DocsAPI._send(url, params, queryString);
+    },
+
     CreateTree: function (params) {
         params = params || {};
 

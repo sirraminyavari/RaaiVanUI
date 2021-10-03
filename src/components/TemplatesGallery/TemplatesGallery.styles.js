@@ -55,8 +55,14 @@ const commonScrollCss = css`
 
 export const TemplateGalleryContainer = styled.div`
   user-select: none;
+
   .templates-modal-title-container {
     display: none;
+  }
+
+  .templates-modal-content {
+    margin-top: 2rem;
+    height: calc(100% - 5rem);
   }
 `;
 
@@ -96,6 +102,7 @@ export const GalleryInfosContainer = styled.div`
   width: 75%;
   height: 100%;
   padding: 0.7rem;
+  padding-${RV_Float}: 1.5rem;
 
   .swiper-container {
     width: 100%;
@@ -110,12 +117,27 @@ export const GalleryInfosContainer = styled.div`
   .template-category-scrollbar {
     ${commonScrollCss}
   }
+
+  .template-back-button {
+    width: 5rem;
+    height: 1.4rem;
+    margin: 1rem 0 2rem 0;
+    position: absolute;
+    top: -0.5rem;
+    border-color: transparent;
+    background-color: transparent;
+    ${RV_RevFloat}: 1rem;
+
+    :hover {
+      border-color: ${CV_RED};
+    }
+  }
 `;
 
 export const ModalTitle = styled.div.attrs({
   className: `${C_DISTANT}`,
 })`
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 `;
 
@@ -136,6 +158,7 @@ export const SuggestionListTitle = styled.div.attrs({
   font-weight: 500;
   margin: 1rem 0;
   cursor: pointer;
+  ${FLEX_RCB}
 `;
 
 const getWidth = ({ mode }) => {
@@ -156,6 +179,7 @@ export const TemplateCardContainer = styled.div.attrs({
   min-height: 7.5rem;
   padding: 0.7rem;
   position: relative;
+  ${({ clickable }) => !!clickable && 'cursor: pointer;'}
 
   .card-tags-tooltip {
     width: 9rem;
@@ -190,8 +214,8 @@ export const CardBadgeContainer = styled.div`
 `;
 
 export const CardTagTitle = styled.div`
-  font-size: 0.95rem;
-  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  padding: 0.15rem 0.5rem;
   border-radius: 1rem;
   background-color: ${TCV_VERY_TRANSPARENT};
   width: auto;
@@ -238,6 +262,7 @@ export const ExtraTagWrapper = styled.div.attrs({
 export const TemplateCardTitle = styled.div.attrs({
   className: `${TC_DEFAULT}`,
 })`
+  font-size: 0.9rem;
   margin: 0.5rem 0;
   white-space: nowrap;
   overflow: hidden;
@@ -265,7 +290,7 @@ export const MainContentTitle = styled.div.attrs({
 })`
   font-size: 1.2rem;
   font-weight: 500;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
 `;
 
 export const MainContentExcerpt = styled.div.attrs({
@@ -286,6 +311,7 @@ export const MainContentDescription = styled.div.attrs({
 
 export const MainContentInputWrapper = styled.div`
   position: relative;
+  margin: 1.5rem 0;
 
   :focus-within svg {
     color: ${TCV_DEFAULT} !important;
@@ -322,7 +348,7 @@ export const MainContentSwiperSection = styled.div.attrs({
   className: `${TC_DEFAULT}`,
 })`
   position: relative;
-  bottom: 2rem;
+  bottom: 1rem;
 
   .swiper-scrollbar {
     bottom: 0rem !important;
@@ -367,7 +393,12 @@ export const TemplateIconWrapper = styled.span`
 
 export const TemplateItemTitle = styled.span`
   margin-${RV_Float}: 0.2rem;
-  ${({ isSelected }) => isSelected && `color: ${TCV_DEFAULT};`}
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+      color: ${CV_BLACK};
+      font-weight: 500;
+  `}
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -375,16 +406,15 @@ export const TemplateItemTitle = styled.span`
 
 export const CategoryContentContainer = styled.div`
   margin-top: 2.5rem;
-  height: 100%;
+  height: calc(100% - 2.5rem);
 `;
 const commonTitleStyle = css`
   color: ${TCV_WARM};
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 500;
 `;
 export const CategoryTitle = styled.div`
-  ${commonTitleStyle}
-  margin:  0 1.5rem 2rem 0;
+  margin: 0 1.5rem 2rem 0;
 `;
 
 export const CategoryDescription = styled.div`
@@ -409,7 +439,11 @@ export const SubCategoryContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 2rem;
-  padding: 0 1.5rem;
+  // padding: 0 1.5rem;
+
+  .template-category-card {
+    min-width: 100%;
+  }
 `;
 
 export const TemplateDescriptionContainer = styled.div`
@@ -421,21 +455,6 @@ export const TemplateDescriptionContainer = styled.div`
 export const TemplateDescriptionWrapper = styled.div`
   position: relative;
   ${FLEX_CCC}
-
-  .template-back-button {
-    width: 5rem;
-    height: 1.4rem;
-    margin: 1rem 0 2rem 0;
-    position: absolute;
-    top: -0.5rem;
-    border-color: transparent;
-    background-color: transparent;
-    ${RV_RevFloat}: 1rem;
-
-    :hover {
-      border-color: ${CV_RED};
-    }
-  }
 
   .activate-template-button {
     width: 15rem;

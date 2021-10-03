@@ -82,6 +82,14 @@ const fakeData = [
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام اول فایل طولانی',
     },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -110,6 +118,14 @@ const fakeData = [
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام دوم فایل طولانی',
     },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -127,7 +143,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day + 1}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '',
     place: {
@@ -137,6 +153,14 @@ const fakeData = [
     microsoftFile: {
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام سوم فایل طولانی',
+    },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -155,7 +179,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day - 1}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '123456',
     place: {
@@ -165,6 +189,14 @@ const fakeData = [
     microsoftFile: {
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام چهارم فایل طولانی',
+    },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -194,6 +226,14 @@ const fakeData = [
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام پنجم فایل طولانی',
     },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -222,6 +262,14 @@ const fakeData = [
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام ششم فایل طولانی',
     },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -239,7 +287,7 @@ const fakeData = [
       defaultValues: getDeafultValues(2),
     },
     revisionDate: {
-      date: `${year}/${month}/${day + 2}`,
+      date: `${year}/${month}/${day}`,
     },
     docNumber: '123456',
     place: {
@@ -249,6 +297,14 @@ const fakeData = [
     microsoftFile: {
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام هفتم فایل طولانی',
+    },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
     },
     recordInfo: {
       recordDate: getRecordDate(),
@@ -278,6 +334,14 @@ const fakeData = [
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: ' نام هشتم فایل طولانی نام هشتم فایل طولانی',
     },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
     recordInfo: {
       recordDate: getRecordDate(),
       userImageURL: '',
@@ -305,6 +369,14 @@ const fakeData = [
     microsoftFile: {
       fileURL: '/data/API List for Rasoul.pdf',
       fileTitle: 'نام نهم فایل طولانی',
+    },
+    topic: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
+    },
+    user: {
+      fileURL: '/data/API List for Rasoul.pdf',
+      fileTitle: 'نام اول فایل طولانی',
     },
     recordInfo: {
       recordDate: getRecordDate(),

@@ -21,10 +21,12 @@ const SubCategoryList = ({ items }) => {
       {items?.map((item) => {
         return (
           <TemplateCard
+            clickable
             onClickCard={handleClickCard}
             mode="grid"
             template={item}
             key={item?.NodeTypeID}
+            containerClass="template-category-card"
           />
         );
       })}

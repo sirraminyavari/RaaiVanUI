@@ -4,6 +4,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import TooltipContent from './CardTooltipContent';
 import Button from 'components/Buttons/Button';
+// import Heading from 'components/Heading/Heading';
 
 const TemplateCard = ({
   template,
@@ -12,6 +13,7 @@ const TemplateCard = ({
   onClickCard,
   isTransition,
   isArchive,
+  clickable,
   onRestore,
 }) => {
   let firstTag, extraTags;
@@ -35,6 +37,7 @@ const TemplateCard = ({
 
   return (
     <Styled.TemplateCardContainer
+      clickable={!!clickable}
       className={containerClass}
       mode={mode}
       onClick={handleClickCard}>
@@ -81,7 +84,8 @@ const TemplateCard = ({
         {decodeBase64(template?.TypeName)}
       </Styled.TemplateCardTitle>
       <Styled.TemplateCardExcerpt>
-        {template?.Description || 'توضیحات مربوط به قالب اینجا قرار می گیرد'}
+        {decodeBase64(template?.Description) ||
+          'توضیحات مربوط به قالب اینجا قرار می گیرد'}
       </Styled.TemplateCardExcerpt>
     </Styled.TemplateCardContainer>
   );

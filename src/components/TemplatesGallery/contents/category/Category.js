@@ -4,20 +4,39 @@ import SubCategoryList from './SubCategoryList';
 import { TemplatesGalleryContext } from '../../TemplatesGallery';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
+import { WindowContext } from 'context/WindowProvider';
+import Button from 'components/Buttons/Button';
+import { MAIN_CONTENT } from 'constant/constants';
+import Heading from 'components/Heading/Heading';
 
 const Category = () => {
-  const { currentCategory } = useContext(TemplatesGalleryContext);
+  const { currentCategory, setContent, setCurrentTemplate } = useContext(
+    TemplatesGalleryContext
+  );
+  const { RVDic } = useWindow(WindowContext);
 
-  console.log(currentCategory);
+  const handleReturnClick = () => {
+    setContent({ name: MAIN_CONTENT, data: {} });
+    setCurrentTemplate(null);
+  };
 
   return (
     <PerfectScrollbar className="template-category-scrollbar">
       <Styled.CategoryContentContainer>
+        <Button
+          type="negative-o"
+          classes="template-back-button"
+          onClick={handleReturnClick}>
+          {RVDic.Return}
+        </Button>
         <Styled.CategoryTitle>
-          {decodeBase64(currentCategory?.Name) || 'سایر'}
+          <Heading type="h1">
+            {decodeBase64(currentCategory?.Name) || RVDic?.Other}
+          </Heading>
         </Styled.CategoryTitle>
         <Styled.CategoryDescription>
-          {currentCategory?.Description || 'Category Description'}
+          {decodeBase64(currentCategory?.Description) || 'Category Description'}
         </Styled.CategoryDescription>
         <SubCategoryList
           items={currentCategory?.Templates || currentCategory}

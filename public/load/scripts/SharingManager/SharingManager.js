@@ -97,7 +97,7 @@
                                 Type: "div", Style: "position:absolute; top:1rem;" + RV_Float + ":0.5rem; width:2.5rem; height:2.5rem; padding:0.2rem;",
                                 Childs: [{
                                     Type: "img", Class: "rv-border-radius-quarter", Style: "width:100%; height:100%;",
-                                    Attributes: [{ Name: "src", Value: ((window.RVGlobal || {}).CurrentUser || {}).ImageURL }]
+                                    Attributes: [{ Name: "src", Value: GlobalUtilities.add_timestamp(((window.RVGlobal || {}).CurrentUser || {}).ImageURL) }]
                                 }]
                             },
                             { Type: "div", Class: "small-12 medium-12 large-12", Name: "textAreaDiv" }
@@ -1051,14 +1051,14 @@
                 Sender: {
                     UserID: (post.IsOriginal ? (post.OriginalSender || {}).UserID : (post.Sender || {}).UserID),
                     Name: post.IsOriginal ? originalFullName : fullName,
-                    ImageURL: (post.IsOriginal ? post.OriginalSenderProfileImage : post.SenderProfileImage),
+                    ImageURL: GlobalUtilities.add_timestamp(post.IsOriginal ? post.OriginalSenderProfileImage : post.SenderProfileImage),
                     JobTitle: GlobalUtilities.trim(post.IsOriginal ?
                         Base64.decode((post.OriginalSender || {}).JobTitle) : Base64.decode((post.Sender || {}).JobTitle))
                 },
                 Receiver: !hasReceiver ? null : {
                     UserID: post.OwnerID,
                     Name: Base64.decode(post.OwnerTitle),
-                    ImageURL: post.OwnerImageURL
+                    ImageURL: GlobalUtilities.add_timestamp(post.OwnerImageURL)
                 },
                 OriginalPost: post.IsOriginal ? null : {
                     PostID: post.RefPostID,
@@ -1066,7 +1066,7 @@
                     Sender: {
                         UserID: (post.OriginalSender || {}).UserID,
                         Name: originalFullName,
-                        ImageURL: post.OriginalSenderProfileImage,
+                        ImageURL: GlobalUtilities.add_timestamp(post.OriginalSenderProfileImage),
                         JobTitle: Base64.decode((post.OriginalSender || {}).JobTitle)
                     }
                 },

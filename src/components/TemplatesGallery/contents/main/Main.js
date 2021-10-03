@@ -34,6 +34,7 @@ const TemplateGalleryMain = () => {
   const [isTransition, setIsTransition] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchList, setSearchList] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   const { ID: expertiseId, Name: expertiseName } =
     currentApp?.FieldOfExpertise || {};
@@ -55,13 +56,18 @@ const TemplateGalleryMain = () => {
 
   //! Search between all templates.
   const handleSearchTemplates = (e) => {
-    const searchValue = e.target.value;
+    const searchValue = e.target.value.replace(/\s+/g, '');
+    setSearchText(e.target.value);
     if (searchValue.length) {
       const searchedTemplates = AllTemplates?.filter(
         (template) =>
-          decodeBase64(template?.TypeName).match(searchValue) ||
+          decodeBase64(template?.TypeName)
+            .replace(/[\u200C]/g, '') //! Removes ZERO WIDTH NON-JOINER that use as half space and massively are using in Persian texts.
+            .match(searchValue) ||
           template?.Tags.some((tag) =>
-            decodeBase64(tag?.Name).match(searchValue)
+            decodeBase64(tag?.Name)
+              .replace(/[\u200C]/g, '')
+              .match(searchValue)
           )
       );
       setIsSearching(true);
@@ -92,7 +98,7 @@ const TemplateGalleryMain = () => {
             <Input
               type="text"
               style={{ width: '100%' }}
-              placeholder="جستجو در همه قالب‌ها"
+              placeholder="جستجو در همه تمپلیت ها"
               onChange={handleSearchTemplates}
             />
             <SearchIcon
@@ -113,7 +119,7 @@ const TemplateGalleryMain = () => {
             <Styled.SwiperTitleIcon>
               <SearchIcon size={18} color={CV_WHITE} />
             </Styled.SwiperTitleIcon>
-            تمپلیت‌های مرتبط با عنوان عبارت جستجو شده
+            {`تمپلیت های مرتبط با '${searchText}'`}
           </Styled.MainSwiperTitle>
         ) : (
           <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
@@ -141,16 +147,24 @@ const TemplateGalleryMain = () => {
             })}
           </CustomSwiper>
         ) : cliqMindSuggestions.length ? (
-          cliqMindSuggestions?.map((template, index) => {
-            return (
-              <TemplateCard
-                template={template}
-                key={index}
-                onClickCard={handleClickCard}
-                isTransition={isTransition}
-              />
-            );
-          })
+          <CustomSwiper
+            grabCursor
+            scrollbar
+            freeMode
+            onSliderTransition={handleSliderTransition}
+            slidesPerView={3}
+            spaceBetween={10}>
+            {cliqMindSuggestions?.map((template, index) => {
+              return (
+                <TemplateCard
+                  template={template}
+                  key={index}
+                  onClickCard={handleClickCard}
+                  isTransition={isTransition}
+                />
+              );
+            })}
+          </CustomSwiper>
         ) : (
           <EmptyTemplateCard />
         )}
