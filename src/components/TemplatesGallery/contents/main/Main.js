@@ -147,16 +147,24 @@ const TemplateGalleryMain = () => {
             })}
           </CustomSwiper>
         ) : cliqMindSuggestions.length ? (
-          cliqMindSuggestions?.map((template, index) => {
-            return (
-              <TemplateCard
-                template={template}
-                key={index}
-                onClickCard={handleClickCard}
-                isTransition={isTransition}
-              />
-            );
-          })
+          <CustomSwiper
+            grabCursor
+            scrollbar
+            freeMode
+            onSliderTransition={handleSliderTransition}
+            slidesPerView={3}
+            spaceBetween={10}>
+            {cliqMindSuggestions?.map((template, index) => {
+              return (
+                <TemplateCard
+                  template={template}
+                  key={index}
+                  onClickCard={handleClickCard}
+                  isTransition={isTransition}
+                />
+              );
+            })}
+          </CustomSwiper>
         ) : (
           <EmptyTemplateCard />
         )}
