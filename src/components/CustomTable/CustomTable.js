@@ -57,6 +57,7 @@ const CustomTable = (props) => {
   const requiredColumns = columns.filter((col) => !!col.isRequired);
 
   const [selectedCell, setSelectedCell] = useState(null);
+  const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [confirm, setConfirm] = useState({
     show: false,
     message: '',
@@ -182,6 +183,8 @@ const CustomTable = (props) => {
       addRow,
       selectedCell,
       setSelectedCell,
+      editableRowIndex,
+      setEditableRowIndex,
       reorderData,
       initialState: {
         ...paginationStates,
@@ -318,6 +321,7 @@ const CustomTable = (props) => {
                   {...getTableBodyProps()}>
                   {page.map((row, i) => {
                     prepareRow(row);
+                    const isEditing = row?.index === editableRowIndex;
                     return (
                       <Draggable
                         draggableId={row.original.id}
@@ -326,29 +330,32 @@ const CustomTable = (props) => {
                         {(provided, snapshot) => (
                           <Styled.Tr
                             ref={provided.innerRef}
-                            isSomethingDragging={snapshot.draggingOver}
+                            isDraggingOver={snapshot.draggingOver}
                             isDragging={snapshot.isDragging}
+                            isEditing={isEditing}
                             {...row.getRowProps({
                               ...provided.draggableProps,
                             })} //! react-table props always must come after dnd props to work properly
                           >
                             <>
-                              {row.cells.map((cell) => (
-                                <Styled.TableCell
-                                  {...cell.getCellProps([
-                                    {
-                                      ...getCellProps(cell),
-                                      onClick: () => setSelectedCell(cell),
-                                    },
-                                  ])}>
-                                  {cell.render('Cell', {
-                                    editable: !!isEditable,
-                                    dragHandleProps: {
-                                      ...provided.dragHandleProps,
-                                    },
-                                  })}
-                                </Styled.TableCell>
-                              ))}
+                              {row.cells.map((cell) => {
+                                return (
+                                  <Styled.TableCell
+                                    {...cell.getCellProps([
+                                      {
+                                        ...getCellProps(cell),
+                                        onClick: () => setSelectedCell(cell),
+                                      },
+                                    ])}>
+                                    {cell.render('Cell', {
+                                      editable: !!isEditable,
+                                      dragHandleProps: {
+                                        ...provided.dragHandleProps,
+                                      },
+                                    })}
+                                  </Styled.TableCell>
+                                );
+                              })}
                               {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
                               <DragIcon />
                             </Styled.RowDragHandle>

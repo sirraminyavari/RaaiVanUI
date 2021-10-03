@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import * as Styled from './CustomTable.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import DuplicationIcon from 'components/Icons/DuplicationIcon/DuplicationIcon';
+import EditIcon from 'components/Icons/EditIcons/Edit';
 import { CV_RED } from 'constant/CssVariables';
 import { WindowContext } from 'context/WindowProvider';
 
@@ -12,20 +13,31 @@ const RowAction = ({ cell }) => {
 
   const handleDeleteRow = () => {
     console.log('Delete row');
-    cell?.removeRow && cell.removeRow(cell.row.index);
+    cell?.removeRow && cell.removeRow(cell?.row?.index);
   };
 
   const handleDuplicateRow = () => {
     console.log('Duplicate row');
   };
 
+  const handleSetEditableRow = () => {
+    console.log('Edit row');
+    cell?.setEditableRowIndex && cell?.setEditableRowIndex(cell?.row?.index);
+  };
+
   return (
     <Styled.TableRowActionContainer>
       {canDelete && (
-        <Styled.TableActionWrapper onClick={handleDeleteRow}>
-          <TrashIcon color={CV_RED} />
-          <span>{RVDic.Remove}</span>
-        </Styled.TableActionWrapper>
+        <>
+          <Styled.TableActionWrapper onClick={handleSetEditableRow}>
+            <EditIcon size={18} />
+            <span>{RVDic.Edit}</span>
+          </Styled.TableActionWrapper>
+          <Styled.TableActionWrapper onClick={handleDeleteRow}>
+            <TrashIcon color={CV_RED} />
+            <span>{RVDic.Remove}</span>
+          </Styled.TableActionWrapper>
+        </>
       )}
       <Styled.TableActionWrapper onClick={handleDuplicateRow}>
         <DuplicationIcon size={18} />

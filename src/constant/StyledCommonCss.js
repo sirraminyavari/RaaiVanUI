@@ -57,6 +57,18 @@ export const FLEX_CCB = css`
 /**
  * @description 'Flex'
  * @Direction 'C'olumn
+ * @Align 'C'enter
+ * @Justify space-'A'round
+ */
+export const FLEX_CCA = css`
+  ${FLEX_COLUMN}
+  align-items: center;
+  justify-content: space-around;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'C'olumn
  * @Align flex-'S'tart
  * @Justify space-'A'round
  */

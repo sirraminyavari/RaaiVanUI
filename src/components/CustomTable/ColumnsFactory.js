@@ -4,11 +4,14 @@ import {
   SelectCell,
   RecordInfoCell,
   FileCell,
+  NodeCell,
+  UserCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import RowActions from './RowAction';
+import EditRowMenu from './EditRowMenu';
 import * as Styled from './CustomTable.styles';
 
 const { RV_Float, RV_RevFloat } = window;
@@ -20,6 +23,9 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => {
+          if (cell?.editableRowIndex === cell?.row?.index) {
+            return <EditRowMenu cell={cell} />;
+          }
           return (
             <ToolTip
               tipId={`row-${cell?.row?.index}-action-tip`}
@@ -79,6 +85,16 @@ const provideCell = (header) => {
     case cellTypes.file:
       return {
         Cell: (row) => <FileCell {...row} header={header} />,
+      };
+
+    case cellTypes.node:
+      return {
+        Cell: (row) => <NodeCell {...row} header={header} />,
+      };
+
+    case cellTypes.user:
+      return {
+        Cell: (row) => <UserCell {...row} header={header} />,
       };
 
     default:
@@ -193,6 +209,22 @@ const getColumnWidth = (data, header) => {
       return Math.min(maxWidth, cellLength * magicSpacing + 55);
 
     case cellTypes.file:
+      magicSpacing = 12;
+      cellLength = Math.max(
+        ...data?.map((row) => row?.[header?.accessor]?.fileTitle?.length),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing);
+
+    case cellTypes.node:
+      magicSpacing = 12;
+      cellLength = Math.max(
+        ...data?.map((row) => row?.[header?.accessor]?.fileTitle?.length),
+        header?.title.length
+      );
+      return Math.min(maxWidth, cellLength * magicSpacing);
+
+    case cellTypes.user:
       magicSpacing = 12;
       cellLength = Math.max(
         ...data?.map((row) => row?.[header?.accessor]?.fileTitle?.length),
