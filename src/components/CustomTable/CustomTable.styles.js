@@ -14,6 +14,8 @@ import {
   TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import {
+  FLEX_CCA,
+  FLEX_CCB,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
@@ -178,6 +180,7 @@ export const HeaderAsterisk = styled.span`
 
 export const Tr = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
+  // background-color: ${({ isEditing }) => (isEditing ? CV_GRAY : '')};
   // :not(:first-child) {
   //   border-top: 1px solid ${CV_DISTANT};
   // }
@@ -190,6 +193,7 @@ export const Tr = styled.div`
 
   &:hover {
     > div:not(:first-child) {
+      // background-color: ${({ isEditing }) => !isEditing && CV_FREEZED};
       background-color: ${CV_FREEZED};
       color: ${CV_BLACK};
     }
@@ -327,6 +331,11 @@ export const TableRowActionContainer = styled.div`
   height: auto;
   color: ${CV_GRAY_DARK};
   padding: 0.5rem;
+`;
+
+export const EditRowActionContainer = styled.div`
+  height: 100%;
+  ${FLEX_CCA}
 `;
 
 export const TableActionWrapper = styled.div.attrs({

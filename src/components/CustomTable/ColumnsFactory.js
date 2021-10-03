@@ -11,6 +11,7 @@ import { cellTypes } from './tableUtils';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import RowActions from './RowAction';
+import EditRowMenu from './EditRowMenu';
 import * as Styled from './CustomTable.styles';
 
 const { RV_Float, RV_RevFloat } = window;
@@ -22,6 +23,9 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => {
+          if (cell?.editableRowIndex === cell?.row?.index) {
+            return <EditRowMenu cell={cell} />;
+          }
           return (
             <ToolTip
               tipId={`row-${cell?.row?.index}-action-tip`}
