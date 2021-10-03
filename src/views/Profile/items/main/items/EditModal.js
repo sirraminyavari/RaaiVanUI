@@ -60,10 +60,7 @@ const EditModal = (props) => {
     formData.append('x', croppedAreaPixels?.x || croppedAreaPixels?.X);
     formData.append('y', croppedAreaPixels?.y || croppedAreaPixels?.Y);
     formData.append('w', croppedAreaPixels?.width || croppedAreaPixels?.Width);
-    formData.append(
-      'h',
-      croppedAreaPixels?.height || croppedAreaPixels?.Height
-    );
+    formData.append('h', croppedAreaPixels?.width || croppedAreaPixels?.Width);
 
     const config = {
       headers: {
@@ -90,9 +87,8 @@ const EditModal = (props) => {
             })
           );
 
-          setIsSavingImage(false);
           handleCloseModal();
-        }
+        } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
       })
       .catch((error) => {
         setIsSavingImage(false);
@@ -102,9 +98,10 @@ const EditModal = (props) => {
 
   //! Fires when user changes the image crop area.
   const handleImageCropComplete = (croppedArea, croppedAreaPixels) => {
+    /*
     const xRatio = modalProps.imgOrig.width / 595;
     const yRatio = modalProps.imgOrig.height / 335;
-
+    
     const truncatedCropArea = {
       x: Math.ceil(croppedAreaPixels.x / xRatio),
       y: Math.trunc(croppedAreaPixels.y / yRatio),
@@ -113,6 +110,9 @@ const EditModal = (props) => {
     };
 
     setCroppedAreaPixels(truncatedCropArea);
+    */
+
+    setCroppedAreaPixels(croppedAreaPixels);
   };
 
   return (
