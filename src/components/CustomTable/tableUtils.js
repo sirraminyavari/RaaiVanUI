@@ -8,4 +8,6 @@ export const cellTypes = {
   binary: 'binary',
   recordInfo: 'record-information',
   file: 'file',
+  node: 'node',
+  user: 'user',
 };
