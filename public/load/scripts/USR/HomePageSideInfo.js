@@ -61,7 +61,7 @@
                                             Childs: [{
                                                 Type: "img", Class: "rv-circle", Style: "width:100%; height:100%;",
                                                 Link: RVAPI.UserPageURL({ Tab: "Resume" }),
-                                                Attributes: [{ Name: "src", Value: that.Objects.User.ProfileImageURL }]
+                                                Attributes: [{ Name: "src", Value: GlobalUtilities.add_timestamp(that.Objects.User.ProfileImageURL) }]
                                             }]
                                         }]
                                     }]
