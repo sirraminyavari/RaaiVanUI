@@ -66,7 +66,7 @@ const FormFill = ({ data }) => {
       setTempForm(syncTempFormWithBackEnd);
       console.log('failed');
       alert('failed', {
-        Timeout: 1000,
+        Timeout: 500,
       });
     }
   };
@@ -88,6 +88,7 @@ const FormFill = ({ data }) => {
           FloatValue,
           BitValue,
           Files,
+          GuidItems,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
         const decodeTitle = decodeBase64(Title);
@@ -151,9 +152,13 @@ const FormFill = ({ data }) => {
                 decodeTitle={decodeTitle}
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
-                value={'ttttt'}
+                value={GuidItems}
                 type={Type}
                 decodeInfo={decodeInfo}
+                save={(id) => {
+                  console.log(tempForm, 'GGGGGGGGG');
+                  saveFieldChanges(tempForm, id);
+                }}
               />
             );
 
@@ -205,6 +210,9 @@ const FormFill = ({ data }) => {
                 text={TextValue}
                 type={Type}
                 decodeInfo={decodeInfo}
+                save={(id) => {
+                  saveFieldChanges(tempForm, id);
+                }}
               />
             );
           case 'Separator':

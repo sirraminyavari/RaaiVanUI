@@ -10,19 +10,56 @@ const prepareForm = (prevForm, elementId, event, type) => {
 
   switch (type) {
     case 'User':
-      return {
+      const result = {
         ...prevForm,
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
                 ...x,
-                SelectedItems: [
-                  { ID: event?.id, Code: '', Name: encodeBase64(event?.name) },
-                ],
+                GuidItems: event.multiSelect
+                  ? x?.SelectedItems.find((z) => z.ID === event?.id)
+                    ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
+                    : [
+                        ...x?.SelectedItems,
+                        { ID: event?.id, Code: '', Name: event?.name },
+                      ]
+                  : x?.SelectedItems.find((z) => z.ID === event?.id)
+                  ? []
+                  : [{ ID: event?.id, Code: '', Name: event?.name }],
+                SelectedItems: event.multiSelect
+                  ? x?.SelectedItems.find((z) => z.ID === event?.id)
+                    ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
+                    : [
+                        ...x?.SelectedItems,
+                        { ID: event?.id, Code: '', Name: event?.name },
+                      ]
+                  : x?.SelectedItems.find((z) => z.ID === event?.id)
+                  ? []
+                  : [{ ID: event?.id, Code: '', Name: event?.name }],
               }
             : x
         ),
       };
+      console.log(result, '********');
+
+      return result;
+    case 'MultiLevel':
+      console.log(event, '#########********');
+
+      const multiLevel = {
+        ...prevForm,
+        Elements: Elements?.map((x) =>
+          x?.ElementID === elementId
+            ? {
+                ...x,
+                GuidItems: event,
+              }
+            : x
+        ),
+      };
+      console.log(multiLevel, 'multiLevel ***');
+      return multiLevel;
+
     case 'Numeric':
       console.log(event, 'numeric***');
       return {

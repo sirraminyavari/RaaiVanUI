@@ -2,9 +2,9 @@ import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 import React from 'react';
 import styled from 'styled-components';
 
-const FormCell = ({ children, title, iconComponent }) => {
+const FormCell = ({ children, title, iconComponent, style }) => {
   return (
-    <Container>
+    <Container style={style}>
       <CellName>
         {iconComponent}
         <Title>{title}</Title>
