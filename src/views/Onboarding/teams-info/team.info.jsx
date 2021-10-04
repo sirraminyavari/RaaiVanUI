@@ -11,9 +11,9 @@ import { team_spec_on_start, team_spec_on_exit } from '../message';
 
 const TeamInfo = () => {
   const options = [
-    { id: 0, value: '1 - 10' },
-    { id: 1, value: '10 - 20' },
-    { id: 2, value: 'بیشتر از 20' },
+    { id: 0, value: '1 - 10', main_value: '1 - 10' },
+    { id: 1, value: '10 - 20', main_value: '10 - 20' },
+    { id: 2, value: 'بیشتر از 20', main_value: 'more than 20' },
   ];
   const { info, dispatch } = useContext(StepperContext);
   const [fields, setFields] = useState([]);
@@ -30,8 +30,12 @@ const TeamInfo = () => {
       setFields(tags);
     });
   }, []);
+
   const selectMembers = ({ value, id }) => {
-    dispatch({ type: 'SET_TEAM_MEMBERS', members: value });
+    let arr = options.filter((op) => op.value === value);
+    let saveValue = (arr.length ? arr[0].main_value : null) || value;
+
+    dispatch({ type: 'SET_TEAM_MEMBERS', members: saveValue });
   };
 
   const selectField = ({ value, id }) => {
@@ -58,7 +62,7 @@ const TeamInfo = () => {
           {
             ApplicationID: info.applicationId,
             FieldID: info.field.id,
-            FieldName: info.field.value,
+            FieldName: encode(info.field.value),
           },
           (res) => {
             if (!!res.Succeed) {
