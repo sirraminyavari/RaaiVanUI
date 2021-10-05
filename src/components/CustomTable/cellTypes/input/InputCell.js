@@ -87,9 +87,9 @@ const InputCell = (props) => {
     );
   } else {
     return !!initialValue ? (
-      <span style={{ cursor: 'pointer' }}>{initialValue}</span>
+      <Styled.CellView>{initialValue}</Styled.CellView>
     ) : (
-      <Styled.EmptyCellShow>وارد نمایید</Styled.EmptyCellShow>
+      <Styled.EmptyCellView>وارد نمایید</Styled.EmptyCellView>
     );
   }
 };

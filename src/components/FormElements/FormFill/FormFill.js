@@ -15,6 +15,7 @@ import UserSelect from './types/userSelect/UserSelect';
 import SubjectField from './types/subjectSelect/SubjectField';
 import DateField from './types/date/DateField';
 import FileField from './types/file/FileField';
+import FormField from './types/form/FormField';
 import prepareForm from './types/prepareForm';
 import SeperatorField from './types/seperator/SeperatorField';
 import saveForm from './types/saveForm';
@@ -88,6 +89,8 @@ const FormFill = ({ data }) => {
           FloatValue,
           BitValue,
           Files,
+          TableColumns,
+          TableContent,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
         const decodeTitle = decodeBase64(Title);
@@ -224,7 +227,19 @@ const FormFill = ({ data }) => {
             );
 
           case 'Form':
-            return null;
+            return (
+              <FormField
+                key={ElementID}
+                decodeInfo={decodeInfo}
+                decodeTitle={decodeTitle}
+                type={Type}
+                onAnyFieldChanged={onAnyFieldChanged}
+                save={(id) => saveFieldChanges(tempForm, id)}
+                elementId={ElementID}
+                tableColumns={TableColumns}
+                tableData={TableContent}
+              />
+            );
 
           default:
             return null;

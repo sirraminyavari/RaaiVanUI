@@ -12,7 +12,7 @@ const UserCell = (props) => {
           <Styled.UserInfoWrapper
             as={Link}
             to="/user"
-            editable={props?.header?.options?.editable}>
+            editable={props?.header?.options?.editable?.toString()}>
             <Avatar
               color={CV_BLACK}
               className="table-user-avatar"

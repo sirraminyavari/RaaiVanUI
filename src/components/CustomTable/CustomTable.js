@@ -356,13 +356,6 @@ const CustomTable = (props) => {
                                   </Styled.TableCell>
                                 );
                               })}
-                              {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
-                              <DragIcon />
-                            </Styled.RowDragHandle>
-                            <Styled.RowActionHandle
-                              onClick={() => console.log('Delete row')}>
-                              <TrashIcon color={CV_DISTANT} />
-                            </Styled.RowActionHandle> */}
                             </>
                           </Styled.Tr>
                         )}

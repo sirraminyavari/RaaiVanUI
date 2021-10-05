@@ -19,11 +19,11 @@ const { RV_Float, RV_RevFloat } = window;
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
-    case 'action':
+    case cellTypes.action:
       return {
         sticky: 'left',
         Cell: (cell) => {
-          if (cell?.editableRowIndex === cell?.row?.index) {
+          if (cell?.editableRowIndex === cell?.row?.original?.id) {
             return <EditRowMenu cell={cell} />;
           }
           return (
@@ -47,7 +47,7 @@ const provideCell = (header) => {
           );
         },
       };
-    case 'index':
+    case cellTypes.index:
       return {
         sticky: 'left',
         Cell: (cell) => (
@@ -55,7 +55,7 @@ const provideCell = (header) => {
         ),
       };
 
-    case cellTypes.string:
+    case cellTypes.text:
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
     case cellTypes.number:
@@ -105,7 +105,7 @@ const provideCell = (header) => {
 //! Provide footer for a given column.
 const provideFooter = (header) => {
   switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.text:
       return {
         Footer: (footer) => <InputCell {...footer} header={header} isNew />,
       };
@@ -162,7 +162,7 @@ const getColumnWidth = (data, header) => {
   let cellLength;
 
   switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.text:
       magicSpacing = 15;
       cellLength = Math.max(
         ...data.map((row) => `${row?.[header?.accessor]}`.length),

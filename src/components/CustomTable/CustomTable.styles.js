@@ -15,7 +15,6 @@ import {
 } from 'constant/CssVariables';
 import {
   FLEX_CCA,
-  FLEX_CCB,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
@@ -23,7 +22,7 @@ import {
   FLEX_RCS,
   HorizontalScrollbar,
 } from 'constant/StyledCommonCss';
-import { BO_RADIUS_QUARTER } from 'constant/constants';
+import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
 
 const { RV_RevFloat, RV_Float } = window;
 
@@ -82,10 +81,14 @@ export const selectStyles = {
   }),
 };
 
-export const TableContainer = styled.div`
+export const TableContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF}`,
+})`
+  width: 100%;
   padding: 1rem 0;
   position: relative;
-  border: 0.1rem solid #333;
+  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  // border: 0.1rem solid #333;
   // overflow-x: auto;
 `;
 

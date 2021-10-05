@@ -21,8 +21,9 @@ const RowAction = ({ cell }) => {
   };
 
   const handleSetEditableRow = () => {
-    console.log('Edit row');
-    cell?.setEditableRowIndex && cell?.setEditableRowIndex(cell?.row?.index);
+    console.log(cell);
+    cell?.setEditableRowIndex &&
+      cell?.setEditableRowIndex(cell?.row?.original?.id);
   };
 
   return (

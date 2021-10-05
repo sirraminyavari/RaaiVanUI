@@ -169,11 +169,13 @@ export const FLEX_RSB = css`
 export const HorizontalScrollbar = css`
   scroll-behavior: smooth;
   scrollbar-height: 0.45rem; /*! Firefox */
+  scrollbar-width: 0.45rem; /*! Firefox */
 
   /*! Show scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: block;
     height: 0.45rem;
+    width: 0.45rem;
   }
 
   &::-webkit-scrollbar-track:hover {

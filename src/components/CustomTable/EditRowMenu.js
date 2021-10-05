@@ -22,7 +22,7 @@ const EditRowMenu = ({ cell }) => {
   };
 
   return (
-    <Styled.EditRowActionContainer>
+    <Styled.EditRowActionContainer {...cell.dragHandleProps}>
       <CheckIcon
         style={{ cursor: 'pointer' }}
         size={28}

@@ -42,13 +42,13 @@ const TableAction = ({ actions, isResizable }) => {
             ایجاد آیتم جدید
           </Button>
         </Styled.ActionButton>
-        {isResizable && (
+        {/* {isResizable && (
           <Button
             style={{ display: 'inline-block', borderRadius: '1.5rem' }}
             onClick={actions.resetResizing}>
             Reset Resizing
           </Button>
-        )}
+        )} */}
         {/* <Button
     style={{ display: 'inline-block' }}
     type="negative"

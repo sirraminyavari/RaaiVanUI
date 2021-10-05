@@ -9,6 +9,8 @@ const DateCell = (props) => {
   const { isNew, row } = props;
   const [dateValue, setDateValue] = useState(props?.value?.date);
 
+  // console.log(props?.value?.cell, 'date-cell');
+
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
 
