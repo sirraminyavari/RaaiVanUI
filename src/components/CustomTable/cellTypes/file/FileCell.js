@@ -6,7 +6,7 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
-import { API_Provider } from 'helpers/helpers';
+import { API_Provider, decodeBase64 } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
@@ -14,8 +14,7 @@ const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
 const FileCell = (props) => {
   // console.log('fileCell', props);
   const [isUploading, setIsUploading] = useState(false);
-  const fileTitle = props?.value?.fileTitle;
-  const fileURL = props?.value?.fileURL;
+  const { files } = props?.value || {};
 
   const handeFileDropError = (error) => {
     if (!props?.isNew) return;
@@ -100,19 +99,48 @@ const FileCell = (props) => {
   }
 
   return (
-    <Styled.FileCellContainer>
-      <Styled.FileInfoWrapper editable={props?.header?.options?.editable}>
-        <FileFormatIcon color={TCV_DEFAULT} size={25} format="pdf" />
-        <Styled.FileLinkWrapper>
-          <Link to={fileURL} target="_blank" download data-title={fileTitle}>
-            {fileTitle}
-          </Link>
-        </Styled.FileLinkWrapper>
-      </Styled.FileInfoWrapper>
-      {props?.editable && props?.header?.options?.editable && (
-        <TrashIcon style={{ cursor: 'pointer' }} color={CV_RED} />
-      )}
-    </Styled.FileCellContainer>
+    <Styled.FilesWrapper>
+      {files?.map((file, index) => {
+        const {
+          Downloadable,
+          Extension,
+          FileID,
+          FileName,
+          IconURL,
+          MIME,
+          OwnerID,
+          Size,
+        } = file;
+
+        return (
+          <Styled.FileCellContainer key={FileID || index}>
+            <Styled.FileInfoWrapper editable={props?.header?.options?.editable}>
+              <FileFormatIcon
+                color={TCV_DEFAULT}
+                size={25}
+                format={decodeBase64(Extension)}
+              />
+              <Styled.FileLinkWrapper>
+                {!!Downloadable ? (
+                  <Link
+                    to={IconURL}
+                    target="_blank"
+                    download
+                    data-title={decodeBase64(FileName)}>
+                    {decodeBase64(FileName)}
+                  </Link>
+                ) : (
+                  decodeBase64(FileName)
+                )}
+              </Styled.FileLinkWrapper>
+            </Styled.FileInfoWrapper>
+            {props?.editable && props?.header?.options?.editable && (
+              <TrashIcon style={{ cursor: 'pointer' }} color={CV_RED} />
+            )}
+          </Styled.FileCellContainer>
+        );
+      })}
+    </Styled.FilesWrapper>
   );
 };
 

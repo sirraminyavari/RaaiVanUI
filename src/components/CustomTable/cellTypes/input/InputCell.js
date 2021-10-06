@@ -15,24 +15,34 @@ const InputCell = (props) => {
     isNew,
   } = props;
 
-  const [value, setValue] = useState(initialValue);
+  const [inputValue, setInputValue] = useState(initialValue);
+
+  const getInputType = () => {
+    switch (props?.header?.dataType) {
+      case 'Numeric':
+        return 'number';
+
+      default:
+        return 'text';
+    }
+  };
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    console.log(e.target.value);
-    setValue(e.target.value);
+    // console.log(e.target.value);
+    setInputValue((oldValue) => ({ ...oldValue, text: e.target.value }));
   };
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     //! API call to server.
-    updateCellData(row?.index, id, value);
+    updateCellData(row?.index, id, inputValue);
     setSelectedCell(null);
   };
 
   //! If the initialValue has changed externally, sync it up with our state.
   useEffect(() => {
-    setValue(initialValue);
+    setInputValue(initialValue);
   }, [initialValue]);
 
   if (!!isNew) {
@@ -46,7 +56,7 @@ const InputCell = (props) => {
           backgroundColor: 'inherit',
           color: 'inherit',
         }}
-        type={props.header.dataType}
+        type={getInputType()}
         value=""
         autoFocus
         placeholder="وارد نمایید"
@@ -56,12 +66,12 @@ const InputCell = (props) => {
 
   //! Check if 'table' is editable in general or not.
   if (!editable) {
-    return `${initialValue}`;
+    return `${initialValue?.text}`;
   }
 
   //! Check if 'column' is editable or not.
   if (!props?.header?.options?.editable) {
-    return props?.value;
+    return props?.value?.text;
   }
 
   if (
@@ -79,15 +89,15 @@ const InputCell = (props) => {
           backgroundColor: 'inherit',
           color: 'inherit',
         }}
-        type={props.header.dataType}
-        value={value}
+        type={getInputType()}
+        value={inputValue?.text}
         autoFocus
         placeholder="وارد نمایید"
       />
     );
   } else {
-    return !!initialValue ? (
-      <Styled.CellView>{initialValue}</Styled.CellView>
+    return !!initialValue?.text ? (
+      <Styled.CellView>{initialValue?.text}</Styled.CellView>
     ) : (
       <Styled.EmptyCellView>وارد نمایید</Styled.EmptyCellView>
     );

@@ -1,11 +1,11 @@
 import { CV_DISTANT } from 'constant/CssVariables';
-import { FLEX_CEC, FLEX_RCB } from 'constant/StyledCommonCss';
+import { FLEX_CEC, FLEX_RCB, FLEX_RCE } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 export const RecordInfoContainer = styled.div`
   width: 100%;
   padding: 0 1rem;
-  ${FLEX_RCB}
+  ${FLEX_RCE}
   gap: 1rem;
 
   .record-info-avatar {

@@ -86,7 +86,7 @@ const getColumnOptions = (column) => {
     case cellTypes.recordInfo:
       return {
         // disableSortBy: true,
-        minWidth: 220,
+        minWidth: 170,
       };
 
     default:
@@ -100,14 +100,16 @@ const getColumnOptions = (column) => {
 export const prepareCell = (cell) => {
   console.log(cell);
   switch (cell?.Type) {
-    //! Text Type.
+    //! Text cell.
     case cellTypes.text:
       return {
-        [`${cell?.Type}_${
-          cell?.RefElementID || cell?.ElementID
-        }`]: decodeBase64(cell?.TextValue),
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          text: decodeBase64(cell?.TextValue),
+          cell,
+        },
       };
 
+    //! Date cell.
     case cellTypes.date:
       const dateArray = cell?.DateValue?.slice(0, 10).split('/');
       const date = [dateArray[2], dateArray[0], dateArray[1]]?.join('/');
@@ -118,6 +120,7 @@ export const prepareCell = (cell) => {
         },
       };
 
+    //! Select cell.
     case cellTypes.singleSelect:
       const selectInfo = toJSON(decodeBase64(cell?.Info));
       const selectValue = decodeBase64(cell?.TextValue);
@@ -138,6 +141,7 @@ export const prepareCell = (cell) => {
         },
       };
 
+    //! Checkbox cell.
     case cellTypes.multiSelect:
       const checkboxInfo = toJSON(decodeBase64(cell?.Info));
       const checkboxValue = decodeBase64(cell?.TextValue);
@@ -149,10 +153,6 @@ export const prepareCell = (cell) => {
         label: decodeBase64(opt),
       }));
 
-      // console.log(
-      //   { cell, checkboxOptions, checkboxValue, checkboxDefaults },
-      //   'Checkbox'
-      // );
       return {
         [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
           options: checkboxOptions,
@@ -161,8 +161,82 @@ export const prepareCell = (cell) => {
         },
       };
 
+    //! Binary cell.
+    case cellTypes.binary:
+      const binaryInfo = toJSON(decodeBase64(cell?.Info));
+      const binaryValue = decodeBase64(cell?.TextValue);
+      const binaryDefaults = !!binaryValue
+        ? [{ value: binaryValue, label: binaryValue }]
+        : [];
+      const binaryOptions = Object.values(binaryInfo).map((opt) => ({
+        value: decodeBase64(opt),
+        label: decodeBase64(opt),
+      }));
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          options: binaryOptions,
+          defaultValues: binaryDefaults,
+          cell,
+        },
+      };
+
+    //! Numeric cell.
+    case cellTypes.number:
+      const numberInfo = toJSON(decodeBase64(cell?.Info));
+      const numberValue = decodeBase64(cell?.TextValue);
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          text: numberValue,
+          numberInfo,
+          cell,
+        },
+      };
+
+    //! Node cell.
+    case cellTypes.node:
+      const nodeInfo = toJSON(decodeBase64(cell?.Info));
+      // console.log(nodeInfo, 'nodeInfo');
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          nodeInfo,
+          cell,
+        },
+      };
+
+    //! User cell.
+    case cellTypes.user:
+      const userInfo = toJSON(decodeBase64(cell?.Info));
+      // console.log(userInfo, 'userInfo');
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          userInfo,
+          cell,
+        },
+      };
+
+    //! File cell.
+    case cellTypes.file:
+      const fileInfo = toJSON(decodeBase64(cell?.Info));
+      const files = cell?.Files;
+      // console.log(fileInfo, 'fileInfo');
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          fileInfo,
+          cell,
+          files,
+        },
+      };
+
+    //! Otherwise creator info cell.
     default:
-      return {};
+      return {
+        recordInfo: { cell },
+      };
   }
 };
 

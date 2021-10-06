@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BO_DISTANT } from 'constant/Colors';
+import { BO_DISTANT, TC_DEFAULT } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
 import {
@@ -16,10 +16,16 @@ export const FileCellContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
 })`
   width: 100%;
-  height: 90%;
+  height: 2.5rem;
   max-height: 2.5rem;
   padding: 0 0.5rem;
   ${FLEX_RCB}
+`;
+
+export const FilesWrapper = styled.div`
+  width: 100%;
+  ${FLEX_CCC}
+  gap: 0.2rem;
 `;
 
 export const FileInfoWrapper = styled.div`
@@ -63,7 +69,9 @@ export const FileInfoWrapper = styled.div`
   }
 `;
 
-export const FileLinkWrapper = styled.div`
+export const FileLinkWrapper = styled.div.attrs({
+  className: `${TC_DEFAULT}`,
+})`
   width: 100%;
   height: 100%;
   font-size: 1rem;
