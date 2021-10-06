@@ -86,7 +86,7 @@ const getColumnOptions = (column) => {
     case cellTypes.recordInfo:
       return {
         // disableSortBy: true,
-        minWidth: 170,
+        minWidth: 190,
       };
 
     default:

@@ -82,7 +82,7 @@ const FileField = (props) => {
           accept={['image/*']} //! (infoJSON?.AllowedExtensions)
           onUpload={handleUploadFile}
           placeholders={{
-            main: 'فایل را بکشید و رها کنید یا کلیک کنید',
+            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
             dragging: 'اینجا رها کنید...',
           }}
           onError={(error) => console.log(error)}

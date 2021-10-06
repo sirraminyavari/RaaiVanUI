@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import * as Styled from './CustomDropzone.styles';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import { errorTypes } from './dropzoneUtils';
-import { TCV_DEFAULT } from 'constant/CssVariables';
+import { TCV_DEFAULT, CV_DISTANT } from 'constant/CssVariables';
 import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 
 /**
@@ -67,7 +67,7 @@ const CustomDropzone = (props) => {
           style={{ minWidth: '2rem' }}
           format="upload"
           size={25}
-          color={TCV_DEFAULT}
+          color={CV_DISTANT}
         />
       );
     }
@@ -225,9 +225,13 @@ const CustomDropzone = (props) => {
       <Styled.InputWrapper>
         <input {...getInputProps(inputProps)} />
         {isDragActive ? (
-          <span>{placeholders?.dragging}</span>
+          <Styled.DropzonePlaceholder>
+            {placeholders?.dragging}
+          </Styled.DropzonePlaceholder>
         ) : (
-          <span>{placeholders?.main}</span>
+          <Styled.DropzonePlaceholder>
+            {placeholders?.main}
+          </Styled.DropzonePlaceholder>
         )}
       </Styled.InputWrapper>
     </Styled.DropzoneContainer>

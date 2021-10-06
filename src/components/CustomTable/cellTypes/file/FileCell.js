@@ -82,19 +82,21 @@ const FileCell = (props) => {
 
   if (props?.isNew) {
     return (
-      <CustomDropzone
-        accept={['image/*', '.pdf']}
-        // foramtExceptions={['jpg']}
-        maxFiles={1}
-        maxEachSize={1}
-        maxTotalSize={1}
-        onError={handeFileDropError}
-        onUpload={handleUploadFiles}
-        isUploading={isUploading}
-        placeholders={{
-          main: 'کلیک یا فایل را بکشید و رها کنید',
-        }}
-      />
+      <div style={{ margin: '0.5rem', width: '100%' }}>
+        <CustomDropzone
+          accept={['image/*', '.pdf']}
+          // foramtExceptions={['jpg']}
+          maxFiles={1}
+          maxEachSize={1}
+          maxTotalSize={1}
+          onError={handeFileDropError}
+          onUpload={handleUploadFiles}
+          isUploading={isUploading}
+          placeholders={{
+            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+          }}
+        />
+      </div>
     );
   }
 
