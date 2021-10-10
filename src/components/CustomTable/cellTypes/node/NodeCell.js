@@ -2,14 +2,22 @@ import { Link } from 'react-router-dom';
 import * as Styled from './NodeCell.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import OpenMailIcon from 'components/Icons/MailIcon/OpenMailIcon';
-import { CV_DISTANT } from 'constant/CssVariables';
+import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
+import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
 import { decodeBase64, getURL } from 'helpers/helpers';
+import Heading from 'components/Heading/Heading';
 
 const NodeCell = (props) => {
   const { nodeInfo, cell } = props?.value || {};
 
   return (
     <Styled.NodesWrapper>
+      {!nodeInfo?.NodeTypes && (
+        <Styled.AddNewNode>
+          <PlusIcon size={20} color={TCV_WARM} />
+          <Heading type="h5">افزودن موضوع</Heading>
+        </Styled.AddNewNode>
+      )}
       {nodeInfo?.NodeTypes.map((node, index) => (
         <Styled.NodeCellContainer key={node?.NodeTypeID || index}>
           <Styled.NodeInfoWrapper editable={props?.header?.options?.editable}>

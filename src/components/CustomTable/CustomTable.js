@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, memo } from 'react';
+import { useMemo, useState, memo } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -10,24 +10,22 @@ import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
-// import DragIcon from 'components/Icons/DragIcon/Drag';
-// import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import Confirm from 'components/Modal/Confirm';
-import H5 from 'components/TypoGraphy/H5';
 import Modal from 'components/Modal/Modal';
 import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 import TableAction from './TableAction';
 
 const defaultPropGetter = () => ({});
+const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '' };
 
 /**
  * @typedef PropType
  * @type {Object}
+ * @property {string} tableId - The id of the table.
  * @property {boolean} editable - If true table cells are editable.
- * @property {boolean} isFetching - A flag that indecates that if table's data are provided or not.
+ * @property {boolean} isLoading - A flag that indicates if table data is loading or not.
  * @property {object} columns - The core columns configuration object for the entire table.
  * @property {array} data - The data array that you want to display on the table.
  */
@@ -42,7 +40,7 @@ const CustomTable = (props) => {
   const {
     editable: isEditable,
     resizable: isResizable,
-    isFetching,
+    isLoading,
     columns,
     data,
     updateCellData,
@@ -51,58 +49,21 @@ const CustomTable = (props) => {
     addRow,
     pagination,
     reorderData,
+    onSearch,
+    tableId,
     getCellProps = defaultPropGetter,
   } = props;
 
   const requiredColumns = columns.filter((col) => !!col.isRequired);
 
   const [selectedCell, setSelectedCell] = useState(null);
-  const [editableRowIndex, setEditableRowIndex] = useState(null);
-  const [confirm, setConfirm] = useState({
-    show: false,
-    message: '',
-    type: '',
-  });
-  const [modal, setModal] = useState({ show: false, title: '', type: '' });
+  const [editingRow, setEditingRow] = useState(null);
+  const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
   const [showFooter, setShowFooter] = useState(false);
 
-  const restoreConfirmState = () => {
-    setConfirm({
-      show: false,
-      message: '',
-      type: '',
-    });
-  };
-
   const restoreModalState = () => {
-    setModal({
-      show: false,
-      title: '',
-      type: '',
-    });
+    setModal(DEFAULT_MODAL_PROPS);
   };
-
-  useEffect(() => {
-    if (!selectedCell) return;
-    if (selectedCell.column.id === 'delete-row') {
-      console.log(selectedCell);
-      setConfirm({
-        show: true,
-        message: `آیا از پاک کردن ردیف شماره ${
-          selectedCell.row.index + 1
-        } اطمینان دارید؟`,
-        type: 'deleteRow',
-      });
-    }
-    if (selectedCell.column.id === 'view-row') {
-      console.log(selectedCell);
-      setModal({
-        show: true,
-        type: 'view-row',
-        title: 'نمایش جزئیات ردیف',
-      });
-    }
-  }, [selectedCell]);
 
   const getModalContent = () => {
     let viewColumns = columns.filter((column) => {
@@ -115,35 +76,6 @@ const CustomTable = (props) => {
     const { source, destination } = result;
     if (!destination) return;
     reorderData(source.index, destination.index);
-  };
-
-  // const handleClearAll = () => {
-  //   setConfirm({
-  //     show: true,
-  //     message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
-  //     type: 'clearAll',
-  //   });
-  // };
-
-  const handleOnConfirm = () => {
-    switch (confirm.type) {
-      case 'clearAll':
-        restoreConfirmState();
-        removeAll();
-        return;
-      case 'deleteRow':
-        restoreConfirmState();
-        removeRow(selectedCell.row.index);
-        return;
-
-      default:
-        restoreConfirmState();
-        return;
-    }
-  };
-
-  const handleOnCancel = () => {
-    restoreConfirmState();
   };
 
   const handleOnModalClose = () => {
@@ -183,8 +115,10 @@ const CustomTable = (props) => {
       addRow,
       selectedCell,
       setSelectedCell,
-      editableRowIndex,
-      setEditableRowIndex,
+      modal,
+      setModal,
+      editingRow,
+      setEditingRow,
       reorderData,
       initialState: {
         ...paginationStates,
@@ -210,7 +144,7 @@ const CustomTable = (props) => {
     footerGroups,
     prepareRow,
     page,
-    resetResizing,
+    // resetResizing,
     // state,
   } = tableInstance;
 
@@ -237,17 +171,7 @@ const CustomTable = (props) => {
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
-      <TableAction
-        isResizable={isResizable}
-        actions={{ handleAddRow, resetResizing }}
-      />
-      <Confirm
-        show={confirm.show}
-        onConfirm={handleOnConfirm}
-        onCancel={handleOnCancel}
-        onClose={handleOnCancel}>
-        <H5>{confirm.message}</H5>
-      </Confirm>
+      <TableAction onAddRow={handleAddRow} onSearch={onSearch} />
       <Modal
         contentWidth="75%"
         show={modal.show}
@@ -256,143 +180,146 @@ const CustomTable = (props) => {
         {getModalContent()}
       </Modal>
       <Styled.TableWrapper>
-        <Styled.Table {...getTableProps()}>
-          <div>
-            {headerGroups.map((headerGroup) => (
-              <div {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <Styled.TableHeader
-                    {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    <Styled.HeaderWrapper canSort={column.canSort}>
-                      <div>
-                        {column.render('Header')}
-                        {requiredColumns
-                          .map((col) => col?.Header)
-                          .includes(column?.Header) && (
-                          <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
-                        )}
-                      </div>
-                      <>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <Arrow
-                              dir="down"
-                              color={CV_GRAY_DARK}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
+        {!isLoading && (
+          <Styled.Table {...getTableProps()}>
+            <div>
+              {headerGroups.map((headerGroup) => (
+                <div {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <Styled.TableHeader
+                      {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <Styled.HeaderWrapper canSort={column.canSort}>
+                        <div>
+                          {column.render('Header')}
+                          {requiredColumns
+                            .map((col) => col?.Header)
+                            .includes(column?.Header) && (
+                            <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
+                          )}
+                        </div>
+                        <>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <Arrow
+                                dir="down"
+                                color={CV_GRAY_DARK}
+                                size={24}
+                                className="table-sort-arrow"
+                              />
+                            ) : (
+                              <Arrow
+                                dir="up"
+                                color={CV_GRAY_DARK}
+                                size={24}
+                                className="table-sort-arrow"
+                              />
+                            )
                           ) : (
-                            <Arrow
-                              dir="up"
-                              color={CV_GRAY_DARK}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
-                          )
-                        ) : (
-                          column.canSort && (
-                            <Arrow
-                              dir="up-down"
-                              color={CV_DISTANT}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
-                          )
-                        )}
-                      </>
-                    </Styled.HeaderWrapper>
-                    {isResizable && (
-                      <Styled.TableColumnResizer
-                        isResizing={column.isResizing}
-                        {...column.getResizerProps()}
-                      />
-                    )}
-                  </Styled.TableHeader>
-                ))}
-              </div>
-            ))}
-          </div>
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="table-body">
-              {(provided, _) => (
-                <Styled.TableBody
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  {...getTableBodyProps()}>
-                  {page.map((row, i) => {
-                    prepareRow(row);
-                    const isEditing = row?.index === editableRowIndex;
-                    return (
-                      <Draggable
-                        draggableId={row.original.id}
-                        key={row.original.id}
-                        index={row.index}>
-                        {(provided, snapshot) => (
-                          <Styled.Tr
-                            ref={provided.innerRef}
-                            isDraggingOver={snapshot.draggingOver}
-                            isDragging={snapshot.isDragging}
-                            isEditing={isEditing}
-                            {...row.getRowProps({
-                              ...provided.draggableProps,
-                            })} //! react-table props always must come after dnd props to work properly
-                          >
-                            <>
-                              {row.cells.map((cell) => {
-                                return (
-                                  <Styled.TableCell
-                                    {...cell.getCellProps([
-                                      {
-                                        ...getCellProps(cell),
-                                        onClick: () => setSelectedCell(cell),
-                                      },
-                                    ])}>
-                                    {cell.render('Cell', {
-                                      editable: !!isEditable,
-                                      dragHandleProps: {
-                                        ...provided.dragHandleProps,
-                                      },
-                                    })}
-                                  </Styled.TableCell>
-                                );
-                              })}
-                            </>
-                          </Styled.Tr>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                  {isFetching && <LogoLoader />}
-                </Styled.TableBody>
-              )}
-            </Droppable>
-          </DragDropContext>
-          {showFooter && (
-            <Styled.FooterContainer>
-              {footerGroups.map((group) => (
-                <Styled.FooterTr {...group.getFooterGroupProps()}>
-                  {group.headers.map((column) => (
-                    <div
-                      className="footer-td"
-                      {...column.getFooterProps({
-                        onClick: () => handleFooterClick(column),
-                      })}>
-                      {column.render('Footer')}
-                    </div>
+                            column.canSort && (
+                              <Arrow
+                                dir="up-down"
+                                color={CV_DISTANT}
+                                size={24}
+                                className="table-sort-arrow"
+                              />
+                            )
+                          )}
+                        </>
+                      </Styled.HeaderWrapper>
+                      {isResizable && (
+                        <Styled.TableColumnResizer
+                          isResizing={column.isResizing}
+                          {...column.getResizerProps()}
+                        />
+                      )}
+                    </Styled.TableHeader>
                   ))}
-                  <Styled.RowActionHandle
-                    style={{ left: '-1.7rem' }}
-                    onClick={() => setShowFooter(false)}>
-                    <CloseIcon size={20} color={CV_RED} />
-                  </Styled.RowActionHandle>
-                </Styled.FooterTr>
+                </div>
               ))}
-            </Styled.FooterContainer>
-          )}
-        </Styled.Table>
+            </div>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId={tableId}>
+                {(provided, _) => (
+                  <Styled.TableBody
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    {...getTableBodyProps()}>
+                    {page.map((row, i) => {
+                      prepareRow(row);
+                      const isRowEditing = row.original.id === editingRow;
+                      return (
+                        <Draggable
+                          draggableId={row.original.id}
+                          key={row.original.id}
+                          index={row.index}
+                          isDragDisabled={isRowEditing}>
+                          {(provided, snapshot) => (
+                            <Styled.Tr
+                              ref={provided.innerRef}
+                              isDraggingOver={snapshot.draggingOver}
+                              isDragging={snapshot.isDragging}
+                              isEditing={isRowEditing}
+                              {...row.getRowProps({
+                                ...provided.draggableProps,
+                              })} //! react-table props always must come after dnd props to work properly
+                            >
+                              <>
+                                {row.cells.map((cell) => {
+                                  return (
+                                    <Styled.TableCell
+                                      {...cell.getCellProps([
+                                        {
+                                          ...getCellProps(cell),
+                                          onClick: () => setSelectedCell(cell),
+                                        },
+                                      ])}>
+                                      {cell.render('Cell', {
+                                        editable: !!isEditable,
+                                        dragHandleProps: {
+                                          ...provided.dragHandleProps,
+                                        },
+                                      })}
+                                    </Styled.TableCell>
+                                  );
+                                })}
+                              </>
+                            </Styled.Tr>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </Styled.TableBody>
+                )}
+              </Droppable>
+            </DragDropContext>
+            {showFooter && (
+              <Styled.FooterContainer>
+                {footerGroups.map((group) => (
+                  <Styled.FooterTr {...group.getFooterGroupProps()}>
+                    {group.headers.map((column) => (
+                      <div
+                        className="footer-td"
+                        {...column.getFooterProps({
+                          onClick: () => handleFooterClick(column),
+                        })}>
+                        {column.render('Footer')}
+                      </div>
+                    ))}
+                    <Styled.RowActionHandle
+                      style={{ left: '-1.7rem' }}
+                      onClick={() => setShowFooter(false)}>
+                      <CloseIcon size={20} color={CV_RED} />
+                    </Styled.RowActionHandle>
+                  </Styled.FooterTr>
+                ))}
+              </Styled.FooterContainer>
+            )}
+          </Styled.Table>
+        )}
       </Styled.TableWrapper>
-      {!!pagination && reachedPaginationThreshold && (
+      {isLoading && <LogoLoader />}
+      {!!pagination && reachedPaginationThreshold && !isLoading && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
     </Styled.TableContainer>

@@ -6,6 +6,8 @@ import {
   FileCell,
   NodeCell,
   UserCell,
+  TableCell,
+  MultiLevelCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
 import DragIcon from 'components/Icons/DragIcon/Drag';
@@ -23,7 +25,7 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => {
-          if (cell?.editableRowIndex === cell?.row?.original?.id) {
+          if (cell?.editingRow === cell?.row?.original?.id) {
             return <EditRowMenu cell={cell} />;
           }
           return (
@@ -36,7 +38,7 @@ const provideCell = (header) => {
               type="dark"
               disable={!cell?.editable}
               clickable
-              offset={{ [RV_Float]: -27 }}
+              offset={{ [RV_Float]: -30 }}
               arrowColor="transparent"
               className="table-row-action-tooltip"
               renderContent={() => <RowActions cell={cell} />}>
@@ -97,6 +99,16 @@ const provideCell = (header) => {
         Cell: (row) => <UserCell {...row} header={header} />,
       };
 
+    case cellTypes.table:
+      return {
+        Cell: (row) => <TableCell {...row} header={header} />,
+      };
+
+    case cellTypes.multiLevel:
+      return {
+        Cell: (row) => <MultiLevelCell {...row} header={header} />,
+      };
+
     default:
       return;
   }
@@ -149,8 +161,8 @@ const provideFooter = (header) => {
 //! Provide options for a given column.
 const provideOptions = (header, data) => {
   return {
-    // width: getColumnWidth(data, header),
-    minWidth: getColumnWidth(data, header),
+    width: getColumnWidth(data, header),
+    // minWidth: getColumnWidth(data, header),
     ...header?.options,
   };
 };
@@ -183,13 +195,14 @@ const getColumnWidth = (data, header) => {
 
     case cellTypes.multiSelect:
       maxWidth = 500;
-      magicSpacing = header?.options?.editable ? 7.8 : 5.5;
+      magicSpacing = header?.options?.editable ? 14.5 : 5.5;
       cellLength = Math.max(
         ...(data?.[0]?.[header?.accessor]?.options?.map(
           (option) => option?.label?.length
         ) || []),
         header?.title.length
       );
+
       const defaultValuesFactor =
         data?.[0]?.[header?.accessor]?.defaultValues?.length > 1 ? 2 : 1;
 

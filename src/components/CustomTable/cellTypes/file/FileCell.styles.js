@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 import { BO_DISTANT, TC_DEFAULT } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
-import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
+import {
+  FLEX_CCC,
+  FLEX_RCB,
+  FLEX_RCC,
+  FLEX_RCS,
+} from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
   CV_GRAY_DARK,
@@ -86,4 +91,10 @@ export const FileLinkWrapper = styled.div.attrs({
   a {
     color: ${TCV_VERYWARM};
   }
+`;
+
+export const AddNewFile = styled.div`
+  ${FLEX_RCC}
+  gap: 0.5rem;
+  cursor: pointer;
 `;

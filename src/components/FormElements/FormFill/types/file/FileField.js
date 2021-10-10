@@ -1,6 +1,6 @@
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
-import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { CV_GRAY } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import * as Styled from './FileField.styles';
@@ -23,7 +23,7 @@ const FileField = (props) => {
 
   const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
 
-  console.log({ props, infoJSON, value }, 'file field');
+  // console.log({ props, infoJSON, value }, 'file field');
 
   //! Upload to server with axios.
   const uploadFile = (file, url) => {
@@ -75,7 +75,7 @@ const FileField = (props) => {
         ))}
         <FileShowCell file={1} />
         <FileShowCell file={2} />
-        <CustomDropzone
+        <CustomDropZone
           maxFiles={2} //! (infoJSON?.MaxCount)
           maxTotalSize={2} //! (infoJSON?.TotalSize)
           maxEachSize={1} //! (infoJSON?.MaxSize)

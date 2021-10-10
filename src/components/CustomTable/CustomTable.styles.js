@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { C_GRAY } from 'constant/Colors';
+import { C_GRAY, TC_VERY_TRANSPARENT } from 'constant/Colors';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -114,7 +114,7 @@ export const Table = styled.div`
 
   [data-sticky-last-left-td] {
     position: fixed;
-    ${RV_Float}: 1.7rem;
+    ${RV_Float}: 2.15rem;
     background-color: ${CV_WHITE};
     border-left: 1px solid ${CV_DISTANT};
   }
@@ -338,7 +338,27 @@ export const TableRowActionContainer = styled.div`
 
 export const EditRowActionContainer = styled.div`
   height: 100%;
-  ${FLEX_CCA}
+  ${FLEX_CCC}
+
+  .table-edit-check-icon {
+    cursor: pointer;
+    padding: 0.05rem;
+    border-radius: 50%;
+
+    :hover {
+      background-color: ${TCV_VERY_TRANSPARENT};
+    }
+  }
+
+  .table-edit-cancel-icon {
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 50%;
+
+    :hover {
+      background-color: ${TCV_VERY_TRANSPARENT};
+    }
+  }
 `;
 
 export const TableActionWrapper = styled.div.attrs({

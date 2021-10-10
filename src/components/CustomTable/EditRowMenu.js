@@ -6,7 +6,7 @@ import * as Styled from './CustomTable.styles';
 const EditRowMenu = ({ cell }) => {
   //! Exit edit mode for a row.
   const handleExitEditMode = () => {
-    cell?.setEditableRowIndex && cell?.setEditableRowIndex(null);
+    cell?.setEditingRow && cell?.setEditingRow(null);
   };
 
   //! Accept edit changes.
@@ -23,18 +23,20 @@ const EditRowMenu = ({ cell }) => {
 
   return (
     <Styled.EditRowActionContainer {...cell.dragHandleProps}>
-      <CheckIcon
-        style={{ cursor: 'pointer' }}
-        size={28}
-        color={TCV_WARM}
-        onClick={handleAcceptChanges}
-      />
-      <CloseIcon
-        style={{ cursor: 'pointer' }}
-        size={16}
-        color={CV_RED}
-        onClick={handleCancelChanges}
-      />
+      <div>
+        <CheckIcon
+          className="table-edit-check-icon"
+          size={30}
+          color={TCV_WARM}
+          onClick={handleAcceptChanges}
+        />
+        <CloseIcon
+          className="table-edit-cancel-icon"
+          size={30}
+          color={CV_RED}
+          onClick={handleCancelChanges}
+        />
+      </div>
     </Styled.EditRowActionContainer>
   );
 };

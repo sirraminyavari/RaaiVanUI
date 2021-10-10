@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import * as Styled from './UserCell.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { CV_BLACK, CV_DISTANT } from 'constant/CssVariables';
+import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
+import { CV_BLACK, CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
 import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64, getURL } from 'helpers/helpers';
+import Heading from 'components/Heading/Heading';
 
 const UserCell = (props) => {
   const { userInfo, cell } = props?.value || {};
@@ -11,6 +13,12 @@ const UserCell = (props) => {
 
   return (
     <Styled.UsersWrapper>
+      {!users?.length && (
+        <Styled.AddNewUser>
+          <PlusIcon size={20} color={TCV_WARM} />
+          <Heading type="h5">افزودن کاربر</Heading>
+        </Styled.AddNewUser>
+      )}
       {users?.map((user, index) => (
         <Styled.UserCellContainer key={user?.UserID || index}>
           <Styled.UserInfoWrapper

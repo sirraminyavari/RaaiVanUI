@@ -4,10 +4,12 @@ import axios from 'axios';
 import * as Styled from './FileCell.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
-import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
-import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
+import { CV_RED, TCV_DEFAULT, TCV_WARM } from 'constant/CssVariables';
+import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { API_Provider, decodeBase64 } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import Heading from 'components/Heading/Heading';
 
 const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
 
@@ -16,7 +18,7 @@ const FileCell = (props) => {
   const [isUploading, setIsUploading] = useState(false);
   const { files } = props?.value || {};
 
-  const handeFileDropError = (error) => {
+  const handleFileDropError = (error) => {
     if (!props?.isNew) return;
     console.log(error);
   };
@@ -83,13 +85,13 @@ const FileCell = (props) => {
   if (props?.isNew) {
     return (
       <div style={{ margin: '0.5rem', width: '100%' }}>
-        <CustomDropzone
+        <CustomDropZone
           accept={['image/*', '.pdf']}
           // foramtExceptions={['jpg']}
           maxFiles={1}
           maxEachSize={1}
           maxTotalSize={1}
-          onError={handeFileDropError}
+          onError={handleFileDropError}
           onUpload={handleUploadFiles}
           isUploading={isUploading}
           placeholders={{
@@ -102,6 +104,12 @@ const FileCell = (props) => {
 
   return (
     <Styled.FilesWrapper>
+      {!files && (
+        <Styled.AddNewFile>
+          <PlusIcon size={20} color={TCV_WARM} />
+          <Heading type="h5">افزودن فایل</Heading>
+        </Styled.AddNewFile>
+      )}
       {files?.map((file, index) => {
         const {
           Downloadable,

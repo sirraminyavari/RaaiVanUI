@@ -12,5 +12,6 @@ export const cellTypes = {
   node: 'Node',
   user: 'User',
   multiLevel: 'MultiLevel',
+  table: 'Form',
   separator: 'Separator', //! Not used in table.
 };

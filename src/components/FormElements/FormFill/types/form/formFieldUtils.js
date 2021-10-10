@@ -1,12 +1,14 @@
 import { cellTypes } from 'components/CustomTable/tableUtils';
 import { decodeBase64, toJSON } from 'helpers/helpers';
 
+const { GlobalUtilities } = window;
+
 const getColumnOptions = (column) => {
   switch (column?.Type) {
     case cellTypes.action:
       return {
         editable: false,
-        width: 30,
+        width: 35,
         disableSortBy: true,
       };
 
@@ -29,6 +31,7 @@ const getColumnOptions = (column) => {
         editable: true,
         disableSortBy: true,
         isRequired: !!column?.IsRequired,
+        minWidth: 135,
       };
 
     case cellTypes.multiSelect:
@@ -36,6 +39,7 @@ const getColumnOptions = (column) => {
         editable: true,
         disableSortBy: true,
         isRequired: !!column?.IsRequired,
+        minWidth: 135,
       };
 
     case cellTypes.date:
@@ -48,7 +52,7 @@ const getColumnOptions = (column) => {
     case cellTypes.number:
       return {
         editable: true,
-        minWidth: 100,
+        minWidth: 120,
         isRequired: !!column?.IsRequired,
       };
 
@@ -98,7 +102,6 @@ const getColumnOptions = (column) => {
 };
 
 export const prepareCell = (cell) => {
-  console.log(cell);
   switch (cell?.Type) {
     //! Text cell.
     case cellTypes.text:
@@ -232,24 +235,34 @@ export const prepareCell = (cell) => {
         },
       };
 
+    //! Table cell.
+    case cellTypes.table:
+      const tableInfo = toJSON(decodeBase64(cell?.Info));
+      // console.log(tableInfo, 'tableInfo');
+
+      return {
+        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
+          tableInfo,
+          cell,
+        },
+      };
+
     //! Otherwise creator info cell.
     default:
-      return {
-        recordInfo: { cell },
-      };
+      return {};
   }
 };
 
 export const prepareHeaders = (columns) => [
   {
-    id: '0',
+    id: 'action',
     title: '',
     accessor: 'rowAction',
     dataType: cellTypes.action,
     options: getColumnOptions({ Type: cellTypes.action }),
   },
   {
-    id: '1',
+    id: 'index',
     title: '#',
     accessor: 'rowIndex',
     dataType: cellTypes.index,
@@ -264,11 +277,31 @@ export const prepareHeaders = (columns) => [
       dataType: col?.Type,
       options: getColumnOptions(col),
     })),
-  {
-    id: 'end',
-    title: 'اطلاعات ثبت',
-    accessor: 'recordInfo',
-    dataType: cellTypes.recordInfo,
-    options: getColumnOptions({ Type: cellTypes.recordInfo }),
-  },
+  // {
+  //   id: 'record',
+  //   title: 'اطلاعات ثبت',
+  //   accessor: 'recordInfo',
+  //   dataType: cellTypes.recordInfo,
+  //   options: getColumnOptions({ Type: cellTypes.recordInfo }),
+  // },
 ];
+
+export const prepareRows = (data, columns) => {
+  return data?.map((row) => {
+    const cells = columns
+      ?.filter((col) => col?.Type !== cellTypes.separator)
+      ?.map((col) => {
+        const arr = row?.Elements?.filter(
+          (e) =>
+            e?.ElementID === col?.ElementID ||
+            e?.RefElementID === col?.ElementID
+        );
+        return arr?.length ? arr[0] : GlobalUtilities.extend({}, col);
+      });
+
+    return cells.reduce((acc, cell) => ({ ...acc, ...prepareCell(cell) }), {
+      id: row?.InstanceID,
+      recordInfo: { cell: cells[0] },
+    });
+  });
+};
