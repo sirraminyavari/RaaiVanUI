@@ -15,16 +15,32 @@ const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
 
 const FileCell = (props) => {
   // console.log('fileCell', props);
+  const {
+    isNew,
+    row,
+    editingRow,
+    onCellChange,
+    column,
+    value,
+    editable: isTableEditable,
+    header,
+  } = props;
   const [isUploading, setIsUploading] = useState(false);
-  const { files } = props?.value || {};
+  const { files } = value || {};
+  const isCellEditable = !!header?.options?.editable;
+
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isRowEditing = rowId === editingRow;
 
   const handleFileDropError = (error) => {
-    if (!props?.isNew) return;
+    if (!isNew || !isRowEditing) return;
     console.log(error);
   };
 
   const handleUploadFiles = (acceptedFiles) => {
-    if (!props?.isNew) return;
+    if (!isNew || !isRowEditing) return;
 
     //! Get upload link.
     apiHandler.url(
@@ -51,7 +67,7 @@ const FileCell = (props) => {
                 let percentage = Math.floor((loaded * 100) / total);
                 //! Executes if upload progress is over.
                 if (percentage === 100) {
-                  //! Resolve promise if and only if ulpoade process is ended.
+                  //! Resolve promise if and only if upload process is ended.
                   resolve();
                 }
               },
@@ -61,8 +77,20 @@ const FileCell = (props) => {
             axios
               .post(uploadURL, formData, options)
               .then((response) => {
+                // console.log(response);
                 if (response?.data?.success) {
+                  //! Call on any field change.
+                  const newFilesArray = [
+                    ...value?.files,
+                    response?.data?.AttachedFile,
+                  ];
+                  const fileCell = { ...value, newFilesArray };
+                  onCellChange(rowId, columnId, fileCell, newFilesArray);
+
+                  //! update upload state.
                   setIsUploading(false);
+
+                  //! Inform user with toast.
                   InfoToast({
                     toastId: accepted?.name,
                     type: 'info',
@@ -82,7 +110,7 @@ const FileCell = (props) => {
     );
   };
 
-  if (props?.isNew) {
+  if (isNew) {
     return (
       <div style={{ margin: '0.5rem', width: '100%' }}>
         <CustomDropZone
@@ -104,12 +132,6 @@ const FileCell = (props) => {
 
   return (
     <Styled.FilesWrapper>
-      {!files && (
-        <Styled.AddNewFile>
-          <PlusIcon size={20} color={TCV_WARM} />
-          <Heading type="h5">افزودن فایل</Heading>
-        </Styled.AddNewFile>
-      )}
       {files?.map((file, index) => {
         const {
           Downloadable,
@@ -117,14 +139,14 @@ const FileCell = (props) => {
           FileID,
           FileName,
           IconURL,
-          MIME,
-          OwnerID,
-          Size,
+          // MIME,
+          // OwnerID,
+          // Size,
         } = file;
 
         return (
           <Styled.FileCellContainer key={FileID || index}>
-            <Styled.FileInfoWrapper editable={props?.header?.options?.editable}>
+            <Styled.FileInfoWrapper editable={isCellEditable}>
               <FileFormatIcon
                 color={TCV_DEFAULT}
                 size={25}
@@ -144,12 +166,27 @@ const FileCell = (props) => {
                 )}
               </Styled.FileLinkWrapper>
             </Styled.FileInfoWrapper>
-            {props?.editable && props?.header?.options?.editable && (
+            {isTableEditable && isCellEditable && isRowEditing && (
               <TrashIcon style={{ cursor: 'pointer' }} color={CV_RED} />
             )}
           </Styled.FileCellContainer>
         );
       })}
+      {!!files && isRowEditing && (
+        <Styled.AddNewFile>
+          <PlusIcon size={20} color={TCV_WARM} />
+          <Heading type="h5">افزودن فایل</Heading>
+        </Styled.AddNewFile>
+      )}
+      {!files &&
+        (isRowEditing ? (
+          <Styled.AddNewFile>
+            <PlusIcon size={20} color={TCV_WARM} />
+            <Heading type="h5">افزودن فایل</Heading>
+          </Styled.AddNewFile>
+        ) : (
+          <div>بدون فایل</div>
+        ))}
     </Styled.FilesWrapper>
   );
 };

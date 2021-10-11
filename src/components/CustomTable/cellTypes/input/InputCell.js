@@ -7,18 +7,24 @@ const InputCell = (props) => {
   const {
     value: initialValue,
     row,
-    column: { id },
-    updateCellData, //! This is a custom function that we supplied to our table instance.
+    column,
+    onCellChange, //! This is a custom function that we supplied to our table instance.
     editable,
-    selectedCell, //! This is what we select for inline edit in cell.
-    setSelectedCell,
+    editingRow,
     isNew,
+    header,
   } = props;
+
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
 
   const [inputValue, setInputValue] = useState(initialValue);
 
   const getInputType = () => {
-    switch (props?.header?.dataType) {
+    switch (header?.dataType) {
       case 'Numeric':
         return 'number';
 
@@ -35,9 +41,8 @@ const InputCell = (props) => {
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
-    //! API call to server.
-    updateCellData(row?.index, id, inputValue);
-    setSelectedCell(null);
+    //! Update parent.
+    // onCellChange(rowId, columnId, inputValue, inputValue?.text);
   };
 
   //! If the initialValue has changed externally, sync it up with our state.
@@ -48,43 +53,9 @@ const InputCell = (props) => {
   if (!!isNew) {
     return (
       <Input
-        onChange={() => {}}
+        onChange={(e) => setInputValue(e.target.value)}
         onBlur={() => {}}
         style={{
-          textAlign: 'center',
-          width: '100%',
-          backgroundColor: 'inherit',
-          color: 'inherit',
-        }}
-        type={getInputType()}
-        value=""
-        autoFocus
-        placeholder="وارد نمایید"
-      />
-    );
-  }
-
-  //! Check if 'table' is editable in general or not.
-  if (!editable) {
-    return `${initialValue?.text}`;
-  }
-
-  //! Check if 'column' is editable or not.
-  if (!props?.header?.options?.editable) {
-    return props?.value?.text;
-  }
-
-  if (
-    !!selectedCell &&
-    row?.index === selectedCell.row.index &&
-    id === selectedCell.column.id
-  ) {
-    return (
-      <Input
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
-        style={{
-          textAlign: 'center',
           width: '100%',
           backgroundColor: 'inherit',
           color: 'inherit',
@@ -92,14 +63,37 @@ const InputCell = (props) => {
         type={getInputType()}
         value={inputValue?.text}
         autoFocus
-        placeholder="وارد نمایید"
+        placeholder="وارد کنید"
+      />
+    );
+  }
+
+  //! Check if 'table' or 'cell' are editable.
+  if (!editable || !isCellEditable) {
+    return <Styled.CellView>{initialValue?.text}</Styled.CellView>;
+  }
+
+  if (isRowEditing) {
+    return (
+      <Input
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        style={{
+          width: '100%',
+          backgroundColor: 'inherit',
+          color: 'inherit',
+        }}
+        type={getInputType()}
+        value={inputValue?.text}
+        autoFocus
+        placeholder="وارد کنید"
       />
     );
   } else {
-    return !!initialValue?.text ? (
-      <Styled.CellView>{initialValue?.text}</Styled.CellView>
+    return !!inputValue?.text ? (
+      <Styled.CellView>{inputValue?.text}</Styled.CellView>
     ) : (
-      <Styled.EmptyCellView>وارد نمایید</Styled.EmptyCellView>
+      <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );
   }
 };

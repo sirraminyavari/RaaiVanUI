@@ -38,6 +38,9 @@ const FormFill = ({ data }) => {
       case 'Binary':
         await saveFieldChanges(readyToUpdate, elementId);
         break;
+      case 'Text':
+        await saveFieldChanges(readyToUpdate, elementId);
+        break;
       default:
         break;
     }

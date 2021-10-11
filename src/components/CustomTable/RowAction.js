@@ -47,6 +47,7 @@ const RowAction = ({ cell }) => {
 
   const handleSetEditableRow = () => {
     cell?.setEditingRow && cell?.setEditingRow(rowId);
+    cell?.setShowFooter(false);
   };
 
   return (

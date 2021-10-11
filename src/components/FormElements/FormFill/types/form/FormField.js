@@ -43,14 +43,18 @@ const FormField = (props) => {
     [data, tableColumns]
   );
 
-  const updateCellData = (rowIndex, columnId, value) => {
-    // console.log(value);
+  const updateCellData = (rowId, columnId, cellData, value) => {
+    // console.log({ cellData, value });
+    const elementId = cellData?.cell?.ElementID;
+    const type = cellData?.cell?.Type;
+    onAnyFieldChanged(elementId, value, type);
+
     setData((old) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
+      old.map((row) => {
+        if (row?.id === rowId) {
           return {
             ...row,
-            [columnId]: value,
+            [columnId]: cellData,
           };
         }
         return row;
@@ -147,7 +151,7 @@ const FormField = (props) => {
           }}
           columns={memoizedColumns}
           data={memoizedData}
-          updateCellData={memoizedUpdateCellData}
+          onCellChange={memoizedUpdateCellData}
           reorderData={memoizedReorderData}
           removeRow={memoizedRemoveRow}
           addRow={memoizedAddRow}

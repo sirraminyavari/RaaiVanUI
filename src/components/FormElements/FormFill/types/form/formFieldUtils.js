@@ -45,7 +45,7 @@ const getColumnOptions = (column) => {
     case cellTypes.date:
       return {
         editable: true,
-        minWidth: 170,
+        minWidth: 200,
         isRequired: !!column?.IsRequired,
       };
 

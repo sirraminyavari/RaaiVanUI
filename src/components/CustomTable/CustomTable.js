@@ -43,7 +43,7 @@ const CustomTable = (props) => {
     isLoading,
     columns,
     data,
-    updateCellData,
+    onCellChange,
     removeRow,
     removeAll,
     addRow,
@@ -109,7 +109,7 @@ const CustomTable = (props) => {
       columns, //! Must be memoized (Based on official Docs.).
       data, //! Must be memoized.
       defaultColumn,
-      updateCellData,
+      onCellChange,
       removeRow,
       removeAll,
       addRow,
@@ -119,6 +119,7 @@ const CustomTable = (props) => {
       setModal,
       editingRow,
       setEditingRow,
+      setShowFooter,
       reorderData,
       initialState: {
         ...paginationStates,
@@ -202,6 +203,7 @@ const CustomTable = (props) => {
                             column.isSortedDesc ? (
                               <Arrow
                                 dir="down"
+                                circle
                                 color={CV_GRAY_DARK}
                                 size={24}
                                 className="table-sort-arrow"
@@ -209,6 +211,7 @@ const CustomTable = (props) => {
                             ) : (
                               <Arrow
                                 dir="up"
+                                circle
                                 color={CV_GRAY_DARK}
                                 size={24}
                                 className="table-sort-arrow"
@@ -219,7 +222,7 @@ const CustomTable = (props) => {
                               <Arrow
                                 dir="up-down"
                                 color={CV_DISTANT}
-                                size={24}
+                                size={20}
                                 className="table-sort-arrow"
                               />
                             )
