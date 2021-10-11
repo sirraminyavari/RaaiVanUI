@@ -16,21 +16,6 @@ const ItemSelection = ({ onClose, routeProps }) => {
   console.log(routeProps, 'QQQQQQQQQQ');
   const { route } = routeProps || {};
 
-  // const route = {
-  //   AccessToken: '7GzPbOsFr2kFliO2GsKg',
-  //   AppID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-  //   Application: {
-  //     ApplicationID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-  //     Title: '2K/bjNiv2q/Yp9mHIC0g2LPYrdin2Kg=',
-  //     Description: '',
-  //     IconURL: '../../Images/CliqMind-Mini.png',
-  //   },
-  //   ApplicationID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-  //   Bookmarked: true,
-  //   IsAuthenticated: true,
-  //   NodeTypes: [],
-  //   RelatedItem: null,
-  // };
   useEffect(() => {
     console.log(checkedItems, 'checkedItems');
   }, [checkedItems]);
