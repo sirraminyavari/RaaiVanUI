@@ -6,6 +6,7 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
+import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
@@ -53,7 +54,10 @@ const CustomTable = (props) => {
     getCellProps = defaultPropGetter,
   } = props;
 
+  const requiredColumns = columns.filter((col) => !!col.isRequired);
+
   const [selectedCell, setSelectedCell] = useState(null);
+  const [editableRowIndex, setEditableRowIndex] = useState(null);
   const [confirm, setConfirm] = useState({
     show: false,
     message: '',
@@ -179,6 +183,8 @@ const CustomTable = (props) => {
       addRow,
       selectedCell,
       setSelectedCell,
+      editableRowIndex,
+      setEditableRowIndex,
       reorderData,
       initialState: {
         ...paginationStates,
@@ -187,7 +193,8 @@ const CustomTable = (props) => {
     useFlexLayout,
     useResizeColumns,
     useSortBy,
-    usePagination
+    usePagination,
+    useSticky
   );
 
   tableInstance.state = {
@@ -248,12 +255,7 @@ const CustomTable = (props) => {
         onClose={handleOnModalClose}>
         {getModalContent()}
       </Modal>
-      <div
-        style={{
-          border: '1px solid #333',
-          overflow: 'auto',
-          marginTop: '3rem',
-        }}>
+      <Styled.TableWrapper>
         <Styled.Table {...getTableProps()}>
           <div>
             {headerGroups.map((headerGroup) => (
@@ -262,9 +264,14 @@ const CustomTable = (props) => {
                   <Styled.TableHeader
                     {...column.getHeaderProps(column.getSortByToggleProps())}>
                     <Styled.HeaderWrapper canSort={column.canSort}>
-                      {column.render('Header')}
-                      {/* <span>*</span>  */}
-                      {console.log(column)}
+                      <div>
+                        {column.render('Header')}
+                        {requiredColumns
+                          .map((col) => col?.Header)
+                          .includes(column?.Header) && (
+                          <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
+                        )}
+                      </div>
                       <>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
@@ -314,6 +321,7 @@ const CustomTable = (props) => {
                   {...getTableBodyProps()}>
                   {page.map((row, i) => {
                     prepareRow(row);
+                    const isEditing = row?.index === editableRowIndex;
                     return (
                       <Draggable
                         draggableId={row.original.id}
@@ -322,29 +330,32 @@ const CustomTable = (props) => {
                         {(provided, snapshot) => (
                           <Styled.Tr
                             ref={provided.innerRef}
-                            isSomethingDragging={snapshot.draggingOver}
+                            isDraggingOver={snapshot.draggingOver}
                             isDragging={snapshot.isDragging}
+                            isEditing={isEditing}
                             {...row.getRowProps({
                               ...provided.draggableProps,
                             })} //! react-table props always must come after dnd props to work properly
                           >
                             <>
-                              {row.cells.map((cell) => (
-                                <Styled.TableCell
-                                  {...cell.getCellProps([
-                                    {
-                                      ...getCellProps(cell),
-                                      onClick: () => setSelectedCell(cell),
-                                    },
-                                  ])}>
-                                  {cell.render('Cell', {
-                                    editable: !!isEditable,
-                                    dragHandleProps: {
-                                      ...provided.dragHandleProps,
-                                    },
-                                  })}
-                                </Styled.TableCell>
-                              ))}
+                              {row.cells.map((cell) => {
+                                return (
+                                  <Styled.TableCell
+                                    {...cell.getCellProps([
+                                      {
+                                        ...getCellProps(cell),
+                                        onClick: () => setSelectedCell(cell),
+                                      },
+                                    ])}>
+                                    {cell.render('Cell', {
+                                      editable: !!isEditable,
+                                      dragHandleProps: {
+                                        ...provided.dragHandleProps,
+                                      },
+                                    })}
+                                  </Styled.TableCell>
+                                );
+                              })}
                               {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
                               <DragIcon />
                             </Styled.RowDragHandle>
@@ -387,7 +398,7 @@ const CustomTable = (props) => {
             </Styled.FooterContainer>
           )}
         </Styled.Table>
-      </div>
+      </Styled.TableWrapper>
       {!!pagination && reachedPaginationThreshold && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}

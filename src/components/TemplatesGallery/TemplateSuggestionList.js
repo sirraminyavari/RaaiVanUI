@@ -6,6 +6,7 @@ import TemplateListItem from './TemplateListItem';
 import { TemplatesGalleryContext, MAIN_CONTENT } from './TemplatesGallery';
 import { isEmpty } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 
 const TemplateSuggestionList = () => {
   const {
@@ -36,7 +37,8 @@ const TemplateSuggestionList = () => {
   return (
     <Styled.SuggestionListContainer>
       <Styled.SuggestionListTitle onClick={handleClickTitle}>
-        پیشنهاد کلیک‌مایند
+        <span>پیشنهاد کلیک‌مایند</span>
+        <ChevronIcon small dir="left" />
       </Styled.SuggestionListTitle>
       <PerfectScrollbar className="template-suggestion-list-scrollbar">
         {isEmpty(tree) ? (

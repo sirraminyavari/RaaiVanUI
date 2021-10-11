@@ -1355,7 +1355,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         
         if (qi > 0) url = url.substr(0, qi);
         if (hi > 0) url = url.substr(0, hi);
-
+        
         var extension = url.substring(url.lastIndexOf(".") + 1, url.length);
         return extension.toLowerCase() !== String("css");
     },
@@ -1363,6 +1363,9 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
     add_timestamp: function (url) {
         var ts = window.__TIMESTAMP = window.__TIMESTAMP || (new Date()).getTime();
 
+        if (((new Date()).getTime() - ts) > (1000 * 5))
+            ts = window.__TIMESTAMP = (new Date()).getTime();
+        
         if (!url) return "";
         return url + (url.indexOf("?") >= 0 ? "&" : "?") + "timeStamp=" + ts;
     },

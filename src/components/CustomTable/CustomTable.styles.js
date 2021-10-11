@@ -14,15 +14,18 @@ import {
   TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import {
+  FLEX_CCA,
+  FLEX_CCB,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
   FLEX_RCE,
   FLEX_RCS,
+  HorizontalScrollbar,
 } from 'constant/StyledCommonCss';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 
-const { RV_RevFloat } = window;
+const { RV_RevFloat, RV_Float } = window;
 
 export const selectStyles = {
   control: (styles) => ({
@@ -86,11 +89,32 @@ export const TableContainer = styled.div`
   // overflow-x: auto;
 `;
 
+export const TableWrapper = styled.div`
+  // border: 1px solid #333;
+  overflow-x: scroll;
+  margin-top: 3rem;
+
+  ${HorizontalScrollbar}
+`;
+
 export const Table = styled.div`
   border-spacing: 0;
   margin: 0.5rem;
   margin-right: 0;
   user-select: none;
+
+  [data-sticky-td] {
+    position: fixed;
+    ${RV_Float}: 0;
+    background-color: ${CV_WHITE};
+  }
+
+  [data-sticky-last-left-td] {
+    position: fixed;
+    ${RV_Float}: 1.7rem;
+    background-color: ${CV_WHITE};
+    border-left: 1px solid ${CV_DISTANT};
+  }
 `;
 
 export const TableBody = styled.div`
@@ -150,8 +174,13 @@ export const HeaderWrapper = styled.div`
   }
 `;
 
+export const HeaderAsterisk = styled.span`
+  color: ${CV_RED};
+`;
+
 export const Tr = styled.div`
   background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
+  // background-color: ${({ isEditing }) => (isEditing ? CV_GRAY : '')};
   // :not(:first-child) {
   //   border-top: 1px solid ${CV_DISTANT};
   // }
@@ -164,6 +193,7 @@ export const Tr = styled.div`
 
   &:hover {
     > div:not(:first-child) {
+      // background-color: ${({ isEditing }) => !isEditing && CV_FREEZED};
       background-color: ${CV_FREEZED};
       color: ${CV_BLACK};
     }
@@ -301,6 +331,11 @@ export const TableRowActionContainer = styled.div`
   height: auto;
   color: ${CV_GRAY_DARK};
   padding: 0.5rem;
+`;
+
+export const EditRowActionContainer = styled.div`
+  height: 100%;
+  ${FLEX_CCA}
 `;
 
 export const TableActionWrapper = styled.div.attrs({

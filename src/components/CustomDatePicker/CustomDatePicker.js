@@ -6,12 +6,16 @@ import '@rasoul678/react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker, {
   Calendar,
 } from '@rasoul678/react-modern-calendar-datepicker';
-import moment from 'jalali-moment';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
 import { lunar } from './customLocals';
-import { mergeRefs, getToday } from 'helpers/helpers';
+import {
+  mergeRefs,
+  getToday,
+  engToPerDate,
+  perToEngDate,
+} from 'helpers/helpers';
 // import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
 import RefreshIcon from 'components/Icons/UndoIcon/Undo';
@@ -55,7 +59,8 @@ const buttonsCommonStyles = {
  * @property {boolean} range - The date picker range.
  * @property {string | {from: string, to: string}} value - The date picker value.
  * @property {function} onDateSelect - The date picker callback function.
- * @property {boolean} clearButton - The date picker caclear button.
+ * @property {boolean} hasFooter - The date picker footer.
+ * @property {boolean} justCalendar - Show calendar without any input or button.
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
  * @property {string} format - The date picker format.
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
@@ -82,7 +87,7 @@ const CustomDatePicker = (props) => {
     value,
     size,
     onDateSelect,
-    clearButton,
+    hasFooter,
     shouldClear,
     format,
     fromToday,
@@ -94,6 +99,7 @@ const CustomDatePicker = (props) => {
     CustomButton,
     headerTitle,
     onChangeVisibility,
+    justCalendar,
     ...rest
   } = props;
 
@@ -111,20 +117,12 @@ const CustomDatePicker = (props) => {
     { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
   ];
 
-  const dateEngToPer = (date) => {
-    return moment(date, format).locale('fa').format(format);
-  };
-
-  const datePerToEng = (date) => {
-    return moment.from(date, 'fa', format).format(format);
-  };
-
   //! Change server value to datepicker friendly object.
   const dateStringToObject = (item) => {
     let dateString = item;
     if (!item) return;
     if (['jalali', 'lunar'].includes(type)) {
-      dateString = dateEngToPer(item);
+      dateString = engToPerDate(item);
     } else {
       dateString = item;
     }
@@ -141,7 +139,7 @@ const CustomDatePicker = (props) => {
     if (!item) return;
     const dateString = `${item.year}/${item.month}/${item.day}`;
     if (type === 'jalali') {
-      const serverFormat = datePerToEng(dateString);
+      const serverFormat = perToEngDate(dateString);
       return serverFormat;
     }
     return dateString;
@@ -173,11 +171,11 @@ const CustomDatePicker = (props) => {
     if (value) {
       let initialVal;
       if (range) {
-        initialVal = (dateEngToPer(value.from) + dateEngToPer(value.to))
+        initialVal = (engToPerDate(value.from) + engToPerDate(value.to))
           .match(/\d/g)
           .join('');
       } else {
-        initialVal = (dateEngToPer(value).match(/\d/g) || ['']).join('');
+        initialVal = (engToPerDate(value).match(/\d/g) || ['']).join('');
       }
       if (mode === 'input') {
         inputRef.current.value = customFormat(initialVal, type, range);
@@ -305,7 +303,7 @@ const CustomDatePicker = (props) => {
   }, [shouldClear]);
 
   //! Renders a clear button for datepicker.
-  const ClearButton = () => {
+  const Footer = () => {
     return (
       <>
         <Styled.CalendarHeaderContainer size={size}>
@@ -456,7 +454,7 @@ const CustomDatePicker = (props) => {
 
   const getMinOrMaxDate = (date) => {
     if (type === 'jalali') {
-      const perDate = dateEngToPer(date).split('/');
+      const perDate = engToPerDate(date).split('/');
       return {
         year: +perDate[0],
         month: +perDate[1],
@@ -494,20 +492,22 @@ const CustomDatePicker = (props) => {
   switch (mode) {
     case 'button':
       return (
-        <Styled.CalendarConatiner>
+        <Styled.CalendarConatiner hasFooter={!!hasFooter}>
           {!!CustomButton ? (
             <CustomButton onClick={toggleCalendar} />
           ) : (
-            <Button
-              style={{ minWidth: '16rem', ...buttonStyle }}
-              onClick={toggleCalendar}>
-              {formatDate(selectedDate)}
-            </Button>
+            !justCalendar && (
+              <Button
+                style={{ minWidth: '16rem', ...buttonStyle }}
+                onClick={toggleCalendar}>
+                {formatDate(selectedDate)}
+              </Button>
+            )
           )}
-          {isCalendarShown && (
+          {(isCalendarShown || !!justCalendar) && (
             <OnClickAway onAway={toggleCalendar}>
               <Calendar
-                renderFooter={() => (clearButton ? <ClearButton /> : null)}
+                renderFooter={() => (hasFooter ? <Footer /> : null)}
                 onChange={handleChange}
                 value={selectedDate}
                 minimumDate={
@@ -535,7 +535,7 @@ const CustomDatePicker = (props) => {
 
     default:
       return (
-        <Styled.CalendarConatiner>
+        <Styled.CalendarConatiner hasFooter={!!hasFooter}>
           <DatePicker
             renderInput={({ ref }) => (
               <Input
@@ -554,7 +554,7 @@ const CustomDatePicker = (props) => {
                 ref={mergeRefs(inputRef, ref)}
               />
             )}
-            renderFooter={() => (clearButton ? <ClearButton /> : null)}
+            renderFooter={() => (hasFooter ? <Footer /> : null)}
             onChange={handleChange}
             value={selectedDate}
             minimumDate={

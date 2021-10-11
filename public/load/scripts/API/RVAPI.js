@@ -603,6 +603,8 @@
     Log: function (params) {
         params = params || {};
 
+        params.Data = params.Data || params.data;
+
         var url = RVAPI.ResponseURL + "/Log?timeStamp=" + new Date().getTime();
         var queryString = (params.Data ? "&Data=" + params.Data : "");
         return RVAPI._send(url, params, queryString);
