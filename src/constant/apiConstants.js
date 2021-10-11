@@ -518,6 +518,12 @@ export const CROP_ICON = 'CropIcon';
 export const CROP_PROFILE_IMAGE = 'CropProfileImage';
 
 /**
+ * @description 'GetUploadLink'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const GET_UPLOAD_LINK = 'GetUploadLink';
+/**
  * @description 'UploadAndCropIcon'
  * @mode API function
  * @class 'DocsAPI'
