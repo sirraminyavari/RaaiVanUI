@@ -27,18 +27,7 @@ const { RVDic, RVGlobal, RV_RTL, RV_RevFloat } = window;
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const Collctor = ({
-  children,
-  nodeType,
-  hierarchy,
-  bookmarked,
-  itemSelectionMode,
-  isProfile,
-  onApplyNodeType,
-  nodeDetails,
-  nodeId,
-  ...props
-}) => {
+const Collctor = ({ itemSelectionMode, nodeDetails, nodeId, ...props }) => {
   const [relatedNodes, setRelatedNodes] = useState([]);
   const [sideColumn, setSideColumn] = useState(false);
 
@@ -68,7 +57,7 @@ const Collctor = ({
                 padding: '0 7.7rem 2rem 7.7rem',
               }}
               {...props}>
-              <MainNode nodeDetails={nodeDetails} nodeId={nodeId} />
+              <MainNode nodeDetails={nodeDetails} nodeId={nodeId} {...props} />
             </div>
           </Maintainer>
         </Scrollable>

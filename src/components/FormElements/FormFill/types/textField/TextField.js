@@ -17,6 +17,7 @@ import FormCell from '../../FormCell';
 import TextIcon from 'components/Icons/TextIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
+import { decodeBase64 } from 'helpers/helpers';
 
 const { GlobalUtilities } = window;
 const { to_json } = GlobalUtilities || {};
@@ -72,6 +73,7 @@ const TextField = ({
       }
     }
   };
+
   return (
     <FormCell
       iconComponent={

@@ -8,6 +8,17 @@ const prepareForm = (prevForm, elementId, event, type) => {
   console.log(event, 'event');
   const { Elements } = prevForm || {};
 
+  const requireItems = (x) => {
+    console.log(x, 'CCCCCC');
+    return {
+      Type: x?.Type,
+      ElementID: x?.ElementID,
+      RefElementID: x?.RefElementID,
+      InstanceID: x?.InstanceID,
+      Info: x?.Info,
+      Title: x?.Title,
+    };
+  };
   switch (type) {
     case 'User':
       const result = {
@@ -15,7 +26,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
-                ...x,
+                ...requireItems(x),
                 GuidItems: event.multiSelect
                   ? x?.SelectedItems.find((z) => z.ID === event?.id)
                     ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
@@ -51,7 +62,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
-                ...x,
+                ...requireItems(x),
                 GuidItems: event,
               }
             : x
@@ -118,7 +129,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
-                ...x,
+                ...requireItems(x),
                 TextValue: event,
               }
             : x

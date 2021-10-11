@@ -2,7 +2,7 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { decodeBase64 } from 'helpers/helpers';
 import { toBase64 } from 'js-base64';
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import MultiLeveltype from './types/multiLevel/MultiLevelType';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
@@ -18,13 +18,17 @@ import FileField from './types/file/FileField';
 import prepareForm from './types/prepareForm';
 import SeperatorField from './types/seperator/SeperatorField';
 import saveForm from './types/saveForm';
+import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 
 const { RVDic, GlobalUtilities } = window;
-const FormFill = ({ data }) => {
+const FormFill = ({ data, ...props }) => {
+  const propsContext = useContext(PropsContext);
+
   const [tempForm, setTempForm] = useState(data);
   const [syncTempFormWithBackEnd, setSyncTempFormWithBackEnd] = useState(data);
   useEffect(() => {
     console.log(data, 'data ****');
+    console.log(props, 'props form fill ****');
     setTempForm(tempForm);
   }, []);
   const onAnyFieldChanged = async (elementId, event, type) => {
@@ -189,6 +193,7 @@ const FormFill = ({ data }) => {
             );
 
           case 'Node':
+            console.log('node node ', propsContext);
             return (
               <SubjectField
                 decodeTitle={decodeTitle}
@@ -197,6 +202,7 @@ const FormFill = ({ data }) => {
                 value={[]}
                 type={Type}
                 decodeInfo={decodeInfo}
+                propsContext={propsContext}
               />
             );
 

@@ -528,6 +528,7 @@ const FilterBar = ({
             <PeoplePicker
               onByMe={onByMe}
               onByPeople={onPeople}
+              multi={true}
               isByMe={isByMe}
               pickedPeople={people}
               onVisible={setPeoplePickerVisibility}

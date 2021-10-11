@@ -16,6 +16,7 @@ const SubjectField = ({
   onAnyFieldChanged,
   elementId,
   type,
+  propsContext,
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,7 +32,12 @@ const SubjectField = ({
         style={{ padding: '0', height: '50%' }}
         stick
         show={isVisible}>
-        <ItemSelection onClose={() => setIsVisible(false)} />
+        <ItemSelection
+          nodeTypeIds={decodeInfo?.map}
+          routeProps={propsContext}
+          //join('|')
+          onClose={() => setIsVisible(false)}
+        />
       </Modal>
       <FormCell iconComponent={<AtIcon color={CV_GRAY} />} title={decodeTitle}>
         <Select onClick={() => setIsVisible(true)}>{RVDic.NodeSelect}</Select>

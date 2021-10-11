@@ -9,9 +9,8 @@ import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 import IntroNodes from './IntroNodes';
 
-const getNodesAPI = (bookMarked = false) => {
-  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
-};
+const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -75,13 +74,13 @@ const NodeList = (props) => {
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetching', 'relatedToNodeId', relatedToNodeId);
+    console.log('byPeople', byPeople);
 
-    getNodesAPI(isBookMarked).fetch(
+    getNodesAPI.fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
-        NodeTypeID: nodeTypeId,
+        NodeTypeID: nodeTypeId || nodeTypeIds,
         RelatedToNodeID: relatedToNodeId,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
@@ -89,11 +88,16 @@ const NodeList = (props) => {
         FormFilters: encode(JSON.stringify(formFilters)),
         UseNodeTypeHierarchy: true,
         IsMine: isByMe,
-        CreatorUserID: byPeople?.id,
+        // CreatorUserID: byPeople?.id,
+        FetchCounts: true,
+        CreatorUserIDs: byPeople?.map((x) => x.id),
+
         VisitsCount: true,
+        IsFavorite: isBookMarked,
       },
       (response) => {
         if (response.Nodes) {
+          console.log(response, '####### response ########');
           // setDataCount(response.TotalCount);
 
           const nodeIds = response?.Nodes.map((x) => x?.NodeID);

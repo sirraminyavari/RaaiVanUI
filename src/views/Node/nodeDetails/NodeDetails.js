@@ -3,11 +3,13 @@
  */
 
 import APIHandler from 'apiHelper/APIHandler';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import NodeView from '../Node-view';
 import Collector from './items/Collector';
 import styled from 'styled-components';
+
+export const PropsContext = React.createContext();
 
 const getNode = new APIHandler('CNAPI', 'GetNode');
 const NodeDetails = (props) => {
@@ -23,20 +25,22 @@ const NodeDetails = (props) => {
       setLoading(false);
     });
   }, []);
-  console.log(props, 'props');
+  console.log(props, 'props NodeDetails');
   return (
-    <Maintainer style={{ width: '100%' }}>
-      {/* If True, will render MobileView component */}
+    <PropsContext.Provider value={props}>
+      <Maintainer style={{ width: '100%' }}>
+        {/* If True, will render MobileView component */}
 
-      <>
-        {DimensionHelper()?.isTabletOrMobile ? (
-          <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
-        ) : (
-          <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
-        )}
-      </>
-      {/* <NodeView {...props} /> */}
-    </Maintainer>
+        <>
+          {DimensionHelper()?.isTabletOrMobile ? (
+            <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
+          ) : (
+            <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
+          )}
+        </>
+        {/* <NodeView {...props} /> */}
+      </Maintainer>
+    </PropsContext.Provider>
   );
 };
 export default NodeDetails;
