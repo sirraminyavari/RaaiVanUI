@@ -52,7 +52,7 @@ const getColumnOptions = (column) => {
     case cellTypes.number:
       return {
         editable: true,
-        minWidth: 120,
+        minWidth: 150,
         isRequired: !!column?.IsRequired,
       };
 
@@ -75,7 +75,7 @@ const getColumnOptions = (column) => {
       return {
         editable: true,
         disableSortBy: true,
-        minWidth: 200,
+        minWidth: 260,
         isRequired: !!column?.IsRequired,
       };
 
@@ -149,7 +149,9 @@ export const prepareCell = (cell) => {
       const checkboxInfo = toJSON(decodeBase64(cell?.Info));
       const checkboxValue = decodeBase64(cell?.TextValue);
       const checkboxDefaults = !!checkboxValue
-        ? [{ value: checkboxValue, label: checkboxValue }]
+        ? checkboxValue
+            .split('~')
+            .map((value) => ({ value: value.trim(), label: value.trim() }))
         : [];
       const checkboxOptions = checkboxInfo?.Options?.map((opt) => ({
         value: decodeBase64(opt),
@@ -168,18 +170,11 @@ export const prepareCell = (cell) => {
     case cellTypes.binary:
       const binaryInfo = toJSON(decodeBase64(cell?.Info));
       const binaryValue = decodeBase64(cell?.TextValue);
-      const binaryDefaults = !!binaryValue
-        ? [{ value: binaryValue, label: binaryValue }]
-        : [];
-      const binaryOptions = Object.values(binaryInfo).map((opt) => ({
-        value: decodeBase64(opt),
-        label: decodeBase64(opt),
-      }));
 
       return {
         [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
-          options: binaryOptions,
-          defaultValues: binaryDefaults,
+          binaryInfo,
+          binaryValue,
           cell,
         },
       };

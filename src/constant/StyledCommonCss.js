@@ -141,6 +141,18 @@ export const FLEX_RCE = css`
 /**
  * @description 'Flex'
  * @Direction 'R'ow
+ * @Align flex-'E'nd
+ * @Justify space-'B'etween
+ */
+export const FLEX_REB = css`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify space-'B'etween
  */

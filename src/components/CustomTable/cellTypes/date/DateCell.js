@@ -15,7 +15,7 @@ const DateCell = (props) => {
     onCellChange,
     column,
     value,
-    editable,
+    editable: isTableEditable,
     editingRow,
     header,
   } = props;
@@ -71,15 +71,7 @@ const DateCell = (props) => {
     );
   }
 
-  if (!editable || !isCellEditable) {
-    return (
-      <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-        {showFormat}
-      </Heading>
-    );
-  }
-
-  if (!isRowEditing) {
+  if (!isTableEditable || !isCellEditable || !isRowEditing) {
     return (
       <Heading style={{ color: CV_GRAY_DARK }} type="h5">
         {showFormat}

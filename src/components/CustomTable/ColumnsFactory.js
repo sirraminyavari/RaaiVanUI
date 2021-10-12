@@ -8,6 +8,7 @@ import {
   UserCell,
   TableCell,
   MultiLevelCell,
+  BinaryCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
 import DragIcon from 'components/Icons/DragIcon/Drag';
@@ -76,7 +77,7 @@ const provideCell = (header) => {
 
     case cellTypes.binary:
       return {
-        Cell: (row) => <SelectCell {...row} header={header} binary />,
+        Cell: (row) => <BinaryCell {...row} header={header} />,
       };
 
     case cellTypes.recordInfo:
@@ -138,7 +139,7 @@ const provideFooter = (header) => {
 
     case cellTypes.binary:
       return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+        Footer: (row) => <BinaryCell {...row} header={header} isNew />,
       };
 
     case cellTypes.date:
@@ -195,7 +196,7 @@ const getColumnWidth = (data, header) => {
 
     case cellTypes.multiSelect:
       maxWidth = 500;
-      magicSpacing = header?.options?.editable ? 14.5 : 5.5;
+      magicSpacing = header?.options?.editable ? 17 : 5.5;
       cellLength = Math.max(
         ...(data?.[0]?.[header?.accessor]?.options?.map(
           (option) => option?.label?.length

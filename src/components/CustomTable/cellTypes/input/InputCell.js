@@ -1,6 +1,8 @@
 import { memo, useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
+import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './InputCell.styles';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const InputCell = (props) => {
   // console.log('inputCell', props);
@@ -8,8 +10,8 @@ const InputCell = (props) => {
     value: initialValue,
     row,
     column,
-    onCellChange, //! This is a custom function that we supplied to our table instance.
-    editable,
+    onCellChange,
+    editable: isTableEditable,
     editingRow,
     isNew,
     header,
@@ -23,15 +25,7 @@ const InputCell = (props) => {
 
   const [inputValue, setInputValue] = useState(initialValue);
 
-  const getInputType = () => {
-    switch (header?.dataType) {
-      case 'Numeric':
-        return 'number';
-
-      default:
-        return 'text';
-    }
-  };
+  const isNumberType = header?.dataType === 'Numeric';
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
@@ -42,7 +36,7 @@ const InputCell = (props) => {
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     //! Update parent.
-    // onCellChange(rowId, columnId, inputValue, inputValue?.text);
+    onCellChange(rowId, columnId, inputValue, inputValue.text);
   };
 
   //! If the initialValue has changed externally, sync it up with our state.
@@ -52,50 +46,42 @@ const InputCell = (props) => {
 
   if (!!isNew) {
     return (
-      <Input
-        onChange={(e) => setInputValue(e.target.value)}
-        onBlur={() => {}}
-        style={{
-          width: '100%',
-          backgroundColor: 'inherit',
-          color: 'inherit',
-        }}
-        type={getInputType()}
-        value={inputValue?.text}
-        autoFocus
-        placeholder="وارد کنید"
-      />
+      <Styled.InputCellWrapper>
+        {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
+        <Input
+          onChange={(e) => setInputValue(e.target.value)}
+          onBlur={() => {}}
+          className="table-number-input"
+          type={`${isNumberType ? 'number' : 'text'}`}
+          value={inputValue?.text}
+          placeholder="وارد کنید"
+        />
+      </Styled.InputCellWrapper>
     );
   }
 
-  //! Check if 'table' or 'cell' are editable.
-  if (!editable || !isCellEditable) {
-    return <Styled.CellView>{initialValue?.text}</Styled.CellView>;
-  }
-
-  if (isRowEditing) {
-    return (
-      <Input
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
-        style={{
-          width: '100%',
-          backgroundColor: 'inherit',
-          color: 'inherit',
-        }}
-        type={getInputType()}
-        value={inputValue?.text}
-        autoFocus
-        placeholder="وارد کنید"
-      />
-    );
-  } else {
+  //! Check if 'table' or 'cell' are editable; or is row in edit mode.
+  if (!isTableEditable || !isCellEditable || !isRowEditing) {
     return !!inputValue?.text ? (
       <Styled.CellView>{inputValue?.text}</Styled.CellView>
     ) : (
       <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );
   }
+
+  return (
+    <Styled.InputCellWrapper>
+      {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
+      <Input
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        className="table-number-input"
+        type={`${isNumberType ? 'number' : 'text'}`}
+        value={inputValue?.text}
+        placeholder="وارد کنید"
+      />
+    </Styled.InputCellWrapper>
+  );
 };
 
 export default memo(InputCell);

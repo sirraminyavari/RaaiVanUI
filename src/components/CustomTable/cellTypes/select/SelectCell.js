@@ -1,61 +1,78 @@
 import { useState } from 'react';
-import * as Styled from './select.styles';
+import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
-import { TCV_VERY_SOFT } from 'constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
+import Heading from 'components/Heading/Heading';
 
 const SelectCell = (props) => {
   // console.log('select cell ', props);
-  const [selectedOptions, setSelectedOptions] = useState(
-    !!props?.isNew
-      ? []
-      : props?.value?.defaultValues?.map((x) => x?.label) || []
+  const {
+    value,
+    row,
+    column,
+    onCellChange,
+    editable: isTableEditable,
+    editingRow,
+    isNew,
+    header,
+    multiSelect,
+  } = props;
+
+  const [defaultValues, setDefaultValues] = useState(
+    !!isNew ? [] : value?.defaultValues
   );
 
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
+
   const handleSelectChange = (values) => {
-    setSelectedOptions(values);
+    // console.log(values);
+    setDefaultValues(values);
   };
 
   const handleOnMenuClose = () => {
     //! Call api.
-    console.log(selectedOptions);
+    console.log(defaultValues);
   };
 
-  if (!props?.editable && !props?.isNew) {
-    return selectedOptions?.[0]?.label;
+  if (isNew) {
+    return <div>new select</div>;
   }
 
-  if (!props?.header?.options?.editable) {
+  if (!isTableEditable || !isCellEditable || !isRowEditing) {
     return (
       <>
-        {selectedOptions.map((item, key) => (
-          <span
-            key={key}
-            style={{
-              display: 'inline-block',
-              backgroundColor: TCV_VERY_SOFT,
-              padding: '0.3rem',
-              margin: '0.2rem',
-              width: 'auto',
-              borderRadius: '0.2rem',
-            }}>
-            {item}
-          </span>
-        ))}
+        {defaultValues?.map((x) => x?.label).length ? (
+          defaultValues
+            ?.map((x) => x?.label)
+            .map((item, key) => (
+              <Styled.SelectedItemWrapper key={key}>
+                {item}
+              </Styled.SelectedItemWrapper>
+            ))
+        ) : (
+          <Heading style={{ color: CV_DISTANT }} type="h6">
+            انتخاب کنید
+          </Heading>
+        )}
       </>
     );
   }
 
   return (
     <CustomSelect
-      defaultValue={props?.value?.defaultValues}
-      isMulti={!!props?.multiSelect}
-      hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
-      closeMenuOnSelect={!props?.multiSelect}
+      defaultValue={defaultValues}
+      isMulti={!!multiSelect}
+      hideSelectedOptions={false}
+      closeMenuOnSelect={false}
       isClearable={false}
       isSearchable={true}
       placeholder="انتخاب کنید"
-      selectName={props?.header?.title}
-      selectOptions={props?.value?.options}
+      selectName={header?.title}
+      selectOptions={value?.options}
       onChange={handleSelectChange}
       onMenuClose={handleOnMenuClose}
       selectStyles={Styled.selectStyles}
