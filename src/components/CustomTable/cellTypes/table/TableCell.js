@@ -26,13 +26,7 @@ const TableCell = (props) => {
       show: true,
       title: decodeBase64(tableInfo?.FormName),
       type: modalTypes.table,
-      content: (props) => (
-        <TableCellModal
-          tableId={tableInfo?.FormID}
-          tableOwnerId={value?.ElementID || value?.RefElementID}
-          {...props}
-        />
-      ),
+      content: () => <TableCellModal {...props} />,
     });
   };
 

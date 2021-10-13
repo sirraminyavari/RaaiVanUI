@@ -4,9 +4,11 @@ import TableIcon from 'components/Icons/TableIcon/TableIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import CustomTable from 'components/CustomTable/CustomTable';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-// import tData from './tableData';
-// import headers from './headers';
-import { prepareHeaders, prepareRows } from './formFieldUtils';
+import {
+  cellTypes,
+  prepareHeaders,
+  prepareRows,
+} from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 
@@ -37,9 +39,66 @@ const FormField = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableData]);
 
+  const getOptions = (column) => {
+    switch (column?.Type) {
+      case cellTypes.action:
+        return {
+          editable: false,
+          width: 35,
+          disableSortBy: true,
+        };
+
+      case cellTypes.index:
+        return {
+          editable: false,
+          width: 40,
+          disableSortBy: true,
+        };
+
+      case cellTypes.text:
+        return { maxWidth: 200 };
+
+      case cellTypes.singleSelect:
+        return { disableSortBy: true, minWidth: 135 };
+
+      case cellTypes.multiSelect:
+        return { disableSortBy: true, minWidth: 135 };
+
+      case cellTypes.date:
+        return { minWidth: 200 };
+
+      case cellTypes.number:
+        return { minWidth: 150 };
+
+      case cellTypes.binary:
+        return { disableSortBy: true };
+
+      case cellTypes.user:
+        return { disableSortBy: true, minWidth: 200 };
+
+      case cellTypes.node:
+        return { disableSortBy: true, minWidth: 260 };
+
+      case cellTypes.file:
+        return { disableSortBy: true, minWidth: 200 };
+
+      // case cellTypes.recordInfo:
+      //   return {
+      //     disableSortBy: true,
+      //     minWidth: 190,
+      //   };
+
+      default:
+        return {
+          editable: true,
+          minWidth: 200,
+        };
+    }
+  };
+
   const memoizedData = useMemo(() => data, [data]);
   const memoizedColumns = useMemo(
-    () => ColumnsFactory(prepareHeaders(tableColumns), data),
+    () => ColumnsFactory(prepareHeaders(tableColumns, getOptions), data),
     [data, tableColumns]
   );
 
@@ -95,10 +154,6 @@ const FormField = (props) => {
   };
 
   const memoizedAddRow = useCallback(addRow, []);
-
-  const removeAll = useCallback(() => {
-    setData([]);
-  }, []);
 
   const handleOnSearch = useCallback((text) => {
     if (!!text && text.length >= 3) {
@@ -156,8 +211,8 @@ const FormField = (props) => {
           removeRow={memoizedRemoveRow}
           addRow={memoizedAddRow}
           isLoading={false}
-          removeAll={removeAll}
           onSearch={handleOnSearch}
+          getColumnsOption={getOptions}
           tableId={tableColumns[0]?.FormID}
           getCellProps={(cell) => ({})}
         />

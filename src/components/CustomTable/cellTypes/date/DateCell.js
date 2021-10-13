@@ -22,18 +22,18 @@ const DateCell = (props) => {
 
   const { DateValue } = value || {};
 
-  const dateArray = DateValue.split(' ')[0]
-    .split('/')
-    .map((s) => {
+  const dateArray = DateValue?.split(' ')[0]
+    ?.split('/')
+    ?.map((s) => {
       if (s.length < 2) {
         return `0${s}`;
       }
       return s;
     });
 
-  const date = [dateArray[2], dateArray[0], dateArray[1]]?.join('/');
+  const date = [dateArray?.[2], dateArray?.[0], dateArray?.[1]]?.join('/');
 
-  const [dateValue, setDateValue] = useState(date);
+  const [dateValue, setDateValue] = useState(!!DateValue ? date : null);
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -47,7 +47,7 @@ const DateCell = (props) => {
   const handleDateSelect = (date) => {
     setDateValue(date);
     if (!isNew) {
-      const dateArray = date.split('/');
+      const dateArray = date?.split('/');
       const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
       const dateCell = { ...value, DateValue: dateString };
       onCellChange(rowId, columnId, dateCell, date);
@@ -89,9 +89,17 @@ const DateCell = (props) => {
 
   if (!isTableEditable || !isCellEditable || !isRowEditing) {
     return (
-      <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-        {showFormat}
-      </Heading>
+      <>
+        {!!DateValue ? (
+          <Heading style={{ color: CV_GRAY_DARK }} type="h5">
+            {showFormat}
+          </Heading>
+        ) : (
+          <Heading style={{ color: CV_DISTANT }} type="h6">
+            انتخاب کنید
+          </Heading>
+        )}
+      </>
     );
   }
 

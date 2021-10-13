@@ -50,12 +50,12 @@ const CustomTable = (props) => {
     data,
     onCellChange,
     removeRow,
-    removeAll,
     addRow,
     pagination,
     reorderData,
     onSearch,
     tableId,
+    getColumnsOption,
     getCellProps = defaultPropGetter,
   } = props;
 
@@ -119,7 +119,6 @@ const CustomTable = (props) => {
       defaultColumn,
       onCellChange,
       removeRow,
-      removeAll,
       addRow,
       selectedCell,
       setSelectedCell,
@@ -129,6 +128,7 @@ const CustomTable = (props) => {
       setEditingRow,
       setShowFooter,
       reorderData,
+      getColumnsOption,
       initialState: {
         ...paginationStates,
       },
