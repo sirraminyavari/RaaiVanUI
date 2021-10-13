@@ -249,6 +249,15 @@
         return FGAPI._send(url, params, queryString);
     },
 
+    GetOwnerFormInstances: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/GetOwnerFormInstances?timeStamp=" + new Date().getTime();
+        var queryString = (params.FormID ? "&FormID=" + params.FormID : "") +
+            (params.OwnerID ? "&OwnerID=" + params.OwnerID : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
     ValidateNewName: function (params) {
         params = params || {};
 
