@@ -1,4 +1,4 @@
-import { useMemo, useState, memo } from 'react';
+import { useMemo, useState, memo, lazy, Suspense } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -13,12 +13,17 @@ import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import Modal from 'components/Modal/Modal';
 import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 import TableAction from './TableAction';
+import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+import { modalTypes } from './tableUtils';
+
+const TableModal = lazy(() =>
+  import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
+);
 
 const defaultPropGetter = () => ({});
-const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '' };
+const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 
 /**
  * @typedef PropType
@@ -65,11 +70,14 @@ const CustomTable = (props) => {
     setModal(DEFAULT_MODAL_PROPS);
   };
 
-  const getModalContent = () => {
-    let viewColumns = columns.filter((column) => {
-      return Object.keys(column).includes('Header');
-    });
-    return selectedCell?.row.original[viewColumns[0].accessor];
+  const getModalContent = (modalType) => {
+    switch (modalType) {
+      case modalTypes.table:
+        return <div>Table</div>;
+
+      default:
+        return <div>Modal Content</div>;
+    }
   };
 
   const handleDragEnd = (result) => {
@@ -173,13 +181,17 @@ const CustomTable = (props) => {
   return (
     <Styled.TableContainer>
       <TableAction onAddRow={handleAddRow} onSearch={onSearch} />
-      <Modal
-        contentWidth="75%"
-        show={modal.show}
-        title={modal.title}
-        onClose={handleOnModalClose}>
-        {getModalContent()}
-      </Modal>
+      <Suspense fallback={<ModalFallbackLoader />}>
+        {modal.show && (
+          <TableModal
+            contentWidth="75%"
+            show={modal.show}
+            title={modal.title}
+            onClose={handleOnModalClose}>
+            {!!modal.content && modal.content()}
+          </TableModal>
+        )}
+      </Suspense>
       <Styled.TableWrapper>
         {!isLoading && (
           <Styled.Table {...getTableProps()}>

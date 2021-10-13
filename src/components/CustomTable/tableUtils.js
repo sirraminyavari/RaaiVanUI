@@ -15,3 +15,7 @@ export const cellTypes = {
   table: 'Form',
   separator: 'Separator', //! Not used in table.
 };
+
+export const modalTypes = {
+  table: 'Form',
+};

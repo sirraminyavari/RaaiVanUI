@@ -547,3 +547,10 @@ export const FG_API = 'FGAPI';
  * @class 'FGAPI'
  */
 export const GET_FORM_ELEMENTS = 'GetFormElements';
+
+/**
+ * @description 'GetOwnerFormInstances'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const GET_OWNER_FORM_INSTANCES = 'GetOwnerFormInstances';

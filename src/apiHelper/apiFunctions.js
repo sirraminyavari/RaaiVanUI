@@ -55,6 +55,7 @@ import {
   RECYCLE_NODE,
   SET_NODE_SEARCHABILITY,
   GET_NODE,
+  GET_OWNER_FORM_INSTANCES,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1345,6 +1346,38 @@ export const setNodeSearchability = (nodeId, searchable) => {
         {
           NodeID: nodeId,
           Searchable: searchable,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set node searchability.
+ * @param {String} formId -The id of the form.
+ * @param {String} ownerId -The id of the form owner.
+ * @returns Promise.
+ */
+export const getOwnerFormInstances = (formId, ownerId) => {
+  const getOwnerFormInstancesAPI = API_Provider(
+    FG_API,
+    GET_OWNER_FORM_INSTANCES
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      getOwnerFormInstancesAPI.fetch(
+        {
+          FormID: formId,
+          OwnerID: ownerId,
         },
         (response) => {
           resolve(response);

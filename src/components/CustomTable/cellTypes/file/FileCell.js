@@ -7,7 +7,7 @@ import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import { CV_RED, TCV_DEFAULT, TCV_WARM } from 'constant/CssVariables';
 import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
-import { API_Provider, decodeBase64 } from 'helpers/helpers';
+import { API_Provider, decodeBase64, toJSON } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import Heading from 'components/Heading/Heading';
 
@@ -26,7 +26,9 @@ const FileCell = (props) => {
     header,
   } = props;
   const [isUploading, setIsUploading] = useState(false);
-  const { files } = value || {};
+  const { Files: files, Info } = value || {};
+  const fileInfo = toJSON(decodeBase64(Info));
+
   const isCellEditable = !!header?.options?.editable;
 
   const rowId = row?.original?.id;

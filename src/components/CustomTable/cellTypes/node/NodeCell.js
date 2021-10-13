@@ -4,7 +4,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import OpenMailIcon from 'components/Icons/MailIcon/OpenMailIcon';
 import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
 import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64, getURL, toJSON } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 
@@ -20,7 +20,8 @@ const NodeCell = (props) => {
     editingRow,
     header,
   } = props;
-  const { nodeInfo, cell } = value || {};
+  const { Info } = value || {};
+  const nodeInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
   const columnId = column?.id;

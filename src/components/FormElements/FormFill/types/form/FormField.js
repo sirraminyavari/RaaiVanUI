@@ -45,8 +45,8 @@ const FormField = (props) => {
 
   const updateCellData = (rowId, columnId, cellData, value) => {
     // console.log({ cellData, value });
-    const elementId = cellData?.cell?.ElementID;
-    const type = cellData?.cell?.Type;
+    const elementId = cellData?.ElementID;
+    const type = cellData?.Type;
     onAnyFieldChanged(elementId, value, type);
 
     setData((old) =>
