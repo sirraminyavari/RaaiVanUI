@@ -68,18 +68,14 @@ const UserSelect = ({
   return (
     <Container>
       <FormCell
+        editMode={editMode}
+        editModeVisible={true}
+        onEdit={() => setEditMode(!editMode)}
+        onSave={onSave}
         style={{ display: 'flex', flexGrow: 1 }}
         iconComponent={<UserIconIo color={CV_GRAY} />}
         title={decodeTitle}
         {...props}>
-        {!editMode && (
-          <PencilIcon
-            size={'1.5rem'}
-            style={{ margin: '0 1rem 0 1rem' }}
-            color={TCV_WARM}
-            onClick={() => setEditMode(!editMode)}
-          />
-        )}
         <Maintainer>
           {value?.length > 0 && (
             <Select>
@@ -139,7 +135,6 @@ const UserSelect = ({
           />
         </Maintainer>
       </FormCell>
-      {editMode && <SaveButton onClick={onSave} />}
     </Container>
   );
 };

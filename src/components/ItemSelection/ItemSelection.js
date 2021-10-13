@@ -5,13 +5,22 @@ import NodeList from 'components/NodeList/NodeList';
 import SideItemSelection from './items/SideItemSelection';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { decodeBase64 } from 'helpers/helpers';
 
-const ItemSelection = ({ onClose, routeProps }) => {
+const ItemSelection = ({
+  nodeTypes,
+  onClose,
+  routeProps,
+  multiSelection,
+  onSelectedItems,
+}) => {
   const { RV_RTL } = window;
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   const [checkedItems, setCheckedItems] = useState([]);
   const [showSelected, setShowSelected] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [selectedNodeTypeId, setSelectedodeTypeId] = useState(null);
 
   console.log(routeProps, 'QQQQQQQQQQ');
   const { route } = routeProps || {};
@@ -32,6 +41,10 @@ const ItemSelection = ({ onClose, routeProps }) => {
   const onShowSelectedItems = () => {
     setShowSelected(!showSelected);
   };
+  const onConfirm = () => {
+    onSelectedItems(checkedItems);
+  };
+
   return (
     <Maintainer>
       <Header className={'rv-border-radius-half'}>
@@ -43,6 +56,11 @@ const ItemSelection = ({ onClose, routeProps }) => {
           onShowSelectedItems={onShowSelectedItems}
           checkedList={checkedItems}
           isShowSelected={showSelected}
+          classes={nodeTypes}
+          counts={classes}
+          onSelectedodeTypeId={setSelectedodeTypeId}
+          multiSelection={multiSelection}
+          onConfirm={onConfirm}
         />
         <AdvanceSearch
           style={{
@@ -71,16 +89,24 @@ const ItemSelection = ({ onClose, routeProps }) => {
             <NodeList
               onCheck={onCheckHandler}
               nodeTypeId={
-                (route?.NodeTypes || []).length
+                selectedNodeTypeId
+                  ? selectedNodeTypeId.NodeTypeID
+                  : (route?.NodeTypes || []).length
                   ? route.NodeTypes[0]?.NodeTypeID
                   : null
               }
-              nodeTypeIds={''}
+              onFetchCounts={setClasses}
+              nodeTypeIds={nodeTypes?.map((x) => x?.NodeTypeID).join('|')}
+              onClickItem={onSelectedItems}
               itemSelectionMode={true}
-              multiSelection={true}
+              multiSelection={multiSelection}
             />
           )}
         </AdvanceSearch>
+        {console.log(
+          nodeTypes.map((x) => decodeBase64(x?.NodeType)),
+          'nodeTypes'
+        )}
       </Container>
     </Maintainer>
   );

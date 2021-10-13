@@ -193,7 +193,7 @@ const FormFill = ({ data, ...props }) => {
             );
 
           case 'Node':
-            console.log('node node ', propsContext);
+            console.log('node node ', decodeInfo);
             return (
               <SubjectField
                 decodeTitle={decodeTitle}

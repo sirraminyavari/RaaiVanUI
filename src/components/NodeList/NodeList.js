@@ -39,6 +39,8 @@ const NodeList = (props) => {
     itemSelectionMode,
     nodeTypeIds,
     relatedToNodeId,
+    onFetchCounts,
+    onClickItem,
   } = props || {};
   useTraceUpdate(props);
 
@@ -99,6 +101,10 @@ const NodeList = (props) => {
         if (response.Nodes) {
           console.log(response, '####### response ########');
           // setDataCount(response.TotalCount);
+          if (!!onFetchCounts) {
+            const { Count } = response || {};
+            onFetchCounts(Count);
+          }
 
           const nodeIds = response?.Nodes.map((x) => x?.NodeID);
           nodeIds.join('|');
@@ -187,6 +193,7 @@ const NodeList = (props) => {
                   isSaas={isSaas}
                   onReload={onReload}
                   onBookmark={onBookmark}
+                  onClickItem={onClickItem}
                 />
               )}
             </>
