@@ -27,7 +27,7 @@ export const useOutsideClick = (ref, callback, when) => {
 export const useOnLoad = (data) => {
   useEffect(() => {
     new APIHandler('RVAPI', 'Log').fetch({ data: encode(data) }, (res) => {});
-  });
+  }, []);
 };
 
 export const useBeforeunload = (data) => {
@@ -37,5 +37,5 @@ export const useBeforeunload = (data) => {
     });
 
     return () => window.removeEventListener('beforeunload', () => {});
-  });
+  }, []);
 };
