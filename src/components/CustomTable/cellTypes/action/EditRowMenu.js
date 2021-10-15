@@ -1,9 +1,11 @@
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CV_RED, TCV_WARM } from 'constant/CssVariables';
-import * as Styled from './CustomTable.styles';
+import * as Styled from 'components/CustomTable/CustomTable.styles';
 
-const EditRowMenu = ({ cell }) => {
+const EditRowMenu = (props) => {
+  const { cell, isNew, setShowFooter } = props;
+
   //! Exit edit mode for a row.
   const handleExitEditMode = () => {
     cell?.setEditingRow && cell?.setEditingRow(null);
@@ -11,18 +13,26 @@ const EditRowMenu = ({ cell }) => {
 
   //! Accept edit changes.
   const handleAcceptChanges = () => {
-    console.log('Changes accepted');
-    handleExitEditMode();
+    if (isNew) {
+      setShowFooter(false);
+    } else {
+      console.log('Changes accepted');
+      handleExitEditMode();
+    }
   };
 
   //! Decline edit changes.
   const handleCancelChanges = () => {
-    console.log('Changes rejected');
-    handleExitEditMode();
+    if (isNew) {
+      setShowFooter(false);
+    } else {
+      console.log('Changes rejected');
+      handleExitEditMode();
+    }
   };
 
   return (
-    <Styled.EditRowActionContainer {...cell.dragHandleProps}>
+    <Styled.EditRowActionContainer>
       <div>
         <CheckIcon
           className="table-edit-check-icon"

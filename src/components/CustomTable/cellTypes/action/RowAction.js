@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
-import * as Styled from './CustomTable.styles';
+import * as Styled from 'components/CustomTable/CustomTable.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import DuplicationIcon from 'components/Icons/DuplicationIcon/DuplicationIcon';
 import EditIcon from 'components/Icons/EditIcons/Edit';
@@ -12,8 +12,6 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 const RowAction = ({ cell }) => {
   const { RVDic } = useContext(WindowContext);
   const rowId = cell?.row?.original?.id;
-
-  const canDelete = cell?.editable && cell?.removeRow;
 
   const undoRowDelete = (rowId) => {};
 
@@ -52,7 +50,7 @@ const RowAction = ({ cell }) => {
 
   return (
     <Styled.TableRowActionContainer>
-      {canDelete && (
+      {cell?.editable && (
         <>
           <Styled.TableActionWrapper onClick={handleSetEditableRow}>
             <EditIcon size={18} />

@@ -9,15 +9,11 @@ import {
   TableCell,
   MultiLevelCell,
   BinaryCell,
+  ActionsCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
-import RowActions from './RowAction';
-import EditRowMenu from './EditRowMenu';
+import EditRowMenu from './cellTypes/action/EditRowMenu';
 import * as Styled from './CustomTable.styles';
-
-const { RV_Float, RV_RevFloat } = window;
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
@@ -25,30 +21,7 @@ const provideCell = (header) => {
     case cellTypes.action:
       return {
         sticky: 'left',
-        Cell: (cell) => {
-          if (cell?.editingRow === cell?.row?.original?.id) {
-            return <EditRowMenu cell={cell} />;
-          }
-          return (
-            <ToolTip
-              tipId={`row-${cell?.row?.index}-action-tip`}
-              multiline
-              effect="solid"
-              event="click"
-              place={RV_RevFloat}
-              type="dark"
-              disable={!cell?.editable}
-              clickable
-              offset={{ [RV_Float]: -30 }}
-              arrowColor="transparent"
-              className="table-row-action-tooltip"
-              renderContent={() => <RowActions cell={cell} />}>
-              <Styled.RowDragHandleWrapper {...cell.dragHandleProps}>
-                <DragIcon />
-              </Styled.RowDragHandleWrapper>
-            </ToolTip>
-          );
-        },
+        Cell: (cell) => <ActionsCell cell={cell} />,
       };
     case cellTypes.index:
       return {
@@ -118,6 +91,11 @@ const provideCell = (header) => {
 //! Provide footer for a given column.
 const provideFooter = (header) => {
   switch (header.dataType) {
+    case cellTypes.action:
+      return {
+        Footer: (footer) => <EditRowMenu {...footer} header={header} isNew />,
+      };
+
     case cellTypes.text:
       return {
         Footer: (footer) => <InputCell {...footer} header={header} isNew />,
@@ -154,7 +132,7 @@ const provideFooter = (header) => {
 
     default:
       return {
-        Footer: header.title,
+        Footer: () => <div>{header.title}</div>,
       };
   }
 };

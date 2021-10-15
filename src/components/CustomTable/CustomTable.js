@@ -10,13 +10,12 @@ import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
 import Arrow from 'components/Icons/ArrowIcons/Arrow';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
-import { modalTypes } from './tableUtils';
+// import { modalTypes } from './tableUtils';
 
 const TableModal = lazy(() =>
   import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
@@ -62,6 +61,7 @@ const CustomTable = (props) => {
   const requiredColumns = columns.filter((col) => !!col.isRequired);
 
   const [selectedCell, setSelectedCell] = useState(null);
+  const [isRowDragging, setIsRowDragging] = useState(false);
   const [editingRow, setEditingRow] = useState(null);
   const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
   const [showFooter, setShowFooter] = useState(false);
@@ -70,20 +70,25 @@ const CustomTable = (props) => {
     setModal(DEFAULT_MODAL_PROPS);
   };
 
-  const getModalContent = (modalType) => {
-    switch (modalType) {
-      case modalTypes.table:
-        return <div>Table</div>;
+  // const getModalContent = (modalType) => {
+  //   switch (modalType) {
+  //     case modalTypes.table:
+  //       return <div>Table</div>;
 
-      default:
-        return <div>Modal Content</div>;
-    }
-  };
+  //     default:
+  //       return <div>Modal Content</div>;
+  //   }
+  // };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
+    setIsRowDragging(false);
     if (!destination) return;
     reorderData(source.index, destination.index);
+  };
+
+  const handleBeforeDragStart = () => {
+    setIsRowDragging(true);
   };
 
   const handleOnModalClose = () => {
@@ -163,20 +168,6 @@ const CustomTable = (props) => {
     setShowFooter(true);
   };
 
-  const handleFooterClick = (column) => {
-    if (column.dataType === 'actions') {
-      if (column.index === 0) {
-        console.log('accept');
-        addRow();
-        setShowFooter(false);
-        // gotoPage(pageCount - 1);
-      } else {
-        console.log('reject');
-        setShowFooter(false);
-      }
-    }
-  };
-
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
@@ -252,10 +243,13 @@ const CustomTable = (props) => {
                 </div>
               ))}
             </div>
-            <DragDropContext onDragEnd={handleDragEnd}>
+            <DragDropContext
+              onDragEnd={handleDragEnd}
+              onBeforeDragStart={handleBeforeDragStart}>
               <Droppable droppableId={tableId}>
                 {(provided, _) => (
                   <Styled.TableBody
+                    isRowDragging={isRowDragging}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     {...getTableBodyProps()}>
@@ -312,20 +306,13 @@ const CustomTable = (props) => {
               <Styled.FooterContainer>
                 {footerGroups.map((group) => (
                   <Styled.FooterTr {...group.getFooterGroupProps()}>
-                    {group.headers.map((column) => (
-                      <div
-                        className="footer-td"
-                        {...column.getFooterProps({
-                          onClick: () => handleFooterClick(column),
-                        })}>
-                        {column.render('Footer')}
-                      </div>
-                    ))}
-                    <Styled.RowActionHandle
-                      style={{ left: '-1.7rem' }}
-                      onClick={() => setShowFooter(false)}>
-                      <CloseIcon size={20} color={CV_RED} />
-                    </Styled.RowActionHandle>
+                    {group.headers.map((column) => {
+                      return (
+                        <div className="footer-td" {...column.getFooterProps()}>
+                          {column.render('Footer')}
+                        </div>
+                      );
+                    })}
                   </Styled.FooterTr>
                 ))}
               </Styled.FooterContainer>

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { C_GRAY, TC_VERY_TRANSPARENT } from 'constant/Colors';
+import { BG_WHITE, C_GRAY } from 'constant/Colors';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -11,10 +11,8 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
-  TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import {
-  FLEX_CCA,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
@@ -25,6 +23,8 @@ import {
 import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
 
 const { RV_RevFloat, RV_Float } = window;
+
+// TODO: doc styles
 
 export const selectStyles = {
   control: (styles) => ({
@@ -96,6 +96,7 @@ export const TableWrapper = styled.div`
   // border: 1px solid #333;
   overflow-x: scroll;
   margin-top: 3rem;
+  // scroll-behavior: auto !important;
 
   ${HorizontalScrollbar}
 `;
@@ -282,43 +283,46 @@ export const PaginationSpan = styled.span`
 export const FooterContainer = styled.div`
   font-weight: bolder;
   text-align: center;
+  border: 0 !important;
 `;
 
 export const FooterTr = styled.div`
   position: relative;
 
   &:first-child {
-    border-left: 2px solid ${CV_GRAY_DARK};
+    // border-left: 2px solid ${CV_GRAY_DARK};
 
     .footer-td {
       :not(:first-child) {
-        border: 2px solid ${CV_GRAY_DARK};
+        border: 2px dashed ${CV_DISTANT};
         border-left: 0;
+      }
+
+      :nth-child(1) {
+        position: sticky;
+        right: 0rem;
+        background-color: #fff;
+        border: 0;
+        z-index: 3000;
+      }
+
+      :nth-child(2) {
+        position: sticky;
+        right: 2.2rem;
+        background-color: #fff;
+        border: 0;
+        border-left: 2px solid ${CV_DISTANT};
+        z-index: 3000;
+      }
+
+      :nth-child(3) {
+        border-right: 0;
       }
 
       min-height: 3rem;
       padding: 0 0.5rem;
       ${FLEX_RCC}
     }
-  }
-`;
-
-export const RowDragHandle = styled.div`
-  // position: absolute;
-  // right: -1.5rem;
-  // top: 50%;
-  // transform: translate(0, -50%);
-`;
-
-export const RowActionHandle = styled.div`
-  position: absolute;
-  left: -1.5rem;
-  top: 50%;
-  transform: translate(0, -50%);
-  cursor: pointer;
-
-  :hover svg {
-    color: ${CV_RED} !important;
   }
 `;
 
@@ -329,11 +333,17 @@ export const TableActionsContainer = styled.div`
   ${FLEX_RCB}
 `;
 
-export const TableRowActionContainer = styled.div`
-  width: 6.5rem;
+export const TableRowActionContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER} ${BG_WHITE}`,
+})`
+  position: absolute;
+  ${RV_Float}: 4.35rem;
+  width: 8rem;
   height: auto;
+  max-height: 6.5rem;
   color: ${CV_GRAY_DARK};
   padding: 0.5rem;
+  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
 `;
 
 export const EditRowActionContainer = styled.div`
@@ -372,11 +382,12 @@ export const TableActionWrapper = styled.div.attrs({
   gap: 0.5rem;
 
   :hover {
-    background-color: ${TCV_VERY_TRANSPARENT_WARM};
+    background-color: ${CV_FREEZED};
   }
 `;
 
 export const RowDragHandleWrapper = styled.div`
+  position: relative;
   cursor: pointer !important;
   width: 100%;
   height: calc(100% + 1rem);

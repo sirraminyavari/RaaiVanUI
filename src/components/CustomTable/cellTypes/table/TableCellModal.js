@@ -6,9 +6,23 @@ import { prepareHeaders, prepareRows } from 'components/CustomTable/tableUtils';
 import { getOwnerFormInstances } from 'apiHelper/apiFunctions';
 import { decodeBase64, toJSON } from 'helpers/helpers';
 
-const TableCellModal = ({ value, getColumnsOption }) => {
+const TableCellModal = ({
+  value,
+  getColumnsOption,
+  row,
+  column,
+  header,
+  editingRow,
+  editable: isTableEditable,
+}) => {
   const { Info } = value || {};
   const tableInfo = toJSON(decodeBase64(Info));
+
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
 
   const tableId = tableInfo?.FormID;
   const tableOwnerId = value?.ElementID || value?.RefElementID;
@@ -53,8 +67,8 @@ const TableCellModal = ({ value, getColumnsOption }) => {
       {isFetching && <LogoLoader />}
       {!isFetching && (
         <CustomTable
-          editable //! This prop makes the whole table editable.
-          resizable //! This prop makes the whole columns of a table resizable.
+          editable={isTableEditable && isCellEditable && isRowEditing}
+          resizable
           pagination={{
             perPageCount: [5, 10, 20, 30],
             initialPageIndex: 0,
