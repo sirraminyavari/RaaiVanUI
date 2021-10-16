@@ -5,29 +5,26 @@ import NodeList from 'components/NodeList/NodeList';
 import SideItemSelection from './items/SideItemSelection';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { decodeBase64 } from 'helpers/helpers';
 
-const ItemSelection = ({ onClose, ...props }) => {
+const ItemSelection = ({
+  nodeTypes,
+  onClose,
+  routeProps,
+  multiSelection,
+  onSelectedItems,
+}) => {
   const { RV_RTL } = window;
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   const [checkedItems, setCheckedItems] = useState([]);
   const [showSelected, setShowSelected] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [selectedNodeTypeId, setSelectedodeTypeId] = useState(null);
 
-  const route = {
-    AccessToken: '7GzPbOsFr2kFliO2GsKg',
-    AppID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-    Application: {
-      ApplicationID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-      Title: '2K/bjNiv2q/Yp9mHIC0g2LPYrdin2Kg=',
-      Description: '',
-      IconURL: '../../Images/CliqMind-Mini.png',
-    },
-    ApplicationID: '08c72552-4f2c-473f-b3b0-c2dacf8cd6a9',
-    Bookmarked: true,
-    IsAuthenticated: true,
-    NodeTypes: [],
-    RelatedItem: null,
-  };
+  console.log(routeProps, 'QQQQQQQQQQ');
+  const { route } = routeProps || {};
+
   useEffect(() => {
     console.log(checkedItems, 'checkedItems');
   }, [checkedItems]);
@@ -44,6 +41,10 @@ const ItemSelection = ({ onClose, ...props }) => {
   const onShowSelectedItems = () => {
     setShowSelected(!showSelected);
   };
+  const onConfirm = () => {
+    onSelectedItems(checkedItems);
+  };
+
   return (
     <Maintainer>
       <Header className={'rv-border-radius-half'}>
@@ -55,6 +56,11 @@ const ItemSelection = ({ onClose, ...props }) => {
           onShowSelectedItems={onShowSelectedItems}
           checkedList={checkedItems}
           isShowSelected={showSelected}
+          classes={nodeTypes}
+          counts={classes}
+          onSelectedodeTypeId={setSelectedodeTypeId}
+          multiSelection={multiSelection}
+          onConfirm={onConfirm}
         />
         <AdvanceSearch
           style={{
@@ -83,15 +89,24 @@ const ItemSelection = ({ onClose, ...props }) => {
             <NodeList
               onCheck={onCheckHandler}
               nodeTypeId={
-                (route?.NodeTypes || []).length
+                selectedNodeTypeId
+                  ? selectedNodeTypeId.NodeTypeID
+                  : (route?.NodeTypes || []).length
                   ? route.NodeTypes[0]?.NodeTypeID
                   : null
               }
+              onFetchCounts={setClasses}
+              nodeTypeIds={nodeTypes?.map((x) => x?.NodeTypeID).join('|')}
+              onClickItem={onSelectedItems}
               itemSelectionMode={true}
-              multiSelection={true}
+              multiSelection={multiSelection}
             />
           )}
         </AdvanceSearch>
+        {console.log(
+          nodeTypes.map((x) => decodeBase64(x?.NodeType)),
+          'nodeTypes'
+        )}
       </Container>
     </Maintainer>
   );

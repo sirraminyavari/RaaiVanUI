@@ -30,12 +30,17 @@ const PeoplePicker = ({
   onByPeople,
   isByMe = false,
   pickedPeople,
+  multi,
+  onBlur,
+
   onVisible,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+
+  console.log(pickedPeople, '********* pickedPeople');
 
   const pickerRef = useRef();
   useEffect(() => {
@@ -203,7 +208,11 @@ const PeoplePicker = ({
               renderItem={(x, index) => {
                 return (
                   <PeopleItem
-                    pickedPeople={pickedPeople?.id === x.id}
+                    pickedPeople={
+                      multi
+                        ? pickedPeople?.find((y) => y.id === x.id)
+                        : pickedPeople?.id === x.id
+                    }
                     onClick={onChoose}
                     item={x}
                     key={index}

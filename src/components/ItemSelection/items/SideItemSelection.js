@@ -7,11 +7,12 @@ import {
   TCV_DEFAULT,
   TCV_WARM,
 } from 'constant/CssVariables';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { decodeBase64 } from 'helpers/helpers';
 
 const { RV_RTL, RVDic } = window || {};
 
@@ -65,6 +66,11 @@ const SideItemSelection = ({
   checkedList,
   onShowSelectedItems,
   isShowSelected,
+  classes,
+  counts,
+  onSelectedodeTypeId,
+  multiSelection,
+  onConfirm,
 }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isHovered, setIsDropDownHovered] = useState(false);
@@ -75,7 +81,18 @@ const SideItemSelection = ({
   };
   const onClassClick = (item) => {
     setSelectedClass(item);
+    console.log(item, 'node node', selectedClass);
+    if (item?.NodeTypeID === selectedClass?.NodeTypeID) {
+      setSelectedClass(null);
+    } else {
+      setSelectedClass(item);
+    }
   };
+  const onSelectNodeTypeId = (node) => {};
+
+  useEffect(() => {
+    onSelectedodeTypeId(selectedClass);
+  }, [selectedClass]);
 
   const commonProps = { borderRadius: '10rem' };
 
@@ -158,13 +175,14 @@ const SideItemSelection = ({
               };
             }
           }}>
-          {data.map((x) => (
+          {console.log(classes, 'classes classes')}
+          {classes?.map((x) => (
             <ClassItem
               onClick={onClassClick}
-              isSelected={selectedClass?.title === x?.title}
+              isSelected={selectedClass?.NodeTypeID === x?.NodeTypeID}
               item={x}
-              title={x?.title}
-              badge={x?.count}
+              title={decodeBase64(x?.NodeType)}
+              badge={counts.find((y) => y?.NodeTypeID === x?.NodeTypeID)?.Count}
             />
           ))}
         </PerfectScrollbar>
@@ -181,7 +199,11 @@ const SideItemSelection = ({
             <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>
         )}
-        <Button type={'primary'}>{RVDic.Confirm}</Button>
+        {multiSelection && (
+          <Button type={'primary'} onClick={onConfirm}>
+            {RVDic.Confirm}
+          </Button>
+        )}
       </div>
     </Container>
   );

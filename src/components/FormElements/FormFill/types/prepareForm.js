@@ -8,21 +8,69 @@ const prepareForm = (prevForm, elementId, event, type) => {
   console.log(event, 'event');
   const { Elements } = prevForm || {};
 
+  const requireItems = (x) => {
+    console.log(x, 'CCCCCC');
+    return {
+      Type: x?.Type,
+      ElementID: x?.ElementID,
+      RefElementID: x?.RefElementID,
+      InstanceID: x?.InstanceID,
+      Info: x?.Info,
+      Title: x?.Title,
+    };
+  };
   switch (type) {
     case 'User':
-      return {
+      const result = {
         ...prevForm,
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
-                ...x,
-                SelectedItems: [
-                  { ID: event?.id, Code: '', Name: encodeBase64(event?.name) },
-                ],
+                ...requireItems(x),
+                GuidItems: event.multiSelect
+                  ? x?.SelectedItems.find((z) => z.ID === event?.id)
+                    ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
+                    : [
+                        ...x?.SelectedItems,
+                        { ID: event?.id, Code: '', Name: event?.name },
+                      ]
+                  : x?.SelectedItems.find((z) => z.ID === event?.id)
+                  ? []
+                  : [{ ID: event?.id, Code: '', Name: event?.name }],
+                SelectedItems: event.multiSelect
+                  ? x?.SelectedItems.find((z) => z.ID === event?.id)
+                    ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
+                    : [
+                        ...x?.SelectedItems,
+                        { ID: event?.id, Code: '', Name: event?.name },
+                      ]
+                  : x?.SelectedItems.find((z) => z.ID === event?.id)
+                  ? []
+                  : [{ ID: event?.id, Code: '', Name: event?.name }],
               }
             : x
         ),
       };
+      console.log(result, '********');
+
+      return result;
+    case 'MultiLevel':
+      console.log(event, '#########********');
+
+      const multiLevel = {
+        ...prevForm,
+        Elements: Elements?.map((x) =>
+          x?.ElementID === elementId
+            ? {
+                ...requireItems(x),
+                GuidItems: event,
+              }
+            : x
+        ),
+      };
+      console.log(multiLevel, 'multiLevel ***');
+      return multiLevel;
+
     case 'Numeric':
       console.log(event, 'numeric***');
       return {
@@ -81,7 +129,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
         Elements: Elements?.map((x) =>
           x?.ElementID === elementId
             ? {
-                ...x,
+                ...requireItems(x),
                 TextValue: event,
               }
             : x
