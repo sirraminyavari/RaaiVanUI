@@ -56,6 +56,9 @@ import {
   SET_NODE_SEARCHABILITY,
   GET_NODE,
   GET_OWNER_FORM_INSTANCES,
+  CREATE_FORM_INSTANCES,
+  REMOVE_FORM_INSTANCES,
+  SAVE_FORM_INSTANCES,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1379,6 +1382,60 @@ export const getOwnerFormInstances = (formId, ownerId) => {
           FormID: formId,
           OwnerID: ownerId,
         },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Create form instance.
+ * @param {String} formId -The id of the form.
+ * @param {String} ownerId -The id of the form owner.
+ * @returns Promise.
+ */
+export const createFormInstance = (formId, ownerId) => {
+  const createFormInstanceAPI = API_Provider(FG_API, CREATE_FORM_INSTANCES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      createFormInstanceAPI.fetch(
+        {
+          FormID: formId,
+          OwnerID: ownerId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Remove form instance.
+ * @param {String} instanceId -The id of the instance.
+ * @returns Promise.
+ */
+export const removeFormInstance = (instanceId) => {
+  const removeFormInstanceAPI = API_Provider(FG_API, REMOVE_FORM_INSTANCES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeFormInstanceAPI.fetch(
+        { InstanceID: instanceId },
         (response) => {
           resolve(response);
         },

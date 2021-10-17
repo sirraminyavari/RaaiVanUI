@@ -3,6 +3,7 @@ import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { CV_DISTANT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
+import { decodeBase64, toJSON } from 'helpers/helpers';
 
 const SelectCell = (props) => {
   // console.log('select cell ', props);
@@ -18,8 +19,40 @@ const SelectCell = (props) => {
     multiSelect,
   } = props;
 
+  const { Info, TextValue } = value || {};
+
+  let options, initialValues;
+
+  //! Prepare options and initial values if any!
+  if (!!multiSelect) {
+    const checkboxInfo = toJSON(decodeBase64(Info));
+    const checkboxValue = decodeBase64(TextValue);
+    initialValues = !!checkboxValue
+      ? decodeBase64(checkboxValue)
+          .split('~')
+          .map((value) => ({
+            value: value.trim(),
+            label: decodeBase64(value.trim()),
+          }))
+      : [];
+    options = checkboxInfo?.Options?.map((opt) => ({
+      value: decodeBase64(opt),
+      label: decodeBase64(opt),
+    }));
+  } else {
+    const selectInfo = toJSON(decodeBase64(Info));
+    const selectValue = decodeBase64(TextValue);
+    initialValues = !!selectValue
+      ? [{ value: decodeBase64(selectValue), label: decodeBase64(selectValue) }]
+      : [];
+    options = selectInfo?.Options?.map((opt) => ({
+      value: decodeBase64(opt),
+      label: decodeBase64(opt),
+    }));
+  }
+
   const [defaultValues, setDefaultValues] = useState(
-    !!isNew ? [] : value?.defaultValues
+    !!isNew ? [] : initialValues
   );
 
   const rowId = row?.original?.id;
@@ -72,7 +105,7 @@ const SelectCell = (props) => {
       isSearchable={true}
       placeholder="انتخاب کنید"
       selectName={header?.title}
-      selectOptions={value?.options}
+      selectOptions={options}
       onChange={handleSelectChange}
       onMenuClose={handleOnMenuClose}
       selectStyles={Styled.selectStyles}

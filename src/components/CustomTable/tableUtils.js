@@ -25,55 +25,7 @@ export const modalTypes = {
 };
 
 export const prepareCell = (cell) => {
-  switch (cell?.Type) {
-    //! Select cell.
-    case cellTypes.singleSelect:
-      const selectInfo = toJSON(decodeBase64(cell?.Info));
-      const selectValue = decodeBase64(cell?.TextValue);
-      const selectDefaults = !!selectValue
-        ? [{ value: selectValue, label: selectValue }]
-        : [];
-      const selectOptions = selectInfo?.Options?.map((opt) => ({
-        value: decodeBase64(opt),
-        label: decodeBase64(opt),
-      }));
-
-      // console.log({ cell, options, defaultValues }, 'Select');
-      return {
-        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
-          options: selectOptions,
-          defaultValues: selectDefaults,
-          cell,
-        },
-      };
-
-    //! Checkbox cell.
-    case cellTypes.multiSelect:
-      const checkboxInfo = toJSON(decodeBase64(cell?.Info));
-      const checkboxValue = decodeBase64(cell?.TextValue);
-      const checkboxDefaults = !!checkboxValue
-        ? checkboxValue
-            .split('~')
-            .map((value) => ({ value: value.trim(), label: value.trim() }))
-        : [];
-      const checkboxOptions = checkboxInfo?.Options?.map((opt) => ({
-        value: decodeBase64(opt),
-        label: decodeBase64(opt),
-      }));
-
-      return {
-        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: {
-          options: checkboxOptions,
-          defaultValues: checkboxDefaults,
-          cell,
-        },
-      };
-
-    default:
-      return {
-        [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: cell,
-      };
-  }
+  return { [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: cell };
 };
 
 export const prepareHeaders = (columns, getColumnOptions) => [
@@ -121,7 +73,6 @@ export const prepareRows = (data, columns) => {
 
     return cells.reduce((acc, cell) => ({ ...acc, ...prepareCell(cell) }), {
       id: row?.InstanceID,
-      recordInfo: { cell: cells[0] },
     });
   });
 };

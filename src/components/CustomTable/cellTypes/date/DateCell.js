@@ -46,12 +46,11 @@ const DateCell = (props) => {
   //! Update date on select.
   const handleDateSelect = (date) => {
     setDateValue(date);
-    if (!isNew) {
-      const dateArray = date?.split('/');
-      const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-      const dateCell = { ...value, DateValue: dateString };
-      onCellChange(rowId, columnId, dateCell, date);
-    }
+
+    const dateArray = date?.split('/');
+    const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
+    const dateCell = { ...value, DateValue: dateString };
+    onCellChange(rowId, columnId, dateCell, date);
   };
 
   if (isNew) {

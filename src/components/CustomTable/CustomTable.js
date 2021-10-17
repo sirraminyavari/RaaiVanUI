@@ -9,13 +9,12 @@ import {
 import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
-import Arrow from 'components/Icons/ArrowIcons/Arrow';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 // import { modalTypes } from './tableUtils';
+import ColumnHeader from './ColumnHeader';
 
 const TableModal = lazy(() =>
   import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
@@ -49,6 +48,7 @@ const CustomTable = (props) => {
     data,
     onCellChange,
     removeRow,
+    saveRow,
     addRow,
     pagination,
     reorderData,
@@ -57,8 +57,6 @@ const CustomTable = (props) => {
     getColumnsOption,
     getCellProps = defaultPropGetter,
   } = props;
-
-  const requiredColumns = columns.filter((col) => !!col.isRequired);
 
   const [selectedCell, setSelectedCell] = useState(null);
   const [isRowDragging, setIsRowDragging] = useState(false);
@@ -124,6 +122,7 @@ const CustomTable = (props) => {
       defaultColumn,
       onCellChange,
       removeRow,
+      saveRow,
       addRow,
       selectedCell,
       setSelectedCell,
@@ -192,46 +191,7 @@ const CustomTable = (props) => {
                   {headerGroup.headers.map((column) => (
                     <Styled.TableHeader
                       {...column.getHeaderProps(column.getSortByToggleProps())}>
-                      <Styled.HeaderWrapper canSort={column.canSort}>
-                        <div>
-                          {column.render('Header')}
-                          {requiredColumns
-                            .map((col) => col?.Header)
-                            .includes(column?.Header) && (
-                            <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
-                          )}
-                        </div>
-                        <>
-                          {column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <Arrow
-                                dir="down"
-                                circle
-                                color={CV_GRAY_DARK}
-                                size={24}
-                                className="table-sort-arrow"
-                              />
-                            ) : (
-                              <Arrow
-                                dir="up"
-                                circle
-                                color={CV_GRAY_DARK}
-                                size={24}
-                                className="table-sort-arrow"
-                              />
-                            )
-                          ) : (
-                            column.canSort && (
-                              <Arrow
-                                dir="up-down"
-                                color={CV_DISTANT}
-                                size={20}
-                                className="table-sort-arrow"
-                              />
-                            )
-                          )}
-                        </>
-                      </Styled.HeaderWrapper>
+                      <ColumnHeader column={column} allColumns={columns} />
                       {isResizable && (
                         <Styled.TableColumnResizer
                           isResizing={column.isResizing}

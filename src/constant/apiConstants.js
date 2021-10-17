@@ -554,3 +554,24 @@ export const GET_FORM_ELEMENTS = 'GetFormElements';
  * @class 'FGAPI'
  */
 export const GET_OWNER_FORM_INSTANCES = 'GetOwnerFormInstances';
+
+/**
+ * @description 'CreateFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const CREATE_FORM_INSTANCES = 'CreateFormInstance';
+
+/**
+ * @description 'RemoveFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const REMOVE_FORM_INSTANCES = 'RemoveFormInstance';
+
+/**
+ * @description 'SaveFormInstanceElements'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const SAVE_FORM_INSTANCES = 'SaveFormInstanceElements';

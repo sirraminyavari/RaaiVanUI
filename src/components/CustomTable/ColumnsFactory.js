@@ -89,7 +89,8 @@ const provideCell = (header) => {
 };
 
 //! Provide footer for a given column.
-const provideFooter = (header) => {
+const provideFooter = (header, data) => {
+  // console.log(data, 'footer')
   switch (header.dataType) {
     case cellTypes.action:
       return {
@@ -235,7 +236,7 @@ const makeColumns = (headers, data) => {
     return {
       Header: header.title,
       accessor: header.accessor,
-      ...provideFooter(header),
+      ...provideFooter(header, data),
       ...provideCell(header),
       ...provideOptions(header, data),
     };

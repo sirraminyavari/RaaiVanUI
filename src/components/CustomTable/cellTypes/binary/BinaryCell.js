@@ -16,6 +16,7 @@ const BinaryCell = (props) => {
     editingRow,
     isNew,
     header,
+    data,
   } = props;
 
   const rowId = row?.original?.id;
@@ -24,45 +25,48 @@ const BinaryCell = (props) => {
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
+  //! Get info for new row.
+  const columnInfo = data?.[0]?.[columnId]?.Info;
+
+  //! Get info for existing row.
   const { Info, TextValue, BitValue } = value || {};
-  const binaryInfo = toJSON(decodeBase64(Info));
+  const binaryInfo = toJSON(decodeBase64(Info || columnInfo));
   const binaryValue = decodeBase64(TextValue);
   const { Yes, No } = binaryInfo || {};
 
-  const binaryOptions = [decodeBase64(Yes), decodeBase64(No)];
+  const binaryOptions = [
+    decodeBase64(decodeBase64(Yes)),
+    decodeBase64(decodeBase64(No)),
+  ];
 
   const handleToggle = (toggleValue) => {
     // console.log(toggleValue);
-    if (!isNew) {
-      const textValue = toggleValue ? binaryOptions[0] : binaryOptions[1];
-      const binaryCell = {
-        ...value,
-        BitValue: toggleValue,
-      };
-      //   onCellChange(rowId, columnId, binaryCell, {
-      //     value: toggleValue,
-      //     label: textValue,
-      //   });
-    }
+    const textValue = toggleValue ? binaryOptions[0] : binaryOptions[1];
+    const binaryCell = {
+      ...value,
+      BitValue: toggleValue,
+    };
+    onCellChange(rowId, columnId, binaryCell, {
+      value: toggleValue,
+      label: textValue,
+    });
   };
 
-  if (isNew) {
-    return <div>New row</div>;
-  }
-
-  if (!isTableEditable || !isCellEditable || !isRowEditing) {
+  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return (
       <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-        {binaryValue}
+        {decodeBase64(TextValue)}
       </Heading>
     );
   }
 
   return (
     <Styled.BinaryCellWrapper>
-      <ToggleButton onToggle={handleToggle} initialCheck={BitValue}>
+      <ToggleButton
+        onToggle={handleToggle}
+        initialCheck={isNew ? false : BitValue}>
         <BinaryButton
-          isChecked={BitValue}
+          isChecked={isNew ? false : BitValue}
           options={binaryOptions}
           className="table-binary-cell"
         />

@@ -55,6 +55,8 @@ const FormFill = ({ data, ...props }) => {
         (x) => x?.ElementID === elementId
       );
 
+      console.log(changedElement, 'changed element');
+
       const saveResult = await saveForm([changedElement]);
       console.log(saveResult, 'saveResult');
 
@@ -250,8 +252,6 @@ const FormFill = ({ data, ...props }) => {
                 decodeInfo={decodeInfo}
                 decodeTitle={decodeTitle}
                 type={Type}
-                onAnyFieldChanged={onAnyFieldChanged}
-                save={(id) => saveFieldChanges(tempForm, id)}
                 elementId={ElementID}
                 tableColumns={TableColumns}
                 tableData={TableContent}

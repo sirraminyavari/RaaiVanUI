@@ -11,6 +11,7 @@ import {
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
+import saveForm from '../saveForm';
 
 const FormField = (props) => {
   const {
@@ -18,10 +19,8 @@ const FormField = (props) => {
     tableData,
     decodeInfo,
     decodeTitle,
-    onAnyFieldChanged,
     elementId,
     type,
-    save,
     ...rest
   } = props;
   const { GlobalUtilities } = useWindow();
@@ -103,22 +102,23 @@ const FormField = (props) => {
   );
 
   const updateCellData = (rowId, columnId, cellData, value) => {
-    // console.log({ cellData, value });
-    const elementId = cellData?.ElementID;
-    const type = cellData?.Type;
-    onAnyFieldChanged(elementId, value, type);
+    console.log({ cellData, value, rowId, columnId }, 'update');
 
-    setData((old) =>
-      old.map((row) => {
-        if (row?.id === rowId) {
-          return {
-            ...row,
-            [columnId]: cellData,
-          };
-        }
-        return row;
-      })
-    );
+    if (rowId) {
+      setData((old) =>
+        old.map((row) => {
+          if (row?.id === rowId) {
+            return {
+              ...row,
+              [columnId]: cellData,
+            };
+          }
+          return row;
+        })
+      );
+    } else {
+      //! New row.
+    }
   };
 
   const memoizedUpdateCellData = useCallback(updateCellData, []);
@@ -128,6 +128,19 @@ const FormField = (props) => {
   };
 
   const memoizedRemoveRow = useCallback(removeRow, []);
+
+  const saveRow = (rowId) => {
+    const rowElements = data?.find((row) => row?.id === rowId);
+    const elementsToSave = Object.values(rowElements).filter(
+      (element) => !!element?.ElementID
+    );
+
+    saveForm(elementsToSave)
+      .then((response) => console.log(response, 'save row response'))
+      .catch((error) => console.log(error, 'save row error'));
+  };
+
+  const memoizedSaveRow = useCallback(saveRow, [data]);
 
   const reorderData = (startIndex, endIndex) => {
     const newData = [...data];
@@ -139,18 +152,7 @@ const FormField = (props) => {
   const memoizedReorderData = useCallback(reorderData, [data]);
 
   const addRow = () => {
-    const newRecord = {
-      id: '10',
-      firstName: 'نام دهم',
-      lastName: 'نام خانوادگی دهم',
-      country: 'ایران',
-      city: 'طهران',
-      age: 50,
-      dateOfBirth: '2008/11/02',
-      progress: 100,
-    };
-    const newData = [...data, newRecord];
-    setData(newData);
+    console.log('add row api');
   };
 
   const memoizedAddRow = useCallback(addRow, []);
@@ -198,8 +200,8 @@ const FormField = (props) => {
       {...rest}>
       <div style={{ width: '50rem' }}>
         <CustomTable
-          editable //! This prop makes the whole table editable.
-          resizable //! This prop makes the whole columns of a table resizable.
+          editable
+          resizable
           pagination={{
             perPageCount: [5, 10, 20, 30],
             initialPageIndex: 0,
@@ -209,6 +211,7 @@ const FormField = (props) => {
           onCellChange={memoizedUpdateCellData}
           reorderData={memoizedReorderData}
           removeRow={memoizedRemoveRow}
+          saveRow={memoizedSaveRow}
           addRow={memoizedAddRow}
           isLoading={false}
           onSearch={handleOnSearch}

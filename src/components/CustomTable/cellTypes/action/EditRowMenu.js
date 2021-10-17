@@ -6,6 +6,8 @@ import * as Styled from 'components/CustomTable/CustomTable.styles';
 const EditRowMenu = (props) => {
   const { cell, isNew, setShowFooter } = props;
 
+  const rowId = cell?.row?.original?.id;
+
   //! Exit edit mode for a row.
   const handleExitEditMode = () => {
     cell?.setEditingRow && cell?.setEditingRow(null);
@@ -18,6 +20,7 @@ const EditRowMenu = (props) => {
     } else {
       console.log('Changes accepted');
       handleExitEditMode();
+      cell?.saveRow(rowId);
     }
   };
 

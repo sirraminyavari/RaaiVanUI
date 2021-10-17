@@ -19,9 +19,10 @@ const InputCell = (props) => {
     header,
   } = props;
 
-  const { Info, TextValue } = value || {};
+  const { Info, TextValue, FloatValue, Type } = value || {};
 
-  const textValue = decodeBase64(TextValue);
+  const isNumberType = Type === cellTypes.number;
+
   const inputInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
@@ -30,46 +31,51 @@ const InputCell = (props) => {
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
-  const [inputValue, setInputValue] = useState(textValue);
-
-  const isNumberType = header?.dataType === cellTypes.number;
+  const [inputValue, setInputValue] = useState(null);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    // console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     //! Update parent.
-    const inputCell = { ...value, TextValue: encodeBase64(inputValue) };
+    let inputCell;
+    if (isNumberType) {
+      inputCell = { ...value, FloatValue: inputValue };
+    } else {
+      inputCell = { ...value, TextValue: inputValue };
+    }
+
     onCellChange(rowId, columnId, inputCell, inputValue);
   };
 
-  //! If the initialValue has changed externally, sync it up with our state.
+  // //! If the initialValue has changed externally, sync it up with our state.
   useEffect(() => {
-    setInputValue(decodeBase64((value || {}).TextValue));
-  }, [value]);
-
-  if (!!isNew) {
-    return (
-      <Styled.InputCellWrapper>
-        {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
-        <Input
-          onChange={(e) => setInputValue(e.target.value)}
-          onBlur={() => {}}
-          className="table-number-input"
-          type={`${isNumberType ? 'number' : 'text'}`}
-          value={inputValue}
-          placeholder="وارد کنید"
-        />
-      </Styled.InputCellWrapper>
+    setInputValue(
+      isNumberType ? FloatValue : decodeBase64(decodeBase64(TextValue))
     );
-  }
+  }, [TextValue, FloatValue, isNumberType]);
+
+  // if (!!isNew) {
+  //   return (
+  //     <Styled.InputCellWrapper>
+  //       {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
+  //       <Input
+  //         onChange={(e) => setInputValue(e.target.value)}
+  //         onBlur={() => {}}
+  //         className="table-number-input"
+  //         type={`${isNumberType ? 'number' : 'text'}`}
+  //         value={inputValue}
+  //         placeholder="وارد کنید"
+  //       />
+  //     </Styled.InputCellWrapper>
+  //   );
+  // }
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
-  if (!isTableEditable || !isCellEditable || !isRowEditing) {
+  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return !!inputValue ? (
       <Styled.CellView>{inputValue}</Styled.CellView>
     ) : (
@@ -84,7 +90,7 @@ const InputCell = (props) => {
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         className="table-number-input"
-        type={`${isNumberType ? 'number' : 'text'}`}
+        type={isNumberType ? 'number' : 'text'}
         value={inputValue}
         placeholder="وارد کنید"
       />
