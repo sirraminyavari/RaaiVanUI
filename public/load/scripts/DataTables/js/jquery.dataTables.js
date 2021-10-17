@@ -4407,7 +4407,7 @@
 				settings.aiDisplay = displayMaster.slice();
 			}
 	
-			// Search the display array
+			// SearchOld the display array
 			display = settings.aiDisplay;
 	
 			for ( i=0 ; i<display.length ; i++ ) {
@@ -4496,7 +4496,7 @@
 							cellData = fomatters[ column.sType ]( cellData );
 						}
 	
-						// Search in DataTables 1.10 is string based. In 1.11 this
+						// SearchOld in DataTables 1.10 is string based. In 1.11 this
 						// should be altered to also allow strict type checking.
 						if ( cellData === null ) {
 							cellData = '';
@@ -6375,7 +6375,7 @@
 				} );
 			}
 	
-			// Search
+			// SearchOld
 			if ( s.search !== undefined ) {
 				$.extend( settings.oPreviousSearch, _fnSearchToHung( s.search ) );
 			}
@@ -6391,7 +6391,7 @@
 						columns[i].bVisible = col.visible;
 					}
 	
-					// Search
+					// SearchOld
 					if ( col.search !== undefined ) {
 						$.extend( settings.aoPreSearchCols[i], _fnSearchToHung( col.search ) );
 					}
@@ -11637,7 +11637,7 @@
 			 * control over where it appears in the string. If "_INPUT_" is not given
 			 * then the input box is appended to the string automatically.
 			 *  @type string
-			 *  @default Search:
+			 *  @default SearchOld:
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.search
@@ -11662,7 +11662,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "SearchOld:",
 	
 	
 			/**
@@ -11843,7 +11843,7 @@
 	
 	
 		/**
-		 * Search delay option. This will throttle full table searches that use the
+		 * SearchOld delay option. This will throttle full table searches that use the
 		 * DataTables provided search input element (it does not effect calls to
 		 * `dt-api search()`, providing a delay before the search is made.
 		 *  @type integer
@@ -13412,7 +13412,7 @@
 		"sDom": null,
 	
 		/**
-		 * Search delay (in mS)
+		 * SearchOld delay (in mS)
 		 *  @type integer
 		 *  @default null
 		 */
@@ -15100,7 +15100,7 @@
 	 */
 
 	/**
-	 * Search event, fired when the searching applied to the table (using the
+	 * SearchOld event, fired when the searching applied to the table (using the
 	 * built-in global search, or column filters) is altered.
 	 *  @name DataTable#search.dt
 	 *  @event

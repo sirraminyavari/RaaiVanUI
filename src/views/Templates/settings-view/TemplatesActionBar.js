@@ -61,7 +61,7 @@ const TemplatesActionBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //! Search between nodes on search input change.
+  //! SearchOld between nodes on search input change.
   useEffect(() => {
     if (searchText.length > 2) {
       setIsSearching(true);

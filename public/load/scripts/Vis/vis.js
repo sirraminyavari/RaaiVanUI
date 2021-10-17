@@ -26115,7 +26115,7 @@ var Label = function () {
      * present in the multi-font options should by definition be taken from the main font options,
      * i.e. from the current 'parent' object of the multi-font option.
      *
-     * ### Search order for multi-fonts
+     * ### SearchOld order for multi-fonts
      *
      * 'bold' used as example:
      *
@@ -26136,7 +26136,7 @@ var Label = function () {
     value: function getFontOption(pile, multiName, option) {
       var multiFont = void 0;
 
-      // Search multi font in local properties
+      // SearchOld multi font in local properties
       for (var n = 0; n < pile.length; ++n) {
         var fontOptions = pile[n];
 
@@ -50684,12 +50684,12 @@ var ClusterEngine = function () {
             // add to the cluster queue
             if ((0, _keys2['default'])(childNodesObj).length > 0 && (0, _keys2['default'])(childEdgesObj).length > 0 && gatheringSuccessful === true) {
               /**
-               * Search for cluster data that contains any of the node id's
+               * SearchOld for cluster data that contains any of the node id's
                * @returns {Boolean} true if no joinCondition, otherwise return value of joinCondition
                */
               findClusterData = function findClusterData() {
                 for (var n = 0; n < clusters.length; ++n) {
-                  // Search for a cluster containing any of the node id's
+                  // SearchOld for a cluster containing any of the node id's
                   for (var m in childNodesObj) {
                     if (clusters[n].nodes[m] !== undefined) {
                       return clusters[n];

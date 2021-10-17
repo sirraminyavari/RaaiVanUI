@@ -2156,7 +2156,7 @@ Axis.prototype.beforePadding = function () {
 		colProto;
 
 	/**
-	 * Search a k-d tree by the point angle, used for shared tooltips in polar charts
+	 * SearchOld a k-d tree by the point angle, used for shared tooltips in polar charts
 	 */
 	seriesProto.searchPointByAngle = function (e) {
 		var series = this,

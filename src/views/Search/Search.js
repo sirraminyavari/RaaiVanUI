@@ -1,35 +1,35 @@
-import { useRef } from 'react';
-import useScript from 'hooks/useScript';
-import { isEmpty } from 'helpers/helpers';
-import SearchCtrl from './SearchCtrl';
+/**
+ *  A View Component to represent the search result
+ */
 
-const Search = (props) => {
-  const node = useRef();
+import { SearchViewContainer } from './SearchStyle';
+import DimensionHelper from '../../utils/DimensionHelper/DimensionHelper';
+import SearchViewDesktop from './SearchViewDesktop';
+import SearchViewMobile from './SearchViewMobile';
+import SearchProvider from './SearchProvider';
 
-  const {} = SearchCtrl();
-
-  useScript(
-    'pageLoadScripts/LoadSearch/LoadSearch.js',
-    'LoadSearch.js',
-    (search) => {
-      !isEmpty(search) &&
-        !node?.current?.firstChild &&
-        window.loadSearch(search);
-    },
-    props.route
-  );
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
+const Search = ({ ...props }) => {
   return (
-    // <div
-    //   ref={node}
-    //   id="searchArea"
-    //   className="small-12 medium-12 large-12 row align-center"
-    //   style={{
-    //     margin: '0rem',
-    //     marginBottom: '5rem',
-    //     padding: '0vw 10vw',
-    //   }}></div>
-    <>search component goes here!</>
+    <SearchViewContainer>
+      <SearchProvider>
+        {
+          /**
+           * determine whether the view is mobile or not
+           */
+          DimensionHelper()?.isTabletOrMobile ? (
+            <SearchViewMobile />
+          ) : (
+            <SearchViewDesktop />
+          )
+        }
+      </SearchProvider>
+    </SearchViewContainer>
   );
 };
-
 export default Search;

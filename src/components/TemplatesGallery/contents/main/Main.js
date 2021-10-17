@@ -54,7 +54,7 @@ const TemplateGalleryMain = () => {
     setIsTransition(value);
   };
 
-  //! Search between all templates.
+  //! SearchOld between all templates.
   const handleSearchTemplates = (e) => {
     const searchValue = e.target.value.replace(/\s+/g, '');
     setSearchText(e.target.value);

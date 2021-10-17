@@ -213,7 +213,7 @@
 
             that.create_content_section(elems["worktableButton"]);
 
-            //Search Options
+            //SearchOld Options
             jQuery(elems["searchInput"])
                 .focus(function () {
                     var nm = RV_RTL ? "paddingLeft" : "paddingRight";
@@ -235,7 +235,7 @@
             GlobalUtilities.set_onenter(elems["searchInput"], function () { that.do_search(elems["searchInput"].value); });
 
             jQuery(elems["searchButton"]).click(function () { that.do_search(elems["searchInput"].value); });
-            //end of Search Options
+            //end of SearchOld Options
 
             //Init Chat
             if (isAuthenticated && that.Objects.Modules.Chat) GlobalUtilities.load_files(["MSG/RChat.js"], {

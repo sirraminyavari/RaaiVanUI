@@ -39,7 +39,7 @@
             }))
         });
 
-        var url = SearchAPI.ResponseURL + "/Search?timeStamp=" + new Date().getTime();
+        var url = SearchAPI.ResponseURL + "/SearchOld?timeStamp=" + new Date().getTime();
         var queryString = "";
 
         var isFirst = true;
