@@ -560,7 +560,7 @@ export const GET_OWNER_FORM_INSTANCES = 'GetOwnerFormInstances';
  * @mode API function
  * @class 'FGAPI'
  */
-export const CREATE_FORM_INSTANCES = 'CreateFormInstance';
+export const CREATE_FORM_INSTANCE = 'CreateFormInstance';
 
 /**
  * @description 'RemoveFormInstance'

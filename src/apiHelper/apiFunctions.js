@@ -56,9 +56,8 @@ import {
   SET_NODE_SEARCHABILITY,
   GET_NODE,
   GET_OWNER_FORM_INSTANCES,
-  CREATE_FORM_INSTANCES,
   REMOVE_FORM_INSTANCES,
-  SAVE_FORM_INSTANCES,
+  CREATE_FORM_INSTANCE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1364,7 +1363,7 @@ export const setNodeSearchability = (nodeId, searchable) => {
 };
 
 /**
- * @description Set node searchability.
+ * @description Get owner form instances.
  * @param {String} formId -The id of the form.
  * @param {String} ownerId -The id of the form owner.
  * @returns Promise.
@@ -1402,7 +1401,7 @@ export const getOwnerFormInstances = (formId, ownerId) => {
  * @returns Promise.
  */
 export const createFormInstance = (formId, ownerId) => {
-  const createFormInstanceAPI = API_Provider(FG_API, CREATE_FORM_INSTANCES);
+  const createFormInstanceAPI = API_Provider(FG_API, CREATE_FORM_INSTANCE);
 
   return new Promise((resolve, reject) => {
     try {

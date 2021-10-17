@@ -3,8 +3,7 @@ import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './InputCell.styles';
 import { CV_DISTANT } from 'constant/CssVariables';
-import { cellTypes } from 'components/CustomTable/tableUtils';
-import { decodeBase64, encodeBase64, toJSON } from 'helpers/helpers';
+import { decodeBase64, toJSON } from 'helpers/helpers';
 
 const InputCell = (props) => {
   // console.log('inputCell', props);
@@ -17,12 +16,10 @@ const InputCell = (props) => {
     editingRow,
     isNew,
     header,
+    isNumber,
   } = props;
 
-  const { Info, TextValue, FloatValue, Type } = value || {};
-
-  const isNumberType = Type === cellTypes.number;
-
+  const { Info, TextValue, FloatValue } = value || {};
   const inputInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
@@ -31,7 +28,7 @@ const InputCell = (props) => {
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
-  const [inputValue, setInputValue] = useState(null);
+  const [inputValue, setInputValue] = useState('');
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
@@ -42,7 +39,7 @@ const InputCell = (props) => {
   const handleInputBlur = () => {
     //! Update parent.
     let inputCell;
-    if (isNumberType) {
+    if (!!isNumber) {
       inputCell = { ...value, FloatValue: inputValue };
     } else {
       inputCell = { ...value, TextValue: inputValue };
@@ -53,26 +50,9 @@ const InputCell = (props) => {
 
   // //! If the initialValue has changed externally, sync it up with our state.
   useEffect(() => {
-    setInputValue(
-      isNumberType ? FloatValue : decodeBase64(decodeBase64(TextValue))
-    );
-  }, [TextValue, FloatValue, isNumberType]);
-
-  // if (!!isNew) {
-  //   return (
-  //     <Styled.InputCellWrapper>
-  //       {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
-  //       <Input
-  //         onChange={(e) => setInputValue(e.target.value)}
-  //         onBlur={() => {}}
-  //         className="table-number-input"
-  //         type={`${isNumberType ? 'number' : 'text'}`}
-  //         value={inputValue}
-  //         placeholder="وارد کنید"
-  //       />
-  //     </Styled.InputCellWrapper>
-  //   );
-  // }
+    const value = !!isNumber ? FloatValue : decodeBase64(TextValue);
+    setInputValue(value);
+  }, [TextValue, FloatValue, isNumber]);
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
@@ -85,12 +65,12 @@ const InputCell = (props) => {
 
   return (
     <Styled.InputCellWrapper>
-      {isNumberType && <NumberIcon size={25} color={CV_DISTANT} />}
+      {!!isNumber && <NumberIcon size={25} color={CV_DISTANT} />}
       <Input
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         className="table-number-input"
-        type={isNumberType ? 'number' : 'text'}
+        type={!!isNumber ? 'number' : 'text'}
         value={inputValue}
         placeholder="وارد کنید"
       />

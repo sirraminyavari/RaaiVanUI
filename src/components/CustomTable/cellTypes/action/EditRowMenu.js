@@ -4,7 +4,7 @@ import { CV_RED, TCV_WARM } from 'constant/CssVariables';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 
 const EditRowMenu = (props) => {
-  const { cell, isNew, setShowFooter } = props;
+  const { cell, isNew, setShowFooter, addRow } = props;
 
   const rowId = cell?.row?.original?.id;
 
@@ -17,10 +17,11 @@ const EditRowMenu = (props) => {
   const handleAcceptChanges = () => {
     if (isNew) {
       setShowFooter(false);
+      addRow && addRow();
     } else {
       console.log('Changes accepted');
       handleExitEditMode();
-      cell?.saveRow(rowId);
+      cell?.saveRow && cell?.saveRow(rowId);
     }
   };
 

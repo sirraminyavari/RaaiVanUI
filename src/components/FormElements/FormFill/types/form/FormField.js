@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import TableIcon from 'components/Icons/TableIcon/TableIcon';
-import { CV_GRAY } from 'constant/CssVariables';
+import { CV_GRAY, CV_RED } from 'constant/CssVariables';
 import CustomTable from 'components/CustomTable/CustomTable';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
 import {
@@ -10,7 +11,15 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, toJSON } from 'helpers/helpers';
+import {
+  createFormInstance,
+  removeFormInstance,
+  getOwnerFormInstances,
+} from 'apiHelper/apiFunctions';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+// import { saveRowElements } from './FormFieldUtils';
 import saveForm from '../saveForm';
 
 const FormField = (props) => {
@@ -23,9 +32,9 @@ const FormField = (props) => {
     type,
     ...rest
   } = props;
-  const { GlobalUtilities } = useWindow();
 
-  // console.log({ tableColumns, tableData });
+  const { GlobalUtilities } = useWindow();
+  const { FormID } = toJSON(decodeInfo);
 
   const [data, setData] = useState([]);
   // const [isSearching, setIsSearching] = useState(false);
@@ -121,26 +130,57 @@ const FormField = (props) => {
     }
   };
 
-  const memoizedUpdateCellData = useCallback(updateCellData, []);
-
-  const removeRow = (rowIndex) => {
-    setData((old) => old.filter((row, index) => index !== rowIndex));
-  };
-
-  const memoizedRemoveRow = useCallback(removeRow, []);
-
   const saveRow = (rowId) => {
     const rowElements = data?.find((row) => row?.id === rowId);
-    const elementsToSave = Object.values(rowElements).filter(
+    const filteredElements = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    saveForm(elementsToSave)
+    // saveRowElements(filteredElements)
+    saveForm(filteredElements)
       .then((response) => console.log(response, 'save row response'))
       .catch((error) => console.log(error, 'save row error'));
   };
 
   const memoizedSaveRow = useCallback(saveRow, [data]);
+
+  const memoizedUpdateCellData = useCallback(updateCellData, []);
+
+  //! Close undo toast when user clicks on "X" button.
+  const closeUndoToast = (toastId) => {
+    toast.dismiss(toastId);
+  };
+
+  const undoRowDelete = (rowId) => {};
+
+  const removeRow = (row) => {
+    const rowIndex = row?.index;
+    const rowId = row?.original?.id;
+
+    removeFormInstance(rowId)
+      .then((response) => {
+        if (response?.Succeed) {
+          setData((old) => old.filter((row, index) => index !== rowIndex));
+
+          const deleteMSG = 'ردیف حذف شد';
+          UndoToast({
+            autoClose: 7000,
+            message: deleteMSG,
+            onUndo: () => undoRowDelete(rowId),
+            toastId: `delete-${rowId}`,
+            closeButton: (
+              <CloseIcon
+                onClick={() => closeUndoToast(`delete-${rowId}`)}
+                color={CV_RED}
+              />
+            ),
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const memoizedRemoveRow = useCallback(removeRow, []);
 
   const reorderData = (startIndex, endIndex) => {
     const newData = [...data];
@@ -152,7 +192,20 @@ const FormField = (props) => {
   const memoizedReorderData = useCallback(reorderData, [data]);
 
   const addRow = () => {
-    console.log('add row api');
+    createFormInstance(FormID, elementId)
+      .then((response) => {
+        if (response?.Succeed) {
+          console.log(response, 'add row');
+          getOwnerFormInstances(FormID, elementId)
+            .then((response) => {
+              console.log(response, 'new table');
+              const rows = prepareRows(response?.TableContent, tableColumns);
+              setData(rows);
+            })
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   const memoizedAddRow = useCallback(addRow, []);

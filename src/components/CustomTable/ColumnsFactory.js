@@ -35,7 +35,7 @@ const provideCell = (header) => {
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
     case cellTypes.number:
-      return { Cell: (row) => <InputCell {...row} header={header} /> };
+      return { Cell: (row) => <InputCell {...row} header={header} isNumber /> };
 
     case cellTypes.date:
       return { Cell: (row) => <DateCell {...row} header={header} /> };
@@ -232,7 +232,7 @@ const getColumnWidth = (data, header) => {
 
 //! Column factory.
 const makeColumns = (headers, data) => {
-  const dataCulomns = headers.map((header) => {
+  const dataColumns = headers.map((header) => {
     return {
       Header: header.title,
       accessor: header.accessor,
@@ -242,7 +242,7 @@ const makeColumns = (headers, data) => {
     };
   });
 
-  return dataCulomns;
+  return dataColumns;
 };
 
 export default makeColumns;
