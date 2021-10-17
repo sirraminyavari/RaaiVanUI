@@ -2,14 +2,9 @@ import { encodeBase64 } from 'helpers/helpers';
 import { encode } from 'js-base64';
 
 const prepareForm = (prevForm, elementId, event, type) => {
-  console.log(prevForm, 'prevForm');
-  console.log(elementId, 'elementId');
-  console.log(type, 'type');
-  console.log(event, 'event');
   const { Elements } = prevForm || {};
 
   const requireItems = (x) => {
-    console.log(x, 'CCCCCC');
     return {
       Type: x?.Type,
       ElementID: x?.ElementID,
@@ -55,8 +50,6 @@ const prepareForm = (prevForm, elementId, event, type) => {
 
       return result;
     case 'MultiLevel':
-      console.log(event, '#########********');
-
       const multiLevel = {
         ...prevForm,
         Elements: Elements?.map((x) =>
@@ -68,11 +61,9 @@ const prepareForm = (prevForm, elementId, event, type) => {
             : x
         ),
       };
-      console.log(multiLevel, 'multiLevel ***');
       return multiLevel;
 
     case 'Numeric':
-      console.log(event, 'numeric***');
       return {
         ...prevForm,
         Elements: Elements?.map((x) =>

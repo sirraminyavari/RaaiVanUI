@@ -23,8 +23,6 @@ const FileField = (props) => {
 
   const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
 
-  console.log({ props, infoJSON, value }, 'file field');
-
   //! Upload to server with axios.
   const uploadFile = (file, url) => {
     //! Prepare upload data

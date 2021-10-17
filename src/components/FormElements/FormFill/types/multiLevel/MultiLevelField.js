@@ -43,17 +43,21 @@ const MultiLevelField = ({
 
   const onLevelSelected = async (elementId, event, type, index) => {
     const selectedTemp = selectedLevels?.map((x, ind) =>
-      ind === index ? { ID: event?.value?.NodeID, Name: event?.label } : x
+      ind === index
+        ? { ID: event?.value?.NodeID, Name: event?.label }
+        : ind > index
+        ? { ID: '', Name: '' }
+        : x
     );
     setSelectedLevels(selectedTemp);
+
     onAnyFieldChanged(elementId, selectedTemp, type);
     const exceptFirstLevel = await getChildNodes(
       NodeType?.ID,
       event?.value?.NodeID
     );
     const { Nodes } = exceptFirstLevel || {};
-    console.log(exceptFirstLevel, 'exceptFirstLevel');
-    console.log('NodeId', event?.value?.NodeID);
+
     if (index + 1 < Levels.length) {
       const newLevels = levels.map((x, ind) =>
         ind === index + 1 ? { nodes: Nodes } : x
@@ -71,20 +75,33 @@ const MultiLevelField = ({
       {levels?.map((x, index) => {
         const { ID, Name } = value[index] || {};
         return (
-          <SelectContainer>
-            <Select
-              onBlur={() => index === levels?.length - 1 && save(elementId)}
-              options={normalizedOptions(x)}
-              styles={customStyles}
-              value={{ value: ID, label: Name }}
-              placeholder={RVDic.Select}
-              isSearchable={true}
-              isClearable={true}
-              onChange={(event) =>
-                onLevelSelected(elementId, event, type, index)
-              }
-            />
-          </SelectContainer>
+          <>
+            {!!normalizedOptions(x) ? (
+              <SelectContainer>
+                <Select
+                  onBlur={() => index === levels?.length - 1 && save(elementId)}
+                  options={normalizedOptions(x)}
+                  styles={customStyles}
+                  value={{ value: ID, label: Name }}
+                  placeholder={RVDic.Select}
+                  isSearchable={true}
+                  onChange={(event, triggeredAction) => {
+                    if (triggeredAction.action === 'clear') {
+                      const selectedTemp = selectedLevels?.map((x, ind) =>
+                        ind === index ? { ID: undefined, Name: undefined } : x
+                      );
+                      setSelectedLevels(selectedTemp);
+                      onAnyFieldChanged(elementId, selectedTemp, type);
+                      setLevels(selectedTemp);
+                      // Clear happened
+                    } else {
+                      onLevelSelected(elementId, event, type, index);
+                    }
+                  }}
+                />
+              </SelectContainer>
+            ) : null}
+          </>
         );
       })}
     </FormCell>

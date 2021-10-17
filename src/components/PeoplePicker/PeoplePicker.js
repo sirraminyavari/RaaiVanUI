@@ -40,8 +40,6 @@ const PeoplePicker = ({
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
 
-  console.log(pickedPeople, '********* pickedPeople');
-
   const pickerRef = useRef();
   useEffect(() => {
     onVisible(isPickerVisible);
