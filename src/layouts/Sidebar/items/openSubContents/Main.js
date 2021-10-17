@@ -1,16 +1,16 @@
 /**
  * Renders regular sidebar with its menu.
  */
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { themeSlice } from 'store/reducers/themeReducer';
 import ReadableTree from 'layouts/Sidebar/items/sidebarTree/readable/ReadableTree';
 import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
 import SearchBox from 'layouts/Sidebar/items/openSubContents/searchBox/SearchBox';
 import SearchResultsList from 'layouts/Sidebar/items/openSubContents/searchBox/SearchResultsList';
-import { createSelector } from 'reselect';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import {
@@ -19,6 +19,9 @@ import {
   INTRO_ONBOARD,
   CLASSES_PATH,
 } from 'constant/constants';
+
+const { setSearchText } = sidebarMenuSlice.actions;
+const { setSidebarContent } = themeSlice.actions;
 
 const selectShowSearchResults = createSelector(
   (state) => state.sidebarItems,
@@ -30,7 +33,7 @@ const selectTeam = createSelector(
   (theme) => theme.selectedTeam
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
@@ -38,12 +41,9 @@ const selecteOnboardingName = createSelector(
 const SidebarMainContent = () => {
   const dispatch = useDispatch();
 
-  const { setSearchText } = sidebarMenuSlice.actions;
-  const { setSidebarContent } = themeSlice.actions;
-
   const showSearchResults = useSelector(selectShowSearchResults);
   const selectedTeam = useSelector(selectTeam);
-  const onboardingName = useSelector(selecteOnboardingName);
+  const onboardingName = useSelector(selectOnboardingName);
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -56,7 +56,7 @@ const SidebarMainContent = () => {
       setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     //! clean up
@@ -64,7 +64,7 @@ const SidebarMainContent = () => {
       dispatch(setSearchText(''));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
@@ -90,4 +90,4 @@ const SidebarMainContent = () => {
   );
 };
 
-export default SidebarMainContent;
+export default memo(SidebarMainContent);

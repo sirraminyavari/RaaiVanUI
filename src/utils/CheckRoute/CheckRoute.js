@@ -27,7 +27,7 @@ import {
   VERIFY_RESET_PATH,
 } from 'constant/constants';
 import {
-  getSidebarNodes,
+  // getSidebarNodes,
   getUnderMenuPermissions,
 } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
@@ -110,7 +110,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       };
       dispatch(setSelectedTeam(application));
       dispatch(setCurrentApp(route?.Application));
-      dispatch(getSidebarNodes());
+      // dispatch(getSidebarNodes());
       dispatch(getConfigPanels());
       dispatch(getUnderMenuPermissions(['Reports']));
       // if (!!response.Onboarding) {

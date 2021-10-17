@@ -19,7 +19,7 @@ import {
 import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
 
-const { RV_Float, RV_RevFloat, RV_RTL } = window;
+const { RV_Float, RV_RevFloat, RV_RTL, RVDic } = window;
 
 const FlexBetween = css`
   display: flex;
@@ -212,7 +212,7 @@ export const SearchWrapper = styled.div.attrs({
 
 export const SearchInput = styled.input.attrs((props) => ({
   type: props.type || 'search',
-  placeholder: props.text || 'جستجو ...',
+  placeholder: props.text || RVDic.Search,
 }))`
   width: 100%;
   background-color: inherit;

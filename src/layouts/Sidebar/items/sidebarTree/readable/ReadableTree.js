@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import ReadableItem from './ReadableItem';
-import OnbordingItem from './OnboardingItem';
+import OnboardingItem from './OnboardingItem';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { isEmpty } from 'helpers/helpers';
 
@@ -15,7 +15,7 @@ const selectSidebarDnDTree = createSelector(
   (sidebarItems) => sidebarItems.dndTree
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
@@ -23,7 +23,7 @@ const selecteOnboardingName = createSelector(
 const ReadableTree = () => {
   const dispatch = useDispatch();
   const sidebarDnDTree = useSelector(selectSidebarDnDTree);
-  const onboardingName = useSelector(selecteOnboardingName);
+  const onboardingName = useSelector(selectOnboardingName);
   const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
   //! Check if onboarding is activated on 'intro' mode.
@@ -37,12 +37,12 @@ const ReadableTree = () => {
 
   //! Render custom item.
   const handleRenderItem = (itemProps) => {
-    return <ReadableItem itemProps={itemProps} />;
+    return <ReadableItem {...itemProps} />;
   };
 
   return (
     <>
-      {isIntroOnboarding && <OnbordingItem />}
+      {isIntroOnboarding && <OnboardingItem />}
       {sidebarDnDTree?.items && !isEmpty(sidebarDnDTree?.items) && (
         <DragAndDropTree
           indentPerLevel={0}
