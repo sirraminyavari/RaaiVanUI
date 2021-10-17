@@ -15,6 +15,8 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
 
+const { toggleSidebar } = themeSlice.actions;
+
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
   (theme) => theme.isSidebarOpen
@@ -30,19 +32,19 @@ const selectHasPattern = createSelector(
   (theme) => theme.hasSidebarPattern
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
-  const { toggleSidebar } = themeSlice.actions;
+  const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
+
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const selectedTeam = useSelector(selectTeam);
   const hasPattern = useSelector(selectHasPattern);
-  const onboardingName = useSelector(selecteOnboardingName);
-  const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
+  const onboardingName = useSelector(selectOnboardingName);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
   //! Check if onboarding is activated on 'intro' mode.
