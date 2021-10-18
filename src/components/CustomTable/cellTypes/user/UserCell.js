@@ -20,7 +20,6 @@ const UserCell = (props) => {
   } = props;
 
   const { SelectedItems: users, Info } = value || {};
-  const userInfo = toJSON(decodeBase64(Info));
 
   return (
     <Styled.UsersWrapper>

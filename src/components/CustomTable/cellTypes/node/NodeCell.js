@@ -3,8 +3,8 @@ import * as Styled from './NodeCell.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import OpenMailIcon from 'components/Icons/MailIcon/OpenMailIcon';
 import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
-import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import { decodeBase64, getURL, toJSON } from 'helpers/helpers';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 
@@ -21,7 +21,6 @@ const NodeCell = (props) => {
     header,
   } = props;
   const { Info } = value || {};
-  const nodeInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -38,7 +37,7 @@ const NodeCell = (props) => {
     <Styled.NodeCellContainer>
       <Styled.ItemsWrapper>
         <Styled.NodeListWrapper>
-          {nodeInfo?.NodeTypes.map((node, index) => (
+          {Info?.NodeTypes.map((node, index) => (
             <Styled.NodeItemContainer key={node?.NodeTypeID || index}>
               <Styled.NodeInfoWrapper
                 editable={props?.header?.options?.editable}>

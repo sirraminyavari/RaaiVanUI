@@ -30,14 +30,10 @@ const BinaryCell = (props) => {
 
   //! Get info for existing row.
   const { Info, TextValue, BitValue } = value || {};
-  const binaryInfo = toJSON(decodeBase64(Info || columnInfo));
-  const binaryValue = decodeBase64(TextValue);
+  const binaryInfo = Info || columnInfo;
   const { Yes, No } = binaryInfo || {};
 
-  const binaryOptions = [
-    decodeBase64(decodeBase64(Yes)),
-    decodeBase64(decodeBase64(No)),
-  ];
+  const binaryOptions = [decodeBase64(Yes), decodeBase64(No)];
 
   const handleToggle = (toggleValue) => {
     // console.log(toggleValue);
@@ -55,7 +51,7 @@ const BinaryCell = (props) => {
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return (
       <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-        {decodeBase64(TextValue)}
+        {TextValue}
       </Heading>
     );
   }

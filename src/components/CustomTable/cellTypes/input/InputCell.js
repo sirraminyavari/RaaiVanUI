@@ -3,7 +3,7 @@ import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './InputCell.styles';
 import { CV_DISTANT } from 'constant/CssVariables';
-import { decodeBase64, toJSON } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 
 const InputCell = (props) => {
   // console.log('inputCell', props);
@@ -20,7 +20,6 @@ const InputCell = (props) => {
   } = props;
 
   const { Info, TextValue, FloatValue } = value || {};
-  const inputInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -50,7 +49,7 @@ const InputCell = (props) => {
 
   // //! If the initialValue has changed externally, sync it up with our state.
   useEffect(() => {
-    const value = !!isNumber ? FloatValue : decodeBase64(TextValue);
+    const value = !!isNumber ? FloatValue : TextValue;
     setInputValue(value);
   }, [TextValue, FloatValue, isNumber]);
 

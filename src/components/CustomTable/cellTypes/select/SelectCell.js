@@ -25,27 +25,21 @@ const SelectCell = (props) => {
 
   //! Prepare options and initial values if any!
   if (!!multiSelect) {
-    const checkboxInfo = toJSON(decodeBase64(Info));
-    const checkboxValue = decodeBase64(TextValue);
-    initialValues = !!checkboxValue
-      ? decodeBase64(checkboxValue)
+    initialValues = !!TextValue
+      ? decodeBase64(TextValue)
           .split('~')
           .map((value) => ({
             value: value.trim(),
-            label: decodeBase64(value.trim()),
+            label: value.trim(),
           }))
       : [];
-    options = checkboxInfo?.Options?.map((opt) => ({
+    options = Info?.Options?.map((opt) => ({
       value: decodeBase64(opt),
       label: decodeBase64(opt),
     }));
   } else {
-    const selectInfo = toJSON(decodeBase64(Info));
-    const selectValue = decodeBase64(TextValue);
-    initialValues = !!selectValue
-      ? [{ value: decodeBase64(selectValue), label: decodeBase64(selectValue) }]
-      : [];
-    options = selectInfo?.Options?.map((opt) => ({
+    initialValues = !!TextValue ? [{ value: TextValue, label: TextValue }] : [];
+    options = Info?.Options?.map((opt) => ({
       value: decodeBase64(opt),
       label: decodeBase64(opt),
     }));

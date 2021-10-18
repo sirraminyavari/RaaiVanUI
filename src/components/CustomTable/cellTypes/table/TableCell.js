@@ -1,6 +1,6 @@
 import TableIcon from 'components/Icons/TableIcon/TableIcon';
 import { CV_GRAY } from 'constant/CssVariables';
-import { decodeBase64, toJSON } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from './TableCell.styles';
 import { modalTypes } from '../../tableUtils';
 import TableCellModal from '../table/TableCellModal';
@@ -18,13 +18,12 @@ const TableCell = (props) => {
   } = props;
 
   const { Info } = value || {};
-  const tableInfo = toJSON(decodeBase64(Info));
   // console.log(tableInfo, props, 'table');
 
   const handleOnTableClick = () => {
     props?.setModal({
       show: true,
-      title: decodeBase64(tableInfo?.FormName),
+      title: decodeBase64(Info?.FormName),
       type: modalTypes.table,
       content: () => <TableCellModal {...props} />,
     });

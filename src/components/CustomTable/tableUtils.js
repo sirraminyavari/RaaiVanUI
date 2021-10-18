@@ -25,7 +25,17 @@ export const modalTypes = {
 };
 
 export const prepareCell = (cell) => {
-  return { [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: cell };
+  const normalizedCell = Object.assign({}, cell, {
+    Info: toJSON(decodeBase64(cell.Info) || '{}'),
+    Title: decodeBase64(cell.Title),
+    Name: decodeBase64(cell.Name),
+    Help: decodeBase64(cell.Help).trim(),
+    TextValue: decodeBase64(cell.TextValue),
+  });
+
+  return {
+    [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: normalizedCell,
+  };
 };
 
 export const prepareHeaders = (columns, getColumnOptions) => [
