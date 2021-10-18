@@ -29,13 +29,18 @@ const FormFill = ({ data, ...props }) => {
   const [syncTempFormWithBackEnd, setSyncTempFormWithBackEnd] = useState(data);
   useEffect(() => {
     console.log(data, 'data ****');
-    console.log(props, 'props form fill ****');
+    console.log(data?.Elements[3], 'Element  **** in ');
+
     setTempForm(tempForm);
   }, []);
+  useEffect(() => {
+    console.log(tempForm?.Elements[3].ElementID, 'tempForm ****');
+  }, [tempForm]);
+
   const onAnyFieldChanged = async (elementId, event, type) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
+
     setTempForm(readyToUpdate);
-    console.log(readyToUpdate, 'readyToUpdate');
 
     switch (type) {
       case 'Date':
@@ -50,15 +55,22 @@ const FormFill = ({ data, ...props }) => {
     }
   };
   const saveFieldChanges = async (readyToUpdate, elementId) => {
+    console.log(
+      readyToUpdate.Elements[3].ElementID,
+      'changedElement **** 0',
+      elementId
+    );
+
     try {
       const changedElement = readyToUpdate?.Elements?.find(
         (x) => x?.ElementID === elementId
       );
+      console.log(changedElement.ElementID, 'changedElement **** 1', elementId);
 
       console.log(changedElement, 'changed element');
 
       const saveResult = await saveForm([changedElement]);
-      console.log(saveResult, 'saveResult');
+      console.log(saveResult[0].ElementID, 'changedElement **** 2', elementId);
 
       const freshForm = {
         ...readyToUpdate,
@@ -168,7 +180,6 @@ const FormFill = ({ data, ...props }) => {
                 type={Type}
                 decodeInfo={decodeInfo}
                 save={(id) => {
-                  console.log(tempForm, 'GGGGGGGGG');
                   saveFieldChanges(tempForm, id);
                 }}
               />
@@ -201,7 +212,6 @@ const FormFill = ({ data, ...props }) => {
             );
 
           case 'Node':
-            console.log('node node ', decodeInfo);
             return (
               <SubjectField
                 decodeTitle={decodeTitle}

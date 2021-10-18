@@ -1,25 +1,18 @@
-import React, { useState } from 'react';
-import FormCell from '../../FormCell';
+import AddIcon from 'components/Icons/AddIcon/AddIcon';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import UserIconIo from 'components/Icons/UserIconIo';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
-import styled from 'styled-components';
-import { decodeBase64 } from 'helpers/helpers';
-import UserIcon from 'components/Icons/UserIcon/User';
 import {
   CV_DISTANT,
   CV_GRAY,
-  CV_GRAY_LIGHT,
   CV_RED,
   TCV_DEFAULT,
-  TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
-import UserIconIo from 'components/Icons/UserIconIo';
-import ArrowDown from 'components/Icons/ArrowDown';
-import EditIcon from 'components/Icons/ExitIcon/ExitIcon';
-import PencilIcon from 'components/Icons/EditIcons/Pencil';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import AddIcon from 'components/Icons/AddIcon/AddIcon';
-import SaveButton from '../../items/SaveButton';
+import { decodeBase64 } from 'helpers/helpers';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import FormCell from '../../FormCell';
 
 const { RVDic, GlobalUtilities } = window;
 const { to_json } = GlobalUtilities || {};
@@ -87,7 +80,6 @@ const UserSelect = ({
                     {editMode && (
                       <CustomCloseIcon
                         onClick={() => {
-                          console.log(x, '))))))))((((((**********');
                           onAnyFieldChanged(
                             elementId,
                             {

@@ -32,14 +32,12 @@ const SubjectField = ({
     setIsVisible(false);
   };
   const onRemove = (e) => {
-    console.log(e, 'selectedItems', selectedItems);
     setSelectedItems(selectedItems.filter((x) => x.NodeID !== e.NodeID));
   };
   const onSave = () => {
     setEditMode(!editMode);
   };
   const parseDecodeInfo = to_json(decodeInfo);
-  console.log(parseDecodeInfo, 'parseDecodeInfo Node');
 
   return (
     <>
