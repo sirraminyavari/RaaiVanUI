@@ -155,6 +155,8 @@ export const TEMPLATES_SETTING_PATH = '/templates/settings';
 export const TEMPLATES_SETTING_NAME = 'admin_configuration';
 export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
 export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
+export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
+export const TEAM_SETTINGS_NAME = 'TeamSettings';
 
 //! Border radius classes
 /**
