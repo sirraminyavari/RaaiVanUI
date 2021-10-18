@@ -238,6 +238,14 @@
         return FGAPI._send(url, params, queryString);
     },
 
+    RecoverFormInstance: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/RecoverFormInstance?timeStamp=" + new Date().getTime();
+        var queryString = (params.InstanceID ? "&InstanceID=" + params.InstanceID : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
     GetFormInstance: function (params) {
         params = params || {};
 
