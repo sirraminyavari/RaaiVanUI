@@ -4,7 +4,6 @@ import CustomTable from 'components/CustomTable/CustomTable';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
 import { prepareHeaders, prepareRows } from 'components/CustomTable/tableUtils';
 import { getOwnerFormInstances } from 'apiHelper/apiFunctions';
-import { decodeBase64, toJSON } from 'helpers/helpers';
 
 const TableCellModal = ({
   value,
@@ -16,7 +15,6 @@ const TableCellModal = ({
   editable: isTableEditable,
 }) => {
   const { Info } = value || {};
-  const tableInfo = toJSON(decodeBase64(Info));
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -24,7 +22,7 @@ const TableCellModal = ({
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
-  const tableId = tableInfo?.FormID;
+  const tableId = Info?.FormID;
   const tableOwnerId = value?.ElementID || value?.RefElementID;
 
   const [rawData, setRawData] = useState([]);

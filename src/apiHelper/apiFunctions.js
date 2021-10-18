@@ -58,6 +58,7 @@ import {
   GET_OWNER_FORM_INSTANCES,
   REMOVE_FORM_INSTANCES,
   CREATE_FORM_INSTANCE,
+  RECOVER_FORM_INSTANCES,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1434,6 +1435,31 @@ export const removeFormInstance = (instanceId) => {
   return new Promise((resolve, reject) => {
     try {
       removeFormInstanceAPI.fetch(
+        { InstanceID: instanceId },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recover form instance.
+ * @param {String} instanceId -The id of the instance.
+ * @returns Promise.
+ */
+export const recoverFormInstance = (instanceId) => {
+  const recoverFormInstanceAPI = API_Provider(FG_API, RECOVER_FORM_INSTANCES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recoverFormInstanceAPI.fetch(
         { InstanceID: instanceId },
         (response) => {
           resolve(response);

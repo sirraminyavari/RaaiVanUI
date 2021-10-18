@@ -16,6 +16,7 @@ import {
   createFormInstance,
   removeFormInstance,
   getOwnerFormInstances,
+  recoverFormInstance,
 } from 'apiHelper/apiFunctions';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -36,16 +37,29 @@ const FormField = (props) => {
   const { GlobalUtilities } = useWindow();
   const { FormID } = toJSON(decodeInfo);
 
-  const [data, setData] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [tableContent, setTableContent] = useState([]);
   // const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     if (!!tableData) {
       const rows = prepareRows(tableData, tableColumns);
-      setData(rows);
+      setRows(rows);
+      setTableContent(tableData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableData]);
+
+  const getFormData = () => {
+    getOwnerFormInstances(FormID, elementId)
+      .then((response) => {
+        console.log(response, 'new table');
+        const rows = prepareRows(response?.TableContent, tableColumns);
+        setRows(rows);
+        setTableContent(response?.TableContent);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const getOptions = (column) => {
     switch (column?.Type) {
@@ -104,17 +118,17 @@ const FormField = (props) => {
     }
   };
 
-  const memoizedData = useMemo(() => data, [data]);
+  const memoizedData = useMemo(() => rows, [rows]);
   const memoizedColumns = useMemo(
-    () => ColumnsFactory(prepareHeaders(tableColumns, getOptions), data),
-    [data, tableColumns]
+    () => ColumnsFactory(prepareHeaders(tableColumns, getOptions), rows),
+    [rows, tableColumns]
   );
 
   const updateCellData = (rowId, columnId, cellData, value) => {
     console.log({ cellData, value, rowId, columnId }, 'update');
 
     if (rowId) {
-      setData((old) =>
+      setRows((old) =>
         old.map((row) => {
           if (row?.id === rowId) {
             return {
@@ -130,19 +144,40 @@ const FormField = (props) => {
     }
   };
 
-  const saveRow = (rowId) => {
-    const rowElements = data?.find((row) => row?.id === rowId);
+  const editRow = (rowId) => {
+    const rowElements = rows?.find((row) => row?.id === rowId);
     const filteredElements = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
     // saveRowElements(filteredElements)
     saveForm(filteredElements)
-      .then((response) => console.log(response, 'save row response'))
+      .then((response) => {
+        const newRowElements = response;
+        const newTableContent = tableContent.map((content) => {
+          if (content?.InstanceID === rowId) {
+            return Object.assign({}, content, { Elements: newRowElements });
+          }
+          return content;
+        });
+
+        const rows = prepareRows(newTableContent, tableColumns);
+        setRows(rows);
+        setTableContent(newTableContent);
+
+        // console.log(
+        //   { response, rows, tableContent, newTableContent, rowId },
+        //   'save row response'
+        // );
+      })
       .catch((error) => console.log(error, 'save row error'));
   };
 
-  const memoizedSaveRow = useCallback(saveRow, [data]);
+  const memoizedEditRow = useCallback(editRow, [
+    rows,
+    tableContent,
+    tableColumns,
+  ]);
 
   const memoizedUpdateCellData = useCallback(updateCellData, []);
 
@@ -151,7 +186,16 @@ const FormField = (props) => {
     toast.dismiss(toastId);
   };
 
-  const undoRowDelete = (rowId) => {};
+  const undoRowDelete = (rowId) => {
+    recoverFormInstance(rowId)
+      .then((response) => {
+        console.log(response);
+        if (response?.Succeed) {
+          getFormData();
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   const removeRow = (row) => {
     const rowIndex = row?.index;
@@ -160,17 +204,18 @@ const FormField = (props) => {
     removeFormInstance(rowId)
       .then((response) => {
         if (response?.Succeed) {
-          setData((old) => old.filter((row, index) => index !== rowIndex));
+          setRows((old) => old.filter((row, index) => index !== rowIndex));
 
-          const deleteMSG = 'ردیف حذف شد';
+          const message = 'ردیف حذف شد';
+          const toastId = `delete-${rowId}`;
           UndoToast({
-            autoClose: 7000,
-            message: deleteMSG,
+            toastId,
+            message,
+            autoClose: 10000,
             onUndo: () => undoRowDelete(rowId),
-            toastId: `delete-${rowId}`,
             closeButton: (
               <CloseIcon
-                onClick={() => closeUndoToast(`delete-${rowId}`)}
+                onClick={() => closeUndoToast(toastId)}
                 color={CV_RED}
               />
             ),
@@ -182,27 +227,21 @@ const FormField = (props) => {
 
   const memoizedRemoveRow = useCallback(removeRow, []);
 
-  const reorderData = (startIndex, endIndex) => {
-    const newData = [...data];
-    const [movedRow] = newData.splice(startIndex, 1);
-    newData.splice(endIndex, 0, movedRow);
-    setData(newData);
+  const reorderRow = (startIndex, endIndex) => {
+    const newRows = [...rows];
+    const [movedRow] = newRows.splice(startIndex, 1);
+    newRows.splice(endIndex, 0, movedRow);
+    setRows(newRows);
   };
 
-  const memoizedReorderData = useCallback(reorderData, [data]);
+  const memoizedReorderRow = useCallback(reorderRow, [rows]);
 
   const addRow = () => {
     createFormInstance(FormID, elementId)
       .then((response) => {
         if (response?.Succeed) {
           console.log(response, 'add row');
-          getOwnerFormInstances(FormID, elementId)
-            .then((response) => {
-              console.log(response, 'new table');
-              const rows = prepareRows(response?.TableContent, tableColumns);
-              setData(rows);
-            })
-            .catch((error) => console.log(error));
+          getFormData();
         }
       })
       .catch((error) => console.log(error));
@@ -237,11 +276,11 @@ const FormField = (props) => {
       });
 
       const rows = prepareRows(searchResultRows, tableColumns);
-      setData(rows);
+      setRows(rows);
     } else {
       if (tableData) {
         const rows = prepareRows(tableData, tableColumns);
-        setData(rows);
+        setRows(rows);
       }
     }
   }, []);
@@ -262,9 +301,9 @@ const FormField = (props) => {
           columns={memoizedColumns}
           data={memoizedData}
           onCellChange={memoizedUpdateCellData}
-          reorderData={memoizedReorderData}
+          reorderRow={memoizedReorderRow}
           removeRow={memoizedRemoveRow}
-          saveRow={memoizedSaveRow}
+          editRow={memoizedEditRow}
           addRow={memoizedAddRow}
           isLoading={false}
           onSearch={handleOnSearch}

@@ -570,6 +570,13 @@ export const CREATE_FORM_INSTANCE = 'CreateFormInstance';
 export const REMOVE_FORM_INSTANCES = 'RemoveFormInstance';
 
 /**
+ * @description 'RecoverFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const RECOVER_FORM_INSTANCES = 'RecoverFormInstance';
+
+/**
  * @description 'SaveFormInstanceElements'
  * @mode API function
  * @class 'FGAPI'

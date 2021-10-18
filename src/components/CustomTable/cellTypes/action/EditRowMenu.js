@@ -21,7 +21,7 @@ const EditRowMenu = (props) => {
     } else {
       console.log('Changes accepted');
       handleExitEditMode();
-      cell?.saveRow && cell?.saveRow(rowId);
+      cell?.editRow && cell?.editRow(rowId);
     }
   };
 

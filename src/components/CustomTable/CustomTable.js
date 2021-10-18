@@ -48,10 +48,10 @@ const CustomTable = (props) => {
     data,
     onCellChange,
     removeRow,
-    saveRow,
+    editRow,
     addRow,
     pagination,
-    reorderData,
+    reorderRow,
     onSearch,
     tableId,
     getColumnsOption,
@@ -82,7 +82,7 @@ const CustomTable = (props) => {
     const { source, destination } = result;
     setIsRowDragging(false);
     if (!destination) return;
-    reorderData(source.index, destination.index);
+    reorderRow(source.index, destination.index);
   };
 
   const handleBeforeDragStart = () => {
@@ -122,7 +122,7 @@ const CustomTable = (props) => {
       defaultColumn,
       onCellChange,
       removeRow,
-      saveRow,
+      editRow,
       addRow,
       selectedCell,
       setSelectedCell,
@@ -131,7 +131,7 @@ const CustomTable = (props) => {
       editingRow,
       setEditingRow,
       setShowFooter,
-      reorderData,
+      reorderRow,
       getColumnsOption,
       initialState: {
         ...paginationStates,
