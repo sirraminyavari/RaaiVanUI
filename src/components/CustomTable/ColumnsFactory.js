@@ -113,7 +113,9 @@ const provideFooter = (header, data) => {
 
     case cellTypes.multiSelect:
       return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+        Footer: (row) => (
+          <SelectCell {...row} header={header} isNew multiSelect />
+        ),
       };
 
     case cellTypes.binary:

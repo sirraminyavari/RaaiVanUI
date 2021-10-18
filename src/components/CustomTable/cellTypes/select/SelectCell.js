@@ -3,7 +3,7 @@ import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { CV_DISTANT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
-import { decodeBase64, toJSON } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 
 const SelectCell = (props) => {
   // console.log('select cell ', props);
@@ -17,9 +17,21 @@ const SelectCell = (props) => {
     isNew,
     header,
     multiSelect,
+    data,
   } = props;
 
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
+
+  //! Get info for new row.
+  const columnInfo = data?.[0]?.[columnId]?.Info;
+
+  //! Get info for existing row.
   const { Info, TextValue } = value || {};
+  const { Options } = Info || columnInfo || {};
 
   let options, initialValues;
 
@@ -33,13 +45,13 @@ const SelectCell = (props) => {
             label: value.trim(),
           }))
       : [];
-    options = Info?.Options?.map((opt) => ({
+    options = Options?.map((opt) => ({
       value: decodeBase64(opt),
       label: decodeBase64(opt),
     }));
   } else {
     initialValues = !!TextValue ? [{ value: TextValue, label: TextValue }] : [];
-    options = Info?.Options?.map((opt) => ({
+    options = Options?.map((opt) => ({
       value: decodeBase64(opt),
       label: decodeBase64(opt),
     }));
@@ -49,27 +61,28 @@ const SelectCell = (props) => {
     !!isNew ? [] : initialValues
   );
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
-
   const handleSelectChange = (values) => {
     // console.log(values);
     setDefaultValues(values);
   };
 
   const handleOnMenuClose = () => {
-    //! Call api.
-    console.log(defaultValues);
+    const textValue = !!multiSelect
+      ? defaultValues.map((x) => x.value).join(' ~ ')
+      : defaultValues.value;
+    const selectCell = {
+      ...value,
+      TextValue: textValue,
+    };
+
+    if (isNew) {
+      //! Add new row.
+    } else {
+      onCellChange(rowId, columnId, selectCell, textValue);
+    }
   };
 
-  if (isNew) {
-    return <div>new select</div>;
-  }
-
-  if (!isTableEditable || !isCellEditable || !isRowEditing) {
+  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return (
       <>
         {defaultValues?.map((x) => x?.label).length ? (

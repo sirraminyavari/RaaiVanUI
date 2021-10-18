@@ -20,7 +20,8 @@ const NodeCell = (props) => {
     editingRow,
     header,
   } = props;
-  const { Info } = value || {};
+
+  const { Info, SelectedItems } = value || {};
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -28,6 +29,10 @@ const NodeCell = (props) => {
   const isRowEditing = rowId === editingRow;
 
   const canEdit = isTableEditable && isCellEditable && isRowEditing;
+
+  const handleSaveCell = () => {
+    console.log('save new nodes');
+  };
 
   if (isNew) {
     return <div>new node</div>;
@@ -58,7 +63,11 @@ const NodeCell = (props) => {
           ))}
         </Styled.NodeListWrapper>
         {canEdit && (
-          <Button classes="table-node-cell-save-button">{RVDic.Save}</Button>
+          <Button
+            classes="table-node-cell-save-button"
+            onClick={handleSaveCell}>
+            {RVDic.Save}
+          </Button>
         )}
       </Styled.ItemsWrapper>
       {canEdit && (

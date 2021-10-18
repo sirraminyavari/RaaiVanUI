@@ -13,8 +13,8 @@ import useToggle from 'hooks/useToggle';
  * @typedef PropType
  * @type {Object}
  * @property {function} onToggle - The callback function that fires on toggle.
- * @property {boolean} initialCheck - The initial toggle value.
- * @property {boolean} disable - If true, button is disabled.
+ * @property {Boolean | null} initialCheck - The initial toggle value.
+ * @property {Boolean} disable - If true, button is disabled.
  */
 
 /**
@@ -27,15 +27,11 @@ const ToggleButton = (props) => {
   const [isOn, setToggle] = useToggle(initialCheck);
 
   const toggle = (e) => {
+    const toggleValue = e.target.checked;
     if (!!disable) return;
-    setToggle((toggle) => !toggle);
-    onToggle && onToggle(e.target.checked);
+    setToggle(toggleValue);
+    onToggle && onToggle(toggleValue);
   };
-
-  // useEffect(() => {
-  //   onToggle && onToggle(isOn);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isOn]);
 
   return (
     <Styled.ToggleLabel>

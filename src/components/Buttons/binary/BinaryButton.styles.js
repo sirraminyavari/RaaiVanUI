@@ -29,10 +29,16 @@ export const ButtonContainer = styled.div.attrs({
   }
 `;
 
+const getOptionClassName = (props) => {
+  if (props.isChecked === null || props.isChecked === false) {
+    return `${BG_WHITE} ${C_DISTANT}`;
+  } else {
+    return `${TBG_DEFAULT} ${C_WHITE} ${props.classes}`;
+  }
+};
+
 export const OptionWrapper = styled.div.attrs((props) => ({
-  className: props.isChecked
-    ? `${TBG_DEFAULT} ${C_WHITE} ${props.classes}`
-    : `${BG_WHITE} ${C_DISTANT}`,
+  className: getOptionClassName(props),
 }))`
   width: 100%;
   flex-grow: 1;

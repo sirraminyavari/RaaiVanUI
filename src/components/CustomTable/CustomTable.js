@@ -13,7 +13,6 @@ import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
-// import { modalTypes } from './tableUtils';
 import ColumnHeader from './ColumnHeader';
 
 const TableModal = lazy(() =>
@@ -50,6 +49,8 @@ const CustomTable = (props) => {
     removeRow,
     editRow,
     addRow,
+    onEditRowStart,
+    onEditRowCancel,
     pagination,
     reorderRow,
     onSearch,
@@ -129,10 +130,13 @@ const CustomTable = (props) => {
       modal,
       setModal,
       editingRow,
+      onEditRowStart,
+      onEditRowCancel,
       setEditingRow,
       setShowFooter,
       reorderRow,
       getColumnsOption,
+      tableId,
       initialState: {
         ...paginationStates,
       },

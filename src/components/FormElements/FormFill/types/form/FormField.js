@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import TableIcon from 'components/Icons/TableIcon/TableIcon';
@@ -39,6 +39,7 @@ const FormField = (props) => {
 
   const [rows, setRows] = useState([]);
   const [tableContent, setTableContent] = useState([]);
+  const beforeEditRowsRef = useRef(null);
   // const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
@@ -179,6 +180,19 @@ const FormField = (props) => {
     tableColumns,
   ]);
 
+  const onEditStart = (beforeEditRows) => {
+    beforeEditRowsRef.current = beforeEditRows;
+  };
+
+  const memoizedOnEditRowStart = useCallback(onEditStart, []);
+
+  const onEditCancel = () => {
+    setRows(beforeEditRowsRef.current);
+    beforeEditRowsRef.current = null;
+  };
+
+  const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
+
   const memoizedUpdateCellData = useCallback(updateCellData, []);
 
   //! Close undo toast when user clicks on "X" button.
@@ -304,6 +318,8 @@ const FormField = (props) => {
           reorderRow={memoizedReorderRow}
           removeRow={memoizedRemoveRow}
           editRow={memoizedEditRow}
+          onEditRowStart={memoizedOnEditRowStart}
+          onEditRowCancel={memoizedOnEditRowCancel}
           addRow={memoizedAddRow}
           isLoading={false}
           onSearch={handleOnSearch}

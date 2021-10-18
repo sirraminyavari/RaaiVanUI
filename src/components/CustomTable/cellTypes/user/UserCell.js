@@ -21,6 +21,13 @@ const UserCell = (props) => {
 
   const { SelectedItems: users, Info } = value || {};
 
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
+
+  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+
   return (
     <Styled.UsersWrapper>
       {!users?.length && (
@@ -44,9 +51,11 @@ const UserCell = (props) => {
               {decodeBase64(user?.FullName)}
             </Styled.UserLinkWrapper>
           </Styled.UserInfoWrapper>
-          <Styled.CloseIconWrapper>
-            <CloseIcon color={CV_DISTANT} />
-          </Styled.CloseIconWrapper>
+          {canEdit && (
+            <Styled.CloseIconWrapper>
+              <CloseIcon color={CV_DISTANT} />
+            </Styled.CloseIconWrapper>
+          )}
         </Styled.UserCellContainer>
       ))}
     </Styled.UsersWrapper>

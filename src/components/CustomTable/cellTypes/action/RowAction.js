@@ -20,6 +20,7 @@ const RowAction = ({ cell }) => {
 
   const handleSetEditableRow = () => {
     cell?.setEditingRow && cell?.setEditingRow(rowId);
+    cell?.onEditRowStart && cell?.onEditRowStart(cell?.data);
     cell?.setShowFooter(false);
   };
 

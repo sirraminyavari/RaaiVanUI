@@ -32,6 +32,7 @@ const EditRowMenu = (props) => {
     } else {
       console.log('Changes rejected');
       handleExitEditMode();
+      cell?.onEditRowCancel && cell?.onEditRowCancel();
     }
   };
 

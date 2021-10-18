@@ -33,26 +33,38 @@ const BinaryCell = (props) => {
   const binaryInfo = Info || columnInfo;
   const { Yes, No } = binaryInfo || {};
 
-  const binaryOptions = [decodeBase64(Yes), decodeBase64(No)];
+  const binaryOptions = { yes: decodeBase64(Yes), no: decodeBase64(No) };
 
   const handleToggle = (toggleValue) => {
     // console.log(toggleValue);
-    const textValue = toggleValue ? binaryOptions[0] : binaryOptions[1];
+    const textValue = toggleValue ? binaryOptions.yes : binaryOptions.no;
     const binaryCell = {
       ...value,
       BitValue: toggleValue,
+      TextValue: textValue,
     };
-    onCellChange(rowId, columnId, binaryCell, {
-      value: toggleValue,
-      label: textValue,
-    });
+
+    if (isNew) {
+      //! Add new row.
+    } else {
+      onCellChange(rowId, columnId, binaryCell, {
+        value: toggleValue,
+        label: textValue,
+      });
+    }
   };
 
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return (
-      <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-        {TextValue}
-      </Heading>
+      <>
+        {TextValue ? (
+          <Heading style={{ color: CV_GRAY_DARK }} type="h5">
+            {TextValue}
+          </Heading>
+        ) : (
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+        )}
+      </>
     );
   }
 
@@ -60,12 +72,8 @@ const BinaryCell = (props) => {
     <Styled.BinaryCellWrapper>
       <ToggleButton
         onToggle={handleToggle}
-        initialCheck={isNew ? false : BitValue}>
-        <BinaryButton
-          isChecked={isNew ? false : BitValue}
-          options={binaryOptions}
-          className="table-binary-cell"
-        />
+        initialCheck={!!isNew ? null : BitValue}>
+        <BinaryButton options={binaryOptions} className="table-binary-cell" />
       </ToggleButton>
     </Styled.BinaryCellWrapper>
   );

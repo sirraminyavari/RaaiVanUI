@@ -3,8 +3,8 @@ import * as Styled from './BinaryButton.styles';
 /**
  * @typedef PropType
  * @type {Object}
- * @property {boolean} isChecked - The initial value.
- * @property {string[]} options - The button options.
+ * @property {Boolean | null} isChecked - The initial value.
+ * @property {String[]} options - The button options.
  */
 
 /**
@@ -17,11 +17,15 @@ const BinaryButton = (props) => {
 
   return (
     <Styled.ButtonContainer>
-      <Styled.OptionWrapper isChecked={isChecked} classes={className}>
-        {options[0]}
+      <Styled.OptionWrapper
+        isChecked={isChecked === null ? null : isChecked}
+        classes={className}>
+        {options?.yes}
       </Styled.OptionWrapper>
-      <Styled.OptionWrapper isChecked={!isChecked} classes={className}>
-        {options[1]}
+      <Styled.OptionWrapper
+        isChecked={isChecked === null ? null : !isChecked}
+        classes={className}>
+        {options?.no}
       </Styled.OptionWrapper>
     </Styled.ButtonContainer>
   );
