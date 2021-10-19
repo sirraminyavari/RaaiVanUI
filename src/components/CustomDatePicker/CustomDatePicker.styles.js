@@ -14,7 +14,7 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 
-export const CalendarConatiner = styled.div`
+export const CalendarContainer = styled.div`
   position: relative;
   // display: flex;
   // flex-direction: column;
