@@ -17,7 +17,8 @@ export const SearchDesktopMain = styled.div`
   border-radius: 1rem;
   padding: 1rem;
   width: ${({ advancedFilterOpen }) =>
-    advancedFilterOpen ? '100%' : 'calc(100% - 25rem )'};
+    !advancedFilterOpen ? '100%' : 'calc(100% - 26rem )'};
+  transition: all 0.25s ease;
 `;
 
 export const AdvancedFilterContainer = styled.div`
@@ -25,9 +26,13 @@ export const AdvancedFilterContainer = styled.div`
   border-radius: 1rem;
   padding: 1rem;
   width: 25rem;
+  margin-right: 1rem;
+  opacity: ${({ state }) => (state === 'entered' ? 1 : 0)};
+  transition: all 0.25s ease;
 `;
 
 export const FilterBarWrapper = styled.div`
+  margin-top: 2rem;
   display: flex;
   flex-direction: ${({ rtl }) => (rtl ? 'row' : 'row-reverse')};
 `;

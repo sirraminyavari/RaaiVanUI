@@ -8,12 +8,16 @@ export const SearchContext = createContext({});
  * @constructor
  */
 const SearchProvider = ({ children }) => {
-  const [advancedFilterOpen, SetAdvancedFilterOpen] = useState(false);
+  const [advancedFilterOpen, setAdvancedFilterOpen] = useState(false);
+
+  const toggleAdvancedFilter = () => {
+    setAdvancedFilterOpen((current) => !current);
+  };
   return (
     <SearchContext.Provider
       value={{
         advancedFilterOpen,
-        SetAdvancedFilterOpen,
+        toggleAdvancedFilter,
       }}>
       {children}
     </SearchContext.Provider>

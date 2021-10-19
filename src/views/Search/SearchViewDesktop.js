@@ -1,5 +1,5 @@
 import * as Styled from './SearchStyle';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { SearchContext } from './SearchProvider';
 import Heading from '../../components/Heading/Heading';
 import AdvancedFilter from './items/AdvancedFilter';
@@ -14,6 +14,10 @@ import FilterBar from './items/FilterBar';
 const SearchViewDesktop = () => {
   const { advancedFilterOpen } = useContext(SearchContext);
   const { RV_RTL } = useContext(WindowContext);
+
+  useEffect(() => {
+    console.log(advancedFilterOpen);
+  }, [advancedFilterOpen]);
   return (
     <Styled.Container rtl={RV_RTL} className={'rv-bg-color-white'}>
       <Styled.SearchDesktopMain advancedFilterOpen={advancedFilterOpen}>
