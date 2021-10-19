@@ -15,6 +15,7 @@ import {
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
+const { RV_Float } = window;
 
 export const NodeCellContainer = styled.div`
   width: 100%;
@@ -37,7 +38,6 @@ export const ItemsWrapper = styled.div`
 
   .table-node-cell-save-button {
     background-color: inherit;
-    color: ${TCV_DEFAULT};
     padding: 0.3rem;
     height: 1.7rem;
     width: 7rem;
@@ -46,7 +46,7 @@ export const ItemsWrapper = styled.div`
 `;
 
 export const NodeListWrapper = styled.div`
-  width: 100%;
+  width: ${({ isEditMode }) => (isEditMode ? '75%' : '100%')};
   ${FLEX_CCC}
   gap: 0.2rem;
 `;
@@ -110,4 +110,11 @@ export const AddNewNode = styled.div`
 export const ItemSelectionButton = styled.div`
   ${FLEX_RCC}
   gap: 0.5rem;
+`;
+
+export const EmptyCellView = styled.div`
+  color: ${CV_DISTANT};
+  width: 100%;
+  text-align: start;
+  padding-${RV_Float}: 0.7rem;
 `;

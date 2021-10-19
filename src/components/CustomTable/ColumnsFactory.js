@@ -133,6 +133,11 @@ const provideFooter = (header, data) => {
         Footer: (footer) => <FileCell {...footer} header={header} isNew />,
       };
 
+    case cellTypes.node:
+      return {
+        Footer: (footer) => <NodeCell {...footer} header={header} isNew />,
+      };
+
     default:
       return {
         Footer: () => <div>{header.title}</div>,
