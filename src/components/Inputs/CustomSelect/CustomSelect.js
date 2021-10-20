@@ -4,6 +4,7 @@ import * as Styled from './CustomSelect.styles';
 const CustomSelect = (props) => {
   const {
     defaultValue,
+    value,
     isMulti,
     placeholder,
     hideSelectedOptions,
@@ -15,23 +16,26 @@ const CustomSelect = (props) => {
     onChange,
     onMenuClose,
     selectStyles,
+    isLoading,
   } = props;
 
   return (
     <Styled.SelectContainer>
       <Select
         defaultValue={defaultValue}
+        value={value}
         isMulti={isMulti}
         hideSelectedOptions={hideSelectedOptions}
         closeMenuOnSelect={closeMenuOnSelect}
         isClearable={isClearable}
-        isSearchable={isSearchable}
+        isSearchable={!!isSearchable}
         name={selectName}
         options={selectOptions}
         onChange={onChange}
         onMenuClose={onMenuClose}
         styles={selectStyles}
         placeholder={placeholder}
+        isLoading={isLoading}
       />
     </Styled.SelectContainer>
   );

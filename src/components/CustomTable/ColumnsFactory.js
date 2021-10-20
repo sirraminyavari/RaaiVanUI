@@ -138,6 +138,13 @@ const provideFooter = (header, data) => {
         Footer: (footer) => <NodeCell {...footer} header={header} isNew />,
       };
 
+    case cellTypes.multiLevel:
+      return {
+        Footer: (footer) => (
+          <MultiLevelCell {...footer} header={header} isNew />
+        ),
+      };
+
     default:
       return {
         Footer: () => <div>{header.title}</div>,
