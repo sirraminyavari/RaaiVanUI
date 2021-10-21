@@ -48,7 +48,10 @@ const FilesFormatIcon = (props) => {
     case 'excel':
       return <FaFileExcel {...rest} />;
 
-    case 'jpg' || 'png':
+    case 'jpg':
+      return <FaFileImage {...rest} />;
+
+    case 'png':
       return <FaFileImage {...rest} />;
 
     case 'html':

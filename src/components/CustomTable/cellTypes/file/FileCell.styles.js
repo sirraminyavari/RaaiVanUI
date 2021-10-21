@@ -15,7 +15,7 @@ import {
   TCV_VERYWARM,
 } from 'constant/CssVariables';
 
-const { GlobalUtilities } = window;
+const { GlobalUtilities, RV_Float } = window;
 
 export const FileCellContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
@@ -24,6 +24,7 @@ export const FileCellContainer = styled.div.attrs({
   height: 2.5rem;
   max-height: 2.5rem;
   padding: 0 0.5rem;
+  position: relative;
   ${FLEX_RCB}
 `;
 
@@ -44,7 +45,8 @@ export const FileInfoWrapper = styled.div`
   }
 
   //!Create tip title container.
-  a[data-title]:hover::after {
+  a[data-title]:hover::after,
+  span[data-title]:hover::after {
     content: attr(data-title);
     position: absolute;
     padding: 0 0.5rem;
@@ -52,17 +54,18 @@ export const FileInfoWrapper = styled.div`
     border-radius: 0.2rem;
     background-color: ${CV_GRAY_DARK};
     color: ${CV_WHITE};
-    top: -2rem;
+    top: -2.4rem;
     z-index: ${GlobalUtilities.zindex.dialog()};
     left: 50%;
     transform: translate(-50%, 0);
   }
 
   //! Create tip triangle.
-  a[data-title]:hover::before {
+  a[data-title]:hover::before,
+  span[data-title]:hover::before {
     content: '';
     position: absolute;
-    top: -0.3rem;
+    top: -0.8rem;
     z-index: ${GlobalUtilities.zindex.dialog()};
     left: 50%;
     transform: translate(-50%, 0);
@@ -97,4 +100,11 @@ export const AddNewFile = styled.div`
   ${FLEX_RCC}
   gap: 0.5rem;
   cursor: pointer;
+`;
+
+export const EmptyCellView = styled.div`
+  color: ${CV_DISTANT};
+  width: 100%;
+  text-align: start;
+  padding-${RV_Float}: 0.7rem;
 `;

@@ -4,7 +4,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import { CV_BLACK, CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
 import Avatar from 'components/Avatar/Avatar';
-import { decodeBase64, getURL, toJSON } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import Heading from 'components/Heading/Heading';
 
 const UserCell = (props) => {

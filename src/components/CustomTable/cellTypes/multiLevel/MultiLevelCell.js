@@ -2,13 +2,13 @@
  * Renders multi-level fill form.
  */
 import { useState, useEffect } from 'react';
-import { decodeBase64 } from 'helpers/helpers';
-import APIHandler from 'apiHelper/APIHandler';
+import { decodeBase64, API_Provider } from 'helpers/helpers';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import * as Styled from './MultiLevelCell.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { CN_API, GET_CHILD_NODES } from 'constant/apiConstants';
 
-const getChildNodesAPI = new APIHandler('CNAPI', 'GetChildNodes');
+const getChildNodesAPI = API_Provider(CN_API, GET_CHILD_NODES);
 
 const MultiLevelCell = (props) => {
   // console.log(props, 'multi');

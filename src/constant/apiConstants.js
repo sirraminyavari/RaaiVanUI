@@ -531,6 +531,13 @@ export const GET_UPLOAD_LINK = 'GetUploadLink';
  */
 export const UPLOAD_AND_CROP_ICON = 'UploadAndCropIcon';
 
+/**
+ * @description 'RemoveFile'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const REMOVE_FILE = 'RemoveFile';
+
 //* #################################
 //* ############ FGAPI ###############
 //* #################################

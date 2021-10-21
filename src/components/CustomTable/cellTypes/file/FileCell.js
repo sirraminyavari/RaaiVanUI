@@ -1,17 +1,16 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import * as Styled from './FileCell.styles';
-import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
-import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import { CV_RED, TCV_DEFAULT, TCV_WARM } from 'constant/CssVariables';
 import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
-import { API_Provider, decodeBase64 } from 'helpers/helpers';
+import { API_Provider } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import Heading from 'components/Heading/Heading';
+import FilesList from './FilesList';
+import AddFileButton from './AddFileButton';
+import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { removeFile } from 'apiHelper/apiFunctions';
 
-const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
+const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
   // console.log('fileCell', props);
@@ -25,8 +24,9 @@ const FileCell = (props) => {
     editable: isTableEditable,
     header,
   } = props;
+  const { Files, Info, ElementID } = value || {};
+
   const [isUploading, setIsUploading] = useState(false);
-  const { Files: files, Info } = value || {};
 
   const isCellEditable = !!header?.options?.editable;
 
@@ -35,18 +35,37 @@ const FileCell = (props) => {
 
   const isRowEditing = rowId === editingRow;
 
+  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+
+  const handleRemoveFile = useCallback((fileId) => {
+    removeFile(ElementID, fileId)
+      .then((response) => {
+        if (response?.Succeed) {
+          console.log(response, 'remove');
+          const newFilesArray = Files?.filter(
+            (file) => file?.FileID !== fileId
+          );
+          const fileCell = { ...value, Files: newFilesArray };
+          onCellChange(rowId, columnId, fileCell, newFilesArray);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleFileDropError = (error) => {
-    if (!isNew || !isRowEditing) return;
+    if (isNew || !canEdit) return;
     console.log(error);
   };
 
   const handleUploadFiles = (acceptedFiles) => {
-    if (!isNew || !isRowEditing) return;
+    if (isNew || !canEdit) return;
 
     //! Get upload link.
-    apiHandler.url(
+    getUploadLinkAPI.url(
       {
-        OwnerID: '40aa835f-751c-4786-86af-fec04f45d262',
+        OwnerID: ElementID,
         OwnerType: 'Node',
       },
       (response) => {
@@ -82,11 +101,12 @@ const FileCell = (props) => {
                 if (response?.data?.success) {
                   //! Call on any field change.
                   const newFilesArray = [
-                    ...value?.files,
+                    ...(Files || []),
                     response?.data?.AttachedFile,
                   ];
-                  const fileCell = { ...value, newFilesArray };
+                  const fileCell = { ...value, Files: newFilesArray };
                   onCellChange(rowId, columnId, fileCell, newFilesArray);
+                  // setFiles(newFilesArray);
 
                   //! update upload state.
                   setIsUploading(false);
@@ -111,83 +131,34 @@ const FileCell = (props) => {
     );
   };
 
-  if (isNew) {
-    return (
-      <div style={{ margin: '0.5rem', width: '100%' }}>
-        <CustomDropZone
-          accept={['image/*', '.pdf']}
-          // foramtExceptions={['jpg']}
-          maxFiles={1}
-          maxEachSize={1}
-          maxTotalSize={1}
-          onError={handleFileDropError}
-          onUpload={handleUploadFiles}
-          isUploading={isUploading}
-          placeholders={{
-            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
-          }}
-        />
-      </div>
-    );
-  }
-
   return (
     <Styled.FilesWrapper>
-      {files?.map((file, index) => {
-        const {
-          Downloadable,
-          Extension,
-          FileID,
-          FileName,
-          IconURL,
-          // MIME,
-          // OwnerID,
-          // Size,
-        } = file;
-
-        return (
-          <Styled.FileCellContainer key={FileID || index}>
-            <Styled.FileInfoWrapper editable={isCellEditable}>
-              <FileFormatIcon
-                color={TCV_DEFAULT}
-                size={25}
-                format={decodeBase64(Extension)}
-              />
-              <Styled.FileLinkWrapper>
-                {!!Downloadable ? (
-                  <Link
-                    to={IconURL}
-                    target="_blank"
-                    download
-                    data-title={decodeBase64(FileName)}>
-                    {decodeBase64(FileName)}
-                  </Link>
-                ) : (
-                  decodeBase64(FileName)
-                )}
-              </Styled.FileLinkWrapper>
-            </Styled.FileInfoWrapper>
-            {isTableEditable && isCellEditable && isRowEditing && (
-              <TrashIcon style={{ cursor: 'pointer' }} color={CV_RED} />
-            )}
-          </Styled.FileCellContainer>
-        );
-      })}
-      {!!files && isRowEditing && (
-        <Styled.AddNewFile>
-          <PlusIcon size={20} color={TCV_WARM} />
-          <Heading type="h5">افزودن فایل</Heading>
-        </Styled.AddNewFile>
+      <FilesList
+        files={Files}
+        canEdit={canEdit}
+        onRemoveFile={handleRemoveFile}
+      />
+      {isUploading && <LogoLoader lottieWidth="3rem" />}
+      {canEdit || isNew ? (
+        <div style={{ margin: '0.5rem', width: '100%' }}>
+          <CustomDropZone
+            accept={['image/*', '.pdf']}
+            // foramtExceptions={['jpg']}
+            maxFiles={1}
+            maxEachSize={1}
+            maxTotalSize={1}
+            onError={handleFileDropError}
+            onUpload={handleUploadFiles}
+            isUploading={isUploading}
+            placeholders={{
+              main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+            }}
+            customComponent={isNew ? undefined : AddFileButton}
+          />
+        </div>
+      ) : (
+        !Files && <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
       )}
-      {!files &&
-        (isRowEditing ? (
-          <Styled.AddNewFile>
-            <PlusIcon size={20} color={TCV_WARM} />
-            <Heading type="h5">افزودن فایل</Heading>
-          </Styled.AddNewFile>
-        ) : (
-          <div>بدون فایل</div>
-        ))}
     </Styled.FilesWrapper>
   );
 };

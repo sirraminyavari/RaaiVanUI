@@ -59,6 +59,7 @@ import {
   REMOVE_FORM_INSTANCES,
   CREATE_FORM_INSTANCE,
   RECOVER_FORM_INSTANCES,
+  REMOVE_FILE,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1461,6 +1462,32 @@ export const recoverFormInstance = (instanceId) => {
     try {
       recoverFormInstanceAPI.fetch(
         { InstanceID: instanceId },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recover file.
+ * @param {String} ownerId -The id of the owner of the file.
+ * @param {String} fileId -The id of the file.
+ * @returns Promise.
+ */
+export const removeFile = (ownerId, fileId) => {
+  const removeFileAPI = API_Provider(DOCS_API, REMOVE_FILE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeFileAPI.fetch(
+        { OwnerID: ownerId, FileID: fileId },
         (response) => {
           resolve(response);
         },

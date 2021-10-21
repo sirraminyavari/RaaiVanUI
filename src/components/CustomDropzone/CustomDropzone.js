@@ -31,6 +31,7 @@ import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
  * @property {boolean} disabled -A flag that will disable dropzone area.
  * @property {string[]} foramtExceptions -All formats that are not allowed to be uploaded.
  * @property {Boolean} isUploading -All formats that are not allowed to be uploaded.
+ * @property {JSX} customComponent -A custom component.
  * {foramtExceptions} prop has priority over {accept} prop.
  * If a format is defined forbidden in exceptions, component will throw error even if it is inside accept list.
  */
@@ -54,6 +55,7 @@ const CustomDropzone = (props) => {
     foramtExceptions,
     placeholders,
     isUploading,
+    customComponent: CustomComponent,
   } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -136,19 +138,19 @@ const CustomDropzone = (props) => {
     isDragActive,
     fileRejections,
     // acceptedFiles,
-    // open,
+    open,
   } = useDropzone({
     onDrop,
     accept: accept?.join(', '),
     maxFiles,
     disabled: !!disabled || isUploading,
     validator: customValidator,
-    // noKeyboard: true,
-    // noClick: true,
+    noKeyboard: !!CustomComponent,
+    noClick: !!CustomComponent,
   });
 
   //! Handle errors thrown from dropzone and validator.
-  const handlErrors = () => {
+  const handleErrors = () => {
     //! Maximum file number error.
     if (fileRejections.length) {
       if (
@@ -204,9 +206,9 @@ const CustomDropzone = (props) => {
     }
   };
 
-  //! Check for errors everytime files are changed.
+  //! Check for errors every time files are changed.
   useEffect(() => {
-    handlErrors();
+    handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
@@ -219,22 +221,26 @@ const CustomDropzone = (props) => {
   }, [errors]);
 
   return (
-    <Styled.DropzoneContainer
-      {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
-      {getIcon()}
-      <Styled.InputWrapper>
-        <input {...getInputProps(inputProps)} />
-        {isDragActive ? (
-          <Styled.DropzonePlaceholder>
-            {placeholders?.dragging}
-          </Styled.DropzonePlaceholder>
-        ) : (
-          <Styled.DropzonePlaceholder>
-            {placeholders?.main}
-          </Styled.DropzonePlaceholder>
-        )}
-      </Styled.InputWrapper>
-    </Styled.DropzoneContainer>
+    <>
+      {!!CustomComponent && <CustomComponent onClick={open} />}
+      <Styled.DropzoneContainer
+        isHidden={!!CustomComponent}
+        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
+        {getIcon()}
+        <Styled.InputWrapper>
+          <input {...getInputProps(inputProps)} />
+          {isDragActive ? (
+            <Styled.DropzonePlaceholder>
+              {placeholders?.dragging}
+            </Styled.DropzonePlaceholder>
+          ) : (
+            <Styled.DropzonePlaceholder>
+              {placeholders?.main}
+            </Styled.DropzonePlaceholder>
+          )}
+        </Styled.InputWrapper>
+      </Styled.DropzoneContainer>
+    </>
   );
 };
 

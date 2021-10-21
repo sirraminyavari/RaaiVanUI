@@ -13,6 +13,7 @@ export const DropzoneContainer = styled.div.attrs({
   cursor: pointer;
   ${FLEX_CCC}
   gap: 1rem;
+  display: ${({ isHidden }) => (isHidden ? 'none' : 'revert')};
 `;
 
 export const DropzonePlaceholder = styled.span`
