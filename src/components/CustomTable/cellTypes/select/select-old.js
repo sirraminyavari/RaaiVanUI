@@ -4,7 +4,7 @@ import CancelIcon from 'components/Icons/CancelCircle';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import SelectOptions from './SelectOptions';
-import * as Styled from './select.styles';
+import * as Styled from './Select.styles';
 
 const SelectCell = (props) => {
   // console.log(props);

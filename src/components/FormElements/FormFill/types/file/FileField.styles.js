@@ -2,7 +2,9 @@ import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
 import {
   CV_BLACK,
+  CV_DISTANT,
   CV_GRAY,
+  CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
@@ -115,4 +117,9 @@ export const FileActionItemWrapper = styled.div`
   gap: 0.5rem;
   margin: 0.5rem 0;
   cursor: pointer;
+  color: ${CV_DISTANT};
+
+  :hover {
+    color: ${CV_RED};
+  }
 `;

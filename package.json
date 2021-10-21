@@ -2,7 +2,7 @@
   "name": "raaivan-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://45.82.136.166",
+  "proxy": "http://cliqmind-dev.ir",
   "dependencies": {
     "@atlaskit/tree": "^8.2.0",
     "@draft-js-plugins/editor": "^4.1.0",
@@ -39,7 +39,7 @@
     "react-flip-toolkit": "^7.0.13",
     "react-google-login": "^5.2.2",
     "react-helmet": "^6.1.0",
-    "react-icons": "^4.1.0",
+    "react-icons": "^4.3.1",
     "react-infinite-scroll-component": "^6.1.0",
     "react-lottie": "^1.2.3",
     "react-modern-calendar-datepicker": "^3.1.6",

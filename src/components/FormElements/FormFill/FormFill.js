@@ -15,6 +15,7 @@ import UserSelect from './types/userSelect/UserSelect';
 import SubjectField from './types/subjectSelect/SubjectField';
 import DateField from './types/date/DateField';
 import FileField from './types/file/FileField';
+import FormField from './types/form/FormField';
 import prepareForm from './types/prepareForm';
 import SeperatorField from './types/seperator/SeperatorField';
 import saveForm from './types/saveForm';
@@ -46,6 +47,9 @@ const FormFill = ({ data, ...props }) => {
       case 'Binary':
         await saveFieldChanges(readyToUpdate, elementId);
         break;
+      case 'Text':
+        await saveFieldChanges(readyToUpdate, elementId);
+        break;
       default:
         break;
     }
@@ -62,6 +66,8 @@ const FormFill = ({ data, ...props }) => {
         (x) => x?.ElementID === elementId
       );
       console.log(changedElement.ElementID, 'changedElement **** 1', elementId);
+
+      console.log(changedElement, 'changed element');
 
       const saveResult = await saveForm([changedElement]);
       console.log(saveResult[0].ElementID, 'changedElement **** 2', elementId);
@@ -104,6 +110,8 @@ const FormFill = ({ data, ...props }) => {
           FloatValue,
           BitValue,
           Files,
+          TableColumns,
+          TableContent,
           GuidItems,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
@@ -248,7 +256,17 @@ const FormFill = ({ data, ...props }) => {
             );
 
           case 'Form':
-            return null;
+            return (
+              <FormField
+                key={ElementID}
+                decodeInfo={decodeInfo}
+                decodeTitle={decodeTitle}
+                type={Type}
+                elementId={ElementID}
+                tableColumns={TableColumns}
+                tableData={TableContent}
+              />
+            );
 
           default:
             return null;

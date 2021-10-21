@@ -6,48 +6,24 @@ import {
   FileCell,
   NodeCell,
   UserCell,
+  TableCell,
+  MultiLevelCell,
+  BinaryCell,
+  ActionsCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
-import RowActions from './RowAction';
-import EditRowMenu from './EditRowMenu';
+import EditRowMenu from './cellTypes/action/EditRowMenu';
 import * as Styled from './CustomTable.styles';
-
-const { RV_Float, RV_RevFloat } = window;
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
-    case 'action':
+    case cellTypes.action:
       return {
         sticky: 'left',
-        Cell: (cell) => {
-          if (cell?.editableRowIndex === cell?.row?.index) {
-            return <EditRowMenu cell={cell} />;
-          }
-          return (
-            <ToolTip
-              tipId={`row-${cell?.row?.index}-action-tip`}
-              multiline
-              effect="solid"
-              event="click"
-              place={RV_RevFloat}
-              type="dark"
-              disable={!cell?.editable}
-              clickable
-              offset={{ [RV_Float]: -27 }}
-              arrowColor="transparent"
-              className="table-row-action-tooltip"
-              renderContent={() => <RowActions cell={cell} />}>
-              <Styled.RowDragHandleWrapper {...cell.dragHandleProps}>
-                <DragIcon />
-              </Styled.RowDragHandleWrapper>
-            </ToolTip>
-          );
-        },
+        Cell: (cell) => <ActionsCell cell={cell} />,
       };
-    case 'index':
+    case cellTypes.index:
       return {
         sticky: 'left',
         Cell: (cell) => (
@@ -55,11 +31,11 @@ const provideCell = (header) => {
         ),
       };
 
-    case cellTypes.string:
+    case cellTypes.text:
       return { Cell: (row) => <InputCell {...row} header={header} /> };
 
     case cellTypes.number:
-      return { Cell: (row) => <InputCell {...row} header={header} /> };
+      return { Cell: (row) => <InputCell {...row} header={header} isNumber /> };
 
     case cellTypes.date:
       return { Cell: (row) => <DateCell {...row} header={header} /> };
@@ -74,7 +50,7 @@ const provideCell = (header) => {
 
     case cellTypes.binary:
       return {
-        Cell: (row) => <SelectCell {...row} header={header} binary />,
+        Cell: (row) => <BinaryCell {...row} header={header} />,
       };
 
     case cellTypes.recordInfo:
@@ -97,15 +73,31 @@ const provideCell = (header) => {
         Cell: (row) => <UserCell {...row} header={header} />,
       };
 
+    case cellTypes.table:
+      return {
+        Cell: (row) => <TableCell {...row} header={header} />,
+      };
+
+    case cellTypes.multiLevel:
+      return {
+        Cell: (row) => <MultiLevelCell {...row} header={header} />,
+      };
+
     default:
       return;
   }
 };
 
 //! Provide footer for a given column.
-const provideFooter = (header) => {
+const provideFooter = (header, data) => {
+  // console.log(data, 'footer')
   switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.action:
+      return {
+        Footer: (footer) => <EditRowMenu {...footer} header={header} isNew />,
+      };
+
+    case cellTypes.text:
       return {
         Footer: (footer) => <InputCell {...footer} header={header} isNew />,
       };
@@ -121,12 +113,14 @@ const provideFooter = (header) => {
 
     case cellTypes.multiSelect:
       return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+        Footer: (row) => (
+          <SelectCell {...row} header={header} isNew multiSelect />
+        ),
       };
 
     case cellTypes.binary:
       return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+        Footer: (row) => <BinaryCell {...row} header={header} isNew />,
       };
 
     case cellTypes.date:
@@ -139,9 +133,21 @@ const provideFooter = (header) => {
         Footer: (footer) => <FileCell {...footer} header={header} isNew />,
       };
 
+    case cellTypes.node:
+      return {
+        Footer: (footer) => <NodeCell {...footer} header={header} isNew />,
+      };
+
+    case cellTypes.multiLevel:
+      return {
+        Footer: (footer) => (
+          <MultiLevelCell {...footer} header={header} isNew />
+        ),
+      };
+
     default:
       return {
-        Footer: header.title,
+        Footer: () => <div>{header.title}</div>,
       };
   }
 };
@@ -149,8 +155,8 @@ const provideFooter = (header) => {
 //! Provide options for a given column.
 const provideOptions = (header, data) => {
   return {
-    // width: getColumnWidth(data, header),
-    minWidth: getColumnWidth(data, header),
+    width: getColumnWidth(data, header),
+    // minWidth: getColumnWidth(data, header),
     ...header?.options,
   };
 };
@@ -162,7 +168,7 @@ const getColumnWidth = (data, header) => {
   let cellLength;
 
   switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.text:
       magicSpacing = 15;
       cellLength = Math.max(
         ...data.map((row) => `${row?.[header?.accessor]}`.length),
@@ -183,13 +189,14 @@ const getColumnWidth = (data, header) => {
 
     case cellTypes.multiSelect:
       maxWidth = 500;
-      magicSpacing = header?.options?.editable ? 7.8 : 5.5;
+      magicSpacing = header?.options?.editable ? 17 : 5.5;
       cellLength = Math.max(
         ...(data?.[0]?.[header?.accessor]?.options?.map(
           (option) => option?.label?.length
         ) || []),
         header?.title.length
       );
+
       const defaultValuesFactor =
         data?.[0]?.[header?.accessor]?.defaultValues?.length > 1 ? 2 : 1;
 
@@ -239,17 +246,17 @@ const getColumnWidth = (data, header) => {
 
 //! Column factory.
 const makeColumns = (headers, data) => {
-  const dataCulomns = headers.map((header) => {
+  const dataColumns = headers.map((header) => {
     return {
       Header: header.title,
       accessor: header.accessor,
-      ...provideFooter(header),
+      ...provideFooter(header, data),
       ...provideCell(header),
       ...provideOptions(header, data),
     };
   });
 
-  return dataCulomns;
+  return dataColumns;
 };
 
 export default makeColumns;

@@ -523,12 +523,20 @@ export const CROP_PROFILE_IMAGE = 'CropProfileImage';
  * @class 'DocsAPI'
  */
 export const GET_UPLOAD_LINK = 'GetUploadLink';
+
 /**
  * @description 'UploadAndCropIcon'
  * @mode API function
  * @class 'DocsAPI'
  */
 export const UPLOAD_AND_CROP_ICON = 'UploadAndCropIcon';
+
+/**
+ * @description 'RemoveFile'
+ * @mode API function
+ * @class 'DocsAPI'
+ */
+export const REMOVE_FILE = 'RemoveFile';
 
 //* #################################
 //* ############ FGAPI ###############
@@ -546,3 +554,38 @@ export const FG_API = 'FGAPI';
  * @class 'FGAPI'
  */
 export const GET_FORM_ELEMENTS = 'GetFormElements';
+
+/**
+ * @description 'GetOwnerFormInstances'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const GET_OWNER_FORM_INSTANCES = 'GetOwnerFormInstances';
+
+/**
+ * @description 'CreateFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const CREATE_FORM_INSTANCE = 'CreateFormInstance';
+
+/**
+ * @description 'RemoveFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const REMOVE_FORM_INSTANCES = 'RemoveFormInstance';
+
+/**
+ * @description 'RecoverFormInstance'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const RECOVER_FORM_INSTANCES = 'RecoverFormInstance';
+
+/**
+ * @description 'SaveFormInstanceElements'
+ * @mode API function
+ * @class 'FGAPI'
+ */
+export const SAVE_FORM_INSTANCES = 'SaveFormInstanceElements';

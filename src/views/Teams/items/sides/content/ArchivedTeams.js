@@ -43,7 +43,7 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
   };
 
   return (
-    <Styled.TeamConatiner
+    <Styled.TeamContainer
       isArchive
       isMobile={isMobile}
       onClick={handleShowArchived}
@@ -69,7 +69,7 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
           <span>تیم های آرشیو شده</span>
         </Styled.ArchivedTeamsLabel>
       </Styled.ArchivedWrapper>
-    </Styled.TeamConatiner>
+    </Styled.TeamContainer>
   );
 };
 

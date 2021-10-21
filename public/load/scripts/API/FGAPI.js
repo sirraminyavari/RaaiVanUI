@@ -238,6 +238,14 @@
         return FGAPI._send(url, params, queryString);
     },
 
+    RecoverFormInstance: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/RecoverFormInstance?timeStamp=" + new Date().getTime();
+        var queryString = (params.InstanceID ? "&InstanceID=" + params.InstanceID : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
     GetFormInstance: function (params) {
         params = params || {};
 
@@ -246,6 +254,15 @@
             (params.LimitOwnerID ? "&LimitOwnerID=" + params.LimitOwnerID : "") +
             (params.ShowAllIfNoLimit ? "&ShowAllIfNoLimit=" + params.ShowAllIfNoLimit : "") +
             (params.PollAbstract ? "&PollAbstract=" + params.PollAbstract : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    GetOwnerFormInstances: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/GetOwnerFormInstances?timeStamp=" + new Date().getTime();
+        var queryString = (params.FormID ? "&FormID=" + params.FormID : "") +
+            (params.OwnerID ? "&OwnerID=" + params.OwnerID : "");
         return FGAPI._send(url, params, queryString);
     },
 

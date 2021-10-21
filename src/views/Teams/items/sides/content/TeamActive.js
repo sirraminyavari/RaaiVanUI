@@ -344,7 +344,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   }, []);
 
   return (
-    <Styled.TeamConatiner
+    <Styled.TeamContainer
       ref={ref}
       isDragging={isDragging}
       isMobile={isMobileScreen}
@@ -503,7 +503,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           </Styled.TeamFooterConatiner>
         </Styled.TeamContentWrapper>
       )}
-    </Styled.TeamConatiner>
+    </Styled.TeamContainer>
   );
 });
 

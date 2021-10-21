@@ -8,6 +8,8 @@ import {
   REPORTS_PATH,
   USER_NAME,
   USER_WITHID_PATH,
+  TEAM_SETTINGS_PATH,
+  TEAM_SETTINGS_NAME,
 } from 'constant/constants';
 
 const ProfileNew = lazy(() =>
@@ -21,6 +23,11 @@ const Reports = lazy(() =>
 );
 const Classes = lazy(() =>
   import(/* webpackChunkName: "classes-view"*/ 'views/Classes/Classes')
+);
+const TeamSettings = lazy(() =>
+  import(
+    /* webpackChunkName: "team-settings-view"*/ 'views/TeamSettings/TeamSettings'
+  )
 );
 
 const SidebarRoutes = [
@@ -52,6 +59,13 @@ const SidebarRoutes = [
     exact: true,
     hasNavSide: true,
     component: Classes,
+  },
+  {
+    path: TEAM_SETTINGS_PATH,
+    name: TEAM_SETTINGS_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: TeamSettings,
   },
 ];
 

@@ -1,97 +1,80 @@
 import { memo, useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
+import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './InputCell.styles';
+import { CV_DISTANT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
 
 const InputCell = (props) => {
   // console.log('inputCell', props);
   const {
-    value: initialValue,
+    value,
     row,
-    column: { id },
-    updateCellData, //! This is a custom function that we supplied to our table instance.
-    editable,
-    selectedCell, //! This is what we select for inline edit in cell.
-    setSelectedCell,
+    column,
+    onCellChange,
+    editable: isTableEditable,
+    editingRow,
     isNew,
+    header,
+    isNumber,
   } = props;
 
-  const [value, setValue] = useState(initialValue);
+  const { Info, TextValue, FloatValue } = value || {};
+
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
+
+  const [inputValue, setInputValue] = useState('');
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    console.log(e.target.value);
-    setValue(e.target.value);
+    setInputValue(e.target.value);
   };
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
-    //! API call to server.
-    updateCellData(row?.index, id, value);
-    setSelectedCell(null);
+    //! Update parent.
+    let inputCell;
+    if (!!isNumber) {
+      inputCell = { ...value, FloatValue: inputValue };
+    } else {
+      inputCell = { ...value, TextValue: inputValue };
+    }
+
+    onCellChange(rowId, columnId, inputCell, inputValue);
   };
 
-  //! If the initialValue has changed externally, sync it up with our state.
+  // //! If the initialValue has changed externally, sync it up with our state.
   useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
+    const value = !!isNumber ? FloatValue : TextValue;
+    setInputValue(value);
+  }, [TextValue, FloatValue, isNumber]);
 
-  if (!!isNew) {
-    return (
-      <Input
-        onChange={() => {}}
-        onBlur={() => {}}
-        style={{
-          textAlign: 'center',
-          width: '100%',
-          backgroundColor: 'inherit',
-          color: 'inherit',
-        }}
-        type={props.header.dataType}
-        value=""
-        autoFocus
-        placeholder="وارد نمایید"
-      />
+  //! Check if 'table' or 'cell' are editable; or is row in edit mode.
+  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
+    return !!inputValue ? (
+      <Styled.CellView>{inputValue}</Styled.CellView>
+    ) : (
+      <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );
   }
 
-  //! Check if 'table' is editable in general or not.
-  if (!editable) {
-    return `${initialValue}`;
-  }
-
-  //! Check if 'column' is editable or not.
-  if (!props?.header?.options?.editable) {
-    return props?.value;
-  }
-
-  if (
-    !!selectedCell &&
-    row?.index === selectedCell.row.index &&
-    id === selectedCell.column.id
-  ) {
-    return (
+  return (
+    <Styled.InputCellWrapper>
+      {!!isNumber && <NumberIcon size={25} color={CV_DISTANT} />}
       <Input
         onChange={handleInputChange}
         onBlur={handleInputBlur}
-        style={{
-          textAlign: 'center',
-          width: '100%',
-          backgroundColor: 'inherit',
-          color: 'inherit',
-        }}
-        type={props.header.dataType}
-        value={value}
-        autoFocus
-        placeholder="وارد نمایید"
+        className="table-number-input"
+        type={!!isNumber ? 'number' : 'text'}
+        value={inputValue}
+        placeholder="وارد کنید"
       />
-    );
-  } else {
-    return !!initialValue ? (
-      <span style={{ cursor: 'pointer' }}>{initialValue}</span>
-    ) : (
-      <Styled.EmptyCellShow>وارد نمایید</Styled.EmptyCellShow>
-    );
-  }
+    </Styled.InputCellWrapper>
+  );
 };
 
 export default memo(InputCell);

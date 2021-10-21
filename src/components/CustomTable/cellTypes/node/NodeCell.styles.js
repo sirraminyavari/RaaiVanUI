@@ -1,21 +1,57 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
-import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
+import {
+  FLEX_CCC,
+  FLEX_CSA,
+  FLEX_RCB,
+  FLEX_RCC,
+  FLEX_RCS,
+  FLEX_REB,
+} from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
+const { RV_Float } = window;
 
-export const NodesWrapper = styled.div`
+export const NodeCellContainer = styled.div`
   width: 100%;
+  ${FLEX_CSA}
+  gap: 0.5rem;
+
+  .table-node-cell-select-button {
+    background-color: inherit;
+    color: ${TCV_DEFAULT};
+    width: 8rem;
+    height: 1.8rem;
+    border-radius: 1rem;
+  }
+`;
+
+export const ItemsWrapper = styled.div`
+  width: 100%;
+  ${FLEX_REB}
+  gap: 0.5rem;
+
+  .table-node-cell-save-button {
+    background-color: inherit;
+    padding: 0.3rem;
+    height: 1.7rem;
+    width: 7rem;
+    border-radius: 1rem;
+  }
+`;
+
+export const NodeListWrapper = styled.div`
+  width: ${({ isEditMode }) => (isEditMode ? '75%' : '100%')};
   ${FLEX_CCC}
   gap: 0.2rem;
 `;
 
-export const NodeCellContainer = styled.div.attrs({
+export const NodeItemContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER} ${BO_DISTANT}`,
 })`
   width: 100%;
@@ -63,4 +99,22 @@ export const CloseIconWrapper = styled.div.attrs({
   &:hover svg {
     color: ${CV_RED} !important;
   }
+`;
+
+export const AddNewNode = styled.div`
+  ${FLEX_RCC}
+  gap: 0.5rem;
+  cursor: pointer;
+`;
+
+export const ItemSelectionButton = styled.div`
+  ${FLEX_RCC}
+  gap: 0.5rem;
+`;
+
+export const EmptyCellView = styled.div`
+  color: ${CV_DISTANT};
+  width: 100%;
+  text-align: start;
+  padding-${RV_Float}: 0.7rem;
 `;

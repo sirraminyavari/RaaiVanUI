@@ -1,6 +1,6 @@
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
-import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { CV_GRAY } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import * as Styled from './FileField.styles';
@@ -73,14 +73,14 @@ const FileField = (props) => {
         ))}
         <FileShowCell file={1} />
         <FileShowCell file={2} />
-        <CustomDropzone
+        <CustomDropZone
           maxFiles={2} //! (infoJSON?.MaxCount)
           maxTotalSize={2} //! (infoJSON?.TotalSize)
           maxEachSize={1} //! (infoJSON?.MaxSize)
           accept={['image/*']} //! (infoJSON?.AllowedExtensions)
           onUpload={handleUploadFile}
           placeholders={{
-            main: 'فایل را بکشید و رها کنید یا کلیک کنید',
+            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
             dragging: 'اینجا رها کنید...',
           }}
           onError={(error) => console.log(error)}

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import * as Styled from './CustomTable.styles';
+import * as Styled from 'components/CustomTable/CustomTable.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import DuplicationIcon from 'components/Icons/DuplicationIcon/DuplicationIcon';
 import EditIcon from 'components/Icons/EditIcons/Edit';
@@ -8,12 +8,10 @@ import { WindowContext } from 'context/WindowProvider';
 
 const RowAction = ({ cell }) => {
   const { RVDic } = useContext(WindowContext);
-
-  const canDelete = cell?.editable && cell?.removeRow;
+  const rowId = cell?.row?.original?.id;
 
   const handleDeleteRow = () => {
-    console.log('Delete row');
-    cell?.removeRow && cell.removeRow(cell?.row?.index);
+    cell?.removeRow && cell.removeRow(cell?.row);
   };
 
   const handleDuplicateRow = () => {
@@ -21,13 +19,14 @@ const RowAction = ({ cell }) => {
   };
 
   const handleSetEditableRow = () => {
-    console.log('Edit row');
-    cell?.setEditableRowIndex && cell?.setEditableRowIndex(cell?.row?.index);
+    cell?.setEditingRow && cell?.setEditingRow(rowId);
+    cell?.onEditRowStart && cell?.onEditRowStart(cell?.data);
+    cell?.setShowFooter(false);
   };
 
   return (
     <Styled.TableRowActionContainer>
-      {canDelete && (
+      {cell?.editable && (
         <>
           <Styled.TableActionWrapper onClick={handleSetEditableRow}>
             <EditIcon size={18} />
