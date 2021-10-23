@@ -38,6 +38,34 @@ const useTeamSettings = (props) => {
     },
   ];
 
+  const teamOwnerOptions = [
+    {
+      value: 'jahanian',
+      label: 'خشایار جهانیان',
+      thumb:
+        'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
+    },
+    {
+      value: 'seif',
+      label: 'خشایار جهانیان',
+      thumb:
+        'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
+    },
+    {
+      value: 'sepehr',
+      label: 'خشایار جهانیان',
+      thumb:
+        'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
+    },
+  ];
+
+  const fieldOfExpertiseOption = [
+    { value: 'industry', label: 'صنعت' },
+    { value: 'med', label: 'پزشکی' },
+    { value: 'it', label: 'فناوری اطلاعات' },
+    { value: 'edu', label: 'آموزش' },
+  ];
+
   const uploadThumbnail = (fd) => {
     //
   };
@@ -50,6 +78,8 @@ const useTeamSettings = (props) => {
     rtl,
     breadCrumbItems,
     imgUrl,
+    fieldOfExpertiseOption,
+    teamOwnerOptions,
     uploadThumbnail,
   };
 };

@@ -1,5 +1,6 @@
 import * as Styled from './ThumbMakerStyle';
 import { useRef } from 'react';
+import EditIcon from '../../../components/Icons/EditIcons/Edit';
 
 const ThumbMaker = ({ children, upload, ...props }) => {
   const fileInput = useRef(null);
@@ -12,8 +13,9 @@ const ThumbMaker = ({ children, upload, ...props }) => {
   return (
     <Styled.ThumbContainer>
       {children}
-      <Styled.EditButton
-        onClick={() => fileInput.current.click()}></Styled.EditButton>
+      <Styled.EditButton onClick={() => fileInput.current.click()}>
+        <EditIcon />
+      </Styled.EditButton>
       <input
         type="file"
         ref={fileInput}

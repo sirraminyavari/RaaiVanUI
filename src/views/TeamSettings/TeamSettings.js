@@ -3,13 +3,21 @@ import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Heading from '../../components/Heading/Heading';
 import ThumbMaker from './items/ThumbMaker';
-import Select from '../../components/Inputs/select/Select';
-import { TeamSelect } from './items/CustomSelectStyle';
+import {
+  Indicator,
+  ThumbnailOption,
+  ThumbnailControl,
+} from './items/CustomSelect';
 
 const TeamSettings = (props) => {
-  const { rtl, breadCrumbItems, imgUrl, uploadThumbnail } = useTeamSettings(
-    props
-  );
+  const {
+    rtl,
+    breadCrumbItems,
+    imgUrl,
+    fieldOfExpertiseOption,
+    teamOwnerOptions,
+    uploadThumbnail,
+  } = useTeamSettings(props);
 
   return (
     <Styled.TeamSettingsCardWrapper>
@@ -30,21 +38,47 @@ const TeamSettings = (props) => {
           <Styled.TeamSubtitle>وبسایت</Styled.TeamSubtitle>
 
           <Styled.SelectWrapper>
+            <Styled.SelectTitle>مالک تیم</Styled.SelectTitle>
+            <Styled.Select
+              classNamePrefix="select"
+              placeholder=""
+              options={teamOwnerOptions}
+              components={{
+                DropdownIndicator: Indicator,
+                Option: ThumbnailOption,
+                SingleValue: ThumbnailControl,
+              }}
+            />
+          </Styled.SelectWrapper>
+
+          <Styled.SelectWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
-            <Select options={[]} name="" />
+            <Styled.Select
+              classNamePrefix="select"
+              placeholder=""
+              options={fieldOfExpertiseOption}
+              components={{ DropdownIndicator: Indicator }}
+            />
           </Styled.SelectWrapper>
 
           <Styled.SelectWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
-            <Select options={[]} name="" />
+            <Styled.Select
+              classNamePrefix="select"
+              isRtl={rtl}
+              placeholder=""
+              components={{ DropdownIndicator: Indicator }}
+            />
           </Styled.SelectWrapper>
 
           <Styled.SelectWrapper>
-            <Styled.SelectTitle>تاریخ</Styled.SelectTitle>
-            <Select options={[]} name="" />
+            <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
+            <Styled.Select
+              classNamePrefix="select"
+              placeholder=""
+              components={{ DropdownIndicator: Indicator }}
+            />
           </Styled.SelectWrapper>
-
-          <Styled.Select classNamePrefix="select"></Styled.Select>
         </Styled.FormWrapper>
       </Styled.TeamSettingsContainer>
     </Styled.TeamSettingsCardWrapper>

@@ -19,4 +19,8 @@ export const EditButton = styled.div.attrs({
   border-radius: 100%;
   border: white 0.12rem solid;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 `;
