@@ -37,6 +37,7 @@ const DateCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
@@ -46,11 +47,22 @@ const DateCell = (props) => {
   //! Update date on select.
   const handleDateSelect = (date) => {
     setDateValue(date);
-
     const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-    const dateCell = { ...value, DateValue: dateString };
-    onCellChange(rowId, columnId, dateCell, date);
+
+    if (isNew) {
+      //! Create new date cell.
+      const dateCell = {
+        ElementID: headerId,
+        DateValue: dateString,
+        Filled: true,
+        Type: header?.dataType,
+      };
+      onCellChange(null, columnId, dateCell, date);
+    } else {
+      const dateCell = { ...value, DateValue: dateString };
+      onCellChange(rowId, columnId, dateCell, date);
+    }
   };
 
   if (isNew) {

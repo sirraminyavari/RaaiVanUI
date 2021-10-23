@@ -4,18 +4,17 @@ import Button from 'components/Buttons/Button';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
-// import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
-import {
-  CV_DISTANT,
-  //  CV_WHITE,
-  TCV_DEFAULT,
-} from 'constant/CssVariables';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 
 const TableAction = ({ onAddRow, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
+  };
+
+  const handleAddRow = () => {
+    onAddRow && onAddRow();
   };
 
   useEffect(() => {
@@ -45,17 +44,7 @@ const TableAction = ({ onAddRow, onSearch, data }) => {
         />
       </Styled.TableSearchWrapper>
       <Styled.TableButtonsWrapper>
-        {/* <Styled.ActionButton onClick={() => console.log('select item')}>
-          <FolderIcon
-            size={20}
-            color={CV_WHITE}
-            className="table-select-item-icon"
-          />
-          <Button type="primary" classes="table-select-item-button">
-            انتخاب آیتم
-          </Button>
-        </Styled.ActionButton> */}
-        <Styled.ActionButton onClick={onAddRow}>
+        <Styled.ActionButton onClick={handleAddRow}>
           <AddIcon
             size={22}
             color={TCV_DEFAULT}

@@ -2,19 +2,29 @@ import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
 import {
+  FLEX_CCB,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
   FLEX_RCS,
 } from 'constant/StyledCommonCss';
 import {
+  CV_DISTANT,
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
   TCV_WARM,
 } from 'constant/CssVariables';
 
-export const UsersWrapper = styled.div`
+const { RV_Float } = window;
+
+export const UsersCellWrapper = styled.div`
+  width: 100%;
+  ${FLEX_CCB}
+  gap: 1rem;
+`;
+
+export const UsersListWrapper = styled.div`
   width: 100%;
   ${FLEX_CCC}
   gap: 0.2rem;
@@ -79,4 +89,11 @@ export const AddNewUser = styled.div`
   ${FLEX_RCC}
   gap: 0.5rem;
   cursor: pointer;
+`;
+
+export const EmptyCellView = styled.div`
+  color: ${CV_DISTANT};
+  width: 100%;
+  text-align: start;
+  padding-${RV_Float}: 0.7rem;
 `;

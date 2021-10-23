@@ -34,10 +34,13 @@ const FormField = (props) => {
     ...rest
   } = props;
 
+  // console.log(tableColumns, 'col');
+
   const { GlobalUtilities } = useWindow();
   const { FormID } = toJSON(decodeInfo);
 
   const [rows, setRows] = useState([]);
+  const [newRow, setNewRow] = useState([]);
   const [tableContent, setTableContent] = useState([]);
   const beforeEditRowsRef = useRef(null);
   // const [isSearching, setIsSearching] = useState(false);
@@ -125,10 +128,9 @@ const FormField = (props) => {
     [rows, tableColumns]
   );
 
-  const updateCellData = (rowId, columnId, cellData, value) => {
-    console.log({ cellData, value, rowId, columnId }, 'update');
-
-    if (rowId) {
+  const updateCellData = (rowId, columnId, cellData, cellValue) => {
+    if (!!rowId) {
+      console.log(cellData, 'edit');
       setRows((old) =>
         old.map((row) => {
           if (row?.id === rowId) {
@@ -142,6 +144,9 @@ const FormField = (props) => {
       );
     } else {
       //! New row.
+      console.log(cellData, 'new');
+
+      setNewRow((oldValue) => ({ ...oldValue, [columnId]: cellData }));
     }
   };
 
@@ -165,11 +170,6 @@ const FormField = (props) => {
         const rows = prepareRows(newTableContent, tableColumns);
         setRows(rows);
         setTableContent(newTableContent);
-
-        // console.log(
-        //   { response, rows, tableContent, newTableContent, rowId },
-        //   'save row response'
-        // );
       })
       .catch((error) => console.log(error, 'save row error'));
   };
@@ -254,8 +254,23 @@ const FormField = (props) => {
     createFormInstance(FormID, elementId)
       .then((response) => {
         if (response?.Succeed) {
-          console.log(response, 'add row');
-          getFormData();
+          const instanceId = response?.Instance?.InstanceID;
+          const extendedElements = Object.values(newRow).map((element) => {
+            return { ...element, InstanceID: instanceId };
+          });
+
+          console.log(
+            response,
+            extendedElements,
+            Object.values(newRow),
+            'add row'
+          );
+
+          saveForm(extendedElements)
+            .then((response) => {
+              getFormData();
+            })
+            .catch((error) => console.log(error, 'save row error'));
         }
       })
       .catch((error) => console.log(error));
