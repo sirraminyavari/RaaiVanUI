@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Heading from '../../components/Heading/Heading';
 import ThumbMaker from './items/ThumbMaker';
 import Select from '../../components/Inputs/select/Select';
+import { TeamSelect } from './items/CustomSelectStyle';
 
 const TeamSettings = (props) => {
   const { rtl, breadCrumbItems, imgUrl, uploadThumbnail } = useTeamSettings(
@@ -28,7 +29,22 @@ const TeamSettings = (props) => {
 
           <Styled.TeamSubtitle>وبسایت</Styled.TeamSubtitle>
 
-          <Select options={[]} />
+          <Styled.SelectWrapper>
+            <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
+            <Select options={[]} name="" />
+          </Styled.SelectWrapper>
+
+          <Styled.SelectWrapper>
+            <Styled.SelectTitle>زبان</Styled.SelectTitle>
+            <Select options={[]} name="" />
+          </Styled.SelectWrapper>
+
+          <Styled.SelectWrapper>
+            <Styled.SelectTitle>تاریخ</Styled.SelectTitle>
+            <Select options={[]} name="" />
+          </Styled.SelectWrapper>
+
+          <Styled.Select classNamePrefix="select"></Styled.Select>
         </Styled.FormWrapper>
       </Styled.TeamSettingsContainer>
     </Styled.TeamSettingsCardWrapper>

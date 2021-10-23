@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ReactSelect from 'react-select';
 
 export const TeamSettingsCardWrapper = styled.div`
   padding: 0 1rem;
@@ -46,4 +47,36 @@ export const TeamSubtitle = styled.div`
   font-size: 1.12rem;
 `;
 
-export const SelectWrapper = styled.div``;
+export const SelectWrapper = styled.div`
+  padding: 2px;
+`;
+
+export const SelectTitle = styled.div`
+  direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};
+  font-size: 1rem;
+  color: var(--rv-gray-color-dark);
+  font-weight: 500;
+  margin: 2rem 0 0.5rem 0;
+`;
+
+export const Select = styled(ReactSelect)`
+  .select__control {
+    border: 0.04rem solid var(--rv-color-distant);
+    border-radius: 0.3rem;
+    height: 3rem;
+  }
+
+  .select__control:hover {
+    border-color: var(--rv-color);
+  }
+
+  .select__control--is-focused {
+    border: 0.08rem solid red !important;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .select__indicator-separator {
+    display: none;
+  }
+`;
