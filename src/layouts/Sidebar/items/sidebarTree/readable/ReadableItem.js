@@ -14,6 +14,8 @@ import useWindow from 'hooks/useWindowContext';
 
 const INDENT_PER_LEVEL = 27;
 
+const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+
 const selectTree = createSelector(
   (state) => state?.sidebarItems,
   (sidebarItems) => sidebarItems?.dndTree
@@ -24,13 +26,13 @@ const selectActivePath = createSelector(
   (theme) => theme?.activePath
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state?.onboarding,
   (onboarding) => onboarding?.name
 );
 
 /**
- * @typedef ItemType
+ * @typedef PropType
  * @property {Object} item -The item.
  * @property {function} onExpand -The callback function that calls on item expand.
  * @property {function} onCollapse -The callback function that calls on item collapse.
@@ -39,40 +41,36 @@ const selecteOnboardingName = createSelector(
  */
 
 /**
- * @typedef PropType
- * @property {ItemType} itemProps - The item props.
- */
-
-/**
  *  @description Renders a menu item for sidebar.
  * @component
  * @param {PropType} props
  */
-const ReadableBranch = (props) => {
-  const { itemProps } = props;
-  const { GlobalUtilities } = useWindow();
+const ReadableItem = (props) => {
+  const { item, onExpand, onCollapse, provided, depth } = props;
+  const { isCategory, id: itemId, data } = item || {};
+
   const tree = useSelector(selectTree);
   const activePath = useSelector(selectActivePath);
-  const onboardingName = useSelector(selecteOnboardingName);
+  const onboardingName = useSelector(selectOnboardingName);
+
   const dispatch = useDispatch();
-  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
     !!onboardingName && onboardingName === INTRO_ONBOARD;
 
-  const { item, onExpand, onCollapse, provided, depth } = itemProps;
-
   //! Expand tree on click.
   const handleOnClick = () => {
     if (isIntroOnboarding) return;
-    if (item?.isCategory && !item?.isExpanded) {
-      const mutatedTree = mutateTree(tree, item?.id, { isExpanded: true });
+    if (isCategory) {
+      const mutatedTree = mutateTree(tree, itemId, {
+        isExpanded: !item?.isExpanded,
+      });
       dispatch(setSidebarDnDTree(mutatedTree));
     }
   };
 
-  const classURL = getURL('Classes', { NodeTypeID: item?.id });
+  const classURL = getURL('Classes', { NodeTypeID: itemId });
 
   //! Check if selected item is active.
   const isSelected = activePath === classURL;
@@ -86,21 +84,18 @@ const ReadableBranch = (props) => {
         ref={provided.innerRef}
         {...provided.draggableProps}>
         <Styled.MenuTitleWrapper>
-          {item?.isCategory ? (
-            <Styled.CaretIconWrapper>
+          {isCategory ? (
+            <Styled.CaretIconWrapper onClick={handleOnClick}>
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage
-              src={GlobalUtilities.add_timestamp(item?.data?.iconURL)}
-              alt="menu-icon"
-            />
+            <Styled.MenuItemImage src={data?.iconURL} alt="menu-icon" />
           )}
           <Styled.MenuTitle
             onClick={handleOnClick}
             as={!isIntroOnboarding && Link}
             to={classURL}>
-            {item?.data?.title}
+            {data?.title}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>
       </Styled.MenuContainer>
@@ -108,4 +103,4 @@ const ReadableBranch = (props) => {
   );
 };
 
-export default ReadableBranch;
+export default ReadableItem;

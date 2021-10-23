@@ -28,7 +28,7 @@ const selectHasPattern = createSelector(
   (theme) => theme.hasSidebarPattern
 );
 
-const selectisSidebarOpen = createSelector(
+const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
   (theme) => theme.isSidebarOpen
 );
@@ -36,7 +36,7 @@ const selectisSidebarOpen = createSelector(
 const OpenSidebar = () => {
   const dispatch = useDispatch();
   const sidebarContent = useSelector(selectSidebarContent);
-  const isOpen = useSelector(selectisSidebarOpen);
+  const isOpen = useSelector(selectIsSidebarOpen);
   const hasPattern = useSelector(selectHasPattern);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;

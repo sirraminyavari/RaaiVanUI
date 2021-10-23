@@ -22,6 +22,8 @@ const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
 );
 
+const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
+
 const selectSidebarContent = createSelector(
   (state) => state.theme,
   (theme) => theme.sidebarContent
@@ -37,25 +39,25 @@ const selectHasPattern = createSelector(
   (theme) => theme.hasSidebarPattern
 );
 
-const selectisSidebarOpen = createSelector(
+const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
   (theme) => theme.isSidebarOpen
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
 
 const OpenSidebar = () => {
   const dispatch = useDispatch();
-  const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
+  const { RV_RTL } = useWindow();
+
   const sidebarContent = useSelector(selectSidebarContent);
   const sidebarOpenWidth = useSelector(selectOpenWidth);
-  const isOpen = useSelector(selectisSidebarOpen);
+  const isOpen = useSelector(selectIsSidebarOpen);
   const hasPattern = useSelector(selectHasPattern);
-  const onboardingName = useSelector(selecteOnboardingName);
-  const { RV_RTL } = useWindow();
+  const onboardingName = useSelector(selectOnboardingName);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

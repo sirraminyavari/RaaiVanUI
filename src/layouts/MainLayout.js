@@ -99,19 +99,20 @@ const selectedActivePath = createSelector(
   (theme) => theme.activePath
 );
 
-const selecteOnboardingName = createSelector(
+const selectOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
 
 const Main = () => {
+  const dispatch = useDispatch();
+  const { RVGlobal } = useWindow();
+
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   const hasNavSide = useSelector(selectHasNavSide);
   const selectedTeam = useSelector(selectedApp);
-  const onboardingName = useSelector(selecteOnboardingName);
+  const onboardingName = useSelector(selectOnboardingName);
   const activePath = useSelector(selectedActivePath);
-  const { RVGlobal } = useWindow();
-  const dispatch = useDispatch();
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =

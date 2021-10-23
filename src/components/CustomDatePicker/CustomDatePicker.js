@@ -9,7 +9,6 @@ import DatePicker, {
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
-import { lunar } from './customLocals';
 import {
   mergeRefs,
   getToday,
@@ -18,17 +17,19 @@ import {
 } from 'helpers/helpers';
 // import styles from './CustomDatePicker.module.css';
 import * as Styled from './CustomDatePicker.styles';
-import RefreshIcon from 'components/Icons/UndoIcon/Undo';
 import useWindow from 'hooks/useWindowContext';
-
-const buttonsCommonStyles = {
-  padding: '0.3rem 0',
-  fontSize: '1.2em',
-  fontWeight: 'bold',
-  minHeight: '2.5em',
-  width: '24%',
-  // backgroundColor: 'transparent',
-};
+import {
+  checkDigit,
+  datePickerTypes,
+  LastNthDays,
+  getMinOrMaxDate,
+  getLocale,
+  limit,
+  customInputFormat,
+  GREGORIAN_MAX_YEAR,
+  JALALI_MAX_YEAR,
+} from './DatePickerUtils';
+import DatePickerFooter from './DatePickerFooter';
 
 /**
  * @typedef DateType
@@ -69,7 +70,7 @@ const buttonsCommonStyles = {
  * @property {Object} buttonStyle - Style for button.
  * @property {boolean} shouldClear - If true, clear the date.
  * @property {*} CustomButton - A custom button for date picker.
- * @property {string} headerTitle - The headeer title.
+ * @property {string} headerTitle - The header title.
  * @property {function} onChangeVisibility - A callback function that fires when input is on focus or button is clicked.
  */
 
@@ -80,7 +81,7 @@ const buttonsCommonStyles = {
  */
 const CustomDatePicker = (props) => {
   const {
-    label = props.type === 'jalali' ? 'انتخاب تاریخ ...' : 'Pick a date ...',
+    label,
     type,
     mode,
     range: initRange,
@@ -121,7 +122,7 @@ const CustomDatePicker = (props) => {
   const dateStringToObject = (item) => {
     let dateString = item;
     if (!item) return;
-    if (['jalali', 'lunar'].includes(type)) {
+    if ([datePickerTypes.jalali, datePickerTypes.lunar].includes(type)) {
       dateString = engToPerDate(item);
     } else {
       dateString = item;
@@ -138,7 +139,7 @@ const CustomDatePicker = (props) => {
   const dateObjectToString = (item) => {
     if (!item) return;
     const dateString = `${item.year}/${item.month}/${item.day}`;
-    if (type === 'jalali') {
+    if (type === datePickerTypes.jalali) {
       const serverFormat = perToEngDate(dateString);
       return serverFormat;
     }
@@ -178,7 +179,7 @@ const CustomDatePicker = (props) => {
         initialVal = (engToPerDate(value).match(/\d/g) || ['']).join('');
       }
       if (mode === 'input') {
-        inputRef.current.value = customFormat(initialVal, type, range);
+        inputRef.current.value = customInputFormat(initialVal, type, range);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -196,41 +197,6 @@ const CustomDatePicker = (props) => {
     if (mode === 'input') {
       inputRef.current.value = '';
     }
-  };
-
-  /**
-   * Format raw new Date().
-   * @param {string} date
-   * @returns string date like "yyyy/mm/dd"
-   */
-  const formatRawDate = (date) => {
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    if (day < 10) {
-      day = '0' + day;
-    }
-    if (month < 10) {
-      month = '0' + month;
-    }
-    date = `${year}/${month}/${day}`;
-    return date;
-  };
-
-  /**
-   * Calculates the last nth days.
-   * @param {number} span
-   * @returns An array of last nth days.
-   */
-  const LastNthDays = (span) => {
-    const result = [];
-    for (let i = 0; i < span; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      result.push(formatRawDate(d));
-    }
-
-    return result;
   };
 
   const handleFooterClick = (e) => {
@@ -302,40 +268,6 @@ const CustomDatePicker = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldClear]);
 
-  //! Renders a clear button for datepicker.
-  const Footer = () => {
-    return (
-      <>
-        <Styled.CalendarHeaderContainer size={size}>
-          <Styled.HeaderWrapper>
-            <Styled.CalendarTitle>{headerTitle}</Styled.CalendarTitle>
-            <Styled.RefreshIconWrapper onClick={handleClear}>
-              <RefreshIcon size={12} />
-            </Styled.RefreshIconWrapper>
-          </Styled.HeaderWrapper>
-        </Styled.CalendarHeaderContainer>
-        <Styled.FooterButtonsContainer>
-          {footerButtonList?.map((footer) => {
-            const isFooterActive = activeFooter === footer.dateSpan;
-            return (
-              <Button
-                key={footer.id}
-                data-span={footer.dateSpan}
-                onClick={handleFooterClick}
-                type={isFooterActive ? 'primary' : 'primary-o'}
-                style={{
-                  ...buttonsCommonStyles,
-                  backgroundColor: !isFooterActive && 'transparent',
-                }}>
-                {footer.title}
-              </Button>
-            );
-          })}
-        </Styled.FooterButtonsContainer>
-      </>
-    );
-  };
-
   //! toggle calendar in "button" mode.
   const toggleCalendar = () => {
     setIsCalendarShown(!isCalendarShown);
@@ -346,9 +278,9 @@ const CustomDatePicker = (props) => {
   const formatDate = (date, r = range) => {
     if (!date || Object.values(date).some((param) => param === null))
       return mode === 'button' ? label : '';
-    let formLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
-    let toLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
-    let atLabel = type === 'jalali' ? 'تاریخ: ' : 'Date: ';
+    let formLabel = RVDic.FromDate + ':';
+    let toLabel = RVDic.ToDate + ':';
+    let atLabel = RVDic.Date + ':';
     if (r) {
       let fromDate = `${date.from.year}/${checkDigit(
         date.from.month
@@ -362,10 +294,6 @@ const CustomDatePicker = (props) => {
       return `${atLabel} ${date.year}/${checkDigit(date.month)}/${checkDigit(
         date.day
       )}`;
-    }
-
-    function checkDigit(digit) {
-      return digit < 10 ? `0${digit}` : digit;
     }
   };
 
@@ -385,7 +313,7 @@ const CustomDatePicker = (props) => {
     let val = e.target.value;
     const value = (val.match(/\d/g) || ['']).join('');
     let date;
-    let maxYear = type === 'jalali' ? '1450' : '2070';
+    let maxYear = datePickerTypes.jalali ? JALALI_MAX_YEAR : GREGORIAN_MAX_YEAR;
 
     let from = {
       year: Number(limit(value.substring(0, 4), maxYear, type)),
@@ -430,43 +358,11 @@ const CustomDatePicker = (props) => {
     }
 
     //! Updates input value on every single input change.
-    inputRef.current.value = customFormat(value, type, range);
+    inputRef.current.value = customInputFormat(value, type, range);
 
     //! Clear datepicker and state values if input has been empty by user.
     if (value.length === 0) {
       handleClear();
-    }
-  };
-
-  //! Get datepicker locale prop based on "type" passed to this component.
-  const getLocale = (type) => {
-    switch (type) {
-      case '‫‪gregorian‬‬':
-        return 'en';
-      case 'lunar':
-        return lunar;
-      default:
-        return 'fa';
-    }
-  };
-
-  // console.log(dateEngToPer('2021/03/12').split('/'));
-
-  const getMinOrMaxDate = (date) => {
-    if (type === 'jalali') {
-      const perDate = engToPerDate(date).split('/');
-      return {
-        year: +perDate[0],
-        month: +perDate[1],
-        day: +perDate[2],
-      };
-    } else {
-      const engDate = date.split('/');
-      return {
-        year: +engDate[0],
-        month: +engDate[1],
-        day: +engDate[2],
-      };
     }
   };
 
@@ -492,7 +388,7 @@ const CustomDatePicker = (props) => {
   switch (mode) {
     case 'button':
       return (
-        <Styled.CalendarConatiner hasFooter={!!hasFooter}>
+        <Styled.CalendarContainer hasFooter={!!hasFooter}>
           {!!CustomButton ? (
             <CustomButton onClick={toggleCalendar} />
           ) : (
@@ -507,17 +403,29 @@ const CustomDatePicker = (props) => {
           {(isCalendarShown || !!justCalendar) && (
             <OnClickAway onAway={toggleCalendar}>
               <Calendar
-                renderFooter={() => (hasFooter ? <Footer /> : null)}
+                renderFooter={() =>
+                  hasFooter ? (
+                    <DatePickerFooter
+                      size={size}
+                      activeFooter={activeFooter}
+                      headerTitle={headerTitle}
+                      onFooterClick={handleFooterClick}
+                      onClear={handleClear}
+                    />
+                  ) : null
+                }
                 onChange={handleChange}
                 value={selectedDate}
                 minimumDate={
                   fromToday
                     ? getToday()
                     : minimumDate
-                    ? getMinOrMaxDate(minimumDate)
+                    ? getMinOrMaxDate(minimumDate, type)
                     : null
                 }
-                maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
+                maximumDate={
+                  maximumDate ? getMinOrMaxDate(maximumDate, type) : null
+                }
                 shouldHighlightWeekends
                 calendarClassName={`${size}-calendar`}
                 calendarTodayClassName="today-date"
@@ -530,12 +438,12 @@ const CustomDatePicker = (props) => {
               />
             </OnClickAway>
           )}
-        </Styled.CalendarConatiner>
+        </Styled.CalendarContainer>
       );
 
     default:
       return (
-        <Styled.CalendarConatiner hasFooter={!!hasFooter}>
+        <Styled.CalendarContainer hasFooter={!!hasFooter}>
           <DatePicker
             renderInput={({ ref }) => (
               <Input
@@ -554,17 +462,29 @@ const CustomDatePicker = (props) => {
                 ref={mergeRefs(inputRef, ref)}
               />
             )}
-            renderFooter={() => (hasFooter ? <Footer /> : null)}
+            renderFooter={() =>
+              hasFooter ? (
+                <DatePickerFooter
+                  size={size}
+                  activeFooter={activeFooter}
+                  headerTitle={headerTitle}
+                  onFooterClick={handleFooterClick}
+                  onClear={handleClear}
+                />
+              ) : null
+            }
             onChange={handleChange}
             value={selectedDate}
             minimumDate={
               fromToday
                 ? getToday()
                 : minimumDate
-                ? getMinOrMaxDate(minimumDate)
+                ? getMinOrMaxDate(minimumDate, type)
                 : null
             }
-            maximumDate={maximumDate ? getMinOrMaxDate(maximumDate) : null}
+            maximumDate={
+              maximumDate ? getMinOrMaxDate(maximumDate, type) : null
+            }
             shouldHighlightWeekends
             calendarClassName={`${size}-calendar`}
             calendarTodayClassName="today-date"
@@ -576,105 +496,19 @@ const CustomDatePicker = (props) => {
             locale={getLocale(type)}
             {...rest}
           />
-        </Styled.CalendarConatiner>
+        </Styled.CalendarContainer>
       );
   }
 };
 
-//! Checks year, month and day values to insure that user
-//! do not exceed from logic.
-function limit(val, max, type) {
-  if (val.length === 1 && val[0] > max[0]) {
-    val = '0' + val;
-  }
-
-  if (val.length === 2) {
-    if (Number(val) === 0) {
-      val = '01';
-
-      //this can happen when user paste number
-    } else if (val > max) {
-      val = max;
-    }
-  }
-
-  if (val.length === 4) {
-    if (type === 'jalali') {
-      if (Number(val) < 1350) {
-        val = '1350';
-      }
-      if (Number(val) > 1450) {
-        val = '1450';
-      }
-    }
-    if (type === '‫‪gregorian‬‬') {
-      if (Number(val) < 1970) {
-        val = '1970';
-      }
-      if (Number(val) > 2070) {
-        val = '2070';
-      }
-    }
-  }
-
-  return val;
-}
-
-//? when user types date to input field.
-//! Adds some custom mask to input value.
-function customFormat(val, type, range) {
-  val = (val.match(/\d/g) || ['']).join('');
-  let maxYear = type === 'jalali' ? '1450' : '2070';
-  let formDateLabel = type === 'jalali' ? 'از تاریخ: ' : 'From: ';
-  let toDateLabel = type === 'jalali' ? '  تا تاریخ: ' : '  To: ';
-  let atDateLabel = type === 'jalali' ? 'تاریخ: ' : 'Date: ';
-
-  let fromYear = limit(val.substring(0, 4), maxYear, type);
-  let fromMonth = limit(val.substring(4, 6), '12');
-  let fromDay = limit(val.substring(6, 8), '30');
-
-  let toYear = limit(val.substring(8, 12), maxYear, type);
-  let toMonth = limit(val.substring(12, 14), '12');
-  let toDay = limit(val.substring(14, 16), '30');
-
-  //! See if "range" is true or false and
-  //! format the input value based on its value
-  if (range) {
-    if (val.length > 8) {
-      return (
-        formDateLabel +
-        fromYear +
-        (fromMonth.length ? '/' + fromMonth : '') +
-        (fromDay.length ? '/' + fromDay : '') +
-        toDateLabel +
-        (toYear.length ? toYear : '') +
-        (toMonth.length ? '/' + toMonth : '') +
-        (toDay.length ? '/' + toDay : '')
-      );
-    } else {
-      return (
-        formDateLabel +
-        fromYear +
-        (fromMonth.length ? '/' + fromMonth : '') +
-        (fromDay.length ? '/' + fromDay : '')
-      );
-    }
-  }
-  return (
-    atDateLabel +
-    fromYear +
-    (fromMonth.length ? '/' + fromMonth : '') +
-    (fromDay.length ? '/' + fromDay : '')
-  );
-}
-
 CustomDatePicker.defaultProps = {
+  label: window?.RVDic.SelectN.replace('[n]', window?.RVDic.Date) || '',
   range: false,
   clearButton: false,
   shouldClear: false,
   size: 'medium',
   format: 'YYYY/MM/DD',
-  headerTitle: 'header title',
+  headerTitle: 'Header Title',
 };
 
 CustomDatePicker.displayName = 'CustomDatePicker';
