@@ -12,7 +12,7 @@ import {
   ActionsCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import EditRowMenu from './cellTypes/action/EditRowMenu';
+import RowEditMenu from './cellTypes/action/RowEditMenu';
 import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
@@ -22,13 +22,15 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => <ActionsCell cell={cell} />,
-        Footer: (footer) => <EditRowMenu {...footer} header={header} isNew />,
+        Footer: (footer) => <RowEditMenu {...footer} header={header} isNew />,
       };
     case cellTypes.index:
       return {
         sticky: 'left',
         Cell: (cell) => (
-          <Styled.TableRowIndex>{cell?.row.index + 1}</Styled.TableRowIndex>
+          <Styled.TableRowIndex type="h4">
+            {cell?.row.index + 1}
+          </Styled.TableRowIndex>
         ),
         Footer: () => <div>{header.title}</div>,
       };

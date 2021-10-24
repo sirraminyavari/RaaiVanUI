@@ -1,12 +1,7 @@
 import styled from 'styled-components';
-import { TC_DEFAULT } from 'constant/Colors';
-import {
-  CV_DISTANT,
-  CV_GRAY,
-  CV_GRAY_DARK,
-  CV_WHITE,
-  TCV_WARM,
-} from 'constant/CssVariables';
+import { C_GRAY_DARK, TC_DEFAULT } from 'constant/Colors';
+import { CV_DISTANT, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import Heading from 'components/Heading/Heading';
 
 const { RV_Float } = window;
 
@@ -31,8 +26,9 @@ export const EmptyCellView = styled.div`
   padding-${RV_Float}: 0.7rem;
 `;
 
-export const CellView = styled.span`
-  color: ${CV_GRAY_DARK};
+export const CellView = styled(Heading).attrs({
+  className: `${C_GRAY_DARK}`,
+})`
   text-align: justify;
   text-justify: inter-word;
 `;

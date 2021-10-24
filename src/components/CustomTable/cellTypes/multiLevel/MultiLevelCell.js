@@ -187,7 +187,9 @@ const MultiLevelCell = (props) => {
   //! Show mode and not new.
   if (!canEdit && !isNew) {
     return !!SelectedItems?.length ? (
-      <Styled.CellView>{selectedItemsName.join(' / ')}</Styled.CellView>
+      <Styled.CellView type="h4">
+        {selectedItemsName.join(' / ')}
+      </Styled.CellView>
     ) : (
       <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );

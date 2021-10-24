@@ -27,9 +27,9 @@ const UsersList = (props) => {
                 className="table-user-avatar"
                 userImage={IconURL}
               />
-              <Styled.UserLinkWrapper>
+              <Styled.UserLinkHeading type="h4">
                 {decodeBase64(FullName)}
-              </Styled.UserLinkWrapper>
+              </Styled.UserLinkHeading>
             </Styled.UserInfoWrapper>
             {canEdit && (
               <Styled.CloseIconWrapper onClick={() => handleRemoveUser(user)}>

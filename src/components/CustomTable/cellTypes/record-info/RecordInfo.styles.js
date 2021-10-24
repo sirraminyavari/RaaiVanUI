@@ -1,5 +1,5 @@
 import { CV_DISTANT } from 'constant/CssVariables';
-import { FLEX_CEC, FLEX_RCB, FLEX_RCE } from 'constant/StyledCommonCss';
+import { FLEX_CEC, FLEX_RCE } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 export const RecordInfoContainer = styled.div`

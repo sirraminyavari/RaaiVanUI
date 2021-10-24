@@ -89,9 +89,9 @@ const SelectCell = (props) => {
           defaultValues
             ?.map((x) => x?.label)
             .map((item, key) => (
-              <Styled.SelectedItemWrapper key={key}>
+              <Styled.SelectedItem type="h4" key={key}>
                 {item}
-              </Styled.SelectedItemWrapper>
+              </Styled.SelectedItem>
             ))
         ) : (
           <Heading style={{ color: CV_DISTANT }} type="h6">

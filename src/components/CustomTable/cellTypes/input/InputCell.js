@@ -56,7 +56,7 @@ const InputCell = (props) => {
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
     return !!inputValue ? (
-      <Styled.CellView>{inputValue}</Styled.CellView>
+      <Styled.CellView type="h4">{inputValue}</Styled.CellView>
     ) : (
       <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import RowActions from './RowAction';
-import EditRowMenu from './EditRowMenu';
+import RowActionMenu from './RowActionMenu';
+import RowEditMenu from './RowEditMenu';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
@@ -21,7 +21,7 @@ const ActionsCell = ({ cell }) => {
 
   if (cell?.editingRow === cell?.row?.original?.id) {
     //! Show Edit mode menu.
-    child = <EditRowMenu cell={cell} />;
+    child = <RowEditMenu cell={cell} />;
   } else {
     //! Show Actions Menu.
     child = (
@@ -30,7 +30,7 @@ const ActionsCell = ({ cell }) => {
         onClick={handleShowActions}
         {...cell.dragHandleProps}>
         <DragIcon />
-        {showActions && <RowActions cell={cell} />}
+        {showActions && <RowActionMenu cell={cell} />}
       </Styled.RowDragHandleWrapper>
     );
   }

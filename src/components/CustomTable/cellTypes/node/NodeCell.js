@@ -128,11 +128,11 @@ const NodeCell = (props) => {
               <Styled.NodeInfoWrapper
                 editable={props?.header?.options?.editable}>
                 <OpenMailIcon color={CV_DISTANT} size={25} />
-                <Styled.NodeLinkWrapper>
+                <Styled.NodeLinkHeading type="h4">
                   <Link to={getURL('Node', { NodeID: node?.NodeID })}>
                     {decodeBase64(node?.Name)}
                   </Link>
-                </Styled.NodeLinkWrapper>
+                </Styled.NodeLinkHeading>
               </Styled.NodeInfoWrapper>
               {canEdit && (
                 <Styled.CloseIconWrapper

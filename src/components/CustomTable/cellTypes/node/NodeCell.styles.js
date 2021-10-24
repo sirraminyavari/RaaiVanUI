@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
 import {
@@ -15,7 +15,9 @@ import {
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
-const { RV_Float } = window;
+import Heading from 'components/Heading/Heading';
+
+const { RV_Float, RV_RevFloat } = window;
 
 export const NodeCellContainer = styled.div`
   width: 100%;
@@ -64,7 +66,7 @@ export const NodeItemContainer = styled.div.attrs({
 export const NodeInfoWrapper = styled.div`
   width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
-  margin-left: 0.2rem;
+  margin-${RV_RevFloat}: 0.2rem;
   ${FLEX_RCS}
 
   a:active {
@@ -72,16 +74,15 @@ export const NodeInfoWrapper = styled.div`
   }
 `;
 
-export const NodeLinkWrapper = styled.div`
+export const NodeLinkHeading = styled(Heading)`
   width: 100%;
   height: 100%;
-  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 0.3rem;
-  margin-right: 0.3rem;
-  border-right: 1px solid ${CV_DISTANT};
+  margin-${RV_Float}: 0.3rem;
+  border-${RV_Float}: 1px solid ${CV_DISTANT};
   line-height: 2rem;
 
   a {

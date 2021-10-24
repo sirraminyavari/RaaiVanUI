@@ -87,8 +87,8 @@ export const FileLinkWrapper = styled.div.attrs({
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 0.3rem;
-  margin-right: 0.3rem;
-  border-right: 1px solid ${CV_DISTANT};
+  margin-${RV_Float}: 0.3rem;
+  border-${RV_Float}: 1px solid ${CV_DISTANT};
   line-height: 2rem;
 
   a {

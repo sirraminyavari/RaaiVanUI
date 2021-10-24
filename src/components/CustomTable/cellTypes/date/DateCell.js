@@ -102,7 +102,7 @@ const DateCell = (props) => {
     return (
       <>
         {!!DateValue ? (
-          <Heading style={{ color: CV_GRAY_DARK }} type="h5">
+          <Heading style={{ color: CV_GRAY_DARK }} type="h4">
             {showFormat}
           </Heading>
         ) : (
@@ -138,7 +138,7 @@ const DateCell = (props) => {
       )}>
       {dateValue ? (
         <Styled.DateCellContainer>
-          <Heading className="table-date-edit-title" type="h5">
+          <Heading className="table-date-edit-title" type="h4">
             {showFormat}
           </Heading>
           <CalendarIcon color={TCV_DEFAULT} size={20} />

@@ -1,9 +1,7 @@
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import BinaryButton from 'components/Buttons/binary/BinaryButton';
 import * as Styled from './BinaryCell.styles';
-import { decodeBase64, toJSON } from 'helpers/helpers';
-import Heading from 'components/Heading/Heading';
-import { CV_GRAY_DARK } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
 
 const BinaryCell = (props) => {
   // console.log('Binary cell ', props);
@@ -58,9 +56,7 @@ const BinaryCell = (props) => {
     return (
       <>
         {TextValue ? (
-          <Heading style={{ color: CV_GRAY_DARK }} type="h5">
-            {TextValue}
-          </Heading>
+          <Styled.CellView type="h4">{TextValue}</Styled.CellView>
         ) : (
           <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
         )}

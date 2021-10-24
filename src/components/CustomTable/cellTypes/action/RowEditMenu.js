@@ -3,7 +3,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CV_RED, TCV_WARM } from 'constant/CssVariables';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 
-const EditRowMenu = (props) => {
+const RowEditMenu = (props) => {
   const { cell, isNew, setShowFooter, addRow } = props;
 
   const rowId = cell?.row?.original?.id;
@@ -56,4 +56,4 @@ const EditRowMenu = (props) => {
   );
 };
 
-export default EditRowMenu;
+export default RowEditMenu;

@@ -15,8 +15,9 @@ import {
   TCV_VERYWARM,
   TCV_WARM,
 } from 'constant/CssVariables';
+import Heading from 'components/Heading/Heading';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RevFloat } = window;
 
 export const UsersCellWrapper = styled.div`
   width: 100%;
@@ -42,7 +43,7 @@ export const UserCellContainer = styled.div.attrs({
 export const UserInfoWrapper = styled.div`
   width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
-  margin-left: 0.2rem;
+  margin-${RV_RevFloat}: 0.2rem;
   ${FLEX_RCS}
   color: ${TCV_WARM};
 
@@ -59,14 +60,13 @@ export const UserInfoWrapper = styled.div`
   }
 `;
 
-export const UserLinkWrapper = styled.div`
+export const UserLinkHeading = styled(Heading)`
   width: 100%;
-  font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 0.3rem;
-  margin-right: 0.3rem;
+  margin-${RV_Float}: 0.3rem;
 
   a {
     color: ${TCV_VERYWARM};
