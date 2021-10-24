@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { useMediaQuery } from 'react-responsive';
+import { useDispatch } from 'react-redux';
 import * as Styled from 'views/Profile/Profile.styles';
 import Avatar from 'components/Avatar/Avatar';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
@@ -15,14 +16,19 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { API_Provider, validateFileUpload } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
-import { getCroppedImg, readFile, createImage } from './items/cropUtils';
+import { readFile, createImage } from 'components/ImageCropper/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import { CV_WHITE } from 'constant/CssVariables';
+import { loginSlice } from 'store/reducers/loginReducer';
+
+const { setAuthUser } = loginSlice.actions;
 
 const EditModal = lazy(() =>
-  import(/* webpackChunkName: "edit-profile-image-modal"*/ './items/EditModal')
+  import(
+    /* webpackChunkName: "edit-profile-image-modal"*/ 'components/ImageCropper/ImageCropperModal'
+  )
 );
 
 const MAX_IMAGE_SIZE = 5000000;
@@ -48,7 +54,8 @@ const ProfileMain = (props) => {
   const isMobileView = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-  const { RVDic, GlobalUtilities } = useWindow();
+  const { RVDic, GlobalUtilities, RVGlobal } = useWindow();
+  const dispatch = useDispatch();
 
   const coverImage = !!HighQualityCoverPhotoURL
     ? GlobalUtilities.add_timestamp(HighQualityCoverPhotoURL)
@@ -157,6 +164,17 @@ const ProfileMain = (props) => {
     }
   };
 
+  const handleOnUploadDone = (newImageURL) => {
+    setProfilePhoto(newImageURL);
+    dispatch(
+      setAuthUser({
+        ...RVGlobal?.CurrentUser,
+        ProfileImageURL: newImageURL,
+      })
+    );
+    handleCloseModal();
+  };
+
   //! Fires whenever user chooses an image for profile avatar photo.
   const handleAvatarSelect = async (event) => {
     const files = event.target.files;
@@ -204,9 +222,12 @@ const ProfileMain = (props) => {
         {editModal?.isShown && (
           <EditModal
             modalProps={editModal}
-            handleCloseModal={handleCloseModal}
-            setCroppedImage={setProfilePhoto}
-            id={UserID}
+            onCloseModal={handleCloseModal}
+            uploadId={UserID}
+            uploadType="ProfileImage"
+            onUploadDone={handleOnUploadDone}
+            cropShape="round"
+            showGrid={false}
           />
         )}
       </Suspense>
@@ -234,7 +255,7 @@ const ProfileMain = (props) => {
           </Styled.HeaderCoverLoader>
         ) : (
           <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
-            <AddImageIcon color="#fff" size={18} />
+            <AddImageIcon color={CV_WHITE} size={18} />
             <HiddenUploadFile
               ref={coverUploadRef}
               onFileChange={handleCoverSelect}
