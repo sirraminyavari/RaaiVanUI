@@ -9,7 +9,7 @@ export const ThumbContainer = styled.div`
 `;
 
 export const EditButton = styled.div.attrs({
-  className: 'rv-bg-color-default ',
+  className: 'rv-bg-color-default',
 })`
   position: absolute;
   height: 2rem;

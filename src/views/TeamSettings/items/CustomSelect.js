@@ -1,7 +1,6 @@
 import { components } from 'react-select';
 import * as Styled from './CustomSelectStyle';
 import ArrowHead from '../../../components/Icons/ArrowIcons/ArrowHead';
-import { ThumbnailControllerContainer } from './CustomSelectStyle';
 export const Indicator = (props) => {
   const { isFocused } = props;
 
