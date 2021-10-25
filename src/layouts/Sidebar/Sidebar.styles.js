@@ -17,15 +17,9 @@ import {
   BO_WHITE,
 } from 'constant/Colors';
 import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
-import { FLEX_RCC } from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RevFloat, RV_RTL, RVDic } = window;
-
-const FlexBetween = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
 
 const FlexCenter = css`
   display: flex;
@@ -149,7 +143,7 @@ const getHeaderWidth = (props) => {
 export const SidebarHeader = withTheme(styled.div.attrs({
   className: TBG_VERYWARM,
 })`
-  ${FlexBetween}
+  ${FLEX_RCB}
   height: 4rem;
   ${getHeaderWidth}
   z-index: 10;
@@ -175,7 +169,7 @@ export const ToggleArrow = styled.div.attrs({
 `;
 
 export const SidebarTitle = styled.div`
-  ${FlexBetween}
+${FLEX_RCB}
   font-size: 1rem;
   height: 3.7rem;
   margin-${RV_Float}: 0.5rem;
@@ -279,7 +273,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
   // ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}
   className: `${BO_RADIUS_QUARTER}`,
 }))`
-  ${FlexBetween}
+${FLEX_RCB}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
   // border-width: 1px;
   // border-style: solid;
@@ -308,7 +302,7 @@ export const MenuContainer = styled.div.attrs((props) => ({
 
 export const MenuTitleWrapper = styled.div`
   ${FLEX_RCC}
-  width: ${({ isManageContent }) => (isManageContent ? '80%' : '100%')};
+  width: ${({ isManageContent }) => (isManageContent ? '80%' : '90%')};
   padding: 0 0.5rem;
 `;
 
@@ -351,9 +345,10 @@ export const HighlightedTitle = styled.span`
 export const ListItemWrapper = styled.div.attrs({
   className: `${C_WHITE} ${BO_RADIUS_QUARTER}`,
 })`
-  ${FlexBetween}
+  ${FLEX_RCB}
   padding: 0 0.5rem;
   cursor: pointer;
+
   &:hover {
     background: rgb(43, 123, 228, 0.2);
   }
@@ -377,9 +372,7 @@ export const TickIconWrapper = styled.div`
 `;
 
 export const ActionsWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${FLEX_RCB}
   line-height: 0.5rem;
 `;
 
