@@ -22,6 +22,7 @@ const SelectCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
@@ -67,19 +68,24 @@ const SelectCell = (props) => {
   };
 
   const handleOnMenuClose = () => {
+    let id = isNew ? null : rowId;
+
     const textValue = !!multiSelect
       ? defaultValues.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
-    const selectCell = {
-      ...value,
-      TextValue: textValue,
-    };
 
-    if (isNew) {
-      //! Add new row.
-    } else {
-      onCellChange(rowId, columnId, selectCell, textValue);
-    }
+    let selectCell = isNew
+      ? {
+          ElementID: headerId,
+          TextValue: textValue,
+          Type: header?.dataType,
+        }
+      : {
+          ...value,
+          TextValue: textValue,
+        };
+
+    onCellChange(id, columnId, selectCell, textValue);
   };
 
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {

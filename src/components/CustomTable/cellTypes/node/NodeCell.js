@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Styled from './NodeCell.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -31,6 +31,7 @@ const NodeCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
@@ -46,20 +47,29 @@ const NodeCell = (props) => {
     !!isNew ? [] : initialItems
   );
 
-  const isSaveDisabled =
-    JSON.stringify(initialItems?.map((x) => x?.NodeID).sort()) ===
-      JSON.stringify(selectedItems?.map((y) => y?.NodeID).sort()) ||
-    !selectedItems?.length;
+  // const isSaveDisabled =
+  // JSON.stringify(initialItems?.map((x) => x?.NodeID).sort()) ===
+  //   JSON.stringify(selectedItems?.map((y) => y?.NodeID).sort()) ||
+  // !selectedItems?.length;
 
   const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
 
   const handleSaveCell = () => {
-    const nodeCell = {
-      ...value,
-      SelectedItems: selectedItems,
-      GuidItems: selectedItems,
-    };
-    onCellChange(rowId, columnId, nodeCell, selectedItems);
+    let id = isNew ? null : rowId;
+    let nodeCell = isNew
+      ? {
+          ElementID: headerId,
+          GuidItems: selectedItems,
+          SelectedItems: selectedItems,
+          Type: header?.dataType,
+        }
+      : {
+          ...value,
+          SelectedItems: selectedItems,
+          GuidItems: selectedItems,
+        };
+
+    onCellChange(id, columnId, nodeCell, selectedItems);
   };
 
   const handleSelectButtonClick = () => {
@@ -91,7 +101,7 @@ const NodeCell = (props) => {
         ID: NodeID,
         NodeID,
         IconURL,
-        Name,
+        Name: decodeBase64(Name),
       };
     });
 
@@ -148,11 +158,13 @@ const NodeCell = (props) => {
         </Styled.NodeListWrapper>
         {canEdit && (
           <Button
-            disable={isSaveDisabled}
+            disable={false}
             classes="table-node-cell-save-button"
-            style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}
+            style={{ color: false ? CV_DISTANT : TCV_DEFAULT }}
             onClick={handleSaveCell}>
-            {RVDic.Save}
+            <Styled.SaveButtonHeading type="h4">
+              {RVDic.Save}
+            </Styled.SaveButtonHeading>
           </Button>
         )}
       </Styled.ItemsWrapper>
@@ -162,7 +174,9 @@ const NodeCell = (props) => {
           onClick={handleSelectButtonClick}>
           <Styled.ItemSelectionButton>
             <FolderIcon size={18} color={TCV_DEFAULT} />
-            <span>انتخاب آیتم</span>
+            <Styled.ItemSelectionHeading type="h4">
+              انتخاب آیتم
+            </Styled.ItemSelectionHeading>
           </Styled.ItemSelectionButton>
         </Button>
       )}

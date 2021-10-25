@@ -40,9 +40,9 @@ const FormField = (props) => {
   const { FormID } = toJSON(decodeInfo);
 
   const [rows, setRows] = useState([]);
-  const [newRow, setNewRow] = useState([]);
   const [tableContent, setTableContent] = useState([]);
   const beforeEditRowsRef = useRef(null);
+  const newRowRef = useRef({});
   // const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const FormField = (props) => {
         return { disableSortBy: true };
 
       case cellTypes.user:
-        return { disableSortBy: true, minWidth: 200 };
+        return { disableSortBy: true, minWidth: 260 };
 
       case cellTypes.node:
         return { disableSortBy: true, minWidth: 260 };
@@ -129,8 +129,8 @@ const FormField = (props) => {
   );
 
   const updateCellData = (rowId, columnId, cellData, cellValue) => {
+    console.log(cellData, 'update');
     if (!!rowId) {
-      console.log(cellData, 'edit');
       setRows((old) =>
         old.map((row) => {
           if (row?.id === rowId) {
@@ -144,9 +144,8 @@ const FormField = (props) => {
       );
     } else {
       //! New row.
-      console.log(cellData, 'new');
-
-      setNewRow((oldValue) => ({ ...oldValue, [columnId]: cellData }));
+      let newRowObject = { ...newRowRef.current, [columnId]: cellData };
+      newRowRef.current = newRowObject;
     }
   };
 
@@ -189,6 +188,7 @@ const FormField = (props) => {
   const onEditCancel = () => {
     setRows(beforeEditRowsRef.current);
     beforeEditRowsRef.current = null;
+    newRowRef.current = {};
   };
 
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
@@ -218,8 +218,6 @@ const FormField = (props) => {
     removeFormInstance(rowId)
       .then((response) => {
         if (response?.Succeed) {
-          setRows((old) => old.filter((row, index) => index !== rowIndex));
-
           const message = 'ردیف حذف شد';
           const toastId = `delete-${rowId}`;
           UndoToast({
@@ -234,6 +232,8 @@ const FormField = (props) => {
               />
             ),
           });
+
+          setRows((old) => old.filter((row, index) => index !== rowIndex));
         }
       })
       .catch((error) => console.log(error));
@@ -251,24 +251,23 @@ const FormField = (props) => {
   const memoizedReorderRow = useCallback(reorderRow, [rows]);
 
   const addRow = () => {
+    console.log(newRowRef.current, 'add before');
     createFormInstance(FormID, elementId)
       .then((response) => {
         if (response?.Succeed) {
           const instanceId = response?.Instance?.InstanceID;
-          const extendedElements = Object.values(newRow).map((element) => {
-            return { ...element, InstanceID: instanceId };
-          });
-
-          console.log(
-            response,
-            extendedElements,
-            Object.values(newRow),
-            'add row'
+          const extendedElements = Object.values(newRowRef.current).map(
+            (element) => {
+              return { ...element, InstanceID: instanceId };
+            }
           );
+
+          console.log(response, newRowRef.current, 'add after');
 
           saveForm(extendedElements)
             .then((response) => {
               getFormData();
+              newRowRef.current = {};
             })
             .catch((error) => console.log(error, 'save row error'));
         }

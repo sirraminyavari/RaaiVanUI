@@ -1,10 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import AddNewUser from './AddNewUser';
+import Button from 'components/Buttons/Button';
+import useWindow from 'hooks/useWindowContext';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 
 const UserCell = (props) => {
+  const { RVDic } = useWindow();
+
   const {
     isNew,
     row,
@@ -14,16 +19,24 @@ const UserCell = (props) => {
     value,
     editable: isTableEditable,
     header,
+    data,
   } = props;
-
-  const { SelectedItems: users, Info } = value || {};
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
-  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+  //! Get info for new row.
+  const columnInfo = data?.[0]?.[columnId]?.Info;
+  const { SelectedItems: initialUsers, Info } = value || {};
+
+  const { MultiSelect: isMultiSelect } = Info || columnInfo || {};
+
+  const [users, setUsers] = useState(isNew ? [] : initialUsers);
+
+  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
 
   const normalizeSelectedUsers =
     users?.length > 0
@@ -39,30 +52,40 @@ const UserCell = (props) => {
    * @param {Object[]} users -Users List to update.
    */
   const updateUserCell = (users) => {
-    const userCell = {
-      ...value,
-      GuidItems: users,
-      SelectedItems: users,
-    };
+    let id = isNew ? null : rowId;
+    let userCell = isNew
+      ? {
+          ElementID: headerId,
+          GuidItems: users,
+          SelectedItems: users,
+          Type: header?.dataType,
+        }
+      : {
+          ...value,
+          GuidItems: users,
+          SelectedItems: users,
+        };
 
     //! Update cell.
-    onCellChange(rowId, columnId, userCell, users);
+    onCellChange(id, columnId, userCell, users);
   };
 
   const handleAddNewPerson = useCallback((person) => {
     const { avatarUrl: IconURL, id: ID, name: FullName } = person;
     let newUser = { ID, UserID: ID, FullName, IconURL };
 
-    let userAlreadyExists = users.some((user) => user?.ID === ID);
+    setUsers((oldUserList) => {
+      let userAlreadyExists = oldUserList?.some((user) => user?.ID === ID);
 
-    //! Prepare new users list;
-    const newUsersArray = Info?.MultiSelect
-      ? userAlreadyExists
-        ? users
-        : [...users, newUser]
-      : [newUser];
+      //! Prepare new users list;
+      const newUsersArray = isMultiSelect
+        ? userAlreadyExists
+          ? oldUserList
+          : [...oldUserList, newUser]
+        : [newUser];
 
-    updateUserCell(newUsersArray);
+      return newUsersArray;
+    });
   }, []);
 
   const handleRemoveUser = useCallback((person) => {
@@ -72,17 +95,36 @@ const UserCell = (props) => {
     updateUserCell(newUsersArray);
   }, []);
 
+  const handleSaveUsers = () => {
+    updateUserCell(users);
+  };
+
   return (
-    <Styled.UsersCellWrapper>
-      <UsersList
-        users={users}
-        onRemoveUser={handleRemoveUser}
-        canEdit={canEdit}
-      />
-      {!users?.length && !canEdit && !isNew && (
-        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
-      {(canEdit || isNew) && (
+    <Styled.UsersCellContainer>
+      <Styled.UsersWrapper>
+        <Styled.UserListWrapper isEditMode={canEdit}>
+          <UsersList
+            users={users}
+            onRemoveUser={handleRemoveUser}
+            canEdit={canEdit}
+          />
+          {!users?.length && (
+            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          )}
+        </Styled.UserListWrapper>
+        {canEdit && (
+          <Button
+            disable={false}
+            classes="table-user-cell-save-button"
+            style={{ color: false ? CV_DISTANT : TCV_DEFAULT }}
+            onClick={handleSaveUsers}>
+            <Styled.SaveButtonHeading type="h4">
+              {RVDic.Save}
+            </Styled.SaveButtonHeading>
+          </Button>
+        )}
+      </Styled.UsersWrapper>
+      {canEdit && (
         <PeoplePicker
           onByMe={() => {}}
           onBlur={() => {}}
@@ -90,11 +132,11 @@ const UserCell = (props) => {
           isByMe={false}
           pickedPeople={isNew ? normalizeSelectedUsers : []}
           onVisible={() => {}}
-          multi={Info?.MultiSelect}
+          multi={isMultiSelect}
           buttonComponent={<AddNewUser />}
         />
       )}
-    </Styled.UsersCellWrapper>
+    </Styled.UsersCellContainer>
   );
 };
 

@@ -1,14 +1,22 @@
-import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import Heading from 'components/Heading/Heading';
+import UserIcon from 'components/Icons/UserIconIo';
 import * as Styled from './UserCell.styles';
-import { TCV_WARM } from 'constant/CssVariables';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import Button from 'components/Buttons/Button';
+import useWindow from 'hooks/useWindowContext';
 
 const AddNewUser = ({ onClick }) => {
+  const { RVDic } = useWindow();
+  const buttonTitle = RVDic?.SelectN?.replace('[n]', RVDic?.User);
+
   return (
-    <Styled.AddNewUser onClick={onClick}>
-      <PlusIcon size={20} color={TCV_WARM} />
-      <Heading type="h5">افزودن کاربر</Heading>
-    </Styled.AddNewUser>
+    <Button classes="table-user-cell-select-button" onClick={onClick}>
+      <Styled.ItemSelectionButton>
+        <UserIcon size={22} color={TCV_DEFAULT} />
+        <Styled.ItemSelectionHeading type="h4">
+          {buttonTitle}
+        </Styled.ItemSelectionHeading>
+      </Styled.ItemSelectionButton>
+    </Button>
   );
 };
 

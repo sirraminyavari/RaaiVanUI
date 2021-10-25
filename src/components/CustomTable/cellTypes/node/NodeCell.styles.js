@@ -27,7 +27,7 @@ export const NodeCellContainer = styled.div`
   .table-node-cell-select-button {
     background-color: inherit;
     color: ${TCV_DEFAULT};
-    width: 8rem;
+    width: 9rem;
     height: 1.8rem;
     border-radius: 1rem;
   }
@@ -48,7 +48,9 @@ export const ItemsWrapper = styled.div`
 `;
 
 export const NodeListWrapper = styled.div`
-  width: ${({ isEditMode }) => (isEditMode ? '75%' : '100%')};
+  width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
+  max-width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
+  min-width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
   ${FLEX_CCC}
   gap: 0.2rem;
 `;
@@ -111,6 +113,14 @@ export const AddNewNode = styled.div`
 export const ItemSelectionButton = styled.div`
   ${FLEX_RCC}
   gap: 0.5rem;
+`;
+
+export const ItemSelectionHeading = styled(Heading)`
+  color: ${TCV_DEFAULT};
+`;
+
+export const SaveButtonHeading = styled(Heading)`
+  color: ${TCV_DEFAULT};
 `;
 
 export const EmptyCellView = styled.div`

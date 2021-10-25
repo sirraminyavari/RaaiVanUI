@@ -19,6 +19,7 @@ const BinaryCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
@@ -34,22 +35,26 @@ const BinaryCell = (props) => {
   const binaryOptions = { yes: decodeBase64(Yes), no: decodeBase64(No) };
 
   const handleToggle = (toggleValue) => {
-    // console.log(toggleValue);
     const textValue = toggleValue ? binaryOptions.yes : binaryOptions.no;
-    const binaryCell = {
-      ...value,
-      BitValue: toggleValue,
-      TextValue: textValue,
-    };
 
-    if (isNew) {
-      //! Add new row.
-    } else {
-      onCellChange(rowId, columnId, binaryCell, {
-        value: toggleValue,
-        label: textValue,
-      });
-    }
+    let id = isNew ? null : rowId;
+    let binaryCell = isNew
+      ? {
+          ElementID: headerId,
+          BitValue: toggleValue,
+          TextValue: textValue,
+          Type: header?.dataType,
+        }
+      : {
+          ...value,
+          BitValue: toggleValue,
+          TextValue: textValue,
+        };
+
+    onCellChange(id, columnId, binaryCell, {
+      toggleValue,
+      textValue,
+    });
   };
 
   if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {

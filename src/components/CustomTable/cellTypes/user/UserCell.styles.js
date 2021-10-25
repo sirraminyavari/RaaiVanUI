@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_CIRCLE, BO_RADIUS_QUARTER } from 'constant/constants';
 import {
-  FLEX_CCB,
   FLEX_CCC,
+  FLEX_CSA,
   FLEX_RCB,
   FLEX_RCC,
   FLEX_RCS,
+  FLEX_REB,
 } from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
@@ -19,10 +20,18 @@ import Heading from 'components/Heading/Heading';
 
 const { RV_Float, RV_RevFloat } = window;
 
-export const UsersCellWrapper = styled.div`
+export const UsersCellContainer = styled.div`
   width: 100%;
-  ${FLEX_CCB}
-  gap: 1rem;
+  ${FLEX_CSA}
+  gap: 0.5rem;
+
+  .table-user-cell-select-button {
+    background-color: inherit;
+    color: ${TCV_DEFAULT};
+    width: 9rem;
+    height: 1.8rem;
+    border-radius: 1rem;
+  }
 `;
 
 export const UsersListWrapper = styled.div`
@@ -96,4 +105,39 @@ export const EmptyCellView = styled.div`
   width: 100%;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
+`;
+
+export const ItemSelectionButton = styled.div`
+  ${FLEX_RCC}
+  gap: 0.5rem;
+`;
+
+export const ItemSelectionHeading = styled(Heading)`
+  color: ${TCV_DEFAULT};
+`;
+
+export const UsersWrapper = styled.div`
+  width: 100%;
+  ${FLEX_REB}
+  gap: 0.5rem;
+
+  .table-user-cell-save-button {
+    background-color: inherit;
+    padding: 0.3rem;
+    height: 1.7rem;
+    width: 7rem;
+    border-radius: 1rem;
+  }
+`;
+
+export const SaveButtonHeading = styled(Heading)`
+  color: ${TCV_DEFAULT};
+`;
+
+export const UserListWrapper = styled.div`
+  width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
+  max-width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
+  min-width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
+  ${FLEX_CCC}
+  gap: 0.2rem;
 `;

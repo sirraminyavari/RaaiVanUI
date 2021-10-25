@@ -1,6 +1,6 @@
 import {
   DateCell,
-  InputCell,
+  TextCell,
   SelectCell,
   RecordInfoCell,
   FileCell,
@@ -10,6 +10,7 @@ import {
   MultiLevelCell,
   BinaryCell,
   ActionsCell,
+  NumberCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
 import RowEditMenu from './cellTypes/action/RowEditMenu';
@@ -37,14 +38,14 @@ const provideCell = (header) => {
 
     case cellTypes.text:
       return {
-        Cell: (row) => <InputCell {...row} header={header} />,
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+        Cell: (row) => <TextCell {...row} header={header} />,
+        Footer: (footer) => <TextCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.number:
       return {
-        Cell: (row) => <InputCell {...row} header={header} isNumber />,
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+        Cell: (row) => <NumberCell {...row} header={header} />,
+        Footer: (footer) => <NumberCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.date:

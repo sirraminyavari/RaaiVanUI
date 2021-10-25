@@ -50,19 +50,16 @@ const DateCell = (props) => {
     const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
 
-    if (isNew) {
-      //! Create new date cell.
-      const dateCell = {
-        ElementID: headerId,
-        DateValue: dateString,
-        Filled: true,
-        Type: header?.dataType,
-      };
-      onCellChange(null, columnId, dateCell, date);
-    } else {
-      const dateCell = { ...value, DateValue: dateString };
-      onCellChange(rowId, columnId, dateCell, date);
-    }
+    let id = isNew ? null : rowId;
+    let dateCell = isNew
+      ? {
+          ElementID: headerId,
+          DateValue: dateString,
+          Type: header?.dataType,
+        }
+      : { ...value, DateValue: dateString };
+
+    onCellChange(id, columnId, dateCell, date);
   };
 
   if (isNew) {

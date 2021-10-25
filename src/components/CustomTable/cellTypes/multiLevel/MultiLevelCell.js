@@ -26,6 +26,7 @@ const MultiLevelCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
@@ -41,7 +42,10 @@ const MultiLevelCell = (props) => {
   );
 
   const { Levels, NodeType } = Info || columnInfo || {};
-  const { ID, Name } = NodeType || {};
+  const {
+    ID,
+    //  Name
+  } = NodeType || {};
 
   const levels = Levels?.map((level) => decodeBase64(level));
 
@@ -74,43 +78,50 @@ const MultiLevelCell = (props) => {
   }, [isRowEditing]);
 
   useEffect(() => {
-    //! If true, All select field are filled.
     let levelsArray = Object.values(levelValues);
+
+    //! If true, All select field are filled.
     const isCompleted = levelsArray?.every((item) => item.value !== null);
 
     if (isCompleted) {
-      if (isNew) {
-        //! New row functionality
-      } else {
-        let selectedItems = levelsArray?.map((level) => {
-          let { Name, NodeID } = level.value;
-          return {
-            AdditionalID: '',
-            Code: '',
-            ID: NodeID,
-            Name: decodeBase64(Name),
-            NodeID,
-          };
-        });
-        const multiLevelCell = {
-          ...value,
-          SelectedItems: selectedItems,
-          GuidItems: selectedItems,
+      let id = isNew ? null : rowId;
+      let selectedItems = levelsArray?.map((level) => {
+        let { Name, NodeID } = level.value;
+        return {
+          AdditionalID: '',
+          Code: '',
+          ID: NodeID,
+          Name: decodeBase64(Name),
+          NodeID,
         };
-        onCellChange(rowId, columnId, multiLevelCell, selectedItems);
-      }
+      });
+
+      let multiLevelCell = isNew
+        ? {
+            ElementID: headerId,
+            SelectedItems: selectedItems,
+            GuidItems: selectedItems,
+            Type: header?.dataType,
+          }
+        : {
+            ...value,
+            SelectedItems: selectedItems,
+            GuidItems: selectedItems,
+          };
+
+      onCellChange(id, columnId, multiLevelCell, selectedItems);
     }
   }, [levelValues]);
 
   //! Calls on input change.
   const handleChange = (selectedOption, levelObject) => {
     const {
-      prevLevel,
+      // prevLevel,
       currentLevel: level,
-      nextLevel,
+      // nextLevel,
       step: currentStep,
-      value,
-      options,
+      // value,
+      // options,
     } = levelObject;
 
     //! Array of next levels name.
