@@ -8,6 +8,8 @@ import {
   ThumbnailOption,
   ThumbnailControl,
 } from './items/CustomSelect';
+import TextArea from '../../components/Inputs/TextArea/TextArea';
+import AnimatedTextArea from './items/AnimatedTextArea';
 
 const TeamSettings = (props) => {
   const {
@@ -79,6 +81,8 @@ const TeamSettings = (props) => {
               components={{ DropdownIndicator: Indicator }}
             />
           </Styled.SelectWrapper>
+
+          <AnimatedTextArea label={'درباره تیم'} rtl={rtl} />
         </Styled.FormWrapper>
       </Styled.TeamSettingsContainer>
     </Styled.TeamSettingsCardWrapper>
