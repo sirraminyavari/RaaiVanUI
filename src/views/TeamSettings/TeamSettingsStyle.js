@@ -47,8 +47,9 @@ export const TeamSubtitle = styled.div`
   font-size: 1.12rem;
 `;
 
-export const SelectWrapper = styled.div`
-  padding: 2px;
+export const FieldWrapper = styled.div`
+  margin-top: 2rem;
+  padding: 0 0.2rem;
 `;
 
 export const SelectTitle = styled.div`
@@ -56,7 +57,14 @@ export const SelectTitle = styled.div`
   font-size: 1rem;
   color: var(--rv-gray-color-dark);
   font-weight: 500;
-  margin: 2rem 0 0.5rem 0;
+  margin: 0 0 0.5rem 0;
+`;
+
+export const SettingActionBar = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4rem;
+  padding: 0 0.2rem;
 `;
 
 export const Select = styled(ReactSelect)`
@@ -71,7 +79,7 @@ export const Select = styled(ReactSelect)`
   }
 
   .select__control:hover {
-    border-color: var(--rv-color);
+    border-color: var(--rv-color-distant);
   }
 
   .select__control--is-focused {

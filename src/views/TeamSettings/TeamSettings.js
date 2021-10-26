@@ -2,14 +2,16 @@ import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Heading from '../../components/Heading/Heading';
-import ThumbMaker from './items/ThumbMaker';
+import TeamThumbEdit from './items/TeamThumbEdit';
 import {
   Indicator,
   ThumbnailOption,
   ThumbnailControl,
 } from './items/CustomSelect';
-import TextArea from '../../components/Inputs/TextArea/TextArea';
 import AnimatedTextArea from './items/AnimatedTextArea';
+import ImageCropper from '../../components/ImageCropper/ImageCropper';
+import Button from '../../components/Buttons/Button';
+import { SettingActionBar } from './TeamSettingsStyle';
 
 const TeamSettings = (props) => {
   const {
@@ -18,6 +20,8 @@ const TeamSettings = (props) => {
     imgUrl,
     fieldOfExpertiseOption,
     teamOwnerOptions,
+    languageOption,
+    calOption,
     uploadThumbnail,
   } = useTeamSettings(props);
 
@@ -29,9 +33,9 @@ const TeamSettings = (props) => {
         <Heading type={'h1'}>{'تنظیمات تیم'}</Heading>
 
         <Styled.FormWrapper>
-          <ThumbMaker upload={uploadThumbnail}>
+          <TeamThumbEdit upload={uploadThumbnail}>
             <Styled.TeamThumbnail src={imgUrl}></Styled.TeamThumbnail>
-          </ThumbMaker>
+          </TeamThumbEdit>
 
           <Styled.TeamTitle> نام تیم</Styled.TeamTitle>
 
@@ -39,7 +43,7 @@ const TeamSettings = (props) => {
 
           <Styled.TeamSubtitle>وبسایت</Styled.TeamSubtitle>
 
-          <Styled.SelectWrapper>
+          <Styled.FieldWrapper>
             <Styled.SelectTitle>مالک تیم</Styled.SelectTitle>
             <Styled.Select
               classNamePrefix="select"
@@ -51,9 +55,9 @@ const TeamSettings = (props) => {
                 SingleValue: ThumbnailControl,
               }}
             />
-          </Styled.SelectWrapper>
+          </Styled.FieldWrapper>
 
-          <Styled.SelectWrapper>
+          <Styled.FieldWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
             <Styled.Select
               classNamePrefix="select"
@@ -61,28 +65,40 @@ const TeamSettings = (props) => {
               options={fieldOfExpertiseOption}
               components={{ DropdownIndicator: Indicator }}
             />
-          </Styled.SelectWrapper>
+          </Styled.FieldWrapper>
 
-          <Styled.SelectWrapper>
+          <Styled.FieldWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
             <Styled.Select
               classNamePrefix="select"
               isRtl={rtl}
               placeholder=""
+              options={languageOption}
               components={{ DropdownIndicator: Indicator }}
             />
-          </Styled.SelectWrapper>
+          </Styled.FieldWrapper>
 
-          <Styled.SelectWrapper>
+          <Styled.FieldWrapper>
             <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
             <Styled.Select
               classNamePrefix="select"
               placeholder=""
+              options={calOption}
               components={{ DropdownIndicator: Indicator }}
             />
-          </Styled.SelectWrapper>
+          </Styled.FieldWrapper>
 
-          <AnimatedTextArea label={'درباره تیم'} rtl={rtl} />
+          <Styled.FieldWrapper>
+            <AnimatedTextArea
+              autoresize={true}
+              label={'درباره تیم'}
+              rtl={rtl}
+            />
+          </Styled.FieldWrapper>
+
+          <Styled.SettingActionBar>
+            <Button type="primary">ذخیره</Button>
+          </Styled.SettingActionBar>
         </Styled.FormWrapper>
       </Styled.TeamSettingsContainer>
     </Styled.TeamSettingsCardWrapper>

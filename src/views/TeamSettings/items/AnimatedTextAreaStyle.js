@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const TextAreaWrapper = styled.div`
   width: 100%;
   position: relative;
+  height: ${({ height }) => height};
 `;
 
 export const TextAreaLabel = styled.label`
@@ -27,7 +28,8 @@ export const TextAreaInput = styled.textarea`
   padding: 1rem;
   font-size: 0.8rem;
   color: var(--rv-gray-color);
-  height: 6rem;
+  height: ${({ height }) => height};
+  resize: none;
 
   &:focus {
     border-color: var(--rv-color);

@@ -46,14 +46,14 @@ const useTeamSettings = (props) => {
         'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
     },
     {
-      value: 'seif',
-      label: 'خشایار جهانیان',
+      value: 'mollazadeh',
+      label: 'سپهر ملازاده',
       thumb:
         'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
     },
     {
-      value: 'sepehr',
-      label: 'خشایار جهانیان',
+      value: 'seif',
+      label: 'امیرحسین سیف',
       thumb:
         'https://i.guim.co.uk/img/media/1e1f70e4478c8195bacaeea84a8df3e3bdd5add9/0_87_5120_3072/master/5120.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=ddf6debeb9048510f33cc60f90f433dd',
     },
@@ -66,8 +66,23 @@ const useTeamSettings = (props) => {
     { value: 'edu', label: 'آموزش' },
   ];
 
-  const uploadThumbnail = (fd) => {
+  const languageOption = [
+    { value: 'fr', label: 'فارسی' },
+    { value: 'en', label: 'English' },
+    { value: 'ar', label: 'Arabic' },
+    { value: 'ku', label: 'Kurdish' },
+  ];
+
+  const calOption = [
+    { value: 'solar', label: 'هجری شمسی' },
+    { value: 'lunar', label: 'هجری قمری' },
+    { value: 'gregorian', label: 'میلادی (Gregorian)' },
+    { value: 'kurdish', label: 'گاه شماری کردی' },
+  ];
+
+  const uploadThumbnail = (fd, config) => {
     //
+    console.log(fd, config);
   };
 
   /**
@@ -80,6 +95,8 @@ const useTeamSettings = (props) => {
     imgUrl,
     fieldOfExpertiseOption,
     teamOwnerOptions,
+    languageOption,
+    calOption,
     uploadThumbnail,
   };
 };

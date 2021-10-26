@@ -1,36 +1,60 @@
 import * as Styled from './AnimatedTextAreaStyle';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const AnimatedTextArea = ({
   rtl,
   label,
   placeholder = ' ',
-  rows = 3,
+  rows = 5,
+  autoresize = false,
+  disabled = false,
+  value = '',
+  onChange,
   ...props
 }) => {
-  const wrapper = useRef(null);
-  const textarea = useRef(null);
+  const [text, setText] = useState(value);
+  const [wrapperHeight, setWrapperHeight] = useState(`auto`);
+  const [textAreaHeight, setTextAreaHeight] = useState(`auto`);
+
+  const textareaRef = useRef(null);
+
+  const changeHandler = (e) => {
+    if (autoresize) {
+      setTextAreaHeight('auto');
+      setWrapperHeight(`${textareaRef.current.scrollHeight}px`);
+    }
+
+    setText(e.target.value);
+
+    if (onChange) {
+      onChange(e);
+    }
+  };
 
   useEffect(() => {
-    if (textarea) {
-      textarea.current.addEventListener('resize', (e) => {
-        console.log(e);
-      });
+    if (autoresize) {
+      setTextAreaHeight(`${textareaRef.current.scrollHeight}px`);
+      setWrapperHeight(`${textareaRef.current.scrollHeight}px`);
     }
-  }, [textarea]);
+  }, [text]);
+
   return (
-    <Styled.TextAreaWrapper ref={wrapper}>
+    <Styled.TextAreaWrapper height={wrapperHeight}>
       <Styled.TextAreaInput
-        ref={textarea}
+        ref={textareaRef}
+        height={textAreaHeight}
         placeholder={placeholder}
         rtl={rtl}
+        disabled={disabled}
+        value={text}
+        rows={rows}
+        onChange={(e) => changeHandler(e)}
       />
 
       {label && (
         <Styled.TextAreaLabel
           rtl={rtl}
-          onClick={() => textarea.current.focus()}>
-          {' '}
+          onClick={() => textareaRef.current.focus()}>
           {label}
         </Styled.TextAreaLabel>
       )}
