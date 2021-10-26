@@ -16,7 +16,6 @@ const ImageCropperModal = ({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({});
 
   const handleImageCropComplete = (croppedArea, croppedAreaPixels) => {
-    console.log(croppedAreaPixels);
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
