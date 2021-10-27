@@ -1,12 +1,10 @@
 import { memo, useEffect, useState } from 'react';
 import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
-import * as Styled from './InputCell.styles';
+import * as Styled from './NumberCell.styles';
 import { CV_DISTANT } from 'constant/CssVariables';
-import { decodeBase64 } from 'helpers/helpers';
 
-const InputCell = (props) => {
-  // console.log('inputCell', props);
+const NumberCell = (props) => {
   const {
     value,
     row,
@@ -16,47 +14,52 @@ const InputCell = (props) => {
     editingRow,
     isNew,
     header,
-    isNumber,
   } = props;
 
-  const { Info, TextValue, FloatValue } = value || {};
+  const { Info, FloatValue } = value || {};
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
-  const [inputValue, setInputValue] = useState('');
+  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+
+  const [numberValue, setNumberValue] = useState(0);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setNumberValue(e.target.valueAsNumber);
   };
+
+  useEffect(() => {
+    setNumberValue(FloatValue);
+  }, []);
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     //! Update parent.
-    let inputCell;
-    if (!!isNumber) {
-      inputCell = { ...value, FloatValue: inputValue };
-    } else {
-      inputCell = { ...value, TextValue: inputValue };
-    }
+    let numberCell;
+    let id = isNew ? null : rowId;
 
-    onCellChange(rowId, columnId, inputCell, inputValue);
+    numberCell = isNew
+      ? {
+          ElementID: headerId,
+          FloatValue: numberValue,
+          TextValue: numberValue + '',
+          Type: header?.dataType,
+        }
+      : { ...value, FloatValue: numberValue, TextValue: numberValue + '' };
+
+    onCellChange(id, columnId, numberCell, numberValue);
   };
 
-  // //! If the initialValue has changed externally, sync it up with our state.
-  useEffect(() => {
-    const value = !!isNumber ? FloatValue : TextValue;
-    setInputValue(value);
-  }, [TextValue, FloatValue, isNumber]);
-
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
-  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
-    return !!inputValue ? (
-      <Styled.CellView>{inputValue}</Styled.CellView>
+  if (!canEdit && !isNew) {
+    return !!numberValue ? (
+      <Styled.CellView type="h4">{numberValue}</Styled.CellView>
     ) : (
       <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );
@@ -64,17 +67,17 @@ const InputCell = (props) => {
 
   return (
     <Styled.InputCellWrapper>
-      {!!isNumber && <NumberIcon size={25} color={CV_DISTANT} />}
+      <NumberIcon size={25} color={CV_DISTANT} />
       <Input
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         className="table-number-input"
-        type={!!isNumber ? 'number' : 'text'}
-        value={inputValue}
+        type="number"
+        value={numberValue}
         placeholder="وارد کنید"
       />
     </Styled.InputCellWrapper>
   );
 };
 
-export default memo(InputCell);
+export default memo(NumberCell);

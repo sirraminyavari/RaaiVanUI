@@ -502,7 +502,7 @@ const CustomDatePicker = (props) => {
 };
 
 CustomDatePicker.defaultProps = {
-  label: window?.RVDic.SelectN.replace('[n]', window?.RVDic.Date) || '',
+  label: window?.RVDic?.SelectN?.replace('[n]', window?.RVDic?.Date) || '',
   range: false,
   clearButton: false,
   shouldClear: false,

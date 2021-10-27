@@ -26,6 +26,7 @@ const MultiLevelCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
@@ -41,11 +42,16 @@ const MultiLevelCell = (props) => {
   );
 
   const { Levels, NodeType } = Info || columnInfo || {};
-  const { ID, Name } = NodeType || {};
+  const {
+    ID,
+    //  Name
+  } = NodeType || {};
 
   const levels = Levels?.map((level) => decodeBase64(level));
 
-  const initialState = levels.reduce(
+  console.log(Info);
+
+  const initialState = levels?.reduce(
     (levelsObject, currentLevel, index, self) => {
       return {
         ...levelsObject,
@@ -62,7 +68,7 @@ const MultiLevelCell = (props) => {
     {}
   );
 
-  const [levelValues, setLevelValues] = useState(initialState);
+  const [levelValues, setLevelValues] = useState(initialState || {});
   const [isFetchingOptions, setIsFetchingOptions] = useState(false);
 
   //! Keep track of edit mode, And revert to default value if edition has been canceled.
@@ -74,43 +80,50 @@ const MultiLevelCell = (props) => {
   }, [isRowEditing]);
 
   useEffect(() => {
+    let levelsArray = Object.values(levelValues || {});
+
     //! If true, All select field are filled.
-    let levelsArray = Object.values(levelValues);
     const isCompleted = levelsArray?.every((item) => item.value !== null);
 
     if (isCompleted) {
-      if (isNew) {
-        //! New row functionality
-      } else {
-        let selectedItems = levelsArray?.map((level) => {
-          let { Name, NodeID } = level.value;
-          return {
-            AdditionalID: '',
-            Code: '',
-            ID: NodeID,
-            Name: decodeBase64(Name),
-            NodeID,
-          };
-        });
-        const multiLevelCell = {
-          ...value,
-          SelectedItems: selectedItems,
-          GuidItems: selectedItems,
+      let id = isNew ? null : rowId;
+      let selectedItems = levelsArray?.map((level) => {
+        let { Name, NodeID } = level.value;
+        return {
+          AdditionalID: '',
+          Code: '',
+          ID: NodeID,
+          Name: decodeBase64(Name),
+          NodeID,
         };
-        onCellChange(rowId, columnId, multiLevelCell, selectedItems);
-      }
+      });
+
+      let multiLevelCell = isNew
+        ? {
+            ElementID: headerId,
+            SelectedItems: selectedItems,
+            GuidItems: selectedItems,
+            Type: header?.dataType,
+          }
+        : {
+            ...value,
+            SelectedItems: selectedItems,
+            GuidItems: selectedItems,
+          };
+
+      onCellChange(id, columnId, multiLevelCell, selectedItems);
     }
   }, [levelValues]);
 
   //! Calls on input change.
   const handleChange = (selectedOption, levelObject) => {
     const {
-      prevLevel,
+      // prevLevel,
       currentLevel: level,
-      nextLevel,
+      // nextLevel,
       step: currentStep,
-      value,
-      options,
+      // value,
+      // options,
     } = levelObject;
 
     //! Array of next levels name.
@@ -138,12 +151,12 @@ const MultiLevelCell = (props) => {
 
   useEffect(() => {
     //! Get level that does not have value.
-    const currentLevel = Object.values(levelValues).filter(
+    const currentLevel = Object.values(levelValues || {}).filter(
       (item) => item.value === null
     )[0];
 
     //! The last level that has value.
-    const prevLevel = Object.values(levelValues)
+    const prevLevel = Object.values(levelValues || {})
       .filter((item) => item.value !== null)
       .pop();
 
@@ -187,7 +200,9 @@ const MultiLevelCell = (props) => {
   //! Show mode and not new.
   if (!canEdit && !isNew) {
     return !!SelectedItems?.length ? (
-      <Styled.CellView>{selectedItemsName.join(' / ')}</Styled.CellView>
+      <Styled.CellView type="h4">
+        {selectedItemsName.join(' / ')}
+      </Styled.CellView>
     ) : (
       <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
     );

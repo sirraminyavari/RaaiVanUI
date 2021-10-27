@@ -8,6 +8,7 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
+import Heading from 'components/Heading/Heading';
 
 const { RV_Float } = window;
 
@@ -70,7 +71,7 @@ export const selectStyles = {
   }),
 };
 
-export const SelectedItemWrapper = styled.span.attrs({
+export const SelectedItem = styled(Heading).attrs({
   className: `${BO_RADIUS_QUARTER}`,
 })`
   display: inline-block;

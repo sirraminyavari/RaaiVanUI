@@ -37,6 +37,7 @@ const DateCell = (props) => {
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
@@ -46,11 +47,19 @@ const DateCell = (props) => {
   //! Update date on select.
   const handleDateSelect = (date) => {
     setDateValue(date);
-
     const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-    const dateCell = { ...value, DateValue: dateString };
-    onCellChange(rowId, columnId, dateCell, date);
+
+    let id = isNew ? null : rowId;
+    let dateCell = isNew
+      ? {
+          ElementID: headerId,
+          DateValue: dateString,
+          Type: header?.dataType,
+        }
+      : { ...value, DateValue: dateString };
+
+    onCellChange(id, columnId, dateCell, date);
   };
 
   if (isNew) {
@@ -90,7 +99,7 @@ const DateCell = (props) => {
     return (
       <>
         {!!DateValue ? (
-          <Heading style={{ color: CV_GRAY_DARK }} type="h5">
+          <Heading style={{ color: CV_GRAY_DARK }} type="h4">
             {showFormat}
           </Heading>
         ) : (
@@ -126,7 +135,7 @@ const DateCell = (props) => {
       )}>
       {dateValue ? (
         <Styled.DateCellContainer>
-          <Heading className="table-date-edit-title" type="h5">
+          <Heading className="table-date-edit-title" type="h4">
             {showFormat}
           </Heading>
           <CalendarIcon color={TCV_DEFAULT} size={20} />

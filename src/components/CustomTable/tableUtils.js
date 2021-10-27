@@ -54,8 +54,8 @@ export const prepareHeaders = (columns, getColumnOptions) => [
     options: getColumnOptions({ Type: cellTypes.index }),
   },
   ...columns
-    .filter((col) => col?.Type !== cellTypes.separator)
-    .map((col) => ({
+    ?.filter((col) => col?.Type !== cellTypes.separator)
+    ?.map((col) => ({
       id: col?.ElementID,
       title: decodeBase64(col?.Title),
       accessor: `${col?.Type}_${col?.ElementID}`,

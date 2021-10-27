@@ -55,6 +55,7 @@ const CustomTable = (props) => {
     reorderRow,
     onSearch,
     tableId,
+    tableMirror,
     getColumnsOption,
     getCellProps = defaultPropGetter,
   } = props;
@@ -137,6 +138,7 @@ const CustomTable = (props) => {
       reorderRow,
       getColumnsOption,
       tableId,
+      tableMirror,
       initialState: {
         ...paginationStates,
       },

@@ -3,25 +3,26 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CV_RED, TCV_WARM } from 'constant/CssVariables';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 
-const EditRowMenu = (props) => {
+const RowEditMenu = (props) => {
   const { cell, isNew, setShowFooter, addRow } = props;
+  const { row, setEditingRow, editRow, onEditRowCancel } = cell || {};
 
-  const rowId = cell?.row?.original?.id;
+  const rowId = row?.original?.id;
 
   //! Exit edit mode for a row.
   const handleExitEditMode = () => {
-    cell?.setEditingRow && cell?.setEditingRow(null);
+    setEditingRow && setEditingRow(null);
   };
 
   //! Accept edit changes.
   const handleAcceptChanges = () => {
     if (isNew) {
-      setShowFooter(false);
       addRow && addRow();
+      setShowFooter(false);
     } else {
       console.log('Changes accepted');
       handleExitEditMode();
-      cell?.editRow && cell?.editRow(rowId);
+      editRow && editRow(rowId);
     }
   };
 
@@ -32,8 +33,8 @@ const EditRowMenu = (props) => {
     } else {
       console.log('Changes rejected');
       handleExitEditMode();
-      cell?.onEditRowCancel && cell?.onEditRowCancel();
     }
+    onEditRowCancel && onEditRowCancel();
   };
 
   return (
@@ -56,4 +57,4 @@ const EditRowMenu = (props) => {
   );
 };
 
-export default EditRowMenu;
+export default RowEditMenu;

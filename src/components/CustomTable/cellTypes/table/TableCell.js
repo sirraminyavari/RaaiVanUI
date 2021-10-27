@@ -18,7 +18,7 @@ const TableCell = (props) => {
   } = props;
 
   const { Info } = value || {};
-  // console.log(tableInfo, props, 'table');
+  // console.log(value, props, 'table cell');
 
   const handleOnTableClick = () => {
     props?.setModal({

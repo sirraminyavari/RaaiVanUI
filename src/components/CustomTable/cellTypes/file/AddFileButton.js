@@ -1,18 +1,22 @@
+import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import * as Styled from './FileCell.styles';
-import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import { TCV_WARM } from 'constant/CssVariables';
-import Heading from 'components/Heading/Heading';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import Button from 'components/Buttons/Button';
+import useWindow from 'hooks/useWindowContext';
 
 const AddFileButton = ({ onClick }) => {
-  const handleAddNewFile = () => {
-    onClick && onClick();
-  };
+  const { RVDic } = useWindow();
+  const buttonTitle = RVDic?.SelectN?.replace('[n]', RVDic?.File);
 
   return (
-    <Styled.AddNewFile onClick={handleAddNewFile}>
-      <PlusIcon size={20} color={TCV_WARM} />
-      <Heading type="h5">افزودن فایل</Heading>
-    </Styled.AddNewFile>
+    <Button classes="table-file-cell-select-button" onClick={onClick}>
+      <Styled.FileSelectionButton>
+        <FileFormatIcon size={20} color={TCV_DEFAULT} />
+        <Styled.FileSelectionHeading type="h4">
+          {buttonTitle}
+        </Styled.FileSelectionHeading>
+      </Styled.FileSelectionButton>
+    </Button>
   );
 };
 

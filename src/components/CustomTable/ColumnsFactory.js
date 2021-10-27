@@ -1,6 +1,6 @@
 import {
   DateCell,
-  InputCell,
+  TextCell,
   SelectCell,
   RecordInfoCell,
   FileCell,
@@ -10,9 +10,10 @@ import {
   MultiLevelCell,
   BinaryCell,
   ActionsCell,
+  NumberCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import EditRowMenu from './cellTypes/action/EditRowMenu';
+import RowEditMenu from './cellTypes/action/RowEditMenu';
 import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
@@ -22,35 +23,55 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => <ActionsCell cell={cell} />,
+        Footer: (footer) => <RowEditMenu {...footer} header={header} isNew />,
       };
     case cellTypes.index:
       return {
         sticky: 'left',
         Cell: (cell) => (
-          <Styled.TableRowIndex>{cell?.row.index + 1}</Styled.TableRowIndex>
+          <Styled.TableRowIndex type="h4">
+            {cell?.row.index + 1}
+          </Styled.TableRowIndex>
         ),
+        Footer: () => <div>{header.title}</div>,
       };
 
     case cellTypes.text:
-      return { Cell: (row) => <InputCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <TextCell {...row} header={header} />,
+        Footer: (footer) => <TextCell {...footer} header={header} isNew />,
+      };
 
     case cellTypes.number:
-      return { Cell: (row) => <InputCell {...row} header={header} isNumber /> };
+      return {
+        Cell: (row) => <NumberCell {...row} header={header} />,
+        Footer: (footer) => <NumberCell {...footer} header={header} isNew />,
+      };
 
     case cellTypes.date:
-      return { Cell: (row) => <DateCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <DateCell {...row} header={header} />,
+        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
+      };
 
     case cellTypes.singleSelect:
-      return { Cell: (row) => <SelectCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <SelectCell {...row} header={header} />,
+        Footer: (row) => <SelectCell {...row} header={header} isNew />,
+      };
 
     case cellTypes.multiSelect:
       return {
         Cell: (row) => <SelectCell {...row} header={header} multiSelect />,
+        Footer: (row) => (
+          <SelectCell {...row} header={header} isNew multiSelect />
+        ),
       };
 
     case cellTypes.binary:
       return {
         Cell: (row) => <BinaryCell {...row} header={header} />,
+        Footer: (row) => <BinaryCell {...row} header={header} isNew />,
       };
 
     case cellTypes.recordInfo:
@@ -61,85 +82,30 @@ const provideCell = (header) => {
     case cellTypes.file:
       return {
         Cell: (row) => <FileCell {...row} header={header} />,
-      };
-
-    case cellTypes.node:
-      return {
-        Cell: (row) => <NodeCell {...row} header={header} />,
-      };
-
-    case cellTypes.user:
-      return {
-        Cell: (row) => <UserCell {...row} header={header} />,
-      };
-
-    case cellTypes.table:
-      return {
-        Cell: (row) => <TableCell {...row} header={header} />,
-      };
-
-    case cellTypes.multiLevel:
-      return {
-        Cell: (row) => <MultiLevelCell {...row} header={header} />,
-      };
-
-    default:
-      return;
-  }
-};
-
-//! Provide footer for a given column.
-const provideFooter = (header, data) => {
-  // console.log(data, 'footer')
-  switch (header.dataType) {
-    case cellTypes.action:
-      return {
-        Footer: (footer) => <EditRowMenu {...footer} header={header} isNew />,
-      };
-
-    case cellTypes.text:
-      return {
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
-      };
-    case cellTypes.number:
-      return {
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
-      };
-
-    case cellTypes.singleSelect:
-      return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
-      };
-
-    case cellTypes.multiSelect:
-      return {
-        Footer: (row) => (
-          <SelectCell {...row} header={header} isNew multiSelect />
-        ),
-      };
-
-    case cellTypes.binary:
-      return {
-        Footer: (row) => <BinaryCell {...row} header={header} isNew />,
-      };
-
-    case cellTypes.date:
-      return {
-        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
-      };
-
-    case cellTypes.file:
-      return {
         Footer: (footer) => <FileCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.node:
       return {
+        Cell: (row) => <NodeCell {...row} header={header} />,
         Footer: (footer) => <NodeCell {...footer} header={header} isNew />,
+      };
+
+    case cellTypes.user:
+      return {
+        Cell: (row) => <UserCell {...row} header={header} />,
+        Footer: (footer) => <UserCell {...footer} header={header} isNew />,
+      };
+
+    case cellTypes.table:
+      return {
+        Cell: (row) => <TableCell {...row} header={header} />,
+        // Footer: (footer) => <TableCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.multiLevel:
       return {
+        Cell: (row) => <MultiLevelCell {...row} header={header} />,
         Footer: (footer) => (
           <MultiLevelCell {...footer} header={header} isNew />
         ),
@@ -250,7 +216,6 @@ const makeColumns = (headers, data) => {
     return {
       Header: header.title,
       accessor: header.accessor,
-      ...provideFooter(header, data),
       ...provideCell(header),
       ...provideOptions(header, data),
     };
