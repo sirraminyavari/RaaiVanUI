@@ -49,7 +49,9 @@ const MultiLevelCell = (props) => {
 
   const levels = Levels?.map((level) => decodeBase64(level));
 
-  const initialState = levels.reduce(
+  console.log(Info);
+
+  const initialState = levels?.reduce(
     (levelsObject, currentLevel, index, self) => {
       return {
         ...levelsObject,
@@ -66,7 +68,7 @@ const MultiLevelCell = (props) => {
     {}
   );
 
-  const [levelValues, setLevelValues] = useState(initialState);
+  const [levelValues, setLevelValues] = useState(initialState || {});
   const [isFetchingOptions, setIsFetchingOptions] = useState(false);
 
   //! Keep track of edit mode, And revert to default value if edition has been canceled.
@@ -78,7 +80,7 @@ const MultiLevelCell = (props) => {
   }, [isRowEditing]);
 
   useEffect(() => {
-    let levelsArray = Object.values(levelValues);
+    let levelsArray = Object.values(levelValues || {});
 
     //! If true, All select field are filled.
     const isCompleted = levelsArray?.every((item) => item.value !== null);
@@ -149,12 +151,12 @@ const MultiLevelCell = (props) => {
 
   useEffect(() => {
     //! Get level that does not have value.
-    const currentLevel = Object.values(levelValues).filter(
+    const currentLevel = Object.values(levelValues || {}).filter(
       (item) => item.value === null
     )[0];
 
     //! The last level that has value.
-    const prevLevel = Object.values(levelValues)
+    const prevLevel = Object.values(levelValues || {})
       .filter((item) => item.value !== null)
       .pop();
 

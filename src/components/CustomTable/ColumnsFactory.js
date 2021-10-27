@@ -100,6 +100,7 @@ const provideCell = (header) => {
     case cellTypes.table:
       return {
         Cell: (row) => <TableCell {...row} header={header} />,
+        // Footer: (footer) => <TableCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.multiLevel:

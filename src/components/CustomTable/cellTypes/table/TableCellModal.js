@@ -1,18 +1,17 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import CustomTable from 'components/CustomTable/CustomTable';
-import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import { prepareHeaders, prepareRows } from 'components/CustomTable/tableUtils';
 import { getOwnerFormInstances } from 'apiHelper/apiFunctions';
 
 const TableCellModal = ({
   value,
-  getColumnsOption,
+  // getColumnsOption,
   row,
   column,
   header,
   editingRow,
   editable: isTableEditable,
+  isNew,
+  tableMirror: Table,
 }) => {
   const { Info } = value || {};
 
@@ -22,12 +21,13 @@ const TableCellModal = ({
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
+  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+
   const tableId = Info?.FormID;
   const tableOwnerId = value?.ElementID || value?.RefElementID;
 
   const [rawData, setRawData] = useState([]);
   const [rawColumns, setRawColumns] = useState([]);
-  const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
@@ -39,10 +39,6 @@ const TableCellModal = ({
 
           const rawTableData = response?.TableContent || [];
           const rawTableColumns = response?.TableColumns || [];
-          if (!!response.TableContent) {
-            const rows = prepareRows(rawTableData, rawTableColumns);
-            setData(rows);
-          }
 
           setRawColumns(rawTableColumns);
           setRawData(rawTableData);
@@ -52,35 +48,19 @@ const TableCellModal = ({
           console.log(error);
         });
     }
-  }, [tableId, tableOwnerId]);
-
-  const memoizedData = useMemo(() => data, [data]);
-  const memoizedColumns = ColumnsFactory(
-    prepareHeaders(rawColumns, getColumnsOption),
-    data
-  );
+  }, []);
 
   return (
     <div>
       {isFetching && <LogoLoader />}
-      {!isFetching && (
-        <CustomTable
-          editable={isTableEditable && isCellEditable && isRowEditing}
-          resizable
-          pagination={{
-            perPageCount: [5, 10, 20, 30],
-            initialPageIndex: 0,
-          }}
-          columns={memoizedColumns}
-          data={memoizedData}
-          // onCellChange={memoizedUpdateCellData}
-          // reorderData={memoizedReorderData}
-          // removeRow={memoizedRemoveRow}
-          // addRow={memoizedAddRow}
-          isLoading={false}
-          // onSearch={handleOnSearch}
+      {!isFetching && !!rawData?.length && (
+        <Table
+          tableColumns={rawColumns}
+          tableData={rawData}
           tableId={tableId}
-          getCellProps={(cell) => ({})}
+          tableOwnerId={tableOwnerId}
+          isEditable={canEdit}
+          isResizable={true}
         />
       )}
     </div>
