@@ -67,13 +67,10 @@ export const NodeItemContainer = styled.div.attrs({
 
 export const NodeInfoWrapper = styled.div`
   width: ${({ editable }) => (editable ? '88%' : '100%')};
+  min-width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
   margin-${RV_RevFloat}: 0.2rem;
   ${FLEX_RCS}
-
-  a:active {
-    color: ${TCV_DEFAULT};
-  }
 `;
 
 export const NodeLinkHeading = styled(Heading)`
@@ -82,13 +79,18 @@ export const NodeLinkHeading = styled(Heading)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0 0.3rem;
+  padding: 0 0.5rem;
   margin-${RV_Float}: 0.3rem;
   border-${RV_Float}: 1px solid ${CV_DISTANT};
   line-height: 2rem;
+  text-align: ${RV_Float};
 
-  a {
+  a{
     color: ${TCV_VERYWARM};
+  }
+
+  a:active {
+    color: ${TCV_DEFAULT};
   }
 `;
 

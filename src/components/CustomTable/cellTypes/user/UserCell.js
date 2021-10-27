@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
@@ -28,6 +28,8 @@ const UserCell = (props) => {
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
+  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
   const { SelectedItems: initialUsers, Info } = value || {};
@@ -35,8 +37,25 @@ const UserCell = (props) => {
   const { MultiSelect: isMultiSelect } = Info || columnInfo || {};
 
   const [users, setUsers] = useState(isNew ? [] : initialUsers);
+  const beforeChangeUsersRef = useRef(null);
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+  useEffect(() => {
+    if (isNew) {
+      beforeChangeUsersRef.current = [];
+    } else {
+      beforeChangeUsersRef.current = initialUsers;
+    }
+
+    return () => {
+      beforeChangeUsersRef.current = null;
+    };
+  }, [canEdit, initialUsers, isNew]);
+
+  const isSaveDisabled =
+    JSON.stringify(
+      beforeChangeUsersRef.current?.map((x) => x?.NodeID).sort()
+    ) === JSON.stringify(users?.map((y) => y?.NodeID).sort()) ||
+    (isNew && !users.length);
 
   const normalizeSelectedUsers =
     users?.length > 0
@@ -92,7 +111,7 @@ const UserCell = (props) => {
     const newUsersArray = users?.filter(
       (user) => user?.UserID !== person?.UserID
     );
-    updateUserCell(newUsersArray);
+    setUsers(newUsersArray);
   }, []);
 
   const handleSaveUsers = () => {
@@ -114,11 +133,12 @@ const UserCell = (props) => {
         </Styled.UserListWrapper>
         {canEdit && (
           <Button
-            disable={false}
+            disable={isSaveDisabled}
             classes="table-user-cell-save-button"
-            style={{ color: false ? CV_DISTANT : TCV_DEFAULT }}
             onClick={handleSaveUsers}>
-            <Styled.SaveButtonHeading type="h4">
+            <Styled.SaveButtonHeading
+              type="h4"
+              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
               {RVDic.Save}
             </Styled.SaveButtonHeading>
           </Button>

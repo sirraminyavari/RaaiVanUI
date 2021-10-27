@@ -19,7 +19,7 @@ const UsersList = (props) => {
         return (
           <Styled.UserCellContainer key={UserID || index}>
             <Styled.UserInfoWrapper
-              as={Link}
+              as={canEdit ? 'div' : Link}
               to={getURL('User', { UserID })}
               editable={canEdit}>
               <Avatar

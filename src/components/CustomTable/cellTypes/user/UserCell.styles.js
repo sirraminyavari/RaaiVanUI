@@ -51,14 +51,10 @@ export const UserCellContainer = styled.div.attrs({
 
 export const UserInfoWrapper = styled.div`
   width: ${({ editable }) => (editable ? '88%' : '100%')};
+  min-width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
   margin-${RV_RevFloat}: 0.2rem;
   ${FLEX_RCS}
-  color: ${TCV_WARM};
-
-  a:active {
-    color: ${TCV_DEFAULT};
-  }
 
   .table-user-avatar {
     width: 2rem;
@@ -76,9 +72,14 @@ export const UserLinkHeading = styled(Heading)`
   text-overflow: ellipsis;
   padding: 0 0.3rem;
   margin-${RV_Float}: 0.3rem;
+  text-align: ${RV_Float};
 
-  a {
+  a{
     color: ${TCV_VERYWARM};
+  }
+
+  a:active {
+    color: ${TCV_DEFAULT};
   }
 `;
 

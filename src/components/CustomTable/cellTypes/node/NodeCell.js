@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as Styled from './NodeCell.styles';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -35,6 +35,8 @@ const NodeCell = (props) => {
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
 
+  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
 
@@ -47,12 +49,25 @@ const NodeCell = (props) => {
     !!isNew ? [] : initialItems
   );
 
-  // const isSaveDisabled =
-  // JSON.stringify(initialItems?.map((x) => x?.NodeID).sort()) ===
-  //   JSON.stringify(selectedItems?.map((y) => y?.NodeID).sort()) ||
-  // !selectedItems?.length;
+  const beforeChangeSelectedItemsRef = useRef(null);
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+  useEffect(() => {
+    if (isNew) {
+      beforeChangeSelectedItemsRef.current = [];
+    } else {
+      beforeChangeSelectedItemsRef.current = initialItems;
+    }
+
+    return () => {
+      beforeChangeSelectedItemsRef.current = null;
+    };
+  }, [canEdit, initialItems, isNew]);
+
+  const isSaveDisabled =
+    JSON.stringify(
+      beforeChangeSelectedItemsRef.current?.map((x) => x?.NodeID).sort()
+    ) === JSON.stringify(selectedItems?.map((y) => y?.NodeID).sort()) ||
+    (isNew && !selectedItems.length);
 
   const handleSaveCell = () => {
     let id = isNew ? null : rowId;
@@ -87,13 +102,14 @@ const NodeCell = (props) => {
   };
 
   const handleOnItemsSelection = (items) => {
+    console.log(items);
     setIsModalShown(false);
 
-    const oldItemsId = selectedItems.map((oldItem) => oldItem?.ID);
+    const oldItemsId = selectedItems?.map((oldItem) => oldItem?.ID);
     const oldItemsIdSet = new Set(oldItemsId);
-    const newItems = MultiSelect ? items : [items];
-    const newItemsId = newItems.map((newItem) => newItem.NodeID);
-    const conciseNewItems = newItems.map((item) => {
+    const newItems = Array.isArray(items) ? items : [items];
+    const newItemsId = newItems?.map((newItem) => newItem?.NodeID);
+    const conciseNewItems = newItems?.map((item) => {
       const { AdditionalID, NodeID, IconURL, Name } = item;
       return {
         AdditionalID,
@@ -106,7 +122,7 @@ const NodeCell = (props) => {
     });
 
     if (MultiSelect) {
-      let alreadyExistInList = newItemsId.some((id) => oldItemsIdSet.has(id));
+      let alreadyExistInList = newItemsId?.some((id) => oldItemsIdSet.has(id));
       if (!alreadyExistInList) {
         setSelectedItems((oldItems) => [...oldItems, ...conciseNewItems]);
       }
@@ -136,12 +152,12 @@ const NodeCell = (props) => {
           {selectedItems?.map((node, index) => (
             <Styled.NodeItemContainer key={node?.NodeID || index}>
               <Styled.NodeInfoWrapper
+                as={canEdit ? 'div' : Link}
+                to={getURL('Node', { NodeID: node?.NodeID })}
                 editable={props?.header?.options?.editable}>
                 <OpenMailIcon color={CV_DISTANT} size={25} />
                 <Styled.NodeLinkHeading type="h4">
-                  <Link to={getURL('Node', { NodeID: node?.NodeID })}>
-                    {decodeBase64(node?.Name)}
-                  </Link>
+                  {decodeBase64(node?.Name)}
                 </Styled.NodeLinkHeading>
               </Styled.NodeInfoWrapper>
               {canEdit && (
@@ -158,11 +174,12 @@ const NodeCell = (props) => {
         </Styled.NodeListWrapper>
         {canEdit && (
           <Button
-            disable={false}
+            disable={isSaveDisabled}
             classes="table-node-cell-save-button"
-            style={{ color: false ? CV_DISTANT : TCV_DEFAULT }}
             onClick={handleSaveCell}>
-            <Styled.SaveButtonHeading type="h4">
+            <Styled.SaveButtonHeading
+              type="h4"
+              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
               {RVDic.Save}
             </Styled.SaveButtonHeading>
           </Button>
