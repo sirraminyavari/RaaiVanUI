@@ -32,7 +32,7 @@ const FilesList = (props) => {
         let fileNameWithExtension = fileName + '.' + fileExtension;
 
         return (
-          <Styled.FileCellContainer key={FileID || index}>
+          <Styled.FileItemContainer key={FileID || index}>
             <Styled.FileInfoWrapper editable={canEdit}>
               <FileFormatIcon
                 color={TCV_DEFAULT}
@@ -54,13 +54,11 @@ const FilesList = (props) => {
               </Styled.FileLinkWrapper>
             </Styled.FileInfoWrapper>
             {canEdit && (
-              <TrashIcon
-                style={{ cursor: 'pointer' }}
-                color={CV_RED}
-                onClick={() => handleRemoveFile(FileID)}
-              />
+              <Styled.TrashIconWrapper onClick={() => handleRemoveFile(FileID)}>
+                <TrashIcon color={CV_RED} />
+              </Styled.TrashIconWrapper>
             )}
-          </Styled.FileCellContainer>
+          </Styled.FileItemContainer>
         );
       })}
     </>

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import axios from 'axios';
 import * as Styled from './FileCell.styles';
 import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
@@ -9,11 +9,15 @@ import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { removeFile } from 'apiHelper/apiFunctions';
+import Button from 'components/Buttons/Button';
+import useWindow from 'hooks/useWindowContext';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
-  // console.log('fileCell', props);
+  const { RVDic } = useWindow();
+
   const {
     isNew,
     row,
@@ -24,29 +28,47 @@ const FileCell = (props) => {
     editable: isTableEditable,
     header,
   } = props;
-  const { Files, Info, ElementID } = value || {};
-
-  const [isUploading, setIsUploading] = useState(false);
+  const { Files: initialFiles, Info, ElementID } = value || {};
 
   const isCellEditable = !!header?.options?.editable;
-
   const rowId = row?.original?.id;
   const columnId = column?.id;
-
   const isRowEditing = rowId === editingRow;
 
-  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [files, setFiles] = useState(isNew ? [] : initialFiles);
+
+  const beforeChangeFilesRef = useRef(null);
+
+  useEffect(() => {
+    if (isNew) {
+      beforeChangeFilesRef.current = [];
+    } else {
+      beforeChangeFilesRef.current = initialFiles;
+    }
+
+    return () => {
+      beforeChangeFilesRef.current = null;
+    };
+  }, [canEdit, initialFiles, isNew]);
+
+  const isSaveDisabled =
+    JSON.stringify(
+      beforeChangeFilesRef.current?.map((x) => x?.NodeID).sort()
+    ) === JSON.stringify(files?.map((y) => y?.NodeID).sort()) ||
+    (isNew && !files.length);
 
   const handleRemoveFile = useCallback((fileId) => {
     removeFile(ElementID, fileId)
       .then((response) => {
         if (response?.Succeed) {
-          console.log(response, 'remove');
-          const newFilesArray = Files?.filter(
-            (file) => file?.FileID !== fileId
+          console.log(response, 'remove file');
+
+          setFiles((oldFiles) =>
+            oldFiles?.filter((file) => file?.FileID !== fileId)
           );
-          const fileCell = { ...value, Files: newFilesArray };
-          onCellChange(rowId, columnId, fileCell, newFilesArray);
         }
       })
       .catch((error) => {
@@ -55,17 +77,26 @@ const FileCell = (props) => {
   }, []);
 
   const handleFileDropError = (error) => {
-    if (isNew || !canEdit) return;
+    if (!canEdit) return;
     console.log(error);
   };
 
+  //! Save uploaded files.
+  const handleSaveFiles = () => {
+    const extendedFiles = files.map((file) => {
+      return { ...file, OwnerID: ElementID };
+    });
+    const fileCell = { ...value, Files: extendedFiles };
+    onCellChange(rowId, columnId, fileCell, extendedFiles);
+  };
+
   const handleUploadFiles = (acceptedFiles) => {
-    if (isNew || !canEdit) return;
+    if (!canEdit) return;
 
     //! Get upload link.
     getUploadLinkAPI.url(
       {
-        OwnerID: ElementID,
+        OwnerID: '',
         OwnerType: 'Node',
       },
       (response) => {
@@ -99,14 +130,10 @@ const FileCell = (props) => {
               .then((response) => {
                 // console.log(response);
                 if (response?.data?.success) {
-                  //! Call on any field change.
-                  const newFilesArray = [
-                    ...(Files || []),
+                  setFiles((oldFiles) => [
+                    ...(oldFiles || []),
                     response?.data?.AttachedFile,
-                  ];
-                  const fileCell = { ...value, Files: newFilesArray };
-                  onCellChange(rowId, columnId, fileCell, newFilesArray);
-                  // setFiles(newFilesArray);
+                  ]);
 
                   //! update upload state.
                   setIsUploading(false);
@@ -132,18 +159,37 @@ const FileCell = (props) => {
   };
 
   return (
-    <Styled.FilesWrapper>
-      <FilesList
-        files={Files}
-        canEdit={canEdit}
-        onRemoveFile={handleRemoveFile}
-      />
-      {isUploading && <LogoLoader lottieWidth="3rem" />}
-      {canEdit || isNew ? (
-        <div style={{ margin: '0.5rem', width: '100%' }}>
+    <Styled.FileCellContainer>
+      <Styled.FilesWrapper>
+        <Styled.FileListWrapper isEditMode={canEdit}>
+          <FilesList
+            files={files}
+            canEdit={canEdit}
+            onRemoveFile={handleRemoveFile}
+          />
+          {!files?.length && !isUploading && (
+            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          )}
+          {isUploading && <LogoLoader lottieWidth="3rem" />}
+        </Styled.FileListWrapper>
+        {canEdit && (
+          <Button
+            disable={isSaveDisabled}
+            classes="table-file-cell-save-button"
+            onClick={handleSaveFiles}>
+            <Styled.SaveButtonHeading
+              type="h4"
+              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
+              {RVDic.Save}
+            </Styled.SaveButtonHeading>
+          </Button>
+        )}
+      </Styled.FilesWrapper>
+      {canEdit && (
+        <div style={{ width: '100%', marginTop: '0.3rem' }}>
           <CustomDropZone
             accept={['image/*', '.pdf']}
-            // foramtExceptions={['jpg']}
+            // formatExceptions={['jpg']}
             maxFiles={1}
             maxEachSize={1}
             maxTotalSize={1}
@@ -153,13 +199,11 @@ const FileCell = (props) => {
             placeholders={{
               main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
             }}
-            customComponent={isNew ? undefined : AddFileButton}
+            customComponent={AddFileButton}
           />
         </div>
-      ) : (
-        !Files && <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
       )}
-    </Styled.FilesWrapper>
+    </Styled.FileCellContainer>
   );
 };
 

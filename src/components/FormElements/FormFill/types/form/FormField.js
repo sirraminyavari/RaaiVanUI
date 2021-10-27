@@ -106,7 +106,7 @@ const FormField = (props) => {
         return { disableSortBy: true, minWidth: 260 };
 
       case cellTypes.file:
-        return { disableSortBy: true, minWidth: 200 };
+        return { disableSortBy: true, minWidth: 260 };
 
       // case cellTypes.recordInfo:
       //   return {

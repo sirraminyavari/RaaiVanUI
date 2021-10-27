@@ -29,10 +29,10 @@ import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
  * @property {Object} inputProps -The props passed to input.
  * @property {PlaceholderType} placeholders -Placeholders for dropzone input.
  * @property {boolean} disabled -A flag that will disable dropzone area.
- * @property {string[]} foramtExceptions -All formats that are not allowed to be uploaded.
+ * @property {string[]} formatExceptions -All formats that are not allowed to be uploaded.
  * @property {Boolean} isUploading -All formats that are not allowed to be uploaded.
  * @property {JSX} customComponent -A custom component.
- * {foramtExceptions} prop has priority over {accept} prop.
+ * {formatExceptions} prop has priority over {accept} prop.
  * If a format is defined forbidden in exceptions, component will throw error even if it is inside accept list.
  */
 
@@ -52,7 +52,7 @@ const CustomDropzone = (props) => {
     containerProps,
     inputProps,
     disabled,
-    foramtExceptions,
+    formatExceptions,
     placeholders,
     isUploading,
     customComponent: CustomComponent,
@@ -93,7 +93,7 @@ const CustomDropzone = (props) => {
     }
 
     //! See if file format is allowed or not.
-    if (foramtExceptions && foramtExceptions.includes(fileFormat)) {
+    if (formatExceptions && formatExceptions.includes(fileFormat)) {
       return {
         code: errorTypes.FORMAT_ERROR,
         message: `فایل با فرمت ${fileFormat} مجاز نمی باشد.`,
@@ -254,7 +254,7 @@ CustomDropzone.propTypes = {
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
   disabled: PropTypes.bool,
-  foramtExceptions: PropTypes.array,
+  formatExceptions: PropTypes.array,
   placeholders: PropTypes.object,
   isUploading: PropTypes.bool,
 };
