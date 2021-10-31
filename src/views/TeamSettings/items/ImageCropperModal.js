@@ -1,5 +1,5 @@
 import Modal from '../../../components/Modal/Modal';
-import ImageCropper from '../../../components/ImageCropper/ImageCropper';
+import ImageCropperEditor from '../../../components/ImageCropper/ImageCropperEditor';
 import * as Styled from './ImageCropperModalStyle';
 import { useState } from 'react';
 import Button from '../../../components/Buttons/Button';
@@ -22,7 +22,7 @@ const ImageCropperModal = ({
   return (
     <Modal show={show} contentWidth="40vw" onClose={onModalClose} middle={true}>
       <Styled.CropperContainer>
-        <ImageCropper
+        <ImageCropperEditor
           imageSrc={file}
           aspectRatio={aspectRatio}
           onImageCropComplete={handleImageCropComplete}
