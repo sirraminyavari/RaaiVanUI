@@ -9,7 +9,7 @@ import {
   ThumbnailControl,
 } from './items/CustomSelect';
 import AnimatedTextArea from './items/AnimatedTextArea';
-import ImageCropper from '../../components/ImageCropper/ImageCropper';
+import ImageCropperEditor from '../../components/ImageCropper/ImageCropperEditor';
 import Button from '../../components/Buttons/Button';
 import { SettingActionBar } from './TeamSettingsStyle';
 

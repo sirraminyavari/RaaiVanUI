@@ -253,6 +253,11 @@ export const ProfileHeader = styled.header.attrs({
     border-radius: 50%;
   }
 
+  .profile-image-cropper {
+    position: absolute;
+    bottom: -2rem;
+  }
+
   :hover > div {
     opacity: 1;
   }
