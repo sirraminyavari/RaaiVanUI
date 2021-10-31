@@ -112,10 +112,11 @@ const ImageCropper = (props) => {
           />
         )}
       </Suspense>
-      <div style={{ width: '100%' }}>
+      <div style={{ position: 'relative' }}>
         <Avatar
           userImage={GlobalUtilities.add_timestamp(image)}
           className="cropper-avatar"
+          imageStyles={{ width: '100%' }}
         />
         {isEditable && (
           <Styled.PencilWrapper onClick={handleAvatarEdit}>

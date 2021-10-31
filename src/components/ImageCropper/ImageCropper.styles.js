@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { FLEX_RCA, FLEX_RCC } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCA, FLEX_RCC } from 'constant/StyledCommonCss';
 import { BO_RADIUS_CIRCLE } from 'constant/constants';
 import { CV_DISTANT, CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
 
-const { RV_Float } = window;
+const { RV_RevFloat } = window;
 
 export const ImageCropperWrapper = styled.div`
   width: 100%;
@@ -33,8 +33,8 @@ export const SliderWrapper = styled.div`
 export const ImageCropper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
-  width: 8rem;
-  height: 8rem;
+  width: 9rem;
+  height: 9rem;
   position: relative;
   padding: 1rem;
 
@@ -56,12 +56,14 @@ export const ImageCropper = styled.div.attrs({
 export const PencilWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 25%;
+  min-width: 1.5rem;
+  height: 25%;
+  min-height: 1.5rem;
   position: absolute;
-  bottom: 0.5rem;
-  ${RV_Float}: 4.5rem;
-  padding: 0.15rem 0.1rem 0 0;
+  bottom: 0;
+  ${RV_RevFloat}: 0;
+  ${FLEX_CCC}
   background-color: ${TCV_DEFAULT};
   border: 2px solid ${CV_DISTANT};
   opacity: 0;
