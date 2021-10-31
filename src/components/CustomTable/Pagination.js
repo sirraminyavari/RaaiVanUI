@@ -3,6 +3,7 @@ import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 // import DoubleArrow from 'components/Icons/ArrowIcons/DoubleArrow';
 import * as Styled from './CustomTable.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import useWindow from 'hooks/useWindowContext';
 
 const DEFAULT_PAGE_SIZES = [5, 10, 15, 30, 50];
 
@@ -18,6 +19,8 @@ const TablePagination = ({ tableInstance, pagination }) => {
     setPageSize,
     state, //! End of Pagination.
   } = tableInstance;
+
+  const { RV_Float, RV_RevFloat } = useWindow();
 
   //! Get pagination properties from table instance state.
   const { pageIndex, pageSize, data } = state;
@@ -86,6 +89,7 @@ const TablePagination = ({ tableInstance, pagination }) => {
           <ChevronIcon
             small
             size={28}
+            dir={RV_Float}
             color={canNextPage ? TCV_DEFAULT : CV_DISTANT}
           />
         </button>
@@ -93,7 +97,7 @@ const TablePagination = ({ tableInstance, pagination }) => {
           <ChevronIcon
             size={28}
             small
-            dir="left"
+            dir={RV_RevFloat}
             color={canPreviousPage ? TCV_DEFAULT : CV_DISTANT}
           />
         </button>

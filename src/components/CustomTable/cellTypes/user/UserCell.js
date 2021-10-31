@@ -6,6 +6,7 @@ import AddNewUser from './AddNewUser';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
 
 const UserCell = (props) => {
   const { RVDic } = useWindow();
@@ -85,13 +86,15 @@ const UserCell = (props) => {
           SelectedItems: users,
         };
 
+    console.log(userCell);
+
     //! Update cell.
     onCellChange(id, columnId, userCell, users);
   };
 
   const handleAddNewPerson = useCallback((person) => {
-    const { avatarUrl: IconURL, id: ID, name: FullName } = person;
-    let newUser = { ID, UserID: ID, FullName, IconURL };
+    const { avatarUrl: IconURL, id: ID, name } = person;
+    let newUser = { ID, UserID: ID, FullName: name, IconURL };
 
     setUsers((oldUserList) => {
       let userAlreadyExists = oldUserList?.some((user) => user?.ID === ID);

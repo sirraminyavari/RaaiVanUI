@@ -49,8 +49,6 @@ const MultiLevelCell = (props) => {
 
   const levels = Levels?.map((level) => decodeBase64(level));
 
-  console.log(Info);
-
   const initialState = levels?.reduce(
     (levelsObject, currentLevel, index, self) => {
       return {

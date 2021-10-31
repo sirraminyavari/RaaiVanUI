@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { BreadcrumbContainer, BreadcrumbItem } from './Breadcrumb.styles';
 import useWindow from 'hooks/useWindowContext';
+import Heading from 'components/Heading/Heading';
 
 const Breadcrumb = (props) => {
   const { items, className } = props;
@@ -16,7 +17,7 @@ const Breadcrumb = (props) => {
             key={id || GlobalUtilities.random_str(10)}
             as={Link}
             to={linkTo}>
-            {title}
+            <Heading type="h4">{title}</Heading>
             {self.length - 1 !== index && (
               <CaretIcon
                 style={{ verticalAlign: 'middle', margin: '0 0.2rem' }}
