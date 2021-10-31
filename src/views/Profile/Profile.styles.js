@@ -65,7 +65,7 @@ export const ProfileViewContainer = styled.div.attrs({
 export const ProfileTitleWrapper = styled.div`
   position: relative;
   top: 2rem;
-  right: 0.5rem;
+  ${RV_Float}: 0.5rem;
 `;
 
 export const ProfileTitle = styled.span.attrs({
@@ -241,7 +241,7 @@ export const ProfileHeader = styled.header.attrs({
   position: relative;
   top: 0;
   width: 100%;
-  left: 0;
+  ${RV_RevFloat}: 0;
   height: 12rem;
   background-image: url(${({ coverImage }) => coverImage || defaultCover});
   background-size: cover;
@@ -270,7 +270,7 @@ export const AvatarPencilWrapper = styled.div.attrs({
   height: 1.6rem;
   position: absolute;
   bottom: 0.5rem;
-  right: 4.5rem;
+  ${RV_Float}: 4.5rem;
   padding: 0.15rem 0.1rem 0 0;
   background-color: ${TCV_DEFAULT};
   border: 2px solid ${CV_DISTANT};
@@ -282,12 +282,12 @@ export const AvatarPencilWrapper = styled.div.attrs({
 export const HeaderPencilWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
 })`
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 2rem;
+  height: 2rem;
   position: absolute;
   bottom: 1rem;
-  left: 1.5rem;
-  padding: 0.15rem 0.1rem 0 0;
+  ${RV_RevFloat}: 1.5rem;
+  ${FLEX_CCC}
   background-color: ${TCV_DEFAULT};
   border: 2px solid ${CV_DISTANT};
   opacity: 0;
@@ -298,7 +298,7 @@ export const HeaderPencilWrapper = styled.div.attrs({
 export const HeaderCoverLoader = styled.div`
   position: absolute;
   bottom: 0;
-  left: 0;
+  ${RV_RevFloat}: 0;
 `;
 
 export const ProfileAvatarWrapper = styled.div.attrs({
@@ -306,7 +306,7 @@ export const ProfileAvatarWrapper = styled.div.attrs({
 })`
   position: absolute;
   bottom: -2rem;
-  right: 1.75rem;
+  ${RV_Float}: 1.75rem;
   padding: 1rem;
 
   :hover {
