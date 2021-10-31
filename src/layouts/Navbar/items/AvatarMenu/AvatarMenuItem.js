@@ -25,7 +25,7 @@ const MenuItem = (props) => {
         <Avatar
           radius={25}
           userImage={iconURL}
-          style={{ minWidth: '1.9rem' }}
+          style={{ minWidth: '1.9rem', width: '1.9rem' }}
         />
       )}
       <Styled.AvatarMenuTitle className={textClass}>

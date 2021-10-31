@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as Styled from './ImageCropper.styles';
 import Modal from 'components/Modal/Modal';
-import ImageCropper from './ImageCropper';
+import ImageCropperEditor from './ImageCropperEditor';
 import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
 import { DOCS_API, UPLOAD_AND_CROP_ICON } from 'constant/apiConstants';
@@ -107,7 +107,7 @@ const ImageCropModal = (props) => {
 
         if (res.ImageURL) {
           const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-          onUploadDone && onUploadDone(newImageURL);
+          onUploadDone(newImageURL);
         } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
       })
       .catch((error) => {
@@ -129,7 +129,7 @@ const ImageCropModal = (props) => {
       titleClass="profile-image-crop-modal"
       title={modalProps?.title}>
       <Styled.ImageCropperWrapper>
-        <ImageCropper
+        <ImageCropperEditor
           imageSrc={modalProps?.imgSrc}
           aspectRatio={modalProps?.aspect}
           onImageCropComplete={handleImageCropComplete}

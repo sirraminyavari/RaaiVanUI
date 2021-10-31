@@ -10,8 +10,8 @@ export const AvatarContainer = styled.div`
 `;
 
 export const AvatarImage = styled.img`
-  width: ${({ radius }) => `${radius}px`};
-  height: ${({ radius }) => `${radius}px`};
+  width: ${({ radius }) => (!!radius ? `${radius}px` : '100%')};
+  height: ${({ radius }) => (!!radius ? `${radius}px` : '100%')};
   border-radius: 50%;
 `;
 

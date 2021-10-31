@@ -2,12 +2,12 @@ import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Heading from '../../components/Heading/Heading';
-import TeamThumbEdit from './items/TeamThumbEdit';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
 import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
 import CustomThumbSelectControl from '../../components/Inputs/CustomSelect/items/CustomThumbSelectControl';
 import CustomThumbSelectOption from '../../components/Inputs/CustomSelect/items/CustomThumbSelectOption';
+import ImageCropper from '../../components/ImageCropper/ImageCropper';
 
 const TeamSettings = (props) => {
   const {
@@ -29,9 +29,9 @@ const TeamSettings = (props) => {
         <Heading type={'h1'}>{'تنظیمات تیم'}</Heading>
 
         <Styled.FormWrapper>
-          <TeamThumbEdit upload={uploadThumbnail}>
-            <Styled.TeamThumbnail src={imgUrl}></Styled.TeamThumbnail>
-          </TeamThumbEdit>
+          <Styled.TeamThumbnailContainer>
+            <ImageCropper isEditable={true} image={imgUrl} />
+          </Styled.TeamThumbnailContainer>
 
           <Styled.TeamTitle> نام تیم</Styled.TeamTitle>
 

@@ -21,10 +21,10 @@ export const FormWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export const TeamThumbnail = styled.img`
-  height: 9rem;
-  width: 9rem;
-  border-radius: 100%;
+export const TeamThumbnailContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export const TeamTitle = styled.h1`
   display: block;
