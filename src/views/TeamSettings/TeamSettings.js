@@ -12,14 +12,14 @@ import ImageCropper from '../../components/ImageCropper/ImageCropper';
 const TeamSettings = (props) => {
   const {
     rtl,
+    teamTitle,
     breadCrumbItems,
-    imgUrl,
     fieldOfExpertiseOption,
     teamOwnerOptions,
     languageOption,
     calOption,
     teamSizeOption,
-    uploadThumbnail,
+    appInfo,
   } = useTeamSettings(props);
 
   return (
@@ -31,26 +31,19 @@ const TeamSettings = (props) => {
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
-            <ImageCropper isEditable={true} image={imgUrl} />
+            <ImageCropper
+              isEditable={true}
+              uploadType="ApplicationIcon"
+              uploadId={appInfo?.ApplicationID}
+              image={appInfo?.IconURL}
+            />
           </Styled.TeamThumbnailContainer>
 
-          <Styled.TeamTitle> نام تیم</Styled.TeamTitle>
+          <Styled.TeamTitle>{teamTitle}</Styled.TeamTitle>
 
           <Styled.TeamSubtitle>شعار / تک لاین تیم</Styled.TeamSubtitle>
 
           <Styled.TeamSubtitle>وبسایت</Styled.TeamSubtitle>
-
-          <Styled.FieldWrapper>
-            <Styled.SelectTitle>مالک تیم</Styled.SelectTitle>
-            <CustomSelect
-              placeholder=""
-              options={teamOwnerOptions}
-              components={{
-                Option: CustomThumbSelectOption,
-                SingleValue: CustomThumbSelectControl,
-              }}
-            />
-          </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
@@ -64,21 +57,12 @@ const TeamSettings = (props) => {
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
-            <CustomSelect
-              classNamePrefix="select"
-              isRtl={rtl}
-              placeholder=""
-              options={languageOption}
-            />
+            <CustomSelect isRtl={rtl} placeholder="" options={languageOption} />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
-            <CustomSelect
-              classNamePrefix="select"
-              placeholder=""
-              options={calOption}
-            />
+            <CustomSelect placeholder="" options={calOption} />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>

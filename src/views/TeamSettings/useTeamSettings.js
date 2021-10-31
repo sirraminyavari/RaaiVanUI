@@ -13,7 +13,9 @@ const loadAppData = API_Provider('', '');
 const IMAGE_URL =
   'https://img.freepik.com/free-vector/cute-cat-driving-spaceship-ufo-cartoon-icon-illustration-animal-technology-icon-concept-isolated-flat-cartoon-style_138676-2334.jpg?size=338&ext=jpg';
 const useTeamSettings = (props) => {
-  const teamId = props?.match?.params?.id;
+  const appInfo = props?.route?.Application;
+  const teamTitle = decodeBase64(appInfo.Title);
+  // const { ApplicationID, IconURL, Title } = application;
 
   const { RV_RTL: rtl, RVDic: dic } = useWindow();
 
@@ -96,7 +98,8 @@ const useTeamSettings = (props) => {
    * provide data to view portion of team settings view
    */
   return {
-    teamId,
+    appInfo,
+    teamTitle,
     rtl,
     breadCrumbItems,
     imgUrl,
