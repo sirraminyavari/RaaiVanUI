@@ -80,6 +80,13 @@ const useTeamSettings = (props) => {
     { value: 'kurdish', label: 'گاه شماری کردی' },
   ];
 
+  const teamSizeOption = [
+    { value: 'solar', label: 'بیشتر از 100' },
+    { value: 'lunar', label: '50-99 نفر' },
+    { value: 'gregorian', label: '10-49 نفر' },
+    { value: 'kurdish', label: 'کمتر از 10 نفر' },
+  ];
+
   const uploadThumbnail = (fd, config) => {
     //
     console.log(fd, config);
@@ -97,6 +104,7 @@ const useTeamSettings = (props) => {
     teamOwnerOptions,
     languageOption,
     calOption,
+    teamSizeOption,
     uploadThumbnail,
   };
 };

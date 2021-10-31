@@ -18,6 +18,7 @@ const TeamSettings = (props) => {
     teamOwnerOptions,
     languageOption,
     calOption,
+    teamSizeOption,
     uploadThumbnail,
   } = useTeamSettings(props);
 
@@ -54,6 +55,11 @@ const TeamSettings = (props) => {
           <Styled.FieldWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
             <CustomSelect placeholder="" options={fieldOfExpertiseOption} />
+          </Styled.FieldWrapper>
+
+          <Styled.FieldWrapper>
+            <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
+            <CustomSelect placeholder="" options={teamSizeOption} />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
