@@ -6,7 +6,6 @@ import AddNewUser from './AddNewUser';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
-import { decodeBase64 } from 'helpers/helpers';
 
 const UserCell = (props) => {
   const { RVDic } = useWindow();
@@ -84,15 +83,14 @@ const UserCell = (props) => {
           ...value,
           GuidItems: users,
           SelectedItems: users,
+          TextValue: '',
         };
-
-    console.log(userCell);
 
     //! Update cell.
     onCellChange(id, columnId, userCell, users);
   };
 
-  const handleAddNewPerson = useCallback((person) => {
+  const handleAddNewPerson = (person) => {
     const { avatarUrl: IconURL, id: ID, name } = person;
     let newUser = { ID, UserID: ID, FullName: name, IconURL };
 
@@ -108,7 +106,7 @@ const UserCell = (props) => {
 
       return newUsersArray;
     });
-  }, []);
+  };
 
   const handleRemoveUser = useCallback((person) => {
     const newUsersArray = users?.filter(
@@ -136,12 +134,12 @@ const UserCell = (props) => {
         </Styled.UserListWrapper>
         {canEdit && (
           <Button
-            disable={isSaveDisabled}
+            disable={false}
             classes="table-user-cell-save-button"
             onClick={handleSaveUsers}>
             <Styled.SaveButtonHeading
               type="h4"
-              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
+              style={{ color: false ? CV_DISTANT : TCV_DEFAULT }}>
               {RVDic.Save}
             </Styled.SaveButtonHeading>
           </Button>

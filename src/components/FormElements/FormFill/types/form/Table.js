@@ -87,7 +87,7 @@ const Table = (props) => {
 
   //! Fires on every cell update.
   const updateCellData = (rowId, columnId, cellData, cellValue) => {
-    // console.log(cellData, 'update');
+    console.log(cellData, 'step one');
     if (!!rowId) {
       setRows((old) =>
         old.map((row) => {
@@ -185,12 +185,13 @@ const Table = (props) => {
       return;
     }
 
+    //! Do this in parent table.
     const rowElements = rows?.find((row) => row?.id === rowId);
     const filteredElements = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    // saveRowElements(filteredElements)
+    console.log(filteredElements, 'edited row');
     saveForm(filteredElements)
       .then((response) => {
         const newRowElements = response;
@@ -205,7 +206,9 @@ const Table = (props) => {
         setRows(rows);
         setTableContent(newTableContent);
       })
-      .catch((error) => console.log(error, 'save row error'));
+      .catch((error) => {
+        // console.log(error, 'save row error')
+      });
   };
   const memoizedEditRow = useCallback(editRow, [
     rows,
