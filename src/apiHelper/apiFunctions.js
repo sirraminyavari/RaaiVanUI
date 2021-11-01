@@ -50,6 +50,7 @@ import {
   GET_NODE_TYPES,
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
+  GET_TEMPLATE_TAGS,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1205,6 +1206,30 @@ export const recoverNodeType = (nodeId) => {
         },
         (error) => {
           reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get field of expertise list
+ * @returns {Promise}
+ */
+export const getTemplateTags = () => {
+  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplateTagsAPI.fetch(
+        {},
+        (response) => {
+          resolve(response);
+        },
+        (err) => {
+          reject(err);
         }
       );
     } catch (err) {

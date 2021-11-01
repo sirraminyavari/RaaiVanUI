@@ -5,8 +5,6 @@ import Heading from '../../components/Heading/Heading';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
 import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
-import CustomThumbSelectControl from '../../components/Inputs/CustomSelect/items/CustomThumbSelectControl';
-import CustomThumbSelectOption from '../../components/Inputs/CustomSelect/items/CustomThumbSelectOption';
 import ImageCropper from '../../components/ImageCropper/ImageCropper';
 
 const TeamSettings = (props) => {
