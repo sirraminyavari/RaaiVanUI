@@ -2,16 +2,12 @@ import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Heading from '../../components/Heading/Heading';
-import TeamThumbEdit from './items/TeamThumbEdit';
-import {
-  Indicator,
-  ThumbnailOption,
-  ThumbnailControl,
-} from './items/CustomSelect';
 import AnimatedTextArea from './items/AnimatedTextArea';
-import ImageCropperEditor from '../../components/ImageCropper/ImageCropperEditor';
 import Button from '../../components/Buttons/Button';
-import { SettingActionBar } from './TeamSettingsStyle';
+import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
+import CustomThumbSelectControl from '../../components/Inputs/CustomSelect/items/CustomThumbSelectControl';
+import CustomThumbSelectOption from '../../components/Inputs/CustomSelect/items/CustomThumbSelectOption';
+import ImageCropper from '../../components/ImageCropper/ImageCropper';
 
 const TeamSettings = (props) => {
   const {
@@ -22,6 +18,7 @@ const TeamSettings = (props) => {
     teamOwnerOptions,
     languageOption,
     calOption,
+    teamSizeOption,
     uploadThumbnail,
   } = useTeamSettings(props);
 
@@ -33,9 +30,9 @@ const TeamSettings = (props) => {
         <Heading type={'h1'}>{'تنظیمات تیم'}</Heading>
 
         <Styled.FormWrapper>
-          <TeamThumbEdit upload={uploadThumbnail}>
-            <Styled.TeamThumbnail src={imgUrl}></Styled.TeamThumbnail>
-          </TeamThumbEdit>
+          <Styled.TeamThumbnailContainer>
+            <ImageCropper isEditable={true} image={imgUrl} />
+          </Styled.TeamThumbnailContainer>
 
           <Styled.TeamTitle> نام تیم</Styled.TeamTitle>
 
@@ -45,46 +42,42 @@ const TeamSettings = (props) => {
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>مالک تیم</Styled.SelectTitle>
-            <Styled.Select
-              classNamePrefix="select"
+            <CustomSelect
               placeholder=""
               options={teamOwnerOptions}
               components={{
-                DropdownIndicator: Indicator,
-                Option: ThumbnailOption,
-                SingleValue: ThumbnailControl,
+                Option: CustomThumbSelectOption,
+                SingleValue: CustomThumbSelectControl,
               }}
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
-            <Styled.Select
-              classNamePrefix="select"
-              placeholder=""
-              options={fieldOfExpertiseOption}
-              components={{ DropdownIndicator: Indicator }}
-            />
+            <CustomSelect placeholder="" options={fieldOfExpertiseOption} />
+          </Styled.FieldWrapper>
+
+          <Styled.FieldWrapper>
+            <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
+            <CustomSelect placeholder="" options={teamSizeOption} />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
-            <Styled.Select
+            <CustomSelect
               classNamePrefix="select"
               isRtl={rtl}
               placeholder=""
               options={languageOption}
-              components={{ DropdownIndicator: Indicator }}
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
-            <Styled.Select
+            <CustomSelect
               classNamePrefix="select"
               placeholder=""
               options={calOption}
-              components={{ DropdownIndicator: Indicator }}
             />
           </Styled.FieldWrapper>
 

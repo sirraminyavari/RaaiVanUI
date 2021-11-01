@@ -1,44 +1,38 @@
-import Select from 'react-select';
+import React from 'react';
 import * as Styled from './CustomSelect.styles';
+import CustomSelectIndicator from './items/CustomSelectIndicator';
 
-const CustomSelect = (props) => {
-  const {
-    defaultValue,
-    value,
-    isMulti,
-    placeholder,
-    hideSelectedOptions,
-    closeMenuOnSelect,
-    isClearable,
-    isSearchable,
-    selectName,
-    selectOptions,
-    onChange,
-    onMenuClose,
-    selectStyles,
-    isLoading,
-  } = props;
+const CustomSelect = React.forwardRef(
+  ({ classNamePrefix, components, ...props }, ref) => {
+    const {
+      defaultValue,
+      isMulti,
+      placeholder,
+      hideSelectedOptions,
+      closeMenuOnSelect,
+      isClearable,
+      isSearchable,
+      selectName,
+      selectOptions,
+      onChange,
+      onMenuClose,
+      selectStyles,
+    } = props;
 
-  return (
-    <Styled.SelectContainer>
-      <Select
-        defaultValue={defaultValue}
-        value={value}
-        isMulti={isMulti}
-        hideSelectedOptions={hideSelectedOptions}
-        closeMenuOnSelect={closeMenuOnSelect}
-        isClearable={isClearable}
-        isSearchable={!!isSearchable}
-        name={selectName}
-        options={selectOptions}
-        onChange={onChange}
-        onMenuClose={onMenuClose}
-        styles={selectStyles}
-        placeholder={placeholder}
-        isLoading={isLoading}
-      />
-    </Styled.SelectContainer>
-  );
-};
+    return (
+      <Styled.SelectContainer>
+        <Styled.Select
+          classNamePrefix="select"
+          components={{
+            ...components,
+            DropdownIndicator: CustomSelectIndicator,
+          }}
+          {...props}
+          ref={ref}
+        />
+      </Styled.SelectContainer>
+    );
+  }
+);
 
 export default CustomSelect;
