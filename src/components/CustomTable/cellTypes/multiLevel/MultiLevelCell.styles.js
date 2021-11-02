@@ -2,12 +2,18 @@ import styled from 'styled-components';
 import { C_GRAY_DARK, TC_DEFAULT } from 'constant/Colors';
 import { CV_DISTANT, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
+import { FLEX_CCC } from 'constant/StyledCommonCss';
 
 const { RV_Float } = window;
 
+export const MultiLevelContainer = styled.div`
+  ${FLEX_CCC}
+  gap: 0.2rem;
+  width: 100%;
+`;
+
 export const SelectWrapper = styled.div`
-  margin: 0.7rem;
-  display: ${({ isShown }) => (isShown ? 'block' : 'none')};
+  width: 100%;
 `;
 
 export const SelectLabel = styled.label.attrs({
