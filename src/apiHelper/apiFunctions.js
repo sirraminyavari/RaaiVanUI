@@ -51,6 +51,7 @@ import {
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
   GET_TEMPLATE_TAGS,
+  SAVE_APPLICATION_INFO,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1225,6 +1226,62 @@ export const getTemplateTags = () => {
     try {
       getTemplateTagsAPI.fetch(
         {},
+        (response) => {
+          resolve(response);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description update the team (application) info
+ * @param ApplicationID - the application id
+ * @param Title - title of the application
+ * @param Tagline - tagline of the application
+ * @param Website - website url of the application
+ * @param About
+ * @param Size
+ * @param ExpertiseFieldID
+ * @param ExpertiseFieldName
+ * @param Language
+ * @param Calender
+ * @return {Promise<unknown>}
+ */
+export const saveApplicationInfo = (
+  ApplicationID,
+  Title,
+  Tagline,
+  Website,
+  About,
+  Size,
+  ExpertiseFieldID,
+  ExpertiseFieldName,
+  Language,
+  Calender
+) => {
+  const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
+
+  return new Promise((resolve, reject) => {
+    try {
+      saveApplicationInfoAPI.fetch(
+        {
+          ApplicationID,
+          ExpertiseFieldID,
+          Title: encodeBase64(Title),
+          Tagline: encodeBase64(Tagline),
+          Website: encodeBase64(Website),
+          About: encodeBase64(About),
+          Size: encodeBase64(Size),
+          ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
+          Language: encodeBase64(Language),
+          Calender: encodeBase64(Calender),
+        },
         (response) => {
           resolve(response);
         },

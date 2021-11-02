@@ -2,23 +2,46 @@
  * Controller portion for team settings view
  */
 import useWindow from '../../hooks/useWindowContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { decodeBase64 } from '../../helpers/helpers';
 import {
-  API_Provider,
-  encodeBase64,
-  decodeBase64,
-} from '../../helpers/helpers';
-import { getTemplateTags } from '../../apiHelper/apiFunctions';
+  getTemplateTags,
+  saveApplicationInfo,
+} from '../../apiHelper/apiFunctions';
 
 const useTeamSettings = (props) => {
-  const appInfo = props?.route?.Application;
-  const teamTitle = decodeBase64(appInfo.Title);
+  const { IconURL, ...appInfo } = props?.route?.Application;
+
+  console.log(appInfo);
 
   const { RV_RTL: rtl, RVDic: dic } = useWindow();
 
+  const [fieldOfExpertiseOption, setFieldOfExpertiseOption] = useState([]);
+  const [applicationInfo, setApplicationInfo] = useState({
+    ApplicationID: appInfo.ApplicationID,
+    Title: decodeBase64(appInfo.Title),
+    Tagline: '',
+    Website: '',
+    About: '',
+    Size: '',
+    ExpertiseFieldID: appInfo.FieldOfExpertise.ID,
+    ExpertiseFieldName: decodeBase64(appInfo.FieldOfExpertise.Name),
+    Language: '',
+    Calender: '',
+  });
+
   useEffect(async () => {
-    const tagList = await getTemplateTags();
-    console.log(tagList);
+    try {
+      const tagList = await getTemplateTags();
+      const fields = tagList.Tags.map((x) => ({
+        value: x.NodeID,
+        label: decodeBase64(x.Name),
+      }));
+      setFieldOfExpertiseOption(fields);
+      console.log(fields);
+    } catch (err) {
+      console.log('call api error: ' + err);
+    }
   }, []);
 
   /**
@@ -38,15 +61,6 @@ const useTeamSettings = (props) => {
     },
   ];
 
-  const teamOwnerOptions = [];
-
-  const fieldOfExpertiseOption = [
-    { value: 'industry', label: 'صنعت' },
-    { value: 'med', label: 'پزشکی' },
-    { value: 'it', label: 'فناوری اطلاعات' },
-    { value: 'edu', label: 'آموزش' },
-  ];
-
   const languageOption = [
     { value: 'fr', label: 'فارسی' },
     { value: 'en', label: 'English' },
@@ -62,31 +76,57 @@ const useTeamSettings = (props) => {
   ];
 
   const teamSizeOption = [
-    { value: 'jalali', label: 'بیشتر از 100' },
-    { value: 'lunar', label: '50-99 نفر' },
-    { value: 'gregorian', label: '10-49 نفر' },
-    { value: 'kurdish', label: 'کمتر از 10 نفر' },
+    { value: '1 - 10', label: '1 - 10' },
+    { value: '10 - 20', label: '10 - 20' },
+    { value: 'more than 20', label: 'بیشتر از 20' },
   ];
 
-  const uploadThumbnail = (fd, config) => {
-    //
-    console.log(fd, config);
+  const saveInfo = async () => {
+    const {
+      ApplicationID,
+      Title,
+      Tagline,
+      Website,
+      About,
+      Size,
+      ExpertiseFieldID,
+      ExpertiseFieldName,
+      Language,
+      Calender,
+    } = applicationInfo;
+
+    try {
+      await saveApplicationInfo(
+        ApplicationID,
+        Title,
+        Tagline,
+        Website,
+        About,
+        Size,
+        ExpertiseFieldID,
+        ExpertiseFieldName,
+        Language,
+        Calender
+      );
+    } catch (err) {
+      console.log('saving app info error', err);
+    }
   };
 
   /**
    * provide data to view portion of team settings view
    */
   return {
-    appInfo,
-    teamTitle,
+    IconURL,
+    applicationInfo,
+    setApplicationInfo,
     rtl,
     breadCrumbItems,
     fieldOfExpertiseOption,
-    teamOwnerOptions,
     languageOption,
     calOption,
     teamSizeOption,
-    uploadThumbnail,
+    saveInfo,
   };
 };
 export default useTeamSettings;
