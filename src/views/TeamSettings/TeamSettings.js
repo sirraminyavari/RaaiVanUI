@@ -5,21 +5,20 @@ import Heading from '../../components/Heading/Heading';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
 import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
-import CustomThumbSelectControl from '../../components/Inputs/CustomSelect/items/CustomThumbSelectControl';
-import CustomThumbSelectOption from '../../components/Inputs/CustomSelect/items/CustomThumbSelectOption';
 import ImageCropper from '../../components/ImageCropper/ImageCropper';
+import CustomSelectIndicator from '../../components/Inputs/CustomSelect/items/CustomSelectIndicator';
 
 const TeamSettings = (props) => {
   const {
     rtl,
+    teamTitle,
     breadCrumbItems,
-    imgUrl,
     fieldOfExpertiseOption,
     teamOwnerOptions,
     languageOption,
     calOption,
     teamSizeOption,
-    uploadThumbnail,
+    appInfo,
   } = useTeamSettings(props);
 
   return (
@@ -31,53 +30,66 @@ const TeamSettings = (props) => {
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
-            <ImageCropper isEditable={true} image={imgUrl} />
+            <ImageCropper
+              isEditable={true}
+              uploadType="ApplicationIcon"
+              uploadId={appInfo?.ApplicationID}
+              image={appInfo?.IconURL}
+            />
           </Styled.TeamThumbnailContainer>
 
-          <Styled.TeamTitle> نام تیم</Styled.TeamTitle>
+          <Styled.TeamTitle>{teamTitle}</Styled.TeamTitle>
 
           <Styled.TeamSubtitle>شعار / تک لاین تیم</Styled.TeamSubtitle>
 
           <Styled.TeamSubtitle>وبسایت</Styled.TeamSubtitle>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>مالک تیم</Styled.SelectTitle>
+            <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
-              options={teamOwnerOptions}
+              options={fieldOfExpertiseOption}
               components={{
-                Option: CustomThumbSelectOption,
-                SingleValue: CustomThumbSelectControl,
+                DropdownIndicator: CustomSelectIndicator,
               }}
+              classNamePrefix="select"
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
-            <CustomSelect placeholder="" options={fieldOfExpertiseOption} />
-          </Styled.FieldWrapper>
-
-          <Styled.FieldWrapper>
             <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
-            <CustomSelect placeholder="" options={teamSizeOption} />
+            <CustomSelect
+              placeholder=""
+              options={teamSizeOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
+            />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
             <CustomSelect
-              classNamePrefix="select"
               isRtl={rtl}
               placeholder=""
               options={languageOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
             <CustomSelect
-              classNamePrefix="select"
               placeholder=""
               options={calOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
             />
           </Styled.FieldWrapper>
 
