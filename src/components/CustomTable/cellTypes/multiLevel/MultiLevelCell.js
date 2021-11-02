@@ -2,13 +2,10 @@
  * Renders multi-level fill form.
  */
 import { useState, useEffect } from 'react';
-import { decodeBase64, API_Provider } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import * as Styled from './MultiLevelCell.styles';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { CN_API, GET_CHILD_NODES } from 'constant/apiConstants';
-
-const getChildNodesAPI = API_Provider(CN_API, GET_CHILD_NODES);
+import { getNestedItems } from './utils';
 
 const MultiLevelCell = (props) => {
   // console.log(props, 'multi');
@@ -42,34 +39,22 @@ const MultiLevelCell = (props) => {
   );
 
   const { Levels, NodeType } = Info || columnInfo || {};
-  const {
-    ID,
-    //  Name
-  } = NodeType || {};
+  const { ID } = NodeType || {};
 
   const levels = Levels?.map((level) => decodeBase64(level));
 
-  console.log(Info);
+  const initialState = levels?.map((level, index, self) => ({
+    step: index,
+    currentLabel: level,
+    nextLabel: !!self?.[index + 1] ? self?.[index + 1] : null,
+    prevLabel: !!self?.[index - 1] ? self?.[index - 1] : null,
+    value: SelectedItems?.[index],
+    defaultValue: selectedItemsName?.[index],
+    options: [],
+    isLoading: false,
+  }));
 
-  const initialState = levels?.reduce(
-    (levelsObject, currentLevel, index, self) => {
-      return {
-        ...levelsObject,
-        [currentLevel]: {
-          step: index,
-          currentLevel,
-          nextLevel: self[index + 1] ?? null,
-          prevLevel: !!index ? self[index - 1] : null,
-          value: null,
-          options: [],
-        },
-      };
-    },
-    {}
-  );
-
-  const [levelValues, setLevelValues] = useState(initialState || {});
-  const [isFetchingOptions, setIsFetchingOptions] = useState(false);
+  const [levelValues, setLevelValues] = useState(initialState);
 
   //! Keep track of edit mode, And revert to default value if edition has been canceled.
   useEffect(() => {
@@ -79,123 +64,121 @@ const MultiLevelCell = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRowEditing]);
 
-  useEffect(() => {
-    let levelsArray = Object.values(levelValues || {});
+  //! Update multi level cell.
+  const updateCell = (levels) => {
+    let id = isNew ? null : rowId;
 
-    //! If true, All select field are filled.
-    const isCompleted = levelsArray?.every((item) => item.value !== null);
+    let selectedItems = levels?.map((level) => {
+      let { Name, NodeID } = level?.value || {};
+      return {
+        AdditionalID: '',
+        Code: '',
+        ID: NodeID,
+        Name: decodeBase64(Name),
+        NodeID,
+      };
+    });
 
-    if (isCompleted) {
-      let id = isNew ? null : rowId;
-      let selectedItems = levelsArray?.map((level) => {
-        let { Name, NodeID } = level.value;
-        return {
-          AdditionalID: '',
-          Code: '',
-          ID: NodeID,
-          Name: decodeBase64(Name),
-          NodeID,
+    let multiLevelCell = isNew
+      ? {
+          ElementID: headerId,
+          SelectedItems: selectedItems,
+          GuidItems: selectedItems,
+          Type: header?.dataType,
+        }
+      : {
+          ...value,
+          SelectedItems: selectedItems,
+          GuidItems: selectedItems,
+          TextValue: '',
         };
+
+    onCellChange(id, columnId, multiLevelCell, selectedItems);
+  };
+
+  //! Get options for each level.
+  const getOptions = (step, id) => {
+    setLevelValues((previous) =>
+      previous.map((level, index) =>
+        step === index
+          ? {
+              ...level,
+              isLoading: true,
+            }
+          : level
+      )
+    );
+
+    getNestedItems(id, step)
+      .then((response) => {
+        setLevelValues((previous) =>
+          previous.map((level, index) =>
+            step === index
+              ? {
+                  ...level,
+                  options: response,
+                  isLoading: false,
+                }
+              : level
+          )
+        );
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      let multiLevelCell = isNew
-        ? {
-            ElementID: headerId,
-            SelectedItems: selectedItems,
-            GuidItems: selectedItems,
-            Type: header?.dataType,
-          }
-        : {
-            ...value,
-            SelectedItems: selectedItems,
-            GuidItems: selectedItems,
-          };
-
-      onCellChange(id, columnId, multiLevelCell, selectedItems);
-    }
-  }, [levelValues]);
+  };
 
   //! Calls on input change.
   const handleChange = (selectedOption, levelObject) => {
-    const {
-      // prevLevel,
-      currentLevel: level,
-      // nextLevel,
-      step: currentStep,
-      // value,
-      // options,
-    } = levelObject;
-
-    //! Array of next levels name.
-    const nextLevelsName = levels.slice(currentStep + 1);
-
-    //! Next levels that their value must set to default.
-    const nextLevelsValue = nextLevelsName.reduce((acc, level) => {
-      return {
-        ...acc,
-        [level]: { ...levelValues[level], value: null, options: [] },
-      };
-    }, {});
+    let { step: currentStep, options } = levelObject;
+    let nextStep = currentStep + 1;
+    let isTheEnd = currentStep === levels.length - 1;
 
     //! Extract selected value from it's option list.
-    const currentLevelValue = levelValues[level].options.find(
+    const currentLevelValue = options.find(
       (item) => decodeBase64(item.Name) === selectedOption
     );
 
-    setLevelValues((oldValues) => ({
-      ...oldValues,
-      [level]: { ...oldValues[level], value: currentLevelValue },
-      ...nextLevelsValue,
-    }));
+    let newLevelsValue = levelValues.map((level, index) => {
+      if (index === currentStep) {
+        return {
+          ...level,
+          value: currentLevelValue,
+          defaultValue: selectedOption,
+        };
+      }
+      if (index > currentStep) {
+        return {
+          ...level,
+          value: null,
+          defaultValue: null,
+          options: [],
+        };
+      }
+      return level;
+    });
+
+    setLevelValues(newLevelsValue);
+
+    if (isTheEnd) {
+      updateCell(newLevelsValue);
+    } else {
+      getOptions(nextStep, currentLevelValue.NodeID);
+    }
   };
 
   useEffect(() => {
-    //! Get level that does not have value.
-    const currentLevel = Object.values(levelValues || {}).filter(
-      (item) => item.value === null
-    )[0];
-
-    //! The last level that has value.
-    const prevLevel = Object.values(levelValues || {})
-      .filter((item) => item.value !== null)
-      .pop();
-
-    //! Check if current level does not have options, then fetch it's options.
-    if (currentLevel && !currentLevel.options?.length) {
-      let fetchOptions;
-      //! Get fetch options based on level step.
-      if (!prevLevel) {
-        //! First level.
-        fetchOptions = { NodeTypeID: ID };
-      } else {
-        //! Child levels.
-        fetchOptions = { NodeID: prevLevel?.value?.NodeID };
-      }
-
-      prevLevel && setIsFetchingOptions(true);
-      //! Fetch select options.
-      getChildNodesAPI.fetch(
-        { ...fetchOptions },
-        (response) => {
-          setIsFetchingOptions(false);
-          //! Update level values.
-          setLevelValues((oldValues) => ({
-            ...oldValues,
-            [currentLevel.currentLevel]: {
-              ...currentLevel,
-              options: response.Nodes,
-            },
-          }));
-        },
-        (error) => {
-          console.log(error);
-          setIsFetchingOptions(false);
-        }
-      );
+    if (canEdit) {
+      getOptions(0, ID);
+    } else {
+      setLevelValues(initialState);
     }
 
+    return () => {
+      setLevelValues(levelValues);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [levelValues]);
+  }, [canEdit]);
 
   //! Show mode and not new.
   if (!canEdit && !isNew) {
@@ -209,62 +192,69 @@ const MultiLevelCell = (props) => {
   }
 
   return (
-    <div>
-      {Object.entries(levelValues || {})?.map((level, key) => {
-        const [levelName, currentLevel] = level;
-        const selectedLevelName = decodeBase64(currentLevel?.value?.Name);
+    <Styled.MultiLevelContainer>
+      {levelValues
+        ?.filter(
+          (level) => !!level.defaultValue || level?.options.length || isNew
+        )
+        ?.map((level, key, self) => {
+          const selectedLevelName = decodeBase64(level?.value?.Name);
+          let previousLevel = self?.[level.step - 1];
+          let previousSelect = previousLevel?.options.find(
+            (option) => decodeBase64(option.Name) === previousLevel.defaultValue
+          );
 
-        //! Options for each select.
-        const options = currentLevel?.options?.map((option) => ({
-          value: decodeBase64(option?.Name),
-          label: decodeBase64(option?.Name),
-        }));
+          //! Options for each select.
+          const selectOptions = level?.options?.map((option) => ({
+            value: decodeBase64(option?.Name),
+            label: decodeBase64(option?.Name),
+          }));
 
-        //! Check if select should be shown.
-        const isShown =
-          currentLevel?.step === 0 || //! Either is first level,
-          !!currentLevel?.options.length || //! Or has got options,
-          (canEdit && SelectedItems.length); //! Or is in Edit mode.
+          //! Get user selected value.
+          const value = !!level?.value
+            ? {
+                value: selectedLevelName,
+                label: selectedLevelName,
+              }
+            : null;
 
-        //! Get user selected value.
-        const value = !!currentLevel?.value
-          ? {
-              value: selectedLevelName,
-              label: selectedLevelName,
-            }
-          : null;
+          //! Get value for the select component.
+          const selectValue = isNew
+            ? undefined
+            : SelectedItems.length
+            ? undefined
+            : value;
 
-        //! Get value for the select component.
-        const selectValue = isNew
-          ? undefined
-          : SelectedItems.length
-          ? undefined
-          : value;
+          //! Get default value if it has any.
+          const selectDefaultValue = !!level?.defaultValue
+            ? {
+                value: level?.defaultValue,
+                label: level?.defaultValue,
+              }
+            : undefined;
 
-        //! Get default value if it has selected items.
-        const selectDefaultValue = isNew
-          ? undefined
-          : SelectedItems?.map((item) => ({
-              value: decodeBase64(item?.Name),
-              label: decodeBase64(item?.Name),
-            }))?.[currentLevel?.step];
-
-        return (
-          <Styled.SelectWrapper key={key} isShown={isShown}>
-            <CustomSelect
-              defaultValue={selectDefaultValue}
-              value={selectValue}
-              placeholder={levelName}
-              selectOptions={options}
-              selectStyles={Styled.customStyles}
-              onChange={(option) => handleChange(option?.value, currentLevel)}
-              isSearchable
-            />
-          </Styled.SelectWrapper>
-        );
-      })}
-      {isFetchingOptions && <LogoLoader lottieWidth="3rem" />}
-    </div>
+          return (
+            <Styled.SelectWrapper key={key}>
+              <CustomSelect
+                defaultValue={selectDefaultValue}
+                value={selectValue}
+                placeholder={level?.currentLabel}
+                options={selectOptions}
+                selectStyles={Styled.customStyles}
+                onChange={(option) => handleChange(option?.value, level)}
+                onFocus={() =>
+                  level.step !== 0 &&
+                  !level.options.length &&
+                  !!previousLevel.options.length &&
+                  getOptions(level.step, previousSelect?.NodeID)
+                }
+                isSearchable
+                isLoading={level.isLoading}
+              />
+            </Styled.SelectWrapper>
+          );
+        })}
+    </Styled.MultiLevelContainer>
   );
 };
 

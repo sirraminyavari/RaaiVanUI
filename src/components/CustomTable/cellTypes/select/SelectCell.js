@@ -109,20 +109,22 @@ const SelectCell = (props) => {
   }
 
   return (
-    <CustomSelect
-      defaultValue={defaultValues}
-      isMulti={!!multiSelect}
-      hideSelectedOptions={false}
-      closeMenuOnSelect={false}
-      isClearable={false}
-      isSearchable={true}
-      placeholder="انتخاب کنید"
-      selectName={header?.title}
-      selectOptions={options}
-      onChange={handleSelectChange}
-      onMenuClose={handleOnMenuClose}
-      selectStyles={Styled.selectStyles}
-    />
+    <Styled.SelectWrapper>
+      <CustomSelect
+        defaultValue={defaultValues}
+        isMulti={!!multiSelect}
+        hideSelectedOptions={false}
+        closeMenuOnSelect={false}
+        isClearable={false}
+        isSearchable={true}
+        placeholder="انتخاب کنید"
+        selectName={header?.title}
+        options={options}
+        onChange={handleSelectChange}
+        onMenuClose={handleOnMenuClose}
+        // selectStyles={Styled.selectStyles}
+      />
+    </Styled.SelectWrapper>
   );
 };
 

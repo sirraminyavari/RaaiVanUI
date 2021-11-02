@@ -446,8 +446,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                         position: 'relative',
                         [RV_Float]: `${-index * 9}px`,
                         zIndex: 10 - index,
+                        width: '3rem',
+                        minWidth: '3rem',
                       }}
-                      imageStyles={{ minWidth: '2.1rem' }}
                     />
                   </Tooltip>
                 );

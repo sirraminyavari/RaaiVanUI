@@ -1,18 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { getOwnerFormInstances } from 'apiHelper/apiFunctions';
 
-const TableCellModal = ({
-  value,
-  // getColumnsOption,
-  row,
-  column,
-  header,
-  editingRow,
-  editable: isTableEditable,
-  isNew,
-  tableMirror: Table,
-}) => {
+const TableCellModal = (props) => {
+  const {
+    value,
+    // getColumnsOption,
+    row,
+    column,
+    header,
+    editingRow,
+    editable: isTableEditable,
+    isNew,
+    tableMirror: Table,
+    onCellChange,
+  } = props;
+
   const { Info } = value || {};
 
   const rowId = row?.original?.id;
@@ -30,18 +33,27 @@ const TableCellModal = ({
   const [rawColumns, setRawColumns] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
+  const handleTableContentChange = (tableContent) => {
+    let tableCell = {
+      ...value,
+      TableContent: tableContent,
+    };
+
+    onCellChange(rowId, columnId, tableCell, tableContent);
+  };
+
   useEffect(() => {
     if (tableId && tableOwnerId) {
       setIsFetching(true);
       getOwnerFormInstances(tableId, tableOwnerId)
         .then((response) => {
-          setIsFetching(false);
-
           const rawTableData = response?.TableContent || [];
           const rawTableColumns = response?.TableColumns || [];
 
           setRawColumns(rawTableColumns);
           setRawData(rawTableData);
+
+          setIsFetching(false);
         })
         .catch((error) => {
           setIsFetching(false);
@@ -50,17 +62,21 @@ const TableCellModal = ({
     }
   }, []);
 
+  const memoizedRawData = useMemo(() => rawData, [rawData]);
+
   return (
     <div>
       {isFetching && <LogoLoader />}
-      {!isFetching && !!rawData?.length && (
+      {!isFetching && (
         <Table
           tableColumns={rawColumns}
-          tableData={rawData}
+          tableData={memoizedRawData}
           tableId={tableId}
           tableOwnerId={tableOwnerId}
+          onTableContentChange={handleTableContentChange}
           isEditable={canEdit}
           isResizable={true}
+          isNestedTable
         />
       )}
     </div>

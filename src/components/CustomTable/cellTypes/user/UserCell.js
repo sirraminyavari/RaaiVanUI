@@ -3,12 +3,10 @@ import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import AddNewUser from './AddNewUser';
-import Button from 'components/Buttons/Button';
-import useWindow from 'hooks/useWindowContext';
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+// import useWindow from 'hooks/useWindowContext';
 
 const UserCell = (props) => {
-  const { RVDic } = useWindow();
+  // const { RVDic } = useWindow();
 
   const {
     isNew,
@@ -51,12 +49,6 @@ const UserCell = (props) => {
     };
   }, [canEdit, initialUsers, isNew]);
 
-  const isSaveDisabled =
-    JSON.stringify(
-      beforeChangeUsersRef.current?.map((x) => x?.NodeID).sort()
-    ) === JSON.stringify(users?.map((y) => y?.NodeID).sort()) ||
-    (isNew && !users.length);
-
   const normalizeSelectedUsers =
     users?.length > 0
       ? users?.map((user) => {
@@ -83,78 +75,61 @@ const UserCell = (props) => {
           ...value,
           GuidItems: users,
           SelectedItems: users,
+          TextValue: '',
         };
 
     //! Update cell.
     onCellChange(id, columnId, userCell, users);
   };
 
-  const handleAddNewPerson = useCallback((person) => {
-    const { avatarUrl: IconURL, id: ID, name: FullName } = person;
-    let newUser = { ID, UserID: ID, FullName, IconURL };
+  const handleAddNewPerson = (person) => {
+    const { avatarUrl: IconURL, id: ID, name } = person;
+    let newUser = { ID, UserID: ID, FullName: name, IconURL };
 
-    setUsers((oldUserList) => {
-      let userAlreadyExists = oldUserList?.some((user) => user?.ID === ID);
+    let userAlreadyExists = users?.some((user) => user?.ID === ID);
 
-      //! Prepare new users list;
-      const newUsersArray = isMultiSelect
-        ? userAlreadyExists
-          ? oldUserList
-          : [...oldUserList, newUser]
-        : [newUser];
+    //! Prepare new users list;
+    const newUsersArray = isMultiSelect
+      ? userAlreadyExists
+        ? users
+        : [...users, newUser]
+      : [newUser];
 
-      return newUsersArray;
-    });
-  }, []);
+    setUsers(newUsersArray);
+    updateUserCell(newUsersArray);
+  };
 
   const handleRemoveUser = useCallback((person) => {
     const newUsersArray = users?.filter(
       (user) => user?.UserID !== person?.UserID
     );
     setUsers(newUsersArray);
+    updateUserCell(newUsersArray);
   }, []);
-
-  const handleSaveUsers = () => {
-    updateUserCell(users);
-  };
 
   return (
     <Styled.UsersCellContainer>
-      <Styled.UsersWrapper>
-        <Styled.UserListWrapper isEditMode={canEdit}>
-          <UsersList
-            users={users}
-            onRemoveUser={handleRemoveUser}
-            canEdit={canEdit}
-          />
-          {!users?.length && (
-            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-          )}
-        </Styled.UserListWrapper>
-        {canEdit && (
-          <Button
-            disable={isSaveDisabled}
-            classes="table-user-cell-save-button"
-            onClick={handleSaveUsers}>
-            <Styled.SaveButtonHeading
-              type="h4"
-              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
-              {RVDic.Save}
-            </Styled.SaveButtonHeading>
-          </Button>
-        )}
-      </Styled.UsersWrapper>
+      <UsersList
+        users={users}
+        onRemoveUser={handleRemoveUser}
+        canEdit={canEdit}
+      />
+      {!users?.length && (
+        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+      )}
       {canEdit && (
-        <PeoplePicker
-          onByMe={() => {}}
-          onBlur={() => {}}
-          onByPeople={handleAddNewPerson}
-          isByMe={false}
-          pickedPeople={isNew ? normalizeSelectedUsers : []}
-          onVisible={() => {}}
-          multi={isMultiSelect}
-          buttonComponent={<AddNewUser />}
-        />
+        <Styled.PeoplePickerWrapper>
+          <PeoplePicker
+            onByMe={() => {}}
+            onBlur={() => {}}
+            onByPeople={handleAddNewPerson}
+            isByMe={false}
+            pickedPeople={isNew ? normalizeSelectedUsers : []}
+            onVisible={() => {}}
+            multi={isMultiSelect}
+            buttonComponent={<AddNewUser />}
+          />
+        </Styled.PeoplePickerWrapper>
       )}
     </Styled.UsersCellContainer>
   );

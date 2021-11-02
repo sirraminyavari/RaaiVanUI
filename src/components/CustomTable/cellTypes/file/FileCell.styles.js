@@ -34,12 +34,13 @@ export const FileItemContainer = styled.div.attrs({
 export const FileCellContainer = styled.div`
   width: 100%;
   ${FLEX_CSA}
-  gap: 0.2rem;
+  gap: 0.5rem;
 
   .table-file-cell-select-button {
     background-color: inherit;
     color: ${TCV_DEFAULT};
-    width: 9rem;
+    width: auto;
+    margin: 0 1rem;
     height: 1.8rem;
     border-radius: 1rem;
   }
@@ -126,11 +127,17 @@ export const AddNewFile = styled.div`
   cursor: pointer;
 `;
 
+export const AddNewFileWrapper = styled.div`
+  width: 100%;
+`;
+
 export const EmptyCellView = styled.div`
   color: ${CV_DISTANT};
   width: 100%;
+  height: 2rem;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
+  margin-top: 0.5rem;
 `;
 
 export const FileListWrapper = styled.div`

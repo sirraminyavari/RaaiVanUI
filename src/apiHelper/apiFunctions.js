@@ -60,6 +60,7 @@ import {
   CREATE_FORM_INSTANCE,
   RECOVER_FORM_INSTANCES,
   REMOVE_FILE,
+  GET_TEMPLATE_TAGS,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1493,6 +1494,28 @@ export const removeFile = (ownerId, fileId) => {
         },
         (error) => {
           reject(error);
+        }
+      );
+    } catch (err) {}
+  });
+};
+
+/**
+ * @description Get field of expertise list
+ * @returns {Promise}
+ */
+export const getTemplateTags = () => {
+  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplateTagsAPI.fetch(
+        {},
+        (response) => {
+          resolve(response);
+        },
+        (err) => {
+          reject(err);
         }
       );
     } catch (err) {

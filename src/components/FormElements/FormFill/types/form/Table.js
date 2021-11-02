@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useState, useEffect, useRef, memo } from 'react';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { CV_RED } from 'constant/CssVariables';
@@ -25,8 +25,10 @@ import saveForm from '../saveForm';
  * @property {Array} tableData - A list of rows for table.
  * @property {String} tableId - The id of the table.
  * @property {String} tableOwnerId - The id of the owner of the table.
- * @property {Boolean} isEditable - Whether table is editable or not?.
- * @property {Boolean} isResizable - Whether table is resizable or not?.
+ * @property {Boolean} isEditable - Whether table is editable or not?
+ * @property {Boolean} isResizable - Whether table is resizable or not?
+ * @property {Boolean} isNestedTable - Whether table is nested inside another table or not?
+ * @property {Function} onTableContentChange - A callback function that fires whenever table content changes.
  */
 
 /**
@@ -42,6 +44,8 @@ const Table = (props) => {
     tableOwnerId,
     isEditable,
     isResizable,
+    isNestedTable,
+    onTableContentChange,
   } = props;
 
   const { GlobalUtilities } = useWindow();
@@ -83,7 +87,7 @@ const Table = (props) => {
 
   //! Fires on every cell update.
   const updateCellData = (rowId, columnId, cellData, cellValue) => {
-    console.log(cellData, 'update');
+    console.log(cellData, 'step one');
     if (!!rowId) {
       setRows((old) =>
         old.map((row) => {
@@ -161,12 +165,33 @@ const Table = (props) => {
 
   //! Edit table row.
   const editRow = (rowId) => {
+    //! Do this in nested tables.
+    if (!!isNestedTable) {
+      let newContentElements = rows
+        ?.map((row) => Object.values(row))
+        .reduce((acc, current) => {
+          let id = current.shift();
+          return { ...acc, [id]: current };
+        }, {});
+
+      let newTableContent = tableContent.map((content) => {
+        return {
+          ...content,
+          Elements: newContentElements[content?.InstanceID],
+        };
+      });
+
+      onTableContentChange && onTableContentChange(newTableContent);
+      return;
+    }
+
+    //! Do this in parent table.
     const rowElements = rows?.find((row) => row?.id === rowId);
     const filteredElements = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    // saveRowElements(filteredElements)
+    console.log(filteredElements, 'edited row');
     saveForm(filteredElements)
       .then((response) => {
         const newRowElements = response;
@@ -181,12 +206,16 @@ const Table = (props) => {
         setRows(rows);
         setTableContent(newTableContent);
       })
-      .catch((error) => console.log(error, 'save row error'));
+      .catch((error) => {
+        // console.log(error, 'save row error')
+      });
   };
   const memoizedEditRow = useCallback(editRow, [
     rows,
     tableContent,
     tableColumns,
+    isNestedTable,
+    onTableContentChange,
   ]);
 
   //! Fires when row edition starts.
@@ -306,4 +335,4 @@ Table.defaultProps = {
   isResizable: true,
 };
 
-export default Table;
+export default memo(Table);

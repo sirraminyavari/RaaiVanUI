@@ -1,20 +1,16 @@
 import { useContext, useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import * as Styled from './NodeCell.styles';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import OpenMailIcon from 'components/Icons/MailIcon/OpenMailIcon';
-import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
-import { decodeBase64, getURL } from 'helpers/helpers';
-import Button from 'components/Buttons/Button';
-import useWindow from 'hooks/useWindowContext';
+import { decodeBase64 } from 'helpers/helpers';
+// import useWindow from 'hooks/useWindowContext';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 import Modal from 'components/Modal/Modal';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import AddNewNode from './AddNewNode';
+import NodesList from './NodesList';
 
 const NodeCell = (props) => {
-  const { RVDic } = useWindow();
+  // const { RVDic } = useWindow();
   const routeProps = useContext(PropsContext);
 
   const {
@@ -63,28 +59,22 @@ const NodeCell = (props) => {
     };
   }, [canEdit, initialItems, isNew]);
 
-  const isSaveDisabled =
-    JSON.stringify(
-      beforeChangeSelectedItemsRef.current?.map((x) => x?.NodeID).sort()
-    ) === JSON.stringify(selectedItems?.map((y) => y?.NodeID).sort()) ||
-    (isNew && !selectedItems.length);
-
-  const handleSaveCell = () => {
+  const updateNodeCell = (items) => {
     let id = isNew ? null : rowId;
     let nodeCell = isNew
       ? {
           ElementID: headerId,
-          GuidItems: selectedItems,
-          SelectedItems: selectedItems,
+          GuidItems: items,
+          SelectedItems: items,
           Type: header?.dataType,
         }
       : {
           ...value,
-          SelectedItems: selectedItems,
-          GuidItems: selectedItems,
+          SelectedItems: items,
+          GuidItems: items,
         };
 
-    onCellChange(id, columnId, nodeCell, selectedItems);
+    onCellChange(id, columnId, nodeCell, items);
   };
 
   const handleSelectButtonClick = () => {
@@ -95,14 +85,15 @@ const NodeCell = (props) => {
     setIsModalShown(false);
   };
 
-  const handleRemoveItem = (itemId) => {
-    setSelectedItems((oldItems) =>
-      oldItems.filter((item) => item?.NodeID !== itemId)
+  const handleRemoveItem = (node) => {
+    let filteredItems = selectedItems.filter(
+      (item) => item?.NodeID !== node?.NodeID
     );
+    setSelectedItems(filteredItems);
+    updateNodeCell(filteredItems);
   };
 
   const handleOnItemsSelection = (items) => {
-    console.log(items);
     setIsModalShown(false);
 
     const oldItemsId = selectedItems?.map((oldItem) => oldItem?.ID);
@@ -125,9 +116,11 @@ const NodeCell = (props) => {
       let alreadyExistInList = newItemsId?.some((id) => oldItemsIdSet.has(id));
       if (!alreadyExistInList) {
         setSelectedItems((oldItems) => [...oldItems, ...conciseNewItems]);
+        updateNodeCell([...selectedItems, ...conciseNewItems]);
       }
     } else {
       setSelectedItems(conciseNewItems);
+      updateNodeCell(conciseNewItems);
     }
   };
 
@@ -147,56 +140,15 @@ const NodeCell = (props) => {
           onSelectedItems={handleOnItemsSelection}
         />
       </Modal>
-      <Styled.ItemsWrapper>
-        <Styled.NodeListWrapper isEditMode={canEdit}>
-          {selectedItems?.map((node, index) => (
-            <Styled.NodeItemContainer key={node?.NodeID || index}>
-              <Styled.NodeInfoWrapper
-                as={canEdit ? 'div' : Link}
-                to={getURL('Node', { NodeID: node?.NodeID })}
-                editable={props?.header?.options?.editable}>
-                <OpenMailIcon color={CV_DISTANT} size={25} />
-                <Styled.NodeLinkHeading type="h4">
-                  {decodeBase64(node?.Name)}
-                </Styled.NodeLinkHeading>
-              </Styled.NodeInfoWrapper>
-              {canEdit && (
-                <Styled.CloseIconWrapper
-                  onClick={() => handleRemoveItem(node?.NodeID)}>
-                  <CloseIcon color={CV_DISTANT} />
-                </Styled.CloseIconWrapper>
-              )}
-            </Styled.NodeItemContainer>
-          ))}
-          {!selectedItems?.length && (
-            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-          )}
-        </Styled.NodeListWrapper>
-        {canEdit && (
-          <Button
-            disable={isSaveDisabled}
-            classes="table-node-cell-save-button"
-            onClick={handleSaveCell}>
-            <Styled.SaveButtonHeading
-              type="h4"
-              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
-              {RVDic.Save}
-            </Styled.SaveButtonHeading>
-          </Button>
-        )}
-      </Styled.ItemsWrapper>
-      {canEdit && (
-        <Button
-          classes="table-node-cell-select-button"
-          onClick={handleSelectButtonClick}>
-          <Styled.ItemSelectionButton>
-            <FolderIcon size={18} color={TCV_DEFAULT} />
-            <Styled.ItemSelectionHeading type="h4">
-              انتخاب آیتم
-            </Styled.ItemSelectionHeading>
-          </Styled.ItemSelectionButton>
-        </Button>
+      <NodesList
+        nodes={selectedItems}
+        canEdit={canEdit}
+        onRemoveNode={handleRemoveItem}
+      />
+      {!selectedItems?.length && (
+        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
       )}
+      {canEdit && <AddNewNode onClick={handleSelectButtonClick} />}
     </Styled.NodeCellContainer>
   );
 };

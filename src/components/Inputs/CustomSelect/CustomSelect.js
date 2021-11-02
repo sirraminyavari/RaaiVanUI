@@ -1,10 +1,9 @@
-import Select from 'react-select';
+import React from 'react';
 import * as Styled from './CustomSelect.styles';
 
-const CustomSelect = (props) => {
+const CustomSelect = React.forwardRef((props, ref) => {
   const {
     defaultValue,
-    value,
     isMulti,
     placeholder,
     hideSelectedOptions,
@@ -16,29 +15,13 @@ const CustomSelect = (props) => {
     onChange,
     onMenuClose,
     selectStyles,
-    isLoading,
   } = props;
 
   return (
     <Styled.SelectContainer>
-      <Select
-        defaultValue={defaultValue}
-        value={value}
-        isMulti={isMulti}
-        hideSelectedOptions={hideSelectedOptions}
-        closeMenuOnSelect={closeMenuOnSelect}
-        isClearable={isClearable}
-        isSearchable={!!isSearchable}
-        name={selectName}
-        options={selectOptions}
-        onChange={onChange}
-        onMenuClose={onMenuClose}
-        styles={selectStyles}
-        placeholder={placeholder}
-        isLoading={isLoading}
-      />
+      <Styled.Select {...props} ref={ref} />
     </Styled.SelectContainer>
   );
-};
+});
 
 export default CustomSelect;

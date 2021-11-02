@@ -36,7 +36,7 @@ const Avatar = forwardRef((props, ref) => {
         <Styled.AvatarContainer ref={ref} color={color} {...rest}>
           <Styled.AvatarImage
             data-testid="avatar-image"
-            radius={radius}
+            radius={!!radius}
             src={userImage}
             alt="user-avatar"
             style={imageStyles}

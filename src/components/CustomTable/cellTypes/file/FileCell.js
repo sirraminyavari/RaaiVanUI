@@ -9,14 +9,12 @@ import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { removeFile } from 'apiHelper/apiFunctions';
-import Button from 'components/Buttons/Button';
-import useWindow from 'hooks/useWindowContext';
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+// import useWindow from 'hooks/useWindowContext';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
-  const { RVDic } = useWindow();
+  // const { RVDic } = useWindow();
 
   const {
     isNew,
@@ -54,41 +52,26 @@ const FileCell = (props) => {
     };
   }, [canEdit, initialFiles, isNew]);
 
-  const isSaveDisabled =
-    JSON.stringify(
-      beforeChangeFilesRef.current?.map((x) => x?.NodeID).sort()
-    ) === JSON.stringify(files?.map((y) => y?.NodeID).sort()) ||
-    (isNew && !files.length);
-
-  const handleRemoveFile = useCallback((fileId) => {
-    removeFile(ElementID, fileId)
-      .then((response) => {
-        if (response?.Succeed) {
-          console.log(response, 'remove file');
-
-          setFiles((oldFiles) =>
-            oldFiles?.filter((file) => file?.FileID !== fileId)
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   const handleFileDropError = (error) => {
     if (!canEdit) return;
     console.log(error);
   };
 
-  //! Save uploaded files.
-  const handleSaveFiles = () => {
-    const extendedFiles = files.map((file) => {
+  //! Update file cell.
+  const updateFileCell = (newFiles) => {
+    const extendedFiles = newFiles?.map((file) => {
       return { ...file, OwnerID: ElementID };
     });
     const fileCell = { ...value, Files: extendedFiles };
     onCellChange(rowId, columnId, fileCell, extendedFiles);
   };
+
+  const handleRemoveFile = useCallback((fileId) => {
+    let filteredFiles = files?.filter((file) => file?.FileID !== fileId);
+
+    setFiles(filteredFiles);
+    updateFileCell(filteredFiles);
+  }, []);
 
   const handleUploadFiles = (acceptedFiles) => {
     if (!canEdit) return;
@@ -130,10 +113,12 @@ const FileCell = (props) => {
               .then((response) => {
                 // console.log(response);
                 if (response?.data?.success) {
-                  setFiles((oldFiles) => [
-                    ...(oldFiles || []),
+                  let newFilesList = [
+                    ...(files || []),
                     response?.data?.AttachedFile,
-                  ]);
+                  ];
+                  setFiles(newFilesList);
+                  updateFileCell(newFilesList);
 
                   //! update upload state.
                   setIsUploading(false);
@@ -160,33 +145,17 @@ const FileCell = (props) => {
 
   return (
     <Styled.FileCellContainer>
-      <Styled.FilesWrapper>
-        <Styled.FileListWrapper isEditMode={canEdit}>
-          <FilesList
-            files={files}
-            canEdit={canEdit}
-            onRemoveFile={handleRemoveFile}
-          />
-          {!files?.length && !isUploading && (
-            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-          )}
-          {isUploading && <LogoLoader lottieWidth="3rem" />}
-        </Styled.FileListWrapper>
-        {canEdit && (
-          <Button
-            disable={isSaveDisabled}
-            classes="table-file-cell-save-button"
-            onClick={handleSaveFiles}>
-            <Styled.SaveButtonHeading
-              type="h4"
-              style={{ color: isSaveDisabled ? CV_DISTANT : TCV_DEFAULT }}>
-              {RVDic.Save}
-            </Styled.SaveButtonHeading>
-          </Button>
-        )}
-      </Styled.FilesWrapper>
+      <FilesList
+        files={files}
+        canEdit={canEdit}
+        onRemoveFile={handleRemoveFile}
+      />
+      {!files?.length && !isUploading && (
+        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+      )}
+      {isUploading && <LogoLoader lottieWidth="3rem" />}
       {canEdit && (
-        <div style={{ width: '100%', marginTop: '0.3rem' }}>
+        <Styled.AddNewFileWrapper>
           <CustomDropZone
             accept={['image/*', '.pdf']}
             // formatExceptions={['jpg']}
@@ -201,7 +170,7 @@ const FileCell = (props) => {
             }}
             customComponent={AddFileButton}
           />
-        </div>
+        </Styled.AddNewFileWrapper>
       )}
     </Styled.FileCellContainer>
   );

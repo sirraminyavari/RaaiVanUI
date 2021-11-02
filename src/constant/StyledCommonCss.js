@@ -180,14 +180,16 @@ export const FLEX_RSB = css`
  */
 export const HorizontalScrollbar = css`
   scroll-behavior: smooth;
-  scrollbar-height: 0.45rem; /*! Firefox */
-  scrollbar-width: 0.45rem; /*! Firefox */
+
+  /*! Show scrollbar for Firefox */
+  scrollbar-height: thin;
+  scrollbar-width: thin;
 
   /*! Show scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: block;
-    height: 0.45rem;
-    width: 0.45rem;
+    height: 0.25rem;
+    width: 0.25rem;
   }
 
   &::-webkit-scrollbar-track:hover {
@@ -196,7 +198,7 @@ export const HorizontalScrollbar = css`
 
   &::-webkit-scrollbar-thumb {
     background-color: ${CV_GRAY};
-    border-radius: 1rem;
+    border-radius: 0.5rem;
 
     :hover {
       background-color: ${CV_GRAY_DARK};

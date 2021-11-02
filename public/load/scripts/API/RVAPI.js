@@ -248,6 +248,23 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    SaveApplicationInfo: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/SaveApplicationInfo?timeStamp=" + new Date().getTime();
+        var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "") +
+            (params.Title ? "&Title=" + params.Title : "") +
+            (params.Tagline ? "&Tagline=" + params.Tagline : "") +
+            (params.Website ? "&Website=" + params.Website : "") +
+            (params.About ? "&About=" + params.About : "") +
+            (params.Size ? "&Size=" + params.Size : "") +
+            (params.ExpertiseFieldID ? "&ExpertiseFieldID=" + params.ExpertiseFieldID : "") +
+            (params.ExpertiseFieldName ? "&ExpertiseFieldName=" + params.ExpertiseFieldName : "") + 
+            (params.Language ? "&Language=" + params.Language : "") +
+            (params.Calendar ? "&Calendar=" + params.Calendar : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
     RemoveApplication: function (params) {
         params = params || {};
 

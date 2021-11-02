@@ -171,6 +171,7 @@ const CustomTable = (props) => {
 
   const handleAddRow = () => {
     setShowFooter(true);
+    setEditingRow(null);
   };
 
   //! Render the UI for your table

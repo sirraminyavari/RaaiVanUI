@@ -71,6 +71,10 @@ export const selectStyles = {
   }),
 };
 
+export const SelectWrapper = styled.div`
+  width: 100%;
+`;
+
 export const SelectedItem = styled(Heading).attrs({
   className: `${BO_RADIUS_QUARTER}`,
 })`

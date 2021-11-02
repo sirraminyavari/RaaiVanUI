@@ -28,7 +28,8 @@ export const UsersCellContainer = styled.div`
   .table-user-cell-select-button {
     background-color: inherit;
     color: ${TCV_DEFAULT};
-    width: 9rem;
+    width: auto;
+    margin: 0 1rem;
     height: 1.8rem;
     border-radius: 1rem;
   }
@@ -104,6 +105,7 @@ export const AddNewUser = styled.div`
 export const EmptyCellView = styled.div`
   color: ${CV_DISTANT};
   width: 100%;
+  height: 2rem;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
 `;
@@ -141,4 +143,8 @@ export const UserListWrapper = styled.div`
   min-width: ${({ isEditMode }) => (isEditMode ? '70%' : '100%')};
   ${FLEX_CCC}
   gap: 0.2rem;
+`;
+
+export const PeoplePickerWrapper = styled.div`
+  width: 100%;
 `;

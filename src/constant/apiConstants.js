@@ -469,6 +469,13 @@ export const SET_NOTIFS_AS_SEEN = 'SetNotificationsAsSeen';
  */
 export const REMOVE_NOTIFICATION = 'RemoveNotification';
 
+/**
+ * @description 'GetTemplateTags'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_TEMPLATE_TAGS = 'GetTemplateTags';
+
 //* #################################
 //* ############ PrivacyAPI ############
 //* #################################
