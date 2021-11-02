@@ -33,6 +33,7 @@ export const TeamTitle = styled.h1`
   text-align: center;
   height: 3rem;
   width: 14rem;
+  font-size: 1.75rem;
 `;
 
 export const TeamSubtitle = styled.div`
