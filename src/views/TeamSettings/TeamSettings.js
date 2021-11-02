@@ -6,6 +6,7 @@ import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
 import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
 import ImageCropper from '../../components/ImageCropper/ImageCropper';
+import CustomSelectIndicator from '../../components/Inputs/CustomSelect/items/CustomSelectIndicator';
 
 const TeamSettings = (props) => {
   const {
@@ -45,22 +46,51 @@ const TeamSettings = (props) => {
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
-            <CustomSelect placeholder="" options={fieldOfExpertiseOption} />
+            <CustomSelect
+              placeholder=""
+              options={fieldOfExpertiseOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
+            />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
-            <CustomSelect placeholder="" options={teamSizeOption} />
+            <CustomSelect
+              placeholder=""
+              options={teamSizeOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
+            />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>زبان</Styled.SelectTitle>
-            <CustomSelect isRtl={rtl} placeholder="" options={languageOption} />
+            <CustomSelect
+              isRtl={rtl}
+              placeholder=""
+              options={languageOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
+            />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
-            <CustomSelect placeholder="" options={calOption} />
+            <CustomSelect
+              placeholder=""
+              options={calOption}
+              components={{
+                DropdownIndicator: CustomSelectIndicator,
+              }}
+              classNamePrefix="select"
+            />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>

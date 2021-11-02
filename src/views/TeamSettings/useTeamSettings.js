@@ -55,14 +55,14 @@ const useTeamSettings = (props) => {
   ];
 
   const calOption = [
-    { value: 'solar', label: 'هجری شمسی' },
+    { value: 'jalali', label: 'هجری شمسی' },
     { value: 'lunar', label: 'هجری قمری' },
     { value: 'gregorian', label: 'میلادی (Gregorian)' },
     { value: 'kurdish', label: 'گاه شماری کردی' },
   ];
 
   const teamSizeOption = [
-    { value: 'solar', label: 'بیشتر از 100' },
+    { value: 'jalali', label: 'بیشتر از 100' },
     { value: 'lunar', label: '50-99 نفر' },
     { value: 'gregorian', label: '10-49 نفر' },
     { value: 'kurdish', label: 'کمتر از 10 نفر' },
