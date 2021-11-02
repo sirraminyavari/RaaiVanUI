@@ -145,7 +145,7 @@ const Navbar = () => {
           <Avatar
             radius={35}
             userImage={profileImage}
-            style={{ cursor: 'pointer', minWidth: '2.5rem', width: '2.5rem' }}
+            className="navbar-avatar"
           />
         </Tooltip>
       </Styled.SearchWrapper>
