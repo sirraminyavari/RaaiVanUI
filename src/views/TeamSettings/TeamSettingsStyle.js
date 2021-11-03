@@ -1,7 +1,15 @@
 import styled from 'styled-components';
+import Heading from '../../components/Heading/Heading';
+import Button from '../../components/Buttons/Button';
 
 export const TeamSettingsCardWrapper = styled.div`
   padding: 0 1rem;
+`;
+
+export const PageTitle = styled(Heading).attrs({
+  type: 'H1',
+})`
+  font-weight: bold;
 `;
 
 export const TeamSettingsContainer = styled.div`

@@ -1,7 +1,6 @@
 import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
-import Heading from '../../components/Heading/Heading';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
 import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
@@ -12,6 +11,7 @@ import CustomInput from './items/CustomInput';
 const TeamSettings = (props) => {
   const {
     rtl,
+    DIC,
     breadCrumbItems,
     fieldOfExpertiseOption,
     languageOption,
@@ -28,14 +28,14 @@ const TeamSettings = (props) => {
       <Styled.TeamSettingsContainer rtl={rtl}>
         <Breadcrumb items={breadCrumbItems} />
 
-        <Heading type="h1">{'تنظیمات تیم'}</Heading>
+        <Styled.PageTitle>{'تنظیمات تیم'}</Styled.PageTitle>
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
             <ImageCropper
               isEditable={true}
               uploadType="ApplicationIcon"
-              uploadId={applicationInfo.ApplicationID}
+              uploadId={applicationInfo?.ApplicationID}
               image={IconURL}
             />
           </Styled.TeamThumbnailContainer>
@@ -51,7 +51,7 @@ const TeamSettings = (props) => {
           <CustomInput
             placeholder={'شعار / تک لاین تیم'}
             light={true}
-            value={applicationInfo.Tagline}
+            value={applicationInfo?.Tagline}
             onChange={(e) =>
               setApplicationInfo({
                 ...applicationInfo,
@@ -82,8 +82,8 @@ const TeamSettings = (props) => {
               }}
               classNamePrefix="select"
               defaultValue={{
-                value: applicationInfo.ExpertiseFieldID,
-                label: applicationInfo.ExpertiseFieldName,
+                value: applicationInfo?.ExpertiseFieldID,
+                label: applicationInfo?.ExpertiseFieldName,
               }}
               onChange={(e) =>
                 setApplicationInfo({
@@ -104,7 +104,12 @@ const TeamSettings = (props) => {
                 DropdownIndicator: CustomSelectIndicator,
               }}
               classNamePrefix="select"
-              defaultValue={applicationInfo.Size}
+              defaultValue={{
+                value: applicationInfo?.Size,
+                label: teamSizeOption.find(
+                  (x) => x.value === applicationInfo?.Size
+                )?.label,
+              }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
@@ -124,7 +129,7 @@ const TeamSettings = (props) => {
                 DropdownIndicator: CustomSelectIndicator,
               }}
               classNamePrefix="select"
-              defaultValue={applicationInfo.Language}
+              defaultValue={applicationInfo?.Language}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
@@ -143,7 +148,12 @@ const TeamSettings = (props) => {
                 DropdownIndicator: CustomSelectIndicator,
               }}
               classNamePrefix="select"
-              defaultValue={applicationInfo.Calender}
+              defaultValue={{
+                value: applicationInfo?.Calender,
+                label: calOption.find(
+                  (x) => x.value === applicationInfo?.Calender
+                )?.label,
+              }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
@@ -158,7 +168,7 @@ const TeamSettings = (props) => {
               autoresize={true}
               label={'درباره تیم'}
               rtl={rtl}
-              value={applicationInfo.About}
+              value={applicationInfo?.About}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
