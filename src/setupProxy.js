@@ -1,39 +1,20 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const fs = require('fs');
+
+let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
 
 module.exports = function (app) {
-  app.use(
-    '/api',
-    createProxyMiddleware({
-      target: 'http://cliqmind-dev.ir',
-      changeOrigin: true,
-    })
+  var endpoints = ['api', 'rss', 'upload', 'download', 'signalr'].map(
+    (v) => '/' + v
   );
-  app.use(
-    '/rss',
-    createProxyMiddleware({
-      target: 'http://cliqmind-dev.ir',
-      changeOrigin: true,
-    })
-  );
-  app.use(
-    '/upload',
-    createProxyMiddleware({
-      target: 'http://cliqmind-dev.ir',
-      changeOrigin: true,
-    })
-  );
-  app.use(
-    '/download',
-    createProxyMiddleware({
-      target: 'http://cliqmind-dev.ir',
-      changeOrigin: true,
-    })
-  );
-  app.use(
-    '/signalr',
-    createProxyMiddleware({
-      target: 'http://cliqmind-dev.ir',
-      changeOrigin: true,
-    })
-  );
+
+  endpoints.forEach((ep) => {
+    app.use(
+      ep,
+      createProxyMiddleware({
+        target: packageJson.proxy,
+        changeOrigin: true,
+      })
+    );
+  });
 };
