@@ -15,6 +15,7 @@ const RowActionMenu = (props) => {
     data,
     setShowFooter,
     editable: isTableEditable,
+    editByCell,
   } = props?.cell || {};
 
   const { RVDic } = useWindow();
@@ -38,11 +39,13 @@ const RowActionMenu = (props) => {
     <Styled.TableRowActionContainer>
       {isTableEditable && (
         <>
-          <RowAction
-            title={RVDic.Edit}
-            onActionClick={handleSetEditableRow}
-            icon={<EditIcon size={20} />}
-          />
+          {!editByCell && (
+            <RowAction
+              title={RVDic.Edit}
+              onActionClick={handleSetEditableRow}
+              icon={<EditIcon size={20} />}
+            />
+          )}
           <RowAction
             title={RVDic.Remove}
             onActionClick={handleDeleteRow}

@@ -12,18 +12,24 @@ const TextCell = (props) => {
     editingRow,
     isNew,
     header,
+    selectedCell,
   } = props;
 
   const { Info, TextValue } = value || {};
 
   const rowId = row?.original?.id;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
   const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
 
-  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+  const canEdit =
+    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
   const [textValue, setTextValue] = useState(TextValue);
 

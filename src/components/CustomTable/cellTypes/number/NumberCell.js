@@ -14,18 +14,24 @@ const NumberCell = (props) => {
     editingRow,
     isNew,
     header,
+    selectedCell,
   } = props;
 
   const { Info, FloatValue } = value || {};
 
   const rowId = row?.original?.id;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
   const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
 
-  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+  const canEdit =
+    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
   const [numberValue, setNumberValue] = useState(0);
 

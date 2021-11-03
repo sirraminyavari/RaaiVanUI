@@ -27,6 +27,7 @@ import saveForm from '../saveForm';
  * @property {String} tableOwnerId - The id of the owner of the table.
  * @property {Boolean} isEditable - Whether table is editable or not?
  * @property {Boolean} isResizable - Whether table is resizable or not?
+ * @property {Boolean} editByCell - Whether single cell is editable or not?
  * @property {Boolean} isNestedTable - Whether table is nested inside another table or not?
  * @property {Function} onTableContentChange - A callback function that fires whenever table content changes.
  */
@@ -44,6 +45,7 @@ const Table = (props) => {
     tableOwnerId,
     isEditable,
     isResizable,
+    editByCell,
     isNestedTable,
     onTableContentChange,
   } = props;
@@ -299,6 +301,7 @@ const Table = (props) => {
     <CustomTable
       editable={isEditable}
       resizable={isResizable}
+      editByCell={editByCell}
       pagination={{
         perPageCount: [5, 10, 20, 30],
         initialPageIndex: 0,
@@ -326,13 +329,18 @@ Table.propTypes = {
   tableColumns: PropTypes.array,
   tableData: PropTypes.array,
   tableId: PropTypes.string,
+  tableOwnerId: PropTypes.string,
   isEditable: PropTypes.bool,
   isResizable: PropTypes.bool,
+  editByCell: PropTypes.bool,
+  isNestedTable: PropTypes.bool,
+  onTableContentChange: PropTypes.func,
 };
 
 Table.defaultProps = {
   isEditable: true,
   isResizable: true,
+  editByCell: false,
 };
 
 export default memo(Table);

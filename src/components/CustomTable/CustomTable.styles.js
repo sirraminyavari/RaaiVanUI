@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { BG_WHITE, C_GRAY, C_GRAY_DARK } from 'constant/Colors';
+import { BG_DISTANT, BG_WHITE, C_GRAY, C_GRAY_DARK } from 'constant/Colors';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -20,7 +20,11 @@ import {
   FLEX_RCS,
   HorizontalScrollbar,
 } from 'constant/StyledCommonCss';
-import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  BO_RADIUS_QUARTER,
+} from 'constant/constants';
 import Heading from 'components/Heading/Heading';
 
 const { RV_RevFloat, RV_Float } = window;
@@ -238,6 +242,13 @@ export const TableCell = styled.div`
   position: relative;
   border-${RV_Float}: 1px solid ${CV_DISTANT};
 
+  :hover:not(:first-child):not(:nth-child(2)) {
+    div {
+      opacity: 1 !important;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+
   :not(:first-child) {
     border-bottom: 1px solid ${CV_DISTANT};
   }
@@ -345,7 +356,7 @@ export const TableRowActionContainer = styled.div.attrs({
   box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
 `;
 
-export const EditRowActionContainer = styled.div`
+export const EditActionContainer = styled.div`
   height: 100%;
   ${FLEX_CCC}
 
@@ -466,3 +477,32 @@ export const ActionButton = styled.div`
 export const TableActionHeading = styled(Heading).attrs({
   className: `${C_GRAY_DARK}`,
 })``;
+
+const getDisplay = ({ isShown }) => {
+  return isShown ? FLEX_CCC : 'display: none;';
+};
+
+export const EditIconWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE} ${BG_DISTANT}`,
+})`
+  ${getDisplay}
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  min-height: 1.5rem;
+  position: absolute;
+  top: 0.25rem;
+  ${RV_RevFloat}: 0.25rem;
+  opacity: 0;
+  cursor: pointer;
+`;
+
+export const EditButtonsWrapper = styled.div`
+  position: absolute;
+  top: 0.25rem;
+  ${RV_RevFloat} : 0.25rem;
+
+  .table-edit-buttons-container {
+    ${FLEX_RCC}
+  }
+`;

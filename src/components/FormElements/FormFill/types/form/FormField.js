@@ -28,6 +28,7 @@ const FormField = (props) => {
           tableData={tableData}
           tableOwnerId={elementId}
           tableId={tableId}
+          editByCell={true}
         />
       </div>
     </FormCell>

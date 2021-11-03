@@ -14,6 +14,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import ColumnHeader from './ColumnHeader';
+import CellEdit from './CellEdit';
 
 const TableModal = lazy(() =>
   import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
@@ -25,11 +26,13 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 /**
  * @typedef PropType
  * @type {Object}
- * @property {string} tableId - The id of the table.
- * @property {boolean} editable - If true table cells are editable.
- * @property {boolean} isLoading - A flag that indicates if table data is loading or not.
- * @property {object} columns - The core columns configuration object for the entire table.
- * @property {array} data - The data array that you want to display on the table.
+ * @property {String} tableId - The id of the table.
+ * @property {Boolean} editable - If true table cells are editable.
+ * @property {Boolean} editByCell - If true every single cell can be edited.
+ * @property {Boolean} resizable - If true table columns are resizable.
+ * @property {Boolean} isLoading - A flag that indicates if table data is loading or not.
+ * @property {Object} columns - The core columns configuration object for the entire table.
+ * @property {Array} data - The data array that you want to display on the table.
  */
 
 /**
@@ -40,8 +43,9 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
-    editable: isEditable,
-    resizable: isResizable,
+    editable: isTableEditable,
+    resizable: isTableResizable,
+    editByCell,
     isLoading,
     columns,
     data,
@@ -139,6 +143,7 @@ const CustomTable = (props) => {
       getColumnsOption,
       tableId,
       tableMirror,
+      editByCell,
       initialState: {
         ...paginationStates,
       },
@@ -199,7 +204,7 @@ const CustomTable = (props) => {
                     <Styled.TableHeader
                       {...column.getHeaderProps(column.getSortByToggleProps())}>
                       <ColumnHeader column={column} allColumns={columns} />
-                      {isResizable && (
+                      {isTableResizable && (
                         <Styled.TableColumnResizer
                           isResizing={column.isResizing}
                           {...column.getResizerProps()}
@@ -246,15 +251,29 @@ const CustomTable = (props) => {
                                       {...cell.getCellProps([
                                         {
                                           ...getCellProps(cell),
-                                          onClick: () => setSelectedCell(cell),
+                                          // onClick: () => setSelectedCell(cell),
                                         },
                                       ])}>
-                                      {cell.render('Cell', {
-                                        editable: !!isEditable,
-                                        dragHandleProps: {
-                                          ...provided.dragHandleProps,
-                                        },
-                                      })}
+                                      <>
+                                        {cell.render('Cell', {
+                                          editable: !!isTableEditable,
+                                          dragHandleProps: {
+                                            ...provided.dragHandleProps,
+                                          },
+                                        })}
+                                        {!!isTableEditable && !!editByCell && (
+                                          <CellEdit
+                                            cell={cell}
+                                            selectedCell={selectedCell}
+                                            setSelectedCell={setSelectedCell}
+                                            onEditStart={() =>
+                                              onEditRowStart(data)
+                                            }
+                                            onEditCancel={onEditRowCancel}
+                                            onEdit={editRow}
+                                          />
+                                        )}
+                                      </>
                                     </Styled.TableCell>
                                   );
                                 })}

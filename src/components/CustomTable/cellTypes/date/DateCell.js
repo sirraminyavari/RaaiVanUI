@@ -18,6 +18,7 @@ const DateCell = (props) => {
     editable: isTableEditable,
     editingRow,
     header,
+    selectedCell,
   } = props;
 
   const { DateValue } = value || {};
@@ -36,10 +37,17 @@ const DateCell = (props) => {
   const [dateValue, setDateValue] = useState(!!DateValue ? date : null);
 
   const rowId = row?.original?.id;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
   const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
+
+  const canEdit =
+    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
@@ -95,7 +103,7 @@ const DateCell = (props) => {
     );
   }
 
-  if (!isTableEditable || !isCellEditable || !isRowEditing) {
+  if (!canEdit) {
     return (
       <>
         {!!DateValue ? (
