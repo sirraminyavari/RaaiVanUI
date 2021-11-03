@@ -167,7 +167,6 @@ const ProfileMain = (props) => {
           image={profilePhoto}
           uploadId={UserID}
           uploadType="ProfileImage"
-          cropShape="round"
           showGrid={false}
           onImageUpload={handleOnUploadDone}
           containerClass="profile-image-cropper"
