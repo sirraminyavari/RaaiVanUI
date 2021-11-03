@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import Input from 'components/Inputs/Input';
 import * as Styled from './TextCell.styles';
 
@@ -32,6 +32,7 @@ const TextCell = (props) => {
     isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
   const [textValue, setTextValue] = useState(TextValue);
+  const originalValueRef = useRef(TextValue);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
@@ -40,6 +41,8 @@ const TextCell = (props) => {
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
+    if (originalValueRef.current === textValue.trim()) return;
+
     //! Update parent.
     let textCell;
     let id = isNew ? null : rowId;

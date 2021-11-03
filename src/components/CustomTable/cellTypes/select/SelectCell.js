@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { CV_DISTANT } from 'constant/CssVariables';
@@ -18,14 +18,22 @@ const SelectCell = (props) => {
     header,
     multiSelect,
     data,
+    selectedCell,
   } = props;
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
   const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
+
+  const canEdit =
+    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -61,6 +69,7 @@ const SelectCell = (props) => {
   const [defaultValues, setDefaultValues] = useState(
     !!isNew ? [] : initialValues
   );
+  const originalValueRef = useRef(TextValue);
 
   const handleSelectChange = (values) => {
     // console.log(values);
@@ -73,6 +82,8 @@ const SelectCell = (props) => {
     const textValue = !!multiSelect
       ? defaultValues.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
+
+    if (originalValueRef.current === textValue) return;
 
     let selectCell = isNew
       ? {
@@ -88,7 +99,7 @@ const SelectCell = (props) => {
     onCellChange(id, columnId, selectCell, textValue);
   };
 
-  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
+  if (!canEdit && !isNew) {
     return (
       <>
         {defaultValues?.map((x) => x?.label).length ? (

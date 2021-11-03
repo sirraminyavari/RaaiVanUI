@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useState, useRef } from 'react';
 import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './NumberCell.styles';
@@ -33,19 +33,17 @@ const NumberCell = (props) => {
   const canEdit =
     isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
 
-  const [numberValue, setNumberValue] = useState(0);
+  const [numberValue, setNumberValue] = useState(FloatValue);
+  const originalValueRef = useRef(FloatValue);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
     setNumberValue(e.target.valueAsNumber);
   };
 
-  useEffect(() => {
-    setNumberValue(FloatValue);
-  }, []);
-
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
+    if (originalValueRef.current === numberValue) return;
     //! Update parent.
     let numberCell;
     let id = isNew ? null : rowId;

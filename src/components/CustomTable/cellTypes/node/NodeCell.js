@@ -23,15 +23,22 @@ const NodeCell = (props) => {
     editingRow,
     header,
     data,
+    selectedCell,
   } = props;
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
   const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
   const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+  const canEdit =
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNew;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;

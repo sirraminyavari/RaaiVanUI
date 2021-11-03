@@ -25,15 +25,23 @@ const FileCell = (props) => {
     value,
     editable: isTableEditable,
     header,
+    selectedCell,
   } = props;
   const { Files: initialFiles, Info, ElementID } = value || {};
 
-  const isCellEditable = !!header?.options?.editable;
   const rowId = row?.original?.id;
   const columnId = column?.id;
-  const isRowEditing = rowId === editingRow;
+  const selectedRowId = selectedCell?.row?.original?.id;
+  const selectedColumnId = selectedCell?.column?.id;
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+  const isCellEditable = !!header?.options?.editable;
+  const isRowEditing = rowId === editingRow;
+  const isCellEditing =
+    rowId === selectedRowId && columnId === selectedColumnId;
+
+  const canEdit =
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNew;
 
   const [isUploading, setIsUploading] = useState(false);
   const [files, setFiles] = useState(isNew ? [] : initialFiles);
