@@ -49,6 +49,7 @@ const CellEdit = (props) => {
         </Styled.EditButtonsWrapper>
       ) : (
         <Styled.EditIconWrapper
+          data-edit-icon-wrapper=""
           isShown={cell?.column?.editable}
           onClick={handleStartEditCell}>
           <EditIcon size={18} color={TCV_DEFAULT} />

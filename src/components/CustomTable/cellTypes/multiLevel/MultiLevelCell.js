@@ -6,6 +6,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import * as Styled from './MultiLevelCell.styles';
 import { getNestedItems } from './utils';
+import useWindow from 'hooks/useWindowContext';
 
 const MultiLevelCell = (props) => {
   const {
@@ -21,6 +22,8 @@ const MultiLevelCell = (props) => {
     selectedCell,
     // state,
   } = props;
+
+  const { RVDic } = useWindow();
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
@@ -265,6 +268,8 @@ const MultiLevelCell = (props) => {
                 isLoading={level.isLoading}
                 menuPortalTarget={document.body}
                 menuShouldScrollIntoView={false}
+                loadingMessage={() => RVDic.Loading + '...'}
+                noOptionsMessage={() => 'موردی یافت نشد'}
                 // menuPosition={state.windowIsScrolling ? 'absolute' : 'fixed'}
               />
             </Styled.SelectWrapper>

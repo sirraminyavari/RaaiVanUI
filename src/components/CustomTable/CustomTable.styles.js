@@ -240,7 +240,7 @@ export const TableCell = styled.div`
   border-${RV_Float}: 1px solid ${CV_DISTANT};
 
   :hover:not(:first-child):not(:nth-child(2)) {
-    div {
+    div[data-edit-icon-wrapper] {
       opacity: 1 !important;
       transition: opacity 0.5s ease-in-out;
     }

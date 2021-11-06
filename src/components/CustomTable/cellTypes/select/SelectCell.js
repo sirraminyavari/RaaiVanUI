@@ -136,6 +136,7 @@ const SelectCell = (props) => {
         styles={Styled.selectStyles}
         menuPortalTarget={document.body}
         menuShouldScrollIntoView={false}
+        noOptionsMessage={() => 'موردی یافت نشد'}
       />
     </Styled.SelectWrapper>
   );
