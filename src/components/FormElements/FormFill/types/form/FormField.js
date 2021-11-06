@@ -14,15 +14,11 @@ const FormField = (props) => {
     type,
     ...rest
   } = props;
-
   const { FormID: tableId } = toJSON(decodeInfo);
 
-  return (
-    <FormCell
-      iconComponent={<TableIcon size={15} color={CV_GRAY} />}
-      title={decodeTitle}
-      {...rest}>
-      <div style={{ width: '50rem' }}>
+  const renderTable = () => {
+    if (tableData && tableData.length > 0) {
+      return (
         <Table
           tableColumns={tableColumns}
           tableData={tableData}
@@ -30,7 +26,17 @@ const FormField = (props) => {
           tableId={tableId}
           editByCell={true}
         />
-      </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <FormCell
+      iconComponent={<TableIcon size={15} color={CV_GRAY} />}
+      title={decodeTitle}
+      {...rest}>
+      <div style={{ width: '50rem' }}>{renderTable()}</div>
     </FormCell>
   );
 };

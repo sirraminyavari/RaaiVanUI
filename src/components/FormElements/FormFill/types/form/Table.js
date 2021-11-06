@@ -166,7 +166,7 @@ const Table = (props) => {
   const memoizedRemoveRow = useCallback(removeRow, []);
 
   //! Edit table row.
-  const editRow = (rowId) => {
+  const editRow = (rowId, columnId = null) => {
     //! Do this in nested tables.
     if (!!isNestedTable) {
       let newContentElements = rows
@@ -187,14 +187,23 @@ const Table = (props) => {
       return;
     }
 
-    //! Do this in parent table.
+    //! Do this in main table.
     const rowElements = rows?.find((row) => row?.id === rowId);
-    const filteredElements = Object.values(rowElements).filter(
+    let elementsToSave = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    console.log(filteredElements, 'edited row');
-    saveForm(filteredElements)
+    //! Check if edit by cell is true.
+    if (columnId) {
+      elementsToSave = elementsToSave.filter(
+        (element) => element?.RefElementID === columnId
+      );
+    }
+
+    // console.log(elementsToSave, 'edited row');
+    // console.log(columnId, 'column id');
+
+    saveForm(elementsToSave)
       .then((response) => {
         const newRowElements = response;
         const newTableContent = tableContent.map((content) => {
@@ -295,6 +304,7 @@ const Table = (props) => {
         setRows(rows);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

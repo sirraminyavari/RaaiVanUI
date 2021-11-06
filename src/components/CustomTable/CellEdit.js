@@ -12,9 +12,14 @@ const CellEdit = (props) => {
     onEditCancel,
     onEdit,
   } = props;
+
+  const rowId = cell?.row?.original?.id;
+  const columnId = cell?.column?.id;
+  const [type, id] = columnId.split('_');
+
   const isEditMode =
-    cell?.row?.original?.id === selectedCell?.row?.original?.id &&
-    cell?.column?.id === selectedCell?.column?.id;
+    rowId === selectedCell?.row?.original?.id &&
+    columnId === selectedCell?.column?.id;
 
   const handleStartEditCell = () => {
     setSelectedCell && setSelectedCell(cell);
@@ -23,7 +28,7 @@ const CellEdit = (props) => {
 
   const handleAcceptChange = () => {
     setSelectedCell && setSelectedCell(null);
-    onEdit && onEdit(cell?.row?.original?.id);
+    onEdit && onEdit(rowId, id);
   };
 
   const handleCancelChange = () => {
