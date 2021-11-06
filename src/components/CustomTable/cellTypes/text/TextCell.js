@@ -41,7 +41,7 @@ const TextCell = (props) => {
 
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
-    if (originalValueRef.current === textValue.trim()) return;
+    if (originalValueRef.current === textValue?.trim()) return;
 
     //! Update parent.
     let textCell;

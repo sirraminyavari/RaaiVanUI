@@ -33,7 +33,8 @@ const MultiLevelCell = (props) => {
     rowId === selectedRowId && columnId === selectedColumnId;
 
   const canEdit =
-    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNew;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -239,6 +240,12 @@ const MultiLevelCell = (props) => {
               }
             : undefined;
 
+          const canGetOptions =
+            level.step !== 0 &&
+            level.options.length === 0 &&
+            previousLevel.options.length !== 0 &&
+            previousLevel.value;
+
           return (
             <Styled.SelectWrapper key={key}>
               <CustomSelect
@@ -249,9 +256,7 @@ const MultiLevelCell = (props) => {
                 selectStyles={Styled.customStyles}
                 onChange={(option) => handleChange(option?.value, level)}
                 onFocus={() =>
-                  level.step !== 0 &&
-                  !level.options.length &&
-                  !!previousLevel.options.length &&
+                  canGetOptions &&
                   getOptions(level.step, previousSelect?.NodeID)
                 }
                 isSearchable
