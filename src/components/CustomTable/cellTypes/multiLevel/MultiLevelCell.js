@@ -8,7 +8,6 @@ import * as Styled from './MultiLevelCell.styles';
 import { getNestedItems } from './utils';
 
 const MultiLevelCell = (props) => {
-  // console.log(props, 'multi');
   const {
     value,
     row,
@@ -20,6 +19,7 @@ const MultiLevelCell = (props) => {
     header,
     data,
     selectedCell,
+    // state,
   } = props;
 
   const rowId = row?.original?.id;
@@ -31,6 +31,8 @@ const MultiLevelCell = (props) => {
   const isRowEditing = rowId === editingRow;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+
+  // const isLastRow = state.lastRowInPage?.original?.id === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
@@ -253,7 +255,7 @@ const MultiLevelCell = (props) => {
                 value={selectValue}
                 placeholder={level?.currentLabel}
                 options={selectOptions}
-                selectStyles={Styled.customStyles}
+                styles={Styled.customStyles}
                 onChange={(option) => handleChange(option?.value, level)}
                 onFocus={() =>
                   canGetOptions &&
@@ -261,6 +263,9 @@ const MultiLevelCell = (props) => {
                 }
                 isSearchable
                 isLoading={level.isLoading}
+                menuPortalTarget={document.body}
+                menuShouldScrollIntoView={false}
+                // menuPosition={state.windowIsScrolling ? 'absolute' : 'fixed'}
               />
             </Styled.SelectWrapper>
           );

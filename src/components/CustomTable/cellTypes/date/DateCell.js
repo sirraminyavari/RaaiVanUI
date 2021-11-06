@@ -47,7 +47,8 @@ const DateCell = (props) => {
     rowId === selectedRowId && columnId === selectedColumnId;
 
   const canEdit =
-    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNew;
 
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
@@ -70,39 +71,6 @@ const DateCell = (props) => {
     onCellChange(id, columnId, dateCell, date);
   };
 
-  if (isNew) {
-    return (
-      <ToolTip
-        tipId={`table-date-new`}
-        arrowColor="transparent"
-        backgroundColor="transparent"
-        clickable
-        multiline
-        event="click"
-        effect="solid"
-        type="dark"
-        offset={{ bottom: -150 }}
-        renderContent={() => (
-          <CustomDatePicker
-            mode="button"
-            type="jalali"
-            range={false}
-            size="small"
-            justCalendar
-            value={dateValue}
-            onDateSelect={handleDateSelect}
-          />
-        )}>
-        <Styled.DateCellContainer>
-          <Heading className="table-date-edit-title" type="h5">
-            {!!dateValue ? showFormat : 'انتخاب کنید'}
-          </Heading>
-          <CalendarIcon color={TCV_DEFAULT} size={20} />
-        </Styled.DateCellContainer>
-      </ToolTip>
-    );
-  }
-
   if (!canEdit) {
     return (
       <>
@@ -111,9 +79,7 @@ const DateCell = (props) => {
             {showFormat}
           </Heading>
         ) : (
-          <Heading style={{ color: CV_DISTANT }} type="h6">
-            انتخاب کنید
-          </Heading>
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
         )}
       </>
     );
@@ -149,9 +115,10 @@ const DateCell = (props) => {
           <CalendarIcon color={TCV_DEFAULT} size={20} />
         </Styled.DateCellContainer>
       ) : (
-        <Heading style={{ color: CV_DISTANT, cursor: 'pointer' }} type="h6">
-          انتخاب کنید
-        </Heading>
+        <Styled.DateCellContainer>
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <CalendarIcon color={TCV_DEFAULT} size={20} />
+        </Styled.DateCellContainer>
       )}
     </ToolTip>
   );

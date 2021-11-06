@@ -92,15 +92,12 @@ export const TableContainer = styled.div.attrs({
   position: relative;
   box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
   // border: 0.1rem solid #333;
-  // overflow-x: auto;
 `;
 
 export const TableWrapper = styled.div`
   // border: 1px solid #333;
   overflow-x: scroll;
   margin-top: 3rem;
-  // scroll-behavior: auto !important;
-
   ${HorizontalScrollbar}
 `;
 

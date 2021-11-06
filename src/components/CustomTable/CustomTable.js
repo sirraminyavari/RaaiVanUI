@@ -1,4 +1,12 @@
-import { useMemo, useState, memo, lazy, Suspense } from 'react';
+import {
+  useMemo,
+  useState,
+  memo,
+  lazy,
+  Suspense,
+  // useRef,
+  // useLayoutEffect,
+} from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -69,20 +77,35 @@ const CustomTable = (props) => {
   const [editingRow, setEditingRow] = useState(null);
   const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
   const [showFooter, setShowFooter] = useState(false);
+  // const [isScrolling, setIsScrolling] = useState(false);
+
+  // useLayoutEffect(() => {
+  //   let isScrolling;
+
+  //   function handleScroll() {
+  //     //! Clear our timeout throughout the scroll
+  //     clearTimeout(isScrolling);
+  //     setIsScrolling(true);
+  //     console.log('Is scrolling.');
+
+  //     //! Set a timeout to run after scrolling ends
+  //     isScrolling = setTimeout(function () {
+  //       //! Run the callback
+  //       console.log('Scrolling has stopped.');
+  //       setIsScrolling(false);
+  //     }, 66);
+  //   }
+
+  //   window.addEventListener('scroll', handleScroll, false);
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll, false);
+  //   };
+  // }, []);
 
   const restoreModalState = () => {
     setModal(DEFAULT_MODAL_PROPS);
   };
-
-  // const getModalContent = (modalType) => {
-  //   switch (modalType) {
-  //     case modalTypes.table:
-  //       return <div>Table</div>;
-
-  //     default:
-  //       return <div>Modal Content</div>;
-  //   }
-  // };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -159,6 +182,8 @@ const CustomTable = (props) => {
     ...tableInstance.state,
     showFooter,
     data,
+    lastRowInPage: tableInstance?.page?.[tableInstance?.page.length - 1],
+    // windowIsScrolling: isScrolling,
   };
 
   const {

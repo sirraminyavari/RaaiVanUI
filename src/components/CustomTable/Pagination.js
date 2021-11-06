@@ -75,9 +75,11 @@ const TablePagination = ({ tableInstance, pagination }) => {
           isClearable={false}
           isSearchable={false}
           selectName="table-pagination"
-          selectOptions={selectOptions}
+          options={selectOptions}
           onChange={handleSelectChange}
-          selectStyles={Styled.selectStyles}
+          styles={Styled.selectStyles}
+          menuPortalTarget={document.body}
+          menuShouldScrollIntoView={false}
         />
       </Styled.TablePaginationSelectWrapper>
       <Styled.PaginationArrowWrapper>

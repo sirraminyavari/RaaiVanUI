@@ -133,7 +133,9 @@ const SelectCell = (props) => {
         options={options}
         onChange={handleSelectChange}
         onMenuClose={handleOnMenuClose}
-        // selectStyles={Styled.selectStyles}
+        styles={Styled.selectStyles}
+        menuPortalTarget={document.body}
+        menuShouldScrollIntoView={false}
       />
     </Styled.SelectWrapper>
   );
