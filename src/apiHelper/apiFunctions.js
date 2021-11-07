@@ -1267,20 +1267,21 @@ export const saveApplicationInfo = (
 ) => {
   const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
 
+  console.log(Language, Calender);
   return new Promise((resolve, reject) => {
     try {
       saveApplicationInfoAPI.fetch(
         {
           ApplicationID,
           ExpertiseFieldID,
+          Language,
+          Calender,
           Title: encodeBase64(Title),
           Tagline: encodeBase64(Tagline),
           Website: encodeBase64(Website),
           About: encodeBase64(About),
           Size: encodeBase64(Size),
           ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
-          Language: encodeBase64(Language),
-          Calender: encodeBase64(Calender),
         },
         (response) => {
           resolve(response);

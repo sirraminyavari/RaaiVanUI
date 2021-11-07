@@ -129,7 +129,12 @@ const TeamSettings = (props) => {
                 DropdownIndicator: CustomSelectIndicator,
               }}
               classNamePrefix="select"
-              defaultValue={applicationInfo?.Language}
+              defaultValue={{
+                value: applicationInfo?.Language,
+                label: languageOption.find(
+                  (x) => x.value === applicationInfo?.Language
+                )?.label,
+              }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
