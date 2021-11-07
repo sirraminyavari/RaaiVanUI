@@ -49,6 +49,7 @@ const AnimatedTextArea = ({
         value={text}
         rows={rows}
         onChange={(e) => changeHandler(e)}
+        {...props}
       />
 
       {label && (

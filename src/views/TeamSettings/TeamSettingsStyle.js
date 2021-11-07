@@ -1,7 +1,15 @@
 import styled from 'styled-components';
+import Heading from '../../components/Heading/Heading';
+import Button from '../../components/Buttons/Button';
 
 export const TeamSettingsCardWrapper = styled.div`
   padding: 0 1rem;
+`;
+
+export const PageTitle = styled(Heading).attrs({
+  type: 'H1',
+})`
+  font-weight: bold;
 `;
 
 export const TeamSettingsContainer = styled.div`
@@ -25,26 +33,6 @@ export const TeamThumbnailContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-export const TeamTitle = styled.h1`
-  display: block;
-  margin: 2.5rem auto 1.5rem auto;
-  border-bottom: var(--rv-color-distant) 0.05rem solid;
-  text-align: center;
-  height: 3rem;
-  width: 14rem;
-  font-size: 1.75rem;
-`;
-
-export const TeamSubtitle = styled.div`
-  display: block;
-  margin: 1.5rem auto;
-  color: var(--rv-gray-color);
-  border-bottom: var(--rv-color-distant) 0.05rem solid;
-  text-align: center;
-  height: 2rem;
-  width: 14rem;
-  font-size: 1.12rem;
 `;
 
 export const FieldWrapper = styled.div`
