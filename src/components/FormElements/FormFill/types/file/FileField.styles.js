@@ -19,7 +19,7 @@ import {
 import styled from 'styled-components';
 
 export const FilesContainer = styled.div`
-  width: 100%;
+  width: calc(100% - 17rem);
 `;
 
 export const FileShowContainer = styled.div.attrs({

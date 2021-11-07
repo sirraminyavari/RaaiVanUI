@@ -3,6 +3,7 @@ import TableIcon from 'components/Icons/TableIcon/TableIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import { toJSON } from 'helpers/helpers';
 import Table from './Table';
+import * as Styled from './FormField.styles';
 
 const FormField = (props) => {
   const {
@@ -36,7 +37,7 @@ const FormField = (props) => {
       iconComponent={<TableIcon size={15} color={CV_GRAY} />}
       title={decodeTitle}
       {...rest}>
-      <div style={{ width: '50rem' }}>{renderTable()}</div>
+      <Styled.TableWrapper>{renderTable()}</Styled.TableWrapper>
     </FormCell>
   );
 };
