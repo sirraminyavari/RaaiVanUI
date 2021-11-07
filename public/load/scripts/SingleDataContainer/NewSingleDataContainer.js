@@ -50,7 +50,7 @@
 
             var elems = GlobalUtilities.create_nested_elements([
                 (that.Options.UseInlineInput ? null : {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem;",
+                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "flex-basis:0 !important; margin:0rem;",
                     Childs: [
                         { Type: "div", Class: _inputClass, Name: "input" },
                         {
