@@ -11,11 +11,11 @@ import {
 import {
   ARABIC_LANGUAGE,
   ENGLISH_LANGUAGE,
-  GREGORIAN_CALENDER,
-  JALALI_CALENDER,
-  KURDISH_CALENDER,
+  GREGORIAN_CALENDAR,
+  JALALI_CALENDAR,
+  KURDISH_CALENDAR,
   KURDISH_LANGUAGE,
-  LUNAR_CALENDER,
+  LUNAR_CALENDAR,
   MORE_THEN_TWENTY,
   ONE_TO_TEN,
   PERSIAN_LANGUAGE,
@@ -40,7 +40,7 @@ const useTeamSettings = (props) => {
     ExpertiseFieldID: appInfo?.FieldOfExpertise.ID,
     ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise.Name),
     Language: appInfo?.Language,
-    Calender: appInfo?.Calender,
+    Calendar: appInfo?.Calendar,
   });
 
   useEffect(async () => {
@@ -81,10 +81,10 @@ const useTeamSettings = (props) => {
   ];
 
   const calOption = [
-    { value: JALALI_CALENDER, label: 'هجری شمسی' },
-    { value: LUNAR_CALENDER, label: 'هجری قمری' },
-    { value: GREGORIAN_CALENDER, label: 'میلادی (Gregorian)' },
-    { value: KURDISH_CALENDER, label: 'گاه شماری کردی' },
+    { value: JALALI_CALENDAR, label: 'هجری شمسی' },
+    { value: LUNAR_CALENDAR, label: 'هجری قمری' },
+    { value: GREGORIAN_CALENDAR, label: 'میلادی (Gregorian)' },
+    { value: KURDISH_CALENDAR, label: 'گاه شماری کردی' },
   ];
 
   const teamSizeOption = [
@@ -104,7 +104,7 @@ const useTeamSettings = (props) => {
       ExpertiseFieldID,
       ExpertiseFieldName,
       Language,
-      Calender,
+      Calendar,
     } = applicationInfo;
 
     try {
@@ -118,7 +118,7 @@ const useTeamSettings = (props) => {
         ExpertiseFieldID,
         ExpertiseFieldName,
         Language,
-        Calender
+        Calendar
       );
 
       console.log(saveResult);

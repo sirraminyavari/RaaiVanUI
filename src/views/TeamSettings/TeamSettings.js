@@ -23,6 +23,7 @@ const TeamSettings = (props) => {
     saveInfo,
   } = useTeamSettings(props);
 
+  console.log(applicationInfo);
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
@@ -154,15 +155,15 @@ const TeamSettings = (props) => {
               }}
               classNamePrefix="select"
               defaultValue={{
-                value: applicationInfo?.Calender,
+                value: applicationInfo?.Calendar,
                 label: calOption.find(
-                  (x) => x.value === applicationInfo?.Calender
+                  (x) => x.value === applicationInfo?.Calendar
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Calender: e.value,
+                  Calendar: e.value,
                 })
               }
             />

@@ -211,10 +211,10 @@ export const BO_RADIUS_CIRCLE = 'rv-circle';
 /**
  * @description Different kind of calender options
  */
-export const JALALI_CALENDER = 'jalali';
-export const LUNAR_CALENDER = 'lunar';
-export const GREGORIAN_CALENDER = 'gregorian';
-export const KURDISH_CALENDER = 'kurdish';
+export const JALALI_CALENDAR = 'Jalali';
+export const LUNAR_CALENDAR = 'Lunar';
+export const GREGORIAN_CALENDAR = 'Gregorian';
+export const KURDISH_CALENDAR = 'Kurdish';
 
 /**
  * @description Different kind of language options
