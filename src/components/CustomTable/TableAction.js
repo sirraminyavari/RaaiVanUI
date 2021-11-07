@@ -6,15 +6,15 @@ import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 
-const TableAction = ({ onAddRow, onSearch, data }) => {
+const TableAction = ({ onAddItem, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
-  const handleAddRow = () => {
-    onAddRow && onAddRow();
+  const handleAddItem = () => {
+    onAddItem && onAddItem();
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const TableAction = ({ onAddRow, onSearch, data }) => {
         />
       </Styled.TableSearchWrapper>
       <Styled.TableButtonsWrapper>
-        <Styled.ActionButton onClick={handleAddRow}>
+        <Styled.ActionButton onClick={handleAddItem}>
           <AddIcon
             size={22}
             color={TCV_DEFAULT}

@@ -10,10 +10,9 @@ const RowActionMenu = (props) => {
   const {
     row,
     removeRow,
-    setEditingRow,
+    setEditingRowId,
     onEditRowStart,
     data,
-    setShowFooter,
     editable: isTableEditable,
     editByCell,
   } = props?.cell || {};
@@ -30,9 +29,8 @@ const RowActionMenu = (props) => {
   };
 
   const handleSetEditableRow = () => {
-    setEditingRow && setEditingRow(rowId);
+    setEditingRowId && setEditingRowId(rowId);
     onEditRowStart && onEditRowStart(data);
-    setShowFooter && setShowFooter(false);
   };
 
   return (

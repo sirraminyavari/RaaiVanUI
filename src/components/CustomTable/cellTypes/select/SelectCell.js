@@ -13,27 +13,27 @@ const SelectCell = (props) => {
     column,
     onCellChange,
     editable: isTableEditable,
-    editingRow,
-    isNew,
+    editingRowId,
     header,
     multiSelect,
     data,
     selectedCell,
+    tempRowId,
   } = props;
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
-  const headerId = header?.id;
-
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
-    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNewRow;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -67,7 +67,7 @@ const SelectCell = (props) => {
   }
 
   const [defaultValues, setDefaultValues] = useState(
-    !!isNew ? [] : initialValues
+    !!isNewRow ? [] : initialValues
   );
   const originalValueRef = useRef(TextValue);
 
@@ -77,7 +77,7 @@ const SelectCell = (props) => {
   };
 
   const handleOnMenuClose = () => {
-    let id = isNew ? null : rowId;
+    let id = isNewRow ? tempRowId : rowId;
 
     const textValue = !!multiSelect
       ? defaultValues.map((x) => x.value).join(' ~ ')
@@ -85,21 +85,15 @@ const SelectCell = (props) => {
 
     if (originalValueRef.current === textValue) return;
 
-    let selectCell = isNew
-      ? {
-          ElementID: headerId,
-          TextValue: textValue,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          TextValue: textValue,
-        };
+    let selectCell = {
+      ...value,
+      TextValue: textValue,
+    };
 
     onCellChange(id, columnId, selectCell, textValue);
   };
 
-  if (!canEdit && !isNew) {
+  if (!canEdit) {
     return (
       <>
         {defaultValues?.map((x) => x?.label).length ? (

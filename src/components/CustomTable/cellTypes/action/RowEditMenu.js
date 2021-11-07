@@ -1,21 +1,29 @@
 import EditMenuButtons from '../../EditMenuButtons';
 
 const RowEditMenu = (props) => {
-  const { cell, isNew, setShowFooter, addRow } = props;
-  const { row, setEditingRow, editRow, onEditRowCancel } = cell || {};
+  const { cell, addRow } = props;
+  const {
+    row,
+    setEditingRowId,
+    editRow,
+    onEditRowCancel,
+    dragHandleProps,
+    tempRowId,
+    setTempRowId,
+  } = cell || {};
 
   const rowId = row?.original?.id;
 
   //! Exit edit mode for a row.
   const handleExitEditMode = () => {
-    setEditingRow && setEditingRow(null);
+    setEditingRowId && setEditingRowId(null);
   };
 
   //! Accept edit changes.
   const handleAcceptChanges = () => {
-    if (isNew) {
+    if (!!tempRowId) {
+      console.log('new row');
       addRow && addRow();
-      setShowFooter(false);
     } else {
       console.log('Changes accepted');
       handleExitEditMode();
@@ -25,17 +33,19 @@ const RowEditMenu = (props) => {
 
   //! Decline edit changes.
   const handleCancelChanges = () => {
-    if (isNew) {
-      setShowFooter(false);
+    if (!!tempRowId) {
+      onEditRowCancel && onEditRowCancel(tempRowId);
+      setTempRowId(null);
     } else {
       console.log('Changes rejected');
       handleExitEditMode();
+      onEditRowCancel && onEditRowCancel();
     }
-    onEditRowCancel && onEditRowCancel();
   };
 
   return (
     <EditMenuButtons
+      {...dragHandleProps}
       onAccept={handleAcceptChanges}
       onCancel={handleCancelChanges}
     />

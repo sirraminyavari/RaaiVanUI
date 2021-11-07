@@ -435,6 +435,7 @@ const commonActionBTNCss = css`
   width: 10rem;
   height: 2rem;
   border-radius: 2rem;
+  user-select: none;
   ${FLEX_RCC}
 `;
 

@@ -11,10 +11,10 @@ const NumberCell = (props) => {
     column,
     onCellChange,
     editable: isTableEditable,
-    editingRow,
-    isNew,
+    editingRowId,
     header,
     selectedCell,
+    tempRowId,
   } = props;
 
   const { Info, FloatValue } = value || {};
@@ -23,17 +23,17 @@ const NumberCell = (props) => {
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
-  const headerId = header?.id;
-
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
-    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNewRow;
 
-  const [numberValue, setNumberValue] = useState(FloatValue);
+  const [numberValue, setNumberValue] = useState(FloatValue || '');
   const originalValueRef = useRef(FloatValue);
 
   //! Keep track of input change.
@@ -44,24 +44,21 @@ const NumberCell = (props) => {
   //! We'll only update the external data when the input is blurred.
   const handleInputBlur = () => {
     if (originalValueRef.current === numberValue) return;
-    //! Update parent.
-    let numberCell;
-    let id = isNew ? null : rowId;
 
-    numberCell = isNew
-      ? {
-          ElementID: headerId,
-          FloatValue: numberValue,
-          TextValue: numberValue + '',
-          Type: header?.dataType,
-        }
-      : { ...value, FloatValue: numberValue, TextValue: numberValue + '' };
+    //! Update parent.
+    let id = isNewRow ? tempRowId : rowId;
+
+    let numberCell = {
+      ...value,
+      FloatValue: numberValue,
+      TextValue: numberValue + '',
+    };
 
     onCellChange(id, columnId, numberCell, numberValue);
   };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
-  if (!canEdit && !isNew) {
+  if (!canEdit) {
     return !!numberValue ? (
       <Styled.CellView type="h4">{numberValue}</Styled.CellView>
     ) : (

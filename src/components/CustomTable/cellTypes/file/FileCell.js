@@ -17,16 +17,17 @@ const FileCell = (props) => {
   // const { RVDic } = useWindow();
 
   const {
-    isNew,
     row,
-    editingRow,
+    editingRowId,
     onCellChange,
     column,
     value,
     editable: isTableEditable,
     header,
     selectedCell,
+    tempRowId,
   } = props;
+
   const { Files: initialFiles, Info, ElementID } = value || {};
 
   const rowId = row?.original?.id;
@@ -35,21 +36,22 @@ const FileCell = (props) => {
   const selectedColumnId = selectedCell?.column?.id;
 
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNew;
+    isNewRow;
 
   const [isUploading, setIsUploading] = useState(false);
-  const [files, setFiles] = useState(isNew ? [] : initialFiles);
+  const [files, setFiles] = useState(isNewRow ? [] : initialFiles);
 
   const beforeChangeFilesRef = useRef(null);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNewRow) {
       beforeChangeFilesRef.current = [];
     } else {
       beforeChangeFilesRef.current = initialFiles;
@@ -58,7 +60,7 @@ const FileCell = (props) => {
     return () => {
       beforeChangeFilesRef.current = null;
     };
-  }, [canEdit, initialFiles, isNew]);
+  }, [canEdit, initialFiles, isNewRow]);
 
   const handleFileDropError = (error) => {
     if (!canEdit) return;

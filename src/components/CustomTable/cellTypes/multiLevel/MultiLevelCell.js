@@ -15,12 +15,11 @@ const MultiLevelCell = (props) => {
     column,
     onCellChange,
     editable: isTableEditable,
-    editingRow,
-    isNew,
+    editingRowId,
     header,
     data,
     selectedCell,
-    // state,
+    tempRowId,
   } = props;
 
   const { RVDic } = useWindow();
@@ -29,17 +28,15 @@ const MultiLevelCell = (props) => {
   const columnId = column?.id;
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
-  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
-
-  // const isLastRow = state.lastRowInPage?.original?.id === rowId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNew;
+    isNewRow;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -78,7 +75,7 @@ const MultiLevelCell = (props) => {
 
   //! Update multi level cell.
   const updateCell = (levels) => {
-    let id = isNew ? null : rowId;
+    let id = isNewRow ? tempRowId : rowId;
 
     let selectedItems = levels?.map((level) => {
       let { Name, NodeID } = level?.value || {};
@@ -91,19 +88,12 @@ const MultiLevelCell = (props) => {
       };
     });
 
-    let multiLevelCell = isNew
-      ? {
-          ElementID: headerId,
-          SelectedItems: selectedItems,
-          GuidItems: selectedItems,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          SelectedItems: selectedItems,
-          GuidItems: selectedItems,
-          TextValue: '',
-        };
+    let multiLevelCell = {
+      ...value,
+      SelectedItems: selectedItems,
+      GuidItems: selectedItems,
+      TextValue: '',
+    };
 
     onCellChange(id, columnId, multiLevelCell, selectedItems);
   };
@@ -193,7 +183,7 @@ const MultiLevelCell = (props) => {
   }, [canEdit]);
 
   //! Show mode and not new.
-  if (!canEdit && !isNew) {
+  if (!canEdit) {
     return !!SelectedItems?.length ? (
       <Styled.CellView type="h4">
         {selectedItemsName.join(' / ')}
@@ -207,7 +197,7 @@ const MultiLevelCell = (props) => {
     <Styled.MultiLevelContainer>
       {levelValues
         ?.filter(
-          (level) => !!level.defaultValue || level?.options.length || isNew
+          (level) => !!level.defaultValue || level?.options.length || isNewRow
         )
         ?.map((level, key, self) => {
           const selectedLevelName = decodeBase64(level?.value?.Name);
@@ -231,7 +221,7 @@ const MultiLevelCell = (props) => {
             : null;
 
           //! Get value for the select component.
-          const selectValue = isNew
+          const selectValue = isNewRow
             ? undefined
             : SelectedItems.length
             ? undefined

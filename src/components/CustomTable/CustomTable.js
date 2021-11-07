@@ -23,6 +23,7 @@ import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import ColumnHeader from './ColumnHeader';
 import CellEdit from './CellEdit';
+import { getUUID } from 'helpers/helpers';
 
 const TableModal = lazy(() =>
   import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
@@ -58,6 +59,7 @@ const CustomTable = (props) => {
     columns,
     data,
     onCellChange,
+    onCreateNewRow,
     removeRow,
     editRow,
     addRow,
@@ -74,34 +76,9 @@ const CustomTable = (props) => {
 
   const [selectedCell, setSelectedCell] = useState(null);
   const [isRowDragging, setIsRowDragging] = useState(false);
-  const [editingRow, setEditingRow] = useState(null);
+  const [editingRowId, setEditingRowId] = useState(null);
   const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
-  const [showFooter, setShowFooter] = useState(false);
-  // const [isScrolling, setIsScrolling] = useState(false);
-
-  // useLayoutEffect(() => {
-  //   let isScrolling;
-
-  //   function handleScroll() {
-  //     //! Clear our timeout throughout the scroll
-  //     clearTimeout(isScrolling);
-  //     setIsScrolling(true);
-  //     console.log('Is scrolling.');
-
-  //     //! Set a timeout to run after scrolling ends
-  //     isScrolling = setTimeout(function () {
-  //       //! Run the callback
-  //       console.log('Scrolling has stopped.');
-  //       setIsScrolling(false);
-  //     }, 66);
-  //   }
-
-  //   window.addEventListener('scroll', handleScroll, false);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll, false);
-  //   };
-  // }, []);
+  const [tempRowId, setTempRowId] = useState(null);
 
   const restoreModalState = () => {
     setModal(DEFAULT_MODAL_PROPS);
@@ -157,12 +134,13 @@ const CustomTable = (props) => {
       setSelectedCell,
       modal,
       setModal,
-      editingRow,
+      editingRowId,
       onEditRowStart,
       onEditRowCancel,
-      setEditingRow,
-      setShowFooter,
+      setEditingRowId,
       reorderRow,
+      tempRowId,
+      setTempRowId,
       getColumnsOption,
       tableId,
       tableMirror,
@@ -180,17 +158,14 @@ const CustomTable = (props) => {
 
   tableInstance.state = {
     ...tableInstance.state,
-    showFooter,
     data,
     lastRowInPage: tableInstance?.page?.[tableInstance?.page.length - 1],
-    // windowIsScrolling: isScrolling,
   };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    footerGroups,
     prepareRow,
     page,
     // resetResizing,
@@ -199,15 +174,21 @@ const CustomTable = (props) => {
 
   // console.log(state);
 
-  const handleAddRow = () => {
-    setShowFooter(true);
-    setEditingRow(null);
+  const handleAddItem = () => {
+    // setShowFooter(true);
+    if (!tempRowId) {
+      let tempRowId = getUUID();
+      setTempRowId(tempRowId);
+      onCreateNewRow && onCreateNewRow(tempRowId);
+    }
+
+    setEditingRowId(null);
   };
 
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
-      <TableAction onAddRow={handleAddRow} onSearch={onSearch} />
+      <TableAction onAddItem={handleAddItem} onSearch={onSearch} />
       <Suspense fallback={<ModalFallbackLoader />}>
         {modal.show && (
           <TableModal
@@ -252,7 +233,7 @@ const CustomTable = (props) => {
                     {...getTableBodyProps()}>
                     {page.map((row, i) => {
                       prepareRow(row);
-                      const isRowEditing = row.original.id === editingRow;
+                      const isRowEditing = row.original.id === editingRowId;
                       return (
                         <Draggable
                           draggableId={row.original.id}
@@ -286,18 +267,21 @@ const CustomTable = (props) => {
                                             ...provided.dragHandleProps,
                                           },
                                         })}
-                                        {!!isTableEditable && !!editByCell && (
-                                          <CellEdit
-                                            cell={cell}
-                                            selectedCell={selectedCell}
-                                            setSelectedCell={setSelectedCell}
-                                            onEditStart={() =>
-                                              onEditRowStart(data)
-                                            }
-                                            onEditCancel={onEditRowCancel}
-                                            onEdit={editRow}
-                                          />
-                                        )}
+                                        {!!isTableEditable && //! Table is editable in general.
+                                          !!editByCell && //! Single cell edit is enabled.
+                                          tempRowId !==
+                                            cell?.row?.original?.id && ( //! New row id is equal to current cell id.
+                                            <CellEdit
+                                              cell={cell}
+                                              selectedCell={selectedCell}
+                                              setSelectedCell={setSelectedCell}
+                                              onEditStart={() =>
+                                                onEditRowStart(data)
+                                              }
+                                              onEditCancel={onEditRowCancel}
+                                              onEdit={editRow}
+                                            />
+                                          )}
                                       </>
                                     </Styled.TableCell>
                                   );
@@ -313,21 +297,6 @@ const CustomTable = (props) => {
                 )}
               </Droppable>
             </DragDropContext>
-            {showFooter && (
-              <Styled.FooterContainer>
-                {footerGroups.map((group) => (
-                  <Styled.FooterTr {...group.getFooterGroupProps()}>
-                    {group.headers.map((column) => {
-                      return (
-                        <div className="footer-td" {...column.getFooterProps()}>
-                          {column.render('Footer')}
-                        </div>
-                      );
-                    })}
-                  </Styled.FooterTr>
-                ))}
-              </Styled.FooterContainer>
-            )}
           </Styled.Table>
         )}
       </Styled.TableWrapper>

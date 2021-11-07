@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import { CV_RED } from 'constant/CssVariables';
 import CustomTable from 'components/CustomTable/CustomTable';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import { prepareHeaders, prepareRows } from 'components/CustomTable/tableUtils';
+import {
+  cellTypes,
+  normalizeCell,
+  prepareHeaders,
+  prepareRows,
+} from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import {
@@ -90,23 +95,17 @@ const Table = (props) => {
   //! Fires on every cell update.
   const updateCellData = (rowId, columnId, cellData, cellValue) => {
     console.log(cellData, 'step one');
-    if (!!rowId) {
-      setRows((old) =>
-        old.map((row) => {
-          if (row?.id === rowId) {
-            return {
-              ...row,
-              [columnId]: cellData,
-            };
-          }
-          return row;
-        })
-      );
-    } else {
-      //! New row.
-      let newRowObject = { ...newRowRef.current, [columnId]: cellData };
-      newRowRef.current = newRowObject;
-    }
+    setRows((old) =>
+      old.map((row) => {
+        if (row?.id === rowId) {
+          return {
+            ...row,
+            [columnId]: cellData,
+          };
+        }
+        return row;
+      })
+    );
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
 
@@ -236,11 +235,17 @@ const Table = (props) => {
   const memoizedOnEditRowStart = useCallback(onEditStart, []);
 
   //! Fires on row edit abortion.
-  const onEditCancel = () => {
-    setRows(beforeEditRowsRef.current);
-    beforeEditRowsRef.current = null;
-    newRowRef.current = {};
+  const onEditCancel = (tempRowId = '') => {
+    if (!!tempRowId) {
+      setRows(beforeEditRowsRef.current);
+      beforeEditRowsRef.current = null;
+    } else {
+      setRows(beforeEditRowsRef.current);
+      beforeEditRowsRef.current = null;
+      newRowRef.current = {};
+    }
   };
+
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
   //! Add new row to the table.
@@ -307,6 +312,35 @@ const Table = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const createNewRow = (tempRowId) => {
+    let newRow = tableColumns
+      ?.filter((col) => col?.Type !== cellTypes.separator)
+      .map((column) => {
+        let extendedColumn = Object.assign({}, column, {
+          FormID: '',
+          InstanceID: tempRowId,
+          RefElementID: '',
+          GuidItems: [],
+          SelectedItems: [],
+          TextValue: '',
+        });
+
+        return normalizeCell(extendedColumn);
+      })
+      .reduce(
+        (acc, column) => {
+          return {
+            ...acc,
+            [`${column.Type}_${column.ElementID}`]: column,
+          };
+        },
+        { id: tempRowId }
+      );
+
+    setRows((oldRows) => [newRow, ...oldRows]);
+    beforeEditRowsRef.current = rows;
+  };
+
   return (
     <CustomTable
       editable={isEditable}
@@ -331,6 +365,7 @@ const Table = (props) => {
       tableId={tableId}
       getCellProps={(cell) => ({})}
       tableMirror={Table}
+      onCreateNewRow={createNewRow}
     />
   );
 };

@@ -14,31 +14,31 @@ const NodeCell = (props) => {
   const routeProps = useContext(PropsContext);
 
   const {
-    isNew,
     row,
     onCellChange,
     column,
     value,
     editable: isTableEditable,
-    editingRow,
+    editingRowId,
     header,
     data,
     selectedCell,
+    tempRowId,
   } = props;
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
-  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNew;
+    isNewRow;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -49,13 +49,13 @@ const NodeCell = (props) => {
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [selectedItems, setSelectedItems] = useState(
-    !!isNew ? [] : initialItems
+    !!isNewRow ? [] : initialItems
   );
 
   const beforeChangeSelectedItemsRef = useRef(null);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNewRow) {
       beforeChangeSelectedItemsRef.current = [];
     } else {
       beforeChangeSelectedItemsRef.current = initialItems;
@@ -64,22 +64,16 @@ const NodeCell = (props) => {
     return () => {
       beforeChangeSelectedItemsRef.current = null;
     };
-  }, [canEdit, initialItems, isNew]);
+  }, [canEdit, initialItems, isNewRow]);
 
   const updateNodeCell = (items) => {
-    let id = isNew ? null : rowId;
-    let nodeCell = isNew
-      ? {
-          ElementID: headerId,
-          GuidItems: items,
-          SelectedItems: items,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          SelectedItems: items,
-          GuidItems: items,
-        };
+    let id = isNewRow ? tempRowId : rowId;
+
+    let nodeCell = {
+      ...value,
+      SelectedItems: items,
+      GuidItems: items,
+    };
 
     onCellChange(id, columnId, nodeCell, items);
   };

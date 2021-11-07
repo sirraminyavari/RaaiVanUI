@@ -9,27 +9,28 @@ const TextCell = (props) => {
     column,
     onCellChange,
     editable: isTableEditable,
-    editingRow,
-    isNew,
+    editingRowId,
     header,
     selectedCell,
+    tempRowId,
   } = props;
 
-  const { Info, TextValue } = value || {};
+  const { TextValue } = value || {};
 
   const rowId = row?.original?.id;
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
-  const headerId = header?.id;
 
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
-    isTableEditable && isCellEditable && (isRowEditing || isCellEditing);
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNewRow;
 
   const [textValue, setTextValue] = useState(TextValue);
   const originalValueRef = useRef(TextValue);
@@ -44,22 +45,15 @@ const TextCell = (props) => {
     if (originalValueRef.current === textValue?.trim()) return;
 
     //! Update parent.
-    let textCell;
-    let id = isNew ? null : rowId;
+    let id = isNewRow ? tempRowId : rowId;
 
-    textCell = isNew
-      ? {
-          ElementID: headerId,
-          TextValue: textValue,
-          Type: header?.dataType,
-        }
-      : { ...value, TextValue: textValue };
+    let textCell = { ...value, TextValue: textValue };
 
     onCellChange(id, columnId, textCell, textValue);
   };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
-  if (!canEdit && !isNew) {
+  if (!canEdit) {
     return !!textValue ? (
       <Styled.CellView type="h4">{textValue}</Styled.CellView>
     ) : (

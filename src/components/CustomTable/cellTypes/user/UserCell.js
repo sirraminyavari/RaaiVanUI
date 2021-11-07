@@ -9,9 +9,8 @@ const UserCell = (props) => {
   // const { RVDic } = useWindow();
 
   const {
-    isNew,
     row,
-    editingRow,
+    editingRowId,
     onCellChange,
     column,
     value,
@@ -19,21 +18,22 @@ const UserCell = (props) => {
     header,
     data,
     selectedCell,
+    tempRowId,
   } = props;
 
   const rowId = row?.original?.id;
   const columnId = column?.id;
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
-  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNew;
+    isNewRow;
 
   //! Get info for new row.
   const columnInfo = data?.[0]?.[columnId]?.Info;
@@ -41,11 +41,11 @@ const UserCell = (props) => {
 
   const { MultiSelect: isMultiSelect } = Info || columnInfo || {};
 
-  const [users, setUsers] = useState(isNew ? [] : initialUsers);
+  const [users, setUsers] = useState(isNewRow ? [] : initialUsers);
   const beforeChangeUsersRef = useRef(null);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNewRow) {
       beforeChangeUsersRef.current = [];
     } else {
       beforeChangeUsersRef.current = initialUsers;
@@ -54,7 +54,7 @@ const UserCell = (props) => {
     return () => {
       beforeChangeUsersRef.current = null;
     };
-  }, [canEdit, initialUsers, isNew]);
+  }, [canEdit, initialUsers, isNewRow]);
 
   const normalizeSelectedUsers =
     users?.length > 0
@@ -70,20 +70,14 @@ const UserCell = (props) => {
    * @param {Object[]} users -Users List to update.
    */
   const updateUserCell = (users) => {
-    let id = isNew ? null : rowId;
-    let userCell = isNew
-      ? {
-          ElementID: headerId,
-          GuidItems: users,
-          SelectedItems: users,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          GuidItems: users,
-          SelectedItems: users,
-          TextValue: '',
-        };
+    let id = isNewRow ? tempRowId : rowId;
+
+    let userCell = {
+      ...value,
+      GuidItems: users,
+      SelectedItems: users,
+      TextValue: '',
+    };
 
     //! Update cell.
     onCellChange(id, columnId, userCell, users);
@@ -131,7 +125,7 @@ const UserCell = (props) => {
             onBlur={() => {}}
             onByPeople={handleAddNewPerson}
             isByMe={false}
-            pickedPeople={isNew ? normalizeSelectedUsers : []}
+            pickedPeople={isNewRow ? normalizeSelectedUsers : []}
             onVisible={() => {}}
             multi={isMultiSelect}
             buttonComponent={<AddNewUser />}

@@ -4,21 +4,21 @@ import * as Styled from './DateCell.styles';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import { engToPerDate, getWeekDay } from 'helpers/helpers';
 import CalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
-import { CV_DISTANT, CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 
 const DateCell = (props) => {
   // console.log('dateCell', props);
   const {
-    isNew,
     row,
     onCellChange,
     column,
     value,
     editable: isTableEditable,
-    editingRow,
+    editingRowId,
     header,
     selectedCell,
+    tempRowId,
   } = props;
 
   const { DateValue } = value || {};
@@ -40,15 +40,15 @@ const DateCell = (props) => {
   const selectedRowId = selectedCell?.row?.original?.id;
   const selectedColumnId = selectedCell?.column?.id;
   const columnId = column?.id;
-  const headerId = header?.id;
   const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const isRowEditing = rowId === editingRowId;
   const isCellEditing =
     rowId === selectedRowId && columnId === selectedColumnId;
+  const isNewRow = tempRowId === rowId;
 
   const canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNew;
+    isNewRow;
 
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
@@ -59,14 +59,9 @@ const DateCell = (props) => {
     const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
 
-    let id = isNew ? null : rowId;
-    let dateCell = isNew
-      ? {
-          ElementID: headerId,
-          DateValue: dateString,
-          Type: header?.dataType,
-        }
-      : { ...value, DateValue: dateString };
+    let id = isNewRow ? tempRowId : rowId;
+
+    let dateCell = { ...value, DateValue: dateString };
 
     onCellChange(id, columnId, dateCell, date);
   };

@@ -18,10 +18,10 @@ import { CV_RED, TCV_WARM } from 'constant/CssVariables';
  * @param {PropType} props -Props that pass to edit menu.
  */
 const EditMenuButtons = (props) => {
-  const { onAccept, onCancel, containerClass, iconSize } = props;
+  const { onAccept, onCancel, containerClass, iconSize, ...rest } = props;
 
   return (
-    <Styled.EditActionContainer className={containerClass}>
+    <Styled.EditActionContainer className={containerClass} {...rest}>
       <div>
         <CheckIcon
           className="table-edit-check-icon"

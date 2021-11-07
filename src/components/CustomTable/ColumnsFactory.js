@@ -13,7 +13,6 @@ import {
   NumberCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import RowEditMenu from './cellTypes/action/RowEditMenu';
 import * as Styled from './CustomTable.styles';
 
 //! Provide cell for a given column.
@@ -23,7 +22,6 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => <ActionsCell cell={cell} />,
-        Footer: (footer) => <RowEditMenu {...footer} header={header} isNew />,
       };
     case cellTypes.index:
       return {
@@ -33,45 +31,36 @@ const provideCell = (header) => {
             {cell?.row.index + 1}
           </Styled.TableRowIndex>
         ),
-        Footer: () => <div>{header.title}</div>,
       };
 
     case cellTypes.text:
       return {
         Cell: (row) => <TextCell {...row} header={header} />,
-        Footer: (footer) => <TextCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.number:
       return {
         Cell: (row) => <NumberCell {...row} header={header} />,
-        Footer: (footer) => <NumberCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.date:
       return {
         Cell: (row) => <DateCell {...row} header={header} />,
-        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.singleSelect:
       return {
         Cell: (row) => <SelectCell {...row} header={header} />,
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
       };
 
     case cellTypes.multiSelect:
       return {
         Cell: (row) => <SelectCell {...row} header={header} multiSelect />,
-        Footer: (row) => (
-          <SelectCell {...row} header={header} isNew multiSelect />
-        ),
       };
 
     case cellTypes.binary:
       return {
         Cell: (row) => <BinaryCell {...row} header={header} />,
-        Footer: (row) => <BinaryCell {...row} header={header} isNew />,
       };
 
     case cellTypes.recordInfo:
@@ -82,39 +71,30 @@ const provideCell = (header) => {
     case cellTypes.file:
       return {
         Cell: (row) => <FileCell {...row} header={header} />,
-        Footer: (footer) => <FileCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.node:
       return {
         Cell: (row) => <NodeCell {...row} header={header} />,
-        Footer: (footer) => <NodeCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.user:
       return {
         Cell: (row) => <UserCell {...row} header={header} />,
-        Footer: (footer) => <UserCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.table:
       return {
         Cell: (row) => <TableCell {...row} header={header} />,
-        // Footer: (footer) => <TableCell {...footer} header={header} isNew />,
       };
 
     case cellTypes.multiLevel:
       return {
         Cell: (row) => <MultiLevelCell {...row} header={header} />,
-        Footer: (footer) => (
-          <MultiLevelCell {...footer} header={header} isNew />
-        ),
       };
 
     default:
-      return {
-        Footer: () => <div>{header.title}</div>,
-      };
+      return {};
   }
 };
 
