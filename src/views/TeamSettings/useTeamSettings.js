@@ -39,8 +39,8 @@ const useTeamSettings = (props) => {
     Size: decodeBase64(appInfo?.Size),
     ExpertiseFieldID: appInfo?.FieldOfExpertise.ID,
     ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise.Name),
-    Language: decodeBase64(appInfo?.Language),
-    Calender: decodeBase64(appInfo?.Calender),
+    Language: appInfo?.Language,
+    Calender: appInfo?.Calender,
   });
 
   useEffect(async () => {
