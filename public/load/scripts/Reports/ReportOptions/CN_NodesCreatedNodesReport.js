@@ -7,20 +7,27 @@
         this.ContainerDiv = typeof (containerDiv) == "object" ? containerDiv : document.getElementById(containerDiv);
         if (!this.ContainerDiv) return;
 
-        var that = this;
-
         this.Objects = {
             NodeTypeSelect: null,
-            CreatorNodeTypeSelect: null,
-            NodesList: null,
+            GroupSelect: null,
             ShowPersonalItemsSelect: null,
             BeginDate: null,
-            FinishDate: null
+            FinishDate: null,
+            Config: GlobalUtilities.extend({
+                Groups: [],
+                FullAccess: false,
+                GroupAdminAccess: false
+
+            }, params.Config)
         };
 
-        GlobalUtilities.load_files(["API/CNAPI.js", "SingleDataContainer/NewSingleDataContainer.js"], {
-            OnLoad: function () { that._initialize(params, done); }
-        });
+        var that = this;
+
+        GlobalUtilities.load_files([
+            "API/CNAPI.js",
+            "SingleDataContainer/NewSingleDataContainer.js",
+            "Reports/ReportGroupSelect.js"
+        ], { OnLoad: () => that._initialize(params, done) });
     }
 
     ReportOptions.CN.NodesCreatedNodesReport.prototype = {
@@ -53,17 +60,8 @@
                     Childs: [{ Type: "div", Style: "width:calc(50% - 0.5rem);", Name: "nodeTypeSelect" }]
                 }),
                 create_titled({
-                    Class: "small-12 medium-12 large-12", Title: RVDic.SelectN.replace("[n]", RVDic.Groups), Style: "margin-bottom:1rem;",
-                    Childs: [
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-bottom:0.5rem;",
-                            Childs: [{ Type: "div", Style: "width:calc(50% - 0.5rem);", Name: "creatorNodeTypeSelect" }]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Childs: [{ Type: "div", Style: "width:calc(50% - 0.5rem);", Name: "nodesList" }]
-                        }
-                    ]
+                    Class: "small-12 medium-12 large-12", Title: RVDic.SelectN.replace("[n]", RVDic.Groups),
+                    Style: "margin-bottom:1rem;", Name: "groups"
                 }),
                 create_titled({
                     Class: "small-12 medium-12 large-12", Title: RVDic.RPT.CN.NodesCreatedNodesReport.PersonalOrGroup, Style: "margin-bottom:1rem;",
@@ -111,31 +109,11 @@
                 }
             });
 
-            that.Objects.CreatorNodeTypeSelect = GlobalUtilities.append_autosuggest(elems["creatorNodeTypeSelect"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.OwnerNodeTypeSelect + "...",
-                AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
-                ResponseParser: function (responseText) {
-                    return (JSON.parse(responseText).NodeTypes || [])
-                        .map(function (x) { return [Base64.decode(x.TypeName), x.NodeTypeID]; });
-                },
-                OnSelect: function () {
-                    var nodeTypeId = this.values[this.selectedIndex];
-                    that.Objects.NodesList.bind_data_source(CNAPI.GetNodesDataSource({ NodeTypeID: nodeTypeId }));
-                }
-            });
-
-            that.Objects.NodesList = new NewSingleDataContainer(elems["nodesList"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.Groups + "...",
-                NoButtons: true,
-                AjaxDataSource: CNAPI.GetNodesDataSource(),
-                ResponseParser: function (responseText) {
-                    return (JSON.parse(responseText).Nodes || [])
-                        .map(function (x) { return [Base64.decode(x.Name), x.NodeID]; });
-                }
+            that.Objects.GroupSelect = new ReportGroupSelect(elems["groups"], {
+                Groups: that.Objects.Config.Groups,
+                MultiSelect: true,
+                AdminMode: that.Objects.Config.FullAccess,
+                NodeTypesSelectable: true
             });
 
             GlobalUtilities.append_calendar(elems["beginDate"], { ClearButton: true }, function (cal) {
@@ -156,8 +134,6 @@
             params = params || {};
 
             if (params.NodeTypeID) this.Objects.NodeTypeSelect.set_item(params.NodeTypeID.Value || "", params.NodeTypeID.Title || "");
-            if (params.CreatorNodeTypeID)
-                this.Objects.CreatorNodeTypeSelect.set_item(params.CreatorNodeTypeID.Value || "", params.CreatorNodeTypeID.Title || "");
 
             if (params.ShowPersonalItems) {
                 switch (String(params.ShowPersonalItems.Value).toLowerCase()) {
@@ -180,13 +156,17 @@
         get_data: function () {
             var that = this;
 
+            var items = !that.Objects.GroupSelect ? {} : that.Objects.GroupSelect.get_items() || {};
+            var creatorNodeType = (items.NodeTypes || []).length ? items.NodeTypes[0] || {} : {};
+
+            if (!creatorNodeType.NodeTypeID && !(items.Nodes || []).length) {
+                alert(RVDic.Checks.PleaseSelectTheGroups);
+                return false;
+            }
+
             var index = this.Objects.NodeTypeSelect.selectedIndex;
             var nodeTypeId = index < 0 ? "" : this.Objects.NodeTypeSelect.values[index];
             var nodeType = index < 0 ? "" : this.Objects.NodeTypeSelect.keywords[index];
-
-            index = this.Objects.CreatorNodeTypeSelect.selectedIndex;
-            var creatorNodeTypeId = index < 0 ? "" : this.Objects.CreatorNodeTypeSelect.values[index];
-            var creatorNodeType = index < 0 ? "" : this.Objects.CreatorNodeTypeSelect.keywords[index];
 
             var slct = this.Objects.ShowPersonalItemsSelect;
 
@@ -194,9 +174,11 @@
             var finishDate = !that.Objects.FinishDate ? {} : that.Objects.FinishDate.Get();
 
             return {
-                NodeTypeID: nodeTypeId, _Title_NodeTypeID: nodeType,
-                CreatorNodeTypeID: creatorNodeTypeId, _Title_CreatorNodeTypeID: creatorNodeType,
-                NodeIDs: this.Objects.NodesList.get_items_string("|"),
+                NodeTypeID: nodeTypeId,
+                _Title_NodeTypeID: nodeType,
+                CreatorNodeTypeID: creatorNodeType.NodeTypeID,
+                _Title_CreatorNodeTypeID: creatorNodeType.NodeType,
+                NodeIDs: (items.Nodes || []).map(itm => itm.NodeID).join("|"),
                 ShowPersonalItems: slct[slct.selectedIndex].title,
                 LowerCreationDateLimit: beginDate.Value,
                 _Title_LowerCreationDateLimit: beginDate.Label,
@@ -208,9 +190,8 @@
         clear: function () {
             var that = this;
 
-            this.Objects.NodeTypeSelect.empty();
-            this.Objects.CreatorNodeTypeSelect.empty();
-            this.Objects.NodesList.clear();
+            if (this.Objects.NodeTypeSelect) this.Objects.NodeTypeSelect.empty();
+            if (this.Objects.GroupSelect) this.Objects.GroupSelect.clear();
             this.Objects.ShowPersonalItemsSelect.selectedIndex = 0;
             if (that.Objects.BeginDate) that.Objects.BeginDate.Clear();
             if (that.Objects.FinishDate) that.Objects.FinishDate.Clear();

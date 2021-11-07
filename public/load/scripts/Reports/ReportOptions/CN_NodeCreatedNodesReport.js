@@ -11,16 +11,23 @@
 
         this.Objects = {
             NodeTypeSelect: null,
-            CreatorNodeTypeSelect: null,
-            CreatorNodeSelect: null,
+            GroupSelect: null,
             StatusSelect: null,
             ShowPersonalItemsSelect: null,
             PublishedSelect: null,
             BeginDate: null,
-            FinishDate: null
+            FinishDate: null,
+            Config: GlobalUtilities.extend({
+                Groups: [],
+                FullAccess: false,
+                GroupAdminAccess: false
+
+            }, params.Config)
         };
 
-        GlobalUtilities.load_files(["API/CNAPI.js"], { OnLoad: function () { that._initialize(params, done); } });
+        GlobalUtilities.load_files(["API/CNAPI.js", "Reports/ReportGroupSelect.js"], {
+            OnLoad: function () { that._initialize(params, done); }
+        });
     }
 
     ReportOptions.CN.NodeCreatedNodesReport.prototype = {
@@ -66,17 +73,8 @@
                             Childs: [{ Type: "div", Style: "width:calc(50% - 0.5rem);", Name: "nodeTypeSelect"}]
                         }),
                         create_titled({
-                            Class: "small-12 medium-12 large-12", Title: RVDic.SelectN.replace("[n]", RVDic.Group), Style: "margin-bottom:1rem;",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "small-6 medium-6 large-6",
-                                    Style: "padding-" + RV_RevFloat + ":0.5rem;", Name: "creatorNodeTypeSelect"
-                                },
-                                {
-                                    Type: "div", Class: "small-6 medium-6 large-6",
-                                    Style: "padding-" + RV_Float + ":0.5rem;", Name: "creatorNodeSelect"
-                                }
-                            ]
+                            Class: "small-12 medium-12 large-12", Title: RVDic.SelectN.replace("[n]", RVDic.Group),
+                            Style: "margin-bottom:1rem;", Name: "groups"
                         }),
                         create_titled({
                             Class: "small-12 medium-12 large-12", Title: RVDic.Status, Style: "margin-bottom:1rem;",
@@ -154,42 +152,11 @@
                 }
             });
 
-            that.Objects.CreatorNodeTypeSelect = GlobalUtilities.append_autosuggest(elems["creatorNodeTypeSelect"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.NodeTypeSelect + " (" + RVDic.Optional + ")...",
-                AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
-                ResponseParser: function (responseText) {
-                    var nodeTypes = JSON.parse(responseText).NodeTypes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = nodeTypes.length; i < lnt; ++i)
-                        arr.push([Base64.decode(nodeTypes[i].TypeName || ""), nodeTypes[i].NodeTypeID]);
-                    return arr;
-                },
-                OnSelect: function () {
-                    var nodeTypeId = this.values[this.selectedIndex];
-                    var nodeType = this.keywords[this.selectedIndex];
-                    that.Objects.CreatorNodeSelect.bindURL(CNAPI.GetNodesDataSource({ NodeTypeID: nodeTypeId }));
-                    GlobalUtilities.set_inner_title(that.Objects.CreatorNodeSelect.InputElement,
-                        RVDic.SelectN.replace("[n]", nodeType) + "...");
-                }
-            });
-
-            that.Objects.CreatorNodeSelect = GlobalUtilities.append_autosuggest(elems["creatorNodeSelect"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.SelectN.replace("[n]", RVDic.Group) + "...",
-                AjaxDataSource: CNAPI.GetNodesDataSource(),
-                ResponseParser: function (responseText) {
-                    var items = JSON.parse(responseText).Nodes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = items.length; i < lnt; ++i) {
-                        var tt = Base64.decode(items[i].Name || "");
-                        if ((items[i].AdditionalID || "") == "") tt += " - " + Base64.decode(items[i].AdditionalID || "");
-                        arr.push([tt, items[i].NodeID]);
-                    }
-                    return arr;
-                }
+            that.Objects.GroupSelect = new ReportGroupSelect(elems["groups"], {
+                Groups: that.Objects.Config.Groups,
+                MultiSelect: false,
+                AdminMode: that.Objects.Config.FullAccess,
+                NodeTypesSelectable: false
             });
 
             GlobalUtilities.append_calendar(elems["beginDate"], { ClearButton: true }, function (cal) {
@@ -211,7 +178,8 @@
             
             if (params.NodeTypeID) this.Objects.NodeTypeSelect.set_item(params.NodeTypeID.Value || "", params.NodeTypeID.Title || "");
 
-            if (params.CreatorNodeID) this.Objects.CreatorNodeSelect.set_item(params.CreatorNodeID.Value || "", params.CreatorNodeID.Title || "");
+            if (params.CreatorNodeID && that.Objects.GroupSelect)
+                that.Objects.GroupSelect.add_node({ NodeID: params.CreatorNodeID.Value, Name: params.CreatorNodeID.Title });
             
             if (params.Status) {
                 for (var i = 0; i < that.Objects.StatusSelect.length; ++i)
@@ -250,13 +218,17 @@
         get_data: function () {
             var that = this;
 
+            var items = !that.Objects.GroupSelect ? {} : that.Objects.GroupSelect.get_items() || {};
+            var creatorNode = (items.Nodes || []).length ? items.Nodes[0] : {};
+
+            if (!creatorNode.NodeID) {
+                alert(RVDic.Checks.PleaseSelectAGroup);
+                return false;
+            }
+            
             var index = this.Objects.NodeTypeSelect.selectedIndex;
             var nodeTypeId = index < 0 ? "" : this.Objects.NodeTypeSelect.values[index];
             var nodeType = index < 0 ? "" : this.Objects.NodeTypeSelect.keywords[index];
-
-            index = this.Objects.CreatorNodeSelect.selectedIndex;
-            var creatorNodeId = index < 0 ? "" : this.Objects.CreatorNodeSelect.values[index];
-            var creatorNode = index < 0 ? "" : this.Objects.CreatorNodeSelect.keywords[index];
 
             var statusSelect = that.Objects.StatusSelect;
             var slct = that.Objects.ShowPersonalItemsSelect;
@@ -264,10 +236,10 @@
 
             var beginDate = !that.Objects.BeginDate ? {} : that.Objects.BeginDate.Get();
             var finishDate = !that.Objects.FinishDate ? {} : that.Objects.FinishDate.Get();
-
+            
             return {
                 NodeTypeID: nodeTypeId, _Title_NodeTypeID: nodeType,
-                CreatorNodeID: creatorNodeId, _Title_CreatorNodeID: creatorNode,
+                CreatorNodeID: creatorNode.NodeID, _Title_CreatorNodeID: creatorNode.Name,
                 Status: statusSelect[statusSelect.selectedIndex].title,
                 ShowPersonalItems: slct[slct.selectedIndex].title,
                 Published: publishedSelect[publishedSelect.selectedIndex].title,
@@ -281,9 +253,8 @@
         clear: function () {
             var that = this;
 
-            that.Objects.NodeTypeSelect.empty();
-            that.Objects.CreatorNodeTypeSelect.empty();
-            that.Objects.CreatorNodeSelect.empty();
+            if (that.Objects.NodeTypeSelect) that.Objects.NodeTypeSelect.empty();
+            if (that.Objects.GroupSelect) that.Objects.GroupSelect.clear();
             that.Objects.StatusSelect.selectedIndex = 0;
             that.Objects.ShowPersonalItemsSelect.selectedIndex = 0;
             that.Objects.PublishedSelect.selectedIndex = 0;

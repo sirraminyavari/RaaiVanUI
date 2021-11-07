@@ -332,6 +332,28 @@
                 }
             },
 
+            NodeVisitDetailsReport: {
+                _IconURL: "",
+
+                Get: function (params) {
+                    params = params || {};
+                    params.Parameters = {
+                        NodeTypeID: params.NodeTypeID,
+                        NodeIDs: params.NodeIDs,
+                        GrabSubNodeTypes: params.GrabSubNodeTypes,
+                        CreatorGroupIDs: params.CreatorGroupIDs,
+                        CreatorUserIDs: params.CreatorUserIDs,
+                        UniqueVisitors: params.UniqueVisitors,
+                        DateFrom: params.DateFrom,
+                        DateTo: params.DateTo,
+                        ParamsOrder: "NodeTypeID:Guid|NodeIDs:Structure|GrabSubNodeTypes:bool|CreatorGroupIDs:Structure" +
+                            "|CreatorUserIDs:Structure|UniqueVisitors:bool|DateFrom:datetime|DateTo:datetime"
+                    };
+                    
+                    ReportsAPI.GetReport(params);
+                }
+            },
+
             CreatorUsersReport: {
                 _IconURL: "",
 
@@ -528,6 +550,7 @@
                         UserIDs: params.UserIDs || "",
                         Delimiter: "~",
                         MemberInNodeTypeID: params.MemberInNodeTypeID || "",
+                        CreatorGroupID: params.CreatorGroupID || "",
                         SendDateFrom: params.SendDateFrom || "",
                         SendDateTo: params.SendDateTo || "",
                         ActionDateFrom: params.ActionDateFrom || "",
@@ -537,8 +560,8 @@
                         Seen: params.Seen,
                         Done: params.Done,
                         ParamsOrder: "Now:Now|KnowledgeTypeID:Guid|UserIDs:String|Delimiter:Char|MemberInNodeTypeID:Guid" +
-                            "|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime|ActionDateTo:Datetime" +
-                            "|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool"
+                            "|CreatorGroupID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime" +
+                            "|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool"
                     };
                     ReportsAPI.GetReport(params);
                 }
@@ -556,6 +579,7 @@
                         UserIDs: params.UserIDs || "",
                         Delimiter: "~",
                         MemberInNodeTypeID: params.MemberInNodeTypeID || "",
+                        CreatorGroupID: params.CreatorGroupID || "",
                         SendDateFrom: params.SendDateFrom || "",
                         SendDateTo: params.SendDateTo || "",
                         ActionDateFrom: params.ActionDateFrom || "",
@@ -565,8 +589,8 @@
                         Seen: params.Seen,
                         Done: params.Done,
                         ParamsOrder: "Now:Now|KnowledgeID:Guid|KnowledgeTypeID:Guid|UserIDs:String|Delimiter:Char" +
-                            "|MemberInNodeTypeID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime" +
-                            "|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool"
+                            "|MemberInNodeTypeID:Guid|CreatorGroupID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime" +
+                            "|ActionDateFrom:Datetime|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool"
                     };
                     ReportsAPI.GetReport(params);
                 }
@@ -583,6 +607,7 @@
                         UserIDs: params.UserIDs || "",
                         Delimiter: "~",
                         MemberInNodeTypeID: params.MemberInNodeTypeID || "",
+                        CreatorGroupID: params.CreatorGroupID || "",
                         SendDateFrom: params.SendDateFrom || "",
                         SendDateTo: params.SendDateTo || "",
                         ActionDateFrom: params.ActionDateFrom || "",
@@ -593,8 +618,8 @@
                         Done: params.Done,
                         Canceled: params.Canceled,
                         ParamsOrder: "Now:Now|KnowledgeTypeID:Guid|UserIDs:String|Delimiter:Char|MemberInNodeTypeID:Guid" +
-                            "|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime|ActionDateTo:Datetime" +
-                            "|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool|Canceled:Bool"
+                            "|CreatorGroupID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime" +
+                            "|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool|Canceled:Bool"
                     };
                     ReportsAPI.GetReport(params);
                 }
@@ -612,6 +637,7 @@
                         UserIDs: params.UserIDs || "",
                         Delimiter: "~",
                         MemberInNodeTypeID: params.MemberInNodeTypeID || "",
+                        CreatorGroupID: params.CreatorGroupID || "",
                         SendDateFrom: params.SendDateFrom || "",
                         SendDateTo: params.SendDateTo || "",
                         ActionDateFrom: params.ActionDateFrom || "",
@@ -622,8 +648,8 @@
                         Done: params.Done,
                         Canceled: params.Canceled,
                         ParamsOrder: "Now:Now|KnowledgeID:Guid|KnowledgeTypeID:Guid|UserIDs:String|Delimiter:Char" +
-                            "|MemberInNodeTypeID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime|ActionDateFrom:Datetime" +
-                            "|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool|Canceled:Bool"
+                            "|MemberInNodeTypeID:Guid|CreatorGroupID:Guid|SendDateFrom:Datetime|SendDateTo:Datetime" +
+                            "|ActionDateFrom:Datetime|ActionDateTo:Datetime|DelayFrom:Int|DelayTo:Int|Seen:Bool|Done:Bool|Canceled:Bool"
                     };
                     ReportsAPI.GetReport(params);
                 }
@@ -639,10 +665,11 @@
                         KnowledgeID: params.KnowledgeID || "",
                         UserIDs: params.UserIDs || "",
                         Delimiter: "~",
+                        CreatorGroupID: params.CreatorGroupID || "",
                         DateFrom: params.DateFrom || "",
                         DateTo: params.DateTo || "",
                         ParamsOrder: "KnowledgeTypeID:Guid|KnowledgeID:Guid|UserIDs:String|Delimiter:Char" +
-                            "|DateFrom:Datetime|DateTo:Datetime"
+                            "|CreatorGroupID:Guid|DateFrom:Datetime|DateTo:Datetime"
                     };
                     ReportsAPI.GetReport(params);
                 }
@@ -717,6 +744,14 @@
                 }
             }
         } //end of WF
+    },
+
+    SetGroupLimitsForAdmins: function (params) {
+        params = params || {};
+
+        var url = ReportsAPI.ResponseURL + "/SetGroupLimitsForAdmins?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeTypeIDs ? "&NodeTypeIDs=" + params.NodeTypeIDs : "");
+        return ReportsAPI._send(url, params, queryString);
     },
 
     _create_dictionary: function (json, delimiter, innerDelimiter) {

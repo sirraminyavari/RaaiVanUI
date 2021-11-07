@@ -13,13 +13,15 @@
 
         this.Objects = {
             TabsManager: null,
-            Reports: params.Reports
+            Reports: params.Reports,
+            GroupLimitsForAdmins: params.GroupLimitsForAdmins || [],
+            Groups: params.Groups || []
         };
         
         this.Options = {
             Modules: params.Modules
         };
-
+        
         GlobalUtilities.load_files([
             "TabsManager/TabsManager.js", "API/ReportsAPI.js", "API/PrivacyAPI.js", "Public/NameDialog.js"
         ], {
@@ -34,7 +36,23 @@
             var that = this;
 
             var elems = GlobalUtilities.create_nested_elements([
-                { Type: "div", Class: "small-12 medium-12 large-12", Name: "tabsArea" },
+                {
+                    Type: "div", Class: "small-12 medium-12 large-12",
+                    Style: "display:flex; flex-flow:row; align-items:center;",
+                    Childs: [
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "tabsArea" },
+                        (!(window.RVGlobal || {}).IsSystemAdmin ? null : {
+                            Type: "div", Name: "settingsButton",
+                            Class: "rv-action-button rv-border-radius-quarter SoftShadow",
+                            Style: "flex:0 0 auto; padding:0.3rem 0; padding-" + RV_Float + ":1rem;" +
+                                "padding-" + RV_RevFloat + ":0.5rem; cursor:pointer;",
+                            Childs: [
+                                { Type: "text", TextValue: RVDic.Settings },
+                                { Type: "i", Class: "fa fa-chevron-down", Style: "margin-" + RV_Float + ":0.3rem;" }
+                            ]
+                        })
+                    ]
+                },
                 {
                     Type: "div", Name: "pagesArea", Style: "padding:1rem;",
                     Class: "small-12 medium-12 large-12 rv-border-radius-1 SoftBackgroundColor"
@@ -47,6 +65,8 @@
 
             that.Interface.FirstPage = that.add_tab(RVDic.ReportSelect, true).Page;
 
+            that.init_settings_menu(elems["settingsButton"]);
+
             var _add_report_item = function (container, _moduleIdentifier, _reportName) {
                 var reportId = that.has_report(_moduleIdentifier, _reportName);
                 if (!reportId) return;
@@ -55,7 +75,7 @@
 
                 var reportTitle = (((RVDic.RPT || {})[_moduleIdentifier] || {})[_reportName] || {})._Title || _reportName;
                 var reportDescription = (((RVDic.RPT || {})[_moduleIdentifier] || {})[_reportName] || {})._Description;
-
+                
                 GlobalUtilities.create_nested_elements([{
                     Type: "div", Class: "small-12 medium-6 large-4", Style: "padding:0.3rem;",
                     Childs: [{
@@ -69,9 +89,22 @@
                             Value: function () { that.show_report({ ID: reportId, ModuleIdentifier: _moduleIdentifier, ReportName: _reportName }); }
                         }],
                         Childs: [
-                            (!config.HasChart ? null : {
-                                Type: "div", Style: "position:absolute; top:0.5rem;" + RV_RevFloat + ":0.5rem;",
-                                Childs: [{Type: "i", Class: "fa fa-bar-chart-o", Style: "color:rgb(80,80,80);"}]
+                            (!config.HasChart && !config.HasGroupAdminMode ? null : {
+                                Type: "div", Style: "position:absolute; top:0.5rem;" + RV_RevFloat + ":0;",
+                                Childs: [
+                                    (!config.HasPersonalMode ? null : {
+                                        Type: "i", Class: "fa fa-user",
+                                        Style: "color:rgb(80,80,80); margin-" + RV_RevFloat + ":0.5rem; font-size:0.8rem;"
+                                    }),
+                                    (!config.HasGroupAdminMode ? null : {
+                                        Type: "i", Class: "fa fa-users",
+                                        Style: "color:rgb(80,80,80); margin-" + RV_RevFloat + ":0.5rem; font-size:0.8rem;"
+                                    }),
+                                    (!config.HasChart ? null : {
+                                        Type: "i", Class: "fa fa-bar-chart-o",
+                                        Style: "color:rgb(80,80,80); margin-" + RV_RevFloat + ":0.5rem;"
+                                    })
+                                ]
                             }),
                             { Type: "div", Childs: [{ Type: "text", TextValue: reportTitle }] },
                             (!reportDescription ? null : {
@@ -104,6 +137,48 @@
                     _add_report_item(itemsArea, moduleIdentifier, reportName);
                 }
             }
+        },
+
+        init_settings_menu: function (menuButton) {
+            var that = this;
+
+            if (!menuButton) return;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Name: "_div",
+                Childs: [
+                    {
+                        Type: "div", Class: "rv-bg-color-white-softer rv-border-radius-quarter",
+                        Style: "cursor:pointer; padding:0.5rem;",
+                        Properties: [{ Name: "onclick", Value: function () { that.group_limits_for_admins(); } }],
+                        Childs: [{ Type: "text", TextValue: RVDic.Groups }]
+                    },
+                    {
+                        Type: "div", Class: "rv-bg-color-white-softer rv-border-radius-quarter",
+                        Style: "cursor:pointer; padding:0.5rem;",
+                        Properties: [{ Name: "onclick", Value: function () { that.access_settings(); } }],
+                        Childs: [{ Type: "text", TextValue: RVDic.AccessSettings }]
+                    }
+                ]
+            }]);
+
+            var menu = elems["_div"];
+
+            var popupMenu = null;
+            var ebmoObj = null;
+
+            var _init_mouse_over = function () {
+                popupMenu = GlobalUtilities.popup_menu(menuButton, menu, {
+                    Align: "bottom", Style: "background-color:white; border-color:rgb(200,200,200);"
+                });
+
+                ebmoObj = GlobalUtilities.enable_by_mouse_over(menuButton, popupMenu.Container, {
+                    Started: true, Delay: 100,
+                    OnStart: function (d) { popupMenu.Show(d); }, OnEnd: function (d) { popupMenu.Hide(d); }
+                });
+            }
+
+            menuButton.onmouseover = function () { this.onmouseover = null; _init_mouse_over(); }
         },
 
         get_report_config: function (moduleIdentifier, reportName) {
@@ -214,8 +289,12 @@
             var moduleIdentifier = params.ModuleIdentifier || "";
             var reportName = params.ReportName || "";
             var showAtStart = params.ShowAtStart === true;
-            var initialParams = GlobalUtilities.extend({ Modules: that.Options.Modules }, (params.InitialParams || {}));
-            var hasChart = !!(that.get_report_config(moduleIdentifier, reportName) || {}).HasChart;
+            var reportConfig = that.get_report_config(moduleIdentifier, reportName) || {};
+            var hasChart = !!reportConfig.HasChart;
+            
+            var initialParams = GlobalUtilities.extend({ Modules: that.Options.Modules }, (params.InitialParams || {}), {
+                Config: GlobalUtilities.extend({}, reportConfig, { Groups: that.Objects.Groups })
+            });
             
             GlobalUtilities.load_files(["Reports/ReportOptions/" + moduleIdentifier + "_" + reportName + ".js"], {
                 OnLoad: function () {
@@ -225,92 +304,77 @@
 
                     var newPage = that.add_tab(reportTitle, true, true).Page;
 
-                    var elems = GlobalUtilities.create_nested_elements([
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Childs: [
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "optionsArea" },
-                                { Type: "hr", Class: "small-12 medium-12 large-12", Style: "margin:1rem 0rem;" },
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12 row", 
-                                    Style: "margin:0rem; margin-bottom:1rem;", Name: "actionArea",
-                                    Childs: [
-                                        {
-                                            Type: "div", Class: "small-8 medium-8 large-8",
-                                            Childs: [
-                                                {
-                                                    Type: "div", Class: "rv-air-button rv-border-radius-quarter",
-                                                    Style: "display:inline-block; font-weight:bold; margin-top:0.5rem; width:9rem;",
-                                                    Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(); } }],
-                                                    Childs: [{ Type: "text", TextValue: RVDic.ShowReport }]
-                                                },
-                                                {
-                                                    Type: "div", Name: "clearButton",
-                                                    Class: "rv-air-button rv-border-radius-quarter",
-                                                    Style: "display:inline-block; margin-top:1rem;" +
-                                                        "width:9rem; margin-" + RV_Float + ":1rem;",
-                                                    Childs: [{ Type: "text", TextValue: RVDic.ClearForm }]
-                                                },
-                                                {
-                                                    Type: "div", Name: "parametersButton",
-                                                    Class: "rv-air-button rv-border-radius-quarter",
-                                                    Style: "display:inline-block; margin-top:1rem;" +
-                                                        "width:9rem; margin-" + RV_Float + ":1rem;",
-                                                    Childs: [{ Type: "text", TextValue: RVDic.StoredParameters }]
-                                                },
-                                                {
-                                                    Type: "div", Name: "privacyButton",
-                                                    Class: "rv-air-button rv-border-radius-quarter",
-                                                    Style: "margin-top:1rem; width:9rem; margin-" + RV_Float + ":1rem;" +
-                                                        "display:" + ((window.RVGlobal || {}).IsSystemAdmin ? "inline-block" : "none") + ";",
-                                                    Childs: [
-                                                        {
-                                                            Type: "i", Class: "fa fa-key", Style: "margin-" + RV_RevFloat + ":0.3rem;",
-                                                            Attributes: [{ Name: "aria-hidden", Value: true }]
-                                                        },
-                                                        { Type: "text", TextValue: RVDic.Privacy }
-                                                    ]
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            Type: "div", Class: "small-4 medium-4 large-4 RevDirection RevTextAlign",
-                                            Style: "display:flex; flex-flow:row; align-items:center; justify-content:center;",
-                                            Childs: [
-                                                {
-                                                    Type: "div", Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;",
-                                                    Childs: [{
-                                                        Type: "i", Class: "fa fa-file-excel-o fa-2x rv-icon-button",
-                                                        Tooltip: RVDic.ExportToExcel,
-                                                        Attributes: [{ Name: "src", Value: GlobalUtilities.icon("extensions/xlsx.png") }],
-                                                        Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(true); } }]
-                                                    }]
-                                                },
-                                                (!hasChart ? null : {
-                                                    Type: "div",
-                                                    Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
-                                                        "padding-" + RV_RevFloat + ":1rem;",
-                                                    Childs: [{
-                                                        Type: "i", Class: "fa fa-bar-chart fa-2x rv-icon-button",
-                                                        Tooltip: RVDic.Chart,
-                                                        Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(null, null, true); } }]
-                                                    }]
-                                                }),
-                                                {
-                                                    Type: "div", Name: "countArea",
-                                                    Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
-                                                        "color:green; font-weight:bold; margin-" + RV_RevFloat + ":3rem;"
-                                                },
-                                                { Type: "div", Style: "flex:1 1 auto;" }
-                                            ]
-                                        },
-                                    ]
-                                },
-                                { Type: "div", Name: "pagesArea", Style: "margin:0px 4px 8px 4px;" },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Style: "height:400px;", Name: "reportArea" }
-                            ]
-                        }
-                    ], newPage);
+                    var elems = GlobalUtilities.create_nested_elements([{
+                        Type: "div", Class: "small-12 medium-12 large-12",
+                        Childs: [
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "optionsArea" },
+                            { Type: "hr", Class: "small-12 medium-12 large-12", Style: "margin:1rem 0rem;" },
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12 row",
+                                Style: "margin:0rem; margin-bottom:1rem;", Name: "actionArea",
+                                Childs: [
+                                    {
+                                        Type: "div", Class: "small-8 medium-8 large-8",
+                                        Childs: [
+                                            {
+                                                Type: "div", Class: "rv-air-button rv-border-radius-quarter",
+                                                Style: "display:inline-block; font-weight:bold; margin-top:0.5rem; width:9rem;",
+                                                Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(); } }],
+                                                Childs: [{ Type: "text", TextValue: RVDic.ShowReport }]
+                                            },
+                                            {
+                                                Type: "div", Name: "clearButton",
+                                                Class: "rv-air-button rv-border-radius-quarter",
+                                                Style: "display:inline-block; margin-top:1rem;" +
+                                                    "width:9rem; margin-" + RV_Float + ":1rem;",
+                                                Childs: [{ Type: "text", TextValue: RVDic.ClearForm }]
+                                            },
+                                            {
+                                                Type: "div", Name: "parametersButton",
+                                                Class: "rv-air-button rv-border-radius-quarter",
+                                                Style: "display:inline-block; margin-top:1rem;" +
+                                                    "width:9rem; margin-" + RV_Float + ":1rem;",
+                                                Childs: [{ Type: "text", TextValue: RVDic.StoredParameters }]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        Type: "div", Class: "small-4 medium-4 large-4 RevDirection RevTextAlign",
+                                        Style: "display:flex; flex-flow:row; align-items:center; justify-content:center;",
+                                        Childs: [
+                                            {
+                                                Type: "div", Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;",
+                                                Childs: [{
+                                                    Type: "i", Class: "fa fa-file-excel-o fa-2x rv-icon-button",
+                                                    Tooltip: RVDic.ExportToExcel,
+                                                    Attributes: [{ Name: "src", Value: GlobalUtilities.icon("extensions/xlsx.png") }],
+                                                    Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(true); } }]
+                                                }]
+                                            },
+                                            (!hasChart ? null : {
+                                                Type: "div",
+                                                Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
+                                                    "padding-" + RV_RevFloat + ":1rem;",
+                                                Childs: [{
+                                                    Type: "i", Class: "fa fa-bar-chart fa-2x rv-icon-button",
+                                                    Tooltip: RVDic.Chart,
+                                                    Properties: [{ Name: "onclick", Value: function () { newPage.ShowReport(null, null, true); } }]
+                                                }]
+                                            }),
+                                            {
+                                                Type: "div", Name: "countArea",
+                                                Style: "flex:0 0 auto; display:flex; align-items:center; justify-content:center;" +
+                                                    "color:green; font-weight:bold; margin-" + RV_RevFloat + ":3rem;"
+                                            },
+                                            { Type: "div", Style: "flex:1 1 auto;" }
+                                        ]
+                                    },
+                                ]
+                            },
+                            { Type: "div", Name: "pagesArea", Style: "margin:0px 4px 8px 4px;" },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Style: "height:400px;", Name: "reportArea" }
+                        ]
+                    }], newPage);
 
                     elems["parametersButton"].onclick = function () {
                         that.saved_parameters(id, (rop || {}).get_data ? rop.get_data() : null, function (op) {
@@ -319,10 +383,6 @@
                                 rop.set_data(op || {});
                             }
                         });
-                    };
-
-                    elems["privacyButton"].onclick = function () {
-                        that.privacy_dialog(id);
                     };
 
                     var _interfaceLoaded = false;
@@ -652,42 +712,6 @@
             GlobalUtilities.show(_div);
 
             _div.innerHTML = data;
-        },
-
-        privacy_dialog: function (reportId) {
-            var that = this;
-
-            that.PrivacyDialogs = that.PrivacyDialogs || {};
-
-            if (that.PrivacyDialogs[reportId])
-                return (that.PrivacyDialogs[reportId].Showed = GlobalUtilities.show(that.PrivacyDialogs[reportId]));
-
-            var _div = that.PrivacyDialogs[reportId] = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
-                    Style: "margin:0rem auto; padding:1rem;", Name: "container"
-                }
-            ])["container"];
-
-            GlobalUtilities.loading(_div);
-            var showed = that.PrivacyDialogs[reportId].Showed = GlobalUtilities.show(_div);
-
-            GlobalUtilities.load_files(["PrivacyManager/PermissionSetting.js"], {
-                OnLoad: function () {
-                    _div.innerHTML = "";
-
-                    var pv = new PermissionSetting(_div, {
-                        ObjectID: reportId,
-                        Options: {
-                            ConfidentialitySelect: true,
-                            PermissionTypes: ["View"],
-                            PermissionTypesWithDefaultValue: [],
-                            ObjectType: "Report",
-                            OnSave: function () { showed.Close(); }
-                        }
-                    });
-                }
-            });
         },
 
         saved_parameters: function (reportId, options, onSelect) {
@@ -1029,6 +1053,152 @@
 
                         if (options.ShowReport) options.ShowReport();
                     }
+                }
+            });
+        },
+
+        group_limits_for_admins: function () {
+            var that = this;
+
+            var nodeTypesList = null;
+
+            var processing = false;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
+                Style: "padding:1rem; margin:0 auto;", Name: "container",
+                Childs: [
+                    {
+                        Type: "div", Class: "rv-title",
+                        Childs: [{Type: "text", TextValue: "گروه هایی که مدیران آنها میتوانند گزارشات مربوط به گروه تحت نظارت خود را مشاهده کنند"}]
+                    },
+                    {
+                        Type: "div", Style: "display:flex; flex-flow:row; padding-top:1rem;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "flex:0 0 auto; padding-" + RV_RevFloat + ":1rem;",
+                                Childs: [{Type: "text", TextValue: "انتخاب گروه ها" + ":"}]
+                            },
+                            { Type: "div", Style: "flex:1 1 auto;", Name: "groups" }
+                        ]
+                    },
+                    {
+                        Type: "div", Style: "display:flex; flex-flow:row; justify-content:center; padding-top:2rem; ",
+                        Childs: [
+                            {
+                                Type: "div", Class: "rv-air-button rv-circle",
+                                Style: "flex:0 0 auto; width:8rem; margin:0 1rem;",
+                                Properties: [{ Name: "onclick", Value: () => showed.Close() }],
+                                Childs: [{ Type: "text", TextValue: RVDic.Cancel }]
+                            },
+                            {
+                                Type: "div", Class: "rv-air-button rv-circle",
+                                Style: "flex:0 0 auto; width:8rem; margin:0 1rem;",
+                                Properties: [{
+                                    Name: "onclick",
+                                    Value: () => {
+                                        if (processing) return;
+                                        processing = true;
+
+                                        var nodeTypes = !nodeTypesList ? null : nodeTypesList.get_items();
+
+                                        ReportsAPI.SetGroupLimitsForAdmins({
+                                            NodeTypeIDs: (nodeTypes || []).map(x => x.ID).join("|"),
+                                            ParseResults: true,
+                                            ResponseHandler: function (result) {
+                                                processing = false;
+
+                                                if ((result || {}).ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+                                                else {
+                                                    that.Objects.GroupLimitsForAdmins = (nodeTypes || []).map(x => ({
+                                                        NodeTypeID: x.ID,
+                                                        TypeName: Base64.encode(x.Title)
+                                                    }));
+
+                                                    showed.Close();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }],
+                                Childs: [{ Type: "text", TextValue: RVDic.Save }]
+                            }
+                        ]
+                    }
+                ]
+            }]);
+
+            GlobalUtilities.loading(elems["groups"]);
+            var showed = GlobalUtilities.show(elems["container"]);
+
+            GlobalUtilities.load_files(["SingleDataContainer/NewSingleDataContainer.js"], {
+                OnLoad: function () {
+                    elems["groups"].innerHTML = "";
+
+                    nodeTypesList = new NewSingleDataContainer(elems["groups"], {
+                        InputClass: "rv-input",
+                        InputStyle: "width:100%; font-size:0.7rem;",
+                        InnerTitle: RVDic.NodeTypeSelect + "...",
+                        NoButtons: true,
+                        AjaxDataSource: CNAPI.GetNodeTypesDataSource({ Extensions: ["Members", "Group", "Experts"].join(",") }),
+                        ResponseParser: function (responseText) {
+                            return (GlobalUtilities.to_json(responseText).NodeTypes || [])
+                                .map(itm => [Base64.decode(itm.TypeName), itm.NodeTypeID]);
+                        }
+                    });
+
+                    (that.Objects.GroupLimitsForAdmins || [])
+                        .forEach(g => nodeTypesList.add_item(Base64.decode(g.TypeName), g.NodeTypeID));
+                }
+            });
+        },
+
+        access_settings: function () {
+            var that = this;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
+                Style: "padding:1rem; margin:0 auto; height:calc(100vh - 10vw);", Name: "container"
+            }]);
+
+            var sections = [];
+            
+            Object.keys(ReportsAPI.Reports || {})
+                .filter(key => ((that.Options.Modules || {})[key] !== false) && that.has_report(key))
+                .forEach(moduleIdentifier => {
+                    var items = Object.keys(ReportsAPI.Reports[moduleIdentifier])
+                        .filter(rptName => !(new RegExp(/^_/g)).test(rptName))
+                        .map(reportName => {
+                            var fullRptName = (moduleIdentifier + "_" + reportName).toLowerCase();
+                            
+                            return {
+                                ID: (that.Objects.Reports[fullRptName] || {}).ID,
+                                Title: (((RVDic.RPT || {})[moduleIdentifier] || {})[reportName] || {})._Title || reportName
+                            };
+                        })
+                        .filter(itm => !!itm.ID);
+
+                    sections.push({
+                        Name: moduleIdentifier,
+                        Title: ((RVDic.RPT || {})[moduleIdentifier] || {})._Title || moduleIdentifier,
+                        Items: items
+                    });
+                });
+
+            GlobalUtilities.loading(elems["container"]);
+            var showed = GlobalUtilities.show(elems["container"]);
+            
+            GlobalUtilities.load_files(["PrivacyManager/BatchPermissionSettings.js"], {
+                OnLoad: function () {
+                    new BatchPermissionSettings(elems["container"], {
+                        Sections: sections,
+                        Options: {
+                            ObjectType: "Report",
+                            PermissionType: "View",
+                            OnCancel: () => showed.Close(),
+                            OnSave: () => showed.Close()
+                        }
+                    });
                 }
             });
         }

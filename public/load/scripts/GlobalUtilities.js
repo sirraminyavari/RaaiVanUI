@@ -424,21 +424,19 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         var arrowDivStyle = "";
         var contentDivStyle = "";
 
-        var elems = GlobalUtilities.create_nested_elements([
-            {
-                Type: "div", Name: "container", Style: "position:relative; display:inline-block;",
-                Childs: [
-                    {
-                        Type: "div", Name: "arrow", Style: params.Style,
-                        Class: params.ArrowClass || params.Class || "SoftBackgroundColor SoftBorder"
-                    },
-                    {
-                        Type: "div", Name: "content", Style: "padding:0.7rem;" + params.Style, //padding will be set, but for positioning reasons, it must be set here too
-                        Class: "rv-border-radius-half " + (params.ContentClass || params.Class || "SoftBackgroundColor SoftBorder")
-                    }
-                ]
-            }
-        ], document.body);
+        var elems = GlobalUtilities.create_nested_elements([{
+            Type: "div", Name: "container", Style: "position:relative; display:inline-block;",
+            Childs: [
+                {
+                    Type: "div", Name: "arrow", Style: params.Style,
+                    Class: params.ArrowClass || params.Class || "SoftBackgroundColor SoftBorder"
+                },
+                {
+                    Type: "div", Name: "content", Style: "padding:0.7rem;" + params.Style, //padding will be set, but for positioning reasons, it must be set here too
+                    Class: "rv-border-radius-half " + (params.ContentClass || params.Class || "SoftBackgroundColor SoftBorder")
+                }
+            ]
+        }], document.body);
 
         contentDiv = elems["content"];
 
@@ -530,6 +528,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
             Container: elems["container"], Arrow: elems["arrow"],
             Content: contentDiv, Reposition: _reposition,
             IsOpen: function () { return isOpen; },
+            Reposition: function () { _reposition(); },
             Show: function (done) {
                 jQuery(elems["container"]).fadeIn(0, function () { _reposition(); if (done) done(); });
                 _on();
@@ -1320,13 +1319,11 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         if (!searchText) return true;
 
-        searchText = searchText.split(" ").filter(function (val) { return !!val; });
+        searchText = searchText.split(" ").filter(val => !!val);
 
         return text.split(" ")
-            .filter(function (val) { return !!val; })
-            .some(function (val) {
-                return searchText.some(function (x) { return val.indexOf(x) >= 0; });
-            });
+            .filter(val => !!val)
+            .some(val => searchText.some(x => val.indexOf(x) >= 0));
     },
 
     diff: function (newStr, oldStr) {

@@ -44,7 +44,7 @@
                         NodeID: that.Objects.NodeID, ParseResults: true,
                         ResponseHandler: function (result) {
                             var node = result || {};
-
+                            
                             if (!(window.RVGlobal || {}).SAASBasedMultiTenancy)
                                 document.title = GlobalUtilities.convert_numbers_to_persian(Base64.decode(node.Name.Value) + " - " + document.title);
 
@@ -1160,7 +1160,7 @@
             var userId = creator.UserID;
             var firstname = Base64.decode(creator.FirstName);
             var lastname = Base64.decode(creator.LastName);
-            var username = Base64.decode(creator.UserName);
+            var username = RVGlobal.HideUserNames ? null : Base64.decode(creator.UserName);
             
             if (!userId) return container.parentNode.removeChild(container);
 
@@ -1174,11 +1174,11 @@
                         Link: UsersAPI.UserPageURL({ UserID: userId }),
                         Childs: [
                             { Type: "text", TextValue: firstname + " " + lastname },
-                            {
+                            (!username ? null : {
                                 Type: "div", Class: "rv-air-button-base rv-air-button-black rv-border-radius-quarter",
                                 Style: "display:inline-block; margin-" + RV_Float + ":0.5rem; padding:0.1rem 0.3rem; font-size:0.6rem;",
                                 Childs: [{ Type: "text", TextValue: username }]
-                            }
+                            })
                         ]
                     },
                     {
@@ -1602,12 +1602,10 @@
             if (editable) editButton.onclick = function () {
                 if (editButton.__Div) return (showed = GlobalUtilities.show(editButton.__Div));
 
-                var _div = GlobalUtilities.create_nested_elements([
-                    {
-                        Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
-                        Style: "margin:0rem auto; padding:1rem;", Name: "container"
-                    }
-                ])["container"];
+                var _div = GlobalUtilities.create_nested_elements([{
+                    Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
+                    Style: "margin:0rem auto; padding:1rem;", Name: "container"
+                }])["container"];
 
                 editButton.__Div = _div;
 
@@ -2419,7 +2417,7 @@
                             },
                             {
                                 Type: "div", Style: "margin-top:0.3rem;",
-                                Childs: [{ Type: "text", TextValue: fullname || Base64.decode(item.User.UserName) }]
+                                Childs: [{ Type: "text", TextValue: fullname }]
                             }
                         ]
                     }
@@ -2429,7 +2427,7 @@
             CNAPI.SuggestKnowledgableUsers({
                 NodeID: that.Objects.NodeID, Count: 10, ParseResults: true,
                 ResponseHandler: function (result) {
-                    var users = result.Users || [];
+                    var users = (result.Users || []).filter(u => !!u.FirstName || !!u.LastName);
 
                     if (users.length) jQuery(container).fadeIn(500);
 
@@ -2553,7 +2551,7 @@
                 var userId = contrib.UserID || "";
                 var firstname = contrib.FirstName;
                 var lastname = contrib.LastName;
-                var username = contrib.UserName;
+                var username = RVGlobal.HideUserNames ? null : contrib.UserName;
                 var profileImageUrl = contrib.ProfileImageURL;
                 var share = +contrib.Share;
                 if (isNaN(share)) share = 0;
@@ -2580,18 +2578,16 @@
                                 Type: "div", Tooltip: "%" + shareTooltip,
                                 Class: "rv-circle SoftBorder RevDirection RevTextAlign",
                                 Style: "width:90%; margin:0.3rem auto 0rem auto; padding:0.1rem;",
-                                Childs: [
-                                    {
-                                        Type: "div", Class: "rv-circle WarmBackgroundColor",
-                                        Style: "padding:0.2rem 0rem; width:" + share + "%;"
-                                    }
-                                ]
+                                Childs: [{
+                                    Type: "div", Class: "rv-circle WarmBackgroundColor",
+                                    Style: "padding:0.2rem 0rem; width:" + share + "%;"
+                                }]
                             },
                             {
                                 Type: "div", Style: "cursor:pointer; margin-top:0.3rem; font-size:0.6rem;",
-                                Tooltip: firstname + " " + lastname + " - " + username,
+                                Tooltip: firstname + " " + lastname + (username ? " - " + username : ""),
                                 Link: UsersAPI.UserPageURL({ UserID: userId }),
-                                Childs: [{ Type: "text", TextValue: GlobalUtilities.get_text_begining(fullname || username, 16, "...") }]
+                                Childs: [{ Type: "text", TextValue: GlobalUtilities.get_text_begining(fullname || username || RVDic.Unknown, 16, "...") }]
                             }
                         ]
                     }
@@ -2720,7 +2716,7 @@
             that.__WikiInited = true;
 
             GlobalUtilities.loading(container);
-
+            
             GlobalUtilities.load_files(["Wiki/WikiManager.js"], {
                 OnLoad: function () {
                     var wm = new WikiManager(container, {

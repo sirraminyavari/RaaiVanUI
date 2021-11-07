@@ -46,6 +46,7 @@
             DocumentsOnly: options.DocumentsOnly === true,
             NodeTypeSearchBox: !(options.Limits || {}).NodeTypes && (options.NodeTypeSearchBox === true),
             NodeTypesSelectable: options.NodeTypesSelectable === true,
+            NodeTypesMultiSelect: (options.NodeTypesSelectable === true) && (options.NodeTypesMultiSelect !== false),
             HideSelectedItems: options.HideSelectedItems === true,
             TreeCheckbox: options.TreeCheckbox !== false,
             Title: options.Title,
@@ -789,7 +790,14 @@
                             Type: "checkbox", Name: "_checkbox",
                             Params: {
                                 Width: "0.9rem", Height: "0.9rem",
-                                OnClick: function (e, done) { nodeType[(this.Checked ? "un" : "") + "check"](); }
+                                OnClick: function (e, done) {
+                                    if (!this.Checked && !that.Options.NodeTypesMultiSelect) {
+                                        that.get_node_types().filter(x => x.NodeTypeID != nodeType.NodeTypeID)
+                                            .forEach(x => that.uncheck_node_type(x.NodeTypeID));
+                                    }
+
+                                    nodeType[(this.Checked ? "un" : "") + "check"]();
+                                }
                             }
                         }]
                     }),

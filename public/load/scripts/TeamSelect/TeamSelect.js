@@ -47,9 +47,10 @@
                     ParseResults: true,
                     ResponseHandler: function (result) {
                         var user = result;
-                        user.UserName = Base64.decode(user.UserName || "");
-                        user.FirstName = Base64.decode(user.FirstName || "");
-                        user.LastName = Base64.decode(user.LastName || "");
+                        user.UserName = Base64.decode(user.UserName);
+                        user.FirstName = Base64.decode(user.FirstName);
+                        user.LastName = Base64.decode(user.LastName);
+                        user.FullName = Base64.decode(user.FullName);
 
                         __Users[user.UserID] = user;
 
@@ -212,12 +213,12 @@
                     var users = JSON.parse(responseText).Users || [];
                     var arr = [];
                     for (var i = 0, lnt = users.length; i < lnt; ++i) {
-                        arr.push([Base64.decode(users[i].FirstName || "") + " " + Base64.decode(users[i].LastName || "") +
-                            " - " + Base64.decode(users[i].UserName || ""), users[i].UserID]);
+                        arr.push([Base64.decode(users[i].FirstName) + " " + Base64.decode(users[i].LastName) +
+                            (RVGlobal.HideUserNames ? "" : " - " + Base64.decode(users[i].UserName)), users[i].UserID]);
 
-                        __Users[users[i].UserID] = { UserID: users[i].UserID, FirstName: Base64.decode(users[i].FirstName || ""),
-                            LastName: Base64.decode(users[i].LastName || ""), UserName: Base64.decode(users[i].UserName || ""),
-                            ProfileImageURL: users[i].ImageURL || users[i].ProfileImageURL || ""
+                        __Users[users[i].UserID] = { UserID: users[i].UserID, FirstName: Base64.decode(users[i].FirstName),
+                            LastName: Base64.decode(users[i].LastName), UserName: Base64.decode(users[i].UserName),
+                            ProfileImageURL: users[i].ImageURL || users[i].ProfileImageURL
                         };
                     }
 
@@ -365,7 +366,8 @@
             var that = this;
 
             if (that._get_user(user.UserID)) return;
-            user.FullName = (user.FullName || "") == "" ? user.FirstName + " " + user.LastName + " - " + user.UserName : user.FullName;
+            user.FullName = user.FullName ? user.FullName :
+                user.FirstName + " " + user.LastName + (RVGlobal.HideUserNames ? "" : " - " + user.UserName);
             that.Objects.SelectedUsers.push(user);
 
             var _share = +user.Share;
