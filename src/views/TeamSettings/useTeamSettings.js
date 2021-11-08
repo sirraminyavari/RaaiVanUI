@@ -25,8 +25,6 @@ import {
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
 
-  console.log(appInfo);
-
   const { RV_RTL: rtl, RVDic: DIC } = useWindow();
 
   const [fieldOfExpertiseOption, setFieldOfExpertiseOption] = useState([]);
@@ -37,8 +35,8 @@ const useTeamSettings = (props) => {
     Website: decodeBase64(appInfo?.Website),
     About: decodeBase64(appInfo?.About),
     Size: decodeBase64(appInfo?.Size),
-    ExpertiseFieldID: appInfo?.FieldOfExpertise.ID,
-    ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise.Name),
+    ExpertiseFieldID: appInfo?.FieldOfExpertise?.ID,
+    ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise?.Name),
     Language: appInfo?.Language,
     Calendar: appInfo?.Calendar,
   });
@@ -46,9 +44,9 @@ const useTeamSettings = (props) => {
   useEffect(async () => {
     try {
       const tagList = await getTemplateTags();
-      const fields = tagList.Tags.map((x) => ({
-        value: x.NodeID,
-        label: decodeBase64(x.Name),
+      const fields = tagList?.Tags?.map((x) => ({
+        value: x?.NodeID,
+        label: decodeBase64(x?.Name),
       }));
       setFieldOfExpertiseOption(fields);
     } catch (err) {
@@ -120,8 +118,6 @@ const useTeamSettings = (props) => {
         Language,
         Calendar
       );
-
-      console.log(saveResult);
     } catch (err) {
       console.log('saving app info error', err);
     }

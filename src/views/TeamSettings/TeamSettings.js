@@ -23,7 +23,6 @@ const TeamSettings = (props) => {
     saveInfo,
   } = useTeamSettings(props);
 
-  console.log(applicationInfo);
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
@@ -43,9 +42,12 @@ const TeamSettings = (props) => {
 
           <CustomInput
             placeholder={'نام تیم'}
-            value={applicationInfo.Title}
+            value={applicationInfo?.Title}
             onChange={(e) =>
-              setApplicationInfo({ ...applicationInfo, Title: e.target.value })
+              setApplicationInfo({
+                ...applicationInfo,
+                Title: e?.target?.value,
+              })
             }
           />
 
@@ -56,7 +58,7 @@ const TeamSettings = (props) => {
             onChange={(e) =>
               setApplicationInfo({
                 ...applicationInfo,
-                Tagline: e.target.value,
+                Tagline: e?.target?.value,
               })
             }
           />
@@ -64,11 +66,11 @@ const TeamSettings = (props) => {
           <CustomInput
             placeholder={'وبسایت'}
             light={true}
-            value={applicationInfo.Website}
+            value={applicationInfo?.Website}
             onChange={(e) =>
               setApplicationInfo({
                 ...applicationInfo,
-                Website: e.target.value,
+                Website: e?.target?.value,
               })
             }
           />
@@ -89,8 +91,8 @@ const TeamSettings = (props) => {
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  ExpertiseFieldID: e.value,
-                  ExpertiseFieldName: e.label,
+                  ExpertiseFieldID: e?.value,
+                  ExpertiseFieldName: e?.label,
                 })
               }
             />
@@ -107,14 +109,14 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Size,
-                label: teamSizeOption.find(
-                  (x) => x.value === applicationInfo?.Size
+                label: teamSizeOption?.find(
+                  (x) => x?.value === applicationInfo?.Size
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Size: e.value,
+                  Size: e?.value,
                 })
               }
             />
@@ -132,14 +134,14 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Language,
-                label: languageOption.find(
-                  (x) => x.value === applicationInfo?.Language
+                label: languageOption?.find(
+                  (x) => x?.value === applicationInfo?.Language
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Language: e.value,
+                  Language: e?.value,
                 })
               }
             />
@@ -156,14 +158,14 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Calendar,
-                label: calOption.find(
-                  (x) => x.value === applicationInfo?.Calendar
+                label: calOption?.find(
+                  (x) => x?.value === applicationInfo?.Calendar
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Calendar: e.value,
+                  Calendar: e?.value,
                 })
               }
             />
@@ -178,7 +180,7 @@ const TeamSettings = (props) => {
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  About: e.target.value,
+                  About: e?.target?.value,
                 })
               }
             />
