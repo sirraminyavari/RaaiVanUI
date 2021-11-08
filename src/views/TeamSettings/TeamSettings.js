@@ -187,7 +187,15 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.SettingActionBar>
-            <Button type="primary" onClick={saveInfo}>
+            <Button
+              type="primary"
+              style={{
+                height: '3rem',
+                width: '7.6rem',
+                fontSize: '1rem',
+                borderRadius: '0.8rem',
+              }}
+              onClick={saveInfo}>
               ذخیره
             </Button>
           </Styled.SettingActionBar>
