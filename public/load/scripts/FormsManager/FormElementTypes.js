@@ -469,14 +469,14 @@
                                             Type: "div", Style: "flex:1 1 auto; display:flex; flex-flow:column; padding:0.5rem;",
                                             Childs: [
                                                 {
-                                                    Type: "div", Class: "small-10 medium-8 large-6",
+                                                    Type: "div", Class: "small-10 medium-8 large-6", Style: "flex-basis:0 !important;",
                                                     Childs: [{
                                                         Type: "select", Class: "rv-input", Name: "patternNameSelect",
                                                         Style: "width:100; font-size:0.7rem; margin-bottom:0.5rem;"
                                                     }]
                                                 },
                                                 {
-                                                    Type: "div", Class: "small-10 medium-8 large-6",
+                                                    Type: "div", Class: "small-10 medium-8 large-6", Style: "flex-basis:0 !important;",
                                                     Childs: [{
                                                         Type: "input", Class: "rv-input rv-placeholder-align-left", Name: "patternInput",
                                                         InnerTitle: "regular expression; e.g. [0-9]{4}\-[a-zA-Z]*", LatinNumbers: true,
@@ -485,7 +485,7 @@
                                                     }]
                                                 },
                                                 {
-                                                    Type: "div", Class: "small-10 medium-8 large-6",
+                                                    Type: "div", Class: "small-10 medium-8 large-6", Style: "flex-basis:0 !important;",
                                                     Childs: [{
                                                         Type: "input", Class: "rv-input", Name: "placeholderInput",
                                                         Style: "width:100%; font-size:0.7rem;", InnerTitle: RVDic.FG.Placeholder
@@ -4272,7 +4272,7 @@
 
                 var container = elems["container"];
                 var itemsContainer = elems["items"];
-
+                
                 var theTable = null;
                 var theColumns = !editable ? [] : [
                     {

@@ -453,7 +453,7 @@
                 }
                 //end of Calculate Sequence Number
 
-                if (title == "") return alert(RVDic.Checks.TitleConnotBeEmpty);
+                if (title == "") return alert(RVDic.Checks.TitleCannotBeEmpty);
 
                 WikiAPI.AddTitle({
                     OwnerID: that.Objects.OwnerID, Title: Base64.encode(title),
@@ -685,7 +685,7 @@
 
                     var _title = GlobalUtilities.trim(btn.TitleInput.value);
                     if (_title == titleInputInnerTitle) _title = "";
-                    if (_title == "") return alert(RVDic.Checks.TitleConnotBeEmpty);
+                    if (_title == "") return alert(RVDic.Checks.TitleCannotBeEmpty);
 
                     set_title(_title);
 

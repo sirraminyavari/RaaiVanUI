@@ -405,7 +405,7 @@
                     Link: RVAPI.UserPageURL({ UserID: ((window.RVGlobal || {}).CurrentUser || {}).UserID, Tab: "resume" })
                 }),
                 _create({ Title: RVDic.Management, Icon: "fa-wrench", Link: RVAPI.AdminPanelPageURL(), Hide: true, Name: "sysAdmin" }),
-                _create({ Title: RVDic.Reports, Icon: "fa-bar-chart", Link: RVAPI.ReportsPageURL(), Hide: true, Name: "reports" }),
+                _create({ Title: RVDic.Reports, Icon: "fa-bar-chart", Link: RVAPI.ReportsPageURL(), Name: "reports" }),
                 _create({ Title: RVDic.Settings, Icon: "fa-cog", OnClick: function (e) { that.user_settings(this); } }),
                 _create({ Title: RVDic.Help, Icon: "fa-question", Link: RVAPI.HelpPageURL() }),
                 _create({ Title: RVDic.Logout, Icon: "fa-power-off", OnClick: function (e) { that.logout(this); } })
@@ -447,15 +447,19 @@
             if (that.PermissionsInited) return;
             else that.PermissionsInited = true;
 
-            PrivacyAPI.CheckAuthority({
-                Permissions: ["ManagementSystem", "Reports"].join("|"), ParseResults: true,
-                ResponseHandler: function (result) {
-                    result = result || {};
+            var _do = () => (that.Interface.SystemSettingsButton.style.display = "inline-block");
 
-                    if (result["ManagementSystem"]) that.Interface.SystemSettingsButton.style.display = "inline-block";
-                    if (result["Reports"]) that.Interface.ReportsButton.style.display = "inline-block";
-                }
-            });
+            if (RVGlobal.IsSystemAdmin) _do();
+            else {
+                var roles = (RVGlobal.AccessRoles || []).map(r => r.Name);
+
+                PrivacyAPI.CheckAuthority({
+                    Permissions: roles.join("|"), ParseResults: true,
+                    ResponseHandler: function (result) {
+                        if (roles.some(r => !!(result || {})[r])) _do();
+                    }
+                });
+            }
         },
 
         initialize_services: function (container) {

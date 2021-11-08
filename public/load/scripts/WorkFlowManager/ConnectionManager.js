@@ -68,6 +68,10 @@
                 },
                 {
                     Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-half rv-bg-color-trans-white",
+                    Style: "padding:0.5rem;", Name: "actionArea"
+                },
+                {
+                    Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-half rv-bg-color-trans-white",
                     Style: "padding:0.5rem;", Name: "formsArea"
                 },
                 {
@@ -90,6 +94,7 @@
             that.create_attachment_area(elems["attachmentArea"]);
             that.create_director_area(elems["directorArea"]);
             that.create_template_files_area(elems["templateFilesArea"]);
+            that.create_action_area(elems["actionArea"]);
             
             new NeededFormsManager(elems["formsArea"], {
                 WorkFlowID: that.Objects.WorkFlowID, InStateID: that.Objects.State.StateID,
@@ -600,6 +605,125 @@
                 },
                 OnRemove: function (p) { }
             }, function (au) { uploader = au; });
-        }
+        },
+
+        create_action_area: function (container) {
+            var that = this;
+
+            var get_action = () => {
+                return ((that.Objects.Edge || {}).Actions || []).length ? that.Objects.Edge.Actions[0] : null;
+            };
+            
+            var elems = GlobalUtilities.create_nested_elements([
+                {
+                    Type: "div", Class: "small-12 medium-12 large-12",
+                    Style: "position:relative; padding-" + RV_Float + ":2.5rem; min-height:2rem;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;",
+                            Childs: [{
+                                Type: "i", Class: "fa fa-pencil fa-2x rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
+                                Attributes: [{ Name: "aria-hidden", Value: true }]
+                            }]
+                        },
+                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" },
+                        {
+                            Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
+                            Style: "display:none; flex-flow:row;", 
+                            Childs: [
+                                {
+                                    Type: "div", Style: "flex:0 0 auto; width:3rem;",
+                                    Childs: [{ Type: "text", TextValue: RVDic.Action + ":" }]
+                                },
+                                {
+                                    Type: "div", Style: "flex:0 0 auto;",
+                                    Childs: [{
+                                        Type: "select", Class: "rv-input", Name: "actionSelect",
+                                        Childs: [{
+                                            Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
+                                        }].concat(["Publish", "Unpublish"].map(itm => {
+                                            return {
+                                                Type: "option",
+                                                Attributes: [
+                                                    { Name: "value", Value: itm },
+                                                    (get_action() == itm ? { Name: "selected", Value: true } : null)
+                                                ],
+                                                Childs: [{ Type: "text", TextValue: RVDic.WF.Actions[itm] }]
+                                            };
+                                        }))
+                                    }]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ], container);
+            console.log(elems["actionSelect"]);
+            var viewArea = elems["viewArea"];
+            var editArea = elems["editArea"];
+            var editButton = elems["editButton"];
+
+            var _set_data = function () {
+                var label = get_action();
+                if (label) label = RVDic.WF.Actions[label];
+
+                viewArea.innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([
+                    {
+                        Type: "div", Style: "display:inline-block; margin-" + RV_RevFloat + ":0.5rem;",
+                        Childs: [{ Type: "text", TextValue: RVDic.Action + ": " }]
+                    },
+                    {
+                        Type: "div",
+                        Style: "display:inline-block;" + (label ? "font-weight:bold;" : "color:rgb(100,100,100);"),
+                        Childs: [{ Type: "text", TextValue: label || ("(" + RVDic.NotSet + ")") }]
+                    }
+                ], viewArea);
+            };
+
+            var _on_edit = function () {
+                var set_things = function () {
+                    editArea.style.display = editButton.__Editing ? "flex" : "none";
+                    viewArea.style.display = editButton.__Editing ? "none" : "block";
+
+                    _set_data();
+
+                    editButton.setAttribute("class", "fa " +
+                        (editButton.__Editing ? "fa-floppy-o" : "fa-pencil") + " fa-2x rv-icon-button");
+
+                    GlobalUtilities.append_tooltip(editButton, editButton.__Editing ? RVDic.Save : RVDic.Edit);
+                };
+
+                if (editButton.__Editing === true) {
+                    GlobalUtilities.block(container);
+
+                    var index = elems["actionSelect"].selectedIndex;
+                    var action = index < 0 ? null : elems["actionSelect"][index].value;
+                    
+                    WFAPI.SetWorkFlowAction({
+                        ConnectionID: that.Objects.Edge.ID, Action: action, ParseResults: true,
+                        ResponseHandler: function (result) {
+                            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+                            else {
+                                that.Objects.Edge.Actions = !action ? [] : [action];
+                                editButton.__Editing = false;
+                                set_things();
+                            }
+
+                            GlobalUtilities.unblock(container);
+                        }
+                    });
+                }
+                else editButton.__Editing = true;
+
+                set_things();
+            }; //end of _on_edit
+
+            editButton.onclick = _on_edit;
+
+            if (!get_action()) _on_edit();
+            _set_data();
+        },
     }
 })();

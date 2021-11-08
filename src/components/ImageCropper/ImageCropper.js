@@ -1,4 +1,5 @@
 import { lazy, Suspense, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import * as Styled from './ImageCropper.styles';
 import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
@@ -130,6 +131,21 @@ const ImageCropper = (props) => {
       </div>
     </Styled.ImageCropper>
   );
+};
+
+ImageCropper.propTypes = {
+  image: PropTypes.string,
+  onImageUpload: PropTypes.func,
+  cropShape: PropTypes.oneOf(['rect', 'round']),
+  showGrid: PropTypes.bool,
+  isEditable: PropTypes.bool,
+  uploadId: PropTypes.string,
+  uploadType: PropTypes.string,
+  containerClass: PropTypes.string,
+};
+
+ImageCropper.defaultProps = {
+  cropShape: 'round',
 };
 
 export default ImageCropper;

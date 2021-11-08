@@ -134,7 +134,7 @@
                                     Link: RVAPI.UserPageURL({ UserID: user.UserID }),
                                     Childs: [
                                         { Type: "text", TextValue: fullname },
-                                        (!user.UserName ? null : {
+                                        (!user.UserName || RVGlobal.HideUserNames ? null : {
                                             Type: "div", Class: "rv-air-button-base rv-air-button-black rv-border-radius-quarter",
                                             Style: "display:inline-block; margin-" + RV_Float + ":0.3rem; font-size:0.6rem; padding:0.1rem 0.3rem;",
                                             Childs: [{ Type: "text", TextValue: Base64.decode(user.UserName) }]

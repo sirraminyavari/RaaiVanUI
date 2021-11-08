@@ -2,23 +2,58 @@
  * Controller portion for team settings view
  */
 import useWindow from '../../hooks/useWindowContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { decodeBase64 } from '../../helpers/helpers';
 import {
-  API_Provider,
-  encodeBase64,
-  decodeBase64,
-} from '../../helpers/helpers';
-import { getTemplateTags } from '../../apiHelper/apiFunctions';
+  getTemplateTags,
+  saveApplicationInfo,
+} from '../../apiHelper/apiFunctions';
+import {
+  ARABIC_LANGUAGE,
+  ENGLISH_LANGUAGE,
+  GREGORIAN_CALENDAR,
+  JALALI_CALENDAR,
+  KURDISH_CALENDAR,
+  KURDISH_LANGUAGE,
+  LUNAR_CALENDAR,
+  MORE_THEN_TWENTY,
+  ONE_TO_TEN,
+  PERSIAN_LANGUAGE,
+  TEN_TO_TWENTY,
+} from '../../constant/constants';
 
 const useTeamSettings = (props) => {
-  const appInfo = props?.route?.Application;
-  const teamTitle = decodeBase64(appInfo.Title);
+  const { IconURL, ...appInfo } = props?.route?.Application;
 
-  const { RV_RTL: rtl, RVDic: dic } = useWindow();
+  console.log(appInfo);
+
+  const { RV_RTL: rtl, RVDic: DIC } = useWindow();
+
+  const [fieldOfExpertiseOption, setFieldOfExpertiseOption] = useState([]);
+  const [applicationInfo, setApplicationInfo] = useState({
+    ApplicationID: appInfo?.ApplicationID,
+    Title: decodeBase64(appInfo?.Title),
+    Tagline: decodeBase64(appInfo?.Tagline),
+    Website: decodeBase64(appInfo?.Website),
+    About: decodeBase64(appInfo?.About),
+    Size: decodeBase64(appInfo?.Size),
+    ExpertiseFieldID: appInfo?.FieldOfExpertise.ID,
+    ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise.Name),
+    Language: appInfo?.Language,
+    Calendar: appInfo?.Calendar,
+  });
 
   useEffect(async () => {
-    const tagList = await getTemplateTags();
-    console.log(tagList);
+    try {
+      const tagList = await getTemplateTags();
+      const fields = tagList.Tags.map((x) => ({
+        value: x.NodeID,
+        label: decodeBase64(x.Name),
+      }));
+      setFieldOfExpertiseOption(fields);
+    } catch (err) {
+      console.log('call api error: ' + err);
+    }
   }, []);
 
   /**
@@ -38,55 +73,75 @@ const useTeamSettings = (props) => {
     },
   ];
 
-  const teamOwnerOptions = [];
-
-  const fieldOfExpertiseOption = [
-    { value: 'industry', label: 'صنعت' },
-    { value: 'med', label: 'پزشکی' },
-    { value: 'it', label: 'فناوری اطلاعات' },
-    { value: 'edu', label: 'آموزش' },
-  ];
-
   const languageOption = [
-    { value: 'fr', label: 'فارسی' },
-    { value: 'en', label: 'English' },
-    { value: 'ar', label: 'Arabic' },
-    { value: 'ku', label: 'Kurdish' },
+    { value: PERSIAN_LANGUAGE, label: 'فارسی' },
+    { value: ENGLISH_LANGUAGE, label: 'English' },
+    { value: ARABIC_LANGUAGE, label: 'Arabic' },
+    { value: KURDISH_LANGUAGE, label: 'Kurdish' },
   ];
 
   const calOption = [
-    { value: 'jalali', label: 'هجری شمسی' },
-    { value: 'lunar', label: 'هجری قمری' },
-    { value: 'gregorian', label: 'میلادی (Gregorian)' },
-    { value: 'kurdish', label: 'گاه شماری کردی' },
+    { value: JALALI_CALENDAR, label: 'هجری شمسی' },
+    { value: LUNAR_CALENDAR, label: 'هجری قمری' },
+    { value: GREGORIAN_CALENDAR, label: 'میلادی (Gregorian)' },
+    { value: KURDISH_CALENDAR, label: 'گاه شماری کردی' },
   ];
 
   const teamSizeOption = [
-    { value: 'jalali', label: 'بیشتر از 100' },
-    { value: 'lunar', label: '50-99 نفر' },
-    { value: 'gregorian', label: '10-49 نفر' },
-    { value: 'kurdish', label: 'کمتر از 10 نفر' },
+    { value: ONE_TO_TEN, label: '1 - 10' },
+    { value: TEN_TO_TWENTY, label: '10 - 20' },
+    { value: MORE_THEN_TWENTY, label: 'بیشتر از 20' },
   ];
 
-  const uploadThumbnail = (fd, config) => {
-    //
-    console.log(fd, config);
+  const saveInfo = async () => {
+    const {
+      ApplicationID,
+      Title,
+      Tagline,
+      Website,
+      About,
+      Size,
+      ExpertiseFieldID,
+      ExpertiseFieldName,
+      Language,
+      Calendar,
+    } = applicationInfo;
+
+    try {
+      const saveResult = await saveApplicationInfo(
+        ApplicationID,
+        Title,
+        Tagline,
+        Website,
+        About,
+        Size,
+        ExpertiseFieldID,
+        ExpertiseFieldName,
+        Language,
+        Calendar
+      );
+
+      console.log(saveResult);
+    } catch (err) {
+      console.log('saving app info error', err);
+    }
   };
 
   /**
    * provide data to view portion of team settings view
    */
   return {
-    appInfo,
-    teamTitle,
+    IconURL,
+    applicationInfo,
+    setApplicationInfo,
     rtl,
     breadCrumbItems,
     fieldOfExpertiseOption,
-    teamOwnerOptions,
     languageOption,
     calOption,
     teamSizeOption,
-    uploadThumbnail,
+    DIC,
+    saveInfo,
   };
 };
 export default useTeamSettings;

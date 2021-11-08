@@ -183,6 +183,11 @@
                 Name: "SystemTitle", Title: RVDic.RV.Settings.SystemTitle, Type: "Text",
                 Info: { UseSimpleEditor: true }
             });
+
+            that.add_element(genSection.items_section(), {
+                Name: "HideUserNames", Title: RVDic.RV.Settings.HideUserNames, Type: "Binary",
+                Info: { Yes: Base64.encode(RVDic.Yes), No: Base64.encode(RVDic.No) }
+            });
             //end of General
 
             //Display

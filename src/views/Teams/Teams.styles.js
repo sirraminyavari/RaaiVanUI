@@ -28,7 +28,7 @@ import {
   TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
-import { FLEX_RCS } from 'constant/StyledCommonCss';
+import { FLEX_CSC, FLEX_RCS } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
@@ -543,10 +543,10 @@ export const ExtraUserTitle = styled.span.attrs({
 export const TeamActionContainer = styled.div.attrs({
   className: `${C_GRAY} ${BG_WHITE} ${BO_RADIUS_QUARTER}`,
 })`
-  ${FLEX_RCS}
+  ${FLEX_CSC}
   cursor: pointer;
   min-width: 7rem;
-  height: 2.2rem;
+  min-height: 2.2rem;
   padding: 0 0.8rem;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   text-transform: capitalize;

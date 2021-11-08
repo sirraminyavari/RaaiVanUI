@@ -356,7 +356,7 @@
 
     GetNodes: function (params) {
         params = params || {};
-
+        
         params.NodeTypeIDs = params.NodeTypeIDs || params.NodeTypeID;
         params.RelatedToIDs = params.RelatedToIDs || params.RelatedToNodeID;
         params.CreatorUserIDs = params.CreatorUserIDs || params.CreatorUserID;

@@ -11,11 +11,13 @@
 
     AdminPanelInitializer.prototype = {
         initialize: function (settingsArea) {
+            var that = this;
+
             var permissions = [
                 { Name: "Settings", Icon: "Settings300.png", URL: "systemsettings" },
                 { Name: "UsersManagement", Icon: "User128.png", URL: "users" },
                 { Name: "ManageConfidentialityLevels", Icon: "UserConfidentiality240.png", URL: "confidentiality" },
-                { Name: "UserGroupsManagement", Icon: "Group.png", URL: "usergroups" },
+                { Name: "UserGroupsManagement", Icon: "Group.png", OnClick: () => that.access_roles() },
                 { Name: "ManageOntology", Icon: "Graph.png", URL: "map" },
                 { Name: "KnowledgeAdmin", Icon: "Audit200.png", URL: "knowledge" },
                 { Name: "ContentsManagement", Icon: "Ledgers240.png", URL: "documents" },
@@ -35,13 +37,8 @@
 
             GlobalUtilities.load_files(["API/PrivacyAPI.js"], {
                 OnLoad: function () {
-                    var itemNames = [];
-
-                    for (var i = 0; i < permissions.length; ++i)
-                        itemNames.push(permissions[i].Name);
-
                     PrivacyAPI.CheckAuthority({
-                        Permissions: itemNames.join("|"), ParseResults: true,
+                        Permissions: permissions.map(p => p.Name).join("|"), ParseResults: true,
                         ResponseHandler: function (result) {
                             if ((window.RVGlobal || {}).IsSystemAdmin) _add_item(settingsArea, permissions[0].Name);
 
@@ -71,8 +68,11 @@
                     Childs: [{
                         Type: "div", Style: "padding:0.5rem; height:100%;",
                         Class: "small-12 medium-12 large-12 rv-border-radius-half rv-air-button",
-                        Link: "../../configuration/" + permissionsDic[name].URL,
+                        Link: !permissionsDic[name].URL ? null : "../../configuration/" + permissionsDic[name].URL,
                         Params: { IgnoreMouseEvents: true },
+                        Properties: !permissionsDic[name].OnClick ? [] : [{
+                            Name: "onclick", Value: permissionsDic[name].OnClick
+                        }],
                         Childs: [{
                             Type: "middle", Class: "small-12 medium-12 large-12",
                             Style: "text-align:center;",
@@ -94,6 +94,43 @@
                     }]
                 }], container);
             };
+        },
+
+        access_roles: function () {
+            var that = this;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
+                Style: "padding:1rem; margin:0 auto; height:calc(100vh - 10vw);", Name: "container"
+            }]);
+
+            var sections = [{
+                Name: "",
+                Title: "",
+                Items: (RVGlobal.AccessRoles || []).map(r => ({
+                    ID: r.ID,
+                    Title: RVDic.PRVC[r.Name] || RVDic[r.Name] || r.Name
+                }))
+            }];
+            console.log(sections);
+            GlobalUtilities.loading(elems["container"]);
+            var showed = GlobalUtilities.show(elems["container"]);
+
+            GlobalUtilities.load_files(["PrivacyManager/BatchPermissionSettings.js"], {
+                OnLoad: function () {
+                    new BatchPermissionSettings(elems["container"], {
+                        Sections: sections,
+                        Options: {
+                            Title: RVDic.PRVC.UserGroupsManagement,
+                            ObjectType: "AccessRole",
+                            PermissionType: "View",
+                            IgnoreConfidentialities: true,
+                            OnCancel: () => showed.Close(),
+                            OnSave: () => showed.Close()
+                        }
+                    });
+                }
+            });
         }
     };
 })();
