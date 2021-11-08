@@ -21,10 +21,10 @@ const AnimatedTextArea = ({
   const changeHandler = (e) => {
     if (autoresize) {
       setTextAreaHeight('auto');
-      setWrapperHeight(`${textareaRef.current.scrollHeight}px`);
+      setWrapperHeight(`${textareaRef?.current?.scrollHeight}px`);
     }
 
-    setText(e.target.value);
+    setText(e?.target?.value);
 
     if (onChange) {
       onChange(e);
@@ -33,8 +33,8 @@ const AnimatedTextArea = ({
 
   useEffect(() => {
     if (autoresize) {
-      setTextAreaHeight(`${textareaRef.current.scrollHeight}px`);
-      setWrapperHeight(`${textareaRef.current.scrollHeight}px`);
+      setTextAreaHeight(`${textareaRef?.current?.scrollHeight}px`);
+      setWrapperHeight(`${textareaRef?.current?.scrollHeight}px`);
     }
   }, [text]);
 
@@ -55,7 +55,7 @@ const AnimatedTextArea = ({
       {label && (
         <Styled.TextAreaLabel
           rtl={rtl}
-          onClick={() => textareaRef.current.focus()}>
+          onClick={() => textareaRef?.current?.focus()}>
           {label}
         </Styled.TextAreaLabel>
       )}
