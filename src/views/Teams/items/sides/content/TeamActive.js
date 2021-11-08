@@ -18,7 +18,6 @@ import {
   removeApplication,
   recycleApplication,
   selectApplication,
-  modifyApplication,
   unsubscribeFromApplication,
   getApplicationUsers,
 } from 'store/actions/applications/ApplicationsAction';
@@ -26,7 +25,6 @@ import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import InlineEdit from 'components/InlineEdit/InlineEdit';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
@@ -99,7 +97,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
-  const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
   const [users, setUsers] = useState(usersList);
 
   const shownUsers = users?.filter((_, index) => index < 4);
@@ -107,12 +104,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Close confirmation dialogue and reset its values.
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
-
-  //! Edit team title.
-  const handleEditTeam = (title) => {
-    setAppTitle(title);
-    dispatch(modifyApplication(appId, title));
-  };
 
   //! Close undo toast when user clicks on "X" button.
   const closeUndoToast = (toastId) => {
@@ -192,9 +183,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const onSelectError = () => {};
 
   //! Select a team.
-  const handleTeamSelect = (e, onSuccess, onError) => {
-    if (e.target.id === 'inline-edit') return;
+  const handleTeamSelect = (onSuccess, onError) => {
     if (isDeleting) return;
+
     dispatch(selectApplication(appId, onSuccess, onError));
   };
 
@@ -202,11 +193,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const onTeamSettingsClick = (e) => {
     e.stopPropagation();
 
-    handleTeamSelect(
-      e,
-      () => history.push(`/teamsettings/${appId}`),
-      onSelectError
-    );
+    handleTeamSelect(history.push(`/teamsettings/${appId}`), onSelectError);
   };
 
   //! Open team users management dialogue.
@@ -311,7 +298,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       dir={RV_Float}
       revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
-      onClick={(e) => handleTeamSelect(e, onSelectDone, onSelectError)}>
+      onClick={() => handleTeamSelect(onSelectDone, onSelectError)}>
       <TeamConfirm
         isOpen={confirm.isOpen}
         onConfirm={handleConfirmation}
@@ -322,7 +309,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       {!isDeleting && (
         <TeamUsersModal
           appId={appId}
-          appTitle={appTitle}
+          appTitle={decodeBase64(Title)}
           isModalShown={isModalShown}
           isRemovable={isRemovable}
           setIsModalShown={setIsModalShown}
@@ -359,18 +346,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 userImage={GlobalUtilities.add_timestamp(IconURL)}
               />
             </Styled.TeamAvatarWrapper>
-            {!isDeleting && isEditable ? (
-              <Styled.TeamTitle>
-                <InlineEdit
-                  text={appTitle}
-                  onSetText={handleEditTeam}
-                  textClasses="team-inline-edit-text"
-                />
-              </Styled.TeamTitle>
-            ) : (
-              <Styled.TeamTitle>{appTitle}</Styled.TeamTitle>
-            )}
-
+            <Styled.TeamTitle>{decodeBase64(Title)}</Styled.TeamTitle>
             <Styled.TeamExcerpt>
               {decodeBase64(appDescription)}
             </Styled.TeamExcerpt>
