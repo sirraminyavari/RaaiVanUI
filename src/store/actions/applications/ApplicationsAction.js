@@ -231,7 +231,6 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
         if (response.ErrorText) {
           error && error(response.ErrorText);
         } else if (response.Succeed) {
-          done && done(response);
           setRVGlobal({
             ApplicationID: appId,
             IsSystemAdmin: response.IsSystemAdmin,
