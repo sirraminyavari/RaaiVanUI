@@ -8,8 +8,10 @@ import FilesList from './FilesList';
 import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { removeFile } from 'apiHelper/apiFunctions';
+// import { removeFile } from 'apiHelper/apiFunctions';
 // import useWindow from 'hooks/useWindowContext';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
@@ -17,33 +19,21 @@ const FileCell = (props) => {
   // const { RVDic } = useWindow();
 
   const {
-    row,
-    editingRowId,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    header,
-    selectedCell,
-    tempRowId,
-  } = props;
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
 
-  const { Files: initialFiles, Info, ElementID } = value || {};
+  const fileRef = useRef();
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
+  useOnClickOutside(fileRef, () => setSelectedCell(null));
 
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
-
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
+  const { Files: initialFiles, ElementID } = value || {};
 
   const [isUploading, setIsUploading] = useState(false);
   const [files, setFiles] = useState(isNewRow ? [] : initialFiles);
@@ -153,8 +143,8 @@ const FileCell = (props) => {
     );
   };
 
-  return (
-    <Styled.FileCellContainer>
+  const renderFiles = () => (
+    <>
       <FilesList
         files={files}
         canEdit={canEdit}
@@ -163,25 +153,37 @@ const FileCell = (props) => {
       {!files?.length && !isUploading && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
       )}
+    </>
+  );
+
+  if (!canEdit) {
+    return (
+      <Styled.FileCellContainer onClick={() => setSelectedCell(cell)}>
+        {renderFiles()}
+      </Styled.FileCellContainer>
+    );
+  }
+
+  return (
+    <Styled.FileCellContainer ref={fileRef}>
+      {renderFiles()}
       {isUploading && <LogoLoader lottieWidth="3rem" />}
-      {canEdit && (
-        <Styled.AddNewFileWrapper>
-          <CustomDropZone
-            accept={['image/*', '.pdf']}
-            // formatExceptions={['jpg']}
-            maxFiles={1}
-            maxEachSize={1}
-            maxTotalSize={1}
-            onError={handleFileDropError}
-            onUpload={handleUploadFiles}
-            isUploading={isUploading}
-            placeholders={{
-              main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
-            }}
-            customComponent={AddFileButton}
-          />
-        </Styled.AddNewFileWrapper>
-      )}
+      <Styled.AddNewFileWrapper>
+        <CustomDropZone
+          accept={['image/*', '.pdf']}
+          // formatExceptions={['jpg']}
+          maxFiles={1}
+          maxEachSize={1}
+          maxTotalSize={1}
+          onError={handleFileDropError}
+          onUpload={handleUploadFiles}
+          isUploading={isUploading}
+          placeholders={{
+            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+          }}
+          customComponent={AddFileButton}
+        />
+      </Styled.AddNewFileWrapper>
     </Styled.FileCellContainer>
   );
 };

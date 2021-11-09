@@ -177,7 +177,7 @@ const CustomTable = (props) => {
   const handleAddItem = () => {
     // setShowFooter(true);
     if (!tempRowId) {
-      let tempRowId = getUUID();
+      let tempRowId = 'new_' + getUUID();
       setTempRowId(tempRowId);
       onCreateNewRow && onCreateNewRow(tempRowId);
     }
@@ -260,29 +260,12 @@ const CustomTable = (props) => {
                                           // onClick: () => setSelectedCell(cell),
                                         },
                                       ])}>
-                                      <>
-                                        {cell.render('Cell', {
-                                          editable: !!isTableEditable,
-                                          dragHandleProps: {
-                                            ...provided.dragHandleProps,
-                                          },
-                                        })}
-                                        {!!isTableEditable && //! Table is editable in general.
-                                          !!editByCell && //! Single cell edit is enabled.
-                                          tempRowId !==
-                                            cell?.row?.original?.id && ( //! New row id is equal to current cell id.
-                                            <CellEdit
-                                              cell={cell}
-                                              selectedCell={selectedCell}
-                                              setSelectedCell={setSelectedCell}
-                                              onEditStart={() =>
-                                                onEditRowStart(data)
-                                              }
-                                              onEditCancel={onEditRowCancel}
-                                              onEdit={editRow}
-                                            />
-                                          )}
-                                      </>
+                                      {cell.render('Cell', {
+                                        editable: !!isTableEditable,
+                                        dragHandleProps: {
+                                          ...provided.dragHandleProps,
+                                        },
+                                      })}
                                     </Styled.TableCell>
                                   );
                                 })}

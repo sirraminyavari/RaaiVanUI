@@ -1,53 +1,39 @@
 /**
  * Renders multi-level fill form.
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import * as Styled from './MultiLevelCell.styles';
 import { getNestedItems } from './utils';
 import useWindow from 'hooks/useWindowContext';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const MultiLevelCell = (props) => {
   const {
     value,
-    row,
-    column,
     onCellChange,
-    editable: isTableEditable,
-    editingRowId,
-    header,
-    data,
-    selectedCell,
-    tempRowId,
-  } = props;
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    isRowEditing,
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
 
   const { RVDic } = useWindow();
+  const multilevelRef = useRef();
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
+  useOnClickOutside(multilevelRef, () => setSelectedCell(null));
 
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
-
-  //! Get info for new row.
-  const columnInfo = data?.[0]?.[columnId]?.Info;
-
-  //! Get info for existing row.
   const { Info, SelectedItems } = value || {};
   const selectedItemsName = SelectedItems?.map((item) =>
     decodeBase64(item?.Name)
   );
 
-  const { Levels, NodeType } = Info || columnInfo || {};
+  const { Levels, NodeType } = Info || {};
   const { ID } = NodeType || {};
 
   const levels = Levels?.map((level) => decodeBase64(level));
@@ -75,8 +61,6 @@ const MultiLevelCell = (props) => {
 
   //! Update multi level cell.
   const updateCell = (levels) => {
-    let id = isNewRow ? tempRowId : rowId;
-
     let selectedItems = levels?.map((level) => {
       let { Name, NodeID } = level?.value || {};
       return {
@@ -95,7 +79,7 @@ const MultiLevelCell = (props) => {
       TextValue: '',
     };
 
-    onCellChange(id, columnId, multiLevelCell, selectedItems);
+    onCellChange(rowId, columnId, multiLevelCell, selectedItems);
   };
 
   //! Get options for each level.
@@ -182,89 +166,94 @@ const MultiLevelCell = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canEdit]);
 
+  const filterViewLevels = (level) =>
+    !!level.defaultValue ||
+    level?.options.length ||
+    level.step === 0 ||
+    isNewRow;
+
   //! Show mode and not new.
   if (!canEdit) {
-    return !!SelectedItems?.length ? (
-      <Styled.CellView type="h4">
-        {selectedItemsName.join(' / ')}
-      </Styled.CellView>
-    ) : (
-      <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+    return (
+      <div onClick={() => setSelectedCell(cell)}>
+        {!!SelectedItems?.length ? (
+          <Styled.CellView type="h4">
+            {selectedItemsName.join(' / ')}
+          </Styled.CellView>
+        ) : (
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+        )}
+      </div>
     );
   }
 
   return (
-    <Styled.MultiLevelContainer>
-      {levelValues
-        ?.filter(
-          (level) => !!level.defaultValue || level?.options.length || isNewRow
-        )
-        ?.map((level, key, self) => {
-          const selectedLevelName = decodeBase64(level?.value?.Name);
-          let previousLevel = self?.[level.step - 1];
-          let previousSelect = previousLevel?.options.find(
-            (option) => decodeBase64(option.Name) === previousLevel.defaultValue
-          );
+    <Styled.MultiLevelContainer ref={multilevelRef}>
+      {levelValues?.filter(filterViewLevels)?.map((level, key, self) => {
+        const selectedLevelName = decodeBase64(level?.value?.Name);
+        let previousLevel = self?.[level.step - 1];
+        let previousSelect = previousLevel?.options.find(
+          (option) => decodeBase64(option.Name) === previousLevel.defaultValue
+        );
 
-          //! Options for each select.
-          const selectOptions = level?.options?.map((option) => ({
-            value: decodeBase64(option?.Name),
-            label: decodeBase64(option?.Name),
-          }));
+        //! Options for each select.
+        const selectOptions = level?.options?.map((option) => ({
+          value: decodeBase64(option?.Name),
+          label: decodeBase64(option?.Name),
+        }));
 
-          //! Get user selected value.
-          const value = !!level?.value
-            ? {
-                value: selectedLevelName,
-                label: selectedLevelName,
+        //! Get user selected value.
+        const value = !!level?.value
+          ? {
+              value: selectedLevelName,
+              label: selectedLevelName,
+            }
+          : null;
+
+        //! Get value for the select component.
+        const selectValue = isNewRow
+          ? undefined
+          : SelectedItems.length
+          ? undefined
+          : value;
+
+        //! Get default value if it has any.
+        const selectDefaultValue = !!level?.defaultValue
+          ? {
+              value: level?.defaultValue,
+              label: level?.defaultValue,
+            }
+          : undefined;
+
+        const canGetOptions =
+          level.step !== 0 &&
+          level.options.length === 0 &&
+          previousLevel.options.length !== 0 &&
+          previousLevel.value;
+
+        return (
+          <Styled.SelectWrapper key={key}>
+            <CustomSelect
+              defaultValue={selectDefaultValue}
+              value={selectValue}
+              placeholder={level?.currentLabel}
+              options={selectOptions}
+              styles={Styled.customStyles}
+              onChange={(option) => handleChange(option?.value, level)}
+              onFocus={() =>
+                canGetOptions && getOptions(level.step, previousSelect?.NodeID)
               }
-            : null;
-
-          //! Get value for the select component.
-          const selectValue = isNewRow
-            ? undefined
-            : SelectedItems.length
-            ? undefined
-            : value;
-
-          //! Get default value if it has any.
-          const selectDefaultValue = !!level?.defaultValue
-            ? {
-                value: level?.defaultValue,
-                label: level?.defaultValue,
-              }
-            : undefined;
-
-          const canGetOptions =
-            level.step !== 0 &&
-            level.options.length === 0 &&
-            previousLevel.options.length !== 0 &&
-            previousLevel.value;
-
-          return (
-            <Styled.SelectWrapper key={key}>
-              <CustomSelect
-                defaultValue={selectDefaultValue}
-                value={selectValue}
-                placeholder={level?.currentLabel}
-                options={selectOptions}
-                styles={Styled.customStyles}
-                onChange={(option) => handleChange(option?.value, level)}
-                onFocus={() =>
-                  canGetOptions &&
-                  getOptions(level.step, previousSelect?.NodeID)
-                }
-                isSearchable
-                isLoading={level.isLoading}
-                menuPortalTarget={document.body}
-                menuShouldScrollIntoView={false}
-                loadingMessage={() => RVDic.Loading + '...'}
-                noOptionsMessage={() => 'موردی یافت نشد'}
-                // menuPosition={state.windowIsScrolling ? 'absolute' : 'fixed'}
-              />
-            </Styled.SelectWrapper>
-          );
-        })}
+              isSearchable
+              isLoading={level.isLoading}
+              menuPortalTarget={document.body}
+              menuShouldScrollIntoView={false}
+              loadingMessage={() => RVDic.Loading + '...'}
+              noOptionsMessage={() => 'موردی یافت نشد'}
+              // menuPosition={state.windowIsScrolling ? 'absolute' : 'fixed'}
+            />
+          </Styled.SelectWrapper>
+        );
+      })}
     </Styled.MultiLevelContainer>
   );
 };

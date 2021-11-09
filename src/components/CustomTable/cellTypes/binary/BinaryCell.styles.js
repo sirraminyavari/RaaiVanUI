@@ -22,3 +22,7 @@ export const EmptyCellView = styled.div`
 export const CellView = styled(Heading).attrs({
   className: `${C_GRAY_DARK}`,
 })``;
+
+export const CellViewContainer = styled.div`
+  width: 100%;
+`;

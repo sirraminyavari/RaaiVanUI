@@ -1,46 +1,29 @@
 import { useRef, useState } from 'react';
 import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
-import { CV_DISTANT } from 'constant/CssVariables';
-import Heading from 'components/Heading/Heading';
 import { decodeBase64 } from 'helpers/helpers';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const SelectCell = (props) => {
-  // console.log('select cell ', props);
   const {
     value,
-    row,
-    column,
     onCellChange,
-    editable: isTableEditable,
-    editingRowId,
-    header,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
     multiSelect,
-    data,
-    selectedCell,
-    tempRowId,
-  } = props;
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
+  const selectRef = useRef();
 
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
+  useOnClickOutside(selectRef, () => setSelectedCell(null));
 
-  //! Get info for new row.
-  const columnInfo = data?.[0]?.[columnId]?.Info;
-
-  //! Get info for existing row.
   const { Info, TextValue } = value || {};
-  const { Options } = Info || columnInfo || {};
+  const { Options } = Info || {};
 
   let options, initialValues;
 
@@ -77,8 +60,6 @@ const SelectCell = (props) => {
   };
 
   const handleOnMenuClose = () => {
-    let id = isNewRow ? tempRowId : rowId;
-
     const textValue = !!multiSelect
       ? defaultValues.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
@@ -90,12 +71,12 @@ const SelectCell = (props) => {
       TextValue: textValue,
     };
 
-    onCellChange(id, columnId, selectCell, textValue);
+    onCellChange(rowId, columnId, selectCell, textValue);
   };
 
   if (!canEdit) {
     return (
-      <>
+      <div onClick={() => setSelectedCell(cell)}>
         {defaultValues?.map((x) => x?.label).length ? (
           defaultValues
             ?.map((x) => x?.label)
@@ -105,16 +86,14 @@ const SelectCell = (props) => {
               </Styled.SelectedItem>
             ))
         ) : (
-          <Heading style={{ color: CV_DISTANT }} type="h6">
-            انتخاب کنید
-          </Heading>
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
         )}
-      </>
+      </div>
     );
   }
 
   return (
-    <Styled.SelectWrapper>
+    <Styled.SelectWrapper ref={selectRef}>
       <CustomSelect
         defaultValue={defaultValues}
         isMulti={!!multiSelect}
@@ -123,7 +102,6 @@ const SelectCell = (props) => {
         isClearable={false}
         isSearchable={true}
         placeholder="انتخاب کنید"
-        selectName={header?.title}
         options={options}
         onChange={handleSelectChange}
         onMenuClose={handleOnMenuClose}

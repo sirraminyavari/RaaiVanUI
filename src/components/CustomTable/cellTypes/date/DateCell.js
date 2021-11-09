@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from './DateCell.styles';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
@@ -6,20 +6,23 @@ import { engToPerDate, getWeekDay } from 'helpers/helpers';
 import CalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
 import { CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const DateCell = (props) => {
-  // console.log('dateCell', props);
   const {
-    row,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    editingRowId,
-    header,
-    selectedCell,
-    tempRowId,
-  } = props;
+    onCellChange,
+    rowId,
+    columnId,
+    canEdit,
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
+
+  const dateRef = useRef();
+
+  useOnClickOutside(dateRef, () => setSelectedCell(null));
 
   const { DateValue } = value || {};
 
@@ -36,20 +39,6 @@ const DateCell = (props) => {
 
   const [dateValue, setDateValue] = useState(!!DateValue ? date : null);
 
-  const rowId = row?.original?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
-  const columnId = column?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
-
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
-
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
 
@@ -59,16 +48,14 @@ const DateCell = (props) => {
     const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
 
-    let id = isNewRow ? tempRowId : rowId;
-
     let dateCell = { ...value, DateValue: dateString };
 
-    onCellChange(id, columnId, dateCell, date);
+    onCellChange(rowId, columnId, dateCell, date);
   };
 
   if (!canEdit) {
     return (
-      <>
+      <Styled.CellViewContainer onClick={() => setSelectedCell(cell)}>
         {!!DateValue ? (
           <Heading style={{ color: CV_GRAY_DARK }} type="h4">
             {showFormat}
@@ -76,46 +63,48 @@ const DateCell = (props) => {
         ) : (
           <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
         )}
-      </>
+      </Styled.CellViewContainer>
     );
   }
 
   return (
-    <ToolTip
-      tipId={`table-date-${rowId}`}
-      arrowColor="transparent"
-      backgroundColor="transparent"
-      clickable
-      multiline
-      event="click"
-      effect="solid"
-      type="dark"
-      offset={{ bottom: -150 }}
-      renderContent={() => (
-        <CustomDatePicker
-          mode="button"
-          type="jalali"
-          range={false}
-          size="small"
-          justCalendar
-          value={dateValue}
-          onDateSelect={handleDateSelect}
-        />
-      )}>
-      {dateValue ? (
-        <Styled.DateCellContainer>
-          <Heading className="table-date-edit-title" type="h4">
-            {showFormat}
-          </Heading>
-          <CalendarIcon color={TCV_DEFAULT} size={20} />
-        </Styled.DateCellContainer>
-      ) : (
-        <Styled.DateCellContainer>
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-          <CalendarIcon color={TCV_DEFAULT} size={20} />
-        </Styled.DateCellContainer>
-      )}
-    </ToolTip>
+    <div ref={dateRef}>
+      <ToolTip
+        tipId={`table-date-${rowId}`}
+        arrowColor="transparent"
+        backgroundColor="transparent"
+        clickable
+        multiline
+        event="click"
+        effect="solid"
+        type="dark"
+        offset={{ bottom: -150 }}
+        renderContent={() => (
+          <CustomDatePicker
+            mode="button"
+            type="jalali"
+            range={false}
+            size="small"
+            justCalendar
+            value={dateValue}
+            onDateSelect={handleDateSelect}
+          />
+        )}>
+        {dateValue ? (
+          <Styled.DateCellContainer>
+            <Heading className="table-date-edit-title" type="h4">
+              {showFormat}
+            </Heading>
+            <CalendarIcon color={TCV_DEFAULT} size={20} />
+          </Styled.DateCellContainer>
+        ) : (
+          <Styled.DateCellContainer>
+            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+            <CalendarIcon color={TCV_DEFAULT} size={20} />
+          </Styled.DateCellContainer>
+        )}
+      </ToolTip>
+    </div>
   );
 };
 

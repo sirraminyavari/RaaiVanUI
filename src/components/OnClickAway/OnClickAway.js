@@ -6,8 +6,8 @@ const OnClickAway = forwardRef((props, ref) => {
   const containerRef = useRef();
 
   const handleClick = (e) => {
-    if (containerRef.current.contains(e.target)) return;
-    onAway();
+    if (containerRef?.current?.contains(e.target)) return;
+    onAway(e);
   };
 
   useEffect(() => {

@@ -12,16 +12,16 @@ const NodesList = (props) => {
     onRemoveNode && onRemoveNode(node);
   };
 
+  // as={canEdit ? 'div' : Link}
+  // to={getURL('Node', { NodeID })}
+
   return (
     <Styled.NodesListWrapper>
       {nodes?.map((node, index) => {
         const { NodeID, Name } = node || {};
         return (
           <Styled.NodeItemContainer key={NodeID || index}>
-            <Styled.NodeInfoWrapper
-              as={canEdit ? 'div' : Link}
-              to={getURL('Node', { NodeID })}
-              editable={canEdit}>
+            <Styled.NodeInfoWrapper editable={canEdit}>
               <OpenMailIcon color={CV_DISTANT} size={25} />
               <Styled.NodeLinkHeading type="h4">
                 {decodeBase64(Name)}

@@ -3,35 +3,25 @@ import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './NumberCell.styles';
 import { CV_DISTANT } from 'constant/CssVariables';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const NumberCell = (props) => {
   const {
     value,
-    row,
-    column,
     onCellChange,
-    editable: isTableEditable,
-    editingRowId,
-    header,
-    selectedCell,
-    tempRowId,
-  } = props;
+    rowId,
+    columnId,
+    canEdit,
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
 
-  const { Info, FloatValue } = value || {};
+  const numberRef = useRef();
 
-  const rowId = row?.original?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
-  const columnId = column?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
+  useOnClickOutside(numberRef, () => setSelectedCell(null));
 
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
+  const { FloatValue } = value || {};
 
   const [numberValue, setNumberValue] = useState(FloatValue || '');
   const originalValueRef = useRef(FloatValue);
@@ -45,29 +35,30 @@ const NumberCell = (props) => {
   const handleInputBlur = () => {
     if (originalValueRef.current === numberValue) return;
 
-    //! Update parent.
-    let id = isNewRow ? tempRowId : rowId;
-
     let numberCell = {
       ...value,
       FloatValue: numberValue,
       TextValue: numberValue + '',
     };
 
-    onCellChange(id, columnId, numberCell, numberValue);
+    onCellChange(rowId, columnId, numberCell, numberValue);
   };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
-    return !!numberValue ? (
-      <Styled.CellView type="h4">{numberValue}</Styled.CellView>
-    ) : (
-      <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+    return (
+      <div onClick={() => setSelectedCell(cell)}>
+        {!!numberValue ? (
+          <Styled.CellView type="h4">{numberValue}</Styled.CellView>
+        ) : (
+          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+        )}
+      </div>
     );
   }
 
   return (
-    <Styled.InputCellWrapper>
+    <Styled.InputCellWrapper ref={numberRef}>
       <NumberIcon size={25} color={CV_DISTANT} />
       <Input
         onChange={handleInputChange}

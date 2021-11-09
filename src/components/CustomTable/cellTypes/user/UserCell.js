@@ -3,43 +3,31 @@ import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import AddNewUser from './AddNewUser';
+import { useCellProps } from 'components/CustomTable/tableUtils';
 // import useWindow from 'hooks/useWindowContext';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const UserCell = (props) => {
   // const { RVDic } = useWindow();
 
   const {
-    row,
-    editingRowId,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    header,
-    data,
-    selectedCell,
-    tempRowId,
-  } = props;
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    setSelectedCell,
+    cell,
+  } = useCellProps(props);
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const selectedRowId = selectedCell?.row?.original?.id;
-  const selectedColumnId = selectedCell?.column?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRowId;
-  const isCellEditing =
-    rowId === selectedRowId && columnId === selectedColumnId;
-  const isNewRow = tempRowId === rowId;
+  const userRef = useRef();
 
-  const canEdit =
-    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
-    isNewRow;
+  useOnClickOutside(userRef, () => setSelectedCell(null));
 
-  //! Get info for new row.
-  const columnInfo = data?.[0]?.[columnId]?.Info;
   const { SelectedItems: initialUsers, Info } = value || {};
 
-  const { MultiSelect: isMultiSelect } = Info || columnInfo || {};
+  const { MultiSelect: isMultiSelect } = Info || {};
 
   const [users, setUsers] = useState(isNewRow ? [] : initialUsers);
   const beforeChangeUsersRef = useRef(null);
@@ -70,8 +58,6 @@ const UserCell = (props) => {
    * @param {Object[]} users -Users List to update.
    */
   const updateUserCell = (users) => {
-    let id = isNewRow ? tempRowId : rowId;
-
     let userCell = {
       ...value,
       GuidItems: users,
@@ -79,8 +65,7 @@ const UserCell = (props) => {
       TextValue: '',
     };
 
-    //! Update cell.
-    onCellChange(id, columnId, userCell, users);
+    onCellChange(rowId, columnId, userCell, users);
   };
 
   const handleAddNewPerson = (person) => {
@@ -108,8 +93,8 @@ const UserCell = (props) => {
     updateUserCell(newUsersArray);
   }, []);
 
-  return (
-    <Styled.UsersCellContainer>
+  const renderUsers = () => (
+    <>
       <UsersList
         users={users}
         onRemoveUser={handleRemoveUser}
@@ -118,20 +103,32 @@ const UserCell = (props) => {
       {!users?.length && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
       )}
-      {canEdit && (
-        <Styled.PeoplePickerWrapper>
-          <PeoplePicker
-            onByMe={() => {}}
-            onBlur={() => {}}
-            onByPeople={handleAddNewPerson}
-            isByMe={false}
-            pickedPeople={isNewRow ? normalizeSelectedUsers : []}
-            onVisible={() => {}}
-            multi={isMultiSelect}
-            buttonComponent={<AddNewUser />}
-          />
-        </Styled.PeoplePickerWrapper>
-      )}
+    </>
+  );
+
+  if (!canEdit) {
+    return (
+      <Styled.UsersCellContainer onClick={() => setSelectedCell(cell)}>
+        {renderUsers()}
+      </Styled.UsersCellContainer>
+    );
+  }
+
+  return (
+    <Styled.UsersCellContainer ref={userRef}>
+      {renderUsers()}
+      <Styled.PeoplePickerWrapper>
+        <PeoplePicker
+          onByMe={() => {}}
+          onBlur={() => {}}
+          onByPeople={handleAddNewPerson}
+          isByMe={false}
+          pickedPeople={isNewRow ? normalizeSelectedUsers : []}
+          onVisible={() => {}}
+          multi={isMultiSelect}
+          buttonComponent={<AddNewUser />}
+        />
+      </Styled.PeoplePickerWrapper>
     </Styled.UsersCellContainer>
   );
 };

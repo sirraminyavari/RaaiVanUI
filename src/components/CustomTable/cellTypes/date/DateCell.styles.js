@@ -36,3 +36,7 @@ export const EmptyCellView = styled.div`
   text-align: start;
   padding-${RV_Float}: 0.7rem;
 `;
+
+export const CellViewContainer = styled.div`
+  width: 100%;
+`;

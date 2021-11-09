@@ -95,17 +95,22 @@ const Table = (props) => {
   //! Fires on every cell update.
   const updateCellData = (rowId, columnId, cellData, cellValue) => {
     console.log(cellData, 'step one');
-    setRows((old) =>
-      old.map((row) => {
-        if (row?.id === rowId) {
-          return {
-            ...row,
-            [columnId]: cellData,
-          };
-        }
-        return row;
-      })
-    );
+    const isNewRow = rowId.split('_')[0] === 'new';
+
+    if (isNewRow) {
+    } else {
+      setRows((old) =>
+        old.map((row) => {
+          if (row?.id === rowId) {
+            return {
+              ...row,
+              [columnId]: cellData,
+            };
+          }
+          return row;
+        })
+      );
+    }
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
 
@@ -248,20 +253,15 @@ const Table = (props) => {
 
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
-  //! Add new row to the table.
-  const addRow = () => {
-    console.log(newRowRef.current, 'add before');
+  //! Save row.
+  const saveRow = (newRowElements) => {
     createFormInstance(tableId, tableOwnerId)
       .then((response) => {
         if (response?.Succeed) {
           const instanceId = response?.Instance?.InstanceID;
-          const extendedElements = Object.values(newRowRef.current).map(
-            (element) => {
-              return { ...element, InstanceID: instanceId };
-            }
-          );
-
-          console.log(response, newRowRef.current, 'add after');
+          const extendedElements = newRowElements.map((element) => {
+            return { ...element, InstanceID: instanceId };
+          });
 
           saveForm(extendedElements)
             .then((response) => {
@@ -272,6 +272,11 @@ const Table = (props) => {
         }
       })
       .catch((error) => console.log(error));
+  };
+
+  const addRow = () => {
+    let elements = Object.values(newRowRef.current);
+    saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, []);
 
