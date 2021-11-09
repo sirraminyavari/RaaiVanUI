@@ -317,7 +317,7 @@
                     if (that.Options.OnSave) that.Options.OnSave(data);
                     return;
                 }
-                console.log(data);
+                
                 that.processing(true);
 
                 PrivacyAPI.SetAudience({
@@ -357,7 +357,7 @@
                 InputClass: "rv-input",
                 InputStyle: "width:100%; font-size:0.7rem;",
                 InnerTitle: RVDic.NodeTypeSelect + "...",
-                AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
+                AjaxDataSource: CNAPI.GetNodeTypesDataSource({ Extensions: ["Group", "Members", "Experts"].join(",") }),
                 ResponseParser: function (responseText) {
                     var nodeTypes = JSON.parse(responseText).NodeTypes || [];
                     var arr = [];

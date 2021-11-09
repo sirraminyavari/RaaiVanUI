@@ -44,7 +44,7 @@
                 Files: Base64.encode(JSON.stringify(files))
             });
         }
-
+        
         return Base64.encode(JSON.stringify(retVal));
     },
 

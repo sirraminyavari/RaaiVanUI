@@ -140,6 +140,15 @@
         return WFAPI._send(url, params, queryString);
     },
 
+    SetWorkFlowAction: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/SetWorkFlowAction?timeStamp=" + new Date().getTime();
+        var queryString = (params.ConnectionID ? "&ConnectionID=" + params.ConnectionID : "") +
+            (params.Action ? "&Action=" + params.Action : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
     SetStateDirector: function (params) {
         params = params || {};
 

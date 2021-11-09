@@ -8,62 +8,114 @@
         var that = this;
 
         this.Objects = {
-            ItemTypeSelect: null,
+            UsersRadio: null,
+            GroupsRadio: null,
             UsersList: null,
-            NodeTypeSelect: null,
-            NodesList: null,
+            GroupSelect: null,
             HierarchyCheckbox: null,
             BeginDate: null,
-            FinishDate: null
+            FinishDate: null,
+            Config: GlobalUtilities.extend({
+                Groups: [],
+                FullAccess: false,
+                GroupAdminAccess: false
+            }, params.Config)
         };
-
+        
         this.Options = {
             IgnoreDate: params.IgnoreDate
         };
 
         GlobalUtilities.load_files([
             { Root: "API/", Ext: "js", Childs: ["CNAPI", "UsersAPI"] },
-            "SingleDataContainer/NewSingleDataContainer.js"
+            "SingleDataContainer/NewSingleDataContainer.js",
+            "Reports/ReportGroupSelect.js"
         ], { OnLoad: function () { that._initialize(params, done); } });
     }
 
     ResumeReportParameters.prototype = {
         _initialize: function (params, done) {
             var that = this;
-            
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-6 medium-6 large-6", Style: "margin-bottom:1rem;",
-                    Childs: [{
-                        Type: "select", Class: "rv-input", Name: "itemTypeSelect",
-                        Style: "max-width:12rem; font-size:0.7rem;",
-                        Childs: [{ Name: "User", Title: RVDic.User }, { Name: "Node", Title: RVDic.Group }].map(function (key) {
-                            return {
-                                Type: "option", Attributes: [{ Name: "title", Value: key.Name }],
-                                Childs: [{ Type: "text", TextValue: key.Title }]
-                            };
-                        })
-                    }]
-                },
-                { Type: "div", Class: "small-12 medium-12 large-12" },
-                {
-                    Type: "div", Class: "small-6 medium-6 large-6", Name: "userDiv",
-                    Style: "padding-" + RV_RevFloat + ":0.5rem;",
-                    Childs: [{ Type: "div", Name: "usersList" }]
-                },
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Name: "nodeDiv", Style: "margin:0rem; display:none;",
+
+            var radioName = GlobalUtilities.random_str(10);
+            var usersId = GlobalUtilities.random_str(20);
+            var groupsId = GlobalUtilities.random_str(20);
+            var usersRadioName = usersId + "_radio";
+            var groupsRadioName = groupsId + "_radio";
+
+            var radio_section = function (options) {
+                return {
+                    Type: "div", Style: "display:flex; flex-flow:row; margin-bottom:0.5rem;",
                     Childs: [
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "nodeTypeSelect",
-                            Style: "padding-" + RV_RevFloat + ":0.5rem;"
+                            Type: "div", Style: "flex:0 0 auto; padding-" + RV_RevFloat + ":0.5rem;",
+                            Childs: [{
+                                Type: "input", Name: options.RadioName,
+                                Attributes: [
+                                    { Name: "type", Value: "radio" },
+                                    { Name: "name", Value: radioName },
+                                    { Name: "value", Value: (options || {}).Value },
+                                    (!(options || {}).Selected ? null : { Name: "checked", Value: true })
+                                ],
+                                Properties: [{ Name: "onchange", Value: function () { options.OnChange(this.checked); } }]
+                            }]
                         },
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "nodesList",
-                            Style: "padding-" + RV_Float + ":0.5rem;"
-                        },
+                            Type: "div", Style: "flex:0 0 auto;",
+                            Properties: [{ Name: "onclick", Value: () => jQuery(elems[options.RadioName]).click() }],
+                            Childs: [{ Type: "text", TextValue: (options || {}).Title }]
+                        }
+                    ]
+                };
+            };
+
+            var show = function (id) {
+                jQuery("#" + id + " *").attr("disabled", false).on('click').css({ 'pointer-events': '', 'opacity': 1 });
+            };
+
+            var hide = function (id) {
+                jQuery("#" + id + " *").attr("disabled", "disabled").off('click').css({ 'pointer-events': 'none', 'opacity': 0.8 });
+            };
+
+            var elems = GlobalUtilities.create_nested_elements([
+                (!that.Objects.Config.FullAccess ? null : radio_section({
+                    Title: RVDic.BasedOnUsers,
+                    Value: "Users", Selected: true,
+                    RadioName: usersRadioName,
+                    OnChange: () => (show(usersId), hide(groupsId))
+                })),
+                (!that.Objects.Config.FullAccess ? null : {
+                    Type: "div", ID: usersId, Class: "small-12 medium-10 large-7", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                    Childs: [
                         {
-                            Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-top:0.5rem; display:flex; flex-flow:row;",
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.SelectN.replace("[n]", RVDic.Users) + ":" }]
+                        },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "usersList" }
+                    ]
+                }),
+                { Type: "div", Class: "small-12 medium-12 large-12" },
+                (!that.Objects.Config.FullAccess ? null : radio_section({
+                    Title: RVDic.BasedOnGroups,
+                    Value: "Groups",
+                    RadioName: groupsRadioName,
+                    OnChange: () => (show(groupsId), hide(usersId))
+                })),
+                {
+                    Type: "div", ID: groupsId, Style: "margin-bottom:2rem;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                            Childs: [
+                                {
+                                    Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                                    Childs: [{ Type: "text", TextValue: RVDic.SelectN.replace("[n]", RVDic.Groups) + ":" }]
+                                },
+                                { Type: "div", Style: "flex:1 1 auto;", Name: "groups" }
+                            ]
+                        },
+                        (!that.Objects.Config.FullAccess ? null : {
+                            Type: "div", Style: "display:flex; flex-flow:row;",
                             Childs: [
                                 {
                                     Type: "div", Style: "flex:0 0 auto;",
@@ -71,10 +123,10 @@
                                 },
                                 {
                                     Type: "div", Style: "flex:1 0 auto; padding-" + RV_Float + ":0.5rem;",
-                                    Childs: [{ Type: "text", TextValue: RVDic.PRVC.CalculateHierarchy }]
+                                    Childs: [{ Type: "text", TextValue: RVDic.ConsideringTheSubGroups }]
                                 }
                             ]
-                        }
+                        })
                     ]
                 },
                 (that.Options.IgnoreDate ? null : {
@@ -94,20 +146,13 @@
                 })
             ], that.ContainerDiv);
 
-            var usersDiv = elems["userDiv"];
-            var nodeDiv = elems["nodeDiv"];
-            that.Objects.ItemTypeSelect = elems["itemTypeSelect"];
+            if (that.Objects.Config.FullAccess) setTimeout(() => hide(groupsId), 100);
+
+            that.Objects.UsersRadio = elems[usersRadioName];
+            that.Objects.GroupsRadio = elems[groupsRadioName];
             that.Objects.HierarchyCheckbox = elems["hierarchy"];
 
-            that.Objects.ItemTypeSelect.onchange = function () {
-                var itemType = this[this.selectedIndex].title;
-                jQuery(usersDiv)[itemType == "User" ? "fadeIn" : "fadeOut"](0);
-                jQuery(nodeDiv)[itemType == "Node" || itemType == "Complex" ? "fadeIn" : "fadeOut"](0);
-                jQuery(elems["nodesList"])[itemType == "Node" ? "fadeIn" : "fadeOut"](0);
-                jQuery(elems["listsList"])[itemType == "Complex" ? "fadeIn" : "fadeOut"](0);
-            };
-
-            that.Objects.UsersList = new NewSingleDataContainer(elems["usersList"], {
+            that.Objects.UsersList = !that.Objects.Config.FullAccess ? null : new NewSingleDataContainer(elems["usersList"], {
                 InputClass: "rv-input",
                 InputStyle: "width:100%; font-size:0.7rem;",
                 InnerTitle: RVDic.UserSelect + "...",
@@ -124,44 +169,11 @@
                 }
             });
 
-            that.Objects.NodeTypeSelect = GlobalUtilities.append_autosuggest(elems["nodeTypeSelect"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.NodeTypeSelect + "...",
-                AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
-                ResponseParser: function (responseText) {
-                    var nodeTypes = JSON.parse(responseText).NodeTypes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = nodeTypes.length; i < lnt; ++i)
-                        arr.push([Base64.decode(nodeTypes[i].TypeName || ""), nodeTypes[i].NodeTypeID || ""]);
-                    return arr;
-                },
-                OnSelect: function () {
-                    var index = this.selectedIndex;
-                    var nodeTypeId = this.values[index];
-                    var nodeType = this.keywords[index];
-
-                    that.Objects.NodesList.bind_data_source(CNAPI.GetNodesDataSource({ NodeTypeID: nodeTypeId }));
-                    GlobalUtilities.set_inner_title(that.Objects.NodesList.Objects.Autosuggest.InputElement, RVDic.SelectN.replace("[n]", nodeType) + "...");
-
-                    that.Objects.ListsList.bind_data_source(CNAPI.GetLists({ NodeTypeID: nodeTypeId }));
-                    GlobalUtilities.set_inner_title(that.Objects.ListsList.Objects.Autosuggest.InputElement, RVDic.ComplexSelect + "...");
-                }
-            });
-
-            that.Objects.NodesList = new NewSingleDataContainer(elems["nodesList"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.NodeSelect + "...",
-                NoButtons: true,
-                AjaxDataSource: CNAPI.GetNodesDataSource(),
-                ResponseParser: function (responseText) {
-                    var nodes = JSON.parse(responseText).Nodes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = nodes.length; i < lnt; ++i)
-                        arr.push([Base64.decode(nodes[i].Name), nodes[i].NodeID]);
-                    return arr;
-                }
+            that.Objects.GroupSelect = new ReportGroupSelect(elems["groups"], {
+                Groups: that.Objects.Config.Groups,
+                MultiSelect: true,
+                AdminMode: that.Objects.Config.FullAccess,
+                NodeTypesSelectable: false
             });
 
             if (!that.Options.IgnoreDate) {
@@ -198,14 +210,20 @@
         get_data: function () {
             var that = this;
 
-            var itemType = that.Objects.ItemTypeSelect[that.Objects.ItemTypeSelect.selectedIndex].title;
+            var itemType = (that.Objects.UsersRadio || {}).checked ? "Users" : "Groups";
+            var items = !that.Objects.GroupSelect ? {} : that.Objects.GroupSelect.get_items() || {};
+
+            if ((itemType == "Groups") && !that.Objects.Config.FullAccess && !(items.Nodes || []).length) {
+                alert(RVDic.Checks.PleaseSelectTheGroups);
+                return false;
+            }
 
             var beginDate = !that.Objects.BeginDate ? {} : that.Objects.BeginDate.Get();
             var finishDate = !that.Objects.FinishDate ? {} : that.Objects.FinishDate.Get();
 
             return GlobalUtilities.extend({
-                UserIDs: itemType == "User" ? that.Objects.UsersList.get_items_string("|") : "",
-                GroupIDs: itemType == "Node" ? that.Objects.NodesList.get_items_string("|") : "",
+                UserIDs: itemType == "Users" && that.Objects.UsersList ? that.Objects.UsersList.get_items_string("|") : "",
+                GroupIDs: itemType == "Groups" ? (items.Nodes || []).map(itm => itm.NodeID).join("|") : "",
                 Hierarchy: !that.Objects.HierarchyCheckbox ? null : that.Objects.HierarchyCheckbox.Checked
             }, that.Options.IgnoreDate ? {} : {
                 DateFrom: beginDate.Value,
@@ -218,11 +236,9 @@
         clear: function () {
             var that = this;
 
-            that.Objects.ItemTypeSelect.selectedIndex = 0;
-            that.Objects.ItemTypeSelect.onchange();
-            that.Objects.UsersList.clear();
-            that.Objects.NodeTypeSelect.clear();
-            that.Objects.NodesList.clear();
+            if (that.Objects.UsersRadio) jQuery(that.Objects.UsersRadio).click();
+            if (that.Objects.UsersList) that.Objects.UsersList.clear();
+            if (that.Objects.GroupSelect) that.Objects.GroupSelect.clear();
             if (that.Objects.HierarchyCheckbox) that.Objects.HierarchyCheckbox.uncheck();
             if (that.Objects.BeginDate) that.Objects.BeginDate.Clear();
             if (that.Objects.FinishDate) that.Objects.FinishDate.Clear();

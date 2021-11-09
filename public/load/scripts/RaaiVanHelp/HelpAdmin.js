@@ -230,7 +230,7 @@
         },
 
         _title: function (name) {
-            return (HelpUtils.get_title || function (name) { return name; })(name);
+            return (HelpUtils.get_title || function (nm) { return nm; })(name);
         },
 
         architecture: function () {
