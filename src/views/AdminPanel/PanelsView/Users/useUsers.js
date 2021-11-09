@@ -1,4 +1,8 @@
-const UsersCtrl = (props) => {
+import useWindowContext from '../../../../hooks/useWindowContext';
+
+const UseUsers = (props) => {
+  const { RV_RTL: rtl, RVDic } = useWindowContext();
+
   /**
    * @description items array to feed breadcrumbs component
    * @type {[{title: string}, {title: string}]}
@@ -6,7 +10,7 @@ const UsersCtrl = (props) => {
   const breadCrumbItems = [
     {
       id: 1,
-      title: 'مدیریت تیم',
+      title: RVDic?.TeamManagement,
       linkTo: '',
     },
     {
@@ -21,6 +25,9 @@ const UsersCtrl = (props) => {
     },
   ];
 
-  return {};
+  return {
+    rtl,
+    RVDic,
+  };
 };
-export default UsersCtrl;
+export default UseUsers;

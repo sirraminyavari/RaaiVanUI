@@ -1,6 +1,7 @@
 import useScript from 'hooks/useScript';
 import { isEmpty } from 'helpers/helpers';
-import UsersCtrl from './UsersCtrl';
+import UseUsers from './useUsers';
+import * as Styled from './UsersStyle';
 
 const Users = (props) => {
   // useScript(
@@ -18,8 +19,12 @@ const Users = (props) => {
   //     style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
   // );
 
-  const {} = UsersCtrl();
-  return <div>users...</div>;
+  const { rtl } = UseUsers();
+  return (
+    <Styled.UserManagementContainer rtl={rtl}>
+      <div>users...</div>
+    </Styled.UserManagementContainer>
+  );
 };
 
 export default Users;
