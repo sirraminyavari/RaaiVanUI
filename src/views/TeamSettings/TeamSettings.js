@@ -1,5 +1,5 @@
 import * as Styled from './TeamSettingsStyle';
-import teamSettingsCtrl from './TeamSettingsCtrl';
+import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
@@ -11,7 +11,7 @@ import CustomInput from './items/CustomInput';
 const TeamSettings = (props) => {
   const {
     rtl,
-    DIC,
+    RVDic,
     breadCrumbItems,
     fieldOfExpertiseOption,
     languageOption,
@@ -21,14 +21,14 @@ const TeamSettings = (props) => {
     applicationInfo,
     setApplicationInfo,
     saveInfo,
-  } = teamSettingsCtrl(props);
+  } = useTeamSettings(props);
 
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
         <Breadcrumb items={breadCrumbItems} />
 
-        <Styled.PageTitle>{'تنظیمات تیم'}</Styled.PageTitle>
+        <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
@@ -41,7 +41,7 @@ const TeamSettings = (props) => {
           </Styled.TeamThumbnailContainer>
 
           <CustomInput
-            placeholder={'نام تیم'}
+            placeholder={RVDic?.TeamName}
             value={applicationInfo?.Title}
             onChange={(e) =>
               setApplicationInfo({
@@ -52,7 +52,7 @@ const TeamSettings = (props) => {
           />
 
           <CustomInput
-            placeholder={'شعار / تک لاین تیم'}
+            placeholder={RVDic?.Tagline}
             light={true}
             value={applicationInfo?.Tagline}
             onChange={(e) =>
@@ -64,7 +64,7 @@ const TeamSettings = (props) => {
           />
 
           <CustomInput
-            placeholder={'وبسایت'}
+            placeholder={RVDic?.Website}
             light={true}
             value={applicationInfo?.Website}
             onChange={(e) =>
@@ -76,7 +76,7 @@ const TeamSettings = (props) => {
           />
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.FieldOfActivity}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={fieldOfExpertiseOption}
@@ -99,7 +99,7 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.TeamSize}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={teamSizeOption}
@@ -123,7 +123,7 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>زبان</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.Language}</Styled.SelectTitle>
             <CustomSelect
               isRtl={rtl}
               placeholder=""
@@ -148,7 +148,7 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.Calendar}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={calOption}
@@ -174,7 +174,7 @@ const TeamSettings = (props) => {
           <Styled.FieldWrapper>
             <AnimatedTextArea
               autoresize={true}
-              label={'درباره تیم'}
+              label={RVDic?.About.replace('[n]', RVDic?.Team)}
               rtl={rtl}
               value={applicationInfo?.About}
               onChange={(e) =>
@@ -196,7 +196,7 @@ const TeamSettings = (props) => {
                 borderRadius: '0.8rem',
               }}
               onClick={saveInfo}>
-              ذخیره
+              {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>
         </Styled.FormWrapper>

@@ -22,10 +22,10 @@ import {
   TEN_TO_TWENTY,
 } from '../../constant/constants';
 
-const teamSettingsCtrl = (props) => {
+const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
 
-  const { RV_RTL: rtl, RVDic: DIC } = useWindow();
+  const { RV_RTL: rtl, RVDic } = useWindow();
 
   const [fieldOfExpertiseOption, setFieldOfExpertiseOption] = useState([]);
   const [applicationInfo, setApplicationInfo] = useState({
@@ -50,7 +50,7 @@ const teamSettingsCtrl = (props) => {
       }));
       setFieldOfExpertiseOption(fields);
     } catch (err) {
-      console.log('call api error: ' + err);
+      console.log('call api error: ', err);
     }
   }, []);
 
@@ -61,34 +61,34 @@ const teamSettingsCtrl = (props) => {
   const breadCrumbItems = [
     {
       id: 1,
-      title: 'مدیریت تیم',
+      title: RVDic?.TeamManagement,
       linkTo: '',
     },
     {
       id: 2,
-      title: 'تنظیمات تیم',
+      title: RVDic?.TeamInfo,
       linkTo: '',
     },
   ];
 
   const languageOption = [
-    { value: PERSIAN_LANGUAGE, label: 'فارسی' },
-    { value: ENGLISH_LANGUAGE, label: 'English' },
-    { value: ARABIC_LANGUAGE, label: 'Arabic' },
-    { value: KURDISH_LANGUAGE, label: 'Kurdish' },
+    { value: PERSIAN_LANGUAGE, label: RVDic?.X?.Language?.Farsi },
+    { value: ENGLISH_LANGUAGE, label: RVDic?.X?.Language?.English },
+    // { value: ARABIC_LANGUAGE, label: RVDic?.X?.Language?.Arabic },
+    // { value: KURDISH_LANGUAGE, label: RVDic?.X?.Language?.Kurdish },
   ];
 
   const calOption = [
-    { value: JALALI_CALENDAR, label: 'هجری شمسی' },
-    { value: LUNAR_CALENDAR, label: 'هجری قمری' },
-    { value: GREGORIAN_CALENDAR, label: 'میلادی (Gregorian)' },
-    { value: KURDISH_CALENDAR, label: 'گاه شماری کردی' },
+    { value: JALALI_CALENDAR, label: RVDic?.X?.Calendar?.Jalali },
+    // { value: LUNAR_CALENDAR, label: RVDic?.X?.Calendar?.LunarHijri },
+    { value: GREGORIAN_CALENDAR, label: RVDic?.X?.Calendar?.Gregorian },
+    // { value: KURDISH_CALENDAR, label: RVDic?.X?.Calendar?.Kurdish },
   ];
 
   const teamSizeOption = [
     { value: ONE_TO_TEN, label: '1 - 10' },
     { value: TEN_TO_TWENTY, label: '10 - 20' },
-    { value: MORE_THEN_TWENTY, label: 'بیشتر از 20' },
+    { value: MORE_THEN_TWENTY, label: RVDic?.MoreThanN?.replace('[n]', 20) },
   ];
 
   const saveInfo = async () => {
@@ -136,8 +136,8 @@ const teamSettingsCtrl = (props) => {
     languageOption,
     calOption,
     teamSizeOption,
-    DIC,
+    RVDic,
     saveInfo,
   };
 };
-export default teamSettingsCtrl;
+export default useTeamSettings;
