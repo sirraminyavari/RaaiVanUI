@@ -22,7 +22,7 @@ import {
   TEN_TO_TWENTY,
 } from '../../constant/constants';
 
-const useTeamSettings = (props) => {
+const teamSettingsCtrl = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
 
   const { RV_RTL: rtl, RVDic: DIC } = useWindow();
@@ -140,4 +140,4 @@ const useTeamSettings = (props) => {
     saveInfo,
   };
 };
-export default useTeamSettings;
+export default teamSettingsCtrl;

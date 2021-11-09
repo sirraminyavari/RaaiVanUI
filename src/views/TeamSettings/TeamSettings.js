@@ -1,5 +1,5 @@
 import * as Styled from './TeamSettingsStyle';
-import useTeamSettings from './useTeamSettings';
+import teamSettingsCtrl from './TeamSettingsCtrl';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import AnimatedTextArea from './items/AnimatedTextArea';
 import Button from '../../components/Buttons/Button';
@@ -21,7 +21,7 @@ const TeamSettings = (props) => {
     applicationInfo,
     setApplicationInfo,
     saveInfo,
-  } = useTeamSettings(props);
+  } = teamSettingsCtrl(props);
 
   return (
     <Styled.TeamSettingsCardWrapper>
