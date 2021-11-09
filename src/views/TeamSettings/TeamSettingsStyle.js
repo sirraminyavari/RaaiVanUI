@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Heading from '../../components/Heading/Heading';
+import Button from '../../components/Buttons/Button';
 
 export const TeamSettingsCardWrapper = styled.div`
   padding: 0 1rem;
