@@ -1,5 +1,6 @@
 import useScript from 'hooks/useScript';
 import { isEmpty } from 'helpers/helpers';
+import UsersCtrl from './UsersCtrl';
 
 const Users = (props) => {
   // useScript(
@@ -17,6 +18,7 @@ const Users = (props) => {
   //     style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
   // );
 
+  const {} = UsersCtrl();
   return <div>users...</div>;
 };
 
