@@ -1,3 +1,6 @@
+/**
+ * @description View component of Team Info
+ */
 import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
@@ -174,7 +177,7 @@ const TeamSettings = (props) => {
           <Styled.FieldWrapper>
             <AnimatedTextArea
               autoresize={true}
-              label={RVDic?.About.replace('[n]', RVDic?.Team)}
+              label={RVDic?.AboutN?.replace('[n]', RVDic?.Team)}
               rtl={rtl}
               value={applicationInfo?.About}
               onChange={(e) =>
