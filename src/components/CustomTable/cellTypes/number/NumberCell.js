@@ -14,12 +14,19 @@ const NumberCell = (props) => {
     columnId,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const numberRef = useRef();
 
-  useOnClickOutside(numberRef, () => setSelectedCell(null));
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      handleUpdateCell();
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(numberRef, handleClickOutside);
 
   const { FloatValue } = value || {};
 
@@ -32,7 +39,7 @@ const NumberCell = (props) => {
   };
 
   //! We'll only update the external data when the input is blurred.
-  const handleInputBlur = () => {
+  const handleUpdateCell = () => {
     if (originalValueRef.current === numberValue) return;
 
     let numberCell = {
@@ -47,11 +54,11 @@ const NumberCell = (props) => {
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
     return (
-      <div onClick={() => setSelectedCell(cell)}>
+      <div>
         {!!numberValue ? (
           <Styled.CellView type="h4">{numberValue}</Styled.CellView>
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </div>
     );
@@ -62,7 +69,7 @@ const NumberCell = (props) => {
       <NumberIcon size={25} color={CV_DISTANT} />
       <Input
         onChange={handleInputChange}
-        onBlur={handleInputBlur}
+        // onBlur={() => console.log('blur')}
         className="table-number-input"
         type="number"
         value={numberValue}

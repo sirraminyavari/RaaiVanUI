@@ -17,12 +17,12 @@ const DateCell = (props) => {
     columnId,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const dateRef = useRef();
 
-  useOnClickOutside(dateRef, () => setSelectedCell(null));
+  useOnClickOutside(dateRef, () => isSelectedCell && setSelectedCell(null));
 
   const { DateValue } = value || {};
 
@@ -50,18 +50,18 @@ const DateCell = (props) => {
 
     let dateCell = { ...value, DateValue: dateString };
 
-    onCellChange(rowId, columnId, dateCell, date);
+    isSelectedCell && onCellChange(rowId, columnId, dateCell, date);
   };
 
   if (!canEdit) {
     return (
-      <Styled.CellViewContainer onClick={() => setSelectedCell(cell)}>
+      <Styled.CellViewContainer>
         {!!DateValue ? (
           <Heading style={{ color: CV_GRAY_DARK }} type="h4">
             {showFormat}
           </Heading>
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </Styled.CellViewContainer>
     );

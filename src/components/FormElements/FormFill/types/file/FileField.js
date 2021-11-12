@@ -9,7 +9,7 @@ import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
 
 const FileField = (props) => {
-  const { GlobalUtilities } = useWindow();
+  const { GlobalUtilities, RVDic } = useWindow();
 
   const {
     value,
@@ -80,7 +80,7 @@ const FileField = (props) => {
           accept={['image/*']} //! (infoJSON?.AllowedExtensions)
           onUpload={handleUploadFile}
           placeholders={{
-            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+            main: RVDic.DropFilesHere,
             dragging: 'اینجا رها کنید...',
           }}
           onError={(error) => console.log(error)}

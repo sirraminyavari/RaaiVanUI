@@ -12,12 +12,19 @@ const TextCell = (props) => {
     columnId,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const textRef = useRef();
 
-  useOnClickOutside(textRef, () => setSelectedCell(null));
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      handleInputBlur();
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(textRef, handleClickOutside);
 
   const { TextValue } = value || {};
 
@@ -41,11 +48,11 @@ const TextCell = (props) => {
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
     return (
-      <div onClick={() => setSelectedCell(cell)}>
+      <div>
         {!!textValue ? (
           <Styled.CellView type="h4">{textValue}</Styled.CellView>
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </div>
     );
@@ -55,7 +62,7 @@ const TextCell = (props) => {
     <Styled.InputCellWrapper ref={textRef}>
       <Input
         onChange={handleInputChange}
-        onBlur={handleInputBlur}
+        // onBlur={() => console.log('blur')} //! Not working due to  input ref clear before it catches the blur event.
         className="table-number-input"
         type="text"
         value={textValue}

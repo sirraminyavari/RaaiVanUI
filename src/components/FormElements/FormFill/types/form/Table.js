@@ -92,24 +92,37 @@ const Table = (props) => {
       .catch((error) => console.log(error));
   };
 
+  const updateRowCell = (rowId, columnId, cell) => {
+    setRows((oldRows) =>
+      oldRows.map((row) => {
+        if (row?.id === rowId) {
+          return {
+            ...row,
+            [columnId]: cell,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
   //! Fires on every cell update.
-  const updateCellData = (rowId, columnId, cellData, cellValue) => {
-    console.log(cellData, 'step one');
+  const updateCellData = (rowId, columnId, newCellData, oldCellValue) => {
+    // console.log({ newCellData }, { oldCellValue }, 'step one');
     const isNewRow = rowId.split('_')[0] === 'new';
 
     if (isNewRow) {
+      saveRow([newCellData]);
     } else {
-      setRows((old) =>
-        old.map((row) => {
-          if (row?.id === rowId) {
-            return {
-              ...row,
-              [columnId]: cellData,
-            };
-          }
-          return row;
+      saveForm([newCellData])
+        .then(() => {
+          updateRowCell(rowId, columnId, newCellData);
         })
-      );
+        .catch((error) => {
+          // console.log(error, 'save row error')
+          // updateRowCell(rowId, columnId, oldCellValue);
+        });
+      updateRowCell(rowId, columnId, newCellData);
     }
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
@@ -342,8 +355,8 @@ const Table = (props) => {
         { id: tempRowId }
       );
 
+    beforeEditRowsRef.current = newRow;
     setRows((oldRows) => [newRow, ...oldRows]);
-    beforeEditRowsRef.current = rows;
   };
 
   return (

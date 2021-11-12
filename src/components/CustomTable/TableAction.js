@@ -5,9 +5,11 @@ import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import useWindow from 'hooks/useWindowContext';
 
 const TableAction = ({ onAddItem, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
+  const { RVDic } = useWindow();
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
@@ -34,7 +36,7 @@ const TableAction = ({ onAddItem, onSearch, data }) => {
         <Input
           type="text"
           style={{ width: '100%' }}
-          placeholder="جستجو در جدول"
+          placeholder={RVDic.SearchInN.replace('[n]', RVDic.Table)}
           onChange={handleInputChange}
         />
         <SearchIcon
@@ -51,7 +53,7 @@ const TableAction = ({ onAddItem, onSearch, data }) => {
             className="table-add-new-item-icon"
           />
           <Button type="primary-o" classes="table-add-new-item-button">
-            ایجاد آیتم جدید
+            {RVDic.CreateNewN.replace('[n]', RVDic.Node)}
           </Button>
         </Styled.ActionButton>
       </Styled.TableButtonsWrapper>

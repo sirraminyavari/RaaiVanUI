@@ -15,12 +15,12 @@ const BinaryCell = (props) => {
     isNewRow,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const toggleRef = useRef();
 
-  useOnClickOutside(toggleRef, () => setSelectedCell(null));
+  useOnClickOutside(toggleRef, () => isSelectedCell && setSelectedCell(null));
 
   const { Info, TextValue, BitValue } = value || {};
   const binaryInfo = Info || {};
@@ -31,26 +31,23 @@ const BinaryCell = (props) => {
   const handleToggle = (toggleValue) => {
     const textValue = toggleValue ? binaryOptions.yes : binaryOptions.no;
 
-    let binaryCell = {
+    let newBinaryCell = {
       ...value,
       BitValue: toggleValue,
       TextValue: textValue,
       Filled: true,
     };
 
-    onCellChange(rowId, columnId, binaryCell, {
-      toggleValue,
-      textValue,
-    });
+    isSelectedCell && onCellChange(rowId, columnId, newBinaryCell, value);
   };
 
   if (!canEdit) {
     return (
-      <Styled.CellViewContainer onClick={() => setSelectedCell(cell)}>
+      <Styled.CellViewContainer>
         {TextValue ? (
           <Styled.CellView type="h4">{TextValue}</Styled.CellView>
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </Styled.CellViewContainer>
     );

@@ -102,7 +102,7 @@ const ArchivedModal = (props) => {
                       <Avatar
                         radius={30}
                         userImage={archive?.IconURL}
-                        style={{ minWidth: '2.1rem' }}
+                        style={{ minWidth: '2.2rem', maxWidth: '2.2rem' }}
                       />
                       <Styled.ArchivedTeamTitle>
                         {decodeBase64(archive?.Title)}

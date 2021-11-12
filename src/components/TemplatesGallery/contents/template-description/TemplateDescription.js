@@ -133,7 +133,7 @@ const TemplateDescription = () => {
           loading={isActivating}
           onClick={handleActivateTemplate}
           classes="activate-template-button">
-          استفاده از این قالب
+          {RVDic.UseThisN.replace('[n]', RVDic.Template)}
         </Button>
         <Styled.TemplateDescription>
           {decodeBase64(currentTemplate?.Description) || 'Template Description'}

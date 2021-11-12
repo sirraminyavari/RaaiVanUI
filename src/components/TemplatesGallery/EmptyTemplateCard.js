@@ -1,7 +1,10 @@
 import * as Styled from './TemplatesGallery.styles';
 import EmptyStates from 'components/EmptyState/EmptyState';
+import useWindow from 'hooks/useWindowContext';
 
 const EmptyTemplateCard = () => {
+  const { RVDic } = useWindow();
+
   return (
     <Styled.TemplateCardContainer style={{ border: 'none' }}>
       <EmptyStates />
@@ -10,7 +13,7 @@ const EmptyTemplateCard = () => {
           textAlign: 'center',
           fontSize: '1rem',
         }}>
-        هیچ پیشنهادی یافت نشد!
+        {RVDic.MSG.NoSuggestionsFound}
       </div>
     </Styled.TemplateCardContainer>
   );

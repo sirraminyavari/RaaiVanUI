@@ -9,14 +9,14 @@ import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 // import { removeFile } from 'apiHelper/apiFunctions';
-// import useWindow from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
 
   const {
     value,
@@ -26,12 +26,12 @@ const FileCell = (props) => {
     isNewRow,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const fileRef = useRef();
 
-  useOnClickOutside(fileRef, () => setSelectedCell(null));
+  useOnClickOutside(fileRef, () => isSelectedCell && setSelectedCell(null));
 
   const { Files: initialFiles, ElementID } = value || {};
 
@@ -63,7 +63,7 @@ const FileCell = (props) => {
       return { ...file, OwnerID: ElementID };
     });
     const fileCell = { ...value, Files: extendedFiles };
-    onCellChange(rowId, columnId, fileCell, extendedFiles);
+    isSelectedCell && onCellChange(rowId, columnId, fileCell, extendedFiles);
   };
 
   const handleRemoveFile = useCallback((fileId) => {
@@ -128,7 +128,10 @@ const FileCell = (props) => {
                     toastId: accepted?.name,
                     type: 'info',
                     autoClose: true,
-                    message: `${accepted?.name} با موفقیت بارگذاری شد`,
+                    message: RVDic.MSG.NUploadedSuccessfully.replace(
+                      '[n]',
+                      accepted?.name
+                    ),
                   });
                 }
               })
@@ -150,18 +153,14 @@ const FileCell = (props) => {
         canEdit={canEdit}
         onRemoveFile={handleRemoveFile}
       />
-      {!files?.length && !isUploading && (
+      {/* {!files?.length && !isUploading && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
+      )} */}
     </>
   );
 
   if (!canEdit) {
-    return (
-      <Styled.FileCellContainer onClick={() => setSelectedCell(cell)}>
-        {renderFiles()}
-      </Styled.FileCellContainer>
-    );
+    return <Styled.FileCellContainer>{renderFiles()}</Styled.FileCellContainer>;
   }
 
   return (

@@ -23,12 +23,12 @@ const NodeCell = (props) => {
     isNewRow,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const nodeRef = useRef();
 
-  useOnClickOutside(nodeRef, () => setSelectedCell(null));
+  useOnClickOutside(nodeRef, () => isSelectedCell && setSelectedCell(null));
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
   const { Info, SelectedItems: initialItems } = value || {};
@@ -61,7 +61,7 @@ const NodeCell = (props) => {
       GuidItems: items,
     };
 
-    onCellChange(rowId, columnId, nodeCell, items);
+    isSelectedCell && onCellChange(rowId, columnId, nodeCell, items);
   };
 
   const handleSelectButtonClick = () => {
@@ -118,18 +118,14 @@ const NodeCell = (props) => {
         canEdit={canEdit}
         onRemoveNode={handleRemoveItem}
       />
-      {!selectedItems?.length && (
+      {/* {!selectedItems?.length && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
+      )} */}
     </>
   );
 
   if (!canEdit) {
-    return (
-      <Styled.NodeCellContainer onClick={() => setSelectedCell(cell)}>
-        {renderNodes()}
-      </Styled.NodeCellContainer>
-    );
+    return <Styled.NodeCellContainer>{renderNodes()}</Styled.NodeCellContainer>;
   }
 
   return (

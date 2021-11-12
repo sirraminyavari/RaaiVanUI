@@ -18,18 +18,15 @@ const FormField = (props) => {
   const { FormID: tableId } = toJSON(decodeInfo);
 
   const renderTable = () => {
-    if (tableData && tableData.length > 0) {
-      return (
-        <Table
-          tableColumns={tableColumns}
-          tableData={tableData}
-          tableOwnerId={elementId}
-          tableId={tableId}
-          editByCell={true}
-        />
-      );
-    }
-    return null;
+    return (
+      <Table
+        tableColumns={tableColumns}
+        tableData={tableData}
+        tableOwnerId={elementId}
+        tableId={tableId}
+        editByCell={true}
+      />
+    );
   };
 
   return (

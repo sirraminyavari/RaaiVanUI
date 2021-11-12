@@ -257,7 +257,7 @@ const CustomTable = (props) => {
                                       {...cell.getCellProps([
                                         {
                                           ...getCellProps(cell),
-                                          // onClick: () => setSelectedCell(cell),
+                                          onClick: () => setSelectedCell(cell),
                                         },
                                       ])}>
                                       {cell.render('Cell', {

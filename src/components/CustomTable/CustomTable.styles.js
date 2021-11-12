@@ -463,7 +463,7 @@ export const ActionButton = styled.div`
 
   .table-add-new-item-icon {
     ${commonActionIconCss}
-    right: 1.5rem;
+    ${RV_Float}: 1rem;
   }
 
   .table-select-item-icon {

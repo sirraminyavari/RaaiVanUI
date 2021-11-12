@@ -100,6 +100,7 @@ export const useCellProps = (cellProps) => {
     header,
     selectedCell,
     tempRowId,
+    cell,
   } = cellProps;
 
   let rowId = row?.original?.id;
@@ -113,12 +114,16 @@ export const useCellProps = (cellProps) => {
   let canEdit =
     (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
     isNewRow;
+  let isSelectedCell =
+    selectedRowId === cell?.row?.original?.id &&
+    selectedColumnId === cell?.column?.id;
 
   return {
     rowId,
     columnId,
     selectedRowId,
     selectedColumnId,
+    isSelectedCell,
     isCellEditable,
     isRowEditing,
     isCellEditing,

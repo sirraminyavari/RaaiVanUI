@@ -20,13 +20,16 @@ const MultiLevelCell = (props) => {
     canEdit,
     isRowEditing,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const { RVDic } = useWindow();
   const multilevelRef = useRef();
 
-  useOnClickOutside(multilevelRef, () => setSelectedCell(null));
+  useOnClickOutside(
+    multilevelRef,
+    () => isSelectedCell && setSelectedCell(null)
+  );
 
   const { Info, SelectedItems } = value || {};
   const selectedItemsName = SelectedItems?.map((item) =>
@@ -79,7 +82,8 @@ const MultiLevelCell = (props) => {
       TextValue: '',
     };
 
-    onCellChange(rowId, columnId, multiLevelCell, selectedItems);
+    isSelectedCell &&
+      onCellChange(rowId, columnId, multiLevelCell, selectedItems);
   };
 
   //! Get options for each level.
@@ -175,13 +179,13 @@ const MultiLevelCell = (props) => {
   //! Show mode and not new.
   if (!canEdit) {
     return (
-      <div onClick={() => setSelectedCell(cell)}>
+      <div>
         {!!SelectedItems?.length ? (
           <Styled.CellView type="h4">
             {selectedItemsName.join(' / ')}
           </Styled.CellView>
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </div>
     );

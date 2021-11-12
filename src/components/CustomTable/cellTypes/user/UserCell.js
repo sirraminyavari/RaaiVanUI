@@ -18,12 +18,12 @@ const UserCell = (props) => {
     isNewRow,
     canEdit,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const userRef = useRef();
 
-  useOnClickOutside(userRef, () => setSelectedCell(null));
+  useOnClickOutside(userRef, () => isSelectedCell && setSelectedCell(null));
 
   const { SelectedItems: initialUsers, Info } = value || {};
 
@@ -82,7 +82,7 @@ const UserCell = (props) => {
       : [newUser];
 
     setUsers(newUsersArray);
-    updateUserCell(newUsersArray);
+    isSelectedCell && updateUserCell(newUsersArray);
   };
 
   const handleRemoveUser = useCallback((person) => {
@@ -90,7 +90,7 @@ const UserCell = (props) => {
       (user) => user?.UserID !== person?.UserID
     );
     setUsers(newUsersArray);
-    updateUserCell(newUsersArray);
+    isSelectedCell && updateUserCell(newUsersArray);
   }, []);
 
   const renderUsers = () => (
@@ -100,17 +100,15 @@ const UserCell = (props) => {
         onRemoveUser={handleRemoveUser}
         canEdit={canEdit}
       />
-      {!users?.length && (
+      {/* {!users?.length && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
+      )} */}
     </>
   );
 
   if (!canEdit) {
     return (
-      <Styled.UsersCellContainer onClick={() => setSelectedCell(cell)}>
-        {renderUsers()}
-      </Styled.UsersCellContainer>
+      <Styled.UsersCellContainer>{renderUsers()}</Styled.UsersCellContainer>
     );
   }
 

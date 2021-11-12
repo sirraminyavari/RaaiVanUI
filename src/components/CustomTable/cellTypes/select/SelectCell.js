@@ -15,12 +15,19 @@ const SelectCell = (props) => {
     canEdit,
     multiSelect,
     setSelectedCell,
-    cell,
+    isSelectedCell,
   } = useCellProps(props);
 
   const selectRef = useRef();
 
-  useOnClickOutside(selectRef, () => setSelectedCell(null));
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      handleUpdateCell();
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(selectRef, handleClickOutside);
 
   const { Info, TextValue } = value || {};
   const { Options } = Info || {};
@@ -55,13 +62,12 @@ const SelectCell = (props) => {
   const originalValueRef = useRef(TextValue);
 
   const handleSelectChange = (values) => {
-    // console.log(values);
     setDefaultValues(values);
   };
 
-  const handleOnMenuClose = () => {
+  const handleUpdateCell = () => {
     const textValue = !!multiSelect
-      ? defaultValues.map((x) => x.value).join(' ~ ')
+      ? defaultValues?.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
 
     if (originalValueRef.current === textValue) return;
@@ -76,9 +82,9 @@ const SelectCell = (props) => {
 
   if (!canEdit) {
     return (
-      <div onClick={() => setSelectedCell(cell)}>
-        {defaultValues?.map((x) => x?.label).length ? (
-          defaultValues
+      <div>
+        {initialValues?.map((x) => x?.label)?.length ? (
+          initialValues
             ?.map((x) => x?.label)
             .map((item, key) => (
               <Styled.SelectedItem type="h4" key={key}>
@@ -86,7 +92,7 @@ const SelectCell = (props) => {
               </Styled.SelectedItem>
             ))
         ) : (
-          <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
       </div>
     );
@@ -95,7 +101,7 @@ const SelectCell = (props) => {
   return (
     <Styled.SelectWrapper ref={selectRef}>
       <CustomSelect
-        defaultValue={defaultValues}
+        defaultValue={initialValues}
         isMulti={!!multiSelect}
         hideSelectedOptions={false}
         closeMenuOnSelect={false}
@@ -104,7 +110,7 @@ const SelectCell = (props) => {
         placeholder="انتخاب کنید"
         options={options}
         onChange={handleSelectChange}
-        onMenuClose={handleOnMenuClose}
+        // onMenuClose={handleUpdateCell}
         styles={Styled.selectStyles}
         menuPortalTarget={document.body}
         menuShouldScrollIntoView={false}
