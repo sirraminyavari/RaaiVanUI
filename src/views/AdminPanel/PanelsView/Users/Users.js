@@ -2,6 +2,10 @@ import useScript from 'hooks/useScript';
 import { isEmpty } from 'helpers/helpers';
 import UseUsers from './useUsers';
 import * as Styled from './UsersStyle';
+import Breadcrumb from '../../../../components/Breadcrumb/Breadcrumb';
+import { BreadCrumbWrapper } from './UsersStyle';
+import SearchUserInput from './items/SearchUserInput';
+import InvitationButton from './items/InvitationButton';
 
 const Users = (props) => {
   // useScript(
@@ -19,10 +23,18 @@ const Users = (props) => {
   //     style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
   // );
 
-  const { rtl } = UseUsers();
+  const { rtl, breadCrumbItems } = UseUsers();
   return (
     <Styled.UserManagementContainer rtl={rtl}>
-      <div>users...</div>
+      <Styled.UserManagementContentCard>
+        <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={rtl} />
+        <Styled.HeadingWrapper>{'اعضای تیم'}</Styled.HeadingWrapper>
+
+        <Styled.TopBar>
+          <SearchUserInput placeholder={'فیلتر براساس نام کاربر'} />
+          <InvitationButton>{'دعوت هم تیمی جدید'}</InvitationButton>
+        </Styled.TopBar>
+      </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>
   );
 };

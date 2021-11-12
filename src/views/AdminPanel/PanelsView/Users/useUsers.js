@@ -28,6 +28,7 @@ const UseUsers = (props) => {
   return {
     rtl,
     RVDic,
+    breadCrumbItems,
   };
 };
 export default UseUsers;
