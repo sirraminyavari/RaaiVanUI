@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
@@ -9,6 +9,7 @@ import { CV_GRAY } from 'constant/CssVariables';
 import { isArray } from 'lodash-es';
 import SelectedItem from './SelectedItems';
 import AddButton from '../../items/AddButton';
+import { decodeBase64 } from 'helpers/helpers';
 
 const { RVDic, GlobalUtilities } = window;
 const { to_json } = GlobalUtilities || {};
@@ -28,15 +29,24 @@ const SubjectField = ({
   const [selectedItems, setSelectedItems] = useState([]);
   const [editMode, setEditMode] = useState(false);
 
+  useEffect(() => {
+    const readyToSave = selectedItems?.map((x) => {
+      return { ID: x.NodeID, Name: decodeBase64(x.Name), IconURL: x.IconURL };
+    });
+    onAnyFieldChanged(elementId, readyToSave, type);
+  }, [selectedItems]);
   const onClose = () => {
     setIsVisible(false);
   };
   const onRemove = (e) => {
-    setSelectedItems(selectedItems.filter((x) => x.NodeID !== e.NodeID));
+    console.log(e, 'e', value, 'value');
+    setSelectedItems(selectedItems.filter((x) => x.NodeID !== e.ID));
   };
   const onSave = () => {
+    save(elementId);
     setEditMode(!editMode);
   };
+
   const parseDecodeInfo = to_json(decodeInfo);
 
   return (
@@ -47,20 +57,28 @@ const SubjectField = ({
         style={{ padding: '0', height: '50%' }}
         stick
         show={isVisible}>
+        {console.log(value, 'value $$$$$ ^^^^ $$$$$')}
         <ItemSelection
           nodeTypes={parseDecodeInfo?.NodeTypes}
           routeProps={propsContext}
           multiSelection={parseDecodeInfo?.MultiSelect}
           //join('|')
-          onClose={() => setIsVisible(false)}
+          onClose={() => {
+            setIsVisible(false);
+          }}
           onSelectedItems={(e) => {
             if (parseDecodeInfo?.MultiSelect) {
-              isArray(e) && setIsVisible(false);
+              if (isArray(e)) {
+                setIsVisible(false);
+                setEditMode(true);
+              }
+
               setSelectedItems(e);
-              console.log(e, 'onSelectedItems');
+              console.log(e, 'onSelectedItems single');
             } else {
               setSelectedItems([e]);
               setIsVisible(false);
+              setEditMode(true);
             }
           }}
         />
@@ -72,9 +90,9 @@ const SubjectField = ({
         onSave={onSave}
         iconComponent={<AtIcon color={CV_GRAY} />}
         title={decodeTitle}>
-        {selectedItems?.length > 0 ? (
+        {value?.length > 0 ? (
           <EditModeContainer>
-            {selectedItems.map((x) => (
+            {value.map((x) => (
               <SelectedItem item={x} onRemove={onRemove} editMode={editMode} />
             ))}
             {editMode && <AddButton onClick={() => setIsVisible(true)} />}

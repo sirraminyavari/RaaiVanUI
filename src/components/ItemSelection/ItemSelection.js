@@ -97,7 +97,9 @@ const ItemSelection = ({
               }
               onFetchCounts={setClasses}
               nodeTypeIds={nodeTypes?.map((x) => x?.NodeTypeID).join('|')}
-              onClickItem={onSelectedItems}
+              onClickItem={(e) =>
+                multiSelection ? () => {} : onSelectedItems(e)
+              }
               itemSelectionMode={true}
               multiSelection={multiSelection}
             />

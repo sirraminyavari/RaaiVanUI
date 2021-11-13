@@ -1,15 +1,31 @@
-import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import React, { useState, useEffect } from 'react';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_WHITE,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import UserIcon from 'components/Icons/UserIcon/User';
+import EditContributersModal from './EditContributersModal';
+import UserIconIo from 'components/Icons/UserIconIo';
+import { decodeBase64 } from 'helpers/helpers';
+import Button from 'components/Buttons/Button';
+import PencilIcon from 'components/Icons/EditIcons/Pencil';
 
 const { GlobalUtilities, RV_Float, RV_RTL } = window;
-const Creators = ({ creatorsList }) => {
+const Creators = ({ creatorsList, nodeDetails }) => {
+  const dialogRef = useRef();
   const [hoverCreators, sethoverCreators] = useState(false);
+  const [editContModalVisible, setEditContModalVisible] = useState(false);
+  const [contributors, setContributors] = useState([]);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      sethoverCreators(false);
+      if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+        sethoverCreators(false);
+      }
     }
 
     // Bind the event listener
@@ -19,32 +35,53 @@ const Creators = ({ creatorsList }) => {
       document?.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const contributers = nodeDetails?.Contributors?.Value?.map((x) => {
+      return {
+        avatarUrl: x?.ProfileImageURL,
+        id: x?.UserID,
+        name: decodeBase64(x?.FirstName) + ' ' + decodeBase64(x?.LastName),
+        percent: +x?.Share,
+      };
+    });
+
+    setContributors(contributers);
+  }, [creatorsList]);
+
+  const editContributors = () => {
+    console.log('edit cont');
+    setEditContModalVisible(true);
+  };
   return (
     <>
-      {creatorsList?.length > 0 && (
+      {console.log(RV_RTL, 'RV_RTL')}
+      {contributors?.length > 0 ? (
         <Maintainer
-          onMouseLeave={() => sethoverCreators(false)}
-          onMouseEnter={() => sethoverCreators(true)}>
-          {creatorsList?.length > 2 ? (
+          ref={dialogRef}
+          // onMouseLeave={() => sethoverCreators(false)}
+          onClick={() => sethoverCreators(true)}>
+          {contributors?.length > 2 ? (
             <MultiCreator>
-              <Profile src={creatorsList[0].avatar} isSaas={false} />
-              <Others>{`+${creatorsList?.length - 1}`}</Others>
+              <Profile src={contributors[0].avatarUrl} isSaas={false} />
+              <Others>{`+${contributors?.length - 1}`}</Others>
             </MultiCreator>
           ) : (
             <>
-              {creatorsList?.length === 2 ? (
+              {contributors?.length === 2 ? (
                 <MultiCreator>
                   <Profile
                     // style={{ zIndex: `${GlobalUtilities.zindex.alert()}` }}
-                    src={creatorsList[0].avatar}
+                    src={contributors[0].avatarUrl}
                     isSaas={false}
                   />
                   <Profile
                     style={{
                       position: 'relative',
-                      right: '-0.5rem',
+                      ...(RV_RTL && { right: '-0.5rem' }),
+                      ...(!RV_RTL && { left: '-0.5rem' }),
                     }}
-                    src={creatorsList[0].avatar}
+                    src={contributors[1].avatarUrl}
                     isSaas={false}
                   />
                 </MultiCreator>
@@ -54,7 +91,7 @@ const Creators = ({ creatorsList }) => {
                     position: 'relative',
                     right: '-0.5rem',
                   }}
-                  src={creatorsList[0].avatar}
+                  src={contributors[0].avatarUrl}
                   isSaas={false}
                 />
               )}
@@ -63,32 +100,62 @@ const Creators = ({ creatorsList }) => {
           <VerticalList
             $hoverCreators={hoverCreators}
             className={'rv-bg-color-white rv-border-radius-half'}>
+            <Button onClick={editContributors} type={'secondary-o'}>
+              <CustomEditIcon size={'1rem'} />
+              {'ویرایش مشارکت کنندگان'}
+            </Button>
             <PerfectScrollbar style={{ maxHeight: '14rem' }}>
-              {creatorsList?.map((x) => {
-                const { name, avatar } = x || {};
+              {contributors?.map((x) => {
+                const { name, avatarUrl, percent, id } = x || {};
                 return (
-                  <ListItem>
-                    <Profile src={avatar} />
-                    <ProducerName className="rv-gray">{name}</ProducerName>
+                  <ListItem key={id}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <Profile src={avatarUrl} />
+                      <ProducerName className="rv-gray">
+                        {name.length > 20
+                          ? `${name.substring(0, 20)}...`
+                          : name}
+                      </ProducerName>
+                    </div>
+                    <ContributePercent>{`%${percent}`}</ContributePercent>
                   </ListItem>
                 );
               })}
             </PerfectScrollbar>
           </VerticalList>
         </Maintainer>
+      ) : (
+        <UserIconIo onClick={editContributors} color={CV_GRAY} />
       )}
+      <EditContributersModal
+        isVisible={editContModalVisible}
+        nodeDetails={nodeDetails}
+        onClose={() => setEditContModalVisible(false)}
+        onUpdateContributors={setContributors}
+        recentContributors={contributors}
+      />
     </>
   );
 };
 export default Creators;
 
-const Maintainer = styled.div``;
+const Maintainer = styled.div`
+  cursor: pointer;
+`;
 const Profile = styled.img`
   max-width: 2.5rem;
   max-height: 2.5rem;
   border-radius: 1.5rem;
   width: auto;
   height: auto;
+  border-width: 0.09rem;
+  border-style: solid;
+  border-color: ${CV_WHITE};
   // z-index: ${GlobalUtilities.zindex.alert()};
 `;
 const Others = styled.div`
@@ -115,7 +182,7 @@ const VerticalList = styled.div`
   position: absolute;
   margin-top: 1rem;
   box-shadow: 1px 3px 20px ${CV_DISTANT};
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
   min-width: 10rem;
   ${() => (RV_RTL ? 'left:2rem' : 'right:2rem')};
 `;
@@ -123,9 +190,21 @@ const ProducerName = styled.div`
   /* color: #707070; */
   margin-right: 0.5rem;
 `;
+const ContributePercent = styled.div`
+  color: ${TCV_DEFAULT};
+`;
 const ListItem = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 0.2rem 0 0.2rem 0;
+  justify-content: space-between;
+`;
+const CustomEditIcon = styled(PencilIcon)`
+  margin: 0.5rem;
+  background-color: #e6f4f1;
+  padding: 0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 1rem;
 `;

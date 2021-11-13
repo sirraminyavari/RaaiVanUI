@@ -1,3 +1,6 @@
+/**
+ * @description View component of Team Info
+ */
 import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
@@ -11,7 +14,7 @@ import CustomInput from './items/CustomInput';
 const TeamSettings = (props) => {
   const {
     rtl,
-    DIC,
+    RVDic,
     breadCrumbItems,
     fieldOfExpertiseOption,
     languageOption,
@@ -23,13 +26,12 @@ const TeamSettings = (props) => {
     saveInfo,
   } = useTeamSettings(props);
 
-  console.log(applicationInfo);
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
         <Breadcrumb items={breadCrumbItems} />
 
-        <Styled.PageTitle>{'تنظیمات تیم'}</Styled.PageTitle>
+        <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
@@ -42,39 +44,42 @@ const TeamSettings = (props) => {
           </Styled.TeamThumbnailContainer>
 
           <CustomInput
-            placeholder={'نام تیم'}
-            value={applicationInfo.Title}
+            placeholder={RVDic?.TeamName}
+            value={applicationInfo?.Title}
             onChange={(e) =>
-              setApplicationInfo({ ...applicationInfo, Title: e.target.value })
+              setApplicationInfo({
+                ...applicationInfo,
+                Title: e?.target?.value,
+              })
             }
           />
 
           <CustomInput
-            placeholder={'شعار / تک لاین تیم'}
+            placeholder={RVDic?.Tagline}
             light={true}
             value={applicationInfo?.Tagline}
             onChange={(e) =>
               setApplicationInfo({
                 ...applicationInfo,
-                Tagline: e.target.value,
+                Tagline: e?.target?.value,
               })
             }
           />
 
           <CustomInput
-            placeholder={'وبسایت'}
+            placeholder={RVDic?.Website}
             light={true}
-            value={applicationInfo.Website}
+            value={applicationInfo?.Website}
             onChange={(e) =>
               setApplicationInfo({
                 ...applicationInfo,
-                Website: e.target.value,
+                Website: e?.target?.value,
               })
             }
           />
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>حوزه فعالیت تیم</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.FieldOfActivity}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={fieldOfExpertiseOption}
@@ -89,15 +94,15 @@ const TeamSettings = (props) => {
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  ExpertiseFieldID: e.value,
-                  ExpertiseFieldName: e.label,
+                  ExpertiseFieldID: e?.value,
+                  ExpertiseFieldName: e?.label,
                 })
               }
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>اندازه تیم</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.TeamSize}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={teamSizeOption}
@@ -107,21 +112,21 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Size,
-                label: teamSizeOption.find(
-                  (x) => x.value === applicationInfo?.Size
+                label: teamSizeOption?.find(
+                  (x) => x?.value === applicationInfo?.Size
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Size: e.value,
+                  Size: e?.value,
                 })
               }
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>زبان</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.Language}</Styled.SelectTitle>
             <CustomSelect
               isRtl={rtl}
               placeholder=""
@@ -132,21 +137,21 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Language,
-                label: languageOption.find(
-                  (x) => x.value === applicationInfo?.Language
+                label: languageOption?.find(
+                  (x) => x?.value === applicationInfo?.Language
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Language: e.value,
+                  Language: e?.value,
                 })
               }
             />
           </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
-            <Styled.SelectTitle>تقویم کلیک مایند</Styled.SelectTitle>
+            <Styled.SelectTitle>{RVDic?.Calendar}</Styled.SelectTitle>
             <CustomSelect
               placeholder=""
               options={calOption}
@@ -156,14 +161,14 @@ const TeamSettings = (props) => {
               classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Calendar,
-                label: calOption.find(
-                  (x) => x.value === applicationInfo?.Calendar
+                label: calOption?.find(
+                  (x) => x?.value === applicationInfo?.Calendar
                 )?.label,
               }}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  Calendar: e.value,
+                  Calendar: e?.value,
                 })
               }
             />
@@ -172,21 +177,29 @@ const TeamSettings = (props) => {
           <Styled.FieldWrapper>
             <AnimatedTextArea
               autoresize={true}
-              label={'درباره تیم'}
+              label={RVDic?.AboutN?.replace('[n]', RVDic?.Team)}
               rtl={rtl}
               value={applicationInfo?.About}
               onChange={(e) =>
                 setApplicationInfo({
                   ...applicationInfo,
-                  About: e.target.value,
+                  About: e?.target?.value,
                 })
               }
             />
           </Styled.FieldWrapper>
 
           <Styled.SettingActionBar>
-            <Button type="primary" onClick={saveInfo}>
-              ذخیره
+            <Button
+              type="primary"
+              style={{
+                height: '3rem',
+                width: '7.6rem',
+                fontSize: '1rem',
+                borderRadius: '0.8rem',
+              }}
+              onClick={saveInfo}>
+              {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>
         </Styled.FormWrapper>

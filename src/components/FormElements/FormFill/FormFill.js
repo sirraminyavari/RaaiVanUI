@@ -26,21 +26,26 @@ const FormFill = ({ data, ...props }) => {
   const propsContext = useContext(PropsContext);
 
   const [tempForm, setTempForm] = useState(data);
+  const [whichElementChanged, setWhichElementChanged] = useState(null);
   const [syncTempFormWithBackEnd, setSyncTempFormWithBackEnd] = useState(data);
   useEffect(() => {
     console.log(data, 'data ****');
-    console.log(data?.Elements[3], 'Element  **** in ');
 
-    setTempForm(tempForm);
+    setTempForm({
+      ...data,
+      Elements: data?.Elements?.map((x) => {
+        return {
+          ...x,
+          TextValue: decodeBase64(x?.TextValue),
+        };
+      }),
+    });
   }, []);
-  useEffect(() => {
-    console.log(tempForm?.Elements[3].ElementID, 'tempForm ****');
-  }, [tempForm]);
 
   const onAnyFieldChanged = async (elementId, event, type) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
-
     setTempForm(readyToUpdate);
+    setWhichElementChanged(elementId);
 
     switch (type) {
       case 'Date':
@@ -55,41 +60,35 @@ const FormFill = ({ data, ...props }) => {
     }
   };
   const saveFieldChanges = async (readyToUpdate, elementId) => {
-    console.log(
-      readyToUpdate.Elements[3].ElementID,
-      'changedElement **** 0',
-      elementId
-    );
+    if (whichElementChanged === elementId) {
+      try {
+        const changedElement = readyToUpdate?.Elements?.find(
+          (x) => x?.ElementID === elementId
+        );
 
-    try {
-      const changedElement = readyToUpdate?.Elements?.find(
-        (x) => x?.ElementID === elementId
-      );
-      console.log(changedElement.ElementID, 'changedElement **** 1', elementId);
+        const saveResult = await saveForm([changedElement]);
 
-      console.log(changedElement, 'changed element');
+        const freshForm = {
+          ...readyToUpdate,
+          Elements: readyToUpdate?.Elements?.map((x) =>
+            x?.ElementID === elementId ? saveResult[0] : x
+          ),
+        };
 
-      const saveResult = await saveForm([changedElement]);
-      console.log(saveResult[0].ElementID, 'changedElement **** 2', elementId);
+        setSyncTempFormWithBackEnd(freshForm);
+        setTempForm(freshForm);
+        setWhichElementChanged(null);
 
-      const freshForm = {
-        ...readyToUpdate,
-        Elements: readyToUpdate?.Elements?.map((x) =>
-          x?.ElementID === elementId ? saveResult[0] : x
-        ),
-      };
-
-      setSyncTempFormWithBackEnd(freshForm);
-      setTempForm(freshForm);
-      alert('saved', {
-        Timeout: 1000,
-      });
-    } catch (err) {
-      setTempForm(syncTempFormWithBackEnd);
-      console.log('failed');
-      alert('failed', {
-        Timeout: 500,
-      });
+        alert('saved', {
+          Timeout: 1000,
+        });
+      } catch (err) {
+        setTempForm(syncTempFormWithBackEnd);
+        console.log('failed');
+        alert('failed', {
+          Timeout: 500,
+        });
+      }
     }
   };
 
@@ -137,7 +136,7 @@ const FormFill = ({ data, ...props }) => {
                 elementId={ElementID}
                 type={Type}
                 onAnyFieldChanged={onAnyFieldChanged}
-                value={decodeBase64(TextValue)}
+                value={TextValue}
                 save={(id) => {
                   saveFieldChanges(tempForm, id);
                 }}
@@ -217,10 +216,13 @@ const FormFill = ({ data, ...props }) => {
                 decodeTitle={decodeTitle}
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
-                value={[]}
+                value={GuidItems}
                 type={Type}
                 decodeInfo={decodeInfo}
                 propsContext={propsContext}
+                save={(id) => {
+                  saveFieldChanges(tempForm, id);
+                }}
               />
             );
 

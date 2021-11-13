@@ -25,9 +25,7 @@ import {
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
 
-  console.log(appInfo);
-
-  const { RV_RTL: rtl, RVDic: DIC } = useWindow();
+  const { RV_RTL: rtl, RVDic } = useWindow();
 
   const [fieldOfExpertiseOption, setFieldOfExpertiseOption] = useState([]);
   const [applicationInfo, setApplicationInfo] = useState({
@@ -37,8 +35,8 @@ const useTeamSettings = (props) => {
     Website: decodeBase64(appInfo?.Website),
     About: decodeBase64(appInfo?.About),
     Size: decodeBase64(appInfo?.Size),
-    ExpertiseFieldID: appInfo?.FieldOfExpertise.ID,
-    ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise.Name),
+    ExpertiseFieldID: appInfo?.FieldOfExpertise?.ID,
+    ExpertiseFieldName: decodeBase64(appInfo?.FieldOfExpertise?.Name),
     Language: appInfo?.Language,
     Calendar: appInfo?.Calendar,
   });
@@ -46,13 +44,13 @@ const useTeamSettings = (props) => {
   useEffect(async () => {
     try {
       const tagList = await getTemplateTags();
-      const fields = tagList.Tags.map((x) => ({
-        value: x.NodeID,
-        label: decodeBase64(x.Name),
+      const fields = tagList?.Tags?.map((x) => ({
+        value: x?.NodeID,
+        label: decodeBase64(x?.Name),
       }));
       setFieldOfExpertiseOption(fields);
     } catch (err) {
-      console.log('call api error: ' + err);
+      console.log('call api error: ', err);
     }
   }, []);
 
@@ -63,34 +61,34 @@ const useTeamSettings = (props) => {
   const breadCrumbItems = [
     {
       id: 1,
-      title: 'مدیریت تیم',
+      title: RVDic?.TeamManagement,
       linkTo: '',
     },
     {
       id: 2,
-      title: 'تنظیمات تیم',
+      title: RVDic?.TeamInfo,
       linkTo: '',
     },
   ];
 
   const languageOption = [
-    { value: PERSIAN_LANGUAGE, label: 'فارسی' },
-    { value: ENGLISH_LANGUAGE, label: 'English' },
-    { value: ARABIC_LANGUAGE, label: 'Arabic' },
-    { value: KURDISH_LANGUAGE, label: 'Kurdish' },
+    { value: PERSIAN_LANGUAGE, label: RVDic?.X?.Language?.Farsi },
+    { value: ENGLISH_LANGUAGE, label: RVDic?.X?.Language?.English },
+    // { value: ARABIC_LANGUAGE, label: RVDic?.X?.Language?.Arabic },
+    // { value: KURDISH_LANGUAGE, label: RVDic?.X?.Language?.Kurdish },
   ];
 
   const calOption = [
-    { value: JALALI_CALENDAR, label: 'هجری شمسی' },
-    { value: LUNAR_CALENDAR, label: 'هجری قمری' },
-    { value: GREGORIAN_CALENDAR, label: 'میلادی (Gregorian)' },
-    { value: KURDISH_CALENDAR, label: 'گاه شماری کردی' },
+    { value: JALALI_CALENDAR, label: RVDic?.X?.Calendar?.Jalali },
+    // { value: LUNAR_CALENDAR, label: RVDic?.X?.Calendar?.LunarHijri },
+    { value: GREGORIAN_CALENDAR, label: RVDic?.X?.Calendar?.Gregorian },
+    // { value: KURDISH_CALENDAR, label: RVDic?.X?.Calendar?.Kurdish },
   ];
 
   const teamSizeOption = [
     { value: ONE_TO_TEN, label: '1 - 10' },
     { value: TEN_TO_TWENTY, label: '10 - 20' },
-    { value: MORE_THEN_TWENTY, label: 'بیشتر از 20' },
+    { value: MORE_THEN_TWENTY, label: RVDic?.MoreThanN?.replace('[n]', 20) },
   ];
 
   const saveInfo = async () => {
@@ -120,8 +118,6 @@ const useTeamSettings = (props) => {
         Language,
         Calendar
       );
-
-      console.log(saveResult);
     } catch (err) {
       console.log('saving app info error', err);
     }
@@ -140,7 +136,7 @@ const useTeamSettings = (props) => {
     languageOption,
     calOption,
     teamSizeOption,
-    DIC,
+    RVDic,
     saveInfo,
   };
 };

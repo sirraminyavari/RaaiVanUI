@@ -61,7 +61,6 @@ import {
   RECOVER_FORM_INSTANCES,
   REMOVE_FILE,
   GET_TEMPLATE_TAGS,
-  SAVE_APPLICATION_INFO,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1314,21 +1313,18 @@ export const recycleNode = (nodeId) => {
  * @param {String} ownerType -The type of owner.
  * @returns Promise.
  */
-export const getUploadLink = (ownerId = '', ownerType = '') => {
-  const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
+export const getTemplateTags = () => {
+  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
 
   return new Promise((resolve, reject) => {
     try {
-      getUploadLinkAPI.url(
-        {
-          OwnerID: ownerId,
-          OwnerType: ownerType,
-        },
+      getTemplateTagsAPI.fetch(
+        {},
         (response) => {
           resolve(response);
         },
-        (error) => {
-          reject(error);
+        (err) => {
+          reject(err);
         }
       );
     } catch (err) {
@@ -1338,20 +1334,47 @@ export const getUploadLink = (ownerId = '', ownerType = '') => {
 };
 
 /**
- * @description Set node searchability.
- * @param {String} nodeId -The id of node.
- * @param {Boolean} searchable -Make it searchable or not.
- * @returns Promise.
+ * @description update the team (application) info
+ * @param ApplicationID - the application id
+ * @param Title - title of the application
+ * @param Tagline - tagline of the application
+ * @param Website - website url of the application
+ * @param About
+ * @param Size
+ * @param ExpertiseFieldID
+ * @param ExpertiseFieldName
+ * @param Language
+ * @param Calender
+ * @return {Promise<unknown>}
  */
-export const setNodeSearchability = (nodeId, searchable) => {
-  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
+export const saveApplicationInfo = (
+  ApplicationID,
+  Title,
+  Tagline,
+  Website,
+  About,
+  Size,
+  ExpertiseFieldID,
+  ExpertiseFieldName,
+  Language,
+  Calendar
+) => {
+  const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
 
   return new Promise((resolve, reject) => {
     try {
-      setNodeSearchabilityAPI.fetch(
+      saveApplicationInfoAPI.fetch(
         {
-          NodeID: nodeId,
-          Searchable: searchable,
+          ApplicationID,
+          ExpertiseFieldID,
+          Language,
+          Calendar,
+          Title: encodeBase64(Title),
+          Tagline: encodeBase64(Tagline),
+          Website: encodeBase64(Website),
+          About: encodeBase64(About),
+          Size: encodeBase64(Size),
+          ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
         },
         (response) => {
           resolve(response);
@@ -1512,62 +1535,6 @@ export const getTemplateTags = () => {
     try {
       getTemplateTagsAPI.fetch(
         {},
-        (response) => {
-          resolve(response);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description update the team (application) info
- * @param ApplicationID - the application id
- * @param Title - title of the application
- * @param Tagline - tagline of the application
- * @param Website - website url of the application
- * @param About
- * @param Size
- * @param ExpertiseFieldID
- * @param ExpertiseFieldName
- * @param Language
- * @param Calender
- * @return {Promise<unknown>}
- */
-export const saveApplicationInfo = (
-  ApplicationID,
-  Title,
-  Tagline,
-  Website,
-  About,
-  Size,
-  ExpertiseFieldID,
-  ExpertiseFieldName,
-  Language,
-  Calendar
-) => {
-  const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
-
-  return new Promise((resolve, reject) => {
-    try {
-      saveApplicationInfoAPI.fetch(
-        {
-          ApplicationID,
-          ExpertiseFieldID,
-          Language,
-          Calendar,
-          Title: encodeBase64(Title),
-          Tagline: encodeBase64(Tagline),
-          Website: encodeBase64(Website),
-          About: encodeBase64(About),
-          Size: encodeBase64(Size),
-          ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
-        },
         (response) => {
           resolve(response);
         },
