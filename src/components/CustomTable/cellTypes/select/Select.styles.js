@@ -84,3 +84,10 @@ export const SelectedItem = styled(Heading).attrs({
   margin: 0.2rem;
   width: auto;
 `;
+
+export const EmptyCellView = styled.div`
+  color: ${CV_DISTANT};
+  width: 100%;
+  text-align: start;
+  padding-${RV_Float}: 0.7rem;
+`;

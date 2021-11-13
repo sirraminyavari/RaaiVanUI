@@ -20,7 +20,7 @@ const TablePagination = ({ tableInstance, pagination }) => {
     state, //! End of Pagination.
   } = tableInstance;
 
-  const { RV_Float, RV_RevFloat } = useWindow();
+  const { RV_Float, RV_RevFloat, RVDic } = useWindow();
 
   //! Get pagination properties from table instance state.
   const { pageIndex, pageSize, data } = state;
@@ -56,16 +56,23 @@ const TablePagination = ({ tableInstance, pagination }) => {
 
   const getPaginationSpan = () => {
     if (!canNextPage) {
-      return `${data.length} از ${data.length} مورد`;
+      return RVDic.NOfMItems.replace('[n]', data.length).replace(
+        '[m]',
+        data.length
+      );
     }
-    return `${(pageIndex + 1) * pageSize} از ${data.length} مورد`;
+
+    return RVDic.NOfMItems.replace('[n]', pageIndex + 1 * pageSize).replace(
+      '[m]',
+      data.length
+    );
   };
 
   return (
     <Styled.TablePaginationContainer>
       <Styled.TablePaginationSelectWrapper>
         <Styled.PaginationSelectTitle>
-          تعداد در هر صفحه
+          {RVDic.CountPerPage}
         </Styled.PaginationSelectTitle>
         <CustomSelect
           defaultValue={[{ value: pageSize, label: `${pageSize}` }]}
@@ -75,9 +82,11 @@ const TablePagination = ({ tableInstance, pagination }) => {
           isClearable={false}
           isSearchable={false}
           selectName="table-pagination"
-          selectOptions={selectOptions}
+          options={selectOptions}
           onChange={handleSelectChange}
-          selectStyles={Styled.selectStyles}
+          styles={Styled.selectStyles}
+          menuPortalTarget={document.body}
+          menuShouldScrollIntoView={false}
         />
       </Styled.TablePaginationSelectWrapper>
       <Styled.PaginationArrowWrapper>

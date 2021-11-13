@@ -27,7 +27,7 @@ const TableCellModal = (props) => {
   const canEdit = isTableEditable && isCellEditable && isRowEditing;
 
   const tableId = Info?.FormID;
-  const tableOwnerId = value?.ElementID || value?.RefElementID;
+  const tableOwnerId = value?.ElementID;
 
   const [rawData, setRawData] = useState([]);
   const [rawColumns, setRawColumns] = useState([]);

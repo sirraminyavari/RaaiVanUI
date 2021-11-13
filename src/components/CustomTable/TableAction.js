@@ -5,16 +5,19 @@ import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import useWindow from 'hooks/useWindowContext';
+import AddNewRowButton from 'components/CustomTable/AddNewButton';
 
-const TableAction = ({ onAddRow, onSearch, data }) => {
+const TableAction = ({ onAddItem, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
+  const { RVDic } = useWindow();
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
-  const handleAddRow = () => {
-    onAddRow && onAddRow();
+  const handleAddItem = () => {
+    onAddItem && onAddItem();
   };
 
   useEffect(() => {
@@ -34,7 +37,7 @@ const TableAction = ({ onAddRow, onSearch, data }) => {
         <Input
           type="text"
           style={{ width: '100%' }}
-          placeholder="جستجو در جدول"
+          placeholder={RVDic.SearchInN.replace('[n]', RVDic.Table)}
           onChange={handleInputChange}
         />
         <SearchIcon
@@ -44,16 +47,12 @@ const TableAction = ({ onAddRow, onSearch, data }) => {
         />
       </Styled.TableSearchWrapper>
       <Styled.TableButtonsWrapper>
-        <Styled.ActionButton onClick={handleAddRow}>
-          <AddIcon
-            size={22}
-            color={TCV_DEFAULT}
-            className="table-add-new-item-icon"
-          />
-          <Button type="primary-o" classes="table-add-new-item-button">
-            ایجاد آیتم جدید
-          </Button>
-        </Styled.ActionButton>
+        <AddNewRowButton
+          onClick={handleAddItem}
+          title={RVDic.CreateNewN.replace('[n]', RVDic.Row)}
+          icon={<AddIcon size={23} />}
+          style={{ width: '14rem' }}
+        />
       </Styled.TableButtonsWrapper>
     </Styled.TableActionsContainer>
   );

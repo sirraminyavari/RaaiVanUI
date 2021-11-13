@@ -23,15 +23,6 @@ export const NodeCellContainer = styled.div`
   width: 100%;
   ${FLEX_CSA}
   gap: 0.5rem;
-
-  .table-node-cell-select-button {
-    background-color: inherit;
-    color: ${TCV_DEFAULT};
-    width: auto;
-    margin: 0 1rem;
-    height: 1.8rem;
-    border-radius: 1rem;
-  }
 `;
 
 export const ItemsWrapper = styled.div`
@@ -113,15 +104,6 @@ export const AddNewNode = styled.div`
   cursor: pointer;
 `;
 
-export const ItemSelectionButton = styled.div`
-  ${FLEX_RCC}
-  gap: 0.5rem;
-`;
-
-export const ItemSelectionHeading = styled(Heading)`
-  color: ${TCV_DEFAULT};
-`;
-
 export const SaveButtonHeading = styled(Heading)`
   color: ${TCV_DEFAULT};
 `;
@@ -132,10 +114,6 @@ export const EmptyCellView = styled.div`
   height: 2rem;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
-`;
-
-export const ItemPickerWrapper = styled.div`
-  width: 100%;
 `;
 
 export const NodesListWrapper = styled.div`

@@ -5,9 +5,13 @@ import RowEditMenu from './RowEditMenu';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 
-const ActionsCell = ({ cell }) => {
+const ActionsCell = (props) => {
+  const { cell } = props;
+  const { row, tempRowId, editingRowId, dragHandleProps } = cell || {};
   const [showActions, setShowActions] = useState(false);
   const actionRef = useRef();
+
+  const rowId = row?.original?.id;
 
   useOnClickOutside(actionRef, () => {
     setShowActions(false);
@@ -19,7 +23,7 @@ const ActionsCell = ({ cell }) => {
 
   let child;
 
-  if (cell?.editingRow === cell?.row?.original?.id) {
+  if (editingRowId === rowId || tempRowId === rowId) {
     //! Show Edit mode menu.
     child = <RowEditMenu cell={cell} />;
   } else {
@@ -28,7 +32,7 @@ const ActionsCell = ({ cell }) => {
       <Styled.RowDragHandleWrapper
         ref={actionRef}
         onClick={handleShowActions}
-        {...cell.dragHandleProps}>
+        {...dragHandleProps}>
         <DragIcon />
         {showActions && <RowActionMenu cell={cell} />}
       </Styled.RowDragHandleWrapper>

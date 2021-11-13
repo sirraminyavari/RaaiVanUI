@@ -5,43 +5,44 @@ import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { API_Provider } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import FilesList from './FilesList';
-import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { removeFile } from 'apiHelper/apiFunctions';
-// import useWindow from 'hooks/useWindowContext';
+// import { removeFile } from 'apiHelper/apiFunctions';
+import useWindow from 'hooks/useWindowContext';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewFileButton from 'components/CustomTable/AddNewButton';
+import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
 
   const {
-    isNew,
-    row,
-    editingRow,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    header,
-  } = props;
-  const { Files: initialFiles, Info, ElementID } = value || {};
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    setSelectedCell,
+    isSelectedCell,
+  } = useCellProps(props);
 
-  const isCellEditable = !!header?.options?.editable;
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const isRowEditing = rowId === editingRow;
+  const fileRef = useRef();
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+  useOnClickOutside(fileRef, () => isSelectedCell && setSelectedCell(null));
+
+  const { Files: initialFiles, ElementID } = value || {};
 
   const [isUploading, setIsUploading] = useState(false);
-  const [files, setFiles] = useState(isNew ? [] : initialFiles);
+  const [files, setFiles] = useState(isNewRow ? [] : initialFiles);
 
   const beforeChangeFilesRef = useRef(null);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNewRow) {
       beforeChangeFilesRef.current = [];
     } else {
       beforeChangeFilesRef.current = initialFiles;
@@ -50,7 +51,7 @@ const FileCell = (props) => {
     return () => {
       beforeChangeFilesRef.current = null;
     };
-  }, [canEdit, initialFiles, isNew]);
+  }, [canEdit, initialFiles, isNewRow]);
 
   const handleFileDropError = (error) => {
     if (!canEdit) return;
@@ -63,7 +64,7 @@ const FileCell = (props) => {
       return { ...file, OwnerID: ElementID };
     });
     const fileCell = { ...value, Files: extendedFiles };
-    onCellChange(rowId, columnId, fileCell, extendedFiles);
+    isSelectedCell && onCellChange(rowId, columnId, fileCell, extendedFiles);
   };
 
   const handleRemoveFile = useCallback((fileId) => {
@@ -128,7 +129,10 @@ const FileCell = (props) => {
                     toastId: accepted?.name,
                     type: 'info',
                     autoClose: true,
-                    message: `${accepted?.name} با موفقیت بارگذاری شد`,
+                    message: RVDic.MSG.NUploadedSuccessfully.replace(
+                      '[n]',
+                      accepted?.name
+                    ),
                   });
                 }
               })
@@ -143,35 +147,49 @@ const FileCell = (props) => {
     );
   };
 
-  return (
-    <Styled.FileCellContainer>
+  const renderFiles = () => (
+    <>
       <FilesList
         files={files}
         canEdit={canEdit}
         onRemoveFile={handleRemoveFile}
       />
-      {!files?.length && !isUploading && (
+      {/* {!files?.length && !isUploading && (
         <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
+      )} */}
+    </>
+  );
+
+  if (!canEdit) {
+    return <Styled.FileCellContainer>{renderFiles()}</Styled.FileCellContainer>;
+  }
+
+  return (
+    <Styled.FileCellContainer ref={fileRef}>
+      {renderFiles()}
       {isUploading && <LogoLoader lottieWidth="3rem" />}
-      {canEdit && (
-        <Styled.AddNewFileWrapper>
-          <CustomDropZone
-            accept={['image/*', '.pdf']}
-            // formatExceptions={['jpg']}
-            maxFiles={1}
-            maxEachSize={1}
-            maxTotalSize={1}
-            onError={handleFileDropError}
-            onUpload={handleUploadFiles}
-            isUploading={isUploading}
-            placeholders={{
-              main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
-            }}
-            customComponent={AddFileButton}
-          />
-        </Styled.AddNewFileWrapper>
-      )}
+      <Styled.AddNewFileWrapper>
+        <CustomDropZone
+          accept={['image/*', '.pdf']}
+          // formatExceptions={['jpg']}
+          maxFiles={1}
+          maxEachSize={1}
+          maxTotalSize={1}
+          onError={handleFileDropError}
+          onUpload={handleUploadFiles}
+          isUploading={isUploading}
+          placeholders={{
+            main: RVDic.DropFilesHere,
+          }}
+          customComponent={(props) => (
+            <AddNewFileButton
+              title={RVDic?.SelectN?.replace('[n]', RVDic?.File)}
+              icon={<FileFormatIcon />}
+              {...props}
+            />
+          )}
+        />
+      </Styled.AddNewFileWrapper>
     </Styled.FileCellContainer>
   );
 };

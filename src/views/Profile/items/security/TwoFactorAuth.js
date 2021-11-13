@@ -231,7 +231,7 @@ const TwoFactorAuthentication = ({ user }) => {
       <TwoFactorToggle
         onToggle={handleTwoFactorToggle}
         isChecked={isTwoFactorOn}
-        title="استفاده از ورود دو مرحله ای"
+        title={RVDic.EnableTwoStepAuthentication}
         containerClass="profile-security-toggle"
       />
       <TwoFactorOptions

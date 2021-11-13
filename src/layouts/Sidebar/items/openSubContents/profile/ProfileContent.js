@@ -26,7 +26,7 @@ const ProfileContent = () => {
   const profileItems = [
     {
       id: '1',
-      title: 'اطلاعات کاربری',
+      title: RVDic.UserInfo,
       icon: PROFILE_USER,
       linkTo: USER_PATH,
     },

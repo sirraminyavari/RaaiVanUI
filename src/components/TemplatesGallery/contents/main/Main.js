@@ -11,7 +11,7 @@ import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { decodeBase64, isEmpty } from 'helpers/helpers';
+import { decodeBase64, isEmpty, getSystemName } from 'helpers/helpers';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils';
 import {
   TemplatesGalleryContext,
@@ -86,19 +86,19 @@ const TemplateGalleryMain = () => {
             {RVDic.TemplatesGallery}
           </Styled.MainContentTitle>
           <Styled.MainContentExcerpt>
-            مجموعه قالب‌های آماده برای استفاده بهتر از کلیک‌مایند
+            {RVDic.CollectionOfReadyToUseTemplatesForBetterUseOfRaaiVan.replace(
+              '[RaaiVan]',
+              getSystemName()
+            )}
           </Styled.MainContentExcerpt>
           <Styled.MainContentDescription>
-            هر تیم می تواند دارای تعدادی قالب محتوا باشد که یا خودتان ساخته‌اید
-            یا از بین قالب‌های آماده فعال کرده اید. اعضاء تیم می‌توانند این
-            قالب‌ها را تکمیل کنند. شما می توانید قالب‌ها را به هم مرتبط کنید تا
-            در زمان ثبت اطلاعات، پیوستگی آن‌ها نیز حفظ شود.
+            {RVDic.X.TemplatesGalleryDescription}
           </Styled.MainContentDescription>
           <Styled.MainContentInputWrapper>
             <Input
               type="text"
               style={{ width: '100%' }}
-              placeholder="جستجو در همه تمپلیت ها"
+              placeholder={RVDic.SearchInN.replace('[n]', RVDic.Templates)}
               onChange={handleSearchTemplates}
             />
             <SearchIcon
@@ -119,10 +119,12 @@ const TemplateGalleryMain = () => {
             <Styled.SwiperTitleIcon>
               <SearchIcon size={18} color={CV_WHITE} />
             </Styled.SwiperTitleIcon>
-            {`تمپلیت های مرتبط با '${searchText}'`}
+            {RVDic.TemplatesRelatedToN.replace('[n]', searchText)}
           </Styled.MainSwiperTitle>
         ) : (
-          <Styled.MainSwiperTitle>پیشنهاد کلیک‌مایند</Styled.MainSwiperTitle>
+          <Styled.MainSwiperTitle>
+            {RVDic.SuggestedByRaaiVan.replace('[RaaiVan]', getSystemName())}
+          </Styled.MainSwiperTitle>
         )}
 
         {isEmpty(templatesObject) ? (

@@ -35,15 +35,6 @@ export const FileCellContainer = styled.div`
   width: 100%;
   ${FLEX_CSA}
   gap: 0.5rem;
-
-  .table-file-cell-select-button {
-    background-color: inherit;
-    color: ${TCV_DEFAULT};
-    width: auto;
-    margin: 0 1rem;
-    height: 1.8rem;
-    border-radius: 1rem;
-  }
 `;
 
 export const FilesWrapper = styled.div`
@@ -157,14 +148,5 @@ export const TrashIconWrapper = styled.div.attrs({
 `;
 
 export const SaveButtonHeading = styled(Heading)`
-  color: ${TCV_DEFAULT};
-`;
-
-export const FileSelectionButton = styled.div`
-  ${FLEX_RCC}
-  gap: 0.5rem;
-`;
-
-export const FileSelectionHeading = styled(Heading)`
   color: ${TCV_DEFAULT};
 `;

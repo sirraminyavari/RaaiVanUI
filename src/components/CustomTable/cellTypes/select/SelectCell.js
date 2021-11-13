@@ -1,38 +1,36 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
-import { CV_DISTANT } from 'constant/CssVariables';
-import Heading from 'components/Heading/Heading';
 import { decodeBase64 } from 'helpers/helpers';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const SelectCell = (props) => {
-  // console.log('select cell ', props);
   const {
     value,
-    row,
-    column,
     onCellChange,
-    editable: isTableEditable,
-    editingRow,
-    isNew,
-    header,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
     multiSelect,
-    data,
-  } = props;
+    setSelectedCell,
+    isSelectedCell,
+  } = useCellProps(props);
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const headerId = header?.id;
+  const selectRef = useRef();
 
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      handleUpdateCell();
+      setSelectedCell(null);
+    }
+  };
 
-  //! Get info for new row.
-  const columnInfo = data?.[0]?.[columnId]?.Info;
+  useOnClickOutside(selectRef, handleClickOutside);
 
-  //! Get info for existing row.
   const { Info, TextValue } = value || {};
-  const { Options } = Info || columnInfo || {};
+  const { Options } = Info || {};
 
   let options, initialValues;
 
@@ -59,40 +57,34 @@ const SelectCell = (props) => {
   }
 
   const [defaultValues, setDefaultValues] = useState(
-    !!isNew ? [] : initialValues
+    !!isNewRow ? [] : initialValues
   );
+  const originalValueRef = useRef(TextValue);
 
   const handleSelectChange = (values) => {
-    // console.log(values);
     setDefaultValues(values);
   };
 
-  const handleOnMenuClose = () => {
-    let id = isNew ? null : rowId;
-
+  const handleUpdateCell = () => {
     const textValue = !!multiSelect
-      ? defaultValues.map((x) => x.value).join(' ~ ')
+      ? defaultValues?.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
 
-    let selectCell = isNew
-      ? {
-          ElementID: headerId,
-          TextValue: textValue,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          TextValue: textValue,
-        };
+    if (originalValueRef.current === textValue) return;
 
-    onCellChange(id, columnId, selectCell, textValue);
+    let selectCell = {
+      ...value,
+      TextValue: textValue,
+    };
+
+    onCellChange(rowId, columnId, selectCell, textValue);
   };
 
-  if ((!isTableEditable || !isCellEditable || !isRowEditing) && !isNew) {
+  if (!canEdit) {
     return (
-      <>
-        {defaultValues?.map((x) => x?.label).length ? (
-          defaultValues
+      <div>
+        {initialValues?.map((x) => x?.label)?.length ? (
+          initialValues
             ?.map((x) => x?.label)
             .map((item, key) => (
               <Styled.SelectedItem type="h4" key={key}>
@@ -100,29 +92,29 @@ const SelectCell = (props) => {
               </Styled.SelectedItem>
             ))
         ) : (
-          <Heading style={{ color: CV_DISTANT }} type="h6">
-            انتخاب کنید
-          </Heading>
+          <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
-      </>
+      </div>
     );
   }
 
   return (
-    <Styled.SelectWrapper>
+    <Styled.SelectWrapper ref={selectRef}>
       <CustomSelect
-        defaultValue={defaultValues}
+        defaultValue={initialValues}
         isMulti={!!multiSelect}
         hideSelectedOptions={false}
         closeMenuOnSelect={false}
         isClearable={false}
         isSearchable={true}
         placeholder="انتخاب کنید"
-        selectName={header?.title}
         options={options}
         onChange={handleSelectChange}
-        onMenuClose={handleOnMenuClose}
-        // selectStyles={Styled.selectStyles}
+        // onMenuClose={handleUpdateCell}
+        styles={Styled.selectStyles}
+        menuPortalTarget={document.body}
+        menuShouldScrollIntoView={false}
+        noOptionsMessage={() => 'موردی یافت نشد'}
       />
     </Styled.SelectWrapper>
   );

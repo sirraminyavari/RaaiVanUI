@@ -1,54 +1,50 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import * as Styled from './NodeCell.styles';
 import { decodeBase64 } from 'helpers/helpers';
-// import useWindow from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 import Modal from 'components/Modal/Modal';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import AddNewNode from './AddNewNode';
 import NodesList from './NodesList';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewNodeButton from 'components/CustomTable/AddNewButton';
+import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
 
 const NodeCell = (props) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
   const routeProps = useContext(PropsContext);
 
   const {
-    isNew,
-    row,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    editingRow,
-    header,
-    data,
-  } = props;
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    setSelectedCell,
+    isSelectedCell,
+  } = useCellProps(props);
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const headerId = header?.id;
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  const nodeRef = useRef();
 
-  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
-
-  //! Get info for new row.
-  const columnInfo = data?.[0]?.[columnId]?.Info;
+  useOnClickOutside(nodeRef, () => isSelectedCell && setSelectedCell(null));
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
   const { Info, SelectedItems: initialItems } = value || {};
 
-  const { NodeTypes, MultiSelect } = Info || columnInfo || {};
+  const { NodeTypes, MultiSelect } = Info || {};
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [selectedItems, setSelectedItems] = useState(
-    !!isNew ? [] : initialItems
+    !!isNewRow ? [] : initialItems
   );
 
   const beforeChangeSelectedItemsRef = useRef(null);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNewRow) {
       beforeChangeSelectedItemsRef.current = [];
     } else {
       beforeChangeSelectedItemsRef.current = initialItems;
@@ -57,24 +53,16 @@ const NodeCell = (props) => {
     return () => {
       beforeChangeSelectedItemsRef.current = null;
     };
-  }, [canEdit, initialItems, isNew]);
+  }, [canEdit, initialItems, isNewRow]);
 
   const updateNodeCell = (items) => {
-    let id = isNew ? null : rowId;
-    let nodeCell = isNew
-      ? {
-          ElementID: headerId,
-          GuidItems: items,
-          SelectedItems: items,
-          Type: header?.dataType,
-        }
-      : {
-          ...value,
-          SelectedItems: items,
-          GuidItems: items,
-        };
+    let nodeCell = {
+      ...value,
+      SelectedItems: items,
+      GuidItems: items,
+    };
 
-    onCellChange(id, columnId, nodeCell, items);
+    isSelectedCell && onCellChange(rowId, columnId, nodeCell, items);
   };
 
   const handleSelectButtonClick = () => {
@@ -124,11 +112,28 @@ const NodeCell = (props) => {
     }
   };
 
+  const renderNodes = () => (
+    <>
+      <NodesList
+        nodes={selectedItems}
+        canEdit={canEdit}
+        onRemoveNode={handleRemoveItem}
+      />
+      {/* {!selectedItems?.length && (
+        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+      )} */}
+    </>
+  );
+
+  if (!canEdit) {
+    return <Styled.NodeCellContainer>{renderNodes()}</Styled.NodeCellContainer>;
+  }
+
   return (
-    <Styled.NodeCellContainer>
+    <Styled.NodeCellContainer ref={nodeRef}>
       <Modal
         onClose={handleOnClose}
-        contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
+        contentWidth={isTabletOrMobile ? '98%' : '90%'}
         style={{ padding: '0.2rem', height: 'calc(100vh - 5rem)' }}
         stick
         show={isModalShown}>
@@ -140,15 +145,12 @@ const NodeCell = (props) => {
           onSelectedItems={handleOnItemsSelection}
         />
       </Modal>
-      <NodesList
-        nodes={selectedItems}
-        canEdit={canEdit}
-        onRemoveNode={handleRemoveItem}
+      {renderNodes()}
+      <AddNewNodeButton
+        title={RVDic.NodeSelect}
+        icon={<FolderIcon />}
+        onClick={handleSelectButtonClick}
       />
-      {!selectedItems?.length && (
-        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )}
-      {canEdit && <AddNewNode onClick={handleSelectButtonClick} />}
     </Styled.NodeCellContainer>
   );
 };

@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import { CV_RED } from 'constant/CssVariables';
 import CustomTable from 'components/CustomTable/CustomTable';
 import ColumnsFactory from 'components/CustomTable/ColumnsFactory';
-import { prepareHeaders, prepareRows } from 'components/CustomTable/tableUtils';
+import {
+  cellTypes,
+  normalizeCell,
+  prepareHeaders,
+  prepareRows,
+} from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import {
@@ -27,6 +32,7 @@ import saveForm from '../saveForm';
  * @property {String} tableOwnerId - The id of the owner of the table.
  * @property {Boolean} isEditable - Whether table is editable or not?
  * @property {Boolean} isResizable - Whether table is resizable or not?
+ * @property {Boolean} editByCell - Whether single cell is editable or not?
  * @property {Boolean} isNestedTable - Whether table is nested inside another table or not?
  * @property {Function} onTableContentChange - A callback function that fires whenever table content changes.
  */
@@ -44,6 +50,7 @@ const Table = (props) => {
     tableOwnerId,
     isEditable,
     isResizable,
+    editByCell,
     isNestedTable,
     onTableContentChange,
   } = props;
@@ -85,25 +92,37 @@ const Table = (props) => {
       .catch((error) => console.log(error));
   };
 
+  const updateRowCell = (rowId, columnId, cell) => {
+    setRows((oldRows) =>
+      oldRows.map((row) => {
+        if (row?.id === rowId) {
+          return {
+            ...row,
+            [columnId]: cell,
+          };
+        }
+        return row;
+      })
+    );
+  };
+
   //! Fires on every cell update.
-  const updateCellData = (rowId, columnId, cellData, cellValue) => {
-    console.log(cellData, 'step one');
-    if (!!rowId) {
-      setRows((old) =>
-        old.map((row) => {
-          if (row?.id === rowId) {
-            return {
-              ...row,
-              [columnId]: cellData,
-            };
-          }
-          return row;
-        })
-      );
+  const updateCellData = (rowId, columnId, newCellData, oldCellValue) => {
+    // console.log({ newCellData }, { oldCellValue }, 'step one');
+    const isNewRow = rowId.split('_')[0] === 'new';
+
+    if (isNewRow) {
+      saveRow([newCellData]);
     } else {
-      //! New row.
-      let newRowObject = { ...newRowRef.current, [columnId]: cellData };
-      newRowRef.current = newRowObject;
+      saveForm([newCellData])
+        .then(() => {
+          updateRowCell(rowId, columnId, newCellData);
+        })
+        .catch((error) => {
+          // console.log(error, 'save row error')
+          // updateRowCell(rowId, columnId, oldCellValue);
+        });
+      updateRowCell(rowId, columnId, newCellData);
     }
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
@@ -164,7 +183,7 @@ const Table = (props) => {
   const memoizedRemoveRow = useCallback(removeRow, []);
 
   //! Edit table row.
-  const editRow = (rowId) => {
+  const editRow = (rowId, columnId = null) => {
     //! Do this in nested tables.
     if (!!isNestedTable) {
       let newContentElements = rows
@@ -185,14 +204,23 @@ const Table = (props) => {
       return;
     }
 
-    //! Do this in parent table.
+    //! Do this in main table.
     const rowElements = rows?.find((row) => row?.id === rowId);
-    const filteredElements = Object.values(rowElements).filter(
+    let elementsToSave = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    console.log(filteredElements, 'edited row');
-    saveForm(filteredElements)
+    //! Check if edit by cell is true.
+    if (columnId) {
+      elementsToSave = elementsToSave.filter(
+        (element) => element?.RefElementID === columnId
+      );
+    }
+
+    // console.log(elementsToSave, 'edited row');
+    // console.log(columnId, 'column id');
+
+    saveForm(elementsToSave)
       .then((response) => {
         const newRowElements = response;
         const newTableContent = tableContent.map((content) => {
@@ -225,27 +253,28 @@ const Table = (props) => {
   const memoizedOnEditRowStart = useCallback(onEditStart, []);
 
   //! Fires on row edit abortion.
-  const onEditCancel = () => {
-    setRows(beforeEditRowsRef.current);
-    beforeEditRowsRef.current = null;
-    newRowRef.current = {};
+  const onEditCancel = (tempRowId = '') => {
+    if (!!tempRowId) {
+      setRows(beforeEditRowsRef.current);
+      beforeEditRowsRef.current = null;
+    } else {
+      setRows(beforeEditRowsRef.current);
+      beforeEditRowsRef.current = null;
+      newRowRef.current = {};
+    }
   };
+
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
-  //! Add new row to the table.
-  const addRow = () => {
-    console.log(newRowRef.current, 'add before');
+  //! Save row.
+  const saveRow = (newRowElements) => {
     createFormInstance(tableId, tableOwnerId)
       .then((response) => {
         if (response?.Succeed) {
           const instanceId = response?.Instance?.InstanceID;
-          const extendedElements = Object.values(newRowRef.current).map(
-            (element) => {
-              return { ...element, InstanceID: instanceId };
-            }
-          );
-
-          console.log(response, newRowRef.current, 'add after');
+          const extendedElements = newRowElements.map((element) => {
+            return { ...element, InstanceID: instanceId };
+          });
 
           saveForm(extendedElements)
             .then((response) => {
@@ -256,6 +285,11 @@ const Table = (props) => {
         }
       })
       .catch((error) => console.log(error));
+  };
+
+  const addRow = () => {
+    let elements = Object.values(newRowRef.current);
+    saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, []);
 
@@ -293,12 +327,44 @@ const Table = (props) => {
         setRows(rows);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const createNewRow = (tempRowId) => {
+    let newRow = tableColumns
+      ?.filter((col) => col?.Type !== cellTypes.separator)
+      .map((column) => {
+        let extendedColumn = Object.assign({}, column, {
+          FormID: '',
+          InstanceID: tempRowId,
+          RefElementID: '',
+          GuidItems: [],
+          SelectedItems: [],
+          TextValue: '',
+        });
+
+        return normalizeCell(extendedColumn);
+      })
+      .reduce(
+        (acc, column) => {
+          return {
+            ...acc,
+            [`${column.Type}_${column.ElementID}`]: column,
+          };
+        },
+        { id: tempRowId }
+      );
+
+    newRow.current = newRow;
+    beforeEditRowsRef.current = rows;
+    setRows((oldRows) => [newRow, ...oldRows]);
+  };
 
   return (
     <CustomTable
       editable={isEditable}
       resizable={isResizable}
+      editByCell={editByCell}
       pagination={{
         perPageCount: [5, 10, 20, 30],
         initialPageIndex: 0,
@@ -318,6 +384,7 @@ const Table = (props) => {
       tableId={tableId}
       getCellProps={(cell) => ({})}
       tableMirror={Table}
+      onCreateNewRow={createNewRow}
     />
   );
 };
@@ -326,13 +393,18 @@ Table.propTypes = {
   tableColumns: PropTypes.array,
   tableData: PropTypes.array,
   tableId: PropTypes.string,
+  tableOwnerId: PropTypes.string,
   isEditable: PropTypes.bool,
   isResizable: PropTypes.bool,
+  editByCell: PropTypes.bool,
+  isNestedTable: PropTypes.bool,
+  onTableContentChange: PropTypes.func,
 };
 
 Table.defaultProps = {
   isEditable: true,
   isResizable: true,
+  editByCell: false,
 };
 
 export default memo(Table);

@@ -24,7 +24,7 @@ export const modalTypes = {
   table: 'Form',
 };
 
-export const prepareCell = (cell) => {
+export const normalizeCell = (cell) => {
   const normalizedCell = Object.assign({}, cell, {
     Info: toJSON(decodeBase64(cell.Info) || '{}'),
     Title: decodeBase64(cell.Title),
@@ -33,9 +33,13 @@ export const prepareCell = (cell) => {
     TextValue: decodeBase64(cell.TextValue),
   });
 
-  return {
-    [`${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`]: normalizedCell,
-  };
+  return normalizedCell;
+};
+
+export const prepareCell = (cell) => {
+  let id = `${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`;
+
+  return { [id]: normalizeCell(cell) };
 };
 
 export const prepareHeaders = (columns, getColumnOptions) => [
@@ -85,4 +89,46 @@ export const prepareRows = (data, columns) => {
       id: row?.InstanceID,
     });
   });
+};
+
+export const useCellProps = (cellProps) => {
+  const {
+    row,
+    column,
+    editable: isTableEditable,
+    editingRowId,
+    header,
+    selectedCell,
+    tempRowId,
+    cell,
+  } = cellProps;
+
+  let rowId = row?.original?.id;
+  let columnId = column?.id;
+  let selectedRowId = selectedCell?.row?.original?.id;
+  let selectedColumnId = selectedCell?.column?.id;
+  let isCellEditable = !!header?.options?.editable;
+  let isRowEditing = rowId === editingRowId;
+  let isCellEditing = rowId === selectedRowId && columnId === selectedColumnId;
+  let isNewRow = tempRowId === rowId;
+  let canEdit =
+    (isTableEditable && isCellEditable && (isRowEditing || isCellEditing)) ||
+    isNewRow;
+  let isSelectedCell =
+    selectedRowId === cell?.row?.original?.id &&
+    selectedColumnId === cell?.column?.id;
+
+  return {
+    rowId,
+    columnId,
+    selectedRowId,
+    selectedColumnId,
+    isSelectedCell,
+    isCellEditable,
+    isRowEditing,
+    isCellEditing,
+    isNewRow,
+    canEdit,
+    ...cellProps,
+  };
 };

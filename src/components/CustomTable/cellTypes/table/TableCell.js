@@ -4,21 +4,25 @@ import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from './TableCell.styles';
 import { modalTypes } from '../../tableUtils';
 import TableCellModal from '../table/TableCellModal';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import AddNewTableButton from 'components/CustomTable/AddNewButton';
+import useWindow from 'hooks/useWindowContext';
 
 const TableCell = (props) => {
   const {
-    isNew,
-    row,
-    editingRow,
-    onCellChange,
-    column,
     value,
-    editable: isTableEditable,
-    header,
-  } = props;
+    onCellChange,
+    rowId,
+    columnId,
+    // canEdit,
+    // setSelectedCell,
+    // isSelectedCell,
+    isNewRow,
+  } = useCellProps(props);
+  const { RVDic } = useWindow();
 
   const { Info } = value || {};
-  // console.log(value, props, 'table cell');
+  // console.log(value, 'table cell');
 
   const handleOnTableClick = () => {
     props?.setModal({
@@ -28,6 +32,23 @@ const TableCell = (props) => {
       content: () => <TableCellModal {...props} />,
     });
   };
+
+  const handleAddNewTable = () => {
+    let dummyText = '(~_~)';
+    let textCell = { ...value, TextValue: dummyText };
+
+    onCellChange(rowId, columnId, textCell, dummyText);
+  };
+
+  if (isNewRow) {
+    return (
+      <AddNewTableButton
+        onClick={handleAddNewTable}
+        title={RVDic.AddN.replace('[n]', RVDic.Table)}
+        icon={<TableIcon size={18} />}
+      />
+    );
+  }
 
   return (
     <Styled.TableCellContainer>

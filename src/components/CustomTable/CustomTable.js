@@ -1,4 +1,12 @@
-import { useMemo, useState, memo, lazy, Suspense } from 'react';
+import {
+  useMemo,
+  useState,
+  memo,
+  lazy,
+  Suspense,
+  // useRef,
+  // useLayoutEffect,
+} from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -14,6 +22,8 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import ColumnHeader from './ColumnHeader';
+import CellEdit from './CellEdit';
+import { getUUID } from 'helpers/helpers';
 
 const TableModal = lazy(() =>
   import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
@@ -25,11 +35,13 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 /**
  * @typedef PropType
  * @type {Object}
- * @property {string} tableId - The id of the table.
- * @property {boolean} editable - If true table cells are editable.
- * @property {boolean} isLoading - A flag that indicates if table data is loading or not.
- * @property {object} columns - The core columns configuration object for the entire table.
- * @property {array} data - The data array that you want to display on the table.
+ * @property {String} tableId - The id of the table.
+ * @property {Boolean} editable - If true table cells are editable.
+ * @property {Boolean} editByCell - If true every single cell can be edited.
+ * @property {Boolean} resizable - If true table columns are resizable.
+ * @property {Boolean} isLoading - A flag that indicates if table data is loading or not.
+ * @property {Object} columns - The core columns configuration object for the entire table.
+ * @property {Array} data - The data array that you want to display on the table.
  */
 
 /**
@@ -40,12 +52,14 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
-    editable: isEditable,
-    resizable: isResizable,
+    editable: isTableEditable,
+    resizable: isTableResizable,
+    editByCell,
     isLoading,
     columns,
     data,
     onCellChange,
+    onCreateNewRow,
     removeRow,
     editRow,
     addRow,
@@ -62,23 +76,13 @@ const CustomTable = (props) => {
 
   const [selectedCell, setSelectedCell] = useState(null);
   const [isRowDragging, setIsRowDragging] = useState(false);
-  const [editingRow, setEditingRow] = useState(null);
+  const [editingRowId, setEditingRowId] = useState(null);
   const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
-  const [showFooter, setShowFooter] = useState(false);
+  const [tempRowId, setTempRowId] = useState(null);
 
   const restoreModalState = () => {
     setModal(DEFAULT_MODAL_PROPS);
   };
-
-  // const getModalContent = (modalType) => {
-  //   switch (modalType) {
-  //     case modalTypes.table:
-  //       return <div>Table</div>;
-
-  //     default:
-  //       return <div>Modal Content</div>;
-  //   }
-  // };
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -130,15 +134,17 @@ const CustomTable = (props) => {
       setSelectedCell,
       modal,
       setModal,
-      editingRow,
+      editingRowId,
       onEditRowStart,
       onEditRowCancel,
-      setEditingRow,
-      setShowFooter,
+      setEditingRowId,
       reorderRow,
+      tempRowId,
+      setTempRowId,
       getColumnsOption,
       tableId,
       tableMirror,
+      editByCell,
       initialState: {
         ...paginationStates,
       },
@@ -152,15 +158,14 @@ const CustomTable = (props) => {
 
   tableInstance.state = {
     ...tableInstance.state,
-    showFooter,
     data,
+    lastRowInPage: tableInstance?.page?.[tableInstance?.page.length - 1],
   };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    footerGroups,
     prepareRow,
     page,
     // resetResizing,
@@ -169,15 +174,21 @@ const CustomTable = (props) => {
 
   // console.log(state);
 
-  const handleAddRow = () => {
-    setShowFooter(true);
-    setEditingRow(null);
+  const handleAddItem = () => {
+    // setShowFooter(true);
+    if (!tempRowId) {
+      let tempRowId = 'new_' + getUUID();
+      setTempRowId(tempRowId);
+      onCreateNewRow && onCreateNewRow(tempRowId);
+    }
+
+    setEditingRowId(null);
   };
 
   //! Render the UI for your table
   return (
     <Styled.TableContainer>
-      <TableAction onAddRow={handleAddRow} onSearch={onSearch} />
+      <TableAction onAddItem={handleAddItem} onSearch={onSearch} />
       <Suspense fallback={<ModalFallbackLoader />}>
         {modal.show && (
           <TableModal
@@ -199,7 +210,7 @@ const CustomTable = (props) => {
                     <Styled.TableHeader
                       {...column.getHeaderProps(column.getSortByToggleProps())}>
                       <ColumnHeader column={column} allColumns={columns} />
-                      {isResizable && (
+                      {isTableResizable && (
                         <Styled.TableColumnResizer
                           isResizing={column.isResizing}
                           {...column.getResizerProps()}
@@ -222,7 +233,7 @@ const CustomTable = (props) => {
                     {...getTableBodyProps()}>
                     {page.map((row, i) => {
                       prepareRow(row);
-                      const isRowEditing = row.original.id === editingRow;
+                      const isRowEditing = row.original.id === editingRowId;
                       return (
                         <Draggable
                           draggableId={row.original.id}
@@ -250,7 +261,7 @@ const CustomTable = (props) => {
                                         },
                                       ])}>
                                       {cell.render('Cell', {
-                                        editable: !!isEditable,
+                                        editable: !!isTableEditable,
                                         dragHandleProps: {
                                           ...provided.dragHandleProps,
                                         },
@@ -269,21 +280,6 @@ const CustomTable = (props) => {
                 )}
               </Droppable>
             </DragDropContext>
-            {showFooter && (
-              <Styled.FooterContainer>
-                {footerGroups.map((group) => (
-                  <Styled.FooterTr {...group.getFooterGroupProps()}>
-                    {group.headers.map((column) => {
-                      return (
-                        <div className="footer-td" {...column.getFooterProps()}>
-                          {column.render('Footer')}
-                        </div>
-                      );
-                    })}
-                  </Styled.FooterTr>
-                ))}
-              </Styled.FooterContainer>
-            )}
           </Styled.Table>
         )}
       </Styled.TableWrapper>

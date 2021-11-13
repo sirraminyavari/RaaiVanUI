@@ -1,76 +1,75 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useState, useRef } from 'react';
 import Input from 'components/Inputs/Input';
 import NumberIcon from 'components/Icons/NymberIcon';
 import * as Styled from './NumberCell.styles';
 import { CV_DISTANT } from 'constant/CssVariables';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const NumberCell = (props) => {
   const {
     value,
-    row,
-    column,
     onCellChange,
-    editable: isTableEditable,
-    editingRow,
-    isNew,
-    header,
-  } = props;
+    rowId,
+    columnId,
+    canEdit,
+    setSelectedCell,
+    isSelectedCell,
+  } = useCellProps(props);
 
-  const { Info, FloatValue } = value || {};
+  const numberRef = useRef();
 
-  const rowId = row?.original?.id;
-  const columnId = column?.id;
-  const headerId = header?.id;
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      handleUpdateCell();
+      setSelectedCell(null);
+    }
+  };
 
-  const isCellEditable = !!header?.options?.editable;
-  const isRowEditing = rowId === editingRow;
+  useOnClickOutside(numberRef, handleClickOutside);
 
-  const canEdit = isTableEditable && isCellEditable && isRowEditing;
+  const { FloatValue } = value || {};
 
-  const [numberValue, setNumberValue] = useState(0);
+  const [numberValue, setNumberValue] = useState(FloatValue || '');
+  const originalValueRef = useRef(FloatValue);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
     setNumberValue(e.target.valueAsNumber);
   };
 
-  useEffect(() => {
-    setNumberValue(FloatValue);
-  }, []);
-
   //! We'll only update the external data when the input is blurred.
-  const handleInputBlur = () => {
-    //! Update parent.
-    let numberCell;
-    let id = isNew ? null : rowId;
+  const handleUpdateCell = () => {
+    if (originalValueRef.current === numberValue) return;
 
-    numberCell = isNew
-      ? {
-          ElementID: headerId,
-          FloatValue: numberValue,
-          TextValue: numberValue + '',
-          Type: header?.dataType,
-        }
-      : { ...value, FloatValue: numberValue, TextValue: numberValue + '' };
+    let numberCell = {
+      ...value,
+      FloatValue: numberValue,
+      TextValue: numberValue + '',
+    };
 
-    onCellChange(id, columnId, numberCell, numberValue);
+    onCellChange(rowId, columnId, numberCell, numberValue);
   };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
-  if (!canEdit && !isNew) {
-    return !!numberValue ? (
-      <Styled.CellView type="h4">{numberValue}</Styled.CellView>
-    ) : (
-      <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+  if (!canEdit) {
+    return (
+      <div>
+        {!!numberValue ? (
+          <Styled.CellView type="h4">{numberValue}</Styled.CellView>
+        ) : (
+          <Styled.EmptyCellView></Styled.EmptyCellView>
+        )}
+      </div>
     );
   }
 
   return (
-    <Styled.InputCellWrapper>
+    <Styled.InputCellWrapper ref={numberRef}>
       <NumberIcon size={25} color={CV_DISTANT} />
       <Input
         onChange={handleInputChange}
-        onBlur={handleInputBlur}
+        // onBlur={() => console.log('blur')}
         className="table-number-input"
         type="number"
         value={numberValue}

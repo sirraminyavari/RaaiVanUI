@@ -12,16 +12,16 @@ const UsersList = (props) => {
     onRemoveUser && onRemoveUser(user);
   };
 
+  // as={canEdit ? 'div' : Link}
+  // to={getURL('User', { UserID })}
+
   return (
     <Styled.UsersListWrapper>
       {users?.map((user, index) => {
         const { UserID, IconURL, FullName } = user;
         return (
           <Styled.UserCellContainer key={UserID || index}>
-            <Styled.UserInfoWrapper
-              as={canEdit ? 'div' : Link}
-              to={getURL('User', { UserID })}
-              editable={canEdit}>
+            <Styled.UserInfoWrapper editable={canEdit}>
               <Avatar
                 color={CV_BLACK}
                 className="table-user-avatar"
