@@ -5,13 +5,14 @@ import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { API_Provider } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import FilesList from './FilesList';
-import AddFileButton from './AddFileButton';
 import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 // import { removeFile } from 'apiHelper/apiFunctions';
 import useWindow from 'hooks/useWindowContext';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewFileButton from 'components/CustomTable/AddNewButton';
+import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 
 const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
@@ -178,9 +179,15 @@ const FileCell = (props) => {
           onUpload={handleUploadFiles}
           isUploading={isUploading}
           placeholders={{
-            main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+            main: RVDic.DropFilesHere,
           }}
-          customComponent={AddFileButton}
+          customComponent={(props) => (
+            <AddNewFileButton
+              title={RVDic?.SelectN?.replace('[n]', RVDic?.File)}
+              icon={<FileFormatIcon />}
+              {...props}
+            />
+          )}
         />
       </Styled.AddNewFileWrapper>
     </Styled.FileCellContainer>

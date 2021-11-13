@@ -1,18 +1,19 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import * as Styled from './NodeCell.styles';
 import { decodeBase64 } from 'helpers/helpers';
-// import useWindow from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import ItemSelection from 'components/ItemSelection/ItemSelection';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 import Modal from 'components/Modal/Modal';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import AddNewNode from './AddNewNode';
 import NodesList from './NodesList';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewNodeButton from 'components/CustomTable/AddNewButton';
+import FolderIcon from 'components/Icons/FolderIcon/FolderIcon';
 
 const NodeCell = (props) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
   const routeProps = useContext(PropsContext);
 
   const {
@@ -145,7 +146,11 @@ const NodeCell = (props) => {
         />
       </Modal>
       {renderNodes()}
-      <AddNewNode onClick={handleSelectButtonClick} />
+      <AddNewNodeButton
+        title={RVDic.NodeSelect}
+        icon={<FolderIcon />}
+        onClick={handleSelectButtonClick}
+      />
     </Styled.NodeCellContainer>
   );
 };

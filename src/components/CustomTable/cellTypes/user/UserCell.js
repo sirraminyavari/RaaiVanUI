@@ -2,13 +2,14 @@ import { useCallback, useState, useEffect, useRef } from 'react';
 import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
-import AddNewUser from './AddNewUser';
 import { useCellProps } from 'components/CustomTable/tableUtils';
-// import useWindow from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewUserButton from 'components/CustomTable/AddNewButton';
+import UserIcon from 'components/Icons/UserIconIo';
 
 const UserCell = (props) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
 
   const {
     value,
@@ -124,7 +125,12 @@ const UserCell = (props) => {
           pickedPeople={isNewRow ? normalizeSelectedUsers : []}
           onVisible={() => {}}
           multi={isMultiSelect}
-          buttonComponent={<AddNewUser />}
+          buttonComponent={
+            <AddNewUserButton
+              title={RVDic?.SelectN?.replace('[n]', RVDic?.User)}
+              icon={<UserIcon size={23} />}
+            />
+          }
         />
       </Styled.PeoplePickerWrapper>
     </Styled.UsersCellContainer>

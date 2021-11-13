@@ -6,6 +6,7 @@ import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
+import AddNewRowButton from 'components/CustomTable/AddNewButton';
 
 const TableAction = ({ onAddItem, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
@@ -46,16 +47,12 @@ const TableAction = ({ onAddItem, onSearch, data }) => {
         />
       </Styled.TableSearchWrapper>
       <Styled.TableButtonsWrapper>
-        <Styled.ActionButton onClick={handleAddItem}>
-          <AddIcon
-            size={22}
-            color={TCV_DEFAULT}
-            className="table-add-new-item-icon"
-          />
-          <Button type="primary-o" classes="table-add-new-item-button">
-            {RVDic.CreateNewN.replace('[n]', RVDic.Node)}
-          </Button>
-        </Styled.ActionButton>
+        <AddNewRowButton
+          onClick={handleAddItem}
+          title={RVDic.CreateNewN.replace('[n]', RVDic.Row)}
+          icon={<AddIcon size={23} />}
+          style={{ width: '14rem' }}
+        />
       </Styled.TableButtonsWrapper>
     </Styled.TableActionsContainer>
   );

@@ -26,11 +26,6 @@ const MultiLevelCell = (props) => {
   const { RVDic } = useWindow();
   const multilevelRef = useRef();
 
-  useOnClickOutside(
-    multilevelRef,
-    () => isSelectedCell && setSelectedCell(null)
-  );
-
   const { Info, SelectedItems } = value || {};
   const selectedItemsName = SelectedItems?.map((item) =>
     decodeBase64(item?.Name)
@@ -53,6 +48,16 @@ const MultiLevelCell = (props) => {
   }));
 
   const [levelValues, setLevelValues] = useState(initialState);
+
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      let isCompleted = levelValues.every((level) => !!level.value);
+      isCompleted && updateCell(levelValues);
+    }
+  };
+
+  useOnClickOutside(multilevelRef, handleClickOutside);
 
   //! Keep track of edit mode, And revert to default value if edition has been canceled.
   useEffect(() => {
@@ -150,9 +155,7 @@ const MultiLevelCell = (props) => {
 
     setLevelValues(newLevelsValue);
 
-    if (isTheEnd) {
-      updateCell(newLevelsValue);
-    } else {
+    if (!isTheEnd) {
       getOptions(nextStep, currentLevelValue.NodeID);
     }
   };

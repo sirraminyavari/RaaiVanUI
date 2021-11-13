@@ -22,22 +22,34 @@ const DateCell = (props) => {
 
   const dateRef = useRef();
 
-  useOnClickOutside(dateRef, () => isSelectedCell && setSelectedCell(null));
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell();
+    }
+  };
+
+  useOnClickOutside(dateRef, handleClickOutside);
 
   const { DateValue } = value || {};
 
-  const dateArray = DateValue?.split(' ')[0]
-    ?.split('/')
-    ?.map((s) => {
-      if (s.length < 2) {
-        return `0${s}`;
-      }
-      return s;
-    });
+  const normalizeDate = (date) => {
+    const dateArray = date
+      ?.split(' ')[0]
+      ?.split('/')
+      ?.map((s) => {
+        if (s.length < 2) {
+          return `0${s}`;
+        }
+        return s;
+      });
 
-  const date = [dateArray?.[2], dateArray?.[0], dateArray?.[1]]?.join('/');
+    return [dateArray?.[2], dateArray?.[0], dateArray?.[1]]?.join('/');
+  };
 
-  const [dateValue, setDateValue] = useState(!!DateValue ? date : null);
+  const [dateValue, setDateValue] = useState(
+    !!DateValue ? normalizeDate(DateValue) : null
+  );
 
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
@@ -45,12 +57,17 @@ const DateCell = (props) => {
   //! Update date on select.
   const handleDateSelect = (date) => {
     setDateValue(date);
-    const dateArray = date?.split('/');
+  };
+
+  const updateCell = () => {
+    const dateArray = dateValue?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
+
+    if (normalizeDate(DateValue) === dateValue) return;
 
     let dateCell = { ...value, DateValue: dateString };
 
-    isSelectedCell && onCellChange(rowId, columnId, dateCell, date);
+    onCellChange(rowId, columnId, dateCell, dateValue);
   };
 
   if (!canEdit) {

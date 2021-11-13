@@ -504,3 +504,22 @@ export const EditButtonsWrapper = styled.div`
     ${FLEX_RCC}
   }
 `;
+
+export const AddNewButtonWrapper = styled.div`
+  width: 100%;
+
+  .table-add-new-in-cell-button {
+    background-color: inherit;
+    color: ${TCV_DEFAULT};
+    width: auto;
+    margin: 0 1rem;
+    height: 1.8rem;
+    border-radius: 1rem;
+    ${FLEX_RCC}
+    gap: 0.5rem;
+  }
+`;
+
+export const AddNewHeading = styled(Heading)`
+  color: ${TCV_DEFAULT};
+`;

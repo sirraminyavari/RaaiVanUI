@@ -24,15 +24,6 @@ export const UsersCellContainer = styled.div`
   width: 100%;
   ${FLEX_CSA}
   gap: 0.5rem;
-
-  .table-user-cell-select-button {
-    background-color: inherit;
-    color: ${TCV_DEFAULT};
-    width: auto;
-    margin: 0 1rem;
-    height: 1.8rem;
-    border-radius: 1rem;
-  }
 `;
 
 export const UsersListWrapper = styled.div`
@@ -108,15 +99,6 @@ export const EmptyCellView = styled.div`
   height: 2rem;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
-`;
-
-export const ItemSelectionButton = styled.div`
-  ${FLEX_RCC}
-  gap: 0.5rem;
-`;
-
-export const ItemSelectionHeading = styled(Heading)`
-  color: ${TCV_DEFAULT};
 `;
 
 export const UsersWrapper = styled.div`

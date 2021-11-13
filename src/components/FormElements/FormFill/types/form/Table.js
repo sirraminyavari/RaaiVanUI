@@ -355,7 +355,8 @@ const Table = (props) => {
         { id: tempRowId }
       );
 
-    beforeEditRowsRef.current = newRow;
+    newRow.current = newRow;
+    beforeEditRowsRef.current = rows;
     setRows((oldRows) => [newRow, ...oldRows]);
   };
 
