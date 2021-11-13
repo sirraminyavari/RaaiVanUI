@@ -17,7 +17,8 @@ const SelectedItem = ({ item, onRemove, editMode }) => {
 
   return (
     <Maintainer className={'rv-border-radius-half'}>
-      <Icon />
+      <Icon src={IconURL} />
+
       <Title>{decodeBase64(Name)}</Title>
       {editMode && <CustomCloseIcon onClick={() => onRemove(item)} />}
     </Maintainer>
@@ -36,7 +37,7 @@ const Maintainer = styled.div`
   flex-direction: row;
   margin: 0.25rem 1rem 0.25rem 1rem;
 `;
-const Icon = styled.div`
+const Icon = styled.img`
   height: 2.2rem;
   width: 2.2rem;
   border-radius: 1rem;

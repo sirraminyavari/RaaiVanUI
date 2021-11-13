@@ -32,6 +32,7 @@ const PeoplePicker = ({
   pickedPeople,
   multi,
   onBlur,
+  direction = 'top',
 
   onVisible,
 }) => {
@@ -130,6 +131,7 @@ const PeoplePicker = ({
       )}
 
       <PeopleBody
+        direction={direction}
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
         <ResetContainer onClick={() => onChoose(null)}>

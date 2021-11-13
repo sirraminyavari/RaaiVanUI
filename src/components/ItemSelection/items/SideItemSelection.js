@@ -213,7 +213,7 @@ export default SideItemSelection;
 
 const Container = styled.div`
   width: ${() => (DimensionHelper().isTabletOrMobile ? '11rem' : '16.75rem')};
-  height: 100%;
+  height: 70vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;

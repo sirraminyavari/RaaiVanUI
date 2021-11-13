@@ -72,38 +72,43 @@ const MultiLevelField = ({
       iconComponent={<FilterIconIo color={CV_GRAY} />}
       title={decodeTitle}
       {...props}>
-      {levels?.map((x, index) => {
-        const { ID, Name } = value[index] || {};
-        return (
-          <>
-            {!!normalizedOptions(x) ? (
-              <SelectContainer>
-                <Select
-                  onBlur={() => index === levels?.length - 1 && save(elementId)}
-                  options={normalizedOptions(x)}
-                  styles={customStyles}
-                  value={{ value: ID, label: Name }}
-                  placeholder={RVDic.Select}
-                  isSearchable={true}
-                  onChange={(event, triggeredAction) => {
-                    if (triggeredAction.action === 'clear') {
-                      const selectedTemp = selectedLevels?.map((x, ind) =>
-                        ind === index ? { ID: undefined, Name: undefined } : x
-                      );
-                      setSelectedLevels(selectedTemp);
-                      onAnyFieldChanged(elementId, selectedTemp, type);
-                      setLevels(selectedTemp);
-                      // Clear happened
-                    } else {
-                      onLevelSelected(elementId, event, type, index);
+      {console.log(levels, 'levels')}
+      <SelectorContainer>
+        {levels?.map((x, index) => {
+          const { ID, Name } = value[index] || {};
+          return (
+            <>
+              {!!normalizedOptions(x) || value[index] ? (
+                <SelectContainer>
+                  <Select
+                    onBlur={() =>
+                      index === levels?.length - 1 && save(elementId)
                     }
-                  }}
-                />
-              </SelectContainer>
-            ) : null}
-          </>
-        );
-      })}
+                    options={normalizedOptions(x)}
+                    styles={customStyles}
+                    value={{ value: ID, label: decodeBase64(Name) }}
+                    placeholder={RVDic.Select}
+                    isSearchable={true}
+                    onChange={(event, triggeredAction) => {
+                      if (triggeredAction.action === 'clear') {
+                        const selectedTemp = selectedLevels?.map((x, ind) =>
+                          ind === index ? { ID: undefined, Name: undefined } : x
+                        );
+                        setSelectedLevels(selectedTemp);
+                        onAnyFieldChanged(elementId, selectedTemp, type);
+                        setLevels(selectedTemp);
+                        // Clear happened
+                      } else {
+                        onLevelSelected(elementId, event, type, index);
+                      }
+                    }}
+                  />
+                </SelectContainer>
+              ) : null}
+            </>
+          );
+        })}
+      </SelectorContainer>
     </FormCell>
   );
 };
@@ -113,6 +118,11 @@ export default MultiLevelField;
 const SelectContainer = styled.div`
   display: flex;
   margin: 0 1rem 0 1rem;
+`;
+const SelectorContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 const customStyles = {
   option: (

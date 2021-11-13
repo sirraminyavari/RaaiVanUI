@@ -5,6 +5,7 @@ const prepareForm = (prevForm, elementId, event, type) => {
   const { Elements } = prevForm || {};
 
   const requireItems = (x) => {
+    console.log(x?.RefElementID, x?.ElementID ? true : false, 'Filled');
     return {
       Type: x?.Type,
       ElementID: x?.ElementID,
@@ -12,10 +13,12 @@ const prepareForm = (prevForm, elementId, event, type) => {
       InstanceID: x?.InstanceID,
       Info: x?.Info,
       Title: x?.Title,
+      Filled: x?.RefElementID && x?.ElementID ? true : false,
     };
   };
   switch (type) {
     case 'User':
+      console.log(event, 'event user select');
       const result = {
         ...prevForm,
         Elements: Elements?.map((x) =>
@@ -27,21 +30,45 @@ const prepareForm = (prevForm, elementId, event, type) => {
                     ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
                     : [
                         ...x?.SelectedItems,
-                        { ID: event?.id, Code: '', Name: event?.name },
+                        {
+                          ID: event?.id,
+                          Code: '',
+                          Name: event?.name,
+                          IconURL: event?.avatarUrl,
+                        },
                       ]
                   : x?.SelectedItems.find((z) => z.ID === event?.id)
                   ? []
-                  : [{ ID: event?.id, Code: '', Name: event?.name }],
+                  : [
+                      {
+                        ID: event?.id,
+                        Code: '',
+                        Name: event?.name,
+                        IconURL: event?.avatarUrl,
+                      },
+                    ],
                 SelectedItems: event.multiSelect
                   ? x?.SelectedItems.find((z) => z.ID === event?.id)
                     ? x?.SelectedItems.filter((z) => z.ID !== event?.id)
                     : [
                         ...x?.SelectedItems,
-                        { ID: event?.id, Code: '', Name: event?.name },
+                        {
+                          ID: event?.id,
+                          Code: '',
+                          Name: event?.name,
+                          IconURL: event?.avatarUrl,
+                        },
                       ]
                   : x?.SelectedItems.find((z) => z.ID === event?.id)
                   ? []
-                  : [{ ID: event?.id, Code: '', Name: event?.name }],
+                  : [
+                      {
+                        ID: event?.id,
+                        Code: '',
+                        Name: event?.name,
+                        IconURL: event?.avatarUrl,
+                      },
+                    ],
               }
             : x
         ),
@@ -138,6 +165,19 @@ const prepareForm = (prevForm, elementId, event, type) => {
             : x
         ),
       };
+    case 'Node':
+      const node = {
+        ...prevForm,
+        Elements: Elements?.map((x) =>
+          x?.ElementID === elementId
+            ? {
+                ...requireItems(x),
+                GuidItems: event,
+              }
+            : x
+        ),
+      };
+      return node;
     default:
       return prevForm;
   }

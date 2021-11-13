@@ -114,15 +114,14 @@ const UserSelect = ({
             onVisible={() => {}}
             multi={multiSelect}
             buttonComponent={
-              <>
-                {editMode && (
-                  <AddIcon
-                    style={{ margin: '0 1rem 0 1rem' }}
-                    size={'2rem'}
-                    color={TCV_DEFAULT}
-                  />
-                )}
-              </>
+              <AddIcon
+                style={{
+                  margin: '0 1rem 0 1rem',
+                  display: !editMode && 'none',
+                }}
+                size={'2rem'}
+                color={TCV_DEFAULT}
+              />
             }
           />
         </Maintainer>

@@ -42,7 +42,8 @@ const TopBar = ({
   onSideColumnClicked,
   sideColumn,
 }) => {
-  const { VisitsCount } = nodeDetails || {};
+  const { VisitsCount, Contributors } = nodeDetails || {};
+  console.log(nodeDetails, 'nodeDetails nodeDetails');
 
   const [relatedNodes, setRelatedNodes] = useState([]);
   const [sideDetailsHover, setSideDetailsHover] = useState(false);
@@ -124,7 +125,7 @@ const TopBar = ({
 
       <BottomRow>
         <RelatedTopicsContainer>
-          <RelatedTopicsTitle>موضوعات مرتبط</RelatedTopicsTitle>
+          <RelatedTopicsTitle>{RVDic.RelatedNode}</RelatedTopicsTitle>
           <LastTopicsTabs
             floatBox
             provideNodes={onApplyNodeType && onApplyNodeType}
@@ -156,7 +157,13 @@ const TopBar = ({
           />
         </ShadowButton>
 
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            ...(RV_RTL && { marginRight: '2rem' }),
+            ...(!RV_RTL && { marginLeft: '2rem' }),
+          }}>
           {/* <ShadowButton
             style={commonStyle}
             onMouseEnter={() => {}}
@@ -167,10 +174,8 @@ const TopBar = ({
             <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
           </ShadowButton> */}
           <Creators
-            creatorsList={[
-              { name: 'ali', avatar: avatar },
-              { name: 'vali', avatar: avatar },
-            ]}
+            creatorsList={nodeDetails?.Contributors?.Value}
+            nodeDetails={nodeDetails}
           />
         </div>
       </BottomRow>
