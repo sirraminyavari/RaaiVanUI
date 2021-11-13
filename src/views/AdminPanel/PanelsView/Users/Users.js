@@ -43,7 +43,11 @@ const Users = (props) => {
           )}
         </Styled.TopBar>
 
-        {SAASBasedMultiTenancy ? <MultiTenantList /> : <TeamBasedList />}
+        {SAASBasedMultiTenancy ? (
+          <MultiTenantList rtl={rtl} />
+        ) : (
+          <TeamBasedList rtl={rtl} />
+        )}
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>
   );

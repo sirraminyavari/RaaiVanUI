@@ -1,9 +1,9 @@
 import useWindowContext from '../../../../hooks/useWindowContext';
 import { useState } from 'react';
+import { teamUsers } from './_lurem';
 
 const UseUsers = (props) => {
   const { RV_RTL: rtl, RVDic, RVGlobal } = useWindowContext();
-
   /**
    * @description items array to feed breadcrumbs component
    * @type {[{title: string}, {title: string}]}
