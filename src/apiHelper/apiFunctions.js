@@ -61,6 +61,7 @@ import {
   RECOVER_FORM_INSTANCES,
   REMOVE_FILE,
   GET_TEMPLATE_TAGS,
+  SAVE_APPLICATION_INFO,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1313,13 +1314,16 @@ export const recycleNode = (nodeId) => {
  * @param {String} ownerType -The type of owner.
  * @returns Promise.
  */
-export const getTemplateTags = () => {
-  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
+export const getUploadLink = (ownerId, ownerType) => {
+  const getUploadLinkAPI = API_Provider(CN_API, GET_UPLOAD_LINK);
 
   return new Promise((resolve, reject) => {
     try {
-      getTemplateTagsAPI.fetch(
-        {},
+      getUploadLinkAPI.fetch(
+        {
+          OwnerID: ownerId,
+          OwnerType: ownerType,
+        },
         (response) => {
           resolve(response);
         },
@@ -1375,6 +1379,35 @@ export const saveApplicationInfo = (
           About: encodeBase64(About),
           Size: encodeBase64(Size),
           ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set node searchability.
+ * @param {String} nodeId -The id of node.
+ * @param {Boolean} searchable -Make it searchable or not.
+ * @returns Promise.
+ */
+export const setNodeSearchability = (nodeId, searchable) => {
+  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setNodeSearchabilityAPI.fetch(
+        {
+          NodeID: nodeId,
+          Searchable: searchable,
         },
         (response) => {
           resolve(response);
