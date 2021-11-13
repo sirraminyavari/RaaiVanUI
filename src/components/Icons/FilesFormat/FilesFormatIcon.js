@@ -18,7 +18,7 @@ import { BsFileEarmarkText } from 'react-icons/bs';
 /**
  * @typedef PropType
  * @type {Object}
- * @property {('svc' | 'pdf' | 'archive' | 'audio' | 'code' | 'excel' | 'image' | 'powerPoint' | 'video' | 'word' | 'upload')} format - The radius of the avatar's circule.
+ * @property {('svc' | 'pdf' | 'archive' | 'audio' | 'code' | 'excel' | 'jpg' | 'png' | 'powerPoint' | 'video' | 'word' | 'upload' | 'html')} format - The radius of the avatar's circule.
  * @property {Boolean} fill - Icon is fill or outlined?.
  */
 
@@ -48,8 +48,14 @@ const FilesFormatIcon = (props) => {
     case 'excel':
       return <FaFileExcel {...rest} />;
 
-    case 'image':
+    case 'jpg':
       return <FaFileImage {...rest} />;
+
+    case 'png':
+      return <FaFileImage {...rest} />;
+
+    case 'html':
+      return <FaFileAlt {...rest} />;
 
     case 'powerPoint':
       return <FaFilePowerpoint {...rest} />;

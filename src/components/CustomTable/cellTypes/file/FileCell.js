@@ -1,34 +1,85 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import axios from 'axios';
 import * as Styled from './FileCell.styles';
-import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
-import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
-import CustomDropzone from 'components/CustomDropzone/CustomDropzone';
+import CustomDropZone from 'components/CustomDropzone/CustomDropzone';
 import { API_Provider } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import FilesList from './FilesList';
+import AddFileButton from './AddFileButton';
+import { DOCS_API, GET_UPLOAD_LINK } from 'constant/apiConstants';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { removeFile } from 'apiHelper/apiFunctions';
+// import useWindow from 'hooks/useWindowContext';
 
-const apiHandler = API_Provider('DocsAPI', 'GetUploadLink');
+const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
 const FileCell = (props) => {
-  // console.log('fileCell', props);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileTitle = props?.value?.fileTitle;
-  const fileURL = props?.value?.fileURL;
+  // const { RVDic } = useWindow();
 
-  const handeFileDropError = (error) => {
-    if (!props?.isNew) return;
+  const {
+    isNew,
+    row,
+    editingRow,
+    onCellChange,
+    column,
+    value,
+    editable: isTableEditable,
+    header,
+  } = props;
+  const { Files: initialFiles, Info, ElementID } = value || {};
+
+  const isCellEditable = !!header?.options?.editable;
+  const rowId = row?.original?.id;
+  const columnId = column?.id;
+  const isRowEditing = rowId === editingRow;
+
+  const canEdit = (isTableEditable && isCellEditable && isRowEditing) || isNew;
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [files, setFiles] = useState(isNew ? [] : initialFiles);
+
+  const beforeChangeFilesRef = useRef(null);
+
+  useEffect(() => {
+    if (isNew) {
+      beforeChangeFilesRef.current = [];
+    } else {
+      beforeChangeFilesRef.current = initialFiles;
+    }
+
+    return () => {
+      beforeChangeFilesRef.current = null;
+    };
+  }, [canEdit, initialFiles, isNew]);
+
+  const handleFileDropError = (error) => {
+    if (!canEdit) return;
     console.log(error);
   };
 
+  //! Update file cell.
+  const updateFileCell = (newFiles) => {
+    const extendedFiles = newFiles?.map((file) => {
+      return { ...file, OwnerID: ElementID };
+    });
+    const fileCell = { ...value, Files: extendedFiles };
+    onCellChange(rowId, columnId, fileCell, extendedFiles);
+  };
+
+  const handleRemoveFile = useCallback((fileId) => {
+    let filteredFiles = files?.filter((file) => file?.FileID !== fileId);
+
+    setFiles(filteredFiles);
+    updateFileCell(filteredFiles);
+  }, []);
+
   const handleUploadFiles = (acceptedFiles) => {
-    if (!props?.isNew) return;
+    if (!canEdit) return;
 
     //! Get upload link.
-    apiHandler.url(
+    getUploadLinkAPI.url(
       {
-        OwnerID: '40aa835f-751c-4786-86af-fec04f45d262',
+        OwnerID: '',
         OwnerType: 'Node',
       },
       (response) => {
@@ -50,7 +101,7 @@ const FileCell = (props) => {
                 let percentage = Math.floor((loaded * 100) / total);
                 //! Executes if upload progress is over.
                 if (percentage === 100) {
-                  //! Resolve promise if and only if ulpoade process is ended.
+                  //! Resolve promise if and only if upload process is ended.
                   resolve();
                 }
               },
@@ -60,8 +111,19 @@ const FileCell = (props) => {
             axios
               .post(uploadURL, formData, options)
               .then((response) => {
+                // console.log(response);
                 if (response?.data?.success) {
+                  let newFilesList = [
+                    ...(files || []),
+                    response?.data?.AttachedFile,
+                  ];
+                  setFiles(newFilesList);
+                  updateFileCell(newFilesList);
+
+                  //! update upload state.
                   setIsUploading(false);
+
+                  //! Inform user with toast.
                   InfoToast({
                     toastId: accepted?.name,
                     type: 'info',
@@ -81,36 +143,34 @@ const FileCell = (props) => {
     );
   };
 
-  if (props?.isNew) {
-    return (
-      <CustomDropzone
-        accept={['image/*', '.pdf']}
-        // foramtExceptions={['jpg']}
-        maxFiles={1}
-        maxEachSize={1}
-        maxTotalSize={1}
-        onError={handeFileDropError}
-        onUpload={handleUploadFiles}
-        isUploading={isUploading}
-        placeholders={{
-          main: 'کلیک یا فایل را بکشید و رها کنید',
-        }}
-      />
-    );
-  }
-
   return (
     <Styled.FileCellContainer>
-      <Styled.FileInfoWrapper editable={props?.header?.options?.editable}>
-        <FileFormatIcon color={TCV_DEFAULT} size={25} format="pdf" />
-        <Styled.FileLinkWrapper>
-          <Link to={fileURL} target="_blank" download data-title={fileTitle}>
-            {fileTitle}
-          </Link>
-        </Styled.FileLinkWrapper>
-      </Styled.FileInfoWrapper>
-      {props?.editable && props?.header?.options?.editable && (
-        <TrashIcon style={{ cursor: 'pointer' }} color={CV_RED} />
+      <FilesList
+        files={files}
+        canEdit={canEdit}
+        onRemoveFile={handleRemoveFile}
+      />
+      {!files?.length && !isUploading && (
+        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
+      )}
+      {isUploading && <LogoLoader lottieWidth="3rem" />}
+      {canEdit && (
+        <Styled.AddNewFileWrapper>
+          <CustomDropZone
+            accept={['image/*', '.pdf']}
+            // formatExceptions={['jpg']}
+            maxFiles={1}
+            maxEachSize={1}
+            maxTotalSize={1}
+            onError={handleFileDropError}
+            onUpload={handleUploadFiles}
+            isUploading={isUploading}
+            placeholders={{
+              main: 'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید',
+            }}
+            customComponent={AddFileButton}
+          />
+        </Styled.AddNewFileWrapper>
       )}
     </Styled.FileCellContainer>
   );

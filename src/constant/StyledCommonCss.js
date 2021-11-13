@@ -141,6 +141,18 @@ export const FLEX_RCE = css`
 /**
  * @description 'Flex'
  * @Direction 'R'ow
+ * @Align flex-'E'nd
+ * @Justify space-'B'etween
+ */
+export const FLEX_REB = css`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify space-'B'etween
  */
@@ -168,12 +180,16 @@ export const FLEX_RSB = css`
  */
 export const HorizontalScrollbar = css`
   scroll-behavior: smooth;
-  scrollbar-height: 0.45rem; /*! Firefox */
+
+  /*! Show scrollbar for Firefox */
+  scrollbar-height: thin;
+  scrollbar-width: thin;
 
   /*! Show scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: block;
-    height: 0.45rem;
+    height: 0.25rem;
+    width: 0.25rem;
   }
 
   &::-webkit-scrollbar-track:hover {
@@ -182,7 +198,7 @@ export const HorizontalScrollbar = css`
 
   &::-webkit-scrollbar-thumb {
     background-color: ${CV_GRAY};
-    border-radius: 1rem;
+    border-radius: 0.5rem;
 
     :hover {
       background-color: ${CV_GRAY_DARK};

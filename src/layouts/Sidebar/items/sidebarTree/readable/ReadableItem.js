@@ -49,6 +49,8 @@ const ReadableItem = (props) => {
   const { item, onExpand, onCollapse, provided, depth } = props;
   const { isCategory, id: itemId, data } = item || {};
 
+  const { GlobalUtilities } = useWindow();
+
   const tree = useSelector(selectTree);
   const activePath = useSelector(selectActivePath);
   const onboardingName = useSelector(selectOnboardingName);
@@ -89,7 +91,10 @@ const ReadableItem = (props) => {
               {getIcon(item, onExpand, onCollapse)}
             </Styled.CaretIconWrapper>
           ) : (
-            <Styled.MenuItemImage src={data?.iconURL} alt="menu-icon" />
+            <Styled.MenuItemImage
+              src={GlobalUtilities.add_timestamp(data?.iconURL)}
+              alt="menu-icon"
+            />
           )}
           <Styled.MenuTitle
             onClick={handleOnClick}
