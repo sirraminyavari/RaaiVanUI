@@ -1,11 +1,10 @@
-import useScript from 'hooks/useScript';
-import { isEmpty } from 'helpers/helpers';
 import UseUsers from './useUsers';
 import * as Styled from './UsersStyle';
-import Breadcrumb from '../../../../components/Breadcrumb/Breadcrumb';
-import { BreadCrumbWrapper } from './UsersStyle';
 import SearchUserInput from './items/SearchUserInput';
-import InvitationButton from './items/InvitationButton';
+import AddUserButton from './items/AddUserButton';
+import MultiTenantList from './items/MultiTenantList';
+import TeamBasedList from './items/TeamBasedList';
+import { useEffect } from 'react';
 
 const Users = (props) => {
   // useScript(
@@ -23,7 +22,11 @@ const Users = (props) => {
   //     style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
   // );
 
-  const { rtl, breadCrumbItems } = UseUsers();
+  const { rtl, breadCrumbItems, SAASBasedMultiTenancy } = UseUsers();
+
+  useEffect(() => {
+    console.log(SAASBasedMultiTenancy);
+  }, []);
   return (
     <Styled.UserManagementContainer rtl={rtl}>
       <Styled.UserManagementContentCard>
@@ -32,8 +35,15 @@ const Users = (props) => {
 
         <Styled.TopBar>
           <SearchUserInput placeholder={'فیلتر براساس نام کاربر'} />
-          <InvitationButton>{'دعوت هم تیمی جدید'}</InvitationButton>
+          {!SAASBasedMultiTenancy && (
+            <AddUserButton>{'دعوت هم تیمی جدید'}</AddUserButton>
+          )}
+          {SAASBasedMultiTenancy && (
+            <AddUserButton>{'ایجاد کاربر جدید'}</AddUserButton>
+          )}
         </Styled.TopBar>
+
+        {SAASBasedMultiTenancy ? <MultiTenantList /> : <TeamBasedList />}
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>
   );

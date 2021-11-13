@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { C_WHITE } from '../../../../../constant/Colors';
 
 const InputWrapper = styled.div`
   display: flex;
@@ -23,6 +22,7 @@ const CustomInput = styled.input.attrs({
   border: none;
   background-color: transparent;
   height: 3rem;
+  width: 100%;
 
   &::placeholder {
     color: var(--rv-color-distant);

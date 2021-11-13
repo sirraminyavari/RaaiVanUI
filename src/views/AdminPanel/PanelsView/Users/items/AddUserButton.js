@@ -16,7 +16,7 @@ const BtnContainer = styled.div.attrs({
   cursor: pointer;
 `;
 
-const InvitationButton = ({ children, ...props }) => {
+const AddUserButton = ({ children, ...props }) => {
   return (
     <BtnContainer>
       <UserPlusIcon size={20} />
@@ -24,4 +24,4 @@ const InvitationButton = ({ children, ...props }) => {
     </BtnContainer>
   );
 };
-export default InvitationButton;
+export default AddUserButton;

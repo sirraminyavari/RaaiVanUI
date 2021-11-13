@@ -1,7 +1,8 @@
 import useWindowContext from '../../../../hooks/useWindowContext';
+import { useState } from 'react';
 
 const UseUsers = (props) => {
-  const { RV_RTL: rtl, RVDic } = useWindowContext();
+  const { RV_RTL: rtl, RVDic, RVGlobal } = useWindowContext();
 
   /**
    * @description items array to feed breadcrumbs component
@@ -26,6 +27,8 @@ const UseUsers = (props) => {
   ];
 
   return {
+    // SAASBasedMultiTenancy: RVGlobal.SAASBasedMultiTenancy,
+    SAASBasedMultiTenancy: false,
     rtl,
     RVDic,
     breadCrumbItems,
