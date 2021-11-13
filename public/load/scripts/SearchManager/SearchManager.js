@@ -977,7 +977,7 @@
             var itemType = item.ItemType;
             var title = Base64.decode(item.Title);
             var type = Base64.decode(item.Type);
-            var additionalId = Base64.decode(item.AdditionalID);
+            var additionalId = (itemType == "User") && RVGlobal.HideUserNames ? "" : Base64.decode(item.AdditionalID);
             var description = Base64.decode(item.Description);
             var iconUrl = item.IconURL;
             var exact = item.Exact === true;

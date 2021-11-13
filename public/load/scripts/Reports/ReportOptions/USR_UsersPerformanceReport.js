@@ -10,18 +10,23 @@
         var that = this;
 
         this.Objects = {
-            ItemTypeSelect: null,
+            UsersRadio: null,
+            GroupsRadio: null,
             UsersList: null,
-            NodeTypeSelect: null,
-            NodesList: null,
-            ListsList: null,
+            GroupSelect: null,
             BeginDate: null,
             FinishDate: null,
             CompensationVolume: null,
             CompensatePerScoreRadio: null,
-            ScoreItems: []
-        };
+            ScoreItems: [],
+            Config: GlobalUtilities.extend({
+                Groups: [],
+                FullAccess: false,
+                GroupAdminAccess: false
 
+            }, params.Config)
+        };
+        
         this.Options = {
             InitialScores: {},
             CompensatePerScore: true,
@@ -30,7 +35,8 @@
 
         GlobalUtilities.load_files([
             { Root: "API/", Ext: "js", Childs: ["CNAPI", "UsersAPI"] },
-            "SingleDataContainer/NewSingleDataContainer.js"
+            "SingleDataContainer/NewSingleDataContainer.js",
+            "Reports/ReportGroupSelect.js"
         ], { OnLoad: function () { that._initialize(params, done); } });
     }
 
@@ -38,70 +44,88 @@
         _initialize: function (params, done) {
             var that = this;
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem; margin-bottom:1rem;",
+            var radioName = GlobalUtilities.random_str(10);
+
+            var radio_section = function (options) {
+                return {
+                    Type: "div", Style: "display:flex; flex-flow:row; margin-bottom:0.5rem;",
                     Childs: [
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6",
-                            Childs: [
-                                {
-                                    Type: "select", Class: "rv-input", Name: "itemTypeSelect",
-                                    Style: "max-width:12rem; font-size:0.7rem;", 
-                                    Childs: [
-                                        {
-                                            Type: "option",
-                                            Attributes: [{ Name: "title", Value: "User" }],
-                                            Childs: [{ Type: "text", TextValue: RVDic.User }]
-                                        },
-                                        {
-                                            Type: "option",
-                                            Attributes: [{ Name: "title", Value: "Node" }],
-                                            Childs: [{ Type: "text", TextValue: RVDic.Group }]
-                                        },
-                                        (true ? null : {
-                                            Type: "option",
-                                            Attributes: [{ Name: "title", Value: "Complex" }],
-                                            Childs: [{ Type: "text", TextValue: RVDic.Complex }]
-                                        })
-                                    ]
-                                }
-                            ]
+                            Type: "div", Style: "flex:0 0 auto; padding-" + RV_RevFloat + ":0.5rem;",
+                            Childs: [{
+                                Type: "input", Name: options.RadioName,
+                                Attributes: [
+                                    { Name: "type", Value: "radio" },
+                                    { Name: "name", Value: radioName },
+                                    { Name: "value", Value: (options || {}).Value },
+                                    (!(options || {}).Selected ? null : { Name: "checked", Value: true })
+                                ],
+                                Properties: [{ Name: "onchange", Value: function () { options.OnChange(this.checked); } }]
+                            }]
                         },
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6 RevDirection RevTextAlign",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "ActionButton",
-                                    Style: "display:inline-block; text-align:center;",
-                                    Properties: [{ Name: "onclick", Value: function () { GlobalUtilities.show(that.scoring_dialog().Container); } }],
-                                    Childs: [{ Type: "text", TextValue: RVDic.ScoringOptions }]
-                                }
-                            ]
+                            Type: "div", Style: "flex:0 0 auto;",
+                            Properties: [{ Name: "onclick", Value: () => jQuery(elems[options.RadioName]).click() }],
+                            Childs: [{ Type: "text", TextValue: (options || {}).Title }]
                         }
                     ]
-                },
-                { Type: "div", Class: "small-12 medium-12 large-12" },
+                };
+            };
+
+            var usersId = GlobalUtilities.random_str(20);
+            var groupsId = GlobalUtilities.random_str(20);
+            var usersRadioName = usersId + "_radio";
+            var groupsRadioName = groupsId + "_radio";
+
+            var show = function (id) {
+                jQuery("#" + id + " *").attr("disabled", false).on('click').css({ 'pointer-events': '', 'opacity': 1 });
+            };
+
+            var hide = function (id) {
+                jQuery("#" + id + " *").attr("disabled", "disabled").off('click').css({ 'pointer-events': 'none', 'opacity': 0.8 });
+            };
+
+            var elems = GlobalUtilities.create_nested_elements([
                 {
-                    Type: "div", Class: "small-6 medium-6 large-6", Name: "userDiv",
-                    Style: "padding-" + RV_RevFloat + ":0.5rem;",
-                    Childs: [{ Type: "div", Name: "usersList" }]
+                    Type: "div", Style: "position:relative;",
+                    Childs: [{
+                        Type: "div", Class: "ActionButton",
+                        Style: "position:absolute; top:0;" + RV_RevFloat + ":0;",
+                        Properties: [{ Name: "onclick", Value: function () { GlobalUtilities.show(that.scoring_dialog().Container); } }],
+                        Childs: [{ Type: "text", TextValue: RVDic.ScoringOptions }]
+                    }]
                 },
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Name: "nodeDiv", Style: "margin:0rem; display:none;",
+                (!that.Objects.Config.FullAccess ? null : radio_section({
+                    Title: RVDic.BasedOnUsers,
+                    Value: "Users", Selected: true,
+                    RadioName: usersRadioName,
+                    OnChange: () => (show(usersId), hide(groupsId))
+                })),
+                (!that.Objects.Config.FullAccess ? null : {
+                    Type: "div", ID: usersId, Class: "small-12 medium-10 large-7", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
                     Childs: [
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "nodeTypeSelect",
-                            Style: "padding-" + RV_RevFloat + ":0.5rem;"
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.SelectN.replace("[n]", RVDic.Users) + ":" }]
                         },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "usersList" }
+                    ]
+                }),
+                { Type: "div", Class: "small-12 medium-12 large-12" },
+                (!that.Objects.Config.FullAccess ? null : radio_section({
+                    Title: RVDic.BasedOnGroups,
+                    Value: "Groups",
+                    RadioName: groupsRadioName,
+                    OnChange: () => (show(groupsId), hide(usersId))
+                })),
+                {
+                    Type: "div", ID: groupsId, Style: "display:flex; flex-flow:row; margin-bottom:2rem;",
+                    Childs: [
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "nodesList",
-                            Style: "padding-" + RV_Float + ":0.5rem;"
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.SelectN.replace("[n]", RVDic.Groups) + ":" }]
                         },
-                        {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "listsList",
-                            Style: "padding-" + RV_Float + ":0.5rem;"
-                        }
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "groups" }
                     ]
                 },
                 {
@@ -121,17 +145,10 @@
                 }
             ], that.ContainerDiv);
 
-            var usersDiv = elems["userDiv"];
-            var nodeDiv = elems["nodeDiv"];
-            that.Objects.ItemTypeSelect = elems["itemTypeSelect"];
+            if (that.Objects.Config.FullAccess) setTimeout(() => hide(groupsId), 100);
 
-            that.Objects.ItemTypeSelect.onchange = function () {
-                var itemType = this[this.selectedIndex].title;
-                jQuery(usersDiv)[itemType == "User" ? "fadeIn" : "fadeOut"](0);
-                jQuery(nodeDiv)[itemType == "Node" || itemType == "Complex" ? "fadeIn" : "fadeOut"](0);
-                jQuery(elems["nodesList"])[itemType == "Node" ? "fadeIn" : "fadeOut"](0);
-                jQuery(elems["listsList"])[itemType == "Complex" ? "fadeIn" : "fadeOut"](0);
-            };
+            that.Objects.UsersRadio = elems[usersRadioName];
+            that.Objects.GroupsRadio = elems[groupsRadioName];
 
             that.Objects.UsersList = new NewSingleDataContainer(elems["usersList"], {
                 InputClass: "rv-input",
@@ -150,59 +167,11 @@
                 }
             });
 
-            that.Objects.NodeTypeSelect = GlobalUtilities.append_autosuggest(elems["nodeTypeSelect"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.NodeTypeSelect + "...",
-                AjaxDataSource: CNAPI.GetNodeTypesDataSource(),
-                ResponseParser: function (responseText) {
-                    var nodeTypes = JSON.parse(responseText).NodeTypes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = nodeTypes.length; i < lnt; ++i)
-                        arr.push([Base64.decode(nodeTypes[i].TypeName || ""), nodeTypes[i].NodeTypeID || ""]);
-                    return arr;
-                },
-                OnSelect: function () {
-                    var index = this.selectedIndex;
-                    var nodeTypeId = this.values[index];
-                    var nodeType = this.keywords[index];
-
-                    that.Objects.NodesList.bind_data_source(CNAPI.GetNodesDataSource({ NodeTypeID: nodeTypeId }));
-                    GlobalUtilities.set_inner_title(that.Objects.NodesList.Objects.Autosuggest.InputElement, RVDic.SelectN.replace("[n]", nodeType) + "...");
-
-                    that.Objects.ListsList.bind_data_source(CNAPI.GetLists({ NodeTypeID: nodeTypeId }));
-                    GlobalUtilities.set_inner_title(that.Objects.ListsList.Objects.Autosuggest.InputElement, RVDic.ComplexSelect + "...");
-                }
-            });
-
-            that.Objects.NodesList = new NewSingleDataContainer(elems["nodesList"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.NodeSelect + "...",
-                NoButtons: true,
-                AjaxDataSource: CNAPI.GetNodesDataSource(),
-                ResponseParser: function (responseText) {
-                    var nodes = JSON.parse(responseText).Nodes || [];
-                    var arr = [];
-                    for (var i = 0, lnt = nodes.length; i < lnt; ++i)
-                        arr.push([Base64.decode(nodes[i].Name), nodes[i].NodeID]);
-                    return arr;
-                }
-            });
-
-            that.Objects.ListsList = new NewSingleDataContainer(elems["listsList"], {
-                InputClass: "rv-input",
-                InputStyle: "width:100%; font-size:0.7rem;",
-                InnerTitle: RVDic.ComplexSelect + "...",
-                NoButtons: true,
-                AjaxDataSource: CNAPI.GetLists(),
-                ResponseParser: function (responseText) {
-                    var lists = JSON.parse(responseText).Lists || [];
-                    var arr = [];
-                    for (var i = 0, lnt = lists.length; i < lnt; ++i)
-                        arr.push([Base64.decode(lists[i].Name), lists[i].ListID]);
-                    return arr;
-                }
+            that.Objects.GroupSelect = new ReportGroupSelect(elems["groups"], {
+                Groups: that.Objects.Config.Groups,
+                MultiSelect: true,
+                AdminMode: that.Objects.Config.FullAccess,
+                NodeTypesSelectable: false
             });
 
             GlobalUtilities.append_calendar(elems["beginDate"], { ClearButton: true }, function (cal) {
@@ -505,6 +474,15 @@
         get_data: function () {
             var that = this;
 
+            var itemType = (that.Objects.UsersRadio || {}).checked ? "Users" : "Groups";
+
+            var items = !that.Objects.GroupSelect ? {} : that.Objects.GroupSelect.get_items() || {};
+
+            if ((itemType == "Groups") && !that.Objects.Config.FullAccess && !(items.Nodes || []).length) {
+                alert(RVDic.Checks.PleaseSelectTheGroups);
+                return false;
+            }
+
             var knowledgeTypeIds = that.get_knowledge_type_ids();
 
             var compensatePerScore = (that.Objects.CompensatePerScoreRadio || {}).checked === true;
@@ -521,16 +499,13 @@
             }
 
             scoreItems = scoreItems.map(function (itm) { return itm.Value + ":" + itm.Name; }).join("|");
-            
-            var itemType = that.Objects.ItemTypeSelect[that.Objects.ItemTypeSelect.selectedIndex].title;
 
             var beginDate = !that.Objects.BeginDate ? {} : that.Objects.BeginDate.Get();
             var finishDate = !that.Objects.FinishDate ? {} : that.Objects.FinishDate.Get();
 
             return {
-                UserIDs: itemType == "User" ? that.Objects.UsersList.get_items_string("|") : "",
-                NodeIDs: itemType == "Node" ? that.Objects.NodesList.get_items_string("|") : "",
-                ListIDs: itemType == "Complex" ? that.Objects.ListsList.get_items_string("|") : "",
+                UserIDs: itemType == "Users" && that.Objects.UsersList ? that.Objects.UsersList.get_items_string("|") : "",
+                NodeIDs: itemType == "Groups" ? (items.Nodes || []).map(itm => itm.NodeID).join("|") : "",
                 KnowledgeTypeIDs: knowledgeTypeIds.join("|"),
                 BeginDate: beginDate.Value,
                 _Title_BeginDate: beginDate.Label,
@@ -543,12 +518,9 @@
         clear: function () {
             var that = this;
 
-            this.Objects.ItemTypeSelect.selectedIndex = 0;
-            this.Objects.ItemTypeSelect.onchange();
-            this.Objects.UsersList.clear();
-            this.Objects.NodeTypeSelect.clear();
-            this.Objects.NodesList.clear();
-            this.Objects.ListsList.clear();
+            if (that.Objects.UsersRadio) jQuery(that.Objects.UsersRadio).click();
+            if (that.Objects.UsersList) that.Objects.UsersList.clear();
+            if (that.Objects.GroupSelect) that.Objects.GroupSelect.clear();
             if (that.Objects.BeginDate) that.Objects.BeginDate.Clear();
             if (that.Objects.FinishDate) that.Objects.FinishDate.Clear();
         }

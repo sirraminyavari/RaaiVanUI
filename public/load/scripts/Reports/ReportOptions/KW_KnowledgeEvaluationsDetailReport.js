@@ -13,6 +13,7 @@
             KnowledgeSelect: null,
             UsersList: null,
             MemberInNodeTypeSelect: null,
+            GroupSelect: null,
             SendDateFrom: null,
             SendDateTo: null,
             ActionDateFrom: null,
@@ -21,7 +22,13 @@
             DelayToInput: null,
             SeenStatusSelect: null,
             DoneStatusSelect: null,
-            CanceledStatusSelect: null
+            CanceledStatusSelect: null,
+            Config: GlobalUtilities.extend({
+                Groups: [],
+                FullAccess: false,
+                GroupAdminAccess: false
+
+            }, params.Config)
         };
 
         this.Options = {
@@ -32,7 +39,8 @@
 
         GlobalUtilities.load_files([
             { Root: "API/", Ext: "js", Childs: ["UsersAPI", "CNAPI"] },
-            "SingleDataContainer/NewSingleDataContainer.js"
+            "SingleDataContainer/NewSingleDataContainer.js",
+            "Reports/ReportGroupSelect.js"
         ], { OnLoad: function () { that._initialize(params, done); } });
     }
 
@@ -42,23 +50,55 @@
 
             var elems = GlobalUtilities.create_nested_elements([
                 {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem; margin-bottom:1rem;",
+                    Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
                     Childs: [
-                        { Type: "div", Class: "small-6 medium-6 large-6", Name: "knowledgeTypeSelect" },
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "knowledgeSelect",
-                            Style: "padding-" + RV_Float + ":1rem;"
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.Knowledge + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex:1 1 auto;",
+                            Childs: [{
+                                Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0;",
+                                Childs: [
+                                    { Type: "div", Class: "small-6 medium-6 large-6", Name: "knowledgeTypeSelect" },
+                                    {
+                                        Type: "div", Class: "small-6 medium-6 large-6", Name: "knowledgeSelect",
+                                        Style: "padding-" + RV_Float + ":1rem;"
+                                    }
+                                ]
+                            }]
                         }
                     ]
                 },
                 {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem; margin-bottom:1rem;",
+                    Type: "div", Class: "small-12 medium-9 large-7", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
                     Childs: [
-                        { Type: "div", Class: "small-6 medium-6 large-6", Name: "usersList" },
                         {
-                            Type: "div", Class: "small-6 medium-6 large-6", Name: "memberInNodeTypeSelect",
-                            Style: "padding-" + RV_Float + ":1rem;"
-                        }
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.SelectN.replace("[n]", RVDic.Evaluator) + ":" }]
+                        },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "usersList" }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-9 large-7", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.BeMemberInNodeType + ":" }]
+                        },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "memberInNodeTypeSelect" }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-bottom:1rem; display:flex; flex-flow:row;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex:0 0 auto; width:7rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.CreatorGroup + ":" }]
+                        },
+                        { Type: "div", Style: "flex:1 1 auto;", Name: "groups" }
                     ]
                 },
                 {
@@ -325,6 +365,13 @@
                 }
             });
 
+            that.Objects.GroupSelect = new ReportGroupSelect(elems["groups"], {
+                Groups: that.Objects.Config.Groups,
+                MultiSelect: false,
+                AdminMode: that.Objects.Config.FullAccess,
+                NodeTypesSelectable: false
+            });
+
             GlobalUtilities.append_calendar(elems["sendDateFrom"], { ClearButton: true }, function (cal) {
                 that.Objects.SendDateFrom = cal;
             });
@@ -351,9 +398,12 @@
             params = params || {};
 
             if (params.KnowledgeTypeID) this.Objects.KnowledgeTypeSelect.set_item(params.KnowledgeTypeID.Value || "", params.KnowledgeTypeID.Title || "");
-            if (params.KnowledgeID) this.Objects.KnowledgeTypeSelect.set_item(params.KnowledgeID.Value || "", params.KnowledgeID.Title || "");
+            if (params.KnowledgeID) this.Objects.KnowledgeSelect.set_item(params.KnowledgeID.Value || "", params.KnowledgeID.Title || "");
             if (params.UserID) this.Objects.UsersList.add_item(params.UserID.Title || "", params.UserID.Value || "");
             if (params.MemberInNodeTypeID) this.Objects.MemberInNodeTypeSelect.set_item(params.MemberInNodeTypeID.Value || "", params.MemberInNodeTypeID.Title || "");
+
+            if (params.CreatorGroupID && that.Objects.GroupSelect)
+                that.Objects.GroupSelect.add_node({ NodeID: params.CreatorGroupID.Value, Name: params.CreatorGroupID.Title });
 
             if (params.SendDateFrom && that.Objects.SendDateFrom) {
                 that.Objects.SendDateFrom.Set({
@@ -398,6 +448,14 @@
         get_data: function () {
             var that = this;
 
+            var items = !that.Objects.GroupSelect ? {} : that.Objects.GroupSelect.get_items() || {};
+            var creatorGroup = (items.Nodes || []).length ? items.Nodes[0] || {} : {};
+
+            if (!that.Objects.Config.FullAccess && !creatorGroup.NodeID) {
+                alert(RVDic.Checks.PleaseSelectAGroup);
+                return false;
+            }
+
             var index = that.Objects.KnowledgeTypeSelect.selectedIndex;
             var knowledgeTypeId = index < 0 ? "" : that.Objects.KnowledgeTypeSelect.values[index];
             var knowledgeType = index < 0 ? "" : that.Objects.KnowledgeTypeSelect.keywords[index];
@@ -424,10 +482,15 @@
             var canceled = that.Objects.CanceledStatusSelect[that.Objects.CanceledStatusSelect.selectedIndex].title;
 
             return {
-                KnowledgeTypeID: knowledgeTypeId, _Title_KnowledgeTypeID: knowledgeType,
-                KnowledgeID: knowledgeId, _Title_KnowledgeID: knowledgeName,
+                KnowledgeTypeID: knowledgeTypeId,
+                _Title_KnowledgeTypeID: knowledgeType,
+                KnowledgeID: knowledgeId,
+                _Title_KnowledgeID: knowledgeName,
                 UserIDs: that.Objects.UsersList.get_items_string("|"),
-                MemberInNodeTypeID: memberInNodeTypeId, _Title_MemberInNodeTypeID: memberInNodeType,
+                MemberInNodeTypeID: memberInNodeTypeId,
+                _Title_MemberInNodeTypeID: memberInNodeType,
+                CreatorGroupID: creatorGroup.NodeID,
+                _Title_CreatorGroupID: creatorGroup.Name,
                 SendDateFrom: sendDateFrom.Value || "",
                 _Title_SendDateFrom: sendDateFrom.Label || "",
                 SendDateTo: sendDateTo.Value || "",
@@ -448,6 +511,7 @@
             var that = this;
 
             if (this.Objects.KnowledgeTypeSelect) this.Objects.KnowledgeTypeSelect.empty();
+            if (this.Objects.KnowledgeSelect) this.Objects.KnowledgeSelect.empty();
             if (this.Objects.UsersList) this.Objects.UsersList.clear();
             if (this.Objects.MemberInNodeTypeSelect) this.Objects.MemberInNodeTypeSelect.empty();
             if (this.Objects.SendDateFrom) this.Objects.SendDateFrom.Clear();

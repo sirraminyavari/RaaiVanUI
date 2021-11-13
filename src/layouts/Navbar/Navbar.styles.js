@@ -156,6 +156,13 @@ export const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   color: inherit;
+
+  .navbar-avatar {
+    cursor: pointer;
+    min-width: 2.5rem;
+    width: 2.5rem;
+    min-height: 2.5rem;
+  }
 `;
 
 export const ExitAndHelpWrapper = styled.div`

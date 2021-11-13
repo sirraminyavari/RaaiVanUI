@@ -8,7 +8,7 @@
         if (!this.ContainerDiv) return;
 
         var that = this;
-
+        
         this.Objects = {
             BeginDate: null,
             FinishDate: null

@@ -4,13 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
-import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
-import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
+import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
@@ -19,7 +18,6 @@ import {
   removeApplication,
   recycleApplication,
   selectApplication,
-  modifyApplication,
   unsubscribeFromApplication,
   getApplicationUsers,
 } from 'store/actions/applications/ApplicationsAction';
@@ -27,7 +25,6 @@ import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from './SortHandle';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import InlineEdit from 'components/InlineEdit/InlineEdit';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
@@ -37,19 +34,13 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import TeamConfirm from './TeamConfirm';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
-import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
-import { API_Provider } from 'helpers/helpers';
-import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import { SIDEBAR_WINDOW } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import UserInvitationDialog from './UserInviteDialog';
 
-const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_ICON);
-
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
-const MAX_IMAGE_SIZE = 2000000;
 
 const { toggleSidebar } = themeSlice.actions;
 
@@ -61,10 +52,16 @@ const selectingApp = createSelector(
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const uploadFileRef = useRef();
   const actionRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal } = useWindow();
+  const {
+    RVDic,
+    RV_Float,
+    RV_RevFloat,
+    RV_RTL,
+    RVGlobal,
+    GlobalUtilities,
+  } = useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -97,23 +94,16 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Removable: isRemovable,
     Editable: isEditable,
   } = team;
+
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
-  const [appTitle, setAppTitle] = useState(() => decodeBase64(Title));
-  const [appIcon, setAppIcon] = useState(IconURL);
   const [users, setUsers] = useState(usersList);
 
   const shownUsers = users?.filter((_, index) => index < 4);
 
-  //! Close confirmation dialoge and reset its values.
+  //! Close confirmation dialogue and reset its values.
   const resetConfirm = () =>
     setConfirm({ type: '', message: '', title: '', isOpen: false });
-
-  //! Edit team title.
-  const handleEditTeam = (title) => {
-    setAppTitle(title);
-    dispatch(modifyApplication(appId, title));
-  };
 
   //! Close undo toast when user clicks on "X" button.
   const closeUndoToast = (toastId) => {
@@ -193,13 +183,20 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const onSelectError = () => {};
 
   //! Select a team.
-  const handleTeamSelect = (e) => {
-    if (e.target.id === 'inline-edit') return;
+  const handleTeamSelect = (onSuccess, onError) => {
     if (isDeleting) return;
-    dispatch(selectApplication(appId, onSelectDone, onSelectError));
+
+    dispatch(selectApplication(appId, onSuccess, onError));
   };
 
-  //! Open team users management dialoge.
+  //! Go to team settings page.
+  const onTeamSettingsClick = (e) => {
+    e.stopPropagation();
+
+    handleTeamSelect(history.push(`/teamsettings/${appId}`), onSelectError);
+  };
+
+  //! Open team users management dialogue.
   const openTeamUsers = (e) => {
     e.stopPropagation();
     if (isDeleting) return;
@@ -219,7 +216,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     // dispatch(openInvitationModal(team));
   };
 
-  //! Handle Which type of confirmation dialoge should open.
+  //! Handle Which type of confirmation dialogue should open.
   const handleConfirmation = () => {
     switch (confirm.type) {
       case EXIT_TEAM_CONFIRM:
@@ -241,62 +238,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   //! Fires when user cancel the confirmation.
   const handleCancelConfirmation = () => {
     resetConfirm();
-  };
-
-  //! Once user clicked on team edit button, It will open choose image dialoge.
-  const handleChangeLogo = (e) => {
-    if (!isAdmin) return;
-    e.stopPropagation();
-    uploadFileRef.current.click();
-  };
-
-  //! Validates image type for upload.
-  const validateImageUpload = (files) =>
-    files[0]?.type === 'image/png' || files[0]?.type === 'image/jpeg';
-
-  //! Read image file, Set preview image, And upload it to the server.
-  const uploadImage = (event) => {
-    const file = event.target.files[0];
-    if (file.size <= MAX_IMAGE_SIZE) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        setAppIcon(e.target.result);
-
-        //! Load on server.
-        let formData = new FormData();
-        formData.append('file', file);
-
-        getUploadUrlAPI.url(
-          { IconID: appId, Type: 'ApplicationIcon' },
-          (response) => {
-            let uploadURL = response.slice(5);
-
-            //! Post file to the server.
-            axios
-              .post(uploadURL, formData)
-              .then((response) => console.log(response));
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-      };
-    } else {
-      event.target.value = '';
-      console.log('Upload less than 2MB');
-    }
-  };
-
-  //! Fires whenever user chooses an image.
-  const handleFileSelect = (event) => {
-    const files = event.target.files;
-    if (files.length === 1 && validateImageUpload(files)) {
-      uploadImage(event);
-    } else {
-      event.target.value = '';
-      console.log('Add one image only');
-    }
   };
 
   const handleClickMoreIcon = (e) => {
@@ -328,6 +269,12 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             <span className="team-action-title">خروج از تیم</span>
           </Styled.TeamExitWrapper>
         )}
+        {isEditable && (
+          <Styled.TeamExitWrapper onClick={onTeamSettingsClick}>
+            <SettingIcon size={18} />
+            <span className="team-action-title">{RVDic.TeamSettings}</span>
+          </Styled.TeamExitWrapper>
+        )}
       </Styled.TeamActionContainer>
     );
   };
@@ -351,7 +298,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       dir={RV_Float}
       revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
-      onClick={handleTeamSelect}>
+      onClick={() => handleTeamSelect(onSelectDone, onSelectError)}>
       <TeamConfirm
         isOpen={confirm.isOpen}
         onConfirm={handleConfirmation}
@@ -362,7 +309,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       {!isDeleting && (
         <TeamUsersModal
           appId={appId}
-          appTitle={appTitle}
+          appTitle={decodeBase64(Title)}
           isModalShown={isModalShown}
           isRemovable={isRemovable}
           setIsModalShown={setIsModalShown}
@@ -393,33 +340,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         <Styled.TeamContentWrapper>
           <Styled.TeamDescription>
             <Styled.TeamAvatarWrapper>
-              {isAdmin && (
-                <Styled.TeamEditWrapper onClick={handleChangeLogo}>
-                  <AddImageIcon color="#fff" size={18} />
-                  <HiddenUploadFile
-                    ref={uploadFileRef}
-                    onFileChange={handleFileSelect}
-                  />
-                </Styled.TeamEditWrapper>
-              )}
               <Avatar
                 radius={45}
                 style={{ width: '3.1rem' }}
-                userImage={appIcon + `?timeStamp=${new Date().getTime()}`}
+                userImage={GlobalUtilities.add_timestamp(IconURL)}
               />
             </Styled.TeamAvatarWrapper>
-            {!isDeleting && isEditable ? (
-              <Styled.TeamTitle>
-                <InlineEdit
-                  text={appTitle}
-                  onSetText={handleEditTeam}
-                  textClasses="team-inline-edit-text"
-                />
-              </Styled.TeamTitle>
-            ) : (
-              <Styled.TeamTitle>{appTitle}</Styled.TeamTitle>
-            )}
-
+            <Styled.TeamTitle>{decodeBase64(Title)}</Styled.TeamTitle>
             <Styled.TeamExcerpt>
               {decodeBase64(appDescription)}
             </Styled.TeamExcerpt>
@@ -446,8 +373,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                         position: 'relative',
                         [RV_Float]: `${-index * 9}px`,
                         zIndex: 10 - index,
+                        width: '3rem',
+                        minWidth: '3rem',
                       }}
-                      imageStyles={{ minWidth: '2.1rem' }}
                     />
                   </Tooltip>
                 );

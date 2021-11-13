@@ -382,8 +382,7 @@
             }
             
             if (params.Rejectable === true) {
-                var _rejectTitle = Base64.decode(params.RejectTitle || "");
-                if (!_rejectTitle) _rejectTitle = RVDic.WF.Reject;
+                var _rejectTitle = Base64.decode(params.RejectionTitle || "") || RVDic.WF.Reject;
 
                 elems["rejectArea"].style.display = "block";
 

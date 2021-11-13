@@ -3,14 +3,34 @@ import Cropper from 'react-easy-crop';
 import ImageIcon from 'components/Icons/ImageIcon/ImageIcon';
 import Slider from 'components/Slider/Slider';
 import { CV_DISTANT } from 'constant/CssVariables';
-import * as Styled from 'views/Profile/Profile.styles';
+import * as Styled from './ImageCropper.styles';
 
-const ImageCropper = ({
-  imageSrc,
-  aspectRatio,
-  onImgaeCropComplete,
-  initialCroppedAreaPixels,
-}) => {
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {String} imageSrc - The image source.
+ * @property {Number} aspectRatio - Image aspect ratio.
+ * @property {Function} onImageCropComplete - A callback function that fires whenever crop ends.
+ * @property {*} initialCroppedAreaPixels - Initial crop area.
+ * @property {('round' | 'rect')} cropShape - Crop shape.
+ * @property {Boolean} showGrid - Show grid or not?.
+ */
+
+/**
+ *  @description Renders an image cropper component.
+ * @component
+ * @param {PropType} props -Props that pass to image cropper.
+ */
+const ImageCropperEditor = (props) => {
+  const {
+    imageSrc,
+    aspectRatio,
+    onImageCropComplete,
+    initialCroppedAreaPixels,
+    cropShape,
+    showGrid,
+  } = props;
+
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
@@ -28,15 +48,15 @@ const ImageCropper = ({
 
   //! Calls when crop image completed.
   const handleCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    onImgaeCropComplete && onImgaeCropComplete(croppedArea, croppedAreaPixels);
+    onImageCropComplete && onImageCropComplete(croppedArea, croppedAreaPixels);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Styled.ImageCropperContainer>
       <Cropper
-        cropShape="round"
-        showGrid={false}
+        cropShape={cropShape}
+        showGrid={showGrid}
         image={imageSrc}
         aspect={aspectRatio}
         crop={crop}
@@ -62,4 +82,4 @@ const ImageCropper = ({
   );
 };
 
-export default ImageCropper;
+export default ImageCropperEditor;

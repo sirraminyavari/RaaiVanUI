@@ -137,7 +137,7 @@ const Navbar = () => {
           clickable
           event="click"
           arrowColor="transparent"
-          offset={{ [RV_RevFloat]: -102, top: -6 }}
+          offset={{ [RV_RevFloat]: -100, top: -6 }}
           className="avatar-tooltip"
           renderContent={() => {
             return <AvatarMenuList />;
@@ -145,7 +145,7 @@ const Navbar = () => {
           <Avatar
             radius={35}
             userImage={profileImage}
-            style={{ cursor: 'pointer', minWidth: '2.5rem' }}
+            className="navbar-avatar"
           />
         </Tooltip>
       </Styled.SearchWrapper>

@@ -1180,7 +1180,21 @@
                                         Childs: [{ Type: "text", TextValue: result.AdditionalID }]
                                     }
                                 ]
-                            }
+                            },
+                            (!that.Objects.Service.IsKnowledge ? null : {
+                                Type: "div", Class: "small-12 medium-12 large-12",
+                                Style: "display:flex; flex-flow:row; align-items:center; padding-top:0.5rem;" + 
+                                    "justify-content:center; font-size:0.7rem;",
+                                Childs: [{
+                                    Type: "div", Class: "rv-air-button rv-border-radius-quarter",
+                                    Style: "flex:0 0 auto; padding:0.2rem 1rem;", Name: "permissionsButton",
+                                    Properties: [{ Name: "onclick", Value: () => that.permissions() }],
+                                    Childs: [
+                                        { Type: "i", Class: "fa fa-pencil", Style: "margin-" + RV_RevFloat + ":0.5rem;" },
+                                        { Type: "text", TextValue: RVDic.PRVC.EditConfidentialityAndPermissions }
+                                    ]
+                                }]
+                            })
                         ], that.Interface.TitleContainer);
 
                         //Wofkflow
@@ -1207,6 +1221,34 @@
                         
                         if (that.Options.OnFinish && that.Objects.Service.NoContent) that.Options.OnFinish();
                     } //end of 'else if (result.Succeed) {'
+                }
+            });
+        },
+
+        permissions: function () {
+            var that = this;
+
+            if (that.__PermissionsButton) return (showed = GlobalUtilities.show(that.__PermissionsButton));
+
+            var _div = that.__PermissionsButton = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin:0rem auto; padding:1rem;", Name: "container"
+            }])["container"];
+
+            GlobalUtilities.loading(_div);
+            showed = GlobalUtilities.show(_div);
+
+            GlobalUtilities.load_files(["PrivacyManager/PermissionSetting.js"], {
+                OnLoad: function () {
+                    new PermissionSetting(_div, {
+                        ObjectID: that.Objects.NodeID,
+                        Options: {
+                            ConfidentialitySelect: true,
+                            PermissionTypes: ["View", "ViewAbstract", "ViewRelatedItems", "Modify", "Delete", "Download"],
+                            ObjectType: "Node",
+                            OnSave: function (data) { showed.Close(); }
+                        }
+                    });
                 }
             });
         },

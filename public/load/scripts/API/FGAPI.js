@@ -19,13 +19,13 @@
         var retVal = { Elements: [] };
 
         for (var i = 0, lnt = (elements || []).length; i < lnt; ++i) {
-            var guidItems = [];
-            jQuery.each(elements[i].GuidItems || [], function (ind, val) {
-                guidItems.push({ ID: val.ID, Name: Base64.encode(val.Name) });
-            });
+            var guidItems = (elements[i].GuidItems || []).map(g => ({ ID: g.ID, Name: Base64.encode(g.Name) }));
 
-            var files = [];
-            jQuery.each(elements[i].Files || [], function (ind, val) { if (val.toString) files.push(val.toString()); });
+            var files = (elements[i].Files || []).map(f => {
+                if (GlobalUtilities.get_type(f) == "json") return JSON.stringify(f);
+                else if (f.toString) return f.toString();
+                else return null;
+            }).filter(f => !!f);
 
             retVal.Elements.push({
                 ElementID: elements[i].ElementID ? elements[i].ElementID : "",
@@ -44,7 +44,7 @@
                 Files: Base64.encode(JSON.stringify(files))
             });
         }
-
+        
         return Base64.encode(JSON.stringify(retVal));
     },
 

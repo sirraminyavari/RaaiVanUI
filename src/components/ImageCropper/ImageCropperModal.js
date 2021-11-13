@@ -1,27 +1,56 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import * as Styled from 'views/Profile/Profile.styles';
+import * as Styled from './ImageCropper.styles';
 import Modal from 'components/Modal/Modal';
-import ImageCropper from './ImageCropper';
+import ImageCropperEditor from './ImageCropperEditor';
 import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
-import { cropIcon } from 'apiHelper/apiFunctions';
-import { loginSlice } from 'store/reducers/loginReducer';
 import { DOCS_API, UPLOAD_AND_CROP_ICON } from 'constant/apiConstants';
 import { API_Provider } from 'helpers/helpers';
-
-const { setAuthUser } = loginSlice.actions;
 
 const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
 
 //! Common styles for crop image modal buttons.
 const ButtonsCommonStyles = { width: '6rem', height: '2rem' };
 
-const EditModal = (props) => {
-  const { modalProps, handleCloseModal, setCroppedImage, id } = props;
+/**
+ * @typedef ModalPropsType
+ * @type {Object}
+ * @property {Boolean} isShown - Show modal or not?.
+ * @property {String} imgSrc - The image source.
+ * @property {Number} aspect - Image aspect ratio.
+ * @property {String} title - Modal title.
+ * @property {*} file - Modal title.
+ */
+
+/**
+ * @typedef PropType
+ * @type {Object}
+ * @property {ModalPropsType} modalProps - The modal properties.
+ * @property {Function} onCloseModal - A callback function that fires on modal close event.
+ * @property {('round' | 'rect')} cropShape - Crop shape.
+ * @property {Boolean} showGrid - Show grid or not?.
+ * @property {String} uploadId - Upload subject id.
+ * @property {String} uploadType - Upload subject type.
+ */
+
+/**
+ *  @description Renders an image crop component.
+ * @component
+ * @param {PropType} props -Props that pass to image crop modal.
+ */
+const ImageCropModal = (props) => {
+  const {
+    modalProps,
+    onCloseModal,
+    uploadId,
+    uploadType,
+    onUploadDone,
+    cropShape,
+    showGrid,
+  } = props;
+
   const { RVDic, GlobalUtilities } = useWindow();
-  const dispatch = useDispatch();
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({});
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileURL, setProfileURL] = useState(null);
@@ -29,7 +58,7 @@ const EditModal = (props) => {
   //! Get upload URL.
   useEffect(() => {
     getUploadUrlAPI.url(
-      { IconID: id, Type: 'ProfileImage' },
+      { IconID: uploadId, Type: uploadType },
       (response) => {
         let uploadURL = response.slice(5);
         setProfileURL(uploadURL);
@@ -54,8 +83,8 @@ const EditModal = (props) => {
     let formData = new FormData();
     formData.append('file', modalProps.file);
 
-    formData.append('IconID', id);
-    formData.append('Type', 'ProfileImage');
+    formData.append('IconID', uploadId);
+    formData.append('Type', uploadType);
 
     formData.append('x', croppedAreaPixels?.x || croppedAreaPixels?.X);
     formData.append('y', croppedAreaPixels?.y || croppedAreaPixels?.Y);
@@ -78,16 +107,7 @@ const EditModal = (props) => {
 
         if (res.ImageURL) {
           const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-          setCroppedImage(newImageURL);
-
-          dispatch(
-            setAuthUser({
-              ...window.RVGlobal?.CurrentUser,
-              ProfileImageURL: newImageURL,
-            })
-          );
-
-          handleCloseModal();
+          onUploadDone(newImageURL);
         } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
       })
       .catch((error) => {
@@ -98,35 +118,23 @@ const EditModal = (props) => {
 
   //! Fires when user changes the image crop area.
   const handleImageCropComplete = (croppedArea, croppedAreaPixels) => {
-    /*
-    const xRatio = modalProps.imgOrig.width / 595;
-    const yRatio = modalProps.imgOrig.height / 335;
-    
-    const truncatedCropArea = {
-      x: Math.ceil(croppedAreaPixels.x / xRatio),
-      y: Math.trunc(croppedAreaPixels.y / yRatio),
-      width: Math.trunc(croppedAreaPixels.width / yRatio),
-      height: Math.trunc(croppedAreaPixels.height / yRatio),
-    };
-
-    setCroppedAreaPixels(truncatedCropArea);
-    */
-
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
   return (
     <Modal
       show={modalProps?.isShown}
-      onClose={handleCloseModal}
+      onClose={onCloseModal}
       contentWidth="50%"
       titleClass="profile-image-crop-modal"
       title={modalProps?.title}>
       <Styled.ImageCropperWrapper>
-        <ImageCropper
+        <ImageCropperEditor
           imageSrc={modalProps?.imgSrc}
           aspectRatio={modalProps?.aspect}
-          onImgaeCropComplete={handleImageCropComplete}
+          onImageCropComplete={handleImageCropComplete}
+          cropShape={cropShape}
+          showGrid={showGrid}
         />
         <Styled.CropperButtonsWrapper>
           <Button
@@ -137,7 +145,7 @@ const EditModal = (props) => {
             {RVDic.Save}
           </Button>
           <Button
-            onClick={handleCloseModal}
+            onClick={onCloseModal}
             type="negative-o"
             style={ButtonsCommonStyles}>
             {RVDic.Return}
@@ -148,4 +156,4 @@ const EditModal = (props) => {
   );
 };
 
-export default EditModal;
+export default ImageCropModal;

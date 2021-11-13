@@ -1,9 +1,8 @@
-import { useRef, useState, useEffect, lazy, Suspense } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useMediaQuery } from 'react-responsive';
+import { useDispatch } from 'react-redux';
 import * as Styled from 'views/Profile/Profile.styles';
-import Avatar from 'components/Avatar/Avatar';
-import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import UserInfos from './items/UserInfos';
 import HeaderStatus from './items/HeaderStatus';
@@ -15,15 +14,13 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { API_Provider, validateFileUpload } from 'helpers/helpers';
 import { DOCS_API, UPLOAD_ICON } from 'constant/apiConstants';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
-import { getCroppedImg, readFile, createImage } from './items/cropUtils';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
-import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import { CV_WHITE } from 'constant/CssVariables';
+import { loginSlice } from 'store/reducers/loginReducer';
+import ImageCropper from 'components/ImageCropper/ImageCropper';
 
-const EditModal = lazy(() =>
-  import(/* webpackChunkName: "edit-profile-image-modal"*/ './items/EditModal')
-);
+const { setAuthUser } = loginSlice.actions;
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
@@ -48,7 +45,8 @@ const ProfileMain = (props) => {
   const isMobileView = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
-  const { RVDic, GlobalUtilities } = useWindow();
+  const { GlobalUtilities, RVGlobal } = useWindow();
+  const dispatch = useDispatch();
 
   const coverImage = !!HighQualityCoverPhotoURL
     ? GlobalUtilities.add_timestamp(HighQualityCoverPhotoURL)
@@ -58,42 +56,16 @@ const ProfileMain = (props) => {
     ProfileImageURL === UNKNOWN_IMAGE ? defaultProfileImage : ProfileImageURL;
 
   const coverUploadRef = useRef();
-  const avatarUploadRef = useRef();
   const [coverPhoto, setCoverPhoto] = useState(coverImage);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(profileImage);
   // const [avatarCropSrc, setAvatarCropSrc] = useState(null);
-  const [editModal, setEditModal] = useState({
-    isShown: false,
-    title: RVDic.CropImage,
-    aspect: 1 / 1,
-    imgSrc: null,
-    file: null,
-    imgOrig: null,
-  });
 
   const [relatedNodes, setRelatedNodes] = useState({});
   const [isFetchingRelatedNodes, setIsFetchingRelatedNodes] = useState(true);
 
-  const handleAvatarEdit = () => {
-    avatarUploadRef.current.click();
-  };
-
   const handleHeaderEdit = () => {
     coverUploadRef.current.click();
-  };
-
-  const handleCloseModal = () => {
-    setEditModal((m) => ({
-      ...m,
-      isShown: false,
-      imgSrc: null,
-      file: null,
-      imgOrig: null,
-    }));
-    avatarUploadRef.current.value = '';
-    // setAvatarCropSrc(null);
-    // console.log(ProfileImageURL);
   };
 
   //! Read image file, Set preview image, And upload it to the server.
@@ -157,25 +129,14 @@ const ProfileMain = (props) => {
     }
   };
 
-  //! Fires whenever user chooses an image for profile avatar photo.
-  const handleAvatarSelect = async (event) => {
-    const files = event.target.files;
-
-    if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
-      let imageDataUrl = await readFile(files[0]);
-      let image = await createImage(imageDataUrl);
-      // setAvatarCropSrc(imageDataUrl);
-      setEditModal((m) => ({
-        ...m,
-        isShown: true,
-        imgSrc: imageDataUrl,
-        file: files[0],
-        imgOrig: image,
-      }));
-    } else {
-      event.target.value = '';
-      console.log('Add one image only');
-    }
+  const handleOnUploadDone = (newImageURL) => {
+    setProfilePhoto(newImageURL);
+    dispatch(
+      setAuthUser({
+        ...RVGlobal?.CurrentUser,
+        ProfileImageURL: newImageURL,
+      })
+    );
   };
 
   useEffect(() => {
@@ -200,41 +161,23 @@ const ProfileMain = (props) => {
 
   return (
     <Styled.ProfileViewContainer style={{ padding: 0 }}>
-      <Suspense fallback={<ModalFallbackLoader />}>
-        {editModal?.isShown && (
-          <EditModal
-            modalProps={editModal}
-            handleCloseModal={handleCloseModal}
-            setCroppedImage={setProfilePhoto}
-            id={UserID}
-          />
-        )}
-      </Suspense>
-
       <Styled.ProfileHeader coverImage={coverPhoto}>
-        <Styled.ProfileAvatarWrapper>
-          <Avatar
-            userImage={GlobalUtilities.add_timestamp(profilePhoto)}
-            radius={95}
-            className="profile-avatar"
-          />
-          {IsOwnPage && (
-            <Styled.AvatarPencilWrapper onClick={handleAvatarEdit}>
-              <PencilIcon color={CV_WHITE} size={18} />
-              <HiddenUploadFile
-                ref={avatarUploadRef}
-                onFileChange={handleAvatarSelect}
-              />
-            </Styled.AvatarPencilWrapper>
-          )}
-        </Styled.ProfileAvatarWrapper>
+        <ImageCropper
+          isEditable={IsOwnPage}
+          image={profilePhoto}
+          uploadId={UserID}
+          uploadType="ProfileImage"
+          showGrid={false}
+          onImageUpload={handleOnUploadDone}
+          containerClass="profile-image-cropper"
+        />
         {isUploadingCover ? (
           <Styled.HeaderCoverLoader>
             <LogoLoader lottieWidth="3rem" />
           </Styled.HeaderCoverLoader>
         ) : (
           <Styled.HeaderPencilWrapper onClick={handleHeaderEdit}>
-            <AddImageIcon color="#fff" size={18} />
+            <AddImageIcon color={CV_WHITE} size={18} />
             <HiddenUploadFile
               ref={coverUploadRef}
               onFileChange={handleCoverSelect}

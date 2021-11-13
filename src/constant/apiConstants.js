@@ -289,6 +289,13 @@ export const GET_VARIABLE = 'GetVariable';
  */
 export const REMOVE_USER_FROM_APPLICATION = 'RemoveUserFromApplication';
 
+/**
+ * @description 'SaveApplicationInfo'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SAVE_APPLICATION_INFO = 'SaveApplicationInfo';
+
 //* #################################
 //* ############ CNAPI ################
 //* #################################
@@ -468,6 +475,13 @@ export const SET_NOTIFS_AS_SEEN = 'SetNotificationsAsSeen';
  * @class 'NotificationsAPI'
  */
 export const REMOVE_NOTIFICATION = 'RemoveNotification';
+
+/**
+ * @description 'GetTemplateTags'
+ * @mode API function
+ * @class 'CNAPI'
+ */
+export const GET_TEMPLATE_TAGS = 'GetTemplateTags';
 
 //* #################################
 //* ############ PrivacyAPI ############

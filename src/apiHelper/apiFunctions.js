@@ -55,6 +55,8 @@ import {
   RECYCLE_NODE,
   SET_NODE_SEARCHABILITY,
   GET_NODE,
+  GET_TEMPLATE_TAGS,
+  SAVE_APPLICATION_INFO,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1246,26 +1248,21 @@ export const recoverNodeType = (nodeId) => {
 };
 
 /**
- * @description Remove node.
- * @param {String} nodeId -The id of the node.
- * @param {Boolean} hierarchy - Should remove hierarchy or not?.
- * @returns Promise.
+ * @description Get field of expertise list
+ * @returns {Promise}
  */
-export const removeNode = (nodeId, hierarchy = false) => {
-  const removeNodeAPI = API_Provider(CN_API, REMOVE_NODE);
+export const getTemplateTags = () => {
+  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
 
   return new Promise((resolve, reject) => {
     try {
-      removeNodeAPI.fetch(
-        {
-          NodeID: nodeId,
-          RemoveHierarchy: hierarchy,
-        },
+      getTemplateTagsAPI.fetch(
+        {},
         (response) => {
           resolve(response);
         },
-        (error) => {
-          reject(error);
+        (err) => {
+          reject(err);
         }
       );
     } catch (err) {
@@ -1275,76 +1272,47 @@ export const removeNode = (nodeId, hierarchy = false) => {
 };
 
 /**
- * @description Recycle node.
- * @param {String} nodeId -The id of the node.
- * @returns Promise.
+ * @description update the team (application) info
+ * @param ApplicationID - the application id
+ * @param Title - title of the application
+ * @param Tagline - tagline of the application
+ * @param Website - website url of the application
+ * @param About
+ * @param Size
+ * @param ExpertiseFieldID
+ * @param ExpertiseFieldName
+ * @param Language
+ * @param Calender
+ * @return {Promise<unknown>}
  */
-export const recycleNode = (nodeId) => {
-  const recycleNodeAPI = API_Provider(CN_API, RECYCLE_NODE);
+export const saveApplicationInfo = (
+  ApplicationID,
+  Title,
+  Tagline,
+  Website,
+  About,
+  Size,
+  ExpertiseFieldID,
+  ExpertiseFieldName,
+  Language,
+  Calendar
+) => {
+  const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
 
   return new Promise((resolve, reject) => {
     try {
-      recycleNodeAPI.fetch(
+      saveApplicationInfoAPI.fetch(
         {
-          NodeID: nodeId,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Get upload link.
- * @param {String} ownerId -The id of owner.
- * @param {String} ownerType -The type of owner.
- * @returns Promise.
- */
-export const getUploadLink = (ownerId = '', ownerType = '') => {
-  const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
-
-  return new Promise((resolve, reject) => {
-    try {
-      getUploadLinkAPI.url(
-        {
-          OwnerID: ownerId,
-          OwnerType: ownerType,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Set node searchability.
- * @param {String} nodeId -The id of node.
- * @param {Boolean} searchable -Make it searchable or not.
- * @returns Promise.
- */
-export const setNodeSearchability = (nodeId, searchable) => {
-  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
-
-  return new Promise((resolve, reject) => {
-    try {
-      setNodeSearchabilityAPI.fetch(
-        {
-          NodeID: nodeId,
-          Searchable: searchable,
+          ApplicationID,
+          ExpertiseFieldID,
+          Language,
+          Calendar,
+          Title: encodeBase64(Title),
+          Tagline: encodeBase64(Tagline),
+          Website: encodeBase64(Website),
+          About: encodeBase64(About),
+          Size: encodeBase64(Size),
+          ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
         },
         (response) => {
           resolve(response);

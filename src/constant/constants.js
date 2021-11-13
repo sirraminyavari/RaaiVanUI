@@ -207,3 +207,26 @@ export const BO_RADIUS_QUARTER = 'rv-border-radius-quarter';
  * @type (circle)
  */
 export const BO_RADIUS_CIRCLE = 'rv-circle';
+
+/**
+ * @description Different kind of calender options
+ */
+export const JALALI_CALENDAR = 'Jalali';
+export const LUNAR_CALENDAR = 'Lunar';
+export const GREGORIAN_CALENDAR = 'Gregorian';
+export const KURDISH_CALENDAR = 'Kurdish';
+
+/**
+ * @description Different kind of language options
+ */
+export const PERSIAN_LANGUAGE = 'fr';
+export const ARABIC_LANGUAGE = 'ar';
+export const ENGLISH_LANGUAGE = 'en';
+export const KURDISH_LANGUAGE = 'ku';
+
+/**
+ * @description Different kind of team size options
+ */
+export const ONE_TO_TEN = '1 - 10';
+export const TEN_TO_TWENTY = '10 - 20';
+export const MORE_THEN_TWENTY = 'more than 20';
