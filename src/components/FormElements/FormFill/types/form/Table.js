@@ -335,9 +335,9 @@ const Table = (props) => {
       ?.filter((col) => col?.Type !== cellTypes.separator)
       .map((column) => {
         let extendedColumn = Object.assign({}, column, {
-          FormID: '',
+          FormID: column.FormID,
           InstanceID: tempRowId,
-          RefElementID: '',
+          RefElementID: column.ElementID,
           GuidItems: [],
           SelectedItems: [],
           TextValue: '',

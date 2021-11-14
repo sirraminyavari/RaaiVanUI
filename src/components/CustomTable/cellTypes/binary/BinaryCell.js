@@ -57,7 +57,7 @@ const BinaryCell = (props) => {
     <Styled.BinaryCellWrapper ref={toggleRef}>
       <ToggleButton
         onToggle={handleToggle}
-        initialCheck={isNewRow && !TextValue ? null : BitValue}>
+        value={isNewRow && !TextValue ? null : BitValue}>
         <BinaryButton options={binaryOptions} className="table-binary-cell" />
       </ToggleButton>
     </Styled.BinaryCellWrapper>

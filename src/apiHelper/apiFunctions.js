@@ -1314,12 +1314,12 @@ export const recycleNode = (nodeId) => {
  * @param {String} ownerType -The type of owner.
  * @returns Promise.
  */
-export const getUploadLink = (ownerId, ownerType) => {
-  const getUploadLinkAPI = API_Provider(CN_API, GET_UPLOAD_LINK);
+export const getUploadLink = (ownerId = '', ownerType = '') => {
+  const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
 
   return new Promise((resolve, reject) => {
     try {
-      getUploadLinkAPI.fetch(
+      getUploadLinkAPI.url(
         {
           OwnerID: ownerId,
           OwnerType: ownerType,

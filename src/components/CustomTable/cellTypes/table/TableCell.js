@@ -16,13 +16,16 @@ const TableCell = (props) => {
     columnId,
     // canEdit,
     // setSelectedCell,
-    // isSelectedCell,
+    isSelectedCell,
     isNewRow,
   } = useCellProps(props);
   const { RVDic } = useWindow();
 
+  if (isSelectedCell) {
+    console.log(value, 'after add cell');
+  }
+
   const { Info } = value || {};
-  // console.log(value, 'table cell');
 
   const handleOnTableClick = () => {
     props?.setModal({
@@ -36,6 +39,7 @@ const TableCell = (props) => {
   const handleAddNewTable = () => {
     let dummyText = '(~_~)';
     let textCell = { ...value, TextValue: dummyText };
+    console.log(textCell, 'before add cell');
 
     onCellChange(rowId, columnId, textCell, dummyText);
   };
