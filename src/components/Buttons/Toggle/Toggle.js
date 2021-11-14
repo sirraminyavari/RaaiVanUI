@@ -2,19 +2,15 @@
  * Renders a toggle button.
  */
 import PropTypes from 'prop-types';
-import {
-  // useEffect,
-  cloneElement,
-} from 'react';
+import { cloneElement } from 'react';
 import * as Styled from './Toggle.styles';
-import useToggle from 'hooks/useToggle';
 
 /**
  * @typedef PropType
  * @type {Object}
  * @property {function} onToggle - The callback function that fires on toggle.
- * @property {Boolean | null} initialCheck - The initial toggle value.
- * @property {Boolean} disable - If true, button is disabled.
+ * @property {Boolean | null} value - The toggle value.
+ * @property {Boolean} disabled - If true, button is disabled.
  */
 
 /**
@@ -23,23 +19,21 @@ import useToggle from 'hooks/useToggle';
  * @param {PropType} props -Props that pass to Toggle.
  */
 const ToggleButton = (props) => {
-  const { onToggle, initialCheck, children, disable, ...rest } = props;
-  const [isOn, setToggle] = useToggle(initialCheck);
+  const { onToggle, children, disabled, value, ...rest } = props;
 
   const toggle = (e) => {
+    if (!!disabled) return;
     const toggleValue = e.target.checked;
-    if (!!disable) return;
-    setToggle(toggleValue);
     onToggle && onToggle(toggleValue);
   };
 
   return (
     <Styled.ToggleLabel>
-      <Styled.ToggleInput type="checkbox" checked={isOn} onChange={toggle} />
+      <Styled.ToggleInput type="checkbox" checked={value} onChange={toggle} />
       {!!children ? (
-        cloneElement(children, { isChecked: isOn })
+        cloneElement(children, { isChecked: value })
       ) : (
-        <Styled.ToggleButton isChecked={isOn} {...rest} />
+        <Styled.ToggleButton isChecked={value} {...rest} />
       )}
     </Styled.ToggleLabel>
   );
@@ -47,13 +41,13 @@ const ToggleButton = (props) => {
 
 ToggleButton.propTypes = {
   onToggle: PropTypes.func,
-  initialCheck: PropTypes.bool,
-  disable: PropTypes.bool,
+  value: PropTypes.oneOfType([PropTypes.bool, null]),
+  disabled: PropTypes.bool,
 };
 
 ToggleButton.defaultProps = {
-  initialCheck: false,
-  disable: false,
+  value: false,
+  disabled: false,
 };
 
 ToggleButton.displayName = 'ToggleButtonComponent';
