@@ -41,9 +41,9 @@ const Toggle = ({
         {title}
       </Styled.ToggleTitleWrapper>
       <ToggleButton
-        disable={!!disable}
+        disabled={!!disable}
         onToggle={onToggle}
-        initialCheck={!!isChecked}
+        value={!!isChecked}
       />
     </Styled.ToggleContainer>
   );
