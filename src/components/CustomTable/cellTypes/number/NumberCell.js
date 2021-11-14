@@ -30,12 +30,12 @@ const NumberCell = (props) => {
 
   const { FloatValue } = value || {};
 
-  const [numberValue, setNumberValue] = useState(FloatValue || '');
+  const [numberValue, setNumberValue] = useState(FloatValue);
   const originalValueRef = useRef(FloatValue);
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    setNumberValue(e.target.valueAsNumber);
+    setNumberValue(e.target.valueAsNumber || 0);
   };
 
   //! We'll only update the external data when the input is blurred.
@@ -72,7 +72,7 @@ const NumberCell = (props) => {
         // onBlur={() => console.log('blur')}
         className="table-number-input"
         type="number"
-        value={numberValue}
+        value={numberValue === 0 ? null : numberValue}
         placeholder="وارد کنید"
       />
     </Styled.InputCellWrapper>

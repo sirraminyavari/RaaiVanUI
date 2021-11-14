@@ -60,6 +60,11 @@ const TableCellModal = (props) => {
           console.log(error);
         });
     }
+
+    return () => {
+      setRawData([]);
+      setRawColumns([]);
+    };
   }, []);
 
   const memoizedRawData = useMemo(() => rawData, [rawData]);

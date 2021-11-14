@@ -1,4 +1,4 @@
-import { cloneElement } from 'react';
+import { cloneElement, forwardRef } from 'react';
 import * as Styled from './CustomTable.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
@@ -16,11 +16,11 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
  * @component
  * @param {PropType} props
  */
-const AddNewToCellButton = (props) => {
+const AddNewToCellButton = forwardRef((props, ref) => {
   const { onClick, icon, title, ...rest } = props;
 
   return (
-    <Styled.AddNewButtonWrapper {...rest}>
+    <Styled.AddNewButtonWrapper ref={ref} {...rest}>
       <Button classes="table-add-new-in-cell-button" onClick={onClick}>
         {cloneElement(icon, {
           size: icon?.props?.size || 18,
@@ -30,6 +30,6 @@ const AddNewToCellButton = (props) => {
       </Button>
     </Styled.AddNewButtonWrapper>
   );
-};
+});
 
 export default AddNewToCellButton;

@@ -60,10 +60,9 @@ const DateCell = (props) => {
   };
 
   const updateCell = () => {
+    if (!dateValue || normalizeDate(DateValue) === dateValue) return;
     const dateArray = dateValue?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-
-    if (normalizeDate(DateValue) === dateValue) return;
 
     let dateCell = { ...value, DateValue: dateString };
 

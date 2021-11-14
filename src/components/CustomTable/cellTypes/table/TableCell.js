@@ -7,6 +7,8 @@ import TableCellModal from '../table/TableCellModal';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import AddNewTableButton from 'components/CustomTable/AddNewButton';
 import useWindow from 'hooks/useWindowContext';
+import useOnClickOutside from 'hooks/useOnClickOutside';
+import { useRef } from 'react';
 
 const TableCell = (props) => {
   const {
@@ -14,21 +16,34 @@ const TableCell = (props) => {
     onCellChange,
     rowId,
     columnId,
-    // canEdit,
-    // setSelectedCell,
+    canEdit,
+    setSelectedCell,
     isSelectedCell,
     isNewRow,
+    setModal,
   } = useCellProps(props);
+
+  const { Info } = value || {};
+
   const { RVDic } = useWindow();
+  const tableRef = useRef();
+
+  const tableOwnerId = value?.RefElementID ? value?.ElementID : null;
 
   if (isSelectedCell) {
     console.log(value, 'after add cell');
   }
 
-  const { Info } = value || {};
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(tableRef, handleClickOutside);
 
   const handleOnTableClick = () => {
-    props?.setModal({
+    setModal({
       show: true,
       title: decodeBase64(Info?.FormName),
       type: modalTypes.table,
@@ -44,20 +59,31 @@ const TableCell = (props) => {
     onCellChange(rowId, columnId, textCell, dummyText);
   };
 
-  if (isNewRow) {
+  if (!canEdit) {
     return (
-      <AddNewTableButton
-        onClick={handleAddNewTable}
-        title={RVDic.AddN.replace('[n]', RVDic.Table)}
-        icon={<TableIcon size={18} />}
-      />
+      <Styled.TableCellContainer>
+        {tableOwnerId && (
+          <TableIcon onClick={handleOnTableClick} size={22} color={CV_GRAY} />
+        )}
+      </Styled.TableCellContainer>
     );
   }
 
   return (
-    <Styled.TableCellContainer>
-      <TableIcon onClick={handleOnTableClick} size={22} color={CV_GRAY} />
-    </Styled.TableCellContainer>
+    <>
+      {isNewRow || !tableOwnerId ? (
+        <AddNewTableButton
+          ref={tableRef}
+          onClick={handleAddNewTable}
+          title={RVDic.AddN.replace('[n]', RVDic.Table)}
+          icon={<TableIcon size={18} />}
+        />
+      ) : (
+        <Styled.TableCellContainer ref={tableRef}>
+          <TableIcon onClick={handleOnTableClick} size={22} color={CV_GRAY} />
+        </Styled.TableCellContainer>
+      )}
+    </>
   );
 };
 

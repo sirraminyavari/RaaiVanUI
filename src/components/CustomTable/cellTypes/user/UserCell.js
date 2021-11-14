@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
@@ -24,14 +24,21 @@ const UserCell = (props) => {
 
   const userRef = useRef();
 
-  useOnClickOutside(userRef, () => isSelectedCell && setSelectedCell(null));
-
   const { SelectedItems: initialUsers, Info } = value || {};
 
   const { MultiSelect: isMultiSelect } = Info || {};
 
   const [users, setUsers] = useState(isNewRow ? [] : initialUsers);
   const beforeChangeUsersRef = useRef(null);
+
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell(users);
+    }
+  };
+
+  useOnClickOutside(userRef, handleClickOutside);
 
   useEffect(() => {
     if (isNewRow) {
@@ -58,7 +65,7 @@ const UserCell = (props) => {
   /**
    * @param {Object[]} users -Users List to update.
    */
-  const updateUserCell = (users) => {
+  const updateCell = (users) => {
     let userCell = {
       ...value,
       GuidItems: users,
@@ -83,16 +90,14 @@ const UserCell = (props) => {
       : [newUser];
 
     setUsers(newUsersArray);
-    isSelectedCell && updateUserCell(newUsersArray);
   };
 
-  const handleRemoveUser = useCallback((person) => {
+  const handleRemoveUser = (person) => {
     const newUsersArray = users?.filter(
       (user) => user?.UserID !== person?.UserID
     );
     setUsers(newUsersArray);
-    isSelectedCell && updateUserCell(newUsersArray);
-  }, []);
+  };
 
   const renderUsers = () => (
     <>

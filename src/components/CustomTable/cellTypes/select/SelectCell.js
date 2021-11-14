@@ -70,7 +70,7 @@ const SelectCell = (props) => {
       ? defaultValues?.map((x) => x.value).join(' ~ ')
       : defaultValues.value;
 
-    if (originalValueRef.current === textValue) return;
+    if (originalValueRef.current === textValue || !textValue) return;
 
     let selectCell = {
       ...value,
