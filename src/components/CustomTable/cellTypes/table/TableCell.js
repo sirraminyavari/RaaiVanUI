@@ -30,10 +30,6 @@ const TableCell = (props) => {
 
   const tableOwnerId = value?.RefElementID ? value?.ElementID : null;
 
-  if (isSelectedCell) {
-    console.log(value, 'after add cell');
-  }
-
   const handleClickOutside = () => {
     if (isSelectedCell) {
       setSelectedCell(null);
@@ -54,7 +50,6 @@ const TableCell = (props) => {
   const handleAddNewTable = () => {
     let dummyText = '(~_~)';
     let textCell = { ...value, TextValue: dummyText };
-    console.log(textCell, 'before add cell');
 
     onCellChange(rowId, columnId, textCell, dummyText);
   };

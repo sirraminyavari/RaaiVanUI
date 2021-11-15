@@ -11,7 +11,7 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getWeekDay } from 'helpers/helpers';
 import {
   createFormInstance,
   removeFormInstance,
@@ -299,16 +299,16 @@ const Table = (props) => {
         let rowCellsText = '';
         for (let cell of row?.Elements) {
           if (!!cell?.DateValue_Jalali && cell?.Type === 'Date') {
-            rowCellsText += ` ${cell?.DateValue_Jalali}`;
+            rowCellsText += ` ${getWeekDay(cell?.DateValue)}`;
           }
 
-          if (!!cell?.TextValue && cell?.Type === 'Text') {
+          if (!!cell?.TextValue && ['Text', 'Checkbox'].includes(cell?.Type)) {
             rowCellsText += ` ${decodeBase64(cell?.TextValue)}`;
           }
 
           if (
             !!cell?.SelectedItems.length &&
-            (cell?.Type === 'User' || cell?.Type === 'Node')
+            ['User', 'Node', 'MultiLevel'].includes(cell?.Type)
           ) {
             for (let item of cell?.SelectedItems) {
               rowCellsText += ` ${decodeBase64(item?.Name)}`;

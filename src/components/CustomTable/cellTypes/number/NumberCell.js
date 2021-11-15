@@ -35,7 +35,7 @@ const NumberCell = (props) => {
 
   //! Keep track of input change.
   const handleInputChange = (e) => {
-    setNumberValue(e.target.valueAsNumber || 0);
+    setNumberValue(e.target.valueAsNumber + '');
   };
 
   //! We'll only update the external data when the input is blurred.
