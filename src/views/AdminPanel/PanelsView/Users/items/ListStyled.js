@@ -1,44 +1,39 @@
 import styled from 'styled-components';
+import ToggleButton from '../../../../../components/Buttons/Toggle/Toggle';
 
-export const ListContainer = styled.div`
+export const ListContainer = styled.table`
   margin: ${({ top, bottom }) => `${top ?? 0}rem auto ${bottom ?? 0}rem auto`};
+  display: block;
+  width: 100%;
 `;
 
-export const ListHeader = styled.div`
-  display: flex;
-  flex-flow: ${({ rtl }) => (rtl ? 'row wrap' : 'wrap-reverse')};
-  justify-content: space-between;
-  align-items: center;
+export const ListHeader = styled.tr`
+  display: block;
   height: 2.8rem;
+  line-height: 2.8rem;
   border-bottom: 0.08rem solid var(--rv-color-distant);
   color: var(--rv-color-distant);
 `;
 
-export const ListHeaderItem = styled.div`
-  flex-grow: ${({ grow }) => grow ?? 0.5};
-  display: flex;
+export const ListHeaderItem = styled.th`
+  display: inline-block;
+  width: ${({ width }) => width}%;
+  text-align: ${({ centralized }) => (centralized ? 'center' : 'auto')};
 `;
 
 export const ListBody = styled.div`
   transition: height 0.25s ease-in;
 `;
 
-export const ListRow = styled.div`
-  display: flex;
-  flex-flow: ${({ rtl }) => (rtl ? 'row wrap' : 'wrap-reverse')};
-  justify-content: space-between;
-  align-items: center;
+export const ListRow = styled.tr`
+  display: block;
   height: 5.125rem;
+  line-height: 5.125rem;
+  border-bottom: 0.08rem solid var(--rv-color-distant);
 `;
 
-export const ListBodyItem = styled.div`
-  flex: ${({ grow }) => grow ?? 0.5};
-  display: flex;
-  border-bottom: 0.08rem solid var(--rv-color-distant);
-  height: 5.125rem;
-  align-items: center;
-  justify-content: flex-start;
+export const ListBodyItem = styled.td`
+  display: inline-block;
+  width: ${({ width }) => width}%;
   overflow: hidden;
-  text-overflow: ellipsis;
-  border-left: 1px solid red;
 `;

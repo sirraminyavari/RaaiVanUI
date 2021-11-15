@@ -17,17 +17,17 @@ const TeamBasedList = ({ rtl, ...props }) => {
   return (
     <Styled.ListContainer top={2.4}>
       <Styled.ListHeader rtl={rtl}>
-        <Styled.ListHeaderItem grow={1.3}>{'نام کاربر'}</Styled.ListHeaderItem>
-        <Styled.ListHeaderItem grow={1.5}>{'ایمیل'}</Styled.ListHeaderItem>
-        <Styled.ListHeaderItem grow={1.2}>
-          {'آخرین فعالیت'}
-        </Styled.ListHeaderItem>
-        <Styled.ListHeaderItem>{'کاربر مدیر'}</Styled.ListHeaderItem>
-        <Styled.ListHeaderItem>{'گروه ها'}</Styled.ListHeaderItem>
-        <Styled.ListHeaderItem grow={1.5}></Styled.ListHeaderItem>
+        {listHeaderData.map((x) => (
+          <Styled.ListHeaderItem
+            key={getUUID()}
+            width={x.width}
+            centralized={x.centralized}>
+            {x.title}
+          </Styled.ListHeaderItem>
+        ))}
       </Styled.ListHeader>
 
-      <Styled.ListBody>{userCards}</Styled.ListBody>
+      {userCards}
 
       <div>
         <button onClick={() => setShowMore(!showMore)}>{'مشاهده همه'}</button>
@@ -35,4 +35,32 @@ const TeamBasedList = ({ rtl, ...props }) => {
     </Styled.ListContainer>
   );
 };
+
+const listHeaderData = [
+  {
+    title: 'نام کاربر',
+    width: 25,
+  },
+  {
+    title: 'ایمیل',
+    width: 25,
+  },
+  {
+    title: 'آخرین فعالیت',
+    width: 17,
+  },
+  {
+    title: 'کاربر مدیر',
+    width: 8,
+    centralized: true,
+  },
+  {
+    title: 'گروه ها',
+    width: 8,
+  },
+  {
+    title: '',
+    width: 17,
+  },
+];
 export default TeamBasedList;
