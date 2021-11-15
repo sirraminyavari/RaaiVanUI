@@ -148,7 +148,7 @@
                         
                         var queryStringJson = that._request_data(nId);
 
-                        queryStringJson[GlobalUtilities.AccessTokenParameterName] = (window.RVGlobal || {}).AccessToken;
+                        queryStringJson[GlobalUtilities.AccessTokenParameterName] = GlobalUtilities.get_csrf_token();
                         
                         return queryStringJson;
                     },

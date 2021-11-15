@@ -55,6 +55,45 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         return { Name: String(M[0]).toLowerCase(), Version: M[1] };
     },
 
+    get_csrf_token: function (restTicket) {
+        var arr = restTicket ? (window.__RestCSRFTokens || {})[restTicket] : (window.RVGlobal || {}).AccessToken;
+        if (!!arr && (GlobalUtilities.get_type(arr) == "string")) arr = [arr];
+
+        if ((GlobalUtilities.get_type(arr) == "array") && arr.length) {
+            var retVal = arr.pop();
+
+            if (restTicket)
+                __RestCSRFTokens[restTicket] = arr;
+            else
+                RVGlobal.AccessToken = arr;
+            
+            return retVal;
+        }
+        else return "";
+    },
+
+    add_csrf_token: function (token, restTicket) {
+        window.__RestCSRFTokens = window.__RestCSRFTokens || {};
+
+        var refArray = restTicket ? __RestCSRFTokens[restTicket] || [] : RVGlobal.AccessToken || [];
+
+        if (!!token && (GlobalUtilities.get_type(token) == "string")) token = [token];
+
+        if ((GlobalUtilities.get_type(token) == "array") && (GlobalUtilities.get_type(refArray) == "array")) {
+            refArray = token
+                .filter(t => !!t && (GlobalUtilities.get_type(t) == "string"))
+                .concat(refArray);
+
+            if (restTicket)
+                __RestCSRFTokens[restTicket] = refArray;
+            else
+                RVGlobal.AccessToken = refArray;
+            
+            return refArray.length ? refArray : null;
+        }
+        else return null;
+    },
+
     to_json: function (str) {
         try { return JSON.parse(str); }
         catch (e) { return null; }
@@ -769,8 +808,8 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         for (var p in requestParams) _add_param(p, requestParams[p]);
 
-        if ((window.RVGlobal || {}).AccessToken)
-            _add_param(GlobalUtilities.AccessTokenParameterName, window.RVGlobal.AccessToken);
+        var token = GlobalUtilities.get_csrf_token();
+        if (token) _add_param(GlobalUtilities.AccessTokenParameterName, token);
 
         form.submit();
     },
@@ -804,8 +843,8 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         for (var p in requestParams) _add_param(p, requestParams[p]);
 
-        if ((window.RVGlobal || {}).AccessToken)
-            _add_param(GlobalUtilities.AccessTokenParameterName, window.RVGlobal.AccessToken);
+        var token = GlobalUtilities.get_csrf_token();
+        if (token) _add_param(GlobalUtilities.AccessTokenParameterName, token);
 
         var newWin = window.open("", _target);
 
