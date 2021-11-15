@@ -100,11 +100,14 @@
                                         ResponseHandler: function (results) {
                                             btn.Processing = false;
                                             var msg = results.ErrorText || results.Succeed;
+
                                             if (results.Succeed) {
                                                 if (GlobalUtilities.get_type(that.Options.OnPasswordChange) == "function")
                                                     that.Options.OnPasswordChange();
                                             }
-                                            alert(RVDic.MSG[msg] || msg, { Timeout: results.ErrorText ? 20000 : null });
+
+                                            if (!results.ResetSession)
+                                                alert(RVDic.MSG[msg] || msg, { Timeout: results.ErrorText ? 20000 : null });
                                         }
                                     });
                                 }
@@ -191,7 +194,7 @@
                         Number: pass && (!settings.Number || /[0-9]/g.test(pass)),
                         NonAlphaNumeric: pass && (!settings.NonAlphaNumeric || !/^[a-zA-Z0-9]+$/g.test(pass))
                     };
-
+                    
                     if (elems["pwdMinLength"]) jQuery(elems["pwdMinLength"]).css({ color: result.MinLength ? "rgb(22,188,31)" : "#f00" });
                     if (elems["pwdNewCharacters"]) jQuery(elems["pwdNewCharacters"]).css({ color: result.NewCharacters ? "rgb(22,188,31)" : "#f00" });
                     if (elems["pwdUpperLower"]) jQuery(elems["pwdUpperLower"]).css({ color: result.UpperLower ? "rgb(22,188,31)" : "#f00" });
