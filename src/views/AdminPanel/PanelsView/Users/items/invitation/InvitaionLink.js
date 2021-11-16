@@ -1,6 +1,6 @@
 import * as Styled from './InvitaionStyle';
-import InfoCircleIcon from '../../../../../../components/Icons/InfoCircleIcon/InfoIcon';
-import CopyIcon from '../../../../../../components/Icons/CopyIcon/CopyIcon';
+import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
+import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
 
 const InvitationLink = () => {
   return (

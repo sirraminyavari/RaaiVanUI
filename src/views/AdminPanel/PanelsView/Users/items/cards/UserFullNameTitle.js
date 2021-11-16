@@ -4,7 +4,7 @@ import Heading from '../../../../../../components/Heading/Heading';
 const UserFullNameTitle = ({ ProfileUrl, Name, ...props }) => {
   return (
     <TitleContainer>
-      <UserProfileImg src={ProfileUrl} />
+      {ProfileUrl && <UserProfileImg src={ProfileUrl} />}
       <UserTitle>{Name}</UserTitle>
     </TitleContainer>
   );
