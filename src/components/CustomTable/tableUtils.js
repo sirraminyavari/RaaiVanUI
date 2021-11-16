@@ -2,6 +2,7 @@ import { decodeBase64, toJSON } from 'helpers/helpers';
 
 const { GlobalUtilities } = window;
 
+//! All possible cell types.
 export const cellTypes = {
   action: 'Action',
   index: 'Index',
@@ -24,6 +25,7 @@ export const modalTypes = {
   table: 'Form',
 };
 
+//! prepare data for table cell.
 export const normalizeCell = (cell) => {
   const normalizedCell = Object.assign({}, cell, {
     Info: toJSON(decodeBase64(cell.Info) || '{}'),
@@ -36,13 +38,16 @@ export const normalizeCell = (cell) => {
   return normalizedCell;
 };
 
+//! Bind id to table cells for accessor.
 export const prepareCell = (cell) => {
   let id = `${cell?.Type}_${cell?.RefElementID || cell?.ElementID}`;
 
   return { [id]: normalizeCell(cell) };
 };
 
+//! Prepare formatted headers for table.
 export const prepareHeaders = (columns, getColumnOptions) => [
+  //! First two columns are always index and action(static).
   {
     id: 'action',
     title: '',
@@ -57,6 +62,7 @@ export const prepareHeaders = (columns, getColumnOptions) => [
     dataType: cellTypes.index,
     options: getColumnOptions({ Type: cellTypes.index }),
   },
+  //! The rest columns(dynamic based on columns).
   ...columns
     ?.filter((col) => col?.Type !== cellTypes.separator)
     ?.map((col) => ({
@@ -72,6 +78,7 @@ export const prepareHeaders = (columns, getColumnOptions) => [
     })),
 ];
 
+//! Prepare raw table contents for table.
 export const prepareRows = (data, columns) => {
   return data?.map((row) => {
     const cells = columns
@@ -91,6 +98,7 @@ export const prepareRows = (data, columns) => {
   });
 };
 
+//! A hook to extend props for cells.
 export const useCellProps = (cellProps) => {
   const {
     row,

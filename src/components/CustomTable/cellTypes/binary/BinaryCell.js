@@ -16,22 +16,13 @@ const BinaryCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const toggleRef = useRef();
 
-  const handleClickOutside = () => {
-    if (isSelectedCell) {
-      setSelectedCell(null);
-      updateCell();
-    }
-  };
-
-  useOnClickOutside(toggleRef, handleClickOutside);
-
   const { Info, TextValue, BitValue } = value || {};
-  const binaryInfo = Info || {};
-  const { Yes, No } = binaryInfo || {};
+  const { Yes, No } = Info || {};
 
   const binaryOptions = { yes: decodeBase64(Yes), no: decodeBase64(No) };
 
@@ -39,23 +30,37 @@ const BinaryCell = (props) => {
     isNewRow && !TextValue ? null : BitValue
   );
 
-  const handleToggle = (toggleValue) => {
-    setToggleValue(toggleValue);
+  //! Handle click outside event.
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell(toggleValue);
+    }
   };
 
-  const updateCell = () => {
-    if (toggleValue === null) return;
-    const textValue = toggleValue ? binaryOptions.yes : binaryOptions.no;
+  //! A hook that fires a callback when the user clicks outside of the current cell.
+  useOnClickOutside(toggleRef, handleClickOutside);
+
+  const handleToggle = (toggleValue) => {
+    setToggleValue(toggleValue);
+    !editByCell && updateCell(toggleValue);
+  };
+
+  //! Update cell value.
+  const updateCell = (toggle) => {
+    if (toggle === null) return; //! If toggle value is null, do nothing and return early.
+    const textValue = toggle ? binaryOptions.yes : binaryOptions.no;
 
     let binaryCell = {
       ...value,
-      BitValue: toggleValue,
+      BitValue: toggle,
       TextValue: textValue,
     };
 
     onCellChange(rowId, columnId, binaryCell, value);
   };
 
+  //! UI for none editing cell.
   if (!canEdit) {
     return (
       <Styled.CellViewContainer>
@@ -68,6 +73,7 @@ const BinaryCell = (props) => {
     );
   }
 
+  //! UI for editing cell.
   return (
     <Styled.BinaryCellWrapper ref={toggleRef}>
       <ToggleButton onToggle={handleToggle} value={toggleValue}>

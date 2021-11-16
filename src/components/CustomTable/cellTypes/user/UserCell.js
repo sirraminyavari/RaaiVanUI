@@ -20,6 +20,7 @@ const UserCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const userRef = useRef();
@@ -62,9 +63,6 @@ const UserCell = (props) => {
         })
       : [];
 
-  /**
-   * @param {Object[]} users -Users List to update.
-   */
   const updateCell = (users) => {
     let userCell = {
       ...value,
@@ -90,6 +88,8 @@ const UserCell = (props) => {
       : [newUser];
 
     setUsers(newUsersArray);
+
+    !editByCell && updateCell(newUsersArray);
   };
 
   const handleRemoveUser = (person) => {
@@ -97,6 +97,7 @@ const UserCell = (props) => {
       (user) => user?.UserID !== person?.UserID
     );
     setUsers(newUsersArray);
+    !editByCell && updateCell(newUsersArray);
   };
 
   const renderUsers = () => (
@@ -106,9 +107,6 @@ const UserCell = (props) => {
         onRemoveUser={handleRemoveUser}
         canEdit={canEdit}
       />
-      {/* {!users?.length && (
-        <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-      )} */}
     </>
   );
 

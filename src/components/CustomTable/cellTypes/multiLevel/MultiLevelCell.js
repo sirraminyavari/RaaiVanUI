@@ -21,6 +21,7 @@ const MultiLevelCell = (props) => {
     isRowEditing,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const { RVDic } = useWindow();
@@ -87,8 +88,7 @@ const MultiLevelCell = (props) => {
       TextValue: '',
     };
 
-    isSelectedCell &&
-      onCellChange(rowId, columnId, multiLevelCell, selectedItems);
+    onCellChange(rowId, columnId, multiLevelCell, selectedItems);
   };
 
   //! Get options for each level.
@@ -157,6 +157,10 @@ const MultiLevelCell = (props) => {
 
     if (!isTheEnd) {
       getOptions(nextStep, currentLevelValue.NodeID);
+    }
+
+    if (isTheEnd && !editByCell) {
+      updateCell(newLevelsValue);
     }
   };
 

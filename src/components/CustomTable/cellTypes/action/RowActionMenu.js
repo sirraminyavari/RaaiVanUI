@@ -15,7 +15,10 @@ const RowActionMenu = (props) => {
     data,
     editable: isTableEditable,
     editByCell,
+    setTempRowId,
   } = props?.cell || {};
+
+  console.log(props?.cell);
 
   const { RVDic } = useWindow();
   const rowId = row?.original?.id;
@@ -29,6 +32,7 @@ const RowActionMenu = (props) => {
   };
 
   const handleSetEditableRow = () => {
+    setTempRowId && setTempRowId(null);
     setEditingRowId && setEditingRowId(rowId);
     onEditRowStart && onEditRowStart(data);
   };

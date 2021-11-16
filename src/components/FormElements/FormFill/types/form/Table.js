@@ -114,14 +114,17 @@ const Table = (props) => {
     if (isNewRow) {
       saveRow([newCellData]);
     } else {
-      saveForm([newCellData])
-        .then(() => {
-          updateRowCell(rowId, columnId, newCellData);
-        })
-        .catch((error) => {
-          // console.log(error, 'save row error')
-          // updateRowCell(rowId, columnId, oldCellValue);
-        });
+      if (editByCell) {
+        saveForm([newCellData])
+          .then(() => {
+            updateRowCell(rowId, columnId, newCellData);
+          })
+          .catch((error) => {
+            // console.log(error, 'save row error')
+            // updateRowCell(rowId, columnId, oldCellValue);
+          });
+      }
+
       updateRowCell(rowId, columnId, newCellData);
     }
   };
@@ -206,12 +209,14 @@ const Table = (props) => {
 
     //! Do this in main table.
     const rowElements = rows?.find((row) => row?.id === rowId);
+
+    //! Editing whole row.
     let elementsToSave = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    //! Check if edit by cell is true.
-    if (columnId) {
+    //! Check if edit by cell is true. Editing single cell.
+    if (!!editByCell) {
       elementsToSave = elementsToSave.filter(
         (element) => element?.RefElementID === columnId
       );
@@ -244,11 +249,17 @@ const Table = (props) => {
     tableColumns,
     isNestedTable,
     onTableContentChange,
+    editByCell,
   ]);
 
   //! Fires when row edition starts.
   const onEditStart = (beforeEditRows) => {
-    beforeEditRowsRef.current = beforeEditRows;
+    //! Exclude temporary new row(if exists).
+    let newRows = beforeEditRows.filter(
+      (row) => row?.id.split('_')[0] !== 'new'
+    );
+    beforeEditRowsRef.current = newRows;
+    setRows(newRows);
   };
   const memoizedOnEditRowStart = useCallback(onEditStart, []);
 

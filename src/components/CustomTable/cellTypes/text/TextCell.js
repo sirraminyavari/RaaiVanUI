@@ -13,13 +13,14 @@ const TextCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const textRef = useRef();
 
   const handleClickOutside = () => {
     if (isSelectedCell) {
-      handleInputBlur();
+      updateCell();
       setSelectedCell(null);
     }
   };
@@ -37,12 +38,17 @@ const TextCell = (props) => {
   };
 
   //! We'll only update the external data when the input is blurred.
-  const handleInputBlur = () => {
+  const updateCell = () => {
     if (originalValueRef.current === textValue?.trim()) return;
 
     let textCell = { ...value, TextValue: textValue };
 
     onCellChange(rowId, columnId, textCell, textValue);
+  };
+
+  //! Only in row edition mode.
+  const handleInputBlur = () => {
+    !editByCell && updateCell();
   };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
@@ -62,7 +68,7 @@ const TextCell = (props) => {
     <Styled.InputCellWrapper ref={textRef}>
       <Input
         onChange={handleInputChange}
-        // onBlur={() => console.log('blur')} //! Not working due to  input ref clear before it catches the blur event.
+        onBlur={handleInputBlur}
         className="table-number-input"
         type="text"
         value={textValue}

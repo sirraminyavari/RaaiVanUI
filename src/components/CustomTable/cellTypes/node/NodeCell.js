@@ -25,6 +25,7 @@ const NodeCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const nodeRef = useRef();
@@ -62,7 +63,8 @@ const NodeCell = (props) => {
       GuidItems: items,
     };
 
-    isSelectedCell && onCellChange(rowId, columnId, nodeCell, items);
+    (isSelectedCell || !editByCell) &&
+      onCellChange(rowId, columnId, nodeCell, items);
   };
 
   const handleSelectButtonClick = () => {
