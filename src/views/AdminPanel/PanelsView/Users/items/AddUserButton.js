@@ -14,11 +14,15 @@ const BtnContainer = styled.div.attrs({
   border-radius: 0.8rem;
   gap: 0.5rem;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
 `;
 
 const AddUserButton = ({ children, ...props }) => {
   return (
-    <BtnContainer>
+    <BtnContainer {...props}>
       <UserPlusIcon size={20} />
       <div>{children}</div>
     </BtnContainer>

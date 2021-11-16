@@ -7,7 +7,11 @@ export const ListContainer = styled.table`
   width: 100%;
 `;
 
-export const ListHeader = styled.tr`
+export const ListHeader = styled.thead`
+  display: block;
+`;
+
+export const ListHeaderRow = styled.tr`
   display: block;
   height: 2.8rem;
   line-height: 2.8rem;
@@ -21,7 +25,8 @@ export const ListHeaderItem = styled.th`
   text-align: ${({ centralized }) => (centralized ? 'center' : 'auto')};
 `;
 
-export const ListBody = styled.div`
+export const ListBody = styled.tbody`
+  display: block;
   transition: height 0.25s ease-in;
 `;
 
@@ -36,4 +41,20 @@ export const ListBodyItem = styled.td`
   display: inline-block;
   width: ${({ width }) => width}%;
   overflow: hidden;
+`;
+
+export const ShowMoreButton = styled.button`
+  background-color: white;
+  outline: none;
+  border: none;
+  width: 9.7rem;
+  height: 2rem;
+  line-height: 2rem;
+  color: var(--rv-color-actionbutton);
+  border-radius: 0.45rem;
+  margin-top: 0.7rem;
+
+  &:hover {
+    border: 1px solid var(--rv-color-actionbutton);
+  }
 `;

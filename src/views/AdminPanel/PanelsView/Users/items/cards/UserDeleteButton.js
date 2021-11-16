@@ -11,19 +11,27 @@ const UserDeleteButton = ({ children, render, ...rest }) => {
     middle: true,
     show: false,
     titleClass: 'rv-red',
+    titleContainerClass: 'modal-title-bar',
   });
 
-  const onModalClose = () => {
+  const onModalConfirm = () => {
+    setModalInfo({ ...modalInfo, show: false });
+  };
+
+  const onModalCancel = () => {
     setModalInfo({ ...modalInfo, show: false });
   };
   return (
     <>
-      <ButtonContainer
-        onClick={() => setModalInfo({ ...modalInfo, show: true })}>
-        {children}
+      <ButtonContainer>
+        <ButtonView onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+          {children}
+        </ButtonView>
       </ButtonContainer>
 
-      <Modal {...modalInfo} onClose={onModalClose}>
+      <Modal
+        {...modalInfo}
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
         <ProfileWrapper>{render}</ProfileWrapper>
 
         <ModalMessage>{'آیا از حذف کاربر اطمینان دارید؟'}</ModalMessage>
@@ -35,11 +43,17 @@ const UserDeleteButton = ({ children, render, ...rest }) => {
         </ModalHint>
 
         <ModelActionBar>
-          <Button type="negative" style={buttonStyles}>
+          <Button
+            type="negative"
+            style={buttonStyles}
+            onClick={() => onModalConfirm()}>
             {'حدف'}
           </Button>
 
-          <Button type="primary-o" style={buttonStyles}>
+          <Button
+            type="primary-o"
+            style={buttonStyles}
+            onClick={() => onModalCancel()}>
             {'بازگشت'}
           </Button>
         </ModelActionBar>
@@ -48,7 +62,12 @@ const UserDeleteButton = ({ children, render, ...rest }) => {
   );
 };
 
-const ButtonContainer = styled.button`
+const ButtonContainer = styled.div`
+  width: 100%;
+  text-align: center;
+`;
+
+const ButtonView = styled.button`
   outline: none;
   color: var(--rv-red-color);
   background-color: transparent;

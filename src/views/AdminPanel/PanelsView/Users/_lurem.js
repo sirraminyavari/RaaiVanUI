@@ -72,3 +72,21 @@ export const teamUsers = [
     IsOnline: false,
   },
 ];
+
+export const invitedUsers = [
+  {
+    UserId: '1',
+    Name: 'ابوالفضل پورعرب',
+    Email: 'poorarab@gmail.com',
+  },
+  {
+    UserId: '1',
+    Name: 'فریبرز عرب نیا',
+    Email: 'arabnia@gmail.com',
+  },
+  {
+    UserId: '1',
+    Name: 'علی دایی',
+    Email: 'ali.daei@gmail.com',
+  },
+];

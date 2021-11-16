@@ -1,38 +1,43 @@
 import * as Styled from './ListStyled';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { teamUsers } from '../_lurem';
 import { getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
+import { ListHeader } from './ListStyled';
 
 const TeamBasedList = ({ rtl, ...props }) => {
-  const [users, setUsers] = useState(teamUsers);
+  const users = useMemo(() => teamUsers, []);
   const [showMore, setShowMore] = useState(false);
 
-  const userCards = users?.slice(0, !showMore ? users.length : 3)?.map((x) => (
+  const userCards = users?.slice(0, showMore ? users.length : 3)?.map((x) => (
     <Styled.ListRow rtl={rtl} key={getUUID()}>
       <TeamBasedUserCard {...x} />
     </Styled.ListRow>
   ));
 
   return (
-    <Styled.ListContainer top={2.4}>
-      <Styled.ListHeader rtl={rtl}>
-        {listHeaderData.map((x) => (
-          <Styled.ListHeaderItem
-            key={getUUID()}
-            width={x.width}
-            centralized={x.centralized}>
-            {x.title}
-          </Styled.ListHeaderItem>
-        ))}
-      </Styled.ListHeader>
+    <>
+      <Styled.ListContainer top={2.4}>
+        <Styled.ListHeader>
+          <Styled.ListHeaderRow rtl={rtl}>
+            {listHeaderData.map((x) => (
+              <Styled.ListHeaderItem
+                key={getUUID()}
+                width={x.width}
+                centralized={x.centralized}>
+                {x.title}
+              </Styled.ListHeaderItem>
+            ))}
+          </Styled.ListHeaderRow>
+        </Styled.ListHeader>
 
-      {userCards}
+        <Styled.ListBody>{userCards}</Styled.ListBody>
+      </Styled.ListContainer>
 
-      <div>
-        <button onClick={() => setShowMore(!showMore)}>{'مشاهده همه'}</button>
-      </div>
-    </Styled.ListContainer>
+      <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
+        {'مشاهده همه'}
+      </Styled.ShowMoreButton>
+    </>
   );
 };
 
