@@ -4,7 +4,15 @@ import UserFullNameTitle from './UserFullNameTitle';
 import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
 import UserDeleteButton from './UserDeleteButton';
 import UserGroupEdit from './UserGroupEdit';
-const TeamBasedUserCard = ({ ProfileUrl, Name, Email, IsAdmin, ...props }) => {
+const TeamBasedUserCard = ({
+  ProfileUrl,
+  Name,
+  Email,
+  IsAdmin,
+  lastTime,
+  lastDate,
+  ...props
+}) => {
   const userTitle = <UserFullNameTitle ProfileUrl={ProfileUrl} Name={Name} />;
 
   return (
@@ -13,7 +21,12 @@ const TeamBasedUserCard = ({ ProfileUrl, Name, Email, IsAdmin, ...props }) => {
 
       <Styled.ListBodyItem width={25}>{Email}</Styled.ListBodyItem>
 
-      <Styled.ListBodyItem width={17}></Styled.ListBodyItem>
+      <Styled.ListBodyItem width={17}>
+        <DateTimeContainer>
+          <DateTimeItem>{lastTime}</DateTimeItem>
+          <DateTimeItem>{lastDate}</DateTimeItem>
+        </DateTimeContainer>
+      </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={8}>
         <ToggleButton value={IsAdmin} />
@@ -29,4 +42,12 @@ const TeamBasedUserCard = ({ ProfileUrl, Name, Email, IsAdmin, ...props }) => {
     </>
   );
 };
+
+const DateTimeContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+`;
+const DateTimeItem = styled.div``;
 export default TeamBasedUserCard;

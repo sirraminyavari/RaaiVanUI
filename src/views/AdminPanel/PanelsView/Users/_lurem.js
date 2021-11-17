@@ -5,6 +5,8 @@ export const teamUsers = [
     Email: 'khashayar.jahanian@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: true,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -13,6 +15,8 @@ export const teamUsers = [
     Email: 'sirraminyavari@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: true,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -21,6 +25,8 @@ export const teamUsers = [
     Email: 'sepehr.mollazaeh@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -29,6 +35,8 @@ export const teamUsers = [
     Email: 'amirhossein.seyf@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -37,6 +45,8 @@ export const teamUsers = [
     Email: 'rasoul@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -45,6 +55,8 @@ export const teamUsers = [
     Email: 'ali.kargar@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -53,6 +65,8 @@ export const teamUsers = [
     Email: 'mehdi.kh14.2@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -61,6 +75,8 @@ export const teamUsers = [
     Email: 'reza.najafi@gmail.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
   {
@@ -69,6 +85,8 @@ export const teamUsers = [
     Email: 'musavi.mehdi@outlook.com',
     ProfileUrl: 'https://picsum.photos/200',
     IsAdmin: false,
+    lastDate: '1399/8/15',
+    lastTime: '23:26',
     IsOnline: false,
   },
 ];
@@ -78,15 +96,21 @@ export const invitedUsers = [
     UserId: '1',
     Name: 'ابوالفضل پورعرب',
     Email: 'poorarab@gmail.com',
+    invitationDate: '1399/8/15',
+    invitationTime: '23:26',
   },
   {
     UserId: '1',
     Name: 'فریبرز عرب نیا',
     Email: 'arabnia@gmail.com',
+    invitationDate: '1399/8/15',
+    invitationTime: '23:26',
   },
   {
     UserId: '1',
     Name: 'علی دایی',
     Email: 'ali.daei@gmail.com',
+    invitationDate: '1399/8/15',
+    invitationTime: '23:26',
   },
 ];

@@ -64,7 +64,8 @@ const UserDeleteButton = ({ children, render, ...rest }) => {
 
 const ButtonContainer = styled.div`
   width: 100%;
-  text-align: center;
+  text-align: end;
+  padding-left: 1.5rem;
 `;
 
 const ButtonView = styled.button`
