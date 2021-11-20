@@ -9,8 +9,8 @@ import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
  * @property {function} onMoveItem -A callback function that fires when item moves on tree.
  * @property {function} renderItem -A callback function that renders a custom item for tree.
  * @property {array} excludeDrag -An array of items that are NOT draggable at all.
- * @property {array} excludeDrop -An array of items that are NOT dropable at all.
- * @property {Object} excludeDragDrop -Dropable and dragable items that are in conflict with each other.
+ * @property {array} excludeDrop -An array of items that are NOT droppable at all.
+ * @property {Object} excludeDragDrop -Droppable and draggable items that are in conflict with each other.
  * @property {boolean} draggable -If true, Tree items are draggable.
  * @property {boolean} nestable -If true, Tree items can be nested.
  */
@@ -44,12 +44,12 @@ const DragAndDropTree = (props) => {
     onMutateTree(mutateTree(tree, itemId, { isExpanded: false }));
   };
 
-  //! Controles drag and drop event.
+  //! Controls drag and drop event.
   const handleOnDragEnd = (source, destination) => {
-    //! Item is out of dropable range.
+    //! Item is out of droppable range.
     if (!destination) return;
 
-    //! Make an area non-dropable.
+    //! Make an area non-droppable.
     if (excludeDrop && excludeDrop.includes(destination.parentId)) return;
 
     //! Make an item non-draggable.

@@ -11,6 +11,7 @@ import getIcon from 'utils/treeUtils/getItemIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { getURL } from 'helpers/helpers';
 
+//! Default indent per level for tree items.
 const INDENT_PER_LEVEL = 27;
 
 const { setSidebarDnDTree } = sidebarMenuSlice.actions;

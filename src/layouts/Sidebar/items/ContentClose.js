@@ -23,6 +23,10 @@ const selectSidebarNodes = createSelector(
   (sidebarItems) => sidebarItems.nodeTypes
 );
 
+/**
+ * Renders content for the sidebar in close mode.
+ * @returns {React.Component}
+ */
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
   const itemRef = useRef();
@@ -126,7 +130,7 @@ const SidebarOnClose = ({ theme }) => {
 
   const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
   const hasSidebarNodes = !!filteredSidebarNodes.length;
-
+  //! Shows the chevron if there are enough nodes.
   useLayoutEffect(() => {
     const listContainerHeight = listRef?.current?.getBoundingClientRect()
       ?.height;

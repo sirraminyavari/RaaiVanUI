@@ -18,6 +18,10 @@ const selectSidebarDnDTree = createSelector(
   (sidebarItems) => sidebarItems.dndTree
 );
 
+/**
+ * Renders nodes tree in editable format.
+ * @returns {React.Component}
+ */
 const EditableTree = () => {
   const dispatch = useDispatch();
   const dndTree = useSelector(selectSidebarDnDTree);
@@ -32,6 +36,7 @@ const EditableTree = () => {
     dispatch(setSidebarDnDTree(newTree));
   };
 
+  //! Fires when user drags and drops a node.
   const handleOnMoveItem = (newTree, source, destination) => {
     if (source?.parentId === destination?.parentId) {
       dispatch(reorderSidebarNode(newTree, source, destination));
@@ -46,11 +51,13 @@ const EditableTree = () => {
     return <EditableItem itemProps={itemProps} />;
   };
 
-  const excludDropIds =
+  //! Exclude ids that are not droppable.
+  const excludeDroppableIds =
     Object.values(dndTree?.items || {})
       .filter((item) => !item?.isCategory)
       .map((item) => item?.id) || [];
 
+  //! get items that are category.
   const categories =
     Object.values(dndTree?.items || {})
       .filter((item) => item?.isCategory && item?.parent !== 'root')
@@ -63,7 +70,7 @@ const EditableTree = () => {
       onMutateTree={handleOnMutateTree}
       onMoveItem={handleOnMoveItem}
       renderItem={handleRenderItem}
-      excludeDrop={isSaaS ? excludDropIds : []}
+      excludeDrop={isSaaS ? excludeDroppableIds : []}
       excludeDragDrop={isSaaS && { from: categories, to: categories }}
       draggable
       nestable

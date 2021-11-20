@@ -29,16 +29,22 @@ const selectUnderMenuList = createSelector(
   (sidebarItems) => sidebarItems?.underMenuList
 );
 
+/**
+ * Renders some items after nodes item inside sidebar menu.
+ * @returns {React.Component}
+ */
 const UnderMenuList = () => {
   const { RVDic } = useWindow();
   const favoriteNodesCount = useSelector(selectFavoriteNodesCount);
   const items = useSelector(selectUnderMenuList);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
 
+  //! Opens gallery modal.
   const openTemplatesGallery = () => {
     setIsGalleryModalOpen(true);
   };
 
+  //! Close gallery modal.
   const handleCloseModal = () => {
     setIsGalleryModalOpen(false);
   };

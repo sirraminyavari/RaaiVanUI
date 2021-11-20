@@ -39,9 +39,9 @@ const NavbarInitial = () => {
     dispatch(logoutAction(onLogoutDone, onLogoutError));
   };
 
-  const isHelpmeActive = activePath === HELP_PATH;
+  const isHelpPathActive = activePath === HELP_PATH;
 
-  const linkTo = isHelpmeActive ? TEAMS_PATH : HELP_PATH;
+  const linkTo = isHelpPathActive ? TEAMS_PATH : HELP_PATH;
 
   return (
     <Styled.InitialNavbarContainer>
@@ -58,11 +58,11 @@ const NavbarInitial = () => {
           offset={{ top: -3 }}
           renderContent={() => (
             <span style={{ textTransform: 'capitalize' }}>
-              {isHelpmeActive ? RVDic.Teams : RVDic.Help}
+              {isHelpPathActive ? RVDic.Teams : RVDic.Help}
             </span>
           )}>
           <Styled.QuestionIconWrapper as={Link} to={linkTo}>
-            {isHelpmeActive ? (
+            {isHelpPathActive ? (
               <TeamIcon size={27} />
             ) : (
               <QuestionIcon size={22} />
