@@ -2,7 +2,6 @@
     this.Objects = {
         AccessToken: null,
         AccessTokenParameterName: "acstkn",
-        RemoteTokens: {},
         RemoteServer: {
             BaseURL: null,
             UserName: null,
@@ -21,20 +20,24 @@ _RVRequest.prototype = {
 
         try {
             var parsed = JSON.parse("{\"R\":" + responseText + "}").R;
+
             if (parsed.AccessToken) {
                 if (hasRemoteServer) {
                     var remoteTicket = parsed.Ticket || (remoteSettings || {}).Ticket;
-                    if (remoteTicket) that.Objects.RemoteTokens[remoteTicket] = parsed.AccessToken;
+                    if (remoteTicket) GlobalUtilities.add_csrf_token(parsed.AccessToken, remoteTicket);
                 }
-                else {
-                    if (window.RVGlobal) RVGlobal.AccessToken = parsed.AccessToken;
-                    that.Objects.AccessToken = parsed.AccessToken;
-                }
+                else
+                    GlobalUtilities.add_csrf_token(parsed.AccessToken);
             }
 
             if (parsed.ResponseIsNotJSON) {
                 responseText = Base64.decode(parsed.Response);
                 parsed = JSON.parse("{\"R\":" + responseText + "}").R;
+            }
+
+            if (parsed.ResetSession) {
+                alert(RVDic.MSG.OperationCompletedSuccessfully + ". " + RVDic.MSG.PleaseLoginAgain + "!",
+                    { Timeout: 4000 }, () => window.location.href = RVAPI.LoginPageURL());
             }
 
             parseResults = parseResults || !responseText || (responseText[0] != "{");
@@ -205,8 +208,9 @@ _RVRequest.prototype = {
 
         var data = { RefreshAccessToken: "true" };
 
-        var atkn = hasRemoteServer ? that.Objects.RemoteTokens[remoteTicket] :
-            (window.RVGlobal || {}).AccessToken || that.Objects.AccessToken;
+        var atkn = hasRemoteServer ? GlobalUtilities.get_csrf_token(remoteTicket) :
+            GlobalUtilities.get_csrf_token() || that.Objects.AccessToken;
+        
         var atknParamName = (window.GlobalUtilities || {}).AccessTokenParameterName || that.Objects.AccessTokenParameterName;
 
         if (atkn && atknParamName) data[atknParamName] = atkn;

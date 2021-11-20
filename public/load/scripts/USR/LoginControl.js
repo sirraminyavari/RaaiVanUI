@@ -94,9 +94,11 @@
 
             var isInvited = that.Objects.IsInvited;
 
-            var signupable = window.RVGlobal.Modules.UserSignUp === true || window.RVGlobal.Modules.SignUpViaInvitation === true;
-            var enableSignUp = window.RVGlobal.Modules.UserSignUp === true || (window.RVGlobal.Modules.SignUpViaInvitation && isInvited);
-
+            var signupable = (window.RVGlobal.Modules.UserSignUp === true) || (window.RVGlobal.Modules.SignUpViaInvitation === true);
+            var enableSignUp = (window.RVGlobal.Modules.UserSignUp === true) || (window.RVGlobal.Modules.SignUpViaInvitation && isInvited);
+            var enableForgotPassword = signupable || (window.RVGlobal.Modules.EmailVerificationCode === true) ||
+                (window.RVGlobal.Modules.SMSVerificationCode === true);
+            
             var userNameInnerTitle = ((window.RVDic || {}).UserName || "UserName") + "...";
             var passwordInnerTitle = ((window.RVDic || {}).Password || "Password") + "...";
 
@@ -240,7 +242,7 @@
                                 {
                                     Type: "div", Class: "small-12 medium-5 large-5 SoftTextShadow",
                                     Style: "margin:1rem auto 0 auto; cursor:pointer; text-align:center;" +
-                                        (isSaaS ? "" : "color:white;") + (signupable ? "" : "display:none;"),
+                                        (isSaaS ? "" : "color:white;") + (enableForgotPassword ? "" : "display:none;"),
                                     Properties: [{ Name: "onclick", Value: function () { that.show_forget_password_form(); } }],
                                     Childs: [{ Type: "text", TextValue: RVDic.ForgotMyPassword }]
                                 }
@@ -261,7 +263,7 @@
             }
 
             if (that.Options.UseCaptcha) {
-                that.Objects.Captcha = that.Objects.Captcha = new CaptchaImage(that.Interface.Captcha, {
+                that.Objects.Captcha = new CaptchaImage(that.Interface.Captcha, {
                     OnEnter: function () { that.try_login(); }
                 });
             }
@@ -505,6 +507,8 @@
         show_forget_password_form: function () {
             var that = this;
 
+            var isSaaS = RVGlobal.SAASBasedMultiTenancy;
+
             var dlg = that.SHOWED_PASS_RESET_DIALOG = that.SHOWED_PASS_RESET_DIALOG || { Container: null, Showed: null };
 
             if (dlg.Container) {
@@ -520,7 +524,10 @@
             GlobalUtilities.loading(_div);
             dlg.Showed = GlobalUtilities.show(_div);
 
-            GlobalUtilities.load_files(["USR/ChangePasswordDialog.js"], {
+            GlobalUtilities.load_files([
+                "USR/ChangePasswordDialog.js",
+                isSaaS ? null : "CaptchaImage.js"
+            ], {
                 OnLoad: function () {
                     UsersAPI.GetPasswordPolicy({
                         ParseResults: true,
@@ -539,6 +546,8 @@
         _show_forget_password_form: function (container, passwordPolicy, close) {
             var that = this;
 
+            var isSaaS = RVGlobal.SAASBasedMultiTenancy;
+
             var elems = GlobalUtilities.create_nested_elements([
                 {
                     Type: "div", Class: "small-12 medium-12 large-12",
@@ -548,8 +557,8 @@
                 {
                     Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-top:1rem;",
                     Childs: [{
-                        Type: "input", Class: "rv-input", Style: "width:100%;",
-                        InnerTitle: RVDic.UserNameOrEmail, Name: "userNameInput"
+                        Type: "input", Class: "rv-input", Style: "width:100%;", Name: "userNameInput",
+                        InnerTitle: isSaaS ? RVDic.UserNameOrEmail : RVDic.UserName
                     }]
                 },
                 {
@@ -564,6 +573,10 @@
                     Style: "margin:0.5rem 0 0 0; display:none;",
                     Childs: [{ Type: "div", Name: "passPolicy", Style: "padding-" + RV_Float + ":0.5rem;" }]
                 },
+                (isSaaS ? null : {
+                    Type: "div", Class: "small-12 medium-12 large-12",
+                    Style: "margin-top:1rem;", Name: "captcha"
+                }),
                 {
                     Type: "div", Name: "sendButton",
                     Class: "small-10 medium-8 large-6 ActionButton",
@@ -600,9 +613,19 @@
             });
             //end of Check Password Policy
 
+            var captchaObj = null;
+
+            if (elems["captcha"]) {
+                captchaObj = new CaptchaImage(elems["captcha"], {
+                    OnEnter: () => jQuery(elems["sendButton"]).click()
+                });
+            }
+
             var sendTicket = function () {
                 var username = GlobalUtilities.trim(userNameInput.value);
                 var password = GlobalUtilities.trim(passwordInput.value);
+
+                var captchaValue = captchaObj ? captchaObj.get() : null;
 
                 if (!username) return alert(RVDic.Checks.PleaseEnterYourUserName);
                 else {
@@ -611,42 +634,49 @@
                     that.send_pass_reset_request(username, password, (succeed) => {
                         GlobalUtilities.unblock(sendButton);
                         if (succeed) close();
-                    });
+                    }, captchaValue);
                 }
             };
         },
 
-        send_pass_reset_request: function (username, password, callback) {
+        send_pass_reset_request: function (username, password, callback, captchaValue) {
             var that = this;
+
+            var isSaaS = RVGlobal.SAASBasedMultiTenancy;
 
             var succeed = false;
 
-            GlobalUtilities.init_recaptcha(function (captcha) {
-                captcha.getToken(token => {
-                    UsersAPI.SetPasswordResetTicket({
-                        UserName: Base64.encode(GlobalUtilities.secure_string(username)),
-                        Password: Base64.encode(GlobalUtilities.secure_string(password)),
-                        InvitationID: that.Options.InvitationID,
-                        Captcha: token,
-                        ParseResults: true,
-                        ResponseHandler: function (result) {
-                            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-                            else if (result.VerificationCode) {
-                                succeed = true;
-                                that.show_reset_password_form(result.VerificationCode);
-                            }
-                            else if (result.Email && result.Phone) {
-                                that.pass_reset_contact_select(result, (contact) => {
-                                    if (!contact) callback(false);
-                                    else that.send_pass_reset_request(contact, password, callback);
-                                });
-                            }
-
-                            callback(succeed);
+            var _do = (token) => {
+                UsersAPI.SetPasswordResetTicket({
+                    UserName: Base64.encode(GlobalUtilities.secure_string(username)),
+                    Password: Base64.encode(GlobalUtilities.secure_string(password)),
+                    InvitationID: that.Options.InvitationID,
+                    Captcha: token,
+                    ParseResults: true,
+                    ResponseHandler: function (result) {
+                        if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+                        else if (result.VerificationCode) {
+                            succeed = true;
+                            that.show_reset_password_form(result.VerificationCode);
                         }
-                    });
+                        else if (result.Email && result.Phone) {
+                            that.pass_reset_contact_select(result, (contact) => {
+                                if (!contact) callback(false);
+                                else that.send_pass_reset_request(contact, password, callback);
+                            });
+                        }
+
+                        callback(succeed);
+                    }
                 });
-            });
+            };
+
+            if (isSaaS) {
+                GlobalUtilities.init_recaptcha(function (captcha) {
+                    captcha.getToken(token => _do(token));
+                });
+            }
+            else _do(captchaValue);
         },
 
         pass_reset_contact_select: function (data, callback) {

@@ -11,7 +11,7 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getWeekDay } from 'helpers/helpers';
 import {
   createFormInstance,
   removeFormInstance,
@@ -114,14 +114,17 @@ const Table = (props) => {
     if (isNewRow) {
       saveRow([newCellData]);
     } else {
-      saveForm([newCellData])
-        .then(() => {
-          updateRowCell(rowId, columnId, newCellData);
-        })
-        .catch((error) => {
-          // console.log(error, 'save row error')
-          // updateRowCell(rowId, columnId, oldCellValue);
-        });
+      if (editByCell) {
+        saveForm([newCellData])
+          .then(() => {
+            updateRowCell(rowId, columnId, newCellData);
+          })
+          .catch((error) => {
+            // console.log(error, 'save row error')
+            // updateRowCell(rowId, columnId, oldCellValue);
+          });
+      }
+
       updateRowCell(rowId, columnId, newCellData);
     }
   };
@@ -206,12 +209,14 @@ const Table = (props) => {
 
     //! Do this in main table.
     const rowElements = rows?.find((row) => row?.id === rowId);
+
+    //! Editing whole row.
     let elementsToSave = Object.values(rowElements).filter(
       (element) => !!element?.ElementID
     );
 
-    //! Check if edit by cell is true.
-    if (columnId) {
+    //! Check if edit by cell is true. Editing single cell.
+    if (!!editByCell) {
       elementsToSave = elementsToSave.filter(
         (element) => element?.RefElementID === columnId
       );
@@ -244,11 +249,17 @@ const Table = (props) => {
     tableColumns,
     isNestedTable,
     onTableContentChange,
+    editByCell,
   ]);
 
   //! Fires when row edition starts.
   const onEditStart = (beforeEditRows) => {
-    beforeEditRowsRef.current = beforeEditRows;
+    //! Exclude temporary new row(if exists).
+    let newRows = beforeEditRows.filter(
+      (row) => row?.id.split('_')[0] !== 'new'
+    );
+    beforeEditRowsRef.current = newRows;
+    setRows(newRows);
   };
   const memoizedOnEditRowStart = useCallback(onEditStart, []);
 
@@ -299,16 +310,16 @@ const Table = (props) => {
         let rowCellsText = '';
         for (let cell of row?.Elements) {
           if (!!cell?.DateValue_Jalali && cell?.Type === 'Date') {
-            rowCellsText += ` ${cell?.DateValue_Jalali}`;
+            rowCellsText += ` ${getWeekDay(cell?.DateValue)}`;
           }
 
-          if (!!cell?.TextValue && cell?.Type === 'Text') {
+          if (!!cell?.TextValue && ['Text', 'Checkbox'].includes(cell?.Type)) {
             rowCellsText += ` ${decodeBase64(cell?.TextValue)}`;
           }
 
           if (
             !!cell?.SelectedItems.length &&
-            (cell?.Type === 'User' || cell?.Type === 'Node')
+            ['User', 'Node', 'MultiLevel'].includes(cell?.Type)
           ) {
             for (let item of cell?.SelectedItems) {
               rowCellsText += ` ${decodeBase64(item?.Name)}`;
@@ -335,9 +346,9 @@ const Table = (props) => {
       ?.filter((col) => col?.Type !== cellTypes.separator)
       .map((column) => {
         let extendedColumn = Object.assign({}, column, {
-          FormID: column.FormID,
+          FormID: '',
           InstanceID: tempRowId,
-          RefElementID: column.ElementID,
+          RefElementID: '',
           GuidItems: [],
           SelectedItems: [],
           TextValue: '',

@@ -42,7 +42,7 @@
                 case "Members":
                     return that.get_related_nodes("GetMembers");
                 case "ExpertsAndMembers":
-                    return that.get_related_nodes(["GetExperts", "GetMembers"]);
+                    return that.get_related_nodes(["GetExperts", "GetMembers"], { Hierarchy: true });
                 default:
                     return that.Options.SelectMode ? null : that.default_buttons();
             }

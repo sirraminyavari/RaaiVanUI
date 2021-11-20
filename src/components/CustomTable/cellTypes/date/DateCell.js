@@ -8,6 +8,7 @@ import { CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import useWindow from 'hooks/useWindowContext';
 
 const DateCell = (props) => {
   const {
@@ -18,21 +19,15 @@ const DateCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
+  const { RVDic } = useWindow();
   const dateRef = useRef();
-
-  const handleClickOutside = () => {
-    if (isSelectedCell) {
-      setSelectedCell(null);
-      updateCell();
-    }
-  };
-
-  useOnClickOutside(dateRef, handleClickOutside);
 
   const { DateValue } = value || {};
 
+  //! Prepare date format for date picker.
   const normalizeDate = (date) => {
     const dateArray = date
       ?.split(' ')[0]
@@ -51,25 +46,38 @@ const DateCell = (props) => {
     !!DateValue ? normalizeDate(DateValue) : null
   );
 
+  //! Handle click outside event.
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell(dateValue);
+    }
+  };
+
+  //! A hook that fires a callback when the user clicks outside of the current cell.
+  useOnClickOutside(dateRef, handleClickOutside);
+
   //! Prepare date for showing
   const showFormat = `${getWeekDay(dateValue)} ${engToPerDate(dateValue)}`;
 
   //! Update date on select.
   const handleDateSelect = (date) => {
     setDateValue(date);
+    !editByCell && updateCell(date);
   };
 
-  const updateCell = () => {
-    const dateArray = dateValue?.split('/');
+  //! Update cell value.
+  const updateCell = (date) => {
+    if (!date || normalizeDate(DateValue) === date) return;
+    const dateArray = date?.split('/');
     const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-
-    if (normalizeDate(DateValue) === dateValue) return;
 
     let dateCell = { ...value, DateValue: dateString };
 
-    onCellChange(rowId, columnId, dateCell, dateValue);
+    onCellChange(rowId, columnId, dateCell, value);
   };
 
+  //! UI for none editing cell.
   if (!canEdit) {
     return (
       <Styled.CellViewContainer>
@@ -84,6 +92,7 @@ const DateCell = (props) => {
     );
   }
 
+  //! UI for editing cell.
   return (
     <div ref={dateRef}>
       <ToolTip
@@ -107,19 +116,16 @@ const DateCell = (props) => {
             onDateSelect={handleDateSelect}
           />
         )}>
-        {dateValue ? (
-          <Styled.DateCellContainer>
+        <Styled.DateCellContainer>
+          {dateValue ? (
             <Heading className="table-date-edit-title" type="h4">
               {showFormat}
             </Heading>
-            <CalendarIcon color={TCV_DEFAULT} size={20} />
-          </Styled.DateCellContainer>
-        ) : (
-          <Styled.DateCellContainer>
-            <Styled.EmptyCellView>انتخاب کنید</Styled.EmptyCellView>
-            <CalendarIcon color={TCV_DEFAULT} size={20} />
-          </Styled.DateCellContainer>
-        )}
+          ) : (
+            <Styled.EmptyCellView>{`${RVDic.Select} ${RVDic.Date}`}</Styled.EmptyCellView>
+          )}
+          <CalendarIcon color={TCV_DEFAULT} size={20} />
+        </Styled.DateCellContainer>
       </ToolTip>
     </div>
   );

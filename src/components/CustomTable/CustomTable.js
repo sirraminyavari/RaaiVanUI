@@ -1,12 +1,4 @@
-import {
-  useMemo,
-  useState,
-  memo,
-  lazy,
-  Suspense,
-  // useRef,
-  // useLayoutEffect,
-} from 'react';
+import { useMemo, useState, memo, lazy, Suspense, useEffect } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -22,7 +14,6 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TableAction from './TableAction';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import ColumnHeader from './ColumnHeader';
-import CellEdit from './CellEdit';
 import { getUUID } from 'helpers/helpers';
 
 const TableModal = lazy(() =>
@@ -83,6 +74,15 @@ const CustomTable = (props) => {
   const restoreModalState = () => {
     setModal(DEFAULT_MODAL_PROPS);
   };
+
+  //! Enable add new row button whenever the new row has been created.
+  useEffect(() => {
+    let hasNewRow = data?.some((row) => row?.id?.substr()?.includes('new'));
+
+    if (!hasNewRow) {
+      setTempRowId(null);
+    }
+  }, [data]);
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -174,8 +174,8 @@ const CustomTable = (props) => {
 
   // console.log(state);
 
+  //! Fires on add new button click.
   const handleAddItem = () => {
-    // setShowFooter(true);
     if (!tempRowId) {
       let tempRowId = 'new_' + getUUID();
       setTempRowId(tempRowId);
@@ -185,7 +185,7 @@ const CustomTable = (props) => {
     setEditingRowId(null);
   };
 
-  //! Render the UI for your table
+  //! Renders the UI for your table.
   return (
     <Styled.TableContainer>
       <TableAction onAddItem={handleAddItem} onSearch={onSearch} />
@@ -257,7 +257,9 @@ const CustomTable = (props) => {
                                       {...cell.getCellProps([
                                         {
                                           ...getCellProps(cell),
-                                          onClick: () => setSelectedCell(cell),
+                                          onClick: () => {
+                                            editByCell && setSelectedCell(cell);
+                                          },
                                         },
                                       ])}>
                                       {cell.render('Cell', {

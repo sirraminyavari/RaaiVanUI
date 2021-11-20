@@ -16,18 +16,10 @@ const SelectCell = (props) => {
     multiSelect,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const selectRef = useRef();
-
-  const handleClickOutside = () => {
-    if (isSelectedCell) {
-      handleUpdateCell();
-      setSelectedCell(null);
-    }
-  };
-
-  useOnClickOutside(selectRef, handleClickOutside);
 
   const { Info, TextValue } = value || {};
   const { Options } = Info || {};
@@ -61,16 +53,25 @@ const SelectCell = (props) => {
   );
   const originalValueRef = useRef(TextValue);
 
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      updateCell(defaultValues);
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(selectRef, handleClickOutside);
+
   const handleSelectChange = (values) => {
     setDefaultValues(values);
   };
 
-  const handleUpdateCell = () => {
+  const updateCell = (values) => {
     const textValue = !!multiSelect
-      ? defaultValues?.map((x) => x.value).join(' ~ ')
-      : defaultValues.value;
+      ? values?.map((x) => x.value).join(' ~ ')
+      : values.value;
 
-    if (originalValueRef.current === textValue) return;
+    if (originalValueRef.current === textValue || !textValue) return;
 
     let selectCell = {
       ...value,
@@ -78,6 +79,10 @@ const SelectCell = (props) => {
     };
 
     onCellChange(rowId, columnId, selectCell, textValue);
+  };
+
+  const handleMenuClose = () => {
+    !editByCell && updateCell(defaultValues);
   };
 
   if (!canEdit) {
@@ -110,7 +115,7 @@ const SelectCell = (props) => {
         placeholder="انتخاب کنید"
         options={options}
         onChange={handleSelectChange}
-        // onMenuClose={handleUpdateCell}
+        onMenuClose={handleMenuClose}
         styles={Styled.selectStyles}
         menuPortalTarget={document.body}
         menuShouldScrollIntoView={false}

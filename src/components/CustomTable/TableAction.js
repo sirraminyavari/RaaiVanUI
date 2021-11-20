@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import * as Styled from './CustomTable.styles';
-import Button from 'components/Buttons/Button';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
-import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import AddNewRowButton from 'components/CustomTable/AddNewButton';
 
@@ -12,10 +11,12 @@ const TableAction = ({ onAddItem, onSearch, data }) => {
   const [searchText, setSearchText] = useState('');
   const { RVDic } = useWindow();
 
+  //! Fires on search input change.
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
+  //! Fires on add item button click.
   const handleAddItem = () => {
     onAddItem && onAddItem();
   };

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import BinaryButton from 'components/Buttons/binary/BinaryButton';
 import * as Styled from './BinaryCell.styles';
@@ -16,31 +16,51 @@ const BinaryCell = (props) => {
     canEdit,
     setSelectedCell,
     isSelectedCell,
+    editByCell,
   } = useCellProps(props);
 
   const toggleRef = useRef();
 
-  useOnClickOutside(toggleRef, () => isSelectedCell && setSelectedCell(null));
-
   const { Info, TextValue, BitValue } = value || {};
-  const binaryInfo = Info || {};
-  const { Yes, No } = binaryInfo || {};
+  const { Yes, No } = Info || {};
 
   const binaryOptions = { yes: decodeBase64(Yes), no: decodeBase64(No) };
 
-  const handleToggle = (toggleValue) => {
-    const textValue = toggleValue ? binaryOptions.yes : binaryOptions.no;
+  const [toggleValue, setToggleValue] = useState(
+    isNewRow && !TextValue ? null : BitValue
+  );
 
-    let newBinaryCell = {
-      ...value,
-      BitValue: toggleValue,
-      TextValue: textValue,
-      Filled: true,
-    };
-
-    isSelectedCell && onCellChange(rowId, columnId, newBinaryCell, value);
+  //! Handle click outside event.
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell(toggleValue);
+    }
   };
 
+  //! A hook that fires a callback when the user clicks outside of the current cell.
+  useOnClickOutside(toggleRef, handleClickOutside);
+
+  const handleToggle = (toggleValue) => {
+    setToggleValue(toggleValue);
+    !editByCell && updateCell(toggleValue);
+  };
+
+  //! Update cell value.
+  const updateCell = (toggle) => {
+    if (toggle === null) return; //! If toggle value is null, do nothing and return early.
+    const textValue = toggle ? binaryOptions.yes : binaryOptions.no;
+
+    let binaryCell = {
+      ...value,
+      BitValue: toggle,
+      TextValue: textValue,
+    };
+
+    onCellChange(rowId, columnId, binaryCell, value);
+  };
+
+  //! UI for none editing cell.
   if (!canEdit) {
     return (
       <Styled.CellViewContainer>
@@ -53,11 +73,10 @@ const BinaryCell = (props) => {
     );
   }
 
+  //! UI for editing cell.
   return (
     <Styled.BinaryCellWrapper ref={toggleRef}>
-      <ToggleButton
-        onToggle={handleToggle}
-        value={isNewRow && !TextValue ? null : BitValue}>
+      <ToggleButton onToggle={handleToggle} value={toggleValue}>
         <BinaryButton options={binaryOptions} className="table-binary-cell" />
       </ToggleButton>
     </Styled.BinaryCellWrapper>
