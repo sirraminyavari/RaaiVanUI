@@ -23,6 +23,7 @@ export const ListHeaderItem = styled.th`
   display: inline-block;
   width: ${({ width }) => width}%;
   text-align: ${({ centralized }) => (centralized ? 'center' : 'auto')};
+  font-weight: 400;
 `;
 
 export const ListBody = styled.tbody`
