@@ -36,8 +36,8 @@ const DatePickerFooter = (props) => {
     () => [
       { id: '1', title: RVDic.Today, dateSpan: '1' },
       { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
-      { id: '3', title: '۷ روز گذشته', dateSpan: '7' },
-      { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
+      { id: '3', title: RVDic.NDaysAgo.replace('[n]', 7), dateSpan: '7' },
+      { id: '4', title: RVDic.NDaysAgo.replace('[n]', 30), dateSpan: '30' },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

@@ -1,65 +1,127 @@
-import { useState } from 'react';
-import * as Styled from './select.styles';
+import { useRef, useState } from 'react';
+import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
-import { TCV_VERY_SOFT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const SelectCell = (props) => {
-  // console.log('select cell ', props);
-  const [selectedOptions, setSelectedOptions] = useState(
-    !!props?.isNew
-      ? []
-      : props?.value?.defaultValues?.map((x) => x?.label) || []
-  );
+  const {
+    value,
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    multiSelect,
+    setSelectedCell,
+    isSelectedCell,
+    editByCell,
+  } = useCellProps(props);
 
-  const handleSelectChange = (values) => {
-    setSelectedOptions(values);
-  };
+  const selectRef = useRef();
 
-  const handleOnMenuClose = () => {
-    //! Call api.
-    console.log(selectedOptions);
-  };
+  const { Info, TextValue } = value || {};
+  const { Options } = Info || {};
 
-  if (!props?.editable && !props?.isNew) {
-    return selectedOptions?.[0]?.label;
+  let options, initialValues;
+
+  //! Prepare options and initial values if any!
+  if (!!multiSelect) {
+    initialValues = !!TextValue
+      ? decodeBase64(TextValue)
+          .split('~')
+          .map((value) => ({
+            value: value.trim(),
+            label: value.trim(),
+          }))
+      : [];
+    options = Options?.map((opt) => ({
+      value: decodeBase64(opt),
+      label: decodeBase64(opt),
+    }));
+  } else {
+    initialValues = !!TextValue ? [{ value: TextValue, label: TextValue }] : [];
+    options = Options?.map((opt) => ({
+      value: decodeBase64(opt),
+      label: decodeBase64(opt),
+    }));
   }
 
-  if (!props?.header?.options?.editable) {
+  const [defaultValues, setDefaultValues] = useState(
+    !!isNewRow ? [] : initialValues
+  );
+  const originalValueRef = useRef(TextValue);
+
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      updateCell(defaultValues);
+      setSelectedCell(null);
+    }
+  };
+
+  useOnClickOutside(selectRef, handleClickOutside);
+
+  const handleSelectChange = (values) => {
+    setDefaultValues(values);
+  };
+
+  const updateCell = (values) => {
+    const textValue = !!multiSelect
+      ? values?.map((x) => x.value).join(' ~ ')
+      : values.value;
+
+    if (originalValueRef.current === textValue || !textValue) return;
+
+    let selectCell = {
+      ...value,
+      TextValue: textValue,
+    };
+
+    onCellChange(rowId, columnId, selectCell, textValue);
+  };
+
+  const handleMenuClose = () => {
+    !editByCell && updateCell(defaultValues);
+  };
+
+  if (!canEdit) {
     return (
-      <>
-        {selectedOptions.map((item, key) => (
-          <span
-            key={key}
-            style={{
-              display: 'inline-block',
-              backgroundColor: TCV_VERY_SOFT,
-              padding: '0.3rem',
-              margin: '0.2rem',
-              width: 'auto',
-              borderRadius: '0.2rem',
-            }}>
-            {item}
-          </span>
-        ))}
-      </>
+      <div>
+        {initialValues?.map((x) => x?.label)?.length ? (
+          initialValues
+            ?.map((x) => x?.label)
+            .map((item, key) => (
+              <Styled.SelectedItem type="h4" key={key}>
+                {item}
+              </Styled.SelectedItem>
+            ))
+        ) : (
+          <Styled.EmptyCellView></Styled.EmptyCellView>
+        )}
+      </div>
     );
   }
 
   return (
-    <CustomSelect
-      defaultValue={props?.value?.defaultValues}
-      isMulti={!!props?.multiSelect}
-      hideSelectedOptions={!!props?.binary || !!props?.multiSelect}
-      closeMenuOnSelect={!props?.multiSelect}
-      isClearable={false}
-      isSearchable={true}
-      placeholder="انتخاب کنید"
-      selectName={props?.header?.title}
-      selectOptions={props?.value?.options}
-      onChange={handleSelectChange}
-      onMenuClose={handleOnMenuClose}
-      selectStyles={Styled.selectStyles}
-    />
+    <Styled.SelectWrapper ref={selectRef}>
+      <CustomSelect
+        defaultValue={initialValues}
+        isMulti={!!multiSelect}
+        hideSelectedOptions={false}
+        closeMenuOnSelect={false}
+        isClearable={false}
+        isSearchable={true}
+        placeholder="انتخاب کنید"
+        options={options}
+        onChange={handleSelectChange}
+        onMenuClose={handleMenuClose}
+        styles={Styled.selectStyles}
+        menuPortalTarget={document.body}
+        menuShouldScrollIntoView={false}
+        noOptionsMessage={() => 'موردی یافت نشد'}
+      />
+    </Styled.SelectWrapper>
   );
 };
 

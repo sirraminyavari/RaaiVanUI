@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import Modal from '../Modal/Modal';
+import Modal from 'components/Modal/Modal';
 import * as Styled from './TemplatesGallery.styles';
 import useWindow from 'hooks/useWindowContext';
 import TemplateSuggestionList from './TemplateSuggestionList';
@@ -93,7 +93,7 @@ const TemplatesGallery = (props) => {
                   className="add-template-icon"
                 />
                 <Button type="primary-o" classes="add-template-button">
-                  ساخت تمپلیت
+                  {RVDic.CreateN.replace('[n]', RVDic.Template)}
                 </Button>
               </Styled.AddTemplateButtonWrapper>
             </Styled.GalleryListContainer>

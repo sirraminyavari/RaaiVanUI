@@ -9,9 +9,8 @@ import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 import IntroNodes from './IntroNodes';
 
-const getNodesAPI = (bookMarked = false) => {
-  return new APIHandler('CNAPI', bookMarked ? 'GetFavoriteNodes' : 'GetNodes');
-};
+const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
+
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 const { RVAPI } = window;
@@ -33,6 +32,8 @@ const NodeList = (props) => {
     forceFetch,
     onTotalFound,
     isByMe,
+    isGroup,
+    isExpertiseDomain,
     byPeople,
     isBookMarked,
     multiSelection,
@@ -40,6 +41,9 @@ const NodeList = (props) => {
     itemSelectionMode,
     nodeTypeIds,
     relatedToNodeId,
+    onFetchCounts,
+    onClickItem,
+    selectedFilters,
   } = props || {};
   useTraceUpdate(props);
 
@@ -71,17 +75,19 @@ const NodeList = (props) => {
     formFilters,
     forceFetch,
     isBookMarked,
+    isGroup,
+    isExpertiseDomain,
   ]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('fetching', 'relatedToNodeId', relatedToNodeId);
+    console.log('byPeople', byPeople);
 
-    getNodesAPI(isBookMarked).fetch(
+    getNodesAPI.fetch(
       {
         Count: count,
         LowerBoundary: lowerBoundary,
-        NodeTypeID: nodeTypeId,
+        NodeTypeID: nodeTypeId || nodeTypeIds,
         RelatedToNodeID: relatedToNodeId,
         SearchText: encode(searchText),
         CreationDateFrom: dateFilter?.from,
@@ -89,12 +95,23 @@ const NodeList = (props) => {
         FormFilters: encode(JSON.stringify(formFilters)),
         UseNodeTypeHierarchy: true,
         IsMine: isByMe,
-        CreatorUserID: byPeople?.id,
+        // CreatorUserID: byPeople?.id,
+        IsGroup: isGroup,
+        IsExpertiseDomain: isExpertiseDomain,
+        FetchCounts: true,
+        CreatorUserIDs: byPeople?.map((x) => x.id),
+
         VisitsCount: true,
+        IsFavorite: isBookMarked,
       },
       (response) => {
         if (response.Nodes) {
+          console.log(response, '####### response ########');
           // setDataCount(response.TotalCount);
+          if (!!onFetchCounts) {
+            const { Count } = response || {};
+            onFetchCounts(Count);
+          }
 
           const nodeIds = response?.Nodes.map((x) => x?.NodeID);
           nodeIds.join('|');
@@ -183,6 +200,7 @@ const NodeList = (props) => {
                   isSaas={isSaas}
                   onReload={onReload}
                   onBookmark={onBookmark}
+                  onClickItem={onClickItem}
                 />
               )}
             </>

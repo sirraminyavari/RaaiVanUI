@@ -30,6 +30,10 @@ const PeoplePicker = ({
   onByPeople,
   isByMe = false,
   pickedPeople,
+  multi,
+  onBlur,
+  direction = 'top',
+
   onVisible,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
@@ -127,6 +131,7 @@ const PeoplePicker = ({
       )}
 
       <PeopleBody
+        direction={direction}
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
         <ResetContainer onClick={() => onChoose(null)}>
@@ -203,7 +208,11 @@ const PeoplePicker = ({
               renderItem={(x, index) => {
                 return (
                   <PeopleItem
-                    pickedPeople={pickedPeople?.id === x.id}
+                    pickedPeople={
+                      multi
+                        ? pickedPeople?.find((y) => y.id === x.id)
+                        : pickedPeople?.id === x.id
+                    }
                     onClick={onChoose}
                     item={x}
                     key={index}

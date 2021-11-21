@@ -7,8 +7,15 @@ import { useDropzone } from 'react-dropzone';
 import * as Styled from './CustomDropzone.styles';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import { errorTypes } from './dropzoneUtils';
-import { TCV_DEFAULT } from 'constant/CssVariables';
+import { TCV_DEFAULT, CV_DISTANT } from 'constant/CssVariables';
 import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
+
+/**
+ * @typedef PlaceholderType
+ * @type {Object}
+ * @property {string} dragging -placeholder for dragging.
+ * @property {string} main -placeholder for main.
+ */
 
 /**
  * @typedef PropType
@@ -20,11 +27,12 @@ import LoadingCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
  * @property {function} onUpload -A callback function that will fire on file upload.
  * @property {Object} containerProps -The props passed to dropzone container.
  * @property {Object} inputProps -The props passed to input.
- * @property {Object} placeholders -Placeholders for dropzone input.
+ * @property {PlaceholderType} placeholders -Placeholders for dropzone input.
  * @property {boolean} disabled -A flag that will disable dropzone area.
- * @property {string[]} foramtExceptions -All formats that are not allowed to be uploaded.
+ * @property {string[]} formatExceptions -All formats that are not allowed to be uploaded.
  * @property {Boolean} isUploading -All formats that are not allowed to be uploaded.
- * {foramtExceptions} prop has priority over {accept} prop.
+ * @property {JSX} customComponent -A custom component.
+ * {formatExceptions} prop has priority over {accept} prop.
  * If a format is defined forbidden in exceptions, component will throw error even if it is inside accept list.
  */
 
@@ -44,9 +52,10 @@ const CustomDropzone = (props) => {
     containerProps,
     inputProps,
     disabled,
-    foramtExceptions,
+    formatExceptions,
     placeholders,
     isUploading,
+    customComponent: CustomComponent,
   } = props;
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState([]);
@@ -55,7 +64,14 @@ const CustomDropzone = (props) => {
     if (isUploading) {
       return <LoadingCircle color={TCV_DEFAULT} />;
     } else {
-      return <FileFormatIcon format="upload" size={25} color={TCV_DEFAULT} />;
+      return (
+        <FileFormatIcon
+          style={{ minWidth: '2rem' }}
+          format="upload"
+          size={25}
+          color={CV_DISTANT}
+        />
+      );
     }
   };
 
@@ -77,7 +93,7 @@ const CustomDropzone = (props) => {
     }
 
     //! See if file format is allowed or not.
-    if (foramtExceptions && foramtExceptions.includes(fileFormat)) {
+    if (formatExceptions && formatExceptions.includes(fileFormat)) {
       return {
         code: errorTypes.FORMAT_ERROR,
         message: `فایل با فرمت ${fileFormat} مجاز نمی باشد.`,
@@ -89,6 +105,7 @@ const CustomDropzone = (props) => {
 
   //! Fires on drop event.
   const onDrop = useCallback((acceptedFiles) => {
+    setErrors([]);
     //! Calculate total file size.
     const totalSize = acceptedFiles
       .map((file) => file.size)
@@ -121,19 +138,19 @@ const CustomDropzone = (props) => {
     isDragActive,
     fileRejections,
     // acceptedFiles,
-    // open,
+    open,
   } = useDropzone({
     onDrop,
     accept: accept?.join(', '),
     maxFiles,
     disabled: !!disabled || isUploading,
     validator: customValidator,
-    // noKeyboard: true,
-    // noClick: true,
+    noKeyboard: !!CustomComponent,
+    noClick: !!CustomComponent,
   });
 
   //! Handle errors thrown from dropzone and validator.
-  const handlErrors = () => {
+  const handleErrors = () => {
     //! Maximum file number error.
     if (fileRejections.length) {
       if (
@@ -171,7 +188,7 @@ const CustomDropzone = (props) => {
               },
             };
           });
-        setErrors((errors) => [...errors, fileSizeError]);
+        setErrors((errors) => [...errors, ...fileSizeError]);
       }
     }
 
@@ -189,33 +206,41 @@ const CustomDropzone = (props) => {
     }
   };
 
-  //! Check for errors everytime files are changed.
+  //! Check for errors every time files are changed.
   useEffect(() => {
-    handlErrors();
+    handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   //! OnError callback.
   useEffect(() => {
     if (!!errors.length) {
-      onError(errors);
+      onError && onError(errors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errors]);
 
   return (
-    <Styled.DropzoneContainer
-      {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
-      {getIcon()}
-      <Styled.InputWrapper>
-        <input {...getInputProps(inputProps)} />
-        {isDragActive ? (
-          <p>{placeholders?.dragging}</p>
-        ) : (
-          <p>{placeholders?.main}</p>
-        )}
-      </Styled.InputWrapper>
-    </Styled.DropzoneContainer>
+    <>
+      {!!CustomComponent && <CustomComponent onClick={open} />}
+      <Styled.DropzoneContainer
+        isHidden={!!CustomComponent}
+        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
+        {getIcon()}
+        <Styled.InputWrapper>
+          <input {...getInputProps(inputProps)} />
+          {isDragActive ? (
+            <Styled.DropzonePlaceholder>
+              {placeholders?.dragging}
+            </Styled.DropzonePlaceholder>
+          ) : (
+            <Styled.DropzonePlaceholder>
+              {placeholders?.main}
+            </Styled.DropzonePlaceholder>
+          )}
+        </Styled.InputWrapper>
+      </Styled.DropzoneContainer>
+    </>
   );
 };
 
@@ -229,7 +254,7 @@ CustomDropzone.propTypes = {
   containerProps: PropTypes.object,
   inputProps: PropTypes.object,
   disabled: PropTypes.bool,
-  foramtExceptions: PropTypes.array,
+  formatExceptions: PropTypes.array,
   placeholders: PropTypes.object,
   isUploading: PropTypes.bool,
 };

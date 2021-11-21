@@ -20,6 +20,7 @@ export const onboardingSlice = createSlice({
       state.newDocMenu = action.payload;
     },
     toggleActivation: (state) => {
+      console.log(state, '***** state *****');
       state.active = !state.active;
     },
   },

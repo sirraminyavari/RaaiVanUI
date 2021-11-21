@@ -70,7 +70,7 @@ const AdvanceSearchDesktop = ({
   const [isBookMarked, setIsBookMarked] = useState(null);
 
   const [isByMe, setIsByMe] = useState(false);
-  const [byPeople, setByPeople] = useState(null);
+  const [byPeople, setByPeople] = useState([]);
 
   const [relatedNodes, setRelatedNodes] = useState([]);
 
@@ -138,9 +138,22 @@ const AdvanceSearchDesktop = ({
     }
   };
   const onByPeople = (item) => {
-    setIsByMe(false);
+    console.log(item, '********* item item item');
 
-    setByPeople(item);
+    if (item) {
+      setIsByMe(false);
+      const isSelectedBefore = byPeople?.find((x) => x.id === item?.id);
+      console.log(!!isSelectedBefore, '********* isSelectedBefore item');
+      console.log(byPeople, '********* byPeople', !!isSelectedBefore);
+
+      setByPeople(
+        !!isSelectedBefore
+          ? byPeople.filter((x) => x.id !== item.id)
+          : [...byPeople, item]
+      );
+    } else {
+      setByPeople([]);
+    }
   };
   const getRelatedNodes = () => {
     getNodeInfoAPI.fetch(

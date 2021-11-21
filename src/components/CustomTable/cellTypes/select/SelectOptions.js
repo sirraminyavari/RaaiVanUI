@@ -1,7 +1,7 @@
 import { useRef, memo } from 'react';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
-import * as Styled from './select.styles';
+import * as Styled from './Select.styles';
 
 const fakeoptions = [...Array(5).keys()].map(
   (item) => `گزینه ${item + 1} انتخاب شد`

@@ -111,13 +111,6 @@ const CustomDatePicker = (props) => {
   const inputRef = useRef();
   const { RVDic } = useWindow();
 
-  const footerButtonList = [
-    { id: '1', title: RVDic.Today, dateSpan: '1' },
-    { id: '2', title: RVDic.Yesterday, dateSpan: '-1' },
-    { id: '3', title: '۷ روز گذشته', dateSpan: '7' },
-    { id: '4', title: '۳۰ روز گذشته', dateSpan: '30' },
-  ];
-
   //! Change server value to datepicker friendly object.
   const dateStringToObject = (item) => {
     let dateString = item;
@@ -502,7 +495,7 @@ const CustomDatePicker = (props) => {
 };
 
 CustomDatePicker.defaultProps = {
-  label: window?.RVDic.SelectN.replace('[n]', window?.RVDic.Date) || '',
+  label: window?.RVDic?.SelectN?.replace('[n]', window?.RVDic?.Date) || '',
   range: false,
   clearButton: false,
   shouldClear: false,
