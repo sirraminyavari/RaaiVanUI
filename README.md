@@ -24,4 +24,18 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
+### Proxy Settings
 
+The application proxies to a SaaS environment by default. If you want to proxy to an Enterprise environment, do the steps below:
+1. Add a file named .env in the root of the project.
+2. Add this line to the file:
+
+```
+REACT_APP_ENV = 'ORG'
+```
+
+3. If you want to proxy to a custom server, add this line:
+
+```
+REACT_APP_PROXY = 'http[s]://[some_address]'
+```
