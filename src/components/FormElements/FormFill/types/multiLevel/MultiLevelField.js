@@ -123,6 +123,7 @@ const SelectorContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0 -1rem 0 -1rem;
 `;
 const customStyles = {
   option: (
