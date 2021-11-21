@@ -133,7 +133,7 @@ const MainNode = ({ nodeDetails, nodeId }) => {
 
   return (
     <>
-      {!fields ? (
+      {fields ? (
         <Main>
           <FormCell
             editModeVisible={false}
