@@ -174,7 +174,7 @@
         for (var i in (window.RVGlobal || {}).Modules || {})
           RVGlobal.Modules[String(i).toLowerCase()] = RVGlobal.Modules[i];
 
-        if((window.RVGlobal || {}).SAASBasedMultiTenancy){
+        if((window.RVGlobal || {}).SAASBasedMultiTenancy && !(window.RVGlobal || {}).IsDev){
           (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
             h._hjSettings={hjid:2485926,hjsv:6};
