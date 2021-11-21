@@ -4,11 +4,12 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
 import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
+import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Edit';
 import {
+  CLASSES_PATH,
   USER_MORE_RELATED_TOPICS_PATH,
   USER_WITHID_PATH,
 } from 'constant/constants';
@@ -21,19 +22,20 @@ import Creators from './Creators';
 import {
   BottomRow,
   Container,
-  Profile,
-  ShadowButton,
-  TopRow,
-  ViewCount,
   CounterBookmarkContainer,
-  Space,
   RelatedTopicsContainer,
   RelatedTopicsTitle,
+  ShadowButton,
+  Space,
+  TopRow,
+  ViewCount,
 } from './TopBar.style';
 
 const { RVDic, RVAPI, RV_RTL, RVGlobal } = window || {};
 
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
+const likeNode = new APIHandler('CNAPI', 'Like');
+const unlikeNode = new APIHandler('CNAPI', 'Unlike');
 
 const TopBar = ({
   nodeDetails,
@@ -43,11 +45,12 @@ const TopBar = ({
   sideColumn,
 }) => {
   const { VisitsCount, Contributors } = nodeDetails || {};
-  console.log(nodeDetails, 'nodeDetails nodeDetails');
 
   const [relatedNodes, setRelatedNodes] = useState([]);
   const [sideDetailsHover, setSideDetailsHover] = useState(false);
-
+  const [bookmarkStatus, setBookmarkStatus] = useState(
+    nodeDetails?.LikeStatue ? 'liked' : 'disLiked'
+  );
   useEffect(() => {
     getRelatedNodes();
   }, []);
@@ -62,7 +65,6 @@ const TopBar = ({
         ParseResults: true,
       },
       (response) => {
-        console.log(response, 'related nodes');
         if (response && response.NodeTypes) {
           setRelatedNodes(response);
         }
@@ -79,7 +81,7 @@ const TopBar = ({
     })
   );
   const breadcrumbItems = [
-    { id: 1, title: RVDic.Profile, linkTo: USER_WITHID_PATH },
+    { id: 1, title: RVDic.Profile, linkTo: CLASSES_PATH },
     {
       id: 2,
       title: RVDic.RelatedNodes,
@@ -96,6 +98,27 @@ const TopBar = ({
   const onSideDetailsClick = () => {
     setSideDetailsHover(!sideDetailsHover);
     onSideColumnClicked(!sideColumn);
+  };
+  const onBookmarkPressed = (e) => {
+    if (bookmarkStatus === 'liked') {
+      unlikeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {
+        if (
+          response?.Succeed &&
+          response.Succeed === 'OperationCompletedSuccessfully'
+        ) {
+          setBookmarkStatus('disLiked');
+        }
+      });
+    } else if (bookmarkStatus === 'disLiked') {
+      likeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {
+        if (
+          response?.Succeed &&
+          response.Succeed === 'OperationCompletedSuccessfully'
+        ) {
+          setBookmarkStatus('liked');
+        }
+      });
+    }
   };
   const { RVGlobal } = window;
   const avatar = RVGlobal?.CurrentUser?.ProfileImageURL;
@@ -116,22 +139,32 @@ const TopBar = ({
             />
             {VisitsCount}
           </ViewCount>
-          <Button style={{ borderRadius: '10rem' }} type={'primary-o'}>
-            <FilledBookmarkIcon className={'rv-default'} />
-            {RVDic.Bookmark}
+          <Button
+            onClick={onBookmarkPressed}
+            style={{ borderRadius: '10rem', height: '2rem' }}
+            type={'primary-o'}>
+            {bookmarkStatus === 'liked' ? (
+              <FilledBookmarkIcon className={'rv-default'} />
+            ) : (
+              <OutLineBookmarkIcon className={'rv-default'} />
+            )}
+
+            {'نشان*#*'}
           </Button>
         </CounterBookmarkContainer>
       </TopRow>
 
       <BottomRow>
-        <RelatedTopicsContainer>
-          <RelatedTopicsTitle>{RVDic.RelatedNode}</RelatedTopicsTitle>
-          <LastTopicsTabs
-            floatBox
-            provideNodes={onApplyNodeType && onApplyNodeType}
-            relatedNodes={relatedNodes}
-          />
-        </RelatedTopicsContainer>
+        {relatedNodes?.TotalRelationsCount > 0 && (
+          <RelatedTopicsContainer>
+            <RelatedTopicsTitle>{RVDic.RelatedNode}</RelatedTopicsTitle>
+            <LastTopicsTabs
+              floatBox
+              provideNodes={onApplyNodeType && onApplyNodeType}
+              relatedNodes={relatedNodes}
+            />
+          </RelatedTopicsContainer>
+        )}
         <Space />
         <ShadowButton
           onMouseEnter={() => setSideDetailsHover(true)}
@@ -164,15 +197,6 @@ const TopBar = ({
             ...(RV_RTL && { marginRight: '2rem' }),
             ...(!RV_RTL && { marginLeft: '2rem' }),
           }}>
-          {/* <ShadowButton
-            style={commonStyle}
-            onMouseEnter={() => {}}
-            onMouseLeave={() => {}}
-            onClick={() => {}}
-            $isEnabled={false}
-            className={'rv-border-distant rv-default'}>
-            <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-          </ShadowButton> */}
           <Creators
             creatorsList={nodeDetails?.Contributors?.Value}
             nodeDetails={nodeDetails}

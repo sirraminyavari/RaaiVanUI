@@ -32,6 +32,8 @@ const NodeList = (props) => {
     forceFetch,
     onTotalFound,
     isByMe,
+    isGroup,
+    isExpertiseDomain,
     byPeople,
     isBookMarked,
     multiSelection,
@@ -41,6 +43,7 @@ const NodeList = (props) => {
     relatedToNodeId,
     onFetchCounts,
     onClickItem,
+    selectedFilters,
   } = props || {};
   useTraceUpdate(props);
 
@@ -72,6 +75,8 @@ const NodeList = (props) => {
     formFilters,
     forceFetch,
     isBookMarked,
+    isGroup,
+    isExpertiseDomain,
   ]);
 
   // method for fetchin nodes
@@ -91,6 +96,8 @@ const NodeList = (props) => {
         UseNodeTypeHierarchy: true,
         IsMine: isByMe,
         // CreatorUserID: byPeople?.id,
+        IsGroup: isGroup,
+        IsExpertiseDomain: isExpertiseDomain,
         FetchCounts: true,
         CreatorUserIDs: byPeople?.map((x) => x.id),
 

@@ -32,6 +32,7 @@ export const BottomRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 5rem;
 `;
 
 export const RelatedTopicsContainer = styled.div`

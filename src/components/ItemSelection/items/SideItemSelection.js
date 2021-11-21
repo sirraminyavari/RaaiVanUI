@@ -13,53 +13,30 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
+import Toggle from 'components/Toggle/Toggle';
 
 const { RV_RTL, RVDic } = window || {};
 
-const data = [
-  { title: 'درس آموخته سنجه محور', count: 13 },
-  { title: 'درس آموخته حادثه محور', count: 53 },
-  { title: 'نامه صادره', count: 89 },
-  { title: 'نامه وارده', count: 53 },
-  { title: 'پروپوزال', count: 13 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-];
-
-const dropDown = [
+const switches = [
   {
     label: 'همه آیتم ها',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
-  },
-  {
-    label: 'مالکیت های معنوی من',
-    value: 'urgentAction',
-    colorClass: 'rv-default',
+    value: false,
+    paramName: 'all',
   },
   {
     label: 'موضوعاتی که در آن خبره ام',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
+    value: false,
+    paramName: 'IsExpertiseDomain',
   },
   {
     label: 'گروه های من',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
+    value: false,
+    paramName: 'IsGroup',
   },
 ];
 const defaultDropDownLabel = {
   label: 'گروه های من',
-  value: 'urgentAction',
+  value: false,
   color: TCV_DEFAULT,
 };
 const SideItemSelection = ({
@@ -71,11 +48,13 @@ const SideItemSelection = ({
   onSelectedodeTypeId,
   multiSelection,
   onConfirm,
+  onSelectFilters,
 }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isHovered, setIsDropDownHovered] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
+  const [filterSwitches, setFilterSwitchs] = useState(switches);
   const onSelectItem = (item) => {
     setSelectedItem(item);
   };
@@ -93,15 +72,65 @@ const SideItemSelection = ({
   useEffect(() => {
     onSelectedodeTypeId(selectedClass);
   }, [selectedClass]);
+  useEffect(() => {
+    onSelectFilters(filterSwitches);
+  }, [filterSwitches]);
 
   const commonProps = { borderRadius: '10rem' };
 
   const isDropDownHovered = isDropDownOpen || isHovered;
 
+  const filterSwitchManagement = (x, i) => {
+    if (i === 0) {
+      console.log(i, 'i', x.value);
+      console.log(
+        filterSwitches.map((y, index) => {
+          return { ...y, value: !x.value };
+        }),
+        '******'
+      );
+
+      setFilterSwitchs(
+        filterSwitches.map((y, index) => {
+          return { ...y, value: !x.value };
+        })
+      );
+    } else {
+      setFilterSwitchs(
+        filterSwitches.map((y, index) =>
+          index === i ? { ...y, value: !x.value } : y
+        )
+      );
+    }
+    if (i !== 0 && !x.value) {
+      setFilterSwitchs(
+        filterSwitches.map((y, index) =>
+          index === 0 ? { ...y, value: false } : y
+        )
+      );
+    }
+  };
+
   return (
     <Container>
       <SideContent>
-        <div
+        <SideSwitchesContainer>
+          {filterSwitches.map((x, i) => {
+            return (
+              <SwitchItem>
+                {console.log(x, 'XXXXXXX')}
+                <Toggle
+                  isChecked={x.value}
+                  onToggle={() => filterSwitchManagement(x, i)}
+                  titleClass={'rv-warm'}
+                  title={x.label}
+                  titleStyle={{ fontSize: '0.8rem' }}
+                />
+              </SwitchItem>
+            );
+          })}
+        </SideSwitchesContainer>
+        {/* <div
           onMouseEnter={() => setIsDropDownHovered(true)}
           onMouseLeave={() => setIsDropDownHovered(false)}
           style={{ marginBottom: '1rem' }}>
@@ -161,7 +190,8 @@ const SideItemSelection = ({
             }}
             onDropDownOpen={setIsDropDownOpen}
           />
-        </div>
+        </div> */}
+
         <PerfectScrollbar
           style={{ maxHeight: '60vh', height: '60%' }}
           containerRef={(ref) => {
@@ -247,4 +277,12 @@ const SideContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+const SideSwitchesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+`;
+const SwitchItem = styled.div`
+  margin: 0.5rem;
 `;

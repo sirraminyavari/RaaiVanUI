@@ -57,7 +57,6 @@ const SubjectField = ({
         style={{ padding: '0', height: '50%' }}
         stick
         show={isVisible}>
-        {console.log(value, 'value $$$$$ ^^^^ $$$$$')}
         <ItemSelection
           nodeTypes={parseDecodeInfo?.NodeTypes}
           routeProps={propsContext}

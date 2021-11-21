@@ -29,8 +29,6 @@ const FormFill = ({ data, ...props }) => {
   const [whichElementChanged, setWhichElementChanged] = useState(null);
   const [syncTempFormWithBackEnd, setSyncTempFormWithBackEnd] = useState(data);
   useEffect(() => {
-    console.log(data, 'data ****');
-
     setTempForm({
       ...data,
       Elements: data?.Elements?.map((x) => {

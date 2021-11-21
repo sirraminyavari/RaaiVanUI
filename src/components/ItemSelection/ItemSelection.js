@@ -21,13 +21,9 @@ const ItemSelection = ({
   const [showSelected, setShowSelected] = useState(false);
   const [classes, setClasses] = useState([]);
   const [selectedNodeTypeId, setSelectedodeTypeId] = useState(null);
+  const [selectedFilters, setSelectedFilters] = useState(null);
 
-  console.log(routeProps, 'QQQQQQQQQQ');
   const { route } = routeProps || {};
-
-  useEffect(() => {
-    console.log(checkedItems, 'checkedItems');
-  }, [checkedItems]);
 
   const onCheckHandler = (value, item) => {
     // console.log(value, item, 'v', 't');
@@ -49,7 +45,7 @@ const ItemSelection = ({
     <Maintainer>
       <Header className={'rv-border-radius-half'}>
         <CloseIcon onClick={onClose} className={'rv-red'} />
-        <div className={'rv-distant'}>{'انتخاب آیتم'}</div>
+        <div className={'rv-distant'}>{'*#*انتخاب آیتم'}</div>
       </Header>
       <Container RV_RTL={RV_RTL}>
         <SideItemSelection
@@ -59,6 +55,7 @@ const ItemSelection = ({
           classes={nodeTypes}
           counts={classes}
           onSelectedodeTypeId={setSelectedodeTypeId}
+          onSelectFilters={setSelectedFilters}
           multiSelection={multiSelection}
           onConfirm={onConfirm}
         />
@@ -94,6 +91,15 @@ const ItemSelection = ({
                   : (route?.NodeTypes || []).length
                   ? route.NodeTypes[0]?.NodeTypeID
                   : null
+              }
+              selectedFilters={selectedFilters}
+              isExpertiseDomain={
+                selectedFilters?.find(
+                  (x) => x.paramName === 'IsExpertiseDomain'
+                )?.value
+              }
+              isGroup={
+                selectedFilters?.find((x) => x.paramName === 'IsGroup')?.value
               }
               onFetchCounts={setClasses}
               nodeTypeIds={nodeTypes?.map((x) => x?.NodeTypeID).join('|')}

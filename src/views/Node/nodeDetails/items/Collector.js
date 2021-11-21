@@ -38,12 +38,12 @@ const Collctor = ({ itemSelectionMode, nodeDetails, nodeId, ...props }) => {
       className={'rv-bg-color-white'}
       RV_RTL={RV_RTL}>
       <ScrollProvider
-        className={`${'rv-bg-color-light-gray'} rv-border-radius-half`}
+        className={`${'rv-bg-color-white'} rv-border-radius-half`}
         isAdvancedShow={sideColumn}>
         <Scrollable isAdvancedShow={sideColumn}>
           <Maintainer
             isAdvancedShow={sideColumn}
-            className={`${'rv-bg-color-light-gray'} rv-border-radius-half`}
+            className={`${'rv-bg-color-white'} rv-border-radius-half`}
             fullWidth={sideColumn}>
             <TopFilter>
               <TopBar
