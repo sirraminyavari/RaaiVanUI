@@ -1,7 +1,15 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const fs = require('fs');
 
-let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
+//const fs = require('fs');
+//let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
+//let proxy = packageJson.proxy;
+
+const saasProxy = 'http://cliqmind-dev.ir';
+const orgProxy = 'http://cliqmind-dev.ir:1234';
+
+let isOrg = (process.env.REACT_APP_ENV || '_').toLowerCase() == 'org';
+
+let proxy = process.env.REACT_APP_PROXY || (isOrg ? orgProxy : saasProxy);
 
 module.exports = function (app) {
   var endpoints = ['api', 'rss', 'upload', 'download', 'signalr'].map(
@@ -12,7 +20,7 @@ module.exports = function (app) {
     app.use(
       ep,
       createProxyMiddleware({
-        target: packageJson.proxy,
+        target: proxy,
         changeOrigin: true,
       })
     );
