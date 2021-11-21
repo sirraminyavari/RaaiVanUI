@@ -17,16 +17,20 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
-const selecteOnboardingName = createSelector(
+const selectedOnboardingName = createSelector(
   (state) => state.onboarding,
   (onboarding) => onboarding.name
 );
 
+/**
+ * Renders a button for sidebar footer.
+ * @returns {React.Component}
+ */
 const ManageButton = () => {
   const dispatch = useDispatch();
   const { RVDic, RV_Float, RV_RevFloat } = useWindow();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const onboardingName = useSelector(selecteOnboardingName);
+  const onboardingName = useSelector(selectedOnboardingName);
   const { setSidebarContent, toggleSidebar } = themeSlice.actions;
   const { closeOpenMenus } = sidebarMenuSlice.actions;
 
@@ -34,6 +38,7 @@ const ManageButton = () => {
   const isIntroOnboarding =
     !!onboardingName && onboardingName === INTRO_ONBOARD;
 
+  //! Fires on button click.
   const handleManageButton = () => {
     if (isIntroOnboarding) return;
     dispatch(closeOpenMenus());

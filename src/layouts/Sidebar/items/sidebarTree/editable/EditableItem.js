@@ -70,14 +70,17 @@ const EditableBranch = (props) => {
 
   const isManageContent = sidebarContent.current === MANAGE_CONTENT;
 
+  //! Undo node deletion.
   const undoDelete = (node) => {
     dispatch(recoverSidebarNode(node));
   };
 
+  //! Undo node edition.
   const undoEdit = () => {
     dispatch(renameSidebarNode(item?.id, item?.data?.title));
   };
 
+  //! Fires when the node is removed.
   const onDeleteDone = (node) => {
     const deleteMSG = `دسته "${node?.data?.title}" حذف خواهد شد`;
     UndoToast({
@@ -89,6 +92,7 @@ const EditableBranch = (props) => {
     });
   };
 
+  //! Fires delete item click.
   const onItemDelete = (e) => {
     e.stopPropagation();
     const itemParent = Object.values(tree?.items).find(
@@ -103,11 +107,12 @@ const EditableBranch = (props) => {
     dispatch(deleteSidebarNode(item, false, onDeleteDone));
   };
 
+  //! Fires on rename item.
   const onEditTitle = (title) => {
-    const trimedTitle = title.trim();
-    if (trimedTitle === item?.data?.title) return;
+    const trimmedTitle = title.trim();
+    if (trimmedTitle === item?.data?.title) return;
 
-    const editMSG = `نام "${item?.data?.title}" به "${trimedTitle}" تغییر خواهد کرد`;
+    const editMSG = `نام "${item?.data?.title}" به "${trimmedTitle}" تغییر خواهد کرد`;
 
     UndoToast({
       type: 'info',
@@ -116,7 +121,7 @@ const EditableBranch = (props) => {
       onUndo: undoEdit,
       toastId: `edit-${item?.id}`,
     });
-    dispatch(renameSidebarNode(item?.id, trimedTitle));
+    dispatch(renameSidebarNode(item?.id, trimmedTitle));
   };
 
   return (

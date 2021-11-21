@@ -43,6 +43,7 @@ const { RVGlobal } = window;
 const isDev = (RVGlobal || {}).IsDev;
 const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
+//! Provides main routes of the app.
 const switchRoutes = (
   <Switch>
     {Routes.filter((route) => {
@@ -104,13 +105,20 @@ const selectOnboardingName = createSelector(
   (onboarding) => onboarding.name
 );
 
+/**
+ * Renders main layout of the app.
+ */
 const Main = () => {
   const dispatch = useDispatch();
   const { RVGlobal } = useWindow();
 
+  //! Check if the sidebar is open.
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  //! Check if navbar or sidebar are enabled for current route.
   const hasNavSide = useSelector(selectHasNavSide);
+  //! Get selected team.
   const selectedTeam = useSelector(selectedApp);
+  //! Get onboarding stage name.
   const onboardingName = useSelector(selectOnboardingName);
   const activePath = useSelector(selectedActivePath);
 
@@ -122,27 +130,29 @@ const Main = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
+  //! Check if user has selected a team.
   const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam?.id;
 
+  //! Provides the sidebar component.
   const getSidebar = () => {
     if (isTeamSelected) {
       //! Disable sidebar on teams view.
       if (activePath === TEAMS_PATH) {
         return null;
       }
+
       //! When 'intro' onboarding mode is active.
       if (isIntroOnboarding) {
         //! Open the sidebar and return 'OpenSidebar'.
         dispatch(toggleSidebar(true));
         return <OpenSidebar />;
       }
+
       if (!isMobileScreen) {
-        if (isSidebarOpen) {
-          return <OpenSidebar />;
-        } else {
-          return <CloseSidebar />;
-        }
+        //! Window screen.
+        return isSidebarOpen ? <OpenSidebar /> : <CloseSidebar />;
       } else {
+        //! Mobile screen.
         return isSidebarOpen ? <OpenSidebarMobile /> : <SidebarHeader />;
       }
     }

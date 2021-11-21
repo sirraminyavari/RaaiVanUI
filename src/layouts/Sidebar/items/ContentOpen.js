@@ -39,6 +39,7 @@ const SidebarProfile = lazy(() =>
   )
 );
 
+//! Provides the content of the sidebar.
 const getSidebarContent = (content) => {
   const rootContent = content.split('-')[0];
 
@@ -54,6 +55,10 @@ const getSidebarContent = (content) => {
   }
 };
 
+/**
+ * Renders content for the sidebar in open mode.
+ * @returns {React.Component}
+ */
 const SidebarOnOpen = () => {
   const containerRef = useRef();
   const dispatch = useDispatch();

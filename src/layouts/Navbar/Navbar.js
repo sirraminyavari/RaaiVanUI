@@ -54,6 +54,10 @@ const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
 
 const NavbarPlaceholder = () => <div />;
 
+/**
+ * Renders navbar for application.
+ * @returns {React.Component}
+ */
 const Navbar = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
@@ -108,7 +112,7 @@ const Navbar = () => {
     setShowSearch(false);
   };
 
-  const SearchPlaceholder = RVDic.SearchInN.replace('[n]', RVDic.Team);
+  const searchPlaceholder = RVDic.SearchInN.replace('[n]', RVDic.Team);
 
   return (
     <Styled.NavbarContainer isMobile={isMobileScreen}>
@@ -120,7 +124,7 @@ const Navbar = () => {
           <NavbarSearchInput
             onBlur={handleHideSearch}
             autoFocus={showSearch}
-            placeholder={SearchPlaceholder}
+            placeholder={searchPlaceholder}
           />
         ) : (
           <SearchIcon
