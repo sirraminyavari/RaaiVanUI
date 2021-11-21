@@ -2,6 +2,7 @@
   "name": "raaivan-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://cliqmind-dev.ir",
   "dependencies": {
     "@atlaskit/tree": "^8.2.0",
     "@draft-js-plugins/editor": "^4.1.0",

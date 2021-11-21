@@ -1,10 +1,9 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const fs = require('fs');
 
-//const fs = require('fs');
-//let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
-//let proxy = packageJson.proxy;
+let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
 
-const saasProxy = 'http://cliqmind-dev.ir';
+let saasProxy = packageJson.proxy;
 const orgProxy = 'http://cliqmind-dev.ir:1234';
 
 let isOrg = (process.env.REACT_APP_ENV || '_').toLowerCase() == 'org';
