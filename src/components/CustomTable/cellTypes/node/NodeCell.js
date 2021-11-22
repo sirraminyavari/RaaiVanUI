@@ -152,6 +152,7 @@ const NodeCell = (props) => {
         title={RVDic.NodeSelect}
         icon={<FolderIcon />}
         onClick={handleSelectButtonClick}
+        noBorder
       />
     </Styled.NodeCellContainer>
   );

@@ -4,6 +4,7 @@ import { CV_GRAY } from 'constant/CssVariables';
 import { toJSON } from 'helpers/helpers';
 import Table from './Table';
 import * as Styled from './FormField.styles';
+import useWindow from 'hooks/useWindowContext';
 
 const FormField = (props) => {
   const {
@@ -16,16 +17,23 @@ const FormField = (props) => {
     ...rest
   } = props;
   const { FormID: tableId } = toJSON(decodeInfo);
+  const { RVDic } = useWindow();
 
   const renderTable = () => {
     return (
-      <Table
-        tableColumns={tableColumns}
-        tableData={tableData}
-        tableOwnerId={elementId}
-        tableId={tableId}
-        editByCell={true}
-      />
+      <>
+        {tableColumns ? (
+          <Table
+            tableColumns={tableColumns}
+            tableData={tableData}
+            tableOwnerId={elementId}
+            tableId={tableId}
+            editByCell={true}
+          />
+        ) : (
+          <div>{RVDic.NothingToDisplay}</div>
+        )}
+      </>
     );
   };
 

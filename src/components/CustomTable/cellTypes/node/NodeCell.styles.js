@@ -62,7 +62,13 @@ export const NodeInfoWrapper = styled.div`
   min-width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
   margin-${RV_RevFloat}: 0.2rem;
+  ${({ editable }) => editable && 'cursor: pointer;'}
   ${FLEX_RCS}
+
+  .table-node-view {
+    font-weight: 400 !important;
+    color: ${TCV_DEFAULT} !important;
+  }
 `;
 
 export const NodeLinkHeading = styled(Heading)`

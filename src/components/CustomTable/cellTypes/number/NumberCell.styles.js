@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_BLACK, CV_DISTANT } from 'constant/CssVariables';
 import { BO_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
@@ -38,4 +38,14 @@ export const CellView = styled(Heading).attrs({
 })`
   text-align: justify;
   text-justify: inter-word;
+`;
+
+export const CellViewContainer = styled.div`
+  width: 100%;
+
+  .table-number-view {
+    font-weight: 400 !important;
+    color: ${CV_BLACK} !important;
+    text-align: center;
+  }
 `;

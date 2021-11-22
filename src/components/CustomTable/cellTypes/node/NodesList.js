@@ -12,8 +12,11 @@ const NodesList = (props) => {
     onRemoveNode && onRemoveNode(node);
   };
 
-  // as={canEdit ? 'div' : Link}
-  // to={getURL('Node', { NodeID })}
+  const handleViewNode = (nodeId) => {
+    let url = getURL('Node', { NodeID: nodeId });
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  };
 
   return (
     <Styled.NodesListWrapper>
@@ -21,9 +24,15 @@ const NodesList = (props) => {
         const { NodeID, Name } = node || {};
         return (
           <Styled.NodeItemContainer key={NodeID || index}>
-            <Styled.NodeInfoWrapper editable={canEdit}>
+            <Styled.NodeInfoWrapper
+              onClick={(e) => {
+                if (!canEdit) return;
+                e.stopPropagation();
+                handleViewNode(NodeID);
+              }}
+              editable={canEdit}>
               <OpenMailIcon color={CV_DISTANT} size={25} />
-              <Styled.NodeLinkHeading type="h4">
+              <Styled.NodeLinkHeading className="table-node-view" type="h6">
                 {decodeBase64(Name)}
               </Styled.NodeLinkHeading>
             </Styled.NodeInfoWrapper>

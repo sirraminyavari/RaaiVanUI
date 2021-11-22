@@ -60,13 +60,15 @@ const NumberCell = (props) => {
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
     return (
-      <div>
+      <Styled.CellViewContainer>
         {!!numberValue ? (
-          <Styled.CellView type="h4">{numberValue}</Styled.CellView>
+          <Styled.CellView className="table-number-view" type="h6">
+            {numberValue}
+          </Styled.CellView>
         ) : (
           <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
-      </div>
+      </Styled.CellViewContainer>
     );
   }
 

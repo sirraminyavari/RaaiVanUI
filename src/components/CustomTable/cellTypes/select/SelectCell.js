@@ -87,19 +87,22 @@ const SelectCell = (props) => {
 
   if (!canEdit) {
     return (
-      <div>
+      <Styled.CellViewContainer>
         {initialValues?.map((x) => x?.label)?.length ? (
           initialValues
             ?.map((x) => x?.label)
             .map((item, key) => (
-              <Styled.SelectedItem type="h4" key={key}>
+              <Styled.SelectedItem
+                className="table-select-view"
+                type="h6"
+                key={key}>
                 {item}
               </Styled.SelectedItem>
             ))
         ) : (
           <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
-      </div>
+      </Styled.CellViewContainer>
     );
   }
 

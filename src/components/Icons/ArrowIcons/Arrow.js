@@ -4,7 +4,7 @@ import {
   BsArrowDown,
   BsArrowLeft,
   BsArrowRight,
-  BsArrowDownUp,
+  // BsArrowDownUp,
   BsArrowLeftRight,
 } from 'react-icons/bs';
 import {
@@ -13,6 +13,7 @@ import {
   IoArrowBackCircleOutline,
   IoArrowForwardCircleOutline,
 } from 'react-icons/io5';
+import ArrowUpAndDown from './ArrowUpAndDown';
 
 const ArrowIcon = ({ dir: direction, circle, ...rest }) => {
   switch (direction) {
@@ -32,7 +33,7 @@ const ArrowIcon = ({ dir: direction, circle, ...rest }) => {
       }
       return <BsArrowLeft {...rest} />;
     case 'up-down':
-      return <BsArrowDownUp {...rest} />;
+      return <ArrowUpAndDown {...rest} />;
     case 'left-right':
       return <BsArrowLeftRight {...rest} />;
     default:

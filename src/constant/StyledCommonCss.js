@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { CV_GRAY, CV_GRAY_DARK } from './CssVariables';
+import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from './CssVariables';
 
 const FLEX_COLUMN = css`
   display: flex;
@@ -188,8 +188,8 @@ export const HorizontalScrollbar = css`
   /*! Show scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: block;
-    height: 0.25rem;
-    width: 0.25rem;
+    height: 0.4rem;
+    width: 0.4rem;
   }
 
   &::-webkit-scrollbar-track:hover {
@@ -197,11 +197,11 @@ export const HorizontalScrollbar = css`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${CV_GRAY};
+    background-color: ${CV_DISTANT};
     border-radius: 0.5rem;
 
     :hover {
-      background-color: ${CV_GRAY_DARK};
+      // background-color: ${CV_GRAY_DARK};
     }
   }
 `;

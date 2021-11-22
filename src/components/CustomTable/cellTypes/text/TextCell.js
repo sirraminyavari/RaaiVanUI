@@ -54,13 +54,15 @@ const TextCell = (props) => {
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
     return (
-      <div>
+      <Styled.CellViewContainer>
         {!!textValue ? (
-          <Styled.CellView type="h4">{textValue}</Styled.CellView>
+          <Styled.CellView className="table-text-view" type="h6">
+            {textValue}
+          </Styled.CellView>
         ) : (
           <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
-      </div>
+      </Styled.CellViewContainer>
     );
   }
 

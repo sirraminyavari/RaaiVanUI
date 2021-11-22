@@ -17,16 +17,16 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
  * @param {PropType} props
  */
 const AddNewToCellButton = forwardRef((props, ref) => {
-  const { onClick, icon, title, ...rest } = props;
+  const { onClick, icon, title, noBorder, ...rest } = props;
 
   return (
-    <Styled.AddNewButtonWrapper ref={ref} {...rest}>
+    <Styled.AddNewButtonWrapper noBorder={!!noBorder} ref={ref} {...rest}>
       <Button classes="table-add-new-in-cell-button" onClick={onClick}>
         {cloneElement(icon, {
           size: icon?.props?.size || 18,
           color: TCV_DEFAULT,
         })}
-        <Styled.AddNewHeading type="h4">{title}</Styled.AddNewHeading>
+        <Styled.AddNewHeading type="h6">{title}</Styled.AddNewHeading>
       </Button>
     </Styled.AddNewButtonWrapper>
   );

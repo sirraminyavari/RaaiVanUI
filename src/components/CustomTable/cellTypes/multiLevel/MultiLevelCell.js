@@ -186,15 +186,15 @@ const MultiLevelCell = (props) => {
   //! Show mode and not new.
   if (!canEdit) {
     return (
-      <div>
+      <Styled.CellViewContainer>
         {!!SelectedItems?.length ? (
-          <Styled.CellView type="h4">
+          <Styled.CellView className="table-multi-level-view" type="h6">
             {selectedItemsName.join(' / ')}
           </Styled.CellView>
         ) : (
           <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
-      </div>
+      </Styled.CellViewContainer>
     );
   }
 
@@ -249,7 +249,7 @@ const MultiLevelCell = (props) => {
               value={selectValue}
               placeholder={level?.currentLabel}
               options={selectOptions}
-              styles={Styled.customStyles}
+              styles={Styled.selectStyles}
               onChange={(option) => handleChange(option?.value, level)}
               onFocus={() =>
                 canGetOptions && getOptions(level.step, previousSelect?.NodeID)

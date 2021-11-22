@@ -18,8 +18,6 @@ const RowActionMenu = (props) => {
     setTempRowId,
   } = props?.cell || {};
 
-  console.log(props?.cell);
-
   const { RVDic } = useWindow();
   const rowId = row?.original?.id;
 
@@ -45,20 +43,20 @@ const RowActionMenu = (props) => {
             <RowAction
               title={RVDic.Edit}
               onActionClick={handleSetEditableRow}
-              icon={<EditIcon size={20} />}
+              icon={<EditIcon size={18} />}
             />
           )}
           <RowAction
             title={RVDic.Remove}
             onActionClick={handleDeleteRow}
-            icon={<TrashIcon color={CV_RED} />}
+            icon={<TrashIcon size={15} color={CV_RED} />}
           />
         </>
       )}
       <RowAction
         title={RVDic.Duplicate}
         onActionClick={handleDuplicateRow}
-        icon={<DuplicationIcon size={18} />}
+        icon={<DuplicationIcon size={16} />}
       />
     </Styled.TableRowActionContainer>
   );

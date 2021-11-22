@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BO_DISTANT } from 'constant/Colors';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
-import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
+import { CV_BLACK, CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 import { FLEX_RCB } from 'constant/StyledCommonCss';
 
 const { RV_Float } = window;
@@ -16,6 +16,7 @@ export const DateCellContainer = styled.div.attrs({
 
   .table-date-edit-title {
     color: ${CV_GRAY};
+    font-weight: 400 !important;
   }
 `;
 
@@ -35,8 +36,14 @@ export const EmptyCellView = styled.div`
   width: 100%;
   text-align: start;
   padding-${RV_Float}: 0.7rem;
+  font-size: 0.85rem;
 `;
 
 export const CellViewContainer = styled.div`
   width: 100%;
+
+  .table-date-view {
+    font-weight: 400 !important;
+    color: ${CV_BLACK} !important;
+  }
 `;

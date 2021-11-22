@@ -1,10 +1,77 @@
 import styled from 'styled-components';
 import { C_GRAY_DARK, TC_DEFAULT } from 'constant/Colors';
-import { CV_DISTANT, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import {
+  CV_BLACK,
+  CV_DISTANT,
+  CV_GRAY,
+  CV_RED,
+  CV_WHITE,
+  TCV_DEFAULT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
 
 const { RV_Float } = window;
+
+export const selectStyles = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: 'inherit',
+    borderColor: CV_DISTANT,
+  }),
+  option: (styles, { isSelected }) => ({
+    ...styles,
+    backgroundColor: CV_WHITE,
+    width: '90%',
+    margin: '0.3rem auto',
+    borderRadius: '0.2rem',
+    color: isSelected ? TCV_WARM : CV_BLACK,
+    textAlign: RV_Float,
+    fontSize: '0.9rem',
+    fontWeight: isSelected ? '600' : '',
+    cursor: 'pointer',
+    // ':hover': {
+    //   backgroundColor: !isSelected && CV_FREEZED,
+    // },
+    ':active': {
+      ...styles[':active'],
+      backgroundColor: CV_WHITE,
+    },
+  }),
+  indicatorsContainer: (styles) => ({
+    ...styles,
+    svg: {
+      color: TCV_DEFAULT,
+    },
+  }),
+  indicatorSeparator: (styles) => ({
+    ...styles,
+    display: 'none',
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    backgroundColor: CV_DISTANT,
+    padding: '0.2rem',
+    fontSize: '0.9rem',
+    borderRadius: '0.2rem',
+    maxWidth: '95%',
+  }),
+  multiValue: (styles) => ({
+    ...styles,
+    backgroundColor: CV_DISTANT,
+    padding: '0.1rem',
+    fontSize: '1rem',
+    borderRadius: '0.2rem',
+  }),
+  multiValueRemove: (styles) => ({
+    ...styles,
+    color: CV_RED,
+    ':hover': {
+      cursor: 'pointer',
+    },
+  }),
+};
 
 export const MultiLevelContainer = styled.div`
   ${FLEX_CCC}
@@ -39,34 +106,12 @@ export const CellView = styled(Heading).attrs({
   text-justify: inter-word;
 `;
 
-export const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    borderColor: CV_WHITE,
-    backgroundColor: CV_WHITE,
-    minWidth: '10rem',
-  }),
-  option: (styles, { isSelected }) => ({
-    ...styles,
-    color: isSelected ? TCV_WARM : CV_GRAY,
-    backgroundColor: CV_WHITE,
-    fontWeight: isSelected ? '500' : '',
-    cursor: 'pointer',
-    minWidth: '10rem',
-    height: '100%',
-    textAlign: RV_Float,
-  }),
-  singleValue: (styles) => {
-    return {
-      ...styles,
-      padding: '0.3rem',
-      minWidth: '10rem',
-      textAlign: RV_Float,
-    };
-  },
-  menu: (provided) => ({
-    ...provided,
-    borderColor: CV_DISTANT,
-    minWidth: '10rem',
-  }),
-};
+export const CellViewContainer = styled.div`
+  width: 100%;
+
+  .table-multi-level-view {
+    font-weight: 400 !important;
+    color: ${CV_BLACK} !important;
+    text-align: center;
+  }
+`;

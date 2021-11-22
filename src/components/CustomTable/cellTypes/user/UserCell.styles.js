@@ -46,6 +46,7 @@ export const UserInfoWrapper = styled.div`
   min-width: ${({ editable }) => (editable ? '88%' : '100%')};
   height: 90%;
   margin-${RV_RevFloat}: 0.2rem;
+  ${({ editable }) => editable && 'cursor: pointer;'}
   ${FLEX_RCS}
 
   .table-user-avatar {
@@ -54,6 +55,11 @@ export const UserInfoWrapper = styled.div`
     min-width: 2rem;
     min-height: 2rem;
     border: none;
+  }
+
+  .table-user-view{
+    font-weight: 400 !important;
+    color: ${TCV_DEFAULT} !important;
   }
 `;
 

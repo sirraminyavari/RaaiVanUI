@@ -98,7 +98,7 @@ export const FileLinkWrapper = styled.div.attrs({
 })`
   width: 100%;
   height: 100%;
-  font-size: 1rem;
+  font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

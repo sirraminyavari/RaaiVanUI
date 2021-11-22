@@ -12,8 +12,11 @@ const UsersList = (props) => {
     onRemoveUser && onRemoveUser(user);
   };
 
-  // as={canEdit ? 'div' : Link}
-  // to={getURL('User', { UserID })}
+  const handleViewUser = (userId) => {
+    let url = getURL('User', { UserID: userId });
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  };
 
   return (
     <Styled.UsersListWrapper>
@@ -21,13 +24,19 @@ const UsersList = (props) => {
         const { UserID, IconURL, FullName } = user;
         return (
           <Styled.UserCellContainer key={UserID || index}>
-            <Styled.UserInfoWrapper editable={canEdit}>
+            <Styled.UserInfoWrapper
+              onClick={(e) => {
+                if (!canEdit) return;
+                e.stopPropagation();
+                handleViewUser(UserID);
+              }}
+              editable={canEdit}>
               <Avatar
                 color={CV_BLACK}
                 className="table-user-avatar"
                 userImage={IconURL}
               />
-              <Styled.UserLinkHeading type="h4">
+              <Styled.UserLinkHeading className="table-user-view" type="h6">
                 {decodeBase64(FullName)}
               </Styled.UserLinkHeading>
             </Styled.UserInfoWrapper>

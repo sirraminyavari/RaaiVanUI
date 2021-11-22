@@ -132,6 +132,7 @@ const UserCell = (props) => {
             <AddNewUserButton
               title={RVDic?.SelectN?.replace('[n]', RVDic?.User)}
               icon={<UserIcon size={23} />}
+              noBorder
             />
           }
         />

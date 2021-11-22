@@ -185,6 +185,7 @@ const FileCell = (props) => {
             <AddNewFileButton
               title={RVDic?.SelectN?.replace('[n]', RVDic?.File)}
               icon={<FileFormatIcon />}
+              noBorder
               {...props}
             />
           )}

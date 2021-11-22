@@ -71,14 +71,14 @@ const TablePagination = ({ tableInstance, pagination }) => {
         <button onClick={handleNextPage} disabled={!canNextPage}>
           <ChevronIcon
             small
-            size={28}
+            size={25}
             dir={RV_Float}
             color={canNextPage ? TCV_DEFAULT : CV_DISTANT}
           />
         </button>
         <button onClick={handlePreviousPage} disabled={!canPreviousPage}>
           <ChevronIcon
-            size={28}
+            size={25}
             small
             dir={RV_RevFloat}
             color={canPreviousPage ? TCV_DEFAULT : CV_DISTANT}

@@ -68,7 +68,7 @@ export const getTableOptions = (column) => {
       return { minWidth: 150 };
 
     case cellTypes.binary:
-      return { disableSortBy: true };
+      return { disableSortBy: true, minWidth: 150 };
 
     case cellTypes.user:
       return { disableSortBy: true, minWidth: 260 };

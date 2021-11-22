@@ -48,6 +48,7 @@ export const selectStyles = {
     width: '90%',
     margin: '0.3rem auto',
     borderRadius: '0.2rem',
+    fontSize: '0.85rem',
     color: CV_BLACK,
     cursor: 'pointer',
     ':hover': {
@@ -71,7 +72,7 @@ export const selectStyles = {
   singleValue: (styles) => ({
     ...styles,
     padding: '0.2rem',
-    fontSize: '1rem',
+    fontSize: '0.85rem',
     borderRadius: '0.2rem',
     width: '75%',
     textAlign: 'center',
@@ -90,7 +91,7 @@ export const TableContainer = styled.div.attrs({
   width: 100%;
   padding: 1rem 0;
   position: relative;
-  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  // box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
   // border: 0.1rem solid #333;
 `;
 
@@ -166,6 +167,10 @@ export const TableHeader = styled.div.attrs({
     div:nth-child(2) {
       display: none !important;
     }
+  }
+
+  .table-header{
+    font-weight: 400 !important;
   }
 `;
 
@@ -272,7 +277,7 @@ export const TablePaginationSelectWrapper = styled.div`
 
 export const PaginationSelectTitle = styled.span`
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   width: 12rem;
   color: ${CV_GRAY};
 `;
@@ -283,7 +288,7 @@ export const PaginationArrowWrapper = styled.div`
 `;
 
 export const PaginationSpan = styled.span`
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: ${CV_DISTANT};
 `;
 
@@ -472,9 +477,10 @@ export const ActionButton = styled.div`
   }
 `;
 
-export const TableActionHeading = styled(Heading).attrs({
-  className: `${C_GRAY_DARK}`,
-})``;
+export const TableActionHeading = styled(Heading)`
+  color: ${CV_GRAY_DARK} !important;
+  font-weight: 400 !important;
+`;
 
 const getDisplay = ({ isShown }) => {
   return isShown ? FLEX_CCC : 'display: none;';
@@ -517,9 +523,11 @@ export const AddNewButtonWrapper = styled.div`
     border-radius: 1rem;
     ${FLEX_RCC}
     gap: 0.5rem;
+    ${({ noBorder }) => noBorder && 'border: 0;'}
   }
 `;
 
 export const AddNewHeading = styled(Heading)`
-  color: ${TCV_DEFAULT};
+  color: ${TCV_DEFAULT} !important;
+  font-weight: 400 !important;
 `;

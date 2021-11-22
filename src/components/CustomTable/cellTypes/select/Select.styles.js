@@ -91,3 +91,12 @@ export const EmptyCellView = styled.div`
   text-align: start;
   padding-${RV_Float}: 0.7rem;
 `;
+
+export const CellViewContainer = styled.div`
+  width: 100%;
+
+  .table-select-view {
+    font-weight: 400 !important;
+    color: ${CV_BLACK} !important;
+  }
+`;

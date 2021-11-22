@@ -51,8 +51,8 @@ const TableAction = ({ onAddItem, onSearch, data }) => {
         <AddNewRowButton
           onClick={handleAddItem}
           title={RVDic.CreateNewN.replace('[n]', RVDic.Row)}
-          icon={<AddIcon size={23} />}
-          style={{ width: '14rem' }}
+          icon={<AddIcon size={22} />}
+          style={{ width: '12rem' }}
         />
       </Styled.TableButtonsWrapper>
     </Styled.TableActionsContainer>

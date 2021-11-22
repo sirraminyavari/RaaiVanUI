@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
-import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import BinaryButton from 'components/Buttons/binary/BinaryButton';
 import * as Styled from './BinaryCell.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import useWindow from 'hooks/useWindowContext';
 
 const BinaryCell = (props) => {
   const {
@@ -20,36 +20,53 @@ const BinaryCell = (props) => {
   } = useCellProps(props);
 
   const toggleRef = useRef();
+  const { RVDic } = useWindow();
 
   const { Info, TextValue, BitValue } = value || {};
   const { Yes, No } = Info || {};
 
   const binaryOptions = { yes: decodeBase64(Yes), no: decodeBase64(No) };
 
-  const [toggleValue, setToggleValue] = useState(
-    isNewRow && !TextValue ? null : BitValue
-  );
+  let toggleValue = isNewRow && !TextValue ? null : BitValue;
+
+  const [toggleSelect, setToggleSelect] = useState({
+    value: toggleValue,
+    label:
+      toggleValue === null
+        ? null
+        : !!toggleValue
+        ? binaryOptions.yes
+        : binaryOptions.no,
+  });
+
+  const binarySelectOptions = [
+    { value: null, label: null },
+    { value: true, label: binaryOptions.yes },
+    { value: false, label: binaryOptions.no },
+  ];
 
   //! Handle click outside event.
   const handleClickOutside = () => {
     if (isSelectedCell) {
       setSelectedCell(null);
-      updateCell(toggleValue);
+      updateCell(toggleSelect.value);
     }
   };
 
   //! A hook that fires a callback when the user clicks outside of the current cell.
   useOnClickOutside(toggleRef, handleClickOutside);
 
-  const handleToggle = (toggleValue) => {
-    setToggleValue(toggleValue);
-    !editByCell && updateCell(toggleValue);
+  const handleMenuClose = () => {
+    !editByCell && updateCell(toggleSelect.value);
   };
 
   //! Update cell value.
   const updateCell = (toggle) => {
-    if (toggle === null) return; //! If toggle value is null, do nothing and return early.
-    const textValue = toggle ? binaryOptions.yes : binaryOptions.no;
+    let textValue = !!toggle ? binaryOptions.yes : binaryOptions.no;
+
+    if (toggle === null) {
+      textValue = '';
+    }
 
     let binaryCell = {
       ...value,
@@ -60,12 +77,18 @@ const BinaryCell = (props) => {
     onCellChange(rowId, columnId, binaryCell, value);
   };
 
+  const handleSelectChange = (selected) => {
+    setToggleSelect(selected);
+  };
+
   //! UI for none editing cell.
   if (!canEdit) {
     return (
       <Styled.CellViewContainer>
         {TextValue ? (
-          <Styled.CellView type="h4">{TextValue}</Styled.CellView>
+          <Styled.SelectedItem className="table-binary-view" type="h6">
+            {TextValue}
+          </Styled.SelectedItem>
         ) : (
           <Styled.EmptyCellView></Styled.EmptyCellView>
         )}
@@ -76,9 +99,21 @@ const BinaryCell = (props) => {
   //! UI for editing cell.
   return (
     <Styled.BinaryCellWrapper ref={toggleRef}>
-      <ToggleButton onToggle={handleToggle} value={toggleValue}>
-        <BinaryButton options={binaryOptions} className="table-binary-cell" />
-      </ToggleButton>
+      <CustomSelect
+        value={toggleSelect}
+        isMulti={false}
+        hideSelectedOptions={false}
+        closeMenuOnSelect={false}
+        isClearable={false}
+        isSearchable={true}
+        placeholder={RVDic.Select}
+        options={binarySelectOptions}
+        onChange={handleSelectChange}
+        onMenuClose={handleMenuClose}
+        styles={Styled.selectStyles}
+        menuPortalTarget={document.body}
+        menuShouldScrollIntoView={false}
+      />
     </Styled.BinaryCellWrapper>
   );
 };

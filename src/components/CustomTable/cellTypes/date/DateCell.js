@@ -4,7 +4,7 @@ import * as Styled from './DateCell.styles';
 import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
 import { engToPerDate, getWeekDay } from 'helpers/helpers';
 import CalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
-import { CV_GRAY_DARK, TCV_DEFAULT } from 'constant/CssVariables';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 import { useCellProps } from 'components/CustomTable/tableUtils';
 import useOnClickOutside from 'hooks/useOnClickOutside';
@@ -82,7 +82,7 @@ const DateCell = (props) => {
     return (
       <Styled.CellViewContainer>
         {!!DateValue ? (
-          <Heading style={{ color: CV_GRAY_DARK }} type="h4">
+          <Heading className="table-date-view" type="h6">
             {showFormat}
           </Heading>
         ) : (
@@ -118,7 +118,7 @@ const DateCell = (props) => {
         )}>
         <Styled.DateCellContainer>
           {dateValue ? (
-            <Heading className="table-date-edit-title" type="h4">
+            <Heading className="table-date-edit-title" type="h6">
               {showFormat}
             </Heading>
           ) : (

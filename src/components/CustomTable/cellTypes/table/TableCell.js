@@ -72,6 +72,7 @@ const TableCell = (props) => {
           onClick={handleAddNewTable}
           title={RVDic.AddN.replace('[n]', RVDic.Table)}
           icon={<TableIcon size={18} />}
+          noBorder
         />
       ) : (
         <Styled.TableCellContainer ref={tableRef}>

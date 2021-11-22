@@ -9,7 +9,7 @@ const RowAction = (props) => {
       <Styled.TableActionIconWrapper>
         {cloneElement(icon)}
       </Styled.TableActionIconWrapper>
-      <Styled.TableActionHeading type="h4">{title}</Styled.TableActionHeading>
+      <Styled.TableActionHeading type="h6">{title}</Styled.TableActionHeading>
     </Styled.TableActionWrapper>
   );
 };
