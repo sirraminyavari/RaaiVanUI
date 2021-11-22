@@ -35,7 +35,7 @@ const Maintainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  margin: 0.25rem 1rem 0.25rem 1rem;
+  margin: 0.25rem 0rem 0.25rem 0rem;
 `;
 const Icon = styled.img`
   height: 2.2rem;

@@ -146,6 +146,8 @@ const Maintainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
+  flex: 1;
 `;
 const SelectedUser = styled.div`
   display: flex;
@@ -155,8 +157,7 @@ const SelectedUser = styled.div`
   border-width: 0.03rem;
   border-radius: 0.5rem;
   border-color: ${CV_DISTANT};
-  padding: 0 0.5rem 0 0.5rem;
-  margin: 0 0.5rem 0 0.5rem;
+
   height: 3rem;
 `;
 const UserName = styled.div`
