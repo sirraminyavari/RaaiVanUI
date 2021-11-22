@@ -30,10 +30,10 @@ import {
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 
-const { RV_RevFloat, RV_Float, RV_RTL } = window;
+const { RV_RevFloat, RV_Float, RV_RTL, RVGlobal } = window;
 
 const getNavbarWidth = ({ theme, isMobile }) => {
-  if (!!theme.states.selectedTeam?.id) {
+  if (!!theme.states.selectedTeam?.id || !!RVGlobal.ApplicationID) {
     if (theme.states.activePath === TEAMS_PATH) {
       return css`
         width: 100%;

@@ -15,8 +15,8 @@ const SidebarContentClose = lazy(() =>
 );
 
 const selectTeam = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state.applications,
+  (theme) => theme.currentApp
 );
 
 const selectSidebarContent = createSelector(
@@ -41,7 +41,7 @@ const CloseSidebar = () => {
   const isOpen = useSelector(selectIsSidebarOpen);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
-  const isTeamSelected = !!selectedTeam?.id;
+  const isTeamSelected = !!selectedTeam?.ApplicationID;
 
   return (
     <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>

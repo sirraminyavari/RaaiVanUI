@@ -19,6 +19,7 @@ import {
   INTRO_ONBOARD,
   CLASSES_PATH,
 } from 'constant/constants';
+import { decodeBase64 } from 'helpers/helpers';
 
 const { setSearchText } = sidebarMenuSlice.actions;
 const { setSidebarContent } = themeSlice.actions;
@@ -29,8 +30,8 @@ const selectShowSearchResults = createSelector(
 );
 
 const selectTeam = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state.applications,
+  (theme) => theme.currentApp
 );
 
 const selectOnboardingName = createSelector(
@@ -70,7 +71,7 @@ const SidebarMainContent = () => {
     <>
       <Styled.SidebarTitle>
         <Styled.TitleText as={!isIntroOnboarding && Link} to={CLASSES_PATH}>
-          {selectedTeam?.name}
+          {decodeBase64(selectedTeam?.Title)}
         </Styled.TitleText>
         <Styled.SettingWrapper onClick={handleOnClick}>
           <SettingIcon />
