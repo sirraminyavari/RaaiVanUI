@@ -23,8 +23,8 @@ const selectIsSidebarOpen = createSelector(
 );
 
 const selectTeam = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state.applications,
+  (theme) => theme.currentApp
 );
 
 const selectHasPattern = createSelector(
@@ -55,7 +55,8 @@ const SidebarHeader = () => {
     query: `(max-width: ${MOBILE_BOUNDRY})`,
   });
 
-  const isTeamSelected = !!selectedTeam?.id && !!RVGlobal?.ApplicationID;
+  const isTeamSelected =
+    !!selectedTeam?.ApplicationID || !!RVGlobal?.ApplicationID;
 
   //! Toggle sidebar drawer on click.
   const toggleDrawer = () => {

@@ -30,8 +30,8 @@ const selectApplications = createSelector(
 );
 
 const selectedApplication = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
+  (state) => state.applications,
+  (theme) => theme.currentApp
 );
 
 const AvatarMenuList = () => {
@@ -106,7 +106,9 @@ const AvatarMenuList = () => {
                 title={decodeBase64(Title)}
                 iconURL={IconURL}
                 textClass={
-                  selectedTeam.id === ApplicationID ? TC_VERYWARM : C_GRAY
+                  selectedTeam?.ApplicationID === ApplicationID
+                    ? TC_VERYWARM
+                    : C_GRAY
                 }
               />
             );

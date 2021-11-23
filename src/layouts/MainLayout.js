@@ -131,7 +131,7 @@ const Main = () => {
   });
 
   //! Check if user has selected a team.
-  const isTeamSelected = !!RVGlobal.ApplicationID && !!selectedTeam?.id;
+  const isTeamSelected = !!RVGlobal.ApplicationID || !!selectedTeam?.id;
 
   //! Provides the sidebar component.
   const getSidebar = () => {

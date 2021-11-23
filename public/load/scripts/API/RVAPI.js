@@ -298,6 +298,24 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    AddSystemAdmin: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/AddSystemAdmin?timeStamp=" + new Date().getTime();
+        var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "") +
+            (params.UserID ? "&UserID=" + params.UserID : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    RemoveSystemAdmin: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/RemoveSystemAdmin?timeStamp=" + new Date().getTime();
+        var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "") +
+            (params.UserID ? "&UserID=" + params.UserID : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
     GetDomains: function (params) {
         params = params || {};
 
