@@ -63,6 +63,7 @@ const Title = styled.div`
   padding: 0 1rem 0 1rem;
 `;
 const Children = styled.div`
+  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;

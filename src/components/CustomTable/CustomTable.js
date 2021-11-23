@@ -188,7 +188,11 @@ const CustomTable = (props) => {
   //! Renders the UI for your table.
   return (
     <Styled.TableContainer>
-      <TableAction onAddItem={handleAddItem} onSearch={onSearch} />
+      <TableAction
+        tableInstance={tableInstance}
+        onAddItem={handleAddItem}
+        onSearch={onSearch}
+      />
       <Suspense fallback={<ModalFallbackLoader />}>
         {modal.show && (
           <TableModal
@@ -233,7 +237,9 @@ const CustomTable = (props) => {
                     {...getTableBodyProps()}>
                     {page.map((row, i) => {
                       prepareRow(row);
-                      const isRowEditing = row.original.id === editingRowId;
+                      const isRowEditing =
+                        row.original.id === selectedCell?.row?.original?.id ||
+                        tempRowId === row.original.id;
                       return (
                         <Draggable
                           draggableId={row.original.id}

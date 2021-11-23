@@ -91,7 +91,7 @@ export const TableContainer = styled.div.attrs({
   width: 100%;
   padding: 1rem 0;
   position: relative;
-  // box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
   // border: 0.1rem solid #333;
 `;
 
@@ -188,8 +188,8 @@ export const HeaderAsterisk = styled.span`
 `;
 
 export const Tr = styled.div`
-  background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
-  // background-color: ${({ isEditing }) => (isEditing ? CV_GRAY : '')};
+  // background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
+  background-color: ${({ isEditing }) => (isEditing ? CV_GRAY_LIGHT : '')};
   // :not(:first-child) {
   //   border-top: 1px solid ${CV_DISTANT};
   // }
@@ -202,8 +202,7 @@ export const Tr = styled.div`
 
   &:hover {
     > div:not(:first-child) {
-      // background-color: ${({ isEditing }) => !isEditing && CV_FREEZED};
-      background-color: ${CV_FREEZED};
+      // background-color: ${CV_FREEZED};
       color: ${CV_BLACK};
     }
   }
@@ -239,7 +238,7 @@ export const TableColumnResizer = styled.div`
 export const TableCell = styled.div`
   ${FLEX_RCC}
   margin: 0;
-  padding: 0.5rem;
+  padding: 0.3rem;
   text-align: center;
   position: relative;
   border-${RV_Float}: 1px solid ${CV_DISTANT};
@@ -348,14 +347,13 @@ export const TableActionsContainer = styled.div`
 export const TableRowActionContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER} ${BG_WHITE}`,
 })`
-  position: absolute;
-  ${RV_Float}: 4.35rem;
   width: 8rem;
   height: auto;
   max-height: 7rem;
   color: ${CV_GRAY_DARK};
   padding: 0.5rem;
   box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  z-index: 3000;
 `;
 
 export const EditActionContainer = styled.div`
@@ -412,6 +410,10 @@ export const RowDragHandleWrapper = styled.div`
   height: calc(100% + 1rem);
   padding: 0.8rem;
   ${FLEX_CCC}
+
+  .table-action-menu {
+    border: none;
+  }
 `;
 
 export const TableSearchWrapper = styled.div`
@@ -432,6 +434,16 @@ export const TableSearchWrapper = styled.div`
 export const TableButtonsWrapper = styled.div`
   width: 70%;
   ${FLEX_RCE}
+  gap: 1rem;
+
+  .table-action-apply-change-btn {
+    height: 1.8rem;
+    width: 8rem;
+    border-radius: 1rem;
+    ${FLEX_RCC}
+    gap: 0.5rem;
+    user-select: none;
+  }
 `;
 
 const commonActionBTNCss = css`

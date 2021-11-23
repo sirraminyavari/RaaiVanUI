@@ -1,40 +1,42 @@
-import { useState, useRef } from 'react';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import RowActionMenu from './RowActionMenu';
 import RowEditMenu from './RowEditMenu';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
-import useOnClickOutside from 'hooks/useOnClickOutside';
+import PopupMenu from 'components/PopupMenu/PopupMenu';
+import useWindow from 'hooks/useWindowContext';
 
 const ActionsCell = (props) => {
+  const { RV_Float } = useWindow();
   const { cell } = props;
   const { row, tempRowId, editingRowId, dragHandleProps } = cell || {};
-  const [showActions, setShowActions] = useState(false);
-  const actionRef = useRef();
 
   const rowId = row?.original?.id;
 
-  useOnClickOutside(actionRef, () => {
-    setShowActions(false);
-  });
-
-  const handleShowActions = () => {
-    setShowActions((showAction) => !showAction);
-  };
+  const isNewRow = tempRowId === rowId;
+  const isEditingRow = editingRowId === rowId;
 
   let child;
 
-  if (editingRowId === rowId || tempRowId === rowId) {
+  if (isEditingRow) {
     //! Show Edit mode menu.
     child = <RowEditMenu cell={cell} />;
   } else {
     //! Show Actions Menu.
     child = (
-      <Styled.RowDragHandleWrapper
-        ref={actionRef}
-        onClick={handleShowActions}
-        {...dragHandleProps}>
-        <DragIcon />
-        {showActions && <RowActionMenu cell={cell} />}
+      <Styled.RowDragHandleWrapper {...dragHandleProps}>
+        {isNewRow ? (
+          <DragIcon />
+        ) : (
+          <PopupMenu
+            trigger="click"
+            align={RV_Float}
+            menuClass="table-action-menu">
+            <div>
+              <DragIcon />
+            </div>
+            <RowActionMenu cell={cell} />
+          </PopupMenu>
+        )}
       </Styled.RowDragHandleWrapper>
     );
   }

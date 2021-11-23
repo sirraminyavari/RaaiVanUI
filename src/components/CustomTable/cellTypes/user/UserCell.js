@@ -130,7 +130,11 @@ const UserCell = (props) => {
           multi={isMultiSelect}
           buttonComponent={
             <AddNewUserButton
-              title={RVDic?.SelectN?.replace('[n]', RVDic?.User)}
+              title={
+                isMultiSelect
+                  ? RVDic?.SelectN?.replace('[n]', RVDic?.User)
+                  : 'تغییر کاربر'
+              }
               icon={<UserIcon size={23} />}
               noBorder
             />
