@@ -26,12 +26,8 @@ import {
   VERIFICATION_PATH,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
-import {
-  // getSidebarNodes,
-  getUnderMenuPermissions,
-} from 'store/actions/sidebar/sidebarMenuAction';
+import { getUnderMenuPermissions } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
-// import useQuery from 'hooks/useQuery';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 
@@ -56,10 +52,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const [isChecking, setIsChecking] = useState(true);
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
-  // const queryParams = useQuery();
-  // console.count('Check-route: ');
 
-  const getQuery = () => {
+  //! Provides query parameters for a given location.
+  const getQueryParams = () => {
     const queryAll = new URLSearchParams(location.search).toString();
     const queryList = queryAll.split('&');
     const qr = queryList.reduce((prev, q) => {
@@ -73,17 +68,21 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   };
 
   useEffect(() => {
-    // console.count('Check-route-API: ');
-    const params = { ...routeParams, ...getQuery() };
+    const params = { ...routeParams, ...getQueryParams() };
+    //! The location before check route api resolves.
     const prevURL = window.location.href;
-
+    //! Set check route flag to true.
     setIsChecking(true);
 
     checkRouteAPI.fetch(
       { RouteName: name, Parameters: params },
       (response) => {
+        //! The location after check route api resolves.
         const currentURL = window.location.href;
+        //! Store current url in urlRef.
         urlRef.current = currentURL;
+        //! If the location before and after check route api are same,
+        //! then set check route flag to false and set route object.
         prevURL === currentURL && setRoute(response);
         setIsChecking(false);
       },
@@ -101,43 +100,48 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
 
+  //! Do some changes when route object is set.
   useEffect(() => {
-    //! Set selected team.
+    //! If route object has application property, then set current application.
     if (route?.Application) {
       const application = {
         name: decodeBase64(route.Application.Title),
         id: route.Application.ApplicationID,
       };
+      //! Set selected app.
       dispatch(setSelectedTeam(application));
       dispatch(setCurrentApp(route?.Application));
-      // dispatch(getSidebarNodes());
+      //! Get configs based on current application.
       dispatch(getConfigPanels());
       dispatch(getUnderMenuPermissions(['Reports']));
-      // if (!!response.Onboarding) {
-      //   dispatch(onboardingName(response.Onboarding?.name || ''));
-      //   dispatch(onboardingStep(response.Onboarding?.fromStep || 0));
-      // }
     }
 
     //! Reset team to null if user is authenticated but has not selected a team yet.
     if (route.IsAuthenticated && !route.AppID) {
-      dispatch(toggleSidebar(false)); //! Close sidebar.
-      dispatch(setSelectedTeam({ name: null, id: null })); //! Clear selected team.
+      //! Close sidebar.
+      dispatch(toggleSidebar(false));
+      //! Clear selected team.
+      dispatch(setSelectedTeam({ name: null, id: null }));
       dispatch(setCurrentApp(null));
-      dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' })); //! Reset sidebar content to default.
-      dispatch(setSidebarDnDTree({})); //! Clear sidebar tree items.
+      //! Reset sidebar content to default.
+      dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' }));
+      //! Clear sidebar tree items.
+      dispatch(setSidebarDnDTree({}));
     }
 
-    //! Set active path.
+    //! Set active path on every route change.
     dispatch(setActivePath(location.pathname));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   useEffect(() => {
+    //! The 'hasNavSide' is used to toggle navbar and sidebar.
+    //! And user can change it for any route in the app(src/routes folder).
     dispatch(toggleNavSide(hasNavSide));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
+  //! A flag that indicates if the view is authentication page or not.
   const isAuthView = [
     FORGOT_PASS_PATH,
     LOGIN_PATH,
@@ -153,8 +157,10 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const isTeamsView = location.pathname === TEAMS_PATH;
 
   if (isChecking) {
+    //! If check route api is still running, then show loader.
     return <LogoLoader />;
   } else if (route?.ServiceUnavailable) {
+    //! If check route api is resolved and some exotic exception happens.
     return <Exception message="Service Unavailable" />;
   } else if (route?.NoApplicationFound) {
     return <Exception message="No Application Found" />;
@@ -163,6 +169,8 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   } else if (route?.NullProfileException) {
     return <Exception message="Null Profile Exception" />;
   } else if (route?.RedirectToLogin && !isAuthView) {
+    //! If check route api is resolved and user is not authenticated, then redirect to login page.
+    //! Also update redux state and RVGlobal object in window.
     dispatch(setIsAthunticated(false));
     setRVGlobal({ IsAuthenticated: false });
     return (
@@ -174,6 +182,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       />
     );
   } else if (route?.RedirectToHome && !isHomeView) {
+    //! If check route api is resolved and user is authenticated, then redirect to home page.
     return (
       <Redirect
         to={{
@@ -183,6 +192,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       />
     );
   } else if (route?.RedirectToProfile && !isUserView) {
+    //! If check route api is resolved and user is authenticated, then redirect to profile page.
     const path = route.RedirectToProfile;
     const isString = typeof path === 'string';
     return (
@@ -194,6 +204,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       />
     );
   } else if (route?.RedirectToTeams && !isTeamsView) {
+    //! If check route api is resolved and user is authenticated, then redirect to teams page.
     return (
       <Redirect
         to={{
@@ -203,6 +214,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       />
     );
   } else if (route?.RedirectToChangePassword) {
+    //! If check route api is resolved and route object force user to change password page.
     return (
       <Redirect
         to={{
@@ -212,14 +224,16 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       />
     );
   } else if (route?.RedirectToURL) {
+    //! If check route api is resolved and route object force user to redirect to some url.
     const url = route?.RedirectToURL;
     window.location.href = url;
   } else {
-    const isUrlChanged = urlRef.current === window.location.href;
-    if (!isUrlChanged) {
+    const isSameUrl = urlRef.current === window.location.href;
+    if (!isSameUrl) {
+      //! If url changed then show loader to get new route object.
       return <LogoLoader />;
     } else {
-      // console.count('Page-mount-count: ');
+      //! At the end of all above checks, then render the component.
       return <Component {...props} route={route} />;
     }
   }

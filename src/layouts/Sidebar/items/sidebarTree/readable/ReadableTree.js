@@ -20,6 +20,10 @@ const selectOnboardingName = createSelector(
   (onboarding) => onboarding.name
 );
 
+/**
+ * Renders nodes tree in readable format.
+ * @returns {React.Component}
+ */
 const ReadableTree = () => {
   const dispatch = useDispatch();
   const sidebarDnDTree = useSelector(selectSidebarDnDTree);

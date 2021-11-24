@@ -46,6 +46,10 @@
             (params.Department ? "&Department=" + params.Department : "") +
             (params.LockedStatus ? "&LockedStatus=" + params.LockedStatus : "") +
             (params.ApprovedStatus ? "&ApprovedStatus=" + params.ApprovedStatus : "") +
+            (params.SystemAdminStatus ? "&SystemAdminStatus=" + params.SystemAdminStatus : "") +
+            (params.LastActivityTime ? "&LastActivityTime=" + params.LastActivityTime : "") +
+            (params.MainEmail ? "&MainEmail=" + params.MainEmail : "") +
+            (params.MainPhoneNumber ? "&MainPhoneNumber=" + params.MainPhoneNumber : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +
             (params.Count ? "&Count=" + params.Count : "") + "&text=";
         return UsersAPI._send(url, params, queryString);

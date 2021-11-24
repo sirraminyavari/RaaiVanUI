@@ -657,6 +657,16 @@
         return CNAPI._send(url, params, queryString);
     },
 
+    GetGroupsAll: function (params) {
+        params = params || {};
+
+        if (!params.NodeTypeIDs) params.NodeTypeIDs = params.NodeTypeID;
+
+        var url = CNAPI.ResponseURL + "/GetGroupsAll?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return CNAPI._send(url, params, queryString);
+    },
+
     MakeAdmin: function (params) {
         params = params || {};
 

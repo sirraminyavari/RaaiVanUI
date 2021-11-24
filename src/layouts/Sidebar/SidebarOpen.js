@@ -65,10 +65,12 @@ const OpenSidebar = () => {
   const isIntroOnboarding =
     !!onboardingName && onboardingName === INTRO_ONBOARD;
 
+  //! Update sidebar open width.
   const handleOnResizeEnd = (size) => {
     dispatch(setOpenWidth(size.width));
   };
 
+  //! Update sidebar current width.
   const handleOnResizing = (size) => {
     dispatch(setCurrentWidth(size.width));
   };
