@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import useWindowContext from '../../../../hooks/useWindowContext';
 import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
+import AutoSuggestInput from '../../../../components/Inputs/AutoSuggestInput/AutoSuggestInput';
 
 const Users = (props) => {
   // useScript(
@@ -25,7 +26,9 @@ const Users = (props) => {
   // );
 
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
-  const SAASBasedMultiTenancy = false; //RVGlobal.SAASBasedMultiTenancy,
+  const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
+
+  console.log('RVGlobal: ', SAASBasedMultiTenancy);
 
   const [showInvitationForm, setShowInvitationForm] = useState(false);
   /**
@@ -63,19 +66,20 @@ const Users = (props) => {
 
             <Styled.TopBar>
               <SearchUserInput placeholder={'فیلتر براساس نام کاربر'} />
-              {!SAASBasedMultiTenancy && (
+              {/*<AutoSuggestInput placeholder={'فیلتر براساس نام کاربر'} />*/}
+              {SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
                   {'دعوت هم تیمی جدید'}
                 </AddUserButton>
               )}
-              {SAASBasedMultiTenancy && (
+              {!SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
                   {'ایجاد کاربر جدید'}
                 </AddUserButton>
               )}
             </Styled.TopBar>
 
-            {SAASBasedMultiTenancy ? (
+            {!SAASBasedMultiTenancy ? (
               <MultiTenantList rtl={RV_RTL} />
             ) : (
               <div>

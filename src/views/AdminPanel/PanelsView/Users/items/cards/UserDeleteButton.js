@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import Modal from '../../../../../../components/Modal/Modal';
+import Modal from 'components/Modal/Modal';
 import { useState } from 'react';
-import Button from '../../../../../../components/Buttons/Button';
-import Heading from '../../../../../../components/Heading/Heading';
+import Button from 'components/Buttons/Button';
+import Heading from 'components/Heading/Heading';
 
 const UserDeleteButton = ({ children, render, ...rest }) => {
   const [modalInfo, setModalInfo] = useState({

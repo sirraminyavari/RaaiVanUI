@@ -1,9 +1,8 @@
 import * as Styled from './ListStyled';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { teamUsers } from '../_lurem';
-import { getUUID } from 'helpers/helpers';
+import { decodeBase64, getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
-import { ListHeader } from './ListStyled';
 
 const TeamBasedList = ({ rtl, ...props }) => {
   const users = useMemo(() => teamUsers, []);

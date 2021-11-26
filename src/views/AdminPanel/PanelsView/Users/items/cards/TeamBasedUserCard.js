@@ -5,15 +5,17 @@ import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
 import UserDeleteButton from './UserDeleteButton';
 import UserGroupEdit from './UserGroupEdit';
 const TeamBasedUserCard = ({
-  ProfileUrl,
-  Name,
+  ImageUrl,
+  FullName,
   Email,
   IsAdmin,
   lastTime,
   lastDate,
   ...props
 }) => {
-  const userTitle = <UserFullNameTitle ProfileUrl={ProfileUrl} Name={Name} />;
+  const userTitle = (
+    <UserFullNameTitle ImageUrl={ImageUrl} FullName={FullName} />
+  );
 
   return (
     <>
@@ -33,7 +35,7 @@ const TeamBasedUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={8}>
-        <UserGroupEdit IsAdmin={IsAdmin} Name={Name} />
+        <UserGroupEdit IsAdmin={IsAdmin} Name={FullName} />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>
