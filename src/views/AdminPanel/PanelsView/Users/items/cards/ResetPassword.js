@@ -1,10 +1,17 @@
 import styled from 'styled-components';
-import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_GRAY_LIGHT,
+  CV_WHITE,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
 import ReloadCircleIcon from 'components/Icons/ReloadCircleIcon/ReloadCircleIcon';
 import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
+import Button from 'components/Buttons/Button';
 
-const ResetPassword = ({ render, ...props }) => {
+const ResetPassword = ({ render, onResetPasswordConfirm, ...props }) => {
   const [modalInfo, setModalInfo] = useState({
     title: 'بازنشانی گذرواژه',
     contentWidth: '30%',
@@ -16,6 +23,7 @@ const ResetPassword = ({ render, ...props }) => {
 
   const onModalConfirm = () => {
     setModalInfo({ ...modalInfo, show: false });
+    onResetPasswordConfirm();
   };
 
   const onModalCancel = () => {
@@ -23,22 +31,46 @@ const ResetPassword = ({ render, ...props }) => {
   };
 
   return (
-    <>
-      <ResetButtonContainer
-        onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
+    <Container>
+      <ResetButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
         <ReloadCircleIcon size={22} />
-      </ResetButtonContainer>
+      </ResetButton>
 
       <Modal
         {...modalInfo}
         onClose={() => setModalInfo({ ...modalInfo, show: false })}>
         <ProfileWrapper>{render}</ProfileWrapper>
+
+        <ActionContainer>
+          <RemoveMessage>{'آیا قصد بازنشانی گذرواژه را دارید؟'}</RemoveMessage>
+          <ActionButtonContainer>
+            <Button
+              type="primary"
+              style={buttonStyles}
+              onClick={() => onModalConfirm()}>
+              {'بازنشانی'}
+            </Button>
+
+            <Button
+              type="negative-o"
+              style={buttonStyles}
+              onClick={() => onModalCancel()}>
+              {'بازگشت'}
+            </Button>
+          </ActionButtonContainer>
+        </ActionContainer>
       </Modal>
-    </>
+    </Container>
   );
 };
 
-const ResetButtonContainer = styled.div`
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ResetButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,5 +90,37 @@ const ProfileWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 2.5rem;
 `;
+
+const ActionContainer = styled.div`
+  margin-top: 4rem;
+  height: 12.6rem;
+  border-radius: 0.5rem;
+  background-color: ${CV_GRAY_LIGHT};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+`;
+
+const RemoveMessage = styled.div`
+  color: ${CV_GRAY};
+  font-size: 1.1rem;
+  height: 1.75rem;
+  line-height: 1.75rem;
+`;
+
+const ActionButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const buttonStyles = {
+  height: '3rem',
+  width: '7.5rem',
+};
 export default ResetPassword;

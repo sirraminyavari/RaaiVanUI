@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 
-const UserDeleteButton = ({ children, render, ...rest }) => {
+const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
   const [modalInfo, setModalInfo] = useState({
     title: 'حذف کاربر',
     contentWidth: '30%',
@@ -16,6 +16,7 @@ const UserDeleteButton = ({ children, render, ...rest }) => {
 
   const onModalConfirm = () => {
     setModalInfo({ ...modalInfo, show: false });
+    onModalConfirm();
   };
 
   const onModalCancel = () => {

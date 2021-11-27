@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getUsers } from '../api';
+import { getGroupsAll, getUsers } from '../api';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import * as Styled from './ListStyled';
 import ORGUserCard from './cards/ORGUserCard';
@@ -7,9 +7,14 @@ import ORGUserCard from './cards/ORGUserCard';
 const MultiTenantList = ({ rtl, searchText, ...props }) => {
   const [users, setUsers] = useState([]);
 
-  useEffect(async () => {
-    const res = await getUsers(searchText);
-    setUsers(res);
+  useEffect(() => {
+    getUsers(searchText)
+      .then((res) => {
+        setUsers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [searchText]);
 
   const userCards = useMemo(
@@ -21,6 +26,16 @@ const MultiTenantList = ({ rtl, searchText, ...props }) => {
       )),
     [users]
   );
+
+  useEffect(() => {
+    getGroupsAll()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
@@ -64,10 +79,12 @@ const listHeaderData = [
   {
     title: 'بازنشانی گذرواژه',
     width: 10,
+    centralized: true,
   },
   {
     title: 'فعال/غیرفعال',
     width: 10,
+    centralized: true,
   },
 ];
 export default MultiTenantList;

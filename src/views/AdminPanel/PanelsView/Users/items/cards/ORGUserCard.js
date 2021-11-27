@@ -3,9 +3,14 @@ import UserFullNameTitle from './UserFullNameTitle';
 import ResetPassword from './ResetPassword';
 import { useMemo, useState } from 'react';
 import InlineEditableTitle from './InlineEditableTitle';
-import { setUserName, updateApprovedStatus } from '../../api';
+import {
+  setRandomPassword,
+  setUserName,
+  updateApprovedStatus,
+} from '../../api';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
+import UserGroupEdit from './UserGroupEdit';
 
 const ORGUserCard = ({
   FirstName,
@@ -61,6 +66,16 @@ const ORGUserCard = ({
       });
   };
 
+  const handleResetPassword = () => {
+    setRandomPassword(UserID)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Styled.ListBodyItem width={25}>{userTitle}</Styled.ListBodyItem>
@@ -75,10 +90,15 @@ const ORGUserCard = ({
         {LastActivityTime_Local}
       </Styled.ListBodyItem>
 
-      <Styled.ListBodyItem width={10}></Styled.ListBodyItem>
+      <Styled.ListBodyItem width={10}>
+        <UserGroupEdit />
+      </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={10}>
-        <ResetPassword render={userTitle} />
+        <ResetPassword
+          render={userTitle}
+          onResetPasswordConfirm={handleResetPassword}
+        />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={10}>

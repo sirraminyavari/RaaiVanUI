@@ -17,7 +17,7 @@ import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
-const UserGroupEdit = ({ Name, IsAdmin, ...props }) => {
+const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
   const { RV_RTL } = useWindowContext();
 
   const [modalInfo, setModalInfo] = useState({
@@ -39,7 +39,7 @@ const UserGroupEdit = ({ Name, IsAdmin, ...props }) => {
     setModalInfo({ ...modalInfo, show: false });
   };
   return (
-    <>
+    <Container>
       <ButtonContainer
         onClick={() => setModalInfo({ ...modalInfo, show: true })}>
         <Icon />
@@ -70,7 +70,7 @@ const UserGroupEdit = ({ Name, IsAdmin, ...props }) => {
         {showGroups && (
           <ContentContainer>
             <ModalMessage rtl={RV_RTL}>
-              {` دسترسی‌های موردنظر برای ${Name} را انتخاب نمایید: `}
+              {` دسترسی‌های موردنظر برای ${FullName} را انتخاب نمایید: `}
             </ModalMessage>
             <OptionLayout>
               <UserGroupCheckbox
@@ -103,7 +103,7 @@ const UserGroupEdit = ({ Name, IsAdmin, ...props }) => {
         {!showGroups && (
           <ContentContainer>
             <ModalMessage rtl={RV_RTL}>
-              {`دسترسی‌های موردنظر برای ${Name} را انتخاب نمایید:`}
+              {`دسترسی‌های موردنظر برای ${FullName} را انتخاب نمایید:`}
             </ModalMessage>
             <OptionLayout>
               <UserAccessOption>
@@ -187,9 +187,16 @@ const UserGroupEdit = ({ Name, IsAdmin, ...props }) => {
           </Button>
         </ModelActionBar>
       </Modal>
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ButtonContainer = styled.div.attrs({
   className: 'rv-bg-color-white',
 })`

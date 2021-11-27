@@ -1,25 +1,25 @@
 import styled from 'styled-components';
 import Heading from '../../../../../../components/Heading/Heading';
+import { CV_GRAY_LIGHT } from '../../../../../../constant/CssVariables';
 
 const UserFullNameTitle = ({
   ImageURL,
   FullName,
   editable,
-  column = true,
+  column = false,
   ...props
 }) => {
-  return (
+  return !column ? (
     <TitleContainer>
       {ImageURL && <UserProfileImg src={ImageURL} />}
       <UserTitle>{FullName}</UserTitle>
     </TitleContainer>
+  ) : (
+    <ColumnContainer>
+      {ImageURL && <UserProfileImg src={ImageURL} />}
+      <UserTitleColumn height={'1.5rem'}>{FullName}</UserTitleColumn>
+    </ColumnContainer>
   );
-  //   : (
-  //   <ColumnContainer>
-  //     {ImageURL && <UserProfileImg src={ImageURL} />}
-  //     <UserTitle height={'1.5rem'}>{FullName}</UserTitle>
-  //   </ColumnContainer>
-  // );
 };
 
 const TitleContainer = styled.div`
@@ -35,8 +35,15 @@ const ColumnContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+  height: 5rem;
 `;
 
+const UserTitleColumn = styled.div`
+  font-weight: 500;
+  font-size: 1rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+`;
 const UserProfileImg = styled.img`
   height: 2.8rem;
   width: 2.8rem;

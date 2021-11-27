@@ -1,9 +1,8 @@
 import * as Styled from './ListStyled';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { teamUsers } from '../_lurem';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
-import { getUsers } from '../api';
+import { getGroupsAll, getUsers } from '../api';
 
 const TeamBasedList = ({ rtl, searchText, ...props }) => {
   const [users, setUsers] = useState([]);
@@ -15,6 +14,16 @@ const TeamBasedList = ({ rtl, searchText, ...props }) => {
     setUsers(res);
   }, [searchText]);
 
+  useEffect(() => {
+    getGroupsAll()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+
   const userCards = useMemo(
     () =>
       users?.slice(0, showMore ? users.length : 3)?.map((x) => (
@@ -24,8 +33,6 @@ const TeamBasedList = ({ rtl, searchText, ...props }) => {
       )),
     [showMore, users]
   );
-
-  console.log(userCards);
 
   return (
     <>
@@ -76,6 +83,7 @@ const listHeaderData = [
   {
     title: 'گروه ها',
     width: 8,
+    centralized: true,
   },
   {
     title: '',
