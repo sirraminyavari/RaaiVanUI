@@ -1,17 +1,36 @@
 import styled from 'styled-components';
 import Heading from '../../../../../../components/Heading/Heading';
 
-const UserFullNameTitle = ({ ProfileUrl, Name, ...props }) => {
-  return (
+const UserFullNameTitle = ({
+  ImageUrl,
+  FullName,
+  editable,
+  column = false,
+  ...props
+}) => {
+  return !column ? (
     <TitleContainer>
-      {ProfileUrl && <UserProfileImg src={ProfileUrl} />}
-      <UserTitle>{Name}</UserTitle>
+      {ImageUrl && <UserProfileImg src={ImageUrl} />}
+      <UserTitle>{FullName}</UserTitle>
     </TitleContainer>
+  ) : (
+    <ColumnContainer>
+      {ImageUrl && <UserProfileImg src={ImageUrl} />}
+      <UserTitle height={'1.5rem'}>{FullName}</UserTitle>
+    </ColumnContainer>
   );
 };
 
 const TitleContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
@@ -28,6 +47,7 @@ const UserTitle = styled(Heading).attrs({
 })`
   font-size: 1rem !important;
   font-weight: 500 !important;
+  ${({ height }) => height && `height: ${height}`}
 `;
 
 export default UserFullNameTitle;
