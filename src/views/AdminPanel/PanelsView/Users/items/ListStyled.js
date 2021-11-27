@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import ToggleButton from '../../../../../components/Buttons/Toggle/Toggle';
 
 export const ListContainer = styled.table`
   margin: ${({ top, bottom }) => `${top ?? 0}rem auto ${bottom ?? 0}rem auto`};
@@ -24,6 +23,7 @@ export const ListHeaderItem = styled.th`
   width: ${({ width }) => width}%;
   text-align: ${({ centralized }) => (centralized ? 'center' : 'auto')};
   font-weight: 400;
+  user-select: none;
 `;
 
 export const ListBody = styled.tbody`
@@ -42,6 +42,7 @@ export const ListBodyItem = styled.td`
   display: inline-block;
   width: ${({ width }) => width}%;
   overflow: hidden;
+  user-select: none;
 `;
 
 export const ShowMoreButton = styled.button`

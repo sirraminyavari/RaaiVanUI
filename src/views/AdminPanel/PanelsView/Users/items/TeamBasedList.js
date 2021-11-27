@@ -3,16 +3,29 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { teamUsers } from '../_lurem';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
+import { getUsers } from '../api';
 
-const TeamBasedList = ({ rtl, ...props }) => {
-  const users = useMemo(() => teamUsers, []);
+const TeamBasedList = ({ rtl, searchText, ...props }) => {
+  const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(false);
 
-  const userCards = users?.slice(0, showMore ? users.length : 3)?.map((x) => (
-    <Styled.ListRow rtl={rtl} key={getUUID()}>
-      <TeamBasedUserCard {...x} />
-    </Styled.ListRow>
-  ));
+  useEffect(async () => {
+    const res = await getUsers(searchText);
+    console.log('list of users: (Saas)', res);
+    setUsers(res);
+  }, [searchText]);
+
+  const userCards = useMemo(
+    () =>
+      users?.slice(0, showMore ? users.length : 3)?.map((x) => (
+        <Styled.ListRow rtl={rtl} key={getUUID()}>
+          <TeamBasedUserCard {...x} />
+        </Styled.ListRow>
+      )),
+    [showMore, users]
+  );
+
+  console.log(userCards);
 
   return (
     <>
@@ -33,9 +46,11 @@ const TeamBasedList = ({ rtl, ...props }) => {
         <Styled.ListBody>{userCards}</Styled.ListBody>
       </Styled.ListContainer>
 
-      <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
-        {'مشاهده همه'}
-      </Styled.ShowMoreButton>
+      {users.length > 3 && (
+        <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
+          {'مشاهده همه'}
+        </Styled.ShowMoreButton>
+      )}
     </>
   );
 };

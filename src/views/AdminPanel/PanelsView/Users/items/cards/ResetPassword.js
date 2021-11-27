@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
+import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import ReloadCircleIcon from 'components/Icons/ReloadCircleIcon/ReloadCircleIcon';
 import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
@@ -29,7 +29,9 @@ const ResetPassword = ({ render, ...props }) => {
         <ReloadCircleIcon size={22} />
       </ResetButtonContainer>
 
-      <Modal {...modalInfo}>
+      <Modal
+        {...modalInfo}
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
         <ProfileWrapper>{render}</ProfileWrapper>
       </Modal>
     </>
@@ -46,6 +48,10 @@ const ResetButtonContainer = styled.div`
   border-radius: 100%;
   color: ${CV_DISTANT};
   cursor: pointer;
+
+  &:hover {
+    color: ${TCV_DEFAULT};
+  }
 `;
 const ProfileWrapper = styled.div`
   width: 100%;

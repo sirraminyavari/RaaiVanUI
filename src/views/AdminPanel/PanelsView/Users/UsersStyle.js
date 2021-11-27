@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Breadcrumb from '../../../../components/Breadcrumb/Breadcrumb';
-import Heading from '../../../../components/Heading/Heading';
-import { CV_RED, CV_WHITE } from '../../../../constant/CssVariables';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
+import Heading from 'components/Heading/Heading';
+import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 
 export const UserManagementContainer = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};

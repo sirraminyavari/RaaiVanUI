@@ -8,25 +8,12 @@ import useWindowContext from '../../../../hooks/useWindowContext';
 import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import AutoSuggestInput from '../../../../components/Inputs/AutoSuggestInput/AutoSuggestInput';
+import Input from '../../../../components/Inputs/Input';
 
 const Users = (props) => {
-  // useScript(
-  //   'pageLoadScripts/LoadUsers/LoadUsers.js',
-  //   'LoadUsers.js',
-  //   (users) => {
-  //     !isEmpty(users) && window.loadUsers(users);
-  //   },
-  //   props.route
-  // );
-  // return (
-  //   <div
-  //     id="usersArea"
-  //     className="small-12 medium-12 large-12 row align-center"
-  //     style={{ marginBottom: '5rem', padding: '0 10vw 0 10vw' }}></div>
-  // );
-
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
+  const [searchText, setSearchText] = useState('');
 
   console.log('RVGlobal: ', SAASBasedMultiTenancy);
 
@@ -56,6 +43,10 @@ const Users = (props) => {
   useEffect(() => {
     console.log(showInvitationForm);
   }, [showInvitationForm]);
+
+  useEffect(() => {
+    console.log(searchText);
+  }, [searchText]);
   return (
     <Styled.UserManagementContainer rtl={RV_RTL}>
       <Styled.UserManagementContentCard>
@@ -65,8 +56,10 @@ const Users = (props) => {
             <Styled.HeadingWrapper>{'اعضای تیم'}</Styled.HeadingWrapper>
 
             <Styled.TopBar>
-              <SearchUserInput placeholder={'فیلتر براساس نام کاربر'} />
-              {/*<AutoSuggestInput placeholder={'فیلتر براساس نام کاربر'} />*/}
+              <SearchUserInput
+                changeOrEnterListener={(e) => setSearchText(e.target.value)}
+                placeholder={'فیلتر براساس نام کاربر'}
+              />
               {SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
                   {'دعوت هم تیمی جدید'}
@@ -80,10 +73,10 @@ const Users = (props) => {
             </Styled.TopBar>
 
             {!SAASBasedMultiTenancy ? (
-              <MultiTenantList rtl={RV_RTL} />
+              <MultiTenantList searchText={searchText} rtl={RV_RTL} />
             ) : (
               <div>
-                <TeamBasedList rtl={RV_RTL} />
+                <TeamBasedList searchText={searchText} rtl={RV_RTL} />
 
                 <InvitedUserList />
               </div>

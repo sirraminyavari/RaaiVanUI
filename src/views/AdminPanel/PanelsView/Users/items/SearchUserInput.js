@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
+import Input from 'components/Inputs/Input';
 
 const InputWrapper = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const InputWrapper = styled.div`
   background-color: var(--rv-white-color);
 `;
 
-const CustomInput = styled.input.attrs({
+const CustomInput = styled(Input).attrs({
   type: 'text',
 })`
   outline: none;

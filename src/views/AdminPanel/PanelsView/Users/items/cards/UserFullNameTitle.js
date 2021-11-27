@@ -2,23 +2,24 @@ import styled from 'styled-components';
 import Heading from '../../../../../../components/Heading/Heading';
 
 const UserFullNameTitle = ({
-  ImageUrl,
+  ImageURL,
   FullName,
   editable,
-  column = false,
+  column = true,
   ...props
 }) => {
-  return !column ? (
+  return (
     <TitleContainer>
-      {ImageUrl && <UserProfileImg src={ImageUrl} />}
+      {ImageURL && <UserProfileImg src={ImageURL} />}
       <UserTitle>{FullName}</UserTitle>
     </TitleContainer>
-  ) : (
-    <ColumnContainer>
-      {ImageUrl && <UserProfileImg src={ImageUrl} />}
-      <UserTitle height={'1.5rem'}>{FullName}</UserTitle>
-    </ColumnContainer>
   );
+  //   : (
+  //   <ColumnContainer>
+  //     {ImageURL && <UserProfileImg src={ImageURL} />}
+  //     <UserTitle height={'1.5rem'}>{FullName}</UserTitle>
+  //   </ColumnContainer>
+  // );
 };
 
 const TitleContainer = styled.div`

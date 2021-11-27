@@ -1,31 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getUsers } from '../api';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import * as Styled from './ListStyled';
 import ORGUserCard from './cards/ORGUserCard';
 
-const MultiTenantList = (rtl, ...props) => {
+const MultiTenantList = ({ rtl, searchText, ...props }) => {
   const [users, setUsers] = useState([]);
+
   useEffect(async () => {
-    const response = await getUsers('');
+    const res = await getUsers(searchText);
+    setUsers(res);
+  }, [searchText]);
 
-    const listOfUsers = response?.Users?.map((x) => ({
-      ...x,
-      FirstName: decodeBase64(x?.FirstName),
-      LastName: decodeBase64(x?.LastName),
-      FullName: decodeBase64(x?.FullName),
-      JobTitle: decodeBase64(x?.JobTitle),
-      UserName: decodeBase64(x?.UserName),
-    }));
-    console.log(listOfUsers);
-    setUsers(listOfUsers);
-  }, []);
-
-  const userCards = users?.map((x) => (
-    <Styled.ListRow rtl={rtl} key={getUUID()}>
-      <ORGUserCard {...x} />
-    </Styled.ListRow>
-  ));
+  const userCards = useMemo(
+    () =>
+      users?.map((x) => (
+        <Styled.ListRow rtl={rtl} key={getUUID()}>
+          <ORGUserCard {...x} />
+        </Styled.ListRow>
+      )),
+    [users]
+  );
 
   return (
     <>

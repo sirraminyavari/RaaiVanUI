@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { invitedUsers, teamUsers } from '../_lurem';
+import { invitedUsers } from '../_lurem';
 import * as Styled from './ListStyled';
 import { getUUID } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
