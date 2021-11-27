@@ -27,7 +27,7 @@ const BinaryField = ({
       onBlur={() => {
         console.log('binary blured!!!');
       }}
-      iconComponent={<ToggleIcon color={CV_GRAY} />}
+      iconComponent={<ToggleIcon color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
       {value !== null ? (

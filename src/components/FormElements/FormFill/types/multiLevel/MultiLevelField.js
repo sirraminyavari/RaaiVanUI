@@ -1,6 +1,6 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
 import FilterIconIo from 'components/Icons/FilterIconIo';
-import { CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
@@ -69,7 +69,7 @@ const MultiLevelField = ({
 
   return (
     <FormCell
-      iconComponent={<FilterIconIo color={CV_GRAY} />}
+      iconComponent={<FilterIconIo color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
       {console.log(levels, 'levels')}
@@ -137,6 +137,13 @@ const customStyles = {
     margin: '0.35rem 0.5rem 0.35rem 0.5rem',
     cursor: 'pointer',
     minWidth: '10rem',
+    padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+    backgroundColor: isFocused && CV_FREEZED,
+    ':hover': {
+      color: TCV_WARM,
+      backgroundColor: CV_FREEZED,
+      padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+    },
   }),
   control: (provided) => ({
     // none of react-select's styles are passed to <Control />

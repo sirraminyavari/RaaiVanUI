@@ -10,13 +10,14 @@ import {
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const { RVDic } = window;
+const { RVDic, RV_RTL } = window;
 
 const ContributorItem = ({ item, onRemove, setPercent }) => {
   const [showPercent, setShowPercent] = useState(false);
-
+  console.log(item, '&&&&&&');
   return (
     <Container>
+      <Profile src={item.avatarUrl} />
       <Title>{item?.name}</Title>
 
       <MainSide>
@@ -57,11 +58,11 @@ const Title = styled.div`
   flex-grow: 1;
   color: ${CV_GRAY};
 `;
-const Percent = styled.div`
-  position: relative;
-  bottom: 0.1rem;
-  size: 0.1rem;
-  color: ${TCV_DEFAULT};
+const Profile = styled.img`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  margin: ${() => (!RV_RTL ? `0 0.5rem 0 0` : `0 0 0 0.5rem`)};
 `;
 const CustomInput = styled(Input)`
   ::placeholder {

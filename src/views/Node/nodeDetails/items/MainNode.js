@@ -133,37 +133,31 @@ const MainNode = ({ nodeDetails, nodeId }) => {
 
   return (
     <>
-      {fields ? (
+      {!fields ? (
         <Main>
-          <FormCell
-            editModeVisible={false}
-            title={''}
-            style={{ display: 'flex', flexGrow: 1 }}
-            iconComponent={null}>
-            {console.log(`${titleEditMode ? 1 : 0}`, 'titleEditMode')}
-            <TitleContainer style={{ marginBottom: '3rem' }}>
-              {nodeDetails?.Name?.Editable ? (
-                <Input
-                  onChange={onTitleChange}
-                  value={title}
-                  onFocus={() => {
-                    console.log('focused');
-                    setTitleEditMode(true);
-                  }}
-                  onBlur={onSaveTitle}
-                  style={{
-                    fontSize: '1.4rem',
-                    fontWeight: 'bold',
-                    borderWidth: 0,
-                    borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
-                    borderRadius: 0,
-                    borderColor: `${CV_DISTANT}`,
-                  }}
-                />
-              ) : (
-                <Heading type={'h1'}>{title}</Heading>
-              )}
-              {/* {titleEditMode ? (
+          <TitleContainer style={{ marginBottom: '3rem' }}>
+            {nodeDetails?.Name?.Editable ? (
+              <Input
+                onChange={onTitleChange}
+                value={title}
+                onFocus={() => {
+                  console.log('focused');
+                  setTitleEditMode(true);
+                }}
+                onBlur={onSaveTitle}
+                style={{
+                  fontSize: '1.4rem',
+                  fontWeight: 'bold',
+                  borderWidth: 0,
+                  borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
+                  borderRadius: 0,
+                  borderColor: `${CV_DISTANT}`,
+                }}
+              />
+            ) : (
+              <Heading type={'h1'}>{title}</Heading>
+            )}
+            {/* {titleEditMode ? (
           <>
             <Input onChange={onTitleChange} value={title} />
             <SaveButton
@@ -184,8 +178,7 @@ const MainNode = ({ nodeDetails, nodeId }) => {
             <Heading type={'h1'}>{title}</Heading>
           </>
         )} */}
-            </TitleContainer>
-          </FormCell>
+          </TitleContainer>
           <TitleContainer>
             <>
               <FormCell

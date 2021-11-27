@@ -5,19 +5,32 @@ const LoadState = () => {
     loop: true,
     autoplay: true,
     animationData: require('./load.json'),
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
+  };
+  const defaultOptions_ = {
+    loop: true,
+    autoplay: true,
+    animationData: require('./load_.json'),
   };
 
   return (
-    <Lottie
-      isStopped={false}
-      isPaused={false}
-      options={defaultOptions}
-      height={'20rem'}
-      width={'20rem'}
-    />
+    <div
+      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Lottie
+        isStopped={false}
+        isPaused={false}
+        options={defaultOptions_}
+        height={'10rem'}
+        width={'10rem'}
+        style={{ borderRadius: 17 }}
+      />
+      <Lottie
+        isStopped={false}
+        isPaused={false}
+        options={defaultOptions}
+        height={'10rem'}
+        width={'10rem'}
+      />
+    </div>
   );
 };
 

@@ -66,7 +66,7 @@ const UserSelect = ({
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}
         style={{ display: 'flex', flexGrow: 1 }}
-        iconComponent={<UserIconIo color={CV_GRAY} />}
+        iconComponent={<UserIconIo color={CV_GRAY} size={'1.25rem'} />}
         title={decodeTitle}
         {...props}>
         <Maintainer>
@@ -157,6 +157,7 @@ const SelectedUser = styled.div`
   border-width: 0.03rem;
   border-radius: 0.5rem;
   border-color: ${CV_DISTANT};
+  margin: 0 0.25rem 0 0.25rem;
 
   height: 3rem;
 `;

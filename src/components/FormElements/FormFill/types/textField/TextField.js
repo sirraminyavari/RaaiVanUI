@@ -77,7 +77,11 @@ const TextField = ({
   return (
     <FormCell
       iconComponent={
-        number ? <NumberIcon color={CV_GRAY} /> : <TextIcon color={CV_GRAY} />
+        number ? (
+          <NumberIcon color={CV_GRAY} size={'1.25rem'} />
+        ) : (
+          <TextIcon color={CV_GRAY} size={'1.25rem'} />
+        )
       }
       title={decodeTitle}>
       <AnimatedInput

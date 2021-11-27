@@ -1,8 +1,10 @@
+import Heading from 'components/Heading/Heading';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import { CV_DISTANT, CV_GRAY, TCV_WARM } from 'constant/CssVariables';
 import React from 'react';
 import styled from 'styled-components';
 import SaveButton from './items/SaveButton';
+import cliqmind_logo_white from '../../../assets/images/edit_icon.svg';
 
 const FormCell = ({
   children,
@@ -25,15 +27,16 @@ const FormCell = ({
           }}>
           {iconComponent}
 
-          <Title>{title}</Title>
+          <Title type="h4">{title}</Title>
         </div>
         {!editMode && editModeVisible && (
-          <PencilIcon
-            size={'1.5rem'}
-            style={{ margin: '0 0.5rem 0 0.5rem' }}
-            color={TCV_WARM}
-            onClick={onEdit}
-          />
+          <EditSVG src={cliqmind_logo_white} />
+          // <PencilIcon
+          //   size={'1.5rem'}
+          //   style={{ margin: '0 0.5rem 0 0.5rem' }}
+          //   color={TCV_WARM}
+          //   onClick={onEdit}
+          // />
         )}
       </CellName>
       <Children>{children}</Children>
@@ -58,7 +61,7 @@ const CellName = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const Title = styled.div`
+const Title = styled(Heading)`
   color: ${CV_GRAY};
   padding: 0 1rem 0 1rem;
 `;
@@ -68,4 +71,7 @@ const Children = styled.div`
   align-items: flex-end;
   justify-content: flex-start;
   flex: 1;
+`;
+const EditSVG = styled.img`
+  margin: 0 0.5rem 0 0.5rem;
 `;

@@ -10,6 +10,8 @@ import {
   TCV_VERYWARM,
   TCV_WARM,
   CV_WHITE,
+  CV_RED_LIGHTWARM,
+  CV_FREEZED,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
 
@@ -45,16 +47,24 @@ const SingleSelectField = ({
       ...provided,
       color: isSelected ? TCV_WARM : CV_GRAY,
       margin: '0.35rem 0.5rem 0.35rem 0.5rem',
+      padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+      backgroundColor: isFocused && CV_FREEZED,
+      ':hover': {
+        color: TCV_WARM,
+        backgroundColor: CV_FREEZED,
+        padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+      },
     }),
     control: (provided) => ({
       // none of react-select's styles are passed to <Control />
       ...provided,
-      width: '7rem',
+      minWidth: '7rem',
       borderColor: CV_WHITE,
       backgroundColor: CV_WHITE,
       ':focus': {
         border: 0,
       },
+      ':hover': {},
     }),
     singleValue: (styles, { data }) => {
       return {
@@ -67,11 +77,15 @@ const SingleSelectField = ({
     menu: (provided) => ({
       ...provided,
       borderColor: '#e6f4f1',
+
+      ':hover': {
+        borderWidth: 0,
+      },
     }),
   };
   return (
     <FormCell
-      iconComponent={<RadioButtonIcon color={CV_GRAY} />}
+      iconComponent={<RadioButtonIcon color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
       {/* {value ? (

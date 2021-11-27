@@ -22,7 +22,7 @@ const DateField = ({
 }) => {
   return (
     <FormCell
-      iconComponent={<IoCalendarOutline color={CV_GRAY} />}
+      iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
       <CustomDatePicker

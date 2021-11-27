@@ -64,7 +64,7 @@ const FileField = (props) => {
 
   return (
     <FormCell
-      iconComponent={<FileFormatIcon size={18} color={CV_GRAY} />}
+      iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
       title={decodeTitle}
       {...rest}>
       <Styled.FilesContainer>

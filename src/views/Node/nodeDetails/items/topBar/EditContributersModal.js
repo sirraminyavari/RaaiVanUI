@@ -1,5 +1,6 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
+import Heading from 'components/Heading/Heading';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Modal from 'components/Modal/Modal';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
@@ -7,6 +8,7 @@ import { RED_HOVER } from 'const/Colors';
 import {
   CV_DISTANT,
   CV_GRAY_DARK,
+  CV_GRAY_LIGHT,
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
@@ -29,7 +31,13 @@ const EditContributersModal = ({
   onUpdateContributors,
 }) => {
   const [contList, setContList] = useState(recentContributors);
-
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isVisible]);
   useEffect(() => {
     console.log(nodeDetails, 'nodeDetails');
     // setTitle(decodeBase64(nodeDetails?.Name?.Value));
@@ -53,15 +61,12 @@ const EditContributersModal = ({
     setContList(newList);
   };
   const updatePercent = ({ item, percent }) => {
-    console.log(percent, '********* percent');
-
     const readyToUpdate = contList?.map((x) =>
       x.id === item.id ? { ...x, percent: percent } : x
     );
     const filledContPercent = readyToUpdate?.reduce((x, y) => ({
       percent: +x?.percent + y?.percent,
     }))?.percent;
-    console.log(filledContPercent, '********* filledContPercent');
 
     if (filledContPercent <= 100) {
       setContList(readyToUpdate);
@@ -89,7 +94,7 @@ const EditContributersModal = ({
         (res) => {
           console.log(res, 'res');
           if (res.Succeed === 'OperationCompletedSuccessfully') {
-            alert('saved', {
+            alert('*#*تغییرات مشارکت کنندگان ذخیره شد.', {
               Timeout: 1000,
             });
           }
@@ -98,7 +103,7 @@ const EditContributersModal = ({
         }
       );
     } else {
-      alert('مجموع درصد مشارکت افراد باید برابر ۱۰۰ باشد', {
+      alert('*#*مجموع درصد مشارکت افراد باید برابر ۱۰۰ باشد', {
         Timeout: 1000,
       });
     }
@@ -122,14 +127,15 @@ const EditContributersModal = ({
       onClose={onClose}
       contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '35.7rem'}
       stick
+      style={{ padding: 0 }}
       show={isVisible}>
-      <Maintainer>
-        <Top>
-          <Header>{'ویرایش مشارکت کنندگان'}</Header>
-          <Close onClick={onClose} />
-        </Top>
+      <Top className="rv-border-radius-half">
+        <Header type="h2">{'*#*ویرایش مشارکت کنندگان'}</Header>
+        <Close onClick={onClose} />
+      </Top>
+      <Maintainer className="rv-border-radius-half">
         <Main>
-          <Title>{'درصد مشارکت هرکدام از اعضای تیم را وارد نمایید.'}</Title>
+          <Title>{'*#*درصد مشارکت هرکدام از اعضای تیم را وارد نمایید.'}</Title>
           {contList?.map((x) => (
             <ContributorItem
               item={x}
@@ -152,7 +158,7 @@ const EditContributersModal = ({
               direction={'bottom'}
               buttonComponent={
                 <Button style={{ height: '3rem' }} type={'secondary-o'}>
-                  {'افزودن هم تیمی'}
+                  {'*#*افزودن هم تیمی'}
                 </Button>
               }
             />
@@ -180,17 +186,17 @@ const EditContributersModal = ({
 export default EditContributersModal;
 
 const Maintainer = styled.div`
-  width: 100%;
+  width: 35.5rem;
   height: 37.5rem;
   display: flex;
   background-color: ${CV_WHITE};
-  padding: 0 2rem 0 2rem;
+  padding: 1rem 2rem 1rem 2rem;
   flex-direction: column;
 `;
 const Title = styled.div`
   display: flex;
   color: ${CV_DISTANT};
-  padding: 0 2rem 0 2rem;
+  /* padding: 0 2rem 0 2rem; */
 `;
 const Header = styled.div`
   display: flex;
@@ -206,10 +212,13 @@ const Top = styled.div`
   width: 100%;
   height: 4rem;
   display: flex;
-  background-color: ${CV_WHITE};
+  background-color: ${CV_GRAY_LIGHT};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  padding: 0 1rem 0 1rem;
+  border-top-left-radius: 1rem;
 `;
 const Bottom = styled.div`
   height: 4rem;

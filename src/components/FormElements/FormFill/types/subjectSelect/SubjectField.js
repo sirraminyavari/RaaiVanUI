@@ -87,7 +87,7 @@ const SubjectField = ({
         editModeVisible={true}
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}
-        iconComponent={<AtIcon color={CV_GRAY} />}
+        iconComponent={<AtIcon color={CV_GRAY} size={'1.25rem'} />}
         title={decodeTitle}>
         {value?.length > 0 ? (
           <EditModeContainer>

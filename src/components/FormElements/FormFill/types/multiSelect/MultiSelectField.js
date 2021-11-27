@@ -1,4 +1,4 @@
-import { CV_GRAY, CV_WHITE } from 'constant/CssVariables';
+import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React from 'react';
 import Select from 'react-select';
@@ -38,8 +38,22 @@ const MultiSelectField = ({
         })
       : [];
   const customStyles = {
-    option: (provided, state) => ({
+    option: (
+      styles,
+      { data, isDisabled, isFocused, isSelected },
+      provided,
+      state
+    ) => ({
       ...provided,
+      color: isSelected ? TCV_WARM : CV_GRAY,
+      margin: '0.35rem 0.5rem 0.35rem 0.5rem',
+      padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+      backgroundColor: isFocused && CV_FREEZED,
+      ':hover': {
+        color: TCV_WARM,
+        backgroundColor: CV_FREEZED,
+        padding: '0.2rem 0.2rem 0.2rem 0.2rem',
+      },
     }),
     control: (provided) => ({
       // none of react-select's styles are passed to <Control />
@@ -63,9 +77,6 @@ const MultiSelectField = ({
     multiValueRemove: (styles, { data }) => {
       return {
         ...styles,
-        ':hover': {
-          color: 'red',
-        },
       };
     },
     menu: (provided) => ({
@@ -79,7 +90,7 @@ const MultiSelectField = ({
 
   return (
     <FormCell
-      iconComponent={<CheckBoxIconIo color={CV_GRAY} />}
+      iconComponent={<CheckBoxIconIo color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
       {/* {value && selectedOptions?.length > 0 ? (

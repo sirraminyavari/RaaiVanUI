@@ -100,10 +100,19 @@ const Creators = ({ creatorsList, nodeDetails }) => {
           <VerticalList
             $hoverCreators={hoverCreators}
             className={'rv-bg-color-white rv-border-radius-half'}>
-            <Button onClick={editContributors} type={'secondary-o'}>
-              <CustomEditIcon size={'1rem'} />
-              {'ویرایش مشارکت کنندگان'}
-            </Button>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <CustomEditIcon color={TCV_DEFAULT} size={'1rem'} />
+
+              <Button onClick={editContributors} type={'secondary-o'}>
+                {'ویرایش مشارکت کنندگان*#*'}
+              </Button>
+            </div>
             <PerfectScrollbar style={{ maxHeight: '14rem' }}>
               {contributors?.map((x) => {
                 const { name, avatarUrl, percent, id } = x || {};
@@ -135,7 +144,10 @@ const Creators = ({ creatorsList, nodeDetails }) => {
       <EditContributersModal
         isVisible={editContModalVisible}
         nodeDetails={nodeDetails}
-        onClose={() => setEditContModalVisible(false)}
+        onClose={() => {
+          document.body.style.overflow = 'unset';
+          setEditContModalVisible(false);
+        }}
         onUpdateContributors={setContributors}
         recentContributors={contributors}
       />
@@ -148,11 +160,10 @@ const Maintainer = styled.div`
   cursor: pointer;
 `;
 const Profile = styled.img`
-  max-width: 2.5rem;
-  max-height: 2.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 1.5rem;
-  width: auto;
-  height: auto;
+
   border-width: 0.09rem;
   border-style: solid;
   border-color: ${CV_WHITE};
@@ -201,7 +212,6 @@ const ListItem = styled.div`
   justify-content: space-between;
 `;
 const CustomEditIcon = styled(PencilIcon)`
-  margin: 0.5rem;
   background-color: #e6f4f1;
   padding: 0.2rem;
   width: 1.5rem;
