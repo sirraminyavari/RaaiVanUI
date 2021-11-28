@@ -14,6 +14,7 @@ import {
   USER_WITHID_PATH,
 } from 'constant/constants';
 import { CV_DISTANT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -43,6 +44,7 @@ const TopBar = ({
   onApplyNodeType = () => {},
   onSideColumnClicked,
   sideColumn,
+  hierarchy,
 }) => {
   const { VisitsCount, Contributors } = nodeDetails || {};
 
@@ -80,14 +82,27 @@ const TopBar = ({
       selectedApp: state?.selectedTeam,
     })
   );
+  const extendedHierarchy = hierarchy?.map((level) => ({
+    id: level?.NodeTypeID,
+    title: decodeBase64(level?.TypeName),
+    linkTo: `/classes/${level?.NodeTypeID}`,
+  }));
+  const { NodeType, Name } = nodeDetails || {};
+
   const breadcrumbItems = [
-    { id: 1, title: RVDic.Profile, linkTo: CLASSES_PATH },
+    { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
     {
-      id: 2,
-      title: RVDic.RelatedNodes,
-      linkTo: USER_MORE_RELATED_TOPICS_PATH,
+      title: decodeBase64(NodeType?.Value[0]?.Name),
+      linkTo: `/classes/${NodeType?.Value[0]?.ID}`,
     },
+    {
+      title: decodeBase64(Name?.Value),
+      linkTo: `/node/${nodeDetails?.NodeID}`,
+    },
+    ...extendedHierarchy,
   ];
+  console.log(nodeDetails, 'nodeDetails nodeDetails');
+
   const getTypeName = () => {
     return nodeType?.TypeName
       ? decode(nodeType?.TypeName)
