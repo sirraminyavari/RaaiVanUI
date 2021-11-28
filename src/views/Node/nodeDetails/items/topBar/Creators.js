@@ -55,7 +55,6 @@ const Creators = ({ creatorsList, nodeDetails }) => {
   };
   return (
     <>
-      {console.log(RV_RTL, 'RV_RTL')}
       {contributors?.length > 0 ? (
         <Maintainer
           ref={dialogRef}
@@ -139,7 +138,11 @@ const Creators = ({ creatorsList, nodeDetails }) => {
           </VerticalList>
         </Maintainer>
       ) : (
-        <UserIconIo onClick={editContributors} color={CV_GRAY} />
+        <UserIconIo
+          onClick={editContributors}
+          color={CV_GRAY}
+          size={'1.5rem'}
+        />
       )}
       <EditContributersModal
         isVisible={editContModalVisible}

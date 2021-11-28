@@ -1,11 +1,12 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
 import FilterIconIo from 'components/Icons/FilterIconIo';
 import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
+import { EditableContext } from '../../FormFill';
 
 const normalizedOptions = (options) =>
   options?.nodes?.map((x) => {
@@ -66,13 +67,12 @@ const MultiLevelField = ({
       setLevels(newLevels);
     }
   };
-
+  const editable = useContext(EditableContext);
   return (
     <FormCell
       iconComponent={<FilterIconIo color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
       {...props}>
-      {console.log(levels, 'levels')}
       <SelectorContainer>
         {levels?.map((x, index) => {
           const { ID, Name } = value[index] || {};
@@ -84,6 +84,7 @@ const MultiLevelField = ({
                     onBlur={() =>
                       index === levels?.length - 1 && save(elementId)
                     }
+                    isDisabled={!editable}
                     options={normalizedOptions(x)}
                     styles={customStyles}
                     value={{ value: ID, label: decodeBase64(Name) }}

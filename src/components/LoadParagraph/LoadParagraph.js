@@ -1,28 +1,15 @@
 import Lottie from 'react-lottie';
 
-const LoadState = () => {
+const LoadParagraph = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: require('./load.json'),
   };
-  const defaultOptions_ = {
-    loop: true,
-    autoplay: true,
-    animationData: require('./load_.json'),
-  };
 
   return (
     <div
       style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <Lottie
-        isStopped={false}
-        isPaused={false}
-        options={defaultOptions_}
-        height={'10rem'}
-        width={'10rem'}
-        style={{ borderRadius: 17 }}
-      />
       <Lottie
         isStopped={false}
         isPaused={false}
@@ -34,4 +21,4 @@ const LoadState = () => {
   );
 };
 
-export default LoadState;
+export default LoadParagraph;

@@ -1,10 +1,11 @@
 import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import React from 'react';
+import React, { useContext } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
 import styled from 'styled-components';
+import { EditableContext } from '../../FormFill';
 
 const MultiSelectField = ({
   value,
@@ -87,6 +88,7 @@ const MultiSelectField = ({
       },
     }),
   };
+  const editable = useContext(EditableContext);
 
   return (
     <FormCell
@@ -110,6 +112,7 @@ const MultiSelectField = ({
         value={selectedOptions}
         isMulti
         isClearable={false}
+        isDisabled={!editable}
         styles={customStyles}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
         className="basic-multi-select"

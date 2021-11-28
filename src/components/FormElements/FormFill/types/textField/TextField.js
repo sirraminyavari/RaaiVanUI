@@ -3,7 +3,7 @@
  */
 
 import Input from 'components/Inputs/Input';
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import EmailValidator from 'utils/Validation/EmailValidator';
@@ -18,6 +18,7 @@ import TextIcon from 'components/Icons/TextIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
 import { decodeBase64 } from 'helpers/helpers';
+import { EditableContext } from '../../FormFill';
 
 const { GlobalUtilities } = window;
 const { to_json } = GlobalUtilities || {};
@@ -73,7 +74,7 @@ const TextField = ({
       }
     }
   };
-
+  const editable = useContext(EditableContext);
   return (
     <FormCell
       iconComponent={
@@ -88,6 +89,7 @@ const TextField = ({
         type={parseDecodeInfo?.pattern}
         placeholder={placeholder}
         error={error}
+        disabled={!editable}
         afterChangeListener={() => errorHandler(value)}
         value={!!value ? value : ''}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}

@@ -1,10 +1,11 @@
 import Heading from 'components/Heading/Heading';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import { CV_DISTANT, CV_GRAY, TCV_WARM } from 'constant/CssVariables';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SaveButton from './items/SaveButton';
 import cliqmind_logo_white from '../../../assets/images/edit_icon.svg';
+import { EditableContext } from './FormFill';
 
 const FormCell = ({
   children,
@@ -16,6 +17,8 @@ const FormCell = ({
   onSave,
   onEdit,
 }) => {
+  const editable = useContext(EditableContext);
+  console.log(editable, '********');
   return (
     <Container style={style}>
       <CellName>
@@ -29,7 +32,7 @@ const FormCell = ({
 
           <Title type="h4">{title}</Title>
         </div>
-        {!editMode && editModeVisible && (
+        {!editMode && editModeVisible && editable && (
           <EditSVG src={cliqmind_logo_white} />
           // <PencilIcon
           //   size={'1.5rem'}

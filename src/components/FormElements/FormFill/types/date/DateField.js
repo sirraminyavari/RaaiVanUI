@@ -1,7 +1,7 @@
 import Button from 'components/Buttons/Button';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { CV_GRAY } from 'constant/CssVariables';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   IoCafeOutline,
   IoCalendarClearOutline,
@@ -9,6 +9,7 @@ import {
 } from 'react-icons/io5';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
+import { EditableContext } from '../../FormFill';
 
 const { RVDic } = window;
 const DateField = ({
@@ -20,6 +21,7 @@ const DateField = ({
   type,
   ...props
 }) => {
+  const editable = useContext(EditableContext);
   return (
     <FormCell
       iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}
@@ -32,7 +34,9 @@ const DateField = ({
         clearButton
         headerTitle="فیلتر تاریخ ایجاد"
         CustomButton={({ onClick }) => (
-          <Button onClick={onClick}>{value ? value : RVDic.DateSelect}</Button>
+          <Button disable={!editable} onClick={onClick}>
+            {value ? value : RVDic.DateSelect}
+          </Button>
         )}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
       />

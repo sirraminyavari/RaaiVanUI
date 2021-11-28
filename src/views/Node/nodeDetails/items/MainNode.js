@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { RVDic } from 'utils/TestUtils/fa';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import LoadState from 'components/LoadPageState/LoadState';
+import LoadParagraph from 'components/LoadParagraph/LoadParagraph';
 
 const ModifyNodeName = new APIHandler('CNAPI', 'ModifyNodeName');
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -133,7 +133,7 @@ const MainNode = ({ nodeDetails, nodeId }) => {
 
   return (
     <>
-      {!fields ? (
+      {fields ? (
         <Main>
           <TitleContainer style={{ marginBottom: '3rem' }}>
             {nodeDetails?.Name?.Editable ? (
@@ -252,10 +252,12 @@ const MainNode = ({ nodeDetails, nodeId }) => {
               </FormCell>
             </>
           </TitleContainer>
-          {fields && <FormFill data={fields} />}
+          {fields && (
+            <FormFill editable={nodeDetails?.Editable} data={fields} />
+          )}
         </Main>
       ) : (
-        <LoadState />
+        <LoadParagraph />
       )}
     </>
   );

@@ -2,7 +2,7 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { decodeBase64 } from 'helpers/helpers';
 import { toBase64 } from 'js-base64';
 import _ from 'lodash';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MultiLeveltype from './types/multiLevel/MultiLevelType';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
@@ -22,7 +22,8 @@ import saveForm from './types/saveForm';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 
 const { RVDic, GlobalUtilities } = window;
-const FormFill = ({ data, ...props }) => {
+export const EditableContext = React.createContext();
+const FormFill = ({ data, editable, ...props }) => {
   const propsContext = useContext(PropsContext);
 
   const [tempForm, setTempForm] = useState(data);
@@ -39,7 +40,7 @@ const FormFill = ({ data, ...props }) => {
       }),
     });
   }, []);
-
+  console.log(editable, 'editable editable editable');
   const onAnyFieldChanged = async (elementId, event, type) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
     setTempForm(readyToUpdate);
@@ -275,7 +276,11 @@ const FormFill = ({ data, ...props }) => {
     return element;
   };
 
-  return <Maintainer>{formProducer()}</Maintainer>;
+  return (
+    <EditableContext.Provider value={editable}>
+      <Maintainer>{formProducer()}</Maintainer>
+    </EditableContext.Provider>
+  );
 };
 
 export default FormFill;

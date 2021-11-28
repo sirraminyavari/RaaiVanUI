@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
@@ -14,6 +14,7 @@ import {
   CV_FREEZED,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
+import { EditableContext } from '../../FormFill';
 
 const { RVDic } = window;
 const SingleSelectField = ({
@@ -26,6 +27,7 @@ const SingleSelectField = ({
   save,
   ...props
 }) => {
+  const editable = useContext(EditableContext);
   const parseDecodeInfo = JSON.parse(decodeInfo);
   const { Options } = parseDecodeInfo || {};
   const normalizedOptions = Options?.map((x) => {
@@ -35,6 +37,7 @@ const SingleSelectField = ({
     };
     return _x;
   });
+
   const decodeValue = decodeBase64(value);
   const selectedValue = normalizedOptions.find((x) => x.value === decodeValue);
   const customStyles = {
@@ -101,6 +104,7 @@ const SingleSelectField = ({
         onBlur={() => save(elementId)}
         options={normalizedOptions}
         styles={customStyles}
+        isDisabled={!editable}
         value={selectedValue}
         placeholder={RVDic.Select}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
