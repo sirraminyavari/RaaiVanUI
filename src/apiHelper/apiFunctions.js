@@ -52,6 +52,8 @@ import {
   ACTIVATE_TEMPLATE,
   GET_TEMPLATE_TAGS,
   SAVE_APPLICATION_INFO,
+  SEARCH_API,
+  SEARCH,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 

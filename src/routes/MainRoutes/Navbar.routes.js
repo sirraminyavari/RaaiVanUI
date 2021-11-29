@@ -26,8 +26,11 @@ const Messages = lazy(() =>
 const Dashboard = lazy(() =>
   import(/* webpackChunkName: "dashboard-view"*/ 'views/Dashboard/Dashboard')
 );
-const Search = lazy(() =>
-  import(/* webpackChunkName: "search-view"*/ 'views/Search/Search')
+const SearchOld = lazy(() =>
+  import(/* webpackChunkName: "search-view"*/ 'views/Search/SearchOld')
+);
+const SearchView = lazy(() =>
+  import(/* webpackChunkName: "search-view"*/ 'views/Search/SearchView')
 );
 const HelpMe = lazy(() =>
   import(/* webpackChunkName: "helpme-view"*/ 'views/HelpMe/HelpMe')
@@ -62,12 +65,19 @@ const NavbarRoutes = [
     hasNavSide: true,
     component: Dashboard,
   },
+  // {
+  //   path: DO_SEARCH_PATH,
+  //   name: DO_SEARCH_NAME,
+  //   exact: true,
+  //   hasNavSide: true,
+  //   component: Search,
+  // },
   {
     path: DO_SEARCH_PATH,
     name: DO_SEARCH_NAME,
     exact: true,
     hasNavSide: true,
-    component: Search,
+    component: SearchView,
   },
   {
     path: HELP_PATH,
