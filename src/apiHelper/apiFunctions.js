@@ -1296,3 +1296,56 @@ export const saveApplicationInfo = (
     }
   });
 };
+
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {String} searchText - The text to be searched.
+ * @property {String} itemTypes - All the types that should search against them(e.g: 'Node|File').
+ * @property {Boolean} [hasTitle]
+ * @property {Boolean} [hasDescription]
+ * @property {Boolean} [hasContent]
+ * @property {Boolean} [hasTags]
+ * @property {Boolean} [hasFileContent]
+ */
+
+/**
+ * Search in almost all the application.
+ * @param {ParamsType}
+ * @returns {Promise}
+ */
+export const search = ({
+  searchText,
+  itemTypes,
+  hasTitle = true,
+  hasDescription = true,
+  hasContent = true,
+  hasTags = true,
+  hasFileContent = true,
+}) => {
+  const searchAPI = API_Provider(SEARCH_API, SEARCH);
+
+  return new Promise((resolve, reject) => {
+    try {
+      searchAPI.fetch(
+        {
+          SearchText: encodeBase64(searchText),
+          ItemTypes: itemTypes,
+          Title: hasTitle,
+          Description: hasDescription,
+          Content: hasContent,
+          Tags: hasTags,
+          FileContent: hasFileContent,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};

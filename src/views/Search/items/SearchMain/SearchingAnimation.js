@@ -5,11 +5,11 @@ import * as Styled from 'views/Search/SearchView.styles';
 const SearchingAnimation = () => {
   return (
     <Styled.SearchAnimationContainer>
-      {[...Array(5).keys()].map((index) => (
+      {[...Array(4).keys()].map((index) => (
         <LottieMaker
           key={index}
           animationJSON={SearchSkeleton}
-          height="3.8rem"
+          height="4.8rem"
           width="100%"
           style={{ borderRadius: '0.3rem' }}
         />

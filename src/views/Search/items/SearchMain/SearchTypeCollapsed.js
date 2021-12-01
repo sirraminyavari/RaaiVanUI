@@ -10,7 +10,7 @@ const SearchTypeCollapsed = () => {
   const { selectedType, setSelectedType } = useContext(searchContext);
 
   const options = [
-    { label: All, value: '' },
+    { label: All, value: 'User|Node|Question|File' },
     { label: Users, value: 'User' },
     { label: 'آیتم ها', value: 'Node' },
     { label: Questions, value: 'Question' },
