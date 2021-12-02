@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getGroupsAll, getUsers } from '../api';
+import { checkAuthority, getGroupsAll, getUsers } from '../api';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import * as Styled from './ListStyled';
 import ORGUserCard from './cards/ORGUserCard';
@@ -34,6 +34,14 @@ const MultiTenantList = ({ rtl, searchText, ...props }) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+
+    checkAuthority()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
       });
   }, []);
 

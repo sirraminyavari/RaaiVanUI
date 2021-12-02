@@ -16,7 +16,7 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
 
   const onModalConfirm = () => {
     setModalInfo({ ...modalInfo, show: false });
-    onModalConfirm();
+    onRemoveConfirm();
   };
 
   const onModalCancel = () => {

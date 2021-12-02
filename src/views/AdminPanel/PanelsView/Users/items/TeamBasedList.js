@@ -2,7 +2,7 @@ import * as Styled from './ListStyled';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
-import { getGroupsAll, getUsers } from '../api';
+import { checkAuthority, getGroupsAll, getUsers } from '../api';
 
 const TeamBasedList = ({ rtl, searchText, ...props }) => {
   const [users, setUsers] = useState([]);
@@ -16,6 +16,14 @@ const TeamBasedList = ({ rtl, searchText, ...props }) => {
 
   useEffect(() => {
     getGroupsAll()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+
+    checkAuthority()
       .then((res) => {
         console.log(res);
       })

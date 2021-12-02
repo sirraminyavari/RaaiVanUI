@@ -2,7 +2,13 @@
  * @description get list of users
  */
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { CN_API, GET_USERS, RV_API, USERS_API } from 'constant/apiConstants';
+import {
+  CN_API,
+  GET_USERS,
+  PRIVACY_API,
+  RV_API,
+  USERS_API,
+} from 'constant/apiConstants';
 
 /**
  *
@@ -56,6 +62,30 @@ export const getGroupsAll = () => {
         )
       );
   });
+};
+
+/**
+ * @description check authority
+ */
+export const checkAuthority = () => {
+  const roles = (window?.RVGlobal?.AccessRoles || []).map((r) => r.Name);
+  console.log(roles);
+
+  const checkAuthorityAPI = API_Provider(PRIVACY_API, 'CheckAuthority');
+
+  return apiCallWrapper(checkAuthorityAPI, {
+    Permissions: roles.join('|'),
+  })
+    .then((res) => {
+      return roles.reduce(
+        (dic, cur) => ((dic[cur] = !!(res || {})[cur]), dic),
+        {}
+      );
+    })
+    .then((res) => {
+      console.log(res);
+      return res;
+    });
 };
 
 /**
