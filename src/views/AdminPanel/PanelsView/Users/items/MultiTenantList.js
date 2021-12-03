@@ -4,19 +4,7 @@ import { decodeBase64, getUUID } from 'helpers/helpers';
 import * as Styled from './ListStyled';
 import ORGUserCard from './cards/ORGUserCard';
 
-const MultiTenantList = ({ rtl, searchText, ...props }) => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    getUsers(searchText)
-      .then((res) => {
-        setUsers(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [searchText]);
-
+const MultiTenantList = ({ rtl, users, ...props }) => {
   const userCards = useMemo(
     () =>
       users?.map((x) => (

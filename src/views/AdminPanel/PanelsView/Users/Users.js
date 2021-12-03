@@ -9,15 +9,38 @@ import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import AutoSuggestInput from '../../../../components/Inputs/AutoSuggestInput/AutoSuggestInput';
 import Input from '../../../../components/Inputs/Input';
+import SearchInput from './items/SearchInput';
+import { getUsers } from './api';
 
 const Users = (props) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
-
-  console.log('RVGlobal: ', SAASBasedMultiTenancy);
-
+  const [users, setUsers] = useState([]);
   const [showInvitationForm, setShowInvitationForm] = useState(false);
+
+  useEffect(() => {
+    loadUsers(searchText);
+  }, [searchText]);
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  /**
+   * @description api call function to load users list
+   * @param keyword
+   */
+  const loadUsers = (keyword = '') => {
+    getUsers(keyword)
+      .then((res) => {
+        setUsers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   /**
    * @description items array to feed breadcrumbs component
    * @type {[{title: string}, {title: string}]}
@@ -40,13 +63,6 @@ const Users = (props) => {
     },
   ];
 
-  useEffect(() => {
-    console.log(showInvitationForm);
-  }, [showInvitationForm]);
-
-  useEffect(() => {
-    console.log(searchText);
-  }, [searchText]);
   return (
     <Styled.UserManagementContainer rtl={RV_RTL}>
       <Styled.UserManagementContentCard>
@@ -57,9 +73,12 @@ const Users = (props) => {
 
             <Styled.TopBar>
               <SearchUserInput
-                changeOrEnterListener={(e) => setSearchText(e.target.value)}
+                defaultValue={searchText}
                 placeholder={'فیلتر براساس نام کاربر'}
+                onChange={(e) => setSearchText(e)}
+                delayTime={1000}
               />
+
               {SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
                   {'دعوت هم تیمی جدید'}
@@ -73,10 +92,18 @@ const Users = (props) => {
             </Styled.TopBar>
 
             {!SAASBasedMultiTenancy ? (
-              <MultiTenantList searchText={searchText} rtl={RV_RTL} />
+              <MultiTenantList
+                searchText={searchText}
+                rtl={RV_RTL}
+                users={users}
+              />
             ) : (
               <div>
-                <TeamBasedList searchText={searchText} rtl={RV_RTL} />
+                <TeamBasedList
+                  searchText={searchText}
+                  rtl={RV_RTL}
+                  users={users}
+                />
 
                 <InvitedUserList />
               </div>

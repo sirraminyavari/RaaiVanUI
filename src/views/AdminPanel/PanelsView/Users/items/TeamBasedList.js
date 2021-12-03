@@ -4,15 +4,8 @@ import { decodeBase64, getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
 import { checkAuthority, getGroupsAll, getUsers } from '../api';
 
-const TeamBasedList = ({ rtl, searchText, ...props }) => {
-  const [users, setUsers] = useState([]);
+const TeamBasedList = ({ rtl, users, ...props }) => {
   const [showMore, setShowMore] = useState(false);
-
-  useEffect(async () => {
-    const res = await getUsers(searchText);
-    console.log('list of users: (Saas)', res);
-    setUsers(res);
-  }, [searchText]);
 
   useEffect(() => {
     getGroupsAll()

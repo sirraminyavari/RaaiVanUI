@@ -59,6 +59,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "reselect": "^4.0.0",
+    "rxjs": "^7.4.0",
     "styled-components": "^5.2.1",
     "suneditor-react": "^2.16.3",
     "swiper": "^6.8.3",

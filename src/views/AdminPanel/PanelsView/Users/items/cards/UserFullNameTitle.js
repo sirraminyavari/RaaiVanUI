@@ -1,18 +1,19 @@
 import styled from 'styled-components';
-import Heading from '../../../../../../components/Heading/Heading';
-import { CV_GRAY_LIGHT } from '../../../../../../constant/CssVariables';
+import Heading from 'components/Heading/Heading';
 
 const UserFullNameTitle = ({
   ImageURL,
+  editable = false,
+  children,
   FullName,
-  editable,
   column = false,
   ...props
 }) => {
   return !column ? (
     <TitleContainer>
       {ImageURL && <UserProfileImg src={ImageURL} />}
-      <UserTitle>{FullName}</UserTitle>
+      {!editable && <UserTitle>{FullName}</UserTitle>}
+      {editable && children}
     </TitleContainer>
   ) : (
     <ColumnContainer>

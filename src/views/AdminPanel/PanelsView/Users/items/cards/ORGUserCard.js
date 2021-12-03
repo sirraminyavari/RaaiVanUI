@@ -1,7 +1,7 @@
 import * as Styled from '../ListStyled';
 import UserFullNameTitle from './UserFullNameTitle';
 import ResetPassword from './ResetPassword';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import InlineEditableTitle from './InlineEditableTitle';
 import {
   setRandomPassword,
@@ -9,8 +9,9 @@ import {
   updateApprovedStatus,
 } from '../../api';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import UserGroupEdit from './UserGroupEdit';
+import EditableTitle from './EditableTitle';
 
 const ORGUserCard = ({
   FirstName,
@@ -23,13 +24,20 @@ const ORGUserCard = ({
   IsApproved,
   ...props
 }) => {
-  const userTitle = useMemo(
-    () => (
+  const userTitle = useCallback(
+    (editable, column = false) => (
       <UserFullNameTitle
         ImageURL={ImageURL}
         FullName={FullName}
-        column={false}
-      />
+        column={column}
+        editable={editable}>
+        <EditableTitle
+          value={FirstName}
+          onConfirm={(e) => updateFirstName(e)}></EditableTitle>
+        <EditableTitle
+          value={LastName}
+          onConfirm={(e) => updateLastName(e)}></EditableTitle>
+      </UserFullNameTitle>
     ),
     [FullName, ImageURL]
   );
@@ -46,6 +54,14 @@ const ORGUserCard = ({
         });
       }
     }
+  };
+
+  const updateFirstName = (firstName) => {
+    console.log(firstName);
+  };
+
+  const updateLastName = (lastName) => {
+    console.log(lastName);
   };
 
   const toggleApprovedStatus = (value) => {
@@ -78,7 +94,7 @@ const ORGUserCard = ({
 
   return (
     <>
-      <Styled.ListBodyItem width={25}>{userTitle}</Styled.ListBodyItem>
+      <Styled.ListBodyItem width={25}>{userTitle(true)}</Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={25}>
         <InlineEditableTitle onChange={updateUserName}>
@@ -96,7 +112,7 @@ const ORGUserCard = ({
 
       <Styled.ListBodyItem width={10}>
         <ResetPassword
-          render={userTitle}
+          render={userTitle(false, true)}
           onResetPasswordConfirm={handleResetPassword}
         />
       </Styled.ListBodyItem>
