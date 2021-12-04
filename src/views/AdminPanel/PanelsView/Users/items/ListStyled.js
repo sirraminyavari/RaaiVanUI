@@ -53,8 +53,10 @@ export const ShowMoreButton = styled.button`
   height: 2rem;
   line-height: 2rem;
   color: var(--rv-color-actionbutton);
+  border: 1px solid transparent;
   border-radius: 0.45rem;
   margin-top: 0.7rem;
+  transition: all ease-out 0.3s;
 
   &:hover {
     border: 1px solid var(--rv-color-actionbutton);

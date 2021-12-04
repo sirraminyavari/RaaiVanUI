@@ -210,10 +210,15 @@ export const getUserInvitations = (ApplicationID, Count = 20) => {
   return apiCallWrapper(getUserInvitationsAPI, {
     ApplicationID,
     Count,
-  }).then((res) => {
-    console.log(res);
-    return res;
-  });
+  }).then(
+    (res) =>
+      res?.Invitations.map((x) => ({
+        ...x,
+        Email: decodeBase64(x?.Email),
+        ReceiverFirstName: decodeBase64(x?.ReceiverFirstName),
+        ReceiverLastName: decodeBase64(x?.ReceiverLastName),
+      })) || []
+  );
 };
 
 const apiCallWrapper = (api, data) => {

@@ -2,15 +2,25 @@ import UserFullNameTitle from './UserFullNameTitle';
 import * as Styled from '../ListStyled';
 import ResendInvitationButton from './ResendInvitationButton';
 import styled from 'styled-components';
+import { useMemo } from 'react';
 
 const InvitedUserCard = ({
-  Name,
+  ReceiverFirstName,
+  ReceiverLastName,
   Email,
-  invitationDate,
+  SendDate,
   invitationTime,
   ...props
 }) => {
-  const userTitle = <UserFullNameTitle Name={Name} />;
+  const userTitle = useMemo(
+    () => (
+      <UserFullNameTitle
+        FullName={`${ReceiverFirstName} ${ReceiverLastName}`}
+        column={false}
+      />
+    ),
+    []
+  );
   return (
     <>
       <Styled.ListBodyItem width={25}>{userTitle}</Styled.ListBodyItem>
@@ -19,8 +29,7 @@ const InvitedUserCard = ({
 
       <Styled.ListBodyItem width={33}>
         <DateTimeContainer>
-          <DateTimeItem>{invitationTime}</DateTimeItem>
-          <DateTimeItem>{invitationDate}</DateTimeItem>
+          <DateTimeItem>{SendDate}</DateTimeItem>
         </DateTimeContainer>
       </Styled.ListBodyItem>
 

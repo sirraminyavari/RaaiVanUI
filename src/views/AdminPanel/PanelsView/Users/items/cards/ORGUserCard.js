@@ -101,16 +101,6 @@ const ORGUserCard = ({
       });
   };
 
-  const handleResetPassword = () => {
-    setRandomPassword(UserID)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <Styled.ListBodyItem width={25}>{userTitle(true)}</Styled.ListBodyItem>
@@ -130,10 +120,7 @@ const ORGUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={10}>
-        <ResetPassword
-          render={userTitle(false, true)}
-          onResetPasswordConfirm={handleResetPassword}
-        />
+        <ResetPassword render={userTitle(false, true)} userId={UserID} />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={10}>

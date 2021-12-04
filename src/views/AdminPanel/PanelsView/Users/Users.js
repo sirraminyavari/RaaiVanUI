@@ -4,20 +4,18 @@ import AddUserButton from './items/AddUserButton';
 import MultiTenantList from './items/MultiTenantList';
 import TeamBasedList from './items/TeamBasedList';
 import { useEffect, useState } from 'react';
-import useWindowContext from '../../../../hooks/useWindowContext';
+import useWindowContext from 'hooks/useWindowContext';
 import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
-import AutoSuggestInput from '../../../../components/Inputs/AutoSuggestInput/AutoSuggestInput';
-import Input from '../../../../components/Inputs/Input';
-import SearchInput from './items/SearchInput';
-import { getUsers } from './api';
+import { getUsers, getUserInvitations } from './api';
 
 const Users = (props) => {
-  console.log(props);
+  const ApplicationID = props?.route?.ApplicationID;
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
   const [users, setUsers] = useState([]);
+  const [invitedUsers, setInvitedUsers] = useState([]);
   const [showInvitationForm, setShowInvitationForm] = useState(false);
 
   useEffect(() => {
@@ -26,6 +24,7 @@ const Users = (props) => {
 
   useEffect(() => {
     loadUsers();
+    loadInvitedUsers();
   }, []);
 
   /**
@@ -42,8 +41,18 @@ const Users = (props) => {
       });
   };
 
+  /**
+   * @description api call function to load invited users
+   */
   const loadInvitedUsers = () => {
-    // getUserInvitations()
+    getUserInvitations(ApplicationID)
+      .then((res) => {
+        console.log(res);
+        setInvitedUsers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   /**
@@ -110,7 +119,9 @@ const Users = (props) => {
                   users={users}
                 />
 
-                <InvitedUserList />
+                {invitedUsers.length !== 0 && (
+                  <InvitedUserList users={invitedUsers} />
+                )}
               </div>
             )}
           </Styled.ContentWrapper>

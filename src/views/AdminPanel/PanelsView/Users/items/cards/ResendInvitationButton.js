@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import {
   CV_DISTANT,
+  CV_FREEZED,
   CV_WHITE,
   TCV_DEFAULT,
-} from '../../../../../../constant/CssVariables';
+} from 'constant/CssVariables';
 
 const ResendInvitationButton = ({ children, ...props }) => {
   return (
@@ -30,8 +31,7 @@ const ButtonView = styled.button`
   border-radius: 0.5rem;
   transition: all 0.3s ease-out;
   &:hover {
-    background-color: ${CV_DISTANT};
-    padding: 0 2.7rem;
+    background-color: ${CV_FREEZED};
   }
 `;
 

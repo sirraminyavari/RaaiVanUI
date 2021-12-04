@@ -1,20 +1,24 @@
 import { useMemo, useState } from 'react';
-import { invitedUsers } from '../_lurem';
 import * as Styled from './ListStyled';
 import { getUUID } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
 import InvitedUserCard from './cards/InvitedUserCard';
 
-const InvitedUserList = ({ ...props }) => {
+const InvitedUserList = ({ users, ...props }) => {
   const { RV_RTL } = useWindowContext();
-  const users = useMemo(() => invitedUsers, []);
   const [showMore, setShowMore] = useState(false);
 
-  const userCards = users?.slice(0, showMore ? users.length : 2)?.map((x) => (
-    <Styled.ListRow rtl={RV_RTL} key={getUUID()}>
-      <InvitedUserCard {...x} />
-    </Styled.ListRow>
-  ));
+  const userCards = useMemo(
+    () =>
+      users?.slice(0, showMore ? users.length : 2)?.map((x) => (
+        <Styled.ListRow rtl={RV_RTL} key={getUUID()}>
+          <InvitedUserCard {...x} />
+        </Styled.ListRow>
+      )),
+    [users, showMore]
+  );
+
+  console.log();
   return (
     <>
       <Styled.ListContainer top={5.5}>
@@ -34,9 +38,11 @@ const InvitedUserList = ({ ...props }) => {
         <Styled.ListBody>{userCards}</Styled.ListBody>
       </Styled.ListContainer>
 
-      <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
-        {'مشاهده همه'}
-      </Styled.ShowMoreButton>
+      {users.length > 2 && (
+        <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
+          {'مشاهده همه'}
+        </Styled.ShowMoreButton>
+      )}
     </>
   );
 };
