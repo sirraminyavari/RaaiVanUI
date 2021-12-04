@@ -12,6 +12,32 @@ import {
 
 /**
  *
+ * @param firstName
+ * @returns {Promise<unknown>}
+ */
+export const updateFirstName = (UserID, firstName) => {
+  const setFirstNameAPI = API_Provider(USERS_API, 'SetFirstName');
+  return apiCallWrapper(setFirstNameAPI, {
+    UserID,
+    FirstName: encodeBase64(firstName),
+  });
+};
+
+/**
+ *
+ * @param firstName
+ * @returns {Promise<unknown>}
+ */
+export const updateLastName = (UserID, lastName) => {
+  const setLastNameAPI = API_Provider(USERS_API, 'SetLastName');
+  return apiCallWrapper(setLastNameAPI, {
+    UserID,
+    LastName: encodeBase64(lastName),
+  });
+};
+
+/**
+ *
  * @param SearchText
  * @param IsOnline
  * @param IsApproved
@@ -51,17 +77,27 @@ export const getUsers = (SearchText, IsOnline, IsApproved) => {
  */
 export const getGroupsAll = () => {
   const getGroupsAllAPI = API_Provider(CN_API, 'GetGroupsAll');
-  return apiCallWrapper(getGroupsAllAPI, {}).then((res) => {
-    return Object.keys(res?.AllGroups || {})
-      .map((key) => res.AllGroups[key]?.Nodes || [])
-      .flat()
-      .map(
-        (g) => (
-          (g.IsMember = (res?.Groups || []).some((x) => x.NodeID == g.NodeID)),
-          g
-        )
-      );
-  });
+  return apiCallWrapper(getGroupsAllAPI, {})
+    .then((res) => {
+      return Object.keys(res?.AllGroups || {})
+        .map((key) => res.AllGroups[key]?.Nodes || [])
+        .flat()
+        .map(
+          (g) => (
+            (g.IsMember = (res?.Groups || []).some(
+              (x) => x.NodeID == g.NodeID
+            )),
+            g
+          )
+        );
+    })
+    .then((res) =>
+      res.map((x) => ({
+        ...x,
+        Name: decodeBase64(x?.Name),
+        NodeType: decodeBase64(x?.NodeType),
+      }))
+    );
 };
 
 /**
@@ -167,6 +203,17 @@ export const updateApprovedStatus = (IsApproved, UserID) => {
 export const setRandomPassword = (UserID) => {
   const setRandomPasswordAPI = API_Provider(USERS_API, 'SetRandomPassword');
   return apiCallWrapper(setRandomPasswordAPI, { UserID });
+};
+
+export const getUserInvitations = (ApplicationID, Count = 20) => {
+  const getUserInvitationsAPI = API_Provider(USERS_API, 'GetUserInvitations');
+  return apiCallWrapper(getUserInvitationsAPI, {
+    ApplicationID,
+    Count,
+  }).then((res) => {
+    console.log(res);
+    return res;
+  });
 };
 
 const apiCallWrapper = (api, data) => {

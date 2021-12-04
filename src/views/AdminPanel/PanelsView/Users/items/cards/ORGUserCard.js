@@ -3,10 +3,12 @@ import UserFullNameTitle from './UserFullNameTitle';
 import ResetPassword from './ResetPassword';
 import { useCallback, useMemo, useState } from 'react';
 import InlineEditableTitle from './InlineEditableTitle';
-import {
+import api, {
   setRandomPassword,
   setUserName,
   updateApprovedStatus,
+  updateFirstName,
+  updateLastName,
 } from '../../api';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
@@ -24,6 +26,9 @@ const ORGUserCard = ({
   IsApproved,
   ...props
 }) => {
+  const [isApprovedStatus, setIsApprovedStatus] = useState(IsApproved);
+  const [firstName, setFirstName] = useState(FirstName);
+  const [lastName, setLastName] = useState(LastName);
   const userTitle = useCallback(
     (editable, column = false) => (
       <UserFullNameTitle
@@ -32,16 +37,15 @@ const ORGUserCard = ({
         column={column}
         editable={editable}>
         <EditableTitle
-          value={FirstName}
-          onConfirm={(e) => updateFirstName(e)}></EditableTitle>
+          value={firstName}
+          onConfirm={(e) => handleFirstNameUpdate(e)}></EditableTitle>
         <EditableTitle
-          value={LastName}
-          onConfirm={(e) => updateLastName(e)}></EditableTitle>
+          value={lastName}
+          onConfirm={(e) => handleLastNameUpdate(e)}></EditableTitle>
       </UserFullNameTitle>
     ),
-    [FullName, ImageURL]
+    [FullName, ImageURL, firstName, lastName]
   );
-  const [isApprovedStatus, setIsApprovedStatus] = useState(IsApproved);
 
   const updateUserName = async (value) => {
     if (value !== UserName) {
@@ -56,12 +60,27 @@ const ORGUserCard = ({
     }
   };
 
-  const updateFirstName = (firstName) => {
+  const handleFirstNameUpdate = (firstName) => {
     console.log(firstName);
+    updateFirstName(UserID, firstName)
+      .then((res) => {
+        console.log(res);
+        setFirstName(firstName);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const updateLastName = (lastName) => {
-    console.log(lastName);
+  const handleLastNameUpdate = (lastName) => {
+    updateLastName(UserID, lastName)
+      .then((res) => {
+        console.log(res);
+        setLastName(lastName);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const toggleApprovedStatus = (value) => {

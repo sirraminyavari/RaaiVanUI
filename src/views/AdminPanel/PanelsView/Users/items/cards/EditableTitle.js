@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
-import useOnClickOutside from '../../../../../../hooks/useOnClickOutside';
+import React, { useEffect, useRef, useState } from 'react';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 import styled from 'styled-components';
-import { CV_DISTANT } from '../../../../../../constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const EditableTitle = ({ value, onConfirm }) => {
   const editEl = useRef();
@@ -15,7 +15,9 @@ const EditableTitle = ({ value, onConfirm }) => {
   const handleConfirm = async () => {
     if (editMode) {
       setEditMode(false);
-      await onConfirm(value);
+      if (title !== value) {
+        await onConfirm(title);
+      }
     }
   };
 
@@ -28,19 +30,41 @@ const EditableTitle = ({ value, onConfirm }) => {
   return (
     <TitleContainer ref={editEl}>
       {!editMode && (
-        <Title onDoubleClick={(e) => setEditMode(!editMode)}>{title}</Title>
+        <Title onDoubleClick={(e) => setEditMode(!editMode)}>{value}</Title>
       )}
       {editMode && (
-        <EditModTitle
-          contentEditable="true"
-          onKeyPress={(e) => handleEnterKey(e)}>
-          {title}
-        </EditModTitle>
+        <EditableElement onChange={(e) => setTitle(e)}>
+          <EditModTitle onKeyPress={(e) => handleEnterKey(e)}>
+            {value}
+          </EditModTitle>
+        </EditableElement>
       )}
     </TitleContainer>
   );
 };
-
+const EditableElement = (props) => {
+  const { onChange } = props;
+  const element = useRef();
+  let elements = React.Children.toArray(props.children);
+  if (elements.length > 1) {
+    throw Error("Can't have more than one child");
+  }
+  const onMouseUp = () => {
+    const value = element.current?.value || element.current?.innerText;
+    onChange(value);
+  };
+  useEffect(() => {
+    const value = element.current?.value || element.current?.innerText;
+    onChange(value);
+  }, []);
+  elements = React.cloneElement(elements[0], {
+    contentEditable: true,
+    suppressContentEditableWarning: true,
+    ref: element,
+    onKeyUp: onMouseUp,
+  });
+  return elements;
+};
 const TitleContainer = styled.div`
   user-select: none;
 `;

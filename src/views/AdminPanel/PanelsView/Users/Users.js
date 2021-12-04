@@ -13,6 +13,7 @@ import SearchInput from './items/SearchInput';
 import { getUsers } from './api';
 
 const Users = (props) => {
+  console.log(props);
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
@@ -39,6 +40,10 @@ const Users = (props) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const loadInvitedUsers = () => {
+    // getUserInvitations()
   };
 
   /**
