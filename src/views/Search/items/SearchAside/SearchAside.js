@@ -6,13 +6,17 @@ import TemplateSelection from './TemplateSelection';
 import Toggles from './Toggles';
 
 const SearchAside = () => {
-  const { searchText } = useContext(searchContext);
+  const { selectedType } = useContext(searchContext);
+
+  const isNodeSearch = selectedType?.value?.split('|').includes('Node');
+
+  console.log(selectedType);
 
   return (
     <Styled.SearchViewAside>
       <AsideHeader />
       <div style={{ padding: '1rem' }}>
-        <TemplateSelection />
+        {isNodeSearch && <TemplateSelection />}
         <Styled.Divider />
         <Toggles />
       </div>

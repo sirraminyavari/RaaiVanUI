@@ -25,9 +25,10 @@ const Toggles = () => {
   return (
     <Styled.TogglesContainer>
       <Styled.TogglesTitle>آیتم</Styled.TogglesTitle>
-      {toggleTypes.map((toggle) => {
+      {toggleTypes.map((toggle, index) => {
         return (
           <Toggle
+            key={index}
             title={toggle.name}
             onToggle={(value) =>
               setTogglesValue((oldValue) => ({

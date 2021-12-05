@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 import * as Styled from './SearchView.styles';
 import SearchAside from './items/SearchAside/SearchAside';
 import SearchMain from './items/SearchMain/SearchMain';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64, getURL } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { search } from 'apiHelper/apiFunctions';
 
@@ -31,6 +31,9 @@ const SearchView = (props) => {
     value: 'User|Node|Question|File',
   });
   const [isSearching, setIsSearching] = useState(false);
+  const [searchItems, setSearchItems] = useState([]);
+  const [selectedTemps, setSelectedTemps] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   //! Reset toggles
   const onReset = () => {
@@ -38,10 +41,20 @@ const SearchView = (props) => {
   };
 
   useEffect(() => {
+    //! Update url path state.
+    window.history.replaceState(
+      null,
+      null,
+      getURL('Search', { SearchText: encodeBase64(searchText) })
+    );
+
+    //! If there is not search text, return early and set isSearching to false.
     if (!searchText) {
       setIsSearching(false);
       return;
     }
+
+    //! If there is search text, set isSearching to true.
     setIsSearching(true);
     let timeout;
 
@@ -50,12 +63,22 @@ const SearchView = (props) => {
     }
 
     timeout = setTimeout(() => {
-      search({ searchText, itemTypes: selectedType.value })
+      search({
+        searchText,
+        itemTypes: selectedType.value,
+        hasTitle: togglesValue.title,
+        hasFileContent: togglesValue.file,
+        hasContent: togglesValue.content,
+        hasDescription: togglesValue.excerpt,
+        hasTags: togglesValue.keywords,
+        typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
+      })
         .then((response) => {
-          console.log(response);
+          setSearchItems(response?.Items || []);
         })
         .catch((error) => {
           console.log(error);
+          setSearchItems([]);
         })
         .finally(() => {
           setIsSearching(false);
@@ -64,8 +87,9 @@ const SearchView = (props) => {
 
     return () => {
       clearTimeout(timeout);
+      setSearchItems([]);
     };
-  }, [searchText, selectedType, togglesValue]);
+  }, [searchText, selectedType, togglesValue, selectedTemps]);
 
   return (
     <searchContext.Provider
@@ -81,6 +105,12 @@ const SearchView = (props) => {
         setSelectedType,
         isSearching,
         setIsSearching,
+        searchItems,
+        setSearchItems,
+        selectedTemps,
+        setSelectedTemps,
+        isModalOpen,
+        setIsModalOpen,
       }}>
       <Styled.SearchViewContainer>
         <SearchMain />

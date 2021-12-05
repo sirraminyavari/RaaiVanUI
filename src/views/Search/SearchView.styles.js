@@ -9,6 +9,7 @@ import {
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
 import {
+  BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
   BO_RADIUS_QUARTER,
   IGNORE_RADIUS_BOTTOM,
@@ -20,7 +21,6 @@ import {
   BO_FREEZED,
   C_DISTANT,
   TBG_VERY_SOFT,
-  TBG_VERY_TRANSPARENT,
   TC_DEFAULT,
   TC_VERYWARM,
   TC_WARM,
@@ -32,6 +32,7 @@ import {
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
+  TCV_WARM,
 } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 
@@ -196,6 +197,50 @@ export const SelectionTitle = styled.div.attrs({
   gap: 0.5rem;
 `;
 
+export const SelectionContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${BG_WHITE}`,
+})`
+  margin-top: 0.5rem;
+  min-height: 2.2rem;
+  padding: 0.5rem;
+  ${FLEX_RCB}
+  gap: 0.5rem;
+`;
+
+export const DotsWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE} ${TBG_VERY_SOFT}`,
+})`
+  width: 2rem;
+  height: 1.5rem;
+  cursor: pointer;
+  ${FLEX_CCC}
+`;
+
+export const SelectedTemplatesWrapper = styled.div`
+  width: calc(100% - 2.5rem);
+  ${FLEX_RCS}
+  gap: 0.3rem;
+  flex-wrap: wrap;
+`;
+
+export const SelectedTemplate = styled.div.attrs({
+  className: `${BO_RADIUS_HALF} ${TBG_VERY_SOFT} ${TC_DEFAULT}`,
+})`
+  ${FLEX_RCB}
+  gap: 0.5rem;
+  min-width: 3rem;
+  padding: 0.2rem 0.5rem 0.2rem 0.3rem;
+
+  .search-selected-temp-close-icon {
+    cursor: pointer;
+    color: ${CV_DISTANT};
+
+    :hover {
+      color: ${CV_RED};
+    }
+  }
+`;
+
 export const Divider = styled.div.attrs({
   className: `${BO_FREEZED}`,
 })`
@@ -355,11 +400,12 @@ export const SearchItemMore = styled.div`
   }
 `;
 
-export const SearchItemTitle = styled(Heading)`
+export const SearchItemTitle = styled.div`
   font-weight: 500 !important;
   width: 100%;
   min-height: 2rem;
-
+  font-size: 1rem;
+  color: ${TCV_WARM};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -10,11 +10,11 @@ const SearchTypeButtons = ({ onTypeChange }) => {
   const { selectedType, setSelectedType } = useContext(searchContext);
 
   const types = [
-    { label: All, type: 'User|Node|Question|File' },
-    { label: Users, type: 'User' },
-    { label: 'آیتم ها', type: 'Node' },
-    { label: Questions, type: 'Question' },
-    { label: Files, type: 'File' },
+    { label: All, value: 'User|Node|Question|File' },
+    { label: Users, value: 'User' },
+    { label: 'آیتم ها', value: 'Node' },
+    { label: Questions, value: 'Question' },
+    { label: Files, value: 'File' },
   ];
 
   const handleOnClickType = (type) => {

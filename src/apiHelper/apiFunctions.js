@@ -1307,6 +1307,7 @@ export const saveApplicationInfo = (
  * @property {Boolean} [hasContent]
  * @property {Boolean} [hasTags]
  * @property {Boolean} [hasFileContent]
+ * @property {String} [typeIds]
  */
 
 /**
@@ -1322,6 +1323,7 @@ export const search = ({
   hasContent = true,
   hasTags = true,
   hasFileContent = true,
+  typeIds = '',
 }) => {
   const searchAPI = API_Provider(SEARCH_API, SEARCH);
 
@@ -1336,6 +1338,7 @@ export const search = ({
           Content: hasContent,
           Tags: hasTags,
           FileContent: hasFileContent,
+          TypeIDs: typeIds,
         },
         (response) => {
           resolve(response);

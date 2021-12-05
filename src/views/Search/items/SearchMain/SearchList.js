@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import SearchNotFound from './SearchNotFound';
 import SearchingAnimation from './SearchingAnimation';
 import * as Styled from 'views/Search/SearchView.styles';
@@ -10,15 +10,28 @@ import NodeSearchItem from './SearchItems/NodeItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const SearchList = () => {
-  const { isSearching, searchText } = useContext(searchContext);
+  const { isSearching, searchText, searchItems } = useContext(searchContext);
 
-  if (!searchText) {
-    return (
-      <Styled.SearchListContainer>
-        <SearchNotFound />
-      </Styled.SearchListContainer>
-    );
-  }
+  const renderItem = (item) => {
+    const { ItemType } = item || {};
+
+    switch (ItemType) {
+      case 'User':
+        return <UserSearchItem item={item} />;
+
+      case 'Node':
+        return <NodeSearchItem item={item} />;
+
+      case 'Question':
+        return <QuestionSearchItem item={item} />;
+
+      case 'File':
+        return <FileSearchItem item={item} />;
+
+      default:
+        return null;
+    }
+  };
 
   if (isSearching) {
     return (
@@ -28,16 +41,25 @@ const SearchList = () => {
     );
   }
 
-  return (
-    <Styled.SearchListContainer>
-      <PerfectScrollbar>
-        <FileSearchItem />
-        <QuestionSearchItem />
-        <UserSearchItem />
-        <NodeSearchItem />
-      </PerfectScrollbar>
-    </Styled.SearchListContainer>
-  );
+  if (!searchText || !searchItems.length) {
+    return (
+      <Styled.SearchListContainer>
+        <SearchNotFound />
+      </Styled.SearchListContainer>
+    );
+  } else {
+    return (
+      <Styled.SearchListContainer>
+        <PerfectScrollbar>
+          {searchItems?.map((item, index) => {
+            return (
+              <Fragment key={item?.ID || index}>{renderItem(item)}</Fragment>
+            );
+          })}
+        </PerfectScrollbar>
+      </Styled.SearchListContainer>
+    );
+  }
 };
 
 export default SearchList;
