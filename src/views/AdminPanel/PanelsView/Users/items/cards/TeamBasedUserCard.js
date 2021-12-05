@@ -6,7 +6,7 @@ import UserDeleteButton from './UserDeleteButton';
 import UserGroupEdit from './UserGroupEdit';
 import { useMemo, useState } from 'react';
 import { addSystemAdmin, removeSystemAdmin } from '../../api';
-import InfoToast from '../../../../../../components/toasts/info-toast/InfoToast';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 const TeamBasedUserCard = ({
   ImageURL,
   FullName,
@@ -17,6 +17,7 @@ const TeamBasedUserCard = ({
   MainEmailAddress,
   LastActivityTime_Local,
   UserID,
+  groups,
   ...props
 }) => {
   const userTitle = useMemo(
@@ -108,7 +109,7 @@ const TeamBasedUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={8}>
-        <UserGroupEdit IsAdmin={IsSystemAdmin} Name={FullName} />
+        <UserGroupEdit UserID={UserID} Name={FullName} Groups={groups} />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>

@@ -71,6 +71,16 @@ export const getUsers = (SearchText, IsOnline, IsApproved) => {
   );
 };
 
+export const addMember = (NodeID, UserID) => {
+  const addMemberAPI = API_Provider(CN_API, 'AddMember');
+  return apiCallWrapper(addMemberAPI, { NodeID, UserID });
+};
+
+export const removeMember = (NodeID, UserID) => {
+  const removeMemberAPI = API_Provider(CN_API, 'RemoveMember');
+  return apiCallWrapper(removeMemberAPI, { NodeID, UserID });
+};
+
 /**
  * @description get all groups
  * @return {Promise<unknown[]>}
@@ -96,6 +106,11 @@ export const getGroupsAll = () => {
         ...x,
         Name: decodeBase64(x?.Name),
         NodeType: decodeBase64(x?.NodeType),
+        Members:
+          x?.Members?.map((member) => ({
+            ...member,
+            FullName: decodeBase64(member.FullName),
+          })) || [],
       }))
     );
 };

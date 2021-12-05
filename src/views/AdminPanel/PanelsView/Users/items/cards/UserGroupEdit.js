@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import SettingOutlineIcon from 'components/Icons/SettingOutlineIcon/SettingOutlineIcon';
 import Modal from 'components/Modal/Modal';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Button from 'components/Buttons/Button';
 import {
   CV_DISTANT,
@@ -17,7 +17,13 @@ import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
-const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
+const UserGroupEdit = ({
+  FullName,
+  IsAdmin = false,
+  Groups,
+  UserID,
+  ...props
+}) => {
   const { RV_RTL } = useWindowContext();
 
   const [modalInfo, setModalInfo] = useState({
@@ -30,6 +36,23 @@ const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
   });
 
   const [showGroups, setShowGroup] = useState(!IsAdmin);
+  const [groups, setGroups] = useState(Groups);
+  const groupCheckbox = useMemo(
+    () =>
+      groups?.map((g) => {
+        const { Name, NodeID, Members } = g;
+        return (
+          <UserGroupCheckbox
+            key={NodeID}
+            label={Name}
+            UserID={UserID}
+            users={Members}
+            onChange={(e) => handleCheckboxToggle(e)}
+          />
+        );
+      }),
+    [groups]
+  );
 
   const onModalConfirm = () => {
     setModalInfo({ ...modalInfo, show: false });
@@ -37,6 +60,10 @@ const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
 
   const onModalCancel = () => {
     setModalInfo({ ...modalInfo, show: false });
+  };
+
+  const handleCheckboxToggle = (e) => {
+    console.log(e);
   };
   return (
     <Container>
@@ -72,31 +99,7 @@ const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
             <ModalMessage rtl={RV_RTL}>
               {` دسترسی‌های موردنظر برای ${FullName} را انتخاب نمایید: `}
             </ModalMessage>
-            <OptionLayout>
-              <UserGroupCheckbox
-                checked={true}
-                label={'گروه کاربری شماره یازده'}
-              />
-              <UserGroupCheckbox label={'گروه کاربری شماره دوازده'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره سیزده'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره چهل و نه'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره صد و پنجاه و هشت'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-              <UserGroupCheckbox label={'گروه کاربری شماره بیست و شش'} />
-            </OptionLayout>
+            <OptionLayout>{groupCheckbox}</OptionLayout>
           </ContentContainer>
         )}
 
@@ -171,21 +174,21 @@ const UserGroupEdit = ({ FullName, IsAdmin = true, ...props }) => {
           </ContentContainer>
         )}
 
-        <ModelActionBar>
-          <Button
-            type="primary"
-            style={buttonStyles}
-            onClick={() => onModalConfirm()}>
-            {'ذخیره'}
-          </Button>
+        {/*<ModelActionBar>*/}
+        {/*  <Button*/}
+        {/*    type="primary"*/}
+        {/*    style={buttonStyles}*/}
+        {/*    onClick={() => onModalConfirm()}>*/}
+        {/*    {'ذخیره'}*/}
+        {/*  </Button>*/}
 
-          <Button
-            type="negative-o"
-            style={buttonStyles}
-            onClick={() => onModalCancel()}>
-            {'بازگشت'}
-          </Button>
-        </ModelActionBar>
+        {/*  <Button*/}
+        {/*    type="negative-o"*/}
+        {/*    style={buttonStyles}*/}
+        {/*    onClick={() => onModalCancel()}>*/}
+        {/*    {'بازگشت'}*/}
+        {/*  </Button>*/}
+        {/*</ModelActionBar>*/}
       </Modal>
     </Container>
   );

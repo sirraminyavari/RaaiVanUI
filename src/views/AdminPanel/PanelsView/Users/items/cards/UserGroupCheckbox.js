@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
   CV_DISTANT,
@@ -8,33 +8,49 @@ import {
 } from 'constant/CssVariables';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { getUUID } from 'helpers/helpers';
-export const UserGroupCheckbox = React.forwardRef(
-  ({ label, checked = false, onChange, users, ...props }, ref) => {
-    const thumbs = Array(Math.floor(Math.random() * 3) + 1)
-      .fill(0)
-      .map((x, i) => (
-        <ProfileImage
-          key={getUUID()}
-          index={i}
-          src="https://picsum.photos/200"
+
+export const UserGroupCheckbox = ({
+  label,
+  UserID,
+  onChange,
+  users,
+  ...props
+}) => {
+  const checkboxEl = useRef(null);
+  const thumbs = users.map((x, i) => (
+    <ProfileImage key={getUUID()} index={i} src={x.ProfileImageURL} />
+  ));
+  const [checked, setChecked] = useState(
+    users?.find((x) => x.UserID === UserID) ? true : false
+  );
+  const toggleCheckBox = () => {
+    if (checked) {
+      // remove from group
+    } else {
+      // add to the group
+    }
+    setChecked(!checked);
+  };
+
+  return (
+    <CheckboxContainer>
+      <Checkbox>
+        <HiddenCheckbox
+          checked={checked}
+          {...props}
+          ref={checkboxEl}
+          onChange={toggleCheckBox}
         />
-      ));
+        <CustomCheckbox checked={checked} onClick={toggleCheckBox}>
+          {checked && <CheckIcon size={20} />}
+        </CustomCheckbox>
+        <CheckboxLabel checked={checked}>{label}</CheckboxLabel>
+      </Checkbox>
 
-    return (
-      <CheckboxContainer>
-        <Checkbox>
-          <HiddenCheckbox checked={checked} {...props} ref={ref} />
-          <CustomCheckbox checked={checked}>
-            {checked && <CheckIcon size={20} />}
-          </CustomCheckbox>
-          <CheckboxLabel checked={checked}>{label}</CheckboxLabel>
-        </Checkbox>
-
-        <ProfileImageList>{thumbs}</ProfileImageList>
-      </CheckboxContainer>
-    );
-  }
-);
+      <ProfileImageList>{thumbs}</ProfileImageList>
+    </CheckboxContainer>
+  );
+};
 
 const CheckboxContainer = styled.div`
   display: flex;

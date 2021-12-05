@@ -6,10 +6,12 @@ import { checkAuthority, getGroupsAll, getUsers } from '../api';
 
 const TeamBasedList = ({ rtl, users, ...props }) => {
   const [showMore, setShowMore] = useState(false);
+  const [userGroups, setUserGroups] = useState([]);
 
   useEffect(() => {
     getGroupsAll()
       .then((res) => {
+        setUserGroups(res);
         console.log(res);
       })
       .catch((res) => {
@@ -29,7 +31,7 @@ const TeamBasedList = ({ rtl, users, ...props }) => {
     () =>
       users?.slice(0, showMore ? users.length : 3)?.map((x) => (
         <Styled.ListRow rtl={rtl} key={getUUID()}>
-          <TeamBasedUserCard {...x} />
+          <TeamBasedUserCard {...x} groups={userGroups} />
         </Styled.ListRow>
       )),
     [showMore, users]
