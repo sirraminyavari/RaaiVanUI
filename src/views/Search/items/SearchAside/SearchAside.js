@@ -10,8 +10,6 @@ const SearchAside = () => {
 
   const isNodeSearch = selectedType?.value?.split('|').includes('Node');
 
-  console.log(selectedType);
-
   return (
     <Styled.SearchViewAside>
       <AsideHeader />

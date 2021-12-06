@@ -579,9 +579,10 @@ export const setCity = (userId, city) => {
  * @description Get form elements.
  *  @param {String} formId -The id of the form.
  *  @param {String} ownerId -The id of the form owner.
+ *  @param {Boolean} [elementsLimits]
  *  @returns Promise.
  */
-export const getFormElements = (formId, ownerId) => {
+export const getFormElements = (formId, ownerId, elementsLimits = false) => {
   const getFormElementsAPI = API_Provider(FG_API, GET_FORM_ELEMENTS);
 
   return new Promise((resolve, reject) => {
@@ -590,6 +591,7 @@ export const getFormElements = (formId, ownerId) => {
         {
           FormID: formId,
           OwnerID: ownerId,
+          ConsiderElementsLimits: elementsLimits,
         },
         (response) => {
           resolve(response);
@@ -1116,6 +1118,7 @@ export const getNodeTypes = (searchText, archive = false, count = '') => {
           Count: count,
           SearchText: encodeBase64(searchText),
           Archive: archive,
+          Icon: true,
         },
         (response) => {
           resolve(response);

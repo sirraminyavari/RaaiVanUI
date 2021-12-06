@@ -1,10 +1,13 @@
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
 import { CV_DISTANT } from 'constant/CssVariables';
+import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from './TemplateSelect.styles';
 
-const FieldCell = ({ type, name }) => {
+const FieldCell = ({ element }) => {
+  const { Type, Title } = element || {};
+
   const getIcon = () => {
-    switch (type) {
+    switch (Type) {
       case 'Date':
         return <AtSignIcon size={20} color={CV_DISTANT} />;
 
@@ -15,9 +18,7 @@ const FieldCell = ({ type, name }) => {
   return (
     <Styled.FieldCellContainer>
       {getIcon()}
-      <span>
-        رونوشت اولیه نامه برای کاربر سطح ارشد دپارتمان موردنظر در سازمان مقصد
-      </span>
+      <span>{decodeBase64(Title)}</span>
     </Styled.FieldCellContainer>
   );
 };

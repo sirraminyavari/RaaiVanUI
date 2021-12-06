@@ -104,9 +104,12 @@ export const SearchViewMain = styled.main.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_QUARTER}`,
 })`
   height: 100%;
-  width: 100%;
+  width: calc(
+    100% - ${({ isAsideOpen }) => (isAsideOpen ? '18.5rem' : '0rem')}
+  );
   box-shadow: 1px 5px 15px #0000001f;
   padding: 1rem 1rem 1rem 1.5rem;
+  transition: width 0.3s linear;
 `;
 
 export const SearchAsideHeader = styled.header.attrs({
@@ -354,7 +357,7 @@ export const SearchItemTypeWrapper = styled.div.attrs({
   className: `${BO_DISTANT}`,
 })`
   height: 100%;
-  width: 5rem;
+  min-width: 4.5rem;
   border-top: none;
   border-bottom: none;
   border-${RV_Float}: none;
@@ -371,7 +374,7 @@ export const SearchItemTypeWrapper = styled.div.attrs({
 
 export const SearchItemInfoWrapper = styled.div`
   height: 100%;
-  width: 100%;
+  width: calc(100% - 4rem);
   padding: 0 1rem;
   ${FLEX_RCB}
   gap: 1rem;

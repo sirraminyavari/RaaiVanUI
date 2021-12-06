@@ -5,10 +5,10 @@ import SearchList from './SearchList';
 import SearchActions from './SearchActions';
 
 const SearchMain = () => {
-  const { searchText, setIsAsideOpen } = useContext(searchContext);
+  const { isAsideOpen } = useContext(searchContext);
 
   return (
-    <Styled.SearchViewMain>
+    <Styled.SearchViewMain isAsideOpen={isAsideOpen}>
       <SearchActions />
       <SearchList />
     </Styled.SearchViewMain>

@@ -6,21 +6,14 @@ import {
   TCV_DEFAULT,
   TCV_VERYWARM,
 } from 'constant/CssVariables';
-import {
-  FLEX_CCB,
-  FLEX_CCC,
-  FLEX_CSC,
-  FLEX_RCB,
-  FLEX_RCC,
-  FLEX_RCS,
-} from 'constant/StyledCommonCss';
-import { BG_GRAY_LIGHT, C_DISTANT, C_GRAY, TC_VERYWARM } from 'constant/Colors';
+import { FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
+import { BG_GRAY_LIGHT, C_DISTANT, C_GRAY } from 'constant/Colors';
 import { BO_RADIUS_HALF, IGNORE_RADIUS_LEFT } from 'constant/constants';
 import Heading from 'components/Heading/Heading';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RevFloat } = window;
 
-const commonScrollCss = css`
+const getScrollCss = (dir = RV_Float) => css`
   .ps__thumb-y {
     background-color: ${CV_BLACK} !important;
   }
@@ -28,7 +21,7 @@ const commonScrollCss = css`
     background-color: transparent !important;
   }
   .ps__rail-y {
-    ${RV_Float}: 0rem !important;
+    ${dir}: 0rem !important;
   }
 `;
 
@@ -66,7 +59,7 @@ export const TemplatesListContainer = styled.div.attrs({
     margin-top: 1rem;
   }
 
-  ${commonScrollCss}
+  ${getScrollCss()}
 `;
 
 export const TemplateFieldsContainer = styled.div`
@@ -97,6 +90,13 @@ export const TemplateFieldsContainer = styled.div`
       border-color: ${CV_RED};
     }
   }
+
+  .template-fields-scrollbar {
+    max-height: calc(100% - 6rem);
+    overflow: hidden;
+  }
+
+  ${getScrollCss(RV_RevFloat)}
 `;
 
 export const TemplateListTitle = styled.div.attrs({
@@ -147,14 +147,4 @@ export const CurrentTemplateName = styled(Heading)`
   color: ${TCV_VERYWARM} !important;
   margin-bottom: 1rem;
   padding-top: 0.5rem;
-`;
-
-export const EmptyTemplate = styled(Heading)`
-  height: 100%;
-  ${FLEX_RCC}
-  gap: 2rem;
-
-  ::before {
-    content: '<===';
-  }
 `;
