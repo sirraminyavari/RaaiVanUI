@@ -4,6 +4,7 @@ import { isEmpty } from 'helpers/helpers';
 
 const Search = (props) => {
   const node = useRef();
+  console.log(props);
 
   useScript(
     'pageLoadScripts/LoadSearch/LoadSearch.js',

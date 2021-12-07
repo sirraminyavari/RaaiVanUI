@@ -19,7 +19,14 @@ const WideScreenMenu = () => {
     <Styled.WideScreenMenu>
       {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
+
+        //! Remove 'navigation', 'question' and 'dashboard' in SAAS mode.
         if (isSaas && ['2', '3', '6'].includes(btn.index)) {
+          return null;
+        }
+
+        //! Remove 'teams' in ORG mode.
+        if (!isSaas && ['4'].includes(btn.index)) {
           return null;
         }
 

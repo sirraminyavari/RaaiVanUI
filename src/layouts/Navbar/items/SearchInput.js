@@ -16,7 +16,7 @@ const SearchInput = (props) => {
 
   //! The path that input is link to.
   const searchPath = getURL('Search', {
-    SearchText: encodeBase64(!!searchText ? searchText : RVDic.Search),
+    SearchText: encodeBase64(searchText),
   });
 
   //! Set search text.

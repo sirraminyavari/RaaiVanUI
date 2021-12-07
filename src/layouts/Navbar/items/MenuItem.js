@@ -57,7 +57,7 @@ const MenuItem = forwardRef((props, ref) => {
       forwardedAs={linkTo ? Link : 'div'}
       to={linkTo}>
       <Styled.ButtonIcon>
-        {NavbarIcons[icon]()}
+        {NavbarIcons[icon]({ outline: false })}
         {hasBadge && (
           <Styled.BadgeWrapper>
             <Badge

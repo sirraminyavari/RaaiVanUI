@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
  * @param {PropType} props -Props that pass to LottieMaker.
  */
 const LottieMaker = (props) => {
-  const { animationJSON, loop, autoplay, height, width } = props;
+  const { animationJSON, loop, autoplay, height, width, ...rest } = props;
 
   const defaultOptions = {
     loop: !!loop,
@@ -28,7 +28,9 @@ const LottieMaker = (props) => {
     },
   };
 
-  return <Lottie options={defaultOptions} height={height} width={width} />;
+  return (
+    <Lottie options={defaultOptions} height={height} width={width} {...rest} />
+  );
 };
 
 LottieMaker.propTypes = {
