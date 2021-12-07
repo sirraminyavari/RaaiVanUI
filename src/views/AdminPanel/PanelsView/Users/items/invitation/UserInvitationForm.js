@@ -1,9 +1,8 @@
 import * as Styled from './InvitaionStyle';
-import AnimatedInput from 'components/Inputs/AnimatedInput';
 import { useEffect, useState } from 'react';
-import CustomSelect from '../../../../../../components/Inputs/CustomSelect/CustomSelect';
-import CustomSelectIndicator from '../../../../../../components/Inputs/CustomSelect/items/CustomSelectIndicator';
-import UserAccessTypeOption from '../../../../../../components/Inputs/CustomSelect/items/UserAccessTypeOption';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
+import UserAccessTypeOption from 'components/Inputs/CustomSelect/items/UserAccessTypeOption';
 
 const UserInvitationForm = ({ ...props }) => {
   const [formData, setFormData] = useState({

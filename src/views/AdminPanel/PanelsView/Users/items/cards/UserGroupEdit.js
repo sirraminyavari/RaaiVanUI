@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 import SettingOutlineIcon from 'components/Icons/SettingOutlineIcon/SettingOutlineIcon';
 import Modal from 'components/Modal/Modal';
-import { useMemo, useState } from 'react';
-import Button from 'components/Buttons/Button';
+import React, { useContext, useMemo, useState } from 'react';
 import {
   CV_DISTANT,
   CV_GRAY,
@@ -16,14 +15,9 @@ import UserGroupCheckbox from './UserGroupCheckbox';
 import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { GroupsContext } from '../TeamBasedList';
 
-const UserGroupEdit = ({
-  FullName,
-  IsAdmin = false,
-  Groups,
-  UserID,
-  ...props
-}) => {
+const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
   const { RV_RTL } = useWindowContext();
 
   const [modalInfo, setModalInfo] = useState({
@@ -35,8 +29,9 @@ const UserGroupEdit = ({
     titleContainerClass: IsAdmin ? 'hidden-title-bar' : 'modal-title-bar',
   });
 
+  const { groups, loadAllGroups } = useContext(GroupsContext);
   const [showGroups, setShowGroup] = useState(!IsAdmin);
-  const [groups, setGroups] = useState(Groups);
+
   const groupCheckbox = useMemo(
     () =>
       groups?.map((g) => {
@@ -47,6 +42,7 @@ const UserGroupEdit = ({
             label={Name}
             UserID={UserID}
             users={Members}
+            nodeId={NodeID}
             onChange={(e) => handleCheckboxToggle(e)}
           />
         );
@@ -63,7 +59,7 @@ const UserGroupEdit = ({
   };
 
   const handleCheckboxToggle = (e) => {
-    console.log(e);
+    loadAllGroups();
   };
   return (
     <Container>
@@ -313,7 +309,6 @@ const CustomTitleBarCloseButton = styled.div`
     color: ${CV_WHITE};
   }
 `;
-
 const buttonStyles = {
   height: '3rem',
   width: '7.5rem',

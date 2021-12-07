@@ -8,29 +8,52 @@ import {
 } from 'constant/CssVariables';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { getUUID } from 'helpers/helpers';
+import { addMember, removeMember } from '../../api';
 
 export const UserGroupCheckbox = ({
   label,
   UserID,
+  nodeId,
   onChange,
   users,
   ...props
 }) => {
   const checkboxEl = useRef(null);
-  const thumbs = users.map((x, i) => (
-    <ProfileImage key={getUUID()} index={i} src={x.ProfileImageURL} />
-  ));
   const [checked, setChecked] = useState(
     users?.find((x) => x.UserID === UserID) ? true : false
   );
   const toggleCheckBox = () => {
     if (checked) {
       // remove from group
+      removeMember(nodeId, UserID)
+        .then((res) => {
+          console.log(res);
+          if (res.Succeed) {
+            onChange();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       // add to the group
+      addMember(nodeId, UserID)
+        .then((res) => {
+          console.log(res);
+          if (res.Succeed) {
+            onChange();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     setChecked(!checked);
   };
+
+  const thumbs = users?.map((x, i) => (
+    <ProfileImage key={getUUID()} index={i} src={x.ProfileImageURL} />
+  ));
 
   return (
     <CheckboxContainer>
@@ -88,19 +111,17 @@ const CheckboxLabel = styled.div`
   font-size: 1rem;
   color: ${({ checked }) => (checked ? TCV_DEFAULT : CV_GRAY)};
 `;
-
-const ProfileImageList = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-  height: 2rem;
-`;
-
 const ProfileImage = styled.img`
   height: 2rem;
   width: 2rem;
   border-radius: 100%;
   border: 2px solid ${CV_WHITE};
   ${({ index }) => index !== 0 && `margin-left: -${0.8}rem`}
+`;
+const ProfileImageList = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  height: 2rem;
 `;
 export default UserGroupCheckbox;

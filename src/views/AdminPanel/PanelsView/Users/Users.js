@@ -8,6 +8,7 @@ import useWindowContext from 'hooks/useWindowContext';
 import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import { getUsers, getUserInvitations } from './api';
+import CreateUser from './CreateUser';
 
 const Users = (props) => {
   const ApplicationID = props?.route?.ApplicationID;
@@ -127,8 +128,12 @@ const Users = (props) => {
           </Styled.ContentWrapper>
         )}
 
-        {showInvitationForm && (
+        {showInvitationForm && SAASBasedMultiTenancy && (
           <UserInvitation onClose={() => setShowInvitationForm(false)} />
+        )}
+
+        {showInvitationForm && !SAASBasedMultiTenancy && (
+          <CreateUser onClose={() => setShowInvitationForm(false)} />
         )}
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>

@@ -1,23 +1,17 @@
 import * as Styled from './ListStyled';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { decodeBase64, getUUID } from 'helpers/helpers';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
+import { getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
 import { checkAuthority, getGroupsAll, getUsers } from '../api';
 
+export const GroupsContext = createContext({});
+
 const TeamBasedList = ({ rtl, users, ...props }) => {
   const [showMore, setShowMore] = useState(false);
-  const [userGroups, setUserGroups] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    getGroupsAll()
-      .then((res) => {
-        setUserGroups(res);
-        console.log(res);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-
+    loadAllGroups();
     checkAuthority()
       .then((res) => {
         console.log(res);
@@ -27,11 +21,21 @@ const TeamBasedList = ({ rtl, users, ...props }) => {
       });
   }, []);
 
+  const loadAllGroups = () => {
+    getGroupsAll()
+      .then((res) => {
+        setGroups(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   const userCards = useMemo(
     () =>
       users?.slice(0, showMore ? users.length : 3)?.map((x) => (
         <Styled.ListRow rtl={rtl} key={getUUID()}>
-          <TeamBasedUserCard {...x} groups={userGroups} />
+          <TeamBasedUserCard {...x} />
         </Styled.ListRow>
       )),
     [showMore, users]
@@ -53,7 +57,9 @@ const TeamBasedList = ({ rtl, users, ...props }) => {
           </Styled.ListHeaderRow>
         </Styled.ListHeader>
 
-        <Styled.ListBody>{userCards}</Styled.ListBody>
+        <GroupsContext.Provider value={{ groups, loadAllGroups }}>
+          <Styled.ListBody>{userCards}</Styled.ListBody>
+        </GroupsContext.Provider>
       </Styled.ListContainer>
 
       {users.length > 3 && (

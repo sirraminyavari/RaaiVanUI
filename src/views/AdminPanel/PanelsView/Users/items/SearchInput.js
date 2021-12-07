@@ -19,6 +19,7 @@ const SearchInput = React.forwardRef(
           debounceTime(delayTime),
           distinctUntilChanged(),
           tap((x) => {
+            console.log(x);
             if (onChange) {
               onChange(x);
             }

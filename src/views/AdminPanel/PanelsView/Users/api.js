@@ -120,8 +120,6 @@ export const getGroupsAll = () => {
  */
 export const checkAuthority = () => {
   const roles = (window?.RVGlobal?.AccessRoles || []).map((r) => r.Name);
-  console.log(roles);
-
   const checkAuthorityAPI = API_Provider(PRIVACY_API, 'CheckAuthority');
 
   return apiCallWrapper(checkAuthorityAPI, {
@@ -137,6 +135,28 @@ export const checkAuthority = () => {
       console.log(res);
       return res;
     });
+};
+
+export const createUser = (data) => {
+  const { UserName, FirstName, LastName } = data;
+  const createUserNameAPI = API_Provider(USERS_API, 'CreateUser');
+  return apiCallWrapper(createUserNameAPI, {
+    UserName: encodeBase64(UserName),
+    FirstName: encodeBase64(FirstName),
+    LastName: encodeBase64(LastName),
+  });
+};
+
+/**
+ * @description check validity of a username
+ * @param username
+ * @return {Promise<unknown>}
+ */
+export const checkUserName = (username) => {
+  const CheckUserNameAPI = API_Provider(USERS_API, 'CheckUserName');
+  return apiCallWrapper(CheckUserNameAPI, {
+    UserName: encodeBase64(username),
+  });
 };
 
 /**

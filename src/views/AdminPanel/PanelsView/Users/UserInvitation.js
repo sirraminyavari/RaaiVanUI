@@ -1,12 +1,12 @@
 import useWindowContext from 'hooks/useWindowContext';
 import * as Styled from './UsersStyle';
 import styled from 'styled-components';
-import { CV_DISTANT, CV_WHITE } from '../../../../constant/CssVariables';
-import UsersGroupIcon from '../../../../components/Icons/UsersGroupIcon/UsersGroup';
+import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';
+import UsersGroupIcon from 'components/Icons/UsersGroupIcon/UsersGroup';
 import { useState } from 'react';
 import InvitationTypeButton from './items/invitation/InvitationTypeButton';
-import MailIcon from '../../../../components/Icons/MailIcon/MailIcon';
-import LinkIcon from '../../../../components/Icons/LinkIcon/LinkIcon';
+import MailIcon from 'components/Icons/MailIcon/MailIcon';
+import LinkIcon from 'components/Icons/LinkIcon/LinkIcon';
 import InvitationLink from './items/invitation/InvitaionLink';
 import SendInvitation from './items/invitation/SendInvitation';
 
