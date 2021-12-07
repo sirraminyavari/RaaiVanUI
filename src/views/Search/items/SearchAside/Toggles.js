@@ -7,13 +7,15 @@ import useWindow from 'hooks/useWindowContext';
 const Toggles = () => {
   const { RVDic } = useWindow();
   const { togglesValue, setTogglesValue } = useContext(searchContext);
-  const { SearchInN, Title, Abstract, Content, Keywords, FileContents } =
+  const { SearchInN, Title, Abstract, Content, Keywords, FileContents, Node } =
     RVDic || {};
 
+  //! Provide toggle name.
   const getName = (name) => {
     return SearchInN?.replace('[n]', name);
   };
 
+  //! Advanced search toggles.
   const toggleTypes = [
     { name: getName(Title), type: 'title' },
     { name: getName(Abstract), type: 'excerpt' },
@@ -24,7 +26,7 @@ const Toggles = () => {
 
   return (
     <Styled.TogglesContainer>
-      <Styled.TogglesTitle>آیتم</Styled.TogglesTitle>
+      <Styled.TogglesTitle>{Node}</Styled.TogglesTitle>
       {toggleTypes.map((toggle, index) => {
         return (
           <Toggle

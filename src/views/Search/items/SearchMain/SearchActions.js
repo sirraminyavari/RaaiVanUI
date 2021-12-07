@@ -23,6 +23,8 @@ const SearchActions = () => {
   const searchInputRef = useRef();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
+  const { Search, SearchResults, SearchResultsForN } = RVDic || {};
+
   const isWindow = useMediaQuery({
     query: '(max-width: 1200px)',
   });
@@ -31,14 +33,17 @@ const SearchActions = () => {
     query: '(max-width: 1020px)',
   });
 
+  //! Put input in focus when component is mounted.
   useEffect(() => {
     searchInputRef.current.focus();
   }, []);
 
+  //! Set search text.
   const handleSearch = (e) => {
     setSearchText(e.target.value);
   };
 
+  //! See if we should show collapsed mode of search types.
   const isCollapsed = () => {
     if (isAsideOpen && isSidebarOpen) return true;
     if (isAsideOpen && isWindow) return true;
@@ -49,7 +54,9 @@ const SearchActions = () => {
   return (
     <Styled.SearchActionsContainer>
       <Styled.SearchViewHeaderTitle>
-        {searchText ? `نتایج جستجو برای "${searchText}"` : 'نتایج جستجو'}
+        {searchText
+          ? SearchResultsForN.replace('[n]', `"${searchText}"`)
+          : SearchResults}
       </Styled.SearchViewHeaderTitle>
       <Styled.SearchActionsWrapper>
         <Styled.SearchArea>
@@ -57,7 +64,7 @@ const SearchActions = () => {
             <Input
               ref={searchInputRef}
               type="search"
-              placeholder={RVDic.Search}
+              placeholder={Search}
               onChange={handleSearch}
               value={searchText}
             />

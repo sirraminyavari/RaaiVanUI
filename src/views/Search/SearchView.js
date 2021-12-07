@@ -40,6 +40,21 @@ const SearchView = (props) => {
     setTogglesValue(DEFAULT_TOGGLE_VALUES);
   };
 
+  //! Download excel file.
+  const getExcelFile = () => {
+    search({
+      searchText,
+      itemTypes: selectedType.value,
+      hasTitle: togglesValue.title,
+      hasFileContent: togglesValue.file,
+      hasContent: togglesValue.content,
+      hasDescription: togglesValue.excerpt,
+      hasTags: togglesValue.keywords,
+      typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
+      isExcel: true,
+    });
+  };
+
   useEffect(() => {
     //! Update url path state.
     window.history.replaceState(
@@ -111,6 +126,7 @@ const SearchView = (props) => {
         setSelectedTemps,
         isModalOpen,
         setIsModalOpen,
+        getExcelFile,
       }}>
       <Styled.SearchViewContainer>
         <SearchMain />

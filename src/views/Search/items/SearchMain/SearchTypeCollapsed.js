@@ -6,13 +6,13 @@ import { searchContext } from 'views/Search/SearchView';
 
 const SearchTypeCollapsed = () => {
   const { RVDic } = useWindow();
-  const { All, Users, Questions, Files } = RVDic || {};
+  const { All, Users, Questions, Files, Nodes } = RVDic || {};
   const { selectedType, setSelectedType } = useContext(searchContext);
 
   const options = [
     { label: All, value: 'User|Node|Question|File' },
     { label: Users, value: 'User' },
-    { label: 'آیتم ها', value: 'Node' },
+    { label: Nodes, value: 'Node' },
     { label: Questions, value: 'Question' },
     { label: Files, value: 'File' },
   ];

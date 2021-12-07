@@ -7,8 +7,12 @@ import Button from 'components/Buttons/Button';
 import { getFormElements } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const TemplateFields = () => {
+  const {
+    RVDic: { SelectN, Template, Return },
+  } = useWindow();
   const [nodeElements, setNodeElements] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { currentNode, onModalClose, onSelect } = useContext(
@@ -54,13 +58,13 @@ const TemplateFields = () => {
           <Button
             onClick={() => onSelect(currentNode)}
             classes="template-select-button">
-            انتخاب تمپلیت
+            {SelectN.replace('[n]', Template)}
           </Button>
           <Button
             onClick={onModalClose}
             type="negative-o"
             classes="template-back-button">
-            بازگشت
+            {Return}
           </Button>
         </>
       ) : (

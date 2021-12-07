@@ -7,7 +7,10 @@ import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import useWindow from 'hooks/useWindowContext';
 
 const SearchNotFound = () => {
-  const { RV_RevFloat } = useWindow();
+  const {
+    RV_RevFloat,
+    RVDic: { NoResultFound },
+  } = useWindow();
 
   const questions = [
     { title: 'چرا آیتم موردنظر من در جستجو نیست؟' },
@@ -27,15 +30,17 @@ const SearchNotFound = () => {
     );
   };
 
+  // TODO : uncomment FAQ whenever is ready.
+
   return (
     <Styled.NotFoundContainer>
       <LottieMaker animationJSON={SearchJson} width="10rem" />
       <Styled.NotFoundText type="h2" style={{ marginBottom: '1rem' }}>
-        نتیجه‌ای برای جستجوی شما پیدا نشد
+        {NoResultFound}
       </Styled.NotFoundText>
-      {questions.map((question, index) => (
+      {/* {questions.map((question, index) => (
         <Question key={index} question={question} />
-      ))}
+      ))} */}
     </Styled.NotFoundContainer>
   );
 };

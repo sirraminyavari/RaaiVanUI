@@ -7,10 +7,12 @@ import FilterIcon from 'components/Icons/FilterIcon/Filter';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 
 const SearchAdvancedButtons = () => {
-  const { isAsideOpen, setIsAsideOpen } = useContext(searchContext);
-  const { RVDic } = useWindow();
-
-  const handleExportAsExcel = () => {};
+  const { isAsideOpen, setIsAsideOpen, getExcelFile } = useContext(
+    searchContext
+  );
+  const {
+    RVDic: { Advanced },
+  } = useWindow();
 
   return (
     <Styled.AdvanceButtonsWrapper isAsideOpen={isAsideOpen}>
@@ -18,14 +20,14 @@ const SearchAdvancedButtons = () => {
         type="excel"
         size={20}
         className="search-export-excel"
-        onClick={handleExportAsExcel}
+        onClick={getExcelFile}
       />
       <Button
         type="primary-o"
         classes="search-advanced-button"
         onClick={() => setIsAsideOpen((v) => !v)}>
         <FilterIcon />
-        {RVDic.Advanced}
+        {Advanced}
       </Button>
     </Styled.AdvanceButtonsWrapper>
   );

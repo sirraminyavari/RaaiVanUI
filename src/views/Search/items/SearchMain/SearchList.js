@@ -12,6 +12,7 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 const SearchList = () => {
   const { isSearching, searchText, searchItems } = useContext(searchContext);
 
+  //! Render correct item based on search list.
   const renderItem = (item) => {
     const { ItemType } = item || {};
 

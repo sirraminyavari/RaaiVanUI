@@ -1311,6 +1311,7 @@ export const saveApplicationInfo = (
  * @property {Boolean} [hasTags]
  * @property {Boolean} [hasFileContent]
  * @property {String} [typeIds]
+ * @property {Boolean} [isExcel]
  */
 
 /**
@@ -1327,6 +1328,7 @@ export const search = ({
   hasTags = true,
   hasFileContent = true,
   typeIds = '',
+  isExcel = false,
 }) => {
   const searchAPI = API_Provider(SEARCH_API, SEARCH);
 
@@ -1342,6 +1344,7 @@ export const search = ({
           Tags: hasTags,
           FileContent: hasFileContent,
           TypeIDs: typeIds,
+          Excel: isExcel,
         },
         (response) => {
           resolve(response);

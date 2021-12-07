@@ -7,6 +7,7 @@ import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import { searchContext } from 'views/Search/SearchView';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindow from 'hooks/useWindowContext';
 
 const TemplateSelectModal = lazy(() =>
   import(
@@ -21,15 +22,20 @@ const TemplateSelection = () => {
     setIsModalOpen,
     setSelectedTemps,
   } = useContext(searchContext);
+  const {
+    RVDic: { Select, SelectN, Template },
+  } = useWindow();
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
+  //! Open template selection modal.
   const openTemplateSelect = () => {
     setIsModalOpen(true);
   };
 
+  //! Select template.
   const handleSelectTemplate = (template) => {
     const alreadyExists = selectedTemps.some(
       (temp) => temp.NodeTypeID === template.NodeTypeID
@@ -39,6 +45,7 @@ const TemplateSelection = () => {
     }
   };
 
+  //! Remove template.
   const handleRemoveTemplate = (tempId) => {
     setSelectedTemps((oldTemps) =>
       oldTemps?.filter((temp) => temp.NodeTypeID !== tempId)
@@ -58,7 +65,7 @@ const TemplateSelection = () => {
       </Suspense>
       <Styled.SelectionTitle>
         <AtSignIconIcon color={CV_DISTANT} />
-        <div>انتخاب تمپلیت برای جستجو</div>
+        <div>{SelectN.replace('[n]', Template)}</div>
       </Styled.SelectionTitle>
       <Styled.SelectionContainer>
         <Styled.SelectedTemplatesWrapper>
@@ -73,7 +80,7 @@ const TemplateSelection = () => {
               </Styled.SelectedTemplate>
             ))
           ) : (
-            <span style={{ color: CV_DISTANT }}>انتخاب کنید</span>
+            <span style={{ color: CV_DISTANT }}>{Select}</span>
           )}
         </Styled.SelectedTemplatesWrapper>
         <Styled.DotsWrapper onClick={openTemplateSelect}>
