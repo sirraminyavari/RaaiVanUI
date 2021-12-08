@@ -7,7 +7,7 @@ import * as Styled from './Badge.styles';
 /**
  * @typedef PropType
  * @type {Object}
- * @property {nubmer} value - The value of the badge.
+ * @property {number} value - The value of the badge.
  * @property {number} limit - The maximum number to show, If exceeds the limitation will show '+'.
  * @property {string} showText - The data that must show to user, Ignore value and limitation.
  */

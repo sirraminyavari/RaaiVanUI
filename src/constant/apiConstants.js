@@ -529,3 +529,20 @@ export const FG_API = 'FGAPI';
  * @class 'FGAPI'
  */
 export const GET_FORM_ELEMENTS = 'GetFormElements';
+
+//* #################################
+//* ############ SearchAPI ############
+//* #################################
+
+/**
+ * @description 'SearchAPI'
+ * @mode API class
+ */
+export const SEARCH_API = 'SearchAPI';
+
+/**
+ * @description 'Search'
+ * @mode API function
+ * @class 'SearchAPI'
+ */
+export const SEARCH = 'Search';
