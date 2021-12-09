@@ -1,4 +1,8 @@
-import { API_Provider, decodeBase64 } from '../../../../helpers/helpers';
+import {
+  API_Provider,
+  decodeBase64,
+  encodeBase64,
+} from '../../../../helpers/helpers';
 import { PRIVACY_API } from '../../../../constant/apiConstants';
 
 const apiCallWrapper = (api, data) => {
@@ -85,4 +89,28 @@ export const getAudience = (
 
     return { confidentialityLevels, permissions, roles };
   });
+};
+
+export const setAudience = (ObjectType, permissions, permissionType) => {
+  const setAudienceAPI = API_Provider(PRIVACY_API, 'SetAudience');
+  const Data = encodeBase64(
+    JSON.stringify(
+      Object.keys(permissions || {}).reduce((dic, key) => {
+        dic[key] = {
+          Confidentiality: {
+            ID: permissions[key].ConfidentialityID,
+          },
+          CalculateHierarchy: false,
+          Audience: (permissions[key].Audience || []).map((aud) => ({
+            RoleID: aud,
+            PermissionType: permissionType,
+            Allow: true,
+          })),
+        };
+        return dic;
+      }, {})
+    )
+  );
+
+  return apiCallWrapper(setAudienceAPI, { ObjectType, Data });
 };

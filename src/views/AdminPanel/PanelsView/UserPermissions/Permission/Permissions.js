@@ -1,9 +1,10 @@
 import useWindow from 'hooks/useWindowContext';
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { getAudience } from '../api';
+import { getAudience, setAudience } from '../api';
 import * as Styled from './PermissionStyle';
 import RoleSelectionPane from './items/RoleSelectionPane';
 import PermissionSelectionPane from './items/PermissionSelectionPane';
+import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
 
 export const PermissionContext = createContext({});
 const Permissions = ({
@@ -30,16 +31,32 @@ const Permissions = ({
   );
 
   useEffect(() => {
+    loadData();
+  }, []);
+
+  const updatePermission = (next) => {
+    setAudience(type, next, permissionType).then((res) => {
+      if (res.Succeed) {
+        loadData();
+        InfoToast({
+          type: 'info',
+          autoClose: true,
+          message: `عملیات موفقیت آمیز بود.`,
+        });
+      }
+    });
+  };
+
+  const loadData = () => {
     getAudience(objectIDs, type, GlobalUtilities, sections).then(
       ({ confidentialityLevels, permissions, roles }) => {
-        console.log(confidentialityLevels, permissions, roles);
         setPermission(permissions);
         setRoles(roles);
         setConfidentialityLevels(confidentialityLevels);
         setSelectedRole(roles?.filter((x) => x?.RoleType === 'User')[0] || {});
       }
     );
-  }, []);
+  };
 
   const breadCrumbItems = [
     {
@@ -67,6 +84,7 @@ const Permissions = ({
         confidentialityLevels,
         selectedRole,
         setSelectedRole,
+        updatePermission,
       }}>
       <Styled.PermissionContainer rtl={RV_RTL}>
         <Styled.RoleSelectorContainer>
@@ -77,7 +95,7 @@ const Permissions = ({
           <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
           <Styled.HeadingWrapper>{`دسترسی‌ها (${selectedRole?.RoleName})`}</Styled.HeadingWrapper>
 
-          <PermissionSelectionPane items={sections} />
+          <PermissionSelectionPane sections={sections} />
         </Styled.PermissionSelectorContainer>
       </Styled.PermissionContainer>
     </PermissionContext.Provider>

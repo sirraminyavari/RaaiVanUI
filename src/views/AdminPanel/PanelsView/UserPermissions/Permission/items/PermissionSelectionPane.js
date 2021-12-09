@@ -3,9 +3,15 @@ import * as Styled from '../PermissionStyle';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { useState } from 'react';
 import { CV_DISTANT } from 'constant/CssVariables';
+import PermissionItem from './PermissionItem';
 
-const PermissionSelectionPane = ({ items }) => {
+const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
+
+  const items = sections[0]?.Items?.filter((x) =>
+    x?.Title?.includes(permissionSearchText)
+  )?.map((x) => <PermissionItem key={x.ID} {...x} />);
+
   return (
     <PermissionContainer>
       <SearchBoxWrapper>
@@ -25,12 +31,15 @@ const PermissionSelectionPane = ({ items }) => {
         <PermissionHeaderTitle>دسترسی</PermissionHeaderTitle>
         <OpenHeaderTitle>مشاهده</OpenHeaderTitle>
       </ListHeader>
+
+      <PermissionBody>{items}</PermissionBody>
     </PermissionContainer>
   );
 };
 
 const PermissionContainer = styled.div`
   margin-top: 2.5rem;
+  position: relative;
 `;
 
 const SearchBoxWrapper = styled.div`
@@ -44,7 +53,10 @@ const ListHeader = styled.div`
   padding: 0.8rem;
   border-bottom: 1px solid ${CV_DISTANT};
 `;
-
+const PermissionHeader = styled.div`
+  position: sticky;
+  top: 0;
+`;
 const SelectAllWrapper = styled.div`
   flex: 0 0 6rem;
   display: flex;
@@ -68,4 +80,12 @@ const OpenHeaderTitle = styled.div`
   color: ${CV_DISTANT};
 `;
 
+const PermissionBody = styled.div`
+  overflow: auto;
+  height: calc(100vh - 27rem);
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+`;
 export default PermissionSelectionPane;

@@ -17,9 +17,10 @@ export const PermissionSelectorContainer = styled.div`
   box-shadow: 1px 5px 15px #0000001f;
   border-radius: 0.5rem;
   background-color: ${CV_GRAY_LIGHT};
-  min-height: calc(100vh - 8rem);
+  height: calc(100vh - 8rem);
   position: relative;
   padding: 4rem 2.7rem 1rem 1rem;
+  overflow: hidden;
 `;
 export const PermissionContainer = styled.div`
   display: flex;
