@@ -69,7 +69,19 @@ export const getAudience = (
           });
         return uniqueArray;
       }, [])
-      .sort((a, b) => a.RoleID < b.RoleID);
+      .sort((a, b) => a.RoleID < b.RoleID)
+      .map((x) => {
+        let count = (
+          Object.values(permissions)
+            .map((p) => p?.Audience)
+            .flat()
+            .filter((r) => r === x?.RoleID) || []
+        )?.length;
+        return {
+          ...x,
+          Permissions: count,
+        };
+      });
 
     return { confidentialityLevels, permissions, roles };
   });
