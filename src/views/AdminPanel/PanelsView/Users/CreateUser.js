@@ -8,12 +8,12 @@ import {
   CV_RED,
   CV_WHITE,
 } from 'constant/CssVariables';
-import InfoCircleIcon from '../../../../components/Icons/InfoCircleIcon/InfoIcon';
+import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
 import SearchInput from './items/SearchInput';
 import InputLoader from './items/cards/InputLoader';
 import { useEffect, useState } from 'react';
 import { checkUserName, createUser } from './api';
-import Button from '../../../../components/Buttons/Button';
+import Button from 'components/Buttons/Button';
 const CreateUser = ({ onClose, ...props }) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
 

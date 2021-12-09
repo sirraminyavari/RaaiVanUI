@@ -28,6 +28,8 @@ import {
   CONFIG_REMOTE_SERVER_PATH,
   CONFIG_SETTING_NAME,
   CONFIG_SETTING_PATH,
+  CONFIG_USER_PERMISSION_NAME,
+  CONFIG_USER_PERMISSIONS_PATH,
   CONFIG_USERS_NAME,
   CONFIG_USERS_PATH,
   CONFIG_WORKFLOWS_NAME,
@@ -112,6 +114,11 @@ const Help = lazy(() =>
 const RemoteServers = lazy(() =>
   import(
     /* webpackChunkName: "remote-servers-view"*/ 'views/AdminPanel/PanelsView/RemoteServers/RemoteServers'
+  )
+);
+const UserPermissions = lazy(() =>
+  import(
+    /* webpackChunkName: "users-view"*/ 'views/AdminPanel/PanelsView/UserPermissions/UserPermissions'
   )
 );
 
@@ -227,6 +234,13 @@ const ConfigRoutes = [
     exact: true,
     hasNavSide: true,
     component: Help,
+  },
+  {
+    path: CONFIG_USER_PERMISSIONS_PATH,
+    name: CONFIG_USER_PERMISSION_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: UserPermissions,
   },
 ];
 
