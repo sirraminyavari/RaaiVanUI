@@ -1,8 +1,14 @@
 import styled from 'styled-components';
-import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_GRAY_DARK,
+  CV_WHITE,
+} from 'constant/CssVariables';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { useContext, useEffect, useState } from 'react';
 import { PermissionContext } from '../Permissions';
+import OpenOutlineIcon from 'components/Icons/OpenOutlineIcon/OpenOutlineIcon';
 
 const PermissionItem = ({ ID, Title, ...props }) => {
   const { permissions, selectedRole, updatePermission } = useContext(
@@ -55,6 +61,12 @@ const PermissionItem = ({ ID, Title, ...props }) => {
           {'ایجاد، ویرایش، حذف و مدیریت فرم‌های تمپلیت‌ها'}
         </ItemSubTitle>
       </ItemContent>
+
+      <OpenIconWrapper>
+        <OpenButton>
+          <OpenOutlineIcon size={22} />
+        </OpenButton>
+      </OpenIconWrapper>
     </ItemContainer>
   );
 };
@@ -80,6 +92,25 @@ const ItemContent = styled.div`
   flex: 1;
   height: 4rem;
   padding: 0.3rem 2.5rem 0.3rem 0.3rem;
+`;
+
+const OpenIconWrapper = styled.div`
+  display: flex;
+  height: 4rem;
+  flex: 0 0 4rem;
+  justify-content: center;
+  align-items: center;
+`;
+const OpenButton = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: ${CV_WHITE};
+  color: ${CV_DISTANT};
+  cursor: pointer;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ItemTitle = styled.div`

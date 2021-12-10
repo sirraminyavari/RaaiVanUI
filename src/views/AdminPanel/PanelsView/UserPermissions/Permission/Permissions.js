@@ -18,7 +18,7 @@ const Permissions = ({
   const [roles, setRoles] = useState([]);
   const [confidentialityLevels, setConfidentialityLevels] = useState([]);
   const [permissions, setPermission] = useState({});
-  const [selectedRole, setSelectedRole] = useState();
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const objectIDs = useMemo(
     () =>
@@ -50,10 +50,16 @@ const Permissions = ({
   const loadData = () => {
     getAudience(objectIDs, type, GlobalUtilities, sections).then(
       ({ confidentialityLevels, permissions, roles }) => {
+        console.log(roles);
         setPermission(permissions);
         setRoles(roles);
         setConfidentialityLevels(confidentialityLevels);
-        setSelectedRole(roles?.filter((x) => x?.RoleType === 'User')[0] || {});
+
+        if (selectedRole === null) {
+          setSelectedRole(
+            roles?.filter((x) => x?.RoleType === 'User')[0] || {}
+          );
+        }
       }
     );
   };
