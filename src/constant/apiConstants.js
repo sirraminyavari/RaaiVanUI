@@ -603,3 +603,19 @@ export const RECOVER_FORM_INSTANCES = 'RecoverFormInstance';
  * @class 'FGAPI'
  */
 export const SAVE_FORM_INSTANCES = 'SaveFormInstanceElements';
+//* #################################
+//* ############ SearchAPI ############
+//* #################################
+
+/**
+ * @description 'SearchAPI'
+ * @mode API class
+ */
+export const SEARCH_API = 'SearchAPI';
+
+/**
+ * @description 'Search'
+ * @mode API function
+ * @class 'SearchAPI'
+ */
+export const SEARCH = 'Search';

@@ -138,8 +138,7 @@ const TopicItem = ({ item }) => {
             }}
           /> */}
           <Avatar
-            color="#333"
-            style={{ width: '2.5rem' }}
+            style={{ width: '3rem', height: '3rem' }}
             userImage={avatarURL}
           />
         </Styled.TopicItemContentActions>

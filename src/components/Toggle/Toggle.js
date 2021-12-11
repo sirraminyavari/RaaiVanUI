@@ -38,6 +38,8 @@ const Toggle = ({
     <Styled.ToggleContainer className={containerClass}>
       <Styled.ToggleTitleWrapper
         disable={!!disable}
+        isClickable={!!clickableLabel}
+        onClick={() => clickableLabel && onToggle(!isChecked)}
         className={titleClass}
         style={titleStyle}>
         {title}

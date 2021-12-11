@@ -1644,3 +1644,17 @@ export const search = ({
     }
   });
 };
+
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {String} searchText - The text to be searched.
+ * @property {String} itemTypes - All the types that should search against them(e.g: 'Node|File').
+ * @property {Boolean} [hasTitle]
+ * @property {Boolean} [hasDescription]
+ * @property {Boolean} [hasContent]
+ * @property {Boolean} [hasTags]
+ * @property {Boolean} [hasFileContent]
+ * @property {String} [typeIds]
+ * @property {Boolean} [isExcel]
+ */

@@ -14,4 +14,5 @@ export const ToggleTitleWrapper = styled.span`
   text-transform: capitalize;
 
   ${({ disable }) => disable && `color: ${CV_DISTANT} !important;`}
+  ${({ isClickable }) => isClickable && 'cursor: pointer;'}
 `;
