@@ -2,6 +2,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
 import CalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 import TextIcon from 'components/Icons/TextIcon';
+import NumberIcon from 'components/Icons/NymberIcon';
 import FilterIcon from 'components/Icons/FilterIconIo';
 import TableIcon from 'components/Icons/TableIcon/TableIcon';
 import ToggleIcon from 'components/Icons/ToggleIcon';
@@ -107,7 +108,7 @@ export const getIcon = (type) => {
       return <TableIcon size={20} color={CV_DISTANT} />;
 
     case 'Numeric':
-      return <AtSignIcon size={20} color={CV_DISTANT} />;
+      return <NumberIcon size={20} color={CV_DISTANT} />;
 
     case 'Binary':
       return <ToggleIcon size={20} color={CV_DISTANT} />;
