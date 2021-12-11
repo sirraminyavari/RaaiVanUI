@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
 import { BG_DISTANT, TBG_DEFAULT, BO_FREEZED } from 'constant/Colors';
+import { CV_GRAY_LIGHT } from 'constant/CssVariables';
+import { FLEX_RCB } from 'constant/StyledCommonCss';
 
-const { RV_Float } = window;
+const { RV_Float, RV_RevFloat } = window;
 
 export const ToggleLabel = styled.label`
   display: inline-block;
@@ -22,36 +24,36 @@ export const ToggleInput = styled.input`
   width: 1px;
   white-space: nowrap;
 
-  :focus + span::after,
-  span:active::after {
-    box-sizing: initial;
-//     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08),
-//       inset 0px 0px 0px 3px #9c9c9c;
-//   }
+  // :focus + span::after,
+  // span:active::after {
+  //   box-sizing: initial;
+  //       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08),
+  //         inset 0px 0px 0px 3px #9c9c9c;
+  // }
 `;
 
 const getCheckedCss = (props) => {
   return props.isChecked
     ? css`
         &::after {
-          left: 50%;
+          ${RV_RevFloat}: 50%;
         }
         &:active {
           box-shadow: none;
         }
         &:active::after {
-          margin-left: -1.6em;
+          margin-${RV_RevFloat}: -1.6em;
         }
       `
     : css`
         &::after {
-          right: 50%;
+          ${RV_Float}: 55%;
         }
         &:active {
           box-shadow: none;
         }
         &:active::after {
-          margin-right: -1.6em;
+          margin-${RV_Float}: -1.6em;
         }
       `;
 };
@@ -63,31 +65,33 @@ export const ToggleButton = styled.span.attrs((props) => ({
   display: inline-block;
   outline: 0;
   width: 2rem;
-  height: 1rem;
+  height: 0.8rem;
+  min-height: 0.8rem;
+  max-height: 0.8rem;
   position: relative;
   cursor: pointer;
   user-select: none;
   border-radius: 4em;
-  padding: 4px;
+  padding: 0.25rem;
   transition: all 0.4s ease;
-  // border: 2px solid #e8eae9;
+  ${FLEX_RCB}
 
   &::after {
     ${RV_Float}: 0;
     position: relative;
     display: block;
     content: '';
-    width: 50%;
-    height: 100%;
+    width: 45%;
+    height: 1.1em;
     border-radius: 4em;
-    background-color: #fbfbfb;
+    background-color: ${CV_GRAY_LIGHT};
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
       padding 0.3s ease, margin 0.3s ease;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
   }
 
   &:active::after {
-    padding-right: 1.6em;
+    padding-${RV_Float}: 1.6em;
   }
   ${getCheckedCss}
 `;

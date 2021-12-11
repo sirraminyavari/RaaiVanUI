@@ -27,7 +27,13 @@ const { RVDic, RVGlobal, RV_RTL, RV_RevFloat } = window;
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const Collctor = ({ itemSelectionMode, nodeDetails, nodeId, ...props }) => {
+const Collctor = ({
+  itemSelectionMode,
+  nodeDetails,
+  nodeId,
+  hierarchy,
+  ...props
+}) => {
   const [relatedNodes, setRelatedNodes] = useState([]);
   const [sideColumn, setSideColumn] = useState(false);
 
@@ -50,6 +56,7 @@ const Collctor = ({ itemSelectionMode, nodeDetails, nodeId, ...props }) => {
                 onSideColumnClicked={setSideColumn}
                 sideColumn={sideColumn}
                 nodeDetails={nodeDetails}
+                hierarchy={hierarchy}
               />
             </TopFilter>
             <div

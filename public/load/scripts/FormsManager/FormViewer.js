@@ -105,7 +105,7 @@
                     ResponseHandler: function (result) {
                         that.Objects.FormID = result.FormID;
                         if (result.PollID) that.Objects.PollID = result.PollID;
-                        
+
                         //set abstracts if exist
                         var abstractDic = that._get_abstract_dic(result.PollAbstract);
 

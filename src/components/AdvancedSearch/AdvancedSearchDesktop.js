@@ -46,7 +46,6 @@ const AdvanceSearchDesktop = ({
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
 
   const nodeTypeId = nodeType?.NodeTypeID;
-  console.log(nodeTypeId, 'nodeTypeId');
   const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');

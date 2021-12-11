@@ -483,6 +483,8 @@
             RecycleApplication: "بازگردانی تیم",
             RemoveUserFromApplication: "حذف کاربر از تیم",
             UnsubscribeFromApplication: "منفک شدن از تیم",
+            AddSystemAdmin: "اعطای دسترسی مدیریت سامانه",
+            RemoveSystemAdmin: "لغو دسترسی مدیریت سامانه",
             AcceptFriendRequest: "تایید درخواست همکاری",
             RejectFriendRequest: "رد درخواست همکاری",
             CreateUserGroup: "ایجاد گروه کاربری",

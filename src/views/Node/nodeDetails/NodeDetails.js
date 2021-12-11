@@ -30,12 +30,22 @@ const NodeDetails = (props) => {
     <PropsContext.Provider value={props}>
       <Maintainer style={{ width: '100%' }}>
         {/* If True, will render MobileView component */}
-
+        {console.log(route, 'RRRRRRRRRRRR')}
         <>
           {DimensionHelper()?.isTabletOrMobile ? (
-            <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
+            <Collector
+              nodeId={NodeID}
+              nodeDetails={nodeDetails}
+              hierarchy={route?.Hierarchy || []}
+              {...props}
+            />
           ) : (
-            <Collector nodeId={NodeID} nodeDetails={nodeDetails} {...props} />
+            <Collector
+              nodeId={NodeID}
+              nodeDetails={nodeDetails}
+              hierarchy={route?.Hierarchy || []}
+              {...props}
+            />
           )}
         </>
         {/* <NodeView {...props} /> */}

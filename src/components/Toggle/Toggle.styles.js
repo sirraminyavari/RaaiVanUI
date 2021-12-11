@@ -9,7 +9,7 @@ export const ToggleContainer = styled.div`
 `;
 
 export const ToggleTitleWrapper = styled.span`
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin: 0 0.5rem;
   text-transform: capitalize;
 
