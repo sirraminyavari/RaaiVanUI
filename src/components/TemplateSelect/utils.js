@@ -1,4 +1,17 @@
 import { decodeBase64 } from 'helpers/helpers';
+import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
+import CalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
+import TextIcon from 'components/Icons/TextIcon';
+import NumberIcon from 'components/Icons/NymberIcon';
+import FilterIcon from 'components/Icons/FilterIconIo';
+import TableIcon from 'components/Icons/TableIcon/TableIcon';
+import ToggleIcon from 'components/Icons/ToggleIcon';
+import RadioButtonIcon from 'components/Icons/RadioButtonIcon';
+import CheckboxIcon from 'components/Icons/CheckBoxIconIo';
+import FilesFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
+import UserIcon from 'components/Icons/UserIconIo';
+import { CV_DISTANT } from 'constant/CssVariables';
+import * as Styled from './TemplateSelect.styles';
 
 export const provideNodeTypesForTree = (data) => {
   const { AppID, NodeTypes } = data || {};
@@ -75,4 +88,44 @@ export const provideNodeTypesForTree = (data) => {
   };
 
   return templatesForTree;
+};
+
+export const getIcon = (type) => {
+  switch (type) {
+    case 'Date':
+      return <CalendarIcon size={20} color={CV_DISTANT} />;
+
+    case 'Text':
+      return <TextIcon size={20} color={CV_DISTANT} />;
+
+    case 'MultiLevel':
+      return <FilterIcon size={20} color={CV_DISTANT} />;
+
+    case 'Node':
+      return <AtSignIcon size={20} color={CV_DISTANT} />;
+
+    case 'Form':
+      return <TableIcon size={20} color={CV_DISTANT} />;
+
+    case 'Numeric':
+      return <NumberIcon size={20} color={CV_DISTANT} />;
+
+    case 'Binary':
+      return <ToggleIcon size={20} color={CV_DISTANT} />;
+
+    case 'Select':
+      return <RadioButtonIcon size={20} color={CV_DISTANT} />;
+
+    case 'Checkbox':
+      return <CheckboxIcon size={20} color={CV_DISTANT} />;
+
+    case 'File':
+      return <FilesFormatIcon size={20} color={CV_DISTANT} />;
+
+    case 'User':
+      return <UserIcon size={20} color={CV_DISTANT} />;
+
+    default:
+      return <Styled.Separator />;
+  }
 };
