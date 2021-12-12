@@ -1,7 +1,11 @@
-import { IoAdd } from 'react-icons/io5';
+import { IoAdd, IoAddCircleOutline } from 'react-icons/io5';
 
-const AddIcon = (props) => {
-  return <IoAdd {...props} />;
+const AddIcon = ({ circleOutline = false, ...props }) => {
+  return !circleOutline ? (
+    <IoAdd {...props} />
+  ) : (
+    <IoAddCircleOutline {...props} />
+  );
 };
 
 export default AddIcon;

@@ -55,7 +55,10 @@ const Permissions = ({
         setRoles(roles);
         setConfidentialityLevels(confidentialityLevels);
 
-        if (selectedRole === null) {
+        const selectedRoleExist = roles.find(
+          (x) => x.RoleID === selectedRole?.RoleID
+        );
+        if (selectedRole === null && !selectedRoleExist) {
           setSelectedRole(
             roles?.filter((x) => x?.RoleType === 'User')[0] || {}
           );
@@ -91,6 +94,7 @@ const Permissions = ({
         selectedRole,
         setSelectedRole,
         updatePermission,
+        setRoles,
       }}>
       <Styled.PermissionContainer rtl={RV_RTL}>
         <Styled.RoleSelectorContainer>
