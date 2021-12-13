@@ -207,7 +207,7 @@ const CustomTable = (props) => {
       <Styled.TableWrapper>
         {!isLoading && (
           <Styled.Table {...getTableProps()}>
-            <div>
+            <div className="table-header-sticky">
               {headerGroups.map((headerGroup) => (
                 <div {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (

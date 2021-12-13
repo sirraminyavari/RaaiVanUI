@@ -53,7 +53,7 @@ export const getTableOptions = (column) => {
       };
 
     case cellTypes.text:
-      return { maxWidth: 200 };
+      return { disableSortBy: true, maxWidth: 200 };
 
     case cellTypes.singleSelect:
       return { disableSortBy: true, minWidth: 135 };
@@ -79,6 +79,12 @@ export const getTableOptions = (column) => {
     case cellTypes.file:
       return { disableSortBy: true, minWidth: 260 };
 
+    case cellTypes.table:
+      return { disableSortBy: true, width: 170, minWidth: 170, maxWidth: 170 };
+
+    case cellTypes.multiLevel:
+      return { disableSortBy: true, minWidth: 220 };
+
     // case cellTypes.recordInfo:
     //   return {
     //     disableSortBy: true,
@@ -89,6 +95,7 @@ export const getTableOptions = (column) => {
       return {
         editable: true,
         minWidth: 200,
+        disableSortBy: true,
       };
   }
 };

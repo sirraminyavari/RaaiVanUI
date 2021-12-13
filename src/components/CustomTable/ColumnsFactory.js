@@ -22,6 +22,7 @@ const provideCell = (header) => {
       return {
         sticky: 'left',
         Cell: (cell) => <ActionsCell cell={cell} />,
+        headerClassName: 'sticky',
       };
     case cellTypes.index:
       return {
@@ -41,11 +42,28 @@ const provideCell = (header) => {
     case cellTypes.number:
       return {
         Cell: (row) => <NumberCell {...row} header={header} />,
+        sortType: (rowA, rowB, columnId, desc) => {
+          const a = rowA?.original?.[columnId]?.FloatValue;
+          const b = rowB?.original?.[columnId]?.FloatValue;
+
+          if (a === b) return 0;
+          return a > b ? 1 : -1;
+        },
       };
 
     case cellTypes.date:
       return {
         Cell: (row) => <DateCell {...row} header={header} />,
+        sortType: (rowA, rowB, columnId, desc) => {
+          const a = rowA?.original?.[columnId]?.DateValue;
+          const b = rowB?.original?.[columnId]?.DateValue;
+
+          const aTime = new Date(a).getTime();
+          const bTime = new Date(b).getTime();
+
+          if (aTime === bTime) return 0;
+          return aTime > bTime ? 1 : -1;
+        },
       };
 
     case cellTypes.singleSelect:
