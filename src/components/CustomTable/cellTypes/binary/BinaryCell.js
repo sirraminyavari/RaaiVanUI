@@ -39,6 +39,7 @@ const BinaryCell = (props) => {
         : binaryOptions.no,
   });
 
+  //! Options for select component.
   const binarySelectOptions = [
     { value: null, label: null },
     { value: true, label: binaryOptions.yes },
@@ -56,6 +57,7 @@ const BinaryCell = (props) => {
   //! A hook that fires a callback when the user clicks outside of the current cell.
   useOnClickOutside(toggleRef, handleClickOutside);
 
+  //! Update cell value on select menu close.
   const handleMenuClose = () => {
     !editByCell && updateCell(toggleSelect.value);
   };
@@ -77,6 +79,7 @@ const BinaryCell = (props) => {
     onCellChange(rowId, columnId, binaryCell, value);
   };
 
+  //! Handle select value change.
   const handleSelectChange = (selected) => {
     setToggleSelect(selected);
   };

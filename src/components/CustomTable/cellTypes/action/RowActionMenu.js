@@ -12,6 +12,7 @@ const RowActionMenu = (props) => {
     removeRow,
     setEditingRowId,
     onEditRowStart,
+    onDuplicateRow,
     data,
     editable: isTableEditable,
     editByCell,
@@ -26,7 +27,7 @@ const RowActionMenu = (props) => {
   };
 
   const handleDuplicateRow = () => {
-    console.log('Duplicate row');
+    onDuplicateRow && onDuplicateRow(row);
   };
 
   const handleSetEditableRow = () => {
