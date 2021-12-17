@@ -6,12 +6,12 @@ import {
   CV_WHITE,
 } from 'constant/CssVariables';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { PermissionContext } from '../Permissions';
-import OpenOutlineIcon from 'components/Icons/OpenOutlineIcon/OpenOutlineIcon';
+import PermissionItemOpen from './PermissionItemOpen';
 
 const PermissionItem = ({ ID, Title, ...props }) => {
-  const { permissions, selectedRole, updatePermission } = useContext(
+  const { permissions, selectedRole, updatePermission, roles } = useContext(
     PermissionContext
   );
   const [state, setState] = useState(false);
@@ -20,7 +20,7 @@ const PermissionItem = ({ ID, Title, ...props }) => {
     setState(
       permissions[ID]?.Audience?.includes(selectedRole?.RoleID) ?? false
     );
-  }, [selectedRole]);
+  }, [selectedRole, roles]);
 
   const togglePermission = (value) => {
     setState(value);
@@ -62,11 +62,7 @@ const PermissionItem = ({ ID, Title, ...props }) => {
         </ItemSubTitle>
       </ItemContent>
 
-      <OpenIconWrapper>
-        <OpenButton>
-          <OpenOutlineIcon size={22} />
-        </OpenButton>
-      </OpenIconWrapper>
+      <PermissionItemOpen ID={ID} />
     </ItemContainer>
   );
 };
@@ -92,25 +88,6 @@ const ItemContent = styled.div`
   flex: 1;
   height: 4rem;
   padding: 0.3rem 2.5rem 0.3rem 0.3rem;
-`;
-
-const OpenIconWrapper = styled.div`
-  display: flex;
-  height: 4rem;
-  flex: 0 0 4rem;
-  justify-content: center;
-  align-items: center;
-`;
-const OpenButton = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: ${CV_WHITE};
-  color: ${CV_DISTANT};
-  cursor: pointer;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ItemTitle = styled.div`

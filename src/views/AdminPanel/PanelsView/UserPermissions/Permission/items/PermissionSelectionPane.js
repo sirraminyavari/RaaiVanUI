@@ -1,16 +1,85 @@
 import styled from 'styled-components';
 import * as Styled from '../PermissionStyle';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { useState } from 'react';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import PermissionItem from './PermissionItem';
+import { PermissionContext } from '../Permissions';
+import DoubleCheck from 'components/Icons/CheckIcons/DoubleCheck';
 
 const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
 
-  const items = sections[0]?.Items?.filter((x) =>
-    x?.Title?.includes(permissionSearchText)
-  )?.map((x) => <PermissionItem key={x.ID} {...x} />);
+  const { selectedRole, permissions, updatePermission, roles } = useContext(
+    PermissionContext
+  );
+  const [allSelected, setAllSelected] = useState(false);
+
+  useEffect(() => {
+    setAllSelected(() => {
+      let result = true;
+      if (selectedRole) {
+        let count = 0;
+        for (const key in permissions) {
+          if (!permissions[key]?.Audience?.includes(selectedRole?.RoleID)) {
+            result = false;
+          }
+          count++;
+        }
+        return result;
+      }
+      return false;
+    });
+  }, [permissions, selectedRole]);
+
+  const items = useMemo(() => {
+    return sections[0]?.Items?.filter((x) =>
+      x?.Title?.includes(permissionSearchText)
+    )?.map((x) => <PermissionItem key={x.ID} {...x} />);
+  }, [roles]);
+
+  const handleSelectAllClick = () => {
+    if (!allSelected) {
+      // select all
+      let next = { ...permissions };
+      for (const key in next) {
+        if (
+          !permissions[key]?.Audience?.find((x) => x === selectedRole.RoleID)
+        ) {
+          next = {
+            ...next,
+            [key]: {
+              ...next[key],
+              Audience: [...next[key]?.Audience, selectedRole.RoleID],
+            },
+          };
+        }
+      }
+      updatePermission(next);
+      setAllSelected(true);
+    } else {
+      // deselect all
+      let next = { ...permissions };
+      for (const key in next) {
+        if (
+          permissions[key]?.Audience?.find((x) => x === selectedRole.RoleID)
+        ) {
+          next = {
+            ...next,
+            [key]: {
+              ...next[key],
+              Audience: [...next[key]?.Audience].filter(
+                (x) => x !== selectedRole.RoleID
+              ),
+            },
+          };
+        }
+      }
+      console.log(next);
+      updatePermission(next);
+      setAllSelected(false);
+    }
+  };
 
   return (
     <PermissionContainer>
@@ -27,7 +96,10 @@ const PermissionSelectionPane = ({ sections }) => {
       </SearchBoxWrapper>
 
       <ListHeader>
-        <SelectAllWrapper>همه</SelectAllWrapper>
+        <SelectAllWrapper onClick={() => handleSelectAllClick()}>
+          {allSelected && <DoubleCheck size={24} />}
+          <div>همه</div>
+        </SelectAllWrapper>
         <PermissionHeaderTitle>دسترسی</PermissionHeaderTitle>
         <OpenHeaderTitle>مشاهده</OpenHeaderTitle>
       </ListHeader>
@@ -53,15 +125,25 @@ const ListHeader = styled.div`
   padding: 0.8rem;
   border-bottom: 1px solid ${CV_DISTANT};
 `;
-const PermissionHeader = styled.div`
-  position: sticky;
-  top: 0;
-`;
 const SelectAllWrapper = styled.div`
   flex: 0 0 6rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid transparent;
+  gap: 0.5rem;
+  user-select: none;
+  height: 2rem;
+  line-height: 2rem;
+  width: 5rem;
+  border-radius: 1.5rem;
+  color: ${TCV_DEFAULT};
+  cursor: pointer;
+  font-size: 1rem;
+
+  &:hover {
+    border: 1px solid ${TCV_DEFAULT};
+  }
 `;
 const PermissionHeaderTitle = styled.div`
   flex: 1;
@@ -82,7 +164,11 @@ const OpenHeaderTitle = styled.div`
 
 const PermissionBody = styled.div`
   overflow: auto;
-  height: calc(100vh - 27rem);
+  height: calc(100vh - 26rem);
+  position: absolute;
+  top: 8.6rem;
+  width: 100%;
+  left: 0;
 
   &::-webkit-scrollbar {
     width: 0.5rem;

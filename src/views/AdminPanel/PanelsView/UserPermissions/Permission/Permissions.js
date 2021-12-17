@@ -4,7 +4,7 @@ import { getAudience, setAudience } from '../api';
 import * as Styled from './PermissionStyle';
 import RoleSelectionPane from './items/RoleSelectionPane';
 import PermissionSelectionPane from './items/PermissionSelectionPane';
-import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 export const PermissionContext = createContext({});
 const Permissions = ({
@@ -50,7 +50,6 @@ const Permissions = ({
   const loadData = () => {
     getAudience(objectIDs, type, GlobalUtilities, sections).then(
       ({ confidentialityLevels, permissions, roles }) => {
-        console.log(roles);
         setPermission(permissions);
         setRoles(roles);
         setConfidentialityLevels(confidentialityLevels);
@@ -58,7 +57,7 @@ const Permissions = ({
         const selectedRoleExist = roles.find(
           (x) => x.RoleID === selectedRole?.RoleID
         );
-        if (selectedRole === null && !selectedRoleExist) {
+        if (!selectedRoleExist) {
           setSelectedRole(
             roles?.filter((x) => x?.RoleType === 'User')[0] || {}
           );

@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import { CV_GRAY, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import Button from 'components/Buttons/Button';
 
-const AddRoleModal = ({ children, onClose, onConfirm, ...props }) => {
+const AddRoleModal = ({ children, onClose, onConfirm, info, ...props }) => {
   const [modalInfo, setModalInfo] = useState({
-    title: 'انتخاب کاربر',
+    ...info,
     contentWidth: '30%',
     middle: true,
     show: false,
@@ -28,6 +28,10 @@ const AddRoleModal = ({ children, onClose, onConfirm, ...props }) => {
       onClose();
     }
   };
+
+  useEffect(() => {
+    setModalInfo({ ...modalInfo, ...info });
+  }, [info]);
 
   return (
     <DialogContainer>

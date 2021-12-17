@@ -126,7 +126,7 @@ export const setAudience = (ObjectType, permissions, permissionType) => {
  * @param IsApproved
  * @return {Promise<unknown>}
  */
-export const getUsers = (SearchText, IsOnline, IsApproved) => {
+export const getUsers = (SearchText, IsApproved, IsOnline) => {
   const getListOfUsersAPI = API_Provider(USERS_API, GET_USERS);
   return apiCallWrapper(getListOfUsersAPI, {
     SearchText: encodeBase64(SearchText),
@@ -158,11 +158,32 @@ export const getNodeTypes = () => {
   const getNodeTypesAPI = API_Provider(CN_API, 'GetNodeTypes');
   return apiCallWrapper(getNodeTypesAPI, {
     Extensions: ['Members', 'Experts', 'Group'].join(','),
-  }).then((res) => ({
-    ...res,
-    NodeTypes: res.NodeTypes.map((x) => ({
-      ...x,
-      TypeName: decodeBase64(x.TypeName),
-    })),
-  }));
+  })
+    .then((res) => ({
+      ...res,
+      NodeTypes: res.NodeTypes.map((x) => ({
+        ...x,
+        TypeName: decodeBase64(x.TypeName),
+      })),
+    }))
+    .then((res) => res?.NodeTypes);
+};
+
+export const getChildNodes = (
+  NodeTypeID,
+  NodeID,
+  SearchText,
+  Count,
+  LowerBoundary
+) => {
+  const getChildNodesAPI = API_Provider(CN_API, 'GetChildNodes');
+
+  console.log(Count);
+  return apiCallWrapper(getChildNodesAPI, {
+    NodeID,
+    NodeTypeID,
+    SearchText: encodeBase64(SearchText),
+    Count,
+    LowerBoundary,
+  });
 };
