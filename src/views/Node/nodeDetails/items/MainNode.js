@@ -18,6 +18,7 @@ import { RVDic } from 'utils/TestUtils/fa';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import LoadParagraph from 'components/LoadParagraph/LoadParagraph';
+import LoadingSkelton from './LoadingSkelton';
 
 const ModifyNodeName = new APIHandler('CNAPI', 'ModifyNodeName');
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -257,7 +258,8 @@ const MainNode = ({ nodeDetails, nodeId }) => {
           )}
         </Main>
       ) : (
-        <LoadParagraph />
+        <LoadingSkelton />
+        // <LoadParagraph />
       )}
     </>
   );

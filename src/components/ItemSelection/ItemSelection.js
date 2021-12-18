@@ -14,7 +14,7 @@ const ItemSelection = ({
   multiSelection,
   onSelectedItems,
 }) => {
-  const { RV_RTL } = window;
+  const { RV_RTL, RVDic } = window;
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
 
   const [checkedItems, setCheckedItems] = useState([]);
@@ -45,7 +45,7 @@ const ItemSelection = ({
     <Maintainer>
       <Header className={'rv-border-radius-half'}>
         <CloseIcon onClick={onClose} className={'rv-red'} />
-        <div className={'rv-distant'}>{'*#*انتخاب آیتم'}</div>
+        <div className={'rv-distant'}>{RVDic.NodeSelect}</div>
       </Header>
       <Container RV_RTL={RV_RTL}>
         <SideItemSelection

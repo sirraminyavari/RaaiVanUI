@@ -91,7 +91,7 @@ const SideHeader = () => {
         onClick={handleRemoveDoc}
         style={{ color: CV_RED }}>
         <TrashIcon size={15} />
-        <div>{RVDic.RemoveN.replace('[n]', RVDic.Document)}</div>
+        <div>{RVDic.RemoveN.replace('[n]', 'حذف آیتم')}</div>
       </Styled.SideActionItemWrapper>
     );
   };
@@ -114,7 +114,7 @@ const SideHeader = () => {
           <MoreIcon size={20} color={TCV_DEFAULT} dir="vertical" />
         </Styled.SideHeaderIconWrapper>
       </ToolTip>
-      <Styled.SideHeaderTitle>اطلاعات آیتم</Styled.SideHeaderTitle>
+      <Styled.SideHeaderTitle>{RVDic.Info}</Styled.SideHeaderTitle>
       <Styled.SideHeaderIconWrapper onClick={handleCloseSide}>
         <CloseIcon size={18} color={CV_RED} />
       </Styled.SideHeaderIconWrapper>

@@ -1,6 +1,6 @@
 import Lottie from 'react-lottie';
 
-const LoadReactangle = ({ width = '10rem', height = '10rem', style }) => {
+const LoadReactangle = ({ width = '30rem', height = '10rem', style }) => {
   const defaultOptions_ = {
     loop: true,
     autoplay: true,
@@ -8,17 +8,14 @@ const LoadReactangle = ({ width = '10rem', height = '10rem', style }) => {
   };
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <Lottie
-        isStopped={false}
-        isPaused={false}
-        options={defaultOptions_}
-        style={style}
-        width={width}
-        height={height}
-      />
-    </div>
+    <Lottie
+      isStopped={false}
+      isPaused={false}
+      options={defaultOptions_}
+      style={style}
+      width={400}
+      height={500}
+    />
   );
 };
 

@@ -110,7 +110,7 @@ const TemplateDescription = () => {
         </Styled.TemplateTitleInDescription>
         <LottieMaker animationJSON={LottieJson} loop autoplay width={'12rem'} />
         <Heading type="h4">
-          تمپلیت های قابل ویرایش را بزودی در همین صفحه خواهید دید!
+          *#* تمپلیت های قابل ویرایش را بزودی در همین صفحه خواهید دید!
         </Heading>
         {/* <Styled.TemplatePhotosWrapper>
           <CustomSwiper

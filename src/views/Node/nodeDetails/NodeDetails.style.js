@@ -27,6 +27,7 @@ import {
   FLEX_RCS,
   FLEX_RSS,
 } from 'constant/StyledCommonCss';
+import Heading from 'components/Heading/Heading';
 
 const { GlobalUtilities } = window;
 
@@ -179,7 +180,7 @@ export const SideHeaderIconWrapper = styled.div.attrs({
 export const SideHeaderTitle = styled.div.attrs({
   className: `${TC_WARM}`,
 })`
-  font-size: 1rem;
+  font-size: 0.8rem;
 `;
 
 export const SideActionItemWrapper = styled.div`
@@ -260,11 +261,15 @@ export const DocItemHeader = styled.div`
   cursor: pointer;
 `;
 
-export const ItemHeaderTitle = styled.div.attrs({
-  className: `${C_GRAY_DARK}`,
-})`
+export const ItemHeaderTitle = styled(Heading)`
   font-size: 1rem;
 `;
+// export const ItemHeaderTitle = styled.div.attrs({
+//   className: `${C_GRAY_DARK}`,
+// })`
+//   font-size: 1rem;
+//   weight: 600;
+// `;
 
 export const LogItemContainer = styled.div`
   ${FLEX_RCB}

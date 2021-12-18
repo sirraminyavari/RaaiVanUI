@@ -18,11 +18,10 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { RVDic } from 'utils/TestUtils/fa';
 import ContributorItem from './ContributorItem';
 
 const SetContributors = new APIHandler('CNAPI', 'SetContributors');
-
+const { RVDic } = window;
 const EditContributersModal = ({
   isVisible,
   onClose,
@@ -94,7 +93,7 @@ const EditContributersModal = ({
         (res) => {
           console.log(res, 'res');
           if (res.Succeed === 'OperationCompletedSuccessfully') {
-            alert('*#*تغییرات مشارکت کنندگان ذخیره شد.', {
+            alert(RVDic.ChangesOfNSaved.replace('[n]', RVDic.MainAuthors), {
               Timeout: 1000,
             });
           }
@@ -103,7 +102,7 @@ const EditContributersModal = ({
         }
       );
     } else {
-      alert('*#*مجموع درصد مشارکت افراد باید برابر ۱۰۰ باشد', {
+      alert(RVDic.Confirms.CollaborationSumLimit, {
         Timeout: 1000,
       });
     }
@@ -130,12 +129,16 @@ const EditContributersModal = ({
       style={{ padding: 0 }}
       show={isVisible}>
       <Top className="rv-border-radius-half">
-        <Header type="h2">{'*#*ویرایش مشارکت کنندگان'}</Header>
+        <Header type="h2">
+          {RVDic.EditN.replace('[n]', RVDic.MainAuthors)}
+        </Header>
         <Close onClick={onClose} />
       </Top>
       <Maintainer className="rv-border-radius-half">
         <Main>
-          <Title>{'*#*درصد مشارکت هرکدام از اعضای تیم را وارد نمایید.'}</Title>
+          <Title>
+            {RVDic.Checks.EnterTheShareOfParticipationForEachAuthor}
+          </Title>
           {contList?.map((x) => (
             <ContributorItem
               item={x}
@@ -158,7 +161,7 @@ const EditContributersModal = ({
               direction={'bottom'}
               buttonComponent={
                 <Button style={{ height: '3rem' }} type={'secondary-o'}>
-                  {'*#*افزودن هم تیمی'}
+                  {RVDic.AddN.replace('[n]', RVDic.Author)}
                 </Button>
               }
             />

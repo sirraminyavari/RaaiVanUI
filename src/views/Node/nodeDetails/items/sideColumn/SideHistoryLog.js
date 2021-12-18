@@ -8,6 +8,7 @@ import LogItem from './LogItem';
 import CalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 import { SideContext } from './SideColumn';
 
+const { RVDic } = window;
 const SideHistoryLog = () => {
   const { setSideModal, nodeDetails } = useContext(SideContext);
 
@@ -18,21 +19,21 @@ const SideHistoryLog = () => {
     setSideModal((prev) => ({
       ...prev,
       isShown: true,
-      title: 'مشاهده تاریخچه تغییرات',
+      title: '*#*مشاهده تاریخچه تغییرات',
       content: 'history',
     }));
   };
 
   return (
     <Styled.DocHistoryLogContainer onClick={handleLogClick}>
-      <DocItemHeader title="مشاهده تاریخچه تغییرات" />
+      <DocItemHeader title="*#*مشاهده تاریخچه تغییرات" />
       <LogItem
         icon={CalendarIcon}
         date={CreationDate}
         user={Creator}
-        title="تاریخ ایجاد"
+        title={RVDic.CreationDate}
       />
-      <LogItem title="بروزرسانی" />
+      <LogItem title={RVDic.Update} />
     </Styled.DocHistoryLogContainer>
   );
 };

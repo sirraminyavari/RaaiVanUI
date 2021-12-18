@@ -11,7 +11,7 @@ const DocItemHeader = ({ title }) => {
 
   return (
     <Styled.DocItemHeader>
-      <Styled.ItemHeaderTitle>{title}</Styled.ItemHeaderTitle>
+      <Styled.ItemHeaderTitle type={'h2'}>{title}</Styled.ItemHeaderTitle>
       <ChevronIcon size={25} small dir={RV_RevFloat} color={TCV_DEFAULT} />
     </Styled.DocItemHeader>
   );

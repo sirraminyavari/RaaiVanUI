@@ -164,7 +164,7 @@ const TopBar = ({
               <OutLineBookmarkIcon className={'rv-default'} />
             )}
 
-            {'نشان*#*'}
+            {RVDic.Bookmark}
           </Button>
         </CounterBookmarkContainer>
       </TopRow>

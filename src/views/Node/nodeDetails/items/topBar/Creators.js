@@ -14,7 +14,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
 
-const { GlobalUtilities, RV_Float, RV_RTL } = window;
+const { GlobalUtilities, RV_Float, RV_RTL, RVDic } = window;
 const Creators = ({ creatorsList, nodeDetails }) => {
   const dialogRef = useRef();
   const [hoverCreators, sethoverCreators] = useState(false);
@@ -109,7 +109,7 @@ const Creators = ({ creatorsList, nodeDetails }) => {
               <CustomEditIcon color={TCV_DEFAULT} size={'1rem'} />
 
               <Button onClick={editContributors} type={'secondary-o'}>
-                {'ویرایش مشارکت کنندگان*#*'}
+                {RVDic.EditN.replace('[n]', RVDic.MainAuthors)}
               </Button>
             </div>
             <PerfectScrollbar style={{ maxHeight: '14rem' }}>

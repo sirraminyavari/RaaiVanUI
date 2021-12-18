@@ -80,6 +80,7 @@ const Collctor = ({
         )}
         <Side $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL}>
           <Suspense fallback={<div>Loading...</div>}>
+            {console.log('render', new Date())}
             {sideColumn && (
               <SideColumn
                 setSideColumn={setSideColumn}

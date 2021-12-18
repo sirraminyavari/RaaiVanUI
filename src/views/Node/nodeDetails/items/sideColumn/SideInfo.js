@@ -17,7 +17,8 @@ const SideInfo = () => {
   return (
     <Styled.SideInfoContainer>
       <Styled.InfoImageWrapper>
-        <img src={IconURL?.Value} alt="side-info-avatar" />
+        {console.log(IconURL, 'IconURL')}
+        <img src={IconURL?.Value} />
       </Styled.InfoImageWrapper>
       <Styled.InfosWrapper>
         <Styled.DocInfoTitle>{nameHierarchy}</Styled.DocInfoTitle>

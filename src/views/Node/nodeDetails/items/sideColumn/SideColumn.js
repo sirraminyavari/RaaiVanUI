@@ -102,7 +102,7 @@ const SideColumn = (props) => {
         <SideHeader />
         <PerfectScrollbar className="node-page-side-scrollbar">
           <SideInfo />
-          <SideHistoryLog />
+          {/* <SideHistoryLog /> */}
           <SideSetting />
           <SideSecurity />
         </PerfectScrollbar>

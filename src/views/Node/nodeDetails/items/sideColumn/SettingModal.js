@@ -70,14 +70,14 @@ const Setting = () => {
         disable={!Searchable?.Editable}
         onToggle={handleShowOnSearch}
         isChecked={isSearchable}
-        title="نمایش آیتم در نتایج جستجو"
+        title={RVDic.Published}
         titleClass={`${C_GRAY_DARK} side-setting-toggle`}
       />
       <Toggle
         disable={true}
         onToggle={handleAccessLink}
         isChecked={accessLink}
-        title="ایجاد لینک دسترسی عمومی به آیتم (به زودی)"
+        title={RVDic.CreatePublicURL + '(' + RVDic.CommingSoon + ')'}
         titleClass={`${C_GRAY_DARK} side-setting-toggle`}
       />
     </Styled.SettingContainer>
