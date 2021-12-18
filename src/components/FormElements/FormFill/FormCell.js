@@ -27,6 +27,7 @@ const FormCell = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            width: '20rem',
           }}>
           {iconComponent}
 

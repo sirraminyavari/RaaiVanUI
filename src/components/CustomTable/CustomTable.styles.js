@@ -91,8 +91,15 @@ export const TableContainer = styled.div.attrs({
   width: 100%;
   padding: 1rem 0;
   position: relative;
-  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  // box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
   // border: 0.1rem solid #333;
+
+  .table-header-sticky {
+    position: sticky !important;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
 `;
 
 export const TableWrapper = styled.div`
@@ -124,6 +131,7 @@ export const Table = styled.div`
 
 export const TableBody = styled.div`
   min-height: 2rem;
+  max-height: 20rem;
 `;
 
 export const TableHeader = styled.div.attrs({
@@ -222,7 +230,7 @@ export const TableRowIndex = styled(Heading).attrs({
 export const TableColumnResizer = styled.div`
   display: inline-block;
   background: ${CV_GRAY};
-  width: 0.25rem;
+  width: 0.18rem;
   height: 100%;
   border-radius: 15%;
   position: absolute;
@@ -340,7 +348,7 @@ export const FooterTr = styled.div`
 export const TableActionsContainer = styled.div`
   position: absolute;
   width: 100%;
-  padding: 0 1rem;
+  // padding: 0 1rem;
   ${FLEX_RCB}
 `;
 

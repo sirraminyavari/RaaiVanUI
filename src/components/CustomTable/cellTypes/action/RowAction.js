@@ -1,3 +1,6 @@
+/**
+ * Renders an action component for rows.
+ */
 import { cloneElement } from 'react';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
 

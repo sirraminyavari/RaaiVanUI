@@ -1,3 +1,5 @@
+//! Recommendation: https://react-table.tanstack.com/docs/overview
+
 import { useMemo, useState, memo, lazy, Suspense, useEffect } from 'react';
 import {
   useTable,
@@ -24,15 +26,35 @@ const defaultPropGetter = () => ({});
 const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 
 /**
+ * @typedef PaginationType
+ * @type {Object}
+ * @property {Number[]} perPageCount
+ * @property {Number} initialPageIndex
+ */
+
+/**
  * @typedef PropType
  * @type {Object}
  * @property {String} tableId - The id of the table.
  * @property {Boolean} editable - If true table cells are editable.
- * @property {Boolean} editByCell - If true every single cell can be edited.
  * @property {Boolean} resizable - If true table columns are resizable.
+ * @property {Boolean} editByCell - If true every single cell can be edited.
  * @property {Boolean} isLoading - A flag that indicates if table data is loading or not.
  * @property {Object} columns - The core columns configuration object for the entire table.
- * @property {Array} data - The data array that you want to display on the table.
+ * @property {Array} data - The data array to display on the table.
+ * @property {Function} onCellChange - A callback function that fires every time cell content changes.
+ * @property {Function} onCreateNewRow - A callback function to create new row instance.
+ * @property {Function} removeRow - A callback function to remove a row record.
+ * @property {Function} editRow - A callback function to edit a row record.
+ * @property {Function} addRow - A callback function to add new row.
+ * @property {Function} onEditRowStart - A callback function that fires on row edit start.
+ * @property {Function} onEditRowCancel - A callback function that fires when edit row has been canceled.
+ * @property {Function} onDuplicateRow - A callback function that duplicates a row record.
+ * @property {Function} reorderRow - A callback function that re-orders row records.
+ * @property {Function} onSearch - A callback function that search among row records content.
+ * @property {PaginationType} pagination - A callback function that duplicates a row record.
+ * @property {any} tableMirror - An instance of the table itself.
+ * @property {Function} getColumnsOption - A callback that gets necessary options for the table.
  */
 
 /**
@@ -43,6 +65,7 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
+    tableId,
     editable: isTableEditable,
     resizable: isTableResizable,
     editByCell,
@@ -56,10 +79,10 @@ const CustomTable = (props) => {
     addRow,
     onEditRowStart,
     onEditRowCancel,
+    onDuplicateRow,
     pagination,
     reorderRow,
     onSearch,
-    tableId,
     tableMirror,
     getColumnsOption,
     getCellProps = defaultPropGetter,
@@ -84,6 +107,7 @@ const CustomTable = (props) => {
     }
   }, [data]);
 
+  //! Execute row re-order on drag end.
   const handleDragEnd = (result) => {
     const { source, destination } = result;
     setIsRowDragging(false);
@@ -121,6 +145,7 @@ const CustomTable = (props) => {
 
   //! Use the state and functions returned from useTable to build your UI.
   //! Every option you pass to useTable should be memoized either via React.useMemo (for objects) or React.useCallback (for functions).
+  //! Credit: https://react-table.tanstack.com/docs/api/overview#option-memoization
   const tableInstance = useTable(
     {
       columns, //! Must be memoized (Based on official Docs.).
@@ -137,6 +162,7 @@ const CustomTable = (props) => {
       editingRowId,
       onEditRowStart,
       onEditRowCancel,
+      onDuplicateRow,
       setEditingRowId,
       reorderRow,
       tempRowId,
@@ -174,7 +200,7 @@ const CustomTable = (props) => {
 
   // console.log(state);
 
-  //! Fires on add new button click.
+  //! Fires on add new row.
   const handleAddItem = () => {
     if (!tempRowId) {
       let tempRowId = 'new_' + getUUID();
@@ -185,7 +211,7 @@ const CustomTable = (props) => {
     setEditingRowId(null);
   };
 
-  //! Renders the UI for your table.
+  //! Renders the UI for the table.
   return (
     <Styled.TableContainer>
       <TableAction
@@ -207,7 +233,7 @@ const CustomTable = (props) => {
       <Styled.TableWrapper>
         {!isLoading && (
           <Styled.Table {...getTableProps()}>
-            <div>
+            <div className="table-header-sticky">
               {headerGroups.map((headerGroup) => (
                 <div {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (

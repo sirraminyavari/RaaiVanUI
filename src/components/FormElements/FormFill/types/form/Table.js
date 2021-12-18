@@ -80,11 +80,10 @@ const Table = (props) => {
   //! Table row data.
   const memoizedData = useMemo(() => rows, [rows]);
 
-  //! Get form data.
+  //! Get table data.
   const getFormData = () => {
     getOwnerFormInstances(tableId, tableOwnerId)
       .then((response) => {
-        console.log(response, 'new table');
         const rows = prepareRows(response?.TableContent, tableColumns);
         setRows(rows);
         setTableContent(response?.TableContent);
@@ -92,6 +91,7 @@ const Table = (props) => {
       .catch((error) => console.log(error));
   };
 
+  //! Update table content(client side).
   const updateRowCell = (rowId, columnId, cell) => {
     setRows((oldRows) =>
       oldRows.map((row) => {
@@ -112,9 +112,12 @@ const Table = (props) => {
     const isNewRow = rowId.split('_')[0] === 'new';
 
     if (isNewRow) {
+      //! If new row is being edited.
       saveRow([newCellData]);
     } else {
+      //! Row already exists.
       if (editByCell) {
+        //! Edit by cell mode is activated.
         saveForm([newCellData])
           .then(() => {
             updateRowCell(rowId, columnId, newCellData);
@@ -125,11 +128,15 @@ const Table = (props) => {
           });
       }
 
+      //! If edit by cell mode is not activated.
+      //! Then user should be able to edit the whole row.
+      //! So user need to save the whole row manually.
       updateRowCell(rowId, columnId, newCellData);
     }
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
 
+  //! Reorder table rows by drag and drop(client side now & need to save order).
   const reorderRow = (startIndex, endIndex) => {
     const newRows = [...rows];
     const [movedRow] = newRows.splice(startIndex, 1);
@@ -143,7 +150,7 @@ const Table = (props) => {
     toast.dismiss(toastId);
   };
 
-  //! Undo row deletion.
+  //! Undo row deletion. restore deleted row.
   const undoRowDelete = (rowId) => {
     recoverFormInstance(rowId)
       .then((response) => {
@@ -188,6 +195,7 @@ const Table = (props) => {
   //! Edit table row.
   const editRow = (rowId, columnId = null) => {
     //! Do this in nested tables.
+    //! If we are in nested table, we do not want to save it, just callback.
     if (!!isNestedTable) {
       let newContentElements = rows
         ?.map((row) => Object.values(row))
@@ -208,6 +216,7 @@ const Table = (props) => {
     }
 
     //! Do this in main table.
+    //! in main table we want to save the row.
     const rowElements = rows?.find((row) => row?.id === rowId);
 
     //! Editing whole row.
@@ -279,6 +288,7 @@ const Table = (props) => {
 
   //! Save row.
   const saveRow = (newRowElements) => {
+    //! Create new row instance.
     createFormInstance(tableId, tableOwnerId)
       .then((response) => {
         if (response?.Succeed) {
@@ -287,9 +297,10 @@ const Table = (props) => {
             return { ...element, InstanceID: instanceId };
           });
 
+          //! Save elements to the row instance that just has been created.
           saveForm(extendedElements)
             .then((response) => {
-              getFormData();
+              getFormData(); //! Refresh table data.
               newRowRef.current = {};
             })
             .catch((error) => console.log(error, 'save row error'));
@@ -298,25 +309,51 @@ const Table = (props) => {
       .catch((error) => console.log(error));
   };
 
+  //! Add new row.
   const addRow = () => {
     let elements = Object.values(newRowRef.current);
     saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, []);
 
+  //! Duplicate a given row.
+  const duplicateRow = (row) => {
+    let elements = Object.values(row?.original)
+      .filter((element) => typeof element === 'object')
+      .filter((element) => !['File', 'Form'].includes(element?.Type)) //! Exclude files and forms.
+      .map((element) => {
+        return {
+          ...element,
+          Filled: false,
+          RefElementID: '',
+          ElementID: !!element?.RefElementID
+            ? element?.RefElementID
+            : element.ElementID,
+        };
+      });
+
+    saveRow(elements);
+  };
+  const memoizedDuplicateRow = useCallback(duplicateRow, []);
+
+  //! Search in table.
   const handleOnSearch = useCallback((text) => {
+    //! If there are some text for search.
     if (!!text && text.length >= 3) {
       const searchResultRows = tableData?.filter((row) => {
         let rowCellsText = '';
         for (let cell of row?.Elements) {
+          //! Search in "date" cells.
           if (!!cell?.DateValue_Jalali && cell?.Type === 'Date') {
             rowCellsText += ` ${getWeekDay(cell?.DateValue)}`;
           }
 
+          //! Search in "text" and "checkbox" cells.
           if (!!cell?.TextValue && ['Text', 'Checkbox'].includes(cell?.Type)) {
             rowCellsText += ` ${decodeBase64(cell?.TextValue)}`;
           }
 
+          //! Search in "user", "node" and "multilevel" cells.
           if (
             !!cell?.SelectedItems.length &&
             ['User', 'Node', 'MultiLevel'].includes(cell?.Type)
@@ -333,6 +370,7 @@ const Table = (props) => {
       const rows = prepareRows(searchResultRows, tableColumns);
       setRows(rows);
     } else {
+      //! If there is no text for search.
       if (tableData) {
         const rows = prepareRows(tableData, tableColumns);
         setRows(rows);
@@ -341,13 +379,14 @@ const Table = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //! Create new row and add it to the beginning of the row list.
   const createNewRow = (tempRowId) => {
     let newRow = tableColumns
-      ?.filter((col) => col?.Type !== cellTypes.separator)
+      ?.filter((col) => col?.Type !== cellTypes.separator) //! Exclude separator type.
       .map((column) => {
         let extendedColumn = Object.assign({}, column, {
           FormID: '',
-          InstanceID: tempRowId,
+          InstanceID: tempRowId, //! add temporary id until row is saved(and gets real id).
           RefElementID: '',
           GuidItems: [],
           SelectedItems: [],
@@ -357,6 +396,7 @@ const Table = (props) => {
         return normalizeCell(extendedColumn);
       })
       .reduce(
+        //! Reduce to one object(suitable for table format).
         (acc, column) => {
           return {
             ...acc,
@@ -396,6 +436,7 @@ const Table = (props) => {
       getCellProps={(cell) => ({})}
       tableMirror={Table}
       onCreateNewRow={createNewRow}
+      onDuplicateRow={memoizedDuplicateRow}
     />
   );
 };
