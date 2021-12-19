@@ -36,6 +36,7 @@ export const SETT_USERS_CONTENT = 'setting-users';
 export const SETT_TEAM_CONTENT = 'setting-team';
 export const SETT_NOTIFS_CONTENT = 'setting-notifs';
 export const SETT_CLASSES_CONTENT = 'setting-classes';
+export const SETT_URL_CONTENT = 'setting-{url}';
 
 //! Sidebar profile items
 export const PROFILE_USER = 'user';

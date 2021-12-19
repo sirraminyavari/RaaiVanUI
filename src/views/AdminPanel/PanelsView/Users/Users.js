@@ -9,12 +9,13 @@ import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import { getUsers, getUserInvitations } from './api';
 import CreateUser from './CreateUser';
-import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
-import {
-  SETT_USERS_CONTENT,
-  SETTING_CONTENT,
-} from '../../../../constant/constants';
+// import { useDispatch } from 'react-redux';
+// import { themeSlice } from 'store/reducers/themeReducer';
+// import {
+//   SETT_USERS_CONTENT,
+//   SETTING_CONTENT,
+//   SETT_TEAM_CONTENT,
+// } from '../../../../constant/constants';
 
 const Users = (props) => {
   const ApplicationID = props?.route?.ApplicationID;
@@ -24,9 +25,9 @@ const Users = (props) => {
   const [users, setUsers] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [showInvitationForm, setShowInvitationForm] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const { setSidebarContent } = themeSlice.actions;
+  // const { setSidebarContent } = themeSlice.actions;
 
   useEffect(() => {
     loadUsers(searchText);
@@ -36,12 +37,12 @@ const Users = (props) => {
     loadUsers();
     loadInvitedUsers();
 
-    dispatch(
-      setSidebarContent({
-        current: SETT_USERS_CONTENT,
-        prev: SETTING_CONTENT,
-      })
-    );
+    // dispatch(
+    //   setSidebarContent({
+    //     current: SETT_USERS_CONTENT,
+    //     prev: SETTING_CONTENT,
+    //   })
+    // );
 
     // return () => {
     //   dispatch(

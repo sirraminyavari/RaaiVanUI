@@ -57,7 +57,11 @@ const SidebarSettingContent = () => {
     if (content === SETTING_CONTENT) {
       return <SettingIcon />;
     } else {
-      return iconList[content]({ size: 22 });
+      return iconList?.[content] ? (
+        iconList[content]({ size: 22 })
+      ) : (
+        <SettingIcon />
+      );
     }
   };
 
