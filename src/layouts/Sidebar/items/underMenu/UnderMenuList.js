@@ -24,10 +24,10 @@ const selectFavoriteNodesCount = createSelector(
   (state) => state?.sidebarItems,
   (sidebarItems) => sidebarItems?.favoriteNodesCount
 );
-const selectUnderMenuList = createSelector(
-  (state) => state?.sidebarItems,
-  (sidebarItems) => sidebarItems?.underMenuList
-);
+// const selectUnderMenuList = createSelector(
+//   (state) => state?.sidebarItems,
+//   (sidebarItems) => sidebarItems?.underMenuList
+// );
 
 /**
  * Renders some items after nodes item inside sidebar menu.
@@ -36,7 +36,7 @@ const selectUnderMenuList = createSelector(
 const UnderMenuList = () => {
   const { RVDic } = useWindow();
   const favoriteNodesCount = useSelector(selectFavoriteNodesCount);
-  const items = useSelector(selectUnderMenuList);
+  // const protectedItems = useSelector(selectUnderMenuList);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
 
   //! Opens gallery modal.
@@ -70,8 +70,13 @@ const UnderMenuList = () => {
         icon={DiamondIcon}
         onClick={openTemplatesGallery}
       />
+      <ListItem
+        title={RVDic.Reports}
+        icon={StatisticBarIcon}
+        linkTo={getURL('Reports')}
+      />
       {/* <ListItem title={RVDic.KnowledgeWorkers} icon={ContactIcon} /> */}
-      {items?.map((item, key) => {
+      {/* {protectedItems?.map((item, key) => {
         return (
           <ListItem
             key={key}
@@ -80,7 +85,7 @@ const UnderMenuList = () => {
             linkTo={getURL(item)}
           />
         );
-      })}
+      })} */}
     </Styled.UnderMenuContainer>
   );
 };
