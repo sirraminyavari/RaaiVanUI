@@ -9,6 +9,12 @@ import UserInvitation from './UserInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import { getUsers, getUserInvitations } from './api';
 import CreateUser from './CreateUser';
+import { useDispatch } from 'react-redux';
+import { themeSlice } from 'store/reducers/themeReducer';
+import {
+  SETT_USERS_CONTENT,
+  SETTING_CONTENT,
+} from '../../../../constant/constants';
 
 const Users = (props) => {
   const ApplicationID = props?.route?.ApplicationID;
@@ -18,6 +24,9 @@ const Users = (props) => {
   const [users, setUsers] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [showInvitationForm, setShowInvitationForm] = useState(false);
+  const dispatch = useDispatch();
+
+  const { setSidebarContent } = themeSlice.actions;
 
   useEffect(() => {
     loadUsers(searchText);
@@ -26,6 +35,22 @@ const Users = (props) => {
   useEffect(() => {
     loadUsers();
     loadInvitedUsers();
+
+    dispatch(
+      setSidebarContent({
+        current: SETT_USERS_CONTENT,
+        prev: SETTING_CONTENT,
+      })
+    );
+
+    // return () => {
+    //   dispatch(
+    //     setSidebarContent({
+    //       current: SETTING_CONTENT,
+    //       prev: SETT_USERS_CONTENT
+    //     })
+    //   )
+    // }
   }, []);
 
   /**

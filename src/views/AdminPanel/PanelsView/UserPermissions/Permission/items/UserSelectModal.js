@@ -15,6 +15,7 @@ import UserRoleItemToSelect from './UserRoleItemToSelect';
 import SearchInput from '../../../Users/items/SearchInput';
 import { getUsers } from '../../api';
 import { PermissionContext } from '../Permissions';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const UserSelectModal = () => {
   const { roles, setRoles } = useContext(PermissionContext);
@@ -98,13 +99,15 @@ const UserSelectModal = () => {
         </SearchRoleInput>
 
         <ModalRoleSelectionContainer>
-          {users.map((x) => (
-            <UserRoleItemToSelect
-              key={x.UserID}
-              {...x}
-              onClick={(e) => handleUserSelect(x)}
-            />
-          ))}
+          <PerfectScrollbar>
+            {users.map((x) => (
+              <UserRoleItemToSelect
+                key={x.UserID}
+                {...x}
+                onClick={(e) => handleUserSelect(x)}
+              />
+            ))}
+          </PerfectScrollbar>
         </ModalRoleSelectionContainer>
 
         <ActionButtonContainer>
@@ -169,7 +172,7 @@ const ModalRoleSelectionContainer = styled.div`
   border-raduis: 0.5rem;
   margin-bottom: 1.5rem;
   height: 25rem;
-  overflow: hidden;
+  overflow: auto;
 `;
 const CustomRole = styled(SearchInput)`
   border: none !important;

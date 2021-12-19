@@ -8,6 +8,7 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { themeSlice } from 'store/reducers/themeReducer';
 import SettingItems from './SettingItem';
+import UsersContent from './items/users/UsersContent';
 import TeamSettings from './items/team-settings/TeamSettings';
 import iconList from './iconList';
 import EditableTree from 'layouts/Sidebar/items/sidebarTree/editable/EditableTree';
@@ -65,7 +66,7 @@ const SidebarSettingContent = () => {
       case SETT_TEAM_CONTENT:
         return <TeamSettings />;
       case SETT_USERS_CONTENT:
-        return 'users';
+        return <UsersContent />;
       case SETT_CLASSES_CONTENT:
         return <EditableTree />;
       case SETT_NOTIFS_CONTENT:

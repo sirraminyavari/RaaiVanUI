@@ -6,6 +6,7 @@ import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import PermissionItem from './PermissionItem';
 import { PermissionContext } from '../Permissions';
 import DoubleCheck from 'components/Icons/CheckIcons/DoubleCheck';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
@@ -104,7 +105,9 @@ const PermissionSelectionPane = ({ sections }) => {
         <OpenHeaderTitle>مشاهده</OpenHeaderTitle>
       </ListHeader>
 
-      <PermissionBody>{items}</PermissionBody>
+      <PermissionBody>
+        <PerfectScrollbar>{items}</PerfectScrollbar>
+      </PermissionBody>
     </PermissionContainer>
   );
 };
