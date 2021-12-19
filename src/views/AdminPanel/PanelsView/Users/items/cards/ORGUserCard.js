@@ -1,19 +1,18 @@
-import * as Styled from '../ListStyled';
+import * as Styled from '../UsersListStyled';
 import UserFullNameTitle from './UserFullNameTitle';
 import ResetPassword from './ResetPassword';
 import { useCallback, useMemo, useState } from 'react';
 import InlineEditableTitle from './InlineEditableTitle';
-import api, {
-  setRandomPassword,
-  setUserName,
-  updateApprovedStatus,
-  updateFirstName,
-  updateLastName,
-} from '../../api';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import UserGroupEdit from './UserGroupEdit';
 import EditableTitle from './EditableTitle';
+import {
+  setUserName,
+  updateApprovedStatus,
+  updateFirstName,
+  updateLastName,
+} from 'apiHelper/ApiHandlers/usersApi';
 
 const ORGUserCard = ({
   FirstName,
@@ -24,7 +23,6 @@ const ORGUserCard = ({
   UserID,
   LastActivityTime_Local,
   IsApproved,
-  ...props
 }) => {
   const [isApprovedStatus, setIsApprovedStatus] = useState(IsApproved);
   const [firstName, setFirstName] = useState(FirstName);
@@ -52,7 +50,7 @@ const ORGUserCard = ({
       const result = await setUserName(value, UserID);
       if (result?.Succeed) {
         InfoToast({
-          type: 'info',
+          type: 'success',
           autoClose: true,
           message: `نام کاربری با موفقیت ثبت شد.`,
         });

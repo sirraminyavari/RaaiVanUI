@@ -15,7 +15,7 @@ import UserGroupCheckbox from './UserGroupCheckbox';
 import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { GroupsContext } from '../TeamBasedList';
+import { GroupsContext } from '../UsersSaasList';
 
 const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
   const { RV_RTL } = useWindowContext();
@@ -169,22 +169,6 @@ const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
             </OptionLayout>
           </ContentContainer>
         )}
-
-        {/*<ModelActionBar>*/}
-        {/*  <Button*/}
-        {/*    type="primary"*/}
-        {/*    style={buttonStyles}*/}
-        {/*    onClick={() => onModalConfirm()}>*/}
-        {/*    {'ذخیره'}*/}
-        {/*  </Button>*/}
-
-        {/*  <Button*/}
-        {/*    type="negative-o"*/}
-        {/*    style={buttonStyles}*/}
-        {/*    onClick={() => onModalCancel()}>*/}
-        {/*    {'بازگشت'}*/}
-        {/*  </Button>*/}
-        {/*</ModelActionBar>*/}
       </Modal>
     </Container>
   );
@@ -309,9 +293,5 @@ const CustomTitleBarCloseButton = styled.div`
     color: ${CV_WHITE};
   }
 `;
-const buttonStyles = {
-  height: '3rem',
-  width: '7.5rem',
-};
 
 export default UserGroupEdit;

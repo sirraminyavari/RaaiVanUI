@@ -8,7 +8,7 @@ import {
 } from 'constant/CssVariables';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { getUUID } from 'helpers/helpers';
-import { addMember, removeMember } from '../../api';
+import { addMember, removeMember } from 'apiHelper/ApiHandlers/CNApi';
 
 export const UserGroupCheckbox = ({
   label,

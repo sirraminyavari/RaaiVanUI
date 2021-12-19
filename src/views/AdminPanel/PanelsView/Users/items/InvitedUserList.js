@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import * as Styled from './ListStyled';
+import * as Styled from './UsersListStyled';
 import { getUUID } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
 import InvitedUserCard from './cards/InvitedUserCard';

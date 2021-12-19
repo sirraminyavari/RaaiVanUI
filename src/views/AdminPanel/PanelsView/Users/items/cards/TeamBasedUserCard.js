@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import * as Styled from '../ListStyled';
+import * as Styled from '../UsersListStyled';
 import UserFullNameTitle from './UserFullNameTitle';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import UserDeleteButton from './UserDeleteButton';
 import UserGroupEdit from './UserGroupEdit';
 import { useMemo, useState } from 'react';
-import { addSystemAdmin, removeSystemAdmin } from '../../api';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVApi';
 const TeamBasedUserCard = ({
   ImageURL,
   FullName,

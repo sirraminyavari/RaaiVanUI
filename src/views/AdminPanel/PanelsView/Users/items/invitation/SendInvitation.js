@@ -1,8 +1,8 @@
 import * as Styled from './InvitaionStyle';
-import InfoCircleIcon from '../../../../../../components/Icons/InfoCircleIcon/InfoIcon';
+import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
 import UserInvitationForm from './UserInvitationForm';
 import styled from 'styled-components';
-import Button from '../../../../../../components/Buttons/Button';
+import Button from 'components/Buttons/Button';
 
 const SendInvitation = () => {
   return (

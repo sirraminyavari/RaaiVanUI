@@ -11,10 +11,11 @@ import {
 import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
 import SearchInput from './items/SearchInput';
 import InputLoader from './items/cards/InputLoader';
-import { useEffect, useState } from 'react';
-import { checkUserName, createUser } from './api';
+import { useState } from 'react';
 import Button from 'components/Buttons/Button';
-const CreateUser = ({ onClose, ...props }) => {
+import { checkUserName, createUser } from 'apiHelper/ApiHandlers/usersApi';
+
+const UsersCreate = ({ onClose, ...props }) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
 
   const breadCrumbItems = [
@@ -25,12 +26,12 @@ const CreateUser = ({ onClose, ...props }) => {
     },
     {
       id: 2,
-      title: 'مدیریت کاربران',
+      title: RVDic?.UserManagement,
       linkTo: '',
     },
     {
       id: 3,
-      title: 'ایجاد کاربر جدید',
+      title: RVDic?.CreateNewN?.replace(`[n]`, RVDic.User),
       linkTo: '',
     },
   ];
@@ -79,9 +80,13 @@ const CreateUser = ({ onClose, ...props }) => {
   return (
     <>
       <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
-      <Styled.HeadingWrapper>{'ایجاد کاربر جدید'}</Styled.HeadingWrapper>
+      <Styled.HeadingWrapper>
+        {RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
+      </Styled.HeadingWrapper>
       <Styled.ReturnButtonWrapper rtl={RV_RTL}>
-        <Styled.ReturnButton onClick={onClose}>بازگشت</Styled.ReturnButton>
+        <Styled.ReturnButton onClick={onClose}>
+          {RVDic?.Return}
+        </Styled.ReturnButton>
       </Styled.ReturnButtonWrapper>
 
       <IconContainer>
@@ -104,7 +109,8 @@ const CreateUser = ({ onClose, ...props }) => {
               onChange={(Username) => handleUsernameValidity(Username)}
               type="text"
               delayTime={1000}
-              placeholder={'نام کاربری'}
+              placeholder={RVDic?.UserName}
+              pattern={RVGlobal?.UserNamePattern}
             />
             {loader && <InputLoader />}
           </UsernameInput>
@@ -112,13 +118,13 @@ const CreateUser = ({ onClose, ...props }) => {
             value={form.FirstName}
             onChange={(e) => setForm({ ...form, FirstName: e?.target?.value })}
             type="text"
-            placeholder={'نام'}
+            placeholder={RVDic?.FirstName}
           />
           <NormalInput
             value={form.LastName}
             onChange={(e) => setForm({ ...form, LastName: e?.target?.value })}
             type="text"
-            placeholder={'نام خانوادگی'}
+            placeholder={RVDic?.LastName}
           />
         </>
         <ActionBar>
@@ -129,7 +135,7 @@ const CreateUser = ({ onClose, ...props }) => {
               width: '8.25rem',
             }}
             disable={!formIsValid()}>
-            ارسال
+            {RVDic?.Send}
           </Button>
         </ActionBar>
       </FormContainer>
@@ -208,4 +214,4 @@ const ActionBar = styled.div`
   justify-content: flex-end;
   margin-top: 3rem;
 `;
-export default CreateUser;
+export default UsersCreate;

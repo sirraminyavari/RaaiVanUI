@@ -13,8 +13,8 @@ import ReloadCircleIcon from 'components/Icons/ReloadCircleIcon/ReloadCircleIcon
 import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
-import { setRandomPassword } from '../../api';
-import CopyIcon from '../../../../../../components/Icons/CopyIcon/CopyIcon';
+import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
+import { setRandomPassword } from '../../../../../../apiHelper/ApiHandlers/usersApi';
 
 const ResetPassword = ({ render, userId, ...props }) => {
   const [modalInfo, setModalInfo] = useState({

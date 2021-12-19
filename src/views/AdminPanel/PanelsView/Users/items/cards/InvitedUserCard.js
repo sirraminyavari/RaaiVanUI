@@ -1,5 +1,5 @@
 import UserFullNameTitle from './UserFullNameTitle';
-import * as Styled from '../ListStyled';
+import * as Styled from '../UsersListStyled';
 import ResendInvitationButton from './ResendInvitationButton';
 import styled from 'styled-components';
 import { useMemo } from 'react';

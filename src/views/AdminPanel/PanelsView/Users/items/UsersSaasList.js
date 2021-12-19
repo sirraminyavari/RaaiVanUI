@@ -1,12 +1,13 @@
-import * as Styled from './ListStyled';
+import * as Styled from './UsersListStyled';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import TeamBasedUserCard from './cards/TeamBasedUserCard';
-import { checkAuthority, getGroupsAll, getUsers } from '../api';
+import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
 
 export const GroupsContext = createContext({});
 
-const TeamBasedList = ({ rtl, users, ...props }) => {
+const UsersSaasList = ({ rtl, users, ...props }) => {
   const [showMore, setShowMore] = useState(false);
   const [groups, setGroups] = useState([]);
 
@@ -99,4 +100,4 @@ const listHeaderData = [
     width: 17,
   },
 ];
-export default TeamBasedList;
+export default UsersSaasList;
