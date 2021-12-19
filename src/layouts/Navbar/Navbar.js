@@ -3,6 +3,7 @@
  */
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
 import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import Avatar from 'components/Avatar/Avatar';
@@ -23,6 +24,7 @@ import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
 import { getNotificationsCount } from 'store/actions/global/NotificationActions';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
+import { getURL } from 'helpers/helpers';
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -40,11 +42,6 @@ const selectIsSidebarOpen = createSelector(
   (theme) => theme.isSidebarOpen
 );
 
-const selectActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
-);
-
 const selectAuthUser = createSelector(
   (state) => state.auth,
   (auth) => auth.authUser
@@ -60,8 +57,8 @@ const NavbarPlaceholder = () => <div />;
  */
 const Navbar = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const activePath = useSelector(selectActivePath);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat, GlobalUtilities } = useWindow();
@@ -71,7 +68,8 @@ const Navbar = () => {
       ? defaultProfileImage
       : GlobalUtilities.add_timestamp(authUser?.ProfileImageURL);
 
-  const isTeamsView = activePath === TEAMS_PATH;
+  const isTeamsView = pathname === TEAMS_PATH;
+  const isSearchView = pathname.slice(0, 9) === getURL('Search');
 
   const getNotifs = () => {
     dispatch(getNotificationsCount());
@@ -120,20 +118,25 @@ const Navbar = () => {
         {isTeamsView ? <NavbarPlaceholder /> : getNavMenu()}
       </Suspense>
       <Styled.SearchWrapper>
-        {showInput() ? (
-          <NavbarSearchInput
-            onBlur={handleHideSearch}
-            autoFocus={showSearch}
-            placeholder={searchPlaceholder}
-          />
-        ) : (
-          <SearchIcon
-            size={30}
-            className={C_WHITE}
-            style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
-            onClick={handleShowSearch}
-          />
+        {!isSearchView && (
+          <>
+            {showInput() ? (
+              <NavbarSearchInput
+                onBlur={handleHideSearch}
+                autoFocus={showSearch}
+                placeholder={searchPlaceholder}
+              />
+            ) : (
+              <SearchIcon
+                size={30}
+                className={C_WHITE}
+                style={{ margin: '0.5rem 1.5rem 0 1.5rem', cursor: 'pointer' }}
+                onClick={handleShowSearch}
+              />
+            )}
+          </>
         )}
+
         <Tooltip
           tipId="nav-avatar-menu"
           multiline

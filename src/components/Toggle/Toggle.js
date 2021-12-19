@@ -12,8 +12,9 @@ import ToggleButton from 'components/Buttons/Toggle/Toggle';
  * @property {boolean} isChecked - The initial toggle value.
  * @property {string} title - The title of toggle component.
  * @property {string} containerClass - The classes for container.
- * @property {strin} titleClass - The classes for title.
+ * @property {string} titleClass - The classes for title.
  * @property {boolean} disable - If true, button is disabled.
+ * @property {boolean} clickableLabel - If true, toggle on label click.
  */
 
 /**
@@ -29,12 +30,17 @@ const Toggle = ({
   titleClass,
   titleStyle,
   disable,
+  clickableLabel,
 }) => {
   // const { onToggle, isChecked, title, containerClass, titleClass } = props;
 
   return (
     <Styled.ToggleContainer className={containerClass}>
-      <Styled.ToggleTitleWrapper className={titleClass} style={titleStyle}>
+      <Styled.ToggleTitleWrapper
+        isClickable={!!clickableLabel}
+        onClick={() => clickableLabel && onToggle(!isChecked)}
+        className={titleClass}
+        style={titleStyle}>
         {title}
       </Styled.ToggleTitleWrapper>
       <ToggleButton

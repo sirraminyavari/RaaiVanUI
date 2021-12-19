@@ -26,7 +26,7 @@ import {
   VERIFICATION_PATH,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
-import { getUnderMenuPermissions } from 'store/actions/sidebar/sidebarMenuAction';
+// import { getUnderMenuPermissions } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
@@ -113,7 +113,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       dispatch(setCurrentApp(route?.Application));
       //! Get configs based on current application.
       dispatch(getConfigPanels());
-      dispatch(getUnderMenuPermissions(['Reports']));
+      // dispatch(getUnderMenuPermissions(['Reports']));
     }
 
     //! Reset team to null if user is authenticated but has not selected a team yet.

@@ -84,7 +84,7 @@ export const MESSAGES_PATH = getURL('Messages');
 export const MESSAGES_NAME = 'messages';
 export const DASHBOARD_PATH = getURL('Dashboard');
 export const DASHBOARD_NAME = 'dashboard';
-export const DO_SEARCH_PATH = getURL('Search', { SearchText: ':searchtext' });
+export const DO_SEARCH_PATH = getURL('Search', { SearchText: ':searchtext?' });
 export const DO_SEARCH_NAME = 'search';
 export const HELP_PATH = getURL('Help');
 export const HELP_NAME = 'help';
@@ -160,6 +160,8 @@ export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
 export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
 export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
 export const TEAM_SETTINGS_NAME = 'TeamSettings';
+export const MONITORING_PATH = '/monitoring';
+export const MONITORING_NAME = 'monitoring';
 
 //! Border radius classes
 /**

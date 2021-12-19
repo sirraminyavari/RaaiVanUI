@@ -39,10 +39,9 @@ const AvatarMenuList = () => {
   const history = useHistory();
   const avatarMenuRef = useRef();
   const containerRef = useRef();
-  const { RVDic, RV_RTL, RVGlobal } = useWindow();
+  const { RVDic, RV_RTL } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
-  const isDev = (RVGlobal || {}).IsDev;
 
   useRouteListener(ReactTooltip.hide);
   usePreventScroll(containerRef);
@@ -123,13 +122,11 @@ const AvatarMenuList = () => {
         iconColor={CV_RED}
         textClass={C_RED}
       />
-      {isDev && (
-        <Checkbox
-          title={RV_RTL ? 'انگلیسی' : 'english'}
-          changeHandler={handleCheckbox}
-          isChecked={Cookie.get('rv_lang') === 'en'}
-        />
-      )}
+      <Checkbox
+        title={RV_RTL ? 'انگلیسی' : 'english'}
+        changeHandler={handleCheckbox}
+        isChecked={Cookie.get('rv_lang') === 'en'}
+      />
     </Styled.AvatarMenuContainer>
   );
 };
