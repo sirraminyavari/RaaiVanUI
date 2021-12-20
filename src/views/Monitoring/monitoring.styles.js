@@ -12,3 +12,9 @@ export const Title = styled.h1`
   font-size: 1.5rem;
   padding: 0.3rem;
 `;
+
+export const GridButton = styled.div`
+  display: grid
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 2px
+`;
