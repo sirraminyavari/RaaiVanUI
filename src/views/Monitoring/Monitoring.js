@@ -1,17 +1,16 @@
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
-import { useEffect, useState } from 'react';
-import * as Styled from './monitoring.styles';
-import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
-import useWindow from 'hooks/useWindowContext';
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
-import APIHandler from '../../apiHelper/APIHandler';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import CustomTable from '../../components/CustomTable/CustomTable';
+import { useMemo } from 'react';
+import styled from 'styled-components';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
-// import LoadingButton from '../../components/Buttons/LoadingButton';
 import TextButton from '../../components/Buttons/TextButton';
+import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
+import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
+import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
+import { COLUMNS } from './columns';
+import * as Styled from './monitoring.styles';
 
 const MonitoringView = ({ ...props }) => {
   const breadcrumbItems = [
@@ -32,16 +31,16 @@ const MonitoringView = ({ ...props }) => {
     position: relative;
     width: 100%;
   `;
-
+  const columns = useMemo(() => COLUMNS, []);
+  const datas = useMemo(() => MOCK_DATA, []);
   const data = [
-    { id: 1, name: 'a' },
-    { id: 2, name: 'b' },
+    { id: 1, name: 'تیم محصول کلیک مایند' },
+    { id: 2, date: '1400/12/12' },
   ];
-  const columns = ['col1', 'col2'];
+  // const columns = ['col1', 'col2'];
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />
-
       <Styled.Title>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
@@ -52,18 +51,23 @@ const MonitoringView = ({ ...props }) => {
             <TextButton
               className="primary"
               style={{
-                border: '1px solid darkgray',
-                padding: '.9rem',
+                border: '1px solid var(--rv-gray-color-dark)',
                 margin: '0.5rem .5rem',
                 width: '130px',
               }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
                 <label
-                  className=""
+                  className="rv-dark-gray"
                   style={{
-                    color: 'darkgray',
-                    fontSize: '12px',
+                    // color: 'darkgray',
+                    fontSize: '.66rem',
                     fontWeight: 'lighter',
+                    paddingLeft: '.8rem',
                   }}>
                   تعداد کل کاربران{' '}
                 </label>
@@ -73,18 +77,24 @@ const MonitoringView = ({ ...props }) => {
             <TextButton
               className="primary"
               style={{
-                border: '1px solid darkgray',
-                padding: '.9rem',
+                border: '1px solid var(--rv-gray-color-dark)',
+                padding: '.7rem',
                 margin: '0.5rem 0rem',
                 width: '130px',
               }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
                 <label
-                  className=""
+                  className="rv-dark-gray"
                   style={{
-                    color: 'darkgray',
-                    fontSize: '12px',
+                    // color: 'darkgray',
+                    fontSize: '.66rem',
                     fontWeight: 'lighter',
+                    paddingLeft: '.8rem',
                   }}>
                   تعداد کل تیم ها{' '}
                 </label>
@@ -101,19 +111,23 @@ const MonitoringView = ({ ...props }) => {
           style={{ maxWidth: '480px' }}
         />
         <Button
-          className=""
+          className="rv-default"
           style={{
-            color: '#2B7BE4',
-            border: '1px solid #2B7BE4',
-            padding: '.5rem .5rem',
-            borderRadius: '8px',
-            fontSize: '12px',
+            // color: '#2B7BE4',
+            border: '1px solid var(--rv-color)',
+            padding: '.5rem',
+            borderRadius: '.5rem',
+            display: 'flex',
+            alignItems: 'center',
           }}>
           {' '}
-          به روز رسانی لیست{' '}
+          <RfreshIcon />
+          <span style={{ fontSize: '.7rem', paddingRight: '.2rem' }}>
+            به روز رسانی لیست{' '}
+          </span>
         </Button>
       </div>
-      {/* <CustomTable data={data} columns={columns}/> */}
+      <MyTable columns={columns} data={datas} />{' '}
     </Styled.Container>
   );
 };
