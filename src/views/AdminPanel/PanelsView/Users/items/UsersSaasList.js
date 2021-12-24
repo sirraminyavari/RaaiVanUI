@@ -1,15 +1,18 @@
 import * as Styled from './UsersListStyled';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
-import TeamBasedUserCard from './cards/TeamBasedUserCard';
+import SaasUsersListRow from './rows/SaasUsersListRow';
 import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
 import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import useWindow from 'hooks/useWindowContext';
+import { SaasUserListHeaders } from './_constants';
 
 export const GroupsContext = createContext({});
 
 const UsersSaasList = ({ rtl, users, ...props }) => {
   const [showMore, setShowMore] = useState(false);
   const [groups, setGroups] = useState([]);
+  const { RVDic } = useWindow();
 
   useEffect(() => {
     loadAllGroups();
@@ -36,7 +39,7 @@ const UsersSaasList = ({ rtl, users, ...props }) => {
     () =>
       users?.slice(0, showMore ? users.length : 3)?.map((x) => (
         <Styled.ListRow rtl={rtl} key={getUUID()}>
-          <TeamBasedUserCard {...x} />
+          <SaasUsersListRow {...x} />
         </Styled.ListRow>
       )),
     [showMore, users]
@@ -47,7 +50,7 @@ const UsersSaasList = ({ rtl, users, ...props }) => {
       <Styled.ListContainer top={2.4}>
         <Styled.ListHeader>
           <Styled.ListHeaderRow rtl={rtl}>
-            {listHeaderData.map((x) => (
+            {SaasUserListHeaders(RVDic).map((x) => (
               <Styled.ListHeaderItem
                 key={getUUID()}
                 width={x.width}
@@ -65,39 +68,10 @@ const UsersSaasList = ({ rtl, users, ...props }) => {
 
       {users.length > 3 && (
         <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
-          {'مشاهده همه'}
+          {showMore ? RVDic?.ShowLess : RVDic?.ShowMore}
         </Styled.ShowMoreButton>
       )}
     </>
   );
 };
-
-const listHeaderData = [
-  {
-    title: 'نام کاربر',
-    width: 25,
-  },
-  {
-    title: 'ایمیل',
-    width: 25,
-  },
-  {
-    title: 'آخرین فعالیت',
-    width: 17,
-  },
-  {
-    title: 'کاربر مدیر',
-    width: 8,
-    centralized: true,
-  },
-  {
-    title: 'گروه ها',
-    width: 8,
-    centralized: true,
-  },
-  {
-    title: '',
-    width: 17,
-  },
-];
 export default UsersSaasList;

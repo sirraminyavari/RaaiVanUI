@@ -2,10 +2,11 @@ import { useMemo, useState } from 'react';
 import * as Styled from './UsersListStyled';
 import { getUUID } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
-import InvitedUserCard from './cards/InvitedUserCard';
+import InvitedUserCard from './rows/InvitedUserCard';
+import { SaasInvitedUsersList } from './_constants';
 
 const InvitedUserList = ({ users, ...props }) => {
-  const { RV_RTL } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
   const [showMore, setShowMore] = useState(false);
 
   const userCards = useMemo(
@@ -24,7 +25,7 @@ const InvitedUserList = ({ users, ...props }) => {
       <Styled.ListContainer top={5.5}>
         <Styled.ListHeader>
           <Styled.ListHeaderRow rtl={RV_RTL}>
-            {listHeaderData.map((x) => (
+            {SaasInvitedUsersList(RVDic).map((x) => (
               <Styled.ListHeaderItem
                 key={getUUID()}
                 width={x.width}
@@ -40,29 +41,10 @@ const InvitedUserList = ({ users, ...props }) => {
 
       {users.length > 2 && (
         <Styled.ShowMoreButton onClick={() => setShowMore(!showMore)}>
-          {'مشاهده همه'}
+          {showMore ? RVDic?.ShowLess : RVDic?.ShowMore}
         </Styled.ShowMoreButton>
       )}
     </>
   );
 };
-
-const listHeaderData = [
-  {
-    title: 'نام کاربر',
-    width: 25,
-  },
-  {
-    title: 'ایمیل',
-    width: 25,
-  },
-  {
-    title: 'تاریخ دعوت',
-    width: 33,
-  },
-  {
-    title: '',
-    width: 17,
-  },
-];
 export default InvitedUserList;

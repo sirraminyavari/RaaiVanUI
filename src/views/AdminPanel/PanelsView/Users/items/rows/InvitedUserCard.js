@@ -3,6 +3,7 @@ import * as Styled from '../UsersListStyled';
 import ResendInvitationButton from './ResendInvitationButton';
 import styled from 'styled-components';
 import { useMemo } from 'react';
+import useWindowContext from 'hooks/useWindowContext';
 
 const InvitedUserCard = ({
   ReceiverFirstName,
@@ -12,6 +13,7 @@ const InvitedUserCard = ({
   invitationTime,
   ...props
 }) => {
+  const { RVDic } = useWindowContext();
   const userTitle = useMemo(
     () => (
       <UserFullNameTitle
@@ -34,7 +36,7 @@ const InvitedUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>
-        <ResendInvitationButton>دعوت مجدد</ResendInvitationButton>
+        <ResendInvitationButton>{RVDic?.ReInvite}</ResendInvitationButton>
       </Styled.ListBodyItem>
     </>
   );

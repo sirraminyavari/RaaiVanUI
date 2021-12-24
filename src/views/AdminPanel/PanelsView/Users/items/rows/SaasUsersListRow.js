@@ -7,7 +7,9 @@ import UserGroupEdit from './UserGroupEdit';
 import { useMemo, useState } from 'react';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVApi';
-const TeamBasedUserCard = ({
+import useWindowContext from 'hooks/useWindowContext';
+
+const SaasUsersListRow = ({
   ImageURL,
   FullName,
   Email,
@@ -32,7 +34,7 @@ const TeamBasedUserCard = ({
   );
 
   const [IsAdmin, setIsAdmin] = useState(IsSystemAdmin);
-
+  const { RVDic, RV_RTL } = useWindowContext();
   const handleSystemAdminChange = (value) => {
     setIsAdmin(value);
     if (value) {
@@ -44,12 +46,14 @@ const TeamBasedUserCard = ({
               type: 'error',
               autoClose: true,
               message: `خطایی رخ داد.`,
+              position: RV_RTL ? 'bottom-left' : 'bottom-right',
             });
           } else if (res?.Succeed) {
             InfoToast({
-              type: 'info',
+              type: 'success',
               autoClose: true,
               message: `عملیات موفقیت آمیز بود.`,
+              position: RV_RTL ? 'bottom-left' : 'bottom-right',
             });
           }
           console.log(res);
@@ -66,12 +70,14 @@ const TeamBasedUserCard = ({
               type: 'error',
               autoClose: true,
               message: `خطایی رخ داد.`,
+              position: RV_RTL ? 'bottom-left' : 'bottom-right',
             });
           } else if (res?.Succeed) {
             InfoToast({
               type: 'info',
               autoClose: true,
               message: `عملیات موفقیت آمیز بود.`,
+              position: RV_RTL ? 'bottom-left' : 'bottom-right',
             });
           }
           console.log(res);
@@ -109,12 +115,12 @@ const TeamBasedUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={8}>
-        <UserGroupEdit UserID={UserID} Name={FullName} Groups={groups} />
+        <UserGroupEdit UserID={UserID} FullName={FullName} Groups={groups} />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>
         <UserDeleteButton render={userTitle} onRemoveConfirm={handleRemoveUser}>
-          {'حذف از تیم'}
+          {RVDic?.RemoveFromTeam}
         </UserDeleteButton>
       </Styled.ListBodyItem>
     </>
@@ -136,4 +142,4 @@ const ToggleWrapper = styled.div`
   justify-content: center !important;
   align-items: center;
 `;
-export default TeamBasedUserCard;
+export default SaasUsersListRow;

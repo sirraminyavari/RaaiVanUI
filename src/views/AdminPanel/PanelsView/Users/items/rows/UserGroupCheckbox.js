@@ -9,6 +9,7 @@ import {
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { getUUID } from 'helpers/helpers';
 import { addMember, removeMember } from 'apiHelper/ApiHandlers/CNApi';
+import useWindowContext from 'hooks/useWindowContext';
 
 export const UserGroupCheckbox = ({
   label,
@@ -19,15 +20,16 @@ export const UserGroupCheckbox = ({
   ...props
 }) => {
   const checkboxEl = useRef(null);
+
   const [checked, setChecked] = useState(
     users?.find((x) => x.UserID === UserID) ? true : false
   );
+  const { RV_RTL } = useWindowContext();
   const toggleCheckBox = () => {
     if (checked) {
       // remove from group
       removeMember(nodeId, UserID)
         .then((res) => {
-          console.log(res);
           if (res.Succeed) {
             onChange();
           }
@@ -52,7 +54,12 @@ export const UserGroupCheckbox = ({
   };
 
   const thumbs = users?.map((x, i) => (
-    <ProfileImage key={getUUID()} index={i} src={x.ProfileImageURL} />
+    <ProfileImage
+      key={getUUID()}
+      index={i}
+      rtl={RV_RTL}
+      src={x.ProfileImageURL}
+    />
   ));
 
   return (
@@ -116,7 +123,8 @@ const ProfileImage = styled.img`
   width: 2rem;
   border-radius: 100%;
   border: 2px solid ${CV_WHITE};
-  ${({ index }) => index !== 0 && `margin-left: -${0.8}rem`}
+  ${({ index, rtl }) =>
+    index !== 0 && `margin-${rtl ? 'left' : 'right'}: -${0.8}rem`}
 `;
 const ProfileImageList = styled.div`
   display: flex;

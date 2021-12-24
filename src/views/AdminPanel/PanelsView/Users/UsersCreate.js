@@ -10,7 +10,7 @@ import {
 } from 'constant/CssVariables';
 import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
 import SearchInput from './items/SearchInput';
-import InputLoader from './items/cards/InputLoader';
+import InputLoader from './items/rows/InputLoader';
 import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import { checkUserName, createUser } from 'apiHelper/ApiHandlers/usersApi';

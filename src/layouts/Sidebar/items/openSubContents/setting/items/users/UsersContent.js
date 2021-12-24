@@ -12,32 +12,30 @@ const UsersContent = () => {
   const profileItems = [
     {
       id: '1',
-      title: 'کاربران',
+      title: RVDic?.Users,
       linkTo: '/configuration/users',
+      show: true,
     },
     {
       id: '2',
-      title: 'مدیریت گروه‌ها',
-      linkTo: '/configuration/users/groups',
-      isSaas,
+      title: RVDic?.UserGroupsManagement || 'مدیریت گروه‌ها',
+      linkTo: '/configuration/usergroups',
+      show: isSaas,
     },
     {
       id: '3',
       title: 'دسترسی‌ها',
-      linkTo: '/configuration/users/permissions',
+      linkTo: '/configuration/userpermissions',
+      show: !isSaas,
     },
   ];
-
-  const handleOnArrowClick = () => {
-    // history.push(HOME_PATH);
-  };
 
   return (
     <>
       <Styled.PanelListWrapper>
         {profileItems?.map((item, key) => {
           const isActiveNav = location.pathname === item.linkTo;
-          return (
+          return item?.show ? (
             <Styled.SettingItemWrapper
               className={isActiveNav && 'avtive-profile-navlink'}
               as={NavLink}
@@ -45,6 +43,8 @@ const UsersContent = () => {
               key={key}>
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>
+          ) : (
+            ''
           );
         })}
       </Styled.PanelListWrapper>

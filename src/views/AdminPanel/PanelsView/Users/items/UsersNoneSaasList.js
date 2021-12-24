@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import * as Styled from './UsersListStyled';
-import ORGUserCard from './cards/ORGUserCard';
+import ORGUserCard from './rows/ORGUserCard';
 import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
 import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
 

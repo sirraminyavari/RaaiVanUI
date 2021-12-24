@@ -1,23 +1,48 @@
-import useScript from 'hooks/useScript';
+import * as Styled from './UserGroupsStyles';
+import useWindowContext from 'hooks/useWindowContext';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
+import SearchIcon from 'components/Icons/SearchIcon/Search';
 
 const UserGroups = () => {
-  useScript(
-    'pageLoadScripts/LoadUserGroups/LoadUserGroups.js',
-    'LoadUserGroups.js',
-    () => {
-      window.loadUserGroups();
-    }
-  );
+  const { RVDic, RV_RTL } = useWindowContext();
+
+  const breadcrumbs = [
+    {
+      id: 1,
+      title: RVDic?.TeamManagement,
+      linkTo: '',
+    },
+    {
+      id: 2,
+      title: RVDic?.UserManagement,
+      linkTo: 'users',
+    },
+    {
+      id: 3,
+      title: 'گروه های کاربری',
+      linkTo: 'usergroups',
+    },
+  ];
   return (
-    <div
-      id="userGroupsArea"
-      className="small-12 medium-12 large-12 row align-center"
-      style={{
-        margin: '0rem',
-        marginBottom: '5rem',
-        padding: '0vw 6vw',
-      }}></div>
+    <Styled.UserGroupsContainer rtl={RV_RTL}>
+      <Styled.UserGroupsContent>
+        <Breadcrumb items={breadcrumbs} />
+
+        <Styled.GroupsContainer>
+          <Styled.HeadingWrapper>{'گروه های کاربری'}</Styled.HeadingWrapper>
+          <Styled.InputContainer>
+            <Styled.Input placeholder={'فیلتر بر اساس نام گروه'} />
+            <SearchIcon size={30} />
+          </Styled.InputContainer>
+
+          <Styled.GroupsCardContainer>
+            <Styled.DashedBox></Styled.DashedBox>
+          </Styled.GroupsCardContainer>
+        </Styled.GroupsContainer>
+
+        <Styled.GroupsExcerpt></Styled.GroupsExcerpt>
+      </Styled.UserGroupsContent>
+    </Styled.UserGroupsContainer>
   );
 };
-
 export default UserGroups;
