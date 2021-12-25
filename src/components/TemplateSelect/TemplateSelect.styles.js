@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import {
   CV_BLACK,
+  CV_DISTANT,
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
@@ -147,4 +148,12 @@ export const CurrentTemplateName = styled(Heading)`
   color: ${TCV_VERYWARM} !important;
   margin-bottom: 1rem;
   padding-top: 0.5rem;
+`;
+
+export const Separator = styled.div`
+  width: 0.25rem;
+  height: 1.8rem;
+  border-radius: 1.5rem;
+  background-color: ${CV_DISTANT};
+  margin: 0 0.5rem;
 `;

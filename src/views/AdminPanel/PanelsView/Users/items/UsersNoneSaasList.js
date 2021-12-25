@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { checkAuthority, getGroupsAll, getUsers } from '../api';
 import { decodeBase64, getUUID } from 'helpers/helpers';
-import * as Styled from './ListStyled';
-import ORGUserCard from './cards/ORGUserCard';
+import * as Styled from './UsersListStyled';
+import ORGUserCard from './rows/ORGUserCard';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
 
-const MultiTenantList = ({ rtl, users, ...props }) => {
+const UsersNoneSaasList = ({ rtl, users, ...props }) => {
   const userCards = useMemo(
     () =>
       users?.map((x) => (
@@ -83,4 +84,4 @@ const listHeaderData = [
     centralized: true,
   },
 ];
-export default MultiTenantList;
+export default UsersNoneSaasList;

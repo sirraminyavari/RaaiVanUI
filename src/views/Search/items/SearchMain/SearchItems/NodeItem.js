@@ -25,7 +25,11 @@ const NodeItem = ({ item }) => {
     decodeBase64(Title),
     searchText,
     (match, i) => {
-      return <span style={{ color: TCV_DEFAULT }}>{match}</span>;
+      return (
+        <span key={i} style={{ color: TCV_DEFAULT }}>
+          {match}
+        </span>
+      );
     }
   );
 
@@ -33,7 +37,7 @@ const NodeItem = ({ item }) => {
     <Styled.SearchItemContainer>
       <Styled.SearchItemTypeWrapper>
         <OpenMailIcon size={33} color={CV_DISTANT} />
-        <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate>
+        {/* <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate> */}
       </Styled.SearchItemTypeWrapper>
       <Styled.SearchItemInfoWrapper>
         <Styled.SearchItemDescription>

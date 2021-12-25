@@ -4,11 +4,10 @@ import * as Styled from 'views/Search/SearchView.styles';
 import Toggle from 'components/Toggle/Toggle';
 import useWindow from 'hooks/useWindowContext';
 
-const Toggles = () => {
+const QuestionToggles = () => {
   const { RVDic } = useWindow();
   const { togglesValue, setTogglesValue } = useContext(searchContext);
-  const { SearchInN, Title, Abstract, Content, Keywords, FileContents, Node } =
-    RVDic || {};
+  const { SearchInN, Title, Description, Answers, Question } = RVDic || {};
 
   //! Provide toggle name.
   const getName = (name) => {
@@ -18,15 +17,13 @@ const Toggles = () => {
   //! Advanced search toggles.
   const toggleTypes = [
     { name: getName(Title), type: 'title' },
-    { name: getName(Abstract), type: 'excerpt' },
-    { name: getName(Content), type: 'content' },
-    { name: getName(Keywords), type: 'keywords' },
-    { name: getName(FileContents), type: 'file' },
+    { name: getName(Description), type: 'excerpt' },
+    { name: getName(Answers), type: 'content' },
   ];
 
   return (
     <Styled.TogglesContainer>
-      <Styled.TogglesTitle>{Node}</Styled.TogglesTitle>
+      <Styled.TogglesTitle>{Question}</Styled.TogglesTitle>
       {toggleTypes.map((toggle, index) => {
         return (
           <Toggle
@@ -47,4 +44,4 @@ const Toggles = () => {
   );
 };
 
-export default Toggles;
+export default QuestionToggles;

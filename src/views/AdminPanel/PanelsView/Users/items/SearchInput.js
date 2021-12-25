@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { debounceTime, Subject } from 'rxjs';
 import { tap, distinctUntilChanged } from 'rxjs/operators';
-
+import { createSubject } from 'helpers/helpers';
 const SearchInput = React.forwardRef(
   ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
     const [inputValue, setInputValue] = useState(defaultValue);
@@ -12,14 +12,13 @@ const SearchInput = React.forwardRef(
        * @description handle input change as stream of data
        * @type {Subject<T>}
        */
-      observableRef.current = new Subject();
+      observableRef.current = createSubject();
       const input$ = observableRef.current;
       input$
         .pipe(
           debounceTime(delayTime),
           distinctUntilChanged(),
           tap((x) => {
-            console.log(x);
             if (onChange) {
               onChange(x);
             }

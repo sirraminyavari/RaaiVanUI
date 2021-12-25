@@ -15,14 +15,14 @@ import UserGroupCheckbox from './UserGroupCheckbox';
 import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { GroupsContext } from '../TeamBasedList';
+import { GroupsContext } from '../UsersSaasList';
 
 const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
-  const { RV_RTL } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
 
   const [modalInfo, setModalInfo] = useState({
     show: false,
-    title: 'گروه های کاربر',
+    title: RVDic?.GroupsOfTheUser,
     middle: true,
     contentWidth: '34rem',
     titleClass: 'rv-default',
@@ -50,14 +50,6 @@ const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
     [groups]
   );
 
-  const onModalConfirm = () => {
-    setModalInfo({ ...modalInfo, show: false });
-  };
-
-  const onModalCancel = () => {
-    setModalInfo({ ...modalInfo, show: false });
-  };
-
   const handleCheckboxToggle = (e) => {
     loadAllGroups();
   };
@@ -71,120 +63,17 @@ const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
       <Modal
         {...modalInfo}
         onClose={() => setModalInfo({ ...modalInfo, show: false })}>
-        {IsAdmin && (
-          <ModalCustomTitleBar rtl={RV_RTL}>
-            <ModalTab
-              selected={!showGroups}
-              onClick={() => setShowGroup(false)}>
-              {'دسترسی‌ها'}
-            </ModalTab>
-            <ModalTab selected={showGroups} onClick={() => setShowGroup(true)}>
-              {'گروه‌های کاربر'}
-            </ModalTab>
-
-            <CustomTitleBarCloseButton
-              rtl={RV_RTL}
-              onClick={() => onModalCancel()}>
-              <CloseIcon size={16} />
-            </CustomTitleBarCloseButton>
-          </ModalCustomTitleBar>
-        )}
-
         {showGroups && (
           <ContentContainer>
             <ModalMessage rtl={RV_RTL}>
-              {` دسترسی‌های موردنظر برای ${FullName} را انتخاب نمایید: `}
+              {RVDic?.SelectN.replace(
+                `[n]`,
+                RVDic.GroupsOfTheUserN.replace(`[n]`, FullName)
+              )}
             </ModalMessage>
             <OptionLayout>{groupCheckbox}</OptionLayout>
           </ContentContainer>
         )}
-
-        {!showGroups && (
-          <ContentContainer>
-            <ModalMessage rtl={RV_RTL}>
-              {`دسترسی‌های موردنظر برای ${FullName} را انتخاب نمایید:`}
-            </ModalMessage>
-            <OptionLayout>
-              <UserAccessOption>
-                <UserAccessTitle>{'فرم ها'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'مدیریت مستندات'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'مدیریت سطوح محرمانگی'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'ورود اطلاعات از طریق XML'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'جریان‌های کاری'}</UserAccessTitle>
-                <UserAccessToggle value={false} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'جریان‌های کاری'}</UserAccessTitle>
-                <UserAccessToggle value={false} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>
-                  {'پیام کوتاه و پست الکترونیکی'}
-                </UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'نظرسنجی‌ها'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'مدیریت سیستم'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'سرورهای راه دور'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'فرآیندهای ارزیابی دانش'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-
-              <UserAccessOption>
-                <UserAccessTitle>{'مدیریت کاربران'}</UserAccessTitle>
-                <UserAccessToggle value={true} />
-              </UserAccessOption>
-            </OptionLayout>
-          </ContentContainer>
-        )}
-
-        {/*<ModelActionBar>*/}
-        {/*  <Button*/}
-        {/*    type="primary"*/}
-        {/*    style={buttonStyles}*/}
-        {/*    onClick={() => onModalConfirm()}>*/}
-        {/*    {'ذخیره'}*/}
-        {/*  </Button>*/}
-
-        {/*  <Button*/}
-        {/*    type="negative-o"*/}
-        {/*    style={buttonStyles}*/}
-        {/*    onClick={() => onModalCancel()}>*/}
-        {/*    {'بازگشت'}*/}
-        {/*  </Button>*/}
-        {/*</ModelActionBar>*/}
       </Modal>
     </Container>
   );
@@ -309,9 +198,5 @@ const CustomTitleBarCloseButton = styled.div`
     color: ${CV_WHITE};
   }
 `;
-const buttonStyles = {
-  height: '3rem',
-  width: '7.5rem',
-};
 
 export default UserGroupEdit;

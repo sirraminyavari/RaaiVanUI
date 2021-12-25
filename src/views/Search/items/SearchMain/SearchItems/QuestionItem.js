@@ -24,7 +24,7 @@ const QuestionItem = ({ item }) => {
     <Styled.SearchItemContainer>
       <Styled.SearchItemTypeWrapper>
         <QuestionIcon format="word" size={30} color={CV_DISTANT} />
-        <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate>
+        {/* <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate> */}
       </Styled.SearchItemTypeWrapper>
       <Styled.SearchItemInfoWrapper>
         <Styled.SearchItemDescription>

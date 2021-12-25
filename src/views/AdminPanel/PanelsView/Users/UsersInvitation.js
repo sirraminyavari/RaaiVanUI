@@ -10,7 +10,7 @@ import LinkIcon from 'components/Icons/LinkIcon/LinkIcon';
 import InvitationLink from './items/invitation/InvitaionLink';
 import SendInvitation from './items/invitation/SendInvitation';
 
-const UserInvitation = ({ onClose, ...props }) => {
+const UsersInvitation = ({ onClose, ...props }) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const [getLink, setGetLink] = useState(true);
 
@@ -22,12 +22,12 @@ const UserInvitation = ({ onClose, ...props }) => {
     },
     {
       id: 2,
-      title: 'مدیریت کاربران',
+      title: RVDic?.UsersManagement,
       linkTo: '',
     },
     {
       id: 3,
-      title: 'دعوت هم‌تیمی جدید',
+      title: RVDic?.InviteNewTeamMate,
       linkTo: '',
     },
   ];
@@ -35,9 +35,11 @@ const UserInvitation = ({ onClose, ...props }) => {
   return (
     <>
       <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
-      <Styled.HeadingWrapper>{'دعوت هم‌تیمی جدید'}</Styled.HeadingWrapper>
+      <Styled.HeadingWrapper>{RVDic.InviteNewTeamMate}</Styled.HeadingWrapper>
       <Styled.ReturnButtonWrapper rtl={RV_RTL}>
-        <Styled.ReturnButton onClick={onClose}>بازگشت</Styled.ReturnButton>
+        <Styled.ReturnButton onClick={onClose}>
+          {RVDic?.Return}
+        </Styled.ReturnButton>
       </Styled.ReturnButtonWrapper>
 
       <IconContainer>
@@ -99,4 +101,4 @@ const InvitationBox = styled.div`
   max-width: ${({ linkType }) => (linkType ? '34rem' : '60rem')};
   height: ${({ linkType }) => (linkType ? '12rem' : '27rem')};
 `;
-export default UserInvitation;
+export default UsersInvitation;

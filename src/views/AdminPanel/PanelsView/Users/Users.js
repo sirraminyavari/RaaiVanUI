@@ -1,14 +1,17 @@
 import * as Styled from './UsersStyle';
 import SearchUserInput from './items/SearchUserInput';
 import AddUserButton from './items/AddUserButton';
-import MultiTenantList from './items/MultiTenantList';
-import TeamBasedList from './items/TeamBasedList';
+import UsersNoneSaasList from './items/UsersNoneSaasList';
+import UsersSaasList from './items/UsersSaasList';
 import { useEffect, useState } from 'react';
 import useWindowContext from 'hooks/useWindowContext';
-import UserInvitation from './UserInvitation';
+import UsersInvitation from './UsersInvitation';
 import InvitedUserList from './items/InvitedUserList';
-import { getUsers, getUserInvitations } from './api';
-import CreateUser from './CreateUser';
+import UsersCreate from './UsersCreate';
+import { getUserInvitations, getUsers } from 'apiHelper/ApiHandlers/usersApi';
+import { catchError, forkJoin, from, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const Users = (props) => {
   const ApplicationID = props?.route?.ApplicationID;
@@ -18,14 +21,46 @@ const Users = (props) => {
   const [users, setUsers] = useState([]);
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [showInvitationForm, setShowInvitationForm] = useState(false);
+  const [dataIsFetching, setDataIsFetching] = useState(true);
 
+  /**
+   * @description reload user on search
+   */
   useEffect(() => {
-    loadUsers(searchText);
+    loadUsers(searchText)
+      .then((_users) => {
+        setUsers(_users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [searchText]);
 
   useEffect(() => {
-    loadUsers();
-    loadInvitedUsers();
+    /**
+     * @description handle multiple data fetch state
+     * @type {Subscription}
+     */
+    const subscription$ = forkJoin({
+      _users: from(getUsers()),
+      _invitedUsers: from(getUserInvitations(ApplicationID)),
+    })
+      .pipe(
+        tap(({ _users, _invitedUsers }) => {
+          setUsers(_users);
+          setInvitedUsers(_invitedUsers);
+          setDataIsFetching(false);
+        }),
+        catchError((e) => {
+          console.log(e);
+          return of(e);
+        })
+      )
+      .subscribe();
+
+    return () => {
+      subscription$.unsubscribe();
+    };
   }, []);
 
   /**
@@ -33,27 +68,9 @@ const Users = (props) => {
    * @param keyword
    */
   const loadUsers = (keyword = '') => {
-    getUsers(keyword)
-      .then((res) => {
-        setUsers(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  /**
-   * @description api call function to load invited users
-   */
-  const loadInvitedUsers = () => {
-    getUserInvitations(ApplicationID)
-      .then((res) => {
-        console.log(res);
-        setInvitedUsers(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return SAASBasedMultiTenancy
+      ? getUsers(keyword, true)
+      : getUsers(keyword, null);
   };
 
   /**
@@ -68,13 +85,13 @@ const Users = (props) => {
     },
     {
       id: 2,
-      title: 'مدیریت کاربران',
-      linkTo: '',
+      title: RVDic?.UserManagement,
+      linkTo: 'users',
     },
     {
       id: 3,
-      title: 'اعضای تیم',
-      linkTo: '',
+      title: SAASBasedMultiTenancy ? RVDic?.TeamMembers : RVDic?.Users,
+      linkTo: 'users',
     },
   ];
 
@@ -84,56 +101,64 @@ const Users = (props) => {
         {!showInvitationForm && (
           <Styled.ContentWrapper>
             <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
-            <Styled.HeadingWrapper>{'اعضای تیم'}</Styled.HeadingWrapper>
+            <Styled.HeadingWrapper>
+              {SAASBasedMultiTenancy ? RVDic?.TeamMembers : RVDic?.Users}
+            </Styled.HeadingWrapper>
 
             <Styled.TopBar>
               <SearchUserInput
                 defaultValue={searchText}
-                placeholder={'فیلتر براساس نام کاربر'}
+                placeholder={RVDic?.Search}
                 onChange={(e) => setSearchText(e)}
                 delayTime={1000}
               />
 
               {SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {'دعوت هم تیمی جدید'}
+                  {RVDic?.InviteNewTeamMate}
                 </AddUserButton>
               )}
               {!SAASBasedMultiTenancy && (
                 <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {'ایجاد کاربر جدید'}
+                  {RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
                 </AddUserButton>
               )}
             </Styled.TopBar>
 
-            {!SAASBasedMultiTenancy ? (
-              <MultiTenantList
-                searchText={searchText}
-                rtl={RV_RTL}
-                users={users}
-              />
-            ) : (
-              <div>
-                <TeamBasedList
-                  searchText={searchText}
-                  rtl={RV_RTL}
-                  users={users}
-                />
+            {!dataIsFetching ? (
+              <>
+                {!SAASBasedMultiTenancy ? (
+                  <UsersNoneSaasList
+                    searchText={searchText}
+                    rtl={RV_RTL}
+                    users={users}
+                  />
+                ) : (
+                  <div>
+                    <UsersSaasList
+                      searchText={searchText}
+                      rtl={RV_RTL}
+                      users={users}
+                    />
 
-                {invitedUsers.length !== 0 && (
-                  <InvitedUserList users={invitedUsers} />
+                    {invitedUsers.length !== 0 && (
+                      <InvitedUserList users={invitedUsers} />
+                    )}
+                  </div>
                 )}
-              </div>
+              </>
+            ) : (
+              <LogoLoader />
             )}
           </Styled.ContentWrapper>
         )}
 
         {showInvitationForm && SAASBasedMultiTenancy && (
-          <UserInvitation onClose={() => setShowInvitationForm(false)} />
+          <UsersInvitation onClose={() => setShowInvitationForm(false)} />
         )}
 
         {showInvitationForm && !SAASBasedMultiTenancy && (
-          <CreateUser onClose={() => setShowInvitationForm(false)} />
+          <UsersCreate onClose={() => setShowInvitationForm(false)} />
         )}
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>

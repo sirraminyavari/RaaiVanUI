@@ -3,10 +3,12 @@ import Modal from 'components/Modal/Modal';
 import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
+import useWindowContext from 'hooks/useWindowContext';
 
 const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
+  const { RVDic } = useWindowContext();
   const [modalInfo, setModalInfo] = useState({
-    title: 'حذف کاربر',
+    title: RVDic?.RemoveN.replace(`[n]`, RVDic?.User),
     contentWidth: '30%',
     middle: true,
     show: false,
@@ -35,27 +37,25 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
         onClose={() => setModalInfo({ ...modalInfo, show: false })}>
         <ProfileWrapper>{render}</ProfileWrapper>
 
-        <ModalMessage>{'آیا از حذف کاربر اطمینان دارید؟'}</ModalMessage>
+        <ModalMessage>
+          {RVDic?.Confirms.DoYouWantToRemoveN.replace(`[n]`, RVDic?.User)}
+        </ModalMessage>
 
-        <ModalHint>
-          {
-            'در صورت حذف کاربر از تیم، تمام آیتم‌های ایجاد شده توسط وی قابل دسترسی خواهد بود و در صورت دعوت مجدد او به تیم، میتواند آنها را ویرایش کند.'
-          }
-        </ModalHint>
+        <ModalHint> {RVDic?._HelpRemoveUser}</ModalHint>
 
         <ModelActionBar>
           <Button
             type="negative"
             style={buttonStyles}
             onClick={() => onModalConfirm()}>
-            {'حدف'}
+            {RVDic?.Remove}
           </Button>
 
           <Button
             type="primary-o"
             style={buttonStyles}
             onClick={() => onModalCancel()}>
-            {'بازگشت'}
+            {RVDic?.Return}
           </Button>
         </ModelActionBar>
       </Modal>
