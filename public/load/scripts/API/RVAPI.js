@@ -204,6 +204,19 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    GetApplicationsMonitoring: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/GetApplicationsMonitoring?timeStamp=" + new Date().getTime();
+        var queryString = (params.MembersCount ? "&MembersCount=" + params.MembersCount : "") +
+            (params.LastActivityTime ? "&LastActivityTime=" + params.LastActivityTime : "") + 
+            (params.LoginsCountSinceNDaysAgo ? "&LoginsCountSinceNDaysAgo=" + params.LoginsCountSinceNDaysAgo : "") +
+            (params.TotalUsersCount ? "&TotalUsersCount=" + params.TotalUsersCount : "") +
+            (params.Count ? "&Count=" + params.Count : "") +
+            (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
     SelectApplication: function (params) {
         params = params || {};
 

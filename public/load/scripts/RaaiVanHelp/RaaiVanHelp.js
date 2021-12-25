@@ -11,7 +11,8 @@
         };
 
         this.Objects = {
-            Permissions: {}
+            Permissions: {},
+            HasSomePermissions: false
         };
 
         this.Options = {
@@ -32,20 +33,18 @@
     RaaiVanHelp.prototype = {
         _preinit: function () {
             var that = this;
-
+            
             if (that.Options.Index) return that._initialize();
 
-            var permissions = [
-                "Settings", "UsersManagement", "ManageConfidentialityLevels", "UserGroupsManagement",
-                "ManageOntology", "KnowledgeAdmin", "ContentsManagement", "ManageForms", "ManagePolls",
-                "ManageWorkflow", "ManageQA", "DataImport", "SMSEMailNotifier", "ManagementSystem", "Reports"
-            ];
+            var permissions = (RVGlobal.AccessRoles || []).map(r => r.Name);
 
             PrivacyAPI.CheckAuthority({
                 Permissions: permissions.join("|"), ParseResults: true,
                 ResponseHandler: function (result) {
-                    for (var p in (result || {}))
-                        that.Objects.Permissions[p.toLowerCase()] = result[p];
+                    permissions.forEach(p => that.Objects.Permissions[p.toLowerCase()] = !!result[p]);
+
+                    that.Objects.HasSomePermissions = Object.keys(that.Objects.Permissions)
+                        .some(key => !!that.Objects.Permissions[key]);
 
                     that._initialize();
                 }
@@ -87,13 +86,16 @@
             ], that.Container);
 
             that.Interface.HelpContent = elems["content"];
-
+            
             new TreeView(elems["index"], {
                 Items: index,
                 Item: function (itm) {
+                    var hasPermission = !itm.Permission ||
+                        (itm.Permission.toLowerCase() == "any" && that.Objects.HasSomePermissions) ||
+                        that.Objects.Permissions[itm.Permission.toLowerCase()];
+
                     if (itm.SystemAdmin && !(window.RVGlobal || {}).IsSystemAdmin) return false;
-                    else if (!that.Options.IgnorePermissions && itm.Permission &&
-                        !that.Objects.Permissions[itm.Permission.toLowerCase()]) return false;
+                    else if (!that.Options.IgnorePermissions && !hasPermission) return false;
                     else if (itm.ModuleIdentifier && !((window.RVGlobal || {}).Modules || {})[String(itm.ModuleIdentifier).toLowerCase()]) return false;
 
                     var titleArr = that._title(itm.Name);

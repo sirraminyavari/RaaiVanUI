@@ -48,23 +48,26 @@
 
             var _inputClass = that.Options.NoButtons ? "small-12 medium-12 large-12" : "small-12 medium-6 large-6";
 
-            var elems = GlobalUtilities.create_nested_elements([
-                (that.Options.UseInlineInput ? null : {
-                    Type: "div", Class: "small-12 medium-12 large-12 row", Style: "flex-basis:0 !important; margin:0rem;",
-                    Childs: [
-                        { Type: "div", Class: _inputClass, Name: "input" },
-                        {
-                            Type: "div", Class: "small-12 medium-6 large-6", Name: "buttons",
-                            Style: that.Options.NoButtons ? "display:none;" : ""
-                        }
-                    ]
-                }),
-                {
-                    Type: "div", Name: "items",
-                    Class: "rv-trim-vertical-margins " + that.Options.CssClass.ItemsContainer, 
-                    Style: that.Options.UseInlineInput ? "" : "margin-top:0.5rem;"
-                }
-            ], that.ContainerDiv);
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Style: "flex: 1 1 auto;",
+                Childs: [
+                    (that.Options.UseInlineInput ? null : {
+                        Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem; flex-basis:0 !important;",
+                        Childs: [
+                            { Type: "div", Class: _inputClass, Name: "input" },
+                            {
+                                Type: "div", Class: "small-12 medium-6 large-6", Name: "buttons",
+                                Style: that.Options.NoButtons ? "display:none;" : ""
+                            }
+                        ]
+                    }),
+                    {
+                        Type: "div", Name: "items",
+                        Class: "rv-trim-vertical-margins " + that.Options.CssClass.ItemsContainer,
+                        Style: that.Options.UseInlineInput ? "" : "margin-top:0.5rem;"
+                    }
+                ]
+            }], that.ContainerDiv);
 
             that.Interface.ItemsArea = elems["items"];
             that.Interface.InputDiv = elems["input"];

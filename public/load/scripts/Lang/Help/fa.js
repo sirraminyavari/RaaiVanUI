@@ -3,7 +3,7 @@
         HLP: {
             systemsettings: {
                 _title: "مدیریت سامانه",
-                _permission: "ManagementSystem",
+                _permission: "Any",
                 settings: {
                     _title: "تنظیمات",
                     _systemadmin: true

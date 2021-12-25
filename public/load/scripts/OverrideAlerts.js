@@ -33,7 +33,7 @@
         }
     }
 
-    GlobalUtilities.load_files([{ Root: "jQuery/jAlerts/", Childs: ["jquery.alerts.css", "jquery.alerts.js"]}], {
+    GlobalUtilities.load_files([{ Root: "jQuery/jAlerts/", Childs: ["jquery.alerts.css", "jquery.alerts.min.js"]}], {
         LoadSequential: false, OnLoad: init
     });
 })();

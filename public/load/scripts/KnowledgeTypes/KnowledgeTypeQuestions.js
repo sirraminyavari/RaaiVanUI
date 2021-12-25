@@ -543,14 +543,9 @@
             var optionsCount = (question.Options || []).length;
 
             var set_button_title = function () {
-                var tt = RVDic.Options;
-
-                if (optionsCount > 0) {
-                    tt += " (<span style='font-weight:bold;'>" +
-                        GlobalUtilities.convert_numbers_to_persian(String(optionsCount)) + "</span>)";
-                }
-
-                GlobalUtilities.set_text(elems["btn"], tt);
+                //XSS Check: OK
+                elems["btn"].innerHTML = RVDic.Options + (!optionsCount ? "" :
+                    " (<span style='font-weight:bold;'>" + GlobalUtilities.convert_numbers_to_persian(String(optionsCount)) + "</span>)");
             };
 
             set_button_title();

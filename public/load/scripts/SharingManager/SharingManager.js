@@ -780,7 +780,7 @@
                         Description: Base64.encode(text), ParseResults: true,
                         ResponseHandler: function (result) {
                             if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-                            else itemObject.Description = text;
+                            else itemObject.Description = Base64.decode((result || {}).Description) || text;
 
                             done(!result.ErrorText);
                         }

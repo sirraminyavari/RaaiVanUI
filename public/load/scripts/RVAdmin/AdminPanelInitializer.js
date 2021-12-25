@@ -112,7 +112,7 @@
                     Title: RVDic.PRVC[r.Name] || RVDic[r.Name] || r.Name
                 }))
             }];
-            console.log(sections);
+            
             GlobalUtilities.loading(elems["container"]);
             var showed = GlobalUtilities.show(elems["container"]);
 

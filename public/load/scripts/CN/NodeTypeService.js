@@ -79,7 +79,7 @@
                                             if (GlobalUtilities.get_type(_function) == "function") return _function.call(this, e, done);
 
                                             e.preventDefault();
-
+                                            
                                             CNAPI[_function]({
                                                 NodeTypeID: that.Objects.NodeTypeID, Editable: !this.Checked,
                                                 Enable: !this.Checked, Value: !this.Checked, IsDocument: !this.Checked,

@@ -1,3 +1,12 @@
+/*
+ * JalaliJSCalendar - Jalali Extension for Date Object 
+ * Copyright (c) 2008 Ali Farhadi (http://farhadi.ir/)
+ * Released under the terms of the GNU General Public License.
+ * See the GPL for details (http://www.gnu.org/licenses/gpl.html).
+ * 
+ * Based on code from http://farsiweb.info
+ */
+
 JalaliDate = {
 	g_days_in_month: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 	j_days_in_month: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]

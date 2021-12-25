@@ -668,7 +668,7 @@
 
                 if (__Editing === true) {
                     var newTitle = GlobalUtilities.trim(titleInput.value);
-                    if (newTitle == "") return;
+                    if (!newTitle) return;
 
                     GlobalUtilities.block(container);
 
@@ -678,7 +678,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                title = newTitle;
+                                title = Base64.decode(result.Title) || newTitle;
                                 __Editing = false;
                                 set_things();
                             }
@@ -787,7 +787,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                description = newDescription;
+                                description = Base64.decode(result.Description) || newDescription;
                                 __Editing = false;
                                 set_things();
                             }
@@ -905,7 +905,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                bodyText = newBodyText;
+                                bodyText = Base64.decode((result.Answer || {}).BodyText) || newBodyText;
                                 __Editing = false;
                                 set_things();
                             }
@@ -1288,7 +1288,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                bodyText = newBodyText;
+                                bodyText = Base64.decode(result.BodyText) || newBodyText;
                                 __Editing = false;
                                 set_things();
                             }

@@ -22,7 +22,16 @@
             var guidItems = (elements[i].GuidItems || []).map(g => ({ ID: g.ID, Name: Base64.encode(g.Name) }));
 
             var files = (elements[i].Files || []).map(f => {
-                if (GlobalUtilities.get_type(f) == "json") return JSON.stringify(f);
+                if (GlobalUtilities.get_type(f) == "json") {
+                    return JSON.stringify({
+                        FileID: f.FileID,
+                        FileName: f.FileName,
+                        OwnerID: f.OwnerID,
+                        Extension: f.Extension,
+                        MIME: f.MIME,
+                        Size: f.Size
+                    });
+                }
                 else if (f.toString) return f.toString();
                 else return null;
             }).filter(f => !!f);
