@@ -4,8 +4,8 @@ import { debounceTime } from 'rxjs';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
 
 const RxInput = React.forwardRef(
-  ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
-    const [inputValue, setInputValue] = useState(defaultValue);
+  ({ value, onChange, delayTime = 0, ...props }, forwardedRef) => {
+    const [inputValue, setInputValue] = useState(value);
     const observableRef = useRef(null);
 
     useEffect(() => {

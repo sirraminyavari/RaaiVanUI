@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FLEX_RCB, FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
 import Heading from 'components/Heading/Heading';
 import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import RxInput from '../../../../components/Inputs/RxInput';
+import RxInput from 'components/Inputs/RxInput';
 
 export const UserGroupsContainer = styled.div`
   padding: 1rem;
@@ -15,7 +15,8 @@ export const UserGroupsContent = styled.div`
 `;
 
 export const GroupsContainer = styled.div`
-  flex-grow: 2.2;
+  flex-grow: 1;
+  //width: fit-content;
 `;
 
 export const GroupsExcerpt = styled.div`
@@ -56,15 +57,46 @@ export const GroupsCardContainer = styled.div`
 `;
 
 export const DashedBox = styled.div`
-  width: 23.5rem;
+  padding: 1.5rem;
+  width: 100%;
   height: 12rem;
-  margin: 10px auto;
   border: 1px ${CV_DISTANT} dashed;
   border-radius: 0.8rem;
   transition: all 0.15s ease-out;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
 
   &:hover {
     border: 1px ${TCV_DEFAULT} solid;
+    color: ${TCV_DEFAULT};
   }
+`;
+
+export const GroupItem = styled.div`
+  padding: 1.5rem;
+  width: 100%;
+  height: 12rem;
+  border: 1px ${CV_DISTANT} solid;
+  border-radius: 0.8rem;
+  position: relative;
+`;
+
+export const GroupItemTitle = styled.div`
+  font-weight: 500;
+  font-size: 1.2rem;
+`;
+
+export const GroupItemActionBar = styled.div`
+  position: absolute;
+  bottom: 1.5rem;
+  left: 0;
+  padding: 0 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

@@ -1,4 +1,4 @@
-import { API_Provider, decodeBase64 } from 'helpers/helpers';
+import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { CN_API } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -40,4 +40,19 @@ export const addMember = (NodeID, UserID) => {
 export const removeMember = (NodeID, UserID) => {
   const removeMemberAPI = API_Provider(CN_API, 'RemoveMember');
   return apiCallWrapper(removeMemberAPI, { NodeID, UserID });
+};
+
+export const addNode = (Name, NodeTypeID) => {
+  const addNodeAPI = API_Provider(CN_API, 'AddNode');
+  return apiCallWrapper(addNodeAPI, {
+    NodeTypeID,
+    Name: encodeBase64(Name),
+  });
+};
+
+export const removeNode = (NodeID) => {
+  const removeNodeAPI = API_Provider(CN_API, 'RemoveNode');
+  return apiCallWrapper(removeNodeAPI, {
+    NodeID,
+  });
 };
