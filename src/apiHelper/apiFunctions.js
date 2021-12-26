@@ -1384,12 +1384,12 @@ export const GetApplicationsMonitoring = ({
   membersCount = true,
   lastActivityTime = true,
   loginsCountSinceNDaysAgo = 30,
-  count = 30,
+  count = 20,
   lowerBoundary = 1,
 }) => {
   const GetApplicationsMonitoringAPI = API_Provider(
     RV_API,
-    GET_APPLICATION_MONITORING
+    'GetApplicationsMonitoring'
   );
 
   return new Promise((resolve, reject) => {
