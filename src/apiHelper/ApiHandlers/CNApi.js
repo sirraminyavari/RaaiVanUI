@@ -18,18 +18,20 @@ export const getGroupsAll = () => {
           )
         );
     })
-    .then((res) =>
-      res.map((x) => ({
+    .then((res) => {
+      return res.map((x) => ({
         ...x,
         Name: decodeBase64(x?.Name),
         NodeType: decodeBase64(x?.NodeType),
         Members:
           x?.Members?.map((member) => ({
             ...member,
-            FullName: decodeBase64(member.FullName),
+            FullName: decodeBase64(member?.FullName),
+            FirstName: decodeBase64(member?.FirstName),
+            LastName: decodeBase64(member?.LastName),
           })) || [],
-      }))
-    );
+      }));
+    });
 };
 
 export const addMember = (NodeID, UserID) => {
@@ -46,6 +48,14 @@ export const addNode = (Name, NodeTypeID) => {
   const addNodeAPI = API_Provider(CN_API, 'AddNode');
   return apiCallWrapper(addNodeAPI, {
     NodeTypeID,
+    Name: encodeBase64(Name),
+  });
+};
+
+export const modifyNodeName = (Name, NodeID) => {
+  const modifyNodeNameAPI = API_Provider(CN_API, 'ModifyNodeName');
+  return apiCallWrapper(modifyNodeNameAPI, {
+    NodeID,
     Name: encodeBase64(Name),
   });
 };
