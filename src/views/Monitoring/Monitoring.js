@@ -13,8 +13,14 @@ import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
 import { COLUMNS } from './columns';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import * as Styled from './monitoring.styles';
+import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
 
 const MonitoringView = ({ ...props }) => {
+  useEffect(() => {
+    GetApplicationsMonitoring({})
+      .then((response) => console.log('ress', response))
+      .catch((error) => console.log(error));
+  }, []);
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
     { id: 1, title: 'پنل مدیریت', linkTo: USER_PATH },
@@ -40,7 +46,6 @@ const MonitoringView = ({ ...props }) => {
     { id: 1, name: 'تیم محصول کلیک مایند' },
     { id: 2, date: '1400/12/12' },
   ];
-  useEffect(() => {}, []);
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />

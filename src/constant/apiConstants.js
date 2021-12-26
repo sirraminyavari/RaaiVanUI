@@ -270,6 +270,13 @@ export const CHECK_ROUTE = 'CheckRoute';
 export const GET_APPLICATIONS = 'GetApplications';
 
 /**
+ * @description 'GetApplicationsMonitoring'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const GET_APPLICATION_MONITORING = 'GetApplicationsMonitoring';
+
+/**
  * @description 'RemoveApplication'
  * @mode API function
  * @class 'RVAPI'
@@ -427,13 +434,6 @@ export const GET_CHILD_NODES = 'GetChildNodes';
  * @class 'CNAPI'
  */
 export const GET_TEMPLATES = 'GetTemplates';
-
-/**
- * @description 'GetApplicationsMonitoring'
- * @mode API function
- * @class 'RVAPI'
- */
-export const GET_APPLICATION_MONITORING = 'GetApplicationsMonitoring';
 
 /**
  * @description 'GetTemplatesJSON'
