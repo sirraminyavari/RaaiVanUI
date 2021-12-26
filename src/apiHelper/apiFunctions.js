@@ -1389,7 +1389,8 @@ export const GetApplicationsMonitoring = ({
 }) => {
   const GetApplicationsMonitoringAPI = API_Provider(
     RV_API,
-    'GetApplicationsMonitoring'
+    GET_APPLICATION_MONITORING
+    // 'GetApplicationsMonitoring'
   );
 
   return new Promise((resolve, reject) => {
