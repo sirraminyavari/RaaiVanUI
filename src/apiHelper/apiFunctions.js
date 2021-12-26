@@ -54,6 +54,7 @@ import {
   SAVE_APPLICATION_INFO,
   SEARCH_API,
   SEARCH,
+  GET_APPLICATION_MONITORING,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1354,6 +1355,59 @@ export const search = ({
         },
         (err) => {
           reject(err);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {Boolean} totalUsersCount -
+ * @property {Boolean} membersCount -
+ * @property {Boolean} lastActivityTime
+ * @property {Number} loginsCountSinceNDaysAgo
+ * @property {Number} count
+ * @property {Number} lowerBoundary
+ */
+
+/**
+ * @description Get team list.
+ * @param {ParamsType}
+ * @returns {Promise}
+ */
+export const GetApplicationsMonitoring = ({
+  totalUsersCount = true,
+  membersCount = true,
+  lastActivityTime = true,
+  loginsCountSinceNDaysAgo = 30,
+  count = 30,
+  lowerBoundary = 1,
+}) => {
+  const GetApplicationsMonitoringAPI = API_Provider(
+    RV_API,
+    GET_APPLICATION_MONITORING
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      GetApplicationsMonitoringAPI.fetch(
+        {
+          TotalUsersCount: totalUsersCount,
+          TembersCount: membersCount,
+          LastActivityTime: lastActivityTime,
+          LoginsCountSinceNDaysAgo: loginsCountSinceNDaysAgo,
+          Count: count,
+          LowerBoundary: lowerBoundary,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
         }
       );
     } catch (err) {

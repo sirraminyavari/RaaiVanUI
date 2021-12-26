@@ -387,6 +387,13 @@ export const GET_CHILD_NODES = 'GetChildNodes';
 export const GET_TEMPLATES = 'GetTemplates';
 
 /**
+ * @description 'GetApplicationsMonitoring'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const GET_APPLICATION_MONITORING = 'GetApplicationsMonitoring';
+
+/**
  * @description 'GetTemplatesJSON'
  * @mode API function
  * @class 'CNAPI'
