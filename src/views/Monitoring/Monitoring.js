@@ -1,7 +1,7 @@
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { useMemo, useContext } from 'react';
+import { useMemo, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
@@ -40,7 +40,7 @@ const MonitoringView = ({ ...props }) => {
     { id: 1, name: 'تیم محصول کلیک مایند' },
     { id: 2, date: '1400/12/12' },
   ];
-  // const columns = ['col1', 'col2'];
+  useEffect(() => {}, []);
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />
