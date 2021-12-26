@@ -1,18 +1,21 @@
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import styled from 'styled-components';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
+import { searchContext } from 'views/Search/SearchView';
 import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
 import { COLUMNS } from './columns';
+import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import * as Styled from './monitoring.styles';
 
 const MonitoringView = ({ ...props }) => {
+  const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
     { id: 1, title: 'پنل مدیریت', linkTo: USER_PATH },
     {
@@ -110,22 +113,32 @@ const MonitoringView = ({ ...props }) => {
           label="search"
           style={{ maxWidth: '480px' }}
         />
-        <Button
-          className="rv-default"
-          style={{
-            // color: '#2B7BE4',
-            border: '1px solid var(--rv-color)',
-            padding: '.5rem',
-            borderRadius: '.5rem',
-            display: 'flex',
-            alignItems: 'center',
-          }}>
-          {' '}
-          <RfreshIcon />
-          <span style={{ fontSize: '.7rem', paddingRight: '.2rem' }}>
-            به روز رسانی لیست{' '}
-          </span>
-        </Button>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Styled.ExcelContainer>
+            <OfficeIcons
+              type="excel"
+              size={20}
+              className="search-export-excel"
+              onClick={getExcelFile}
+            />
+          </Styled.ExcelContainer>
+          <Button
+            className="rv-default"
+            style={{
+              // color: '#2B7BE4',
+              border: '1px solid var(--rv-color)',
+              padding: '.5rem',
+              borderRadius: '.5rem',
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            {' '}
+            <RfreshIcon size={16} />
+            <span style={{ fontSize: '.7rem', paddingRight: '.2rem' }}>
+              به روز رسانی لیست{' '}
+            </span>
+          </Button>
+        </div>
       </div>
       <MyTable columns={columns} data={datas} />{' '}
     </Styled.Container>
