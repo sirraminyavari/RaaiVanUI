@@ -1,7 +1,8 @@
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { useMemo, useContext, useEffect } from 'react';
+import { useMemo, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
@@ -13,14 +14,26 @@ import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
 import { COLUMNS } from './columns';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import * as Styled from './monitoring.styles';
-import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
+import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
+// import { getApplications } from 'store/actions/applications/ApplicationsAction';
+
+// import { getApplications } from 'store/actions/applications/ApplicationsAction';
+
+// import { isEmpty, isUndefined } from 'underscore';
 
 const MonitoringView = ({ ...props }) => {
+  const dispatch = useDispatch();
+  const monitoring = useSelector((state) => state.monitoring);
+  console.log(monitoring);
+  const [getApplicationsMonitoringData, setGetAppMonitoringData] = useState([]);
+  // const [getApplicationsMonitoring, setGetAppMonitoring] = useState([]);
+
   useEffect(() => {
-    GetApplicationsMonitoring({})
-      .then((response) => console.log('ress', response))
-      .catch((error) => console.log(error));
+    dispatch(getApplicationsMonitoring()).then((res) => {
+      console.log(res);
+    });
   }, []);
+
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
     { id: 1, title: 'پنل مدیریت', linkTo: USER_PATH },
@@ -42,10 +55,7 @@ const MonitoringView = ({ ...props }) => {
   `;
   const columns = useMemo(() => COLUMNS, []);
   const datas = useMemo(() => MOCK_DATA, []);
-  const data = [
-    { id: 1, name: 'تیم محصول کلیک مایند' },
-    { id: 2, date: '1400/12/12' },
-  ];
+
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />
