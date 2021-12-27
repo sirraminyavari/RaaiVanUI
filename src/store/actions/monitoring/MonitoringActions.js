@@ -1,11 +1,8 @@
-import {
-  GET_Apps_Monitoring,
-  GET_App_Monitoring,
-} from '../monitoring/GetApplicationMonitoring.slice';
-// import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
 import { MonitoringSlice } from 'store/reducers/monitoringReducer';
+// import { MonitoringSlice } from 'store/reducers/monitoringReducer';
 import { RV_API, GET_APPLICATION_MONITORING } from 'constant/apiConstants';
 import { API_Provider, setRVGlobal } from 'helpers/helpers';
+// import { setMonitoring, setFetchingApps } from 'store/reducers/monitoringReducer';
 const { setMonitoring, setFetchingApps } = MonitoringSlice.actions;
 
 /**
@@ -29,17 +26,14 @@ export const getApplicationsMonitoring = () => async (dispatch) => {
     },
     (response) => {
       console.log(response);
-      if (response.status === 200) {
-        dispatch(setMonitoring(response));
-        // done({ status: 'success', data: result.data });
+      console.log(response.Applications);
+      //   if (response.status === 200) {
+      if (response?.Applications) {
+        const archives = response?.Applications || [];
+        if (!!archives.length) {
+          dispatch(setMonitoring(archives));
+        }
       }
     }
   );
-  // GetApplicationsMonitoring(data).then((result) => {
-  //     console.log(result);
-  //     if (result.status === 200) {
-  //         dispatch(GET_Apps_Monitoring(result));
-  //         // done({ status: 'success', data: result });
-  //       }
-  // })
 };
