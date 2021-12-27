@@ -23,7 +23,7 @@ import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringAc
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
-  const monitoring = useSelector((state) => state.monitoring);
+  const monitoring = useSelector((state) => console.log(state));
   console.log(monitoring);
   const [getApplicationsMonitoringData, setGetAppMonitoringData] = useState([]);
   // const [getApplicationsMonitoring, setGetAppMonitoring] = useState([]);

@@ -1,19 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  totalUsersCount: true,
+  membersCount: true,
+  lastActivityTime: true,
+  loginsCountSinceNDaysAgo: 30,
+  count: 20,
+  lowerBoundary: 1,
+  monitoring: {},
+};
 //! Monitoring Slice
 export const MonitoringSlice = createSlice({
   name: 'monitoring',
-
-  initialState: {
-    totalUsersCount: true,
-    membersCount: true,
-    lastActivityTime: true,
-    loginsCountSinceNDaysAgo: 30,
-    count: 20,
-    lowerBoundary: 1,
-    monitoring: [],
-  },
-
+  initialState,
   reducers: {
     settotalUsersCount: (state, action) => {
       state.totalUsersCount = action.payload;
@@ -41,5 +40,5 @@ export const MonitoringSlice = createSlice({
     },
   },
 });
-
+// export const { setMonitoring, setFetchingApps } = MonitoringSlice.actions;
 export default MonitoringSlice.reducer;
