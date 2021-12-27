@@ -43,5 +43,5 @@ const RxInput = React.forwardRef(
     );
   }
 );
-RxInput.displayName = 'SearchInput';
+RxInput.displayName = 'RxInput';
 export default RxInput;

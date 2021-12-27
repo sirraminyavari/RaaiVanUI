@@ -1,7 +1,18 @@
 import styled from 'styled-components';
-import { FLEX_RCB, FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
+import {
+  FLEX_RCB,
+  FLEX_RCS,
+  FLEX_RSB,
+  ViewContentCard,
+} from 'constant/StyledCommonCss';
 import Heading from 'components/Heading/Heading';
-import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_GRAY_DARK,
+  CV_WHITE,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
 import RxInput from 'components/Inputs/RxInput';
 
 export const UserGroupsContainer = styled.div`
@@ -16,7 +27,6 @@ export const UserGroupsContent = styled.div`
 
 export const GroupsContainer = styled.div`
   flex-grow: 1.2;
-  //width: fit-content;
 `;
 
 export const GroupsExcerpt = styled.div`
@@ -58,6 +68,10 @@ export const GroupsCardContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 1.5rem;
   grid-row-gap: 1.5rem;
+
+  @media screen and (max-width: 1240px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const DashedBox = styled.div`
@@ -96,6 +110,7 @@ export const GroupItem = styled.div`
 export const GroupItemTitle = styled.div`
   font-weight: 500;
   font-size: 1.2rem;
+  color: ${CV_GRAY_DARK};
 `;
 
 export const GroupItemActionBar = styled.div`
@@ -112,4 +127,32 @@ export const GroupItemActionBar = styled.div`
 export const ExcerptImage = styled.img`
   max-width: 23rem;
   width: 100%;
+`;
+
+export const GroupDescriptionTitle = styled.div`
+  text-align: center;
+  margin: 4.5rem 0 1.5rem 0;
+  color: ${CV_GRAY_DARK};
+  font-size: 1rem;
+  font-weight: 500;
+`;
+
+export const GroupDescription = styled.div`
+  max-width: 18rem;
+  text-align: center;
+  color: ${CV_GRAY};
+`;
+
+export const GroupMemberContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  height: 2.6rem;
+`;
+
+export const GroupMemberItem = styled.img`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 100%;
+  border: 0.16rem solid ${CV_WHITE};
+  ${(props) => (props?.rtl ? `margin-right: -0.9rem` : `margin-left: -0.9rem`)}
 `;

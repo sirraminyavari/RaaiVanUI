@@ -3,17 +3,31 @@ import useWindowContext from 'hooks/useWindowContext';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { useEffect, useMemo, useState } from 'react';
-import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import {
+  addNode,
+  getGroupsAll,
+  modifyNodeName,
+  removeNode,
+  saveMembers,
+} from 'apiHelper/ApiHandlers/CNApi';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
+  GroupDescriptionTitle,
   GroupItem,
   GroupItemActionBar,
   GroupItemTitle,
+  GroupMemberItem,
 } from './UserGroupsStyles';
 import UserGroupMembers from './items/UserGroupMembers';
 import UserGroupUpsertModal from './items/UserGroupUpsertModal';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import groupImg from 'assets/images/groups.png';
+import { catchError, first, from, of, switchMap, tap } from 'rxjs';
+
+const modifyNodeName$ = (name, id) => from(modifyNodeName(name, id));
+const saveMember$ = (id, userIds) => from(saveMembers(id, userIds));
+const addNode$ = (name, nodeTypeId) => from(addNode(name, nodeTypeId));
+const removeNode$ = (nodeId) => from(removeNode(nodeId));
 
 const UserGroups = () => {
   const { RVDic, RV_RTL } = useWindowContext();
@@ -42,17 +56,70 @@ const UserGroups = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleModalClose = (state, users) => {
-    switch (state) {
-      case 'delete':
-        break;
-      case 'confirm':
-        break;
-      default:
-      // close
+  const handleModalConfirm = (name, users, nodeId) => {
+    const userIds = users.map((x) => x?.UserID);
+    if (nodeId) {
+      modifyNodeName$(name, nodeId)
+        .pipe(
+          first(),
+          switchMap(() =>
+            saveMember$(nodeId, userIds).pipe(
+              switchMap(() =>
+                from(getGroupsAll()).pipe(
+                  tap((x) => {
+                    setGroups(x);
+                  })
+                )
+              )
+            )
+          ),
+          catchError((err) => {
+            console.log(err);
+            return of(err);
+          })
+        )
+        .subscribe();
+    } else {
+      addNode$(name, NodeTypeID)
+        .pipe(
+          first(),
+          switchMap((x) =>
+            saveMember$(x?.Node?.NodeID, userIds).pipe(
+              switchMap(() =>
+                from(getGroupsAll()).pipe(
+                  tap((x) => {
+                    setGroups(x);
+                  })
+                )
+              )
+            )
+          ),
+          catchError((err) => {
+            console.log(err);
+            return of(err);
+          })
+        )
+        .subscribe();
     }
+  };
 
-    //reload groups
+  const handleModalDelete = (nodeId) => {
+    removeNode$(nodeId)
+      .pipe(
+        first(),
+        switchMap(() =>
+          from(getGroupsAll()).pipe(
+            tap((x) => {
+              setGroups(x);
+            })
+          )
+        ),
+        catchError((err) => {
+          console.log(err);
+          return of(err);
+        })
+      )
+      .subscribe();
   };
 
   const groupItems = useMemo(
@@ -67,6 +134,8 @@ const UserGroups = () => {
               typeId={NodeTypeID}
               createMode={false}
               users={allUsers}
+              onModalConfirm={handleModalConfirm}
+              onModalDelete={handleModalDelete}
             />
           </GroupItemActionBar>
         </GroupItem>
@@ -113,6 +182,8 @@ const UserGroups = () => {
                 createMode={true}
                 typeId={NodeTypeID}
                 users={allUsers}
+                onModalConfirm={handleModalConfirm}
+                onModalDelete={handleModalDelete}
               />
             </Styled.GroupsCardContainer>
           ) : (
@@ -122,6 +193,12 @@ const UserGroups = () => {
 
         <Styled.GroupsExcerpt>
           <Styled.ExcerptImage src={groupImg} />
+          <Styled.GroupDescriptionTitle>
+            {RVDic?.WhatIsN.replace(`[n]`, RVDic.Group)}
+          </Styled.GroupDescriptionTitle>
+          <Styled.GroupDescription>
+            {RVDic._HelpGroupsSAAS}
+          </Styled.GroupDescription>
         </Styled.GroupsExcerpt>
       </Styled.UserGroupsContent>
     </Styled.UserGroupsContainer>

@@ -24,7 +24,8 @@ const UserGroupUpsertModal = ({
   typeId,
   createMode,
   users,
-  onModalClose,
+  onModalDelete,
+  onModalConfirm,
   ...props
 }) => {
   const [modalInfo, setModalInfo] = useState({
@@ -39,17 +40,19 @@ const UserGroupUpsertModal = ({
   const [members, setMembers] = useState(group ? group?.Members : []);
 
   const handleGroupNameChange = (name) => {
-    if (name && name !== '') {
-      if (!group) {
-        addNode(name, typeId)
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-      } else {
-        modifyNodeName(name, group?.NodeID)
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-      }
-    }
+    // if (name && name !== '') {
+    //   if (!group) {
+    //     addNode(name, typeId)
+    //       .then((res) => console.log(res))
+    //       .catch((err) => console.log(err));
+    //   } else {
+    //     modifyNodeName(name, group?.NodeID)
+    //       .then((res) => console.log(res))
+    //       .catch((err) => console.log(err));
+    //   }
+    // }
+
+    setGroupName(name);
   };
 
   const checkSelection = (userID) => !!members.find((x) => x.UserID === userID);
@@ -67,29 +70,27 @@ const UserGroupUpsertModal = ({
 
   const handleModalConfirm = () => {
     setModalInfo({ ...modalInfo, show: false });
-    if (onModalClose) {
-      onModalClose('confirm', members);
+    if (onModalConfirm) {
+      onModalConfirm(groupName, members, group?.NodeID);
     }
   };
 
   const handleModalCancel = () => {
     setModalInfo({ ...modalInfo, show: false });
-    if (onModalClose) {
-      onModalClose('close');
-    }
   };
 
   const handleDeleteGroup = () => {
     setModalInfo({ ...modalInfo, show: false });
-    if (onModalClose) {
-      onModalClose('delete');
+    if (onModalDelete) {
+      onModalDelete(group?.NodeID);
     }
   };
 
   return (
     <>
       {!createMode && (
-        <SettingButton onClick={() => handleModalCancel()}>
+        <SettingButton
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
           <SettingOutlineIcon size={28} />
         </SettingButton>
       )}
@@ -102,9 +103,7 @@ const UserGroupUpsertModal = ({
         </Styled.DashedBox>
       )}
 
-      <Modal
-        {...modalInfo}
-        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
+      <Modal {...modalInfo} onClose={() => handleModalCancel()}>
         <ModalContent>
           <InputLabel>
             {'در کادر زیر نام گروه کاربری را وارد نمایید.'}
@@ -114,7 +113,6 @@ const UserGroupUpsertModal = ({
             onChange={(name) => handleGroupNameChange(name)}
             type="text"
             placeholder={'نام گروه'}
-            delayTime={1000}
           />
 
           <InputLabel>{'کاربران گروه کاربری را انتخاب نمایید.'}</InputLabel>

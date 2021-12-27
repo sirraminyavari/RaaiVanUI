@@ -66,3 +66,11 @@ export const removeNode = (NodeID) => {
     NodeID,
   });
 };
+
+export const saveMembers = (NodeID, UserIDs) => {
+  const saveMembersAPI = API_Provider(CN_API, 'SaveMembers');
+  return apiCallWrapper(saveMembersAPI, {
+    NodeID,
+    UserIDs: UserIDs.join('|'),
+  });
+};

@@ -1,5 +1,5 @@
-import { API_Provider } from '../../helpers/helpers';
-import { RV_API } from '../../constant/apiConstants';
+import { API_Provider } from 'helpers/helpers';
+import { RV_API } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
 /**
