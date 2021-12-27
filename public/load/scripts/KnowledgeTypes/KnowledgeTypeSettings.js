@@ -820,7 +820,7 @@
                     start();
 
                     var newValue = {};
-
+                    
                     groups.forEach(function (grp) {
                         var arr = !grp.ListObj ? [] : (grp.ListObj.get_items() || []).map(function (itm) {
                             return Base64.encode(itm.Title);

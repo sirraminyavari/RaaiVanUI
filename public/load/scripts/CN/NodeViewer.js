@@ -752,7 +752,7 @@
 
                 if (__Editing === true) {
                     var newTitle = GlobalUtilities.trim(titleInput.value);
-                    if (newTitle == "") return;
+                    if (!newTitle) return;
 
                     GlobalUtilities.block(container);
 
@@ -763,7 +763,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                title = newTitle;
+                                title = Base64.decode(result.Name);
                                 __Editing = false;
                                 set_things();
                             }
@@ -2061,7 +2061,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                desc = newDesc;
+                                desc = Base64.decode(result.Description);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -2183,7 +2183,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                abstract = newAbstract;
+                                abstract = Base64.decode(result.Description);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -2213,47 +2213,43 @@
             if ((!editable && !keywords.length) || params.DisableAbstractAndKeywords)
                 return container.parentNode.removeChild(container);
 
-            var _el = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12",
-                    Style: "position:relative; padding-" + RV_Float + ":4.5rem;",
-                    Childs: [
-                        {
-                            Type: "div",
-                            Style: "position:absolute; top:0rem;" + RV_Float + ":0rem; width:4.5rem;" +
-                                "font-weight:bold; font-size:0.7rem;",
-                            Childs: [{ Type: "text", TextValue: RVDic.Keywords + ":" }]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Childs: [
-                                {
-                                    Type: "div", Tooltip: (editable ? RVDic.DoubleClickToEdit : null), Name: "keywords",
-                                    Style: "display:inline-block;" + (editable ? "cursor:pointer;" : "") //inline-block is necessary to display tooltip at the center of text
-                                },
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
-                                    Style: "position:relative; display:none; padding-" + RV_Float + ":2rem;",
-                                    Childs: [
-                                        {
-                                            Type: "div",
-                                            Style: "position:absolute; top:0rem;" + RV_Float + ":0rem; width:2rem;",
-                                            Childs: [
-                                                {
-                                                    Type: "i", Class: "fa fa-floppy-o fa-2x rv-icon-button", Tooltip: RVDic.Save,
-                                                    Attributes: [{ Name: "aria-hidden", Value: true }],
-                                                    Properties: [{ Name: "onclick", Value: function () { _on_edit(); } }]
-                                                }
-                                            ]
-                                        },
-                                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "itemSelect" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], container);
+            var _el = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Style: "position:relative; padding-" + RV_Float + ":4.5rem;",
+                Childs: [
+                    {
+                        Type: "div",
+                        Style: "position:absolute; top:0rem;" + RV_Float + ":0rem; width:4.5rem;" +
+                            "font-weight:bold; font-size:0.7rem;",
+                        Childs: [{ Type: "text", TextValue: RVDic.Keywords + ":" }]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12",
+                        Childs: [
+                            {
+                                Type: "div", Tooltip: (editable ? RVDic.DoubleClickToEdit : null), Name: "keywords",
+                                Style: "display:inline-block;" + (editable ? "cursor:pointer;" : "") //inline-block is necessary to display tooltip at the center of text
+                            },
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
+                                Style: "position:relative; display:none; padding-" + RV_Float + ":2rem;",
+                                Childs: [
+                                    {
+                                        Type: "div",
+                                        Style: "position:absolute; top:0rem;" + RV_Float + ":0rem; width:2rem;",
+                                        Childs: [{
+                                            Type: "i", Class: "fa fa-floppy-o fa-2x rv-icon-button", Tooltip: RVDic.Save,
+                                            Attributes: [{ Name: "aria-hidden", Value: true }],
+                                            Properties: [{ Name: "onclick", Value: function () { _on_edit(); } }]
+                                        }]
+                                    },
+                                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "itemSelect" }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }], container);
 
             var itemsArea = _el["keywords"];
             var editArea = _el["editArea"];

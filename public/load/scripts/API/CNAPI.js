@@ -513,6 +513,15 @@
         return CNAPI._send(url, params, queryString);
     },
 
+    SaveMembers: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/SaveMembers?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeID ? "&NodeID=" + params.NodeID : "") +
+            (params.UserIDs ? "&UserIDs=" + params.UserIDs : "");
+        return CNAPI._send(url, params, queryString);
+    },
+
     AddExpert: function (params) {
         params = params || {};
 

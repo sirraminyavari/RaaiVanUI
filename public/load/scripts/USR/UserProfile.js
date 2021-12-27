@@ -303,8 +303,8 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                firstName = newFirstName;
-                                lastName = newLastName;
+                                firstName = Base64.decode(result.FirstName);
+                                lastName = Base64.decode(result.LastName);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -337,12 +337,10 @@
                 {
                     Type: "div",
                     Style: "position:absolute; top:0.4rem;" + RV_Float + ":0.5rem;" + (editable ? "" : "display:none;"),
-                    Childs: [
-                        {
-                            Type: "i", Class: "fa fa-pencil fa-lg rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
-                            Attributes: [{ Name: "aria-hidden", Value: true }]
-                        }
-                    ]
+                    Childs: [{
+                        Type: "i", Class: "fa fa-pencil fa-lg rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
+                        Attributes: [{ Name: "aria-hidden", Value: true }]
+                    }]
                 },
                 { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" },
                 { Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea", Style: "display:none;" }
@@ -501,7 +499,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                jobTitle = newJobTitle;
+                                jobTitle = Base64.decode(result.JobTitle);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -675,7 +673,7 @@
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
                                 phoneNumber.Type = newPhoneType;
-                                phoneNumber.Number = newNumber;
+                                phoneNumber.Number = Base64.decode(result.PhoneNumber);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -806,7 +804,7 @@
 
                             that.set_phone_number({
                                 NumberID: result.NumberID,
-                                Number: Base64.encode(newNumber),
+                                Number: result.PhoneNumber,
                                 Type: newPhoneType
                             });
                         }
@@ -935,7 +933,7 @@
                             if (result.ErrorText)
                                 alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                             else {
-                                email.Email = newAddress;
+                                email.Email = Base64.decode(result.Address);
                                 editButton.__Editing = false;
                                 set_things();
                             }
@@ -987,7 +985,6 @@
                 UsersAPI.SetMainEmail({
                     EmailID: email.EmailID, UserID: that.Objects.UserID, ParseResults: true,
                     ResponseHandler: function (result) {
-                        console.log(result);
                         if (result.VerificationCode) {
                             that.verify_email_sms(result.VerificationCode, {
                                 APIFunction: "SetMainEmail",
@@ -1073,7 +1070,7 @@
                             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                         else {
                             addressInput.value = "";
-                            that.set_email({ EmailID: result.EmailID || "", Email: Base64.encode(newAddress) });
+                            that.set_email({ EmailID: result.EmailID, Email: result.Address });
                         }
 
                         GlobalUtilities.unblock(addItemDiv);

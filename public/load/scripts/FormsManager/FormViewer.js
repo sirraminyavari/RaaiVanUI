@@ -449,7 +449,7 @@
                             alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                         else {
                             var filledElements = result.FilledElements || [];
-
+                            
                             var abstractDic = that._get_abstract_dic(result.PollAbstract);
                             that.set_form_statistics((result.PollAbstract || {}).Statistics);
 
@@ -462,6 +462,15 @@
                                         elements[i].Data.RefElementID = filledElements[j].ElementID;
                                         elements[i].Data.Filled = true;
                                     }
+                                }
+                                
+                                var resElem = (result.Elements || []).filter(x => x.ElementID == elements[i].Data.ElementID ||
+                                    x.ElementID == elements[i].Data.RefElementID);
+
+                                if (resElem.length == 1) {
+                                    elements[i].Data.TextValue = Base64.decode(resElem[0].TextValue);
+                                    elements[i].Data.Files = Base64.decode(resElem[0].Files) || [];
+                                    elements[i].BodyTextManager.set_data();
                                 }
                             }
                             

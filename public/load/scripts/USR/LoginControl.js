@@ -558,14 +558,18 @@
                     Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-top:1rem;",
                     Childs: [{
                         Type: "input", Class: "rv-input", Style: "width:100%;", Name: "userNameInput",
-                        InnerTitle: isSaaS ? RVDic.UserNameOrEmail : RVDic.UserName
+                        InnerTitle: isSaaS ? RVDic.UserNameOrEmail : RVDic.UserName,
+                        Attributes: [{ Name: "autocomplete", Value: "off" }]
                     }]
                 },
                 {
                     Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-top:1rem;",
                     Childs: [{
                         Type: "input", Name: "passwordInput", Class: "rv-input", Style: "width:100%;", InnerTitle: RVDic.NewPassword,
-                        Attributes: [{ Name: "type", Value: "password" }]
+                        Attributes: [
+                            { Name: "type", Value: "password" },
+                            { Name: "autocomplete", Value: "off" }
+                        ]
                     }]
                 },
                 {

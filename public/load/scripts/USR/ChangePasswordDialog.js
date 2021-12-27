@@ -66,7 +66,10 @@
                                         Type: "div", Class: "small-6 medium-8 large-9",
                                         Childs: [{
                                             Type: "input", Class: "rv-input", Name: itm.Name, Style: "width:100%;",
-                                            Attributes: [{ Name: "type", Value: "password" }]
+                                            Attributes: [
+                                                { Name: "type", Value: "password" },
+                                                { Name: "autocomplete", Value: "off" }
+                                            ]
                                         }]
                                     }
                                 ]

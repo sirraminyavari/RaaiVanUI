@@ -512,12 +512,10 @@
             var relatedTitleArea = params.TitleArea;
 
 
-            var titleContainerDiv = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12",
-                    Style: (params.Removed ? "color:red;" : ""), Name: "_div"
-                }
-            ])["_div"];
+            var titleContainerDiv = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Style: (params.Removed ? "color:red;" : ""), Name: "_div"
+            }])["_div"];
 
             titleContainerDiv.IsTitle = true;
             titleContainerDiv.Removed = params.Removed === true;
@@ -540,14 +538,12 @@
             var _add_button = function (p) {
                 _options.push({
                     Type: "div", Style: "display:inline-block;",
-                    Childs: [
-                        {
-                            Type: "i", Name: p.Name, Tooltip: p.Tooltip,
-                            Class: "RevFloat fa fa-" + p.IconName + " fa-lg rv-icon-button",
-                            Style: "margin-" + RV_Float + ":0.6rem; margin-top:0.3rem;",
-                            Properties: [{ Name: "onclick", Value: p.OnClick }]
-                        }
-                    ]
+                    Childs: [{
+                        Type: "i", Name: p.Name, Tooltip: p.Tooltip,
+                        Class: "RevFloat fa fa-" + p.IconName + " fa-lg rv-icon-button",
+                        Style: "margin-" + RV_Float + ":0.6rem; margin-top:0.3rem;",
+                        Properties: [{ Name: "onclick", Value: p.OnClick }]
+                    }]
                 });
             }
 
@@ -721,80 +717,76 @@
 
             var _areaOut = true;
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12", Name: "titleContainerId",
-                    Style: "position:relative; margin:0.3rem 0rem; padding:0.1rem; padding-" + RV_RevFloat + ":4rem;",
-                    Properties: [
-                        {
-                            Name: "onmouseover",
-                            Value: function () {
-                                _areaOut = false;
-                                setTimeout(function () {
-                                    if (_areaOut) return;
-                                    //if (_edit_mode) _edit_mode(elems["editButtonImageId"], false);
-                                    elems["opcId"].style.display = "inline-block";
-                                    if (params.Editable && !(titleContainerDiv.nextSibling || {}).__IsNotRegisteredYet)
-                                        elems["newTButton"].style.display = "inline-block";
-                                }, 50);
-                            }
-                        },
-                        {
-                            Name: "onmouseout",
-                            Value: function () {
-                                _areaOut = true;
-                                setTimeout(function () {
-                                    if (!_areaOut) return;
-                                    //if (_view_mode) _view_mode(elems["editButtonImageId"], false);
-                                    elems["opcId"].style.display = "none";
-                                    if (params.Editable) elems["newTButton"].style.display = "none";
-                                }, 400);
-                            }
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12", Name: "titleContainerId",
+                Style: "position:relative; margin:0.3rem 0rem; padding:0.1rem; padding-" + RV_RevFloat + ":4rem;",
+                Properties: [
+                    {
+                        Name: "onmouseover",
+                        Value: function () {
+                            _areaOut = false;
+                            setTimeout(function () {
+                                if (_areaOut) return;
+                                //if (_edit_mode) _edit_mode(elems["editButtonImageId"], false);
+                                elems["opcId"].style.display = "inline-block";
+                                if (params.Editable && !(titleContainerDiv.nextSibling || {}).__IsNotRegisteredYet)
+                                    elems["newTButton"].style.display = "inline-block";
+                            }, 50);
                         }
-                    ],
-                    Childs: [
-                        {
-                            Type: "div", Class: "RevDirection RevTextAlign", Name: "opcId",
-                            Style: "display:none; position:absolute; top:0rem;" + RV_RevFloat + ":0rem; width:4rem;",
-                            Childs: _options
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Style: "cursor:pointer; margin-bottom:0.1rem;", Name: "titleDivId"
-                        },
-                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "childsContainerId" },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12", Name: "newTButton",
-                            Style: "position:absolute; bottom:0.1rem; display:none;",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "SoftBorder",
-                                    Style: "position:absolute; padding-top:1px; width:7rem; border-color:black; z-index:2;" +
-                                        "background-color:rgb(255, 255, 255); top:0.1rem;" + window.RV_Float + ":-1.1rem;" +
-                                        "background-color:white;" + GlobalUtilities.border_radius(2)
-                                },
-                                {
-                                    Type: "div", Tooltip: RVDic.AddNewTitle, Class: "SoftBorder",
-                                    Style: "position:absolute; width:1.5rem; height:1.5rem; background-color:white; z-index:3;" +
-                                        GlobalUtilities.border_radius(12) + "text-align:center; top:-0.6rem; border-color:black;" +
-                                        window.RV_Float + ":-2.5rem;" + "cursor:pointer; color:black;" +
-                                        "font-size:1.5rem; line-height:1.55rem;",
-                                    Properties: [
-                                        {
-                                            Name: "onclick",
-                                            Value: function () {
-                                                var newTArea = that._create_new_index_title_area(titleContainerDiv, true);
-                                                //if (that.Options.AutoScroll) GlobalUtilities.scroll_into_view(newTArea);
-                                            }
-                                        }
-                                    ],
-                                    Childs: [{ Type: "text", TextValue: "+" }]
-                                }
-                            ]
+                    },
+                    {
+                        Name: "onmouseout",
+                        Value: function () {
+                            _areaOut = true;
+                            setTimeout(function () {
+                                if (!_areaOut) return;
+                                //if (_view_mode) _view_mode(elems["editButtonImageId"], false);
+                                elems["opcId"].style.display = "none";
+                                if (params.Editable) elems["newTButton"].style.display = "none";
+                            }, 400);
                         }
-                    ]
-                }
-            ], titleContainerDiv);
+                    }
+                ],
+                Childs: [
+                    {
+                        Type: "div", Class: "RevDirection RevTextAlign", Name: "opcId",
+                        Style: "display:none; position:absolute; top:0rem;" + RV_RevFloat + ":0rem; width:4rem;",
+                        Childs: _options
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12",
+                        Style: "cursor:pointer; margin-bottom:0.1rem;", Name: "titleDivId"
+                    },
+                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "childsContainerId" },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12", Name: "newTButton",
+                        Style: "position:absolute; bottom:0.1rem; display:none;",
+                        Childs: [
+                            {
+                                Type: "div", Class: "SoftBorder",
+                                Style: "position:absolute; padding-top:1px; width:7rem; border-color:black; z-index:2;" +
+                                    "background-color:rgb(255, 255, 255); top:0.1rem;" + window.RV_Float + ":-1.1rem;" +
+                                    "background-color:white;" + GlobalUtilities.border_radius(2)
+                            },
+                            {
+                                Type: "div", Tooltip: RVDic.AddNewTitle, Class: "SoftBorder",
+                                Style: "position:absolute; width:1.5rem; height:1.5rem; background-color:white; z-index:3;" +
+                                    GlobalUtilities.border_radius(12) + "text-align:center; top:-0.6rem; border-color:black;" +
+                                    window.RV_Float + ":-2.5rem;" + "cursor:pointer; color:black;" +
+                                    "font-size:1.5rem; line-height:1.55rem;",
+                                Properties: [{
+                                    Name: "onclick",
+                                    Value: function () {
+                                        var newTArea = that._create_new_index_title_area(titleContainerDiv, true);
+                                        //if (that.Options.AutoScroll) GlobalUtilities.scroll_into_view(newTArea);
+                                    }
+                                }],
+                                Childs: [{ Type: "text", TextValue: "+" }]
+                            }
+                        ]
+                    }
+                ]
+            }], titleContainerDiv);
 
             var titleDiv = elems["titleDivId"];
 
@@ -802,17 +794,16 @@
 
             var set_title = function (t) {
                 t = theTitle || t;
-                var trimmed = GlobalUtilities.convert_numbers_to_persian(GlobalUtilities.trim2pix(t, 280, { Postfix: "..." }));
+
                 titleDiv.innerHTML = "";
-                GlobalUtilities.create_nested_elements([
-                    {
-                        Type: "div", Style: "display:inline-block;", Tooltip: trimmed == t ? null : t,
-                        Childs: [{ Type: "text", TextValue: trimmed }]
-                    }
-                ], titleDiv);
+
+                GlobalUtilities.create_nested_elements([{
+                    Type: "div", Style: "display:inline-block;",
+                    Childs: [{ Type: "text", TextValue: t }]
+                }], titleDiv);
 
                 if ((that.Objects.Titles[titleId] || {}).set_title) that.Objects.Titles[titleId].set_title(t);
-            }
+            };
 
             set_title();
 
@@ -1089,6 +1080,9 @@
                                     CheckWorkFlowEditPermission: that.Objects.HasWorkFlowEditPermission, ParseResults: true,
                                     ResponseHandler: function (result) {
                                         if (result.Succeed) {
+                                            change.Title = Base64.decode((result.Paragraph || {}).Title) || change.Title;
+                                            change.BodyText = Base64.decode((result.Paragraph || {}).BodyText) || change.BodyText;
+
                                             that.Objects.Paragraphs[paragraphId].set_data(change.Title, change.BodyText, false);
                                             that.Objects.Paragraphs[paragraphId].change_mode(true);
                                         }
@@ -1687,6 +1681,9 @@
                                 return GlobalUtilities.unblock(paragraphContainer);
                             }
 
+                            _title = Base64.decode((result.Paragraph || {}).Title) || _title;
+                            _bodyText = Base64.decode((result.Paragraph || {}).BodyText) || _bodyText;
+
                             if (result.Change) {
                                 var changeJson = that._decode_change(result.Change);
                                 var changeElement = that._create_change_area({ Change: changeJson, ContainerDiv: changesArea });
@@ -2107,6 +2104,10 @@
 
                         if (result.Succeed) {
                             showed.Close();
+
+                            changeObj.Title = Base64.decode((result.Paragraph || {}).Title) || changeObj.Title;
+                            changeObj.BodyText = Base64.decode((result.Paragraph || {}).BodyText) || changeObj.BodyText;
+
                             that.Objects.Paragraphs[paragraphId].set_data(changeObj.Title, changeObj.BodyText);
                         }
                     }
