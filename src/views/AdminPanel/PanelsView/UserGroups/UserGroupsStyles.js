@@ -15,12 +15,16 @@ export const UserGroupsContent = styled.div`
 `;
 
 export const GroupsContainer = styled.div`
-  flex-grow: 1;
+  flex-grow: 1.2;
   //width: fit-content;
 `;
 
 export const GroupsExcerpt = styled.div`
-  flex-grow: 1;
+  flex-grow: 0.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 export const HeadingWrapper = styled(Heading).attrs({
@@ -61,6 +65,7 @@ export const DashedBox = styled.div`
   width: 100%;
   height: 12rem;
   border: 1px ${CV_DISTANT} dashed;
+  color: ${CV_DISTANT};
   border-radius: 0.8rem;
   transition: all 0.15s ease-out;
   cursor: pointer;
@@ -68,7 +73,10 @@ export const DashedBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.2rem;
+  user-select: none;
+  font-weight: 500;
+  font-size: 1.2rem;
 
   &:hover {
     border: 1px ${TCV_DEFAULT} solid;
@@ -99,4 +107,9 @@ export const GroupItemActionBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const ExcerptImage = styled.img`
+  max-width: 23rem;
+  width: 100%;
 `;

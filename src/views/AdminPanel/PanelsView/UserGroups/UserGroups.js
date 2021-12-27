@@ -12,19 +12,21 @@ import {
 } from './UserGroupsStyles';
 import UserGroupMembers from './items/UserGroupMembers';
 import UserGroupUpsertModal from './items/UserGroupUpsertModal';
-import AddIcon from '../../../../components/Icons/AddIcon/AddIcon';
+import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
+import groupImg from 'assets/images/groups.png';
 
 const UserGroups = () => {
   const { RVDic, RV_RTL } = useWindowContext();
 
   const [groups, setGroups] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [NodeTypeID, setNodeTypeID] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     getGroupsAll()
       .then((x) => {
-        console.log(x);
         setNodeTypeID(x[0]?.NodeTypeID);
         setGroups(x);
         setLoading(false);
@@ -32,11 +34,30 @@ const UserGroups = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    getUsers('', true)
+      .then((res) => {
+        setAllUsers(res);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  const handleModalClose = (state, users) => {
+    switch (state) {
+      case 'delete':
+        break;
+      case 'confirm':
+        break;
+      default:
+      // close
+    }
+
+    //reload groups
+  };
 
   const groupItems = useMemo(
     () =>
-      groups.map((x) => (
+      groups?.map((x) => (
         <GroupItem key={x?.NodeID}>
           <GroupItemTitle>{x?.Name}</GroupItemTitle>
           <GroupItemActionBar>
@@ -45,11 +66,12 @@ const UserGroups = () => {
               group={x}
               typeId={NodeTypeID}
               createMode={false}
+              users={allUsers}
             />
           </GroupItemActionBar>
         </GroupItem>
       )),
-    [groups]
+    [groups, allUsers, searchText]
   );
   const breadcrumbs = [
     {
@@ -76,21 +98,31 @@ const UserGroups = () => {
         <Styled.GroupsContainer>
           <Styled.HeadingWrapper>{'گروه های کاربری'}</Styled.HeadingWrapper>
           <Styled.InputContainer>
-            <Styled.Input placeholder={'فیلتر بر اساس نام گروه'} />
+            <Styled.Input
+              placeholder={'فیلتر بر اساس نام گروه'}
+              value={searchText}
+              onChange={(e) => setSearchText(e?.target?.value)}
+            />
             <SearchIcon size={30} />
           </Styled.InputContainer>
 
           {!loading ? (
             <Styled.GroupsCardContainer>
               {groupItems}
-              <UserGroupUpsertModal createMode={true} typeId={NodeTypeID} />
+              <UserGroupUpsertModal
+                createMode={true}
+                typeId={NodeTypeID}
+                users={allUsers}
+              />
             </Styled.GroupsCardContainer>
           ) : (
             <LogoLoader />
           )}
         </Styled.GroupsContainer>
 
-        <Styled.GroupsExcerpt></Styled.GroupsExcerpt>
+        <Styled.GroupsExcerpt>
+          <Styled.ExcerptImage src={groupImg} />
+        </Styled.GroupsExcerpt>
       </Styled.UserGroupsContent>
     </Styled.UserGroupsContainer>
   );

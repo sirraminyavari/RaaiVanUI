@@ -14,7 +14,6 @@ import {
 import UserGroupCheckbox from './UserGroupCheckbox';
 import useWindowContext from 'hooks/useWindowContext';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { GroupsContext } from '../UsersSaasList';
 
 const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {

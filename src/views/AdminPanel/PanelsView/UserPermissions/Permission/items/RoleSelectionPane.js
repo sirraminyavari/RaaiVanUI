@@ -6,7 +6,6 @@ import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { PermissionContext } from '../Permissions';
 import RoleItem from './RoleItem';
 import * as Styled from '../PermissionStyle';
-import { getChildNodes, getNodeTypes } from '../../api';
 import UserSelectModal from './UserSelectModal';
 import GroupSelectModal from './GroupSelectModal';
 
