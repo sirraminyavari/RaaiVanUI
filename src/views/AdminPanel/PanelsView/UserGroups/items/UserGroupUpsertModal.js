@@ -12,9 +12,8 @@ import {
 } from 'constant/CssVariables';
 import SettingOutlineIcon from 'components/Icons/SettingOutlineIcon/SettingOutlineIcon';
 import Modal from 'components/Modal/Modal';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import RxInput from 'components/Inputs/RxInput';
-import { addNode, modifyNodeName } from 'apiHelper/ApiHandlers/CNApi';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Button from 'components/Buttons/Button';
@@ -40,18 +39,6 @@ const UserGroupUpsertModal = ({
   const [members, setMembers] = useState(group ? group?.Members : []);
 
   const handleGroupNameChange = (name) => {
-    // if (name && name !== '') {
-    //   if (!group) {
-    //     addNode(name, typeId)
-    //       .then((res) => console.log(res))
-    //       .catch((err) => console.log(err));
-    //   } else {
-    //     modifyNodeName(name, group?.NodeID)
-    //       .then((res) => console.log(res))
-    //       .catch((err) => console.log(err));
-    //   }
-    // }
-
     setGroupName(name);
   };
 

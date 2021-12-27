@@ -12,17 +12,16 @@ import {
 } from 'apiHelper/ApiHandlers/CNApi';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
-  GroupDescriptionTitle,
   GroupItem,
   GroupItemActionBar,
   GroupItemTitle,
-  GroupMemberItem,
 } from './UserGroupsStyles';
 import UserGroupMembers from './items/UserGroupMembers';
 import UserGroupUpsertModal from './items/UserGroupUpsertModal';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import groupImg from 'assets/images/groups.png';
 import { catchError, first, from, of, switchMap, tap } from 'rxjs';
+import PeopleIcon from 'components/Icons/PeopleIcon/PeopleIcon';
 
 const modifyNodeName$ = (name, id) => from(modifyNodeName(name, id));
 const saveMember$ = (id, userIds) => from(saveMembers(id, userIds));
@@ -31,7 +30,6 @@ const removeNode$ = (nodeId) => from(removeNode(nodeId));
 
 const UserGroups = () => {
   const { RVDic, RV_RTL } = useWindowContext();
-
   const [groups, setGroups] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,22 +122,27 @@ const UserGroups = () => {
 
   const groupItems = useMemo(
     () =>
-      groups?.map((x) => (
-        <GroupItem key={x?.NodeID}>
-          <GroupItemTitle>{x?.Name}</GroupItemTitle>
-          <GroupItemActionBar>
-            <UserGroupMembers members={x?.Members} />
-            <UserGroupUpsertModal
-              group={x}
-              typeId={NodeTypeID}
-              createMode={false}
-              users={allUsers}
-              onModalConfirm={handleModalConfirm}
-              onModalDelete={handleModalDelete}
-            />
-          </GroupItemActionBar>
-        </GroupItem>
-      )),
+      groups
+        ?.filter((x) => x?.Name.includes(searchText))
+        ?.map((x) => (
+          <GroupItem key={x?.NodeID}>
+            <Styled.GroupIconContainer>
+              <PeopleIcon size={96} />
+            </Styled.GroupIconContainer>
+            <GroupItemTitle>{x?.Name}</GroupItemTitle>
+            <GroupItemActionBar>
+              <UserGroupMembers members={x?.Members} />
+              <UserGroupUpsertModal
+                group={x}
+                typeId={NodeTypeID}
+                createMode={false}
+                users={allUsers}
+                onModalConfirm={handleModalConfirm}
+                onModalDelete={handleModalDelete}
+              />
+            </GroupItemActionBar>
+          </GroupItem>
+        )),
     [groups, allUsers, searchText]
   );
   const breadcrumbs = [
@@ -159,6 +162,7 @@ const UserGroups = () => {
       linkTo: 'usergroups',
     },
   ];
+
   return (
     <Styled.UserGroupsContainer rtl={RV_RTL}>
       <Styled.UserGroupsContent>
@@ -170,7 +174,7 @@ const UserGroups = () => {
             <Styled.Input
               placeholder={'فیلتر بر اساس نام گروه'}
               value={searchText}
-              onChange={(e) => setSearchText(e?.target?.value)}
+              onChange={(e) => setSearchText(e)}
             />
             <SearchIcon size={30} />
           </Styled.InputContainer>

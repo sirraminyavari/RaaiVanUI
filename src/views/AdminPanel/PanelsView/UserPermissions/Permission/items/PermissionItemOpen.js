@@ -12,6 +12,7 @@ import useOutsideClick from 'hooks/useOutsideClick';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { PermissionContext } from '../Permissions';
+import useWindowContext from 'hooks/useWindowContext';
 
 const PermissionItemOpen = ({ ID, ...props }) => {
   const [show, setShow] = useState(false);
@@ -19,6 +20,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
   const listEl = useRef();
   const { roles, permissions } = useContext(PermissionContext);
   const [roleSearchText, setRoleSearchTexts] = useState('');
+  const { RV_RTL } = useWindowContext();
 
   useOutsideClick(() => {
     setShow(false);
@@ -54,7 +56,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
       </OpenButton>
 
       {show && (
-        <PermissionListContainer ref={listEl}>
+        <PermissionListContainer ref={listEl} rtl={RV_RTL}>
           <TopRow>
             <TopRowButton
               highlight={userRole}
@@ -67,7 +69,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
               گروه‌ها
             </TopRowButton>
 
-            <CloseButton onClick={() => setShow(false)}>
+            <CloseButton onClick={() => setShow(false)} rtl={RV_RTL}>
               <CloseIcon size={14} />
             </CloseButton>
           </TopRow>
@@ -137,9 +139,8 @@ const PermissionListContainer = styled.div`
   width: 19.125rem;
   border-radius: 0.8rem;
   box-shadow: 1px 5px 20px #0000001f;
-  position: absolute;
   top: 1rem;
-  left: 1.2rem;
+  ${({ rtl }) => (rtl ? 'left' : 'right')}: 1.2rem;
   z-index: 100;
 `;
 
@@ -166,7 +167,7 @@ const TopRowButton = styled.div`
 `;
 const CloseButton = styled.div`
   position: absolute;
-  left: 0.5rem;
+  ${({ rtl }) => (rtl ? 'left' : 'right')}: 0.5rem;
   height: 2rem;
   width: 2rem;
   display: flex;

@@ -5,6 +5,8 @@ import * as Styled from './PermissionStyle';
 import RoleSelectionPane from './items/RoleSelectionPane';
 import PermissionSelectionPane from './items/PermissionSelectionPane';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { setLastName } from '../../../../../apiHelper/apiFunctions';
+import LogoLoader from '../../../../../components/Loaders/LogoLoader/LogoLoader';
 
 export const PermissionContext = createContext({});
 const Permissions = ({
@@ -19,6 +21,7 @@ const Permissions = ({
   const [confidentialityLevels, setConfidentialityLevels] = useState([]);
   const [permissions, setPermission] = useState({});
   const [selectedRole, setSelectedRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const objectIDs = useMemo(
     () =>
@@ -62,6 +65,8 @@ const Permissions = ({
             roles?.filter((x) => x?.RoleType === 'User')[0] || {}
           );
         }
+
+        setLoading(false);
       }
     );
   };
@@ -102,9 +107,15 @@ const Permissions = ({
 
         <Styled.PermissionSelectorContainer>
           <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
-          <Styled.HeadingWrapper>{`دسترسی‌ها (${selectedRole?.RoleName})`}</Styled.HeadingWrapper>
+          {!loading ? (
+            <>
+              <Styled.HeadingWrapper>{`دسترسی‌ها (${selectedRole?.RoleName})`}</Styled.HeadingWrapper>
 
-          <PermissionSelectionPane sections={sections} />
+              <PermissionSelectionPane sections={sections} />
+            </>
+          ) : (
+            <LogoLoader />
+          )}
         </Styled.PermissionSelectorContainer>
       </Styled.PermissionContainer>
     </PermissionContext.Provider>

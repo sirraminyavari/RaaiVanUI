@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import * as Styled from '../PermissionStyle';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import PermissionItem from './PermissionItem';
 import { PermissionContext } from '../Permissions';
 import DoubleCheck from 'components/Icons/CheckIcons/DoubleCheck';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import useWindowContext from 'hooks/useWindowContext';
 
 const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
-
+  const { RV_RTL } = useWindowContext();
   const { selectedRole, permissions, updatePermission, roles } = useContext(
     PermissionContext
   );
@@ -37,7 +37,7 @@ const PermissionSelectionPane = ({ sections }) => {
     return sections[0]?.Items?.filter((x) =>
       x?.Title?.includes(permissionSearchText)
     )?.map((x) => <PermissionItem key={x.ID} {...x} />);
-  }, [roles]);
+  }, [roles, permissionSearchText]);
 
   const handleSelectAllClick = () => {
     if (!allSelected) {
@@ -76,7 +76,6 @@ const PermissionSelectionPane = ({ sections }) => {
           };
         }
       }
-      console.log(next);
       updatePermission(next);
       setAllSelected(false);
     }
@@ -101,13 +100,11 @@ const PermissionSelectionPane = ({ sections }) => {
           {allSelected && <DoubleCheck size={24} />}
           <div>همه</div>
         </SelectAllWrapper>
-        <PermissionHeaderTitle>دسترسی</PermissionHeaderTitle>
+        <PermissionHeaderTitle rtl={RV_RTL}>دسترسی</PermissionHeaderTitle>
         <OpenHeaderTitle>مشاهده</OpenHeaderTitle>
       </ListHeader>
 
-      <PermissionBody>
-        <PerfectScrollbar>{items}</PerfectScrollbar>
-      </PermissionBody>
+      <PermissionBody>{items}</PermissionBody>
     </PermissionContainer>
   );
 };
@@ -150,7 +147,7 @@ const SelectAllWrapper = styled.div`
 `;
 const PermissionHeaderTitle = styled.div`
   flex: 1;
-  padding-right: 2.5rem;
+  padding-${({ rtl }) => (rtl ? 'right' : 'left')}: 2.5rem;
   font-size: 0.8rem;
   height: 1.5rem;
   line-height: 1.5rem;

@@ -73,7 +73,7 @@ const RoleSelectionPane = ({ ...props }) => {
 const RoleSelectionRow = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: ${(props) => (props?.rtl ? 'row' : 'row-reverse')};
+
   justify-content: center;
   height: 3.5rem;
   border-bottom: 1px solid ${CV_DISTANT};

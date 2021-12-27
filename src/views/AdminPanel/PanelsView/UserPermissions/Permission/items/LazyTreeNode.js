@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { CV_DISTANT, CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
 import PeopleOutlineIcon from 'components/Icons/PeopleOutlineIcon/PeopleOutlineIcon';
+import useWindowContext from 'hooks/useWindowContext';
+import inprogressLoader from 'assets/images/loading_progress_bar.gif';
 
 const LazyTreeNode = (props) => {
+  const { RV_RTL } = useWindowContext();
   // extract node event
   const { openNode, selectNode, loadMore, ...node } = props;
   const { isOpen } = props;
@@ -28,9 +31,10 @@ const LazyTreeNode = (props) => {
           {props?.hasChildren && (
             <NodeIcon
               onClick={() => openNode(node)}
-              dir="left"
+              dir={RV_RTL ? 'left' : 'right'}
               size={18}
               opened={isOpen ? 1 : 0}
+              rtl={RV_RTL}
             />
           )}
         </NodeIconContainer>
@@ -46,7 +50,9 @@ const LazyTreeNode = (props) => {
       {props?.isOpen && (
         <>
           <ul> {itemsList} </ul>
-          {props?.isLoading && <div>...loading </div>}
+          {props?.isLoading && (
+            <img src={inprogressLoader} alt="cliqmind-loader" />
+          )}
 
           {!props?.isLoading && props?.hasMore && (
             <button onClick={() => loadMore(node)}>load more</button>
@@ -89,9 +95,10 @@ const NodeIcon = styled(CaretIcon).attrs((props) => ({
 }))`
   color: ${CV_DISTANT};
   cursor: pointer;
-  transform: ${({ opened }) => (opened ? 'rotate(-90deg)' : 'rotate(0)')};
+  transform: ${({ opened, rtl }) =>
+    opened ? `rotate(${rtl ? '-90' : '90'}deg)` : 'rotate(0)'};
   transition: all 0.3s ease-out;
-  margin-left: 0.5rem;
+  margin-${({ rtl }) => (rtl ? 'left' : 'right')}: 0.5rem;
 `;
 
 export default LazyTreeNode;

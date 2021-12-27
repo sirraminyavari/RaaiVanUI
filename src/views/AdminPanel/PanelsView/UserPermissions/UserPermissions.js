@@ -17,6 +17,7 @@ const UserPermissions = (props) => {
         Items: (RVGlobal?.AccessRoles || []).map((r) => ({
           ID: r?.ID,
           Title: RVDic?.PRVC[r?.Name] || RVDic[r?.Name] || r?.Name,
+          Description: RVDic.PRVC[r.Name + '_Desc'],
         })),
       },
     ],

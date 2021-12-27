@@ -1,15 +1,11 @@
 import styled from 'styled-components';
-import {
-  FLEX_RCB,
-  FLEX_RCS,
-  FLEX_RSB,
-  ViewContentCard,
-} from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
 import Heading from 'components/Heading/Heading';
 import {
   CV_DISTANT,
   CV_GRAY,
   CV_GRAY_DARK,
+  CV_GRAY_LIGHT,
   CV_WHITE,
   TCV_DEFAULT,
 } from 'constant/CssVariables';
@@ -91,6 +87,7 @@ export const DashedBox = styled.div`
   user-select: none;
   font-weight: 500;
   font-size: 1.2rem;
+  background-color: ${CV_WHITE};
 
   &:hover {
     border: 1px ${TCV_DEFAULT} solid;
@@ -105,6 +102,7 @@ export const GroupItem = styled.div`
   border: 1px ${CV_DISTANT} solid;
   border-radius: 0.8rem;
   position: relative;
+  background-color: ${CV_WHITE};
 `;
 
 export const GroupItemTitle = styled.div`
@@ -154,5 +152,13 @@ export const GroupMemberItem = styled.img`
   height: 2.5rem;
   border-radius: 100%;
   border: 0.16rem solid ${CV_WHITE};
-  ${(props) => (props?.rtl ? `margin-right: -0.9rem` : `margin-left: -0.9rem`)}
+  ${({ index, rtl }) =>
+    index !== 0 && `margin-${rtl ? 'left' : 'right'}: -${0.8}rem`}
+`;
+
+export const GroupIconContainer = styled.div`
+  position: absolute;
+  top: 0.1rem;
+  left: 0.5rem;
+  color: ${CV_GRAY_LIGHT};
 `;

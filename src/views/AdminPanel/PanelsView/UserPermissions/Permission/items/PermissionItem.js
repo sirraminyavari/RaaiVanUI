@@ -1,20 +1,17 @@
 import styled from 'styled-components';
-import {
-  CV_DISTANT,
-  CV_GRAY,
-  CV_GRAY_DARK,
-  CV_WHITE,
-} from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from 'constant/CssVariables';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PermissionContext } from '../Permissions';
 import PermissionItemOpen from './PermissionItemOpen';
+import useWindowContext from 'hooks/useWindowContext';
 
-const PermissionItem = ({ ID, Title, ...props }) => {
+const PermissionItem = ({ ID, Title, Description, ...props }) => {
   const { permissions, selectedRole, updatePermission, roles } = useContext(
     PermissionContext
   );
   const [state, setState] = useState(false);
+  const { RV_RTL } = useWindowContext();
 
   useEffect(() => {
     setState(
@@ -51,15 +48,13 @@ const PermissionItem = ({ ID, Title, ...props }) => {
 
   return (
     <ItemContainer>
-      <ToggleSwitchWrapper>
+      <ToggleSwitchWrapper rtl={RV_RTL}>
         <ToggleButton onToggle={togglePermission} value={state} />
       </ToggleSwitchWrapper>
 
-      <ItemContent>
+      <ItemContent rtl={RV_RTL}>
         <ItemTitle>{Title}</ItemTitle>
-        <ItemSubTitle>
-          {'ایجاد، ویرایش، حذف و مدیریت فرم‌های تمپلیت‌ها'}
-        </ItemSubTitle>
+        <ItemSubTitle>{Description}</ItemSubTitle>
       </ItemContent>
 
       <PermissionItemOpen ID={ID} />
@@ -79,7 +74,10 @@ const ToggleSwitchWrapper = styled.div`
   display: flex;
   height: 4rem;
   flex: 0 0 6rem;
-  border-left: 1px solid ${CV_DISTANT};
+  ${(props) =>
+    props?.rtl
+      ? `border-left: 1px solid ${CV_DISTANT}`
+      : `border-right: 1px solid ${CV_DISTANT}`};
   justify-content: center;
   align-items: center;
 `;
@@ -87,7 +85,10 @@ const ToggleSwitchWrapper = styled.div`
 const ItemContent = styled.div`
   flex: 1;
   height: 4rem;
-  padding: 0.3rem 2.5rem 0.3rem 0.3rem;
+  ${(props) =>
+    props?.rtl
+      ? `padding: 0.3rem 2.5rem 0.3rem 0.3rem`
+      : `padding: 0.3rem 0.3rem 0.3rem 2.5rem`};
 `;
 
 const ItemTitle = styled.div`
