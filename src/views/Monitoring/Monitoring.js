@@ -1,36 +1,68 @@
+// import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
+import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
+import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { useMemo, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
-import { searchContext } from 'views/Search/SearchView';
 import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
 import { COLUMNS } from './columns';
-import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import * as Styled from './monitoring.styles';
-import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
-// import { getApplications } from 'store/actions/applications/ApplicationsAction';
-
+import { useAppMonitoring } from './useMonitoring';
 // import { getApplications } from 'store/actions/applications/ApplicationsAction';
 
 // import { isEmpty, isUndefined } from 'underscore';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
-  const monitoring = useSelector((state) => console.log(state));
+  const [monitorindData, setMonitoringData] = useState({});
+  const { data: monitoring, isLoading } = useAppMonitoring();
+  const columns = useMemo(() => COLUMNS, []);
+  const datas = useMemo(() => MOCK_DATA, []);
+  // const [monitoringApp, setMonitoringApp] = useState([]);
+  // const monitoring = useSelector((state) => console.log(state));
   console.log(monitoring);
+  let usersMarkup;
+  if (isLoading) {
+    usersMarkup = <div>Loading...</div>;
+  } else if (monitoring && monitoring.Applications.length === 0) {
+    usersMarkup = <div>No Team!</div>;
+  } else if (monitoring && monitoring.Applications.length >= 0) {
+    console.log('monitoring', monitoring);
+    let fieldOfExpertise = [];
+    let i = monitoring.Applications;
+    for (let dataObj of i) {
+      if (dataObj.FieldOfExpertise) {
+        console.log('dataObj.FieldOfExpertise', dataObj.FieldOfExpertise);
+        dataObj.FieldOfExpertise = dataObj.FieldOfExpertise;
+        dataObj.FieldOfExpertise.Name = fieldOfExpertise.push(
+          dataObj.FieldOfExpertise.Name
+        );
+        console.log(fieldOfExpertise);
+      }
+      // dataObj.FieldOfExpertise = dataObj.FieldOfExpertise.Name;
+      // dataObj.FieldOfExpertise = dataObjFieldOfExpertise;
+    }
+    usersMarkup = <MyTable columns={columns} data={monitoring.Applications} />;
+  }
 
-  useEffect(() => {
-    dispatch(getApplicationsMonitoring()).then((res) => {
-      console.log(res);
-    });
-  }, []);
+  // useEffect(() => {
+  //   GetApplicationsMonitoring({}).then((res) => {
+  //     console.log('res', res);
+  //     // setMonitoringData(res)
+  //     // console.log('monitorindData', monitorindData);
+  //     // setMonitoringApp(res.Applications)
+  //     // console.log('monitoringApp',monitoringApp);
+  //   });
+  // }, []);
 
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
@@ -51,8 +83,6 @@ const MonitoringView = ({ ...props }) => {
     position: relative;
     width: 100%;
   `;
-  const columns = useMemo(() => COLUMNS, []);
-  const datas = useMemo(() => MOCK_DATA, []);
 
   return (
     <Styled.Container>
@@ -153,7 +183,8 @@ const MonitoringView = ({ ...props }) => {
           </Button>
         </div>
       </div>
-      <MyTable columns={columns} data={datas} />{' '}
+      {/* <MyTable columns={columns} data={monitoring.Applications} />{' '} */}
+      {usersMarkup}
     </Styled.Container>
   );
 };

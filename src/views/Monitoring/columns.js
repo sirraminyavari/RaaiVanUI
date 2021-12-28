@@ -1,8 +1,8 @@
 export const COLUMNS = [
-  // {
-  //   Header: 'نام تیم',
-  //   accessor: 'Name',
-  // },
+  {
+    Header: 'نام تیم',
+    accessor: 'FieldOfExpertise.Name',
+  },
   // {
   //   Header: 'تاریخ عضویت',
   //   accessor: 'date',
@@ -16,7 +16,7 @@ export const COLUMNS = [
     accessor: 'LastActivityTime',
   },
   {
-    Header: 'تاریخ آخرین فعالیت',
+    Header: 'تاریخ آخرین ورود',
     accessor: 'LoginsCount',
   },
 ];
