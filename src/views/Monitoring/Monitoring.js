@@ -25,8 +25,6 @@ const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
   const monitoring = useSelector((state) => console.log(state));
   console.log(monitoring);
-  const [getApplicationsMonitoringData, setGetAppMonitoringData] = useState([]);
-  // const [getApplicationsMonitoring, setGetAppMonitoring] = useState([]);
 
   useEffect(() => {
     dispatch(getApplicationsMonitoring()).then((res) => {

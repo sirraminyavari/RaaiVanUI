@@ -1,8 +1,6 @@
 import { MonitoringSlice } from 'store/reducers/monitoringReducer';
-// import { MonitoringSlice } from 'store/reducers/monitoringReducer';
 import { RV_API, GET_APPLICATION_MONITORING } from 'constant/apiConstants';
 import { API_Provider, setRVGlobal } from 'helpers/helpers';
-// import { setMonitoring, setFetchingApps } from 'store/reducers/monitoringReducer';
 const { setMonitoring, setFetchingApps } = MonitoringSlice.actions;
 
 /**
