@@ -3,15 +3,15 @@ import {
   CV_DISTANT,
   CV_GRAY,
   TCV_DEFAULT,
-  TCV_VERY_TRANSPARENT,
   TCV_WARM,
 } from 'constant/CssVariables';
-import { useCallback, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { PermissionContext } from '../Permissions';
+import useWindowContext from 'hooks/useWindowContext';
 
 const RoleItem = (props) => {
   const { IconURL, RoleID, RoleName, Permissions } = props;
-
+  const { RVDic } = useWindowContext();
   const { selectedRole, setSelectedRole } = useContext(PermissionContext);
   const selected = useMemo(() => selectedRole?.RoleID === RoleID, [
     selectedRole,
@@ -21,7 +21,9 @@ const RoleItem = (props) => {
     <CardContainer highlight={selected} onClick={(e) => setSelectedRole(props)}>
       <Title name={RoleName} thumb={IconURL} selected={selected} />
       <PermissionCountTitle
-        highlight={selected}>{`${Permissions} دسترسی `}</PermissionCountTitle>
+        highlight={
+          selected
+        }>{`${Permissions} ${RVDic.Permissions} `}</PermissionCountTitle>
     </CardContainer>
   );
 };

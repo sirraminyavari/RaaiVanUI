@@ -1,10 +1,5 @@
 import styled from 'styled-components';
-import {
-  CV_DISTANT,
-  CV_FREEZED,
-  CV_WHITE,
-  TCV_DEFAULT,
-} from 'constant/CssVariables';
+import { CV_FREEZED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 
 const ResendInvitationButton = ({ children, ...props }) => {
   return (

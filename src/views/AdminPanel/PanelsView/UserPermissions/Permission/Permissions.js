@@ -5,8 +5,7 @@ import * as Styled from './PermissionStyle';
 import RoleSelectionPane from './items/RoleSelectionPane';
 import PermissionSelectionPane from './items/PermissionSelectionPane';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { setLastName } from '../../../../../apiHelper/apiFunctions';
-import LogoLoader from '../../../../../components/Loaders/LogoLoader/LogoLoader';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 export const PermissionContext = createContext({});
 const Permissions = ({
@@ -65,7 +64,6 @@ const Permissions = ({
             roles?.filter((x) => x?.RoleType === 'User')[0] || {}
           );
         }
-
         setLoading(false);
       }
     );
@@ -79,12 +77,12 @@ const Permissions = ({
     },
     {
       id: 2,
-      title: 'مدیریت کاربران',
+      title: RVDic?.UserManagement,
       linkTo: '',
     },
     {
       id: 3,
-      title: 'دسترسی‌ها',
+      title: RVDic?.Permissions,
       linkTo: '',
     },
   ];
@@ -109,7 +107,7 @@ const Permissions = ({
           <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
           {!loading ? (
             <>
-              <Styled.HeadingWrapper>{`دسترسی‌ها (${selectedRole?.RoleName})`}</Styled.HeadingWrapper>
+              <Styled.HeadingWrapper>{`${RVDic?.Permissions} (${selectedRole?.RoleName})`}</Styled.HeadingWrapper>
 
               <PermissionSelectionPane sections={sections} />
             </>

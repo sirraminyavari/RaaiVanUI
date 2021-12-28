@@ -20,7 +20,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
   const listEl = useRef();
   const { roles, permissions } = useContext(PermissionContext);
   const [roleSearchText, setRoleSearchTexts] = useState('');
-  const { RV_RTL } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
 
   useOutsideClick(() => {
     setShow(false);
@@ -61,12 +61,12 @@ const PermissionItemOpen = ({ ID, ...props }) => {
             <TopRowButton
               highlight={userRole}
               onClick={() => setUserRole(true)}>
-              اعضا
+              {RVDic?.Users}
             </TopRowButton>
             <TopRowButton
               highlight={!userRole}
               onClick={() => setUserRole(false)}>
-              گروه‌ها
+              {RVDic?.Groups}
             </TopRowButton>
 
             <CloseButton onClick={() => setShow(false)} rtl={RV_RTL}>
@@ -77,7 +77,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
           <BodyContainer>
             <InputWrapper>
               <Input
-                placeholder="جستجو در هم‌تیمی‌ها"
+                placeholder={RVDic.Search}
                 value={roleSearchText}
                 onChange={(e) => setRoleSearchTexts(e?.target?.value)}
               />
@@ -99,7 +99,7 @@ const PermissionItemOpen = ({ ID, ...props }) => {
 const RoleTitle = ({ IconURL, RoleName }) => {
   return (
     <TitleContainer>
-      <Thumbnail src={IconURL}></Thumbnail>
+      <Thumbnail src={IconURL} />
       <RoleNameTitle>{RoleName}</RoleNameTitle>
     </TitleContainer>
   );

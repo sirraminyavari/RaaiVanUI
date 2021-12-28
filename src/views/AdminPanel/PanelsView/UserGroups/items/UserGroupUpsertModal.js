@@ -17,6 +17,7 @@ import RxInput from 'components/Inputs/RxInput';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Button from 'components/Buttons/Button';
+import useWindowContext from 'hooks/useWindowContext';
 
 const UserGroupUpsertModal = ({
   group,
@@ -27,9 +28,10 @@ const UserGroupUpsertModal = ({
   onModalConfirm,
   ...props
 }) => {
+  const { RVDic } = useWindowContext();
   const [modalInfo, setModalInfo] = useState({
     show: false,
-    title: 'تنظیمات گروه',
+    title: RVDic.SettingsOfN.replace('[n]', RVDic.Group),
     middle: true,
     contentWidth: '34rem',
     titleClass: 'rv-default',
@@ -86,15 +88,13 @@ const UserGroupUpsertModal = ({
         <Styled.DashedBox
           onClick={() => setModalInfo({ ...modalInfo, show: true })}>
           <AddIcon circleOutline={true} size={48} />
-          <div>ایجاد گروه جدید</div>
+          <div>{RVDic?.CreateNewN.replace('[n]', RVDic.Group)}</div>
         </Styled.DashedBox>
       )}
 
       <Modal {...modalInfo} onClose={() => handleModalCancel()}>
         <ModalContent>
-          <InputLabel>
-            {'در کادر زیر نام گروه کاربری را وارد نمایید.'}
-          </InputLabel>
+          <InputLabel>{RVDic?.EnterTheGroupName}</InputLabel>
           <Input
             value={groupName}
             onChange={(name) => handleGroupNameChange(name)}
@@ -102,7 +102,7 @@ const UserGroupUpsertModal = ({
             placeholder={'نام گروه'}
           />
 
-          <InputLabel>{'کاربران گروه کاربری را انتخاب نمایید.'}</InputLabel>
+          <InputLabel>{RVDic?.SelectMembersOfTheGroup}</InputLabel>
           <SelectedUsersContainer>
             {members.map((x) => (
               <UserChips user={x} key={x?.UserID} onDelete={deselect} />
@@ -125,14 +125,14 @@ const UserGroupUpsertModal = ({
               type="primary"
               style={buttonStyles}
               onClick={() => handleModalConfirm()}>
-              {'ذخیره'}
+              {RVDic?.Save}
             </Button>
 
             <Button
               type="negative-o"
               style={buttonStyles}
               onClick={() => handleModalCancel()}>
-              {'بازگشت'}
+              {RVDic?.Return}
             </Button>
 
             <Spacer />
@@ -142,7 +142,7 @@ const UserGroupUpsertModal = ({
                 type="negative"
                 style={buttonStyles}
                 onClick={() => handleDeleteGroup()}>
-                {'حذف'}
+                {RVDic.RemoveN.replace('[n]', RVDic.Group)}
               </Button>
             )}
           </ModalActionBar>

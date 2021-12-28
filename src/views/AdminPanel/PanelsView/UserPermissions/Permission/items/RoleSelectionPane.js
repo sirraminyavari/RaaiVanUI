@@ -10,7 +10,7 @@ import UserSelectModal from './UserSelectModal';
 import GroupSelectModal from './GroupSelectModal';
 
 const RoleSelectionPane = ({ ...props }) => {
-  const { RV_RTL } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
   const { roles } = useContext(PermissionContext);
   const [userType, setUserType] = useState(true);
   const [roleSearchText, setRoleSearchText] = useState('');
@@ -34,13 +34,13 @@ const RoleSelectionPane = ({ ...props }) => {
         <RoleSelectionButton
           selected={userType}
           onClick={() => setUserType(true)}>
-          {'کاربرها'}
+          {RVDic.Users}
         </RoleSelectionButton>
 
         <RoleSelectionButton
           selected={!userType}
           onClick={() => setUserType(false)}>
-          {'گروه‌های کاربری'}
+          {RVDic.Groups}
         </RoleSelectionButton>
 
         <AddRoleContainer>
@@ -53,6 +53,7 @@ const RoleSelectionPane = ({ ...props }) => {
       <RolesContainer>
         <Styled.RoleSearchBox>
           <Styled.RoleInput
+            placeholder={RVDic.Search}
             type="text"
             value={roleSearchText}
             onChange={(e) => setRoleSearchText(e?.target?.value)}

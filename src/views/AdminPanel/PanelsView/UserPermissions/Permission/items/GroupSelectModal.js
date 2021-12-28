@@ -18,12 +18,14 @@ import useLazyPaginatedTree from './LazyPaginatedTree';
 import LazyTreeNode from './LazyTreeNode';
 import { decodeBase64, getUUID } from 'helpers/helpers';
 import PeopleOutlineIcon from 'components/Icons/PeopleOutlineIcon/PeopleOutlineIcon';
+import useWindowContext from 'hooks/useWindowContext';
 
 const GroupSelectModal = () => {
   const FETCH_DATA_COUNT = 12;
   const { roles, setRoles } = useContext(PermissionContext);
+  const { RVDic } = useWindowContext();
   const [modalInfo, setModalInfo] = useState({
-    title: 'انتخاب گروه کاربری',
+    title: RVDic.SelectN.replace('[n]', RVDic.Group),
     contentWidth: '35%',
     middle: true,
     show: false,
@@ -38,7 +40,6 @@ const GroupSelectModal = () => {
     selectedNode,
     handleResetSelectedNode,
     updateNodeChildren,
-    setNodeLoadingState,
     setNodeOpenState,
     setNodeOpenLoading,
     handleNodeSelection,
@@ -127,9 +128,7 @@ const GroupSelectModal = () => {
     )
       .then((res) => {
         hasMore =
-          res?.TotalCount - res?.Nodes?.length - node?.items?.length > 0
-            ? true
-            : false;
+          res?.TotalCount - res?.Nodes?.length - node?.items?.length > 0;
         return res?.Nodes;
       })
       .then((res) =>
@@ -159,20 +158,16 @@ const GroupSelectModal = () => {
     <DialogContainer>
       <ModalButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
         <AddIcon circleOutline={true} size={20} />
-        <div>افزودن</div>
+        <div>{RVDic.Add}</div>
       </ModalButton>
       <Modal {...modalInfo} onClose={onModalCancel}>
-        <ModalMessage>
-          {'کاربران گروه‌های انتخاب شده به مدیریت مستندات دسترسی خواهند داشت:'}
-        </ModalMessage>
-
         <SearchRoleInput>
           <CustomRole
             type="text"
             delayTime={1000}
             defaultValue={searchNewRole}
             onChange={(value) => setSearchNewRole(value)}
-            placeholder={'برای افزودن گروه، نام گروه را جستجو کنید...'}
+            placeholder={RVDic?.Search}
           />
           <SearchIcon size={20} />
         </SearchRoleInput>
@@ -195,19 +190,19 @@ const GroupSelectModal = () => {
 
         <HintContainer>
           <PeopleOutlineIcon size={16} />
-          <div>{'موارد که علامت گروه را ندارند، قابل انتخاب نیستند'}</div>
+          <div>{RVDic.ItemsWithoutTheGroupMarkAreNotSelectable}</div>
         </HintContainer>
 
         <ActionButtonContainer>
           <Button type="primary" style={buttonStyles} onClick={onModalConfirm}>
-            {'ذخیره'}
+            {RVDic?.Save}
           </Button>
 
           <Button
             type="negative-o"
             style={buttonStyles}
             onClick={onModalCancel}>
-            {'بازگشت'}
+            {RVDic.Return}
           </Button>
         </ActionButtonContainer>
       </Modal>

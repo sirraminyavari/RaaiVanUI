@@ -5,7 +5,7 @@ import useWindow from 'hooks/useWindowContext';
 const UsersContent = () => {
   const history = useHistory();
   const location = useLocation();
-  const { RV_RevFloat, RVDic, RVGlobal } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
 
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
@@ -18,13 +18,13 @@ const UsersContent = () => {
     },
     {
       id: '2',
-      title: RVDic?.UserGroupsManagement || 'مدیریت گروه‌ها',
+      title: RVDic?.ManageN.replace('[n]', RVDic.Groups),
       linkTo: '/configuration/usergroups',
       show: isSaas,
     },
     {
       id: '3',
-      title: 'دسترسی‌ها',
+      title: RVDic.Permissions,
       linkTo: '/configuration/userpermissions',
       show: !isSaas,
     },

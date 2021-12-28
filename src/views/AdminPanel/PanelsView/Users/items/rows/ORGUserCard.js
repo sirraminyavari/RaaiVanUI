@@ -36,10 +36,12 @@ const ORGUserCard = ({
         editable={editable}>
         <EditableTitle
           value={firstName}
-          onConfirm={(e) => handleFirstNameUpdate(e)}></EditableTitle>
+          onConfirm={(e) => handleFirstNameUpdate(e)}
+        />
         <EditableTitle
           value={lastName}
-          onConfirm={(e) => handleLastNameUpdate(e)}></EditableTitle>
+          onConfirm={(e) => handleLastNameUpdate(e)}
+        />
       </UserFullNameTitle>
     ),
     [FullName, ImageURL, firstName, lastName]
@@ -113,15 +115,11 @@ const ORGUserCard = ({
         {LastActivityTime_Local}
       </Styled.ListBodyItem>
 
-      <Styled.ListBodyItem width={10}>
-        <UserGroupEdit />
-      </Styled.ListBodyItem>
-
-      <Styled.ListBodyItem width={10}>
+      <Styled.ListBodyItem width={15}>
         <ResetPassword render={userTitle(false, true)} userId={UserID} />
       </Styled.ListBodyItem>
 
-      <Styled.ListBodyItem width={10}>
+      <Styled.ListBodyItem width={15}>
         <ToggleButton
           value={isApprovedStatus}
           onToggle={toggleApprovedStatus}

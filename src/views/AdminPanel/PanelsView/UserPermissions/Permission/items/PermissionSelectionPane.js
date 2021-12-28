@@ -10,7 +10,7 @@ import useWindowContext from 'hooks/useWindowContext';
 
 const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
-  const { RV_RTL } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
   const { selectedRole, permissions, updatePermission, roles } = useContext(
     PermissionContext
   );
@@ -86,7 +86,7 @@ const PermissionSelectionPane = ({ sections }) => {
       <SearchBoxWrapper>
         <Styled.RoleSearchBox>
           <Styled.RoleInput
-            placeholder={'فیلتر بر اساس نام دسترسی'}
+            placeholder={RVDic.Search}
             type="text"
             value={permissionSearchText}
             onChange={(e) => setPermissionSearchText(e?.target?.value)}
@@ -98,10 +98,12 @@ const PermissionSelectionPane = ({ sections }) => {
       <ListHeader>
         <SelectAllWrapper onClick={() => handleSelectAllClick()}>
           {allSelected && <DoubleCheck size={24} />}
-          <div>همه</div>
+          <div>{RVDic.All}</div>
         </SelectAllWrapper>
-        <PermissionHeaderTitle rtl={RV_RTL}>دسترسی</PermissionHeaderTitle>
-        <OpenHeaderTitle>مشاهده</OpenHeaderTitle>
+        <PermissionHeaderTitle rtl={RV_RTL}>
+          {RVDic.Permissions}
+        </PermissionHeaderTitle>
+        <OpenHeaderTitle>{RVDic?.View}</OpenHeaderTitle>
       </ListHeader>
 
       <PermissionBody>{items}</PermissionBody>

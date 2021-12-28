@@ -10,7 +10,8 @@ const UserGroupMembers = ({ members }) => {
           index={index}
           rtl={RV_RTL}
           key={x?.UserID}
-          src={x?.ImageURL}></Styled.GroupMemberItem>
+          src={x?.ImageURL}
+        />
       ))}
     </Styled.GroupMemberContainer>
   );

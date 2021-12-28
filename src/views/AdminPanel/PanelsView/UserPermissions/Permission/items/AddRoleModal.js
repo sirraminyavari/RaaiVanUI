@@ -4,6 +4,7 @@ import Modal from 'components/Modal/Modal';
 import { CV_GRAY, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import Button from 'components/Buttons/Button';
+import useWindowContext from 'hooks/useWindowContext';
 
 const AddRoleModal = ({ children, onClose, onConfirm, info, ...props }) => {
   const [modalInfo, setModalInfo] = useState({
@@ -14,6 +15,8 @@ const AddRoleModal = ({ children, onClose, onConfirm, info, ...props }) => {
     titleClass: 'rv-default',
     titleContainerClass: 'modal-title-bar',
   });
+
+  const { RVDic } = useWindowContext();
 
   const onModalConfirm = () => {
     if (onConfirm) {
@@ -37,23 +40,20 @@ const AddRoleModal = ({ children, onClose, onConfirm, info, ...props }) => {
     <DialogContainer>
       <ModalButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
         <AddIcon circleOutline={true} size={20} />
-        <div>افزودن</div>
+        <div>{RVDic?.Add}</div>
       </ModalButton>
       <Modal {...modalInfo} onClose={onModalCancel}>
-        <ModalMessage>
-          {'کاربران انتخاب شده به مدیریت مستندات دسترسی خواهند داشت:'}
-        </ModalMessage>
         {children}
         <ActionButtonContainer>
           <Button type="primary" style={buttonStyles} onClick={onModalConfirm}>
-            {'ذخیره'}
+            {RVDic?.Save}
           </Button>
 
           <Button
             type="negative-o"
             style={buttonStyles}
             onClick={onModalCancel}>
-            {'بازگشت'}
+            {RVDic?.Return}
           </Button>
         </ActionButtonContainer>
       </Modal>

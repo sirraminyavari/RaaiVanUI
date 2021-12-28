@@ -159,6 +159,6 @@ export const GroupMemberItem = styled.img`
 export const GroupIconContainer = styled.div`
   position: absolute;
   top: 0.1rem;
-  left: 0.5rem;
+  ${({ rtl }) => (rtl ? 'left' : 'right')}: 0.5rem;
   color: ${CV_GRAY_LIGHT};
 `;

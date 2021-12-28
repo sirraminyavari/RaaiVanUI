@@ -126,7 +126,7 @@ const UserGroups = () => {
         ?.filter((x) => x?.Name.includes(searchText))
         ?.map((x) => (
           <GroupItem key={x?.NodeID}>
-            <Styled.GroupIconContainer>
+            <Styled.GroupIconContainer rtl={RV_RTL}>
               <PeopleIcon size={96} />
             </Styled.GroupIconContainer>
             <GroupItemTitle>{x?.Name}</GroupItemTitle>
@@ -158,7 +158,7 @@ const UserGroups = () => {
     },
     {
       id: 3,
-      title: 'گروه های کاربری',
+      title: RVDic?.Groups,
       linkTo: 'usergroups',
     },
   ];
@@ -169,10 +169,10 @@ const UserGroups = () => {
         <Breadcrumb items={breadcrumbs} />
 
         <Styled.GroupsContainer>
-          <Styled.HeadingWrapper>{'گروه های کاربری'}</Styled.HeadingWrapper>
+          <Styled.HeadingWrapper>{RVDic.Groups}</Styled.HeadingWrapper>
           <Styled.InputContainer>
             <Styled.Input
-              placeholder={'فیلتر بر اساس نام گروه'}
+              placeholder={RVDic.Search}
               value={searchText}
               onChange={(e) => setSearchText(e)}
             />

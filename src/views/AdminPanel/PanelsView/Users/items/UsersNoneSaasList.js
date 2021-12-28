@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { decodeBase64, getUUID } from 'helpers/helpers';
+import { useEffect, useMemo } from 'react';
+import { getUUID } from 'helpers/helpers';
 import * as Styled from './UsersListStyled';
 import ORGUserCard from './rows/ORGUserCard';
 import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
 import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
+import useWindowContext from 'hooks/useWindowContext';
+import { NoneSaasUserListHeaders } from './_constants';
 
 const UsersNoneSaasList = ({ rtl, users, ...props }) => {
+  const { RVDic } = useWindowContext();
   const userCards = useMemo(
     () =>
       users?.map((x) => (
@@ -39,7 +42,7 @@ const UsersNoneSaasList = ({ rtl, users, ...props }) => {
       <Styled.ListContainer top={2.4}>
         <Styled.ListHeader>
           <Styled.ListHeaderRow rtl={rtl}>
-            {listHeaderData.map((x) => (
+            {NoneSaasUserListHeaders(RVDic).map((x) => (
               <Styled.ListHeaderItem
                 key={getUUID()}
                 width={x.width}
@@ -55,33 +58,4 @@ const UsersNoneSaasList = ({ rtl, users, ...props }) => {
     </>
   );
 };
-const listHeaderData = [
-  {
-    title: 'نام کاربر',
-    width: 25,
-  },
-  {
-    title: 'نام کاربری',
-    width: 25,
-  },
-  {
-    title: 'آخرین فعالیت',
-    width: 20,
-  },
-  {
-    title: 'تنظیمات',
-    width: 10,
-    centralized: true,
-  },
-  {
-    title: 'بازنشانی گذرواژه',
-    width: 10,
-    centralized: true,
-  },
-  {
-    title: 'فعال/غیرفعال',
-    width: 10,
-    centralized: true,
-  },
-];
 export default UsersNoneSaasList;
