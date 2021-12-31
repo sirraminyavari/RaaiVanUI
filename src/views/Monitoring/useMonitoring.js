@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
+import { useEffect, useState } from 'react';
 
 const useAppMonitoring = (
   totalUsersCount = true,
