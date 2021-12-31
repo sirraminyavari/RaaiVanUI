@@ -206,12 +206,14 @@ const MonitoringView = ({ ...props }) => {
           </div>
         </div>
       </Styled.Title>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <AnimatedInput
-          name="search"
-          label="search"
-          style={{ maxWidth: '480px' }}
-        />
+      <Styled.Grid>
+        <Styled.Inpt>
+          <AnimatedInput
+            name="search"
+            label="search"
+            // style={{ maxWidth: '480px' }}
+          />
+        </Styled.Inpt>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Styled.ExcelContainer>
             <OfficeIcons
@@ -226,7 +228,7 @@ const MonitoringView = ({ ...props }) => {
             style={{
               // color: '#2B7BE4',
               border: '1px solid var(--rv-color)',
-              padding: '.5rem',
+              padding: '.51rem',
               borderRadius: '.5rem',
               display: 'flex',
               alignItems: 'center',
@@ -238,7 +240,7 @@ const MonitoringView = ({ ...props }) => {
             </span>
           </Button>
         </div>
-      </div>
+      </Styled.Grid>
       {usersMarkup}
     </Styled.Container>
   );
