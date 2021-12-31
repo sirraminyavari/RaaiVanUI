@@ -18,17 +18,21 @@ import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
 // import { getApplications } from 'store/actions/applications/ApplicationsAction';
-
+import {
+  API_Provider,
+  decodeBase64,
+  encodeBase64,
+  // getCaptchaToken,
+} from 'helpers/helpers';
 // import { isEmpty, isUndefined } from 'underscore';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
-  const [monitorindData, setMonitoringData] = useState({});
+  // const [monitorindData, setMonitoringData] = useState({});
   const { data: monitoring, isLoading } = useAppMonitoring();
   const columns = useMemo(() => COLUMNS, []);
-  const datas = useMemo(() => MOCK_DATA, []);
-  // const [monitoringApp, setMonitoringApp] = useState([]);
-  // const monitoring = useSelector((state) => console.log(state));
+  // const datas = useMemo(() => MOCK_DATA, []);
+
   console.log(monitoring);
   let usersMarkup;
   if (isLoading) {
@@ -40,29 +44,31 @@ const MonitoringView = ({ ...props }) => {
     let fieldOfExpertise = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
+      console.log('mmmmmmmmm', dataObj);
       if (dataObj.FieldOfExpertise) {
         console.log('dataObj.FieldOfExpertise', dataObj.FieldOfExpertise);
         dataObj.FieldOfExpertise = dataObj.FieldOfExpertise;
+        console.log(
+          'dataObj.LastActivityTime',
+          dataObj.LastActivityTime.slice(10, 15)
+        );
+        dataObj.LastActivityTime = dataObj.LastActivityTime.slice(10, 15);
         dataObj.FieldOfExpertise.Name = fieldOfExpertise.push(
           dataObj.FieldOfExpertise.Name
         );
         console.log(fieldOfExpertise);
       }
-      // dataObj.FieldOfExpertise = dataObj.FieldOfExpertise.Name;
-      // dataObj.FieldOfExpertise = dataObjFieldOfExpertise;
+      if (dataObj.Title) {
+        dataObj.Title = decodeBase64(dataObj.Title);
+        console.log('dataObj.Title', dataObj.Title);
+      }
+      // if(dataObj.IconURL){
+      //   dataObj.IconURL =  <img src='http://cliqmind-dev.ir/Images/CliqMind-Mini.png' />
+      //   // 'http://cliqmind-dev.ir/../../Images/CliqMind-Mini.png'
+      // }
     }
     usersMarkup = <MyTable columns={columns} data={monitoring.Applications} />;
   }
-
-  // useEffect(() => {
-  //   GetApplicationsMonitoring({}).then((res) => {
-  //     console.log('res', res);
-  //     // setMonitoringData(res)
-  //     // console.log('monitorindData', monitorindData);
-  //     // setMonitoringApp(res.Applications)
-  //     // console.log('monitoringApp',monitoringApp);
-  //   });
-  // }, []);
 
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
@@ -183,7 +189,6 @@ const MonitoringView = ({ ...props }) => {
           </Button>
         </div>
       </div>
-      {/* <MyTable columns={columns} data={monitoring.Applications} />{' '} */}
       {usersMarkup}
     </Styled.Container>
   );

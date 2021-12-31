@@ -5,6 +5,14 @@ import { useHistory } from 'react-router-dom';
 
 export const MyTable = ({ columns, data }) => {
   const history = useHistory();
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 30,
+      width: 150,
+      maxWidth: 400,
+    }),
+    []
+  );
   const {
     getTableProps,
     getTableBodyProps,
@@ -14,6 +22,7 @@ export const MyTable = ({ columns, data }) => {
     getHooks,
   } = useTable(
     {
+      defaultColumn,
       columns,
       data,
     },
@@ -46,13 +55,19 @@ export const MyTable = ({ columns, data }) => {
                   {...row.getRowProps()}
                   striped={true}
                   onClick={() => {
-                    console.log('kkkk');
+                    console.log('hhh');
                     history.push('/');
                   }}>
                   {row.cells.map((cell) => {
                     return (
                       <td
-                        style={{ padding: '0rem 0rem 0rem 6rem' }}
+                        style={{
+                          padding: '.2rem .1rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          textAlign: 'center',
+                          justifyContent: 'center',
+                        }}
                         {...cell.getCellProps()}>
                         {cell.render('Cell')}{' '}
                       </td>

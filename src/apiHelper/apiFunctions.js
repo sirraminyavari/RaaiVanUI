@@ -1397,7 +1397,7 @@ export const GetApplicationsMonitoring = ({
       GetApplicationsMonitoringAPI.fetch(
         {
           TotalUsersCount: totalUsersCount,
-          TembersCount: membersCount,
+          MembersCount: membersCount,
           LastActivityTime: lastActivityTime,
           LoginsCountSinceNDaysAgo: loginsCountSinceNDaysAgo,
           Count: count,

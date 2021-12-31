@@ -28,15 +28,21 @@ export const TableRowHeader = styled.div.attrs({
   className: `${C_GRAY}`,
 })`
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr;
-  font-size: 0.8rem;
-  padding: 0.5rem;
+  grid-template-columns: repeat(5, 1fr);
+  textalign: center;
+  alignitems: center;
+  font-size: 0.75rem;
+  justfy-content: center;
+  padding: 0rem;
 `;
 export const TRow = styled.div.attrs({ className: `${C_GRAY}` })`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  font-size: 0.8rem;
-  padding: 0.5rem;
+  grid-template-columns: repeat(5, 1fr);
+  font-size: 0.78rem;
+  padding: 0rem;
+  textalign: center;
+  alignitems: center;
+  justfy-content: center;
   border-bottom: 1px solid var(--rv-gray-color);
   &:hover {
     cursor: pointer;
