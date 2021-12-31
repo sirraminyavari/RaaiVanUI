@@ -4,7 +4,14 @@ import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { searchContext } from 'views/Search/SearchView';
@@ -18,6 +25,7 @@ import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   API_Provider,
   decodeBase64,
@@ -29,11 +37,14 @@ import {
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
   // const [monitorindData, setMonitoringData] = useState({});
-  const { data: monitoring, isLoading } = useAppMonitoring();
+  const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
   const columns = useMemo(() => COLUMNS, []);
   // const datas = useMemo(() => MOCK_DATA, []);
-
-  console.log(monitoring);
+  console.log(hasMore, 'hasMore');
+  console.log(isLoading, 'isLoading');
+  const observer = useRef();
+  const lastItem = useCallback();
+  // console.log(monitoring);
   let usersMarkup;
   if (isLoading) {
     usersMarkup = (
@@ -44,11 +55,11 @@ const MonitoringView = ({ ...props }) => {
   } else if (monitoring && monitoring.Applications.length === 0) {
     usersMarkup = <div>No Team!</div>;
   } else if (monitoring && monitoring.Applications.length >= 0) {
-    console.log('monitoring', monitoring);
+    // console.log('monitoring', monitoring);
     let fieldOfExpertise = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
-      console.log('mmmmmmmmm', dataObj);
+      // console.log('mmmmmmmmm', dataObj);
       if (dataObj.FieldOfExpertise) {
         console.log('dataObj.FieldOfExpertise', dataObj.FieldOfExpertise);
         dataObj.FieldOfExpertise = dataObj.FieldOfExpertise;
@@ -64,7 +75,7 @@ const MonitoringView = ({ ...props }) => {
       }
       if (dataObj.Title) {
         dataObj.Title = decodeBase64(dataObj.Title);
-        console.log('dataObj.Title', dataObj.Title);
+        // console.log('dataObj.Title', dataObj.Title);
       }
       // if(dataObj.IconURL){
       //   dataObj.IconURL =  <img src='http://cliqmind-dev.ir/Images/CliqMind-Mini.png' />
@@ -72,9 +83,32 @@ const MonitoringView = ({ ...props }) => {
       // }
     }
     usersMarkup = (
-      <PerfectScrollbar dataLength={3} className="extra-users-scrollbar">
+      <InfiniteScroll
+        dataLength={5}
+        // next={update}
+        onScroll={() =>
+          setTimeout(() => {
+            // fetchNextPage();
+          }, 1500)
+        }
+        loader={<div>111</div>}
+        // endMessage={
+        //   hasNextPage && (
+        //     <Box sx={{ textAlign: "center" }}>
+        //       <SyncLoader
+        //         speedMultiplier={0.7}
+        //         color={"purple"}
+        //         size={8}
+        //       />
+        //     </Box>
+        //   )
+        // }
+        ref={lastItem}
+        hasMore={true}
+        // loader={<h4>Loading more 2 itens...</h4>}
+      >
         <MyTable columns={columns} data={monitoring.Applications} />
-      </PerfectScrollbar>
+      </InfiniteScroll>
     );
   }
 
