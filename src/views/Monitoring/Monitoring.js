@@ -13,11 +13,11 @@ import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
-import MOCK_DATA from '../../mockdata/MOCK_DATA.json';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
-// import { getApplications } from 'store/actions/applications/ApplicationsAction';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import {
   API_Provider,
   decodeBase64,
@@ -36,7 +36,11 @@ const MonitoringView = ({ ...props }) => {
   console.log(monitoring);
   let usersMarkup;
   if (isLoading) {
-    usersMarkup = <div>Loading...</div>;
+    usersMarkup = (
+      <div>
+        <LogoLoader />
+      </div>
+    );
   } else if (monitoring && monitoring.Applications.length === 0) {
     usersMarkup = <div>No Team!</div>;
   } else if (monitoring && monitoring.Applications.length >= 0) {
@@ -67,7 +71,11 @@ const MonitoringView = ({ ...props }) => {
       //   // 'http://cliqmind-dev.ir/../../Images/CliqMind-Mini.png'
       // }
     }
-    usersMarkup = <MyTable columns={columns} data={monitoring.Applications} />;
+    usersMarkup = (
+      <PerfectScrollbar dataLength={3} className="extra-users-scrollbar">
+        <MyTable columns={columns} data={monitoring.Applications} />
+      </PerfectScrollbar>
+    );
   }
 
   const { getExcelFile } = useContext(searchContext);
