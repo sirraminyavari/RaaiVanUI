@@ -2,8 +2,9 @@ import React from 'react';
 import { usePagination, useTable } from 'react-table';
 import * as Styled from './MyTbl.stles';
 import { useHistory } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-export const MyTable = ({ columns, data }) => {
+export const MyTable = ({ columns, data, updat }) => {
   const history = useHistory();
   const defaultColumn = React.useMemo(
     () => ({
@@ -25,6 +26,7 @@ export const MyTable = ({ columns, data }) => {
       defaultColumn,
       columns,
       data,
+      // update
     },
     usePagination
   );
@@ -78,6 +80,7 @@ export const MyTable = ({ columns, data }) => {
             })}
           </tbody>
         </table>
+        {/* </InfiniteScroll> */}
       </Styled.TableContainer>
       {/* <Card sx={{backgroundColor: 'linen', textAlign:'center'}}>
           <Stack spacing={2}>
