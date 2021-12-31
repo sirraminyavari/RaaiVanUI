@@ -123,7 +123,11 @@ const MonitoringView = ({ ...props }) => {
                   }}>
                   تعداد کل کاربران{' '}
                 </label>
-                <label style={{ fontWeight: 'bold' }}>126</label>
+                <label style={{ fontWeight: 'bold' }}>
+                  {monitoring && monitoring.TotalApplicationsCount
+                    ? monitoring.TotalApplicationsCount
+                    : ''}
+                </label>
               </div>
             </TextButton>
             <TextButton
@@ -150,7 +154,11 @@ const MonitoringView = ({ ...props }) => {
                   }}>
                   تعداد کل تیم ها{' '}
                 </label>
-                <label style={{ fontWeight: 'bold' }}>37</label>
+                <label style={{ fontWeight: 'bold' }}>
+                  {monitoring && monitoring.TotalUsersCount
+                    ? monitoring.TotalUsersCount
+                    : ''}
+                </label>
               </div>
             </TextButton>
           </div>
