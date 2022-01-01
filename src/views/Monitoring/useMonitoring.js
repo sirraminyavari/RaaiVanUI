@@ -6,8 +6,8 @@ const useAppMonitoring = (
   membersCount = true,
   lastActivityTime = true,
   loginsCountSinceNDaysAgo = 30,
-  count = 20,
-  lowerBoundary = 1
+  count,
+  lowerBoundary
 ) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +40,8 @@ const useAppMonitoring = (
     loginsCountSinceNDaysAgo,
     count,
     lowerBoundary,
+    data,
+    isLoading,
   ]);
 
   return { data, isLoading, hasMore };
