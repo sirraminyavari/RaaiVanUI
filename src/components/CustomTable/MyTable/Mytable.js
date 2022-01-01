@@ -20,13 +20,18 @@ export const MyTable = ({ columns, data, updat }) => {
     headerGroups,
     rows,
     prepareRow,
+    page,
+    canNextPage,
+    pageCount,
+    nextPage,
+    setPageSize,
     getHooks,
   } = useTable(
     {
       defaultColumn,
       columns,
       data,
-      // update
+      initialState: { pageIndex: 2 },
     },
     usePagination
   );

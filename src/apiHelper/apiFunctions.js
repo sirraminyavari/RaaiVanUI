@@ -1384,8 +1384,8 @@ export const GetApplicationsMonitoring = ({
   membersCount = true,
   lastActivityTime = true,
   loginsCountSinceNDaysAgo = 30,
-  count = 10,
-  lowerBoundary = 1,
+  count,
+  lowerBoundary,
 }) => {
   const GetApplicationsMonitoringAPI = API_Provider(
     RV_API,

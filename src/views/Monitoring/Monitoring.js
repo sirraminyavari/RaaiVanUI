@@ -32,19 +32,36 @@ import {
   encodeBase64,
   // getCaptchaToken,
 } from 'helpers/helpers';
-// import { isEmpty, isUndefined } from 'underscore';
+import { slice, concat } from 'lodash';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
-  // const [monitorindData, setMonitoringData] = useState({});
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
+  const [showMore, setShowMore] = useState(true);
+  const [page, setPage] = useState(3);
+
+  const loadMore = () => {
+    setPage((prv) => prv + 3);
+  };
   const columns = useMemo(() => COLUMNS, []);
   // const datas = useMemo(() => MOCK_DATA, []);
   console.log(hasMore, 'hasMore');
   console.log(isLoading, 'isLoading');
-  const observer = useRef();
-  const lastItem = useCallback();
-  // console.log(monitoring);
+  // const pages = []
+  //   //totalPage
+  //   for (let i = 1; i <= Math.ceil(monitoring.Applications.length / page); i++) {
+  //     pages.push(i)
+  //   }
+  const fetchData = (count) => {
+    // setPage(count + monitoring.Applications.length )
+    GetApplicationsMonitoring({ count: 2, lowerBoundary: 8 });
+    // setPage(page + 5)
+    // return monitoring.Applications.length =  monitoring.Applications.length + 3
+  };
+  // if (monitoring) {
+  //   setMonitoringData(monitoring.Applications);
+  //   console.log(monitorindData);
+  // }
   let usersMarkup;
   if (isLoading) {
     usersMarkup = (
@@ -55,7 +72,6 @@ const MonitoringView = ({ ...props }) => {
   } else if (monitoring && monitoring.Applications.length === 0) {
     usersMarkup = <div>No Team!</div>;
   } else if (monitoring && monitoring.Applications.length >= 0) {
-    // console.log('monitoring', monitoring);
     let fieldOfExpertise = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
@@ -71,27 +87,25 @@ const MonitoringView = ({ ...props }) => {
         dataObj.FieldOfExpertise.Name = fieldOfExpertise.push(
           dataObj.FieldOfExpertise.Name
         );
-        console.log(fieldOfExpertise);
+        // console.log(fieldOfExpertise);
       }
       if (dataObj.Title) {
         dataObj.Title = decodeBase64(dataObj.Title);
         // console.log('dataObj.Title', dataObj.Title);
       }
-      // if(dataObj.IconURL){
-      //   dataObj.IconURL =  <img src='http://cliqmind-dev.ir/Images/CliqMind-Mini.png' />
-      //   // 'http://cliqmind-dev.ir/../../Images/CliqMind-Mini.png'
-      // }
     }
     usersMarkup = (
       <InfiniteScroll
-        dataLength={5}
-        // next={update}
+        dataLength={monitoring.Applications.length}
+        next={loadMore}
+        hasMore={hasMore ? true : false}
+        scrollableTarget="scrollableDiv"
         onScroll={() =>
           setTimeout(() => {
-            // fetchNextPage();
-          }, 1500)
+            loadMore();
+          }, 3000)
         }
-        loader={<div>111</div>}
+        loader={<div>more...</div>}
         // endMessage={
         //   hasNextPage && (
         //     <Box sx={{ textAlign: "center" }}>
@@ -103,11 +117,13 @@ const MonitoringView = ({ ...props }) => {
         //     </Box>
         //   )
         // }
-        ref={lastItem}
-        hasMore={true}
-        // loader={<h4>Loading more 2 itens...</h4>}
+        // ref={lastItem}
       >
-        <MyTable columns={columns} data={monitoring.Applications} />
+        <MyTable
+          columns={columns}
+          data={monitoring.Applications.slice(1, page)}
+        />
+        {/* <button onClick={fetchData}> cc</button> */}
       </InfiniteScroll>
     );
   }
@@ -126,11 +142,6 @@ const MonitoringView = ({ ...props }) => {
       linkTo: USER_SECURITY_PATH,
     },
   ];
-
-  const InputContainer = styled.div`
-    position: relative;
-    width: 100%;
-  `;
 
   return (
     <Styled.Container>
@@ -242,6 +253,7 @@ const MonitoringView = ({ ...props }) => {
         </div>
       </Styled.Grid>
       {usersMarkup}
+      {showMore && <button onClick={loadMore}> Load More </button>}
     </Styled.Container>
   );
 };
