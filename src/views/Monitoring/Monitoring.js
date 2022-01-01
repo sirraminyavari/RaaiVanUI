@@ -2,66 +2,44 @@
 import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useRef,
-  useCallback,
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { decodeBase64 } from 'helpers/helpers';
+import { useContext, useMemo, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch } from 'react-redux';
 import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import {
-  API_Provider,
-  decodeBase64,
-  encodeBase64,
-  // getCaptchaToken,
-} from 'helpers/helpers';
-import { slice, concat } from 'lodash';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
-  const [showMore, setShowMore] = useState(true);
-  const [page, setPage] = useState(3);
+  const [count, setCount] = useState(8);
+  const [lowerBoundary, setLowerBoundary] = useState(5);
 
   const loadMore = () => {
-    setPage((prv) => prv + 3);
+    // setLowerBoundary(prv=> prv + 20);
+    // for (let i = 1; i <= Math.ceil(monitoring.TotalApplicationsCount / count); i++) {}
+    if (lowerBoundary <= monitoring.Applications.length + count) {
+      // setPage((prv) => prv + 5);
+      GetApplicationsMonitoring({ count: 8, lowerBoundary });
+    }
+    setLowerBoundary((prv) => prv + 8);
   };
   const columns = useMemo(() => COLUMNS, []);
   // const datas = useMemo(() => MOCK_DATA, []);
   console.log(hasMore, 'hasMore');
   console.log(isLoading, 'isLoading');
-  // const pages = []
-  //   //totalPage
-  //   for (let i = 1; i <= Math.ceil(monitoring.Applications.length / page); i++) {
-  //     pages.push(i)
-  //   }
-  const fetchData = (count) => {
-    // setPage(count + monitoring.Applications.length )
-    GetApplicationsMonitoring({ count: 2, lowerBoundary: 8 });
-    // setPage(page + 5)
-    // return monitoring.Applications.length =  monitoring.Applications.length + 3
-  };
-  // if (monitoring) {
-  //   setMonitoringData(monitoring.Applications);
-  //   console.log(monitorindData);
-  // }
+
   let usersMarkup;
   if (isLoading) {
     usersMarkup = (
@@ -87,43 +65,41 @@ const MonitoringView = ({ ...props }) => {
         dataObj.FieldOfExpertise.Name = fieldOfExpertise.push(
           dataObj.FieldOfExpertise.Name
         );
-        // console.log(fieldOfExpertise);
       }
       if (dataObj.Title) {
         dataObj.Title = decodeBase64(dataObj.Title);
-        // console.log('dataObj.Title', dataObj.Title);
       }
     }
     usersMarkup = (
       <InfiniteScroll
-        dataLength={monitoring.Applications.length}
+        dataLength={monitoring.TotalApplicationsCount}
         next={loadMore}
         hasMore={hasMore ? true : false}
         scrollableTarget="scrollableDiv"
         onScroll={() =>
           setTimeout(() => {
             loadMore();
-          }, 3000)
+          }, 1000)
         }
-        loader={<div>more...</div>}
-        // endMessage={
-        //   hasNextPage && (
-        //     <Box sx={{ textAlign: "center" }}>
-        //       <SyncLoader
-        //         speedMultiplier={0.7}
-        //         color={"purple"}
-        //         size={8}
-        //       />
-        //     </Box>
-        //   )
-        // }
+        loader={
+          hasMore && (
+            <div style={{ textAlign: 'center' }}>
+              <LoadingIconFlat />
+            </div>
+          )
+        }
+        endMessage={
+          !hasMore && (
+            <div style={{ textAlign: 'center' }}> No More data... </div>
+          )
+        }
         // ref={lastItem}
       >
         <MyTable
           columns={columns}
-          data={monitoring.Applications.slice(1, page)}
+          data={monitoring.Applications.slice(0, lowerBoundary)}
         />
-        {/* <button onClick={fetchData}> cc</button> */}
+        {/* {hasMore ? 'Loading...' : 'Load More'} */}
       </InfiniteScroll>
     );
   }
@@ -253,7 +229,7 @@ const MonitoringView = ({ ...props }) => {
         </div>
       </Styled.Grid>
       {usersMarkup}
-      {showMore && <button onClick={loadMore}> Load More </button>}
+      {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>
   );
 };
