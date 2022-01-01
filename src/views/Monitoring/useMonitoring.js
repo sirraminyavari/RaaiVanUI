@@ -6,25 +6,29 @@ const useAppMonitoring = (
   membersCount = true,
   lastActivityTime = true,
   loginsCountSinceNDaysAgo = 30,
-  count = 8,
+  count = 20,
   lowerBoundary = 1
 ) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
-  // const [counts, setCounts] = useState(count);
+  const [hasNex, setHasNext] = useState(false);
+  const [counts, setCounts] = useState(count);
+  const [lowerBoundarys, setLowerBoundarys] = useState(lowerBoundary);
   useEffect(() => {
     const getData = async () => {
       GetApplicationsMonitoring({}).then((res) => {
         console.log(res, res.TotalApplicationsCount);
+        setHasMore(res.Applications.length > 0);
         setData(res);
-        setHasMore(res.TotalApplicationsCount > 0);
+
         // if(res.TotalApplicationsCount > 0){
         // setCounts(count=>count + 3)
         // }
         console.log('hasMore', hasMore);
         setIsLoading(false);
-        console.log('hasMore', hasMore);
+        // setHasMore(false)
+        // setHasMore(res.Applications.length > 0)
       });
     };
 
