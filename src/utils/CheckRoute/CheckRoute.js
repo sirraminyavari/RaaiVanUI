@@ -31,6 +31,7 @@ import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 import { BsWindowSidebar } from 'react-icons/bs';
+import { indexOf } from 'lodash';
 
 const { setIsAthunticated } = loginSlice.actions;
 const { setCurrentApp } = ApplicationsSlice.actions;
@@ -43,12 +44,13 @@ const {
   toggleSidebar,
 } = themeSlice.actions;
 
-const setLastLocation = (data, routeName) =>
+const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
     location: window.location.pathname,
     search: window.location.search,
     data: data,
     routeName: routeName,
+    pathMatch: pathMatch,
   });
 
 const getLastLocation = () => window.__LastLocation || {};
@@ -82,7 +84,13 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const isUserView = location.pathname === USER_PATH;
   const isTeamsView = location.pathname === TEAMS_PATH;
 
+  const curPathMatch = props?.match?.path;
+  const hasDynamicParam = (curPathMatch || '_').indexOf('/:') >= 0;
+
   const isSwitchAllowed =
+    (!hasDynamicParam ||
+      curPathMatch !== lastLocation.pathMatch ||
+      location.pathname === lastLocation.location) &&
     name === lastLocation?.routeName &&
     window.location.search === lastLocation.search;
 
@@ -178,7 +186,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   const showComponent = () => {
     let rut = isSwitchAllowed ? lastLocation.data : route;
-    setLastLocation(rut, name);
+    setLastLocation(rut, name, props?.match?.path);
     return <Component {...props} route={rut} />;
   };
 
