@@ -41,7 +41,6 @@ const MonitoringView = ({ ...props }) => {
   // const datas = useMemo(() => MOCK_DATA, []);
   console.log(hasMore, 'hasMore');
   console.log(isLoading, 'isLoading');
-
   let usersMarkup;
   if (isLoading) {
     usersMarkup = (
