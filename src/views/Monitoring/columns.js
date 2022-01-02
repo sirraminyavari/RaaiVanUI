@@ -1,4 +1,16 @@
 export const COLUMNS = [
+  // {
+  //   Header: 'نام تیم',
+  //   accessor: 'Name',
+  // },
+  // {
+  //   Header: 'تاریخ عضویت',
+  //   accessor: 'date',
+  // },
+  // {
+  //   Header: 'تعداد اعضا',
+  //   accessor: 'number',
+  // },
   {
     Header: <div style={{ textAlign: 'center' }}>لوگو</div>,
     Cell: ({ value }) => (
