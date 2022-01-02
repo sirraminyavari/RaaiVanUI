@@ -4,7 +4,7 @@ import * as Styled from './MyTbl.stles';
 import { useHistory } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-export const MyTable = ({ columns, data, updat }) => {
+export const MyTable = ({ columns, data, onClick }) => {
   const history = useHistory();
   const defaultColumn = React.useMemo(
     () => ({
@@ -31,6 +31,7 @@ export const MyTable = ({ columns, data, updat }) => {
       defaultColumn,
       columns,
       data,
+      onClick,
       initialState: { pageIndex: 2 },
     },
     usePagination
@@ -61,10 +62,12 @@ export const MyTable = ({ columns, data, updat }) => {
                 <Styled.TRow
                   {...row.getRowProps()}
                   striped={true}
-                  onClick={() => {
-                    console.log('hhh');
-                    history.push('/');
-                  }}>
+                  // onClick={()=>onClick}
+                  // onClick={() => {
+                  //   console.log('hhh');
+                  //   history.push('/');
+                  // }}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <td

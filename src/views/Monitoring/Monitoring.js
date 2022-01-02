@@ -21,11 +21,16 @@ import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
+import { useLocation } from 'react-router-dom';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { pathname } = location;
+
   const { RV_RTL, RVDic } = useWindowContext();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
+  const [name, setName] = useState('');
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
   console.log('RV_RTL', RV_RTL);
@@ -53,6 +58,7 @@ const MonitoringView = ({ ...props }) => {
     usersMarkup = <div>No Team!</div>;
   } else if (monitoring && monitoring.Applications.length >= 0) {
     let fieldOfExpertise = [];
+    let title = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
       // console.log('mmmmmmmmm', dataObj);
@@ -70,8 +76,13 @@ const MonitoringView = ({ ...props }) => {
       }
       if (dataObj.Title) {
         dataObj.Title = decodeBase64(dataObj.Title);
+        // setName((dataObj.Title));
+        title.push(dataObj.Title);
       }
     }
+    console.log(title);
+    console.log(pathname + `/${name}`, 'path');
+
     usersMarkup = (
       <InfiniteScroll
         dataLength={monitoring.TotalApplicationsCount}
@@ -100,6 +111,7 @@ const MonitoringView = ({ ...props }) => {
         <MyTable
           columns={columns}
           data={monitoring.Applications.slice(0, lowerBoundary)}
+          // onClick={()=>console.log('aaaaaaaaaaaaa')}
         />
         {/* {hasMore ? 'Loading...' : 'Load More'} */}
       </InfiniteScroll>
