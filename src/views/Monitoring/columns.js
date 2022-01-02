@@ -4,10 +4,7 @@ export const COLUMNS = [
     Cell: ({ value }) => (
       <div style={{ textAlign: 'center', alignItems: 'center' }}>
         {' '}
-        <img
-          src={`http://cliqmind-dev.ir/${value}`}
-          style={{ width: '2rem' }}
-        />{' '}
+        <img src={`${value}`} style={{ width: '2rem' }} />{' '}
       </div>
     ),
     accessor: 'IconURL',
@@ -20,7 +17,7 @@ export const COLUMNS = [
   },
 
   {
-    Header: <div style={{ textAlign: 'center' }}> تاریخ آخرین فعالیت تیم </div>,
+    Header: <div style={{ textAlign: 'center' }}> تاریخ عضویت </div>,
     Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'CreationDate_Local',
   },

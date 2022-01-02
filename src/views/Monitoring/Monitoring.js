@@ -10,6 +10,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import { useContext, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
+import useWindowContext from 'hooks/useWindowContext';
 import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
@@ -22,6 +23,7 @@ import { useAppMonitoring } from './useMonitoring';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
+  const { RV_RTL, RVDic } = useWindowContext();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
@@ -106,15 +108,15 @@ const MonitoringView = ({ ...props }) => {
 
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
-    { id: 1, title: 'پنل مدیریت', linkTo: USER_PATH },
+    { id: 1, title: RVDic?.AdminPanel, linkTo: USER_PATH },
     {
       id: 2,
-      title: 'گزارشات',
+      title: RVDic?.Reports,
       linkTo: USER_SECURITY_PATH,
     },
     {
       id: 2,
-      title: 'گزارش تیم ها',
+      title: RVDic?.TeamsReport,
       linkTo: USER_SECURITY_PATH,
     },
   ];
