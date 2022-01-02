@@ -1,5 +1,6 @@
 // import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
 import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
+import { Space } from 'components';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
@@ -7,10 +8,10 @@ import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindowContext from 'hooks/useWindowContext';
 import { useContext, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
-import useWindowContext from 'hooks/useWindowContext';
 import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
@@ -27,7 +28,7 @@ const MonitoringView = ({ ...props }) => {
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
-
+  console.log('RV_RTL', RV_RTL);
   const loadMore = () => {
     // setLowerBoundary(prv=> prv + 20);
     // for (let i = 1; i <= Math.ceil(monitoring.TotalApplicationsCount / count); i++) {}
@@ -137,7 +138,7 @@ const MonitoringView = ({ ...props }) => {
                 margin: '0.5rem .5rem',
                 width: '130px',
               }}>
-              <div
+              <Space
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -149,7 +150,7 @@ const MonitoringView = ({ ...props }) => {
                     // color: 'darkgray',
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
-                    paddingLeft: '.8rem',
+                    // paddingLeft: '.8rem',
                   }}>
                   تعداد کل کاربران{' '}
                 </label>
@@ -158,7 +159,7 @@ const MonitoringView = ({ ...props }) => {
                     ? monitoring.TotalApplicationsCount
                     : ''}
                 </label>
-              </div>
+              </Space>
             </TextButton>
             <TextButton
               className="primary"
@@ -168,11 +169,11 @@ const MonitoringView = ({ ...props }) => {
                 margin: '0.5rem 0rem',
                 width: '130px',
               }}>
-              <div
+              <Space
                 style={{
                   display: 'flex',
+                  justifyContent: 'center',
                   justifyContent: 'space-between',
-                  alignItems: 'center',
                 }}>
                 <label
                   className="rv-dark-gray"
@@ -180,7 +181,7 @@ const MonitoringView = ({ ...props }) => {
                     // color: 'darkgray',
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
-                    paddingLeft: '.8rem',
+                    // paddingLeft: '.8rem',
                   }}>
                   تعداد کل تیم ها{' '}
                 </label>
@@ -189,7 +190,7 @@ const MonitoringView = ({ ...props }) => {
                     ? monitoring.TotalUsersCount
                     : ''}
                 </label>
-              </div>
+              </Space>
             </TextButton>
           </div>
         </div>
@@ -222,10 +223,32 @@ const MonitoringView = ({ ...props }) => {
               alignItems: 'center',
             }}>
             {' '}
-            <RfreshIcon size={16} />
-            <span style={{ fontSize: '.7rem', paddingRight: '.2rem' }}>
-              به روز رسانی لیست{' '}
-            </span>
+            <Space
+              space=".3rem"
+              style={{
+                display: 'flex',
+                // justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <span
+                style={{
+                  // fontSize: '.7rem',
+                  display: 'flex',
+                  // justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <RfreshIcon size={17} />
+              </span>
+              <span
+                style={{
+                  fontSize: '.7rem',
+                  // display: 'flex',
+                  // justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                به روز رسانی لیست{' '}
+              </span>
+            </Space>
           </Button>
         </div>
       </Styled.Grid>
