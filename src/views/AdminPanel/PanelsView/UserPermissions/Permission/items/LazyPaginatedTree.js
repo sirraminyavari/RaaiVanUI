@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import produce from 'immer';
 
@@ -38,8 +38,9 @@ const useLazyPaginatedTree = () => {
 
   /**
    * @description update node children
-   * @param node
+   * @param id
    * @param children
+   * @param hasMore
    */
   const updateNodeChildren = (id, children, hasMore) => {
     setTree(
@@ -92,6 +93,10 @@ const useLazyPaginatedTree = () => {
     );
   };
 
+  /**
+   *
+   * @param id
+   */
   const setNodeOpenLoading = (id) => {
     setTree(
       produce((draft) => {
