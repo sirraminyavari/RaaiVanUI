@@ -1,8 +1,8 @@
 export const COLUMNS = [
-  {
-    Header: 'نام تیم',
-    accessor: 'FieldOfExpertise.Name',
-  },
+  // {
+  //   Header: 'نام تیم',
+  //   accessor: 'FieldOfExpertise.Name',
+  // },
   // {
   //   Header: 'تاریخ عضویت',
   //   accessor: 'date',
