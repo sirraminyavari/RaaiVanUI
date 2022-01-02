@@ -84,6 +84,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const isUserView = location.pathname === USER_PATH;
   const isTeamsView = location.pathname === TEAMS_PATH;
 
+  //check if free switching between previous and current routes is allowed
   const curPathMatch = props?.match?.path;
   const hasDynamicParam = (curPathMatch || '_').indexOf('/:') >= 0;
 
@@ -93,6 +94,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       location.pathname === lastLocation.location) &&
     name === lastLocation?.routeName &&
     window.location.search === lastLocation.search;
+  //end of: check if free switching between ...
 
   //! Provides query parameters for a given location.
   const getQueryParams = () => {
