@@ -124,7 +124,6 @@ const MonitoringView = ({ ...props }) => {
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />
-
       <Styled.Title>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
