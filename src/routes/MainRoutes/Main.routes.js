@@ -111,6 +111,10 @@ const MonitoringView = lazy(() =>
   import(/* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/Monitoring')
 );
 
+// const MonitoringViewTeam = lazy(() =>
+//   import(/* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/Monitoring/')
+// );
+
 const routes = [
   ...NavbarRoutes,
   ...SidebarRoutes,
