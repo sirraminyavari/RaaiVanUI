@@ -30,6 +30,7 @@ import {
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
+import { BsWindowSidebar } from 'react-icons/bs';
 
 const { setIsAthunticated } = loginSlice.actions;
 const { setCurrentApp } = ApplicationsSlice.actions;
@@ -42,6 +43,16 @@ const {
   toggleSidebar,
 } = themeSlice.actions;
 
+const setLastLocation = (data, routeName) =>
+  (window.__LastLocation = {
+    location: window.location.pathname,
+    search: window.location.search,
+    data: data,
+    routeName: routeName,
+  });
+
+const getLastLocation = () => window.__LastLocation || {};
+
 const checkRouteAPI = API_Provider(RV_API, CHECK_ROUTE);
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
@@ -52,6 +63,28 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const [isChecking, setIsChecking] = useState(true);
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
+  const lastLocation = getLastLocation();
+
+  const authPathList = [
+    FORGOT_PASS_PATH,
+    LOGIN_PATH,
+    REGISTER_PATH,
+    RESET_PASS_ADDRESS_PATH,
+    RESET_PASS_PATH,
+    VERIFICATION_PATH,
+    VERIFY_RESET_PATH,
+  ];
+
+  //! A flag that indicates if the view is authentication page or not.
+  const isAuthView = authPathList.includes(location.pathname);
+
+  const isHomeView = location.pathname === HOME_PATH;
+  const isUserView = location.pathname === USER_PATH;
+  const isTeamsView = location.pathname === TEAMS_PATH;
+
+  const isSwitchAllowed =
+    name === lastLocation?.routeName &&
+    window.location.search === lastLocation.search;
 
   //! Provides query parameters for a given location.
   const getQueryParams = () => {
@@ -68,6 +101,8 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   };
 
   useEffect(() => {
+    if (isSwitchAllowed) return;
+
     const params = { ...routeParams, ...getQueryParams() };
     //! The location before check route api resolves.
     const prevURL = window.location.href;
@@ -141,20 +176,13 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasNavSide]);
 
-  //! A flag that indicates if the view is authentication page or not.
-  const isAuthView = [
-    FORGOT_PASS_PATH,
-    LOGIN_PATH,
-    REGISTER_PATH,
-    RESET_PASS_ADDRESS_PATH,
-    RESET_PASS_PATH,
-    VERIFICATION_PATH,
-    VERIFY_RESET_PATH,
-  ].includes(location.pathname);
+  const showComponent = () => {
+    let rut = isSwitchAllowed ? lastLocation.data : route;
+    setLastLocation(rut, name);
+    return <Component {...props} route={rut} />;
+  };
 
-  const isHomeView = location.pathname === HOME_PATH;
-  const isUserView = location.pathname === USER_PATH;
-  const isTeamsView = location.pathname === TEAMS_PATH;
+  if (isSwitchAllowed) return showComponent();
 
   if (isChecking) {
     //! If check route api is still running, then show loader.
@@ -234,7 +262,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       return <LogoLoader />;
     } else {
       //! At the end of all above checks, then render the component.
-      return <Component {...props} route={route} />;
+      return showComponent();
     }
   }
 };
