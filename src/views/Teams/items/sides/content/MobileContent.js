@@ -1,4 +1,4 @@
-// import Header from './ContentHeader';
+import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import MobileWorkSpace from './MobileSpace';
 
@@ -14,7 +14,7 @@ const spaces = [
 const MobileContentSide = () => {
   return (
     <Styled.MobileContentSide>
-      {/* <Header /> */}
+      <Header />
       <Styled.SpaceListConatiner>
         {spaces?.map((space, key) => (
           <MobileWorkSpace key={key} space={space} />

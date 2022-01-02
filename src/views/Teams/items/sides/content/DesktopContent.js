@@ -1,4 +1,4 @@
-// import Header from './ContentHeader';
+import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import DesktopWorkSpace from './DesktopSpace';
 
@@ -14,7 +14,7 @@ const spaces = [
 const DesktopContentSide = () => {
   return (
     <Styled.DesktopContentSide>
-      {/* <Header /> */}
+      <Header />
       <Styled.SpaceListConatiner>
         {spaces?.map((space, key) => (
           <DesktopWorkSpace key={key} space={space} />
