@@ -156,6 +156,8 @@ export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
 export const TEAM_SETTINGS_NAME = 'TeamSettings';
 export const MONITORING_PATH = '/monitoring';
 export const MONITORING_NAME = 'monitoring';
+export const MONITORING_TEAMS_PATH = '/monitoring-teams';
+export const MONITORING_TEAMS_NAME = 'monitoringteams';
 
 //! Border radius classes
 /**
