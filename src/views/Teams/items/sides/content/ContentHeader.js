@@ -56,7 +56,7 @@ const Header = () => {
       />
       <Styled.HeaderTitle>{RVDic.YourWorkspaces}</Styled.HeaderTitle>
       <Button style={{ minWidth: '10rem' }} onClick={handleAddSpace}>
-        <AddIcon style={{ fontSize: '1.5em', marginInlineEnd: 2 }} />
+        <AddIcon size={'1.5rem'} style={{ marginInlineEnd: '.25rem' }} />
         {RVDicNewWorkspace}
       </Button>
     </Styled.HeaderContainer>
