@@ -24,7 +24,7 @@ const TextContainer = styled.p`
  * @param {string} [props.question=""] - Message question
  * @param {string} [props.warning=""] - Message warning
  *
- * @return {JSX.Element} The fragment created.
+ * @return {JSX.Element} The delete confirmation texts.
  */
 const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
   return (
@@ -45,8 +45,6 @@ const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
   );
 };
 
-export default DeleteConfirmMSG;
-
 DeleteConfirmMSG.propTypes = {
   isOpen: PropTypes.bool,
   onInputChange: PropTypes.func,
@@ -63,3 +61,5 @@ DeleteConfirmMSG.defaultProps = {
   question: '',
   warning: '',
 };
+
+export default DeleteConfirmMSG;

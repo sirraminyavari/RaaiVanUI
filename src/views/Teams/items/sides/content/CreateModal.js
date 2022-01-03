@@ -38,7 +38,7 @@ const ButtonWrapper = styled.div`
  * @param {string|number} props.modalWidth - Modal component's fixed width
  * @param {string} props.placeholder - placeholder value for input component
  *
- * @return {JSX.Element} The fragment created.
+ * @return {JSX.Element} modal for creating a new workspace
  */
 const CreateModal = ({
   isOpen,
@@ -86,8 +86,6 @@ const CreateModal = ({
   );
 };
 
-export default CreateModal;
-
 CreateModal.propTypes = {
   isOpen: PropTypes.bool,
   onInputChange: PropTypes.func,
@@ -108,3 +106,5 @@ CreateModal.defaultProps = {
   modalWidth: '33%',
   placeholder: '',
 };
+
+export default CreateModal;

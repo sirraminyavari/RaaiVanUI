@@ -14,9 +14,9 @@ import { TC_DEFAULT } from 'constant/Colors';
  * SpaceHeader component
  *
  * @param {object} props - SpaceHeder component props
- * @param {object} [props.space] - workspace object
+ * @param {object} props.space - workspace object
  *
- * @return {JSX.Element} The fragment created.
+ * @return {JSX.Element} The header associated with each workspace
  */
 const SpaceHeader = ({ space }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
@@ -79,8 +79,8 @@ const SpaceHeader = ({ space }) => {
   );
 };
 
-export default SpaceHeader;
-
 SpaceHeader.propTypes = {
   space: PropTypes.object.isRequired,
 };
+
+export default SpaceHeader;
