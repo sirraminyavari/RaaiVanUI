@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'views/Teams/Teams.styles';
-// import SpaceHeader from './SpcaeHeader';
+import SpaceHeader from './SpaceHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -45,7 +45,7 @@ const DesktopWorkSpace = ({ space }) => {
 
   return (
     <Styled.SpaceConatiner>
-      {/* <SpaceHeader space={space} /> */}
+      <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.id} spring="stiff">
           <Styled.TeamListConatiner>

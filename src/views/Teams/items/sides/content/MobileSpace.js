@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import * as Styled from 'views/Teams/Teams.styles';
-// import SpaceHeader from './SpcaeHeader';
+import SpaceHeader from './SpaceHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -44,7 +44,7 @@ const MobileWorkSpace = ({ space }) => {
 
   return (
     <Styled.SpaceConatiner>
-      {/* <SpaceHeader space={space} /> */}
+      <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.id} spring="stiff">
           {/* <Styled.MobileTeamListConatiner> */}
