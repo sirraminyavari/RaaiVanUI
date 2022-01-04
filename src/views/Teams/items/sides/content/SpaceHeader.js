@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import useWindow from 'hooks/useWindowContext';
+import { TC_DEFAULT } from 'constant/Colors';
 import * as Styled from 'views/Teams/Teams.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
-import DeleteConfirmModal from 'components/Modal/Confirm';
-import DeleteConfirmMessage from 'components/Modal/Messages/DeleteConfirm';
-import useWindow from 'hooks/useWindowContext';
-import { TC_DEFAULT } from 'constant/Colors';
+import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 
 /**
  *
@@ -56,14 +55,12 @@ const SpaceHeader = ({ space }) => {
         onClose={handleCancelDelete}
         onConfirm={handleSpaceDelete}
         confirmText={RVDicPermanentlyRemove}
-        cancelText={RVDicReturn}>
-        <DeleteConfirmMessage
-          title={space.title}
-          Icon={SpaceIcon}
-          question={RVDicDeleteConfirmQuestion}
-          warning={RVDicDeleteConfirmWarning}
-        />
-      </DeleteConfirmModal>
+        cancelText={RVDicReturn}
+        messageTitle={space.title}
+        messageIcon={SpaceIcon}
+        messageQuestion={RVDicDeleteConfirmQuestion}
+        messageWarning={RVDicDeleteConfirmWarning}
+      />
       <Styled.SpaceHeaderTitle>
         <SpaceIcon
           className={TC_DEFAULT}

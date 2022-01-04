@@ -46,14 +46,10 @@ const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
 };
 
 DeleteConfirmMSG.propTypes = {
-  isOpen: PropTypes.bool,
-  onInputChange: PropTypes.func,
-  inputValue: PropTypes.string,
-  onCancelCreate: PropTypes.func,
-  onCreate: PropTypes.func,
-  modalTitle: PropTypes.string,
-  modalWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  placeholder: PropTypes.string,
+  title: PropTypes.string,
+  Icon: PropTypes.element,
+  question: PropTypes.string,
+  warning: PropTypes.string,
 };
 DeleteConfirmMSG.defaultProps = {
   title: '',
