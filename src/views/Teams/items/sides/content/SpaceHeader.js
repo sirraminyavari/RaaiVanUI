@@ -30,6 +30,9 @@ const SpaceHeader = ({ space }) => {
   const RVDicRemoveWorkspace = RVDic.RemoveN.replace('[n]', RVDic.Workspace);
   const RVDicPermanentlyRemove = RVDic.RemoveN.replace('[n]', 'دائمی');
 
+  //TODO Change [RVDic.User] with appropriate localization value
+  const userAuthority = space.role === 'admin' ? RVDic.Admin : RVDic.User;
+
   //! Show space delete confirmation.
   const onTrashClick = () => {
     setIsConfirmShown(true);
@@ -62,8 +65,13 @@ const SpaceHeader = ({ space }) => {
         />
       </DeleteConfirmModal>
       <Styled.SpaceHeaderTitle>
-        <SpaceIcon className={TC_DEFAULT} />
-        <span style={{ margin: ' 0 1rem' }}>{space.title}</span>
+        <SpaceIcon
+          className={TC_DEFAULT}
+          size={'1.4rem'}
+          style={{ marginInlineEnd: '0.6rem' }}
+        />
+        {/*//? Should <Styled.SpaceHeaderTitle/> component be replaced with <Heading/>?  */}
+        {`${space.title} (${userAuthority})`}
       </Styled.SpaceHeaderTitle>
       {space.role === 'admin' && (
         <Styled.SpaceHeaderActions>

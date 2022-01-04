@@ -120,7 +120,8 @@ export const ArchivedTeamTitle = styled.span`
 export const HeaderTitle = styled.span.attrs({
   className: C_GRAY,
 })`
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
 `;
 
 export const DesktopContentSide = styled.div`
