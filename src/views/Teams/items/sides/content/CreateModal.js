@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'components/Modal/Modal';
-import Input from 'components/Inputs/Input';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import useWindow from 'hooks/useWindowContext';
@@ -54,11 +54,6 @@ const CreateModal = ({
   const RVDicSave = RVDic.Save;
   const RVDicReturn = RVDic.Return;
 
-  //! handling Input component's onChange event
-  const handleInputChange = (event) => {
-    onInputChange(event.target.value);
-  };
-
   return (
     <>
       <Modal
@@ -68,8 +63,8 @@ const CreateModal = ({
         title={modalTitle}
         onClose={onCancelCreate}>
         <InputWrapper>
-          <Input
-            onChange={handleInputChange}
+          <AnimatedInput
+            onChange={onInputChange}
             value={inputValue}
             placeholder={placeholder}
             style={{ width: '100%' }}
