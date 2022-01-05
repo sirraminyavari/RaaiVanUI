@@ -45,6 +45,7 @@ import {
   MONITORING_TEAMS_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
+import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
 
 const ErrorView = lazy(() =>
   import(/* webpackChunkName: "error-view"*/ 'views/Error/ErrorView')
@@ -113,7 +114,7 @@ const MonitoringView = lazy(() =>
   import(/* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/Monitoring')
 );
 
-const MonitoringViewTeam = lazy(() =>
+const MonitoringTeamView = lazy(() =>
   import(
     /* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
   )
@@ -250,11 +251,18 @@ const routes = [
   },
   {
     path: MONITORING_TEAMS_PATH,
-    name: MONITORING_TEAMS_NAME,
+    name: MONITORING_NAME,
     exact: true,
     hasNavSide: true,
-    component: MonitoringViewTeam,
+    component: Teams,
   },
+  // {
+  //   path: MONITORING_TEAMS_PATH,
+  //   name: MONITORING_TEAMS_NAME,
+  //   exact: true,
+  //   hasNavSide: true,
+  //   component: MonitoringTeamView,
+  // },
 
   {
     path: '/ali',
