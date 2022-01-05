@@ -150,11 +150,12 @@ const MonitoringView = ({ ...props }) => {
                 margin: '0.5rem .5rem',
                 width: '130px',
               }}>
-              <Space
+              <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  // marginInlineEnd: '30px'
                 }}>
                 <label
                   className="rv-dark-gray"
@@ -162,7 +163,7 @@ const MonitoringView = ({ ...props }) => {
                     // color: 'darkgray',
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
-                    // paddingLeft: '.8rem',
+                    marginInlineEnd: '.8rem',
                   }}>
                   تعداد کل کاربران{' '}
                 </label>
@@ -171,7 +172,7 @@ const MonitoringView = ({ ...props }) => {
                     ? monitoring.TotalApplicationsCount
                     : ''}
                 </label>
-              </Space>
+              </div>
             </TextButton>
             <TextButton
               className="primary"
@@ -181,10 +182,10 @@ const MonitoringView = ({ ...props }) => {
                 margin: '0.5rem 0rem',
                 width: '130px',
               }}>
-              <Space
+              <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'center',
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                 }}>
                 <label
@@ -193,7 +194,7 @@ const MonitoringView = ({ ...props }) => {
                     // color: 'darkgray',
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
-                    // paddingLeft: '.8rem',
+                    marginInlineEnd: '.8rem',
                   }}>
                   تعداد کل تیم ها{' '}
                 </label>
@@ -202,7 +203,7 @@ const MonitoringView = ({ ...props }) => {
                     ? monitoring.TotalUsersCount
                     : ''}
                 </label>
-              </Space>
+              </div>
             </TextButton>
           </div>
         </div>
@@ -235,7 +236,7 @@ const MonitoringView = ({ ...props }) => {
               alignItems: 'center',
             }}>
             {' '}
-            <Space
+            <div
               space=".3rem"
               style={{
                 display: 'flex',
@@ -244,23 +245,20 @@ const MonitoringView = ({ ...props }) => {
               }}>
               <span
                 style={{
-                  // fontSize: '.7rem',
                   display: 'flex',
-                  // justifyContent: 'space-between',
                   alignItems: 'center',
+                  marginInlineEnd: '.3rem',
                 }}>
                 <RfreshIcon size={17} />
               </span>
               <span
                 style={{
                   fontSize: '.7rem',
-                  // display: 'flex',
-                  // justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
                 به روز رسانی لیست{' '}
               </span>
-            </Space>
+            </div>
           </Button>
         </div>
       </Styled.Grid>
