@@ -155,9 +155,15 @@ export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
 export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
 export const TEAM_SETTINGS_NAME = 'TeamSettings';
 export const MONITORING_PATH = '/monitoring';
+// export const MONITORING_NAME = 'monitoring';
+export const MONITORING_TEAMS_PATH = '/monitoring/:id';
+// getURL('monitoring', { AppID: ':id' })
+// '/monitoring-teams';
+export const MONITORING_TEAMS_NAME = 'monitoring';
+// export const  MONITORING_PATH = getURL('monitoring');
+// export const CLASSES_WITHID_PATH = getURL('Classes', { NodeTypeID: ':id' });
+// export const CLASSES_NAME = 'advanced_search';
 export const MONITORING_NAME = 'monitoring';
-export const MONITORING_TEAMS_PATH = '/monitoring-teams';
-export const MONITORING_TEAMS_NAME = 'monitoringteams';
 
 //! Border radius classes
 /**
