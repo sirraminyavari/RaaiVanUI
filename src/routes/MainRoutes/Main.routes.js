@@ -254,7 +254,7 @@ const routes = [
     name: MONITORING_NAME,
     exact: true,
     hasNavSide: true,
-    component: Teams,
+    component: MonitoringTeamView,
   },
   // {
   //   path: MONITORING_TEAMS_PATH,

@@ -34,6 +34,8 @@ const Teams = ({ ...props }) => {
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
   console.log('RV_RTL', RV_RTL);
+  let title = [];
+
   const loadMore = () => {
     // setLowerBoundary(prv=> prv + 20);
     // for (let i = 1; i <= Math.ceil(monitoring.TotalApplicationsCount / count); i++) {}
@@ -58,7 +60,6 @@ const Teams = ({ ...props }) => {
     usersMarkup = <div>No Team!</div>;
   } else if (monitoring && monitoring.Applications.length >= 0) {
     let fieldOfExpertise = [];
-    let title = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
       // console.log('mmmmmmmmm', dataObj);
@@ -145,6 +146,9 @@ const Teams = ({ ...props }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
             {'تیم محصول کلیلک مایند'}
+            {/* {monitoring && monitoring.Applications.map((item, index)=> (
+              <>{item.Title}</>
+            ))} */}
           </Heading>
         </div>
       </Styled.Title>
