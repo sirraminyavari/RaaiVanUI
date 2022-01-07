@@ -47,7 +47,11 @@ const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
 
 DeleteConfirmMSG.propTypes = {
   title: PropTypes.string,
-  Icon: PropTypes.element,
+  Icon: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+    PropTypes.element,
+  ]),
   question: PropTypes.string,
   warning: PropTypes.string,
 };

@@ -77,7 +77,11 @@ DeleteConfirmModal.propTypes = {
   confirmText: PropTypes.string,
   cancelText: PropTypes.string,
   messageTitle: PropTypes.string,
-  messageIcon: PropTypes.element,
+  messageIcon: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+    PropTypes.element,
+  ]),
   messageQuestion: PropTypes.string,
   messageWarning: PropTypes.string,
 };
