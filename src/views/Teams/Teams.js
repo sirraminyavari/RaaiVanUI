@@ -1,24 +1,18 @@
 import { useEffect, lazy, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
-import { MOBILE_BOUNDRY } from 'constant/constants';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import WithSuspense from 'components/WithSuspense/WithSuspense';
 
-const TeamsDesktopView = lazy(() =>
-  import(/* webpackChunkName: "teams-desktop-view"*/ 'views/Teams/DesktopView')
-);
-
-const TeamsMobileView = lazy(() =>
-  import(/* webpackChunkName: "teams-desktop-view"*/ 'views/Teams/MobileView')
+const TeamsWorkspaceView = WithSuspense(
+  lazy(() =>
+    import(
+      /* webpackChunkName: "teams-workspace-view"*/ 'views/Teams/WorkspaceView'
+    )
+  )
 );
 
 const TeamsView = () => {
   const dispatch = useDispatch();
-
-  const isMobileScreen = useMediaQuery({
-    query: `(max-width: ${MOBILE_BOUNDRY})`,
-  });
 
   useEffect(() => {
     dispatch(getApplications());
@@ -26,9 +20,9 @@ const TeamsView = () => {
   }, []);
 
   return (
-    <Suspense fallback={<LogoLoader />}>
-      {isMobileScreen ? <TeamsMobileView /> : <TeamsDesktopView />}
-    </Suspense>
+    <>
+      <TeamsWorkspaceView />
+    </>
   );
 };
 

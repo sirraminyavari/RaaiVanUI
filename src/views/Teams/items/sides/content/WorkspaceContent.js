@@ -13,14 +13,14 @@ const spaces = [
 
 const DesktopContentSide = () => {
   return (
-    <Styled.DesktopContentSide>
+    <>
       <Header />
-      <Styled.SpaceListConatiner>
+      <Styled.SpaceListContainer>
         {spaces?.map((space, key) => (
           <DesktopWorkSpace key={key} space={space} />
         ))}
-      </Styled.SpaceListConatiner>
-    </Styled.DesktopContentSide>
+      </Styled.SpaceListContainer>
+    </>
   );
 };
 
