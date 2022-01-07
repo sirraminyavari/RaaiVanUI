@@ -21,30 +21,42 @@ import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
-import { useHistory, useLocation } from 'react-router-dom';
+import {
+  Route,
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from 'react-router-dom';
 import { MONITORING_TEAMS_PATH } from 'constant/constants';
-import { RV_API } from 'constant/apiConstants';
+import Teams from './MonitoringTeams/Teams';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
+  const params = useParams();
+  const { path, url } = useRouteMatch();
+  console.log(path);
+  console.log(url);
+  console.log(params.ApplicationID);
   const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
-  const { route } = props;
-  console.log('route', route.Application.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
-  // const [name, setName] = useState([]);
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
   console.log('RV_RTL', RV_RTL);
   let name = [];
-  const handleRowClick = (template) => {
+  const handleRowClick = (template, index) => {
     console.log(
       template,
       pathname + '/' + monitoring.Applications[0].ApplicationID
     );
-    history.push(pathname + '/' + monitoring.Applications[0].ApplicationID);
+    // console.log(`${path}/:ApplicationID`);
+    console.log(`${url}/:ApplicationID`);
+    // console.log(`/monitoring/${index}`);
+    history.push(`${url}/:ApplicationID`);
+    // history.push(`${url}/`+monitoring.Applications[0].ApplicationID);
   };
   const loadMore = () => {
     if (lowerBoundary <= monitoring.Applications.length + count) {
@@ -122,13 +134,7 @@ const MonitoringView = ({ ...props }) => {
         <MyTable
           columns={columns}
           data={monitoring.Applications.slice(0, lowerBoundary)}
-          onClick={handleRowClick}
-          // onClick={(app) => {
-          //   console.log(app,pathname+ `/${name}`);
-          //   console.log(route.Application.ApplicationID, name);
-          //   console.log(MONITORING_TEAMS_PATH, 'MONITORING_TEAMS_PATH');
-          //   // history.push(pathname+ `/${name}`);
-          // }}
+          // onClick={handleRowClick}
         />
         {/* {hasMore ? 'Loading...' : 'Load More'} */}
       </InfiniteScroll>
@@ -278,6 +284,10 @@ const MonitoringView = ({ ...props }) => {
 
       {usersMarkup}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
+      <Route path={`${path}/:ApplicationID`}>
+        <Teams />
+      </Route>
+      {/* <Route exact path={`monitoring/:ApplicationID`}><Teams /></Route> */}
     </Styled.Container>
   );
 };

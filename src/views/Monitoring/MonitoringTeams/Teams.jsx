@@ -21,13 +21,19 @@ import { USER_PATH, USER_SECURITY_PATH } from 'constant/constants';
 import { COLUMNS } from '../columns';
 import * as Styled from '../monitoring.styles';
 import { useAppMonitoring } from '../useMonitoring';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { pathname } = location;
+  const params = useParams();
+  let { ApplicationID } = useParams();
 
+  const { path, url } = useRouteMatch();
+  console.log(path);
+  console.log(url);
+  console.log(params.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
   const [name, setName] = useState('');
@@ -84,39 +90,7 @@ const Teams = ({ ...props }) => {
     console.log(title);
     console.log(pathname + `/${name}`, 'path');
 
-    usersMarkup = (
-      <InfiniteScroll
-        dataLength={monitoring.TotalApplicationsCount}
-        next={loadMore}
-        hasMore={hasMore ? true : false}
-        scrollableTarget="scrollableDiv"
-        onScroll={() =>
-          setTimeout(() => {
-            loadMore();
-          }, 1000)
-        }
-        loader={
-          hasMore && (
-            <div style={{ textAlign: 'center' }}>
-              <LoadingIconFlat />
-            </div>
-          )
-        }
-        endMessage={
-          !hasMore && (
-            <div style={{ textAlign: 'center' }}> No More data... </div>
-          )
-        }
-        // ref={lastItem}
-      >
-        <MyTable
-          columns={columns}
-          data={monitoring.Applications.slice(0, lowerBoundary)}
-          // onClick={()=>console.log('aaaaaaaaaaaaa')}
-        />
-        {/* {hasMore ? 'Loading...' : 'Load More'} */}
-      </InfiniteScroll>
-    );
+    usersMarkup = <>{ApplicationID}</>;
   }
 
   const { getExcelFile } = useContext(searchContext);
@@ -272,68 +246,6 @@ const Teams = ({ ...props }) => {
             </label>
           </div>
         </TextButton>
-        {/* <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <label
-              className="rv-dark-gray"
-              style={{
-                // color: 'darkgray',
-                fontSize: '.66rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
-              }}>
-              اعضای تیم{' '}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''}
-            </label>
-          </div>
-        </TextButton>
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <label
-              className="rv-dark-gray"
-              style={{
-                // color: 'darkgray',
-                fontSize: '.66rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
-              }}>
-              اعضای تیم{' '}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''}
-            </label>
-          </div>
-        </TextButton> */}
       </Styled.Grid>
       {usersMarkup}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
