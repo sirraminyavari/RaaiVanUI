@@ -3,9 +3,12 @@ import { usePagination, useTable } from 'react-table';
 import * as Styled from './MyTbl.stles';
 import { useHistory } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useLocation } from 'react-router-dom';
 
 export const MyTable = ({ columns, data, onClick }) => {
   const history = useHistory();
+  const location = useLocation();
+  const { pathname } = location;
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 30,
@@ -63,11 +66,7 @@ export const MyTable = ({ columns, data, onClick }) => {
                   {...row.getRowProps()}
                   striped={true}
                   // onClick={()=>onClick}
-                  // onClick={() => {
-                  //   console.log('hhh');
-                  //   history.push('/');
-                  // }}
-                >
+                  onClick={onClick}>
                   {row.cells.map((cell) => {
                     return (
                       <td
