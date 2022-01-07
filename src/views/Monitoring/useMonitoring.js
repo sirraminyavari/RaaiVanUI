@@ -40,8 +40,6 @@ const useAppMonitoring = (
     loginsCountSinceNDaysAgo,
     count,
     lowerBoundary,
-    data,
-    isLoading,
   ]);
 
   return { data, isLoading, hasMore };

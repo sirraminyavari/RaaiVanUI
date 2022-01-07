@@ -41,8 +41,8 @@ import {
   USER_SEARCH_PATH,
   MONITORING_NAME,
   MONITORING_PATH,
-  MONITORING_TEAMS_PATH,
-  MONITORING_TEAMS_NAME,
+  // MONITORING_TEAMS_PATH,
+  // MONITORING_TEAMS_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
@@ -250,9 +250,9 @@ const routes = [
     component: MonitoringView,
   },
   {
-    path: MONITORING_TEAMS_PATH,
+    // path: MONITORING_TEAMS_PATH,
     name: MONITORING_NAME,
-    // exact: true,
+    exact: true,
     hasNavSide: true,
     component: MonitoringTeamView,
   },

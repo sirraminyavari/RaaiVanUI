@@ -7,7 +7,7 @@ import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getURL } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
 import { useContext, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -21,22 +21,32 @@ import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { MONITORING_TEAMS_PATH } from 'constant/constants';
+import { RV_API } from 'constant/apiConstants';
 
 const MonitoringView = ({ ...props }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
-
+  const { route } = props;
+  console.log('route', route.Application.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
   const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
-  const [name, setName] = useState('');
+  // const [name, setName] = useState([]);
   const [count, setCount] = useState(8);
   const [lowerBoundary, setLowerBoundary] = useState(5);
   console.log('RV_RTL', RV_RTL);
+  let name = [];
+  const handleRowClick = (template) => {
+    console.log(
+      template,
+      pathname + '/' + monitoring.Applications[0].ApplicationID
+    );
+    history.push(pathname + '/' + monitoring.Applications[0].ApplicationID);
+  };
   const loadMore = () => {
-    // setLowerBoundary(prv=> prv + 20);
-    // for (let i = 1; i <= Math.ceil(monitoring.TotalApplicationsCount / count); i++) {}
     if (lowerBoundary <= monitoring.Applications.length + count) {
       // setPage((prv) => prv + 5);
       GetApplicationsMonitoring({ count: 8, lowerBoundary });
@@ -61,9 +71,7 @@ const MonitoringView = ({ ...props }) => {
     let title = [];
     let i = monitoring.Applications;
     for (let dataObj of i) {
-      // console.log('mmmmmmmmm', dataObj);
       if (dataObj.FieldOfExpertise) {
-        console.log('dataObj.FieldOfExpertise', dataObj.FieldOfExpertise);
         dataObj.FieldOfExpertise = dataObj.FieldOfExpertise;
         console.log(
           'dataObj.LastActivityTime',
@@ -79,9 +87,14 @@ const MonitoringView = ({ ...props }) => {
         // setName((dataObj.Title));
         title.push(dataObj.Title);
       }
+      if (dataObj.ApplicationID) {
+        name = dataObj.ApplicationID;
+        console.log(dataObj.ApplicationID);
+      }
     }
+
     console.log(title);
-    console.log(pathname + `/${name}`, 'path');
+    console.log(pathname + `/${name}`);
 
     usersMarkup = (
       <InfiniteScroll
@@ -105,13 +118,17 @@ const MonitoringView = ({ ...props }) => {
           !hasMore && (
             <div style={{ textAlign: 'center' }}> No More data... </div>
           )
-        }
-        // ref={lastItem}
-      >
+        }>
         <MyTable
           columns={columns}
           data={monitoring.Applications.slice(0, lowerBoundary)}
-          // onClick={()=>console.log('aaaaaaaaaaaaa')}
+          onClick={handleRowClick}
+          // onClick={(app) => {
+          //   console.log(app,pathname+ `/${name}`);
+          //   console.log(route.Application.ApplicationID, name);
+          //   console.log(MONITORING_TEAMS_PATH, 'MONITORING_TEAMS_PATH');
+          //   // history.push(pathname+ `/${name}`);
+          // }}
         />
         {/* {hasMore ? 'Loading...' : 'Load More'} */}
       </InfiniteScroll>
