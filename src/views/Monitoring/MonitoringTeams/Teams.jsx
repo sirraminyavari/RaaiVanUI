@@ -209,6 +209,132 @@ const Teams = ({ ...props }) => {
           </Button>
         </div>
       </Styled.Grid>
+      <Styled.Grid>
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              اعضای تیم{' '}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''}
+            </label>
+          </div>
+        </TextButton>
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              اعضای تیم{' '}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''}
+            </label>
+          </div>
+        </TextButton>
+        {/* <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              اعضای تیم{' '}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''}
+            </label>
+          </div>
+        </TextButton>
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              اعضای تیم{' '}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''}
+            </label>
+          </div>
+        </TextButton> */}
+      </Styled.Grid>
       {usersMarkup}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>
