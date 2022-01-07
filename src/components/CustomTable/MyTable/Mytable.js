@@ -59,14 +59,16 @@ export const MyTable = ({ columns, data, onClick }) => {
             })}
           </Styled.TableHeader>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
+            {rows.map((row, index) => {
+              prepareRow(row, index);
               return (
                 <Styled.TRow
                   {...row.getRowProps()}
+                  {...index}
                   striped={true}
-                  // onClick={()=>onClick}
-                  onClick={onClick}>
+                  onClick={() => history.push(`monitoring/${row.id}`)}>
+                  {/* onSelect={() => {console.log(index)}}
+                   onClick={onClick}> */}
                   {row.cells.map((cell) => {
                     return (
                       <td

@@ -108,11 +108,11 @@ export const MONITORING_NAME = 'monitoring';
 // // '/monitoring';
 // //
 // //
-// export const MONITORING_TEAMS_PATH =  '/monitoring/:id';
+export const MONITORING_TEAMS_PATH = '/monitoring/:ApplicationID';
 // // ;
 // // getURL('monitoring', { ApplicationID: ':id' })
 // // '/monitoring-teams';
-// export const MONITORING_TEAMS_NAME = 'monitoring';
+export const MONITORING_TEAMS_NAME = 'monitoringTeams';
 
 export const TEAMS_PATH = getURL('Applications');
 export const TEAMS_NAME = 'teams';
