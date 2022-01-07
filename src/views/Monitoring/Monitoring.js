@@ -139,7 +139,7 @@ const MonitoringView = ({ ...props }) => {
       <Styled.Title>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
-            {'تیم ها '}
+            {RVDic?.Teams}
           </Heading>
 
           <div style={{ display: 'flex' }}>
@@ -165,7 +165,7 @@ const MonitoringView = ({ ...props }) => {
                     fontWeight: 'lighter',
                     marginInlineEnd: '.8rem',
                   }}>
-                  تعداد کل کاربران{' '}
+                  {RVDic.TotalNCount.replace('[n]', RVDic.Users)}
                 </label>
                 <label style={{ fontWeight: 'bold' }}>
                   {monitoring && monitoring.TotalApplicationsCount
@@ -196,7 +196,7 @@ const MonitoringView = ({ ...props }) => {
                     fontWeight: 'lighter',
                     marginInlineEnd: '.8rem',
                   }}>
-                  تعداد کل تیم ها{' '}
+                  {RVDic.TotalNCount.replace('[n]', RVDic.Teams)}
                 </label>
                 <label style={{ fontWeight: 'bold' }}>
                   {monitoring && monitoring.TotalUsersCount
@@ -210,11 +210,7 @@ const MonitoringView = ({ ...props }) => {
       </Styled.Title>
       <Styled.Grid>
         <Styled.Inpt>
-          <AnimatedInput
-            name="search"
-            label="search"
-            // style={{ maxWidth: '480px' }}
-          />
+          <AnimatedInput name="search" placeholder={RVDic?.Search} />
         </Styled.Inpt>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Styled.ExcelContainer>
@@ -256,12 +252,13 @@ const MonitoringView = ({ ...props }) => {
                   fontSize: '.7rem',
                   alignItems: 'center',
                 }}>
-                به روز رسانی لیست{' '}
+                {RVDic?.Update}
               </span>
             </div>
           </Button>
         </div>
       </Styled.Grid>
+
       {usersMarkup}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>

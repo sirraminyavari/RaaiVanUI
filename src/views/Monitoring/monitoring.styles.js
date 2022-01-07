@@ -49,6 +49,22 @@ export const Grid = styled.div`
   }
 `;
 
+// export const BtnGrid = styled.div`
+//   @media (max-width: 320px) {
+//     display: grid;
+//     grid-gap: '.2rem';
+//     // style={{ display: 'flex', justifyContent: 'space-between' }}
+//     // justify-content: space-between;
+//     //  padding: .2rem;
+//     // flex-wrap: wrap;
+//     // margin: 0 -8px 0 -8px
+//   }
+//   @media (min-width: 620px) {
+//     display: flex;
+//     justify-content: space-between;
+//   }
+// `;
+
 export const Inpt = styled.div`
   // @media (max-width:320px) {display: grid !important;margin-bottom: .2rem !important;}
   @media (min-width: 920px) {

@@ -1,18 +1,8 @@
+const { RVDic } = window;
+
 export const COLUMNS = [
-  // {
-  //   Header: 'نام تیم',
-  //   accessor: 'FieldOfExpertise.Name',
-  // },
-  // {
-  //   Header: 'تاریخ عضویت',
-  //   accessor: 'date',
-  // },
-  // {
-  //   Header: 'تعداد اعضا',
-  //   accessor: 'number',
-  // },
   {
-    Header: <div style={{ textAlign: 'center' }}>لوگو</div>,
+    Header: <div style={{ textAlign: 'center' }}> {RVDic?.Logo} </div>,
     Cell: ({ value }) => (
       <div style={{ textAlign: 'center', alignItems: 'center' }}>
         {' '}
@@ -23,24 +13,31 @@ export const COLUMNS = [
   },
 
   {
-    Header: <div style={{ textAlign: 'center' }}>نام تیم </div>,
+    Header: <div style={{ textAlign: 'center' }}> {RVDic?.TeamName} </div>,
     Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'Title',
   },
 
   {
-    Header: <div style={{ textAlign: 'center' }}> تاریخ عضویت </div>,
+    Header: (
+      <div style={{ textAlign: 'center' }}> {RVDic?.MembershipDate} </div>
+    ),
     Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'CreationDate_Local',
   },
   {
-    Header: <div style={{ textAlign: 'center' }}>تاریخ آخرین فعالیت</div>,
+    Header: (
+      <div style={{ textAlign: 'center' }}> {RVDic?.LastActivityTime} </div>
+    ),
     Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'LastActivityTime_Local',
   },
   {
     Header: (
-      <div style={{ textAlign: 'center' }}> تعداد ورود در 30روز گذشته </div>
+      <div style={{ textAlign: 'center' }}>
+        {' '}
+        {RVDic.NumberOfLoginsInTheLastNDays.replace('[n]', 30)}{' '}
+      </div>
     ),
     Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'LoginsCount',
