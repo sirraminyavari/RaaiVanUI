@@ -1432,7 +1432,7 @@ export const GetApplicationsMonitoring = ({
  * @returns {Promise}
  */
 export const GetApplicationPerformanceMonitoring = ({
-  appID = '',
+  appID = '36a00fac-0353-445c-be7b-df3c134e9dc7',
   dateFrom = 'yyyy-mm-dd',
   dateTo = 'yyyy-mm-dd',
 }) => {
