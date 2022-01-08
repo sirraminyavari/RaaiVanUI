@@ -18,11 +18,11 @@ import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import RfreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from 'constant/constants';
-import { COLUMNS } from '../columns';
 import * as Styled from '../monitoring.styles';
 import { useAppMonitoring } from '../useMonitoring';
 import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
+import { COLUMNS } from './column';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -30,13 +30,17 @@ const Teams = ({ ...props }) => {
   const { pathname } = location;
   const params = useParams();
   let { ApplicationID } = useParams();
-  const { data: team, isLoading } = useTeamMonitoring();
+  const { data, isLoading } = useTeamMonitoring();
   const { path, url } = useRouteMatch();
-  console.log(team, 'team');
+  console.log(data, 'data');
+  // console.log(app, 'app');
+  // console.log(user, 'user');
   console.log(path);
   console.log(url);
   console.log(params.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
+  const [lowerBoundary, setLowerBoundary] = useState(5);
+  const columns = useMemo(() => COLUMNS, []);
 
   console.log('RV_RTL', RV_RTL);
 
@@ -60,16 +64,53 @@ const Teams = ({ ...props }) => {
     },
   ];
 
+  let usersMarkup;
+  if (isLoading) {
+    usersMarkup = (
+      <div>
+        <LogoLoader />
+      </div>
+    );
+  } else if (data && data.Users.length === 0) {
+    usersMarkup = <div>No Team!</div>;
+  } else if (data && data.Users.length > 0) {
+    usersMarkup = (
+      // <InfiniteScroll
+      //   dataLength={monitoring.TotalApplicationsCount}
+      //   next={loadMore}
+      //   hasMore={hasMore ? true : false}
+      //   scrollableTarget="scrollableDiv"
+      //   onScroll={() =>
+      //     setTimeout(() => {
+      //       loadMore();
+      //     }, 1000)
+      //   }
+      //   loader={
+      //     hasMore && (
+      //       <div style={{ textAlign: 'center' }}>
+      //         <LoadingIconFlat />
+      //       </div>
+      //     )
+      //   }
+      //   endMessage={
+      //     !hasMore && (
+      //       <div style={{ textAlign: 'center' }}> No More data... </div>
+      //     )
+      //   }>
+      <MyTable columns={columns} data={data.Users.slice(0, lowerBoundary)} />
+
+      //  </InfiniteScroll>
+    );
+  }
+
   return (
     <Styled.Container>
       <Breadcrumb items={breadcrumbItems} />
       <Styled.Title>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
-            {'تیم محصول کلیلک مایند'}
-            {/* {monitoring && monitoring.Applications.map((item, index)=> (
-              <>{item.Title}</>
-            ))} */}
+            {/* {'تیم محصول کلیلک مایند'} */}
+            {data && data.Application.Title}
           </Heading>
         </div>
       </Styled.Title>
@@ -194,7 +235,7 @@ const Teams = ({ ...props }) => {
           </div>
         </TextButton>
       </Styled.Grid>
-      {/* {usersMarkup} */}
+      {usersMarkup}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>
   );

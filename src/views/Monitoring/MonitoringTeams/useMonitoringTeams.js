@@ -9,6 +9,8 @@ const useTeamMonitoring = (
   dateFrom = 'yyyy-mm-dd',
   dateTo = 'yyyy-mm-dd'
 ) => {
+  const [app, setApp] = useState(null);
+  const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   // const [hasMore, setHasMore] = useState(false);
@@ -18,9 +20,12 @@ const useTeamMonitoring = (
       await GetApplicationPerformanceMonitoring({
         appID: '36a00fac-0353-445c-be7b-df3c134e9dc7',
       }).then((res) => {
-        console.log(res);
+        console.log(res.Application);
         // setHasMore(res.Applications.length > 0);
         setData(res);
+        setUser(res.User);
+
+        setApp(res.Application);
 
         // if(res.TotalApplicationsCount > 0){
         // setCounts(count=>count + 3)
@@ -35,7 +40,7 @@ const useTeamMonitoring = (
     getData();
   }, [appID, dateFrom, dateTo]);
 
-  return { data, isLoading };
+  return { data, app, user, isLoading };
 };
 
 export { useTeamMonitoring };
