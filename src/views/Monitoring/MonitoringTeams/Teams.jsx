@@ -24,6 +24,7 @@ import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
 import { COLUMNS } from './column';
 import { Base64 } from 'js-base64';
+import FilledCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -125,13 +126,12 @@ const Teams = ({ ...props }) => {
       </Styled.Title>
       <Styled.Grid>
         <Styled.Inpt>
-          <AnimatedInput
-            name="search"
-            label="search"
-            // style={{ maxWidth: '480px' }}
-          />
+          <AnimatedInput name="search" placeholder={RVDic?.Search} />
         </Styled.Inpt>
         <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Styled.ExcelContainer>
+            <FilledCalendarIcon size={20} />
+          </Styled.ExcelContainer>
           <Styled.ExcelContainer>
             <OfficeIcons
               type="excel"
@@ -140,6 +140,7 @@ const Teams = ({ ...props }) => {
               onClick={getExcelFile}
             />
           </Styled.ExcelContainer>
+
           <Button
             className="rv-default"
             style={{
@@ -203,7 +204,7 @@ const Teams = ({ ...props }) => {
                 fontWeight: 'lighter',
                 marginInlineEnd: '.8rem',
               }}>
-              اعضای تیم{' '}
+              اعضای تیم {data && data.Application.MembersCount}
             </label>
             <label style={{ fontWeight: 'bold' }}>
               {/* {monitoring && monitoring.TotalUsersCount
@@ -234,7 +235,104 @@ const Teams = ({ ...props }) => {
                 fontWeight: 'lighter',
                 marginInlineEnd: '.8rem',
               }}>
-              اعضای تیم{' '}
+              آیتم های ثبت شده{' '}
+              {/* {data && data.Application.AttachmentSizeMB} */}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {/* {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''} */}
+            </label>
+          </div>
+        </TextButton>
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              تمپلیت های مورد استفاده{' '}
+              {data && data.Application.UsedTemplatesCount}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {/* {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''} */}
+            </label>
+          </div>
+        </TextButton>
+
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              بازدید آیتم های ثبت شده{' '}
+              {/* {data && data.Application.AttachmentSizeMB} */}
+            </label>
+            <label style={{ fontWeight: 'bold' }}>
+              {/* {monitoring && monitoring.TotalUsersCount
+                ? monitoring.TotalUsersCount
+                : ''} */}
+            </label>
+          </div>
+        </TextButton>
+        <TextButton
+          className="primary"
+          style={{
+            border: '1px solid var(--rv-gray-color-dark)',
+            padding: '.7rem',
+            margin: '0.5rem 0rem',
+            width: '130px',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <label
+              className="rv-dark-gray"
+              style={{
+                // color: 'darkgray',
+                fontSize: '.66rem',
+                fontWeight: 'lighter',
+                marginInlineEnd: '.8rem',
+              }}>
+              حجم مورد استفاده {data && data.Application.AttachmentSizeMB}
             </label>
             <label style={{ fontWeight: 'bold' }}>
               {/* {monitoring && monitoring.TotalUsersCount
