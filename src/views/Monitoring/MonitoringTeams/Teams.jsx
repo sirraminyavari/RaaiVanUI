@@ -22,6 +22,7 @@ import { COLUMNS } from '../columns';
 import * as Styled from '../monitoring.styles';
 import { useAppMonitoring } from '../useMonitoring';
 import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
+import { useTeamMonitoring } from './useMonitoringTeams';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -29,69 +30,15 @@ const Teams = ({ ...props }) => {
   const { pathname } = location;
   const params = useParams();
   let { ApplicationID } = useParams();
-
+  const { data: team, isLoading } = useTeamMonitoring();
   const { path, url } = useRouteMatch();
+  console.log(team, 'team');
   console.log(path);
   console.log(url);
   console.log(params.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
-  const { data: monitoring, isLoading, hasMore } = useAppMonitoring();
-  const [name, setName] = useState('');
-  const [count, setCount] = useState(8);
-  const [lowerBoundary, setLowerBoundary] = useState(5);
+
   console.log('RV_RTL', RV_RTL);
-  let title = [];
-
-  const loadMore = () => {
-    // setLowerBoundary(prv=> prv + 20);
-    // for (let i = 1; i <= Math.ceil(monitoring.TotalApplicationsCount / count); i++) {}
-    if (lowerBoundary <= monitoring.Applications.length + count) {
-      // setPage((prv) => prv + 5);
-      GetApplicationsMonitoring({ count: 8, lowerBoundary });
-    }
-    setLowerBoundary((prv) => prv + 8);
-  };
-  const columns = useMemo(() => COLUMNS, []);
-  // const datas = useMemo(() => MOCK_DATA, []);
-  console.log(hasMore, 'hasMore');
-  console.log(isLoading, 'isLoading');
-  let usersMarkup;
-  if (isLoading) {
-    usersMarkup = (
-      <div>
-        <LogoLoader />
-      </div>
-    );
-  } else if (monitoring && monitoring.Applications.length === 0) {
-    usersMarkup = <div>No Team!</div>;
-  } else if (monitoring && monitoring.Applications.length >= 0) {
-    let fieldOfExpertise = [];
-    let i = monitoring.Applications;
-    for (let dataObj of i) {
-      // console.log('mmmmmmmmm', dataObj);
-      if (dataObj.FieldOfExpertise) {
-        console.log('dataObj.FieldOfExpertise', dataObj.FieldOfExpertise);
-        dataObj.FieldOfExpertise = dataObj.FieldOfExpertise;
-        console.log(
-          'dataObj.LastActivityTime',
-          dataObj.LastActivityTime.slice(10, 15)
-        );
-        dataObj.LastActivityTime = dataObj.LastActivityTime.slice(10, 15);
-        dataObj.FieldOfExpertise.Name = fieldOfExpertise.push(
-          dataObj.FieldOfExpertise.Name
-        );
-      }
-      if (dataObj.Title) {
-        dataObj.Title = decodeBase64(dataObj.Title);
-        // setName((dataObj.Title));
-        title.push(dataObj.Title);
-      }
-    }
-    console.log(title);
-    console.log(pathname + `/${name}`, 'path');
-
-    usersMarkup = <>{ApplicationID}</>;
-  }
 
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
@@ -209,9 +156,9 @@ const Teams = ({ ...props }) => {
               اعضای تیم{' '}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {monitoring && monitoring.TotalUsersCount
+              {/* {monitoring && monitoring.TotalUsersCount
                 ? monitoring.TotalUsersCount
-                : ''}
+                : ''} */}
             </label>
           </div>
         </TextButton>
@@ -240,14 +187,14 @@ const Teams = ({ ...props }) => {
               اعضای تیم{' '}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {monitoring && monitoring.TotalUsersCount
+              {/* {monitoring && monitoring.TotalUsersCount
                 ? monitoring.TotalUsersCount
-                : ''}
+                : ''} */}
             </label>
           </div>
         </TextButton>
       </Styled.Grid>
-      {usersMarkup}
+      {/* {usersMarkup} */}
       {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>
   );
