@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useLocation } from 'react-router-dom';
 
-export const MyTable = ({ columns, data, onClick }) => {
+export const MyTable = ({ columns, data, onClick, id }) => {
   const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
@@ -35,6 +35,7 @@ export const MyTable = ({ columns, data, onClick }) => {
       columns,
       data,
       onClick,
+      id,
       initialState: { pageIndex: 2 },
     },
     usePagination
@@ -64,11 +65,14 @@ export const MyTable = ({ columns, data, onClick }) => {
               return (
                 <Styled.TRow
                   {...row.getRowProps()}
-                  {...index}
+                  {...row.id}
                   striped={true}
-                  onClick={() => history.push(`monitoring/${row.id}`)}>
-                  {/* onSelect={() => {console.log(index)}}
-                   onClick={onClick}> */}
+                  id={row.id}
+                  onClick={() =>
+                    history.push(`monitoring/${row.original.ApplicationID}`)
+                  }>
+                  {/* onClick={  () => console.log(row.id, row.index, row.original.ApplicationID)       }
+                     >   */}
                   {row.cells.map((cell) => {
                     return (
                       <td

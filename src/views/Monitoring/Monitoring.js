@@ -134,7 +134,6 @@ const MonitoringView = ({ ...props }) => {
         <MyTable
           columns={columns}
           data={monitoring.Applications.slice(0, lowerBoundary)}
-          // onClick={handleRowClick}
         />
         {/* {hasMore ? 'Loading...' : 'Load More'} */}
       </InfiniteScroll>
