@@ -23,6 +23,7 @@ import { useAppMonitoring } from '../useMonitoring';
 import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
 import { COLUMNS } from './column';
+import { Base64 } from 'js-base64';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -74,6 +75,14 @@ const Teams = ({ ...props }) => {
   } else if (data && data.Users.length === 0) {
     usersMarkup = <div>No Team!</div>;
   } else if (data && data.Users.length > 0) {
+    let i = data.Users;
+
+    for (let dataObj of i) {
+      console.log(decodeBase64(dataObj.FullName));
+      dataObj.FullName = decodeBase64(dataObj.FullName);
+      console.log(decodeBase64(dataObj.MainEmailAddress));
+      dataObj.MainEmailAddress = decodeBase64(dataObj.MainEmailAddress);
+    }
     usersMarkup = (
       // <InfiniteScroll
       //   dataLength={monitoring.TotalApplicationsCount}
