@@ -71,8 +71,6 @@ export const MyTable = ({ columns, data, onClick, id }) => {
                   onClick={() =>
                     history.push(`monitoring/${row.original.ApplicationID}`)
                   }>
-                  {/* onClick={  () => console.log(row.id, row.index, row.original.ApplicationID)       }
-                     >   */}
                   {row.cells.map((cell) => {
                     return (
                       <td
