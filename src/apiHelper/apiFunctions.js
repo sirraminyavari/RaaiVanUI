@@ -55,6 +55,7 @@ import {
   SEARCH_API,
   SEARCH,
   GET_APPLICATION_MONITORING,
+  GET_APPLICATION_PERFORMANCE_MONITORING,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1402,6 +1403,51 @@ export const GetApplicationsMonitoring = ({
           LoginsCountSinceNDaysAgo: loginsCountSinceNDaysAgo,
           Count: count,
           LowerBoundary: lowerBoundary,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+// RVAPI.GetApplicationPerformanceMonitoring({ AppID: "", DateFrom: "yyyy-mm-dd", DateTo: "yyyy-mm-dd" })
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {string} AppID -
+ * @property {date} DateFrom -
+ * @property {date} DateTo
+ */
+
+/**
+ * @description Get team list.
+ * @param {ParamsType}
+ * @returns {Promise}
+ */
+export const GetApplicationPerformanceMonitoring = ({
+  appID = '',
+  dateFrom = 'yyyy-mm-dd',
+  dateTo = 'yyyy-mm-dd',
+}) => {
+  const GetApplicationPerformanceMonitoringAPI = API_Provider(
+    RV_API,
+    GET_APPLICATION_PERFORMANCE_MONITORING
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      GetApplicationPerformanceMonitoringAPI.fetch(
+        {
+          AppID: appID,
+          DateFrom: dateFrom,
+          DateTo: dateTo,
         },
         (response) => {
           resolve(response);

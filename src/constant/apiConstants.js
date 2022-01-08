@@ -277,6 +277,13 @@ export const GET_APPLICATIONS = 'GetApplications';
 export const GET_APPLICATION_MONITORING = 'GetApplicationsMonitoring';
 
 /**
+ * @description 'GetApplicationsPerformanceMonitoring'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const GET_APPLICATION_PERFORMANCE_MONITORING =
+  'GetApplicationPerformanceMonitoring';
+/**
  * @description 'RemoveApplication'
  * @mode API function
  * @class 'RVAPI'
