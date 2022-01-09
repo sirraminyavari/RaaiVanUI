@@ -196,6 +196,49 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    CreateWorkspace: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/CreateWorkspace?timeStamp=" + new Date().getTime();
+        var queryString = (params.Name ? "&Name=" + params.Name : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    RenameWorkspace: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/RenameWorkspace?timeStamp=" + new Date().getTime();
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (params.Name ? "&Name=" + params.Name : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    RemoveWorkspaceTicket: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/RemoveWorkspaceTicket?timeStamp=" + new Date().getTime();
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (params.Captcha ? "&Captcha=" + params.Captcha : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    RemoveWorkspace: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/RemoveWorkspace?timeStamp=" + new Date().getTime();
+        var queryString = (params.VerificationToken ? "&VerificationToken=" + params.VerificationToken : "") +
+            (params.Code ? "&Code=" + params.Code : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    GetWorkspaces: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/GetWorkspaces?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return RVAPI._send(url, params, queryString);
+    },
+
     GetApplications: function (params) {
         params = params || {};
 
@@ -239,7 +282,8 @@
         params = params || {};
 
         var url = RVAPI.ResponseURL + "/CreateApplication?timeStamp=" + new Date().getTime();
-        var queryString = (params.Title ? "&Title=" + params.Title : "");
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (params.Title ? "&Title=" + params.Title : "");
         return RVAPI._send(url, params, queryString);
     },
 
