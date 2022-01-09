@@ -1,7 +1,7 @@
 /**
  * H6 text-box
  */
-import { MAIN_BLUE } from 'const/Colors';
+import { MAIN_BLUE } from 'constant/Colors';
 import React from 'react';
 import styled from 'styled-components';
 

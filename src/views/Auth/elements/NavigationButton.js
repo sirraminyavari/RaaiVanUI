@@ -2,7 +2,7 @@
  * A component, for handling the navigation
  */
 import Button from 'components/Buttons/Button';
-import { RED, RED_HOVER } from 'const/Colors';
+import { RED, RED_HOVER } from 'constant/Colors';
 import {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
@@ -14,7 +14,7 @@ import {
   SIGN_UP_PASSWORD,
   SIGN_UP_SUCCESS,
   VERIFICATION_CODE,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import loginAction from 'store/actions/auth/loginAction';

@@ -3,8 +3,8 @@
  */
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
-import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
-import { VERIFICATION_CODE } from 'const/LoginRoutes';
+import { LIGHT_BLUE, MAIN_BLUE } from 'constant/Colors';
+import { VERIFICATION_CODE } from 'constant/LoginRoutes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reSendVerifyCodeAction from 'store/actions/auth/reSendVerifyCodeAction';

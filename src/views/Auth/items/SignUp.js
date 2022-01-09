@@ -7,7 +7,7 @@ import InvisibleIcon from 'components/Icons/InVisible';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { GlobalParams } from 'const/GlobalParams';
+import { GlobalParams } from 'constant/GlobalParams';
 import { decode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

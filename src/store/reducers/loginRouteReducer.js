@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SIGN_IN } from 'const/LoginRoutes';
+import { SIGN_IN } from 'constant/LoginRoutes';
 
 export const loginRouteSlice = createSlice({
   name: 'loginRoute',

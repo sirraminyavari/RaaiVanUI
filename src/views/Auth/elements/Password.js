@@ -9,7 +9,7 @@ import {
   SIGN_IN,
   SIGN_IN_COLLAPSED,
   SIGN_UP_EMAIL,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setPassword from 'store/actions/auth/setPassAction';

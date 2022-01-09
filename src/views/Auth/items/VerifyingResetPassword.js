@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import CountDownTimer from '../elements/CountDownTimer';
 import VerificationCode from '../elements/VerificationCode';
 import { useDispatch, useSelector } from 'react-redux';
-import { MAIN_BLUE } from 'const/Colors';
+import { MAIN_BLUE } from 'constant/Colors';
 import Button from 'components/Buttons/Button';
 import { useHistory } from 'react-router-dom';
 import resetPasswordAction from 'store/actions/auth/resetPasswordAction';

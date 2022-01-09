@@ -4,7 +4,7 @@ import Edit from 'components/Icons/Edit';
 import InvisibleIcon from 'components/Icons/InVisible';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { MAIN_BLUE } from 'const/Colors';
+import { MAIN_BLUE } from 'constant/Colors';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';

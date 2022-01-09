@@ -8,7 +8,7 @@ import {
   SIGN_IN_COLLAPSED,
   SIGN_UP_EMAIL,
   SIGN_UP_PASSWORD,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';

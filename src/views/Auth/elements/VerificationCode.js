@@ -1,7 +1,7 @@
 /**
  * A component for rendering single cell for each code input char
  */
-import { LIGHT_BLUE, RED } from 'const/Colors';
+import { LIGHT_BLUE, RED } from 'constant/Colors';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ShakeAnimate } from './Animate.style';
