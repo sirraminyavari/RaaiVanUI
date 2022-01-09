@@ -174,7 +174,7 @@ const UserGroups = () => {
             <Styled.Input
               placeholder={RVDic.Search}
               value={searchText}
-              onChange={(e) => setSearchText(e)}
+              onChange={(e) => setSearchText(e?.target?.value)}
             />
             <SearchIcon size={30} />
           </Styled.InputContainer>

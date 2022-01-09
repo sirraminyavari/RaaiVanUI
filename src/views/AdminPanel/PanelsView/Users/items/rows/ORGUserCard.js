@@ -1,11 +1,10 @@
 import * as Styled from '../UsersListStyled';
 import UserFullNameTitle from './UserFullNameTitle';
 import ResetPassword from './ResetPassword';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import InlineEditableTitle from './InlineEditableTitle';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import UserGroupEdit from './UserGroupEdit';
 import EditableTitle from './EditableTitle';
 import {
   setUserName,
