@@ -26,19 +26,19 @@ const RxInput = React.forwardRef(
       return () => {
         input$?.unsubscribe();
       };
-    }, []);
+    }, [delayTime, onChange]);
 
     const handleInputChange = (e) => {
       setInputValue(e?.target?.value);
-      observableRef.current.next(e?.target?.value);
+      observableRef.current.next(e);
     };
 
     return (
       <input
         value={inputValue}
         onChange={(e) => handleInputChange(e)}
-        {...props}
         ref={forwardedRef}
+        {...props}
       />
     );
   }
