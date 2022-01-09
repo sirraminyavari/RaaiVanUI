@@ -119,7 +119,7 @@
     CreateUser: function (params) {
         params = params || {};
 
-        var url = UsersAPI.ResponseURL + "/CreateUser?timeStamp=" + new Date().getTime();
+        var url = UsersAPI.ResponseURL + "/UsersCreate?timeStamp=" + new Date().getTime();
         var queryString = (params.UserName ? "&UserName=" + params.UserName : "") +
             (params.FirstName ? "&FirstName=" + params.FirstName : "") +
             (params.LastName ? "&LastName=" + params.LastName : "");

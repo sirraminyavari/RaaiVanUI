@@ -3,6 +3,7 @@ import Cookie from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 import moment from 'jalali-moment';
+import { Subject } from 'rxjs';
 
 const { GlobalUtilities, RVAPI } = window;
 
@@ -288,4 +289,8 @@ export const formatDeltaDays = (value, local = getLanguage()) => {
   }
 
   return formatter.format(Math.round(deltaDays), 'days');
+};
+
+export const createSubject = () => {
+  return new Subject();
 };

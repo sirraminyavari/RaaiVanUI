@@ -197,6 +197,48 @@ export const SAVE_USER_SETTINGS_ITEM = 'SaveUserSettingsItem';
  */
 export const SET_VERIFICATION_CODE_MEDIA = 'SetVerificationCodeMedia';
 
+/**
+ * @description 'GetUserInvitations'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Get_User_Invitations = 'GetUserInvitations';
+
+/**
+ * @description 'SetRandomPassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Set_Random_Password = 'SetRandomPassword';
+
+/**
+ * @description 'SetRandomPassword'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Is_Approved = 'IsApproved';
+
+/**
+ * @description 'SetUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Set_User_Name = 'SetUserName';
+
+/**
+ * @description 'UsersCreate'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Create_User = 'CreateUser';
+
+/**
+ * @description 'CheckUserName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Check_User_Name = 'CheckUserName';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################

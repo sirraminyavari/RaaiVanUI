@@ -75,7 +75,11 @@ _RVRequest.prototype = {
                 else if (j.NotAuthenticated === true) {
                     window.IsAuthenticated = false;
                     if (window.RVGlobal) window.RVGlobal.IsAuthenticated = false;
-                    if (window.GlobalUtilities) GlobalUtilities.login_dialog();
+
+                    if (window.GlobalUtilities) {
+                        //GlobalUtilities.login_dialog();
+                        window.location.href = RVAPI.LoginPageURL();
+                    }
                 }
                 else if (j.NoApplicationFound) {
                     if (!(window.RVGlobal || {}).SAASBasedMultiTenancy)
@@ -271,8 +275,13 @@ _RVRequest.prototype = {
         }
 
         jQuery.ajax({
-            crossDomain: true, dataType: "text", method: method, timeout: options.Timeout ? options.Timeout : 0,
-            url: url, data: requestParams,
+            crossDomain: true,
+            cache: false,
+            dataType: "text",
+            method: method,
+            timeout: options.Timeout ? options.Timeout : 0,
+            url: url,
+            data: requestParams,
             error: function (jqXHR, status, error) {
                 var isTimeOut = (status == "timeout");
                 var isError = (status == "error");

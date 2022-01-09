@@ -160,9 +160,10 @@
             } //end of init
 
             GlobalUtilities.load_files([
-                "API/CNAPI.js",
-                "Lib/underscore.js",
-                { Root: "jQuery/", Childs: ["jquery.js", { Root: "TextNTags/", Childs: ["jquery-textntags.css", "jquery-textntags.js"] }] }
+                "API/CNAPI.js"
+                //the files below are already included in the page
+                //,"Lib/underscore.min.js",
+                //{ Root: "jQuery/", Childs: ["jquery.min.js", { Root: "TextNTags/", Childs: ["jquery-textntags.css", "jquery-textntags.min.js"] }] }
             ], { OnLoad: init, LoadSequential: true });
         },
 

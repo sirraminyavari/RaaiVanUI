@@ -14,6 +14,9 @@ const DEFAULT_TOGGLE_VALUES = {
   content: true,
   keywords: true,
   file: true,
+  description: true,
+  answers: true,
+  fileTypes: ['pdf', 'doc|docx', 'xlsx', 'ppt|pptx', 'xml', 'htm|html', 'txt'],
 };
 
 const SearchView = (props) => {
@@ -51,6 +54,7 @@ const SearchView = (props) => {
       hasDescription: togglesValue.excerpt,
       hasTags: togglesValue.keywords,
       typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
+      types: togglesValue.fileTypes.join('|'),
       isExcel: true,
     });
   };
@@ -67,6 +71,12 @@ const SearchView = (props) => {
     if (!searchText) {
       setIsSearching(false);
       return;
+    }
+
+    //! If there is not advanced search for a type, close the aside section.
+    //! In "All = Node | User | Question | File" and "User" search there is no advanced search.
+    if (selectedType?.value?.split('|').includes('User')) {
+      setIsAsideOpen(false);
     }
 
     //! If there is search text, set isSearching to true.
@@ -87,6 +97,7 @@ const SearchView = (props) => {
         hasDescription: togglesValue.excerpt,
         hasTags: togglesValue.keywords,
         typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
+        types: togglesValue.fileTypes.join('|'),
       })
         .then((response) => {
           setSearchItems(response?.Items || []);

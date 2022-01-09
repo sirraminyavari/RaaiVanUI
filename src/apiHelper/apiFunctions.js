@@ -1598,6 +1598,7 @@ export const getTemplateTags = () => {
  * @property {Boolean} [hasFileContent]
  * @property {String} [typeIds]
  * @property {Boolean} [isExcel]
+ * @property {String} [types]
  */
 
 /**
@@ -1615,6 +1616,7 @@ export const search = ({
   hasFileContent = true,
   typeIds = '',
   isExcel = false,
+  types = '',
 }) => {
   const searchAPI = API_Provider(SEARCH_API, SEARCH);
 
@@ -1630,6 +1632,7 @@ export const search = ({
           Tags: hasTags,
           FileContent: hasFileContent,
           TypeIDs: typeIds,
+          Types: types,
           Excel: isExcel,
         },
         (response) => {

@@ -205,3 +205,12 @@ export const HorizontalScrollbar = css`
     }
   }
 `;
+
+export const ViewContentCard = css`
+  position: relative;
+  box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
+  border-radius: 0.625rem;
+  padding: 4rem 1.5rem 1.5rem 1.5rem;
+  background-color: var(--rv-gray-color-light);
+  min-height: calc(100vh - 8rem);
+`;

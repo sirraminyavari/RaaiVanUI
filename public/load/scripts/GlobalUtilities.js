@@ -810,7 +810,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
 
         var token = GlobalUtilities.get_csrf_token();
         if (token) _add_param(GlobalUtilities.AccessTokenParameterName, token);
-
+        
         form.submit();
     },
 
@@ -2231,7 +2231,10 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
                         Class: "rv-input input-anim-label-input " + (params.Class ? params.Class : ""),
                         Style: (params.BackgroundColor ? "background-color:" + params.BackgroundColor + ";" : "") +
                             "padding:0.3rem 0.5rem;" + (params.Style ? params.Style : ""),
-                        Attributes: [{ Name: "type", Value: params.Type || "text" }],
+                        Attributes: [
+                            { Name: "type", Value: params.Type || "text" },
+                            { Name: "autocomplete", Value: "off" }
+                        ],
                         Properties: [{ Name: "onmousedown", Value: function (e) { e.stopImmediatePropagation(); } }]
                     },
                     {

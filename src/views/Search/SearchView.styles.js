@@ -5,6 +5,7 @@ import {
   FLEX_CEC,
   FLEX_CSC,
   FLEX_RCB,
+  FLEX_RCE,
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
@@ -270,7 +271,7 @@ const openAsideCss = css`
 `;
 
 export const AdvanceButtonsWrapper = styled.div`
-  ${FLEX_RCB}
+  ${FLEX_RCE}
   gap: 1rem;
   width: 8rem;
 

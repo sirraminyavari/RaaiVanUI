@@ -36,6 +36,7 @@ export const SETT_USERS_CONTENT = 'setting-users';
 export const SETT_TEAM_CONTENT = 'setting-team';
 export const SETT_NOTIFS_CONTENT = 'setting-notifs';
 export const SETT_CLASSES_CONTENT = 'setting-classes';
+export const SETT_URL_CONTENT = 'setting-{url}';
 
 //! Sidebar profile items
 export const PROFILE_USER = 'user';
@@ -107,27 +108,23 @@ export const TEAMS_NAME = 'teams';
 export const LOGIN_PATH = getURL('Login');
 export const LOGIN_NAME = 'login';
 export const REGISTER_PATH = '/auth/register';
-export const REGISTER_NAME = 'register';
 export const VERIFICATION_PATH = '/auth/verificationCode';
-export const VERIFICATION_NAME = 'verificationCode';
 export const VERIFY_RESET_PATH = '/auth/verifyingResetPassword';
-export const VERIFY_RESET_NAME = 'verifyingResetPassword';
 export const FORGOT_PASS_PATH = '/auth/forgotPassword';
-export const FORGOT_PASS_NAME = 'forgotPassword';
 export const RESET_PASS_ADDRESS_PATH = '/auth/resetPasswordAddress';
-export const RESET_PASS_ADDRESS_NAME = 'resetPasswordAddress';
 export const RESET_PASS_PATH = '/auth/resetPassword';
-export const RESET_PASS_NAME = 'resetPassword';
 export const CONFIG_PATH = '/configuration';
 export const CONFIG_NAME = 'admin_configuration';
 export const CONFIG_SETTING_PATH = '/configuration/systemsettings';
 export const CONFIG_SETTING_NAME = 'admin_systemsettings';
 export const CONFIG_USERS_PATH = '/configuration/users';
 export const CONFIG_USERS_NAME = 'admin_users';
+export const CONFIG_PERMISSION_NAME = 'user_permissions';
 export const CONFIG_CONFIDENT_PATH = '/configuration/confidentiality';
 export const CONFIG_CONFIDENT_NAME = 'admin_confidentiality';
 export const CONFIG_GROUPS_PATH = '/configuration/usergroups';
 export const CONFIG_GROUPS_NAME = 'admin_usergroups';
+export const CONFIG_PERMISSIONS_PATH = '/configuration/userpermissions';
 export const CONFIG_MAP_PATH = '/configuration/map';
 export const CONFIG_MAP_NAME = 'admin_map';
 export const CONFIG_KNOWLEDGE_PATH = '/configuration/knowledge';
@@ -157,6 +154,8 @@ export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
 export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
 export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
 export const TEAM_SETTINGS_NAME = 'TeamSettings';
+export const MONITORING_PATH = '/monitoring';
+export const MONITORING_NAME = 'monitoring';
 
 //! Border radius classes
 /**

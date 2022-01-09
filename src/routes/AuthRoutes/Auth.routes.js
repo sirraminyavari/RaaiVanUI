@@ -9,19 +9,13 @@ import ResetPasswordAddress from 'views/Auth/items/ResetPasswordAddress';
 import VerifyingResetPassword from 'views/Auth/items/VerifyingResetPassword';
 import ResetPassword from 'views/Auth/items/ResetPassword';
 import {
-  FORGOT_PASS_NAME,
-  FORGOT_PASS_PATH,
   LOGIN_NAME,
   LOGIN_PATH,
-  REGISTER_NAME,
+  FORGOT_PASS_PATH,
   REGISTER_PATH,
-  RESET_PASS_ADDRESS_NAME,
   RESET_PASS_ADDRESS_PATH,
-  RESET_PASS_NAME,
   RESET_PASS_PATH,
-  VERIFICATION_NAME,
   VERIFICATION_PATH,
-  VERIFY_RESET_NAME,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
 
@@ -33,32 +27,32 @@ const routes = [
   },
   {
     path: REGISTER_PATH,
-    name: REGISTER_NAME,
+    name: LOGIN_NAME,
     component: SignUp,
   },
   {
     path: VERIFICATION_PATH,
-    name: VERIFICATION_NAME,
+    name: LOGIN_NAME,
     component: VerifyingCode,
   },
   {
     path: VERIFY_RESET_PATH,
-    name: VERIFY_RESET_NAME,
+    name: LOGIN_NAME,
     component: VerifyingResetPassword,
   },
   {
     path: FORGOT_PASS_PATH,
-    name: FORGOT_PASS_NAME,
+    name: LOGIN_NAME,
     component: ForgotPassword,
   },
   {
     path: RESET_PASS_ADDRESS_PATH,
-    name: RESET_PASS_ADDRESS_NAME,
+    name: LOGIN_NAME,
     component: ResetPasswordAddress,
   },
   {
     path: RESET_PASS_PATH,
-    name: RESET_PASS_NAME,
+    name: LOGIN_NAME,
     component: ResetPassword,
   },
 ];

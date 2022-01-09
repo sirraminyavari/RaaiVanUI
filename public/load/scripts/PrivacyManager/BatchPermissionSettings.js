@@ -67,7 +67,7 @@
                             });
                             
                             that.Objects.Roles = Object.keys(roles).map(key => roles[key]).sort((a, b) => a.RoleID < b.RoleID);
-                            
+
                             that.initialize();
                         }
                     });
@@ -503,7 +503,7 @@
                         PermissionType: that.Options.PermissionType,
                         Allow: true
                     }))
-                }
+                };
             });
             
             PrivacyAPI.SetAudience({

@@ -39,6 +39,8 @@ import {
   TEMPLATES_SETTING_PATH,
   USER_SEARCH_NAME,
   USER_SEARCH_PATH,
+  MONITORING_NAME,
+  MONITORING_PATH,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 
@@ -105,11 +107,13 @@ const TemplatesSettings = lazy(() =>
     /* webpackChunkName: "templates-settings-view"*/ 'views/Templates/settings-view/TemplatesSettings'
   )
 );
-
 const TemplatesArchives = lazy(() =>
   import(
     /* webpackChunkName: "templates-archives-view"*/ 'views/Templates/archives-view/TemplatesArchives'
   )
+);
+const MonitoringView = lazy(() =>
+  import(/* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/Monitoring')
 );
 
 const routes = [
@@ -233,6 +237,13 @@ const routes = [
     exact: true,
     hasNavSide: false,
     component: Onboarding,
+  },
+  {
+    path: MONITORING_PATH,
+    name: MONITORING_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: MonitoringView,
   },
   {
     path: '/ali',

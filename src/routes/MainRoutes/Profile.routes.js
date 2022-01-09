@@ -1,8 +1,8 @@
 import { lazy } from 'react';
 import {
+  USER_NAME,
   USER_CUSTOMIZATION_PATH,
   USER_MORE_RELATED_TOPICS_PATH,
-  USER_NAME,
   USER_SECURITY_PATH,
   USER_WITHID_PATH,
 } from 'constant/constants';

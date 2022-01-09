@@ -10,6 +10,7 @@ import {
 } from 'constant/constants';
 
 const settingIcons = {
+  // TODO: add icons for other settings(for panels)
   [SETT_TEAM_CONTENT]: (props) => <TeamIcon {...props} />,
   [SETT_USERS_CONTENT]: (props) => <UsersIcon {...props} />,
   [SETT_CLASSES_CONTENT]: (props) => <ClassesIcon {...props} />,
