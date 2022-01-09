@@ -217,6 +217,16 @@
         return RVAPI._send(url, params, queryString);
     },
 
+    GetApplicationPerformanceMonitoring: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/GetApplicationPerformanceMonitoring?timeStamp=" + new Date().getTime();
+        var queryString = (params.AppID ? "&AppID=" + params.AppID : "") +
+            (params.DateFrom ? "&DateFrom=" + params.DateFrom : "") +
+            (params.DateTo ? "&DateTo=" + params.DateTo : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
     SelectApplication: function (params) {
         params = params || {};
 
