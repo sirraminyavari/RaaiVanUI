@@ -49,7 +49,7 @@ const TemplatesView = () => {
   useEffect(() => {
     getChildNodeTypes()
       .then((response) => {
-        // console.log({ response });
+        console.log(provideTree(response));
         setTree(provideTree(response));
       })
       .catch((err) => console.log(err));

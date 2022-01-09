@@ -1,5 +1,5 @@
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { CN_API } from 'constant/apiConstants';
+import { CN_API, GET_CHILD_NODE_TYPES } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
 export const getGroupsAll = () => {
@@ -12,7 +12,7 @@ export const getGroupsAll = () => {
         .map(
           (g) => (
             (g.IsMember = (res?.Groups || []).some(
-              (x) => x.NodeID == g.NodeID
+              (x) => x.NodeID === g.NodeID
             )),
             g
           )
@@ -73,4 +73,33 @@ export const saveMembers = (NodeID, UserIDs) => {
     NodeID,
     UserIDs: UserIDs.join('|'),
   });
+};
+
+/**
+ * @description Get node types.
+ * @param {String} nodeTypeId -The id of node.
+ * @param {String} count -The number of nodes to fetch.
+ * @param {Boolean} archive - Get archives or not? .
+ * @param {Boolean} icon - Get icon or not? .
+ * @returns Promise.
+ */
+export const getChildNodeTypes = (
+  nodeTypeId = '',
+  count = '',
+  archive = false,
+  icon = true
+) => {
+  const getChildNodeTypesAPI = API_Provider(CN_API, GET_CHILD_NODE_TYPES);
+
+  return apiCallWrapper(getChildNodeTypesAPI, {
+    NodeTypeID: nodeTypeId,
+    Count: count,
+    Archive: archive,
+    Icon: icon,
+  }).then((x) =>
+    x?.NodeTypes.map((n) => ({
+      ...n,
+      TypeName: decodeBase64(n?.TypeName),
+    }))
+  );
 };
