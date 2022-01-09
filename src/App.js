@@ -21,7 +21,7 @@ const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
 window._alert = window.alert;
-window.alert = function (txt, ...props) {
+window.alert = function (txt, props) {
   toast(txt, {
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
     style: { backgroundColor: CV_WHITE },
