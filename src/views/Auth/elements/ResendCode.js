@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reSendVerifyCodeAction from 'store/actions/auth/reSendVerifyCodeAction';
 import styled from 'styled-components';
-import CountDownTimer from 'views/Auth/elements/CountDownTimer';
+import OTPCountDownTimer from 'components/OTP/CountDownTimer';
 import { UpToDownAnimate } from './Animate.style';
 
 const ResendCode = () => {
@@ -22,10 +22,12 @@ const ResendCode = () => {
     currentRoute,
     isFetching,
     resendVerifyCodeTotalTimeout,
+    resendCodeTimeout,
   } = useSelector((state) => ({
     currentRoute: state.auth.currentRoute,
     isFetching: state.auth.resendVerifyCodeIsFetching,
     resendVerifyCodeTotalTimeout: state.auth.resendVerifyCodeTotalTimeout,
+    resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
   }));
 
   useEffect(() => {
@@ -67,7 +69,10 @@ const ResendCode = () => {
       isVisible={isVisible()}>
       <Container>
         {resendDisabled && resendVerifyCodeTotalTimeout > 0 ? (
-          <CountDownTimer onFinished={onFinished} />
+          <OTPCountDownTimer
+            resendCodeTimeout={resendCodeTimeout}
+            onFinished={onFinished}
+          />
         ) : (
           // <TextButton
           //   onClick={onResend}

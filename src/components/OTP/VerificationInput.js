@@ -8,7 +8,7 @@ import { ShakeAnimate } from './Animate.style';
 
 const { RV_Float } = window;
 
-const VerificationCode = ({
+const VerificationInput = ({
   error,
   value,
   length,
@@ -101,7 +101,7 @@ const VerificationCode = ({
     </Container>
   );
 };
-export default VerificationCode;
+export default VerificationInput;
 
 const Container = styled.div`
   display: flex;

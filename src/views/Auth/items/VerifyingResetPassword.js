@@ -5,8 +5,8 @@ import Heading from 'components/Heading/Heading';
 import Edit from 'components/Icons/Edit';
 import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
-import CountDownTimer from '../elements/CountDownTimer';
-import VerificationCode from '../elements/VerificationCode';
+import OTPCountDownTimer from 'components/OTP/CountDownTimer';
+import OTPVerificationInput from 'components/OTP/VerificationInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { MAIN_BLUE } from 'constant/Colors';
 import Button from 'components/Buttons/Button';
@@ -37,6 +37,7 @@ const VerifyingResetPassword = () => {
     verifyCodeError,
     verifyCodeLength,
     resendVerifyCodeIsFetching,
+    resendCodeTimeout,
   } = useSelector((state) => ({
     email: state.auth.email,
     emailError: state.auth.emailError,
@@ -52,6 +53,7 @@ const VerifyingResetPassword = () => {
     verifyCodeError: state.auth.verifyCodeError,
     verifyCodeLength: state.auth.verifyCodeLength,
     resendVerifyCodeIsFetching: state.auth.resendVerifyCodeIsFetching,
+    resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
   }));
   // const initFetch = useCallback(() => {
   //   const { GlobalUtilities } = window;
@@ -148,7 +150,7 @@ const VerifyingResetPassword = () => {
           {RVDic?.Checks?.PleaseEnterTheVerificationCode}
         </Heading>
 
-        <VerificationCode
+        <OTPVerificationInput
           error={verifyCodeError}
           length={verifyCodeLength}
           value={verifyCode}
@@ -173,7 +175,11 @@ const VerifyingResetPassword = () => {
             {RVDic?.Resend}
           </Button>
         ) : (
-          <CountDownTimer onFinished={onFinished} style={common_style} />
+          <OTPCountDownTimer
+            resendCodeTimeout={resendCodeTimeout}
+            onFinished={onFinished}
+            style={common_style}
+          />
         )}
         <Button
           onClick={onResetPass}

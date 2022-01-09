@@ -4,18 +4,18 @@
 import CircularProgress from 'components/Progress/CircularProgress';
 import { MAIN_BLUE } from 'constant/Colors';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 /**
  *
  * @callback - Will fire when timer finishes.
  */
-const CountDownTimer = ({ onFinished, ...props }) => {
-  const { resendCodeTimeout } = useSelector((state) => ({
-    resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
-  }));
-
+const OTPCountDownTimer = ({
+  resendCodeTimeout = null,
+  onFinished,
+  NoCircularProgress = false,
+  ...props
+}) => {
   // resendCodeTimeout changes to milliseconds for better calculation.
   const [timer, setTimer] = useState(resendCodeTimeout * 1000);
   // the timer that is showing to user.
@@ -51,17 +51,19 @@ const CountDownTimer = ({ onFinished, ...props }) => {
 
   return (
     <Maintainer>
-      <CircularProgress
-        maxValue={resendCodeTimeout}
-        hideLabel
-        {...props}
-        color={MAIN_BLUE}
-      />
+      {!NoCircularProgress && (
+        <CircularProgress
+          maxValue={resendCodeTimeout}
+          hideLabel
+          {...props}
+          color={MAIN_BLUE}
+        />
+      )}
       <Container className="textarea">{stringTime}</Container>
     </Maintainer>
   );
 };
-export default CountDownTimer;
+export default OTPCountDownTimer;
 
 const Container = styled.div`
   display: flex;
