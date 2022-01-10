@@ -66,11 +66,17 @@ export const MyTable = ({ columns, data, onClick, id }) => {
                 <Styled.TRow
                   {...row.getRowProps()}
                   {...row.id}
+                  {...row.original}
                   striped={true}
-                  id={row.id}
-                  onClick={() =>
-                    history.push(`monitoring/${row.original.ApplicationID}`)
-                  }>
+                  id={row.original}
+                  onClick={() => {
+                    console.log(
+                      row.original,
+                      row.original.Title,
+                      row.original.ApplicationID
+                    );
+                    history.push(`monitoring/${row.original.ApplicationID}`);
+                  }}>
                   {row.cells.map((cell) => {
                     return (
                       <td

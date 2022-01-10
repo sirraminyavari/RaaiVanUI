@@ -35,15 +35,12 @@ const Teams = ({ ...props }) => {
   const { data, isLoading } = useTeamMonitoring();
   const { path, url } = useRouteMatch();
   console.log(data, 'data');
-  // console.log(app, 'app');
-  // console.log(user, 'user');
   console.log(path);
   console.log(url);
   console.log(params.ApplicationID);
   const { RV_RTL, RVDic } = useWindowContext();
   const [lowerBoundary, setLowerBoundary] = useState(5);
   const columns = useMemo(() => COLUMNS, []);
-
   console.log('RV_RTL', RV_RTL);
 
   const { getExcelFile } = useContext(searchContext);
@@ -61,7 +58,8 @@ const Teams = ({ ...props }) => {
     },
     {
       id: 3,
-      title: 'تیم محصول کلیک مایند',
+      title: data?.Application?.Title,
+      // 'تیم محصول کلیک مایند',
       linkTo: USER_SECURITY_PATH,
     },
   ];
@@ -186,7 +184,7 @@ const Teams = ({ ...props }) => {
           className="primary"
           style={{
             border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
+            padding: '.7rem .2rem',
             margin: '0.5rem 0rem',
             width: '130px',
           }}>
@@ -200,16 +198,15 @@ const Teams = ({ ...props }) => {
               className="rv-dark-gray"
               style={{
                 // color: 'darkgray',
-                fontSize: '.66rem',
+                fontSize: '.6rem',
                 fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
+                marginInlineEnd: '.5rem',
               }}>
-              اعضای تیم {data && data.Application.MembersCount}
+              {/* اعضای تیم */}
+              {RVDic?.Members}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {/* {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''} */}
+              {data && data.Application.MembersCount}
             </label>
           </div>
         </TextButton>
@@ -217,7 +214,7 @@ const Teams = ({ ...props }) => {
           className="primary"
           style={{
             border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
+            padding: '.7rem .2rem',
             margin: '0.5rem 0rem',
             width: '130px',
           }}>
@@ -225,23 +222,24 @@ const Teams = ({ ...props }) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              // justifyContent: 'space-between',
             }}>
             <label
               className="rv-dark-gray"
               style={{
                 // color: 'darkgray',
-                fontSize: '.66rem',
+                fontSize: '.6rem',
                 fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
+                marginInlineEnd: '.5rem',
               }}>
-              آیتم های ثبت شده{' '}
+              آیتم های ثبت شده {RVDic?.CreatedNodes}
               {/* {data && data.Application.AttachmentSizeMB} */}
             </label>
             <label style={{ fontWeight: 'bold' }}>
               {/* {monitoring && monitoring.TotalUsersCount
                 ? monitoring.TotalUsersCount
                 : ''} */}
+              {data && data.Application.CreatedNodesCount}
             </label>
           </div>
         </TextButton>
@@ -249,7 +247,8 @@ const Teams = ({ ...props }) => {
           className="primary"
           style={{
             border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
+            padding: '.7rem .2rem',
+
             margin: '0.5rem 0rem',
             width: '130px',
           }}>
@@ -263,17 +262,14 @@ const Teams = ({ ...props }) => {
               className="rv-dark-gray"
               style={{
                 // color: 'darkgray',
-                fontSize: '.66rem',
+                fontSize: '.6rem',
                 fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
+                marginInlineEnd: '.5rem',
               }}>
-              تمپلیت های مورد استفاده{' '}
-              {data && data.Application.UsedTemplatesCount}
+              تمپلیت های مورد استفاده {RVDic?.UsedTemplates}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {/* {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''} */}
+              {data && data.Application.UsedTemplatesCount}
             </label>
           </div>
         </TextButton>
@@ -282,7 +278,8 @@ const Teams = ({ ...props }) => {
           className="primary"
           style={{
             border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
+            padding: '.7rem .2rem',
+
             margin: '0.5rem 0rem',
             width: '130px',
           }}>
@@ -290,23 +287,20 @@ const Teams = ({ ...props }) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              // justifyContent: 'space-between',
             }}>
             <label
               className="rv-dark-gray"
               style={{
                 // color: 'darkgray',
-                fontSize: '.66rem',
+                fontSize: '.6rem',
                 fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
+                marginInlineEnd: '.5rem',
               }}>
-              بازدید آیتم های ثبت شده{' '}
-              {/* {data && data.Application.AttachmentSizeMB} */}
+              بازدید آیتم های ثبت شده {RVDic?.NodeVisits}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {/* {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''} */}
+              {data && data.Application.VisitedNodesCount}
             </label>
           </div>
         </TextButton>
@@ -314,7 +308,8 @@ const Teams = ({ ...props }) => {
           className="primary"
           style={{
             border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem',
+            padding: '.7rem .2rem',
+
             margin: '0.5rem 0rem',
             width: '130px',
           }}>
@@ -322,28 +317,26 @@ const Teams = ({ ...props }) => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              // justifyContent: 'space-between',
             }}>
             <label
               className="rv-dark-gray"
               style={{
                 // color: 'darkgray',
-                fontSize: '.66rem',
+                fontSize: '.6rem',
                 fontWeight: 'lighter',
-                marginInlineEnd: '.8rem',
+                marginInlineEnd: '.5rem',
               }}>
-              حجم مورد استفاده {data && data.Application.AttachmentSizeMB}
+              حجم مورد استفاده
+              {RVDic?.UsedStorage}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {/* {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''} */}
+              {data && data.Application.AttachmentSizeMB}
             </label>
           </div>
         </TextButton>
       </Styled.Grid>
       {usersMarkup}
-      {/* {showMore && <button onClick={loadMore}> Load More </button>} */}
     </Styled.Container>
   );
 };
