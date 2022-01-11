@@ -34,7 +34,7 @@ TransitionSwitchWrapper.defaultProps = {
 TransitionSwitchWrapper.propTypes = {
   timeout: PropTypes.number,
   children: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+    PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element])
   ),
 };
 
