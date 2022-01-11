@@ -33,7 +33,18 @@ export const ExcelContainer = styled.div`
     // padding: 0.6rem;
   }
 `;
-
+export const DateContainer = styled.div`
+  display: flex;
+  margin: 0rem 0.8rem;
+  align-items: center;
+  // padding: 0.01rem;
+  &:hover {
+    cursor: pointer;
+    // border-radius: 50px;
+    // border: 0.01rem solid gray;
+    // padding: 0.4rem;
+  }
+`;
 export const Grid = styled.div`
   @media (max-width: 320px) {
     display: grid;

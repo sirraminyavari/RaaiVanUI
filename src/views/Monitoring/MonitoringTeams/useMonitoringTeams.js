@@ -5,20 +5,24 @@ import {
 import { useEffect, useState } from 'react';
 
 const useTeamMonitoring = (
-  appID = '36a00fac-0353-445c-be7b-df3c134e9dc7',
-  dateFrom = 'yyyy-mm-dd',
-  dateTo = 'yyyy-mm-dd'
+  appID = '36a00fac-0353-445c-be7b-df3c134e9dc7'
+  // dateFrom = 'yyyy-mm-dd',
+  // dateTo = 'yyyy-mm-dd'
 ) => {
   const [app, setApp] = useState(null);
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   // const [hasMore, setHasMore] = useState(false);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   useEffect(() => {
     const getData = async () => {
       await GetApplicationPerformanceMonitoring({
         appID: '36a00fac-0353-445c-be7b-df3c134e9dc7',
+        dateFrom: dateFrom,
+        dateTo: dateTo,
       }).then((res) => {
         console.log(res.Application);
         // setHasMore(res.Applications.length > 0);
@@ -40,7 +44,16 @@ const useTeamMonitoring = (
     getData();
   }, [appID, dateFrom, dateTo]);
 
-  return { data, app, user, isLoading };
+  return {
+    data,
+    app,
+    user,
+    isLoading,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
+  };
 };
 
 export { useTeamMonitoring };
