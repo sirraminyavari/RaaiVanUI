@@ -28,8 +28,9 @@ const OTPCountDownTimer = ({
     setTimer(resendCodeTimeout * 1000);
   }, [resendCodeTimeout]);
   useEffect(() => {
+    let timeoutFunc;
     if (timer >= 1000) {
-      setTimeout(() => {
+      timeoutFunc = setTimeout(() => {
         setTimer(timer - 1000);
         // Converts milliseconds to minutes.
         const minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
@@ -47,6 +48,9 @@ const OTPCountDownTimer = ({
       setStringTime(stringTime);
       timerStarted && onFinished();
     }
+    return () => {
+      if (!!timeoutFunc) clearTimeout(timeoutFunc);
+    };
   }, [timer]);
 
   return (
