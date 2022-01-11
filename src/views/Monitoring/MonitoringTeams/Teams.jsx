@@ -10,7 +10,7 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
 import { useContext, useMemo, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { useDispatch } from 'react-redux';
 import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
@@ -24,7 +24,15 @@ import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
 import { COLUMNS } from './column';
 import { Base64 } from 'js-base64';
+import EmptyCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 import FilledCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
+import {
+  BackButton,
+  BottomRow,
+  Container,
+  ShadowButton,
+  TopRow,
+} from './datepicker.style';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -32,7 +40,14 @@ const Teams = ({ ...props }) => {
   const { pathname } = location;
   const params = useParams();
   let { ApplicationID } = useParams();
-  const { data, isLoading } = useTeamMonitoring();
+  const {
+    data,
+    isLoading,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
+  } = useTeamMonitoring();
   const { path, url } = useRouteMatch();
   console.log(data, 'data');
   console.log(path);
@@ -42,6 +57,11 @@ const Teams = ({ ...props }) => {
   const [lowerBoundary, setLowerBoundary] = useState(5);
   const columns = useMemo(() => COLUMNS, []);
   console.log('RV_RTL', RV_RTL);
+  const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
+  const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
+  const [date, setDate] = useState(null);
+
+  const [dateHover, setDateHover] = useState(false);
 
   const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
@@ -127,9 +147,56 @@ const Teams = ({ ...props }) => {
           <AnimatedInput name="search" placeholder={RVDic?.Search} />
         </Styled.Inpt>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Styled.ExcelContainer>
-            <FilledCalendarIcon size={20} />
-          </Styled.ExcelContainer>
+          <Styled.DateContainer>
+            {/* <FilledCalendarIcon size={20} /> */}
+            <CustomDatePicker
+              label={RVDic?.SelectDate}
+              mode="button"
+              type="jalali"
+              hasFooter
+              range
+              headerTitle="فیلتر تاریخ "
+              onChangeVisibility={setCalendarPickerClicked}
+              CustomButton={({ onClick }) => (
+                <ShadowButton
+                  onClick={() => {
+                    onClick();
+                  }}
+                  // onMouseEnter={() => setDateHover(true)}
+                  // onMouseLeave={() => setDateHover(false)}
+                  // style={commonStyle}
+                  $isEnabled={date || calendarPickerClicked}
+                  className={
+                    calendarPickerClicked || date
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
+                  }>
+                  {date ? (
+                    <FilledCalendarIcon size={20} className={'rv-default'} />
+                  ) : (
+                    <EmptyCalendarIcon
+                      size={20}
+                      className={
+                        calendarPickerClicked || dateHover
+                          ? 'rv-default'
+                          : 'rv-distant'
+                      }
+                    />
+                  )}
+                </ShadowButton>
+              )}
+              onDateSelect={(value) => {
+                setDate(value);
+                console.log('value', value.from, value.to);
+                setDateFrom(value.from);
+                setDateTo(value.to);
+                console.log(dateFrom);
+                console.log(dateTo);
+                console.log('value', value);
+                // onByDate(value);
+              }}
+            />
+          </Styled.DateContainer>
           <Styled.ExcelContainer>
             <OfficeIcons
               type="excel"
@@ -342,3 +409,9 @@ const Teams = ({ ...props }) => {
 };
 
 export default Teams;
+
+const commonStyle = {
+  width: '2.3rem',
+  aspectRatio: '1',
+  marginRight: '0.5rem',
+};
