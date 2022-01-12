@@ -239,13 +239,11 @@ export const destroyCaptchaToken = () => {
   const reCaptchaElement = document.querySelector(
     'script[src^="https://www.google.com/recaptcha/api.js?render="]'
   );
-  return (
-    window.RVGlobal?.SAASBasedMultiTenancy &&
-    document?.body?.removeChild(reCaptchaElement) &&
+  reCaptchaElement?.remove();
+  window.RVGlobal?.SAASBasedMultiTenancy &&
     document.querySelectorAll('.grecaptcha-badge').forEach((el) => {
       el.remove(el);
-    })
-  );
+    });
 };
 
 /**
