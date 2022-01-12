@@ -22,15 +22,15 @@ class ErrorBoundary extends Component {
     this.setState({
       errorFound: true,
     });
-    this.setState({ errorFound: false });
 
     if (this.RVGlobal.IsDev) {
+      this.setState({ errorFound: false });
       alert(`Error Boundary: ${error.message}`, {
         autoClose: 60000,
       });
-      console.log('error: ', error.message);
-      console.log('info: ', info);
     }
+    console.error('info: ', info);
+    console.error('error: ', error.message);
   }
 
   /**
