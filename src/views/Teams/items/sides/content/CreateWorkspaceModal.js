@@ -26,9 +26,9 @@ const ButtonWrapper = styled.div`
 `;
 /**
  *
- * Create Modal component
+ * Create Workspace Modal component
  *
- * @param {object} props - CreateModal component props
+ * @param {object} props - Create Workspace Modal component props
  * @param {boolean} [props.isOpen=false] - Modal status
  * @param {function(string):void} props.onInputChange - Input component's onChange event callback
  * @param {string} [props.inputValue=''] - value attribute for input
@@ -40,7 +40,7 @@ const ButtonWrapper = styled.div`
  *
  * @return {JSX.Element} modal for creating a new workspace
  */
-const CreateModal = ({
+const CreateWorkspaceModal = ({
   isOpen,
   onInputChange,
   inputValue,
@@ -71,7 +71,9 @@ const CreateModal = ({
           />
         </InputWrapper>
         <ButtonWrapper>
-          <Button onClick={onCreate}>{RVDicSave}</Button>
+          <Button onClick={onCreate} disable={!inputValue.length}>
+            {RVDicSave}
+          </Button>
           <Button type="negative-o" onClick={onCancelCreate}>
             {RVDicReturn}
           </Button>
@@ -81,7 +83,7 @@ const CreateModal = ({
   );
 };
 
-CreateModal.propTypes = {
+CreateWorkspaceModal.propTypes = {
   isOpen: PropTypes.bool,
   onInputChange: PropTypes.func,
   inputValue: PropTypes.string,
@@ -91,7 +93,7 @@ CreateModal.propTypes = {
   modalWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
 };
-CreateModal.defaultProps = {
+CreateWorkspaceModal.defaultProps = {
   isOpen: false,
   onInputChange: () => {},
   inputValue: '',
@@ -102,4 +104,4 @@ CreateModal.defaultProps = {
   placeholder: '',
 };
 
-export default CreateModal;
+export default CreateWorkspaceModal;

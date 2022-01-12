@@ -1,22 +1,22 @@
 import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import DesktopWorkSpace from './DesktopSpace';
+import { useEffect, useState } from 'react';
+import useWindow from 'hooks/useWindowContext';
+import APIHandler from 'apiHelper/APIHandler';
 
-const spaces = [
-  {
-    id: '1',
-    role: 'admin',
-    title: 'فضای کاری مدیر',
-    teams: [],
-  },
-];
+const apiHandler = new APIHandler('RVAPI', 'GetWorkspaces');
 
 const DesktopContentSide = () => {
+  const [Workspaces, setWorkspaces] = useState(undefined);
+  useEffect(() => {
+    apiHandler.fetch({}, ({ Workspaces }) => setWorkspaces(Workspaces));
+  }, []);
   return (
     <>
       <Header />
       <Styled.SpaceListContainer>
-        {spaces?.map((space, key) => (
+        {Workspaces?.map((space, key) => (
           <DesktopWorkSpace key={key} space={space} />
         ))}
       </Styled.SpaceListContainer>

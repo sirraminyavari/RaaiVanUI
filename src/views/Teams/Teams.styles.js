@@ -727,3 +727,48 @@ export const TeamConfirmMessage = styled.span`
   font-size: 1rem;
   color: ${CV_GRAY_DARK};
 `;
+
+export const WorkspaceDeleteContainer = styled.div`
+  width: 100%;
+  padding-top: 2rem;
+  font-size: 1rem;
+`;
+
+export const WorkspaceDeleteString = styled.p`
+  ${({ type }) =>
+    type &&
+    `color: ${(type === 'alert' && CV_RED) || (type === 'email' && TCV_WARM)};`}
+  ${({ size }) => size && `font-size: ${size};`};
+  ${({ fontWeight = 'normal' }) => fontWeight && `font-weight: ${fontWeight}`};
+  margin-block-start: ${({ marginTop }) => (marginTop ? marginTop : '0.5rem')};
+`;
+
+export const WorkspaceDeleteConsequencesList = styled.ul`
+  padding-inline-start: 0;
+  margin-block-start: 2rem;
+  list-style: none;
+`;
+
+export const WorkspaceDeleteConsequencesListItem = styled.li`
+  padding-inline-start: 0;
+  margin-block: 0.5rem;
+  text-indent: 0.5rem;
+  font-weight: 500;
+  :before {
+    content: '-';
+    text-indent: 0.5rem;
+    padding-inline: 0.2rem;
+  }
+`;
+
+export const WorkspaceDeleteActionsContainer = styled.div`
+  margin-block: 1.5rem;
+  display: flex;
+  align-items: center;
+`;
+export const WorkspaceDeleteWelcomeHeader = styled.div`
+  margin: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;

@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import * as Styled from 'views/Teams/Teams.styles';
-import CreateModal from './CreateModal';
+import CreateWorkspaceModal from './CreateWorkspaceModal';
 import useWindow from 'hooks/useWindowContext';
-import { useMediaQuery } from 'react-responsive';
-import { MOBILE_BOUNDRY } from 'constant/constants';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
+import APIHandler from 'apiHelper/APIHandler';
+import { useHistory } from 'react-router-dom';
+import { encodeBase64 } from 'helpers/helpers';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const Header = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [spaceName, setSpaceName] = useState('');
+  const history = useHistory();
 
   const { RVDic } = useWindow();
   const RVDicNewWorkspace = RVDic.CreateN.replace(
@@ -17,12 +20,7 @@ const Header = () => {
     RVDic.NewN.replace('[n]', RVDic.Workspace)
   );
 
-  //? How to handle modal responsiveness?
-  const ModalWidth = useMediaQuery({
-    query: `(max-width: ${MOBILE_BOUNDRY})`,
-  })
-    ? '66%'
-    : '33%';
+  const ModalWidth = DimensionHelper().isTabletOrMobile ? '66%' : '33%';
 
   //! Add new space.
   const handleAddSpace = () => {
@@ -40,11 +38,20 @@ const Header = () => {
   };
 
   //TODO: Create new space
-  const handleSpaceCreate = () => {};
+  const handleSpaceCreate = () => {
+    const apiHandler = new APIHandler('RVAPI', 'CreateWorkspace');
+    if (spaceName.length > 0)
+      apiHandler.fetch({ Name: encodeBase64(spaceName) }, (response) => {
+        history.push('/teams');
+        console.log(response);
+
+        setIsModalShown(false);
+      });
+  };
 
   return (
     <Styled.HeaderContainer>
-      <CreateModal
+      <CreateWorkspaceModal
         isOpen={isModalShown}
         onInputChange={handleInputChange}
         inputValue={spaceName}

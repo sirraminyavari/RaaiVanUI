@@ -42,35 +42,47 @@ const DesktopWorkSpace = ({ space }) => {
     dispatch(setApplicationsOrder(reordered));
     dispatch(setApplications(reordered));
   };
+  const checkWorkspaceHasArchivedApps = () => {
+    const workspaceArchivedApps = archivedApps
+      .map((app) => {
+        if (app.WorkspaceID === space.WorkspaceID) {
+          return app;
+        }
+      })
+      .filter((app) => app);
+    if (workspaceArchivedApps.length > 0) return true;
+    else return false;
+  };
 
   return (
     <Styled.SpaceConatiner>
       <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
-        <Flipper flipKey={space.id} spring="stiff">
+        <Flipper flipKey={space.WorkspaceID} spring="stiff">
           <Styled.TeamListConatiner>
             {isFetching ? (
               <LogoLoader />
             ) : (
               <>
                 {teams?.map((team, index) => {
-                  return (
-                    <Flipped
-                      key={team?.ApplicationID}
-                      flipId={team?.ApplicationID}>
-                      <DragItem
-                        team={team}
+                  if (team.WorkspaceID === space.WorkspaceID)
+                    return (
+                      <Flipped
                         key={team?.ApplicationID}
-                        index={index}
-                        moveCard={moveCard}
-                      />
-                    </Flipped>
-                  );
+                        flipId={team?.ApplicationID}>
+                        <DragItem
+                          team={team}
+                          key={team?.ApplicationID}
+                          index={index}
+                          moveCard={moveCard}
+                        />
+                      </Flipped>
+                    );
                 })}
-                {!!archivedApps.length && (
-                  <ArchivedTeams archives={archivedApps} />
+                {checkWorkspaceHasArchivedApps() && (
+                  <ArchivedTeams space={space} archives={archivedApps} />
                 )}
-                <NewTeam />
+                <NewTeam WorkspaceID={space.WorkspaceID} />
               </>
             )}
           </Styled.TeamListConatiner>

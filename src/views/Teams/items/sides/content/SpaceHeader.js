@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import { TC_DEFAULT } from 'constant/Colors';
 import * as Styled from 'views/Teams/Teams.styles';
@@ -7,6 +8,7 @@ import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
+import { decodeBase64 } from 'helpers/helpers';
 
 /**
  *
@@ -19,18 +21,19 @@ import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
  */
 const SpaceHeader = ({ space }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
+  const history = useHistory();
 
   //TODO: Update RVDic object dictionary
   const { RVDic } = useWindow();
   const RVDicReturn = RVDic.Return;
-  const RVDicDeleteConfirmQuestion = 'آیا از حذف فضای کاری اطمینان دارید؟';
-  const RVDicDeleteConfirmWarning =
-    'با حذف فضای کاری، دسترسی به اطلاعات آن برای هیچ کاربری ممکن نخواهد بود و فضای کاری به صورت دائمی حذف خواهد شد!';
+  const RVDicDeleteConfirmQuestion = RVDic.Confirms.AreYouSureYouWantToDeleteTheN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicDeleteConfirmWarning = RVDic._HelpRemoveWorkspace;
   const RVDicRemoveWorkspace = RVDic.RemoveN.replace('[n]', RVDic.Workspace);
-  const RVDicPermanentlyRemove = RVDic.RemoveN.replace('[n]', 'دائمی');
-
-  //TODO Change [RVDic.User] with appropriate localization value
-  const userAuthority = space.role === 'admin' ? RVDic.Admin : RVDic.User;
+  const RVDicPermanentlyRemove = RVDic.RemovePermanently;
+  const userAuthority = space.Editable ? RVDic.Admin : RVDic.OrdinaryUser;
 
   //! Show space delete confirmation.
   const onTrashClick = () => {
@@ -42,7 +45,9 @@ const SpaceHeader = ({ space }) => {
     setIsConfirmShown(false);
   };
 
-  const handleSpaceDelete = () => {};
+  const handleSpaceDelete = () => {
+    history.push(`/teams/remove-workspace/${space.WorkspaceID}`);
+  };
 
   const handleSpaceSetting = () => {};
 
@@ -56,7 +61,7 @@ const SpaceHeader = ({ space }) => {
         onConfirm={handleSpaceDelete}
         confirmText={RVDicPermanentlyRemove}
         cancelText={RVDicReturn}
-        messageTitle={space.title}
+        messageTitle={decodeBase64(space.Name)}
         messageIcon={SpaceIcon}
         messageQuestion={RVDicDeleteConfirmQuestion}
         messageWarning={RVDicDeleteConfirmWarning}
@@ -68,9 +73,9 @@ const SpaceHeader = ({ space }) => {
           style={{ marginInlineEnd: '0.6rem' }}
         />
         {/*//? Should <Styled.SpaceHeaderTitle/> component be replaced with <Heading/>?  */}
-        {`${space.title} (${userAuthority})`}
+        {`${decodeBase64(space.Name)} (${userAuthority})`}
       </Styled.SpaceHeaderTitle>
-      {space.role === 'admin' && (
+      {space.Removable && (
         <Styled.SpaceHeaderActions>
           <Styled.TrashIconWrapper onClick={onTrashClick}>
             <TrashIcon size={'0.8rem'} />

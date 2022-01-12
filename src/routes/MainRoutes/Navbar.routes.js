@@ -40,7 +40,7 @@ const NavbarRoutes = [
   {
     path: TEAMS_PATH,
     name: TEAMS_NAME,
-    exact: true,
+    exact: false,
     hasNavSide: true,
     component: Teams,
   },
