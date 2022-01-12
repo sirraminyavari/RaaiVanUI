@@ -14,7 +14,12 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import RfreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
-import { USER_PATH, USER_SECURITY_PATH } from 'constant/constants';
+import {
+  USER_PATH,
+  USER_SECURITY_PATH,
+  REPORTS_PATH,
+  MONITORING_TEAMS_PATH,
+} from 'constant/constants';
 import * as Styled from '../monitoring.styles';
 import {
   useHistory,
@@ -63,17 +68,17 @@ const Teams = ({ ...props }) => {
     {
       id: 2,
       title: RVDic?.Reports,
-      linkTo: USER_SECURITY_PATH,
+      linkTo: REPORTS_PATH,
     },
     {
       id: 3,
       title: RVDic?.TeamsReport,
-      linkTo: USER_SECURITY_PATH,
+      linkTo: REPORTS_PATH,
     },
     {
       id: 3,
       title: data?.Application?.Title,
-      linkTo: USER_SECURITY_PATH,
+      linkTo: MONITORING_TEAMS_PATH,
     },
   ];
 
