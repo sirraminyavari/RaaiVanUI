@@ -184,14 +184,17 @@ export const recycleApplication = (appId, done, error) => async (
  * @description A function (action) that creates a new application.
  * @returns -Dispatch to redux store.
  */
-export const createApplication = (title, done, error) => async (
+export const createApplication = (title, WorkspaceID, done, error) => async (
   dispatch,
   getState
 ) => {
   const { applications } = getState();
   try {
     createApplicationAPI.fetch(
-      { Title: encodeBase64(title) },
+      {
+        Title: encodeBase64(title),
+        WorkspaceID,
+      },
       (response) => {
         if (response.ErrorText) {
           error && error(response.ErrorText);
