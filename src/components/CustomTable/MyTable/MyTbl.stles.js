@@ -14,7 +14,7 @@ export const TableContainer = styled.div`
   height: 100vh;
   overflow: scroll;
   grid-gap: 0.25rem;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
 `;
 
 export const TableHeader = styled.div.attrs({
@@ -29,6 +29,9 @@ export const TableRowHeader = styled.div.attrs({
 })`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  grid-area: content;
+
   textalign: center;
   alignitems: center;
   font-size: 0.75rem;
@@ -38,6 +41,9 @@ export const TableRowHeader = styled.div.attrs({
 export const TRow = styled.div.attrs({ className: `${C_GRAY}` })`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-area: content;
+
+  width: 100%;
   font-size: 0.78rem;
   padding: 0rem;
   textalign: center;
