@@ -22,6 +22,7 @@ import {
 } from 'constant/constants';
 import * as Styled from '../monitoring.styles';
 import {
+  Link,
   useHistory,
   useLocation,
   useParams,
@@ -113,7 +114,9 @@ const Teams = ({ ...props }) => {
         </div>
         <div>
           {/* <Styled.ReturnBtn> */}
-          <Styled.ReturnBtn>بازگشت </Styled.ReturnBtn>
+          <Styled.ReturnBtn as={Link} to={REPORTS_PATH}>
+            بازگشت{' '}
+          </Styled.ReturnBtn>
           {/* </Styled.ReturnBtn> */}
           {/* </TextButton> */}
         </div>
@@ -221,7 +224,7 @@ const Teams = ({ ...props }) => {
                   // justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                به روز رسانی لیست{' '}
+                {RVDic?.Update}
               </span>
             </Space>
           </Button>
@@ -235,7 +238,6 @@ const Teams = ({ ...props }) => {
               border: '1px solid var(--rv-gray-color-dark)',
               padding: '.7rem .2rem',
               margin: '0.5rem',
-
               width: '130px',
             }}>
             <div
@@ -301,7 +303,7 @@ const Teams = ({ ...props }) => {
             className="primary"
             style={{
               border: '1px solid var(--rv-gray-color-dark)',
-              padding: '.7rem .2rem',
+              padding: '.7rem .3rem',
               margin: '0.5rem',
 
               width: '130px',
@@ -487,7 +489,7 @@ const Teams = ({ ...props }) => {
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
                 }}>
-                حجم مورد استفاده
+                {/* حجم مورد استفاده */}
                 {RVDic?.Login}
               </label>
               <label style={{ fontWeight: 'bold' }}>
