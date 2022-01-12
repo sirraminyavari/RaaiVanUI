@@ -233,6 +233,38 @@ export const getCaptchaToken = async () => {
 };
 
 /**
+ * @description Destroy google reCaptcha
+ */
+export const destroyCaptchaToken = () => {
+  const reCaptchaElement = document.querySelector(
+    'script[src^="https://www.google.com/recaptcha/api.js?render="]'
+  );
+  return (
+    window.RVGlobal?.SAASBasedMultiTenancy &&
+    document?.body?.removeChild(reCaptchaElement) &&
+    document.querySelectorAll('.grecaptcha-badge').forEach((el) => {
+      el.remove(el);
+    })
+  );
+};
+
+/**
+ * @description Initialize google reCaptcha
+ * @return {Promise<void>}
+ */
+export const initializeCaptchaToken = () => {
+  return new Promise((resolve) => {
+    const script = document?.createElement('script');
+    // reCaptcha is just for SAAS
+    if (window.RVGlobal?.SAASBasedMultiTenancy) {
+      script.src = window.RVGlobal?.CaptchaURL;
+      document?.body?.appendChild(script);
+      script.addEventListener('load', resolve);
+    }
+  });
+};
+
+/**
  * @description Validates file upload type.
  * @param {Array} files -List of files
  * @param {Array} types - A list of file types.
