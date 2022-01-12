@@ -11,7 +11,7 @@ import {
   SIGN_UP_EMAIL_COLLAPSED,
   SIGN_UP_PASSWORD,
   VERIFICATION_CODE,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import { MAIN_BLUE } from 'constant/Colors';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

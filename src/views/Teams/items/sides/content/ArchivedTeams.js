@@ -10,7 +10,7 @@ import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-const ArchivedTeams = ({ archives, hasHandle }) => {
+const ArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL } = useWindow();
@@ -49,6 +49,7 @@ const ArchivedTeams = ({ archives, hasHandle }) => {
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
+        space={space}
         isOpen={isModalShown}
         modalTitle="تیم های آرشیو شده"
         modalWidth={getModalWidth()}

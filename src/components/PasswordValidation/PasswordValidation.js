@@ -4,7 +4,7 @@
 import CancelCircle from 'components/Icons/CancelCircle';
 import CheckCircle from 'components/Icons/CheckCircle';
 import H6 from 'components/TypoGraphy/H6';
-import { LIGHT_BLUE, MAIN_BLUE } from 'const/Colors';
+import { LIGHT_BLUE, MAIN_BLUE } from 'constant/Colors';
 import { RED } from 'constant/Colors';
 import React from 'react';
 import styled from 'styled-components';

@@ -73,7 +73,7 @@ const AuthView = () => {
           ResponseHandler: function (responseText) {
             const result = JSON?.parse(responseText);
             if (result?.Succeed)
-              alert(RVDic?.MSG[result?.Succeed], { Timeout: 30000 });
+              alert(RVDic?.MSG[result?.Succeed], { autoClose: 30000 });
             if (result?.ErrorText) alert(RVDic?.MSG[result?.ErrorText]);
             setPreinitDone(true);
           },
