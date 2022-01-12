@@ -17,7 +17,11 @@ import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
-import { USER_PATH, USER_SECURITY_PATH } from '../../constant/constants';
+import {
+  REPORTS_PATH,
+  USER_PATH,
+  USER_SECURITY_PATH,
+} from '../../constant/constants';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
@@ -146,12 +150,12 @@ const MonitoringView = ({ ...props }) => {
     {
       id: 2,
       title: RVDic?.Reports,
-      linkTo: USER_SECURITY_PATH,
+      linkTo: REPORTS_PATH,
     },
     {
       id: 2,
       title: RVDic?.TeamsReport,
-      linkTo: USER_SECURITY_PATH,
+      linkTo: REPORTS_PATH,
     },
   ];
 
