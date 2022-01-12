@@ -60,21 +60,6 @@ export const Grid = styled.div`
   }
 `;
 
-// export const BtnGrid = styled.div`
-// display: flex;
-// justify-content: space-between;
-//  flex-wrap: no-wrap;
-// // grid-template-columns: repeat(5, 1fr);
-// // grid-gap: 2px
-
-//   @media (max-width:680px) {
-//     // display: flex;
-//     display: grid;
-//     grid-template-columns: repeat(2, 4fr)!important;
-//     grid-gap: 2px
-//   }
-// `;
-
 export const BtnGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -118,4 +103,19 @@ export const Mcontain = styled.div`
   // @media (max-width:320px) { margin-top: 10px!important}
 
   // style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}
+`;
+
+export const ReturnBtn = styled.div`
+  color: var(--rv-red-color-warm);
+  display: flex;
+  margin: 0rem;
+  align-items: center;
+  padding: 0.1rem 0.55rem;
+
+  &:hover {
+    cursor: pointer;
+    border-radius: 30px;
+    border: 0.01rem solid var(--rv-red-color-warm);
+    // padding: 0.1rem .3rem;
+  }
 `;
