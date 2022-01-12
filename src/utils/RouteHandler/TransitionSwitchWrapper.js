@@ -66,8 +66,11 @@ const time = 1;
 export const Wrapper = styled.div`
   div.transition-group {
     position: relative;
+    padding-inline: 1rem;
     > div {
       width: 100%;
+      box-sizing: border-box;
+      margin-inline: 0;
     }
   }
   .fade-enter {
