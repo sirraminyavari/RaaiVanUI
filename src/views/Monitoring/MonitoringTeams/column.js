@@ -22,27 +22,15 @@ export const COLUMNS = [
   },
 
   {
-    Header: (
-      <div style={{ textAlign: 'center', marginRight: '1rem' }}>
-        {' '}
-        {RVDic?.Email}{' '}
-      </div>
-    ),
-    Cell: ({ value }) => (
-      <div style={{ textAlign: 'center', marginRight: '1rem' }}>{value}</div>
-    ),
+    Header: <div style={{ textAlign: 'center' }}> {RVDic?.Email} </div>,
+    Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'MainEmailAddress',
   },
   {
     Header: (
-      <div style={{ textAlign: 'center', marginRight: '4rem' }}>
-        {' '}
-        {RVDic?.LastActivityTime}{' '}
-      </div>
+      <div style={{ textAlign: 'center' }}> {RVDic?.LastActivityTime} </div>
     ),
-    Cell: ({ value }) => (
-      <div style={{ textAlign: 'center', marginRight: '2rem' }}>{value}</div>
-    ),
+    Cell: ({ value }) => <div style={{ textAlign: 'center' }}>{value}</div>,
     accessor: 'LastActivityTime_Local',
   },
 ];
