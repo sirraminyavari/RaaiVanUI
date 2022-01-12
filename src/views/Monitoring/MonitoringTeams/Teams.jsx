@@ -1,9 +1,6 @@
-// import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
-import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
 import { Space } from 'components';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -19,20 +16,12 @@ import TextButton from 'components/Buttons/TextButton';
 import RfreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
 import { USER_PATH, USER_SECURITY_PATH } from 'constant/constants';
 import * as Styled from '../monitoring.styles';
-import { useAppMonitoring } from '../useMonitoring';
 import { useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
 import { COLUMNS } from './column';
-import { Base64 } from 'js-base64';
 import EmptyCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
 import FilledCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
-import {
-  BackButton,
-  BottomRow,
-  Container,
-  ShadowButton,
-  TopRow,
-} from './datepicker.style';
+import { ShadowButton } from './datepicker.style';
 
 const Teams = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -79,7 +68,6 @@ const Teams = ({ ...props }) => {
     {
       id: 3,
       title: data?.Application?.Title,
-      // 'تیم محصول کلیک مایند',
       linkTo: USER_SECURITY_PATH,
     },
   ];
@@ -103,31 +91,7 @@ const Teams = ({ ...props }) => {
       dataObj.MainEmailAddress = decodeBase64(dataObj.MainEmailAddress);
     }
     usersMarkup = (
-      // <InfiniteScroll
-      //   dataLength={monitoring.TotalApplicationsCount}
-      //   next={loadMore}
-      //   hasMore={hasMore ? true : false}
-      //   scrollableTarget="scrollableDiv"
-      //   onScroll={() =>
-      //     setTimeout(() => {
-      //       loadMore();
-      //     }, 1000)
-      //   }
-      //   loader={
-      //     hasMore && (
-      //       <div style={{ textAlign: 'center' }}>
-      //         <LoadingIconFlat />
-      //       </div>
-      //     )
-      //   }
-      //   endMessage={
-      //     !hasMore && (
-      //       <div style={{ textAlign: 'center' }}> No More data... </div>
-      //     )
-      //   }>
       <MyTable columns={columns} data={data.Users.slice(0, lowerBoundary)} />
-
-      //  </InfiniteScroll>
     );
   }
 
@@ -137,7 +101,6 @@ const Teams = ({ ...props }) => {
       <Styled.Title>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Heading className="" type={'h1'}>
-            {/* {'تیم محصول کلیلک مایند'} */}
             {data && data.Application.Title}
           </Heading>
         </div>
@@ -162,9 +125,6 @@ const Teams = ({ ...props }) => {
                   onClick={() => {
                     onClick();
                   }}
-                  // onMouseEnter={() => setDateHover(true)}
-                  // onMouseLeave={() => setDateHover(false)}
-                  // style={commonStyle}
                   $isEnabled={date || calendarPickerClicked}
                   className={
                     calendarPickerClicked || date
@@ -303,9 +263,6 @@ const Teams = ({ ...props }) => {
               {/* {data && data.Application.AttachmentSizeMB} */}
             </label>
             <label style={{ fontWeight: 'bold' }}>
-              {/* {monitoring && monitoring.TotalUsersCount
-                ? monitoring.TotalUsersCount
-                : ''} */}
               {data && data.Application.CreatedNodesCount}
             </label>
           </div>
@@ -409,9 +366,3 @@ const Teams = ({ ...props }) => {
 };
 
 export default Teams;
-
-const commonStyle = {
-  width: '2.3rem',
-  aspectRatio: '1',
-  marginRight: '0.5rem',
-};
