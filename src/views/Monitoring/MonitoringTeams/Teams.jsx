@@ -46,7 +46,6 @@ const Teams = ({ ...props }) => {
   const [lowerBoundary, setLowerBoundary] = useState(5);
   const columns = useMemo(() => COLUMNS, []);
   console.log('RV_RTL', RV_RTL);
-  const [peoplePickerVisibility, setPeoplePickerVisibility] = useState(false);
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
   const [date, setDate] = useState(null);
 
@@ -157,14 +156,14 @@ const Teams = ({ ...props }) => {
               }}
             />
           </Styled.DateContainer>
-          <Styled.ExcelContainer>
+          {/* <Styled.ExcelContainer>
             <OfficeIcons
               type="excel"
               size={20}
               className="search-export-excel"
               onClick={getExcelFile}
             />
-          </Styled.ExcelContainer>
+          </Styled.ExcelContainer> */}
 
           <Button
             className="rv-default"
@@ -206,160 +205,309 @@ const Teams = ({ ...props }) => {
           </Button>
         </div>
       </Styled.Grid>
-      <Styled.Grid>
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem .2rem',
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
+      <Styled.BtnGrid style={{ marginTop: '1rem' }}>
+        <Styled.btn>
+          <TextButton
+            className="primary"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <label
-              className="rv-dark-gray"
-              style={{
-                // color: 'darkgray',
-                fontSize: '.6rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.5rem',
-              }}>
-              {/* اعضای تیم */}
-              {RVDic?.Members}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {data && data.Application.MembersCount}
-            </label>
-          </div>
-        </TextButton>
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem .2rem',
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              // justifyContent: 'space-between',
-            }}>
-            <label
-              className="rv-dark-gray"
-              style={{
-                // color: 'darkgray',
-                fontSize: '.6rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.5rem',
-              }}>
-              آیتم های ثبت شده {RVDic?.CreatedNodes}
-              {/* {data && data.Application.AttachmentSizeMB} */}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {data && data.Application.CreatedNodesCount}
-            </label>
-          </div>
-        </TextButton>
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem .2rem',
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
 
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              width: '130px',
             }}>
-            <label
-              className="rv-dark-gray"
+            <div
               style={{
-                // color: 'darkgray',
-                fontSize: '.6rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
               }}>
-              تمپلیت های مورد استفاده {RVDic?.UsedTemplates}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {data && data.Application.UsedTemplatesCount}
-            </label>
-          </div>
-        </TextButton>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                {/* اعضای تیم */}
+                {RVDic?.Members}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.MembersCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
 
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem .2rem',
-
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
+        <Styled.btn>
+          <TextButton
+            className="primary"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              // justifyContent: 'space-between',
-            }}>
-            <label
-              className="rv-dark-gray"
-              style={{
-                // color: 'darkgray',
-                fontSize: '.6rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.5rem',
-              }}>
-              بازدید آیتم های ثبت شده {RVDic?.NodeVisits}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {data && data.Application.VisitedNodesCount}
-            </label>
-          </div>
-        </TextButton>
-        <TextButton
-          className="primary"
-          style={{
-            border: '1px solid var(--rv-gray-color-dark)',
-            padding: '.7rem .2rem',
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
 
-            margin: '0.5rem 0rem',
-            width: '130px',
-          }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              // justifyContent: 'space-between',
+              width: '130px',
             }}>
-            <label
-              className="rv-dark-gray"
+            <div
               style={{
-                // color: 'darkgray',
-                fontSize: '.6rem',
-                fontWeight: 'lighter',
-                marginInlineEnd: '.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
               }}>
-              حجم مورد استفاده
-              {RVDic?.UsedStorage}
-            </label>
-            <label style={{ fontWeight: 'bold' }}>
-              {data && data.Application.AttachmentSizeMB}
-            </label>
-          </div>
-        </TextButton>
-      </Styled.Grid>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                آیتم های ثبت شده {RVDic?.CreatedNodes}
+                {/* {data && data.Application.AttachmentSizeMB} */}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.CreatedNodesCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                تمپلیت های مورد استفاده {RVDic?.UsedTemplates}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.UsedTemplatesCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                بازدید آیتم های ثبت شده {RVDic?.NodeVisits}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.VisitedNodesCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                حجم مورد استفاده
+                {RVDic?.UsedStorage}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.AttachmentSizeMB}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+        {/* </Styled.BtnGrid>
+        <Styled.BtnGrid> */}
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                {/* حجم مورد استفاده */}
+                {RVDic?.UsedTemplates}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.TotalTemplatesCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                {/* حجم مورد استفاده */}
+                {RVDic?.Searches}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.SearchCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                حجم مورد استفاده
+                {RVDic?.Login}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.LoginCount}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+
+        <Styled.btn>
+          <TextButton
+            className="primary"
+            style={{
+              border: '1px solid var(--rv-gray-color-dark)',
+              padding: '.7rem .2rem',
+              margin: '0.5rem',
+              width: '130px',
+            }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+              }}>
+              <label
+                className="rv-dark-gray"
+                style={{
+                  // color: 'darkgray',
+                  fontSize: '.6rem',
+                  fontWeight: 'lighter',
+                  marginInlineEnd: '.5rem',
+                }}>
+                {/* حجم مورد استفاده */}
+                {RVDic?.Attachments}
+              </label>
+              <label style={{ fontWeight: 'bold' }}>
+                {data && data.Application.Attachments}
+              </label>
+            </div>
+          </TextButton>
+        </Styled.btn>
+      </Styled.BtnGrid>
       {usersMarkup}
     </Styled.Container>
   );
