@@ -19,6 +19,7 @@ import {
   USER_SECURITY_PATH,
   REPORTS_PATH,
   MONITORING_TEAMS_PATH,
+  MONITORING_PATH,
 } from 'constant/constants';
 import * as Styled from '../monitoring.styles';
 import {
@@ -74,7 +75,7 @@ const Teams = ({ ...props }) => {
     {
       id: 3,
       title: RVDic?.TeamsReport,
-      linkTo: REPORTS_PATH,
+      linkTo: MONITORING_PATH,
     },
     {
       id: 3,
@@ -114,7 +115,7 @@ const Teams = ({ ...props }) => {
         </div>
         <div>
           {/* <Styled.ReturnBtn> */}
-          <Styled.ReturnBtn as={Link} to={REPORTS_PATH}>
+          <Styled.ReturnBtn as={Link} to={MONITORING_PATH}>
             بازگشت{' '}
           </Styled.ReturnBtn>
           {/* </Styled.ReturnBtn> */}

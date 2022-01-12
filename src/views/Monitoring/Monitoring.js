@@ -239,14 +239,14 @@ const MonitoringView = ({ ...props }) => {
           <AnimatedInput name="search" placeholder={RVDic?.Search} />
         </Styled.Inpt>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Styled.ExcelContainer>
+          {/* <Styled.ExcelContainer>
             <OfficeIcons
               type="excel"
               size={20}
               className="search-export-excel"
               onClick={getExcelFile}
             />
-          </Styled.ExcelContainer>
+          </Styled.ExcelContainer> */}
           <Button
             className="rv-default"
             style={{
