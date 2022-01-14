@@ -1,17 +1,32 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
-import Tree from '@atlaskit/tree';
+import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
 import SHTemplateItem from './SHTemplateItem';
 
 const SHTemplates = ({ nodes, ...rest }) => {
   const [tree, setTree] = useState({});
 
   useEffect(() => {
-    console.log(nodes);
-    console.log(makeTree(nodes));
     setTree(makeTree(nodes));
   }, []);
+
+  const onExpand = (id) => {
+    setTree(mutateTree(tree, id, { isExpanded: true }));
+  };
+
+  const onCollapse = (id) => {
+    setTree(mutateTree(tree, id, { isExpanded: false }));
+  };
+
+  const onDragEnd = (src, dest) => {
+    console.log(src, dest);
+    if (!dest) {
+      return;
+    }
+
+    setTree(moveItemOnTree(tree, src, dest));
+  };
 
   const makeTree = (data) => {
     const { Tree, AppID } = data;
@@ -50,7 +65,6 @@ const SHTemplates = ({ nodes, ...rest }) => {
   };
 
   const renderItem = (props) => {
-    console.log(props);
     return <SHTemplateItem {...props} />;
   };
 
@@ -60,7 +74,10 @@ const SHTemplates = ({ nodes, ...rest }) => {
         <Tree
           tree={tree}
           renderItem={renderItem}
-          offsetPerLevel={100}
+          onExpand={onExpand}
+          onCollapse={onCollapse}
+          onDragEnd={onDragEnd}
+          offsetPerLevel={0}
           isDragEnabled={true}
           isNestingEnabled={true}
         />
