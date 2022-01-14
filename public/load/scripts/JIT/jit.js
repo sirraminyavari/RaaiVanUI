@@ -1101,7 +1101,7 @@ Options.Canvas = {
 };
 
 /*
- * File: Options.Tree.js
+ * File: Options.DndTree.js
  *
 */
 

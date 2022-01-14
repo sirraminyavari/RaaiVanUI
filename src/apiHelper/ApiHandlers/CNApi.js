@@ -1,5 +1,9 @@
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { CN_API, GET_CHILD_NODE_TYPES } from 'constant/apiConstants';
+import {
+  CN_API,
+  GET_CHILD_NODE_TYPES,
+  GET_NODE_TYPES,
+} from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
 export const getGroupsAll = () => {
@@ -96,10 +100,21 @@ export const getChildNodeTypes = (
     Count: count,
     Archive: archive,
     Icon: icon,
-  }).then((x) =>
-    x?.NodeTypes.map((n) => ({
-      ...n,
-      TypeName: decodeBase64(n?.TypeName),
-    }))
-  );
+  });
+  //   .then((x) =>
+  //   x?.NodeTypes.map((n) => ({
+  //     ...n,
+  //     TypeName: decodeBase64(n?.TypeName),
+  //   }))
+  // );
+};
+
+export const getNodeTypes = () => {
+  const getNodeTypesAPI = API_Provider(CN_API, GET_NODE_TYPES);
+
+  return apiCallWrapper(getNodeTypesAPI, {
+    Icon: true,
+    Tree: true,
+    Count: 100000,
+  });
 };
