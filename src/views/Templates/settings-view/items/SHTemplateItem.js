@@ -6,6 +6,7 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import TemplateInlineEdit from './TemplatesInlineEdit';
+import TemplateCreateNew from './TemplateCreateNew';
 
 const SHTemplateItem = ({
   item,
@@ -45,9 +46,7 @@ const SHTemplateItem = ({
         <DragIconWrapper>
           <DragPaneIcon size={20} />
         </DragIconWrapper>
-        <AddButton>
-          <AddIcon size={20} />
-        </AddButton>
+        <TemplateCreateNew parent={item?.id} />
         <ItemIcon src={item?.data?.IconURL} />
         <TemplateInlineEdit value={item?.data?.title} />
       </TreeItemContainer>
@@ -89,14 +88,6 @@ const NodeIcon = styled(CaretIcon).attrs((props) => ({
 const DragPaneIcon = styled(DragIcon).attrs((props) => ({
   size: props.size,
 }))`
-  color: ${CV_DISTANT};
-`;
-const AddButton = styled.button`
-  width: 1.5rem;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
   color: ${CV_DISTANT};
 `;
 const ItemIcon = styled.img`

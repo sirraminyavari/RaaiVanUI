@@ -1,4 +1,4 @@
-import { FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
@@ -9,6 +9,9 @@ import SHTemplates from './items/SHTemplates';
 import SaaSTemplates from './items/SaaSTemplates';
 import SearchInput from 'components/Inputs/SearchInput';
 import LogoLoader from '../../../components/Loaders/LogoLoader/LogoLoader';
+import TemplateCreateNew from './items/TemplateCreateNew';
+import { CV_RED, CV_WHITE, TCV_DEFAULT } from '../../../constant/CssVariables';
+import ArchiveIcon from '../../../components/Icons/ArchiveIcon/ArchiveIcon';
 
 const TemplatesSettings = () => {
   const { RVDic, RV_RTL, RVGlobal } = useWindowContext();
@@ -56,6 +59,12 @@ const TemplatesSettings = () => {
             placeholder={RVDic?.Search}
             delayTime={1000}
           />
+          <Spacer />
+          <ArchiveButton>
+            <ArchiveIcon size={20} />
+            <div>{'بایگانی'}</div>
+          </ArchiveButton>
+          <TemplateCreateNew />
         </ActionBarContainer>
 
         {loading ? (
@@ -80,7 +89,28 @@ const ViewCard = styled.div`
 const ViewTitle = styled(Heading)``;
 
 const ActionBarContainer = styled.div`
-  ${FLEX_RSB}
+  ${FLEX_RCB};
+  width: 100%;
+  gap: 1rem;
 `;
-
+const Spacer = styled.div`
+  flex: 1;
+`;
+const ArchiveButton = styled.button`
+  border: 1px solid transparent;
+  outline: none;
+  border-radius: 0.8rem;
+  height: 3rem;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${CV_RED};
+  background-color: ${CV_WHITE};
+  gap: 0.5rem;
+  transition: border 0.15s ease-out;
+  &:hover {
+    border: 1px solid ${CV_RED};
+  }
+`;
 export default TemplatesSettings;

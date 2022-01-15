@@ -15,7 +15,7 @@ const TemplateInlineEdit = ({ value, onConfirm }) => {
   const handleConfirm = async () => {
     if (editMode) {
       setEditMode(false);
-      if (title !== value) {
+      if (title !== value && onConfirm) {
         await onConfirm(title);
       }
     }
