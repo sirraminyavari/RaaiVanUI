@@ -243,7 +243,8 @@
         params = params || {};
 
         var url = RVAPI.ResponseURL + "/GetApplications?timeStamp=" + new Date().getTime();
-        var queryString = (GlobalUtilities.get_type(params.Archive) == "boolean" ? "&Archive=" + params.Archive : "");
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (GlobalUtilities.get_type(params.Archive) == "boolean" ? "&Archive=" + params.Archive : "");
         return RVAPI._send(url, params, queryString);
     },
 

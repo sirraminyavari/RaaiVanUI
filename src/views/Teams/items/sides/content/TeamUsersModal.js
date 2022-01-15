@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import * as Styled from 'views/Teams/Teams.styles';
 import Avatar from 'components/Avatar/Avatar';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -44,7 +45,7 @@ const TeamUsersModal = ({
       '[n]',
       `"${fullName}"`
     );
-    const title = 'حذف کاربر از تیم';
+    const title = RVDic.RemoveUserFromTheTeam;
     setConfirm({ user, message, title, isOpen: true });
   };
 
@@ -82,48 +83,52 @@ const TeamUsersModal = ({
             gap: '0.2rem',
             marginTop: '1rem',
           }}>
-          {users?.map((user) => {
-            const isAuthUser =
-              ((window.RVGlobal || {}).CurrentUser || {}).UserID ===
-              user?.UserID;
-            const fullName = `${decodeBase64(user?.FirstName)} ${decodeBase64(
-              user?.LastName
-            )}`;
-            const userName = decodeBase64(user?.UserName);
-            return (
-              <Styled.ExtraUserItem
-                key={user?.UserID}
-                className={BO_RADIUS_QUARTER}
-                style={{
-                  border: `1px solid ${CV_DISTANT}`,
-                  padding: '0.2rem 0.5rem',
-                }}>
-                <Avatar userImage={user?.ProfileImageURL} radius={25} />
-                <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
-                <Styled.ExtraUserTitle
+          {!users.length ? (
+            <LogoLoader />
+          ) : (
+            users?.map((user) => {
+              const isAuthUser =
+                ((window.RVGlobal || {}).CurrentUser || {}).UserID ===
+                user?.UserID;
+              const fullName = `${decodeBase64(user?.FirstName)} ${decodeBase64(
+                user?.LastName
+              )}`;
+              const userName = decodeBase64(user?.UserName);
+              return (
+                <Styled.ExtraUserItem
+                  key={user?.UserID}
                   className={BO_RADIUS_QUARTER}
                   style={{
-                    fontSize: '0.65rem',
-                    fontWeight: 'bold',
-                    backgroundColor: CV_FREEZED,
-                    padding: '0.3rem',
+                    border: `1px solid ${CV_DISTANT}`,
+                    padding: '0.2rem 0.5rem',
                   }}>
-                  {userName}
-                </Styled.ExtraUserTitle>
-                {isRemovable && !isAuthUser && (
-                  <CloseIcon
-                    onClick={() => handleRemoveUser(user)}
-                    color={CV_RED}
+                  <Avatar userImage={user?.ProfileImageURL} radius={25} />
+                  <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
+                  <Styled.ExtraUserTitle
+                    className={BO_RADIUS_QUARTER}
                     style={{
-                      position: 'absolute',
-                      left: '0.5rem',
-                      cursor: 'pointer',
-                    }}
-                  />
-                )}
-              </Styled.ExtraUserItem>
-            );
-          })}
+                      fontSize: '0.65rem',
+                      fontWeight: 'bold',
+                      backgroundColor: CV_FREEZED,
+                      padding: '0.3rem',
+                    }}>
+                    {userName}
+                  </Styled.ExtraUserTitle>
+                  {isRemovable && !isAuthUser && (
+                    <CloseIcon
+                      onClick={() => handleRemoveUser(user)}
+                      color={CV_RED}
+                      style={{
+                        position: 'absolute',
+                        left: '0.5rem',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  )}
+                </Styled.ExtraUserItem>
+              );
+            })
+          )}
         </div>
       </div>
     </Modal>

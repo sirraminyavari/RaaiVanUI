@@ -7,7 +7,7 @@ import CreateModal from 'components/Modal/types/create/CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 
-const NewTeam = () => {
+const NewTeam = ({ WorkspaceID }) => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [teamName, setTeamName] = useState('');
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const NewTeam = () => {
   //! Add team and call api.
   const handleTeamCreate = () => {
     if (!!teamName) {
-      dispatch(createApplication(teamName, console.log));
+      dispatch(createApplication(teamName, WorkspaceID, console.log));
       setIsModalShown(false);
     }
   };

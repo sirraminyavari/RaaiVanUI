@@ -3,7 +3,7 @@
  */
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
-import { FORGOT_PASSWORD, SIGN_IN } from 'const/LoginRoutes';
+import { FORGOT_PASSWORD, SIGN_IN } from 'constant/LoginRoutes';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';

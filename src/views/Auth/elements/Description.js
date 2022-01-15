@@ -2,7 +2,7 @@
  * A component for showing some descriptions in different routes.
  */
 import H5 from 'components/TypoGraphy/H5';
-import { LIGHT_BLUE } from 'const/Colors';
+import { LIGHT_BLUE } from 'constant/Colors';
 import {
   FORGOT_PASSWORD,
   RESET_PASSWORD_SENT,
@@ -11,7 +11,7 @@ import {
   SIGN_UP_PASSWORD,
   SIGN_UP_SUCCESS,
   VERIFICATION_CODE,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { UpToDownAnimate } from './Animate.style';

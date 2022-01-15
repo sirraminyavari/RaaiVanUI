@@ -2,7 +2,7 @@
  * A component for entering name & family name
  */
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import { SIGN_UP_EMAIL, SIGN_UP_PASSWORD } from 'const/LoginRoutes';
+import { SIGN_UP_EMAIL, SIGN_UP_PASSWORD } from 'constant/LoginRoutes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import setFamilyAction from 'store/actions/auth/setFamilyAction';

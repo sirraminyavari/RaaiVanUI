@@ -54,6 +54,8 @@ import {
   SAVE_APPLICATION_INFO,
   SEARCH_API,
   SEARCH,
+  GET_APPLICATION_MONITORING,
+  GET_APPLICATION_PERFORMANCE_MONITORING,
 } from 'constant/apiConstants';
 const { GlobalUtilities } = window;
 
@@ -1354,6 +1356,104 @@ export const search = ({
         },
         (err) => {
           reject(err);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {Boolean} totalUsersCount -
+ * @property {Boolean} membersCount -
+ * @property {Boolean} lastActivityTime
+ * @property {Number} loginsCountSinceNDaysAgo
+ * @property {Number} count
+ * @property {Number} lowerBoundary
+ */
+
+/**
+ * @description Get team list.
+ * @param {ParamsType}
+ * @returns {Promise}
+ */
+export const GetApplicationsMonitoring = ({
+  totalUsersCount = true,
+  membersCount = true,
+  lastActivityTime = true,
+  loginsCountSinceNDaysAgo = 30,
+  count,
+  lowerBoundary,
+}) => {
+  const GetApplicationsMonitoringAPI = API_Provider(
+    RV_API,
+    GET_APPLICATION_MONITORING
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      GetApplicationsMonitoringAPI.fetch(
+        {
+          TotalUsersCount: totalUsersCount,
+          MembersCount: membersCount,
+          LastActivityTime: lastActivityTime,
+          LoginsCountSinceNDaysAgo: loginsCountSinceNDaysAgo,
+          Count: count,
+          LowerBoundary: lowerBoundary,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+// RVAPI.GetApplicationPerformanceMonitoring({ AppID: "", DateFrom: "yyyy-mm-dd", DateTo: "yyyy-mm-dd" })
+/**
+ * @typedef ParamsType
+ * @type {Object}
+ * @property {string} AppID -
+ * @property {date} DateFrom -
+ * @property {date} DateTo
+ */
+
+/**
+ * @description Get team list.
+ * @param {ParamsType}
+ * @returns {Promise}
+ */
+export const GetApplicationPerformanceMonitoring = ({
+  appID = '',
+  dateFrom = '',
+  dateTo = '',
+}) => {
+  const GetApplicationPerformanceMonitoringAPI = API_Provider(
+    RV_API,
+    GET_APPLICATION_PERFORMANCE_MONITORING
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      GetApplicationPerformanceMonitoringAPI.fetch(
+        {
+          AppID: appID,
+          DateFrom: dateFrom,
+          DateTo: dateTo,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
         }
       );
     } catch (err) {

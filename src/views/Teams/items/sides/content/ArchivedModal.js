@@ -24,6 +24,7 @@ const ArchivedModal = (props) => {
     modalWidth,
     archives,
     contentClass,
+    space,
   } = props;
 
   const [confirm, setConfirm] = useState({
@@ -95,34 +96,35 @@ const ArchivedModal = (props) => {
               padding: '0 1rem',
             }}>
             {archives?.map((archive, index, self) => {
-              return (
-                <Fragment key={archive?.ApplicationID}>
-                  <Styled.ArchivedTeamWrapper>
-                    <Styled.ArchivedTeamDescription>
-                      <Avatar
-                        radius={30}
-                        userImage={archive?.IconURL}
-                        style={{ minWidth: '2.1rem' }}
-                      />
-                      <Styled.ArchivedTeamTitle>
-                        {decodeBase64(archive?.Title)}
-                      </Styled.ArchivedTeamTitle>
-                    </Styled.ArchivedTeamDescription>
-                    <Button
-                      loading={recyclingIds.includes(archive.ApplicationID)}
-                      onClick={() => handleRecycle(archive)}
-                      type="primary-o"
-                      style={{
-                        height: '1.5rem',
-                        minWidth: '5rem',
-                        textTransform: 'capitalize',
-                      }}>
-                      {RVDic?.Activate}
-                    </Button>
-                  </Styled.ArchivedTeamWrapper>
-                  {self.length !== index + 1 && <hr className={BO_FREEZED} />}
-                </Fragment>
-              );
+              if (archive.WorkspaceID === space.WorkspaceID)
+                return (
+                  <Fragment key={archive?.ApplicationID}>
+                    <Styled.ArchivedTeamWrapper>
+                      <Styled.ArchivedTeamDescription>
+                        <Avatar
+                          radius={30}
+                          userImage={archive?.IconURL}
+                          style={{ minWidth: '2.1rem' }}
+                        />
+                        <Styled.ArchivedTeamTitle>
+                          {decodeBase64(archive?.Title)}
+                        </Styled.ArchivedTeamTitle>
+                      </Styled.ArchivedTeamDescription>
+                      <Button
+                        loading={recyclingIds.includes(archive.ApplicationID)}
+                        onClick={() => handleRecycle(archive)}
+                        type="primary-o"
+                        style={{
+                          height: '1.5rem',
+                          minWidth: '5rem',
+                          textTransform: 'capitalize',
+                        }}>
+                        {RVDic?.Activate}
+                      </Button>
+                    </Styled.ArchivedTeamWrapper>
+                    {self.length !== index + 1 && <hr className={BO_FREEZED} />}
+                  </Fragment>
+                );
             })}
           </PerfectScrollbar>
         </Styled.ModalContentWrapper>

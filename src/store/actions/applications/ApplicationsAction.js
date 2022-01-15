@@ -24,6 +24,7 @@ import {
   SET_VARIABLE,
   REMOVE_USER_FROM_APPLICATION,
   GET_APPLICATION_USERS,
+  GET_APPLICATION_MONITORING,
 } from 'constant/apiConstants';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
 
@@ -39,6 +40,10 @@ const {
 const { onboardingName, onboardingStep } = onboardingSlice.actions;
 
 const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
+const GetApplicationsMonitoringAPI = API_Provider(
+  RV_API,
+  GET_APPLICATION_MONITORING
+);
 const removeApplicationAPI = API_Provider(RV_API, REMOVE_APPLICATION);
 const recycleApplicationAPI = API_Provider(RV_API, RECYCLE_APPLICATION);
 const createApplicationAPI = API_Provider(RV_API, CREATE_APPLICATION);
@@ -55,6 +60,40 @@ const removeUserFromApplicationAPI = API_Provider(
   REMOVE_USER_FROM_APPLICATION
 );
 const getApplicationUsersAPI = API_Provider(USERS_API, GET_APPLICATION_USERS);
+
+// /**
+//  * @description A function (action) that gets NOT archived applications list from server.
+//  * @returns -Dispatch to redux store.
+//  */
+// export const GetApplicationsMonitoring = (data) => async (dispatch) => {
+//   try {
+//   dispatch(setFetchingApps(true));
+//   GetApplicationsMonitoringAPI.fetch(
+//     { Archive: false },
+//     (response) => {
+//       if(response.status === 200){
+//         dispatch(GET_Apps_Monitoring(response.Applications));
+//       }
+//       console.log(response);
+//       // if (response?.Applications) {
+//       //   const users = response?.ApplicationUsers;
+//       //   const appsWithUsers = response.Applications.map((app) => {
+//       //     app.Users = users[app?.ApplicationID];
+//       //     return app;
+//       //   });
+
+//       //   // dispatch(getApplicationsOrder(appsWithUsers));
+//       //   // dispatch(getArchivedApplications());
+//       // }
+//     },
+
+//     );
+//   } catch (err) {
+//     // dispatch(setFetchingApps(false));
+//     console.log({ err });
+//   }
+// };
+
 /**
  * @description A function (action) that gets NOT archived applications list from server.
  * @returns -Dispatch to redux store.
@@ -184,14 +223,17 @@ export const recycleApplication = (appId, done, error) => async (
  * @description A function (action) that creates a new application.
  * @returns -Dispatch to redux store.
  */
-export const createApplication = (title, done, error) => async (
+export const createApplication = (title, WorkspaceID, done, error) => async (
   dispatch,
   getState
 ) => {
   const { applications } = getState();
   try {
     createApplicationAPI.fetch(
-      { Title: encodeBase64(title) },
+      {
+        Title: encodeBase64(title),
+        WorkspaceID,
+      },
       (response) => {
         if (response.ErrorText) {
           error && error(response.ErrorText);

@@ -197,5 +197,51 @@
             (params.CoverID ? "&CoverID=" + params.CoverID : "") +
             (params.Password ? "&PS=" + params.Password : "");
         return WikiAPI._send(url, params, queryString);
+    },
+
+    GetWikiBlocks: function (params) {
+        params = params || {};
+
+        var url = WikiAPI.ResponseURL + "/GetWikiBlocks?timeStamp=" + new Date().getTime();
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "");
+        return WikiAPI._send(url, params, queryString);
+    },
+
+    SaveBlocks: function (params) {
+        params = params || {};
+
+        var url = WikiAPI.ResponseURL + "/SaveBlocks?timeStamp=" + new Date().getTime();
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
+            (params.Content ? "&Content=" + params.Content : "") +
+            (params.InsertAfterKey ? "&InsertAfterKey=" + params.InsertAfterKey : "");
+        return WikiAPI._send(url, params, queryString);
+    },
+
+    RemoveBlocks: function (params) {
+        params = params || {};
+
+        var url = WikiAPI.ResponseURL + "/RemoveBlocks?timeStamp=" + new Date().getTime();
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
+            (params.Content ? "&Content=" + params.Content : "");
+        return WikiAPI._send(url, params, queryString);
+    },
+
+    SortBlocks: function (params) {
+        params = params || {};
+
+        var url = WikiAPI.ResponseURL + "/SortBlocks?timeStamp=" + new Date().getTime();
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
+            (params.Content ? "&Content=" + params.Content : "");
+        return WikiAPI._send(url, params, queryString);
+    },
+
+    SaveHTMLContent: function (params) {
+        params = params || {};
+
+        var url = WikiAPI.ResponseURL + "/SaveHTMLContent?timeStamp=" + new Date().getTime();
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
+            (params.HTML ? "&HTML=" + params.HTML : "") +
+            (params.CSS ? "&CSS=" + params.CSS : "");
+        return WikiAPI._send(url, params, queryString);
     }
 };

@@ -41,7 +41,7 @@ const ToggleButton = (props) => {
 
 ToggleButton.propTypes = {
   onToggle: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.bool, null]),
+  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.instanceOf(null)]),
   disabled: PropTypes.bool,
 };
 
