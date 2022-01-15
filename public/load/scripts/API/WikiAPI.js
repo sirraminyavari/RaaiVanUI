@@ -239,7 +239,8 @@
         params = params || {};
 
         var url = WikiAPI.ResponseURL + "/SaveHTMLContent?timeStamp=" + new Date().getTime();
-        var queryString = (params.HTML ? "&HTML=" + params.HTML : "") +
+        var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
+            (params.HTML ? "&HTML=" + params.HTML : "") +
             (params.CSS ? "&CSS=" + params.CSS : "");
         return WikiAPI._send(url, params, queryString);
     }
