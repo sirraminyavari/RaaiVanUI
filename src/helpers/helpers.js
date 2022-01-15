@@ -235,15 +235,8 @@ export const getCaptchaToken = async () => {
 /**
  * @description Destroy google reCaptcha
  */
-export const destroyCaptchaToken = () => {
-  const reCaptchaElement = document.querySelector(
-    'script[src^="https://www.google.com/recaptcha/api.js?render="]'
-  );
-  reCaptchaElement?.remove();
-  window.RVGlobal?.SAASBasedMultiTenancy &&
-    document.querySelectorAll('.grecaptcha-badge').forEach((el) => {
-      el.remove(el);
-    });
+export const hideCaptchaToken = () => {
+  GlobalUtilities?.hide_recaptcha();
 };
 
 /**
@@ -252,12 +245,22 @@ export const destroyCaptchaToken = () => {
  */
 export const initializeCaptchaToken = () => {
   return new Promise((resolve) => {
-    const script = document?.createElement('script');
-    // reCaptcha is just for SAAS
-    if (window.RVGlobal?.SAASBasedMultiTenancy) {
-      script.src = window.RVGlobal?.CaptchaURL;
-      document?.body?.appendChild(script);
-      script.addEventListener('load', resolve);
+    const reCaptchaElement = document.querySelectorAll(
+      'script[src^="https://www.google.com/recaptcha/api.js?render="]'
+    );
+    if (reCaptchaElement.length) {
+      document.querySelectorAll('.grecaptcha-badge').forEach((element) => {
+        element.style.visibility = 'visible';
+        resolve();
+      });
+    } else {
+      const script = document?.createElement('script');
+      // reCaptcha is just for SAAS
+      if (window.RVGlobal?.SAASBasedMultiTenancy) {
+        script.src = window.RVGlobal?.CaptchaURL;
+        document?.body?.appendChild(script);
+        script.addEventListener('load', resolve);
+      }
     }
   });
 };
