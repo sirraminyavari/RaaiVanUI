@@ -8,7 +8,9 @@ const SHTemplates = ({ nodes, ...rest }) => {
   const [tree, setTree] = useState({});
 
   useEffect(() => {
-    setTree(makeTree(nodes));
+    const newTree = makeTree(nodes);
+    console.log(newTree);
+    setTree(newTree);
   }, []);
 
   const onExpand = (id) => {
@@ -20,12 +22,11 @@ const SHTemplates = ({ nodes, ...rest }) => {
   };
 
   const onDragEnd = (src, dest) => {
-    console.log(src, dest);
     if (!dest) {
       return;
     }
-
-    setTree(moveItemOnTree(tree, src, dest));
+    const newTree = moveItemOnTree(tree, src, dest);
+    setTree(newTree);
   };
 
   const makeTree = (data) => {
@@ -34,6 +35,7 @@ const SHTemplates = ({ nodes, ...rest }) => {
       rootId: AppID,
       items: {
         [`${AppID}`]: {
+          id: AppID,
           children: Tree?.map((x) => x?.NodeTypeID) || [],
           hasChildren: true,
           isExpanded: true,
@@ -68,6 +70,10 @@ const SHTemplates = ({ nodes, ...rest }) => {
     return <SHTemplateItem {...props} />;
   };
 
+  const onDragStartHandler = (id) => {
+    onCollapse(id);
+  };
+
   return (
     <div>
       {tree.rootId && (
@@ -77,6 +83,7 @@ const SHTemplates = ({ nodes, ...rest }) => {
           onExpand={onExpand}
           onCollapse={onCollapse}
           onDragEnd={onDragEnd}
+          onDragStart={onDragStartHandler}
           offsetPerLevel={0}
           isDragEnabled={true}
           isNestingEnabled={true}
@@ -85,8 +92,4 @@ const SHTemplates = ({ nodes, ...rest }) => {
     </div>
   );
 };
-const RootTree = styled.ul`
-  list-style: none;
-  padding: 0 1.5rem;
-`;
 export default SHTemplates;

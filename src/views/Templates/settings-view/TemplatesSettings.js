@@ -82,4 +82,5 @@ const ViewTitle = styled(Heading)``;
 const ActionBarContainer = styled.div`
   ${FLEX_RSB}
 `;
+
 export default TemplatesSettings;

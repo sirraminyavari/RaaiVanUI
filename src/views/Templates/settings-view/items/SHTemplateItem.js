@@ -4,6 +4,8 @@ import { FLEX_RCS } from 'constant/StyledCommonCss';
 import { CV_DISTANT } from 'constant/CssVariables';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import DragIcon from 'components/Icons/DragIcon/Drag';
+import AddIcon from 'components/Icons/AddIcon/AddIcon';
+import TemplateInlineEdit from './TemplatesInlineEdit';
 
 const SHTemplateItem = ({
   item,
@@ -13,7 +15,6 @@ const SHTemplateItem = ({
   depth,
   ...rest
 }) => {
-  console.log(item);
   const { RV_RTL } = useWindowContext();
   const toggleItem = () => {
     if (item.isExpanded) {
@@ -36,7 +37,7 @@ const SHTemplateItem = ({
               onClick={() => toggleItem()}
               size={20}
               rtl={RV_RTL}
-              opend={item?.isExpanded}
+              opened={item?.isExpanded}
               dir={RV_RTL ? 'left' : 'right'}
             />
           )}
@@ -44,7 +45,11 @@ const SHTemplateItem = ({
         <DragIconWrapper>
           <DragPaneIcon size={20} />
         </DragIconWrapper>
-        {item?.data?.title}
+        <AddButton>
+          <AddIcon size={20} />
+        </AddButton>
+        <ItemIcon src={item?.data?.IconURL} />
+        <TemplateInlineEdit value={item?.data?.title} />
       </TreeItemContainer>
     </TreeItemRow>
   );
@@ -85,5 +90,17 @@ const DragPaneIcon = styled(DragIcon).attrs((props) => ({
   size: props.size,
 }))`
   color: ${CV_DISTANT};
+`;
+const AddButton = styled.button`
+  width: 1.5rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: ${CV_DISTANT};
+`;
+const ItemIcon = styled.img`
+  width: 3rem;
+  height: 3rem;
 `;
 export default SHTemplateItem;

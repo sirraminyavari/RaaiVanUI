@@ -49,8 +49,7 @@ export const removeMember = (NodeID, UserID) => {
 };
 
 export const addNode = (Name, NodeTypeID) => {
-  const addNodeAPI = API_Provider(CN_API, 'AddNode');
-  return apiCallWrapper(addNodeAPI, {
+  return apiCallWrapper(API_Provider(CN_API, 'AddNode'), {
     NodeTypeID,
     Name: encodeBase64(Name),
   });
@@ -87,12 +86,12 @@ export const saveMembers = (NodeID, UserIDs) => {
  * @param {Boolean} icon - Get icon or not? .
  * @returns Promise.
  */
-export const getChildNodeTypes = (
+export const getChildNodeTypes = ({
   nodeTypeId = '',
   count = '',
   archive = false,
-  icon = true
-) => {
+  icon = true,
+}) => {
   const getChildNodeTypesAPI = API_Provider(CN_API, GET_CHILD_NODE_TYPES);
 
   return apiCallWrapper(getChildNodeTypesAPI, {
@@ -109,12 +108,14 @@ export const getChildNodeTypes = (
   // );
 };
 
-export const getNodeTypes = () => {
-  const getNodeTypesAPI = API_Provider(CN_API, GET_NODE_TYPES);
-
-  return apiCallWrapper(getNodeTypesAPI, {
-    Icon: true,
-    Tree: true,
-    Count: 100000,
+export const getNodeTypes = ({
+  icon = true,
+  tree = true,
+  count = 100000,
+} = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
+    Icon: icon,
+    Tree: tree,
+    Count: count,
   });
 };
