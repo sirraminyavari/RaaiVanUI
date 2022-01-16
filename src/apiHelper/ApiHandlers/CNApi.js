@@ -1,8 +1,13 @@
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import {
+  ADD_NODE_TYPE,
   CN_API,
   GET_CHILD_NODE_TYPES,
   GET_NODE_TYPES,
+  MOVE_NODE_TYPE,
+  REMOVE_NODE_TYPE,
+  RENAME_NODE_TYPE,
+  SET_NODE_TYPE_ORDER,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -108,14 +113,64 @@ export const getChildNodeTypes = ({
   // );
 };
 
-export const getNodeTypes = ({
-  icon = true,
-  tree = true,
-  count = 100000,
-} = {}) => {
+/**
+ * @description get node types
+ * @param Icon flag to get icon in response
+ * @param Tree flag to get tree in response
+ * @param Count
+ * @return {Promise<ValidationOptions.unknown>}
+ */
+export const getNodeTypes = ({ Icon, Tree, Count = 100000 } = {}) => {
   return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
-    Icon: icon,
-    Tree: tree,
-    Count: count,
+    Icon,
+    Tree,
+    Count,
+  });
+};
+
+/**
+ * @description create new node type
+ * @param Name
+ * @param ParentID
+ * @param IsCategory
+ * @return {Promise<ValidationOptions.unknown>}
+ */
+export const addNodeType = ({ Name, ParentID, IsCategory } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, ADD_NODE_TYPE), {
+    Name: encodeBase64(Name),
+    ParentID,
+    IsCategory,
+  });
+};
+
+export const moveNodeType = ({ NodeTypeID, ParentID }) => {
+  return apiCallWrapper(API_Provider(CN_API, MOVE_NODE_TYPE), {
+    ParentID,
+    NodeTypeID,
+  });
+};
+
+export const setNodeTypesOrder = ({ NodeTypeIDs } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, SET_NODE_TYPE_ORDER), {
+    NodeTypeIDs: NodeTypeIDs.join('|'),
+  });
+};
+
+export const renameNodeType = ({ Name, NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, RENAME_NODE_TYPE), {
+    Name: encodeBase64(Name),
+    NodeTypeID,
+  });
+};
+
+export const removeNodeType = ({
+  NodeTypeID,
+  NodeTypeIDs,
+  RemoveHierarchy = false,
+} = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, REMOVE_NODE_TYPE), {
+    NodeTypeID,
+    NodeTypeIDs,
+    RemoveHierarchy,
   });
 };

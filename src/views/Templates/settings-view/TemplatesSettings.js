@@ -4,7 +4,13 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import Heading from 'components/Heading/Heading';
 import { useEffect, useState } from 'react';
-import { getChildNodeTypes, getNodeTypes } from 'apiHelper/ApiHandlers/CNApi';
+import {
+  addNodeType,
+  getChildNodeTypes,
+  getNodeTypes,
+  removeNode,
+  removeNodeType,
+} from 'apiHelper/ApiHandlers/CNApi';
 import SHTemplates from './items/SHTemplates';
 import SaaSTemplates from './items/SaaSTemplates';
 import SearchInput from 'components/Inputs/SearchInput';
@@ -12,8 +18,12 @@ import LogoLoader from '../../../components/Loaders/LogoLoader/LogoLoader';
 import TemplateCreateNew from './items/TemplateCreateNew';
 import { CV_RED, CV_WHITE, TCV_DEFAULT } from '../../../constant/CssVariables';
 import ArchiveIcon from '../../../components/Icons/ArchiveIcon/ArchiveIcon';
+import { TEMPLATES_ARCHIVE_PATH } from '../../../constant/constants';
+import { useHistory } from 'react-router-dom';
+import { forkJoin } from 'rxjs';
 
 const TemplatesSettings = () => {
+  const history = useHistory();
   const { RVDic, RV_RTL, RVGlobal } = useWindowContext();
   const isSaaS = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
@@ -36,14 +46,42 @@ const TemplatesSettings = () => {
     loadNodeTypes();
   }, []);
 
+  //! Redirect to archived templates view.
+  const handleGoToArchives = () => {
+    history.push(TEMPLATES_ARCHIVE_PATH);
+  };
+
   const loadNodeTypes = () => {
     setLoading(true);
-    getNodeTypes()
+    getNodeTypes({
+      Icon: true,
+      Tree: true,
+      Count: 100000,
+    })
       .then((res) => {
         setData(res);
         setLoading(false);
       })
       .catch((err) => console.log(err));
+  };
+
+  const handleAddNodeType = (Name, ParentID) => {
+    addNodeType({
+      Name,
+      ParentID,
+    }).then((res) => {
+      if (res?.Succeed) {
+        loadNodeTypes();
+      }
+    });
+  };
+
+  const handleDeleteNode = (id) => {
+    removeNodeType({ NodeTypeID: id }).then((res) => {
+      if (res?.Succeed) {
+        loadNodeTypes();
+      }
+    });
   };
 
   return (
@@ -60,11 +98,11 @@ const TemplatesSettings = () => {
             delayTime={1000}
           />
           <Spacer />
-          <ArchiveButton>
+          <ArchiveButton onClick={handleGoToArchives}>
             <ArchiveIcon size={20} />
             <div>{'بایگانی'}</div>
           </ArchiveButton>
-          <TemplateCreateNew />
+          <TemplateCreateNew onSubmit={handleAddNodeType} />
         </ActionBarContainer>
 
         {loading ? (
@@ -72,7 +110,11 @@ const TemplatesSettings = () => {
         ) : isSaaS ? (
           <SaaSTemplates nodes={data} />
         ) : (
-          <SHTemplates nodes={data} />
+          <SHTemplates
+            nodes={data}
+            handleAddNodeType={handleAddNodeType}
+            onDeleteSubmit={handleDeleteNode}
+          />
         )}
       </ViewCard>
     </TemplateSettingsContainer>
@@ -108,6 +150,7 @@ const ArchiveButton = styled.button`
   color: ${CV_RED};
   background-color: ${CV_WHITE};
   gap: 0.5rem;
+  font-weight: 500;
   transition: border 0.15s ease-out;
   &:hover {
     border: 1px solid ${CV_RED};

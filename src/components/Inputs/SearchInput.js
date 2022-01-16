@@ -12,7 +12,7 @@ const SearchInput = (props) => {
     </InputContainer>
   );
 };
-export const InputContainer = styled.div`
+const InputContainer = styled.div`
   ${FLEX_RCB};
   background-color: ${CV_WHITE};
   color: ${CV_DISTANT};
@@ -25,7 +25,7 @@ export const InputContainer = styled.div`
   padding: 0 1rem;
 `;
 
-export const Input = styled(RxInput)`
+const Input = styled(RxInput)`
   width: 100%;
   outline: none;
   border: none;

@@ -4,9 +4,9 @@ import { FLEX_RCS } from 'constant/StyledCommonCss';
 import { CV_DISTANT } from 'constant/CssVariables';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import TemplateInlineEdit from './TemplatesInlineEdit';
 import TemplateCreateNew from './TemplateCreateNew';
+import TemplateDeleteButton from './TemplateDeleteButton';
 
 const SHTemplateItem = ({
   item,
@@ -14,6 +14,9 @@ const SHTemplateItem = ({
   onExpand,
   onCollapse,
   depth,
+  onRenameSubmit,
+  onDeleteSubmit,
+  handleAddNodeType,
   ...rest
 }) => {
   const { RV_RTL } = useWindowContext();
@@ -23,6 +26,14 @@ const SHTemplateItem = ({
     } else {
       onExpand(item?.id);
     }
+  };
+
+  const handleRename = (name) => {
+    if (onRenameSubmit) onRenameSubmit(name, item?.id);
+  };
+
+  const handleDelete = () => {
+    if (onDeleteSubmit) onDeleteSubmit(item?.id);
   };
 
   return (
@@ -43,12 +54,26 @@ const SHTemplateItem = ({
             />
           )}
         </ArrowIconWrapper>
-        <DragIconWrapper>
+
+        <DragIconWrapper onMouseDown={() => onCollapse(item?.id)}>
           <DragPaneIcon size={20} />
         </DragIconWrapper>
-        <TemplateCreateNew parent={item?.id} />
-        <ItemIcon src={item?.data?.IconURL} />
-        <TemplateInlineEdit value={item?.data?.title} />
+
+        <TemplateCreateNew
+          parent={item?.id}
+          onSubmit={(name, parent) => handleAddNodeType(name, parent)}
+        />
+
+        {item?.data?.IconURL && <ItemIcon src={item?.data?.IconURL} />}
+
+        <TemplateInlineEdit
+          value={item?.data?.title}
+          onConfirm={(name) => handleRename(name)}
+        />
+
+        <Spacer />
+
+        <TemplateDeleteButton onDeleteConfirm={() => handleDelete()} />
       </TreeItemContainer>
     </TreeItemRow>
   );
@@ -61,7 +86,7 @@ const TreeItemRow = styled.div`
 const TreeItemContainer = styled.div`
   ${FLEX_RCS};
   ${({ rtl, depth }) =>
-    rtl ? `margin-right: ${2 * depth}rem` : `margin-left: ${2 * depth}rem`};
+    rtl ? `margin-right: ${3 * depth}rem` : `margin-left: ${3 * depth}rem`};
   cursor: default;
   width: 100%;
   height: 5rem;
@@ -93,5 +118,8 @@ const DragPaneIcon = styled(DragIcon).attrs((props) => ({
 const ItemIcon = styled.img`
   width: 3rem;
   height: 3rem;
+`;
+const Spacer = styled.div`
+  flex: 1;
 `;
 export default SHTemplateItem;

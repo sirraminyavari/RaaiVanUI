@@ -1,42 +1,43 @@
 import { useEffect, useState } from 'react';
-import { decodeBase64, getUUID } from 'helpers/helpers';
-import Tree from '@atlaskit/tree';
-import provideTree from '../provideTreeData';
+import { getNodeTypes } from 'apiHelper/ApiHandlers/CNApi';
+import { decodeBase64 } from 'helpers/helpers';
+import SaaSTemplateItem from './SaaSTemplateItem';
 
 const SaaSTemplates = ({ nodes, ...rest }) => {
-  const [tree, setTree] = useState({
-    rootId: getUUID(),
-    items: {},
-  });
+  const [nodeList, setNodeList] = useState([]);
 
   useEffect(() => {
-    if (nodes) {
-      const a = provideTree(nodes);
-      console.log(a);
-      // setTree(a);
-    }
-  }, [nodes]);
+    loadNodeTypes();
+  }, []);
 
-  const handleDragEnd = (e) => {
-    console.log(e);
+  const loadNodeTypes = () => {
+    getNodeTypes().then((res) => {
+      const nodes = res?.NodeTypes.map((x) => ({
+        ...x,
+        TypeName: decodeBase64(x?.TypeName),
+      }));
+
+      const list = [
+        ...nodes
+          .filter((x) => x?.IsCategory)
+          .map((x) => ({ ...x, isExpanded: true })),
+        {
+          TypeName: 'not categorized',
+          isExpanded: true,
+          Sub: [...nodes.filter((x) => !x?.IsCategory)],
+        },
+      ];
+      setNodeList(list);
+      console.log(list);
+    });
   };
 
-  const treeItem = ({
-    item,
-    onExpand,
-    onCollapse,
-    provided,
-    snapshot,
-    ...rest
-  }) => {
-    return (
-      <div ref={provided.innerRef} {...provided.draggableProps}>
-        <div>{item.data ? item.data.title : ''}</div>
-      </div>
-    );
-  };
-
-  return <div>.....</div>;
+  return (
+    <>
+      {nodeList.map((x) => (
+        <SaaSTemplateItem key={x?.NodeTypeID} {...x} />
+      ))}
+    </>
+  );
 };
-
 export default SaaSTemplates;

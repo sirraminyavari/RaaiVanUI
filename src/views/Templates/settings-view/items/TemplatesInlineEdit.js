@@ -3,7 +3,12 @@ import useOnClickOutside from 'hooks/useOnClickOutside';
 import styled from 'styled-components';
 import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
 
-const TemplateInlineEdit = ({ value, onConfirm }) => {
+const TemplateInlineEdit = ({
+  value,
+  onConfirm,
+  color = TCV_WARM,
+  fontSize = '1rem',
+}) => {
   const editEl = useRef();
   const [title, setTitle] = useState(value);
   const [editMode, setEditMode] = useState(false);
@@ -30,7 +35,12 @@ const TemplateInlineEdit = ({ value, onConfirm }) => {
   return (
     <TitleContainer ref={editEl}>
       {!editMode && (
-        <Title onDoubleClick={(e) => setEditMode(!editMode)}>{value}</Title>
+        <Title
+          color={color}
+          fontSize={fontSize}
+          onDoubleClick={(e) => setEditMode(!editMode)}>
+          {value}
+        </Title>
       )}
       {editMode && (
         <EditableElement onChange={(e) => setTitle(e)}>
@@ -70,13 +80,13 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 1rem;
+  font-size: ${({ fontSize }) => fontSize};
   user-select: none;
   padding: 0.2rem 0;
   height: 2rem;
   line-height: 2rem;
-  color: ${TCV_WARM};
-  font-weight: 500;
+  color: ${({ color }) => color};
+  font-weight: 600;
 `;
 
 const EditModTitle = styled(Title)`

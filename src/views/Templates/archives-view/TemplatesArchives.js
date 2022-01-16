@@ -88,6 +88,7 @@ const TemplatesArchives = () => {
       getNodeTypes(searchText, true)
         .then((response) => {
           if (response?.NodeTypes) {
+            console.log(response);
             setArchivedTemplates(response?.NodeTypes);
           }
           setIsFetching(false);

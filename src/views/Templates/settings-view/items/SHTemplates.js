@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
 import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
 import SHTemplateItem from './SHTemplateItem';
+import {
+  moveNodeType,
+  renameNodeType,
+  setNodeTypesOrder,
+} from 'apiHelper/ApiHandlers/CNApi';
 
-const SHTemplates = ({ nodes, ...rest }) => {
+const SHTemplates = ({ nodes, handleAddNodeType, onDeleteSubmit }) => {
   const [tree, setTree] = useState({});
 
   useEffect(() => {
     const newTree = makeTree(nodes);
-    console.log(newTree);
     setTree(newTree);
   }, []);
 
@@ -25,8 +28,19 @@ const SHTemplates = ({ nodes, ...rest }) => {
     if (!dest) {
       return;
     }
-    const newTree = moveItemOnTree(tree, src, dest);
-    setTree(newTree);
+
+    if (dest?.parentId === src?.parentId) {
+      // sort action
+      const newTree = moveItemOnTree(tree, src, dest);
+      handleSortNodes(newTree?.items[`${src?.parentId}`]?.children);
+      setTree(newTree);
+    } else {
+      // move action
+      const id = tree?.items[`${src?.parentId}`]?.children[src?.index];
+      handleMoveItem(id, dest?.parentId);
+      const newTree = moveItemOnTree(tree, src, dest);
+      setTree(newTree);
+    }
   };
 
   const makeTree = (data) => {
@@ -38,7 +52,7 @@ const SHTemplates = ({ nodes, ...rest }) => {
           id: AppID,
           children: Tree?.map((x) => x?.NodeTypeID) || [],
           hasChildren: true,
-          isExpanded: true,
+          isExpanded: false,
           isChildrenLoading: false,
         },
       },
@@ -53,7 +67,7 @@ const SHTemplates = ({ nodes, ...rest }) => {
             children: x?.Sub?.map((x) => x?.NodeTypeID) || [],
             data: { ...x, title: decodeBase64(x?.TypeName) },
             hasChildren: !!x?.Sub,
-            isExpanded: true,
+            isExpanded: false,
             isChildrenLoading: false,
           },
         };
@@ -67,11 +81,48 @@ const SHTemplates = ({ nodes, ...rest }) => {
   };
 
   const renderItem = (props) => {
-    return <SHTemplateItem {...props} />;
+    return (
+      <SHTemplateItem
+        {...props}
+        onRenameSubmit={handleRenameNode}
+        handleAddNodeType={handleAddNodeType}
+        onDeleteSubmit={onDeleteSubmit}
+      />
+    );
   };
 
-  const onDragStartHandler = (id) => {
-    onCollapse(id);
+  const handleMoveItem = (id, parentId) => {
+    moveNodeType({
+      NodeTypeID: id,
+      ParentID: parentId,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleSortNodes = (NodeTypeIDs) => {
+    setNodeTypesOrder({
+      NodeTypeIDs,
+    })
+      .then((res) => {
+        console.log('response: ', res);
+      })
+      .catch((err) => {
+        console.log('err: ', err);
+      });
+  };
+
+  const handleRenameNode = (name, id) => {
+    const data = tree?.items[`${id}`]?.data;
+    setTree(mutateTree(tree, id, { data: { ...data, title: name } }));
+    renameNodeType({
+      Name: name,
+      NodeTypeID: id,
+    }).then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -83,7 +134,6 @@ const SHTemplates = ({ nodes, ...rest }) => {
           onExpand={onExpand}
           onCollapse={onCollapse}
           onDragEnd={onDragEnd}
-          onDragStart={onDragStartHandler}
           offsetPerLevel={0}
           isDragEnabled={true}
           isNestingEnabled={true}

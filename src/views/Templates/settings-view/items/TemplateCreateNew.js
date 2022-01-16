@@ -7,7 +7,7 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import useWindowContext from 'hooks/useWindowContext';
 
-const TemplateCreateNew = ({ parent, onSubmit, ...props }) => {
+const TemplateCreateNew = ({ parent, onSubmit }) => {
   const { RVDic } = useWindowContext();
   const [value, setValue] = useState('');
   const [modalInfo, setModalInfo] = useState({
@@ -22,8 +22,10 @@ const TemplateCreateNew = ({ parent, onSubmit, ...props }) => {
   const handleModalCancel = () => setModalInfo({ ...modalInfo, show: false });
 
   const handleModalConfirm = () => {
+    console.log(value, parent);
     if (onSubmit && value) {
-      onSubmit(value);
+      console.log(value, parent);
+      onSubmit(value, parent);
     }
     setModalInfo({ ...modalInfo, show: false });
   };
@@ -82,6 +84,7 @@ const RootAddButton = styled.button`
   outline: none;
   border-radius: 0.8rem;
   height: 3rem;
+  min-width: 11.5rem;
   padding: 0 2rem;
   display: flex;
   justify-content: center;
