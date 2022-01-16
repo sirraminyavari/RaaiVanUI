@@ -38,3 +38,20 @@ export const saveHTMLContent = async ({ ownerId, html, css } = {}) => {
     CSS: Base64.encode(css),
   });
 };
+
+export const suggestTags = async ({ text, count = 10 } = {}) => {
+  const result = await apiCallWrapper(API_Provider('RVAPI', 'SuggestTags'), {
+    SearchText: Base64.encode(text),
+    Count: count,
+  });
+
+  return (result?.Items || [])
+    .map((item) => ({
+      ItemID: item.ItemID,
+      Name: Base64.decode(item.Name),
+      Type: item.Type,
+      AdditionalID: Base64.decode(item.AdditionalID),
+      ImageURL: item.ImageURL,
+    }))
+    .filter((itm, ind) => ind < count);
+};

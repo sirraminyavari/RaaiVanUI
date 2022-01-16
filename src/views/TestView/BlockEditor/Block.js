@@ -5,6 +5,7 @@ import {
   removeBlocks,
   sortBlocks,
   saveHTMLContent,
+  suggestTags,
 } from './API';
 
 const Block = ({ nodeId, lang }) => {
@@ -60,6 +61,13 @@ const Block = ({ nodeId, lang }) => {
     const result = await saveHTMLContent({ ownerId: nodeId, html, css });
     console.log(result, "blocks 'save html content'");
     //do something
+  };
+
+  //use 'suggestTags' the get a list of tags for 'Mention' plugin
+  const handleSuggestTags = async ({ text } = {}) => {
+    const result = await suggestTags({ text });
+    console.log(result, 'suggested tags');
+    //do some stuff with the result
   };
 
   return <div>Block Editor</div>;
