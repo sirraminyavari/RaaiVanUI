@@ -1,5 +1,5 @@
 ﻿if (!window.PDFAPI) window.PDFAPI = {
-    ResponseURL: "../../api/pdf",
+    ResponseURL: "/api/pdf",
 
     _send: function (url, params, queryString) {
         params = params || {};

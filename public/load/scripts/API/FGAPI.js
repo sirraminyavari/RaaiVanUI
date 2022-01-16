@@ -1,5 +1,5 @@
 ﻿if (!window.FGAPI) window.FGAPI = {
-    ResponseURL: "../../api/forms",
+    ResponseURL: "/api/forms",
 
     _send: function (url, params, queryString) {
         params = params || {};

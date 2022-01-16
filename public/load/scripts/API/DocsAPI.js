@@ -1,7 +1,7 @@
 ﻿if (!window.DocsAPI) window.DocsAPI = {
-    DocsHandler: "../../api/docs",
-    UploadHandler: "../../upload",
-    DownloadHandler: "../../download",
+    DocsHandler: "/api/docs",
+    UploadHandler: "/upload",
+    DownloadHandler: "/download",
 
     _send: function (url, params, queryString) {
         params = params || {};

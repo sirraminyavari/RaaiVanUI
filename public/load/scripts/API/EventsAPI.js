@@ -1,5 +1,5 @@
 ﻿if (!window.EventsAPI) window.EventsAPI = {
-    ResponseURL: "../../api/event",
+    ResponseURL: "/api/event",
 
     _send: function (url, params, queryString) {
         params = params || {};

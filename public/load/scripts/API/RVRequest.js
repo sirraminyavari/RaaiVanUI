@@ -184,8 +184,8 @@ _RVRequest.prototype = {
 
     is_data_request: function (url) {
         var that = this;
-        return (url.toLowerCase().indexOf("/api/") > 0) || (url.toLowerCase().indexOf("/upload/") > 0) ||
-            (url.toLowerCase().indexOf("/download/") > 0);
+        return (url.toLowerCase().indexOf("/api/") >= 0) || (url.toLowerCase().indexOf("/upload/") >= 0) ||
+            (url.toLowerCase().indexOf("/download/") >= 0) || (url.toLowerCase().indexOf("/rss") >= 0);
     },
 
     refine_base_url: function (remoteSettings) {
@@ -262,7 +262,7 @@ _RVRequest.prototype = {
         if (!that.is_data_request(url)) remoteSettings = null;
         var requestParams = isPostRequest && that.is_data_request(url) ?
             that.refine_query_string(queryString, isLocalRequest ? null : remoteSettings) : null;
-
+        
         if (!isLocalRequest && (remoteSettings || {}).BaseURL && (window.RVAPI || {}).WebRequest) {
             return RVAPI.WebRequest({
                 URL: url, Data: requestParams, ParseResults: false,
@@ -273,7 +273,7 @@ _RVRequest.prototype = {
                 }
             });
         }
-
+        
         jQuery.ajax({
             crossDomain: true,
             cache: false,

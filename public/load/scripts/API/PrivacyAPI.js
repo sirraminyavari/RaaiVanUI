@@ -1,5 +1,5 @@
 ﻿if (!window.PrivacyAPI) window.PrivacyAPI = {
-    ResponseURL: "../../api/privacy",
+    ResponseURL: "/api/privacy",
 
     _send: function (url, params, queryString) {
         params = params || {};

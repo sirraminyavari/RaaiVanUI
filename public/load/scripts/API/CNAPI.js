@@ -1,5 +1,5 @@
 ﻿if (!window.CNAPI) window.CNAPI = {
-    ResponseURL: "../../api/network",
+    ResponseURL: "/api/network",
 
     _send: function (url, params, queryString) {
         params = params || {};
@@ -519,7 +519,7 @@
         var url = CNAPI.ResponseURL + "/SaveMembers?timeStamp=" + new Date().getTime();
         var queryString = (params.NodeID ? "&NodeID=" + params.NodeID : "") +
             (params.UserIDs ? "&UserIDs=" + params.UserIDs : "");
-        return CNAPI._send(url, params, queryString);
+        return CNAPI._send(url, params, queryString);  
     },
 
     AddExpert: function (params) {

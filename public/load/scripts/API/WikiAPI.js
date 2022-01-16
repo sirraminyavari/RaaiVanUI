@@ -1,5 +1,5 @@
 ﻿if (!window.WikiAPI) window.WikiAPI = {
-    ResponseURL: "../../api/wiki",
+    ResponseURL: "/api/wiki",
 
     _send: function (url, params, queryString) {
         params = params || {};
