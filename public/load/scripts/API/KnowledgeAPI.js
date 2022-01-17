@@ -1,5 +1,5 @@
 ﻿if (!window.KnowledgeAPI) window.KnowledgeAPI = {
-    RequestHandler: "../../api/knowledge",
+    RequestHandler: "/api/knowledge",
 
     _send: function (url, params, queryString) {
         params = params || {};

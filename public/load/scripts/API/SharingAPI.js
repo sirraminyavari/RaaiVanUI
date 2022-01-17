@@ -1,5 +1,5 @@
 ﻿if (!window.SharingAPI) window.SharingAPI = {
-    ResponseURL: "../../api/social",
+    ResponseURL: "/api/social",
 
     _send: function (url, params, queryString) {
         params = params || {};

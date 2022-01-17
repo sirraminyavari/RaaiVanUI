@@ -1,5 +1,5 @@
 ﻿if (!window.DIAPI) window.DIAPI = {
-    ResponseURL: "../../api/import",
+    ResponseURL: "/api/import",
 
     _send: function (url, params, queryString) {
         params = params || {};

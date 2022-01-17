@@ -1,5 +1,5 @@
 ﻿if(!window.UsersAPI) window.UsersAPI = {
-    ResponseURL: "../../api/user",
+    ResponseURL: "/api/user",
 
     _send: function (url, params, queryString) {
         params = params || {};
@@ -50,6 +50,17 @@
             (params.LastActivityTime ? "&LastActivityTime=" + params.LastActivityTime : "") +
             (params.MainEmail ? "&MainEmail=" + params.MainEmail : "") +
             (params.MainPhoneNumber ? "&MainPhoneNumber=" + params.MainPhoneNumber : "") +
+            (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +
+            (params.Count ? "&Count=" + params.Count : "") + "&text=";
+        return UsersAPI._send(url, params, queryString);
+    },
+
+    GetWorkspaceUsers: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/GetWorkspaceUsers?timeStamp=" + new Date().getTime();
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (params.SearchText ? "&SearchText=" + params.SearchText : "") +
             (params.LowerBoundary ? "&LowerBoundary=" + params.LowerBoundary : "") +
             (params.Count ? "&Count=" + params.Count : "") + "&text=";
         return UsersAPI._send(url, params, queryString);
@@ -119,7 +130,7 @@
     CreateUser: function (params) {
         params = params || {};
 
-        var url = UsersAPI.ResponseURL + "/UsersCreate?timeStamp=" + new Date().getTime();
+        var url = UsersAPI.ResponseURL + "/CreateUser?timeStamp=" + new Date().getTime();
         var queryString = (params.UserName ? "&UserName=" + params.UserName : "") +
             (params.FirstName ? "&FirstName=" + params.FirstName : "") +
             (params.LastName ? "&LastName=" + params.LastName : "");
@@ -260,7 +271,8 @@
         var url = UsersAPI.ResponseURL + "/ChangePassword?timeStamp=" + new Date().getTime();
         var queryString = (params.UserID ? "&UserID=" + params.UserID : "") +
             (params.CurrentPassword ? "&CurrentPassword=" + params.CurrentPassword : "") +
-            (params.NewPassword ? "&NewPassword=" + params.NewPassword : "");
+            (params.NewPassword ? "&NewPassword=" + params.NewPassword : "") +
+            (params.Captcha ? "&Captcha=" + params.Captcha : "");
         return UsersAPI._send(url, params, queryString);
     },
 

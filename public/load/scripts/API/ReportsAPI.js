@@ -1,5 +1,5 @@
 ﻿if (!window.ReportsAPI) window.ReportsAPI = {
-    ResponseURL: "../../api/report",
+    ResponseURL: "/api/report",
 
     _send: function (url, params, queryString) {
         params = params || {};

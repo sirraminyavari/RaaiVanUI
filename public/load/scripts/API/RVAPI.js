@@ -1,6 +1,6 @@
 ﻿if (!window.RVAPI) window.RVAPI = {
-    ResponseURL: "../../api/rv",
-    RSSResponseURL: "../../rss",
+    ResponseURL: "/api/rv",
+    RSSResponseURL: "/rss",
 
     _send: function (url, params, queryString) {
         params = params || {};
@@ -346,6 +346,15 @@
 
         var url = RVAPI.ResponseURL + "/RecycleApplication?timeStamp=" + new Date().getTime();
         var queryString = (params.ApplicationID ? "&ApplicationID=" + params.ApplicationID : "");
+        return RVAPI._send(url, params, queryString);
+    },
+
+    RemoveUserFromWorkspace: function (params) {
+        params = params || {};
+
+        var url = RVAPI.ResponseURL + "/RemoveUserFromWorkspace?timeStamp=" + new Date().getTime();
+        var queryString = (params.WorkspaceID ? "&WorkspaceID=" + params.WorkspaceID : "") +
+            (params.UserID ? "&UserID=" + params.UserID : "");
         return RVAPI._send(url, params, queryString);
     },
 
