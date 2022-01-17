@@ -1,5 +1,5 @@
 ﻿if (!window.WFAPI) window.WFAPI = {
-    ResponseURL: "../../api/workflow",
+    ResponseURL: "/api/workflow",
 
     _send: function (url, params, queryString) {
         params = params || {};

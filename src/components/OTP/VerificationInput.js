@@ -1,14 +1,14 @@
 /**
  * A component for rendering single cell for each code input char
  */
-import { LIGHT_BLUE, RED } from 'const/Colors';
+import { LIGHT_BLUE, RED } from 'constant/Colors';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ShakeAnimate } from './Animate.style';
 
 const { RV_Float } = window;
 
-const VerificationCode = ({
+const VerificationInput = ({
   error,
   value,
   length,
@@ -101,7 +101,7 @@ const VerificationCode = ({
     </Container>
   );
 };
-export default VerificationCode;
+export default VerificationInput;
 
 const Container = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
 ﻿if (!window.EMAPI) window.EMAPI = {
-    RequestHandler: "../../api/expert",
+    RequestHandler: "/api/expert",
 
     _send: function (url, params, queryString) {
         params = params || {};

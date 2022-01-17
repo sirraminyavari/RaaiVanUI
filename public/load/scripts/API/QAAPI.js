@@ -1,5 +1,5 @@
 ﻿if (!window.QAAPI) window.QAAPI = {
-    ResponseURL: "../../api/qa",
+    ResponseURL: "/api/qa",
 
     _send: function (url, params, queryString) {
         params = params || {};

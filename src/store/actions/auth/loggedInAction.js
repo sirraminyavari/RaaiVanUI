@@ -38,7 +38,7 @@ const loggedInAction = (result) => (dispatch, getState) => {
   } else {
     if ((result.LastLogins || []).length > 0)
       dispatch(showLastLogins({ message: msg, lastLogins: result.LastLogins }));
-    else if (msg) alert(msg, { Timeout: 10000 }, callback);
+    else if (msg) alert(msg, { autoClose: 10000 }, callback);
     else callback();
   }
   dispatch(loginSuccess(result));

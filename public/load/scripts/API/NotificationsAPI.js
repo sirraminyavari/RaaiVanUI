@@ -1,5 +1,5 @@
 ﻿if (!window.NotificationsAPI) window.NotificationsAPI = {
-    ResponseURL: "../../api/notification",
+    ResponseURL: "/api/notification",
 
     _send: function (url, params, queryString) {
         params = params || {};

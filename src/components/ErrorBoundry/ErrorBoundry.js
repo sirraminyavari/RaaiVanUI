@@ -14,14 +14,23 @@ import { Container } from './ErrorBoundry.style';
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
+    this.RVGlobal = window.RVGlobal;
     this.state = { errorFound: false, error: null };
   }
   componentDidCatch(error, info) {
+    // simple hack to prevent react components unmount when an error occurs
     this.setState({
       errorFound: true,
     });
-    console.log('error: ', error.message);
-    console.log('info: ', info);
+
+    if (this.RVGlobal.IsDev) {
+      this.setState({ errorFound: false });
+      alert(`Error Boundary: ${error.message}`, {
+        autoClose: 60000,
+      });
+    }
+    console.error('info: ', info);
+    console.error('error: ', error.message);
   }
 
   /**

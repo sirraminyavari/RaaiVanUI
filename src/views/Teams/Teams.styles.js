@@ -13,7 +13,6 @@ import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
   BO_RADIUS_QUARTER,
-  BO_RADIUS_UNIT,
 } from 'constant/constants';
 import {
   CV_DISTANT,
@@ -31,43 +30,6 @@ import {
 import { FLEX_CSC, FLEX_RCS } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
-
-export const TeamsDesktopViewContainer = styled.div.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
-})`
-  min-height: 100vh;
-  box-shadow: 1px 5px 15px #0000001f;
-  margin: 1rem;
-  padding: 0 2rem 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  .archived-teams {
-    max-height: calc(100vh - 4.5rem);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-`;
-
-export const TeamsMobileViewContainer = styled.div.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_UNIT}`,
-})`
-  min-height: 100vh;
-  box-shadow: 1px 5px 15px #0000001f;
-  margin: 1rem;
-  padding: 0 2rem 1rem 2rem;
-
-  .archived-teams {
-    max-height: calc(100vh - 4.5rem);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-`;
 
 export const HeaderContainer = styled.div.attrs({
   className: BG_GRAY_LIGHT,
@@ -120,22 +82,11 @@ export const ArchivedTeamTitle = styled.span`
 export const HeaderTitle = styled.span.attrs({
   className: C_GRAY,
 })`
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
 `;
 
-export const DesktopContentSide = styled.div`
-  width: 50%;
-  height: 100%;
-  margin: 0;
-`;
-
-export const MobileContentSide = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 0;
-`;
-
-export const SpaceListConatiner = styled.div`
+export const SpaceListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -245,8 +196,6 @@ export const TeamListConatiner = styled.div`
     display: table;
   }
 `;
-
-export const MobileTeamListConatiner = styled.div``;
 
 const getBorderCss = (props) => {
   if (props.isNew) {
@@ -615,24 +564,8 @@ export const ArchivedTeamsLabel = styled.div.attrs({
 `;
 
 export const DesktopWelcomeSide = styled.div`
-  width: 45%;
-  // position: fixed;
-  position: sticky;
-  ${({ dir }) => dir}: 0;
-  // top: 2.5rem;
-  top: 5rem;
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-`;
-
-export const MobileWelcomeSide = styled.div`
   width: 100%;
-  margin: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -641,8 +574,9 @@ export const MobileWelcomeSide = styled.div`
 `;
 
 export const WorkspaceImageWrapper = styled.div`
-  width: 18rem;
-  margin-top: 3rem;
+  width: 60%;
+  // max-width: 18rem;
+  margin-block-start: 5rem;
   aspect-ratio: 1;
 `;
 
@@ -792,4 +726,49 @@ export const GetLinkFieldWrapper = styled.div`
 export const TeamConfirmMessage = styled.span`
   font-size: 1rem;
   color: ${CV_GRAY_DARK};
+`;
+
+export const WorkspaceDeleteContainer = styled.div`
+  width: 100%;
+  padding-top: 2rem;
+  font-size: 1rem;
+`;
+
+export const WorkspaceDeleteString = styled.p`
+  ${({ type }) =>
+    type &&
+    `color: ${(type === 'alert' && CV_RED) || (type === 'email' && TCV_WARM)};`}
+  ${({ size }) => size && `font-size: ${size};`};
+  ${({ fontWeight = 'normal' }) => fontWeight && `font-weight: ${fontWeight}`};
+  margin-block-start: ${({ marginTop }) => (marginTop ? marginTop : '0.5rem')};
+`;
+
+export const WorkspaceDeleteConsequencesList = styled.ul`
+  padding-inline-start: 0;
+  margin-block-start: 2rem;
+  list-style: none;
+`;
+
+export const WorkspaceDeleteConsequencesListItem = styled.li`
+  padding-inline-start: 0;
+  margin-block: 0.5rem;
+  text-indent: 0.5rem;
+  font-weight: 500;
+  :before {
+    content: '-';
+    text-indent: 0.5rem;
+    padding-inline: 0.2rem;
+  }
+`;
+
+export const WorkspaceDeleteActionsContainer = styled.div`
+  margin-block: 1.5rem;
+  display: flex;
+  align-items: center;
+`;
+export const WorkspaceDeleteWelcomeHeader = styled.div`
+  margin: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 `;

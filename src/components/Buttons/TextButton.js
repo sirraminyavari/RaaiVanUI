@@ -2,7 +2,7 @@
  * A @link LoadingButton, with Text UI
  */
 import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
-import { MAIN_BLUE, MAIN_BLUE_HOVER } from 'const/Colors';
+import { MAIN_BLUE, MAIN_BLUE_HOVER } from 'constant/Colors';
 import React from 'react';
 import styled from 'styled-components';
 

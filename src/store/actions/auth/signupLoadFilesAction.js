@@ -1,7 +1,7 @@
 /**
  * An action for getting required files during sign up from server.
  */
-import { SIGN_UP_EMAIL } from 'const/LoginRoutes';
+import { SIGN_UP_EMAIL } from 'constant/LoginRoutes';
 import { loginSlice } from '../../reducers/loginReducer';
 import setLoginRouteAction from './setLoginRouteAction';
 

@@ -1,38 +1,52 @@
 import * as Styled from 'views/Teams/Teams.styles';
 import Button from 'components/Buttons/Button';
-// import TwitterIcon from 'components/Icons/SocialMediaIcons/Twitter';
+import TwitterIcon from 'components/Icons/SocialMediaIcons/Twitter';
 import LinkedIcon from 'components/Icons/SocialMediaIcons/LinkedIn';
 import useHover from 'hooks/useHover';
+import WorkspaceImage from 'assets/images/workspace.svg?file';
 import useWindow from 'hooks/useWindowContext';
 import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
 import { CV_GRAY_LIGHT } from 'constant/CssVariables';
 import { getSystemName } from 'helpers/helpers';
+import { useMediaQuery } from 'react-responsive';
+import { MOBILE_BOUNDRY } from 'constant/constants';
 
-const MobileWelcome = () => {
+const DesktopWelcome = () => {
   const { RVDic } = useWindow();
   const [buttonRef, isButtonHovered] = useHover();
+
+  const isMobileScreen = useMediaQuery({
+    query: `(max-width: ${MOBILE_BOUNDRY})`,
+  });
 
   const openInNewTab = (url) => {
     const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
     if (newWindow) newWindow.opener = null;
   };
 
-  //   const openTwitter = () => {
-  //     openInNewTab(CLIQMIND_URL);
-  //   };
+  // const openTwitter = () => openInNewTab(CLIQMIND_URL);
 
-  const openLinkedin = () => {
-    openInNewTab(LINKEDIN_URL);
-  };
+  const openLinkedin = () => openInNewTab(LINKEDIN_URL);
 
-  const openCliqmind = () => {
-    openInNewTab(CLIQMIND_URL);
-  };
+  const openCliqmind = () => openInNewTab(CLIQMIND_URL);
+
+  const welcomeMSG = RVDic.WelcomeToRaaiVan.replace(
+    '[RaaiVan]',
+    getSystemName()
+  );
 
   const blogTitle = RVDic.RaaiVanBlog.replace('[RaaiVan]', getSystemName());
 
   return (
-    <Styled.MobileWelcomeSide>
+    <Styled.DesktopWelcomeSide>
+      {!isMobileScreen && (
+        <Styled.WorkspaceImageWrapper>
+          <Styled.WorkspaceImage src={WorkspaceImage} alt="team-workspace" />
+        </Styled.WorkspaceImageWrapper>
+      )}
+      <Styled.WelcomeMSGContainer>
+        <Styled.WelcomeMessage>{welcomeMSG}</Styled.WelcomeMessage>
+      </Styled.WelcomeMSGContainer>
       <Button
         onClick={openCliqmind}
         ref={buttonRef}
@@ -53,8 +67,8 @@ const MobileWelcome = () => {
           <LinkedIcon size={20} />
         </Styled.IconWrapper>
       </Styled.SocialMediaContainer>
-    </Styled.MobileWelcomeSide>
+    </Styled.DesktopWelcomeSide>
   );
 };
 
-export default MobileWelcome;
+export default DesktopWelcome;

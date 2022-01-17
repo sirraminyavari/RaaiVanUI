@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SIGN_IN } from 'const/LoginRoutes';
+import { SIGN_IN } from 'constant/LoginRoutes';
 
 const { GlobalUtilities, IsAuthenticated } = window;
 export const loginSlice = createSlice({

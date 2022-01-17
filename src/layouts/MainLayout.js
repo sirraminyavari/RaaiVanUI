@@ -25,6 +25,7 @@ import useWindow from 'hooks/useWindowContext';
 import { NavbarContainer } from './Navbar/Navbar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import TestView from 'views/TestView/TestView';
+import Teams from 'views/Monitoring/MonitoringTeams/Teams';
 // import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const { toggleSidebar } = themeSlice.actions;
@@ -77,6 +78,8 @@ const switchRoutes = (
     {isDev && <Route exact path="/ramin" component={RaminView} />}
 
     <Redirect from="/*" to={TEAMS_PATH} />
+
+    {/* <Route path={`monitoring/:ApplicationID`} component={Teams} /> */}
   </Switch>
 );
 

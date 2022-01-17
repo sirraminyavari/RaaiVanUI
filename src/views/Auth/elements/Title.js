@@ -10,7 +10,7 @@ import {
   SIGN_UP_EMAIL,
   SIGN_UP_EMAIL_COLLAPSED,
   SIGN_UP_PASSWORD,
-} from 'const/LoginRoutes';
+} from 'constant/LoginRoutes';
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { UpToDownAnimate } from './Animate.style';

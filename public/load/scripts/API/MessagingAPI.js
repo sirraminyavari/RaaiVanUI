@@ -1,5 +1,5 @@
 ﻿if (!window.MessagingAPI) window.MessagingAPI = {
-    ResponseURL: "../../api/msg",
+    ResponseURL: "/api/msg",
 
     _send: function (url, params, queryString) {
         params = params || {};

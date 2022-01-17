@@ -57,7 +57,7 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
             dispatch(sendVerifyCodeFailed());
 
             alert(RVDic.MSG[results.ErrorText] || results.ErrorText, {
-              Timeout: 20000,
+              autoClose: 20000,
             });
           } else if (results.VerificationCode) {
             console.log(results, 'result');

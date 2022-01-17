@@ -280,15 +280,15 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   };
 
   useEffect(() => {
-    dispatch(getApplicationUsers(appId, '', onGetUsers));
+    isModalShown && dispatch(getApplicationUsers(appId, '', onGetUsers));
 
     //? Due to memory leak error in component.
     //! Clean up.
     return () => {
-      setUsers([]);
+      // setUsers([]);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isModalShown]);
 
   return (
     <Styled.TeamContainer

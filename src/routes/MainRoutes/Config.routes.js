@@ -121,6 +121,11 @@ const UserPermissions = lazy(() =>
     /* webpackChunkName: "users-view"*/ 'views/AdminPanel/PanelsView/UserPermissions/UserPermissions'
   )
 );
+const BlockEditor = lazy(() =>
+  import(
+    /* webpackChunkName: "users-view"*/ 'views/TestView/BlockEditor/Editor'
+  )
+);
 
 const ConfigRoutes = [
   {
@@ -241,6 +246,13 @@ const ConfigRoutes = [
     exact: true,
     hasNavSide: true,
     component: UserPermissions,
+  },
+  {
+    path: '/blockeditor',
+    name: 'blockeditor',
+    exact: true,
+    hasNavSide: false,
+    component: BlockEditor,
   },
 ];
 

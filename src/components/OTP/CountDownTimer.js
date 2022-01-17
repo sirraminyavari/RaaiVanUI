@@ -2,20 +2,20 @@
  * Count down counter for resending the verification code.
  */
 import CircularProgress from 'components/Progress/CircularProgress';
-import { MAIN_BLUE } from 'const/Colors';
+import { MAIN_BLUE } from 'constant/Colors';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 /**
  *
  * @callback - Will fire when timer finishes.
  */
-const CountDownTimer = ({ onFinished, ...props }) => {
-  const { resendCodeTimeout } = useSelector((state) => ({
-    resendCodeTimeout: state.auth.resendVerifyCodeTimeout,
-  }));
-
+const OTPCountDownTimer = ({
+  resendCodeTimeout = null,
+  onFinished,
+  NoCircularProgress = false,
+  ...props
+}) => {
   // resendCodeTimeout changes to milliseconds for better calculation.
   const [timer, setTimer] = useState(resendCodeTimeout * 1000);
   // the timer that is showing to user.
@@ -28,8 +28,9 @@ const CountDownTimer = ({ onFinished, ...props }) => {
     setTimer(resendCodeTimeout * 1000);
   }, [resendCodeTimeout]);
   useEffect(() => {
+    let timeoutFunc;
     if (timer >= 1000) {
-      setTimeout(() => {
+      timeoutFunc = setTimeout(() => {
         setTimer(timer - 1000);
         // Converts milliseconds to minutes.
         const minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
@@ -47,21 +48,26 @@ const CountDownTimer = ({ onFinished, ...props }) => {
       setStringTime(stringTime);
       timerStarted && onFinished();
     }
+    return () => {
+      if (!!timeoutFunc) clearTimeout(timeoutFunc);
+    };
   }, [timer]);
 
   return (
     <Maintainer>
-      <CircularProgress
-        maxValue={resendCodeTimeout}
-        hideLabel
-        {...props}
-        color={MAIN_BLUE}
-      />
+      {!NoCircularProgress && (
+        <CircularProgress
+          maxValue={resendCodeTimeout}
+          hideLabel
+          {...props}
+          color={MAIN_BLUE}
+        />
+      )}
       <Container className="textarea">{stringTime}</Container>
     </Maintainer>
   );
 };
-export default CountDownTimer;
+export default OTPCountDownTimer;
 
 const Container = styled.div`
   display: flex;

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import usePrevious from '../../hooks/usePrevious';
-import CloseIcon from '../Icons/CloseIcon/CloseIcon';
+import { createPortal } from 'react-dom';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { WindowContext } from '../../context/WindowProvider';
+import usePrevious from 'hooks/usePrevious';
+import useWindow from 'hooks/useWindowContext';
+import CloseIcon from '../Icons/CloseIcon/CloseIcon';
 
 const Modal = ({
   title,
@@ -17,10 +18,8 @@ const Modal = ({
   titleContainerClass,
   ...props
 }) => {
-  const { GlobalUtilities } = useContext(WindowContext);
-  const [componentId, __dontCallMe] = useState(
-    'r' + GlobalUtilities.random_str(10)
-  );
+  const { GlobalUtilities } = useWindow();
+  const [componentId] = useState('r' + GlobalUtilities.random_str(10));
   const [disposed, _setDisposed] = useState(false);
   const [showState, setShowState] = useState(show);
   const prevDisposed = usePrevious(disposed);
@@ -37,6 +36,7 @@ const Modal = ({
     let disposedRecently = disposed && !prevDisposed;
     if (disposedRecently && GlobalUtilities.get_type(onClose) === 'function')
       onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disposed]);
 
   if (!showState && prevShowState)
@@ -44,54 +44,57 @@ const Modal = ({
       _setDisposed(true);
     });
 
-  return disposed || (!showState && !prevShowState) ? (
-    <></>
-  ) : (
-    <Container
-      GlobalUtilities={GlobalUtilities}
-      id={componentId}
-      className={`RevDirection ${showState ? 'rv-fade-in' : 'rv-fade-out'}`}
-      noBackground={noBackground}
-      middle={middle}
-      onClick={(e) => {
-        e.stopPropagation();
-        setShowState(false);
-      }}>
-      <ContentContainer>
-        <ContentSection
-          className={`Direction rv-border-radius-half SurroundingShadow ${
-            contentClass || ' '
-          }`}
-          onClick={(e) => e.stopPropagation()}
-          contentWidth={contentWidth}>
-          {!title && stick ? (
-            <></>
-          ) : (
-            <>
-              <TitleContainer
-                className={`rv-border-radius-half rv-ignore-bottom-radius ${titleContainerClass}`}>
-                {!stick && <EmptyTitleSide />}
-                <TitleArea
-                  className={`${titleClass ? titleClass : 'WarmColor'}`}>
-                  {title}
-                </TitleArea>
-                {!stick && (
-                  <ExitButton
-                    className="rv-circle RevTextAlign"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowState(false);
-                    }}>
-                    <CloseIcon />
-                  </ExitButton>
-                )}
-              </TitleContainer>
-            </>
-          )}
-          <MainContent {...props}>{props.children}</MainContent>
-        </ContentSection>
-      </ContentContainer>
-    </Container>
+  return createPortal(
+    disposed || (!showState && !prevShowState) ? (
+      <></>
+    ) : (
+      <Container
+        GlobalUtilities={GlobalUtilities}
+        id={componentId}
+        className={`RevDirection ${showState ? 'rv-fade-in' : 'rv-fade-out'}`}
+        noBackground={noBackground}
+        middle={middle}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowState(false);
+        }}>
+        <ContentContainer>
+          <ContentSection
+            className={`Direction rv-border-radius-half SurroundingShadow ${
+              contentClass || ' '
+            }`}
+            onClick={(e) => e.stopPropagation()}
+            contentWidth={contentWidth}>
+            {!title && stick ? (
+              <></>
+            ) : (
+              <>
+                <TitleContainer
+                  className={`rv-border-radius-half rv-ignore-bottom-radius ${titleContainerClass}`}>
+                  {!stick && <EmptyTitleSide />}
+                  <TitleArea
+                    className={`${titleClass ? titleClass : 'WarmColor'}`}>
+                    {title}
+                  </TitleArea>
+                  {!stick && (
+                    <ExitButton
+                      className="rv-circle RevTextAlign"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowState(false);
+                      }}>
+                      <CloseIcon />
+                    </ExitButton>
+                  )}
+                </TitleContainer>
+              </>
+            )}
+            <MainContent {...props}>{props.children}</MainContent>
+          </ContentSection>
+        </ContentContainer>
+      </Container>
+    ),
+    document.getElementById('root')
   );
 };
 

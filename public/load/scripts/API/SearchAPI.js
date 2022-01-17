@@ -1,5 +1,5 @@
 ﻿if (!window.SearchAPI) window.SearchAPI = {
-    ResponseURL: "../../api/search",
+    ResponseURL: "/api/search",
 
     _send: function (url, params, queryString) {
         params = params || {};
