@@ -1,6 +1,5 @@
 import TrashIcon from 'components/Icons/TrashIcon';
 import Input from 'components/Inputs/Input';
-import { RED_HOVER } from 'const/Colors';
 import {
   CV_DISTANT,
   CV_GRAY,

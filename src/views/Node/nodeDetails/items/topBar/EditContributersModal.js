@@ -4,7 +4,6 @@ import Heading from 'components/Heading/Heading';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Modal from 'components/Modal/Modal';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
-import { RED_HOVER } from 'const/Colors';
 import {
   CV_DISTANT,
   CV_GRAY_DARK,
