@@ -5,14 +5,14 @@
         this.Container = typeof (container) == "object" ? container : document.getElementById(container);
         if (!this.Container) return;
         params = params || {};
-        
+
         this.Options = {
             OnPasswordChange: params.OnPasswordChange
         };
 
         var that = this;
         
-        GlobalUtilities.load_files(["API/UsersAPI.js"], {
+        GlobalUtilities.load_files(["API/UsersAPI.js", "CaptchaImage.js"], {
             OnLoad: function () { that.preinit(params); }
         });
     };
@@ -76,6 +76,7 @@
                             };
                         })
                     },
+                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "captcha", Style: "margin-top:1rem;" },
                     {
                         Type: "div", Class: "small-8 medium-6 large-4 rv-air-button rv-circle",
                         Style: "margin:1rem auto 0.6rem auto;",
@@ -98,7 +99,9 @@
                                     btn.Processing = true;
 
                                     UsersAPI.ChangePassword({
-                                        CurrentPassword: Base64.encode(curPass), NewPassword: Base64.encode(newPass),
+                                        CurrentPassword: Base64.encode(curPass),
+                                        NewPassword: Base64.encode(newPass),
+                                        Captcha: captchaObj ? Base64.encode(captchaObj.get()) : null,
                                         ParseResults: true,
                                         ResponseHandler: function (results) {
                                             btn.Processing = false;
@@ -125,6 +128,8 @@
                     { Type: "div", Class: "small-12 medium-12 large-12", Name: "policyArea", Style: "margin-top:1rem;" }
                 ]
             }], that.Container);
+
+            var captchaObj = new CaptchaImage(elems["captcha"]);
 
             var policyChecker = settings.HasPolicy ? that.password_policy_checker(elems["policyArea"], settings.Policy) : null;
 
