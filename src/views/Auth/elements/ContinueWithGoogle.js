@@ -78,7 +78,9 @@ const ContinueWithGoogle = ({ ...props }) => {
     console.log('change route');
   };
 
-  return (
+  return !(RVGlobal || {}).GoogleSignInClientID ? (
+    <></>
+  ) : (
     <GoogleLogin
       clientId={(RVGlobal || {}).GoogleSignInClientID}
       buttonText={RVDic.SignInWithGoogle}

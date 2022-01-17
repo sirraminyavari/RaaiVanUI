@@ -12,6 +12,7 @@ import styled from 'styled-components';
 export const PropsContext = React.createContext();
 
 const getNode = new APIHandler('CNAPI', 'GetNode');
+
 const NodeDetails = (props) => {
   const { route } = props || {};
   const { NodeID } = route || {};
@@ -20,17 +21,15 @@ const NodeDetails = (props) => {
 
   useEffect(() => {
     getNode?.fetch({ NodeID: NodeID }, (result) => {
-      console.log(result, 'result');
       setNodeDetails(result);
       setLoading(false);
     });
   }, []);
-  console.log(props, 'props NodeDetails');
+
   return (
     <PropsContext.Provider value={props}>
       <Maintainer style={{ width: '100%' }}>
         {/* If True, will render MobileView component */}
-        {console.log(route, 'RRRRRRRRRRRR')}
         <>
           {DimensionHelper()?.isTabletOrMobile ? (
             <Collector

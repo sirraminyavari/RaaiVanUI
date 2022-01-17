@@ -3,7 +3,6 @@
  */
 import FilterBar from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
-import useWindow from 'hooks/useWindowContext';
 import React, { useEffect, useState } from 'react';
 import {
   Container,
@@ -20,8 +19,6 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
-import { LastTopicsList } from 'views/Profile/Profile.styles';
-import LastRelatedTopics from 'views/Profile/items/main/items/LastTopics';
 import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import APIHandler from 'apiHelper/APIHandler';
 
@@ -165,10 +162,7 @@ const AdvanceSearchDesktop = ({
         ParseResults: true,
       },
       (response) => {
-        console.log(response, 'related nodes');
-        if (response && response.NodeTypes) {
-          setRelatedNodes(response);
-        }
+        if (response && response.NodeTypes) setRelatedNodes(response);
       }
     );
   };

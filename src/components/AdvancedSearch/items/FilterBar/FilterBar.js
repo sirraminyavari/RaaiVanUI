@@ -23,7 +23,6 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createSelector } from 'reselect';
 import {
   BackButton,
   BottomRow,
@@ -31,11 +30,9 @@ import {
   ShadowButton,
   TopRow,
 } from './FilterBar.style';
-import SubmitNewNode from 'apiHelper/SubmitNewNode';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import {
   INTRO_ONBOARD,
-  OPENED,
   USER_MORE_RELATED_TOPICS_PATH,
   USER_WITHID_PATH,
 } from 'constant/constants';
@@ -177,17 +174,9 @@ const FilterBar = ({
   // By mounting component at the first time, fetches creation access.
   useEffect(() => {
     if (onboardingName === INTRO_ONBOARD) {
-      console.log(
-        onboardingName,
-        'onboardingName*********',
-        isInOnBoarding && isNewDocOpened
-      );
       setIsInOnBoarding(true);
-
       setMarket(data);
-    } else {
-      getCreationAccess();
-    }
+    } else getCreationAccess();
   }, []);
 
   // Gets typeName by retrieving it from the hierarchy.
@@ -198,6 +187,7 @@ const FilterBar = ({
       ? teamName
       : '';
   };
+
   // By changing 'hierarchy' will fire.
   useEffect(() => {
     if (nodeTypeId) {
@@ -243,6 +233,7 @@ const FilterBar = ({
       }
     );
   };
+
   // Fetches formElements according to passed 'nodeTypeId'
   const getOwnerForm = () => {
     ownerForm?.fetch({ OwnerID: nodeTypeId }, (result) => {
@@ -287,10 +278,12 @@ const FilterBar = ({
       push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
     }
   };
+
   // By typing in the search input will fire
   const onTextSearch = (value) => {
     setSearchText(value);
   };
+
   const onAdvancedFilterClick = () => {
     setTimeout(() => {
       onAdvanecedSearch(!advancedSearch);
@@ -300,35 +293,6 @@ const FilterBar = ({
   const onPeople = (item) => {
     onByPeople(item);
   };
-
-  // const placeHolderText = () => {
-  //   if (getTypeName() !== '') {
-  //     return (
-  //       RVDic.SearchInN.replace(
-  //         '[n]',
-
-  //         getTypeName()
-  //       ) +
-  //       ' (' +
-  //       RVDic.Title +
-  //       ' - ' +
-  //       RVDic.AdditionalID +
-  //       ' - ' +
-  //       RVDic.Keywords +
-  //       ')'
-  //     );
-  //   }
-  //   return (
-  //     RVDic.Search +
-  //     ' (' +
-  //     RVDic.Title +
-  //     ' - ' +
-  //     RVDic.AdditionalID +
-  //     ' - ' +
-  //     RVDic.Keywords +
-  //     ')'
-  //   );
-  // };
 
   const extendedHierarchy = hierarchy?.map((level) => ({
     id: level?.NodeTypeID,
@@ -350,7 +314,10 @@ const FilterBar = ({
         ...extendedHierarchy,
       ];
 
-  const isProfile_all = () => (isProfile && nodeType === null) || !!isProfile;
+  const hasSelectedNodeType = () => !!nodeTypeId || !!nodeType?.NodeTypeID;
+
+  //for now, it is not necessary to show advanced options in profile mode
+  const isProfile_all = () => false; // (isProfile && !hasSelectedNodeType()) || !!isProfile;
 
   return (
     <Container>
@@ -538,16 +505,18 @@ const FilterBar = ({
                   // onClick={onClick}
                   onMouseEnter={() => setPeopleHover(true)}
                   onMouseLeave={() => setPeopleHover(false)}
-                  $isEnabled={people || isByMe || peoplePickerVisibility}
+                  $isEnabled={
+                    (people || []).length || isByMe || peoplePickerVisibility
+                  }
                   className={
-                    isByMe || people || peoplePickerVisibility
+                    isByMe || (people || []).length || peoplePickerVisibility
                       ? 'rv-border-distant rv-default'
                       : 'rv-border-white rv-distant'
                   }>
                   <PersonIcon
                     size={'1.5rem'}
                     className={
-                      isByMe || people || peoplePickerVisibility
+                      isByMe || (people || []).length || peoplePickerVisibility
                         ? 'rv-default'
                         : peopleHover
                         ? 'rv-default'
@@ -558,7 +527,6 @@ const FilterBar = ({
               }
             />
           )}
-
           {(advancedButton || isProfile_all()) && (
             <ShadowButton
               style={{

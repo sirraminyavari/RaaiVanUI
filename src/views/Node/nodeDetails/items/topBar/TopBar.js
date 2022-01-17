@@ -8,11 +8,6 @@ import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Edit';
-import {
-  CLASSES_PATH,
-  USER_MORE_RELATED_TOPICS_PATH,
-  USER_WITHID_PATH,
-} from 'constant/constants';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import { decode } from 'js-base64';
@@ -101,7 +96,6 @@ const TopBar = ({
     },
     ...extendedHierarchy,
   ];
-  console.log(nodeDetails, 'nodeDetails nodeDetails');
 
   const getTypeName = () => {
     return nodeType?.TypeName
@@ -222,4 +216,3 @@ const TopBar = ({
   );
 };
 export default TopBar;
-const commonStyle = { width: '3rem', aspectRatio: '1', marginRight: '0.5rem' };

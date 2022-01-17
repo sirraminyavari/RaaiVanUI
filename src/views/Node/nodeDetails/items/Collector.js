@@ -2,7 +2,6 @@
  * A component for advanced searching
  */
 import React, { useState, lazy, Suspense } from 'react';
-import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import {
   Container,
   Maintainer,

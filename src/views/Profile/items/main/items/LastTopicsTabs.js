@@ -8,19 +8,23 @@ import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
 // import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
-// const MORE_TAB = 'more-classes';
 
-const LastTopicsTabs = (props) => {
-  const {
-    relatedNodes,
-    provideNodes,
-    showAll,
-    relatedTopicsLink,
-    floatBox,
-  } = props;
+const LastTopicsTabs = ({
+  relatedNodes,
+  provideNodes,
+  showAll,
+  relatedTopicsLink,
+  floatBox,
+} = {}) => {
+  const getAllNodeTypeIds = () =>
+    showAll
+      ? []
+      : relatedNodes?.NodeTypes?.map((nodeType) => nodeType?.NodeTypeID);
+
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
-  // const { RVDic } = useWindow();
+  const [nodeTypeIds, setNodeTypeIds] = useState(getAllNodeTypeIds());
+
   const location = useLocation();
 
   const isRelatedPage = location.pathname.includes(
@@ -28,14 +32,10 @@ const LastTopicsTabs = (props) => {
   );
 
   useEffect(() => {
-    if (relatedNodes) {
-      const nodeTypeIds = relatedNodes?.NodeTypes?.map(
-        (nodeType) => nodeType?.NodeTypeID
-      ).join('|');
-      provideNodes(nodeTypeIds);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (activeTab === DEFAULT_TAB) setNodeTypeIds(getAllNodeTypeIds());
   }, [relatedNodes]);
+
+  useEffect(() => provideNodes((nodeTypeIds || []).join('|')), [nodeTypeIds]);
 
   const allNodesCount = relatedNodes?.NodeTypes?.reduce(
     (acc, prev) => acc + prev?.Count,
@@ -53,51 +53,39 @@ const LastTopicsTabs = (props) => {
     })
     ?.reduce((acc, prev) => acc + prev?.Count, 0);
 
-  // console.log(moreNodesCount);
-
   const handleMoreTopics = () => {
     setIsMoreShown((v) => !v);
   };
 
   const handleItemClick = (item) => {
     setActiveTab(item?.NodeTypeID);
-    //! API call.
-    provideNodes(item?.NodeTypeID, item);
+    setNodeTypeIds([item?.NodeTypeID]);
   };
 
   const handleClickAll = () => {
-    if (!!showAll) {
-      setActiveTab(DEFAULT_TAB);
-      const nodeTypeIds = relatedNodes?.NodeTypes?.map(
-        (nodeType) => nodeType?.NodeTypeID
-      ).join('|');
-
-      provideNodes(nodeTypeIds, { NodeTypeID: DEFAULT_TAB });
-    }
+    setActiveTab(DEFAULT_TAB);
+    setNodeTypeIds(getAllNodeTypeIds());
   };
 
   return (
     <Styled.TopicsTabsContainer>
       <Styled.TabsContainer>
-        {!!showAll && (
-          <TabItem
-            item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
-            isActive={activeTab === DEFAULT_TAB}
-            noImage
-            onTabClick={handleClickAll}
-          />
-        )}
-        {sortedNodes?.map((item, index) => {
-          if (index > 2) return null;
-          return (
+        <TabItem
+          item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
+          isActive={activeTab === DEFAULT_TAB}
+          noImage
+          onTabClick={handleClickAll}
+        />
+        {sortedNodes
+          ?.filter((itm, ind) => ind <= 2)
+          .map((item, index) => (
             <TabItem
               item={item}
               key={item?.NodeTypeID}
               isActive={activeTab === item?.NodeTypeID}
               onTabClick={() => handleItemClick(item)}
             />
-          );
-        })}
+          ))}
         {!!moreNodesCount && (
           <TabItem
             item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
@@ -110,17 +98,16 @@ const LastTopicsTabs = (props) => {
       </Styled.TabsContainer>
       <Styled.MoreTopicsContainer isOpen={isMoreShown} isFloat={!!floatBox}>
         <Styled.MoreTopicsWrapper>
-          {sortedNodes?.map((item, index) => {
-            if (index < 3) return null;
-            return (
+          {sortedNodes
+            ?.filter((itm, ind) => ind >= 3)
+            .map((item, index) => (
               <TabItem
                 item={item}
                 key={item?.NodeTypeID}
                 isActive={activeTab === item?.NodeTypeID}
                 onTabClick={() => handleItemClick(item)}
               />
-            );
-          })}
+            ))}
         </Styled.MoreTopicsWrapper>
         {!isRelatedPage && (
           <Button classes="more-topics-button">

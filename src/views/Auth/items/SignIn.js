@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
+import CreateAccountButtons from './CreateAccountButtons';
 
 const { RVDic } = window;
 
@@ -223,25 +224,12 @@ const SignIn = () => {
           onClick={onForgot}>
           {RVDic?.ForgotMyPassword}
         </Button>
-        <Hiddener isVisible={email.length === 0}>
-          <ContinueWithGoogle
-            style={{
-              marginBottom: '0.5rem',
-              marginTop: '2rem',
-            }}
-          />
-          <Button
-            type="secondary-o"
-            loading={signUpClicked && fetchingFiles}
-            style={{
-              marginBottom: '1.5rem',
-              marginTop: '0.5rem',
-              fontSize: '1rem',
-            }}
-            onClick={onCreateAccount}>
-            {RVDic?.CreateAccount}
-          </Button>
-        </Hiddener>
+        <CreateAccountButtons
+          isVisible={true}
+          label={RVDic?.CreateAccount}
+          onCreateAccountClick={onCreateAccount}
+          loading={signUpClicked && fetchingFiles}
+        />
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
       </Container>
     </Box>

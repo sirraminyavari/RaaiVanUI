@@ -434,11 +434,8 @@ export const TopicsTabsContainer = styled.div`
 `;
 
 export const TabsContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, auto));
-  gap: 0.5rem;
-  justify-content: space-between;
+  display: flex;
+  flex-flow: row;
 `;
 
 const getFloatCss = ({ isFloat }) => {
@@ -489,11 +486,13 @@ export const TabItemContainer = styled.div.attrs((props) => ({
     props.isActive ? (props.hasMore ? TBG_WARM : TBG_DEFAULT) : BG_WHITE
   }`,
 }))`
+  flex: 0 0 auto;
   ${FLEX_RCB}
   height: 2.5rem;
   padding: 0 0.5rem;
   cursor: pointer;
   ${({ hasMore }) => !!hasMore && 'border: none;'}
+  margin-inline-end: 0.5rem;
 
   .tab-item-tooltip {
     border-radius: 50%;

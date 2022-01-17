@@ -64,7 +64,6 @@ const NodeList = (props) => {
   useEffect(() => {
     onTotalFound(null);
     // console.log(isBookMarked, 'isBookMarked', bookmarked, 'bookmarked');
-
     setExtraData(!extraData);
   }, [
     isByMe,
@@ -72,17 +71,17 @@ const NodeList = (props) => {
     searchText,
     dateFilter,
     nodeTypeId,
+    nodeTypeIds,
     formFilters,
     forceFetch,
     isBookMarked,
     isGroup,
     isExpertiseDomain,
+    relatedToNodeId,
   ]);
 
   // method for fetchin nodes
   const fetchData = (count = 20, lowerBoundary = 1, done) => {
-    console.log('byPeople', byPeople);
-
     getNodesAPI.fetch(
       {
         Count: count,
@@ -152,8 +151,6 @@ const NodeList = (props) => {
       (error) => console.log('error', error)
     );
   };
-
-  // const route = useCheckRoute('0033c52b-9871-4197-9b7d-ab45203cb4ee');
 
   const onReload = () => {
     setExtraData(!extraData);

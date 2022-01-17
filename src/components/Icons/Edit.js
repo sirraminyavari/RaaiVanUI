@@ -2,9 +2,10 @@
  * See @link ArrowDown
  */
 import React from 'react';
-import { FaEye } from 'react-icons/fa';
+import { BiEditAlt } from 'react-icons/bi';
 
-const Eye = ({ ...props }) => {
-  return <FaEye {...props} />;
+const Edit = ({ ...props }) => {
+  return <BiEditAlt {...props} />;
 };
-export default Eye;
+
+export default Edit;
