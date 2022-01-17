@@ -528,7 +528,7 @@ export const PanelLink = styled.div`
 ${TruncateTextCss}
 `;
 
-export const SettingItemTitle = styled.div`
+export const SettingItemTitle = styled.span`
   margin-${RV_Float}: 0.4rem;
   text-transform: capitalize;
 `;

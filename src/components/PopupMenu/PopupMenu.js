@@ -17,8 +17,8 @@ const ArrowRadius = 0.4;
 /**
  * @typedef PropType
  * @property {('top' | 'left' | 'bottom' | 'right')} [align] - The popup alignment.
- * @property {string} arrowClass -The Classe for arrow element.
- * @property {string} [menuClass] -The Classe for menu container.
+ * @property {string} arrowClass -The Class for arrow element.
+ * @property {string} [menuClass] -The Class for menu container.
  * @property {string} menuStyle -The style for menu container.
  * @property {string} arrowStyle -The style for arrow.
  * @property {string} leftOffset -The left offset.

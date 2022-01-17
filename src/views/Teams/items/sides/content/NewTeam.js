@@ -47,7 +47,7 @@ const NewTeam = ({ WorkspaceID }) => {
   const newTeamName = RVDic.NewN.replace('[n]', RVDic.TeamName);
 
   return (
-    <Styled.TeamConatiner
+    <Styled.TeamContainer
       isNew
       isMobile={isMobileScreen}
       dir={RV_Float}
@@ -58,7 +58,7 @@ const NewTeam = ({ WorkspaceID }) => {
         isOpen={isModalShown}
         onInputChange={handleInputChange}
         inputValue={teamName}
-        onCancleCreate={handleCancelCreate}
+        onCancelCreate={handleCancelCreate}
         onCreate={handleTeamCreate}
         modalTitle={createNewTeamTitle}
         modalWidth="35%"
@@ -70,7 +70,7 @@ const NewTeam = ({ WorkspaceID }) => {
           <span>{createNewTeamTitle}</span>
         </Styled.NewTeamLabel>
       </Styled.NewTeamWrapper>
-    </Styled.TeamConatiner>
+    </Styled.TeamContainer>
   );
 };
 

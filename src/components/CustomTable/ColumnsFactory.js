@@ -1,71 +1,75 @@
 import {
   DateCell,
-  InputCell,
+  TextCell,
   SelectCell,
   RecordInfoCell,
   FileCell,
   NodeCell,
   UserCell,
+  TableCell,
+  MultiLevelCell,
+  BinaryCell,
+  ActionsCell,
+  NumberCell,
 } from './cellTypes';
 import { cellTypes } from './tableUtils';
-import DragIcon from 'components/Icons/DragIcon/Drag';
-import ToolTip from 'components/Tooltip/react-tooltip/Tooltip';
-import RowActions from './RowAction';
-import EditRowMenu from './EditRowMenu';
 import * as Styled from './CustomTable.styles';
-
-const { RV_Float, RV_RevFloat } = window;
 
 //! Provide cell for a given column.
 const provideCell = (header) => {
   switch (header.dataType) {
-    case 'action':
+    case cellTypes.action:
       return {
         sticky: 'left',
-        Cell: (cell) => {
-          if (cell?.editableRowIndex === cell?.row?.index) {
-            return <EditRowMenu cell={cell} />;
-          }
-          return (
-            <ToolTip
-              tipId={`row-${cell?.row?.index}-action-tip`}
-              multiline
-              effect="solid"
-              event="click"
-              place={RV_RevFloat}
-              type="dark"
-              disable={!cell?.editable}
-              clickable
-              offset={{ [RV_Float]: -27 }}
-              arrowColor="transparent"
-              className="table-row-action-tooltip"
-              renderContent={() => <RowActions cell={cell} />}>
-              <Styled.RowDragHandleWrapper {...cell.dragHandleProps}>
-                <DragIcon />
-              </Styled.RowDragHandleWrapper>
-            </ToolTip>
-          );
-        },
+        Cell: (cell) => <ActionsCell cell={cell} />,
+        headerClassName: 'sticky',
       };
-    case 'index':
+    case cellTypes.index:
       return {
         sticky: 'left',
         Cell: (cell) => (
-          <Styled.TableRowIndex>{cell?.row.index + 1}</Styled.TableRowIndex>
+          <Styled.TableRowIndex type="h4">
+            {cell?.row.index + 1}
+          </Styled.TableRowIndex>
         ),
       };
 
-    case cellTypes.string:
-      return { Cell: (row) => <InputCell {...row} header={header} /> };
+    case cellTypes.text:
+      return {
+        Cell: (row) => <TextCell {...row} header={header} />,
+      };
 
     case cellTypes.number:
-      return { Cell: (row) => <InputCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <NumberCell {...row} header={header} />,
+        sortType: (rowA, rowB, columnId, desc) => {
+          const a = rowA?.original?.[columnId]?.FloatValue;
+          const b = rowB?.original?.[columnId]?.FloatValue;
+
+          if (a === b) return 0;
+          return a > b ? 1 : -1;
+        },
+      };
 
     case cellTypes.date:
-      return { Cell: (row) => <DateCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <DateCell {...row} header={header} />,
+        sortType: (rowA, rowB, columnId, desc) => {
+          const a = rowA?.original?.[columnId]?.DateValue;
+          const b = rowB?.original?.[columnId]?.DateValue;
+
+          const aTime = new Date(a).getTime();
+          const bTime = new Date(b).getTime();
+
+          if (aTime === bTime) return 0;
+          return aTime > bTime ? 1 : -1;
+        },
+      };
 
     case cellTypes.singleSelect:
-      return { Cell: (row) => <SelectCell {...row} header={header} /> };
+      return {
+        Cell: (row) => <SelectCell {...row} header={header} />,
+      };
 
     case cellTypes.multiSelect:
       return {
@@ -74,7 +78,7 @@ const provideCell = (header) => {
 
     case cellTypes.binary:
       return {
-        Cell: (row) => <SelectCell {...row} header={header} binary />,
+        Cell: (row) => <BinaryCell {...row} header={header} />,
       };
 
     case cellTypes.recordInfo:
@@ -97,60 +101,26 @@ const provideCell = (header) => {
         Cell: (row) => <UserCell {...row} header={header} />,
       };
 
-    default:
-      return;
-  }
-};
-
-//! Provide footer for a given column.
-const provideFooter = (header) => {
-  switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.table:
       return {
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
-      };
-    case cellTypes.number:
-      return {
-        Footer: (footer) => <InputCell {...footer} header={header} isNew />,
+        Cell: (row) => <TableCell {...row} header={header} />,
       };
 
-    case cellTypes.singleSelect:
+    case cellTypes.multiLevel:
       return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
-      };
-
-    case cellTypes.multiSelect:
-      return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
-      };
-
-    case cellTypes.binary:
-      return {
-        Footer: (row) => <SelectCell {...row} header={header} isNew />,
-      };
-
-    case cellTypes.date:
-      return {
-        Footer: (footer) => <DateCell {...footer} header={header} isNew />,
-      };
-
-    case cellTypes.file:
-      return {
-        Footer: (footer) => <FileCell {...footer} header={header} isNew />,
+        Cell: (row) => <MultiLevelCell {...row} header={header} />,
       };
 
     default:
-      return {
-        Footer: header.title,
-      };
+      return {};
   }
 };
 
 //! Provide options for a given column.
 const provideOptions = (header, data) => {
   return {
-    // width: getColumnWidth(data, header),
-    minWidth: getColumnWidth(data, header),
+    width: getColumnWidth(data, header),
+    // minWidth: getColumnWidth(data, header),
     ...header?.options,
   };
 };
@@ -162,7 +132,7 @@ const getColumnWidth = (data, header) => {
   let cellLength;
 
   switch (header.dataType) {
-    case cellTypes.string:
+    case cellTypes.text:
       magicSpacing = 15;
       cellLength = Math.max(
         ...data.map((row) => `${row?.[header?.accessor]}`.length),
@@ -183,13 +153,14 @@ const getColumnWidth = (data, header) => {
 
     case cellTypes.multiSelect:
       maxWidth = 500;
-      magicSpacing = header?.options?.editable ? 7.8 : 5.5;
+      magicSpacing = header?.options?.editable ? 17 : 5.5;
       cellLength = Math.max(
         ...(data?.[0]?.[header?.accessor]?.options?.map(
           (option) => option?.label?.length
         ) || []),
         header?.title.length
       );
+
       const defaultValuesFactor =
         data?.[0]?.[header?.accessor]?.defaultValues?.length > 1 ? 2 : 1;
 
@@ -239,17 +210,16 @@ const getColumnWidth = (data, header) => {
 
 //! Column factory.
 const makeColumns = (headers, data) => {
-  const dataCulomns = headers.map((header) => {
+  const dataColumns = headers.map((header) => {
     return {
       Header: header.title,
       accessor: header.accessor,
-      ...provideFooter(header),
       ...provideCell(header),
       ...provideOptions(header, data),
     };
   });
 
-  return dataCulomns;
+  return dataColumns;
 };
 
 export default makeColumns;

@@ -12,7 +12,9 @@ export const PeopleBody = styled.div`
   position: absolute;
   flex-direction: column;
   align-items: center;
-  top: 3rem;
+  /* ${({ direction }) => `${direction}:3rem`} */
+  bottom: ${({ direction }) => direction === 'bottom' && `4rem`};
+  top: ${({ direction }) => direction === 'top' && `3rem`};
   left: -1rem;
   box-shadow: 1px 3px 20px ${CV_DISTANT};
   padding: 0rem 0.75rem 0rem 0.75rem;

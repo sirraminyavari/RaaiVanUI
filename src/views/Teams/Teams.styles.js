@@ -241,7 +241,7 @@ const getDragCss = (props) => {
   );
 };
 
-export const TeamConatiner = styled.div.attrs({
+export const TeamContainer = styled.div.attrs({
   className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});

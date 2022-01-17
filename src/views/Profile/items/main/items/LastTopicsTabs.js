@@ -1,25 +1,41 @@
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
-import useWindow from 'hooks/useWindowContext';
+// import useWindow from 'hooks/useWindowContext';
+import Button from 'components/Buttons/Button';
+import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
 // import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
-// const MORE_TAB = 'more-classes';
 
-const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
+const LastTopicsTabs = ({
+  relatedNodes,
+  provideNodes,
+  showAll,
+  relatedTopicsLink,
+  floatBox,
+} = {}) => {
+  const getAllNodeTypeIds = () =>
+    showAll
+      ? []
+      : relatedNodes?.NodeTypes?.map((nodeType) => nodeType?.NodeTypeID);
+
   const [isMoreShown, setIsMoreShown] = useState(false);
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
-  const { RVDic } = useWindow();
+  const [nodeTypeIds, setNodeTypeIds] = useState(getAllNodeTypeIds());
+
+  const location = useLocation();
+
+  const isRelatedPage = location.pathname.includes(
+    USER_MORE_RELATED_TOPICS_PATH
+  );
 
   useEffect(() => {
-    if (relatedNodes) {
-      const nodeTypeIds = relatedNodes?.NodeTypes?.map(
-        (nodeType) => nodeType?.NodeTypeID
-      ).join('|');
-      provideNodes(nodeTypeIds);
-    }
+    if (activeTab === DEFAULT_TAB) setNodeTypeIds(getAllNodeTypeIds());
   }, [relatedNodes]);
+
+  useEffect(() => provideNodes((nodeTypeIds || []).join('|')), [nodeTypeIds]);
 
   const allNodesCount = relatedNodes?.NodeTypes?.reduce(
     (acc, prev) => acc + prev?.Count,
@@ -37,28 +53,22 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
     })
     ?.reduce((acc, prev) => acc + prev?.Count, 0);
 
-  // console.log(moreNodesCount);
-
   const handleMoreTopics = () => {
     setIsMoreShown((v) => !v);
   };
 
   const handleItemClick = (item) => {
     setActiveTab(item?.NodeTypeID);
-    //! API call.
-    provideNodes(item?.NodeTypeID, item);
+    setNodeTypeIds([item?.NodeTypeID]);
   };
 
   const handleClickAll = () => {
     setActiveTab(DEFAULT_TAB);
-    const nodeTypeIds = relatedNodes?.NodeTypes?.map(
-      (nodeType) => nodeType?.NodeTypeID
-    ).join('|');
-    provideNodes(nodeTypeIds, { NodeTypeID: DEFAULT_TAB });
+    setNodeTypeIds(getAllNodeTypeIds());
   };
 
   return (
-    <div>
+    <Styled.TopicsTabsContainer>
       <Styled.TabsContainer>
         <TabItem
           item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
@@ -66,42 +76,46 @@ const LastTopicsTabs = ({ relatedNodes, provideNodes }) => {
           noImage
           onTabClick={handleClickAll}
         />
-        {sortedNodes?.map((item, index) => {
-          if (index > 2) return null;
-          return (
+        {sortedNodes
+          ?.filter((itm, ind) => ind <= 2)
+          .map((item, index) => (
             <TabItem
               item={item}
               key={item?.NodeTypeID}
               isActive={activeTab === item?.NodeTypeID}
               onTabClick={() => handleItemClick(item)}
             />
-          );
-        })}
+          ))}
         {!!moreNodesCount && (
           <TabItem
-            item={{ NodeType: RVDic.ShowAll, Count: moreNodesCount }}
+            item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
             isActive={isMoreShown}
+            noImage
             hasMore
             onTabClick={handleMoreTopics}
           />
         )}
       </Styled.TabsContainer>
-      {/* <PerfectScrollbar  style={{ maxHeight: '10.4rem'}}> */}
-      <Styled.MoreTopicsContainer isOpen={isMoreShown}>
-        {sortedNodes?.map((item, index) => {
-          if (index < 3) return null;
-          return (
-            <TabItem
-              item={item}
-              key={item?.NodeTypeID}
-              isActive={activeTab === item?.NodeTypeID}
-              onTabClick={() => handleItemClick(item)}
-            />
-          );
-        })}
+      <Styled.MoreTopicsContainer isOpen={isMoreShown} isFloat={!!floatBox}>
+        <Styled.MoreTopicsWrapper>
+          {sortedNodes
+            ?.filter((itm, ind) => ind >= 3)
+            .map((item, index) => (
+              <TabItem
+                item={item}
+                key={item?.NodeTypeID}
+                isActive={activeTab === item?.NodeTypeID}
+                onTabClick={() => handleItemClick(item)}
+              />
+            ))}
+        </Styled.MoreTopicsWrapper>
+        {!isRelatedPage && (
+          <Button classes="more-topics-button">
+            <Link to={relatedTopicsLink}>مشاهده همه آیتم‌ها</Link>
+          </Button>
+        )}
       </Styled.MoreTopicsContainer>
-      {/* </PerfectScrollbar> */}
-    </div>
+    </Styled.TopicsTabsContainer>
   );
 };
 

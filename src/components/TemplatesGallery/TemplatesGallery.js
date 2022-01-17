@@ -93,7 +93,7 @@ const TemplatesGallery = (props) => {
                   className="add-template-icon"
                 />
                 <Button type="primary-o" classes="add-template-button">
-                  ساخت تمپلیت
+                  {RVDic.CreateN.replace('[n]', RVDic.Template)}
                 </Button>
               </Styled.AddTemplateButtonWrapper>
             </Styled.GalleryListContainer>

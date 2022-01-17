@@ -1,33 +1,147 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import * as Styled from './UserCell.styles';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { CV_BLACK, CV_DISTANT } from 'constant/CssVariables';
-import Avatar from 'components/Avatar/Avatar';
+import UsersList from './UsersList';
+import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
+import { useCellProps } from 'components/CustomTable/tableUtils';
+import useWindow from 'hooks/useWindowContext';
+import useOnClickOutside from 'hooks/useOnClickOutside';
+import AddNewUserButton from 'components/CustomTable/AddNewButton';
+import UserIcon from 'components/Icons/UserIconIo';
 
 const UserCell = (props) => {
+  const { RVDic } = useWindow();
+
+  const {
+    value,
+    onCellChange,
+    rowId,
+    columnId,
+    isNewRow,
+    canEdit,
+    setSelectedCell,
+    isSelectedCell,
+    editByCell,
+  } = useCellProps(props);
+
+  const userRef = useRef();
+
+  const { SelectedItems: initialUsers, Info } = value || {};
+
+  const { MultiSelect: isMultiSelect } = Info || {};
+
+  const [users, setUsers] = useState(isNewRow ? [] : initialUsers);
+  const beforeChangeUsersRef = useRef(null);
+
+  const handleClickOutside = () => {
+    if (isSelectedCell) {
+      setSelectedCell(null);
+      updateCell(users);
+    }
+  };
+
+  useOnClickOutside(userRef, handleClickOutside);
+
+  useEffect(() => {
+    if (isNewRow) {
+      beforeChangeUsersRef.current = [];
+    } else {
+      beforeChangeUsersRef.current = initialUsers;
+    }
+
+    return () => {
+      beforeChangeUsersRef.current = null;
+    };
+  }, [canEdit, initialUsers, isNewRow]);
+
+  const normalizeSelectedUsers =
+    users?.length > 0
+      ? users?.map((user) => {
+          const temp = {
+            id: user.ID,
+          };
+          return temp;
+        })
+      : [];
+
+  const updateCell = (users) => {
+    let userCell = {
+      ...value,
+      GuidItems: users,
+      SelectedItems: users,
+      TextValue: '',
+    };
+
+    onCellChange(rowId, columnId, userCell, users);
+  };
+
+  const handleAddNewPerson = (person) => {
+    const { avatarUrl: IconURL, id: ID, name } = person;
+    let newUser = { ID, UserID: ID, FullName: name, IconURL };
+
+    let userAlreadyExists = users?.some((user) => user?.ID === ID);
+
+    //! Prepare new users list;
+    const newUsersArray = isMultiSelect
+      ? userAlreadyExists
+        ? users
+        : [...users, newUser]
+      : [newUser];
+
+    setUsers(newUsersArray);
+
+    !editByCell && updateCell(newUsersArray);
+  };
+
+  const handleRemoveUser = (person) => {
+    const newUsersArray = users?.filter(
+      (user) => user?.UserID !== person?.UserID
+    );
+    setUsers(newUsersArray);
+    !editByCell && updateCell(newUsersArray);
+  };
+
+  const renderUsers = () => (
+    <>
+      <UsersList
+        users={users}
+        onRemoveUser={handleRemoveUser}
+        canEdit={canEdit}
+      />
+    </>
+  );
+
+  if (!canEdit) {
+    return (
+      <Styled.UsersCellContainer>{renderUsers()}</Styled.UsersCellContainer>
+    );
+  }
+
   return (
-    <Styled.UsersWrapper>
-      {[1, 2].map((index) => (
-        <Styled.UserCellContainer key={index}>
-          <Styled.UserInfoWrapper
-            as={Link}
-            to="/user"
-            editable={props?.header?.options?.editable}>
-            <Avatar
-              color={CV_BLACK}
-              className="table-user-avatar"
-              userImage={
-                props?.value?.userImageURL || 'https://i.pravatar.cc/300'
+    <Styled.UsersCellContainer ref={userRef}>
+      {renderUsers()}
+      <Styled.PeoplePickerWrapper>
+        <PeoplePicker
+          onByMe={() => {}}
+          onBlur={() => {}}
+          onByPeople={handleAddNewPerson}
+          isByMe={false}
+          pickedPeople={isNewRow ? normalizeSelectedUsers : []}
+          onVisible={() => {}}
+          multi={isMultiSelect}
+          buttonComponent={
+            <AddNewUserButton
+              title={
+                isMultiSelect
+                  ? RVDic?.SelectN?.replace('[n]', RVDic?.User)
+                  : 'تغییر کاربر'
               }
+              icon={<UserIcon size={23} />}
+              noBorder
             />
-            <Styled.UserLinkWrapper>رسول حسامی رستمی</Styled.UserLinkWrapper>
-          </Styled.UserInfoWrapper>
-          <Styled.CloseIconWrapper>
-            <CloseIcon color={CV_DISTANT} />
-          </Styled.CloseIconWrapper>
-        </Styled.UserCellContainer>
-      ))}
-    </Styled.UsersWrapper>
+          }
+        />
+      </Styled.PeoplePickerWrapper>
+    </Styled.UsersCellContainer>
   );
 };
 

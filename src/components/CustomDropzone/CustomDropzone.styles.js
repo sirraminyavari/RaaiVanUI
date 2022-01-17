@@ -1,17 +1,24 @@
-import { BO_RADIUS_HALF, BO_RADIUS_QUARTER } from 'constant/constants';
-import { TCV_DEFAULT } from 'constant/CssVariables';
-import { FLEX_RCS } from 'constant/StyledCommonCss';
+import { BO_RADIUS_QUARTER } from 'constant/constants';
+import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { FLEX_CCC } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 export const DropzoneContainer = styled.div.attrs({
   className: `${BO_RADIUS_QUARTER}`,
 })`
   width: 100%;
-  height: 80%;
-  border: 0.15rem dashed ${TCV_DEFAULT};
-  padding: 0.3rem 0.2rem;
+  height: 100%;
+  border: 0.15rem dashed ${CV_DISTANT};
+  padding: 0.5rem;
   cursor: pointer;
-  ${FLEX_RCS}
+  ${FLEX_CCC}
+  gap: 1rem;
+  display: ${({ isHidden }) => (isHidden ? 'none' : 'revert')};
+`;
+
+export const DropzonePlaceholder = styled.span`
+  font-size: 0.8rem;
+  color: ${CV_DISTANT};
 `;
 
 export const UploadIconWrapper = styled.div`
@@ -30,6 +37,7 @@ export const InputWrapper = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 `;
 
 export const ThumbsContainer = styled.aside`

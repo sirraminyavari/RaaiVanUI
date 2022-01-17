@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import RadioSelect from 'components/Inputs/radio/Radio';
 import * as Styled from 'views/Profile/Profile.styles';
+import useWindow from 'hooks/useWindowContext';
 
 const TwoFactorOptions = ({ options, enabled, media, onSelectOption }) => {
   const [selected, setSelected] = useState(!!media ? media : '');
+  const { RVDic } = useWindow();
 
   const handleOnSelect = (radioValue) => {
     setSelected(radioValue);
@@ -20,7 +22,7 @@ const TwoFactorOptions = ({ options, enabled, media, onSelectOption }) => {
   return (
     <Styled.TwoFactorOptionsWrapper enabled={enabled}>
       <div style={{ marginBottom: '2rem' }}>
-        <span>کد تایید ورود دومرحله‌ای از چه طریقی برای شما ارسال شود</span>
+        <span>{RVDic.HowDoYouPreferToReceiveTheVerificationCode}</span>
       </div>
       <RadioSelect
         options={options}

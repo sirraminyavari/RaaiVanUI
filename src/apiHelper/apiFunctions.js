@@ -50,6 +50,16 @@ import {
   GET_NODE_TYPES,
   GET_TEMPLATES_JSON,
   ACTIVATE_TEMPLATE,
+  GET_UPLOAD_LINK,
+  REMOVE_NODE,
+  RECYCLE_NODE,
+  SET_NODE_SEARCHABILITY,
+  GET_NODE,
+  GET_OWNER_FORM_INSTANCES,
+  REMOVE_FORM_INSTANCES,
+  CREATE_FORM_INSTANCE,
+  RECOVER_FORM_INSTANCES,
+  REMOVE_FILE,
   GET_TEMPLATE_TAGS,
   SAVE_APPLICATION_INFO,
   SEARCH_API,
@@ -1136,6 +1146,33 @@ export const getNodeTypes = (searchText, archive = false, count = '') => {
 };
 
 /**
+ * @description Get node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const getNode = (nodeId) => {
+  const getNodeAPI = API_Provider(CN_API, GET_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
  * @description Add node type.
  * @param {String} name -The name of the node.
  * @param {String} parentId -The id of the parent of the node.
@@ -1223,16 +1260,77 @@ export const recoverNodeType = (nodeId) => {
 };
 
 /**
- * @description Get field of expertise list
- * @returns {Promise}
+ * @description Remove node.
+ * @param {String} nodeId -The id of the node.
+ * @param {Boolean} hierarchy - Should remove hierarchy or not?.
+ * @returns Promise.
  */
-export const getTemplateTags = () => {
-  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
+export const removeNode = (nodeId, hierarchy = false) => {
+  const removeNodeAPI = API_Provider(CN_API, REMOVE_NODE);
 
   return new Promise((resolve, reject) => {
     try {
-      getTemplateTagsAPI.fetch(
-        {},
+      removeNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recycle node.
+ * @param {String} nodeId -The id of the node.
+ * @returns Promise.
+ */
+export const recycleNode = (nodeId) => {
+  const recycleNodeAPI = API_Provider(CN_API, RECYCLE_NODE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recycleNodeAPI.fetch(
+        {
+          NodeID: nodeId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get upload link.
+ * @param {String} ownerId -The id of owner.
+ * @param {String} ownerType -The type of owner.
+ * @returns Promise.
+ */
+export const getUploadLink = (ownerId = '', ownerType = '') => {
+  const getUploadLinkAPI = API_Provider(DOCS_API, GET_UPLOAD_LINK);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getUploadLinkAPI.url(
+        {
+          OwnerID: ownerId,
+          OwnerType: ownerType,
+        },
         (response) => {
           resolve(response);
         },
@@ -1289,6 +1387,194 @@ export const saveApplicationInfo = (
           Size: encodeBase64(Size),
           ExpertiseFieldName: encodeBase64(ExpertiseFieldName),
         },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Set node searchability.
+ * @param {String} nodeId -The id of node.
+ * @param {Boolean} searchable -Make it searchable or not.
+ * @returns Promise.
+ */
+export const setNodeSearchability = (nodeId, searchable) => {
+  const setNodeSearchabilityAPI = API_Provider(CN_API, SET_NODE_SEARCHABILITY);
+
+  return new Promise((resolve, reject) => {
+    try {
+      setNodeSearchabilityAPI.fetch(
+        {
+          NodeID: nodeId,
+          Searchable: searchable,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Get owner form instances.
+ * @param {String} formId -The id of the form.
+ * @param {String} ownerId -The id of the form owner.
+ * @returns Promise.
+ */
+export const getOwnerFormInstances = (formId, ownerId) => {
+  const getOwnerFormInstancesAPI = API_Provider(
+    FG_API,
+    GET_OWNER_FORM_INSTANCES
+  );
+
+  return new Promise((resolve, reject) => {
+    try {
+      getOwnerFormInstancesAPI.fetch(
+        {
+          FormID: formId,
+          OwnerID: ownerId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Create form instance.
+ * @param {String} formId -The id of the form.
+ * @param {String} ownerId -The id of the form owner.
+ * @returns Promise.
+ */
+export const createFormInstance = (formId, ownerId) => {
+  const createFormInstanceAPI = API_Provider(FG_API, CREATE_FORM_INSTANCE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      createFormInstanceAPI.fetch(
+        {
+          FormID: formId,
+          OwnerID: ownerId,
+        },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Remove form instance.
+ * @param {String} instanceId -The id of the instance.
+ * @returns Promise.
+ */
+export const removeFormInstance = (instanceId) => {
+  const removeFormInstanceAPI = API_Provider(FG_API, REMOVE_FORM_INSTANCES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeFormInstanceAPI.fetch(
+        { InstanceID: instanceId },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recover form instance.
+ * @param {String} instanceId -The id of the instance.
+ * @returns Promise.
+ */
+export const recoverFormInstance = (instanceId) => {
+  const recoverFormInstanceAPI = API_Provider(FG_API, RECOVER_FORM_INSTANCES);
+
+  return new Promise((resolve, reject) => {
+    try {
+      recoverFormInstanceAPI.fetch(
+        { InstanceID: instanceId },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+/**
+ * @description Recover file.
+ * @param {String} ownerId -The id of the owner of the file.
+ * @param {String} fileId -The id of the file.
+ * @returns Promise.
+ */
+export const removeFile = (ownerId, fileId) => {
+  const removeFileAPI = API_Provider(DOCS_API, REMOVE_FILE);
+
+  return new Promise((resolve, reject) => {
+    try {
+      removeFileAPI.fetch(
+        { OwnerID: ownerId, FileID: fileId },
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } catch (err) {}
+  });
+};
+
+/**
+ * @description Get field of expertise list
+ * @returns {Promise}
+ */
+export const getTemplateTags = () => {
+  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
+
+  return new Promise((resolve, reject) => {
+    try {
+      getTemplateTagsAPI.fetch(
+        {},
         (response) => {
           resolve(response);
         },

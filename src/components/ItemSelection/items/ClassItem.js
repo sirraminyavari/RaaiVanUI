@@ -18,6 +18,7 @@ const ClassItem = ({ item, title, icon, badge, isSelected, onClick }) => {
       $isSelected={isSelected}
       RV_RTL={RV_RTL}>
       <Content>
+        {console.log(badge, 'badge')}
         {/* <Icon /> */}
 
         <CustomHeading
@@ -26,7 +27,11 @@ const ClassItem = ({ item, title, icon, badge, isSelected, onClick }) => {
           {title}
         </CustomHeading>
       </Content>
-      <Badge $isSelected={isSelected}>{badge}</Badge>
+      {!!badge ? (
+        <Badge $isSelected={isSelected}>{badge}</Badge>
+      ) : (
+        <div style={{ height: '1.5rem' }} />
+      )}
     </Container>
   );
 };

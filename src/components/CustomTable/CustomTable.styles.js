@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { C_GRAY } from 'constant/Colors';
+import { BG_DISTANT, BG_WHITE, C_GRAY, C_GRAY_DARK } from 'constant/Colors';
 import {
   CV_BLACK,
   CV_DISTANT,
@@ -11,11 +11,8 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
-  TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import {
-  FLEX_CCA,
-  FLEX_CCB,
   FLEX_CCC,
   FLEX_RCB,
   FLEX_RCC,
@@ -23,7 +20,12 @@ import {
   FLEX_RCS,
   HorizontalScrollbar,
 } from 'constant/StyledCommonCss';
-import { BO_RADIUS_QUARTER } from 'constant/constants';
+import {
+  BO_RADIUS_CIRCLE,
+  BO_RADIUS_HALF,
+  BO_RADIUS_QUARTER,
+} from 'constant/constants';
+import Heading from 'components/Heading/Heading';
 
 const { RV_RevFloat, RV_Float } = window;
 
@@ -46,6 +48,7 @@ export const selectStyles = {
     width: '90%',
     margin: '0.3rem auto',
     borderRadius: '0.2rem',
+    fontSize: '0.85rem',
     color: CV_BLACK,
     cursor: 'pointer',
     ':hover': {
@@ -69,7 +72,7 @@ export const selectStyles = {
   singleValue: (styles) => ({
     ...styles,
     padding: '0.2rem',
-    fontSize: '1rem',
+    fontSize: '0.85rem',
     borderRadius: '0.2rem',
     width: '75%',
     textAlign: 'center',
@@ -82,25 +85,34 @@ export const selectStyles = {
   }),
 };
 
-export const TableContainer = styled.div`
+export const TableContainer = styled.div.attrs({
+  className: `${BO_RADIUS_HALF}`,
+})`
+  width: 100%;
   padding: 1rem 0;
   position: relative;
-  border: 0.1rem solid #333;
-  // overflow-x: auto;
+  // box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  // border: 0.1rem solid #333;
+
+  .table-header-sticky {
+    position: sticky !important;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
 `;
 
 export const TableWrapper = styled.div`
   // border: 1px solid #333;
   overflow-x: scroll;
   margin-top: 3rem;
-
   ${HorizontalScrollbar}
 `;
 
 export const Table = styled.div`
   border-spacing: 0;
   margin: 0.5rem;
-  margin-right: 0;
+  margin-${RV_Float}: 0;
   user-select: none;
 
   [data-sticky-td] {
@@ -111,14 +123,15 @@ export const Table = styled.div`
 
   [data-sticky-last-left-td] {
     position: fixed;
-    ${RV_Float}: 1.7rem;
+    ${RV_Float}: 2.15rem;
     background-color: ${CV_WHITE};
-    border-left: 1px solid ${CV_DISTANT};
+    border-${RV_RevFloat}: 1px solid ${CV_DISTANT};
   }
 `;
 
 export const TableBody = styled.div`
   min-height: 2rem;
+  max-height: 20rem;
 `;
 
 export const TableHeader = styled.div.attrs({
@@ -129,12 +142,12 @@ export const TableHeader = styled.div.attrs({
   padding: 0.5rem;
   text-align: center;
   position: relative;
-  border-right: 1px solid ${CV_WHITE};
+  border-${RV_Float}: 1px solid ${CV_WHITE};
 
   //! Give border to last header.
   :last-child {
-    border-left: 1px solid ${CV_WHITE};
-    border-top-left-radius: 0.9rem !important;
+    border-${RV_RevFloat}: 1px solid ${CV_WHITE};
+    border-top-${RV_RevFloat}-radius: 0.9rem !important;
   }
 
   :not(:first-child) {
@@ -145,7 +158,7 @@ export const TableHeader = styled.div.attrs({
   //! Hide first column border.
   :first-child {
     :first-child {
-      border-right: 0;
+      border-${RV_Float}: 0;
     }
 
     //! Hide first column resizer.
@@ -156,12 +169,16 @@ export const TableHeader = styled.div.attrs({
 
   //! Give border radius to second one.
   :nth-child(2) {
-    border-top-right-radius: 0.9rem !important;
+    border-top-${RV_Float}-radius: 0.9rem !important;
 
     //! Hide second column resizer.
     div:nth-child(2) {
       display: none !important;
     }
+  }
+
+  .table-header{
+    font-weight: 400 !important;
   }
 `;
 
@@ -179,8 +196,8 @@ export const HeaderAsterisk = styled.span`
 `;
 
 export const Tr = styled.div`
-  background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
-  // background-color: ${({ isEditing }) => (isEditing ? CV_GRAY : '')};
+  // background-color: ${({ isDragging }) => (isDragging ? CV_FREEZED : '')};
+  background-color: ${({ isEditing }) => (isEditing ? CV_GRAY_LIGHT : '')};
   // :not(:first-child) {
   //   border-top: 1px solid ${CV_DISTANT};
   // }
@@ -193,8 +210,7 @@ export const Tr = styled.div`
 
   &:hover {
     > div:not(:first-child) {
-      // background-color: ${({ isEditing }) => !isEditing && CV_FREEZED};
-      background-color: ${CV_FREEZED};
+      // background-color: ${CV_FREEZED};
       color: ${CV_BLACK};
     }
   }
@@ -207,18 +223,18 @@ export const Tr = styled.div`
   }
 `;
 
-export const TableRowIndex = styled.span`
-  font-size: 1rem;
-`;
+export const TableRowIndex = styled(Heading).attrs({
+  className: `${C_GRAY}`,
+})``;
 
 export const TableColumnResizer = styled.div`
   display: inline-block;
   background: ${CV_GRAY};
-  width: 0.25rem;
+  width: 0.18rem;
   height: 100%;
   border-radius: 15%;
   position: absolute;
-  right: -0.13rem;
+  ${RV_Float}: -0.13rem;
   top: 0;
   // transform: translateX(-50%);
   // z-index: 1;
@@ -230,22 +246,29 @@ export const TableColumnResizer = styled.div`
 export const TableCell = styled.div`
   ${FLEX_RCC}
   margin: 0;
-  padding: 0.5rem;
+  padding: 0.3rem;
   text-align: center;
   position: relative;
-  border-right: 1px solid ${CV_DISTANT};
+  border-${RV_Float}: 1px solid ${CV_DISTANT};
+
+  :hover:not(:first-child):not(:nth-child(2)) {
+    div[data-edit-icon-wrapper] {
+      opacity: 1 !important;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
 
   :not(:first-child) {
     border-bottom: 1px solid ${CV_DISTANT};
   }
 
   :nth-child(1) {
-    border-right: 0 !important;
+    border-${RV_Float}: 0 !important;
     border-top: 0 !important;
   }
 
   :nth-child(2) {
-    border-right: 0 !important;
+    border-${RV_Float}: 0 !important;
   }
 `;
 
@@ -261,7 +284,7 @@ export const TablePaginationSelectWrapper = styled.div`
 
 export const PaginationSelectTitle = styled.span`
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   width: 12rem;
   color: ${CV_GRAY};
 `;
@@ -272,25 +295,47 @@ export const PaginationArrowWrapper = styled.div`
 `;
 
 export const PaginationSpan = styled.span`
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: ${CV_DISTANT};
 `;
 
 export const FooterContainer = styled.div`
   font-weight: bolder;
   text-align: center;
+  border: 0 !important;
 `;
 
 export const FooterTr = styled.div`
   position: relative;
 
   &:first-child {
-    border-left: 2px solid ${CV_GRAY_DARK};
+    // border-left: 2px solid ${CV_GRAY_DARK};
 
     .footer-td {
       :not(:first-child) {
-        border: 2px solid ${CV_GRAY_DARK};
-        border-left: 0;
+        border: 2px dashed ${CV_DISTANT};
+        border-${RV_RevFloat}: 0;
+      }
+
+      :nth-child(1) {
+        position: sticky;
+        ${RV_Float}: 0rem;
+        background-color: #fff;
+        border: 0;
+        z-index: 3000;
+      }
+
+      :nth-child(2) {
+        position: sticky;
+        ${RV_Float}: 2.2rem;
+        background-color: #fff;
+        border: 0;
+        border-${RV_RevFloat}: 2px solid ${CV_DISTANT};
+        z-index: 3000;
+      }
+
+      :nth-child(3) {
+        border-${RV_Float}: 0;
       }
 
       min-height: 3rem;
@@ -300,42 +345,48 @@ export const FooterTr = styled.div`
   }
 `;
 
-export const RowDragHandle = styled.div`
-  // position: absolute;
-  // right: -1.5rem;
-  // top: 50%;
-  // transform: translate(0, -50%);
-`;
-
-export const RowActionHandle = styled.div`
-  position: absolute;
-  left: -1.5rem;
-  top: 50%;
-  transform: translate(0, -50%);
-  cursor: pointer;
-
-  :hover svg {
-    color: ${CV_RED} !important;
-  }
-`;
-
 export const TableActionsContainer = styled.div`
   position: absolute;
   width: 100%;
-  padding: 0 1rem;
+  // padding: 0 1rem;
   ${FLEX_RCB}
 `;
 
-export const TableRowActionContainer = styled.div`
-  width: 6.5rem;
+export const TableRowActionContainer = styled.div.attrs({
+  className: `${BO_RADIUS_QUARTER} ${BG_WHITE}`,
+})`
+  width: 8rem;
   height: auto;
+  max-height: 7rem;
   color: ${CV_GRAY_DARK};
   padding: 0.5rem;
+  box-shadow: 1px 3px 10px ${TCV_VERY_TRANSPARENT} !important;
+  z-index: 3000;
 `;
 
-export const EditRowActionContainer = styled.div`
+export const EditActionContainer = styled.div`
   height: 100%;
-  ${FLEX_CCA}
+  ${FLEX_CCC}
+
+  .table-edit-check-icon {
+    cursor: pointer;
+    padding: 0.05rem;
+    border-radius: 50%;
+
+    :hover {
+      background-color: ${TCV_VERY_TRANSPARENT};
+    }
+  }
+
+  .table-edit-cancel-icon {
+    cursor: pointer;
+    padding: 0.4rem;
+    border-radius: 50%;
+
+    :hover {
+      background-color: ${TCV_VERY_TRANSPARENT};
+    }
+  }
 `;
 
 export const TableActionWrapper = styled.div.attrs({
@@ -347,18 +398,30 @@ export const TableActionWrapper = styled.div.attrs({
   margin: 0.1rem 0;
   ${FLEX_RCS}
   gap: 0.5rem;
+  text-transform: capitalize;
 
   :hover {
-    background-color: ${TCV_VERY_TRANSPARENT_WARM};
+    background-color: ${CV_FREEZED};
   }
 `;
 
+export const TableActionIconWrapper = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  ${FLEX_CCC}
+`;
+
 export const RowDragHandleWrapper = styled.div`
+  position: relative;
   cursor: pointer !important;
   width: 100%;
   height: calc(100% + 1rem);
   padding: 0.8rem;
   ${FLEX_CCC}
+
+  .table-action-menu {
+    border: none;
+  }
 `;
 
 export const TableSearchWrapper = styled.div`
@@ -379,6 +442,16 @@ export const TableSearchWrapper = styled.div`
 export const TableButtonsWrapper = styled.div`
   width: 70%;
   ${FLEX_RCE}
+  gap: 1rem;
+
+  .table-action-apply-change-btn {
+    height: 1.8rem;
+    width: 8rem;
+    border-radius: 1rem;
+    ${FLEX_RCC}
+    gap: 0.5rem;
+    user-select: none;
+  }
 `;
 
 const commonActionBTNCss = css`
@@ -387,6 +460,7 @@ const commonActionBTNCss = css`
   width: 10rem;
   height: 2rem;
   border-radius: 2rem;
+  user-select: none;
   ${FLEX_RCC}
 `;
 
@@ -414,11 +488,66 @@ export const ActionButton = styled.div`
 
   .table-add-new-item-icon {
     ${commonActionIconCss}
-    right: 1.5rem;
+    ${RV_Float}: 1rem;
   }
 
   .table-select-item-icon {
     ${commonActionIconCss}
-    right: 2rem;
+    ${RV_Float}: 2rem;
   }
+`;
+
+export const TableActionHeading = styled(Heading)`
+  color: ${CV_GRAY_DARK} !important;
+  font-weight: 400 !important;
+`;
+
+const getDisplay = ({ isShown }) => {
+  return isShown ? FLEX_CCC : 'display: none;';
+};
+
+export const EditIconWrapper = styled.div.attrs({
+  className: `${BO_RADIUS_CIRCLE} ${BG_DISTANT}`,
+})`
+  ${getDisplay}
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  min-height: 1.5rem;
+  position: absolute;
+  top: 0.25rem;
+  ${RV_RevFloat}: 0.25rem;
+  opacity: 0;
+  cursor: pointer;
+`;
+
+export const EditButtonsWrapper = styled.div`
+  position: absolute;
+  top: 0.25rem;
+  ${RV_RevFloat} : 0.25rem;
+
+  .table-edit-buttons-container {
+    ${FLEX_RCC}
+  }
+`;
+
+export const AddNewButtonWrapper = styled.div`
+  width: 100%;
+
+  .table-add-new-in-cell-button {
+    background-color: inherit;
+    color: ${TCV_DEFAULT};
+    width: auto;
+    margin: 0 1rem;
+    height: 1.8rem;
+    border-radius: 1rem;
+    ${FLEX_RCC}
+    gap: 0.5rem;
+    ${({ noBorder }) => noBorder && 'border: 0;'}
+  }
+`;
+
+export const AddNewHeading = styled(Heading)`
+  color: ${TCV_DEFAULT} !important;
+  font-weight: 400 !important;
 `;

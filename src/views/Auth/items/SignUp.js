@@ -23,7 +23,7 @@ import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { Box } from '../AuthView.style';
-import ContinueWithGoogle from '../elements/ContinueWithGoogle';
+import CreateAccountButtons from './CreateAccountButtons';
 
 const { RVDic, RVGlobal, RV_RTL } = window;
 /**
@@ -344,15 +344,11 @@ const SignUp = () => {
             }}>
             {RVDic?.GetConfirmationCode}
           </Button>
-          <Hiddener isVisible={email.length === 0}>
-            <ContinueWithGoogle style={{ width: '100%', common_style }} />
-            <Button
-              type="secondary-o"
-              style={{ ...common_style, fontSize: '1rem', width: '100%' }}
-              onClick={onHaveAccount}>
-              {RVDic?.AlreadyHaveAnAccount}
-            </Button>
-          </Hiddener>
+          <CreateAccountButtons
+            isVisible={true}
+            label={RVDic?.AlreadyHaveAnAccount}
+            onCreateAccountClick={onHaveAccount}
+          />
         </Container>
       )}
     </Box>
@@ -375,14 +371,9 @@ const RowItems = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-const common_style = {
+
+export const common_style = {
   marginBottom: '0.75rem',
   marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
-const Hiddener = styled.div`
-  width: 100%;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
-  transition: opacity 0.7s, max-height 1s;
-`;

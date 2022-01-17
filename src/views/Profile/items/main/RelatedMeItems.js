@@ -3,7 +3,7 @@ import NodeList from 'components/NodeList/NodeList';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-const { RVDic, RVGlobal } = window || {};
+const { RVGlobal } = window || {};
 
 const RelatedMeItems = (props) => {
   const { route } = props;
@@ -18,7 +18,6 @@ const RelatedMeItems = (props) => {
       setNodeTypeIds(null);
     } else {
       setNodeType(null);
-
       setNodeTypeIds(data);
     }
   };
@@ -26,23 +25,21 @@ const RelatedMeItems = (props) => {
   const userId = params?.uid || RVGlobal?.CurrentUser?.UserID;
 
   return (
-    <>
-      <AdvanceSearch
-        nodeType={nodeType ? nodeType : null}
-        hierarchy={route?.Hierarchy || []}
-        bookmarked={route?.Bookmarked}
-        onApplyNodeType={onNodeTypeChange}
-        isProfile={true}>
-        {(nodeTypeIds || nodeType) && (
-          <NodeList
-            nodeTypeId={nodeType?.NodeTypeID ? nodeType?.NodeTypeID : null}
-            bookmarked={route?.Bookmarked}
-            relatedToNodeId={userId}
-          />
-        )}
-      </AdvanceSearch>
-      {console.log(route, 'route')}
-    </>
+    <AdvanceSearch
+      nodeType={nodeType ? nodeType : null}
+      hierarchy={route?.Hierarchy || []}
+      bookmarked={route?.Bookmarked}
+      onApplyNodeType={onNodeTypeChange}
+      isProfile={true}>
+      {(nodeTypeIds || nodeType || userId) && (
+        <NodeList
+          nodeTypeId={nodeType?.NodeTypeID ? nodeType?.NodeTypeID : null}
+          nodeTypeIds={nodeTypeIds}
+          bookmarked={route?.Bookmarked}
+          relatedToNodeId={userId}
+        />
+      )}
+    </AdvanceSearch>
   );
 };
 

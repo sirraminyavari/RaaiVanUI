@@ -31,7 +31,7 @@ const MultiLevelType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
 
-  const { RVDic, GlobalUtilities } = useWindow();
+  const { RVDic, GlobalUtilities } = window;
 
   const { NodeType, Levels } =
     GlobalUtilities.to_json(decodeBase64(Info)) || {};

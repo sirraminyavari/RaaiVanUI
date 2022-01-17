@@ -7,84 +7,130 @@ import {
   TCV_DEFAULT,
   TCV_WARM,
 } from 'constant/CssVariables';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { decodeBase64 } from 'helpers/helpers';
+import Toggle from 'components/Toggle/Toggle';
 
 const { RV_RTL, RVDic } = window || {};
 
-const data = [
-  { title: 'درس آموخته سنجه محور', count: 13 },
-  { title: 'درس آموخته حادثه محور', count: 53 },
-  { title: 'نامه صادره', count: 89 },
-  { title: 'نامه وارده', count: 53 },
-  { title: 'پروپوزال', count: 13 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-  { title: 'تکنولوژی', count: 53 },
-];
-
-const dropDown = [
+const switches = [
   {
     label: 'همه آیتم ها',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
-  },
-  {
-    label: 'مالکیت های معنوی من',
-    value: 'urgentAction',
-    colorClass: 'rv-default',
+    value: false,
+    paramName: 'all',
   },
   {
     label: 'موضوعاتی که در آن خبره ام',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
+    value: false,
+    paramName: 'IsExpertiseDomain',
   },
   {
     label: 'گروه های من',
-    value: 'urgentAction',
-    colorClass: 'rv-gray',
+    value: false,
+    paramName: 'IsGroup',
   },
 ];
 const defaultDropDownLabel = {
   label: 'گروه های من',
-  value: 'urgentAction',
+  value: false,
   color: TCV_DEFAULT,
 };
 const SideItemSelection = ({
   checkedList,
   onShowSelectedItems,
   isShowSelected,
+  classes,
+  counts,
+  onSelectedodeTypeId,
+  multiSelection,
+  onConfirm,
+  onSelectFilters,
 }) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isHovered, setIsDropDownHovered] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedItem, setSelectedItem] = useState(defaultDropDownLabel);
+  const [filterSwitches, setFilterSwitchs] = useState(switches);
   const onSelectItem = (item) => {
     setSelectedItem(item);
   };
   const onClassClick = (item) => {
     setSelectedClass(item);
+    console.log(item, 'node node', selectedClass);
+    if (item?.NodeTypeID === selectedClass?.NodeTypeID) {
+      setSelectedClass(null);
+    } else {
+      setSelectedClass(item);
+    }
   };
+  const onSelectNodeTypeId = (node) => {};
+
+  useEffect(() => {
+    onSelectedodeTypeId(selectedClass);
+  }, [selectedClass]);
+  useEffect(() => {
+    onSelectFilters(filterSwitches);
+  }, [filterSwitches]);
 
   const commonProps = { borderRadius: '10rem' };
 
   const isDropDownHovered = isDropDownOpen || isHovered;
 
+  const filterSwitchManagement = (x, i) => {
+    if (i === 0) {
+      console.log(i, 'i', x.value);
+      console.log(
+        filterSwitches.map((y, index) => {
+          return { ...y, value: !x.value };
+        }),
+        '******'
+      );
+
+      setFilterSwitchs(
+        filterSwitches.map((y, index) => {
+          return { ...y, value: !x.value };
+        })
+      );
+    } else {
+      setFilterSwitchs(
+        filterSwitches.map((y, index) =>
+          index === i ? { ...y, value: !x.value } : y
+        )
+      );
+    }
+    if (i !== 0 && !x.value) {
+      setFilterSwitchs(
+        filterSwitches.map((y, index) =>
+          index === 0 ? { ...y, value: false } : y
+        )
+      );
+    }
+  };
+
   return (
     <Container>
       <SideContent>
-        <div
+        <SideSwitchesContainer>
+          {filterSwitches.map((x, i) => {
+            return (
+              <SwitchItem>
+                {console.log(x, 'XXXXXXX')}
+                <Toggle
+                  isChecked={x.value}
+                  onToggle={() => filterSwitchManagement(x, i)}
+                  titleClass={'rv-warm'}
+                  title={x.label}
+                  titleStyle={{ fontSize: '0.8rem' }}
+                />
+              </SwitchItem>
+            );
+          })}
+        </SideSwitchesContainer>
+        {/* <div
           onMouseEnter={() => setIsDropDownHovered(true)}
           onMouseLeave={() => setIsDropDownHovered(false)}
           style={{ marginBottom: '1rem' }}>
@@ -144,7 +190,8 @@ const SideItemSelection = ({
             }}
             onDropDownOpen={setIsDropDownOpen}
           />
-        </div>
+        </div> */}
+
         <PerfectScrollbar
           style={{ maxHeight: '60vh', height: '60%' }}
           containerRef={(ref) => {
@@ -158,13 +205,14 @@ const SideItemSelection = ({
               };
             }
           }}>
-          {data.map((x) => (
+          {console.log(classes, 'classes classes')}
+          {classes?.map((x) => (
             <ClassItem
               onClick={onClassClick}
-              isSelected={selectedClass?.title === x?.title}
+              isSelected={selectedClass?.NodeTypeID === x?.NodeTypeID}
               item={x}
-              title={x?.title}
-              badge={x?.count}
+              title={decodeBase64(x?.NodeType)}
+              badge={counts.find((y) => y?.NodeTypeID === x?.NodeTypeID)?.Count}
             />
           ))}
         </PerfectScrollbar>
@@ -181,7 +229,11 @@ const SideItemSelection = ({
             <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>
         )}
-        <Button type={'primary'}>{RVDic.Confirm}</Button>
+        {multiSelection && (
+          <Button type={'primary'} onClick={onConfirm}>
+            {RVDic.Confirm}
+          </Button>
+        )}
       </div>
     </Container>
   );
@@ -191,7 +243,7 @@ export default SideItemSelection;
 
 const Container = styled.div`
   width: ${() => (DimensionHelper().isTabletOrMobile ? '11rem' : '16.75rem')};
-  height: 100%;
+  height: 70vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -225,4 +277,12 @@ const SideContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+const SideSwitchesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+`;
+const SwitchItem = styled.div`
+  margin: 0.5rem;
 `;
