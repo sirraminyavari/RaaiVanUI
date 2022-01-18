@@ -6,8 +6,9 @@ import { useState } from 'react';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import useWindowContext from 'hooks/useWindowContext';
+import { FLEX_CCC } from 'constant/StyledCommonCss';
 
-const TemplateCreateNew = ({ parent, onSubmit }) => {
+const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
   const { RVDic } = useWindowContext();
   const [value, setValue] = useState('');
   const [modalInfo, setModalInfo] = useState({
@@ -22,9 +23,7 @@ const TemplateCreateNew = ({ parent, onSubmit }) => {
   const handleModalCancel = () => setModalInfo({ ...modalInfo, show: false });
 
   const handleModalConfirm = () => {
-    console.log(value, parent);
     if (onSubmit && value) {
-      console.log(value, parent);
       onSubmit(value, parent);
     }
     setModalInfo({ ...modalInfo, show: false });
@@ -32,16 +31,25 @@ const TemplateCreateNew = ({ parent, onSubmit }) => {
 
   return (
     <>
-      {parent ? (
-        <AddButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
-          <AddIcon size={20} />
-        </AddButton>
-      ) : (
+      {!parent && !isSaaS && (
         <RootAddButton
           onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
           <AddIcon size={20} />
           <div>{'ایجاد دسته جدید'}</div>
         </RootAddButton>
+      )}
+
+      {parent && !isSaaS && (
+        <AddButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
+          <AddIcon size={20} />
+        </AddButton>
+      )}
+
+      {parent && isSaaS && (
+        <CartButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
+          <AddIcon circleOutline={true} size={44} />
+          <CardTitle>{`ایجاد تمپلیت جدید در ${title}`}</CardTitle>
+        </CartButton>
       )}
 
       <Modal {...modalInfo} onClose={() => handleModalCancel()}>
@@ -93,6 +101,29 @@ const RootAddButton = styled.button`
   background-color: ${TCV_DEFAULT};
   gap: 0.5rem;
 `;
+const CartButton = styled.div`
+  ${FLEX_CCC};
+  height: 12rem;
+  border-radius: 0.8rem;
+  border: 2px dashed ${CV_DISTANT};
+  background-color: ${CV_WHITE};
+  color: ${CV_DISTANT};
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  gap: 1rem;
+
+  &:hover {
+    border: 2px dashed ${TCV_DEFAULT};
+  }
+`;
+const CardTitle = styled.div`
+  width: 13rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.1rem;
+  text-align: center;
+`;
+
 const ModalContent = styled.div`
   height: 10rem;
   padding: 3.25rem 3.8rem;

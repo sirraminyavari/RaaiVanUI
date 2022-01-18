@@ -3,7 +3,7 @@ import { getNodeTypes } from 'apiHelper/ApiHandlers/CNApi';
 import { decodeBase64 } from 'helpers/helpers';
 import SaaSTemplateItem from './SaaSTemplateItem';
 
-const SaaSTemplates = ({ nodes, ...rest }) => {
+const SaaSTemplates = ({ nodes, handleAddNodeType, ...rest }) => {
   const [nodeList, setNodeList] = useState([]);
 
   useEffect(() => {
@@ -35,7 +35,11 @@ const SaaSTemplates = ({ nodes, ...rest }) => {
   return (
     <>
       {nodeList.map((x) => (
-        <SaaSTemplateItem key={x?.NodeTypeID} {...x} />
+        <SaaSTemplateItem
+          key={x?.NodeTypeID}
+          {...x}
+          handleAddNodeType={handleAddNodeType}
+        />
       ))}
     </>
   );

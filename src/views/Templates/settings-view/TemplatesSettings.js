@@ -66,9 +66,11 @@ const TemplatesSettings = () => {
   };
 
   const handleAddNodeType = (Name, ParentID) => {
+    console.log(Name, ParentID);
     addNodeType({
       Name,
       ParentID,
+      IsCategory: isSaaS,
     }).then((res) => {
       if (res?.Succeed) {
         loadNodeTypes();
@@ -108,7 +110,7 @@ const TemplatesSettings = () => {
         {loading ? (
           <LogoLoader />
         ) : isSaaS ? (
-          <SaaSTemplates nodes={data} />
+          <SaaSTemplates nodes={data} handleAddNodeType={handleAddNodeType} />
         ) : (
           <SHTemplates
             nodes={data}
