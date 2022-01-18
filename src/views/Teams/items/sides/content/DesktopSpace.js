@@ -4,7 +4,6 @@ import * as Styled from 'views/Teams/Teams.styles';
 import SpaceHeader from './SpaceHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import NewTeam from './NewTeam';
 import ArchivedTeams from './ArchivedTeams';
 
