@@ -4,28 +4,27 @@
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import InvisibleIcon from 'components/Icons/InVisible';
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import { GlobalParams } from 'constant/GlobalParams';
 import { decode } from 'js-base64';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import sendVerifyCodeAction from 'store/actions/auth/sendVerifyCodeAction';
-import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
-import setEmailAction from 'store/actions/auth/setEmailAction';
-import setFamilyAction from 'store/actions/auth/setFamilyAction';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
-import setNameAction from 'store/actions/auth/setNameAction';
-import setPasswordAction from 'store/actions/auth/setPassAction';
-import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
-import { Box } from '../AuthView.style';
+import CheckPassword from 'utils/Validation/CheckPassword';
+import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import CreateAccountButtons from './CreateAccountButtons';
+import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
+import SignUpWrapper from './SignUpWrapper';
+import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
+import {
+  createUserToken,
+  validateUserCreation,
+} from 'apiHelper/ApiHandlers/usersApi';
 
-const { RVDic, RVGlobal, RV_RTL } = window;
+const { RVDic, RVGlobal, GlobalUtilities } = window;
 /**
  * In this page user can create an account with his/her mobile/email.
  */
@@ -34,219 +33,207 @@ const SignUp = () => {
     '[m]'
   );
 
-  // To handle inputs focus
-  const emailRef = useRef();
-  const passRef = useRef();
-  const nameRef = useRef();
-  const familyRef = useRef();
-
-  const dispatch = useDispatch();
   const { push } = useHistory();
 
   //If true, the typed password will be shown.
   const [passVisible, setPassVisible] = useState(false);
-  //If true, means the password input is focused(to showing the Password validation).
+  //If true, means the password input is focused (to show the Password validation).
   const [passFocused, setPassFocused] = useState(false);
-  // Routing is handled with the 'useEffect'. to prevent unwanted navigation,
-  // sign up button have to  be clicked
-  const [signUpClicked, setSignUpClicked] = useState(false);
 
-  const {
-    email,
-    emailError,
-    password,
-    passwordError,
-    isFetching,
-    fetchingFiles,
-    passwordPolicy,
-    name,
-    nameError,
-    family,
-    familyError,
-    routeHistory,
-  } = useSelector((state) => ({
-    email: state.auth.email,
-    emailError: state.auth.emailError,
-    password: state.auth.password,
-    passwordError: state.auth.passwordError,
-    name: state.auth.name,
-    nameError: state.auth.nameError,
-    family: state.auth.family,
-    familyError: state.auth.familyError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    passwordPolicy: state.auth.passwordPolicy,
+  //true means that sending verification code is in progress
+  const [isSending, setIsSending] = useState(false);
+  const [isFinalizing, setIsFinalizing] = useState(false);
+
+  //true means that verification-code component must be rendered
+  const [verificationCodeMode, setVerificationCodeMode] = useState(false);
+  const [verificationCode, setVerificationCode] = useState();
+  const [verificationCodeObject, setVerificationCodeObject] = useState(null);
+  const [resetVerificationCode, setResetVerificationCode] = useState();
+
+  var xx = {
+    Token: 'CWJzj5EorgsKvrz3hqpp',
+    Timeout: 60,
+    TotalTimeout: 180,
+    Length: 5,
+  };
+
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+  const [shake, setShake] = useState(0);
+
+  const passwordPolicy = RVGlobal?.PasswordPolicy || {};
+
+  const { routeHistory } = useSelector((state) => ({
     routeHistory: state.auth.routeHistory,
   }));
 
   // has two responsibilities.
   // 1- when the component did mount, checks password policy, if it is null, will fetch it.
-  // 2- when component will unmount, sets signUpClicked to false.
+  /*
   useEffect(() => {
-    const { GlobalUtilities } = window;
-
-    !passwordPolicy && dispatch(signupLoadFilesAction());
-    GlobalUtilities?.init_recaptcha((captcha) => {
-      captcha?.getToken((token) => {
-        //use token
-        dispatch(setCaptchaTokenAction(token));
-      });
-    });
     return () => {
-      setSignUpClicked(false);
       dispatch(setLoginRouteAction(null));
     };
   }, []);
-  // By changing routeHistory & signUpClicked,
+  */
+
+  // By changing routeHistory
   // navigates to the address that routeHistory says.
   useEffect(() => {
-    signUpClicked && routeHistory && !isFetching && push(routeHistory);
-  }, [routeHistory, signUpClicked, isFetching]);
+    routeHistory && push(routeHistory);
+  }, [routeHistory]);
 
-  /**
-   * Synchronously sets inputted email/number to redux state.
-   * @param {String} value - email input
-   */
-  const onEmailChanged = (value) => {
-    dispatch(setEmailAction(value));
-  };
-  /**
-   * Synchronously sets inputted password to redux state.
-   * @param {String} value - password input
-   */
-  const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
-    setPassFocused(true);
-  };
-  /**
-   * Synchronously sets inputted name to redux state.
-   * @param {String} value - name input
-   */
-  const onNameChanged = (value) => {
-    dispatch(setNameAction(value));
-  };
-  /**
-   * Synchronously sets inputted family to redux state.
-   * @param {String} value - family input
-   */
-  const onFamilyChanged = (value) => {
-    dispatch(setFamilyAction(value));
-  };
-  /**
-   * When the user is typing in email input and then presses the enter key,
-   * focus will change to name input
-   */
-  const onEmailEnter = () => {
-    passRef?.current?.focus();
-  };
-  /**
-   * When the user is typing in name input and then presses the enter key,
-   * focus will change to family input
-   */
-  const onNameEnter = () => {
-    familyRef?.current?.focus();
-  };
-  /**
-   * When the user is typing in family input and then presses the enter key,
-   * focus will change to password input
-   */
-  const onFamilyEnter = () => {
-    onSendVerifyCode();
-  };
-  /**
-   * When the user is typing in password input and then presses the enter key,
-   * 'onSignUp' will fire.
-   */
-  const onPassEnter = () => {
-    nameRef?.current?.focus();
-  };
-  /**
-   * When the password input is focused, the password validator will be shown.
-   */
-  const onPassFocus = () => {
-    setPassFocused(true);
-  };
-  /**
-   * When the password input is blurred, the Clickmind terms will be shown.
-   */
-  const onPassBlur = () => {
-    setTimeout(() => {
-      setPassFocused(false);
-    }, 100);
-  };
   /**
    *  Starts the process of registering the user by sending a verification code.
    */
-  const onSendVerifyCode = () => {
-    setSignUpClicked(true);
-    dispatch(
-      sendVerifyCodeAction({
-        email,
-        password,
-        name,
-        family,
-        passwordPolicy,
-      })
+  const onSendVerifyCode = async () => {
+    const invalidEmail =
+      !GlobalUtilities.is_valid_email(email) && !MobileNumberValidator(email);
+    const invalidPassword = !CheckPassword(password, passwordPolicy);
+    const invalidFirstName = !firstName.trim();
+    const invalidLastName = !lastName.trim();
+
+    setEmailError(invalidEmail ? RVDic.Checks.EmailIsNotValid : '');
+    setPasswordError(
+      invalidPassword ? RVDic.Checks.PasswordPolicyDoesNotMeet : ''
     );
+
+    if (
+      invalidEmail ||
+      invalidPassword ||
+      invalidFirstName ||
+      invalidLastName
+    ) {
+      setShake(GlobalUtilities.random());
+      return;
+    }
+
+    setIsSending(true);
+
+    const results = await createUserToken({
+      FirstName: firstName.trim(),
+      LastName: lastName.trim(),
+      Contact: email,
+      Password: password,
+    });
+
+    setIsSending(false);
+
+    if (results?.ErrorText)
+      alert(RVDic.MSG[results.ErrorText] || results.ErrorText, {
+        autoClose: 20000,
+      });
+    else if (results?.VerificationCode) {
+      setVerificationCodeMode(true);
+      setVerificationCodeObject(results.VerificationCode);
+      setResetVerificationCode(GlobalUtilities.random());
+    }
   };
+
+  const finalValidation = async () => {
+    setIsFinalizing(true);
+
+    const results = await validateUserCreation({
+      Token: verificationCodeObject?.Token,
+      Code: verificationCode,
+      Login: true,
+    });
+
+    setIsFinalizing(false);
+
+    console.log(results, 'ramin vc');
+  };
+
   /**
    * Returns user to the login page.
    */
   const onHaveAccount = () => {
-    dispatch(setEmailAction(''));
-    dispatch(setPasswordAction(''));
     push('/login' + window.location.search);
   };
 
   const passVisibility = (value) => {
     setPassVisible(value);
-    setTimeout(() => {
-      setPassFocused(true);
-    }, 101);
+    setTimeout(() => setPassFocused(true), 101);
+  };
+
+  const handleVerificationCode = (arr, val) => {
+    setVerificationCode(val);
+
+    if (String(val || '_').length === verificationCodeObject?.Length)
+      finalValidation();
   };
 
   return (
-    <Box>
-      {fetchingFiles ? (
-        <LoadingIconFlat style={{ height: '50vh' }} />
-      ) : (
-        <Container>
-          <Heading
-            type="h5"
-            style={{
-              marginTop: '2rem',
-              marginBottom: '2rem',
-              textAlign: 'center',
-            }}
-            className={'rv-distant'}>
-            {RVDic.CreateAccount}
-          </Heading>
-
+    <TransitionSwitchWrapper
+      transitionKey={verificationCodeMode ? 'vr-code' : 'normal'}>
+      {verificationCodeMode && (
+        <SignUpWrapper>
+          <VerificationInputWithTimer
+            email={email}
+            length={verificationCodeObject?.Length}
+            timeout={verificationCodeObject?.Timeout}
+            onValueChange={handleVerificationCode}
+            resendCodeRequest={onSendVerifyCode}
+            loading={isSending}
+            reset={resetVerificationCode}
+            columnView
+          />
+          <RowItems style={{ marginTop: '2rem' }}>
+            <Button
+              style={{
+                flex: '0 0 auto',
+                marginInlineEnd: '1rem',
+                width: '8rem',
+              }}
+              disable={
+                String(verificationCode || 1).length !==
+                verificationCodeObject?.Length
+              }
+              onClick={finalValidation}
+              loading={isFinalizing}>
+              {RVDic.Confirm}
+            </Button>
+            <Button
+              type="primary-o"
+              style={{
+                flex: '0 0 auto',
+                marginInlineStart: '1rem',
+                width: '8rem',
+              }}
+              onClick={() => setVerificationCodeMode(false)}>
+              {RVDic.Return}
+            </Button>
+          </RowItems>
+        </SignUpWrapper>
+      )}
+      {!verificationCodeMode && (
+        <SignUpWrapper>
           <AnimatedInput
-            onChange={onEmailChanged}
+            onChange={(v) => setEmail(v)}
             value={email}
             placeholder={RVDic?.EmailAddress}
             error={emailError}
-            shake={emailError && 300}
+            shake={shake}
             style={common_style}
-            id={'email'}
-            ref={emailRef}
-            enterListener={onEmailEnter}
           />
 
           <AnimatedInput
-            onChange={onPasswordChanged}
+            onChange={(v) => setPassword(v)}
             value={password}
             placeholder={RVDic?.Password}
             type={passVisible ? 'text' : 'password'}
             error={passwordError}
-            shake={passwordError && 300}
+            shake={shake}
             style={common_style}
-            id={'password'}
-            ref={passRef}
-            onBlur={onPassBlur}
-            onFocus={onPassFocus}
-            enterListener={onPassEnter}
+            onBlur={() => setTimeout(() => setPassFocused(false), 100)}
+            onFocus={() => setPassFocused(true)}
             children={
               passVisible ? (
                 <InvisibleIcon
@@ -263,50 +250,33 @@ const SignUp = () => {
               )
             }
           />
-          {passFocused && (
-            <PasswordValidation
-              style={{
-                opacity: '0',
-                transition: 'opacity 1s',
-              }}
-              isVisible={passFocused}
-              password={password}
-              passwordPolicy={passwordPolicy}
-            />
-          )}
+          <PasswordValidation
+            style={{
+              opacity: '0',
+              transition: 'opacity 1s',
+            }}
+            isVisible={passFocused}
+            password={password}
+            passwordPolicy={passwordPolicy}
+          />
 
           <RowItems>
             <AnimatedInput
-              onChange={onNameChanged}
-              value={name}
-              placeholder={RVDic.Name}
-              error={nameError}
-              shake={nameError && 300}
-              style={
-                RV_RTL
-                  ? { marginLeft: '1rem', ...common_style }
-                  : { marginRight: '1rem', ...common_style }
-              }
-              id={'name'}
-              ref={nameRef}
-              enterListener={onNameEnter}
+              onChange={(v) => setFirstName(v)}
+              value={firstName}
+              placeholder={RVDic.FirstName}
+              shake={shake}
+              style={{ marginInlineEnd: '1rem', ...common_style }}
             />
             <AnimatedInput
-              onChange={onFamilyChanged}
-              value={family}
+              onChange={(v) => setLastName(v)}
+              value={lastName}
               placeholder={RVDic?.LastName}
-              error={familyError}
-              style={
-                RV_RTL
-                  ? { marginRight: '1rem', ...common_style }
-                  : { marginLeft: '1rem', ...common_style }
-              }
-              shake={familyError && 300}
-              id={'family'}
-              ref={familyRef}
-              enterListener={onFamilyEnter}
+              style={{ marginInlineStart: '1rem', ...common_style }}
+              shake={shake}
             />
           </RowItems>
+
           {!passFocused && (
             <Heading
               type="h6"
@@ -315,7 +285,8 @@ const SignUp = () => {
                 opacity: `${passFocused ? 0 : 1}`,
                 transition: 'opacity 1s',
                 marginTop: '1rem',
-                marginBottom: '2.5rem',
+                marginBottom: '1rem',
+                textAlign: 'justify',
               }}>
               {splitted_terms[0].replace('[n]', decode(RVGlobal?.SystemName))}
               <a
@@ -331,11 +302,14 @@ const SignUp = () => {
               {splitted_terms[1]?.replace('[m]', '')}
             </Heading>
           )}
+
           <Button
             onClick={onSendVerifyCode}
             type="primary"
-            loading={isFetching}
-            disable={!email || !password || !name || !family}
+            loading={isSending}
+            disable={
+              !email || !password || !firstName.trim() || !lastName.trim()
+            }
             style={{
               width: '100%',
               textAlign: 'center',
@@ -344,26 +318,26 @@ const SignUp = () => {
             }}>
             {RVDic?.GetConfirmationCode}
           </Button>
+
           <CreateAccountButtons
             isVisible={true}
             label={RVDic?.AlreadyHaveAnAccount}
             onCreateAccountClick={onHaveAccount}
           />
-        </Container>
+        </SignUpWrapper>
       )}
-    </Box>
+    </TransitionSwitchWrapper>
   );
 };
+
 export default SignUp;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 100%;
-`;
+export const common_style = {
+  marginBottom: '0.75rem',
+  marginTop: '0.75rem',
+  fontSize: '0.8rem',
+};
+
 const RowItems = styled.div`
   display: flex;
   flex-direction: row;
@@ -371,9 +345,3 @@ const RowItems = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-
-export const common_style = {
-  marginBottom: '0.75rem',
-  marginTop: '0.75rem',
-  fontSize: '0.8rem',
-};

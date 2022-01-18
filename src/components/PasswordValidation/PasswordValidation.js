@@ -65,18 +65,18 @@ const PasswordValidation = ({
   return (
     <CollapseAnimate style={{ marginBottom: '1rem' }} isVisible={isVisible}>
       <Container>
-        {passwordPolicy.NewCharacters && resetingPass && (
+        {passwordPolicy?.NewCharacters && resetingPass && (
           <ValidatorItems
             text={RVDic.PasswordPolicyNewCharacters.replace(
               '[n]',
-              passwordPolicy.NewCharacters
+              passwordPolicy?.NewCharacters
             )}
             validator={
               PasswordValidator(password, passwordPolicy)?.NewCharacters
             }
           />
         )}
-        {passwordPolicy.NonAlphaNumeric && (
+        {passwordPolicy?.NonAlphaNumeric && (
           <ValidatorItems
             text={RVDic.PasswordPolicyNonAlphaNumeric}
             validator={
@@ -84,22 +84,22 @@ const PasswordValidation = ({
             }
           />
         )}
-        {passwordPolicy.Number && (
+        {passwordPolicy?.Number && (
           <ValidatorItems
             text={RVDic.PasswordPolicyNumber}
             validator={PasswordValidator(password, passwordPolicy)?.Number}
           />
         )}
-        {passwordPolicy.MinLength && (
+        {passwordPolicy?.MinLength && (
           <ValidatorItems
             text={RVDic.PasswordPolicyMinLength.replace(
               '[n]',
-              passwordPolicy.MinLength
+              passwordPolicy?.MinLength
             )}
             validator={PasswordValidator(password, passwordPolicy)?.MinLength}
           />
         )}
-        {passwordPolicy.NonAlphabetic && (
+        {passwordPolicy?.NonAlphabetic && (
           <ValidatorItems
             text={RVDic.PasswordPolicyNonAlphabetic}
             validator={
@@ -107,7 +107,7 @@ const PasswordValidation = ({
             }
           />
         )}
-        {passwordPolicy.UpperLower && (
+        {passwordPolicy?.UpperLower && (
           <ValidatorItems
             text={RVDic.PasswordPolicyUpperLower}
             validator={PasswordValidator(password, passwordPolicy)?.UpperLower}
@@ -125,6 +125,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const Items = styled.div`
   display: flex;
   flex-direction: row;
@@ -133,6 +134,7 @@ const Items = styled.div`
   margin: 3px 0px 3px 3px;
   padding: 3px 0px 3px 3px;
 `;
+
 export const CollapseAnimate = styled.div`
   position: relative;
   width: 100%;
@@ -142,5 +144,5 @@ export const CollapseAnimate = styled.div`
   max-height: ${({ isVisible }) => (isVisible ? '15%' : '0')};
   min-height: ${({ isVisible }) => (isVisible ? '0%' : '0%')};
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
-  transition: max-height 1s, opacity 1s, min-height 1s;
+  transition: max-height 0.1s, opacity 1s, min-height 1s;
 `;
