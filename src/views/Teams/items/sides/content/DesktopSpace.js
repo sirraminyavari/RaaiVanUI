@@ -13,6 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from './DragTeam';
 import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
+import WorkspaceTeamsSkeleton from '../../others/skeletons/WorkspaceTeams';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -61,7 +62,7 @@ const DesktopWorkSpace = ({ space }) => {
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
           <Styled.TeamListConatiner>
             {isFetching ? (
-              <LogoLoader />
+              <WorkspaceTeamsSkeleton />
             ) : (
               <>
                 {teams?.map((team, index) => {
