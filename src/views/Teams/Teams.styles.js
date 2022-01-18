@@ -321,6 +321,14 @@ export const ArchivedTeamsModalContainer = styled.div`
     background-color: ${CV_GRAY_LIGHT};
     z-index: 1000;
   }
+
+  .archived-teams {
+    max-height: calc(100vh - 4.5rem);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 export const DragIconWrapper = styled.div`

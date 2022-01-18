@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import { useMediaQuery } from 'react-responsive';
-import { BO_RADIUS_UNIT, MOBILE_BOUNDRY } from 'constant/constants';
+import { BO_RADIUS_UNIT } from 'constant/constants';
 import { BG_GRAY_LIGHT } from 'constant/Colors';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 /**
  *
@@ -23,31 +23,38 @@ import { BG_GRAY_LIGHT } from 'constant/Colors';
  *
  * @param {object} props - WelcomeLayout component props
  * @param {JSX.Element[]} [props.children=[]] - JSX Children passed to the component
+ * @param {JSX.Element} [props.Wrapper="div"] - JSX or HTML Element to wrap the layout to fit styling need
  *
  * @return {JSX.Element} JSX Layout component
  */
-function WelcomeLayout({ children }) {
-  const isMobileScreen = useMediaQuery({
-    query: `(max-width: ${MOBILE_BOUNDRY})`,
-  });
+function WelcomeLayout({ children, Wrapper = WelcomeLayoutContainer }) {
+  const isMobileScreen = DimensionHelper().isMobile;
 
   return (
-    <WelcomeLayoutContainer
+    <Wrapper
       className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT)}
       isMobile={isMobileScreen}>
-      {children.map((child, idx) => (
+      {Children.toArray(children).map((child, idx) => (
         <LayoutColumn
           isMobile={isMobileScreen}
           key={`WelcomeLayout-col-${idx}`}>
           {child}
         </LayoutColumn>
       ))}
-    </WelcomeLayoutContainer>
+    </Wrapper>
   );
 }
 
 WelcomeLayout.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]),
+  Wrapper: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.element,
+  ]),
 };
 
 WelcomeLayout.defaultDrops = {
@@ -68,14 +75,6 @@ const WelcomeLayoutContainer = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     `}
-
-  .archived-teams {
-    max-height: calc(100vh - 4.5rem);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
 `;
 
 const LayoutColumn = styled.div`
