@@ -156,7 +156,7 @@ const ProfileCustomization = ({ route }) => {
             disable={true}
             onToggle={handleDarkMode}
             isChecked={isDarkMode}
-            title="حالت تاریک (غیر فعال)"
+            title={RVDic.DarkMode + ` (${RVDic.Inactive})`}
             //TODO: Change color when dark mode is available.
             titleClass={`${C_DISTANT} profile-theme-toggle`}
           />

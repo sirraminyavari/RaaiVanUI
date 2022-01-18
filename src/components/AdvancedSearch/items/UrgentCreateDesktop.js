@@ -85,13 +85,15 @@ const UrgentCreateDesktop = ({
       liteMode={itemSelectionMode}
       isVisible={isVisible}
       className={'rv-border-default rv-border-radius-half'}>
-      <div style={{ width: '7.5rem' }}>
-        <img
-          style={{ height: '4rem', aspectRatio: 1 }}
-          src={nodeType?.IconURL}
-          alt={''}
-        />
-      </div>
+      {nodeType?.IconURL && (
+        <div style={{ width: '7.5rem' }}>
+          <img
+            style={{ height: '4rem', aspectRatio: 1 }}
+            src={nodeType?.IconURL}
+            alt={''}
+          />
+        </div>
+      )}
       <CustomInput
         className={'rv-border-white'}
         value={urgentInput}

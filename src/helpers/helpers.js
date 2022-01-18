@@ -39,6 +39,14 @@ export const encodeBase64 = (string) => {
 };
 
 /**
+ * @description A function that converts a string to a JSON.
+ * @returns {Object} JSON.
+ */
+export const toJSON = (string) => {
+  return GlobalUtilities.to_json(string);
+};
+
+/**
  * @description A function to capitalize strings.
  * @param {string} str -The string to transform to capital form.
  * @returns {string} The result as capitalized string.

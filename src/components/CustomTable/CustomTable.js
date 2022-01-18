@@ -1,4 +1,6 @@
-import { useMemo, useState, useEffect, memo } from 'react';
+//! Recommendation: https://react-table.tanstack.com/docs/overview
+
+import { useMemo, useState, memo, lazy, Suspense, useEffect } from 'react';
 import {
   useTable,
   useFlexLayout,
@@ -9,27 +11,50 @@ import {
 import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
-import Arrow from 'components/Icons/ArrowIcons/Arrow';
-// import DragIcon from 'components/Icons/DragIcon/Drag';
-// import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Pagination from './Pagination';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import Confirm from 'components/Modal/Confirm';
-import H5 from 'components/TypoGraphy/H5';
-import Modal from 'components/Modal/Modal';
-import { CV_DISTANT, CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 import TableAction from './TableAction';
+import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+import ColumnHeader from './ColumnHeader';
+import { getUUID } from 'helpers/helpers';
+
+const TableModal = lazy(() =>
+  import(/* webpackChunkName: "table-modal"*/ 'components/Modal/Modal')
+);
 
 const defaultPropGetter = () => ({});
+const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
+
+/**
+ * @typedef PaginationType
+ * @type {Object}
+ * @property {Number[]} perPageCount
+ * @property {Number} initialPageIndex
+ */
 
 /**
  * @typedef PropType
  * @type {Object}
- * @property {boolean} editable - If true table cells are editable.
- * @property {boolean} isFetching - A flag that indecates that if table's data are provided or not.
- * @property {object} columns - The core columns configuration object for the entire table.
- * @property {array} data - The data array that you want to display on the table.
+ * @property {String} tableId - The id of the table.
+ * @property {Boolean} editable - If true table cells are editable.
+ * @property {Boolean} resizable - If true table columns are resizable.
+ * @property {Boolean} editByCell - If true every single cell can be edited.
+ * @property {Boolean} isLoading - A flag that indicates if table data is loading or not.
+ * @property {Object} columns - The core columns configuration object for the entire table.
+ * @property {Array} data - The data array to display on the table.
+ * @property {Function} onCellChange - A callback function that fires every time cell content changes.
+ * @property {Function} onCreateNewRow - A callback function to create new row instance.
+ * @property {Function} removeRow - A callback function to remove a row record.
+ * @property {Function} editRow - A callback function to edit a row record.
+ * @property {Function} addRow - A callback function to add new row.
+ * @property {Function} onEditRowStart - A callback function that fires on row edit start.
+ * @property {Function} onEditRowCancel - A callback function that fires when edit row has been canceled.
+ * @property {Function} onDuplicateRow - A callback function that duplicates a row record.
+ * @property {Function} reorderRow - A callback function that re-orders row records.
+ * @property {Function} onSearch - A callback function that search among row records content.
+ * @property {PaginationType} pagination - A callback function that duplicates a row record.
+ * @property {any} tableMirror - An instance of the table itself.
+ * @property {Function} getColumnsOption - A callback that gets necessary options for the table.
  */
 
 /**
@@ -40,110 +65,58 @@ const defaultPropGetter = () => ({});
 const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
-    editable: isEditable,
-    resizable: isResizable,
-    isFetching,
+    tableId,
+    editable: isTableEditable,
+    resizable: isTableResizable,
+    editByCell,
+    isLoading,
     columns,
     data,
-    updateCellData,
+    onCellChange,
+    onCreateNewRow,
     removeRow,
-    removeAll,
+    editRow,
     addRow,
+    onEditRowStart,
+    onEditRowCancel,
+    onDuplicateRow,
     pagination,
-    reorderData,
+    reorderRow,
+    onSearch,
+    tableMirror,
+    getColumnsOption,
     getCellProps = defaultPropGetter,
   } = props;
 
-  const requiredColumns = columns.filter((col) => !!col.isRequired);
-
   const [selectedCell, setSelectedCell] = useState(null);
-  const [editableRowIndex, setEditableRowIndex] = useState(null);
-  const [confirm, setConfirm] = useState({
-    show: false,
-    message: '',
-    type: '',
-  });
-  const [modal, setModal] = useState({ show: false, title: '', type: '' });
-  const [showFooter, setShowFooter] = useState(false);
-
-  const restoreConfirmState = () => {
-    setConfirm({
-      show: false,
-      message: '',
-      type: '',
-    });
-  };
+  const [isRowDragging, setIsRowDragging] = useState(false);
+  const [editingRowId, setEditingRowId] = useState(null);
+  const [modal, setModal] = useState(DEFAULT_MODAL_PROPS);
+  const [tempRowId, setTempRowId] = useState(null);
 
   const restoreModalState = () => {
-    setModal({
-      show: false,
-      title: '',
-      type: '',
-    });
+    setModal(DEFAULT_MODAL_PROPS);
   };
 
+  //! Enable add new row button whenever the new row has been created.
   useEffect(() => {
-    if (!selectedCell) return;
-    if (selectedCell.column.id === 'delete-row') {
-      console.log(selectedCell);
-      setConfirm({
-        show: true,
-        message: `آیا از پاک کردن ردیف شماره ${
-          selectedCell.row.index + 1
-        } اطمینان دارید؟`,
-        type: 'deleteRow',
-      });
-    }
-    if (selectedCell.column.id === 'view-row') {
-      console.log(selectedCell);
-      setModal({
-        show: true,
-        type: 'view-row',
-        title: 'نمایش جزئیات ردیف',
-      });
-    }
-  }, [selectedCell]);
+    let hasNewRow = data?.some((row) => row?.id?.substr()?.includes('new'));
 
-  const getModalContent = () => {
-    let viewColumns = columns.filter((column) => {
-      return Object.keys(column).includes('Header');
-    });
-    return selectedCell?.row.original[viewColumns[0].accessor];
-  };
+    if (!hasNewRow) {
+      setTempRowId(null);
+    }
+  }, [data]);
 
+  //! Execute row re-order on drag end.
   const handleDragEnd = (result) => {
     const { source, destination } = result;
+    setIsRowDragging(false);
     if (!destination) return;
-    reorderData(source.index, destination.index);
+    reorderRow(source.index, destination.index);
   };
 
-  // const handleClearAll = () => {
-  //   setConfirm({
-  //     show: true,
-  //     message: `آیا از پاک کردن تمام جدول اطمینان دارید؟`,
-  //     type: 'clearAll',
-  //   });
-  // };
-
-  const handleOnConfirm = () => {
-    switch (confirm.type) {
-      case 'clearAll':
-        restoreConfirmState();
-        removeAll();
-        return;
-      case 'deleteRow':
-        restoreConfirmState();
-        removeRow(selectedCell.row.index);
-        return;
-
-      default:
-        restoreConfirmState();
-        return;
-    }
-  };
-
-  const handleOnCancel = () => {
-    restoreConfirmState();
+  const handleBeforeDragStart = () => {
+    setIsRowDragging(true);
   };
 
   const handleOnModalClose = () => {
@@ -172,20 +145,32 @@ const CustomTable = (props) => {
 
   //! Use the state and functions returned from useTable to build your UI.
   //! Every option you pass to useTable should be memoized either via React.useMemo (for objects) or React.useCallback (for functions).
+  //! Credit: https://react-table.tanstack.com/docs/api/overview#option-memoization
   const tableInstance = useTable(
     {
       columns, //! Must be memoized (Based on official Docs.).
       data, //! Must be memoized.
       defaultColumn,
-      updateCellData,
+      onCellChange,
       removeRow,
-      removeAll,
+      editRow,
       addRow,
       selectedCell,
       setSelectedCell,
-      editableRowIndex,
-      setEditableRowIndex,
-      reorderData,
+      modal,
+      setModal,
+      editingRowId,
+      onEditRowStart,
+      onEditRowCancel,
+      onDuplicateRow,
+      setEditingRowId,
+      reorderRow,
+      tempRowId,
+      setTempRowId,
+      getColumnsOption,
+      tableId,
+      tableMirror,
+      editByCell,
       initialState: {
         ...paginationStates,
       },
@@ -199,207 +184,141 @@ const CustomTable = (props) => {
 
   tableInstance.state = {
     ...tableInstance.state,
-    showFooter,
     data,
+    lastRowInPage: tableInstance?.page?.[tableInstance?.page.length - 1],
   };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    footerGroups,
     prepareRow,
     page,
-    resetResizing,
+    // resetResizing,
     // state,
   } = tableInstance;
 
   // console.log(state);
 
-  const handleAddRow = () => {
-    setShowFooter(true);
-  };
-
-  const handleFooterClick = (column) => {
-    if (column.dataType === 'actions') {
-      if (column.index === 0) {
-        console.log('accept');
-        addRow();
-        setShowFooter(false);
-        // gotoPage(pageCount - 1);
-      } else {
-        console.log('reject');
-        setShowFooter(false);
-      }
+  //! Fires on add new row.
+  const handleAddItem = () => {
+    if (!tempRowId) {
+      let tempRowId = 'new_' + getUUID();
+      setTempRowId(tempRowId);
+      onCreateNewRow && onCreateNewRow(tempRowId);
     }
+
+    setEditingRowId(null);
   };
 
-  //! Render the UI for your table
+  //! Renders the UI for the table.
   return (
     <Styled.TableContainer>
       <TableAction
-        isResizable={isResizable}
-        actions={{ handleAddRow, resetResizing }}
+        tableInstance={tableInstance}
+        onAddItem={handleAddItem}
+        onSearch={onSearch}
       />
-      <Confirm
-        show={confirm.show}
-        onConfirm={handleOnConfirm}
-        onCancel={handleOnCancel}
-        onClose={handleOnCancel}>
-        <H5>{confirm.message}</H5>
-      </Confirm>
-      <Modal
-        contentWidth="75%"
-        show={modal.show}
-        title={modal.title}
-        onClose={handleOnModalClose}>
-        {getModalContent()}
-      </Modal>
+      <Suspense fallback={<ModalFallbackLoader />}>
+        {modal.show && (
+          <TableModal
+            contentWidth="75%"
+            show={modal.show}
+            title={modal.title}
+            onClose={handleOnModalClose}>
+            {!!modal.content && modal.content()}
+          </TableModal>
+        )}
+      </Suspense>
       <Styled.TableWrapper>
-        <Styled.Table {...getTableProps()}>
-          <div>
-            {headerGroups.map((headerGroup) => (
-              <div {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <Styled.TableHeader
-                    {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    <Styled.HeaderWrapper canSort={column.canSort}>
-                      <div>
-                        {column.render('Header')}
-                        {requiredColumns
-                          .map((col) => col?.Header)
-                          .includes(column?.Header) && (
-                          <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
-                        )}
-                      </div>
-                      <>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <Arrow
-                              dir="down"
-                              color={CV_GRAY_DARK}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
-                          ) : (
-                            <Arrow
-                              dir="up"
-                              color={CV_GRAY_DARK}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
-                          )
-                        ) : (
-                          column.canSort && (
-                            <Arrow
-                              dir="up-down"
-                              color={CV_DISTANT}
-                              size={24}
-                              className="table-sort-arrow"
-                            />
-                          )
-                        )}
-                      </>
-                    </Styled.HeaderWrapper>
-                    {isResizable && (
-                      <Styled.TableColumnResizer
-                        isResizing={column.isResizing}
-                        {...column.getResizerProps()}
-                      />
-                    )}
-                  </Styled.TableHeader>
-                ))}
-              </div>
-            ))}
-          </div>
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable droppableId="table-body">
-              {(provided, _) => (
-                <Styled.TableBody
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  {...getTableBodyProps()}>
-                  {page.map((row, i) => {
-                    prepareRow(row);
-                    const isEditing = row?.index === editableRowIndex;
-                    return (
-                      <Draggable
-                        draggableId={row.original.id}
-                        key={row.original.id}
-                        index={row.index}>
-                        {(provided, snapshot) => (
-                          <Styled.Tr
-                            ref={provided.innerRef}
-                            isDraggingOver={snapshot.draggingOver}
-                            isDragging={snapshot.isDragging}
-                            isEditing={isEditing}
-                            {...row.getRowProps({
-                              ...provided.draggableProps,
-                            })} //! react-table props always must come after dnd props to work properly
-                          >
-                            <>
-                              {row.cells.map((cell) => {
-                                return (
-                                  <Styled.TableCell
-                                    {...cell.getCellProps([
-                                      {
-                                        ...getCellProps(cell),
-                                        onClick: () => setSelectedCell(cell),
-                                      },
-                                    ])}>
-                                    {cell.render('Cell', {
-                                      editable: !!isEditable,
-                                      dragHandleProps: {
-                                        ...provided.dragHandleProps,
-                                      },
-                                    })}
-                                  </Styled.TableCell>
-                                );
-                              })}
-                              {/* <Styled.RowDragHandle {...provided.dragHandleProps}>
-                              <DragIcon />
-                            </Styled.RowDragHandle>
-                            <Styled.RowActionHandle
-                              onClick={() => console.log('Delete row')}>
-                              <TrashIcon color={CV_DISTANT} />
-                            </Styled.RowActionHandle> */}
-                            </>
-                          </Styled.Tr>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                  {provided.placeholder}
-                  {isFetching && <LogoLoader />}
-                </Styled.TableBody>
-              )}
-            </Droppable>
-          </DragDropContext>
-          {showFooter && (
-            <Styled.FooterContainer>
-              {footerGroups.map((group) => (
-                <Styled.FooterTr {...group.getFooterGroupProps()}>
-                  {group.headers.map((column) => (
-                    <div
-                      className="footer-td"
-                      {...column.getFooterProps({
-                        onClick: () => handleFooterClick(column),
-                      })}>
-                      {column.render('Footer')}
-                    </div>
+        {!isLoading && (
+          <Styled.Table {...getTableProps()}>
+            <div className="table-header-sticky">
+              {headerGroups.map((headerGroup) => (
+                <div {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <Styled.TableHeader
+                      {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      <ColumnHeader column={column} allColumns={columns} />
+                      {isTableResizable && (
+                        <Styled.TableColumnResizer
+                          isResizing={column.isResizing}
+                          {...column.getResizerProps()}
+                        />
+                      )}
+                    </Styled.TableHeader>
                   ))}
-                  <Styled.RowActionHandle
-                    style={{ left: '-1.7rem' }}
-                    onClick={() => setShowFooter(false)}>
-                    <CloseIcon size={20} color={CV_RED} />
-                  </Styled.RowActionHandle>
-                </Styled.FooterTr>
+                </div>
               ))}
-            </Styled.FooterContainer>
-          )}
-        </Styled.Table>
+            </div>
+            <DragDropContext
+              onDragEnd={handleDragEnd}
+              onBeforeDragStart={handleBeforeDragStart}>
+              <Droppable droppableId={tableId}>
+                {(provided, _) => (
+                  <Styled.TableBody
+                    isRowDragging={isRowDragging}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    {...getTableBodyProps()}>
+                    {page.map((row, i) => {
+                      prepareRow(row);
+                      const isRowEditing =
+                        row.original.id === selectedCell?.row?.original?.id ||
+                        tempRowId === row.original.id;
+                      return (
+                        <Draggable
+                          draggableId={row.original.id}
+                          key={row.original.id}
+                          index={row.index}
+                          isDragDisabled={isRowEditing}>
+                          {(provided, snapshot) => (
+                            <Styled.Tr
+                              ref={provided.innerRef}
+                              isDraggingOver={snapshot.draggingOver}
+                              isDragging={snapshot.isDragging}
+                              isEditing={isRowEditing}
+                              {...row.getRowProps({
+                                ...provided.draggableProps,
+                              })} //! react-table props always must come after dnd props to work properly
+                            >
+                              <>
+                                {row.cells.map((cell) => {
+                                  return (
+                                    <Styled.TableCell
+                                      {...cell.getCellProps([
+                                        {
+                                          ...getCellProps(cell),
+                                          onClick: () => {
+                                            editByCell && setSelectedCell(cell);
+                                          },
+                                        },
+                                      ])}>
+                                      {cell.render('Cell', {
+                                        editable: !!isTableEditable,
+                                        dragHandleProps: {
+                                          ...provided.dragHandleProps,
+                                        },
+                                      })}
+                                    </Styled.TableCell>
+                                  );
+                                })}
+                              </>
+                            </Styled.Tr>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </Styled.TableBody>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </Styled.Table>
+        )}
       </Styled.TableWrapper>
-      {!!pagination && reachedPaginationThreshold && (
+      {isLoading && <LogoLoader />}
+      {!!pagination && reachedPaginationThreshold && !isLoading && (
         <Pagination tableInstance={tableInstance} pagination={pagination} />
       )}
     </Styled.TableContainer>

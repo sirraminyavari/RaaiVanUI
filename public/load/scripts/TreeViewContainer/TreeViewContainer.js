@@ -37,7 +37,7 @@
             var _jqextcheck = function (ext) { return _jqcheck() && typeof (jQuery(document.createElement("div"))[ext]) == "function"; }
 
             GlobalUtilities.load_files([
-                { Root: "jQuery/", Ext: "js", Childs: ["jquery", "jsTree/jquery.jstree", "jquery.cookie", "jquery.hotkeys"] }
+                { Root: "jQuery/", Ext: "js", Childs: ["jsTree/jquery.jstree", "jquery.cookie", "jquery.hotkeys"] }
             ], {
                 Timeout: 0, LoadSequential: true, OnLoad: function () {
                     that.reset(that.InitialParams);

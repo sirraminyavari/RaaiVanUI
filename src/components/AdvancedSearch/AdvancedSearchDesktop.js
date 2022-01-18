@@ -3,7 +3,6 @@
  */
 import FilterBar from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import FormFilter from 'components/FormElements/FormFilter/FormFilter';
-import useWindow from 'hooks/useWindowContext';
 import React, { useEffect, useState } from 'react';
 import {
   Container,
@@ -20,8 +19,6 @@ import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
-import { LastTopicsList } from 'views/Profile/Profile.styles';
-import LastRelatedTopics from 'views/Profile/items/main/items/LastTopics';
 import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import APIHandler from 'apiHelper/APIHandler';
 
@@ -46,7 +43,6 @@ const AdvanceSearchDesktop = ({
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
 
   const nodeTypeId = nodeType?.NodeTypeID;
-  console.log(nodeTypeId, 'nodeTypeId');
   const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
@@ -70,7 +66,7 @@ const AdvanceSearchDesktop = ({
   const [isBookMarked, setIsBookMarked] = useState(null);
 
   const [isByMe, setIsByMe] = useState(false);
-  const [byPeople, setByPeople] = useState(null);
+  const [byPeople, setByPeople] = useState([]);
 
   const [relatedNodes, setRelatedNodes] = useState([]);
 
@@ -138,9 +134,22 @@ const AdvanceSearchDesktop = ({
     }
   };
   const onByPeople = (item) => {
-    setIsByMe(false);
+    console.log(item, '********* item item item');
 
-    setByPeople(item);
+    if (item) {
+      setIsByMe(false);
+      const isSelectedBefore = byPeople?.find((x) => x.id === item?.id);
+      console.log(!!isSelectedBefore, '********* isSelectedBefore item');
+      console.log(byPeople, '********* byPeople', !!isSelectedBefore);
+
+      setByPeople(
+        !!isSelectedBefore
+          ? byPeople.filter((x) => x.id !== item.id)
+          : [...byPeople, item]
+      );
+    } else {
+      setByPeople([]);
+    }
   };
   const getRelatedNodes = () => {
     getNodeInfoAPI.fetch(
@@ -153,10 +162,7 @@ const AdvanceSearchDesktop = ({
         ParseResults: true,
       },
       (response) => {
-        console.log(response, 'related nodes');
-        if (response && response.NodeTypes) {
-          setRelatedNodes(response);
-        }
+        if (response && response.NodeTypes) setRelatedNodes(response);
       }
     );
   };

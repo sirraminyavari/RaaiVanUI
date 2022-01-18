@@ -3,6 +3,7 @@
  */
 import { decode } from 'js-base64';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';
@@ -30,6 +31,7 @@ const SubjectItemMobileView = ({
   onReload,
   parentNodeType,
   onBookmark,
+  onClickItem,
 }) => {
   const {
     Name,
@@ -46,6 +48,7 @@ const SubjectItemMobileView = ({
   } = item;
 
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
+  const history = useHistory();
   // /**
   //  * By clicking on the item will fire.
   //  */
@@ -56,12 +59,21 @@ const SubjectItemMobileView = ({
     onChecked(value, item);
     setIsChecked(value);
   };
+
+  const onClick = () => {
+    if (!!onClickItem) {
+      onClickItem(item);
+    } else {
+      history.push(RVAPI.NodePageURL({ NodeID: NodeID }));
+    }
+  };
   return (
     <Root>
       <Container
         $isChecked={isChecked}
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
-        className="rv-border-freezed">
+        className="rv-border-freezed"
+        onClick={onClick}>
         <IconContent>
           {/* <div> */}
           <SubjectIcon iconUrl={IconURL} />

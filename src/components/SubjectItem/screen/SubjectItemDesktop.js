@@ -3,6 +3,7 @@
  */
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';
@@ -28,6 +29,7 @@ const SubjectItemDesktop = ({
   item,
   selectMode,
   onChecked,
+  onClickItem,
   parentNodeType,
   onReload,
   onBookmark,
@@ -50,7 +52,7 @@ const SubjectItemDesktop = ({
   const [isHover, setIsHover] = useState(false);
   const [isChecked, setIsChecked] = useState(isSelected ? isSelected : false);
   const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
-
+  const history = useHistory();
   // /**
   //  * By clicking on the item will fire.
   //  */
@@ -64,6 +66,14 @@ const SubjectItemDesktop = ({
     setIsChecked(value);
   };
 
+  const onClick = () => {
+    if (!!onClickItem) {
+      onClickItem(item);
+    } else {
+      history.push(RVAPI.NodePageURL({ NodeID: NodeID }));
+    }
+  };
+
   return (
     <Root>
       {/* {console.log(item, 'item')} */}
@@ -72,7 +82,7 @@ const SubjectItemDesktop = ({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         $isChecked={isChecked}
-        to={RVAPI.NodePageURL({ NodeID: NodeID })}
+        onClick={onClick}
         className="rv-border-freezed">
         <IconContent>
           <SubjectIcon liteMode={liteMode} iconUrl={IconURL} />

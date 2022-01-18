@@ -88,15 +88,17 @@
 
             new NewSimpleListViewer(_div, {
                 Options: {
-                    OnDataRequest: function (options, done) {
+                    OnDataRequest: function (options, done, setTotalCount) {
                         _api.APIFunction(GlobalUtilities.extend(options || {}, that.Options.Constraints || {}, _api.Constraints || {}, {
                             ParseResults: true,
-                            ResponseHandler: function (result) { done(result.Users || result.Experts || result.Members || result.Friends || []); }
+                            ResponseHandler: function (result) {
+                                done(result.Users || result.Experts || result.Members || result.Friends || []);
+                                setTotalCount(result.TotalCount);
+                            }
                         }));
                     },
                     ItemBuilder: function (container, item, params) {
                         that.create_user(container, item);
-
                         params.OnAfterAdd();
                     }
                 }

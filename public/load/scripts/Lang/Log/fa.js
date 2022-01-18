@@ -92,6 +92,7 @@
             RemoveNodeMember_PermissionFailed: "عدم دسترسی: حذف عضو از گروه",
             AcceptNodeMember: "تایید عضویت کاربر در مجموعه",
             AcceptNodeMember_PermissionFailed: "عدم دسترسی: تایید عضویت کاربر در مجموعه",
+            SaveNodeMembers: "ذخیره اعضای گروه",
             SetUserAsNodeAdmin: "تعیین عضو به عنوان مدیر گروه",
             SetUserAsNodeAdmin_PermissionFailed: "عدم دسترسی: تعیین عضو به عنوان مدیر گروه",
             RemoveNodeAdmin: "لغو مدیریت کاربر در گروه",

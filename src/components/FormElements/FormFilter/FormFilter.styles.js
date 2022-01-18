@@ -1,13 +1,5 @@
 import styled from 'styled-components';
-import {
-  BG_WHITE,
-  BG_GRAY_LIGHT,
-  C_GRAY,
-  TBG_DEFAULT,
-  C_WHITE,
-  TC_DEFAULT,
-  TC_VERYWARM,
-} from 'constant/Colors';
+import { BG_WHITE, BG_GRAY_LIGHT, C_GRAY, TC_VERYWARM } from 'constant/Colors';
 import {
   FLEX_CCB,
   FLEX_CCC,
@@ -15,7 +7,7 @@ import {
   FLEX_RCC,
   FLEX_RCE,
 } from 'constant/StyledCommonCss';
-import { CV_DISTANT } from 'constant/CssVariables';
+import { CV_BLACK, CV_WHITE } from 'constant/CssVariables';
 
 export const FormFilterContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT}`,
@@ -76,26 +68,7 @@ export const FilterToggleTitle = styled.span.attrs({
   text-transform: capitalize;
 `;
 
-export const OrAndButtonContainer = styled.div`
-  ${FLEX_RCB}
-  width: 6rem;
-  height: 2.2rem;
-  border: 1px solid ${CV_DISTANT};
-  border-radius: 0.6rem;
-  overflow: hidden;
-  user-select: none;
-  cursor: pointer;
-`;
-
-export const OrAndOption = styled.div.attrs((props) => ({
-  className: props.isChecked
-    ? `${TBG_DEFAULT} ${C_WHITE}`
-    : `${BG_WHITE} ${TC_DEFAULT}`,
-}))`
-  width: 100%;
-  flex-grow: 1;
-  ${FLEX_RCC}
-  font-size: 1rem;
-  height: 100%;
-  text-transform: capitalize;
+export const OrAndToggleWrapper = styled.div`
+  .form-filter-toggle {
+  }
 `;

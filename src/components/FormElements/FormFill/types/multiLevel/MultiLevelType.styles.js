@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const SelectWrapper = styled.div`
   margin: 0.7rem;
-  dispaly: ${({ isShown }) => (isShown ? 'block' : 'none')};
+  display: ${({ isShown }) => (isShown ? 'block' : 'none')};
 `;
 
 export const SelectLabel = styled.label.attrs({

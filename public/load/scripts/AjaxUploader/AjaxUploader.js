@@ -130,7 +130,11 @@
 
                     var err = null;
 
-                    if ((GlobalUtilities.get_type(that.Options.MaxSize) == "number") &&
+                    if (((RVGlobal || {}).PotentiallyHarmfulFileExtensions || [])
+                        .some(x => file.name.toLowerCase().endsWith("." + x))) {
+                        err = RVDic.MSG.ThisFileTypeIsNotAllowed;
+                    }
+                    else if ((GlobalUtilities.get_type(that.Options.MaxSize) == "number") &&
                         (that.Options.MaxSize > 0) && (that.size(file) > that.Options.MaxSize)) {
                         err = RVDic.MSG.MaxAllowedFileSizeIsNMBs.replace("[n]", that.Options.MaxSize);
                     }
@@ -146,7 +150,7 @@
                     file.__LastCheckMessage = { MSG: err };
 
                     if (!err && that.Options.OnFileAccept) that.Options.OnFileAccept(file);
-                    
+
                     return err ? done(err) : done();
                 },
                 drop: function () {
@@ -162,8 +166,10 @@
                     uploadContainer.style.borderColor = "transparent";
                 },
                 uploadprogress: function (file, percentage, bytesSent) {
-                    file.__ProgressBar.Percentage.style.width = percentage + "%";
-                    file.__ProgressBar.PercentageLabel.innerHTML = GlobalUtilities.convert_numbers_to_persian(percentage.toFixed(0)) + "%";
+                    if ((file || {}).__ProgressBar) {
+                        file.__ProgressBar.Percentage.style.width = percentage + "%";
+                        file.__ProgressBar.PercentageLabel.innerHTML = GlobalUtilities.convert_numbers_to_persian(percentage.toFixed(0)) + "%";
+                    }
                 },
                 addedfile: function (file) {
                     //Necessary!
@@ -195,8 +201,10 @@
                     xhr.setRequestHeader("X-File-Name", "Encoded__" + Base64.encode(file.name));
                 },
                 complete: function (file) {
-                    file.__ProgressBar.Container.parentNode.removeChild(file.__ProgressBar.Container);
-                    file.__ProgressBar.PercentageLabel.parentNode.removeChild(file.__ProgressBar.PercentageLabel);
+                    if ((file || {}).__ProgressBar) {
+                        file.__ProgressBar.Container.parentNode.removeChild(file.__ProgressBar.Container);
+                        file.__ProgressBar.PercentageLabel.parentNode.removeChild(file.__ProgressBar.PercentageLabel);
+                    }
                 },
                 success: function (file, responseText, e) {
                     var result = GlobalUtilities.to_json(responseText) || {};

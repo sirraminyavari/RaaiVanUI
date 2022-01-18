@@ -579,7 +579,10 @@
 
                                 alert(RVDic.MSG[result.Succeed] || result.Succeed);
 
-                                setTimeout(function () { window.location.href = UsersAPI.UserPageURL({ UserID: currUId }); }, 4000);
+                                setTimeout(function () {
+                                    window.location.href = RVGlobal.SAASBasedMultiTenancy ?
+                                        RVAPI.ClassesPageURL() : RVAPI.UserPageURL({ UserID: currUId });
+                                }, 4000);
                             }
                         });
                     });
@@ -2977,25 +2980,21 @@
         _initialize_workflow: function () {
             var that = this;
 
-            var actionDiv = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12 row align-center",
-                    Style: "position:fixed; bottom:0.6rem; left:0rem; right:0rem; margin:0rem;",
-                    Childs: [
-                        {
-                            Type: "div", Name: "actionDiv",
-                            Class: "small-10 medium-8 large-6 rv-border-radius-quarter WarmBorder SoftBackgroundColor",
-                            Style: "padding:0.3rem; text-align:center; border-width:0.3rem;" +
-                                "font-weight:bold; cursor:pointer; color:gray;",
-                            Properties: [
-                                { Name: "onmouseover", Value: function () { this.style.color = "black"; } },
-                                { Name: "onmouseout", Value: function () { this.style.color = "gray"; } },
-                                { Name: "onclick", Value: function () { _show(); } }
-                            ]
-                        }
+            var actionDiv = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12 row align-center",
+                Style: "position:fixed; bottom:0.6rem; left:0rem; right:0rem; margin:0rem;",
+                Childs: [{
+                    Type: "div", Name: "actionDiv",
+                    Class: "small-10 medium-8 large-6 rv-border-radius-quarter WarmBorder SoftBackgroundColor",
+                    Style: "padding:0.3rem; text-align:center; border-width:0.3rem;" +
+                        "font-weight:bold; cursor:pointer; color:gray;",
+                    Properties: [
+                        { Name: "onmouseover", Value: function () { this.style.color = "black"; } },
+                        { Name: "onmouseout", Value: function () { this.style.color = "gray"; } },
+                        { Name: "onclick", Value: function () { _show(); } }
                     ]
-                }
-            ], document.body)["actionDiv"];
+                }]
+            }], document.body)["actionDiv"];
 
             actionDiv.innerHTML = "<span style='color:black; margin:0rem 0.3rem;'>" + RVDic.WorkFlow + ":" +
                 "</span><span style='margin:0rem 0.3rem;'>" + RVDic.ClickForAction + "</span>";
@@ -3004,15 +3003,13 @@
                 var _divName = "__QuestionsDiv";
                 if (actionDiv[_divName]) return GlobalUtilities.show(actionDiv[_divName]);
 
-                var _div = actionDiv[_divName] = GlobalUtilities.create_nested_elements([
-                    {
-                        Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
-                        Style: "margin:0rem auto; padding:1rem;", Name: "_div"
-                    }
-                ])["_div"];
+                var _div = actionDiv[_divName] = GlobalUtilities.create_nested_elements([{
+                    Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
+                    Style: "margin:0rem auto; padding:1rem;", Name: "_div"
+                }])["_div"];
 
                 GlobalUtilities.loading(_div);
-                GlobalUtilities.show(_div);
+                var showed = GlobalUtilities.show(_div);
 
                 GlobalUtilities.load_files(["WorkFlowManager/WorkFlowViewer.js"], {
                     OnLoad: function () {

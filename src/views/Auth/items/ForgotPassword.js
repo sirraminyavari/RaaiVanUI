@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { Box } from '../AuthView.style';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
+import CreateAccountButtons from './CreateAccountButtons';
 
 const { RVDic } = window;
 
@@ -235,27 +236,12 @@ const ForgotPassword = () => {
             onClick={onReturn}>
             {RVDic.Return}
           </Button>
-          <Hiddener isVisible={email.length === 0}>
-            <ContinueWithGoogle
-              style={{
-                marginBottom: '1rem',
-                marginTop: '2.5rem',
-                width: '100%',
-              }}
-            />
-            <Button
-              type="secondary-o"
-              loading={fetchingFiles}
-              style={{
-                marginTop: '0.5rem',
-                marginBottom: '1.5rem',
-                width: '100%',
-                fontSize: '1rem',
-              }}
-              onClick={onCreateAccount}>
-              {RVDic?.CreateAccount}
-            </Button>
-          </Hiddener>
+          <CreateAccountButtons
+            isVisible={true}
+            label={RVDic?.CreateAccount}
+            onCreateAccountClick={onCreateAccount}
+            loading={fetchingFiles}
+          />
         </Container>
       )}
     </Box>

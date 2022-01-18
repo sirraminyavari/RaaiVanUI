@@ -1,5 +1,6 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Heading from 'components/Heading/Heading';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -7,9 +8,15 @@ import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import Toggle from 'components/Toggle/Toggle';
 import { C_DISTANT } from 'constant/Colors';
-import { CV_DISTANT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_RED,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import PeopleItem from './PeopleItem';
 import {
   Container,
@@ -30,6 +37,10 @@ const PeoplePicker = ({
   onByPeople,
   isByMe = false,
   pickedPeople,
+  multi,
+  onBlur,
+  direction = 'top',
+
   onVisible,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
@@ -65,7 +76,9 @@ const PeoplePicker = ({
 
   const onChoose = (item) => {
     onByPeople && onByPeople(item);
-    setPickerVisible(false);
+    if (!multi) {
+      setPickerVisible(false);
+    }
     // const choosedIndex = choosedPeople.indexOf((x) => x.id === item.id);
     // if (choosedIndex === -1) {
     //   let temp_list = choosedPeople;
@@ -127,22 +140,34 @@ const PeoplePicker = ({
       )}
 
       <PeopleBody
+        direction={direction}
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}>
-        <ResetContainer onClick={() => onChoose(null)}>
-          <Heading cursor={'pointer'} type={'H6'}>
-            {RVDic.Reset}
-          </Heading>
-          <UndoIcon
-            style={{
-              cursor: 'pointer',
-              transform: 'scaleX(-1)',
-              marginRight: '1rem',
-            }}
-            className={C_DISTANT}
-            size={16}
-          />
-        </ResetContainer>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Close onClick={() => setPickerVisible(false)} />
+
+          <ResetContainer onClick={() => onChoose(null)}>
+            <Heading cursor={'pointer'} type={'H6'}>
+              {RVDic.Reset}
+            </Heading>
+            <UndoIcon
+              style={{
+                cursor: 'pointer',
+                transform: 'scaleX(-1)',
+                marginRight: '1rem',
+              }}
+              className={C_DISTANT}
+              size={16}
+            />
+          </ResetContainer>
+        </div>
         {/* <Apply_Picked>
           <PickedList>
             {choosedPeople &&
@@ -203,7 +228,11 @@ const PeoplePicker = ({
               renderItem={(x, index) => {
                 return (
                   <PeopleItem
-                    pickedPeople={pickedPeople?.id === x.id}
+                    pickedPeople={
+                      multi
+                        ? pickedPeople?.find((y) => y.id === x.id)
+                        : pickedPeople?.id === x.id
+                    }
                     onClick={onChoose}
                     item={x}
                     key={index}
@@ -219,3 +248,10 @@ const PeoplePicker = ({
 };
 
 export default PeoplePicker;
+
+const Close = styled(CloseIcon)`
+  color: ${CV_FREEZED};
+  :hover {
+    color: ${CV_RED};
+  }
+`;
