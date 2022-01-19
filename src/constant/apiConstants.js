@@ -226,6 +226,20 @@ export const Is_Approved = 'IsApproved';
 export const Set_User_Name = 'SetUserName';
 
 /**
+ * @description 'sends a verification code for user creation'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Create_User_Token = 'CreateUserToken';
+
+/**
+ * @description finalizes verification-code-based user creation
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const Validate_User_Creation = 'ValidateUserCreation';
+
+/**
  * @description 'UsersCreate'
  * @mode API function
  * @class 'UsersAPI'

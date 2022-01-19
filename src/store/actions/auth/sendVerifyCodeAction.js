@@ -5,7 +5,6 @@ import { getCaptchaToken } from 'helpers/helpers';
 import { encode } from 'js-base64';
 import CheckPassword from 'utils/Validation/CheckPassword';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
-import PersianValidator from 'utils/Validation/PersianValidator';
 import { loginSlice } from '../../reducers/loginReducer';
 
 const {
@@ -14,8 +13,6 @@ const {
   sendVerifyCode,
   setEmailError,
   setPasswordError,
-  setNameError,
-  setFamilyError,
 } = loginSlice.actions;
 
 /**
@@ -27,8 +24,7 @@ const {
  * @param {String} family - Inputted user family for signing up.
  */
 const sendVerifyCodeAction = ({ email, password, name, family }) => async (
-  dispatch,
-  getState
+  dispatch
 ) => {
   const { GlobalUtilities, UsersAPI, RVDic } = window;
   const reqParams = GlobalUtilities.request_params();
@@ -60,7 +56,6 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
               autoClose: 20000,
             });
           } else if (results.VerificationCode) {
-            console.log(results, 'result');
             dispatch(sendVerifyCodeSuccess(results));
           }
         },
@@ -69,21 +64,10 @@ const sendVerifyCodeAction = ({ email, password, name, family }) => async (
       dispatch(sendVerifyCodeFailed(err));
     }
   };
-  // Checks inputted email/mobile
-  !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
-    ? //ask ramin
-      dispatch(setEmailError(`!ایمیل یا شماره موبایل وارد شده صحیح نیست`))
-    : // Checks inputted password, with Password Policy comes from server.
 
-    !CheckPassword(password, getState().auth?.passwordPolicy)
-    ? dispatch(setPasswordError('الگو رمزعبور وارد شده صحیح نیست'))
-    : // Checks inputted name if is Persian with Persian chars.
-    !PersianValidator(name)
-    ? dispatch(setNameError('نام وارد شده باید فارسی باشد'))
-    : // Checks inputted family if is Persian with Persian chars.
-    !PersianValidator(family)
-    ? dispatch(setFamilyError('نام خانوادگی وارد شده باید فارسی باشد'))
-    : // After checking all passed params, 'sendCode()' will be called.
-      sendCode();
+  sendCode();
+
+  //getState().auth?.passwordPolicy
 };
+
 export default sendVerifyCodeAction;

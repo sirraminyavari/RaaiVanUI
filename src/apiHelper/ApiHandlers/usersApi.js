@@ -1,16 +1,25 @@
-import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
+import {
+  API_Provider,
+  decodeBase64,
+  encodeBase64,
+  getCaptchaToken,
+} from 'helpers/helpers';
 import {
   Check_User_Name,
   Create_User,
   Get_User_Invitations,
   GET_USERS,
   Is_Approved,
-  RV_API,
   Set_Random_Password,
   Set_User_Name,
   USERS_API,
+  Create_User_Token,
+  Validate_User_Creation,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+const { GlobalUtilities } = window;
+const reqParams = GlobalUtilities.request_params();
 
 /**
  * @description reset password
@@ -70,6 +79,45 @@ export const setUserName = (UserName, UserID) => {
 };
 
 /**
+ * @description a handler for create user token api call
+ * @param {string} Contact - it could be email or phone-number (for now, only email is supported)
+ * @param {string} Password - the user's password
+ * @param {string} FirstName - the user's first-name
+ * @param {string} LastName - the user's last-name
+ * @return {Promise<ValidationOptions.unknown>}
+ */
+export const createUserToken = async ({
+  FirstName,
+  LastName,
+  Contact,
+  Password,
+} = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, Create_User_Token), {
+    FirstName: encodeBase64(FirstName),
+    LastName: encodeBase64(LastName),
+    Contact: encodeBase64(Contact),
+    Password: encodeBase64(Password),
+    InvitationID: reqParams.get_value('inv'),
+    Captcha: await getCaptchaToken(),
+  });
+};
+
+/**
+ * @description a handler for finalizing verification-code-based user creation
+ * @param {string} Token the token received from the API that has send the verification code
+ * @param {string} Code the code provided by the user
+ * @param {boolean} Login if true, the user will automatically login after validating their account creation
+ * @return {Promise<ValidationOptions.unknown>}
+ */
+export const validateUserCreation = async ({ Token, Code, Login } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, Validate_User_Creation), {
+    VerificationToken: Token,
+    Code: Code,
+    Login: Login,
+  });
+};
+
+/**
  * @description a handler for create user api call
  * @param UserName
  * @param UserID
@@ -78,6 +126,7 @@ export const setUserName = (UserName, UserID) => {
 export const createUser = (data) => {
   const { UserName, FirstName, LastName } = data;
   const createUserNameAPI = API_Provider(USERS_API, Create_User);
+
   return apiCallWrapper(createUserNameAPI, {
     UserName: encodeBase64(UserName),
     FirstName: encodeBase64(FirstName),

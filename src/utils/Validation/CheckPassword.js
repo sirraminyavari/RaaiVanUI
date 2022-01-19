@@ -29,7 +29,7 @@ const CheckPassword = (pass, passwordPolicy) => {
   const nonAlph = passwordPolicy.NonAlphabetic ? NonAlphabetic : true;
   const number = passwordPolicy.Number ? Number : true;
   const nonAlphNum = passwordPolicy.NonAlphaNumeric ? NonAlphaNumeric : true;
-  console.log(length, upper, nonAlph, number, nonAlphNum, 'result pass');
+
   return length && upper && nonAlph && number && nonAlphNum;
 };
 export default CheckPassword;

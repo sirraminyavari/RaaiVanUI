@@ -8,9 +8,10 @@ import styled, { keyframes } from 'styled-components';
  * This component can be used best as a nested routing system within each `src/Views/*` default exported file
  *
  * @param {number} [props.timeout=1000] - Route change transition duration
+ * @param {string} transitionKey - the default key is location.key but it is overridable for situations that transition is not based on routing
  * @return {JSX.Element}
  */
-const TransitionSwitchWrapper = ({ timeout, children }) => {
+const TransitionSwitchWrapper = ({ timeout, transitionKey, children } = {}) => {
   const location = useLocation();
 
   return (
@@ -18,7 +19,7 @@ const TransitionSwitchWrapper = ({ timeout, children }) => {
       <Wrapper>
         <TransitionGroup className="transition-group">
           <CSSTransition
-            key={location?.key}
+            key={transitionKey || location?.key}
             classNames="fade"
             timeout={timeout}>
             <Switch location={location}>{children}</Switch>
@@ -28,9 +29,11 @@ const TransitionSwitchWrapper = ({ timeout, children }) => {
     </>
   );
 };
+
 TransitionSwitchWrapper.defaultProps = {
   timeout: 1000,
 };
+
 TransitionSwitchWrapper.propTypes = {
   timeout: PropTypes.number,
   children: PropTypes.arrayOf(

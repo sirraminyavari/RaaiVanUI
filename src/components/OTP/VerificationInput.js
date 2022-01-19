@@ -13,6 +13,8 @@ const VerificationInput = ({
   value,
   length,
   onValueChange,
+  size,
+  reset,
   ...props
 }) => {
   // Index of next char
@@ -20,6 +22,10 @@ const VerificationInput = ({
   // verification code input UI is designed to every char has its cell.
   //so verification code stores as an array and finally will convert to string
   const [inputArray, setInputArray] = useState([]);
+
+  useEffect(() => {
+    //reset the verification code
+  }, [reset]);
 
   // According to verifyCodeLength:
   // Creates an array of '-1' for verification code array.
@@ -80,6 +86,7 @@ const VerificationInput = ({
               key={index}
               type={'text'}
               maxLength="1"
+              size={size}
               value={inputArray[index] !== -1 ? inputArray[index] : ''}
               onChange={OnChange}
               width={100 / inputArray.length + '%'}
@@ -97,10 +104,11 @@ const VerificationInput = ({
       <ShakeAnimate isVisible={error}>
         {inputArray?.length > 0 && <VerifyCodeInputProducer />}
       </ShakeAnimate>
-      <ErrorMessage error={error}>{error}</ErrorMessage>
+      {error && <ErrorMessage error={error}>{error}</ErrorMessage>}
     </Container>
   );
 };
+
 export default VerificationInput;
 
 const Container = styled.div`
@@ -118,11 +126,12 @@ const InputChar = styled.input`
   border-radius: 7px;
   background-color: white;
   /* width: ${({ width }) => width}; */
-  width: 3rem;
-  height: 3rem;
+  width: ${({ size }) => size || 3}rem;
+  height: ${({ size }) => size || 3}rem;
   margin: 5px;
   text-align: center;
 `;
+
 const ErrorMessage = styled.div`
   color: ${RED};
   text-align: ${RV_Float};
@@ -134,6 +143,7 @@ const ErrorMessage = styled.div`
   min-height: ${({ error }) => (error ? '0rem' : '0rem')};
   transition: max-height 1s, opacity 1s, min-height 1s;
 `;
+
 const Maintainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
