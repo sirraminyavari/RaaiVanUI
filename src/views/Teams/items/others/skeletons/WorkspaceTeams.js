@@ -9,6 +9,7 @@ const WorkspaceTeamsSkeleton = (props) => {
   const isMobile = DimensionHelper().isMobile;
   const emptyImage =
     'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
   return (
     <GridWrapper isMobile={isMobile}>
       {Array.apply(null, Array(isMobile ? 1 : 4)).map((_, key) => (
