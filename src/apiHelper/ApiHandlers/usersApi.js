@@ -139,9 +139,8 @@ export const createUser = (data) => {
  * @param UserName
  * @return {Promise<unknown>}
  */
-export const checkUserName = (UserName) => {
-  const CheckUserNameAPI = API_Provider(USERS_API, Check_User_Name);
-  return apiCallWrapper(CheckUserNameAPI, {
+export const checkUserName = ({ UserName } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, Check_User_Name), {
     UserName: encodeBase64(UserName),
   });
 };

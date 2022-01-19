@@ -55,7 +55,7 @@ const UsersCreate = ({ onClose, ...props }) => {
     setForm({ ...form, Username: Username });
     if (Username !== '') {
       setLoader(true);
-      checkUserName(Username).then((res) => {
+      checkUserName({ UserName: Username }).then((res) => {
         if (res) {
           setShake(true);
           setTimeout(() => setShake(false), 1500);
