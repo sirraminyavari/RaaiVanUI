@@ -780,3 +780,81 @@ export const WorkspaceDeleteWelcomeHeader = styled.div`
   justify-content: flex-end;
   width: 100%;
 `;
+
+export const WorkspaceSettingsHeaderContainer = styled.div`
+  padding-block: 1.5rem;
+  .breadcrumb {
+    position: initial;
+    justify-content: start;
+  }
+  .pageTitle {
+    padding-block: 1.5rem;
+  }
+`;
+
+export const WorkspaceSettingsTableContainer = styled.div`
+  width: 100%;
+  padding-top: 4rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  table {
+    min-width: 100%;
+    thead {
+      tr {
+        border-bottom: 1px solid ${CV_DISTANT};
+      }
+      th {
+        padding-inline: 2rem;
+        padding-block-end: 0.6rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        color: ${CV_DISTANT};
+        :nth-last-of-type(2) {
+          display: block;
+          width: 23rem;
+        }
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid ${CV_DISTANT};
+        :last-of-type {
+          border-bottom-color: transparent;
+        }
+      }
+      td {
+        padding-block: 1rem;
+        padding-inline: 2rem;
+        :first-of-type {
+          font-weight: bold;
+          padding-inline-start: 1rem;
+        }
+        > div {
+          display: flex;
+          flex-wrap: nowrap;
+          white-space: nowrap;
+          justify-content: start;
+          align-items: center;
+          > * {
+            flex-shrink: 0;
+          }
+        }
+      }
+    }
+  }
+  .userAvatar {
+    margin-inline-end: 0.5rem;
+  }
+  .teamAvatar {
+    width: 3rem;
+    height: 3rem;
+  }
+  .extraTeamsIndicator {
+    width: 3rem;
+    height: 3rem;
+    background-color: ${TCV_VERY_TRANSPARENT};
+    font-size: 0.9rem;
+    color: ${TCV_DEFAULT};
+  }
+`;

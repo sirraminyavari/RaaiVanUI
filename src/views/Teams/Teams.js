@@ -19,6 +19,13 @@ const WorkspaceDeleteView = WithSuspense(
     )
   )
 );
+const WorkspaceSettingsView = WithSuspense(
+  lazy(() =>
+    import(
+      /* webpackChunkName: "teams-workspace-view"*/ 'views/Teams/WorkspaceSettingsView'
+    )
+  )
+);
 
 const TeamsView = () => {
   const dispatch = useDispatch();
@@ -33,8 +40,13 @@ const TeamsView = () => {
         <Route exact path={'/teams'} component={TeamsWorkspaceView} />
         <Route
           exact
-          path={'/teams/remove-workspace/:id'}
+          path={'/teams/workspace/remove/:id'}
           component={WorkspaceDeleteView}
+        />
+        <Route
+          exact
+          path={'/teams/workspace/settings/:id'}
+          component={WorkspaceSettingsView}
         />
         <Redirect to={'/teams'} />
       </TransitionSwitchWrapper>
