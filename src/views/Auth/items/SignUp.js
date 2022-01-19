@@ -86,9 +86,11 @@ const SignUp = () => {
 
   // By changing routeHistory
   // navigates to the address that routeHistory says.
+  /*
   useEffect(() => {
     routeHistory && push(routeHistory);
   }, [routeHistory]);
+  */
 
   /**
    *  Starts the process of registering the user by sending a verification code.
