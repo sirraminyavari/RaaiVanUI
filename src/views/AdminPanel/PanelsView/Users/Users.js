@@ -1,5 +1,5 @@
 import * as Styled from './UsersStyle';
-import SearchUserInput from './items/SearchUserInput';
+import SearchUserInput from 'components/Inputs/SearchInput';
 import AddUserButton from './items/AddUserButton';
 import UsersNoneSaasList from './items/UsersNoneSaasList';
 import UsersSaasList from './items/UsersSaasList';
@@ -106,7 +106,7 @@ const Users = (props) => {
             </Styled.HeadingWrapper>
 
             <Styled.TopBar>
-              <SearchUserInput
+              <SearchInput
                 defaultValue={searchText}
                 placeholder={RVDic?.Search}
                 onChange={(e) => setSearchText(e)}
