@@ -2,13 +2,15 @@ import Button from 'components/Buttons/Button';
 import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import { common_style } from './SignUp';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const CreateAccountButtons = ({
   isVisible,
   label,
-  onCreateAccountClick,
-  loading,
+  onCreateAccountClick = () => {},
 } = {}) => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <Hiddener isVisible={isVisible}>
@@ -16,7 +18,10 @@ const CreateAccountButtons = ({
         <Button
           type="secondary-o"
           style={{ ...common_style, fontSize: '1rem', width: '100%' }}
-          onClick={onCreateAccountClick}
+          onClick={() => {
+            setLoading(true);
+            onCreateAccountClick();
+          }}
           loading={loading}>
           {label}
         </Button>

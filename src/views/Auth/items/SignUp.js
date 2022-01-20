@@ -8,8 +8,8 @@ import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import { GlobalParams } from 'constant/GlobalParams';
 import { decode } from 'js-base64';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
@@ -20,9 +20,12 @@ import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper'
 import SignUpWrapper from './SignUpWrapper';
 import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
 import {
+  checkUserName,
   createUserToken,
   validateUserCreation,
 } from 'apiHelper/ApiHandlers/usersApi';
+import { LOGIN_PATH } from 'constant/constants';
+import loggedInAction from 'store/actions/auth/loggedInAction';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 /**
@@ -34,6 +37,8 @@ const SignUp = () => {
   );
 
   const { push } = useHistory();
+
+  const dispatch = useDispatch();
 
   //If true, the typed password will be shown.
   const [passVisible, setPassVisible] = useState(false);
@@ -50,12 +55,8 @@ const SignUp = () => {
   const [verificationCodeObject, setVerificationCodeObject] = useState(null);
   const [resetVerificationCode, setResetVerificationCode] = useState();
 
-  var xx = {
-    Token: 'CWJzj5EorgsKvrz3hqpp',
-    Timeout: 60,
-    TotalTimeout: 180,
-    Length: 5,
-  };
+  //a dictionary of emails that we have checked their availability
+  const [emailsDic, setEmailsDic] = useState({});
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -86,21 +87,61 @@ const SignUp = () => {
 
   // By changing routeHistory
   // navigates to the address that routeHistory says.
+  /*
   useEffect(() => {
     routeHistory && push(routeHistory);
   }, [routeHistory]);
+  */
 
-  /**
-   *  Starts the process of registering the user by sending a verification code.
-   */
+  //check if the entered email address is valid and available
+  const checkAvailability = async (val) => {
+    if (!(val || ' ').trim()) return setEmailError('');
+
+    const isEmail = GlobalUtilities.is_valid_email(val);
+    const isAvailable =
+      isEmail &&
+      emailsDic[val] !== false &&
+      !(await checkUserName({ UserName: val }));
+
+    if (isEmail) {
+      emailsDic[val] = isAvailable;
+      setEmailsDic(emailsDic);
+    }
+
+    //check this, because the email may has changed during 'checkUserName' running
+    if (val !== email) return;
+
+    if (!isEmail) setEmailError(RVDic.Checks.EmailIsNotValid);
+    else if (!isAvailable) setEmailError(RVDic.MSG.EmailAlreadyExists);
+    else setEmailError('');
+  };
+
+  const checkPassword = (val) => {
+    setPasswordError(
+      !val || CheckPassword(val, passwordPolicy)
+        ? ''
+        : RVDic.Checks.PasswordPolicyDoesNotMeet
+    );
+  };
+
+  //Starts the process of registering the user by sending a verification code.
   const onSendVerifyCode = async () => {
     const invalidEmail =
       !GlobalUtilities.is_valid_email(email) && !MobileNumberValidator(email);
     const invalidPassword = !CheckPassword(password, passwordPolicy);
     const invalidFirstName = !firstName.trim();
     const invalidLastName = !lastName.trim();
+    const unavailableEmail =
+      emailsDic[(email || ' ').trim().toLowerCase()] === false;
 
-    setEmailError(invalidEmail ? RVDic.Checks.EmailIsNotValid : '');
+    setEmailError(
+      invalidEmail
+        ? RVDic.Checks.EmailIsNotValid
+        : unavailableEmail
+        ? RVDic.MSG.EmailAlreadyExists
+        : ''
+    );
+
     setPasswordError(
       invalidPassword ? RVDic.Checks.PasswordPolicyDoesNotMeet : ''
     );
@@ -109,7 +150,8 @@ const SignUp = () => {
       invalidEmail ||
       invalidPassword ||
       invalidFirstName ||
-      invalidLastName
+      invalidLastName ||
+      unavailableEmail
     ) {
       setShake(GlobalUtilities.random());
       return;
@@ -137,25 +179,25 @@ const SignUp = () => {
     }
   };
 
-  const finalValidation = async () => {
+  const finalValidation = async (val) => {
     setIsFinalizing(true);
 
     const results = await validateUserCreation({
       Token: verificationCodeObject?.Token,
-      Code: verificationCode,
+      Code: val || verificationCode,
       Login: true,
     });
 
     setIsFinalizing(false);
 
-    console.log(results, 'ramin vc');
+    if (results?.ErrorText)
+      alert(RVDic.MSG[results.ErrorText] || results.ErrorText);
+    else dispatch(loggedInAction(results));
   };
 
-  /**
-   * Returns user to the login page.
-   */
+  // Returns user to the login page.
   const onHaveAccount = () => {
-    push('/login' + window.location.search);
+    push(LOGIN_PATH + window.location.search);
   };
 
   const passVisibility = (value) => {
@@ -167,7 +209,7 @@ const SignUp = () => {
     setVerificationCode(val);
 
     if (String(val || '_').length === verificationCodeObject?.Length)
-      finalValidation();
+      finalValidation(val);
   };
 
   return (
@@ -217,6 +259,9 @@ const SignUp = () => {
         <SignUpWrapper>
           <AnimatedInput
             onChange={(v) => setEmail(v)}
+            afterChangeListener={(e) =>
+              checkAvailability((e?.target?.value || ' ').trim().toLowerCase())
+            }
             value={email}
             placeholder={RVDic?.EmailAddress}
             error={emailError}
@@ -226,6 +271,7 @@ const SignUp = () => {
 
           <AnimatedInput
             onChange={(v) => setPassword(v)}
+            afterChangeListener={(e) => checkPassword(e?.target?.value)}
             value={password}
             placeholder={RVDic?.Password}
             type={passVisible ? 'text' : 'password'}

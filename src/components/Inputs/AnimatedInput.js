@@ -32,6 +32,7 @@ const AnimatedInput = React.forwardRef(
       error = null,
       disabled,
       onChange,
+      afterChangeListener,
       children,
       placeholderClass,
       placeholderFocusedClass,
@@ -61,6 +62,7 @@ const AnimatedInput = React.forwardRef(
         _setFocused(true);
       }
     };
+
     const normalizePlaceHolder = () => {
       if (
         labelRef?.current?.offsetWidth -
@@ -96,6 +98,7 @@ const AnimatedInput = React.forwardRef(
             onChange={(event) => {
               onChange(event.target.value);
             }}
+            afterChangeListener={afterChangeListener}
             onBlur={(e) => {
               e.preventDefault();
               setFocused(false);
