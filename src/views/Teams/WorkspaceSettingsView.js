@@ -6,7 +6,7 @@ import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import React, { useEffect, useState } from 'react';
 
 //TODO create global reuseable component from searchUserInput or investigate other Input components to replace this component
-import SearchInput from 'views/AdminPanel/PanelsView/Users/items/SearchUserInput';
+import SearchInput from 'components/Inputs/SearchInput';
 import APIHandler from 'apiHelper/APIHandler';
 import { useParams } from 'react-router-dom';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
@@ -26,7 +26,8 @@ import {
   WorkspaceSettingsHeaderContainer,
   WorkspaceSettingsTableContainer,
 } from './Teams.styles';
-
+import * as Styled from './Teams.styles';
+import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 const { setSidebarContent } = themeSlice.actions;
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
@@ -38,7 +39,8 @@ const WorkspaceSettingsView = () => {
   const { isMobile } = DimensionHelper();
   const [SearchText, setSearchText] = useState('');
   const [tablePage, setTablePage] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [InfiniteScrollRerenderer, setInfiniteScrollRerenderer] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
   const [removeUserFromWorkspace, setRemoveUserFromWorkspace] = useState(false);
 
@@ -56,40 +58,50 @@ const WorkspaceSettingsView = () => {
   ];
 
   //! API request handler
-  const getWorkspaceUsers = (resetTable = false) => {
-    setIsLoading(true);
-    console.log({
-      WorkspaceID,
-      Count: 2,
-      SearchText: encodeBase64(SearchText),
-      LowerBoundary: resetTable ? 1 : workspaceUsers?.length + 1,
-    });
-    getWorkspaceUsersAPI.fetch(
-      {
-        WorkspaceID,
-        Count: 2,
-        SearchText: encodeBase64(SearchText),
-        LowerBoundary: workspaceUsers?.length + 1,
-      },
-      (response) => {
-        setIsLoading(false);
-        setWorkspaceUsers((storedUsers) => [
-          //* If [resetTable] is true, then only return recently fetched Users
-          //* if false, then merge recently fetched data with previous items
-          ...(resetTable ? [] : storedUsers),
-          ...response.Items,
-        ]);
-        if (resetTable) {
-          setTablePage(0);
-        } else if (response.TotalCount > workspaceUsers.length + 1)
-          setTablePage((currentPage) => currentPage + 1);
-        else setTablePage(false);
-      }
-    );
-  };
-  //! fetch first batch of workspace users(page1) and reset the Workspace Users on SearchText changes
+  const getWorkspaceUsers = React.useMemo(
+    () => (resetTable = false) => {
+      setIsLoading(true);
+      if (isLoading) return;
+
+      getWorkspaceUsersAPI.fetch(
+        {
+          WorkspaceID,
+          Count: 2,
+          SearchText: encodeBase64(SearchText),
+          LowerBoundary: workspaceUsers?.length + 1,
+        },
+        (response) => {
+          setIsLoading(false);
+          setWorkspaceUsers((storedUsers) => [
+            //* If [resetTable] is true, then only return recently fetched Users
+            //* if false, then merge recently fetched data with previous items
+            ...(resetTable ? [] : storedUsers),
+            ...response.Items,
+          ]);
+
+          if (resetTable) {
+            setTablePage(0);
+          } else if (response.TotalCount > workspaceUsers.length + 1)
+            setTablePage((currentPage) => currentPage + 1);
+          else setTablePage(false);
+        }
+      );
+    },
+    [workspaceUsers, SearchText]
+  );
+  //! fetch first batch of workspace users on page load
   useEffect(() => {
     getWorkspaceUsers(true);
+  }, []);
+
+  //! reset the Workspace Users on SearchText changes
+  useEffect(() => {
+    setWorkspaceUsers([]);
+    setTablePage(0);
+    //? simple hack to make InfiniteScroll component fetch on search input changes
+    window.scrollTo(0, 0);
+    window.scrollTo(0, 10);
+    setInfiniteScrollRerenderer(window.GlobalUtilities.random());
   }, [SearchText]);
 
   //! configure sidebar content
@@ -126,37 +138,56 @@ const WorkspaceSettingsView = () => {
             col2: decodeBase64(User.MainEmailAddress),
             col3: decodeBase64(User.LastActivityTime_Local),
           }),
-          col4: Applications.map(({ ApplicationID, Title, IconURL }, idx) => {
-            if (idx < 5)
-              return (
-                <Tooltip
-                  effect="solid"
-                  place="bottom"
-                  tipId={ApplicationID}
-                  key={ApplicationID || idx}
-                  renderContent={() => decodeBase64(Title)}>
-                  <Avatar imageClasses="teamAvatar" userImage={IconURL} />
-                </Tooltip>
-              );
-            else if (idx === 5)
-              return (
-                <>
-                  <PopupMenu
-                    trigger="hover"
-                    align="top"
-                    arrowClass="hidden-arrow"
-                    menuClass="">
-                    <div>
-                      <Badge
-                        showText={`${Applications.length - 4}+`}
-                        className="extraTeamsIndicator"
-                      />
-                    </div>
-                    <div className="non-scroll">sdasdasdasd</div>
-                  </PopupMenu>
-                </>
-              );
-          }),
+          col4: Applications.map(
+            ({ ApplicationID, Title, IconURL }, idx, ApplicationsArray) => {
+              if (idx < 5)
+                return (
+                  <Tooltip
+                    effect="solid"
+                    place="bottom"
+                    tipId={ApplicationID}
+                    key={ApplicationID || idx}
+                    renderContent={() => decodeBase64(Title)}>
+                    <Avatar imageClasses="teamAvatar" userImage={IconURL} />
+                  </Tooltip>
+                );
+              else if (idx === 5)
+                return (
+                  <>
+                    <PopupMenu
+                      trigger="hover"
+                      align="top"
+                      arrowClass="hidden-arrow"
+                      menuClass="">
+                      <div>
+                        <Badge
+                          showText={`${Applications.length - 4}+`}
+                          className="extraTeamsIndicator"
+                        />
+                      </div>
+
+                      <div className="extraTeamsPanel">
+                        <PerfectScrollbar>
+                          {ApplicationsArray.map(
+                            ({ ApplicationID, Title, IconURL }, idx) => {
+                              if (idx > 4)
+                                return (
+                                  <Styled.ExtraUserItem key={ApplicationID}>
+                                    <Avatar userImage={IconURL} radius={25} />
+                                    <Styled.ExtraUserTitle>
+                                      {decodeBase64(Title)}
+                                    </Styled.ExtraUserTitle>
+                                  </Styled.ExtraUserItem>
+                                );
+                            }
+                          )}
+                        </PerfectScrollbar>
+                      </div>
+                    </PopupMenu>
+                  </>
+                );
+            }
+          ),
           col5: (
             <Button
               type="negative-o"
@@ -169,7 +200,7 @@ const WorkspaceSettingsView = () => {
           col6: '',
         };
       }),
-    [workspaceUsers, removeUserFromWorkspace, isMobile]
+    [workspaceUsers, tablePage, isMobile]
   );
 
   //! Setup workspace user's table headers
@@ -225,6 +256,7 @@ const WorkspaceSettingsView = () => {
           title="حذف از همه تیم‌ها"
           messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
         />
+
         <WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
@@ -237,13 +269,12 @@ const WorkspaceSettingsView = () => {
           delayTime={650}
           defaultValue={''}
         />
+
         <WorkspaceSettingsTableContainer>
           <InfiniteScroll
+            key={InfiniteScrollRerenderer}
             dataLength={workspaceUsers.length}
-            next={() => {
-              getWorkspaceUsers();
-              console.log('next');
-            }}
+            next={getWorkspaceUsers}
             hasMore={typeof tablePage !== 'boolean'}
             loader={
               isLoading && (
@@ -255,12 +286,7 @@ const WorkspaceSettingsView = () => {
                   }}
                 />
               )
-            }
-            initialScrollY="0"
-            // endMessage={
-            //   <div style={{ textAlign: 'center' }}> No More data... </div>
-            // }
-          >
+            }>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
         </WorkspaceSettingsTableContainer>

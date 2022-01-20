@@ -25,6 +25,7 @@ import {
   TCV_DEFAULT,
   TCV_VERYWARM,
   TCV_VERY_TRANSPARENT,
+  TCV_VERY_TRANSPARENT_WARM,
   TCV_WARM,
 } from 'constant/CssVariables';
 import { FLEX_CSC, FLEX_RCS } from 'constant/StyledCommonCss';
@@ -856,5 +857,15 @@ export const WorkspaceSettingsTableContainer = styled.div`
     background-color: ${TCV_VERY_TRANSPARENT};
     font-size: 0.9rem;
     color: ${TCV_DEFAULT};
+  }
+  .extraTeamsPanel {
+    overflow-y: auto;
+    height: 8rem;
+    width: 12rem;
+    margin-inline-end: -15rem;
+    margin-block-end: -4rem;
+    background: ${CV_WHITE} 0% 0% no-repeat padding-box;
+    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT_WARM};
+    border-radius: 0.6rem;
   }
 `;
