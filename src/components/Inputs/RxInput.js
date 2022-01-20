@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { createSubject } from '../../helpers/helpers';
-import { debounceTime } from 'rxjs';
-import { distinctUntilChanged, tap } from 'rxjs/operators';
-
-const RxInput = React.forwardRef(
-  ({ value, onChange, delayTime = 0, ...props }, forwardedRef) => {
-    const [inputValue, setInputValue] = useState(value);
+import { debounceTime, Subject } from 'rxjs';
+import { tap, distinctUntilChanged } from 'rxjs/operators';
+import { createSubject } from 'helpers/helpers';
+const SearchInput = React.forwardRef(
+  ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
+    const [inputValue, setInputValue] = useState(defaultValue);
     const observableRef = useRef(null);
 
     useEffect(() => {
+      /**
+       * @description handle input change as stream of data
+       * @type {Subject<T>}
+       */
       observableRef.current = createSubject();
       const input$ = observableRef.current;
       input$
@@ -26,22 +29,22 @@ const RxInput = React.forwardRef(
       return () => {
         input$?.unsubscribe();
       };
-    }, [delayTime, onChange]);
+    }, []);
 
     const handleInputChange = (e) => {
       setInputValue(e?.target?.value);
-      observableRef.current.next(e);
+      observableRef.current.next(e?.target?.value);
     };
 
     return (
       <input
         value={inputValue}
         onChange={(e) => handleInputChange(e)}
-        ref={forwardedRef}
         {...props}
+        ref={forwardedRef}
       />
     );
   }
 );
-RxInput.displayName = 'RxInput';
-export default RxInput;
+SearchInput.displayName = 'SearchInput';
+export default SearchInput;
