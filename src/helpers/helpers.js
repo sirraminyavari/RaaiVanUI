@@ -324,6 +324,16 @@ export const formatDeltaDays = (value, local = getLanguage()) => {
   return formatter.format(Math.round(deltaDays), 'days');
 };
 
+/**
+ * @description Generates a 10 digit random number
+ * @param {number} [min] - Sets the possible **minimum** value
+ * @param {number} [max] - sets the possible **maximum** value
+ * @return {number}
+ */
+export const randomNumber = (min, max) => {
+  return GlobalUtilities?.random(min, max);
+};
+
 export const createSubject = () => {
   return new Subject();
 };
