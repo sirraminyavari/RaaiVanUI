@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { debounceTime, Subject } from 'rxjs';
 import { tap, distinctUntilChanged } from 'rxjs/operators';
 import { createSubject } from 'helpers/helpers';
-const SearchInput = React.forwardRef(
+
+const RxInput = React.forwardRef(
   ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
     const [inputValue, setInputValue] = useState(defaultValue);
     const observableRef = useRef(null);
@@ -46,5 +47,5 @@ const SearchInput = React.forwardRef(
     );
   }
 );
-SearchInput.displayName = 'SearchInput';
-export default SearchInput;
+RxInput.displayName = 'RxInput';
+export default RxInput;
