@@ -1,5 +1,5 @@
 import * as Styled from './UsersStyle';
-import SearchUserInput from 'components/Inputs/SearchInput';
+import SearchInput from 'components/Inputs/SearchInput';
 import AddUserButton from './items/AddUserButton';
 import UsersNoneSaasList from './items/UsersNoneSaasList';
 import UsersSaasList from './items/UsersSaasList';
