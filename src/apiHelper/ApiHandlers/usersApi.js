@@ -15,6 +15,8 @@ import {
   USERS_API,
   Create_User_Token,
   Validate_User_Creation,
+  SET_PASSWORD_RESET_TICKET,
+  SET_PASSWORD,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -29,6 +31,34 @@ const reqParams = GlobalUtilities.request_params();
 export const setRandomPassword = (UserID) => {
   const setRandomPasswordAPI = API_Provider(USERS_API, Set_Random_Password);
   return apiCallWrapper(setRandomPasswordAPI, { UserID });
+};
+
+/**
+ * @description send verification code for 'reset password'
+ * @return {Promise<unknown>}
+ */
+export const setPasswordResetTicket = async ({ UserName, Password } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, SET_PASSWORD_RESET_TICKET), {
+    UserName: encodeBase64(UserName),
+    Password: encodeBase64(Password),
+    InvitationID: reqParams.get_value('inv'),
+    Captcha: await getCaptchaToken(),
+  });
+};
+
+/**
+ * @description a handler for finalizing verification-code-based password reset
+ * @param {string} Token the token received from the API that has send the verification code
+ * @param {string} Code the code provided by the user
+ * @param {boolean} Login if true, the user will automatically login after validating their password reset
+ * @return {Promise<ValidationOptions.unknown>}
+ */
+export const setPassword = ({ Token, Code, Login } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, SET_PASSWORD), {
+    VerificationToken: Token,
+    Code: Code,
+    Login: Login,
+  });
 };
 
 /**
@@ -109,7 +139,7 @@ export const createUserToken = async ({
  * @param {boolean} Login if true, the user will automatically login after validating their account creation
  * @return {Promise<ValidationOptions.unknown>}
  */
-export const validateUserCreation = async ({ Token, Code, Login } = {}) => {
+export const validateUserCreation = ({ Token, Code, Login } = {}) => {
   return apiCallWrapper(API_Provider(USERS_API, Validate_User_Creation), {
     VerificationToken: Token,
     Code: Code,

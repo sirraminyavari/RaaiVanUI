@@ -12,28 +12,15 @@ const {
   setEmail,
   setPassword,
 } = loginSlice.actions;
-const { GlobalUtilities, UsersAPI } = window;
 
 const signupLoadFilesAction = (destination) => async (dispatch) => {
   dispatch(signupLoadFiles());
 
   try {
-    GlobalUtilities.load_files(
-      ['API/UsersAPI.js', 'API/CNAPI.js', 'USR/ChangePasswordDialog.js'],
-      {
-        OnLoad: function () {
-          UsersAPI.GetPasswordPolicy({
-            ParseResults: true,
-            ResponseHandler: function (result) {
-              dispatch(setLoginRouteAction(SIGN_UP_EMAIL));
-              dispatch(setEmail(''));
-              dispatch(setPassword(''));
-              dispatch(signupLoadFilesSuccess({ result, destination }));
-            },
-          });
-        },
-      }
-    );
+    dispatch(setLoginRouteAction(SIGN_UP_EMAIL));
+    //dispatch(setEmail(''));
+    dispatch(setPassword(''));
+    dispatch(signupLoadFilesSuccess({ destination }));
   } catch (err) {
     dispatch(signupLoadFilesFailed(err));
   }

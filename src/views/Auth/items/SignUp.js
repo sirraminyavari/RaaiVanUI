@@ -3,22 +3,18 @@
  */
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
-import InvisibleIcon from 'components/Icons/InVisible';
-import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import { GlobalParams } from 'constant/GlobalParams';
 import { decode } from 'js-base64';
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import CheckPassword from 'utils/Validation/CheckPassword';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import CreateAccountButtons from './CreateAccountButtons';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
 import SignUpWrapper from './SignUpWrapper';
-import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
 import {
   checkUserName,
   createUserToken,
@@ -26,6 +22,8 @@ import {
 } from 'apiHelper/ApiHandlers/usersApi';
 import { LOGIN_PATH } from 'constant/constants';
 import loggedInAction from 'store/actions/auth/loggedInAction';
+import VerificationCodeDialog from './VerificationCodeDialog';
+import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 /**
@@ -40,8 +38,6 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
 
-  //If true, the typed password will be shown.
-  const [passVisible, setPassVisible] = useState(false);
   //If true, means the password input is focused (to show the Password validation).
   const [passFocused, setPassFocused] = useState(false);
 
@@ -71,28 +67,6 @@ const SignUp = () => {
 
   const passwordPolicy = RVGlobal?.PasswordPolicy || {};
 
-  const { routeHistory } = useSelector((state) => ({
-    routeHistory: state.auth.routeHistory,
-  }));
-
-  // has two responsibilities.
-  // 1- when the component did mount, checks password policy, if it is null, will fetch it.
-  /*
-  useEffect(() => {
-    return () => {
-      dispatch(setLoginRouteAction(null));
-    };
-  }, []);
-  */
-
-  // By changing routeHistory
-  // navigates to the address that routeHistory says.
-  /*
-  useEffect(() => {
-    routeHistory && push(routeHistory);
-  }, [routeHistory]);
-  */
-
   //check if the entered email address is valid and available
   const checkAvailability = async (val) => {
     if (!(val || ' ').trim()) return setEmailError('');
@@ -114,14 +88,6 @@ const SignUp = () => {
     if (!isEmail) setEmailError(RVDic.Checks.EmailIsNotValid);
     else if (!isAvailable) setEmailError(RVDic.MSG.EmailAlreadyExists);
     else setEmailError('');
-  };
-
-  const checkPassword = (val) => {
-    setPasswordError(
-      !val || CheckPassword(val, passwordPolicy)
-        ? ''
-        : RVDic.Checks.PasswordPolicyDoesNotMeet
-    );
   };
 
   //Starts the process of registering the user by sending a verification code.
@@ -200,11 +166,6 @@ const SignUp = () => {
     push(LOGIN_PATH + window.location.search);
   };
 
-  const passVisibility = (value) => {
-    setPassVisible(value);
-    setTimeout(() => setPassFocused(true), 101);
-  };
-
   const handleVerificationCode = (arr, val) => {
     setVerificationCode(val);
 
@@ -217,42 +178,18 @@ const SignUp = () => {
       transitionKey={verificationCodeMode ? 'vr-code' : 'normal'}>
       {verificationCodeMode && (
         <SignUpWrapper>
-          <VerificationInputWithTimer
+          <VerificationCodeDialog
             email={email}
-            length={verificationCodeObject?.Length}
-            timeout={verificationCodeObject?.Timeout}
-            onValueChange={handleVerificationCode}
-            resendCodeRequest={onSendVerifyCode}
-            loading={isSending}
+            isSending={isSending}
+            isFinalizing={isFinalizing}
             reset={resetVerificationCode}
-            columnView
+            verificationCode={verificationCode}
+            verificationCodeObject={verificationCodeObject}
+            handleVerificationCode={handleVerificationCode}
+            onCodeRequest={onSendVerifyCode}
+            onConfirm={finalValidation}
+            onCancel={() => setVerificationCodeMode(false)}
           />
-          <RowItems style={{ marginTop: '2rem' }}>
-            <Button
-              style={{
-                flex: '0 0 auto',
-                marginInlineEnd: '1rem',
-                width: '8rem',
-              }}
-              disable={
-                String(verificationCode || 1).length !==
-                verificationCodeObject?.Length
-              }
-              onClick={finalValidation}
-              loading={isFinalizing}>
-              {RVDic.Confirm}
-            </Button>
-            <Button
-              type="primary-o"
-              style={{
-                flex: '0 0 auto',
-                marginInlineStart: '1rem',
-                width: '8rem',
-              }}
-              onClick={() => setVerificationCodeMode(false)}>
-              {RVDic.Return}
-            </Button>
-          </RowItems>
         </SignUpWrapper>
       )}
       {!verificationCodeMode && (
@@ -269,41 +206,13 @@ const SignUp = () => {
             style={common_style}
           />
 
-          <AnimatedInput
-            onChange={(v) => setPassword(v)}
-            afterChangeListener={(e) => checkPassword(e?.target?.value)}
-            value={password}
+          <SetPasswordInput
             placeholder={RVDic?.Password}
-            type={passVisible ? 'text' : 'password'}
             error={passwordError}
             shake={shake}
             style={common_style}
-            onBlur={() => setTimeout(() => setPassFocused(false), 100)}
-            onFocus={() => setPassFocused(true)}
-            children={
-              passVisible ? (
-                <InvisibleIcon
-                  className="rv-gray"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => passVisibility(false)}
-                />
-              ) : (
-                <VisibleIcon
-                  className="rv-gray"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => passVisibility(true)}
-                />
-              )
-            }
-          />
-          <PasswordValidation
-            style={{
-              opacity: '0',
-              transition: 'opacity 1s',
-            }}
-            isVisible={passFocused}
-            password={password}
-            passwordPolicy={passwordPolicy}
+            onChange={(v) => setPassword(v)}
+            onFocusChange={(v) => setPassFocused(v)}
           />
 
           <RowItems>

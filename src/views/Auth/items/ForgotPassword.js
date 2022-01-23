@@ -2,219 +2,167 @@
  * The forgot password page. Helps the user to reset his/her password.
  */
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
-import InvisibleIcon from 'components/Icons/InVisible';
-import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
-import VisibleIcon from 'components/Icons/VisibleIcon';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import sendResetPsswordTicketAction from 'store/actions/auth/sendResetPsswordTicketAction';
-import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import setEmailAction from 'store/actions/auth/setEmailAction';
-import setLoginRouteAction from 'store/actions/auth/setLoginRouteAction';
-import setPasswordAction from 'store/actions/auth/setPassAction';
-import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
-import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
-import { Box } from '../AuthView.style';
-import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import CreateAccountButtons from './CreateAccountButtons';
+import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
+import ForgotPasswordWrapper from './ForgotPasswordWrapper';
+import CheckPassword from 'utils/Validation/CheckPassword';
+import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
+import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
+import {
+  setPasswordResetTicket,
+  setPassword as savePassword,
+} from 'apiHelper/ApiHandlers/usersApi';
+import { REGISTER_PATH } from 'constant/constants';
+import loggedInAction from 'store/actions/auth/loggedInAction';
+import VerificationCodeDialog from './VerificationCodeDialog';
 
-const { RVDic } = window;
+const { RVDic, RVGlobal, GlobalUtilities } = window;
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const { goBack, push } = useHistory();
-  // True, if user clicks signUp button.
-  const [signUpClicked, setSignUpClicked] = useState(false);
-  const [verifyCodeClicked, setVerifyCodeClicked] = useState(false);
-  //If true, means the password input is focused(to showing the Password validation).
-  const [passFocused, setPassFocused] = useState(false);
-  // If true, typed password will be visible
-  const [passVisible, setPassVisible] = useState(false);
 
-  const {
-    email,
-    emailError,
-    passwordError,
-    isFetching,
-    fetchingFiles,
-    routeHistory,
-    passwordPolicy,
-    password,
-  } = useSelector((state) => ({
-    email: state.auth.email,
-    emailError: state.auth.emailError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    routeHistory: state.auth.routeHistory,
-    passwordPolicy: state.auth.passwordPolicy,
-    password: state.auth.password,
-    passwordError: state.auth.passwordError,
+  const { initialEmail } = useSelector((state) => ({
+    initialEmail: state.auth.email,
   }));
 
-  // has two responsibilities.
-  // 1- when the component did mount, checks password policy, if it is null, will fetch it.
-  // 2- when component will unmount, sets signUpClicked to false.
-  // 3- when component will unmount, sets verifyCodeClicked to false.
-  useEffect(() => {
-    const { GlobalUtilities } = window;
+  const [email, setEmail] = useState(initialEmail);
+  const [emailError, setEmailError] = useState('');
 
-    !passwordPolicy && dispatch(signupLoadFilesAction());
-    GlobalUtilities?.init_recaptcha((captcha) => {
-      captcha?.getToken((token) => {
-        //use token
-        dispatch(setCaptchaTokenAction(token));
-      });
-    });
-    return () => {
-      setSignUpClicked(false);
-      setVerifyCodeClicked(false);
-      dispatch(setLoginRouteAction(null));
-    };
-  }, []);
-  // By changing routeHistory & signUpClicked,
-  // navigates to the address that routeHistory says.
-  useEffect(() => {
-    signUpClicked && !fetchingFiles && routeHistory && push(routeHistory);
-  }, [routeHistory, signUpClicked, fetchingFiles]);
-  useEffect(() => {
-    verifyCodeClicked && !isFetching && routeHistory && push(routeHistory);
-  }, [verifyCodeClicked, routeHistory]);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  // Sends reset link to inputted email address.
-  const onSendResetLink = () => {
-    setVerifyCodeClicked(true);
-    dispatch(sendResetPsswordTicketAction({ email, password }));
-  };
+  const [shake, setShake] = useState(0);
+  const passwordPolicy = RVGlobal?.PasswordPolicy || {};
+
+  //true means that sending verification code is in progress
+  const [isSending, setIsSending] = useState(false);
+  const [isFinalizing, setIsFinalizing] = useState(false);
+
+  //true means that verification-code component must be rendered
+  const [verificationCodeMode, setVerificationCodeMode] = useState(false);
+  const [verificationCode, setVerificationCode] = useState();
+  const [verificationCodeObject, setVerificationCodeObject] = useState(null);
+  const [resetVerificationCode, setResetVerificationCode] = useState();
+
   // Returns the user to the login page.
   const onReturn = () => {
     goBack();
   };
-  /**
-   * Synchronously sets inputted email/number to redux state.
-   * @param {String} value - email input
-   */
-  const onEmailChanged = (value) => {
-    dispatch(setEmailAction(value));
+
+  const onSendVerifyCode = async () => {
+    const invalidEmail =
+      !GlobalUtilities.is_valid_email(email) && !MobileNumberValidator(email);
+    const invalidPassword = !CheckPassword(password, passwordPolicy);
+
+    setEmailError(invalidEmail ? RVDic.Checks.EmailIsNotValid : '');
+
+    setPasswordError(
+      invalidPassword ? RVDic.Checks.PasswordPolicyDoesNotMeet : ''
+    );
+
+    if (invalidEmail || invalidPassword) {
+      setShake(GlobalUtilities.random());
+      return;
+    }
+
+    setIsSending(true);
+
+    const results = await setPasswordResetTicket({
+      UserName: email.trim(),
+      Password: password,
+    });
+
+    setIsSending(false);
+
+    if (results?.ErrorText)
+      alert(RVDic.MSG[results.ErrorText] || results.ErrorText, {
+        autoClose: 20000,
+      });
+    else if (results?.VerificationCode) {
+      setVerificationCodeMode(true);
+      setVerificationCodeObject(results.VerificationCode);
+      setResetVerificationCode(GlobalUtilities.random());
+    }
   };
-  /**
-   * Starts to load sign up necessary files, by dispatching signupLoadFilesAction
-   */
+
+  const finalValidation = async (val) => {
+    setIsFinalizing(true);
+
+    const results = await savePassword({
+      Token: verificationCodeObject?.Token,
+      Code: val || verificationCode,
+      Login: true,
+    });
+
+    setIsFinalizing(false);
+
+    if (results?.ErrorText)
+      alert(RVDic.MSG[results.ErrorText] || results.ErrorText);
+    else dispatch(loggedInAction(results));
+  };
+
+  const handleVerificationCode = (arr, val) => {
+    setVerificationCode(val);
+
+    if (String(val || '_').length === verificationCodeObject?.Length)
+      finalValidation(val);
+  };
+
   const onCreateAccount = () => {
-    setSignUpClicked(true);
-    dispatch(setEmailAction(''));
-    dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
-  };
-  /**
-   * When the password input is focused, the password validator will be shown.
-   */
-  const onPassFocus = () => {
-    setPassFocused(true);
-  };
-  /**
-   * Synchronously sets inputted password to redux state.
-   * @param {String} value - password input
-   */
-  const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
-  };
-  /**
-   * When the password input is blurred, the password validator will be hidden.
-   */
-  const onPassBlurred = () => {
-    setTimeout(() => {
-      setPassFocused(false);
-    }, 100);
+    push(REGISTER_PATH + window.location.search);
   };
 
   return (
-    <Box>
-      {!signUpClicked && fetchingFiles ? (
-        <LoadingIconFlat
-          style={{
-            alignSelf: 'center',
-            height: '30vh',
-          }}
-        />
-      ) : (
-        <Container onSubmit={onSendResetLink}>
-          <Heading
-            type="h5"
-            className={'rv-distant'}
-            style={{
-              textAlign: 'center',
-              ...common_style,
-            }}>
-            {RVDic?.ForgotMyPassword}
-          </Heading>
+    <TransitionSwitchWrapper
+      transitionKey={verificationCodeMode ? 'vr-code' : 'normal'}>
+      {verificationCodeMode && (
+        <ForgotPasswordWrapper>
+          <VerificationCodeDialog
+            email={email}
+            isSending={isSending}
+            isFinalizing={isFinalizing}
+            reset={resetVerificationCode}
+            verificationCode={verificationCode}
+            verificationCodeObject={verificationCodeObject}
+            handleVerificationCode={handleVerificationCode}
+            onCodeRequest={onSendVerifyCode}
+            onConfirm={finalValidation}
+            onCancel={() => setVerificationCodeMode(false)}
+          />
+        </ForgotPasswordWrapper>
+      )}
+      {!verificationCodeMode && (
+        <ForgotPasswordWrapper>
           <AnimatedInput
-            onChange={onEmailChanged}
+            onChange={(v) => {
+              setEmail(v);
+              setEmailError('');
+            }}
             value={email}
             placeholder={RVDic?.EmailAddress}
             error={emailError}
-            shake={emailError && 300}
+            shake={shake}
             style={{ marginTop: '1.5rem', marginBottom: '0.75rem' }}
-            id={'email'}
           />
-          <AnimatedInput
-            onChange={onPasswordChanged}
-            value={password}
+          <SetPasswordInput
             placeholder={RVDic?.NewPassword}
             error={passwordError}
-            shake={passwordError && 300}
+            shake={shake}
             style={common_style}
-            type={passVisible ? 'text' : 'password'}
-            onFocus={onPassFocus}
-            onBlur={onPassBlurred}
-            id={'password'}
-            children={
-              passVisible ? (
-                <InvisibleIcon
-                  className="rv-gray"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(false)}
-                />
-              ) : (
-                <VisibleIcon
-                  className="rv-gray"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setPassVisible(true)}
-                />
-              )
-            }
+            onChange={(v) => setPassword(v)}
           />
-          {passFocused && (
-            <PasswordValidation
-              style={{
-                opacity: '0',
-                transition: 'opacity 1s',
-              }}
-              isVisible={passFocused}
-              password={password}
-              passwordPolicy={passwordPolicy}
-            />
-          )}
-          {/* <Heading
-          type="h6"
-          style={{
-            fontSize: '0.8rem',
-            color: 'grey',
-          }}>
-          <p>
-            {
-              'در صورتی که این ایمیل یا شماره موبایل در کلیک‌مایند ثبت شده باشد، کد تایید تغییر رمزعبور برای شما ارسال خواهد شد'
-            }
-          </p>
-        </Heading> */}
-
           <Button
-            onClick={onSendResetLink}
+            onClick={onSendVerifyCode}
             type="negative"
-            loading={isFetching}
+            loading={isSending}
+            disable={!email || !password}
             style={{
               width: '100%',
               textAlign: 'center',
@@ -223,7 +171,6 @@ const ForgotPassword = () => {
             }}>
             {RVDic?.ChangePassword}
           </Button>
-
           <Button
             type="secondary-o"
             style={{
@@ -240,16 +187,16 @@ const ForgotPassword = () => {
             isVisible={true}
             label={RVDic?.CreateAccount}
             onCreateAccountClick={onCreateAccount}
-            loading={fetchingFiles}
           />
-        </Container>
+        </ForgotPasswordWrapper>
       )}
-    </Box>
+    </TransitionSwitchWrapper>
   );
 };
 
 export default ForgotPassword;
-const Container = styled.form`
+
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -257,14 +204,9 @@ const Container = styled.form`
   justify-content: center;
   padding-top: 1rem;
 `;
+
 const common_style = {
   marginBottom: '0.75rem',
   marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
-const Hiddener = styled.div`
-  width: 100%;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
-  transition: opacity 0.7s, max-height 1s;
-`;

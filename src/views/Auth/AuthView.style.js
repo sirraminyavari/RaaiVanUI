@@ -52,6 +52,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: flex-start;
 `;
+
 export const Box = styled.div`
   display: flex;
   width: 100%;
@@ -69,7 +70,9 @@ export const Box = styled.div`
   min-width: 100%;
   padding-bottom: 1rem;
 `;
+
 const time = 1;
+
 export const Center = styled.div`
   display: flex;
   height: 100%;

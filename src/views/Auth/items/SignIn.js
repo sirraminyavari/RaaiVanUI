@@ -15,7 +15,6 @@ import setPasswordAction from 'store/actions/auth/setPassAction';
 import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
-import ContinueWithGoogle from '../elements/ContinueWithGoogle';
 import LastLoginsModal from '../elements/LastLoginsModal';
 import CreateAccountButtons from './CreateAccountButtons';
 
@@ -82,6 +81,7 @@ const SignIn = () => {
   const onEmailChanged = (value) => {
     dispatch(setEmailAction(value));
   };
+
   /**
    * Synchronously sets inputted password to redux state.
    * @param {String} value - password input
@@ -98,14 +98,7 @@ const SignIn = () => {
     const { GlobalUtilities } = window;
     const reqParams = GlobalUtilities.request_params();
     const invitationId = reqParams?.get_value('inv');
-    console.log(
-      email,
-      'email',
-      password,
-      'password',
-      invitationId,
-      'invitationId'
-    );
+
     dispatch(
       loginAction({
         email: email,
@@ -114,6 +107,7 @@ const SignIn = () => {
       })
     );
   };
+
   /**
    * navigates to resetPassword page.
    */
@@ -124,6 +118,7 @@ const SignIn = () => {
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };
+
   /**
    * Starts to load sign up necessary files, by dispatching signupLoadFilesAction
    */
@@ -134,12 +129,14 @@ const SignIn = () => {
     dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
     // push('/auth/register');
   };
+
   /**
    * When the email input is focused, the password input will be focused.
    */
   const onEmailEnter = () => {
     passRef?.current?.focus();
   };
+
   /**
    * When the password input is focused, the sign in process starts.
    */
@@ -243,13 +240,9 @@ const Container = styled.form`
   width: 80%;
   padding-top: 1rem;
 `;
+
 const common_style = {
   marginBottom: '0.75rem',
   marginTop: '0.75rem',
   fontSize: '0.8rem',
 };
-const Hiddener = styled.div`
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  ${({ isVisible }) => (isVisible ? `max-height:100rem` : `max-height:0rem`)};
-  transition: opacity 0.7s, max-height 1s;
-`;
