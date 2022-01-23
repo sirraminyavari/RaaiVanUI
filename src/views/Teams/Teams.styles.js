@@ -793,7 +793,7 @@ export const WorkspaceSettingsHeaderContainer = styled.div`
   }
 `;
 
-export const WorkspaceSettingsTableContainer = styled.div`
+export const WorkspaceUserManagementTableContainer = styled.div`
   width: 100%;
   padding-top: 4rem;
   overflow-x: auto;
@@ -867,5 +867,157 @@ export const WorkspaceSettingsTableContainer = styled.div`
     background: ${CV_WHITE} 0% 0% no-repeat padding-box;
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT_WARM};
     border-radius: 0.6rem;
+  }
+`;
+
+export const WorkspacePlansContainer = styled.div`
+  display: flex;
+  padding-inline: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .planItem {
+    flex-shrink: 0;
+    padding: 1rem;
+    padding-block-start: 5rem;
+    min-width: 16rem;
+    max-width: 20rem;
+    width: 100%;
+
+    &.active {
+      .planContent {
+        box-shadow: 0px 7px 20px ${CV_DISTANT};
+      }
+      .planImage {
+        box-shadow: 0px 2px 7px ${CV_DISTANT};
+      }
+    }
+  }
+
+  .planContent {
+    padding: 0.8rem;
+    padding-block-start: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: ${TCV_WARM};
+    border: 1px solid ${CV_DISTANT};
+    border-radius: 0.8rem;
+    background: transparent
+      linear-gradient(149deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
+      padding-box;
+
+    > div:not(.planImage) {
+      width: 100%;
+    }
+  }
+
+  .planImage {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ${TCV_WARM};
+    background: transparent
+      linear-gradient(134deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
+      padding-box;
+    border: 1px solid ${CV_DISTANT};
+    border-radius: 0.8rem;
+    margin-block-start: -4.5rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .planDescription {
+    color: ${TCV_WARM};
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    font-size: 0.8rem;
+    svg {
+      margin-inline-end: 0.4rem;
+      font-size: 0.7rem;
+      color: ${TCV_DEFAULT};
+    }
+  }
+  .planTitle {
+    color: ${TCV_WARM};
+    font-weight: bold;
+    padding-block: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .planSlogan {
+    color: ${CV_GRAY};
+    padding-block-start: 0.5rem;
+    padding-block-end: 1.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+  }
+
+  .planActionButton {
+    margin-block-start: 1.5rem;
+  }
+`;
+
+export const WorkspacePlansTableContainer = styled.div`
+  width: 100%;
+  padding-top: 4rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  table {
+    min-width: 100%;
+    thead {
+      tr {
+        border-bottom: 1px solid ${CV_DISTANT};
+      }
+      th {
+        padding-inline: 2rem;
+        padding-block-end: 0.6rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        color: ${TCV_WARM};
+        :not(:first-of-type) {
+          text-align: center;
+        }
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid ${CV_DISTANT};
+        :last-of-type {
+          border-bottom-color: transparent;
+        }
+      }
+      td {
+        padding-block: 1rem;
+        padding-inline: 2rem;
+
+        > div {
+          .disabled {
+            color: ${CV_RED};
+          }
+          .enabled {
+            color: ${TCV_DEFAULT};
+          }
+          .info {
+            color: ${CV_DISTANT};
+          }
+        }
+        :not(:first-of-type) {
+          text-align: center;
+          > div {
+            text-align: center;
+            svg {
+              font-size: 1.2rem;
+            }
+          }
+        }
+      }
+    }
   }
 `;

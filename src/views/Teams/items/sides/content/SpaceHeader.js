@@ -46,11 +46,11 @@ const SpaceHeader = ({ space }) => {
   };
 
   const handleSpaceDelete = () => {
-    history.push(`/teams/workspace/remove/${space.WorkspaceID}`);
+    history.push(`/workspaces/remove/${space.WorkspaceID}`);
   };
 
   const handleSpaceSetting = () => {
-    history.push(`/teams/workspace/settings/${space.WorkspaceID}`);
+    history.push(`/workspaces/settings/user-management/${space.WorkspaceID}`);
   };
 
   return (

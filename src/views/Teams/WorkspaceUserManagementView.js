@@ -4,12 +4,10 @@ import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import React, { useEffect, useState } from 'react';
-
-//TODO create global reuseable component from searchUserInput or investigate other Input components to replace this component
 import SearchInput from 'components/Inputs/SearchInput';
 import APIHandler from 'apiHelper/APIHandler';
 import { useParams } from 'react-router-dom';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64, randomNumber } from 'helpers/helpers';
 import Avatar from 'components/Avatar/Avatar';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
@@ -24,7 +22,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
 import {
   WorkspaceSettingsHeaderContainer,
-  WorkspaceSettingsTableContainer,
+  WorkspaceUserManagementTableContainer,
 } from './Teams.styles';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
@@ -48,12 +46,12 @@ const WorkspaceSettingsView = () => {
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/teams',
+      linkTo: '/workspaces',
     },
     {
       id: 2,
       title: RVDic.ManageN.replace('[n]', RVDic.Users),
-      linkTo: '/teams/workspace/settings',
+      // linkTo: '/workspaces/settings/user-management',
     },
   ];
 
@@ -101,7 +99,7 @@ const WorkspaceSettingsView = () => {
     //? simple hack to make InfiniteScroll component fetch on search input changes
     window.scrollTo(0, 0);
     window.scrollTo(0, 10);
-    setInfiniteScrollRerenderer(window.GlobalUtilities.random());
+    setInfiniteScrollRerenderer(randomNumber());
   }, [SearchText]);
 
   //! configure sidebar content
@@ -264,13 +262,13 @@ const WorkspaceSettingsView = () => {
           </Heading>
         </WorkspaceSettingsHeaderContainer>
         <SearchInput
-          placeholder={'فیلتر بر اساس نام کاربر'}
+          placeholder={RVDic.Search}
           onChange={setSearchText}
           delayTime={650}
           defaultValue={''}
         />
 
-        <WorkspaceSettingsTableContainer>
+        <WorkspaceUserManagementTableContainer>
           <InfiniteScroll
             key={InfiniteScrollRerenderer}
             dataLength={workspaceUsers.length}
@@ -289,7 +287,7 @@ const WorkspaceSettingsView = () => {
             }>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
-        </WorkspaceSettingsTableContainer>
+        </WorkspaceUserManagementTableContainer>
       </div>
     </WelcomeLayout>
   );

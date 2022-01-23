@@ -115,7 +115,7 @@ export const MONITORING_TEAMS_PATH = '/monitoring/:ApplicationID';
 // // '/monitoring-teams';
 export const MONITORING_TEAMS_NAME = 'monitoringTeams';
 
-export const TEAMS_PATH = getURL('Applications');
+export const TEAMS_PATH = '/workspaces';
 export const TEAMS_NAME = 'teams';
 export const LOGIN_PATH = getURL('Login');
 export const LOGIN_NAME = 'login';

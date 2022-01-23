@@ -1,6 +1,6 @@
 /**
  * Renders a component according to current route if not authenticated
- * ... Otherwise, redirects user to '/teams' route.
+ * ... Otherwise, redirects user to '/workspaces' route.
  */
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';

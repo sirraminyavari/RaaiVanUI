@@ -63,7 +63,7 @@ const ContinueWithGoogle = ({ ...props }) => {
           dispatch(loggedInAction(result));
           // dispatch(setAuthUserAction(result?.User));
           // window.RVGlobal.IsAuthenticated = true;
-          // window.location.href = afterLogin(response) || '/teams';
+          // window.location.href = afterLogin(response) || '/workspaces';
         }
       }
     );

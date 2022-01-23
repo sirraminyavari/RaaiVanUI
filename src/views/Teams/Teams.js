@@ -19,10 +19,17 @@ const WorkspaceDeleteView = WithSuspense(
     )
   )
 );
-const WorkspaceSettingsView = WithSuspense(
+const WorkspaceUserManagementView = WithSuspense(
   lazy(() =>
     import(
-      /* webpackChunkName: "teams-workspace-view"*/ 'views/Teams/WorkspaceSettingsView'
+      /* webpackChunkName: "teams-workspace-view"*/ 'views/Teams/WorkspaceUserManagementView'
+    )
+  )
+);
+const WorkspacePlansView = WithSuspense(
+  lazy(() =>
+    import(
+      /* webpackChunkName: "teams-workspace-view"*/ 'views/Teams/WorkspacePlansView'
     )
   )
 );
@@ -37,18 +44,23 @@ const TeamsView = () => {
   return (
     <>
       <TransitionSwitchWrapper>
-        <Route exact path={'/teams'} component={TeamsWorkspaceView} />
+        <Route exact path={'/workspaces'} component={TeamsWorkspaceView} />
         <Route
           exact
-          path={'/teams/workspace/remove/:id'}
+          path={'/workspaces/remove/:id'}
           component={WorkspaceDeleteView}
         />
         <Route
           exact
-          path={'/teams/workspace/settings/:id'}
-          component={WorkspaceSettingsView}
+          path={'/workspaces/settings/user-management/:id'}
+          component={WorkspaceUserManagementView}
         />
-        <Redirect to={'/teams'} />
+        <Route
+          exact
+          path={'/workspaces/settings/plans/:id'}
+          component={WorkspacePlansView}
+        />
+        <Redirect to={'/workspaces'} />
       </TransitionSwitchWrapper>
     </>
   );
