@@ -4,16 +4,6 @@ import styled from 'styled-components';
 import { TC_DEFAULT } from 'constant/Colors';
 import { CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 
-const TextContainer = styled.p`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.85rem;
-  margin-bottom: ${({ bottomMargin }) => (bottomMargin ? bottomMargin : '')};
-  color: ${({ color }) => (color ? color : 'unset')};
-  font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
-`;
 /**
  *
  * Delete Confirm Message component
@@ -63,3 +53,14 @@ DeleteConfirmMSG.defaultProps = {
 };
 
 export default DeleteConfirmMSG;
+
+const TextContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: ${({ bottomMargin }) => (bottomMargin ? bottomMargin : '')};
+  color: ${({ color }) => (color ? color : 'unset')};
+  font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
+`;

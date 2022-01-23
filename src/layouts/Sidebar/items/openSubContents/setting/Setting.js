@@ -18,9 +18,11 @@ import {
   SETTING_CONTENT,
   SETT_CLASSES_CONTENT,
   SETT_NOTIFS_CONTENT,
+  SETT_WORKSPACE_CONTENT,
   SETT_TEAM_CONTENT,
   SETT_USERS_CONTENT,
 } from 'constant/constants';
+import WorkspaceContent from './items/workspace/WorkspaceContent';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -48,6 +50,8 @@ const SidebarSettingContent = () => {
         return RVDic.TemplateManagement;
       case splitTitle(SETT_NOTIFS_CONTENT):
         return RVDic.NotificationSettings;
+      case splitTitle(SETT_WORKSPACE_CONTENT):
+        return RVDic.SettingsOfN.replace('[n]', RVDic.Workspace);
       default:
         return RVDic.TeamManagement;
     }
@@ -75,6 +79,8 @@ const SidebarSettingContent = () => {
         return <EditableTree />;
       case SETT_NOTIFS_CONTENT:
         return 'notifs';
+      case SETT_WORKSPACE_CONTENT:
+        return <WorkspaceContent />;
       default:
         return <SettingItems />;
     }

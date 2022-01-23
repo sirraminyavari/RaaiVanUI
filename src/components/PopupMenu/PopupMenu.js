@@ -32,6 +32,21 @@ const ArrowRadius = 0.4;
  *  @description Renders a popup menu.
  * @component
  * @param {PropType} props
+ *
+ * <PopupMenu/> component accepts two direct HTML elements as children,
+ * First element should be the reference component and the second element should be the popup menu container.
+ *
+ * Example:
+ * ```js
+ * <PopupMenu>
+ *  <div className="reference-component">
+ *    Hover me ...
+ *  </div>
+ *  <div className="popup-menu-container">
+ *    this is the popup !
+ *  </div>
+ * </PopupMenu>
+ * ```
  */
 const PopupMenu = (props) => {
   const { GlobalUtilities } = useContext(WindowContext);

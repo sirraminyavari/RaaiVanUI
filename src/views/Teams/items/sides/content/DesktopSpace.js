@@ -4,7 +4,6 @@ import * as Styled from 'views/Teams/Teams.styles';
 import SpaceHeader from './SpaceHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import NewTeam from './NewTeam';
 import ArchivedTeams from './ArchivedTeams';
 
@@ -13,6 +12,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from './DragTeam';
 import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
+import WorkspaceTeamsSkeleton from '../../others/skeletons/WorkspaceTeams';
+import { useEffect, useState } from 'react';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -37,6 +38,14 @@ const DesktopWorkSpace = ({ space }) => {
   const archivedApps = useSelector(selectArchivedApplications);
   const isFetching = useSelector(selectIsFetchingApps);
 
+  //! add a simple delay to [isFetching] redux state
+  const [DelayedLoading, setDelayedLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setDelayedLoading(isFetching);
+    }, 5000);
+  }, [isFetching]);
+
   const moveCard = (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
     dispatch(setApplicationsOrder(reordered));
@@ -60,8 +69,8 @@ const DesktopWorkSpace = ({ space }) => {
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
           <Styled.TeamListConatiner>
-            {isFetching ? (
-              <LogoLoader />
+            {DelayedLoading || isFetching ? (
+              <WorkspaceTeamsSkeleton />
             ) : (
               <>
                 {teams?.map((team, index) => {

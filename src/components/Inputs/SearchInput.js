@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import SearchInput from './SearchInput';
+import RxInput from './RxInput';
 
 const InputWrapper = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const InputWrapper = styled.div`
   background-color: var(--rv-white-color);
 `;
 
-const CustomInput = styled(SearchInput).attrs({
+const CustomInput = styled(RxInput).attrs({
   type: 'text',
 })`
   outline: none;
@@ -31,7 +31,7 @@ const CustomInput = styled(SearchInput).attrs({
   }
 `;
 
-const SearchUserInput = React.forwardRef((props, ref) => {
+const SearchInput = React.forwardRef((props, ref) => {
   return (
     <InputWrapper>
       <CustomInput ref={ref} {...props} />
@@ -39,5 +39,5 @@ const SearchUserInput = React.forwardRef((props, ref) => {
     </InputWrapper>
   );
 });
-SearchUserInput.displayName = 'SearchUserInput';
-export default SearchUserInput;
+SearchInput.displayName = 'SearchInput';
+export default SearchInput;

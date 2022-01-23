@@ -103,7 +103,7 @@ const loginAction = ({ email, password, invitationId }) => async (
             window.RVGlobal.IsAuthenticated = true;
             const afterLoginResult = await afterLogin(response);
 
-            window.location.href = afterLoginResult || '/teams';
+            window.location.href = afterLoginResult || '/workspaces';
           }
         },
         (err) => {

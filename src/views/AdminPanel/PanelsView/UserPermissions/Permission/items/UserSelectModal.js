@@ -12,7 +12,7 @@ import {
 } from 'constant/CssVariables';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import UserRoleItemToSelect from './UserRoleItemToSelect';
-import SearchInput from '../../../Users/items/SearchInput';
+import SearchInput from 'components/Inputs/SearchInput';
 import { getUsers } from '../../api';
 import { PermissionContext } from '../Permissions';
 import PerfectScrollbar from 'react-perfect-scrollbar';

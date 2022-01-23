@@ -1,9 +1,9 @@
 import * as Styled from 'views/Teams/Teams.styles';
 import WorkspaceDeleteImage from 'assets/images/workspace-delete.svg?file';
-import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 import { useHistory } from 'react-router-dom';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import ReturnButton from 'components/Buttons/ReturnButton';
 
 const WorkspaceDeleteWelcome = () => {
   const { RVDic } = useWindow();
@@ -15,12 +15,7 @@ const WorkspaceDeleteWelcome = () => {
       {!isMobileScreen && (
         <>
           <Styled.WorkspaceDeleteWelcomeHeader>
-            <Button
-              onClick={goBack}
-              type="negative-secondary-o"
-              style={{ marginInline: '0.5rem' }}>
-              {RVDicReturn}
-            </Button>
+            <ReturnButton onClick={goBack} style={{ marginInline: '0.5rem' }} />
           </Styled.WorkspaceDeleteWelcomeHeader>
           <Styled.WorkspaceImageWrapper>
             <Styled.WorkspaceImage

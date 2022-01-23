@@ -13,7 +13,7 @@ import {
   CV_WHITE,
   TCV_DEFAULT,
 } from 'constant/CssVariables';
-import SearchInput from '../../../Users/items/SearchInput';
+import SearchInput from 'components/Inputs/SearchInput';
 import useLazyPaginatedTree from './LazyPaginatedTree';
 import LazyTreeNode from './LazyTreeNode';
 import { decodeBase64, getUUID } from 'helpers/helpers';

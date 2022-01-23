@@ -4,9 +4,10 @@ import AlertIcon from 'components/Icons/AlertIcon/AlertIcon';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import OTPCountDownTimer from 'components/OTP/CountDownTimer';
 import OTPVerificationInput from 'components/OTP/VerificationInput';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 import {
   decodeBase64,
-  destroyCaptchaToken,
+  hideCaptchaToken,
   getCaptchaToken,
   initializeCaptchaToken,
 } from 'helpers/helpers';
@@ -24,6 +25,7 @@ const RemoveWorkspaceTicketAPI = new APIHandler(
 const RemoveWorkspaceAPI = new APIHandler('RVAPI', 'RemoveWorkspace');
 const WorkspaceDeleteContent = () => {
   const [OTPInput, setOTPInput] = useState([]);
+  const [pendingPromise, setPendingPromise] = useState(false);
   const dispatch = useDispatch();
   const [timerFinished, setTimerFinished] = useState(false);
   const [OTPProperties, setOTPProperties] = useState(undefined);
@@ -45,7 +47,7 @@ const WorkspaceDeleteContent = () => {
     RVDic.MSG.DeleteWorkspaceVerficiationCode;
   const RVDicReturn = RVDic.Return;
   const RVDicResend = RVDic.Resend;
-  const RVDicConfirmDelete = 'تایید و حذف';
+  const RVDicConfirmDelete = `${RVDic.Confirm} ${RVDic.And} ${RVDic.Remove}`;
 
   const handleLoaded = async () => {
     const recaptcha = await getCaptchaToken();
@@ -68,16 +70,27 @@ const WorkspaceDeleteContent = () => {
     );
   };
 
-  const handleReturnButton = () => history.push('/teams');
+  const ReturnToWorkspaces = () => history.push('/teams');
   const handleRemoveWorkspaceButton = () => {
+    setPendingPromise(true);
     RemoveWorkspaceAPI.fetch(
       {
         VerificationToken: OTPProperties.Token, //got from RVAPI.RemoveWorkspaceTicket previously
         Code: OTPInput.join(''), //a 5-digit number
       },
-      (response) => {
-        console.log(`success:`, { response });
-        history.push('/teams');
+      ({ ErrorText, Succeed }) => {
+        if (!ErrorText) {
+          InfoToast({
+            type: 'success',
+            message: RVDic.MSG[Succeed] || Succeed,
+          });
+          ReturnToWorkspaces();
+        } else
+          InfoToast({
+            type: 'error',
+            message: RVDic.MSG[ErrorText] || ErrorText,
+          });
+        setPendingPromise(false);
       }
     );
   };
@@ -88,8 +101,8 @@ const WorkspaceDeleteContent = () => {
       await handleLoaded();
     })();
 
-    // removes reCapctha when component willunmount
-    return () => destroyCaptchaToken();
+    // hides reCapctha when component willunmount
+    return () => hideCaptchaToken();
   }, []);
 
   return (
@@ -120,7 +133,7 @@ const WorkspaceDeleteContent = () => {
           {RVDicRemoveWorkspaceConsequence3}.
         </Styled.WorkspaceDeleteConsequencesListItem>
       </Styled.WorkspaceDeleteConsequencesList>
-      {OTPProperties?.Timeout && (
+      {OTPProperties?.Timeout ? (
         <>
           <Styled.WorkspaceDeleteString marginTop="2rem">
             {RVDicRemoveWorkspaceOTPVerification}:
@@ -151,17 +164,20 @@ const WorkspaceDeleteContent = () => {
             )}
           </Styled.WorkspaceDeleteActionsContainer>
         </>
+      ) : (
+        <LogoLoader />
       )}
       <Styled.WorkspaceDeleteActionsContainer>
         <Button
-          loading={!OTPProperties}
+          loading={pendingPromise}
+          disable={!OTPProperties?.Timeout}
           onClick={handleRemoveWorkspaceButton}
           type="negative-o"
           style={{ marginInline: '0.5rem' }}>
           {RVDicConfirmDelete}
         </Button>
         <Button
-          onClick={handleReturnButton}
+          onClick={ReturnToWorkspaces}
           type="primary-o"
           style={{ marginInline: '0.5rem' }}>
           {RVDicReturn}

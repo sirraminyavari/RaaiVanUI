@@ -35,6 +35,7 @@ export const PROFILE_CONTENT = 'profile';
 export const SETT_USERS_CONTENT = 'setting-users';
 export const SETT_TEAM_CONTENT = 'setting-team';
 export const SETT_NOTIFS_CONTENT = 'setting-notifs';
+export const SETT_WORKSPACE_CONTENT = 'setting-workspace';
 export const SETT_CLASSES_CONTENT = 'setting-classes';
 export const SETT_URL_CONTENT = 'setting-{url}';
 
@@ -114,7 +115,7 @@ export const MONITORING_TEAMS_PATH = '/monitoring/:ApplicationID';
 // // '/monitoring-teams';
 export const MONITORING_TEAMS_NAME = 'monitoringTeams';
 
-export const TEAMS_PATH = getURL('Applications');
+export const TEAMS_PATH = '/workspaces';
 export const TEAMS_NAME = 'teams';
 export const LOGIN_PATH = getURL('Login');
 export const LOGIN_NAME = 'login';

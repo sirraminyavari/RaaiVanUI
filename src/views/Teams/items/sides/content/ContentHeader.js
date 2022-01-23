@@ -42,7 +42,7 @@ const Header = () => {
     const apiHandler = new APIHandler('RVAPI', 'CreateWorkspace');
     if (spaceName.length > 0)
       apiHandler.fetch({ Name: encodeBase64(spaceName) }, (response) => {
-        history.push('/teams');
+        history.push('/workspaces');
         console.log(response);
 
         setIsModalShown(false);
