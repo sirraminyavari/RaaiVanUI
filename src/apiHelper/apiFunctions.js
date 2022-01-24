@@ -1358,7 +1358,7 @@ export const getUploadLink = (ownerId = '', ownerType = '') => {
  * @param Calender
  * @return {Promise<unknown>}
  */
-export const saveApplicationInfo = (
+export const saveApplicationInfo = ({
   ApplicationID,
   Title,
   Tagline,
@@ -1368,8 +1368,8 @@ export const saveApplicationInfo = (
   ExpertiseFieldID,
   ExpertiseFieldName,
   Language,
-  Calendar
-) => {
+  Calendar,
+} = {}) => {
   const saveApplicationInfoAPI = API_Provider(RV_API, SAVE_APPLICATION_INFO);
 
   return new Promise((resolve, reject) => {

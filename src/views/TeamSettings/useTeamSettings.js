@@ -21,6 +21,7 @@ import {
   PERSIAN_LANGUAGE,
   TEN_TO_TWENTY,
 } from '../../constant/constants';
+import InfoToast from '../../components/toasts/info-toast/InfoToast';
 
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
@@ -105,22 +106,42 @@ const useTeamSettings = (props) => {
       Calendar,
     } = applicationInfo;
 
-    try {
-      const saveResult = await saveApplicationInfo(
-        ApplicationID,
-        Title,
-        Tagline,
-        Website,
-        About,
-        Size,
-        ExpertiseFieldID,
-        ExpertiseFieldName,
-        Language,
-        Calendar
-      );
-    } catch (err) {
-      console.log('saving app info error', err);
-    }
+    saveApplicationInfo({
+      ApplicationID,
+      Title,
+      Tagline,
+      Website,
+      About,
+      Size,
+      ExpertiseFieldID,
+      ExpertiseFieldName,
+      Language,
+      Calendar,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res?.Succeed) {
+          InfoToast({
+            type: 'success',
+            autoClose: true,
+            message: `.تغییرات شما ذخیره شد`,
+          });
+        } else {
+          InfoToast({
+            type: 'error',
+            autoClose: true,
+            message: `خطایی رخ داد.`,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        InfoToast({
+          type: 'error',
+          autoClose: true,
+          message: `خطایی رخ داد.`,
+        });
+      });
   };
 
   /**

@@ -11,7 +11,7 @@ export const CustomInput = styled.input`
   border-bottom: var(--rv-color-distant) 0.05rem solid;
   text-align: center;
   height: ${({ light }) => (!light ? '3rem' : '2rem')};
-  width: 14rem;
+  width: 100%;
   font-size: ${({ light }) => (!light ? '1.75rem' : '1.12rem')};
   ${({ light }) => !light && 'font-weight: bolder;'}
   color: ${({ light }) =>
