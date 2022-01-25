@@ -9,7 +9,7 @@ import {
   TCV_LIGHTWARM,
   TCV_WARM,
 } from 'constant/CssVariables';
-import ReloadCircleIcon from 'components/Icons/ReloadCircleIcon/ReloadCircleIcon';
+import ReloadIcon from 'components/Icons/ReloadIcon/ReloadIcon';
 import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
@@ -51,7 +51,7 @@ const ResetPassword = ({ render, userId, ...props }) => {
   return (
     <Container>
       <ResetButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
-        <ReloadCircleIcon size={22} />
+        <ReloadIcon size={22} />
       </ResetButton>
 
       <Modal

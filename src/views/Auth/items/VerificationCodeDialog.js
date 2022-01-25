@@ -1,21 +1,58 @@
 import Button from 'components/Buttons/Button';
 import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
-import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 
-const { RVDic } = window;
+const { RVDic, GlobalUtilities } = window;
 
 const VerificationCodeDialog = ({
   email,
   isSending,
-  isFinalizing,
-  reset,
-  verificationCode,
   verificationCodeObject,
-  handleVerificationCode,
   onCodeRequest = () => {},
   onConfirm = () => {},
-  onCancel = () => {},
 } = {}) => {
+  const [verificationCode, setVerificationCode] = useState();
+  const [error, setError] = useState('');
+  const [shake, setShake] = useState(0);
+  const [reset, setReset] = useState(0);
+
+  const [isValidating, setIsValidating] = useState(false);
+  const [timerFinished, setTimerFinished] = useState(false);
+
+  useEffect(() => {
+    setError('');
+    setReset(GlobalUtilities.random());
+    setTimerFinished(false);
+    setVerificationCode('');
+  }, [verificationCodeObject]);
+
+  const handleVerificationCode = (arr, val, data) => {
+    setError('');
+    setShake(0);
+
+    setVerificationCode(val);
+
+    if (
+      String(val || '_').length === verificationCodeObject?.Length &&
+      data?.lastChangedIndex + 1 === verificationCodeObject?.Length &&
+      !timerFinished
+    )
+      validate(val);
+  };
+
+  const validate = (val) => {
+    setIsValidating(true);
+
+    onConfirm(val || verificationCode, (error) => {
+      if (error) {
+        setError(error);
+        setShake(GlobalUtilities.random());
+      }
+
+      setIsValidating(false);
+    });
+  };
+
   return (
     <>
       <VerificationInputWithTimer
@@ -23,47 +60,28 @@ const VerificationCodeDialog = ({
         length={verificationCodeObject?.Length}
         timeout={verificationCodeObject?.Timeout}
         onValueChange={handleVerificationCode}
+        onTimerFinished={() => setTimerFinished(true)}
         resendCodeRequest={onCodeRequest}
         loading={isSending}
         reset={reset}
         columnView
+        error={error}
+        shake={shake}
       />
-      <RowItems style={{ marginTop: '2rem' }}>
-        <Button
-          style={{
-            flex: '0 0 auto',
-            marginInlineEnd: '1rem',
-            width: '8rem',
-          }}
-          disable={
-            String(verificationCode || 1).length !==
+      <Button
+        style={{ width: '100%', marginTop: '2rem' }}
+        disable={
+          !!error ||
+          timerFinished ||
+          String(verificationCode || 1).length !==
             verificationCodeObject?.Length
-          }
-          onClick={onConfirm}
-          loading={isFinalizing}>
-          {RVDic.Confirm}
-        </Button>
-        <Button
-          type="primary-o"
-          style={{
-            flex: '0 0 auto',
-            marginInlineStart: '1rem',
-            width: '8rem',
-          }}
-          onClick={onCancel}>
-          {RVDic.Return}
-        </Button>
-      </RowItems>
+        }
+        onClick={() => validate()}
+        loading={isValidating}>
+        {RVDic.Continue}
+      </Button>
     </>
   );
 };
 
 export default VerificationCodeDialog;
-
-const RowItems = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;

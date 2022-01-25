@@ -1,6 +1,7 @@
 /**
  * A component for rendering single cell for each code input char
  */
+import Input from 'components/Inputs/Input';
 import { LIGHT_BLUE, RED } from 'constant/Colors';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -10,6 +11,7 @@ const { RV_Float } = window;
 
 const VerificationInput = ({
   error,
+  shake,
   value,
   length,
   onValueChange,
@@ -19,22 +21,28 @@ const VerificationInput = ({
 }) => {
   // Index of next char
   const [ind, setIndex] = useState(0);
+
   // verification code input UI is designed to every char has its cell.
   //so verification code stores as an array and finally will convert to string
   const [inputArray, setInputArray] = useState([]);
 
+  const [doShake, setDoShake] = useState(shake);
+
   useEffect(() => {
-    //reset the verification code
+    setDoShake(shake);
+    let to = setTimeout(() => setDoShake(0), 1000);
+    return () => clearTimeout(to);
+  }, [shake]);
+
+  useEffect(() => {
+    setInputArray([...Array(length).keys()].map((i) => -1));
+    setIndex(0);
   }, [reset]);
 
   // According to verifyCodeLength:
   // Creates an array of '-1' for verification code array.
   useEffect(() => {
-    let activationCodeArray = [];
-    for (let i = 0; i < length; i++) {
-      activationCodeArray.push(-1);
-    }
-    setInputArray(activationCodeArray);
+    setInputArray([...Array(length).keys()].map((i) => -1));
   }, [length]);
 
   /**
@@ -46,6 +54,7 @@ const VerificationInput = ({
 
     useEffect(() => {
       itemsRef.current[ind]?.focus();
+      itemsRef.current[ind]?.select();
     }, [value, ind]);
 
     // according to input array length, produces cells with help of 'map'.
@@ -58,25 +67,23 @@ const VerificationInput = ({
            * this method decides to change the focus forward or backward.
            * @param {HTMLInputElement} e - user inputs
            */
-          const OnChange = (e) => {
-            const input = e.target.value;
-            // Detects user is deleting
-            if (input === '') {
-              let pre = inputArray;
+          const handleKeyUp = (e) => {
+            const val = e.key;
+            let pre = inputArray;
+
+            if (String(e.key).toLowerCase() === 'backspace') {
               pre[index] = -1;
               setInputArray(pre);
-              // dispatch(setVerifyCodeAction(pre));
-              onValueChange(pre);
-              setIndex(index - 1);
-            }
-            // Detects user is typing
-            else {
-              let pre = inputArray;
-              pre[index] = input;
+              onValueChange(pre, { lastChangedIndex: index });
+              setIndex(Math.max(index - 1, 0));
+            } else if (String(e.key).toLowerCase() === 'arrowleft')
+              setIndex(Math.max(index - 1, 0));
+            else if (String(e.key).toLowerCase() === 'arrowright')
+              setIndex(Math.min(index + 1, length - 1));
+            else if (+val >= 0) {
+              pre[index] = +val;
               setInputArray(pre);
-              // dispatch(setVerifyCodeAction(pre));
-              onValueChange(pre);
-
+              onValueChange(pre, { lastChangedIndex: index });
               setIndex(index + 1);
             }
           };
@@ -88,10 +95,12 @@ const VerificationInput = ({
               maxLength="1"
               size={size}
               value={inputArray[index] !== -1 ? inputArray[index] : ''}
-              onChange={OnChange}
+              onKeyUp={handleKeyUp}
+              onFocus={(e) => setIndex(index)}
               width={100 / inputArray.length + '%'}
               ref={(el) => (itemsRef.current[index] = el)}
-              error={error}
+              error={!!error}
+              shake={doShake}
             />
           );
         })}
@@ -101,9 +110,7 @@ const VerificationInput = ({
 
   return (
     <Container {...props}>
-      <ShakeAnimate isVisible={error}>
-        {inputArray?.length > 0 && <VerifyCodeInputProducer />}
-      </ShakeAnimate>
+      {inputArray?.length > 0 && <VerifyCodeInputProducer />}
       {error && <ErrorMessage error={error}>{error}</ErrorMessage>}
     </Container>
   );
@@ -117,7 +124,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const InputChar = styled.input`
+const InputChar = styled(Input)`
   display: flex;
 
   border-width: 1px;
@@ -125,7 +132,6 @@ const InputChar = styled.input`
   border-style: solid;
   border-radius: 7px;
   background-color: white;
-  /* width: ${({ width }) => width}; */
   width: ${({ size }) => size || 3}rem;
   height: ${({ size }) => size || 3}rem;
   margin: 5px;

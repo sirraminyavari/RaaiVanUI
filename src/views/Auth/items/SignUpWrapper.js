@@ -2,15 +2,16 @@
  *  Wrapper component for SignUp page
  */
 import Heading from 'components/Heading/Heading';
+import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import React from 'react';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 
-const { RVDic } = window;
+const { RVDic, RV_RTL } = window;
 /**
  * In this page user can create an account with his/her mobile/email.
  */
-const SignUpWrapper = ({ children } = {}) => {
+const SignUpWrapper = ({ codeMode, onCodeCancel, children } = {}) => {
   return (
     <Box>
       <Container>
@@ -20,9 +21,26 @@ const SignUpWrapper = ({ children } = {}) => {
             marginTop: '2rem',
             marginBottom: '2rem',
             textAlign: 'center',
+            position: 'relative',
+            width: '100%',
           }}
           className={'rv-distant'}>
-          {RVDic.CreateAccount}
+          {codeMode && (
+            <ArrowIcon
+              dir={RV_RTL ? 'right' : 'left'}
+              style={{
+                marginInlineEnd: '0.5rem',
+                fontWeight: 'bold',
+                position: 'absolute',
+                [RV_RTL ? 'right' : 'left']: 0,
+                top: '0.3rem',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+              }}
+              onClick={onCodeCancel}
+            />
+          )}
+          {codeMode ? RVDic.VerificationCode : RVDic.CreateAccount}
         </Heading>
         {children}
       </Container>

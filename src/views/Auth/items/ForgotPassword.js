@@ -6,7 +6,6 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import setEmailAction from 'store/actions/auth/setEmailAction';
 import styled from 'styled-components';
 import CreateAccountButtons from './CreateAccountButtons';
 import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
@@ -43,13 +42,8 @@ const ForgotPassword = () => {
 
   //true means that sending verification code is in progress
   const [isSending, setIsSending] = useState(false);
-  const [isFinalizing, setIsFinalizing] = useState(false);
 
-  //true means that verification-code component must be rendered
-  const [verificationCodeMode, setVerificationCodeMode] = useState(false);
-  const [verificationCode, setVerificationCode] = useState();
   const [verificationCodeObject, setVerificationCodeObject] = useState(null);
-  const [resetVerificationCode, setResetVerificationCode] = useState();
 
   // Returns the user to the login page.
   const onReturn = () => {
@@ -85,34 +79,23 @@ const ForgotPassword = () => {
       alert(RVDic.MSG[results.ErrorText] || results.ErrorText, {
         autoClose: 20000,
       });
-    else if (results?.VerificationCode) {
-      setVerificationCodeMode(true);
+    else if (results?.VerificationCode)
       setVerificationCodeObject(results.VerificationCode);
-      setResetVerificationCode(GlobalUtilities.random());
-    }
   };
 
-  const finalValidation = async (val) => {
-    setIsFinalizing(true);
-
+  const finalValidation = async (val, done = () => {}) => {
     const results = await savePassword({
       Token: verificationCodeObject?.Token,
-      Code: val || verificationCode,
+      Code: val,
       Login: true,
     });
 
-    setIsFinalizing(false);
-
     if (results?.ErrorText)
-      alert(RVDic.MSG[results.ErrorText] || results.ErrorText);
-    else dispatch(loggedInAction(results));
-  };
-
-  const handleVerificationCode = (arr, val) => {
-    setVerificationCode(val);
-
-    if (String(val || '_').length === verificationCodeObject?.Length)
-      finalValidation(val);
+      done(RVDic.MSG[results.ErrorText] || results.ErrorText);
+    else {
+      done();
+      dispatch(loggedInAction(results));
+    }
   };
 
   const onCreateAccount = () => {
@@ -121,24 +104,21 @@ const ForgotPassword = () => {
 
   return (
     <TransitionSwitchWrapper
-      transitionKey={verificationCodeMode ? 'vr-code' : 'normal'}>
-      {verificationCodeMode && (
-        <ForgotPasswordWrapper>
+      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}>
+      {!!verificationCodeObject?.Token && (
+        <ForgotPasswordWrapper
+          codeMode={true}
+          onCodeCancel={() => setVerificationCodeObject(null)}>
           <VerificationCodeDialog
             email={email}
             isSending={isSending}
-            isFinalizing={isFinalizing}
-            reset={resetVerificationCode}
-            verificationCode={verificationCode}
             verificationCodeObject={verificationCodeObject}
-            handleVerificationCode={handleVerificationCode}
             onCodeRequest={onSendVerifyCode}
             onConfirm={finalValidation}
-            onCancel={() => setVerificationCodeMode(false)}
           />
         </ForgotPasswordWrapper>
       )}
-      {!verificationCodeMode && (
+      {!verificationCodeObject?.Token && (
         <ForgotPasswordWrapper>
           <AnimatedInput
             onChange={(v) => {

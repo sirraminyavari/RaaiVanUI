@@ -13,7 +13,7 @@ import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
-import RfreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
+import RefreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
 import {
   USER_PATH,
   USER_SECURITY_PATH,
@@ -216,7 +216,7 @@ const Teams = ({ ...props }) => {
                   // justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <RfreshIcon size={17} />
+                <RefreshIcon size={17} />
               </span>
               <span
                 style={{
