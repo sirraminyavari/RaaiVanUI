@@ -43,13 +43,9 @@ const SignUp = () => {
 
   //true means that sending verification code is in progress
   const [isSending, setIsSending] = useState(false);
-  const [isFinalizing, setIsFinalizing] = useState(false);
 
   //true means that verification-code component must be rendered
-  const [verificationCodeMode, setVerificationCodeMode] = useState(false);
-  const [verificationCode, setVerificationCode] = useState();
   const [verificationCodeObject, setVerificationCodeObject] = useState(null);
-  const [resetVerificationCode, setResetVerificationCode] = useState();
 
   //a dictionary of emails that we have checked their availability
   const [emailsDic, setEmailsDic] = useState({});
@@ -138,27 +134,23 @@ const SignUp = () => {
       alert(RVDic.MSG[results.ErrorText] || results.ErrorText, {
         autoClose: 20000,
       });
-    else if (results?.VerificationCode) {
-      setVerificationCodeMode(true);
+    else if (results?.VerificationCode)
       setVerificationCodeObject(results.VerificationCode);
-      setResetVerificationCode(GlobalUtilities.random());
-    }
   };
 
-  const finalValidation = async (val) => {
-    setIsFinalizing(true);
-
+  const finalValidation = async (val, done = () => {}) => {
     const results = await validateUserCreation({
       Token: verificationCodeObject?.Token,
-      Code: val || verificationCode,
+      Code: val,
       Login: true,
     });
 
-    setIsFinalizing(false);
-
     if (results?.ErrorText)
-      alert(RVDic.MSG[results.ErrorText] || results.ErrorText);
-    else dispatch(loggedInAction(results));
+      done(RVDic.MSG[results.ErrorText] || results.ErrorText);
+    else {
+      done();
+      dispatch(loggedInAction(results));
+    }
   };
 
   // Returns user to the login page.
@@ -166,33 +158,23 @@ const SignUp = () => {
     push(LOGIN_PATH + window.location.search);
   };
 
-  const handleVerificationCode = (arr, val) => {
-    setVerificationCode(val);
-
-    if (String(val || '_').length === verificationCodeObject?.Length)
-      finalValidation(val);
-  };
-
   return (
     <TransitionSwitchWrapper
-      transitionKey={verificationCodeMode ? 'vr-code' : 'normal'}>
-      {verificationCodeMode && (
-        <SignUpWrapper>
+      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}>
+      {!!verificationCodeObject?.Token && (
+        <SignUpWrapper
+          codeMode={true}
+          onCodeCancel={() => setVerificationCodeObject(null)}>
           <VerificationCodeDialog
             email={email}
             isSending={isSending}
-            isFinalizing={isFinalizing}
-            reset={resetVerificationCode}
-            verificationCode={verificationCode}
             verificationCodeObject={verificationCodeObject}
-            handleVerificationCode={handleVerificationCode}
             onCodeRequest={onSendVerifyCode}
             onConfirm={finalValidation}
-            onCancel={() => setVerificationCodeMode(false)}
           />
         </SignUpWrapper>
       )}
-      {!verificationCodeMode && (
+      {!verificationCodeObject?.Token && (
         <SignUpWrapper>
           <AnimatedInput
             onChange={(v) => setEmail(v)}

@@ -16,7 +16,7 @@ import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
-import RfreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
+import RefreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
 import {
   REPORTS_PATH,
   USER_PATH,
@@ -271,7 +271,7 @@ const MonitoringView = ({ ...props }) => {
                   alignItems: 'center',
                   marginInlineEnd: '.3rem',
                 }}>
-                <RfreshIcon size={17} />
+                <RefreshIcon size={17} />
               </span>
               <span
                 style={{

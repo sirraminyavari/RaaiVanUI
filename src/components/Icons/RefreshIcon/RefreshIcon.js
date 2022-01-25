@@ -1,7 +1,7 @@
 import { BiRefresh } from 'react-icons/bi';
 
-const RfreshIcon = (props) => {
+const RefreshIcon = (props) => {
   return <BiRefresh {...props} />;
 };
 
-export default RfreshIcon;
+export default RefreshIcon;

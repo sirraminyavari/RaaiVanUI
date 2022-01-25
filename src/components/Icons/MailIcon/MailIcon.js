@@ -1,12 +1,12 @@
-import { GoMail } from 'react-icons/go';
-import { MdEmail } from 'react-icons/md';
+import { FaRegEnvelope } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 
 const MailIcon = (props) => {
   const { fill, ...rest } = props;
   if (!!fill) {
-    return <MdEmail {...rest} />;
+    return <FaEnvelope {...rest} />;
   } else {
-    return <GoMail {...rest} />;
+    return <FaRegEnvelope {...rest} />;
   }
 };
 
