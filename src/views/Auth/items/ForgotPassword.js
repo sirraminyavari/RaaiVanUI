@@ -19,7 +19,7 @@ import {
 } from 'apiHelper/ApiHandlers/usersApi';
 import { REGISTER_PATH } from 'constant/constants';
 import loggedInAction from 'store/actions/auth/loggedInAction';
-import VerificationCodeDialog from './VerificationCodeDialog';
+import VerificationCodeDialog from 'components/OTP/VerificationCodeDialog';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 

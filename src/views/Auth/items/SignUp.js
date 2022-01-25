@@ -22,7 +22,7 @@ import {
 } from 'apiHelper/ApiHandlers/usersApi';
 import { LOGIN_PATH } from 'constant/constants';
 import loggedInAction from 'store/actions/auth/loggedInAction';
-import VerificationCodeDialog from './VerificationCodeDialog';
+import VerificationCodeDialog from 'components/OTP/VerificationCodeDialog';
 import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
