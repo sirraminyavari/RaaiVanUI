@@ -32,7 +32,6 @@ const UserGroupUpsertModal = ({
   const [modalInfo, setModalInfo] = useState({
     show: false,
     title: RVDic.SettingsOfN.replace('[n]', RVDic.Group),
-    middle: true,
     contentWidth: '34rem',
     titleClass: 'rv-default',
     titleContainerClass: 'modal-title-bar',
