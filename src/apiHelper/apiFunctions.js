@@ -1131,6 +1131,7 @@ export const getNodeTypes = (searchText, archive = false, count = '') => {
           SearchText: encodeBase64(searchText),
           Archive: archive,
           Icon: true,
+          Tree: true,
         },
         (response) => {
           resolve(response);
