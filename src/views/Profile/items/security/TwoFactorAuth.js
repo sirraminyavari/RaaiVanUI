@@ -11,18 +11,23 @@ import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import {
-  checkUserName,
   changeUserName,
   setVerificationCodeMedia,
 } from 'apiHelper/apiFunctions';
 import useDebounce from 'hooks/useDebounce';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { TOAST_TIMEOUT } from 'constant/constants';
+import { checkUserName } from 'apiHelper/ApiHandlers/usersApi';
 
 const TwoFactorAuthentication = ({ user }) => {
-  const { RVDic } = useWindow();
-  const { UserName, UserID, VerificationCodeMedia, Emails, PhoneNumbers } =
-    user || {};
+  const { RVDic, RVGlobal } = useWindow();
+  const {
+    UserName,
+    UserID,
+    VerificationCodeMedia,
+    MainEmailAddress,
+    MainPhoneNumber,
+  } = user || {};
 
   //! If true, Show two factor option box.
   const [isTwoFactorOn, setIsTwoFactorOn] = useState(!!VerificationCodeMedia);
@@ -35,26 +40,28 @@ const TwoFactorAuthentication = ({ user }) => {
     type: '',
     text: '',
   });
+
   const debouncedUserName = useDebounce(userName, 500);
 
   const provideOptions = () => {
     const options = [];
-    if (!!Emails?.length) {
+
+    if (MainEmailAddress) {
       options.push({
         value: 'Email',
-        title: `${RVDic.Email} : ${decodeBase64(Emails?.[0].Email)}`,
+        title: `${RVDic.Email} : ${decodeBase64(MainEmailAddress)}`,
         group: 'two-factor-auth',
       });
     }
-    if (!!PhoneNumbers?.length) {
+
+    if (MainPhoneNumber) {
       options.push({
         value: 'SMS',
-        title: `${RVDic.PhoneNumber} : ${decodeBase64(
-          PhoneNumbers?.[0].Number
-        )}`,
+        title: `${RVDic.PhoneNumber} : ${decodeBase64(MainPhoneNumber)}`,
         group: 'two-factor-auth',
       });
     }
+
     return options;
   };
 
@@ -80,9 +87,13 @@ const TwoFactorAuthentication = ({ user }) => {
     });
   };
 
+  const checkUserNameValidity = (val) =>
+    new RegExp(RVGlobal.UserNamePattern).test(val);
+
   //! Toggle two factor options.
   const handleTwoFactorToggle = (toggleValue) => {
     setIsTwoFactorOn(toggleValue);
+
     if (toggleValue) {
       //! Turn on code media area.
       setVerificationCodeMedia('On')
@@ -113,25 +124,29 @@ const TwoFactorAuthentication = ({ user }) => {
   };
 
   //! Keep track of user name value and check if exists on server.
-  useEffect(() => {
+  useEffect(async () => {
     //! Don't check if there is no user name.
     if (!debouncedUserName) return;
+
     //! Don't check if user name is same as before.
     if (decodeBase64(UserName) !== debouncedUserName.trim()) {
       setIsCheckingUserName(true);
-      checkUserName(debouncedUserName)
-        .then((response) => {
-          setIsCheckingUserName(false);
-          setIsValidUserName(!response);
-          setUserNameMessage({
-            type: 'info',
-            text: 'این آیدی برای شما در دسترسه :)',
-          });
-        })
-        .catch((error) => {
-          setIsCheckingUserName(false);
-          setError(error);
-        });
+
+      const isValid = checkUserNameValidity(debouncedUserName);
+      const isAvailable =
+        isValid && !(await checkUserName({ UserName: debouncedUserName }));
+
+      setIsCheckingUserName(false);
+      setIsValidUserName(isAvailable);
+
+      setUserNameMessage({
+        type: isAvailable ? 'info' : 'error',
+        text: !isValid
+          ? RVDic.MSG.UserNamePatternIsNotValid
+          : !isAvailable
+          ? RVDic.MSG.UserNameAlreadyExists
+          : RVDic.MSG.UserNameIsAvailable,
+      });
     } else {
       setIsValidUserName(false);
     }
@@ -151,7 +166,7 @@ const TwoFactorAuthentication = ({ user }) => {
       .then((response) => {
         setIsSavingUserName(false);
         if (response.Succeed) {
-          const successMSG = 'نام کاربری با موفقیت تغییر کرد';
+          const successMSG = RVDic.MSG.UserNameChangedSuccessfully;
           renderToast('success', successMSG);
         }
         if (response.ErrorText) {
@@ -180,6 +195,12 @@ const TwoFactorAuthentication = ({ user }) => {
       .then((response) => console.log(response))
       .catch((error) => console.log(error));
   };
+
+  let selectedMedia = !isTwoFactorOn ? '' : VerificationCodeMedia;
+  if (selectedMedia === 'On' && !MainEmailAddress && !!MainPhoneNumber)
+    selectedMedia = 'SMS';
+  else if (selectedMedia === 'On' && !!MainEmailAddress && !MainPhoneNumber)
+    selectedMedia = 'Email';
 
   return (
     <Styled.ContentWrapper>
@@ -235,7 +256,7 @@ const TwoFactorAuthentication = ({ user }) => {
         containerClass="profile-security-toggle"
       />
       <TwoFactorOptions
-        media={VerificationCodeMedia}
+        media={selectedMedia}
         options={provideOptions()}
         enabled={isTwoFactorOn}
         onSelectOption={handleMediaSelection}
