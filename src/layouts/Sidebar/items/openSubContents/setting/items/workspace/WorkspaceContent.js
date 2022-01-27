@@ -3,6 +3,12 @@ import { NavLink, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import { createSelector } from 'reselect';
 import { useSelector } from 'react-redux';
+import iconList from '../../iconList';
+import {
+  SETT_TEAM_CONTENT,
+  SETT_WORKSPACE_INVOICE_CONTENT,
+  SETT_WORKSPACE_PLANS_CONTENT,
+} from 'constant/constants';
 
 //TODO This logic needs improvement
 const currentWorkspaceID = createSelector(
@@ -22,20 +28,21 @@ const WorkspaceContent = () => {
       title: RVDic.ManageN.replace('[n]', RVDic.Users),
       linkTo: `/workspaces/settings/user-management/${workspaceID}`,
       show: isSaas,
-      icon: 'users',
+      icon: SETT_TEAM_CONTENT,
     },
     {
       id: '2',
       title: 'طرحها',
       linkTo: `/workspaces/settings/plans/${workspaceID}`,
       show: isSaas,
-      icon: 'setting-team',
+      icon: SETT_WORKSPACE_PLANS_CONTENT,
     },
     {
       id: '3',
       title: RVDic.AccountManagement,
       linkTo: `/workspaces/settings/account-management/${workspaceID}`,
       show: isSaas,
+      icon: SETT_WORKSPACE_INVOICE_CONTENT,
     },
   ];
 
@@ -50,6 +57,7 @@ const WorkspaceContent = () => {
               as={NavLink}
               to={item?.linkTo}
               key={key}>
+              {iconList[item?.icon]({ size: 20 })}
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>
           ) : (
