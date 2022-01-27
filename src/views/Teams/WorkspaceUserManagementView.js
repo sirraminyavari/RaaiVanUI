@@ -15,24 +15,15 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import Badge from 'components/Badge/Badge';
 import Button from 'components/Buttons/Button';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
-import {
-  WorkspaceSettingsHeaderContainer,
-  WorkspaceUserManagementTableContainer,
-} from './Teams.styles';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
-const { setSidebarContent } = themeSlice.actions;
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
 
 const WorkspaceSettingsView = () => {
   const { id: WorkspaceID } = useParams();
-  const dispatch = useDispatch();
   const { RVDic } = useWindow();
   const { isMobile } = DimensionHelper();
   const [SearchText, setSearchText] = useState('');
@@ -68,7 +59,8 @@ const WorkspaceSettingsView = () => {
           SearchText: encodeBase64(SearchText),
           LowerBoundary: workspaceUsers?.length + 1,
         },
-        (response) => {
+        ({ ErrorText, ...response }) => {
+          if (ErrorText) return alert(RVDic.MSG[ErrorText] || ErrorText);
           setIsLoading(false);
           setWorkspaceUsers((storedUsers) => [
             //* If [resetTable] is true, then only return recently fetched Users
@@ -101,24 +93,6 @@ const WorkspaceSettingsView = () => {
     window.scrollTo(0, 10);
     setInfiniteScrollRerenderer(randomNumber());
   }, [SearchText]);
-
-  //! configure sidebar content
-  useEffect(() => {
-    dispatch(
-      setSidebarContent({
-        current: SETT_WORKSPACE_CONTENT,
-        prev: MAIN_CONTENT,
-      })
-    );
-    return () => {
-      dispatch(
-        setSidebarContent({
-          prev: SETT_WORKSPACE_CONTENT,
-          current: MAIN_CONTENT,
-        })
-      );
-    };
-  }, []);
 
   //! Build a template for every row of workspace users (react-table)
   const data = React.useMemo(
@@ -255,12 +229,12 @@ const WorkspaceSettingsView = () => {
           messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
         />
 
-        <WorkspaceSettingsHeaderContainer>
+        <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
             {RVDic.ManageN.replace('[n]', RVDic.Users)}
           </Heading>
-        </WorkspaceSettingsHeaderContainer>
+        </Styled.WorkspaceSettingsHeaderContainer>
         <SearchInput
           placeholder={RVDic.Search}
           onChange={setSearchText}
@@ -268,7 +242,7 @@ const WorkspaceSettingsView = () => {
           defaultValue={''}
         />
 
-        <WorkspaceUserManagementTableContainer>
+        <Styled.WorkspaceUserManagementTableContainer>
           <InfiniteScroll
             key={InfiniteScrollRerenderer}
             dataLength={workspaceUsers.length}
@@ -287,7 +261,7 @@ const WorkspaceSettingsView = () => {
             }>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
-        </WorkspaceUserManagementTableContainer>
+        </Styled.WorkspaceUserManagementTableContainer>
       </div>
     </WelcomeLayout>
   );
