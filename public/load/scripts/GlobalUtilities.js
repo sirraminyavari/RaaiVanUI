@@ -303,9 +303,9 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         }
     })(),
 
-    icon: function (params) { return "../../images/" + ((params || {}).Name || params || "") + ((params || {}).NoCache ? "?timeStamp=" + new Date().getTime() : ""); },
-    js: function (params) { return "../../Script/" + ((params || {}).Name || params || ""); },
-    css: function (params) { return "../../css/" + ((params || {}).Name || params || ""); },
+    icon: function (params) { return "/Images/" + ((params || {}).Name || params || "") + ((params || {}).NoCache ? "?timeStamp=" + new Date().getTime() : ""); },
+    js: function (params) { return "/Script/" + ((params || {}).Name || params || ""); },
+    css: function (params) { return "/CSS/" + ((params || {}).Name || params || ""); },
 
     append_clear_div: function (_div) {
         var clearDiv = document.createElement("div");
