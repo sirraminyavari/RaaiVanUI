@@ -1,9 +1,8 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
 import AlertIcon from 'components/Icons/AlertIcon/AlertIcon';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import OTPCountDownTimer from 'components/OTP/CountDownTimer';
-import OTPVerificationInput from 'components/OTP/VerificationInput';
+import { randomNumber } from 'helpers/helpers';
+import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import {
   decodeBase64,
@@ -15,7 +14,6 @@ import useWindow from 'hooks/useWindowContext';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
 import * as Styled from 'views/Teams/Teams.styles';
 
 const RemoveWorkspaceTicketAPI = new APIHandler(
@@ -27,9 +25,9 @@ const WorkspaceDeleteContent = () => {
   const [OTPInput, setOTPInput] = useState([]);
   const [pendingPromise, setPendingPromise] = useState(false);
   const dispatch = useDispatch();
-  const [timerFinished, setTimerFinished] = useState(false);
+  const [resetCountdown, setResetCountdown] = useState(0);
   const [OTPProperties, setOTPProperties] = useState(undefined);
-  const { RVDic, RVGlobal } = useWindow();
+  const { RVDic } = useWindow();
   const history = useHistory();
   let { id: WorkspaceID } = useParams();
 
@@ -46,7 +44,6 @@ const WorkspaceDeleteContent = () => {
   const RVDicRemoveWorkspaceOTPVerification =
     RVDic.MSG.DeleteWorkspaceVerficiationCode;
   const RVDicReturn = RVDic.Return;
-  const RVDicResend = RVDic.Resend;
   const RVDicConfirmDelete = `${RVDic.Confirm} ${RVDic.And} ${RVDic.Remove}`;
 
   const handleLoaded = async () => {
@@ -64,8 +61,7 @@ const WorkspaceDeleteContent = () => {
           EmailAddress: decodeBase64(VerificationCode.EmailAddress),
           Token: VerificationCode.Token,
         });
-
-        setTimerFinished(false);
+        setResetCountdown(randomNumber(1));
       }
     );
   };
@@ -97,7 +93,6 @@ const WorkspaceDeleteContent = () => {
   useEffect(() => {
     (async () => {
       await initializeCaptchaToken();
-      setTimerFinished(false);
       await handleLoaded();
     })();
 
@@ -133,40 +128,19 @@ const WorkspaceDeleteContent = () => {
           {RVDicRemoveWorkspaceConsequence3}.
         </Styled.WorkspaceDeleteConsequencesListItem>
       </Styled.WorkspaceDeleteConsequencesList>
-      {OTPProperties?.Timeout ? (
-        <>
-          <Styled.WorkspaceDeleteString marginTop="2rem">
-            {RVDicRemoveWorkspaceOTPVerification}:
-          </Styled.WorkspaceDeleteString>
-          <Styled.WorkspaceDeleteString type="email" fontWeight="bold">
-            {OTPProperties?.EmailAddress}
-          </Styled.WorkspaceDeleteString>
-          <Styled.WorkspaceDeleteActionsContainer>
-            <OTPVerificationInput
-              onValueChange={setOTPInput}
-              length={OTPProperties?.Length}
-            />
-            {!timerFinished ? (
-              <OTPCountDownTimer
-                onFinished={() => setTimerFinished(true)}
-                NoCircularProgress
-                resendCodeTimeout={OTPProperties?.Timeout}
-              />
-            ) : (
-              <div>
-                <Button
-                  onClick={handleLoaded}
-                  type="primary-o"
-                  style={{ marginInline: '0.5rem' }}>
-                  {RVDicResend}
-                </Button>
-              </div>
-            )}
-          </Styled.WorkspaceDeleteActionsContainer>
-        </>
-      ) : (
-        <LogoLoader />
-      )}
+      <Styled.WorkspaceDeleteString marginTop="2rem">
+        {RVDicRemoveWorkspaceOTPVerification}:
+      </Styled.WorkspaceDeleteString>
+      <Styled.WorkspaceDeleteActionsContainer>
+        <VerificationInputWithTimer
+          email={OTPProperties?.EmailAddress}
+          length={OTPProperties?.Length}
+          timeout={OTPProperties?.Timeout}
+          onValueChange={setOTPInput}
+          resendCodeRequest={handleLoaded}
+          reset={resetCountdown}
+        />
+      </Styled.WorkspaceDeleteActionsContainer>
       <Styled.WorkspaceDeleteActionsContainer>
         <Button
           loading={pendingPromise}
