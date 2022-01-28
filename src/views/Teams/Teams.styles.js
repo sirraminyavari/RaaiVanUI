@@ -918,26 +918,6 @@ export const WorkspaceSecondaryText = styled.span`
   font-size: 0.8rem;
 `;
 
-export const WorkspaceBadge = styled.span.attrs({
-  className: 'rv-border-radius-1',
-})`
-  padding-inline: 2rem;
-  padding-block: 0.45rem;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: bold;
-`;
-
-export const WorkspaceDefaultBadge = styled(WorkspaceBadge)`
-  color: ${TCV_DEFAULT};
-  background-color: ${TCV_VERY_TRANSPARENT};
-`;
-
-export const WorkspaceDeleteBadge = styled(WorkspaceBadge)`
-  color: ${CV_RED};
-  background-color: ${CV_RED_VERYSOFT};
-`;
-
 export const WorkspacePlanImage = styled.div.attrs({
   className: 'rv-border-radius-1',
 })`

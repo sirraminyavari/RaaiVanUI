@@ -5,6 +5,7 @@ import * as Styled from '../../../Teams.styles';
 import Button from 'components/Buttons/Button';
 import UsersIcon from 'components/Icons/UsersIcon/Users';
 import CloudIcon from 'components/Icons/CloudIcon/CloudIcon';
+import StatusBadge from 'components/Badge/StatusBadge';
 
 const WorkspaceSubscription = ({ sectionTitle }) => {
   const { RVDic } = useWindow();
@@ -96,12 +97,7 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
           <div>
             <Button type="primary-o">دریافت فاکتور</Button>
             <div style={{ width: '10rem' }}>
-              {/* <Styled.WorkspaceDeleteBadge>
-                اشتراک پایان یافته
-              </Styled.WorkspaceDeleteBadge> */}
-              <Styled.WorkspaceDefaultBadge>
-                اشتراک پایان یافته
-              </Styled.WorkspaceDefaultBadge>
+              <StatusBadge type="error">اشتراک پایان یافته</StatusBadge>
             </div>
           </div>
         </Styled.WorkspaceAccountSubscriptionItem>
