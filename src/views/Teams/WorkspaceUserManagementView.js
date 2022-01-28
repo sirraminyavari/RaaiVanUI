@@ -19,8 +19,13 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
+const removeUserFromWorkspaceAPI = new APIHandler(
+  'RVAPI',
+  'RemoveUserFromWorkspace'
+);
 
 const WorkspaceSettingsView = () => {
   const { id: WorkspaceID } = useParams();
@@ -30,8 +35,9 @@ const WorkspaceSettingsView = () => {
   const [tablePage, setTablePage] = useState(0);
   const [InfiniteScrollRerenderer, setInfiniteScrollRerenderer] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
-  const [removeUserFromWorkspace, setRemoveUserFromWorkspace] = useState(false);
+  const [removableUser, setRemovableUser] = useState(false);
 
   const breadCrumbItems = [
     {
@@ -60,7 +66,11 @@ const WorkspaceSettingsView = () => {
           LowerBoundary: workspaceUsers?.length + 1,
         },
         ({ ErrorText, ...response }) => {
-          if (ErrorText) return alert(RVDic.MSG[ErrorText] || ErrorText);
+          if (ErrorText)
+            return InfoToast({
+              type: 'error',
+              message: RVDic.MSG[ErrorText] || ErrorText,
+            });
           setIsLoading(false);
           setWorkspaceUsers((storedUsers) => [
             //* If [resetTable] is true, then only return recently fetched Users
@@ -164,7 +174,7 @@ const WorkspaceSettingsView = () => {
             <Button
               type="negative-o"
               key={User.MainEmailAddress}
-              onClick={() => setRemoveUserFromWorkspace(User)}
+              onClick={() => setRemovableUser(User)}
               style={{ padding: '0.25rem 1rem' }}>
               حذف از همه تیم ها
             </Button>
@@ -207,6 +217,26 @@ const WorkspaceSettingsView = () => {
     [isMobile]
   );
 
+  //! handling the removal of the selected user from workspace
+  const removeUserFromWorkspace = () => {
+    const { UserID } = removableUser;
+    removeUserFromWorkspaceAPI.fetch(
+      { UserID, WorkspaceID },
+      ({ ErrorText, Succeed }) => {
+        if (ErrorText)
+          return InfoToast({
+            type: 'error',
+            message: RVDic.MSG[ErrorText] || ErrorText,
+          });
+        setRemovableUser(false);
+        InfoToast({
+          type: 'success',
+          message: RVDic.MSG[Succeed] || Succeed,
+        });
+      }
+    );
+  };
+
   return (
     <WelcomeLayout>
       <div>
@@ -216,17 +246,17 @@ const WorkspaceSettingsView = () => {
           messageIcon={() => (
             <Avatar
               imageClasses="teamAvatar"
-              userImage={removeUserFromWorkspace.ImageURL}
+              userImage={removableUser.ImageURL}
             />
           )}
-          show={!!removeUserFromWorkspace}
-          onConfirm={() => setRemoveUserFromWorkspace(false)}
-          onCancel={() => setRemoveUserFromWorkspace(false)}
-          onClose={() => setRemoveUserFromWorkspace(false)}
+          show={!!removableUser}
+          onConfirm={removeUserFromWorkspace}
+          onCancel={() => setRemovableUser(false)}
+          onClose={() => setRemovableUser(false)}
           messageQuestion="آیا از حذف کاربر از همه تیم‌ها اطمینان دارید؟"
           messageWarning="با حذف کاربر اطلاعات تولید شده توسط او از بین نمی‌رود، همچنین با افزودن دوباره کاربر به تیم، او میتواند به اطلاعات قبلی دسترسی داشته باشد."
           title="حذف از همه تیم‌ها"
-          messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
+          messageTitle={decodeBase64(removableUser.FullName)}
         />
 
         <Styled.WorkspaceSettingsHeaderContainer>
