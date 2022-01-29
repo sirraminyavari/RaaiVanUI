@@ -13,7 +13,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 const ArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
-  const { RV_RevFloat, RV_RTL } = useWindow();
+  const { RV_RevFloat, RV_RTL, RVDic } = useWindow();
   const isMobile = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -51,7 +51,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
       <ArchivedModal
         space={space}
         isOpen={isModalShown}
-        modalTitle="تیم های آرشیو شده"
+        modalTitle={RVDic.ArchivedTeams}
         modalWidth={getModalWidth()}
         contentClass="archived-teams"
         archives={archives}
@@ -67,7 +67,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
       <Styled.ArchivedWrapper>
         <TrashIcon size={25} />
         <Styled.ArchivedTeamsLabel>
-          <span>تیم های آرشیو شده</span>
+          <span>{RVDic.ArchivedTeams}</span>
         </Styled.ArchivedTeamsLabel>
       </Styled.ArchivedWrapper>
     </Styled.TeamContainer>

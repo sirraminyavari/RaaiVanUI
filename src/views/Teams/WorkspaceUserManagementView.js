@@ -20,7 +20,10 @@ import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { WORKSPACES_PATH } from './items/others/constants';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_USER_MANAGEMENT_PATH,
+} from './items/others/constants';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
 const removeUserFromWorkspaceAPI = new APIHandler(
@@ -39,16 +42,35 @@ const WorkspaceSettingsView = () => {
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
   const [removableUser, setRemovableUser] = useState(false);
 
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicUserManagement = RVDic.ManageN.replace('[n]', RVDic.Users);
+  const RVDicRemoveFromAllTeams = RVDic.RemoveFromAllTeams;
+  const RVDicSearch = RVDic.Search;
+  const RVDicReturn = RVDic.Return;
+  const RVDicConfirm = RVDic.Confirm;
+  const RVDicFullName = RVDic.FullName;
+  const RVDicTeams = RVDic.Teams;
+  const RVDicLastActivityTime = RVDic.LastActivityTime;
+  const RVDicRemoveUserFormTeams = RVDic.Confirms.DoYouWantToRemoveN.replace(
+    '[n]',
+    RVDic.User
+  );
+  const RVDicRemoveUserFormTeamsInfo = RVDic._HelpRemoveUser;
+
   const breadCrumbItems = [
     {
       id: 1,
-      title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
+      title: RVDicWorkspaceSettings,
       linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
-      title: RVDic.ManageN.replace('[n]', RVDic.Users),
-      // linkTo: '/workspaces/settings/user-management',
+      title: RVDicUserManagement,
+      linkTo: `${WORKSPACE_USER_MANAGEMENT_PATH}/${WorkspaceID}`,
     },
   ];
 
@@ -168,6 +190,7 @@ const WorkspaceSettingsView = () => {
                     </PopupMenu>
                   </>
                 );
+              return;
             }
           ),
           col5: (
@@ -176,7 +199,7 @@ const WorkspaceSettingsView = () => {
               key={User.MainEmailAddress}
               onClick={() => setRemovableUser(User)}
               style={{ padding: '0.25rem 1rem' }}>
-              حذف از همه تیم ها
+              {RVDicRemoveFromAllTeams}
             </Button>
           ),
           col6: '',
@@ -189,7 +212,7 @@ const WorkspaceSettingsView = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'نام کاربر',
+        Header: RVDicFullName,
         accessor: 'col1',
       },
       //* remove [col2] and [col3] of the table on mobile view
@@ -200,13 +223,13 @@ const WorkspaceSettingsView = () => {
               accessor: 'col2',
             },
             {
-              Header: 'آخرین ورود',
+              Header: RVDicLastActivityTime,
               accessor: 'col3',
             },
           ]
         : []),
       {
-        Header: 'تیم های عضو',
+        Header: RVDicTeams,
         accessor: 'col4',
       },
       {
@@ -241,8 +264,8 @@ const WorkspaceSettingsView = () => {
     <WelcomeLayout>
       <div>
         <DeleteConfirmModal
-          cancelText={RVDic.Return}
-          confirmText={RVDic.Confirm}
+          cancelText={RVDicReturn}
+          confirmText={RVDicConfirm}
           messageIcon={() => (
             <Avatar
               imageClasses="teamAvatar"
@@ -250,23 +273,23 @@ const WorkspaceSettingsView = () => {
             />
           )}
           show={!!removableUser}
-          onConfirm={removeUserFromWorkspace}
+          onConfirm={() => setRemovableUser(false)}
           onCancel={() => setRemovableUser(false)}
           onClose={() => setRemovableUser(false)}
-          messageQuestion="آیا از حذف کاربر از همه تیم‌ها اطمینان دارید؟"
-          messageWarning="با حذف کاربر اطلاعات تولید شده توسط او از بین نمی‌رود، همچنین با افزودن دوباره کاربر به تیم، او میتواند به اطلاعات قبلی دسترسی داشته باشد."
-          title="حذف از همه تیم‌ها"
-          messageTitle={decodeBase64(removableUser.FullName)}
+          messageQuestion={RVDicRemoveUserFormTeams}
+          messageWarning={RVDicRemoveUserFormTeamsInfo}
+          title={RVDicRemoveFromAllTeams}
+          messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
         />
 
         <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
-            {RVDic.ManageN.replace('[n]', RVDic.Users)}
+            {RVDicUserManagement}
           </Heading>
         </Styled.WorkspaceSettingsHeaderContainer>
         <SearchInput
-          placeholder={RVDic.Search}
+          placeholder={RVDicSearch}
           onChange={setSearchText}
           delayTime={650}
           defaultValue={''}

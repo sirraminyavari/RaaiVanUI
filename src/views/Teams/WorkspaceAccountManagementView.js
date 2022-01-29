@@ -4,27 +4,35 @@ import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import * as Styled from './Teams.styles';
 import WorkspaceAccountManagementBanner from './items/sides/welcome/WorkspaceAccountManagementWelcome';
 import WorkspaceSubscription from './items/sides/content/WorkspaceSubscription';
-import { WORKSPACES_PATH } from './items/others/constants';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_ACCOUNT_MANAGEMENT_PATH,
+} from './items/others/constants';
 
 const WorkspaceAccountManagementView = () => {
   const { id: WorkspaceID } = useParams();
   const { RVDic } = useWindow();
-  const { isMobile } = DimensionHelper();
+
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicAccountManagement = RVDic.AccountManagement;
 
   const breadCrumbItems = [
     {
       id: 1,
-      title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
+      title: RVDicWorkspaceSettings,
       linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
-      title: 'مدیریت حساب',
-      linkTo: '',
+      title: RVDicAccountManagement,
+      linkTo: `${WORKSPACE_ACCOUNT_MANAGEMENT_PATH}/${WorkspaceID}`,
     },
   ];
 
@@ -34,7 +42,7 @@ const WorkspaceAccountManagementView = () => {
         <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
-            {'مدیریت حساب'}
+            {RVDicAccountManagement}
           </Heading>
         </Styled.WorkspaceSettingsHeaderContainer>
 

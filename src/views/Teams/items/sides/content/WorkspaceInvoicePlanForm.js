@@ -21,11 +21,17 @@ const WorkspaceInvoicePlanForm = () => {
 
   const { RVDic } = useWindow();
 
+  //! RVDic i18n variables
+  const RVDicGigaBytes = RVDic.GigaBytes;
+  const RVDicDuration = RVDic.Duration;
+  const RVDicDiscountCode = RVDic.DiscountCode;
+  const RVDicPaymentGateway = RVDic.PaymentGateway;
+
   return (
     <CustomWelcomeLayout noOutline>
       <div>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
-          <span>مدت اعتبار</span>
+          <span>{RVDicDuration}</span>
           <CustomSelect
             options={purchaseDurations}
             defaultValue={purchaseDurations[2]}
@@ -38,7 +44,7 @@ const WorkspaceInvoicePlanForm = () => {
           <span>فضای ذخیره‌سازی اضافی</span>
           <NumberInput step={5} defaultValue={1} />
           <Styled.WorkspaceSecondaryText>
-            گیگابایت
+            {RVDicGigaBytes}
           </Styled.WorkspaceSecondaryText>
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
@@ -47,11 +53,11 @@ const WorkspaceInvoicePlanForm = () => {
           <Styled.WorkspaceSecondaryText>کاربر</Styled.WorkspaceSecondaryText>
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
-          <span>کدتخفیف</span>
+          <span>{RVDicDiscountCode} </span>
           <AnimatedInput
             value={coupon}
             onChange={setCoupon}
-            placeholder={'کدتخفیف'}
+            placeholder={RVDicDiscountCode}
           />
           <Styled.WorkspaceInvoiceCouponIconWrapper>
             {Boolean(coupon.length) && <CheckIcon />}
@@ -59,7 +65,7 @@ const WorkspaceInvoicePlanForm = () => {
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
 
         <Styled.WorkspaceInvoicePaymentGatewayContainer>
-          <strong>{'درگاه پرداخت'}</strong>
+          <strong>{RVDicPaymentGateway}</strong>
           <Styled.WorkspaceInvoicePaymentGatewayChoicesContainer>
             {new Array(3).fill().map((_, idx) => (
               <Styled.WorkspaceInvoicePaymentGatewayChoice

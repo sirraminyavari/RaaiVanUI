@@ -10,7 +10,7 @@ import usePreventScroll from 'hooks/usePreventScroll';
 
 const ExtraUsersList = ({ handleInviteUser, users }) => {
   const containerRef = useRef();
-  const { RV_RTL, RVGlobal } = useWindow();
+  const { RV_RTL, RVGlobal, RVDic } = useWindow();
 
   const isAdmin = (RVGlobal || {}).IsSystemAdmin;
 
@@ -34,7 +34,7 @@ const ExtraUsersList = ({ handleInviteUser, users }) => {
             />
           </Styled.AddUserWrapper>
           <Styled.ExtraUsersPopupTitle>
-            افزودن هم تیمی جدید
+            {RVDic.InviteNewTeamMate}
           </Styled.ExtraUsersPopupTitle>
         </Styled.ExtraUsersPopupHeader>
       )}
