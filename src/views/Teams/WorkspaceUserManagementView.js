@@ -36,7 +36,6 @@ const WorkspaceSettingsView = () => {
   const [tablePage, setTablePage] = useState(0);
   const [InfiniteScrollRerenderer, setInfiniteScrollRerenderer] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isRemoving, setIsRemoving] = useState(false);
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
   const [removableUser, setRemovableUser] = useState(false);
 

@@ -3,8 +3,6 @@ import WelcomeLayout from 'layouts/WelcomeLayout';
 import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
 import React, { useState } from 'react';
-import APIHandler from 'apiHelper/APIHandler';
-import { useParams } from 'react-router-dom';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
@@ -21,7 +19,6 @@ import WorkspacePlanItem from './items/sides/content/WorkspacePlanItem';
 import { WORKSPACES_PATH } from './items/others/constants';
 
 const WorkspacePlansView = () => {
-  const { id: WorkspaceID } = useParams();
   const [isYearlyPrices, setIsYearlyPrices] = useState(false);
   const { RVDic } = useWindow();
   const { isTabletOrMobile } = DimensionHelper();
