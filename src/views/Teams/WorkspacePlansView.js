@@ -18,6 +18,7 @@ import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { scrollIntoView } from 'helpers/helpers';
 import WorkspacePlanItem from './items/sides/content/WorkspacePlanItem';
+import { WORKSPACES_PATH } from './items/others/constants';
 
 const WorkspacePlansView = () => {
   const { id: WorkspaceID } = useParams();
@@ -29,12 +30,12 @@ const WorkspacePlansView = () => {
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
       title: 'طرحها',
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
   ];
 

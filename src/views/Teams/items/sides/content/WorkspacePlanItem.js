@@ -4,14 +4,16 @@ import * as Styled from './../../../Teams.styles';
 import Button from 'components/Buttons/Button';
 import UsersIcon from 'components/Icons/UsersIcon/Users';
 import { AiOutlineLeftCircle } from 'react-icons/ai';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { WORKSPACE_INVOICE_PATH } from '../../others/constants';
 
 const WorkspacePlanItem = ({ isYearlyPrices }) => {
   const { RVDic } = useWindow();
   const history = useHistory();
+  const { id: WorkspaceID } = useParams();
 
   const handlePlanSelection = () => {
-    history.push(`/workspaces/settings/plans/invoice/${'plan-id'}`);
+    history.push(`${WORKSPACE_INVOICE_PATH}/${WorkspaceID}`);
   };
 
   return (

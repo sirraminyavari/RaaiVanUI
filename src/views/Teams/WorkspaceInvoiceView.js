@@ -3,24 +3,27 @@ import WelcomeLayout from 'layouts/WelcomeLayout';
 import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import * as Styled from './Teams.styles';
 import WorkspaceInvoicePlan from './items/sides/content/WorkspaceInvoicePlan';
 import WorkspaceInvoicePlanForm from './items/sides/content/WorkspaceInvoicePlanForm';
 import styled from 'styled-components';
 import ReturnButton from 'components/Buttons/ReturnButton';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_PLANS_PATH,
+} from './items/others/constants';
+import { useHistory, useParams } from 'react-router-dom';
 
 const WorkspaceInvoiceView = () => {
-  const { id: WorkspaceID } = useParams();
   const { RVDic } = useWindow();
-  const { isMobile } = DimensionHelper();
+  const history = useHistory();
+  const { id: WorkspaceID } = useParams();
 
   const breadCrumbItems = [
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
@@ -29,13 +32,16 @@ const WorkspaceInvoiceView = () => {
     },
   ];
 
+  const handleReturnToPlansView = () =>
+    history.push(`${WORKSPACE_PLANS_PATH}/${WorkspaceID}`);
+
   return (
     <CustomWelcomeLayout noOutline noPadding>
       <div className="rv-border-radius-1">
         <Styled.WorkspaceSettingsHeaderContainer>
           <div className="headerContainer">
             <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
-            <ReturnButton />
+            <ReturnButton onClick={handleReturnToPlansView} />
           </div>
           <Heading type="h1" className="pageTitle">
             {'صورت‌حساب طرح حرفه‌ای'}
@@ -49,8 +55,6 @@ const WorkspaceInvoiceView = () => {
 };
 
 export default WorkspaceInvoiceView;
-
-// تیم تست خذف نشود -> فرم کامل -> خداحافظ سپهر
 
 const CustomWelcomeLayout = styled(WelcomeLayout)`
   min-height: auto;

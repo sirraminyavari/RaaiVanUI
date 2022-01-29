@@ -8,6 +8,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import * as Styled from './Teams.styles';
 import WorkspaceAccountManagementBanner from './items/sides/welcome/WorkspaceAccountManagementWelcome';
 import WorkspaceSubscription from './items/sides/content/WorkspaceSubscription';
+import { WORKSPACES_PATH } from './items/others/constants';
 
 const WorkspaceAccountManagementView = () => {
   const { id: WorkspaceID } = useParams();
@@ -18,7 +19,7 @@ const WorkspaceAccountManagementView = () => {
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,

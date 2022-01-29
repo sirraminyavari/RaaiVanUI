@@ -5,10 +5,18 @@ import * as Styled from './../../../Teams.styles';
 import EditIcon from 'components/Icons/EditIcons/Pencil';
 import UsersIcon from 'components/Icons/UsersIcon/Users';
 import Button from 'components/Buttons/Button';
+import { useHistory, useParams } from 'react-router-dom';
+import { WORKSPACE_PLANS_PATH } from '../../others/constants';
 
 const WorkspaceInvoicePlan = () => {
-  const [isYearlyPrices, setIsYearlyPrices] = useState(false);
   const { RVDic } = useWindow();
+  const history = useHistory();
+  const { id: WorkspaceID } = useParams();
+
+  const [isYearlyPrices, setIsYearlyPrices] = useState(false);
+
+  const handleReturnToPlansView = () =>
+    history.push(`${WORKSPACE_PLANS_PATH}/${WorkspaceID}`);
 
   return (
     <WelcomeLayout noOutline>
@@ -19,7 +27,7 @@ const WorkspaceInvoicePlan = () => {
         }}>
         <Styled.WorkspaceInvoicePlanHeader>
           <span>{'انتخاب طرح'}</span>
-          <EditIcon />
+          <EditIcon onClick={handleReturnToPlansView} />
         </Styled.WorkspaceInvoicePlanHeader>
         <Styled.WorkspacePlansContainer rowItemsCount="1" columnWidth={'100%'}>
           <Styled.WorkspacePlanItem className={`${isYearlyPrices && 'active'}`}>

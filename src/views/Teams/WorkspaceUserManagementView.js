@@ -20,6 +20,7 @@ import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { WORKSPACES_PATH } from './items/others/constants';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
 const removeUserFromWorkspaceAPI = new APIHandler(
@@ -43,7 +44,7 @@ const WorkspaceSettingsView = () => {
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,

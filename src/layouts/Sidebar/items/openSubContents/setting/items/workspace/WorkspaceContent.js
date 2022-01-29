@@ -1,46 +1,44 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
-import { createSelector } from 'reselect';
-import { useSelector } from 'react-redux';
 import iconList from '../../iconList';
 import {
   SETT_TEAM_CONTENT,
   SETT_WORKSPACE_INVOICE_CONTENT,
   SETT_WORKSPACE_PLANS_CONTENT,
 } from 'constant/constants';
+import lastElementOfArray from 'lodash/last';
+import {
+  WORKSPACE_USER_MANAGEMENT_PATH,
+  WORKSPACE_PLANS_PATH,
+  WORKSPACE_ACCOUNT_MANAGEMENT_PATH,
+} from 'views/Teams/items/others/constants';
 
-//TODO This logic needs improvement
-const currentWorkspaceID = createSelector(
-  (state) => state.applications,
-  (applications) => applications.currentApp.WorkspaceID
-);
-
-const WorkspaceContent = () => {
-  const location = useLocation();
+const WorkspaceContent = ({ location }) => {
   const { RVDic, RVGlobal } = useWindow();
-  const workspaceID = useSelector(currentWorkspaceID);
+
+  const workspaceID = lastElementOfArray(location.pathname.split('/'));
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
   const workspaceItems = [
     {
       id: '1',
       title: RVDic.ManageN.replace('[n]', RVDic.Users),
-      linkTo: `/workspaces/settings/user-management/${workspaceID}`,
+      linkTo: `${WORKSPACE_USER_MANAGEMENT_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_TEAM_CONTENT,
     },
     {
       id: '2',
       title: 'طرحها',
-      linkTo: `/workspaces/settings/plans/${workspaceID}`,
+      linkTo: `${WORKSPACE_PLANS_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_WORKSPACE_PLANS_CONTENT,
     },
     {
       id: '3',
       title: RVDic.AccountManagement,
-      linkTo: `/workspaces/settings/account-management/${workspaceID}`,
+      linkTo: `${WORKSPACE_ACCOUNT_MANAGEMENT_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_WORKSPACE_INVOICE_CONTENT,
     },
@@ -68,4 +66,4 @@ const WorkspaceContent = () => {
     </>
   );
 };
-export default WorkspaceContent;
+export default withRouter(WorkspaceContent);

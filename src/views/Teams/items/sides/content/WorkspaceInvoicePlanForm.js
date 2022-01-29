@@ -16,9 +16,10 @@ const purchaseDurations = [
   { value: '3', label: 'یک ساله (60% تخفیف)' },
 ];
 const WorkspaceInvoicePlanForm = () => {
-  const { RVDic } = useWindow();
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [coupon, setCoupon] = useState('');
+
+  const { RVDic } = useWindow();
 
   return (
     <CustomWelcomeLayout noOutline>

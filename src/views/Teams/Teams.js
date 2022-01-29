@@ -6,6 +6,14 @@ import { Redirect, Route } from 'react-router-dom';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_ACCOUNT_MANAGEMENT_PATH,
+  WORKSPACE_INVOICE_PATH,
+  WORKSPACE_PLANS_PATH,
+  WORKSPACE_REMOVE_PATH,
+  WORKSPACE_USER_MANAGEMENT_PATH,
+} from './items/others/constants';
 const { setSidebarContent } = themeSlice.actions;
 
 const TeamsWorkspaceView = WithSuspense(
@@ -74,36 +82,39 @@ const TeamsView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /**
+   * ! paths defined for routes [WorkspaceUserManagementView, WorkspacePlansView, WorkspaceAccountManagementView] should be consistent with paths defined in src/layouts/Sidebar/items/openSubContents/setting/items/workspace/WorkspaceContent
+   */
   return (
     <>
       <TransitionSwitchWrapper>
-        <Route exact path={'/workspaces'} component={TeamsWorkspaceView} />
+        <Route exact path={WORKSPACES_PATH} component={TeamsWorkspaceView} />
         <Route
           exact
-          path={'/workspaces/remove/:id'}
+          path={`${WORKSPACE_REMOVE_PATH}/:id`}
           component={WorkspaceDeleteView}
         />
         <Route
           exact
-          path={'/workspaces/settings/user-management/:id'}
+          path={`${WORKSPACE_USER_MANAGEMENT_PATH}/:id`}
           component={WorkspaceUserManagementView}
         />
         <Route
           exact
-          path={'/workspaces/settings/plans/:id'}
-          component={WorkspacePlansView}
-        />
-        <Route
-          exact
-          path={'/workspaces/settings/plans/invoice/:id'}
+          path={`${WORKSPACE_INVOICE_PATH}/:id`}
           component={WorkspaceInvoiceView}
         />
         <Route
           exact
-          path={'/workspaces/settings/account-management/:id'}
+          path={`${WORKSPACE_PLANS_PATH}/:id`}
+          component={WorkspacePlansView}
+        />
+        <Route
+          exact
+          path={`${WORKSPACE_ACCOUNT_MANAGEMENT_PATH}/:id`}
           component={WorkspaceAccountManagementView}
         />
-        <Redirect to={'/workspaces'} />
+        <Redirect to={WORKSPACES_PATH} />
       </TransitionSwitchWrapper>
     </>
   );

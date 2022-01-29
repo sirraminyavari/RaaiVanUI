@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Styled from 'views/Teams/Teams.styles';
+import { WORKSPACES_PATH } from '../../others/constants';
 
 const RemoveWorkspaceTicketAPI = new APIHandler(
   'RVAPI',
@@ -66,7 +67,7 @@ const WorkspaceDeleteContent = () => {
     );
   };
 
-  const ReturnToWorkspaces = () => history.push('/teams');
+  const ReturnToWorkspaces = () => history.push(WORKSPACES_PATH);
   const handleRemoveWorkspaceButton = () => {
     setPendingPromise(true);
     RemoveWorkspaceAPI.fetch(
