@@ -334,6 +334,16 @@ export const randomNumber = (min, max) => {
   return GlobalUtilities?.random(min, max);
 };
 
+/**
+ * @description Generates a 10 digit random number
+ * @param {HTMLElement|string} element - The element which needs to be in the browser viewport (also accepts a string as element's [id] attribute)
+ * @param {object} [params]
+ * @return {void}
+ */
+export const scrollIntoView = (element, params) => {
+  return GlobalUtilities?.scroll_into_view(element, params);
+};
+
 export const createSubject = () => {
   return new Subject();
 };

@@ -38,14 +38,6 @@ const DesktopWorkSpace = ({ space }) => {
   const archivedApps = useSelector(selectArchivedApplications);
   const isFetching = useSelector(selectIsFetchingApps);
 
-  //! add a simple delay to [isFetching] redux state
-  const [DelayedLoading, setDelayedLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setDelayedLoading(isFetching);
-    }, 5000);
-  }, [isFetching]);
-
   const moveCard = (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
     dispatch(setApplicationsOrder(reordered));
@@ -69,7 +61,7 @@ const DesktopWorkSpace = ({ space }) => {
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
           <Styled.TeamListConatiner>
-            {DelayedLoading || isFetching ? (
+            {isFetching ? (
               <WorkspaceTeamsSkeleton />
             ) : (
               <>

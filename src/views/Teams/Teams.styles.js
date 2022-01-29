@@ -21,6 +21,7 @@ import {
   CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
+  CV_RED_VERYSOFT,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
@@ -587,6 +588,9 @@ export const WorkspaceImageWrapper = styled.div`
   // max-width: 18rem;
   margin-block-start: 5rem;
   aspect-ratio: 1;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 `;
 
 export const WorkspaceImage = styled.img`
@@ -784,7 +788,15 @@ export const WorkspaceDeleteWelcomeHeader = styled.div`
 
 export const WorkspaceSettingsHeaderContainer = styled.div`
   padding-block: 1.5rem;
+
+  .headerContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
   .breadcrumb {
+    display: inline-flex;
     position: initial;
     justify-content: start;
   }
@@ -870,63 +882,132 @@ export const WorkspaceUserManagementTableContainer = styled.div`
   }
 `;
 
-export const WorkspacePlansContainer = styled.div`
-  display: flex;
-  padding-inline: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  .planItem {
-    flex-shrink: 0;
-    padding: 1rem;
-    padding-block-start: 5rem;
-    min-width: 16rem;
-    max-width: 20rem;
-    width: 100%;
-
-    &.active {
-      .planContent {
-        box-shadow: 0px 7px 20px ${CV_DISTANT};
-      }
-      .planImage {
-        box-shadow: 0px 2px 7px ${CV_DISTANT};
+export const WorkspacePlansHeaderContainer = styled(
+  WorkspaceSettingsHeaderContainer
+)`
+  .paymentType {
+    margin-block-start: 2rem;
+    display: flex;
+    justify-content: center;
+    > span {
+      margin-inline: 1rem;
+      color: ${CV_DISTANT};
+      &.active {
+        color: ${TCV_WARM};
+        font-weight: bold;
       }
     }
   }
+`;
 
-  .planContent {
-    padding: 0.8rem;
-    padding-block-start: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: ${TCV_WARM};
-    border: 1px solid ${CV_DISTANT};
-    border-radius: 0.8rem;
-    background: transparent
-      linear-gradient(149deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
-      padding-box;
+export const WorkspacePlansActionContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
-    > div:not(.planImage) {
+export const WorkspacePrimaryText = styled.span`
+  color: ${TCV_WARM};
+  font-weight: bold;
+  text-align: center;
+  font-size: 1rem;
+`;
+
+export const WorkspaceSecondaryText = styled.span`
+  color: ${CV_GRAY};
+  text-align: center;
+  font-size: 0.8rem;
+`;
+
+export const WorkspacePlanImage = styled.div.attrs({
+  className: 'rv-border-radius-1',
+})`
+  ${({ size = '4rem' }) => `
+  width: ${size};
+  height: ${size};
+`}
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${({ muted }) => (muted ? CV_GRAY : TCV_WARM)};
+  background: transparent
+    linear-gradient(134deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
+    padding-box;
+  border: 1px solid ${({ borderColor }) => borderColor || CV_DISTANT};
+  // padding: 20%;
+  ${({ pop }) =>
+    pop &&
+    `
+  margin-block-start: -4.5rem;
+  margin-block-end: 1.5rem;
+  `}
+
+  > svg {
+    font-size: 0.8em;
+  }
+`;
+
+export const WorkspacePlanContent = styled.div.attrs({
+  className: 'rv-border-black rv-border-radius-half',
+})`
+  padding: 0.8rem;
+  padding-block-start: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  color: ${TCV_WARM};
+  border: 1px solid ${CV_DISTANT};
+  border-radius: 0.8rem;
+  background: transparent
+    linear-gradient(149deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
+    padding-box;
+`;
+
+export const WorkspacePlanItem = styled.div`
+  padding: 1rem;
+  padding-block-start: 5rem;
+  min-width: 17rem;
+  max-width: 18rem;
+  width: 100%;
+  justify-self: center;
+  &.active {
+    ${WorkspacePlanContent} {
+      box-shadow: 0px 7px 20px ${CV_DISTANT};
+    }
+    ${WorkspacePlanImage} {
+      box-shadow: 0px 2px 7px ${CV_DISTANT};
+    }
+  }
+`;
+
+export const WorkspacePlansContainer = styled.div`
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  display: grid;
+  ${({ wrapContent, rowItemsCount = 3, columnWidth = '1fr' }) =>
+    !wrapContent &&
+    `
+  grid-auto-flow: column dense;
+  grid-template-columns: ${new Array(+rowItemsCount)
+    .fill(columnWidth)
+    .join(' ')};
+  `}
+
+  ${WorkspacePlanContent} {
+    > div:not(${WorkspacePlanImage}) {
       width: 100%;
     }
   }
 
-  .planImage {
-    width: 5rem;
-    height: 5rem;
-    font-size: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: ${TCV_WARM};
-    background: transparent
-      linear-gradient(134deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
-      padding-box;
-    border: 1px solid ${CV_DISTANT};
-    border-radius: 0.8rem;
-    margin-block-start: -4.5rem;
-    margin-block-end: 1.5rem;
+  ${WorkspaceSecondaryText} {
+    padding-block-start: 0.5rem;
+    padding-block-end: 1.5rem;
+  }
+
+  ${WorkspacePrimaryText} {
+    padding-block: 0.5rem;
   }
 
   .planDescription {
@@ -943,19 +1024,24 @@ export const WorkspacePlansContainer = styled.div`
       color: ${TCV_DEFAULT};
     }
   }
-  .planTitle {
-    color: ${TCV_WARM};
-    font-weight: bold;
-    padding-block: 0.5rem;
-    text-align: center;
-    font-size: 1rem;
-  }
-  .planSlogan {
-    color: ${CV_GRAY};
-    padding-block-start: 0.5rem;
-    padding-block-end: 1.5rem;
-    text-align: center;
-    font-size: 0.7rem;
+  .planPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .noPriceTag,
+    .price {
+      color: ${TCV_DEFAULT};
+      font-weight: bold;
+      padding-inline: 0.5rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .offPrice {
+      margin-block-start: -0.8rem;
+      text-decoration: line-through;
+      color: ${CV_RED};
+      font-size: 0.8rem;
+    }
   }
 
   .planActionButton {
@@ -1020,4 +1106,210 @@ export const WorkspacePlansTableContainer = styled.div`
       }
     }
   }
+`;
+
+export const WorkspaceAccountSubscriptionContainer = styled.section`
+  margin-block-end: 10rem;
+`;
+
+export const WorkspaceAccountSubscriptionItem = styled.div.attrs({
+  className: 'rv-border-radius-1',
+})`
+  width: 100%;
+  border: 1px solid ${CV_DISTANT};
+  padding-inline: 2rem;
+  padding-block: 1.2rem;
+  margin-block-start: 1.8rem;
+  margin-block-end: 1.8rem;
+  display: block;
+  background: transparent
+    linear-gradient(134deg, ${CV_WHITE} 0%, ${CV_WHITE} 100%) 0% 0% no-repeat
+    padding-box;
+
+  > div {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    text-align: end;
+
+    &:not(:first-of-type) {
+      margin-block-start: 2rem;
+    }
+  }
+`;
+
+export const WorkspaceAccountSubscriptionItemTitleContainer = styled.div`
+
+  display: flex;
+  text-align: start;
+  }
+`;
+export const WorkspaceAccountSubscriptionItemTitle = styled.div`
+  padding-inline-start: 0.5rem;
+  padding-block: 0.5rem;
+  span {
+    text-align: start;
+    display: block;
+
+    &:first-of-type {
+      padding-block-end: 0.5rem;
+    }
+  }
+`;
+
+export const WorkspaceAccountSubscriptionItemIcon = styled.div`
+  display: inline-block;
+  padding-inline-end: 0.6rem;
+
+  svg {
+    background-color: ${CV_DISTANT};
+    color: ${CV_WHITE};
+    border-radius: 100%;
+    font-size: 1.2rem;
+    padding: 0.15rem;
+    display: block;
+  }
+  span {
+    text-align: start;
+    display: block;
+    margin-block-start: 0.5rem;
+    color: ${TCV_WARM};
+    font-size: 0.9rem;
+  }
+`;
+
+export const WorkspaceAccountSubscriptionItemIconWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  min-width: 10rem;
+  text-align: start;
+`;
+
+export const WorkspaceAccountSubscriptionProgressBar = styled.div.attrs({
+  className: 'rv-border-radius-1',
+})`
+  width: 100%;
+  height: 0.5rem;
+  margin-block-start: 0.5rem;
+  background-color: ${TCV_VERY_TRANSPARENT_WARM};
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  &::after {
+    content: '';
+    width: ${({ progressPercentage = 0 }) => `${progressPercentage}%`};
+    height: 100%;
+    border-radius: 1rem;
+    background-color: ${TCV_WARM};
+  }
+`;
+
+export const WorkspaceInvoicePlanHeader = styled.div.attrs({
+  className: 'rv-border-radius-1 rv-ignore-bottom-radius',
+})`
+  background-color: ${CV_WHITE};
+  font-size: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  color: ${TCV_WARM};
+  padding-block: 1rem;
+  padding-inline: 0.5rem;
+  // margin-block-start: 4rem;
+
+  &::before {
+    content: '';
+    width: 5%;
+  }
+  svg {
+    color: ${TCV_DEFAULT};
+    font-size: 1.2rem;
+  }
+`;
+
+export const WorkspaceInvoicePlanDetailsContainer = styled.div`
+  font-size: 1rem;
+  justify-content: space-between;
+  align-items:center;
+  display: flex;
+  border-bottom: 1px dashed ${({ noSeparator }) =>
+    noSeparator ? `transparent` : CV_GRAY};
+
+  &:last-of-type {
+    border-color: transparent;
+  }
+}
+
+  & > * {
+    display: inline-block;
+    width: 100%;
+    padding: 1rem 0.25rem !important;
+
+    &:first-child {
+      text-align: start;
+    }
+    &:last-child {
+      text-align: end;
+    }
+`;
+
+export const WorkspaceInvoicePlanDetailsPrice = styled(WorkspaceSecondaryText)`
+  color: ${TCV_VERYWARM};
+  font-weight: bold;
+`;
+
+export const WorkspaceInvoicePlanDetailsCoupon = styled(WorkspaceSecondaryText)`
+  color: ${CV_RED};
+  font-weight: bold;
+`;
+
+export const WorkspaceInvoicePlanFormDetailsContainer = styled(
+  WorkspaceInvoicePlanDetailsContainer
+)`
+  color: ${CV_GRAY_DARK};
+  > * {
+    display: inline-grid;
+    font-size: 0.9rem;
+  }
+  > *:first-child {
+    width: 30%;
+  }
+  > *:last-child {
+    width: 20%;
+    text-align: start;
+    padding-inline-start: 0.5rem;
+  }
+  > *:nth-child(2) {
+    width: 50%;
+  }
+`;
+
+export const WorkspaceInvoiceCouponIconWrapper = styled.span`
+  svg {
+    font-size: 1.5rem;
+    margin-inline: 1rem;
+    color: ${TCV_DEFAULT};
+  }
+`;
+
+export const WorkspaceInvoicePaymentGatewayContainer = styled.div`
+  margin-block-start: 4rem;
+`;
+
+export const WorkspaceInvoicePaymentGatewayChoice = styled.div.attrs({
+  className: 'rv-border-radius-1',
+})`
+  margin: 0.5rem;
+  overflow: hidden;
+  border: 0.15rem solid transparent;
+  ${({ active }) =>
+    active &&
+    `border-color:${TCV_DEFAULT};
+   `}
+`;
+
+export const WorkspaceInvoicePaymentGatewayChoicesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-block-start: 1.5rem;
 `;

@@ -15,24 +15,21 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import Badge from 'components/Badge/Badge';
 import Button from 'components/Buttons/Button';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
-import {
-  WorkspaceSettingsHeaderContainer,
-  WorkspaceUserManagementTableContainer,
-} from './Teams.styles';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
-const { setSidebarContent } = themeSlice.actions;
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { WORKSPACES_PATH } from './items/others/constants';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
+const removeUserFromWorkspaceAPI = new APIHandler(
+  'RVAPI',
+  'RemoveUserFromWorkspace'
+);
 
 const WorkspaceSettingsView = () => {
   const { id: WorkspaceID } = useParams();
-  const dispatch = useDispatch();
   const { RVDic } = useWindow();
   const { isMobile } = DimensionHelper();
   const [SearchText, setSearchText] = useState('');
@@ -40,13 +37,13 @@ const WorkspaceSettingsView = () => {
   const [InfiniteScrollRerenderer, setInfiniteScrollRerenderer] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
-  const [removeUserFromWorkspace, setRemoveUserFromWorkspace] = useState(false);
+  const [removableUser, setRemovableUser] = useState(false);
 
   const breadCrumbItems = [
     {
       id: 1,
       title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
@@ -68,7 +65,12 @@ const WorkspaceSettingsView = () => {
           SearchText: encodeBase64(SearchText),
           LowerBoundary: workspaceUsers?.length + 1,
         },
-        (response) => {
+        ({ ErrorText, ...response }) => {
+          if (ErrorText)
+            return InfoToast({
+              type: 'error',
+              message: RVDic.MSG[ErrorText] || ErrorText,
+            });
           setIsLoading(false);
           setWorkspaceUsers((storedUsers) => [
             //* If [resetTable] is true, then only return recently fetched Users
@@ -101,24 +103,6 @@ const WorkspaceSettingsView = () => {
     window.scrollTo(0, 10);
     setInfiniteScrollRerenderer(randomNumber());
   }, [SearchText]);
-
-  //! configure sidebar content
-  useEffect(() => {
-    dispatch(
-      setSidebarContent({
-        current: SETT_WORKSPACE_CONTENT,
-        prev: MAIN_CONTENT,
-      })
-    );
-    return () => {
-      dispatch(
-        setSidebarContent({
-          prev: SETT_WORKSPACE_CONTENT,
-          current: MAIN_CONTENT,
-        })
-      );
-    };
-  }, []);
 
   //! Build a template for every row of workspace users (react-table)
   const data = React.useMemo(
@@ -190,7 +174,7 @@ const WorkspaceSettingsView = () => {
             <Button
               type="negative-o"
               key={User.MainEmailAddress}
-              onClick={() => setRemoveUserFromWorkspace(User)}
+              onClick={() => setRemovableUser(User)}
               style={{ padding: '0.25rem 1rem' }}>
               حذف از همه تیم ها
             </Button>
@@ -233,6 +217,26 @@ const WorkspaceSettingsView = () => {
     [isMobile]
   );
 
+  //! handling the removal of the selected user from workspace
+  const removeUserFromWorkspace = () => {
+    const { UserID } = removableUser;
+    removeUserFromWorkspaceAPI.fetch(
+      { UserID, WorkspaceID },
+      ({ ErrorText, Succeed }) => {
+        if (ErrorText)
+          return InfoToast({
+            type: 'error',
+            message: RVDic.MSG[ErrorText] || ErrorText,
+          });
+        setRemovableUser(false);
+        InfoToast({
+          type: 'success',
+          message: RVDic.MSG[Succeed] || Succeed,
+        });
+      }
+    );
+  };
+
   return (
     <WelcomeLayout>
       <div>
@@ -242,25 +246,25 @@ const WorkspaceSettingsView = () => {
           messageIcon={() => (
             <Avatar
               imageClasses="teamAvatar"
-              userImage={removeUserFromWorkspace.ImageURL}
+              userImage={removableUser.ImageURL}
             />
           )}
-          show={!!removeUserFromWorkspace}
-          onConfirm={() => setRemoveUserFromWorkspace(false)}
-          onCancel={() => setRemoveUserFromWorkspace(false)}
-          onClose={() => setRemoveUserFromWorkspace(false)}
+          show={!!removableUser}
+          onConfirm={removeUserFromWorkspace}
+          onCancel={() => setRemovableUser(false)}
+          onClose={() => setRemovableUser(false)}
           messageQuestion="آیا از حذف کاربر از همه تیم‌ها اطمینان دارید؟"
           messageWarning="با حذف کاربر اطلاعات تولید شده توسط او از بین نمی‌رود، همچنین با افزودن دوباره کاربر به تیم، او میتواند به اطلاعات قبلی دسترسی داشته باشد."
           title="حذف از همه تیم‌ها"
-          messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
+          messageTitle={decodeBase64(removableUser.FullName)}
         />
 
-        <WorkspaceSettingsHeaderContainer>
+        <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
             {RVDic.ManageN.replace('[n]', RVDic.Users)}
           </Heading>
-        </WorkspaceSettingsHeaderContainer>
+        </Styled.WorkspaceSettingsHeaderContainer>
         <SearchInput
           placeholder={RVDic.Search}
           onChange={setSearchText}
@@ -268,7 +272,7 @@ const WorkspaceSettingsView = () => {
           defaultValue={''}
         />
 
-        <WorkspaceUserManagementTableContainer>
+        <Styled.WorkspaceUserManagementTableContainer>
           <InfiniteScroll
             key={InfiniteScrollRerenderer}
             dataLength={workspaceUsers.length}
@@ -287,7 +291,7 @@ const WorkspaceSettingsView = () => {
             }>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
-        </WorkspaceUserManagementTableContainer>
+        </Styled.WorkspaceUserManagementTableContainer>
       </div>
     </WelcomeLayout>
   );

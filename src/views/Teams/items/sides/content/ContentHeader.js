@@ -8,6 +8,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import { useHistory } from 'react-router-dom';
 import { encodeBase64 } from 'helpers/helpers';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { WORKSPACES_PATH } from '../../others/constants';
 
 const Header = () => {
   const [isModalShown, setIsModalShown] = useState(false);
@@ -42,7 +43,7 @@ const Header = () => {
     const apiHandler = new APIHandler('RVAPI', 'CreateWorkspace');
     if (spaceName.length > 0)
       apiHandler.fetch({ Name: encodeBase64(spaceName) }, (response) => {
-        history.push('/workspaces');
+        history.push(WORKSPACES_PATH);
         console.log(response);
 
         setIsModalShown(false);

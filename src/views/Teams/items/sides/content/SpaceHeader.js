@@ -9,6 +9,10 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { decodeBase64 } from 'helpers/helpers';
+import {
+  WORKSPACE_USER_MANAGEMENT_PATH,
+  WORKSPACE_REMOVE_PATH,
+} from '../../others/constants';
 
 /**
  *
@@ -46,11 +50,11 @@ const SpaceHeader = ({ space }) => {
   };
 
   const handleSpaceDelete = () => {
-    history.push(`/workspaces/remove/${space.WorkspaceID}`);
+    history.push(`${WORKSPACE_REMOVE_PATH}/${space.WorkspaceID}`);
   };
 
   const handleSpaceSetting = () => {
-    history.push(`/workspaces/settings/user-management/${space.WorkspaceID}`);
+    history.push(`${WORKSPACE_USER_MANAGEMENT_PATH}/${space.WorkspaceID}`);
   };
 
   return (
