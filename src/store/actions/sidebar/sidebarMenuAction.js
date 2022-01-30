@@ -4,7 +4,6 @@ import {
   CN_API,
   PRIVACY_API,
   GET_FAVORITE_NODES_COUNT,
-  GET_NODE_TYPES,
   RENAME_NODE_TYPE,
   REMOVE_NODE_TYPE,
   MOVE_NODE_TYPE,
@@ -12,6 +11,7 @@ import {
   RECOVER_NODE_TYPE,
   CHECK_AUTHORITY,
 } from 'constant/apiConstants';
+import { getNodeTypes } from 'apiHelper/ApiHandlers/CNApi';
 
 const {
   setSidebarNodeTypes,
@@ -21,7 +21,6 @@ const {
   setUnderMenuList,
 } = sidebarMenuSlice.actions;
 
-const getNodesAPI = API_Provider(CN_API, GET_NODE_TYPES);
 const renameNodeAPI = API_Provider(CN_API, RENAME_NODE_TYPE);
 const deleteNodeAPI = API_Provider(CN_API, REMOVE_NODE_TYPE);
 const moveNodeAPI = API_Provider(CN_API, MOVE_NODE_TYPE);
@@ -31,15 +30,16 @@ const getFavoriteNodesCountAPI = API_Provider(CN_API, GET_FAVORITE_NODES_COUNT);
 const getUnderMenuPermissionsAPI = API_Provider(PRIVACY_API, CHECK_AUTHORITY);
 
 //! Filter hidden nodes out.
-const filterHiddenNodes = (nodes) => nodes.filter((node) => !node.Hidden);
+const filterHiddenNodes = (nodes) =>
+  (nodes || []).filter((node) => !node.Hidden);
 
 const getChildrenIds = (trees) => {
-  return trees.map((tree) => tree.NodeTypeID);
+  return (trees || []).map((tree) => tree.NodeTypeID);
 };
 
 const provideItems = (data) => {
-  const items = filterHiddenNodes(data.NodeTypes);
-  const appId = data.AppID;
+  const items = filterHiddenNodes(data?.NodeTypes) || [];
+  const appId = data?.AppID;
 
   return items.reduce((prevItems, item, _, self) => {
     const itemChildrens = self.filter((i) => i.ParentID === item.NodeTypeID);
@@ -60,19 +60,25 @@ const provideItems = (data) => {
         iconURL: item.IconURL,
       },
     };
+
     return { ...prevItems, [item.NodeTypeID]: extendedItem };
   }, {});
 };
 
 const provideDnDTree = (data) => {
-  const filteredNodes = filterHiddenNodes(data.NodeTypes);
+  if (!data?.AppID) return {};
+
+  const filteredNodes = filterHiddenNodes(data?.NodeTypes || []) || [];
+
   const rootChildren = getChildrenIds(
     filteredNodes?.filter((node) => {
       if (node.ParentID) return false;
       return true;
     })
   );
+
   const restItems = provideItems(data);
+
   return {
     rootId: data.AppID,
     items: {
@@ -96,34 +102,25 @@ const provideDnDTree = (data) => {
 
 /**
  * @description A function (action) that gets sidebar menu item from server.
- * @returns -Dispatch to redux store.
+ * @returns Dispatch to redux store.
  */
-export const getSidebarNodes = (done, error) => async (dispatch, getState) => {
-  try {
-    getNodesAPI.fetch(
-      {
-        Icon: true,
-        Count: 1000,
-        Tree: true,
-        CheckAccess: true,
-        ParseResults: true,
-      },
-      (response) => {
-        if (response.NodeTypes || response.Tree) {
-          done && done();
-          const dndTree = provideDnDTree(response);
-          dispatch(setSidebarNodeTypes(response.NodeTypes));
-          dispatch(setSidebarTree(response.Tree));
-          dispatch(setSidebarDnDTree(dndTree));
-        }
-      },
-      (err) => {
-        console.log({ err });
-        error && error();
-      }
-    );
-  } catch (err) {
-    console.log({ err });
+export const getSidebarNodeTypes = (done, error) => async (
+  dispatch,
+  getState
+) => {
+  const response = await getNodeTypes({
+    Icon: true,
+    Count: 1000,
+    Tree: true,
+    CheckAccess: true,
+  });
+
+  if (response.NodeTypes || response.Tree) {
+    done && done();
+    const dndTree = provideDnDTree(response);
+    dispatch(setSidebarNodeTypes(response.NodeTypes));
+    dispatch(setSidebarTree(response.Tree));
+    dispatch(setSidebarDnDTree(dndTree));
   }
 };
 
@@ -142,7 +139,7 @@ export const renameSidebarNode = (nodeId, nodeName) => async (
         Name: encodeBase64(nodeName),
       },
       (response) => {
-        dispatch(getSidebarNodes());
+        dispatch(getSidebarNodeTypes());
       },
       (error) => console.log({ error })
     );
@@ -167,7 +164,7 @@ export const deleteSidebarNode = (node, hierarchy = false, done) => async (
       (response) => {
         console.log(response);
         done(node);
-        dispatch(getSidebarNodes());
+        dispatch(getSidebarNodeTypes());
       },
       (error) => console.log({ error })
     );
@@ -203,7 +200,7 @@ export const moveSidebarNode = (newTree, source, destination) => async (
         ParentID: parentId,
       },
       (response) => {
-        dispatch(getSidebarNodes());
+        dispatch(getSidebarNodeTypes());
       },
       (error) => console.log({ error })
     );
@@ -232,7 +229,7 @@ export const reorderSidebarNode = (newTree, source, destination) => async (
       },
       (error) => {
         console.log({ error });
-        dispatch(getSidebarNodes());
+        dispatch(getSidebarNodeTypes());
       }
     );
   } catch (err) {
@@ -260,7 +257,7 @@ export const recoverSidebarNode = (node) => async (dispatch, getState) => {
                 ParentID: node.id,
               },
               (response) => {
-                dispatch(getSidebarNodes());
+                dispatch(getSidebarNodeTypes());
               },
               (error) => console.log(error)
             );
@@ -268,12 +265,12 @@ export const recoverSidebarNode = (node) => async (dispatch, getState) => {
             console.log({ err });
           }
         } else {
-          dispatch(getSidebarNodes());
+          dispatch(getSidebarNodeTypes());
         }
       },
       (error) => {
         console.log({ error });
-        dispatch(getSidebarNodes());
+        dispatch(getSidebarNodeTypes());
       }
     );
   } catch (err) {

@@ -5,8 +5,45 @@ import {
   GET_TEMPLATES,
   GET_TEMPLATE_JSON,
   GET_TEMPLATE_TAGS,
+  GET_NODE_TYPES,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description fetches NodeTypes based on provided parameters and filters
+ * @returns
+ */
+export const getNodeTypes = ({
+  NodeTypeIDs,
+  GrabSubNodeTypes,
+  SearchText,
+  IsKnowledge,
+  IsDocument,
+  Archive,
+  Icon,
+  Extensions,
+  Count,
+  LowerBoundary,
+  HasChild,
+  Tree,
+  CheckAccess,
+} = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
+    NodeTypeIDs: (NodeTypeIDs || []).join('|'),
+    GrabSubNodeTypes,
+    SearchText,
+    IsKnowledge,
+    IsDocument,
+    Archive,
+    Icon,
+    Extensions: (Extensions || []).join(','),
+    Count,
+    LowerBoundary,
+    HasChild,
+    Tree,
+    CheckAccess,
+  });
+};
 
 export const getGroupsAll = () => {
   const getGroupsAllAPI = API_Provider(CN_API, 'GetGroupsAll');

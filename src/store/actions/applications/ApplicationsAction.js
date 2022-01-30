@@ -4,7 +4,7 @@ import {
   toggleActivation,
 } from 'store/reducers/onboardingReducer';
 import {
-  getSidebarNodes,
+  getSidebarNodeTypes,
   getUnderMenuPermissions,
 } from 'store/actions/sidebar/sidebarMenuAction';
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
@@ -277,7 +277,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
             ApplicationID: appId,
             IsSystemAdmin: response.IsSystemAdmin,
           });
-          dispatch(getSidebarNodes());
+          dispatch(getSidebarNodeTypes());
           dispatch(getConfigPanels());
           dispatch(getUnderMenuPermissions(['Reports']));
           // dispatch(getNotificationsCount());

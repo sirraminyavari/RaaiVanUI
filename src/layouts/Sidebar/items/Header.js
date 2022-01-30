@@ -12,7 +12,7 @@ import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
 import { themeSlice } from 'store/reducers/themeReducer';
-import { getSidebarNodes } from 'store/actions/sidebar/sidebarMenuAction';
+import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
 
 const { toggleSidebar } = themeSlice.actions;
@@ -62,7 +62,7 @@ const SidebarHeader = () => {
   const toggleDrawer = () => {
     if (isIntroOnboarding) return;
     isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
-    dispatch(getSidebarNodes());
+    dispatch(getSidebarNodeTypes());
   };
 
   useEffect(() => {
