@@ -1,11 +1,11 @@
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-export const Container = styled(Link)`
+export const Container = styled.div`
   border-radius: 0.75rem;
   display: flex;
+  cursor: pointer;
 
   min-height: ${({ liteMode }) =>
     DimensionHelper().isTabletOrMobile

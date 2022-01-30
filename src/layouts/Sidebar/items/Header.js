@@ -62,7 +62,6 @@ const SidebarHeader = () => {
   const toggleDrawer = () => {
     if (isIntroOnboarding) return;
     isTeamSelected && dispatch(toggleSidebar(!isSidebarOpen));
-    dispatch(getSidebarNodeTypes());
   };
 
   useEffect(() => {
