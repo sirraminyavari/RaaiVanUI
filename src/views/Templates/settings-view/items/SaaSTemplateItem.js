@@ -1,25 +1,28 @@
 import styled from 'styled-components';
 import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
-import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
+import { CV_GRAY_DARK } from 'constant/CssVariables';
 import TemplateInlineEdit from './TemplatesInlineEdit';
 import TemplateCreateNew from './TemplateCreateNew';
 import SaaSTemplateCard from './SaaSTemplateCard';
 import TemplateDeleteButton from './TemplateDeleteButton';
 import { useContext, useState } from 'react';
 import { TemplateListContext } from '../TemplatesSettings';
-import CaretIcon from '../../../../components/Icons/CaretIcons/Caret';
-import useWindowContext from '../../../../hooks/useWindowContext';
+import CaretIcon from 'components/Icons/CaretIcons/Caret';
+import useWindowContext from 'hooks/useWindowContext';
 
 const SaaSTemplateItem = ({ NodeTypeID, TypeName, Sub, isExpanded }) => {
   const { handleDeleteNode, handleAddNodeType } = useContext(
     TemplateListContext
   );
+
+  const [isOpen, setIsOpen] = useState(isExpanded);
+
   const { RV_RTL } = useWindowContext();
+
   const handleDelete = () => {
     if (handleDeleteNode) handleDeleteNode(NodeTypeID);
   };
 
-  const [isOpen, setIsOpen] = useState(isExpanded);
   return (
     <>
       <ItemHead>
