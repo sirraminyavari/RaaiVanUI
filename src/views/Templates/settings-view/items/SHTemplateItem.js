@@ -7,6 +7,8 @@ import DragIcon from 'components/Icons/DragIcon/Drag';
 import TemplateInlineEdit from './TemplatesInlineEdit';
 import TemplateCreateNew from './TemplateCreateNew';
 import TemplateDeleteButton from './TemplateDeleteButton';
+import { useContext } from 'react';
+import { TemplateListContext } from '../TemplatesSettings';
 
 const SHTemplateItem = ({
   item,
@@ -15,11 +17,13 @@ const SHTemplateItem = ({
   onCollapse,
   depth,
   onRenameSubmit,
-  onDeleteSubmit,
-  handleAddNodeType,
   ...rest
 }) => {
   const { RV_RTL } = useWindowContext();
+  const { handleDeleteNode, handleAddNodeType } = useContext(
+    TemplateListContext
+  );
+
   const toggleItem = () => {
     if (item.isExpanded) {
       onCollapse(item?.id);
@@ -33,7 +37,7 @@ const SHTemplateItem = ({
   };
 
   const handleDelete = () => {
-    if (onDeleteSubmit) onDeleteSubmit(item?.id);
+    if (handleDeleteNode) handleDeleteNode(item?.id);
   };
 
   return (

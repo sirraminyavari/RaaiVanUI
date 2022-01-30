@@ -1,27 +1,25 @@
-import { FLEX_RCB, FLEX_RSB, ViewContentCard } from 'constant/StyledCommonCss';
+import { FLEX_RCB, ViewContentCard } from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import Heading from 'components/Heading/Heading';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import {
   addNodeType,
-  getChildNodeTypes,
   getNodeTypes,
-  removeNode,
   removeNodeType,
 } from 'apiHelper/ApiHandlers/CNApi';
 import SHTemplates from './items/SHTemplates';
 import SaaSTemplates from './items/SaaSTemplates';
 import SearchInput from 'components/Inputs/SearchInput';
-import LogoLoader from '../../../components/Loaders/LogoLoader/LogoLoader';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TemplateCreateNew from './items/TemplateCreateNew';
-import { CV_RED, CV_WHITE, TCV_DEFAULT } from '../../../constant/CssVariables';
-import ArchiveIcon from '../../../components/Icons/ArchiveIcon/ArchiveIcon';
-import { TEMPLATES_ARCHIVE_PATH } from '../../../constant/constants';
+import { CV_RED, CV_WHITE } from 'constant/CssVariables';
+import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
+import { TEMPLATES_ARCHIVE_PATH } from 'constant/constants';
 import { useHistory } from 'react-router-dom';
-import { forkJoin } from 'rxjs';
 
+export const TemplateListContext = createContext({});
 const TemplatesSettings = () => {
   const history = useHistory();
   const { RVDic, RV_RTL, RVGlobal } = useWindowContext();
@@ -106,17 +104,19 @@ const TemplatesSettings = () => {
           <TemplateCreateNew onSubmit={handleAddNodeType} />
         </ActionBarContainer>
 
-        {loading ? (
-          <LogoLoader />
-        ) : isSaaS ? (
-          <SaaSTemplates nodes={data} handleAddNodeType={handleAddNodeType} />
-        ) : (
-          <SHTemplates
-            nodes={data}
-            handleAddNodeType={handleAddNodeType}
-            onDeleteSubmit={handleDeleteNode}
-          />
-        )}
+        <TemplateListContext.Provider
+          value={{
+            handleDeleteNode,
+            handleAddNodeType,
+          }}>
+          {loading ? (
+            <LogoLoader />
+          ) : isSaaS ? (
+            <SaaSTemplates nodes={data} />
+          ) : (
+            <SHTemplates nodes={data} />
+          )}
+        </TemplateListContext.Provider>
       </ViewCard>
     </TemplateSettingsContainer>
   );

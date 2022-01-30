@@ -8,7 +8,7 @@ import {
   setNodeTypesOrder,
 } from 'apiHelper/ApiHandlers/CNApi';
 
-const SHTemplates = ({ nodes, handleAddNodeType, onDeleteSubmit }) => {
+const SHTemplates = ({ nodes }) => {
   const [tree, setTree] = useState({});
 
   useEffect(() => {
@@ -81,14 +81,7 @@ const SHTemplates = ({ nodes, handleAddNodeType, onDeleteSubmit }) => {
   };
 
   const renderItem = (props) => {
-    return (
-      <SHTemplateItem
-        {...props}
-        onRenameSubmit={handleRenameNode}
-        handleAddNodeType={handleAddNodeType}
-        onDeleteSubmit={onDeleteSubmit}
-      />
-    );
+    return <SHTemplateItem {...props} onRenameSubmit={handleRenameNode} />;
   };
 
   const handleMoveItem = (id, parentId) => {
