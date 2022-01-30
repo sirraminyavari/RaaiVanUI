@@ -78,9 +78,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   useOnClickOutside(actionRef, handleOnClickOutside);
 
-  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
-  const currentUser = (RVGlobal || {}).CurrentUser;
-
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -94,6 +91,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Removable: isRemovable,
     Editable: isEditable,
   } = team;
+
+  const isAdmin = isEditable || isRemovable;
+  const currentUser = (RVGlobal || {}).CurrentUser;
 
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
@@ -394,6 +394,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   </Styled.ExtraUsersWrapper>
                   <ExtraUsersList
                     users={users}
+                    isAdmin={isAdmin}
                     handleInviteUser={handleInviteUser}
                   />
                 </PopupMenu>

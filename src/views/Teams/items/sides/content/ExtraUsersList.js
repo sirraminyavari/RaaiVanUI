@@ -8,11 +8,9 @@ import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
 
-const ExtraUsersList = ({ handleInviteUser, users }) => {
+const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
   const containerRef = useRef();
   const { RV_RTL, RVGlobal } = useWindow();
-
-  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
 
   usePreventScroll(containerRef);
 
