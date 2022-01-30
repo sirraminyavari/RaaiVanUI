@@ -10,12 +10,16 @@ import {
 } from '../../TemplatesGallery';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
-import { activateTemplate, getTemplatesJSON } from 'apiHelper/apiFunctions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import LottieMaker from 'components/LottieMaker/LottieMaker';
 import LottieJson from 'assets/lotties/big-data-analysis.json';
 import Heading from 'components/Heading/Heading';
+import { CLASSES_PATH } from 'constant/constants';
+import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNApi';
 
+/**
+ * @description
+ */
 const TemplateDescription = () => {
   const {
     currentTemplate,
@@ -23,6 +27,7 @@ const TemplateDescription = () => {
     setContent,
     setCurrentTemplate,
   } = useContext(TemplatesGalleryContext);
+
   const { RVDic } = useWindow();
   const [isActivating, setIsActivating] = useState(false);
 
@@ -53,47 +58,39 @@ const TemplateDescription = () => {
   };
 
   //! Template activation process.
-  const handleActivateTemplate = () => {
+  const handleActivateTemplate = async () => {
     setIsActivating(true);
 
-    //! First, get template json.
-    getTemplatesJSON(currentTemplate?.NodeTypeID)
-      .then((response) => {
-        if (response?.Template) {
-          const template = encodeBase64(JSON.stringify(response?.Template));
-          //! Then, activate the template.
-          activateTemplate(template)
-            .then((res) => {
-              console.log(res);
-              setIsActivating(false);
-              if (res?.Succeed) {
-                //! send success toast.
-                const successMSG = `قالب "${decodeBase64(
-                  currentTemplate?.TypeName
-                )}" فعال شد`;
-                makeToast(successMSG, 'info');
-              }
+    //first, get the template object
+    const response = await getTemplateJSON({
+      NodeTypeID: currentTemplate?.NodeTypeID,
+    });
 
-              if (res?.ErrorText) {
-                //! send error toast.
-                const errorMSG = RVDic.MSG[res?.ErrorText] || res?.ErrorText;
-                makeToast(errorMSG, 'error');
-              }
-            })
-            .catch((err) => {
-              setIsActivating(false);
-              console.log(err);
-              //! send error toast.
-              makeToast(err.message, 'error');
-            });
-        }
-      })
-      .catch((error) => {
-        setIsActivating(false);
-        console.log(error);
-        //! send error toast.
-        makeToast(error.message, 'error');
-      });
+    //then, activate the template
+    const acRes = !response?.Template
+      ? null
+      : await activateTemplate({ Template: response.Template });
+
+    setIsActivating(false);
+
+    if (acRes?.Succeed) {
+      //! send success toast.
+      const successMSG = RVDic.MSG.TemplateNActivated.replace(
+        '[n]',
+        decodeBase64(currentTemplate?.TypeName)
+      );
+
+      makeToast(successMSG, 'info');
+
+      setTimeout(() => (window.location.href = CLASSES_PATH), 1000);
+    } else if (acRes?.ErrorText || response?.ErrorText) {
+      //! send error toast.
+      const errorMSG =
+        RVDic.MSG[acRes?.ErrorText || response?.ErrorText] ||
+        acRes?.ErrorText ||
+        response?.ErrorText;
+      makeToast(errorMSG, 'error');
+    }
   };
 
   return (
@@ -135,9 +132,11 @@ const TemplateDescription = () => {
           classes="activate-template-button">
           {RVDic.UseThisN.replace('[n]', RVDic.Template)}
         </Button>
-        <Styled.TemplateDescription>
-          {decodeBase64(currentTemplate?.Description) || 'Template Description'}
-        </Styled.TemplateDescription>
+        {!!currentTemplate?.Description && (
+          <Styled.TemplateDescription>
+            {decodeBase64(currentTemplate.Description)}
+          </Styled.TemplateDescription>
+        )}
       </Styled.TemplateDescriptionWrapper>
     </PerfectScrollbar>
   );

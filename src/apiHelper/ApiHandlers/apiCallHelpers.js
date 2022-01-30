@@ -13,11 +13,15 @@ export const apiCallWrapper = (api, data, { parser } = {}) => {
           resolve(typeof parser == 'function' ? parser(res) : res);
         },
         (err) => {
-          reject(err);
+          console.error(err);
+          resolve({ error: err });
+          //reject(err);
         }
       );
     } catch (err) {
-      reject(err);
+      console.error(err);
+      resolve({ error: err });
+      //reject(err);
     }
   });
 };
