@@ -11,6 +11,7 @@ import useWindow from 'hooks/useWindowContext';
 import SearchTypeButtons from './SearchTypeButtons';
 import SearchAdvancedButtons from './SearchAdvancedButtons';
 import SearchTypeCollapsed from './SearchTypeCollapsed';
+import Heading from 'components/Heading/Heading';
 
 const selectIsSidebarOpen = createSelector(
   (state) => state.theme,
@@ -53,26 +54,22 @@ const SearchActions = () => {
 
   return (
     <Styled.SearchActionsContainer>
-      <Styled.SearchViewHeaderTitle>
+      <Heading type="H1" style={{ marginBottom: '1.5rem' }}>
         {searchText
           ? SearchResultsForN.replace('[n]', `"${searchText}"`)
           : SearchResults}
-      </Styled.SearchViewHeaderTitle>
+      </Heading>
       <Styled.SearchActionsWrapper>
         <Styled.SearchArea>
           <Styled.InputWrapper>
             <Input
               ref={searchInputRef}
-              type="search"
               placeholder={Search}
               onChange={handleSearch}
               value={searchText}
-            />
-            <SearchIcon
-              size={20}
-              color={CV_DISTANT}
-              className="search-input-icon"
-            />
+              style={{ padding: '0.5rem', fontSize: '1rem' }}>
+              <SearchIcon size={22} color={CV_DISTANT} />
+            </Input>
           </Styled.InputWrapper>
           {isCollapsed() ? (
             <SearchTypeCollapsed />
