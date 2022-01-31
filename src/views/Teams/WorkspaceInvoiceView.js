@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import ReturnButton from 'components/Buttons/ReturnButton';
 import {
   WORKSPACES_PATH,
+  WORKSPACE_INVOICE_PATH,
   WORKSPACE_PLANS_PATH,
 } from './items/others/constants';
 import { useHistory, useParams } from 'react-router-dom';
@@ -19,6 +20,8 @@ const WorkspaceInvoiceView = () => {
   const history = useHistory();
   const { id: WorkspaceID } = useParams();
 
+  const RVDicPriceCalculation = RVDic.PriceCalculation;
+
   const breadCrumbItems = [
     {
       id: 1,
@@ -27,8 +30,8 @@ const WorkspaceInvoiceView = () => {
     },
     {
       id: 2,
-      title: 'صورت‌حساب طرح حرفه‌ای',
-      linkTo: '',
+      title: RVDicPriceCalculation,
+      linkTo: `${WORKSPACE_INVOICE_PATH}/${WorkspaceID}`,
     },
   ];
 
@@ -44,7 +47,7 @@ const WorkspaceInvoiceView = () => {
             <ReturnButton onClick={handleReturnToPlansView} />
           </div>
           <Heading type="h1" className="pageTitle">
-            {'صورت‌حساب طرح حرفه‌ای'}
+            {RVDicPriceCalculation}
           </Heading>
         </Styled.WorkspaceSettingsHeaderContainer>
         <WorkspaceInvoicePlanForm />

@@ -52,7 +52,7 @@ const ArchivedModal = (props) => {
       '[n]',
       `"${decodeBase64(archivedTeam?.Title)}"`
     );
-    const title = 'بازیافت تیم';
+    const title = RVDic.RecoverN.replace('[n]', RVDic.Team);
     setConfirm({ team: archivedTeam, message, title, isOpen: true });
   };
 
@@ -125,6 +125,7 @@ const ArchivedModal = (props) => {
                     {self.length !== index + 1 && <hr className={BO_FREEZED} />}
                   </Fragment>
                 );
+              return;
             })}
           </PerfectScrollbar>
         </Styled.ModalContentWrapper>

@@ -21,7 +21,6 @@ import {
   CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
-  CV_RED_VERYSOFT,
   CV_WHITE,
   TCV_DEFAULT,
   TCV_VERYWARM,
@@ -584,7 +583,7 @@ export const DesktopWelcomeSide = styled.div`
 `;
 
 export const WorkspaceImageWrapper = styled.div`
-  width: 60%;
+  width: 40%;
   // max-width: 18rem;
   margin-block-start: 5rem;
   aspect-ratio: 1;

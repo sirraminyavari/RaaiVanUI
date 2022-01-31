@@ -13,7 +13,6 @@ import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from './DragTeam';
 import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
 import WorkspaceTeamsSkeleton from '../../others/skeletons/WorkspaceTeams';
-import { useEffect, useState } from 'react';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -49,6 +48,7 @@ const DesktopWorkSpace = ({ space }) => {
         if (app.WorkspaceID === space.WorkspaceID) {
           return app;
         }
+        return;
       })
       .filter((app) => app);
     if (workspaceArchivedApps.length > 0) return true;
@@ -79,6 +79,7 @@ const DesktopWorkSpace = ({ space }) => {
                         />
                       </Flipped>
                     );
+                  return;
                 })}
                 {checkWorkspaceHasArchivedApps() && (
                   <ArchivedTeams space={space} archives={archivedApps} />

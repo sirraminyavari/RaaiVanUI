@@ -16,23 +16,39 @@ import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { scrollIntoView } from 'helpers/helpers';
 import WorkspacePlanItem from './items/sides/content/WorkspacePlanItem';
-import { WORKSPACES_PATH } from './items/others/constants';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_PLANS_PATH,
+} from './items/others/constants';
+import { useParams } from 'react-router-dom';
 
 const WorkspacePlansView = () => {
-  const [isYearlyPrices, setIsYearlyPrices] = useState(false);
+  const { id: WorkspaceID } = useParams();
   const { RVDic } = useWindow();
   const { isTabletOrMobile } = DimensionHelper();
+
+  const [isYearlyPrices, setIsYearlyPrices] = useState(false);
+
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicWorkspacePlans = RVDic.Plans;
+  const RVDicAnnualPayment = RVDic.AnnualPayment;
+  const RVDicMonthlyPayment = RVDic.MonthlyPayment;
+  const RVDicComparePlans = RVDic.ComparePlans;
 
   const breadCrumbItems = [
     {
       id: 1,
-      title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
+      title: RVDicWorkspaceSettings,
       linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
-      title: 'طرحها',
-      linkTo: WORKSPACES_PATH,
+      title: RVDicWorkspacePlans,
+      linkTo: `${WORKSPACE_PLANS_PATH}/${WorkspaceID}`,
     },
   ];
 
@@ -126,12 +142,16 @@ const WorkspacePlansView = () => {
         <Styled.WorkspacePlansHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
-            {'طرحها'}
+            {RVDicWorkspacePlans}
           </Heading>
           <div className="paymentType">
-            <span className={isYearlyPrices && `active`}>پرداخت سالیانه</span>
+            <span className={isYearlyPrices && `active`}>
+              {RVDicAnnualPayment}
+            </span>
             <ToggleButton onToggle={setIsYearlyPrices} value={isYearlyPrices} />
-            <span className={!isYearlyPrices && `active`}>پرداخت ماهیانه</span>
+            <span className={!isYearlyPrices && `active`}>
+              {RVDicMonthlyPayment}
+            </span>
           </div>
         </Styled.WorkspacePlansHeaderContainer>
 
@@ -149,7 +169,7 @@ const WorkspacePlansView = () => {
             }}
             onClick={() => scrollIntoView('planDetails')}
             type="primary-o">
-            مشاهده امکانات کامل
+            {RVDicComparePlans}
           </Button>
         </Styled.WorkspacePlansActionContainer>
 
@@ -157,7 +177,7 @@ const WorkspacePlansView = () => {
           id="planDetails"
           type="h3"
           style={{ textAlign: 'center', marginBlockStart: '8rem' }}>
-          مقایسه امکانات طرح‌های کلیک‌مایند
+          {RVDicComparePlans}
         </Heading>
         <Styled.WorkspacePlansTableContainer>
           <ResponsiveTable data={data} columns={columns} />

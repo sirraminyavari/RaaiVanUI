@@ -25,7 +25,6 @@ const RemoveWorkspaceAPI = new APIHandler('RVAPI', 'RemoveWorkspace');
 const WorkspaceDeleteContent = () => {
   const [OTPInput, setOTPInput] = useState([]);
   const [pendingPromise, setPendingPromise] = useState(false);
-  const dispatch = useDispatch();
   const [resetCountdown, setResetCountdown] = useState(0);
   const [OTPProperties, setOTPProperties] = useState(undefined);
   const { RVDic } = useWindow();
