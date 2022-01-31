@@ -583,7 +583,7 @@ export const DesktopWelcomeSide = styled.div`
 `;
 
 export const WorkspaceImageWrapper = styled.div`
-  width: 60%;
+  width: 40%;
   // max-width: 18rem;
   margin-block-start: 5rem;
   aspect-ratio: 1;
