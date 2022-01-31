@@ -11,8 +11,8 @@ import {
   FaFilePowerpoint,
   FaFileVideo,
   FaFileWord,
-  FaFileUpload,
 } from 'react-icons/fa';
+import { IoDocumentTextOutline } from 'react-icons/io5';
 import { BsFileEarmarkText } from 'react-icons/bs';
 
 /**
@@ -67,7 +67,7 @@ const FilesFormatIcon = (props) => {
       return <FaFileWord {...rest} />;
 
     case 'upload':
-      return <FaFileUpload {...rest} />;
+      return <IoDocumentTextOutline {...rest} />;
 
     default:
       return !!fill ? <FaFileAlt {...rest} /> : <BsFileEarmarkText {...rest} />;

@@ -153,6 +153,7 @@ const MainNode = ({ nodeDetails, nodeId }) => {
                   borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
                   borderRadius: 0,
                   borderColor: `${CV_DISTANT}`,
+                  width: '100%',
                 }}
               />
             ) : (
