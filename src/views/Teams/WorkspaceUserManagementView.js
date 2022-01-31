@@ -9,7 +9,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import { useParams } from 'react-router-dom';
 import { decodeBase64, encodeBase64, randomNumber } from 'helpers/helpers';
 import Avatar from 'components/Avatar/Avatar';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import Badge from 'components/Badge/Badge';
@@ -24,6 +24,7 @@ import {
   WORKSPACES_PATH,
   WORKSPACE_USER_MANAGEMENT_PATH,
 } from './items/others/constants';
+import InfiniteScroll from 'components/InfiniteScroll/InfiniteScroll';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
 const removeUserFromWorkspaceAPI = new APIHandler(
@@ -113,7 +114,7 @@ const WorkspaceSettingsView = () => {
   );
   //! fetch first batch of workspace users on page load
   useEffect(() => {
-    getWorkspaceUsers(true);
+    // getWorkspaceUsers(true);
   }, []);
 
   //! reset the Workspace Users on SearchText changes
@@ -121,9 +122,9 @@ const WorkspaceSettingsView = () => {
     setWorkspaceUsers([]);
     setTablePage(0);
     //? simple hack to make InfiniteScroll component fetch on search input changes
-    window.scrollTo(0, 0);
-    window.scrollTo(0, 10);
-    setInfiniteScrollRerenderer(randomNumber());
+    // window.scrollTo(0, 0);
+    // window.scrollTo(0, 10);
+    // setInfiniteScrollRerenderer(randomNumber());
   }, [SearchText]);
 
   //! Build a template for every row of workspace users (react-table)
@@ -297,21 +298,10 @@ const WorkspaceSettingsView = () => {
 
         <Styled.WorkspaceUserManagementTableContainer>
           <InfiniteScroll
-            key={InfiniteScrollRerenderer}
-            dataLength={workspaceUsers.length}
-            next={getWorkspaceUsers}
-            hasMore={typeof tablePage !== 'boolean'}
-            loader={
-              isLoading && (
-                <LoadingIconCircle
-                  style={{
-                    marginInline: 'auto',
-                    marginBlock: '1rem',
-                    display: 'block',
-                  }}
-                />
-              )
-            }>
+            onScrollEnd={getWorkspaceUsers}
+            pageNumber={tablePage}
+            setPageNumber={setTablePage}
+            hasMore={typeof tablePage !== 'boolean'}>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
         </Styled.WorkspaceUserManagementTableContainer>
