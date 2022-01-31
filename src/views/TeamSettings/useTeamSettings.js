@@ -4,10 +4,7 @@
 import useWindow from '../../hooks/useWindowContext';
 import { useEffect, useState } from 'react';
 import { decodeBase64 } from '../../helpers/helpers';
-import {
-  getTemplateTags,
-  saveApplicationInfo,
-} from '../../apiHelper/apiFunctions';
+import { saveApplicationInfo } from '../../apiHelper/apiFunctions';
 import {
   ARABIC_LANGUAGE,
   ENGLISH_LANGUAGE,
@@ -22,6 +19,7 @@ import {
   TEN_TO_TWENTY,
 } from '../../constant/constants';
 import InfoToast from '../../components/toasts/info-toast/InfoToast';
+import { getTemplateTags } from 'apiHelper/ApiHandlers/CNApi';
 
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
@@ -43,16 +41,14 @@ const useTeamSettings = (props) => {
   });
 
   useEffect(async () => {
-    try {
-      const tagList = await getTemplateTags();
-      const fields = tagList?.Tags?.map((x) => ({
-        value: x?.NodeID,
-        label: decodeBase64(x?.Name),
-      }));
-      setFieldOfExpertiseOption(fields);
-    } catch (err) {
-      console.log('call api error: ', err);
-    }
+    const tagList = await getTemplateTags();
+
+    const fields = tagList?.Tags?.map((x) => ({
+      value: x?.NodeID,
+      label: decodeBase64(x?.Name),
+    }));
+
+    setFieldOfExpertiseOption(fields);
   }, []);
 
   /**

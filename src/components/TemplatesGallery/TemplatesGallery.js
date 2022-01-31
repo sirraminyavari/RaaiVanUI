@@ -10,9 +10,9 @@ import DescriptionContent from './contents/template-description/TemplateDescript
 import Button from 'components/Buttons/Button';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import { getTemplates } from 'apiHelper/apiFunctions';
 import { provideTemplatesForTree } from './templateUtils';
 import { TEMPLATES_SETTING_PATH } from 'constant/constants';
+import { getTemplates } from 'apiHelper/ApiHandlers/CNApi';
 
 export const MAIN_CONTENT = 'main';
 export const CATEGORY_CONTENT = 'category';
@@ -20,7 +20,7 @@ export const DESCRIPTIONS_CONTENT = 'descriptions';
 
 export const TemplatesGalleryContext = createContext({});
 
-const TemplatesGallery = (props) => {
+const TemplatesGallery = ({ isOpen, onModalClose } = {}) => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const [content, setContent] = useState({ name: MAIN_CONTENT, data: {} });
@@ -28,7 +28,6 @@ const TemplatesGallery = (props) => {
   const [tree, setTree] = useState({});
   const [currentCategory, setCurrentCategory] = useState(null);
   const [currentTemplate, setCurrentTemplate] = useState(null);
-  const { isOpen, onModalClose } = props;
 
   const getContent = () => {
     switch (content.name) {
@@ -42,14 +41,11 @@ const TemplatesGallery = (props) => {
   };
 
   //! Fetch templates.
-  useEffect(() => {
-    getTemplates()
-      .then((response) => {
-        setTree(provideTemplatesForTree(response));
-        setTemplatesObject(response);
-        // console.log(response);
-      })
-      .catch((error) => console.log(error));
+  useEffect(async () => {
+    const response = await getTemplates();
+
+    setTree(provideTemplatesForTree(response));
+    setTemplatesObject(response);
 
     //! Clean up.
     return () => {

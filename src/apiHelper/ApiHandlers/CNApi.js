@@ -1,6 +1,49 @@
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { CN_API } from 'constant/apiConstants';
+import {
+  ACTIVATE_TEMPLATE,
+  CN_API,
+  GET_TEMPLATES,
+  GET_TEMPLATE_JSON,
+  GET_TEMPLATE_TAGS,
+  GET_NODE_TYPES,
+} from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description fetches NodeTypes based on provided parameters and filters
+ * @returns
+ */
+export const getNodeTypes = ({
+  NodeTypeIDs,
+  GrabSubNodeTypes,
+  SearchText,
+  IsKnowledge,
+  IsDocument,
+  Archive,
+  Icon,
+  Extensions,
+  Count,
+  LowerBoundary,
+  HasChild,
+  Tree,
+  CheckAccess,
+} = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
+    NodeTypeIDs: (NodeTypeIDs || []).join('|'),
+    GrabSubNodeTypes,
+    SearchText,
+    IsKnowledge,
+    IsDocument,
+    Archive,
+    Icon,
+    Extensions: (Extensions || []).join(','),
+    Count,
+    LowerBoundary,
+    HasChild,
+    Tree,
+    CheckAccess,
+  });
+};
 
 export const getGroupsAll = () => {
   const getGroupsAllAPI = API_Provider(CN_API, 'GetGroupsAll');
@@ -72,5 +115,44 @@ export const saveMembers = (NodeID, UserIDs) => {
   return apiCallWrapper(saveMembersAPI, {
     NodeID,
     UserIDs: UserIDs.join('|'),
+  });
+};
+
+/**
+ * @description Get templates.
+ * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
+ * @returns Promise.
+ */
+export const getTemplates = ({ TagID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
+};
+
+/**
+ * @description fetches the categories of templates
+ * @returns Promise.
+ */
+export const getTemplateTags = () => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_TAGS), {});
+};
+
+/**
+ * @description Gets a template object
+ * @param {String} NodeTypeID the id of the template
+ * @returns Promise.
+ */
+export const getTemplateJSON = ({ NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_JSON), {
+    NodeTypeID,
+  });
+};
+
+/**
+ * @description Activate a template.
+ * @param {any} Template -The template object to be activated.
+ * @returns Promise.
+ */
+export const activateTemplate = ({ Template } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, ACTIVATE_TEMPLATE), {
+    Template: encodeBase64(JSON.stringify(Template || {})),
   });
 };
