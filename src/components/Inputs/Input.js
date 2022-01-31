@@ -107,16 +107,14 @@ const Input = React.forwardRef(
             'rv-input' +
             (error ? ' rv-input-invalid ' : ' ') +
             (shaking ? ' rv-shake ' : ' ') +
-            className
+            (className ? className : '')
           }
           style={GlobalUtilities.extend(
             style || {},
             {
               position: 'relative',
             },
-            !hasButton
-              ? {}
-              : { [RV_RTL ? 'paddingLeft' : 'paddingRight']: '2.2rem' }
+            !hasButton ? {} : { paddingInlineEnd: '2.2rem' }
           )}
           onKeyUp={handleKeyDown}
           autoComplete="off"
