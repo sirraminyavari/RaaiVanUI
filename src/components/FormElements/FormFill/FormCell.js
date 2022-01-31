@@ -1,11 +1,10 @@
 import Heading from 'components/Heading/Heading';
-import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import { CV_DISTANT, CV_GRAY, TCV_WARM } from 'constant/CssVariables';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SaveButton from './items/SaveButton';
-import cliqmind_logo_white from '../../../assets/images/edit_icon.svg';
 import { EditableContext } from './FormFill';
+import EditCircleIcon from 'components/Icons/EditIcons/EditCircle';
 
 const FormCell = ({
   children,
@@ -34,13 +33,7 @@ const FormCell = ({
           <Title type="h4">{title}</Title>
         </div>
         {!editMode && editModeVisible && editable && (
-          <EditSVG src={cliqmind_logo_white} />
-          // <PencilIcon
-          //   size={'1.5rem'}
-          //   style={{ margin: '0 0.5rem 0 0.5rem' }}
-          //   color={TCV_WARM}
-          //   onClick={onEdit}
-          // />
+          <EditIcon onClick={onEdit} />
         )}
       </CellName>
       <Children>{children}</Children>
@@ -76,6 +69,12 @@ const Children = styled.div`
   justify-content: flex-start;
   flex: 1;
 `;
-const EditSVG = styled.img`
+const EditIcon = styled(EditCircleIcon)`
   margin: 0 0.5rem 0 0.5rem;
+  color: ${CV_DISTANT};
+  cursor: pointer;
+  font-size: 2.1rem;
+  &:hover {
+    color: ${TCV_WARM};
+  }
 `;
