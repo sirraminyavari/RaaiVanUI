@@ -111,7 +111,8 @@ export const SpaceHeaderContainer = styled.div.attrs({
   align-items: center;
   margin: 0 0 0.2rem 0;
   position: sticky;
-  top: 4rem;
+  // top: 4rem;
+  top: 0;
   z-index: 200;
   padding: 1rem 0;
 `;
