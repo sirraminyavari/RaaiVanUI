@@ -37,7 +37,7 @@ const SpaceHeader = ({ space }) => {
   const RVDicDeleteConfirmWarning = RVDic._HelpRemoveWorkspace;
   const RVDicRemoveWorkspace = RVDic.RemoveN.replace('[n]', RVDic.Workspace);
   const RVDicPermanentlyRemove = RVDic.RemovePermanently;
-  const userAuthority = space.Editable ? RVDic.Admin : RVDic.OrdinaryUser;
+  // const userAuthority = space.Editable ? RVDic.Admin : RVDic.OrdinaryUser;
 
   //! Show space delete confirmation.
   const onTrashClick = () => {
@@ -79,7 +79,7 @@ const SpaceHeader = ({ space }) => {
           style={{ marginInlineEnd: '0.6rem' }}
         />
         {/*//? Should <Styled.SpaceHeaderTitle/> component be replaced with <Heading/>?  */}
-        {`${decodeBase64(space.Name)} (${userAuthority})`}
+        <span contentEditable>{`${decodeBase64(space.Name)}`}</span>
       </Styled.SpaceHeaderTitle>
       {space.Removable && (
         <Styled.SpaceHeaderActions>
