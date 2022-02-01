@@ -23,7 +23,6 @@ const RemoveWorkspaceTicketAPI = new APIHandler(
 );
 const RemoveWorkspaceAPI = new APIHandler('RVAPI', 'RemoveWorkspace');
 const WorkspaceDeleteContent = () => {
-  const [OTPInput, setOTPInput] = useState([]);
   const [pendingPromise, setPendingPromise] = useState(false);
   const [resetCountdown, setResetCountdown] = useState(0);
   const [OTPProperties, setOTPProperties] = useState(undefined);
@@ -67,12 +66,12 @@ const WorkspaceDeleteContent = () => {
   };
 
   const ReturnToWorkspaces = () => history.push(WORKSPACES_PATH);
-  const handleRemoveWorkspaceButton = () => {
+  const handleRemoveWorkspaceButton = (otp, error) => {
     setPendingPromise(true);
     RemoveWorkspaceAPI.fetch(
       {
         VerificationToken: OTPProperties.Token, //got from RVAPI.RemoveWorkspaceTicket previously
-        Code: OTPInput.join(''), //a 5-digit number
+        Code: otp, //a 5-digit number
       },
       ({ ErrorText, Succeed }) => {
         if (!ErrorText) {
@@ -81,11 +80,7 @@ const WorkspaceDeleteContent = () => {
             message: RVDic.MSG[Succeed] || Succeed,
           });
           ReturnToWorkspaces();
-        } else
-          InfoToast({
-            type: 'error',
-            message: RVDic.MSG[ErrorText] || ErrorText,
-          });
+        } else error(RVDic.MSG[ErrorText] || ErrorText);
         setPendingPromise(false);
       }
     );
@@ -133,10 +128,11 @@ const WorkspaceDeleteContent = () => {
       </Styled.WorkspaceDeleteString>
       <Styled.WorkspaceDeleteActionsContainer>
         <VerificationInputWithTimer
+          noIcon
           email={OTPProperties?.EmailAddress}
           length={OTPProperties?.Length}
           timeout={OTPProperties?.Timeout}
-          onValueChange={setOTPInput}
+          onConfirm={handleRemoveWorkspaceButton}
           resendCodeRequest={handleLoaded}
           reset={resetCountdown}
         />
