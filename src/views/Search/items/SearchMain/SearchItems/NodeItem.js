@@ -7,6 +7,7 @@ import OpenMailIcon from 'components/Icons/MailIcon/OpenMailIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
+import CreationDateLabel from './CreationDateLabel';
 
 const NodeItem = ({ item }) => {
   const {
@@ -37,7 +38,7 @@ const NodeItem = ({ item }) => {
     <Styled.SearchItemContainer>
       <Styled.SearchItemTypeWrapper>
         <OpenMailIcon size={33} color={CV_DISTANT} />
-        {/* <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate> */}
+        <CreationDateLabel {...item} />
       </Styled.SearchItemTypeWrapper>
       <Styled.SearchItemInfoWrapper>
         <Styled.SearchItemDescription>

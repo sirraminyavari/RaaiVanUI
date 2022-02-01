@@ -2,10 +2,10 @@ import {
   CV_RED,
   CV_RED_VERYSOFT,
   TCV_DEFAULT,
-  TCV_VERY_TRANSPARENT,
+  TCV_VERY_SOFT,
 } from 'constant/CssVariables';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const BadgeWrapper = styled.div`
   height: 1.5rem;
@@ -31,11 +31,15 @@ export const PureBadge = styled.span.attrs({
   ${({ type }) => {
     switch (type) {
       case 'default':
-        return `color: ${TCV_DEFAULT};
-  background-color: ${TCV_VERY_TRANSPARENT};`;
+        return css`
+          color: ${TCV_DEFAULT};
+          background-color: ${TCV_VERY_SOFT};
+        `;
       case 'error':
-        return `color: ${CV_RED};
-  background-color: ${CV_RED_VERYSOFT};`;
+        return css`
+          color: ${CV_RED};
+          background-color: ${CV_RED_VERYSOFT};
+        `;
     }
   }}
 `;

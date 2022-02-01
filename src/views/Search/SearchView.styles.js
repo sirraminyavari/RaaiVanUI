@@ -27,9 +27,7 @@ import {
   TC_WARM,
 } from 'constant/Colors';
 import {
-  CV_BLACK,
   CV_DISTANT,
-  CV_FREEZED,
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
@@ -322,8 +320,6 @@ export const SearchItemInfoWrapper = styled.div`
   gap: 1rem;
 `;
 
-export const SearchItemDate = styled(Heading)``;
-
 export const SearchItemDescription = styled.div`
   height: 85%;
   max-width: 70%;
@@ -335,7 +331,6 @@ export const SearchItemMore = styled.div`
   height: 85%;
   width: 30%;
   ${FLEX_CEC}
-  gap: 1rem;
 
   .search-item-avatar {
     cursor: pointer;
@@ -351,15 +346,6 @@ export const SearchItemTitle = styled.div`
   min-height: 2rem;
   font-size: 1rem;
   color: ${TCV_WARM};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemSubTitle = styled(Heading)`
-  font-weight: 300 !important;
-  width: 100%;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

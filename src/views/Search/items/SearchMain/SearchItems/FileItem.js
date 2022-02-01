@@ -4,7 +4,10 @@ import { searchContext } from 'views/Search/SearchView';
 import * as Styled from 'views/Search/SearchView.styles';
 import FileFormatIcon from 'components/Icons/FilesFormat/FilesFormatIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, fileSizeLabel } from 'helpers/helpers';
+import CreationDateLabel from './CreationDateLabel';
+import DescriptionLabel from './DescriptionLabel';
+import StatusBadge from 'components/Badge/StatusBadge';
 
 const FileItem = ({ item }) => {
   const {
@@ -14,23 +17,10 @@ const FileItem = ({ item }) => {
     Title,
     Type,
     FileOwnerNode,
-    Description,
+    Size,
   } = item || {};
 
   const { searchText } = useContext(searchContext);
-
-  const normalizedDescription = decodeBase64(Description).replace(
-    /<(?!b \s*\/?)[^>]+>/g,
-    ''
-  );
-
-  const description = reactStringReplace(
-    normalizedDescription,
-    searchText,
-    (match, i) => {
-      return <span style={{ color: TCV_DEFAULT }}>{match}</span>;
-    }
-  );
 
   const {
     // NodeID: fileOwnerId,
@@ -56,22 +46,23 @@ const FileItem = ({ item }) => {
             color={CV_DISTANT}
           />
         )}
-        {/* <Styled.SearchItemDate type="h6">1395/09/06</Styled.SearchItemDate> */}
+        <CreationDateLabel {...item} />
       </Styled.SearchItemTypeWrapper>
       <Styled.SearchItemInfoWrapper>
         <Styled.SearchItemDescription>
           <Styled.SearchItemTitle>{fileName}</Styled.SearchItemTitle>
-          <Styled.SearchItemSubTitle type="h6">
-            {description}
-          </Styled.SearchItemSubTitle>
+          <DescriptionLabel {...item} />
         </Styled.SearchItemDescription>
         <Styled.SearchItemMore>
-          <Styled.SearchItemFileTitle type="h6">
+          <StatusBadge style={{ padding: '0.2rem 0.7rem', fontWeight: '300' }}>
             {decodeBase64(fileOwnerName)}
-          </Styled.SearchItemFileTitle>
-          {/* <Styled.SearchItemFileSubTitle type="h6">
-            12.5 کیلوبایت
-          </Styled.SearchItemFileSubTitle> */}
+          </StatusBadge>
+          <div style={{ flex: '1 1 auto' }}></div>
+          {Size && (
+            <Styled.SearchItemFileSubTitle type="h6">
+              {fileSizeLabel(Size)}
+            </Styled.SearchItemFileSubTitle>
+          )}
         </Styled.SearchItemMore>
       </Styled.SearchItemInfoWrapper>
     </Styled.SearchItemContainer>

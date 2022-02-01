@@ -318,7 +318,7 @@ export const formatDeltaDays = (value, local = getLanguage()) => {
   const formatter = new Intl.RelativeTimeFormat(local);
 
   if (Math.round(deltaDays) === 0) {
-    return window?.RVDic?.Today || 'امروز';
+    return window?.RVDic?.Today;
   }
 
   return formatter.format(Math.round(deltaDays), 'days');
@@ -346,4 +346,31 @@ export const scrollIntoView = (element, params) => {
 
 export const createSubject = () => {
   return new Subject();
+};
+
+/**
+ * @description gets a size and returns a label; size in Bytes, KB, MB, or GB
+ * @param {int} size total size in bytes
+ */
+export const fileSizeLabel = (size) => {
+  const {
+    RVDic: {
+      RV: {
+        DataSize: { Bytes, KiloBytes, MegaBytes, GigaBytes },
+      },
+    },
+  } = window;
+
+  if (isNaN(+size)) return '';
+  else if (+size < 1000) return String(size) + ' ' + Bytes;
+  else if (+size / 1024 < 1000)
+    return String(Number((+size / 1024).toFixed(0))) + ' ' + KiloBytes;
+  else if (+size / (1024 * 1024) < 1000)
+    return String(Number((+size / (1024 * 1024)).toFixed(1))) + ' ' + MegaBytes;
+  else
+    return (
+      String(Number((+size / (1024 * 1024 * 1024)).toFixed(2))) +
+      ' ' +
+      GigaBytes
+    );
 };
