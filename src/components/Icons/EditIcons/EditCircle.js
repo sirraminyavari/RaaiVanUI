@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const EditCircleIcon = ({ size, ...props }) => {
   return (
@@ -27,7 +26,5 @@ const EditCircleIcon = ({ size, ...props }) => {
     </>
   );
 };
-
-EditCircleIcon.propTypes = {};
 
 export default EditCircleIcon;
