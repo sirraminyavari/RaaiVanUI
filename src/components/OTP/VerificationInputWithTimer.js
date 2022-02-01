@@ -19,6 +19,7 @@ import ReloadIcon from 'components/Icons/ReloadIcon/ReloadIcon';
  * @param {boolean} columnView if true, the timer will be positioned under the inputs
  * @param {string} error error message
  * @param {number} shake a random number indicating that if there is an error, the inputs must shake for a while
+ * @param {boolean} noIcon determines whether to show the OTP Icon or not
  * @param {object} messageStyle custom style for message. you can hide the message by setting 'display: none'
  * @param {object} labelStyle custom style for label. you can hide the label by setting 'display: none'
  * @method resendCodeRequest a function that sends the verification code again
@@ -36,17 +37,50 @@ const VerificationInputWithTimer = ({
   columnView,
   error,
   shake,
+  noIcon = false,
   messageStyle = {},
   labelStyle = {},
   resendCodeRequest,
   onValueChange = () => {},
+  onConfirm = () => {},
   onTimerFinished = () => {},
 } = {}) => {
+  const { RVDic, GlobalUtilities } = window;
+
   const [timerFinished, setTimerFinished] = useState(false);
+  const [verificationCode, setVerificationCode] = useState();
+  const [internalError, setInternalError] = useState('');
+  const [internalShake, setInternalShake] = useState(0);
 
   useEffect(() => setTimerFinished(false), [reset]);
 
-  const { RVDic } = window;
+  const handleVerificationCode = (val, data) => {
+    setInternalError('');
+    setInternalShake(0);
+
+    setVerificationCode(val);
+    onValueChange(
+      val,
+      Number((val || []).filter((v) => +v >= 0).join('')),
+      data
+    );
+    if (
+      val.filter((v) => v !== -1).length === length &&
+      data?.lastChangedIndex + 1 === length &&
+      !timerFinished
+    ) {
+      validate(val);
+    }
+  };
+
+  const validate = (val) => {
+    onConfirm(val || verificationCode, (error) => {
+      if (error) {
+        setInternalError(error);
+        setInternalShake(GlobalUtilities.random());
+      }
+    });
+  };
 
   const message = RVDic.MSG.AVerificationCodeHasBeenSentToTheFollowingN.replace(
     '[n]',
@@ -66,61 +100,59 @@ const VerificationInputWithTimer = ({
             <div>{RVDic?.Checks?.PleaseEnterTheVerificationCode}</div>
           </Heading>
         </div>
-        <IconWrapper>
-          <MailIcon />
-        </IconWrapper>
+        <IconWrapper>{!noIcon && <MailIcon />}</IconWrapper>
       </TitleWrapper>
-      <Heading
-        type="h3"
-        style={{
-          width: '100%',
-          marginBottom: '0.5rem',
-          ...messageStyle,
-        }}>
-        <div>{message}:</div>
-      </Heading>
-      <Contact>{email || phoneNumber}</Contact>
-      <Wrapper columnView={columnView}>
-        <InputWrapper columnView={columnView}>
-          <VerificationInput
-            onValueChange={(v, data) =>
-              onValueChange(
-                v,
-                Number((v || []).filter((v) => +v >= 0).join('')),
-                data
-              )
-            }
-            length={length}
-            size={size}
-            reset={reset}
-            error={error}
-            shake={shake}
-          />
-        </InputWrapper>
-        <TimerWrapper columnView={columnView}>
-          {!timerFinished ? (
-            <OTPCountDownTimer
-              onFinished={handleTimerFinished}
-              NoCircularProgress
-              resendCodeTimeout={timeout}
+      {(email || phoneNumber) && (
+        <>
+          <Heading
+            type="h3"
+            style={{
+              width: '100%',
+              marginBottom: '0.5rem',
+              ...messageStyle,
+            }}>
+            <div>{message}:</div>
+          </Heading>
+          <Contact>{email || phoneNumber}</Contact>
+        </>
+      )}
+      {timeout && length && (
+        <Wrapper columnView={columnView}>
+          <InputWrapper columnView={columnView}>
+            <VerificationInput
+              onValueChange={handleVerificationCode}
+              length={length}
+              size={size}
+              reset={reset}
+              error={internalError || error}
+              shake={internalShake || shake}
             />
-          ) : (
-            <Button
-              onClick={resendCodeRequest}
-              type="secondary-o"
-              style={{
-                marginInline: '0.5rem',
-                padding: '0.3rem 0.5rem',
-                fontSize: '1rem',
-                fontWeight: 'bold',
-              }}
-              loading={loading}>
-              <ReloadIcon style={{ marginInlineEnd: '0.5rem' }} />
-              {RVDic.Resend}
-            </Button>
-          )}
-        </TimerWrapper>
-      </Wrapper>
+          </InputWrapper>
+          <TimerWrapper columnView={columnView}>
+            {!timerFinished ? (
+              <OTPCountDownTimer
+                onFinished={handleTimerFinished}
+                NoCircularProgress
+                resendCodeTimeout={timeout}
+              />
+            ) : (
+              <Button
+                onClick={resendCodeRequest}
+                type="secondary-o"
+                style={{
+                  marginInline: '0.5rem',
+                  padding: '0.3rem 0.5rem',
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                }}
+                loading={loading}>
+                <ReloadIcon style={{ marginInlineEnd: '0.5rem' }} />
+                {RVDic.Resend}
+              </Button>
+            )}
+          </TimerWrapper>
+        </Wrapper>
+      )}
     </Maintainer>
   );
 };
