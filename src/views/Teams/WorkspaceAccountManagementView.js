@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import * as Styled from './Teams.styles';
 import WorkspaceAccountManagementBanner from './items/sides/welcome/WorkspaceAccountManagementWelcome';
 import WorkspaceSubscription from './items/sides/content/WorkspaceSubscription';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import {
   WORKSPACES_PATH,
   WORKSPACE_ACCOUNT_MANAGEMENT_PATH,
@@ -14,6 +15,7 @@ import {
 
 const WorkspaceAccountManagementView = () => {
   const { id: WorkspaceID } = useParams();
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const { RVDic } = useWindow();
 
   //! RVDic i18n variables
@@ -37,7 +39,7 @@ const WorkspaceAccountManagementView = () => {
   ];
 
   return (
-    <WelcomeLayout>
+    <WelcomeLayout singleColumn={isTabletOrMobile}>
       <div>
         <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
