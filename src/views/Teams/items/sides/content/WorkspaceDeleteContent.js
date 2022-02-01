@@ -12,7 +12,6 @@ import {
 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Styled from 'views/Teams/Teams.styles';
 import { WORKSPACES_PATH } from '../../others/constants';
@@ -26,6 +25,11 @@ const WorkspaceDeleteContent = () => {
   const [pendingPromise, setPendingPromise] = useState(false);
   const [resetCountdown, setResetCountdown] = useState(0);
   const [OTPProperties, setOTPProperties] = useState(undefined);
+  const [OTPInput, setOTPInput] = useState([]);
+  const [OTPError, setOTPError] = useState('');
+  const [OTPShake, setOTPShake] = useState(0);
+  const [OTPLoading, setOTPLoading] = useState(false);
+
   const { RVDic } = useWindow();
   const history = useHistory();
   let { id: WorkspaceID } = useParams();
@@ -46,6 +50,7 @@ const WorkspaceDeleteContent = () => {
   const RVDicConfirmDelete = `${RVDic.Confirm} ${RVDic.And} ${RVDic.Remove}`;
 
   const handleLoaded = async () => {
+    setOTPLoading(true);
     const recaptcha = await getCaptchaToken();
 
     RemoveWorkspaceTicketAPI.fetch(
@@ -60,18 +65,20 @@ const WorkspaceDeleteContent = () => {
           EmailAddress: decodeBase64(VerificationCode.EmailAddress),
           Token: VerificationCode.Token,
         });
+        setOTPError('');
+        setOTPLoading(false);
         setResetCountdown(randomNumber(1));
       }
     );
   };
 
   const ReturnToWorkspaces = () => history.push(WORKSPACES_PATH);
-  const handleRemoveWorkspaceButton = (otp, error) => {
+  const handleRemoveWorkspaceButton = () => {
     setPendingPromise(true);
     RemoveWorkspaceAPI.fetch(
       {
         VerificationToken: OTPProperties.Token, //got from RVAPI.RemoveWorkspaceTicket previously
-        Code: otp, //a 5-digit number
+        Code: OTPInput.join(''), //a 5-digit number
       },
       ({ ErrorText, Succeed }) => {
         if (!ErrorText) {
@@ -80,11 +87,25 @@ const WorkspaceDeleteContent = () => {
             message: RVDic.MSG[Succeed] || Succeed,
           });
           ReturnToWorkspaces();
-        } else error(RVDic.MSG[ErrorText] || ErrorText);
+        } else {
+          setOTPError(RVDic.MSG[ErrorText] || ErrorText);
+
+          setOTPShake(randomNumber(1, 50));
+        }
         setPendingPromise(false);
       }
     );
   };
+  useEffect(() => {
+    (async () => {
+      await initializeCaptchaToken();
+      await handleLoaded();
+    })();
+
+    // hides reCapctha when component willunmount
+    return () => hideCaptchaToken();
+  }, []);
+
   useEffect(() => {
     (async () => {
       await initializeCaptchaToken();
@@ -129,9 +150,16 @@ const WorkspaceDeleteContent = () => {
       <Styled.WorkspaceDeleteActionsContainer>
         <VerificationInputWithTimer
           noIcon
+          error={OTPError}
+          shake={OTPShake}
+          loading={OTPLoading}
           email={OTPProperties?.EmailAddress}
           length={OTPProperties?.Length}
           timeout={OTPProperties?.Timeout}
+          onValueChange={(val) => {
+            setOTPInput(val);
+            setOTPError('');
+          }}
           onConfirm={handleRemoveWorkspaceButton}
           resendCodeRequest={handleLoaded}
           reset={resetCountdown}
