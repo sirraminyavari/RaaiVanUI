@@ -15,11 +15,12 @@ const IndicatorIcon = styled.div`
 `;
 
 const CustomSelectIndicator = (props) => {
-  const { isFocused } = props;
+  const { menuIsOpen } = props.selectProps;
+
   return (
     <components.DropdownIndicator {...props}>
       <IndicatorIcon>
-        <ArrowHead dir={isFocused ? 'up' : 'down'} />
+        <ArrowHead dir={menuIsOpen ? 'up' : 'down'} />
       </IndicatorIcon>
     </components.DropdownIndicator>
   );

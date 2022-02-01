@@ -8,9 +8,11 @@ import QuestionSearchItem from './SearchItems/QuestionItem';
 import UserSearchItem from './SearchItems/UserItem';
 import NodeSearchItem from './SearchItems/NodeItem';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import useWindow from 'hooks/useWindowContext';
 
 const SearchList = () => {
   const { isSearching, searchText, searchItems } = useContext(searchContext);
+  const { RVDic } = useWindow();
 
   //! Render correct item based on search list.
   const renderItem = (item) => {
@@ -45,7 +47,7 @@ const SearchList = () => {
   if (!searchText || !searchItems.length) {
     return (
       <Styled.SearchListContainer>
-        <SearchNotFound />
+        <SearchNotFound label={!searchText ? RVDic._HelpSearch : ''} />
       </Styled.SearchListContainer>
     );
   } else {

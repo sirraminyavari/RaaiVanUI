@@ -37,52 +37,7 @@ import {
 } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
 
-const { RV_RevFloat, RV_Float } = window;
-
-export const selectStyles = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: 'inherit',
-    borderColor: CV_FREEZED,
-    cursor: 'pointer',
-  }),
-  option: (styles, { isSelected }) => ({
-    ...styles,
-    backgroundColor: isSelected && CV_DISTANT,
-    width: '90%',
-    margin: '0.3rem auto',
-    borderRadius: '0.2rem',
-    color: CV_BLACK,
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: !isSelected && CV_FREEZED,
-    },
-    ':active': {
-      ...styles[':active'],
-      backgroundColor: isSelected && CV_DISTANT,
-    },
-    textTransform: 'capitalize',
-  }),
-  indicatorsContainer: (styles) => ({
-    ...styles,
-    svg: {
-      color: TCV_DEFAULT,
-    },
-  }),
-  indicatorSeparator: (styles) => ({
-    ...styles,
-    display: 'none',
-  }),
-  singleValue: (styles) => ({
-    ...styles,
-    backgroundColor: CV_DISTANT,
-    padding: '0.2rem',
-    fontSize: '0.85rem',
-    borderRadius: '0.2rem',
-    width: '85%',
-    textTransform: 'capitalize',
-  }),
-};
+const { RV_RevFloat } = window;
 
 export const SearchViewContainer = styled.div`
   user-select: none;
@@ -174,8 +129,7 @@ export const SearchTypeButtonsContainer = styled.div`
 
   .search-type-button {
     width: 5rem;
-    height: 2.8rem;
-    border-color: ${CV_DISTANT};
+    height: 2.7rem;
   }
 `;
 
@@ -267,7 +221,7 @@ export const AdvanceButtonsWrapper = styled.div`
     width: 5rem;
     height: 2rem;
     border: none;
-    padding-${RV_Float}: 0.6rem;
+    padding-inline-start: 0.6rem;
     border-radius: 1.5rem;
     background: ${CV_WHITE};
     color: ${CV_DISTANT};
@@ -322,7 +276,7 @@ export const SearchAnimationContainer = styled.div`
 `;
 
 export const SearchListContainer = styled.div`
-  height: calc(100% - 6rem);
+  height: calc(100% - 7rem);
   margin-top: 1.2rem;
   width: calc(100% + 1rem);
 `;
@@ -348,11 +302,11 @@ export const SearchItemTypeWrapper = styled.div.attrs({
   min-width: 4.5rem;
   border-top: none;
   border-bottom: none;
-  border-${RV_Float}: none;
+  border-inline-start: none;
   ${FLEX_CCC}
   gap: 0.5rem;
 
-  .search-item-user-type{
+  .search-item-user-type {
     cursor: pointer;
     min-width: 3.5rem;
     width: 3.5rem;
