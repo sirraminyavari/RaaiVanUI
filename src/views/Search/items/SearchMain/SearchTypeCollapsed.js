@@ -1,11 +1,10 @@
 import { useContext } from 'react';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
-import * as Styled from 'views/Search/SearchView.styles';
 import useWindow from 'hooks/useWindowContext';
 import { searchContext } from 'views/Search/SearchView';
 
 const SearchTypeCollapsed = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const { All, Users, Questions, Files, Nodes } = RVDic || {};
   const { selectedType, setSelectedType } = useContext(searchContext);
 
@@ -13,9 +12,9 @@ const SearchTypeCollapsed = () => {
     { label: All, value: 'User|Node|Question|File' },
     { label: Users, value: 'User' },
     { label: Nodes, value: 'Node' },
-    { label: Questions, value: 'Question' },
+    RVGlobal?.Modules?.QA ? { label: Questions, value: 'Question' } : null,
     { label: Files, value: 'File' },
-  ];
+  ].filter((i) => !!i);
 
   const handleSelectChange = (type) => {
     setSelectedType(type);
@@ -25,10 +24,9 @@ const SearchTypeCollapsed = () => {
     <div style={{ width: '10.5rem' }}>
       <CustomSelect
         hideSelectedOptions={true}
-        value={selectedType}
+        defaultValue={selectedType}
         options={options}
         onChange={handleSelectChange}
-        styles={Styled.selectStyles}
       />
     </div>
   );

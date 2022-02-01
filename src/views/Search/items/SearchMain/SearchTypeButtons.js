@@ -3,6 +3,7 @@ import * as Styled from 'views/Search/SearchView.styles';
 import Button from 'components/Buttons/Button';
 import useWindow from 'hooks/useWindowContext';
 import { searchContext } from 'views/Search/SearchView';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const SearchTypeButtons = ({ onTypeChange }) => {
   const { RVDic } = useWindow();
@@ -32,8 +33,9 @@ const SearchTypeButtons = ({ onTypeChange }) => {
           <Button
             onClick={() => handleOnClickType(type)}
             type={isSelected ? 'primary' : 'primary-o'}
-            classes="search-type-button rv-border-radius-half"
-            key={index}>
+            classes="search-type-button"
+            key={index}
+            style={isSelected ? {} : { borderColor: CV_DISTANT }}>
             {type.label}
           </Button>
         );
