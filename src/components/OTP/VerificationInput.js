@@ -5,7 +5,6 @@ import Input from 'components/Inputs/Input';
 import { LIGHT_BLUE, RED } from 'constant/Colors';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ShakeAnimate } from './Animate.style';
 
 const { RV_Float } = window;
 
@@ -99,6 +98,7 @@ const VerificationInput = ({
               onFocus={(e) => setIndex(index)}
               width={100 / inputArray.length + '%'}
               ref={(el) => (itemsRef.current[index] = el)}
+              onChange={() => {}}
               error={!!error}
               shake={doShake}
             />
@@ -111,7 +111,7 @@ const VerificationInput = ({
   return (
     <Container {...props}>
       {inputArray?.length > 0 && <VerifyCodeInputProducer />}
-      {error && <ErrorMessage error={error}>{error}</ErrorMessage>}
+      {<ErrorMessage error={error}>{error}</ErrorMessage>}
     </Container>
   );
 };

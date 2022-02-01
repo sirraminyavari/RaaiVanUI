@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import MailIcon from 'components/Icons/MailIcon/MailIcon';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
 import ReloadIcon from 'components/Icons/ReloadIcon/ReloadIcon';
+import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 
 /**
  * @param {string} email if the code has been sent to this email, it will be used in the message
@@ -116,7 +117,7 @@ const VerificationInputWithTimer = ({
           <Contact>{email || phoneNumber}</Contact>
         </>
       )}
-      {timeout && length && (
+      {timeout && length ? (
         <Wrapper columnView={columnView}>
           <InputWrapper columnView={columnView}>
             <VerificationInput
@@ -152,6 +153,10 @@ const VerificationInputWithTimer = ({
             )}
           </TimerWrapper>
         </Wrapper>
+      ) : (
+        <>
+          <LoadingIcon />
+        </>
       )}
     </Maintainer>
   );
@@ -174,6 +179,10 @@ const IconWrapper = styled.div`
   color: ${CV_DISTANT};
 `;
 
+const LoadingIcon = styled(LoadingIconFlat)`
+  color: ${CV_DISTANT};
+`;
+
 const Contact = styled.div`
   color: ${TCV_DEFAULT};
   font-weight: bold;
@@ -191,7 +200,7 @@ const Maintainer = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-flow: ${({ columnView }) => (columnView ? 'column' : 'row')};
-  align-items: center;
+  align-items: ${({ columnView }) => (columnView ? 'center' : 'baseline')};
 `;
 
 const InputWrapper = styled.div`
