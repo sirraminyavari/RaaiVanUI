@@ -70,8 +70,9 @@ export const Wrapper = styled.div`
   div.transition-group {
     position: relative;
     padding-inline: 1rem;
+    padding-block: 1rem;
     > div {
-      width: 100%;
+      max-width: 100%;
       box-sizing: border-box;
       margin-inline: 0;
     }

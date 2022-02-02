@@ -32,7 +32,7 @@ const SearchTypeButtons = ({ onTypeChange }) => {
           <Button
             onClick={() => handleOnClickType(type)}
             type={isSelected ? 'primary' : 'primary-o'}
-            classes="search-type-button"
+            classes="search-type-button rv-border-radius-half"
             key={index}>
             {type.label}
           </Button>

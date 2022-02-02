@@ -15,6 +15,11 @@ const WorkspaceInvoicePlan = () => {
 
   const [isYearlyPrices, setIsYearlyPrices] = useState(false);
 
+  //! RVDic i18n variables
+  const RVDicDiscountCode = RVDic.DiscountCode;
+  const RVDicServiceFee = RVDic.ServiceFee;
+  const RVDicCurrencyToman = RVDic.CRNCY.IRT;
+
   const handleReturnToPlansView = () =>
     history.push(`${WORKSPACE_PLANS_PATH}/${WorkspaceID}`);
 
@@ -45,12 +50,10 @@ const WorkspaceInvoicePlan = () => {
 
               <Styled.WorkspaceInvoicePlanDetailsContainer>
                 <Styled.WorkspaceSecondaryText>
-                  <strong>{'هزینه سرویس'}</strong>
-                  <br />
-                  {'با احتساب مالیات بر) (ارزش افزوده'}
+                  <strong>{RVDicServiceFee}</strong>
                 </Styled.WorkspaceSecondaryText>
                 <Styled.WorkspaceInvoicePlanDetailsPrice>
-                  {'290,000 تومان'}
+                  290,000{RVDicCurrencyToman}
                 </Styled.WorkspaceInvoicePlanDetailsPrice>
               </Styled.WorkspaceInvoicePlanDetailsContainer>
 
@@ -59,16 +62,16 @@ const WorkspaceInvoicePlan = () => {
                   <strong>{'هزینه فضای اضافی'}</strong>
                 </Styled.WorkspaceSecondaryText>
                 <Styled.WorkspaceInvoicePlanDetailsPrice>
-                  {'290,000 تومان'}
+                  290,000{RVDicCurrencyToman}
                 </Styled.WorkspaceInvoicePlanDetailsPrice>
               </Styled.WorkspaceInvoicePlanDetailsContainer>
 
               <Styled.WorkspaceInvoicePlanDetailsContainer>
                 <Styled.WorkspaceInvoicePlanDetailsCoupon>
-                  {'کد تخفیف'}
+                  {RVDicDiscountCode}
                 </Styled.WorkspaceInvoicePlanDetailsCoupon>
                 <Styled.WorkspaceInvoicePlanDetailsCoupon>
-                  {'290,000 تومان'}
+                  290,000{RVDicCurrencyToman}
                 </Styled.WorkspaceInvoicePlanDetailsCoupon>
               </Styled.WorkspaceInvoicePlanDetailsContainer>
             </Styled.WorkspacePlanContent>
@@ -82,7 +85,7 @@ const WorkspaceInvoicePlan = () => {
                 {'مبلغ نهایی قابل پرداخت'}
               </Styled.WorkspaceSecondaryText>
               <Styled.WorkspaceInvoicePlanDetailsPrice>
-                {'290,000 تومان'}
+                290,000{RVDicCurrencyToman}
               </Styled.WorkspaceInvoicePlanDetailsPrice>
             </Styled.WorkspaceInvoicePlanDetailsContainer>
             <div>

@@ -9,7 +9,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import { useParams } from 'react-router-dom';
 import { decodeBase64, encodeBase64, randomNumber } from 'helpers/helpers';
 import Avatar from 'components/Avatar/Avatar';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import Badge from 'components/Badge/Badge';
@@ -20,7 +20,11 @@ import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
 import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { WORKSPACES_PATH } from './items/others/constants';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_USER_MANAGEMENT_PATH,
+} from './items/others/constants';
+import InfiniteScroll from 'components/InfiniteScroll/InfiniteScroll';
 
 const getWorkspaceUsersAPI = new APIHandler('UsersAPI', 'GetWorkspaceUsers');
 const removeUserFromWorkspaceAPI = new APIHandler(
@@ -39,16 +43,35 @@ const WorkspaceSettingsView = () => {
   const [workspaceUsers, setWorkspaceUsers] = useState([]);
   const [removableUser, setRemovableUser] = useState(false);
 
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicUserManagement = RVDic.ManageN.replace('[n]', RVDic.Users);
+  const RVDicRemoveFromAllTeams = RVDic.RemoveFromAllTeams;
+  const RVDicSearch = RVDic.Search;
+  const RVDicReturn = RVDic.Return;
+  const RVDicConfirm = RVDic.Confirm;
+  const RVDicFullName = RVDic.FullName;
+  const RVDicTeams = RVDic.Teams;
+  const RVDicLastActivityTime = RVDic.LastActivityTime;
+  const RVDicRemoveUserFormTeams = RVDic.Confirms.DoYouWantToRemoveN.replace(
+    '[n]',
+    RVDic.User
+  );
+  const RVDicRemoveUserFormTeamsInfo = RVDic._HelpRemoveUser;
+
   const breadCrumbItems = [
     {
       id: 1,
-      title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
+      title: RVDicWorkspaceSettings,
       linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
-      title: RVDic.ManageN.replace('[n]', RVDic.Users),
-      // linkTo: '/workspaces/settings/user-management',
+      title: RVDicUserManagement,
+      linkTo: `${WORKSPACE_USER_MANAGEMENT_PATH}/${WorkspaceID}`,
     },
   ];
 
@@ -91,7 +114,7 @@ const WorkspaceSettingsView = () => {
   );
   //! fetch first batch of workspace users on page load
   useEffect(() => {
-    getWorkspaceUsers(true);
+    // getWorkspaceUsers(true);
   }, []);
 
   //! reset the Workspace Users on SearchText changes
@@ -99,9 +122,9 @@ const WorkspaceSettingsView = () => {
     setWorkspaceUsers([]);
     setTablePage(0);
     //? simple hack to make InfiniteScroll component fetch on search input changes
-    window.scrollTo(0, 0);
-    window.scrollTo(0, 10);
-    setInfiniteScrollRerenderer(randomNumber());
+    // window.scrollTo(0, 0);
+    // window.scrollTo(0, 10);
+    // setInfiniteScrollRerenderer(randomNumber());
   }, [SearchText]);
 
   //! Build a template for every row of workspace users (react-table)
@@ -168,6 +191,7 @@ const WorkspaceSettingsView = () => {
                     </PopupMenu>
                   </>
                 );
+              return;
             }
           ),
           col5: (
@@ -176,7 +200,7 @@ const WorkspaceSettingsView = () => {
               key={User.MainEmailAddress}
               onClick={() => setRemovableUser(User)}
               style={{ padding: '0.25rem 1rem' }}>
-              حذف از همه تیم ها
+              {RVDicRemoveFromAllTeams}
             </Button>
           ),
           col6: '',
@@ -189,7 +213,7 @@ const WorkspaceSettingsView = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'نام کاربر',
+        Header: RVDicFullName,
         accessor: 'col1',
       },
       //* remove [col2] and [col3] of the table on mobile view
@@ -200,13 +224,13 @@ const WorkspaceSettingsView = () => {
               accessor: 'col2',
             },
             {
-              Header: 'آخرین ورود',
+              Header: RVDicLastActivityTime,
               accessor: 'col3',
             },
           ]
         : []),
       {
-        Header: 'تیم های عضو',
+        Header: RVDicTeams,
         accessor: 'col4',
       },
       {
@@ -241,8 +265,8 @@ const WorkspaceSettingsView = () => {
     <WelcomeLayout>
       <div>
         <DeleteConfirmModal
-          cancelText={RVDic.Return}
-          confirmText={RVDic.Confirm}
+          cancelText={RVDicReturn}
+          confirmText={RVDicConfirm}
           messageIcon={() => (
             <Avatar
               imageClasses="teamAvatar"
@@ -250,23 +274,23 @@ const WorkspaceSettingsView = () => {
             />
           )}
           show={!!removableUser}
-          onConfirm={removeUserFromWorkspace}
+          onConfirm={() => setRemovableUser(false)}
           onCancel={() => setRemovableUser(false)}
           onClose={() => setRemovableUser(false)}
-          messageQuestion="آیا از حذف کاربر از همه تیم‌ها اطمینان دارید؟"
-          messageWarning="با حذف کاربر اطلاعات تولید شده توسط او از بین نمی‌رود، همچنین با افزودن دوباره کاربر به تیم، او میتواند به اطلاعات قبلی دسترسی داشته باشد."
-          title="حذف از همه تیم‌ها"
-          messageTitle={decodeBase64(removableUser.FullName)}
+          messageQuestion={RVDicRemoveUserFormTeams}
+          messageWarning={RVDicRemoveUserFormTeamsInfo}
+          title={RVDicRemoveFromAllTeams}
+          messageTitle={decodeBase64(removeUserFromWorkspace.FullName)}
         />
 
         <Styled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
-            {RVDic.ManageN.replace('[n]', RVDic.Users)}
+            {RVDicUserManagement}
           </Heading>
         </Styled.WorkspaceSettingsHeaderContainer>
         <SearchInput
-          placeholder={RVDic.Search}
+          placeholder={RVDicSearch}
           onChange={setSearchText}
           delayTime={650}
           defaultValue={''}
@@ -274,21 +298,10 @@ const WorkspaceSettingsView = () => {
 
         <Styled.WorkspaceUserManagementTableContainer>
           <InfiniteScroll
-            key={InfiniteScrollRerenderer}
-            dataLength={workspaceUsers.length}
-            next={getWorkspaceUsers}
-            hasMore={typeof tablePage !== 'boolean'}
-            loader={
-              isLoading && (
-                <LoadingIconCircle
-                  style={{
-                    marginInline: 'auto',
-                    marginBlock: '1rem',
-                    display: 'block',
-                  }}
-                />
-              )
-            }>
+            onScrollEnd={getWorkspaceUsers}
+            pageNumber={tablePage}
+            setPageNumber={setTablePage}
+            hasMore={typeof tablePage !== 'boolean'}>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
         </Styled.WorkspaceUserManagementTableContainer>

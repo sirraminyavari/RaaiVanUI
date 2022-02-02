@@ -2,6 +2,7 @@ import { API_Provider, encodeBase64 } from 'helpers/helpers';
 import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
+  RENAME_WORKSPACE,
   RV_API,
   SELECT_APPLICATION,
 } from 'constant/apiConstants';
@@ -15,6 +16,19 @@ import { apiCallWrapper } from './apiCallHelpers';
 export const createWorkspace = ({ Name } = {}) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_WORKSPACE), {
     Name: encodeBase64(Name),
+  });
+};
+
+/**
+ * @description rename workspace
+ * @param WorkspaceID - workspace uuid hash string
+ * @param Name - new workspace name
+ * @return {Promise<unknown>}
+ */
+export const renameWorkspace = ({ Name, WorkspaceID } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, RENAME_WORKSPACE), {
+    Name: encodeBase64(Name),
+    WorkspaceID,
   });
 };
 

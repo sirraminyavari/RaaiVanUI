@@ -12,6 +12,9 @@ const WorkspacePlanItem = ({ isYearlyPrices }) => {
   const history = useHistory();
   const { id: WorkspaceID } = useParams();
 
+  //! RVDic i18n variables
+  const RVDicCurrencyToman = RVDic.CRNCY.IRT;
+
   const handlePlanSelection = () => {
     history.push(`${WORKSPACE_INVOICE_PATH}/${WorkspaceID}`);
   };
@@ -30,7 +33,7 @@ const WorkspacePlanItem = ({ isYearlyPrices }) => {
             <>
               <span className="offPrice">۲۷٫۰۰۰</span>
               <span className="price">۲۷٫۰۰۰</span>
-              <span className="currency">تومان</span>
+              <span className="currency">{RVDicCurrencyToman}</span>
             </>
           )}
         </div>

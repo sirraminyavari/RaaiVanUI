@@ -20,24 +20,32 @@ const WorkspaceContent = ({ location }) => {
   const workspaceID = lastElementOfArray(location.pathname.split('/'));
   const { SAASBasedMultiTenancy: isSaas } = RVGlobal;
 
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicWorkspacePlans = RVDic.Plans;
+  const RVDicAccountManagement = RVDic.AccountManagement;
+
   const workspaceItems = [
     {
       id: '1',
-      title: RVDic.ManageN.replace('[n]', RVDic.Users),
+      title: RVDicWorkspaceSettings,
       linkTo: `${WORKSPACE_USER_MANAGEMENT_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_TEAM_CONTENT,
     },
     {
       id: '2',
-      title: 'طرحها',
+      title: RVDicWorkspacePlans,
       linkTo: `${WORKSPACE_PLANS_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_WORKSPACE_PLANS_CONTENT,
     },
     {
       id: '3',
-      title: RVDic.AccountManagement,
+      title: RVDicAccountManagement,
       linkTo: `${WORKSPACE_ACCOUNT_MANAGEMENT_PATH}/${workspaceID}`,
       show: isSaas,
       icon: SETT_WORKSPACE_INVOICE_CONTENT,

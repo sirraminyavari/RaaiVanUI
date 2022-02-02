@@ -9,11 +9,22 @@ import StatusBadge from 'components/Badge/StatusBadge';
 
 const WorkspaceSubscription = ({ sectionTitle }) => {
   const { RVDic } = useWindow();
+
+  //! RVDic i18n variables
+  const RVDicActivePlans = RVDic.ActivePlans;
+  const RVDicExpiredPlans = RVDic.ExpiredPlans;
+  const RVDicPlanInvoice = RVDic.Invoice;
+  const RVDicUpgradePlan = RVDic.Upgrade;
+  const RVDicAlways = RVDic.Always;
+  const RVDicFreeCost = RVDic.Free_Cost;
+  const RVDicGigaBytes = RVDic.GigaBytes;
+  const RVDicInfiniteDaysRemaining = RVDic.NDaysRemaining.replace('[n]', '∞');
+
   return (
     <>
       <Styled.WorkspaceAccountSubscriptionContainer>
         <Heading type="h2" className="sectionTitle">
-          اشتراک‌های جاری
+          {RVDicActivePlans}
         </Heading>
 
         <Styled.WorkspaceAccountSubscriptionItem>
@@ -24,10 +35,10 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
               </Styled.WorkspacePlanImage>
               <Styled.WorkspaceAccountSubscriptionItemTitle>
                 <Styled.WorkspacePrimaryText>
-                  رایگان
+                  {RVDicFreeCost}
                 </Styled.WorkspacePrimaryText>
                 <Styled.WorkspaceSecondaryText>
-                  همیشه - 1400/01/09
+                  {RVDicAlways} - 1400/01/09
                 </Styled.WorkspaceSecondaryText>
               </Styled.WorkspaceAccountSubscriptionItemTitle>
             </Styled.WorkspaceAccountSubscriptionItemTitleContainer>
@@ -41,16 +52,16 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
               <Styled.WorkspaceAccountSubscriptionItemIcon>
                 <CloudIcon />
                 <Styled.WorkspaceSecondaryText>
-                  5 گیگابایت
+                  5 {RVDicGigaBytes}
                 </Styled.WorkspaceSecondaryText>
               </Styled.WorkspaceAccountSubscriptionItemIcon>
             </Styled.WorkspaceAccountSubscriptionItemIconWrapper>
           </div>
           <div>
-            <Button>ارتقای طرح</Button>
+            <Button>{RVDicUpgradePlan}</Button>
             <div style={{ width: '10rem' }}>
               <Styled.WorkspaceSecondaryText>
-                بی‌نهایت روز مانده
+                {RVDicInfiniteDaysRemaining}
               </Styled.WorkspaceSecondaryText>
 
               <Styled.WorkspaceAccountSubscriptionProgressBar progressPercentage="80" />
@@ -61,7 +72,7 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
 
       <Styled.WorkspaceAccountSubscriptionContainer>
         <Heading type="h2" className="sectionTitle">
-          اشتراک‌های گذشته
+          {RVDicExpiredPlans}
         </Heading>
 
         <Styled.WorkspaceAccountSubscriptionItem>
@@ -72,10 +83,10 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
               </Styled.WorkspacePlanImage>
               <Styled.WorkspaceAccountSubscriptionItemTitle>
                 <Styled.WorkspacePrimaryText>
-                  رایگان
+                  {RVDicFreeCost}
                 </Styled.WorkspacePrimaryText>
                 <Styled.WorkspaceSecondaryText>
-                  همیشه - 1400/01/09
+                  {RVDicAlways} - 1400/01/09
                 </Styled.WorkspaceSecondaryText>
               </Styled.WorkspaceAccountSubscriptionItemTitle>
             </Styled.WorkspaceAccountSubscriptionItemTitleContainer>
@@ -89,15 +100,15 @@ const WorkspaceSubscription = ({ sectionTitle }) => {
               <Styled.WorkspaceAccountSubscriptionItemIcon>
                 <CloudIcon />
                 <Styled.WorkspaceSecondaryText>
-                  5 گیگابایت
+                  5 {RVDicGigaBytes}
                 </Styled.WorkspaceSecondaryText>
               </Styled.WorkspaceAccountSubscriptionItemIcon>
             </Styled.WorkspaceAccountSubscriptionItemIconWrapper>
           </div>
           <div>
-            <Button type="primary-o">دریافت فاکتور</Button>
+            <Button type="primary-o">{RVDicPlanInvoice}</Button>
             <div style={{ width: '10rem' }}>
-              <StatusBadge type="error">اشتراک پایان یافته</StatusBadge>
+              <StatusBadge type="error">{RVDicExpiredPlans}</StatusBadge>
             </div>
           </div>
         </Styled.WorkspaceAccountSubscriptionItem>

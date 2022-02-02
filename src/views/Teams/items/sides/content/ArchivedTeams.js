@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Teams/Teams.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import ArchivedModal from './ArchivedModal';
@@ -13,15 +13,14 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 const ArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
-  const { RV_RevFloat, RV_RTL } = useWindow();
-  const isMobile = useMediaQuery({
-    query: '(max-width: 970px)',
-  });
-  const { isTabletOrMobile } = DimensionHelper();
-  const isMobileScreen = useMediaQuery({ query: '(max-width: 600px)' });
+  const { RV_RevFloat, RV_RTL, RVDic } = useWindow();
+  // const isMobile = useMediaQuery({
+  //   query: '(max-width: 970px)',
+  // });
+  const { isTabletOrMobile, isMobile } = DimensionHelper();
 
   const getModalWidth = () => {
-    if (isMobileScreen) {
+    if (isMobile) {
       return '85%';
     } else if (isTabletOrMobile) {
       return '60%';
@@ -45,13 +44,13 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
   return (
     <Styled.TeamContainer
       isArchive
-      isMobile={isMobile}
+      isMobile={isTabletOrMobile}
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
         space={space}
         isOpen={isModalShown}
-        modalTitle="تیم های آرشیو شده"
+        modalTitle={RVDic.ArchivedTeams}
         modalWidth={getModalWidth()}
         contentClass="archived-teams"
         archives={archives}
@@ -67,7 +66,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
       <Styled.ArchivedWrapper>
         <TrashIcon size={25} />
         <Styled.ArchivedTeamsLabel>
-          <span>تیم های آرشیو شده</span>
+          <span>{RVDic.ArchivedTeams}</span>
         </Styled.ArchivedTeamsLabel>
       </Styled.ArchivedWrapper>
     </Styled.TeamContainer>

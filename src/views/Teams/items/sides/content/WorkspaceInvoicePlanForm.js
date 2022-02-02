@@ -9,6 +9,7 @@ import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { selectStyles } from '../../others/select/Select.styles';
 import NumberInput from 'components/Inputs/Number/NumberInput';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const purchaseDurations = [
   { value: '1', label: 'یک ساله (30% تخفیف)' },
@@ -19,13 +20,20 @@ const WorkspaceInvoicePlanForm = () => {
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [coupon, setCoupon] = useState('');
 
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const { RVDic } = useWindow();
 
+  //! RVDic i18n variables
+  const RVDicGigaBytes = RVDic.GigaBytes;
+  const RVDicDuration = RVDic.Duration;
+  const RVDicDiscountCode = RVDic.DiscountCode;
+  const RVDicPaymentGateway = RVDic.PaymentGateway;
+
   return (
-    <CustomWelcomeLayout noOutline>
+    <CustomWelcomeLayout noOutline singleColumn={isTabletOrMobile}>
       <div>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
-          <span>مدت اعتبار</span>
+          <span>{RVDicDuration}</span>
           <CustomSelect
             options={purchaseDurations}
             defaultValue={purchaseDurations[2]}
@@ -38,7 +46,7 @@ const WorkspaceInvoicePlanForm = () => {
           <span>فضای ذخیره‌سازی اضافی</span>
           <NumberInput step={5} defaultValue={1} />
           <Styled.WorkspaceSecondaryText>
-            گیگابایت
+            {RVDicGigaBytes}
           </Styled.WorkspaceSecondaryText>
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
@@ -47,11 +55,11 @@ const WorkspaceInvoicePlanForm = () => {
           <Styled.WorkspaceSecondaryText>کاربر</Styled.WorkspaceSecondaryText>
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
-          <span>کدتخفیف</span>
+          <span>{RVDicDiscountCode} </span>
           <AnimatedInput
             value={coupon}
             onChange={setCoupon}
-            placeholder={'کدتخفیف'}
+            placeholder={RVDicDiscountCode}
           />
           <Styled.WorkspaceInvoiceCouponIconWrapper>
             {Boolean(coupon.length) && <CheckIcon />}
@@ -59,7 +67,7 @@ const WorkspaceInvoicePlanForm = () => {
         </Styled.WorkspaceInvoicePlanFormDetailsContainer>
 
         <Styled.WorkspaceInvoicePaymentGatewayContainer>
-          <strong>{'درگاه پرداخت'}</strong>
+          <strong>{RVDicPaymentGateway}</strong>
           <Styled.WorkspaceInvoicePaymentGatewayChoicesContainer>
             {new Array(3).fill().map((_, idx) => (
               <Styled.WorkspaceInvoicePaymentGatewayChoice

@@ -163,31 +163,18 @@ export const InputWrapper = styled.div`
   }
 
   input {
-    width: calc(100% - 0.3rem);
+    width: 100%;
   }
-
-  .search-input-icon {
-    position: absolute;
-    ${RV_RevFloat}: 0.5rem;
-    top: 0.5rem;
-  }
-`;
-
-export const SearchViewHeaderTitle = styled.div.attrs({
-  className: `${TC_WARM}`,
-})`
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
 `;
 
 export const SearchTypeButtonsContainer = styled.div`
   ${FLEX_RCB}
   gap: 0.5rem;
+  height: 100%;
 
   .search-type-button {
     width: 5rem;
-    height: 1.9rem;
-    border-radius: 0.2rem;
+    height: 2.8rem;
     border-color: ${CV_DISTANT};
   }
 `;
