@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import Heading from '../../components/Heading/Heading';
+import { FLEX_CCB, FLEX_RCB } from '../../constant/StyledCommonCss';
+import { CV_GRAY } from '../../constant/CssVariables';
 
 export const TeamSettingsCardWrapper = styled.div`
   padding: 0 1rem;
@@ -52,4 +54,12 @@ export const SettingActionBar = styled.div`
   justify-content: flex-start;
   margin-top: 4rem;
   padding: 0 0.2rem;
+`;
+
+export const TeamPlanContainer = styled.div`
+  ${FLEX_RCB};
+`;
+
+export const TeamPlanTitle = styled.div`
+  color: ${CV_GRAY};
 `;

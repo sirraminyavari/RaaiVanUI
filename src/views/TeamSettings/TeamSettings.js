@@ -3,18 +3,19 @@
  */
 import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import AnimatedTextArea from './items/AnimatedTextArea';
-import Button from '../../components/Buttons/Button';
-import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
-import ImageCropper from '../../components/ImageCropper/ImageCropper';
-import CustomSelectIndicator from '../../components/Inputs/CustomSelect/items/CustomSelectIndicator';
+import Button from 'components/Buttons/Button';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import ImageCropper from 'components/ImageCropper/ImageCropper';
+import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
 import CustomInput from './items/CustomInput';
 
 const TeamSettings = (props) => {
   const {
     rtl,
     RVDic,
+    plan,
     breadCrumbItems,
     fieldOfExpertiseOption,
     languageOption,
@@ -31,7 +32,7 @@ const TeamSettings = (props) => {
       <Styled.TeamSettingsContainer rtl={rtl}>
         <Breadcrumb items={breadCrumbItems} />
 
-        <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
+        <Styled.PageTitle>{RVDic?.TeamInfo}</Styled.PageTitle>
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
@@ -77,6 +78,16 @@ const TeamSettings = (props) => {
               })
             }
           />
+
+          <Styled.FieldWrapper>
+            <Styled.SelectTitle>{'پلن تیم'}</Styled.SelectTitle>
+            <Styled.TeamPlanContainer>
+              <Styled.TeamPlanTitle>
+                {RVDic?.RV?.SubscriptionPlans[plan]}
+              </Styled.TeamPlanTitle>
+              <Button disable="true">{'تغییر پلن'}</Button>
+            </Styled.TeamPlanContainer>
+          </Styled.FieldWrapper>
 
           <Styled.FieldWrapper>
             <Styled.SelectTitle>{RVDic?.FieldOfActivity}</Styled.SelectTitle>

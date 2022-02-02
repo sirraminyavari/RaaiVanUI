@@ -24,7 +24,8 @@ import {
 import InfoToast from '../../components/toasts/info-toast/InfoToast';
 
 const useTeamSettings = (props) => {
-  const { IconURL, ...appInfo } = props?.route?.Application;
+  console.log(props.route.Application);
+  const { IconURL, Plan, ...appInfo } = props?.route?.Application;
 
   const { RV_RTL: rtl, RVDic } = useWindow();
 
@@ -152,6 +153,7 @@ const useTeamSettings = (props) => {
     applicationInfo,
     setApplicationInfo,
     rtl,
+    plan: Plan,
     breadCrumbItems,
     fieldOfExpertiseOption,
     languageOption,
