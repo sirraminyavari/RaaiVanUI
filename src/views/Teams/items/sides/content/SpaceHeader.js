@@ -9,6 +9,8 @@ import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { decodeBase64 } from 'helpers/helpers';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { renameWorkspace } from 'apiHelper/ApiHandlers/RVApi';
 import {
   WORKSPACE_USER_MANAGEMENT_PATH,
   WORKSPACE_REMOVE_PATH,
@@ -42,6 +44,20 @@ const SpaceHeader = ({ space }) => {
   //! Show space delete confirmation.
   const onTrashClick = () => {
     setIsConfirmShown(true);
+  };
+
+  //! API call for renaming workspace
+  const onWorkspaceRename = async (event) => {
+    const Name = event.target.value;
+    const { Succeed, ErrorText } = await renameWorkspace({
+      WorkspaceID: space.WorkspaceID,
+      Name,
+    });
+    const operationInfoText = ErrorText || Succeed;
+    InfoToast({
+      type: ErrorText ? 'error' : 'success',
+      message: RVDic.MSG[operationInfoText] || operationInfoText,
+    });
   };
 
   //! Cancel space deletion.
@@ -78,8 +94,14 @@ const SpaceHeader = ({ space }) => {
           size={'1.4rem'}
           style={{ marginInlineEnd: '0.6rem' }}
         />
-        {/*//? Should <Styled.SpaceHeaderTitle/> component be replaced with <Heading/>?  */}
-        <span contentEditable>{`${decodeBase64(space.Name)}`}</span>
+        {space.Editable ? (
+          <Styled.SpaceHeaderTitleInput
+            defaultValue={decodeBase64(space.Name)}
+            onBlur={onWorkspaceRename}
+          />
+        ) : (
+          <span>{`${decodeBase64(space.Name)}`}</span>
+        )}
       </Styled.SpaceHeaderTitle>
       {space.Removable && (
         <Styled.SpaceHeaderActions>

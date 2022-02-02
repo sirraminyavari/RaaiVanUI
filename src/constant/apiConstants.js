@@ -347,6 +347,13 @@ export const UNSUBSCRIBE_APPLICATION = 'UnsubscribeFromApplication';
 export const CREATE_WORKSPACE = 'CreateWorkspace';
 
 /**
+ * @description Rename workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const RENAME_WORKSPACE = 'RenameWorkspace';
+
+/**
  * @description 'SetVariable'
  * @mode API function
  * @class 'RVAPI'
