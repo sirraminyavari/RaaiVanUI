@@ -85,7 +85,7 @@ export default WelcomeLayout;
 const WelcomeLayoutContainer = styled.div`
   ${({ Outline = true }) => Outline && `box-shadow: 1px 5px 15px #0000001f;`}
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
-  min-height: 100vh;
+  min-height: calc(100vh - 15vh);
   margin: 1rem;
   ${({ isMobile = false }) =>
     !isMobile &&

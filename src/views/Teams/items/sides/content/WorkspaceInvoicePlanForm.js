@@ -9,6 +9,7 @@ import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { selectStyles } from '../../others/select/Select.styles';
 import NumberInput from 'components/Inputs/Number/NumberInput';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const purchaseDurations = [
   { value: '1', label: 'یک ساله (30% تخفیف)' },
@@ -19,6 +20,7 @@ const WorkspaceInvoicePlanForm = () => {
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [coupon, setCoupon] = useState('');
 
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const { RVDic } = useWindow();
 
   //! RVDic i18n variables
@@ -28,7 +30,7 @@ const WorkspaceInvoicePlanForm = () => {
   const RVDicPaymentGateway = RVDic.PaymentGateway;
 
   return (
-    <CustomWelcomeLayout noOutline>
+    <CustomWelcomeLayout noOutline singleColumn={isTabletOrMobile}>
       <div>
         <Styled.WorkspaceInvoicePlanFormDetailsContainer noSeparator>
           <span>{RVDicDuration}</span>

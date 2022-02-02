@@ -29,6 +29,7 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 import { FLEX_CSC, FLEX_RCS } from 'constant/StyledCommonCss';
+import Input from 'components/Inputs/Input';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
@@ -111,7 +112,8 @@ export const SpaceHeaderContainer = styled.div.attrs({
   align-items: center;
   margin: 0 0 0.2rem 0;
   position: sticky;
-  top: 4rem;
+  // top: 4rem;
+  top: 0;
   z-index: 200;
   padding: 1rem 0;
 `;
@@ -125,6 +127,26 @@ export const SpaceHeaderTitle = styled.div.attrs({
   height: 1rem;
   font-size: 1rem;
   font-weight: bold;
+`;
+export const SpaceHeaderTitleInput = styled(Input).attrs({
+  className: C_GRAY_DARK,
+})`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-block: 1rem;
+  border-color: transparent;
+  border-radius: 0;
+  &:hover {
+    border-color: transparent;
+  }
+  &:focus {
+    border-color: transparent;
+    border-bottom-color: ${CV_DISTANT};
+  }
 `;
 
 export const ConfirmSpaceWrapper = styled.div`

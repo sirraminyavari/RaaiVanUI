@@ -81,10 +81,14 @@ const DesktopWorkSpace = ({ space }) => {
                     );
                   return;
                 })}
-                {checkWorkspaceHasArchivedApps() && (
-                  <ArchivedTeams space={space} archives={archivedApps} />
+                {(space.Editable || space.Removable) && (
+                  <>
+                    {checkWorkspaceHasArchivedApps() && (
+                      <ArchivedTeams space={space} archives={archivedApps} />
+                    )}
+                    <NewTeam WorkspaceID={space.WorkspaceID} />
+                  </>
                 )}
-                <NewTeam WorkspaceID={space.WorkspaceID} />
               </>
             )}
           </Styled.TeamListConatiner>

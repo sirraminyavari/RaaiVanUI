@@ -3,10 +3,10 @@ import WorkspaceAccountManagementImage from 'assets/images/workspace-account-man
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const WorkspaceAccountManagementWelcome = () => {
-  const isMobileScreen = DimensionHelper().isMobile;
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   return (
-    <Styled.DesktopWelcomeSide style={{ height: '90vh' }}>
-      {!isMobileScreen && (
+    !isTabletOrMobile && (
+      <Styled.DesktopWelcomeSide style={{ height: '90vh' }}>
         <>
           <Styled.WorkspaceImageWrapper>
             <Styled.WorkspaceImage
@@ -15,8 +15,8 @@ const WorkspaceAccountManagementWelcome = () => {
             />
           </Styled.WorkspaceImageWrapper>
         </>
-      )}
-    </Styled.DesktopWelcomeSide>
+      </Styled.DesktopWelcomeSide>
+    )
   );
 };
 
