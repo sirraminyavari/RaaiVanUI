@@ -36,6 +36,17 @@
         return window.location.pathname.toLowerCase().indexOf("/home") == 0;
     },
 
+    DownloadLink: function (params) {
+        params = params || {};
+        return "/download/" + (params.FileID || "_") +
+            (params.Extension ? "&Extension=" + params.Extension : "") +
+            (params.Category ? "&Category=" + params.Category : "") +
+            (params.CoverID ? "&CoverID=" + params.CoverID : "") +
+            (params.Meta ? "&Meta=" + params.Meta : "") +
+            (params.Password ? "&PS=" + params.Password : "") +
+            (params.Download === false ? "&dl=false" : "");
+    },
+
     UserPageURL: function (params) {
         params = params || {};
         return "../../user" + (params.UserID ? "/" + params.UserID : "") + (params.Tab ? "?Tab=" + params.Tab : "");

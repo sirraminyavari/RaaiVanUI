@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from './CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK } from './CssVariables';
 
 const FLEX_COLUMN = css`
   display: flex;
@@ -213,4 +213,15 @@ export const ViewContentCard = css`
   padding: 4rem 1.5rem 1.5rem 1.5rem;
   background-color: var(--rv-gray-color-light);
   min-height: calc(100vh - 8rem);
+`;
+
+/**
+ * @description use this style to automatically truncate text
+ *** important *** if you are using this inside a flex box, make sure that you set a width for the parent element
+ ***************** you can use this for parent: { flex: 1 1 auto; width: 0; } this works like a charm
+ */
+export const Ellipsis = css`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

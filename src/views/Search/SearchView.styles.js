@@ -2,8 +2,6 @@ import styled, { css } from 'styled-components';
 import {
   FLEX_CCB,
   FLEX_CCC,
-  FLEX_CEC,
-  FLEX_CSC,
   FLEX_RCB,
   FLEX_RCE,
   FLEX_RCS,
@@ -18,7 +16,6 @@ import {
 import {
   BG_GRAY_LIGHT,
   BG_WHITE,
-  BO_DISTANT,
   BO_FREEZED,
   C_DISTANT,
   TBG_VERY_SOFT,
@@ -31,11 +28,8 @@ import {
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
-  TCV_WARM,
 } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
-
-const { RV_RevFloat } = window;
 
 export const SearchViewContainer = styled.div`
   user-select: none;
@@ -277,105 +271,4 @@ export const SearchListContainer = styled.div`
   height: calc(100% - 7rem);
   margin-top: 1.2rem;
   width: calc(100% + 1rem);
-`;
-
-export const SearchItemContainer = styled.div.attrs({
-  className: `${BO_RADIUS_HALF} ${BO_DISTANT}`,
-})`
-  height: 4.8rem;
-  width: calc(100% - 1rem);
-  margin: 0.6rem 0;
-  padding: 0.3rem;
-  ${FLEX_RCB}
-
-  :hover {
-    border-color: ${TCV_DEFAULT};
-  }
-`;
-
-export const SearchItemTypeWrapper = styled.div.attrs({
-  className: `${BO_DISTANT}`,
-})`
-  height: 100%;
-  min-width: 4.5rem;
-  border-top: none;
-  border-bottom: none;
-  border-inline-start: none;
-  ${FLEX_CCC}
-  gap: 0.5rem;
-
-  .search-item-user-type {
-    cursor: pointer;
-    min-width: 3.5rem;
-    width: 3.5rem;
-    min-height: 3.5rem;
-  }
-`;
-
-export const SearchItemInfoWrapper = styled.div`
-  height: 100%;
-  width: calc(100% - 4rem);
-  padding: 0 1rem;
-  ${FLEX_RCB}
-  gap: 1rem;
-`;
-
-export const SearchItemDescription = styled.div`
-  height: 85%;
-  max-width: 70%;
-  ${FLEX_CSC}
-  gap: 0.2rem;
-`;
-
-export const SearchItemMore = styled.div`
-  height: 85%;
-  width: 30%;
-  ${FLEX_CEC}
-
-  .search-item-avatar {
-    cursor: pointer;
-    min-width: 3rem;
-    width: 3rem;
-    min-height: 3rem;
-  }
-`;
-
-export const SearchItemTitle = styled.div`
-  font-weight: 500 !important;
-  width: 100%;
-  min-height: 2rem;
-  font-size: 1rem;
-  color: ${TCV_WARM};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemFileTitle = styled(Heading).attrs({
-  className: `${TBG_VERY_SOFT}`,
-})`
-  font-weight: 300 !important;
-  max-width: 100%;
-  text-align: ${RV_RevFloat};
-  color: ${TCV_DEFAULT} !important;
-  padding: 0.8rem;
-  border-radius: 1rem;
-  ${FLEX_CCC}
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemFileSubTitle = styled(Heading)`
-  font-weight: 300 !important;
-`;
-
-export const SearchItemNodeSubTitle = styled(Heading).attrs({
-  className: `${TBG_VERY_SOFT}`,
-})`
-  font-weight: 300 !important;
-  color: ${TCV_DEFAULT} !important;
-  padding: 0.3rem 0.5rem;
-  border-radius: 1rem;
 `;

@@ -24,20 +24,24 @@ import * as Styled from './Avatar.styles';
 const Avatar = forwardRef((props, ref) => {
   const {
     radius,
+    url,
     userImage,
     color,
     imageStyles,
     imageClasses,
     ...rest
   } = props;
+
+  const avatarUrl = url || userImage;
+
   return (
     <>
-      {userImage ? (
+      {avatarUrl ? (
         <Styled.AvatarContainer ref={ref} color={color} {...rest}>
           <Styled.AvatarImage
             data-testid="avatar-image"
             radius={radius}
-            src={userImage}
+            src={avatarUrl}
             alt="user-avatar"
             style={imageStyles}
             className={imageClasses}
