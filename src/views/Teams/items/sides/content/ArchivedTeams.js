@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Teams/Teams.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import ArchivedModal from './ArchivedModal';
@@ -14,14 +14,13 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL, RVDic } = useWindow();
-  const isMobile = useMediaQuery({
-    query: '(max-width: 970px)',
-  });
-  const { isTabletOrMobile } = DimensionHelper();
-  const isMobileScreen = useMediaQuery({ query: '(max-width: 600px)' });
+  // const isMobile = useMediaQuery({
+  //   query: '(max-width: 970px)',
+  // });
+  const { isTabletOrMobile, isMobile } = DimensionHelper();
 
   const getModalWidth = () => {
-    if (isMobileScreen) {
+    if (isMobile) {
       return '85%';
     } else if (isTabletOrMobile) {
       return '60%';
@@ -45,7 +44,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
   return (
     <Styled.TeamContainer
       isArchive
-      isMobile={isMobile}
+      isMobile={isTabletOrMobile}
       onClick={handleShowArchived}
       style={{ cursor: 'pointer' }}>
       <ArchivedModal
