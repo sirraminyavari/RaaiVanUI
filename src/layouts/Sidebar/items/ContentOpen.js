@@ -10,7 +10,7 @@ import {
   SETTING_CONTENT,
 } from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 
 const selectSidebarContent = createSelector(
@@ -72,7 +72,7 @@ const SidebarOnOpen = () => {
   }, []);
 
   return (
-    <PerfectScrollbar
+    <ScrollBarProvider
       style={{
         width: '100%',
         position: 'relative',
@@ -80,7 +80,7 @@ const SidebarOnOpen = () => {
       }}
       data-tut="categories_and_templates">
       <div ref={containerRef}>{getSidebarContent(content?.current)}</div>
-    </PerfectScrollbar>
+    </ScrollBarProvider>
   );
 };
 

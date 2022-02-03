@@ -55,7 +55,7 @@ const SearchItem = (item = {}) => {
             {!!Type && isNode && (
               <div style={{ display: 'flex', flexFlow: 'row' }}>
                 <StatusBadge
-                  style={{ padding: '0.2rem 0.7rem', fontWeight: '300' }}>
+                  style={{ padding: '0.2rem 0.7rem', fontWeight: '400' }}>
                   {decodeBase64(Type)}
                 </StatusBadge>
               </div>

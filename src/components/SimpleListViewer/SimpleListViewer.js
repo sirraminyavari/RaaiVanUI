@@ -29,14 +29,6 @@ const SimpleListViewer = ({
   extraData = false,
   onTotal,
 }) => {
-  // useTraceUpdate({
-  //   fetchMethod,
-  //   renderItem,
-  //   pageSize,
-  //   infiniteLoop,
-  //   extraData,
-  //   onTotal,
-  // });
   // fetched data
   const [data, setData] = useState([]);
   // count of the total data can be reached.
@@ -114,29 +106,10 @@ const SimpleListViewer = ({
       });
     }
   };
-  // under develop
-  // const handleScroll = (e) => {
-  //   const lastScrollY = window.scrollY;
-  //   const screenY = window.screenY;
-  //   const elementHeight = container.current?.clientHeight;
-  //   if (
-  //     elementHeight - lastScrollY < 500 &&
-  //     infiniteLoop &&
-  //     scrollDir === 'scrolling down' &&
-  //     !isFetching &&
-  //     data.length > 0 &&
-  //     data.length < total
-  //   ) {
-  //     // fetchMore();
-  //   }
-  // };
 
   const onEndReached = () => {
-    console.log('onEndReached****');
-    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total) {
-      console.log('onEnd fetched****');
+    if (infiniteLoop && !isFetching && data.length > 0 && data.length < total)
       fetchMore();
-    }
   };
 
   return (
@@ -155,14 +128,7 @@ const SimpleListViewer = ({
           <InfiniteScroll
             dataLength={data.length} //This is important field to render the next data
             next={onEndReached}
-            hasMore={true}
-            // loader={<h4>Loading...</h4>}
-            // endMessage={
-            //   <p style={{ textAlign: 'center' }}>
-            //     <b>Yay! You have seen it all</b>
-            //   </p>
-            // }
-          >
+            hasMore={true}>
             {data.map((x, index) => (
               <div key={index}>{renderItem(x, index)}</div>
             ))}
@@ -183,23 +149,6 @@ const SimpleListViewer = ({
 
           <span style={{ color: 'transparent' }}>1</span>
         </>
-
-        // ) : (
-        // <>
-        //   {data.length > 0 && data.length < total && (
-        //     <Button
-        //       loading={isFetching}
-        //       disable={isFetching}
-        //       onClick={fetchMore}
-        //       style={{
-        //         maxWidth: '30%',
-        //         alignSelf: 'center',
-        //         margin: '0.5rem 0 0.5rem 0',
-        //       }}>
-        //       {RVDic.More}
-        //     </Button>
-        //   )}
-        // </>
       )}
     </div>
   );

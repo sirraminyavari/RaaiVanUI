@@ -39,15 +39,6 @@ export const SearchViewContainer = styled.div`
   gap: 1rem;
 `;
 
-export const SearchViewAside = styled.aside.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_QUARTER}`,
-})`
-  box-shadow: 1px 3px 15px #00000026;
-  width: 18rem;
-  max-width: 18rem;
-  min-width: 18rem;
-`;
-
 export const SearchViewMain = styled.main.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_QUARTER}`,
 })`
@@ -207,27 +198,6 @@ export const AdvanceButtonsWrapper = styled.div`
   ${FLEX_RCE}
   gap: 1rem;
   width: 8rem;
-
-  .search-advanced-button {
-    ${FLEX_RCB}
-    width: 5rem;
-    height: 2rem;
-    border: none;
-    padding-inline-start: 0.6rem;
-    border-radius: 1.5rem;
-    background: ${CV_WHITE};
-    color: ${CV_DISTANT};
-    ${({ isAsideOpen }) => isAsideOpen && openAsideCss}
-  }
-
-  .search-export-excel {
-    color: ${CV_DISTANT};
-    cursor: pointer;
-
-    :hover {
-      color: ${TCV_DEFAULT};
-    }
-  }
 `;
 
 export const NotFoundContainer = styled(Heading)`
@@ -271,4 +241,5 @@ export const SearchListContainer = styled.div`
   height: calc(100% - 7rem);
   margin-top: 1.2rem;
   width: calc(100% + 1rem);
+  position: relative;
 `;

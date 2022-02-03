@@ -60,7 +60,10 @@ export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
  * @returns {string} The route url path.
  */
 export const getURL = (routeName, params = {}) =>
-  RVAPI[`${capitalize(routeName)}PageURL`](params).slice(5);
+  RVAPI[`${capitalize(routeName)}PageURL`](params).replace(
+    /\.\.\/(\.\.\/)+/gi,
+    '/'
+  );
 
 /**
  * @description Check if an object is empty or not.
