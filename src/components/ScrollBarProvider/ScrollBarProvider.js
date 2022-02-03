@@ -1,21 +1,24 @@
-// import { lazy, Suspense } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-// import useWindow from 'hooks/useWindowContext';
-import 'assets/css/scrollbar/scrollbar.css';
+import useWindow from 'hooks/useWindowContext';
+import './scrollbar.css';
 
-// const RTLSupport = lazy(() => import('./RTLSupport'));
-// const LTRSupport = lazy(() => import('./LTRSupport'));
+/**
+ * @description a wrapper for react-perfect-scrollbar. always use this component as scrollbar
+ * @param {"left" | "right"} direction determines whether the scrollbar should be placed at left or at right
+ */
+const ScrollBarProvider = ({ direction, ...restProps }) => {
+  const { RV_RTL } = useWindow();
 
-const ScrollBarProvider = ({ children, ...restProps }) => {
-  // const { RV_RTL } = useWindow();
+  const alignLeft = direction
+    ? String(direction).toLowerCase() === 'left'
+    : RV_RTL;
 
   return (
     <>
-      {/* <Suspense fallback={<></>}>
-        {RV_RTL ? <RTLSupport /> : <LTRSupport />}
-      </Suspense> */}
-
-      <PerfectScrollbar {...restProps}>{children}</PerfectScrollbar>
+      <PerfectScrollbar
+        className={alignLeft ? 'ps-align-left' : 'ps-align-right'}
+        {...restProps}
+      />
     </>
   );
 };

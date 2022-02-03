@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { searchContext } from 'views/Search/SearchView';
-import { TCV_WARM, TCV_DEFAULT, CV_GRAY } from 'constant/CssVariables';
+import { TCV_WARM, TCV_DEFAULT } from 'constant/CssVariables';
 import { decodeBase64, fileSizeLabel } from 'helpers/helpers';
 import { Ellipsis } from 'constant/StyledCommonCss';
 import reactStringReplace from 'react-string-replace';
@@ -10,6 +10,7 @@ import Heading from 'components/Heading/Heading';
 
 const TitleLabel = ({ ItemType, Title, Type, ItemURL, Size } = {}) => {
   const { searchText } = useContext(searchContext);
+  const { GlobalUtilities } = window;
 
   const isFile = ItemType === 'File';
 
@@ -25,7 +26,15 @@ const TitleLabel = ({ ItemType, Title, Type, ItemURL, Size } = {}) => {
 
   return (
     <Wrapper type="h4">
-      <LabelContainer as={Link} to={ItemURL}>
+      <LabelContainer
+        as={isFile || !ItemURL ? undefined : Link}
+        to={isFile || !ItemURL ? undefined : ItemURL}
+        onClick={
+          !isFile || !ItemURL
+            ? undefined
+            : () => GlobalUtilities.open_window({ URL: ItemURL })
+        }
+        ItemURL={ItemURL}>
         {title}
       </LabelContainer>
       {isFile && Size && (
@@ -53,5 +62,6 @@ const LabelContainer = styled.div`
   padding-inline-end: 0.5rem;
   font-size: 1rem;
   color: ${TCV_WARM};
+  ${({ ItemURL }) => (ItemURL ? 'cursor: pointer;' : '')}
   ${Ellipsis}
 `;

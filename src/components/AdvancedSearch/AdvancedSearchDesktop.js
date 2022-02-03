@@ -75,23 +75,10 @@ const AdvanceSearchDesktop = ({
   }));
 
   useEffect(() => {
-    if (isProfile) {
-      getRelatedNodes();
-    }
+    if (isProfile) getRelatedNodes();
   }, []);
 
-  useEffect(() => {
-    // console.log(bookmarked, 'bookmarked');
-    if (bookmarked === true) {
-      console.log(bookmarked, 'bookmarked**** ');
-
-      setIsBookMarked(bookmarked);
-    } else {
-      console.log(bookmarked, 'bookmarked**** _______');
-
-      setIsBookMarked(false);
-    }
-  }, [bookmarked]);
+  useEffect(() => setIsBookMarked(bookmarked === true), [bookmarked]);
 
   useEffect(() => {
     const { offsetTop } = advancedSearchButtonRef?.current || {};
@@ -127,20 +114,19 @@ const AdvanceSearchDesktop = ({
   const onCreateUrgent = () => {
     setUrgentCreate(!urgentCreate);
   };
+
   const onByMe = (e) => {
     setIsByMe(e);
     if (e) {
       setByPeople(null);
     }
   };
-  const onByPeople = (item) => {
-    console.log(item, '********* item item item');
 
+  const onByPeople = (item) => {
     if (item) {
       setIsByMe(false);
+
       const isSelectedBefore = byPeople?.find((x) => x.id === item?.id);
-      console.log(!!isSelectedBefore, '********* isSelectedBefore item');
-      console.log(byPeople, '********* byPeople', !!isSelectedBefore);
 
       setByPeople(
         !!isSelectedBefore
@@ -151,6 +137,7 @@ const AdvanceSearchDesktop = ({
       setByPeople([]);
     }
   };
+
   const getRelatedNodes = () => {
     getNodeInfoAPI.fetch(
       {

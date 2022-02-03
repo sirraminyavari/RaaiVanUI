@@ -12,7 +12,7 @@
     },
 
     RemoteAuthenticationURL: function () {
-        return "../../api/Authenticate?timeStamp=" + new Date().getTime();
+        return "/api/Authenticate?timeStamp=" + new Date().getTime();
     },
 
     PostRequest: function (url, data, callback) {
@@ -22,15 +22,15 @@
         send_post_request(url, queryString, callback, null, null, null, true);
     },
 
-    ThemeURL: function (params) { return "../../api/rv/theme?name=" + (params || {}).Name + "&timeStamp=" + new Date().getTime(); },
+    ThemeURL: function (params) { return "/api/rv/theme?name=" + (params || {}).Name + "&timeStamp=" + new Date().getTime(); },
 
-    HelpPageURL: function () { return "../../helpme"; },
+    HelpPageURL: function () { return "/helpme"; },
 
-    LoginPageURL: function () { return "../../login"; },
+    LoginPageURL: function () { return "/login"; },
 
-    ApplicationsPageURL: function () { return "../../teams"; },
+    ApplicationsPageURL: function () { return "/teams"; },
 
-    HomePageURL: function () { return "../../home"; },
+    HomePageURL: function () { return "/home"; },
 
     IsHomePage: function () {
         return window.location.pathname.toLowerCase().indexOf("/home") == 0;
@@ -49,23 +49,23 @@
 
     UserPageURL: function (params) {
         params = params || {};
-        return "../../user" + (params.UserID ? "/" + params.UserID : "") + (params.Tab ? "?Tab=" + params.Tab : "");
+        return "/user" + (params.UserID ? "/" + params.UserID : "") + (params.Tab ? "?Tab=" + params.Tab : "");
     },
 
     DashboardPageURL: function (params) {
-        return "../../dashboard";
+        return "/dashboard";
     },
 
     NetworkPageURL: function (params) {
         params = params || {};
-        return "../../network" + (params.Tab ? "?OpenTab=" + params.Tab : "");
+        return "/network" + (params.Tab ? "?OpenTab=" + params.Tab : "");
     },
 
     NewNodePageURL: function (params) {
         params = params || {};
         params.ParentID = params.ParentID || params.ParentNodeID;
 
-        return "../../newnode/" + (params.NodeTypeID || params.ID || "") + "?timeStamp=" + new Date().getTime() +
+        return "/newnode/" + (params.NodeTypeID || params.ID || "") + "?timeStamp=" + new Date().getTime() +
             (params.ParentID ? "&ParentID=" + params.ParentID : "") +
             (params.PreviousVersionID ? "&PreviousVersionID=" + params.PreviousVersionID : "") +
             (params.DocumentTreeNodeID ? "&DocumentTreeNodeID=" + params.DocumentTreeNodeID : "");
@@ -73,36 +73,36 @@
 
     NodePageURL: function (params) {
         params = params || {};
-        return "../../node/" + (params.NodeID || params.ID || "_") + (params.QRCode ? "?qrcode=true" : "");
+        return "/node/" + (params.NodeID || params.ID || "_") + (params.QRCode ? "?qrcode=true" : "");
     },
 
     NodeToQRCodeURL: function (params) {
         params = params || {};
-        return "../../api/network/qrcode?NodeID=" + (params.NodeID || params.ID || "_") + "&timeStamp=" + new Date().getTime();
+        return "/api/network/qrcode?NodeID=" + (params.NodeID || params.ID || "_") + "&timeStamp=" + new Date().getTime();
     },
 
     NewQuestionPageURL: function () {
-        return "../../newquestion";
+        return "/newquestion";
     },
 
     QuestionsPageURL: function () {
-        return "../../questions";
+        return "/questions";
     },
 
     QuestionPageURL: function (params) {
-        return "../../question/" + ((params || {}).QuestionID);
+        return "/question/" + ((params || {}).QuestionID);
     },
 
     FormPageURL: function (params) {
-        return "../../form/" + ((params || {}).ID || (params || {}).InstanceID);
+        return "/form/" + ((params || {}).ID || (params || {}).InstanceID);
     },
 
     PostsPageURL: function (params) {
-        return "../../posts" + (!(params || {}).PostID ? "" : "/" + params.PostID);
+        return "/posts" + (!(params || {}).PostID ? "" : "/" + params.PostID);
     },
 
     MessagesPageURL: function () {
-        return "../../messages";
+        return "/messages";
     },
 
     ClassesPageURL: function (params) {
@@ -114,28 +114,28 @@
 
         if (queryString && (queryString[0] == "&")) queryString = queryString.substr(1);
 
-        return "../../classes" + (!params.NodeTypeID ? "" : "/" + String(params.NodeTypeID).toLowerCase()) +
+        return "/classes" + (!params.NodeTypeID ? "" : "/" + String(params.NodeTypeID).toLowerCase()) +
             (queryString ? "?" + queryString : "");
     },
 
     GraphPageURL: function () {
-        return "../../graph";
+        return "/graph";
     },
 
     ExplorerPageURL: function () {
-        return "../../explorer";
+        return "/explorer";
     },
 
     ExpertLocatorPageURL: function (params) {
-        return "../../usersearch";
+        return "/usersearch";
     },
 
     OnboardingPageURL: function (params) {
-        return "../../onboarding";
+        return "/onboarding";
     },
 
     SearchPageURL: function (params) {
-        return "../../dosearch" + (!(params || {}).SearchText ? "" : "/" + params.SearchText.replace(/\//g, '_').replace(/\+/g, '~'));
+        return "/dosearch" + (!(params || {}).SearchText ? "" : "/" + params.SearchText.replace(/\//g, '_').replace(/\+/g, '~'));
     },
 
     IsSearchPage: function () {
@@ -143,12 +143,12 @@
     },
 
     RemoteSearchPageURL: function (params) {
-        return "../../remotesearch";
+        return "/remotesearch";
     },
 
     DownloadURL: function (params) {
         params = params || {};
-        return "../../download/" + (params.FileID || "_") + "?" +
+        return "/download/" + (params.FileID || "_") + "?" +
             (params.Extension ? "&Extension=" + params.Extension : "") +
             (params.Category ? "&Category=" + params.Category : "") +
             (params.CoverID ? "&CoverID=" + params.CoverID : "") +
@@ -159,15 +159,15 @@
 
     DataImportTemplateURL: function (params) {
         params = params || {};
-        return "../../Data_Import_Templates/" + params.Name + ".xml" + "?timeStamp=" + new Date().getTime();
+        return "/Data_Import_Templates/" + params.Name + ".xml" + "?timeStamp=" + new Date().getTime();
     },
 
     AdminPanelPageURL: function (params) {
-        return "../../configuration";
+        return "/configuration";
     },
 
     ReportsPageURL: function (params) {
-        return "../../reportspanel";
+        return "/reportspanel";
     },
 
     _LoginFuncs: [],

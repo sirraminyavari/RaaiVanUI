@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import * as Styled from './SearchView.styles';
-import SearchAside from './items/SearchAside/SearchAside';
-import SearchMain from './items/SearchMain/SearchMain';
+import SearchAside from './SearchAside/SearchAside';
+import SearchMain from './SearchMain/SearchMain';
 import { decodeBase64, encodeBase64, getURL } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { search } from 'apiHelper/ApiHandlers/SearchAPI';
@@ -136,7 +136,7 @@ const SearchView = (props) => {
       }}>
       <Styled.SearchViewContainer>
         <SearchMain />
-        {isAsideOpen && <SearchAside />}
+        <SearchAside />
       </Styled.SearchViewContainer>
     </searchContext.Provider>
   );
