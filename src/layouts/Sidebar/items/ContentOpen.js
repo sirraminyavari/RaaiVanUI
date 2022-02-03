@@ -12,6 +12,7 @@ import {
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
+import useWindowContext from 'hooks/useWindowContext';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -64,6 +65,8 @@ const SidebarOnOpen = () => {
   const dispatch = useDispatch();
   const content = useSelector(selectSidebarContent);
 
+  const { RV_Float } = useWindowContext();
+
   usePreventScroll(containerRef);
 
   useEffect(() => {
@@ -73,6 +76,8 @@ const SidebarOnOpen = () => {
 
   return (
     <ScrollBarProvider
+      direction={RV_Float}
+      brightMode={true}
       style={{
         width: '100%',
         position: 'relative',

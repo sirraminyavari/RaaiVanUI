@@ -256,16 +256,6 @@ export const NotificationsMenuContainer = styled.div.attrs({
   margin: -0.7rem 0;
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-
-  .notifs-scroll-area {
-    height: 16.5rem;
-    margin-bottom: 0.5rem;
-    padding: 0 0.7rem;
-
-    .ps__rail-y {
-      right: -0.3rem !important;
-    }
-  }
 `;
 
 export const EmptyNotifs = styled.div`
@@ -306,7 +296,7 @@ export const NotifAvatarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-${RV_RevFloat}: 0.3rem;
+  padding-inline-end: 0.3rem;
 `;
 
 export const NotifContentWrapper = styled.div`
@@ -316,7 +306,7 @@ export const NotifContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  margin-${RV_Float}: 1rem;
+  margin-inline-start: 1rem;
   padding: 0;
 `;
 
@@ -440,19 +430,9 @@ export const AvatarMenuContainer = styled.div`
   align-items: flex-start;
   width: 14rem;
   margin: 0.5rem;
-  margin-${RV_Float}: 1rem;
-  margin-${RV_RevFloat}: 0;
-
-  .ps__rail-y {
-    ${RV_RTL ? 'right: 13rem !important;' : 'left: 13.3rem !important;'}
-  }
+  margin-inline-start: 1rem;
+  margin-inline-end: 0;
 `;
-
-// export const AvatarTeamsListWrapper = styled.div`
-// max-height: calc(100vh - 18rem);
-// overflow: scroll;
-// margin-bottom: 3rem;
-// `;
 
 export const AvatarMenuItem = styled.div.attrs({
   className: C_BLACK,
@@ -477,7 +457,7 @@ export const AvatarMenuTitle = styled.span`
 
 export const Divider = styled.div`
   margin: 0.5rem;
-  margin-${RV_Float}: -1rem;
-  margin-${RV_RevFloat}: 0;
+  margin-inline-start: -1rem;
+  margin-inline-end: 0;
   border-top: 0.1rem solid ${CV_DISTANT};
 `;

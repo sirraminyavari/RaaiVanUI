@@ -47,15 +47,11 @@ export const HeaderContainer = styled.div.attrs({
 
 export const ModalContentWrapper = styled.div`
   width: calc(100% + 2rem);
-  height: calc(100vh - 9rem);
+  height: calc(100vh - 17rem);
   overflow: scroll;
   margin-top: 2.5rem;
-  margin-${RV_Float}: -1rem;
+  margin-inline-start: -1rem;
   padding: 0 1rem;
-
-  .ps__rail-y {
-    ${RV_Float}: calc(100% - 1rem) !important;
-  }
 `;
 
 export const ArchivedTeamWrapper = styled.div`
@@ -322,15 +318,6 @@ export const TeamContainer = styled.div.attrs({
     // overflow: hidden;
   }
 
-  .extra-users-scrollbar {
-    height: 8rem;
-    padding-${RV_Float}: 0.5rem;
-
-    .ps__rail-y {
-      ${RV_Float}: ${RV_RTL ? '-0.35rem' : '-0.1rem'} !important;
-    }
-  }
-
   .invite-modal-container {
     margin-top: 4rem;
   }
@@ -510,7 +497,7 @@ export const ExtraUserItem = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin: 0.45rem 0;
-  padding-${RV_Float}: 0.2rem;
+  padding-inline-start: 0.2rem;
   position: relative;
 `;
 
@@ -716,7 +703,7 @@ export const InviteContent = styled.div.attrs({
 
   .send-invitation-button {
     width: 8rem;
-    margin-${RV_Float}: auto;
+    margin-inline-start: auto;
   }
 `;
 
@@ -1160,11 +1147,10 @@ export const WorkspaceAccountSubscriptionItem = styled.div.attrs({
 `;
 
 export const WorkspaceAccountSubscriptionItemTitleContainer = styled.div`
-
   display: flex;
   text-align: start;
-  }
 `;
+
 export const WorkspaceAccountSubscriptionItemTitle = styled.div`
   padding-inline-start: 0.5rem;
   padding-block: 0.5rem;

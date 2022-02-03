@@ -12,7 +12,7 @@ import * as Styled from '../Sidebar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
@@ -65,31 +65,6 @@ const SidebarOnClose = ({ theme }) => {
       setSidebarContent({ current: SETTING_CONTENT, prev: MAIN_CONTENT })
     );
   };
-
-  // //! Updates scroll position.
-  // const handleScroll = () => {
-  //   const diff =
-  //     iconListRef.current.scrollHeight - iconListRef.current.clientHeight;
-  //   const isScrollDown = iconListRef.current.scrollTop === diff;
-  //   const isScrollUp = iconListRef.current.scrollTop === 0;
-  //   setIsDown(isScrollDown);
-  //   setIsUp(isScrollUp);
-  //   if (isScrollDown) {
-  //     setScroll(diff);
-  //   }
-  //   if (isScrollUp) {
-  //     setScroll(0);
-  //   }
-  // };
-
-  // useLayoutEffect(() => {
-  //   iconListRef.current.scrollTo({
-  //     top: scroll,
-  //     left: 0,
-  //     behavior: 'smooth',
-  //   });
-  //   handleScroll();
-  // }, [scroll]);
 
   const handleScrollUp = () => {
     setIsUp(false);
@@ -171,10 +146,12 @@ const SidebarOnClose = ({ theme }) => {
           </Styled.Up>
         )}
         <Styled.IconListContainer ref={listRef}>
-          <PerfectScrollbar
+          <ScrollBarProvider
             onYReachStart={handleScrollStart}
             onYReachEnd={handleScrollEnd}
             onScrollUp={handleScrollUp}
+            direction={RV_Float}
+            brightMode={true}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -207,7 +184,7 @@ const SidebarOnClose = ({ theme }) => {
                 );
               })}
             </div>
-          </PerfectScrollbar>
+          </ScrollBarProvider>
         </Styled.IconListContainer>
         {hasSidebarNodes && hasArrow && (
           <Styled.Down isDown={isDown} onClick={scrollDown}>

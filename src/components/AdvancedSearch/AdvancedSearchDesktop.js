@@ -15,7 +15,7 @@ import {
   AdvancedFilterDialog,
 } from './AdvancedSearch.style';
 import UrgentCreate from './items/UrgentCreate';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
@@ -166,7 +166,7 @@ const AdvanceSearchDesktop = ({
         } rv-border-radius-half`}
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
-        <PerfectScrollbar
+        <ScrollBarProvider
           containerRef={(ref) => {
             if (ref) {
               ref._getBoundingClientRect = ref.getBoundingClientRect;
@@ -250,7 +250,7 @@ const AdvanceSearchDesktop = ({
               </div>
             </Maintainer>
           </Scrollable>
-        </PerfectScrollbar>
+        </ScrollBarProvider>
       </ScrollProvider>
 
       <div

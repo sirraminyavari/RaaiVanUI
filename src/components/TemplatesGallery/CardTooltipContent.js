@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import * as Styled from './TemplatesGallery.styles';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
 
 const CardTooltipContent = ({ extraTags }) => {
   return (
     <Styled.CardTooltipContainer>
-      <PerfectScrollbar className="extra-tags-scrollbar">
+      <ScrollBarProvider>
         {extraTags?.map((tag, index) => {
           return (
             <Styled.ExtraTagWrapper key={index}>
@@ -14,7 +14,7 @@ const CardTooltipContent = ({ extraTags }) => {
             </Styled.ExtraTagWrapper>
           );
         })}
-      </PerfectScrollbar>
+      </ScrollBarProvider>
     </Styled.CardTooltipContainer>
   );
 };
