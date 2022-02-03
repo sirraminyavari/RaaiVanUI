@@ -98,22 +98,10 @@ export const ContentWrapper = withTheme(styled.div`
   bottom: ${(props) => (props.theme.states.isSettingShown ? '-6%' : '-1rem')};
   overflow: auto;
   margin-top: 4rem;
-  // padding: 0 ${(props) =>
-    props.theme.states.isSidebarOpen ? '1.5rem' : '0'};
   margin-bottom: ${({ isMainContent }) => (isMainContent ? '11.5vh' : '3vh')};
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .ps__thumb-y {
-    background-color: ${CV_WHITE} !important;
-  }
-  .ps__rail-y:hover {
-    background-color: transparent !important;
-  }
-  .ps__rail-y {
-    ${RV_Float}: 0rem !important;
-  }
 `);
 
 const getHeaderWidth = (props) => {
@@ -164,15 +152,15 @@ export const ToggleArrow = styled.div.attrs({
   className: C_WHITE,
 })`
   height: 1.5rem;
-  margin-${RV_Float}: 0.7rem;
+  margin-inline-start: 0.7rem;
   cursor: pointer;
 `;
 
 export const SidebarTitle = styled.div`
-${FLEX_RCB}
+  ${FLEX_RCB}
   font-size: 1rem;
   height: 3.7rem;
-  margin-${RV_Float}: 0.5rem;
+  margin-inline-start: 0.5rem;
 `;
 
 export const SearchWrapper = styled.div.attrs({
@@ -254,7 +242,7 @@ export const FooterButton = styled.div`
 `;
 
 export const FooterIconWrapper = withTheme(styled.div`
-  margin-${RV_Float}: 0;
+  margin-inline-start: 0;
   margin-top: 0;
 `);
 
@@ -273,13 +261,13 @@ export const MenuContainer = styled.div.attrs((props) => ({
   // ${props.isExpanded ? TBO_DEFAULT : BO_GRAY_DARK}
   className: `${BO_RADIUS_QUARTER}`,
 }))`
-${FLEX_RCB}
+  ${FLEX_RCB}
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
   // border-width: 1px;
   // border-style: solid;
   height: 2.2rem;
   margin: 0.5rem 0;
-  margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
+  margin-inline-start: ${({ indentStep }) => `${indentStep}px`};
   background-color: ${({ isExpanded, isSelected }) =>
     isExpanded
       ? 'rgb(43,123,228, 0.2)'
@@ -316,10 +304,10 @@ export const SubMenuTitleWrapper = styled.div`
 export const MenuTitle = styled.span.attrs({ className: C_WHITE })`
   display: inline-block;
   width: 100%;
-  margin-${RV_Float}: 0.6rem;
+  margin-inline-start: 0.6rem;
   user-select: none;
   padding: 0.35rem 0;
-${TruncateTextCss}
+  ${TruncateTextCss}
 `;
 
 export const CaretIconWrapper = styled.div`
@@ -339,7 +327,7 @@ export const MenuItemImage = styled.img.attrs({
 `;
 
 export const HighlightedTitle = styled.span`
-  margin-${RV_Float}: 0.6rem;
+  margin-inline-start: 0.6rem;
 `;
 
 export const ListItemWrapper = styled.div.attrs({
@@ -391,7 +379,7 @@ export const PanelWrapper = styled.div.attrs({
 })`
   ${FlexCenter}
   margin: 0.5rem 0;
-  margin-${RV_Float}: 0.5rem;
+  margin-inline-start: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
   background-color: ${({ isSelected }) =>
@@ -407,7 +395,7 @@ export const SettingItemWrapper = styled.div.attrs({
 })`
   ${FlexCenter}
   margin: 0.5rem 0;
-  margin-${RV_Float}: 0.5rem;
+  margin-inline-start: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
   :hover {
@@ -469,16 +457,6 @@ export const IconListContainer = styled.div`
   height: 85%;
   overflow: hidden;
   position: relative;
-
-  .ps__thumb-y {
-    background-color: ${CV_WHITE} !important;
-  }
-  .ps__rail-y:hover {
-    background-color: transparent !important;
-  }
-  .ps__rail-y {
-    ${RV_RTL ? 'right: -0.3rem !important ' : 'left: 0 !important'};
-  }
 `;
 
 export const IconListWrap = styled.div`
@@ -523,13 +501,13 @@ export const CancelIconWrapper = styled.div`
 `;
 
 export const PanelLink = styled.div`
-  margin-${RV_Float}: 0.4rem;
+  margin-inline-start: 0.4rem;
   text-transform: capitalize;
-${TruncateTextCss}
+  ${TruncateTextCss}
 `;
 
 export const SettingItemTitle = styled.span`
-  margin-${RV_Float}: 0.4rem;
+  margin-inline-start: 0.4rem;
   text-transform: capitalize;
 `;
 

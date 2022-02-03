@@ -8,7 +8,7 @@ import Button from 'components/Buttons/Button';
 import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
 import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import TeamConfirm from './TeamConfirm';
 
 const ArchivedModal = (props) => {
@@ -89,12 +89,7 @@ const ArchivedModal = (props) => {
             message={confirm.message}
             title={confirm.title}
           />
-          <PerfectScrollbar
-            style={{
-              marginLeft: '-1rem',
-              marginRight: '-1rem',
-              padding: '0 1rem',
-            }}>
+          <ScrollBarProvider>
             {archives?.map((archive, index, self) => {
               if (archive.WorkspaceID === space.WorkspaceID)
                 return (
@@ -127,7 +122,7 @@ const ArchivedModal = (props) => {
                 );
               return;
             })}
-          </PerfectScrollbar>
+          </ScrollBarProvider>
         </Styled.ModalContentWrapper>
       </Modal>
     </Styled.ArchivedTeamsModalContainer>

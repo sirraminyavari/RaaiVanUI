@@ -18,7 +18,7 @@ import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import { CV_RED } from 'constant/CssVariables';
 import { selectApplication } from 'store/actions/applications/ApplicationsAction';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import { HOME_PATH } from 'constant/constants';
 import usePreventScroll from 'hooks/usePreventScroll';
@@ -94,7 +94,7 @@ const AvatarMenuList = () => {
         );
       })}
       <Styled.Divider />
-      <PerfectScrollbar style={{ maxHeight: 'calc(100vh - 26rem)' }}>
+      <ScrollBarProvider style={{ maxHeight: '10rem' }}>
         <div ref={containerRef}>
           {teams?.map((team) => {
             const { ApplicationID, Title, IconURL } = team;
@@ -113,7 +113,7 @@ const AvatarMenuList = () => {
             );
           })}
         </div>
-      </PerfectScrollbar>
+      </ScrollBarProvider>
       <Styled.Divider />
       <AvatarMenuItem
         title={RVDic.Logout}

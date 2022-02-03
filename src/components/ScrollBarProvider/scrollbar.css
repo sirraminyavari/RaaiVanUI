@@ -30,7 +30,7 @@
   transition: background-color 0.2s linear, opacity 0.2s linear;
   -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
   border-radius: 1rem;
-  height: 1rem;
+  height: 0.8rem;
   /* there must be 'bottom' or 'top' for ps__rail-x */
   bottom: 0 !important;
   /* please don't change 'position' */
@@ -43,7 +43,7 @@
   transition: background-color 0.2s linear, opacity 0.2s linear;
   -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
   border-radius: 1rem;
-  width: 1rem;
+  width: 0.8rem;
   position: absolute;
 }
 
@@ -58,11 +58,11 @@
 }
 
 .ps-align-left > .ps__rail-y > .ps__thumb-y {
-  left: 0.25rem;
+  left: 0.15rem;
 }
 
 .ps-align-right > .ps__rail-y > .ps__thumb-y {
-  right: 0.25rem;
+  right: 0.15rem;
 }
 
 .ps--active-x > .ps__rail-x,
@@ -80,21 +80,68 @@
   opacity: 0.6;
 }
 
-/* .ps .ps__rail-x:hover, */
-/* .ps .ps__rail-x:focus, */
-/* .ps .ps__rail-x.ps--clicking, */
-.ps .ps__rail-y:hover,
-.ps .ps__rail-y:focus,
-.ps .ps__rail-y.ps--clicking {
+.ps-bg-normal .ps__rail-y:hover,
+.ps-bg-normal .ps__rail-y:focus,
+.ps-bg-normal .ps__rail-y.ps--clicking {
   background-color: #eee;
   opacity: 0.9;
+}
+
+.ps-bg-bright .ps__rail-y:hover,
+.ps-bg-bright .ps__rail-y:focus,
+.ps-bg-bright .ps__rail-y.ps--clicking {
+  background-color: #eeeeee11;
+  opacity: 0.9;
+}
+
+.ps-bg-normal > .ps__rail-x > .ps__thumb-x {
+  background-color: #666;
+}
+
+.ps-bg-bright > .ps__rail-x > .ps__thumb-x {
+  background-color: #999;
+}
+
+.ps-bg-normal > .ps__rail-y > .ps__thumb-y {
+  background-color: #666;
+}
+
+.ps-bg-bright > .ps__rail-y > .ps__thumb-y {
+  background-color: #999;
+}
+
+.ps-bg-normal > .ps__rail-x:hover > .ps__thumb-x,
+.ps-bg-normal > .ps__rail-x:focus > .ps__thumb-x,
+.ps-bg-normal > .ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #333;
+  height: 0.5rem;
+}
+
+.ps-bg-bright > .ps__rail-x:hover > .ps__thumb-x,
+.ps-bg-bright > .ps__rail-x:focus > .ps__thumb-x,
+.ps-bg-bright > .ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #ccc;
+  height: 0.5rem;
+}
+
+.ps-bg-normal > .ps__rail-y:hover > .ps__thumb-y,
+.ps-bg-normal > .ps__rail-y:focus > .ps__thumb-y,
+.ps-bg-normal > .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #333;
+  width: 0.5rem;
+}
+
+.ps-bg-bright > .ps__rail-y:hover > .ps__thumb-y,
+.ps-bg-bright > .ps__rail-y:focus > .ps__thumb-y,
+.ps-bg-bright > .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #ccc;
+  width: 0.5rem;
 }
 
 /*
 * Scrollbar thumb styles
 */
 .ps__thumb-x {
-  background-color: #666;
   border-radius: 1rem;
   transition: background-color 0.2s linear, height 0.2s ease-in-out;
   -webkit-transition: background-color 0.2s linear, height 0.2s ease-in-out;
@@ -106,26 +153,11 @@
 }
 
 .ps__thumb-y {
-  background-color: #666;
   border-radius: 1rem;
   transition: background-color 0.2s linear, width 0.2s ease-in-out;
   -webkit-transition: background-color 0.2s linear, width 0.2s ease-in-out;
   width: 0.4rem;
   position: absolute;
-}
-
-.ps__rail-x:hover > .ps__thumb-x,
-.ps__rail-x:focus > .ps__thumb-x,
-.ps__rail-x.ps--clicking .ps__thumb-x {
-  background-color: #333;
-  height: 0.5rem;
-}
-
-.ps__rail-y:hover > .ps__thumb-y,
-.ps__rail-y:focus > .ps__thumb-y,
-.ps__rail-y.ps--clicking .ps__thumb-y {
-  background-color: #333;
-  width: 0.5rem;
 }
 
 /* MS supports */

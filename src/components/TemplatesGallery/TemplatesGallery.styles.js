@@ -41,18 +41,6 @@ const {
   RV_RevDirection,
 } = window;
 
-const commonScrollCss = css`
-  .ps__thumb-y {
-    background-color: ${CV_BLACK} !important;
-  }
-  .ps__rail-y:hover {
-    background-color: transparent !important;
-  }
-  .ps__rail-y {
-    ${RV_Float}: 0rem !important;
-  }
-`;
-
 export const TemplateGalleryContainer = styled.div`
   user-select: none;
 
@@ -93,8 +81,9 @@ export const AddTemplateButtonWrapper = styled.div`
     right: 1rem;
     z-index: ${GlobalUtilities.zindex.alert()};
   }
+
   .add-template-button {
-    background-color: ${CV_WHITE}};
+    background-color: ${CV_WHITE};
   }
 `;
 
@@ -102,20 +91,11 @@ export const GalleryInfosContainer = styled.div`
   width: 75%;
   height: 100%;
   padding: 0.7rem;
-  padding-${RV_Float}: 1.5rem;
+  padding-inline-start: 1.5rem;
 
   .swiper-container {
     width: 100%;
     height: 100%;
-  }
-
-  .template-description-scrollbar {
-    max-height: 100%;
-    ${commonScrollCss}
-  }
-
-  .template-category-scrollbar {
-    ${commonScrollCss}
   }
 
   .template-back-button {
@@ -139,16 +119,6 @@ export const ModalTitle = styled.div.attrs({
 })`
   font-size: 0.9rem;
   font-weight: 500;
-`;
-
-export const SuggestionListContainer = styled.div`
-  .template-suggestion-list-scrollbar {
-    height: calc(100vh - 15rem);
-    margin-${RV_Float}: -1rem;
-    padding-${RV_Float}: 1.3rem;
-  }
-
-  ${commonScrollCss}
 `;
 
 export const SuggestionListTitle = styled.div.attrs({
@@ -230,20 +200,6 @@ export const CardTooltipContainer = styled.div`
   width: 100%;
   height: 100%;
   margin: 0;
-
-  .extra-tags-scrollbar {
-    max-height: 5.5rem;
-    direction: ${RV_RevDirection};
-
-    .ps__thumb-y {
-      background-color: ${CV_BLACK} !important;
-      width: 0.3rem;
-    }
-
-    .ps__rail-y {
-      ${RV_RevFloat}: 0.2rem !important;
-    }
-  }
 `;
 
 export const ExtraTagWrapper = styled.div.attrs({
@@ -381,7 +337,7 @@ export const TemplateItemWrapper = styled.div.attrs({
   className: `${C_GRAY}`,
 })`
   width: ${({ indentStep }) => `calc(100% - ${indentStep}px)`};
-  margin-${RV_Float}: ${({ indentStep }) => `${indentStep}px`};
+  margin-inline-start: ${({ indentStep }) => `${indentStep}px`};
   ${FLEX_RCS}
   padding: 0.3rem 0;
   cursor: pointer;
@@ -392,7 +348,7 @@ export const TemplateIconWrapper = styled.span`
 `;
 
 export const TemplateItemTitle = styled.span`
-  margin-${RV_Float}: 0.2rem;
+  margin-inline-start: 0.2rem;
   ${({ isSelected }) =>
     isSelected &&
     `
@@ -448,8 +404,6 @@ export const SubCategoryContainer = styled.div`
 
 export const TemplateDescriptionContainer = styled.div`
   max-height: 100%;
-
-  ${commonScrollCss}
 `;
 
 export const TemplateDescriptionWrapper = styled.div`
