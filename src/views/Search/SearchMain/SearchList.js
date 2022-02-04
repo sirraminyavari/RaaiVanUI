@@ -28,7 +28,12 @@ const SearchList = () => {
   } else {
     return (
       <Styled.SearchListContainer>
-        <ScrollbarProvider>
+        <ScrollbarProvider
+          scrollEndOptions={{
+            onEndReach: () => {
+              console.log('end reached!!!', 'ramin');
+            },
+          }}>
           {searchItems?.map((item, index) => {
             return (
               <Fragment key={item?.ID || index}>

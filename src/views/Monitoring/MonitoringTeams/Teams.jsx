@@ -1,34 +1,24 @@
 import { Space } from 'components';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
-import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import { useDispatch } from 'react-redux';
-import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
 import TextButton from 'components/Buttons/TextButton';
 import RefreshIcon from 'components/Icons/RefreshIcon/RefreshIcon';
 import {
   USER_PATH,
-  USER_SECURITY_PATH,
   REPORTS_PATH,
   MONITORING_TEAMS_PATH,
   MONITORING_PATH,
 } from 'constant/constants';
 import * as Styled from '../monitoring.styles';
-import {
-  Link,
-  useHistory,
-  useLocation,
-  useParams,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTeamMonitoring } from './useMonitoringTeams';
 import { COLUMNS } from './column';
 import EmptyCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
@@ -36,12 +26,7 @@ import FilledCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon'
 import { ShadowButton } from './datepicker.style';
 
 const Teams = ({ ...props }) => {
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { pathname } = location;
-  const history = useHistory();
   const params = useParams();
-  let { ApplicationID } = useParams();
   const {
     data,
     isLoading,
@@ -50,21 +35,16 @@ const Teams = ({ ...props }) => {
     dateTo,
     setDateTo,
   } = useTeamMonitoring();
-  const { path, url } = useRouteMatch();
-  console.log(data, 'data');
-  console.log(path);
-  console.log(url);
-  console.log(params.ApplicationID);
-  const { RV_RTL, RVDic } = useWindowContext();
+
+  const { RVDic } = useWindowContext();
   const [lowerBoundary, setLowerBoundary] = useState(5);
   const columns = useMemo(() => COLUMNS, []);
-  console.log('RV_RTL', RV_RTL);
+
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
   const [date, setDate] = useState(null);
 
   const [dateHover, setDateHover] = useState(false);
 
-  const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
     { id: 1, title: RVDic?.AdminPanel, linkTo: USER_PATH },
     {

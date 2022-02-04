@@ -21,18 +21,35 @@ const DEFAULT_TOGGLE_VALUES = {
 
 const SearchView = (props) => {
   const { SearchText } = props?.route || {};
+
   const {
-    RVDic: { All },
+    RVDic: { All, Nodes, Users, Questions, Files },
+    RVGlobal,
   } = useWindow();
+
+  const allTypes = [
+    { label: Nodes, value: 'Node' },
+    RVGlobal?.SAASBasedMultiTenancy ? null : { label: Users, value: 'User' },
+    RVGlobal?.Modules?.QA ? { label: Questions, value: 'Question' } : null,
+    { label: Files, value: 'File' },
+  ].filter((t) => !!t);
+
+  const allOptions = [
+    { label: All, value: allTypes.map((t) => t.value) },
+  ].concat(allTypes.map((t) => ({ label: t.label, value: [t.value] })));
+
   const [searchText, setSearchText] = useState(
     SearchText === 'undefined' ? null : decodeBase64(SearchText)
   );
+
   const [isAsideOpen, setIsAsideOpen] = useState(false);
   const [togglesValue, setTogglesValue] = useState(DEFAULT_TOGGLE_VALUES);
+
   const [selectedType, setSelectedType] = useState({
     label: All,
-    value: 'User|Node|Question|File',
+    value: allTypes.map((t) => t.value),
   });
+
   const [isSearching, setIsSearching] = useState(false);
   const [searchItems, setSearchItems] = useState([]);
   const [selectedTemps, setSelectedTemps] = useState([]);
@@ -53,8 +70,8 @@ const SearchView = (props) => {
       hasContent: togglesValue.content,
       hasDescription: togglesValue.excerpt,
       hasTags: togglesValue.keywords,
-      typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
-      types: togglesValue.fileTypes.join('|'),
+      typeIds: selectedTemps?.map((temp) => temp.NodeTypeId),
+      types: togglesValue.fileTypes,
       isExcel: true,
     });
   };
@@ -75,7 +92,7 @@ const SearchView = (props) => {
 
     //! If there is not advanced search for a type, close the aside section.
     //! In "All = Node | User | Question | File" and "User" search there is no advanced search.
-    if (selectedType?.value?.split('|').includes('User')) {
+    if (selectedType?.value?.some((v) => v === 'User')) {
       setIsAsideOpen(false);
     }
 
@@ -97,8 +114,8 @@ const SearchView = (props) => {
         hasContent: togglesValue.content,
         hasDescription: togglesValue.excerpt,
         hasTags: togglesValue.keywords,
-        typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
-        types: togglesValue.fileTypes.join('|'),
+        typeIds: selectedTemps?.map((temp) => temp.NodeTypeId),
+        types: togglesValue.fileTypes,
       });
 
       setIsSearching(false);
@@ -122,6 +139,7 @@ const SearchView = (props) => {
         togglesValue,
         setTogglesValue,
         onReset,
+        allOptions,
         selectedType,
         setSelectedType,
         isSearching,

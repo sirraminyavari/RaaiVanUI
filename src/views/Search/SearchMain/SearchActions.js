@@ -71,11 +71,7 @@ const SearchActions = () => {
               <SearchIcon size={22} color={CV_DISTANT} />
             </Input>
           </Styled.InputWrapper>
-          {isCollapsed() ? (
-            <SearchTypeCollapsed />
-          ) : (
-            <SearchTypeButtons onTypeChange={(type) => console.log(type)} />
-          )}
+          {isCollapsed() ? <SearchTypeCollapsed /> : <SearchTypeButtons />}
         </Styled.SearchArea>
         <SearchAdvancedButtons />
       </Styled.SearchActionsWrapper>
