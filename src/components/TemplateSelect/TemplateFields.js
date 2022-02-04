@@ -6,7 +6,7 @@ import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import { getFormElements } from 'apiHelper/apiFunctions';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import useWindow from 'hooks/useWindowContext';
 
 const TemplateFields = () => {
@@ -46,7 +46,7 @@ const TemplateFields = () => {
           <Styled.CurrentTemplateName type="h2">
             {decodeBase64(TypeName)}
           </Styled.CurrentTemplateName>
-          <PerfectScrollbar className="template-fields-scrollbar">
+          <ScrollBarProvider className="template-fields-scrollbar">
             {!isLoading ? (
               nodeElements?.map((element, key) => (
                 <FieldCell key={element?.ElementID || key} element={element} />
@@ -54,7 +54,7 @@ const TemplateFields = () => {
             ) : (
               <LogoLoader />
             )}
-          </PerfectScrollbar>
+          </ScrollBarProvider>
           <Button
             onClick={() => onSelect(currentNode)}
             classes="template-select-button">

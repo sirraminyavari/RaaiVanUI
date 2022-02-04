@@ -18,7 +18,7 @@ import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
 import * as Styled from './Teams.styles';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import {
   WORKSPACES_PATH,
@@ -172,7 +172,7 @@ const WorkspaceSettingsView = () => {
                       </div>
 
                       <div className="extraTeamsPanel">
-                        <PerfectScrollbar>
+                        <ScrollBarProvider>
                           {ApplicationsArray.map(
                             ({ ApplicationID, Title, IconURL }, idx) => {
                               if (idx > 4)
@@ -186,7 +186,7 @@ const WorkspaceSettingsView = () => {
                                 );
                             }
                           )}
-                        </PerfectScrollbar>
+                        </ScrollBarProvider>
                       </div>
                     </PopupMenu>
                   </>
