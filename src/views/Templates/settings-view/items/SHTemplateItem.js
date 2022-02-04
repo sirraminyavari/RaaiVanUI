@@ -9,6 +9,8 @@ import TemplateCreateNew from './TemplateCreateNew';
 import TemplateDeleteButton from './TemplateDeleteButton';
 import { useContext } from 'react';
 import { TemplateListContext } from '../TemplatesSettings';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import { encodeBase64 } from '../../../../helpers/helpers';
 
 const SHTemplateItem = ({
   item,
@@ -20,6 +22,9 @@ const SHTemplateItem = ({
   ...rest
 }) => {
   const { RV_RTL } = useWindowContext();
+  const history = useHistory();
+  const { path } = useRouteMatch();
+
   const { handleDeleteNode, handleAddNodeType } = useContext(
     TemplateListContext
   );
@@ -38,6 +43,10 @@ const SHTemplateItem = ({
 
   const handleDelete = () => {
     if (handleDeleteNode) handleDeleteNode(item?.id);
+  };
+
+  const handleCardClick = () => {
+    history.push(`${path}/${item?.id}/${encodeBase64(item?.data?.title)}`);
   };
 
   return (
@@ -91,7 +100,7 @@ const TreeItemContainer = styled.div`
   ${FLEX_RCS};
   ${({ rtl, depth }) =>
     rtl ? `margin-right: ${3 * depth}rem` : `margin-left: ${3 * depth}rem`};
-  cursor: default;
+  cursor: pointer;
   width: 100%;
   height: 5rem;
   gap: 1rem;

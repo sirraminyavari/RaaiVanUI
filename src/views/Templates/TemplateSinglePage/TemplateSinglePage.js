@@ -4,22 +4,32 @@ import TemplateAdvancedSettings from './items/TemplateAdvancedSettings/TemplateA
 import TemplateMembersSettings from './items/TemplateMembersSettings/TemplateMembersSettings';
 import TemplateFormSettings from './items/TemplateFormSettings/TemplateFormSettings';
 import TemplateItemSettings from './items/TemplateItemsSettings/TemplateItemSettings';
+import styled from 'styled-components';
 
 const TemplateSinglePage = () => {
   const { path } = useRouteMatch();
 
-  console.log(path);
   return (
-    <>
-      <div>single page</div>
+    <Container>
       <Switch>
-        <Route path={'/:id'} component={TemplateGeneralSettings} />
-        <Route path={'/forms/:id'} component={TemplateFormSettings} />
-        <Route path={'/advanced/:id'} component={TemplateAdvancedSettings} />
-        <Route path={'/items/:id'} component={TemplateItemSettings} />
-        <Route path={'/members/:id'} component={TemplateMembersSettings} />
+        <Route exact path={`${path}`} component={TemplateGeneralSettings} />
+        <Route exact path={`${path}/forms`} component={TemplateFormSettings} />
+        <Route
+          exact
+          path={`${path}/advanced`}
+          component={TemplateAdvancedSettings}
+        />
+        <Route exact path={`${path}/items`} component={TemplateItemSettings} />
+        <Route
+          exact
+          path={`${path}/members`}
+          component={TemplateMembersSettings}
+        />
       </Switch>
-    </>
+    </Container>
   );
 };
+const Container = styled.div`
+  padding: 1rem;
+`;
 export default TemplateSinglePage;

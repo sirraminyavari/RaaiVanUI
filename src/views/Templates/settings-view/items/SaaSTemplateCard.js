@@ -5,10 +5,18 @@ import {
   CV_GRAY_DARK,
   CV_WHITE,
 } from 'constant/CssVariables';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { encodeBase64 } from '../../../../helpers/helpers';
 
-const SaaSTemplateCard = ({ TypeName, IconURL }) => {
+const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {
+  const history = useHistory();
+  const { path } = useRouteMatch();
+
+  const handleCardClick = () => {
+    history.push(`${path}/${NodeTypeID}/${encodeBase64(TypeName)}`);
+  };
   return (
-    <CardContainer>
+    <CardContainer onClick={handleCardClick}>
       <Image src={IconURL} alt={TypeName} />
       <Title>{TypeName}</Title>
       <Subtitle>
@@ -25,6 +33,7 @@ const CardContainer = styled.div`
   border: 1px solid ${CV_DISTANT};
   background-color: ${CV_WHITE};
   padding: 1rem;
+  cursor: pointer;
 `;
 const Image = styled.img`
   width: 2.8rem;
