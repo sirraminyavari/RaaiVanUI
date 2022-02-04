@@ -36,7 +36,9 @@ const TemplateGeneralSettings = () => {
         <Breadcrumb items={breadItems} />
         <TemplateUploadIcon />
       </Styled.MainForm>
-      <Styled.SideForm>...</Styled.SideForm>
+      <Styled.SideForm>
+        <Styled.SideFormHeader>{'تنظیمات عمومی'}</Styled.SideFormHeader>
+      </Styled.SideForm>
     </Styled.Container>
   );
 };
