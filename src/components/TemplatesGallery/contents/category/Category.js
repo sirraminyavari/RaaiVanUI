@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import * as Styled from '../../TemplatesGallery.styles';
 import SubCategoryList from './SubCategoryList';
 import { TemplatesGalleryContext } from '../../TemplatesGallery';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import { WindowContext } from 'context/WindowProvider';
@@ -22,7 +22,7 @@ const Category = () => {
   };
 
   return (
-    <PerfectScrollbar className="template-category-scrollbar">
+    <ScrollBarProvider>
       <Styled.CategoryContentContainer>
         <Button
           type="negative-o"
@@ -42,7 +42,7 @@ const Category = () => {
           items={currentCategory?.Templates || currentCategory}
         />
       </Styled.CategoryContentContainer>
-    </PerfectScrollbar>
+    </ScrollBarProvider>
   );
 };
 

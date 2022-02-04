@@ -6,8 +6,7 @@ import {
 } from 'constant/CssVariables';
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
-import UserIcon from 'components/Icons/UserIcon/User';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import EditContributersModal from './EditContributersModal';
 import UserIconIo from 'components/Icons/UserIconIo';
 import { decodeBase64 } from 'helpers/helpers';
@@ -112,7 +111,7 @@ const Creators = ({ creatorsList, nodeDetails }) => {
                 {RVDic.EditN.replace('[n]', RVDic.MainAuthors)}
               </Button>
             </div>
-            <PerfectScrollbar style={{ maxHeight: '14rem' }}>
+            <ScrollBarProvider style={{ maxHeight: '14rem' }}>
               {contributors?.map((x) => {
                 const { name, avatarUrl, percent, id } = x || {};
                 return (
@@ -134,7 +133,7 @@ const Creators = ({ creatorsList, nodeDetails }) => {
                   </ListItem>
                 );
               })}
-            </PerfectScrollbar>
+            </ScrollBarProvider>
           </VerticalList>
         </Maintainer>
       ) : (

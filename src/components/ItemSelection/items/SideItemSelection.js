@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
 import Toggle from 'components/Toggle/Toggle';
 
@@ -82,14 +82,6 @@ const SideItemSelection = ({
 
   const filterSwitchManagement = (x, i) => {
     if (i === 0) {
-      console.log(i, 'i', x.value);
-      console.log(
-        filterSwitches.map((y, index) => {
-          return { ...y, value: !x.value };
-        }),
-        '******'
-      );
-
       setFilterSwitchs(
         filterSwitches.map((y, index) => {
           return { ...y, value: !x.value };
@@ -130,69 +122,7 @@ const SideItemSelection = ({
             );
           })}
         </SideSwitchesContainer>
-        {/* <div
-          onMouseEnter={() => setIsDropDownHovered(true)}
-          onMouseLeave={() => setIsDropDownHovered(false)}
-          style={{ marginBottom: '1rem' }}>
-          <AnimatedDropDownList
-            data={dropDown}
-            onSelectItem={onSelectItem}
-            defaultValue={selectedItem}
-            hiddenSelectedItem={false}
-            onClickLabel={() => onSelectItem(selectedItem)}
-            customStyle={{
-              label: { minWidth: '8rem' },
-              container: { backgroundColor: CV_GRAY_LIGHT },
-              button: RV_RTL
-                ? {
-                    borderBottomLeftRadius: '1rem',
-                    borderTopLeftRadius: '1rem',
-                    borderWidth: isDropDownHovered
-                      ? '0.5px 0px 0.5px 0.5px'
-                      : '0 0 0 0',
-                  }
-                : {
-                    borderBottomRightRadius: '1rem',
-                    borderTopRightRadius: '1rem',
-                    borderWidth: isDropDownHovered
-                      ? '0.5px 0.5px 0.5px 0px'
-                      : '0 0 0 0',
-                  },
-              label: RV_RTL
-                ? {
-                    borderBottomRightRadius: '1rem',
-                    borderTopRightRadius: '1rem',
-                    borderWidth: isDropDownHovered
-                      ? '0.5px 0.5px 0.5px 0px'
-                      : '0 0 0 0',
-                  }
-                : {
-                    borderBottomLeftRadius: '1rem',
-                    borderTopLeftRadius: '1rem',
-                    borderWidth: isDropDownHovered
-                      ? '0.5px 0px 0.5px 0.5px'
-                      : '0 0 0 0',
-                  },
-            }}
-            customClass={{
-              dividerClass: 'rv-bg-color-distant',
-              labelClass: `rv-bg-color-white rv-border-distant rv-border-radius-1 ${
-                RV_RTL ? 'rv-ignore-left-radius' : 'rv-ignore-right-radius'
-              }`,
-              buttonClass: isDropDownOpen
-                ? `rv-bg-color-white rv-border-distant rv-border-radius-1 ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`
-                : `rv-bg-color-white rv-border-distant rv-border-radius-1 ${
-                    RV_RTL ? 'rv-ignore-right-radius' : 'rv-ignore-left-radius'
-                  }`,
-              arrowIconColorClass: 'rv-gray',
-            }}
-            onDropDownOpen={setIsDropDownOpen}
-          />
-        </div> */}
-
-        <PerfectScrollbar
+        <ScrollBarProvider
           style={{ maxHeight: '60vh', height: '60%' }}
           containerRef={(ref) => {
             if (ref) {
@@ -215,7 +145,7 @@ const SideItemSelection = ({
               badge={counts.find((y) => y?.NodeTypeID === x?.NodeTypeID)?.Count}
             />
           ))}
-        </PerfectScrollbar>
+        </ScrollBarProvider>
       </SideContent>
       <div style={{ marginTop: '2rem' }}>
         {checkedList?.length > 0 && (

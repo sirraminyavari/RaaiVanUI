@@ -26,7 +26,6 @@ import { NavbarContainer } from './Navbar/Navbar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import TestView from 'views/TestView/TestView';
 import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
-// import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const { toggleSidebar } = themeSlice.actions;
 

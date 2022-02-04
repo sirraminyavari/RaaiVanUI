@@ -19,7 +19,7 @@ import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import FilterButton from 'components/Buttons/Button';
 import { C_DISTANT, C_RED } from 'constant/Colors';
-import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
 /**
  * @typedef PropType
@@ -93,7 +93,7 @@ const FormFilter = (props) => {
               />
             </Styled.FormFilterHeader>
           )}
-          <PerfectScrollBar style={{ padding: '1.5rem', width: '100%' }}>
+          <ScrollBarProvider style={{ padding: '1.5rem', width: '100%' }}>
             {/* <Styled.FiltersWrapper> */}
             {filters.map((filter, key) => {
               return (
@@ -108,7 +108,7 @@ const FormFilter = (props) => {
               );
             })}
             {/* </Styled.FiltersWrapper> */}
-          </PerfectScrollBar>
+          </ScrollBarProvider>
           <Styled.FilterButtonWrapper>
             <FilterButton
               onClick={handleOnFilterClick}
