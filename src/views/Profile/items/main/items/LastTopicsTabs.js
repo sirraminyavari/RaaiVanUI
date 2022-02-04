@@ -4,6 +4,7 @@ import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
 import Button from 'components/Buttons/Button';
 import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
 
@@ -66,38 +67,17 @@ const LastTopicsTabs = ({
   };
 
   return (
-    <Styled.TopicsTabsContainer>
-      <Styled.TabsContainer>
-        <TabItem
-          item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
-          isActive={activeTab === DEFAULT_TAB}
-          noImage
-          onTabClick={handleClickAll}
-        />
-        {sortedNodes
-          ?.filter((itm, ind) => ind <= 2)
-          .map((item, index) => (
-            <TabItem
-              item={item}
-              key={item?.NodeTypeID}
-              isActive={activeTab === item?.NodeTypeID}
-              onTabClick={() => handleItemClick(item)}
-            />
-          ))}
-        {!!moreNodesCount && (
+    <ScrollBarProvider style={{ paddingBottom: '0.5rem' }}>
+      <Styled.TopicsTabsContainer>
+        <Styled.TabsContainer>
           <TabItem
-            item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
-            isActive={isMoreShown}
+            item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
+            isActive={activeTab === DEFAULT_TAB}
             noImage
-            hasMore
-            onTabClick={handleMoreTopics}
+            onTabClick={handleClickAll}
           />
-        )}
-      </Styled.TabsContainer>
-      <Styled.MoreTopicsContainer isOpen={isMoreShown} isFloat={!!floatBox}>
-        <Styled.MoreTopicsWrapper>
           {sortedNodes
-            ?.filter((itm, ind) => ind >= 3)
+            ?.filter((itm, ind) => ind <= 2)
             .map((item, index) => (
               <TabItem
                 item={item}
@@ -106,14 +86,37 @@ const LastTopicsTabs = ({
                 onTabClick={() => handleItemClick(item)}
               />
             ))}
-        </Styled.MoreTopicsWrapper>
-        {!isRelatedPage && (
-          <Button classes="more-topics-button">
-            <Link to={relatedTopicsLink}>مشاهده همه آیتم‌ها</Link>
-          </Button>
-        )}
-      </Styled.MoreTopicsContainer>
-    </Styled.TopicsTabsContainer>
+          {!!moreNodesCount && (
+            <TabItem
+              item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
+              isActive={isMoreShown}
+              noImage
+              hasMore
+              onTabClick={handleMoreTopics}
+            />
+          )}
+        </Styled.TabsContainer>
+        <Styled.MoreTopicsContainer isOpen={isMoreShown} isFloat={!!floatBox}>
+          <Styled.MoreTopicsWrapper>
+            {sortedNodes
+              ?.filter((itm, ind) => ind >= 3)
+              .map((item, index) => (
+                <TabItem
+                  item={item}
+                  key={item?.NodeTypeID}
+                  isActive={activeTab === item?.NodeTypeID}
+                  onTabClick={() => handleItemClick(item)}
+                />
+              ))}
+          </Styled.MoreTopicsWrapper>
+          {!isRelatedPage && (
+            <Button classes="more-topics-button">
+              <Link to={relatedTopicsLink}>مشاهده همه آیتم‌ها</Link>
+            </Button>
+          )}
+        </Styled.MoreTopicsContainer>
+      </Styled.TopicsTabsContainer>
+    </ScrollBarProvider>
   );
 };
 
