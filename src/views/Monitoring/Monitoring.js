@@ -1,27 +1,20 @@
 // import { getApplicationsMonitoring } from 'store/actions/monitoring/MonitoringActions';
 import { GetApplicationsMonitoring } from 'apiHelper/apiFunctions';
-import { Space } from 'components';
 import { MyTable } from 'components/CustomTable/MyTable/Mytable';
 import Heading from 'components/Heading/Heading';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
-import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import { decodeBase64, getURL } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
-import { searchContext } from 'views/Search/SearchView';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import Button from '../../components/Buttons/Button';
 import TextButton from '../../components/Buttons/TextButton';
 import RefreshIcon from '../../components/Icons/RefreshIcon/RefreshIcon';
-import {
-  REPORTS_PATH,
-  USER_PATH,
-  USER_SECURITY_PATH,
-} from '../../constant/constants';
+import { REPORTS_PATH, USER_PATH } from '../../constant/constants';
 import { COLUMNS } from './columns';
 import * as Styled from './monitoring.styles';
 import { useAppMonitoring } from './useMonitoring';
@@ -32,7 +25,6 @@ import {
   useParams,
   useRouteMatch,
 } from 'react-router-dom';
-import { MONITORING_TEAMS_PATH } from 'constant/constants';
 import Teams from './MonitoringTeams/Teams';
 
 const MonitoringView = ({ ...props }) => {
@@ -109,9 +101,6 @@ const MonitoringView = ({ ...props }) => {
       }
     }
 
-    console.log(title);
-    console.log(pathname + `/${name}`);
-
     usersMarkup = (
       <InfiniteScroll
         dataLength={monitoring.TotalApplicationsCount}
@@ -144,7 +133,6 @@ const MonitoringView = ({ ...props }) => {
     );
   }
 
-  const { getExcelFile } = useContext(searchContext);
   const breadcrumbItems = [
     { id: 1, title: RVDic?.AdminPanel, linkTo: USER_PATH },
     {
