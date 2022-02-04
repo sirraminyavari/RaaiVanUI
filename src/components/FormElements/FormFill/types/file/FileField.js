@@ -41,7 +41,7 @@ const FileField = (props) => {
     // console.log(acceptedFiles);
     if (acceptedFiles?.length) {
       const result = await getUploadLink();
-      const uploadURL = result.slice(5);
+      const uploadURL = result;
       console.log(uploadURL);
 
       const promises = acceptedFiles.map((file) => {
