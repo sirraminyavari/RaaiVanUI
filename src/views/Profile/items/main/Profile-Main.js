@@ -86,7 +86,7 @@ const ProfileMain = (props) => {
         getUploadUrlAPI.url(
           { IconID: UserID, Type: 'CoverPhoto' },
           (response) => {
-            let uploadURL = response.slice(5);
+            let uploadURL = response;
             const config = {
               headers: {
                 'Content-Type': 'multipart/form-data',
