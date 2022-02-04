@@ -51,19 +51,26 @@ const SearchView = (props) => {
   });
 
   const [isSearching, setIsSearching] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [searchItems, setSearchItems] = useState([]);
   const [selectedTemps, setSelectedTemps] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [lowerBoundary, setLowerBoundary] = useState(0);
+  const [noMore, setNoMore] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   //! Reset toggles
   const onReset = () => {
     setTogglesValue(DEFAULT_TOGGLE_VALUES);
   };
 
-  //! Download excel file.
-  const getExcelFile = () => {
-    search({
+  const doSearch = async ({ excel, moreMode } = {}) => {
+    if (moreMode) setIsFetchingMore(true);
+
+    const response = await search({
       searchText,
+      lowerBoundary: moreMode ? lowerBoundary : 0,
       itemTypes: selectedType.value,
       hasTitle: togglesValue.title,
       hasFileContent: togglesValue.file,
@@ -72,9 +79,34 @@ const SearchView = (props) => {
       hasTags: togglesValue.keywords,
       typeIds: selectedTemps?.map((temp) => temp.NodeTypeId),
       types: togglesValue.fileTypes,
-      isExcel: true,
+      isExcel: excel === true,
     });
+
+    if (!excel) {
+      if (moreMode) setIsFetchingMore(false);
+      else setIsSearching(false);
+
+      setLowerBoundary(response?.LastItem);
+      setNoMore(response?.NoMore === true);
+      setTotalCount(response?.TotalCount);
+
+      const newItems = response?.Items || [];
+
+      setSearchItems(
+        moreMode
+          ? [
+              ...searchItems,
+              ...newItems.filter(
+                (i) => !searchItems.some((s) => s.ID === i.ID)
+              ),
+            ]
+          : newItems
+      );
+    }
   };
+
+  //! Download excel file.
+  const getExcelFile = () => doSearch({ excel: true });
 
   useEffect(() => {
     //! Update url path state.
@@ -101,33 +133,19 @@ const SearchView = (props) => {
 
     let timeout;
 
-    if (timeout) {
-      clearTimeout(timeout);
-    }
+    if (timeout) clearTimeout(timeout);
 
-    timeout = setTimeout(async () => {
-      const response = await search({
-        searchText,
-        itemTypes: selectedType.value,
-        hasTitle: togglesValue.title,
-        hasFileContent: togglesValue.file,
-        hasContent: togglesValue.content,
-        hasDescription: togglesValue.excerpt,
-        hasTags: togglesValue.keywords,
-        typeIds: selectedTemps?.map((temp) => temp.NodeTypeId),
-        types: togglesValue.fileTypes,
-      });
-
-      setIsSearching(false);
-
-      setSearchItems(response?.Items || []);
-    }, 500);
+    timeout = setTimeout(() => doSearch(), 500);
 
     return () => {
       clearTimeout(timeout);
       setSearchItems([]);
     };
   }, [searchText, selectedType, togglesValue, selectedTemps]);
+
+  const onScrollEnd = () => {
+    if (!isFetchingMore && !noMore) doSearch({ moreMode: true });
+  };
 
   return (
     <searchContext.Provider
@@ -143,14 +161,17 @@ const SearchView = (props) => {
         selectedType,
         setSelectedType,
         isSearching,
+        isFetchingMore,
         setIsSearching,
         searchItems,
         setSearchItems,
+        totalCount,
         selectedTemps,
         setSelectedTemps,
         isModalOpen,
         setIsModalOpen,
         getExcelFile,
+        onScrollEnd,
       }}>
       <Styled.SearchViewContainer>
         <SearchMain />

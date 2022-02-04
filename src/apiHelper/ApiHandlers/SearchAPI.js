@@ -24,6 +24,7 @@ import { apiCallWrapper } from './apiCallHelpers';
  */
 export const search = ({
   searchText,
+  lowerBoundary,
   itemTypes,
   hasTitle = true,
   hasDescription = true,
@@ -36,6 +37,7 @@ export const search = ({
 }) => {
   return apiCallWrapper(API_Provider(SEARCH_API, SEARCH), {
     SearchText: encodeBase64(searchText),
+    LowerBoundary: lowerBoundary,
     ItemTypes: (itemTypes || []).join('|'),
     Title: hasTitle,
     Description: hasDescription,
@@ -45,5 +47,6 @@ export const search = ({
     TypeIDs: (typeIds || []).join('|'),
     Types: (types || []).join('|'),
     Excel: isExcel,
+    FormDetails: isExcel,
   });
 };
