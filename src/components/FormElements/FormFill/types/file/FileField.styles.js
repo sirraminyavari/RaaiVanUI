@@ -19,7 +19,7 @@ import {
 import styled from 'styled-components';
 
 export const FilesContainer = styled.div`
-  width: calc(100% - 17rem);
+  width: calc(100% / 3 * 2);
 `;
 
 export const FileShowContainer = styled.div.attrs({
@@ -71,17 +71,20 @@ export const FileLinkWrapper = styled.div.attrs({
   font-size: 1rem;
   padding: 0.1rem 0.3rem;
   border: 1px solid ${CV_WHITE};
-  width: 5rem;
+  // width: 5rem;
   text-align: center;
+  margin-inline: 1rem;
+  padding-inline: 1rem;
 
   :hover {
-    border-color: ${TCV_VERYWARM};
+    border-color: ${TCV_DEFAULT};
   }
 
   a {
     width: 100%;
     display: inline-block;
-    color: ${TCV_VERYWARM};
+    color: ${TCV_DEFAULT};
+    font-weight: normal;
   }
 `;
 

@@ -3,8 +3,6 @@
  */
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { CV_RED_SOFT } from 'constant/CssVariables';
 import { decode, encode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
 import {

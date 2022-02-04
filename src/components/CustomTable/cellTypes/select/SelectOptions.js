@@ -1,5 +1,5 @@
 import { useRef, memo } from 'react';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 import * as Styled from './Select.styles';
 
@@ -16,7 +16,7 @@ const SelectOptions = ({ handleSelectOption, selectedOptions, options }) => {
     <Styled.SelectOptionsContainer
       rowCount={Math.ceil(selectedOptions.length / 2)}
       ref={containerRef}>
-      <PerfectScrollbar
+      <ScrollBarProvider
         style={{ maxHeight: '7rem' }}
         className="table-select-options-scroll">
         {fakeoptions
@@ -30,7 +30,7 @@ const SelectOptions = ({ handleSelectOption, selectedOptions, options }) => {
               {x}
             </Styled.SelectOptionWrapper>
           ))}
-      </PerfectScrollbar>
+      </ScrollBarProvider>
     </Styled.SelectOptionsContainer>
   );
 };

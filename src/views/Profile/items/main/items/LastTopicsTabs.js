@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
-// import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
 import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
-// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
 

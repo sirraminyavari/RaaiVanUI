@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NotificationsHeader from './NotificationsHeader';
 import NotificationItem from './NotificationItem';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import usePreventScroll from 'hooks/usePreventScroll';
 import {
@@ -56,9 +56,9 @@ const NotificationsMenu = () => {
       {notifications?.length ? (
         <>
           <NotificationsHeader unseenCount={unseenNotifs?.length} />
-          <PerfectScrollbar
-            onYReachEnd={handleReachEnd}
-            className="notifs-scroll-area">
+          <ScrollBarProvider
+            style={{ maxHeight: '16.5rem', padding: '0 1rem' }}
+            onYReachEnd={handleReachEnd}>
             {notifications?.map((notif) => {
               return (
                 <NotificationItem notif={notif} key={notif?.NotificationID} />
@@ -67,7 +67,7 @@ const NotificationsMenu = () => {
             <div style={{ textAlign: 'center' }}>
               {isFetchingNotifs && <LoadingIconFlat />}
             </div>
-          </PerfectScrollbar>
+          </ScrollBarProvider>
         </>
       ) : (
         <Styled.EmptyNotifs>

@@ -15,7 +15,7 @@ const AdvancedSearchView = (props) => {
   useEffect(() => {
     if (onboardingName === 'intro') dispatch(toggleActivation());
   }, [props.route]);
-  console.log('classes render***');
+
   return (
     <Fragment>
       <AdvanceSearch

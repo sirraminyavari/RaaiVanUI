@@ -340,6 +340,20 @@ export const MODIFY_APPLICATION = 'ModifyApplication';
 export const UNSUBSCRIBE_APPLICATION = 'UnsubscribeFromApplication';
 
 /**
+ * @description create new workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const CREATE_WORKSPACE = 'CreateWorkspace';
+
+/**
+ * @description Rename workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const RENAME_WORKSPACE = 'RenameWorkspace';
+
+/**
  * @description 'SetVariable'
  * @mode API function
  * @class 'RVAPI'
@@ -482,11 +496,11 @@ export const GET_TEMPLATES = 'GetTemplates';
 // export const GET_APPLICATION_MONITORING = 'GetApplicationsMonitoring';
 
 /**
- * @description 'GetTemplatesJSON'
+ * @description gets a template object
  * @mode API function
  * @class 'CNAPI'
  */
-export const GET_TEMPLATES_JSON = 'GetTemplateJSON';
+export const GET_TEMPLATE_JSON = 'GetTemplateJSON';
 
 /**
  * @description 'ActivateTemplate'

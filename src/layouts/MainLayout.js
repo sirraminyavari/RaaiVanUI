@@ -1,4 +1,4 @@
-import { Suspense, memo, lazy } from 'react';
+import { Suspense, memo, lazy, useEffect } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
@@ -25,8 +25,7 @@ import useWindow from 'hooks/useWindowContext';
 import { NavbarContainer } from './Navbar/Navbar.styles';
 import { themeSlice } from 'store/reducers/themeReducer';
 import TestView from 'views/TestView/TestView';
-import Teams from 'views/Monitoring/MonitoringTeams/Teams';
-// import PerfectScrollBar from 'components/ScrollBarProvider/ScrollBarProvider';
+import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
 
 const { toggleSidebar } = themeSlice.actions;
 
@@ -161,6 +160,9 @@ const Main = () => {
     }
     return null;
   };
+
+  //update the list of templates in sidebar
+  useEffect(() => dispatch(getSidebarNodeTypes()), []);
 
   return (
     <>

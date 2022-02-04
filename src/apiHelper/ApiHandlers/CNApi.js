@@ -3,13 +3,53 @@ import {
   ADD_NODE_TYPE,
   CN_API,
   GET_CHILD_NODE_TYPES,
-  GET_NODE_TYPES,
   MOVE_NODE_TYPE,
   REMOVE_NODE_TYPE,
   RENAME_NODE_TYPE,
   SET_NODE_TYPE_ORDER,
+  ACTIVATE_TEMPLATE,
+  GET_TEMPLATES,
+  GET_TEMPLATE_JSON,
+  GET_TEMPLATE_TAGS,
+  GET_NODE_TYPES,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description fetches NodeTypes based on provided parameters and filters
+ * @returns
+ */
+export const getNodeTypes = ({
+  NodeTypeIDs,
+  GrabSubNodeTypes,
+  SearchText,
+  IsKnowledge,
+  IsDocument,
+  Archive,
+  Icon,
+  Extensions,
+  Count,
+  LowerBoundary,
+  HasChild,
+  Tree,
+  CheckAccess,
+} = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
+    NodeTypeIDs: (NodeTypeIDs || []).join('|'),
+    GrabSubNodeTypes,
+    SearchText,
+    IsKnowledge,
+    IsDocument,
+    Archive,
+    Icon,
+    Extensions: (Extensions || []).join(','),
+    Count,
+    LowerBoundary,
+    HasChild,
+    Tree,
+    CheckAccess,
+  });
+};
 
 export const getGroupsAll = () => {
   const getGroupsAllAPI = API_Provider(CN_API, 'GetGroupsAll');
@@ -84,6 +124,7 @@ export const saveMembers = (NodeID, UserIDs) => {
 };
 
 /**
+<<<<<<< HEAD
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.
@@ -114,21 +155,6 @@ export const getChildNodeTypes = ({
 };
 
 /**
- * @description get node types
- * @param Icon flag to get icon in response
- * @param Tree flag to get tree in response
- * @param Count
- * @return {Promise<ValidationOptions.unknown>}
- */
-export const getNodeTypes = ({ Icon, Tree, Count = 100000 } = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
-    Icon,
-    Tree,
-    Count,
-  });
-};
-
-/**
  * @description create new node type
  * @param Name
  * @param ParentID
@@ -146,6 +172,34 @@ export const addNodeType = ({ Name, ParentID, IsCategory } = {}) => {
 export const moveNodeType = ({ NodeTypeID, ParentID }) => {
   return apiCallWrapper(API_Provider(CN_API, MOVE_NODE_TYPE), {
     ParentID,
+    NodeTypeID,
+  });
+};
+
+/**
+ * @description Get templates.
+ * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
+ * @returns Promise.
+ */
+export const getTemplates = ({ TagID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
+};
+
+/**
+ * @description fetches the categories of templates
+ * @returns Promise.
+ */
+export const getTemplateTags = () => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_TAGS), {});
+};
+
+/**
+ * @description Gets a template object
+ * @param {String} NodeTypeID the id of the template
+ * @returns Promise.
+ */
+export const getTemplateJSON = ({ NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_JSON), {
     NodeTypeID,
   });
 };
@@ -172,5 +226,16 @@ export const removeNodeType = ({
     NodeTypeID,
     NodeTypeIDs,
     RemoveHierarchy,
+  });
+};
+
+/**
+ * @description Activate a template.
+ * @param {any} Template -The template object to be activated.
+ * @returns Promise.
+ */
+export const activateTemplate = ({ Template } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, ACTIVATE_TEMPLATE), {
+    Template: encodeBase64(JSON.stringify(Template || {})),
   });
 };

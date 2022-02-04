@@ -59,10 +59,8 @@ const ImageCropModal = (props) => {
   useEffect(() => {
     getUploadUrlAPI.url(
       { IconID: uploadId, Type: uploadType },
-      (response) => {
-        let uploadURL = response.slice(5);
+      (uploadURL) => {
         setProfileURL(uploadURL);
-        // console.log(response);
       },
       (error) => {
         console.log(error);
@@ -98,22 +96,27 @@ const ImageCropModal = (props) => {
     };
 
     //! Update profile avatar.
-    axios
-      .post(profileURL, formData, config)
-      .then((response) => {
-        setIsSavingImage(false);
+    try {
+      axios
+        .post(profileURL, formData, config)
+        .then((response) => {
+          setIsSavingImage(false);
 
-        let res = response?.data || {};
+          let res = response?.data || {};
 
-        if (res.ImageURL) {
-          const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-          onUploadDone(newImageURL);
-        } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
-      })
-      .catch((error) => {
-        setIsSavingImage(false);
-        console.log(error);
-      });
+          if (res.ImageURL) {
+            const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
+            onUploadDone(newImageURL);
+          } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
+        })
+        .catch((error) => {
+          setIsSavingImage(false);
+          console.log(error);
+        });
+    } catch (error) {
+      setIsSavingImage(false);
+      console.log(error);
+    }
   };
 
   //! Fires when user changes the image crop area.

@@ -48,8 +48,6 @@ import {
   REMOVE_NODE_TYPE,
   RECOVER_NODE_TYPE,
   GET_NODE_TYPES,
-  GET_TEMPLATES_JSON,
-  ACTIVATE_TEMPLATE,
   GET_UPLOAD_LINK,
   REMOVE_NODE,
   RECYCLE_NODE,
@@ -998,87 +996,6 @@ export const setVerificationCodeMedia = (media = '') => {
 };
 
 /**
- * @description Get gallery templates.
- * @param {String} tagId -The id of tag for template(empty to get all).
- * @returns Promise.
- */
-export const getTemplates = (tagId = '') => {
-  const getTemplatesAPI = API_Provider(CN_API, GET_TEMPLATES);
-
-  return new Promise((resolve, reject) => {
-    try {
-      getTemplatesAPI.fetch(
-        {
-          TagID: tagId,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Get gallery templates JSON.
- * @param {String} nodeId -The id of node type.
- * @returns Promise.
- */
-export const getTemplatesJSON = (nodeId) => {
-  const getTemplatesJSONAPI = API_Provider(CN_API, GET_TEMPLATES_JSON);
-
-  return new Promise((resolve, reject) => {
-    try {
-      getTemplatesJSONAPI.fetch(
-        {
-          NodeTypeID: nodeId,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @description Activate a template.
- * @param {any} template -The template to be activated.
- * @returns Promise.
- */
-export const activateTemplate = (template) => {
-  const activateTemplateAPI = API_Provider(CN_API, ACTIVATE_TEMPLATE);
-
-  return new Promise((resolve, reject) => {
-    try {
-      activateTemplateAPI.fetch(
-        {
-          Template: template,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.
@@ -1562,92 +1479,6 @@ export const removeFile = (ownerId, fileId) => {
         }
       );
     } catch (err) {}
-  });
-};
-
-/**
- * @description Get field of expertise list
- * @returns {Promise}
- */
-export const getTemplateTags = () => {
-  const getTemplateTagsAPI = API_Provider(CN_API, GET_TEMPLATE_TAGS);
-
-  return new Promise((resolve, reject) => {
-    try {
-      getTemplateTagsAPI.fetch(
-        {},
-        (response) => {
-          resolve(response);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
-/**
- * @typedef ParamsType
- * @type {Object}
- * @property {String} searchText - The text to be searched.
- * @property {String} itemTypes - All the types that should search against them(e.g: 'Node|File').
- * @property {Boolean} [hasTitle]
- * @property {Boolean} [hasDescription]
- * @property {Boolean} [hasContent]
- * @property {Boolean} [hasTags]
- * @property {Boolean} [hasFileContent]
- * @property {String} [typeIds]
- * @property {Boolean} [isExcel]
- * @property {String} [types]
- */
-
-/**
- * Search in almost all the application.
- * @param {ParamsType}
- * @returns {Promise}
- */
-export const search = ({
-  searchText,
-  itemTypes,
-  hasTitle = true,
-  hasDescription = true,
-  hasContent = true,
-  hasTags = true,
-  hasFileContent = true,
-  typeIds = '',
-  isExcel = false,
-  types = '',
-}) => {
-  const searchAPI = API_Provider(SEARCH_API, SEARCH);
-
-  return new Promise((resolve, reject) => {
-    try {
-      searchAPI.fetch(
-        {
-          SearchText: encodeBase64(searchText),
-          ItemTypes: itemTypes,
-          Title: hasTitle,
-          Description: hasDescription,
-          Content: hasContent,
-          Tags: hasTags,
-          FileContent: hasFileContent,
-          TypeIDs: typeIds,
-          Types: types,
-          Excel: isExcel,
-        },
-        (response) => {
-          resolve(response);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    } catch (err) {
-      reject(err);
-    }
   });
 };
 

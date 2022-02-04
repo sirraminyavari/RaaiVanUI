@@ -1,18 +1,14 @@
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
-import Button from 'components/Buttons/Button';
 import {
-  CV_RED_SOFT,
   CV_DISTANT,
-  CV_RED,
   CV_WHITE,
   TCV_VERY_TRANSPARENT,
   CV_BLACK,
   TCV_WARM,
 } from 'constant/CssVariables';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { BG_WHITE, C_GRAY, C_GRAY_DARK, TC_WARM } from 'constant/Colors';
+import { BG_WHITE, C_GRAY, TC_WARM } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,

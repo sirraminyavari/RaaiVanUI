@@ -30,8 +30,6 @@ import {
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
-import { BsWindowSidebar } from 'react-icons/bs';
-import { indexOf } from 'lodash';
 
 const { setIsAthunticated } = loginSlice.actions;
 const { setCurrentApp } = ApplicationsSlice.actions;

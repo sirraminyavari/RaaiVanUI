@@ -36,6 +36,8 @@ export const SETT_USERS_CONTENT = 'setting-users';
 export const SETT_TEAM_CONTENT = 'setting-team';
 export const SETT_NOTIFS_CONTENT = 'setting-notifs';
 export const SETT_WORKSPACE_CONTENT = 'setting-workspace';
+export const SETT_WORKSPACE_INVOICE_CONTENT = 'setting-workspace-invoice';
+export const SETT_WORKSPACE_PLANS_CONTENT = 'setting-workspace-plans';
 export const SETT_CLASSES_CONTENT = 'setting-classes';
 export const SETT_URL_CONTENT = 'setting-{url}';
 

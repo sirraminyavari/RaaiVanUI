@@ -7,10 +7,9 @@ import { BO_RADIUS_HALF } from 'constant/constants';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import SideHeader from './SideHeader';
 import SideInfo from './SideInfo';
-import SideHistoryLog from './SideHistoryLog';
 import SideSetting from './SideSetting';
 import SideSecurity from './SideSecurity';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 import Modal from 'components/Modal/Modal';
 import LogTimeLine from './LogTimeLineModal';
@@ -100,12 +99,12 @@ const SideColumn = (props) => {
           {getModalContent()}
         </Modal>
         <SideHeader />
-        <PerfectScrollbar className="node-page-side-scrollbar">
+        <ScrollBarProvider className="node-page-side-scrollbar">
           <SideInfo />
           {/* <SideHistoryLog /> */}
           <SideSetting />
           <SideSecurity />
-        </PerfectScrollbar>
+        </ScrollBarProvider>
       </Styled.SideColumnMaintainer>
     </SideContext.Provider>
   );

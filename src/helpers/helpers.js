@@ -60,7 +60,10 @@ export const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
  * @returns {string} The route url path.
  */
 export const getURL = (routeName, params = {}) =>
-  RVAPI[`${capitalize(routeName)}PageURL`](params).slice(5);
+  RVAPI[`${capitalize(routeName)}PageURL`](params).replace(
+    /\.\.\/(\.\.\/)+/gi,
+    '/'
+  );
 
 /**
  * @description Check if an object is empty or not.
@@ -318,7 +321,7 @@ export const formatDeltaDays = (value, local = getLanguage()) => {
   const formatter = new Intl.RelativeTimeFormat(local);
 
   if (Math.round(deltaDays) === 0) {
-    return window?.RVDic?.Today || 'امروز';
+    return window?.RVDic?.Today;
   }
 
   return formatter.format(Math.round(deltaDays), 'days');
@@ -334,6 +337,43 @@ export const randomNumber = (min, max) => {
   return GlobalUtilities?.random(min, max);
 };
 
+/**
+ * @description Generates a 10 digit random number
+ * @param {HTMLElement|string} element - The element which needs to be in the browser viewport (also accepts a string as element's [id] attribute)
+ * @param {object} [params]
+ * @return {void}
+ */
+export const scrollIntoView = (element, params) => {
+  return GlobalUtilities?.scroll_into_view(element, params);
+};
+
 export const createSubject = () => {
   return new Subject();
+};
+
+/**
+ * @description gets a size and returns a label; size in Bytes, KB, MB, or GB
+ * @param {int} size total size in bytes
+ */
+export const fileSizeLabel = (size) => {
+  const {
+    RVDic: {
+      RV: {
+        DataSize: { Bytes, KiloBytes, MegaBytes, GigaBytes },
+      },
+    },
+  } = window;
+
+  if (isNaN(+size)) return '';
+  else if (+size < 1000) return String(size) + ' ' + Bytes;
+  else if (+size / 1024 < 1000)
+    return String(Number((+size / 1024).toFixed(0))) + ' ' + KiloBytes;
+  else if (+size / (1024 * 1024) < 1000)
+    return String(Number((+size / (1024 * 1024)).toFixed(1))) + ' ' + MegaBytes;
+  else
+    return (
+      String(Number((+size / (1024 * 1024 * 1024)).toFixed(2))) +
+      ' ' +
+      GigaBytes
+    );
 };

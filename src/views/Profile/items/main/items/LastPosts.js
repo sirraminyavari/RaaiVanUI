@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import PostItem from './PostItem';
 
 const LastPosts = () => {
@@ -16,11 +15,9 @@ const LastPosts = () => {
           </Link>
         </Button>
       </Styled.Header>
-      {/* <PerfectScrollbar style={{ maxHeight: '22rem', marginTop: '0.5rem' }}> */}
       {[...Array(3).keys()].map((item, index) => {
         return <PostItem key={index} />;
       })}
-      {/* </PerfectScrollbar> */}
     </Styled.LastPostsContainer>
   );
 };

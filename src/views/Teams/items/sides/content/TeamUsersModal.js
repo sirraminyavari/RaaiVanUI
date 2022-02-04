@@ -23,12 +23,17 @@ const TeamUsersModal = ({
 }) => {
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
+
   const [confirm, setConfirm] = useState({
     user: null,
     message: '',
     title: '',
     isOpen: false,
   });
+
+  //! RVDic i18n variables
+  const RVDicTeamMates = RVDic.TeamMates;
+  const RVDicTitle = RVDic.RemoveUserFromTheTeam;
 
   const resetConfirm = () =>
     setConfirm({ user: null, message: '', title: '', isOpen: false });
@@ -45,8 +50,7 @@ const TeamUsersModal = ({
       '[n]',
       `"${fullName}"`
     );
-    const title = RVDic.RemoveUserFromTheTeam;
-    setConfirm({ user, message, title, isOpen: true });
+    setConfirm({ user, message, title: RVDicTitle, isOpen: true });
   };
 
   const handleConfirmation = () => {
@@ -66,7 +70,7 @@ const TeamUsersModal = ({
       show={isModalShown}
       onClose={handleCloseModal}
       contentWidth="40%"
-      title="هم تیمی ها">
+      title={RVDicTeamMates}>
       <TeamConfirm
         isOpen={confirm.isOpen}
         onConfirm={handleConfirmation}

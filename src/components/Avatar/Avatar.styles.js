@@ -4,7 +4,7 @@ export const AvatarContainer = styled.div`
   display: flex;
   place-items: center;
   border-radius: 50%;
-  overflow: hidden;
+  //overflow: hidden;
   color: #fff;
   border: 0.15rem solid ${({ color }) => (!!color ? color : '#fff')};
 `;

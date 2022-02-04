@@ -13,6 +13,10 @@ import Button from 'components/Buttons/Button';
 const TableAction = (props) => {
   const { onAddItem, onSearch, tableInstance } = props;
   const [searchText, setSearchText] = useState('');
+
+  //* manage loading status state for `Save changes` button
+  const [saveBtnLoadingStatus, setSaveBtnLoadingStatus] = useState(false);
+
   const { RVDic } = useWindow();
 
   const { tempRowId, setTempRowId, onEditRowCancel, addRow } =
@@ -46,6 +50,14 @@ const TableAction = (props) => {
 
   const handleAcceptChanges = () => {
     // addRow && addRow();
+    //* simple promise mock ...
+    setSaveBtnLoadingStatus(true);
+    new Promise((resolve) =>
+      setTimeout(() => {
+        setSaveBtnLoadingStatus(false);
+        resolve();
+      }, 2000)
+    );
   };
 
   return (
@@ -75,6 +87,7 @@ const TableAction = (props) => {
           <>
             <Button
               onClick={handleAcceptChanges}
+              loading={saveBtnLoadingStatus}
               classes="table-action-apply-change-btn">
               <SaveIcon size={18} />
               <span>ثبت تغییرات</span>

@@ -7,9 +7,12 @@ import * as Styled from './FileField.styles';
 import FileShowCell from './FileShowCell';
 import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
+import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
+import { useState } from 'react';
 
 const FileField = (props) => {
   const { GlobalUtilities, RVDic } = useWindow();
+  const [deleteModalStatus, setDeleteModalStatus] = useState(false);
 
   const {
     value,
@@ -38,7 +41,7 @@ const FileField = (props) => {
     // console.log(acceptedFiles);
     if (acceptedFiles?.length) {
       const result = await getUploadLink();
-      const uploadURL = result.slice(5);
+      const uploadURL = result;
       console.log(uploadURL);
 
       const promises = acceptedFiles.map((file) => {
@@ -67,12 +70,22 @@ const FileField = (props) => {
       iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
       title={decodeTitle}
       {...rest}>
+      <DeleteConfirmModal
+        show={deleteModalStatus}
+        messageQuestion="آیا از حذف اطمینان دارید؟"
+        confirmText="حذف"
+        cancelText="بازگشت"
+        title="حذف فایل"
+        onCancel={() => setDeleteModalStatus(false)}
+        onClose={() => setDeleteModalStatus(false)}
+        onConfirm={() => setDeleteModalStatus(false)}
+      />
       <Styled.FilesContainer>
         {value?.map((file, key) => (
           <FileShowCell file={file} key={key} />
         ))}
-        <FileShowCell file={1} />
-        <FileShowCell file={2} />
+        <FileShowCell file={1} onDelete={() => setDeleteModalStatus(true)} />
+        <FileShowCell file={2} onDelete={() => setDeleteModalStatus(true)} />
         <CustomDropZone
           maxFiles={2} //! (infoJSON?.MaxCount)
           maxTotalSize={2} //! (infoJSON?.TotalSize)

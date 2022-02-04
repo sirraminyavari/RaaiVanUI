@@ -8,7 +8,7 @@ import Button from 'components/Buttons/Button';
 import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
 import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import TeamConfirm from './TeamConfirm';
 
 const ArchivedModal = (props) => {
@@ -52,7 +52,7 @@ const ArchivedModal = (props) => {
       '[n]',
       `"${decodeBase64(archivedTeam?.Title)}"`
     );
-    const title = 'بازیافت تیم';
+    const title = RVDic.RecoverN.replace('[n]', RVDic.Team);
     setConfirm({ team: archivedTeam, message, title, isOpen: true });
   };
 
@@ -89,12 +89,7 @@ const ArchivedModal = (props) => {
             message={confirm.message}
             title={confirm.title}
           />
-          <PerfectScrollbar
-            style={{
-              marginLeft: '-1rem',
-              marginRight: '-1rem',
-              padding: '0 1rem',
-            }}>
+          <ScrollBarProvider>
             {archives?.map((archive, index, self) => {
               if (archive.WorkspaceID === space.WorkspaceID)
                 return (
@@ -125,8 +120,9 @@ const ArchivedModal = (props) => {
                     {self.length !== index + 1 && <hr className={BO_FREEZED} />}
                   </Fragment>
                 );
+              return;
             })}
-          </PerfectScrollbar>
+          </ScrollBarProvider>
         </Styled.ModalContentWrapper>
       </Modal>
     </Styled.ArchivedTeamsModalContainer>

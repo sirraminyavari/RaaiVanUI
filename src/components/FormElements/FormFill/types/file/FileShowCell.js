@@ -10,7 +10,7 @@ import useWindow from 'hooks/useWindowContext';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 // import ResizeIcon from 'components/Icons/ResizeIcon/ResizeIcon';
 
-const FileShowCell = ({ file }) => {
+const FileShowCell = ({ file, onDelete }) => {
   const { RVDic } = useWindow();
 
   return (
@@ -32,7 +32,7 @@ const FileShowCell = ({ file }) => {
             {RVDic.Download}
           </Link>
         </Styled.FileLinkWrapper>
-        <Styled.FileActionItemWrapper>
+        <Styled.FileActionItemWrapper onClick={onDelete}>
           <TrashIcon size={15} />
         </Styled.FileActionItemWrapper>
       </Styled.FileActionWrapper>
@@ -40,4 +40,7 @@ const FileShowCell = ({ file }) => {
   );
 };
 
+FileShowCell.defaultProps = {
+  onDelete: () => {},
+};
 export default FileShowCell;

@@ -24,16 +24,31 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
  * @param {object} props - WelcomeLayout component props
  * @param {JSX.Element[]} [props.children=[]] - JSX Children passed to the component
  * @param {JSX.Element} [props.Wrapper="div"] - JSX or HTML Element to wrap the layout to fit styling need
+ * @param {boolean} [props.noOutline=false] - remove outline shadow surrounding the layout
+ * @param {boolean} [props.noPadding=false] - remove padding surrounding each column in the layout
+ * @param {boolean} [props.singleColumn=false] - Force the layout to be a single column
+ * (use case: set responsive view based on DimensionHelper() function)
  *
  * @return {JSX.Element} JSX Layout component
  */
-function WelcomeLayout({ children, Wrapper = WelcomeLayoutContainer }) {
+function WelcomeLayout({
+  children,
+  noOutline,
+  noPadding,
+  singleColumn,
+  Wrapper = WelcomeLayoutContainer,
+  className,
+  ...restProps
+}) {
   const isMobileScreen = DimensionHelper().isMobile;
 
   return (
     <Wrapper
-      className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT)}
-      isMobile={isMobileScreen}>
+      {...restProps}
+      Outline={!noOutline}
+      Padding={!noPadding}
+      className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT, className)}
+      isMobile={singleColumn || isMobileScreen}>
       {Children.toArray(children).map((child, idx) => (
         <LayoutColumn
           isMobile={isMobileScreen}
@@ -55,19 +70,23 @@ WelcomeLayout.propTypes = {
     PropTypes.func,
     PropTypes.element,
   ]),
+  noOutline: PropTypes.bool,
+  noPadding: PropTypes.bool,
+  singleColumn: PropTypes.bool,
 };
 
 WelcomeLayout.defaultDrops = {
   children: [],
+  noOutline: false,
 };
 
 export default WelcomeLayout;
 
 const WelcomeLayoutContainer = styled.div`
-  min-height: 100vh;
-  box-shadow: 1px 5px 15px #0000001f;
+  ${({ Outline = true }) => Outline && `box-shadow: 1px 5px 15px #0000001f;`}
+  ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
+  min-height: calc(100vh - 15vh);
   margin: 1rem;
-  padding: 0 2rem 1rem 2rem;
   ${({ isMobile = false }) =>
     !isMobile &&
     `

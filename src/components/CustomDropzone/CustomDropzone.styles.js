@@ -9,8 +9,9 @@ export const DropzoneContainer = styled.div.attrs({
   width: 100%;
   height: 100%;
   border: 0.15rem dashed ${CV_DISTANT};
-  padding: 0.5rem;
+  padding: 3rem 0.6rem;
   cursor: pointer;
+  text-align: center;
   ${FLEX_CCC}
   gap: 1rem;
   display: ${({ isHidden }) => (isHidden ? 'none' : 'revert')};

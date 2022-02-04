@@ -12,6 +12,8 @@ const TwoFactorOptions = ({ options, enabled, media, onSelectOption }) => {
     onSelectOption && onSelectOption(radioValue);
   };
 
+  useEffect(() => setSelected(!!media ? media : ''), [media]);
+
   useEffect(() => {
     if (!enabled) {
       setSelected('');

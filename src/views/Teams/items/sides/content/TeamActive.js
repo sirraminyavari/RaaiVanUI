@@ -78,9 +78,6 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   useOnClickOutside(actionRef, handleOnClickOutside);
 
-  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
-  const currentUser = (RVGlobal || {}).CurrentUser;
-
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
   });
@@ -94,6 +91,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     Removable: isRemovable,
     Editable: isEditable,
   } = team;
+
+  const isAdmin = isEditable || isRemovable;
+  const currentUser = (RVGlobal || {}).CurrentUser;
 
   const { TotalCount: totalUsers, Users: usersList } = appUsers;
 
@@ -112,7 +112,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   //! Inform user on team delete.
   const onRemoveDone = (removedAppId) => {
-    const deleteMSG = 'تیم حذف خواهد شد';
+    const deleteMSG = RVDic.Confirms.TheTeamWillBeArchived;
     UndoToast({
       autoClose: 7000,
       message: deleteMSG,
@@ -161,7 +161,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       '[n]',
       `"${decodeBase64(Title)}"`
     );
-    const title = 'خروج از تیم';
+    const title = RVDic.LeaveN.replace('[n]', RVDic.Team);
     setConfirm({ type: EXIT_TEAM_CONFIRM, message, title, isOpen: true });
   };
 
@@ -266,7 +266,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         ) : (
           <Styled.TeamExitWrapper onClick={onExitTeamClick}>
             <ExitIcon size={22} />
-            <span className="team-action-title">خروج از تیم</span>
+            <span className="team-action-title">
+              {RVDic.LeaveN.replace('[n]', RVDic.Team)}
+            </span>
           </Styled.TeamExitWrapper>
         )}
         {isEditable && (
@@ -394,6 +396,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   </Styled.ExtraUsersWrapper>
                   <ExtraUsersList
                     users={users}
+                    isAdmin={isAdmin}
                     handleInviteUser={handleInviteUser}
                   />
                 </PopupMenu>

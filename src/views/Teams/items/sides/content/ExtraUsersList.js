@@ -3,16 +3,14 @@ import * as Styled from 'views/Teams/Teams.styles';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
 
-const ExtraUsersList = ({ handleInviteUser, users }) => {
+const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
   const containerRef = useRef();
-  const { RV_RTL, RVGlobal } = useWindow();
-
-  const isAdmin = (RVGlobal || {}).IsSystemAdmin;
+  const { RV_RTL, RVGlobal, RVDic } = useWindow();
 
   usePreventScroll(containerRef);
 
@@ -34,11 +32,11 @@ const ExtraUsersList = ({ handleInviteUser, users }) => {
             />
           </Styled.AddUserWrapper>
           <Styled.ExtraUsersPopupTitle>
-            افزودن هم تیمی جدید
+            {RVDic.InviteNewTeamMate}
           </Styled.ExtraUsersPopupTitle>
         </Styled.ExtraUsersPopupHeader>
       )}
-      <PerfectScrollbar className="extra-users-scrollbar">
+      <ScrollBarProvider style={{ height: '8rem' }}>
         {users
           ?.filter((user, index) => index > 3 && user)
           .map((user) => {
@@ -52,15 +50,16 @@ const ExtraUsersList = ({ handleInviteUser, users }) => {
               </Styled.ExtraUserItem>
             );
           })}
-        {/* {[...Array(10).keys()].map((test) => {
-          return (
-            <Styled.ExtraUserItem key={test}>
-              <Avatar radius={25} color="#333" />
-              <Styled.ExtraUserTitle>{'fullName'}</Styled.ExtraUserTitle>
-            </Styled.ExtraUserItem>
-          );
-        })} */}
-      </PerfectScrollbar>
+
+        {/* [...Array(10).keys()].map((test) => {
+            return (
+              <Styled.ExtraUserItem key={test}>
+                <Avatar radius={25} color="#333" />
+                <Styled.ExtraUserTitle>{'fullName'}</Styled.ExtraUserTitle>
+              </Styled.ExtraUserItem>
+            );
+          }) */}
+      </ScrollBarProvider>
     </div>
   );
 };

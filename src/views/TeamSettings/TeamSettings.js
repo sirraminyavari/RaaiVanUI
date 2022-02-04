@@ -3,12 +3,11 @@
  */
 import * as Styled from './TeamSettingsStyle';
 import useTeamSettings from './useTeamSettings';
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import AnimatedTextArea from './items/AnimatedTextArea';
-import Button from '../../components/Buttons/Button';
-import CustomSelect from '../../components/Inputs/CustomSelect/CustomSelect';
-import ImageCropper from '../../components/ImageCropper/ImageCropper';
-import CustomSelectIndicator from '../../components/Inputs/CustomSelect/items/CustomSelectIndicator';
+import Button from 'components/Buttons/Button';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
+import ImageCropper from 'components/ImageCropper/ImageCropper';
 import CustomInput from './items/CustomInput';
 
 const TeamSettings = (props) => {
@@ -83,10 +82,6 @@ const TeamSettings = (props) => {
             <CustomSelect
               placeholder=""
               options={fieldOfExpertiseOption}
-              components={{
-                DropdownIndicator: CustomSelectIndicator,
-              }}
-              classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.ExpertiseFieldID,
                 label: applicationInfo?.ExpertiseFieldName,
@@ -106,10 +101,6 @@ const TeamSettings = (props) => {
             <CustomSelect
               placeholder=""
               options={teamSizeOption}
-              components={{
-                DropdownIndicator: CustomSelectIndicator,
-              }}
-              classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Size,
                 label: teamSizeOption?.find(
@@ -131,10 +122,6 @@ const TeamSettings = (props) => {
               isRtl={rtl}
               placeholder=""
               options={languageOption}
-              components={{
-                DropdownIndicator: CustomSelectIndicator,
-              }}
-              classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Language,
                 label: languageOption?.find(
@@ -155,10 +142,6 @@ const TeamSettings = (props) => {
             <CustomSelect
               placeholder=""
               options={calOption}
-              components={{
-                DropdownIndicator: CustomSelectIndicator,
-              }}
-              classNamePrefix="select"
               defaultValue={{
                 value: applicationInfo?.Calendar,
                 label: calOption?.find(

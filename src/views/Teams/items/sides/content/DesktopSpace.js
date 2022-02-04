@@ -13,7 +13,6 @@ import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from './DragTeam';
 import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
 import WorkspaceTeamsSkeleton from '../../others/skeletons/WorkspaceTeams';
-import { useEffect, useState } from 'react';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -38,14 +37,6 @@ const DesktopWorkSpace = ({ space }) => {
   const archivedApps = useSelector(selectArchivedApplications);
   const isFetching = useSelector(selectIsFetchingApps);
 
-  //! add a simple delay to [isFetching] redux state
-  const [DelayedLoading, setDelayedLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setDelayedLoading(isFetching);
-    }, 5000);
-  }, [isFetching]);
-
   const moveCard = (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
     dispatch(setApplicationsOrder(reordered));
@@ -57,6 +48,7 @@ const DesktopWorkSpace = ({ space }) => {
         if (app.WorkspaceID === space.WorkspaceID) {
           return app;
         }
+        return;
       })
       .filter((app) => app);
     if (workspaceArchivedApps.length > 0) return true;
@@ -69,7 +61,7 @@ const DesktopWorkSpace = ({ space }) => {
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
           <Styled.TeamListConatiner>
-            {DelayedLoading || isFetching ? (
+            {isFetching ? (
               <WorkspaceTeamsSkeleton />
             ) : (
               <>
@@ -87,11 +79,16 @@ const DesktopWorkSpace = ({ space }) => {
                         />
                       </Flipped>
                     );
+                  return;
                 })}
-                {checkWorkspaceHasArchivedApps() && (
-                  <ArchivedTeams space={space} archives={archivedApps} />
+                {(space.Editable || space.Removable) && (
+                  <>
+                    {checkWorkspaceHasArchivedApps() && (
+                      <ArchivedTeams space={space} archives={archivedApps} />
+                    )}
+                    <NewTeam WorkspaceID={space.WorkspaceID} />
+                  </>
                 )}
-                <NewTeam WorkspaceID={space.WorkspaceID} />
               </>
             )}
           </Styled.TeamListConatiner>

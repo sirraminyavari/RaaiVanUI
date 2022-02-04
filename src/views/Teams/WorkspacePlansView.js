@@ -2,75 +2,69 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
-import React, { useEffect, useState } from 'react';
-import APIHandler from 'apiHelper/APIHandler';
-import { useParams } from 'react-router-dom';
-import { decodeBase64, encodeBase64, randomNumber } from 'helpers/helpers';
-import Avatar from 'components/Avatar/Avatar';
-import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
+import React, { useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ResponsiveTable from './items/others/table/ResponsiveTable';
-import {
-  WorkspaceSettingsHeaderContainer,
-  WorkspacePlansTableContainer,
-  WorkspacePlansContainer,
-} from './Teams.styles';
+import * as Styled from './Teams.styles';
 import {
   RiCheckboxCircleLine,
   RiCloseCircleLine,
   RiInformationLine,
 } from 'react-icons/ri';
 import Button from 'components/Buttons/Button';
-import UserIcon from 'components/Icons/UserIcon/User';
-import UsersIcon from 'components/Icons/UsersIcon/Users';
-import { AiOutlineLeftCircle } from 'react-icons/ai';
-const { setSidebarContent } = themeSlice.actions;
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
+import { scrollIntoView } from 'helpers/helpers';
+import WorkspacePlanItem from './items/sides/content/WorkspacePlanItem';
+import {
+  WORKSPACES_PATH,
+  WORKSPACE_PLANS_PATH,
+} from './items/others/constants';
+import { useParams } from 'react-router-dom';
 
 const WorkspacePlansView = () => {
   const { id: WorkspaceID } = useParams();
-  const dispatch = useDispatch();
   const { RVDic } = useWindow();
+  const { isTabletOrMobile } = DimensionHelper();
+
+  const [isYearlyPrices, setIsYearlyPrices] = useState(false);
+
+  //! RVDic i18n variables
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicWorkspacePlans = RVDic.Plans;
+  const RVDicAnnualPayment = RVDic.AnnualPayment;
+  const RVDicMonthlyPayment = RVDic.MonthlyPayment;
+  const RVDicComparePlans = RVDic.ComparePlans;
 
   const breadCrumbItems = [
     {
       id: 1,
-      title: RVDic.SettingsOfN.replace('[n]', RVDic.Workspace),
-      linkTo: '/workspaces',
+      title: RVDicWorkspaceSettings,
+      linkTo: WORKSPACES_PATH,
     },
     {
       id: 2,
-      title: 'طرحها',
+      title: RVDicWorkspacePlans,
+      linkTo: `${WORKSPACE_PLANS_PATH}/${WorkspaceID}`,
     },
   ];
 
-  //! configure sidebar content
-  useEffect(() => {
-    dispatch(
-      setSidebarContent({
-        current: SETT_WORKSPACE_CONTENT,
-        prev: MAIN_CONTENT,
-      })
-    );
-    return () => {
-      dispatch(
-        setSidebarContent({
-          prev: SETT_WORKSPACE_CONTENT,
-          current: MAIN_CONTENT,
-        })
-      );
-    };
-  }, []);
-
-  //! Build a template for every row of workspace users (react-table)
+  //! Build a template for every row of workspace plan descriptions (react-table)
   const data = React.useMemo(
     () => [
       {
         col1: (
           <>
             فضای قابل آپلود
-            <RiInformationLine className="info" />
+            <Tooltip
+              effect="solid"
+              place="top"
+              renderContent={() => 'لورم ایپسوم'}>
+              <RiInformationLine className="info" />
+            </Tooltip>
           </>
         ),
         col2: '15 گیگ',
@@ -81,18 +75,12 @@ const WorkspacePlansView = () => {
         col1: (
           <>
             امکان ایجاد دسترسی کاربر معتمد
-            <RiInformationLine className="info" />
-          </>
-        ),
-        col2: <RiCloseCircleLine className="disabled" />,
-        col3: <RiCloseCircleLine className="disabled" />,
-        col4: <RiCheckboxCircleLine className="enabled" />,
-      },
-      {
-        col1: (
-          <>
-            امکان ایجاد دسترسی کاربر معتمد
-            <RiInformationLine className="info" />
+            <Tooltip
+              effect="solid"
+              place="top"
+              renderContent={() => 'لورم ایپسوم'}>
+              <RiInformationLine className="info" />
+            </Tooltip>
           </>
         ),
         col2: <RiCloseCircleLine className="disabled" />,
@@ -149,60 +137,51 @@ const WorkspacePlansView = () => {
   );
 
   return (
-    <WelcomeLayout>
+    <WelcomeLayout noOutline>
       <div>
-        <WorkspaceSettingsHeaderContainer>
+        <Styled.WorkspacePlansHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
-            {'طرحها'}
+            {RVDicWorkspacePlans}
           </Heading>
-        </WorkspaceSettingsHeaderContainer>
+          <div className="paymentType">
+            <span className={isYearlyPrices && `active`}>
+              {RVDicAnnualPayment}
+            </span>
+            <ToggleButton onToggle={setIsYearlyPrices} value={isYearlyPrices} />
+            <span className={!isYearlyPrices && `active`}>
+              {RVDicMonthlyPayment}
+            </span>
+          </div>
+        </Styled.WorkspacePlansHeaderContainer>
 
-        <WorkspacePlansContainer>
+        <Styled.WorkspacePlansContainer wrapContent={isTabletOrMobile}>
           {new Array(3).fill(undefined).map(() => {
-            return (
-              <div className="planItem">
-                <div className="planContent rv-border-black rv-border-radius-half">
-                  <div className="planImage rv-border-black rv-border-radius-half">
-                    <UsersIcon />
-                  </div>
-
-                  <div className="planSlogan">برای هر کاربر در ماه</div>
-                  <div className="planTitle">حرفه ای</div>
-                  <div className="planSlogan">
-                    مناسب کسب‌وکارهای کوچک و متوسط
-                  </div>
-                  {new Array(3).fill(undefined).map(() => {
-                    return (
-                      <div className="planDescription">
-                        <AiOutlineLeftCircle />
-                        ده گیگابایت فضای ذخیره‌سازی
-                      </div>
-                    );
-                  })}
-                  <div className="planActionButton">
-                    <Button type="primary">انتحاب طرح</Button>
-                  </div>
-                </div>
-              </div>
-            );
+            return <WorkspacePlanItem isYearlyPrices={isYearlyPrices} />;
           })}
-        </WorkspacePlansContainer>
+        </Styled.WorkspacePlansContainer>
+        <Styled.WorkspacePlansActionContainer>
+          <Button
+            $circleEdges
+            style={{
+              paddingInline: '3rem',
+              marginBlockStart: '1rem',
+            }}
+            onClick={() => scrollIntoView('planDetails')}
+            type="primary-o">
+            {RVDicComparePlans}
+          </Button>
+        </Styled.WorkspacePlansActionContainer>
 
-        <Button
-          style={{ display: 'inline-block' }}
-          $circleEdges
-          type="primary-o">
-          مشاهده امکانات کامل
-        </Button>
         <Heading
+          id="planDetails"
           type="h3"
-          style={{ textAlign: 'center', marginBlockStart: '10rem' }}>
-          مقایسه امکانات طرح‌های کلیک‌مایند
+          style={{ textAlign: 'center', marginBlockStart: '8rem' }}>
+          {RVDicComparePlans}
         </Heading>
-        <WorkspacePlansTableContainer>
+        <Styled.WorkspacePlansTableContainer>
           <ResponsiveTable data={data} columns={columns} />
-        </WorkspacePlansTableContainer>
+        </Styled.WorkspacePlansTableContainer>
       </div>
     </WelcomeLayout>
   );

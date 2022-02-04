@@ -2,7 +2,6 @@ import Header from './ContentHeader';
 import * as Styled from 'views/Teams/Teams.styles';
 import DesktopWorkSpace from './DesktopSpace';
 import { useEffect, useState } from 'react';
-import useWindow from 'hooks/useWindowContext';
 import APIHandler from 'apiHelper/APIHandler';
 
 const apiHandler = new APIHandler('RVAPI', 'GetWorkspaces');

@@ -1,10 +1,10 @@
 import { createContext, useState, useEffect } from 'react';
 import * as Styled from './SearchView.styles';
-import SearchAside from './items/SearchAside/SearchAside';
-import SearchMain from './items/SearchMain/SearchMain';
+import SearchAside from './SearchAside/SearchAside';
+import SearchMain from './SearchMain/SearchMain';
 import { decodeBase64, encodeBase64, getURL } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
-import { search } from 'apiHelper/apiFunctions';
+import { search } from 'apiHelper/ApiHandlers/SearchAPI';
 
 export const searchContext = createContext({});
 
@@ -81,14 +81,15 @@ const SearchView = (props) => {
 
     //! If there is search text, set isSearching to true.
     setIsSearching(true);
+
     let timeout;
 
     if (timeout) {
       clearTimeout(timeout);
     }
 
-    timeout = setTimeout(() => {
-      search({
+    timeout = setTimeout(async () => {
+      const response = await search({
         searchText,
         itemTypes: selectedType.value,
         hasTitle: togglesValue.title,
@@ -98,17 +99,11 @@ const SearchView = (props) => {
         hasTags: togglesValue.keywords,
         typeIds: selectedTemps?.map((temp) => temp.NodeTypeId).join('|'),
         types: togglesValue.fileTypes.join('|'),
-      })
-        .then((response) => {
-          setSearchItems(response?.Items || []);
-        })
-        .catch((error) => {
-          console.log(error);
-          setSearchItems([]);
-        })
-        .finally(() => {
-          setIsSearching(false);
-        });
+      });
+
+      setIsSearching(false);
+
+      setSearchItems(response?.Items || []);
     }, 500);
 
     return () => {
@@ -141,7 +136,7 @@ const SearchView = (props) => {
       }}>
       <Styled.SearchViewContainer>
         <SearchMain />
-        {isAsideOpen && <SearchAside />}
+        <SearchAside />
       </Styled.SearchViewContainer>
     </searchContext.Provider>
   );

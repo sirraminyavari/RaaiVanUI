@@ -12,8 +12,8 @@ import {
   TEAM_SETTINGS_NAME,
 } from 'constant/constants';
 
-const ProfileNew = lazy(() =>
-  import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/ProfileNew')
+const Profile = lazy(() =>
+  import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/Profile')
 );
 // const ProfileOld = lazy(() =>
 //   import(/* webpackChunkName: "profile-main-view"*/ 'views/Profile/Profile')
@@ -44,7 +44,7 @@ const SidebarRoutes = [
     name: USER_NAME,
     exact: false,
     hasNavSide: true,
-    component: ProfileNew,
+    component: Profile,
   },
   {
     path: CLASSES_WITHID_PATH,
