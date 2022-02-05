@@ -361,6 +361,20 @@ export const CREATE_WORKSPACE = 'CreateWorkspace';
 export const RENAME_WORKSPACE = 'RenameWorkspace';
 
 /**
+ * @description OTP code for workspace removal process
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_WORKSPACE_TICKET = 'RemoveWorkspaceTicket';
+
+/**
+ * @description  Remove workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_WORKSPACE = 'RemoveWorkspace';
+
+/**
  * @description remove user from workspace
  * @mode API function
  * @class 'RVAPI'
