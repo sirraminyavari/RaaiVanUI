@@ -3,6 +3,7 @@ import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
   RENAME_WORKSPACE,
+  REMOVE_WORKSPACE_USER,
   RV_API,
   SELECT_APPLICATION,
 } from 'constant/apiConstants';
@@ -16,6 +17,19 @@ import { apiCallWrapper } from './apiCallHelpers';
 export const createWorkspace = ({ Name } = {}) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_WORKSPACE), {
     Name: encodeBase64(Name),
+  });
+};
+
+/**
+ * @description remove user from workspace
+ * @param WorkspaceID
+ * @param UserID
+ * @return {Promise<unknown>}
+ */
+export const removeWorkspaceUser = ({ UserID, WorkspaceID } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE_USER), {
+    WorkspaceID,
+    UserID,
   });
 };
 
