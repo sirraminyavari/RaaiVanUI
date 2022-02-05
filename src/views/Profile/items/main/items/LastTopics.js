@@ -4,7 +4,6 @@ import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import LastTopicTabs from './LastTopicsTabs';
-// import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
 import TopicItem from './TopicItem';
 import { API_Provider } from 'helpers/helpers';
 import { CN_API, GET_NODES, GET_NODE_INFO } from 'constant/apiConstants';

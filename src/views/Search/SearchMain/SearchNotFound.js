@@ -6,7 +6,7 @@ import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import useWindow from 'hooks/useWindowContext';
 
-const SearchNotFound = () => {
+const SearchNotFound = ({ label } = {}) => {
   const {
     RV_RevFloat,
     RVDic: { NoResultFound },
@@ -33,15 +33,17 @@ const SearchNotFound = () => {
   // TODO : uncomment FAQ whenever is ready.
 
   return (
-    <Styled.NotFoundContainer>
-      <LottieMaker animationJSON={SearchJson} width="10rem" />
-      <Styled.NotFoundText type="h2" style={{ marginBottom: '1rem' }}>
-        {NoResultFound}
-      </Styled.NotFoundText>
-      {/* {questions.map((question, index) => (
-        <Question key={index} question={question} />
-      ))} */}
-    </Styled.NotFoundContainer>
+    <div style={{ height: '100%', display: 'flex', paddingBottom: '2rem' }}>
+      <Styled.NotFoundContainer>
+        <LottieMaker animationJSON={SearchJson} width="10rem" />
+        <Styled.NotFoundText type="h2" style={{ marginBottom: '1rem' }}>
+          {label || NoResultFound}
+        </Styled.NotFoundText>
+        {/* {questions.map((question, index) => (
+          <Question key={index} question={question} />
+        ))} */}
+      </Styled.NotFoundContainer>
+    </div>
   );
 };
 

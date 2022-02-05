@@ -2,8 +2,6 @@ import styled, { css } from 'styled-components';
 import {
   FLEX_CCB,
   FLEX_CCC,
-  FLEX_CEC,
-  FLEX_CSC,
   FLEX_RCB,
   FLEX_RCE,
   FLEX_RCS,
@@ -18,7 +16,6 @@ import {
 import {
   BG_GRAY_LIGHT,
   BG_WHITE,
-  BO_DISTANT,
   BO_FREEZED,
   C_DISTANT,
   TBG_VERY_SOFT,
@@ -27,62 +24,12 @@ import {
   TC_WARM,
 } from 'constant/Colors';
 import {
-  CV_BLACK,
   CV_DISTANT,
-  CV_FREEZED,
   CV_RED,
   CV_WHITE,
   TCV_DEFAULT,
-  TCV_WARM,
 } from 'constant/CssVariables';
 import Heading from 'components/Heading/Heading';
-
-const { RV_RevFloat, RV_Float } = window;
-
-export const selectStyles = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: 'inherit',
-    borderColor: CV_FREEZED,
-    cursor: 'pointer',
-  }),
-  option: (styles, { isSelected }) => ({
-    ...styles,
-    backgroundColor: isSelected && CV_DISTANT,
-    width: '90%',
-    margin: '0.3rem auto',
-    borderRadius: '0.2rem',
-    color: CV_BLACK,
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: !isSelected && CV_FREEZED,
-    },
-    ':active': {
-      ...styles[':active'],
-      backgroundColor: isSelected && CV_DISTANT,
-    },
-    textTransform: 'capitalize',
-  }),
-  indicatorsContainer: (styles) => ({
-    ...styles,
-    svg: {
-      color: TCV_DEFAULT,
-    },
-  }),
-  indicatorSeparator: (styles) => ({
-    ...styles,
-    display: 'none',
-  }),
-  singleValue: (styles) => ({
-    ...styles,
-    backgroundColor: CV_DISTANT,
-    padding: '0.2rem',
-    fontSize: '0.85rem',
-    borderRadius: '0.2rem',
-    width: '85%',
-    textTransform: 'capitalize',
-  }),
-};
 
 export const SearchViewContainer = styled.div`
   user-select: none;
@@ -90,15 +37,6 @@ export const SearchViewContainer = styled.div`
   margin: 0 1.5rem;
   ${FLEX_RSB}
   gap: 1rem;
-`;
-
-export const SearchViewAside = styled.aside.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_QUARTER}`,
-})`
-  box-shadow: 1px 3px 15px #00000026;
-  width: 18rem;
-  max-width: 18rem;
-  min-width: 18rem;
 `;
 
 export const SearchViewMain = styled.main.attrs({
@@ -174,8 +112,7 @@ export const SearchTypeButtonsContainer = styled.div`
 
   .search-type-button {
     width: 5rem;
-    height: 2.8rem;
-    border-color: ${CV_DISTANT};
+    height: 2.7rem;
   }
 `;
 
@@ -261,27 +198,6 @@ export const AdvanceButtonsWrapper = styled.div`
   ${FLEX_RCE}
   gap: 1rem;
   width: 8rem;
-
-  .search-advanced-button {
-    ${FLEX_RCB}
-    width: 5rem;
-    height: 2rem;
-    border: none;
-    padding-${RV_Float}: 0.6rem;
-    border-radius: 1.5rem;
-    background: ${CV_WHITE};
-    color: ${CV_DISTANT};
-    ${({ isAsideOpen }) => isAsideOpen && openAsideCss}
-  }
-
-  .search-export-excel {
-    color: ${CV_DISTANT};
-    cursor: pointer;
-
-    :hover {
-      color: ${TCV_DEFAULT};
-    }
-  }
 `;
 
 export const NotFoundContainer = styled(Heading)`
@@ -322,120 +238,8 @@ export const SearchAnimationContainer = styled.div`
 `;
 
 export const SearchListContainer = styled.div`
-  height: calc(100% - 6rem);
+  height: calc(100% - 7rem);
   margin-top: 1.2rem;
   width: calc(100% + 1rem);
-`;
-
-export const SearchItemContainer = styled.div.attrs({
-  className: `${BO_RADIUS_HALF} ${BO_DISTANT}`,
-})`
-  height: 4.8rem;
-  width: calc(100% - 1rem);
-  margin: 0.6rem 0;
-  padding: 0.3rem;
-  ${FLEX_RCB}
-
-  :hover {
-    border-color: ${TCV_DEFAULT};
-  }
-`;
-
-export const SearchItemTypeWrapper = styled.div.attrs({
-  className: `${BO_DISTANT}`,
-})`
-  height: 100%;
-  min-width: 4.5rem;
-  border-top: none;
-  border-bottom: none;
-  border-${RV_Float}: none;
-  ${FLEX_CCC}
-  gap: 0.5rem;
-
-  .search-item-user-type{
-    cursor: pointer;
-    min-width: 3.5rem;
-    width: 3.5rem;
-    min-height: 3.5rem;
-  }
-`;
-
-export const SearchItemInfoWrapper = styled.div`
-  height: 100%;
-  width: calc(100% - 4rem);
-  padding: 0 1rem;
-  ${FLEX_RCB}
-  gap: 1rem;
-`;
-
-export const SearchItemDate = styled(Heading)``;
-
-export const SearchItemDescription = styled.div`
-  height: 85%;
-  max-width: 70%;
-  ${FLEX_CSC}
-  gap: 0.2rem;
-`;
-
-export const SearchItemMore = styled.div`
-  height: 85%;
-  width: 30%;
-  ${FLEX_CEC}
-  gap: 1rem;
-
-  .search-item-avatar {
-    cursor: pointer;
-    min-width: 3rem;
-    width: 3rem;
-    min-height: 3rem;
-  }
-`;
-
-export const SearchItemTitle = styled.div`
-  font-weight: 500 !important;
-  width: 100%;
-  min-height: 2rem;
-  font-size: 1rem;
-  color: ${TCV_WARM};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemSubTitle = styled(Heading)`
-  font-weight: 300 !important;
-  width: 100%;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemFileTitle = styled(Heading).attrs({
-  className: `${TBG_VERY_SOFT}`,
-})`
-  font-weight: 300 !important;
-  max-width: 100%;
-  text-align: ${RV_RevFloat};
-  color: ${TCV_DEFAULT} !important;
-  padding: 0.8rem;
-  border-radius: 1rem;
-  ${FLEX_CCC}
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const SearchItemFileSubTitle = styled(Heading)`
-  font-weight: 300 !important;
-`;
-
-export const SearchItemNodeSubTitle = styled(Heading).attrs({
-  className: `${TBG_VERY_SOFT}`,
-})`
-  font-weight: 300 !important;
-  color: ${TCV_DEFAULT} !important;
-  padding: 0.3rem 0.5rem;
-  border-radius: 1rem;
+  position: relative;
 `;

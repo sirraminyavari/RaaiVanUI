@@ -88,7 +88,7 @@ const FileCell = (props) => {
         acceptedFiles.reduce(async (previousPromise, accepted) => {
           await previousPromise;
           return new Promise((resolve, reject) => {
-            let uploadURL = response.slice(5);
+            let uploadURL = response;
             setIsUploading(true);
 
             //! Prepare upload data

@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import * as Styled from '../../TemplatesGallery.styles';
-// import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import Button from 'components/Buttons/Button';
 import {
   TemplatesGalleryContext,
@@ -94,7 +93,7 @@ const TemplateDescription = () => {
   };
 
   return (
-    <PerfectScrollbar className="template-description-scrollbar">
+    <ScrollBarProvider>
       <Styled.TemplateDescriptionWrapper>
         <Button
           type="negative-o"
@@ -138,7 +137,7 @@ const TemplateDescription = () => {
           </Styled.TemplateDescription>
         )}
       </Styled.TemplateDescriptionWrapper>
-    </PerfectScrollbar>
+    </ScrollBarProvider>
   );
 };
 

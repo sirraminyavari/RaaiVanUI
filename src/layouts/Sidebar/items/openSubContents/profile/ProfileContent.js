@@ -1,7 +1,7 @@
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
-import SettingIcon from 'components/Icons/SettingIcon/Setting';
+import ProfileIcon from 'components/Icons/ProfileIcon/ProfileIcon';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import {
   HOME_PATH,
@@ -66,7 +66,7 @@ const ProfileContent = () => {
     <>
       <Styled.SidebarTitle>
         <Styled.CenterIcon>
-          <SettingIcon />
+          <ProfileIcon size={20} />
           <Styled.TitleText>{RVDic.Profile}</Styled.TitleText>
         </Styled.CenterIcon>
         <Styled.SettingWrapper onClick={handleOnArrowClick}>

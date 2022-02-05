@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { TemplateSelectContext } from './TemplateSelect';
 import * as Styled from './TemplateSelect.styles';
-import PerfectScrollbar from 'components/ScrollBarProvider/ScrollBarProvider';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import TemplateListItem from './TemplateListItem';
 import { isEmpty } from 'helpers/helpers';
@@ -23,7 +23,7 @@ const TemplatesList = () => {
   return (
     <Styled.TemplatesListContainer>
       <Styled.TemplateListTitle>لیست دسته و کلاس‌ها</Styled.TemplateListTitle>
-      <PerfectScrollbar className="template-list-scrollbar">
+      <ScrollBarProvider>
         {isEmpty(nodeTree) ? (
           <LogoLoader />
         ) : (
@@ -34,7 +34,7 @@ const TemplatesList = () => {
             renderItem={handleRenderItem}
           />
         )}
-      </PerfectScrollbar>
+      </ScrollBarProvider>
     </Styled.TemplatesListContainer>
   );
 };

@@ -3,7 +3,6 @@ import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
 import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
-import { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
@@ -13,7 +12,6 @@ const getNodesAPI = new APIHandler('CNAPI', 'GetNodes');
 
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetNodeInfo');
 const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
-const { RVAPI } = window;
 
 /**
  *
@@ -56,9 +54,6 @@ const NodeList = (props) => {
   const { onboardingName } = useSelector((state) => ({
     onboardingName: state.onboarding.name,
   }));
-
-  const preExtraData = usePrevious(extraData);
-  const preIsBookMarked = usePrevious(isBookMarked);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {
@@ -105,7 +100,6 @@ const NodeList = (props) => {
       },
       (response) => {
         if (response.Nodes) {
-          console.log(response, '####### response ########');
           // setDataCount(response.TotalCount);
           if (!!onFetchCounts) {
             const { Count } = response || {};
