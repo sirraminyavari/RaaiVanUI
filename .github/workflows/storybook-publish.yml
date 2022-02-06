@@ -3,7 +3,7 @@ name: Publish Storybook on GitHub Pages
 on: 
   push:
     branches:
-      - dev-search-page
+      - dev
 
 jobs:
   build-and-deploy:
