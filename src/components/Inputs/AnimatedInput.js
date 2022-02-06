@@ -20,7 +20,7 @@ import {
  * @callback onBlur - Fires when the loses the focus.
  * @callback onChange - Fires when the user typing a new char.
  * @param {object} props - Other params that don't include above.
- * @param {Boolean||setShake(GlobalUtilities.random())} - if True, shakes component for 500ms, with this {setShake(GlobalUtilities.random())} will shake randomly
+ * @param {Boolean|number} - if True, shakes component for 500ms, with this {setShake(GlobalUtilities.random())} will shake randomly
  */
 const AnimatedInput = React.forwardRef(
   (
