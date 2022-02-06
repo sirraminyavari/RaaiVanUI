@@ -253,6 +253,13 @@ export const Create_User = 'CreateUser';
  */
 export const Check_User_Name = 'CheckUserName';
 
+/**
+ * @description Get workspace Users
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const GET_WORKSPACE_USERS = 'GetWorkspaceUsers';
+
 //* #################################
 //* ############ RVAPI ################
 //* #################################
@@ -352,6 +359,27 @@ export const CREATE_WORKSPACE = 'CreateWorkspace';
  * @class 'RVAPI'
  */
 export const RENAME_WORKSPACE = 'RenameWorkspace';
+
+/**
+ * @description OTP code for workspace removal process
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_WORKSPACE_TICKET = 'RemoveWorkspaceTicket';
+
+/**
+ * @description  Remove workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_WORKSPACE = 'RemoveWorkspace';
+
+/**
+ * @description remove user from workspace
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const REMOVE_WORKSPACE_USER = 'RemoveUserFromWorkspace';
 
 /**
  * @description 'SetVariable'

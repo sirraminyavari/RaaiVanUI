@@ -16,9 +16,6 @@ import Heading from 'components/Heading/Heading';
 import { CLASSES_PATH } from 'constant/constants';
 import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNApi';
 
-/**
- * @description
- */
 const TemplateDescription = () => {
   const {
     currentTemplate,
@@ -34,7 +31,6 @@ const TemplateDescription = () => {
    * Make a toast for template activation status.
    * @param {string} message -Toast message
    * @param {('info' | 'error')} type -Toast type
-   * @returns
    */
   const makeToast = (message, type) => {
     return InfoToast({
