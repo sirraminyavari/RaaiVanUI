@@ -17,6 +17,9 @@
 # debug.log
 debug.log
 
+# documentation
+/docs/
+
 # misc
 .DS_Store
 .env.local

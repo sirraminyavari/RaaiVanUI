@@ -1,7 +1,6 @@
 /**
  * Simple list viewer with the 'fetchMore' feature.
  */
-import Button from 'components/Buttons/Button';
 import EmptyState from 'components/EmptyState/EmptyState';
 import Heading from 'components/Heading/Heading';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
@@ -18,7 +17,6 @@ const { RVDic } = window;
  * @param {number} pageSize - defines to how many items should fetch in every call.
  * @param {Boolean} infiniteLoop - If true, at the end of the list, it will automatically fetch more items.
  * @param {Boolean} extraData - A trigger for waking up the list to refresh itself by fetching the list.
- * @returns
  */
 
 const SimpleListViewer = ({
