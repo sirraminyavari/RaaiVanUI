@@ -31,7 +31,7 @@
     "object-hash": "^2.2.0",
     "persian-rex": "^2.3.3",
     "prop-types": "^15.7.2",
-    "react": "17.0.1",
+    "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-dnd": "^14.0.2",
