@@ -19,6 +19,7 @@ debug.log
 
 # documentation
 /docs
+/storybook-static
 
 # misc
 .DS_Store
