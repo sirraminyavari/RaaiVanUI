@@ -20,7 +20,7 @@ jobs:
           npm run build-storybook
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           ssh-key: ${{ secrets.STORYBOOK_DEPLOY_KEY }}
           repository-name: sirraminyavari/RaaiVanUI-Storybook
