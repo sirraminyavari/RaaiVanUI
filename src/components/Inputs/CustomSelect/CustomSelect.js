@@ -30,6 +30,7 @@ const CustomSelect = React.forwardRef((props = {}, ref) => {
         components={{
           DropdownIndicator: CustomSelectIndicator,
           Control: DefaultSelectControl,
+          ...components,
         }}
         {...otherProps}
       />

@@ -8,7 +8,7 @@ import PencilIcon from 'components/Icons/EditIcons/Pencil';
 const TemplateUploadIcon = () => {
   const { RV_RTL } = useWindow();
   return (
-    <>
+    <Container>
       <Icon>
         <ImageIcon size={54} />
 
@@ -16,9 +16,14 @@ const TemplateUploadIcon = () => {
           <PencilIcon color={CV_WHITE} size={18} />
         </AddButton>
       </Icon>
-    </>
+    </Container>
   );
 };
+const Container = styled.div`
+  height: 8rem;
+  width: 8rem;
+`;
+
 const Icon = styled.div`
   position: relative;
   ${FLEX_CCC};

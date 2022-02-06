@@ -4,6 +4,11 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import TemplateUploadIcon from './items/TemplateUploadIcon';
+import TemplateGeneralSettingSideForm from './items/TemplateGeneralSettingSideForm';
+import DeleteTemplateButton from './items/DeleteTemplateButton';
+import { MainFormContainer } from './TemplateGeneralSettingsStyles';
+import TemplateTitleForm from './items/TemplateTitleForm';
+import ConfidentialitySetting from './items/ConfidentialitySetting';
 const TemplateGeneralSettings = () => {
   const { id, title } = useParams();
   const { RVDic } = useWindowContext();
@@ -34,10 +39,20 @@ const TemplateGeneralSettings = () => {
     <Styled.Container>
       <Styled.MainForm>
         <Breadcrumb items={breadItems} />
-        <TemplateUploadIcon />
+
+        <MainFormContainer>
+          <TemplateUploadIcon />
+          <TemplateTitleForm name={decodeBase64(title)} />
+        </MainFormContainer>
+
+        <ConfidentialitySetting />
       </Styled.MainForm>
+
       <Styled.SideForm>
         <Styled.SideFormHeader>{'تنظیمات عمومی'}</Styled.SideFormHeader>
+        <TemplateGeneralSettingSideForm />
+
+        <DeleteTemplateButton />
       </Styled.SideForm>
     </Styled.Container>
   );
