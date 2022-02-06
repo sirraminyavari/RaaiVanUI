@@ -22,9 +22,9 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
-          ssh-key: ${{ secrets.STORYBOOK_DEPLOY_KEY }}
-          repository-name: sirraminyavari/RaaiVanUI-Storybook
-          branch: main # The branch the action should deploy to.
-          folder: storybook-static # The folder that the build-storybook script generates files.
-          clean: true # Automatically remove deleted files from the deploy branch
-          target-folder: docs # The folder that we serve our Storybook files from
+          SSH: ${{ secrets.STORYBOOK_DEPLOY_KEY }}
+          REPOSITORY_NAME: sirraminyavari/RaaiVanUI-Storybook
+          BRANCH: main # The branch the action should deploy to.
+          FOLDER: storybook-static # The folder that the build-storybook script generates files.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+          TARGET_FOLDER: docs # The folder that we serve our Storybook files from
