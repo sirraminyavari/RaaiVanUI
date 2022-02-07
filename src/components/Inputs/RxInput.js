@@ -4,8 +4,8 @@ import { tap, distinctUntilChanged } from 'rxjs/operators';
 import { createSubject } from 'helpers/helpers';
 
 const RxInput = React.forwardRef(
-  ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
-    const [inputValue, setInputValue] = useState(defaultValue);
+  ({ value, onChange, delayTime = 0, ...props }, forwardedRef) => {
+    const [inputValue, setInputValue] = useState(value);
     const observableRef = useRef(null);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const RxInput = React.forwardRef(
     }, []);
 
     const handleInputChange = (e) => {
-      setInputValue(e);
+      setInputValue(e?.target?.value);
       observableRef.current.next(e);
     };
 
