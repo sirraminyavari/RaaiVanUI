@@ -10,7 +10,7 @@ import LinkIcon from 'components/Icons/LinkIcon/LinkIcon';
 import InvitationLink from './items/invitation/InvitaionLink';
 import SendInvitation from './items/invitation/SendInvitation';
 
-const UsersInvitation = ({ onClose, ...props }) => {
+const UsersInvitation = ({ onClose }) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const [getLink, setGetLink] = useState(true);
 

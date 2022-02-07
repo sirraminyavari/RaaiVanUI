@@ -44,6 +44,10 @@ const Users = (props) => {
     setUsers(_users);
   };
 
+  /**
+   * @description load list of users and invited users
+   * @returns {Promise<void>}
+   */
   const loadData = async () => {
     const _users = await getUsers();
     const _invitedUsers = await getUserInvitations(ApplicationID);
@@ -143,5 +147,4 @@ const Users = (props) => {
     </Styled.UserManagementContainer>
   );
 };
-
 export default Users;
