@@ -92,7 +92,7 @@ const Users = (props) => {
               <SearchInput
                 defaultValue={searchText}
                 placeholder={RVDic?.Search}
-                onChange={(e) => setSearchText(e)}
+                onChange={(e) => setSearchText(e?.target?.value)}
                 delayTime={1000}
               />
 

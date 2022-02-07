@@ -21,6 +21,7 @@ import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import groupImg from 'assets/images/groups.png';
 import PeopleIcon from 'components/Icons/PeopleIcon/PeopleIcon';
 import SearchInput from 'components/Inputs/SearchInput';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 const UserGroups = () => {
   const { RVDic, RV_RTL } = useWindow();
@@ -70,9 +71,16 @@ const UserGroups = () => {
    * @returns {Promise<void>}
    */
   const handleModalDelete = async (nodeId) => {
-    await removeNode(nodeId);
-    const groups = await getGroupsAll();
-    setGroups(groups);
+    const { ErrorText } = await removeNode(nodeId);
+    if (ErrorText) {
+      return InfoToast({
+        type: 'error',
+        message: RVDic.MSG[ErrorText] || ErrorText,
+      });
+    } else {
+      const groups = await getGroupsAll();
+      setGroups(groups);
+    }
   };
 
   const groupItems = useMemo(
