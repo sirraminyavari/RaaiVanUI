@@ -90,7 +90,7 @@ const Users = (props) => {
 
             <Styled.TopBar>
               <SearchInput
-                defaultValue={searchText}
+                value={searchText}
                 placeholder={RVDic?.Search}
                 onChange={(e) => setSearchText(e?.target?.value)}
                 delayTime={1000}

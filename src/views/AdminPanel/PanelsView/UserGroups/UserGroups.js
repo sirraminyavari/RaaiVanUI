@@ -126,11 +126,6 @@ const UserGroups = () => {
     },
   ];
 
-  const search = (e) => {
-    console.log(e);
-    // setSearchText(e?.target?.value)
-  };
-
   return (
     <Styled.UserGroupsContainer rtl={RV_RTL}>
       <Styled.UserGroupsContent>
@@ -142,7 +137,7 @@ const UserGroups = () => {
           <SearchInput
             placeholder={RVDic.Search}
             value={searchText}
-            onChange={(e) => search(e)}
+            onChange={(e) => setSearchText(e?.target?.value)}
           />
 
           {!loading ? (
