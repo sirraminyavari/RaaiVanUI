@@ -1,4 +1,4 @@
-import Lottie from 'react-lottie';
+import { Player } from '@lottiefiles/react-lottie-player';
 import PropTypes from 'prop-types';
 
 /**
@@ -12,24 +12,26 @@ import PropTypes from 'prop-types';
  */
 
 /**
- *  @description Renders a LottieMaker component.
+ * @description Renders a LottieMaker component.
  * @component
  * @param {PropType} props -Props that pass to LottieMaker.
  */
-const LottieMaker = (props) => {
-  const { animationJSON, loop, autoplay, height, width, ...rest } = props;
-
-  const defaultOptions = {
-    loop: !!loop,
-    autoplay: !!autoplay,
-    animationData: animationJSON,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
-
+const LottieMaker = ({
+  animationJSON,
+  loop,
+  autoplay,
+  height,
+  width,
+  ...rest
+} = {}) => {
   return (
-    <Lottie options={defaultOptions} height={height} width={width} {...rest} />
+    <Player
+      loop={!!loop}
+      autoplay={!!autoplay}
+      src={animationJSON}
+      style={{ width: width, height: height || 'auto' }}
+      {...rest}
+    />
   );
 };
 

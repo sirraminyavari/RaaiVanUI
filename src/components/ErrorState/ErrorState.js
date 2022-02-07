@@ -1,24 +1,17 @@
-import Lottie from 'react-lottie';
+import LottieMaker from 'components/LottieMaker/LottieMaker';
 
-const EmptyState = () => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: require('./error.json'),
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
+const ErrorState = () => {
+  const data = require('./error.json');
 
   return (
-    <Lottie
-      isStopped={false}
-      isPaused={false}
-      options={defaultOptions}
-      height={'20rem'}
-      width={'20rem'}
+    <LottieMaker
+      animationJSON={data}
+      loop={true}
+      autoplay={true}
+      width="20rem"
+      height="20rem"
     />
   );
 };
 
-export default EmptyState;
+export default ErrorState;
