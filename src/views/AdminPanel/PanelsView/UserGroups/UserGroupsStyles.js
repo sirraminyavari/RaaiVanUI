@@ -64,6 +64,7 @@ export const GroupsCardContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 1.5rem;
   grid-row-gap: 1.5rem;
+  margin-top: 3rem;
 
   @media screen and (max-width: 1240px) {
     grid-template-columns: 1fr;
@@ -74,7 +75,7 @@ export const DashedBox = styled.div`
   padding: 1.5rem;
   width: 100%;
   height: 12rem;
-  border: 1px ${CV_DISTANT} dashed;
+  border: 2px ${CV_DISTANT} dashed;
   color: ${CV_DISTANT};
   border-radius: 0.8rem;
   transition: all 0.15s ease-out;

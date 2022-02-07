@@ -1,7 +1,6 @@
 import * as Styled from './UserGroupsStyles';
-import useWindowContext from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
-import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { useEffect, useMemo, useState } from 'react';
 import {
   addNode,
@@ -20,16 +19,11 @@ import UserGroupMembers from './items/UserGroupMembers';
 import UserGroupUpsertModal from './items/UserGroupUpsertModal';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import groupImg from 'assets/images/groups.png';
-import { catchError, first, from, of, switchMap, tap } from 'rxjs';
 import PeopleIcon from 'components/Icons/PeopleIcon/PeopleIcon';
-
-const modifyNodeName$ = (name, id) => from(modifyNodeName(name, id));
-const saveMember$ = (id, userIds) => from(saveMembers(id, userIds));
-const addNode$ = (name, nodeTypeId) => from(addNode(name, nodeTypeId));
-const removeNode$ = (nodeId) => from(removeNode(nodeId));
+import SearchInput from 'components/Inputs/SearchInput';
 
 const UserGroups = () => {
-  const { RVDic, RV_RTL } = useWindowContext();
+  const { RVDic, RV_RTL } = useWindow();
   const [groups, setGroups] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,87 +31,48 @@ const UserGroups = () => {
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    getGroupsAll()
-      .then((x) => {
-        setNodeTypeID(x[0]?.NodeTypeID);
-        setGroups(x);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    (async () => {
+      const groups = await getGroupsAll();
+      setNodeTypeID(groups[0]?.NodeTypeID);
+      setGroups(groups);
+      setLoading(false);
 
-    getUsers('', true)
-      .then((res) => {
-        setAllUsers(res);
-      })
-      .catch((err) => console.log(err));
+      const users = await getUsers('', true);
+      setAllUsers(users);
+    })();
   }, []);
 
-  const handleModalConfirm = (name, users, nodeId) => {
+  /**
+   * @description modify groups on modal confirm
+   * @param name
+   * @param users
+   * @param nodeId
+   * @returns {Promise<void>}
+   */
+  const handleModalConfirm = async (name, users, nodeId) => {
     const userIds = users.map((x) => x?.UserID);
     if (nodeId) {
-      modifyNodeName$(name, nodeId)
-        .pipe(
-          first(),
-          switchMap(() =>
-            saveMember$(nodeId, userIds).pipe(
-              switchMap(() =>
-                from(getGroupsAll()).pipe(
-                  tap((x) => {
-                    setGroups(x);
-                  })
-                )
-              )
-            )
-          ),
-          catchError((err) => {
-            console.log(err);
-            return of(err);
-          })
-        )
-        .subscribe();
+      await modifyNodeName(name, nodeId);
+      await saveMembers(nodeId, userIds);
+      const groups = await getGroupsAll();
+      setGroups(groups);
     } else {
-      addNode$(name, NodeTypeID)
-        .pipe(
-          first(),
-          switchMap((x) =>
-            saveMember$(x?.Node?.NodeID, userIds).pipe(
-              switchMap(() =>
-                from(getGroupsAll()).pipe(
-                  tap((x) => {
-                    setGroups(x);
-                  })
-                )
-              )
-            )
-          ),
-          catchError((err) => {
-            console.log(err);
-            return of(err);
-          })
-        )
-        .subscribe();
+      const node = await addNode(name, NodeTypeID);
+      await saveMembers(node?.Node?.NodeID, userIds);
+      const groups = await getGroupsAll();
+      setGroups(groups);
     }
   };
 
-  const handleModalDelete = (nodeId) => {
-    removeNode$(nodeId)
-      .pipe(
-        first(),
-        switchMap(() =>
-          from(getGroupsAll()).pipe(
-            tap((x) => {
-              setGroups(x);
-            })
-          )
-        ),
-        catchError((err) => {
-          console.log(err);
-          return of(err);
-        })
-      )
-      .subscribe();
+  /**
+   * @description delete group by nodeId
+   * @param nodeId
+   * @returns {Promise<void>}
+   */
+  const handleModalDelete = async (nodeId) => {
+    await removeNode(nodeId);
+    const groups = await getGroupsAll();
+    setGroups(groups);
   };
 
   const groupItems = useMemo(
@@ -163,6 +118,11 @@ const UserGroups = () => {
     },
   ];
 
+  const search = (e) => {
+    console.log(e);
+    // setSearchText(e?.target?.value)
+  };
+
   return (
     <Styled.UserGroupsContainer rtl={RV_RTL}>
       <Styled.UserGroupsContent>
@@ -170,14 +130,12 @@ const UserGroups = () => {
 
         <Styled.GroupsContainer>
           <Styled.HeadingWrapper>{RVDic.Groups}</Styled.HeadingWrapper>
-          <Styled.InputContainer>
-            <Styled.Input
-              placeholder={RVDic.Search}
-              value={searchText}
-              onChange={(e) => setSearchText(e?.target?.value)}
-            />
-            <SearchIcon size={30} />
-          </Styled.InputContainer>
+
+          <SearchInput
+            placeholder={RVDic.Search}
+            value={searchText}
+            onChange={(e) => search(e)}
+          />
 
           {!loading ? (
             <Styled.GroupsCardContainer>
