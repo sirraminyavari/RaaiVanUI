@@ -15,11 +15,11 @@ import {
 } from './ItemProducerHandler.style';
 /**
  *
- * @param {{value:String,id:String,...props}} autoSuggestItem - An item that passed here by the 'autosuggest' component .
+ * @param {object} autoSuggestItem - An item that passed here by the 'autosuggest' component .
  * @param {'text'|'autosuggest'} type - type of item producer
- * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
+ * @param {function} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
- * @param {[{}]} savedData - An array of items that saved in past.
+ * @param {object[]} savedData - An array of items that saved in past.
  * @param {number} resetMe - By changing the value, items will reset.
  */
 const ItemProducerHandler = ({
@@ -109,7 +109,7 @@ const ItemProducerHandler = ({
   }, [newIndex]);
   /**
    * Updates value of items in 'text' mode.
-   * @param {Input event} event - user input
+   * @param {event} event - user input
    * @param {Number} index - index of the item that user is inputting
    */
   const onChange = (event, index) => {
@@ -144,7 +144,7 @@ const ItemProducerHandler = ({
 
   /**
    * Reorders the changes to the items applied by 'Draggable'.
-   * @param {[{id:String,value:String,...props}]} list
+   * @param {object[]} list
    * @param {Number} startIndex - index of the item on the start of dragging
    * @param {Number} endIndex - index of the item on the end of dragging
    * @returns reorderd items

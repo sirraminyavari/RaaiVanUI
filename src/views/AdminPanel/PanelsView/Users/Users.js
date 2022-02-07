@@ -58,7 +58,7 @@ const Users = (props) => {
 
   /**
    * @description items array to feed breadcrumbs component
-   * @type {[{title: string}, {title: string}]}
+   * @type {object[]}
    */
   const breadCrumbItems = [
     {

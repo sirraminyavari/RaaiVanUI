@@ -11,9 +11,9 @@ import ItemProducerHandler from './ItemProducerHandler';
  * @param {function} fetchItems - A callback function that will fire on input change and fetch suggestion from server.
  * @param {any} props - other props applied to 'Container'
  * @param {'text'|'autosuggest'} type - type of item producer
- * @param {Callback([{value:String,id:String,...props}])} onItems - returns array of produced items
+ * @param {function} onItems - returns array of produced items
  * @param {Boolean} isDragDisabled - If true, draggable will disable
- * @param {[{}]} savedData - An array of items that saved in past.
+ * @param {object[]} savedData - An array of items that saved in past.
  * @param {number} resetMe - by changing the value, items will reset.
 
  */

@@ -9,7 +9,6 @@ import SubjectItemMobileView from './SubjectItemMobileView';
 /**
  * According to screen dimension returns the suitable component.
  * @param {any} -  the all component props
- * @returns
  */
 const SubjectItem = ({ ...props }) => {
   return (

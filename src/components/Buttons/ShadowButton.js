@@ -5,7 +5,6 @@ import Button from './Button';
 /**
  * @description a customized version of Button component that has a shadow in active mode
  * @param {boolean} active determines if the button is active
- * @returns
  */
 const ShadowButton = ({ active, ...props } = {}) => {
   return <StyledButton active={active} {...props} />;

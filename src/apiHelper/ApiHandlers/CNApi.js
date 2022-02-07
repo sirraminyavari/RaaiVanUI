@@ -11,7 +11,6 @@ import { apiCallWrapper } from './apiCallHelpers';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
- * @returns
  */
 export const getNodeTypes = ({
   NodeTypeIDs,

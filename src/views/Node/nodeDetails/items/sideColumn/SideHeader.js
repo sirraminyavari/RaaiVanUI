@@ -24,7 +24,6 @@ const SideHeader = () => {
    * Make an info toast.
    * @param {string} message -Toast message
    * @param {('info' | 'error')} type -Toast type
-   * @returns
    */
   const makeInfoToast = (message, type) => {
     return InfoToast({

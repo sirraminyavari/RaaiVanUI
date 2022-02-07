@@ -17,7 +17,7 @@ export const datePickerTypes = {
 /**
  * Capitalize sentence.
  * @param {String} sentence - The sentence.
- * @returns  Capitalized sentence.
+ * @returns {String}  Capitalized sentence.
  */
 export const capitalizeWordInSentence = (sentence) => {
   return sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
@@ -28,7 +28,7 @@ export const capitalizeWordInSentence = (sentence) => {
 /**
  * Check for digit number.
  * @param {*} digit
- * @returns Two digit number.
+ * @returns {number} Two digit number.
  */
 export const checkDigit = (digit) => {
   return digit < 10 ? `0${digit}` : digit;
@@ -39,7 +39,7 @@ export const checkDigit = (digit) => {
  * @param {String} val
  * @param {String} max
  * @param {String} type
- * @returns Given value.
+ * @returns {number} Given value.
  */
 export const limit = (val, max, type) => {
   if (val.length === 1 && val[0] > max[0]) {
@@ -81,7 +81,7 @@ export const limit = (val, max, type) => {
 /**
  * Format raw new Date().
  * @param {Date} date
- * @returns string date like "yyyy/mm/dd"
+ * @returns {string} string date like "yyyy/mm/dd"
  */
 export const formatRawDate = (date) => {
   let day = date.getDate();
@@ -100,7 +100,7 @@ export const formatRawDate = (date) => {
 /**
  * Calculates the last nth days.
  * @param {number} span
- * @returns An array of last nth days.
+ * @returns {string[]} An array of last nth days.
  */
 export const LastNthDays = (span) => {
   const result = [];
@@ -116,7 +116,7 @@ export const LastNthDays = (span) => {
 /**
  * @param {String} date
  * @param {('jalali' | '‫‪gregorian‬‬' | 'lunar')} type
- * @returns max or min date for date picker
+ * @returns {date} max or min date for date picker
  */
 export const getMinOrMaxDate = (date, type) => {
   if (type === datePickerTypes.jalali) {
@@ -139,7 +139,7 @@ export const getMinOrMaxDate = (date, type) => {
 /**
  * Get datepicker locale prop based on "type" passed to it.
  * @param {('jalali' | '‫‪gregorian‬‬' | 'lunar')} type
- * @returns Date picker locale.
+ * @returns {string} Date picker locale.
  */
 export const getLocale = (type) => {
   switch (type) {
@@ -158,7 +158,7 @@ export const getLocale = (type) => {
  * @param {String} val
  * @param {('jalali' | '‫‪gregorian‬‬' | 'lunar')} type -Date picker type
  * @param {Boolean} range
- * @returns
+ * @returns {string}
  */
 export const customInputFormat = (val, type, range) => {
   val = (val.match(/\d/g) || ['']).join('');

@@ -10,7 +10,6 @@ import { FaCheckCircle } from 'react-icons/fa';
  * @description - Renders circled check Icon
  * @component
  * @param {boolean} [props.outline=false] - switch between Outline or Filled styles
- * @returns
  */
 const CheckCircleIcon = ({ outline, ...props }) => {
   const CheckIcon = outline ? RiCheckboxCircleLine : FaCheckCircle;

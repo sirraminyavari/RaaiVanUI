@@ -73,7 +73,6 @@ const formElements = new APIHandler('FGAPI', 'GetFormElements');
  * @callback - By clicking the AdvancedSearch button will fire.
  * @param {String} - Id for nodeType.
  * @callback onFormElements - By fetching it,Passes formElement to up
- * @returns
  */
 const FilterBar = ({
   nodeType,
@@ -157,7 +156,6 @@ const FilterBar = ({
 
   /**
    * Gets user access for creating document.
-   * @returns
    */
   const getCreationAccess = () =>
     checkNodeCreationAccess?.fetch({ NodeTypeID: nodeTypeId }, (dt) => {

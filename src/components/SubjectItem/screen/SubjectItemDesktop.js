@@ -3,7 +3,7 @@
  */
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SubjectCheckBox from '../items/SubjectCheckBox';
 import SubjectClassName from '../items/SubjectClassName';

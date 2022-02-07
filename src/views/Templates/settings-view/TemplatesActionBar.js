@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import * as Styled from './TemplatesSettings.styles';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
