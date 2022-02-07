@@ -33,8 +33,8 @@ const RxInput = React.forwardRef(
     }, []);
 
     const handleInputChange = (e) => {
-      setInputValue(e?.target?.value);
-      observableRef.current.next(e?.target?.value);
+      setInputValue(e);
+      observableRef.current.next(e);
     };
 
     return (

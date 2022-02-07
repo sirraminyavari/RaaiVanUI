@@ -1,21 +1,17 @@
-import Lottie from 'react-lottie';
+import LottieMaker from 'components/LottieMaker/LottieMaker';
 
 const LoadParagraph = () => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: require('./load.json'),
-  };
+  const data = require('./load.json');
 
   return (
     <div
       style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <Lottie
-        isStopped={false}
-        isPaused={false}
-        options={defaultOptions}
-        height={'10rem'}
-        width={'10rem'}
+      <LottieMaker
+        animationJSON={data}
+        loop={true}
+        autoplay={true}
+        width="10rem"
+        height="10rem"
       />
     </div>
   );
