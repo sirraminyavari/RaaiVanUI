@@ -15,6 +15,19 @@ In the project directory, you can run:
 
 ### `npm install`
 This command will install dependencies.
+
+If you have problems with dependency resolution, you can use the command below:
+
+```
+npm install --legacy-peer-deps
+```
+
+And if you want to build the project, run the below command before running 'npm run-script build'
+
+```
+npm dedupe --legacy-peer-deps
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\
