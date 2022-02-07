@@ -3,6 +3,11 @@ import { debounceTime, Subject } from 'rxjs';
 import { tap, distinctUntilChanged } from 'rxjs/operators';
 import { createSubject } from 'helpers/helpers';
 
+/**
+ * @description simple input with delay time extension
+ * @delayTime time to delay onChange event in millisecond, the default value is 0
+ * @type {React.ForwardRefExoticComponent<>}
+ */
 const RxInput = React.forwardRef(
   ({ value, onChange, delayTime = 0, ...props }, forwardedRef) => {
     const [inputValue, setInputValue] = useState(value);
