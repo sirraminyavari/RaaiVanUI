@@ -50,7 +50,7 @@
     "react-redux": "^7.2.2",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.0",
+    "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
     "react-string-replace": "^0.4.4",
     "react-table": "^7.6.3",
@@ -119,6 +119,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.4.18",
+    "@storybook/addon-docs": "^6.4.18",
     "@storybook/addon-essentials": "^6.4.18",
     "@storybook/addon-links": "^6.4.18",
     "@storybook/node-logger": "^6.4.18",
