@@ -8,11 +8,12 @@ on:
 jobs:
   code-structure-test:
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [ubuntu-latest]
         node: [16]
+    env:
+      CI: false
 
     steps:
       - name: Checkout code
