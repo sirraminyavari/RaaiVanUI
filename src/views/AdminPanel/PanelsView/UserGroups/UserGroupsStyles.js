@@ -15,15 +15,18 @@ export const UserGroupsContainer = styled.div`
   padding: 1rem;
   direction: ${(props) => (props?.rtl ? 'rtl' : 'ltr')};
 `;
+UserGroupsContainer.displayName = 'UserGroupsContainer';
 
 export const UserGroupsContent = styled.div`
   ${ViewContentCard}
   ${FLEX_RSB}
 `;
+UserGroupsContent.displayName = 'UserGroupsContent';
 
 export const GroupsContainer = styled.div`
   flex-grow: 1.2;
 `;
+GroupsContainer.displayName = 'GroupsContainer';
 
 export const GroupsExcerpt = styled.div`
   flex-grow: 0.5;
@@ -32,12 +35,15 @@ export const GroupsExcerpt = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
+GroupsExcerpt.displayName = 'GroupsExcerpt';
 
 export const HeadingWrapper = styled(Heading).attrs({
   type: 'H1',
 })`
   font-size: 1.375rem;
+  margin-bottom: 2.5rem;
 `;
+HeadingWrapper.displayName = 'HeadingWrapper';
 
 export const InputContainer = styled.div`
   ${FLEX_RCB};
@@ -51,6 +57,7 @@ export const InputContainer = styled.div`
   margin: 2.5rem 0 3rem 0;
   padding: 0 1rem;
 `;
+InputContainer.displayName = 'InputContainer';
 
 export const Input = styled(RxInput)`
   width: 100%;
@@ -58,6 +65,7 @@ export const Input = styled(RxInput)`
   border: none;
   color: ${CV_DISTANT};
 `;
+Input.displayName = 'Input';
 
 export const GroupsCardContainer = styled.div`
   display: grid;
@@ -66,16 +74,37 @@ export const GroupsCardContainer = styled.div`
   grid-row-gap: 1.5rem;
   margin-top: 3rem;
 
+  .transition-enter {
+    opacity: 0;
+    transform: translate(0, 0.5rem);
+  }
+
+  .transition-enter-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: all ${({ duration }) => duration}ms ease-in;
+  }
+
+  .transition-exit {
+    opacity: 1;
+  }
+
+  .transition-exit-active {
+    opacity: 0;
+    transition: all ${({ duration }) => duration}ms ease-in;
+  }
+
   @media screen and (max-width: 1240px) {
     grid-template-columns: 1fr;
   }
 `;
+GroupsCardContainer.displayName = 'GroupsCardContainer';
 
 export const DashedBox = styled.div`
   padding: 1.5rem;
   width: 100%;
   height: 12rem;
-  border: 2px ${CV_DISTANT} dashed;
+  border: 3px ${CV_DISTANT} dashed;
   color: ${CV_DISTANT};
   border-radius: 0.8rem;
   transition: all 0.15s ease-out;
@@ -95,6 +124,7 @@ export const DashedBox = styled.div`
     color: ${TCV_DEFAULT};
   }
 `;
+DashedBox.displayName = 'DashedBox';
 
 export const GroupItem = styled.div`
   padding: 1.5rem;
@@ -105,12 +135,14 @@ export const GroupItem = styled.div`
   position: relative;
   background-color: ${CV_WHITE};
 `;
+GroupItem.displayName = 'GroupItem';
 
 export const GroupItemTitle = styled.div`
   font-weight: 500;
   font-size: 1.2rem;
   color: ${CV_GRAY_DARK};
 `;
+GroupItemTitle.displayName = 'GroupItemTitle';
 
 export const GroupItemActionBar = styled.div`
   position: absolute;
@@ -122,11 +154,13 @@ export const GroupItemActionBar = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+GroupItemActionBar.displayName = 'GroupItemActionBar';
 
 export const ExcerptImage = styled.img`
   max-width: 23rem;
   width: 100%;
 `;
+ExcerptImage.displayName = 'ExcerptImage';
 
 export const GroupDescriptionTitle = styled.div`
   text-align: center;
@@ -135,18 +169,21 @@ export const GroupDescriptionTitle = styled.div`
   font-size: 1rem;
   font-weight: 500;
 `;
+GroupDescriptionTitle.displayName = 'GroupDescriptionTitle';
 
 export const GroupDescription = styled.div`
   max-width: 18rem;
   text-align: center;
   color: ${CV_GRAY};
 `;
+GroupDescription.displayName = 'GroupDescription';
 
 export const GroupMemberContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   height: 2.6rem;
 `;
+GroupMemberContainer.displayName = 'GroupMemberContainer';
 
 export const GroupMemberItem = styled.img`
   width: 2.5rem;
@@ -156,6 +193,7 @@ export const GroupMemberItem = styled.img`
   ${({ index, rtl }) =>
     index !== 0 && `margin-${rtl ? 'left' : 'right'}: -${0.8}rem`}
 `;
+GroupMemberItem.displayName = 'GroupMemberItem';
 
 export const GroupIconContainer = styled.div`
   position: absolute;
@@ -163,3 +201,4 @@ export const GroupIconContainer = styled.div`
   ${({ rtl }) => (rtl ? 'left' : 'right')}: 0.5rem;
   color: ${CV_GRAY_LIGHT};
 `;
+GroupIconContainer.displayName = 'GroupIconContainer';
