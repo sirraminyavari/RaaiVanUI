@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
 import { TCV_DEFAULT } from 'constant/CssVariables';

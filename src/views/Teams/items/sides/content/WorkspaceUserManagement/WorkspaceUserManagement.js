@@ -1,4 +1,3 @@
-// import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindow from 'hooks/useWindowContext';
@@ -6,25 +5,24 @@ import Heading from 'components/Heading/Heading';
 import SearchInput from 'components/Inputs/SearchInput';
 import { decodeBase64 } from 'helpers/helpers';
 import Avatar from 'components/Avatar/Avatar';
-import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
-import Badge from 'components/Badge/Badge';
-import Button from 'components/Buttons/Button';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
+import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import InfiniteScroll from 'components/InfiniteScroll/InfiniteScroll';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import ResponsiveTable from './../../others/table/ResponsiveTable';
-import * as Styled from './../../../Teams.styles';
+import ResponsiveTable from 'views/Teams/items/others/table/ResponsiveTable';
+import * as GlobalStyled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceUserManagement.styles';
 import {
   WORKSPACES_PATH,
   WORKSPACE_USER_MANAGEMENT_PATH,
-} from './../../others/constants';
+} from 'views/Teams/items/others/constants';
 import { removeWorkspaceUser } from 'apiHelper/ApiHandlers/RVApi';
 import { getWorkspaceUsers } from 'apiHelper/ApiHandlers/usersApi';
+import WorkspaceUserManagementTableData from './WorkspaceUserManagementTableData';
+import WorkspaceUserManagementTableColumnHead from './WorkspaceUserManagementTableColumnHead';
 
-const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
+const WorkspaceUserManagement = ({ WorkspaceID }) => {
   const { RVDic } = useWindow();
   const { isMobile } = DimensionHelper();
   const [SearchText, setSearchText] = useState('');
@@ -43,9 +41,6 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
   const RVDicSearch = RVDic.Search;
   const RVDicReturn = RVDic.Return;
   const RVDicConfirm = RVDic.Confirm;
-  const RVDicFullName = RVDic.FullName;
-  const RVDicTeams = RVDic.Teams;
-  const RVDicLastActivityTime = RVDic.LastActivityTime;
   const RVDicRemoveUserFormTeams = RVDic.Confirms.DoYouWantToRemoveN.replace(
     '[n]',
     RVDic.User
@@ -68,11 +63,11 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
   //! API request handler
   const loadWorkspaceUsers = React.useMemo(
     () => async (resetTable = false) => {
-      setIsLoading(true);
       if (isLoading) return;
+      setIsLoading(true);
       const { ErrorText, ...response } = await getWorkspaceUsers({
         WorkspaceID,
-        Count: 2,
+        Count: 20,
         SearchText: SearchText,
         LowerBoundary: workspaceUsers?.length + 1,
       });
@@ -95,7 +90,7 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
         setTablePage((currentPage) => currentPage + 1);
       else setTablePage(false);
     },
-    [workspaceUsers, SearchText]
+    [workspaceUsers, SearchText, isLoading]
   );
 
   //! reset the Workspace Users on SearchText changes
@@ -107,114 +102,17 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
   //! Build a template for every row of workspace users (react-table)
   const data = React.useMemo(
     () =>
-      workspaceUsers?.map(({ Applications, User }) => {
-        return {
-          col1: (
-            <>
-              <Avatar className="userAvatar" userImage={User.ImageURL} />
-              {decodeBase64(User.FullName)}
-            </>
-          ),
-          //* remove [col2] and [col3] of the table on mobile view
-          ...(!isMobile && {
-            col2: decodeBase64(User.MainEmailAddress),
-            col3: decodeBase64(User.LastActivityTime_Local),
-          }),
-          col4: Applications.map(
-            ({ ApplicationID, Title, IconURL }, idx, ApplicationsArray) => {
-              if (idx < 5)
-                return (
-                  <Tooltip
-                    effect="solid"
-                    place="bottom"
-                    tipId={ApplicationID}
-                    key={ApplicationID || idx}
-                    renderContent={() => decodeBase64(Title)}>
-                    <Avatar imageClasses="teamAvatar" userImage={IconURL} />
-                  </Tooltip>
-                );
-              else if (idx === 5)
-                return (
-                  <>
-                    <PopupMenu
-                      trigger="hover"
-                      align="top"
-                      arrowClass="hidden-arrow"
-                      menuClass="">
-                      <div>
-                        <Badge
-                          showText={`${Applications.length - 4}+`}
-                          className="extraTeamsIndicator"
-                        />
-                      </div>
-
-                      <div className="extraTeamsPanel">
-                        <ScrollBarProvider>
-                          {ApplicationsArray.map(
-                            ({ ApplicationID, Title, IconURL }, idx) => {
-                              if (idx > 4)
-                                return (
-                                  <Styled.ExtraUserItem key={ApplicationID}>
-                                    <Avatar userImage={IconURL} radius={25} />
-                                    <Styled.ExtraUserTitle>
-                                      {decodeBase64(Title)}
-                                    </Styled.ExtraUserTitle>
-                                  </Styled.ExtraUserItem>
-                                );
-                            }
-                          )}
-                        </ScrollBarProvider>
-                      </div>
-                    </PopupMenu>
-                  </>
-                );
-              return;
-            }
-          ),
-          col5: (
-            <Button
-              type="negative-o"
-              key={User.MainEmailAddress}
-              onClick={() => setRemovableUser(User)}
-              style={{ padding: '0.25rem 1rem' }}>
-              {RVDicRemoveFromAllTeams}
-            </Button>
-          ),
-          col6: '',
-        };
+      WorkspaceUserManagementTableData({
+        workspaceUsers,
+        isMobile,
+        setRemovableUser,
       }),
     [workspaceUsers, tablePage, isMobile]
   );
 
   //! Setup workspace user's table headers
   const columns = React.useMemo(
-    () => [
-      {
-        Header: RVDicFullName,
-        accessor: 'col1',
-      },
-      //* remove [col2] and [col3] of the table on mobile view
-      ...(!isMobile
-        ? [
-            {
-              Header: `${RVDic.Mobile}/${RVDic.Email}`,
-              accessor: 'col2',
-            },
-            {
-              Header: RVDicLastActivityTime,
-              accessor: 'col3',
-            },
-          ]
-        : []),
-      {
-        Header: RVDicTeams,
-        accessor: 'col4',
-      },
-      {
-        Header: '',
-        accessor: 'col5',
-      },
-    ],
+    () => WorkspaceUserManagementTableColumnHead({ isMobile }),
     [isMobile]
   );
 
@@ -260,12 +158,12 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
           messageTitle={decodeBase64(removableUser.FullName)}
         />
 
-        <Styled.WorkspaceSettingsHeaderContainer>
+        <GlobalStyled.WorkspaceSettingsHeaderContainer>
           <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
           <Heading type="h1" className="pageTitle">
             {RVDicUserManagement}
           </Heading>
-        </Styled.WorkspaceSettingsHeaderContainer>
+        </GlobalStyled.WorkspaceSettingsHeaderContainer>
         <SearchInput
           placeholder={RVDicSearch}
           onChange={setSearchText}
@@ -273,18 +171,19 @@ const WorkspaceUserManagementContent = ({ WorkspaceID }) => {
           defaultValue={''}
         />
 
-        <Styled.WorkspaceUserManagementTableContainer>
+        <Styled.TableContainer>
           <InfiniteScroll
             onScrollEnd={loadWorkspaceUsers}
             pageNumber={tablePage}
             setPageNumber={setTablePage}
-            hasMore={typeof tablePage !== 'boolean'}>
+            hasMore={tablePage !== false}>
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
-        </Styled.WorkspaceUserManagementTableContainer>
+          {isLoading && <LoadingIconCircle />}
+        </Styled.TableContainer>
       </div>
     </>
   );
 };
 
-export default WorkspaceUserManagementContent;
+export default WorkspaceUserManagement;
