@@ -8,6 +8,8 @@ on:
 jobs:
   code-structure-test:
     runs-on: ${{ matrix.os }}
+    env:
+      CI: false
     strategy:
       matrix:
         os: [windows-latest]
