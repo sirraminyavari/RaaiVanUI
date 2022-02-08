@@ -1,0 +1,112 @@
+import { Meta } from '@storybook/addon-docs';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+
+<Meta title="Development guide/JSDoc" />
+
+# JSDoc
+
+- [JSDoc with React](#JSDoc-with-React)
+- [Generating Documentation from JSDoc](#Generating-Documentation-from-JSDoc)
+- [References](#References)
+
+JSDoc is a standard approach to writing code documentation in JavaScript. It is also a documentation generator that is used for the Javascript language. One of the advantages it has is that it works out of the box and has great support with various tools.
+
+Benefits of using JSDoc:
+
+- Great support in Visual Studio Code
+- Document while you code
+- Auto generate documentation in various formats HTML, README
+
+**Standard format for JSDoc**:
+
+```js
+/**
+ * <function description>
+ * @param   {<type>} param1 - <description>
+ * @param   {<type>} param2 - <description>
+ * @param   {<type>} param3 - <description>
+ * @return  {<type>}        - <description>
+ */
+```
+
+**An example with a function**:
+
+```js
+/**
+ * return full name of the user
+ * @param   {string} firstName  First Name of the User
+ * @param   {string} lastName   Last Name of the User
+ * @return  {string}            Full name of the user
+ */
+
+function getFullName(firstName, lastName) {
+  return `${firstName} ${lastName}`;
+}
+```
+
+## JSDoc with React
+
+To document a React **functional** component with minimal
+
+## Functional Component documentation
+
+Here's a simple component using **better-docs**:
+
+```js
+/**
+ * # JSDoc's @component decorator is no different than @description in functionality
+ * # but is more descriptive for React components
+ * @component - myComponent
+ *
+ * #  provide an example for the component
+ * @example
+ * <myComponent className="text" primary size={20}/>
+ *
+ *
+ * # since a React component (more likely) accepts a single object known as `Props`
+ * @param {Object} props - react props
+ *
+ * # `primary` is getting passed throw `props` object, so ...
+ * @param {Boolean} props.primary - changes the color scheme to primary
+ *
+ * # if <MyComponent/>'s `className` property is optional, wrap the defined parameter name in brackets
+ * @param {String} [props.className] - component type
+ *
+ * # Typescript type definitions are also allowed to be used as JSDoc's type and considered as a best practice
+ * @param {React.Node} [props.children] - JSX Children passed to the component
+ *
+ * # you might have added a default value for a optional property,
+ * @param {Number} [props.size=15]
+ *
+ * # @return decorator defines the return type of your function/component
+ * @return {JSX.Element}
+ */
+function MyComponent({ primary, size = 15, children, className }) {
+  // logic ...
+
+  return (
+    <div className={`${className} other-classes`} size={size}>
+      {children}
+    </div>
+  );
+}
+```
+
+## Generating Documentation from JSDoc
+
+Generating a static HTML export from **JSDoc** can be achieved by running the command below
+(in the root folder of the project)
+
+```bash
+$ npm run docs
+```
+
+## References
+
+For acquiring additional information and more descriptive guide-lines, links below can be helpful.
+
+- [official JSDoc website](https://jsdoc.app)
+
+export const Component = () => {
+  return <SyntaxHighlighter />;
+};

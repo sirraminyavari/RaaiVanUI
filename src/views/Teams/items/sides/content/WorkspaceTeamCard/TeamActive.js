@@ -5,7 +5,8 @@ import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import { createSelector } from 'reselect';
 import ReactTooltip from 'react-tooltip';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as GlobalStyled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
 import Avatar from 'components/Avatar/Avatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
@@ -23,7 +24,7 @@ import {
 } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
-import SortHandle from './SortHandle';
+import SortHandle from '../SortHandle';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import TeamUsersModal from './TeamUsersModal';
@@ -31,7 +32,7 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import { CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
 import LoadingIconCircle from 'components/Icons/LoadingIcons/LoadingIconCircle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import TeamConfirm from './TeamConfirm';
+import TeamConfirm from '../TeamConfirm';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { SIDEBAR_WINDOW } from 'constant/constants';
@@ -293,7 +294,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   }, [isModalShown]);
 
   return (
-    <Styled.TeamContainer
+    <GlobalStyled.TeamContainer
       ref={ref}
       isDragging={isDragging}
       isMobile={isMobileScreen}
@@ -330,7 +331,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       {/* </Suspense> */}
 
       <SortHandle />
-      <Styled.TeamPattern
+      <GlobalStyled.TeamPattern
         dir={RV_RevFloat}
         rtl={RV_RTL}
         src={TeamPatternDefault}
@@ -353,7 +354,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               {decodeBase64(appDescription)}
             </Styled.TeamExcerpt>
           </Styled.TeamDescription>
-          <Styled.TeamFooterConatiner>
+          <Styled.TeamFooterContainer>
             <Styled.TeamAvatarsWrapper>
               {shownUsers?.map((user, index) => {
                 const fullName = `${decodeBase64(
@@ -431,10 +432,10 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 <MoreIcon size={28} className="team-more-icon" />
               </Styled.MoreIconWrapper>
             </Tooltip>
-          </Styled.TeamFooterConatiner>
+          </Styled.TeamFooterContainer>
         </Styled.TeamContentWrapper>
       )}
-    </Styled.TeamContainer>
+    </GlobalStyled.TeamContainer>
   );
 });
 

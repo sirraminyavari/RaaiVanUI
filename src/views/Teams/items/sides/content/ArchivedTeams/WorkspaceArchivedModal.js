@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceArchivedTeams.styles';
 import Modal from 'components/Modal/Modal';
 import { TC_DEFAULT, BO_FREEZED } from 'constant/Colors';
 import { decodeBase64 } from 'helpers/helpers';
@@ -9,9 +9,9 @@ import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
 import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import TeamConfirm from './TeamConfirm';
+import TeamConfirm from '../TeamConfirm';
 
-const ArchivedModal = (props) => {
+const WorkspaceArchivedModal = (props) => {
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
   const [recycledIds, setRecycledIds] = useState([]);
@@ -129,4 +129,4 @@ const ArchivedModal = (props) => {
   );
 };
 
-export default ArchivedModal;
+export default WorkspaceArchivedModal;

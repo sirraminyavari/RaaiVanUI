@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
+import * as GlobalStyled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import CreateModal from 'components/Modal/types/create/CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
@@ -47,7 +48,7 @@ const NewTeam = ({ WorkspaceID }) => {
   const newTeamName = RVDic.NewN.replace('[n]', RVDic.TeamName);
 
   return (
-    <Styled.TeamContainer
+    <GlobalStyled.TeamContainer
       isNew
       isMobile={isMobileScreen}
       dir={RV_Float}
@@ -70,7 +71,7 @@ const NewTeam = ({ WorkspaceID }) => {
           <span>{createNewTeamTitle}</span>
         </Styled.NewTeamLabel>
       </Styled.NewTeamWrapper>
-    </Styled.TeamContainer>
+    </GlobalStyled.TeamContainer>
   );
 };
 

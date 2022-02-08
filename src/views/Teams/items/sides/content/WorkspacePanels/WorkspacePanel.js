@@ -1,18 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
-import * as Styled from 'views/Teams/Teams.styles';
-import SpaceHeader from './SpaceHeader';
+import * as Styled from './WorkspacePanel.styles';
+import SpaceHeader from './WorkspaceHeader';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
-import NewTeam from './NewTeam';
-import ArchivedTeams from './ArchivedTeams';
+import NewTeam from '../WorkspaceTeamCard/NewTeam';
+import ArchivedTeams from '../ArchivedTeams/WorkspaceArchivedTeams';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import DragItem from './DragTeam';
+import DragItem from '../WorkspaceTeamCard/DragTeam';
 import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
-import WorkspaceTeamsSkeleton from '../../others/skeletons/WorkspaceTeams';
+import WorkspaceTeamsSkeleton from '../../../others/skeletons/WorkspaceTeams';
 
 const { setApplications } = ApplicationsSlice.actions;
 
@@ -31,7 +31,7 @@ const selectIsFetchingApps = createSelector(
   (applications) => applications.isFetching
 );
 
-const DesktopWorkSpace = ({ space }) => {
+const WorkspacePanel = ({ space }) => {
   const dispatch = useDispatch();
   const teams = useSelector(selectApplications);
   const archivedApps = useSelector(selectArchivedApplications);
@@ -56,11 +56,11 @@ const DesktopWorkSpace = ({ space }) => {
   };
 
   return (
-    <Styled.SpaceConatiner>
+    <Styled.SpaceContainer>
       <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
-          <Styled.TeamListConatiner>
+          <Styled.TeamListContainer>
             {isFetching ? (
               <WorkspaceTeamsSkeleton />
             ) : (
@@ -91,11 +91,11 @@ const DesktopWorkSpace = ({ space }) => {
                 )}
               </>
             )}
-          </Styled.TeamListConatiner>
+          </Styled.TeamListContainer>
         </Flipper>
       </DndProvider>
-    </Styled.SpaceConatiner>
+    </Styled.SpaceContainer>
   );
 };
 
-export default DesktopWorkSpace;
+export default WorkspacePanel;

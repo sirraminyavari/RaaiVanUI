@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from 'components/Buttons/Button';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspacesHeader.styles';
 import CreateWorkspaceModal from './CreateWorkspaceModal';
 import useWindow from 'hooks/useWindowContext';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
@@ -8,9 +8,9 @@ import APIHandler from 'apiHelper/APIHandler';
 import { useHistory } from 'react-router-dom';
 import { encodeBase64 } from 'helpers/helpers';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { WORKSPACES_PATH } from '../../others/constants';
+import { WORKSPACES_PATH } from '../../../others/constants';
 
-const Header = () => {
+const WorkspaceHeader = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [spaceName, setSpaceName] = useState('');
   const history = useHistory();
@@ -38,7 +38,7 @@ const Header = () => {
     setSpaceName(inputValue);
   };
 
-  //TODO: Create new space
+  //! Create new space
   const handleSpaceCreate = () => {
     const apiHandler = new APIHandler('RVAPI', 'CreateWorkspace');
     if (spaceName.length > 0)
@@ -71,4 +71,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default WorkspaceHeader;
