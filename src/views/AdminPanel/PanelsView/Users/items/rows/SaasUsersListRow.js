@@ -10,6 +10,7 @@ import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVApi';
 import useWindowContext from 'hooks/useWindowContext';
 
 const SaasUsersListRow = ({
+  ownerId,
   ImageURL,
   FullName,
   Email,
@@ -110,7 +111,11 @@ const SaasUsersListRow = ({
 
       <Styled.ListBodyItem width={8}>
         <ToggleWrapper>
-          <ToggleButton value={IsAdmin} onToggle={handleSystemAdminChange} />
+          <ToggleButton
+            value={IsAdmin}
+            onToggle={handleSystemAdminChange}
+            disabled={ownerId === UserID}
+          />
         </ToggleWrapper>
       </Styled.ListBodyItem>
 
@@ -119,7 +124,10 @@ const SaasUsersListRow = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>
-        <UserDeleteButton render={userTitle} onRemoveConfirm={handleRemoveUser}>
+        <UserDeleteButton
+          render={userTitle}
+          isOwner={ownerId === UserID}
+          onRemoveConfirm={handleRemoveUser}>
           {RVDic?.RemoveFromTeam}
         </UserDeleteButton>
       </Styled.ListBodyItem>

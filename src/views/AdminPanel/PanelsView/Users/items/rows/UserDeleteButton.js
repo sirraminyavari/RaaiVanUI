@@ -4,8 +4,9 @@ import { useState } from 'react';
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import useWindowContext from 'hooks/useWindowContext';
+import { CV_FREEZED } from '../../../../../../constant/CssVariables';
 
-const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
+const UserDeleteButton = ({ children, render, onRemoveConfirm, isOwner }) => {
   const { RVDic } = useWindowContext();
   const [modalInfo, setModalInfo] = useState({
     title: RVDic?.RemoveN.replace(`[n]`, RVDic?.User),
@@ -27,7 +28,9 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
   return (
     <>
       <ButtonContainer>
-        <ButtonView onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+        <ButtonView
+          disabled={isOwner}
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
           {children}
         </ButtonView>
       </ButtonContainer>
@@ -80,6 +83,15 @@ const ButtonView = styled.button`
   border-radius: 0.5rem;
   &:hover {
     background-color: var(--rv-red-color-verysoft);
+  }
+
+  &:disabled:hover {
+    color: ${CV_FREEZED};
+    border: 1px solid ${CV_FREEZED};
+  }
+  &:disabled {
+    color: ${CV_FREEZED};
+    border: 1px solid ${CV_FREEZED};
   }
 `;
 

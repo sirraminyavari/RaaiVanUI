@@ -32,7 +32,6 @@ ListHeaderItem.displayName = 'ListHeaderItem';
 
 export const ListBody = styled.tbody`
   display: block;
-  transition: height 0.25s ease-in;
 `;
 ListBody.displayName = 'ListBody';
 

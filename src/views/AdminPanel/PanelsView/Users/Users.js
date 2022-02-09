@@ -12,7 +12,10 @@ import { getUserInvitations, getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 const Users = (props) => {
+  console.log(props);
   const ApplicationID = props?.route?.ApplicationID;
+  const CreatorUserID = props?.route?.Application?.CreatorUserID;
+
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
@@ -122,6 +125,7 @@ const Users = (props) => {
                       searchText={searchText}
                       rtl={RV_RTL}
                       users={users}
+                      ownerId={CreatorUserID}
                     />
 
                     {invitedUsers.length !== 0 && (
