@@ -135,6 +135,13 @@ export const SET_FIRST_NAME = 'SetFirstName';
 export const SET_LAST_NAME = 'SetLastName';
 
 /**
+ * @description 'SetFirstAndLastName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_FIRST_AND_LAST_NAME = 'SetFirstAndLastName';
+
+/**
  * @description 'ChangePassword'
  * @mode API function
  * @class 'UsersAPI'

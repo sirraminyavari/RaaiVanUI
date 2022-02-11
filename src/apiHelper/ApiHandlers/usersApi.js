@@ -18,6 +18,9 @@ import {
   SET_PASSWORD_RESET_TICKET,
   SET_PASSWORD,
   GET_WORKSPACE_USERS,
+  SET_FIRST_AND_LAST_NAME,
+  SET_FIRST_NAME,
+  SET_LAST_NAME,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -212,12 +215,13 @@ export const getUsers = (SearchText, IsApproved, IsOnline) => {
 };
 
 /**
- *
- * @param firstName
+ * @description Sets firstName of the given UserID
+ * @param {string} firstName
+ * @param  {string} UserID
  * @returns {Promise<unknown>}
  */
 export const updateFirstName = (UserID, firstName) => {
-  const setFirstNameAPI = API_Provider(USERS_API, 'SetFirstName');
+  const setFirstNameAPI = API_Provider(USERS_API, SET_FIRST_NAME);
   return apiCallWrapper(setFirstNameAPI, {
     UserID,
     FirstName: encodeBase64(firstName),
@@ -225,12 +229,13 @@ export const updateFirstName = (UserID, firstName) => {
 };
 
 /**
- *
- * @param firstName
+ * @description Sets lastName of the given UserID
+ * @param {string} lastName
+ * @param {string} UserID
  * @returns {Promise<unknown>}
  */
 export const updateLastName = (UserID, lastName) => {
-  const setLastNameAPI = API_Provider(USERS_API, 'SetLastName');
+  const setLastNameAPI = API_Provider(USERS_API, SET_LAST_NAME);
   return apiCallWrapper(setLastNameAPI, {
     UserID,
     LastName: encodeBase64(lastName),
@@ -238,11 +243,29 @@ export const updateLastName = (UserID, lastName) => {
 };
 
 /**
+ * @description Sets the currently logged in user's firstName and lastName
+ * @param {string} firstName
+ * @param {string} lastName
+ * @returns {Promise<unknown>}
+ */
+export const updateCurrentUserFirstAndLastName = (firstName, lastName) => {
+  const setCurrentUserFirstAndLastName = API_Provider(
+    USERS_API,
+    SET_FIRST_AND_LAST_NAME
+  );
+  return apiCallWrapper(setCurrentUserFirstAndLastName, {
+    FirstName: encodeBase64(firstName),
+    LastName: encodeBase64(lastName),
+  });
+};
+
+/**
  * @description get workspace users
- * @param WorkspaceID
- * @param Count
- * @param LowerBoundary
- * @param SearchText
+ * @param {object} parameters
+ * @param {string} parameters.WorkspaceID
+ * @param {number} parameters.Count
+ * @param {number} parameters.LowerBoundary
+ * @param {string} parameters.SearchText
  * @return {Promise<unknown>}
  */
 export const getWorkspaceUsers = ({
