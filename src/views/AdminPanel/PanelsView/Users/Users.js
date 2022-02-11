@@ -10,9 +10,10 @@ import InvitedUserList from './items/InvitedUserList';
 import UsersCreate from './UsersCreate';
 import { getUserInvitations, getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { CSSTransition } from 'react-transition-group';
 
 const Users = (props) => {
-  console.log(props);
+  const animationDuration = 200;
   const ApplicationID = props?.route?.ApplicationID;
   const CreatorUserID = props?.route?.Application?.CreatorUserID;
 
@@ -83,8 +84,12 @@ const Users = (props) => {
 
   return (
     <Styled.UserManagementContainer rtl={RV_RTL}>
-      <Styled.UserManagementContentCard>
-        {!showInvitationForm && (
+      <Styled.UserManagementContentCard transitionDutration={animationDuration}>
+        <CSSTransition
+          in={!showInvitationForm}
+          timeout={animationDuration}
+          classNames="transition"
+          unmountOnExit>
           <Styled.ContentWrapper>
             <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
             <Styled.HeadingWrapper>
@@ -138,15 +143,23 @@ const Users = (props) => {
               <LogoLoader />
             )}
           </Styled.ContentWrapper>
-        )}
+        </CSSTransition>
 
-        {showInvitationForm && SAASBasedMultiTenancy && (
+        <CSSTransition
+          in={showInvitationForm && SAASBasedMultiTenancy}
+          classNames="transition"
+          timeout={animationDuration}
+          unmountOnExit>
           <UsersInvitation onClose={() => setShowInvitationForm(false)} />
-        )}
+        </CSSTransition>
 
-        {showInvitationForm && !SAASBasedMultiTenancy && (
+        <CSSTransition
+          in={showInvitationForm && !SAASBasedMultiTenancy}
+          classNames="transition"
+          timeout={animationDuration}
+          unmountOnExit>
           <UsersCreate onClose={() => setShowInvitationForm(false)} />
-        )}
+        </CSSTransition>
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>
   );

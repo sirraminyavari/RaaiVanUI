@@ -11,7 +11,7 @@ import InvitationLink from './items/invitation/InvitaionLink';
 import SendInvitation from './items/invitation/SendInvitation';
 
 const UsersInvitation = ({ onClose }) => {
-  const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
+  const { RV_RTL, RVDic } = useWindowContext();
   const [getLink, setGetLink] = useState(true);
 
   const breadCrumbItems = [
@@ -22,7 +22,7 @@ const UsersInvitation = ({ onClose }) => {
     },
     {
       id: 2,
-      title: RVDic?.UsersManagement,
+      title: RVDic?.UserManagement,
       linkTo: '',
     },
     {
@@ -82,6 +82,7 @@ const IconContainer = styled.div`
   border-radius: 100%;
   margin: 2rem auto;
 `;
+IconContainer.displayName = 'IconContainer';
 
 const InvitationTypeAction = styled.div`
   display: flex;
@@ -89,6 +90,7 @@ const InvitationTypeAction = styled.div`
   align-items: center;
   gap: 1.5rem;
 `;
+InvitationTypeAction.displayName = 'InvitationTypeAction';
 
 const InvitationBox = styled.div`
   background-color: ${CV_WHITE};
@@ -101,4 +103,5 @@ const InvitationBox = styled.div`
   max-width: ${({ linkType }) => (linkType ? '34rem' : '60rem')};
   height: ${({ linkType }) => (linkType ? '12rem' : '27rem')};
 `;
+InvitationBox.displayName = 'InvitationBox';
 export default UsersInvitation;

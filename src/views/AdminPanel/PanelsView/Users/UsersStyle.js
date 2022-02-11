@@ -12,7 +12,8 @@ UserManagementContainer.displayName = 'UserManagementContainer';
 const BreadCrumbWrapper = styled(Breadcrumb)`
   position: absolute;
   top: 1.5rem;
-  ${({ rtl }) => (rtl ? 'right: 1.5rem;' : 'left: 1.5rem;')}
+  ${({ rtl }) => (rtl ? 'right: 1.5rem;' : 'left: 1.5rem;')};
+  transition: all 200ms ease-in-out;
 `;
 BreadCrumbWrapper.displayName = 'BreadCrumbWrapper';
 
@@ -68,6 +69,25 @@ const UserManagementContentCard = styled.div`
 
   .modal-content {
     padding: 0 !important;
+  }
+
+  .transition-enter {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  .transition-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all ${({ transitionDutration }) => transitionDutration}ms;
+  }
+  .transition-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .transition-exit-active {
+    opacity: 0;
+    transition: all ${({ transitionDutration }) => transitionDutration}ms;
+    transform: translateX(-3rem);
   }
 `;
 UserManagementContentCard.displayName = 'UserManagementContentCard';
