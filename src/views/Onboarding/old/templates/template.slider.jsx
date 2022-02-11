@@ -111,7 +111,8 @@ const TemplateSlider = () => {
           ref={templateTrack}
           onMouseDown={(e) => handleTouchStart(e)}
           onMouseUp={(e) => handleTouchEnd(e)}
-          onWheel={(e) => move(e)}>
+          onWheel={(e) => move(e)}
+        >
           {templates.length !== 0 &&
             templates.map((x) => <TemplateCard key={uuidv4()} item={x} />)}
         </div>

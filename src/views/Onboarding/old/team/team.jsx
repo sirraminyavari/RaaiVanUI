@@ -95,7 +95,8 @@ const Team = () => {
           ].join(' ')}
           onClick={(e) => {
             saveName();
-          }}>
+          }}
+        >
           {'تیممو بساز!'}
         </button>
       </div>

@@ -7,7 +7,7 @@ const Stepper = (props) => {
   return (
     <StepperContextProvider>
       <div className="root">
-        <SideBar></SideBar>
+        {/* <SideBar></SideBar> */}
         <MainContent></MainContent>
       </div>
     </StepperContextProvider>

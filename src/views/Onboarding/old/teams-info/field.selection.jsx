@@ -1,33 +1,42 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './select.css';
 import { useOutsideClick } from '../hook/hooks';
 
-const Select = ({ placeholder, value, children }) => {
+const FieldSelection = ({ placeholder, value, children }) => {
   const [active, setActive] = useState(true);
-  const dropdownRef = useRef();
+  const dropdownMenu = useRef();
 
   const toggleSelection = () => {
     setActive((current) => !current);
   };
 
-  useOutsideClick(dropdownRef, toggleSelection, active);
+  useEffect(() => {
+    setTimeout(() => {
+      setActive(true);
+    }, 50);
+  }, []);
+
+  useOutsideClick(dropdownMenu, toggleSelection, active);
 
   return (
     <div
       className="select-box-container"
-      style={{ zIndex: 11, width: '150px' }}>
+      style={{ zIndex: 10, width: '400px' }}
+    >
       <div
         className="selected noselect"
         onClick={() => toggleSelection()}
-        style={{ width: '150px' }}>
+        style={{ width: '400px' }}
+      >
         {value === '' && <span className="h3 tint">{placeholder}</span>}
         {value !== '' && <span className="h3 item-selected">{value}</span>}
       </div>
 
       <div
         className={['select-box', active && 'active'].join(' ')}
-        style={{ width: '150px' }}
-        ref={dropdownRef}>
+        style={{ width: '400px' }}
+        ref={dropdownMenu}
+      >
         <div className="options-container">
           {React.Children.map(children, (child) => {
             child = { ...child, props: { ...child.props, toggleSelection } };
@@ -38,4 +47,4 @@ const Select = ({ placeholder, value, children }) => {
     </div>
   );
 };
-export default Select;
+export default FieldSelection;

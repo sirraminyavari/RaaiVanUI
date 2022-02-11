@@ -33,7 +33,8 @@ const StepperProgress = () => {
           x.id < info.step && 'dot-after',
           x.id > info.step && 'dot-before',
           x.id === info.step && 'dot-focused',
-        ].join(' ')}></div>
+        ].join(' ')}
+      ></div>
     </div>
   ));
 
@@ -46,7 +47,8 @@ const StepperProgress = () => {
           x.id % 2 !== 0 && 'down',
           info.step === x.id && 'title-focused',
           info.step !== x.id && 'title-out',
-        ].join(' ')}>
+        ].join(' ')}
+      >
         {x.title}
       </div>
     </div>

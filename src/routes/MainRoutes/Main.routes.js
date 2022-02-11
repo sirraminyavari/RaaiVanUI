@@ -243,8 +243,8 @@ const routes = [
   {
     path: ONBOARDING_PATH,
     name: ONBOARDING_NAME,
-    exact: true,
-    hasNavSide: false,
+    exact: false,
+    hasNavSide: true,
     component: Onboarding,
   },
   {

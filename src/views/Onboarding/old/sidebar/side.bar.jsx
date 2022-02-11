@@ -7,7 +7,7 @@ import SidebarLoader from './sidebar.loader';
 import { v4 as uuidv4 } from 'uuid';
 import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
 import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
-import ListItem from '../../../layouts/Sidebar/items/underMenu/ListItem';
+import ListItem from 'layouts/Sidebar/items/underMenu/ListItem';
 import DiamondIcon from 'components/Icons/DiamondIcon/Diamond';
 
 const SideBar = (props) => {

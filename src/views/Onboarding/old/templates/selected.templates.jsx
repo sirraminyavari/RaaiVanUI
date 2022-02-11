@@ -25,7 +25,8 @@ const SelectedTemplates = () => {
   return (
     <div
       style={{ width: '600px', height: '330px' }}
-      className="selected-template-container">
+      className="selected-template-container"
+    >
       {/* {info.templates.length === 0 && (
         <div className="no-template-selected">{'قالبی فعال نکردید'}</div>
       )} */}
