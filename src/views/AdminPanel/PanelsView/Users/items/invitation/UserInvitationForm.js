@@ -1,11 +1,12 @@
 import * as Styled from './InvitaionStyle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
 import UserAccessTypeOption from 'components/Inputs/CustomSelect/items/UserAccessTypeOption';
 import useWindowContext from 'hooks/useWindowContext';
 
 const UserInvitationForm = ({ onChange, data }) => {
+  const { RVDic } = useWindowContext();
   const [formData, setFormData] = useState({
     email: data?.email || '',
     name: data?.name || '',
@@ -14,26 +15,13 @@ const UserInvitationForm = ({ onChange, data }) => {
 
   const setEmail = (value) => {
     setFormData({ ...formData, email: value });
+  };
+
+  useEffect(() => {
     if (onChange) {
       onChange(formData);
     }
-  };
-
-  const setName = (value) => {
-    setFormData({ ...formData, name: value });
-    if (onChange) {
-      onChange(formData);
-    }
-  };
-
-  const setAccess = (value) => {
-    setFormData({ ...formData, access: value });
-    if (onChange) {
-      onChange(formData);
-    }
-  };
-
-  const { RVDic } = useWindowContext();
+  }, [formData]);
 
   const userAccessOption = [
     {
@@ -67,7 +55,7 @@ const UserInvitationForm = ({ onChange, data }) => {
       <Styled.FieldContainer>
         <Styled.StyledAnimatedInput
           value={formData?.name}
-          onChange={setName}
+          onChange={(value) => setFormData({ ...formData, name: value })}
           placeholder={'نام هم‌تیمی (اختیاری)'}
         />
       </Styled.FieldContainer>
@@ -86,7 +74,7 @@ const UserInvitationForm = ({ onChange, data }) => {
           }}
           classNamePrefix="select"
           options={userAccessOption}
-          onChange={setAccess}
+          onChange={(e) => setFormData({ ...formData, access: e?.value })}
         />
       </Styled.FieldContainer>
     </Styled.FormContainer>

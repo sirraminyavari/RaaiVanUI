@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import produce from 'immer';
 
 const SendInvitation = () => {
+  const { RVDic } = window;
   const [formIsValid, setFormIsValid] = useState(false);
   const [form, setForm] = useState([
     {
@@ -45,7 +46,6 @@ const SendInvitation = () => {
   };
 
   useEffect(() => {
-    console.log(form);
     // check if at least one block is valid which it means we need to enable the send button
     const oneBlockIsValid = form.some((x) => x.valid);
     if (oneBlockIsValid) {
@@ -71,7 +71,7 @@ const SendInvitation = () => {
           />
         );
       }),
-    []
+    [form?.length]
   );
 
   return (
@@ -95,7 +95,7 @@ const SendInvitation = () => {
             width: '8.25rem',
           }}
           disable={!formIsValid}>
-          ارسال
+          {RVDic?.Send}
         </Button>
       </ActionBar>
     </>

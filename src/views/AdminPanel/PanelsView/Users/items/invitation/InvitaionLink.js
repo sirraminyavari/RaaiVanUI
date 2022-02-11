@@ -41,7 +41,7 @@ const InvitationLink = () => {
           <CopyIcon size={16} square={true} />
           <div>{RVDic?.Copy}</div>
         </Styled.CopyLinkButton>
-        <Styled.LinkInput value={link} />
+        <Styled.LinkInput value={link} onChange={(e) => {}} disable={true} />
       </Styled.LinkContainer>
     </>
   );

@@ -12,6 +12,7 @@ import {
   updateFirstName,
   updateLastName,
 } from 'apiHelper/ApiHandlers/usersApi';
+import useWindowContext from 'hooks/useWindowContext';
 
 const ORGUserCard = ({
   FirstName,
@@ -26,6 +27,7 @@ const ORGUserCard = ({
   const [isApprovedStatus, setIsApprovedStatus] = useState(IsApproved);
   const [firstName, setFirstName] = useState(FirstName);
   const [lastName, setLastName] = useState(LastName);
+  const { RVDic } = useWindowContext();
   const userTitle = useCallback(
     (editable, column = false) => (
       <UserFullNameTitle
@@ -48,27 +50,20 @@ const ORGUserCard = ({
 
   const updateUserName = async (value) => {
     if (value !== UserName) {
-      const result = await setUserName(value, UserID);
-      if (result?.Succeed) {
+      const { Succeed } = await setUserName(value, UserID);
+      if (Succeed) {
         InfoToast({
           type: 'success',
           autoClose: true,
-          message: `نام کاربری با موفقیت ثبت شد.`,
+          message: RVDic?.MSG[Succeed] || Succeed,
         });
       }
     }
   };
 
-  const handleFirstNameUpdate = (firstName) => {
-    console.log(firstName);
-    updateFirstName(UserID, firstName)
-      .then((res) => {
-        console.log(res);
-        setFirstName(firstName);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleFirstNameUpdate = async (firstName) => {
+    await updateFirstName(UserID, firstName);
+    setFirstName(firstName);
   };
 
   const handleLastNameUpdate = (lastName) => {
@@ -82,22 +77,9 @@ const ORGUserCard = ({
       });
   };
 
-  const toggleApprovedStatus = (value) => {
+  const toggleApprovedStatus = async (value) => {
     setIsApprovedStatus(value);
-    updateApprovedStatus(value, UserID)
-      .then((res) => {
-        console.log('end', res);
-        if (res?.Succeed) {
-          InfoToast({
-            type: 'info',
-            autoClose: true,
-            message: `عملیات موفقیت آمیز بود.`,
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const { Succeed, ErrorText } = await updateApprovedStatus(value, UserID);
   };
 
   return (

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 import moment from 'jalali-moment';
 import { Subject } from 'rxjs';
+import InfoToast from '../components/toasts/info-toast/InfoToast';
 
 const { GlobalUtilities, RVAPI } = window;
 

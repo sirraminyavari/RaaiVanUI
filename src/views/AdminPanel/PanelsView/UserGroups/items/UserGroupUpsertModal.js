@@ -12,23 +12,19 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 /**
  * @description create and edit user groups modal component
  * @param group group object to edit
- * @param typeId
  * @param createMode
  * @param users
  * @param onModalDelete
  * @param onModalConfirm
- * @param props
  * @return {JSX.Element}
  * @constructor
  */
 const UserGroupUpsertModal = ({
   group,
-  typeId,
   createMode,
   users,
   onModalDelete,
   onModalConfirm,
-  ...props
 }) => {
   const listAnimationDuration = 150;
   const { RVDic } = useWindowContext();
@@ -184,7 +180,7 @@ const UserChips = ({ user, onDelete }) => {
   );
 };
 
-const UserItemRow = ({ user, selected, onSelect, ...props }) => {
+const UserItemRow = ({ user, selected, onSelect }) => {
   return (
     <ModalStyles.UserItemContainer onClick={() => onSelect(user)}>
       <ModalStyles.ProfileImage src={user?.ImageURL} highlight={selected} />

@@ -63,9 +63,7 @@ const UsersInvitation = ({ onClose }) => {
       </InvitationTypeAction>
 
       <InvitationBox linkType={getLink}>
-        {getLink && <InvitationLink />}
-
-        {!getLink && <SendInvitation />}
+        {getLink ? <InvitationLink /> : <SendInvitation />}
       </InvitationBox>
     </>
   );
