@@ -97,7 +97,11 @@ const ORGUserCard = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={15}>
-        <ResetPassword render={userTitle(false, true)} userId={UserID} />
+        <ResetPassword
+          render={userTitle(false, true)}
+          userId={UserID}
+          userTitle={FullName}
+        />
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={15}>

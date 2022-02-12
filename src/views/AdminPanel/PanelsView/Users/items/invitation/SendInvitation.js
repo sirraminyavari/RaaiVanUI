@@ -48,15 +48,12 @@ const SendInvitation = () => {
   useEffect(() => {
     // check if at least one block is valid which it means we need to enable the send button
     const oneBlockIsValid = form.some((x) => x.valid);
-    if (oneBlockIsValid) {
-      setFormIsValid(true);
-    }
+    if (oneBlockIsValid) setFormIsValid(true);
 
-    // check if all blocks are valid which it means we need another form block
+    // check if all blocks are valid which it means we need another forms block
     const allBlocksValid = form.every((x) => x.valid);
-    if (allBlocksValid) {
+    if (allBlocksValid)
       setForm([...form, { id: form.length + 1, valid: false, data: null }]);
-    }
   }, [form]);
 
   const blocks = useMemo(
