@@ -8,7 +8,7 @@ import MailIcon from 'components/Icons/MailIcon/MailIcon';
 import InfoIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
 // import LinkIcon from 'components/Icons/LinkIcon/LinkIcon';
 // import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
 import Button from 'components/Buttons/Button';
 // import Input from 'components/Inputs/Input';
 import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';

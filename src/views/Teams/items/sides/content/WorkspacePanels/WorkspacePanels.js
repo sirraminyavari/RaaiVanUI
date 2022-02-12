@@ -1,12 +1,12 @@
-import Header from './ContentHeader';
-import * as Styled from 'views/Teams/Teams.styles';
-import DesktopWorkSpace from './DesktopSpace';
+import Header from '../WorkspacesHeader/WorkspacesHeader';
+import * as Styled from './WorkspacePanel.styles';
+import DesktopWorkSpace from './WorkspacePanel';
 import { useEffect, useState } from 'react';
 import APIHandler from 'apiHelper/APIHandler';
 
 const apiHandler = new APIHandler('RVAPI', 'GetWorkspaces');
 
-const DesktopContentSide = () => {
+const WorkspacePanels = () => {
   const [Workspaces, setWorkspaces] = useState(undefined);
   useEffect(() => {
     apiHandler.fetch({}, ({ Workspaces }) => setWorkspaces(Workspaces));
@@ -23,4 +23,4 @@ const DesktopContentSide = () => {
   );
 };
 
-export default DesktopContentSide;
+export default WorkspacePanels;

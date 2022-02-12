@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
 import Avatar from 'components/Avatar/Avatar';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { decodeBase64 } from 'helpers/helpers';
 import { CV_DISTANT, CV_FREEZED, CV_RED } from 'constant/CssVariables';
 import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { removeUserFromApplication } from 'store/actions/applications/ApplicationsAction';
-import TeamConfirm from './TeamConfirm';
+import TeamConfirm from '../TeamConfirm';
 import useWindow from 'hooks/useWindowContext';
 
 const TeamUsersModal = ({
@@ -22,7 +22,7 @@ const TeamUsersModal = ({
   setIsModalShown,
 }) => {
   const dispatch = useDispatch();
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
 
   const [confirm, setConfirm] = useState({
     user: null,
@@ -92,8 +92,7 @@ const TeamUsersModal = ({
           ) : (
             users?.map((user) => {
               const isAuthUser =
-                ((window.RVGlobal || {}).CurrentUser || {}).UserID ===
-                user?.UserID;
+                ((RVGlobal || {}).CurrentUser || {}).UserID === user?.UserID;
               const fullName = `${decodeBase64(user?.FirstName)} ${decodeBase64(
                 user?.LastName
               )}`;

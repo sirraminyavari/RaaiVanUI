@@ -2,12 +2,12 @@ import React from 'react';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Heading from 'components/Heading/Heading';
 import useWindow from 'hooks/useWindowContext';
-import * as Styled from './../../../Teams.styles';
+import * as Styled from 'views/Teams/Teams.styles';
 import WorkspaceSubscription from './WorkspaceSubscription';
 import {
   WORKSPACES_PATH,
   WORKSPACE_ACCOUNT_MANAGEMENT_PATH,
-} from './../../others/constants';
+} from 'views/Teams/items/others/constants';
 
 const WorkspaceAccountManagementView = ({ WorkspaceID }) => {
   const { RVDic } = useWindow();

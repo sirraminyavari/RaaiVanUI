@@ -1,5 +1,5 @@
 import { useContext, forwardRef } from 'react';
-import * as Styled from '../../../Teams.styles';
+import * as Styled from './WorkspaceTeamCard.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Avatar from 'components/Avatar/Avatar';
 import Button from 'components/Buttons/Button';
@@ -15,7 +15,7 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const { IsSystemAdmin } = RVGlobal;
 
   return (
-    <Styled.TeamConatiner ref={ref}>
+    <Styled.TeamContainer ref={ref}>
       <Styled.DragIconWrapper {...dragHandle}>
         <DragIcon />
       </Styled.DragIconWrapper>
@@ -38,7 +38,7 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
               : 'کلیک مایند. مغز تیم شما!'}
           </Styled.TeamExcerpt>
         </Styled.TeamDescription>
-        <Styled.TeamFooterConatiner>
+        <Styled.TeamFooterContainer>
           <Styled.TeamAvatarsWrapper>
             {Users?.map((user, index) => {
               if (index > 3) return null;
@@ -98,9 +98,9 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
               فعال سازی
             </Button>
           )}
-        </Styled.TeamFooterConatiner>
+        </Styled.TeamFooterContainer>
       </Styled.TeamContentWrapper>
-    </Styled.TeamConatiner>
+    </Styled.TeamContainer>
   );
 });
 

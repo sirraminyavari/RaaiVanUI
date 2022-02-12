@@ -1282,6 +1282,26 @@
         return CNAPI._send(url, params, queryString);
     },
 
+    IsCommunityPage: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/IsCommunityPage?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeTypeID ? "&NodeTypeID=" + params.NodeTypeID : "") +
+            (params.NodeID ? "&NodeID=" + params.NodeID : "") +
+            (GlobalUtilities.get_type(params.Value) == "boolean" ? "&Value=" + params.Value : "");
+        return CNAPI._send(url, params, queryString);
+    },
+
+    EnableComments: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/EnableComments?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeTypeID ? "&NodeTypeID=" + params.NodeTypeID : "") +
+            (params.NodeID ? "&NodeID=" + params.NodeID : "") +
+            (GlobalUtilities.get_type(params.Value) == "boolean" ? "&Value=" + params.Value : "");
+        return CNAPI._send(url, params, queryString);
+    },
+
     EnablePreviousVersionSelect: function (params) {
         params = params || {};
 

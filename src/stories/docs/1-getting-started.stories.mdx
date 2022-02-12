@@ -1,0 +1,76 @@
+import { Meta } from '@storybook/addon-docs';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+
+<Meta title="Getting Started" />
+
+# Getting Started
+
+- [Project structure](#project-structure)
+- [Installation](#installation)
+
+## Project structure
+
+When you start with the project, it's important to understand how data is structured on the file system.
+The layout looks like this:
+
+```bash
+.
+├── .github
+├── .storybook
+├── .vscode
+├── public
+├── src
+│   ├── apiHelper
+│   │   └── ... # Where all API call functions are located
+│   ├── assets
+│   │   └── ... # All assets that required before `build` in the components
+│   ├── components
+│   │   └── ... # Reusable components
+│   ├── constant
+│   │   └── ... # project Global CONSTANTS
+│   ├── helpers
+│   │   └── ...
+│   ├── hooks
+│   │   └── ...
+│   ├── layouts
+│   │   └── ...
+│   ├── routes
+│   │   └── ... # Where all of the project `routes` are defined
+│   ├── store
+│   │   └── ...
+│   ├── stories
+│   │   └── ... # Storybook's resources
+│   ├── utils
+│   │   └── ...
+│   └── views
+│       └── ... # Each route defined in `src/routes`, points to one of the views in here
+├── README.md
+├── package.json
+└── package-lock.json
+
+```
+
+## Installation
+
+Installation process is just like any other Node.js project...
+
+- Please be sure to install the prerequisites before proceeding:
+
+  - [Node.js 16.13.0](https://nodejs.org) or later
+
+```bash
+# Run the following command in the project's root directory to install the required dependencies
+$ npm install
+
+
+# starting Development server
+$ npm start
+
+# starting Development server (Storybook)
+$ npm run storybook
+
+```
+
+export const Component = () => {
+  return <SyntaxHighlighter />;
+};
