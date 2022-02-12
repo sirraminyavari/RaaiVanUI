@@ -9,7 +9,7 @@ import {
 } from './API';
 
 import { EditorState, convertFromRaw } from 'draft-js';
-import BlockEditor, { defaultTheme, plugins as _plugins } from 'block-editor';
+//import BlockEditor, { defaultTheme, plugins as _plugins } from 'block-editor';
 import mentionsData from './mentions-mock-data';
 
 const plugins = [
@@ -141,8 +141,7 @@ export const contentPresets = {
           },
           {
             key: '5h4ci',
-            text:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -160,8 +159,7 @@ export const contentPresets = {
           },
           {
             key: '77to5',
-            text:
-              'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+            text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -170,8 +168,7 @@ export const contentPresets = {
           },
           {
             key: '3cefe',
-            text:
-              'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -234,8 +231,7 @@ export const contentPresets = {
           },
           {
             key: 'd67f6',
-            text:
-              "You can even take these secret steps... but don't tell anyone!",
+            text: "You can even take these secret steps... but don't tell anyone!",
             type: 'accordion',
             depth: 0,
             inlineStyleRanges: [],
@@ -298,8 +294,7 @@ export const contentPresets = {
           },
           {
             key: '83dfn',
-            text:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -317,8 +312,7 @@ export const contentPresets = {
           },
           {
             key: 'f3ss5',
-            text:
-              'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+            text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -327,8 +321,7 @@ export const contentPresets = {
           },
           {
             key: '654h4',
-            text:
-              'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -400,8 +393,7 @@ export const contentPresets = {
           },
           {
             key: '2agqd',
-            text:
-              'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+            text: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -410,8 +402,7 @@ export const contentPresets = {
           },
           {
             key: '1aviv',
-            text:
-              'Call Nextle and ask them to create the greatest editor on the planet.',
+            text: 'Call Nextle and ask them to create the greatest editor on the planet.',
             type: 'ordered-list-item',
             depth: 0,
             inlineStyleRanges: [],
@@ -420,8 +411,7 @@ export const contentPresets = {
           },
           {
             key: '8rbal',
-            text:
-              'Wait untill Nextle creates the greatest editor that ever editted the texts on the Earth.',
+            text: 'Wait untill Nextle creates the greatest editor that ever editted the texts on the Earth.',
             type: 'ordered-list-item',
             depth: 0,
             inlineStyleRanges: [],
@@ -430,8 +420,7 @@ export const contentPresets = {
           },
           {
             key: '7pbkd',
-            text:
-              'Reveal your miraculous editor to the inhabitants of Earth and let them explode of excitement and wonder.',
+            text: 'Reveal your miraculous editor to the inhabitants of Earth and let them explode of excitement and wonder.',
             type: 'ordered-list-item',
             depth: 0,
             inlineStyleRanges: [],
@@ -440,8 +429,7 @@ export const contentPresets = {
           },
           {
             key: '2o6h0',
-            text:
-              'The Greatness is not in the Greatness itself but in the Essence of a Great Thing that is Great',
+            text: 'The Greatness is not in the Greatness itself but in the Essence of a Great Thing that is Great',
             type: 'blockquote',
             depth: 0,
             inlineStyleRanges: [],
@@ -450,8 +438,7 @@ export const contentPresets = {
           },
           {
             key: '1dtqo',
-            text:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -460,8 +447,7 @@ export const contentPresets = {
           },
           {
             key: 'd6ntv',
-            text:
-              'How to Use the Greatest Editor that Can Ever be Written in Your Project',
+            text: 'How to Use the Greatest Editor that Can Ever be Written in Your Project',
             type: 'header-three',
             depth: 0,
             inlineStyleRanges: [],
@@ -470,8 +456,7 @@ export const contentPresets = {
           },
           {
             key: 'ar0ga',
-            text:
-              "import GreatesetEditor, { withExtraGreatness } from 'greatest-editor'\n\nfunction GreatApp () {\n    return <GreatestEditor />\n}\n\nexport default withExtraGreatness ( GreatApp )",
+            text: "import GreatesetEditor, { withExtraGreatness } from 'greatest-editor'\n\nfunction GreatApp () {\n    return <GreatestEditor />\n}\n\nexport default withExtraGreatness ( GreatApp )",
             type: 'code-block',
             depth: 0,
             inlineStyleRanges: [],
@@ -497,8 +482,7 @@ export const contentPresets = {
           },
           {
             key: 'blftu',
-            text:
-              'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
+            text: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -516,8 +500,7 @@ export const contentPresets = {
           },
           {
             key: '39dsf',
-            text:
-              ' علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود.',
+            text: ' علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -526,8 +509,7 @@ export const contentPresets = {
           },
           {
             key: '2j6hd',
-            text:
-              'برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتاب‌های زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه‌ای.',
+            text: 'برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتاب‌های زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه‌ای.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -653,8 +635,7 @@ export const contentPresets = {
           },
           {
             key: 'ap1jb',
-            text:
-              'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
+            text: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -672,8 +653,7 @@ export const contentPresets = {
           },
           {
             key: '4urnv',
-            text:
-              ' علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود.',
+            text: ' علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -682,8 +662,7 @@ export const contentPresets = {
           },
           {
             key: '2mhu0',
-            text:
-              'برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتاب‌های زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه‌ای.',
+            text: 'برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتاب‌های زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه‌ای.',
             type: 'unstyled',
             depth: 4,
             inlineStyleRanges: [],
@@ -755,8 +734,7 @@ export const contentPresets = {
           },
           {
             key: 'e6eb3',
-            text:
-              'در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.',
+            text: 'در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -765,8 +743,7 @@ export const contentPresets = {
           },
           {
             key: '89ndf',
-            text:
-              'با نکستل تماس بگیرید و ازشون بخواید تا بهترین ادیتور روی زمین رو درست کنن.',
+            text: 'با نکستل تماس بگیرید و ازشون بخواید تا بهترین ادیتور روی زمین رو درست کنن.',
             type: 'ordered-list-item',
             depth: 0,
             inlineStyleRanges: [],
@@ -784,8 +761,7 @@ export const contentPresets = {
           },
           {
             key: '99td',
-            text:
-              'این معجزه مهندسی رو نشون ساکنان زمین بدید تا از تعجب منفجر شن.',
+            text: 'این معجزه مهندسی رو نشون ساکنان زمین بدید تا از تعجب منفجر شن.',
             type: 'ordered-list-item',
             depth: 0,
             inlineStyleRanges: [],
@@ -803,8 +779,7 @@ export const contentPresets = {
           },
           {
             key: '52gao',
-            text:
-              'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
+            text: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.',
             type: 'unstyled',
             depth: 0,
             inlineStyleRanges: [],
@@ -822,8 +797,7 @@ export const contentPresets = {
           },
           {
             key: 'bisvu',
-            text:
-              "import GreatesetEditor, { withExtraGreatness } from 'greatest-editor'\n\nfunction GreatApp () {\n     return <GreatestEditor />\n}\n\nexport default withExtraGreatness ( GreatApp )",
+            text: "import GreatesetEditor, { withExtraGreatness } from 'greatest-editor'\n\nfunction GreatApp () {\n     return <GreatestEditor />\n}\n\nexport default withExtraGreatness ( GreatApp )",
             type: 'code-block',
             depth: 0,
             inlineStyleRanges: [
@@ -1084,22 +1058,22 @@ function BE() {
   //     )
   // ), 1000 )
 
-  return (
-    <>
-      <BlockEditor
-        ref={editorRef}
-        editorState={editorState}
-        onChange={setEditorState}
-        dict={dict}
-        lang={'en'}
-        dir={'ltr'}
-        plugins={plugins}
-        styles={defaultTheme}
-        portalNode={document.getElementById('block-editor-portal')}
-        debugMode={false}
-        readOnly={false}
-        textarea={false}
-      />
-    </>
-  );
+  /*
+  <BlockEditor
+    ref={editorRef}
+    editorState={editorState}
+    onChange={setEditorState}
+    dict={dict}
+    lang={'en'}
+    dir={'ltr'}
+    plugins={plugins}
+    styles={defaultTheme}
+    portalNode={document.getElementById('block-editor-portal')}
+    debugMode={false}
+    readOnly={false}
+    textarea={false}
+  />
+  */
+
+  return <></>;
 }
