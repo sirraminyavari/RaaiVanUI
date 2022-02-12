@@ -8,6 +8,7 @@ import {
   suggestTags,
 } from './API';
 
+/*
 import { EditorState, convertFromRaw } from 'draft-js';
 //import BlockEditor, { defaultTheme, plugins as _plugins } from 'block-editor';
 import mentionsData from './mentions-mock-data';
@@ -48,6 +49,7 @@ const plugins = [
   _plugins.createBlockAlignmentPlugin(),
   _plugins.createMentionPlugin({ mentions: mentionsData }),
 ];
+*/
 
 const Block = ({ nodeId, lang }) => {
   const [editorContent, setEditorContent] = useState({});
@@ -111,15 +113,12 @@ const Block = ({ nodeId, lang }) => {
     //do some stuff with the result
   };
 
-  return (
-    <>
-      <BE />
-    </>
-  );
+  return <>{/* <BE /> */}</>;
 };
 
 export default Block;
 
+/*
 function getInitialEditorState(preset) {
   return () => contentPresets[preset]();
 }
@@ -1058,7 +1057,6 @@ function BE() {
   //     )
   // ), 1000 )
 
-  /*
   <BlockEditor
     ref={editorRef}
     editorState={editorState}
@@ -1073,7 +1071,7 @@ function BE() {
     readOnly={false}
     textarea={false}
   />
-  */
 
   return <></>;
 }
+*/
