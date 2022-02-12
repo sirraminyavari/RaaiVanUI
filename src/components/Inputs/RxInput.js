@@ -3,9 +3,13 @@ import { debounceTime, Subject } from 'rxjs';
 import { tap, distinctUntilChanged } from 'rxjs/operators';
 import { createSubject } from 'helpers/helpers';
 
+/**
+ * @description simple input with delay time extension
+ * @delayTime time to delay onChange event in millisecond, the default value is 0
+ */
 const RxInput = React.forwardRef(
-  ({ defaultValue, onChange, delayTime = 0, ...props }, forwardedRef) => {
-    const [inputValue, setInputValue] = useState(defaultValue);
+  ({ value, onChange, delayTime = 0, ...props }, forwardedRef) => {
+    const [inputValue, setInputValue] = useState(value);
     const observableRef = useRef(null);
 
     useEffect(() => {
@@ -34,7 +38,7 @@ const RxInput = React.forwardRef(
 
     const handleInputChange = (e) => {
       setInputValue(e?.target?.value);
-      observableRef.current.next(e?.target?.value);
+      observableRef.current.next(e);
     };
 
     return (

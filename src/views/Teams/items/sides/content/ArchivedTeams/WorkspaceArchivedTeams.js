@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { useMediaQuery } from 'react-responsive';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspaceArchivedTeams.styles';
+import * as GlobalStyled from 'views/Teams/Teams.styles';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import ArchivedModal from './ArchivedModal';
-import SortHandle from './SortHandle';
+import ArchivedModal from './WorkspaceArchivedModal';
+import SortHandle from '../SortHandle';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-const ArchivedTeams = ({ archives, hasHandle, space }) => {
+const WorkspaceArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL, RVDic } = useWindow();
@@ -42,7 +42,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
   };
 
   return (
-    <Styled.TeamContainer
+    <GlobalStyled.TeamContainer
       isArchive
       isMobile={isTabletOrMobile}
       onClick={handleShowArchived}
@@ -57,7 +57,7 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
         onModalClose={handleCloseArchivedModal}
       />
       {hasHandle && <SortHandle />}
-      <Styled.TeamPattern
+      <GlobalStyled.TeamPattern
         dir={RV_RevFloat}
         rtl={RV_RTL}
         src={TeamPatternDefault}
@@ -69,8 +69,8 @@ const ArchivedTeams = ({ archives, hasHandle, space }) => {
           <span>{RVDic.ArchivedTeams}</span>
         </Styled.ArchivedTeamsLabel>
       </Styled.ArchivedWrapper>
-    </Styled.TeamContainer>
+    </GlobalStyled.TeamContainer>
   );
 };
 
-export default ArchivedTeams;
+export default WorkspaceArchivedTeams;

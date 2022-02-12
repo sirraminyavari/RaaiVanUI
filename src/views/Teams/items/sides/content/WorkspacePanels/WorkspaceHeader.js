@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import { TC_DEFAULT } from 'constant/Colors';
-import * as Styled from 'views/Teams/Teams.styles';
+import * as Styled from './WorkspacePanel.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
@@ -14,18 +14,18 @@ import { renameWorkspace } from 'apiHelper/ApiHandlers/RVApi';
 import {
   WORKSPACE_USER_MANAGEMENT_PATH,
   WORKSPACE_REMOVE_PATH,
-} from '../../others/constants';
+} from '../../../others/constants';
 
 /**
  *
- * SpaceHeader component
+ * WorkspaceHeader component
  *
  * @param {object} props - SpaceHeder component props
  * @param {object} props.space - workspace object
  *
  * @return {JSX.Element} The header associated with each workspace
  */
-const SpaceHeader = ({ space }) => {
+const WorkspaceHeader = ({ space }) => {
   const [isConfirmShown, setIsConfirmShown] = useState(false);
   const history = useHistory();
 
@@ -117,8 +117,8 @@ const SpaceHeader = ({ space }) => {
   );
 };
 
-SpaceHeader.propTypes = {
+WorkspaceHeader.propTypes = {
   space: PropTypes.object.isRequired,
 };
 
-export default SpaceHeader;
+export default WorkspaceHeader;
