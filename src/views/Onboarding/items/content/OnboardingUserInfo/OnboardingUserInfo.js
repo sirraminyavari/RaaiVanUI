@@ -7,7 +7,7 @@ import ImageCropper from 'components/ImageCropper/ImageCropper';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingUserInfo.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { updateCurrentUserFirstAndLastName } from 'apiHelper/ApiHandlers/usersApi';
+import { setUserFirstAndLastName } from 'apiHelper/ApiHandlers/usersApi';
 import Button from 'components/Buttons/Button';
 import { ONBOARDING_USER_TEAM_PATH } from '../../others/constants';
 
@@ -57,10 +57,7 @@ const OnboardingUserInfoContent = () => {
   const saveCurrentUserInfo = useMemo(
     () => async () => {
       setIsLoading(true);
-      await updateCurrentUserFirstAndLastName(
-        currentUserInfo.FirstName,
-        currentUserInfo.LastName
-      );
+      await setUserFirstAndLastName(currentUserInfo);
       history.push(ONBOARDING_USER_TEAM_PATH);
     },
     [currentUserInfo]

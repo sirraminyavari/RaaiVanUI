@@ -243,19 +243,26 @@ export const updateLastName = (UserID, lastName) => {
 };
 
 /**
- * @description Sets the currently logged in user's firstName and lastName
- * @param {string} firstName
- * @param {string} lastName
+ * @description Sets the firstName and lastName of the given UserID
+ * @param {object} parameters
+ * @param {string} parameters.FirstName
+ * @param {string} parameters.LastName
+ * @param {string} parameters.UserID - desired User ID (defaults to currently logged in user)
  * @returns {Promise<unknown>}
  */
-export const updateCurrentUserFirstAndLastName = (firstName, lastName) => {
-  const setCurrentUserFirstAndLastName = API_Provider(
+export const setUserFirstAndLastName = ({
+  FirstName,
+  LastName,
+  UserID,
+} = {}) => {
+  const setUserFirstAndLastNameAPI = API_Provider(
     USERS_API,
     SET_FIRST_AND_LAST_NAME
   );
-  return apiCallWrapper(setCurrentUserFirstAndLastName, {
-    FirstName: encodeBase64(firstName),
-    LastName: encodeBase64(lastName),
+  return apiCallWrapper(setUserFirstAndLastNameAPI, {
+    FirstName: encodeBase64(FirstName),
+    LastName: encodeBase64(LastName),
+    UserID,
   });
 };
 
