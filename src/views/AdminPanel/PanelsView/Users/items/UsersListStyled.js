@@ -5,10 +5,12 @@ export const ListContainer = styled.table`
   display: block;
   width: 100%;
 `;
+ListContainer.displayName = 'ListContainer';
 
 export const ListHeader = styled.thead`
   display: block;
 `;
+ListHeader.displayName = 'ListHeader';
 
 export const ListHeaderRow = styled.tr`
   display: block;
@@ -17,6 +19,7 @@ export const ListHeaderRow = styled.tr`
   border-bottom: 0.08rem solid var(--rv-color-distant);
   color: var(--rv-color-distant);
 `;
+ListHeaderRow.displayName = 'ListHeaderRow';
 
 export const ListHeaderItem = styled.th`
   display: inline-block;
@@ -25,11 +28,12 @@ export const ListHeaderItem = styled.th`
   font-weight: 400;
   user-select: none;
 `;
+ListHeaderItem.displayName = 'ListHeaderItem';
 
 export const ListBody = styled.tbody`
   display: block;
-  transition: height 0.25s ease-in;
 `;
+ListBody.displayName = 'ListBody';
 
 export const ListRow = styled.tr`
   display: block;
@@ -37,6 +41,7 @@ export const ListRow = styled.tr`
   line-height: 5.125rem;
   border-bottom: 0.08rem solid var(--rv-color-distant);
 `;
+ListRow.displayName = 'ListRow';
 
 export const ListBodyItem = styled.td`
   display: inline-block;
@@ -44,11 +49,11 @@ export const ListBodyItem = styled.td`
   overflow: hidden;
   user-select: none;
 `;
+ListBodyItem.displayName = 'ListBodyItem';
 
 export const ShowMoreButton = styled.button`
   background-color: white;
   outline: none;
-  border: none;
   width: 9.7rem;
   height: 2rem;
   line-height: 2rem;
@@ -62,3 +67,4 @@ export const ShowMoreButton = styled.button`
     border: 1px solid var(--rv-color-actionbutton);
   }
 `;
+ShowMoreButton.displayName = 'ShowMoreButton';

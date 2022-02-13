@@ -6,12 +6,13 @@ import { Label, Maintainer } from './AnimatedDropDownList.style';
 
 /**
  *
- * @param {{
+ * @param {object} item - Raw data is needed for rendering every single item.
+ * {
  *  icon: Component,
  *  label: String,
  *  value: any,
  *  color: hex|rgb,
- * }} item - Raw data is needed for rendering every single item.
+ * }
  * @param {CSSProperties} itemStyle - Styling the every item.
  * @callback onSelectItem - will fire by clicking on the item.
  * @returns - Renders item in the drop-down

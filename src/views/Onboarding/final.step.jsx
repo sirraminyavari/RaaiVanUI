@@ -5,7 +5,7 @@ import { StepperContext } from './context/stepper.context';
 import APIHandler from 'apiHelper/APIHandler';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { toggleActivation } from 'store/reducers/onboardingReducer';
 
 const activateTemplate = (x, appId) => {

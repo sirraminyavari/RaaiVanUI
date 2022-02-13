@@ -14,10 +14,13 @@ import {
   GET_NODE_TYPES,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+import {
+  API_NAME_CN_REMOVE_NODE_TYPE,
+  API_NAME_CN_RENAME_NODE_TYPE,
+} from 'constant/api-names-cn';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
- * @returns
  */
 export const getNodeTypes = ({
   NodeTypeIDs,
@@ -48,6 +51,41 @@ export const getNodeTypes = ({
     HasChild,
     Tree,
     CheckAccess,
+  });
+};
+
+/**
+ * @description renames a NodeType/Class/Template
+ * @param {string} NodeTypeID id of the class/template
+ * @param {string} Name new name of the class/template
+ */
+export const renameNodeType = ({ NodeTypeID, Name } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_RENAME_NODE_TYPE), {
+    NodeTypeID,
+    Name: encodeBase64(Name),
+  });
+};
+
+/**
+ * @description removes a number of NodeTypes simultaneously
+ * @param {string[]} NodeTypeIDs array of ids of the classes/templates
+ * @param {string} NodeTypeID id of the class/template. The API ignores this parameter if NodeTypeIDs array is not empty
+ * @param {boolean?} RemoveHierarchy if true, the children NodeTypes will also be removed
+ */
+export const removeNodeType = ({
+  NodeTypeIDs,
+  NodeTypeID,
+  RemoveHierarchy,
+} = {}) => {
+  const ids = NodeTypeIDs?.length
+    ? NodeTypeIDs
+    : !!NodeTypeID
+    ? [NodeTypeID]
+    : [];
+
+  return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_REMOVE_NODE_TYPE), {
+    NodeTypeIDs: ids,
+    RemoveHierarchy,
   });
 };
 

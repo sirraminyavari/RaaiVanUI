@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
+import { TCV_LIGHTWARM } from 'constant/CssVariables';
 
 const BtnContainer = styled.div.attrs({
   className: 'rv-bg-color-default',
@@ -18,6 +19,10 @@ const BtnContainer = styled.div.attrs({
   -webkit-user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
+
+  &:hover {
+    background-color: ${TCV_LIGHTWARM};
+  }
 `;
 
 const AddUserButton = ({ children, ...props }) => {

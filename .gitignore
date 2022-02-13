@@ -17,6 +17,10 @@
 # debug.log
 debug.log
 
+# documentation
+/docs
+/storybook-static
+
 # misc
 .DS_Store
 .env.local
@@ -32,4 +36,3 @@ yarn-error.log*
 route_info.js
 
 .eslintcache
-package-lock.json

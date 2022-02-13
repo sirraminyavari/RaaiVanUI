@@ -10,8 +10,8 @@ import PropTypes from 'prop-types';
  * @param {JSX.Element[]} props.children
  * @param {boolean} [props.hasMore=false] Determines whether trigger `onScrollEnd` event or not
  * @param {number} [props.pageNumber=0] An useState getter
- * @param {()=>void} [props.setPageNumber=()=>{})] An useState setter
- * @param {()=>void} [props.onScrollEnd=()=>{})] function to trigger, when scrolled to the last child
+ * @param {function} [props.setPageNumber] An useState setter
+ * @param {event} [props.onScrollEnd] function to trigger, when scrolled to the last child
  * @param {number | number[]} [props.threshold=0.75] - A number or array of numbers between 0 - 1 that determines when to trigger `onScrollEnd`
  * @return {JSX.Element}
  */

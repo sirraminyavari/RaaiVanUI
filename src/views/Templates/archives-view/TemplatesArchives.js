@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import GridList from '../items/GridList';
 import SearchTemplates from '../items/SearchTemplates';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';

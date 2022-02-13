@@ -6,7 +6,12 @@ import * as Styled from 'views/Search/SearchView.styles';
 import { searchContext } from 'views/Search/SearchView';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import { CV_DISTANT } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  TCV_REVERSE,
+  TCV_SOFT,
+} from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import SearchTypeButtons from './SearchTypeButtons';
 import SearchAdvancedButtons from './SearchAdvancedButtons';
@@ -20,7 +25,9 @@ const selectIsSidebarOpen = createSelector(
 
 const SearchActions = () => {
   const { RVDic } = useWindow();
-  const { searchText, setSearchText, isAsideOpen } = useContext(searchContext);
+  const { searchText, setSearchText, isAsideOpen, totalCount } = useContext(
+    searchContext
+  );
   const searchInputRef = useRef();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
@@ -54,11 +61,25 @@ const SearchActions = () => {
 
   return (
     <Styled.SearchActionsContainer>
-      <Heading type="H1" style={{ marginBottom: '1.5rem' }}>
-        {searchText
-          ? SearchResultsForN.replace('[n]', `"${searchText}"`)
-          : SearchResults}
-      </Heading>
+      <div
+        style={{
+          display: 'flex',
+          flexFlow: 'row',
+          alignItems: 'center',
+          paddingInlineEnd: '0.5rem',
+        }}>
+        <Heading type="H1" style={{ flex: '1 1 auto', marginBottom: '1.5rem' }}>
+          {searchText
+            ? SearchResultsForN.replace('[n]', `"${searchText}"`)
+            : SearchResults}
+        </Heading>
+        {!!totalCount && (
+          <div
+            style={{ flex: '0 0 auto', fontSize: '1rem', color: TCV_REVERSE }}>
+            {RVDic.NItems.replace('[n]', totalCount)}
+          </div>
+        )}
+      </div>
       <Styled.SearchActionsWrapper>
         <Styled.SearchArea>
           <Styled.InputWrapper>
@@ -71,11 +92,7 @@ const SearchActions = () => {
               <SearchIcon size={22} color={CV_DISTANT} />
             </Input>
           </Styled.InputWrapper>
-          {isCollapsed() ? (
-            <SearchTypeCollapsed />
-          ) : (
-            <SearchTypeButtons onTypeChange={(type) => console.log(type)} />
-          )}
+          {isCollapsed() ? <SearchTypeCollapsed /> : <SearchTypeButtons />}
         </Styled.SearchArea>
         <SearchAdvancedButtons />
       </Styled.SearchActionsWrapper>

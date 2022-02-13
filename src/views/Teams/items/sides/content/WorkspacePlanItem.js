@@ -3,12 +3,12 @@ import React from 'react';
 import * as Styled from './../../../Teams.styles';
 import Button from 'components/Buttons/Button';
 import UsersIcon from 'components/Icons/UsersIcon/Users';
-import { AiOutlineLeftCircle } from 'react-icons/ai';
+import ArrowIcon from 'components/Icons/ArrowIcons/ArrowHead';
 import { useHistory, useParams } from 'react-router-dom';
 import { WORKSPACE_INVOICE_PATH } from '../../others/constants';
 
 const WorkspacePlanItem = ({ isYearlyPrices }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, RV_RTL } = useWindow();
   const history = useHistory();
   const { id: WorkspaceID } = useParams();
 
@@ -47,7 +47,7 @@ const WorkspacePlanItem = ({ isYearlyPrices }) => {
         {new Array(3).fill(undefined).map(() => {
           return (
             <div className="planDescription">
-              <AiOutlineLeftCircle />
+              <ArrowIcon circle dir={RV_RTL && 'left'} />
               ده گیگابایت فضای ذخیره‌سازی
             </div>
           );

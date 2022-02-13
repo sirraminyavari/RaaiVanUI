@@ -5,7 +5,7 @@ import useWindowContext from 'hooks/useWindowContext';
 import InvitedUserCard from './rows/InvitedUserCard';
 import { SaasInvitedUsersList } from './_constants';
 
-const InvitedUserList = ({ users, ...props }) => {
+const InvitedUserList = ({ users }) => {
   const { RV_RTL, RVDic } = useWindowContext();
   const [showMore, setShowMore] = useState(false);
 

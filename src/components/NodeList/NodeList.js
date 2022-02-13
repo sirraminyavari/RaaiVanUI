@@ -19,7 +19,6 @@ const isSaas = (window.RVGlobal || {}).SAASBasedMultiTenancy;
  * @param {Object} dateFilter - selected date for finding nodes in that period time
  * @param {String} nodeTypeId - Id of nodeType.
  * @param {Object} formFilters - object of objects of filters
- * @returns
  */
 const NodeList = (props) => {
   const {
