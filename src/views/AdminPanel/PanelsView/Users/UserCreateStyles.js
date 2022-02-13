@@ -5,7 +5,7 @@ import {
   CV_RED,
   CV_WHITE,
 } from 'constant/CssVariables';
-import SearchInput from 'components/Inputs/SearchInput';
+import RxInput from 'components/Inputs/RxInput';
 
 export const IconContainer = styled.div`
   display: flex;
@@ -79,7 +79,7 @@ export const UsernameInput = styled.div`
 `;
 UsernameInput.displayName = 'UsernameInput';
 
-export const UsernameInputField = styled(SearchInput)`
+export const UsernameInputField = styled(RxInput)`
   width: 100%;
   border: none;
   outline: none;
