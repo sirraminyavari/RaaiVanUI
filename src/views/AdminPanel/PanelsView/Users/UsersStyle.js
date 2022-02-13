@@ -3,24 +3,28 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Heading from 'components/Heading/Heading';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 
-export const UserManagementContainer = styled.div`
+const UserManagementContainer = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};
   padding: 1rem;
 `;
+UserManagementContainer.displayName = 'UserManagementContainer';
 
-export const BreadCrumbWrapper = styled(Breadcrumb)`
+const BreadCrumbWrapper = styled(Breadcrumb)`
   position: absolute;
   top: 1.5rem;
-  ${({ rtl }) => (rtl ? 'right: 1.5rem;' : 'left: 1.5rem;')}
+  ${({ rtl }) => (rtl ? 'right: 1.5rem;' : 'left: 1.5rem;')};
+  transition: all 200ms ease-in-out;
 `;
+BreadCrumbWrapper.displayName = 'BreadCrumbWrapper';
 
-export const ReturnButtonWrapper = styled.div`
+const ReturnButtonWrapper = styled.div`
   position: absolute;
   top: 1.5rem;
   ${({ rtl }) => (rtl ? 'left: 1.5rem;' : 'right: 1.5rem;')}
 `;
+ReturnButtonWrapper.displayName = 'ReturnButtonWrapper';
 
-export const ReturnButton = styled.button`
+const ReturnButton = styled.button`
   width: 9.7rem;
   outline: none;
   background-color: ${CV_WHITE};
@@ -38,14 +42,16 @@ export const ReturnButton = styled.button`
     border: 1px solid ${CV_RED};
   }
 `;
+ReturnButton.displayName = 'ReturnButton';
 
-export const HeadingWrapper = styled(Heading).attrs({
+const HeadingWrapper = styled(Heading).attrs({
   type: 'H1',
 })`
   font-size: 1.375rem;
 `;
+HeadingWrapper.displayName = 'HeadingWrapper';
 
-export const UserManagementContentCard = styled.div`
+const UserManagementContentCard = styled.div`
   position: relative;
   box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
   border-radius: 0.625rem;
@@ -64,16 +70,49 @@ export const UserManagementContentCard = styled.div`
   .modal-content {
     padding: 0 !important;
   }
-`;
 
-export const ContentWrapper = styled.div`
+  .transition-enter {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  .transition-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all ${({ transitionDutration }) => transitionDutration}ms;
+  }
+  .transition-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .transition-exit-active {
+    opacity: 0;
+    transition: all ${({ transitionDutration }) => transitionDutration}ms;
+    transform: translateX(-3rem);
+  }
+`;
+UserManagementContentCard.displayName = 'UserManagementContentCard';
+
+const ContentWrapper = styled.div`
   width: 100%;
 `;
+ContentWrapper.displayName = 'ContentWrapper';
 
-export const TopBar = styled.div`
+const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 2.44rem;
   gap: 0.5rem;
 `;
+TopBar.displayName = 'TopBar';
+
+export {
+  UserManagementContainer,
+  BreadCrumbWrapper,
+  ReturnButtonWrapper,
+  TopBar,
+  ContentWrapper,
+  UserManagementContentCard,
+  HeadingWrapper,
+  ReturnButton,
+};
