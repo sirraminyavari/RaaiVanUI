@@ -10,6 +10,8 @@ import {
   API_NAME_CN_GET_EXTENSIONS,
   API_NAME_CN_GET_SERVICE,
   API_NAME_CN_IS_COMMUNITY_PAGE,
+  API_NAME_CN_SET_SERVICE_DESCRIPTION,
+  API_NAME_CN_SET_SERVICE_TITLE,
 } from 'constant/api-names-cn';
 
 /**
@@ -20,6 +22,21 @@ export const getService = ({ NodeTypeID } = {}) => {
   return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_GET_SERVICE), {
     NodeTypeID,
   });
+};
+
+/**
+ * @description sets the description of a service
+ * @param {string} NodeTypeID the id of a class/template
+ * @param {string} Description the description of the service
+ */
+export const setServiceDescription = ({ NodeTypeID, Description } = {}) => {
+  return apiCallWrapper(
+    API_Provider(CN_API, API_NAME_CN_SET_SERVICE_DESCRIPTION),
+    {
+      NodeTypeID,
+      Description: encodeBase64(Description),
+    }
+  );
 };
 
 /**
