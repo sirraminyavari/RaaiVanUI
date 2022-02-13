@@ -1,206 +1,126 @@
-import styled from 'styled-components';
-import {
-  CV_DISTANT,
-  CV_FREEZED,
-  CV_GRAY,
-  CV_GRAY_LIGHT,
-  CV_WHITE,
-  TCV_DEFAULT,
-  TCV_LIGHTWARM,
-  TCV_WARM,
-} from 'constant/CssVariables';
 import ReloadIcon from 'components/Icons/ReloadIcon/ReloadIcon';
 import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Buttons/Button';
 import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
-import { setRandomPassword } from '../../../../../../apiHelper/ApiHandlers/usersApi';
+import { setRandomPassword } from 'apiHelper/ApiHandlers/usersApi';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import * as Styled from './ResetPasswordStyle';
 
-const ResetPassword = ({ render, userId, ...props }) => {
+const ResetPassword = ({ render, userId, userTitle }) => {
+  const { RVDic } = window;
   const [modalInfo, setModalInfo] = useState({
-    title: 'بازنشانی گذرواژه',
+    title: RVDic?.ResetPassword,
     contentWidth: '30%',
     middle: true,
     show: false,
     titleClass: 'rv-default',
     titleContainerClass: 'modal-title-bar',
   });
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState('');
 
-  const onModalConfirm = () => {
-    setRandomPassword(userId)
-      .then((res) => {
-        console.log(res);
-        if (res?.Succeed) {
-          setPassword(res?.Password);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+  const onModalConfirm = async () => {
+    const { Succeed, Password, ErrorText } = await setRandomPassword(userId);
+
+    if (Succeed) {
+      setPassword(Password);
+    } else if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        message: RVDic?.MSG[ErrorText] || ErrorText,
       });
+    }
   };
 
-  const copyPassword = () => {
-    navigator?.clipboard?.writeText(password);
+  const copyPassword = async () => {
+    try {
+      await navigator?.clipboard?.writeText(password);
+      InfoToast({
+        type: 'success',
+        autoClose: true,
+        message: 'لینک کپی شد',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onModalCancel = () => {
     setModalInfo({ ...modalInfo, show: false });
   };
 
+  const onModalOpen = () => {
+    setPassword('');
+    setModalInfo({ ...modalInfo, show: true });
+  };
+
   return (
-    <Container>
-      <ResetButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
+    <Styled.Container>
+      <Styled.ResetButton onClick={onModalOpen}>
         <ReloadIcon size={22} />
-      </ResetButton>
+      </Styled.ResetButton>
 
       <Modal
         {...modalInfo}
         onClose={() => setModalInfo({ ...modalInfo, show: false })}>
-        <ProfileWrapper>{render}</ProfileWrapper>
+        <Styled.ProfileWrapper>{render}</Styled.ProfileWrapper>
 
-        <ActionContainer>
+        <Styled.ActionContainer>
           {!password && (
             <>
-              <RemoveMessage>
-                {'آیا قصد بازنشانی گذرواژه را دارید؟'}
-              </RemoveMessage>
-              <ActionButtonContainer>
+              <Styled.RemoveMessage>
+                {RVDic.Confirms.DoYouWantToResetPasswordForUserN.replace(
+                  '[n]',
+                  `${userTitle || ''}`
+                )}
+              </Styled.RemoveMessage>
+              <Styled.ActionButtonContainer>
                 <Button
                   type="primary"
                   style={buttonStyles}
                   onClick={() => onModalConfirm()}>
-                  {'بازنشانی'}
+                  {RVDic?.Reset}
                 </Button>
 
                 <Button
                   type="negative-o"
                   style={buttonStyles}
                   onClick={() => onModalCancel()}>
-                  {'بازگشت'}
+                  {RVDic?.Return}
                 </Button>
-              </ActionButtonContainer>
+              </Styled.ActionButtonContainer>
             </>
           )}
           {password && (
             <>
-              <PasswordChangeTitle>رمز عبور جدید کاربر</PasswordChangeTitle>
+              <Styled.PasswordChangeTitle>
+                {RVDic?.NewPassword}
+              </Styled.PasswordChangeTitle>
 
-              <PasswordInput value={password} disabled />
-              <ActionButtonContainer>
-                <CopyButton
+              <Styled.PasswordInput value={password} disabled />
+              <Styled.ActionButtonContainer>
+                <Styled.CopyButton
                   type="primary"
                   style={buttonStyles}
                   onClick={() => copyPassword()}>
                   <CopyIcon square={true} size={16} />
-                  {'کپی'}
-                </CopyButton>
+                  {RVDic?.Copy}
+                </Styled.CopyButton>
 
                 <Button
                   type="negative-o"
                   style={buttonStyles}
                   onClick={() => onModalCancel()}>
-                  {'بازگشت'}
+                  {RVDic?.Return}
                 </Button>
-              </ActionButtonContainer>
+              </Styled.ActionButtonContainer>
             </>
           )}
-        </ActionContainer>
+        </Styled.ActionContainer>
       </Modal>
-    </Container>
+    </Styled.Container>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ResetButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${CV_WHITE};
-  height: 2.5rem;
-  width: 2.5rem;
-  border-radius: 100%;
-  color: ${CV_DISTANT};
-  cursor: pointer;
-
-  &:hover {
-    color: ${TCV_DEFAULT};
-  }
-`;
-const ProfileWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2.5rem;
-`;
-
-const ActionContainer = styled.div`
-  margin-top: 4rem;
-  height: 12.6rem;
-  border-radius: 0.5rem;
-  background-color: ${CV_GRAY_LIGHT};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-`;
-
-const RemoveMessage = styled.div`
-  color: ${CV_GRAY};
-  font-size: 1.1rem;
-  height: 1.75rem;
-  line-height: 1.75rem;
-`;
-
-const ActionButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const PasswordChangeTitle = styled.div`
-  font-size: 1rem;
-  color: ${CV_GRAY};
-  height: 1.2rem;
-  line-height: 1.2rem;
-`;
-
-const PasswordInput = styled.input`
-  height: 3rem;
-  width: 16rem;
-  border-radius: 0.3rem;
-  outline: none;
-  border: 1px solid ${CV_DISTANT};
-  text-align: center;
-  font-size: 1rem;
-  background-color: ${CV_FREEZED};
-`;
-
-const CopyButton = styled.div`
-  height: 3rem;
-  width: 7.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  user-select: none;
-  background-color: ${TCV_DEFAULT};
-  color: ${CV_WHITE};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    background-color: ${TCV_LIGHTWARM};
-  }
-`;
 const buttonStyles = {
   height: '3rem',
   width: '7.5rem',
