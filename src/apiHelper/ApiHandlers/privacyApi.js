@@ -22,7 +22,6 @@ export const checkAuthority = () => {
 
 /**
  * @enum {PrivacyObjectTypes}
- */
 const PRIVACY_OBJECT_TYPE = {
   Node,
   NodeType,
@@ -33,10 +32,10 @@ const PRIVACY_OBJECT_TYPE = {
   FormElement,
   AccessRole,
 };
+*/
 
 /**
  * @enum {PermissionType}
- */
 const PERMISSION_TYPE = {
   Create,
   CreateBulk,
@@ -47,6 +46,7 @@ const PERMISSION_TYPE = {
   Delete,
   Download,
 };
+*/
 
 /**
  * @description fetches the current privacy settings for a number of ObjectIDs
@@ -56,10 +56,10 @@ const PERMISSION_TYPE = {
  * @param {PrivacyObjectType} Type the type of the object(s)
  */
 export const getAudience = ({ ObjectIDs, ObjectID, Type } = {}) => {
-  if (!(ObjectIDs || []).length && !!ObjectID) ObjectsIDs = [ObjectID];
+  if (!(ObjectIDs || []).length && !!ObjectID) ObjectIDs = [ObjectID];
 
   return apiCallWrapper(API_Provider(PRIVACY_API, API_NAME_PRVC_GET_AUDIENCE), {
-    ObjectIDs: (ObjectsIDs || []).join('|'),
+    ObjectIDs: (ObjectIDs || []).join('|'),
     ObjectType: Type,
   });
 };

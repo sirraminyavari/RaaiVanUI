@@ -1,4 +1,4 @@
-import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { API_Provider, encodeBase64 } from 'helpers/helpers';
 import { CN_API } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 import {
@@ -11,7 +11,6 @@ import {
   API_NAME_CN_GET_SERVICE,
   API_NAME_CN_IS_COMMUNITY_PAGE,
   API_NAME_CN_SET_SERVICE_DESCRIPTION,
-  API_NAME_CN_SET_SERVICE_TITLE,
 } from 'constant/api-names-cn';
 
 /**
