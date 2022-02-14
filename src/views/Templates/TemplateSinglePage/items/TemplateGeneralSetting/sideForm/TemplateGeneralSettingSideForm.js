@@ -2,25 +2,29 @@ import styled from 'styled-components';
 import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 import { FLEX_RCB } from 'constant/StyledCommonCss';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
+import { useTemplateGeneralSettingSideForm } from './useTemplateGeneralSettingSideForm';
 
 const TemplateGeneralSettingSideForm = () => {
+  const { wiki, posts, handleWikiState, handlePostsState } =
+    useTemplateGeneralSettingSideForm();
+
   return (
     <Container>
       <Block>
         <Title>{'ساختار قالب'}</Title>
         <Section>
           <ItemTitle>{'دانش‌نامه قالب فعال باشد'}</ItemTitle>
-          <ToggleButton value={true} />
+          <ToggleButton value={wiki} onToggle={handleWikiState} />
         </Section>
 
         <Section>
           <ItemTitle>{'بخش دیدگاه‌ها'}</ItemTitle>
-          <ToggleButton value={true} />
+          <ToggleButton value={posts} onToggle={handlePostsState} />
         </Section>
 
         <Section>
           <ItemTitle>{' - اولویت دیدگاه در چیدمان'}</ItemTitle>
-          <ToggleButton value={false} />
+          <ToggleButton value={true} />
         </Section>
 
         <Section>

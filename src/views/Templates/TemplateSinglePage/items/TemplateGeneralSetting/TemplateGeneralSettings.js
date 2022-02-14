@@ -4,11 +4,12 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import TemplateUploadIcon from './items/TemplateUploadIcon';
-import TemplateGeneralSettingSideForm from './items/TemplateGeneralSettingSideForm';
+import TemplateGeneralSettingSideForm from './sideForm/TemplateGeneralSettingSideForm';
 import DeleteTemplateButton from './items/DeleteTemplateButton';
 import { MainFormContainer } from './TemplateGeneralSettingsStyles';
 import TemplateTitleForm from './items/TemplateTitleForm';
 import ConfidentialitySetting from './items/ConfidentialitySetting';
+
 const TemplateGeneralSettings = () => {
   const { id, title } = useParams();
   const { RVDic } = useWindowContext();
