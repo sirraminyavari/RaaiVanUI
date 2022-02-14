@@ -3,8 +3,11 @@ import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
   RENAME_WORKSPACE,
+  REMOVE_WORKSPACE_TICKET,
+  REMOVE_WORKSPACE_USER,
   RV_API,
   SELECT_APPLICATION,
+  REMOVE_WORKSPACE,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -16,6 +19,45 @@ import { apiCallWrapper } from './apiCallHelpers';
 export const createWorkspace = ({ Name } = {}) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_WORKSPACE), {
     Name: encodeBase64(Name),
+  });
+};
+
+/**
+ * @description remove user from workspace
+ * @param WorkspaceID
+ * @param UserID
+ * @return {Promise<unknown>}
+ */
+export const removeWorkspaceUser = ({ UserID, WorkspaceID } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE_USER), {
+    WorkspaceID,
+    UserID,
+  });
+};
+
+/**
+ * @description OTP verification code for removing a workspace
+ * @param WorkspaceID
+ * @param Captcha
+ * @return {Promise<unknown>}
+ */
+export const removeWorkspaceTicket = ({ WorkspaceID, Captcha } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE_TICKET), {
+    WorkspaceID,
+    Captcha,
+  });
+};
+
+/**
+ * @description  remove workspace
+ * @param VerificationToken - a verification token from [removeWorkspaceTicket] api
+ * @param Code - OTP digits from user input
+ * @return {Promise<unknown>}
+ */
+export const removeWorkspace = ({ VerificationToken, Code } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE), {
+    VerificationToken,
+    Code,
   });
 };
 

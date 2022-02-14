@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
  * ```js
  * const LazyComponentWithLoading = WithSuspense(lazy(() => import('views/Teams/WorkspaceView')))
  * ```
- * @param {React.LazyExoticComponent<() => JSX.Element>} Component - React lazy import
- * @param {()=>JSX.Element} Loading - loading component e.g. LogoLoader, Shimmer or component Skeleton
+ * @param {Component} Component - React lazy import
+ * @param {function} Loading - loading component e.g. LogoLoader, Shimmer or component Skeleton
  * @return {JSX.Element}
  */
 const WithSuspense = (Component, Loading = undefined) => (props) => {

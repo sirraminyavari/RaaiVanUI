@@ -29,121 +29,8 @@ import {
   TCV_WARM,
 } from 'constant/CssVariables';
 import { FLEX_CSC, FLEX_RCS } from 'constant/StyledCommonCss';
-import Input from 'components/Inputs/Input';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
-
-export const HeaderContainer = styled.div.attrs({
-  className: BG_GRAY_LIGHT,
-})`
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const ModalContentWrapper = styled.div`
-  width: calc(100% + 2rem);
-  height: calc(100vh - 17rem);
-  overflow: scroll;
-  margin-top: 2.5rem;
-  margin-inline-start: -1rem;
-  padding: 0 1rem;
-`;
-
-export const ArchivedTeamWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.9rem 0;
-`;
-
-export const ArchivedTeamDescription = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-grow: 1;
-  width: calc(100% - 5rem);
-`;
-
-export const ArchivedTeamTitle = styled.span`
-  margin: 0 1rem;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-export const HeaderTitle = styled.span.attrs({
-  className: C_GRAY,
-})`
-  font-size: 1.1rem;
-  font-weight: 500;
-`;
-
-export const SpaceListContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  //TODO: remove it when space exists.
-  margin-top: 2rem;
-`;
-
-export const SpaceConatiner = styled.div`
-  width: 100%;
-  margin: 0 0 1rem 0;
-`;
-
-export const SpaceHeaderContainer = styled.div.attrs({
-  className: `${BG_GRAY_LIGHT}`,
-})`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 0.2rem 0;
-  position: sticky;
-  // top: 4rem;
-  top: 0;
-  z-index: 200;
-  padding: 1rem 0;
-`;
-
-export const SpaceHeaderTitle = styled.div.attrs({
-  className: C_GRAY_DARK,
-})`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-`;
-export const SpaceHeaderTitleInput = styled(Input).attrs({
-  className: C_GRAY_DARK,
-})`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  padding-block: 1rem;
-  border-color: transparent;
-  border-radius: 0;
-  &:hover {
-    border-color: transparent;
-  }
-  &:focus {
-    border-color: transparent;
-    border-bottom-color: ${CV_DISTANT};
-  }
-`;
 
 export const ConfirmSpaceWrapper = styled.div`
   margin: 0 2.5rem;
@@ -170,50 +57,6 @@ export const ConfirmWarning = styled.div.attrs({
   className: C_RED,
 })`
   font-size: 0.8rem;
-`;
-
-export const SpaceHeaderActions = styled.div`
-  width: 3rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-`;
-
-const IconWrapperCss = css`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 50%;
-`;
-
-export const TrashIconWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${BG_WHITE}`,
-}))`
-  ${IconWrapperCss}
-  padding: 0.5rem;
-  :hover {
-    color: ${CV_RED} !important;
-  }
-`;
-
-export const SettingIconWrapper = styled.div.attrs((props) => ({
-  className: `${C_DISTANT} ${BG_WHITE}`,
-}))`
-  ${IconWrapperCss}
-  padding: 0.4rem;
-  margin: 0 0.2rem;
-  :hover {
-    color: ${TCV_DEFAULT} !important;
-  }
-`;
-
-export const TeamListConatiner = styled.div`
-  white-space: wrap;
-  &:after {
-    content: '';
-    clear: both;
-    display: table;
-  }
 `;
 
 const getBorderCss = (props) => {
@@ -323,24 +166,6 @@ export const TeamContainer = styled.div.attrs({
   }
 `;
 
-export const ArchivedTeamsModalContainer = styled.div`
-  .archived-teams-title {
-    position: fixed;
-    width: ${({ modalWidth }) => modalWidth};
-    padding: 1rem;
-    background-color: ${CV_GRAY_LIGHT};
-    z-index: 1000;
-  }
-
-  .archived-teams {
-    max-height: calc(100vh - 4.5rem);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-`;
-
 export const DragIconWrapper = styled.div`
   position: absolute;
   top: 0.15rem;
@@ -350,28 +175,6 @@ export const DragIconWrapper = styled.div`
     all-scroll !important;
   z-index: 100;
   padding: 0.5rem;
-`;
-
-export const TeamContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-`;
-
-export const TeamDescription = styled.div`
-  flex-grow: 1;
-`;
-
-export const TeamAvatarWrapper = styled.div.attrs({
-  className: `${BO_RADIUS_CIRCLE}`,
-})`
-  width: 3.2rem;
-  position: relative;
-
-  :hover > div {
-    opacity: 1;
-  }
 `;
 
 export const TeamEditWrapper = styled.div.attrs({
@@ -388,197 +191,6 @@ export const TeamEditWrapper = styled.div.attrs({
   opacity: 0;
   cursor: pointer;
   transition: all 0.3s ease;
-`;
-
-export const TeamTitle = styled.div.attrs({
-  className: C_GRAY_DARK,
-})`
-  font-size: 1rem;
-  margin: 0.5rem 0;
-  font-weight: 500;
-
-  .team-inline-edit-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 50%;
-    padding: 0.2rem 0.5rem;
-
-    :hover {
-      border: 1px solid ${CV_DISTANT};
-      border-radius: 0.3rem;
-    }
-  }
-`;
-
-export const TeamExcerpt = styled.div.attrs({
-  className: C_GRAY,
-})`
-  font-size: 0.8rem;
-  margin: 0.5rem 0;
-`;
-
-export const TeamFooterConatiner = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-
-  .team-more-icon {
-    color: ${CV_DISTANT};
-
-    :hover {
-      color: ${TCV_DEFAULT};
-    }
-  }
-
-  .team-more-tooltip {
-    // background-color: ${CV_WHITE} !important;
-    // box-shadow: 1px 3px 20px ${TC_VERY_TRANSPARENT} !important;
-  }
-`;
-
-export const TeamAvatarsWrapper = styled.div`
-  ${FLEX_RCS}
-`;
-
-export const MoreIconWrapper = styled.div.attrs({
-  className: `${BO_RADIUS_CIRCLE}`,
-})`
-  ${FLEX_RCS}
-  padding: 0.2rem;
-  background-color: ${CV_FREEZED};
-`;
-
-const getPosition = ({ dir, usersCount }) => {
-  if (usersCount === 4) {
-    return `${dir}: 1.7rem`;
-  } else if (usersCount === 3) {
-    return `${dir}: 1.2rem`;
-  } else if (usersCount === 2) {
-    return `${dir}: 0.6rem`;
-  } else {
-    return `${dir}: 0`;
-  }
-};
-
-export const ExtraUsersWrapper = styled.div`
-  position: relative;
-  ${RV_RevFloat}: 1.7rem;
-`;
-
-export const ExtraUsersPopupHeader = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: ${TCV_DEFAULT};
-  margin: 0.1rem 0.55rem;
-`;
-
-export const ExtraUsersPopupTitle = styled.span`
-  margin: 0 0.5rem;
-`;
-
-export const AddUserWrapper = styled.div.attrs({
-  className: `${BO_RADIUS_CIRCLE}`,
-})`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: ${CV_FREEZED};
-  text-align: center;
-  line-height: 3.5rem;
-  ${({ rtl }) => rtl && 'transform: scaleX(-1);'}
-  position: relative;
-  ${getPosition}
-`;
-
-export const ExtraUserItem = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 0.45rem 0;
-  padding-inline-start: 0.2rem;
-  position: relative;
-`;
-
-export const ExtraUserTitle = styled.span.attrs({
-  className: C_GRAY,
-})`
-  margin: 0 0.5rem;
-`;
-
-export const TeamActionContainer = styled.div.attrs({
-  className: `${C_GRAY} ${BG_WHITE} ${BO_RADIUS_QUARTER}`,
-})`
-  ${FLEX_CSC}
-  cursor: pointer;
-  min-width: 7rem;
-  min-height: 2.2rem;
-  padding: 0 0.8rem;
-  box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  text-transform: capitalize;
-
-  .team-action-title {
-    margin: 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-`;
-
-export const TeamDeleteWrapper = styled.div`
-  ${FLEX_RCS}
-
-  :hover {
-    color: ${CV_RED} !important;
-  }
-`;
-
-export const TeamExitWrapper = styled.div`
-  ${FLEX_RCS}
-
-  & svg {
-    transform: scaleX(-1);
-  }
-
-  :hover {
-    color: ${TCV_VERYWARM} !important;
-  }
-`;
-
-export const NewTeamWrapper = styled.div.attrs({
-  className: C_DISTANT,
-})`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const ArchivedWrapper = styled.div.attrs({
-  className: C_RED,
-})`
-  width: 100%;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  font-size: 1rem;
-`;
-
-export const NewTeamLabel = styled.div.attrs({
-  className: C_DISTANT,
-})`
-  margin: 1rem 0 0 0;
-  font-size: 1.2rem;
-`;
-
-export const ArchivedTeamsLabel = styled.div.attrs({
-  className: C_RED,
-})`
-  margin: 1rem 0 0 0;
 `;
 
 export const DesktopWelcomeSide = styled.div`
@@ -639,109 +251,6 @@ export const WelcomeMessage = styled.span.attrs({
 })`
   font-size: 1rem;
   text-transform: capitalize;
-`;
-
-export const TeamPattern = styled.img`
-  width: 7rem;
-  position: absolute;
-  top: 0;
-  ${({ dir }) => dir}: 0;
-  ${({ rtl }) =>
-    !rtl &&
-    `-webkit-transform: scaleX(-1);
-  transform: scaleX(-1);`}
-`;
-
-export const AddUserModalHeader = styled.div`
-  text-align: center;
-  position: relative;
-  width: 3.2rem;
-  margin: auto;
-  color: ${CV_DISTANT};
-`;
-
-export const AddUserPlusSign = styled.span`
-  position: absolute;
-  top: -0.3rem;
-  left: 0;
-  font-weight: bold;
-  font-size: 1rem;
-`;
-
-export const AddUserActionsWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-
-  .active-tab {
-    width: 47%;
-    background-color: #fff;
-    font-size: 1rem;
-    font-weight: 500;
-    color: ${TCV_WARM};
-  }
-
-  .inactive-tab {
-    width: 47%;
-    border-color: #fff;
-    background-color: #fff;
-    font-size: 1rem;
-    font-weight: 500;
-
-    :hover {
-      border-color: ${TCV_DEFAULT};
-    }
-  }
-`;
-
-export const InviteContent = styled.div.attrs({
-  className: `${BO_RADIUS_HALF} ${BO_DISTANT}`,
-})`
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-
-  .send-invitation-button {
-    width: 8rem;
-    margin-inline-start: auto;
-  }
-`;
-
-export const GetLinkTitle = styled.span`
-  font-size: 1rem;
-  font-weight: 500;
-  color: ${CV_GRAY_DARK};
-`;
-
-export const GetLinkInfoWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-export const GetLinkInfoTitle = styled.span`
-  font-size: 0.8rem;
-  color: ${CV_DISTANT};
-  margin: 0.3rem;
-`;
-
-export const GetLinkFieldWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1.8rem;
-
-  .get-link-input {
-    width: 100%;
-    margin: 0 1rem;
-    text-align: left;
-    color: ${CV_GRAY};
-    background-color: ${CV_FREEZED};
-    border-color: ${CV_DISTANT};
-    padding-left: 1rem;
-    padding-right: 1rem;
-    font-size: 1rem;
-  }
 `;
 
 export const TeamConfirmMessage = styled.span`
@@ -810,83 +319,6 @@ export const WorkspaceSettingsHeaderContainer = styled.div`
   }
   .pageTitle {
     padding-block: 1.5rem;
-  }
-`;
-
-export const WorkspaceUserManagementTableContainer = styled.div`
-  width: 100%;
-  padding-top: 4rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  table {
-    min-width: 100%;
-    thead {
-      tr {
-        border-bottom: 1px solid ${CV_DISTANT};
-      }
-      th {
-        padding-inline: 2rem;
-        padding-block-end: 0.6rem;
-        font-size: 0.8rem;
-        white-space: nowrap;
-        color: ${CV_DISTANT};
-        :nth-last-of-type(2) {
-          display: block;
-          width: 23rem;
-        }
-      }
-    }
-    tbody {
-      tr {
-        border-bottom: 1px solid ${CV_DISTANT};
-        :last-of-type {
-          border-bottom-color: transparent;
-        }
-      }
-      td {
-        padding-block: 1rem;
-        padding-inline: 2rem;
-        :first-of-type {
-          font-weight: bold;
-          padding-inline-start: 1rem;
-        }
-        > div {
-          display: flex;
-          flex-wrap: nowrap;
-          white-space: nowrap;
-          justify-content: start;
-          align-items: center;
-          > * {
-            flex-shrink: 0;
-          }
-        }
-      }
-    }
-  }
-  .userAvatar {
-    margin-inline-end: 0.5rem;
-  }
-  .teamAvatar {
-    width: 3rem;
-    height: 3rem;
-  }
-  .extraTeamsIndicator {
-    width: 3rem;
-    height: 3rem;
-    background-color: ${TCV_VERY_TRANSPARENT};
-    font-size: 0.9rem;
-    color: ${TCV_DEFAULT};
-  }
-  .extraTeamsPanel {
-    overflow-y: auto;
-    height: 8rem;
-    width: 12rem;
-    margin-inline-end: -15rem;
-    margin-block-end: -4rem;
-    background: ${CV_WHITE} 0% 0% no-repeat padding-box;
-    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT_WARM};
-    border-radius: 0.6rem;
   }
 `;
 
@@ -1319,4 +751,30 @@ export const WorkspaceInvoicePaymentGatewayChoicesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-block-start: 1.5rem;
+`;
+
+export const TeamPattern = styled.img`
+  width: 7rem;
+  position: absolute;
+  top: 0;
+  ${({ dir }) => dir}: 0;
+  ${({ rtl }) =>
+    !rtl &&
+    `-webkit-transform: scaleX(-1);
+  transform: scaleX(-1);`}
+`;
+/// workspaceUserManagementContent
+export const ExtraUserItem = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0.45rem 0;
+  padding-inline-start: 0.2rem;
+  position: relative;
+`;
+
+export const ExtraUserTitle = styled.span.attrs({
+  className: C_GRAY,
+})`
+  margin: 0 0.5rem;
 `;

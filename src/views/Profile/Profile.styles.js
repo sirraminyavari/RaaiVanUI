@@ -161,11 +161,11 @@ export const CustomizationView = styled.div`
     min-width: 18rem;
     min-height: 10rem;
     margin: 0;
-    margin-${({ dir }) => dir}: 1rem;
+    ${({ dir }) => `margin-${dir}:1rem;`}
     padding: 1rem;
     text-align: center;
     position: fixed;
-   ${RV_RevFloat}: 1rem;
+    ${RV_RevFloat}: 1rem;
   }
 `;
 
@@ -528,12 +528,12 @@ export const TopicItemWrapper = styled.article.attrs({
   width: 100%;
   height: 5rem;
   margin: 0.5rem 0;
-  padding-${RV_RevFloat}: 1rem;
+  padding-inline-end: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .topic-option-orange{
+  .topic-option-orange {
     color: orange;
   }
 `;
@@ -554,13 +554,13 @@ export const PostItemWrapper = styled.div.attrs({
   width: 100%;
   height: 7rem;
   margin: 0.5rem 0;
-  padding-${RV_RevFloat}: 1rem;
+  padding-inline-end: 1rem;
   ${FLEX_RCB}
 `;
 
 export const TopicItemIconWrapper = styled.div`
   ${FLEX_CCC}
-  border-${RV_RevFloat}: 2px solid ${CV_FREEZED};
+  border-inline-end: 2px solid ${CV_FREEZED};
   width: 6rem;
   height: 80%;
 `;
@@ -606,7 +606,7 @@ export const InfoItemWrapper = styled.div`
 
   .user-info-inline-edit-container {
     margin: 0;
-    margin-${RV_Float}: 1rem;
+    margin-inline-start: 1rem;
     flex-grow: 1;
     color: ${CV_DISTANT};
     font-size: 1rem;

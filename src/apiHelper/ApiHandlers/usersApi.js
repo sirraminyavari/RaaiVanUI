@@ -17,6 +17,7 @@ import {
   Validate_User_Creation,
   SET_PASSWORD_RESET_TICKET,
   SET_PASSWORD,
+  GET_WORKSPACE_USERS,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -233,5 +234,27 @@ export const updateLastName = (UserID, lastName) => {
   return apiCallWrapper(setLastNameAPI, {
     UserID,
     LastName: encodeBase64(lastName),
+  });
+};
+
+/**
+ * @description get workspace users
+ * @param WorkspaceID
+ * @param Count
+ * @param LowerBoundary
+ * @param SearchText
+ * @return {Promise<unknown>}
+ */
+export const getWorkspaceUsers = ({
+  WorkspaceID,
+  Count,
+  LowerBoundary,
+  SearchText,
+} = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, GET_WORKSPACE_USERS), {
+    WorkspaceID,
+    Count,
+    LowerBoundary,
+    SearchText: encodeBase64(SearchText),
   });
 };

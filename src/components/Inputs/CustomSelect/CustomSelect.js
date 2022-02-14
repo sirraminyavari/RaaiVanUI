@@ -4,23 +4,7 @@ import CustomSelectIndicator from './items/CustomSelectIndicator';
 import DefaultSelectControl from './items/DefaultSelectControl';
 
 const CustomSelect = React.forwardRef((props = {}, ref) => {
-  const {
-    options,
-    defaultValue,
-    isMulti,
-    placeholder,
-    hideSelectedOptions,
-    closeMenuOnSelect,
-    isClearable,
-    isSearchable,
-    selectName,
-    selectOptions,
-    onChange,
-    onMenuClose,
-    selectStyles,
-  } = props;
-
-  const { classNamePrefix, components, ...otherProps } = props;
+  const { classNamePrefix, components, ...rest } = props;
 
   return (
     <Styled.SelectContainer>
@@ -32,10 +16,10 @@ const CustomSelect = React.forwardRef((props = {}, ref) => {
           Control: DefaultSelectControl,
           ...components,
         }}
-        {...otherProps}
+        {...rest}
       />
     </Styled.SelectContainer>
   );
 });
-
+CustomSelect.displayName = 'CustomSelect';
 export default CustomSelect;

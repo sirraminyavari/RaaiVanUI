@@ -17,8 +17,8 @@ const SearchAdvancedButtons = () => {
     RVDic: { Advanced },
   } = useWindow();
 
-  const hasNodeSearch = selectedType?.value?.split('|').includes('Node');
-  const hasUserSearch = selectedType?.value?.split('|').includes('User');
+  const hasNodeSearch = selectedType?.value?.some((t) => t === 'Node');
+  const hasUserSearch = selectedType?.value?.some((t) => t === 'User');
 
   return (
     <Styled.AdvanceButtonsWrapper isAsideOpen={isAsideOpen}>

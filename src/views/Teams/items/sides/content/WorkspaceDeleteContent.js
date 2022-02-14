@@ -1,4 +1,5 @@
-import APIHandler from 'apiHelper/APIHandler';
+import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import Button from 'components/Buttons/Button';
 import AlertIcon from 'components/Icons/AlertIcon/AlertIcon';
 import { randomNumber } from 'helpers/helpers';
@@ -11,16 +12,12 @@ import {
   initializeCaptchaToken,
 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
-import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
 import * as Styled from 'views/Teams/Teams.styles';
 import { WORKSPACES_PATH } from '../../others/constants';
-
-const RemoveWorkspaceTicketAPI = new APIHandler(
-  'RVAPI',
-  'RemoveWorkspaceTicket'
-);
-const RemoveWorkspaceAPI = new APIHandler('RVAPI', 'RemoveWorkspace');
+import {
+  removeWorkspaceTicket,
+  removeWorkspace,
+} from 'apiHelper/ApiHandlers/RVApi';
 const WorkspaceDeleteContent = () => {
   const [pendingPromise, setPendingPromise] = useState(false);
   const [resetCountdown, setResetCountdown] = useState(0);
@@ -52,49 +49,42 @@ const WorkspaceDeleteContent = () => {
   const handleLoaded = async () => {
     setOTPLoading(true);
     const recaptcha = await getCaptchaToken();
+    const { VerificationCode } = await removeWorkspaceTicket({
+      WorkspaceID,
+      Captcha: recaptcha,
+    });
 
-    RemoveWorkspaceTicketAPI.fetch(
-      {
-        WorkspaceID: WorkspaceID,
-        Captcha: recaptcha,
-      },
-      ({ VerificationCode }) => {
-        setOTPProperties({
-          Length: VerificationCode.Length,
-          Timeout: VerificationCode.Timeout,
-          EmailAddress: decodeBase64(VerificationCode.EmailAddress),
-          Token: VerificationCode.Token,
-        });
-        setOTPError('');
-        setOTPLoading(false);
-        setResetCountdown(randomNumber(1));
-      }
-    );
+    setOTPProperties({
+      Length: VerificationCode.Length,
+      Timeout: VerificationCode.Timeout,
+      EmailAddress: decodeBase64(VerificationCode.EmailAddress),
+      Token: VerificationCode.Token,
+    });
+    setOTPError('');
+    setOTPLoading(false);
+    setResetCountdown(randomNumber(1));
   };
 
   const ReturnToWorkspaces = () => history.push(WORKSPACES_PATH);
-  const handleRemoveWorkspaceButton = () => {
+  const handleRemoveWorkspaceButton = async () => {
     setPendingPromise(true);
-    RemoveWorkspaceAPI.fetch(
-      {
-        VerificationToken: OTPProperties.Token, //got from RVAPI.RemoveWorkspaceTicket previously
-        Code: OTPInput.join(''), //a 5-digit number
-      },
-      ({ ErrorText, Succeed }) => {
-        if (!ErrorText) {
-          InfoToast({
-            type: 'success',
-            message: RVDic.MSG[Succeed] || Succeed,
-          });
-          ReturnToWorkspaces();
-        } else {
-          setOTPError(RVDic.MSG[ErrorText] || ErrorText);
+    const { ErrorText, Succeed } = await removeWorkspace({
+      VerificationToken: OTPProperties.Token, //got from RVAPI.RemoveWorkspaceTicket previously
+      Code: OTPInput.join(''), //a 5-digit number
+    });
 
-          setOTPShake(randomNumber(1, 50));
-        }
-        setPendingPromise(false);
-      }
-    );
+    if (!ErrorText) {
+      InfoToast({
+        type: 'success',
+        message: RVDic.MSG[Succeed] || Succeed,
+      });
+      ReturnToWorkspaces();
+    } else {
+      setOTPError(RVDic.MSG[ErrorText] || ErrorText);
+
+      setOTPShake(randomNumber(1, 50));
+    }
+    setPendingPromise(false);
   };
   useEffect(() => {
     (async () => {

@@ -14,9 +14,15 @@ const SearchAside = () => {
   const { selectedType, isAsideOpen } = useContext(searchContext);
 
   //! See if we can show the template selection.
-  const isNodeSearch = selectedType?.value === 'Node';
-  const isQuestionSearch = selectedType?.value === 'Question';
-  const isFileSearch = selectedType?.value === 'File';
+  const isNodeSearch =
+    !!selectedType?.value?.length &&
+    (selectedType?.value).every((t) => t === 'Node');
+  const isQuestionSearch =
+    !!selectedType?.value?.length &&
+    (selectedType?.value).every((t) => t === 'Question');
+  const isFileSearch =
+    !!selectedType?.value?.length &&
+    (selectedType?.value).every((t) => t === 'File');
 
   return (
     <SearchViewAside isOpen={isAsideOpen}>

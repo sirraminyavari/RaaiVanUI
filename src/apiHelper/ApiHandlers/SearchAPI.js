@@ -6,15 +6,15 @@ import { apiCallWrapper } from './apiCallHelpers';
  * @typedef ParamsType
  * @type {Object}
  * @property {String} searchText - The text to be searched.
- * @property {String} itemTypes - All the types that should search against them(e.g: 'Node|File').
+ * @property {String[]} itemTypes - All the types that should search against them(e.g: 'Node|File').
  * @property {Boolean} [hasTitle]
  * @property {Boolean} [hasDescription]
  * @property {Boolean} [hasContent]
  * @property {Boolean} [hasTags]
  * @property {Boolean} [hasFileContent]
- * @property {String} [typeIds]
+ * @property {String[]} [typeIds]
  * @property {Boolean} [isExcel]
- * @property {String} [types]
+ * @property {String[]} [types]
  */
 
 /**
@@ -24,6 +24,7 @@ import { apiCallWrapper } from './apiCallHelpers';
  */
 export const search = ({
   searchText,
+  lowerBoundary,
   itemTypes,
   hasTitle = true,
   hasDescription = true,
@@ -36,14 +37,16 @@ export const search = ({
 }) => {
   return apiCallWrapper(API_Provider(SEARCH_API, SEARCH), {
     SearchText: encodeBase64(searchText),
-    ItemTypes: itemTypes,
+    LowerBoundary: lowerBoundary,
+    ItemTypes: (itemTypes || []).join('|'),
     Title: hasTitle,
     Description: hasDescription,
     Content: hasContent,
     Tags: hasTags,
     FileContent: hasFileContent,
-    TypeIDs: typeIds,
-    Types: types,
+    TypeIDs: (typeIds || []).join('|'),
+    Types: (types || []).join('|'),
     Excel: isExcel,
+    FormDetails: isExcel,
   });
 };

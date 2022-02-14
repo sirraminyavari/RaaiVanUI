@@ -21,7 +21,6 @@ const addNode = new APIHandler('CNAPI', 'AddNode');
  * @param {Callback} onDismiss - makes 'UrgenCreate' invisible
  * @param {CallBack} onForceFetch - forces NodeList to fetch again for new changes.
  * @param {any} dataFetched  - prevents the user inputting till fetching be completed.
- * @returns
  */
 const UrgentCreateMobile = ({
   nodeTypeId,

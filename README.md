@@ -1,6 +1,10 @@
 # Raaivan.React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Documentation (Storybook)
+[https://sirraminyavari.github.io/RaaiVanUI-Storybook](https://sirraminyavari.github.io/RaaiVanUI-Storybook)
+
+## Documentation (jsDoc)
+[https://sirraminyavari.github.io/RaaiVanUI-jsDoc](https://sirraminyavari.github.io/RaaiVanUI-jsDoc)
 
 ## Notice:
 Add `scripts`, `css` and `fonts` folders from backend source folder to `public/load` ( Ignored by git for file size reduction).
@@ -11,6 +15,19 @@ In the project directory, you can run:
 
 ### `npm install`
 This command will install dependencies.
+
+If you have problems with dependency resolution, you can use the command below:
+
+```
+npm install --legacy-peer-deps
+```
+
+And if you want to build the project, run the below command before running 'npm run-script build'
+
+```
+npm dedupe --legacy-peer-deps
+```
+
 ### `npm start`
 
 Runs the app in the development mode.\

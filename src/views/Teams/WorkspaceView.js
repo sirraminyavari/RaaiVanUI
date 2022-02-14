@@ -1,4 +1,4 @@
-import WorkspaceContent from './items/sides/content/WorkspaceContent';
+import WorkspacePanels from './items/sides/content/WorkspacePanels/WorkspacePanels';
 import WelcomeBanner from './items/sides/welcome/WorkspaceWelcome';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
@@ -15,7 +15,7 @@ const WorkspaceView = () => {
           marginBlock: '1rem',
         }}>
         <div>
-          <WorkspaceContent />
+          <WorkspacePanels />
         </div>
       </ScrollBarProvider>
       <WelcomeBanner />
