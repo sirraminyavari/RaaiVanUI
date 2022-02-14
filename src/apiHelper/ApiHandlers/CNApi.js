@@ -248,24 +248,24 @@ export const setNodeTypesOrder = ({ NodeTypeIDs } = {}) => {
   });
 };
 
-export const renameNodeType = ({ Name, NodeTypeID } = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, RENAME_NODE_TYPE), {
-    Name: encodeBase64(Name),
-    NodeTypeID,
-  });
-};
+// export const renameNodeType = ({ Name, NodeTypeID } = {}) => {
+//   return apiCallWrapper(API_Provider(CN_API, RENAME_NODE_TYPE), {
+//     Name: encodeBase64(Name),
+//     NodeTypeID,
+//   });
+// };
 
-export const removeNodeType = ({
-  NodeTypeID,
-  NodeTypeIDs,
-  RemoveHierarchy = false,
-} = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, REMOVE_NODE_TYPE), {
-    NodeTypeID,
-    NodeTypeIDs,
-    RemoveHierarchy,
-  });
-};
+// export const removeNodeType = ({
+//   NodeTypeID,
+//   NodeTypeIDs,
+//   RemoveHierarchy = false,
+// } = {}) => {
+//   return apiCallWrapper(API_Provider(CN_API, REMOVE_NODE_TYPE), {
+//     NodeTypeID,
+//     NodeTypeIDs,
+//     RemoveHierarchy,
+//   });
+// };
 
 /**
  * @description Activate a template.
