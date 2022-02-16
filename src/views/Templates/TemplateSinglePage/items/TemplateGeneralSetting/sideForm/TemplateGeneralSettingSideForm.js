@@ -1,75 +1,67 @@
-import styled from 'styled-components';
-import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
-import { FLEX_RCB } from 'constant/StyledCommonCss';
+import * as Styled from './TemplateGeneralSettingSideFormStyles';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { useTemplateGeneralSettingSideForm } from './useTemplateGeneralSettingSideForm';
 
 const TemplateGeneralSettingSideForm = () => {
-  const { wiki, posts, handleWikiState, handlePostsState } =
-    useTemplateGeneralSettingSideForm();
+  const {
+    wiki,
+    posts,
+    handleWikiState,
+    handlePostsState,
+    communityPage,
+    handleCommunityPage,
+    comments,
+    handleEnableComments,
+    contributionState,
+    handleEnableContribution,
+    versioningState,
+    handleVersioningState,
+  } = useTemplateGeneralSettingSideForm();
 
   return (
-    <Container>
-      <Block>
-        <Title>{'ساختار قالب'}</Title>
-        <Section>
-          <ItemTitle>{'دانش‌نامه قالب فعال باشد'}</ItemTitle>
+    <Styled.Container>
+      <Styled.Block>
+        <Styled.Title>{'ساختار قالب'}</Styled.Title>
+        <Styled.Section>
+          <Styled.ItemTitle>{'دانش‌نامه قالب فعال باشد'}</Styled.ItemTitle>
           <ToggleButton value={wiki} onToggle={handleWikiState} />
-        </Section>
+        </Styled.Section>
 
-        <Section>
-          <ItemTitle>{'بخش دیدگاه‌ها'}</ItemTitle>
+        <Styled.Section>
+          <Styled.ItemTitle>{'بخش دیدگاه‌ها'}</Styled.ItemTitle>
           <ToggleButton value={posts} onToggle={handlePostsState} />
-        </Section>
+        </Styled.Section>
 
-        <Section>
-          <ItemTitle>{' - اولویت دیدگاه در چیدمان'}</ItemTitle>
-          <ToggleButton value={true} />
-        </Section>
+        <Styled.Section>
+          <Styled.ItemTitle>{' - اولویت دیدگاه در چیدمان'}</Styled.ItemTitle>
+          <ToggleButton value={communityPage} onToggle={handleCommunityPage} />
+        </Styled.Section>
 
-        <Section>
-          <ItemTitle>{'امکان ثبت نظر در آیتم'}</ItemTitle>
-          <ToggleButton value={true} />
-        </Section>
-      </Block>
+        <Styled.Section>
+          <Styled.ItemTitle>{'امکان ثبت نظر در آیتم'}</Styled.ItemTitle>
+          <ToggleButton value={comments} onToggle={handleEnableComments} />
+        </Styled.Section>
+      </Styled.Block>
 
-      <Block>
-        <Title>{'امکانات ثبت'}</Title>
-        <Section>
-          <ItemTitle>{'ثبت گروهی آیتم'}</ItemTitle>
-          <ToggleButton value={true} />
-        </Section>
+      <Styled.Block>
+        <Styled.Title>{'امکانات ثبت'}</Styled.Title>
+        <Styled.Section>
+          <Styled.ItemTitle>{'ثبت گروهی آیتم'}</Styled.ItemTitle>
+          <ToggleButton
+            value={contributionState}
+            onToggle={handleEnableContribution}
+          />
+        </Styled.Section>
 
-        <Section>
-          <ItemTitle>{'ثبت نسخه جدید برای آیتم'}</ItemTitle>
-          <ToggleButton value={true} />
-        </Section>
-      </Block>
-    </Container>
+        <Styled.Section>
+          <Styled.ItemTitle>{'ثبت نسخه جدید برای آیتم'}</Styled.ItemTitle>
+          <ToggleButton
+            value={versioningState}
+            onToggle={handleVersioningState}
+          />
+        </Styled.Section>
+      </Styled.Block>
+    </Styled.Container>
   );
 };
-export const Container = styled.div`
-  padding: 0 1.5rem;
-`;
-
-export const Block = styled.div`
-  margin: 2.2rem 0 0 0;
-`;
-
-export const Title = styled.div`
-  font-size: 0.85rem;
-  color: ${CV_DISTANT};
-  margin-bottom: 1.5rem;
-`;
-
-export const Section = styled.div`
-  ${FLEX_RCB};
-  margin-bottom: 1.5rem;
-`;
-
-export const ItemTitle = styled.div`
-  font-size: 1rem;
-  color: ${CV_GRAY_DARK};
-`;
-
 export default TemplateGeneralSettingSideForm;
