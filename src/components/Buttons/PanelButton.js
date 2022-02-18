@@ -2,25 +2,41 @@ import styled from 'styled-components';
 import { BO_RADIUS_HALF } from 'constant/constants';
 import {
   CV_DISTANT,
+  CV_GRAY,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
+import classNames from 'classnames';
 
 /**
  * @component - A squared Panel Button
  * @param {React.ButtonHTMLAttributes} props
+ * @param {boolean} [props.active=false] - sets the toggle effect
+ * @param {boolean} [props.secondary=false] - sets the secondary (Gray-ish) color
  * @return {JSX.Element}
  */
-function PanelButton({ children, ...restProps }) {
-  return <StyledPanelButton {...restProps}>{children}</StyledPanelButton>;
+function PanelButton({ children, active, secondary, className, ...restProps }) {
+  return (
+    <StyledPanelButton
+      className={classNames(
+        secondary && 'secondary',
+        active && 'active',
+        className
+      )}
+      {...restProps}
+    >
+      {children}
+    </StyledPanelButton>
+  );
 }
 const StyledPanelButton = styled.button.attrs({
   className: BO_RADIUS_HALF,
 })`
   cursor: pointer;
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 0.5rem;
-  width: clamp(6rem, 100%, 12rem);
+  width: 10rem;
+  max-width: 100%;
   aspect-ratio: 1;
   flex-shrink: 0;
   flex-grow: 0;
@@ -31,20 +47,26 @@ const StyledPanelButton = styled.button.attrs({
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   border: 1px solid transparent;
-  transition: border 0.3s ease-out;
+  transition: border 0.3s ease-out, color 0.3s;
   box-sizing: border-box;
+  &.secondary {
+    color: ${CV_GRAY};
+  }
 
-  & > svg {
+  & > svg,
+  & > img {
     font-size: 4rem;
-    margin-block-start: 2rem;
-    margin-block-end: 3rem;
+    margin-block-start: 1rem;
+    margin-block-end: 2rem;
   }
   &:hover {
     border-color: ${CV_DISTANT};
   }
-  &:focus {
+  &:focus,
+  &.active {
     border-width: 0.15rem;
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
+    color: ${TCV_DEFAULT};
     border-color: ${TCV_DEFAULT};
   }
 `;
