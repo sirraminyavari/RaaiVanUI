@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { OnboardingPageDescriptionText } from 'views/Onboarding/items/Onboarding.styles';
 import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
-import { TCV_DEFAULT } from 'constant/CssVariables';
+import { TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
 
 export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
 
@@ -105,3 +105,11 @@ export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
 `;
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
+
+export const OnboardingTeamWelcomeLayoutWrapper = styled.div`
+  min-height: calc(100vh - 12rem);
+  width: 100%;
+  background-color: ${CV_WHITE};
+`;
+OnboardingTeamWelcomeLayoutWrapper.displayName =
+  'OnboardingTeamWelcomeLayoutWrapper';

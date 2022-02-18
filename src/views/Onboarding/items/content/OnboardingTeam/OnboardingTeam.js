@@ -58,20 +58,22 @@ const OnboardingTeamContent = () => {
   const RVDicSaveAndNext = RVDic.SaveAndNext;
   return (
     <>
-      <TransitionSwitchWrapper key={activeStep}>
-        <WelcomeLayout noFullHeight noOutline>
-          {ContentComponent && (
-            <>
-              <ContentComponent />
-            </>
-          )}
-          {BannerComponent && (
-            <>
-              <BannerComponent />
-            </>
-          )}
-        </WelcomeLayout>
-      </TransitionSwitchWrapper>
+      <Styles.OnboardingTeamWelcomeLayoutWrapper>
+        <TransitionSwitchWrapper transitionKey={activeStep}>
+          <WelcomeLayout noFullHeight noOutline style={{ width: '100%' }}>
+            {ContentComponent && (
+              <>
+                <ContentComponent />
+              </>
+            )}
+            {BannerComponent && (
+              <>
+                <BannerComponent />
+              </>
+            )}
+          </WelcomeLayout>
+        </TransitionSwitchWrapper>
+      </Styles.OnboardingTeamWelcomeLayoutWrapper>
       {stepsCount && (
         <Styles.OnboardingTeamActionButtonWrapper>
           <Button
