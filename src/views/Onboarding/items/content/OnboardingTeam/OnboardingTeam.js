@@ -3,7 +3,10 @@ import * as Styles from './OnboardingTeam.styles';
 import useWindow from 'hooks/useWindowContext';
 import Stepper from 'views/Onboarding/items/others/Stepper/Stepper';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
-import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import {
+  useOnboardingTeamContent,
+  OnboardingTeamStepContextActions,
+} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import Button from 'components/Buttons/Button';
 
@@ -18,6 +21,31 @@ const OnboardingTeamContent = () => {
     disableContinue,
     dispatch,
   } = useOnboardingTeamContent();
+
+  const goToStep = (stepActionType) => {
+    dispatch({ type: stepActionType });
+  };
+
+  const StepArguments = [
+    {
+      onClick: () =>
+        goToStep(
+          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_NAME
+        ),
+    },
+    {
+      onClick: () =>
+        goToStep(
+          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT
+        ),
+    },
+    {
+      onClick: () =>
+        goToStep(
+          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_WORK_FIELD
+        ),
+    },
+  ];
 
   const goToNextStep = useMemo(
     () => () => {
@@ -53,7 +81,11 @@ const OnboardingTeamContent = () => {
           >
             {RVDicSaveAndNext}
           </Button>
-          <Stepper stepsCount={stepsCount} activeStep={activeStep} />
+          <Stepper
+            stepsCount={stepsCount}
+            activeStep={activeStep}
+            stepArguments={StepArguments}
+          />
         </Styles.OnboardingTeamActionButtonWrapper>
       )}
     </>

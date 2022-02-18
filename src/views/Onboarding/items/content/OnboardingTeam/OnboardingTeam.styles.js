@@ -96,3 +96,12 @@ export const OnboardingTeamActionButtonWrapper = styled.div`
 `;
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
+
+export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
+  margin-block-start: 2.2rem;
+  padding-inline: 1rem;
+  width: 100%;
+  margin-inline: auto;
+`;
+OnboardingTeamActionButtonWrapper.displayName =
+  'OnboardingTeamActionButtonWrapper';

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import Heading from 'components/Heading/Heading';
@@ -10,12 +11,15 @@ import DEVELOPMENTImage from './OnboardingWorkFieldAssets/DEVELOPMENT.png';
 import DESIGNImage from './OnboardingWorkFieldAssets/DESIGN.png';
 import OTHERSImage from './OnboardingWorkFieldAssets/OTHERS.png';
 import PanelButton from 'components/Buttons/PanelButton';
+import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
+  const [otherWorkFieldInput, setOtherWorkFieldInput] = useState('');
+
   const { RVDic } = useWindow();
   const {
     dispatch: dispatchTeamPage,
@@ -33,8 +37,9 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   const RVDicDevelopmentField = `توسعه نرم افزار`;
   const RVDicDesignField = `طراحی`;
   const RVDicOthersField = `سایر`;
+  const RVDicOthersInputField = `نام حوزه کاری خود را بنویسید`;
 
-  const setOnboardingTeamWorkFieldCount = (workField) => () => {
+  const setOnboardingTeamWorkField = (workField) => () => {
     dispatchTeamPage({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
       stateKey: 'workField',
@@ -42,74 +47,74 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     });
   };
 
+  const workFields = [
+    { id: 'LEGAL', imageSrc: LEGALImage, text: RVDicLegalField },
+    {
+      id: 'EDUCATIONAL',
+      imageSrc: EDUCATIONALImage,
+      text: RVDicEducationalField,
+    },
+    {
+      id: 'HR',
+      imageSrc: HRImage,
+      text: RVDicHRField,
+    },
+    {
+      id: 'MANUFACTURING',
+      imageSrc: MANUFACTURINGImage,
+      text: RVDicManufacturingField,
+    },
+    {
+      id: 'MARKETING',
+      imageSrc: MARKETINGImage,
+      text: RVDicMarketingField,
+    },
+    {
+      id: 'DEVELOPMENT',
+      imageSrc: DEVELOPMENTImage,
+      text: RVDicDevelopmentField,
+    },
+    {
+      id: 'DESIGN',
+      imageSrc: DESIGNImage,
+      text: RVDicDesignField,
+    },
+  ];
+
   return (
     <>
       <Heading type="h2">{RVDicِTeamWorkFieldHeadCount}</Heading>
       <Styles.OnboardingTeamButtonInputWrapper>
+        {workFields.map(({ id, text, imageSrc }) => (
+          <>
+            <PanelButton
+              secondary
+              active={workField === id}
+              onClick={setOnboardingTeamWorkField(id)}
+            >
+              <img src={imageSrc} size={'1em'} />
+              {text}
+            </PanelButton>
+          </>
+        ))}
+
         <PanelButton
           secondary
-          active={workField === 'LEGAL'}
-          onClick={setOnboardingTeamWorkFieldCount('LEGAL')}
-        >
-          <img src={LEGALImage} size={'1em'} />
-          {RVDicLegalField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'EDUCATIONAL'}
-          onClick={setOnboardingTeamWorkFieldCount('EDUCATIONAL')}
-        >
-          <img src={EDUCATIONALImage} size={'1em'} />
-          {RVDicEducationalField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'HR'}
-          onClick={setOnboardingTeamWorkFieldCount('HR')}
-        >
-          <img src={HRImage} size={'1em'} />
-          {RVDicHRField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'MANUFACTURING'}
-          onClick={setOnboardingTeamWorkFieldCount('MANUFACTURING')}
-        >
-          <img src={MANUFACTURINGImage} size={'1em'} />
-          {RVDicManufacturingField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'MARKETING'}
-          onClick={setOnboardingTeamWorkFieldCount('MARKETING')}
-        >
-          <img src={MARKETINGImage} size={'1em'} />
-          {RVDicMarketingField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'DEVELOPMENT'}
-          onClick={setOnboardingTeamWorkFieldCount('DEVELOPMENT')}
-        >
-          <img src={DEVELOPMENTImage} size={'1em'} />
-          {RVDicDevelopmentField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'DESIGN'}
-          onClick={setOnboardingTeamWorkFieldCount('DESIGN')}
-        >
-          <img src={DESIGNImage} size={'1em'} />
-          {RVDicDesignField}
-        </PanelButton>
-        <PanelButton
-          secondary
-          active={workField === 'OTHERS'}
-          onClick={setOnboardingTeamWorkFieldCount('OTHERS')}
+          active={workField.startsWith('OTHERS', 0)}
+          onClick={setOnboardingTeamWorkField('OTHERS')}
         >
           <img src={OTHERSImage} size={'1em'} />
           {RVDicOthersField}
         </PanelButton>
+        {workField.startsWith('OTHERS') && (
+          <Styles.OnboardingTeamSetWorkFieldInputWrapper>
+            <AnimatedInput
+              placeholder={RVDicOthersInputField}
+              value={otherWorkFieldInput}
+              onChange={setOtherWorkFieldInput}
+            />
+          </Styles.OnboardingTeamSetWorkFieldInputWrapper>
+        )}
       </Styles.OnboardingTeamButtonInputWrapper>
     </>
   );
