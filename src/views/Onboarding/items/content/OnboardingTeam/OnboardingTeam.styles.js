@@ -1,24 +1,9 @@
-import { BO_RADIUS_HALF } from 'constant/constants';
-import {
-  CV_DISTANT,
-  TCV_DEFAULT,
-  TCV_VERY_TRANSPARENT,
-} from 'constant/CssVariables';
 import styled from 'styled-components';
+import { OnboardingPageDescriptionText } from 'views/Onboarding/items/Onboarding.styles';
+import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
+import { TCV_DEFAULT } from 'constant/CssVariables';
 
-export const OnboardingTeamWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: calc(100vh - 20rem);
-  width: 100%;
-  padding: 1rem;
-  & > * {
-    flex-shrink: 0;
-  }
-`;
-OnboardingTeamWrapper.displayName = 'OnboardingTeamWrapper';
+export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
 
 export const OnboardingTeamFlatPanelButtonGroup = styled.div`
   display: flex;
@@ -29,38 +14,85 @@ export const OnboardingTeamFlatPanelButtonGroup = styled.div`
 OnboardingTeamFlatPanelButtonGroup.displayName =
   'OnboardingTeamFlatPanelButtonGroup';
 
-export const OnboardingTeamFlatPanelButton = styled.button.attrs({
-  className: BO_RADIUS_HALF,
-})`
-  cursor: pointer;
-  padding: 1rem;
-  margin: 0.5rem;
-  width: clamp(6rem, 100%, 12rem);
-  aspect-ratio: 1;
-  flex-shrink: 0;
-  flex-grow: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: ${TCV_DEFAULT};
-  font-size: 0.8rem;
-  border: 1px solid transparent;
-  transition: border 0.3s ease-out;
-  box-sizing: border-box;
-
-  & > svg {
-    font-size: 4rem;
-    margin-block-start: 2rem;
-    margin-block-end: 3rem;
-  }
-  &:hover {
-    border-color: ${CV_DISTANT};
-  }
-  &:focus {
-    border-width: 0.15rem;
-    box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-    border-color: ${TCV_DEFAULT};
+export const OnboardingTeamImageBannerWrapper = styled.div`
+  min-height: 100%;
+  > div {
+    min-height: 100%;
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
+    aspect-ratio: 1;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    ${({ noBackgroundImage, BackgroundImage }) =>
+      !noBackgroundImage &&
+      `
+    background-image: url(${
+      BackgroundImage ? BackgroundImage : OnboardingBannerBackgroundImage
+    });
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition:background-image 0.3s;
+    `}
   }
 `;
-OnboardingTeamFlatPanelButton.displayName = 'OnboardingTeamFlatPanelButton';
+OnboardingTeamImageBannerWrapper.displayName =
+  'OnboardingTeamImageBannerWrapper';
+
+export const OnboardingTeamImageBanner = styled.img`
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+`;
+
+OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
+
+export const OnboardingTeamInputWrapper = styled.div`
+  margin-block-start: 10rem;
+  margin-inline-end: 1rem;
+  max-width: 25rem;
+  width: 100%;
+  display: flex;
+`;
+
+OnboardingTeamInputWrapper.displayName = 'OnboardingTeamInputWrapper';
+
+export const OnboardingTeamButtonInputWrapper = styled.div`
+  margin-block-start: 5rem;
+  margin-inline-end: 1rem;
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+OnboardingTeamButtonInputWrapper.displayName =
+  'OnboardingTeamButtonInputWrapper';
+
+export const OnboardingTeamAvatarPlaceholder = styled.div`
+  color: ${TCV_DEFAULT};
+  font-size: 0.8rem;
+`;
+
+OnboardingTeamAvatarPlaceholder.displayName = 'OnboardingTeamAvatarPlaceholder';
+
+export const OnboardingTeamActionButtonWrapper = styled.div`
+  margin-block-start: 2.2rem;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+
+  & > * {
+    margin-inline: 3rem;
+  }
+`;
+OnboardingTeamActionButtonWrapper.displayName =
+  'OnboardingTeamActionButtonWrapper';
