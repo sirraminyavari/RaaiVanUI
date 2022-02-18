@@ -4,7 +4,7 @@ const TemplateContext = createContext({});
 
 export const useTemplateContext = () => {
   const context = useContext(TemplateContext);
-  return { ...context };
+  return context;
 };
 
 export const TemplateProvider = ({ service, extensions, children }) => {

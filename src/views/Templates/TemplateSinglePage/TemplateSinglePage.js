@@ -24,6 +24,8 @@ const TemplateSinglePage = () => {
     (async () => {
       const _extensions = await getExtensions({ NodeTypeID, Initialize: true });
       const _service = await getService({ NodeTypeID });
+
+      console.log(_extensions, _service);
       setExtensions(_extensions);
       setService(_service);
       setLoading(false);
@@ -67,4 +69,5 @@ const TemplateSinglePage = () => {
 const Container = styled.div`
   padding: 1rem;
 `;
+Container.displayName = 'Container';
 export default TemplateSinglePage;

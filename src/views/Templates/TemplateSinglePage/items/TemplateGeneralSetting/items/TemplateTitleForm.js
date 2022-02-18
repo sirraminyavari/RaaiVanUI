@@ -1,16 +1,62 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from 'constant/CssVariables';
 import { FLEX_CSA } from 'constant/StyledCommonCss';
+import RxInput from 'components/Inputs/RxInput';
+import { renameNodeType } from 'apiHelper/ApiHandlers/CNApi';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { useTemplateContext } from '../../../TemplateProvider';
+import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
 
 const TemplateTitleForm = ({ name }) => {
+  const { RVDic } = window;
+  const { AppID: NodeTypeID, Description: description } = useTemplateContext();
   const [title, setTitle] = useState(name);
-  const [subtitle, setSubtitle] = useState('');
+  const [subtitle, setSubtitle] = useState(description);
+
+  const handleTitleChange = async (e) => {
+    const Name = e?.target?.value;
+    setTitle(Name);
+
+    const { ErrorText } = await renameNodeType({ NodeTypeID, Name });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        autoClose: true,
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+    }
+  };
+
+  const handleSubtitleChange = async (e) => {
+    const Description = e?.target?.value;
+    setSubtitle(Description);
+
+    const { ErrorText } = await setServiceDescription({
+      NodeTypeID,
+      Description,
+    });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        autoClose: true,
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+    }
+  };
+
   return (
     <Container>
-      <TitleInput value={title} onChange={(e) => setTitle(e?.target?.value)} />
+      <TitleInput value={title} onChange={handleTitleChange} delayTime={1000} />
 
-      <SubtitleInput placeholder={'راهنمای تکمیل قالب'} value={subtitle} />
+      <SubtitleInput
+        placeholder={'راهنمای تکمیل قالب'}
+        value={subtitle}
+        onChange={handleSubtitleChange}
+        delayTime={1000}
+      />
     </Container>
   );
 };
@@ -20,7 +66,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const TitleInput = styled.input`
+const TitleInput = styled(RxInput)`
   height: 2.75rem;
   width: 18.75rem;
   outline: none;
@@ -31,7 +77,7 @@ const TitleInput = styled.input`
   font-size: 1.75rem;
 `;
 
-const SubtitleInput = styled.input`
+const SubtitleInput = styled(RxInput)`
   height: 1.6rem;
   max-width: 48rem;
   width: 100%;
