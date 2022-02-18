@@ -1,17 +1,11 @@
 import styled from 'styled-components';
+import {
+  OnboardingCenterizeContent,
+  OnboardingPageDescriptionText,
+} from 'views/Onboarding/items/Onboarding.styles';
 
-export const OnboardingUserInfoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: calc(100vh - 20rem);
-  width: 100%;
-  & > * {
-    flex-shrink: 0;
-  }
-`;
-OnboardingUserInfoWrapper.displayName = 'OnboardingUserInfoWrapper';
+export const OnboardingUserInfoDescriptionWrapper =
+  OnboardingPageDescriptionText;
 
 export const OnboardingUserInfoInputContainer = styled.div`
   max-width: 30rem;
