@@ -28,6 +28,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
  * @param {boolean} [props.noPadding=false] - remove padding surrounding each column in the layout
  * @param {boolean} [props.singleColumn=false] - Force the layout to be a single column
  * (use case: set responsive view based on DimensionHelper() function)
+ * @param {boolean} [props.noFullHeight=false] - Sets the height to auto
  *
  * @return {JSX.Element} JSX Layout component
  */
@@ -35,6 +36,7 @@ function WelcomeLayout({
   children,
   noOutline,
   noPadding,
+  noFullHeight,
   singleColumn,
   Wrapper = WelcomeLayoutContainer,
   className,
@@ -47,12 +49,15 @@ function WelcomeLayout({
       {...restProps}
       Outline={!noOutline}
       Padding={!noPadding}
+      FullHeight={!noFullHeight}
       className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT, className)}
-      isMobile={singleColumn || isMobileScreen}>
+      isMobile={singleColumn || isMobileScreen}
+    >
       {Children.toArray(children).map((child, idx) => (
         <LayoutColumn
           isMobile={isMobileScreen}
-          key={`WelcomeLayout-col-${idx}`}>
+          key={`WelcomeLayout-col-${idx}`}
+        >
           {child}
         </LayoutColumn>
       ))}
@@ -85,7 +90,8 @@ export default WelcomeLayout;
 const WelcomeLayoutContainer = styled.div`
   ${({ Outline = true }) => Outline && `box-shadow: 1px 5px 15px #0000001f;`}
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
-  min-height: calc(100vh - 15vh);
+  ${({ FullHeight = true }) => FullHeight && `min-height: calc(100vh - 15vh);`}
+  
   margin: 1rem;
   ${({ isMobile = false }) =>
     !isMobile &&
