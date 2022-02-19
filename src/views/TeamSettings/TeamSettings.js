@@ -9,6 +9,7 @@ import Button from 'components/Buttons/Button';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import ImageCropper from 'components/ImageCropper/ImageCropper';
 import CustomInput from './items/CustomInput';
+import TabView from '../../components/TabView/TabView';
 
 const TeamSettings = (props) => {
   const {
@@ -181,7 +182,8 @@ const TeamSettings = (props) => {
                 fontSize: '1rem',
                 borderRadius: '0.8rem',
               }}
-              onClick={saveInfo}>
+              onClick={saveInfo}
+            >
               {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>
