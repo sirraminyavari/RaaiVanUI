@@ -187,24 +187,6 @@ const TeamSettings = (props) => {
               {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>
-
-          <div style={{ marginTop: '2rem' }}>
-            <TabView width={4} height={3}>
-              <TabView.Item label="tab1">
-                <div>tab 1 view content</div>
-              </TabView.Item>
-
-              <TabView.Item label="tab2">
-                <div>tab 1 view content</div>
-              </TabView.Item>
-
-              <TabView.Item label="tab3">
-                <div>tab 1 view content</div>
-              </TabView.Item>
-
-              <TabView.Action>action goes here</TabView.Action>
-            </TabView>
-          </div>
         </Styled.FormWrapper>
       </Styled.TeamSettingsContainer>
     </Styled.TeamSettingsCardWrapper>

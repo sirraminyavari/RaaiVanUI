@@ -21,7 +21,9 @@ const TabContext = createContext({});
  */
 export const TabView = ({ height = 3, width = 4, children }) => {
   const { RV_RTL: rtl } = window;
+
   const action = [...children].find((x) => x?.type?.name === 'Action') || null;
+
   const items = children
     .filter((x) => x?.type?.name === 'Item')
     .map((x, index) => ({
@@ -35,6 +37,11 @@ export const TabView = ({ height = 3, width = 4, children }) => {
 
   const indicatorOffset = useMemo(
     () => selectedIndex * width + (width - 3.5) / 2,
+    [selectedIndex]
+  );
+
+  const selectedBody = useMemo(
+    () => items.find((x) => x?.props?.index === selectedIndex)?.props?.children,
     [selectedIndex]
   );
 
@@ -52,12 +59,7 @@ export const TabView = ({ height = 3, width = 4, children }) => {
           {action && <Styled.ActionContainer>{action}</Styled.ActionContainer>}
         </Styled.TabHeader>
 
-        <Styled.TabBody>
-          {
-            items.find((x) => x?.props?.index === selectedIndex)?.props
-              ?.children
-          }
-        </Styled.TabBody>
+        <Styled.TabBody>{selectedBody}</Styled.TabBody>
       </Styled.TabViewContainer>
     </TabContext.Provider>
   );
