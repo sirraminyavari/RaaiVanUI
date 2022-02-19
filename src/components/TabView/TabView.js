@@ -1,46 +1,80 @@
 import * as Styled from './TabViewStyle';
-import { createContext, useContext, useState } from 'react';
+import {
+  cloneElement,
+  createContext,
+  createRef,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+import { getUUID } from 'helpers/helpers';
 
 const TabContext = createContext({});
 
-export const TabView = ({ height = '3rem', children }) => {
-  const items = children.filter((x) => x?.type?.name === 'Item');
-  const [selectedTabBody, setSelectedTabBody] = useState([...items][0]);
-
+/**
+ * @description
+ * @param height height of the tabview item in 'rem'
+ * @param width width of the tabview item in 'rem'
+ * @param children
+ * @return {JSX.Element}
+ * @constructor
+ */
+export const TabView = ({ height = 3, width = 4, children }) => {
+  const { RV_RTL: rtl } = window;
   const action = [...children].find((x) => x?.type?.name === 'Action') || null;
+  const items = children
+    .filter((x) => x?.type?.name === 'Item')
+    .map((x, index) => ({
+      ...x,
+      key: getUUID(),
+      props: { ...x.props, index, width },
+    }))
+    .map((x) => cloneElement(x));
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const indicatorOffset = useMemo(
+    () => selectedIndex * width + (width - 3.5) / 2,
+    [selectedIndex]
+  );
 
   return (
-    <TabContext.Provider value={{ selectedTabBody, setSelectedTabBody }}>
-      <Styled.TabViewContainer>
+    <TabContext.Provider value={{ selectedIndex, setSelectedIndex }}>
+      <Styled.TabViewContainer rtl={rtl}>
         <Styled.TabHeader height={height}>
           <Styled.TabItemContainer>
-            <Styled.Items>{items}</Styled.Items>
+            <Styled.Items height={height}>{items}</Styled.Items>
             <Styled.IndicatorContainer>
-              {[...items]?.map((x, i) => (
-                <Styled.Indicator key={i} />
-              ))}
+              <Styled.Indicator offset={indicatorOffset} rtl={rtl} />
             </Styled.IndicatorContainer>
           </Styled.TabItemContainer>
 
-          {action && <div>{action}</div>}
+          {action && <Styled.ActionContainer>{action}</Styled.ActionContainer>}
         </Styled.TabHeader>
 
-        <Styled.TabBody>{selectedTabBody}</Styled.TabBody>
+        <Styled.TabBody>
+          {
+            items.find((x) => x?.props?.index === selectedIndex)?.props
+              ?.children
+          }
+        </Styled.TabBody>
       </Styled.TabViewContainer>
     </TabContext.Provider>
   );
 };
 
-const Item = ({ label, children }) => {
-  const { setSelectedTabBody } = useContext(TabContext);
+const Item = ({ label, children, ...rest }) => {
+  const { index, width } = rest;
+  const { selectedIndex, setSelectedIndex } = useContext(TabContext);
 
   return (
-    <div
-      style={{ padding: '0 0.6rem' }}
-      onClick={(e) => setSelectedTabBody(children)}
+    <Styled.TabViewItem
+      highlight={selectedIndex?.index === index}
+      width={width}
+      onClick={() => setSelectedIndex(index)}
     >
       {label}
-    </div>
+    </Styled.TabViewItem>
   );
 };
 

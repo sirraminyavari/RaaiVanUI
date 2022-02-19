@@ -188,21 +188,21 @@ const TeamSettings = (props) => {
             </Button>
           </Styled.SettingActionBar>
 
-          <div>
-            <TabView>
-              <TabView.Action>action is here</TabView.Action>
-
+          <div style={{ marginTop: '2rem' }}>
+            <TabView width={4} height={3}>
               <TabView.Item label="tab1">
-                <div>tab 1</div>
+                <div>tab 1 view content</div>
               </TabView.Item>
 
               <TabView.Item label="tab2">
-                <div>tab 2</div>
+                <div>tab 1 view content</div>
               </TabView.Item>
 
               <TabView.Item label="tab3">
-                <div>tab 3</div>
+                <div>tab 1 view content</div>
               </TabView.Item>
+
+              <TabView.Action>action goes here</TabView.Action>
             </TabView>
           </div>
         </Styled.FormWrapper>
