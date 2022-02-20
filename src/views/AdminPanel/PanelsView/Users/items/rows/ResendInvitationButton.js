@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { CV_FREEZED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 
-const ResendInvitationButton = ({ children, ...props }) => {
+const ResendInvitationButton = ({ children, onClick, ...props }) => {
   return (
     <ButtonContainer>
-      <ButtonView>{children}</ButtonView>
+      <ButtonView onClick={onClick}>{children}</ButtonView>
     </ButtonContainer>
   );
 };

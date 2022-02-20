@@ -38,7 +38,7 @@ const ResetPassword = ({ render, userId, userTitle }) => {
       InfoToast({
         type: 'success',
         autoClose: true,
-        message: 'لینک کپی شد',
+        message: RVDic?.RVDic.LinkCopied,
       });
     } catch (e) {
       console.log(e);
@@ -62,7 +62,8 @@ const ResetPassword = ({ render, userId, userTitle }) => {
 
       <Modal
         {...modalInfo}
-        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}
+      >
         <Styled.ProfileWrapper>{render}</Styled.ProfileWrapper>
 
         <Styled.ActionContainer>
@@ -78,14 +79,16 @@ const ResetPassword = ({ render, userId, userTitle }) => {
                 <Button
                   type="primary"
                   style={buttonStyles}
-                  onClick={() => onModalConfirm()}>
+                  onClick={() => onModalConfirm()}
+                >
                   {RVDic?.Reset}
                 </Button>
 
                 <Button
                   type="negative-o"
                   style={buttonStyles}
-                  onClick={() => onModalCancel()}>
+                  onClick={() => onModalCancel()}
+                >
                   {RVDic?.Return}
                 </Button>
               </Styled.ActionButtonContainer>
@@ -102,7 +105,8 @@ const ResetPassword = ({ render, userId, userTitle }) => {
                 <Styled.CopyButton
                   type="primary"
                   style={buttonStyles}
-                  onClick={() => copyPassword()}>
+                  onClick={() => copyPassword()}
+                >
                   <CopyIcon square={true} size={16} />
                   {RVDic?.Copy}
                 </Styled.CopyButton>
@@ -110,7 +114,8 @@ const ResetPassword = ({ render, userId, userTitle }) => {
                 <Button
                   type="negative-o"
                   style={buttonStyles}
-                  onClick={() => onModalCancel()}>
+                  onClick={() => onModalCancel()}
+                >
                   {RVDic?.Return}
                 </Button>
               </Styled.ActionButtonContainer>

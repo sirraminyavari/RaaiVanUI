@@ -56,27 +56,27 @@ const UserInvitationForm = ({ onChange, data }) => {
         <Styled.StyledAnimatedInput
           value={formData?.name}
           onChange={(value) => setFormData({ ...formData, name: value })}
-          placeholder={'نام هم‌تیمی (اختیاری)'}
+          placeholder={`${RVDic?.FullName} (${RVDic?.Optional})`}
         />
       </Styled.FieldContainer>
 
-      <Styled.FieldContainer>
-        <CustomSelect
-          defaulValue={{
-            value: formData?.access,
-            label: userAccessOption?.find((x) => x?.value === formData?.access)
-              ?.label,
-          }}
-          placeholder=""
-          components={{
-            DropdownIndicator: CustomSelectIndicator,
-            Option: UserAccessTypeOption,
-          }}
-          classNamePrefix="select"
-          options={userAccessOption}
-          onChange={(e) => setFormData({ ...formData, access: e?.value })}
-        />
-      </Styled.FieldContainer>
+      {/*<Styled.FieldContainer>*/}
+      {/*  <CustomSelect*/}
+      {/*    defaulValue={{*/}
+      {/*      value: formData?.access,*/}
+      {/*      label: userAccessOption?.find((x) => x?.value === formData?.access)*/}
+      {/*        ?.label,*/}
+      {/*    }}*/}
+      {/*    placeholder=""*/}
+      {/*    components={{*/}
+      {/*      DropdownIndicator: CustomSelectIndicator,*/}
+      {/*      Option: UserAccessTypeOption,*/}
+      {/*    }}*/}
+      {/*    classNamePrefix="select"*/}
+      {/*    options={userAccessOption}*/}
+      {/*    onChange={(e) => setFormData({ ...formData, access: e?.value })}*/}
+      {/*  />*/}
+      {/*</Styled.FieldContainer>*/}
     </Styled.FormContainer>
   );
 };

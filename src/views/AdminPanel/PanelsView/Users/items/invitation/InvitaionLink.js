@@ -15,7 +15,7 @@ const InvitationLink = () => {
       InfoToast({
         type: 'success',
         autoClose: true,
-        message: 'لینک کپی شد',
+        message: RVDic?.LinkCopied,
         position: RV_RTL ? 'bottom-left' : 'bottom-right',
       });
     } catch (e) {
@@ -25,15 +25,11 @@ const InvitationLink = () => {
   return (
     <>
       <Styled.Title>
-        {'لینک زیر را برای هم‌تیمی جدید خود بفرستید!'}
+        {RVDic?.SendTheFollowingLinkToYourNewTeamMates}
       </Styled.Title>
       <Styled.SubtitleContainer>
         <InfoCircleIcon size={16} />
-        <Styled.SubTitle>
-          {
-            'با لینک زیر هرکسی می‌تواند عضو تیم شود، عضویت کاربر به مدیر اطلاع داده می‌شود.'
-          }
-        </Styled.SubTitle>
+        <Styled.SubTitle>{RVDic?._HelpInvitationLink}</Styled.SubTitle>
       </Styled.SubtitleContainer>
 
       <Styled.LinkContainer>

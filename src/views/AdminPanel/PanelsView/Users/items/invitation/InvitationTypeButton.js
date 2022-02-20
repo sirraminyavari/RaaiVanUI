@@ -9,7 +9,7 @@ export const InvitationTypeButton = ({ render, children, ...props }) => {
     </ButtonContainer>
   );
 };
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,6 +31,11 @@ const ButtonContainer = styled.div`
 
   &:hover {
     border: 1px solid ${({ selected }) => !selected && TCV_DEFAULT};
+  }
+
+  &:disabled {
+    color: ${({ selected }) => (selected ? TCV_VERYWARM : TCV_DEFAULT)};
+    border: 1px solid ${({ selected }) => (selected ? TCV_VERYWARM : CV_WHITE)};
   }
 `;
 export default InvitationTypeButton;
