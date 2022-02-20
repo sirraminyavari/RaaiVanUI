@@ -22,6 +22,7 @@ import {
   SET_FIRST_NAME,
   SET_LAST_NAME,
 } from 'constant/apiConstants';
+import { API_NAME_USR_BATCH_INVITE_USERS } from 'constant/api-names-users';
 import { apiCallWrapper } from './apiCallHelpers';
 
 const { GlobalUtilities } = window;
@@ -63,6 +64,29 @@ export const setPassword = ({ Token, Code, Login } = {}) => {
     Code: Code,
     Login: Login,
   });
+};
+
+/**
+ * @description sends an invitation email to a an array of email addresses to join the team with id, ApplicationID
+ * @param {string} ApplicationID the id of the team/application
+ * @param {object[]} Users an array of users each containing an 'Email' and a 'FullName'
+ * User: {
+ *  Email: "string",
+ *  FullName: "string"
+ * }
+ * @param {string} Message the invitation message
+ */
+export const inviteUsersBatch = ({ ApplicationID, Users, Message } = {}) => {
+  return apiCallWrapper(
+    API_Provider(USERS_API, API_NAME_USR_BATCH_INVITE_USERS),
+    {
+      ApplicationID,
+      Emails: (Users || [])
+        .map((u) => encodeBase64(u.Email) + ',' + encodeBase64(u.FullName))
+        .join('|'),
+      MessageText: Message,
+    }
+  );
 };
 
 /**

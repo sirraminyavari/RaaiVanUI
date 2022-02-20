@@ -1,58 +1,43 @@
 import * as Styled from './TabViewStyle';
-import {
-  cloneElement,
-  createContext,
-  createRef,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
-import { getUUID } from 'helpers/helpers';
+import { createContext, useContext, useEffect, useRef } from 'react';
+import useTabView from './useTabView';
 
 const TabContext = createContext({});
 
 /**
- * @description
+ * @description tabview component organize content into separate views where only one view can be visible at a time
  * @param height height of the tabview item in 'rem'
- * @param width width of the tabview item in 'rem'
- * @param children
+ * @param onSelect an event which fire on each tab selection and pass the optional key attribute
  * @return {JSX.Element}
  * @constructor
  */
-export const TabView = ({ height = 3, width = 4, children }) => {
-  const { RV_RTL: rtl } = window;
-
-  const action = [...children].find((x) => x?.type?.name === 'Action') || null;
-
-  const items = children
-    .filter((x) => x?.type?.name === 'Item')
-    .map((x, index) => ({
-      ...x,
-      key: getUUID(),
-      props: { ...x.props, index, width },
-    }))
-    .map((x) => cloneElement(x));
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const indicatorOffset = useMemo(
-    () => selectedIndex * width + (width - 3.5) / 2,
-    [selectedIndex]
-  );
-
-  const selectedBody = useMemo(
-    () => items.find((x) => x?.props?.index === selectedIndex)?.props?.children,
-    [selectedIndex]
-  );
+export const TabView = ({ height = 3, onSelect, ...rest }) => {
+  const { children } = rest;
+  const {
+    rtl,
+    action,
+    items,
+    selectedIndex,
+    selectedBody,
+    tabContainerEl,
+    indicatorWidth,
+    indicatorOffset,
+    onItemSelect,
+    onResize,
+  } = useTabView({ children, onSelect });
 
   return (
-    <TabContext.Provider value={{ selectedIndex, setSelectedIndex }}>
+    <TabContext.Provider value={{ selectedIndex, onResize, onItemSelect }}>
       <Styled.TabViewContainer rtl={rtl}>
         <Styled.TabHeader height={height}>
-          <Styled.TabItemContainer>
+          <Styled.TabItemContainer ref={tabContainerEl}>
             <Styled.Items height={height}>{items}</Styled.Items>
             <Styled.IndicatorContainer>
-              <Styled.Indicator offset={indicatorOffset} rtl={rtl} />
+              <Styled.Indicator
+                offset={indicatorOffset}
+                width={indicatorWidth}
+                rtl={rtl}
+              />
             </Styled.IndicatorContainer>
           </Styled.TabItemContainer>
 
@@ -65,15 +50,38 @@ export const TabView = ({ height = 3, width = 4, children }) => {
   );
 };
 
-const Item = ({ label, children, ...rest }) => {
+const Item = ({ label, ...rest }) => {
   const { index, width } = rest;
-  const { selectedIndex, setSelectedIndex } = useContext(TabContext);
+  const { selectedIndex, onItemSelect, onResize } = useContext(TabContext);
+  const itemEl = useRef();
+
+  useEffect(() => {
+    window.addEventListener('resize', (e) => {
+      if (selectedIndex === index) {
+        onResize(itemEl?.current?.getBoundingClientRect());
+      }
+    });
+    return () => {
+      window.removeEventListener('resize', null);
+    };
+  });
+
+  const onSelect = () => {
+    onItemSelect(index, itemEl?.current?.getBoundingClientRect());
+  };
+
+  useEffect(() => {
+    if (selectedIndex === index) {
+      onSelect();
+    }
+  }, []);
 
   return (
     <Styled.TabViewItem
-      highlight={selectedIndex?.index === index}
+      ref={itemEl}
+      highlight={selectedIndex === index}
       width={width}
-      onClick={() => setSelectedIndex(index)}
+      onClick={onSelect}
     >
       {label}
     </Styled.TabViewItem>

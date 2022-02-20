@@ -124,7 +124,7 @@ export const enableContribution = ({ NodeTypeID, NodeID, Value } = {}) => {
   return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_ENABLE_CONTRIBUTION), {
     NodeTypeID,
     NodeID,
-    Value,
+    Enable: Value,
   });
 };
 

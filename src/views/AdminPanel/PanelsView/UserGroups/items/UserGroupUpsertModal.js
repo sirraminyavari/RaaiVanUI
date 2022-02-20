@@ -77,14 +77,16 @@ const UserGroupUpsertModal = ({
     <>
       {!createMode && (
         <ModalStyles.SettingButton
-          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}
+        >
           <SettingOutlineIcon size={28} />
         </ModalStyles.SettingButton>
       )}
 
       {createMode && (
         <Styled.DashedBox
-          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}
+        >
           <AddIcon circleOutline={true} size={48} />
           <div>{RVDic?.CreateNewN.replace('[n]', RVDic.Group)}</div>
         </Styled.DashedBox>
@@ -99,7 +101,7 @@ const UserGroupUpsertModal = ({
             value={groupName}
             onChange={(name) => handleGroupNameChange(name)}
             type="text"
-            placeholder={'نام گروه'}
+            placeholder={RVDic?.GroupName}
           />
 
           <ModalStyles.InputLabel>
@@ -107,12 +109,14 @@ const UserGroupUpsertModal = ({
           </ModalStyles.InputLabel>
           <TransitionGroup
             duration={listAnimationDuration}
-            component={ModalStyles.SelectedUsersContainer}>
+            component={ModalStyles.SelectedUsersContainer}
+          >
             {[...members].map((x) => (
               <CSSTransition
                 key={x?.UserID}
                 timeout={listAnimationDuration}
-                classNames="transition">
+                classNames="transition"
+              >
                 <UserChips user={x} onDelete={deselect} />
               </CSSTransition>
             ))}
@@ -133,14 +137,16 @@ const UserGroupUpsertModal = ({
             <Button
               type="primary"
               style={buttonStyles}
-              onClick={() => handleModalConfirm()}>
+              onClick={() => handleModalConfirm()}
+            >
               {RVDic?.Save}
             </Button>
 
             <Button
               type="negative-o"
               style={buttonStyles}
-              onClick={() => handleModalCancel()}>
+              onClick={() => handleModalCancel()}
+            >
               {RVDic?.Return}
             </Button>
 
@@ -150,7 +156,8 @@ const UserGroupUpsertModal = ({
               <Button
                 type="negative"
                 style={buttonStyles}
-                onClick={() => handleDeleteGroup()}>
+                onClick={() => handleDeleteGroup()}
+              >
                 {RVDic.RemoveN.replace('[n]', RVDic.Group)}
               </Button>
             )}
