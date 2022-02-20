@@ -1,6 +1,8 @@
 import { useTemplateContext } from '../../../TemplateProvider';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { getAudience } from 'apiHelper/ApiHandlers/privacyApi';
+import { getGroupsAll } from '../../../../../../apiHelper/ApiHandlers/CNApi';
+import { getUsers } from '../../../../../../apiHelper/ApiHandlers/usersApi';
 
 export const useCMConfidentiality = ({ type }) => {
   const [loading, setLoading] = useState(true);
@@ -10,6 +12,8 @@ export const useCMConfidentiality = ({ type }) => {
   useEffect(() => {
     (async () => {
       const audience = await getAudience({ ObjectID: AppID, Type: type });
+      const groups = await getGroupsAll();
+      const users = await getUsers({ IsApproved: true });
       setLoading(false);
       console.log(audience);
     })();
@@ -57,4 +61,5 @@ export const useCMConfidentiality = ({ type }) => {
 
   return { options, loading, selectedOption, handleSelection, advancedOption };
 };
+
 export default useCMConfidentiality;

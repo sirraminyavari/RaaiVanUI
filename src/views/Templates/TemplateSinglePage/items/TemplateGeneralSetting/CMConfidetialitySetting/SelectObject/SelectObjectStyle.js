@@ -19,8 +19,7 @@ export const Button = styled.button`
 Button.displayName = 'Button';
 
 export const Container = styled.div`
-  max-width: 300px;
-  width: 100%;
+  display: flex;
   position: relative;
 `;
 Container.displayName = 'Container';
@@ -33,8 +32,7 @@ export const DropDown = styled.div`
   border-radius: 0.8rem;
   box-shadow: 1px 5px 20px #0000001f;
   height: 300px;
-  max-width: 306px;
-  width: 100%;
+  width: 306px;
 `;
 DropDown.displayName = 'DropDown';
 
