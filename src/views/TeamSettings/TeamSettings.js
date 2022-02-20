@@ -10,6 +10,7 @@ import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import ImageCropper from 'components/ImageCropper/ImageCropper';
 import CustomInput from './items/CustomInput';
 import TabView from '../../components/TabView/TabView';
+import CloseIcon from '../../components/Icons/CloseIcon/CloseIcon';
 
 const TeamSettings = (props) => {
   const {
