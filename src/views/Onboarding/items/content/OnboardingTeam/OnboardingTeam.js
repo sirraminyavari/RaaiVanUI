@@ -9,9 +9,11 @@ import {
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import Button from 'components/Buttons/Button';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamContent = () => {
   const { RVDic } = useWindow();
+  const { isTabletOrMobile } = DimensionHelper();
   const {
     ContentComponent,
     BannerComponent,
@@ -66,7 +68,7 @@ const OnboardingTeamContent = () => {
                 <ContentComponent />
               </>
             )}
-            {BannerComponent && (
+            {BannerComponent && !isTabletOrMobile && (
               <>
                 <BannerComponent />
               </>

@@ -69,7 +69,9 @@ export const OnboardingTeamButtonInputWrapper = styled.div`
   justify-content: center;
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: ${({ wrap }) => (wrap ? 'wrap' : 'nowrap')};
+  flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
+  align-items: ${({ isMobile }) => (isMobile ? 'center' : 'start')};
 `;
 
 OnboardingTeamButtonInputWrapper.displayName =
@@ -87,7 +89,7 @@ export const OnboardingTeamActionButtonWrapper = styled.div`
   width: 100%;
   margin-inline: auto;
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   flex-shrink: 0;
 
   & > * {
@@ -107,8 +109,9 @@ OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
 
 export const OnboardingTeamWelcomeLayoutWrapper = styled.div`
-  min-height: calc(100vh - 12rem);
+  height: calc(100vh - 12rem);
   width: 100%;
+  overflow: auto;
   background-color: ${CV_WHITE};
 `;
 OnboardingTeamWelcomeLayoutWrapper.displayName =
