@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import { FLEX_CCC } from '../../../../../../../constant/StyledCommonCss';
 
 export const Button = styled.button`
   outline: none;
@@ -37,12 +38,21 @@ export const DropDown = styled.div`
 `;
 DropDown.displayName = 'DropDown';
 
-export const CloseButton = styled.button`
+const IconButton = styled.button`
+  ${FLEX_CCC};
   height: 1.3rem;
   width: 1.3rem;
   outline: none;
   border: none;
   background-color: transparent;
-  color: ${CV_RED};
   cursor: pointer;
+  margin: 0 0.3rem;
+`;
+
+export const ResizeButton = styled(IconButton)`
+  color: ${TCV_DEFAULT};
+`;
+
+export const CloseButton = styled(IconButton)`
+  color: ${CV_RED};
 `;

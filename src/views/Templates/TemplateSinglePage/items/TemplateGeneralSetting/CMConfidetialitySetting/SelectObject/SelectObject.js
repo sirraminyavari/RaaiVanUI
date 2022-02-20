@@ -1,8 +1,15 @@
-import { Button, Container, DropDown, CloseButton } from './SelectObjectStyle';
+import {
+  Button,
+  Container,
+  DropDown,
+  CloseButton,
+  ResizeButton,
+} from './SelectObjectStyle';
 import { createRef, useState } from 'react';
 import TabView from 'components/TabView/TabView';
 import useOutsideClick from 'hooks/useOutsideClick';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import ResizeIcon from 'components/Icons/ResizeIcon/ResizeIcon';
 
 export const SelectObject = () => {
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -28,8 +35,12 @@ export const SelectObject = () => {
             </TabView.Item>
 
             <TabView.Action>
-              <CloseButton>
-                <CloseIcon outline={true} size={21} />
+              <ResizeButton onClick={() => setOpenDropDown(false)}>
+                <ResizeIcon size={17} />
+              </ResizeButton>
+
+              <CloseButton onClick={() => setOpenDropDown(false)}>
+                <CloseIcon outline={true} size={22} />
               </CloseButton>
             </TabView.Action>
           </TabView>
