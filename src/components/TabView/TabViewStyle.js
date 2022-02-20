@@ -34,7 +34,8 @@ export const TabViewItem = styled.div`
   cursor: pointer;
   min-width: 3.5rem;
   font-size: 1rem;
-  width: ${({ width }) => width}rem;
+  user-select: none;
+  transition: all 300ms ease-out;
 `;
 TabViewItem.displayName = 'TabViewItem';
 
@@ -52,13 +53,12 @@ IndicatorContainer.displayName = 'IndicatorContainer';
 
 export const Indicator = styled.div`
   position: absolute;
-
-  ${({ rtl }) => (rtl ? 'right' : 'left')}: ${({ offset }) => offset}rem;
+  left: ${({ offset }) => offset}rem;
   bottom: -1px;
   height: 0.25rem;
   border-radius: 0.25rem 0.25rem 0 0;
   background-color: ${TCV_DEFAULT};
-  width: 3.5rem;
+  width: ${({ width }) => width / 16}rem;
   transition: all 300ms ease-out;
 `;
 Indicator.displayName = 'Indicator';
