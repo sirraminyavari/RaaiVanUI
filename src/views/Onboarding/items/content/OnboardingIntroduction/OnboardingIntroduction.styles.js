@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import Heading from 'components/Heading/Heading';
 import { OnboardingCenterizeContent } from 'views/Onboarding/items/Onboarding.styles';
+import EmojiHello from 'assets/images/emoji-hello.svg';
 
 const waveAnimationKeyframes = keyframes`
 
@@ -23,6 +24,12 @@ export const WaveContent = styled.span`
   display: inline-block;
 `;
 WaveContent.displayName = 'WaveContent';
+
+export const EmojiImage = styled.img`
+  width: 3rem !important;
+  margin: 0.3rem;
+`;
+EmojiImage.displayName = 'EmojiImage';
 
 export const OnboardingIntroductionText = styled(Heading)`
   font-size: 3rem !important;

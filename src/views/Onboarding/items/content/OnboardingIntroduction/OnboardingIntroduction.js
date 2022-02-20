@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingIntroduction.styles';
 import * as GlobalStyles from 'views/Onboarding/items/Onboarding.styles';
+import EmojiHello from 'assets/images/emoji-hello.svg';
 import { ONBOARDING_USER_INFO_PATH } from '../../others/constants';
 import { decodeBase64 } from 'helpers/helpers';
 
@@ -30,7 +31,9 @@ const OnboardingIntroductionContent = () => {
     <GlobalStyles.OnboardingFixedLayout>
       <Styles.OnboardingIntroductionWrapper className={introductionStep}>
         <Styles.OnboardingIntroductionText>
-          <Styles.WaveContent>👋</Styles.WaveContent>
+          <Styles.WaveContent>
+            <Styles.EmojiImage src={EmojiHello} />
+          </Styles.WaveContent>
           {RVDicHelloWorld}!
         </Styles.OnboardingIntroductionText>
         <Styles.OnboardingIntroductionText>
