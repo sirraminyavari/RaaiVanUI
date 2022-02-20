@@ -12,7 +12,7 @@ import SendInvitation from './items/invitation/SendInvitation';
 
 const UsersInvitation = ({ onClose }) => {
   const { RV_RTL, RVDic } = useWindowContext();
-  const [getLink, setGetLink] = useState(true);
+  const [getLink, setGetLink] = useState(false);
 
   const breadCrumbItems = [
     {
@@ -48,16 +48,19 @@ const UsersInvitation = ({ onClose }) => {
 
       <InvitationTypeAction>
         <InvitationTypeButton
+          disabled
           selected={getLink}
           render={<LinkIcon size={14} />}
-          onClick={() => setGetLink(true)}>
-          {'دریافت لینک دعوت'}
+          onClick={() => setGetLink(true)}
+        >
+          {` `}
         </InvitationTypeButton>
 
         <InvitationTypeButton
           selected={!getLink}
           render={<MailIcon size={14} fill={true} />}
-          onClick={() => setGetLink(false)}>
+          onClick={() => setGetLink(false)}
+        >
           {'ارسال دعوت‌نامه'}
         </InvitationTypeButton>
       </InvitationTypeAction>
