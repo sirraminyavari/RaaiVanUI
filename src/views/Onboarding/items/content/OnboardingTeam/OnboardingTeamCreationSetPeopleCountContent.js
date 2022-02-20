@@ -3,6 +3,7 @@ import * as Styles from './OnboardingTeam.styles';
 import Heading from 'components/Heading/Heading';
 import TeamMemberCountIcon from 'components/Icons/TeamMemberIcon/TeamMemberCountIcon';
 import PanelButton from 'components/Buttons/PanelButton';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
@@ -10,6 +11,8 @@ import {
 
 const OnboardingTeamCreationSetPeopleCountContent = () => {
   const { RVDic } = useWindow();
+  const { isMobile } = DimensionHelper();
+
   const {
     dispatch: dispatchTeamPage,
     teamState: { peopleCount },
@@ -33,7 +36,7 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
   return (
     <>
       <Heading type="h2">{RVDicِYourTeamHeadCount}</Heading>
-      <Styles.OnboardingTeamButtonInputWrapper>
+      <Styles.OnboardingTeamButtonInputWrapper isMobile={isMobile}>
         <PanelButton
           secondary
           active={peopleCount === 'lessThan10'}

@@ -84,7 +84,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   return (
     <>
       <Heading type="h2">{RVDicِTeamWorkFieldHeadCount}</Heading>
-      <Styles.OnboardingTeamButtonInputWrapper>
+      <Styles.OnboardingTeamButtonInputWrapper wrap>
         {workFields.map(({ id, text, imageSrc }) => (
           <>
             <PanelButton
@@ -100,7 +100,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
 
         <PanelButton
           secondary
-          active={workField.startsWith('OTHERS', 0)}
+          active={workField === 'OTHERS'}
           onClick={setOnboardingTeamWorkField('OTHERS')}
         >
           <img src={OTHERSImage} size={'1em'} />
