@@ -5,9 +5,12 @@ import styled from 'styled-components';
 import Button from 'components/Buttons/Button';
 import { useEffect, useMemo, useState } from 'react';
 import produce from 'immer';
+import { decodeBase64 } from 'helpers/helpers';
+import { inviteUsersBatch } from 'apiHelper/ApiHandlers/usersApi';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
-const SendInvitation = () => {
-  const { RVDic } = window;
+const SendInvitation = ({ ApplicationID }) => {
+  const { RVDic, RVGlobal, RV_RTL } = window;
   const [formIsValid, setFormIsValid] = useState(false);
   const [form, setForm] = useState([
     {
@@ -36,10 +39,7 @@ const SendInvitation = () => {
           _item.data = data;
 
           // check if the block is valid
-          _item.valid =
-            _item?.data?.email !== '' &&
-            _item?.data?.name !== '' &&
-            _item?.data?.access !== '';
+          _item.valid = _item?.data?.email !== '' && _item?.data?.name !== '';
         }
       })
     );
@@ -71,15 +71,48 @@ const SendInvitation = () => {
     [form?.length]
   );
 
+  const submitForm = async () => {
+    const Users = [...form]
+      .filter((x) => x.valid)
+      .map((x) => x.data)
+      .map((x) => ({
+        Email: x?.email,
+        FullName: x?.name,
+      }));
+    const { ErrorText, Succeed } = await inviteUsersBatch({
+      ApplicationID,
+      Users,
+    });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        autoClose: true,
+        message: RVDic.MSG[ErrorText] || ErrorText,
+        position: RV_RTL ? 'bottom-left' : 'bottom-right',
+      });
+    } else if (Succeed) {
+      InfoToast({
+        type: 'success',
+        autoClose: true,
+        message: RVDic.MSG[Succeed] || Succeed,
+        position: RV_RTL ? 'bottom-left' : 'bottom-right',
+      });
+    }
+  };
+
   return (
     <>
       <Styled.Title>
-        {'هم‌تیمی های خود را به کلیک‌مایند دعوت کنید!'}
+        {RVDic?.InviteYourTeamMatesToRaaiVan.replace(
+          '[RaaiVan]',
+          decodeBase64(RVGlobal?.SystemName)
+        )}
       </Styled.Title>
       <Styled.SubtitleContainer>
         <InfoCircleIcon size={16} />
         <Styled.SubTitle>
-          {'برای ارسال دعوت‌نامه به هم‌تیمی جدید، ایمیل او را وارد کنید'}
+          {RVDic?.ToSendTheInvitationToANewTeamMateEnterTheirEmail}
         </Styled.SubTitle>
       </Styled.SubtitleContainer>
 
@@ -87,11 +120,13 @@ const SendInvitation = () => {
 
       <ActionBar>
         <Button
+          onClick={submitForm}
           style={{
             height: '3rem',
             width: '8.25rem',
           }}
-          disable={!formIsValid}>
+          disable={!formIsValid}
+        >
           {RVDic?.Send}
         </Button>
       </ActionBar>

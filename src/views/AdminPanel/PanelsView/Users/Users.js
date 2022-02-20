@@ -89,7 +89,8 @@ const Users = (props) => {
           in={!showInvitationForm}
           timeout={animationDuration}
           classNames="transition"
-          unmountOnExit>
+          unmountOnExit
+        >
           <Styled.ContentWrapper>
             <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
             <Styled.HeadingWrapper>
@@ -104,16 +105,11 @@ const Users = (props) => {
                 delayTime={1000}
               />
 
-              {SAASBasedMultiTenancy && (
-                <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {RVDic?.InviteNewTeamMate}
-                </AddUserButton>
-              )}
-              {!SAASBasedMultiTenancy && (
-                <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
-                </AddUserButton>
-              )}
+              <AddUserButton onClick={() => setShowInvitationForm(true)}>
+                {SAASBasedMultiTenancy
+                  ? RVDic?.InviteNewTeamMate
+                  : RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
+              </AddUserButton>
             </Styled.TopBar>
 
             {!dataIsFetching ? (
@@ -134,7 +130,10 @@ const Users = (props) => {
                     />
 
                     {invitedUsers.length !== 0 && (
-                      <InvitedUserList users={invitedUsers} />
+                      <InvitedUserList
+                        users={invitedUsers}
+                        ApplicationID={ApplicationID}
+                      />
                     )}
                   </div>
                 )}
@@ -149,15 +148,20 @@ const Users = (props) => {
           in={showInvitationForm && SAASBasedMultiTenancy}
           classNames="transition"
           timeout={animationDuration}
-          unmountOnExit>
-          <UsersInvitation onClose={() => setShowInvitationForm(false)} />
+          unmountOnExit
+        >
+          <UsersInvitation
+            onClose={() => setShowInvitationForm(false)}
+            ApplicationID={ApplicationID}
+          />
         </CSSTransition>
 
         <CSSTransition
           in={showInvitationForm && !SAASBasedMultiTenancy}
           classNames="transition"
           timeout={animationDuration}
-          unmountOnExit>
+          unmountOnExit
+        >
           <UsersCreate onClose={() => setShowInvitationForm(false)} />
         </CSSTransition>
       </Styled.UserManagementContentCard>
