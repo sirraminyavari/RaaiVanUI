@@ -9,11 +9,15 @@ import { MainFormContainer } from './TemplateGeneralSettingsStyles';
 import TemplateTitleForm from './items/TemplateTitleForm';
 import CMConfidentialitySetting from './CMConfidetialitySetting/CMConfidentialitySetting';
 import { PRIVACY_OBJECT_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
+import { useState } from 'react';
+import RVCheckbox from '../../../../../components/Inputs/RVCheckbox/RVCheckbox';
 
 const TemplateGeneralSettings = () => {
   const { id, title } = useParams();
   const { RVDic, RVGlobal } = window;
   const isSaas = RVGlobal?.SAASBasedMultiTenancy;
+
+  const [test, setTest] = useState(true);
 
   const breadItems = [
     {
@@ -52,6 +56,18 @@ const TemplateGeneralSettings = () => {
         ) : (
           ''
         )}
+
+        <RVCheckbox
+          value="data"
+          checked={test}
+          onChange={(e) => {
+            console.log(e?.target);
+            console.log(e?.target?.checked);
+            setTest(e?.target?.checked);
+          }}
+        >
+          تست
+        </RVCheckbox>
       </Styled.MainForm>
 
       <Styled.SideForm>
