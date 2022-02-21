@@ -90,7 +90,7 @@ const UserSelectModal = () => {
             type="text"
             delayTime={1000}
             defaultValue={searchNewRole}
-            onChange={(value) => setSearchNewRole(value)}
+            onChange={(event) => setSearchNewRole(event.target.value)}
             placeholder={RVDic.Search}
           />
           <SearchIcon size={20} />
@@ -116,7 +116,8 @@ const UserSelectModal = () => {
           <Button
             type="negative-o"
             style={buttonStyles}
-            onClick={onModalCancel}>
+            onClick={onModalCancel}
+          >
             {RVDic.Return}
           </Button>
         </ActionButtonContainer>
