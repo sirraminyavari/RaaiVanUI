@@ -59,6 +59,7 @@ const TemplateGeneralSettings = () => {
 
         <RVCheckbox
           value="data"
+          disabled={true}
           checked={test}
           onChange={(e) => {
             console.log(e?.target);
