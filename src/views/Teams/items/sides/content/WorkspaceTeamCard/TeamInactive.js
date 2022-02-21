@@ -26,7 +26,7 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
               radius={45}
               style={{ width: '50px' }}
               imageStyles={{ filter: 'grayscale(100%)' }}
-              userImage={IconURL}
+              userImage={GlobalUtilities.add_timestamp(IconURL)}
             />
           </div>
           <Styled.TeamTitle style={{ color: '#707070' }}>
@@ -45,7 +45,9 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
               return (
                 <Avatar
                   key={index}
-                  userImage={user.ProfileImageURL}
+                  userImage={GlobalUtilities.add_timestamp(
+                    user.ProfileImageURL
+                  )}
                   radius={32}
                   imageStyles={{ filter: 'grayscale(100%)' }}
                   style={{
@@ -60,7 +62,8 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
               <PopupMenu
                 align="top"
                 arrowClass="hidden-arrow"
-                menuClass="extra-users-popup">
+                menuClass="extra-users-popup"
+              >
                 <Styled.ExtraUsersWrapper>
                   <Badge
                     showText={`${TotalCount - 4}+`}
@@ -74,7 +77,9 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
                         <Styled.ExtraUserItem>
                           <Avatar
                             color="#333"
-                            userImage={user.ProfileImageURL}
+                            userImage={GlobalUtilities.add_timestamp(
+                              user.ProfileImageURL
+                            )}
                             style={{ width: '30px' }}
                             radius={25}
                           />
@@ -94,7 +99,8 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
           {IsSystemAdmin && (
             <Button
               type="primary-o"
-              style={{ height: '1.5rem', width: '5rem' }}>
+              style={{ height: '1.5rem', width: '5rem' }}
+            >
               فعال سازی
             </Button>
           )}

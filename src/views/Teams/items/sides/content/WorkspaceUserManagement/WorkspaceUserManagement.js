@@ -23,7 +23,7 @@ import WorkspaceUserManagementTableData from './WorkspaceUserManagementTableData
 import WorkspaceUserManagementTableColumnHead from './WorkspaceUserManagementTableColumnHead';
 
 const WorkspaceUserManagement = ({ WorkspaceID }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
   const { isMobile } = DimensionHelper();
   const [SearchText, setSearchText] = useState('');
   const [tablePage, setTablePage] = useState(0);
@@ -62,34 +62,36 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
 
   //! API request handler
   const loadWorkspaceUsers = React.useMemo(
-    () => async (resetTable = false) => {
-      if (isLoading) return;
-      setIsLoading(true);
-      const { ErrorText, ...response } = await getWorkspaceUsers({
-        WorkspaceID,
-        Count: 20,
-        SearchText: SearchText,
-        LowerBoundary: workspaceUsers?.length + 1,
-      });
-      if (ErrorText)
-        return InfoToast({
-          type: 'error',
-          message: RVDic.MSG[ErrorText] || ErrorText,
+    () =>
+      async (resetTable = false) => {
+        if (isLoading) return;
+        setIsLoading(true);
+        const { ErrorText, ...response } = await getWorkspaceUsers({
+          WorkspaceID,
+          Count: 20,
+          SearchText: SearchText,
+          LowerBoundary: workspaceUsers?.length + 1,
         });
-      setIsLoading(false);
-      setWorkspaceUsers((storedUsers) => [
-        //* If [resetTable] is true, then only return recently fetched Users
-        //* if false, then merge recently fetched data with previous items
-        ...(resetTable ? [] : storedUsers),
-        ...response.Items,
-      ]);
+        if (ErrorText)
+          return InfoToast({
+            type: 'error',
+            message: RVDic.MSG[ErrorText] || ErrorText,
+          });
+        setIsLoading(false);
+        setWorkspaceUsers((storedUsers) => [
+          //* If [resetTable] is true, then only return recently fetched Users
+          //* if false, then merge recently fetched data with previous items
+          ...(resetTable ? [] : storedUsers),
+          ...response.Items,
+        ]);
 
-      if (resetTable) {
-        setTablePage(0);
-      } else if (response.TotalCount > workspaceUsers.length + 1)
-        setTablePage((currentPage) => currentPage + 1);
-      else setTablePage(false);
-    },
+        if (resetTable) {
+          setTablePage(0);
+        } else if (response.TotalCount > workspaceUsers.length + 1)
+          setTablePage((currentPage) => currentPage + 1);
+        else setTablePage(false);
+        console.log({ SearchText });
+      },
     [workspaceUsers, SearchText, isLoading]
   );
 
@@ -145,7 +147,7 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
           messageIcon={() => (
             <Avatar
               imageClasses="teamAvatar"
-              userImage={removableUser.ImageURL}
+              userImage={GlobalUtilities.add_timestamp(removableUser.ImageURL)}
             />
           )}
           show={!!removableUser}
@@ -176,7 +178,8 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
             onScrollEnd={loadWorkspaceUsers}
             pageNumber={tablePage}
             setPageNumber={setTablePage}
-            hasMore={tablePage !== false}>
+            hasMore={tablePage !== false}
+          >
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
           {isLoading && <LoadingIconCircle />}
