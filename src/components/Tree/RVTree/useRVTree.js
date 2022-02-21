@@ -7,7 +7,6 @@ const useRVTree = () => {
   const [tree, setTree] = useState({});
 
   /**
-   *
    * @description creation top level node of tree
    * @param nodes
    */
@@ -118,7 +117,6 @@ const useRVTree = () => {
   };
 
   /**
-   *
    * @param node
    */
   const handleNodeSelection = (node) => {
@@ -173,7 +171,6 @@ const useRVTree = () => {
   };
 
   /**
-   * @description
    * @param node
    * @param callback
    */
