@@ -168,7 +168,7 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
         </GlobalStyled.WorkspaceSettingsHeaderContainer>
         <SearchInput
           placeholder={RVDicSearch}
-          onChange={setSearchText}
+          onChange={(event) => setSearchText(event.target.value)}
           delayTime={650}
           defaultValue={''}
         />

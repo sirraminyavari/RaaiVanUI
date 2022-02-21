@@ -106,7 +106,7 @@ const UsersCreate = ({ onClose, ...props }) => {
           <UsernameInput className={shake && 'rv-shake'} error={highlight}>
             <UsernameInputField
               defaultValue={form.Username}
-              onChange={(Username) => handleUsernameValidity(Username)}
+              onChange={(event) => handleUsernameValidity(event.target.value)}
               type="text"
               delayTime={1000}
               placeholder={RVDic?.UserName}
@@ -134,7 +134,8 @@ const UsersCreate = ({ onClose, ...props }) => {
               height: '3rem',
               width: '8.25rem',
             }}
-            disable={!formIsValid()}>
+            disable={!formIsValid()}
+          >
             {RVDic?.Send}
           </Button>
         </ActionBar>
