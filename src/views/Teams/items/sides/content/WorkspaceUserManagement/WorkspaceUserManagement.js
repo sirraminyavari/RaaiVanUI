@@ -173,7 +173,7 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
           defaultValue={''}
         />
 
-        <Styled.TableContainer>
+        <Styled.WorkspaceUserManagementTableContainer>
           <InfiniteScroll
             onScrollEnd={loadWorkspaceUsers}
             pageNumber={tablePage}
@@ -182,8 +182,10 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
           >
             <ResponsiveTable data={data} columns={columns} />
           </InfiniteScroll>
-          {isLoading && <LoadingIconCircle />}
-        </Styled.TableContainer>
+          <Styled.WorkspaceUserManagementLoaderContainer>
+            {isLoading && <LoadingIconCircle />}
+          </Styled.WorkspaceUserManagementLoaderContainer>
+        </Styled.WorkspaceUserManagementTableContainer>
       </div>
     </>
   );
