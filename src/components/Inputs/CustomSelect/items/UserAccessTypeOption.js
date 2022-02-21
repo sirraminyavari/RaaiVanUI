@@ -25,6 +25,7 @@ const Description = styled.div`
 
 const UserAccessTypeOption = (props) => {
   const { data, children } = props;
+  console.log(data);
   const { value, label, description } = data;
 
   return (

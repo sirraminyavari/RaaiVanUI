@@ -6,7 +6,7 @@ export const useTabView = ({ children, onSelect }) => {
   const tabContainerEl = useRef();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [indicatorWidth, setIndicatorWidth] = useState();
-  const [indicatorOffset, setIndicatorOffset] = useState(0);
+  const [indicatorOffset, setIndicatorOffset] = useState();
   const action = [...children].find((x) => x?.type?.name === 'Action') || null;
 
   const items = children

@@ -43,6 +43,8 @@ import {
   MONITORING_PATH,
   MONITORING_TEAMS_PATH,
   MONITORING_TEAMS_NAME,
+  TEMPLATES_SETTING_SINGLE_PATH,
+  TEMPLATES_SETTING_SINGLE_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
@@ -123,6 +125,12 @@ const MonitoringView = lazy(() =>
 const MonitoringTeamView = lazy(() =>
   import(
     /* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
+  )
+);
+
+const SingleTemplateView = lazy(() =>
+  import(
+    /* webpackChunkName: "monitoring-view"*/ 'views/Templates/TemplateSinglePage/TemplateSinglePage'
   )
 );
 
@@ -226,6 +234,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: NetworkView,
+  },
+  {
+    path: TEMPLATES_SETTING_SINGLE_PATH,
+    name: TEMPLATES_SETTING_SINGLE_NAME,
+    exact: false,
+    hasNavSide: true,
+    component: SingleTemplateView,
   },
   {
     path: TEMPLATES_SETTING_PATH,
