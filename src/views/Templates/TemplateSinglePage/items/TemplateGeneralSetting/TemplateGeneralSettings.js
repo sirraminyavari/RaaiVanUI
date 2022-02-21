@@ -17,8 +17,6 @@ const TemplateGeneralSettings = () => {
   const { RVDic, RVGlobal } = window;
   const isSaas = RVGlobal?.SAASBasedMultiTenancy;
 
-  const [test, setTest] = useState(true);
-
   const breadItems = [
     {
       id: 1,
@@ -56,19 +54,6 @@ const TemplateGeneralSettings = () => {
         ) : (
           ''
         )}
-
-        <RVCheckbox
-          value="data"
-          disabled={true}
-          checked={test}
-          onChange={(e) => {
-            console.log(e?.target);
-            console.log(e?.target?.checked);
-            setTest(e?.target?.checked);
-          }}
-        >
-          تست
-        </RVCheckbox>
       </Styled.MainForm>
 
       <Styled.SideForm>
