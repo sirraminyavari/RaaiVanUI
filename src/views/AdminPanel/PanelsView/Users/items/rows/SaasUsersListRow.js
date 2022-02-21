@@ -10,6 +10,7 @@ import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVApi';
 import useWindowContext from 'hooks/useWindowContext';
 
 const SaasUsersListRow = ({
+  ownerId,
   ImageURL,
   FullName,
   Email,
@@ -35,56 +36,44 @@ const SaasUsersListRow = ({
 
   const [IsAdmin, setIsAdmin] = useState(IsSystemAdmin);
   const { RVDic, RV_RTL } = useWindowContext();
-  const handleSystemAdminChange = (value) => {
+  const handleSystemAdminChange = async (value) => {
     setIsAdmin(value);
     if (value) {
-      addSystemAdmin(UserID)
-        .then((res) => {
-          if (res?.ErrorText) {
-            setIsAdmin(!value);
-            InfoToast({
-              type: 'error',
-              autoClose: true,
-              message: `خطایی رخ داد.`,
-              position: RV_RTL ? 'bottom-left' : 'bottom-right',
-            });
-          } else if (res?.Succeed) {
-            InfoToast({
-              type: 'success',
-              autoClose: true,
-              message: `عملیات موفقیت آمیز بود.`,
-              position: RV_RTL ? 'bottom-left' : 'bottom-right',
-            });
-          }
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
+      const { ErrorText, Succeed } = await addSystemAdmin(UserID);
+      if (ErrorText) {
+        setIsAdmin(!value);
+        InfoToast({
+          type: 'error',
+          autoClose: true,
+          message: RVDic.MSG[ErrorText] || ErrorText,
+          position: RV_RTL ? 'bottom-left' : 'bottom-right',
         });
+      } else if (Succeed) {
+        InfoToast({
+          type: 'success',
+          autoClose: true,
+          message: RVDic.MSG[Succeed] || Succeed,
+          position: RV_RTL ? 'bottom-left' : 'bottom-right',
+        });
+      }
     } else {
-      removeSystemAdmin(UserID)
-        .then((res) => {
-          if (res?.ErrorText) {
-            setIsAdmin(!value);
-            InfoToast({
-              type: 'error',
-              autoClose: true,
-              message: `خطایی رخ داد.`,
-              position: RV_RTL ? 'bottom-left' : 'bottom-right',
-            });
-          } else if (res?.Succeed) {
-            InfoToast({
-              type: 'info',
-              autoClose: true,
-              message: `عملیات موفقیت آمیز بود.`,
-              position: RV_RTL ? 'bottom-left' : 'bottom-right',
-            });
-          }
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
+      const { ErrorText, Succeed } = await removeSystemAdmin(UserID);
+      if (ErrorText) {
+        setIsAdmin(!value);
+        InfoToast({
+          type: 'error',
+          autoClose: true,
+          message: RVDic.MSG[ErrorText] || ErrorText,
+          position: RV_RTL ? 'bottom-left' : 'bottom-right',
         });
+      } else if (Succeed) {
+        InfoToast({
+          type: 'success',
+          autoClose: true,
+          message: RVDic.MSG[Succeed] || Succeed,
+          position: RV_RTL ? 'bottom-left' : 'bottom-right',
+        });
+      }
     }
   };
 
@@ -110,7 +99,11 @@ const SaasUsersListRow = ({
 
       <Styled.ListBodyItem width={8}>
         <ToggleWrapper>
-          <ToggleButton value={IsAdmin} onToggle={handleSystemAdminChange} />
+          <ToggleButton
+            value={IsAdmin}
+            onToggle={handleSystemAdminChange}
+            disabled={ownerId === UserID}
+          />
         </ToggleWrapper>
       </Styled.ListBodyItem>
 
@@ -119,7 +112,10 @@ const SaasUsersListRow = ({
       </Styled.ListBodyItem>
 
       <Styled.ListBodyItem width={17}>
-        <UserDeleteButton render={userTitle} onRemoveConfirm={handleRemoveUser}>
+        <UserDeleteButton
+          render={userTitle}
+          isOwner={ownerId === UserID}
+          onRemoveConfirm={handleRemoveUser}>
           {RVDic?.RemoveFromTeam}
         </UserDeleteButton>
       </Styled.ListBodyItem>

@@ -5,7 +5,7 @@ import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import useWindowContext from 'hooks/useWindowContext';
 
-const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
+const UserDeleteButton = ({ children, render, onRemoveConfirm, isOwner }) => {
   const { RVDic } = useWindowContext();
   const [modalInfo, setModalInfo] = useState({
     title: RVDic?.RemoveN.replace(`[n]`, RVDic?.User),
@@ -27,7 +27,9 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, ...rest }) => {
   return (
     <>
       <ButtonContainer>
-        <ButtonView onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+        <ButtonView
+          disabled={isOwner}
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
           {children}
         </ButtonView>
       </ButtonContainer>
@@ -68,6 +70,7 @@ const ButtonContainer = styled.div`
   text-align: end;
   padding-left: 1.5rem;
 `;
+ButtonContainer.displayName = 'ButtonContainer';
 
 const ButtonView = styled.button`
   outline: none;
@@ -82,6 +85,7 @@ const ButtonView = styled.button`
     background-color: var(--rv-red-color-verysoft);
   }
 `;
+ButtonView.displayName = 'ButtonView';
 
 const ProfileWrapper = styled.div`
   width: 100%;
@@ -89,6 +93,7 @@ const ProfileWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+ProfileWrapper.displayName = 'ProfileWrapper';
 
 const ModalMessage = styled(Heading).attrs({
   type: 'h4',
@@ -100,6 +105,7 @@ const ModalMessage = styled(Heading).attrs({
   line-height: 1.6rem;
   margin: 1rem auto;
 `;
+ModalMessage.displayName = 'ModalMessage';
 
 const ModalHint = styled.p`
   text-align: center;
@@ -108,6 +114,7 @@ const ModalHint = styled.p`
   font-weight: 500;
   color: var(--rv-red-color);
 `;
+ModalHint.displayName = 'ModalHint';
 
 const ModelActionBar = styled.div`
   height: 3rem;
@@ -117,6 +124,7 @@ const ModelActionBar = styled.div`
   gap: 1.5rem;
   margin-top: 2.2rem;
 `;
+ModelActionBar.displayName = 'ModelActionBar';
 
 const buttonStyles = {
   height: '3rem',

@@ -80,7 +80,7 @@ export const EmailContainer = styled.div`
 `;
 
 export const FieldContainer = styled.div`
-  width: 32%;
+  width: 46%;
 `;
 
 export const StyledAnimatedInput = styled(AnimatedInput)`

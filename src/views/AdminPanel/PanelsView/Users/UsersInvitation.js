@@ -10,9 +10,9 @@ import LinkIcon from 'components/Icons/LinkIcon/LinkIcon';
 import InvitationLink from './items/invitation/InvitaionLink';
 import SendInvitation from './items/invitation/SendInvitation';
 
-const UsersInvitation = ({ onClose, ...props }) => {
-  const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
-  const [getLink, setGetLink] = useState(true);
+const UsersInvitation = ({ onClose, ApplicationID }) => {
+  const { RV_RTL, RVDic } = useWindowContext();
+  const [getLink, setGetLink] = useState(false);
 
   const breadCrumbItems = [
     {
@@ -22,7 +22,7 @@ const UsersInvitation = ({ onClose, ...props }) => {
     },
     {
       id: 2,
-      title: RVDic?.UsersManagement,
+      title: RVDic?.UserManagement,
       linkTo: '',
     },
     {
@@ -48,24 +48,29 @@ const UsersInvitation = ({ onClose, ...props }) => {
 
       <InvitationTypeAction>
         <InvitationTypeButton
+          disabled
           selected={getLink}
           render={<LinkIcon size={14} />}
-          onClick={() => setGetLink(true)}>
-          {'دریافت لینک دعوت'}
+          onClick={() => setGetLink(true)}
+        >
+          {`${RVDic.GetInvitationLink} (${RVDic?.CommingSoon})`}
         </InvitationTypeButton>
 
         <InvitationTypeButton
           selected={!getLink}
           render={<MailIcon size={14} fill={true} />}
-          onClick={() => setGetLink(false)}>
-          {'ارسال دعوت‌نامه'}
+          onClick={() => setGetLink(false)}
+        >
+          {RVDic?.SendInvitations}
         </InvitationTypeButton>
       </InvitationTypeAction>
 
       <InvitationBox linkType={getLink}>
-        {getLink && <InvitationLink />}
-
-        {!getLink && <SendInvitation />}
+        {getLink ? (
+          <InvitationLink />
+        ) : (
+          <SendInvitation ApplicationID={ApplicationID} />
+        )}
       </InvitationBox>
     </>
   );
@@ -82,6 +87,7 @@ const IconContainer = styled.div`
   border-radius: 100%;
   margin: 2rem auto;
 `;
+IconContainer.displayName = 'IconContainer';
 
 const InvitationTypeAction = styled.div`
   display: flex;
@@ -89,6 +95,7 @@ const InvitationTypeAction = styled.div`
   align-items: center;
   gap: 1.5rem;
 `;
+InvitationTypeAction.displayName = 'InvitationTypeAction';
 
 const InvitationBox = styled.div`
   background-color: ${CV_WHITE};
@@ -99,6 +106,7 @@ const InvitationBox = styled.div`
   margin: 1.5rem auto 6rem auto;
   transition: all 0.3s ease-out;
   max-width: ${({ linkType }) => (linkType ? '34rem' : '60rem')};
-  height: ${({ linkType }) => (linkType ? '12rem' : '27rem')};
+  min-height: ${({ linkType }) => (linkType ? '12rem' : '27rem')};
 `;
+InvitationBox.displayName = 'InvitationBox';
 export default UsersInvitation;

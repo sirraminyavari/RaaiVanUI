@@ -9,12 +9,14 @@ import UsersInvitation from './UsersInvitation';
 import InvitedUserList from './items/InvitedUserList';
 import UsersCreate from './UsersCreate';
 import { getUserInvitations, getUsers } from 'apiHelper/ApiHandlers/usersApi';
-import { catchError, forkJoin, from, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import { CSSTransition } from 'react-transition-group';
 
 const Users = (props) => {
+  const animationDuration = 200;
   const ApplicationID = props?.route?.ApplicationID;
+  const CreatorUserID = props?.route?.Application?.CreatorUserID;
+
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
   const SAASBasedMultiTenancy = RVGlobal?.SAASBasedMultiTenancy;
   const [searchText, setSearchText] = useState('');
@@ -27,50 +29,35 @@ const Users = (props) => {
    * @description reload user on search
    */
   useEffect(() => {
-    loadUsers(searchText)
-      .then((_users) => {
-        setUsers(_users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    loadUsers(searchText).catch((err) => console.log(err));
   }, [searchText]);
 
   useEffect(() => {
-    /**
-     * @description handle multiple data fetch state
-     * @type {Subscription}
-     */
-    const subscription$ = forkJoin({
-      _users: from(getUsers()),
-      _invitedUsers: from(getUserInvitations(ApplicationID)),
-    })
-      .pipe(
-        tap(({ _users, _invitedUsers }) => {
-          setUsers(_users);
-          setInvitedUsers(_invitedUsers);
-          setDataIsFetching(false);
-        }),
-        catchError((e) => {
-          console.log(e);
-          return of(e);
-        })
-      )
-      .subscribe();
-
-    return () => {
-      subscription$.unsubscribe();
-    };
+    loadData().catch((err) => console.log(err));
   }, []);
 
   /**
    * @description api call function to load users list
    * @param keyword
    */
-  const loadUsers = (keyword = '') => {
-    return SAASBasedMultiTenancy
-      ? getUsers(keyword, true)
-      : getUsers(keyword, null);
+  const loadUsers = async (keyword = '') => {
+    const _users = SAASBasedMultiTenancy
+      ? await getUsers(keyword, true)
+      : await getUsers(keyword, null);
+
+    setUsers(_users);
+  };
+
+  /**
+   * @description load list of users and invited users
+   * @returns {Promise<void>}
+   */
+  const loadData = async () => {
+    const _users = await getUsers();
+    const _invitedUsers = await getUserInvitations(ApplicationID);
+    setUsers(_users);
+    setInvitedUsers(_invitedUsers);
+    setDataIsFetching(false);
   };
 
   /**
@@ -97,8 +84,13 @@ const Users = (props) => {
 
   return (
     <Styled.UserManagementContainer rtl={RV_RTL}>
-      <Styled.UserManagementContentCard>
-        {!showInvitationForm && (
+      <Styled.UserManagementContentCard transitionDutration={animationDuration}>
+        <CSSTransition
+          in={!showInvitationForm}
+          timeout={animationDuration}
+          classNames="transition"
+          unmountOnExit
+        >
           <Styled.ContentWrapper>
             <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
             <Styled.HeadingWrapper>
@@ -107,22 +99,17 @@ const Users = (props) => {
 
             <Styled.TopBar>
               <SearchInput
-                defaultValue={searchText}
+                value={searchText}
                 placeholder={RVDic?.Search}
-                onChange={(event) => setSearchText(event.target.value)}
+                onChange={(e) => setSearchText(e?.target?.value)}
                 delayTime={1000}
               />
 
-              {SAASBasedMultiTenancy && (
-                <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {RVDic?.InviteNewTeamMate}
-                </AddUserButton>
-              )}
-              {!SAASBasedMultiTenancy && (
-                <AddUserButton onClick={() => setShowInvitationForm(true)}>
-                  {RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
-                </AddUserButton>
-              )}
+              <AddUserButton onClick={() => setShowInvitationForm(true)}>
+                {SAASBasedMultiTenancy
+                  ? RVDic?.InviteNewTeamMate
+                  : RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
+              </AddUserButton>
             </Styled.TopBar>
 
             {!dataIsFetching ? (
@@ -139,10 +126,14 @@ const Users = (props) => {
                       searchText={searchText}
                       rtl={RV_RTL}
                       users={users}
+                      ownerId={CreatorUserID}
                     />
 
                     {invitedUsers.length !== 0 && (
-                      <InvitedUserList users={invitedUsers} />
+                      <InvitedUserList
+                        users={invitedUsers}
+                        ApplicationID={ApplicationID}
+                      />
                     )}
                   </div>
                 )}
@@ -151,18 +142,30 @@ const Users = (props) => {
               <LogoLoader />
             )}
           </Styled.ContentWrapper>
-        )}
+        </CSSTransition>
 
-        {showInvitationForm && SAASBasedMultiTenancy && (
-          <UsersInvitation onClose={() => setShowInvitationForm(false)} />
-        )}
+        <CSSTransition
+          in={showInvitationForm && SAASBasedMultiTenancy}
+          classNames="transition"
+          timeout={animationDuration}
+          unmountOnExit
+        >
+          <UsersInvitation
+            onClose={() => setShowInvitationForm(false)}
+            ApplicationID={ApplicationID}
+          />
+        </CSSTransition>
 
-        {showInvitationForm && !SAASBasedMultiTenancy && (
+        <CSSTransition
+          in={showInvitationForm && !SAASBasedMultiTenancy}
+          classNames="transition"
+          timeout={animationDuration}
+          unmountOnExit
+        >
           <UsersCreate onClose={() => setShowInvitationForm(false)} />
-        )}
+        </CSSTransition>
       </Styled.UserManagementContentCard>
     </Styled.UserManagementContainer>
   );
 };
-
 export default Users;
