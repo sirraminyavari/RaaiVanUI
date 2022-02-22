@@ -14,7 +14,15 @@ const { GlobalUtilities } = window;
  */
 const Button = forwardRef(
   (
-    { type, loading, disable = false, $circleEdges = false, onClick, ...props },
+    {
+      type,
+      loading,
+      disable = false,
+      $circleEdges = false,
+      onClick,
+      className,
+      ...props
+    },
     ref
   ) => {
     return (
@@ -25,11 +33,12 @@ const Button = forwardRef(
           ' rv-action-button-base ' +
           resolveClass({ type, disable }) +
           ' ' +
-          (props.classes || ' ')
+          (props.classes || className || ' ')
         }
         style={props.style}
         onClick={disable || loading ? null : onClick}
-        {...props}>
+        {...props}
+      >
         {!loading ? (
           props.children
         ) : (
