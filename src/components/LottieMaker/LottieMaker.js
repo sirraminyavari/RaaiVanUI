@@ -22,6 +22,7 @@ const LottieMaker = ({
   autoplay,
   height,
   width,
+  style = {},
   ...rest
 } = {}) => {
   return (
@@ -29,7 +30,7 @@ const LottieMaker = ({
       loop={!!loop}
       autoplay={!!autoplay}
       src={animationJSON}
-      style={{ width: width, height: height || 'auto' }}
+      style={{ width: width, height: height || 'auto', ...style }}
       {...rest}
     />
   );

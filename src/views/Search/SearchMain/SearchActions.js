@@ -6,12 +6,7 @@ import * as Styled from 'views/Search/SearchView.styles';
 import { searchContext } from 'views/Search/SearchView';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
-import {
-  CV_DISTANT,
-  CV_GRAY,
-  TCV_REVERSE,
-  TCV_SOFT,
-} from 'constant/CssVariables';
+import { CV_DISTANT, TCV_REVERSE } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import SearchTypeButtons from './SearchTypeButtons';
 import SearchAdvancedButtons from './SearchAdvancedButtons';
@@ -25,9 +20,8 @@ const selectIsSidebarOpen = createSelector(
 
 const SearchActions = () => {
   const { RVDic } = useWindow();
-  const { searchText, setSearchText, isAsideOpen, totalCount } = useContext(
-    searchContext
-  );
+  const { searchText, setSearchText, isAsideOpen, totalCount } =
+    useContext(searchContext);
   const searchInputRef = useRef();
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
 
@@ -67,18 +61,21 @@ const SearchActions = () => {
           flexFlow: 'row',
           alignItems: 'center',
           paddingInlineEnd: '0.5rem',
-        }}>
+        }}
+      >
         <Heading type="H1" style={{ flex: '1 1 auto', marginBottom: '1.5rem' }}>
           {searchText
             ? SearchResultsForN.replace('[n]', `"${searchText}"`)
             : SearchResults}
         </Heading>
-        {!!totalCount && (
-          <div
-            style={{ flex: '0 0 auto', fontSize: '1rem', color: TCV_REVERSE }}>
-            {RVDic.NItems.replace('[n]', totalCount)}
-          </div>
-        )}
+        {!!totalCount &&
+          false(
+            <div
+              style={{ flex: '0 0 auto', fontSize: '1rem', color: TCV_REVERSE }}
+            >
+              {RVDic.NItems.replace('[n]', totalCount)}
+            </div>
+          )}
       </div>
       <Styled.SearchActionsWrapper>
         <Styled.SearchArea>
@@ -88,7 +85,8 @@ const SearchActions = () => {
               placeholder={Search}
               onChange={handleSearch}
               value={searchText}
-              style={{ padding: '0.5rem', fontSize: '1rem' }}>
+              style={{ padding: '0.5rem', fontSize: '1rem' }}
+            >
               <SearchIcon size={22} color={CV_DISTANT} />
             </Input>
           </Styled.InputWrapper>
