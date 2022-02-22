@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { loginSlice } from 'store/reducers/loginReducer';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import ImageCropper from 'components/ImageCropper/ImageCropper';
+import Button from 'components/Buttons/Button';
+import AvatarImageCropper from 'components/ImageCropper/AvatarImageCropper';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingUserInfo.styles';
 import * as GlobalStyles from 'views/Onboarding/items/Onboarding.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { setUserFirstAndLastName } from 'apiHelper/ApiHandlers/usersApi';
-import Button from 'components/Buttons/Button';
-import { ONBOARDING_USER_TEAM_PATH } from '../../others/constants';
+import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
 
 const { setAuthUser } = loginSlice.actions;
 
@@ -65,6 +65,7 @@ const OnboardingUserInfoContent = () => {
       await setUserFirstAndLastName(currentUserInfo);
       history.push(ONBOARDING_USER_TEAM_PATH);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentUserInfo]
   );
 
@@ -74,14 +75,11 @@ const OnboardingUserInfoContent = () => {
         <Styles.OnboardingUserInfoDescriptionWrapper>
           <p>{RVDicPageDescriptionInfo}</p>
         </Styles.OnboardingUserInfoDescriptionWrapper>
-        <ImageCropper
-          image={currentUser.ProfileImageURL}
+        <AvatarImageCropper
           uploadType="ProfileImage"
-          cropShape="round"
           uploadId={currentUser.UserID}
+          currentImageURL={currentUser.ProfileImageURL}
           onImageUpload={onImageUpload}
-          showGrid={false}
-          isEditable
         />
         <Styles.OnboardingUserInfoInputContainer>
           <Styles.OnboardingUserInfoInputWrapper>
