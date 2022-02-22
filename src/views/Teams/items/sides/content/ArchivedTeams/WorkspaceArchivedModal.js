@@ -13,7 +13,7 @@ import TeamConfirm from '../TeamConfirm';
 
 const WorkspaceArchivedModal = (props) => {
   const dispatch = useDispatch();
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
   const [recycledIds, setRecycledIds] = useState([]);
   const [recyclingIds, setRecyclingIds] = useState([]);
 
@@ -80,7 +80,8 @@ const WorkspaceArchivedModal = (props) => {
         titleContainerClass="archived-teams-title"
         title={modalTitle}
         show={isOpen}
-        onClose={handleCloseModal}>
+        onClose={handleCloseModal}
+      >
         <Styled.ModalContentWrapper>
           <TeamConfirm
             isOpen={confirm.isOpen}
@@ -98,7 +99,9 @@ const WorkspaceArchivedModal = (props) => {
                       <Styled.ArchivedTeamDescription>
                         <Avatar
                           radius={30}
-                          userImage={archive?.IconURL}
+                          userImage={GlobalUtilities.add_timestamp(
+                            archive?.IconURL
+                          )}
                           style={{ minWidth: '2.1rem' }}
                         />
                         <Styled.ArchivedTeamTitle>
@@ -113,7 +116,8 @@ const WorkspaceArchivedModal = (props) => {
                           height: '1.5rem',
                           minWidth: '5rem',
                           textTransform: 'capitalize',
-                        }}>
+                        }}
+                      >
                         {RVDic?.Activate}
                       </Button>
                     </Styled.ArchivedTeamWrapper>

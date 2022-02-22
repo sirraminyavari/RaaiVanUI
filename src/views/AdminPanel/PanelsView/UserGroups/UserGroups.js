@@ -40,7 +40,7 @@ const UserGroups = () => {
       setGroups(groups);
       setLoading(false);
 
-      const users = await getUsers('', true);
+      const users = await getUsers({ IsApproved: true });
       setAllUsers(users);
     })();
   }, []);
@@ -93,7 +93,8 @@ const UserGroups = () => {
           <CSSTransition
             key={x?.NodeID}
             timeout={listAnimationDuration}
-            classNames="transition">
+            classNames="transition"
+          >
             <GroupItem>
               <Styled.GroupIconContainer rtl={RV_RTL}>
                 <PeopleIcon size={96} />
@@ -152,7 +153,8 @@ const UserGroups = () => {
           {!loading ? (
             <TransitionGroup
               duration={listAnimationDuration}
-              component={Styled.GroupsCardContainer}>
+              component={Styled.GroupsCardContainer}
+            >
               {groupItems}
               <UserGroupUpsertModal
                 createMode={true}

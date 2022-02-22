@@ -11,14 +11,17 @@ function WorkspaceUserManagementTableData({
   isMobile,
   setRemovableUser,
 }) {
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
 
   const RVDicRemoveFromAllTeams = RVDic.RemoveFromAllTeams;
   return workspaceUsers?.map(({ Applications, User }) => {
     return {
       col1: (
         <>
-          <Avatar className="userAvatar" userImage={User.ImageURL} />
+          <Avatar
+            className="userAvatar"
+            userImage={GlobalUtilities.add_timestamp(User.ImageURL)}
+          />
           {decodeBase64(User.FullName)}
         </>
       ),
@@ -36,8 +39,12 @@ function WorkspaceUserManagementTableData({
                 place="bottom"
                 tipId={ApplicationID}
                 key={ApplicationID || idx}
-                renderContent={() => decodeBase64(Title)}>
-                <Avatar imageClasses="teamAvatar" userImage={IconURL} />
+                renderContent={() => decodeBase64(Title)}
+              >
+                <Avatar
+                  imageClasses="teamAvatar"
+                  userImage={GlobalUtilities.add_timestamp(IconURL)}
+                />
               </Tooltip>
             );
           else if (idx === 5)
@@ -56,7 +63,8 @@ function WorkspaceUserManagementTableData({
           type="negative-o"
           key={User.MainEmailAddress}
           onClick={() => setRemovableUser(User)}
-          style={{ padding: '0.25rem 1rem' }}>
+          style={{ padding: '0.25rem 1rem' }}
+        >
           {RVDicRemoveFromAllTeams}
         </Button>
       ),

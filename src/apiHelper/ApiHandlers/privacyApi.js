@@ -22,31 +22,31 @@ export const checkAuthority = () => {
 
 /**
  * @enum {PrivacyObjectTypes}
-const PRIVACY_OBJECT_TYPE = {
-  Node,
-  NodeType,
-  FAQCategory,
-  QAWorkFlow,
-  Poll,
-  Report,
-  FormElement,
-  AccessRole,
+ */
+export const PRIVACY_OBJECT_TYPE = {
+  Node: 'Node',
+  NodeType: 'NodeType',
+  FAQCategory: 'FAQCategory',
+  QAWorkFlow: 'QAWorkFlow',
+  Poll: 'Poll',
+  Report: 'Report',
+  FormElement: 'FormElement',
+  AccessRole: 'AccessRole',
 };
-*/
 
 /**
  * @enum {PermissionType}
+ */
 const PERMISSION_TYPE = {
-  Create,
-  CreateBulk,
-  View,
-  ViewAbstract,
-  ViewRelatedItems,
-  Modify,
-  Delete,
-  Download,
+  Create: 'Create',
+  CreateBulk: 'CreateBulk',
+  View: 'View',
+  ViewAbstract: 'ViewAbstract',
+  ViewRelatedItems: 'ViewRelatedItems',
+  Modify: 'Modify',
+  Delete: 'Delete',
+  Download: 'Download',
 };
-*/
 
 /**
  * @description fetches the current privacy settings for a number of ObjectIDs

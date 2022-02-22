@@ -55,14 +55,16 @@ const Item = ({ label, ...rest }) => {
   const { selectedIndex, onItemSelect, onResize } = useContext(TabContext);
   const itemEl = useRef();
 
+  const resizeHandler = () => {
+    if (itemEl.current && selectedIndex === index) {
+      onResize(itemEl?.current?.getBoundingClientRect());
+    }
+  };
+
   useEffect(() => {
-    window.addEventListener('resize', (e) => {
-      if (selectedIndex === index) {
-        onResize(itemEl?.current?.getBoundingClientRect());
-      }
-    });
+    window.addEventListener('resize', resizeHandler);
     return () => {
-      window.removeEventListener('resize', null);
+      window.removeEventListener('resize', resizeHandler);
     };
   });
 

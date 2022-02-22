@@ -40,10 +40,10 @@ const Users = (props) => {
    * @description api call function to load users list
    * @param keyword
    */
-  const loadUsers = async (keyword = '') => {
+  const loadUsers = async (SearchText = '') => {
     const _users = SAASBasedMultiTenancy
-      ? await getUsers(keyword, true)
-      : await getUsers(keyword, null);
+      ? await getUsers({ SearchText, IsApproved: true })
+      : await getUsers({ SearchText, IsApproved: true });
 
     setUsers(_users);
   };

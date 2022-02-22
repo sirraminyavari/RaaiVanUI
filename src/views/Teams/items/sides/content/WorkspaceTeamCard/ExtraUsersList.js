@@ -10,7 +10,7 @@ import usePreventScroll from 'hooks/usePreventScroll';
 
 const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
   const containerRef = useRef();
-  const { RV_RTL, RVGlobal, RVDic } = useWindow();
+  const { RV_RTL, GlobalUtilities, RVDic } = useWindow();
 
   usePreventScroll(containerRef);
 
@@ -24,7 +24,8 @@ const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
               height: '2rem',
               lineHeight: '2.5rem',
             }}
-            rtl={RV_RTL}>
+            rtl={RV_RTL}
+          >
             <UserPlusIcon
               size={16}
               color={TCV_DEFAULT}
@@ -45,7 +46,12 @@ const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
             )}`;
             return (
               <Styled.ExtraUserItem key={user?.UserID}>
-                <Avatar userImage={user?.ProfileImageURL} radius={25} />
+                <Avatar
+                  userImage={GlobalUtilities.add_timestamp(
+                    user?.ProfileImageURL
+                  )}
+                  radius={25}
+                />
                 <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
               </Styled.ExtraUserItem>
             );

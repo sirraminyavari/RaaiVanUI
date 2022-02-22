@@ -210,9 +210,8 @@ export const checkUserName = ({ UserName } = {}) => {
  * @param IsApproved
  * @return {Promise<unknown>}
  */
-export const getUsers = (SearchText, IsApproved, IsOnline) => {
-  const getListOfUsersAPI = API_Provider(USERS_API, GET_USERS);
-  return apiCallWrapper(getListOfUsersAPI, {
+export const getUsers = ({ SearchText, IsApproved, IsOnline } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, GET_USERS), {
     SearchText: encodeBase64(SearchText),
     IsOnline,
     IsApproved,

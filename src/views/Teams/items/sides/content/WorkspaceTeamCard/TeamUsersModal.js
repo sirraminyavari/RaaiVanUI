@@ -22,7 +22,7 @@ const TeamUsersModal = ({
   setIsModalShown,
 }) => {
   const dispatch = useDispatch();
-  const { RVDic, RVGlobal } = useWindow();
+  const { RVDic, RVGlobal, GlobalUtilities } = useWindow();
 
   const [confirm, setConfirm] = useState({
     user: null,
@@ -70,7 +70,8 @@ const TeamUsersModal = ({
       show={isModalShown}
       onClose={handleCloseModal}
       contentWidth="40%"
-      title={RVDicTeamMates}>
+      title={RVDicTeamMates}
+    >
       <TeamConfirm
         isOpen={confirm.isOpen}
         onConfirm={handleConfirmation}
@@ -86,7 +87,8 @@ const TeamUsersModal = ({
             gridTemplateColumns: '1fr',
             gap: '0.2rem',
             marginTop: '1rem',
-          }}>
+          }}
+        >
           {!users.length ? (
             <LogoLoader />
           ) : (
@@ -104,8 +106,14 @@ const TeamUsersModal = ({
                   style={{
                     border: `1px solid ${CV_DISTANT}`,
                     padding: '0.2rem 0.5rem',
-                  }}>
-                  <Avatar userImage={user?.ProfileImageURL} radius={25} />
+                  }}
+                >
+                  <Avatar
+                    userImage={GlobalUtilities.add_timestamp(
+                      user?.ProfileImageURL
+                    )}
+                    radius={25}
+                  />
                   <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
                   <Styled.ExtraUserTitle
                     className={BO_RADIUS_QUARTER}
@@ -114,7 +122,8 @@ const TeamUsersModal = ({
                       fontWeight: 'bold',
                       backgroundColor: CV_FREEZED,
                       padding: '0.3rem',
-                    }}>
+                    }}
+                  >
                     {userName}
                   </Styled.ExtraUserTitle>
                   {isRemovable && !isAuthUser && (
