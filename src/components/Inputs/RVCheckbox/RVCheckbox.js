@@ -4,15 +4,15 @@ import {
   Input,
   CustomCheckbox,
   CheckboxLabel,
-} from './RVCheckboxStyle';
+} from './CheckboxStyle';
 import CheckIcon from '../../Icons/CheckIcons/Check';
 
-const RVCheckbox = React.forwardRef((props, forwardedRef) => {
+const RVCheckbox = React.forwardRef((props, ref) => {
   const { children, checked, ...rest } = props;
 
   return (
     <CheckboxContainer>
-      <Input ref={forwardedRef} {...rest} />
+      <Input {...{ checked, ref }} {...rest} />
       <CustomCheckbox checked={checked}>
         {checked && <CheckIcon size={20} />}
       </CustomCheckbox>

@@ -7,15 +7,36 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import LockIcon from 'components/Icons/LockIcon/LockIcon';
 import AdvancedConfidentialitySelect from './AdvancedConfidentialitySelect/AdvancedConfidentialitySelect';
 import { AdvancedSelectionContainer } from './CMConfidentialitySettingStyle';
+import { PrivacyObjectProvider } from './PrivacyContext';
 
 const CMConfidentialitySetting = ({ type }) => {
-  const { options, loading, selectedOption, handleSelection, advancedOption } =
-    useCMConfidentiality({ type });
+  const {
+    options,
+    users,
+    groups,
+    selectedUsers,
+    handleUserSelect,
+    selectedGroups,
+    handleGroupSelect,
+    loading,
+    selectedOption,
+    handleSelection,
+    advancedOption,
+  } = useCMConfidentiality({ type });
 
   if (loading) return <LogoLoader />;
 
   return (
-    <>
+    <PrivacyObjectProvider
+      {...{
+        users,
+        groups,
+        selectedUsers,
+        handleUserSelect,
+        selectedGroups,
+        handleGroupSelect,
+      }}
+    >
       <Styled.Container>
         <Styled.SelectionBlock>
           <Styled.BlockTitle>{'تنظیمات محرمانگی'}</Styled.BlockTitle>
@@ -55,7 +76,7 @@ const CMConfidentialitySetting = ({ type }) => {
             <AdvancedConfidentialitySelect {...x} />
           ))}
       </AdvancedSelectionContainer>
-    </>
+    </PrivacyObjectProvider>
   );
 };
 export default CMConfidentialitySetting;

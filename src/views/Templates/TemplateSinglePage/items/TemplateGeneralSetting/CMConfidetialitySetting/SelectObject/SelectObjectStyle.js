@@ -11,6 +11,8 @@ export const Button = styled.button`
   color: ${TCV_DEFAULT};
   transition: all 150ms ease-in-out;
   cursor: pointer;
+  font-weight: 500;
+  background-color: ${CV_WHITE};
 
   &:hover {
     border: 1px solid ${TCV_DEFAULT};

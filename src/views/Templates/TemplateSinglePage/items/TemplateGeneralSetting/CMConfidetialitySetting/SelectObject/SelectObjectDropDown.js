@@ -9,8 +9,10 @@ import ResizeIcon from 'components/Icons/ResizeIcon/ResizeIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { createRef, useState } from 'react';
 import useOutsideClick from 'hooks/useOutsideClick';
+import SelectGroups from './SelectObjectItem/SelectGroups';
+import SelectUsers from './SelectObjectItem/SelectUsers';
 
-const SelectObjectDropDown = ({}) => {
+const SelectObjectDropDown = ({ type }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [selectedTab, setSelectedTab] = useState('members');
   const dropDownEl = createRef();
@@ -27,11 +29,11 @@ const SelectObjectDropDown = ({}) => {
         <DropDown ref={dropDownEl}>
           <TabView onSelect={(key) => setSelectedTab(key)}>
             <TabView.Item label={'اعضا'} key="members">
-              <div>{'members'}</div>
+              <SelectUsers {...{ type }} />
             </TabView.Item>
 
             <TabView.Item label={'گروه‌ها'} key="groups">
-              <div>{'groups'}</div>
+              <SelectGroups {...{ type }} />
             </TabView.Item>
 
             <TabView.Action>

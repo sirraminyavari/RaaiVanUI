@@ -46,7 +46,7 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
           />
         </Styled.BlockSelectWrapper>
 
-        {selected === 'CUSTOMIZED' && <SelectObject />}
+        {selected === 'CUSTOMIZED' && <SelectObject type={permissionType} />}
       </Styled.SelectionBlock>
     </>
   );
