@@ -8,7 +8,7 @@ import Modal from 'components/Modal/Modal';
  * @param {string} [props.currentImageURL] - If supplied, will be the trigger button's initial image
  * @param {string} props.uploadId
  * @param {string} props.uploadType - An string to set the correct api upload path e.g. "ProfileImage"
- * @param {(imageURL:string)=>void} [props.onImageUploadComplete]
+ * @param {Function} [props.onImageUploadComplete] - A function to run after image input change (passes imageURL as parameter to the supplied function)
  * @return {JSX.Element}
  */
 function AvatarImageCropper({

@@ -17,11 +17,11 @@ const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
 /**
  * @component
  * @param {string} props.imageSrc - Default Image url/uri
- * @param {(imageURL:string)=>void} props.onImageChange - A function to run after image input change
+ * @param {Function} props.onImageChange - A function to run after image input change (passes imageURL as parameter to the supplied function)
  * @param {string} props.uploadId - An ID to set as the upload image's name
  * @param {string} props.uploadType - An string to set the correct api upload path e.g. "ProfileImage"
- * @param {()=>void} props.onImageUploadComplete - A function to run after image upload process completed
- * @param {()=>void} props.onCancel - A function to run after cancel button pressed
+ * @param {Function} props.onImageUploadComplete - A function to run after image upload process completed
+ * @param {Function} props.onCancel - A function to run after cancel button pressed
  * @return {JSX.Element}
  */
 function AvatarImageCropperTabs({

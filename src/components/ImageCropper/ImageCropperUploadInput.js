@@ -5,7 +5,7 @@ import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
 
 /**
  * @component - Image Cropper's hidden file input
- * @param {({imageSrc,targetFile,originalImage})=>void} [props.onImageChange]
+ * @param {Function} [props.onImageChange] A function to run after image input change (passes {imageSrc,targetFile,originalImage} as parameter to the supplied function)
  */
 const ImageCropperUploadInput = forwardRef(
   ({ onImageChange, ...restProps }, ref) => {

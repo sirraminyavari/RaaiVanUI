@@ -14,8 +14,8 @@ const ImageCropperEditor = lazy(() =>
 /**
  * @component - A wrapper for Image Cropper Editor
  * @param {string} props.imageSrc - Image url/uri
- * @param {()=>void} props.onImageEditorDelete - A function to run after the delete button pressed
- * @param {()=>void} props.onImageEditChange - A function to run when user make changes in editor
+ * @param {Function} props.onImageEditorDelete - A function to run after the delete button pressed
+ * @param {Function} props.onImageEditChange - A function to run when user make changes in editor
  * @param {React.MutableRefObject} props.fileInputRef - File input's Ref
  * @return {JSX.Element}
  */
