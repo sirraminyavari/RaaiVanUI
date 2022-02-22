@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { TCV_DEFAULT, CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 import { BO_RADIUS_CIRCLE } from 'constant/constants';
 
-//TODO Move to the `src/components/...` folder
 /**
  * @component - Stepper component
  * @param {object} props
