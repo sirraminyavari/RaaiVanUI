@@ -6,6 +6,7 @@ import {
   ONBOARDING_PATH,
   ONBOARDING_USER_INFO_PATH,
   ONBOARDING_USER_TEAM_PATH,
+  ONBOARDING_TEMPLATE_PATH,
 } from './items/others/constants';
 import { OnboardingTeamStepContextProvider } from './items/others/OnboardingTeam.context';
 
@@ -28,7 +29,15 @@ const OnboardingUserInfoView = WithSuspense(
 const OnboardingTeamView = WithSuspense(
   lazy(() =>
     import(
-      /* webpackChunkName: "onboarding-user-info-view"*/ 'views/Onboarding/OnboardingTeamView'
+      /* webpackChunkName: "onboarding-team-view"*/ 'views/Onboarding/OnboardingTeamView'
+    )
+  )
+);
+
+const OnboardingTemplateView = WithSuspense(
+  lazy(() =>
+    import(
+      /* webpackChunkName: "onboarding-team-view"*/ 'views/Onboarding/OnboardingTemplateView'
     )
   )
 );
@@ -46,6 +55,11 @@ const OnboardingView = () => {
           exact
           path={ONBOARDING_USER_INFO_PATH}
           component={OnboardingUserInfoView}
+        />
+        <Route
+          exact
+          path={ONBOARDING_TEMPLATE_PATH}
+          component={OnboardingTemplateView}
         />
         <OnboardingTeamStepContextProvider>
           <Route

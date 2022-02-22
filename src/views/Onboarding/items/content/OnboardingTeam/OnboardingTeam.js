@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import * as Styles from './OnboardingTeam.styles';
 import useWindow from 'hooks/useWindowContext';
-import Stepper from 'views/Onboarding/items/others/Stepper/Stepper';
+import Stepper from 'components/Stepper/Stepper';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
 import {
   useOnboardingTeamContent,
@@ -53,6 +53,7 @@ const OnboardingTeamContent = () => {
     () => () => {
       dispatch({ type: nextStepAction });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [nextStepAction]
   );
 
