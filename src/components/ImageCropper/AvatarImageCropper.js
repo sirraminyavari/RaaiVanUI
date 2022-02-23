@@ -28,6 +28,12 @@ function AvatarImageCropper({
     setImageSrc(currentImageURL);
     handleModalClose();
   };
+
+  const onImageUploadCompleteFunction = (newImageURL) => {
+    onImageUploadComplete(newImageURL);
+    handleModalClose();
+  };
+
   const handleModalOpen = () => setModalStatus(true);
 
   return (
@@ -43,7 +49,7 @@ function AvatarImageCropper({
           onImageChange={setImageSrc}
           uploadId={uploadId}
           uploadType={uploadType}
-          onImageUploadComplete={onImageUploadComplete}
+          onImageUploadComplete={onImageUploadCompleteFunction}
           onSubmitComplete={handleModalClose}
           onCancel={handleModalCancel}
         />

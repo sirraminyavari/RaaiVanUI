@@ -79,7 +79,7 @@ const OnboardingUserInfoContent = () => {
           uploadType="ProfileImage"
           uploadId={currentUser.UserID}
           currentImageURL={currentUser.ProfileImageURL}
-          onImageUpload={onImageUpload}
+          onImageUploadComplete={onImageUpload}
         />
         <Styles.OnboardingUserInfoInputContainer>
           <Styles.OnboardingUserInfoInputWrapper>

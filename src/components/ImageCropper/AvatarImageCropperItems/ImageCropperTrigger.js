@@ -1,6 +1,7 @@
 import * as Styles from './AvatarImageCropper.styles';
 import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import Avatar from 'components/Avatar/Avatar';
+import useWindow from 'hooks/useWindowContext';
 
 /**
  * @component
@@ -9,11 +10,13 @@ import Avatar from 'components/Avatar/Avatar';
  * @return {JSX.Element}
  */
 function ImageCropperTrigger({ imageSrc, ...restProps }) {
+  const { GlobalUtilities } = useWindow();
+
   return (
     <Styles.ImageCropperTriggerAvatar {...restProps}>
       {imageSrc ? (
         <Avatar
-          userImage={imageSrc}
+          userImage={GlobalUtilities.add_timestamp(imageSrc)}
           className="cropper-avatar"
           imageStyles={{ width: '100%', height: '100%' }}
         />
