@@ -11,9 +11,9 @@ import { getUsers } from '../../../../../../apiHelper/ApiHandlers/usersApi';
 import produce from 'immer';
 import InfoToast from '../../../../../../components/toasts/info-toast/InfoToast';
 const accessTypes = [
-  { type: 'read', items: [] },
-  { type: 'create', items: [] },
-  { type: 'modify', items: [] },
+  { type: PERMISSION_TYPE.View, items: [] },
+  { type: PERMISSION_TYPE.Create, items: [] },
+  { type: PERMISSION_TYPE.Modify, items: [] },
 ];
 
 const basicPermissions = [
@@ -157,17 +157,17 @@ export const useCMConfidentiality = ({ type }) => {
     {
       key: 1,
       label: 'نمایش آیتم‌ها',
-      permissionType: 'read',
+      permissionType: PERMISSION_TYPE.View,
     },
     {
       key: 2,
       label: 'ویرایش آیتم‌ها',
-      permissionType: 'modify',
+      permissionType: PERMISSION_TYPE.Modify,
     },
     {
       key: 3,
       label: 'ایجاد آیتم جدید',
-      permissionType: 'create',
+      permissionType: PERMISSION_TYPE.Create,
     },
   ];
 
