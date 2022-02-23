@@ -2,14 +2,21 @@ import styled from 'styled-components';
 import { CV_RED } from 'constant/CssVariables';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
+import useModal from '../../../../../../hooks/useModal';
 
 const DeleteTemplateButton = () => {
+  const { Modal, open, close } = useModal({
+    title: 'delete',
+    contentWidth: '30%',
+  });
   return (
     <>
-      <Button>
+      <Button onClick={open}>
         <TrashIcon />
         <div>{'حذف تمپلیت'}</div>
       </Button>
+
+      <Modal>delete</Modal>
     </>
   );
 };

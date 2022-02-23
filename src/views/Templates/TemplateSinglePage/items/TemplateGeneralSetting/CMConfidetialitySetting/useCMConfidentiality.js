@@ -1,18 +1,32 @@
 import { useTemplateContext } from '../../../TemplateProvider';
 import { createContext, useEffect, useState } from 'react';
-import { getAudience } from 'apiHelper/ApiHandlers/privacyApi';
+import {
+  getAudience,
+  PERMISSION_TYPE,
+  PRIVACY_OBJECT_TYPE,
+  setAudience,
+} from 'apiHelper/ApiHandlers/privacyApi';
 import { getGroupsAll } from '../../../../../../apiHelper/ApiHandlers/CNApi';
 import { getUsers } from '../../../../../../apiHelper/ApiHandlers/usersApi';
 import produce from 'immer';
+import InfoToast from '../../../../../../components/toasts/info-toast/InfoToast';
 const accessTypes = [
   { type: 'read', items: [] },
   { type: 'create', items: [] },
   { type: 'modify', items: [] },
 ];
+
+const basicPermissions = [
+  PERMISSION_TYPE.Create,
+  PERMISSION_TYPE.Delete,
+  PERMISSION_TYPE.Modify,
+  PERMISSION_TYPE.View,
+];
 export const useCMConfidentiality = ({ type }) => {
+  const { RVDic } = window;
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState('');
-  const { AppID } = useTemplateContext();
+  const { NodeTypeID } = useTemplateContext();
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState(accessTypes);
   const [groups, setGroups] = useState([]);
@@ -20,11 +34,12 @@ export const useCMConfidentiality = ({ type }) => {
 
   useEffect(() => {
     (async () => {
-      const audience = await getAudience({ ObjectID: AppID, Type: type });
+      const audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
       const groups = await getGroupsAll();
       const users = await getUsers({ IsApproved: true });
       setUsers(users);
       setGroups(groups);
+      console.log('audience: ', audience);
       setLoading(false);
     })();
   }, []);
@@ -67,9 +82,58 @@ export const useCMConfidentiality = ({ type }) => {
     }
   };
 
+  const resetAdvancedModeSelectedObjects = () => {
+    setSelectedGroups(accessTypes);
+    setSelectedUsers(accessTypes);
+  };
+
   const handleSelection = (e) => {
     setSelectedOption(e?.value);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (selectedOption === 'GRANTED') {
+        await setBasicPermission({ DefaultValue: true });
+      } else if (selectedOption === 'CLASSIFIED') {
+        await setBasicPermission({ DefaultValue: false });
+      }
+    })();
+  }, [selectedOption]);
+
+  const setBasicPermission = async ({ DefaultValue }) => {
+    resetAdvancedModeSelectedObjects();
+    const Data = {
+      [NodeTypeID]: {
+        DefaultPermissions: basicPermissions?.map((_type) => ({
+          PermissionType: _type,
+          DefaultValue,
+        })),
+      },
+    };
+
+    const { ErrorText, Succeed, ...rest } = await setAudience({
+      Type: PRIVACY_OBJECT_TYPE.NodeType,
+      Data,
+    });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        autoClose: true,
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+    }
+    if (Succeed) {
+      InfoToast({
+        type: 'success',
+        autoClose: true,
+        message: RVDic?.MSG[Succeed] || Succeed,
+      });
+    }
+  };
+
+  const setAdvancedPermission = () => {};
 
   const options = [
     {

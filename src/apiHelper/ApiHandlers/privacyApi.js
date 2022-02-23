@@ -37,7 +37,7 @@ export const PRIVACY_OBJECT_TYPE = {
 /**
  * @enum {PermissionType}
  */
-const PERMISSION_TYPE = {
+export const PERMISSION_TYPE = {
   Create: 'Create',
   CreateBulk: 'CreateBulk',
   View: 'View',
