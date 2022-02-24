@@ -6,10 +6,10 @@ import {
   PRIVACY_OBJECT_TYPE,
   setAudience,
 } from 'apiHelper/ApiHandlers/privacyApi';
-import { getGroupsAll } from '../../../../../../apiHelper/ApiHandlers/CNApi';
-import { getUsers } from '../../../../../../apiHelper/ApiHandlers/usersApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import produce from 'immer';
-import InfoToast from '../../../../../../components/toasts/info-toast/InfoToast';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 const accessTypes = [
   { type: PERMISSION_TYPE.View, items: [] },
   { type: PERMISSION_TYPE.Create, items: [] },
@@ -31,15 +31,16 @@ export const useCMConfidentiality = ({ type }) => {
   const [selectedUsers, setSelectedUsers] = useState(accessTypes);
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState(accessTypes);
-
+  const [audiences, setAudiences] = useState();
   useEffect(() => {
     (async () => {
-      const audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
-      const groups = await getGroupsAll();
-      const users = await getUsers({ IsApproved: true });
-      setUsers(users);
-      setGroups(groups);
-      console.log('audience: ', audience);
+      const _audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
+      const _groups = await getGroupsAll();
+      const _users = await getUsers({ IsApproved: true });
+      setUsers(_users);
+      setGroups(_groups);
+      setAudiences(_audience);
+      console.log('audience: ', _audience);
       setLoading(false);
     })();
   }, []);
@@ -133,7 +134,32 @@ export const useCMConfidentiality = ({ type }) => {
     }
   };
 
-  const setAdvancedPermission = () => {};
+  const setAdvancedPermissions = async ({ Data }) => {
+    console.log(Data);
+    const { ErrorText, Succeed } = await setAudience({
+      Type: PRIVACY_OBJECT_TYPE.NodeType,
+      Data,
+    });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        autoClose: true,
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+    }
+    if (Succeed) {
+      InfoToast({
+        type: 'success',
+        autoClose: true,
+        message: RVDic?.MSG[Succeed] || Succeed,
+      });
+      const _audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
+      setAudiences(_audience);
+    }
+  };
+
+  useEffect(() => console.log('audience', audiences), [audiences]);
 
   const options = [
     {
@@ -183,6 +209,7 @@ export const useCMConfidentiality = ({ type }) => {
     handleUserSelect,
     selectedGroups,
     handleGroupSelect,
+    setAdvancedPermissions,
   };
 };
 

@@ -22,6 +22,7 @@ const CMConfidentialitySetting = ({ type }) => {
     selectedOption,
     handleSelection,
     advancedOption,
+    setAdvancedPermissions,
   } = useCMConfidentiality({ type });
 
   if (loading) return <LogoLoader />;
@@ -35,6 +36,7 @@ const CMConfidentialitySetting = ({ type }) => {
         handleUserSelect,
         selectedGroups,
         handleGroupSelect,
+        setAdvancedPermissions,
       }}
     >
       <Styled.Container>

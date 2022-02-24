@@ -1,11 +1,15 @@
 import * as Styled from '../CMConfidentialitySettingStyle';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SelectObject from '../SelectObject/SelectObject';
+import useCMConfidentiality from '../useCMConfidentiality';
+import { usePrivacyProvider } from '../PrivacyContext';
+import { PERMISSION_TYPE } from '../../../../../../../apiHelper/ApiHandlers/privacyApi';
 
 const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   const [selected, setSelected] = useState('');
+  const { NodeTypeID, setAdvancedPermissions } = usePrivacyProvider();
 
   const options = [
     {
@@ -25,6 +29,32 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   const handleSelection = (e) => {
     setSelected(e?.value);
   };
+
+  useEffect(() => {
+    (async () => {
+      if (selected === 'ALLOWED') {
+        const Data = {
+          [NodeTypeID]: {
+            DefaultPermissions: {
+              PermissionType: permissionType,
+              DefaultValue: true,
+            },
+          },
+        };
+        await setAdvancedPermissions({ Data });
+      } else if (selected === 'DENIED') {
+        const Data = {
+          [NodeTypeID]: {
+            DefaultPermissions: {
+              PermissionType: permissionType,
+              DefaultValue: false,
+            },
+          },
+        };
+        await setAdvancedPermissions({ Data });
+      }
+    })();
+  }, [selected]);
 
   return (
     <>
