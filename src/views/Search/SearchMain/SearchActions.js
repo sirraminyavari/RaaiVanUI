@@ -68,14 +68,13 @@ const SearchActions = () => {
             ? SearchResultsForN.replace('[n]', `"${searchText}"`)
             : SearchResults}
         </Heading>
-        {!!totalCount &&
-          false(
-            <div
-              style={{ flex: '0 0 auto', fontSize: '1rem', color: TCV_REVERSE }}
-            >
-              {RVDic.NItems.replace('[n]', totalCount)}
-            </div>
-          )}
+        {!!totalCount && false && (
+          <div
+            style={{ flex: '0 0 auto', fontSize: '1rem', color: TCV_REVERSE }}
+          >
+            {RVDic.NItems.replace('[n]', totalCount)}
+          </div>
+        )}
       </div>
       <Styled.SearchActionsWrapper>
         <Styled.SearchArea>
