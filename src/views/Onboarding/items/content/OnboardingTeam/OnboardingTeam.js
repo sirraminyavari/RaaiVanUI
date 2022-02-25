@@ -21,10 +21,13 @@ const OnboardingTeamContent = () => {
     activeStep,
     nextStepAction,
     disableContinue,
+    apiCall,
+    loading,
     dispatch,
+    teamState,
   } = useOnboardingTeamContent();
 
-  const goToStep = (stepActionType) => {
+  const goToStep = async (stepActionType) => {
     dispatch({ type: stepActionType });
   };
 
@@ -50,11 +53,22 @@ const OnboardingTeamContent = () => {
   ];
 
   const goToNextStep = useMemo(
-    () => () => {
-      dispatch({ type: nextStepAction });
+    () => async () => {
+      dispatch({
+        type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_LOADING,
+        stateKey: 'loading',
+        stateValue: true,
+      });
+
+      try {
+        if (apiCall) await apiCall({ dispatch, teamState });
+        dispatch({ type: nextStepAction });
+      } catch (error) {
+        alert(error);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nextStepAction]
+    [nextStepAction, teamState]
   );
 
   //! RVDic i18n localization
@@ -83,6 +97,7 @@ const OnboardingTeamContent = () => {
             style={{ paddingInline: '4rem' }}
             onClick={goToNextStep}
             disable={disableContinue}
+            loading={loading}
           >
             {RVDicSaveAndNext}
           </Button>
