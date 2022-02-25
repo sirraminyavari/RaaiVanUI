@@ -333,6 +333,21 @@ export const RECYCLE_APPLICATION = 'RecycleApplication';
 export const CREATE_APPLICATION = 'CreateApplication';
 
 /**
+ * @description 'SetApplicationSize'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SET_APPLICATION_SIZE = 'SetApplicationSize';
+
+/**
+ * @description 'SetApplicationFieldOfExpertise'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SET_APPLICATION_FIELD_OF_EXPERTISE =
+  'SetApplicationFieldOfExpertise';
+
+/**
  * @description 'SelectApplication'
  * @mode API function
  * @class 'RVAPI'
