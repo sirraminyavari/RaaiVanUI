@@ -31,8 +31,6 @@ const MembersPreview = ({
       );
     });
 
-  console.log(items);
-
   return (
     <Container {...{ maxWidth, rtl }}>
       <UnitWrapper>

@@ -33,25 +33,21 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   useEffect(() => {
     (async () => {
       if (selected === 'ALLOWED') {
-        const Data = {
-          [NodeTypeID]: {
-            DefaultPermissions: {
-              PermissionType: permissionType,
-              DefaultValue: true,
-            },
+        const Audience = [
+          {
+            PermissionType: permissionType,
+            Allow: true,
           },
-        };
-        await setAdvancedPermissions({ Data });
+        ];
+        await setAdvancedPermissions(Audience);
       } else if (selected === 'DENIED') {
-        const Data = {
-          [NodeTypeID]: {
-            DefaultPermissions: {
-              PermissionType: permissionType,
-              DefaultValue: false,
-            },
+        const Audience = [
+          {
+            PermissionType: permissionType,
+            Allow: true,
           },
-        };
-        await setAdvancedPermissions({ Data });
+        ];
+        await setAdvancedPermissions(Audience);
       }
     })();
   }, [selected]);

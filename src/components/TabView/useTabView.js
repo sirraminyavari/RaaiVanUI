@@ -4,9 +4,11 @@ import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 export const useTabView = ({ children, onSelect }) => {
   const { RV_RTL: rtl } = window;
   const tabContainerEl = useRef();
+  const container = useRef();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [indicatorWidth, setIndicatorWidth] = useState();
   const [indicatorOffset, setIndicatorOffset] = useState();
+  const [bodyWidth, setBodyWidth] = useState();
   const action = [...children].find((x) => x?.type?.name === 'Action') || null;
 
   const items = children
@@ -43,6 +45,10 @@ export const useTabView = ({ children, onSelect }) => {
     }
   }, [selectedIndex]);
 
+  useEffect(() => {
+    setBodyWidth(container?.current?.offsetWidth);
+  }, []);
+
   return {
     rtl,
     action,
@@ -51,8 +57,10 @@ export const useTabView = ({ children, onSelect }) => {
     setSelectedIndex,
     selectedBody,
     tabContainerEl,
+    container,
     indicatorWidth,
     indicatorOffset,
+    bodyWidth,
     onItemSelect,
     onResize,
   };

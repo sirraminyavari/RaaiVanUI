@@ -4,6 +4,7 @@ import {
   CloseButton,
   DropDown,
   ResizeButton,
+  AddNewGroupButtonContainer,
 } from './SelectObjectStyle';
 import ResizeIcon from 'components/Icons/ResizeIcon/ResizeIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -11,15 +12,43 @@ import { createRef, useState } from 'react';
 import useOutsideClick from 'hooks/useOutsideClick';
 import SelectGroups from './SelectObjectItem/SelectGroups';
 import SelectUsers from './SelectObjectItem/SelectUsers';
+import { usePrivacyProvider } from '../PrivacyContext';
+import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 
-const SelectObjectDropDown = ({ type }) => {
+const SelectObjectDropDown = ({
+  type,
+  onNewGroupModalOpen,
+  onGroupModalOpen,
+  onUserModalOpen,
+}) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [selectedTab, setSelectedTab] = useState('members');
+  const { selectedGroups, selectedUsers, setAdvancedPermissions } =
+    usePrivacyProvider();
   const dropDownEl = createRef();
 
   useOutsideClick(() => {
-    setOpenDropDown(false);
+    (async () => await handleSetAudience())();
   }, dropDownEl);
+
+  const handleSetAudience = async () => {
+    setOpenDropDown(false);
+    const users = [...selectedUsers].find((x) => x.type === type)?.items;
+    const groups = [...selectedGroups].find((x) => x.type === type)?.items;
+    const audience = [...users, ...groups].map((RoleID) => ({
+      RoleID,
+      PermissionType: type,
+      Allow: true,
+    }));
+    await setAdvancedPermissions(audience);
+  };
+
+  const openInDialog = () => {};
+
+  const addNewGroup = () => {
+    setOpenDropDown(false);
+    if (onNewGroupModalOpen) onNewGroupModalOpen();
+  };
 
   return (
     <>
@@ -33,15 +62,19 @@ const SelectObjectDropDown = ({ type }) => {
             </TabView.Item>
 
             <TabView.Item label={'گروه‌ها'} key="groups">
+              <AddNewGroupButtonContainer onClick={addNewGroup}>
+                <PlusIcon size={20} />
+                <div>{'ساخت گروه کاربری جدید'}</div>
+              </AddNewGroupButtonContainer>
               <SelectGroups {...{ type }} />
             </TabView.Item>
 
             <TabView.Action>
-              <ResizeButton onClick={() => setOpenDropDown(false)}>
+              <ResizeButton onClick={openInDialog}>
                 <ResizeIcon size={17} />
               </ResizeButton>
 
-              <CloseButton onClick={() => setOpenDropDown(false)}>
+              <CloseButton onClick={handleSetAudience}>
                 <CloseIcon outline={true} size={22} />
               </CloseButton>
             </TabView.Action>

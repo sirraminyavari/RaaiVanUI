@@ -21,7 +21,7 @@ const TemplateSinglePage = () => {
   const [service, setService] = useState({});
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       const _extensions = await getExtensions({ NodeTypeID, Initialize: true });
       const _service = await getService({ NodeTypeID });
 
@@ -29,7 +29,8 @@ const TemplateSinglePage = () => {
       setExtensions(_extensions);
       setService(_service);
       setLoading(false);
-    })();
+    };
+    fetchData();
   }, []);
 
   return (

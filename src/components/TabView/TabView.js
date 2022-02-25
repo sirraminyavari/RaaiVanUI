@@ -1,6 +1,7 @@
 import * as Styled from './TabViewStyle';
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
 import useTabView from './useTabView';
+import { BodyWrapper } from './TabViewStyle';
 
 const TabContext = createContext({});
 
@@ -18,7 +19,8 @@ export const TabView = ({ height = 3, onSelect, ...rest }) => {
     action,
     items,
     selectedIndex,
-    selectedBody,
+    bodyWidth,
+    container,
     tabContainerEl,
     indicatorWidth,
     indicatorOffset,
@@ -26,9 +28,22 @@ export const TabView = ({ height = 3, onSelect, ...rest }) => {
     onResize,
   } = useTabView({ children, onSelect });
 
+  const bodies = useMemo(
+    () =>
+      [...items].map((x, i) => {
+        const { children } = x?.props;
+        return (
+          <Styled.BodyWrapper key={i} width={bodyWidth}>
+            {children}
+          </Styled.BodyWrapper>
+        );
+      }),
+    [bodyWidth]
+  );
+
   return (
     <TabContext.Provider value={{ selectedIndex, onResize, onItemSelect }}>
-      <Styled.TabViewContainer rtl={rtl}>
+      <Styled.TabViewContainer rtl={rtl} ref={container}>
         <Styled.TabHeader height={height}>
           <Styled.TabItemContainer ref={tabContainerEl}>
             <Styled.Items height={height}>{items}</Styled.Items>
@@ -44,7 +59,15 @@ export const TabView = ({ height = 3, onSelect, ...rest }) => {
           {action && <Styled.ActionContainer>{action}</Styled.ActionContainer>}
         </Styled.TabHeader>
 
-        <Styled.TabBody>{selectedBody}</Styled.TabBody>
+        <Styled.TabBody>
+          <Styled.ItemsContainer
+            index={selectedIndex}
+            width={bodyWidth}
+            rtl={rtl}
+          >
+            {bodies}
+          </Styled.ItemsContainer>
+        </Styled.TabBody>
       </Styled.TabViewContainer>
     </TabContext.Provider>
   );

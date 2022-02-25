@@ -3,20 +3,25 @@ import { CV_RED } from 'constant/CssVariables';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import useModal from '../../../../../../hooks/useModal';
+import { useRef } from 'react';
 
 const DeleteTemplateButton = () => {
-  const { Modal, open, close } = useModal({
-    title: 'delete',
-    contentWidth: '30%',
+  const ref = useRef();
+  const { open } = useModal(ref, (e) => {
+    console.log(e);
   });
+
+  const handlOpen = () => {
+    open(<div>mehid</div>, {}, { name: 'ali' });
+  };
   return (
     <>
-      <Button onClick={open}>
+      <Button onClick={handlOpen}>
         <TrashIcon />
         <div>{'حذف تمپلیت'}</div>
       </Button>
 
-      <Modal>delete</Modal>
+      <div ref={ref}></div>
     </>
   );
 };

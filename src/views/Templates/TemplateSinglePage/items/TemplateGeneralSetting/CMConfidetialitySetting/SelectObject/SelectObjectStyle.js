@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import { FLEX_CCC } from '../../../../../../../constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
 
 export const Button = styled.button`
   outline: none;
@@ -56,3 +56,16 @@ export const ResizeButton = styled(IconButton)`
 export const CloseButton = styled(IconButton)`
   color: ${CV_RED};
 `;
+
+export const AddNewGroupButtonContainer = styled.div`
+  ${FLEX_RCS};
+  height: 1.3rem;
+  gap: 0.5rem;
+  color: ${TCV_DEFAULT};
+  user-select: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0.5rem 0 1rem 0;
+  cursor: pointer;
+`;
+AddNewGroupButtonContainer.displayName = 'AddNewGroupButtonContainer';

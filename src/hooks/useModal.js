@@ -1,36 +1,36 @@
-import { useMemo, useState } from 'react';
+import { cloneElement, useEffect, useState } from 'react';
 import _Modal from '../components/Modal/Modal';
+import { createPortal } from 'react-dom';
 
-const useModal = (props) => {
-  console.log(props);
+const useModal = (refEl, closeHandler) => {
   const [info, setInfo] = useState({
-    ...props,
     show: false,
   });
 
-  console.log(info);
-  const open = () => {
+  const [_renderer, setRenderer] = useState();
+
+  const open = (renderer, info, data) => {
     setInfo({ ...info, show: true });
+    const _body = cloneElement(renderer, { close, data });
+    setRenderer(_body);
   };
 
-  const close = () => {
+  const close = (e) => {
     setInfo({ ...info, show: false });
+    if (closeHandler) closeHandler(e);
   };
 
-  const Modal = useMemo(() => {
-    return ({ children }) => {
-      return (
-        <_Modal {...info} onClose={close}>
-          {children}
-        </_Modal>
-      );
-    };
-  }, [info]);
+  useEffect(() => {
+    createPortal(
+      <_Modal {...info} onClose={close}>
+        {_renderer}
+      </_Modal>,
+      document.body
+    );
+  }, [_renderer]);
 
   return {
     open,
-    close,
-    Modal,
   };
 };
 export default useModal;

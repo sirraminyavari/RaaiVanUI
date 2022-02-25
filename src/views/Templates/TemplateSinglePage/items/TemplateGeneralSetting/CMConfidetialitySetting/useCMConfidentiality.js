@@ -40,7 +40,6 @@ export const useCMConfidentiality = ({ type }) => {
       setUsers(_users);
       setGroups(_groups);
       setAudiences(_audience);
-      console.log('audience: ', _audience);
       setLoading(false);
     })();
   }, []);
@@ -134,8 +133,17 @@ export const useCMConfidentiality = ({ type }) => {
     }
   };
 
-  const setAdvancedPermissions = async ({ Data }) => {
-    console.log(Data);
+  const setAdvancedPermissions = async (_audience) => {
+    console.log(_audience);
+    const Data = {
+      [NodeTypeID]: {
+        Audience: _audience,
+        DefaultPermissions: basicPermissions?.map((_type) => ({
+          PermissionType: _type,
+          DefaultValue: false,
+        })),
+      },
+    };
     const { ErrorText, Succeed } = await setAudience({
       Type: PRIVACY_OBJECT_TYPE.NodeType,
       Data,
