@@ -15,6 +15,7 @@ import {
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 import {
+  API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY,
   API_NAME_CN_REMOVE_NODE_TYPE,
   API_NAME_CN_RENAME_NODE_TYPE,
 } from 'constant/api-names-cn';
@@ -215,12 +216,13 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
 };
 
 /**
- * @description Get templates.
- * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
- * @returns Promise.
+ * @description fetches all fields of activity
  */
-export const getTemplates = ({ TagID } = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
+export const getAllFieldsOfActivity = () => {
+  return apiCallWrapper(
+    API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
+    {}
+  );
 };
 
 /**
@@ -229,6 +231,15 @@ export const getTemplates = ({ TagID } = {}) => {
  */
 export const getTemplateTags = () => {
   return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_TAGS), {});
+};
+
+/**
+ * @description Get templates.
+ * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
+ * @returns Promise.
+ */
+export const getTemplates = ({ TagID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
 };
 
 /**

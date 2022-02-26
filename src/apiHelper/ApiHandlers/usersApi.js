@@ -22,7 +22,10 @@ import {
   SET_FIRST_NAME,
   SET_LAST_NAME,
 } from 'constant/apiConstants';
-import { API_NAME_USR_BATCH_INVITE_USERS } from 'constant/api-names-users';
+import {
+  API_NAME_USR_BATCH_INVITE_USERS,
+  API_NAME_USR_SET_AVATAR,
+} from 'constant/api-names-users';
 import { apiCallWrapper } from './apiCallHelpers';
 
 const { GlobalUtilities } = window;
@@ -309,5 +312,16 @@ export const getWorkspaceUsers = ({
     Count,
     LowerBoundary,
     SearchText: encodeBase64(SearchText),
+  });
+};
+
+/**
+ * @description sets the avatar of the user
+ * @param Name the name of the avatar
+ * @return {Promise<unknown>}
+ */
+export const setUserAvatar = ({ Name } = {}) => {
+  return apiCallWrapper(API_Provider(USERS_API, API_NAME_USR_SET_AVATAR), {
+    AvatarName: encodeBase64(Name),
   });
 };

@@ -10,3 +10,4 @@ export const API_NAME_CN_ENABLE_EXTENSION = 'EnableExtension';
 export const API_NAME_CN_DISABLE_EXTENSION = 'DisableExtension';
 export const API_NAME_CN_ENABLE_CONTRIBUTION = 'EnableContribution';
 export const API_NAME_CN_ENABLE_VERSIONING = 'EnablePreviousVersionSelect';
+export const API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY = 'GetAllFieldsOfActivity';
