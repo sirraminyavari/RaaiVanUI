@@ -32,11 +32,11 @@
                     servicesettings: "تنظیمات سرویس",
                     serviceadmins: "کاربران ویژه",
                     nodes: {
-                        _title: "موضوعات",
-                        newnode: "افزودن موضوع جدید",
+                        _title: "آیتم ها",
+                        newnode: "افزودن آیتم جدید",
                         manynodesviaexcel: "ایجاد از طریق بارگذاری فایل اکسل",
                         edittree: "ویرایش درختی",
-                        removednodes: "موضوعات حذف شده",
+                        removednodes: "آیتم های حذف شده",
                         membersandexperts: "تعیین اعضا و خبرگان"
                     },
                     sets: "مجموعه ها",
@@ -65,7 +65,7 @@
                     multilevelfield: "فیلد چند سطحی",
                     binaryfield: "فیلد دودویی",
                     numericfield: "فیلد عددی",
-                    nodefield: "فیلد موضوع",
+                    nodefield: "فیلد آیتم",
                     userfield: "فیلد کاربر",
                     filefield: "فیلد فایل",
                     formfield: "فیلد فرم",
@@ -199,7 +199,7 @@
                     feedbacks: "بازخوردها",
                     details: "جزییات",
                     contributors: "مشارکت کنندگان",
-                    relatednodes: "موضوعات مرتبط",
+                    relatednodes: "آیتم های مرتبط",
                     abstract: "چکیده",
                     keywords: "کلمات کلیدی",
                     descfornoaccess: "شرح برای کسانی که دسترسی ندارند",
@@ -210,7 +210,7 @@
             },
             groups: "گروه ها",
             expertisedomains: "حوزه های خبرگی",
-            favorites: "موضوعات مورد علاقه",
+            favorites: "آیتم های مورد علاقه",
             newcontentsfrommynetwork: {
                 _title: "تولیدات همکاران من",
                 _module: "sh"
@@ -263,7 +263,7 @@
                     multilevel: "چند سطحی",
                     file: "فایل",
                     user: "کاربر",
-                    node: "موضوع",
+                    node: "آیتم",
                     separator: "جداکننده"
                 },
                 edit: "ویرایش",
@@ -275,9 +275,9 @@
             },
             */
             classes: "کلاس/کلاس ها",
-            nodes: "موضوع/موضوعات",
+            nodes: "آیتم/آیتم ها",
             tags: "تگ/برچسب",
-            nodeselectdialog: "رابط کاربری انتخاب موضوع",
+            nodeselectdialog: "رابط کاربری انتخاب آیتم",
             userselectdialog: "رابط کاربری انتخاب کاربر",
             simpleeditor: "ویرایشگر ساده",
             advancededitor: "ویرایشگر حرفه ای",
