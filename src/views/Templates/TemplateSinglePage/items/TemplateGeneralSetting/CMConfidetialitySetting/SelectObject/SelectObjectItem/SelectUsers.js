@@ -1,20 +1,16 @@
 import { usePrivacyProvider } from '../../PrivacyContext';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import {
-  Input,
-  InputContainer,
   ObjectItemContainer,
   ObjectListWrapper,
 } from './SelectObjectItemStyle';
 import UserSelectionCheckbox from 'components/Inputs/RVCheckbox/UserSelectionCheckbox';
-import { useMemo, useState } from 'react';
-import SearchIcon from 'components/Icons/SearchIcon/Search';
+import { useMemo } from 'react';
 
-const SelectUsers = ({ type }) => {
+const SelectUsers = ({ type, searchText }) => {
   const { RVDic } = window;
   const { users, selectedUsers, handleUserSelect } = usePrivacyProvider();
   const _users = [...selectedUsers].find((x) => x.type === type)?.items;
-  const [searchText, setSearchText] = useState('');
 
   const items = useMemo(
     () =>
@@ -43,14 +39,6 @@ const SelectUsers = ({ type }) => {
   );
   return (
     <ScrollBarProvider>
-      <InputContainer>
-        <Input
-          placeholder={RVDic?.Search}
-          value={searchText}
-          onChange={(e) => setSearchText(e?.target?.value)}
-        />
-        <SearchIcon size={13} />
-      </InputContainer>
       <ObjectListWrapper>{items}</ObjectListWrapper>
     </ScrollBarProvider>
   );

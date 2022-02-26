@@ -9,36 +9,27 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 /**
  * @description create and edit user groups modal component
  * @param group group object to edit
- * @param createMode
  * @param users
- * @param onModalDelete
- * @param onModalConfirm
+ * @param onConfirm
+ * @param onCancel
+ * @param onDelete
  * @return {JSX.Element}
  * @constructor
  */
 const UserGroupUpsertModal = ({
   group,
-  createMode,
   users,
-  onModalDelete,
-  onModalConfirm,
-  onModalClose,
-  isOpen,
+  onConfirm,
+  onCancel,
+  onDelete,
 }) => {
   const listAnimationDuration = 150;
   const { RVDic } = useWindowContext();
-  const [modalInfo, setModalInfo] = useState({
-    show: isOpen,
-    title: RVDic.SettingsOfN.replace('[n]', RVDic.Group),
-    contentWidth: '34rem',
-    titleClass: 'rv-default',
-    titleContainerClass: 'modal-title-bar',
-  });
   const [groupName, setGroupName] = useState(group ? group?.Name : '');
   const [members, setMembers] = useState(group ? group?.Members : []);
 
-  const handleGroupNameChange = (name) => {
-    setGroupName(name);
+  const handleGroupNameChange = (e) => {
+    setGroupName(e?.target?.value);
   };
 
   const checkSelection = (userID) => !!members.find((x) => x.UserID === userID);
@@ -55,32 +46,26 @@ const UserGroupUpsertModal = ({
   };
 
   const handleModalConfirm = () => {
-    setModalInfo({ ...modalInfo, show: false });
-    if (onModalConfirm) {
-      onModalConfirm(groupName, members, group?.NodeID);
-    }
+    if (onConfirm) onConfirm(groupName, members, group?.NodeID);
   };
 
   const handleModalCancel = () => {
-    setModalInfo({ ...modalInfo, show: false });
+    if (onCancel) onCancel();
   };
 
   const handleDeleteGroup = () => {
-    setModalInfo({ ...modalInfo, show: false });
-    if (onModalDelete) {
-      onModalDelete(group?.NodeID);
-    }
+    if (onDelete) onDelete(group?.NodeID);
   };
 
   return (
-    <Modal {...modalInfo} onClose={() => handleModalCancel()}>
+    <>
       <ModalStyles.ModalContent>
         <ModalStyles.InputLabel>
           {RVDic?.EnterTheGroupName}
         </ModalStyles.InputLabel>
         <ModalStyles.Input
           value={groupName}
-          onChange={(name) => handleGroupNameChange(name)}
+          onChange={handleGroupNameChange}
           type="text"
           placeholder={RVDic?.GroupName}
         />
@@ -144,7 +129,7 @@ const UserGroupUpsertModal = ({
           )}
         </ModalStyles.ModalActionBar>
       </ModalStyles.ModalContent>
-    </Modal>
+    </>
   );
 };
 

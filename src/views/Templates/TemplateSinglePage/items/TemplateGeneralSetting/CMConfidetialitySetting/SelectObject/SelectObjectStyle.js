@@ -1,6 +1,12 @@
 import styled from 'styled-components';
-import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_RED,
+  CV_WHITE,
+  TCV_DEFAULT,
+} from 'constant/CssVariables';
+import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
 
 export const Button = styled.button`
   outline: none;
@@ -69,3 +75,23 @@ export const AddNewGroupButtonContainer = styled.div`
   cursor: pointer;
 `;
 AddNewGroupButtonContainer.displayName = 'AddNewGroupButtonContainer';
+
+export const InputContainer = styled.div`
+  ${FLEX_RCB};
+  height: 1.5rem;
+  width: 100%;
+  border-bottom: 0.0625rem solid ${CV_DISTANT};
+  height: 1.5rem;
+  margin: 0.5rem 0;
+  color: ${CV_DISTANT};
+  padding: 0 0.2rem;
+`;
+
+export const Input = styled.input.attrs({
+  type: 'text',
+})`
+  outline: none;
+  border: none;
+  width: 100%;
+  color: ${CV_GRAY};
+`;

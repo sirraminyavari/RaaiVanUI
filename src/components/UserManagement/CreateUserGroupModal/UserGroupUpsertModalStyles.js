@@ -30,7 +30,7 @@ export const SettingButton = styled.div`
 export const ModalContent = styled.div`
   padding: 0 1rem 1rem 1rem;
 `;
-export const Input = styled(RxInput)`
+export const Input = styled.input`
   width: 100%;
   outline: none;
   border: 1px solid ${CV_DISTANT};

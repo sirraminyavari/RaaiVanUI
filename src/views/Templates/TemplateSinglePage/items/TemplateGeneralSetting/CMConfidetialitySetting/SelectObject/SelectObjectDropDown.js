@@ -5,6 +5,8 @@ import {
   DropDown,
   ResizeButton,
   AddNewGroupButtonContainer,
+  Input,
+  InputContainer,
 } from './SelectObjectStyle';
 import ResizeIcon from 'components/Icons/ResizeIcon/ResizeIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -14,15 +16,20 @@ import SelectGroups from './SelectObjectItem/SelectGroups';
 import SelectUsers from './SelectObjectItem/SelectUsers';
 import { usePrivacyProvider } from '../PrivacyContext';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
+import SearchIcon from 'components/Icons/SearchIcon/Search';
 
 const SelectObjectDropDown = ({
   type,
+  searchText,
+  handleUserSearch,
   onNewGroupModalOpen,
   onGroupModalOpen,
   onUserModalOpen,
 }) => {
+  const { RVDic } = window;
   const [openDropDown, setOpenDropDown] = useState(false);
   const [selectedTab, setSelectedTab] = useState('members');
+
   const { selectedGroups, selectedUsers, setAdvancedPermissions } =
     usePrivacyProvider();
   const dropDownEl = createRef();
@@ -58,7 +65,15 @@ const SelectObjectDropDown = ({
         <DropDown ref={dropDownEl}>
           <TabView onSelect={(key) => setSelectedTab(key)}>
             <TabView.Item label={'اعضا'} key="members">
-              <SelectUsers {...{ type }} />
+              <InputContainer>
+                <Input
+                  placeholder={RVDic?.Search}
+                  value={searchText}
+                  onChange={handleUserSearch}
+                />
+                <SearchIcon size={13} />
+              </InputContainer>
+              <SelectUsers {...{ type, searchText }} />
             </TabView.Item>
 
             <TabView.Item label={'گروه‌ها'} key="groups">
