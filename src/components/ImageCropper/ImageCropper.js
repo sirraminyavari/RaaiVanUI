@@ -4,19 +4,15 @@ import * as Styled from './ImageCropper.styles';
 import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
 import { CV_WHITE } from 'constant/CssVariables';
-import { validateFileUpload } from 'helpers/helpers';
-import { readFile, createImage } from './cropUtils';
-import HiddenUploadFile from 'components/HiddenUploadFile/HiddenUploadFile';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+import ImageCropperUploadInput from './ImageCropperUploadInput';
 
 const CropperModal = lazy(() =>
   import(
     /* webpackChunkName: "crop-image-modal"*/ 'components/ImageCropper/ImageCropperModal'
   )
 );
-
-const allowedTypes = ['image/png', 'image/jpeg'];
 
 /**
  * @typedef PropType
@@ -73,24 +69,14 @@ const ImageCropper = (props) => {
   };
 
   //! Fires whenever user chooses an image.
-  const handleImageSelect = async (event) => {
-    const files = event.target.files;
-
-    if (files.length === 1 && validateFileUpload(files, allowedTypes)) {
-      let imageDataUrl = await readFile(files[0]);
-      let image = await createImage(imageDataUrl);
-
-      setCropModalProps((m) => ({
-        ...m,
-        isShown: true,
-        imgSrc: imageDataUrl,
-        file: files[0],
-        imgOrig: image,
-      }));
-    } else {
-      event.target.value = '';
-      console.log('Add one image only');
-    }
+  const handleImageSelect = async ({ imageSrc, targetFile, originalImage }) => {
+    setCropModalProps((m) => ({
+      ...m,
+      isShown: true,
+      imgSrc: imageSrc,
+      file: targetFile,
+      imgOrig: originalImage,
+    }));
   };
 
   const handleOnUploadDone = (image) => {
@@ -122,9 +108,9 @@ const ImageCropper = (props) => {
         {isEditable && (
           <Styled.PencilWrapper onClick={handleAvatarEdit}>
             <PencilIcon color={CV_WHITE} size={18} />
-            <HiddenUploadFile
+            <ImageCropperUploadInput
               ref={avatarUploadRef}
-              onFileChange={handleImageSelect}
+              onImageChange={handleImageSelect}
             />
           </Styled.PencilWrapper>
         )}
