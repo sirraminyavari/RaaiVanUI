@@ -1,5 +1,12 @@
 import { getUUID } from '../../helpers/helpers';
-import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  cloneElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export const useTabView = ({ children, onSelect }) => {
   const { RV_RTL: rtl } = window;
@@ -9,16 +16,26 @@ export const useTabView = ({ children, onSelect }) => {
   const [indicatorWidth, setIndicatorWidth] = useState();
   const [indicatorOffset, setIndicatorOffset] = useState();
   const [bodyWidth, setBodyWidth] = useState();
-  const action = [...children].find((x) => x?.type?.name === 'Action') || null;
 
-  const items = children
-    .filter((x) => x?.type?.name === 'Item')
-    .map((x, index) => ({
-      ...x,
-      key: x?.key || getUUID(),
-      props: { ...x.props, index },
-    }))
-    .map((x) => cloneElement(x));
+  const action = useCallback(
+    [...children].find((x) => x?.type?.name === 'Action') || null,
+    [children]
+  );
+  const items = useCallback(
+    children
+      .filter((x) => x?.type?.name === 'Item')
+      .map((x) => {
+        console.log(x);
+        return x;
+      })
+      .map((x, index) => ({
+        ...x,
+        key: x?.key || getUUID(),
+        props: { ...x.props, index },
+      }))
+      .map((x) => cloneElement(x)),
+    [children]
+  );
 
   const selectedBody = useMemo(
     () => items.find((x) => x?.props?.index === selectedIndex)?.props?.children,

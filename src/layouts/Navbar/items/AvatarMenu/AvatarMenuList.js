@@ -39,7 +39,7 @@ const AvatarMenuList = () => {
   const history = useHistory();
   const avatarMenuRef = useRef();
   const containerRef = useRef();
-  const { RVDic, RV_RTL } = useWindow();
+  const { RVDic, RV_RTL, RVGlobal } = useWindow();
   const teams = useSelector(selectApplications);
   const selectedTeam = useSelector(selectedApplication);
 
@@ -122,11 +122,13 @@ const AvatarMenuList = () => {
         iconColor={CV_RED}
         textClass={C_RED}
       />
-      <Checkbox
-        title={RV_RTL ? 'انگلیسی' : 'english'}
-        changeHandler={handleCheckbox}
-        isChecked={Cookie.get('rv_lang') === 'en'}
-      />
+      {RVGlobal?.IsDev && (
+        <Checkbox
+          title={RV_RTL ? 'انگلیسی' : 'english'}
+          changeHandler={handleCheckbox}
+          isChecked={Cookie.get('rv_lang') === 'en'}
+        />
+      )}
     </Styled.AvatarMenuContainer>
   );
 };

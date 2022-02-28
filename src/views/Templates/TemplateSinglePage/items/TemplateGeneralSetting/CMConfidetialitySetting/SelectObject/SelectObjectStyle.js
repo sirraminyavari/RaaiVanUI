@@ -7,6 +7,7 @@ import {
   TCV_DEFAULT,
 } from 'constant/CssVariables';
 import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
+import RxInput from '../../../../../../../components/Inputs/RxInput';
 
 export const Button = styled.button`
   outline: none;
@@ -87,7 +88,7 @@ export const InputContainer = styled.div`
   padding: 0 0.2rem;
 `;
 
-export const Input = styled.input.attrs({
+export const Input = styled(RxInput).attrs({
   type: 'text',
 })`
   outline: none;

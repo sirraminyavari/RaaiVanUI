@@ -2,12 +2,13 @@ import {
   CV_DISTANT,
   CV_WHITE,
   TCV_DEFAULT,
+  CV_GRAY_DARK,
   TCV_VERY_TRANSPARENT,
   TCV_VERY_TRANSPARENT_WARM,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
 
-export const TableContainer = styled.div`
+export const WorkspaceUserManagementTableContainer = styled.div`
   width: 100%;
   padding-top: 4rem;
   overflow-x: auto;
@@ -83,3 +84,16 @@ export const TableContainer = styled.div`
     border-radius: 0.6rem;
   }
 `;
+
+WorkspaceUserManagementTableContainer.displayName =
+  'WorkspaceUserManagementTableContainer';
+
+export const WorkspaceUserManagementLoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 1.1rem;
+  padding-block: 1rem;
+  color: ${CV_GRAY_DARK};
+`;
+WorkspaceUserManagementLoaderContainer.displayName =
+  'WorkspaceUserManagementLoaderContainer';

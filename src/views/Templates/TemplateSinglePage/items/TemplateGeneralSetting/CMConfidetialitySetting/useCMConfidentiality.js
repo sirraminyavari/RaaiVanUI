@@ -112,29 +112,60 @@ export const useCMConfidentiality = ({ type }) => {
       },
     };
 
-    const { ErrorText, Succeed, ...rest } = await setAudience({
-      Type: PRIVACY_OBJECT_TYPE.NodeType,
-      Data,
+    await setAudienceApiCall(Data);
+  };
+
+  const handleAudienceSelection = async (_audience) => {};
+
+  const handlePermissionTypeSelection = async (
+    PermissionType,
+    DefaultValue
+  ) => {
+    let DefaultPermissions = audiences?.Items[
+      `${NodeTypeID}`
+    ]?.DefaultPermissions?.map((x) => {
+      if (x.DefaultValue === 'Public') {
+        return { ...x, DefaultValue: true };
+      }
+      return { ...x, DefaultValue: false };
     });
 
-    if (ErrorText) {
-      InfoToast({
-        type: 'error',
-        autoClose: true,
-        message: RVDic?.MSG[ErrorText] || ErrorText,
-      });
+    if (PermissionType === PERMISSION_TYPE.Modify) {
+      DefaultPermissions = DefaultPermissions?.filter(
+        (x) =>
+          x.PermissionType !== PERMISSION_TYPE.Modify &&
+          x.PermissionType !== PERMISSION_TYPE.Delete
+      ).concat([
+        {
+          PermissionType: PERMISSION_TYPE.Modify,
+          DefaultValue,
+        },
+        {
+          PermissionType: PERMISSION_TYPE.Delete,
+          DefaultValue,
+        },
+      ]);
+    } else {
+      DefaultPermissions = DefaultPermissions?.filter(
+        (x) => x.PermissionType !== PermissionType
+      ).concat([
+        {
+          PermissionType,
+          DefaultValue,
+        },
+      ]);
     }
-    if (Succeed) {
-      InfoToast({
-        type: 'success',
-        autoClose: true,
-        message: RVDic?.MSG[Succeed] || Succeed,
-      });
-    }
+
+    const Data = {
+      [NodeTypeID]: {
+        DefaultPermissions,
+      },
+    };
+
+    await setAudienceApiCall(Data);
   };
 
   const setAdvancedPermissions = async (_audience) => {
-    console.log(_audience);
     const Data = {
       [NodeTypeID]: {
         Audience: _audience,
@@ -144,6 +175,11 @@ export const useCMConfidentiality = ({ type }) => {
         })),
       },
     };
+    await setAudienceApiCall(Data);
+  };
+
+  const setAudienceApiCall = async (Data) => {
+    console.log(Data);
     const { ErrorText, Succeed } = await setAudience({
       Type: PRIVACY_OBJECT_TYPE.NodeType,
       Data,
@@ -157,11 +193,6 @@ export const useCMConfidentiality = ({ type }) => {
       });
     }
     if (Succeed) {
-      InfoToast({
-        type: 'success',
-        autoClose: true,
-        message: RVDic?.MSG[Succeed] || Succeed,
-      });
       const _audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
       setAudiences(_audience);
     }
@@ -218,6 +249,8 @@ export const useCMConfidentiality = ({ type }) => {
     selectedGroups,
     handleGroupSelect,
     setAdvancedPermissions,
+    handlePermissionTypeSelection,
+    handleAudienceSelection,
   };
 };
 

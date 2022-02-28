@@ -38,7 +38,7 @@ export const TabView = ({ height = 3, onSelect, ...rest }) => {
           </Styled.BodyWrapper>
         );
       }),
-    [bodyWidth]
+    [bodyWidth, items]
   );
 
   return (

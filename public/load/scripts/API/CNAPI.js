@@ -1546,6 +1546,14 @@
 
     /* end of Service */
 
+    GetAllFieldsOfActivity: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/GetAllFieldsOfActivity?timeStamp=" + new Date().getTime();
+        var queryString = "";
+        return CNAPI._send(url, params, queryString);
+    },
+
     GetTemplateTags: function (params) {
         params = params || {};
 

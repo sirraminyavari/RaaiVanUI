@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import UserGroupUpsertModal from 'components/UserManagement/CreateUserGroupModal/UserGroupUpsertModal';
 import { usePrivacyProvider } from '../PrivacyContext';
+import SelectUsers from './SelectObjectItem/SelectUsers';
+import SearchInput from 'components/Inputs/SearchInput';
 
 const SelectObject = ({ type }) => {
   const { RVDic } = window;
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState('test');
   const { users } = usePrivacyProvider();
   const [info, setInfo] = useState({
     modalType: '',
@@ -19,7 +21,6 @@ const SelectObject = ({ type }) => {
   });
 
   const handleUserSearch = (e) => {
-    console.log(e);
     setSearchText(e?.target?.value);
   };
 
@@ -33,11 +34,21 @@ const SelectObject = ({ type }) => {
   };
 
   const onGroupModalOpen = () => {
-    setInfo({ ...info, modalType: 'group-select', show: true });
+    setInfo({
+      ...info,
+      modalType: 'group-select',
+      title: RVDic.SelectN.replace('[n]', RVDic.Group),
+      show: true,
+    });
   };
 
   const onUserModalOpen = () => {
-    setInfo({ ...info, modalType: 'user-select', show: true });
+    setInfo({
+      ...info,
+      modalType: 'user-select',
+      title: RVDic.SelectN.replace('[n]', RVDic.User),
+      show: true,
+    });
   };
 
   const onCancel = () => {
@@ -62,9 +73,19 @@ const SelectObject = ({ type }) => {
       />
 
       <Modal {...info} onClose={onCancel}>
-        <UserGroupUpsertModal
-          {...{ users, onCancel, onConfirm: createNewGroup }}
-        />
+        {info?.modalType === 'create-new-group' && (
+          <UserGroupUpsertModal
+            {...{ users, onCancel, onConfirm: createNewGroup }}
+          />
+        )}
+
+        {info?.modalType === 'user-select' && (
+          <>
+            <SearchInput value={searchText} onChange={handleUserSearch} />
+            <SelectUsers {...{ type, searchText }} />
+            div
+          </>
+        )}
       </Modal>
     </Container>
   );

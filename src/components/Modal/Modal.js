@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import usePrevious from 'hooks/usePrevious';
 import useWindow from 'hooks/useWindowContext';
-import CloseIcon from '../Icons/CloseIcon/CloseIcon';
+import CloseButton from 'components/Buttons/CloseButton';
 
 const Modal = ({
   title,
@@ -57,34 +57,37 @@ const Modal = ({
         onClick={(e) => {
           e.stopPropagation();
           setShowState(false);
-        }}>
+        }}
+      >
         <ContentContainer>
           <ContentSection
             className={`Direction rv-border-radius-half SurroundingShadow ${
               contentClass || ' '
             }`}
             onClick={(e) => e.stopPropagation()}
-            contentWidth={contentWidth}>
+            contentWidth={contentWidth}
+          >
             {!title && stick ? (
               <></>
             ) : (
               <>
                 <TitleContainer
-                  className={`rv-border-radius-half rv-ignore-bottom-radius ${titleContainerClass}`}>
+                  className={`rv-border-radius-half rv-ignore-bottom-radius ${titleContainerClass}`}
+                >
                   {!stick && <EmptyTitleSide />}
                   <TitleArea
-                    className={`${titleClass ? titleClass : 'WarmColor'}`}>
+                    className={`${titleClass ? titleClass : 'WarmColor'}`}
+                  >
                     {title}
                   </TitleArea>
                   {!stick && (
-                    <ExitButton
-                      className="rv-circle RevTextAlign"
+                    <CloseButton
+                      className="RevTextAlign"
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowState(false);
-                      }}>
-                      <CloseIcon />
-                    </ExitButton>
+                      }}
+                    />
                   )}
                 </TitleContainer>
               </>
@@ -114,25 +117,6 @@ const Container = styled.div`
   z-index: ${({ GlobalUtilities }) => GlobalUtilities.zindex.dialog()};
   ${({ middle }) => middle && `justify-content: center; padding-bottom:15vh;`}
   ${({ noBackground }) => !noBackground && `background: rgba(0, 0, 0, 0.75);`}
-`;
-
-const ExitButton = styled.div`
-  flex: 0 0 auto;
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-weight: bolder;
-  color: red;
-  width: 1.5rem;
-  height: 1.5rem;
-  font-size: 0.8rem;
-
-  &:hover {
-    color: white;
-    background-color: red;
-  }
 `;
 
 const EmptyTitleSide = styled.div`

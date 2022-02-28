@@ -8,7 +8,6 @@ import UserSelectionCheckbox from 'components/Inputs/RVCheckbox/UserSelectionChe
 import { useMemo } from 'react';
 
 const SelectUsers = ({ type, searchText }) => {
-  const { RVDic } = window;
   const { users, selectedUsers, handleUserSelect } = usePrivacyProvider();
   const _users = [...selectedUsers].find((x) => x.type === type)?.items;
 
@@ -37,6 +36,7 @@ const SelectUsers = ({ type, searchText }) => {
         )),
     [users, _users, searchText]
   );
+
   return (
     <ScrollBarProvider>
       <ObjectListWrapper>{items}</ObjectListWrapper>

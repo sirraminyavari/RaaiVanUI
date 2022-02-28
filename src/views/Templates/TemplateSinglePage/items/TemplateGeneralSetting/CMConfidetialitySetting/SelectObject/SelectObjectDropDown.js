@@ -35,7 +35,9 @@ const SelectObjectDropDown = ({
   const dropDownEl = createRef();
 
   useOutsideClick(() => {
-    (async () => await handleSetAudience())();
+    (async () => {
+      // await handleSetAudience();
+    })();
   }, dropDownEl);
 
   const handleSetAudience = async () => {
@@ -50,7 +52,17 @@ const SelectObjectDropDown = ({
     await setAdvancedPermissions(audience);
   };
 
-  const openInDialog = () => {};
+  const openInDialog = () => {
+    if (selectedTab === 'members' && onUserModalOpen) {
+      onUserModalOpen();
+    }
+
+    if (selectedTab === 'groups' && onGroupModalOpen) {
+      onGroupModalOpen();
+    }
+
+    setOpenDropDown(false);
+  };
 
   const addNewGroup = () => {
     setOpenDropDown(false);
@@ -60,7 +72,6 @@ const SelectObjectDropDown = ({
   return (
     <>
       <Button onClick={() => setOpenDropDown(true)}>{'انتخاب اعضا'}</Button>
-
       {openDropDown && (
         <DropDown ref={dropDownEl}>
           <TabView onSelect={(key) => setSelectedTab(key)}>

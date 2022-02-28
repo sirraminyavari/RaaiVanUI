@@ -172,7 +172,8 @@ const SearchView = (props) => {
         setIsModalOpen,
         getExcelFile,
         onScrollEnd,
-      }}>
+      }}
+    >
       <Styled.SearchViewContainer>
         <SearchMain />
         <SearchAside />

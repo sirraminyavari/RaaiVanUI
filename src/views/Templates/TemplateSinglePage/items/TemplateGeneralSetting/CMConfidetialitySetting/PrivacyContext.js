@@ -15,6 +15,8 @@ export const PrivacyObjectProvider = ({
   selectedGroups,
   handleGroupSelect,
   setAdvancedPermissions,
+  handlePermissionTypeSelection,
+  handleAudienceSelection,
   children,
 }) => {
   return (
@@ -27,6 +29,8 @@ export const PrivacyObjectProvider = ({
         selectedGroups,
         handleGroupSelect,
         setAdvancedPermissions,
+        handlePermissionTypeSelection,
+        handleAudienceSelection,
       }}
     >
       {children}

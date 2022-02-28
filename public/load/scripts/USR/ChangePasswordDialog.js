@@ -101,7 +101,7 @@
                                     UsersAPI.ChangePassword({
                                         CurrentPassword: Base64.encode(curPass),
                                         NewPassword: Base64.encode(newPass),
-                                        Captcha: captchaObj ? Base64.encode(captchaObj.get()) : null,
+                                        Captcha: captchaObj ? captchaObj.get() : null,
                                         ParseResults: true,
                                         ResponseHandler: function (results) {
                                             btn.Processing = false;

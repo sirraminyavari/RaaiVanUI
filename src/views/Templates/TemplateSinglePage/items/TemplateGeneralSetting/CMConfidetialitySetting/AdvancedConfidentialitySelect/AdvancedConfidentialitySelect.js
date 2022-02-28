@@ -9,7 +9,7 @@ import { PERMISSION_TYPE } from '../../../../../../../apiHelper/ApiHandlers/priv
 
 const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   const [selected, setSelected] = useState('');
-  const { NodeTypeID, setAdvancedPermissions } = usePrivacyProvider();
+  const { handlePermissionTypeSelection } = usePrivacyProvider();
 
   const options = [
     {
@@ -33,21 +33,9 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   useEffect(() => {
     (async () => {
       if (selected === 'ALLOWED') {
-        const Audience = [
-          {
-            PermissionType: permissionType,
-            Allow: true,
-          },
-        ];
-        await setAdvancedPermissions(Audience);
+        await handlePermissionTypeSelection(permissionType, true);
       } else if (selected === 'DENIED') {
-        const Audience = [
-          {
-            PermissionType: permissionType,
-            Allow: true,
-          },
-        ];
-        await setAdvancedPermissions(Audience);
+        await handlePermissionTypeSelection(permissionType, false);
       }
     })();
   }, [selected]);

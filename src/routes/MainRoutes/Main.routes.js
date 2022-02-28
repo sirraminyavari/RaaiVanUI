@@ -60,7 +60,8 @@ const NewNode = lazy(() =>
 // );
 const NodeView = lazy(() =>
   import(
-    /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
+    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
+    'views/Node/Node-view'
   )
 );
 const FormView = lazy(() =>
