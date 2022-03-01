@@ -38,4 +38,9 @@ export const MessageContainer = styled.div`
 export const AdvancedSelectionContainer = styled.div`
   margin-top: 1.5rem;
 `;
-AdvancedSelectionContainer.displayName = 'AdvancedSelectionContainer;';
+AdvancedSelectionContainer.displayName = 'AdvancedSelectionContainer';
+
+export const CustomizedSelectionContainer = styled.div`
+  min-width: 7rem;
+`;
+CustomizedSelectionContainer.displayName = 'CustomizedSelectionContainer';

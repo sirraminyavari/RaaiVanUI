@@ -17,6 +17,9 @@ import SelectUsers from './SelectObjectItem/SelectUsers';
 import { usePrivacyProvider } from '../PrivacyContext';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
+import { useTemplateContext } from '../../../../TemplateProvider';
+import { PERMISSION_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
+import * as _ from 'lodash';
 
 const SelectObjectDropDown = ({
   type,
@@ -29,8 +32,8 @@ const SelectObjectDropDown = ({
   const { RVDic } = window;
   const [openDropDown, setOpenDropDown] = useState(false);
   const [selectedTab, setSelectedTab] = useState('members');
-
-  const { selectedGroups, selectedUsers, setAdvancedPermissions } =
+  const { NodeTypeID } = useTemplateContext();
+  const { selectedGroups, selectedUsers, audience, handleAudienceSelection } =
     usePrivacyProvider();
   const dropDownEl = createRef();
 
@@ -44,12 +47,39 @@ const SelectObjectDropDown = ({
     setOpenDropDown(false);
     const users = [...selectedUsers].find((x) => x.type === type)?.items;
     const groups = [...selectedGroups].find((x) => x.type === type)?.items;
-    const audience = [...users, ...groups].map((RoleID) => ({
-      RoleID,
-      PermissionType: type,
-      Allow: true,
-    }));
-    await setAdvancedPermissions(audience);
+    let newAudience = [];
+    if (type === PERMISSION_TYPE.Modify) {
+      [...users, ...groups].forEach((RoleID) => {
+        newAudience = newAudience.concat([
+          {
+            RoleID,
+            PermissionType: PERMISSION_TYPE.Modify,
+            Allow: true,
+          },
+          {
+            RoleID,
+            PermissionType: PERMISSION_TYPE.Delete,
+            Allow: true,
+          },
+        ]);
+      });
+    } else {
+      newAudience = [...users, ...groups].map((RoleID) => ({
+        RoleID,
+        PermissionType: type,
+        Allow: true,
+      }));
+    }
+    const oldAudience = audience?.Items[`${NodeTypeID}`]?.Audience?.map(
+      (x) => ({
+        RoleID: x?.RoleID,
+        PermissionType: x?.PermissionType,
+        Allow: x?.Allow,
+      })
+    );
+    let _audience = [...newAudience, ...oldAudience];
+    _audience = _.uniqWith(_audience, _.isEqual);
+    await handleAudienceSelection(_audience, type);
   };
 
   const openInDialog = () => {

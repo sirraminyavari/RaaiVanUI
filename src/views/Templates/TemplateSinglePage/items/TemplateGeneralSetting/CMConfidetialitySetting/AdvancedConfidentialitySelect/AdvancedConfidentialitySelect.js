@@ -1,15 +1,33 @@
 import * as Styled from '../CMConfidentialitySettingStyle';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SelectObject from '../SelectObject/SelectObject';
-import useCMConfidentiality from '../useCMConfidentiality';
 import { usePrivacyProvider } from '../PrivacyContext';
-import { PERMISSION_TYPE } from '../../../../../../../apiHelper/ApiHandlers/privacyApi';
+import { useTemplateContext } from '../../../../TemplateProvider';
 
 const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
-  const [selected, setSelected] = useState('');
-  const { handlePermissionTypeSelection } = usePrivacyProvider();
+  const { handlePermissionTypeSelection, audience } = usePrivacyProvider();
+  const { NodeTypeID } = useTemplateContext();
+  const [selected, setSelected] = useState(() => {
+    const Audience = audience?.Items[`${NodeTypeID}`]?.Audience;
+
+    const hasAudience = Audience.some(
+      (x) => x?.PermissionType === permissionType
+    );
+
+    if (hasAudience) {
+      return 'CUSTOMIZED';
+    } else {
+      const defaultValue = audience?.Items[
+        `${NodeTypeID}`
+      ]?.DefaultPermissions?.find(
+        (x) => x?.PermissionType === permissionType
+      )?.DefaultValue;
+
+      return defaultValue === 'Public' ? 'ALLOWED' : 'DENIED';
+    }
+  });
 
   const options = [
     {
@@ -26,19 +44,15 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
     },
   ];
 
-  const handleSelection = (e) => {
+  const handleSelection = async (e) => {
+    if (e?.value === 'ALLOWED') {
+      await handlePermissionTypeSelection(permissionType, true);
+    } else if (e?.value === 'DENIED') {
+      await handlePermissionTypeSelection(permissionType, false);
+    } else if (e?.value === 'CUSTOMIZED') {
+    }
     setSelected(e?.value);
   };
-
-  useEffect(() => {
-    (async () => {
-      if (selected === 'ALLOWED') {
-        await handlePermissionTypeSelection(permissionType, true);
-      } else if (selected === 'DENIED') {
-        await handlePermissionTypeSelection(permissionType, false);
-      }
-    })();
-  }, [selected]);
 
   return (
     <>
@@ -60,7 +74,9 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
           />
         </Styled.BlockSelectWrapper>
 
-        {selected === 'CUSTOMIZED' && <SelectObject type={permissionType} />}
+        <Styled.CustomizedSelectionContainer>
+          {selected === 'CUSTOMIZED' && <SelectObject type={permissionType} />}
+        </Styled.CustomizedSelectionContainer>
       </Styled.SelectionBlock>
     </>
   );

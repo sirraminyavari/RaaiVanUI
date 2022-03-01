@@ -2,26 +2,30 @@ import styled from 'styled-components';
 import { CV_RED } from 'constant/CssVariables';
 import { FLEX_RCC } from 'constant/StyledCommonCss';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
-import useModal from '../../../../../../hooks/useModal';
-import { useRef } from 'react';
+import { useState } from 'react';
+import Modal from 'components/Modal/Modal';
 
 const DeleteTemplateButton = () => {
-  const ref = useRef();
-  const { open } = useModal(ref, (e) => {
-    console.log(e);
+  const [modalInfo, setModalInfo] = useState({
+    title: 'حذف تمپلیت',
+    contentWidth: '30%',
+    middle: true,
+    show: false,
+    titleClass: 'rv-red',
+    titleContainerClass: 'modal-title-bar',
   });
 
-  const handlOpen = () => {
-    open(<div>mehid</div>, {}, { name: 'ali' });
-  };
   return (
     <>
-      <Button onClick={handlOpen}>
+      <Button onClick={() => setModalInfo({ ...modalInfo, show: true })}>
         <TrashIcon />
         <div>{'حذف تمپلیت'}</div>
       </Button>
 
-      <div ref={ref}></div>
+      <Modal
+        {...modalInfo}
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}
+      ></Modal>
     </>
   );
 };

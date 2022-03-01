@@ -9,7 +9,7 @@ import SearchInput from 'components/Inputs/SearchInput';
 
 const SelectObject = ({ type }) => {
   const { RVDic } = window;
-  const [searchText, setSearchText] = useState('test');
+  const [searchText, setSearchText] = useState('');
   const { users } = usePrivacyProvider();
   const [info, setInfo] = useState({
     modalType: '',

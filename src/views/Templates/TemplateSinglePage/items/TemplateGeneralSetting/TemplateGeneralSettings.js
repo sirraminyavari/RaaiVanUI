@@ -10,6 +10,7 @@ import TemplateTitleForm from './items/TemplateTitleForm';
 import CMConfidentialitySetting from './CMConfidetialitySetting/CMConfidentialitySetting';
 import { PRIVACY_OBJECT_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
 import { useState } from 'react';
+import AvatarImageCropper from '../../../../../components/ImageCropper/AvatarImageCropper';
 
 const TemplateGeneralSettings = () => {
   const { id, title } = useParams();
@@ -44,7 +45,8 @@ const TemplateGeneralSettings = () => {
         <Breadcrumb items={breadItems} />
 
         <MainFormContainer>
-          <TemplateUploadIcon />
+          {/*<TemplateUploadIcon />*/}
+          <AvatarImageCropper />
           <TemplateTitleForm name={decodeBase64(title)} />
         </MainFormContainer>
 

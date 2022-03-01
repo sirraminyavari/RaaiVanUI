@@ -25,7 +25,6 @@ export const useTabView = ({ children, onSelect }) => {
     children
       .filter((x) => x?.type?.name === 'Item')
       .map((x) => {
-        console.log(x);
         return x;
       })
       .map((x, index) => ({

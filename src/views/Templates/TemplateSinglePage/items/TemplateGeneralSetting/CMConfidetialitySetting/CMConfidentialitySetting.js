@@ -14,6 +14,7 @@ const CMConfidentialitySetting = ({ type }) => {
     options,
     users,
     groups,
+    audience,
     selectedUsers,
     handleUserSelect,
     selectedGroups,
@@ -22,7 +23,6 @@ const CMConfidentialitySetting = ({ type }) => {
     selectedOption,
     handleSelection,
     advancedOption,
-    setAdvancedPermissions,
     handlePermissionTypeSelection,
     handleAudienceSelection,
   } = useCMConfidentiality({ type });
@@ -34,11 +34,11 @@ const CMConfidentialitySetting = ({ type }) => {
       {...{
         users,
         groups,
+        audience,
         selectedUsers,
         handleUserSelect,
         selectedGroups,
         handleGroupSelect,
-        setAdvancedPermissions,
         handlePermissionTypeSelection,
         handleAudienceSelection,
       }}

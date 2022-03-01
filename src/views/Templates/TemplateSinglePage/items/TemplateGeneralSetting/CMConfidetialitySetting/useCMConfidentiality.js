@@ -1,5 +1,5 @@
 import { useTemplateContext } from '../../../TemplateProvider';
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   getAudience,
   PERMISSION_TYPE,
@@ -10,6 +10,8 @@ import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import produce from 'immer';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { decodeBase64 } from 'helpers/helpers';
+
 const accessTypes = [
   { type: PERMISSION_TYPE.View, items: [] },
   { type: PERMISSION_TYPE.Create, items: [] },
@@ -115,7 +117,51 @@ export const useCMConfidentiality = ({ type }) => {
     await setAudienceApiCall(Data);
   };
 
-  const handleAudienceSelection = async (_audience) => {};
+  // handle setAudience api call in term of custom user/group id selection
+  const handleAudienceSelection = async (_audience, PermissionType) => {
+    let DefaultPermissions = audiences?.Items[
+      `${NodeTypeID}`
+    ]?.DefaultPermissions?.map((x) => {
+      if (x.DefaultValue === 'Public') {
+        return { ...x, DefaultValue: true };
+      }
+      return { ...x, DefaultValue: false };
+    });
+
+    if (PermissionType === PERMISSION_TYPE.Modify) {
+      DefaultPermissions = DefaultPermissions?.filter(
+        (x) =>
+          x.PermissionType !== PERMISSION_TYPE.Modify &&
+          x.PermissionType !== PERMISSION_TYPE.Delete
+      ).concat([
+        {
+          PermissionType: PERMISSION_TYPE.Modify,
+          DefaultValue: false,
+        },
+        {
+          PermissionType: PERMISSION_TYPE.Delete,
+          DefaultValue: false,
+        },
+      ]);
+    } else {
+      DefaultPermissions = DefaultPermissions?.filter(
+        (x) => x.PermissionType !== PermissionType
+      ).concat([
+        {
+          PermissionType,
+          DefaultValue: false,
+        },
+      ]);
+    }
+
+    const Data = {
+      [NodeTypeID]: {
+        Audience: [..._audience],
+        DefaultPermissions,
+      },
+    };
+    await setAudienceApiCall(Data);
+  };
 
   const handlePermissionTypeSelection = async (
     PermissionType,
@@ -165,21 +211,7 @@ export const useCMConfidentiality = ({ type }) => {
     await setAudienceApiCall(Data);
   };
 
-  const setAdvancedPermissions = async (_audience) => {
-    const Data = {
-      [NodeTypeID]: {
-        Audience: _audience,
-        DefaultPermissions: basicPermissions?.map((_type) => ({
-          PermissionType: _type,
-          DefaultValue: false,
-        })),
-      },
-    };
-    await setAudienceApiCall(Data);
-  };
-
   const setAudienceApiCall = async (Data) => {
-    console.log(Data);
     const { ErrorText, Succeed } = await setAudience({
       Type: PRIVACY_OBJECT_TYPE.NodeType,
       Data,
@@ -198,7 +230,59 @@ export const useCMConfidentiality = ({ type }) => {
     }
   };
 
-  useEffect(() => console.log('audience', audiences), [audiences]);
+  const initializeTopLevelOption = () => {
+    const Audience = audiences?.Items[`${NodeTypeID}`]?.Audience?.map((x) => ({
+      ...x,
+      RoleType: decodeBase64(x?.RoleType),
+    }));
+
+    setSelectedGroups(
+      produce((d) => {
+        Audience.filter((x) => x?.RoleType === 'Node').forEach((item) => {
+          const t = d.find((x) => x.type === item?.PermissionType);
+          if (t) {
+            t?.items.push(item?.RoleID);
+          }
+        });
+      })
+    );
+
+    setSelectedUsers(
+      produce((d) => {
+        Audience.filter((x) => x?.RoleType === 'User').forEach((item) => {
+          const t = d.find((x) => x.type === item?.PermissionType);
+          if (t) {
+            t?.items.push(item?.RoleID);
+          }
+        });
+      })
+    );
+
+    const DefaultPermissions =
+      audiences?.Items[`${NodeTypeID}`]?.DefaultPermissions;
+
+    const allAllowed = DefaultPermissions?.filter(
+      (x) => x?.DefaultValue === 'Public'
+    );
+
+    const allDenied = DefaultPermissions?.filter(
+      (x) => x?.DefaultValue === 'Restricted'
+    );
+
+    if (allAllowed?.length === 4 && Audience?.length === 0) {
+      setSelectedOption('GRANTED');
+    } else if (allDenied?.length === 4 && Audience?.length === 0) {
+      setSelectedOption('CLASSIFIED');
+    } else {
+      setSelectedOption('ADVANCED');
+    }
+  };
+
+  useEffect(() => {
+    if (audiences) {
+      initializeTopLevelOption();
+    }
+  }, [audiences]);
 
   const options = [
     {
@@ -241,6 +325,7 @@ export const useCMConfidentiality = ({ type }) => {
     users,
     groups,
     loading,
+    audience: audiences,
     selectedOption,
     handleSelection,
     advancedOption,
@@ -248,7 +333,6 @@ export const useCMConfidentiality = ({ type }) => {
     handleUserSelect,
     selectedGroups,
     handleGroupSelect,
-    setAdvancedPermissions,
     handlePermissionTypeSelection,
     handleAudienceSelection,
   };

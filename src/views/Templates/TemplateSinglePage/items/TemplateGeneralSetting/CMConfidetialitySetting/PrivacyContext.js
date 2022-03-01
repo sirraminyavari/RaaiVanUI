@@ -10,11 +10,11 @@ export const usePrivacyProvider = () => {
 export const PrivacyObjectProvider = ({
   users,
   groups,
+  audience,
   selectedUsers,
   handleUserSelect,
   selectedGroups,
   handleGroupSelect,
-  setAdvancedPermissions,
   handlePermissionTypeSelection,
   handleAudienceSelection,
   children,
@@ -24,11 +24,11 @@ export const PrivacyObjectProvider = ({
       value={{
         users,
         groups,
+        audience,
         selectedUsers,
         handleUserSelect,
         selectedGroups,
         handleGroupSelect,
-        setAdvancedPermissions,
         handlePermissionTypeSelection,
         handleAudienceSelection,
       }}
