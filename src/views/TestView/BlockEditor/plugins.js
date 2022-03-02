@@ -1,7 +1,7 @@
 import {
   defaultTheme,
   plugins as _plugins,
-} from '@sirraminyavari/block-editor';
+} from '@sirraminyavari/rv-block-editor';
 
 import { suggestTags } from './API';
 
