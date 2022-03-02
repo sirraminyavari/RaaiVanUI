@@ -373,11 +373,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     <Avatar
                       onClick={openTeamUsers}
                       userImage={user?.ProfileImageURL}
-                      radius={38}
+                      // radius={38}
                       style={{
                         position: 'relative',
-                        [RV_Float]: `${-index * 9}px`,
-                        zIndex: 10 - index,
+                        [RV_Float]: `${-index * 1}rem`,
+                        // zIndex: 10 - index,
                         width: '3rem',
                         minWidth: '3rem',
                       }}
