@@ -1,4 +1,7 @@
-import { defaultTheme, plugins as _plugins } from 'block-editor';
+import {
+  defaultTheme,
+  plugins as _plugins,
+} from '@sirraminyavari/block-editor';
 
 import { suggestTags } from './API';
 

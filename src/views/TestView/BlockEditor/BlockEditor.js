@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { convertToRaw } from 'draft-js';
 
-import BlockEditor, { defaultTheme } from 'block-editor';
+import BlockEditor, { defaultTheme } from '@sirraminyavari/block-editor';
 
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
