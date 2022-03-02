@@ -1,33 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
 import * as Styles from './AvatarImageCropper.styles';
-import * as AvatarSVGS from 'assets/images/avatars/AvatarAssets-profile';
 
 /**
  * @component
  * @param {string[]} props.avatars
+ * @param {Record<string,string>} props.avatarObject
  * @return {JSX.Element}
  */
-function AvatarButtons({ onChange, value }) {
+function AvatarPanels({ onChange, value, avatarObject }) {
   const isLoaded = useRef(false);
-  const [activeAvatar, setActiveAvatar] = useState(value);
+  const [avatar, setAvatar] = useState({ avatarName: value });
 
   useEffect(() => {
-    if (isLoaded.current) onChange(activeAvatar);
+    if (isLoaded.current) onChange(avatar);
     else isLoaded.current = true;
+    console.log(avatar);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeAvatar]);
+  }, [avatar]);
 
   //TODO This component needs improvements regarding how to get different set of avatar pictures
 
   return (
     <>
-      <Styles.ImageCropperAvatarContainer active={activeAvatar !== undefined}>
-        {Object.values(AvatarSVGS).map((avatarSrc) => {
+      <Styles.ImageCropperAvatarContainer
+        active={avatar.avatarName !== undefined}
+      >
+        {Object.entries(avatarObject).map(([avatarName, avatarSrc]) => {
           return (
             <Styles.ImageCropperAvatarImageButton
               key={avatarSrc}
-              active={activeAvatar === avatarSrc}
-              onClick={() => setActiveAvatar(avatarSrc)}
+              active={avatar.avatarName === avatarName}
+              onClick={() => setAvatar({ avatarName, avatarSrc })}
             >
               <Styles.ImageCropperAvatarImage src={avatarSrc} />
             </Styles.ImageCropperAvatarImageButton>
@@ -38,6 +41,6 @@ function AvatarButtons({ onChange, value }) {
   );
 }
 
-AvatarButtons.displayName = 'AvatarButtons';
+AvatarPanels.displayName = 'AvatarPanels';
 
-export default AvatarButtons;
+export default AvatarPanels;

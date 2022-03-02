@@ -5,11 +5,15 @@ import { loginSlice } from 'store/reducers/loginReducer';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import AvatarImageCropper from 'components/ImageCropper/AvatarImageCropper';
+import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingUserInfo.styles';
 import * as GlobalStyles from 'views/Onboarding/items/Onboarding.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import { setUserFirstAndLastName } from 'apiHelper/ApiHandlers/usersApi';
+import {
+  setUserAvatar,
+  setUserFirstAndLastName,
+} from 'apiHelper/ApiHandlers/usersApi';
 import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
 
 const { setAuthUser } = loginSlice.actions;
@@ -32,6 +36,7 @@ const OnboardingUserInfoContent = () => {
   const RVDicFirstName = RVDic.FirstName;
   const RVDicLastName = RVDic.LastName;
   const RVDicSaveAndNext = RVDic.SaveAndNext;
+  const RVDicDefaultAvatars = `آواتار پیشفرض`;
   const RVDicPageDescriptionInfo =
     'در کلیک‌مایند برای ارتباط با هم‌تیمی‌ها و ثبت دقیق‌تر اطلاعات، توصیه میشود همه اعضا نام و عکس مشخص خود را داشته باشند. برای همین در قسمت زیر، نام خود را وارد کنید و عکس/آواتار پروفایل خود را انتخاب کنید';
 
@@ -59,6 +64,10 @@ const OnboardingUserInfoContent = () => {
     );
   };
 
+  const setAvatarApi = async ({ avatarName, avatarSrc }) => {
+    return setUserAvatar({ Name: avatarName });
+  };
+
   const saveCurrentUserInfo = useMemo(
     () => async () => {
       setIsLoading(true);
@@ -76,11 +85,15 @@ const OnboardingUserInfoContent = () => {
           <p>{RVDicPageDescriptionInfo}</p>
         </Styles.OnboardingUserInfoDescriptionWrapper>
         <AvatarImageCropper
+          avatarObject={AvatarSVGS}
+          avatarTabLabel={RVDicDefaultAvatars}
           uploadType="ProfileImage"
           uploadId={currentUser.UserID}
           currentImageURL={currentUser.ProfileImageURL}
-          onImageUploadComplete={onImageUpload}
+          setAvatarApi={setAvatarApi}
+          onComplete={onImageUpload}
         />
+
         <Styles.OnboardingUserInfoInputContainer>
           <Styles.OnboardingUserInfoInputWrapper>
             <AnimatedInput

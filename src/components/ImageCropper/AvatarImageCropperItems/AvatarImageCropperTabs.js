@@ -4,7 +4,7 @@ import useWindow from 'hooks/useWindowContext';
 import TabView from 'components/TabView/TabView';
 import Button from 'components/Buttons/Button';
 import CloseButton from 'components/Buttons/CloseButton';
-import AvatarButtons from './AvatarButtons';
+import AvatarPanel from './AvatarPanel';
 import ImageCropperUploadInput from '../ImageCropperUploadInput';
 import ImageCropperSelection from './ImageCropperSelection';
 import * as Styles from './AvatarImageCropper.styles';
@@ -19,20 +19,27 @@ const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
  * @param {string} props.imageSrc - Default Image url/uri
  * @param {Function} props.onImageChange - A function to run after image input change (passes imageURL as parameter to the supplied function)
  * @param {string} props.uploadId - An ID to set as the upload image's name
+ * @param {Record<string,string>} props.avatarObject - An ID to set as the upload image's name
  * @param {string} props.uploadType - An string to set the correct api upload path e.g. "ProfileImage"
- * @param {Function} props.onImageUploadComplete - A function to run after image upload process completed
+ * @param {string} props.setAvatarApi - An string to set the correct api upload path e.g. "ProfileImage"
+ * @param {Function} props.onComplete - A function to run after image upload process completed
  * @param {Function} props.onCancel - A function to run after cancel button pressed
  * @return {JSX.Element}
  */
 function AvatarImageCropperTabs({
   imageSrc,
+  avatarName,
   onImageChange,
   uploadId,
+  avatarTabLabel,
+  avatarObject,
   uploadType,
-  onImageUploadComplete,
+  onComplete,
+  setAvatarApi,
   onCancel,
 }) {
   const [internalImageSrc, setInternalImageSrc] = useState();
+  const [internalAvatar, setInternalAvatar] = useState({ avatarName });
   const [targetFile, setTargetFile] = useState();
   const avatarUploadRef = useRef();
   const { RVDic, GlobalUtilities } = useWindow();
@@ -47,6 +54,7 @@ function AvatarImageCropperTabs({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({});
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [profileURL, setProfileURL] = useState(null);
+  const [uploadMode, setUploadMode] = useState('image');
 
   //! Get upload URL.
   useEffect(() => {
@@ -69,6 +77,7 @@ function AvatarImageCropperTabs({
 
   const onImageEditChangeHandler = (_croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
+    setUploadMode('image');
   };
   const onImageEditDeleteHandler = () => {
     setInternalImageSrc(undefined);
@@ -76,9 +85,14 @@ function AvatarImageCropperTabs({
     avatarUploadRef.current.value = '';
   };
 
+  const onAvatarSelection = async (avatar) => {
+    setInternalAvatar(avatar);
+    setUploadMode('avatar');
+  };
+
   //! Fires on save button click.
   const handleSaveCroppedImage = useMemo(
-    () => () => {
+    () => async () => {
       setIsSavingImage(true);
 
       let formData = new FormData();
@@ -98,12 +112,10 @@ function AvatarImageCropperTabs({
         },
       };
 
-      console.log(croppedAreaPixels);
       //! Update profile avatar.
       try {
-        axios
-          .post(profileURL, formData, config)
-          .then((response) => {
+        if (uploadMode === 'image') {
+          await axios.post(profileURL, formData, config).then((response) => {
             setIsSavingImage(false);
 
             let res = response?.data || {};
@@ -111,25 +123,28 @@ function AvatarImageCropperTabs({
             if (res.ImageURL) {
               const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
               onImageChange(newImageURL);
-              onImageUploadComplete && onImageUploadComplete(newImageURL);
+              onComplete && onComplete(newImageURL);
             } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
-          })
-          .catch((error) => {
-            setIsSavingImage(false);
-            console.log(error);
           });
+        } else if (uploadMode === 'avatar') {
+          await setAvatarApi(internalAvatar);
+
+          onImageChange(internalAvatar.avatarSrc);
+          onComplete && onComplete(internalAvatar.avatarSrc);
+        }
+        setIsSavingImage(false);
       } catch (error) {
         setIsSavingImage(false);
-        console.log(error);
+        console.log({ error });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [croppedAreaPixels, targetFile]
+    [croppedAreaPixels, targetFile, internalAvatar, uploadMode]
   );
 
   return (
     <>
-      <TabView key={internalImageSrc && targetFile}>
+      <TabView key={targetFile}>
         <TabView.Item label={RVDicPicture}>
           <ImageCropperSelection
             imageSrc={internalImageSrc}
@@ -139,8 +154,12 @@ function AvatarImageCropperTabs({
           />
         </TabView.Item>
 
-        <TabView.Item label={RVDicDefaultAvatar}>
-          <AvatarButtons value={imageSrc} onChange={onImageChange} />
+        <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
+          <AvatarPanel
+            avatarObject={avatarObject}
+            value={internalAvatar}
+            onChange={onAvatarSelection}
+          />
         </TabView.Item>
         <TabView.Action>
           <CloseButton onClick={onCancel} />
@@ -151,6 +170,7 @@ function AvatarImageCropperTabs({
         onImageChange={({ imageSrc, targetFile }) => {
           setInternalImageSrc(imageSrc);
           setTargetFile(targetFile);
+          setInternalAvatar(undefined);
         }}
       />
       <Styles.ImageCropperActionsContainer>
