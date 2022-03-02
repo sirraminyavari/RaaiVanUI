@@ -117,7 +117,7 @@ const WelcomeLayoutContainerWithScrollbar = styled(ScrollBarProvider).attrs({
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
   height: calc(100vh - 10rem) !important;
   overflow-y: auto;
-
+  width: 100%;
   margin: 1rem;
   ${({ isMobile = false }) =>
     !isMobile &&
