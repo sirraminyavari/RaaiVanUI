@@ -10,6 +10,7 @@ import OnboardingTeamCreationSetWorkFieldContent from 'views/Onboarding/items/co
 import OnboardingTeamCreationSetWorkFieldBanner from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetWorkFieldBanner';
 import { ONBOARDING_TEMPLATE_PATH } from './constants';
 import {
+  onboardingTeamFieldOfExpertiseSave,
   onboardingTeamNameSave,
   onboardingTeamPeopleCountSave,
 } from './OnboardingTeamApiCalls';
@@ -42,7 +43,10 @@ const initialState = {
     loading: false,
     teamName: '',
     peopleCount: '',
-    workField: '',
+    workField: {
+      fieldID: '',
+      fieldName: '',
+    },
   },
 };
 
@@ -98,9 +102,23 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
         BannerComponent: OnboardingTeamCreationSetWorkFieldBanner,
         ContentComponent: OnboardingTeamCreationSetWorkFieldContent,
         nextStepAction: ONBOARDING_TEAM_COMPLETED,
-        disableContinue: prevState.teamState.workField === '',
+        disableContinue: prevState.teamState.workField.fieldID === '',
         loading: false,
-        apiCall: ({ dispatch, teamState }) => {},
+        apiCall: ({ teamState }) =>
+          new Promise(async (resolve) => {
+            if (teamState.workField.fieldID !== 'OTHERS')
+              await onboardingTeamFieldOfExpertiseSave({
+                ApplicationID: prevState.applicationID,
+                workFieldID: teamState.workField.fieldID,
+                workFieldName: teamState.workField.fieldName,
+              });
+            else
+              await onboardingTeamFieldOfExpertiseSave({
+                ApplicationID: prevState.applicationID,
+                workFieldName: teamState.workField.fieldName,
+              });
+            resolve();
+          }),
         activeStep: 3,
         stepsCount: 3,
       };
@@ -148,7 +166,7 @@ export function OnboardingTeamStepContextProvider({ children }) {
   const [states, dispatch] = useReducer(stepperReducer, initialState);
 
   useEffect(() => {
-    // console.log({ states });
+    console.log({ states });
     if (states.completed) history.push(ONBOARDING_TEMPLATE_PATH);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [states]);

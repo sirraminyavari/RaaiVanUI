@@ -1,7 +1,7 @@
 import * as Styles from './OnboardingTeam.styles';
-import { OTHERS as lessThan10Image } from 'views/Onboarding/items/content/OnboardingTeam/svgs/lessThen10/lessThen10';
-import { OTHERS as between11To20Image } from 'views/Onboarding/items/content/OnboardingTeam/svgs/between11To20/between11To20';
-import { OTHERS as moreThan20Image } from 'views/Onboarding/items/content/OnboardingTeam/svgs/moreThan20/moreThan20';
+import { OTHERS as lessThan10Image } from 'assets/images/onboarding/illustration/lessThen10/lessThen10';
+import { OTHERS as between11To20Image } from 'assets/images/onboarding/illustration/between11To20/between11To20';
+import { OTHERS as moreThan20Image } from 'assets/images/onboarding/illustration/moreThan20/moreThan20';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 
 const OnboardingTeamCreationSetPeopleCountBanner = () => {

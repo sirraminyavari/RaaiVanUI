@@ -2,23 +2,18 @@ import { useEffect, useState } from 'react';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import Heading from 'components/Heading/Heading';
-import LEGALImage from './OnboardingWorkFieldAssets/LEGAL.png';
-import EDUCATIONALImage from './OnboardingWorkFieldAssets/EDUCATIONAL.png';
-import HRImage from './OnboardingWorkFieldAssets/HR.png';
-import MANUFACTURINGImage from './OnboardingWorkFieldAssets/MANUFACTURING.png';
-import MARKETINGImage from './OnboardingWorkFieldAssets/MARKETING.png';
-import DEVELOPMENTImage from './OnboardingWorkFieldAssets/DEVELOPMENT.png';
-import DESIGNImage from './OnboardingWorkFieldAssets/DESIGN.png';
-import OTHERSImage from './OnboardingWorkFieldAssets/OTHERS.png';
+import workFieldAssets from 'assets/images/onboarding/workFieldAssets/workFieldAssets';
 import PanelButton from 'components/Buttons/PanelButton';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import { getAllFieldsOfActivity } from 'apiHelper/ApiHandlers/CNApi';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
-  const [otherWorkFieldInput, setOtherWorkFieldInput] = useState('');
+  const [workFields, setWorkFields] = useState([]);
 
   const { RVDic } = useWindow();
   const {
@@ -29,13 +24,6 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   //TODO add missing RVDic locales
   //! RVDic i18n localization
   const RVDicِTeamWorkFieldHeadCount = `حوزه فعالیت تیم شما`;
-  const RVDicLegalField = `اداری و حقوقی`;
-  const RVDicEducationalField = `آموزش`;
-  const RVDicHRField = `منابع انسانی`;
-  const RVDicManufacturingField = `عملیات و تولید`;
-  const RVDicMarketingField = `فروش و بازاریابی`;
-  const RVDicDevelopmentField = `توسعه نرم افزار`;
-  const RVDicDesignField = `طراحی`;
   const RVDicOthersField = `سایر`;
   const RVDicOthersInputField = `نام حوزه کاری خود را بنویسید`;
 
@@ -47,71 +35,60 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     });
   };
 
-  const workFields = [
-    { id: 'LEGAL', imageSrc: LEGALImage, text: RVDicLegalField },
-    {
-      id: 'EDUCATIONAL',
-      imageSrc: EDUCATIONALImage,
-      text: RVDicEducationalField,
-    },
-    {
-      id: 'HR',
-      imageSrc: HRImage,
-      text: RVDicHRField,
-    },
-    {
-      id: 'MANUFACTURING',
-      imageSrc: MANUFACTURINGImage,
-      text: RVDicManufacturingField,
-    },
-    {
-      id: 'MARKETING',
-      imageSrc: MARKETINGImage,
-      text: RVDicMarketingField,
-    },
-    {
-      id: 'DEVELOPMENT',
-      imageSrc: DEVELOPMENTImage,
-      text: RVDicDevelopmentField,
-    },
-    {
-      id: 'DESIGN',
-      imageSrc: DESIGNImage,
-      text: RVDicDesignField,
-    },
-  ];
+  useEffect(() => {
+    async function fetchAllFieldsOfActivity() {
+      const { Items } = await getAllFieldsOfActivity();
+      setWorkFields(Items);
+    }
+    fetchAllFieldsOfActivity();
+  }, []);
 
   return (
     <>
       <Heading type="h2">{RVDicِTeamWorkFieldHeadCount}</Heading>
       <Styles.OnboardingTeamButtonInputWrapper wrap>
-        {workFields.map(({ id, text, imageSrc }) => (
+        {workFields.map(({ NodeID, Name, AvatarName }) => (
           <>
             <PanelButton
               secondary
-              active={workField === id}
-              onClick={setOnboardingTeamWorkField(id)}
+              active={workField.fieldID === NodeID}
+              onClick={setOnboardingTeamWorkField({
+                fieldID: NodeID,
+                fieldName: AvatarName,
+              })}
             >
-              <img src={imageSrc} size={'1em'} />
-              {text}
+              <img
+                src={workFieldAssets[decodeBase64(AvatarName)]}
+                size={'1em'}
+                alt=""
+              />
+              {decodeBase64(Name)}
             </PanelButton>
           </>
         ))}
 
         <PanelButton
           secondary
-          active={workField === 'OTHERS'}
-          onClick={setOnboardingTeamWorkField('OTHERS')}
+          active={workField.fieldID === 'OTHERS'}
+          onClick={setOnboardingTeamWorkField({
+            fieldID: 'OTHERS',
+            fieldName: '',
+          })}
         >
-          <img src={OTHERSImage} size={'1em'} />
+          <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
           {RVDicOthersField}
         </PanelButton>
-        {workField.startsWith('OTHERS') && (
+        {workField.fieldID === 'OTHERS' && (
           <Styles.OnboardingTeamSetWorkFieldInputWrapper>
             <AnimatedInput
               placeholder={RVDicOthersInputField}
-              value={otherWorkFieldInput}
-              onChange={setOtherWorkFieldInput}
+              value={decodeBase64(workField.fieldName)}
+              onChange={(input) =>
+                setOnboardingTeamWorkField({
+                  fieldID: 'OTHERS',
+                  fieldName: encodeBase64(input),
+                })()
+              }
             />
           </Styles.OnboardingTeamSetWorkFieldInputWrapper>
         )}

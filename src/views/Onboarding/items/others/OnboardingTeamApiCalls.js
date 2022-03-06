@@ -2,6 +2,7 @@ import {
   createApplication,
   createWorkspace,
   selectApplication,
+  setApplicationFieldOfExpertise,
   setApplicationSize,
 } from 'apiHelper/ApiHandlers/RVApi';
 import { OnboardingTeamStepContextActions } from './OnboardingTeam.context';
@@ -49,5 +50,18 @@ export const onboardingTeamPeopleCountSave = async ({
   await setApplicationSize({
     ApplicationID,
     Size: serverValue[Size],
+  });
+};
+
+export const onboardingTeamFieldOfExpertiseSave = async ({
+  //   dispatch,
+  ApplicationID,
+  workFieldID,
+  workFieldName,
+}) => {
+  await setApplicationFieldOfExpertise({
+    ApplicationID,
+    FieldID: workFieldID,
+    FieldName: workFieldName,
   });
 };
