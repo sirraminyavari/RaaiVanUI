@@ -90,6 +90,7 @@ const OnboardingUserInfoContent = () => {
           uploadType="ProfileImage"
           uploadId={currentUser.UserID}
           currentImageURL={currentUser.ProfileImageURL}
+          currentAvatarID={decodeBase64(currentUser.AvatarName)}
           setAvatarApi={setAvatarApi}
           onComplete={onImageUpload}
         />
