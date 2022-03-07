@@ -32,7 +32,7 @@ const SelectGroups = ({ type }) => {
             >
               {Name}
             </RVCheckbox>
-            <MembersPreview members={members} size={2} showMore />
+            <MembersPreview members={members} maxItems={2} size={2} showMore />
           </ObjectItemContainer>
         );
       }),

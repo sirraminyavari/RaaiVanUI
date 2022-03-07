@@ -1,46 +1,52 @@
-import { Container, UnitWrapper, Image } from './MembersPreviewStyles';
+import {
+  Container,
+  UnitWrapper,
+  Image,
+  MoreUnits,
+} from './MembersPreviewStyles';
 import { useMemo } from 'react';
+import AddIcon from '../Icons/AddIcon/AddIcon';
 
 const MembersPreview = ({
   members,
-  maxItems = 4,
+  maxItems = 2,
   size = 2,
   showMore = false,
   showMoreRenderer,
 }) => {
   const { RV_RTL: rtl } = window;
   const maxWidth = useMemo(() => {
-    const units = showMore ? maxItems + 1 : maxItems;
-    return `${0.7 * units * size}rem`;
+    const units = maxItems + 1;
+    return `${units * size}rem`;
   }, [maxItems, size, showMore]);
 
-  const items = [...members]
-    .map((x) => ({
-      ...x,
-      isImg: true,
-    }))
-    .reverse()
-    .filter((x, index) => index < maxItems)
-    .map((x, index) => {
-      const { title, src } = x;
-      return (
-        <UnitWrapper key={index} {...{ size, rtl, index }}>
-          {}
-          {x?.isImg ? <Image {...{ src, size, title }} /> : x}
-        </UnitWrapper>
-      );
-    });
+  const { items, remains } = useMemo(() => {
+    let _items;
+    let _remains = [];
+    _items = members.filter((x, index) => index <= maxItems - 1);
+    _remains = members.filter((x, index) => index > maxItems - 1);
+    return { items: _items, remains: _remains };
+  }, [members]);
 
   return (
     <Container {...{ maxWidth, rtl }}>
-      <UnitWrapper>
-        <>
-          {items.length > maxItems && (
-            <>{!showMoreRenderer ? <div>r</div> : showMoreRenderer}</>
-          )}
-        </>
-      </UnitWrapper>
-      {items}
+      {remains.length !== 0 && (
+        <UnitWrapper index={0} {...{ size, rtl }}>
+          <MoreUnits {...{ size }}>
+            <AddIcon size={10} />
+            <div>{remains.length}</div>
+          </MoreUnits>
+        </UnitWrapper>
+      )}
+      {items?.map((x, index) => {
+        const { title, src } = x;
+        if (remains.length !== 0) index++;
+        return (
+          <UnitWrapper key={index} {...{ size, rtl, index }}>
+            <Image {...{ src, size, title }} />
+          </UnitWrapper>
+        );
+      })}
     </Container>
   );
 };

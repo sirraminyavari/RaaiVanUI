@@ -45,8 +45,8 @@ const TemplateGeneralSettings = () => {
         <Breadcrumb items={breadItems} />
 
         <MainFormContainer>
-          {/*<TemplateUploadIcon />*/}
-          <AvatarImageCropper />
+          <TemplateUploadIcon />
+          {/*<AvatarImageCropper />*/}
           <TemplateTitleForm name={decodeBase64(title)} />
         </MainFormContainer>
 
