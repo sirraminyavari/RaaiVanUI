@@ -20,6 +20,7 @@ export const Button = styled.button`
   cursor: pointer;
   font-weight: 500;
   background-color: ${CV_WHITE};
+  min-width: 7rem;
 
   &:hover {
     border: 1px solid ${TCV_DEFAULT};

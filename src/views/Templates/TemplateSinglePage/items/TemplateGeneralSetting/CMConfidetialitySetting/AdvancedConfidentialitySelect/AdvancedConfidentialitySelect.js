@@ -1,14 +1,30 @@
 import * as Styled from '../CMConfidentialitySettingStyle';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import CustomSelectIndicator from 'components/Inputs/CustomSelect/items/CustomSelectIndicator';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import SelectObject from '../SelectObject/SelectObject';
 import { usePrivacyProvider } from '../PrivacyContext';
 import { useTemplateContext } from '../../../../TemplateProvider';
+import MembersPreview from 'components/MembersPreview/MembersPreview';
+import { decodeBase64 } from 'helpers/helpers';
 
 const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
   const { handlePermissionTypeSelection, audience } = usePrivacyProvider();
+
   const { NodeTypeID } = useTemplateContext();
+
+  const members = useMemo(() => {
+    return (
+      audience?.Items[`${NodeTypeID}`]?.Audience?.filter(
+        (x) => x?.PermissionType === permissionType
+      )?.map((x) => ({
+        id: x?.ObjectID,
+        title: decodeBase64(x?.RoleName),
+        src: x?.IconURL,
+      })) || []
+    );
+  }, [audience]);
+
   const [selected, setSelected] = useState(() => {
     const Audience = audience?.Items[`${NodeTypeID}`]?.Audience;
 
@@ -75,7 +91,13 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
         </Styled.BlockSelectWrapper>
 
         <Styled.CustomizedSelectionContainer>
-          {selected === 'CUSTOMIZED' && <SelectObject type={permissionType} />}
+          {selected === 'CUSTOMIZED' && (
+            <>
+              <SelectObject type={permissionType} />
+
+              <MembersPreview members={members} size={2.5} maxItems={4} />
+            </>
+          )}
         </Styled.CustomizedSelectionContainer>
       </Styled.SelectionBlock>
     </>

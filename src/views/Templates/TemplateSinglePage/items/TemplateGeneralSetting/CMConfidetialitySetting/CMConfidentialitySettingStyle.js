@@ -42,5 +42,7 @@ AdvancedSelectionContainer.displayName = 'AdvancedSelectionContainer';
 
 export const CustomizedSelectionContainer = styled.div`
   min-width: 7rem;
+  ${FLEX_RCS};
+  gap: 0.5rem;
 `;
 CustomizedSelectionContainer.displayName = 'CustomizedSelectionContainer';

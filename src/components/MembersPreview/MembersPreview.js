@@ -3,8 +3,12 @@ import {
   UnitWrapper,
   Image,
   MoreUnits,
+  DropDown,
+  MoreObjectItemContainer,
+  MoreObjectItemImg,
+  MoreObjectItemTitle,
 } from './MembersPreviewStyles';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import AddIcon from '../Icons/AddIcon/AddIcon';
 
 const MembersPreview = ({
@@ -15,8 +19,16 @@ const MembersPreview = ({
   showMoreRenderer,
 }) => {
   const { RV_RTL: rtl } = window;
+
+  const [showDropDown, setShowDropDown] = useState(false);
+
   const maxWidth = useMemo(() => {
-    const units = maxItems + 1;
+    let units;
+    if (members.length > maxItems) {
+      units = maxItems + 1;
+    } else {
+      units = maxItems;
+    }
     return `${units * size}rem`;
   }, [maxItems, size, showMore]);
 
@@ -30,23 +42,40 @@ const MembersPreview = ({
 
   return (
     <Container {...{ maxWidth, rtl }}>
-      {remains.length !== 0 && (
-        <UnitWrapper index={0} {...{ size, rtl }}>
-          <MoreUnits {...{ size }}>
-            <AddIcon size={10} />
-            <div>{remains.length}</div>
-          </MoreUnits>
-        </UnitWrapper>
-      )}
       {items?.map((x, index) => {
         const { title, src } = x;
-        if (remains.length !== 0) index++;
         return (
           <UnitWrapper key={index} {...{ size, rtl, index }}>
             <Image {...{ src, size, title }} />
           </UnitWrapper>
         );
       })}
+      {remains.length !== 0 && (
+        <UnitWrapper
+          index={maxItems}
+          {...{ size, rtl }}
+          onMouseEnter={() => setShowDropDown(true)}
+          onMouseLeave={() => setShowDropDown(false)}
+        >
+          <MoreUnits {...{ size }}>
+            <div>{remains.length}</div>
+            <AddIcon size={10} />
+          </MoreUnits>
+          {showDropDown && (
+            <DropDown>
+              {remains?.map((x, index) => {
+                const { title, src } = x;
+                return (
+                  <MoreObjectItemContainer key={index}>
+                    <MoreObjectItemImg src={src} />
+                    <MoreObjectItemTitle>{title}</MoreObjectItemTitle>
+                  </MoreObjectItemContainer>
+                );
+              })}
+            </DropDown>
+          )}
+        </UnitWrapper>
+      )}
     </Container>
   );
 };
