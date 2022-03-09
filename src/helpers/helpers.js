@@ -13,7 +13,10 @@ const { GlobalUtilities, RVAPI } = window;
  * ...pipes them together.
  * @returns Any
  */
-export const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
+export const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((v, f) => f(v), x);
 
 /**
  * @description A function to get current language from cookie.
@@ -339,7 +342,7 @@ export const randomNumber = (min, max) => {
 };
 
 /**
- * @description Generates a 10 digit random number
+ * @description Scroll Element to the view
  * @param {HTMLElement|string} element - The element which needs to be in the browser viewport (also accepts a string as element's [id] attribute)
  * @param {object} [params]
  * @return {void}
@@ -377,4 +380,25 @@ export const fileSizeLabel = (size) => {
       ' ' +
       GigaBytes
     );
+};
+
+/**
+ * @description Returns an URL based on user object having "AvatarName" or "ImageURL" keys
+ * @param {string} [param.defaultURL] - The default URL to return, if both "AvatarName" and "ImageURL" were undefined
+ * @param {object} param.AvatarSVGsObject -  An Object the of Avatar URLs and Names
+ * @param {object} param.userObject -  An Object containing "AvatarName" or "ImageURL"
+ * @return {string}
+ */
+export const profileAvatarURL = ({
+  userObject,
+  defaultURL,
+  AvatarSVGsObject,
+}) => {
+  const { ImageURL, AvatarName } = userObject || {};
+  if (AvatarName) {
+    if (AvatarName && AvatarSVGsObject[decodeBase64(AvatarName)])
+      return AvatarSVGsObject[decodeBase64(AvatarName)];
+    else return defaultURL;
+  } else if (ImageURL) return ImageURL;
+  else return defaultURL;
 };

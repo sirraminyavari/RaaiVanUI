@@ -1,5 +1,5 @@
 import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
-import { decodeBase64 } from 'helpers/helpers';
+import { profileAvatarURL } from 'helpers/helpers';
 
 /**
  * @component - A HOC component converting base64 encoded AvatarName and ImageURL properties and injecting an Avatar URL or the profile image URL as a desired prop argument to passed component
@@ -14,11 +14,11 @@ import { decodeBase64 } from 'helpers/helpers';
  * import AvatarComponent from 'components/Avatar/Avatar';
  * import WithAvatar from 'components/Avatar/WithAvatar';
  *
- *const Avatar = WithAvatar({AvatarComponent, 'userImage',AvatarSVGS});
+ *const Avatar = WithAvatar({Component:AvatarComponent, componentURLProp:'userImage',AvatarSVGsObject:AvatarSVGS});
  * ...
  *
- *
- * <Avatar  AvatarSVGsObject={window.RVGlobal.CurrentUser} {...restProps}/>
+ * //* pass user object containing "ImageURL" and "AvatarName" to the "userObject" attribute
+ * <Avatar  userObject={window.RVGlobal.CurrentUser} {...restProps}/>
  *
  * ```
  */
@@ -28,19 +28,13 @@ const WithAvatar =
   (props) => {
     const { userObject, [componentURLProp]: urlProp, ...rest } = props;
 
-    const AvatarOrImageSrc = (userObject) => {
-      const { ImageURL, AvatarName } = userObject || {};
-      if (AvatarName) {
-        if (AvatarName && AvatarSVGsObject[decodeBase64(AvatarName)])
-          return AvatarSVGsObject[decodeBase64(AvatarName)];
-        else return urlProp;
-      } else if (ImageURL) return ImageURL;
-      else return urlProp;
-    };
-
     const newProps = {
       ...rest,
-      [componentURLProp]: AvatarOrImageSrc(userObject),
+      [componentURLProp]: profileAvatarURL({
+        userObject,
+        defaultURL: urlProp,
+        AvatarSVGsObject,
+      }),
     };
 
     return (

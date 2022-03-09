@@ -18,7 +18,13 @@ import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import { CV_WHITE } from 'constant/CssVariables';
 import { loginSlice } from 'store/reducers/loginReducer';
-import ImageCropper from 'components/ImageCropper/ImageCropper';
+import ImageCropperComponent from 'components/ImageCropper/ImageCropper';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const ImageCropper = WithAvatar({
+  Component: ImageCropperComponent,
+  componentURLProp: 'image',
+});
 
 const { setAuthUser } = loginSlice.actions;
 
@@ -40,7 +46,7 @@ const ProfileMain = (props) => {
     ProfileImageURL,
     // HighQualityImageURL,
   } = User || {};
-  // console.log({User});
+  // console.log({ User });
 
   const isMobileView = useMediaQuery({
     query: `(max-width: ${MOBILE_BOUNDRY})`,
@@ -170,6 +176,7 @@ const ProfileMain = (props) => {
           showGrid={false}
           onImageUpload={handleOnUploadDone}
           containerClass="profile-image-cropper"
+          userObject={User}
         />
         {isUploadingCover ? (
           <Styled.HeaderCoverLoader>
