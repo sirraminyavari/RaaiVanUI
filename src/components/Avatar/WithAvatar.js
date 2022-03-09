@@ -5,7 +5,7 @@ import { decodeBase64 } from 'helpers/helpers';
  * @component - A HOC component converting base64 encoded AvatarName and ImageURL properties and injecting an Avatar URL or the profile image URL as a desired prop argument to passed component
  *
  * @param {string} props.componentURLProp - The component's URL receiving property name (e.g. "src" is receiving property name for <img/> html tag)
- * @param {number} [props.Component] - The component that needs an URL for displaying an Avatar or Image
+ * @param {JSX.Element} props.Component - The component that needs an URL for displaying an Avatar or Image
  * @param {object} [props.AvatarSVGsObject] - An Object the of Avatar URLs and Names.
  * @return {JSX.Element}
  * @example

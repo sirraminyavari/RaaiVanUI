@@ -6,10 +6,6 @@ import CloseButton from 'components/Buttons/CloseButton';
 
 /**
  * 
-  noModal,
-  children,
-  noAvatarTab,
-  OnSaveFunction,
  * @component
  * @param {string} [props.currentImageURL] - If supplied, will be the trigger button's initial image
  * @param {string} props.uploadId - An ID for image upload API's uploadId
@@ -19,9 +15,9 @@ import CloseButton from 'components/Buttons/CloseButton';
  * @param {string} props.uploadType - An string to set the correct api upload path e.g. "ProfileImage"
  * @param {Function} [props.onComplete] - A function to run after image input change (passes newImageURL as parameter to the supplied function)
  * @param {Function} [props.noModal] - Disable Modal view
- * @param {JSX.Element} props.children - (Only TabView.Item is acceptable as component's direct child/children)
+ * @param {JSX.Element} [props.children] - (Only TabView.Item is acceptable as component's direct child/children)
  * @param {Function} [props.noAvatarTab] - Disable Avatar Selection tab view
- * @param {Function} props.OnSaveFunction - A function for Save Button(Comes handy if customizing tabs and custom OnSave functionality is mandatory)
+ * @param {Function} [props.OnSaveFunction] - A function for Save Button(Comes handy if customizing tabs and custom OnSave functionality is mandatory)
  * @return {JSX.Element}
  * 
  * @example
