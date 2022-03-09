@@ -3,7 +3,6 @@ import axios from 'axios';
 import useWindow from 'hooks/useWindowContext';
 import TabView from 'components/TabView/TabView';
 import Button from 'components/Buttons/Button';
-import CloseButton from 'components/Buttons/CloseButton';
 import AvatarPanel from './AvatarPanel';
 import ImageCropperUploadInput from '../ImageCropperUploadInput';
 import ImageCropperSelection from './ImageCropperSelection';
@@ -24,10 +23,20 @@ const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
  * @param {string} props.setAvatarApi - An string to set the correct api upload path e.g. "ProfileImage"
  * @param {Function} props.onComplete - A function to run after image upload process completed
  * @param {Function} props.onCancel - A function to run after cancel button pressed
+ * @param {JSX.Element} props.children - (Only TabView.Item is acceptable as component's direct child/children)
+ * @param {JSX.Element} props.CustomTabAction - If provided, will be passed to TabView.Action component
+ * @param {boolean} props.isModal - Controls the rendering of the return button with OnClick event set to OnCancel method
+ * @param {boolean} props.noAvatarTab - Disable the Avatar selection tab view
+ * @param {Function} props.OnSaveFunction - A function for Save Button(Comes handy if customizing tabs and custom OnSave functionality is mandatory)
  * @return {JSX.Element}
+ * @example
+ * ```jsx
+ * <AvatarImageCropperTabs [...acceptableProps]>
+ *    <TabView.Item label="some label"> some content </TabView.Item>
+ * </AvatarImageCropperTabs>
+ * ```
  */
 function AvatarImageCropperTabs({
-  imageSrc,
   avatarName,
   onImageChange,
   uploadId,
@@ -37,6 +46,11 @@ function AvatarImageCropperTabs({
   onComplete,
   setAvatarApi,
   onCancel,
+  children,
+  CustomTabAction,
+  isModal,
+  noAvatarTab,
+  OnSaveFunction,
 }) {
   const [internalImageSrc, setInternalImageSrc] = useState();
   const [internalAvatar, setInternalAvatar] = useState({ avatarName });
@@ -114,7 +128,7 @@ function AvatarImageCropperTabs({
 
       //! Update profile avatar.
       try {
-        if (uploadMode === 'image') {
+        if (uploadMode === 'image' && targetFile) {
           await axios.post(profileURL, formData, config).then((response) => {
             setIsSavingImage(false);
 
@@ -131,6 +145,8 @@ function AvatarImageCropperTabs({
 
           onImageChange(internalAvatar.avatarSrc);
           onComplete && onComplete(internalAvatar.avatarSrc);
+        } else {
+          OnSaveFunction && OnSaveFunction();
         }
         setIsSavingImage(false);
       } catch (error) {
@@ -153,17 +169,21 @@ function AvatarImageCropperTabs({
             onImageEditorDelete={onImageEditDeleteHandler}
           />
         </TabView.Item>
-
-        <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
-          <AvatarPanel
-            avatarObject={avatarObject}
-            value={internalAvatar}
-            onChange={onAvatarSelection}
-          />
-        </TabView.Item>
-        <TabView.Action>
-          <CloseButton onClick={onCancel} />
-        </TabView.Action>
+        {!noAvatarTab && (
+          <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
+            <AvatarPanel
+              avatarObject={avatarObject}
+              value={internalAvatar}
+              onChange={onAvatarSelection}
+            />
+          </TabView.Item>
+        )}
+        {children}
+        {CustomTabAction && (
+          <TabView.Action>
+            <CustomTabAction />
+          </TabView.Action>
+        )}
       </TabView>
       <ImageCropperUploadInput
         ref={avatarUploadRef}
@@ -181,9 +201,11 @@ function AvatarImageCropperTabs({
         >
           {RVDicSave}
         </Button>
-        <Button onClick={onCancel} type="negative-o">
-          {RVDicReturn}
-        </Button>
+        {isModal && (
+          <Button onClick={onCancel} type="negative-o">
+            {RVDicReturn}
+          </Button>
+        )}
       </Styles.ImageCropperActionsContainer>
     </>
   );
