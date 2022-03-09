@@ -7,7 +7,8 @@ import { createSelector } from 'reselect';
 import ReactTooltip from 'react-tooltip';
 import * as GlobalStyled from 'views/Teams/Teams.styles';
 import * as Styled from './WorkspaceTeamCard.styles';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
+import WithAvatar from 'components/Avatar/WithAvatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
@@ -49,6 +50,11 @@ const selectingApp = createSelector(
   (state) => state?.applications,
   (applications) => applications?.selectingApp
 );
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
@@ -373,6 +379,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     <Avatar
                       onClick={openTeamUsers}
                       userImage={user?.ProfileImageURL}
+                      userObject={user}
                       // radius={38}
                       style={{
                         position: 'relative',
