@@ -1,11 +1,6 @@
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
-import TemplateGeneralSettings from './items/TemplateGeneralSetting/TemplateGeneralSettings';
-import TemplateAdvancedSettings from './items/TemplateAdvancedSettings/TemplateAdvancedSettings';
-import TemplateMembersSettings from './items/TemplateMembersSettings/TemplateMembersSettings';
-import TemplateFormSettings from './items/TemplateFormSettings/TemplateFormSettings';
-import TemplateItemSettings from './items/TemplateItemsSettings/TemplateItemSettings';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import {
   getExtensions,
   getService,
@@ -19,6 +14,26 @@ const TemplateSinglePage = () => {
   const [loading, setLoading] = useState(true);
   const [extensions, setExtensions] = useState({});
   const [service, setService] = useState({});
+
+  const generalSetting = lazy(() =>
+    import('./items/TemplateGeneralSetting/TemplateGeneralSettings')
+  );
+
+  const membersSetting = lazy(() =>
+    import('./items/TemplateMembersSettings/TemplateMembersSettings')
+  );
+
+  const formSettings = lazy(() =>
+    import('./items/TemplateFormSettings/TemplateFormSettings')
+  );
+
+  const advancedSettings = lazy(() =>
+    import('./items/TemplateAdvancedSettings/TemplateAdvancedSettings')
+  );
+
+  const itemSettings = lazy(() =>
+    import('./items/TemplateItemsSettings/TemplateItemSettings')
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,27 +54,15 @@ const TemplateSinglePage = () => {
       ) : (
         <TemplateProvider extensions={extensions} service={service}>
           <Switch>
-            <Route exact path={`${path}`} component={TemplateGeneralSettings} />
-            <Route
-              exact
-              path={`${path}/forms`}
-              component={TemplateFormSettings}
-            />
+            <Route exact path={`${path}`} component={generalSetting} />
+            <Route exact path={`${path}/forms`} component={formSettings} />
             <Route
               exact
               path={`${path}/advanced`}
-              component={TemplateAdvancedSettings}
+              component={advancedSettings}
             />
-            <Route
-              exact
-              path={`${path}/items`}
-              component={TemplateItemSettings}
-            />
-            <Route
-              exact
-              path={`${path}/members`}
-              component={TemplateMembersSettings}
-            />
+            <Route exact path={`${path}/items`} component={itemSettings} />
+            <Route exact path={`${path}/members`} component={membersSetting} />
           </Switch>
         </TemplateProvider>
       )}
