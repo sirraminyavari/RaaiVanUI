@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import Modal from 'components/Modal/Modal';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import * as Styled from './WorkspaceTeamCard.styles';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { decodeBase64 } from 'helpers/helpers';
 import { CV_DISTANT, CV_FREEZED, CV_RED } from 'constant/CssVariables';
@@ -11,6 +11,12 @@ import { BO_RADIUS_QUARTER } from 'constant/constants';
 import { removeUserFromApplication } from 'store/actions/applications/ApplicationsAction';
 import TeamConfirm from '../TeamConfirm';
 import useWindow from 'hooks/useWindowContext';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const TeamUsersModal = ({
   appTitle,
@@ -112,6 +118,7 @@ const TeamUsersModal = ({
                     userImage={GlobalUtilities.add_timestamp(
                       user?.ProfileImageURL
                     )}
+                    userObject={user}
                     radius={25}
                   />
                   <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>

@@ -4,9 +4,15 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
   const containerRef = useRef();
@@ -51,6 +57,7 @@ const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
                     user?.ProfileImageURL
                   )}
                   radius={25}
+                  userObject={user}
                 />
                 <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
               </Styled.ExtraUserItem>
