@@ -47,10 +47,14 @@ const StyledPanelButton = styled.button.attrs({
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   border: 1px solid transparent;
-  transition: border 0.3s ease-out, color 0.3s;
+  transition: border 0.3s ease-out, color 0.3s, filter 0.3s;
   box-sizing: border-box;
   &.secondary {
     color: ${CV_GRAY};
+    & > svg,
+    & > img {
+      filter: grayscale(1);
+    }
   }
 
   & > svg,
@@ -58,6 +62,7 @@ const StyledPanelButton = styled.button.attrs({
     font-size: 4rem;
     margin-block-start: 1rem;
     margin-block-end: 2rem;
+    transition: filter 0.3s;
   }
   &:hover {
     border-color: ${CV_DISTANT};
@@ -68,6 +73,10 @@ const StyledPanelButton = styled.button.attrs({
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
     color: ${TCV_DEFAULT};
     border-color: ${TCV_DEFAULT};
+    & > svg,
+    & > img {
+      filter: grayscale(0);
+    }
   }
 `;
 
