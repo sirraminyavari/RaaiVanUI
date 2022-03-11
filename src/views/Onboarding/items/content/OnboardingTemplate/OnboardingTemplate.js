@@ -3,10 +3,14 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplate.styles';
 import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
 import Button from 'components/Buttons/Button';
+import { ONBOARDING_TEMPLATE_SELECTION_PATH } from '../../others/constants';
 
 const OnboardingTemplateContent = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
+
+  const goToTemplateSelectionView = () =>
+    history.push(ONBOARDING_TEMPLATE_SELECTION_PATH);
 
   const videoSrcList = [
     {
@@ -33,7 +37,10 @@ const OnboardingTemplateContent = () => {
         {RVDicOnboardingTemplateDescription}
       </Styles.RVDicOnboardingTemplateDescription>
 
-      <Button style={{ paddingInline: '4rem' }}>
+      <Button
+        style={{ paddingInline: '4rem' }}
+        onClick={goToTemplateSelectionView}
+      >
         {RVDicOnboardingTemplateUnderstood}
       </Button>
     </Styles.OnboardingTemplateWrapper>
