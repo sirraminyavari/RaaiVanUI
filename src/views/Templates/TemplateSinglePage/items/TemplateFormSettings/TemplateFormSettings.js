@@ -8,6 +8,9 @@ import Button from 'components/Buttons/Button';
 import SaveIcon from 'components/Icons/SaveIcon/Save';
 import TrashIcon from 'components/Icons/TrashIcon';
 import PreviewIcon from 'components/Icons/PreviewIcon/PreviewIcon';
+import FormElementList from './items/FromElementList';
+import FormBuilder, { FORM_BUILDER_ID } from './items/FormBuilder';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 const TemplateFormSettings = () => {
   const { toggleSidebar } = themeSlice.actions;
@@ -18,6 +21,12 @@ const TemplateFormSettings = () => {
   useEffect(() => {
     dispatch(toggleSidebar());
   }, []);
+
+  const handleDrag = (e) => {
+    const { destination } = e;
+    if (destination?.droppableId !== FORM_BUILDER_ID) return;
+    console.log(e);
+  };
 
   return (
     <Styled.Container rtl={rtl}>
@@ -42,7 +51,14 @@ const TemplateFormSettings = () => {
       </Styled.ActionHeader>
 
       <Styled.MainContent>
-        <Styled.FormElementListPanel>...</Styled.FormElementListPanel>
+        <DragDropContext onDragEnd={handleDrag}>
+          <Styled.FormElementListPanel>
+            <FormElementList />
+          </Styled.FormElementListPanel>
+          <Styled.FormPanel>
+            <FormBuilder />
+          </Styled.FormPanel>
+        </DragDropContext>
       </Styled.MainContent>
     </Styled.Container>
   );
