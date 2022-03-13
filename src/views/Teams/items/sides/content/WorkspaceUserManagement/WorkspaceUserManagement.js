@@ -21,10 +21,13 @@ import { removeWorkspaceUser } from 'apiHelper/ApiHandlers/RVApi';
 import { getWorkspaceUsers } from 'apiHelper/ApiHandlers/usersApi';
 import WorkspaceUserManagementTableData from './WorkspaceUserManagementTableData';
 import WorkspaceUserManagementTableColumnHead from './WorkspaceUserManagementTableColumnHead';
+import ReturnButton from 'components/Buttons/ReturnButton';
+import { useHistory } from 'react-router-dom';
 
 const WorkspaceUserManagement = ({ WorkspaceID }) => {
   const { RVDic, GlobalUtilities } = useWindow();
   const { isMobile } = DimensionHelper();
+  const history = useHistory();
   const [SearchText, setSearchText] = useState('');
   const [tablePage, setTablePage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +63,8 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
     },
   ];
 
+  const returnToWorkspacesView = () => history.push(WORKSPACES_PATH);
+
   //! API request handler
   const loadWorkspaceUsers = React.useMemo(
     () =>
@@ -92,6 +97,7 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
         else setTablePage(false);
         console.log({ SearchText });
       },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [workspaceUsers, SearchText, isLoading]
   );
 
@@ -109,6 +115,7 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
         isMobile,
         setRemovableUser,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [workspaceUsers, tablePage, isMobile]
   );
 
@@ -161,10 +168,13 @@ const WorkspaceUserManagement = ({ WorkspaceID }) => {
         />
 
         <GlobalStyled.WorkspaceSettingsHeaderContainer>
-          <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
-          <Heading type="h1" className="pageTitle">
-            {RVDicUserManagement}
-          </Heading>
+          <div>
+            <Breadcrumb className="breadcrumb" items={breadCrumbItems} />
+            <Heading type="h1" className="pageTitle">
+              {RVDicUserManagement}
+            </Heading>
+          </div>
+          <ReturnButton onClick={returnToWorkspacesView} />
         </GlobalStyled.WorkspaceSettingsHeaderContainer>
         <SearchInput
           placeholder={RVDicSearch}
