@@ -1,5 +1,5 @@
 import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
-import { profileAvatarURL } from 'helpers/helpers';
+import { avatarIconURL } from 'helpers/helpers';
 
 /**
  * @component - A HOC component converting base64 encoded AvatarName and ImageURL properties and injecting an Avatar URL or the profile image URL as a desired prop argument to passed component
@@ -30,7 +30,7 @@ const WithAvatar =
 
     const newProps = {
       ...rest,
-      [componentURLProp]: profileAvatarURL({
+      [componentURLProp]: avatarIconURL({
         userObject,
         defaultURL: urlProp,
         AvatarSVGsObject,

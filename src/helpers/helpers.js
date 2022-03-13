@@ -389,11 +389,7 @@ export const fileSizeLabel = (size) => {
  * @param {object} param.userObject -  An Object containing "AvatarName" or "ImageURL"
  * @return {string}
  */
-export const profileAvatarURL = ({
-  userObject,
-  defaultURL,
-  AvatarSVGsObject,
-}) => {
+export const avatarIconURL = ({ userObject, defaultURL, AvatarSVGsObject }) => {
   const { ImageURL, AvatarName } = userObject || {};
   if (AvatarName) {
     if (AvatarName && AvatarSVGsObject[decodeBase64(AvatarName)])
