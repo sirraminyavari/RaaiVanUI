@@ -33,11 +33,16 @@ const Block = ({ nodeId, lang }) => {
   //use 'saveBlocks' api to save a block
   //content: { blocks: 'array of the blocks to be saved', entityMap: 'current version of entity map' }
   //insertAfterKey: the key of the last block that is places immediately before the blocks to be saved
-  const handleSaveBlocks = async ({ content, insertAfterKey } = {}) => {
+  const handleSaveBlocks = async ({
+    content,
+    insertAfterKey,
+    removeBlocks,
+  } = {}) => {
     const result = await saveBlocks({
       ownerId: nodeId,
       content,
       insertAfterKey,
+      removeBlocks,
     });
     console.log(result, "blocks 'save blocks'");
   };
