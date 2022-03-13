@@ -3,6 +3,7 @@ import {
   CV_DISTANT,
   CV_GRAY,
   CV_GRAY_DARK,
+  CV_GRAY_LIGHT,
   CV_WHITE,
 } from 'constant/CssVariables';
 import {
@@ -11,6 +12,7 @@ import {
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
+import { C_GRAY_LIGHT } from '../../../../../constant/Colors';
 
 export const Container = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};
@@ -126,7 +128,7 @@ export const FormElementItem = styled.li`
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: border 0.3s ease-out;
-  background-color: ${CV_WHITE};
+  background-color: ${CV_GRAY_LIGHT};
 
   &:hover {
     border: 0.0625rem solid ${CV_DISTANT};
