@@ -1,7 +1,55 @@
-import { API_NAME_FG_SAVE_FORM_ELEMENTS } from 'constant/api-names-fg';
+import {
+  API_NAME_FG_GET_FORM_ELEMENTS,
+  API_NAME_FG_SAVE_FORM_ELEMENTS,
+} from 'constant/api-names-fg';
 import { FG_API } from 'constant/apiConstants';
-import { API_Provider, encodeBase64, extend } from 'helpers/helpers';
+import {
+  API_Provider,
+  decodeBase64,
+  encodeBase64,
+  extend,
+} from 'helpers/helpers';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description gets the elements of a form
+ * @param {string} FormID the id of the form
+ */
+export const getFormElements = ({
+  FormID,
+  OwnerID,
+  Type,
+  ConsiderElementLimits,
+} = {}) => {
+  return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORM_ELEMENTS), {
+    FormID,
+    OwnerID,
+    Type,
+    ConsiderElementLimits,
+  }).then((res) => ({
+    FormName: decodeBase64(res?.FormName),
+    FormDescription: decodeBase64(res?.FormDescription),
+    Elements: (res?.Elements || []).map((e) => ({
+      ...e,
+      Title: decodeBase64(e?.Title),
+      Name: decodeBase64(e?.Name),
+      Help: decodeBase64(e?.Help),
+      Info: !e?.Info
+        ? undefined
+        : JSON.parse(
+            decodeBase64(
+              extend({}, e.Info, {
+                Options: !e?.Info?.Options?.length
+                  ? undefined
+                  : e.Info.Options.map((o) => decodeBase64(o)),
+                Yes: !e?.Info?.Yes ? undefined : decodeBase64(e.Info.Yes),
+                No: !e?.Info?.No ? undefined : decodeBase64(e.Info.No),
+              })
+            )
+          ),
+    })),
+  }));
+};
 
 /**
  * @description saves the elements of a form
