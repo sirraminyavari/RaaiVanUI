@@ -213,7 +213,8 @@
         var url = WikiAPI.ResponseURL + "/SaveBlocks?timeStamp=" + new Date().getTime();
         var queryString = (params.OwnerID ? "&OwnerID=" + params.OwnerID : "") +
             (params.Content ? "&Content=" + params.Content : "") +
-            (params.InsertAfterKey ? "&InsertAfterKey=" + params.InsertAfterKey : "");
+            (params.InsertAfterKey ? "&InsertAfterKey=" + params.InsertAfterKey : "") +
+            (params.RemoveBlocks ? "&RemoveBlocks=" + params.RemoveBlocks : "");
         return WikiAPI._send(url, params, queryString);
     },
 

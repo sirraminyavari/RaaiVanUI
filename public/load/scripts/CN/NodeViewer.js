@@ -140,7 +140,7 @@
 
             _add_icon_button({
                 Tooltip: RVDic.QRCode, FontIcon: "fa-qrcode",
-                OnClick: function () { window.open(RVAPI.NodeToQRCodeURL({ NodeID: that.Objects.NodeID })); }
+                OnClick: function () { window.open(RVAPI.NodeToQRCodeURL({ NodeID: that.Objects.NodeID, URLOnly: true })); }
             });
 
             //_add_icon_button({ Tooltip: RVDic.Settings, IconName: "Settings" });
