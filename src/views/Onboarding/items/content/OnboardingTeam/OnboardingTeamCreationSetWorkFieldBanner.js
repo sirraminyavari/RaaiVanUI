@@ -12,13 +12,25 @@ const OnboardingTeamCreationSetWorkFieldBanner = () => {
       return between11To20Images;
     else return lessThan10Images;
   };
+
+  //TODO refactor is needed!
   const workFieldBannerImage = (workField) => {
-    return PeopleCountImages()[workField];
+    const assets = {
+      laptop: 'DEVELOPMENT',
+      loudspeaker: 'MARKETING',
+      briefcase: 'LEGAL',
+      brush: 'DESIGN',
+      handshake: 'HR',
+      book: 'EDUCATIONAL',
+      spanner: 'MANUFACTURING',
+      cardbox: 'OTHERS',
+    };
+    return PeopleCountImages()[assets[workField] || assets.cardbox];
   };
 
   return (
     <Styles.OnboardingTeamImageBannerWrapper
-      BackgroundImage={workFieldBannerImage(teamState.workField)}
+      BackgroundImage={workFieldBannerImage(teamState.workField.fieldName)}
     >
       <div />
     </Styles.OnboardingTeamImageBannerWrapper>

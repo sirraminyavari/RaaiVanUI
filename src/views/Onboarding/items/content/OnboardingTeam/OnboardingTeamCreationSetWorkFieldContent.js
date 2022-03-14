@@ -54,7 +54,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
               active={workField.fieldID === NodeID}
               onClick={setOnboardingTeamWorkField({
                 fieldID: NodeID,
-                fieldName: AvatarName,
+                fieldName: decodeBase64(AvatarName),
               })}
             >
               <img
