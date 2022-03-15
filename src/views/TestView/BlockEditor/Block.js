@@ -1,6 +1,14 @@
-import { useState, useEffect } from 'react';
-import { EditorState, convertFromRaw } from 'draft-js';
+import { useState, useEffect, useMemo } from 'react';
+import {
+  EditorState,
+  ContentState,
+  convertFromRaw,
+  convertToRaw,
+} from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import htmlToDraft from 'html-to-draftjs';
+import _ from 'lodash';
+import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 
 import {
   getWikiBlocks,
@@ -39,7 +47,7 @@ const Block = ({ nodeId, lang }) => {
       content,
       insertAfterKey,
     });
-    console.log(result, "blocks 'save blocks'");
+    // console.log(result, "blocks 'save blocks'");
   };
 
   // //use 'removeBlocks' api to remove an array of blocks
@@ -98,6 +106,17 @@ const Block = ({ nodeId, lang }) => {
         }}
       >
         Save HTML
+      </button>
+      <button
+        onClick={() => {
+          setEditorState(
+            convertLegacyHtmlToEditorState(`<h1>Silam</h1><p>khoobi?!</p>`, {
+              colors: { textColors: [], highlightColors: [] },
+            })
+          );
+        }}
+      >
+        Import Legacy
       </button>
     </>
   ) : (
