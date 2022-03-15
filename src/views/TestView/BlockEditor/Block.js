@@ -18,6 +18,7 @@ import {
   saveHTMLContent,
   suggestTags,
 } from './API';
+import { textColors, highlightColors } from './data';
 
 import BE from './BlockEditor';
 
@@ -115,13 +116,24 @@ const Block = ({ nodeId, lang }) => {
       <button
         onClick={() => {
           setEditorState(
-            convertLegacyHtmlToEditorState(`<h1>Silam</h1><p>khoobi?!</p>`, {
-              colors: { textColors: [], highlightColors: [] },
-            })
+            EditorState.createWithContent(
+              convertFromRaw(
+                convertLegacyHtmlToEditorState(legacyContent, {
+                  colors: { textColors, highlightColors },
+                })
+              )
+            )
           );
         }}
       >
         Import Legacy
+      </button>
+      <button
+        onClick={() => {
+          setEditorState(EditorState.createEmpty());
+        }}
+      >
+        Reset
       </button>
     </>
   ) : (

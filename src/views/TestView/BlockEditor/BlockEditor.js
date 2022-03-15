@@ -30,9 +30,12 @@ function BE({
     editorState,
     (changes, sort) => {
       // const entityMap = editorState.getCurrentContent ().getEntityMap ()
-      handleSaveBlocks({
-        content: convertToRaw(editorState.getCurrentContent()),
-      });
+      setTimeout(() => {
+        handleSaveBlocks({
+          content: convertToRaw(editorState.getCurrentContent()),
+          removeBlocks: changes.removedBlocks.map((b) => b.key),
+        });
+      }, 1000);
       // if ( changes.updatedBlocks.length ) {
       //   handleSaveBlocks ({  })
       // }
