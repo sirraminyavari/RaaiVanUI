@@ -9,11 +9,17 @@ export const getWikiBlocks = async ({ ownerId }) => {
   });
 };
 
-export const saveBlocks = async ({ ownerId, content, insertAfterKey } = {}) => {
+export const saveBlocks = async ({
+  ownerId,
+  content,
+  insertAfterKey,
+  removeBlocks,
+} = {}) => {
   return await apiCallWrapper(API_Provider('WikiAPI', 'SaveBlocks'), {
     OwnerID: ownerId,
     Content: Base64.encode(JSON.stringify(content || {})),
     InsertAfterKey: insertAfterKey,
+    RemoveBlocks: (removeBlocks || []).join(','),
   });
 };
 

@@ -78,7 +78,9 @@
 
     NodeToQRCodeURL: function (params) {
         params = params || {};
-        return "/api/network/qrcode?NodeID=" + (params.NodeID || params.ID || "_") + "&timeStamp=" + new Date().getTime();
+        return "/api/network/qrcode?NodeID=" + (params.NodeID || params.ID || "_") +
+            (params.URLOnly ? "&URLOnly=" + params.URLOnly : "") +
+            "&timeStamp=" + new Date().getTime();
     },
 
     NewQuestionPageURL: function () {
