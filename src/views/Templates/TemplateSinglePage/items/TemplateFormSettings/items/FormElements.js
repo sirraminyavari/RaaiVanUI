@@ -20,6 +20,8 @@ import {
 import CellPhoneIcon from 'components/Icons/CellPhoneIcon/CellPhoneIcon';
 import { IoMdRadioButtonOn } from 'react-icons/io';
 import { BsTable } from 'react-icons/bs';
+import SimpleTextSetting from '../elementSettingComponents/simpleText/SimpleTextSetting';
+import SimpleTextInfo from '../elementSettingComponents/simpleText/SimpleTextInfo';
 
 const formElementList = () => {
   const { RVDic } = window;
@@ -34,6 +36,10 @@ const formElementList = () => {
           id: getUUID(),
           title: 'متن کوتاه',
           icon: <TextInputIcon size={size} />,
+          setting: {},
+          info: {},
+          draggable: SimpleTextSetting(this),
+          sideForm: SimpleTextInfo(this),
         },
         {
           id: getUUID(),

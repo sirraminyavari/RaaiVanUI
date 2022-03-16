@@ -62,6 +62,7 @@ const FormBuilder = () => {
               ref={provided.innerRef}
             >
               {[...formObjects].map((x, index) => {
+                console.log(x);
                 return (
                   <Draggable key={x.id} draggableId={`${x.id}`} index={index}>
                     {(provided) => (
@@ -75,7 +76,8 @@ const FormBuilder = () => {
                           <DragIcon size={28} />
                         </DraggableFormObjectHandle>
                         <DraggableFormObjectMainContent>
-                          <FormFieldProps />
+                          {/*<FormFieldProps />*/}
+                          {x?.draggable}
                         </DraggableFormObjectMainContent>
                       </DraggableFormObject>
                     )}
