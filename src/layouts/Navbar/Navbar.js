@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
@@ -25,6 +25,12 @@ import useInterval from 'hooks/useInterval';
 import { getNotificationsCount } from 'store/actions/global/NotificationActions';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getURL } from 'helpers/helpers';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const WideScreenMenu = lazy(() =>
   import(
@@ -148,10 +154,12 @@ const Navbar = () => {
           className="avatar-tooltip"
           renderContent={() => {
             return <AvatarMenuList />;
-          }}>
+          }}
+        >
           <Avatar
             radius={35}
             userImage={profileImage}
+            userObject={authUser}
             className="navbar-avatar"
           />
         </Tooltip>

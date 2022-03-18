@@ -14,6 +14,7 @@ import CheckRoute from 'utils/CheckRoute/CheckRoute';
 
 import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
 import { CV_WHITE } from 'constant/CssVariables';
+import { avatarIconURL } from 'helpers/helpers';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -21,6 +22,8 @@ const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
 );
 window._alert = window.alert;
+window.avatarIconURL = avatarIconURL;
+
 window.alert = function (txt, props) {
   toast(txt, {
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
