@@ -22,7 +22,6 @@ import { BsTable } from 'react-icons/bs';
 const sharedProps = {
   Name: '', //optional
   Title: '', //necessary
-  Info: '',
   Help: '', //optional
   Necessary: false, //default: false
   UniqueValue: false, //default: false

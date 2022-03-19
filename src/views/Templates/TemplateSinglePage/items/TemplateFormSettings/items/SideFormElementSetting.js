@@ -1,21 +1,29 @@
 import styled from 'styled-components';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
 import { CV_DISTANT } from 'constant/CssVariables';
-import { useTemplateFormContext } from '../TemplateFormContext';
-import { getSideFormElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
 
-const SideFormElementSetting = () => {
-  const { focusedObject, formObjects } = useTemplateFormContext();
-  if (focusedObject !== null) {
-    const x = formObjects?.find((x) => x?.id === focusedObject);
-    const settingComponent = getSideFormElementSetting({
-      key: x?.type,
-      props: x,
-    });
-    console.log(settingComponent);
-    return <Container>{settingComponent}</Container>;
-  }
-  return <PlaceHolder>{'هنوز فیلدی را انتخاب نکرده‌اید :('}</PlaceHolder>;
+import { getSideFormElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
+import { useMemo } from 'react';
+
+const SideFormElementSetting = ({
+  focusedObject,
+  formObjects,
+  setFormObjects,
+}) => {
+  const component = useMemo(() => {
+    const x = formObjects?.find((x) => x?.id === focusedObject) || null;
+    return focusedObject !== null ? (
+      <Container>
+        {getSideFormElementSetting({
+          key: x?.type,
+          props: { current: x, setFormObjects },
+        })}
+      </Container>
+    ) : (
+      <PlaceHolder>{'هنوز فیلدی را انتخاب نکرده‌اید :('}</PlaceHolder>
+    );
+  }, [focusedObject, formObjects]);
+  return <>{component}</>;
 };
 
 const Container = styled.div`

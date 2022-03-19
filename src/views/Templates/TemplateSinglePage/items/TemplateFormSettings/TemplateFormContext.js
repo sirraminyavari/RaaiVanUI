@@ -27,14 +27,25 @@ export const TemplateFormProvider = ({ children, initialState }) => {
 
   const moveItem = () => {};
 
-  const duplicateItem = () => {};
+  const duplicateItem = (id) => {
+    const element = formObjects.find((x) => x?.id === id);
+    const elementIndex = formObjects.findIndex((x) => x?.id === id);
+    formObjects.splice(elementIndex, 0, { ...element, id: getUUID() });
+  };
 
-  const removeItem = () => {};
+  const removeItem = (id) => {
+    if (id === focusedObject) {
+      setFocusedObject(null);
+    }
+    const newObjects = formObjects.filter((x) => x?.id !== id);
+    setFormObjects(newObjects);
+  };
 
   return (
     <TemplateFormContext.Provider
       value={{
         formObjects,
+        setFormObjects,
         focusedObject,
         setFocusedObject,
         copyItem,

@@ -7,7 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 0.8rem;
+  gap: 1rem;
 `;
 
 export const ToggleRow = styled.div`

@@ -11,6 +11,15 @@ const componentsArray = [
       };
     },
   },
+  {
+    key: 'paragraph',
+    value: (props) => {
+      return {
+        main: TextTypeMainSetting({ ...props }),
+        sideBox: TextTypeSideBoxSetting({ ...props }),
+      };
+    },
+  },
 ];
 
 export const getDraggableElementSetting = ({ key, props }) => {

@@ -22,8 +22,14 @@ const FormBuilder = () => {
   const { RV_RTL: rtl, RVDic } = window;
   const [description, setDescription] = useState('');
   const { Title } = useTemplateContext();
-  const { formObjects, focusedObject, setFocusedObject } =
-    useTemplateFormContext();
+  const {
+    formObjects,
+    focusedObject,
+    setFocusedObject,
+    setFormObjects,
+    duplicateItem,
+    removeItem,
+  } = useTemplateFormContext();
   const breadItems = [
     {
       id: 1,
@@ -66,7 +72,12 @@ const FormBuilder = () => {
               {[...formObjects].map((x, index) => {
                 const formSettingComponent = getDraggableElementSetting({
                   key: x?.type,
-                  props: x,
+                  props: {
+                    current: x,
+                    setFormObjects,
+                    duplicateItem,
+                    removeItem,
+                  },
                 });
                 return (
                   <Draggable key={x?.id} draggableId={`${x?.id}`} index={index}>
@@ -98,7 +109,13 @@ const FormBuilder = () => {
       </Styles.FormBuilderLayout>
       <Styles.FormSetting>
         <Styles.FormSettingTitle>{'تنظیمات فیلد'}</Styles.FormSettingTitle>
-        <SideFormElementSetting />
+        <SideFormElementSetting
+          {...{
+            formObjects,
+            setFormObjects,
+            focusedObject,
+          }}
+        />
       </Styles.FormSetting>
     </>
   );
