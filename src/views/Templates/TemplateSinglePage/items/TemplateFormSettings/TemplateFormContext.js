@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import formElementList from './items/FormElements';
 
@@ -12,15 +12,17 @@ export const useTemplateFormContext = () => {
 export const TemplateFormProvider = ({ children, initialState }) => {
   const elementList = formElementList();
   const [formObjects, setFormObjects] = useState(initialState || []);
+  const [focusedObject, setFocusedObject] = useState(null);
 
   const copyItem = (e) => {
-    console.log(Number(e?.source?.droppableId));
     const { destination } = e;
     const subcategory = elementList?.find(
       (x) => x.id === Number(e?.source?.droppableId)
     );
     const element = subcategory?.items[e?.source?.index];
     formObjects.splice(destination?.index, 0, { ...element, id: getUUID() });
+    setFocusedObject(formObjects[destination?.index]?.id || null);
+    setFormObjects(formObjects);
   };
 
   const moveItem = () => {};
@@ -33,6 +35,8 @@ export const TemplateFormProvider = ({ children, initialState }) => {
     <TemplateFormContext.Provider
       value={{
         formObjects,
+        focusedObject,
+        setFocusedObject,
         copyItem,
         moveItem,
         duplicateItem,

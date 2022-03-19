@@ -1,7 +1,7 @@
 import list from './FormElements';
 import { useMemo } from 'react';
 import * as Styles from '../TemplateFormSettingsStyles';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const FormElementList = () => {
   const _list = useMemo(() => list(), []);

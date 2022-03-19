@@ -1,4 +1,4 @@
-import { getUUID } from 'helpers/helpers';
+import { encodeBase64, getUUID } from 'helpers/helpers';
 import TextInputIcon from 'components/Icons/TextInputIcon/TextInputIcon';
 import TextAreaIcon from 'components/Icons/TextAreaIcon/TextAreaIcon';
 import MailIcon from 'components/Icons/MailIcon/MailIcon';
@@ -7,7 +7,6 @@ import NumericalIcon from 'components/Icons/NumericalIcon';
 import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
 import {
   BsFileEarmarkArrowUp,
-  FcCellPhone,
   FiToggleLeft,
   IoDocumentOutline,
   IoFilter,
@@ -15,14 +14,20 @@ import {
   IoIosStarOutline,
   IoReorderTwoOutline,
   RiAccountCircleFill,
-  RiCellphoneLine,
 } from 'react-icons/all';
 import CellPhoneIcon from 'components/Icons/CellPhoneIcon/CellPhoneIcon';
 import { IoMdRadioButtonOn } from 'react-icons/io';
 import { BsTable } from 'react-icons/bs';
-import SimpleTextSetting from '../elementSettingComponents/simpleText/SimpleTextSetting';
-import SimpleTextInfo from '../elementSettingComponents/simpleText/SimpleTextInfo';
 
+const sharedProps = {
+  Name: '', //optional
+  Title: '', //necessary
+  Info: '',
+  Help: '', //optional
+  Necessary: false, //default: false
+  UniqueValue: false, //default: false
+  Weight: null, //default: null
+};
 const formElementList = () => {
   const { RVDic } = window;
   const size = 22;
@@ -35,26 +40,51 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'متن کوتاه',
+          type: 'short text',
           icon: <TextInputIcon size={size} />,
-          setting: {},
-          info: {},
-          draggable: SimpleTextSetting(this),
-          sideForm: SimpleTextInfo(this),
+          data: {
+            ...sharedProps,
+            Type: 'Text',
+            Info: { UseSimpleEditor: true },
+            min: 10,
+            max: 20,
+          },
         },
         {
           id: getUUID(),
           title: 'پاراگراف',
+          type: 'paragraph',
           icon: <TextAreaIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Text',
+            Info: {
+              min: 10,
+              max: 20,
+            },
+          },
         },
         {
           id: getUUID(),
           title: 'ایمیل',
+          type: 'email',
           icon: <MailIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Text',
+            Info: { UseSimpleEditor: true, PatternName: 'email' },
+          },
         },
         {
           id: getUUID(),
           title: 'لینک',
+          type: 'url',
           icon: <LinkIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Text',
+            Info: { UseSimpleEditor: true, PatternName: 'url' },
+          },
         },
       ],
     },

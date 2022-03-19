@@ -20,7 +20,8 @@ export const DraggableFormObjectHandle = styled.div`
 export const DraggableFormObjectMainContent = styled.div`
   min-height: 9rem;
   border-radius: 0.8rem;
-  border: 0.0625rem solid ${CV_DISTANT};
+  border: 0.0625rem solid
+    ${({ focused }) => (!focused ? CV_DISTANT : TCV_DEFAULT)};
   flex: 1;
   margin-bottom: 1rem;
   transition: border 0.3s ease-out;

@@ -13,7 +13,8 @@ import {
 } from './FormBuilderStyles';
 import { useTemplateFormContext } from '../TemplateFormContext';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import FormFieldProps from './FormFieldProps';
+import { getDraggableElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
+import SideFormElementSetting from './SideFormElementSetting';
 
 export const FORM_BUILDER_ID = 'FORM_BUILDER_ID';
 
@@ -21,7 +22,8 @@ const FormBuilder = () => {
   const { RV_RTL: rtl, RVDic } = window;
   const [description, setDescription] = useState('');
   const { Title } = useTemplateContext();
-  const { formObjects } = useTemplateFormContext();
+  const { formObjects, focusedObject, setFocusedObject } =
+    useTemplateFormContext();
   const breadItems = [
     {
       id: 1,
@@ -62,9 +64,12 @@ const FormBuilder = () => {
               ref={provided.innerRef}
             >
               {[...formObjects].map((x, index) => {
-                console.log(x);
+                const formSettingComponent = getDraggableElementSetting({
+                  key: x?.type,
+                  props: x,
+                });
                 return (
-                  <Draggable key={x.id} draggableId={`${x.id}`} index={index}>
+                  <Draggable key={x?.id} draggableId={`${x?.id}`} index={index}>
                     {(provided) => (
                       <DraggableFormObject
                         ref={provided.innerRef}
@@ -75,9 +80,11 @@ const FormBuilder = () => {
                         >
                           <DragIcon size={28} />
                         </DraggableFormObjectHandle>
-                        <DraggableFormObjectMainContent>
-                          {/*<FormFieldProps />*/}
-                          {x?.draggable}
+                        <DraggableFormObjectMainContent
+                          focused={focusedObject === x?.id}
+                          onClick={() => setFocusedObject(x?.id)}
+                        >
+                          {formSettingComponent}
                         </DraggableFormObjectMainContent>
                       </DraggableFormObject>
                     )}
@@ -91,6 +98,7 @@ const FormBuilder = () => {
       </Styles.FormBuilderLayout>
       <Styles.FormSetting>
         <Styles.FormSettingTitle>{'تنظیمات فیلد'}</Styles.FormSettingTitle>
+        <SideFormElementSetting />
       </Styles.FormSetting>
     </>
   );

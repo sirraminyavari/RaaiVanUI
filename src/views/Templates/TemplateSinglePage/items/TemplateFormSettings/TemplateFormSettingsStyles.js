@@ -94,6 +94,8 @@ export const FormSetting = styled.div`
   background-color: ${CV_WHITE};
   border-radius: 0.8rem;
   box-shadow: 1px 5px 20px #0000001f;
+  overflow: hidden;
+  min-height: 20rem;
 `;
 
 export const FormSettingTitle = styled.div`
@@ -102,6 +104,7 @@ export const FormSettingTitle = styled.div`
   text-align: center;
   color: ${CV_GRAY};
   font-size: 1rem;
+  background-color: ${CV_GRAY_LIGHT};
 `;
 
 export const FromElementGroupLabel = styled.div`
