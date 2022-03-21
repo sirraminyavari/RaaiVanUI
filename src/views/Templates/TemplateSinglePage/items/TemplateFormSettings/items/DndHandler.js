@@ -5,7 +5,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { useTemplateFormContext } from '../TemplateFormContext';
 
 const DndHandler = () => {
-  const { copyItem } = useTemplateFormContext();
+  const { copyItem, moveItem } = useTemplateFormContext();
 
   const handleDrag = (e) => {
     const { destination, source } = e;
@@ -17,8 +17,10 @@ const DndHandler = () => {
     }
 
     if (destination?.droppableId === source?.droppableId) {
+      console.log(e);
       // move item
       console.log('move item');
+      moveItem(e);
     }
   };
 

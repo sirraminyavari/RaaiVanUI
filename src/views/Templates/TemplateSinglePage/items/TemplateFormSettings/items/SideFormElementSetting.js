@@ -11,18 +11,22 @@ const SideFormElementSetting = ({
   setFormObjects,
 }) => {
   const component = useMemo(() => {
-    const x = formObjects?.find((x) => x?.id === focusedObject) || null;
-    return focusedObject !== null ? (
-      <Container>
-        {getSideFormElementSetting({
-          key: x?.type,
-          props: { current: x, setFormObjects },
-        })}
-      </Container>
-    ) : (
-      <PlaceHolder>{'هنوز فیلدی را انتخاب نکرده‌اید :('}</PlaceHolder>
-    );
+    if (focusedObject) {
+      const el = formObjects?.find((x) => x?.id === focusedObject) || null;
+      return (
+        <Container>
+          {getSideFormElementSetting({
+            key: el?.type,
+            props: { current: el, setFormObjects },
+          })}
+        </Container>
+      );
+    }
   }, [focusedObject, formObjects]);
+
+  if (!focusedObject)
+    return <PlaceHolder>{'هنوز فیلدی را انتخاب نکرده‌اید :('}</PlaceHolder>;
+
   return <>{component}</>;
 };
 

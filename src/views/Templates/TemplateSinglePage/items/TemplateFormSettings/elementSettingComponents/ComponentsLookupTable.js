@@ -24,12 +24,12 @@ const componentsArray = [
 
 export const getDraggableElementSetting = ({ key, props }) => {
   const { main } =
-    componentsArray?.find((x) => x?.key === key)?.value(props) || null;
+    componentsArray?.find((x) => x?.key === key)?.value(props) || {};
   return main;
 };
 
 export const getSideFormElementSetting = ({ key, props }) => {
   const { sideBox } =
-    componentsArray?.find((x) => x?.key === key)?.value(props) || null;
+    componentsArray?.find((x) => x?.key === key)?.value(props) || {};
   return sideBox;
 };

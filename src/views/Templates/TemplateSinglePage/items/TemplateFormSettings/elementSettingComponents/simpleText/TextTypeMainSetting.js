@@ -4,7 +4,7 @@ import CopyIcon from 'components/Icons/CopyIcon/CopyIcon';
 import TrashIcon from 'components/Icons/TrashIcon';
 import * as Styles from './TextTypeMainSettingStyles';
 import produce from 'immer';
-import { getUUID } from '../../../../../../../helpers/helpers';
+import { getUUID } from 'helpers/helpers';
 
 const TextTypeMainSetting = ({
   current,
@@ -53,10 +53,8 @@ const TextTypeMainSetting = ({
         produce((d) => {
           const _current = d.find((x) => x?.id === current?.id);
           const _c = Object.assign(_current);
-          _c.id = getUUID();
-          console.log(_c.id, current?.id);
-          // const _currentIndex = d.findIndex((x) => x?.id === current?.id);
-          // d.splice(_currentIndex, 0, _c);
+          let _currentIndex = d.findIndex((x) => x?.id === current?.id);
+          d.splice(++_currentIndex, 0, { ..._c, id: getUUID() });
         })
       );
     }
