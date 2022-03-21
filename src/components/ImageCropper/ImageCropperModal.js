@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import * as Styled from './ImageCropper.styles';
 import Modal from 'components/Modal/Modal';
 import ImageCropperEditor from './ImageCropperEditor';
 import useWindow from 'hooks/useWindowContext';
 import Button from 'components/Buttons/Button';
-import { DOCS_API, UPLOAD_AND_CROP_ICON } from 'constant/apiConstants';
-import { API_Provider } from 'helpers/helpers';
-
-const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
+import { getUploadUrl, setUploadImage } from 'apiHelper/ApiHandlers/docsApi';
 
 //! Common styles for crop image modal buttons.
 const ButtonsCommonStyles = { width: '6rem', height: '2rem' };
@@ -57,16 +53,20 @@ const ImageCropModal = (props) => {
 
   //! Get upload URL.
   useEffect(() => {
-    getUploadUrlAPI.url(
-      { IconID: uploadId, Type: uploadType },
-      (uploadURL) => {
-        setProfileURL(uploadURL);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    // getUploadUrlAPI.url(
+    //   { IconID: uploadId, Type: uploadType },
+    //   (uploadURL) => {
+    //     console.log({ uploadURL });
+    //     setProfileURL(uploadURL);
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
 
+    getUploadUrl({ IconID: uploadId, Type: uploadType }).then((uploadURL) =>
+      setProfileURL(uploadURL)
+    );
     //! Clean up.
     return () => {
       setProfileURL(null);
@@ -75,47 +75,27 @@ const ImageCropModal = (props) => {
   }, []);
 
   //! Fires on save button click.
-  const handleSaveCroppedImage = () => {
+  const handleSaveCroppedImage = async () => {
     setIsSavingImage(true);
-
-    let formData = new FormData();
-    formData.append('file', modalProps.file);
-
-    formData.append('IconID', uploadId);
-    formData.append('Type', uploadType);
-
-    formData.append('x', croppedAreaPixels?.x || croppedAreaPixels?.X);
-    formData.append('y', croppedAreaPixels?.y || croppedAreaPixels?.Y);
-    formData.append('w', croppedAreaPixels?.width || croppedAreaPixels?.Width);
-    formData.append('h', croppedAreaPixels?.width || croppedAreaPixels?.Width);
-
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
 
     //! Update profile avatar.
     try {
-      axios
-        .post(profileURL, formData, config)
-        .then((response) => {
-          setIsSavingImage(false);
-
-          let res = response?.data || {};
-
-          if (res.ImageURL) {
-            const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-            onUploadDone(newImageURL);
-          } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
-        })
-        .catch((error) => {
-          setIsSavingImage(false);
-          console.log(error);
-        });
-    } catch (error) {
+      const response = await setUploadImage({
+        SaveURL: profileURL,
+        file: modalProps.file,
+        IconID: uploadId,
+        Type: uploadType,
+        x: croppedAreaPixels?.x || croppedAreaPixels?.X,
+        y: croppedAreaPixels?.x || croppedAreaPixels?.Y,
+        width: croppedAreaPixels?.width || croppedAreaPixels?.Width,
+        height: croppedAreaPixels?.height || croppedAreaPixels?.Height,
+      });
       setIsSavingImage(false);
-      console.log(error);
+      const newImageURL = GlobalUtilities.add_timestamp(response.ImageURL);
+      onUploadDone(newImageURL);
+    } catch (err) {
+      setIsSavingImage(false);
+      alert(RVDic?.MSG[err] || 'operation failed');
     }
   };
 
@@ -130,7 +110,8 @@ const ImageCropModal = (props) => {
       onClose={onCloseModal}
       contentWidth="50%"
       titleClass="profile-image-crop-modal"
-      title={modalProps?.title}>
+      title={modalProps?.title}
+    >
       <Styled.ImageCropperWrapper>
         <ImageCropperEditor
           imageSrc={modalProps?.imgSrc}
@@ -144,13 +125,15 @@ const ImageCropModal = (props) => {
             loading={isSavingImage}
             onClick={handleSaveCroppedImage}
             type="primary"
-            style={ButtonsCommonStyles}>
+            style={ButtonsCommonStyles}
+          >
             {RVDic.Save}
           </Button>
           <Button
             onClick={onCloseModal}
             type="negative-o"
-            style={ButtonsCommonStyles}>
+            style={ButtonsCommonStyles}
+          >
             {RVDic.Return}
           </Button>
         </Styled.CropperButtonsWrapper>

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import AvatarImageCropperTabs from './AvatarImageCropperItems/AvatarImageCropperTabs';
 import ImageCropperTrigger from './AvatarImageCropperItems/ImageCropperTrigger';
 import Modal from 'components/Modal/Modal';
+import CloseButton from 'components/Buttons/CloseButton';
 
 /**
+ * 
  * @component - Avatar Selector/Image Cropper Modal
  * @param {string} [props.currentImageURL] - If supplied, will be the trigger button's initial image
  * @param {string} [props.currentAvatarID] - If supplied, will be the trigger button's initial avatar
@@ -13,6 +15,10 @@ import Modal from 'components/Modal/Modal';
  * @param {Record<string,string>} props.setAvatarApi - An async function for processing avatar saving API call
  * @param {string} props.uploadType - An string to set the correct api upload path e.g. "ProfileImage"
  * @param {Function} [props.onComplete] - A function to run after image input change (passes newImageURL as parameter to the supplied function)
+ * @param {Function} [props.noModal] - Disable Modal view
+ * @param {JSX.Element} [props.children] - (Only TabView.Item is acceptable as component's direct child/children)
+ * @param {Function} [props.noAvatarTab] - Disable Avatar Selection tab view
+ * @param {Function} [props.OnSaveFunction] - A function for Save Button(Comes handy if customizing tabs and custom OnSave functionality is mandatory)
  * @return {JSX.Element}
  * 
  * @example
@@ -24,7 +30,7 @@ import Modal from 'components/Modal/Modal';
  * 
  * ...
  * }
- * import * as AvatarSVGS from 'assets/images/avatars/AvatarAssets-profile';
+ * import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
  * 
  * 
  * const setAvatarApi = ({ avatarName, avatarSrc }) => {
@@ -38,7 +44,7 @@ import Modal from 'components/Modal/Modal';
  * ... 
  * 
  * <AvatarImageCropper
- *  avatarObject={AvatarSVGS}
+    avatarObject={AvatarSVGS}
     avatarTabLabel={"avatar selection"}
     uploadType="ProfileImage"
     uploadId={RVGlobal.CurrentUser.UserID}
@@ -58,6 +64,10 @@ function AvatarImageCropper({
   avatarObject,
   setAvatarApi,
   onComplete,
+  noModal,
+  children,
+  noAvatarTab,
+  OnSaveFunction,
 }) {
   const [imageSrc, setImageSrc] = useState(
     currentImageURL || avatarObject[currentAvatarID]
@@ -80,13 +90,14 @@ function AvatarImageCropper({
 
   const handleModalOpen = () => setModalStatus(true);
 
+  const ModalCloseButton = () => <CloseButton onClick={handleModalCancel} />;
+
   return (
     <>
-      <Modal
-        show={modalStatus}
-        stick
-        onClose={handleModalClose}
-        contentWidth={'clamp(10rem,95%,50rem)'}
+      <ModalWrapper
+        noModal={noModal}
+        modalStatus={modalStatus}
+        handleModalClose={handleModalClose}
       >
         <AvatarImageCropperTabs
           avatarObject={avatarObject}
@@ -99,9 +110,17 @@ function AvatarImageCropper({
           onComplete={onCompleteFunction}
           onSubmitComplete={handleModalClose}
           onCancel={handleModalCancel}
-        />
-      </Modal>
-      <ImageCropperTrigger imageSrc={imageSrc} onClick={handleModalOpen} />
+          isModal={!noModal}
+          OnSaveFunction={OnSaveFunction}
+          noAvatarTab={noAvatarTab}
+          CustomTabAction={!noModal && ModalCloseButton}
+        >
+          {children}
+        </AvatarImageCropperTabs>
+      </ModalWrapper>
+      {!noModal && (
+        <ImageCropperTrigger imageSrc={imageSrc} onClick={handleModalOpen} />
+      )}
     </>
   );
 }
@@ -109,3 +128,18 @@ function AvatarImageCropper({
 AvatarImageCropper.displayName = 'AvatarImageCropper';
 
 export default AvatarImageCropper;
+
+const ModalWrapper = ({ noModal, children, modalStatus, handleModalClose }) => {
+  if (noModal) return children;
+  else
+    return (
+      <Modal
+        show={modalStatus}
+        stick
+        onClose={handleModalClose}
+        contentWidth={'clamp(10rem,95%,50rem)'}
+      >
+        {children}
+      </Modal>
+    );
+};

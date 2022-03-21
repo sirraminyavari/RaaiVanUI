@@ -7,7 +7,7 @@ import * as Styles from './AvatarImageCropper.styles';
  * @param {Record<string,string>} props.avatarObject
  * @return {JSX.Element}
  */
-function AvatarPanels({ onChange, value, avatarObject }) {
+function AvatarPanel({ onChange, value, avatarObject }) {
   const isLoaded = useRef(false);
   const [avatar, setAvatar] = useState({ avatarName: value });
 
@@ -41,6 +41,6 @@ function AvatarPanels({ onChange, value, avatarObject }) {
   );
 }
 
-AvatarPanels.displayName = 'AvatarPanels';
+AvatarPanel.displayName = 'AvatarPanel';
 
-export default AvatarPanels;
+export default AvatarPanel;

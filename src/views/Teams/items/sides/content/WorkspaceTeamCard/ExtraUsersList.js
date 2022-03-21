@@ -4,9 +4,15 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
   const containerRef = useRef();
@@ -38,26 +44,32 @@ const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
         </Styled.ExtraUsersPopupHeader>
       )}
       <ScrollBarProvider style={{ height: '8rem' }}>
-        {users
-          ?.filter((user, index) => index > 3 && user)
-          .map((user) => {
-            const fullName = `${decodeBase64(user.FirstName)} ${decodeBase64(
-              user?.LastName
-            )}`;
-            return (
-              <Styled.ExtraUserItem key={user?.UserID}>
-                <Avatar
-                  userImage={GlobalUtilities.add_timestamp(
-                    user?.ProfileImageURL
-                  )}
-                  radius={25}
-                />
-                <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
-              </Styled.ExtraUserItem>
-            );
-          })}
+        <div
+          style={{
+            minHeight: '9rem',
+          }}
+        >
+          {users
+            ?.filter((user, index) => index > 3 && user)
+            .map((user) => {
+              const fullName = `${decodeBase64(user.FirstName)} ${decodeBase64(
+                user?.LastName
+              )}`;
+              return (
+                <Styled.ExtraUserItem key={user?.UserID}>
+                  <Avatar
+                    userImage={GlobalUtilities.add_timestamp(
+                      user?.ProfileImageURL
+                    )}
+                    radius={25}
+                    userObject={user}
+                  />
+                  <Styled.ExtraUserTitle>{fullName}</Styled.ExtraUserTitle>
+                </Styled.ExtraUserItem>
+              );
+            })}
 
-        {/* [...Array(10).keys()].map((test) => {
+          {/* [...Array(10).keys()].map((test) => {
             return (
               <Styled.ExtraUserItem key={test}>
                 <Avatar radius={25} color="#333" />
@@ -65,6 +77,7 @@ const ExtraUsersList = ({ handleInviteUser, isAdmin, users }) => {
               </Styled.ExtraUserItem>
             );
           }) */}
+        </div>
       </ScrollBarProvider>
     </div>
   );
