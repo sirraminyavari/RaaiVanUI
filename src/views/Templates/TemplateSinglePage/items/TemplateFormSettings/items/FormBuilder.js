@@ -15,6 +15,7 @@ import { useTemplateFormContext } from '../TemplateFormContext';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import { getDraggableElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
 import SideFormElementSetting from './SideFormElementSetting';
+import DraggableSharedSetting from '../elementSettingComponents/sharedItems/DraggableSharedSetting';
 
 export const FORM_BUILDER_ID = 'FORM_BUILDER_ID';
 
@@ -27,7 +28,6 @@ const FormBuilder = () => {
     focusedObject,
     setFocusedObject,
     setFormObjects,
-    duplicateItem,
     removeItem,
   } = useTemplateFormContext();
   const breadItems = [
@@ -71,13 +71,8 @@ const FormBuilder = () => {
             >
               {[...formObjects].map((x, index) => {
                 const formSettingComponent = getDraggableElementSetting({
-                  key: x?.type,
-                  props: {
-                    current: x,
-                    setFormObjects,
-                    duplicateItem,
-                    removeItem,
-                  },
+                  current: x,
+                  setFormObjects,
                 });
                 return (
                   <Draggable key={x?.id} draggableId={`${x?.id}`} index={index}>
@@ -95,7 +90,11 @@ const FormBuilder = () => {
                           focused={focusedObject === x?.id}
                           onClick={() => setFocusedObject(x?.id)}
                         >
-                          {formSettingComponent}
+                          <DraggableSharedSetting
+                            {...{ current: x, setFormObjects, removeItem }}
+                          >
+                            {formSettingComponent}
+                          </DraggableSharedSetting>
                         </DraggableFormObjectMainContent>
                       </DraggableFormObject>
                     )}

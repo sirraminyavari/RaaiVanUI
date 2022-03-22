@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import formElementList from './items/FormElements';
 import produce from 'immer';
+import { getElementType } from './elementSettingComponents/ElementTypeFinder';
+import { saveFormElements } from '../../../../../apiHelper/ApiHandlers/FGAPI';
 
 const TemplateFormContext = createContext({});
 
@@ -12,7 +14,7 @@ export const useTemplateFormContext = () => {
 
 export const TemplateFormProvider = ({ children, initialState }) => {
   const elementList = formElementList();
-  const [formObjects, setFormObjects] = useState(initialState || []);
+  const [formObjects, setFormObjects] = useState([]);
   const [focusedObject, setFocusedObject] = useState(null);
 
   // create new element on drag over
@@ -55,6 +57,35 @@ export const TemplateFormProvider = ({ children, initialState }) => {
     setFormObjects(newObjects);
   };
 
+  const formPreProcessDataModel = (data) => {
+    const { Elements } = data || {};
+    const modified = Elements?.map((x) => getElementType(x));
+    if (modified) {
+      setFormObjects(modified);
+    }
+  };
+
+  useEffect(() => {
+    formPreProcessDataModel(initialState);
+  }, [initialState]);
+
+  useEffect(() => console.log(formObjects), [formObjects]);
+
+  const saveForm = async () => {
+    const Elements = formObjects
+      .map((x) => x?.data)
+      .map((x) => ({
+        ElementID: getUUID(),
+        ...x,
+      }));
+    const { ErrorText } = saveFormElements({
+      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+      Elements,
+    });
+
+    console.log(ErrorText);
+  };
+
   return (
     <TemplateFormContext.Provider
       value={{
@@ -66,6 +97,7 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         moveItem,
         duplicateItem,
         removeItem,
+        saveForm,
       }}
     >
       {children}

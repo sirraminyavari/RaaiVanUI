@@ -35,6 +35,7 @@ const formElementList = () => {
     {
       id: 1,
       title: 'فیلدهای متنی',
+      type: 'Text',
       items: [
         {
           id: getUUID(),
@@ -44,9 +45,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true },
-            min: 10,
-            max: 20,
+            Info: { UseSimpleEditor: true, min: 10, max: 20 },
           },
         },
         {

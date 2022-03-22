@@ -12,7 +12,6 @@ import {
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
-import { C_GRAY_LIGHT } from '../../../../../constant/Colors';
 
 export const Container = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};

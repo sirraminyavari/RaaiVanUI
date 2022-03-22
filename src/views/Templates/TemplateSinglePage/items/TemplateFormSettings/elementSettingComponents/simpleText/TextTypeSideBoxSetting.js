@@ -1,53 +1,64 @@
 import * as Styles from './TextTypeSideBoxSettingStyles';
-import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import produce from 'immer';
+import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
+import ToggleUniqueValueState from '../sharedItems/ToggleUniqueValueState';
 
 const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
-  const { Necessary, UniqueValue } = current?.data || {};
+  const { type, data } = current || {};
 
-  const handleNecessaryStateChange = (state) => {
-    if (setFormObjects) {
-      setFormObjects(
-        produce((d) => {
-          let _current = d?.find((x) => x?.id === current?.id);
-          _current.data.Necessary = state;
-        })
-      );
-    }
+  const handleMinCharStateChange = (e) => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d.find((x) => x?.id === current?.id);
+        _current.data.Info.min = e?.target?.value;
+      })
+    );
   };
 
-  const handleUniqueValueStateChange = (state) => {
-    if (setFormObjects) {
-      setFormObjects(
-        produce((d) => {
-          let _current = d?.find((x) => x?.id === current?.id);
-          _current.data.UniqueValue = state;
-        })
-      );
-    }
+  const handleMaxCharStateChange = (e) => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d.find((x) => x?.id === current?.id);
+        _current.data.Info.max = e?.target?.value;
+      })
+    );
   };
 
   return (
     <Styles.Container>
-      <Styles.ToggleRow>
-        <div>{'فیلد ضروری'}</div>
-        <div>
-          <ToggleButton
-            value={Necessary}
-            onToggle={handleNecessaryStateChange}
-          />
-        </div>
-      </Styles.ToggleRow>
+      <Styles.Row>
+        <ToggleNecessaryState {...{ current, setFormObjects }} />
+      </Styles.Row>
 
-      <Styles.ToggleRow>
-        <div>{'پاسخ منحصربه‌فرد'}</div>
-        <div>
-          <ToggleButton
-            value={UniqueValue}
-            onToggle={handleUniqueValueStateChange}
-          />
-        </div>
-      </Styles.ToggleRow>
+      {type !== 'paragraph' && (
+        <Styles.Row>
+          <ToggleUniqueValueState {...{ current, setFormObjects }} />
+        </Styles.Row>
+      )}
+
+      {type !== 'email' && type !== 'url' && (
+        <>
+          <Styles.InputRowContainer>
+            <Styles.ToggleRowTitle>
+              {'حداقل تعداد کاراکتر'}
+            </Styles.ToggleRowTitle>
+            <Styles.Input
+              value={data?.Info?.min}
+              onChange={handleMinCharStateChange}
+            />
+          </Styles.InputRowContainer>
+
+          <Styles.InputRowContainer>
+            <Styles.ToggleRowTitle>
+              {'حداکثر تعداد کاراکتر'}
+            </Styles.ToggleRowTitle>
+            <Styles.Input
+              value={data?.Info?.max}
+              onChange={handleMaxCharStateChange}
+            />
+          </Styles.InputRowContainer>
+        </>
+      )}
     </Styles.Container>
   );
 };

@@ -27,8 +27,4 @@ export const DraggableFormObjectMainContent = styled.div`
   transition: border 0.3s ease-out;
   background-color: ${CV_WHITE};
   padding: 0.5rem 1rem;
-
-  &:hover {
-    border: 0.0625rem solid ${TCV_DEFAULT};
-  }
 `;

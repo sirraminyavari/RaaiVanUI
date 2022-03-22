@@ -15,10 +15,7 @@ const SideFormElementSetting = ({
       const el = formObjects?.find((x) => x?.id === focusedObject) || null;
       return (
         <Container>
-          {getSideFormElementSetting({
-            key: el?.type,
-            props: { current: el, setFormObjects },
-          })}
+          {getSideFormElementSetting({ current: el, setFormObjects })}
         </Container>
       );
     }
@@ -31,7 +28,7 @@ const SideFormElementSetting = ({
 };
 
 const Container = styled.div`
-  height: 17rem;
+  min-height: 17rem;
   padding: 1.5rem;
 `;
 
