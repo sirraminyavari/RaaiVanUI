@@ -78,12 +78,11 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         ElementID: getUUID(),
         ...x,
       }));
-    const { ErrorText } = saveFormElements({
-      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
-      Elements,
-    });
-
-    console.log(ErrorText);
+    console.log(Elements);
+    // const { ErrorText } = saveFormElements({
+    //   FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+    //   Elements,
+    // });
   };
 
   return (

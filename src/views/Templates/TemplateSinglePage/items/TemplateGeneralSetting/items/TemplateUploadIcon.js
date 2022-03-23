@@ -1,58 +1,50 @@
-import styled from 'styled-components';
-import { FLEX_CCC } from 'constant/StyledCommonCss';
+import * as Styles from './TemplateUploadIconStyles';
 import ImageIcon from 'components/Icons/ImageIcon/ImageIcon';
-import { CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
-import useWindow from 'hooks/useWindowContext';
+import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
+import TabView from 'components/TabView/TabView';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { useState } from 'react';
+import Uploader from './Uploader';
 
 const TemplateUploadIcon = () => {
-  const { RV_RTL } = useWindow();
+  const { RV_RTL } = window;
+  const [openState, setOpenState] = useState(false);
+
+  const open = () => setOpenState(true);
+
+  const close = () => setOpenState(false);
+
   return (
-    <Container>
-      <Icon>
+    <Styles.Container>
+      <Styles.Icon>
         <ImageIcon size={54} />
 
-        <AddButton rtl={RV_RTL}>
+        <Styles.AddButton rtl={RV_RTL} onClick={open}>
           <PencilIcon color={CV_WHITE} size={18} />
-        </AddButton>
-      </Icon>
-    </Container>
+        </Styles.AddButton>
+
+        {openState && (
+          <Styles.UploaderLayout>
+            <TabView>
+              <TabView.Item label={'اموجی'}>
+                <div>emojies</div>
+              </TabView.Item>
+              <TabView.Item label={'بارگذاری تصویر'}>
+                <Uploader />
+              </TabView.Item>
+
+              <TabView.Action>
+                <Styles.CloseButton onClick={close}>
+                  <CloseIcon outline={true} size={20} />
+                </Styles.CloseButton>
+              </TabView.Action>
+            </TabView>
+          </Styles.UploaderLayout>
+        )}
+      </Styles.Icon>
+    </Styles.Container>
   );
 };
-const Container = styled.div`
-  height: 8rem;
-  width: 8rem;
-`;
-
-const Icon = styled.div`
-  position: relative;
-  ${FLEX_CCC};
-  height: 8rem;
-  width: 8rem;
-  border-radius: 100%;
-  background-color: #eef1f5;
-  color: ${TCV_DEFAULT};
-`;
-
-const AddButton = styled.div`
-  ${FLEX_CCC};
-  height: 2rem;
-  width: 2rem;
-  border-radius: 100%;
-  color: ${CV_WHITE};
-  background-color: ${TCV_DEFAULT};
-  position: absolute;
-  ${({ rtl }) => (rtl ? 'left: 0' : 'right: 0;')};
-  bottom: 0;
-  transition: all 120ms linear;
-  visibility: hidden;
-  opacity: 0;
-  cursor: pointer;
-
-  ${Icon}:hover & {
-    visibility: visible;
-    opacity: 1;
-  }
-`;
 
 export default TemplateUploadIcon;
