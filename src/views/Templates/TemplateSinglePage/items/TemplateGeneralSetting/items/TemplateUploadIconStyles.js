@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FLEX_CCC } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_CSC } from 'constant/StyledCommonCss';
 import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 
 export const Container = styled.div`
@@ -39,7 +39,7 @@ export const AddButton = styled.div`
 `;
 
 export const UploaderLayout = styled.div`
-  width: 25rem;
+  width: 22rem;
   height: 15rem;
   border-radius: 0.8rem;
   background-color: ${CV_WHITE};
@@ -57,4 +57,11 @@ export const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   color: ${CV_RED};
+`;
+
+export const TabViewContentWrapper = styled.div`
+  width: 100%;
+  height: 11rem;
+  overflow: scroll;
+  ${FLEX_CSC};
 `;

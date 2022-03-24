@@ -1,8 +1,11 @@
+import { EmojiContextProvider } from './EmojiContext';
+import EmojiPickerContent from './items/EmojiPickerContent';
+
 const EmojiPicker = () => {
   return (
-    <>
-      <div></div>
-    </>
+    <EmojiContextProvider>
+      <EmojiPickerContent />
+    </EmojiContextProvider>
   );
 };
 export default EmojiPicker;

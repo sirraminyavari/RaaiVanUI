@@ -6,6 +6,8 @@ import TabView from 'components/TabView/TabView';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { useState } from 'react';
 import Uploader from './Uploader';
+import EmojiPicker from 'components/EmojiPicker/EmojiPicker';
+import { TabViewContentWrapper } from './TemplateUploadIconStyles';
 
 const TemplateUploadIcon = () => {
   const { RV_RTL } = window;
@@ -28,10 +30,14 @@ const TemplateUploadIcon = () => {
           <Styles.UploaderLayout>
             <TabView>
               <TabView.Item label={'اموجی'}>
-                <div>emojies</div>
+                <Styles.TabViewContentWrapper>
+                  <EmojiPicker />
+                </Styles.TabViewContentWrapper>
               </TabView.Item>
               <TabView.Item label={'بارگذاری تصویر'}>
-                <Uploader />
+                <Styles.TabViewContentWrapper>
+                  <Uploader />
+                </Styles.TabViewContentWrapper>
               </TabView.Item>
 
               <TabView.Action>
