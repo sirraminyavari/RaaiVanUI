@@ -103,10 +103,14 @@ const WelcomeLayoutContainer = styled.div`
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
       overflow:inherit !important;
   min-height: calc(100vh - 10rem);
-  margin: 1rem;
+  margin-block-start: 5rem;
   ${({ isMobile = false }) =>
-    !isMobile &&
+    isMobile
+      ? `
+  // fix mobile devices showing a floating browser address bar and webpage's ending contents are unreachable
+    padding-block-end: 5rem;
     `
+      : `
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -118,13 +122,17 @@ const WelcomeLayoutContainerWithScrollbar = styled(ScrollBarProvider).attrs({
 })`
   ${({ Outline = true }) => Outline && `box-shadow: 1px 5px 15px #0000001f;`}
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
-  height: calc(100vh - 10rem) !important;
+  height: calc(100vh - 6rem) !important;
   overflow-y: auto;
   width: 100%;
-  margin: 1rem;
+  margin-block-start: 5rem;
   ${({ isMobile = false }) =>
-    !isMobile &&
+    isMobile
+      ? `
+    // fix mobile devices showing a floating browser address bar and webpage's ending contents are unreachable
+    padding-block-end: 5rem;
     `
+      : `
     display: flex;
     justify-content: space-between;
     align-items: flex-start;

@@ -376,6 +376,13 @@ export const UNSUBSCRIBE_APPLICATION = 'UnsubscribeFromApplication';
 export const CREATE_WORKSPACE = 'CreateWorkspace';
 
 /**
+ * @description Get All Workspaces
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const GET_WORKSPACES = 'GetWorkspaces';
+
+/**
  * @description Rename workspace
  * @mode API function
  * @class 'RVAPI'

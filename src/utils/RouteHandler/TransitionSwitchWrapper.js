@@ -21,7 +21,8 @@ const TransitionSwitchWrapper = ({ timeout, transitionKey, children } = {}) => {
           <CSSTransition
             key={transitionKey || location?.key}
             classNames="fade"
-            timeout={timeout}>
+            timeout={timeout}
+          >
             <Switch location={location}>{children}</Switch>
           </CSSTransition>
         </TransitionGroup>
@@ -70,7 +71,7 @@ export const Wrapper = styled.div`
   div.transition-group {
     position: relative;
     padding-inline: 1rem;
-    padding-block: 1rem;
+    // padding-block: 1rem;
     > div {
       max-width: 100%;
       box-sizing: border-box;
