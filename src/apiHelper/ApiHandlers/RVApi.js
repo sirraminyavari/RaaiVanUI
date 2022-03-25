@@ -2,6 +2,7 @@ import { API_Provider, encodeBase64 } from 'helpers/helpers';
 import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
+  GET_WORKSPACES,
   RENAME_WORKSPACE,
   REMOVE_WORKSPACE_TICKET,
   REMOVE_WORKSPACE_USER,
@@ -10,6 +11,14 @@ import {
   REMOVE_WORKSPACE,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description get all workspaces
+ * @return {Promise<unknown>}
+ */
+export const getWorkspaces = () => {
+  return apiCallWrapper(API_Provider(RV_API, GET_WORKSPACES));
+};
 
 /**
  * @description create workspace
