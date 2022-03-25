@@ -7,28 +7,50 @@ import {
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 import classNames from 'classnames';
+import CheckCircleFilled from 'components/Icons/CheckIcons/CheckCircleFilled';
 
 /**
  * @component - A squared Panel Button
  * @param {React.ButtonHTMLAttributes} props
  * @param {boolean} [props.active=false] - sets the toggle effect
  * @param {boolean} [props.secondary=false] - sets the secondary (Gray-ish) color
+ * @param {boolean} [props.grayScale=false] - sets image/svg filter to grayScale on default state and normal color on hover/active state
  * @return {JSX.Element}
  */
-function PanelButton({ children, active, secondary, className, ...restProps }) {
+function PanelButton({
+  children,
+  active,
+  secondary,
+  grayScale,
+  className,
+  checked,
+  ...restProps
+}) {
   return (
     <StyledPanelButton
       className={classNames(
+        grayScale && 'grayScale',
         secondary && 'secondary',
         active && 'active',
         className
       )}
       {...restProps}
     >
+      {checked && (
+        <StyledPanelButtonCheckBox>
+          <CheckCircleFilled />
+        </StyledPanelButtonCheckBox>
+      )}
       {children}
     </StyledPanelButton>
   );
 }
+const StyledPanelButtonCheckBox = styled.div`
+  font-size: 1.5rem;
+  position: absolute;
+  inset-block-start: 0.6rem;
+  inset-inline-start: 0.6rem;
+`;
 const StyledPanelButton = styled.button.attrs({
   className: BO_RADIUS_HALF,
 })`
@@ -49,8 +71,11 @@ const StyledPanelButton = styled.button.attrs({
   border: 1px solid transparent;
   transition: border 0.3s ease-out, color 0.3s, filter 0.3s;
   box-sizing: border-box;
+  position: relative;
   &.secondary {
     color: ${CV_GRAY};
+  }
+  &.grayScale {
     & > svg,
     & > img {
       filter: grayscale(1);
@@ -73,9 +98,11 @@ const StyledPanelButton = styled.button.attrs({
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
     color: ${TCV_DEFAULT};
     border-color: ${TCV_DEFAULT};
-    & > svg,
-    & > img {
-      filter: grayscale(0);
+    &.grayScale {
+      & > svg,
+      & > img {
+        filter: grayscale(0);
+      }
     }
   }
 `;

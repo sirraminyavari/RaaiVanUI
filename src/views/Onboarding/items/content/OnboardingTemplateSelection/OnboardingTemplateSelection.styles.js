@@ -40,10 +40,23 @@ export const OnboardingTemplateSelectionButtonWrapper = styled.div`
   display: flex;
   // flex-wrap: wrap;
   flex-shrink: 0;
-
+  align-items: center;
   & > * {
     margin-inline: 1rem;
   }
+`;
+OnboardingTemplateSelectionButtonWrapper.displayName =
+  'OnboardingTemplateSelectionButtonWrapper';
+
+export const OnboardingTemplateSelectionTemplateCount = styled.div`
+  padding-inline: 2.2rem;
+  font-size: 0.8rem;
+  height: 100%;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  color: ${CV_DISTANT};
 `;
 OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
@@ -164,6 +177,7 @@ export const OnboardingTemplateSelectionGallerySuggestion = styled.div.attrs({
   padding: 0.7rem;
   margin: 0.7rem;
   background-color: ${CV_WHITE};
+  cursor: pointer;
 `;
 OnboardingTemplateSelectionGallerySuggestion.displayName =
   'OnboardingTemplateSelectionGallerySuggestion';

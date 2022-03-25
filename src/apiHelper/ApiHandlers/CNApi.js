@@ -244,7 +244,7 @@ export const getTemplates = ({ TagID } = {}) => {
 
 /**
  * @description Gets a template object
- * @param {String} NodeTypeID the id of the template
+ * @param {String} prop.NodeTypeID the id of the template
  * @returns Promise.
  */
 export const getTemplateJSON = ({ NodeTypeID } = {}) => {

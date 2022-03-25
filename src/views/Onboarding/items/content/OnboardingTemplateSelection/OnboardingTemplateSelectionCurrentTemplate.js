@@ -1,53 +1,91 @@
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import Button from 'components/Buttons/Button';
-import { useEffect } from 'react';
-import { getTemplates } from 'apiHelper/ApiHandlers/CNApi';
+import { decodeBase64 } from 'helpers/helpers';
+import {
+  useOnboardingTeamContent,
+  OnboardingTeamStepContextActions,
+} from 'views/Onboarding/items/others/OnboardingTeam.context';
 
-const OnboardingTemplateSelectionCurrentTemplate = () => {
+const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
+  const { dispatch, selectedTemplates } = useOnboardingTeamContent();
 
-  useEffect(() => {
-    // const ress = getTemplateJSON({
-    //   NodeTypeID: '2e36f09f-b76c-4c41-bb53-1f256a5adbe8',
-    // });
-    // ress.then((res) => console.log({ res }));
-    getTemplates({ TagID: 'd1e73967-8360-4f96-9bcc-9156aa68aad7' }).then(
-      (res) => {
-        console.log({ cTag: res });
-      }
-    );
-  }, []);
+  const selectTemplateHandler = (template) => {
+    dispatch({
+      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_TEMPLATE,
+      stateKey: template.NodeTypeID,
+      stateValue: template,
+    });
+  };
+
+  const deselectTemplateHandler = (template) => {
+    dispatch({
+      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_REMOVE_TEMPLATE,
+      stateKey: template.NodeTypeID,
+    });
+  };
+
+  const isTemplateSelected = (selectedTemplates, activeTemplate) => {
+    const nodeID = activeTemplate?.NodeTypeID || 'null';
+    if (
+      nodeID !== 'null' &&
+      Object.keys(selectedTemplates).length &&
+      Object.keys(selectedTemplates).includes(nodeID)
+    )
+      return true;
+    else return false;
+  };
 
   //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplatePlaceholder = 'بازدید از نمایشگاه';
   const RVDicOnboardingSelectTemplate = 'انتخاب تمپلیت';
-  const RVDicOnboardingTemplateTextPlaceholder1 =
-    'شرکت ها و سازمان ها سالانه به دفعات از نمایشگاه های داخلی و خارجی بازدید می کنند؛ اما دستاورد آن ها از این نمایشگاه ها مجموعه محدودی از مستندات و تعدادی گفتگوی سرپایی است که بعد از مدتی فراموش می شود. پس از آن نه دیگران نه حتی خود فرد یا افراد شرکت کننده اطلاعات و مستندات دقیقی از این که در نمایشگاه چه گذشته، با چه مجموعه ها و افرادی آشنا شده اند یا از آن چه چیزهایی آموخته اند در اختیار ندارند و این چرخه در سازمان ادامه دارد.';
-  const RVDicOnboardingTemplateTextPlaceholder2 =
-    'نمایشگاه های عمومی و تخصصی مملو از فرصت های آشنایی با شرکت ها، محصولات، خدمات، ایده ها و افراد جدید است. این موارد می تواند به توسعه کسب و کار، توسعه محصولات جدید، آگاهی از فعالیت رقبا یا پیدا کردن شرکا تجاری جدید منجر شود.';
+  const RVDicOnboardingDeselectTemplate = 'لغو انتخاب';
 
   return (
     <>
-      <div>
-        <Styles.OnboardingTemplateSelectionImage src="/images/preview.png" />
-        <Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
-          {RVDicOnboardingTemplatePlaceholder}
-        </Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
-        <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
-          {RVDicOnboardingTemplateTextPlaceholder1}
-        </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
-        <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
-          {RVDicOnboardingTemplateTextPlaceholder2}
-        </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
-        <Styles.OnboardingTemplateSelectionButtonWrapper
-          style={{ marginBlockStart: '4rem' }}
-        >
-          <Button style={{ paddingInline: '2rem' }} type="primary-o">
-            {RVDicOnboardingSelectTemplate}
-          </Button>
-        </Styles.OnboardingTemplateSelectionButtonWrapper>
+      <div
+        style={{
+          minHeight: '50vh',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          flexDirection: 'column',
+        }}
+      >
+        {activeTemplate && (
+          <>
+            <Styles.OnboardingTemplateSelectionImage
+              src={activeTemplate?.IconURL}
+            />
+            <Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
+              {decodeBase64(activeTemplate?.TypeName)}
+            </Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
+            <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
+              {decodeBase64(activeTemplate?.Description)}
+            </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
+            <Styles.OnboardingTemplateSelectionButtonWrapper
+              style={{ marginBlockStart: '4rem' }}
+            >
+              {!isTemplateSelected(selectedTemplates, activeTemplate) ? (
+                <Button
+                  style={{ paddingInline: '2rem' }}
+                  type="primary-o"
+                  onClick={() => selectTemplateHandler(activeTemplate)}
+                >
+                  {RVDicOnboardingSelectTemplate}
+                </Button>
+              ) : (
+                <Button
+                  style={{ paddingInline: '2rem' }}
+                  type="negative-o"
+                  onClick={() => deselectTemplateHandler(activeTemplate)}
+                >
+                  {RVDicOnboardingDeselectTemplate}
+                </Button>
+              )}
+            </Styles.OnboardingTemplateSelectionButtonWrapper>
+          </>
+        )}
       </div>
     </>
   );

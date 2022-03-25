@@ -25,7 +25,11 @@ const ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT =
   'ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT';
 const ONBOARDING_TEAM_CREATION_SET_WORK_FIELD =
   'ONBOARDING_TEAM_CREATION_SET_WORK_FIELD';
-const ONBOARDING_TEAM_COMPLETED = 'ONBOARDING_TEAM_COMPLETED';
+const ONBOARDING_TEAM_CREATION_COMPLETED = 'ONBOARDING_TEAM_CREATION_COMPLETED';
+const ONBOARDING_TEAM_TEMPLATE_SELECTION = 'ONBOARDING_TEAM_TEMPLATE_SELECTION';
+const ONBOARDING_TEAM_SET_TEMPLATE = 'ONBOARDING_TEAM_SET_TEMPLATE';
+const ONBOARDING_TEAM_REMOVE_TEMPLATE = 'ONBOARDING_TEAM_REMOVE_TEMPLATE';
+const ONBOARDING_TEAM_CLEAR_TEMPLATE = 'ONBOARDING_TEAM_CLEAR_TEMPLATE';
 
 export const OnboardingTeamStepContext = createContext();
 
@@ -48,6 +52,7 @@ const initialState = {
       fieldName: '',
     },
   },
+  selectedTemplates: {},
 };
 
 export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
@@ -101,7 +106,7 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
         ...prevState,
         BannerComponent: OnboardingTeamCreationSetWorkFieldBanner,
         ContentComponent: OnboardingTeamCreationSetWorkFieldContent,
-        nextStepAction: ONBOARDING_TEAM_COMPLETED,
+        nextStepAction: ONBOARDING_TEAM_CREATION_COMPLETED,
         disableContinue: prevState.teamState.workField.fieldID === '',
         loading: false,
         apiCall: ({ teamState }) =>
@@ -122,13 +127,19 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
         activeStep: 3,
         stepsCount: 3,
       };
-    case ONBOARDING_TEAM_COMPLETED:
-      return { ...initialState, completed: true };
+    case ONBOARDING_TEAM_CREATION_COMPLETED:
+      return { ...prevState, completed: true };
+    case ONBOARDING_TEAM_TEMPLATE_SELECTION:
+      console.log({ myStecp: prevState });
+      return {
+        ...prevState,
+        completed: false,
+      };
 
     case ONBOARDING_TEAM_SET_STATE:
       return {
         ...prevState,
-        disableContinue: stateValue === '',
+        disableContinue: stateValue === '' || stateValue?.fieldName === '',
         teamState: {
           ...prevState.teamState,
           [stateKey]: stateValue,
@@ -146,6 +157,32 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
         ...prevState,
         loading: stateValue,
       };
+    case ONBOARDING_TEAM_SET_TEMPLATE:
+      const setSelectedTemplates = {
+        ...prevState.selectedTemplates,
+        [stateKey]: stateValue,
+      };
+      return {
+        ...prevState,
+        selectedTemplates: setSelectedTemplates,
+        disableContinue: !Object.keys(setSelectedTemplates).length,
+      };
+    case ONBOARDING_TEAM_REMOVE_TEMPLATE:
+      const { [stateKey]: removableTemplate, ...selectedTemplates } =
+        prevState.selectedTemplates;
+      return {
+        ...prevState,
+        selectedTemplates: {
+          ...selectedTemplates,
+        },
+        disableContinue: !Object.keys(selectedTemplates).length,
+      };
+    case ONBOARDING_TEAM_CLEAR_TEMPLATE:
+      return {
+        ...prevState,
+        selectedTemplates: {},
+        disableContinue: true,
+      };
     default:
       return prevState;
   }
@@ -159,6 +196,9 @@ export const OnboardingTeamStepContextActions = {
   ONBOARDING_TEAM_CREATION_CHOICE,
   ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT,
   ONBOARDING_TEAM_CREATION_SET_WORK_FIELD,
+  ONBOARDING_TEAM_SET_TEMPLATE,
+  ONBOARDING_TEAM_REMOVE_TEMPLATE,
+  ONBOARDING_TEAM_CLEAR_TEMPLATE,
 };
 
 export function OnboardingTeamStepContextProvider({ children }) {
@@ -167,7 +207,10 @@ export function OnboardingTeamStepContextProvider({ children }) {
 
   useEffect(() => {
     console.log({ states });
-    if (states.completed) history.push(ONBOARDING_TEMPLATE_PATH);
+    if (states.completed) {
+      dispatch({ type: ONBOARDING_TEAM_TEMPLATE_SELECTION });
+      history.push(ONBOARDING_TEMPLATE_PATH);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [states]);
 

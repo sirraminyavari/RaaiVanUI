@@ -3,7 +3,7 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplate.styles';
 import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
 import Button from 'components/Buttons/Button';
-import { ONBOARDING_TEMPLATE_SELECTION_PATH } from '../../others/constants';
+import { ONBOARDING_TEMPLATE_SELECTION_PATH } from 'views/Onboarding/items/others/constants';
 
 const OnboardingTemplateContent = () => {
   const { RVDic } = useWindow();

@@ -8,6 +8,7 @@ import {
   ONBOARDING_USER_TEAM_PATH,
   ONBOARDING_TEMPLATE_PATH,
   ONBOARDING_TEMPLATE_SELECTION_PATH,
+  ONBOARDING_TEMPLATE_SETUP_PATH,
 } from './items/others/constants';
 import { OnboardingTeamStepContextProvider } from './items/others/OnboardingTeam.context';
 
@@ -51,38 +52,51 @@ const OnboardingTemplateSelectionView = WithSuspense(
   )
 );
 
+const OnboardingTemplateSetupView = WithSuspense(
+  lazy(() =>
+    import(
+      /* webpackChunkName: "onboarding-template-setup-view"*/ 'views/Onboarding/OnboardingTemplateSetupView'
+    )
+  )
+);
+
 const OnboardingView = () => {
   return (
     <>
-      <TransitionSwitchWrapper>
-        <Route
-          exact
-          path={ONBOARDING_PATH}
-          component={OnboardingIntroductionView}
-        />
-        <Route
-          exact
-          path={ONBOARDING_USER_INFO_PATH}
-          component={OnboardingUserInfoView}
-        />
-        <Route
-          exact
-          path={ONBOARDING_TEMPLATE_SELECTION_PATH}
-          component={OnboardingTemplateSelectionView}
-        />
-        <Route
-          exact
-          path={ONBOARDING_TEMPLATE_PATH}
-          component={OnboardingTemplateView}
-        />
-        <OnboardingTeamStepContextProvider>
+      <OnboardingTeamStepContextProvider>
+        <TransitionSwitchWrapper>
+          <Route
+            exact
+            path={ONBOARDING_PATH}
+            component={OnboardingIntroductionView}
+          />
+          <Route
+            exact
+            path={ONBOARDING_USER_INFO_PATH}
+            component={OnboardingUserInfoView}
+          />
+          <Route
+            exact
+            path={ONBOARDING_TEMPLATE_SELECTION_PATH}
+            component={OnboardingTemplateSelectionView}
+          />
+          <Route
+            exact
+            path={ONBOARDING_TEMPLATE_SETUP_PATH}
+            component={OnboardingTemplateSetupView}
+          />
+          <Route
+            exact
+            path={ONBOARDING_TEMPLATE_PATH}
+            component={OnboardingTemplateView}
+          />
           <Route
             path={ONBOARDING_USER_TEAM_PATH}
             component={OnboardingTeamView}
           />
-        </OnboardingTeamStepContextProvider>
-        <Redirect to={ONBOARDING_PATH} />
-      </TransitionSwitchWrapper>
+          <Redirect to={ONBOARDING_PATH} />
+        </TransitionSwitchWrapper>
+      </OnboardingTeamStepContextProvider>
     </>
   );
 };

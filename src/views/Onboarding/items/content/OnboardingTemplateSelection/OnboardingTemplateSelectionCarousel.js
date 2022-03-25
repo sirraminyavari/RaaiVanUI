@@ -1,49 +1,37 @@
-import * as Styles from './OnboardingTemplateSelection.styles';
 import PanelButton from 'components/Buttons/PanelButton';
-import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
-import { useMemo, useRef } from 'react';
+import { decodeBase64 } from 'helpers/helpers';
+import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
+import Carousel from 'components/Carousel/Carousel';
 
-// TODO extract carousel as a reusable component
-const OnboardingTemplateSelectionCarousel = () => {
-  const carouselRef = useRef(null);
-
-  const carouselNavigationHandler = useMemo(
-    () =>
-      ({ direction }) => {
-        if (carouselRef.current === null) return;
-        if (direction === 'left') carouselRef.current.scrollLeft -= 300;
-        else if (direction === 'right') carouselRef.current.scrollLeft += 300;
-      },
-    [carouselRef]
-  );
+const OnboardingTemplateSelectionCarousel = ({
+  templates,
+  activateTemplate,
+  activeTemplate,
+}) => {
+  const { selectedTemplates } = useOnboardingTeamContent();
 
   return (
-    <Styles.OnboardingTemplateSelectionCarouselContainer>
-      <Styles.OnboardingTemplateSelectionCarouselNavigationButton
-        dir="left"
-        onClick={() => carouselNavigationHandler({ direction: 'left' })}
-      >
-        <ChevronIcon small dir="left" />
-      </Styles.OnboardingTemplateSelectionCarouselNavigationButton>
-      <Styles.OnboardingTemplateSelectionCarouselNavigationButton
-        dir="right"
-        onClick={() => carouselNavigationHandler({ direction: 'right' })}
-      >
-        <ChevronIcon small dir="right" />
-      </Styles.OnboardingTemplateSelectionCarouselNavigationButton>
-      <Styles.OnboardingTemplateSelectionCarouselInnerContainer
-        ref={carouselRef}
-      >
-        {new Array(12).fill('').map((_, idx) => {
-          return (
-            <PanelButton secondary>
-              <img src="/images/preview.png" width="70" />
-              بازدید از نمایشگاه {idx}
-            </PanelButton>
-          );
-        })}
-      </Styles.OnboardingTemplateSelectionCarouselInnerContainer>
-    </Styles.OnboardingTemplateSelectionCarouselContainer>
+    <Carousel>
+      {(templates || []).map((template, idx) => {
+        const { IconURL, TypeName, NodeTypeID } = template;
+        return (
+          <PanelButton
+            grayScale
+            active={
+              NodeTypeID === activeTemplate?.NodeTypeID ||
+              Object.keys(selectedTemplates).includes(NodeTypeID)
+            }
+            checked={Object.keys(selectedTemplates).includes(NodeTypeID)}
+            onClick={() => {
+              activateTemplate(template);
+            }}
+          >
+            <img src={IconURL} width="70" alt="" />
+            {decodeBase64(TypeName)}
+          </PanelButton>
+        );
+      })}
+    </Carousel>
   );
 };
 
