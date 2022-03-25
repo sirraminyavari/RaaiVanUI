@@ -22,7 +22,7 @@ import styled from 'styled-components';
  *
  */
 const Shimmer = ({ children, ...restProps }) => {
-  return <ShimmerElement>{children}</ShimmerElement>;
+  return <ShimmerElement {...restProps}>{children}</ShimmerElement>;
 };
 export default Shimmer;
 
