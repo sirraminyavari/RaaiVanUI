@@ -1,4 +1,11 @@
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+import {
+  Redirect,
+  Route,
+  Switch,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import { lazy, useEffect, useState } from 'react';
 import {
@@ -7,13 +14,21 @@ import {
 } from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { TemplateProvider } from './TemplateProvider';
+import { themeSlice } from 'store/reducers/themeReducer';
+import { useDispatch } from 'react-redux';
+import { TEMPLATE_CONTENT } from '../../../constant/constants';
 
 const TemplateSinglePage = () => {
+  const dispatch = useDispatch();
   const { path } = useRouteMatch();
+  const { pathname } = useLocation();
+  console.log(path);
   const { id: NodeTypeID } = useParams();
   const [loading, setLoading] = useState(true);
   const [extensions, setExtensions] = useState({});
   const [service, setService] = useState({});
+
+  const { setSidebarContent } = themeSlice.actions;
 
   const generalSetting = lazy(() =>
     import('./items/TemplateGeneralSetting/TemplateGeneralSettings')
@@ -36,13 +51,23 @@ const TemplateSinglePage = () => {
   );
 
   useEffect(() => {
+    dispatch(
+      setSidebarContent({
+        current: TEMPLATE_CONTENT,
+        prev: '',
+      })
+    );
     const fetchData = async () => {
+      console.log(NodeTypeID);
       const _extensions = await getExtensions({ NodeTypeID, Initialize: true });
       const _service = await getService({ NodeTypeID });
 
-      setExtensions(_extensions);
-      setService(_service);
-      setLoading(false);
+      console.log(_extensions);
+      if (!_extensions?.ErrorText) {
+        setExtensions(_extensions);
+        setService(_service);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -54,7 +79,12 @@ const TemplateSinglePage = () => {
       ) : (
         <TemplateProvider extensions={extensions} service={service}>
           <Switch>
-            <Route exact path={`${path}`} component={generalSetting} />
+            <Route
+              exact
+              path={`${path}/`}
+              render={() => <Redirect to={`${pathname}/basic`} />}
+            />
+            <Route exact path={`${path}/basic`} component={generalSetting} />
             <Route exact path={`${path}/forms`} component={formSettings} />
             <Route
               exact

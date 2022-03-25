@@ -4,15 +4,19 @@ import { useEmojiContext } from '../EmojiContext';
 import EmojiCategoryItem from './EmojiCategoryItem';
 import { getEmojiType } from './emojis';
 import EmojiRecent from './EmojiRecent';
+import { useMemo } from 'react';
 
 const EmojiCategoryList = () => {
   const { selectedCategoryIndex } = useEmojiContext();
+  const list = useMemo(
+    () =>
+      getEmojiType()?.map((x) => <EmojiCategoryItem key={x?.key} type={x} />),
+    []
+  );
   return (
     <Container shift={selectedCategoryIndex}>
       <EmojiRecent />
-      {getEmojiType()?.map((x) => (
-        <EmojiCategoryItem key={x?.key} type={x} />
-      ))}
+      {list}
     </Container>
   );
 };

@@ -28,7 +28,7 @@ const TemplateUploadIcon = () => {
 
         {openState && (
           <Styles.UploaderLayout>
-            <TabView>
+            <TabView height={2.5}>
               <TabView.Item label={'اموجی'}>
                 <Styles.TabViewContentWrapper>
                   <EmojiPicker />

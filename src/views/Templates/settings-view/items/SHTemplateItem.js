@@ -10,7 +10,7 @@ import TemplateDeleteButton from './TemplateDeleteButton';
 import { useContext } from 'react';
 import { TemplateListContext } from '../TemplatesSettings';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { encodeBase64 } from '../../../../helpers/helpers';
+import { encodeBase64 } from 'helpers/helpers';
 
 const SHTemplateItem = ({
   item,

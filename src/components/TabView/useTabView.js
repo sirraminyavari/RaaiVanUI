@@ -18,7 +18,7 @@ export const useTabView = ({ children, onSelect }) => {
   const [bodyWidth, setBodyWidth] = useState();
 
   const action = useCallback(
-    [...children].find((x) => x?.type?.name === 'Action') || null,
+    [...children].find((x) => x?.type?.name === 'Action'),
     [children]
   );
   const items = useCallback(

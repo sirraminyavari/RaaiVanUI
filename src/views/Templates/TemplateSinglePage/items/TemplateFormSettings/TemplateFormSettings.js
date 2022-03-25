@@ -4,7 +4,7 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import { TemplateFormProvider } from './TemplateFormContext';
 import { getFormElements } from 'apiHelper/ApiHandlers/FGAPI';
 import TemplateFormWrapper from './TemplateFormWrapper';
-import { decodeBase64 } from '../../../../../helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateFormSettings = () => {
   const { toggleSidebar } = themeSlice.actions;

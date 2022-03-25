@@ -15,45 +15,47 @@ import {
   SiFoodpanda,
 } from 'react-icons/all';
 import { CV_DISTANT, TCV_DEFAULT } from 'constant/CssVariables';
+import { lazy, Suspense, useMemo } from 'react';
 
 export const EmojiPickerContent = () => {
+  const ButtonIconSize = 16;
   const { handleCategorySelect, selectedCategoryIndex } = useEmojiContext();
   const buttons = [
     {
       id: 0,
-      icon: <IoMdTime size={16} />,
+      icon: <IoMdTime size={ButtonIconSize} />,
     },
     {
       id: 1,
-      icon: <BsEmojiSmile size={16} />,
+      icon: <BsEmojiSmile size={ButtonIconSize} />,
     },
     {
       id: 2,
-      icon: <SiFoodpanda size={16} />,
+      icon: <SiFoodpanda size={ButtonIconSize} />,
     },
     {
       id: 3,
-      icon: <IoFastFoodOutline size={16} />,
+      icon: <IoFastFoodOutline size={ButtonIconSize} />,
     },
     {
       id: 4,
-      icon: <IoFootballOutline size={16} />,
+      icon: <IoFootballOutline size={ButtonIconSize} />,
     },
     {
       id: 5,
-      icon: <MdOutlineEmojiTransportation size={16} />,
+      icon: <MdOutlineEmojiTransportation size={ButtonIconSize} />,
     },
     {
       id: 6,
-      icon: <BsLightbulb size={16} />,
+      icon: <BsLightbulb size={ButtonIconSize} />,
     },
     {
       id: 7,
-      icon: <MdOutlineEmojiSymbols size={16} />,
+      icon: <MdOutlineEmojiSymbols size={ButtonIconSize} />,
     },
     {
       id: 8,
-      icon: <FaRegFlag size={16} />,
+      icon: <FaRegFlag size={ButtonIconSize} />,
     },
   ].map((x) => (
     <Button
@@ -64,10 +66,17 @@ export const EmojiPickerContent = () => {
       {x?.icon}
     </Button>
   ));
+
+  const EmojiCategoryList = useMemo(
+    () => lazy(() => import('./EmojiCategoryList')),
+    []
+  );
   return (
     <>
       <CategoryListContainer>{buttons}</CategoryListContainer>
-      <EmojiCategoryList />
+      <Suspense fallback={<div></div>}>
+        <EmojiCategoryList />
+      </Suspense>
     </>
   );
 };
