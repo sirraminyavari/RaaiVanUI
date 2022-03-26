@@ -2115,10 +2115,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sirraminyavari/rv-block-editor@^0.3.7-dev":
-  "integrity" "sha512-VGLVCU3zW4d8FhIZtCWQbyN+sXqaZdzkVweJ0nWEmUtU7L+0FXtttvuwGo/jo3eCBTej8ds8/eSpfbqgEhngfA=="
-  "resolved" "https://npm.pkg.github.com/download/@sirraminyavari/rv-block-editor/0.3.7-dev/c7286653dfb04c72cdd075a940499a26d0ef68c03f7ea4ad715f4dddef9d41ef"
-  "version" "0.3.7-dev"
+"@sirraminyavari/rv-block-editor@^0.3.9-dev":
+  "integrity" "sha512-aBQeybNk8Ts85JbWH8x/4aUt8LEhQyPaBuBUuq+obsgSyux643Ze7f84OWN7bda1u5JlWhoBSZFJOUPauHhx3A=="
+  "resolved" "https://npm.pkg.github.com/download/@sirraminyavari/rv-block-editor/0.3.9-dev/23682c3aae916c38f0c24fa2cd9509612e88e13be37dcba7111ae24f5712a02d"
+  "version" "0.3.9-dev"
   dependencies:
     "@draft-js-plugins/editor" "^4.1.0"
     "@draft-js-plugins/linkify" "^4.2.0"
@@ -3115,9 +3115,9 @@
     "loader-utils" "^2.0.0"
 
 "@swc/helpers@^0.3.2":
-  "integrity" "sha512-xVl7Sddrl9/eMjEMqkH9lT8fLOGCuWHH9VmR2IBKQ8xTcjA6UQw4O3/4oS3xnyZHLtL9vC3P+C0kLneHpiqeEg=="
-  "resolved" "https://registry.npmjs.org/@swc/helpers/-/helpers-0.3.6.tgz"
-  "version" "0.3.6"
+  "integrity" "sha512-aWItSZvJj4+GI6FWkjZR13xPNPctq2RRakzo+O6vN7bC2yjwdg5EFpgaSAUn95b7BGSgcflvzVDPoKmJv24IOg=="
+  "resolved" "https://registry.npmjs.org/@swc/helpers/-/helpers-0.3.8.tgz"
+  "version" "0.3.8"
 
 "@testing-library/dom@^7.28.1":
   "integrity" "sha512-3UqjCpey6HiTZT92vODYLPxTBWlM8ZOOjr3LX5F37/VRipW2M1kX6I/Cm4VXzteZqfGfagg8yXywpcOgQBlNsQ=="
@@ -10489,9 +10489,9 @@
     "wrap-ansi" "^7.0.0"
 
 "lmdb@^2.0.2":
-  "integrity" "sha512-yx+jtqSgp9uzp+2b3U3VTvS/g5hw4jXqvTAX+QU4Izdueq5O6MUTLwp/94R4F7SYq96zOfaGN/IUgiz6AWo+yg=="
-  "resolved" "https://registry.npmjs.org/lmdb/-/lmdb-2.2.5.tgz"
-  "version" "2.2.5"
+  "integrity" "sha512-UmQV0oZZcV3EN6rjcAjIiuWcc3MYZGWQ0GUYz46Ron5fuTa/dUow7WSQa6leFkvZIKVUdECBWVw96tckfEzUFQ=="
+  "resolved" "https://registry.npmjs.org/lmdb/-/lmdb-2.2.6.tgz"
+  "version" "2.2.6"
   dependencies:
     "msgpackr" "^1.5.4"
     "nan" "^2.14.2"
