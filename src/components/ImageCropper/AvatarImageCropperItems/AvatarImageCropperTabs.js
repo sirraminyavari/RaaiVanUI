@@ -1,18 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import axios from 'axios';
 import useWindow from 'hooks/useWindowContext';
 import TabView from 'components/TabView/TabView';
 import Button from 'components/Buttons/Button';
-import CloseButton from 'components/Buttons/CloseButton';
 import AvatarPanel from './AvatarPanel';
 import ImageCropperUploadInput from '../ImageCropperUploadInput';
 import ImageCropperSelection from './ImageCropperSelection';
 import * as Styles from './AvatarImageCropper.styles';
-import { API_Provider } from 'helpers/helpers';
-import { DOCS_API, UPLOAD_AND_CROP_ICON } from 'constant/apiConstants';
-
-//TODO create a API helper for 'DOCS_API'=>'UPLOAD_AND_CROP_ICON'
-const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
+import { getUploadUrl, setUploadImage } from 'apiHelper/ApiHandlers/docsApi';
 
 /**
  * @component
@@ -24,10 +18,20 @@ const getUploadUrlAPI = API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON);
  * @param {string} props.setAvatarApi - An string to set the correct api upload path e.g. "ProfileImage"
  * @param {Function} props.onComplete - A function to run after image upload process completed
  * @param {Function} props.onCancel - A function to run after cancel button pressed
+ * @param {JSX.Element} props.children - (Only TabView.Item is acceptable as component's direct child/children)
+ * @param {JSX.Element} props.CustomTabAction - If provided, will be passed to TabView.Action component
+ * @param {boolean} props.isModal - Controls the rendering of the return button with OnClick event set to OnCancel method
+ * @param {boolean} props.noAvatarTab - Disable the Avatar selection tab view
+ * @param {Function} props.OnSaveFunction - A function for Save Button(Comes handy if customizing tabs and custom OnSave functionality is mandatory)
  * @return {JSX.Element}
+ * @example
+ * ```jsx
+ * <AvatarImageCropperTabs [...acceptableProps]>
+ *    <TabView.Item label="some label"> some content </TabView.Item>
+ * </AvatarImageCropperTabs>
+ * ```
  */
 function AvatarImageCropperTabs({
-  imageSrc,
   avatarName,
   onImageChange,
   uploadId,
@@ -37,6 +41,11 @@ function AvatarImageCropperTabs({
   onComplete,
   setAvatarApi,
   onCancel,
+  children,
+  CustomTabAction,
+  isModal,
+  noAvatarTab,
+  OnSaveFunction,
 }) {
   const [internalImageSrc, setInternalImageSrc] = useState();
   const [internalAvatar, setInternalAvatar] = useState({ avatarName });
@@ -58,14 +67,8 @@ function AvatarImageCropperTabs({
 
   //! Get upload URL.
   useEffect(() => {
-    getUploadUrlAPI.url(
-      { IconID: uploadId, Type: uploadType },
-      (uploadURL) => {
-        setProfileURL(uploadURL);
-      },
-      (error) => {
-        console.log(error);
-      }
+    getUploadUrl({ IconID: uploadId, Type: uploadType }).then((uploadURL) =>
+      setProfileURL(uploadURL)
     );
 
     //! Clean up.
@@ -95,42 +98,30 @@ function AvatarImageCropperTabs({
     () => async () => {
       setIsSavingImage(true);
 
-      let formData = new FormData();
-      formData.append('file', targetFile);
-
-      formData.append('IconID', uploadId);
-      formData.append('Type', uploadType);
-
-      formData.append('x', croppedAreaPixels?.x);
-      formData.append('y', croppedAreaPixels?.y);
-      formData.append('w', croppedAreaPixels?.width);
-      formData.append('h', croppedAreaPixels?.width);
-
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-
       //! Update profile avatar.
       try {
-        if (uploadMode === 'image') {
-          await axios.post(profileURL, formData, config).then((response) => {
-            setIsSavingImage(false);
-
-            let res = response?.data || {};
-
-            if (res.ImageURL) {
-              const newImageURL = GlobalUtilities.add_timestamp(res.ImageURL);
-              onImageChange(newImageURL);
-              onComplete && onComplete(newImageURL);
-            } else alert(RVDic?.MSG?.OperationFailed || 'operation failed');
+        if (uploadMode === 'image' && targetFile) {
+          const response = await setUploadImage({
+            SaveURL: profileURL,
+            file: targetFile,
+            IconID: uploadId,
+            Type: uploadType,
+            x: croppedAreaPixels?.x,
+            y: croppedAreaPixels?.x,
+            width: croppedAreaPixels?.width,
+            height: croppedAreaPixels?.height,
           });
+          setIsSavingImage(false);
+          const newImageURL = GlobalUtilities.add_timestamp(response?.ImageURL);
+          onImageChange(newImageURL);
+          onComplete && onComplete(newImageURL);
         } else if (uploadMode === 'avatar') {
           await setAvatarApi(internalAvatar);
 
           onImageChange(internalAvatar.avatarSrc);
           onComplete && onComplete(internalAvatar.avatarSrc);
+        } else {
+          OnSaveFunction && OnSaveFunction();
         }
         setIsSavingImage(false);
       } catch (error) {
@@ -153,17 +144,21 @@ function AvatarImageCropperTabs({
             onImageEditorDelete={onImageEditDeleteHandler}
           />
         </TabView.Item>
-
-        <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
-          <AvatarPanel
-            avatarObject={avatarObject}
-            value={internalAvatar}
-            onChange={onAvatarSelection}
-          />
-        </TabView.Item>
-        <TabView.Action>
-          <CloseButton onClick={onCancel} />
-        </TabView.Action>
+        {!noAvatarTab && (
+          <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
+            <AvatarPanel
+              avatarObject={avatarObject}
+              value={internalAvatar}
+              onChange={onAvatarSelection}
+            />
+          </TabView.Item>
+        )}
+        {children}
+        {CustomTabAction && (
+          <TabView.Action>
+            <CustomTabAction />
+          </TabView.Action>
+        )}
       </TabView>
       <ImageCropperUploadInput
         ref={avatarUploadRef}
@@ -181,9 +176,11 @@ function AvatarImageCropperTabs({
         >
           {RVDicSave}
         </Button>
-        <Button onClick={onCancel} type="negative-o">
-          {RVDicReturn}
-        </Button>
+        {isModal && (
+          <Button onClick={onCancel} type="negative-o">
+            {RVDicReturn}
+          </Button>
+        )}
       </Styles.ImageCropperActionsContainer>
     </>
   );

@@ -94,16 +94,7 @@ const WorkspaceDeleteContent = () => {
 
     // hides reCapctha when component willunmount
     return () => hideCaptchaToken();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      await initializeCaptchaToken();
-      await handleLoaded();
-    })();
-
-    // hides reCapctha when component willunmount
-    return () => hideCaptchaToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -114,7 +105,8 @@ const WorkspaceDeleteContent = () => {
       <Styled.WorkspaceDeleteString
         type="alert"
         fontWeight="bold"
-        size={'1.5rem'}>
+        size={'1.5rem'}
+      >
         {RVDicRemoveWorkspacePermanently}!
       </Styled.WorkspaceDeleteString>
       <Styled.WorkspaceDeleteString>
@@ -161,13 +153,15 @@ const WorkspaceDeleteContent = () => {
           disable={!OTPProperties?.Timeout}
           onClick={handleRemoveWorkspaceButton}
           type="negative-o"
-          style={{ marginInline: '0.5rem' }}>
+          style={{ marginInline: '0.5rem' }}
+        >
           {RVDicConfirmDelete}
         </Button>
         <Button
           onClick={ReturnToWorkspaces}
           type="primary-o"
-          style={{ marginInline: '0.5rem' }}>
+          style={{ marginInline: '0.5rem' }}
+        >
           {RVDicReturn}
         </Button>
       </Styled.WorkspaceDeleteActionsContainer>

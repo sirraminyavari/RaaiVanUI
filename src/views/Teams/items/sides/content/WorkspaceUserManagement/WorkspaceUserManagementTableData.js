@@ -1,10 +1,15 @@
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
+import WithAvatar from 'components/Avatar/WithAvatar';
 import Button from 'components/Buttons/Button';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
-import { memo } from 'react';
 import WorkspaceUserManagementExtraTeamsList from './WorkspaceUserManagementList';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 function WorkspaceUserManagementTableData({
   workspaceUsers,
@@ -21,6 +26,7 @@ function WorkspaceUserManagementTableData({
           <Avatar
             className="userAvatar"
             userImage={GlobalUtilities.add_timestamp(User.ImageURL)}
+            userObject={User}
           />
           {decodeBase64(User.FullName)}
         </>

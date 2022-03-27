@@ -9,17 +9,51 @@ export const useTabView = ({ children, onSelect }) => {
   const [indicatorOffset, setIndicatorOffset] = useState();
   const action = [...children].find((x) => x?.type?.name === 'Action') || null;
 
-  const items = children
-    .filter((x) => x?.type?.name === 'Item')
-    .map((x, index) => ({
-      ...x,
-      key: x?.key || getUUID(),
-      props: { ...x.props, index },
-    }))
-    .map((x) => cloneElement(x));
+  const tabItemsComponentBuilder = useMemo(
+    () => (children) => {
+      const itemsArray = [];
+      children
+        .filter((x) => {
+          if (x?.type?.name === 'Item') return true;
+          else if (Array.isArray(x) && x.length) {
+            let arrayLength = x.length;
+
+            while (arrayLength--) {
+              if (x[arrayLength]?.type?.name !== 'Item') return false;
+            }
+            return true;
+          } else return false;
+        })
+        .forEach((x, index) => {
+          if (Array.isArray(x)) {
+            let arrayLength = x.length;
+
+            while (arrayLength--) {
+              itemsArray.push({
+                ...x[arrayLength],
+                key: x[arrayLength]?.key || getUUID(),
+                props: { ...x[arrayLength].props, index },
+              });
+            }
+          } else
+            itemsArray.push({
+              ...x,
+              key: x?.key || getUUID(),
+              props: { ...x.props, index },
+            });
+        });
+
+      return itemsArray.map((x) => cloneElement(x));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [children]
+  );
+
+  const items = tabItemsComponentBuilder(children);
 
   const selectedBody = useMemo(
     () => items.find((x) => x?.props?.index === selectedIndex)?.props?.children,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedIndex]
   );
 
@@ -41,6 +75,7 @@ export const useTabView = ({ children, onSelect }) => {
     if (onSelect) {
       onSelect([...items].find((x) => x?.props?.index === selectedIndex)?.key);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex]);
 
   return {
