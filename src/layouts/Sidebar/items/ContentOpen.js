@@ -8,6 +8,7 @@ import {
   MANAGE_CONTENT,
   PROFILE_CONTENT,
   SETTING_CONTENT,
+  TEMPLATE_CONTENT,
 } from 'constant/constants';
 import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
@@ -40,6 +41,12 @@ const SidebarProfile = lazy(() =>
   )
 );
 
+const SidebarTemplate = lazy(() =>
+  import(
+    /* webpackChunkName: "sidebar-template-single"*/ './openSubContents/template/TemplateSetting'
+  )
+);
+
 //! Provides the content of the sidebar.
 const getSidebarContent = (content) => {
   const rootContent = content.split('-')[0];
@@ -51,6 +58,8 @@ const getSidebarContent = (content) => {
       return <SidebarManage />;
     case PROFILE_CONTENT:
       return <SidebarProfile />;
+    case TEMPLATE_CONTENT:
+      return <SidebarTemplate />;
     default:
       return <SidebarMain />;
   }
@@ -83,7 +92,8 @@ const SidebarOnOpen = () => {
         position: 'relative',
         padding: '0 1.5rem',
       }}
-      data-tut="categories_and_templates">
+      data-tut="categories_and_templates"
+    >
       <div ref={containerRef}>{getSidebarContent(content?.current)}</div>
     </ScrollBarProvider>
   );

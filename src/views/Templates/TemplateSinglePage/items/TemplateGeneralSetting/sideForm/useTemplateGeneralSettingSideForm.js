@@ -13,7 +13,7 @@ import InfoToast from 'components/toasts/info-toast/InfoToast';
 export const useTemplateGeneralSettingSideForm = () => {
   const { RVDic } = window;
   const {
-    AppID: NodeTypeID,
+    NodeTypeID,
     Extensions: extensions,
     IsCommunityPage,
     EnableComments,

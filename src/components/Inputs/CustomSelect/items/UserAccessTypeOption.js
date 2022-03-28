@@ -1,14 +1,10 @@
 import { components } from 'react-select';
 import styled from 'styled-components';
 import InfoCircleIcon from '../../../Icons/InfoCircleIcon/InfoIcon';
-import { CV_DISTANT } from '../../../../constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
 
 const OptionContainer = styled.div`
   padding: 0.2rem;
-`;
-
-const OptionLabel = styled.div`
-  font-size: 1rem;
 `;
 
 const DescriptionContainer = styled.div`
@@ -25,7 +21,6 @@ const Description = styled.div`
 
 const UserAccessTypeOption = (props) => {
   const { data, children } = props;
-  console.log(data);
   const { value, label, description } = data;
 
   return (

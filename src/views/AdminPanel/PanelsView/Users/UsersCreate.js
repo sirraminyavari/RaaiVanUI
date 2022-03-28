@@ -93,7 +93,8 @@ const UsersCreate = ({ onClose }) => {
         <>
           <UserCreateStyle.UsernameInput
             className={shake && 'rv-shake'}
-            error={highlight}>
+            error={highlight}
+          >
             <UserCreateStyle.UsernameInputField
               defaultValue={form.Username}
               onChange={(event) => handleUsernameValidity(event.target.value)}

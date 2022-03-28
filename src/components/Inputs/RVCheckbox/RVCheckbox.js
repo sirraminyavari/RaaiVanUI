@@ -4,7 +4,7 @@ import {
   Input,
   CustomCheckbox,
   CheckboxLabel,
-} from './RVCheckboxStyle';
+} from './CheckboxStyle';
 import CheckIcon from '../../Icons/CheckIcons/Check';
 
 /**
@@ -12,18 +12,16 @@ import CheckIcon from '../../Icons/CheckIcons/Check';
  * RVCheckbox can be either checked, unchecked, indeterminate, or disabled.
  * @type {React.<JSX>}
  */
-const RVCheckbox = React.forwardRef((props, forwardedRef) => {
+const RVCheckbox = React.forwardRef((props, ref) => {
   const { children, checked, disabled, ...rest } = props;
 
   return (
-    <CheckboxContainer disabled={disabled}>
-      <Input ref={forwardedRef} disabled={disabled} {...rest} />
-      <CustomCheckbox checked={checked} disabled={disabled}>
+    <CheckboxContainer>
+      <Input {...{ checked, ref }} {...rest} />
+      <CustomCheckbox checked={checked}>
         {checked && <CheckIcon size={20} />}
       </CustomCheckbox>
-      <CheckboxLabel checked={checked} disabled={disabled}>
-        {children}
-      </CheckboxLabel>
+      <CheckboxLabel {...{ checked, disabled }}>{children}</CheckboxLabel>
     </CheckboxContainer>
   );
 });
