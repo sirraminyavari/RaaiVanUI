@@ -10,7 +10,7 @@ import TemplateDeleteButton from './TemplateDeleteButton';
 import { useContext } from 'react';
 import { TemplateListContext } from '../TemplatesSettings';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { encodeBase64 } from '../../../../helpers/helpers';
+import { encodeBase64 } from 'helpers/helpers';
 
 const SHTemplateItem = ({
   item,
@@ -25,9 +25,8 @@ const SHTemplateItem = ({
   const history = useHistory();
   const { path } = useRouteMatch();
 
-  const { handleDeleteNode, handleAddNodeType } = useContext(
-    TemplateListContext
-  );
+  const { handleDeleteNode, handleAddNodeType } =
+    useContext(TemplateListContext);
 
   const toggleItem = () => {
     if (item.isExpanded) {
@@ -54,7 +53,7 @@ const SHTemplateItem = ({
       style={{ direction: 'rtl' }}
       ref={provided.innerRef}
       {...provided.draggableProps}
-      {...provided.dragHandleProps}>
+    >
       <TreeItemContainer rtl={RV_RTL} depth={depth}>
         <ArrowIconWrapper>
           {item?.hasChildren && (
@@ -68,7 +67,10 @@ const SHTemplateItem = ({
           )}
         </ArrowIconWrapper>
 
-        <DragIconWrapper onMouseDown={() => onCollapse(item?.id)}>
+        <DragIconWrapper
+          onMouseDown={() => onCollapse(item?.id)}
+          {...provided.dragHandleProps}
+        >
           <DragPaneIcon size={20} />
         </DragIconWrapper>
 
@@ -85,6 +87,8 @@ const SHTemplateItem = ({
         />
 
         <Spacer />
+
+        <div onClick={handleCardClick}>go</div>
 
         <TemplateDeleteButton onDeleteConfirm={() => handleDelete()} />
       </TreeItemContainer>

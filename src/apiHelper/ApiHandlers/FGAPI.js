@@ -29,25 +29,25 @@ export const getFormElements = ({
   }).then((res) => ({
     FormName: decodeBase64(res?.FormName),
     FormDescription: decodeBase64(res?.FormDescription),
-    Elements: (res?.Elements || []).map((e) => ({
-      ...e,
-      Title: decodeBase64(e?.Title),
-      Name: decodeBase64(e?.Name),
-      Help: decodeBase64(e?.Help),
-      Info: !e?.Info
-        ? undefined
-        : JSON.parse(
-            decodeBase64(
-              extend({}, e.Info, {
-                Options: !e?.Info?.Options?.length
-                  ? undefined
-                  : e.Info.Options.map((o) => decodeBase64(o)),
-                Yes: !e?.Info?.Yes ? undefined : decodeBase64(e.Info.Yes),
-                No: !e?.Info?.No ? undefined : decodeBase64(e.Info.No),
-              })
-            )
-          ),
-    })),
+    Elements: (res?.Elements || []).map((e) => {
+      const info = !e?.Info ? undefined : JSON.parse(decodeBase64(e.Info));
+
+      return {
+        ...e,
+        Title: decodeBase64(e?.Title),
+        Name: decodeBase64(e?.Name),
+        Help: decodeBase64(e?.Help),
+        Info: !info
+          ? undefined
+          : extend({}, info, {
+              Options: !info.Options?.length
+                ? undefined
+                : info.Options.map((o) => decodeBase64(o)),
+              Yes: !info.Yes ? undefined : decodeBase64(info.Yes),
+              No: !info.No ? undefined : decodeBase64(info.No),
+            }),
+      };
+    }),
   }));
 };
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFD93B;}
+	.st1{fill:#3E4347;}
+	.st2{fill:#F4C534;}
+	.st3{fill:#38C0DC;}
+	.st4{fill:#45CBEA;}
+	.st5{fill:#FFFFFF;}
+	.st6{fill:#E24B4B;}
+	.st7{fill:#5A5F63;}
+	.st8{opacity:0.3;}
+	.st9{opacity:0.2;}
+	.st10{opacity:0.1;}
+	.st11{fill:#E9B02C;}
+	.st12{fill:#65B1EF;}
+	.st13{fill:#E9EFF4;}
+	.st14{fill:#8CC63E;}
+	.st15{fill:#7FB239;}
+	.st16{fill:#D03F3F;}
+	.st17{fill:#D23F77;}
+	.st18{fill:#E84D88;}
+	.st19{fill:#59A5E0;}
+	.st20{fill:#DEE4E9;}
+	.st21{fill:#D3D9DD;}
+	.st22{opacity:0.25;fill:#FFFFFF;}
+	.st23{fill:#9A795F;}
+	.st24{fill:#F29A2E;}
+	.st25{fill:#FC97B2;}
+	.st26{fill:#89664C;}
+	.st27{fill:#7A5B44;}
+	.st28{opacity:0.2;fill:#FFFFFF;}
+	.st29{fill:#4E99D2;}
+	.st30{fill:#BBC7D1;}
+	.st31{fill:#DE9C25;}
+</style>
+<g>
+	<circle class="st0" cx="16" cy="16" r="16"/>
+	<path class="st1" d="M25.48,22.053c-1.533,3.732-5.198,6.355-9.479,6.355s-7.946-2.623-9.489-6.355
+		c-0.145-0.347,0.096-0.752,0.472-0.829c6.008-1.119,12.025-1.119,18.023,0C25.383,21.301,25.624,21.706,25.48,22.053z"/>
+	<path class="st2" d="M32,16c0,8.84-7.165,16-16,16c-5.03,0-9.52-2.32-12.455-5.955c2.745,2.22,6.24,3.545,10.045,3.545
+		c8.835,0,16-7.16,16-16c0-3.805-1.325-7.3-3.545-10.045C29.675,6.48,32,10.97,32,16z"/>
+	<path class="st5" d="M7.204,21.188c1.138,1.852,4.699,2.051,8.948,2.051c4.193,0,7.762-0.199,8.948-1.974
+		c-0.032-0.012-0.058-0.034-0.092-0.041C19.082,20.118,13.139,20.11,7.204,21.188z"/>
+	<ellipse class="st5" cx="22.277" cy="12.829" rx="5.066" ry="5.063"/>
+	<ellipse class="st1" cx="22.275" cy="12.829" rx="2.762" ry="2.764"/>
+	
+		<ellipse transform="matrix(0.7072 -0.7071 0.7071 0.7072 -1.441 20.0273)" class="st5" cx="23.457" cy="11.753" rx="0.504" ry="0.747"/>
+	<ellipse class="st5" cx="9.726" cy="12.829" rx="5.066" ry="5.063"/>
+	<ellipse class="st1" cx="9.724" cy="12.829" rx="2.762" ry="2.764"/>
+	
+		<ellipse transform="matrix(0.7072 -0.7071 0.7071 0.7072 -5.1164 11.1532)" class="st5" cx="10.906" cy="11.753" rx="0.504" ry="0.747"/>
+</g>
+</svg>
