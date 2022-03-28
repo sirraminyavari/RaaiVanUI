@@ -1,5 +1,7 @@
 import TextTypeMainSetting from './simpleText/TextTypeMainSetting';
 import TextTypeSideBoxSetting from './simpleText/TextTypeSideBoxSetting';
+import DateTypeMainSetting from './DateElement/DateTypeMainSetting';
+import DateTypeSideBoxSetting from './DateElement/DateTypeSideBoxSetting';
 
 const componentsArray = [
   {
@@ -8,12 +10,25 @@ const componentsArray = [
       return TextTypeTemplate(props);
     },
   },
+  {
+    key: 'Date',
+    value: (props) => {
+      return DateTypeTemplate(props);
+    },
+  },
 ];
 
 const TextTypeTemplate = (props) => {
   return {
     main: TextTypeMainSetting({ ...props }),
     sideBox: TextTypeSideBoxSetting({ ...props }),
+  };
+};
+
+const DateTypeTemplate = (props) => {
+  return {
+    main: DateTypeMainSetting(props),
+    sideBox: DateTypeSideBoxSetting(props),
   };
 };
 

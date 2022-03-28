@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { FLEX_RCB } from 'constant/StyledCommonCss';
 import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 
+export const Row = styled.div`
+  width: 100%;
+`;
+
 export const ToggleRow = styled.div`
   ${FLEX_RCB};
   width: 100%;

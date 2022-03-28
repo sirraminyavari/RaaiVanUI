@@ -25,7 +25,7 @@ const TextTypeFinder = (data) => {
     return el;
   };
 
-  if (Info === {} || Info === null || !Info) {
+  if (Info.hasOwnProperty('min') || Info.hasOwnProperty('max')) {
     return _getObject('paragraph');
   } else if (
     Info.hasOwnProperty('UseSimpleEditor') &&
@@ -45,4 +45,16 @@ const TextTypeFinder = (data) => {
   }
 };
 
-const NumericTypeFinder = (data) => {};
+const NumericTypeFinder = (data) => {
+  const _getObject = (type) => {
+    const _list = formElementList() || [];
+    const el = _list
+      .find((x) => x?.type === 'Numeric')
+      ?.items?.find((x) => x?.type === type);
+    const _temp = el.data.Info;
+    el.data = data;
+    if (!el.data.Info) el.data.Info = _temp;
+    return el;
+  };
+  return _getObject(data?.Type);
+};

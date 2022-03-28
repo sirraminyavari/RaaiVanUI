@@ -89,6 +89,7 @@ const formElementList = () => {
     {
       id: 2,
       title: 'فیلدهای عددی',
+      type: 'Numeric',
       items: [
         {
           id: getUUID(),
@@ -103,7 +104,15 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'تاریخ',
+          type: 'Date',
           icon: <FilledCalendarIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Date',
+            Info: {
+              Calendar: '',
+            },
+          },
         },
       ],
     },

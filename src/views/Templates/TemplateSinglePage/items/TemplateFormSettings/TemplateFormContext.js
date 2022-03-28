@@ -60,6 +60,7 @@ export const TemplateFormProvider = ({ children, initialState }) => {
   const formPreProcessDataModel = (data) => {
     const { Elements } = data || {};
     const modified = Elements?.map((x) => getElementType(x));
+    console.log(Elements);
     if (modified) {
       setFormObjects(modified);
     }
@@ -79,10 +80,10 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         ...x,
       }));
     console.log(Elements);
-    // const { ErrorText } = saveFormElements({
-    //   FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
-    //   Elements,
-    // });
+    const { ErrorText } = saveFormElements({
+      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+      Elements,
+    });
   };
 
   return (
