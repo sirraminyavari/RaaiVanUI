@@ -63,6 +63,7 @@ export default WorkspaceTeamsSkeleton;
 const GridWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   > div {
     flex-shrink: 0;
     width: ${({ isMobile }) => (isMobile ? 100 : 50)}%;

@@ -2806,6 +2806,8 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
         };
 
         return function (elem, reverse) {
+            return elem; //this matter is handled by font
+
             if ((window.RV_Lang || "_").toLowerCase() != "fa") return elem;
 
             if (GlobalUtilities.get_type(elem) == "number") elem = String(elem);

@@ -30,12 +30,13 @@ const WorkspaceHeader = ({ space }) => {
   const history = useHistory();
 
   //TODO: Update RVDic object dictionary
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const RVDicReturn = RVDic.Return;
-  const RVDicDeleteConfirmQuestion = RVDic.Confirms.AreYouSureYouWantToDeleteTheN.replace(
-    '[n]',
-    RVDic.Workspace
-  );
+  const RVDicDeleteConfirmQuestion =
+    RVDic.Confirms.AreYouSureYouWantToDeleteTheN.replace(
+      '[n]',
+      RVDic.Workspace
+    );
   const RVDicDeleteConfirmWarning = RVDic._HelpRemoveWorkspace;
   const RVDicRemoveWorkspace = RVDic.RemoveN.replace('[n]', RVDic.Workspace);
   const RVDicPermanentlyRemove = RVDic.RemovePermanently;
@@ -53,11 +54,13 @@ const WorkspaceHeader = ({ space }) => {
       WorkspaceID: space.WorkspaceID,
       Name,
     });
-    const operationInfoText = ErrorText || Succeed;
-    InfoToast({
-      type: ErrorText ? 'error' : 'success',
-      message: RVDic.MSG[operationInfoText] || operationInfoText,
-    });
+    if (Succeed && RVGlobal.IsDev)
+      console.log({
+        operation: 'rename workspace title',
+        type: ErrorText ? 'error' : 'success',
+        message: RVDic.MSG[Succeed] || Succeed,
+      });
+    else if (ErrorText) alert(RVDic.MSG[ErrorText] || ErrorText);
   };
 
   //! Cancel space deletion.
