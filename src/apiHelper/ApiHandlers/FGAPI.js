@@ -116,11 +116,17 @@ const customizedElements = {
   },
   number: {
     Type: 'Numeric',
-    Info: { min: '[number]', max: '[number]' },
+    Info: {
+      min: '[number]',
+      max: '[number]',
+      PatternName: 'NUMBER | PRICE | NATIONAL_CODE | POSTAL_CODE | NONE',
+      currency: 'TOMAN | RIAL | DOLLAR | EURO | NONE',
+      separator: true,
+    },
   },
   'phone number': {
     Type: 'Text',
-    Info: { UseSimpleEditor: true, PatternName: 'mobile' },
+    Info: { UseSimpleEditor: true, PatternName: 'mobile | ' },
   },
   date: {
     Type: 'Date',

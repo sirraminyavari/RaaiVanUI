@@ -95,6 +95,17 @@ const formElementList = () => {
           id: getUUID(),
           title: 'عددی',
           icon: <NumericalIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Numeric',
+            Info: {
+              min: 10,
+              max: 20,
+              PatternName: 'NONE',
+              currency: 'NONE',
+              separator: true,
+            },
+          },
         },
         {
           id: getUUID(),

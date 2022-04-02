@@ -4,6 +4,7 @@ import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 
 export const Row = styled.div`
   width: 100%;
+  margin-bottom: 2rem;
 `;
 
 export const ToggleRow = styled.div`
