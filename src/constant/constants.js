@@ -255,4 +255,4 @@ export const KURDISH_LANGUAGE = 'ku';
  */
 export const ONE_TO_TEN = '1 - 10';
 export const TEN_TO_TWENTY = '10 - 20';
-export const MORE_THEN_TWENTY = 'more than 20';
+export const MORE_THAN_TWENTY = 'more than 20';

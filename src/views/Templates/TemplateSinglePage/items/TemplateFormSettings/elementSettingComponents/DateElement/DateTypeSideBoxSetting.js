@@ -21,7 +21,7 @@ export const DateTypeSideBoxSetting = ({ current, setFormObjects }) => {
       </Styles.Row>
 
       <Styles.Row>
-        <div>{'انتخاب تقویم'}</div>
+        <Styles.SelectBoxTitle>{'انتخاب تقویم'}</Styles.SelectBoxTitle>
         <CustomSelect
           placeholder=""
           options={calOption}

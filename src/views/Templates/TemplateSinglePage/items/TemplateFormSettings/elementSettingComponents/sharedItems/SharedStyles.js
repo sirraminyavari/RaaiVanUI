@@ -7,6 +7,11 @@ export const Row = styled.div`
   margin-bottom: 2rem;
 `;
 
+export const SelectBoxTitle = styled.div`
+  margin-bottom: 0.5rem;
+  color: ${CV_GRAY};
+`;
+
 export const ToggleRow = styled.div`
   ${FLEX_RCB};
   width: 100%;
