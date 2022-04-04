@@ -19,6 +19,8 @@ function BE({
   // handleRemoveBlocks,
   // handleSortBlocks,
   handleSaveRawHtmlContent,
+  lang,
+  dir,
 }) {
   const editorRef = useRef();
   useLayoutEffect(
@@ -58,8 +60,8 @@ function BE({
       editorState={editorState}
       onChange={setEditorState}
       dict={dict}
-      lang={'en'}
-      dir={'ltr'}
+      lang={lang || 'en'}
+      dir={dir || 'ltr'}
       plugins={plugins}
       styles={defaultTheme}
       portalNode={document.getElementById('block-editor-portal')}
