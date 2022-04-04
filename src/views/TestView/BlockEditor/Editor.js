@@ -52,7 +52,8 @@ const Editor = () => {
             type="negative-o"
             style={{ marginBottom: '1rem' }}
             loading={adding}
-            onClick={addNode}>
+            onClick={addNode}
+          >
             {'+ ' + RVDic.Add}
           </Button>
           {nodes.map((nd) => (
@@ -60,7 +61,8 @@ const Editor = () => {
               key={nd.NodeID}
               type={selectedId === nd.NodeID ? 'primary-o' : 'primary'}
               onClick={() => setSelectedId(nd.NodeID)}
-              style={{ marginBottom: '0.5rem' }}>
+              style={{ marginBottom: '0.5rem' }}
+            >
               {Base64.decode(nd.Name)}
             </Button>
           ))}
@@ -76,10 +78,12 @@ const Editor = () => {
             <div style={{ flex: '0 0 auto' }}>
               <Button
                 type="secondary-o"
-                onClick={() => setBlockEditorPage(!blockEditorPage)}>
+                onClick={() => setBlockEditorPage(!blockEditorPage)}
+              >
                 <ArrowIcon
                   dir={RV_RTL ? 'right' : 'left'}
-                  style={{ marginInlineEnd: '0.5rem' }}></ArrowIcon>
+                  style={{ marginInlineEnd: '0.5rem' }}
+                ></ArrowIcon>
                 {RV_RTL
                   ? blockEditorPage
                     ? 'ویرایشگر قدیمی'
@@ -92,7 +96,11 @@ const Editor = () => {
           </Settings>
           <EditorContainer>
             {blockEditorPage ? (
-              <Block nodeId={selectedId} lang={RV_RTL ? 'fa' : 'en'} />
+              <Block
+                nodeId={selectedId}
+                lang={RV_RTL ? 'fa' : 'en'}
+                dir={RV_RTL ? 'rtl' : 'ltr'}
+              />
             ) : (
               <Legacy nodeId={selectedId} />
             )}
