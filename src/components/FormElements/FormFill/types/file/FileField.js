@@ -9,10 +9,12 @@ import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { useState } from 'react';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const FileField = (props) => {
   const { GlobalUtilities, RVDic } = useWindow();
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
   const {
     value,
@@ -69,7 +71,8 @@ const FileField = (props) => {
     <FormCell
       iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
       title={decodeTitle}
-      {...rest}>
+      {...rest}
+    >
       <DeleteConfirmModal
         show={deleteModalStatus}
         messageQuestion="آیا از حذف اطمینان دارید؟"
@@ -80,7 +83,7 @@ const FileField = (props) => {
         onClose={() => setDeleteModalStatus(false)}
         onConfirm={() => setDeleteModalStatus(false)}
       />
-      <Styled.FilesContainer>
+      <Styled.FilesContainer isTabletOrMobile={isTabletOrMobile}>
         {value?.map((file, key) => (
           <FileShowCell file={file} key={key} />
         ))}

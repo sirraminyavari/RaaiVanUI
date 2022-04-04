@@ -1,5 +1,7 @@
 import {
   API_NAME_FG_GET_FORM_ELEMENTS,
+  API_NAME_FG_GET_FORM_INSTANCE,
+  API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE,
   API_NAME_FG_SAVE_FORM_ELEMENTS,
 } from 'constant/api-names-fg';
 import { FG_API } from 'constant/apiConstants';
@@ -94,6 +96,32 @@ export const saveFormElements = ({
         })),
       })
     ),
+  });
+};
+
+/**
+ *
+ */
+
+export const initializeOwnerFormInstance = ({ OwnerID }) => {
+  return apiCallWrapper(
+    API_Provider(FG_API, API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE),
+    { OwnerID }
+  );
+};
+/**
+ *
+ */
+
+export const getFormInstance = ({
+  InstanceID,
+  LimitOwnerID,
+  ShowAllIfNoLimit,
+}) => {
+  return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORM_INSTANCE), {
+    InstanceID,
+    LimitOwnerID,
+    ShowAllIfNoLimit,
   });
 };
 

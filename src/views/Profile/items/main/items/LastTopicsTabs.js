@@ -67,7 +67,7 @@ const LastTopicsTabs = ({
   };
 
   return (
-    <ScrollBarProvider style={{ paddingBottom: '0.5rem' }}>
+    <ScrollBarProvider style={{ paddingBottom: '0.5rem', width: '100%' }}>
       <Styled.TopicsTabsContainer>
         <Styled.TabsContainer>
           <TabItem
@@ -111,7 +111,7 @@ const LastTopicsTabs = ({
           </Styled.MoreTopicsWrapper>
           {!isRelatedPage && (
             <Button classes="more-topics-button">
-              <Link to={relatedTopicsLink}>مشاهده همه آیتم‌ها</Link>
+              <Link to={relatedTopicsLink || ''}>مشاهده همه آیتم‌ها</Link>
             </Button>
           )}
         </Styled.MoreTopicsContainer>

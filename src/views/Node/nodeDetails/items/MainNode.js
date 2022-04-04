@@ -5,28 +5,25 @@
 import APIHandler from 'apiHelper/APIHandler';
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import FormFill from 'components/FormElements/FormFill/FormFill';
-import SaveButton from 'components/FormElements/FormFill/items/SaveButton';
 import Heading from 'components/Heading/Heading';
-import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import TextIcon from 'components/Icons/TextIcon';
 import Input from 'components/Inputs/Input';
-import { CV_DISTANT, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, CV_WHITE } from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RVDic } from 'utils/TestUtils/fa';
-import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import LoadParagraph from 'components/LoadParagraph/LoadParagraph';
-import LoadingSkelton from './LoadingSkelton';
+import {
+  getFormInstance,
+  initializeOwnerFormInstance,
+} from 'apiHelper/ApiHandlers/FGAPI';
 
 const ModifyNodeName = new APIHandler('CNAPI', 'ModifyNodeName');
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
 const ModifyNodeTags = new APIHandler('CNAPI', 'ModifyNodeTags');
-const getFormInstance = new APIHandler('FGAPI', 'GetFormInstance');
 const getInstanceId = new APIHandler('FGAPI', 'InitializeOwnerFormInstance');
-const MainNode = ({ nodeDetails, nodeId }) => {
-  const [fields, setFields] = useState(null);
+const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const [titleEditMode, setTitleEditMode] = useState(false);
   const [descEditMode, setDescEditMode] = useState(false);
   const [keywords, setKeywords] = useState([]);
@@ -35,25 +32,7 @@ const MainNode = ({ nodeDetails, nodeId }) => {
   const [desc, setDesc] = useState(
     decodeBase64(nodeDetails?.Description?.Value)
   );
-  useEffect(() => {
-    getInstanceId.fetch(
-      {
-        OwnerID: nodeId,
-      },
-      (result) => {
-        getFormInstance.fetch(
-          {
-            InstanceID: result?.InstanceID,
-            LimitOwnerID: null,
-            ShowAllIfNoLimit: true,
-          },
-          (response) => {
-            setFields(response);
-          }
-        );
-      }
-    );
-  }, []);
+
   useEffect(() => {
     setTitle(decodeBase64(nodeDetails?.Name?.Value));
     setDesc(decodeBase64(nodeDetails?.Description?.Value));
@@ -134,75 +113,54 @@ const MainNode = ({ nodeDetails, nodeId }) => {
 
   return (
     <>
-      {fields ? (
-        <Main>
-          <TitleContainer style={{ marginBottom: '3rem' }}>
-            {nodeDetails?.Name?.Editable ? (
-              <Input
-                onChange={onTitleChange}
-                value={title}
-                onFocus={() => {
-                  console.log('focused');
-                  setTitleEditMode(true);
-                }}
-                onBlur={onSaveTitle}
-                style={{
-                  fontSize: '1.4rem',
-                  fontWeight: 'bold',
-                  borderWidth: 0,
-                  borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
-                  borderRadius: 0,
-                  borderColor: `${CV_DISTANT}`,
-                  width: '100%',
-                }}
-              />
-            ) : (
-              <Heading type={'h1'}>{title}</Heading>
-            )}
-            {/* {titleEditMode ? (
-          <>
-            <Input onChange={onTitleChange} value={title} />
-            <SaveButton
-              style={{ margin: '0 1rem 0 1rem' }}
-              onClick={onSaveTitle}
+      <Main>
+        <TitleContainer style={{ marginBottom: '3rem' }}>
+          {nodeDetails?.Name?.Editable ? (
+            <Input
+              onChange={onTitleChange}
+              value={title}
+              onFocus={() => {
+                console.log('focused');
+                setTitleEditMode(true);
+              }}
+              onBlur={onSaveTitle}
+              style={{
+                fontSize: '1.4rem',
+                fontWeight: 'bold',
+                borderWidth: 0,
+                borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
+                borderRadius: 0,
+                borderColor: `${CV_DISTANT}`,
+                width: '100%',
+              }}
             />
-          </>
-        ) : (
-          <>
-            {nodeDetails?.Name?.Editable && (
-              <PencilIcon
-                size={'1.5rem'}
-                style={{ margin: '0 1rem 0 1rem' }}
-                color={TCV_WARM}
-                onClick={onEditTitle}
-              />
-            )}
+          ) : (
             <Heading type={'h1'}>{title}</Heading>
-          </>
-        )} */}
-          </TitleContainer>
-          <TitleContainer>
-            <>
-              <FormCell
-                editModeVisible={false}
-                title={RVDic.Summary}
-                style={{ display: 'flex', flexGrow: 1 }}
-                iconComponent={<TextIcon color={CV_GRAY} />}>
-                {nodeDetails?.Name?.Editable ? (
-                  <Input
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '300',
-                      width: '90%',
-                    }}
-                    onChange={onDescChange}
-                    value={desc}
-                    onBlur={onSaveDesc}
-                  />
-                ) : (
-                  <Heading type={'h3'}>{desc}</Heading>
-                )}
-                {/* {descEditMode ? (
+          )}
+        </TitleContainer>
+        <TitleContainer>
+          <>
+            <FormCell
+              editModeVisible={false}
+              title={RVDic.Summary}
+              style={{ display: 'flex', flexGrow: 1 }}
+              iconComponent={<TextIcon color={CV_GRAY} />}
+            >
+              {nodeDetails?.Name?.Editable ? (
+                <Input
+                  style={{
+                    fontSize: '1.1rem',
+                    fontWeight: '300',
+                    width: '100%',
+                  }}
+                  onChange={onDescChange}
+                  value={desc}
+                  onBlur={onSaveDesc}
+                />
+              ) : (
+                <Heading type={'h3'}>{desc}</Heading>
+              )}
+              {/* {descEditMode ? (
               <CellContainer>
                 <Input
                   style={{ width: '90%' }}
@@ -227,41 +185,35 @@ const MainNode = ({ nodeDetails, nodeId }) => {
                 <Heading type={'h3'}>{desc}</Heading>
               </>
             )} */}
-              </FormCell>
-            </>
-          </TitleContainer>
-          <TitleContainer>
-            <>
-              <FormCell
-                editModeVisible={false}
-                title={RVDic.Keywords}
-                style={{ display: 'flex', flexGrow: 1 }}
-                iconComponent={<TextIcon color={CV_GRAY} />}>
-                <CellContainer>
-                  <CreatableSelect
-                    value={keywords}
-                    isMulti
-                    isDisabled={!nodeDetails?.Keywords?.Editable}
-                    isClearable
-                    onBlur={onSaveKeywords}
-                    onChange={setKeywords}
-                    styles={customStyles}
-                    value={keywords}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                  />
-                </CellContainer>
-              </FormCell>
-            </>
-          </TitleContainer>
-          {fields && (
-            <FormFill editable={nodeDetails?.Editable} data={fields} />
-          )}
-        </Main>
-      ) : (
-        <LoadingSkelton />
-        // <LoadParagraph />
-      )}
+            </FormCell>
+          </>
+        </TitleContainer>
+        <TitleContainer>
+          <>
+            <FormCell
+              editModeVisible={false}
+              title={RVDic.Keywords}
+              style={{ display: 'flex', flexGrow: 1 }}
+              iconComponent={<TextIcon color={CV_GRAY} />}
+            >
+              <CellContainer>
+                <CreatableSelect
+                  value={keywords}
+                  isMulti
+                  isDisabled={!nodeDetails?.Keywords?.Editable}
+                  isClearable
+                  onBlur={onSaveKeywords}
+                  onChange={setKeywords}
+                  styles={customStyles}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+              </CellContainer>
+            </FormCell>
+          </>
+        </TitleContainer>
+        {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
+      </Main>
     </>
   );
 };
