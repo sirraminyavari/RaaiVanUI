@@ -6,16 +6,16 @@ import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 
 const { RVDic, RVGlobal } = window;
 const securityOptions = [
-  { label: '*#*غیرمحرمانه', value: 'غیرمحرمانه' },
-  { label: '*#*محرمانه', value: 'محرمانه' },
-  { label: '*#*محرمانه پیشرفته', value: 'محرمانه پیشرفته' },
+  { label: 'غیرمحرمانه', value: 'غیرمحرمانه' },
+  { label: 'محرمانه', value: 'محرمانه' },
+  { label: 'محرمانه پیشرفته', value: 'محرمانه پیشرفته' },
 ];
 
 const showItemOptions = [
-  { label: '*#*برای همه اعضای تیم', value: 'برای همه اعضای تیم' },
-  { label: '*#*برای مدیران و اعضای معتمد', value: 'برای مدیران و اعضای معتمد' },
-  { label: '*#*انتخاب از لیست اعضای تیم', value: 'انتخاب از لیست اعضای تیم' },
-  { label: '*#*فقط مدیران تیم', value: 'فقط مدیران تیم' },
+  { label: 'برای همه اعضای تیم', value: 'برای همه اعضای تیم' },
+  { label: 'برای مدیران و اعضای معتمد', value: 'برای مدیران و اعضای معتمد' },
+  { label: 'انتخاب از لیست اعضای تیم', value: 'انتخاب از لیست اعضای تیم' },
+  { label: 'فقط مدیران تیم', value: 'فقط مدیران تیم' },
 ];
 
 const Security = () => {

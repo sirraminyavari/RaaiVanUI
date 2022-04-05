@@ -29,12 +29,13 @@ const ContributorItem = ({ item, onRemove, setPercent }) => {
               console.log('mouse entrer');
             }}
             onMouseLeave={() => setShowPercent(false)}
-            percent={item.percent / 100}></ContributePercent>
+            percent={item.percent / 100}
+          ></ContributePercent>
         </ContributeContainer>
 
         <CustomInput
           style={{
-            width: '4.2rem',
+            // width: '4.2rem',
             textAlign: 'center',
           }}
           type="number"
@@ -55,6 +56,7 @@ export default ContributorItem;
 const Title = styled.div`
   display: flex;
   flex-grow: 1;
+  width: 100%;
   color: ${CV_GRAY};
 `;
 const Profile = styled.img`
@@ -99,7 +101,7 @@ const CustomTrash = styled(TrashIcon)`
   }
 `;
 const MainSide = styled.div`
-  width: 50%;
+  // width: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;

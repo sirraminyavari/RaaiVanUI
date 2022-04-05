@@ -12,7 +12,7 @@ const SaveButton = ({ onClick }) => {
 
 export default SaveButton;
 
-const Maintainer = styled(Button)`
+const Maintainer = styled(Button).attrs({ type: 'primary-o' })`
   display: flex;
   align-items: center;
   border-color: ${TCV_DEFAULT};

@@ -58,7 +58,8 @@ const Creators = ({ creatorsList, nodeDetails }) => {
         <Maintainer
           ref={dialogRef}
           // onMouseLeave={() => sethoverCreators(false)}
-          onClick={() => sethoverCreators(true)}>
+          onClick={() => sethoverCreators(true)}
+        >
           {contributors?.length > 2 ? (
             <MultiCreator>
               <Profile src={contributors[0].avatarUrl} isSaas={false} />
@@ -97,14 +98,16 @@ const Creators = ({ creatorsList, nodeDetails }) => {
           )}
           <VerticalList
             $hoverCreators={hoverCreators}
-            className={'rv-bg-color-white rv-border-radius-half'}>
+            className={'rv-bg-color-white rv-border-radius-half'}
+          >
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+              }}
+            >
               <CustomEditIcon color={TCV_DEFAULT} size={'1rem'} />
 
               <Button onClick={editContributors} type={'secondary-o'}>
@@ -121,7 +124,8 @@ const Creators = ({ creatorsList, nodeDetails }) => {
                         display: 'flex',
                         flexDirection: 'row',
                         alignItems: 'center',
-                      }}>
+                      }}
+                    >
                       <Profile src={avatarUrl} />
                       <ProducerName className="rv-gray">
                         {name.length > 20
@@ -198,6 +202,7 @@ const VerticalList = styled.div`
   padding: 0 1rem 1rem 1rem;
   min-width: 10rem;
   ${() => (RV_RTL ? 'left:2rem' : 'right:2rem')};
+  z-index: 1;
 `;
 const ProducerName = styled.div`
   /* color: #707070; */
