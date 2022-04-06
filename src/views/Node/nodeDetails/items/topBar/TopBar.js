@@ -12,12 +12,14 @@ import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
 import Creators from './Creators';
 import * as Styles from './TopBar.style';
+import { themeSlice } from 'store/reducers/themeReducer';
+const { toggleSidebar } = themeSlice.actions;
 
 const { RVDic, RVAPI, RV_RTL, RVGlobal } = window || {};
 
@@ -41,6 +43,8 @@ const TopBar = ({
   const [bookmarkStatus, setBookmarkStatus] = useState(
     nodeDetails?.LikeStatue ? 'liked' : 'disLiked'
   );
+
+  const dispatch = useDispatch();
   useEffect(() => {
     getRelatedNodes();
   }, []);
@@ -100,6 +104,7 @@ const TopBar = ({
   const onSideDetailsClick = () => {
     setSideDetailsHover(!sideDetailsHover);
     onSideColumnClicked(!sideColumn);
+    dispatch(toggleSidebar(false));
   };
   const onBookmarkPressed = (e) => {
     if (bookmarkStatus === 'liked') {
