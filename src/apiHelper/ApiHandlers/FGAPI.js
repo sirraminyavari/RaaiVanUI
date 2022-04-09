@@ -122,6 +122,7 @@ const customizedElements = {
       PatternName: 'NUMBER | PRICE | NATIONAL_CODE | POSTAL_CODE | NONE',
       currency: 'TOMAN | RIAL | DOLLAR | EURO | NONE',
       separator: true,
+      percentage: true,
     },
   },
   'phone number': {

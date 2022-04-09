@@ -104,6 +104,7 @@ const formElementList = () => {
               PatternName: 'NONE',
               currency: 'NONE',
               separator: true,
+              percentage: true,
             },
           },
         },

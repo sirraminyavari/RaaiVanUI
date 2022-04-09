@@ -30,3 +30,27 @@ export const ToggleRowHint = styled.p`
   font-weight: 300;
   padding: 0.75rem 0 !important;
 `;
+
+export const InputRowContainer = styled.div`
+  width: 100%;
+  ${FLEX_RCB};
+  margin: 0.2rem 0;
+`;
+
+export const Input = styled.input.attrs({
+  type: 'number',
+})`
+  outline: none;
+  width: 5rem;
+  height: 2.3rem;
+  border-radius: 0.3rem;
+  border: 0.0625rem solid #00deb7;
+  padding: 0.4rem;
+  direction: ltr;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
