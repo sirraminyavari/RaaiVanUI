@@ -6,15 +6,13 @@ on:
       - dev
 
 jobs:
-  code-structure-test:
+  deploy:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
         node: [16]
 
-  deploy:
-    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
