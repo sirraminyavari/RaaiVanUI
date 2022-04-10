@@ -1,12 +1,13 @@
 import useScript from 'hooks/useScript';
 
-const WorkFlows = () => {
+const WorkFlows = (props) => {
   useScript(
     'pageLoadScripts/LoadWorkFlows/LoadWorkFlows.js',
     'LoadWorkFlows.js',
-    () => {
-      window.loadWorkFlows();
-    }
+    (settings) => {
+      window.loadWorkFlows(settings || {});
+    },
+    props.route
   );
   return (
     <div
@@ -16,7 +17,8 @@ const WorkFlows = () => {
         margin: '0rem',
         marginBottom: '5rem',
         padding: '0vw 6vw',
-      }}></div>
+      }}
+    ></div>
   );
 };
 
