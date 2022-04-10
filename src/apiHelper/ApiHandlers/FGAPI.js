@@ -127,14 +127,21 @@ const customizedElements = {
   },
   'phone number': {
     Type: 'Text',
-    Info: { UseSimpleEditor: true, PatternName: 'mobile | ' },
+    Info: {
+      UseSimpleEditor: true,
+      PatternName: 'mobile | phone | phoneByNationalCode ',
+    },
   },
   date: {
     Type: 'Date',
   },
   'single-select': {
     Type: 'Select',
-    Info: { Options: '[array of string items]' },
+    Info: {
+      Options: '[array of string items]',
+      ViewType: 'sliding | optional',
+      addOption: true,
+    },
   },
   'multi-select': {
     Type: 'Checkbox',

@@ -4,6 +4,12 @@ import DateTypeMainSetting from './DateElement/DateTypeMainSetting';
 import DateTypeSideBoxSetting from './DateElement/DateTypeSideBoxSetting';
 import NumericalTypeMainSetting from './NumericalElement/NumericalTypeMainSetting';
 import NumericalTypeSideBoxSetting from './NumericalElement/NumericalTypeSideBoxSetting';
+import SingleSelectMainSetting from './SingleSelectElement/SingleSelectMainSetting';
+import SingleSelectSideBoxSetting from './SingleSelectElement/SingleSelectSideBoxSetting';
+import BinaryTypeMainSetting from './BinaryTypeElement/BinaryTypeMainSetting';
+import BinaryTypeSideBoxSetting from './BinaryTypeElement/BinaryTypeSideBoxSetting';
+import PhoneTypeMainSetting from './PhoneTypeElement/PhoneTypeMainSetting';
+import PhoneTypeSideBoxSetting from './PhoneTypeElement/PhoneTypeSideBoxSetting';
 
 const componentsArray = [
   {
@@ -22,6 +28,18 @@ const componentsArray = [
     key: 'Numeric',
     value: (props) => {
       return NumericTypeTemplate(props);
+    },
+  },
+  {
+    key: 'Select',
+    value: (props) => {
+      return SingleSelectTypeTemplate(props);
+    },
+  },
+  {
+    key: 'Binary',
+    value: (props) => {
+      return BinarySelectTemplate(props);
     },
   },
 ];
@@ -44,6 +62,20 @@ const NumericTypeTemplate = (props) => {
   return {
     main: NumericalTypeMainSetting(props),
     sideBox: NumericalTypeSideBoxSetting(props),
+  };
+};
+
+const SingleSelectTypeTemplate = (props) => {
+  return {
+    main: SingleSelectMainSetting(props),
+    sideBox: SingleSelectSideBoxSetting(props),
+  };
+};
+
+const BinarySelectTemplate = (props) => {
+  return {
+    main: BinaryTypeMainSetting(props),
+    sideBox: BinaryTypeSideBoxSetting(props),
   };
 };
 

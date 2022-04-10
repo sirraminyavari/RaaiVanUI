@@ -2,9 +2,30 @@ import * as Styles from './TextTypeSideBoxSettingStyles';
 import produce from 'immer';
 import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
 import ToggleUniqueValueState from '../sharedItems/ToggleUniqueValueState';
+import * as SharedStyle from '../sharedItems/SharedStyles';
+import CustomSelect from '../../../../../../../components/Inputs/CustomSelect/CustomSelect';
 
 const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { type, data } = current || {};
+  const { PatternName } = data?.Info || {};
+
+  const patternOptions = [
+    {
+      id: 1,
+      value: 'mobile',
+      label: 'تلفن همراه',
+    },
+    {
+      id: 2,
+      value: 'phone',
+      label: 'تلفن ثابت',
+    },
+    {
+      id: 3,
+      value: 'phoneByNationalCode',
+      label: 'تلفن با کد کشور',
+    },
+  ];
 
   const handleMinCharStateChange = (e) => {
     setFormObjects(
@@ -24,19 +45,29 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
     );
   };
 
+  const handlePhonePatternStateChange = (e) => {
+    const { value } = e;
+    setFormObjects(
+      produce((d) => {
+        let _current = d?.find((x) => x?.id === current?.id);
+        _current.data.Info.PatternName = value;
+      })
+    );
+  };
+
   return (
     <Styles.Container>
       <Styles.Row>
         <ToggleNecessaryState {...{ current, setFormObjects }} />
       </Styles.Row>
 
-      {type !== 'paragraph' && (
+      {(type !== 'paragraph' || 'phone') && (
         <Styles.Row>
           <ToggleUniqueValueState {...{ current, setFormObjects }} />
         </Styles.Row>
       )}
 
-      {type !== 'email' && type !== 'url' && (
+      {type !== 'email' && type !== 'url' && type !== 'phone' && (
         <>
           <Styles.InputRowContainer>
             <Styles.ToggleRowTitle>
@@ -58,6 +89,24 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
             />
           </Styles.InputRowContainer>
         </>
+      )}
+
+      {type === 'phone' && (
+        <Styles.Row>
+          <SharedStyle.SelectBoxTitle>
+            {'الگوهای ورودی'}
+          </SharedStyle.SelectBoxTitle>
+          <CustomSelect
+            placeholder=""
+            options={patternOptions}
+            defaultValue={{
+              value: PatternName,
+              label: patternOptions?.find((x) => x?.value === PatternName)
+                ?.label,
+            }}
+            onChange={handlePhonePatternStateChange}
+          />
+        </Styles.Row>
       )}
     </Styles.Container>
   );

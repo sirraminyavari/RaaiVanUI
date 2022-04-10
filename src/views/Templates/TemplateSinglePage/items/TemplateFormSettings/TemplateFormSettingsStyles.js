@@ -93,8 +93,7 @@ export const FormSetting = styled.div`
   background-color: ${CV_WHITE};
   border-radius: 0.8rem;
   box-shadow: 1px 5px 20px #0000001f;
-  //overflow: hidden;
-  min-height: 13rem;
+  min-height: 6rem;
 `;
 
 export const FormSettingTitle = styled.div`

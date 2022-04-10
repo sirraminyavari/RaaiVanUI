@@ -111,7 +111,16 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'شماره تماس',
+          type: 'phone',
           icon: <CellPhoneIcon size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Text',
+            Info: {
+              PatternName: 'mobile',
+              UseSimpleEditor: true,
+            },
+          },
         },
         {
           id: getUUID(),
@@ -136,6 +145,16 @@ const formElementList = () => {
           id: getUUID(),
           title: 'تک انتخابی',
           icon: <IoMdRadioButtonOn size={size} />,
+          type: 'Select',
+          data: {
+            ...sharedProps,
+            Type: 'Select',
+            Info: {
+              Options: [''],
+              ViewType: 'sliding',
+              addOption: true,
+            },
+          },
         },
         {
           id: getUUID(),
@@ -146,6 +165,15 @@ const formElementList = () => {
           id: getUUID(),
           title: 'دو گزینه ای',
           icon: <FiToggleLeft size={size} />,
+          type: 'Binary',
+          data: {
+            ...sharedProps,
+            Type: 'Binary',
+            Info: {
+              Yes: '',
+              No: '',
+            },
+          },
         },
         {
           id: getUUID(),
