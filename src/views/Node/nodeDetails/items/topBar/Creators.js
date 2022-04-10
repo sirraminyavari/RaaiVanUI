@@ -166,8 +166,8 @@ const Maintainer = styled.div`
   cursor: pointer;
 `;
 const Profile = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.1rem;
+  height: 2.1rem;
   border-radius: 1.5rem;
 
   border-width: 0.09rem;

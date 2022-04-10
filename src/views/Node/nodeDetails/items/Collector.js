@@ -54,6 +54,8 @@ const Collctor = ({
         LimitOwnerID: null,
         ShowAllIfNoLimit: true,
       });
+      console.log({ formInstance });
+
       setFields(formInstance);
     })();
   }, [nodeId]);
