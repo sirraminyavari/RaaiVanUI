@@ -93,7 +93,8 @@ const FileType = (props) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-        }}>
+        }}
+      >
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>

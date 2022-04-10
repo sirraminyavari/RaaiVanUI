@@ -85,17 +85,20 @@ const SideColumn = (props) => {
 
   return (
     <SideContext.Provider
-      value={{ nodeDetails, handleCloseSide, setSideModal, getNodeDetails }}>
+      value={{ nodeDetails, handleCloseSide, setSideModal, getNodeDetails }}
+    >
       <Styled.SideColumnMaintainer
         ref={containerRef}
-        className={`${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`}>
+        className={`${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`}
+      >
         <Modal
           contentWidth="33%"
           contentClass="node-page-side-modal-content"
           titleContainerClass="node-page-side-modal-header"
           show={sideModal.isShown}
           title={sideModal.title}
-          onClose={onModalClose}>
+          onClose={onModalClose}
+        >
           {getModalContent()}
         </Modal>
         <SideHeader />

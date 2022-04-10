@@ -225,7 +225,8 @@ const CustomDropzone = (props) => {
       {!!CustomComponent && <CustomComponent onClick={open} />}
       <Styled.DropzoneContainer
         isHidden={!!CustomComponent}
-        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}>
+        {...getRootProps({ ...containerProps, refKey: 'innerRef' })}
+      >
         {getIcon()}
         <Styled.InputWrapper>
           <input {...getInputProps(inputProps)} />

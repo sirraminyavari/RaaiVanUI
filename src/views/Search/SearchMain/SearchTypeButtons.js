@@ -5,9 +5,8 @@ import { searchContext } from 'views/Search/SearchView';
 import { CV_DISTANT } from 'constant/CssVariables';
 
 const SearchTypeButtons = () => {
-  const { selectedType, setSelectedType, allOptions } = useContext(
-    searchContext
-  );
+  const { selectedType, setSelectedType, allOptions } =
+    useContext(searchContext);
 
   //! Choose search type on button click.
   const handleOnClickType = (type) => {
@@ -26,7 +25,8 @@ const SearchTypeButtons = () => {
             type={isSelected ? 'primary' : 'primary-o'}
             classes="search-type-button"
             key={index}
-            style={isSelected ? {} : { borderColor: CV_DISTANT }}>
+            style={isSelected ? {} : { borderColor: CV_DISTANT }}
+          >
             {type.label}
           </Button>
         );

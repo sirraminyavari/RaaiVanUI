@@ -17,12 +17,8 @@ import { CLASSES_PATH } from 'constant/constants';
 import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNApi';
 
 const TemplateDescription = () => {
-  const {
-    currentTemplate,
-    currentCategory,
-    setContent,
-    setCurrentTemplate,
-  } = useContext(TemplatesGalleryContext);
+  const { currentTemplate, currentCategory, setContent, setCurrentTemplate } =
+    useContext(TemplatesGalleryContext);
 
   const { RVDic } = useWindow();
   const [isActivating, setIsActivating] = useState(false);
@@ -94,7 +90,8 @@ const TemplateDescription = () => {
         <Button
           type="negative-o"
           classes="template-back-button"
-          onClick={handleReturnClick}>
+          onClick={handleReturnClick}
+        >
           {RVDic.Return}
         </Button>
         <Styled.TemplateTitleInDescription>
@@ -124,7 +121,8 @@ const TemplateDescription = () => {
         <Button
           loading={isActivating}
           onClick={handleActivateTemplate}
-          classes="activate-template-button">
+          classes="activate-template-button"
+        >
           {RVDic.UseThisN.replace('[n]', RVDic.Template)}
         </Button>
         {!!currentTemplate?.Description && (

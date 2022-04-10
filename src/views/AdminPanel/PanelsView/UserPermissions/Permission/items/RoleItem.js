@@ -13,17 +13,17 @@ const RoleItem = (props) => {
   const { IconURL, RoleID, RoleName, Permissions } = props;
   const { RVDic } = useWindowContext();
   const { selectedRole, setSelectedRole } = useContext(PermissionContext);
-  const selected = useMemo(() => selectedRole?.RoleID === RoleID, [
-    selectedRole,
-  ]);
+  const selected = useMemo(
+    () => selectedRole?.RoleID === RoleID,
+    [selectedRole]
+  );
 
   return (
     <CardContainer highlight={selected} onClick={(e) => setSelectedRole(props)}>
       <Title name={RoleName} thumb={IconURL} selected={selected} />
       <PermissionCountTitle
-        highlight={
-          selected
-        }>{`${Permissions} ${RVDic.Permissions} `}</PermissionCountTitle>
+        highlight={selected}
+      >{`${Permissions} ${RVDic.Permissions} `}</PermissionCountTitle>
     </CardContainer>
   );
 };

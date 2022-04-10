@@ -25,7 +25,8 @@ const NavButtonMenu = (props) => {
           <Styled.ButtonAction
             as={Link}
             to={action?.linkTo}
-            key={action?.index}>
+            key={action?.index}
+          >
             {NavbarIcons[action?.icon]({ className: TC_DEFAULT, size: 20 })}
             <Styled.ActionTitle>{action?.title}</Styled.ActionTitle>
           </Styled.ButtonAction>

@@ -29,12 +29,14 @@ const BinaryField = ({
       }}
       iconComponent={<ToggleIcon color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
-      {...props}>
+      {...props}
+    >
       {value !== null ? (
         <Bit
           onClick={() =>
             onAnyFieldChanged(elementId, { label: null, value: null }, type)
-          }>
+          }
+        >
           {value ? yes : no}
         </Bit>
       ) : (
@@ -42,14 +44,16 @@ const BinaryField = ({
           <Bit
             onClick={() =>
               onAnyFieldChanged(elementId, { label: yes, value: true }, type)
-            }>
+            }
+          >
             {yes}
           </Bit>
           <Divider />
           <Bit
             onClick={() =>
               onAnyFieldChanged(elementId, { label: no, value: false }, type)
-            }>
+            }
+          >
             {no}
           </Bit>
         </Maintainer>

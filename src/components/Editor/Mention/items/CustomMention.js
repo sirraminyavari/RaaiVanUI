@@ -13,7 +13,8 @@ const CustomMention = (props) => {
           borderRadius: 23,
           padding: 10,
           color: 'white',
-        }}>
+        }}
+      >
         {props.decoratedText}
         {console.log(props, 'props')}
       </span>

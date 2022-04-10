@@ -6,7 +6,8 @@ const DashedLine = ({ width, fill }) => {
     <div className="line-container" style={{ width }}>
       <div
         className="line"
-        style={{ backgroundSize: `${fill} 100%`, width }}></div>
+        style={{ backgroundSize: `${fill} 100%`, width }}
+      ></div>
     </div>
   );
 };

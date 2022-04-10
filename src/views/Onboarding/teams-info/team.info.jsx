@@ -86,7 +86,8 @@ const TeamInfo = () => {
                   key={x.id}
                   id={x.id}
                   value={x.value}
-                  onSelect={selectMembers}>
+                  onSelect={selectMembers}
+                >
                   {x.value}
                 </Option>
               ))}
@@ -104,13 +105,15 @@ const TeamInfo = () => {
               <FieldSelection
                 placeholder="زمینه کاریت چیه؟"
                 name="field"
-                value={info.field.value}>
+                value={info.field.value}
+              >
                 {fields.map((x) => (
                   <Option
                     key={x.id}
                     id={x.id}
                     value={x.value}
-                    onSelect={selectField}>
+                    onSelect={selectField}
+                  >
                     {x.value}
                   </Option>
                 ))}

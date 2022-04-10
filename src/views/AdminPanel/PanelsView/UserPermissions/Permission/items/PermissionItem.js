@@ -7,9 +7,8 @@ import PermissionItemOpen from './PermissionItemOpen';
 import useWindowContext from 'hooks/useWindowContext';
 
 const PermissionItem = ({ ID, Title, Description, ...props }) => {
-  const { permissions, selectedRole, updatePermission, roles } = useContext(
-    PermissionContext
-  );
+  const { permissions, selectedRole, updatePermission, roles } =
+    useContext(PermissionContext);
   const [state, setState] = useState(false);
   const { RV_RTL } = useWindowContext();
 

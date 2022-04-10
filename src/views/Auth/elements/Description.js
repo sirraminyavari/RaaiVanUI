@@ -33,7 +33,8 @@ const Description = () => {
       <a
         href="http://www.cliqmind.com/%D9%82%D9%88%D8%A7%D9%86%DB%8C%D9%86-%D9%88-%D8%AA%D8%B9%D9%87%D8%AF%D8%A7%D8%AA/"
         target="_blank"
-        style={{ color: 'blue' }}>
+        style={{ color: 'blue' }}
+      >
         {'قوانین کلیک مایند'}
       </a>
       {' را خوانده و به آن متعهد هستید '}
@@ -117,12 +118,14 @@ const Description = () => {
       style={{ marginTop: '2rem' }}
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
-      isVisible={isVisible().visible}>
+      isVisible={isVisible().visible}
+    >
       <H5
         style={{
           fontSize: '0.8rem',
           color: `${LIGHT_BLUE}`,
-        }}>
+        }}
+      >
         {isVisible().label}
       </H5>
     </UpToDownAnimate>

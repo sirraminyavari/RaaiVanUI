@@ -78,7 +78,8 @@ const Password = () => {
       ref={ref}
       isVisible={isVisible()}
       dimension={ref?.current?.getBoundingClientRect()}
-      style={{ marginTop: '1.5rem' }}>
+      style={{ marginTop: '1.5rem' }}
+    >
       <AnimatedInput
         onChange={onPasswordChanged}
         value={password}

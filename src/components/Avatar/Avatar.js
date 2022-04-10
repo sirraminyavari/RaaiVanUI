@@ -22,15 +22,8 @@ import * as Styled from './Avatar.styles';
  * @param {PropType} props -Props that pass to avatar.
  */
 const Avatar = forwardRef((props, ref) => {
-  const {
-    radius,
-    url,
-    userImage,
-    color,
-    imageStyles,
-    imageClasses,
-    ...rest
-  } = props;
+  const { radius, url, userImage, color, imageStyles, imageClasses, ...rest } =
+    props;
 
   const avatarUrl = url || userImage;
 

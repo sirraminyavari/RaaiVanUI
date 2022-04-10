@@ -30,7 +30,8 @@ const UsersList = (props) => {
                 e.stopPropagation();
                 handleViewUser(UserID);
               }}
-              editable={canEdit}>
+              editable={canEdit}
+            >
               <Avatar
                 color={CV_BLACK}
                 className="table-user-avatar"

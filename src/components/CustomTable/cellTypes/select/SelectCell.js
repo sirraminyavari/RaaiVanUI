@@ -95,7 +95,8 @@ const SelectCell = (props) => {
               <Styled.SelectedItem
                 className="table-select-view"
                 type="h6"
-                key={key}>
+                key={key}
+              >
                 {item}
               </Styled.SelectedItem>
             ))

@@ -27,7 +27,8 @@ export const WindowProvider = ({ children }) => {
         RV_RevFloat,
         RVDic,
         RV_Direction,
-      }}>
+      }}
+    >
       {children}
     </WindowContext.Provider>
   );

@@ -41,7 +41,8 @@ const ListItem = (props) => {
     <Styled.ListItemWrapper
       onClick={onClick}
       as={!isIntroOnboarding && !onClick && Link}
-      to={linkTo}>
+      to={linkTo}
+    >
       <Styled.CenterIcon>
         <Icon />
         <Styled.TitleText>{title}</Styled.TitleText>

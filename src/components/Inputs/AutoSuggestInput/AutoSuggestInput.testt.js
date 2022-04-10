@@ -10,7 +10,8 @@ describe('AutoSuggest Input Component Test', () => {
       <>
         <script
           type="text/javascript"
-          src="%PUBLIC_URL%/load/scripts/GlobalUtilities.js?v=29"></script>
+          src="%PUBLIC_URL%/load/scripts/GlobalUtilities.js?v=29"
+        ></script>
         <AutoSuggestInput />
       </>
     );

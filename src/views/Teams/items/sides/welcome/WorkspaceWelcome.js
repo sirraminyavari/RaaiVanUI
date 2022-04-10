@@ -53,7 +53,8 @@ const DesktopWelcome = () => {
           textAlign: 'center',
           borderColor: !isButtonHovered && '#fff',
           backgroundColor: CV_GRAY_LIGHT,
-        }}>
+        }}
+      >
         {blogTitle}
       </Button>
       <Styled.SocialMediaContainer>

@@ -106,7 +106,8 @@ const TopicItem = ({ item }) => {
       <Styled.TopicItemContentWrapper>
         <Styled.TopicItemTitleWrapper
           as={Link}
-          to={getURL('Node', { NodeID: item?.NodeID })}>
+          to={getURL('Node', { NodeID: item?.NodeID })}
+        >
           <Styled.TopicItemTitle>
             {decodeBase64(item?.Name)}
           </Styled.TopicItemTitle>

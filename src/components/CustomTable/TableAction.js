@@ -88,14 +88,16 @@ const TableAction = (props) => {
             <Button
               onClick={handleAcceptChanges}
               loading={saveBtnLoadingStatus}
-              classes="table-action-apply-change-btn">
+              classes="table-action-apply-change-btn"
+            >
               <SaveIcon size={18} />
               <span>ثبت تغییرات</span>
             </Button>
             <Button
               type="negative-o"
               onClick={handleCancelChange}
-              classes="table-action-apply-change-btn">
+              classes="table-action-apply-change-btn"
+            >
               <CancelIcon size={18} />
               <span>{RVDic.Cancel}</span>
             </Button>

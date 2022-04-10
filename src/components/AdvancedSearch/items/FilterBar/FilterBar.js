@@ -327,7 +327,8 @@ const FilterBar = ({
             flexDirection: 'row',
             alignItems: 'center',
             marginTop: '1.5rem',
-          }}>
+          }}
+        >
           {nodeType?.IconURL && (
             <img
               alt={''}
@@ -349,7 +350,8 @@ const FilterBar = ({
             className={'rv-border-radius-half'}
             onClick={() => goBack()}
             style={{ color: CV_RED, padding: '0.5rem' }}
-            type={'secondary-o'}>
+            type={'secondary-o'}
+          >
             {RVDic.Return}
           </BackButton>
         )}
@@ -444,7 +446,8 @@ const FilterBar = ({
                   calendarPickerClicked || date
                     ? 'rv-border-distant rv-default'
                     : 'rv-border-white rv-distant'
-                }>
+                }
+              >
                 {date ? (
                   <FilledCalendarIcon
                     size={'1.5rem'}
@@ -478,7 +481,8 @@ const FilterBar = ({
                 isBookMarked
                   ? 'rv-border-distant rv-default'
                   : 'rv-border-white rv-distant'
-              }>
+              }
+            >
               {isBookMarked ? (
                 <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
               ) : (
@@ -510,7 +514,8 @@ const FilterBar = ({
                     isByMe || (people || []).length || peoplePickerVisibility
                       ? 'rv-border-distant rv-default'
                       : 'rv-border-white rv-distant'
-                  }>
+                  }
+                >
                   <PersonIcon
                     size={'1.5rem'}
                     className={
@@ -542,7 +547,8 @@ const FilterBar = ({
                 advancedSearch
                   ? 'rv-border-distant rv-default'
                   : 'rv-border-white rv-distant'
-              }>
+              }
+            >
               <Filter
                 size={'1.5rem'}
                 className={

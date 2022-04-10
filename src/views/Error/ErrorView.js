@@ -7,7 +7,8 @@ const ErrorView = (props) => {
   return (
     <div
       className="small-12 medium-12 large-12"
-      style={{ width: '100vw', height: '100vh' }}>
+      style={{ width: '100vw', height: '100vh' }}
+    >
       <div style={{ display: 'table', width: '100%', height: '100%' }}>
         <div
           id="errorArea"
@@ -15,7 +16,8 @@ const ErrorView = (props) => {
             display: 'table-cell',
             verticalAlign: 'middle',
             textAlign: 'center',
-          }}></div>
+          }}
+        ></div>
       </div>
     </div>
   );

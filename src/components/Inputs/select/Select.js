@@ -24,7 +24,8 @@ const Select = (props) => {
             style={optionStyles}
             key={index}
             selected={index === selectedOption ? true : false}
-            value={option.value}>
+            value={option.value}
+          >
             {option.label}
           </Styled.Option>
         );

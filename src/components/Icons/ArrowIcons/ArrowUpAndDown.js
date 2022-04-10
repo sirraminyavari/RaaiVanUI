@@ -4,13 +4,15 @@ const ArrowUpAndDown = (props) => {
       xmlns="http://www.w3.org/2000/svg"
       width={props?.size || 20}
       style={props?.style}
-      viewBox="0 0 19.547 20">
+      viewBox="0 0 19.547 20"
+    >
       <g id="arrow-up-circle-outline" transform="translate(-3.375 -3.375)">
         <g id="Group_2317" data-name="Group 2317">
           <g
             id="Group_2316"
             data-name="Group 2316"
-            transform="translate(6.334 7.902)">
+            transform="translate(6.334 7.902)"
+          >
             <path
               id="Path_691"
               data-name="Path 691"
@@ -29,7 +31,8 @@ const ArrowUpAndDown = (props) => {
           <g
             id="Group_2315"
             data-name="Group 2315"
-            transform="translate(11.915 7.902)">
+            transform="translate(11.915 7.902)"
+          >
             <path
               id="Path_691-2"
               data-name="Path 691"

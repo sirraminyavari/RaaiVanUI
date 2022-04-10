@@ -132,7 +132,8 @@ const EditableBranch = (props) => {
         indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
         isExpanded={item?.isExpanded}
         ref={provided.innerRef}
-        {...provided.draggableProps}>
+        {...provided.draggableProps}
+      >
         <Styled.MenuTitleWrapper isManageContent={isManageContent}>
           {item?.isCategory ? (
             <Styled.CaretIconWrapper>

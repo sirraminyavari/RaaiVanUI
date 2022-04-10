@@ -24,36 +24,38 @@ const setPasswordResetTicket = new APIHandler(
  * @param {String} email - mobile number or email entered.
  */
 
-const sendResetPsswordLinkAction = ({ email }) => async (dispatch) => {
-  const sendTicket = () => {
-    try {
-      // Sends reset-password request to server
-      setPasswordResetTicket.fetch(
-        {
-          Email: encode(GlobalUtilities.secure_string(email)),
-          ParseResults: true,
-        },
-        (result) => {
-          if (result.ErrorText) {
-            dispatch(sendResetPasswordLinkFailed(result.ErrorText));
-            alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-          } else if (result.Succeed) {
-            alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
-            dispatch(sendResetPasswordLinkSuccess());
+const sendResetPsswordLinkAction =
+  ({ email }) =>
+  async (dispatch) => {
+    const sendTicket = () => {
+      try {
+        // Sends reset-password request to server
+        setPasswordResetTicket.fetch(
+          {
+            Email: encode(GlobalUtilities.secure_string(email)),
+            ParseResults: true,
+          },
+          (result) => {
+            if (result.ErrorText) {
+              dispatch(sendResetPasswordLinkFailed(result.ErrorText));
+              alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+            } else if (result.Succeed) {
+              alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+              dispatch(sendResetPasswordLinkSuccess());
+            }
           }
-        }
-      );
-    } catch (err) {
-      console.log(err, 'error');
+        );
+      } catch (err) {
+        console.log(err, 'error');
 
-      dispatch(sendResetPasswordLinkFailed(err));
+        dispatch(sendResetPasswordLinkFailed(err));
+      }
+    };
+    if (email) {
+      dispatch(sendResetPasswordLink());
+      sendTicket();
+    } else {
+      !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
     }
   };
-  if (email) {
-    dispatch(sendResetPasswordLink());
-    sendTicket();
-  } else {
-    !email && dispatch(setEmailError('ایمیل نمیتواند خالی باشد'));
-  }
-};
 export default sendResetPsswordLinkAction;

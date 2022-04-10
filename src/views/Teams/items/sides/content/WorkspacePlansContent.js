@@ -58,7 +58,8 @@ const WorkspacePlansContent = ({ WorkspaceID }) => {
             <Tooltip
               effect="solid"
               place="top"
-              renderContent={() => 'لورم ایپسوم'}>
+              renderContent={() => 'لورم ایپسوم'}
+            >
               <InfoCircleIcon className="info" />
             </Tooltip>
           </>
@@ -74,7 +75,8 @@ const WorkspacePlansContent = ({ WorkspaceID }) => {
             <Tooltip
               effect="solid"
               place="top"
-              renderContent={() => 'لورم ایپسوم'}>
+              renderContent={() => 'لورم ایپسوم'}
+            >
               <InfoCircleIcon className="info" />
             </Tooltip>
           </>
@@ -164,7 +166,8 @@ const WorkspacePlansContent = ({ WorkspaceID }) => {
               marginBlockStart: '1rem',
             }}
             onClick={() => scrollIntoView('planDetails')}
-            type="primary-o">
+            type="primary-o"
+          >
             {RVDicComparePlans}
           </Button>
         </Styled.WorkspacePlansActionContainer>
@@ -172,7 +175,8 @@ const WorkspacePlansContent = ({ WorkspaceID }) => {
         <Heading
           id="planDetails"
           type="h3"
-          style={{ textAlign: 'center', marginBlockStart: '8rem' }}>
+          style={{ textAlign: 'center', marginBlockStart: '8rem' }}
+        >
           {RVDicComparePlans}
         </Heading>
         <Styled.WorkspacePlansTableContainer>

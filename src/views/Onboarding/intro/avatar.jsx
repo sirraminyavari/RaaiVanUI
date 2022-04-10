@@ -28,7 +28,8 @@ const Avatar = (props) => {
       <div
         className={['avatar', mouseIsOver && 'avatar_hovered'].join(' ')}
         onMouseEnter={() => mouseEnter()}
-        onMouseLeave={() => mouseLeave()}>
+        onMouseLeave={() => mouseLeave()}
+      >
         {avatarText()}
       </div>
       <div
@@ -41,7 +42,8 @@ const Avatar = (props) => {
             avatar:
               'https://ponisha.ir/usercontent/500281/avatar-e34f2f863290a0251605612a90ae3b94.jpg',
           })
-        }>
+        }
+      >
         {false && <UploadIcon color={uploadBtnColor}></UploadIcon>}
       </div>
     </div>

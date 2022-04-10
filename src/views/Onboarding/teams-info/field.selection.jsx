@@ -21,11 +21,13 @@ const FieldSelection = ({ placeholder, value, children }) => {
   return (
     <div
       className="select-box-container"
-      style={{ zIndex: 10, width: '400px' }}>
+      style={{ zIndex: 10, width: '400px' }}
+    >
       <div
         className="selected noselect"
         onClick={() => toggleSelection()}
-        style={{ width: '400px' }}>
+        style={{ width: '400px' }}
+      >
         {value === '' && <span className="h3 tint">{placeholder}</span>}
         {value !== '' && <span className="h3 item-selected">{value}</span>}
       </div>
@@ -33,7 +35,8 @@ const FieldSelection = ({ placeholder, value, children }) => {
       <div
         className={['select-box', active && 'active'].join(' ')}
         style={{ width: '400px' }}
-        ref={dropdownMenu}>
+        ref={dropdownMenu}
+      >
         <div className="options-container">
           {React.Children.map(children, (child) => {
             child = { ...child, props: { ...child.props, toggleSelection } };

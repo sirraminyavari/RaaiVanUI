@@ -22,7 +22,8 @@ const SubjectCheckBox = ({ onChecked, selectMode, isChecked }) => {
     <CheckBox
       selectMode={selectMode}
       defaultChecked={checked}
-      onClick={onCheckChange}>
+      onClick={onCheckChange}
+    >
       <CustomCheckBox isChecked={checked}>
         {checked && (
           <CheckCircleFilled

@@ -34,7 +34,8 @@ const TitleLabel = ({ ItemType, Title, Type, ItemURL, Size } = {}) => {
             ? undefined
             : () => GlobalUtilities.open_window({ URL: ItemURL })
         }
-        ItemURL={ItemURL}>
+        ItemURL={ItemURL}
+      >
         {title}
       </LabelContainer>
       {isFile && Size && (

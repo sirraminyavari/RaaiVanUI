@@ -95,7 +95,8 @@ const Tooltip = (props) => {
         backgroundColor={backgroundColor}
         borderColor={borderColor}
         arrowColor={arrowColor}
-        getContent={!!renderContent && [renderContent, 500]}>
+        getContent={!!renderContent && [renderContent, 500]}
+      >
         {!renderContent && (
           <span>Please provide me content with 'renderContent' prop</span>
         )}

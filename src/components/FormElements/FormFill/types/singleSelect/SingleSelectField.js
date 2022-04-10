@@ -90,7 +90,8 @@ const SingleSelectField = ({
     <FormCell
       iconComponent={<RadioButtonIcon color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
-      {...props}>
+      {...props}
+    >
       {/* {value ? (
         <Selected
           className={'rv-border-radius-half'}

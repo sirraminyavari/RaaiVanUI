@@ -33,13 +33,15 @@ const RoleSelectionPane = ({ ...props }) => {
       <RoleSelectionRow rtl={RV_RTL}>
         <RoleSelectionButton
           selected={userType}
-          onClick={() => setUserType(true)}>
+          onClick={() => setUserType(true)}
+        >
           {RVDic.Users}
         </RoleSelectionButton>
 
         <RoleSelectionButton
           selected={!userType}
-          onClick={() => setUserType(false)}>
+          onClick={() => setUserType(false)}
+        >
           {RVDic.Groups}
         </RoleSelectionButton>
 

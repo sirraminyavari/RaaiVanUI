@@ -85,7 +85,8 @@ const ReadableItem = (props) => {
         isExpanded={item?.isExpanded}
         isSelected={isSelected}
         ref={provided.innerRef}
-        {...provided.draggableProps}>
+        {...provided.draggableProps}
+      >
         <Styled.MenuTitleWrapper>
           {isCategory ? (
             <Styled.CaretIconWrapper onClick={handleOnClick}>
@@ -100,7 +101,8 @@ const ReadableItem = (props) => {
           <Styled.MenuTitle
             onClick={handleOnClick}
             as={!isIntroOnboarding && Link}
-            to={classURL}>
+            to={classURL}
+          >
             {data?.title}
           </Styled.MenuTitle>
         </Styled.MenuTitleWrapper>

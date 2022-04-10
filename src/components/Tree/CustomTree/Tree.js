@@ -9,15 +9,13 @@ const Tree = ({ data, droppableId }) => {
         return (
           <Styled.TreeContainer
             {...provided.droppableProps}
-            ref={provided.innerRef}>
+            ref={provided.innerRef}
+          >
             {data.map((tree, index) => (
               <Draggable key={tree.key} draggableId={tree.key} index={index}>
                 {(provided, snapshot) => {
-                  const {
-                    draggableProps,
-                    innerRef,
-                    dragHandleProps,
-                  } = provided;
+                  const { draggableProps, innerRef, dragHandleProps } =
+                    provided;
                   return (
                     <TreeNode
                       node={tree}

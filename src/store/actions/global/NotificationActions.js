@@ -8,11 +8,8 @@ import {
 } from 'constant/apiConstants';
 import { notificationsSlice } from 'store/reducers/notificationsReducer';
 
-const {
-  setNotificationsCount,
-  setNotificationsList,
-  setIsFetchingNotifsList,
-} = notificationsSlice.actions;
+const { setNotificationsCount, setNotificationsList, setIsFetchingNotifsList } =
+  notificationsSlice.actions;
 
 const getNotificationsCountAPI = API_Provider(
   NOTIFICATIONS_API,
@@ -79,30 +76,29 @@ export const getNotificationsList = (count) => async (dispatch) => {
  * @description A function (action) that removes a notification.
  * @returns -Dispatch to redux store.
  */
-export const removeNotification = (notifId, done, error) => async (
-  dispatch
-) => {
-  try {
-    removeNotificationAPI.fetch(
-      { NotificationID: notifId },
-      (response) => {
-        // console.log(response);
-        if (!!(response || {}).Succeed) {
-          done && done(notifId);
-          dispatch(getNotificationsCount());
-          dispatch(getNotificationsList());
-        } else if ((response || {}).ErrorText) {
-          error && error(response.ErrorText);
+export const removeNotification =
+  (notifId, done, error) => async (dispatch) => {
+    try {
+      removeNotificationAPI.fetch(
+        { NotificationID: notifId },
+        (response) => {
+          // console.log(response);
+          if (!!(response || {}).Succeed) {
+            done && done(notifId);
+            dispatch(getNotificationsCount());
+            dispatch(getNotificationsList());
+          } else if ((response || {}).ErrorText) {
+            error && error(response.ErrorText);
+          }
+        },
+        (err) => {
+          error && error(err);
         }
-      },
-      (err) => {
-        error && error(err);
-      }
-    );
-  } catch (err) {
-    error && error(err);
-  }
-};
+      );
+    } catch (err) {
+      error && error(err);
+    }
+  };
 
 /**
  * @description A function (action) that changes notifications status to seen.

@@ -62,7 +62,8 @@ const WorkspaceContent = ({ location }) => {
               className={isActiveNav && 'avtive-profile-navlink'}
               as={NavLink}
               to={item?.linkTo}
-              key={key}>
+              key={key}
+            >
               {iconList[item?.icon]({ size: 20 })}
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>

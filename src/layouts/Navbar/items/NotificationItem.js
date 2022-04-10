@@ -86,7 +86,8 @@ function renderTitle(notification) {
         textTransform: 'capitalize',
       }}
       key={notification.NotificationID}
-      to={getURL('User', { UserID: (notification.Sender || {}).UserID })}>
+      to={getURL('User', { UserID: (notification.Sender || {}).UserID })}
+    >
       {GlobalUtilities.convert_numbers_to_persian(fullname)}
     </Link>
   ));
@@ -149,7 +150,8 @@ function renderTitle(notification) {
         onClick={() => console.log('action-link')}
         style={{ color: TCV_DEFAULT, fontWeight: '500' }}
         key={index}
-        to={value.url}>
+        to={value.url}
+      >
         {value.title}
       </Link>
     );

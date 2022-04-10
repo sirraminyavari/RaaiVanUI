@@ -72,7 +72,8 @@ const WorkspaceInvoicePlanForm = () => {
             {new Array(3).fill().map((_, idx) => (
               <Styled.WorkspaceInvoicePaymentGatewayChoice
                 active={idx === paymentMethod}
-                onClick={() => setPaymentMethod(idx)}>
+                onClick={() => setPaymentMethod(idx)}
+              >
                 <img src="https://via.placeholder.com/96" />
               </Styled.WorkspaceInvoicePaymentGatewayChoice>
             ))}

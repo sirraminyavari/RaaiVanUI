@@ -24,7 +24,8 @@ const Checkbox = (props) => {
           color: '#000',
           cursor: 'pointer',
           textTransform: 'capitalize',
-        }}>
+        }}
+      >
         {`${title} :`}
       </label>
       <input

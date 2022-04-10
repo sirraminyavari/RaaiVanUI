@@ -130,7 +130,8 @@ const PeoplePicker = ({
       <PeopleBody
         direction={direction}
         className={'rv-bg-color-white rv-border-radius-half'}
-        isVisible={isPickerVisible}>
+        isVisible={isPickerVisible}
+      >
         <div
           style={{
             display: 'flex',
@@ -138,7 +139,8 @@ const PeoplePicker = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
-          }}>
+          }}
+        >
           <Close onClick={() => setPickerVisible(false)} />
 
           <ResetContainer onClick={() => onChoose(null)}>

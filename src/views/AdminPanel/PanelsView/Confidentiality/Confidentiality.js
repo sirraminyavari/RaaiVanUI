@@ -16,7 +16,8 @@ const Confidentiality = () => {
         margin: '0rem',
         marginBottom: '5rem',
         padding: '0vw 6vw',
-      }}></div>
+      }}
+    ></div>
   );
 };
 

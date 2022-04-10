@@ -38,7 +38,8 @@ const CustomScrollbars = (props) => {
       renderThumbHorizontal={renderThumbHorizontal}
       renderThumbVertical={renderThumbVertical}
       renderView={renderView}
-      {...restProps}>
+      {...restProps}
+    >
       {children}
     </Scrollbars>
   );

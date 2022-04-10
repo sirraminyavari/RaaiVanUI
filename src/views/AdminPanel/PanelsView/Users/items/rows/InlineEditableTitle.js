@@ -19,7 +19,8 @@ const InlineEditableTitle = React.forwardRef(
     return (
       <TitleContainer
         ref={titleRef}
-        onDoubleClick={(e) => setEditMode(!editMode)}>
+        onDoubleClick={(e) => setEditMode(!editMode)}
+      >
         {!editMode && <div>{value}</div>}
         {editMode && (
           <InputField

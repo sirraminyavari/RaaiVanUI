@@ -101,7 +101,8 @@ const Template = () => {
 
                 <button
                   className="action-button-inverted"
-                  onClick={() => skip()}>
+                  onClick={() => skip()}
+                >
                   از این مرحله رد شو
                 </button>
               </div>
@@ -115,7 +116,8 @@ const Template = () => {
 
                 <button
                   className="action-button-inverted"
-                  onClick={() => skip()}>
+                  onClick={() => skip()}
+                >
                   از این مرحله رد شو
                 </button>
               </div>

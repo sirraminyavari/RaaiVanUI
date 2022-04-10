@@ -13,13 +13,15 @@ import PropTypes from 'prop-types';
  * @param {function} Loading - loading component e.g. LogoLoader, Shimmer or component Skeleton
  * @return {JSX.Element}
  */
-const WithSuspense = (Component, Loading = undefined) => (props) => {
-  return (
-    <Suspense fallback={Loading ? <Loading /> : <LogoLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
-};
+const WithSuspense =
+  (Component, Loading = undefined) =>
+  (props) => {
+    return (
+      <Suspense fallback={Loading ? <Loading /> : <LogoLoader />}>
+        <Component {...props} />
+      </Suspense>
+    );
+  };
 
 export default WithSuspense;
 

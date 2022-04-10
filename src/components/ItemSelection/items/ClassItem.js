@@ -16,14 +16,16 @@ const ClassItem = ({ item, title, icon, badge, isSelected, onClick }) => {
     <Container
       onClick={() => onClick(item)}
       $isSelected={isSelected}
-      RV_RTL={RV_RTL}>
+      RV_RTL={RV_RTL}
+    >
       <Content>
         {console.log(badge, 'badge')}
         {/* <Icon /> */}
 
         <CustomHeading
           $isSelected={isSelected}
-          style={{ display: 'flex', alignItems: 'center' }}>
+          style={{ display: 'flex', alignItems: 'center' }}
+        >
           {title}
         </CustomHeading>
       </Content>

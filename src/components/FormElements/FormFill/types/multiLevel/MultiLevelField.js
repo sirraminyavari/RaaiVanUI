@@ -72,7 +72,8 @@ const MultiLevelField = ({
     <FormCell
       iconComponent={<FilterIconIo color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
-      {...props}>
+      {...props}
+    >
       <SelectorContainer>
         {levels?.map((x, index) => {
           const { ID, Name } = value[index] || {};

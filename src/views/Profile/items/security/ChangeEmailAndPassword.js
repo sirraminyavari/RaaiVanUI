@@ -39,12 +39,10 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
   const [email, setEmail] = useState('');
   const [isPolicyShown, setIsPolicyShown] = useState(false);
   const [canSavePass, setCanSavePass] = useState(false);
-  const [emailVerification, setEmailVerification] = useState(
-    DEFAULT_VERIFICATION
-  );
-  const [passVerification, setPassVerification] = useState(
-    DEFAULT_VERIFICATION
-  );
+  const [emailVerification, setEmailVerification] =
+    useState(DEFAULT_VERIFICATION);
+  const [passVerification, setPassVerification] =
+    useState(DEFAULT_VERIFICATION);
   const [passVisibility, setPassVisibility] = useState({
     currentPass: false,
     newPass: false,
@@ -310,7 +308,8 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
             disable={emailVerification.isShown || isSameEmailAddress}
             type="primary-o"
             classes="change-button"
-            onClick={handleChangeEmail}>
+            onClick={handleChangeEmail}
+          >
             تغییر
           </Button>
         </Styled.InputWrapper>
@@ -338,7 +337,8 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
           onChange={handleCurrentPass}
           value={currentPass}
           placeholder={RVDic.CurrentPassword}
-          style={commonInputStyles}>
+          style={commonInputStyles}
+        >
           {passVisibility.currentPass ? (
             <InvisibleIcon
               className={C_GRAY}
@@ -365,7 +365,8 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         onBlur={hidePassPolicy}
         value={newPass}
         placeholder={RVDic.NewPassword}
-        style={commonInputStyles}>
+        style={commonInputStyles}
+      >
         {passVisibility.newPass ? (
           <InvisibleIcon
             className={C_GRAY}
@@ -389,7 +390,8 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
         onChange={handleNewPassConfirm}
         value={newPassConfirm}
         placeholder={RVDic.RepeatNewPassword}
-        style={commonInputStyles}>
+        style={commonInputStyles}
+      >
         {passVisibility.confirmPass ? (
           <InvisibleIcon
             className={C_GRAY}
@@ -436,7 +438,8 @@ const ChangeEmailAndPassword = ({ user, captchaToken }) => {
             width: '8rem',
             fontSize: '1rem',
             marginTop: '1rem',
-          }}>
+          }}
+        >
           {RVDic.Save}
         </Button>
       )}

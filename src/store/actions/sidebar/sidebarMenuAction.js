@@ -104,138 +104,130 @@ const provideDnDTree = (data) => {
  * @description A function (action) that gets sidebar menu item from server.
  * @returns Dispatch to redux store.
  */
-export const getSidebarNodeTypes = (done, error) => async (
-  dispatch,
-  getState
-) => {
-  const response = await getNodeTypes({
-    Icon: true,
-    Count: 1000,
-    Tree: true,
-    CheckAccess: true,
-  });
+export const getSidebarNodeTypes =
+  (done, error) => async (dispatch, getState) => {
+    const response = await getNodeTypes({
+      Icon: true,
+      Count: 1000,
+      Tree: true,
+      CheckAccess: true,
+    });
 
-  if (response.NodeTypes || response.Tree) {
-    done && done();
-    const dndTree = provideDnDTree(response);
-    dispatch(setSidebarNodeTypes(response.NodeTypes));
-    dispatch(setSidebarTree(response.Tree));
-    dispatch(setSidebarDnDTree(dndTree));
-  }
-};
+    if (response.NodeTypes || response.Tree) {
+      done && done();
+      const dndTree = provideDnDTree(response);
+      dispatch(setSidebarNodeTypes(response.NodeTypes));
+      dispatch(setSidebarTree(response.Tree));
+      dispatch(setSidebarDnDTree(dndTree));
+    }
+  };
 
 /**
  * @description A function (action) that renames the sidebar menu item.
  * @returns -Dispatch to redux store.
  */
-export const renameSidebarNode = (nodeId, nodeName) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    renameNodeAPI.fetch(
-      {
-        NodeTypeID: nodeId,
-        Name: encodeBase64(nodeName),
-      },
-      (response) => {
-        dispatch(getSidebarNodeTypes());
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const renameSidebarNode =
+  (nodeId, nodeName) => async (dispatch, getState) => {
+    try {
+      renameNodeAPI.fetch(
+        {
+          NodeTypeID: nodeId,
+          Name: encodeBase64(nodeName),
+        },
+        (response) => {
+          dispatch(getSidebarNodeTypes());
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that removes the sidebar menu item.
  * @returns -Dispatch to redux store.
  */
-export const deleteSidebarNode = (node, hierarchy = false, done) => async (
-  dispatch
-) => {
-  try {
-    deleteNodeAPI.fetch(
-      {
-        NodeTypeID: node.id,
-        RemoveHierarchy: hierarchy,
-      },
-      (response) => {
-        console.log(response);
-        done(node);
-        dispatch(getSidebarNodeTypes());
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const deleteSidebarNode =
+  (node, hierarchy = false, done) =>
+  async (dispatch) => {
+    try {
+      deleteNodeAPI.fetch(
+        {
+          NodeTypeID: node.id,
+          RemoveHierarchy: hierarchy,
+        },
+        (response) => {
+          console.log(response);
+          done(node);
+          dispatch(getSidebarNodeTypes());
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that moves item on sidebar tree.
  * @returns -Dispatch to redux store.
  */
-export const moveSidebarNode = (newTree, source, destination) => async (
-  dispatch,
-  getState
-) => {
-  //! Redux store.
-  const { theme } = getState();
-  const { selectedTeam } = theme;
-  let parentId = null; //! Item is at root level.
+export const moveSidebarNode =
+  (newTree, source, destination) => async (dispatch, getState) => {
+    //! Redux store.
+    const { theme } = getState();
+    const { selectedTeam } = theme;
+    let parentId = null; //! Item is at root level.
 
-  //! Check if item moved to root or not.
-  if (destination.parentId !== selectedTeam.id) {
-    parentId = destination.parentId; //! Item is NOT at root level.
-  }
+    //! Check if item moved to root or not.
+    if (destination.parentId !== selectedTeam.id) {
+      parentId = destination.parentId; //! Item is NOT at root level.
+    }
 
-  const nodeId = source.id;
+    const nodeId = source.id;
 
-  try {
-    moveNodeAPI.fetch(
-      {
-        NodeTypeID: nodeId,
-        ParentID: parentId,
-      },
-      (response) => {
-        dispatch(getSidebarNodeTypes());
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+    try {
+      moveNodeAPI.fetch(
+        {
+          NodeTypeID: nodeId,
+          ParentID: parentId,
+        },
+        (response) => {
+          dispatch(getSidebarNodeTypes());
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that reorder items on sidebar tree.
  * @returns -Dispatch to redux store.
  */
-export const reorderSidebarNode = (newTree, source, destination) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    const nodeIds = newTree.items[source.parentId].children.join('|');
+export const reorderSidebarNode =
+  (newTree, source, destination) => async (dispatch, getState) => {
+    try {
+      const nodeIds = newTree.items[source.parentId].children.join('|');
 
-    reorderNodesAPI.fetch(
-      {
-        NodeTypeIDs: nodeIds,
-      },
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log({ error });
-        dispatch(getSidebarNodeTypes());
-      }
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+      reorderNodesAPI.fetch(
+        {
+          NodeTypeIDs: nodeIds,
+        },
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log({ error });
+          dispatch(getSidebarNodeTypes());
+        }
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that recover deleted items to sidebar tree.

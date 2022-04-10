@@ -66,7 +66,8 @@ const ResendCode = () => {
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
       style={{ marginTop: '3rem', marginBottom: '3rem' }}
-      isVisible={isVisible()}>
+      isVisible={isVisible()}
+    >
       <Container>
         {resendDisabled && resendVerifyCodeTotalTimeout > 0 ? (
           <OTPCountDownTimer
@@ -91,7 +92,8 @@ const ResendCode = () => {
             disable={resendDisabled}
             onClick={onResend}
             style={{ width: '100%' }}
-            loading={isFetching}>
+            loading={isFetching}
+          >
             {'ارسال مجدد کد'}
           </Button>
         )}

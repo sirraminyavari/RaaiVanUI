@@ -136,7 +136,8 @@ const TemplateGalleryMain = () => {
             freeMode
             onSliderTransition={handleSliderTransition}
             slidesPerView={3}
-            spaceBetween={10}>
+            spaceBetween={10}
+          >
             {searchList?.map((template, index) => {
               return (
                 <TemplateCard
@@ -155,7 +156,8 @@ const TemplateGalleryMain = () => {
             freeMode
             onSliderTransition={handleSliderTransition}
             slidesPerView={3}
-            spaceBetween={10}>
+            spaceBetween={10}
+          >
             {cliqMindSuggestions?.map((template, index) => {
               return (
                 <TemplateCard
