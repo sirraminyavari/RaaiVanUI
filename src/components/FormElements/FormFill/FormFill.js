@@ -63,7 +63,8 @@ const FormFill = ({ data, editable, ...props }) => {
     }
   };
   const saveFieldChanges = async (readyToUpdate, elementId) => {
-    if (whichElementChanged === elementId) {
+    if (true) {
+      // if (whichElementChanged === elementId) {
       try {
         const changedElement = readyToUpdate?.Elements?.find(
           (x) => x?.ElementID === elementId
@@ -95,8 +96,8 @@ const FormFill = ({ data, editable, ...props }) => {
     }
   };
 
-  const formProducer = () => {
-    const { Elements } = tempForm || {};
+  const formProducer = (FormObject) => {
+    const { Elements } = FormObject || {};
     const element =
       _.isArray(Elements) &&
       !_.isEmpty(Elements) &&
@@ -141,7 +142,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={TextValue}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -155,7 +156,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
                 value={TextValue}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -168,7 +169,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 elementId={ElementID}
                 type={Type}
                 value={TextValue}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -182,7 +183,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 decodeInfo={decodeInfo}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -209,7 +210,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={FloatValue}
                 number={true}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -224,7 +225,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 decodeInfo={decodeInfo}
                 propsContext={propsContext}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -240,7 +241,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 decodeInfo={decodeInfo}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -282,7 +283,7 @@ const FormFill = ({ data, editable, ...props }) => {
 
   return (
     <EditableContext.Provider value={editable}>
-      <Maintainer>{formProducer()}</Maintainer>
+      <Maintainer>{formProducer(tempForm)}</Maintainer>
     </EditableContext.Provider>
   );
 };

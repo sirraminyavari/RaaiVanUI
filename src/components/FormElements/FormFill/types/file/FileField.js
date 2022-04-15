@@ -8,8 +8,9 @@ import FileShowCell from './FileShowCell';
 import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { randomNumber } from 'helpers/helpers';
 
 const FileField = ({
   value,
@@ -21,54 +22,101 @@ const FileField = ({
   Files,
   ...rest
 }) => {
-  const { GlobalUtilities, RVDic } = useWindow();
+  const {
+    // GlobalUtilities,
+    RVDic,
+  } = useWindow();
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState([]);
+  const [allFiles, setAllFiles] = useState(Files);
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
-  const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
+  // const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
+  const saveFunctionality = useMemo(
+    () =>
+      async (files = allFiles) => {
+        return onAnyFieldChanged(elementId, files, type);
+      },
+    [elementId, onAnyFieldChanged, type, allFiles]
+  );
 
   //! Upload to server with axios.
   const uploadFile = (file, url) => {
     //! Prepare upload data
     let formData = new FormData();
     formData.append('file', file);
-
+    const uploadID = randomNumber();
+    const cancelTokenSource = axios.CancelToken.source();
+    setUploadingFiles((items) => {
+      return [
+        ...items,
+        {
+          uploadID,
+          file,
+          cancelFunction: () => cancelTokenSource.cancel('Upload cancelled'),
+        },
+      ];
+    });
     //! Post file to the server.
-    return axios.post(url, formData);
+    return axios.post(url, formData, {
+      cancelToken: cancelTokenSource.token,
+      onUploadProgress: function (progressEvent) {
+        var percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        setUploadingFiles((items) =>
+          items.map((item) => {
+            if (item.uploadID === uploadID)
+              return { ...item, percentCompleted };
+            return item;
+          })
+        );
+      },
+    });
   };
 
   //! Get upload link and upload file(s).
-  const handleUploadFile = useMemo(
-    () => async (acceptedFiles) => {
-      // console.log(acceptedFiles);
-      if (acceptedFiles?.length) {
-        const result = await getUploadLink();
-        const uploadURL = result;
-        console.log(uploadURL);
+  const handleUploadFile = async (acceptedFiles, allFiles) => {
+    // console.log(acceptedFiles);
+    if (acceptedFiles?.length) {
+      const result = await getUploadLink();
+      const uploadURL = result;
 
-        const promises = acceptedFiles.map((file) => {
-          return uploadFile(file, uploadURL).catch((error) => error);
-        });
+      const promises = acceptedFiles.map((file) => {
+        return uploadFile(file, uploadURL).catch((error) => error);
+      });
 
-        Promise.all(promises)
-          .then((responses) => {
-            if (responses.length) {
-              //! Response data.
-              const datas = responses
-                ?.map((res) => res?.data)
-                ?.filter((data) => data?.success);
+      Promise.all(promises)
+        .then((responses) => {
+          if (responses.length) {
+            setUploadingFiles([]);
+            //! Response data.
+            const datas = responses
+              ?.map((res) => res?.data)
+              ?.filter((data) => data?.success);
 
-              //! Uploaded files.
-              const files = datas.map((data) => data?.AttachedFile);
-              console.log({ asd: [...Files, ...files] });
-              onAnyFieldChanged(elementId, [...Files, ...files], type);
-            }
-          })
-          .catch((error) => console.log(`Error in uploading ${error}`));
-      }
-    },
-    [onAnyFieldChanged]
-  );
+            //! Uploaded files.
+            const files = datas.map(({ AttachedFile }) => ({
+              ...AttachedFile,
+            }));
+            console.log({ allFiles, files });
+            setAllFiles((prevFiles) => [...prevFiles, ...files]);
+            saveFunctionality([...allFiles, ...files]);
+          }
+        })
+        .catch((error) => console.log(`Error in uploading ${error}`));
+    }
+  };
+
+  //! remove Item from uploadList
+  const handleRemoveFile = (FileID) => async () => {
+    // console.log(acceptedFiles);
+
+    const files = allFiles?.filter((fileItem) => fileItem.FileID !== FileID);
+    await onAnyFieldChanged(elementId, files, 'File');
+    setAllFiles(files);
+    setDeleteModalStatus(false);
+  };
 
   return (
     <FormCell
@@ -84,18 +132,27 @@ const FileField = ({
         title="حذف فایل"
         onCancel={() => setDeleteModalStatus(false)}
         onClose={() => setDeleteModalStatus(false)}
-        onConfirm={() => setDeleteModalStatus(false)}
+        onConfirm={handleRemoveFile(deleteModalStatus)}
       />
       <Styled.FilesContainer isTabletOrMobile={isTabletOrMobile}>
-        {Files?.map((file, key) => (
-          <FileShowCell file={file} key={key} />
+        {allFiles?.map((file, key) => (
+          <FileShowCell
+            file={file}
+            key={key}
+            onDelete={() => setDeleteModalStatus(file.FileID)}
+          />
         ))}
+        {uploadingFiles?.map((file, key) => {
+          return <FileShowCell uploadingFile={file} key={key} />;
+        })}
         <CustomDropZone
           maxFiles={2} //! (infoJSON?.MaxCount)
           maxTotalSize={2} //! (infoJSON?.TotalSize)
           maxEachSize={1} //! (infoJSON?.MaxSize)
           accept={['image/*']} //! (infoJSON?.AllowedExtensions)
-          onUpload={handleUploadFile}
+          onUpload={(acceptedFiles) =>
+            handleUploadFile(acceptedFiles, allFiles)
+          }
           placeholders={{
             main: RVDic.DropFilesHere,
             dragging: 'اینجا رها کنید...',
