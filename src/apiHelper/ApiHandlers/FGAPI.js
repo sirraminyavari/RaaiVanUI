@@ -53,6 +53,15 @@ export const getFormElements = ({
                     ...nt,
                     NodeType: decodeBase64(nt.NodeType),
                   })),
+              FormName: !info.FormName
+                ? undefined
+                : decodeBase64(info.FormName),
+              NodeType: !info.NodeType
+                ? undefined
+                : { ...info.NodeType, Name: decodeBase64(info.NodeType?.Name) },
+              Levels: !info.Levels?.length
+                ? undefined
+                : info.Levels.map((l) => decodeBase64(l)),
             }),
       };
     }),
@@ -98,6 +107,18 @@ export const saveFormElements = ({
                           ...nt,
                           NodeType: encodeBase64(nt.NodeType),
                         })),
+                    FormName: !e?.Info?.FormName
+                      ? undefined
+                      : encodeBase64(e.Info.FormName),
+                    NodeType: !e?.Info?.NodeType
+                      ? undefined
+                      : {
+                          ...e.Info.NodeType,
+                          Name: encodeBase64(e.Info.NodeType?.Name),
+                        },
+                    Levels: !e?.Info?.Levels?.length
+                      ? undefined
+                      : e.Info.Levels.map((l) => encodeBase64(l)),
                   })
                 )
               ),
@@ -182,7 +203,7 @@ const customizedElements = {
     Info: { Pattern: 'rating' },
   },
   item: {
-    Type: 'Numeric',
+    Type: 'Node',
     Info: {
       NodeTypes: [{ NodeTypeID: '[string]', NodeType: '[string]' }], //array of node types
       MultiSelect: '[boolean]',
@@ -200,6 +221,21 @@ const customizedElements = {
       TotalSize: '[integer]',
       ImageOnly: '[boolean]',
       AllowedExtensions: "array of strings. i.e. ['pdf', 'docx']",
+    },
+  },
+  separator: {
+    Type: 'Separator',
+  },
+  table: {
+    Type: 'Form',
+    Info: { FormID: '[string]', FormName: '[string]' },
+  },
+  multilevel: {
+    Type: 'MultiLevel',
+    Info: {
+      Template: '[string]', //Country_Province_City, University
+      NodeType: { ID: '[string]', Name: '[string]' },
+      Levels: 'array of string values',
     },
   },
 };
