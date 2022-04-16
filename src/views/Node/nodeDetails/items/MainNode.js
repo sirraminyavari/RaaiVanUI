@@ -14,17 +14,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RVDic } from 'utils/TestUtils/fa';
 import CreatableSelect from 'react-select/creatable';
-import {
-  getFormInstance,
-  initializeOwnerFormInstance,
-} from 'apiHelper/ApiHandlers/FGAPI';
+import { modifyNodeName } from 'apiHelper/ApiHandlers/CNApi';
 
-const ModifyNodeName = new APIHandler('CNAPI', 'ModifyNodeName');
+//TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
 const ModifyNodeTags = new APIHandler('CNAPI', 'ModifyNodeTags');
-const getInstanceId = new APIHandler('FGAPI', 'InitializeOwnerFormInstance');
 const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const [titleEditMode, setTitleEditMode] = useState(false);
+
+  //TODO identify `descEditMode` usage ...
   const [descEditMode, setDescEditMode] = useState(false);
   const [keywords, setKeywords] = useState([]);
   const [whichElementChanged, setWhichElementChanged] = useState(null);
@@ -34,16 +32,17 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   );
 
   useEffect(() => {
-    setTitle(decodeBase64(nodeDetails?.Name?.Value));
+    if (descEditMode)
+      setTitle(decodeBase64(nodeDetails?.Name?.Value));
     setDesc(decodeBase64(nodeDetails?.Description?.Value));
     setKeywords(
       nodeDetails?.Keywords?.Value?.length > 0
         ? nodeDetails?.Keywords?.Value?.map((x) => {
-            return {
-              label: decodeBase64(x),
-              value: decodeBase64(x),
-            };
-          })
+          return {
+            label: decodeBase64(x),
+            value: decodeBase64(x),
+          };
+        })
         : []
     );
   }, [nodeDetails?.Name?.Value]);
@@ -51,21 +50,18 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const onEditTitle = () => {
     setTitleEditMode(true);
   };
-  const onSaveTitle = () => {
+  const onSaveTitle = async () => {
     setTitleEditMode(false);
     if (whichElementChanged === 'title') {
       setTitleEditMode(false);
       const { NodeID } = nodeDetails || {};
-      ModifyNodeName.fetch(
-        { NodeID: NodeID, Name: encodeBase64(title) },
-        (res) => {
-          console.log(res, 'save result');
 
-          alert('saved', {
-            Timeout: 1000,
-          });
-        }
-      );
+      const saveResult = await modifyNodeName({ NodeID: NodeID, Name: encodeBase64(title) });
+      console.log({ saveResult });
+
+      alert('saved', {
+        Timeout: 1000,
+      });
     }
     setWhichElementChanged(null);
   };

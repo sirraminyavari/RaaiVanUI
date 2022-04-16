@@ -19,7 +19,6 @@ const FormCell = ({
 }) => {
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const editable = useContext(EditableContext);
-  console.log(editable, '********');
   return (
     <Container style={style} wrap={isTabletOrMobile}>
       <CellName fullWidth={isTabletOrMobile}>

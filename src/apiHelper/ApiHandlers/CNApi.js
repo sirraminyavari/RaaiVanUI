@@ -81,8 +81,8 @@ export const removeNodeType = ({
   const ids = NodeTypeIDs?.length
     ? NodeTypeIDs
     : !!NodeTypeID
-    ? [NodeTypeID]
-    : [];
+      ? [NodeTypeID]
+      : [];
 
   return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_REMOVE_NODE_TYPE), {
     NodeTypeIDs: ids,
@@ -163,7 +163,6 @@ export const saveMembers = (NodeID, UserIDs) => {
 };
 
 /**
-<<<<<<< HEAD
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.

@@ -23,13 +23,17 @@ const FileField = ({
   ...rest
 }) => {
   const {
-    // GlobalUtilities,
     RVDic,
   } = useWindow();
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState([]);
   const [allFiles, setAllFiles] = useState(Files);
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
+
+  //TODO update hardcoded text literals with associated RVDic
+  //TODO Improve upload handling functionality via Redux-SAGA or queue alternatives
+  //TODO add comments and JSDoc templates
+
 
   // const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
   const saveFunctionality = useMemo(
@@ -100,9 +104,16 @@ const FileField = ({
               ...AttachedFile,
             }));
             console.log({ allFiles, files });
-            setAllFiles((prevFiles) => [...prevFiles, ...files]);
-            saveFunctionality([...allFiles, ...files]);
+            setAllFiles((prevFiles) => {
+
+              saveFunctionality([...prevFiles, ...files]);
+
+              return [...prevFiles, ...files]
+            });
           }
+          alert('saved', {
+            Timeout: 1000,
+          });
         })
         .catch((error) => console.log(`Error in uploading ${error}`));
     }
@@ -116,6 +127,10 @@ const FileField = ({
     await onAnyFieldChanged(elementId, files, 'File');
     setAllFiles(files);
     setDeleteModalStatus(false);
+
+    alert('saved', {
+      Timeout: 1000,
+    });
   };
 
   return (

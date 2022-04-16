@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 
-const { RVDic, RV_RTL } = window;
-const SeperatorField = ({
+const { RV_RTL } = window;
+const SeparatorField = ({
   value,
   decodeInfo,
   decodeTitle,
@@ -20,7 +20,7 @@ const SeperatorField = ({
     </Maintainer>
   );
 };
-export default SeperatorField;
+export default SeparatorField;
 
 const Maintainer = styled.div`
   display: flex;

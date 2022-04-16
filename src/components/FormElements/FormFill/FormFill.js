@@ -1,9 +1,8 @@
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+// import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { decodeBase64 } from 'helpers/helpers';
-import { toBase64 } from 'js-base64';
 import _ from 'lodash';
-import React, { useContext, useEffect, useState } from 'react';
-import MultiLeveltype from './types/multiLevel/MultiLevelType';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+// import MultiLeveltype from './types/multiLevel/MultiLevelType';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
 import TextField from './types/textField/TextField';
@@ -16,11 +15,11 @@ import DateField from './types/date/DateField';
 import FileField from './types/file/FileField';
 import FormField from './types/form/FormField';
 import prepareForm from './types/prepareForm';
-import SeperatorField from './types/seperator/SeperatorField';
+import SeparatorField from './types/separator/separator';
 import saveForm from './types/saveForm';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 
-const { RVDic, GlobalUtilities } = window;
+
 export const EditableContext = React.createContext();
 const FormFill = ({ data, editable, ...props }) => {
   const propsContext = useContext(PropsContext);
@@ -62,9 +61,13 @@ const FormFill = ({ data, editable, ...props }) => {
         break;
     }
   };
-  const saveFieldChanges = async (readyToUpdate, elementId) => {
+  const saveFieldChanges = useMemo(() => async (readyToUpdate, elementId) => {
+    console.log("saveFieldChanges", {
+      whichElementChanged, elementId
+    })
+    // if (whichElementChanged === elementId) {
     if (true) {
-      // if (whichElementChanged === elementId) {
+
       try {
         const changedElement = readyToUpdate?.Elements?.find(
           (x) => x?.ElementID === elementId
@@ -83,9 +86,9 @@ const FormFill = ({ data, editable, ...props }) => {
         setTempForm(freshForm);
         setWhichElementChanged(null);
 
-        alert('saved', {
-          Timeout: 1000,
-        });
+        // alert('saved', {
+        //   Timeout: 1000,
+        // });
       } catch (err) {
         setTempForm(syncTempFormWithBackEnd);
         console.log('failed');
@@ -94,7 +97,8 @@ const FormFill = ({ data, editable, ...props }) => {
         });
       }
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [whichElementChanged]);
 
   const formProducer = (FormObject) => {
     const { Elements } = FormObject || {};
@@ -246,7 +250,7 @@ const FormFill = ({ data, editable, ...props }) => {
               />
             );
           case 'Separator':
-            return <SeperatorField decodeTitle={decodeTitle} />;
+            return <SeparatorField decodeTitle={decodeTitle} />;
 
           case 'File':
             return (

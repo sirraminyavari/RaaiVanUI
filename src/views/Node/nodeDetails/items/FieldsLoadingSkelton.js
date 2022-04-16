@@ -37,7 +37,6 @@ const LoadingSkelton = () => {
       </Shimmer>
     </>
   );
-  // return <LoadReactangle height={'10rem'} width={'10rem'} />;
 };
 
 export default LoadingSkelton;

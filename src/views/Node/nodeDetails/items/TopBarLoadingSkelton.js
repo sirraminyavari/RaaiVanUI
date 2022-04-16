@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Shimmer from 'components/Shimmer/Shimmer';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const LoadingSkelton = () => {
-  const isMobile = DimensionHelper().isMobile;
   return (
     <>
       <Shimmer>
@@ -33,7 +31,6 @@ const LoadingSkelton = () => {
       </Shimmer>
     </>
   );
-  // return <LoadReactangle height={'10rem'} width={'10rem'} />;
 };
 
 export default LoadingSkelton;
