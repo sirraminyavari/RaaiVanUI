@@ -47,6 +47,12 @@ export const getFormElements = ({
                 : info.Options.map((o) => decodeBase64(o)),
               Yes: !info.Yes ? undefined : decodeBase64(info.Yes),
               No: !info.No ? undefined : decodeBase64(info.No),
+              NodeTypes: !(info.NodeTypes || []).length
+                ? undefined
+                : info.NodeTypes.map((nt) => ({
+                    ...nt,
+                    NodeType: decodeBase64(nt.NodeType),
+                  })),
             }),
       };
     }),
@@ -86,6 +92,12 @@ export const saveFormElements = ({
                       : e.Info.Options.map((o) => encodeBase64(o)),
                     Yes: !e?.Info?.Yes ? undefined : encodeBase64(e.Info.Yes),
                     No: !e?.Info?.No ? undefined : encodeBase64(e.Info.No),
+                    NodeTypes: !e?.Info?.NodeTypes?.length
+                      ? undefined
+                      : e.Info.NodeTypes.map((nt) => ({
+                          ...nt,
+                          NodeType: encodeBase64(nt.NodeType),
+                        })),
                   })
                 )
               ),
@@ -164,5 +176,30 @@ const customizedElements = {
   'two options': {
     Type: 'Binary',
     Info: { Yes: '[string]', No: '[string]' },
+  },
+  rating: {
+    Type: 'Numeric',
+    Info: { Pattern: 'rating' },
+  },
+  item: {
+    Type: 'Numeric',
+    Info: {
+      NodeTypes: [{ NodeTypeID: '[string]', NodeType: '[string]' }], //array of node types
+      MultiSelect: '[boolean]',
+    },
+  },
+  user: {
+    Type: 'User',
+    Info: { MultiSelect: '[boolean]' },
+  },
+  file: {
+    Type: 'File',
+    Info: {
+      MaxCount: '[integer]',
+      MaxSize: '[integer]',
+      TotalSize: '[integer]',
+      ImageOnly: '[boolean]',
+      AllowedExtensions: "array of strings. i.e. ['pdf', 'docx']",
+    },
   },
 };
