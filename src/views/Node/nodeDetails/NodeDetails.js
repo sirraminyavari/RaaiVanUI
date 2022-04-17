@@ -8,6 +8,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import NodeView from '../Node-view';
 import Collector from './items/Collector';
 import styled from 'styled-components';
+import WelcomeLayout from 'layouts/WelcomeLayout';
 
 export const PropsContext = React.createContext();
 
@@ -28,27 +29,17 @@ const NodeDetails = (props) => {
 
   return (
     <PropsContext.Provider value={props}>
-      <Maintainer style={{ width: '100%' }}>
+      <WelcomeLayout withScrollbar noOutline>
         {/* If True, will render MobileView component */}
-        <>
-          {DimensionHelper()?.isTabletOrMobile ? (
-            <Collector
-              nodeId={NodeID}
-              nodeDetails={nodeDetails}
-              hierarchy={route?.Hierarchy || []}
-              {...props}
-            />
-          ) : (
-            <Collector
-              nodeId={NodeID}
-              nodeDetails={nodeDetails}
-              hierarchy={route?.Hierarchy || []}
-              {...props}
-            />
-          )}
-        </>
+
+        <Collector
+          nodeId={NodeID}
+          nodeDetails={nodeDetails}
+          hierarchy={route?.Hierarchy || []}
+          {...props}
+        />
         {/* <NodeView {...props} /> */}
-      </Maintainer>
+      </WelcomeLayout>
     </PropsContext.Provider>
   );
 };
@@ -57,4 +48,5 @@ export default NodeDetails;
 const Maintainer = styled.div`
   display: flex;
   flex-direction: column;
+  background: red;
 `;

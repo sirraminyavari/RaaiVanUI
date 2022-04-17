@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SaveButton from './items/SaveButton';
 import { EditableContext } from './FormFill';
 import EditCircleIcon from 'components/Icons/EditIcons/EditCircle';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const FormCell = ({
   children,
@@ -16,20 +17,30 @@ const FormCell = ({
   onSave,
   onEdit,
 }) => {
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const editable = useContext(EditableContext);
   console.log(editable, '********');
   return (
-    <Container style={style}>
-      <CellName>
+    <Container style={style} wrap={isTabletOrMobile}>
+      <CellName fullWidth={isTabletOrMobile}>
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            width: '20rem',
-          }}>
-          {iconComponent}
-
+            minWidth: '17rem',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem',
+            }}
+          >
+            {iconComponent}
+          </div>
           <Title type="h4">{title}</Title>
         </div>
         {!editMode && editModeVisible && editable && (
@@ -47,16 +58,24 @@ export default FormCell;
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${({ wrap }) => (wrap ? 'column' : 'row')};
   align-items: center;
-  margin: 1.25rem 0 1.25rem 0;
+  margin-block: 1.25rem;
 `;
 const CellName = styled.div`
   display: flex;
   flex-direction: row;
-  width: 17rem;
   align-items: center;
   justify-content: space-between;
+  ${({ fullWidth }) =>
+    fullWidth
+      ? `
+      width:100%;
+  margin-block-end: 1.25rem;
+  `
+      : `
+  // width:  17rem;
+  `}
 `;
 const Title = styled(Heading)`
   color: ${CV_GRAY};

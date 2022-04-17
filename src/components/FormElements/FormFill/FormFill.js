@@ -8,7 +8,6 @@ import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
 import TextField from './types/textField/TextField';
 import styled from 'styled-components';
-import FormCell from './FormCell';
 import MultiLevelField from './types/multiLevel/MultiLevelField';
 import BinaryField from './types/binary/BinaryField';
 import UserSelect from './types/userSelect/UserSelect';
@@ -40,10 +39,12 @@ const FormFill = ({ data, editable, ...props }) => {
       }),
     });
   }, []);
-  console.log(editable, 'editable editable editable');
+  // console.log(editable, 'editable editable editable');
   const onAnyFieldChanged = async (elementId, event, type) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
     setTempForm(readyToUpdate);
+
+    console.log({ readyToUpdate });
     setWhichElementChanged(elementId);
 
     switch (type) {
@@ -52,6 +53,9 @@ const FormFill = ({ data, editable, ...props }) => {
         await saveFieldChanges(readyToUpdate, elementId);
         break;
       case 'Text':
+        await saveFieldChanges(readyToUpdate, elementId);
+        break;
+      case 'File':
         await saveFieldChanges(readyToUpdate, elementId);
         break;
       default:
@@ -73,7 +77,7 @@ const FormFill = ({ data, editable, ...props }) => {
             x?.ElementID === elementId ? saveResult[0] : x
           ),
         };
-
+        console.log({ freshForm });
         setSyncTempFormWithBackEnd(freshForm);
         setTempForm(freshForm);
         setWhichElementChanged(null);
@@ -252,7 +256,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
-                value={Files}
+                Files={Files}
               />
             );
 

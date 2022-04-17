@@ -19,36 +19,47 @@ import {
 import styled from 'styled-components';
 
 export const FilesContainer = styled.div`
-  width: calc(100% / 3 * 2);
+  ${({ isTabletOrMobile }) =>
+    isTabletOrMobile
+      ? `
+width: 100%;
+`
+      : `
+width: calc(100% );
+`}
 `;
+FilesContainer.displayName = 'FilesContainer';
 
 export const FileShowContainer = styled.div.attrs({
   className: `${BO_DISTANT} ${BO_RADIUS_QUARTER}`,
 })`
   width: 100%;
-  height: 2.5rem;
+  // height: 2.5rem;
   margin-bottom: 0.5rem;
-  padding: 0 0.6rem;
+  padding: 0.2rem 0.6rem;
   user-select: none;
   ${FLEX_RCB}
+  ${({ mobileView }) =>
+    mobileView &&
+    `
+  flex-direction:column;
+  `}
 
   .form-file-show-avatar {
-    width: 2rem;
-    height: 2rem;
-    min-width: 2rem;
-    min-height: 2rem;
-    border: none;
+    aspect-ratio: 1;
   }
 `;
+FileShowContainer.displayName = 'FileShowContainer';
 
 export const FileTitleWrapper = styled.div`
   ${FLEX_RCS}
-  width: 50%;
+  width: 100%;
 `;
+FileTitleWrapper.displayName = 'FileTitleWrapper';
 
 export const FileActionWrapper = styled.div`
   ${FLEX_RCA}
-  width: 50%;
+  width: 100%;
 
   .form-fill-file-tooltip {
     width: 10rem;
@@ -59,11 +70,13 @@ export const FileActionWrapper = styled.div`
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT} !important;
   }
 `;
+FileActionWrapper.displayName = 'FileActionWrapper';
 
 export const FileSize = styled.div`
   color: ${CV_GRAY};
   font-size: 1rem;
 `;
+FileSize.displayName = 'FileSize';
 
 export const FileLinkWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
@@ -87,6 +100,7 @@ export const FileLinkWrapper = styled.div.attrs({
     font-weight: normal;
   }
 `;
+FileLinkWrapper.displayName = 'FileLinkWrapper';
 
 export const MoreIconWrapper = styled.div.attrs({
   className: `${BO_RADIUS_CIRCLE}`,
@@ -103,6 +117,7 @@ export const MoreIconWrapper = styled.div.attrs({
     }
   }
 `;
+MoreIconWrapper.displayName = 'MoreIconWrapper';
 
 export const FileShowTitle = styled.div`
   width: 100%;
@@ -113,6 +128,7 @@ export const FileShowTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+FileShowTitle.displayName = 'FileShowTitle';
 
 export const FileActionItemWrapper = styled.div`
   font-size: 0.9rem;
@@ -126,3 +142,14 @@ export const FileActionItemWrapper = styled.div`
     color: ${CV_RED};
   }
 `;
+FileActionItemWrapper.displayName = 'FileActionItemWrapper';
+
+export const FileShowAvatarWrapper = styled.div`
+  width: 3rem;
+  height: 3rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: none;
+  display: flex;
+`;
+FileShowAvatarWrapper.displayName = 'FileShowAvatarWrapper';

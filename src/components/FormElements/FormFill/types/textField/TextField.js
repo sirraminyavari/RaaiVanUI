@@ -84,9 +84,10 @@ const TextField = ({
           <TextIcon color={CV_GRAY} size={'1.25rem'} />
         )
       }
-      title={decodeTitle}>
+      title={decodeTitle}
+    >
       <AnimatedInput
-        type={parseDecodeInfo?.pattern}
+        type={type || parseDecodeInfo?.pattern}
         placeholder={placeholder}
         error={error}
         disabled={!editable}
@@ -99,8 +100,7 @@ const TextField = ({
           console.log('onBlur!!!', new Date());
           save(elementId);
         }}
-        type={type}
-        style={{ width: number ? '7rem' : '37rem' }}
+        style={{ width: number ? '7rem' : '100%' }}
         children={null}
       />
     </FormCell>

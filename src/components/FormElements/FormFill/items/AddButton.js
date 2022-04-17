@@ -16,7 +16,7 @@ const AddButton = ({ onClick }) => {
 
 export default AddButton;
 
-const Maintainer = styled(Button)`
+const Maintainer = styled(Button).attrs({ type: 'primary-o' })`
   display: flex;
   align-items: center;
   border-color: ${TCV_DEFAULT};

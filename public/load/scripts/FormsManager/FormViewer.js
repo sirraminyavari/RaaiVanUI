@@ -453,27 +453,33 @@
                             var abstractDic = that._get_abstract_dic(result.PollAbstract);
                             that.set_form_statistics((result.PollAbstract || {}).Statistics);
 
-                            for (var i = 0, lnt = (elements || []).length; i < lnt; ++i) {
-                                that._set_poll_abstract(elements[i].Data, abstractDic);
+                            (elements || []).forEach(elem => {
+                                that._set_poll_abstract(elem.Data, abstractDic);
 
-                                for (var j = 0, _ln = filledElements.length; j < _ln; ++j) {
-                                    if (elements[i].Data.ElementID == filledElements[j].ElementID) {
-                                        elements[i].Data.ElementID = filledElements[j].NewElementID;
-                                        elements[i].Data.RefElementID = filledElements[j].ElementID;
-                                        elements[i].Data.Filled = true;
-                                    }
+                                var filledElem = filledElements.filter(e => e.ElementID == elem.Data.ElementID);
+                                filledElem = filledElem.length == 1 ? filledElem[0] : null;
+
+                                if (filledElem) {
+                                    elem.Data.ElementID = filledElem.NewElementID;
+                                    elem.Data.RefElementID = filledElem.ElementID;
+                                    elem.Data.Filled = true;
                                 }
+
+                                var resElem = (result.Elements || []).filter(x => x.ElementID == elem.Data.ElementID ||
+                                    x.ElementID == elem.Data.RefElementID);
+                                resElem = resElem.length == 1 ? that.parse_element(resElem[0]) : null;
                                 
-                                var resElem = (result.Elements || []).filter(x => x.ElementID == elements[i].Data.ElementID ||
-                                    x.ElementID == elements[i].Data.RefElementID);
-
-                                if (resElem.length == 1) {
-                                    elements[i].Data.TextValue = Base64.decode(resElem[0].TextValue);
-                                    elements[i].Data.Files = Base64.decode(resElem[0].Files) || [];
-                                    elements[i].BodyTextManager.set_data();
+                                if (resElem) {
+                                    elem.Data.TextValue = resElem.TextValue;
+                                    elem.Data.FloatValue = resElem.FloatValue;
+                                    elem.Data.BitValue = resElem.BitValue;
+                                    elem.Data.DateValue = resElem.DateValue;
+                                    elem.Data.GuidItems = resElem.GuidItems;
+                                    elem.Data.Files = resElem.Files || [];
+                                    elem.BodyTextManager.set_data();
                                 }
-                            }
-                            
+                            });
+
                             for (var i = 0, lnt = (elements || []).length; i < lnt; ++i) {
                                 if (erredElementIds[elements[i].Data.ElementID]) continue;
 
@@ -755,6 +761,19 @@
             return false;
         },
 
+        parse_element: function (element) {
+            if (!element) return element;
+
+            element.Info = JSON.parse(Base64.decode(element.Info) || "{}");
+            element.Title = Base64.decode(element.Title);
+            element.Name = Base64.decode(element.Name);
+            element.Help = GlobalUtilities.trim(Base64.decode(element.Help));
+            element.TextValue = Base64.decode(element.TextValue);
+            jQuery.each(element.GuidItems || [], function (ind, val) { val.Name = Base64.decode(val.Name); });
+
+            return element;
+        },
+
         add_element: function (element) {
             var that = this;
 
@@ -764,13 +783,8 @@
             if (!that.Options.CheckUniqueConstraints) element.UniqueValue = false;
 
             element.InstanceID = element.InstanceID || that.Objects.InstanceID;
-            element.Info = JSON.parse(Base64.decode(element.Info) || "{}");
-            element.Title = Base64.decode(element.Title);
-            element.Name = Base64.decode(element.Name);
-            element.Help = GlobalUtilities.trim(Base64.decode(element.Help));
-            element.TextValue = Base64.decode(element.TextValue);
-            jQuery.each(element.GuidItems || [], function (ind, val) { val.Name = Base64.decode(val.Name); });
-
+            that.parse_element(element);
+            
             var helpTip = GlobalUtilities.get_text_begining(element.Help, 200, "...");
 
             var valuesCount = (element.Abstract || {}).ValuesCount;

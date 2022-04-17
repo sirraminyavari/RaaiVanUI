@@ -8,21 +8,22 @@ import FileShowCell from './FileShowCell';
 import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-const FileField = (props) => {
+const FileField = ({
+  value,
+  decodeInfo,
+  decodeTitle,
+  onAnyFieldChanged,
+  elementId,
+  type,
+  Files,
+  ...rest
+}) => {
   const { GlobalUtilities, RVDic } = useWindow();
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
-
-  const {
-    value,
-    decodeInfo,
-    decodeTitle,
-    onAnyFieldChanged,
-    elementId,
-    type,
-    ...rest
-  } = props;
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
   const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
 
@@ -37,39 +38,44 @@ const FileField = (props) => {
   };
 
   //! Get upload link and upload file(s).
-  const handleUploadFile = async (acceptedFiles) => {
-    // console.log(acceptedFiles);
-    if (acceptedFiles?.length) {
-      const result = await getUploadLink();
-      const uploadURL = result;
-      console.log(uploadURL);
+  const handleUploadFile = useMemo(
+    () => async (acceptedFiles) => {
+      // console.log(acceptedFiles);
+      if (acceptedFiles?.length) {
+        const result = await getUploadLink();
+        const uploadURL = result;
+        console.log(uploadURL);
 
-      const promises = acceptedFiles.map((file) => {
-        return uploadFile(file, uploadURL).catch((error) => error);
-      });
+        const promises = acceptedFiles.map((file) => {
+          return uploadFile(file, uploadURL).catch((error) => error);
+        });
 
-      Promise.all(promises)
-        .then((responses) => {
-          if (responses.length) {
-            //! Response data.
-            const datas = responses
-              ?.map((res) => res?.data)
-              ?.filter((data) => data?.success);
+        Promise.all(promises)
+          .then((responses) => {
+            if (responses.length) {
+              //! Response data.
+              const datas = responses
+                ?.map((res) => res?.data)
+                ?.filter((data) => data?.success);
 
-            //! Uploaded files.
-            const files = datas.map((data) => data?.AttachedFile);
-            onAnyFieldChanged(elementId, files, type);
-          }
-        })
-        .catch((error) => console.log(`Error in uploading ${error}`));
-    }
-  };
+              //! Uploaded files.
+              const files = datas.map((data) => data?.AttachedFile);
+              console.log({ asd: [...Files, ...files] });
+              onAnyFieldChanged(elementId, [...Files, ...files], type);
+            }
+          })
+          .catch((error) => console.log(`Error in uploading ${error}`));
+      }
+    },
+    [onAnyFieldChanged]
+  );
 
   return (
     <FormCell
       iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
       title={decodeTitle}
-      {...rest}>
+      {...rest}
+    >
       <DeleteConfirmModal
         show={deleteModalStatus}
         messageQuestion="آیا از حذف اطمینان دارید؟"
@@ -80,12 +86,10 @@ const FileField = (props) => {
         onClose={() => setDeleteModalStatus(false)}
         onConfirm={() => setDeleteModalStatus(false)}
       />
-      <Styled.FilesContainer>
-        {value?.map((file, key) => (
+      <Styled.FilesContainer isTabletOrMobile={isTabletOrMobile}>
+        {Files?.map((file, key) => (
           <FileShowCell file={file} key={key} />
         ))}
-        <FileShowCell file={1} onDelete={() => setDeleteModalStatus(true)} />
-        <FileShowCell file={2} onDelete={() => setDeleteModalStatus(true)} />
         <CustomDropZone
           maxFiles={2} //! (infoJSON?.MaxCount)
           maxTotalSize={2} //! (infoJSON?.TotalSize)
