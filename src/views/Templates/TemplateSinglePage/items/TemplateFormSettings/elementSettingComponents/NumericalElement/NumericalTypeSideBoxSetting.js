@@ -13,27 +13,27 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const patternOptions = [
     {
       id: 1,
-      value: 'NONE',
+      value: 'none',
       label: 'هیچ‌کدام',
     },
     {
       id: 2,
-      value: 'NUMBER',
+      value: 'number',
       label: 'عدد',
     },
     {
       id: 3,
-      value: 'PRICE',
+      value: 'currency',
       label: 'مبلغ',
     },
     {
       id: 4,
-      value: 'NATIONAL_CODE',
+      value: 'nationalCode',
       label: 'کد ملی',
     },
     {
       id: 5,
-      value: 'POSTAL_CODE',
+      value: 'postalCode',
       label: 'کد پستی',
     },
   ];
@@ -41,27 +41,27 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const currencyOptions = [
     {
       id: 1,
-      value: 'NONE',
+      value: 'none',
       label: 'هیچ‌کدام',
     },
     {
       id: 2,
-      value: 'TOMAN',
+      value: 'IRT',
       label: 'تومان',
     },
     {
       id: 3,
-      value: 'RIAL',
+      value: 'IRR',
       label: 'ریال',
     },
     {
       id: 4,
-      value: 'DOLLAR',
+      value: 'USD',
       label: 'دلار ($)',
     },
     {
       id: 6,
-      value: 'EURO',
+      value: 'EUR',
       label: 'یورو (€) ',
     },
   ];
@@ -145,7 +145,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
         />
       </Styles.Row>
 
-      {(PatternName === 'PRICE' || PatternName === 'NUMBER') && (
+      {(PatternName === 'currency' || PatternName === 'number') && (
         <Styles.Row>
           <Styles.ToggleRow>
             <Styles.ToggleRowTitle>
@@ -159,7 +159,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
         </Styles.Row>
       )}
 
-      {PatternName === 'NUMBER' && (
+      {PatternName === 'number' && (
         <Styles.Row>
           <Styles.ToggleRow>
             <Styles.ToggleRowTitle>
@@ -173,7 +173,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
         </Styles.Row>
       )}
 
-      {PatternName === 'PRICE' && (
+      {PatternName === 'currency' && (
         <Styles.Row>
           <Styles.SelectBoxTitle>{'نمایش نماد ارزی'}</Styles.SelectBoxTitle>
           <CustomSelect
@@ -188,7 +188,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
         </Styles.Row>
       )}
 
-      {(PatternName === 'PRICE' || PatternName === 'NUMBER') && (
+      {(PatternName === 'currency' || PatternName === 'number') && (
         <>
           <Styles.Row>
             <Styles.InputRowContainer>

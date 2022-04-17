@@ -180,8 +180,8 @@ const customizedElements = {
     Info: {
       min: '[number]',
       max: '[number]',
-      PatternName: 'NUMBER | PRICE | NATIONAL_CODE | POSTAL_CODE | NONE',
-      currency: 'TOMAN | RIAL | DOLLAR | EURO | NONE',
+      PatternName: 'number | currency | nationalCode | postalCode | none',
+      currency: 'IRT | IRR | USD | EUR | none',
       separator: true,
       percentage: true,
     },
