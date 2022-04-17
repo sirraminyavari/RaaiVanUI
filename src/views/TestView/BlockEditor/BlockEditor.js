@@ -1,15 +1,11 @@
 import { useLayoutEffect, useRef } from 'react';
 import { convertToRaw } from 'draft-js';
 
-import BlockEditor, {
-  defaultTheme,
-  convertLegacyHtmlToEditorState,
-} from '@sirraminyavari/rv-block-editor';
+import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
 
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
 import plugins from './plugins';
-console.log(convertLegacyHtmlToEditorState);
 
 function BE({
   editorState,

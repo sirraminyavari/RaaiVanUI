@@ -10,7 +10,7 @@
     "@etchteam/storybook-addon-css-variables-theme": "^1.1.1",
     "@lottiefiles/react-lottie-player": "^3.4.1",
     "@reduxjs/toolkit": "^1.5.0",
-    "@sirraminyavari/rv-block-editor": "^0.3.10-dev",
+    "@sirraminyavari/rv-block-editor": "^0.3.12-dev",
     "@stfy/react-editor.js": "^1.0.3",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
