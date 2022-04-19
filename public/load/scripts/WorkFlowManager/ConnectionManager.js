@@ -13,15 +13,18 @@
         };
 
         this.Options = {
-            GetStates: params.GetStates || function () { }
+            GetStates: params.GetStates || function () { },
+            ActionTypes: params.ActionTypes || [],
+            VariableTypes: params.VariableTypes || []
         };
-
+        
         var that = this;
 
         GlobalUtilities.load_files([
             { Root: "API/", Ext: "js", Childs: ["WFAPI", "DocsAPI"] },
             { Root: "WorkFlowManager/", Ext: "js", Childs: ["NeededFormsManager", "AutoMessageManager"] },
             "MediaManager/MediaManager.js",
+            "Formula/RVFormula.js"
         ], { OnLoad: function () { that.initialize(); } });
     }
 
@@ -106,7 +109,7 @@
                 GetStates: that.Options.GetStates
             });
         },
-
+        
         create_connection_label_area: function (container) {
             var that = this;
             
@@ -610,120 +613,413 @@
         create_action_area: function (container) {
             var that = this;
 
+            var optionsObj = null;
+
             var get_action = () => {
                 return ((that.Objects.Edge || {}).Actions || []).length ? that.Objects.Edge.Actions[0] : null;
             };
+
+            var selectedAction = null;
             
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12",
-                    Style: "position:relative; padding-" + RV_Float + ":2.5rem; min-height:2rem;",
-                    Childs: [
-                        {
-                            Type: "div", Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;",
-                            Childs: [{
-                                Type: "i", Class: "fa fa-pencil fa-2x rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
-                                Attributes: [{ Name: "aria-hidden", Value: true }]
-                            }]
-                        },
-                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
-                            Style: "display:none; flex-flow:row;", 
-                            Childs: [
-                                {
-                                    Type: "div", Style: "flex:0 0 auto; width:3rem;",
-                                    Childs: [{ Type: "text", TextValue: RVDic.Action + ":" }]
-                                },
-                                {
-                                    Type: "div", Style: "flex:0 0 auto;",
-                                    Childs: [{
-                                        Type: "select", Class: "rv-input", Name: "actionSelect",
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Childs: [
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12", Style: "margin-bottom: 0.5rem;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "display:inline-block; color:green; font-weight:bold;",
+                                Childs: [{ Type: "text", TextValue: RVDic.Actions }]
+                            },
+                            {
+                                Type: "div", Class: "rv-air-button rv-circle", Name: "addButton",
+                                Style: "display:inline-block; margin-" + RV_Float + ":1rem; font-size:0.7rem;",
+                                Childs: [
+                                    {
+                                        Type: "i", Class: "fa fa-plus", Style: "margin-" + RV_RevFloat + ":0.4rem;",
+                                        Attributes: [{ Name: "aria-hidden", Value: true }]
+                                    },
+                                    { Type: "text", TextValue: RVDic.Add }
+                                ]
+                            }
+                        ]
+                    },
+                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
+                        Style: "display: flex; flex-flow:column; margin-top: 1rem;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "flex: 0 0 auto; display: flex; flex-flow:row;",
+                                Childs: [
+                                    {
+                                        Type: "div", Style: "flex:0 0 auto; width:3rem;",
+                                        Childs: [{ Type: "text", TextValue: RVDic.Action + ":" }]
+                                    },
+                                    {
+                                        Type: "div", Style: "flex:0 0 auto;",
                                         Childs: [{
-                                            Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
-                                        }].concat(["Publish", "Unpublish"].map(itm => {
-                                            return {
-                                                Type: "option",
-                                                Attributes: [
-                                                    { Name: "value", Value: itm },
-                                                    (get_action() == itm ? { Name: "selected", Value: true } : null)
-                                                ],
-                                                Childs: [{ Type: "text", TextValue: RVDic.WF.Actions[itm] }]
-                                            };
-                                        }))
-                                    }]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], container);
-            console.log(elems["actionSelect"]);
+                                            Type: "select", Class: "rv-input", Name: "actionSelect",
+                                            Properties: [{
+                                                Name: "onchange",
+                                                Value: (e) => {
+                                                    selectedAction = !e.target.selectedIndex ? null :
+                                                        e.target[e.target.selectedIndex].value;
+                                                    render_action_options();
+                                                }
+                                            }],
+                                            Childs: [{
+                                                Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
+                                            }].concat((that.Options.ActionTypes || []).map(itm => {
+                                                return {
+                                                    Type: "option",
+                                                    Attributes: [
+                                                        { Name: "value", Value: itm },
+                                                        (get_action() == itm ? { Name: "selected", Value: true } : null)
+                                                    ],
+                                                    Childs: [{ Type: "text", TextValue: RVDic.WF.Actions[itm] }]
+                                                };
+                                            }))
+                                        }]
+                                    }
+                                ]
+                            },
+                            {
+                                Type: "div", Name: "actionOptions",
+                                Style: "flex: 0 0 auto; margin-top: 1rem; display: none;"
+                            },
+                            {
+                                Type: "div", Style: "flex: 0 0 auto; padding-top: 1rem;",
+                                Childs: [{
+                                    Type: "div", Class: "rv-air-button rv-circle",
+                                    Style: "margin: 0 auto; width: 8rem;", Name: "addButton",
+                                    Childs: [{ Type: "text", TextValue: RVDic.Add }]
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            }], container);
+            
             var viewArea = elems["viewArea"];
             var editArea = elems["editArea"];
-            var editButton = elems["editButton"];
-
-            var _set_data = function () {
-                var label = get_action();
-                if (label) label = RVDic.WF.Actions[label];
-
+            
+            var refresh_actions = function () {
                 viewArea.innerHTML = "";
+                that.show_actions(viewArea, that.Objects.Edge.Actions);
+            };
+            
+            refresh_actions();
 
-                GlobalUtilities.create_nested_elements([
-                    {
-                        Type: "div", Style: "display:inline-block; margin-" + RV_RevFloat + ":0.5rem;",
-                        Childs: [{ Type: "text", TextValue: RVDic.Action + ": " }]
-                    },
-                    {
-                        Type: "div",
-                        Style: "display:inline-block;" + (label ? "font-weight:bold;" : "color:rgb(100,100,100);"),
-                        Childs: [{ Type: "text", TextValue: label || ("(" + RVDic.NotSet + ")") }]
+            var adding = false;
+
+            elems["addButton"].onclick = function () {
+                if (adding) return;
+
+                var index = elems["actionSelect"].selectedIndex;
+                var action = index < 0 ? null : elems["actionSelect"][index].value;
+
+                var options = !(optionsObj || {}).get_data ? {} : optionsObj.get_data();
+
+                if (options === false) return;
+                else {
+                    adding = true;
+                    GlobalUtilities.block(container);
+                }
+
+                WFAPI.AddWorkFlowAction({
+                    ConnectionID: that.Objects.Edge.ID, Action: action, VariableType: options.VariableType,
+                    VariableName: Base64.encode(options.VariableName),
+                    VariableDefaultValue: Base64.encode(options.VariableDefaultValue),
+                    Formula: Base64.encode(options.Formula), ParseResults: true,
+                    ResponseHandler: function (result) {
+                        if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+                        else {
+                            that.Objects.Edge.Actions = that.Objects.Edge.Actions || [];
+                            that.Objects.Edge.Actions.push(result.Action);
+                            refresh_actions();
+                        }
+
+                        adding = false;
+                        GlobalUtilities.unblock(container);
                     }
-                ], viewArea);
+                });
             };
 
-            var _on_edit = function () {
-                var set_things = function () {
-                    editArea.style.display = editButton.__Editing ? "flex" : "none";
-                    viewArea.style.display = editButton.__Editing ? "none" : "block";
+            var render_action_options = function () {
+                elems["actionOptions"].innerHTML = "";
 
-                    _set_data();
-
-                    editButton.setAttribute("class", "fa " +
-                        (editButton.__Editing ? "fa-floppy-o" : "fa-pencil") + " fa-2x rv-icon-button");
-
-                    GlobalUtilities.append_tooltip(editButton, editButton.__Editing ? RVDic.Save : RVDic.Edit);
-                };
-
-                if (editButton.__Editing === true) {
-                    GlobalUtilities.block(container);
-
-                    var index = elems["actionSelect"].selectedIndex;
-                    var action = index < 0 ? null : elems["actionSelect"][index].value;
-                    
-                    WFAPI.SetWorkFlowAction({
-                        ConnectionID: that.Objects.Edge.ID, Action: action, ParseResults: true,
-                        ResponseHandler: function (result) {
-                            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-                            else {
-                                that.Objects.Edge.Actions = !action ? [] : [action];
-                                editButton.__Editing = false;
-                                set_things();
-                            }
-
-                            GlobalUtilities.unblock(container);
-                        }
-                    });
+                if (selectedAction == "SetVariable") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+                    optionsObj = that.render_action_variable(elems["actionOptions"]);
                 }
-                else editButton.__Editing = true;
-
-                set_things();
-            }; //end of _on_edit
-
-            editButton.onclick = _on_edit;
-
-            if (!get_action()) _on_edit();
-            _set_data();
+                else if (selectedAction == "SetScore") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+                    optionsObj = that.render_formula_input(elems["actionOptions"]);
+                }
+                else {
+                    jQuery(elems["actionOptions"]).fadeOut(0);
+                    optionsObj = null;
+                }
+            };
         },
+
+        show_actions: function (container, actions) {
+            var that = this;
+
+            that.get_workflow_variables(function (variables) {
+                (actions || []).forEach(ac => that.show_action(container, ac, variables));
+            });
+        },
+
+        show_action: function (container, action, variables) {
+            var that = this;
+            action = action || {};
+
+            var isVariable = action.ActionType == "SetVariable";
+            var hasDefaultValue = isVariable && (action.VariableType == "Number");
+            var hasFormula = (action.ActionType == "SetScore") || (action.VariableType == "Formula");
+
+            var create_item = function (data) {
+                return {
+                    Type: "div", Class: "small-12 medium-6 large-4", Style: "padding: 0.5rem;",
+                    Childs: [{
+                        Type: "div", Class: "rv-border-radius-half",
+                        Style: "background-color:white; outline: 1px solid rgb(240, 240, 240);" +
+                            "padding: 0.5rem; height: 100%; text-align: center;",
+                        Childs: [
+                            {
+                                Type: "div",
+                                Style: "font-style: italic; font-size: 0.7rem; color: rgb(100, 100, 100);",
+                                Childs: [{ Type: "text", TextValue: data.label }]
+                            },
+                            {
+                                Type: "div",
+                                Childs: [{ Type: "text", TextValue: data.value }]
+                            }
+                        ]
+                    }]
+                };
+            };
+            
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "SoftBackgroundColor rv-border-radius-half",
+                Style: "padding: 0.5rem; margin-bottom: 0.5rem; border-inline-start: 2px solid var(--rv-color-warm)",
+                Childs: [
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin: 0;",
+                        Childs: [
+                            create_item({
+                                label: RVDic.Action,
+                                value: RVDic.WF.Actions[action.ActionType]
+                            }),
+                            (!isVariable ? null : create_item({
+                                label: RVDic.VariableType,
+                                value: RVDic.WF.VariableTypes[action.VariableType]
+                            })),
+                            (!isVariable ? null : create_item({
+                                label: RVDic.VariableName,
+                                value: Base64.decode(action.VariableName)
+                            }))
+                        ]
+                    },
+                    (!hasFormula ? null : {
+                        Type: "div",
+                        Style: "display: flex; flex-flow: row; padding: 0.5rem; padding-bottom: 0; padding-inline-end:0.3rem;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "flex: 0 0 auto; width: 6rem; color: rgb(100, 100, 100);",
+                                Childs: [{ Type: "text", TextValue: RVDic.Formula + ":" }]
+                            },
+                            {
+                                Type: "div", Name: "formula",
+                                Style: "flex: 1 1 auto; direction: ltr; text-align: left;"
+                            }
+                        ]
+                    })
+                ]
+            }], container);
+
+            if (hasFormula) RVFormula.show_formula(elems["formula"], Base64.decode(action.Formula), {
+                Variables: variables
+            });
+        },
+
+        render_action_variable: function (container) {
+            var that = this;
+
+            var formulaObj = null;
+
+            var handle_type_change = function (selectedType) {
+                elems["valueContainer"].style.display = selectedType == "Number" ? "flex" : "none";
+
+                if (selectedType == "Formula") {
+                    elems["formulaContainer"].innerHTML = "";
+                    elems["formulaContainer"].style.display = "flex";
+
+                    var fDiv = GlobalUtilities.create_nested_elements([{
+                        Type: "div", Name: "_div", Style: "width: 100%;",
+                    }], elems["formulaContainer"])["_div"];
+
+                    formulaObj = that.render_formula_input(fDiv, { IsVariable: true });
+                }
+                else {
+                    formulaObj = null;
+                    elems["formulaContainer"].style.display = "none";
+                }
+            };
+
+            var elems = GlobalUtilities.create_nested_elements([
+                {
+                    Type: "div", Class: "small-12 medium-9 large-6",
+                    Style: "display: flex; flex-flow: row; align-items: center; justify-content: center;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 8rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.VariableType + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto;",
+                            Childs: [{
+                                Type: "select", Class: "rv-input", Name: "typeSelect",
+                                Properties: [{
+                                    Name: "onchange",
+                                    Value: (e) => {
+                                        var selectedType = !e.target.selectedIndex ? null :
+                                            jQuery(e.target[e.target.selectedIndex]).attr("data-value");
+                                        handle_type_change(selectedType);
+                                    }
+                                }],
+                                Childs: [{
+                                    Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
+                                }].concat((that.Options.VariableTypes || []).map(itm => {
+                                    return {
+                                        Type: "option",
+                                        Attributes: [{ Name: "data-value", Value: itm }],
+                                        Childs: [{ Type: "text", TextValue: RVDic.WF.VariableTypes[itm] }]
+                                    };
+                                }))
+                            }]
+                        }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-9 large-6",
+                    Style: "display: flex; flex-flow: row; align-items: center; justify-content: center; margin-top: 0.5rem;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 8rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.VariableName + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto;",
+                            Childs: [{ Type: "input", Class: "rv-input", Name: "nameInput", Style: "width: 100%;" }]
+                        }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-9 large-6", Name: "valueContainer",
+                    Style: "display: none; flex-flow: row; align-items: center; justify-content: center; margin-top: 0.5rem;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 8rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.NumberValue + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto;",
+                            Childs: [{ Type: "number", Class: "rv-input", Name: "valueInput", Style: "width: 100%;" }]
+                        }
+                    ]
+                },
+                {
+                    Type: "div", Class: "small-12 medium-12 large-12", Name: "formulaContainer",
+                    Style: "display: none; margin-top: 0.5rem;"
+                }
+            ], container);
+
+            return {
+                get_data: function () {
+                    var index = elems["typeSelect"].selectedIndex;
+                    var type = index < 0 ? null : jQuery(elems["typeSelect"][index]).attr("data-value");
+
+                    var name = elems["nameInput"].value.trim();
+                    var numberValue = type == "Number" ? elems["valueInput"].value.trim() : "";
+
+                    var formula = formulaObj ? formulaObj.get_data() : null;
+                    if (formula) formula = formula.Formula;
+
+                    if (formula === false) return false;
+
+                    return !type || !name || ((type == "Number") && (!numberValue.length || isNaN(+numberValue))) ?
+                        false : {
+                            VariableType: type,
+                            VariableName: name,
+                            VariableDefaultValue: type == "Number" ? String(+ numberValue) : undefined,
+                            Formula: !formula ? undefined : formula
+                        };
+                }
+            };
+        },
+
+        render_formula_input: function (container, options) {
+            var that = this;
+            options = options || {};
+            var formulaObj = null;
+
+            var ignoreVariableId = options.IgnoreVariableID;
+            var variableMode = options.IsVariable;
+
+            container.innerHTML = "";
+
+            GlobalUtilities.loading(container);
+
+            that.get_workflow_variables(function (variables) {
+                container.innerHTML = "";
+
+                var _div = GlobalUtilities.create_nested_elements([{
+                    Type: "div", Style: "display: flex; flex-flow: row; align-items: center;",
+                    Childs: [
+                        {
+                            Type: "div",
+                            Style: "flex: 0 0 auto;" + (variableMode ? "width: 8rem;" : "padding-inline-end: 1rem;"),
+                            Childs: [{ Type: "text", TextValue: RVDic.Formula + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto; direction: ltr; text-align: left;",
+                            Childs: [{ Type: "div", Name: "_div" }]
+                        }
+                    ]
+                }], container)["_div"];
+
+                formulaObj = new RVFormula(_div, { Variables: variables });
+            });
+
+            return {
+                get_data: function () {
+                    var formula = !formulaObj ? false : formulaObj.get_formula();
+
+                    return !formula || !(formula || []).length ? false : {
+                        Formula: formula.join(" ")
+                    };
+                }
+            };
+        },
+
+        get_workflow_variables: function (callback, ignoreVariableId) {
+            var that = this;
+
+            callback = callback || function () { };
+
+            WFAPI.GetWorkFlowVariables({
+                WorkFlowID: that.Objects.WorkFlowID, ParseResults: true,
+                ResponseHandler: function (result) {
+                    callback(((result || {}).Variables || []).filter(v => v.ActionID != ignoreVariableId).map(v => ({
+                        ID: v.ActionID,
+                        Name: v.ActionID,
+                        Label: Base64.decode(v.VariableName)
+                    })));
+                }
+            });
+        }
     }
 })();
