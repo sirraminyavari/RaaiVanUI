@@ -27,6 +27,7 @@ const plugins = [
         id: m.ItemID,
         name: m.Name,
         avatar: m.ImageURL,
+        link: `https://google.com/search?q=${m.ItemID}`,
       }));
       return mentions;
     },
