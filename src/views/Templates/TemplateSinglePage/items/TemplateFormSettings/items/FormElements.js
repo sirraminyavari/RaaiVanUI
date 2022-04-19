@@ -183,7 +183,18 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'امتیازدهی',
+          type: 'Numeric',
           icon: <IoIosStarOutline size={size} />,
+          data: {
+            ...sharedProps,
+            Type: 'Numeric',
+            Info: {
+              Pattern: 'rating',
+              min: 1,
+              max: 1,
+              ViewType: 'numeric',
+            },
+          },
         },
       ],
     },
@@ -204,7 +215,18 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'فایل و چند رسانه ای',
+          type: 'File',
           icon: <BsFileEarmarkArrowUp size={size} />,
+          data: {
+            Type: 'File',
+            Info: {
+              MaxCount: 0,
+              MaxSize: 0,
+              TotalSize: 0,
+              ImageOnly: 0,
+              AllowedExtensions: [],
+            },
+          },
         },
         {
           id: getUUID(),

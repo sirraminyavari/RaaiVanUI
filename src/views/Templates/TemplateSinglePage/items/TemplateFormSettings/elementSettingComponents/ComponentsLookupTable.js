@@ -8,8 +8,9 @@ import SingleSelectMainSetting from './SingleSelectElement/SingleSelectMainSetti
 import SingleSelectSideBoxSetting from './SingleSelectElement/SingleSelectSideBoxSetting';
 import BinaryTypeMainSetting from './BinaryTypeElement/BinaryTypeMainSetting';
 import BinaryTypeSideBoxSetting from './BinaryTypeElement/BinaryTypeSideBoxSetting';
-import PhoneTypeMainSetting from './PhoneTypeElement/PhoneTypeMainSetting';
-import PhoneTypeSideBoxSetting from './PhoneTypeElement/PhoneTypeSideBoxSetting';
+import RatingTypeMainSetting from './NumericalElement/RatingTypeMainSetting';
+import RatingTypeSideBoxSetting from './NumericalElement/RatingTypeSideBoxSetting';
+import FileTypeSideBoxSetting from './FileTypeElement/FileTypeSideBoxSetting';
 
 const componentsArray = [
   {
@@ -42,6 +43,12 @@ const componentsArray = [
       return BinarySelectTemplate(props);
     },
   },
+  {
+    key: 'File',
+    value: (props) => {
+      return FileTypeTemplate(props);
+    },
+  },
 ];
 
 const TextTypeTemplate = (props) => {
@@ -58,11 +65,24 @@ const DateTypeTemplate = (props) => {
   };
 };
 
-const NumericTypeTemplate = (props) => {
+const FileTypeTemplate = (props) => {
   return {
-    main: NumericalTypeMainSetting(props),
-    sideBox: NumericalTypeSideBoxSetting(props),
+    main: <div></div>,
+    sideBox: FileTypeSideBoxSetting(props),
   };
+};
+
+const NumericTypeTemplate = (props) => {
+  const { current } = props;
+  return current?.data?.Info?.Pattern === 'rating'
+    ? {
+        main: RatingTypeMainSetting(props),
+        sideBox: RatingTypeSideBoxSetting(props),
+      }
+    : {
+        main: NumericalTypeMainSetting(props),
+        sideBox: NumericalTypeSideBoxSetting(props),
+      };
 };
 
 const SingleSelectTypeTemplate = (props) => {

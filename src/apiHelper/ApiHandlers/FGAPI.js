@@ -214,7 +214,12 @@ const customizedElements = {
   },
   rating: {
     Type: 'Numeric',
-    Info: { Pattern: 'rating' },
+    Info: {
+      Pattern: 'rating',
+      min: '[number]',
+      max: '[number]',
+      ViewType: 'numerical | stars',
+    },
   },
   item: {
     Type: 'Node',
@@ -239,6 +244,7 @@ const customizedElements = {
   },
   separator: {
     Type: 'Separator',
+    Info: {},
   },
   table: {
     Type: 'Form',
