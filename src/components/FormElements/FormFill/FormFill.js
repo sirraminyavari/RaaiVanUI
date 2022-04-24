@@ -19,7 +19,6 @@ import SeparatorField from './types/separator/separator';
 import saveForm from './types/saveForm';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 
-
 export const EditableContext = React.createContext();
 const FormFill = ({ data, editable, ...props }) => {
   const propsContext = useContext(PropsContext);
@@ -55,50 +54,55 @@ const FormFill = ({ data, editable, ...props }) => {
         await saveFieldChanges(readyToUpdate, elementId);
         break;
       case 'File':
-        await saveFieldChanges(readyToUpdate, elementId);
-        break;
+        const result = await saveFieldChanges(readyToUpdate, elementId);
+        return result;
       default:
         break;
     }
   };
-  const saveFieldChanges = useMemo(() => async (readyToUpdate, elementId) => {
-    console.log("saveFieldChanges", {
-      whichElementChanged, elementId
-    })
-    // if (whichElementChanged === elementId) {
-    if (true) {
+  const saveFieldChanges = useMemo(
+    () => async (readyToUpdate, elementId) => {
+      console.log('saveFieldChanges', {
+        whichElementChanged,
+        elementId,
+      });
+      // if (whichElementChanged === elementId) {
+      if (true) {
+        try {
+          const changedElement = readyToUpdate?.Elements?.find(
+            (x) => x?.ElementID === elementId
+          );
 
-      try {
-        const changedElement = readyToUpdate?.Elements?.find(
-          (x) => x?.ElementID === elementId
-        );
+          const saveResult = await saveForm([changedElement]);
 
-        const saveResult = await saveForm([changedElement]);
+          const freshForm = {
+            ...readyToUpdate,
+            Elements: readyToUpdate?.Elements?.map((x) =>
+              x?.ElementID === elementId ? saveResult[0] : x
+            ),
+          };
+          console.log({ freshForm });
+          setSyncTempFormWithBackEnd(freshForm);
+          setTempForm(freshForm);
+          setWhichElementChanged(null);
+          return true;
 
-        const freshForm = {
-          ...readyToUpdate,
-          Elements: readyToUpdate?.Elements?.map((x) =>
-            x?.ElementID === elementId ? saveResult[0] : x
-          ),
-        };
-        console.log({ freshForm });
-        setSyncTempFormWithBackEnd(freshForm);
-        setTempForm(freshForm);
-        setWhichElementChanged(null);
-
-        // alert('saved', {
-        //   Timeout: 1000,
-        // });
-      } catch (err) {
-        setTempForm(syncTempFormWithBackEnd);
-        console.log('failed');
-        alert('failed', {
-          Timeout: 500,
-        });
+          // alert('saved', {
+          //   Timeout: 1000,
+          // });
+        } catch (err) {
+          setTempForm(syncTempFormWithBackEnd);
+          console.log('failed');
+          return false;
+          alert('failed', {
+            Timeout: 500,
+          });
+        }
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [whichElementChanged]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [whichElementChanged]
+  );
 
   const formProducer = (FormObject) => {
     const { Elements } = FormObject || {};

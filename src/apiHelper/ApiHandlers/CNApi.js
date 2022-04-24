@@ -81,8 +81,8 @@ export const removeNodeType = ({
   const ids = NodeTypeIDs?.length
     ? NodeTypeIDs
     : !!NodeTypeID
-      ? [NodeTypeID]
-      : [];
+    ? [NodeTypeID]
+    : [];
 
   return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_REMOVE_NODE_TYPE), {
     NodeTypeIDs: ids,

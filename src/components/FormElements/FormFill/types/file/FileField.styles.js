@@ -20,7 +20,8 @@ import {
 import styled from 'styled-components';
 
 export const FilesContainer = styled.div`
-  width: 100%;
+  width: 95%;
+  margin-block-end: 1rem;
 `;
 FilesContainer.displayName = 'FilesContainer';
 

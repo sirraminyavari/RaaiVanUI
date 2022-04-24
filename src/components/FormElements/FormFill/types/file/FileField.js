@@ -22,11 +22,10 @@ const FileField = ({
   Files,
   ...rest
 }) => {
-  const {
-    RVDic,
-  } = useWindow();
+  const { RVDic } = useWindow();
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState([]);
+  const [readyToUploadFiles, setReadyToUploadFiles] = useState([]);
   const [allFiles, setAllFiles] = useState(Files);
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
 
@@ -34,11 +33,11 @@ const FileField = ({
   //TODO Improve upload handling functionality via Redux-SAGA or queue alternatives
   //TODO add comments and JSDoc templates
 
-
   // const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
   const saveFunctionality = useMemo(
     () =>
       async (files = allFiles) => {
+        setReadyToUploadFiles([]);
         return onAnyFieldChanged(elementId, files, type);
       },
     [elementId, onAnyFieldChanged, type, allFiles]
@@ -104,16 +103,17 @@ const FileField = ({
               ...AttachedFile,
             }));
             console.log({ allFiles, files });
-            setAllFiles((prevFiles) => {
-
-              saveFunctionality([...prevFiles, ...files]);
-
-              return [...prevFiles, ...files]
-            });
+            if (datas.length) {
+              setAllFiles((prevFiles) => {
+                // saveFunctionality([...prevFiles, ...files]);
+                setReadyToUploadFiles(files);
+                return [...prevFiles, ...files];
+              });
+              alert('saved', {
+                Timeout: 1000,
+              });
+            }
           }
-          alert('saved', {
-            Timeout: 1000,
-          });
         })
         .catch((error) => console.log(`Error in uploading ${error}`));
     }
@@ -124,8 +124,8 @@ const FileField = ({
     // console.log(acceptedFiles);
 
     const files = allFiles?.filter((fileItem) => fileItem.FileID !== FileID);
-    await onAnyFieldChanged(elementId, files, 'File');
-    setAllFiles(files);
+    const isSaved = await onAnyFieldChanged(elementId, files, 'File');
+    if (isSaved) setAllFiles(files);
     setDeleteModalStatus(false);
 
     alert('saved', {
@@ -137,6 +137,10 @@ const FileField = ({
     <FormCell
       iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
       title={decodeTitle}
+      editMode={readyToUploadFiles.length}
+      onSave={() => {
+        saveFunctionality(allFiles);
+      }}
       {...rest}
     >
       <DeleteConfirmModal

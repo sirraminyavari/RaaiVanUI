@@ -32,17 +32,16 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   );
 
   useEffect(() => {
-    if (descEditMode)
-      setTitle(decodeBase64(nodeDetails?.Name?.Value));
+    if (descEditMode) setTitle(decodeBase64(nodeDetails?.Name?.Value));
     setDesc(decodeBase64(nodeDetails?.Description?.Value));
     setKeywords(
       nodeDetails?.Keywords?.Value?.length > 0
         ? nodeDetails?.Keywords?.Value?.map((x) => {
-          return {
-            label: decodeBase64(x),
-            value: decodeBase64(x),
-          };
-        })
+            return {
+              label: decodeBase64(x),
+              value: decodeBase64(x),
+            };
+          })
         : []
     );
   }, [nodeDetails?.Name?.Value]);
@@ -56,7 +55,10 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
       setTitleEditMode(false);
       const { NodeID } = nodeDetails || {};
 
-      const saveResult = await modifyNodeName({ NodeID: NodeID, Name: encodeBase64(title) });
+      const saveResult = await modifyNodeName({
+        NodeID: NodeID,
+        Name: encodeBase64(title),
+      });
       console.log({ saveResult });
 
       alert('saved', {
