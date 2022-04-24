@@ -5,7 +5,8 @@ const LoadParagraph = () => {
 
   return (
     <div
-      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+    >
       <LottieMaker
         animationJSON={data}
         loop={true}

@@ -188,14 +188,16 @@ const ItemProducerHandler = ({
             <Parent
               {...provided.droppableProps}
               ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}>
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
               {items.map((x, index) => {
                 return (
                   <Draggable
                     isDragDisabled={isDragDisabled}
                     draggableId={index.toString()}
                     index={index}
-                    key={index.toString()}>
+                    key={index.toString()}
+                  >
                     {(provided, snapshot) => (
                       <Maintainer
                         {...provided.draggableProps}
@@ -212,7 +214,8 @@ const ItemProducerHandler = ({
                             ? 'addMe'
                             : resetDone && 'resetMe'
                         }
-                        ref={provided.innerRef}>
+                        ref={provided.innerRef}
+                      >
                         {isDragDisabled && <DragIcon color={'grey'} />}
                         <Container>
                           {type === 'text' ? (

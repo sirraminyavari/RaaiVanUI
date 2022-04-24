@@ -21,7 +21,8 @@ const Radio = ({
           <Styled.RadioOptionWrapper
             selectedStyle={selected === value && selectedStyle}
             style={{ ...optionStyle }}
-            key={key}>
+            key={key}
+          >
             <input
               id={group + '-' + value}
               type="radio"
@@ -33,7 +34,8 @@ const Radio = ({
             />
             <Styled.RadioLabel
               style={{ ...labelStyle }}
-              htmlFor={group + '-' + value}>
+              htmlFor={group + '-' + value}
+            >
               {title}
             </Styled.RadioLabel>
           </Styled.RadioOptionWrapper>

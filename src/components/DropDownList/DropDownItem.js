@@ -26,7 +26,8 @@ const DropDownItem = ({ item, onSelectItem, itemStyle, $dropedDown }) => {
         <Maintainer
           $dropedDown={$dropedDown}
           style={{ ...itemStyle }}
-          onClick={onSelectItem}>
+          onClick={onSelectItem}
+        >
           {
             <div
               style={{
@@ -34,7 +35,8 @@ const DropDownItem = ({ item, onSelectItem, itemStyle, $dropedDown }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+              }}
+            >
               {icon}
             </div>
           }

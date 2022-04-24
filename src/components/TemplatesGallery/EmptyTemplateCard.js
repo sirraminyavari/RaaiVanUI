@@ -12,7 +12,8 @@ const EmptyTemplateCard = () => {
         style={{
           textAlign: 'center',
           fontSize: '1rem',
-        }}>
+        }}
+      >
         {RVDic.MSG.NoSuggestionsFound}
       </div>
     </Styled.TemplateCardContainer>

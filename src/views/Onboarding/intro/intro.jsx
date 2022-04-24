@@ -77,7 +77,8 @@ const Intro = (props) => {
                   'ActionButton',
                   (info.firstName === '' || info.lastName === '') && 'deactive',
                 ].join(' ')}
-                onClick={() => save()}>
+                onClick={() => save()}
+              >
                 {'بزن بریم!'}
               </button>
             </div>

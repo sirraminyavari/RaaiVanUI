@@ -34,7 +34,8 @@ const ORGUserCard = ({
         ImageURL={ImageURL}
         FullName={FullName}
         column={column}
-        editable={editable}>
+        editable={editable}
+      >
         <EditableTitle
           value={firstName}
           onConfirm={(e) => handleFirstNameUpdate(e)}

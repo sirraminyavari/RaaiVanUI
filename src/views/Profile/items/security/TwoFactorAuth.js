@@ -226,7 +226,8 @@ const TwoFactorAuthentication = ({ user }) => {
             type="primary-o"
             disable={!isValidUserName}
             classes="change-button"
-            onClick={handleSaveUserName}>
+            onClick={handleSaveUserName}
+          >
             تغییر
           </Button>
         </Styled.InputWrapper>
@@ -236,7 +237,8 @@ const TwoFactorAuthentication = ({ user }) => {
             top: '7rem',
             right: '0.5rem',
             color: userNameMessage.type === 'error' ? CV_RED : TCV_DEFAULT,
-          }}>
+          }}
+        >
           {userNameMessage?.text}
         </div>
       </div>

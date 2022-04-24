@@ -149,7 +149,8 @@ const PopupMenu = (props) => {
       fit={fit}
       leftOffset={leftOffset}
       topOffset={topOffset}
-      onReposition={(pos) => setStickerPos(pos)}>
+      onReposition={(pos) => setStickerPos(pos)}
+    >
       {cloneElement(children[0], {
         id: mainId,
         onClick: trigger != 'click' ? null : () => setShowMenu(!showMenu),
@@ -161,7 +162,8 @@ const PopupMenu = (props) => {
           id={menuContainerId}
           align={align}
           onMouseOver={mouseOver}
-          onMouseOut={mouseOut}>
+          onMouseOut={mouseOut}
+        >
           <ArrowContainer align={align}>
             <MenuArrow
               id={arrowId}
@@ -175,7 +177,8 @@ const PopupMenu = (props) => {
             id={menuId}
             className={'rv-border-radius-half ' + menuClass}
             style={info.contentStyle || {}}
-            menuStyle={menuStyle}>
+            menuStyle={menuStyle}
+          >
             {cloneElement(children[1])}
           </MenuContent>
         </MenuContainer>

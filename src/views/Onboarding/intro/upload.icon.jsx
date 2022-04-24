@@ -11,7 +11,8 @@ const UploadIcon = ({ color }) => {
           viewBox="0 0 24 24"
           width="24px"
           fill={color}
-          className="upload-btn-content">
+          className="upload-btn-content"
+        >
           <g>
             <rect fill="none" height="24" width="24" />
           </g>

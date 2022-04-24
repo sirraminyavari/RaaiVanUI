@@ -77,7 +77,8 @@ const ResetPassword = () => {
           style={{
             textAlign: 'center',
             ...common_style,
-          }}>
+          }}
+        >
           {RVDic?.Login}
         </Heading>
         <RowItems style={common_style}>
@@ -87,7 +88,8 @@ const ResetPassword = () => {
               textAlign: 'center',
               ...common_style,
             }}
-            className={'rv-distant'}>
+            className={'rv-distant'}
+          >
             {email}
           </Heading>
           <Edit
@@ -148,7 +150,8 @@ const ResetPassword = () => {
         <Button
           type="primary"
           style={{ ...common_style, width: '100%', fontSize: '1rem' }}
-          onClick={onChangePassword}>
+          onClick={onChangePassword}
+        >
           {RVDic.ChangePassword}
         </Button>
       </Container>

@@ -4,13 +4,8 @@ import { useTable } from 'react-table';
 
 //TODO add jsDoc and PropTypes
 const ResponsiveTable = ({ data, columns }) => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data });
   return (
     <>
       <table {...getTableProps()}>

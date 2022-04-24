@@ -65,7 +65,8 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
         style={{
           borderLeft: `1px solid ${CV_DISTANT}`,
           borderRight: `1px solid ${CV_DISTANT}`,
-        }}>
+        }}
+      >
         <span>تعداد آیتم‌های مرتبط</span>
         <Styled.StatusCount>{relatedNodesCount}</Styled.StatusCount>
       </Styled.StatusWrapper>

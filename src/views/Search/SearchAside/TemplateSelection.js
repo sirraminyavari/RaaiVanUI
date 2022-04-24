@@ -16,12 +16,8 @@ const TemplateSelectModal = lazy(() =>
 );
 
 const TemplateSelection = () => {
-  const {
-    selectedTemps,
-    isModalOpen,
-    setIsModalOpen,
-    setSelectedTemps,
-  } = useContext(searchContext);
+  const { selectedTemps, isModalOpen, setIsModalOpen, setSelectedTemps } =
+    useContext(searchContext);
   const {
     RVDic: { Select, SelectN, Template },
   } = useWindow();

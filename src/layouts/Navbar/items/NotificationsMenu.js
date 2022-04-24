@@ -58,7 +58,8 @@ const NotificationsMenu = () => {
           <NotificationsHeader unseenCount={unseenNotifs?.length} />
           <ScrollBarProvider
             style={{ maxHeight: '16.5rem', padding: '0 1rem' }}
-            onYReachEnd={handleReachEnd}>
+            onYReachEnd={handleReachEnd}
+          >
             {notifications?.map((notif) => {
               return (
                 <NotificationItem notif={notif} key={notif?.NotificationID} />

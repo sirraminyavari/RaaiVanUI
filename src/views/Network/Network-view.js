@@ -12,7 +12,8 @@ const NetworkView = () => {
     <div
       id="pageContainer"
       className="small-12 medium-12 large-12"
-      style={{ padding: '0vw 6vw', marginBottom: '5rem' }}></div>
+      style={{ padding: '0vw 6vw', marginBottom: '5rem' }}
+    ></div>
   );
 };
 

@@ -11,12 +11,14 @@ const AvatarThumb = ({ url }) => {
     <div
       className="thumbnail"
       onMouseEnter={() => setShowRemove(true)}
-      onMouseLeave={() => setShowRemove(false)}>
+      onMouseLeave={() => setShowRemove(false)}
+    >
       <img src={url} />
 
       <div
         className={`remove ${!showRemove ? 'hide' : ''}`}
-        onClick={() => dispatch({ type: 'SET_AVATAR', avatar: undefined })}>
+        onClick={() => dispatch({ type: 'SET_AVATAR', avatar: undefined })}
+      >
         <RemoveIcon color={'#ef5350'}></RemoveIcon>
       </div>
     </div>

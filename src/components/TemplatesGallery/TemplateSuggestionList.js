@@ -10,13 +10,8 @@ import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import useWindowContext from 'hooks/useWindowContext';
 
 const TemplateSuggestionList = () => {
-  const {
-    setContent,
-    setCurrentCategory,
-    setCurrentTemplate,
-    tree,
-    setTree,
-  } = useContext(TemplatesGalleryContext);
+  const { setContent, setCurrentCategory, setCurrentTemplate, tree, setTree } =
+    useContext(TemplatesGalleryContext);
 
   const { RV_Float } = useWindowContext();
 
@@ -44,7 +39,8 @@ const TemplateSuggestionList = () => {
         <ChevronIcon small dir="left" />
       </Styled.SuggestionListTitle>
       <div
-        style={{ marginInlineStart: '-1rem', height: 'calc(100vh - 15rem)' }}>
+        style={{ marginInlineStart: '-1rem', height: 'calc(100vh - 15rem)' }}
+      >
         <ScrollBarProvider direction={RV_Float}>
           {isEmpty(tree) ? (
             <LogoLoader />

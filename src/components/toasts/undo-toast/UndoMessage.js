@@ -26,7 +26,8 @@ const UndoMessage = (props) => {
           justifySelf: 'start',
           padding: '0.5rem',
           color: CV_BLACK,
-        }}>
+        }}
+      >
         {message}
       </span>
       {showCircle && (

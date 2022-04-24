@@ -152,107 +152,101 @@ export const getArchivedApplications = () => async (dispatch) => {
  * @description A function (action) that removes an application from server.
  * @returns -Dispatch to redux store.
  */
-export const removeApplication = (appId, done, error) => async (
-  dispatch,
-  getState
-) => {
-  const { applications } = getState();
-  const newApps = applications.userApps.filter(
-    (app) => app.ApplicationID !== appId
-  );
-
-  try {
-    removeApplicationAPI.fetch(
-      { ApplicationID: appId },
-      (response) => {
-        if (response.ErrorText) {
-          error && error(response.ErrorText);
-        } else if (response.Succeed) {
-          done && done(appId);
-          dispatch(deleteApplication(newApps));
-          dispatch(setApplicationsOrder(newApps));
-          // dispatch(getApplications());
-          dispatch(getArchivedApplications());
-        }
-      },
-      (err) => {
-        error && error(err);
-      }
+export const removeApplication =
+  (appId, done, error) => async (dispatch, getState) => {
+    const { applications } = getState();
+    const newApps = applications.userApps.filter(
+      (app) => app.ApplicationID !== appId
     );
-  } catch (err) {
-    error && error(err);
-  }
-};
+
+    try {
+      removeApplicationAPI.fetch(
+        { ApplicationID: appId },
+        (response) => {
+          if (response.ErrorText) {
+            error && error(response.ErrorText);
+          } else if (response.Succeed) {
+            done && done(appId);
+            dispatch(deleteApplication(newApps));
+            dispatch(setApplicationsOrder(newApps));
+            // dispatch(getApplications());
+            dispatch(getArchivedApplications());
+          }
+        },
+        (err) => {
+          error && error(err);
+        }
+      );
+    } catch (err) {
+      error && error(err);
+    }
+  };
 
 /**
  * @description A function (action) that recycles deleted application from server.
  * @returns -Dispatch to redux store.
  */
-export const recycleApplication = (appId, done, error) => async (
-  dispatch,
-  getState
-) => {
-  const { applications } = getState();
-  try {
-    recycleApplicationAPI.fetch(
-      { ApplicationID: appId },
-      (response) => {
-        if (response?.Succeed) {
-          done && done(response);
-          // console.log(response);
-          const newArchivedApps = applications.userArchivedApps.filter(
-            (app) => app.ApplicationID !== appId
-          );
-          dispatch(setArchivedApplications(newArchivedApps));
-        }
+export const recycleApplication =
+  (appId, done, error) => async (dispatch, getState) => {
+    const { applications } = getState();
+    try {
+      recycleApplicationAPI.fetch(
+        { ApplicationID: appId },
+        (response) => {
+          if (response?.Succeed) {
+            done && done(response);
+            // console.log(response);
+            const newArchivedApps = applications.userArchivedApps.filter(
+              (app) => app.ApplicationID !== appId
+            );
+            dispatch(setArchivedApplications(newArchivedApps));
+          }
 
-        if (response?.ErrorText) {
-          error && error(response?.ErrorText);
+          if (response?.ErrorText) {
+            error && error(response?.ErrorText);
+          }
+        },
+        (err) => {
+          error && error(err);
         }
-      },
-      (err) => {
-        error && error(err);
-      }
-    );
-  } catch (err) {
-    error && error(err.message);
-  }
-};
+      );
+    } catch (err) {
+      error && error(err.message);
+    }
+  };
 
 /**
  * @description A function (action) that creates a new application.
  * @returns -Dispatch to redux store.
  */
-export const createApplication = (title, WorkspaceID, done, error) => async (
-  dispatch,
-  getState
-) => {
-  const { applications } = getState();
-  try {
-    createApplicationAPI.fetch(
-      {
-        Title: encodeBase64(title),
-        WorkspaceID,
-      },
-      (response) => {
-        if (response.ErrorText) {
-          error && error(response.ErrorText);
-        } else if (response.Succeed) {
-          done && done(response);
-          const createdApp = response.Application;
-          const appUsers = response.ApplicationUsers;
-          createdApp.Users = appUsers;
-          const newApps = [...applications.userApps, createdApp];
-          dispatch(addApplication(newApps));
-          dispatch(setApplicationsOrder(newApps));
-        }
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const createApplication =
+  (title, WorkspaceID, done, error) => async (dispatch, getState) => {
+    const { applications } = getState();
+    try {
+      createApplicationAPI.fetch(
+        {
+          Title: encodeBase64(title),
+          WorkspaceID,
+        },
+        (response) => {
+          if (response.ErrorText) {
+            error && error(response.ErrorText);
+          } else if (response.Succeed) {
+            done && done(response);
+            const createdApp = response.Application;
+            const appUsers = response.ApplicationUsers;
+            createdApp.Users = appUsers;
+            const newApps = [...applications.userApps, createdApp];
+            dispatch(addApplication(newApps));
+            dispatch(setApplicationsOrder(newApps));
+          }
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that creates a new application.
@@ -327,162 +321,162 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
  * @description A function (action) that modifies application.
  * @returns -Dispatch to redux store.
  */
-export const modifyApplication = (appId, title, done, error) => async (
-  dispatch
-) => {
-  try {
-    modifyApplicationAPI.fetch(
-      { ApplicationID: appId, Title: encodeBase64(title) },
-      (response) => {
-        if (response.ErrorText) {
-          error && error(response.ErrorText);
-        } else if (response.Succeed) {
-          done && done(response);
-          dispatch(getApplications());
-        }
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const modifyApplication =
+  (appId, title, done, error) => async (dispatch) => {
+    try {
+      modifyApplicationAPI.fetch(
+        { ApplicationID: appId, Title: encodeBase64(title) },
+        (response) => {
+          if (response.ErrorText) {
+            error && error(response.ErrorText);
+          } else if (response.Succeed) {
+            done && done(response);
+            dispatch(getApplications());
+          }
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that unsubscribe a user from an application.
  * @returns -Dispatch to redux store.
  */
-export const unsubscribeFromApplication = (appId, done, error) => async (
-  dispatch
-) => {
-  try {
-    unsubscribeFromApplicationAPI.fetch(
-      { ApplicationID: appId },
-      (response) => {
-        if (response.ErrorText) {
-          error && error(response.ErrorText);
-        } else if (response.Succeed) {
-          done && done(response);
-          dispatch(getApplications());
-        }
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const unsubscribeFromApplication =
+  (appId, done, error) => async (dispatch) => {
+    try {
+      unsubscribeFromApplicationAPI.fetch(
+        { ApplicationID: appId },
+        (response) => {
+          if (response.ErrorText) {
+            error && error(response.ErrorText);
+          } else if (response.Succeed) {
+            done && done(response);
+            dispatch(getApplications());
+          }
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that removes a user in an application.
  * @returns -Dispatch to redux store.
  */
-export const removeUserFromApplication = (appId, userId, done, error) => async (
-  dispatch
-) => {
-  try {
-    removeUserFromApplicationAPI.fetch(
-      { ApplicationID: appId, UserID: userId },
-      (response) => {
-        if (response.ErrorText) {
-          error && error(response.ErrorText);
-        } else if (response.Succeed) {
-          done && done(response);
-          dispatch(getApplications());
-        }
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
-};
+export const removeUserFromApplication =
+  (appId, userId, done, error) => async (dispatch) => {
+    try {
+      removeUserFromApplicationAPI.fetch(
+        { ApplicationID: appId, UserID: userId },
+        (response) => {
+          if (response.ErrorText) {
+            error && error(response.ErrorText);
+          } else if (response.Succeed) {
+            done && done(response);
+            dispatch(getApplications());
+          }
+        },
+        (error) => console.log({ error })
+      );
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that gets applications order from server.
  * @returns -Dispatch to redux store.
  */
-export const getApplicationsOrder = (unorderedApps, done, error) => async (
-  dispatch
-) => {
-  const sortVariableName = `ApplicationsOrder_${
-    ((window.RVGlobal || {}).CurrentUser || {}).UserID
-  }`;
-  try {
-    getApplicationsOrderAPI.fetch(
-      { Name: sortVariableName, ApplicationIndependent: true },
-      (response) => {
-        dispatch(setFetchingApps(false));
-        if (!response.Value) {
-          //! New user.
-          dispatch(setApplications(unorderedApps));
-          dispatch(setArchivedApplications([]));
-        } else {
-          const orderedIds =
-            (window.GlobalUtilities.to_json(decodeBase64(response.Value)) || {})
-              .Order || [];
-          // console.log(orderedIds);
-          // console.log(unorderedApps);
-          const orderedApps = orderedIds
-            .filter((id) =>
-              unorderedApps.some((app) => app.ApplicationID === id)
-            )
-            .map(
-              (id) => unorderedApps.filter((app) => app.ApplicationID === id)[0]
+export const getApplicationsOrder =
+  (unorderedApps, done, error) => async (dispatch) => {
+    const sortVariableName = `ApplicationsOrder_${
+      ((window.RVGlobal || {}).CurrentUser || {}).UserID
+    }`;
+    try {
+      getApplicationsOrderAPI.fetch(
+        { Name: sortVariableName, ApplicationIndependent: true },
+        (response) => {
+          dispatch(setFetchingApps(false));
+          if (!response.Value) {
+            //! New user.
+            dispatch(setApplications(unorderedApps));
+            dispatch(setArchivedApplications([]));
+          } else {
+            const orderedIds =
+              (
+                window.GlobalUtilities.to_json(decodeBase64(response.Value)) ||
+                {}
+              ).Order || [];
+            // console.log(orderedIds);
+            // console.log(unorderedApps);
+            const orderedApps = orderedIds
+              .filter((id) =>
+                unorderedApps.some((app) => app.ApplicationID === id)
+              )
+              .map(
+                (id) =>
+                  unorderedApps.filter((app) => app.ApplicationID === id)[0]
+              );
+
+            const extraApps = unorderedApps.filter(
+              (app) => !orderedIds.some((id) => app.ApplicationID === id)
             );
+            dispatch(setApplications([...orderedApps, ...extraApps]));
+          }
 
-          const extraApps = unorderedApps.filter(
-            (app) => !orderedIds.some((id) => app.ApplicationID === id)
-          );
-          dispatch(setApplications([...orderedApps, ...extraApps]));
+          // dispatch(setApplicationsOrder(unorderedApps));
+        },
+        (error) => {
+          dispatch(setFetchingApps(false));
+          console.log({ error });
         }
-
-        // dispatch(setApplicationsOrder(unorderedApps));
-      },
-      (error) => {
-        dispatch(setFetchingApps(false));
-        console.log({ error });
-      }
-    );
-  } catch (err) {
-    dispatch(setFetchingApps(false));
-    console.log({ err });
-  }
-};
+      );
+    } catch (err) {
+      dispatch(setFetchingApps(false));
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that gets applications order from server.
  * @returns -Dispatch to redux store.
  */
-export const setApplicationsOrder = (orderedApps, done, error) => async (
-  dispatch
-) => {
-  const sortVariableName = `ApplicationsOrder_${
-    ((window.RVGlobal || {}).CurrentUser || {}).UserID
-  }`;
-  const userAppIds = orderedApps.map((app) => app.ApplicationID);
-  const sortVariableValue = encodeBase64(JSON.stringify({ Order: userAppIds }));
-
-  try {
-    setApplicationsOrderAPI.fetch(
-      {
-        Name: sortVariableName,
-        Value: sortVariableValue,
-        ApplicationIndependent: true,
-      },
-      () => {
-        done && done();
-      },
-      (error) => {
-        error && error();
-        console.log({ error });
-      }
+export const setApplicationsOrder =
+  (orderedApps, done, error) => async (dispatch) => {
+    const sortVariableName = `ApplicationsOrder_${
+      ((window.RVGlobal || {}).CurrentUser || {}).UserID
+    }`;
+    const userAppIds = orderedApps.map((app) => app.ApplicationID);
+    const sortVariableValue = encodeBase64(
+      JSON.stringify({ Order: userAppIds })
     );
-  } catch (err) {
-    error && error();
-    console.log({ err });
-  }
-};
+
+    try {
+      setApplicationsOrderAPI.fetch(
+        {
+          Name: sortVariableName,
+          Value: sortVariableValue,
+          ApplicationIndependent: true,
+        },
+        () => {
+          done && done();
+        },
+        (error) => {
+          error && error();
+          console.log({ error });
+        }
+      );
+    } catch (err) {
+      error && error();
+      console.log({ err });
+    }
+  };
 
 /**
  * @description A function (action) that get users of an application from server.
@@ -492,23 +486,23 @@ export const setApplicationsOrder = (orderedApps, done, error) => async (
  * @param {Function} error
  * @returns -Dispatch to redux store.
  */
-export const getApplicationUsers = (appId, text = '', done, error) => async (
-  dispatch
-) => {
-  try {
-    getApplicationUsersAPI.fetch(
-      {
-        ApplicationID: appId,
-        SearchText: text,
-      },
-      (response) => {
-        done && done(response.Users);
-      },
-      (err) => {
-        error && error(err);
-      }
-    );
-  } catch (err) {
-    error && error(err);
-  }
-};
+export const getApplicationUsers =
+  (appId, text = '', done, error) =>
+  async (dispatch) => {
+    try {
+      getApplicationUsersAPI.fetch(
+        {
+          ApplicationID: appId,
+          SearchText: text,
+        },
+        (response) => {
+          done && done(response.Users);
+        },
+        (err) => {
+          error && error(err);
+        }
+      );
+    } catch (err) {
+      error && error(err);
+    }
+  };

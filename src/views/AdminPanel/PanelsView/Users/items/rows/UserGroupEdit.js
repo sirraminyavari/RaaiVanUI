@@ -55,13 +55,15 @@ const UserGroupEdit = ({ FullName, IsAdmin = false, UserID, ...props }) => {
   return (
     <Container>
       <ButtonContainer
-        onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+        onClick={() => setModalInfo({ ...modalInfo, show: true })}
+      >
         <Icon />
       </ButtonContainer>
 
       <Modal
         {...modalInfo}
-        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}
+      >
         {showGroups && (
           <ContentContainer>
             <ModalMessage rtl={RV_RTL}>

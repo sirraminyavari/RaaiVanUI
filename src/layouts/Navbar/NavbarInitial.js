@@ -60,7 +60,8 @@ const NavbarInitial = () => {
             <span style={{ textTransform: 'capitalize' }}>
               {isHelpPathActive ? RVDic.Teams : RVDic.Help}
             </span>
-          )}>
+          )}
+        >
           <Styled.QuestionIconWrapper as={Link} to={linkTo}>
             {isHelpPathActive ? (
               <TeamIcon size={27} />
@@ -76,7 +77,8 @@ const NavbarInitial = () => {
           offset={{ top: -3 }}
           renderContent={() => (
             <span style={{ textTransform: 'capitalize' }}>{RVDic.Logout}</span>
-          )}>
+          )}
+        >
           <Styled.ExitIconWrapper onClick={handleLogout}>
             {isLoggingOut ? (
               <LoadingIconFlat size={20} />

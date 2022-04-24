@@ -138,7 +138,8 @@ const NodeCell = (props) => {
         contentWidth={isTabletOrMobile ? '98%' : '90%'}
         style={{ padding: '0.2rem', height: 'calc(100vh - 5rem)' }}
         stick
-        show={isModalShown}>
+        show={isModalShown}
+      >
         <ItemSelection
           nodeTypes={NodeTypes}
           routeProps={routeProps}

@@ -8,7 +8,8 @@ const ModalFallbackLoader = () => {
       <Modal
         show={true}
         titleContainerClass="modal-fallback-title-container"
-        contentClass="modal-fallback-content">
+        contentClass="modal-fallback-content"
+      >
         <LogoLoader />
       </Modal>
     </Styled.ModalFallbackWrapper>

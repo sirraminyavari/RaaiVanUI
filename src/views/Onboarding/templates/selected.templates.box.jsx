@@ -6,7 +6,8 @@ const SelectedTemplatesBox = ({ zIndex, translateX, translateY, show }) => {
   return (
     <div
       className="selected-box"
-      style={{ zIndex, transform: `translate(${translateX}, ${translateY})` }}>
+      style={{ zIndex, transform: `translate(${translateX}, ${translateY})` }}
+    >
       {show && (
         <div
           style={{
@@ -14,7 +15,8 @@ const SelectedTemplatesBox = ({ zIndex, translateX, translateY, show }) => {
             justifyContent: 'center',
             alignItems: 'center',
             height: '100%',
-          }}>
+          }}
+        >
           {info.templatePreview && <div>{info.templatePreview.name}</div>}
         </div>
       )}

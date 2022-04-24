@@ -13,7 +13,8 @@ const SystemSettings = (props) => {
   return (
     <div
       id="settingsArea"
-      className="small-12 medium-12 large-12 row align-center rv-form"></div>
+      className="small-12 medium-12 large-12 row align-center rv-form"
+    ></div>
   );
 };
 

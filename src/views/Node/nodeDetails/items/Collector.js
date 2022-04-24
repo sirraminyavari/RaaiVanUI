@@ -26,20 +26,19 @@ const SideColumn = lazy(() =>
   )
 );
 
-const { RVDic, RVGlobal, RV_RTL, RV_RevFloat } = window;
+const { RV_RTL, RV_RevFloat } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
  * @param {String} nodeTypeId - required for fetching node list
  */
-const Collctor = ({
+const Collector = ({
   itemSelectionMode,
   nodeDetails,
   nodeId,
   hierarchy,
   ...props
 }) => {
-  const [relatedNodes, setRelatedNodes] = useState([]);
   const [sideColumn, setSideColumn] = useState(false);
   const [fields, setFields] = useState(null);
   const isTabletOrMobile = DimensionHelper()?.isTabletOrMobile;
@@ -60,7 +59,6 @@ const Collctor = ({
     })();
   }, [nodeId]);
 
-  const isAdvancedSearch = false;
   return (
     <Container
       isAdvancedShow={false}
@@ -138,4 +136,4 @@ const Collctor = ({
     </Container>
   );
 };
-export default Collctor;
+export default Collector;

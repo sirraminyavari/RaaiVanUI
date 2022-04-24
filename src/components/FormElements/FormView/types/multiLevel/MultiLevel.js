@@ -20,7 +20,8 @@ const MultiLevel = (props) => {
               display: 'flex',
               justifyContent: 'flex-start',
               alignItems: 'center',
-            }}>
+            }}
+          >
             <CloseIcon
               color="red"
               style={{ cursor: 'pointer' }}

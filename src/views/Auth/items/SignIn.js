@@ -153,7 +153,8 @@ const SignIn = () => {
             textAlign: 'center',
             ...common_style,
             marginBottom: '1.75rem',
-          }}>
+          }}
+        >
           {RVDic?.Login}
         </Heading>
         <AnimatedInput
@@ -206,7 +207,8 @@ const SignIn = () => {
             textAlign: 'center',
             ...common_style,
             marginTop: '1.75rem',
-          }}>
+          }}
+        >
           {RVDic.Login}
         </Button>
         <Button
@@ -218,7 +220,8 @@ const SignIn = () => {
             marginBottom: '1rem',
           }}
           loading={forgotPassClicked && fetchingFiles}
-          onClick={onForgot}>
+          onClick={onForgot}
+        >
           {RVDic?.ForgotMyPassword}
         </Button>
         <CreateAccountButtons

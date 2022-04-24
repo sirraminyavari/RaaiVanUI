@@ -107,7 +107,8 @@ const VerificationCodeHandle = (props) => {
           ref={sendButtonRef}
           onClick={handleSendCode}
           disable={!isButtonActive}
-          style={{ width: '5rem', height: '2rem' }}>
+          style={{ width: '5rem', height: '2rem' }}
+        >
           {RVDic.Save}
         </Button>
         <Timer onTimeEnd={onTimeout} seconds={countDown} />

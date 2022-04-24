@@ -27,7 +27,8 @@ const Category = () => {
         <Button
           type="negative-o"
           classes="template-back-button"
-          onClick={handleReturnClick}>
+          onClick={handleReturnClick}
+        >
           {RVDic.Return}
         </Button>
         <Styled.CategoryTitle>

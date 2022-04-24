@@ -60,12 +60,14 @@ const PermissionItemOpen = ({ ID, ...props }) => {
           <TopRow>
             <TopRowButton
               highlight={userRole}
-              onClick={() => setUserRole(true)}>
+              onClick={() => setUserRole(true)}
+            >
               {RVDic?.Users}
             </TopRowButton>
             <TopRowButton
               highlight={!userRole}
-              onClick={() => setUserRole(false)}>
+              onClick={() => setUserRole(false)}
+            >
               {RVDic?.Groups}
             </TopRowButton>
 

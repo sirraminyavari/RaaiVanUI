@@ -30,7 +30,8 @@ const RelatedMeItems = (props) => {
       hierarchy={route?.Hierarchy || []}
       bookmarked={route?.Bookmarked}
       onApplyNodeType={onNodeTypeChange}
-      isProfile={true}>
+      isProfile={true}
+    >
       {(nodeTypeIds || nodeType || userId) && (
         <NodeList
           nodeTypeId={nodeType?.NodeTypeID ? nodeType?.NodeTypeID : null}

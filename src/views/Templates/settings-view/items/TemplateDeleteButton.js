@@ -30,7 +30,8 @@ const TemplateDeleteButton = ({ id, onDeleteConfirm }) => {
 
       <Modal
         {...modalInfo}
-        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}
+      >
         <DeleteConfirmMessage
           question={'آیا از حذف دسته اطمینان دارید؟'}
           warning={
@@ -42,14 +43,16 @@ const TemplateDeleteButton = ({ id, onDeleteConfirm }) => {
           <Button
             type="negative"
             style={buttonStyles}
-            onClick={() => handleModalConfirm()}>
+            onClick={() => handleModalConfirm()}
+          >
             {RVDic?.Remove}
           </Button>
 
           <Button
             type="primary-o"
             style={buttonStyles}
-            onClick={() => setModalInfo({ ...modalInfo, show: false })}>
+            onClick={() => setModalInfo({ ...modalInfo, show: false })}
+          >
             {RVDic?.Return}
           </Button>
         </ModalActionBar>

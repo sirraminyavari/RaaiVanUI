@@ -14,7 +14,8 @@ const InfoMessage = (props) => {
           flexGrow: 1,
           justifySelf: 'start',
           padding: '0.5rem',
-        }}>
+        }}
+      >
         {message}
       </span>
     </Styled.ToastMessageContainer>

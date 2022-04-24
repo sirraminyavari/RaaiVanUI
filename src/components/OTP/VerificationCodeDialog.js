@@ -77,7 +77,8 @@ const VerificationCodeDialog = ({
             verificationCodeObject?.Length
         }
         onClick={() => validate()}
-        loading={isValidating}>
+        loading={isValidating}
+      >
         {RVDic.Continue}
       </Button>
     </>

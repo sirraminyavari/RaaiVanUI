@@ -22,9 +22,9 @@ const TablePagination = ({ tableInstance, pagination }) => {
   const { pageIndex, pageSize, data } = state;
 
   //! Select options for pagination.
-  const selectOptions = (
-    pagination?.perPageCount || DEFAULT_PAGE_SIZES
-  ).map((pageSize) => ({ value: pageSize, label: `${pageSize}` }));
+  const selectOptions = (pagination?.perPageCount || DEFAULT_PAGE_SIZES).map(
+    (pageSize) => ({ value: pageSize, label: `${pageSize}` })
+  );
 
   //! Go to previous page on back arrow click.
   const handlePreviousPage = () => {

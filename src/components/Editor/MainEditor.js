@@ -59,7 +59,8 @@ const MainEditor = () => {
       // className={editorStyles.editor}
       onClick={() => {
         ref.current.focus();
-      }}>
+      }}
+    >
       <Editor
         editorKey={'editor'}
         editorState={editorState}

@@ -7,12 +7,8 @@ import OfficeIcons from 'components/Icons/OfficeIcons/OfficeIcons';
 import ShadowButton from 'components/Buttons/ShadowButton';
 
 const SearchAdvancedButtons = () => {
-  const {
-    isAsideOpen,
-    setIsAsideOpen,
-    getExcelFile,
-    selectedType,
-  } = useContext(searchContext);
+  const { isAsideOpen, setIsAsideOpen, getExcelFile, selectedType } =
+    useContext(searchContext);
   const {
     RVDic: { Advanced },
   } = useWindow();
@@ -31,7 +27,8 @@ const SearchAdvancedButtons = () => {
         <ShadowButton
           active={isAsideOpen}
           style={{ width: '5rem' }}
-          onClick={() => setIsAsideOpen((v) => !v)}>
+          onClick={() => setIsAsideOpen((v) => !v)}
+        >
           <FilterIcon style={{ marginInlineEnd: '0.3rem' }} />
           {Advanced}
         </ShadowButton>

@@ -73,7 +73,8 @@ const SubjectItemMobileView = ({
         $isChecked={isChecked}
         to={RVAPI.NodePageURL({ NodeID: NodeID })}
         className="rv-border-freezed"
-        onClick={onClick}>
+        onClick={onClick}
+      >
         <IconContent>
           {/* <div> */}
           <SubjectIcon iconUrl={IconURL} />

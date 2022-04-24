@@ -19,12 +19,14 @@ const BinaryButton = (props) => {
     <Styled.ButtonContainer>
       <Styled.OptionWrapper
         isChecked={isChecked === null ? null : isChecked}
-        classes={className}>
+        classes={className}
+      >
         {options?.yes}
       </Styled.OptionWrapper>
       <Styled.OptionWrapper
         isChecked={isChecked === null ? null : !isChecked}
-        classes={className}>
+        classes={className}
+      >
         {options?.no}
       </Styled.OptionWrapper>
     </Styled.ButtonContainer>

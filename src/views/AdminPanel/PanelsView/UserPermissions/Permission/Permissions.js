@@ -97,7 +97,8 @@ const Permissions = ({
         setSelectedRole,
         updatePermission,
         setRoles,
-      }}>
+      }}
+    >
       <Styled.PermissionContainer rtl={RV_RTL}>
         <Styled.RoleSelectorContainer>
           <RoleSelectionPane />

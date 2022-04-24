@@ -137,7 +137,8 @@ const AnimatedDropDownList = ({
         id={'list'}
         style={{ ...itemContainer }}
         $dropedDown={dropedDown}
-        className={itemContainerClass}>
+        className={itemContainerClass}
+      >
         {list?.map((x, index) => (
           <DropDownItem
             onSelectItem={() => onClickItem(x, index)}
@@ -159,7 +160,8 @@ const AnimatedDropDownList = ({
           $dropedDown={dropedDown}
           onClick={onClick}
           style={{ ...button }}
-          className={buttonClass}>
+          className={buttonClass}
+        >
           <ArrowIcon
             $dropedDown={dropedDown}
             color={customStyle?.arrowIconColor}
@@ -170,7 +172,8 @@ const AnimatedDropDownList = ({
         <Maintainer
           className={labelClass}
           onClick={onClickLabel}
-          style={{ ...label }}>
+          style={{ ...label }}
+        >
           {defaultValue?.icon}
           <Label color={defaultValue.color}>{defaultValue?.label}</Label>
         </Maintainer>

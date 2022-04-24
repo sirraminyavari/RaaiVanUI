@@ -8,7 +8,8 @@ const Exception = ({ message }) => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100%',
-        }}>
+        }}
+      >
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
           <img
             src={window.RVGlobal.LogoURL}

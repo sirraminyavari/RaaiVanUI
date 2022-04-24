@@ -46,7 +46,8 @@ const WorkspaceArchivedTeams = ({ archives, hasHandle, space }) => {
       isArchive
       isMobile={isTabletOrMobile}
       onClick={handleShowArchived}
-      style={{ cursor: 'pointer' }}>
+      style={{ cursor: 'pointer' }}
+    >
       <ArchivedModal
         space={space}
         isOpen={isModalShown}

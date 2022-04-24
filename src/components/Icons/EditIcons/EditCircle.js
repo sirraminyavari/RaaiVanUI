@@ -9,7 +9,8 @@ const EditCircleIcon = ({ size, ...props }) => {
         height={size || '1em'}
         viewBox="0 0 23.456 24"
         fill="currentColor"
-        {...props}>
+        {...props}
+      >
         <g transform="translate(-3.375 -3.375)">
           <g transform="translate(3.375 3.375)">
             <path

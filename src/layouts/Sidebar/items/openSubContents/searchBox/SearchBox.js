@@ -52,7 +52,8 @@ const SearchBox = () => {
     <Styled.SearchWrapper>
       <Styled.CancelIconWrapper
         isTyping={isTyping}
-        onClick={handleClearSearchText}>
+        onClick={handleClearSearchText}
+      >
         <CancelIcon />
       </Styled.CancelIconWrapper>
       <Styled.SearchInput

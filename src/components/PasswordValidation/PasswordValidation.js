@@ -55,7 +55,8 @@ const PasswordValidation = ({
           style={{
             color: validator ? MAIN_BLUE : LIGHT_BLUE,
             marginRight: '7px',
-          }}>
+          }}
+        >
           {text}
         </H6>
       </Items>

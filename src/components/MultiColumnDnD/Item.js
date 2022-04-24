@@ -8,7 +8,8 @@ const Item = ({ text, index }) => {
         <Styled.Item
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}>
+          {...provided.dragHandleProps}
+        >
           {text}
         </Styled.Item>
       )}

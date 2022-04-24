@@ -70,14 +70,16 @@ const TemplatesGallery = ({ isOpen, onModalClose } = {}) => {
         templatesObject,
         tree,
         setTree,
-      }}>
+      }}
+    >
       <Styled.TemplateGalleryContainer>
         <Modal
           contentWidth="70%"
           titleContainerClass="templates-modal-title-container"
           contentClass="templates-modal-content"
           show={isOpen}
-          onClose={onModalClose}>
+          onClose={onModalClose}
+        >
           <Styled.ModalContentWrapper>
             <Styled.GalleryListContainer>
               <Styled.ModalTitle>{RVDic.TemplatesGallery}</Styled.ModalTitle>

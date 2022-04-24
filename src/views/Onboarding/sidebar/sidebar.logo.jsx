@@ -5,7 +5,8 @@ const SidebarLogo = () => {
         id="Layer_1"
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 527.91 152.38">
+        viewBox="0 0 527.91 152.38"
+      >
         <path
           d="M205.74,281.32a5.71,5.71,0,1,0-5.7-5.7,5.7,5.7,0,0,0,5.7,5.7"
           transform="translate(-156.99 -221.45)"
