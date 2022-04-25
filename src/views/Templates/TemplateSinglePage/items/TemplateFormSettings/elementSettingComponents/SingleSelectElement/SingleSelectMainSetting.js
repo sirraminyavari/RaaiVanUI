@@ -78,6 +78,7 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
                         <DragIcon size={16} />
                       </DragHandle>
                       <OptionTextContainer>
+                        <CheckboxSymbol />
                         <OptionTextInput
                           value={o}
                           onChange={(e) =>
@@ -131,6 +132,7 @@ const OptionTextContainer = styled.div`
   width: 100%;
   ${FLEX_RCB};
   padding: 0 0.5rem;
+  gap: 0.3rem;
 `;
 const OptionTextInput = styled.input.attrs({
   type: 'text',
@@ -154,5 +156,13 @@ const RemoveIconButton = styled.button`
 const ButtonTitle = styled.span`
   margin: 0 0.5rem;
   user-select: none;
+`;
+
+const CheckboxSymbol = styled.section`
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 100%;
+  border: 1px solid ${CV_DISTANT};
+  flex: 1.25rem;
 `;
 export default SingleSelectMainSetting;
