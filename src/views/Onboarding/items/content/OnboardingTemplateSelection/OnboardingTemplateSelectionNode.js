@@ -4,20 +4,15 @@ import * as Styles from './OnboardingTemplateSelection.styles';
 import PanelButton from 'components/Buttons/PanelButton';
 import Button from 'components/Buttons/Button';
 
-const OnboardingTemplateSelectionNode = () => {
+const OnboardingTemplateSelectionNode = ({ children }) => {
   const { RVDic } = useWindow();
   const history = useHistory();
 
   return (
     <>
-      <div
-        style={{
-          width: '100%',
-          border: '1px solid gray',
-          height: '100%',
-          alignSelf: 'stretch',
-        }}
-      ></div>
+      <Styles.OnboardingTemplateSelectionNodeContainer>
+        {children}
+      </Styles.OnboardingTemplateSelectionNodeContainer>
     </>
   );
 };

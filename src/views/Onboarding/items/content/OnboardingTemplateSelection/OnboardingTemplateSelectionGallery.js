@@ -10,6 +10,12 @@ const OnboardingTemplateSelectionGallery = ({
 }) => {
   const { RVDic } = useWindow();
 
+  console.log({
+    templates,
+    setActiveTag,
+    activateTemplate,
+  });
+
   //TODO add missing RVDic locales
   //! RVDic i18n localization
   const RVDicOnboardingTemplateGallery = 'گالری تمپلیت‌ها';
@@ -28,6 +34,7 @@ const OnboardingTemplateSelectionGallery = ({
         </Styles.OnboardingTemplateSelectionGallerySuggestion>
         {templates?.Tags?.map((Tag, idx) => {
           const { Name, NodeID, NodeTypeID, Templates } = Tag;
+          alert('Name');
           return (
             <OnboardingTemplateSelectionGalleryItem
               Name={Name}

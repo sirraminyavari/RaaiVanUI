@@ -222,3 +222,30 @@ export const OnboardingTemplateSelectionGalleryItemSubItem = styled.div`
 `;
 OnboardingTemplateSelectionGalleryItemSubItem.displayName =
   'OnboardingTemplateSelectionGalleryItemSubItem';
+
+export const OnboardingTemplateSelectionNodeContainer = styled.div`
+  width: 100% !important;
+  border: 1px solid ${CV_DISTANT};
+  alignself: stretch;
+  overflow: hidden !important;
+  border-radius: 0.8rem;
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  & > div {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: clamp(10rem, 40vh, 70vh) !important;
+    transform: scale(1);
+  }
+`;
+OnboardingTemplateSelectionNodeContainer.displayName =
+  'OnboardingTemplateSelectionNodeContainer';

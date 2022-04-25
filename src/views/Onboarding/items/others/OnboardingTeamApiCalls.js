@@ -5,6 +5,7 @@ import {
   setApplicationFieldOfExpertise,
   setApplicationSize,
 } from 'apiHelper/ApiHandlers/RVApi';
+import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
 import { OnboardingTeamStepContextActions } from './OnboardingTeam.context';
 
 //TODO Refactor needed ...
@@ -34,6 +35,7 @@ export const onboardingTeamNameSave = async ({ dispatch, teamName }) => {
       stateKey: 'ApplicationID',
       stateValue: appRes.Application.ApplicationID,
     });
+    dispatch(selectApplicationAction(appRes.Application.ApplicationID));
   }
 };
 
@@ -54,11 +56,14 @@ export const onboardingTeamPeopleCountSave = async ({
 };
 
 export const onboardingTeamFieldOfExpertiseSave = async ({
-  //   dispatch,
+  dispatch,
   ApplicationID,
   workFieldID,
   workFieldName,
 }) => {
+  await selectApplication({
+    ApplicationID: ApplicationID,
+  });
   await setApplicationFieldOfExpertise({
     ApplicationID,
     FieldID: workFieldID,

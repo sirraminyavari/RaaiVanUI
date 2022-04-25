@@ -11,6 +11,7 @@ import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
+import NodeDetails from 'views/Node/nodeDetails/NodeDetails';
 
 const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
@@ -59,7 +60,14 @@ const OnboardingTemplateSelectionContent = () => {
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          <OnboardingTemplateSelectionNode />
+          <OnboardingTemplateSelectionNode>
+            <NodeDetails
+              route={
+                '690e0506-dcf1-4d44-9478-6c0c14bb5f55' ||
+                activateTemplate?.NodeID
+              }
+            />
+          </OnboardingTemplateSelectionNode>
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={activeTag ? activeTag.Templates : templates?.AllTemplates}

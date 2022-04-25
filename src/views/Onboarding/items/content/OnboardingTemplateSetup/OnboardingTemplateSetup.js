@@ -3,7 +3,7 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSetup.styles';
 import CliqMindLogo from 'assets/images/cliqmind_logo_mini.svg?file';
 import Button from 'components/Buttons/Button';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
@@ -13,6 +13,7 @@ const {
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic } = useWindow();
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const { selectedTemplates, applicationID } = useOnboardingTeamContent();
 
@@ -33,6 +34,7 @@ const OnboardingTemplateSetupContent = () => {
       });
       for (let i = 0; i < selectedTemplatesAPICallbacks.length; i++)
         await selectedTemplatesAPICallbacks[i]();
+      setIsLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplates]);
@@ -51,7 +53,11 @@ const OnboardingTemplateSetupContent = () => {
         {RVDicOnboardingTemplateSetupTitle}
       </Styles.OnboardingTemplateSetupTitle>
 
-      <Button style={{ paddingInline: '4rem' }} onClick={goToApplication}>
+      <Button
+        style={{ paddingInline: '4rem' }}
+        onClick={goToApplication}
+        loading={isLoading}
+      >
         {RVDicOnboardingTemplateSetupUnderstood}
       </Button>
     </Styles.OnboardingTemplateSetupWrapper>
