@@ -2,11 +2,8 @@ import { decode } from 'js-base64';
 import { domainsSlice } from 'store/reducers/domainsReducer';
 import APIHandler from '../../../apiHelper/APIHandler';
 
-const {
-  getDomainsAction,
-  getDomainsResponse,
-  getDomainsFailed,
-} = domainsSlice.actions;
+const { getDomainsAction, getDomainsResponse, getDomainsFailed } =
+  domainsSlice.actions;
 const apiHandler = new APIHandler('RVAPI', 'GetDomains');
 
 const getDomains = () => async (dispatch) => {

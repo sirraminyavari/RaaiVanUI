@@ -228,7 +228,8 @@ const MultiLevelType = (props) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-        }}>
+        }}
+      >
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
       </div>
@@ -237,7 +238,8 @@ const MultiLevelType = (props) => {
           onClose={handleCloseModal}
           title={decodeBase64(Title)}
           show={isModalShown}
-          contentWidth="50%">
+          contentWidth="50%"
+        >
           <FormFill.MultiLevel
             onConfirm={handleOnConfirm}
             onChange={handleChangeFormFill}

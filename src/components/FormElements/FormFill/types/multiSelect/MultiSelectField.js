@@ -94,7 +94,8 @@ const MultiSelectField = ({
     <FormCell
       iconComponent={<CheckBoxIconIo color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
-      {...props}>
+      {...props}
+    >
       {/* {value && selectedOptions?.length > 0 ? (
         <SelectedMaintainer>
           {selectedOptions?.map((x) => (

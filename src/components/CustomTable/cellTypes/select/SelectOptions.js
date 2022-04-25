@@ -15,10 +15,12 @@ const SelectOptions = ({ handleSelectOption, selectedOptions, options }) => {
   return (
     <Styled.SelectOptionsContainer
       rowCount={Math.ceil(selectedOptions.length / 2)}
-      ref={containerRef}>
+      ref={containerRef}
+    >
       <ScrollBarProvider
         style={{ maxHeight: '7rem' }}
-        className="table-select-options-scroll">
+        className="table-select-options-scroll"
+      >
         {fakeoptions
           .filter((opt) => !selectedOptions.some((s) => opt === s))
           .map((x, index) => (
@@ -26,7 +28,8 @@ const SelectOptions = ({ handleSelectOption, selectedOptions, options }) => {
               data-name={x}
               data-value={index}
               key={index}
-              onClick={handleSelectOption}>
+              onClick={handleSelectOption}
+            >
               {x}
             </Styled.SelectOptionWrapper>
           ))}

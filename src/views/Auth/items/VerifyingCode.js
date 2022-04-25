@@ -101,7 +101,8 @@ const VerifyingCode = () => {
             textAlign: 'center',
             ...common_style,
             marginTop: '2rem',
-          }}>
+          }}
+        >
           {RVDic?.Login}
         </Heading>
         <RowItems style={common_style}>
@@ -111,7 +112,8 @@ const VerifyingCode = () => {
               textAlign: 'center',
               ...common_style,
             }}
-            className={'rv-distant'}>
+            className={'rv-distant'}
+          >
             {email}
           </Heading>
           <button onClick={onEdit}>
@@ -138,7 +140,8 @@ const VerifyingCode = () => {
               width: '100%',
               textAlign: 'center',
               ...common_style,
-            }}>
+            }}
+          >
             {RVDic.Resend}
           </Button>
         ) : (
@@ -162,7 +165,8 @@ const VerifyingCode = () => {
             textAlign: 'center',
             marginTop: '3rem',
             marginBottom: '1rem',
-          }}>
+          }}
+        >
           {RVDic?.SignUp}
         </Button>
       </Container>

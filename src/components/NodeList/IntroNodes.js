@@ -216,7 +216,8 @@ const IntroNodes = ({ selectMode, liteMode, onChecked }) => {
         height: '100%',
         width: '100%',
         flex: 1,
-      }}>
+      }}
+    >
       {list.map((x, index) => {
         return (
           <SubjectItem

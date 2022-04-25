@@ -18,7 +18,8 @@ const TreeNode = (props) => {
     <Styled.TreeNodeContainer
       {...draggableProps}
       style={{ ...draggableProps.style }}
-      ref={draggableRef}>
+      ref={draggableRef}
+    >
       <Styled.LabelWrapper onClick={handleVisibility}>
         <Styled.IconWrapper {...draggHandle}>
           <DragIcon />

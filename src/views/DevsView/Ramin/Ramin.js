@@ -24,7 +24,8 @@ const RaminView = () => {
                 flexFlow: 'row',
                 alignItems: 'center',
                 padding: '1rem 0',
-              }}>
+              }}
+            >
               <div style={{ flex: '0 0 auto', width: '10rem' }}>{name}</div>
               {[
                 {},
@@ -37,12 +38,14 @@ const RaminView = () => {
                     flex: '0 0 auto',
                     width: '10rem',
                     padding: '0 1rem',
-                  }}>
+                  }}
+                >
                   <Button
                     type={name}
                     disable={options.disable}
                     loading={options.loading}
-                    $circleEdges={options.$circleEdges}>
+                    $circleEdges={options.$circleEdges}
+                  >
                     button
                   </Button>
                 </div>
@@ -60,7 +63,8 @@ const RaminView = () => {
                 flexFlow: 'row',
                 alignItems: 'center',
                 padding: '1rem 0',
-              }}>
+              }}
+            >
               <div style={{ flex: '0 0 auto', width: '4rem' }}>{name}</div>
               <Heading type={name}>این یک هدینگ است</Heading>
             </div>
@@ -69,7 +73,8 @@ const RaminView = () => {
       </div>
       <div
         class={'small-12 medium-12 large-12 row'}
-        style={{ padding: '2rem', direction: 'ltr', textAlign: 'left' }}>
+        style={{ padding: '2rem', direction: 'ltr', textAlign: 'left' }}
+      >
         {[
           ['rv-border-radius-1'],
           ['rv-border-radius-half'],
@@ -91,7 +96,8 @@ const RaminView = () => {
                 display: 'flex',
                 alignItems: 'center',
                 padding: '0.5rem 0',
-              }}>
+              }}
+            >
               <div
                 class={name.join(' ')}
                 style={{
@@ -103,7 +109,8 @@ const RaminView = () => {
                   color: 'white',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}>
+                }}
+              >
                 {name.map((nm) => (
                   <span style={{ margin: '0 1rem' }}>{nm}</span>
                 ))}

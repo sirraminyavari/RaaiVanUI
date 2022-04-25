@@ -163,7 +163,6 @@ export const saveMembers = (NodeID, UserIDs) => {
 };
 
 /**
-<<<<<<< HEAD
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.

@@ -107,8 +107,8 @@ const SidebarOnClose = ({ theme }) => {
   const hasSidebarNodes = !!filteredSidebarNodes.length;
   //! Shows the chevron if there are enough nodes.
   useLayoutEffect(() => {
-    const listContainerHeight = listRef?.current?.getBoundingClientRect()
-      ?.height;
+    const listContainerHeight =
+      listRef?.current?.getBoundingClientRect()?.height;
     const itemHeight = itemRef?.current?.getBoundingClientRect()?.height;
     if (
       hasSidebarNodes &&
@@ -133,7 +133,8 @@ const SidebarOnClose = ({ theme }) => {
             <span style={{ textTransform: 'capitalize' }}>
               {RVDic.Settings}
             </span>
-          )}>
+          )}
+        >
           <Styled.SettingWrapper isClose onClick={handleOnClick}>
             <SettingIcon size={22} />
           </Styled.SettingWrapper>
@@ -157,7 +158,8 @@ const SidebarOnClose = ({ theme }) => {
               flexDirection: 'column',
               alignItems: 'center',
               width: '100%',
-            }}>
+            }}
+          >
             <div ref={containerRef}>
               {filteredSidebarNodes?.map((node, key) => {
                 const { TypeName, NodeTypeID, IconURL } = node;
@@ -168,11 +170,13 @@ const SidebarOnClose = ({ theme }) => {
                     effect="solid"
                     offset={{ [RV_Float]: -10 }}
                     place={RV_RevFloat}
-                    renderContent={() => decodeBase64(TypeName)}>
+                    renderContent={() => decodeBase64(TypeName)}
+                  >
                     <Styled.MiniIconWrapper
                       ref={itemRef}
                       as={Link}
-                      to={getURL('Classes', { NodeTypeID: NodeTypeID })}>
+                      to={getURL('Classes', { NodeTypeID: NodeTypeID })}
+                    >
                       {!!IconURL && (
                         <Styled.MenuItemImage
                           src={GlobalUtilities.add_timestamp(IconURL)}

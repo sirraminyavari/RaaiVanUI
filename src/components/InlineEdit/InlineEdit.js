@@ -185,7 +185,8 @@ const InlineEdit = (props) => {
           data-testid="inline-edit-span"
           id="inline-edit"
           ref={textRef}
-          onClick={handleActivateInput}>
+          onClick={handleActivateInput}
+        >
           {inputValue}
         </Styled.SpanText>
       )}

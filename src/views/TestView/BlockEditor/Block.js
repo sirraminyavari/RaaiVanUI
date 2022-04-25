@@ -22,7 +22,7 @@ import { textColors, highlightColors } from './data';
 
 import BE from './BlockEditor';
 
-const Block = ({ nodeId, lang }) => {
+const Block = ({ nodeId, lang, dir }) => {
   const [editorState, setEditorState] = useState(null);
 
   //legacy content is the old wiki content that must be converted to blocks
@@ -101,6 +101,8 @@ const Block = ({ nodeId, lang }) => {
         initialContent={editorState}
         handleSaveBlocks={handleSaveBlocks}
         handleSaveRawHtmlContent={handleSaveRawHtmlContent}
+        lang={lang}
+        dir={dir}
       />
       <button
         onClick={async () => {

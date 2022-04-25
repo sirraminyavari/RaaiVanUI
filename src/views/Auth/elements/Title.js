@@ -46,7 +46,8 @@ const Title = () => {
     <UpToDownAnimate
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
-      isVisible={true}>
+      isVisible={true}
+    >
       <Heading type="h5" style={{ marginTop: '2rem' }}>
         {title()}
       </Heading>

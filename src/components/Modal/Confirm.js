@@ -44,7 +44,8 @@ const Confirm = ({
       titleClass="RedColor"
       show={showState}
       onClose={handleOnClose}
-      {...props}>
+      {...props}
+    >
       <Message>{props.children}</Message>
       <ButtonsContainer>
         <Button
@@ -56,7 +57,8 @@ const Confirm = ({
             },
             RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
           )}
-          onClick={handleOnConfirm}>
+          onClick={handleOnConfirm}
+        >
           {confirmText ?? RVDic.Confirm}
         </Button>
         <Button
@@ -65,7 +67,8 @@ const Confirm = ({
             flex: '0 0 auto',
             width: '6rem',
           }}
-          onClick={handleOnCancel}>
+          onClick={handleOnCancel}
+        >
           {cancelText ?? RVDic.Cancel}
         </Button>
       </ButtonsContainer>

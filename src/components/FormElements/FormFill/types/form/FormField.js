@@ -39,9 +39,10 @@ const FormField = (props) => {
 
   return (
     <FormCell
-      iconComponent={<TableIcon size={15} color={CV_GRAY} />}
+      iconComponent={<TableIcon size={'1.22rem'} color={CV_GRAY} />}
       title={decodeTitle}
-      {...rest}>
+      {...rest}
+    >
       <Styled.TableWrapper>{renderTable()}</Styled.TableWrapper>
     </FormCell>
   );

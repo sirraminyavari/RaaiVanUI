@@ -11,9 +11,8 @@ import useWindowContext from 'hooks/useWindowContext';
 const PermissionSelectionPane = ({ sections }) => {
   const [permissionSearchText, setPermissionSearchText] = useState('');
   const { RV_RTL, RVDic } = useWindowContext();
-  const { selectedRole, permissions, updatePermission, roles } = useContext(
-    PermissionContext
-  );
+  const { selectedRole, permissions, updatePermission, roles } =
+    useContext(PermissionContext);
   const [allSelected, setAllSelected] = useState(false);
 
   useEffect(() => {

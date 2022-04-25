@@ -33,7 +33,8 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
     <>
       {!parent && !isSaaS && (
         <RootAddButton
-          onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
+          onClick={(e) => setModalInfo({ ...modalInfo, show: true })}
+        >
           <AddIcon size={20} />
           <div>{'ایجاد دسته جدید'}</div>
         </RootAddButton>
@@ -64,14 +65,16 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
           <Button
             type="primary"
             style={buttonStyles}
-            onClick={() => handleModalConfirm()}>
+            onClick={() => handleModalConfirm()}
+          >
             {RVDic?.Save}
           </Button>
 
           <Button
             type="negative-o"
             style={buttonStyles}
-            onClick={() => handleModalCancel()}>
+            onClick={() => handleModalCancel()}
+          >
             {RVDic?.Return}
           </Button>
         </ModalActionBar>

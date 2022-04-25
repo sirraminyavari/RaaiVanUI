@@ -159,13 +159,15 @@ const AdvanceSearchDesktop = ({
       isAdvancedShow={isAdvancedSearch}
       className={'rv-bg-color-white'}
       itemSelectionMode={itemSelectionMode}
-      RV_RTL={RV_RTL}>
+      RV_RTL={RV_RTL}
+    >
       <ScrollProvider
         className={`${
           itemSelectionMode ? 'rv-bg-color-white' : 'rv-bg-color-light-gray'
         } rv-border-radius-half`}
         itemSelectionMode={itemSelectionMode}
-        isAdvancedShow={!itemSelectionMode && isAdvancedSearch}>
+        isAdvancedShow={!itemSelectionMode && isAdvancedSearch}
+      >
         <ScrollBarProvider
           containerRef={(ref) => {
             if (ref) {
@@ -178,7 +180,8 @@ const AdvanceSearchDesktop = ({
               };
             }
           }}
-          className={'rv-border-radius-half'}>
+          className={'rv-border-radius-half'}
+        >
           <Scrollable isAdvancedShow={isAdvancedSearch}>
             <Maintainer
               itemSelectionMode={itemSelectionMode}
@@ -188,7 +191,8 @@ const AdvanceSearchDesktop = ({
                   ? 'rv-bg-color-white'
                   : 'rv-bg-color-light-gray'
               } rv-border-radius-half`}
-              fullWidth={isAdvancedSearch}>
+              fullWidth={isAdvancedSearch}
+            >
               <TopFilter>
                 <FilterBar
                   nodeTypeId={nodeTypeId}
@@ -218,7 +222,8 @@ const AdvanceSearchDesktop = ({
                 style={{
                   padding: '0 2rem 2rem 2rem',
                 }}
-                {...props}>
+                {...props}
+              >
                 {isProfile && (
                   <LastTopicsTabs
                     provideNodes={onApplyNodeType && onApplyNodeType}
@@ -258,7 +263,8 @@ const AdvanceSearchDesktop = ({
           display: 'flex',
           flexDirection: 'column',
           // width: '25rem',
-        }}>
+        }}
+      >
         {!itemSelectionMode && (
           <Space $isEnabled={isAdvancedSearch} dir={RV_RevFloat} rtl={RV_RTL} />
         )}
@@ -266,7 +272,8 @@ const AdvanceSearchDesktop = ({
           <SideFilter
             $isEnabled={isAdvancedSearch && formElements}
             dir={RV_RevFloat}
-            rtl={RV_RTL}>
+            rtl={RV_RTL}
+          >
             {isAdvancedSearch && formElements && (
               <FormFilter
                 formName={RVDic.AdvancedFilters}
@@ -283,9 +290,8 @@ const AdvanceSearchDesktop = ({
         <AdvancedFilterDialog
           className={'rv-border-radius-half'}
           top={advancedSearchButtonRef?.current?.getBoundingClientRect()?.top}
-          left={
-            advancedSearchButtonRef?.current?.getBoundingClientRect()?.left
-          }>
+          left={advancedSearchButtonRef?.current?.getBoundingClientRect()?.left}
+        >
           <FormFilter
             formName={RVDic.AdvancedFilters}
             filters={formElements}

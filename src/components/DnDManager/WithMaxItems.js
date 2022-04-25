@@ -25,10 +25,8 @@ const withMaxItems = (Component, createId) => {
     onDragEnd = ({ source, destination }) => {
       if (destination) {
         const { index: indexInSourceChunk, id: sourceChunkId } = source;
-        const {
-          index: indexInDestinationChunk,
-          id: destinationChunkId,
-        } = destination;
+        const { index: indexInDestinationChunk, id: destinationChunkId } =
+          destination;
         const sourceChunkIndex = this.findChunkIndex(sourceChunkId);
         const destinationChunkIndex = this.findChunkIndex(destinationChunkId);
         const sourceIndex = computeOriginalIndex(

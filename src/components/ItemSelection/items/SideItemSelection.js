@@ -134,7 +134,8 @@ const SideItemSelection = ({
                 return { ...original, height: Math.round(original.height) };
               };
             }
-          }}>
+          }}
+        >
           {console.log(classes, 'classes classes')}
           {classes?.map((x) => (
             <ClassItem
@@ -154,7 +155,8 @@ const SideItemSelection = ({
             $isShowSelected={isShowSelected}
             className={
               'rv-border-radius-half rv-border-distant rv-bg-color-white rv-default'
-            }>
+            }
+          >
             {'موارد انتخاب شده'}
             <Badge $isShowSelected={isShowSelected}>{checkedList.length}</Badge>
           </ChoosedItems>

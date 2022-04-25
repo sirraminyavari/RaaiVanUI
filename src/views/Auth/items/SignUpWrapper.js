@@ -24,7 +24,8 @@ const SignUpWrapper = ({ codeMode, onCodeCancel, children } = {}) => {
             position: 'relative',
             width: '100%',
           }}
-          className={'rv-distant'}>
+          className={'rv-distant'}
+        >
           {codeMode && (
             <ArrowIcon
               dir={RV_RTL ? 'right' : 'left'}

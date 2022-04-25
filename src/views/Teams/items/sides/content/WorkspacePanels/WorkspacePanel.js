@@ -70,7 +70,8 @@ const WorkspacePanel = ({ space }) => {
                     return (
                       <Flipped
                         key={team?.ApplicationID}
-                        flipId={team?.ApplicationID}>
+                        flipId={team?.ApplicationID}
+                      >
                         <DragItem
                           team={team}
                           key={team?.ApplicationID}

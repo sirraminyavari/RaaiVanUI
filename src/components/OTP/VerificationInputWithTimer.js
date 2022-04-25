@@ -111,7 +111,8 @@ const VerificationInputWithTimer = ({
               width: '100%',
               marginBottom: '0.5rem',
               ...messageStyle,
-            }}>
+            }}
+          >
             <div>{message}:</div>
           </Heading>
           <Contact>{email || phoneNumber}</Contact>
@@ -146,7 +147,8 @@ const VerificationInputWithTimer = ({
                   fontSize: '1rem',
                   fontWeight: 'bold',
                 }}
-                loading={loading}>
+                loading={loading}
+              >
                 <ReloadIcon style={{ marginInlineEnd: '0.5rem' }} />
                 {RVDic.Resend}
               </Button>

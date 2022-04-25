@@ -28,7 +28,8 @@ const CreateModal = (props) => {
         titleContainerClass="create-modal-header"
         title={modalTitle}
         show={isOpen}
-        onClose={onCancelCreate}>
+        onClose={onCancelCreate}
+      >
         <Styled.ModalContentWrapper>
           <AnimatedInput
             value={inputValue}
@@ -41,13 +42,15 @@ const CreateModal = (props) => {
             <Button
               style={{ width: '7rem', margin: '0 2rem' }}
               disable={!inputValue}
-              onClick={onCreate}>
+              onClick={onCreate}
+            >
               <Styled.ModalButtonText>{RVDic.Save}</Styled.ModalButtonText>
             </Button>
             <Button
               type="negative-o"
               style={{ width: '7rem', margin: '0 2rem' }}
-              onClick={onCancelCreate}>
+              onClick={onCancelCreate}
+            >
               <Styled.ModalButtonText>{RVDic.Return}</Styled.ModalButtonText>
             </Button>
           </Styled.ModalButtonsWrapper>

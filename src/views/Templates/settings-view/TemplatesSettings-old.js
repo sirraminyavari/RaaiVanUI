@@ -131,7 +131,8 @@ const TemplatesView = () => {
           setSearchResult,
           setIsSearching,
           refetchNodes,
-        }}>
+        }}
+      >
         <CreateModal
           isOpen={modal?.isShown}
           onInputChange={handleModalInputChange}

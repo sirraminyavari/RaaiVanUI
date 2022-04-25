@@ -1,15 +1,11 @@
 import { useLayoutEffect, useRef } from 'react';
 import { convertToRaw } from 'draft-js';
 
-import BlockEditor, {
-  defaultTheme,
-  convertLegacyHtmlToEditorState,
-} from '@sirraminyavari/rv-block-editor';
+import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
 
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
 import plugins from './plugins';
-console.log(convertLegacyHtmlToEditorState);
 
 function BE({
   editorState,
@@ -19,6 +15,8 @@ function BE({
   // handleRemoveBlocks,
   // handleSortBlocks,
   handleSaveRawHtmlContent,
+  lang,
+  dir,
 }) {
   const editorRef = useRef();
   useLayoutEffect(
@@ -58,8 +56,8 @@ function BE({
       editorState={editorState}
       onChange={setEditorState}
       dict={dict}
-      lang={'en'}
-      dir={'ltr'}
+      lang={lang || 'en'}
+      dir={dir || 'ltr'}
       plugins={plugins}
       styles={defaultTheme}
       portalNode={document.getElementById('block-editor-portal')}

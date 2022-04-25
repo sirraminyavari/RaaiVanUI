@@ -45,7 +45,8 @@ const FilesList = (props) => {
                     to={IconURL}
                     target="_blank"
                     download
-                    data-title={fileName}>
+                    data-title={fileName}
+                  >
                     {fileName}
                   </Link>
                 ) : (

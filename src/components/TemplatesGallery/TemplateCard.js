@@ -40,7 +40,8 @@ const TemplateCard = ({
       clickable={!!clickable}
       className={containerClass}
       mode={mode}
-      onClick={handleClickCard}>
+      onClick={handleClickCard}
+    >
       {!isArchive && hasTags && (
         <ToolTip
           multiline
@@ -53,7 +54,8 @@ const TemplateCard = ({
           arrowColor="transparent"
           className="card-tags-tooltip"
           disable={!extraTagsLength}
-          renderContent={() => <TooltipContent extraTags={extraTags} />}>
+          renderContent={() => <TooltipContent extraTags={extraTags} />}
+        >
           <Styled.CardBadgeContainer>
             <Styled.CardTagTitle>
               {decodeBase64(firstTag?.Name)}
@@ -72,7 +74,8 @@ const TemplateCard = ({
           <Button
             onClick={handleRestore}
             type="primary-o"
-            style={{ width: '5rem', fontWeight: '500' }}>
+            style={{ width: '5rem', fontWeight: '500' }}
+          >
             بازیابی
           </Button>
         </Styled.CardBadgeContainer>

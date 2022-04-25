@@ -11,9 +11,8 @@ import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import useWindowContext from 'hooks/useWindowContext';
 
 const SaaSTemplateItem = ({ NodeTypeID, TypeName, Sub, isExpanded }) => {
-  const { handleDeleteNode, handleAddNodeType } = useContext(
-    TemplateListContext
-  );
+  const { handleDeleteNode, handleAddNodeType } =
+    useContext(TemplateListContext);
 
   const [isOpen, setIsOpen] = useState(isExpanded);
 

@@ -10,13 +10,8 @@ import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 
 const SearchList = () => {
-  const {
-    isSearching,
-    searchText,
-    searchItems,
-    onScrollEnd,
-    isFetchingMore,
-  } = useContext(searchContext);
+  const { isSearching, searchText, searchItems, onScrollEnd, isFetchingMore } =
+    useContext(searchContext);
   const { RVDic } = useWindow();
 
   if (isSearching) {
@@ -44,7 +39,8 @@ const SearchList = () => {
           ))}
           {isFetchingMore && (
             <div
-              style={{ width: '100%', padding: '1rem', textAlign: 'center' }}>
+              style={{ width: '100%', padding: '1rem', textAlign: 'center' }}
+            >
               <LoadingIconFlat style={{ color: TCV_DEFAULT }} />
             </div>
           )}

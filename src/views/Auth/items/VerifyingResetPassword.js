@@ -129,7 +129,8 @@ const VerifyingResetPassword = () => {
             textAlign: 'center',
             ...common_style,
           }}
-          className={'rv-distant'}>
+          className={'rv-distant'}
+        >
           {RVDic?.ForgotMyPassword}
         </Heading>
         <RowItems style={common_style}>
@@ -139,7 +140,8 @@ const VerifyingResetPassword = () => {
               textAlign: 'center',
               color: 'black',
               ...common_style,
-            }}>
+            }}
+          >
             {email}
           </Heading>
           <button onClick={onEdit}>
@@ -171,7 +173,8 @@ const VerifyingResetPassword = () => {
               width: '100%',
               textAlign: 'center',
               ...common_style,
-            }}>
+            }}
+          >
             {RVDic?.Resend}
           </Button>
         ) : (
@@ -190,7 +193,8 @@ const VerifyingResetPassword = () => {
             textAlign: 'center',
             marginTop: '3rem',
             marginBottom: '1rem',
-          }}>
+          }}
+        >
           {RVDic?.Login}
         </Button>
       </Container>

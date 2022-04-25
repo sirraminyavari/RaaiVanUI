@@ -1,5 +1,7 @@
 import {
   API_NAME_FG_GET_FORM_ELEMENTS,
+  API_NAME_FG_GET_FORM_INSTANCE,
+  API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE,
   API_NAME_FG_SAVE_FORM_ELEMENTS,
 } from 'constant/api-names-fg';
 import { FG_API } from 'constant/apiConstants';
@@ -45,6 +47,21 @@ export const getFormElements = ({
                 : info.Options.map((o) => decodeBase64(o)),
               Yes: !info.Yes ? undefined : decodeBase64(info.Yes),
               No: !info.No ? undefined : decodeBase64(info.No),
+              NodeTypes: !(info.NodeTypes || []).length
+                ? undefined
+                : info.NodeTypes.map((nt) => ({
+                    ...nt,
+                    NodeType: decodeBase64(nt.NodeType),
+                  })),
+              FormName: !info.FormName
+                ? undefined
+                : decodeBase64(info.FormName),
+              NodeType: !info.NodeType
+                ? undefined
+                : { ...info.NodeType, Name: decodeBase64(info.NodeType?.Name) },
+              Levels: !info.Levels?.length
+                ? undefined
+                : info.Levels.map((l) => decodeBase64(l)),
             }),
       };
     }),
@@ -84,6 +101,24 @@ export const saveFormElements = ({
                       : e.Info.Options.map((o) => encodeBase64(o)),
                     Yes: !e?.Info?.Yes ? undefined : encodeBase64(e.Info.Yes),
                     No: !e?.Info?.No ? undefined : encodeBase64(e.Info.No),
+                    NodeTypes: !e?.Info?.NodeTypes?.length
+                      ? undefined
+                      : e.Info.NodeTypes.map((nt) => ({
+                          ...nt,
+                          NodeType: encodeBase64(nt.NodeType),
+                        })),
+                    FormName: !e?.Info?.FormName
+                      ? undefined
+                      : encodeBase64(e.Info.FormName),
+                    NodeType: !e?.Info?.NodeType
+                      ? undefined
+                      : {
+                          ...e.Info.NodeType,
+                          Name: encodeBase64(e.Info.NodeType?.Name),
+                        },
+                    Levels: !e?.Info?.Levels?.length
+                      ? undefined
+                      : e.Info.Levels.map((l) => encodeBase64(l)),
                   })
                 )
               ),
@@ -94,6 +129,32 @@ export const saveFormElements = ({
         })),
       })
     ),
+  });
+};
+
+/**
+ *
+ */
+
+export const initializeOwnerFormInstance = ({ OwnerID }) => {
+  return apiCallWrapper(
+    API_Provider(FG_API, API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE),
+    { OwnerID }
+  );
+};
+/**
+ *
+ */
+
+export const getFormInstance = ({
+  InstanceID,
+  LimitOwnerID,
+  ShowAllIfNoLimit,
+}) => {
+  return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORM_INSTANCE), {
+    InstanceID,
+    LimitOwnerID,
+    ShowAllIfNoLimit,
   });
 };
 
@@ -136,5 +197,45 @@ const customizedElements = {
   'two options': {
     Type: 'Binary',
     Info: { Yes: '[string]', No: '[string]' },
+  },
+  rating: {
+    Type: 'Numeric',
+    Info: { Pattern: 'rating' },
+  },
+  item: {
+    Type: 'Node',
+    Info: {
+      NodeTypes: [{ NodeTypeID: '[string]', NodeType: '[string]' }], //array of node types
+      MultiSelect: '[boolean]',
+    },
+  },
+  user: {
+    Type: 'User',
+    Info: { MultiSelect: '[boolean]' },
+  },
+  file: {
+    Type: 'File',
+    Info: {
+      MaxCount: '[integer]',
+      MaxSize: '[integer]',
+      TotalSize: '[integer]',
+      ImageOnly: '[boolean]',
+      AllowedExtensions: "array of strings. i.e. ['pdf', 'docx']",
+    },
+  },
+  separator: {
+    Type: 'Separator',
+  },
+  table: {
+    Type: 'Form',
+    Info: { FormID: '[string]', FormName: '[string]' },
+  },
+  multilevel: {
+    Type: 'MultiLevel',
+    Info: {
+      Template: '[string]', //Country_Province_City, University
+      NodeType: { ID: '[string]', Name: '[string]' },
+      Levels: 'array of string values',
+    },
   },
 };

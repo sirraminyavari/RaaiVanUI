@@ -102,7 +102,8 @@ const Resizable = (props) => {
       maxH={maxConstraints?.height}
       ref={containerRef}
       size={size}
-      style={resizableStyles}>
+      style={resizableStyles}
+    >
       {!disable &&
         resizeHandles.map((handle, index) => {
           return (

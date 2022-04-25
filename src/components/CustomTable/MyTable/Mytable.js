@@ -76,7 +76,8 @@ export const MyTable = ({ columns, data, onClick, id }) => {
                       row.original.ApplicationID
                     );
                     history.push(`monitoring/${row.original.ApplicationID}`);
-                  }}>
+                  }}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <td
@@ -87,7 +88,8 @@ export const MyTable = ({ columns, data, onClick, id }) => {
                           textAlign: 'center',
                           justifyContent: 'center',
                         }}
-                        {...cell.getCellProps()}>
+                        {...cell.getCellProps()}
+                      >
                         {cell.render('Cell')}{' '}
                       </td>
                     );

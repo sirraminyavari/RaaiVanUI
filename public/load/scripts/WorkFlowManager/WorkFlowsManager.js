@@ -6,6 +6,11 @@
         if (!this.Container) return;
         params = params || {};
 
+        this.Options = {
+            ActionTypes: params.ActionTypes,
+            VariableTypes: params.VariableTypes
+        };
+
         var that = this;
 
         GlobalUtilities.load_files(["API/WFAPI.js", "Public/NameDialog.js"], {
@@ -38,30 +43,24 @@
         new_item: function (container) {
             var that = this;
 
-            var btn = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-6 large-4", Style: "padding:0.5rem;",
-                    Childs: [
-                        {
-                            Type: "div", Style: "height:100%; font-size:1.2rem;", Name: "btn",
-                            Class: "small-12 medium-12 large-12 rv-border-radius-half rv-air-button",
-                            Childs: [
-                                {
-                                    Type: "middle", Style: "display:inline-block;",
-                                    Childs: [
-                                        {
-                                            Type: "i", Class: "fa fa-plus-circle fa-lg",
-                                            Style: "margin-" + RV_RevFloat + ":0.5rem;",
-                                            Attributes: [{ Name: "aria-hidden", Value: true }]
-                                        },
-                                        { Type: "text", TextValue: RVDic.NewN.replace("[n]", RVDic.WorkFlow) }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], container)["btn"];
+            var btn = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-6 large-4", Style: "padding:0.5rem;",
+                Childs: [{
+                    Type: "div", Style: "height:100%; font-size:1.2rem;", Name: "btn",
+                    Class: "small-12 medium-12 large-12 rv-border-radius-half rv-air-button",
+                    Childs: [{
+                        Type: "middle", Style: "display:inline-block;",
+                        Childs: [
+                            {
+                                Type: "i", Class: "fa fa-plus-circle fa-lg",
+                                Style: "margin-" + RV_RevFloat + ":0.5rem;",
+                                Attributes: [{ Name: "aria-hidden", Value: true }]
+                            },
+                            { Type: "text", TextValue: RVDic.NewN.replace("[n]", RVDic.WorkFlow) }
+                        ]
+                    }]
+                }]
+            }], container)["btn"];
 
             var saving = false;
 
@@ -100,55 +99,47 @@
 
                 return {
                     Type: "div", Class: "small-4 medium-4 large-4", Style: "padding:0rem 0.25rem;",
-                    Childs: [
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12 rv-air-button rv-circle", Name: p.Name,
-                            Childs: [
-                                {
-                                    Type: "i", Class: "fa " + p.Icon, Style: "margin-" + RV_RevFloat + ":0.4rem;",
-                                    Attributes: [{ Name: "aria-hidden", Value: true }]
-                                },
-                                { Type: "text", TextValue: p.Title }
-                            ]
-                        }
-                    ]
+                    Childs: [{
+                        Type: "div", Class: "small-12 medium-12 large-12 rv-air-button rv-circle", Name: p.Name,
+                        Childs: [
+                            {
+                                Type: "i", Class: "fa " + p.Icon, Style: "margin-" + RV_RevFloat + ":0.4rem;",
+                                Attributes: [{ Name: "aria-hidden", Value: true }]
+                            },
+                            { Type: "text", TextValue: p.Title }
+                        ]
+                    }]
                 };
             };
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-6 large-4",
-                    Style: "padding:0.5rem; opacity:0;", Name: "container",
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-6 large-4",
+                Style: "padding:0.5rem; opacity:0;", Name: "container",
+                Childs: [{
+                    Type: "div",
+                    Class: "small-12 medium-12 large-12 rv-border-radius-half rv-bg-color-softer-soft",
+                    Style: "position:relative; height:100%; padding:0.4rem; padding-bottom:3.5rem; text-align:center;",
                     Childs: [
                         {
-                            Type: "div",
-                            Class: "small-12 medium-12 large-12 rv-border-radius-half rv-bg-color-softer-soft",
-                            Style: "position:relative; height:100%; padding:0.4rem; padding-bottom:3.5rem; text-align:center;",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "rv-border-radius-quarter",
-                                    Style: "position:absolute; bottom:0.5rem; left:0.5rem; right:0.5rem;" +
-                                        "padding:0.3rem; background-color:white;",
-                                    Childs: [
-                                        {
-                                            Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem;",
-                                            Childs: [
-                                                action_button({ Name: "rename", Title: RVDic.Rename, Icon: "fa-i-cursor" }),
-                                                action_button({ Name: "edit", Title: RVDic.Edit, Icon: "fa-pencil" }),
-                                                action_button({ Name: "remove", Title: RVDic.Remove, Icon: "fa-times" })
-                                            ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    Type: "middle", Style: "display:inline-block; font-size:1rem;",
-                                    Childs: [{ Type: "text", TextValue: Base64.decode(item.Name), Name: "wfName" }]
-                                }
-                            ]
+                            Type: "div", Class: "rv-border-radius-quarter",
+                            Style: "position:absolute; bottom:0.5rem; left:0.5rem; right:0.5rem;" +
+                                "padding:0.3rem; background-color:white;",
+                            Childs: [{
+                                Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin:0rem;",
+                                Childs: [
+                                    action_button({ Name: "rename", Title: RVDic.Rename, Icon: "fa-i-cursor" }),
+                                    action_button({ Name: "edit", Title: RVDic.Edit, Icon: "fa-pencil" }),
+                                    action_button({ Name: "remove", Title: RVDic.Remove, Icon: "fa-times" })
+                                ]
+                            }]
+                        },
+                        {
+                            Type: "middle", Style: "display:inline-block; font-size:1rem;",
+                            Childs: [{ Type: "text", TextValue: Base64.decode(item.Name), Name: "wfName" }]
                         }
                     ]
-                }
-            ]);
+                }]
+            }]);
 
             if (!add2top) container.appendChild(elems["container"]);
             else container.insertBefore(elems["container"], (container.firstChild || {}).nextSibling);
@@ -206,18 +197,22 @@
 
             if (that.WFManagers[item.WorkFlowID]) return GlobalUtilities.show(that.WFManagers[item.WorkFlowID], showOptions);
 
-            var _div = that.WFManagers[item.WorkFlowID] = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-11 medium-11 large-11 rv-border-radius-1 SoftBackgroundColor",
-                    Style: "margin:0rem auto; padding:1rem; height:100%;", Name: "_div"
-                }
-            ])["_div"];
+            var _div = that.WFManagers[item.WorkFlowID] = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-11 medium-11 large-11 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin:0rem auto; padding:1rem; height:100%;", Name: "_div"
+            }])["_div"];
 
             GlobalUtilities.loading(_div);
             GlobalUtilities.show(_div, showOptions);
 
             GlobalUtilities.load_files(["WorkFlowManager/WorkFlowManager.js"], {
-                OnLoad: function () { new WorkFlowManager(_div, { WorkFlowID: item.WorkFlowID }); }
+                OnLoad: function () {
+                    new WorkFlowManager(_div, {
+                        WorkFlowID: item.WorkFlowID,
+                        ActionTypes: that.Options.ActionTypes,
+                        VariableTypes: that.Options.VariableTypes
+                    });
+                }
             });
         },
 

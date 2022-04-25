@@ -148,13 +148,15 @@ const NavigationButton = () => {
       isVisible={true}
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
-      style={{ padding: '0.4rem', marginTop: '2rem' }}>
+      style={{ padding: '0.4rem', marginTop: '2rem' }}
+    >
       <Button
         onClick={onNavigate}
         type="primary"
         loading={isFetching}
         style={{ width: '100%' }}
-        disable={disabledButton()}>
+        disable={disabledButton()}
+      >
         {buttonTitle(currentRoute).label}
       </Button>
     </UpToDownAnimate>

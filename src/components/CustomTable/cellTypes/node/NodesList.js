@@ -30,7 +30,8 @@ const NodesList = (props) => {
                 e.stopPropagation();
                 handleViewNode(NodeID);
               }}
-              editable={canEdit}>
+              editable={canEdit}
+            >
               <OpenMailIcon color={CV_DISTANT} size={25} />
               <Styled.NodeLinkHeading className="table-node-view" type="h6">
                 {decodeBase64(Name)}

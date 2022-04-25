@@ -19,12 +19,14 @@ const Login = () => {
       <div
         id="mainContent"
         className="small-12 medium-12 large-12"
-        style={styles.mainContent}>
+        style={styles.mainContent}
+      >
         <div style={{ width: '100%' }}>
           <div
             id="loginContainer"
             className="small-12 medium-8 large-6 rv-border-radius-1"
-            style={styles.loginContainer}>
+            style={styles.loginContainer}
+          >
             <div id="loginArea" className="small-12 medium-12 large-12"></div>
           </div>
         </div>
@@ -35,11 +37,13 @@ const Login = () => {
             left: 0,
             right: 0,
             textAlign: 'center',
-          }}>
+          }}
+        >
           <div
             id="pageDownButton"
             className="rv-air-button-base rv-air-button-white rv-circle"
-            style={styles.pageDownButton}>
+            style={styles.pageDownButton}
+          >
             <i className="fa fa-chevron-down fa-2x" aria-hidden="true"></i>
           </div>
         </div>
@@ -59,27 +63,32 @@ const Login = () => {
           dispatch(
             login({ UserName: encode('admin'), Password: encode('admin') })
           );
-        }}></div>
+        }}
+      ></div>
 
       <div
         id="statisticsArea"
         className="small-12 medium-12 large-12 row align-center"
-        style={styles.statisticsArea}>
+        style={styles.statisticsArea}
+      >
         <div
           className="small-12 medium-12 large-12"
           style={{
             textAlign: 'center',
             paddingTop: '0.5rem',
             height: '4rem',
-          }}>
+          }}
+        >
           <div
             id="pageUpButton"
             className="rv-air-button-base rv-air-button-black rv-circle"
-            style={styles.pageUpButton}>
+            style={styles.pageUpButton}
+          >
             <i
               className="fa fa-chevron-up fa-2x"
               aria-hidden="true"
-              style={{ marginBottom: '0.5rem' }}></i>
+              style={{ marginBottom: '0.5rem' }}
+            ></i>
           </div>
         </div>
         <div id="loginPageContent" style={styles.loginPageContent}></div>

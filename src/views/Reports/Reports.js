@@ -18,7 +18,8 @@ const Reports = (props) => {
         margin: '0rem',
         padding: '0vw 6vw',
         marginBottom: '5rem',
-      }}></div>
+      }}
+    ></div>
   );
 };
 

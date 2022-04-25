@@ -29,7 +29,8 @@ const WorkspaceInvoicePlan = () => {
         className="rv-border-radius-1 "
         style={{
           boxShadow: '1px 5px 15px #0000001f',
-        }}>
+        }}
+      >
         <Styled.WorkspaceInvoicePlanHeader>
           <span>{'انتخاب طرح'}</span>
           <EditIcon onClick={handleReturnToPlansView} />
@@ -40,7 +41,8 @@ const WorkspaceInvoicePlan = () => {
               <Styled.WorkspacePlanImage
                 pop
                 size="5rem"
-                className={'planImage'}>
+                className={'planImage'}
+              >
                 <UsersIcon />
               </Styled.WorkspacePlanImage>
               <Styled.WorkspacePrimaryText>حرفه ای</Styled.WorkspacePrimaryText>

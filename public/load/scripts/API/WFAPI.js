@@ -145,7 +145,64 @@
 
         var url = WFAPI.ResponseURL + "/SetWorkFlowAction?timeStamp=" + new Date().getTime();
         var queryString = (params.ConnectionID ? "&ConnectionID=" + params.ConnectionID : "") +
-            (params.Action ? "&Action=" + params.Action : "");
+            (params.Action ? "&Action=" + params.Action : "") +
+            (params.VariableType ? "&VariableType=" + params.VariableType : "") +
+            (params.VariableName ? "&VariableName=" + params.VariableName : "") +
+            (GlobalUtilities.get_type(params.NumberValue) == "number" ? "&NumberValue=" + params.NumberValue : "") +
+            (params.Formula ? "&Formula=" + params.Formula : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
+    AddWorkFlowAction: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/AddWorkFlowAction?timeStamp=" + new Date().getTime();
+        var queryString = (params.ConnectionID ? "&ConnectionID=" + params.ConnectionID : "") +
+            (params.Action ? "&Action=" + params.Action : "") +
+            (params.VariableType ? "&VariableType=" + params.VariableType : "") +
+            (params.VariableName ? "&VariableName=" + params.VariableName : "") +
+            (!["undefined", "null"].some(nl => GlobalUtilities.get_type(params.VariableDefaultValue) == nl) ?
+                "&VariableDefaultValue=" + params.VariableDefaultValue : "") +
+            (params.Formula ? "&Formula=" + params.Formula : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
+    ModifyWorkFlowAction: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/ModifyWorkFlowAction?timeStamp=" + new Date().getTime();
+        var queryString = (params.ActionID ? "&ActionID=" + params.ActionID : "") +
+            (params.ConnectionID ? "&ConnectionID=" + params.ConnectionID : "") +
+            (params.Action ? "&Action=" + params.Action : "") +
+            (params.VariableType ? "&VariableType=" + params.VariableType : "") +
+            (params.VariableName ? "&VariableName=" + params.VariableName : "") +
+            (!["undefined", "null"].some(nl => GlobalUtilities.get_type(params.VariableDefaultValue) == nl) ?
+                "&VariableDefaultValue=" + params.VariableDefaultValue : "") +
+            (params.Formula ? "&Formula=" + params.Formula : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
+    SortWorkFlowActions: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/SortWorkFlowActions?timeStamp=" + new Date().getTime();
+        var queryString = (params.ActionIDs ? "&ActionIDs=" + params.ActionIDs : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
+    GetWorkFlowVariables: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/GetWorkFlowVariables?timeStamp=" + new Date().getTime();
+        var queryString = (params.WorkFlowID ? "&WorkFlowID=" + params.WorkFlowID : "");
+        return WFAPI._send(url, params, queryString);
+    },
+
+    RemoveWorkFlowAction: function (params) {
+        params = params || {};
+
+        var url = WFAPI.ResponseURL + "/RemoveWorkFlowAction?timeStamp=" + new Date().getTime();
+        var queryString = (params.ActionID ? "&ActionID=" + params.ActionID : "");
         return WFAPI._send(url, params, queryString);
     },
 

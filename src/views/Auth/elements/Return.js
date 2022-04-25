@@ -46,7 +46,8 @@ const Return = () => {
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
       isVisible={isVisible(currentRoute)}
-      style={{ marginTop: '2rem' }}>
+      style={{ marginTop: '2rem' }}
+    >
       {/* <TextButton onClick={onReturn}>{RVDic.Return}</TextButton> */}
       <Button type="secondary-o" style={{ width: '100%' }} onClick={onReturn}>
         {RVDic.Return}

@@ -16,13 +16,8 @@ const { default: PasswordValidator } = require('./PasswordValidator');
  * but if the item is null, means inputted pass follows it
  */
 const CheckPassword = (pass, passwordPolicy) => {
-  const {
-    MinLength,
-    UpperLower,
-    NonAlphabetic,
-    Number,
-    NonAlphaNumeric,
-  } = PasswordValidator(pass, passwordPolicy);
+  const { MinLength, UpperLower, NonAlphabetic, Number, NonAlphaNumeric } =
+    PasswordValidator(pass, passwordPolicy);
 
   const length = passwordPolicy.MinLength ? MinLength : true;
   const upper = passwordPolicy.UpperLower ? UpperLower : true;

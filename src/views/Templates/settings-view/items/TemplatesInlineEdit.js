@@ -38,7 +38,8 @@ const TemplateInlineEdit = ({
         <Title
           color={color}
           fontSize={fontSize}
-          onDoubleClick={(e) => setEditMode(!editMode)}>
+          onDoubleClick={(e) => setEditMode(!editMode)}
+        >
           {value}
         </Title>
       )}

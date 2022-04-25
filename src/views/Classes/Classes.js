@@ -22,7 +22,8 @@ const AdvancedSearchView = (props) => {
         nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
         hierarchy={route?.Hierarchy || []}
         isProfile={false}
-        bookmarked={route?.Bookmarked}>
+        bookmarked={route?.Bookmarked}
+      >
         <NodeList
           nodeTypeId={
             (route?.NodeTypes || []).length

@@ -64,7 +64,8 @@ const CustomSwiper = (props) => {
       onSlideChangeTransitionEnd={() => handleSliderTransition(false)}
       scrollbar={!!scrollbar ? { hide: autoHideScrollbar } : false}
       spaceBetween={spaceBetween}
-      freeMode={!!freeMode}>
+      freeMode={!!freeMode}
+    >
       {children &&
         children.map((child, index) => {
           return (

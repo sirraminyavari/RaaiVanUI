@@ -41,7 +41,8 @@ const Toggle = ({
         isClickable={!!clickableLabel}
         onClick={() => clickableLabel && onToggle(!isChecked)}
         className={titleClass}
-        style={titleStyle}>
+        style={titleStyle}
+      >
         {title}
       </Styled.ToggleTitleWrapper>
       <ToggleButton

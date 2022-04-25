@@ -7,7 +7,8 @@ const Panel = ({ panel }) => {
       <Link to={`/configuration/${URL}`}>
         <div
           className="small-12 medium-12 large-12 rv-border-radius-half rv-air-button"
-          style={{ padding: '0.5rem', height: '100%' }}>
+          style={{ padding: '0.5rem', height: '100%' }}
+        >
           <div
             className="small-12 medium-12 large-12"
             style={{
@@ -15,7 +16,8 @@ const Panel = ({ panel }) => {
               flexFlow: 'column',
               placeItems: 'center',
               textAlign: 'center',
-            }}>
+            }}
+          >
             <div id="image" className="small-12 medium-12 large-12">
               <img
                 style={{ width: '6rem', height: '6rem' }}
@@ -29,7 +31,8 @@ const Panel = ({ panel }) => {
                 fontSize: '1.2rem',
                 marginTop: '1rem',
                 textTransform: 'capitalize',
-              }}>
+              }}
+            >
               <span>
                 {window.RVDic.PRVC[Name] || window.RVDic[Name] || Name}
               </span>

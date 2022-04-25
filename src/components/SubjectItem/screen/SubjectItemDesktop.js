@@ -83,7 +83,8 @@ const SubjectItemDesktop = ({
         onMouseLeave={() => setIsHover(false)}
         $isChecked={isChecked}
         onClick={onClick}
-        className="rv-border-freezed">
+        className="rv-border-freezed"
+      >
         <IconContent>
           <SubjectIcon liteMode={liteMode} iconUrl={IconURL} />
           <SubjectDate liteMode={liteMode} date={CreationDate} />

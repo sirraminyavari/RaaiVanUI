@@ -104,11 +104,13 @@ const ForgotPassword = () => {
 
   return (
     <TransitionSwitchWrapper
-      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}>
+      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}
+    >
       {!!verificationCodeObject?.Token && (
         <ForgotPasswordWrapper
           codeMode={true}
-          onCodeCancel={() => setVerificationCodeObject(null)}>
+          onCodeCancel={() => setVerificationCodeObject(null)}
+        >
           <VerificationCodeDialog
             email={email}
             isSending={isSending}
@@ -148,7 +150,8 @@ const ForgotPassword = () => {
               textAlign: 'center',
               ...common_style,
               marginTop: '1.75rem',
-            }}>
+            }}
+          >
             {RVDic?.ChangePassword}
           </Button>
           <Button
@@ -160,7 +163,8 @@ const ForgotPassword = () => {
               ...common_style,
               marginTop: '0.75rem',
             }}
-            onClick={onReturn}>
+            onClick={onReturn}
+          >
             {RVDic.Return}
           </Button>
           <CreateAccountButtons

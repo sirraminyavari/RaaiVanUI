@@ -86,7 +86,8 @@ const AnimatedInput = React.forwardRef(
           ref={labelRef}
           error={error}
           className={inputFocused || value.length > 0 ? 'active ' : ''}
-          inputFocused={inputFocused || value.length > 0}>
+          inputFocused={inputFocused || value.length > 0}
+        >
           <StyledInput
             value={value}
             type={type}
@@ -105,14 +106,16 @@ const AnimatedInput = React.forwardRef(
             }}
             error={error}
             onMouseDown={(e) => e.nativeEvent.stopImmediatePropagation()}
-            {...props}>
+            {...props}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              ref={childrenRef}>
+              ref={childrenRef}
+            >
               {children}
             </div>
           </StyledInput>
@@ -126,7 +129,8 @@ const AnimatedInput = React.forwardRef(
               inputFocused || value.length > 0
                 ? PlaceHolderClassFocused
                 : PlaceHolderClass
-            }`}>
+            }`}
+          >
             {placeHolderState}
           </Placeholder>
         </Label>

@@ -42,7 +42,8 @@ const LazyTreeNode = (props) => {
         <NodeTitle
           selectable={props.selectable}
           selected={props?.isSelected}
-          onClick={() => selectNode(node)}>
+          onClick={() => selectNode(node)}
+        >
           {props.selectable && <PeopleOutlineIcon size={14} />}
           {props.Name}
         </NodeTitle>

@@ -22,72 +22,71 @@ const {
  * See @link https://github.com/reduxjs/redux-thunk for more info.
  * @param {String} email - mobile number or email entered.
  */
-const sendResetPsswordTicketAction = ({ email, password }) => async (
-  dispatch,
-  getState
-) => {
-  const { GlobalUtilities, UsersAPI, RVDic } = window;
-  const reqParams = GlobalUtilities.request_params();
+const sendResetPsswordTicketAction =
+  ({ email, password }) =>
+  async (dispatch, getState) => {
+    const { GlobalUtilities, UsersAPI, RVDic } = window;
+    const reqParams = GlobalUtilities.request_params();
 
-  const captchaToken = await getCaptchaToken();
+    const captchaToken = await getCaptchaToken();
 
-  const setPasswordResetAction = new APIHandler(
-    'UsersAPI',
-    'SetPasswordResetTicket'
-  );
-  // const captchaToken = getState().auth.captchaToken;
+    const setPasswordResetAction = new APIHandler(
+      'UsersAPI',
+      'SetPasswordResetTicket'
+    );
+    // const captchaToken = getState().auth.captchaToken;
 
-  const sendTicket = () => {
-    dispatch(sendResetPasswordTicket());
+    const sendTicket = () => {
+      dispatch(sendResetPasswordTicket());
 
-    try {
-      // Sends reset-password request to server
-      setPasswordResetAction.fetch(
-        {
-          UserName: encode(GlobalUtilities.secure_string(email)),
-          Password: password,
-          ParseResults: true,
-          Captcha: captchaToken,
-          InvitationID: reqParams.get_value('inv'),
-        },
-        (result) => {
-          if (result.ErrorText) {
-            dispatch(sendResetPasswordTicketFailed(result.ErrorText));
-            alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
-          } else if (result.VerificationCode) {
-            alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
-            dispatch(
-              sendResetPasswordTicketSuccessVerification({
-                route: '/auth/verifyingResetPassword',
-                VerificationCode: result,
-              })
-            );
-          } else if (result.Email || result.Phone) {
-            dispatch(
-              sendResetPasswordTicketSuccessAddress({
-                route: '/auth/resetPasswordAddress',
-                address: result,
-              })
-            );
+      try {
+        // Sends reset-password request to server
+        setPasswordResetAction.fetch(
+          {
+            UserName: encode(GlobalUtilities.secure_string(email)),
+            Password: password,
+            ParseResults: true,
+            Captcha: captchaToken,
+            InvitationID: reqParams.get_value('inv'),
+          },
+          (result) => {
+            if (result.ErrorText) {
+              dispatch(sendResetPasswordTicketFailed(result.ErrorText));
+              alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+            } else if (result.VerificationCode) {
+              alert(RVDic.MSG['AnEmailContainingPasswordResetLinkSentToYou']);
+              dispatch(
+                sendResetPasswordTicketSuccessVerification({
+                  route: '/auth/verifyingResetPassword',
+                  VerificationCode: result,
+                })
+              );
+            } else if (result.Email || result.Phone) {
+              dispatch(
+                sendResetPasswordTicketSuccessAddress({
+                  route: '/auth/resetPasswordAddress',
+                  address: result,
+                })
+              );
+            }
           }
-        }
-      );
-    } catch (err) {
-      console.log(err, 'error');
+        );
+      } catch (err) {
+        console.log(err, 'error');
 
-      dispatch(sendResetPasswordTicketFailed(err));
-    }
+        dispatch(sendResetPasswordTicketFailed(err));
+      }
+    };
+
+    !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
+      ? //ask ramin
+        dispatch(setEmailError(`!ایمیل یا شماره موبایل وارد شده صحیح نیست`))
+      : // Checks inputted password, with Password Policy comes from server.
+
+      !CheckPassword(password, getState().auth?.passwordPolicy)
+      ? dispatch(setPasswordError('الگو رمزعبور وارد شده صحیح نیست'))
+      : // Checks inputted name if is Persian with Persian chars.
+
+        sendTicket();
   };
-
-  !(GlobalUtilities.is_valid_email(email) || MobileNumberValidator(email))
-    ? //ask ramin
-      dispatch(setEmailError(`!ایمیل یا شماره موبایل وارد شده صحیح نیست`))
-    : // Checks inputted password, with Password Policy comes from server.
-
-    !CheckPassword(password, getState().auth?.passwordPolicy)
-    ? dispatch(setPasswordError('الگو رمزعبور وارد شده صحیح نیست'))
-    : // Checks inputted name if is Persian with Persian chars.
-
-      sendTicket();
-};
 export default sendResetPsswordTicketAction;

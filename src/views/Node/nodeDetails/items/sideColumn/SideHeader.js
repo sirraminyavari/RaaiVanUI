@@ -88,9 +88,10 @@ const SideHeader = () => {
     return (
       <Styled.SideActionItemWrapper
         onClick={handleRemoveDoc}
-        style={{ color: CV_RED }}>
+        style={{ color: CV_RED }}
+      >
         <TrashIcon size={15} />
-        <div>{RVDic.RemoveN.replace('[n]', 'حذف آیتم')}</div>
+        <div>{RVDic.RemoveN.replace('[n]', 'آیتم')}</div>
       </Styled.SideActionItemWrapper>
     );
   };
@@ -108,7 +109,8 @@ const SideHeader = () => {
         className="side-more-action-tooltip"
         arrowColor="transparent"
         offset={{ right: 30, bottom: 15 }}
-        renderContent={() => <Actions />}>
+        renderContent={() => <Actions />}
+      >
         <Styled.SideHeaderIconWrapper>
           <MoreIcon size={20} color={TCV_DEFAULT} dir="vertical" />
         </Styled.SideHeaderIconWrapper>

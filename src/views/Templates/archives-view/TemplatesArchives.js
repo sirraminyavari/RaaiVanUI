@@ -113,7 +113,8 @@ const TemplatesArchives = () => {
       <Button
         onClick={handleClickBack}
         type="negative-o"
-        classes="templates-archives-return-button">
+        classes="templates-archives-return-button"
+      >
         {RVDic.Return}
       </Button>
       <Styled.TemplatesViewTitle>بایگانی کلاس‌ها</Styled.TemplatesViewTitle>

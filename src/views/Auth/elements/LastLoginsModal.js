@@ -33,7 +33,8 @@ const LastLoginsModal = ({ isVisible }) => {
     <Modal
       onClose={onClose}
       contentWidth={isMediumScreen ? '50%' : '80%'}
-      show={isVisible}>
+      show={isVisible}
+    >
       <Container>
         <Message>{loginMessage && decode(loginMessage)} </Message>
         <Message>{RVDic.LastLogins} </Message>

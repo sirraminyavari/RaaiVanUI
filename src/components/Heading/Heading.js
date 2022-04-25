@@ -23,7 +23,8 @@ const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
         fontSize: values.size,
         fontWeight: values.weight || 'normal',
       })}
-      {...props}>
+      {...props}
+    >
       {props.children}
     </div>
   );

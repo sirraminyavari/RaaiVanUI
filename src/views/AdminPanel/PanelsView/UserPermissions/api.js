@@ -41,10 +41,9 @@ export const getAudience = (
   }).then((results) => {
     results = results || {};
     //this 'confidentialityLevel' won't be used if 'ignoreConfidentialities' parameter is set to 'false'
-    let confidentialityLevels = (
-      results.ConfidentialityLevels || []
-    ).map((conf) =>
-      GlobalUtilities.extend(conf, { Title: decodeBase64(conf.Title) })
+    let confidentialityLevels = (results.ConfidentialityLevels || []).map(
+      (conf) =>
+        GlobalUtilities.extend(conf, { Title: decodeBase64(conf.Title) })
     );
     //permissions state
     let permissions = (sections || [])

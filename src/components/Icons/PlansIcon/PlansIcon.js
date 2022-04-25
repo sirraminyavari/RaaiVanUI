@@ -8,7 +8,8 @@ const PlansIcon = ({ size, ...props }) => {
         width={size || '1em'}
         height={size || '1em'}
         viewBox="0 0 19.555 14.666"
-        {...props}>
+        {...props}
+      >
         <path
           id="Path_568"
           data-name="Path 568"
