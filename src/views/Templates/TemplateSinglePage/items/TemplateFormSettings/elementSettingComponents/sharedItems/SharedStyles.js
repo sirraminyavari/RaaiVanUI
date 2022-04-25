@@ -20,6 +20,7 @@ export const SelectBoxTitle = styled.div`
 export const ToggleRow = styled.div`
   ${FLEX_RCB};
   width: 100%;
+  margin-bottom: 2rem;
 `;
 ToggleRow.displayName = 'ToggleRow';
 
@@ -47,7 +48,7 @@ export const Input = styled.input.attrs({
 })`
   outline: none;
   width: 5rem;
-  height: 2.3rem;
+  height: 2.5rem;
   border-radius: 0.3rem;
   border: 0.0625rem solid #00deb7;
   padding: 0.4rem;

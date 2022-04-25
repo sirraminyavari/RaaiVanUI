@@ -45,7 +45,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, min: 10, max: 20 },
+            Info: { UseSimpleEditor: true, min: '', max: '' },
           },
         },
         {
@@ -57,8 +57,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Text',
             Info: {
-              min: 10,
-              max: 20,
+              min: '',
+              max: '',
             },
           },
         },
@@ -99,8 +99,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Numeric',
             Info: {
-              min: 10,
-              max: 20,
+              min: '',
+              max: '',
               PatternName: 'NONE',
               currency: 'NONE',
               separator: true,
@@ -190,8 +190,8 @@ const formElementList = () => {
             Type: 'Numeric',
             Info: {
               Pattern: 'rating',
-              min: 1,
-              max: 1,
+              min: '',
+              max: '',
               ViewType: 'numeric',
             },
           },
@@ -220,10 +220,10 @@ const formElementList = () => {
           data: {
             Type: 'File',
             Info: {
-              MaxCount: 0,
-              MaxSize: 0,
-              TotalSize: 0,
-              ImageOnly: 0,
+              MaxCount: '',
+              MaxSize: '',
+              TotalSize: '',
+              ImageOnly: false,
               AllowedExtensions: [],
             },
           },

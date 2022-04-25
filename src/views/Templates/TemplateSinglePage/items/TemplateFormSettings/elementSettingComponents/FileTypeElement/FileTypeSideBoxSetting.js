@@ -2,6 +2,8 @@ import * as Styles from '../sharedItems/SharedStyles';
 import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
 import produce from 'immer';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
+import ExtensionSelectInput from '../sharedItems/ExtensionSelectInput';
+
 const FileTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { MaxCount, MaxSize, TotalSize, ImageOnly, AllowedExtensions } =
     current?.data?.Info || {};
@@ -41,6 +43,35 @@ const FileTypeSideBoxSetting = ({ current, setFormObjects }) => {
       })
     );
   };
+
+  const handleAddAllowedExtensionsStateChange = (ext) => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d.find((x) => x.id === current.id);
+        _current.data.Info.AllowedExtensions.push(ext);
+      })
+    );
+  };
+
+  const handleRemoveAllowedExtensionsStateChange = (ext) => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d.find((x) => x.id === current.id);
+        _current.data.Info.AllowedExtensions =
+          _current.data.Info.AllowedExtensions.filter((x) => x !== ext);
+      })
+    );
+  };
+
+  const handleRemoveLastAllowedExtension = () => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d.find((x) => x.id === current.id);
+        _current.data.Info.AllowedExtensions.pop();
+      })
+    );
+  };
+
   return (
     <>
       <Styles.Row>
@@ -79,6 +110,16 @@ const FileTypeSideBoxSetting = ({ current, setFormObjects }) => {
         <Styles.ToggleRowTitle>{'فقط تصویر'}</Styles.ToggleRowTitle>
         <ToggleButton value={ImageOnly} onToggle={handleImageOnlyStateChange} />
       </Styles.ToggleRow>
+
+      <ExtensionSelectInput
+        {...{
+          AllowedExtensions,
+          ImageOnly,
+          handleAddAllowedExtensionsStateChange,
+          handleRemoveAllowedExtensionsStateChange,
+          handleRemoveLastAllowedExtension,
+        }}
+      />
     </>
   );
 };
