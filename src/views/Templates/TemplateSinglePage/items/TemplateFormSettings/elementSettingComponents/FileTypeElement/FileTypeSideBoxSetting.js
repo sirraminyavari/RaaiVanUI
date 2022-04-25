@@ -2,7 +2,7 @@ import * as Styles from '../sharedItems/SharedStyles';
 import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
 import produce from 'immer';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
-import ExtensionSelectInput from '../sharedItems/ExtensionSelectInput';
+import ExtensionSelectInput from './ExtensionSelectInput';
 
 const FileTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { MaxCount, MaxSize, TotalSize, ImageOnly, AllowedExtensions } =

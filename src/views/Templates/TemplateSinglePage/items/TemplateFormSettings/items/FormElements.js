@@ -206,11 +206,27 @@ const formElementList = () => {
           id: getUUID(),
           title: 'آیتم',
           icon: <IoDocumentOutline size={size} />,
+          type: 'Node',
+          data: {
+            ...sharedProps,
+            Type: 'Node',
+            MultiSelect: false,
+          },
         },
         {
           id: getUUID(),
           title: 'کاربر',
           icon: <RiAccountCircleFill size={size} />,
+          type: 'User',
+          data: {
+            ...sharedProps,
+            Type: 'User',
+            Info: {
+              MultiSelect: false,
+              GroupSelect: true,
+              Groups: [],
+            },
+          },
         },
         {
           id: getUUID(),

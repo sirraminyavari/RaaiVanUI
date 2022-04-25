@@ -3,7 +3,7 @@ import produce from 'immer';
 import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
 import ToggleUniqueValueState from '../sharedItems/ToggleUniqueValueState';
 import * as SharedStyle from '../sharedItems/SharedStyles';
-import CustomSelect from '../../../../../../../components/Inputs/CustomSelect/CustomSelect';
+import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 
 const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { type, data } = current || {};

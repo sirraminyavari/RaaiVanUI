@@ -230,7 +230,11 @@ const customizedElements = {
   },
   user: {
     Type: 'User',
-    Info: { MultiSelect: '[boolean]' },
+    Info: {
+      MultiSelect: '[boolean]',
+      GroupSelect: '[boolean]',
+      GroupIDs: '[array of group ids]',
+    },
   },
   file: {
     Type: 'File',

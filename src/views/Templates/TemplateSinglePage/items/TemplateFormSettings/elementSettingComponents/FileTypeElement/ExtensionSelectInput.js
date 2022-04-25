@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import * as Styles from './SharedStyles';
+import * as Styles from '../sharedItems/SharedStyles';
 import { getUUID } from 'helpers/helpers';
 import styled from 'styled-components';
 import { CV_GRAY, CV_RED, TCV_DEFAULT, TCV_WARM } from 'constant/CssVariables';
@@ -74,6 +74,7 @@ const ExtensionInputContainer = styled.div`
   gap: 0.25rem;
   direction: ltr;
   padding: 0.5rem;
+  cursor: text;
 `;
 
 const ExtensionInput = styled.input.attrs({
@@ -81,7 +82,7 @@ const ExtensionInput = styled.input.attrs({
 })`
   outline: none;
   border: none;
-  width: 4rem;
+  width: 3rem;
   &::placeholder {
     direction: ltr;
     text-align: left;

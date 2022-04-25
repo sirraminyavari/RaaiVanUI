@@ -11,6 +11,8 @@ import BinaryTypeSideBoxSetting from './BinaryTypeElement/BinaryTypeSideBoxSetti
 import RatingTypeMainSetting from './NumericalElement/RatingTypeMainSetting';
 import RatingTypeSideBoxSetting from './NumericalElement/RatingTypeSideBoxSetting';
 import FileTypeSideBoxSetting from './FileTypeElement/FileTypeSideBoxSetting';
+import UserTypeMainSetting from './UserTypeElement/UserTypeMainSetting';
+import UserTypeSideBoxSetting from './UserTypeElement/UserTypeSideBoxSetting';
 
 const componentsArray = [
   {
@@ -47,6 +49,15 @@ const componentsArray = [
     key: 'File',
     value: (props) => {
       return FileTypeTemplate(props);
+    },
+  },
+  {
+    key: 'User',
+    value: (props) => {
+      return {
+        main: UserTypeMainSetting({ ...props }),
+        sideBox: UserTypeSideBoxSetting({ ...props }),
+      };
     },
   },
 ];
