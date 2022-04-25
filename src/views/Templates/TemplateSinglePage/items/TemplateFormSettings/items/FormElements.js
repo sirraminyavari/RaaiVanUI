@@ -1,4 +1,4 @@
-import { encodeBase64, getUUID } from 'helpers/helpers';
+import { getUUID } from 'helpers/helpers';
 import TextInputIcon from 'components/Icons/TextInputIcon/TextInputIcon';
 import TextAreaIcon from 'components/Icons/TextAreaIcon/TextAreaIcon';
 import MailIcon from 'components/Icons/MailIcon/MailIcon';
