@@ -135,6 +135,13 @@ export const SET_FIRST_NAME = 'SetFirstName';
 export const SET_LAST_NAME = 'SetLastName';
 
 /**
+ * @description 'SetFirstAndLastName'
+ * @mode API function
+ * @class 'UsersAPI'
+ */
+export const SET_FIRST_AND_LAST_NAME = 'SetFirstAndLastName';
+
+/**
  * @description 'ChangePassword'
  * @mode API function
  * @class 'UsersAPI'
@@ -324,6 +331,21 @@ export const RECYCLE_APPLICATION = 'RecycleApplication';
  * @class 'RVAPI'
  */
 export const CREATE_APPLICATION = 'CreateApplication';
+
+/**
+ * @description 'SetApplicationSize'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SET_APPLICATION_SIZE = 'SetApplicationSize';
+
+/**
+ * @description 'SetApplicationFieldOfExpertise'
+ * @mode API function
+ * @class 'RVAPI'
+ */
+export const SET_APPLICATION_FIELD_OF_EXPERTISE =
+  'SetApplicationFieldOfExpertise';
 
 /**
  * @description 'SelectApplication'
