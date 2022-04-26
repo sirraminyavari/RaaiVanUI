@@ -6,9 +6,12 @@ import MembersPreview from 'components/MembersPreview/MembersPreview';
 import * as Styles from './GroupSelectInputStyles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import Button from 'components/Buttons/Button';
+import { IoChevronBackOutline, IoChevronForward } from 'react-icons/io5';
+import { RiGroup2Fill } from 'react-icons/all';
+import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 
 const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
-  const { RVDic } = window;
+  const { RVDic, RV_RTL } = window;
   const [loading, setLoading] = useState(true);
   const [modalInfo, setModalInfo] = useState({
     show: false,
@@ -38,6 +41,11 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
     }
   };
 
+  const handleItemRemove = (id) => {
+    const removeID = selectedGroups?.filter((x) => x === id);
+    setSelectedGroups(removeID);
+  };
+
   const groupItems = useMemo(
     () =>
       groups.map((x) => {
@@ -65,6 +73,21 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
     [selectedGroups, groups]
   );
 
+  const selectedListItems = useMemo(() => {
+    return selectedGroups.map((x) => {
+      const { Name } = groups?.find((g) => g.NodeID === x) || {};
+      return (
+        <Styles.SelectItemContainer>
+          <RiGroup2Fill size={20} />
+          <Styles.SelectedItemTitle>{Name}</Styles.SelectedItemTitle>
+          <Styles.SelectedItemRemove onClick={() => handleItemRemove(x)}>
+            <CloseIcon size={20} outline={true} />
+          </Styles.SelectedItemRemove>
+        </Styles.SelectItemContainer>
+      );
+    });
+  }, [selectedGroups]);
+
   const openModal = () => {
     setModalInfo({ ...modalInfo, show: true });
   };
@@ -84,9 +107,21 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
     <LogoLoader />
   ) : (
     <>
-      <Styles.UserInputContainer
-        onClick={openModal}
-      ></Styles.UserInputContainer>
+      <Styles.UserInputContainer onClick={openModal}>
+        <Styles.SelectedGroupContainer>
+          {selectedListItems}
+          <Styles.Input placeholder={'گروه کاربری خود را انتخاب کنید'} />
+        </Styles.SelectedGroupContainer>
+        <Styles.ButtonWrapper>
+          <Styles.ArrowButton>
+            {RV_RTL ? (
+              <IoChevronBackOutline size={20} />
+            ) : (
+              <IoChevronForward size={20} />
+            )}
+          </Styles.ArrowButton>
+        </Styles.ButtonWrapper>
+      </Styles.UserInputContainer>
       <Modal {...modalInfo} onClose={closeModal}>
         <Styles.ObjectListWrapper>{groupItems}</Styles.ObjectListWrapper>
         <Styles.ModalActionBar>
