@@ -12,7 +12,8 @@ const QuestionsView = () => {
     <div
       id="qaArea"
       className="small-12 medium-12 large-12 row"
-      style={{ margin: 0, padding: '0vw 10vw' }}></div>
+      style={{ margin: 0, padding: '0vw 10vw' }}
+    ></div>
   );
 };
 

@@ -10,7 +10,7 @@
     "@etchteam/storybook-addon-css-variables-theme": "^1.1.1",
     "@lottiefiles/react-lottie-player": "^3.4.1",
     "@reduxjs/toolkit": "^1.5.0",
-    "@sirraminyavari/rv-block-editor": "^0.3.13-dev",
+    "@sirraminyavari/rv-block-editor": "^0.3.14-dev",
     "@stfy/react-editor.js": "^1.0.3",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
@@ -81,9 +81,11 @@
     "_postbuild": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./post_build.ps1",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,scss,json}\"",
     "docs": "jsdoc -c jsdoc.config.json",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -129,7 +131,7 @@
     "@testing-library/react-hooks": "^5.1.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "husky": "^4.3.8",
+    "husky": "^7.0.0",
     "jsdoc": "^3.6.10",
     "lint-staged": "^12.3.3",
     "prettier": "2.5.1"

@@ -16,7 +16,8 @@ const MapConfig = (props) => {
         margin: '0rem',
         marginBottom: '5rem',
         padding: '0vw 2vw',
-      }}></div>
+      }}
+    ></div>
   );
 };
 

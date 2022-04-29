@@ -52,7 +52,8 @@ const ForgotPassword = () => {
       ref={ref}
       isVisible={isVisible()}
       dimension={ref?.current?.getBoundingClientRect()}
-      style={{ flexGrow: '0.8', marginTop: '1.5rem' }}>
+      style={{ flexGrow: '0.8', marginTop: '1.5rem' }}
+    >
       <Container>
         {/* <TextButton
           style={{ fontSize: '1rem' }}
@@ -66,7 +67,8 @@ const ForgotPassword = () => {
           style={{ fontSize: '1rem' }}
           className="rv-red"
           style={{ width: '100%', textAlign: 'center' }}
-          onClick={onForgot}>
+          onClick={onForgot}
+        >
           {RVDic.ForgotMyPassword}
         </Button>
         <div

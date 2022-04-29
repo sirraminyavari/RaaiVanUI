@@ -171,7 +171,8 @@ const Main = () => {
           {getSidebar()}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
-            isMobile={isMobileScreen}>
+            isMobile={isMobileScreen}
+          >
             <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
               {isTeamSelected ? <Navbar /> : <NavbarInitial />}
             </Suspense>

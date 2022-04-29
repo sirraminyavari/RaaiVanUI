@@ -19,7 +19,8 @@ const CustomEntry = ({ mentions, ...props }) => {
       id={index}
       role={props.role}
       key={index}
-      {...props}>
+      {...props}
+    >
       <Suggestion>
         {mentions[index - 1] &&
         mentions[index - 1].type === props.mention.type ? null : (

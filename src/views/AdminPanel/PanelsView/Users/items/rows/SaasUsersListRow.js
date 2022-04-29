@@ -115,7 +115,8 @@ const SaasUsersListRow = ({
         <UserDeleteButton
           render={userTitle}
           isOwner={ownerId === UserID}
-          onRemoveConfirm={handleRemoveUser}>
+          onRemoveConfirm={handleRemoveUser}
+        >
           {RVDic?.RemoveFromTeam}
         </UserDeleteButton>
       </Styled.ListBodyItem>

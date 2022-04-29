@@ -27,7 +27,8 @@ const TabItem = (props) => {
     <Styled.TabItemContainer
       hasMore={!!hasMore}
       isActive={isActive}
-      onClick={onTabClick}>
+      onClick={onTabClick}
+    >
       {getIcon()}
       <Styled.TabItemTitle isActive={isActive}>
         {decodeBase64(item?.NodeType)}
@@ -48,7 +49,8 @@ const TabItem = (props) => {
           disable={item?.Count < BADGE_LIMIT_COUNT}
           ignoreTip={decodeBase64(item?.NodeType) !== 'همه قالب ها'}
           className="tab-item-tooltip"
-          renderContent={() => item?.Count}>
+          renderContent={() => item?.Count}
+        >
           <Badge
             value={item?.Count}
             limit={BADGE_LIMIT_COUNT}

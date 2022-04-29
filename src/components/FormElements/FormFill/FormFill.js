@@ -1,9 +1,8 @@
-import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
+// import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { decodeBase64 } from 'helpers/helpers';
-import { toBase64 } from 'js-base64';
 import _ from 'lodash';
-import React, { useContext, useEffect, useState } from 'react';
-import MultiLeveltype from './types/multiLevel/MultiLevelType';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+// import MultiLeveltype from './types/multiLevel/MultiLevelType';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
 import TextField from './types/textField/TextField';
@@ -16,11 +15,10 @@ import DateField from './types/date/DateField';
 import FileField from './types/file/FileField';
 import FormField from './types/form/FormField';
 import prepareForm from './types/prepareForm';
-import SeperatorField from './types/seperator/SeperatorField';
+import SeparatorField from './types/separator/separator';
 import saveForm from './types/saveForm';
 import { PropsContext } from 'views/Node/nodeDetails/NodeDetails';
 
-const { RVDic, GlobalUtilities } = window;
 export const EditableContext = React.createContext();
 const FormFill = ({ data, editable, ...props }) => {
   const propsContext = useContext(PropsContext);
@@ -56,47 +54,58 @@ const FormFill = ({ data, editable, ...props }) => {
         await saveFieldChanges(readyToUpdate, elementId);
         break;
       case 'File':
-        await saveFieldChanges(readyToUpdate, elementId);
-        break;
+        const result = await saveFieldChanges(readyToUpdate, elementId);
+        return result;
       default:
         break;
     }
   };
-  const saveFieldChanges = async (readyToUpdate, elementId) => {
-    if (whichElementChanged === elementId) {
-      try {
-        const changedElement = readyToUpdate?.Elements?.find(
-          (x) => x?.ElementID === elementId
-        );
+  const saveFieldChanges = useMemo(
+    () => async (readyToUpdate, elementId) => {
+      console.log('saveFieldChanges', {
+        whichElementChanged,
+        elementId,
+      });
+      // if (whichElementChanged === elementId) {
+      if (true) {
+        try {
+          const changedElement = readyToUpdate?.Elements?.find(
+            (x) => x?.ElementID === elementId
+          );
 
-        const saveResult = await saveForm([changedElement]);
+          const saveResult = await saveForm([changedElement]);
 
-        const freshForm = {
-          ...readyToUpdate,
-          Elements: readyToUpdate?.Elements?.map((x) =>
-            x?.ElementID === elementId ? saveResult[0] : x
-          ),
-        };
-        console.log({ freshForm });
-        setSyncTempFormWithBackEnd(freshForm);
-        setTempForm(freshForm);
-        setWhichElementChanged(null);
+          const freshForm = {
+            ...readyToUpdate,
+            Elements: readyToUpdate?.Elements?.map((x) =>
+              x?.ElementID === elementId ? saveResult[0] : x
+            ),
+          };
+          console.log({ freshForm });
+          setSyncTempFormWithBackEnd(freshForm);
+          setTempForm(freshForm);
+          setWhichElementChanged(null);
+          return true;
 
-        alert('saved', {
-          Timeout: 1000,
-        });
-      } catch (err) {
-        setTempForm(syncTempFormWithBackEnd);
-        console.log('failed');
-        alert('failed', {
-          Timeout: 500,
-        });
+          // alert('saved', {
+          //   Timeout: 1000,
+          // });
+        } catch (err) {
+          setTempForm(syncTempFormWithBackEnd);
+          console.log('failed');
+          return false;
+          alert('failed', {
+            Timeout: 500,
+          });
+        }
       }
-    }
-  };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [whichElementChanged]
+  );
 
-  const formProducer = () => {
-    const { Elements } = tempForm || {};
+  const formProducer = (FormObject) => {
+    const { Elements } = FormObject || {};
     const element =
       _.isArray(Elements) &&
       !_.isEmpty(Elements) &&
@@ -141,7 +150,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={TextValue}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -155,7 +164,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
                 value={TextValue}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -168,7 +177,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 elementId={ElementID}
                 type={Type}
                 value={TextValue}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -182,7 +191,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 decodeInfo={decodeInfo}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -209,7 +218,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 onAnyFieldChanged={onAnyFieldChanged}
                 value={FloatValue}
                 number={true}
-                save={(id) => saveFieldChanges(tempForm, id)}
+                save={(id) => saveFieldChanges(FormObject, id)}
               />
             );
 
@@ -224,7 +233,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 decodeInfo={decodeInfo}
                 propsContext={propsContext}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
@@ -240,12 +249,12 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 decodeInfo={decodeInfo}
                 save={(id) => {
-                  saveFieldChanges(tempForm, id);
+                  saveFieldChanges(FormObject, id);
                 }}
               />
             );
           case 'Separator':
-            return <SeperatorField decodeTitle={decodeTitle} />;
+            return <SeparatorField decodeTitle={decodeTitle} />;
 
           case 'File':
             return (
@@ -282,7 +291,7 @@ const FormFill = ({ data, editable, ...props }) => {
 
   return (
     <EditableContext.Provider value={editable}>
-      <Maintainer>{formProducer()}</Maintainer>
+      <Maintainer>{formProducer(tempForm)}</Maintainer>
     </EditableContext.Provider>
   );
 };

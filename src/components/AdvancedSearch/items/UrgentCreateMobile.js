@@ -78,7 +78,8 @@ const UrgentCreateMobile = ({
   return (
     <UrgentInputMobile
       isVisible={isVisible}
-      className={'rv-border-default rv-border-radius-half'}>
+      className={'rv-border-default rv-border-radius-half'}
+    >
       <div style={{ width: '7.5rem' }}>
         <img
           style={{ height: '4rem', aspectRatio: 1 }}
@@ -115,7 +116,8 @@ const UrgentCreateMobile = ({
             $circleEdges={true}
             style={{ margin: '0 1rem 0 1rem' }}
             loading={isFetching}
-            onClick={() => onCreateUrgent()}>
+            onClick={() => onCreateUrgent()}
+          >
             {RVDic?.Save}
           </Button>
 
@@ -127,7 +129,8 @@ const UrgentCreateMobile = ({
             $circleEdges={true}
             style={{ margin: '0 1rem 0 1rem' }}
             loading={isFetchingContinually}
-            onClick={() => onCreateUrgent(true)}>
+            onClick={() => onCreateUrgent(true)}
+          >
             {RVDic?.Save + ' ' + RVDic?.And + ' ' + RVDic?.Next}
           </Button>
           <Button
@@ -143,7 +146,8 @@ const UrgentCreateMobile = ({
               margin: '0 1rem 0 1rem',
               height: '2rem',
               width: '2rem',
-            }}>
+            }}
+          >
             <CloseIcon style={{ fontSize: '1rem' }} className={'rv-red '} />
           </Button>
         </ButtonContainer>

@@ -38,7 +38,8 @@ const DnDProvider = (props) => {
             style={{ ...droppableStyle }}
             className={droppableClass}
             {...provided.droppableProps}
-            ref={provided.innerRef}>
+            ref={provided.innerRef}
+          >
             {list?.map((item, index) => {
               return (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -50,7 +51,8 @@ const DnDProvider = (props) => {
                       <div
                         {...provided.draggableProps}
                         ref={provided.innerRef}
-                        style={{ ...provided.draggableProps.style }}>
+                        style={{ ...provided.draggableProps.style }}
+                      >
                         {children({ isDragging, dragHandleProps, item })}
                       </div>
                     );

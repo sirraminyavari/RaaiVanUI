@@ -90,7 +90,8 @@ const ContinueWithGoogle = ({ ...props }) => {
           onClick={renderProps.onClick}
           style={{ width: '100%' }}
           {...props}
-          disabled={renderProps.disabled}>
+          disabled={renderProps.disabled}
+        >
           <GoogleIcon style={{ fontSize: '1rem' }} />
           <Label>{RVDic.SignInWithGoogle}</Label>
         </Button>

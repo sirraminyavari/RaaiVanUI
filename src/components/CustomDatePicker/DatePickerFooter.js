@@ -65,7 +65,8 @@ const DatePickerFooter = (props) => {
               style={{
                 ...buttonsCommonStyles,
                 backgroundColor: !isFooterActive && 'transparent',
-              }}>
+              }}
+            >
               {footer.title}
             </Button>
           );

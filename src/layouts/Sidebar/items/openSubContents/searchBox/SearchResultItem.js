@@ -31,7 +31,8 @@ const SearchResultItem = ({ node, searchText }) => {
       className="BorderRadius4"
       as={Link}
       to={getURL('Classes', { NodeTypeID: NodeTypeID })}
-      key={NodeTypeID}>
+      key={NodeTypeID}
+    >
       <Styled.MenuTitle>
         <Styled.MenuItemImage src={IconURL} alt="menu-icon" />
         <Styled.HighlightedTitle>

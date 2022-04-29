@@ -69,7 +69,8 @@ const AnimatedTextArea = ({
       {label && (
         <Styled.TextAreaLabel
           rtl={rtl}
-          onClick={() => textareaRef?.current?.focus()}>
+          onClick={() => textareaRef?.current?.focus()}
+        >
           {label}
         </Styled.TextAreaLabel>
       )}

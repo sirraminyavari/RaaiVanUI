@@ -123,7 +123,8 @@ const MonitoringView = ({ ...props }) => {
           !hasMore && (
             <div style={{ textAlign: 'center' }}> No More data... </div>
           )
-        }>
+        }
+      >
         <MyTable
           columns={columns}
           data={monitoring.Applications.slice(0, lowerBoundary)}
@@ -163,14 +164,16 @@ const MonitoringView = ({ ...props }) => {
                 border: '1px solid var(--rv-gray-color-dark)',
                 margin: '0.5rem .5rem',
                 width: '130px',
-              }}>
+              }}
+            >
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   // marginInlineEnd: '30px'
-                }}>
+                }}
+              >
                 <label
                   className="rv-dark-gray"
                   style={{
@@ -178,7 +181,8 @@ const MonitoringView = ({ ...props }) => {
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
                     marginInlineEnd: '.8rem',
-                  }}>
+                  }}
+                >
                   {RVDic.TotalNCount.replace('[n]', RVDic.Users)}
                 </label>
                 <label style={{ fontWeight: 'bold' }}>
@@ -195,13 +199,15 @@ const MonitoringView = ({ ...props }) => {
                 padding: '.7rem',
                 margin: '0.5rem 0rem',
                 width: '130px',
-              }}>
+              }}
+            >
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                }}>
+                }}
+              >
                 <label
                   className="rv-dark-gray"
                   style={{
@@ -209,7 +215,8 @@ const MonitoringView = ({ ...props }) => {
                     fontSize: '.66rem',
                     fontWeight: 'lighter',
                     marginInlineEnd: '.8rem',
-                  }}>
+                  }}
+                >
                   {RVDic.TotalNCount.replace('[n]', RVDic.Teams)}
                 </label>
                 <label style={{ fontWeight: 'bold' }}>
@@ -244,7 +251,8 @@ const MonitoringView = ({ ...props }) => {
               borderRadius: '.5rem',
               display: 'flex',
               alignItems: 'center',
-            }}>
+            }}
+          >
             {' '}
             <div
               space=".3rem"
@@ -252,20 +260,23 @@ const MonitoringView = ({ ...props }) => {
                 display: 'flex',
                 // justifyContent: 'space-between',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <span
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   marginInlineEnd: '.3rem',
-                }}>
+                }}
+              >
                 <RefreshIcon size={17} />
               </span>
               <span
                 style={{
                   fontSize: '.7rem',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 {RVDic?.Update}
               </span>
             </div>

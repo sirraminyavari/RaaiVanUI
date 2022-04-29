@@ -4,7 +4,8 @@ const DragIcon = (props) => {
       xmlns="http://www.w3.org/2000/svg"
       width={props?.size || '20'}
       height="13.443"
-      viewBox="0 0 8.066 13.443">
+      viewBox="0 0 8.066 13.443"
+    >
       <g transform="translate(-13.5 -10.5)">
         <path
           d="M16.189,11.844A1.344,1.344,0,1,1,14.844,10.5,1.344,1.344,0,0,1,16.189,11.844Z"

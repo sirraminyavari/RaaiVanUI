@@ -16,7 +16,8 @@ const Breadcrumb = (props) => {
           <BreadcrumbItem
             key={id || GlobalUtilities.random_str(10)}
             as={Link}
-            to={linkTo}>
+            to={linkTo}
+          >
             <Heading type="h4">{title}</Heading>
             {self.length - 1 !== index && (
               <CaretIcon

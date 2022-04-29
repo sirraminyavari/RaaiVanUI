@@ -81,7 +81,8 @@ const UrgentCreateDesktop = ({
     <UrgentInput
       liteMode={itemSelectionMode}
       isVisible={isVisible}
-      className={'rv-border-default rv-border-radius-half'}>
+      className={'rv-border-default rv-border-radius-half'}
+    >
       {nodeType?.IconURL && (
         <div style={{ width: '7.5rem' }}>
           <img
@@ -125,7 +126,8 @@ const UrgentCreateDesktop = ({
           }}
           loading={isFetching}
           onClick={() => onCreateUrgent()}
-          type={'primary'}>
+          type={'primary'}
+        >
           {RVDic?.Save}
         </Button>
 
@@ -143,17 +145,20 @@ const UrgentCreateDesktop = ({
           }}
           loading={isFetchingContinually}
           onClick={() => onCreateUrgent(true)}
-          type={'primary-o'}>
+          type={'primary-o'}
+        >
           {RVDic?.Save + ' ' + RVDic?.And + ' ' + RVDic?.Next}
         </Button>
         <UrgentButtonCancel
           style={cancelButton}
           $circleEdges={true}
-          type={'primary-o'}>
+          type={'primary-o'}
+        >
           <UrgentIconCancel
             onClick={onDismiss}
             $circleEdges={true}
-            style={urgentCancelIcon}></UrgentIconCancel>
+            style={urgentCancelIcon}
+          ></UrgentIconCancel>
         </UrgentButtonCancel>
       </ButtonContainer>
     </UrgentInput>

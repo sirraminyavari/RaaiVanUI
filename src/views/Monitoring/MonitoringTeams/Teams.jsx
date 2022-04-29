@@ -27,14 +27,8 @@ import { ShadowButton } from './datepicker.style';
 
 const Teams = ({ ...props }) => {
   const params = useParams();
-  const {
-    data,
-    isLoading,
-    dateFrom,
-    setDateFrom,
-    dateTo,
-    setDateTo,
-  } = useTeamMonitoring();
+  const { data, isLoading, dateFrom, setDateFrom, dateTo, setDateTo } =
+    useTeamMonitoring();
 
   const { RVDic } = useWindowContext();
   const [lowerBoundary, setLowerBoundary] = useState(5);
@@ -135,7 +129,8 @@ const Teams = ({ ...props }) => {
                     calendarPickerClicked || date
                       ? 'rv-border-distant rv-default'
                       : 'rv-border-white rv-distant'
-                  }>
+                  }
+                >
                   {date ? (
                     <FilledCalendarIcon size={20} className={'rv-default'} />
                   ) : (
@@ -180,7 +175,8 @@ const Teams = ({ ...props }) => {
               borderRadius: '.5rem',
               display: 'flex',
               alignItems: 'center',
-            }}>
+            }}
+          >
             {' '}
             <Space
               space=".3rem"
@@ -188,14 +184,16 @@ const Teams = ({ ...props }) => {
                 display: 'flex',
                 // justifyContent: 'space-between',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <span
                 style={{
                   // fontSize: '.7rem',
                   display: 'flex',
                   // justifyContent: 'space-between',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 <RefreshIcon size={17} />
               </span>
               <span
@@ -204,7 +202,8 @@ const Teams = ({ ...props }) => {
                   // display: 'flex',
                   // justifyContent: 'space-between',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 {RVDic?.Update}
               </span>
             </Space>
@@ -220,13 +219,15 @@ const Teams = ({ ...props }) => {
               padding: '.7rem .2rem',
               margin: '0.5rem',
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -234,7 +235,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 {/* اعضای تیم */}
                 {RVDic?.Members}
               </label>
@@ -254,13 +256,15 @@ const Teams = ({ ...props }) => {
               margin: '0.5rem',
 
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -268,7 +272,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 آیتم های ثبت شده {RVDic?.CreatedNodes}
                 {/* {data && data.Application.AttachmentSizeMB} */}
               </label>
@@ -288,13 +293,15 @@ const Teams = ({ ...props }) => {
               margin: '0.5rem',
 
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -302,7 +309,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 تمپلیت های مورد استفاده {RVDic?.UsedTemplates}
               </label>
               <label style={{ fontWeight: 'bold' }}>
@@ -321,13 +329,15 @@ const Teams = ({ ...props }) => {
               margin: '0.5rem',
 
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -335,7 +345,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 بازدید آیتم های ثبت شده {RVDic?.NodeVisits}
               </label>
               <label style={{ fontWeight: 'bold' }}>
@@ -354,13 +365,15 @@ const Teams = ({ ...props }) => {
               margin: '0.5rem',
 
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -368,7 +381,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 حجم مورد استفاده
                 {RVDic?.UsedStorage}
               </label>
@@ -388,13 +402,15 @@ const Teams = ({ ...props }) => {
               padding: '.7rem .2rem',
               margin: '0.5rem',
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -402,7 +418,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 {/* حجم مورد استفاده */}
                 {RVDic?.UsedTemplates}
               </label>
@@ -422,13 +439,15 @@ const Teams = ({ ...props }) => {
               margin: '0.5rem',
 
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -436,7 +455,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 {/* حجم مورد استفاده */}
                 {RVDic?.Searches}
               </label>
@@ -455,13 +475,15 @@ const Teams = ({ ...props }) => {
               padding: '.7rem .2rem',
               margin: '0.5rem',
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -469,7 +491,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 {/* حجم مورد استفاده */}
                 {RVDic?.Login}
               </label>
@@ -488,13 +511,15 @@ const Teams = ({ ...props }) => {
               padding: '.7rem .2rem',
               margin: '0.5rem',
               width: '130px',
-            }}>
+            }}
+          >
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 // justifyContent: 'space-between',
-              }}>
+              }}
+            >
               <label
                 className="rv-dark-gray"
                 style={{
@@ -502,7 +527,8 @@ const Teams = ({ ...props }) => {
                   fontSize: '.6rem',
                   fontWeight: 'lighter',
                   marginInlineEnd: '.5rem',
-                }}>
+                }}
+              >
                 {/* حجم مورد استفاده */}
                 {RVDic?.Attachments}
               </label>

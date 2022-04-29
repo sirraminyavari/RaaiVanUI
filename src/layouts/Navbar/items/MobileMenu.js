@@ -41,7 +41,8 @@ const NavMenus = () => {
     <PopupMenu
       arrowClass="no-arrow"
       menuStyle={`border: 0; margin: 0.8rem 0.2rem;`}
-      trigger="click">
+      trigger="click"
+    >
       <div>
         <MenuIcon size={30} className={C_WHITE} style={{ cursor: 'pointer' }} />
       </div>
@@ -63,7 +64,8 @@ const NavMenus = () => {
               {title}
               {hasBadge && (
                 <Styled.BadgeWrapper
-                  style={{ top: '0.9rem', [RV_Float]: '2.8rem' }}>
+                  style={{ top: '0.9rem', [RV_Float]: '2.8rem' }}
+                >
                   <Badge
                     style={{
                       fontSize: '0.7rem',

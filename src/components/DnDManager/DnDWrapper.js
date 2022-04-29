@@ -14,12 +14,14 @@ const DragAndDropWrapper = ({ onDragEnd, chunks, direction, render }) => {
         <Droppable
           key={droppableId}
           droppableId={droppableId}
-          direction={direction}>
+          direction={direction}
+        >
           {(provided, _) => (
             <div
               ref={provided.innerRef}
               style={direction === 'horizontal' ? horizontalStyle : undefined}
-              {...provided.droppableProps}>
+              {...provided.droppableProps}
+            >
               {items.map((item, index) => (
                 <DnDItem
                   key={hash(item)}

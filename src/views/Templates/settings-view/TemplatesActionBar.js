@@ -16,13 +16,8 @@ const TemplatesActionBar = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const [searchText, setSearchText] = useState('');
-  const {
-    setModal,
-    modalTypes,
-    setTree,
-    setSearchResult,
-    setIsSearching,
-  } = useContext(TemplatesViewContext);
+  const { setModal, modalTypes, setTree, setSearchResult, setIsSearching } =
+    useContext(TemplatesViewContext);
 
   const handleAddCategory = () => {
     setModal({
@@ -100,7 +95,8 @@ const TemplatesActionBar = () => {
             data-type="archive"
             classes="archives-class-button"
             type="negative-o"
-            onClick={handleGoToArchives}>
+            onClick={handleGoToArchives}
+          >
             {RVDic.Archive}
           </Button>
         </Styled.ButtonWrapper>

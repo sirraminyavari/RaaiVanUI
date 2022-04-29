@@ -151,7 +151,8 @@ const AutoSuggestInput = (props) => {
       onInputValueChange={setSearchTerm}
       onChange={handleChange}
       onSelect={handleSelection}
-      itemToString={handleToString}>
+      itemToString={handleToString}
+    >
       {({
         getRootProps,
         getInputProps,
@@ -163,18 +164,21 @@ const AutoSuggestInput = (props) => {
       }) => (
         <Styled.AutoSuggestContainer
           {...rest}
-          className="ColdBackgroundColor BorderRadius4">
+          className="ColdBackgroundColor BorderRadius4"
+        >
           <Styled.InputElementWrapper
             {...getRootProps({
               refKey: 'inputwrapperRef',
-            })}>
+            })}
+          >
             <Input
               {...getInputProps({
                 placeholder: placeholder || RVDic.Search,
                 className: `BorderRadius4 ${
                   !!items.length && isOpen && 'show-results'
                 }`,
-              })}>
+              })}
+            >
               <DotsIcon
                 size={20}
                 style={{ cursor: 'pointer', padding: '0.1rem' }}
@@ -196,7 +200,8 @@ const AutoSuggestInput = (props) => {
               })}
               {...getRootProps({ refKey: 'ulRef' })}
               items={items}
-              hasButton={!!withButtons}>
+              hasButton={!!withButtons}
+            >
               {!!withButtons && (
                 <Styled.ButtonsContainer className="ColdBackgroundColor">
                   <Button type="primary">do sth</Button>
@@ -227,7 +232,8 @@ const AutoSuggestInput = (props) => {
                           // }`,
                           index,
                           item,
-                        })}>
+                        })}
+                      >
                         {/* {searchTerm.length > 2 && hasError && (
                           <Styled.Error className="Circle">!</Styled.Error>
                         )} */}

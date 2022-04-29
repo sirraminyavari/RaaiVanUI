@@ -43,7 +43,8 @@ const ProgressBar = (props) => {
         <Styled.ProgressBar>
           <Styled.Bar
             progress={progress}
-            color={barColor}>{` % ${progress}`}</Styled.Bar>
+            color={barColor}
+          >{` % ${progress}`}</Styled.Bar>
         </Styled.ProgressBar>
       </Styled.ProgressBarWrapper>
     </Styled.ProgressBarContainer>

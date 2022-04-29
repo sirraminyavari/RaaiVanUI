@@ -57,13 +57,15 @@ const TemplateFields = () => {
           </ScrollBarProvider>
           <Button
             onClick={() => onSelect(currentNode)}
-            classes="template-select-button">
+            classes="template-select-button"
+          >
             {SelectN.replace('[n]', Template)}
           </Button>
           <Button
             onClick={onModalClose}
             type="negative-o"
-            classes="template-back-button">
+            classes="template-back-button"
+          >
             {Return}
           </Button>
         </>

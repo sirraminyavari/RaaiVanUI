@@ -30,7 +30,8 @@ const ActionsCell = (props) => {
           <PopupMenu
             trigger="click"
             align={RV_Float}
-            menuClass="table-action-menu">
+            menuClass="table-action-menu"
+          >
             <div>
               <DragIcon />
             </div>

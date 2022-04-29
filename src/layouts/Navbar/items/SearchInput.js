@@ -44,7 +44,8 @@ const SearchInput = (props) => {
         onChange={handleInputChange}
         onKeyPress={handleInputEnter}
         type="search"
-        {...props}>
+        {...props}
+      >
         <Styled.SearchWrapper as={Link} to={searchPath}>
           <SearchIcon
             size={22}

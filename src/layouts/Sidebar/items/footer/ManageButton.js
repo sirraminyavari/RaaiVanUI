@@ -53,7 +53,8 @@ const ManageButton = () => {
   return (
     <Styled.FooterButton
       className={`${isSidebarOpen && 'WarmBorder'}  BorderRadius4 `}
-      onClick={handleManageButton}>
+      onClick={handleManageButton}
+    >
       <Tooltip
         tipId="sidebar-footer-icon"
         offset={{ [RV_Float]: -16 }}
@@ -64,7 +65,8 @@ const ManageButton = () => {
           <span style={{ textTransform: 'capitalize' }}>
             {RVDic.TemplateManagement}
           </span>
-        )}>
+        )}
+      >
         <Styled.FooterIconWrapper>
           <EditIcon size={20} />
         </Styled.FooterIconWrapper>

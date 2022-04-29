@@ -54,7 +54,8 @@ const NewTeam = ({ WorkspaceID }) => {
       dir={RV_Float}
       revDir={RV_RevFloat}
       onClick={handleAddTeam}
-      style={{ cursor: 'pointer' }}>
+      style={{ cursor: 'pointer' }}
+    >
       <CreateModal
         isOpen={isModalShown}
         onInputChange={handleInputChange}

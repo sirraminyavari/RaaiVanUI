@@ -50,11 +50,13 @@ const TemplateListItem = ({ itemProps }) => {
   return (
     <Styled.TemplateItemWrapper
       indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
-      ref={provided.innerRef}>
+      ref={provided.innerRef}
+    >
       {item?.isCategory ? (
         <Styled.TemplateIconWrapper
           onClick={handleClickIcon}
-          isExpanded={item?.isExpanded}>
+          isExpanded={item?.isExpanded}
+        >
           {getIcon(item)}
         </Styled.TemplateIconWrapper>
       ) : (
@@ -66,7 +68,8 @@ const TemplateListItem = ({ itemProps }) => {
       )}
       <Styled.TemplateItemTitle
         onClick={handleClickTitle}
-        isSelected={isSelected}>
+        isSelected={isSelected}
+      >
         {item?.data?.title}
       </Styled.TemplateItemTitle>
     </Styled.TemplateItemWrapper>

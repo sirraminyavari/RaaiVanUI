@@ -10,7 +10,8 @@ const HelpMeView = (props) => {
     <div
       id="helpArea"
       className="small-12 medium-12 large-12 row"
-      style={{ margin: '0rem', padding: '1rem 4vw' }}></div>
+      style={{ margin: '0rem', padding: '1rem 4vw' }}
+    ></div>
   );
 };
 

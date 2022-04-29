@@ -3,9 +3,8 @@
  */
 
 import APIHandler from 'apiHelper/APIHandler';
-import React, { useContext, useEffect, useState } from 'react';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import NodeView from '../Node-view';
+import React, { useEffect, useState } from 'react';
+// import NodeView from '../Node-view';
 import Collector from './items/Collector';
 import styled from 'styled-components';
 import WelcomeLayout from 'layouts/WelcomeLayout';

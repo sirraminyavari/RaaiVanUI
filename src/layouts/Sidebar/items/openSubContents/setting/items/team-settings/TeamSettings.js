@@ -43,7 +43,8 @@ const TeamSettings = () => {
             onClick={handleClickPanel(panel?.URL)}
             key={key}
             as={NavLink}
-            to={`/configuration/${panel?.URL}`}>
+            to={`/configuration/${panel?.URL}`}
+          >
             <Styled.PanelImage
               src={`${process.env.PUBLIC_URL}/images/icons/${panel?.Icon}`}
               alt="panel-icon"

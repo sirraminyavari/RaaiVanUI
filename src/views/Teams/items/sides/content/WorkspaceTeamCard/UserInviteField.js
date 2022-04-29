@@ -59,7 +59,8 @@ const UserInviteField = (props) => {
         gridTemplateColumns: '3fr 2fr',
         gap: '1rem',
         margin: '1.5rem 0',
-      }}>
+      }}
+    >
       <AnimatedInput
         value={email}
         onChange={handleChangeEmail}

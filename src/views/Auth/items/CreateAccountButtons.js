@@ -22,7 +22,8 @@ const CreateAccountButtons = ({
             setLoading(true);
             onCreateAccountClick();
           }}
-          loading={loading}>
+          loading={loading}
+        >
           {label}
         </Button>
       </Hiddener>

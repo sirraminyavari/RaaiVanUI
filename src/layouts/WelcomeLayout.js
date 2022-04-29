@@ -30,6 +30,7 @@ import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
  * @param {boolean} [props.withScrollbar=false] - Fixates the layout height and adds a scrollbar to the wrapper of the layout
  * @param {boolean} [props.singleColumn=false] - Force the layout to be a single column
  * (use case: set responsive view based on DimensionHelper() function)
+ * @param {boolean} [props.noFullHeight=false] - Sets the height to auto
  *
  * @return {JSX.Element} JSX Layout component
  */
@@ -37,6 +38,7 @@ function WelcomeLayout({
   children,
   noOutline,
   noPadding,
+  noFullHeight,
   singleColumn,
   Wrapper,
   withScrollbar,
@@ -56,6 +58,7 @@ function WelcomeLayout({
       {...restProps}
       Outline={!noOutline}
       Padding={!noPadding}
+      FullHeight={!noFullHeight}
       className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT, className)}
       isMobile={singleColumn || isMobileScreen}
       style={{ overflow: 'inherit !important' }}

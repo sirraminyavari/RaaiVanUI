@@ -3,11 +3,8 @@
  */
 import APIHandler from 'apiHelper/APIHandler';
 import { loginSlice } from '../../reducers/loginReducer';
-const {
-  reSendVerifyCode,
-  reSendVerifyCodeSuccess,
-  reSendVerifyCodeFailed,
-} = loginSlice.actions;
+const { reSendVerifyCode, reSendVerifyCodeSuccess, reSendVerifyCodeFailed } =
+  loginSlice.actions;
 
 const { RVAPI, RVDic } = window;
 

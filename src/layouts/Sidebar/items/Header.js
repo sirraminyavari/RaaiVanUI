@@ -76,7 +76,8 @@ const SidebarHeader = () => {
       {isSidebarOpen && (
         <Link
           to={HOME_PATH}
-          style={{ pointerEvents: isIntroOnboarding ? 'none' : 'revert' }}>
+          style={{ pointerEvents: isIntroOnboarding ? 'none' : 'revert' }}
+        >
           <img
             src={isSaas ? (RV_RTL ? Logo_Fa : Logo_En) : RVGlobal.LogoURL}
             width={isSaas ? '120' : '60'}

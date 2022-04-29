@@ -43,7 +43,8 @@ const DeleteConfirmModal = ({
       onConfirm={onConfirm}
       confirmText={confirmText}
       cancelText={cancelText}
-      {...props}>
+      {...props}
+    >
       <DeleteConfirmMessage
         title={messageTitle}
         Icon={messageIcon}

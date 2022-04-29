@@ -19,15 +19,8 @@ import InfoMSG from './InfoMessage';
  * @param {PropType} props
  */
 const InfoToast = (props) => {
-  const {
-    type,
-    autoClose,
-    position,
-    message,
-    onClose,
-    closeButton,
-    toastId,
-  } = props;
+  const { type, autoClose, position, message, onClose, closeButton, toastId } =
+    props;
 
   const InfoMessage = <InfoMSG message={message} />;
 

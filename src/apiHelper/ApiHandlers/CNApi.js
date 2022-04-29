@@ -163,7 +163,6 @@ export const saveMembers = (NodeID, UserIDs) => {
 };
 
 /**
-<<<<<<< HEAD
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.
@@ -244,7 +243,7 @@ export const getTemplates = ({ TagID } = {}) => {
 
 /**
  * @description Gets a template object
- * @param {String} NodeTypeID the id of the template
+ * @param {String} prop.NodeTypeID the id of the template
  * @returns Promise.
  */
 export const getTemplateJSON = ({ NodeTypeID } = {}) => {

@@ -8,7 +8,8 @@ const CreationDateLabel = ({ CreationDate_Local, CreationDate } = {}) => {
           style={{
             color: CV_GRAY,
             fontSize: '0.6rem',
-          }}>
+          }}
+        >
           {CreationDate_Local}
         </div>
       )}

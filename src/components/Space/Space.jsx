@@ -17,7 +17,8 @@ const Space = ({ children, space = '.5rem', style }) => {
             style={{
               display: 'inline',
               [margin]: count - 1 !== i ? space : '0',
-            }}>
+            }}
+          >
             {element}
           </span>
         );
