@@ -122,6 +122,8 @@ const Block = ({ nodeId, lang, dir }) => {
               convertFromRaw(
                 convertLegacyHtmlToEditorState(legacyContent, {
                   colors: { textColors, highlightColors },
+                  getMentionLink: ({ id }) =>
+                    `https://google.com/search?q=${id}`,
                 })
               )
             )

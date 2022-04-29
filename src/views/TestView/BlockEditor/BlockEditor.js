@@ -33,7 +33,7 @@ function BE({
           content: convertToRaw(editorState.getCurrentContent()),
           removeBlocks: changes.removedBlocks.map((b) => b.key),
         });
-      }, 1000);
+      }, 7000);
       // if ( changes.updatedBlocks.length ) {
       //   handleSaveBlocks ({  })
       // }
