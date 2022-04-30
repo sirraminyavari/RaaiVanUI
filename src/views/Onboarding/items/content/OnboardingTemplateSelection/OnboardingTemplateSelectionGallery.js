@@ -1,3 +1,4 @@
+import { decodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import OnboardingTemplateSelectionGalleryItem from './OnboardingTemplateSelectionGalleryItem';
@@ -8,7 +9,7 @@ const OnboardingTemplateSelectionGallery = ({
   setActiveTag,
   activateTemplate,
 }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
 
   console.log({
     templates,
@@ -16,11 +17,13 @@ const OnboardingTemplateSelectionGallery = ({
     activateTemplate,
   });
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateGallery = 'گالری تمپلیت‌ها';
-  const RVDicOnboardingTemplateSuggestionGallery = 'پیشنهاد کلیک‌مایند';
-
+  const RVDicOnboardingTemplateGallery = RVDic.TemplatesGallery;
+  const RVDicOnboardingTemplateSuggestionGallery =
+    RVDic.SuggestedByRaaiVan.replace(
+      '[RaaiVan]',
+      decodeBase64(RVGlobal.SystemName)
+    );
   return (
     <>
       <Styles.OnboardingTemplateSelectionGalleryContainer>
@@ -33,7 +36,7 @@ const OnboardingTemplateSelectionGallery = ({
           {RVDicOnboardingTemplateSuggestionGallery}
         </Styles.OnboardingTemplateSelectionGallerySuggestion>
         {templates?.Tags?.map((Tag, idx) => {
-          const { Name, NodeID, NodeTypeID, Templates } = Tag;
+          const { Name, NodeID, Templates } = Tag;
           alert('Name');
           return (
             <OnboardingTemplateSelectionGalleryItem

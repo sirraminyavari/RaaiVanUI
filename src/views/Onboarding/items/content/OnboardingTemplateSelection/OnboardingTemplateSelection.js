@@ -34,6 +34,7 @@ const OnboardingTemplateSelectionContent = () => {
         setActivateTemplate(parsedTemplates.AllTemplates[0]);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const gotoTemplateSetup = () => history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
@@ -43,11 +44,10 @@ const OnboardingTemplateSelectionContent = () => {
     return selectedTemplateKeys.length;
   }, [selectedTemplates]);
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
   const RVDicSaveAndNext = RVDic.SaveAndNext;
-  const RVDicSelectedTemplates = 'تمپلیت انتخاب شده';
-  const RVDicUseDefaultTemplates = `!از تمپلیت‌های پیش‌فرض استفاده کن`;
+  const RVDicSelectedTemplates = RVDic.SelectedN.replace('[n]', RVDic.Template);
+  const RVDicUseDefaultTemplates = RVDic.UseDefaultTemplates;
   return (
     <Styles.OnboardingTemplateSelectionWrapper>
       <OnboardingTemplateSelectionGallery

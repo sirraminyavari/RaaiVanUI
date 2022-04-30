@@ -6,7 +6,6 @@ const OnboardingTeamCreationSetNameBanner = () => {
   // const { RVDic } = useWindow();
   const { teamState } = useOnboardingTeamContent();
 
-  // TODO add missing RVDic locales
   // ! RVDic i18n localization
   // const RVDicِTeamAvatarPlaceholder = `برای آپلود لوگوی تیم اینجا کلیک کنید`;
 

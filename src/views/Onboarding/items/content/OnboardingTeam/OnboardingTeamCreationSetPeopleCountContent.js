@@ -18,12 +18,20 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
     teamState: { peopleCount },
   } = useOnboardingTeamContent();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicِYourTeamHeadCount = `تعداد افراد تیم شما`;
-  const RVDicLessThan10People = `کمتر از 10 نفر`;
-  const RVDicBetween11To20People = `11 تا 20 نفر`;
-  const RVDicMoreThan20People = `بیشتر از 20 نفر`;
+  const RVDicِYourTeamHeadCount = RVDic.TeamSize;
+  const RVDicLessThan10People = RVDic.LessThanN.replace(
+    '[n]',
+    RVDic.NPeople.replace('[n]', 10)
+  );
+  const RVDicBetween11To20People = RVDic.NToMPeople.replace('[n]', 11).replace(
+    '[m]',
+    20
+  );
+  const RVDicMoreThan20People = RVDic.MoreThanN.replace(
+    '[n]',
+    RVDic.NPeople.replace('[n]', 20)
+  );
 
   const setOnboardingTeamPeopleCount = (peopleCount) => () => {
     dispatchTeamPage({

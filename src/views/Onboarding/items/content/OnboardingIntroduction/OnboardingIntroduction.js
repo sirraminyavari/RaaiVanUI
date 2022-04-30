@@ -13,9 +13,8 @@ const OnboardingIntroductionContent = () => {
   const { RVDic, RVGlobal } = useWindow();
   const history = useHistory();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicHelloWorld = 'ســـلام';
+  const RVDicHelloWorld = RVDic.Hello;
   const RVDicWelcomeToCliqMind = RVDic.WelcomeToRaaiVan.replace(
     '[RaaiVan]',
     decodeBase64(RVGlobal.SystemName)
@@ -25,6 +24,7 @@ const OnboardingIntroductionContent = () => {
     setTimeout(() => setIntroductionStep('title'), 100);
     setTimeout(() => setIntroductionStep('title desc'), 2500);
     setTimeout(() => history.push(ONBOARDING_USER_INFO_PATH), 5000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

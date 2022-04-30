@@ -21,11 +21,10 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     teamState: { workField },
   } = useOnboardingTeamContent();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicِTeamWorkFieldHeadCount = `حوزه فعالیت تیم شما`;
-  const RVDicOthersField = `سایر`;
-  const RVDicOthersInputField = `نام حوزه کاری خود را بنویسید`;
+  const RVDicِTeamWorkFieldHeadCount = RVDic.FieldOfActivity;
+  const RVDicOthersField = RVDic.Other;
+  const RVDicOthersInputField = RVDic.Checks.EnterYourFieldOfActivity;
 
   const setOnboardingTeamWorkField = (workField) => () => {
     dispatchTeamPage({

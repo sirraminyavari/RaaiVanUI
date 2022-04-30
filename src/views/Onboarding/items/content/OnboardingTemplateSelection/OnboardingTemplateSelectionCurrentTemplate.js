@@ -37,10 +37,12 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
     else return false;
   };
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingSelectTemplate = 'انتخاب تمپلیت';
-  const RVDicOnboardingDeselectTemplate = 'لغو انتخاب';
+  const RVDicOnboardingSelectTemplate = RVDic.SelectN.replace(
+    '[n]',
+    RVDic.Template
+  );
+  const RVDicOnboardingDeselectTemplate = RVDic.Unselect;
 
   return (
     <>

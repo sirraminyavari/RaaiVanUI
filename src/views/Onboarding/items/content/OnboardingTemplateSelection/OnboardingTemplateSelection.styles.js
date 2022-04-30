@@ -7,6 +7,7 @@ import {
   CV_DISTANT,
   CV_WHITE,
   TCV_DEFAULT,
+  TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 import { BO_RADIUS_HALF } from 'constant/constants';
 import { FLEX_RSS, FLEX_RCS, FLEX_RCC } from 'constant/StyledCommonCss';
@@ -153,11 +154,11 @@ OnboardingTemplateSelectionCarouselInnerContainer.displayName =
 
 export const OnboardingTemplateSelectionGalleryContainer = styled.div`
   width: 17.5rem;
-  background-color: #2b7be40d;
+  // background-color: #2b7be40d;
+  background-color: ${TCV_VERY_TRANSPARENT};
   font-size: 1rem;
   padding-block: 0.7rem;
   flex-shrink: 0;
-  //TODO change color to color-constant
 `;
 OnboardingTemplateSelectionGalleryContainer.displayName =
   'OnboardingTemplateSelectionGalleryContainer';

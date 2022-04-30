@@ -11,9 +11,8 @@ const OnboardingTeamCreationSetNameContent = () => {
   const { dispatch: dispatchTeam, teamState } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicِYourTeamName = `نام تیم شما`;
+  const RVDicِYourTeamName = RVDic.TeamName;
   const RVDicِTeamName = RVDic.TeamName;
 
   const setTeamName = (teamName) => {
