@@ -5,6 +5,7 @@ import OnboardingTemplateSelectionGallery from './OnboardingTemplateSelectionGal
 import OnboardingTemplateSelectionCurrentTemplate from './OnboardingTemplateSelectionCurrentTemplate';
 import OnboardingTemplateSelectionNode from './OnboardingTemplateSelectionNode';
 import OnboardingTemplateSelectionCarousel from './OnboardingTemplateSelectionCarousel';
+import OnboardingTemplateSelectionSelectedModal from './OnboardingTemplateSelectionSelectedModal';
 import Button from 'components/Buttons/Button';
 import { getTemplates } from 'apiHelper/ApiHandlers/CNApi';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
@@ -17,6 +18,7 @@ const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
   const [activateTemplate, setActivateTemplate] = useState();
   const [activeTag, setActiveTag] = useState();
+  const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
   const {
@@ -83,14 +85,26 @@ const OnboardingTemplateSelectionContent = () => {
             {RVDicSaveAndNext}
           </Button>
           {selectedTemplateCount ? (
-            <Styles.OnboardingTemplateSelectionTemplateCount>
-              {selectedTemplateCount} {RVDicSelectedTemplates}
-            </Styles.OnboardingTemplateSelectionTemplateCount>
+            <>
+              <Styles.OnboardingTemplateSelectionTemplateCount
+                onClick={() => setIsSelectedModalShown(true)}
+              >
+                {selectedTemplateCount} {RVDicSelectedTemplates}
+              </Styles.OnboardingTemplateSelectionTemplateCount>
+            </>
           ) : (
             <Button style={{ paddingInline: '1rem' }} type="primary-o">
               {RVDicUseDefaultTemplates}
             </Button>
           )}
+          <OnboardingTemplateSelectionSelectedModal
+            appTitle={`${selectedTemplateCount} ${RVDicSelectedTemplates}`}
+            isModalShown={isSelectedModalShown}
+            setIsModalShown={setIsSelectedModalShown}
+            templates={
+              activeTag ? activeTag.Templates : templates?.AllTemplates
+            }
+          />
         </Styles.OnboardingTemplateSelectionButtonWrapper>
       </div>
     </Styles.OnboardingTemplateSelectionWrapper>

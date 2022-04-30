@@ -250,3 +250,29 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
 `;
 OnboardingTemplateSelectionNodeContainer.displayName =
   'OnboardingTemplateSelectionNodeContainer';
+
+export const OnboardingTemplateSelectionSelectedModalContainer = styled.div`
+  display: grid;
+  gridtemplatecolumns: 1fr;
+  gap: 0.2rem;
+  margin-block-start: 1rem;
+`;
+OnboardingTemplateSelectionSelectedModalContainer.displayName =
+  'OnboardingTemplateSelectionSelectedModalContainer';
+
+export const OnboardingTemplateSelectionSelectedModalTemplateWrapper = styled.div`
+  margin-block: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+`;
+OnboardingTemplateSelectionSelectedModalTemplateWrapper.displayName =
+  'OnboardingTemplateSelectionSelectedModalTemplateWrapper';
+
+export const OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper = styled.div`
+  & > img {
+    width: 3rem;
+    margin-inline-end: 0.5rem;
+  }
+`;
+OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper.displayName =
+  'OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper';

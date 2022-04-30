@@ -5,15 +5,12 @@ import PanelButton from 'components/Buttons/PanelButton';
 import Button from 'components/Buttons/Button';
 
 const OnboardingTemplateSelectionNode = ({ children }) => {
-  const { RVDic } = useWindow();
-  const history = useHistory();
-
   return (
-    <>
+    <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
         {children}
       </Styles.OnboardingTemplateSelectionNodeContainer>
-    </>
+    </div>
   );
 };
 
