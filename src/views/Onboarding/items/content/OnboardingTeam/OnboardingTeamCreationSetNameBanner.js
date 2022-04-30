@@ -1,20 +1,20 @@
 // import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+// import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 
 const OnboardingTeamCreationSetNameBanner = () => {
   // const { RVDic } = useWindow();
-  const { teamState } = useOnboardingTeamContent();
+  // const { teamState } = useOnboardingTeamContent();
 
   // ! RVDic i18n localization
-  // const RVDicِTeamAvatarPlaceholder = `برای آپلود لوگوی تیم اینجا کلیک کنید`;
+  // const RVDicِTeamAvatarPlaceholder = RVDic.ClickToUploadTheTeamLogo;
 
   return (
     <>
       <Styles.OnboardingTeamImageBannerWrapper>
         <div>
           <Styles.OnboardingTeamAvatarPlaceholder>
-            {teamState.teamName}
+            {/* {teamState.teamName} */}
           </Styles.OnboardingTeamAvatarPlaceholder>
         </div>
       </Styles.OnboardingTeamImageBannerWrapper>

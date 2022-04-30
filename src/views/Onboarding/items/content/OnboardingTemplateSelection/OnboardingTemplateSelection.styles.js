@@ -10,7 +10,12 @@ import {
   TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 import { BO_RADIUS_HALF } from 'constant/constants';
-import { FLEX_RSS, FLEX_RCS, FLEX_RCC } from 'constant/StyledCommonCss';
+import {
+  FLEX_RSS,
+  FLEX_RCS,
+  FLEX_RCC,
+  FLEX_CSC,
+} from 'constant/StyledCommonCss';
 
 export const OnboardingTemplateSelectionWrapper = styled.div`
   padding-block-end: 2rem;
@@ -24,11 +29,11 @@ OnboardingTemplateSelectionWrapper.displayName =
   'OnboardingTemplateSelectionWrapper';
 
 export const OnboardingTemplateSelectionTemplatePanel = styled.div`
-  ${FLEX_RSS}
+  ${({ mobile }) => (mobile ? FLEX_CSC : FLEX_RSS)}
   align-items: stretch;
 
   & > div {
-    width: 100%;
+    width: ${({ mobile }) => (mobile ? '100%' : '95%')};
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
@@ -233,7 +238,7 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
   position: relative;
 
   &:after {
-    content: '';
+    // content: '';
     position: absolute;
     top: 0;
     right: 0;
@@ -253,7 +258,7 @@ OnboardingTemplateSelectionNodeContainer.displayName =
 
 export const OnboardingTemplateSelectionSelectedModalContainer = styled.div`
   display: grid;
-  gridtemplatecolumns: 1fr;
+  grid-template-columns: 1fr;
   gap: 0.2rem;
   margin-block-start: 1rem;
 `;

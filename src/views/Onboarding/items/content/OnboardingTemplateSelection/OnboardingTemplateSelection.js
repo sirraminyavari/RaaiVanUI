@@ -12,7 +12,7 @@ import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
-import NodeDetails from 'views/Node/nodeDetails/NodeDetails';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
@@ -21,11 +21,13 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
+  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const {
     disableContinue,
     selectedTemplates,
     teamState: { workField },
   } = useOnboardingTeamContent();
+
   useEffect(() => {
     const templateTagID =
       workField.fieldID !== 'OTHERS' ? workField?.fieldID : undefined;
@@ -58,18 +60,13 @@ const OnboardingTemplateSelectionContent = () => {
         activateTemplate={setActivateTemplate}
       />
       <div>
-        <Styles.OnboardingTemplateSelectionTemplatePanel>
+        <Styles.OnboardingTemplateSelectionTemplatePanel
+          mobile={isTabletOrMobile}
+        >
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          <OnboardingTemplateSelectionNode>
-            <NodeDetails
-              route={
-                '690e0506-dcf1-4d44-9478-6c0c14bb5f55' ||
-                activateTemplate?.NodeID
-              }
-            />
-          </OnboardingTemplateSelectionNode>
+          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={activeTag ? activeTag.Templates : templates?.AllTemplates}
