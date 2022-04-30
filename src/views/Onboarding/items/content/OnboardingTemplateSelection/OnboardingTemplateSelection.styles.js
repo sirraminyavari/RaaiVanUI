@@ -7,9 +7,15 @@ import {
   CV_DISTANT,
   CV_WHITE,
   TCV_DEFAULT,
+  TCV_VERY_TRANSPARENT,
 } from 'constant/CssVariables';
 import { BO_RADIUS_HALF } from 'constant/constants';
-import { FLEX_RSS, FLEX_RCS, FLEX_RCC } from 'constant/StyledCommonCss';
+import {
+  FLEX_RSS,
+  FLEX_RCS,
+  FLEX_RCC,
+  FLEX_CSC,
+} from 'constant/StyledCommonCss';
 
 export const OnboardingTemplateSelectionWrapper = styled.div`
   padding-block-end: 2rem;
@@ -23,11 +29,11 @@ OnboardingTemplateSelectionWrapper.displayName =
   'OnboardingTemplateSelectionWrapper';
 
 export const OnboardingTemplateSelectionTemplatePanel = styled.div`
-  ${FLEX_RSS}
+  ${({ mobile }) => (mobile ? FLEX_CSC : FLEX_RSS)}
   align-items: stretch;
 
   & > div {
-    width: 100%;
+    width: ${({ mobile }) => (mobile ? '100%' : '95%')};
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
@@ -153,11 +159,11 @@ OnboardingTemplateSelectionCarouselInnerContainer.displayName =
 
 export const OnboardingTemplateSelectionGalleryContainer = styled.div`
   width: 17.5rem;
-  background-color: #2b7be40d;
+  // background-color: #2b7be40d;
+  background-color: ${TCV_VERY_TRANSPARENT};
   font-size: 1rem;
   padding-block: 0.7rem;
   flex-shrink: 0;
-  //TODO change color to color-constant
 `;
 OnboardingTemplateSelectionGalleryContainer.displayName =
   'OnboardingTemplateSelectionGalleryContainer';
@@ -232,7 +238,7 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
   position: relative;
 
   &:after {
-    content: '';
+    // content: '';
     position: absolute;
     top: 0;
     right: 0;
@@ -249,3 +255,29 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
 `;
 OnboardingTemplateSelectionNodeContainer.displayName =
   'OnboardingTemplateSelectionNodeContainer';
+
+export const OnboardingTemplateSelectionSelectedModalContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.2rem;
+  margin-block-start: 1rem;
+`;
+OnboardingTemplateSelectionSelectedModalContainer.displayName =
+  'OnboardingTemplateSelectionSelectedModalContainer';
+
+export const OnboardingTemplateSelectionSelectedModalTemplateWrapper = styled.div`
+  margin-block: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+`;
+OnboardingTemplateSelectionSelectedModalTemplateWrapper.displayName =
+  'OnboardingTemplateSelectionSelectedModalTemplateWrapper';
+
+export const OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper = styled.div`
+  & > img {
+    width: 3rem;
+    margin-inline-end: 0.5rem;
+  }
+`;
+OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper.displayName =
+  'OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper';

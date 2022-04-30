@@ -4,9 +4,10 @@ import * as Styles from './OnboardingTemplate.styles';
 import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
 import Button from 'components/Buttons/Button';
 import { ONBOARDING_TEMPLATE_SELECTION_PATH } from 'views/Onboarding/items/others/constants';
+import { decodeBase64 } from 'helpers/helpers';
 
 const OnboardingTemplateContent = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const history = useHistory();
 
   const goToTemplateSelectionView = () =>
@@ -19,12 +20,16 @@ const OnboardingTemplateContent = () => {
     },
   ];
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateTitle = 'تمپلیت چیست؟';
-  const RVDicOnboardingTemplateUnderstood = 'متوجه شدم !';
-  const RVDicOnboardingTemplateDescription =
-    'در هر کاری داشتن یک تمپلیت یا الگو، کار را ساده‌تر می‌کند؛ یکی از قابلیت‌های مهم کلیک‌مایند تمپلیت‌ها هستند. هر مفهومی که در تیم یا کسب‌وکار شما با اهمیت است یا درمورد آن اطلاعات به دردبخور دارید می‌تواند یک تمپلیت اختصاصی داشته باشد؛ به طور مثال مکاتبات، گزارش‌ها، پروژه‌ها، رقبا، تجهیزات، محصولات و سایر موارد مشابه.';
+  const RVDicOnboardingTemplateTitle = RVDic.WhatIsN.replace(
+    '[n]',
+    RVDic.Template
+  );
+  const RVDicOnboardingTemplateUnderstood = RVDic.GotIt;
+  const RVDicOnboardingTemplateDescription = RVDic._HelpTemplate.replace(
+    '[RaaiVan]',
+    decodeBase64(RVGlobal.SystemName)
+  );
   return (
     <Styles.OnboardingTemplateWrapper>
       <Styles.OnboardingTemplateVideoContainer>

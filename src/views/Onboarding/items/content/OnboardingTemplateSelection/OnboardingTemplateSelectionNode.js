@@ -1,19 +1,48 @@
-import { useHistory } from 'react-router-dom';
-import useWindow from 'hooks/useWindowContext';
+import { useEffect, useState } from 'react';
+import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-import PanelButton from 'components/Buttons/PanelButton';
-import Button from 'components/Buttons/Button';
+import {
+  getFormElements,
+  getFormInstance,
+  initializeOwnerFormInstance,
+} from 'apiHelper/ApiHandlers/FGAPI';
+import APIHandler from 'apiHelper/APIHandler';
 
-const OnboardingTemplateSelectionNode = ({ children }) => {
-  const { RVDic } = useWindow();
-  const history = useHistory();
+const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
+//formFill
+//1 - getFormElements => ownerID=NodeTypeID
+
+// 2- getOwnerForm(ownerID=NodeTypeID) =>  getFormElements(formID)
+
+const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
+  const [templateNodeElements, setTemplateNodeElements] = useState();
+
+  const getOwnerForm = async (NodeTypeID) => {
+    const getFormFormOwner = new Promise((res) => {
+      ownerForm?.fetch({ OwnerID: NodeTypeID }, (result) => res(result));
+    });
+    return getFormFormOwner;
+  };
+
+  useEffect(() => {
+    (async () => {
+      const ownerFormRes = await getOwnerForm(activeTemplate?.NodeTypeID);
+      const formElements = await getFormElements({
+        OwnerID: activeTemplate?.NodeTypeID,
+      });
+      setTemplateNodeElements(formElements);
+      console.warn({ ownerFormRes, formElements, activeTemplate });
+    })();
+  }, [activeTemplate?.NodeTypeID]);
 
   return (
-    <>
+    <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
-        {children}
+        {templateNodeElements && (
+          <FormFill data={templateNodeElements} editable />
+        )}
       </Styles.OnboardingTemplateSelectionNodeContainer>
-    </>
+    </div>
   );
 };
 

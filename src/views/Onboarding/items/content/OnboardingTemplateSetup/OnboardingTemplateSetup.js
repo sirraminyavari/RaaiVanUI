@@ -7,12 +7,13 @@ import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { decodeBase64 } from 'helpers/helpers';
 const {
   actions: { toggleSidebarMenu },
 } = sidebarMenuSlice;
 
 const OnboardingTemplateSetupContent = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const { selectedTemplates, applicationID } = useOnboardingTeamContent();
@@ -41,11 +42,13 @@ const OnboardingTemplateSetupContent = () => {
 
   const goToApplication = () => history.push('/');
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateSetupUnderstood = '!آرررره! بزن بریم';
+  const RVDicOnboardingTemplateSetupUnderstood = RVDic.YesssLetsGo;
   const RVDicOnboardingTemplateSetupTitle =
-    'آماده‌ای بریم توی محیط کلیک‌مایند؟';
+    RVDic.AreYouReadyToStartYourJourneyOnRaaiVan.replace(
+      '[RaaiVan]',
+      decodeBase64(RVGlobal.SystemName)
+    );
   return (
     <Styles.OnboardingTemplateSetupWrapper>
       <img src={CliqMindLogo} alt="" />

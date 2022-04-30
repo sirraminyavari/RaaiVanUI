@@ -94,6 +94,7 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
             await onboardingTeamPeopleCountSave({
               dispatch,
               ApplicationID: prevState.applicationID,
+              teamName: teamState.teamName,
               Size: teamState.peopleCount,
             });
             resolve();
