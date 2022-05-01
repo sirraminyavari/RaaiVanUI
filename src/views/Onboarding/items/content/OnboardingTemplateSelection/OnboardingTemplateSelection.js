@@ -21,7 +21,7 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
-  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
+  const { isTabletOrMobile, isMobile } = DimensionHelper();
   const {
     disableContinue,
     selectedTemplates,
@@ -61,12 +61,15 @@ const OnboardingTemplateSelectionContent = () => {
       />
       <div>
         <Styles.OnboardingTemplateSelectionTemplatePanel
-          mobile={isTabletOrMobile}
-        >
+          mobile={isTabletOrMobile}>
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
+          {!isMobile && (
+            <OnboardingTemplateSelectionNode
+              activeTemplate={activateTemplate}
+            />
+          )}
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={activeTag ? activeTag.Templates : templates?.AllTemplates}
@@ -77,15 +80,13 @@ const OnboardingTemplateSelectionContent = () => {
           <Button
             style={{ paddingInline: '3rem' }}
             disable={disableContinue}
-            onClick={gotoTemplateSetup}
-          >
+            onClick={gotoTemplateSetup}>
             {RVDicSaveAndNext}
           </Button>
           {selectedTemplateCount ? (
             <>
               <Styles.OnboardingTemplateSelectionTemplateCount
-                onClick={() => setIsSelectedModalShown(true)}
-              >
+                onClick={() => setIsSelectedModalShown(true)}>
                 {selectedTemplateCount} {RVDicSelectedTemplates}
               </Styles.OnboardingTemplateSelectionTemplateCount>
             </>

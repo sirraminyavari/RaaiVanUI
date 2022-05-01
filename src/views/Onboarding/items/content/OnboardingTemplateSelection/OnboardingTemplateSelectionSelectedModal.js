@@ -25,6 +25,7 @@ const OnboardingTemplateSelectionSelectedModal = ({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_REMOVE_TEMPLATE,
       stateKey: template.NodeTypeID,
     });
+    if (Object.keys(selectedTemplates).length === 1) setIsModalShown(false);
   };
 
   return (
@@ -32,8 +33,7 @@ const OnboardingTemplateSelectionSelectedModal = ({
       show={isModalShown}
       onClose={() => setIsModalShown(false)}
       contentWidth="clamp(300px,90%,700px)"
-      title={appTitle}
-    >
+      title={appTitle}>
       <Styled.OnboardingTemplateSelectionSelectedModalContainer>
         {(templates || []).map((template, idx) => {
           const { IconURL, TypeName, NodeTypeID } = template;
@@ -48,8 +48,7 @@ const OnboardingTemplateSelectionSelectedModal = ({
                   <Button
                     style={{}}
                     type="negative-o"
-                    onClick={() => deselectTemplateHandler(template)}
-                  >
+                    onClick={() => deselectTemplateHandler(template)}>
                     {RVDicOnboardingDeselectTemplate}
                   </Button>
                 </Styled.OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper>

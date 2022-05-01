@@ -31,9 +31,10 @@ OnboardingTemplateSelectionWrapper.displayName =
 export const OnboardingTemplateSelectionTemplatePanel = styled.div`
   ${({ mobile }) => (mobile ? FLEX_CSC : FLEX_RSS)}
   align-items: stretch;
+  gap: 1rem;
 
   & > div {
-    width: ${({ mobile }) => (mobile ? '100%' : '95%')};
+    width: 100%;
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
