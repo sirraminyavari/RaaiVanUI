@@ -61,7 +61,8 @@ const OnboardingTemplateSelectionContent = () => {
       />
       <div>
         <Styles.OnboardingTemplateSelectionTemplatePanel
-          mobile={isTabletOrMobile}>
+          mobile={isTabletOrMobile}
+        >
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
@@ -80,13 +81,15 @@ const OnboardingTemplateSelectionContent = () => {
           <Button
             style={{ paddingInline: '3rem' }}
             disable={disableContinue}
-            onClick={gotoTemplateSetup}>
+            onClick={gotoTemplateSetup}
+          >
             {RVDicSaveAndNext}
           </Button>
           {selectedTemplateCount ? (
             <>
               <Styles.OnboardingTemplateSelectionTemplateCount
-                onClick={() => setIsSelectedModalShown(true)}>
+                onClick={() => setIsSelectedModalShown(true)}
+              >
                 {selectedTemplateCount} {RVDicSelectedTemplates}
               </Styles.OnboardingTemplateSelectionTemplateCount>
             </>

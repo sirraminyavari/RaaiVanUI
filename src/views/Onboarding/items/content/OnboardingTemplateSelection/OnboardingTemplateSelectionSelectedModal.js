@@ -33,7 +33,8 @@ const OnboardingTemplateSelectionSelectedModal = ({
       show={isModalShown}
       onClose={() => setIsModalShown(false)}
       contentWidth="clamp(300px,90%,700px)"
-      title={appTitle}>
+      title={appTitle}
+    >
       <Styled.OnboardingTemplateSelectionSelectedModalContainer>
         {(templates || []).map((template, idx) => {
           const { IconURL, TypeName, NodeTypeID } = template;
@@ -48,7 +49,8 @@ const OnboardingTemplateSelectionSelectedModal = ({
                   <Button
                     style={{}}
                     type="negative-o"
-                    onClick={() => deselectTemplateHandler(template)}>
+                    onClick={() => deselectTemplateHandler(template)}
+                  >
                     {RVDicOnboardingDeselectTemplate}
                   </Button>
                 </Styled.OnboardingTemplateSelectionSelectedModalTemplateTitleWrapper>

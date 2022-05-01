@@ -52,7 +52,7 @@ const OnboardingTemplateSetupContent = () => {
   return (
     <Styles.OnboardingTemplateSetupWrapper>
       <img src={CliqMindLogo} alt="" />
-      <Styles.OnboardingTemplateSetupTitle type="H1">
+      <Styles.OnboardingTemplateSetupTitle>
         {RVDicOnboardingTemplateSetupTitle}
       </Styles.OnboardingTemplateSetupTitle>
 

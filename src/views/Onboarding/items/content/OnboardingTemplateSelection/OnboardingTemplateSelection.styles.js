@@ -64,6 +64,11 @@ export const OnboardingTemplateSelectionTemplateCount = styled.div`
   justify-content: center;
   align-items: center;
   color: ${CV_DISTANT};
+  cursor: pointer;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
@@ -173,6 +178,10 @@ export const OnboardingTemplateSelectionGalleryTitle = styled.div`
   color: ${CV_DISTANT};
   padding-inline: 1.4rem;
   padding-block: 0.7rem;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 OnboardingTemplateSelectionGalleryTitle.displayName =
   'OnboardingTemplateSelectionGalleryTitle';

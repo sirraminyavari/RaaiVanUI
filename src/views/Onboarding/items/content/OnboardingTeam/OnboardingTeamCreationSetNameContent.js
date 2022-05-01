@@ -1,6 +1,5 @@
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import Heading from 'components/Heading/Heading';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   useOnboardingTeamContent,
@@ -26,7 +25,9 @@ const OnboardingTeamCreationSetNameContent = () => {
   return (
     <>
       <div>
-        <Heading type="h2">{RVDicِYourTeamName}</Heading>
+        <Styles.OnboardingTeamTitleWrapper>
+          {RVDicِYourTeamName}
+        </Styles.OnboardingTeamTitleWrapper>
         <Styles.OnboardingTeamInputWrapper>
           <AnimatedInput
             value={teamState.teamName}

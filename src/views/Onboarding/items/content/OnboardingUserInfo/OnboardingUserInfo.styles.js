@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  OnboardingCenterizeContent,
-  OnboardingPageDescriptionText,
-} from 'views/Onboarding/items/Onboarding.styles';
+import { OnboardingPageDescriptionText } from 'views/Onboarding/items/Onboarding.styles';
 
 export const OnboardingUserInfoDescriptionWrapper =
   OnboardingPageDescriptionText;

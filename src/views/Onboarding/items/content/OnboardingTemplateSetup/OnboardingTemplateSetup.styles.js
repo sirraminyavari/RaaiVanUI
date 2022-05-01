@@ -18,6 +18,10 @@ export const OnboardingTemplateSetupTitle = styled(Heading).attrs({
   text-align: center;
   margin-block-start: 2rem;
   margin-block-end: 4rem;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 OnboardingTemplateSetupTitle.displayName = 'OnboardingTemplateSetupTitle';
 
