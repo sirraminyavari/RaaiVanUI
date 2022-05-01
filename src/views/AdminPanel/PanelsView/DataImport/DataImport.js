@@ -12,7 +12,7 @@ const DataImport = () => {
     <div
       id="dataimport"
       className="small-12 medium-12 large-12"
-      style={{ marginBottom: '5rem', padding: '0vw 6vw' }}
+      style={{ marginBottom: '5rem', padding: '0vw 6vw', paddingTop: '1rem' }}
     ></div>
   );
 };

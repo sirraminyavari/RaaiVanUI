@@ -8,7 +8,7 @@ const Polls = () => {
     <div
       id="pollsArea"
       className="small-12 medium-12 large-12 row align-center"
-      style={{ margin: '0rem', padding: '0vw 6vw' }}
+      style={{ margin: '0rem', padding: '0vw 6vw', paddingTop: '1rem' }}
     ></div>
   );
 };
