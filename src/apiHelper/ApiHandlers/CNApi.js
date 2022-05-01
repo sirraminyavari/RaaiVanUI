@@ -293,6 +293,8 @@ export const activateTemplate = ({ Template } = {}) => {
  * @param {string} NodeTypeID -The template object to be activated.
  * @returns Promise.
  */
- export const getTemplatePreview = ({ NodeTypeID } = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, "GetTemplatePreview"), { NodeTypeID });
+export const getTemplatePreview = ({ NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetTemplatePreview'), {
+    NodeTypeID,
+  });
 };
