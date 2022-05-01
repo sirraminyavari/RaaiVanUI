@@ -17,7 +17,10 @@ const AdvancedSearchView = (props) => {
     if (onboardingName === 'intro') dispatch(toggleActivation());
   }, [props.route]);
 
-  const nodeType = !!route?.NodeTypes?.length && !!route.NodeTypes[0].NodeTypeID ? route.NodeTypes[0] : null;
+  const nodeType =
+    !!route?.NodeTypes?.length && !!route.NodeTypes[0].NodeTypeID
+      ? route.NodeTypes[0]
+      : null;
 
   return (
     <Fragment>

@@ -82,7 +82,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const isHomeView = location.pathname === HOME_PATH;
   const isUserView = location.pathname === USER_PATH;
   const isTeamsView = location.pathname === TEAMS_PATH;
-  const isClassesView = location.pathname.toLowerCase().startsWith(CLASSES_PATH.toLowerCase());
+  const isClassesView = location.pathname
+    .toLowerCase()
+    .startsWith(CLASSES_PATH.toLowerCase());
 
   //check if free switching between previous and current routes is allowed
   const curPathMatch = props?.match?.path;
@@ -90,7 +92,8 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   const notSwitchableView = isClassesView;
 
-  const isSwitchAllowed = !notSwitchableView &&
+  const isSwitchAllowed =
+    !notSwitchableView &&
     (!hasDynamicParam ||
       curPathMatch !== lastLocation.pathMatch ||
       location.pathname === lastLocation.location) &&
