@@ -32,7 +32,7 @@ const OnboardingTemplateSelectionSelectedModal = ({
     <Modal
       show={isModalShown}
       onClose={() => setIsModalShown(false)}
-      contentWidth="clamp(300px,90%,700px)"
+      contentWidth="clamp(300px,90%,30rem)"
       title={appTitle}
     >
       <Styled.OnboardingTemplateSelectionSelectedModalContainer>
