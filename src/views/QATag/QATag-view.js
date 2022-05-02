@@ -14,7 +14,7 @@ const QATagView = (props) => {
     <div
       id="contentArea"
       className="small-12 medium-12 large-12 row align-center"
-      style={{ margin: '0rem', padding: '0vw 10vw' }}
+      style={{ margin: '0rem', padding: '0vw 10vw', paddingTop: '1rem' }}
     ></div>
   );
 };

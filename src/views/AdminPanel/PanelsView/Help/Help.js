@@ -8,7 +8,7 @@ const Help = () => {
     <div
       id="helpArea"
       className="small-12 medium-12 large-12 row"
-      style={{ margin: '0rem', padding: '1rem 6vw' }}
+      style={{ margin: '0rem', padding: '1rem 6vw', paddingTop: '1rem' }}
     ></div>
   );
 };

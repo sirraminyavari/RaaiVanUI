@@ -1592,5 +1592,13 @@
         var url = CNAPI.ResponseURL + "/ActivateTemplate?timeStamp=" + new Date().getTime();
         var queryString = (params.Template ? "&Template=" + params.Template : "");
         return CNAPI._send(url, params, queryString);
+    },
+
+    GetTemplatePreview: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/GetTemplatePreview?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeTypeID ? "&NodeTypeID=" + params.NodeTypeID : "");
+        return CNAPI._send(url, params, queryString);
     }
 };

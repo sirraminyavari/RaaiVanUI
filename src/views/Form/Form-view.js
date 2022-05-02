@@ -14,6 +14,7 @@ const FormView = (props) => {
     <div
       id="formArea"
       className="small-12 medium-12 large-12 row align-center rv-form"
+      style={{ paddingTop: '1rem' }}
     ></div>
   );
 };
