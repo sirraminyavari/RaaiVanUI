@@ -8,11 +8,15 @@ const OnboardingTemplateSelectionGalleryItem = ({
   Templates,
   onClick,
   activateTemplate,
+  active,
   ...restProps
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <details open={isOpen}>
+    <Styles.OnboardingTemplateSelectionGalleryItemDetails
+      open={isOpen}
+      active={active}
+    >
       <Styles.OnboardingTemplateSelectionGalleryItemSummery
         isOpen={isOpen}
         {...restProps}
@@ -26,7 +30,7 @@ const OnboardingTemplateSelectionGalleryItem = ({
         {decodeBase64(Name)}
       </Styles.OnboardingTemplateSelectionGalleryItemSummery>
       {Templates.map((template) => {
-        const { TypeName, NodeID, NodeTypeID, IconURL } = template;
+        const { TypeName, NodeID, IconURL } = template;
         return (
           <Styles.OnboardingTemplateSelectionGalleryItemSubItem
             key={NodeID}
@@ -37,7 +41,7 @@ const OnboardingTemplateSelectionGalleryItem = ({
           </Styles.OnboardingTemplateSelectionGalleryItemSubItem>
         );
       })}
-    </details>
+    </Styles.OnboardingTemplateSelectionGalleryItemDetails>
   );
 };
 

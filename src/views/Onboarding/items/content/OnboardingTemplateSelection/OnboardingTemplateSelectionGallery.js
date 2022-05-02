@@ -4,6 +4,7 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import OnboardingTemplateSelectionGalleryItem from './OnboardingTemplateSelectionGalleryItem';
 import { useState } from 'react';
+import { BO_RADIUS_HALF } from 'constant/constants';
 
 // TODO extract Dropdown as a dedicated component
 const OnboardingTemplateSelectionGallery = ({
@@ -14,6 +15,7 @@ const OnboardingTemplateSelectionGallery = ({
 }) => {
   const { RVDic, RVGlobal } = useWindow();
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [activeID, setActiveID] = useState();
 
   //! RVDic i18n localization
   const RVDicOnboardingTemplateGallery = RVDic.TemplatesGallery;
@@ -25,7 +27,9 @@ const OnboardingTemplateSelectionGallery = ({
 
   return (
     <Styles.OnboardingTemplateSelectionGalleryContainer mobile={mobile}>
-      <Styles.OnboardingTemplateSelectionGalleryContainerBackground>
+      <Styles.OnboardingTemplateSelectionGalleryContainerBackground
+        className={mobile && BO_RADIUS_HALF}
+      >
         <Styles.OnboardingTemplateSelectionGalleryTitle>
           {mobile && (
             <>
@@ -39,10 +43,15 @@ const OnboardingTemplateSelectionGallery = ({
           {RVDicOnboardingTemplateGallery}
         </Styles.OnboardingTemplateSelectionGalleryTitle>
         <Styles.OnboardingTemplateSelectionGalleryContentWrapper
-          isCollapsed={mobile && isCollapsed}
+          isCollapsed={isCollapsed}
+          mobile={mobile}
         >
           <Styles.OnboardingTemplateSelectionGallerySuggestion
-            onClick={() => setActiveTag(undefined)}
+            onClick={() => {
+              setActiveTag(undefined);
+              setActiveID(undefined);
+            }}
+            active={activeID === undefined}
           >
             {RVDicOnboardingTemplateSuggestionGallery}
           </Styles.OnboardingTemplateSelectionGallerySuggestion>
@@ -53,7 +62,11 @@ const OnboardingTemplateSelectionGallery = ({
                 Name={Name}
                 Templates={Templates}
                 key={NodeID}
-                onClick={() => setActiveTag(Tag)}
+                onClick={() => {
+                  setActiveTag(Tag);
+                  setActiveID(NodeID);
+                }}
+                active={activeID === NodeID}
                 activateTemplate={activateTemplate}
               />
             );

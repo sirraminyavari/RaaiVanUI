@@ -1,38 +1,17 @@
 import { useEffect, useState } from 'react';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-// import {
-//   getFormElements,
-//   getFormInstance,
-//   initializeOwnerFormInstance,
-// } from 'apiHelper/ApiHandlers/FGAPI';
-// import APIHandler from 'apiHelper/APIHandler';
 import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNApi';
-
-// const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
-//formFill
-//1 - getFormElements => ownerID=NodeTypeID
-
-// 2- getOwnerForm(ownerID=NodeTypeID) =>  getFormElements(formID)
+import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
 
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
-  const [templateNodeElements, setTemplateNodeElements] = useState();
-
-  // const getOwnerForm = async (NodeTypeID) => {
-  //   const getFormFormOwner = new Promise((res) => {
-  //     ownerForm?.fetch({ OwnerID: NodeTypeID }, (result) => res(result));
-  //   });
-  //   return getFormFormOwner;
-  // };
+  const [templateNodeElements, setTemplateNodeElements] = useState(false);
 
   useEffect(() => {
     (async () => {
-      // const ownerFormRes = await getOwnerForm(activeTemplate?.NodeTypeID);
-      // const formElements = await getFormElements({
-      //   OwnerID: activeTemplate?.NodeTypeID,
-      // });
+      setTemplateNodeElements(false);
       const formElements = await getTemplatePreview({
-        // NodeTypeID: activeTemplate?.NodeTypeID,
+        NodeTypeID: activeTemplate?.NodeTypeID,
       });
       setTemplateNodeElements(formElements);
       console.warn({ formElements, activeTemplate });
@@ -43,8 +22,10 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
   return (
     <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
-        {templateNodeElements && (
+        {templateNodeElements ? (
           <FormFill data={templateNodeElements} editable />
+        ) : (
+          <FieldsLoadingSkelton />
         )}
       </Styles.OnboardingTemplateSelectionNodeContainer>
     </div>
