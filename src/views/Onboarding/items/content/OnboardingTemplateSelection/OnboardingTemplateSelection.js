@@ -21,7 +21,7 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
-  const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
+  const { isTabletOrMobile, isMobile } = DimensionHelper();
   const {
     disableContinue,
     selectedTemplates,
@@ -53,11 +53,12 @@ const OnboardingTemplateSelectionContent = () => {
   const RVDicSelectedTemplates = RVDic.SelectedN.replace('[n]', RVDic.Template);
   const RVDicUseDefaultTemplates = RVDic.UseDefaultTemplates;
   return (
-    <Styles.OnboardingTemplateSelectionWrapper>
+    <Styles.OnboardingTemplateSelectionWrapper mobile={isTabletOrMobile}>
       <OnboardingTemplateSelectionGallery
         templates={templates}
         setActiveTag={setActiveTag}
         activateTemplate={setActivateTemplate}
+        mobile={isTabletOrMobile}
       />
       <div>
         <Styles.OnboardingTemplateSelectionTemplatePanel
@@ -66,7 +67,11 @@ const OnboardingTemplateSelectionContent = () => {
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
+          {!isMobile && (
+            <OnboardingTemplateSelectionNode
+              activeTemplate={activateTemplate}
+            />
+          )}
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={activeTag ? activeTag.Templates : templates?.AllTemplates}

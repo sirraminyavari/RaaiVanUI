@@ -1,8 +1,12 @@
 import styled from 'styled-components';
-import { OnboardingPageDescriptionText } from 'views/Onboarding/items/Onboarding.styles';
+import {
+  OnboardingPageDescriptionText,
+  OnboardingPageTitleText,
+} from 'views/Onboarding/items/Onboarding.styles';
 import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
 import { TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
 
+export const OnboardingTeamTitleWrapper = OnboardingPageTitleText;
 export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
 
 export const OnboardingTeamFlatPanelButtonGroup = styled.div`

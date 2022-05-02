@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import Heading from 'components/Heading/Heading';
 import workFieldAssets from 'assets/images/onboarding/workFieldAssets/workFieldAssets';
 import PanelButton from 'components/Buttons/PanelButton';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
@@ -44,7 +43,9 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
 
   return (
     <>
-      <Heading type="h2">{RVDicِTeamWorkFieldHeadCount}</Heading>
+      <Styles.OnboardingTeamTitleWrapper>
+        {RVDicِTeamWorkFieldHeadCount}
+      </Styles.OnboardingTeamTitleWrapper>
       <Styles.OnboardingTeamButtonInputWrapper wrap>
         {workFields.map(({ NodeID, Name, AvatarName }) => (
           <>

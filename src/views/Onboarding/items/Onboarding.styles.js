@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { CV_GRAY, CV_WHITE } from 'constant/CssVariables';
+import Heading from 'components/Heading/Heading';
 
 const waveAnimationKeyframes = keyframes`
 
@@ -57,5 +58,15 @@ export const OnboardingPageDescriptionText = styled.div`
   padding-inline: 4rem;
   max-width: 60rem;
   font-size: 1rem;
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 OnboardingPageDescriptionText.displayName = 'OnboardingPageDescriptionText';
+
+export const OnboardingPageTitleText = styled(Heading).attrs({ type: 'H2' })`
+  &::first-letter {
+    text-transform: capitalize;
+  }
+`;
+OnboardingPageTitleText.displayName = 'OnboardingPageTitleText';

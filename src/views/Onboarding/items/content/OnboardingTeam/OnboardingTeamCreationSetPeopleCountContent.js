@@ -1,6 +1,5 @@
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import Heading from 'components/Heading/Heading';
 import TeamMemberCountIcon from 'components/Icons/TeamMemberIcon/TeamMemberCountIcon';
 import PanelButton from 'components/Buttons/PanelButton';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
@@ -43,7 +42,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
 
   return (
     <>
-      <Heading type="h2">{RVDicِYourTeamHeadCount}</Heading>
+      <Styles.OnboardingTeamTitleWrapper>
+        {RVDicِYourTeamHeadCount}
+      </Styles.OnboardingTeamTitleWrapper>
       <Styles.OnboardingTeamButtonInputWrapper isMobile={isMobile}>
         <PanelButton
           secondary

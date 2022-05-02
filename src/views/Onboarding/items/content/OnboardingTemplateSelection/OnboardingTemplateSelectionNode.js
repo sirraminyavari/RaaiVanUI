@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-import {
-  getFormElements,
-  getFormInstance,
-  initializeOwnerFormInstance,
-} from 'apiHelper/ApiHandlers/FGAPI';
-import APIHandler from 'apiHelper/APIHandler';
+// import {
+//   getFormElements,
+//   getFormInstance,
+//   initializeOwnerFormInstance,
+// } from 'apiHelper/ApiHandlers/FGAPI';
+// import APIHandler from 'apiHelper/APIHandler';
+import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNApi';
 
-const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
+// const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 //formFill
 //1 - getFormElements => ownerID=NodeTypeID
 
@@ -17,22 +18,26 @@ const ownerForm = new APIHandler('FGAPI', 'GetOwnerForm');
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
   const [templateNodeElements, setTemplateNodeElements] = useState();
 
-  const getOwnerForm = async (NodeTypeID) => {
-    const getFormFormOwner = new Promise((res) => {
-      ownerForm?.fetch({ OwnerID: NodeTypeID }, (result) => res(result));
-    });
-    return getFormFormOwner;
-  };
+  // const getOwnerForm = async (NodeTypeID) => {
+  //   const getFormFormOwner = new Promise((res) => {
+  //     ownerForm?.fetch({ OwnerID: NodeTypeID }, (result) => res(result));
+  //   });
+  //   return getFormFormOwner;
+  // };
 
   useEffect(() => {
     (async () => {
-      const ownerFormRes = await getOwnerForm(activeTemplate?.NodeTypeID);
-      const formElements = await getFormElements({
-        OwnerID: activeTemplate?.NodeTypeID,
+      // const ownerFormRes = await getOwnerForm(activeTemplate?.NodeTypeID);
+      // const formElements = await getFormElements({
+      //   OwnerID: activeTemplate?.NodeTypeID,
+      // });
+      const formElements = await getTemplatePreview({
+        // NodeTypeID: activeTemplate?.NodeTypeID,
       });
       setTemplateNodeElements(formElements);
-      console.warn({ ownerFormRes, formElements, activeTemplate });
+      console.warn({ formElements, activeTemplate });
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTemplate?.NodeTypeID]);
 
   return (

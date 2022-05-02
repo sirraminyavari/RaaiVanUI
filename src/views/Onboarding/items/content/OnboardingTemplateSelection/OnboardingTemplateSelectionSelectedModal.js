@@ -25,13 +25,14 @@ const OnboardingTemplateSelectionSelectedModal = ({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_REMOVE_TEMPLATE,
       stateKey: template.NodeTypeID,
     });
+    if (Object.keys(selectedTemplates).length === 1) setIsModalShown(false);
   };
 
   return (
     <Modal
       show={isModalShown}
       onClose={() => setIsModalShown(false)}
-      contentWidth="clamp(300px,90%,700px)"
+      contentWidth="clamp(300px,90%,30rem)"
       title={appTitle}
     >
       <Styled.OnboardingTemplateSelectionSelectedModalContainer>
