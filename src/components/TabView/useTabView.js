@@ -17,13 +17,17 @@ export const useTabView = ({ children, onSelect }) => {
   const [indicatorOffset, setIndicatorOffset] = useState();
   const [bodyWidth, setBodyWidth] = useState();
 
-  // <<<<<<< HEAD
-  const action = useCallback(
-    [...children].find((x) => x?.type?.name === 'Action'),
-    [children]
-  );
-  const items = useCallback(
-    children
+  const action = useMemo(() => {
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
+    return children.find((x) => x?.type?.name === 'Action');
+  }, [children]);
+  const items = useMemo(() => {
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
+    return children
       .filter((x) => x?.type?.name === 'Item')
       .map((x) => {
         return x;
@@ -33,9 +37,8 @@ export const useTabView = ({ children, onSelect }) => {
         key: x?.key || getUUID(),
         props: { ...x.props, index },
       }))
-      .map((x) => cloneElement(x)),
-    [children]
-  );
+      .map((x) => cloneElement(x));
+  }, [children]);
   // =======
   //   const tabItemsComponentBuilder = useMemo(
   //     () => (children) => {

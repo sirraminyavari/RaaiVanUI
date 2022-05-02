@@ -199,14 +199,32 @@ const customizedElements = {
   'single-select': {
     Type: 'Select',
     Info: {
-      Options: '[array of string items]',
+      // Options: '[array of string items]',
+      Items: [
+        {
+          text: '[string]',
+          color: '[string]',
+          min: '[number]',
+          max: '[number]',
+        },
+      ],
       ViewType: 'sliding | optional',
       addOption: true,
     },
   },
   'multi-select': {
     Type: 'Checkbox',
-    Info: { Options: '[array of string items]' },
+    Info: {
+      // Options: '[array of string items]',
+      Items: [
+        {
+          text: '[string]',
+          color: '[string]',
+        },
+      ],
+      ViewType: 'sliding | optional',
+      addOption: true,
+    },
   },
   'two options': {
     Type: 'Binary',
@@ -248,7 +266,10 @@ const customizedElements = {
   },
   separator: {
     Type: 'Separator',
-    Info: {},
+    Info: {
+      SeparatorType: 'text | line | ...',
+      SeparatorText: '[string]',
+    },
   },
   table: {
     Type: 'Form',

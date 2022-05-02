@@ -5,7 +5,6 @@ import DateTypeSideBoxSetting from './DateElement/DateTypeSideBoxSetting';
 import NumericalTypeMainSetting from './NumericalElement/NumericalTypeMainSetting';
 import NumericalTypeSideBoxSetting from './NumericalElement/NumericalTypeSideBoxSetting';
 import SingleSelectMainSetting from './SingleSelectElement/SingleSelectMainSetting';
-import SingleSelectSideBoxSetting from './SingleSelectElement/SingleSelectSideBoxSetting';
 import BinaryTypeMainSetting from './BinaryTypeElement/BinaryTypeMainSetting';
 import BinaryTypeSideBoxSetting from './BinaryTypeElement/BinaryTypeSideBoxSetting';
 import RatingTypeMainSetting from './NumericalElement/RatingTypeMainSetting';
@@ -13,42 +12,81 @@ import RatingTypeSideBoxSetting from './NumericalElement/RatingTypeSideBoxSettin
 import FileTypeSideBoxSetting from './FileTypeElement/FileTypeSideBoxSetting';
 import UserTypeMainSetting from './UserTypeElement/UserTypeMainSetting';
 import UserTypeSideBoxSetting from './UserTypeElement/UserTypeSideBoxSetting';
+import ItemTypeMainSetting from './ItemTypeElement/ItemTypeMainSetting';
+import ItemTypeSideBoxSetting from './ItemTypeElement/ItemTypeSideBoxSetting';
+import SeparatorTypeMainSetting from './SeparatorTypeElement/SeparatorTypeMainSetting';
+import SeparatorTypeSideBoxSetting from './SeparatorTypeElement/SeparatorTypeSideboxSetting';
+import SelectSideBoxSetting from './sharedItems/SelectSideBoxSetting';
+import MultiSelectMainSetting from './MultiSelectElement/MultiSelectMainSetting';
 
 const componentsArray = [
   {
     key: 'Text',
     value: (props) => {
-      return TextTypeTemplate(props);
+      return {
+        main: TextTypeMainSetting({ ...props }),
+        sideBox: TextTypeSideBoxSetting({ ...props }),
+      };
     },
   },
   {
     key: 'Date',
     value: (props) => {
-      return DateTypeTemplate(props);
+      return {
+        main: DateTypeMainSetting(props),
+        sideBox: DateTypeSideBoxSetting(props),
+      };
     },
   },
   {
     key: 'Numeric',
     value: (props) => {
-      return NumericTypeTemplate(props);
+      const { current } = props;
+      return current?.data?.Info?.Pattern === 'rating'
+        ? {
+            main: RatingTypeMainSetting(props),
+            sideBox: RatingTypeSideBoxSetting(props),
+          }
+        : {
+            main: NumericalTypeMainSetting(props),
+            sideBox: NumericalTypeSideBoxSetting(props),
+          };
     },
   },
   {
     key: 'Select',
     value: (props) => {
-      return SingleSelectTypeTemplate(props);
+      return {
+        main: SingleSelectMainSetting(props),
+        sideBox: SelectSideBoxSetting(props),
+      };
+    },
+  },
+  {
+    key: 'Checkbox',
+    value: (props) => {
+      return {
+        main: MultiSelectMainSetting(props),
+        sideBox: SelectSideBoxSetting(props),
+      };
     },
   },
   {
     key: 'Binary',
     value: (props) => {
-      return BinarySelectTemplate(props);
+      return {
+        main: BinaryTypeMainSetting(props),
+        sideBox: BinaryTypeSideBoxSetting(props),
+      };
     },
   },
   {
     key: 'File',
     value: (props) => {
-      return FileTypeTemplate(props);
+      return {
+        main: <div></div>,
+        sideBox: FileTypeSideBoxSetting(props),
+      };
     },
   },
   {
@@ -60,55 +98,25 @@ const componentsArray = [
       };
     },
   },
-];
-
-const TextTypeTemplate = (props) => {
-  return {
-    main: TextTypeMainSetting({ ...props }),
-    sideBox: TextTypeSideBoxSetting({ ...props }),
-  };
-};
-
-const DateTypeTemplate = (props) => {
-  return {
-    main: DateTypeMainSetting(props),
-    sideBox: DateTypeSideBoxSetting(props),
-  };
-};
-
-const FileTypeTemplate = (props) => {
-  return {
-    main: <div></div>,
-    sideBox: FileTypeSideBoxSetting(props),
-  };
-};
-
-const NumericTypeTemplate = (props) => {
-  const { current } = props;
-  return current?.data?.Info?.Pattern === 'rating'
-    ? {
-        main: RatingTypeMainSetting(props),
-        sideBox: RatingTypeSideBoxSetting(props),
-      }
-    : {
-        main: NumericalTypeMainSetting(props),
-        sideBox: NumericalTypeSideBoxSetting(props),
+  {
+    key: 'Node',
+    value: (props) => {
+      return {
+        main: ItemTypeMainSetting({ ...props }),
+        sideBox: ItemTypeSideBoxSetting({ ...props }),
       };
-};
-
-const SingleSelectTypeTemplate = (props) => {
-  return {
-    main: SingleSelectMainSetting(props),
-    sideBox: SingleSelectSideBoxSetting(props),
-  };
-};
-
-const BinarySelectTemplate = (props) => {
-  return {
-    main: BinaryTypeMainSetting(props),
-    sideBox: BinaryTypeSideBoxSetting(props),
-  };
-};
+    },
+  },
+  {
+    key: 'Separator',
+    value: (props) => {
+      return {
+        main: SeparatorTypeMainSetting({ ...props }),
+        sideBox: SeparatorTypeSideBoxSetting({ ...props }),
+      };
+    },
+  },
+];
 
 export const getDraggableElementSetting = (props) => {
   const key = props?.current?.data?.Type;

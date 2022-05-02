@@ -36,13 +36,15 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
     if (state) {
       setSelectedGroups([...selectedGroups, id]);
     } else {
-      const removeID = selectedGroups?.filter((x) => x === id);
+      const removeID = selectedGroups?.filter((x) => x !== id);
+      console.log(removeID);
       setSelectedGroups(removeID);
     }
   };
 
-  const handleItemRemove = (id) => {
-    const removeID = selectedGroups?.filter((x) => x === id);
+  const handleItemRemove = (e, id) => {
+    e?.stopPropagation();
+    const removeID = selectedGroups?.filter((x) => x !== id);
     setSelectedGroups(removeID);
   };
 
@@ -57,6 +59,7 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
         return (
           <Styles.ObjectItemContainer key={NodeID}>
             <RVCheckbox
+              key={NodeID}
               checked={selectedGroups?.includes(NodeID)}
               value={NodeID}
               onChange={(e) => {
@@ -80,7 +83,7 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
         <Styles.SelectItemContainer>
           <RiGroup2Fill size={20} />
           <Styles.SelectedItemTitle>{Name}</Styles.SelectedItemTitle>
-          <Styles.SelectedItemRemove onClick={() => handleItemRemove(x)}>
+          <Styles.SelectedItemRemove onClick={(e) => handleItemRemove(e, x)}>
             <CloseIcon size={20} outline={true} />
           </Styles.SelectedItemRemove>
         </Styles.SelectItemContainer>
@@ -110,7 +113,9 @@ const GroupSelectInput = ({ Groups, handleSelectedStateChange }) => {
       <Styles.UserInputContainer onClick={openModal}>
         <Styles.SelectedGroupContainer>
           {selectedListItems}
-          <Styles.Input placeholder={'گروه کاربری خود را انتخاب کنید'} />
+          {selectedGroups.length === 0 && (
+            <Styles.Input placeholder={'گروه کاربری خود را انتخاب کنید'} />
+          )}
         </Styles.SelectedGroupContainer>
         <Styles.ButtonWrapper>
           <Styles.ArrowButton>

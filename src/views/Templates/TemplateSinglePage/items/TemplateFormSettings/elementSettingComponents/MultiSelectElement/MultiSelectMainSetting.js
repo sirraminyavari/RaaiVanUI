@@ -1,17 +1,16 @@
+import styled from 'styled-components';
+import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { getUUID } from 'helpers/helpers';
 import * as Styles from '../sharedItems/SharedStyles';
-import styled from 'styled-components';
-import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import Button from 'components/Buttons/Button';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import produce from 'immer';
-import SingleSelectInput from './SingleSelectInput';
+import MultipleSelectInput from './MultipleSelectInput';
 
-const SingleSelectMainSetting = ({ current, setFormObjects }) => {
-  const { data } = current || {};
-  const { Items } = data?.Info || {};
+const MultiSelectMainSetting = ({ current, setFormObjects }) => {
+  const { Items } = current?.data?.Info || {};
 
   const handleOptionTextChange = (value, index) => {
     setFormObjects(
@@ -30,25 +29,6 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
       })
     );
   };
-
-  const handleOptionMaxChange = (value, index) => {
-    setFormObjects(
-      produce((d) => {
-        const _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.Items[index].max = value;
-      })
-    );
-  };
-
-  const handleOptionMinChange = (value, index) => {
-    setFormObjects(
-      produce((d) => {
-        const _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.Items[index].min = value;
-      })
-    );
-  };
-
   const handleAddNewOption = () => {
     setFormObjects(
       produce((d) => {
@@ -56,8 +36,6 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
         _current.data.Info.Items.push({
           text: '',
           color: '',
-          min: '',
-          max: '',
         });
       })
     );
@@ -108,14 +86,12 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
                       <DragHandle {...provided.dragHandleProps}>
                         <DragIcon size={16} />
                       </DragHandle>
-                      <SingleSelectInput
+                      <MultipleSelectInput
                         {...{
                           index,
                           option,
                           handleOptionTextChange,
                           handleOptionColorChange,
-                          handleOptionMinChange,
-                          handleOptionMaxChange,
                           handleRemoveOption,
                         }}
                       />
@@ -155,5 +131,4 @@ const ButtonTitle = styled.span`
   margin: 0 0.5rem;
   user-select: none;
 `;
-
-export default SingleSelectMainSetting;
+export default MultiSelectMainSetting;

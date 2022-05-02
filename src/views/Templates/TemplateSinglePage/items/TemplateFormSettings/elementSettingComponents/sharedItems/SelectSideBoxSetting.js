@@ -1,5 +1,5 @@
-import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
-import * as Styles from '../sharedItems/SharedStyles';
+import ToggleNecessaryState from './ToggleNecessaryState';
+import * as Styles from './SharedStyles';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import produce from 'immer';
 import styled from 'styled-components';
@@ -11,8 +11,8 @@ import {
 } from 'constant/CssVariables';
 import { FLEX_RSB } from 'constant/StyledCommonCss';
 
-const SingleSelectSideBoxSetting = ({ current, setFormObjects }) => {
-  const { type, data } = current || {};
+const SelectSideBoxSetting = ({ current, setFormObjects }) => {
+  const { data } = current || {};
   const { addOption, ViewType } = data?.Info || {};
 
   const handleOptionStateChange = (e) => {
@@ -86,4 +86,4 @@ const OptionItem = styled.div`
   user-select: none;
 `;
 
-export default SingleSelectSideBoxSetting;
+export default SelectSideBoxSetting;

@@ -150,7 +150,7 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Select',
             Info: {
-              Options: [''],
+              Items: [{ text: '', color: '', min: '', max: '' }],
               ViewType: 'sliding',
               addOption: true,
             },
@@ -160,6 +160,16 @@ const formElementList = () => {
           id: getUUID(),
           title: 'چند انتخابی',
           icon: <IoIosCheckboxOutline size={size} />,
+          type: 'Checkbox',
+          data: {
+            ...sharedProps,
+            Type: 'Checkbox',
+            Info: {
+              Items: [{ text: '', color: '' }],
+              ViewType: 'sliding',
+              addOption: true,
+            },
+          },
         },
         {
           id: getUUID(),
@@ -179,6 +189,9 @@ const formElementList = () => {
           id: getUUID(),
           title: 'چندسطحی',
           icon: <IoFilter size={size} />,
+          data: {
+            ...sharedProps,
+          },
         },
         {
           id: getUUID(),
@@ -210,7 +223,10 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Node',
-            MultiSelect: false,
+            Info: {
+              MultiSelect: true,
+              NodeTypes: [],
+            },
           },
         },
         {
@@ -234,6 +250,7 @@ const formElementList = () => {
           type: 'File',
           icon: <BsFileEarmarkArrowUp size={size} />,
           data: {
+            ...sharedProps,
             Type: 'File',
             Info: {
               MaxCount: '',
@@ -248,11 +265,23 @@ const formElementList = () => {
           id: getUUID(),
           title: 'جدول',
           icon: <BsTable size={size} />,
+          data: {
+            ...sharedProps,
+          },
         },
         {
           id: getUUID(),
           title: 'جداکننده',
           icon: <IoReorderTwoOutline size={size} />,
+          type: 'Separator',
+          data: {
+            ...sharedProps,
+            Type: 'Separator',
+            Info: {
+              SeparatorType: 'text',
+              SeparatorText: '',
+            },
+          },
         },
       ],
     },

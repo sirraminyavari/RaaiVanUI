@@ -17,7 +17,11 @@ const ExtensionSelectInput = ({
   const inputEl = useRef(null);
 
   const onInputSet = (e) => {
-    if (e?.key === 'Enter' && ext !== '') {
+    if (
+      (e?.key === 'Enter' || e?.key === ' ') &&
+      ext !== '' &&
+      !ext.includes(' ')
+    ) {
       setExt('');
       handleAddAllowedExtensionsStateChange(ext);
     } else if ((e?.key === 'Backspace' || e?.key === 'Delete') && ext === '') {
