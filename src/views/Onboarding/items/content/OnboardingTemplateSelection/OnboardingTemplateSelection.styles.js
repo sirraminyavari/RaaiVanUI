@@ -168,12 +168,13 @@ OnboardingTemplateSelectionCarouselInnerContainer.displayName =
 
 export const OnboardingTemplateSelectionGalleryContainer = styled.div`
   ${({ mobile }) => !mobile && 'width: 17.5rem;'}
+  position:sticky;
+  z-index: 1;
+  top: 3.5rem;
   ${({ mobile }) =>
     mobile &&
     `
-  position:sticky;
   top: 3rem;
-  z-index: 1;
   `}
   background-color: ${CV_WHITE};
   font-size: 1rem;
@@ -187,22 +188,36 @@ export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div`
   // background-color: #2b7be40d;
   background-color: ${TCV_VERY_TRANSPARENT};
   display: grid;
-`;
-OnboardingTemplateSelectionGalleryContainerBackground.displayName =
-  'OnboardingTemplateSelectionGalleryContainerBackground';
-
-export const OnboardingTemplateSelectionGalleryContentWrapper = styled.div`
-  // transition: height 0.25s, max-height 0.25s;
-  ${({ isCollapsed }) =>
-    isCollapsed
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  ${({ isCollapsed, mobile }) =>
+    mobile && isCollapsed
       ? `
   overflow-y: hidden;
   height: 0;
   
   `
       : `
-  height: 100%;
-  max-height: calc(100vh - 4rem);
+  height: 100%;   
+  ${mobile && `max-height: calc(100vh - 10rem);`}
+  `}
+`;
+OnboardingTemplateSelectionGalleryContainerBackground.displayName =
+  'OnboardingTemplateSelectionGalleryContainerBackground';
+
+export const OnboardingTemplateSelectionGalleryContentWrapper = styled.div`
+  // transition: height 0.25s, max-height 0.25s;
+  ${({ isCollapsed, mobile }) =>
+    mobile && isCollapsed
+      ? `
+  overflow-y: hidden;
+  height: 0;
+  
+  `
+      : `
+  height: 100%;   
+  ${mobile && `max-height: calc(100vh - 10rem);`}
+  overflow-y: auto;
   `}
 `;
 OnboardingTemplateSelectionGalleryContentWrapper.displayName =
@@ -234,11 +249,36 @@ export const OnboardingTemplateSelectionGallerySuggestion = styled.div.attrs({
   color: ${TCV_WARM};
   padding: 0.7rem;
   margin: 0.7rem;
-  background-color: ${CV_WHITE};
+  ${({ active }) => active && `background-color: ${CV_WHITE};`}
   cursor: pointer;
 `;
 OnboardingTemplateSelectionGallerySuggestion.displayName =
   'OnboardingTemplateSelectionGallerySuggestion';
+
+export const OnboardingTemplateSelectionGalleryItemDetails = styled.details.attrs(
+  {
+    className: BO_RADIUS_HALF,
+  }
+)`
+  ${({ active }) => active && `background-color: ${CV_WHITE};`}
+  padding: 0.7rem;
+  margin-inline: 0.7rem;
+  margin-block: 0.4rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s;
+  & > svg {
+    transition: transform 0.3s, color 0.3s;
+    ${({ isOpen }) =>
+      isOpen
+        ? `transform: rotate(-90deg);color: ${TCV_DEFAULT};`
+        : `color: ${CV_DISTANT};`}
+    margin-inline-end: 0.7rem;
+  }
+`;
+OnboardingTemplateSelectionGalleryItemDetails.displayName =
+  'OnboardingTemplateSelectionGalleryItemDetails';
 
 export const OnboardingTemplateSelectionGalleryItemSummery = styled.summary.attrs(
   {
@@ -246,9 +286,7 @@ export const OnboardingTemplateSelectionGalleryItemSummery = styled.summary.attr
   }
 )`
   ${({ isOpen }) => (isOpen ? `color: ${TCV_DEFAULT};` : `color: ${CV_GRAY};`)}
-  padding: 0.7rem;
-  margin-inline: 0.7rem;
-  margin-block: 0.4rem;
+  ${({ active }) => active && `background-color: ${CV_WHITE};`}
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -284,10 +322,15 @@ OnboardingTemplateSelectionGalleryItemSubItem.displayName =
 export const OnboardingTemplateSelectionNodeContainer = styled.div`
   width: 100% !important;
   border: 1px solid ${CV_DISTANT};
-  alignself: stretch;
-  overflow: hidden !important;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 0.8rem;
   position: relative;
+  padding-inline: 1rem;
+  padding-block: 1rem;
+  max-height: clamp(30rem, 100%, 80vh);
+  position: sticky;
+  top: 5rem;
 
   & > div::after {
     content: '';
@@ -295,14 +338,12 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
     top: 0;
     right: 0;
     width: 100%;
-    height: 100%;
+    height: 110%;
+    z-index: 1;
   }
 
   & > div {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: clamp(10rem, 40vh, 70vh) !important;
-    transform: scale(1);
+    // height: clamp(10rem, 40vh, 70vh);
   }
 `;
 OnboardingTemplateSelectionNodeContainer.displayName =
