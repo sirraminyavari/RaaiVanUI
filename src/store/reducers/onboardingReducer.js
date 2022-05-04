@@ -8,6 +8,8 @@ export const onboardingSlice = createSlice({
     newDocMenu: '',
     fromStep: 0,
     active: false,
+    teamName: undefined,
+    templates: [],
   },
   reducers: {
     onboardingName: (state, action) => {
@@ -23,6 +25,19 @@ export const onboardingSlice = createSlice({
       console.log(state, '***** state *****');
       state.active = !state.active;
     },
+    setOnboardingTeamName: (state, action) => {
+      state.teamName = action.payload;
+    },
+    setOnboardingTemplates: (state, action) => {
+      console.log({ action });
+      state.templates = action.payload;
+    },
+    setOnboardingTemplateStatusCompleted: (state, action) => {
+      state.templates = state.templates.map((template) => {
+        if (template.NodeTypeID !== action.payload) return template;
+        else return { ...template, isSetupComplete: true };
+      });
+    },
   },
 });
 
@@ -31,6 +46,9 @@ export const {
   onboardingStep,
   setNewDocMenu,
   toggleActivation,
+  setOnboardingTeamName,
+  setOnboardingTemplates,
+  setOnboardingTemplateStatusCompleted,
 } = onboardingSlice.actions;
 
 export default onboardingSlice.reducer;

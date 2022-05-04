@@ -5,10 +5,13 @@ import {
   setApplicationFieldOfExpertise,
   setApplicationSize,
 } from 'apiHelper/ApiHandlers/RVApi';
-import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { OnboardingTeamStepContextActions } from './OnboardingTeam.context';
 import { store } from 'store/store';
+import { MAIN_CONTENT, SETT_ONBOARDING_CONTENT } from 'constant/constants';
+import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
+import { setOnboardingTeamName } from 'store/reducers/onboardingReducer';
+const { setSidebarContent } = themeSlice.actions;
 
 const { setSelectedTeam } = themeSlice.actions;
 
@@ -25,12 +28,21 @@ export const onboardingTeamNameSave = async ({ dispatch, teamName }) => {
     });
   }
 
-  if (createApplicationResponse?.Succeed)
+  if (createApplicationResponse?.Succeed) {
+    store.dispatch(setOnboardingTeamName(teamName));
+    store.dispatch(
+      setSidebarContent({
+        current: SETT_ONBOARDING_CONTENT,
+        prev: MAIN_CONTENT,
+      })
+    );
+
     dispatch({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_APPLICATION_ID,
       stateKey: 'ApplicationID',
       stateValue: createApplicationResponse.Application.ApplicationID,
     });
+  }
 };
 
 export const onboardingTeamPeopleCountSave = async ({

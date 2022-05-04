@@ -13,6 +13,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useDispatch } from 'react-redux';
+import { setOnboardingTemplates } from 'store/reducers/onboardingReducer';
 
 const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
@@ -21,6 +23,7 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { isTabletOrMobile, isMobile } = DimensionHelper();
   const {
     disableContinue,
@@ -41,11 +44,25 @@ const OnboardingTemplateSelectionContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const gotoTemplateSetup = () => history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
+  const gotoTemplateSetup = () => {
+    dispatch(setOnboardingTemplates(selectedTemplateArray));
+    history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
+  };
 
   const selectedTemplateCount = useMemo(() => {
     const selectedTemplateKeys = Object.keys(selectedTemplates);
     return selectedTemplateKeys.length;
+  }, [selectedTemplates]);
+
+  const selectedTemplateArray = useMemo(() => {
+    const selectedTemplateValues = Object.values(selectedTemplates).map(
+      ({ NodeTypeID, IconURL, TypeName }) => ({
+        NodeTypeID,
+        IconURL,
+        TypeName,
+      })
+    );
+    return selectedTemplateValues;
   }, [selectedTemplates]);
 
   //! RVDic i18n localization

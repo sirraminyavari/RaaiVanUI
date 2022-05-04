@@ -11,6 +11,7 @@ import {
   SETT_USERS_CONTENT,
   SETT_WORKSPACE_INVOICE_CONTENT,
   SETT_WORKSPACE_PLANS_CONTENT,
+  SETT_ONBOARDING_CONTENT,
 } from 'constant/constants';
 
 const settingIcons = {
@@ -19,6 +20,7 @@ const settingIcons = {
   [SETT_USERS_CONTENT]: (props) => <UsersIcon {...props} />,
   [SETT_CLASSES_CONTENT]: (props) => <ClassesIcon {...props} />,
   [SETT_NOTIFS_CONTENT]: (props) => <AlertIcon {...props} />,
+  [SETT_ONBOARDING_CONTENT]: (props) => <></>,
   [SETT_WORKSPACE_INVOICE_CONTENT]: (props) => <InvoiceIcon {...props} />,
   [SETT_WORKSPACE_PLANS_CONTENT]: (props) => <PlansIcon {...props} />,
 };

@@ -8,6 +8,11 @@ import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { decodeBase64 } from 'helpers/helpers';
+import {
+  setOnboardingTemplateStatusCompleted,
+  toggleActivation,
+} from 'store/reducers/onboardingReducer';
+import { useDispatch } from 'react-redux';
 const {
   actions: { toggleSidebarMenu },
 } = sidebarMenuSlice;
@@ -16,6 +21,7 @@ const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { selectedTemplates, applicationID } = useOnboardingTeamContent();
 
   const activateTemplateHandler = async (template, appId) => {
@@ -31,7 +37,10 @@ const OnboardingTemplateSetupContent = () => {
       const selectedTemplatesAPICallbacks = Object.values(
         selectedTemplates
       ).map((template) => {
-        return () => activateTemplateHandler(template, applicationID);
+        return () =>
+          activateTemplateHandler(template, applicationID).then(() =>
+            dispatch(setOnboardingTemplateStatusCompleted(template.NodeTypeID))
+          );
       });
       for (let i = 0; i < selectedTemplatesAPICallbacks.length; i++)
         await selectedTemplatesAPICallbacks[i]();
@@ -40,7 +49,10 @@ const OnboardingTemplateSetupContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplates]);
 
-  const goToApplication = () => history.push('/');
+  const goToApplication = () => {
+    dispatch(toggleActivation());
+    history.push('/');
+  };
 
   //! RVDic i18n localization
   const RVDicOnboardingTemplateSetupUnderstood = RVDic.YesssLetsGo;
