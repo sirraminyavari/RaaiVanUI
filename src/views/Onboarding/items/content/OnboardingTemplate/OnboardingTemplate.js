@@ -30,6 +30,7 @@ const OnboardingTemplateContent = () => {
     '[RaaiVan]',
     decodeBase64(RVGlobal.SystemName)
   );
+
   return (
     <Styles.OnboardingTemplateWrapper>
       <Styles.OnboardingTemplateVideoContainer>
