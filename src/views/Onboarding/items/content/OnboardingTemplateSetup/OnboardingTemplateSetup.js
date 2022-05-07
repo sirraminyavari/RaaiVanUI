@@ -7,15 +7,16 @@ import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
+import { themeSlice } from 'store/reducers/themeReducer';
 import { decodeBase64 } from 'helpers/helpers';
 import {
   setOnboardingTemplateStatusCompleted,
   toggleActivation,
 } from 'store/reducers/onboardingReducer';
 import { useDispatch } from 'react-redux';
-const {
-  actions: { toggleSidebarMenu },
-} = sidebarMenuSlice;
+import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
+const { toggleSidebarMenu } = sidebarMenuSlice.actions;
+const { setSidebarContent } = themeSlice.actions;
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -51,7 +52,13 @@ const OnboardingTemplateSetupContent = () => {
 
   const goToApplication = () => {
     dispatch(toggleActivation());
-    history.push('/');
+    dispatch(
+      setSidebarContent({
+        current: MAIN_CONTENT,
+        prev: '',
+      })
+    );
+    history.push(CLASSES_PATH);
   };
 
   //! RVDic i18n localization
