@@ -75,9 +75,16 @@ const OnboardingTeamContent = () => {
   const RVDicSaveAndNext = RVDic.SaveAndNext;
   return (
     <>
-      <Styles.OnboardingTeamWelcomeLayoutWrapper>
+      <Styles.OnboardingTeamWelcomeLayoutWrapper
+        noFixedHeight={[0, 3, null].includes(stepsCount)}
+      >
         <TransitionSwitchWrapper transitionKey={activeStep}>
-          <WelcomeLayout noFullHeight noOutline style={{ width: '100%' }}>
+          <WelcomeLayout
+            centerize={[0, 3, null].includes(stepsCount)}
+            noFullHeight
+            noOutline
+            style={{ width: '100%', marginBlockStart: 0 }}
+          >
             {ContentComponent && (
               <>
                 <ContentComponent />

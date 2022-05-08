@@ -113,7 +113,7 @@ OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
 
 export const OnboardingTeamWelcomeLayoutWrapper = styled.div`
-  height: calc(100vh - 12rem);
+  ${({ noFixedHeight }) => !noFixedHeight && `height: calc(100vh - 12rem);`}
   width: 100%;
   overflow: auto;
   background-color: ${CV_WHITE};

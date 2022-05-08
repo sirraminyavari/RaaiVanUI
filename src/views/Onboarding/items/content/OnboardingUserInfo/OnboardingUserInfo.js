@@ -38,6 +38,12 @@ const OnboardingUserInfoContent = () => {
   const RVDicDefaultAvatars = RVDic.DefaultN.replace('[n]', RVDic.Avatar);
   const RVDicPageDescriptionInfo = RVDic._HelpPersonalInfo;
 
+  const isUserInfoSupplied = useMemo(() => {
+    const { FirstName, LastName } = currentUserInfo;
+    if (String(FirstName).length && String(LastName).length) return true;
+    else return false;
+  }, [currentUserInfo]);
+
   const updateUserInfo = (newInfo) => {
     setCurrentUserInfo((state) => {
       const updatedUserInfo = { ...state, ...newInfo };
@@ -112,7 +118,11 @@ const OnboardingUserInfoContent = () => {
             />
           </Styles.OnboardingUserInfoInputWrapper>
           <Styles.OnboardingUserInfoActionButtonWrapper>
-            <Button onClick={saveCurrentUserInfo} loading={isLoading}>
+            <Button
+              onClick={saveCurrentUserInfo}
+              disable={!isUserInfoSupplied}
+              loading={isLoading}
+            >
               {RVDicSaveAndNext}
             </Button>
           </Styles.OnboardingUserInfoActionButtonWrapper>
