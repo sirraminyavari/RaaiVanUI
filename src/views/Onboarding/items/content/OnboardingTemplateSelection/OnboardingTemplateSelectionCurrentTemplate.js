@@ -46,14 +46,7 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
 
   return (
     <>
-      <div
-        style={{
-          minHeight: '50vh',
-          display: 'flex',
-          justifyContent: 'space-evenly',
-          flexDirection: 'column',
-        }}
-      >
+      <Styles.OnboardingTemplateSelectionCurrentTemplateContainer>
         {activeTemplate && (
           <>
             <Styles.OnboardingTemplateSelectionImage
@@ -88,7 +81,7 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             </Styles.OnboardingTemplateSelectionButtonWrapper>
           </>
         )}
-      </div>
+      </Styles.OnboardingTemplateSelectionCurrentTemplateContainer>
     </>
   );
 };

@@ -38,6 +38,7 @@ export const OnboardingTemplateSelectionTemplatePanel = styled.div`
 
   & > div {
     width: 100%;
+    min-width: 40%;
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
@@ -75,6 +76,15 @@ export const OnboardingTemplateSelectionTemplateCount = styled.div`
 `;
 OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
+
+export const OnboardingTemplateSelectionCurrentTemplateContainer = styled.div`
+  min-height: ;50vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+`;
+OnboardingTemplateSelectionCurrentTemplateContainer.displayName =
+  'OnboardingTemplateSelectionCurrentTemplateContainer';
 
 export const OnboardingTemplateSelectionCurrentTemplateTitle = styled(
   Heading
@@ -344,6 +354,7 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
 
   & > div {
     // height: clamp(10rem, 40vh, 70vh);
+    position: relative;
   }
 `;
 OnboardingTemplateSelectionNodeContainer.displayName =
