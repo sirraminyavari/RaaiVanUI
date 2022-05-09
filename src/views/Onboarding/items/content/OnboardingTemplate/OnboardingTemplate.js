@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplate.styles';
-import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
+// import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
 import Button from 'components/Buttons/Button';
 import { ONBOARDING_TEMPLATE_SELECTION_PATH } from 'views/Onboarding/items/others/constants';
 import { decodeBase64 } from 'helpers/helpers';
@@ -13,12 +13,12 @@ const OnboardingTemplateContent = () => {
   const goToTemplateSelectionView = () =>
     history.push(ONBOARDING_TEMPLATE_SELECTION_PATH);
 
-  const videoSrcList = [
-    {
-      src: 'https://static.videezy.com/system/resources/previews/000/041/206/original/12.Audio_Visualizer.mp4',
-      type: 'video/mp4',
-    },
-  ];
+  // const videoSrcList = [
+  //   {
+  //     src: 'https://static.videezy.com/system/resources/previews/000/041/206/original/12.Audio_Visualizer.mp4',
+  //     type: 'video/mp4',
+  //   },
+  // ];
 
   //! RVDic i18n localization
   const RVDicOnboardingTemplateTitle = RVDic.WhatIsN.replace(
@@ -32,14 +32,16 @@ const OnboardingTemplateContent = () => {
   );
 
   return (
-    <Styles.OnboardingTemplateWrapper>
+    <Styles.OnboardingTemplateWrapper
+      style={{ minHeight: 'calc(100vh - 6rem)' }}
+    >
       <Styles.OnboardingTemplateVideoContainer>
-        <VideoPlayer videoSrcList={videoSrcList} />
+        {/* <VideoPlayer videoSrcList={videoSrcList} /> */}
       </Styles.OnboardingTemplateVideoContainer>
-      <Styles.OnboardingTemplateTitle type="H1">
+      <Styles.OnboardingTemplateTitle type="H1" fontSize="2rem">
         {RVDicOnboardingTemplateTitle}
       </Styles.OnboardingTemplateTitle>
-      <Styles.RVDicOnboardingTemplateDescription type="H3">
+      <Styles.RVDicOnboardingTemplateDescription type="H3" fontSize="1.5rem">
         {RVDicOnboardingTemplateDescription}
       </Styles.RVDicOnboardingTemplateDescription>
 

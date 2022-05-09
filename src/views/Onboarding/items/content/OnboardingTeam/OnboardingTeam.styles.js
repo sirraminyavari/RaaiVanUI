@@ -83,6 +83,7 @@ OnboardingTeamButtonInputWrapper.displayName =
 
 export const OnboardingTeamContentContainer = styled.div`
   min-height: 50vh;
+  position: relative;
 `;
 
 OnboardingTeamContentContainer.displayName = 'OnboardingTeamContentContainer';

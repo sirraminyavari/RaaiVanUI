@@ -17,10 +17,7 @@ const OnboardingTemplateSelectionCarousel = ({
         return (
           <PanelButton
             grayScale
-            active={
-              NodeTypeID === activeTemplate?.NodeTypeID ||
-              Object.keys(selectedTemplates).includes(NodeTypeID)
-            }
+            active={NodeTypeID === activeTemplate?.NodeTypeID}
             checked={Object.keys(selectedTemplates).includes(NodeTypeID)}
             onClick={() => {
               activateTemplate(template);

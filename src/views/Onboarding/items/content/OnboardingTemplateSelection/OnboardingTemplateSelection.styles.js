@@ -105,6 +105,7 @@ OnboardingTemplateSelectionCurrentTemplateTitle.displayName =
 
 export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled.p`
   margin-block: 1rem;
+  font-size: 1rem;
   color: ${CV_GRAY};
 `;
 OnboardingTemplateSelectionCurrentTemplateParagraph.displayName =
@@ -336,8 +337,9 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
   overflow-x: hidden;
   border-radius: 0.8rem;
   position: relative;
-  padding-inline: 1rem;
+  padding-inline: 2.5rem;
   padding-block: 1rem;
+  margin-block-start: 1rem;
   max-height: clamp(30rem, 100%, 80vh);
   position: sticky;
   top: 5rem;

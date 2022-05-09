@@ -74,7 +74,7 @@ const OnboardingTeamContent = () => {
   //! RVDic i18n localization
   const RVDicSaveAndNext = RVDic.SaveAndNext;
   return (
-    <>
+    <Styles.OnboardingTeamContentContainer>
       <Styles.OnboardingTeamWelcomeLayoutWrapper
         noFixedHeight={[null].includes(stepsCount)}
       >
@@ -119,7 +119,7 @@ const OnboardingTeamContent = () => {
           />
         </Styles.OnboardingTeamActionButtonWrapper>
       )}
-    </>
+    </Styles.OnboardingTeamContentContainer>
   );
 };
 
