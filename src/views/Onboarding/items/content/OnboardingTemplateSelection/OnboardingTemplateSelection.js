@@ -38,14 +38,29 @@ const OnboardingTemplateSelectionContent = () => {
   useEffect(() => {
     const templateTagID =
       workField.fieldID !== 'OTHERS' ? workField?.fieldID : undefined;
-    getTemplates({ TagID: templateTagID }).then((res) => {
-      const parsedTemplates = parseTemplates(res);
-      setTemplates(parsedTemplates);
-      if (parsedTemplates?.AllTemplates.length) {
-        setActivateTemplate(parsedTemplates.AllTemplates[0]);
-      }
-      console.log({ parsedTemplates });
-    });
+    (async () => {
+      await getTemplates({ TagID: undefined }).then((res) => {
+        const parsedTemplates = parseTemplates(res);
+        setTemplates(parsedTemplates);
+        if (parsedTemplates?.AllTemplates.length) {
+          setActivateTemplate(parsedTemplates.AllTemplates[0]);
+        }
+      });
+
+      if (templateTagID)
+        getTemplates({ TagID: templateTagID }).then((res) => {
+          const parsedSuggestionTemplates = parseTemplates(res);
+          setTemplates((templates) => ({
+            ...templates,
+            suggestions: parsedSuggestionTemplates,
+          }));
+        });
+      else
+        setTemplates((templates) => ({
+          ...templates,
+          suggestions: templates,
+        }));
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,7 +129,11 @@ const OnboardingTemplateSelectionContent = () => {
           )}
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
-          templates={activeTag ? activeTag.Templates : templates?.AllTemplates}
+          templates={
+            activeTag
+              ? activeTag.Templates
+              : templates?.suggestions?.AllTemplates
+          }
           activateTemplate={setActivateTemplate}
           activeTemplate={activateTemplate}
         />

@@ -5,9 +5,16 @@ import {
 } from 'views/Onboarding/items/Onboarding.styles';
 import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
 import { TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
+import Button from 'components/Buttons/Button';
 
 export const OnboardingTeamTitleWrapper = OnboardingPageTitleText;
 export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
+
+export const OnboardingTeamButton = styled(Button)`
+  padding-inline: 3rem;
+  min-height: 3rem;
+`;
+OnboardingTeamButton.displayName = 'OnboardingTeamButton';
 
 export const OnboardingTeamFlatPanelButtonGroup = styled.div`
   display: flex;
@@ -116,6 +123,7 @@ export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
   padding-inline: 1rem;
   width: 100%;
   margin-inline: auto;
+  ${({ hide }) => hide && 'opacity: 0;'}
 `;
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';

@@ -11,7 +11,7 @@ const OnboardingTeamItem = ({ TypeName, IconURL, isLoading = true }) => {
 
   return (
     <>
-      <WorkspacePanelHeaderSkeleton>
+      <WorkspacePanelHeaderSkeleton darkMode>
         <Avatar
           className={classNames(isLoading && 'shimmerEffect', 'Avatar')}
           userImage={!isLoading ? IconURL : emptyImage}
@@ -44,14 +44,6 @@ const WorkspacePanelHeaderSkeleton = styled(Shimmer)`
   align-items: center;
   .Avatar {
     display: contents;
-    & > * {
-      background: linear-gradient(
-        to right,
-        #eff1f3 4%,
-        #9d9d9d 25%,
-        #eff1f3 36%
-      );
-    }
   }
   .headerTextContainer {
     height: 0.8rem;
@@ -63,6 +55,5 @@ const WorkspacePanelHeaderSkeleton = styled(Shimmer)`
     display: inline-block;
     border-radius: 0.8rem;
     width: ${randomNumber(35, 95)}%;
-    background: linear-gradient(to right, #eff1f3 4%, #9d9d9d 25%, #eff1f3 36%);
   }
 `;

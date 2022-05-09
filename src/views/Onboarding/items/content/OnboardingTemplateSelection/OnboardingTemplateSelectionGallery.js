@@ -29,6 +29,7 @@ const OnboardingTemplateSelectionGallery = ({
     <Styles.OnboardingTemplateSelectionGalleryContainer mobile={mobile}>
       <Styles.OnboardingTemplateSelectionGalleryContainerBackground
         className={mobile && BO_RADIUS_HALF}
+        mobile={mobile}
       >
         <Styles.OnboardingTemplateSelectionGalleryTitle>
           {mobile && (
