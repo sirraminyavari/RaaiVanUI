@@ -95,6 +95,7 @@ const formElementList = () => {
           id: getUUID(),
           title: 'عددی',
           icon: <NumericalIcon size={size} />,
+          type: 'Numeric',
           data: {
             ...sharedProps,
             Type: 'Numeric',
@@ -196,13 +197,12 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'امتیازدهی',
-          type: 'Numeric',
+          type: 'Rating',
           icon: <IoIosStarOutline size={size} />,
           data: {
             ...sharedProps,
             Type: 'Numeric',
             Info: {
-              Pattern: 'rating',
               min: '',
               max: '',
               ViewType: 'numeric',

@@ -12,6 +12,7 @@ import {
   extend,
 } from 'helpers/helpers';
 import { apiCallWrapper } from './apiCallHelpers';
+import { number } from 'prop-types';
 
 /**
  * @description gets the elements of a form
@@ -165,7 +166,7 @@ const customizedElements = {
   },
   paragraph: {
     Type: 'Text',
-    Info: {},
+    Info: { min: '[number]', max: '[number]' },
   },
   email: {
     Type: 'Text',
