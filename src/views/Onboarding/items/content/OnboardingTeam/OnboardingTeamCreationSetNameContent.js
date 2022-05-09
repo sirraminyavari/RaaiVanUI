@@ -24,7 +24,7 @@ const OnboardingTeamCreationSetNameContent = () => {
 
   return (
     <>
-      <div>
+      <Styles.OnboardingTeamContentContainer>
         <Styles.OnboardingTeamTitleWrapper>
           {RVDicِYourTeamName}
         </Styles.OnboardingTeamTitleWrapper>
@@ -35,7 +35,7 @@ const OnboardingTeamCreationSetNameContent = () => {
             placeholder={RVDicِTeamName}
           />
         </Styles.OnboardingTeamInputWrapper>
-      </div>
+      </Styles.OnboardingTeamContentContainer>
     </>
   );
 };

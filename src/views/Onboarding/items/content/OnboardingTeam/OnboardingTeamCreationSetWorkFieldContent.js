@@ -42,7 +42,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   }, []);
 
   return (
-    <>
+    <Styles.OnboardingTeamContentContainer>
       <Styles.OnboardingTeamTitleWrapper>
         {RVDicِTeamWorkFieldHeadCount}
       </Styles.OnboardingTeamTitleWrapper>
@@ -93,7 +93,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
           </Styles.OnboardingTeamSetWorkFieldInputWrapper>
         )}
       </Styles.OnboardingTeamButtonInputWrapper>
-    </>
+    </Styles.OnboardingTeamContentContainer>
   );
 };
 

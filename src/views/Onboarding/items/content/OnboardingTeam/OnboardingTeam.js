@@ -76,14 +76,18 @@ const OnboardingTeamContent = () => {
   return (
     <>
       <Styles.OnboardingTeamWelcomeLayoutWrapper
-        noFixedHeight={[0, 3, null].includes(stepsCount)}
+        noFixedHeight={[null].includes(stepsCount)}
       >
         <TransitionSwitchWrapper transitionKey={activeStep}>
           <WelcomeLayout
-            centerize={[0, 3, null].includes(stepsCount)}
+            centerize={[3, null].includes(stepsCount)}
             noFullHeight
             noOutline
-            style={{ width: '100%', marginBlockStart: 0 }}
+            style={{
+              width: '100%',
+              marginBlockStart: 0,
+              minHeight: 'calc(100vh - 15rem)',
+            }}
           >
             {ContentComponent && (
               <>
