@@ -19,12 +19,12 @@ import {
 } from 'constant/StyledCommonCss';
 
 export const OnboardingTemplateSelectionWrapper = styled.div`
-  padding-block-end: 2rem;
+  ${({ mobile }) => mobile && `padding-block-end: 2rem;`}
   ${({ mobile }) => !mobile && FLEX_RSS}
   position: relative;
 
   & > div:last-of-type {
-    padding: 0.5rem 2rem;
+    padding: 3vh 4vw;
     ${({ mobile }) => (mobile ? 'width:100%;' : 'width:calc(100% - 17.5rem);')}
   }
 `;
@@ -34,11 +34,10 @@ OnboardingTemplateSelectionWrapper.displayName =
 export const OnboardingTemplateSelectionTemplatePanel = styled.div`
   ${({ mobile }) => (mobile ? FLEX_CSC : FLEX_RSS)}
   align-items: stretch;
-  gap: 1rem;
-
+  gap: 4vw;
+  flex-wrap: wrap;
   & > div {
-    width: 100%;
-    min-width: 40%;
+    flex: 1 1 30rem;
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
@@ -185,11 +184,12 @@ export const OnboardingTemplateSelectionGalleryContainer = styled.div`
   ${({ mobile }) =>
     mobile &&
     `
-  top: 3rem;
+  top: 4rem;
+  margin-block-start: 1.5rem;
   `}
   background-color: ${CV_WHITE};
   font-size: 1rem;
-  padding-block: 0.7rem;
+  margin-inline: 0.5rem;
   flex-shrink: 0;
 `;
 OnboardingTemplateSelectionGalleryContainer.displayName =
@@ -198,8 +198,10 @@ OnboardingTemplateSelectionGalleryContainer.displayName =
 export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div`
   // background-color: #2b7be40d;
   background-color: ${TCV_VERY_TRANSPARENT};
-  display: grid;
-  max-height: calc(100vh - 6rem);
+  display: block;
+
+  ${({ mobile }) => !mobile && `height: calc(100vh - 4rem);`}
+
   overflow-y: auto;
   ${({ isCollapsed, mobile }) =>
     mobile && isCollapsed
@@ -209,7 +211,6 @@ export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div`
   
   `
       : `
-  height: 100%;   
   ${mobile && `max-height: calc(100vh - 10rem);`}
   `}
 `;
@@ -226,7 +227,7 @@ export const OnboardingTemplateSelectionGalleryContentWrapper = styled.div`
   
   `
       : `
-  height: 100%;   
+  height: 90%;   
   ${mobile && `max-height: calc(100vh - 10rem);`}
   overflow-y: auto;
   `}

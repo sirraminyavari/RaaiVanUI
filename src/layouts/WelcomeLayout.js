@@ -107,7 +107,9 @@ const WelcomeLayoutContainer = styled.div`
   ${({ Outline = true }) =>
     Outline &&
     `box-shadow: 1px 5px 15px #0000001f;
-  min-height: calc(100vh - 10rem);`}
+  min-height: calc(100vh - 10rem);
+  margin-inline: 1rem !important;
+  `}
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
       overflow:inherit !important;
   margin-block-start: 5rem;
@@ -121,7 +123,7 @@ const WelcomeLayoutContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: ${centerize ? 'center' : 'flex-start'};
-     ${centerize && 'min-height: calc(100vh - 10rem);'};
+    min-height: ${centerize ? 'calc(100vh - 10rem)' : undefined};
     `}
 `;
 
@@ -131,7 +133,9 @@ const WelcomeLayoutContainerWithScrollbar = styled(ScrollBarProvider).attrs({
   ${({ Outline = true }) =>
     Outline &&
     `box-shadow: 1px 5px 15px #0000001f;
-    height: calc(100vh - 6rem) !important;`}
+    height: calc(100vh - 6rem) !important;
+  margin-inline: 1rem !important;
+  `}
   ${({ Padding = true }) => Padding && `padding: 0 2rem 1rem 2rem;`}
   
   overflow-y: auto;
@@ -147,7 +151,7 @@ const WelcomeLayoutContainerWithScrollbar = styled(ScrollBarProvider).attrs({
     display: flex;
     justify-content: space-between;
     align-items: ${centerize ? 'center' : 'flex-start'};
-     ${centerize && 'min-height: calc(100vh - 10rem);'};
+    min-height: ${centerize ? 'calc(100vh - 10rem)' : undefined};
     `}
 `;
 
