@@ -68,7 +68,7 @@ export const OnboardingTeamInputWrapper = styled.div`
 OnboardingTeamInputWrapper.displayName = 'OnboardingTeamInputWrapper';
 
 export const OnboardingTeamButtonInputWrapper = styled.div`
-  margin-block-start: 5rem;
+  margin-block-start: 1rem;
   margin-inline-end: 1rem;
   justify-content: center;
   width: 100%;
@@ -81,6 +81,13 @@ export const OnboardingTeamButtonInputWrapper = styled.div`
 OnboardingTeamButtonInputWrapper.displayName =
   'OnboardingTeamButtonInputWrapper';
 
+export const OnboardingTeamContentContainer = styled.div`
+  min-height: 50vh;
+  position: relative;
+`;
+
+OnboardingTeamContentContainer.displayName = 'OnboardingTeamContentContainer';
+
 export const OnboardingTeamAvatarPlaceholder = styled.div`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
@@ -90,6 +97,7 @@ OnboardingTeamAvatarPlaceholder.displayName = 'OnboardingTeamAvatarPlaceholder';
 
 export const OnboardingTeamActionButtonWrapper = styled.div`
   margin-block-start: 2.2rem;
+  padding-block: 1rem;
   width: 100%;
   margin-inline: auto;
   display: flex;

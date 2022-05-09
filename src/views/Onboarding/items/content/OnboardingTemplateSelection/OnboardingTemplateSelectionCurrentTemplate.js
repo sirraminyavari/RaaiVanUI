@@ -63,7 +63,11 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             >
               {!isTemplateSelected(selectedTemplates, activeTemplate) ? (
                 <Button
-                  style={{ paddingInline: '2rem' }}
+                  style={{
+                    paddingInline: '3rem',
+                    height: '3rem',
+                    fontSize: '1rem',
+                  }}
                   type="primary-o"
                   onClick={() => selectTemplateHandler(activeTemplate)}
                 >
@@ -71,7 +75,11 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
                 </Button>
               ) : (
                 <Button
-                  style={{ paddingInline: '2rem' }}
+                  style={{
+                    paddingInline: '3rem',
+                    height: '3rem',
+                    fontSize: '1rem',
+                  }}
                   type="negative-o"
                   onClick={() => deselectTemplateHandler(activeTemplate)}
                 >

@@ -10,7 +10,10 @@ import Button from 'components/Buttons/Button';
 import { getTemplates } from 'apiHelper/ApiHandlers/CNApi';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
-import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import {
+  useOnboardingTeamContent,
+  OnboardingTeamStepContextActions,
+} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useDispatch } from 'react-redux';
@@ -23,9 +26,10 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
-  const dispatch = useDispatch();
+  const reduxDispatch = useDispatch();
   const { isTabletOrMobile, isMobile } = DimensionHelper();
   const {
+    dispatch,
     disableContinue,
     selectedTemplates,
     teamState: { workField },
@@ -40,13 +44,32 @@ const OnboardingTemplateSelectionContent = () => {
       if (parsedTemplates?.AllTemplates.length) {
         setActivateTemplate(parsedTemplates.AllTemplates[0]);
       }
+      console.log({ parsedTemplates });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const gotoTemplateSetup = () => {
-    dispatch(setOnboardingTemplates(selectedTemplateArray));
+    reduxDispatch(setOnboardingTemplates(selectedTemplateArray));
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
+  };
+
+  const setDefaultTemplates = () => {
+    const defaultTemplates = templates.AllTemplates.filter(
+      (template) => template.IsDefaultTemplate
+    );
+    let defaultTemplatesObject = {};
+
+    defaultTemplates.forEach(({ NodeTypeID, ...restTemplateProps }) => {
+      defaultTemplatesObject[NodeTypeID] = {
+        NodeTypeID,
+        ...restTemplateProps,
+      };
+    });
+    dispatch({
+      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE,
+      stateValue: defaultTemplatesObject,
+    });
   };
 
   const selectedTemplateCount = useMemo(() => {
@@ -97,7 +120,7 @@ const OnboardingTemplateSelectionContent = () => {
         />
         <Styles.OnboardingTemplateSelectionButtonWrapper>
           <Button
-            style={{ paddingInline: '3rem' }}
+            style={{ paddingInline: '3rem', height: '3rem' }}
             disable={disableContinue}
             onClick={gotoTemplateSetup}
           >
@@ -112,7 +135,11 @@ const OnboardingTemplateSelectionContent = () => {
               </Styles.OnboardingTemplateSelectionTemplateCount>
             </>
           ) : (
-            <Button style={{ paddingInline: '1rem' }} type="primary-o">
+            <Button
+              style={{ paddingInline: '1rem', height: '3rem' }}
+              type="primary-o"
+              onClick={setDefaultTemplates}
+            >
               {RVDicUseDefaultTemplates}
             </Button>
           )}
