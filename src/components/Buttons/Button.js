@@ -10,6 +10,7 @@ const { GlobalUtilities } = window;
  * @property { bool } loading determines if the button is in the state of processing or loading and thus cannot be clicked
  * @property { bool } disable determines if the button is disabled and so, cannot be clicked
  * @property { bool } $circleEdges if equals true, the border-radius will be circle shaped
+ * @property { bool } isCustomButton if true, ignores default styles of button types
  * @property { function } onClick @fires onClick when the button is clicked and is not disabled or in loading state
  */
 const Button = forwardRef(
@@ -19,6 +20,7 @@ const Button = forwardRef(
       loading,
       disable = false,
       $circleEdges = false,
+      isCustomButton = false,
       onClick,
       className,
       ...props
@@ -30,8 +32,7 @@ const Button = forwardRef(
         ref={ref}
         className={
           ($circleEdges ? 'rv-circle' : 'rv-border-radius-half') +
-          ' rv-action-button-base ' +
-          resolveClass({ type, disable }) +
+          (isCustomButton ? '' : resolveClass({ type, disable })) +
           ' ' +
           (props.classes || className || ' ')
         }
@@ -69,5 +70,7 @@ const resolveClass = ({ type, disable }) => {
     'negative-secondary-o': 'rv-action-button-negative-so',
   };
 
-  return dic[type] || resolveClass({ type: 'primary' });
+  return (
+    ' rv-action-button-base ' + (dic[type] || resolveClass({ type: 'primary' }))
+  );
 };
