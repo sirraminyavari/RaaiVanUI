@@ -27,7 +27,7 @@ import { getUploadUrl, setUploadImage } from 'apiHelper/ApiHandlers/docsApi';
  * @example
  * ```jsx
  * <AvatarImageCropperTabs [...acceptableProps]>
- *    <TabView.Item label="some label"> some content </TabView.Item>
+ *    <TabView.Item label="some label" type="Item"> some content </TabView.Item>
  * </AvatarImageCropperTabs>
  * ```
  */
@@ -136,7 +136,7 @@ function AvatarImageCropperTabs({
   return (
     <>
       <TabView key={targetFile}>
-        <TabView.Item label={RVDicPicture}>
+        <TabView.Item type="Item" label={RVDicPicture}>
           <ImageCropperSelection
             imageSrc={internalImageSrc}
             fileInputRef={avatarUploadRef}
@@ -145,7 +145,10 @@ function AvatarImageCropperTabs({
           />
         </TabView.Item>
         {!noAvatarTab && (
-          <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
+          <TabView.Item
+            type="Item"
+            label={avatarTabLabel || RVDicDefaultAvatar}
+          >
             <AvatarPanel
               avatarObject={avatarObject}
               value={internalAvatar}
@@ -155,7 +158,7 @@ function AvatarImageCropperTabs({
         )}
         {children}
         {CustomTabAction && (
-          <TabView.Action>
+          <TabView.Action type="Action">
             <CustomTabAction />
           </TabView.Action>
         )}
