@@ -29,18 +29,18 @@ const TemplateUploadIcon = () => {
         {openState && (
           <Styles.UploaderLayout>
             <TabView height={2.5}>
-              <TabView.Item label={'اموجی'}>
+              <TabView.Item type="Item" label={'اموجی'}>
                 <Styles.TabViewContentWrapper>
                   <EmojiPicker />
                 </Styles.TabViewContentWrapper>
               </TabView.Item>
-              <TabView.Item label={'بارگذاری تصویر'}>
+              <TabView.Item type="Item" label={'بارگذاری تصویر'}>
                 <Styles.TabViewContentWrapper>
                   <Uploader />
                 </Styles.TabViewContentWrapper>
               </TabView.Item>
 
-              <TabView.Action>
+              <TabView.Action type="Action">
                 <Styles.CloseButton onClick={close}>
                   <CloseIcon outline={true} size={20} />
                 </Styles.CloseButton>

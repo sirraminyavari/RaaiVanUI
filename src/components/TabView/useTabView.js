@@ -19,15 +19,12 @@ export const useTabView = ({ children, onSelect }) => {
 
   // <<<<<<< HEAD
   const action = useCallback(
-    [...children].find((x) => x?.type?.name === 'Action'),
+    [...children].find((x) => x?.props?.type === 'Action'),
     [children]
   );
   const items = useCallback(
     children
-      .filter((x) => x?.type?.name === 'Item')
-      .map((x) => {
-        return x;
-      })
+      .filter((x) => x?.props?.type === 'Item')
       .map((x, index) => ({
         ...x,
         key: x?.key || getUUID(),
