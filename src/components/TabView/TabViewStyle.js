@@ -64,7 +64,8 @@ export const Indicator = styled.div`
 Indicator.displayName = 'Indicator';
 
 export const TabBody = styled.div`
-  padding: 0.5rem 1rem;
+  width: 100%;
+  overflow: hidden;
 `;
 TabBody.displayName = 'TabBody';
 
@@ -73,3 +74,20 @@ export const ActionContainer = styled.div`
   padding-left: 0.75rem;
 `;
 ActionContainer.displayName = 'ActionContainer';
+
+export const ItemsContainer = styled.div`
+  ${FLEX_RSS};
+  padding: 0.5rem 1rem;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  transform: translateX(
+    ${({ index, width, rtl }) =>
+      rtl ? (width / 16) * index : -(width / 16) * index}rem
+  );
+  transition: transform 300ms ease-in-out;
+`;
+
+export const BodyWrapper = styled.div`
+  flex-shrink: 0;
+  width: calc(${({ width }) => width / 16}rem - 2rem) !important;
+`;

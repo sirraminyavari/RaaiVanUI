@@ -88,7 +88,8 @@ const CreateAccountButton = ({ ...props }) => {
       style={{ fontSize: '1rem' }}
       loading={fetchingFiles}
       style={{ width: '100%' }}
-      onClick={onCreate}>
+      onClick={onCreate}
+    >
       {title()}
     </Button>
     // </UpToDownAnimate>

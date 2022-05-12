@@ -66,9 +66,10 @@ const UserSelect = ({
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}
         style={{ display: 'flex', flexGrow: 1 }}
-        iconComponent={<UserIconIo color={CV_GRAY} size={'1.25rem'} />}
+        iconComponent={<UserIconIo color={CV_GRAY} size={'1.5rem'} />}
         title={decodeTitle}
-        {...props}>
+        {...props}
+      >
         <Maintainer>
           {value?.length > 0 && (
             <Select>
@@ -138,8 +139,16 @@ const Container = styled.div`
 `;
 const Select = styled.div`
   cursor: pointer;
-  display: flex;
-  flex-direction: row;
+  // display: flex;
+  // flex-direction: row;
+
+  display: grid;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-column-gap: 0;
+  grid-row-gap: 10px;
+  justify-content: center;
+  width: 100%;
 `;
 
 const Maintainer = styled.div`
@@ -164,6 +173,11 @@ const SelectedUser = styled.div`
 const UserName = styled.div`
   margin: 0 0.5rem 0 0.5rem;
   color: ${TCV_WARM};
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 8rem;
 `;
 const CustomCloseIcon = styled(CloseIcon)`
   color: ${CV_DISTANT};

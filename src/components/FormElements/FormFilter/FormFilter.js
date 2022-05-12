@@ -113,7 +113,8 @@ const FormFilter = (props) => {
             <FilterButton
               onClick={handleOnFilterClick}
               style={{ width: '50%', fontSize: '1rem' }}
-              type="primary-o">
+              type="primary-o"
+            >
               اعمال فیلتر
             </FilterButton>
           </Styled.FilterButtonWrapper>

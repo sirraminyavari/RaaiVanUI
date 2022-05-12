@@ -91,7 +91,8 @@ const Email = () => {
       ref={ref}
       isVisible={isVisible()}
       id="email"
-      style={{ marginTop: '2.5rem' }}>
+      style={{ marginTop: '2.5rem' }}
+    >
       <AnimatedInput
         onChange={onEmailChanged}
         value={email}

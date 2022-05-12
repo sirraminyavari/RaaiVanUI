@@ -15,7 +15,7 @@ const SideSecurity = () => {
     setSideModal((prev) => ({
       ...prev,
       isShown: true,
-      title: '*#*ویرایش سطح محرمانگی',
+      title: 'ویرایش سطح محرمانگی',
       content: 'security',
     }));
   };
@@ -24,7 +24,7 @@ const SideSecurity = () => {
     <Styled.DocSettingContainer onClick={handleSecurityClick}>
       <DocItemHeader title={RVDic.EditN.replace('[n]', RVDic.Permissions)} />
       <Styled.DocSettingTitle>
-        *#*محرمانه پیشرفته (پیش‌فرض تمپلیت)
+        محرمانه پیشرفته (پیش‌فرض تمپلیت)
       </Styled.DocSettingTitle>
     </Styled.DocSettingContainer>
   );

@@ -89,7 +89,8 @@ const OpenSidebar = () => {
       maxConstraints={{ width: MAX_WIDTH }}
       resizeHandles={RV_RTL ? ['w'] : ['e']}
       onResizing={handleOnResizing}
-      onResizeEnd={handleOnResizeEnd}>
+      onResizeEnd={handleOnResizeEnd}
+    >
       <Styled.SidebarContainer isOpen={isOpen} hasPattern={hasPattern}>
         <SidebarHeader />
         <Styled.ContentWrapper isMainContent={isMainContent}>

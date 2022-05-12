@@ -14,6 +14,7 @@ export default ShadowButton;
 
 const StyledButton = styled(Button).attrs({
   className: 'rv-border-white rv-circle',
+  isCustomButton: true,
 })`
   box-shadow: ${({ active }) => !!active && `1px 3px 20px ${CV_DISTANT}`};
   background-color: ${CV_WHITE};

@@ -537,6 +537,14 @@
         return UsersAPI._send(url, params, queryString);
     },
 
+    SetAvatar: function (params) {
+        params = params || {};
+
+        var url = UsersAPI.ResponseURL + "/SetAvatar?timeStamp=" + new Date().getTime();
+        var queryString = (params.AvatarName ? "&AvatarName=" + params.AvatarName : "");
+        return UsersAPI._send(url, params, queryString);
+    },
+
     SetAboutMe: function (params) {
         params = params || {};
 

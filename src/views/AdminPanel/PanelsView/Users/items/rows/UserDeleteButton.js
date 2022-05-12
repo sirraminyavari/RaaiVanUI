@@ -29,14 +29,16 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, isOwner }) => {
       <ButtonContainer>
         <ButtonView
           disabled={isOwner}
-          onClick={() => setModalInfo({ ...modalInfo, show: true })}>
+          onClick={() => setModalInfo({ ...modalInfo, show: true })}
+        >
           {children}
         </ButtonView>
       </ButtonContainer>
 
       <Modal
         {...modalInfo}
-        onClose={() => setModalInfo({ ...modalInfo, show: false })}>
+        onClose={() => setModalInfo({ ...modalInfo, show: false })}
+      >
         <ProfileWrapper>{render}</ProfileWrapper>
 
         <ModalMessage>
@@ -49,14 +51,16 @@ const UserDeleteButton = ({ children, render, onRemoveConfirm, isOwner }) => {
           <Button
             type="negative"
             style={buttonStyles}
-            onClick={() => onModalConfirm()}>
+            onClick={() => onModalConfirm()}
+          >
             {RVDic?.Remove}
           </Button>
 
           <Button
             type="primary-o"
             style={buttonStyles}
-            onClick={() => onModalCancel()}>
+            onClick={() => onModalCancel()}
+          >
             {RVDic?.Return}
           </Button>
         </ModelActionBar>

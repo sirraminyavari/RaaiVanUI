@@ -12,7 +12,8 @@ const PeopleItem = ({ item, onClick, pickedPeople }) => {
     <PeopleItemContent
       className={'rv-border-radius-quarter'}
       pickedPeople={pickedPeople}
-      onClick={onChoose}>
+      onClick={onChoose}
+    >
       <Avatar src={avatarUrl} />
       <Heading type={'H6'}>{name}</Heading>
     </PeopleItemContent>

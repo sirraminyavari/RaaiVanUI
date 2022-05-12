@@ -52,7 +52,8 @@ const AddRoleModal = ({ children, onClose, onConfirm, info, ...props }) => {
           <Button
             type="negative-o"
             style={buttonStyles}
-            onClick={onModalCancel}>
+            onClick={onModalCancel}
+          >
             {RVDic?.Return}
           </Button>
         </ActionButtonContainer>

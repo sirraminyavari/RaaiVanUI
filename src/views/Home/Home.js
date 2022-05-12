@@ -19,7 +19,8 @@ const Home = (props) => {
       ref={node}
       id="homeArea"
       className="small-12 medium-12 large-12 row align-center"
-      style={{ margin: '0rem' }}></div>
+      style={{ margin: '0rem', paddingTop: '1rem' }}
+    ></div>
   );
 };
 

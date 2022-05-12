@@ -61,7 +61,8 @@ const CreateWorkspaceModal = ({
         show={isOpen}
         contentWidth={modalWidth}
         title={modalTitle}
-        onClose={onCancelCreate}>
+        onClose={onCancelCreate}
+      >
         <InputWrapper>
           <AnimatedInput
             onChange={onInputChange}

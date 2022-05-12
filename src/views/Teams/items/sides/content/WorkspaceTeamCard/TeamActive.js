@@ -7,7 +7,8 @@ import { createSelector } from 'reselect';
 import ReactTooltip from 'react-tooltip';
 import * as GlobalStyled from 'views/Teams/Teams.styles';
 import * as Styled from './WorkspaceTeamCard.styles';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
+import WithAvatar from 'components/Avatar/WithAvatar';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import MoreIcon from 'components/Icons/ShowMoreIcons/ShowMore';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
@@ -50,19 +51,18 @@ const selectingApp = createSelector(
   (applications) => applications?.selectingApp
 );
 
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
+
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const actionRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
-  const {
-    RVDic,
-    RV_Float,
-    RV_RevFloat,
-    RV_RTL,
-    RVGlobal,
-    GlobalUtilities,
-  } = useWindow();
+  const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal, GlobalUtilities } =
+    useWindow();
   const [isModalShown, setIsModalShown] = useState(false);
   const [isInviteShown, setIsInviteShown] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -204,6 +204,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     setIsModalShown(true);
   };
 
+  const getAdditionalTeamUsers = () => {
+    if (isDeleting) return;
+    dispatch(getApplicationUsers(appId, '', onGetUsers));
+  };
+
   //! Get users for each team.
   const onGetUsers = (users) => {
     setUsers(users);
@@ -249,7 +254,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     return (
       <Styled.TeamActionContainer
         ref={actionRef}
-        data-action={`team-action-${appId}`}>
+        data-action={`team-action-${appId}`}
+      >
         {isRemovable ? (
           isDeleting ? (
             <LoadingIconCircle
@@ -283,7 +289,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   };
 
   useEffect(() => {
-    isModalShown && dispatch(getApplicationUsers(appId, '', onGetUsers));
+    isModalShown && getAdditionalTeamUsers();
 
     //? Due to memory leak error in component.
     //! Clean up.
@@ -301,7 +307,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
       dir={RV_Float}
       revDir={RV_RevFloat}
       style={{ cursor: 'pointer' }}
-      onClick={() => handleTeamSelect(onSelectDone, onSelectError)}>
+      onClick={() => handleTeamSelect(onSelectDone, onSelectError)}
+    >
       <TeamConfirm
         isOpen={confirm.isOpen}
         onConfirm={handleConfirmation}
@@ -367,15 +374,17 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     effect="solid"
                     place="bottom"
                     ignoreTip={isDragging}
-                    renderContent={() => fullName}>
+                    renderContent={() => fullName}
+                  >
                     <Avatar
                       onClick={openTeamUsers}
                       userImage={user?.ProfileImageURL}
-                      radius={38}
+                      userObject={user}
+                      // radius={38}
                       style={{
                         position: 'relative',
-                        [RV_Float]: `${-index * 9}px`,
-                        zIndex: 10 - index,
+                        [RV_Float]: `${-index * 1}rem`,
+                        // zIndex: 10 - index,
                         width: '3rem',
                         minWidth: '3rem',
                       }}
@@ -388,9 +397,11 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                   trigger="hover"
                   align="top"
                   arrowClass="hidden-arrow"
-                  menuClass="extra-users-popup">
+                  menuClass="extra-users-popup"
+                >
                   <Styled.ExtraUsersWrapper>
                     <Badge
+                      onMouseOver={getAdditionalTeamUsers}
                       showText={`${totalUsers - 4}+`}
                       className="team-extra-users"
                     />
@@ -407,7 +418,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                     usersCount={shownUsers?.length}
                     onClick={handleInviteUser}
                     rtl={RV_RTL}
-                    dir={RV_RevFloat}>
+                    dir={RV_RevFloat}
+                  >
                     <UserPlusIcon
                       size={22}
                       color={TCV_DEFAULT}
@@ -427,7 +439,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               backgroundColor="transparent"
               offset={{ [RV_Float]: 70 }}
               ignoreTip={isDragging}
-              renderContent={renderMoreContent}>
+              renderContent={renderMoreContent}
+            >
               <Styled.MoreIconWrapper onClick={handleClickMoreIcon}>
                 <MoreIcon size={28} className="team-more-icon" />
               </Styled.MoreIconWrapper>

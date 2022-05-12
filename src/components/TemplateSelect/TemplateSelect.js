@@ -44,14 +44,16 @@ const TemplateSelect = (props) => {
         setNodeTree,
         onModalClose,
         onSelect,
-      }}>
+      }}
+    >
       <Styled.TemplateSelectContainer ref={containerRef}>
         <Modal
           contentWidth="70%"
           titleContainerClass="select-template-modal-title-container"
           contentClass="select-template-modal-content"
           show={isOpen}
-          onClose={onModalClose}>
+          onClose={onModalClose}
+        >
           <Styled.ModalContentWrapper>
             <TemplatesList />
             <TemplateFields />

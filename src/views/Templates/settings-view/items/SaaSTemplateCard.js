@@ -5,7 +5,7 @@ import {
   CV_GRAY_DARK,
   CV_WHITE,
 } from 'constant/CssVariables';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { encodeBase64 } from '../../../../helpers/helpers';
 
 const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {

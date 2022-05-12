@@ -46,7 +46,8 @@ const UsersNoneSaasList = ({ rtl, users, ...props }) => {
               <Styled.ListHeaderItem
                 key={getUUID()}
                 width={x.width}
-                centralized={x.centralized}>
+                centralized={x.centralized}
+              >
                 {x.title}
               </Styled.ListHeaderItem>
             ))}

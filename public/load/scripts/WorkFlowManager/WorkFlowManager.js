@@ -28,6 +28,11 @@
             BeginningID: "begin"
         };
 
+        this.Options = {
+            ActionTypes: params.ActionTypes,
+            VariableTypes: params.VariableTypes
+        };
+
         var that = this;
 
         GlobalUtilities.load_files(["NetworkGraph/NetworkGraph.js", "Public/NameDialog.js"], {
@@ -58,110 +63,108 @@
                 };
             };
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12",
-                    Style: "position:relative; height:100%; padding-top:5rem; text-align:center;",
-                    Childs: [
-                        {
-                            Type: "div", Class: "rv-border-radius-half",
-                            Style: "position:absolute; background-color:white; top:0rem; left:0rem; right:0rem;" +
-                                "padding:0.3rem; height:4.3rem; overflow:hidden;",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12", Name: "optionsArea", Style: "display:none;",
-                                    Childs: [
-                                        create_button({ Name: "editNode", Title: RVDic.SettingsOfN.replace("[n]", RVDic.State), Icon: "fa-cog" }),
-                                        create_button({ Name: "editEdge", Title: RVDic.SettingsOfN.replace("[n]", RVDic.Option), Icon: "fa-cog" }),
-                                        create_button({ Name: "addNode", Title: RVDic.AddN.replace("[n]", RVDic.State) }),
-                                        create_button({ Name: "renameNode", Title: RVDic.RenameN.replace("[n]", RVDic.State) }),
-                                        create_button({ Name: "removeNode", Title: RVDic.RemoveN.replace("[n]", RVDic.State) }),
-                                        create_button({ Name: "newEdge", Title: RVDic.AddN.replace("[n]", RVDic.Option) }),
-                                        create_button({ Name: "sortEdges", Title: RVDic.SortOptions }),
-                                        create_button({ Name: "removeEdge", Title: RVDic.RemoveN.replace("[n]", RVDic.Option) }),
-                                        create_button({ Name: "imgBtn", Title: RVDic.ConvertToImage }),
-                                        {
-                                            Type: "div", Style: "display:inline-block; margin-" + RV_Float + ":1.5rem;",
-                                            Childs: [
-                                                {
-                                                    Type: "checkbox", Name: "enablePhysics",
-                                                    Style: "width:1rem; height:1rem; cursor:pointer; margin-" + RV_RevFloat + ":0.5rem;",
-                                                    Params: {
-                                                        Checked: true,
-                                                        OnChange: function () {
-                                                            if (!that.Objects.NetworkInitialized) return;
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Style: "position:relative; height:100%; padding-top:5rem; text-align:center;",
+                Childs: [
+                    {
+                        Type: "div", Class: "rv-border-radius-half",
+                        Style: "position:absolute; background-color:white; top:0rem; left:0rem; right:0rem;" +
+                            "padding:0.3rem; height:4.3rem; overflow:hidden;",
+                        Childs: [
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12", Name: "optionsArea", Style: "display:none;",
+                                Childs: [
+                                    create_button({ Name: "editNode", Title: RVDic.SettingsOfN.replace("[n]", RVDic.State), Icon: "fa-cog" }),
+                                    create_button({ Name: "editEdge", Title: RVDic.SettingsOfN.replace("[n]", RVDic.Option), Icon: "fa-cog" }),
+                                    create_button({ Name: "addNode", Title: RVDic.AddN.replace("[n]", RVDic.State) }),
+                                    create_button({ Name: "renameNode", Title: RVDic.RenameN.replace("[n]", RVDic.State) }),
+                                    create_button({ Name: "removeNode", Title: RVDic.RemoveN.replace("[n]", RVDic.State) }),
+                                    create_button({ Name: "newEdge", Title: RVDic.AddN.replace("[n]", RVDic.Option) }),
+                                    create_button({ Name: "sortEdges", Title: RVDic.SortOptions }),
+                                    create_button({ Name: "removeEdge", Title: RVDic.RemoveN.replace("[n]", RVDic.Option) }),
+                                    create_button({ Name: "imgBtn", Title: RVDic.ConvertToImage }),
+                                    {
+                                        Type: "div", Style: "display:inline-block; margin-" + RV_Float + ":1.5rem;",
+                                        Childs: [
+                                            {
+                                                Type: "checkbox", Name: "enablePhysics",
+                                                Style: "width:1rem; height:1rem; cursor:pointer; margin-" + RV_RevFloat + ":0.5rem;",
+                                                Params: {
+                                                    Checked: true,
+                                                    OnChange: function () {
+                                                        if (!that.Objects.NetworkInitialized) return;
 
-                                                            if (this.Checked) that.Objects.Network.enable_physics();
-                                                            else that.Objects.Network.disable_physics();
-                                                        }
+                                                        if (this.Checked) that.Objects.Network.enable_physics();
+                                                        else that.Objects.Network.disable_physics();
                                                     }
-                                                },
-                                                {
-                                                    Type: "div", Style: "display:inline-block;",
-                                                    Childs: [{ Type: "text", TextValue: RVDic.AutoPositioning }]
                                                 }
-                                            ]
-                                        },
-                                        {
-                                            Type: "div", Class: "small-12 medium-12 large-12",
-                                            Style: "margin-top:0.5rem; text-align:center;", Name: "info"
-                                        }
-                                    ]
-                                },
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12", Name: "newEdgeArea",
-                                    Style: "display:none; padding:0.5rem;",
-                                    Childs: [
-                                        {
-                                            Type: "div", Name: "reservedState",
-                                            Class: "rv-border-radius-quarter rv-bg-color-softer-soft SoftBorder",
-                                            Style: "display:inline-block; padding:0.1rem 0.5rem; font-size:0.8rem; font-weight:bold;"
-                                        },
-                                        {
-                                            Type: "div", Name: "reservedOption",
-                                            Class: "rv-border-radius-quarter rv-bg-color-softer-soft SoftBorder",
-                                            Style: "display:inline-block; padding:0.1rem 0.5rem; font-size:0.8rem;" +
-                                                "font-weight:bold; margin-" + RV_Float + ":0.5rem;"
-                                        },
-                                        {
-                                            Type: "div", Class: "rv-air-button rv-circle", Name: "cancelEdge",
-                                            Style: "display:inline-block; font-size:0.7rem;" +
-                                                "margin-" + RV_Float + ":1rem; width:6rem;",
-                                            Childs: [{ Type: "text", TextValue: RVDic.Cancel }]
-                                        },
-                                        {
-                                            Type: "div", Class: "rv-air-button rv-circle", Name: "addEdge",
-                                            Style: "display:inline-block; font-size:0.7rem;" +
-                                                "margin-" + RV_Float + ":0.5rem; width:6rem;",
-                                            Childs: [{ Type: "text", TextValue: RVDic.Add }]
-                                        },
-                                        {
-                                            Type: "div", Class: "small-12 medium-12 large-12",
-                                            Style: "font-size:0.7rem; margin-top:0.5rem; text-align:center;",
-                                            Childs: [{ Type: "text", TextValue: RVDic.WF.OptionSelectForNewEdgeInfo }]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-1 SoftBorder HardShadow",
-                            Style: "position:relative; height:100%; border-color:rgb(200,200,200); overflow:hidden;" +
-                                "background-color:rgba(255,255,255,0.5);",
-                            Childs: [
-                                {
-                                    Type: "div", Name: "state",
-                                    Style: "position:absolute; display:none; top:0.5rem;" + RV_Float + ":0.5rem; width:30rem; z-index:1;"
-                                },
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-1",
-                                    Style: "height:100%;", Name: "wfArea"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ], that.Container);
+                                            },
+                                            {
+                                                Type: "div", Style: "display:inline-block;",
+                                                Childs: [{ Type: "text", TextValue: RVDic.AutoPositioning }]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        Type: "div", Class: "small-12 medium-12 large-12",
+                                        Style: "margin-top:0.5rem; text-align:center;", Name: "info"
+                                    }
+                                ]
+                            },
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12", Name: "newEdgeArea",
+                                Style: "display:none; padding:0.5rem;",
+                                Childs: [
+                                    {
+                                        Type: "div", Name: "reservedState",
+                                        Class: "rv-border-radius-quarter rv-bg-color-softer-soft SoftBorder",
+                                        Style: "display:inline-block; padding:0.1rem 0.5rem; font-size:0.8rem; font-weight:bold;"
+                                    },
+                                    {
+                                        Type: "div", Name: "reservedOption",
+                                        Class: "rv-border-radius-quarter rv-bg-color-softer-soft SoftBorder",
+                                        Style: "display:inline-block; padding:0.1rem 0.5rem; font-size:0.8rem;" +
+                                            "font-weight:bold; margin-" + RV_Float + ":0.5rem;"
+                                    },
+                                    {
+                                        Type: "div", Class: "rv-air-button rv-circle", Name: "cancelEdge",
+                                        Style: "display:inline-block; font-size:0.7rem;" +
+                                            "margin-" + RV_Float + ":1rem; width:6rem;",
+                                        Childs: [{ Type: "text", TextValue: RVDic.Cancel }]
+                                    },
+                                    {
+                                        Type: "div", Class: "rv-air-button rv-circle", Name: "addEdge",
+                                        Style: "display:inline-block; font-size:0.7rem;" +
+                                            "margin-" + RV_Float + ":0.5rem; width:6rem;",
+                                        Childs: [{ Type: "text", TextValue: RVDic.Add }]
+                                    },
+                                    {
+                                        Type: "div", Class: "small-12 medium-12 large-12",
+                                        Style: "font-size:0.7rem; margin-top:0.5rem; text-align:center;",
+                                        Childs: [{ Type: "text", TextValue: RVDic.WF.OptionSelectForNewEdgeInfo }]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-1 SoftBorder HardShadow",
+                        Style: "position:relative; height:100%; border-color:rgb(200,200,200); overflow:hidden;" +
+                            "background-color:rgba(255,255,255,0.5);",
+                        Childs: [
+                            {
+                                Type: "div", Name: "state",
+                                Style: "position:absolute; display:none; top:0.5rem;" + RV_Float + ":0.5rem; width:30rem; z-index:1;"
+                            },
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-1",
+                                Style: "height:100%;", Name: "wfArea"
+                            }
+                        ]
+                    }
+                ]
+            }], that.Container);
 
             that.Interface.Options = elems["optionsArea"];
             that.Interface.Buttons.RenameState = elems["renameNode"];
@@ -784,7 +787,9 @@
                             for (var i in that.Objects.Nodes)
                                 if (that.Objects.Nodes[i]) arr.push(that.Objects.Nodes[i]);
                             callback(arr);
-                        }
+                        },
+                        ActionTypes: that.Options.ActionTypes,
+                        VariableTypes: that.Options.VariableTypes
                     });
                 }
             });

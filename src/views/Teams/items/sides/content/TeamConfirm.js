@@ -18,7 +18,8 @@ const TeamConfirm = (props) => {
       confirmText={RVDic.Confirm}
       onConfirm={onConfirm}
       onCancel={handleCloseConfirm}
-      onClose={handleCloseConfirm}>
+      onClose={handleCloseConfirm}
+    >
       <Styled.TeamConfirmMessage>{message}</Styled.TeamConfirmMessage>
     </Confirm>
   );

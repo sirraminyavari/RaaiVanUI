@@ -118,7 +118,8 @@ const SimpleListViewer = ({
         justifyContent: 'center',
         flexDirection: 'column',
         width: '100%',
-      }}>
+      }}
+    >
       {isFetching && data.length === 0 ? (
         <LogoLoader />
       ) : data && data.length > 0 && renderItem ? (
@@ -126,7 +127,8 @@ const SimpleListViewer = ({
           <InfiniteScroll
             dataLength={data.length} //This is important field to render the next data
             next={onEndReached}
-            hasMore={true}>
+            hasMore={true}
+          >
             {data.map((x, index) => (
               <div key={index}>{renderItem(x, index)}</div>
             ))}

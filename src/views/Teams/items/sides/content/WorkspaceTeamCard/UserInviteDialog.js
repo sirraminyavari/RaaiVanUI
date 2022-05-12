@@ -231,7 +231,8 @@ const UserInviteDialog = (props) => {
       onClose={handleCloseInvitation}
       contentWidth={getModalWidth()}
       contentClass="invite-modal-container"
-      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(app?.Title)})`}>
+      title={`${RVDic.InviteNewTeamMate} (${decodeBase64(app?.Title)})`}
+    >
       <Styled.AddUserModalHeader>
         <Styled.AddUserPlusSign>+</Styled.AddUserPlusSign>
         <UsersGroupIcon size={40} />
@@ -262,7 +263,8 @@ const UserInviteDialog = (props) => {
             fontSize: '1rem',
             fontWeight: '500',
             color: TCV_WARM,
-          }}>
+          }}
+        >
           <MailIcon fill size={20} />
           <span style={{ margin: '0 0.5rem' }}>{RVDic.SendInvitations}</span>
         </div>
@@ -318,7 +320,8 @@ const UserInviteDialog = (props) => {
           loading={isSending}
           onClick={handleSendInvitations}
           classes="send-invitation-button"
-          disable={isSendDisabled}>
+          disable={isSendDisabled}
+        >
           {RVDic.Send}
         </Button>
       </Styled.InviteContent>

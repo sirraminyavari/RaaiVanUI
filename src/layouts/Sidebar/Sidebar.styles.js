@@ -105,11 +105,8 @@ export const ContentWrapper = withTheme(styled.div`
 `);
 
 const getHeaderWidth = (props) => {
-  const {
-    isSidebarOpen,
-    sidebarCurrentWidth,
-    sidebarCloseWidth,
-  } = props.theme.states;
+  const { isSidebarOpen, sidebarCurrentWidth, sidebarCloseWidth } =
+    props.theme.states;
   const openWidth = css`
     width: ${sidebarCurrentWidth / 16}rem;
   `;

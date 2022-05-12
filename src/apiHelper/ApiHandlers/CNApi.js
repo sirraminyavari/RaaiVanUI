@@ -15,6 +15,7 @@ import {
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 import {
+  API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY,
   API_NAME_CN_REMOVE_NODE_TYPE,
   API_NAME_CN_RENAME_NODE_TYPE,
 } from 'constant/api-names-cn';
@@ -162,7 +163,6 @@ export const saveMembers = (NodeID, UserIDs) => {
 };
 
 /**
-<<<<<<< HEAD
  * @description Get node types.
  * @param {String} nodeTypeId -The id of node.
  * @param {String} count -The number of nodes to fetch.
@@ -215,12 +215,13 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
 };
 
 /**
- * @description Get templates.
- * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
- * @returns Promise.
+ * @description fetches all fields of activity
  */
-export const getTemplates = ({ TagID } = {}) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
+export const getAllFieldsOfActivity = () => {
+  return apiCallWrapper(
+    API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
+    {}
+  );
 };
 
 /**
@@ -232,8 +233,17 @@ export const getTemplateTags = () => {
 };
 
 /**
+ * @description Get templates.
+ * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
+ * @returns Promise.
+ */
+export const getTemplates = ({ TagID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
+};
+
+/**
  * @description Gets a template object
- * @param {String} NodeTypeID the id of the template
+ * @param {String} prop.NodeTypeID the id of the template
  * @returns Promise.
  */
 export const getTemplateJSON = ({ NodeTypeID } = {}) => {
@@ -275,5 +285,16 @@ export const setNodeTypesOrder = ({ NodeTypeIDs } = {}) => {
 export const activateTemplate = ({ Template } = {}) => {
   return apiCallWrapper(API_Provider(CN_API, ACTIVATE_TEMPLATE), {
     Template: encodeBase64(JSON.stringify(Template || {})),
+  });
+};
+
+/**
+ * @description get the preview of a Template
+ * @param {string} NodeTypeID -The template object to be activated.
+ * @returns Promise.
+ */
+export const getTemplatePreview = ({ NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetTemplatePreview'), {
+    NodeTypeID,
   });
 };

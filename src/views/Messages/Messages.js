@@ -12,7 +12,12 @@ const Messages = () => {
     <div
       id="messagesArea"
       className="small-12 medium-12 large-12 row"
-      style={{ margin: '0rem 0rem 5rem 0rem', padding: '0vw 10vw' }}></div>
+      style={{
+        margin: '0rem 0rem 5rem 0rem',
+        padding: '0vw 10vw',
+        paddingTop: '1rem',
+      }}
+    ></div>
   );
 };
 

@@ -28,7 +28,8 @@ const TemplateListItem = ({ itemProps }) => {
     <Styled.TemplateItemWrapper
       onClick={handleClickItem}
       indentStep={depth === 0 ? 0 : `${INDENT_PER_LEVEL * depth}`}
-      ref={provided.innerRef}>
+      ref={provided.innerRef}
+    >
       {item?.hasChildren ? (
         <Styled.TemplateIconWrapper isExpanded={item?.isExpanded}>
           {getIcon(item)}

@@ -76,14 +76,16 @@ const SubjectTools = ({
       {editable && (
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
-          onClick={onEdit}>
+          onClick={onEdit}
+        >
           <EditIcon className="rv-distant" size={30} />
         </button>
       )}
       {removable && (
         <button
           style={{ width: '1rem', marginRight: '1.7rem' }}
-          onClick={onDelete}>
+          onClick={onDelete}
+        >
           <TrashIcon size={30} className="rv-distant" />
         </button>
       )}
@@ -107,7 +109,8 @@ const SubjectTools = ({
             alignContent: 'center',
           }}
           type={'secondary-o'}
-          onClick={onBookmark}>
+          onClick={onBookmark}
+        >
           {bookmarkFetching ? (
             <LoadingIconCircle
               style={{

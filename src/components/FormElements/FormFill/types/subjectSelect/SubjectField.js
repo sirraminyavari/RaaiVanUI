@@ -56,7 +56,8 @@ const SubjectField = ({
         contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
         style={{ padding: '0', height: '50%' }}
         stick
-        show={isVisible}>
+        show={isVisible}
+      >
         <ItemSelection
           nodeTypes={parseDecodeInfo?.NodeTypes}
           routeProps={propsContext}
@@ -87,8 +88,9 @@ const SubjectField = ({
         editModeVisible={true}
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}
-        iconComponent={<AtIcon color={CV_GRAY} size={'1.25rem'} />}
-        title={decodeTitle}>
+        iconComponent={<AtIcon color={CV_GRAY} size={'1.5rem'} />}
+        title={decodeTitle}
+      >
         {value?.length > 0 ? (
           <EditModeContainer>
             {value.map((x) => (

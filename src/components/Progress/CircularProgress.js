@@ -76,13 +76,15 @@ const CircularProgress = ({
         width: size,
         height: size,
         justifyContent: 'space-around',
-      }}>
+      }}
+    >
       <svg
         viewBox="0 0 36 36"
         style={{
           width: '100%',
           height: '100%',
-        }}>
+        }}
+      >
         {!hideChannel && (
           <Channel
             channelColor={channelColor}
@@ -101,7 +103,8 @@ const CircularProgress = ({
             x="18"
             y={RV_RTL ? '22' : '20.35'}
             textColor={textColor}
-            textSize={textSize}>
+            textSize={textSize}
+          >
             {label || value}
           </Text>
         )}

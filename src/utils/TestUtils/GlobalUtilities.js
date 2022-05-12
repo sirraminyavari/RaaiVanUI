@@ -39,23 +39,7 @@ export const GlobalUtilities = {
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     );
     var numbers = [
-      2,
-      35,
-      23,
-      6,
-      9,
-      4,
-      274,
-      742,
-      45,
-      565,
-      456,
-      34,
-      798,
-      12,
-      56,
-      776,
-      665,
+      2, 35, 23, 6, 9, 4, 274, 742, 45, 565, 456, 34, 798, 12, 56, 776, 665,
     ];
     id = String(!id ? GlobalUtilities.generate_new_guid() : id);
     var initialLength = id.length;
@@ -2301,7 +2285,8 @@ export const GlobalUtilities = {
   },
 
   is_valid_email: function (email) {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
   },
 
@@ -2459,8 +2444,8 @@ export const GlobalUtilities = {
             slctObj.__NodeListContainer
           ));
 
-        var _div = (slctObj.__NodeListContainer = GlobalUtilities.create_nested_elements(
-          [
+        var _div = (slctObj.__NodeListContainer =
+          GlobalUtilities.create_nested_elements([
             {
               Type: 'div',
               Class:
@@ -2468,8 +2453,7 @@ export const GlobalUtilities = {
               Style: 'margin:0 auto; padding:1rem;',
               Name: '_div',
             },
-          ]
-        )['_div']);
+          ])['_div']);
 
         slctObj.__ShowedNodeList = GlobalUtilities.show(_div);
         GlobalUtilities.loading(_div);
@@ -3062,12 +3046,18 @@ export const GlobalUtilities = {
     img.check = img.Check = function (p, e) {
       _change(p, e, true);
     };
-    img.uncheck = img.Uncheck = img.UnCheck = function (p, e) {
-      _change(p, e, false);
-    };
-    img.clear = img.Clear = img.UnCheck = function (p, e) {
-      _change(p, e, null);
-    };
+    img.uncheck =
+      img.Uncheck =
+      img.UnCheck =
+        function (p, e) {
+          _change(p, e, false);
+        };
+    img.clear =
+      img.Clear =
+      img.UnCheck =
+        function (p, e) {
+          _change(p, e, null);
+        };
 
     img.onclick = function (e) {
       e.stopPropagation();
@@ -4584,11 +4574,8 @@ export const GlobalUtilities = {
         Set: function (params) {
           if ((params || {}).Value) elems['hiddenArea'].value = params.Value;
           if ((params || {}).Label)
-            elems[
-              'viewArea'
-            ].innerHTML = GlobalUtilities.convert_numbers_to_persian(
-              String(params.Label)
-            );
+            elems['viewArea'].innerHTML =
+              GlobalUtilities.convert_numbers_to_persian(String(params.Label));
         },
       };
 
@@ -4643,9 +4630,8 @@ export const GlobalUtilities = {
   load_files: function (files, params) {
     params = params || {};
 
-    files = (GlobalUtilities.get_type(files) == 'string'
-      ? [files]
-      : files || []
+    files = (
+      GlobalUtilities.get_type(files) == 'string' ? [files] : files || []
     )
       .map((f) => (f || {}).File || f)
       .filter((f) => !!f);

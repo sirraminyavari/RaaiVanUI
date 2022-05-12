@@ -305,6 +305,10 @@ export const WorkspaceDeleteWelcomeHeader = styled.div`
 
 export const WorkspaceSettingsHeaderContainer = styled.div`
   padding-block: 1.5rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
 
   .headerContainer {
     display: flex;

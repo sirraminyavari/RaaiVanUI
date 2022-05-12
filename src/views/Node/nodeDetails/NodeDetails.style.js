@@ -39,13 +39,10 @@ export const Container = styled.div`
   width: 100%;
   align-items: flex-start;
   justify-content: center;
-  max-height: calc(100vh - 11rem);
-  padding: 2rem 2rem 2rem 2rem;
+  padding-block: 2rem;
 `;
 export const ScrollProvider = styled.div`
-  width: calc(
-    ${({ isAdvancedShow }) => (isAdvancedShow ? '100% - 25rem' : '100%')}
-  );
+  width: calc(${({ isAdvancedShow }) => (isAdvancedShow ? '100%' : '100%')});
 
   box-shadow: 1px 3px 20px #0000001f;
 `;
@@ -54,7 +51,6 @@ export const Scrollable = styled.div`
 `;
 export const Maintainer = styled.div`
   width: 100%;
-  min-height: calc(100vh - 9rem);
   max-height: 100%;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
 `;
@@ -67,6 +63,7 @@ export const Side = styled.div`
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
   // transition: width 0.5s, opacity 0.5s;
+  z-index: 10;
 `;
 
 export const TopFilter = styled.div`
@@ -110,10 +107,11 @@ export const AdvancedFilterDialog = styled.div`
   box-shadow: 1px 3px 20px ${CV_DISTANT};
 `;
 export const Space = styled.div`
-  width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
+  width: ${({ $isEnabled, mobileView }) =>
+    $isEnabled && !mobileView ? '25rem' : '0rem'};
   ${({ dir }) => dir}: 0;
   height: 1rem;
-  padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
+  // padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   transition: width 0.5s;
 `;
 
@@ -176,7 +174,7 @@ export const SideHeaderIconWrapper = styled.div.attrs({
 export const SideHeaderTitle = styled.div.attrs({
   className: `${TC_WARM}`,
 })`
-  font-size: 0.8rem;
+  font-size: 1rem;
 `;
 
 export const SideActionItemWrapper = styled.div`

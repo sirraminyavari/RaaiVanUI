@@ -14,7 +14,8 @@ const PostView = (props) => {
     <div
       id="postArea"
       className="small-12 medium-12 large-12"
-      style={{ padding: '0 10% 5rem 10%', margin: '0 auto' }}></div>
+      style={{ padding: '1rem 10% 5rem 10%', margin: '0 auto' }}
+    ></div>
   );
 };
 

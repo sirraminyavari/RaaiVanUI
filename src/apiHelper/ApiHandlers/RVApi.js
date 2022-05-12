@@ -2,14 +2,25 @@ import { API_Provider, encodeBase64 } from 'helpers/helpers';
 import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
+  GET_WORKSPACES,
   RENAME_WORKSPACE,
   REMOVE_WORKSPACE_TICKET,
   REMOVE_WORKSPACE_USER,
   RV_API,
   SELECT_APPLICATION,
   REMOVE_WORKSPACE,
+  SET_APPLICATION_SIZE,
+  SET_APPLICATION_FIELD_OF_EXPERTISE,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+/**
+ * @description get all workspaces
+ * @return {Promise<unknown>}
+ */
+export const getWorkspaces = () => {
+  return apiCallWrapper(API_Provider(RV_API, GET_WORKSPACES));
+};
 
 /**
  * @description create workspace
@@ -85,6 +96,42 @@ export const createApplication = ({ WorkspaceID, Title } = {}) => {
     WorkspaceID: WorkspaceID,
     Title: encodeBase64(Title),
   });
+};
+
+/**
+ * @description set application's people count size
+ * @param props.ApplicationID ID of the application
+ * @param {("1 - 10"|"10 - 20"|"more than 20")} props.Size size of the application people
+ * @return {Promise<unknown>}
+ */
+export const setApplicationSize = ({ ApplicationID, Size } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, SET_APPLICATION_SIZE), {
+    ApplicationID,
+    Size: encodeBase64(Size),
+  });
+};
+
+//TODO complete documentation of setApplicationFieldOfExpertise for optional input keys
+/**
+ * @description set application's field of expertise
+ * @param props.ApplicationID ID of the application
+ * @param props.FieldID Field ID
+ * @param props.FieldName Name of the field
+ * @return {Promise<unknown>}
+ */
+export const setApplicationFieldOfExpertise = ({
+  ApplicationID,
+  FieldID,
+  FieldName,
+} = {}) => {
+  return apiCallWrapper(
+    API_Provider(RV_API, SET_APPLICATION_FIELD_OF_EXPERTISE),
+    {
+      ApplicationID,
+      FieldID,
+      FieldName: encodeBase64(FieldName),
+    }
+  );
 };
 
 /**

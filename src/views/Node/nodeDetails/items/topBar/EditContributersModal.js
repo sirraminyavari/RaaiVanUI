@@ -58,14 +58,13 @@ const EditContributersModal = ({
       : [...contList, { ...event, percent: 0 }];
     setContList(newList);
   };
-  const updatePercent = ({ item, percent }) => {
+  const updatePercent = ({ item, percent = 0 }) => {
     const readyToUpdate = contList?.map((x) =>
       x.id === item.id ? { ...x, percent: percent } : x
     );
     const filledContPercent = readyToUpdate?.reduce((x, y) => ({
       percent: +x?.percent + y?.percent,
     }))?.percent;
-
     if (filledContPercent <= 100) {
       setContList(readyToUpdate);
     }
@@ -123,10 +122,11 @@ const EditContributersModal = ({
   return (
     <Modal
       onClose={onClose}
-      contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '35.7rem'}
+      contentWidth={'clamp(10rem,97%,35.7rem)'}
       stick
       style={{ padding: 0 }}
-      show={isVisible}>
+      show={isVisible}
+    >
       <Top className="rv-border-radius-half">
         <Header type="h2">
           {RVDic.EditN.replace('[n]', RVDic.MainAuthors)}
@@ -169,14 +169,16 @@ const EditContributersModal = ({
               onClick={onSave}
               style={{ width: '6.5rem', height: '3rem' }}
               type={'primary'}
-              disable={changeOccured()}>
+              disable={changeOccured()}
+            >
               {RVDic.Save}
             </Button>
           </BottomMain>
           <Button
             onClick={onClose}
             style={{ width: '6.5rem', height: '3rem' }}
-            type={'negative-o'}>
+            type={'negative-o'}
+          >
             {RVDic.Return}
           </Button>
         </Bottom>
@@ -188,7 +190,7 @@ const EditContributersModal = ({
 export default EditContributersModal;
 
 const Maintainer = styled.div`
-  width: 35.5rem;
+  // width: 35.5rem;
   height: 37.5rem;
   display: flex;
   background-color: ${CV_WHITE};

@@ -3,9 +3,8 @@ import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { searchContext } from 'views/Search/SearchView';
 
 const SearchTypeCollapsed = () => {
-  const { selectedType, setSelectedType, allOptions } = useContext(
-    searchContext
-  );
+  const { selectedType, setSelectedType, allOptions } =
+    useContext(searchContext);
 
   const handleSelectChange = (type) => {
     setSelectedType(type);

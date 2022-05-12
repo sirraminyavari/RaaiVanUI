@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import APIHandler from 'apiHelper/APIHandler';
 import moment from 'jalali-moment';
 import { Subject } from 'rxjs';
-import InfoToast from '../components/toasts/info-toast/InfoToast';
+import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
 
 const { GlobalUtilities, RVAPI } = window;
 
@@ -13,7 +13,10 @@ const { GlobalUtilities, RVAPI } = window;
  * ...pipes them together.
  * @returns Any
  */
-export const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
+export const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((v, f) => f(v), x);
 
 /**
  * @description A function to get current language from cookie.
@@ -339,7 +342,7 @@ export const randomNumber = (min, max) => {
 };
 
 /**
- * @description Generates a 10 digit random number
+ * @description Scroll Element to the view
  * @param {HTMLElement|string} element - The element which needs to be in the browser viewport (also accepts a string as element's [id] attribute)
  * @param {object} [params]
  * @return {void}
@@ -377,4 +380,67 @@ export const fileSizeLabel = (size) => {
       ' ' +
       GigaBytes
     );
+};
+
+export const extend = (...args) => {
+  let jsonValue = args.length ? args[0] : {};
+
+  let hasLevel =
+    args.length > 0 &&
+    GlobalUtilities.get_type(args[args.length - 1]) === 'number';
+  let level = hasLevel ? args[args.length - 1] : 3;
+
+  args =
+    args.length === (hasLevel ? 2 : 1) &&
+    GlobalUtilities.get_type(jsonValue) === 'array'
+      ? jsonValue
+      : args;
+
+  let first = args.length > 0 ? args[0] : null;
+  let second = args.length > 1 ? args[1] : null;
+
+  if (
+    GlobalUtilities.get_type(first) !== 'json' ||
+    GlobalUtilities.get_type(second) !== 'json'
+  )
+    return first;
+
+  for (let o in second) {
+    let type = GlobalUtilities.get_type(second[o]);
+    if (type === 'undefined') continue;
+
+    if (
+      GlobalUtilities.get_type(first[o]) === 'json' &&
+      GlobalUtilities.get_type(second[o]) === 'json' &&
+      level > 0
+    )
+      first[o] = extend(first[o] || {}, second[o], level - 1);
+    else first[o] = second[o];
+  }
+
+  let newArgs = [first];
+  for (let i = 2, lnt = args.length; i < lnt; ++i) newArgs.push(args[i]);
+
+  return extend(newArgs, level);
+};
+
+/**
+ * @description Returns an URL based on user object having "AvatarName" or "ImageURL" keys
+ * @param {string} [param.defaultURL] - The default URL to return, if both "AvatarName" and "ImageURL" were undefined
+ * @param {object} param.AvatarSVGsObject -  An Object the of Avatar URLs and Names
+ * @param {object} param.userObject -  An Object containing "AvatarName" or "ImageURL"
+ * @return {string}
+ */
+export const avatarIconURL = ({
+  userObject,
+  defaultURL,
+  AvatarSVGsObject = AvatarSVGS,
+}) => {
+  const { ImageURL, AvatarName } = userObject || {};
+  if (AvatarName) {
+    if (AvatarName && AvatarSVGsObject[decodeBase64(AvatarName)])
+      return AvatarSVGsObject[decodeBase64(AvatarName)];
+    else return defaultURL;
+  } else if (ImageURL) return ImageURL;
+  else return defaultURL;
 };

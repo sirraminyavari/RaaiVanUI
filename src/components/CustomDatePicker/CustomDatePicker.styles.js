@@ -54,7 +54,6 @@ export const CalendarContainer = styled.div`
   .Calendar__yearSelectorAnimationWrapper {
     height: 75% !important;
   }
-
   .Calendar__monthSelector {
     position: relative;
     top: 0.15rem;
@@ -123,7 +122,7 @@ export const CalendarContainer = styled.div`
 
   .today-date {
     color: ${CV_WHITE} !important;
-    background-color: ${TCV_VERYWARM} !important;
+    background-color: ${TCV_DEFAULT} !important;
   }
 
   .selected-date {

@@ -225,7 +225,8 @@ const CustomTable = (props) => {
             contentWidth="75%"
             show={modal.show}
             title={modal.title}
-            onClose={handleOnModalClose}>
+            onClose={handleOnModalClose}
+          >
             {!!modal.content && modal.content()}
           </TableModal>
         )}
@@ -238,7 +239,8 @@ const CustomTable = (props) => {
                 <div {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <Styled.TableHeader
-                      {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
                       <ColumnHeader column={column} allColumns={columns} />
                       {isTableResizable && (
                         <Styled.TableColumnResizer
@@ -253,14 +255,16 @@ const CustomTable = (props) => {
             </div>
             <DragDropContext
               onDragEnd={handleDragEnd}
-              onBeforeDragStart={handleBeforeDragStart}>
+              onBeforeDragStart={handleBeforeDragStart}
+            >
               <Droppable droppableId={tableId}>
                 {(provided, _) => (
                   <Styled.TableBody
                     isRowDragging={isRowDragging}
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    {...getTableBodyProps()}>
+                    {...getTableBodyProps()}
+                  >
                     {page.map((row, i) => {
                       prepareRow(row);
                       const isRowEditing =
@@ -271,7 +275,8 @@ const CustomTable = (props) => {
                           draggableId={row.original.id}
                           key={row.original.id}
                           index={row.index}
-                          isDragDisabled={isRowEditing}>
+                          isDragDisabled={isRowEditing}
+                        >
                           {(provided, snapshot) => (
                             <Styled.Tr
                               ref={provided.innerRef}
@@ -293,7 +298,8 @@ const CustomTable = (props) => {
                                             editByCell && setSelectedCell(cell);
                                           },
                                         },
-                                      ])}>
+                                      ])}
+                                    >
                                       {cell.render('Cell', {
                                         editable: !!isTableEditable,
                                         dragHandleProps: {

@@ -23,6 +23,10 @@ export const parseTemplates = (data) => {
   });
 
   templates.forEach((tmp) => {
+    tmp.IsDefaultTemplate = (data.DefaultTemplateIDs || []).some(
+      (id) => id === tmp.NodeTypeID
+    );
+
     tmp.Tags = !templateTags[tmp.NodeTypeID]
       ? []
       : templateTags[tmp.NodeTypeID]

@@ -115,7 +115,8 @@ const DateCell = (props) => {
             value={dateValue}
             onDateSelect={handleDateSelect}
           />
-        )}>
+        )}
+      >
         <Styled.DateCellContainer>
           {dateValue ? (
             <Heading className="table-date-edit-title" type="h6">

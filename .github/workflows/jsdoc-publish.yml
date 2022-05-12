@@ -7,10 +7,23 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup node env
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://npm.pkg.github.com'
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Build
         uses: andstor/jsdoc-action@v1

@@ -2,10 +2,8 @@
  * A custom date picker for all.
  */
 import { useState, useRef, useEffect } from 'react';
-import '@rasoul678/react-modern-calendar-datepicker/lib/DatePicker.css';
-import DatePicker, {
-  Calendar,
-} from '@rasoul678/react-modern-calendar-datepicker';
+import 'ramin-modern-calendar-datepicker/lib/DatePicker.css';
+import DatePicker, { Calendar } from 'ramin-modern-calendar-datepicker';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import Input from 'components/Inputs/Input';
 import Button from 'components/Buttons/Button';
@@ -388,7 +386,8 @@ const CustomDatePicker = (props) => {
             !justCalendar && (
               <Button
                 style={{ minWidth: '16rem', ...buttonStyle }}
-                onClick={toggleCalendar}>
+                onClick={toggleCalendar}
+              >
                 {formatDate(selectedDate)}
               </Button>
             )

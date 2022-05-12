@@ -77,7 +77,8 @@ const NameFamily = () => {
     <UpToDownAnimate
       ref={ref}
       dimension={ref?.current?.getBoundingClientRect()}
-      isVisible={isVisible()}>
+      isVisible={isVisible()}
+    >
       <Container>
         <AnimatedInput
           onChange={onNameChanged}

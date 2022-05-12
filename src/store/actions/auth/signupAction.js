@@ -4,12 +4,8 @@
 import afterLogin from 'utils/OnboardingRoute/afterLogin';
 import { loginSlice } from '../../reducers/loginReducer';
 
-const {
-  signup,
-  signupSuccess,
-  signupFailed,
-  setVerifyCodeError,
-} = loginSlice.actions;
+const { signup, signupSuccess, signupFailed, setVerifyCodeError } =
+  loginSlice.actions;
 
 const { UsersAPI, GlobalUtilities, location, RVDic, RVAPI, RVGlobal } = window;
 

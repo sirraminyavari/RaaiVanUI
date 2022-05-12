@@ -50,7 +50,8 @@ const NotifsNavigationOldVersion = () => {
     <Styled.AlertFooterNavigation>
       <Styled.AlertFooterArrowWrapper
         style={{ color: isLastPage && `${CV_DISTANT}` }}
-        onClick={handleNextPage}>
+        onClick={handleNextPage}
+      >
         <ArrowHead dir={RV_Float} size={20} />
       </Styled.AlertFooterArrowWrapper>
       <Styled.AlertFooterArrowWrapper style={{ padding: '0 0.5rem' }}>
@@ -58,7 +59,8 @@ const NotifsNavigationOldVersion = () => {
       </Styled.AlertFooterArrowWrapper>
       <Styled.AlertFooterArrowWrapper
         style={{ color: isFirstPage && `${CV_DISTANT}` }}
-        onClick={handlePrevPage}>
+        onClick={handlePrevPage}
+      >
         <ArrowHead dir={RV_RevFloat} size={20} />
       </Styled.AlertFooterArrowWrapper>
     </Styled.AlertFooterNavigation>

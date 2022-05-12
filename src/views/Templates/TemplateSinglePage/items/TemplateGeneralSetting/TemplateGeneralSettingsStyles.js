@@ -31,6 +31,7 @@ export const SideForm = styled.div`
   overflow: hidden;
   background-color: ${CV_GRAY_LIGHT};
   position: relative;
+  z-index: 0;
 `;
 
 export const SideFormHeader = styled.div`

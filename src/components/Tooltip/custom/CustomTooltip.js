@@ -56,7 +56,8 @@ const Tooltip = (props) => {
             right: tipRec.left < nodeRec.width / 2 ? nodeRec.left + 100 : 50,
             offsetX,
             offsetY,
-          }}>
+          }}
+        >
           {typeof Content === 'string' ? Content : <Content />}
         </Styled.Tooltip>
       )}

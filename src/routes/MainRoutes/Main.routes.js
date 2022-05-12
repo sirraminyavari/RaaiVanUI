@@ -55,9 +55,13 @@ const ErrorView = lazy(() =>
 const NewNode = lazy(() =>
   import(/* webpackChunkName: "new-node-view"*/ 'views/NewNode/NewNode')
 );
-// const NodeView = lazy(() =>
-//   import(/* webpackChunkName: "node-view "*/ 'views/Node/Node-view')
-// );
+
+//const NodeView = lazy(() =>
+//  import(
+//    /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
+//  )
+//);
+
 const NodeView = lazy(() =>
   import(
     /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
@@ -105,8 +109,15 @@ const ChangePassword = lazy(() =>
     /* webpackChunkName: "change-password-view"*/ 'views/ChangePassword/ChangePassword'
   )
 );
+const OnboardingNew = lazy(() =>
+  import(
+    /* webpackChunkName: "onboarding-new-view"*/ 'views/Onboarding/Onboarding'
+  )
+);
 const Onboarding = lazy(() =>
-  import(/* webpackChunkName: "onboarding-view"*/ 'views/Onboarding/Onboarding')
+  import(
+    /* webpackChunkName: "onboarding-view"*/ 'views/Onboarding/old/stepper'
+  )
 );
 const TemplatesSettings = lazy(() =>
   import(
@@ -256,12 +267,20 @@ const routes = [
     hasNavSide: true,
     component: TemplatesArchives,
   },
+  //TODO setup new Onboarding design to /onboarding/new/* due to uncompleted RVDic and potential bugs
+  {
+    path: ONBOARDING_PATH + '/old',
+    name: ONBOARDING_NAME,
+    exact: false,
+    hasNavSide: false,
+    component: Onboarding,
+  },
   {
     path: ONBOARDING_PATH,
     name: ONBOARDING_NAME,
-    exact: true,
-    hasNavSide: false,
-    component: Onboarding,
+    exact: false,
+    hasNavSide: true,
+    component: OnboardingNew,
   },
   {
     path: MONITORING_PATH,

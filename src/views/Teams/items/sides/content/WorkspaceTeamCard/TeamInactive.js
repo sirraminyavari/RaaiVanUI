@@ -1,17 +1,23 @@
 import { useContext, forwardRef } from 'react';
 import * as Styled from './WorkspaceTeamCard.styles';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import Avatar from 'components/Avatar/Avatar';
+import AvatarComponent from 'components/Avatar/Avatar';
 import Button from 'components/Buttons/Button';
 import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
 import { WindowContext } from 'context/WindowProvider';
+import WithAvatar from 'components/Avatar/WithAvatar';
+
+const Avatar = WithAvatar({
+  Component: AvatarComponent,
+  componentURLProp: 'userImage',
+});
 
 const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
   const { Title, Description, Users: appUsers, IconURL } = team;
   const { TotalCount, Users } = appUsers;
-  const { RVGlobal } = useContext(WindowContext);
+  const { RVGlobal, GlobalUtilities } = useContext(WindowContext);
   const { IsSystemAdmin } = RVGlobal;
 
   return (
@@ -48,6 +54,7 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
                   userImage={GlobalUtilities.add_timestamp(
                     user.ProfileImageURL
                   )}
+                  userObject={user}
                   radius={32}
                   imageStyles={{ filter: 'grayscale(100%)' }}
                   style={{
@@ -80,6 +87,7 @@ const InactiveTeam = forwardRef(({ team, dragHandle }, ref) => {
                             userImage={GlobalUtilities.add_timestamp(
                               user.ProfileImageURL
                             )}
+                            userObject={user}
                             style={{ width: '30px' }}
                             radius={25}
                           />

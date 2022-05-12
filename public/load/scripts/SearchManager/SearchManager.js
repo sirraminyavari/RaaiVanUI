@@ -633,7 +633,7 @@
                 Excel: isExcel, FormDetails: isExcel, ParseResults: true,
                 ResponseHandler: function (result) {
                     if (params.Reset === true) that.Interface.ItemsArea.innerHTML = "";
-
+                    
                     var nodeTypeIds = [];
                     for (var i = 0, lnt = (result.NodeTypes || []).length; i < lnt; ++i) {
                         that.add_node_type(result.NodeTypes[i]);
@@ -1136,8 +1136,10 @@
                 }
             ], that.Interface.ItemsArea);
 
-            if (elems["desc"])
-                GlobalUtilities.set_text(elems["desc"], description);
+            if (elems["desc"]) {
+                //GlobalUtilities.set_text(elems["desc"], description);
+                elems["desc"].innerHTML = description;
+            }
 
             infoDiv = elems["infoDiv"];
         }

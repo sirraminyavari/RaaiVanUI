@@ -30,9 +30,8 @@ const { RVDic, RVGlobal, GlobalUtilities } = window;
  * In this page user can create an account with his/her mobile/email.
  */
 const SignUp = () => {
-  const splitted_terms = RVDic.Checks.YouMustAgreeWithTermsAndConditions.split(
-    '[m]'
-  );
+  const splitted_terms =
+    RVDic.Checks.YouMustAgreeWithTermsAndConditions.split('[m]');
 
   const { push } = useHistory();
 
@@ -160,11 +159,13 @@ const SignUp = () => {
 
   return (
     <TransitionSwitchWrapper
-      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}>
+      transitionKey={!!verificationCodeObject?.Token ? 'vr-code' : 'normal'}
+    >
       {!!verificationCodeObject?.Token && (
         <SignUpWrapper
           codeMode={true}
-          onCodeCancel={() => setVerificationCodeObject(null)}>
+          onCodeCancel={() => setVerificationCodeObject(null)}
+        >
           <VerificationCodeDialog
             email={email}
             isSending={isSending}
@@ -224,13 +225,15 @@ const SignUp = () => {
                 marginTop: '1rem',
                 marginBottom: '1rem',
                 textAlign: 'justify',
-              }}>
+              }}
+            >
               {splitted_terms[0].replace('[n]', decode(RVGlobal?.SystemName))}
               <a
                 href={GlobalParams?.TermsAndConditionsURL}
                 target="_blank"
                 rel="noreferrer"
-                style={{ color: 'blue' }}>
+                style={{ color: 'blue' }}
+              >
                 {RVDic?.TermsAndConditionsOfN.replace(
                   '[n]',
                   decode(RVGlobal?.SystemName)
@@ -252,7 +255,8 @@ const SignUp = () => {
               textAlign: 'center',
               ...common_style,
               marginBottom: '2.5rem',
-            }}>
+            }}
+          >
             {RVDic?.GetConfirmationCode}
           </Button>
 

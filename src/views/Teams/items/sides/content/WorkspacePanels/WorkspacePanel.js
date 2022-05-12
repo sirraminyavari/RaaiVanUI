@@ -65,22 +65,21 @@ const WorkspacePanel = ({ space }) => {
               <WorkspaceTeamsSkeleton />
             ) : (
               <>
-                {teams?.map((team, index) => {
-                  if (team.WorkspaceID === space.WorkspaceID)
-                    return (
-                      <Flipped
+                {teams
+                  ?.filter((team) => team.WorkspaceID === space.WorkspaceID)
+                  .map((team, index) => (
+                    <Flipped
+                      key={team?.ApplicationID}
+                      flipId={team?.ApplicationID}
+                    >
+                      <DragItem
+                        team={team}
                         key={team?.ApplicationID}
-                        flipId={team?.ApplicationID}>
-                        <DragItem
-                          team={team}
-                          key={team?.ApplicationID}
-                          index={index}
-                          moveCard={moveCard}
-                        />
-                      </Flipped>
-                    );
-                  return;
-                })}
+                        index={index}
+                        moveCard={moveCard}
+                      />
+                    </Flipped>
+                  ))}
                 {(space.Editable || space.Removable) && (
                   <>
                     {checkWorkspaceHasArchivedApps() && (

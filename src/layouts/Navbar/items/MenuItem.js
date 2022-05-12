@@ -55,7 +55,8 @@ const MenuItem = forwardRef((props, ref) => {
       style={{ cursor: withArrow ? 'default' : 'pointer' }}
       isActive={isActive}
       forwardedAs={linkTo ? Link : 'div'}
-      to={linkTo}>
+      to={linkTo}
+    >
       <Styled.ButtonIcon>
         {NavbarIcons[icon]({ outline: 'false' })}
         {hasBadge && (

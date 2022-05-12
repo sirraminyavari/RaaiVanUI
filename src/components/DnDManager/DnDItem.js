@@ -7,7 +7,8 @@ const DnDItem = ({ item, index, render }) => (
       <div
         ref={provided.innerRef}
         {...provided.draggableProps}
-        {...provided.dragHandleProps}>
+        {...provided.dragHandleProps}
+      >
         {render(item)}
       </div>
     )}

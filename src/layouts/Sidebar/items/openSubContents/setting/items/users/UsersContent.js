@@ -1,9 +1,8 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 
 const UsersContent = () => {
-  const history = useHistory();
   const location = useLocation();
   const { RVDic, RVGlobal } = useWindow();
 
@@ -40,7 +39,8 @@ const UsersContent = () => {
               className={isActiveNav && 'avtive-profile-navlink'}
               as={NavLink}
               to={item?.linkTo}
-              key={key}>
+              key={key}
+            >
               <Styled.SettingItemTitle>{item?.title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>
           ) : (

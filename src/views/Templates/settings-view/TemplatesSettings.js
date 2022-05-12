@@ -108,7 +108,8 @@ const TemplatesSettings = () => {
           value={{
             handleDeleteNode,
             handleAddNodeType,
-          }}>
+          }}
+        >
           {loading ? (
             <LogoLoader />
           ) : isSaaS ? (

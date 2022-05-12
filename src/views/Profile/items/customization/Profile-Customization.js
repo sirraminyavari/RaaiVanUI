@@ -119,7 +119,8 @@ const ProfileCustomization = ({ route }) => {
           style={{
             width: 'calc(100% - 19rem)',
             margin: '0',
-          }}>
+          }}
+        >
           <Breadcrumb items={breadcrumbItems} />
           <Styled.ProfileTitleWrapper>
             <Styled.ProfileTitle>{PAGE_TITLE}</Styled.ProfileTitle>

@@ -19,7 +19,8 @@ const MenuItem = (props) => {
     <Styled.AvatarMenuItem
       as={linkTo ? Link : 'div'}
       to={linkTo}
-      onClick={onClickHandler ?? null}>
+      onClick={onClickHandler ?? null}
+    >
       {!!Icon && <Icon size={22} color={iconColor} dir={RV_RevFloat} />}
       {!!iconURL && (
         <Avatar

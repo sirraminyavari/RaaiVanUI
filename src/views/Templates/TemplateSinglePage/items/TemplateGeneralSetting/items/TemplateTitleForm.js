@@ -7,12 +7,13 @@ import { renameNodeType } from 'apiHelper/ApiHandlers/CNApi';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { useTemplateContext } from '../../../TemplateProvider';
 import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
+import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateTitleForm = ({ name }) => {
   const { RVDic } = window;
-  const { AppID: NodeTypeID, Description: description } = useTemplateContext();
+  const { NodeTypeID, Description: description } = useTemplateContext();
   const [title, setTitle] = useState(name);
-  const [subtitle, setSubtitle] = useState(description);
+  const [subtitle, setSubtitle] = useState(decodeBase64(description));
 
   const handleTitleChange = async (e) => {
     const Name = e?.target?.value;

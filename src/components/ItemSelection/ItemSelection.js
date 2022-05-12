@@ -66,7 +66,8 @@ const ItemSelection = ({
           }}
           itemSelectionMode={true}
           nodeType={(route?.NodeTypes || []).length ? route.NodeTypes[0] : null}
-          hierarchy={route?.Hierarchy || []}>
+          hierarchy={route?.Hierarchy || []}
+        >
           {showSelected && checkedItems.length > 0 ? (
             <>
               {checkedItems.map((x, index) => (

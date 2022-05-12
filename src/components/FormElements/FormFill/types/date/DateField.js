@@ -26,7 +26,8 @@ const DateField = ({
     <FormCell
       iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}
       title={decodeTitle}
-      {...props}>
+      {...props}
+    >
       <CustomDatePicker
         label={RVDic?.SelectDate}
         mode="button"
