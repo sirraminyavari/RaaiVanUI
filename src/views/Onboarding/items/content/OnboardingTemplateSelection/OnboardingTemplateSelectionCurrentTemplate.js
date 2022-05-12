@@ -6,10 +6,12 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
   const { dispatch, selectedTemplates } = useOnboardingTeamContent();
+  const { isTabletOrMobile } = DimensionHelper();
 
   const selectTemplateHandler = (template) => {
     dispatch({
@@ -46,7 +48,9 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
 
   return (
     <>
-      <Styles.OnboardingTemplateSelectionCurrentTemplateContainer>
+      <Styles.OnboardingTemplateSelectionCurrentTemplateContainer
+        mobile={isTabletOrMobile}
+      >
         {activeTemplate && (
           <>
             <Styles.OnboardingTemplateSelectionImage
@@ -55,7 +59,9 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             <Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
               {decodeBase64(activeTemplate?.TypeName)}
             </Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
-            <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
+            <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph
+              mobile={isTabletOrMobile}
+            >
               {decodeBase64(activeTemplate?.Description)}
             </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
             <Styles.OnboardingTemplateSelectionButtonWrapper

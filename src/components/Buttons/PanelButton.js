@@ -15,6 +15,7 @@ import CheckCircleFilled from 'components/Icons/CheckIcons/CheckCircleFilled';
  * @param {boolean} [props.active=false] - sets the toggle effect
  * @param {boolean} [props.secondary=false] - sets the secondary (Gray-ish) color
  * @param {boolean} [props.grayScale=false] - sets image/svg filter to grayScale on default state and normal color on hover/active state
+ * @param {boolean} [props.checked=false] - sets the checked style of the button
  * @return {JSX.Element}
  */
 function PanelButton({
@@ -32,6 +33,7 @@ function PanelButton({
         grayScale && 'grayScale',
         secondary && 'secondary',
         active && 'active',
+        checked && 'checked',
         className
       )}
       {...restProps}
@@ -98,6 +100,14 @@ const StyledPanelButton = styled.button.attrs({
     box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
     color: ${TCV_DEFAULT};
     border-color: ${TCV_DEFAULT};
+    &.grayScale {
+      & > svg,
+      & > img {
+        filter: grayscale(0);
+      }
+    }
+  }
+  &.checked {
     &.grayScale {
       & > svg,
       & > img {

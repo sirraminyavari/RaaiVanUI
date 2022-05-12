@@ -6,7 +6,6 @@ import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { decodeBase64 } from 'helpers/helpers';
 import {
@@ -15,8 +14,7 @@ import {
 } from 'store/reducers/onboardingReducer';
 import { useDispatch } from 'react-redux';
 import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
-const { toggleSidebarMenu } = sidebarMenuSlice.actions;
-const { setSidebarContent } = themeSlice.actions;
+const { setSidebarContent, toggleSidebar } = themeSlice.actions;
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -33,7 +31,7 @@ const OnboardingTemplateSetupContent = () => {
   };
 
   useEffect(() => {
-    toggleSidebarMenu();
+    dispatch(toggleSidebar(true));
     (async () => {
       const selectedTemplatesAPICallbacks = Object.values(
         selectedTemplates
