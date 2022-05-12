@@ -613,14 +613,6 @@
         create_action_area: function (container) {
             var that = this;
 
-            var optionsObj = null;
-
-            var get_action = () => {
-                return ((that.Objects.Edge || {}).Actions || []).length ? that.Objects.Edge.Actions[0] : null;
-            };
-
-            var selectedAction = null;
-            
             var elems = GlobalUtilities.create_nested_elements([{
                 Type: "div", Class: "small-12 medium-12 large-12",
                 Childs: [
@@ -644,72 +636,133 @@
                             }
                         ]
                     },
-                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" },
-                    {
-                        Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea",
-                        Style: "display: flex; flex-flow:column; margin-top: 1rem;",
-                        Childs: [
-                            {
-                                Type: "div", Style: "flex: 0 0 auto; display: flex; flex-flow:row;",
-                                Childs: [
-                                    {
-                                        Type: "div", Style: "flex:0 0 auto; width:3rem;",
-                                        Childs: [{ Type: "text", TextValue: RVDic.Action + ":" }]
-                                    },
-                                    {
-                                        Type: "div", Style: "flex:0 0 auto;",
-                                        Childs: [{
-                                            Type: "select", Class: "rv-input", Name: "actionSelect",
-                                            Properties: [{
-                                                Name: "onchange",
-                                                Value: (e) => {
-                                                    selectedAction = !e.target.selectedIndex ? null :
-                                                        e.target[e.target.selectedIndex].value;
-                                                    render_action_options();
-                                                }
-                                            }],
-                                            Childs: [{
-                                                Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
-                                            }].concat((that.Options.ActionTypes || []).map(itm => {
-                                                return {
-                                                    Type: "option",
-                                                    Attributes: [
-                                                        { Name: "value", Value: itm },
-                                                        (get_action() == itm ? { Name: "selected", Value: true } : null)
-                                                    ],
-                                                    Childs: [{ Type: "text", TextValue: RVDic.WF.Actions[itm] }]
-                                                };
-                                            }))
-                                        }]
-                                    }
-                                ]
-                            },
-                            {
-                                Type: "div", Name: "actionOptions",
-                                Style: "flex: 0 0 auto; margin-top: 1rem; display: none;"
-                            },
-                            {
-                                Type: "div", Style: "flex: 0 0 auto; padding-top: 1rem;",
-                                Childs: [{
-                                    Type: "div", Class: "rv-air-button rv-circle",
-                                    Style: "margin: 0 auto; width: 8rem;", Name: "addButton",
-                                    Childs: [{ Type: "text", TextValue: RVDic.Add }]
-                                }]
-                            }
-                        ]
-                    }
+                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea" }
                 ]
             }], container);
             
             var viewArea = elems["viewArea"];
-            var editArea = elems["editArea"];
             
             var refresh_actions = function () {
                 viewArea.innerHTML = "";
-                that.show_actions(viewArea, that.Objects.Edge.Actions);
+                that.show_actions(viewArea, that.Objects.Edge.Actions, {
+                    OnEdit: () => refresh_actions()
+                });
             };
             
             refresh_actions();
+
+            elems["addButton"].onclick = function () {
+                that.new_action_area(null, { Done: () => refresh_actions() });
+            };
+        },
+
+        new_action_area: function (action, options) {
+            var that = this;
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-9 large-8 rv-border-radius-1 SoftBackgroundColor",
+                Style: "padding: 1rem; margin: 0 auto;", Name: "_div"
+            }]);
+
+            var showed = GlobalUtilities.show(elems["_div"]);
+
+            that._new_action_area(elems["_div"], action, GlobalUtilities.extend({}, options, {
+                CloseModal: () => showed.Close()
+            }));
+        },
+
+        _new_action_area: function (container, action, op) {
+            var that = this;
+            action = action || {};
+            op = op || {};
+
+            var optionsObj = null;
+
+            var get_action = () => {
+                return ((that.Objects.Edge || {}).Actions || []).length ? that.Objects.Edge.Actions[0] : null;
+            };
+
+            var selectedAction = null;
+
+            var render_action_options = function () {
+                elems["actionOptions"].innerHTML = "";
+
+                if (selectedAction == "SetVariable") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+                    optionsObj = that.render_action_variable(elems["actionOptions"], action);
+                }
+                else if (selectedAction == "SetScore") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+                    optionsObj = that.render_formula_input(elems["actionOptions"], {
+                        IsVariable: false,
+                        Formula: Base64.decode(action.Formula),
+                        IgnoreVariableID: action.ActionID
+                    });
+                }
+                else {
+                    jQuery(elems["actionOptions"]).fadeOut(0);
+                    optionsObj = null;
+                }
+            };
+
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Style: "display: flex; flex-flow:column; margin-top: 1rem;",
+                Childs: [
+                    {
+                        Type: "div", Style: "flex: 0 0 auto; display: flex; flex-flow:row;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "flex:0 0 auto; width:3rem;",
+                                Childs: [{ Type: "text", TextValue: RVDic.Action + ":" }]
+                            },
+                            {
+                                Type: "div", Style: "flex:0 0 auto;",
+                                Childs: [{
+                                    Type: "select", Class: "rv-input", Name: "actionSelect",
+                                    Properties: [{
+                                        Name: "onchange",
+                                        Value: (e) => {
+                                            selectedAction = action.ActionType = !e.target.selectedIndex ? null :
+                                                e.target[e.target.selectedIndex].value;
+                                            render_action_options();
+                                        }
+                                    }],
+                                    Childs: [{
+                                        Type: "option", Childs: [{ Type: "text", TextValue: RVDic.Select + "..." }]
+                                    }].concat((that.Options.ActionTypes || []).map(itm => {
+                                        return {
+                                            Type: "option",
+                                            Attributes: [
+                                                { Name: "value", Value: itm },
+                                                (get_action() == itm ? { Name: "selected", Value: true } : null)
+                                            ],
+                                            Childs: [{ Type: "text", TextValue: RVDic.WF.Actions[itm] }]
+                                        };
+                                    }))
+                                }]
+                            }
+                        ]
+                    },
+                    {
+                        Type: "div", Name: "actionOptions",
+                        Style: "flex: 0 0 auto; margin-top: 1rem; display: none;"
+                    },
+                    {
+                        Type: "div", Style: "flex: 0 0 auto; padding-top: 1rem;",
+                        Childs: [{
+                            Type: "div", Class: "rv-air-button rv-circle",
+                            Style: "margin: 0 auto; width: 8rem;", Name: "addButton",
+                            Childs: [{ Type: "text", TextValue: !!action.ActionID ? RVDic.Save : RVDic.Add }]
+                        }]
+                    }
+                ]
+            }], container);
+
+            if (action.ActionType) {
+                elems["actionSelect"].selectedIndex = Array.from(elems["actionSelect"]).findIndex(o => o.value == action.ActionType);
+                jQuery(elems["actionSelect"]).change();
+            }
 
             var adding = false;
 
@@ -717,7 +770,7 @@
                 if (adding) return;
 
                 var index = elems["actionSelect"].selectedIndex;
-                var action = index < 0 ? null : elems["actionSelect"][index].value;
+                var actionType = index < 0 ? null : elems["actionSelect"][index].value;
 
                 var options = !(optionsObj || {}).get_data ? {} : optionsObj.get_data();
 
@@ -727,17 +780,26 @@
                     GlobalUtilities.block(container);
                 }
 
-                WFAPI.AddWorkFlowAction({
-                    ConnectionID: that.Objects.Edge.ID, Action: action, VariableType: options.VariableType,
-                    VariableName: Base64.encode(options.VariableName),
+                var apiName = !!action.ActionID ? "ModifyWorkFlowAction" : "AddWorkFlowAction";
+                
+                WFAPI[apiName]({
+                    ActionID: action.ActionID, ConnectionID: that.Objects.Edge.ID, Action: actionType,
+                    VariableType: options.VariableType, VariableName: Base64.encode(options.VariableName),
                     VariableDefaultValue: Base64.encode(options.VariableDefaultValue),
                     Formula: Base64.encode(options.Formula), ParseResults: true,
                     ResponseHandler: function (result) {
                         if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
                         else {
                             that.Objects.Edge.Actions = that.Objects.Edge.Actions || [];
-                            that.Objects.Edge.Actions.push(result.Action);
-                            refresh_actions();
+
+                            if (!!action.ActionID) {
+                                that.Objects.Edge.Actions = (that.Objects.Edge.Actions || [])
+                                    .map(a => a.ActionID == action.ActionID ? result.Action : a);
+                            }
+                            else that.Objects.Edge.Actions.push(result.Action);
+
+                            if (op.Done) op.Done();
+                            if (op.CloseModal) op.CloseModal();
                         }
 
                         adding = false;
@@ -745,40 +807,24 @@
                     }
                 });
             };
-
-            var render_action_options = function () {
-                elems["actionOptions"].innerHTML = "";
-
-                if (selectedAction == "SetVariable") {
-                    jQuery(elems["actionOptions"]).fadeIn(0);
-                    optionsObj = that.render_action_variable(elems["actionOptions"]);
-                }
-                else if (selectedAction == "SetScore") {
-                    jQuery(elems["actionOptions"]).fadeIn(0);
-                    optionsObj = that.render_formula_input(elems["actionOptions"]);
-                }
-                else {
-                    jQuery(elems["actionOptions"]).fadeOut(0);
-                    optionsObj = null;
-                }
-            };
         },
 
-        show_actions: function (container, actions) {
+        show_actions: function (container, actions, options) {
             var that = this;
 
             that.get_workflow_variables(function (variables) {
-                (actions || []).forEach(ac => that.show_action(container, ac, variables));
+                (actions || []).forEach(ac => that.show_action(container, ac, variables, options));
             });
         },
 
-        show_action: function (container, action, variables) {
+        show_action: function (container, action, variables, options) {
             var that = this;
             action = action || {};
+            options = options || {};
 
             var isVariable = action.ActionType == "SetVariable";
-            var hasDefaultValue = isVariable && (action.VariableType == "Number");
             var hasFormula = (action.ActionType == "SetScore") || (action.VariableType == "Formula");
+            var hasNumberValue = (action.ActionType == "SetVariable") && (action.VariableType == "Number")
 
             var create_item = function (data) {
                 return {
@@ -803,50 +849,115 @@
             };
             
             var elems = GlobalUtilities.create_nested_elements([{
-                Type: "div", Class: "SoftBackgroundColor rv-border-radius-half",
-                Style: "padding: 0.5rem; margin-bottom: 0.5rem; border-inline-start: 2px solid var(--rv-color-warm)",
+                Type: "div", Class: "SoftBackgroundColor rv-border-radius-half", Name: "container",
+                Style: "padding: 0.5rem; margin-bottom: 0.5rem; border-inline-start: 2px solid var(--rv-color-warm);" +
+                    "display: flex; flex-flow: row;",
                 Childs: [
                     {
-                        Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin: 0;",
+                        Type: "div", Style: "flex: 1 1 auto;",
                         Childs: [
-                            create_item({
-                                label: RVDic.Action,
-                                value: RVDic.WF.Actions[action.ActionType]
-                            }),
-                            (!isVariable ? null : create_item({
-                                label: RVDic.VariableType,
-                                value: RVDic.WF.VariableTypes[action.VariableType]
-                            })),
-                            (!isVariable ? null : create_item({
-                                label: RVDic.VariableName,
-                                value: Base64.decode(action.VariableName)
-                            }))
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12 row", Style: "margin: 0;",
+                                Childs: [
+                                    create_item({
+                                        label: RVDic.Action,
+                                        value: RVDic.WF.Actions[action.ActionType]
+                                    }),
+                                    (!isVariable ? null : create_item({
+                                        label: RVDic.VariableType,
+                                        value: RVDic.WF.VariableTypes[action.VariableType]
+                                    })),
+                                    (!isVariable ? null : create_item({
+                                        label: RVDic.VariableName,
+                                        value: Base64.decode(action.VariableName)
+                                    })),
+                                    (!hasNumberValue ? null : create_item({
+                                        label: RVDic.NumberValue,
+                                        value: Base64.decode(action.VariableDefaultValue)
+                                    }))
+                                ]
+                            },
+                            (!hasFormula ? null : {
+                                Type: "div",
+                                Style: "display: flex; flex-flow: row; padding: 0.5rem; padding-bottom: 0; padding-inline-end:0.3rem;",
+                                Childs: [
+                                    {
+                                        Type: "div", Style: "flex: 0 0 auto; width: 6rem; color: rgb(100, 100, 100);",
+                                        Childs: [{ Type: "text", TextValue: RVDic.Formula + ":" }]
+                                    },
+                                    {
+                                        Type: "div", Name: "formula",
+                                        Style: "flex: 1 1 auto; direction: ltr; text-align: left;"
+                                    }
+                                ]
+                            })
                         ]
                     },
-                    (!hasFormula ? null : {
-                        Type: "div",
-                        Style: "display: flex; flex-flow: row; padding: 0.5rem; padding-bottom: 0; padding-inline-end:0.3rem;",
+                    {
+                        Type: "div", Style: "flex: 0 0 auto; display: flex; flex-flow: column; gap: 0.2rem;",
                         Childs: [
                             {
-                                Type: "div", Style: "flex: 0 0 auto; width: 6rem; color: rgb(100, 100, 100);",
-                                Childs: [{ Type: "text", TextValue: RVDic.Formula + ":" }]
+                                Type: "div", Class: "rv-icon-button rv-circle",
+                                Style: "width: 1rem; text-align:center;", Name: "removeButton",
+                                Childs: [{Type: "i", Class: "fa fa-times"}]
                             },
                             {
-                                Type: "div", Name: "formula",
-                                Style: "flex: 1 1 auto; direction: ltr; text-align: left;"
+                                Type: "div", Class: "rv-icon-button rv-circle",
+                                Style: "width: 1rem; text-align:center;", Name: "editButton",
+                                Childs: [{ Type: "i", Class: "fa fa-pencil" }]
                             }
                         ]
-                    })
+                    }
                 ]
             }], container);
 
             if (hasFormula) RVFormula.show_formula(elems["formula"], Base64.decode(action.Formula), {
                 Variables: variables
             });
+
+            elems["editButton"].onclick = function () {
+                that.new_action_area(action, {
+                    Variables: variables,
+                    Done: function () {
+                        if (options.OnEdit) options.OnEdit();
+                    }
+                });
+            };
+
+            var removing = false;
+
+            elems["removeButton"].onclick = function () {
+                if (removing) return;
+
+                var message = isVariable ? RVDic.Confirms.RemoveWorkFlowVariable : RVDic.Confirms.RemoveWorkFlowAction;
+
+                GlobalUtilities.confirm(message, (r) => {
+                    if (!r) return;
+                    else removing = true;
+
+                    WFAPI.RemoveWorkFlowAction({
+                        ActionID: action.ActionID, ParseResults: true,
+                        ResponseHandler: function (result) {
+                            if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
+                            else if (result.Succeed) {
+                                that.Objects.Edge.Actions = (that.Objects.Edge.Actions || [])
+                                    .filter(a => a.ActionID != action.ActionID);
+
+                                jQuery(elems["container"]).animate({ height: "toggle" }, 500, () => {
+                                    jQuery(elems["container"]).remove();
+                                });
+                            }
+
+                            removing = false;
+                        }
+                    });
+                });
+            };
         },
 
-        render_action_variable: function (container) {
+        render_action_variable: function (container, action) {
             var that = this;
+            action = action || {};
 
             var formulaObj = null;
 
@@ -860,8 +971,12 @@
                     var fDiv = GlobalUtilities.create_nested_elements([{
                         Type: "div", Name: "_div", Style: "width: 100%;",
                     }], elems["formulaContainer"])["_div"];
-
-                    formulaObj = that.render_formula_input(fDiv, { IsVariable: true });
+                    
+                    formulaObj = that.render_formula_input(fDiv, {
+                        IsVariable: true,
+                        Formula: Base64.decode(action.Formula),
+                        IgnoreVariableID: action.ActionID
+                    });
                 }
                 else {
                     formulaObj = null;
@@ -885,7 +1000,7 @@
                                 Properties: [{
                                     Name: "onchange",
                                     Value: (e) => {
-                                        var selectedType = !e.target.selectedIndex ? null :
+                                        var selectedType = action.VariableType = !e.target.selectedIndex ? null :
                                             jQuery(e.target[e.target.selectedIndex]).attr("data-value");
                                         handle_type_change(selectedType);
                                     }
@@ -936,7 +1051,19 @@
                     Style: "display: none; margin-top: 0.5rem;"
                 }
             ], container);
+            
+            if (action.VariableType) {
+                elems["typeSelect"].selectedIndex = Array.from(elems["typeSelect"])
+                    .findIndex(o => jQuery(o).attr("data-value") == action.VariableType);
+                jQuery(elems["typeSelect"]).change();
+            }
 
+            if (action.VariableName)
+                elems["nameInput"].value = Base64.decode(action.VariableName);
+
+            if (action.VariableDefaultValue)
+                elems["valueInput"].value = Base64.decode(action.VariableDefaultValue);
+            
             return {
                 get_data: function () {
                     var index = elems["typeSelect"].selectedIndex;
@@ -975,7 +1102,7 @@
 
             that.get_workflow_variables(function (variables) {
                 container.innerHTML = "";
-
+                
                 var _div = GlobalUtilities.create_nested_elements([{
                     Type: "div", Style: "display: flex; flex-flow: row; align-items: center;",
                     Childs: [
@@ -991,8 +1118,8 @@
                     ]
                 }], container)["_div"];
 
-                formulaObj = new RVFormula(_div, { Variables: variables });
-            });
+                formulaObj = new RVFormula(_div, { Formula: options.Formula, Variables: variables });
+            }, ignoreVariableId);
 
             return {
                 get_data: function () {

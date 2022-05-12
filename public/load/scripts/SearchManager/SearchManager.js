@@ -1136,8 +1136,10 @@
                 }
             ], that.Interface.ItemsArea);
 
-            if (elems["desc"])
-                GlobalUtilities.set_text(elems["desc"], description);
+            if (elems["desc"]) {
+                //GlobalUtilities.set_text(elems["desc"], description);
+                elems["desc"].innerHTML = description;
+            }
 
             infoDiv = elems["infoDiv"];
         }

@@ -140,19 +140,6 @@
         return WFAPI._send(url, params, queryString);
     },
 
-    SetWorkFlowAction: function (params) {
-        params = params || {};
-
-        var url = WFAPI.ResponseURL + "/SetWorkFlowAction?timeStamp=" + new Date().getTime();
-        var queryString = (params.ConnectionID ? "&ConnectionID=" + params.ConnectionID : "") +
-            (params.Action ? "&Action=" + params.Action : "") +
-            (params.VariableType ? "&VariableType=" + params.VariableType : "") +
-            (params.VariableName ? "&VariableName=" + params.VariableName : "") +
-            (GlobalUtilities.get_type(params.NumberValue) == "number" ? "&NumberValue=" + params.NumberValue : "") +
-            (params.Formula ? "&Formula=" + params.Formula : "");
-        return WFAPI._send(url, params, queryString);
-    },
-
     AddWorkFlowAction: function (params) {
         params = params || {};
 
