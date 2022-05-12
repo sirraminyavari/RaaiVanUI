@@ -10,7 +10,11 @@ import { OnboardingTeamStepContextActions } from './OnboardingTeam.context';
 import { store } from 'store/store';
 import { MAIN_CONTENT, SETT_ONBOARDING_CONTENT } from 'constant/constants';
 import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
-import { setOnboardingTeamName } from 'store/reducers/onboardingReducer';
+import {
+  setOnboardingTeamName,
+  onboardingSlice,
+} from 'store/reducers/onboardingReducer';
+const { onboardingName, onboardingStep } = onboardingSlice.actions;
 const { setSidebarContent } = themeSlice.actions;
 
 const { setSelectedTeam } = themeSlice.actions;
@@ -82,5 +86,7 @@ export const onboardingTeamFieldOfExpertiseSave = async ({
     FieldName: workFieldName,
   });
   store.dispatch(selectApplicationAction(ApplicationID));
+  store.dispatch(onboardingName('intro'));
+  store.dispatch(onboardingStep(0));
   store.dispatch(setSelectedTeam({ name: teamName, id: ApplicationID }));
 };

@@ -37,7 +37,10 @@ export const OnboardingTemplateSelectionTemplatePanel = styled.div`
   gap: 4vw;
   flex-wrap: wrap;
   & > div {
-    flex: 1 1 30rem;
+    flex: 1 1 25rem;
+    // max-height: 50vh;
+
+    ${({ mobile }) => !mobile && `width: 50%;`}
   }
 `;
 OnboardingTemplateSelectionTemplatePanel.displayName =
@@ -77,10 +80,11 @@ OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
 
 export const OnboardingTemplateSelectionCurrentTemplateContainer = styled.div`
-  min-height: ;50vh;
+  min-height: 50vh;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  ${({ mobile }) => (mobile ? `max-height: 100%;` : `height: 50vh;`)}
 `;
 OnboardingTemplateSelectionCurrentTemplateContainer.displayName =
   'OnboardingTemplateSelectionCurrentTemplateContainer';
@@ -106,6 +110,7 @@ export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled.p`
   margin-block: 1rem;
   font-size: 1rem;
   color: ${CV_GRAY};
+  ${({ mobile }) => !mobile && `height: 50vh;overflow-y:auto;`}
 `;
 OnboardingTemplateSelectionCurrentTemplateParagraph.displayName =
   'OnboardingTemplateSelectionCurrentTemplateParagraph';
@@ -341,9 +346,9 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
   padding-inline: 2.5rem;
   padding-block: 1rem;
   margin-block-start: 1rem;
-  max-height: clamp(30rem, 100%, 80vh);
-  position: sticky;
-  top: 5rem;
+  ${({ mobile }) => (mobile ? `max-height: 100%;` : `height: 50vh;`)}
+  // position: sticky;
+  // top: 5rem;
 
   & > div::after {
     content: '';
