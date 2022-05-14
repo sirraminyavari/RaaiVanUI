@@ -42,7 +42,7 @@ const componentsArray = [
     key: 'Numeric',
     value: (props) => {
       const { current } = props;
-      return current?.data?.Info?.Pattern === 'rating'
+      return current?.data?.Info?.PatternName === 'rating'
         ? {
             main: RatingTypeMainSetting(props),
             sideBox: RatingTypeSideBoxSetting(props),

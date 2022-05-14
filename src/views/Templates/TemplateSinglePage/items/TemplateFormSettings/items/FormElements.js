@@ -203,6 +203,7 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Numeric',
             Info: {
+              PatternName: 'rating',
               min: '',
               max: '',
               ViewType: 'numeric',

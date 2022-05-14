@@ -234,7 +234,7 @@ const customizedElements = {
   rating: {
     Type: 'Numeric',
     Info: {
-      Pattern: 'rating',
+      PatternName: 'rating',
       min: '[number]',
       max: '[number]',
       ViewType: 'numerical | stars',

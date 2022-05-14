@@ -13,7 +13,6 @@ export const getElementType = (data) => {
 };
 
 const TextTypeFinder = (data) => {
-  console.log(data);
   const { Info } = data || {};
   const _getObject = (type) => {
     const _list = formElementList() || [];
@@ -49,7 +48,6 @@ const TextTypeFinder = (data) => {
       Info.PatternName === 'phone' ||
       Info.PatternName === 'phoneByNationalCode')
   ) {
-    console.log('phone condition has been working..', data);
     return _getObject('phone');
   } else if (
     Info.hasOwnProperty('UseSimpleEditor') &&
@@ -77,7 +75,10 @@ const NumericTypeFinder = (data) => {
 
 const getObject = (data) => {
   const { Type } = data?.Info || {};
-  const _list = formElementList() || [];
+  const _list =
+    formElementList()
+      .map((x) => x?.items)
+      .flat() || [];
   const el = _list.find((x) => x?.data?.Info?.Type === Type);
   return { ...el, data: data };
 };
