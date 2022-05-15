@@ -45,7 +45,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, min: '', max: '' },
+            Info: { UseSimpleEditor: true, min: '', max: '', Sample: '' },
           },
         },
         {
@@ -59,6 +59,7 @@ const formElementList = () => {
             Info: {
               min: '',
               max: '',
+              Sample: '',
             },
           },
         },
@@ -70,7 +71,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, PatternName: 'email' },
+            Info: { UseSimpleEditor: true, PatternName: 'email', Sample: '' },
           },
         },
         {
@@ -81,7 +82,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, PatternName: 'url' },
+            Info: { UseSimpleEditor: true, PatternName: 'url', Sample: '' },
           },
         },
       ],
@@ -106,6 +107,7 @@ const formElementList = () => {
               currency: 'NONE',
               separator: true,
               percentage: true,
+              Sample: '',
             },
           },
         },
@@ -120,6 +122,7 @@ const formElementList = () => {
             Info: {
               PatternName: 'mobile',
               UseSimpleEditor: true,
+              Sample: '',
             },
           },
         },

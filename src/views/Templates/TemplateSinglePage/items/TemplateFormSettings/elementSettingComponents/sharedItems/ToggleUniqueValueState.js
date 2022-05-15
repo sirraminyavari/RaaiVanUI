@@ -1,6 +1,8 @@
 import produce from 'immer';
 import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import * as Styles from './SharedStyles';
+import styled from 'styled-components';
+import { FLEX_RCB } from '../../../../../../../constant/StyledCommonCss';
 
 const ToggleUniqueValueState = ({ current, setFormObjects }) => {
   const { UniqueValue } = current?.data || {};
@@ -17,7 +19,7 @@ const ToggleUniqueValueState = ({ current, setFormObjects }) => {
 
   return (
     <>
-      <Styles.ToggleRow>
+      <ToggleRow>
         <Styles.ToggleRowTitle>{'پاسخ منحصربه‌فرد'}</Styles.ToggleRowTitle>
         <div>
           <ToggleButton
@@ -25,11 +27,16 @@ const ToggleUniqueValueState = ({ current, setFormObjects }) => {
             onToggle={handleUniqueValueStateChange}
           />
         </div>
-      </Styles.ToggleRow>
+      </ToggleRow>
       <Styles.ToggleRowHint>
         {'با فعال کردن این گزینه تنها ورودی غیرتکراری از کاربر پذیرفته می‌شود'}
       </Styles.ToggleRowHint>
     </>
   );
 };
+const ToggleRow = styled.div`
+  ${FLEX_RCB};
+  width: 100%;
+`;
+ToggleRow.displayName = 'ToggleRow';
 export default ToggleUniqueValueState;

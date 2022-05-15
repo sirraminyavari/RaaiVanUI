@@ -1,4 +1,4 @@
 const RatingTypeMainSetting = ({ current, setFormObjects }) => {
-  return <div>rating type main </div>;
+  return <div> </div>;
 };
 export default RatingTypeMainSetting;
