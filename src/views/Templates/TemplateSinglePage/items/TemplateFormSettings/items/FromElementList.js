@@ -7,7 +7,7 @@ const FormElementList = () => {
   const _list = useMemo(() => list(), []);
   return (
     <Styles.FormElementList>
-      {[..._list].map((x) => {
+      {_list.map((x) => {
         const { id, title, items } = x;
         return (
           <Styles.FromElementGroupLabel key={id}>
@@ -20,7 +20,7 @@ const FormElementList = () => {
                   isDraggingOver={snapshot.isDraggingOver}
                 >
                   <Styles.FormElementListWrapper
-                    height={(items?.length - 1) * 6}
+                    height={(items?.length - 1) * 6.4}
                   >
                     {[...items].map((l, index) => {
                       const { title, id, icon } = l;

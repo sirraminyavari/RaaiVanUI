@@ -6,7 +6,7 @@ import {
   CV_WHITE,
 } from 'constant/CssVariables';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { encodeBase64 } from '../../../../helpers/helpers';
+import { encodeBase64 } from 'helpers/helpers';
 
 const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {
   const history = useHistory();

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FLEX_RCB } from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RSB } from 'constant/StyledCommonCss';
 import {
   CV_DISTANT,
   CV_GRAY,
@@ -8,7 +8,7 @@ import {
 } from 'constant/CssVariables';
 
 export const FieldsContainer = styled.div`
-  ${FLEX_RCB};
+  ${FLEX_RSB};
   margin-top: 1rem;
 `;
 
@@ -75,4 +75,15 @@ export const Separator = styled.div`
     content: '';
     border-right: 0.0625rem solid ${CV_DISTANT};
   }
+`;
+
+export const SelectBoxContainer = styled.div`
+  max-width: 21rem;
+  width: 100%;
+`;
+
+export const SelectBoxTitle = styled.div`
+  color: ${CV_GRAY};
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 `;
