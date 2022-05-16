@@ -1,14 +1,13 @@
 import { useEffect, memo, useState, createContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { getThemes, getCurrentTheme } from 'store/actions/themes/ThemeActions';
+//import { getThemes, getCurrentTheme } from 'store/actions/themes/ThemeActions';
 import * as Styled from 'views/Profile/Profile.styles';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import ThemeToggle from 'components/Toggle/Toggle';
 import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
-import { themeSlice } from 'store/reducers/themeReducer';
 import {
   SIDEBAR_WINDOW,
   USER_CUSTOMIZATION_PATH,
@@ -17,23 +16,8 @@ import {
 } from 'constant/constants';
 import { saveUserSettings } from 'apiHelper/apiFunctions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-
-const { setDarkMode, setSidebarPattern } = themeSlice.actions;
-
-const selectAllThemes = createSelector(
-  (state) => state.theme,
-  (theme) => theme.themes
-);
-
-const selectIsDarkMode = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isDarkMode
-);
-
-const selectHasSidebarPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 export const CustomSettingContext = createContext({});
 
@@ -43,9 +27,14 @@ const ProfileCustomization = ({ route }) => {
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
   const currentUser = (route || {}).User;
 
-  const allThemes = useSelector(selectAllThemes);
-  const isDarkMode = useSelector(selectIsDarkMode);
-  const hasSidebarPattern = useSelector(selectHasSidebarPattern);
+  const {
+    actions: { setDarkMode, setSidebarPattern },
+  } = useThemeSlice();
+  const themeState = useSelector(selectTheme);
+
+  const allThemes = themeState.themes;
+  const isDarkMode = themeState.isDarkMode;
+  const hasSidebarPattern = themeState.hasSidebarPattern;
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     !!currentUser?.Settings?.[SIDEBAR_WINDOW]
   );
@@ -106,9 +95,11 @@ const ProfileCustomization = ({ route }) => {
     dispatch(setDarkMode(toggleValue));
   };
 
+  const { actions: themeActions } = useThemeSlice();
+
   useEffect(() => {
-    dispatch(getThemes());
-    dispatch(getCurrentTheme());
+    dispatch(themeActions.getThemes());
+    dispatch(themeActions.getCurrentTheme());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

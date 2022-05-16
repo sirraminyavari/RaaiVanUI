@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { TemplateFormProvider } from './TemplateFormContext';
-import { getFormElements } from 'apiHelper/ApiHandlers/FGAPI';
 import TemplateFormWrapper from './TemplateFormWrapper';
 import { decodeBase64 } from 'helpers/helpers';
+import { useThemeSlice } from 'store/slice/theme';
 
 const TemplateFormSettings = () => {
-  const { toggleSidebar } = themeSlice.actions;
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
   const dispatch = useDispatch();
   const [formInitialState, setFormInitialState] = useState([]);
 

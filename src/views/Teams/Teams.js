@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import WithSuspense from 'components/WithSuspense/WithSuspense';
 import { Redirect, Route } from 'react-router-dom';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
 import {
@@ -14,7 +13,7 @@ import {
   WORKSPACE_REMOVE_PATH,
   WORKSPACE_USER_MANAGEMENT_PATH,
 } from './items/others/constants';
-const { setSidebarContent } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
 
 const TeamsWorkspaceView = WithSuspense(
   lazy(() =>
@@ -61,6 +60,11 @@ const WorkspaceInvoiceView = WithSuspense(
 
 const TeamsView = () => {
   const dispatch = useDispatch();
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
+
   useEffect(() => {
     dispatch(getApplications());
 

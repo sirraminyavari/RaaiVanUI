@@ -1,15 +1,10 @@
 import { useSelector } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { createSelector } from 'reselect';
-
-const selectThemeStates = createSelector(
-  (state) => state.theme,
-  (theme) => theme
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const withTheme = (Component) => (props) => {
-  const actions = themeSlice.actions;
-  const states = useSelector(selectThemeStates);
+  const { actions } = useThemeSlice();
+  const states = useSelector(selectTheme);
 
   return <Component theme={{ states, actions }} {...props} />;
 };

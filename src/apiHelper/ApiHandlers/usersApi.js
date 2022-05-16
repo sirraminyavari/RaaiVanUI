@@ -325,3 +325,7 @@ export const setUserAvatar = ({ Name } = {}) => {
     AvatarName: encodeBase64(Name),
   });
 };
+
+export const getCurrentTheme = () => {
+  return apiCallWrapper(API_Provider(USERS_API, 'GetTheme'), {});
+};

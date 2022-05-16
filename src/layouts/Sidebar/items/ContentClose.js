@@ -9,13 +9,13 @@ import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
+import { useThemeSlice } from 'store/slice/theme';
 
 //! Gets unfiltered nodes for closed sidebar menu.
 const selectSidebarNodes = createSelector(
@@ -29,6 +29,7 @@ const selectSidebarNodes = createSelector(
  */
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
+
   const itemRef = useRef();
   const listRef = useRef();
   const containerRef = useRef();
@@ -42,7 +43,9 @@ const SidebarOnClose = ({ theme }) => {
   const [isUp, setIsUp] = useState(false);
   const sidebarNodes = useSelector(selectSidebarNodes);
   const { handleSettings } = theme.actions;
-  const { setSidebarContent } = themeSlice.actions;
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
 
   usePreventScroll(containerRef);
 

@@ -11,25 +11,13 @@ import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
-
-const { toggleSidebar } = themeSlice.actions;
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const selectTeam = createSelector(
   (state) => state.applications,
   (theme) => theme.currentApp
-);
-
-const selectHasPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
 );
 
 const selectOnboardingName = createSelector(
@@ -41,9 +29,14 @@ const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
 
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+  const themeState = useSelector(selectTheme);
+
+  const isSidebarOpen = themeState.isSidebarOpen;
   const selectedTeam = useSelector(selectTeam);
-  const hasPattern = useSelector(selectHasPattern);
+  const hasPattern = themeState.hasSidebarPattern;
   const onboardingName = useSelector(selectOnboardingName);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;

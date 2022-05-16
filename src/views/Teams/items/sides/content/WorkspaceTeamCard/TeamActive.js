@@ -37,14 +37,12 @@ import TeamConfirm from '../TeamConfirm';
 import ExtraUsersList from './ExtraUsersList';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { SIDEBAR_WINDOW } from 'constant/constants';
-import { themeSlice } from 'store/reducers/themeReducer';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import UserInvitationDialog from './UserInviteDialog';
+import { useThemeSlice } from 'store/slice/theme';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
-
-const { toggleSidebar } = themeSlice.actions;
 
 const selectingApp = createSelector(
   (state) => state?.applications,
@@ -59,6 +57,11 @@ const Avatar = WithAvatar({
 const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
   const actionRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal, GlobalUtilities } =

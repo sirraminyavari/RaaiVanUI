@@ -18,10 +18,9 @@ import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
 import Creators from './Creators';
 import * as Styles from './TopBar.style';
-import { themeSlice } from 'store/reducers/themeReducer';
-const { toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
 
-const { RVDic, RVAPI, RV_RTL, RVGlobal } = window || {};
+const { RVDic, RV_RTL } = window || {};
 
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
 const likeNode = new APIHandler('CNAPI', 'Like');
@@ -35,6 +34,10 @@ const TopBar = ({
   sideColumn,
   hierarchy,
 }) => {
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
   const { VisitsCount, Contributors } = nodeDetails || {};
 
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
@@ -74,11 +77,13 @@ const TopBar = ({
       selectedApp: state?.selectedTeam,
     })
   );
+
   const extendedHierarchy = hierarchy?.map((level) => ({
     id: level?.NodeTypeID,
     title: decodeBase64(level?.TypeName),
     linkTo: `/classes/${level?.NodeTypeID}`,
   }));
+
   const { NodeType, Name } = nodeDetails || {};
 
   const breadcrumbItems = [
@@ -101,11 +106,13 @@ const TopBar = ({
       ? teamName
       : '';
   };
+
   const onSideDetailsClick = () => {
     setSideDetailsHover(!sideDetailsHover);
     onSideColumnClicked(!sideColumn);
     dispatch(toggleSidebar(false));
   };
+
   const onBookmarkPressed = (e) => {
     if (bookmarkStatus === 'liked') {
       unlikeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {

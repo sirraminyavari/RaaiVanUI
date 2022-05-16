@@ -1,3 +1,7 @@
+/**
+ * Create the store with dynamic reducers
+ */
+
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {
   persistStore,
@@ -12,7 +16,11 @@ import {
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
-import rootReducer from './reducers/rootReducer';
+
+import { createInjectorsEnhancer } from 'redux-injectors';
+import createSagaMiddleware from 'redux-saga';
+
+import { createReducer } from './reducers';
 
 const MIGRATION_DEBUG = true;
 
@@ -36,15 +44,36 @@ const persistConfig = {
   blacklist: [],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, createReducer());
+
+//create store
+const reduxSagaMonitorOptions = {};
+const sagaMiddleware = createSagaMiddleware(reduxSagaMonitorOptions);
+const { run: runSaga } = sagaMiddleware;
+
+// Create the store with saga middleware
+const middlewares = [sagaMiddleware];
+
+const enhancers = [
+  createInjectorsEnhancer({
+    createReducer,
+    runSaga,
+  }),
+];
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
+  middleware: [
+    ...getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+    ...middlewares,
+  ],
+  devTools: process.env.NODE_ENV !== 'production',
+  enhancers,
 });
+//end of create store
 
 export let persistor = persistStore(store);

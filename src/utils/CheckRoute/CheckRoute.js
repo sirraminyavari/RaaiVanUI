@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from 'react';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Exception from 'components/Exception/Exception';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { loginSlice } from 'store/reducers/loginReducer';
@@ -31,17 +30,11 @@ import {
 import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
+import { useThemeSlice } from 'store/slice/theme';
 
 const { setIsAthunticated } = loginSlice.actions;
 const { setCurrentApp } = ApplicationsSlice.actions;
 const { setSidebarDnDTree } = sidebarMenuSlice.actions;
-const {
-  toggleNavSide,
-  setSelectedTeam,
-  setActivePath,
-  setSidebarContent,
-  toggleSidebar,
-} = themeSlice.actions;
 
 const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
@@ -65,6 +58,16 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
   const lastLocation = getLastLocation();
+
+  const {
+    actions: {
+      toggleNavSide,
+      setSelectedTeam,
+      setActivePath,
+      setSidebarContent,
+      toggleSidebar,
+    },
+  } = useThemeSlice();
 
   const authPathList = [
     FORGOT_PASS_PATH,

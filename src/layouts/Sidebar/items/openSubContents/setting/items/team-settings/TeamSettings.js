@@ -4,23 +4,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
-import { themeSlice } from 'store/reducers/themeReducer';
-import {
-  SETTING_CONTENT,
-  SETT_URL_CONTENT,
-  SETT_USERS_CONTENT,
-} from 'constant/constants';
+import { SETTING_CONTENT, SETT_URL_CONTENT } from 'constant/constants';
+import { useThemeSlice } from 'store/slice/theme';
 
 const selectConfigPanels = createSelector(
   (state) => state.sidebarItems,
   (sidebarItems) => sidebarItems.configPanels
 );
 
-const { setSidebarContent } = themeSlice.actions;
-
 const TeamSettings = () => {
   const { RVDic } = useWindow();
   const dispatch = useDispatch();
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
+
   const panels = useSelector(selectConfigPanels);
 
   const handleClickPanel = useCallback(

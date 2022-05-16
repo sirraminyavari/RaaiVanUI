@@ -1,9 +1,5 @@
 import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import {
-  onboardingSlice,
-  toggleActivation,
-} from 'store/reducers/onboardingReducer';
-import {
   getSidebarNodeTypes,
   getUnderMenuPermissions,
 } from 'store/actions/sidebar/sidebarMenuAction';
@@ -13,9 +9,6 @@ import { API_Provider, setRVGlobal } from 'helpers/helpers';
 import {
   RV_API,
   USERS_API,
-  GET_APPLICATIONS,
-  REMOVE_APPLICATION,
-  RECYCLE_APPLICATION,
   CREATE_APPLICATION,
   SELECT_APPLICATION,
   MODIFY_APPLICATION,
@@ -27,6 +20,13 @@ import {
   GET_APPLICATION_MONITORING,
 } from 'constant/apiConstants';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import {
+  createApplication as createApplicationAPI,
+  getApplications as getApplicationsApi,
+  removeApplication as removeApplicationApi,
+  recoverApplication as recoverApplicationApi,
+} from 'apiHelper/ApiHandlers/RVApi';
 
 const {
   setApplications,
@@ -37,16 +37,10 @@ const {
   setArchivedApplications,
 } = ApplicationsSlice.actions;
 
-const { onboardingName, onboardingStep } = onboardingSlice.actions;
-
-const getApplicationsAPI = API_Provider(RV_API, GET_APPLICATIONS);
 const GetApplicationsMonitoringAPI = API_Provider(
   RV_API,
   GET_APPLICATION_MONITORING
 );
-const removeApplicationAPI = API_Provider(RV_API, REMOVE_APPLICATION);
-const recycleApplicationAPI = API_Provider(RV_API, RECYCLE_APPLICATION);
-const createApplicationAPI = API_Provider(RV_API, CREATE_APPLICATION);
 const selectApplicationAPI = API_Provider(RV_API, SELECT_APPLICATION);
 const modifyApplicationAPI = API_Provider(RV_API, MODIFY_APPLICATION);
 const unsubscribeFromApplicationAPI = API_Provider(
@@ -99,30 +93,16 @@ const getApplicationUsersAPI = API_Provider(USERS_API, GET_APPLICATION_USERS);
  * @returns -Dispatch to redux store.
  */
 export const getApplications = () => async (dispatch) => {
-  try {
-    dispatch(setFetchingApps(true));
-    getApplicationsAPI.fetch(
-      { Archive: false },
-      (response) => {
-        if (response?.Applications) {
-          const users = response?.ApplicationUsers;
-          const appsWithUsers = response.Applications.map((app) => {
-            app.Users = users[app?.ApplicationID];
-            return app;
-          });
-          dispatch(getApplicationsOrder(appsWithUsers));
-          dispatch(getArchivedApplications());
-        }
-      },
-      (error) => {
-        dispatch(setFetchingApps(false));
-        console.log({ error });
-      }
-    );
-  } catch (err) {
-    dispatch(setFetchingApps(false));
-    console.log({ err });
+  dispatch(setFetchingApps(true));
+
+  const res = await getApplicationsApi({ Archive: false });
+
+  if ((res?.Applications || []).length) {
+    dispatch(getApplicationsOrder(res.Applications));
+    dispatch(getArchivedApplications());
   }
+
+  dispatch(setFetchingApps(false));
 };
 
 /**
@@ -130,22 +110,10 @@ export const getApplications = () => async (dispatch) => {
  * @returns -Dispatch to redux store.
  */
 export const getArchivedApplications = () => async (dispatch) => {
-  try {
-    getApplicationsAPI.fetch(
-      { Archive: true },
-      (response) => {
-        if (response?.Applications) {
-          const archives = response?.Applications || [];
-          if (!!archives.length) {
-            dispatch(setArchivedApplications(archives));
-          }
-        }
-      },
-      (error) => console.log({ error })
-    );
-  } catch (err) {
-    console.log({ err });
-  }
+  const res = await getApplicationsApi({ Archive: true });
+
+  if ((res?.Applications || []).length)
+    dispatch(setArchivedApplications(res.Applications));
 };
 
 /**
@@ -155,30 +123,20 @@ export const getArchivedApplications = () => async (dispatch) => {
 export const removeApplication =
   (appId, done, error) => async (dispatch, getState) => {
     const { applications } = getState();
+
     const newApps = applications.userApps.filter(
       (app) => app.ApplicationID !== appId
     );
 
-    try {
-      removeApplicationAPI.fetch(
-        { ApplicationID: appId },
-        (response) => {
-          if (response.ErrorText) {
-            error && error(response.ErrorText);
-          } else if (response.Succeed) {
-            done && done(appId);
-            dispatch(deleteApplication(newApps));
-            dispatch(setApplicationsOrder(newApps));
-            // dispatch(getApplications());
-            dispatch(getArchivedApplications());
-          }
-        },
-        (err) => {
-          error && error(err);
-        }
-      );
-    } catch (err) {
-      error && error(err);
+    const res = removeApplicationApi({ ApplicationID: appId });
+
+    if (res?.ErrorText) {
+      error && error(res?.ErrorText);
+    } else if (res?.Succeed) {
+      done && done(appId);
+      dispatch(deleteApplication(newApps));
+      dispatch(setApplicationsOrder(newApps));
+      dispatch(getArchivedApplications());
     }
   };
 
@@ -189,29 +147,19 @@ export const removeApplication =
 export const recycleApplication =
   (appId, done, error) => async (dispatch, getState) => {
     const { applications } = getState();
-    try {
-      recycleApplicationAPI.fetch(
-        { ApplicationID: appId },
-        (response) => {
-          if (response?.Succeed) {
-            done && done(response);
-            // console.log(response);
-            const newArchivedApps = applications.userArchivedApps.filter(
-              (app) => app.ApplicationID !== appId
-            );
-            dispatch(setArchivedApplications(newArchivedApps));
-          }
 
-          if (response?.ErrorText) {
-            error && error(response?.ErrorText);
-          }
-        },
-        (err) => {
-          error && error(err);
-        }
+    const res = recoverApplicationApi({ ApplicationID: appId });
+
+    if (res?.Succeed) {
+      done && done(res);
+      const newArchivedApps = applications.userArchivedApps.filter(
+        (app) => app.ApplicationID !== appId
       );
-    } catch (err) {
-      error && error(err.message);
+      dispatch(setArchivedApplications(newArchivedApps));
+    }
+
+    if (res?.ErrorText) {
+      error && error(res?.ErrorText);
     }
   };
 
@@ -253,6 +201,10 @@ export const createApplication =
  * @returns -Dispatch to redux store.
  */
 export const selectApplication = (appId, done, error) => async (dispatch) => {
+  const {
+    actions: { onboardingName, onboardingStep, toggleActivation },
+  } = useOnboardingSlice();
+
   try {
     dispatch(
       setSelectingApp({

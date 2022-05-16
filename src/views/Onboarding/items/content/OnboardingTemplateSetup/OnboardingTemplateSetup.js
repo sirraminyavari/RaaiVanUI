@@ -6,7 +6,6 @@ import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { decodeBase64 } from 'helpers/helpers';
 import {
   setOnboardingTemplateStatusCompleted,
@@ -14,7 +13,7 @@ import {
 } from 'store/reducers/onboardingReducer';
 import { useDispatch } from 'react-redux';
 import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
-const { setSidebarContent, toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -22,6 +21,10 @@ const OnboardingTemplateSetupContent = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { selectedTemplates, applicationID } = useOnboardingTeamContent();
+
+  const {
+    actions: { setSidebarContent, toggleSidebar },
+  } = useThemeSlice();
 
   const activateTemplateHandler = async (template, appId) => {
     const { Template } = await getTemplateJSON({

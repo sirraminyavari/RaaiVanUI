@@ -6,7 +6,6 @@ import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
-import { themeSlice } from 'store/reducers/themeReducer';
 import SettingItems from './SettingItem';
 import UsersContent from './items/users/UsersContent';
 import TeamSettings from './items/team-settings/TeamSettings';
@@ -25,6 +24,7 @@ import {
 } from 'constant/constants';
 import WorkspaceContent from './items/workspace/WorkspaceContent';
 import OnboardingContent from './items/onboarding/OnboardingContent';
+import { useThemeSlice } from 'store/slice/theme';
 
 const selectSidebarContent = createSelector(
   (state) => state.theme,
@@ -34,8 +34,12 @@ const selectSidebarContent = createSelector(
 const SidebarSettingContent = () => {
   const dispatch = useDispatch();
   const { RV_RevFloat, RVDic } = useWindow();
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
+
   const selectedContent = useSelector(selectSidebarContent);
-  const { setSidebarContent } = themeSlice.actions;
 
   const currentContent = selectedContent.current;
   const previousContent = selectedContent.prev;

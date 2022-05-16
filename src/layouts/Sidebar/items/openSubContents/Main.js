@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { themeSlice } from 'store/reducers/themeReducer';
 import ReadableTree from 'layouts/Sidebar/items/sidebarTree/readable/ReadableTree';
 import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
 import SearchBox from 'layouts/Sidebar/items/openSubContents/searchBox/SearchBox';
@@ -20,9 +19,9 @@ import {
   CLASSES_PATH,
 } from 'constant/constants';
 import { decodeBase64 } from 'helpers/helpers';
+import { useThemeSlice } from 'store/slice/theme';
 
 const { setSearchText } = sidebarMenuSlice.actions;
-const { setSidebarContent } = themeSlice.actions;
 
 const selectShowSearchResults = createSelector(
   (state) => state.sidebarItems,
@@ -41,6 +40,10 @@ const selectOnboardingName = createSelector(
 
 const SidebarMainContent = () => {
   const dispatch = useDispatch();
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
 
   const showSearchResults = useSelector(selectShowSearchResults);
   const selectedTeam = useSelector(selectTeam);

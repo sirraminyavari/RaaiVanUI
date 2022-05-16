@@ -11,6 +11,9 @@ import {
   REMOVE_WORKSPACE,
   SET_APPLICATION_SIZE,
   SET_APPLICATION_FIELD_OF_EXPERTISE,
+  GET_APPLICATIONS,
+  REMOVE_APPLICATION,
+  RECYCLE_APPLICATION,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
@@ -93,7 +96,14 @@ export const renameWorkspace = ({ Name, WorkspaceID } = {}) => {
  */
 export const createApplication = ({ WorkspaceID, Title } = {}) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
-    WorkspaceID: WorkspaceID,
+    WorkspaceID,
+    Title: encodeBase64(Title),
+  });
+};
+
+export const modifyApplication = ({ ApplicationID, Title } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
+    ApplicationID,
     Title: encodeBase64(Title),
   });
 };
@@ -132,6 +142,35 @@ export const setApplicationFieldOfExpertise = ({
       FieldName: encodeBase64(FieldName),
     }
   );
+};
+
+/**
+ * @param {boolean} Archive if true, retrieves archived applications
+ */
+export const getApplications = ({ Archive } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, GET_APPLICATIONS), {
+    Archive: Archive === true,
+  }).then((res) => {
+    if ((res?.Applications || []).length) {
+      res.Applications.forEach((app) => {
+        app.Users = (res.ApplicationUsers || {})[app.ApplicationID] || [];
+      });
+    }
+
+    return res;
+  });
+};
+
+export const removeApplication = ({ ApplicationID } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_APPLICATION), {
+    ApplicationID,
+  });
+};
+
+export const recoverApplication = ({ ApplicationID } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, RECYCLE_APPLICATION), {
+    ApplicationID,
+  });
 };
 
 /**
@@ -176,4 +215,8 @@ export const removeUserFromApplication = (UserID) => {
     'RemoveUserFromApplication'
   );
   return apiCallWrapper(removeUserFromApplicationAPI, { UserID });
+};
+
+export const getThemes = () => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetThemes'), {});
 };

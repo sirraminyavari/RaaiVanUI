@@ -2,7 +2,6 @@ import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import EditIcon from 'components/Icons/EditIcons/Edit';
 import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import {
   MANAGE_CONTENT,
@@ -11,11 +10,8 @@ import {
 } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const selectedOnboardingName = createSelector(
   (state) => state.onboarding,
@@ -29,9 +25,14 @@ const selectedOnboardingName = createSelector(
 const ManageButton = () => {
   const dispatch = useDispatch();
   const { RVDic, RV_Float, RV_RevFloat } = useWindow();
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+
+  const {
+    actions: { setSidebarContent, toggleSidebar },
+  } = useThemeSlice();
+  const themeState = useSelector(selectTheme);
+
+  const isSidebarOpen = themeState.isSidebarOpen;
   const onboardingName = useSelector(selectedOnboardingName);
-  const { setSidebarContent, toggleSidebar } = themeSlice.actions;
   const { closeOpenMenus } = sidebarMenuSlice.actions;
 
   //! Check if onboarding is activated on 'intro' mode.

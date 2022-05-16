@@ -1,23 +1,24 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import iconList from './iconList';
 import {
   SETTING_CONTENT,
   SETT_CLASSES_CONTENT,
-  SETT_NOTIFS_CONTENT,
   SETT_TEAM_CONTENT,
-  SETT_USERS_CONTENT,
 } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import { useHistory } from 'react-router-dom';
+import { useThemeSlice } from 'store/slice/theme';
 
 const SettingItem = () => {
   const dispatch = useDispatch();
-  const { setSidebarContent } = themeSlice.actions;
   const { RVDic } = useWindow();
   const history = useHistory();
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
 
   const settingItems = [
     { id: '1', title: RVDic.Settings, icon: SETT_TEAM_CONTENT },
