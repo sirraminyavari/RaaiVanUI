@@ -74,10 +74,21 @@ const OnboardingTeamContent = () => {
   //! RVDic i18n localization
   const RVDicSaveAndNext = RVDic.SaveAndNext;
   return (
-    <>
-      <Styles.OnboardingTeamWelcomeLayoutWrapper>
+    <Styles.OnboardingTeamContentContainer>
+      <Styles.OnboardingTeamWelcomeLayoutWrapper
+        noFixedHeight={[null].includes(stepsCount)}
+      >
         <TransitionSwitchWrapper transitionKey={activeStep}>
-          <WelcomeLayout noFullHeight noOutline style={{ width: '100%' }}>
+          <WelcomeLayout
+            centerize={[3, null].includes(stepsCount)}
+            noFullHeight
+            noOutline
+            style={{
+              width: '100%',
+              marginBlockStart: 0,
+              minHeight: 'calc(100vh - 15rem)',
+            }}
+          >
             {ContentComponent && (
               <>
                 <ContentComponent />
@@ -108,7 +119,7 @@ const OnboardingTeamContent = () => {
           />
         </Styles.OnboardingTeamActionButtonWrapper>
       )}
-    </>
+    </Styles.OnboardingTeamContentContainer>
   );
 };
 

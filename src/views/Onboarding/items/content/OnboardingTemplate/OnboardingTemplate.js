@@ -1,39 +1,47 @@
 import { useHistory } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplate.styles';
-import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
+// import VideoPlayer from 'views/Onboarding/items/others/VideoPlayer/VideoPlayer';
 import Button from 'components/Buttons/Button';
 import { ONBOARDING_TEMPLATE_SELECTION_PATH } from 'views/Onboarding/items/others/constants';
+import { decodeBase64 } from 'helpers/helpers';
 
 const OnboardingTemplateContent = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const history = useHistory();
 
   const goToTemplateSelectionView = () =>
     history.push(ONBOARDING_TEMPLATE_SELECTION_PATH);
 
-  const videoSrcList = [
-    {
-      src: 'https://static.videezy.com/system/resources/previews/000/041/206/original/12.Audio_Visualizer.mp4',
-      type: 'video/mp4',
-    },
-  ];
+  // const videoSrcList = [
+  //   {
+  //     src: 'https://static.videezy.com/system/resources/previews/000/041/206/original/12.Audio_Visualizer.mp4',
+  //     type: 'video/mp4',
+  //   },
+  // ];
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateTitle = 'تمپلیت چیست؟';
-  const RVDicOnboardingTemplateUnderstood = 'متوجه شدم !';
-  const RVDicOnboardingTemplateDescription =
-    'در هر کاری داشتن یک تمپلیت یا الگو، کار را ساده‌تر می‌کند؛ یکی از قابلیت‌های مهم کلیک‌مایند تمپلیت‌ها هستند. هر مفهومی که در تیم یا کسب‌وکار شما با اهمیت است یا درمورد آن اطلاعات به دردبخور دارید می‌تواند یک تمپلیت اختصاصی داشته باشد؛ به طور مثال مکاتبات، گزارش‌ها، پروژه‌ها، رقبا، تجهیزات، محصولات و سایر موارد مشابه.';
+  const RVDicOnboardingTemplateTitle = RVDic.WhatIsN.replace(
+    '[n]',
+    RVDic.Template
+  );
+  const RVDicOnboardingTemplateUnderstood = RVDic.GotIt;
+  const RVDicOnboardingTemplateDescription = RVDic._HelpTemplate.replace(
+    '[RaaiVan]',
+    decodeBase64(RVGlobal.SystemName)
+  );
+
   return (
-    <Styles.OnboardingTemplateWrapper>
+    <Styles.OnboardingTemplateWrapper
+      style={{ minHeight: 'calc(100vh - 6rem)' }}
+    >
       <Styles.OnboardingTemplateVideoContainer>
-        <VideoPlayer videoSrcList={videoSrcList} />
+        {/* <VideoPlayer videoSrcList={videoSrcList} /> */}
       </Styles.OnboardingTemplateVideoContainer>
-      <Styles.OnboardingTemplateTitle type="H1">
+      <Styles.OnboardingTemplateTitle type="H1" fontSize="2rem">
         {RVDicOnboardingTemplateTitle}
       </Styles.OnboardingTemplateTitle>
-      <Styles.RVDicOnboardingTemplateDescription type="H3">
+      <Styles.RVDicOnboardingTemplateDescription type="H3" fontSize="1.5rem">
         {RVDicOnboardingTemplateDescription}
       </Styles.RVDicOnboardingTemplateDescription>
 

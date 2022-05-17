@@ -287,3 +287,14 @@ export const activateTemplate = ({ Template } = {}) => {
     Template: encodeBase64(JSON.stringify(Template || {})),
   });
 };
+
+/**
+ * @description get the preview of a Template
+ * @param {string} NodeTypeID -The template object to be activated.
+ * @returns Promise.
+ */
+export const getTemplatePreview = ({ NodeTypeID } = {}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetTemplatePreview'), {
+    NodeTypeID,
+  });
+};

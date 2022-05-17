@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 
 const SelectGroups = ({ type }) => {
   const { groups, selectedGroups, handleGroupSelect } = usePrivacyProvider();
-  const _groups = [...selectedGroups].find((x) => x.type === type)?.items;
+  const _groups = selectedGroups?.find((x) => x.type === type)?.items;
 
   const items = useMemo(
     () =>

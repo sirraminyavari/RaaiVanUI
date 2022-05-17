@@ -55,17 +55,20 @@ const ErrorView = lazy(() =>
 const NewNode = lazy(() =>
   import(/* webpackChunkName: "new-node-view"*/ 'views/NewNode/NewNode')
 );
+
 const NodeView = lazy(() =>
   import(
     /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
   )
 );
-// const NodeView = lazy(() =>
-//   import(
-//     /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
-//     'views/Node/Node-view'
-//   )
-// );
+
+//const NodeView = lazy(() =>
+//  import(
+//    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
+//    'views/Node/Node-view'
+//  )
+//);
+
 const FormView = lazy(() =>
   import(/* webpackChunkName: "form-view"*/ 'views/Form/Form-view')
 );
@@ -267,18 +270,18 @@ const routes = [
   },
   //TODO setup new Onboarding design to /onboarding/new/* due to uncompleted RVDic and potential bugs
   {
-    path: ONBOARDING_PATH + '/new',
+    path: ONBOARDING_PATH + '/old',
     name: ONBOARDING_NAME,
     exact: false,
-    hasNavSide: true,
-    component: OnboardingNew,
+    hasNavSide: false,
+    component: Onboarding,
   },
   {
     path: ONBOARDING_PATH,
     name: ONBOARDING_NAME,
     exact: false,
-    hasNavSide: false,
-    component: Onboarding,
+    hasNavSide: true,
+    component: OnboardingNew,
   },
   {
     path: MONITORING_PATH,

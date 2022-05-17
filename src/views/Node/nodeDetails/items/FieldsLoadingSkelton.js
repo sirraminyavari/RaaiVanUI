@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Shimmer from 'components/Shimmer/Shimmer';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
-const LoadingSkelton = () => {
+const FieldsLoadingSkelton = () => {
   const isMobile = DimensionHelper().isMobile;
   return (
     <>
@@ -39,7 +39,7 @@ const LoadingSkelton = () => {
   );
 };
 
-export default LoadingSkelton;
+export default FieldsLoadingSkelton;
 
 const NodePageHeaderSkeleton = styled.div`
   padding: 2rem;

@@ -31,14 +31,18 @@ const OnboardingUserInfoContent = () => {
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
   const RVDicFirstName = RVDic.FirstName;
   const RVDicLastName = RVDic.LastName;
   const RVDicSaveAndNext = RVDic.SaveAndNext;
-  const RVDicDefaultAvatars = `آواتار پیشفرض`;
-  const RVDicPageDescriptionInfo =
-    'در کلیک‌مایند برای ارتباط با هم‌تیمی‌ها و ثبت دقیق‌تر اطلاعات، توصیه میشود همه اعضا نام و عکس مشخص خود را داشته باشند. برای همین در قسمت زیر، نام خود را وارد کنید و عکس/آواتار پروفایل خود را انتخاب کنید';
+  const RVDicDefaultAvatars = RVDic.DefaultN.replace('[n]', RVDic.Avatar);
+  const RVDicPageDescriptionInfo = RVDic._HelpPersonalInfo;
+
+  const isUserInfoSupplied = useMemo(() => {
+    const { FirstName, LastName } = currentUserInfo;
+    if (String(FirstName).length && String(LastName).length) return true;
+    else return false;
+  }, [currentUserInfo]);
 
   const updateUserInfo = (newInfo) => {
     setCurrentUserInfo((state) => {
@@ -54,7 +58,6 @@ const OnboardingUserInfoContent = () => {
     });
   };
 
-  // TODO implement associating team's avatar with team creation ...
   const onImageUpload = (newImageURL) => {
     dispatch(
       setAuthUser({
@@ -115,7 +118,11 @@ const OnboardingUserInfoContent = () => {
             />
           </Styles.OnboardingUserInfoInputWrapper>
           <Styles.OnboardingUserInfoActionButtonWrapper>
-            <Button onClick={saveCurrentUserInfo} loading={isLoading}>
+            <Button
+              onClick={saveCurrentUserInfo}
+              disable={!isUserInfoSupplied}
+              loading={isLoading}
+            >
               {RVDicSaveAndNext}
             </Button>
           </Styles.OnboardingUserInfoActionButtonWrapper>

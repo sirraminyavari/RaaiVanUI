@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import Heading from 'components/Heading/Heading';
 import workFieldAssets from 'assets/images/onboarding/workFieldAssets/workFieldAssets';
 import PanelButton from 'components/Buttons/PanelButton';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
@@ -14,6 +13,7 @@ import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
   const [workFields, setWorkFields] = useState([]);
+  const workFieldInputRef = useRef(null);
 
   const { RVDic } = useWindow();
   const {
@@ -21,11 +21,10 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     teamState: { workField },
   } = useOnboardingTeamContent();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicِTeamWorkFieldHeadCount = `حوزه فعالیت تیم شما`;
-  const RVDicOthersField = `سایر`;
-  const RVDicOthersInputField = `نام حوزه کاری خود را بنویسید`;
+  const RVDicِTeamWorkFieldHeadCount = RVDic.FieldOfActivity;
+  const RVDicOthersField = RVDic.Other;
+  const RVDicOthersInputField = RVDic.Checks.EnterYourFieldOfActivity;
 
   const setOnboardingTeamWorkField = (workField) => () => {
     dispatchTeamPage({
@@ -43,9 +42,18 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     fetchAllFieldsOfActivity();
   }, []);
 
+  useEffect(() => {
+    if (workField.fieldID === 'OTHERS')
+      workFieldInputRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+  }, [workField.fieldID]);
+
   return (
-    <>
-      <Heading type="h2">{RVDicِTeamWorkFieldHeadCount}</Heading>
+    <Styles.OnboardingTeamContentContainer>
+      <Styles.OnboardingTeamTitleWrapper>
+        {RVDicِTeamWorkFieldHeadCount}
+      </Styles.OnboardingTeamTitleWrapper>
       <Styles.OnboardingTeamButtonInputWrapper wrap>
         {workFields.map(({ NodeID, Name, AvatarName }) => (
           <>
@@ -78,9 +86,14 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
           <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
           {RVDicOthersField}
         </PanelButton>
-        {workField.fieldID === 'OTHERS' && (
-          <Styles.OnboardingTeamSetWorkFieldInputWrapper>
+        {
+          <Styles.OnboardingTeamSetWorkFieldInputWrapper
+            hide={workField.fieldID !== 'OTHERS'}
+          >
             <AnimatedInput
+              ref={workFieldInputRef}
+              id="workFieldInput"
+              disabled={workField.fieldID !== 'OTHERS'}
               placeholder={RVDicOthersInputField}
               value={decodeBase64(workField.fieldName)}
               onChange={(input) =>
@@ -91,9 +104,9 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
               }
             />
           </Styles.OnboardingTeamSetWorkFieldInputWrapper>
-        )}
+        }
       </Styles.OnboardingTeamButtonInputWrapper>
-    </>
+    </Styles.OnboardingTeamContentContainer>
   );
 };
 

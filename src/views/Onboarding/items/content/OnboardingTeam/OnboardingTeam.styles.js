@@ -1,9 +1,20 @@
 import styled from 'styled-components';
-import { OnboardingPageDescriptionText } from 'views/Onboarding/items/Onboarding.styles';
+import {
+  OnboardingPageDescriptionText,
+  OnboardingPageTitleText,
+} from 'views/Onboarding/items/Onboarding.styles';
 import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
 import { TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
+import Button from 'components/Buttons/Button';
 
+export const OnboardingTeamTitleWrapper = OnboardingPageTitleText;
 export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
+
+export const OnboardingTeamButton = styled(Button)`
+  padding-inline: 3rem;
+  min-height: 3rem;
+`;
+OnboardingTeamButton.displayName = 'OnboardingTeamButton';
 
 export const OnboardingTeamFlatPanelButtonGroup = styled.div`
   display: flex;
@@ -64,7 +75,7 @@ export const OnboardingTeamInputWrapper = styled.div`
 OnboardingTeamInputWrapper.displayName = 'OnboardingTeamInputWrapper';
 
 export const OnboardingTeamButtonInputWrapper = styled.div`
-  margin-block-start: 5rem;
+  margin-block-start: 1rem;
   margin-inline-end: 1rem;
   justify-content: center;
   width: 100%;
@@ -77,6 +88,13 @@ export const OnboardingTeamButtonInputWrapper = styled.div`
 OnboardingTeamButtonInputWrapper.displayName =
   'OnboardingTeamButtonInputWrapper';
 
+export const OnboardingTeamContentContainer = styled.div`
+  min-height: 50vh;
+  position: relative;
+`;
+
+OnboardingTeamContentContainer.displayName = 'OnboardingTeamContentContainer';
+
 export const OnboardingTeamAvatarPlaceholder = styled.div`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
@@ -86,6 +104,7 @@ OnboardingTeamAvatarPlaceholder.displayName = 'OnboardingTeamAvatarPlaceholder';
 
 export const OnboardingTeamActionButtonWrapper = styled.div`
   margin-block-start: 2.2rem;
+  padding-block: 1rem;
   width: 100%;
   margin-inline: auto;
   display: flex;
@@ -104,12 +123,13 @@ export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
   padding-inline: 1rem;
   width: 100%;
   margin-inline: auto;
+  ${({ hide }) => hide && 'opacity: 0;'}
 `;
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
 
 export const OnboardingTeamWelcomeLayoutWrapper = styled.div`
-  height: calc(100vh - 12rem);
+  ${({ noFixedHeight }) => !noFixedHeight && `height: calc(100vh - 12rem);`}
   width: 100%;
   overflow: auto;
   background-color: ${CV_WHITE};

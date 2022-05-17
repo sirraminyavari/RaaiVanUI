@@ -70,7 +70,7 @@ const time = 1;
 export const Wrapper = styled.div`
   div.transition-group {
     position: relative;
-    padding-inline: 1rem;
+    // padding-inline: 1rem;
     // padding-block: 1rem;
     > div {
       max-width: 100%;

@@ -1,19 +1,34 @@
-import { useHistory } from 'react-router-dom';
-import useWindow from 'hooks/useWindowContext';
+import { useEffect, useState } from 'react';
+import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-import PanelButton from 'components/Buttons/PanelButton';
-import Button from 'components/Buttons/Button';
+import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNApi';
+import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
 
-const OnboardingTemplateSelectionNode = ({ children }) => {
-  const { RVDic } = useWindow();
-  const history = useHistory();
+const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
+  const [templateNodeElements, setTemplateNodeElements] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setTemplateNodeElements(false);
+      const formElements = await getTemplatePreview({
+        NodeTypeID: activeTemplate?.NodeTypeID,
+      });
+      setTemplateNodeElements(formElements);
+      console.warn({ formElements, activeTemplate });
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTemplate?.NodeTypeID]);
 
   return (
-    <>
+    <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
-        {children}
+        {templateNodeElements ? (
+          <FormFill data={templateNodeElements} editable />
+        ) : (
+          <FieldsLoadingSkelton />
+        )}
       </Styles.OnboardingTemplateSelectionNodeContainer>
-    </>
+    </div>
   );
 };
 

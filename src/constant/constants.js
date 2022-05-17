@@ -39,6 +39,7 @@ export const SETT_NOTIFS_CONTENT = 'setting-notifs';
 export const SETT_WORKSPACE_CONTENT = 'setting-workspace';
 export const SETT_WORKSPACE_INVOICE_CONTENT = 'setting-workspace-invoice';
 export const SETT_WORKSPACE_PLANS_CONTENT = 'setting-workspace-plans';
+export const SETT_ONBOARDING_CONTENT = 'setting-onboarding-content';
 export const SETT_CLASSES_CONTENT = 'setting-classes';
 export const SETT_URL_CONTENT = 'setting-{url}';
 
@@ -255,4 +256,4 @@ export const KURDISH_LANGUAGE = 'ku';
  */
 export const ONE_TO_TEN = '1 - 10';
 export const TEN_TO_TWENTY = '10 - 20';
-export const MORE_THEN_TWENTY = 'more than 20';
+export const MORE_THAN_TWENTY = 'more than 20';

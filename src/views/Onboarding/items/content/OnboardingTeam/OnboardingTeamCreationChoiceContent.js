@@ -14,12 +14,10 @@ const OnboardingTeamCreationChoiceContent = () => {
   const { dispatch: dispatchTeamPage, nextStepAction } =
     useOnboardingTeamContent();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
   const RVDicCreateNewTeam = RVDic.CreateNewN.replace('[n]', RVDic.Team);
-  const RVDicAlreadyInATeam = 'عضو تیم هستم';
-  const RVDicPageDescriptionInfo =
-    '.اگر از طریق ایمیل یا لینک دعوت به تیمی دعوت شده‌اید و قصد ورود به تیم را دارید، از گزینه عضو تیم هستم استفاده کنید .و درصورتی که قصد ایجاد یک تیم جدید را دارید، از گزینه ساخت تیم جدید استفاده کنید';
+  const RVDicAlreadyInATeam = RVDic.IAmATeamMember;
+  const RVDicPageDescriptionInfo = RVDic._HelpOnboardingTeamSelection;
 
   const goToTheDefaultEntranceRoute = () => history.push('/');
 

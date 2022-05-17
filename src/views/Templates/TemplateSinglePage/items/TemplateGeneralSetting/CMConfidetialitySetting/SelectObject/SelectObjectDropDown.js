@@ -105,7 +105,7 @@ const SelectObjectDropDown = ({
       {openDropDown && (
         <DropDown ref={dropDownEl}>
           <TabView onSelect={(key) => setSelectedTab(key)}>
-            <TabView.Item label={'اعضا'} key="members">
+            <TabView.Item type="Item" label={'اعضا'} key="members">
               <InputContainer>
                 <Input
                   placeholder={RVDic?.Search}
@@ -117,7 +117,7 @@ const SelectObjectDropDown = ({
               <SelectUsers {...{ type, searchText }} />
             </TabView.Item>
 
-            <TabView.Item label={'گروه‌ها'} key="groups">
+            <TabView.Item type="Item" label={'گروه‌ها'} key="groups">
               <AddNewGroupButtonContainer onClick={addNewGroup}>
                 <PlusIcon size={20} />
                 <div>{'ساخت گروه کاربری جدید'}</div>
@@ -125,7 +125,7 @@ const SelectObjectDropDown = ({
               <SelectGroups {...{ type }} />
             </TabView.Item>
 
-            <TabView.Action>
+            <TabView.Action type="Action">
               <ResizeButton onClick={openInDialog}>
                 <ResizeIcon size={17} />
               </ResizeButton>

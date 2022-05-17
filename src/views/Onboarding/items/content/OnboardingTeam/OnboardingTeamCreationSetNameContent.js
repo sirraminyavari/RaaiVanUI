@@ -1,6 +1,5 @@
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
-import Heading from 'components/Heading/Heading';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   useOnboardingTeamContent,
@@ -11,9 +10,8 @@ const OnboardingTeamCreationSetNameContent = () => {
   const { dispatch: dispatchTeam, teamState } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicِYourTeamName = `نام تیم شما`;
+  const RVDicِYourTeamName = RVDic.TeamName;
   const RVDicِTeamName = RVDic.TeamName;
 
   const setTeamName = (teamName) => {
@@ -26,8 +24,10 @@ const OnboardingTeamCreationSetNameContent = () => {
 
   return (
     <>
-      <div>
-        <Heading type="h2">{RVDicِYourTeamName}</Heading>
+      <Styles.OnboardingTeamContentContainer>
+        <Styles.OnboardingTeamTitleWrapper>
+          {RVDicِYourTeamName}
+        </Styles.OnboardingTeamTitleWrapper>
         <Styles.OnboardingTeamInputWrapper>
           <AnimatedInput
             value={teamState.teamName}
@@ -35,7 +35,7 @@ const OnboardingTeamCreationSetNameContent = () => {
             placeholder={RVDicِTeamName}
           />
         </Styles.OnboardingTeamInputWrapper>
-      </div>
+      </Styles.OnboardingTeamContentContainer>
     </>
   );
 };

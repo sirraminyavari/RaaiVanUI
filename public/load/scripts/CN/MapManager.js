@@ -574,12 +574,12 @@
                     ]
                 };
             };
-
+            
             var elems = GlobalUtilities.create_nested_elements([
                 _create_button("+ " + RVDic.Add, "newNode"),
                 _create_button(RVDic.TreeEdit, "treeEdit"),
                 _create_button("+ " + RVDic.ImportViaExcel, "importExcel"),
-                _create_button("+ " + RVDic.ImportViaXML, "importXML"),
+                (!RVGlobal.Modules.FG ? null : _create_button("+ " + RVDic.ImportViaXML, "importXML")),
                 { Type: "div", Class: "small-12 medium-6 large-6" },
                 {
                     Type: "div", Class: "small-12 medium-6 large-6",

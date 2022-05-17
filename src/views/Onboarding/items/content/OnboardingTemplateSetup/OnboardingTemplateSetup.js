@@ -6,15 +6,21 @@ import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNApi';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-const {
-  actions: { toggleSidebarMenu },
-} = sidebarMenuSlice;
+import { themeSlice } from 'store/reducers/themeReducer';
+import { decodeBase64 } from 'helpers/helpers';
+import {
+  setOnboardingTemplateStatusCompleted,
+  toggleActivation,
+} from 'store/reducers/onboardingReducer';
+import { useDispatch } from 'react-redux';
+import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
+const { setSidebarContent, toggleSidebar } = themeSlice.actions;
 
 const OnboardingTemplateSetupContent = () => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const dispatch = useDispatch();
   const { selectedTemplates, applicationID } = useOnboardingTeamContent();
 
   const activateTemplateHandler = async (template, appId) => {
@@ -25,12 +31,15 @@ const OnboardingTemplateSetupContent = () => {
   };
 
   useEffect(() => {
-    toggleSidebarMenu();
+    dispatch(toggleSidebar(true));
     (async () => {
       const selectedTemplatesAPICallbacks = Object.values(
         selectedTemplates
       ).map((template) => {
-        return () => activateTemplateHandler(template, applicationID);
+        return () =>
+          activateTemplateHandler(template, applicationID).then(() =>
+            dispatch(setOnboardingTemplateStatusCompleted(template.NodeTypeID))
+          );
       });
       for (let i = 0; i < selectedTemplatesAPICallbacks.length; i++)
         await selectedTemplatesAPICallbacks[i]();
@@ -39,17 +48,28 @@ const OnboardingTemplateSetupContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplates]);
 
-  const goToApplication = () => history.push('/');
+  const goToApplication = () => {
+    dispatch(toggleActivation());
+    dispatch(
+      setSidebarContent({
+        current: MAIN_CONTENT,
+        prev: '',
+      })
+    );
+    history.push(CLASSES_PATH);
+  };
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateSetupUnderstood = '!آرررره! بزن بریم';
+  const RVDicOnboardingTemplateSetupUnderstood = RVDic.YesssLetsGo;
   const RVDicOnboardingTemplateSetupTitle =
-    'آماده‌ای بریم توی محیط کلیک‌مایند؟';
+    RVDic.AreYouReadyToStartYourJourneyOnRaaiVan.replace(
+      '[RaaiVan]',
+      decodeBase64(RVGlobal.SystemName)
+    );
   return (
     <Styles.OnboardingTemplateSetupWrapper>
       <img src={CliqMindLogo} alt="" />
-      <Styles.OnboardingTemplateSetupTitle type="H1">
+      <Styles.OnboardingTemplateSetupTitle>
         {RVDicOnboardingTemplateSetupTitle}
       </Styles.OnboardingTemplateSetupTitle>
 

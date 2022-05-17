@@ -1,11 +1,6 @@
-import AnimatedInput from 'components/Inputs/AnimatedInput';
-import * as Styles from './TextTypeMainSettingStyles';
+import SampleState from '../sharedItems/SampleState';
 
 const TextTypeMainSetting = ({ current, setFormObjects }) => {
-  return (
-    <Styles.FieldWrapper>
-      <AnimatedInput placeholder={'عبارت پیش‌فرض کادر پاسخ'} />
-    </Styles.FieldWrapper>
-  );
+  return <SampleState {...{ current, setFormObjects }} />;
 };
 export default TextTypeMainSetting;

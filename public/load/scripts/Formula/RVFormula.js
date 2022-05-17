@@ -28,6 +28,7 @@
         };
 
         this.Options = {
+            InitialFormula: params.Formula,
             Variables: parse_variables(params.Variables || []) || {}
         };
 
@@ -42,11 +43,14 @@
         initialize: function () {
             var that = this;
 
-            that.Objects.CurrentOptions = that.get_options();
+            var initialFormula = RVFormula.parse_formula(that.Options.InitialFormula, that.Options.Variables);
+            var initialOptions = (initialFormula || []).map(x => that.create_option(x));
 
+            that.Objects.CurrentOptions = that.get_options().concat(initialOptions);
+            
             var formulaInput = that.Objects.FormulaInput = jQuery(that.Container).selectize({
                 delimiter: ",",
-                items: [], //initial value
+                items: initialOptions.map(x => x.value), //initial value
                 options: that.Objects.CurrentOptions,
                 valueField: "value",
                 labelField: "option",
@@ -161,18 +165,16 @@
         }
     };
 
-    RVFormula.show_formula = function (container, formula, options) {
-        options = options || {};
-        
-        var variables = parse_variables(options.Variables || []) || {};
-        
-        var parts = (formula || " ")
+    RVFormula.parse_formula = function (formula, variables) {
+        variables = variables || {};
+
+        return (formula || " ")
             .trim()
             .split(" ")
             .filter(itm => !!itm)
             .map(itm => {
                 var op = get_operators().find(x => x.option == itm);
-                
+
                 if (!!op)
                     return op;
                 else if (/^\[\[[a-zA-Z0-9\-]+\]\]$/ig.test(itm)) {
@@ -185,6 +187,12 @@
                 else return null;
             })
             .filter(itm => !!itm);
+    };
+
+    RVFormula.show_formula = function (container, formula, options) {
+        options = options || {};
+
+        var parts = RVFormula.parse_formula(formula, parse_variables(options.Variables || []));
 
         GlobalUtilities.create_nested_elements(parts.map(p => {
             var notFound = (p.option === null) || (p.option === undefined);

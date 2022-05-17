@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useWindow from 'hooks/useWindowContext';
 import TabView from 'components/TabView/TabView';
 import Button from 'components/Buttons/Button';
@@ -27,7 +27,7 @@ import { getUploadUrl, setUploadImage } from 'apiHelper/ApiHandlers/docsApi';
  * @example
  * ```jsx
  * <AvatarImageCropperTabs [...acceptableProps]>
- *    <TabView.Item label="some label"> some content </TabView.Item>
+ *    <TabView.Item label="some label" type="Item"> some content </TabView.Item>
  * </AvatarImageCropperTabs>
  * ```
  */
@@ -94,8 +94,8 @@ function AvatarImageCropperTabs({
   };
 
   //! Fires on save button click.
-  const handleSaveCroppedImage = useMemo(
-    () => async () => {
+  const handleSaveCroppedImage = useCallback(
+    async (croppedAreaPixels) => {
       setIsSavingImage(true);
 
       //! Update profile avatar.
@@ -106,10 +106,10 @@ function AvatarImageCropperTabs({
             file: targetFile,
             IconID: uploadId,
             Type: uploadType,
-            x: croppedAreaPixels?.x,
-            y: croppedAreaPixels?.x,
-            width: croppedAreaPixels?.width,
-            height: croppedAreaPixels?.height,
+            x: croppedAreaPixels?.x || croppedAreaPixels?.X,
+            y: croppedAreaPixels?.x || croppedAreaPixels?.Y,
+            width: croppedAreaPixels?.width || croppedAreaPixels?.Width,
+            height: croppedAreaPixels?.height || croppedAreaPixels?.Height,
           });
           setIsSavingImage(false);
           const newImageURL = GlobalUtilities.add_timestamp(response?.ImageURL);
@@ -130,13 +130,13 @@ function AvatarImageCropperTabs({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [croppedAreaPixels, targetFile, internalAvatar, uploadMode]
+    [targetFile, internalAvatar, uploadMode]
   );
 
   return (
     <>
       <TabView key={targetFile}>
-        <TabView.Item label={RVDicPicture}>
+        <TabView.Item type="Item" label={RVDicPicture}>
           <ImageCropperSelection
             imageSrc={internalImageSrc}
             fileInputRef={avatarUploadRef}
@@ -145,7 +145,10 @@ function AvatarImageCropperTabs({
           />
         </TabView.Item>
         {!noAvatarTab && (
-          <TabView.Item label={avatarTabLabel || RVDicDefaultAvatar}>
+          <TabView.Item
+            type="Item"
+            label={avatarTabLabel || RVDicDefaultAvatar}
+          >
             <AvatarPanel
               avatarObject={avatarObject}
               value={internalAvatar}
@@ -155,7 +158,7 @@ function AvatarImageCropperTabs({
         )}
         {children}
         {CustomTabAction && (
-          <TabView.Action>
+          <TabView.Action type="Action">
             <CustomTabAction />
           </TabView.Action>
         )}
@@ -171,7 +174,7 @@ function AvatarImageCropperTabs({
       <Styles.ImageCropperActionsContainer>
         <Button
           loading={isSavingImage}
-          onClick={handleSaveCroppedImage}
+          onClick={() => handleSaveCroppedImage(croppedAreaPixels)}
           type="primary"
         >
           {RVDicSave}

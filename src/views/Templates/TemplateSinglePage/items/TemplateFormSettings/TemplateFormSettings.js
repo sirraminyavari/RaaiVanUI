@@ -4,7 +4,6 @@ import { themeSlice } from 'store/reducers/themeReducer';
 import { TemplateFormProvider } from './TemplateFormContext';
 import { getFormElements } from 'apiHelper/ApiHandlers/FGAPI';
 import TemplateFormWrapper from './TemplateFormWrapper';
-import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateFormSettings = () => {
   const { toggleSidebar } = themeSlice.actions;
@@ -13,15 +12,15 @@ const TemplateFormSettings = () => {
 
   useEffect(() => {
     dispatch(toggleSidebar());
-    (async () => await initForm())();
+    initForm();
   }, []);
 
   const initForm = async () => {
-    // const data = await getFormElements({
-    //   FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
-    // });
-    // setFormInitialState(data);
-    console.log(decodeBase64('eyJtaW4iOjEwLCJtYXgiOjIwfQ=='));
+    const data = await getFormElements({
+      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+    });
+    console.log(data);
+    setFormInitialState(data);
   };
 
   return (

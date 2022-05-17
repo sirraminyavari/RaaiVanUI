@@ -5,37 +5,47 @@ import {
   setApplicationFieldOfExpertise,
   setApplicationSize,
 } from 'apiHelper/ApiHandlers/RVApi';
-import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
+import { themeSlice } from 'store/reducers/themeReducer';
 import { OnboardingTeamStepContextActions } from './OnboardingTeam.context';
+import { store } from 'store/store';
+import { MAIN_CONTENT, SETT_ONBOARDING_CONTENT } from 'constant/constants';
+import { selectApplication as selectApplicationAction } from 'store/actions/applications/ApplicationsAction';
+import {
+  setOnboardingTeamName,
+  onboardingSlice,
+} from 'store/reducers/onboardingReducer';
+const { onboardingName, onboardingStep } = onboardingSlice.actions;
+const { setSidebarContent } = themeSlice.actions;
 
-//TODO Refactor needed ...
+const { setSelectedTeam } = themeSlice.actions;
+
 export const onboardingTeamNameSave = async ({ dispatch, teamName }) => {
-  const wsRes = await createWorkspace({ Name: window.RVDic.Default });
-  let appRes;
+  const createWorkspaceResponse = await createWorkspace({
+    Name: window.RVDic.Default,
+  });
+  let createApplicationResponse;
 
-  if (wsRes.Workspace?.WorkspaceID) {
-    appRes = await createApplication({
-      WorkspaceID: wsRes.Workspace.WorkspaceID,
+  if (createWorkspaceResponse.Workspace?.WorkspaceID) {
+    createApplicationResponse = await createApplication({
+      WorkspaceID: createWorkspaceResponse.Workspace.WorkspaceID,
       Title: teamName,
     });
   }
 
-  const slctRes = !appRes?.Application?.ApplicationID
-    ? null
-    : await selectApplication({
-        ApplicationID: appRes.Application.ApplicationID,
-      });
-
-  if (slctRes?.Succeed) {
-    (window.RVGlobal || {}).ApplicationID = appRes.Application.ApplicationID;
-    (window.RVGlobal || {}).IsSystemAdmin = slctRes.IsSystemAdmin;
+  if (createApplicationResponse?.Succeed) {
+    store.dispatch(setOnboardingTeamName(teamName));
+    store.dispatch(
+      setSidebarContent({
+        current: SETT_ONBOARDING_CONTENT,
+        prev: MAIN_CONTENT,
+      })
+    );
 
     dispatch({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_APPLICATION_ID,
       stateKey: 'ApplicationID',
-      stateValue: appRes.Application.ApplicationID,
+      stateValue: createApplicationResponse.Application.ApplicationID,
     });
-    dispatch(selectApplicationAction(appRes.Application.ApplicationID));
   }
 };
 
@@ -53,20 +63,30 @@ export const onboardingTeamPeopleCountSave = async ({
     ApplicationID,
     Size: serverValue[Size],
   });
+
+  const selectApplicationResponse = await selectApplication({
+    ApplicationID: ApplicationID,
+  });
+
+  (window.RVGlobal || {}).ApplicationID = ApplicationID;
+  (window.RVGlobal || {}).IsSystemAdmin =
+    selectApplicationResponse?.IsSystemAdmin;
 };
 
 export const onboardingTeamFieldOfExpertiseSave = async ({
-  dispatch,
+  // dispatch,
+  teamName,
   ApplicationID,
   workFieldID,
   workFieldName,
 }) => {
-  await selectApplication({
-    ApplicationID: ApplicationID,
-  });
   await setApplicationFieldOfExpertise({
     ApplicationID,
     FieldID: workFieldID,
     FieldName: workFieldName,
   });
+  store.dispatch(selectApplicationAction(ApplicationID));
+  store.dispatch(onboardingName('intro'));
+  store.dispatch(onboardingStep(0));
+  store.dispatch(setSelectedTeam({ name: teamName, id: ApplicationID }));
 };

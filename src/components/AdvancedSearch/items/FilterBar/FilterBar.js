@@ -23,13 +23,7 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import {
-  BackButton,
-  BottomRow,
-  Container,
-  ShadowButton,
-  TopRow,
-} from './FilterBar.style';
+import { BackButton, BottomRow, Container, TopRow } from './FilterBar.style';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import {
   INTRO_ONBOARD,
@@ -37,6 +31,7 @@ import {
   USER_WITHID_PATH,
 } from 'constant/constants';
 import Button from 'components/Buttons/Button';
+import ShadowButton from 'components/Buttons/ShadowButton';
 
 export const advancedSearchButtonRef = React.createRef();
 

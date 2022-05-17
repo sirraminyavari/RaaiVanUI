@@ -28,6 +28,8 @@ const ONBOARDING_TEAM_CREATION_SET_WORK_FIELD =
 const ONBOARDING_TEAM_CREATION_COMPLETED = 'ONBOARDING_TEAM_CREATION_COMPLETED';
 const ONBOARDING_TEAM_TEMPLATE_SELECTION = 'ONBOARDING_TEAM_TEMPLATE_SELECTION';
 const ONBOARDING_TEAM_SET_TEMPLATE = 'ONBOARDING_TEAM_SET_TEMPLATE';
+const ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE =
+  'ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE';
 const ONBOARDING_TEAM_REMOVE_TEMPLATE = 'ONBOARDING_TEAM_REMOVE_TEMPLATE';
 const ONBOARDING_TEAM_CLEAR_TEMPLATE = 'ONBOARDING_TEAM_CLEAR_TEMPLATE';
 
@@ -94,6 +96,7 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
             await onboardingTeamPeopleCountSave({
               dispatch,
               ApplicationID: prevState.applicationID,
+              teamName: teamState.teamName,
               Size: teamState.peopleCount,
             });
             resolve();
@@ -167,6 +170,12 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
         selectedTemplates: setSelectedTemplates,
         disableContinue: !Object.keys(setSelectedTemplates).length,
       };
+    case ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE:
+      return {
+        ...prevState,
+        selectedTemplates: stateValue,
+        disableContinue: !Object.keys(stateValue).length,
+      };
     case ONBOARDING_TEAM_REMOVE_TEMPLATE:
       const { [stateKey]: removableTemplate, ...selectedTemplates } =
         prevState.selectedTemplates;
@@ -197,6 +206,7 @@ export const OnboardingTeamStepContextActions = {
   ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT,
   ONBOARDING_TEAM_CREATION_SET_WORK_FIELD,
   ONBOARDING_TEAM_SET_TEMPLATE,
+  ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE,
   ONBOARDING_TEAM_REMOVE_TEMPLATE,
   ONBOARDING_TEAM_CLEAR_TEMPLATE,
 };

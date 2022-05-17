@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import Heading from 'components/Heading/Heading';
 import { OnboardingCenterizeContent } from 'views/Onboarding/items/Onboarding.styles';
-import EmojiHello from 'assets/images/emoji-hello.svg';
 
 const waveAnimationKeyframes = keyframes`
 
@@ -37,11 +36,18 @@ export const OnboardingIntroductionText = styled(Heading)`
   transform: scale(0);
   transition: opacity 1s, filter 1s, transform 1s;
   text-align: center;
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 OnboardingIntroductionText.displayName = 'OnboardingIntroductionText';
 
 export const OnboardingIntroductionWrapper = styled(OnboardingCenterizeContent)`
   &.title {
+    &::first-letter {
+      text-transform: capitalize;
+    }
+
     ${OnboardingIntroductionText}:first-of-type {
       opacity: 1;
       transform: scale(1);

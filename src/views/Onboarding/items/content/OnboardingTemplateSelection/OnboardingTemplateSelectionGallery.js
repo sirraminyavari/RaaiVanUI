@@ -1,52 +1,80 @@
+import { decodeBase64 } from 'helpers/helpers';
+import HamburgerMenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import OnboardingTemplateSelectionGalleryItem from './OnboardingTemplateSelectionGalleryItem';
+import { useState } from 'react';
+import { BO_RADIUS_HALF } from 'constant/constants';
 
 // TODO extract Dropdown as a dedicated component
 const OnboardingTemplateSelectionGallery = ({
   templates,
   setActiveTag,
   activateTemplate,
+  mobile,
 }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [activeID, setActiveID] = useState();
 
-  console.log({
-    templates,
-    setActiveTag,
-    activateTemplate,
-  });
-
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingTemplateGallery = 'گالری تمپلیت‌ها';
-  const RVDicOnboardingTemplateSuggestionGallery = 'پیشنهاد کلیک‌مایند';
+  const RVDicOnboardingTemplateGallery = RVDic.TemplatesGallery;
+  const RVDicOnboardingTemplateSuggestionGallery =
+    RVDic.SuggestedByRaaiVan.replace(
+      '[RaaiVan]',
+      decodeBase64(RVGlobal.SystemName)
+    );
 
   return (
-    <>
-      <Styles.OnboardingTemplateSelectionGalleryContainer>
+    <Styles.OnboardingTemplateSelectionGalleryContainer mobile={mobile}>
+      <Styles.OnboardingTemplateSelectionGalleryContainerBackground
+        className={mobile && BO_RADIUS_HALF}
+        mobile={mobile}
+      >
         <Styles.OnboardingTemplateSelectionGalleryTitle>
+          {mobile && (
+            <>
+              <Styles.OnboardingTemplateSelectionGalleryTitleMenuButton
+                onClick={() => setIsCollapsed((state) => !state)}
+              >
+                <HamburgerMenuIcon />
+              </Styles.OnboardingTemplateSelectionGalleryTitleMenuButton>
+            </>
+          )}
           {RVDicOnboardingTemplateGallery}
         </Styles.OnboardingTemplateSelectionGalleryTitle>
-        <Styles.OnboardingTemplateSelectionGallerySuggestion
-          onClick={() => setActiveTag(undefined)}
+        <Styles.OnboardingTemplateSelectionGalleryContentWrapper
+          isCollapsed={isCollapsed}
+          mobile={mobile}
         >
-          {RVDicOnboardingTemplateSuggestionGallery}
-        </Styles.OnboardingTemplateSelectionGallerySuggestion>
-        {templates?.Tags?.map((Tag, idx) => {
-          const { Name, NodeID, NodeTypeID, Templates } = Tag;
-          alert('Name');
-          return (
-            <OnboardingTemplateSelectionGalleryItem
-              Name={Name}
-              Templates={Templates}
-              key={NodeID}
-              onClick={() => setActiveTag(Tag)}
-              activateTemplate={activateTemplate}
-            />
-          );
-        })}
-      </Styles.OnboardingTemplateSelectionGalleryContainer>
-    </>
+          <Styles.OnboardingTemplateSelectionGallerySuggestion
+            onClick={() => {
+              setActiveTag(undefined);
+              setActiveID(undefined);
+            }}
+            active={activeID === undefined}
+          >
+            {RVDicOnboardingTemplateSuggestionGallery}
+          </Styles.OnboardingTemplateSelectionGallerySuggestion>
+          {templates?.Tags?.map((Tag, idx) => {
+            const { Name, NodeID, Templates } = Tag;
+            return (
+              <OnboardingTemplateSelectionGalleryItem
+                Name={Name}
+                Templates={Templates}
+                key={NodeID}
+                onClick={() => {
+                  setActiveTag(Tag);
+                  setActiveID(NodeID);
+                }}
+                active={activeID === NodeID}
+                activateTemplate={activateTemplate}
+              />
+            );
+          })}
+        </Styles.OnboardingTemplateSelectionGalleryContentWrapper>
+      </Styles.OnboardingTemplateSelectionGalleryContainerBackground>
+    </Styles.OnboardingTemplateSelectionGalleryContainer>
   );
 };
 

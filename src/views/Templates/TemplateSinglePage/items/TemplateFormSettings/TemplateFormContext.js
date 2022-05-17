@@ -3,7 +3,8 @@ import { getUUID } from 'helpers/helpers';
 import formElementList from './items/FormElements';
 import produce from 'immer';
 import { getElementType } from './elementSettingComponents/ElementTypeFinder';
-import { saveFormElements } from '../../../../../apiHelper/ApiHandlers/FGAPI';
+import { saveFormElements } from 'apiHelper/ApiHandlers/FGAPI';
+import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
 
 const TemplateFormContext = createContext({});
 
@@ -13,6 +14,7 @@ export const useTemplateFormContext = () => {
 };
 
 export const TemplateFormProvider = ({ children, initialState }) => {
+  const { RVDic } = window;
   const elementList = formElementList();
   const [formObjects, setFormObjects] = useState([]);
   const [focusedObject, setFocusedObject] = useState(null);
@@ -60,6 +62,7 @@ export const TemplateFormProvider = ({ children, initialState }) => {
   const formPreProcessDataModel = (data) => {
     const { Elements } = data || {};
     const modified = Elements?.map((x) => getElementType(x));
+    console.log(Elements);
     if (modified) {
       setFormObjects(modified);
     }
@@ -79,10 +82,22 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         ...x,
       }));
     console.log(Elements);
-    // const { ErrorText } = saveFormElements({
-    //   FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
-    //   Elements,
-    // });
+    const { ErrorText, Succeed } = await saveFormElements({
+      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+      Elements,
+    });
+
+    if (ErrorText) {
+      InfoToast({
+        type: 'error',
+        message: RVDic.MSG[ErrorText] || ErrorText,
+      });
+    } else {
+      InfoToast({
+        type: 'success',
+        message: RVDic.MSG[Succeed] || Succeed,
+      });
+    }
   };
 
   return (

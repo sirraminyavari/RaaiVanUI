@@ -6,10 +6,12 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
   const { dispatch, selectedTemplates } = useOnboardingTeamContent();
+  const { isTabletOrMobile } = DimensionHelper();
 
   const selectTemplateHandler = (template) => {
     dispatch({
@@ -37,20 +39,17 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
     else return false;
   };
 
-  //TODO add missing RVDic locales
   //! RVDic i18n localization
-  const RVDicOnboardingSelectTemplate = 'انتخاب تمپلیت';
-  const RVDicOnboardingDeselectTemplate = 'لغو انتخاب';
+  const RVDicOnboardingSelectTemplate = RVDic.SelectN.replace(
+    '[n]',
+    RVDic.Template
+  );
+  const RVDicOnboardingDeselectTemplate = RVDic.Unselect;
 
   return (
     <>
-      <div
-        style={{
-          minHeight: '50vh',
-          display: 'flex',
-          justifyContent: 'space-evenly',
-          flexDirection: 'column',
-        }}
+      <Styles.OnboardingTemplateSelectionCurrentTemplateContainer
+        mobile={isTabletOrMobile}
       >
         {activeTemplate && (
           <>
@@ -60,7 +59,9 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             <Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
               {decodeBase64(activeTemplate?.TypeName)}
             </Styles.OnboardingTemplateSelectionCurrentTemplateTitle>
-            <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
+            <Styles.OnboardingTemplateSelectionCurrentTemplateParagraph
+              mobile={isTabletOrMobile}
+            >
               {decodeBase64(activeTemplate?.Description)}
             </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
             <Styles.OnboardingTemplateSelectionButtonWrapper
@@ -68,7 +69,11 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             >
               {!isTemplateSelected(selectedTemplates, activeTemplate) ? (
                 <Button
-                  style={{ paddingInline: '2rem' }}
+                  style={{
+                    paddingInline: '3rem',
+                    height: '3rem',
+                    fontSize: '1rem',
+                  }}
                   type="primary-o"
                   onClick={() => selectTemplateHandler(activeTemplate)}
                 >
@@ -76,7 +81,11 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
                 </Button>
               ) : (
                 <Button
-                  style={{ paddingInline: '2rem' }}
+                  style={{
+                    paddingInline: '3rem',
+                    height: '3rem',
+                    fontSize: '1rem',
+                  }}
                   type="negative-o"
                   onClick={() => deselectTemplateHandler(activeTemplate)}
                 >
@@ -86,7 +95,7 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
             </Styles.OnboardingTemplateSelectionButtonWrapper>
           </>
         )}
-      </div>
+      </Styles.OnboardingTemplateSelectionCurrentTemplateContainer>
     </>
   );
 };

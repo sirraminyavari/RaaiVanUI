@@ -276,6 +276,7 @@ export const selectApplication = (appId, done, error) => async (dispatch) => {
           dispatch(getUnderMenuPermissions(['Reports']));
           // dispatch(getNotificationsCount());
           // dispatch(getNotificationsList());
+
           if (!!response.ProductTour) {
             dispatch(onboardingName(response.ProductTour?.Name || ''));
             dispatch(onboardingStep(response.ProductTour?.Step || 0));
