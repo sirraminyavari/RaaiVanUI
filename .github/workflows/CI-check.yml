@@ -28,13 +28,16 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: install project dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build project package
-        run: npm run build
+        run: yarn run build
 
       - name: Build JSDoc
-        run: npm run docs
+        run: yarn run docs
+
+      - name: Initialize StoryBook and install dependencies
+        run: yarn add -D @etchteam/storybook-addon-css-variables-theme@^1.1.1 @storybook/addon-actions@^6.4.18 @storybook/addon-docs@^6.4.18 @storybook/addon-essentials@^6.4.18 @storybook/addon-links@^6.4.18 @storybook/node-logger@^6.4.18 @storybook/preset-create-react-app@^3.2.0 @storybook/react@^6.4.18
 
       - name: Build StoryBook.js
-        run: npm run build-storybook
+        run: yarn run build-storybook
