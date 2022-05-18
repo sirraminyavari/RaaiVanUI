@@ -1,6 +1,6 @@
 import OnboardingUserInfoContent from './items/content/OnboardingUserInfo/OnboardingUserInfo';
 
-const OnboardingUserInfoView = () => {
+const OnboardingUserInfoView = (): JSX.Element => {
   return (
     <>
       <OnboardingUserInfoContent />
