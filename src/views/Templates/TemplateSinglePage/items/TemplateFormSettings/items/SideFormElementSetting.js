@@ -28,7 +28,7 @@ const SideFormElementSetting = ({
 };
 
 const Container = styled.div`
-  min-height: 17rem;
+  min-height: 5rem;
   padding: 1.5rem;
 `;
 

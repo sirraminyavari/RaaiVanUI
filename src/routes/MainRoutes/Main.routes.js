@@ -56,18 +56,19 @@ const NewNode = lazy(() =>
   import(/* webpackChunkName: "new-node-view"*/ 'views/NewNode/NewNode')
 );
 
+const NodeView = lazy(() =>
+  import(
+    /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
+  )
+);
+
 //const NodeView = lazy(() =>
 //  import(
-//    /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
+//    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
+//    'views/Node/Node-view'
 //  )
 //);
 
-const NodeView = lazy(() =>
-  import(
-    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
-    'views/Node/Node-view'
-  )
-);
 const FormView = lazy(() =>
   import(/* webpackChunkName: "form-view"*/ 'views/Form/Form-view')
 );

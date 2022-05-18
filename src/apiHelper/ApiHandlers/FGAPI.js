@@ -12,6 +12,7 @@ import {
   extend,
 } from 'helpers/helpers';
 import { apiCallWrapper } from './apiCallHelpers';
+import { number } from 'prop-types';
 
 /**
  * @description gets the elements of a form
@@ -165,7 +166,7 @@ const customizedElements = {
   },
   paragraph: {
     Type: 'Text',
-    Info: {},
+    Info: { min: '[number]', max: '[number]' },
   },
   email: {
     Type: 'Text',
@@ -177,22 +178,54 @@ const customizedElements = {
   },
   number: {
     Type: 'Numeric',
-    Info: { min: '[number]', max: '[number]' },
+    Info: {
+      min: '[number]',
+      max: '[number]',
+      PatternName: 'number | currency | nationalCode | postalCode | none',
+      currency: 'IRT | IRR | USD | EUR | none',
+      separator: true,
+      percentage: true,
+    },
   },
   'phone number': {
     Type: 'Text',
-    Info: { UseSimpleEditor: true, PatternName: 'mobile' },
+    Info: {
+      UseSimpleEditor: true,
+      PatternName: 'mobile | phone | phoneByNationalCode ',
+    },
   },
   date: {
     Type: 'Date',
   },
   'single-select': {
     Type: 'Select',
-    Info: { Options: '[array of string items]' },
+    Info: {
+      // Options: '[array of string items]',
+      Items: [
+        {
+          text: '[string]',
+          color: '[string]',
+          min: '[number]',
+          max: '[number]',
+        },
+      ],
+      ViewType: 'sliding | optional',
+      addOption: true,
+    },
   },
   'multi-select': {
     Type: 'Checkbox',
-    Info: { Options: '[array of string items]' },
+    Info: {
+      // Options: '[array of string items]',
+      Items: [
+        {
+          text: '[string]',
+          color: '[string]',
+        },
+      ],
+      ViewType: 'sliding | optional',
+      addOption: true,
+    },
   },
   'two options': {
     Type: 'Binary',
@@ -200,7 +233,12 @@ const customizedElements = {
   },
   rating: {
     Type: 'Numeric',
-    Info: { Pattern: 'rating' },
+    Info: {
+      PatternName: 'rating',
+      min: '[number]',
+      max: '[number]',
+      ViewType: 'numerical | stars',
+    },
   },
   item: {
     Type: 'Node',
@@ -211,7 +249,11 @@ const customizedElements = {
   },
   user: {
     Type: 'User',
-    Info: { MultiSelect: '[boolean]' },
+    Info: {
+      MultiSelect: '[boolean]',
+      GroupSelect: '[boolean]',
+      GroupIDs: '[array of group ids]',
+    },
   },
   file: {
     Type: 'File',
@@ -225,6 +267,10 @@ const customizedElements = {
   },
   separator: {
     Type: 'Separator',
+    Info: {
+      SeparatorType: 'text | line | ...',
+      SeparatorText: '[string]',
+    },
   },
   table: {
     Type: 'Form',

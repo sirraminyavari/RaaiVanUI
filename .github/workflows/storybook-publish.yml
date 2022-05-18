@@ -28,8 +28,9 @@ jobs:
 
       - name: Install and Build 🔧
         run: | # Install npm packages and build the Storybook files
-          npm install --legacy-peer-deps
-          npm run build-storybook
+          yarn install
+          yarn add -D @etchteam/storybook-addon-css-variables-theme@^1.1.1 @storybook/addon-actions@^6.4.18 @storybook/addon-docs@^6.4.18 @storybook/addon-essentials@^6.4.18 @storybook/addon-links@^6.4.18 @storybook/node-logger@^6.4.18 @storybook/preset-create-react-app@^3.2.0 @storybook/react@^6.4.18
+          yarn run build-storybook
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.3

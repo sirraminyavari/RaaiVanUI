@@ -6,14 +6,10 @@ import { useEffect, useState } from 'react';
 import { decodeBase64 } from '../../helpers/helpers';
 import { saveApplicationInfo } from '../../apiHelper/apiFunctions';
 import {
-  ARABIC_LANGUAGE,
   ENGLISH_LANGUAGE,
   GREGORIAN_CALENDAR,
   JALALI_CALENDAR,
-  KURDISH_CALENDAR,
-  KURDISH_LANGUAGE,
-  LUNAR_CALENDAR,
-  MORE_THEN_TWENTY,
+  MORE_THAN_TWENTY,
   ONE_TO_TEN,
   PERSIAN_LANGUAGE,
   TEN_TO_TWENTY,
@@ -85,7 +81,7 @@ const useTeamSettings = (props) => {
   const teamSizeOption = [
     { value: ONE_TO_TEN, label: '1 - 10' },
     { value: TEN_TO_TWENTY, label: '10 - 20' },
-    { value: MORE_THEN_TWENTY, label: RVDic?.MoreThanN?.replace('[n]', 20) },
+    { value: MORE_THAN_TWENTY, label: RVDic?.MoreThanN?.replace('[n]', 20) },
   ];
 
   const saveInfo = async () => {

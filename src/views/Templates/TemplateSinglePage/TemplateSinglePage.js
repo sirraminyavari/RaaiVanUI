@@ -60,11 +60,9 @@ const TemplateSinglePage = () => {
       })
     );
     const fetchData = async () => {
-      console.log(NodeTypeID);
       const _extensions = await getExtensions({ NodeTypeID, Initialize: true });
       const _service = await getService({ NodeTypeID });
 
-      console.log(_extensions);
       if (!_extensions?.ErrorText) {
         setExtensions(_extensions);
         setService(_service);

@@ -37,6 +37,21 @@ const TemplateSetting = () => {
       title: 'مدیریت فرم',
       linkTo: `${root}/forms`,
     },
+    {
+      id: 3,
+      title: 'تنظیمات پیشرفته',
+      linkTo: `${root}/advanced`,
+    },
+    {
+      id: 4,
+      title: 'آیتم‌ها',
+      linkTo: `${root}/items`,
+    },
+    {
+      id: 5,
+      title: 'اعضا',
+      linkTo: `${root}/members`,
+    },
   ];
   return (
     <>

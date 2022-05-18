@@ -7,7 +7,7 @@ import {
   TCV_DEFAULT,
 } from 'constant/CssVariables';
 import { FLEX_CCC, FLEX_RCB, FLEX_RCS } from 'constant/StyledCommonCss';
-import RxInput from '../../../../../../../components/Inputs/RxInput';
+import RxInput from 'components/Inputs/RxInput';
 
 export const Button = styled.button`
   outline: none;
