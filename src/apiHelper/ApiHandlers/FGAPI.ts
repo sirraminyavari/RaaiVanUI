@@ -12,7 +12,6 @@ import {
   extend,
 } from 'helpers/helpers';
 import { apiCallWrapper } from './apiCallHelpers';
-import { number } from 'prop-types';
 
 /**
  * @description gets the elements of a form
@@ -23,13 +22,13 @@ export const getFormElements = ({
   OwnerID,
   Type,
   ConsiderElementLimits,
-} = {}) => {
+}) => {
   return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORM_ELEMENTS), {
     FormID,
     OwnerID,
     Type,
     ConsiderElementLimits,
-  }).then((res) => ({
+  }).then((res: any) => ({
     FormName: decodeBase64(res?.FormName),
     FormDescription: decodeBase64(res?.FormDescription),
     Elements: (res?.Elements || []).map((e) => {
@@ -75,12 +74,7 @@ export const getFormElements = ({
  * @param {string?} Name the name or unique code of the form
  * @param {object[]} Elements an array of all form elements
  */
-export const saveFormElements = ({
-  FormID,
-  Name,
-  Description,
-  Elements,
-} = {}) => {
+export const saveFormElements = ({ FormID, Name, Description, Elements }) => {
   return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_SAVE_FORM_ELEMENTS), {
     FormID,
     Name: encodeBase64(Name),

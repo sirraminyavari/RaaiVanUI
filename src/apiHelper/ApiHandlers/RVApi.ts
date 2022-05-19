@@ -30,7 +30,7 @@ export const getWorkspaces = () => {
  * @param Name
  * @return {Promise<unknown>}
  */
-export const createWorkspace = ({ Name } = {}) => {
+export const createWorkspace = ({ Name }) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_WORKSPACE), {
     Name: encodeBase64(Name),
   });
@@ -42,7 +42,7 @@ export const createWorkspace = ({ Name } = {}) => {
  * @param UserID
  * @return {Promise<unknown>}
  */
-export const removeWorkspaceUser = ({ UserID, WorkspaceID } = {}) => {
+export const removeWorkspaceUser = ({ UserID, WorkspaceID }) => {
   return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE_USER), {
     WorkspaceID,
     UserID,
@@ -55,7 +55,7 @@ export const removeWorkspaceUser = ({ UserID, WorkspaceID } = {}) => {
  * @param Captcha
  * @return {Promise<unknown>}
  */
-export const removeWorkspaceTicket = ({ WorkspaceID, Captcha } = {}) => {
+export const removeWorkspaceTicket = ({ WorkspaceID, Captcha }) => {
   return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE_TICKET), {
     WorkspaceID,
     Captcha,
@@ -68,7 +68,7 @@ export const removeWorkspaceTicket = ({ WorkspaceID, Captcha } = {}) => {
  * @param Code - OTP digits from user input
  * @return {Promise<unknown>}
  */
-export const removeWorkspace = ({ VerificationToken, Code } = {}) => {
+export const removeWorkspace = ({ VerificationToken, Code }) => {
   return apiCallWrapper(API_Provider(RV_API, REMOVE_WORKSPACE), {
     VerificationToken,
     Code,
@@ -81,7 +81,7 @@ export const removeWorkspace = ({ VerificationToken, Code } = {}) => {
  * @param Name - new workspace name
  * @return {Promise<unknown>}
  */
-export const renameWorkspace = ({ Name, WorkspaceID } = {}) => {
+export const renameWorkspace = ({ Name, WorkspaceID }) => {
   return apiCallWrapper(API_Provider(RV_API, RENAME_WORKSPACE), {
     Name: encodeBase64(Name),
     WorkspaceID,
@@ -94,7 +94,7 @@ export const renameWorkspace = ({ Name, WorkspaceID } = {}) => {
  * @param Title the title of the application
  * @return {Promise<unknown>}
  */
-export const createApplication = ({ WorkspaceID, Title } = {}) => {
+export const createApplication = ({ WorkspaceID, Title }) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
     WorkspaceID,
     Title: encodeBase64(Title),
@@ -114,7 +114,7 @@ export const modifyApplication = ({ ApplicationID, Title } = {}) => {
  * @param {("1 - 10"|"10 - 20"|"more than 20")} props.Size size of the application people
  * @return {Promise<unknown>}
  */
-export const setApplicationSize = ({ ApplicationID, Size } = {}) => {
+export const setApplicationSize = ({ ApplicationID, Size }) => {
   return apiCallWrapper(API_Provider(RV_API, SET_APPLICATION_SIZE), {
     ApplicationID,
     Size: encodeBase64(Size),
@@ -133,7 +133,7 @@ export const setApplicationFieldOfExpertise = ({
   ApplicationID,
   FieldID,
   FieldName,
-} = {}) => {
+}) => {
   return apiCallWrapper(
     API_Provider(RV_API, SET_APPLICATION_FIELD_OF_EXPERTISE),
     {
@@ -178,7 +178,7 @@ export const recoverApplication = ({ ApplicationID } = {}) => {
  * @param ApplicationID the id of the application
  * @return {Promise<unknown>}
  */
-export const selectApplication = ({ ApplicationID } = {}) => {
+export const selectApplication = ({ ApplicationID }) => {
   return apiCallWrapper(API_Provider(RV_API, SELECT_APPLICATION), {
     ApplicationID,
   });
