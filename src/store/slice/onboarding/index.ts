@@ -1,39 +1,43 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { onboardingSaga } from './saga';
+import { EmptyOnboardingState, IOnboardingState } from './types';
 
 const slice = createSlice({
   name: 'onboarding',
-  initialState: {
-    name: '',
-    newDocMenu: '',
-    fromStep: 0,
-    active: false,
-    teamName: undefined,
-    templates: [],
-  },
+  initialState: EmptyOnboardingState,
   reducers: {
-    onboardingName: (state, action) => {
+    onboardingName: (state: IOnboardingState, action: PayloadAction<any>) => {
       state.name = action.payload;
     },
-    onboardingStep: (state, action) => {
+    onboardingStep: (state: IOnboardingState, action: PayloadAction<any>) => {
       state.fromStep = action.payload;
     },
-    setNewDocMenu: (state, action) => {
+    setNewDocMenu: (state: IOnboardingState, action: PayloadAction<any>) => {
       state.newDocMenu = action.payload;
     },
-    toggleActivation: (state) => {
+    toggleActivation: (state: IOnboardingState, action: PayloadAction<any>) => {
       console.log(state, '***** state *****');
       state.active = !state.active;
     },
-    setOnboardingTeamName: (state, action) => {
+    setOnboardingTeamName: (
+      state: IOnboardingState,
+      action: PayloadAction<any>
+    ) => {
       state.teamName = action.payload;
     },
-    setOnboardingTemplates: (state, action) => {
+    setOnboardingTemplates: (
+      state: IOnboardingState,
+      action: PayloadAction<any>
+    ) => {
       console.log({ action });
       state.templates = action.payload;
     },
-    setOnboardingTemplateStatusCompleted: (state, action) => {
+    setOnboardingTemplateStatusCompleted: (
+      state: IOnboardingState,
+      action: PayloadAction<any>
+    ) => {
       state.templates = state.templates.map((template) => {
         if (template.NodeTypeID !== action.payload) return template;
         else return { ...template, isSetupComplete: true };

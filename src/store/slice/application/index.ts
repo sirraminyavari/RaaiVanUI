@@ -1,49 +1,75 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { applicationSaga } from './saga';
+import { EmptyApplicationState, IApplicationState } from './types';
 
 const slice = createSlice({
   name: 'application',
-  initialState: {
-    userApps: [],
-    userArchivedApps: [],
-    isFetching: false,
-    selectingApp: { isSelecting: false, selectingAppId: null },
-    currentApp: null,
-  },
+  initialState: EmptyApplicationState,
   reducers: {
-    selectApplication: (state, action) => {},
-    createApplication: (state, action) => {},
-    setApplicationsOrder: (state, action) => {},
-    getApplications: (state, action) => {
+    selectApplication: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    createApplication: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    setApplicationsOrder: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    getApplications: (state: IApplicationState, action: PayloadAction<any>) => {
       state.isFetching = true;
     },
-    getArchivedApplications: (state, action) => {},
-    setApplications: (state, action) => {
+    getArchivedApplications: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    setApplications: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
     },
-    setArchivedApplications: (state, action) => {
+    setArchivedApplications: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {
       state.userArchivedApps = action.payload;
     },
-    removeApplication: (state, action) => {},
-    removeApplicationSuccessful: (state, action) => {
+    removeApplication: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    removeApplicationSuccessful: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {
       state.userApps = action.payload;
     },
-    recoverApplication: (state, action) => {},
-    addApplication: (state, action) => {
+    recoverApplication: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    addApplication: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
     },
-    modifyApplication: (state, action) => {},
-    clearApplications: (state, action) => {
+    modifyApplication: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {},
+    clearApplications: (
+      state: IApplicationState,
+      action: PayloadAction<any>
+    ) => {
       state.userApps = [];
     },
-    setFetchingApps: (state, action) => {
+    setFetchingApps: (state: IApplicationState, action: PayloadAction<any>) => {
       state.isFetching = action.payload;
     },
-    setSelectingApp: (state, action) => {
+    setSelectingApp: (state: IApplicationState, action: PayloadAction<any>) => {
       state.selectingApp = action.payload;
     },
-    setCurrentApp: (state, action) => {
+    setCurrentApp: (state: IApplicationState, action: PayloadAction<any>) => {
       state.currentApp = action.payload;
     },
   },
