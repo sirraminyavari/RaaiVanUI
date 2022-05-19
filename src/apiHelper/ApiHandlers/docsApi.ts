@@ -8,7 +8,13 @@ import axios from 'axios';
  * @param {string|"ProfileImage"} prop.Type - Usage type of the uploadable file
  * @return {Promise<unknown>}
  */
-export const getUploadUrl = async ({ IconID, Type } = {}) => {
+export const getUploadUrl = async ({
+  IconID,
+  Type,
+}: {
+  IconID: string;
+  Type: string;
+}) => {
   return new Promise((resolve) =>
     API_Provider(DOCS_API, UPLOAD_AND_CROP_ICON).url(
       {
@@ -17,9 +23,6 @@ export const getUploadUrl = async ({ IconID, Type } = {}) => {
       },
       (uploadURL) => {
         resolve(uploadURL);
-      },
-      (error) => {
-        console.log(error);
       }
     )
   );
@@ -46,15 +49,24 @@ export const setUploadImage = async ({
   y,
   width,
   height,
-} = {}) => {
+}: {
+  file: any;
+  IconID: string;
+  Type: string;
+  SaveURL: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('IconID', IconID);
   formData.append('Type', Type);
-  formData.append('x', x);
-  formData.append('y', y);
-  formData.append('w', width);
-  formData.append('h', height);
+  formData.append('x', String(x));
+  formData.append('y', String(y));
+  formData.append('w', String(width));
+  formData.append('h', String(height));
 
   const config = {
     headers: {
@@ -70,6 +82,6 @@ export const setUploadImage = async ({
       return res;
     } else throw new Error(res || 'OperationFailed');
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };

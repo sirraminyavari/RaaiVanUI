@@ -6,13 +6,19 @@ import {
   API_NAME_PRVC_SET_AUDIENCE,
 } from 'constant/api-names-privacy';
 
+declare global {
+  interface Window {
+    RVGlobal?: any;
+  }
+}
+
 export const checkAuthority = () => {
   const roles = (window?.RVGlobal?.AccessRoles || []).map((r) => r.Name);
   const checkAuthorityAPI = API_Provider(PRIVACY_API, 'CheckAuthority');
 
   return apiCallWrapper(checkAuthorityAPI, {
     Permissions: roles.join('|'),
-  }).then((res) => {
+  }).then((res: any) => {
     return roles.reduce(
       (dic, cur) => ((dic[cur] = !!(res || {})[cur]), dic),
       {}
@@ -55,7 +61,7 @@ export const PERMISSION_TYPE = {
  * If the ObjectIDs array has at least one ID in it, ObjectID will be ignored
  * @param {PrivacyObjectType} Type the type of the object(s)
  */
-export const getAudience = ({ ObjectIDs, ObjectID, Type } = {}) => {
+export const getAudience = ({ ObjectIDs, ObjectID, Type }) => {
   if (!(ObjectIDs || []).length && !!ObjectID) ObjectIDs = [ObjectID];
 
   return apiCallWrapper(API_Provider(PRIVACY_API, API_NAME_PRVC_GET_AUDIENCE), {
@@ -93,7 +99,7 @@ export const getAudience = ({ ObjectIDs, ObjectID, Type } = {}) => {
  *  [objId_n]: ...
  * }
  */
-export const setAudience = ({ Type, Data } = {}) => {
+export const setAudience = ({ Type, Data }) => {
   return apiCallWrapper(API_Provider(PRIVACY_API, API_NAME_PRVC_SET_AUDIENCE), {
     ObjectType: Type,
     Data: encodeBase64(JSON.stringify(Data)),

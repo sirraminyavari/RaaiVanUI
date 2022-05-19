@@ -16,3 +16,5 @@ export const API = {
   Search,
   Users,
 };
+
+export default API;

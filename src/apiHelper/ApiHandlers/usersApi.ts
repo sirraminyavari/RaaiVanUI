@@ -28,6 +28,12 @@ import {
 } from 'constant/api-names-users';
 import { apiCallWrapper } from './apiCallHelpers';
 
+declare global {
+  interface Window {
+    GlobalUtilities: any;
+  }
+}
+
 const { GlobalUtilities } = window;
 const reqParams = GlobalUtilities.request_params();
 
@@ -45,7 +51,7 @@ export const setRandomPassword = (UserID) => {
  * @description send verification code for 'reset password'
  * @return {Promise<unknown>}
  */
-export const setPasswordResetTicket = async ({ UserName, Password } = {}) => {
+export const setPasswordResetTicket = async ({ UserName, Password }) => {
   return apiCallWrapper(API_Provider(USERS_API, SET_PASSWORD_RESET_TICKET), {
     UserName: encodeBase64(UserName),
     Password: encodeBase64(Password),
@@ -61,7 +67,7 @@ export const setPasswordResetTicket = async ({ UserName, Password } = {}) => {
  * @param {boolean} Login if true, the user will automatically login after validating their password reset
  * @return {Promise<ValidationOptions.unknown>}
  */
-export const setPassword = ({ Token, Code, Login } = {}) => {
+export const setPassword = ({ Token, Code, Login }) => {
   return apiCallWrapper(API_Provider(USERS_API, SET_PASSWORD), {
     VerificationToken: Token,
     Code: Code,
@@ -79,7 +85,7 @@ export const setPassword = ({ Token, Code, Login } = {}) => {
  * }
  * @param {string} Message the invitation message
  */
-export const inviteUsersBatch = ({ ApplicationID, Users, Message } = {}) => {
+export const inviteUsersBatch = ({ ApplicationID, Users, Message }) => {
   return apiCallWrapper(
     API_Provider(USERS_API, API_NAME_USR_BATCH_INVITE_USERS),
     {
@@ -103,7 +109,7 @@ export const getUserInvitations = (ApplicationID, Count = 20) => {
     ApplicationID,
     Count,
   }).then(
-    (res) =>
+    (res: any) =>
       res?.Invitations.map((x) => ({
         ...x,
         Email: decodeBase64(x?.Email),
@@ -152,7 +158,7 @@ export const createUserToken = async ({
   LastName,
   Contact,
   Password,
-} = {}) => {
+}) => {
   return apiCallWrapper(API_Provider(USERS_API, Create_User_Token), {
     FirstName: encodeBase64(FirstName),
     LastName: encodeBase64(LastName),
@@ -170,7 +176,7 @@ export const createUserToken = async ({
  * @param {boolean} Login if true, the user will automatically login after validating their account creation
  * @return {Promise<ValidationOptions.unknown>}
  */
-export const validateUserCreation = ({ Token, Code, Login } = {}) => {
+export const validateUserCreation = ({ Token, Code, Login }) => {
   return apiCallWrapper(API_Provider(USERS_API, Validate_User_Creation), {
     VerificationToken: Token,
     Code: Code,
@@ -200,7 +206,7 @@ export const createUser = (data) => {
  * @param UserName
  * @return {Promise<unknown>}
  */
-export const checkUserName = ({ UserName } = {}) => {
+export const checkUserName = ({ UserName }) => {
   return apiCallWrapper(API_Provider(USERS_API, Check_User_Name), {
     UserName: encodeBase64(UserName),
   });
@@ -213,7 +219,11 @@ export const checkUserName = ({ UserName } = {}) => {
  * @param IsApproved
  * @return {Promise<unknown>}
  */
-export const getUsers = ({ SearchText, IsApproved, IsOnline } = {}) => {
+export const getUsers = ({
+  SearchText,
+  IsApproved,
+  IsOnline,
+}: { SearchText?: string; IsApproved?: boolean; IsOnline?: boolean } = {}) => {
   return apiCallWrapper(API_Provider(USERS_API, GET_USERS), {
     SearchText: encodeBase64(SearchText),
     IsOnline,
@@ -224,7 +234,7 @@ export const getUsers = ({ SearchText, IsApproved, IsOnline } = {}) => {
     MainPhoneNumber: true,
     ApprovedStatus: true,
     SystemAdminStatus: true,
-  }).then((res) =>
+  }).then((res: any) =>
     res?.Users?.map((x) => ({
       ...x,
       FirstName: decodeBase64(x?.FirstName),
@@ -276,11 +286,7 @@ export const updateLastName = (UserID, lastName) => {
  * @param {string} parameters.UserID - desired User ID (defaults to currently logged in user)
  * @returns {Promise<unknown>}
  */
-export const setUserFirstAndLastName = ({
-  FirstName,
-  LastName,
-  UserID,
-} = {}) => {
+export const setUserFirstAndLastName = ({ FirstName, LastName, UserID }) => {
   const setUserFirstAndLastNameAPI = API_Provider(
     USERS_API,
     SET_FIRST_AND_LAST_NAME
@@ -306,7 +312,7 @@ export const getWorkspaceUsers = ({
   Count,
   LowerBoundary,
   SearchText,
-} = {}) => {
+}) => {
   return apiCallWrapper(API_Provider(USERS_API, GET_WORKSPACE_USERS), {
     WorkspaceID,
     Count,
@@ -320,7 +326,7 @@ export const getWorkspaceUsers = ({
  * @param Name the name of the avatar
  * @return {Promise<unknown>}
  */
-export const setUserAvatar = ({ Name } = {}) => {
+export const setUserAvatar = ({ Name }) => {
   return apiCallWrapper(API_Provider(USERS_API, API_NAME_USR_SET_AVATAR), {
     AvatarName: encodeBase64(Name),
   });
