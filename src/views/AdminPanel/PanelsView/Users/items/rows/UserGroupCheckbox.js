@@ -8,7 +8,7 @@ import {
 } from 'constant/CssVariables';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import { getUUID } from 'helpers/helpers';
-import { addMember, removeMember } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { addMember, removeMember } from 'apiHelper/ApiHandlers/CNAPI';
 import useWindowContext from 'hooks/useWindowContext';
 
 export const UserGroupCheckbox = ({

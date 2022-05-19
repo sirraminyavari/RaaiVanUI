@@ -12,7 +12,7 @@ import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import { provideTemplatesForTree } from './templateUtils';
 import { TEMPLATES_SETTING_PATH } from 'constant/constants';
-import { getTemplates } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { getTemplates } from 'apiHelper/ApiHandlers/CNAPI';
 
 export const MAIN_CONTENT = 'main';
 export const CATEGORY_CONTENT = 'category';

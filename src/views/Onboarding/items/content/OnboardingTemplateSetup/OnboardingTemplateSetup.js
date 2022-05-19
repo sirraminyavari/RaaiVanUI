@@ -5,10 +5,7 @@ import CliqMindLogo from 'assets/images/cliqmind_logo_mini.svg?file';
 import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
-import {
-  getTemplateJSON,
-  activateTemplate,
-} from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNAPI';
 import { themeSlice } from 'store/reducers/themeReducer';
 import { decodeBase64 } from 'helpers/helpers';
 import {

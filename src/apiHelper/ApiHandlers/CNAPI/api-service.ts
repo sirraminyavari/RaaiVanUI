@@ -12,8 +12,8 @@ import {
   API_NAME_CN_IS_COMMUNITY_PAGE,
   API_NAME_CN_SET_SERVICE_DESCRIPTION,
 } from 'constant/api-names-cn';
-import * as CNDecoders from './cn-decoders';
-import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/user-decoders';
+import * as CNDecoders from './decoders';
+import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
 import { IContributor, IServiceSettingBinaryOption } from './types';
 
 /**

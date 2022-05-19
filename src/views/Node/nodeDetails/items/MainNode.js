@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RVDic } from 'utils/TestUtils/fa';
 import CreatableSelect from 'react-select/creatable';
-import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');

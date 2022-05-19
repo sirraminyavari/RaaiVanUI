@@ -14,10 +14,7 @@ import LottieMaker from 'components/LottieMaker/LottieMaker';
 import LottieJson from 'assets/lotties/big-data-analysis.json';
 import Heading from 'components/Heading/Heading';
 import { CLASSES_PATH } from 'constant/constants';
-import {
-  activateTemplate,
-  getTemplateJSON,
-} from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNAPI';
 
 const TemplateDescription = () => {
   const { currentTemplate, currentCategory, setContent, setCurrentTemplate } =

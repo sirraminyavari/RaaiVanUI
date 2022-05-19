@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import SaasUsersListRow from './rows/SaasUsersListRow';
 import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
-import { getGroupsAll } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNAPI';
 import useWindow from 'hooks/useWindowContext';
 import { SaasUserListHeaders } from './_constants';
 

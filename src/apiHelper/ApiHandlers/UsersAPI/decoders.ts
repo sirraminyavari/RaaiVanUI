@@ -1,5 +1,5 @@
 import { decodeBase64 } from 'helpers/helpers';
-import * as CNDecoders from 'apiHelper/ApiHandlers/CNAPI/cn-decoders';
+import * as CNDecoders from 'apiHelper/ApiHandlers/CNAPI/decoders';
 
 export const decodeUser = (user: any) => ({
   ...(user || {}),
