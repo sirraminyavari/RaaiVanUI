@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { CV_DISTANT, CV_GRAY, CV_GRAY_DARK } from 'constant/CssVariables';
 import { FLEX_CSA } from 'constant/StyledCommonCss';
 import RxInput from 'components/Inputs/RxInput';
-import { renameNodeType } from 'apiHelper/ApiHandlers/CNApi';
+import { renameNodeType } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { useTemplateContext } from '../../../TemplateProvider';
-import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
+import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI/CNAPI_ServiceSettings';
 import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateTitleForm = ({ name }) => {

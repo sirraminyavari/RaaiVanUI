@@ -8,7 +8,7 @@ import {
   addNodeType,
   getNodeTypes,
   removeNodeType,
-} from 'apiHelper/ApiHandlers/CNApi';
+} from 'apiHelper/ApiHandlers/CNAPI/CNApi';
 import SHTemplates from './items/SHTemplates';
 import SaaSTemplates from './items/SaaSTemplates';
 import SearchInput from 'components/Inputs/SearchInput';

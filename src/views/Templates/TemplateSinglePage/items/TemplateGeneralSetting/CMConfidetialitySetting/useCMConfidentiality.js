@@ -6,7 +6,7 @@ import {
   PRIVACY_OBJECT_TYPE,
   setAudience,
 } from 'apiHelper/ApiHandlers/privacyApi';
-import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import produce from 'immer';
 import InfoToast from 'components/toasts/info-toast/InfoToast';

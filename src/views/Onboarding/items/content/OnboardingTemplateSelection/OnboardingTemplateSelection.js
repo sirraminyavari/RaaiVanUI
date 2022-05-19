@@ -7,7 +7,7 @@ import OnboardingTemplateSelectionNode from './OnboardingTemplateSelectionNode';
 import OnboardingTemplateSelectionCarousel from './OnboardingTemplateSelectionCarousel';
 import OnboardingTemplateSelectionSelectedModal from './OnboardingTemplateSelectionSelectedModal';
 import Button from 'components/Buttons/Button';
-import { getTemplates } from 'apiHelper/ApiHandlers/CNApi';
+import { getTemplates } from 'apiHelper/ApiHandlers/CNAPI/CNApi';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
 import {

@@ -7,14 +7,17 @@ import {
   CATEGORY_CONTENT,
   MAIN_CONTENT,
 } from '../../TemplatesGallery';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import LottieMaker from 'components/LottieMaker/LottieMaker';
 import LottieJson from 'assets/lotties/big-data-analysis.json';
 import Heading from 'components/Heading/Heading';
 import { CLASSES_PATH } from 'constant/constants';
-import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNApi';
+import {
+  activateTemplate,
+  getTemplateJSON,
+} from 'apiHelper/ApiHandlers/CNAPI/CNApi';
 
 const TemplateDescription = () => {
   const { currentTemplate, currentCategory, setContent, setCurrentTemplate } =

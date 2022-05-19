@@ -7,7 +7,7 @@ import {
   enableExtension,
   enableVersioning,
   isCommunityPage,
-} from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
+} from 'apiHelper/ApiHandlers/CNAPI/CNAPI_ServiceSettings';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 export const useTemplateGeneralSettingSideForm = () => {

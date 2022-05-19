@@ -4,8 +4,6 @@ import {
   CN_API,
   GET_CHILD_NODE_TYPES,
   MOVE_NODE_TYPE,
-  REMOVE_NODE_TYPE,
-  RENAME_NODE_TYPE,
   SET_NODE_TYPE_ORDER,
   ACTIVATE_TEMPLATE,
   GET_TEMPLATES,
@@ -13,7 +11,7 @@ import {
   GET_TEMPLATE_TAGS,
   GET_NODE_TYPES,
 } from 'constant/apiConstants';
-import { apiCallWrapper } from './apiCallHelpers';
+import { apiCallWrapper } from '../apiCallHelpers';
 import {
   API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY,
   API_NAME_CN_REMOVE_NODE_TYPE,
