@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNAPI';
 import Modal from 'components/Modal/Modal';
 import RVCheckbox from 'components/Inputs/RVCheckbox/RVCheckbox';
 import MembersPreview from 'components/MembersPreview/MembersPreview';

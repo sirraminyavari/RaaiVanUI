@@ -8,7 +8,7 @@ import {
   modifyNodeName,
   removeNode,
   saveMembers,
-} from 'apiHelper/ApiHandlers/CNApi';
+} from 'apiHelper/ApiHandlers/CNAPI';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
   GroupItem,

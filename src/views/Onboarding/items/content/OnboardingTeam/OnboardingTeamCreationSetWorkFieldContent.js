@@ -8,7 +8,7 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
-import { getAllFieldsOfActivity } from 'apiHelper/ApiHandlers/CNApi';
+import { getAllFieldsOfActivity } from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {

@@ -11,7 +11,7 @@ import {
   RECOVER_NODE_TYPE,
   CHECK_AUTHORITY,
 } from 'constant/apiConstants';
-import { getNodeTypes } from 'apiHelper/ApiHandlers/CNApi';
+import { getNodeTypes } from 'apiHelper/ApiHandlers/CNAPI';
 
 const {
   setSidebarNodeTypes,

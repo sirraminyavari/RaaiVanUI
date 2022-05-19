@@ -6,7 +6,7 @@ import {
   moveNodeType,
   renameNodeType,
   setNodeTypesOrder,
-} from 'apiHelper/ApiHandlers/CNApi';
+} from 'apiHelper/ApiHandlers/CNAPI';
 
 const SHTemplates = ({ nodes }) => {
   const [tree, setTree] = useState({});
