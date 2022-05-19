@@ -2,7 +2,9 @@ import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { themeSaga } from './saga';
 
-import { MIN_WIDTH, MAX_WIDTH, MAIN_CONTENT } from 'constant/constants';
+import { MIN_WIDTH, MAX_WIDTH } from 'constant/constants';
+import { EmptyThemeState, IThemeState } from './types';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 const getWidth = (width) => {
   if (width > MAX_WIDTH) {
@@ -16,68 +18,51 @@ const getWidth = (width) => {
 
 const slice = createSlice({
   name: 'theme',
-  initialState: {
-    isSidebarOpen: false,
-    isSettingShown: false,
-    hasNavSide: false,
-    activePath: '',
-    sidebarContent: { current: MAIN_CONTENT, prev: '' },
-    selectedTeam: { name: null, id: null },
-    allTeams: [],
-    sidebarOpenWidth: 320,
-    sidebarCurrentWidth: 320,
-    sidebarCloseWidth: 64,
-    sidebarMinWidth: MIN_WIDTH,
-    sidebarMaxWidth: MAX_WIDTH,
-    themes: [],
-    currentTheme: null,
-    isDarkMode: false,
-    hasSidebarPattern: true,
-  },
+  initialState: EmptyThemeState,
   reducers: {
-    toggleSidebar: (state, action) => {
+    toggleSidebar: (state: IThemeState, action: PayloadAction<any>) => {
       state.isSidebarOpen = action.payload;
     },
-    toggleSetting: (state, action) => {
+    toggleSetting: (state: IThemeState, action: PayloadAction<any>) => {
       state.isSettingShown = action.payload;
     },
-    toggleNavSide: (state, action) => {
+    toggleNavSide: (state: IThemeState, action: PayloadAction<any>) => {
       state.hasNavSide = action.payload;
     },
-    setActivePath: (state, action) => {
+    setActivePath: (state: IThemeState, action: PayloadAction<any>) => {
       state.activePath = action.payload;
     },
-    setSidebarContent: (state, action) => {
+    setSidebarContent: (state: IThemeState, action: PayloadAction<any>) => {
       state.sidebarContent = action.payload;
     },
-    setSelectedTeam: (state, action) => {
+    setSelectedTeam: (state: IThemeState, action: PayloadAction<any>) => {
       state.selectedTeam = action.payload;
     },
-    handleSettings: (state, action) => {
+    handleSettings: (state: IThemeState, action: PayloadAction<any>) => {
       if (!state.isSidebarOpen) {
         state.isSidebarOpen = true;
       } else {
         state.isSettingShown = !state.isSettingShown;
       }
     },
-    setOpenWidth: (state, action) => {
+    setOpenWidth: (state: IThemeState, action: PayloadAction<any>) => {
       state.sidebarOpenWidth = getWidth(action.payload);
     },
-    setCurrentWidth: (state, action) => {
+    setCurrentWidth: (state: IThemeState, action: PayloadAction<any>) => {
       state.sidebarCurrentWidth = getWidth(action.payload);
     },
-    getThemes: (state, action) => {},
-    getCurrentTheme: (state, action) => {},
-    setThemes: (state, action) => {
+    getThemes: (state: IThemeState, action: PayloadAction<any>) => {},
+    getCurrentTheme: (state: IThemeState, action: PayloadAction<any>) => {},
+    setThemes: (state: IThemeState, action: PayloadAction<any>) => {
       state.themes = action.payload;
     },
-    setCurrentTheme: (state, action) => {
+    setCurrentTheme: (state: IThemeState, action: PayloadAction<any>) => {
       state.currentTheme = action.payload;
     },
-    setDarkMode: (state, action) => {
+    setDarkMode: (state: IThemeState, action: PayloadAction<any>) => {
       state.isDarkMode = action.payload;
     },
-    setSidebarPattern: (state, action) => {
+    setSidebarPattern: (state: IThemeState, action: PayloadAction<any>) => {
       state.hasSidebarPattern = action.payload;
     },
   },
