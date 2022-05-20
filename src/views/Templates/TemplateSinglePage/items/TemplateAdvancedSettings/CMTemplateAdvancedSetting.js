@@ -2,9 +2,8 @@ import * as Styles from './TemplateAdvancedSettingStyles';
 import { decodeBase64 } from 'helpers/helpers';
 import { useParams } from 'react-router-dom';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
-import AnimatedInput from '../../../../../components/Inputs/AnimatedInput';
 import CodingPattern from './items/CodingPattern';
-import { InputContainer } from './TemplateAdvancedSettingStyles';
+import CoverPatternUploader from './items/CoverPatternUploader';
 
 const CMTemplateAdvancedSetting = () => {
   const { RVDic, RV_RTL: rtl } = window;
@@ -40,12 +39,17 @@ const CMTemplateAdvancedSetting = () => {
       <Styles.CMContentContainer>
         <Styles.InputContainer>
           <Styles.InputLabel>{'شناسه تمپلیت'}</Styles.InputLabel>
-          <AnimatedInput placeholder={'شناسه تمپلیت'} />
+          <Styles.IdInput placeholder={'شناسه تمپلیت'} />
         </Styles.InputContainer>
 
         <Styles.InputContainer>
           <Styles.InputLabel>{'الگوی کددهی آیتم‌ها'}</Styles.InputLabel>
           <CodingPattern />
+        </Styles.InputContainer>
+
+        <Styles.InputContainer>
+          <Styles.InputLabel>{'PDF الگوی جلد فایل'}</Styles.InputLabel>
+          <CoverPatternUploader />
         </Styles.InputContainer>
       </Styles.CMContentContainer>
     </Styles.Container>

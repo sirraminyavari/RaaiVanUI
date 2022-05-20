@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { ViewContentCard } from 'constant/StyledCommonCss';
 import Button from 'components/Buttons/Button';
-import { CV_GRAY_DARK } from '../../../../../constant/CssVariables';
+import {
+  CV_GRAY_DARK,
+  CV_RED,
+  CV_WHITE,
+} from '../../../../../constant/CssVariables';
 import AnimatedInput from '../../../../../components/Inputs/AnimatedInput';
 
 export const Container = styled.div`
@@ -28,10 +32,15 @@ export const ReturnButton = styled(Button).attrs({
   ${({ rtl }) => (rtl ? 'left: 1rem' : 'right: 1rem')};
   height: 2rem;
   width: 10rem;
+  border: 0.0625rem solid ${CV_WHITE};
+
+  &:hover {
+    border: 0.0625rem solid ${CV_RED};
+    background-color: ${CV_WHITE};
+  }
 `;
 
 export const InputContainer = styled.div`
-  max-width: 38rem;
   width: 100%;
   margin-bottom: 2rem;
 `;

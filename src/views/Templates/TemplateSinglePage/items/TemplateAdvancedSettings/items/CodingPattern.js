@@ -1,21 +1,29 @@
 import * as Styled from './CodingPattrenStyles';
 import { useMemo, useState } from 'react';
 import Modal from '../../../../../../components/Modal/Modal';
-import { RemoveIconButton } from './CodingPattrenStyles';
 import CloseIcon from '../../../../../../components/Icons/CloseIcon/CloseIcon';
+import {
+  ID_PATTERNS,
+  ID_PATTERNS_Georgian,
+  ID_PATTERNS_Jalali,
+  Other_Patterns,
+} from './_IdPatterns';
 
 const _selectedPatternMockData = [
   {
     id: 1,
     title: 'سال 4رقمی',
+    preview: '1400',
   },
   {
     id: 2,
     title: 'ماه 2رقمی',
+    preview: '01',
   },
   {
     id: 3,
     title: 'کد تمپلیت',
+    preview: '123',
   },
 ];
 const CodingPattern = ({}) => {
@@ -25,6 +33,10 @@ const CodingPattern = ({}) => {
   );
   const [modalInfo, setModalInfo] = useState({
     show: false,
+    title: 'الگوی کددهی آیتم‌ها',
+    middle: true,
+    contentWidth: '64rem',
+    titleClass: 'rv-default',
   });
 
   const openModal = () => setModalInfo({ ...modalInfo, show: true });
@@ -39,15 +51,96 @@ const CodingPattern = ({}) => {
       }),
     [selectedPattern]
   );
+
+  const selectedPatternPreview = useMemo(
+    () =>
+      selectedPattern?.map((x) => {
+        const { id, preview } = x;
+        return <Styled.PreviewItem key={id}>{preview}</Styled.PreviewItem>;
+      }),
+    [selectedPattern]
+  );
+
+  const JalaliDateItems = useMemo(() => {
+    return ID_PATTERNS_Jalali?.map((x) => {
+      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    });
+  }, [selectedPattern]);
+
+  const GeorgianDateItems = useMemo(() => {
+    return ID_PATTERNS_Georgian?.map((x) => {
+      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    });
+  }, [selectedPattern]);
+
+  const IdPatternsItems = useMemo(() => {
+    return ID_PATTERNS?.map((x) => {
+      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    });
+  }, [selectedPattern]);
+
+  const OtherPatternsItems = useMemo(() => {
+    return Other_Patterns?.map((x) => {
+      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    });
+  }, [selectedPattern]);
+
   return (
     <Styled.CodingPatternContainer>
-      <Styled.InputData>{selectedPatternItems}</Styled.InputData>
+      <Styled.InputData modal={false}>{selectedPatternItems}</Styled.InputData>
       <Styled.EditButton onClick={openModal}>{RVDic?.Edit}</Styled.EditButton>
 
-      <Modal onClose={closeModal} {...modalInfo}></Modal>
+      <Modal onClose={closeModal} {...modalInfo}>
+        <Styled.ExampleContainer>
+          <Styled.ExampleTitle>{'مثال'}</Styled.ExampleTitle>
+          <Styled.ExamplePreviewContainer>
+            {selectedPatternPreview}
+          </Styled.ExamplePreviewContainer>
+        </Styled.ExampleContainer>
+        <Styled.ModalContentContainer>
+          <Styled.InputData modal={true}>
+            {selectedPatternItems}
+          </Styled.InputData>
+        </Styled.ModalContentContainer>
+
+        <Styled.ItemSelectionBlock>
+          <Styled.ItemSelectionBlockTitle>
+            {'تاریخ'}
+          </Styled.ItemSelectionBlockTitle>
+          <Styled.ItemSelectionBlockPatternsContainer>
+            <Styled.ListContainer>{JalaliDateItems}</Styled.ListContainer>
+            <Styled.ListContainer>{GeorgianDateItems}</Styled.ListContainer>
+          </Styled.ItemSelectionBlockPatternsContainer>
+        </Styled.ItemSelectionBlock>
+
+        <Styled.ItemSelectionBlock>
+          <Styled.ItemSelectionBlockTitle>
+            {'آیتم'}
+          </Styled.ItemSelectionBlockTitle>
+          <Styled.ItemSelectionBlockPatternsContainer>
+            <Styled.ListContainer>{IdPatternsItems}</Styled.ListContainer>
+          </Styled.ItemSelectionBlockPatternsContainer>
+        </Styled.ItemSelectionBlock>
+
+        <Styled.ItemSelectionBlock>
+          <Styled.ItemSelectionBlockTitle>
+            {'سایر'}
+          </Styled.ItemSelectionBlockTitle>
+          <Styled.ItemSelectionBlockPatternsContainer>
+            <Styled.ListContainer>{OtherPatternsItems}</Styled.ListContainer>
+          </Styled.ItemSelectionBlockPatternsContainer>
+        </Styled.ItemSelectionBlock>
+
+        <Styled.ActionBar>
+          <Styled.ActionButton type="primary">
+            {'ثبت الگوی کددهی'}
+          </Styled.ActionButton>
+        </Styled.ActionBar>
+      </Modal>
     </Styled.CodingPatternContainer>
   );
 };
+
 const SelectedItem = ({ item }) => {
   return (
     <Styled.Item>
@@ -56,6 +149,15 @@ const SelectedItem = ({ item }) => {
         <CloseIcon outline={true} size={22} />
       </Styled.RemoveIconButton>
     </Styled.Item>
+  );
+};
+
+const PatternCheckbox = ({ children, checked, disabled, ...rest }) => {
+  return (
+    <Styled.CheckboxContainer active={checked}>
+      <Styled.Input {...rest} />
+      {children}
+    </Styled.CheckboxContainer>
   );
 };
 export default CodingPattern;
