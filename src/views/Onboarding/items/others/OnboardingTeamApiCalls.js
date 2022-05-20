@@ -19,15 +19,21 @@ const { setSidebarContent } = themeSlice.actions;
 
 const { setSelectedTeam } = themeSlice.actions;
 
-export const onboardingTeamNameSave = async ({ dispatch, teamName }) => {
-  const createWorkspaceResponse = await createWorkspace({
-    Name: window.RVDic.Default,
-  });
+export const onboardingTeamNameSave = async ({
+  dispatch,
+  teamName,
+  WorkspaceID,
+}) => {
+  const createWorkspaceResponse =
+    WorkspaceID ||
+    (await createWorkspace({
+      Name: window.RVDic.Default,
+    }));
   let createApplicationResponse;
 
-  if (createWorkspaceResponse.Workspace?.WorkspaceID) {
+  if (WorkspaceID || createWorkspaceResponse.Workspace?.WorkspaceID) {
     createApplicationResponse = await createApplication({
-      WorkspaceID: createWorkspaceResponse.Workspace.WorkspaceID,
+      WorkspaceID: WorkspaceID || createWorkspaceResponse.Workspace.WorkspaceID,
       Title: teamName,
     });
   }

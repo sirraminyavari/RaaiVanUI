@@ -7,10 +7,14 @@ import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 import CreateModal from 'components/Modal/types/create/CreateModal';
 import { createApplication } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
+import { useHistory } from 'react-router-dom';
+import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
 
 const NewTeam = ({ WorkspaceID }) => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [teamName, setTeamName] = useState('');
+
+  const history = useHistory();
   const dispatch = useDispatch();
   const { RV_RevFloat, RV_Float, RVDic } = useWindow();
   const isMobileScreen = useMediaQuery({
@@ -19,7 +23,8 @@ const NewTeam = ({ WorkspaceID }) => {
 
   //! Show add new team modal.
   const handleAddTeam = () => {
-    setIsModalShown(true);
+    // setIsModalShown(true);
+    history.push(`${ONBOARDING_USER_TEAM_PATH}?workspaceID=${WorkspaceID}`);
   };
 
   //! Close modal and cancel add team proccess.

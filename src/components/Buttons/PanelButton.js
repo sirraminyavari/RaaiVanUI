@@ -74,6 +74,8 @@ const StyledPanelButton = styled.button.attrs({
   transition: border 0.3s ease-out, color 0.3s, filter 0.3s;
   box-sizing: border-box;
   position: relative;
+  line-height: 1.1rem;
+
   &.secondary {
     color: ${CV_GRAY};
   }

@@ -1,5 +1,6 @@
 // import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
+import OnboardingTeamCreationSetNameBannerImage from 'assets/images/onboarding-team-creation-set-name.svg?file';
 // import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 
 const OnboardingTeamCreationSetNameBanner = () => {
@@ -13,9 +14,9 @@ const OnboardingTeamCreationSetNameBanner = () => {
     <>
       <Styles.OnboardingTeamImageBannerWrapper>
         <div>
-          <Styles.OnboardingTeamAvatarPlaceholder>
-            {/* {teamState.teamName} */}
-          </Styles.OnboardingTeamAvatarPlaceholder>
+          <Styles.OnboardingTeamAvatarPlaceholder
+            backgroundImageURL={OnboardingTeamCreationSetNameBannerImage}
+          ></Styles.OnboardingTeamAvatarPlaceholder>
         </div>
       </Styles.OnboardingTeamImageBannerWrapper>
     </>
