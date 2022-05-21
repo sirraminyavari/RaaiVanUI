@@ -19,6 +19,7 @@ import {
 const ONBOARDING_TEAM_SET_STATE = 'ONBOARDING_TEAM_SET_STATE';
 const ONBOARDING_TEAM_SET_LOADING = 'ONBOARDING_TEAM_SET_LOADING';
 const ONBOARDING_TEAM_SET_APPLICATION_ID = 'ONBOARDING_TEAM_SET_APPLICATION_ID';
+const ONBOARDING_TEAM_SET_WORKSPACE_ID = 'ONBOARDING_TEAM_SET_WORKSPACE_ID';
 const ONBOARDING_TEAM_CREATION_CHOICE = 'ONBOARDING_TEAM_CREATION_CHOICE';
 const ONBOARDING_TEAM_CREATION_SET_NAME = 'ONBOARDING_TEAM_CREATION_SET_NAME';
 const ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT =
@@ -41,6 +42,7 @@ const initialState = {
   ContentComponent: OnboardingTeamCreationChoiceContent,
   nextStepAction: ONBOARDING_TEAM_CREATION_SET_NAME,
   stepsCount: null,
+  WorkspaceID: null,
   applicationID: null,
   disableContinue: true,
   completed: false,
@@ -77,6 +79,7 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
             await onboardingTeamNameSave({
               dispatch,
               teamName: teamState.teamName,
+              WorkspaceID: prevState.WorkspaceID,
             });
             resolve();
           }),
@@ -123,7 +126,9 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
             else
               await onboardingTeamFieldOfExpertiseSave({
                 ApplicationID: prevState.applicationID,
-                workFieldName: teamState.workField.fieldName,
+
+                //TODO API not accepting emptyFieldName for team's workField
+                workFieldName: teamState.workField.fieldName || ' ',
               });
             resolve();
           }),
@@ -142,7 +147,7 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
     case ONBOARDING_TEAM_SET_STATE:
       return {
         ...prevState,
-        disableContinue: stateValue === '' || stateValue?.fieldName === '',
+        disableContinue: stateValue === '' || stateValue?.fieldID === '',
         teamState: {
           ...prevState.teamState,
           [stateKey]: stateValue,
@@ -153,6 +158,12 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
       return {
         ...prevState,
         applicationID: stateValue,
+      };
+
+    case ONBOARDING_TEAM_SET_WORKSPACE_ID:
+      return {
+        ...prevState,
+        WorkspaceID: stateValue,
       };
 
     case ONBOARDING_TEAM_SET_LOADING:
@@ -201,6 +212,7 @@ export const OnboardingTeamStepContextActions = {
   ONBOARDING_TEAM_SET_STATE,
   ONBOARDING_TEAM_SET_LOADING,
   ONBOARDING_TEAM_SET_APPLICATION_ID,
+  ONBOARDING_TEAM_SET_WORKSPACE_ID,
   ONBOARDING_TEAM_CREATION_SET_NAME,
   ONBOARDING_TEAM_CREATION_CHOICE,
   ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT,

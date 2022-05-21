@@ -6,6 +6,7 @@ import {
 import OnboardingBannerBackgroundImage from 'assets/images/onboarding-banner-background.svg?file';
 import { TCV_DEFAULT, CV_WHITE } from 'constant/CssVariables';
 import Button from 'components/Buttons/Button';
+import PanelButton from 'components/Buttons/PanelButton';
 
 export const OnboardingTeamTitleWrapper = OnboardingPageTitleText;
 export const OnboardingTeamDescriptionWrapper = OnboardingPageDescriptionText;
@@ -15,6 +16,16 @@ export const OnboardingTeamButton = styled(Button)`
   min-height: 3rem;
 `;
 OnboardingTeamButton.displayName = 'OnboardingTeamButton';
+
+export const OnboardingTeamHugePanelButton = styled(PanelButton)`
+  width: 16rem;
+  font-size: 1.13rem;
+
+  & > svg {
+    font-size: 5.63rem;
+  }
+`;
+OnboardingTeamHugePanelButton.displayName = 'OnboardingTeamHugePanelButton';
 
 export const OnboardingTeamFlatPanelButtonGroup = styled.div`
   display: flex;
@@ -65,7 +76,7 @@ export const OnboardingTeamImageBanner = styled.img`
 OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
 
 export const OnboardingTeamInputWrapper = styled.div`
-  margin-block-start: 10rem;
+  margin-block-start: 13rem;
   margin-inline-end: 1rem;
   max-width: 25rem;
   width: 100%;
@@ -79,6 +90,7 @@ export const OnboardingTeamButtonInputWrapper = styled.div`
   margin-inline-end: 1rem;
   justify-content: center;
   width: 100%;
+  max-width: 45rem;
   display: flex;
   flex-wrap: ${({ wrap }) => (wrap ? 'wrap' : 'nowrap')};
   flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
@@ -98,9 +110,26 @@ OnboardingTeamContentContainer.displayName = 'OnboardingTeamContentContainer';
 export const OnboardingTeamAvatarPlaceholder = styled.div`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
+  width: 50%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  ${({ backgroundImageURL }) =>
+    backgroundImageURL && `background-image:url("${backgroundImageURL}")`}
 `;
 
 OnboardingTeamAvatarPlaceholder.displayName = 'OnboardingTeamAvatarPlaceholder';
+
+export const OnboardingTeamTitleDescription = styled(
+  OnboardingPageDescriptionText
+)`
+  padding-inline: 0;
+  text-align: start;
+  margin-block: 0.8rem;
+`;
+
+OnboardingTeamTitleDescription.displayName = 'OnboardingTeamTitleDescription';
 
 export const OnboardingTeamActionButtonWrapper = styled.div`
   margin-block-start: 2.2rem;

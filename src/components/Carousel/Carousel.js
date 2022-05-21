@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as Styles from './Carousel.styles';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 
@@ -16,6 +16,7 @@ const Carousel = ({
   NoNavigationButton = false,
   ...restProps
 }) => {
+  const [isContentScrollable, setIsContentScrollable] = useState(true);
   const carouselRef = useRef(null);
 
   const carouselNavigationHandler = useMemo(
@@ -29,9 +30,17 @@ const Carousel = ({
     [carouselRef, scrollSpeed]
   );
 
+  useEffect(() => {
+    if (carouselRef.current) {
+      if (carouselRef.current.scrollWidth > carouselRef.current.clientWidth)
+        setIsContentScrollable(true);
+      else setIsContentScrollable(false);
+    }
+  }, []);
+
   return (
     <Styles.CarouselContainer {...restProps}>
-      {!NoNavigationButton && (
+      {!NoNavigationButton && isContentScrollable && (
         <>
           <Styles.CarouselNavigationButton
             dir="left"
