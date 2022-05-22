@@ -43,7 +43,7 @@ export const OnboardingCenterizeContent = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 1rem;
-  min-height: 100%;
+  min-height: calc(100vh - 5rem);
   width: 100%;
   & > * {
     flex-shrink: 0;
@@ -57,7 +57,7 @@ export const OnboardingPageDescriptionText = styled.div`
   text-align: center;
   padding-inline: 4rem;
   max-width: 60rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   &::first-letter {
     text-transform: capitalize;
   }
@@ -68,5 +68,6 @@ export const OnboardingPageTitleText = styled(Heading).attrs({ type: 'H2' })`
   &::first-letter {
     text-transform: capitalize;
   }
+  font-size: 2.5rem !important;
 `;
 OnboardingPageTitleText.displayName = 'OnboardingPageTitleText';

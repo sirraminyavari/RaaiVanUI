@@ -15,6 +15,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
 import { useThemeSlice } from 'store/slice/theme';
+import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
+const { setSidebarContent, toggleSidebar } = themeSlice.actions;
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -62,9 +64,11 @@ const OnboardingTemplateSetupContent = () => {
     );
     history.push(CLASSES_PATH);
   };
-
+  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicOnboardingTemplateSetupUnderstood = RVDic.YesssLetsGo;
+  const RVDicOnboardingTemplateSetupNavbarDescriptionTitle = `سایدبار ناوبری کلیک‌مایند`;
+  const RVDicOnboardingTemplateSetupNavbarDescription = `.در کلیک مایند سایدبار سمت راست نقش ناوبری کاربر بین دسته‌ها و تمپلیتها را به عهده دارد و راه دسترسی کاربر به آیتم‌های یک تمپلیت از سایدبار است`;
   const RVDicOnboardingTemplateSetupTitle =
     RVDic.AreYouReadyToStartYourJourneyOnRaaiVan.replace(
       '[RaaiVan]',
@@ -84,6 +88,16 @@ const OnboardingTemplateSetupContent = () => {
       >
         {RVDicOnboardingTemplateSetupUnderstood}
       </Button>
+
+      <Styles.OnboardingTemplateSetupDescriptionWrapper>
+        <Styles.OnboardingTemplateSetupTitleDescription mediumFontWeight>
+          <InfoCircleIcon />
+          {RVDicOnboardingTemplateSetupNavbarDescriptionTitle}
+        </Styles.OnboardingTemplateSetupTitleDescription>
+        <Styles.OnboardingTemplateSetupTitleDescription>
+          {RVDicOnboardingTemplateSetupNavbarDescription}
+        </Styles.OnboardingTemplateSetupTitleDescription>
+      </Styles.OnboardingTemplateSetupDescriptionWrapper>
     </Styles.OnboardingTemplateSetupWrapper>
   );
 };

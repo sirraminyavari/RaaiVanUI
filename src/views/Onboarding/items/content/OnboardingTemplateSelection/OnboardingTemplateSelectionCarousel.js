@@ -1,5 +1,5 @@
 import PanelButton from 'components/Buttons/PanelButton';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, randomNumber } from 'helpers/helpers';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
 import Carousel from 'components/Carousel/Carousel';
 
@@ -11,7 +11,7 @@ const OnboardingTemplateSelectionCarousel = ({
   const { selectedTemplates } = useOnboardingTeamContent();
 
   return (
-    <Carousel>
+    <Carousel key={randomNumber()}>
       {(templates || []).map((template, idx) => {
         const { IconURL, TypeName, NodeTypeID } = template;
         return (

@@ -21,8 +21,11 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     teamState: { workField },
   } = useOnboardingTeamContent();
 
+  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِTeamWorkFieldHeadCount = RVDic.FieldOfActivity;
+  const RVDicِTeamWorkFieldHeadCountDescription =
+    'فعالیت **نام تیم** در سازمان شما در چه حوزه‌ای است؟';
   const RVDicOthersField = RVDic.Other;
   const RVDicOthersInputField = RVDic.Checks.EnterYourFieldOfActivity;
 
@@ -50,10 +53,13 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   }, [workField.fieldID]);
 
   return (
-    <Styles.OnboardingTeamContentContainer>
+    <>
       <Styles.OnboardingTeamTitleWrapper>
         {RVDicِTeamWorkFieldHeadCount}
       </Styles.OnboardingTeamTitleWrapper>
+      <Styles.OnboardingTeamTitleDescription>
+        {RVDicِTeamWorkFieldHeadCountDescription}
+      </Styles.OnboardingTeamTitleDescription>
       <Styles.OnboardingTeamButtonInputWrapper wrap>
         {workFields.map(({ NodeID, Name, AvatarName }) => (
           <>
@@ -86,7 +92,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
           <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
           {RVDicOthersField}
         </PanelButton>
-        {
+        {workField.fieldID === 'OTHERS' && (
           <Styles.OnboardingTeamSetWorkFieldInputWrapper
             hide={workField.fieldID !== 'OTHERS'}
           >
@@ -104,9 +110,9 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
               }
             />
           </Styles.OnboardingTeamSetWorkFieldInputWrapper>
-        }
+        )}
       </Styles.OnboardingTeamButtonInputWrapper>
-    </Styles.OnboardingTeamContentContainer>
+    </>
   );
 };
 

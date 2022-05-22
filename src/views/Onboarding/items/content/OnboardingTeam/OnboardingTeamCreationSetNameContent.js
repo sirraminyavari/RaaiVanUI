@@ -10,9 +10,12 @@ const OnboardingTeamCreationSetNameContent = () => {
   const { dispatch: dispatchTeam, teamState } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
 
+  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِYourTeamName = RVDic.TeamName;
   const RVDicِTeamName = RVDic.TeamName;
+  const RVDicِTeamNameDescription =
+    '.برای تیمی که قصد ایجاد آن را دارید، یک نام وارد کنید';
 
   const setTeamName = (teamName) => {
     dispatchTeam({
@@ -24,18 +27,22 @@ const OnboardingTeamCreationSetNameContent = () => {
 
   return (
     <>
-      <Styles.OnboardingTeamContentContainer>
+      <>
         <Styles.OnboardingTeamTitleWrapper>
           {RVDicِYourTeamName}
         </Styles.OnboardingTeamTitleWrapper>
+        <Styles.OnboardingTeamTitleDescription>
+          {RVDicِTeamNameDescription}
+        </Styles.OnboardingTeamTitleDescription>
         <Styles.OnboardingTeamInputWrapper>
           <AnimatedInput
+            style={{ fontSize: '1rem' }}
             value={teamState.teamName}
             onChange={setTeamName}
             placeholder={RVDicِTeamName}
           />
         </Styles.OnboardingTeamInputWrapper>
-      </Styles.OnboardingTeamContentContainer>
+      </>
     </>
   );
 };
