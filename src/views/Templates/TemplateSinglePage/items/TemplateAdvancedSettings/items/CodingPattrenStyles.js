@@ -50,7 +50,7 @@ export const InputData = styled.div`
 `;
 
 export const Item = styled.div`
-  background-color: ${CV_GRAY_LIGHT};
+  background-color: #eef1f5;
   color: ${CV_GRAY};
   font-size: 0.8rem;
   ${FLEX_RCS};

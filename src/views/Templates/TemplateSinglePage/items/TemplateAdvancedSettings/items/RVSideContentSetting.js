@@ -5,15 +5,20 @@ import {
 } from '../../../../../../constant/CssVariables';
 import { FLEX_RCB } from '../../../../../../constant/StyledCommonCss';
 import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
+import useRVSideContentSetting from './useRVSideContentSetting';
 
 const RVSideContentSetting = () => {
+  const { Browser, Extensions, handleBrowserState } = useRVSideContentSetting(
+    {}
+  );
+
   return (
     <Container>
       <Block>
         <BlockTitle>{'افزونه‌ها'}</BlockTitle>
         <ToggleRow>
           <ToggleRowTitle>{'مرورگر'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton value={Browser} onToggle={handleBrowserState} />
         </ToggleRow>
       </Block>
 
