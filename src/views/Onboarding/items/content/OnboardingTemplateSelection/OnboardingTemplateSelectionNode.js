@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNApi';
+import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNAPI';
 import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
 
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {

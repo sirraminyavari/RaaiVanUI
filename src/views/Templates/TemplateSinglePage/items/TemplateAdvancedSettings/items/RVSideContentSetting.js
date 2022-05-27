@@ -8,9 +8,24 @@ import ToggleButton from '../../../../../../components/Buttons/Toggle/Toggle';
 import useRVSideContentSetting from './useRVSideContentSetting';
 
 const RVSideContentSetting = () => {
-  const { Browser, Extensions, handleBrowserState } = useRVSideContentSetting(
-    {}
-  );
+  const {
+    Browser,
+    handleBrowserState,
+    noContent,
+    handleNoCotentServiceStateChange,
+    isKnowledgeState,
+    handleIsKnowledgeStateChange,
+    isDocumentState,
+    handleIsDocumentStateChange,
+    disableAbstractAndKeywords,
+    handleDisableAbstractAndKeywords,
+    fileUploadState,
+    handleFileUploadState,
+    relatedNodesSelectState,
+    handleRelatedNodesSelectStateChange,
+    isTreeState,
+    handleTreeStateChange,
+  } = useRVSideContentSetting({});
 
   return (
     <Container>
@@ -26,17 +41,26 @@ const RVSideContentSetting = () => {
         <BlockTitle>{'انوع تمپلیت'}</BlockTitle>
         <ToggleRow>
           <ToggleRowTitle>{'فاقد محتواست'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={noContent}
+            onToggle={handleNoCotentServiceStateChange}
+          />
         </ToggleRow>
 
         <ToggleRow>
           <ToggleRowTitle>{'از نوع دانش است'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={isKnowledgeState}
+            onToggle={handleIsKnowledgeStateChange}
+          />
         </ToggleRow>
 
         <ToggleRow>
           <ToggleRowTitle>{'از نوع مستند است'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={isDocumentState}
+            onToggle={handleIsDocumentStateChange}
+          />
         </ToggleRow>
       </Block>
 
@@ -45,22 +69,31 @@ const RVSideContentSetting = () => {
 
         <ToggleRow>
           <ToggleRowTitle>{'نمایش چکیده و کلمات کلیدی'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={!disableAbstractAndKeywords}
+            onToggle={handleDisableAbstractAndKeywords}
+          />
         </ToggleRow>
 
         <ToggleRow>
           <ToggleRowTitle>{'امکان الصاق فایل به موضوع'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={fileUploadState}
+            onToggle={handleFileUploadState}
+          />
         </ToggleRow>
 
         <ToggleRow>
           <ToggleRowTitle>{'امکان ویرایش موضوعات مرتبط'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton
+            value={relatedNodesSelectState}
+            onToggle={handleRelatedNodesSelectStateChange}
+          />
         </ToggleRow>
 
         <ToggleRow>
           <ToggleRowTitle>{'امکان سازمان‌دهی به صورت درختی'}</ToggleRowTitle>
-          <ToggleButton />
+          <ToggleButton value={isTreeState} onToggle={handleTreeStateChange} />
         </ToggleRow>
       </Block>
     </Container>

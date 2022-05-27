@@ -3,7 +3,7 @@
  */
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import AvatarComponent from 'components/Avatar/Avatar';

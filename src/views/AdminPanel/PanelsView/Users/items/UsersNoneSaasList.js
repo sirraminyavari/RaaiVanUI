@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { getUUID } from 'helpers/helpers';
 import * as Styled from './UsersListStyled';
 import ORGUserCard from './rows/ORGUserCard';
-import { getGroupsAll } from 'apiHelper/ApiHandlers/CNApi';
+import { getGroupsAll } from 'apiHelper/ApiHandlers/CNAPI';
 import { checkAuthority } from 'apiHelper/ApiHandlers/privacyApi';
 import useWindowContext from 'hooks/useWindowContext';
 import { NoneSaasUserListHeaders } from './_constants';

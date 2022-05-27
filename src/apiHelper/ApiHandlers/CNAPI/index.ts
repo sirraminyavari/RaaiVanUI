@@ -4,8 +4,6 @@ import {
   CN_API,
   GET_CHILD_NODE_TYPES,
   MOVE_NODE_TYPE,
-  REMOVE_NODE_TYPE,
-  RENAME_NODE_TYPE,
   SET_NODE_TYPE_ORDER,
   ACTIVATE_TEMPLATE,
   GET_TEMPLATES,
@@ -13,12 +11,13 @@ import {
   GET_TEMPLATE_TAGS,
   GET_NODE_TYPES,
 } from 'constant/apiConstants';
-import { apiCallWrapper } from './apiCallHelpers';
+import { apiCallWrapper } from '../apiCallHelpers';
 import {
   API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY,
   API_NAME_CN_REMOVE_NODE_TYPE,
   API_NAME_CN_RENAME_NODE_TYPE,
 } from 'constant/api-names-cn';
+import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
@@ -37,7 +36,7 @@ export const getNodeTypes = ({
   HasChild,
   Tree,
   CheckAccess,
-} = {}) => {
+}) => {
   return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
     NodeTypeIDs: (NodeTypeIDs || []).join('|'),
     GrabSubNodeTypes,
@@ -60,7 +59,7 @@ export const getNodeTypes = ({
  * @param {string} NodeTypeID id of the class/template
  * @param {string} Name new name of the class/template
  */
-export const renameNodeType = ({ NodeTypeID, Name } = {}) => {
+export const renameNodeType = ({ NodeTypeID, Name }) => {
   return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_RENAME_NODE_TYPE), {
     NodeTypeID,
     Name: encodeBase64(Name),
@@ -77,7 +76,7 @@ export const removeNodeType = ({
   NodeTypeIDs,
   NodeTypeID,
   RemoveHierarchy,
-} = {}) => {
+}) => {
   const ids = NodeTypeIDs?.length
     ? NodeTypeIDs
     : !!NodeTypeID
@@ -90,46 +89,64 @@ export const removeNodeType = ({
   });
 };
 
+export const setNodeTypeAdditionalId = ({
+  NodeTypeID,
+  AdditionalID,
+}: {
+  NodeTypeID: string;
+  AdditionalID: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'SetNodeTypeAdditionalID'), {
+    NodeTypeID,
+    AdditionalID: encodeBase64(AdditionalID),
+  });
+};
+
+export const setAdditionalIdPattern = ({
+  NodeTypeID,
+  Pattern,
+}: {
+  NodeTypeID: string;
+  Pattern: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'SetAdditionalIDPattern'), {
+    NodeTypeID,
+    AdditionalIDPattern: encodeBase64(Pattern),
+  });
+};
+
 export const getGroupsAll = () => {
-  const getGroupsAllAPI = API_Provider(CN_API, 'GetGroupsAll');
-  return apiCallWrapper(getGroupsAllAPI, {})
-    .then((res) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetGroupsAll'), {})
+    .then((res: any) => {
       return Object.keys(res?.AllGroups || {})
         .map((key) => res.AllGroups[key]?.Nodes || [])
         .flat()
-        .map(
-          (g) => (
-            (g.IsMember = (res?.Groups || []).some(
-              (x) => x.NodeID === g.NodeID
-            )),
-            g
-          )
-        );
+        .map((g) => {
+          g.IsMember = (res?.Groups || []).some((x) => x.NodeID === g.NodeID);
+          return g;
+        });
     })
     .then((res) => {
       return res.map((x) => ({
         ...x,
         Name: decodeBase64(x?.Name),
         NodeType: decodeBase64(x?.NodeType),
-        Members:
-          x?.Members?.map((member) => ({
-            ...member,
-            FullName: decodeBase64(member?.FullName),
-            FirstName: decodeBase64(member?.FirstName),
-            LastName: decodeBase64(member?.LastName),
-          })) || [],
+        Members: (x?.Members || []).map((member) =>
+          UserDecoders.decodeUser(member)
+        ),
       }));
     });
 };
 
 export const addMember = (NodeID, UserID) => {
-  const addMemberAPI = API_Provider(CN_API, 'AddMember');
-  return apiCallWrapper(addMemberAPI, { NodeID, UserID });
+  return apiCallWrapper(API_Provider(CN_API, 'AddMember'), { NodeID, UserID });
 };
 
 export const removeMember = (NodeID, UserID) => {
-  const removeMemberAPI = API_Provider(CN_API, 'RemoveMember');
-  return apiCallWrapper(removeMemberAPI, { NodeID, UserID });
+  return apiCallWrapper(API_Provider(CN_API, 'RemoveMember'), {
+    NodeID,
+    UserID,
+  });
 };
 
 export const addNode = (Name, NodeTypeID) => {
@@ -140,23 +157,20 @@ export const addNode = (Name, NodeTypeID) => {
 };
 
 export const modifyNodeName = (Name, NodeID) => {
-  const modifyNodeNameAPI = API_Provider(CN_API, 'ModifyNodeName');
-  return apiCallWrapper(modifyNodeNameAPI, {
+  return apiCallWrapper(API_Provider(CN_API, 'ModifyNodeName'), {
     NodeID,
     Name: encodeBase64(Name),
   });
 };
 
 export const removeNode = (NodeID) => {
-  const removeNodeAPI = API_Provider(CN_API, 'RemoveNode');
-  return apiCallWrapper(removeNodeAPI, {
+  return apiCallWrapper(API_Provider(CN_API, 'RemoveNode'), {
     NodeID,
   });
 };
 
 export const saveMembers = (NodeID, UserIDs) => {
-  const saveMembersAPI = API_Provider(CN_API, 'SaveMembers');
-  return apiCallWrapper(saveMembersAPI, {
+  return apiCallWrapper(API_Provider(CN_API, 'SaveMembers'), {
     NodeID,
     UserIDs: UserIDs.join('|'),
   });
@@ -176,20 +190,12 @@ export const getChildNodeTypes = ({
   archive = false,
   icon = true,
 }) => {
-  const getChildNodeTypesAPI = API_Provider(CN_API, GET_CHILD_NODE_TYPES);
-
-  return apiCallWrapper(getChildNodeTypesAPI, {
+  return apiCallWrapper(API_Provider(CN_API, GET_CHILD_NODE_TYPES), {
     NodeTypeID: nodeTypeId,
     Count: count,
     Archive: archive,
     Icon: icon,
   });
-  //   .then((x) =>
-  //   x?.NodeTypes.map((n) => ({
-  //     ...n,
-  //     TypeName: decodeBase64(n?.TypeName),
-  //   }))
-  // );
 };
 
 /**
@@ -199,7 +205,7 @@ export const getChildNodeTypes = ({
  * @param IsCategory
  * @return {Promise<ValidationOptions.unknown>}
  */
-export const addNodeType = ({ Name, ParentID, IsCategory } = {}) => {
+export const addNodeType = ({ Name, ParentID, IsCategory }) => {
   return apiCallWrapper(API_Provider(CN_API, ADD_NODE_TYPE), {
     Name: encodeBase64(Name),
     ParentID,
@@ -237,7 +243,7 @@ export const getTemplateTags = () => {
  * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
  * @returns Promise.
  */
-export const getTemplates = ({ TagID } = {}) => {
+export const getTemplates = ({ TagID }) => {
   return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
 };
 
@@ -246,43 +252,24 @@ export const getTemplates = ({ TagID } = {}) => {
  * @param {String} prop.NodeTypeID the id of the template
  * @returns Promise.
  */
-export const getTemplateJSON = ({ NodeTypeID } = {}) => {
+export const getTemplateJSON = ({ NodeTypeID }) => {
   return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_JSON), {
     NodeTypeID,
   });
 };
 
-export const setNodeTypesOrder = ({ NodeTypeIDs } = {}) => {
+export const setNodeTypesOrder = ({ NodeTypeIDs }) => {
   return apiCallWrapper(API_Provider(CN_API, SET_NODE_TYPE_ORDER), {
     NodeTypeIDs: NodeTypeIDs.join('|'),
   });
 };
-
-// export const renameNodeType = ({ Name, NodeTypeID } = {}) => {
-//   return apiCallWrapper(API_Provider(CN_API, RENAME_NODE_TYPE), {
-//     Name: encodeBase64(Name),
-//     NodeTypeID,
-//   });
-// };
-
-// export const removeNodeType = ({
-//   NodeTypeID,
-//   NodeTypeIDs,
-//   RemoveHierarchy = false,
-// } = {}) => {
-//   return apiCallWrapper(API_Provider(CN_API, REMOVE_NODE_TYPE), {
-//     NodeTypeID,
-//     NodeTypeIDs,
-//     RemoveHierarchy,
-//   });
-// };
 
 /**
  * @description Activate a template.
  * @param {any} Template -The template object to be activated.
  * @returns Promise.
  */
-export const activateTemplate = ({ Template } = {}) => {
+export const activateTemplate = ({ Template }) => {
   return apiCallWrapper(API_Provider(CN_API, ACTIVATE_TEMPLATE), {
     Template: encodeBase64(JSON.stringify(Template || {})),
   });
@@ -293,7 +280,7 @@ export const activateTemplate = ({ Template } = {}) => {
  * @param {string} NodeTypeID -The template object to be activated.
  * @returns Promise.
  */
-export const getTemplatePreview = ({ NodeTypeID } = {}) => {
+export const getTemplatePreview = ({ NodeTypeID }) => {
   return apiCallWrapper(API_Provider(CN_API, 'GetTemplatePreview'), {
     NodeTypeID,
   });

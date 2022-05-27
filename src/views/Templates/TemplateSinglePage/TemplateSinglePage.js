@@ -11,7 +11,7 @@ import { lazy, useEffect, useState } from 'react';
 import {
   getExtensions,
   getService,
-} from 'apiHelper/ApiHandlers/CNAPI_ServiceSettings';
+} from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { TemplateProvider } from './TemplateProvider';
 import { themeSlice } from 'store/reducers/themeReducer';

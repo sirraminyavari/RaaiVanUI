@@ -15,7 +15,7 @@ import {
   TEN_TO_TWENTY,
 } from '../../constant/constants';
 import InfoToast from '../../components/toasts/info-toast/InfoToast';
-import { getTemplateTags } from 'apiHelper/ApiHandlers/CNApi';
+import { getTemplateTags } from 'apiHelper/ApiHandlers/CNAPI';
 
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;

@@ -8,7 +8,7 @@ import DeleteConfirmMSG from 'components/Modal/Messages/DeleteConfirmMessage';
 import { useTemplateContext } from '../../../TemplateProvider';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
-import { removeNodeType } from 'apiHelper/ApiHandlers/CNApi';
+import { removeNodeType } from 'apiHelper/ApiHandlers/CNAPI';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 
 const DeleteTemplateButton = () => {

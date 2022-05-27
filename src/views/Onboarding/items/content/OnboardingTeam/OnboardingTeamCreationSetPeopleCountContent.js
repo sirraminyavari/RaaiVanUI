@@ -17,8 +17,11 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
     teamState: { peopleCount },
   } = useOnboardingTeamContent();
 
+  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِYourTeamHeadCount = RVDic.TeamSize;
+  const RVDicِYourTeamHeadCountDescription =
+    'اندازه تیم **نام تیم** در سازمان شما چند نفر است؟';
   const RVDicLessThan10People = RVDic.LessThanN.replace(
     '[n]',
     RVDic.NPeople.replace('[n]', 10)
@@ -45,6 +48,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
       <Styles.OnboardingTeamTitleWrapper>
         {RVDicِYourTeamHeadCount}
       </Styles.OnboardingTeamTitleWrapper>
+      <Styles.OnboardingTeamTitleDescription>
+        {RVDicِYourTeamHeadCountDescription}
+      </Styles.OnboardingTeamTitleDescription>
       <Styles.OnboardingTeamButtonInputWrapper isMobile={isMobile}>
         <PanelButton
           secondary
