@@ -76,9 +76,9 @@ export const OnboardingTeamImageBanner = styled.img`
 OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
 
 export const OnboardingTeamInputWrapper = styled.div`
-  margin-block-start: 13rem;
+  margin-block-start: ${({ isMobile }) => (isMobile ? '2rem' : '8rem')};
   margin-inline-end: 1rem;
-  max-width: 25rem;
+  max-width: ${({ isMobile }) => (isMobile ? '85%' : '30vw')};
   width: 100%;
   display: flex;
 `;

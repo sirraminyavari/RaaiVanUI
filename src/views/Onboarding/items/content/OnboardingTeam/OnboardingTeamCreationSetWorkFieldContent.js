@@ -12,6 +12,7 @@ import { getAllFieldsOfActivity } from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [workFields, setWorkFields] = useState([]);
   const workFieldInputRef = useRef(null);
 
@@ -41,6 +42,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
     async function fetchAllFieldsOfActivity() {
       const { Items } = await getAllFieldsOfActivity();
       setWorkFields(Items);
+      setIsLoading(false);
     }
     fetchAllFieldsOfActivity();
   }, []);
@@ -60,58 +62,62 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
       <Styles.OnboardingTeamTitleDescription>
         {RVDicِTeamWorkFieldHeadCountDescription}
       </Styles.OnboardingTeamTitleDescription>
-      <Styles.OnboardingTeamButtonInputWrapper wrap>
-        {workFields.map(({ NodeID, Name, AvatarName }) => (
-          <>
-            <PanelButton
-              secondary
-              active={workField.fieldID === NodeID}
-              onClick={setOnboardingTeamWorkField({
-                fieldID: NodeID,
-                fieldName: decodeBase64(AvatarName),
-              })}
-            >
-              <img
-                src={workFieldAssets[decodeBase64(AvatarName)]}
-                size={'1em'}
-                alt=""
-              />
-              {decodeBase64(Name)}
-            </PanelButton>
-          </>
-        ))}
+      {isLoading ? (
+        ''
+      ) : (
+        <Styles.OnboardingTeamButtonInputWrapper wrap>
+          {workFields.map(({ NodeID, Name, AvatarName }) => (
+            <>
+              <PanelButton
+                secondary
+                active={workField.fieldID === NodeID}
+                onClick={setOnboardingTeamWorkField({
+                  fieldID: NodeID,
+                  fieldName: decodeBase64(AvatarName),
+                })}
+              >
+                <img
+                  src={workFieldAssets[decodeBase64(AvatarName)]}
+                  size={'1em'}
+                  alt=""
+                />
+                {decodeBase64(Name)}
+              </PanelButton>
+            </>
+          ))}
 
-        <PanelButton
-          secondary
-          active={workField.fieldID === 'OTHERS'}
-          onClick={setOnboardingTeamWorkField({
-            fieldID: 'OTHERS',
-            fieldName: '',
-          })}
-        >
-          <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
-          {RVDicOthersField}
-        </PanelButton>
-        {workField.fieldID === 'OTHERS' && (
-          <Styles.OnboardingTeamSetWorkFieldInputWrapper
-            hide={workField.fieldID !== 'OTHERS'}
+          <PanelButton
+            secondary
+            active={workField.fieldID === 'OTHERS'}
+            onClick={setOnboardingTeamWorkField({
+              fieldID: 'OTHERS',
+              fieldName: '',
+            })}
           >
-            <AnimatedInput
-              ref={workFieldInputRef}
-              id="workFieldInput"
-              disabled={workField.fieldID !== 'OTHERS'}
-              placeholder={RVDicOthersInputField}
-              value={decodeBase64(workField.fieldName)}
-              onChange={(input) =>
-                setOnboardingTeamWorkField({
-                  fieldID: 'OTHERS',
-                  fieldName: encodeBase64(input),
-                })()
-              }
-            />
-          </Styles.OnboardingTeamSetWorkFieldInputWrapper>
-        )}
-      </Styles.OnboardingTeamButtonInputWrapper>
+            <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
+            {RVDicOthersField}
+          </PanelButton>
+          {workField.fieldID === 'OTHERS' && (
+            <Styles.OnboardingTeamSetWorkFieldInputWrapper
+              hide={workField.fieldID !== 'OTHERS'}
+            >
+              <AnimatedInput
+                ref={workFieldInputRef}
+                id="workFieldInput"
+                disabled={workField.fieldID !== 'OTHERS'}
+                placeholder={RVDicOthersInputField}
+                value={decodeBase64(workField.fieldName)}
+                onChange={(input) =>
+                  setOnboardingTeamWorkField({
+                    fieldID: 'OTHERS',
+                    fieldName: encodeBase64(input),
+                  })()
+                }
+              />
+            </Styles.OnboardingTeamSetWorkFieldInputWrapper>
+          )}
+        </Styles.OnboardingTeamButtonInputWrapper>
+      )}
     </>
   );
 };

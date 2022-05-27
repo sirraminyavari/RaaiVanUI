@@ -65,13 +65,12 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
               {decodeBase64(activeTemplate?.Description)}
             </Styles.OnboardingTemplateSelectionCurrentTemplateParagraph>
             <Styles.OnboardingTemplateSelectionButtonWrapper
-              style={{ marginBlockStart: '4rem' }}
+              style={{ marginBlockStart: '0rem' }}
             >
               {!isTemplateSelected(selectedTemplates, activeTemplate) ? (
                 <Button
                   style={{
                     paddingInline: '3rem',
-                    height: '3rem',
                     fontSize: '1rem',
                   }}
                   type="primary-o"
@@ -83,7 +82,6 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
                 <Button
                   style={{
                     paddingInline: '3rem',
-                    height: '3rem',
                     fontSize: '1rem',
                   }}
                   type="negative-o"

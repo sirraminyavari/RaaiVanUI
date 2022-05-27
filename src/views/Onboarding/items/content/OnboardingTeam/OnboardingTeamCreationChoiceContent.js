@@ -1,9 +1,8 @@
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import * as GlobalStyles from 'views/Onboarding/items/Onboarding.styles';
 import TeamMemberIcon from 'components/Icons/TeamMemberIcon/TeamMemberIcon';
-import PanelButton from 'components/Buttons/PanelButton';
 import NewTeamIcon from 'components/Icons/NewTeamIcon/NewTeamIcon';
 import {
   useOnboardingTeamContent,
@@ -26,11 +25,13 @@ const OnboardingTeamCreationChoiceContent = () => {
   useEffect(() => {
     const UrlQuery = new URLSearchParams(location.search);
     const workspaceID = UrlQuery.get('workspaceID');
-    if (workspaceID !== null)
+    if (workspaceID !== null) {
       dispatchTeamPage({
         type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_WORKSPACE_ID,
         stateValue: workspaceID,
       });
+      goToNextStep();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

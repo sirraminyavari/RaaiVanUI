@@ -13,6 +13,7 @@ import { selectApplication as selectApplicationAction } from 'store/actions/appl
 import {
   setOnboardingTeamName,
   onboardingSlice,
+  setOnboardingProductTourStatus,
 } from 'store/reducers/onboardingReducer';
 const { onboardingName, onboardingStep } = onboardingSlice.actions;
 const { setSidebarContent } = themeSlice.actions;
@@ -24,6 +25,7 @@ export const onboardingTeamNameSave = async ({
   teamName,
   WorkspaceID,
 }) => {
+  if (WorkspaceID) store.dispatch(setOnboardingProductTourStatus(false));
   const createWorkspaceResponse =
     WorkspaceID ||
     (await createWorkspace({
@@ -85,6 +87,7 @@ export const onboardingTeamFieldOfExpertiseSave = async ({
   ApplicationID,
   workFieldID,
   workFieldName,
+  showProductTour,
 }) => {
   await setApplicationFieldOfExpertise({
     ApplicationID,
@@ -92,7 +95,9 @@ export const onboardingTeamFieldOfExpertiseSave = async ({
     FieldName: workFieldName,
   });
   store.dispatch(selectApplicationAction(ApplicationID));
-  store.dispatch(onboardingName('intro'));
-  store.dispatch(onboardingStep(0));
+  if (showProductTour) {
+    store.dispatch(onboardingName('intro'));
+    store.dispatch(onboardingStep(0));
+  }
   store.dispatch(setSelectedTeam({ name: teamName, id: ApplicationID }));
 };
