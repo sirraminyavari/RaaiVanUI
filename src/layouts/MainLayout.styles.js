@@ -19,10 +19,13 @@ const getContentMargin = (props) => {
   } = props;
   if (states.activePath === TEAMS_PATH) return;
   return css`${window.RV_RTL ? 'margin-right' : 'margin-left'}: ${
-    !isMobile
-      ? isSidebarOpen
-        ? `${states.sidebarCurrentWidth / 16}rem`
-        : `${states.selectedTeam?.id ? CLOSE_WIDTH : 0}rem`
+    //! hide sidebar view completely
+    !states.hideSidebar
+      ? !isMobile
+        ? isSidebarOpen
+          ? `${states.sidebarCurrentWidth / 16}rem`
+          : `${states.selectedTeam?.id ? CLOSE_WIDTH : 0}rem`
+        : '0'
       : '0'
   }};
   `;
