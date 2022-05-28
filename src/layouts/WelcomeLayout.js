@@ -70,7 +70,7 @@ function WelcomeLayout({
       {Children.toArray(children).map((child, idx) => (
         <LayoutColumn
           withScrollbar={withScrollbar}
-          isMobile={isMobileScreen}
+          isMobile={singleColumn || isMobileScreen}
           key={`WelcomeLayout-col-${idx}`}
         >
           {child}

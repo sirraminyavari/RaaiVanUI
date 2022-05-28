@@ -3,7 +3,7 @@ import * as Styles from './OnboardingTeam.styles';
 import OnboardingTeamCreationSetNameBannerImage from 'assets/images/onboarding-team-creation-set-name.svg?file';
 // import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 
-const OnboardingTeamCreationSetNameBanner = () => {
+const OnboardingTeamCreationSetNameBanner = ({ sticky }) => {
   // const { RVDic } = useWindow();
   // const { teamState } = useOnboardingTeamContent();
 
@@ -16,7 +16,7 @@ const OnboardingTeamCreationSetNameBanner = () => {
         <div>
           <Styles.OnboardingTeamAvatarPlaceholder
             backgroundImageURL={OnboardingTeamCreationSetNameBannerImage}
-          ></Styles.OnboardingTeamAvatarPlaceholder>
+          />
         </div>
       </Styles.OnboardingTeamImageBannerWrapper>
     </>

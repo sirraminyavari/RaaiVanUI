@@ -92,6 +92,12 @@ const selectHasNavSide = createSelector(
   (theme) => theme.hasNavSide
 );
 
+//! hide sidebar view completely
+const selectHideSidebar = createSelector(
+  (state) => state.theme,
+  (theme) => theme.hideSidebar
+);
+
 const selectedApp = createSelector(
   (state) => state.theme,
   (theme) => theme.selectedTeam
@@ -118,6 +124,8 @@ const Main = () => {
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
   //! Check if navbar or sidebar are enabled for current route.
   const hasNavSide = useSelector(selectHasNavSide);
+  //! hide sidebar view completely
+  const hideSidebar = useSelector(selectHideSidebar);
   //! Get selected team.
   const selectedTeam = useSelector(selectedApp);
   //! Get onboarding stage name.
@@ -168,7 +176,7 @@ const Main = () => {
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          {getSidebar()}
+          {!hideSidebar && getSidebar()}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}

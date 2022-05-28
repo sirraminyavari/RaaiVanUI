@@ -42,11 +42,13 @@ const getNavbarWidth = ({ theme, isMobile }) => {
     return css`
       width: calc(
         100% -
-          ${!isMobile
-            ? theme.states.isSidebarOpen
-              ? theme.states.sidebarCurrentWidth / 16
+          ${!theme.states.hideSidebar /*//! hide sidebar view completely*/
+            ? !isMobile
+              ? theme.states.isSidebarOpen
+                ? theme.states.sidebarCurrentWidth / 16
+                : CLOSE_WIDTH
               : CLOSE_WIDTH
-            : CLOSE_WIDTH}rem
+            : 0}rem
       );
     `;
   }

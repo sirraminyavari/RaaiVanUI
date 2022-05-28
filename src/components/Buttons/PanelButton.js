@@ -52,6 +52,7 @@ const StyledPanelButtonCheckBox = styled.div`
   position: absolute;
   inset-block-start: 0.6rem;
   inset-inline-start: 0.6rem;
+  z-index: 1;
 `;
 const StyledPanelButton = styled.button.attrs({
   className: BO_RADIUS_HALF,
@@ -59,7 +60,7 @@ const StyledPanelButton = styled.button.attrs({
   cursor: pointer;
   padding: 0.5rem;
   margin: 0.5rem;
-  width: 10rem;
+  width: clamp(8rem, 10vw, 10rem);
   max-width: 100%;
   aspect-ratio: 1;
   flex-shrink: 0;
@@ -69,7 +70,7 @@ const StyledPanelButton = styled.button.attrs({
   align-items: center;
   flex-direction: column;
   color: ${TCV_DEFAULT};
-  font-size: 0.8rem;
+  font-size: clamp(0.8rem, 1vw, 1rem);
   border: 1px solid transparent;
   transition: border 0.3s ease-out, color 0.3s, filter 0.3s;
   box-sizing: border-box;
@@ -88,9 +89,9 @@ const StyledPanelButton = styled.button.attrs({
 
   & > svg,
   & > img {
-    font-size: 4rem;
-    margin-block-start: 1rem;
-    margin-block-end: 2rem;
+    font-size: clamp(3rem, 6vw, 4rem);
+    margin-block-start: clamp(0.5rem, 10%, 1rem);
+    margin-block-end: clamp(0.5rem, 10%, 1rem);
     transition: filter 0.3s;
   }
   &:hover {

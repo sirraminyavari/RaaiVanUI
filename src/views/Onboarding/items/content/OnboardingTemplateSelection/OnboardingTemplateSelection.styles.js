@@ -17,6 +17,7 @@ import {
   FLEX_RCC,
   FLEX_CSC,
 } from 'constant/StyledCommonCss';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
 export const OnboardingTemplateSelectionWrapper = styled.div`
   ${({ mobile }) => mobile && `padding-block-end: 2rem;`}
@@ -80,7 +81,7 @@ OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
 
 export const OnboardingTemplateSelectionCurrentTemplateContainer = styled.div`
-  min-height: 45vh;
+  min-height: 46vh;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -106,11 +107,14 @@ export const OnboardingTemplateSelectionImage = styled.img`
 OnboardingTemplateSelectionCurrentTemplateTitle.displayName =
   'OnboardingTemplateSelectionCurrentTemplateTitle';
 
-export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled.p`
+export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled(
+  ScrollBarProvider
+).attrs({ direction: 'right' })`
   margin-block: 1rem;
   font-size: 1rem;
+  padding-inline: 1rem;
   color: ${CV_GRAY};
-  ${({ mobile }) => !mobile && `height: 45vh;overflow-y:auto;`}
+  ${({ mobile }) => !mobile && `height: 48vh;overflow-y:auto;`}
 `;
 OnboardingTemplateSelectionCurrentTemplateParagraph.displayName =
   'OnboardingTemplateSelectionCurrentTemplateParagraph';
@@ -357,7 +361,7 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
     right: 0;
     width: 100%;
     height: 110%;
-    z-index: 1;
+    z-index: 100;
   }
 
   & > div {

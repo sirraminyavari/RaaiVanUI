@@ -123,12 +123,12 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
                 workFieldID: teamState.workField.fieldID,
                 workFieldName: teamState.workField.fieldName,
               });
-            else
+            else if (teamState.workField.fieldName)
               await onboardingTeamFieldOfExpertiseSave({
                 ApplicationID: prevState.applicationID,
 
                 //TODO API not accepting emptyFieldName for team's workField
-                workFieldName: teamState.workField.fieldName || ' ',
+                workFieldName: teamState.workField.fieldName,
               });
             resolve();
           }),
