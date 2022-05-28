@@ -1,3 +1,4 @@
+import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { BO_RADIUS_HALF } from 'constant/constants';
 import {
@@ -8,6 +9,14 @@ import {
 } from 'constant/CssVariables';
 import classNames from 'classnames';
 import CheckCircleFilled from 'components/Icons/CheckIcons/CheckCircleFilled';
+
+interface PanelButtonType extends ButtonHTMLAttributes<HTMLButtonElement> {
+  active?: boolean;
+  secondary?: boolean;
+  grayScale?: boolean;
+  checked?: boolean;
+  children?: ReactNode;
+}
 
 /**
  * @component - A squared Panel Button
@@ -26,7 +35,7 @@ function PanelButton({
   className,
   checked,
   ...restProps
-}) {
+}: PanelButtonType): JSX.Element {
   return (
     <StyledPanelButton
       className={classNames(

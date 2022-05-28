@@ -8,13 +8,18 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
-import { getAllFieldsOfActivity } from 'apiHelper/ApiHandlers/CNAPI';
+import {
+  getAllFieldsOfActivity,
+  getAllFieldsOfActivityReturnType,
+} from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [workFields, setWorkFields] = useState([]);
-  const workFieldInputRef = useRef(null);
+  const [workFields, setWorkFields] = useState<
+    getAllFieldsOfActivityReturnType['Items']
+  >([]);
+  const workFieldInputRef = useRef<HTMLInputElement>();
 
   const { RVDic } = useWindow();
   const {
@@ -30,13 +35,14 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   const RVDicOthersField = RVDic.Other;
   const RVDicOthersInputField = RVDic.Checks.EnterYourFieldOfActivity;
 
-  const setOnboardingTeamWorkField = (workField) => () => {
-    dispatchTeamPage({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
-      stateKey: 'workField',
-      stateValue: workField,
-    });
-  };
+  const setOnboardingTeamWorkField =
+    (workField: { fieldID: string; fieldName: string }) => () => {
+      dispatchTeamPage({
+        type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
+        stateKey: 'workField',
+        stateValue: workField,
+      });
+    };
 
   useEffect(() => {
     async function fetchAllFieldsOfActivity() {
@@ -48,7 +54,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   }, []);
 
   useEffect(() => {
-    if (workField.fieldID === 'OTHERS')
+    if (workField.fieldID === 'OTHERS' && workFieldInputRef.current)
       workFieldInputRef.current.scrollIntoView({
         behavior: 'smooth',
       });
@@ -76,11 +82,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
                   fieldName: decodeBase64(AvatarName),
                 })}
               >
-                <img
-                  src={workFieldAssets[decodeBase64(AvatarName)]}
-                  size={'1em'}
-                  alt=""
-                />
+                <img src={workFieldAssets[decodeBase64(AvatarName)]} alt="" />
                 {decodeBase64(Name)}
               </PanelButton>
             </>
@@ -94,7 +96,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
               fieldName: '',
             })}
           >
-            <img src={workFieldAssets.cardbox} size={'1em'} alt="" />
+            <img src={workFieldAssets.cardbox} alt="" />
             {RVDicOthersField}
           </PanelButton>
           {workField.fieldID === 'OTHERS' && (
@@ -103,6 +105,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
             >
               <AnimatedInput
                 ref={workFieldInputRef}
+                //@ts-ignore
                 id="workFieldInput"
                 disabled={workField.fieldID !== 'OTHERS'}
                 placeholder={RVDicOthersInputField}

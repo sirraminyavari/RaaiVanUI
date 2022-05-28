@@ -29,7 +29,7 @@ const OnboardingTemplateSelectionContent = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const reduxDispatch = useDispatch();
-  const { isTabletOrMobile, isMobile } = DimensionHelper();
+  const { isTabletOrMobile } = DimensionHelper();
   const {
     dispatch,
     disableContinue,
@@ -134,11 +134,7 @@ const OnboardingTemplateSelectionContent = () => {
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          {!isMobile && (
-            <OnboardingTemplateSelectionNode
-              activeTemplate={activateTemplate}
-            />
-          )}
+          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={

@@ -5,11 +5,13 @@ import {
   OnboardingPageTitleText,
 } from 'views/Onboarding/items/Onboarding.styles';
 import { CV_GRAY } from 'constant/CssVariables';
+import CelebrateAnimation from 'components/celebrateAnimation/celebrateAnimation';
 
 export const OnboardingTemplateSetupWrapper = styled(
   OnboardingCenterizeContent
 )`
   margin-block-start: 5vh;
+  position: relative;
 `;
 OnboardingTemplateSetupWrapper.displayName = 'OnboardingTemplateSetupWrapper';
 
@@ -33,7 +35,7 @@ OnboardingTemplateSetupDescriptionWrapper.displayName =
 
 export const OnboardingTemplateSetupTitleDescription = styled(Heading).attrs({
   type: 'h5',
-})`
+})<{ mediumFontWeight?: boolean }>`
   color: ${CV_GRAY};
 
   font-weight: ${({ mediumFontWeight }) =>
@@ -58,3 +60,14 @@ export const OnboardingTemplateSetupVideoContainer = styled.div`
 `;
 OnboardingTemplateSetupVideoContainer.displayName =
   'OnboardingTemplateSetupVideoContainer';
+
+export const OnboardingTemplateSetupCelebrateAnimation = styled(
+  CelebrateAnimation
+).attrs({ width: '100%', height: '100%' })`
+  position: absolute;
+  inset-inline: 0;
+  z-index: -1;
+  inset-block-start: 0;
+`;
+OnboardingTemplateSetupCelebrateAnimation.displayName =
+  'OnboardingTemplateSetupCelebrateAnimation';

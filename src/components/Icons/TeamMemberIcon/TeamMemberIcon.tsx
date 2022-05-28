@@ -1,12 +1,16 @@
+import type { SVGProps } from 'react';
 import React from 'react';
 
+interface TeamMemberIconType extends SVGProps<SVGSVGElement> {
+  size?: string;
+}
 /**
  * @component - TeamMember Icon component
- * @param {React.SVGAttributes} props
+ * @param {SVGSVGElement} props
  * @param {string|number} [props.size="1em"]
  * @return {JSX.Element}
  */
-const TeamMemberIcon = ({ size, ...props }) => {
+const TeamMemberIcon = ({ size, ...props }: TeamMemberIconType) => {
   return (
     <>
       <svg

@@ -3,9 +3,16 @@ import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNAPI';
 import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
+// import useWindow from 'hooks/useWindowContext';
+import EmptyState from 'components/EmptyState/EmptyState';
 
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
+  // const { RVDic } = useWindow();
   const [templateNodeElements, setTemplateNodeElements] = useState(false);
+
+  //TODO update RVDic i18n
+  //! RVDic i18n localization
+  const RVDicِNothingToDisplayTemplate = 'این تمپلیت فیلد قابل نمایشی ندارد!';
 
   useEffect(() => {
     (async () => {
@@ -23,7 +30,18 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
     <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
         {templateNodeElements ? (
-          <FormFill data={templateNodeElements} editable />
+          <>
+            {templateNodeElements.Elements.length ? (
+              <FormFill data={templateNodeElements} editable />
+            ) : (
+              <Styles.OnboardingTemplateSelectionNodeEmptyContainer>
+                <div>
+                  <EmptyState loop />
+                  {RVDicِNothingToDisplayTemplate}
+                </div>
+              </Styles.OnboardingTemplateSelectionNodeEmptyContainer>
+            )}
+          </>
         ) : (
           <FieldsLoadingSkelton />
         )}

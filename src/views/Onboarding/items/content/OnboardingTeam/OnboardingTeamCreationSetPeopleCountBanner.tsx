@@ -3,10 +3,14 @@ import { OTHERS as lessThan10Image } from 'assets/images/onboarding/illustration
 import { OTHERS as between11To20Image } from 'assets/images/onboarding/illustration/between11To20/between11To20';
 import { OTHERS as moreThan20Image } from 'assets/images/onboarding/illustration/moreThan20/moreThan20';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamCreationSetPeopleCountBanner = () => {
   const { teamState } = useOnboardingTeamContent();
-  const peopleCountImageSrc = (peopleCount) => {
+  const { isMobile } = DimensionHelper();
+  const peopleCountImageSrc = (
+    peopleCount: 'between11To20' | 'moreThan20' | 'lessThan10'
+  ) => {
     switch (peopleCount) {
       case 'between11To20':
         return between11To20Image;
@@ -19,6 +23,7 @@ const OnboardingTeamCreationSetPeopleCountBanner = () => {
   };
   return (
     <Styles.OnboardingTeamImageBannerWrapper
+      isMobile={isMobile}
       BackgroundImage={peopleCountImageSrc(teamState.peopleCount)}
     >
       <div />

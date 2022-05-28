@@ -3,9 +3,11 @@ import * as lessThan10Images from 'assets/images/onboarding/illustration/lessThe
 import * as between11To20Images from 'assets/images/onboarding/illustration/between11To20/between11To20';
 import * as moreThan20Images from 'assets/images/onboarding/illustration/moreThan20/moreThan20';
 import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamCreationSetWorkFieldBanner = () => {
   const { teamState } = useOnboardingTeamContent();
+  const { isMobile } = DimensionHelper();
   const PeopleCountImages = () => {
     if (teamState.peopleCount === 'moreThan20') return moreThan20Images;
     else if (teamState.peopleCount === 'between11To20')
@@ -14,7 +16,7 @@ const OnboardingTeamCreationSetWorkFieldBanner = () => {
   };
 
   //TODO refactor is needed!
-  const workFieldBannerImage = (workField) => {
+  const workFieldBannerImage = (workField: string) => {
     const assets = {
       laptop: 'DEVELOPMENT',
       loudspeaker: 'MARKETING',
@@ -30,6 +32,7 @@ const OnboardingTeamCreationSetWorkFieldBanner = () => {
 
   return (
     <Styles.OnboardingTeamImageBannerWrapper
+      isMobile={isMobile}
       BackgroundImage={workFieldBannerImage(teamState.workField.fieldName)}
     >
       <div />

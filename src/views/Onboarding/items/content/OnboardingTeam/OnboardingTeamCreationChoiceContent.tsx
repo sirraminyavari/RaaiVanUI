@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
@@ -8,12 +9,13 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
-import { useEffect, useMemo } from 'react';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamCreationChoiceContent = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const location = useLocation();
+  const { isMobile } = DimensionHelper();
   const { dispatch: dispatchTeamPage, nextStepAction } =
     useOnboardingTeamContent();
 
@@ -47,7 +49,7 @@ const OnboardingTeamCreationChoiceContent = () => {
 
   return (
     <>
-      <GlobalStyles.OnboardingCenterizeContent>
+      <GlobalStyles.OnboardingCenterizeContent isMobile={isMobile}>
         <Styles.OnboardingTeamDescriptionWrapper>
           {RVDicPageDescriptionInfo}
         </Styles.OnboardingTeamDescriptionWrapper>
