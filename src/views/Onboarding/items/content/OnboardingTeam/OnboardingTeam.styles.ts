@@ -36,11 +36,15 @@ export const OnboardingTeamFlatPanelButtonGroup = styled.div`
 OnboardingTeamFlatPanelButtonGroup.displayName =
   'OnboardingTeamFlatPanelButtonGroup';
 
-export const OnboardingTeamImageBannerWrapper = styled.div`
+export const OnboardingTeamImageBannerWrapper = styled.div<{
+  noBackgroundImage?: boolean;
+  BackgroundImage?: string;
+  isMobile?: boolean;
+}>`
   min-height: 100%;
   > div {
     min-height: 100%;
-    width: 100%;
+    width: ${({ isMobile }) => (isMobile ? '80%' : '100%')};
     max-width: 30rem;
     margin-inline: auto;
     aspect-ratio: 1;
@@ -75,7 +79,7 @@ export const OnboardingTeamImageBanner = styled.img`
 
 OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
 
-export const OnboardingTeamInputWrapper = styled.div`
+export const OnboardingTeamInputWrapper = styled.div<{ isMobile?: boolean }>`
   margin-block-start: ${({ isMobile }) => (isMobile ? '2rem' : '8rem')};
   margin-inline-end: 1rem;
   max-width: ${({ isMobile }) => (isMobile ? '85%' : '30vw')};
@@ -85,7 +89,10 @@ export const OnboardingTeamInputWrapper = styled.div`
 
 OnboardingTeamInputWrapper.displayName = 'OnboardingTeamInputWrapper';
 
-export const OnboardingTeamButtonInputWrapper = styled.div`
+export const OnboardingTeamButtonInputWrapper = styled.div<{
+  wrap?: boolean;
+  isMobile?: boolean;
+}>`
   margin-block-start: 1rem;
   margin-inline-end: 1rem;
   justify-content: center;
@@ -107,7 +114,9 @@ export const OnboardingTeamContentContainer = styled.div`
 
 OnboardingTeamContentContainer.displayName = 'OnboardingTeamContentContainer';
 
-export const OnboardingTeamAvatarPlaceholder = styled.div`
+export const OnboardingTeamAvatarPlaceholder = styled.div<{
+  backgroundImageURL?: string;
+}>`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   width: 50%;
@@ -147,7 +156,9 @@ export const OnboardingTeamActionButtonWrapper = styled.div`
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
 
-export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
+export const OnboardingTeamSetWorkFieldInputWrapper = styled.div<{
+  hide?: boolean;
+}>`
   margin-block-start: 2.2rem;
   padding-inline: 1rem;
   width: 100%;
@@ -157,7 +168,9 @@ export const OnboardingTeamSetWorkFieldInputWrapper = styled.div`
 OnboardingTeamActionButtonWrapper.displayName =
   'OnboardingTeamActionButtonWrapper';
 
-export const OnboardingTeamWelcomeLayoutWrapper = styled.div`
+export const OnboardingTeamWelcomeLayoutWrapper = styled.div<{
+  noFixedHeight?: boolean;
+}>`
   ${({ noFixedHeight }) => !noFixedHeight && `height: calc(100vh - 12rem);`}
   width: 100%;
   overflow: auto;

@@ -37,13 +37,14 @@ export const OnboardingFixedLayout = styled.div`
 `;
 OnboardingFixedLayout.displayName = 'OnboardingFixedLayout';
 
-export const OnboardingCenterizeContent = styled.div`
+export const OnboardingCenterizeContent = styled.div<{ isMobile?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 1rem;
-  min-height: calc(100vh - 5rem);
+  min-height: ${({ isMobile }) =>
+    isMobile ? 'calc(100vh - 15rem)' : 'calc(100vh - 5rem)'};
   width: 100%;
   & > * {
     flex-shrink: 0;

@@ -23,6 +23,7 @@ const Button = forwardRef(
       isCustomButton = false,
       onClick,
       className,
+      children,
       ...props
     },
     ref
@@ -41,7 +42,7 @@ const Button = forwardRef(
         {...props}
       >
         {!loading ? (
-          props.children
+          children
         ) : (
           <>
             <span style={{ color: 'transparent' }}>1</span>

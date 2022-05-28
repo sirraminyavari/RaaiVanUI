@@ -38,6 +38,7 @@ const OnboardingTeamCreationSetNameContent = () => {
         </Styles.OnboardingTeamTitleDescription>
         <Styles.OnboardingTeamInputWrapper isMobile={isTabletOrMobile}>
           <AnimatedInput
+            //@ts-ignore
             style={{ fontSize: '1rem' }}
             value={teamState.teamName}
             onChange={setTeamName}

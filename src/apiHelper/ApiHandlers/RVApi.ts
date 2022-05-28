@@ -134,15 +134,22 @@ export const setApplicationFieldOfExpertise = ({
   );
 };
 
+//TODO needs review to complete api return types
+interface selectApplicationReturnType {
+  AccessToken: string;
+  AppID: string;
+  IsSystemAdmin: boolean;
+  Succeed: string;
+}
+
 /**
  * @description select application
- * @param ApplicationID the id of the application
- * @return {Promise<unknown>}
  */
-export const selectApplication = ({ ApplicationID }) => {
-  return apiCallWrapper(API_Provider(RV_API, SELECT_APPLICATION), {
-    ApplicationID,
-  });
+export const selectApplication = (data: { ApplicationID: string }) => {
+  return apiCallWrapper<selectApplicationReturnType>(
+    API_Provider(RV_API, SELECT_APPLICATION),
+    data
+  );
 };
 
 /**

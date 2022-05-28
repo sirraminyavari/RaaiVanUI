@@ -146,6 +146,8 @@ export const getLanguageDigits = (lang = getLanguage(), digit) => {
  * @returns Boolean.
  */
 export const isBeforeDate = (day1, day2) => {
+  //TODO check utils function and fix ts error
+  //@ts-ignore
   return utils().isBeforeDate(day1, day2);
 };
 
@@ -258,14 +260,14 @@ export const hideCaptchaToken = () => {
  * @description Initialize google reCaptcha
  * @return {Promise<void>}
  */
-export const initializeCaptchaToken = () => {
+export const initializeCaptchaToken = (): Promise<void> => {
   return new Promise((resolve) => {
     const reCaptchaElement = document.querySelectorAll(
       'script[src^="https://www.google.com/recaptcha/api.js?render="]'
     );
     if (reCaptchaElement.length) {
       document.querySelectorAll('.grecaptcha-badge').forEach((element) => {
-        element.style.visibility = 'visible';
+        (element as HTMLElement).style.visibility = 'visible';
         resolve();
       });
     } else {
@@ -274,7 +276,7 @@ export const initializeCaptchaToken = () => {
       if (window.RVGlobal?.SAASBasedMultiTenancy) {
         script.src = window.RVGlobal?.CaptchaURL;
         document?.body?.appendChild(script);
-        script.addEventListener('load', resolve);
+        script.addEventListener('load', () => resolve());
       }
     }
   });

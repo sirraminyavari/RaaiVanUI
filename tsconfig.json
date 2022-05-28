@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./src/react-app-env.d.ts"
+    ],
     "noImplicitAny": false,
     "target": "es5",
     "lib": [
