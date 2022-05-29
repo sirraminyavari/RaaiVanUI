@@ -1,4 +1,4 @@
-import { API_Provider, encodeBase64 } from 'helpers/helpers';
+import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
@@ -16,6 +16,35 @@ import {
   RECYCLE_APPLICATION,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+export const setVariable = ({
+  Name,
+  Value,
+  ApplicationIndependent,
+}: {
+  Name: string;
+  Value: string;
+  ApplicationIndependent?: boolean;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'SetVariable'), {
+    Name,
+    Value,
+    ApplicationIndependent,
+  });
+};
+
+export const getVariable = ({
+  Name,
+  ApplicationIndependent,
+}: {
+  Name: string;
+  ApplicationIndependent?: boolean;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetVariable'), {
+    Name,
+    ApplicationIndependent,
+  });
+};
 
 /**
  * @description get all workspaces
@@ -101,7 +130,7 @@ export const createApplication = ({ WorkspaceID, Title }) => {
   });
 };
 
-export const modifyApplication = ({ ApplicationID, Title } = {}) => {
+export const modifyApplication = ({ ApplicationID, Title }) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
     ApplicationID,
     Title: encodeBase64(Title),
@@ -147,10 +176,10 @@ export const setApplicationFieldOfExpertise = ({
 /**
  * @param {boolean} Archive if true, retrieves archived applications
  */
-export const getApplications = ({ Archive } = {}) => {
+export const getApplications = ({ Archive }: { Archive?: boolean } = {}) => {
   return apiCallWrapper(API_Provider(RV_API, GET_APPLICATIONS), {
     Archive: Archive === true,
-  }).then((res) => {
+  }).then((res: any) => {
     if ((res?.Applications || []).length) {
       res.Applications.forEach((app) => {
         app.Users = (res.ApplicationUsers || {})[app.ApplicationID] || [];
@@ -161,13 +190,21 @@ export const getApplications = ({ Archive } = {}) => {
   });
 };
 
-export const removeApplication = ({ ApplicationID } = {}) => {
+export const removeApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
   return apiCallWrapper(API_Provider(RV_API, REMOVE_APPLICATION), {
     ApplicationID,
   });
 };
 
-export const recoverApplication = ({ ApplicationID } = {}) => {
+export const recoverApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
   return apiCallWrapper(API_Provider(RV_API, RECYCLE_APPLICATION), {
     ApplicationID,
   });
@@ -209,12 +246,69 @@ export const removeSystemAdmin = (UserID) => {
  * @param UserID
  * @return {Promise<unknown>}
  */
-export const removeUserFromApplication = (UserID) => {
+export const removeUserFromApplication = ({
+  ApplicationID,
+  UserID,
+}: {
+  ApplicationID: string;
+  UserID: string;
+}) => {
   const removeUserFromApplicationAPI = API_Provider(
     RV_API,
     'RemoveUserFromApplication'
   );
-  return apiCallWrapper(removeUserFromApplicationAPI, { UserID });
+  return apiCallWrapper(removeUserFromApplicationAPI, {
+    ApplicationID,
+    UserID,
+  });
+};
+
+export const unsubscribeFromApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'UnsubscribeFromApplication'), {
+    ApplicationID,
+  });
+};
+
+const getAppsOrderVariableName = (): string =>
+  !window.RVGlobal?.CurrentUser?.UserID
+    ? ''
+    : `ApplicationsOrder_${window.RVGlobal.CurrentUser.UserID}`;
+
+export const setApplicationsOrder = async ({
+  ApplicationIDs,
+}: {
+  ApplicationIDs: string[];
+}) => {
+  const varName = getAppsOrderVariableName();
+
+  return !varName
+    ? {}
+    : await setVariable({
+        Name: varName,
+        Value: encodeBase64(JSON.stringify({ Order: ApplicationIDs })),
+        ApplicationIndependent: true,
+      });
+};
+
+export const getApplicationsOrder = async (): Promise<string[]> => {
+  const varName = getAppsOrderVariableName();
+
+  if (!varName) return [];
+  else {
+    const res: any = await getVariable({
+      Name: varName,
+      ApplicationIndependent: true,
+    });
+
+    return (
+      (window.GlobalUtilities.to_json(decodeBase64(res?.Value)) || {}).Order ||
+      []
+    );
+  }
 };
 
 export const getThemes = () => {

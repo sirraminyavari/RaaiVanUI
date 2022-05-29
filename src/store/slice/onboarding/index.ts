@@ -1,7 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
-import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { onboardingSaga } from './saga';
+import { useInjectReducer } from 'utils/redux-injectors';
 import { EmptyOnboardingState, IOnboardingState } from './types';
 
 const slice = createSlice({
@@ -50,6 +49,5 @@ export const { actions: onboardingActions } = slice;
 
 export const useOnboardingSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
-  useInjectSaga({ key: slice.name, saga: onboardingSaga });
   return { actions: slice.actions };
 };

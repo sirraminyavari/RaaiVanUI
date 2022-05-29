@@ -5,6 +5,14 @@ import API from 'apiHelper';
 import { setRVGlobal } from 'helpers/helpers';
 import { selectApplicationSlice } from './selectors';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
+import { PayloadAction } from '@reduxjs/toolkit';
+import {
+  IAppID,
+  IAppIDs,
+  IAppIDTitle,
+  IAppIDUserID,
+  IWorkspaceIDTitle,
+} from './types';
 
 function* getApplications() {
   const res = yield API.RV.getApplications({ Archive: false });
@@ -18,7 +26,7 @@ function* getArchivedApplications() {
   yield put(actions.setArchivedApplications(res?.Applications || []));
 }
 
-function* removeApplication(values) {
+function* removeApplication(values: PayloadAction<IAppID>) {
   const { error, done, ApplicationID } = values?.payload || {};
 
   const appState = yield select(selectApplicationSlice);
@@ -27,7 +35,9 @@ function* removeApplication(values) {
     (app) => app.ApplicationID !== ApplicationID
   );
 
-  const res = yield API.RV.removeApplication({ ApplicationID });
+  const res = yield API.RV.removeApplication({
+    ApplicationID: ApplicationID,
+  });
 
   if (res?.ErrorText) {
     error && error(res?.ErrorText);
@@ -39,7 +49,7 @@ function* removeApplication(values) {
   }
 }
 
-function* recoverApplication(values) {
+function* recoverApplication(values: PayloadAction<IAppID>) {
   const { error, done, ApplicationID } = values?.payload || {};
 
   const appState = yield select(selectApplicationSlice);
@@ -48,7 +58,9 @@ function* recoverApplication(values) {
     (app) => app.ApplicationID !== ApplicationID
   );
 
-  const res = yield API.RV.recoverApplication({ ApplicationID });
+  const res = yield API.RV.recoverApplication({
+    ApplicationID: ApplicationID,
+  });
 
   if (res?.ErrorText) {
     error && error(res?.ErrorText);
@@ -58,12 +70,12 @@ function* recoverApplication(values) {
   }
 }
 
-function* createApplication(values) {
-  const { error, done } = values?.payload || {};
+function* createApplication(values: PayloadAction<IWorkspaceIDTitle>) {
+  const { WorkspaceID, Title, error, done } = values?.payload || {};
 
   const appState = yield select(selectApplicationSlice);
 
-  const res = yield API.RV.createApplication(values?.payload);
+  const res = yield API.RV.createApplication({ WorkspaceID, Title });
 
   if (res?.ErrorText) {
     error && error(res?.ErrorText);
@@ -78,7 +90,7 @@ function* createApplication(values) {
   }
 }
 
-function* modifyApplication(values) {
+function* modifyApplication(values: PayloadAction<IAppIDTitle>) {
   const { ApplicationID, Title, error, done } = values?.payload || {};
 
   const res = yield API.RV.modifyApplication({ ApplicationID, Title });
@@ -91,7 +103,7 @@ function* modifyApplication(values) {
   }
 }
 
-function* selectApplication(values) {
+function* selectApplication(values: PayloadAction<IAppID>) {
   const { ApplicationID, error, done } = values?.payload || {};
 
   yield put(
@@ -136,6 +148,65 @@ function* selectApplication(values) {
   );
 }
 
+function* unsubscribeFromApplication(values: PayloadAction<IAppID>) {
+  const { ApplicationID, error, done } = values?.payload || {};
+
+  const res = yield API.RV.unsubscribeFromApplication({
+    ApplicationID: ApplicationID,
+  });
+
+  if (res?.ErrorText) {
+    error && error(res?.ErrorText);
+  } else if (res?.Succeed) {
+    done && done(res);
+    yield put(actions.getApplications({}));
+  }
+}
+
+function* removeUserFromApplication(values: PayloadAction<IAppIDUserID>) {
+  const { ApplicationID, UserID, error, done } = values?.payload || {};
+
+  const res = yield API.RV.removeUserFromApplication({
+    ApplicationID: ApplicationID,
+    UserID: UserID,
+  });
+
+  if (res?.ErrorText) {
+    error && error(res?.ErrorText);
+  } else if (res?.Succeed) {
+    done && done(res);
+    yield put(actions.getApplications({}));
+  }
+}
+
+function* getApplicationsOrder(
+  values: PayloadAction<{ UnorderedApplications: any[] }>
+) {
+  const { UnorderedApplications: Apps } = values.payload;
+
+  const ordered: string[] = yield API.RV.getApplicationsOrder();
+
+  yield put(actions.setFetchingApps(false));
+
+  const orderedApps = ordered
+    .filter((id) => Apps.some((app) => app?.ApplicationID === id))
+    .map((id) => Apps.filter((app) => app.ApplicationID === id)[0]);
+
+  const extraApps = Apps.filter(
+    (app) => !ordered.some((id) => app.ApplicationID === id)
+  );
+
+  yield put(actions.setApplications([...orderedApps, ...extraApps]));
+}
+
+function* setApplicationsOrder(values: PayloadAction<IAppIDs>) {
+  const { ApplicationIDs, done, error } = values.payload;
+  const res: any = yield API.RV.setApplicationsOrder({ ApplicationIDs });
+
+  if (res?.Succeed) done && done();
+  else error && error();
+}
+
 export function* applicationSaga() {
   yield takeEvery(actions.getApplications.type, getApplications);
   yield takeEvery(
@@ -147,4 +218,14 @@ export function* applicationSaga() {
   yield takeEvery(actions.createApplication.type, createApplication);
   yield takeEvery(actions.modifyApplication.type, modifyApplication);
   yield takeEvery(actions.selectApplication.type, selectApplication);
+  yield takeEvery(
+    actions.unsubscribeFromApplication.type,
+    unsubscribeFromApplication
+  );
+  yield takeEvery(
+    actions.removeUserFromApplication.type,
+    removeUserFromApplication
+  );
+  yield takeEvery(actions.getApplicationsOrder.type, getApplicationsOrder);
+  yield takeEvery(actions.setApplicationsOrder.type, setApplicationsOrder);
 }

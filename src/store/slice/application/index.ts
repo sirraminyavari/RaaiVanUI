@@ -2,7 +2,15 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { applicationSaga } from './saga';
-import { EmptyApplicationState, IApplicationState } from './types';
+import {
+  EmptyApplicationState,
+  IAppID,
+  IAppIDs,
+  IAppIDTitle,
+  IAppIDUserID,
+  IApplicationState,
+  IWorkspaceIDTitle,
+} from './types';
 
 const slice = createSlice({
   name: 'application',
@@ -10,15 +18,19 @@ const slice = createSlice({
   reducers: {
     selectApplication: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IAppID>
     ) => {},
     createApplication: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IWorkspaceIDTitle>
+    ) => {},
+    getApplicationsOrder: (
+      state: IApplicationState,
+      action: PayloadAction<{ UnorderedApplications: any[] }>
     ) => {},
     setApplicationsOrder: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IAppIDs>
     ) => {},
     getApplications: (state: IApplicationState, action: PayloadAction<any>) => {
       state.isFetching = true;
@@ -38,7 +50,7 @@ const slice = createSlice({
     },
     removeApplication: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IAppID>
     ) => {},
     removeApplicationSuccessful: (
       state: IApplicationState,
@@ -48,14 +60,14 @@ const slice = createSlice({
     },
     recoverApplication: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IAppID>
     ) => {},
     addApplication: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
     },
     modifyApplication: (
       state: IApplicationState,
-      action: PayloadAction<any>
+      action: PayloadAction<IAppIDTitle>
     ) => {},
     clearApplications: (
       state: IApplicationState,
@@ -72,6 +84,14 @@ const slice = createSlice({
     setCurrentApp: (state: IApplicationState, action: PayloadAction<any>) => {
       state.currentApp = action.payload;
     },
+    unsubscribeFromApplication: (
+      state: IApplicationState,
+      action: PayloadAction<IAppID>
+    ) => {},
+    removeUserFromApplication: (
+      state: IApplicationState,
+      action: PayloadAction<IAppIDUserID>
+    ) => {},
   },
 });
 

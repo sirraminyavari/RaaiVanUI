@@ -335,3 +335,16 @@ export const setUserAvatar = ({ Name }) => {
 export const getCurrentTheme = () => {
   return apiCallWrapper(API_Provider(USERS_API, 'GetTheme'), {});
 };
+
+export const getApplicationUsers = ({
+  ApplicationID,
+  SearchText,
+}: {
+  ApplicationID: string;
+  SearchText?: string;
+}) => {
+  return apiCallWrapper(API_Provider(USERS_API, 'GetApplicationUsers'), {
+    ApplicationID,
+    SearchText,
+  });
+};
