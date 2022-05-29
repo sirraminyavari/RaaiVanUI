@@ -31,7 +31,7 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
       <Styles.OnboardingTemplateSelectionNodeContainer>
         {templateNodeElements ? (
           <>
-            {templateNodeElements.Elements.length ? (
+            {templateNodeElements?.Elements?.length ? (
               <FormFill data={templateNodeElements} editable />
             ) : (
               <Styles.OnboardingTemplateSelectionNodeEmptyContainer>
