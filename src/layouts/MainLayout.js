@@ -102,6 +102,7 @@ const Main = () => {
   const isSidebarOpen = themeState.isSidebarOpen;
   //! Check if navbar or sidebar are enabled for current route.
   const hasNavSide = themeState.hasNavSide;
+  const hideSidebar = themeState.hasSidebar;
   //! Get selected team.
   const selectedTeam = themeState.selectedTeam;
   //! Get onboarding stage name.
@@ -152,7 +153,7 @@ const Main = () => {
     <>
       {hasNavSide ? (
         <Styled.MainContainer>
-          {getSidebar()}
+          {!hideSidebar && getSidebar()}
           <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}

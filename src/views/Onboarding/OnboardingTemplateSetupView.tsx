@@ -1,23 +1,20 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { themeSlice } from 'store/reducers/themeReducer';
-import OnboardingUserInfoContent from './items/content/OnboardingUserInfo/OnboardingUserInfo';
+import OnboardingTemplateSetupContent from './items/content/OnboardingTemplateSetup/OnboardingTemplateSetup';
 const { setSidebarVisibility } = themeSlice.actions;
 
-const OnboardingUserInfoView = (): JSX.Element => {
+const OnboardingTemplateSetupView = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setSidebarVisibility('hidden'));
-    return () => {
-      dispatch(setSidebarVisibility(''));
-    };
+    dispatch(setSidebarVisibility(''));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
-      <OnboardingUserInfoContent />
+      <OnboardingTemplateSetupContent />
     </>
   );
 };
 
-export default OnboardingUserInfoView;
+export default OnboardingTemplateSetupView;

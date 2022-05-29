@@ -17,8 +17,11 @@ import {
   FLEX_RCC,
   FLEX_CSC,
 } from 'constant/StyledCommonCss';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
-export const OnboardingTemplateSelectionWrapper = styled.div`
+export const OnboardingTemplateSelectionWrapper = styled.div<{
+  mobile?: boolean;
+}>`
   ${({ mobile }) => mobile && `padding-block-end: 2rem;`}
   ${({ mobile }) => !mobile && FLEX_RSS}
   position: relative;
@@ -31,7 +34,9 @@ export const OnboardingTemplateSelectionWrapper = styled.div`
 OnboardingTemplateSelectionWrapper.displayName =
   'OnboardingTemplateSelectionWrapper';
 
-export const OnboardingTemplateSelectionTemplatePanel = styled.div`
+export const OnboardingTemplateSelectionTemplatePanel = styled.div<{
+  mobile?: boolean;
+}>`
   ${({ mobile }) => (mobile ? FLEX_CSC : FLEX_RSS)}
   align-items: stretch;
   gap: 4vw;
@@ -79,8 +84,10 @@ export const OnboardingTemplateSelectionTemplateCount = styled.div`
 OnboardingTemplateSelectionButtonWrapper.displayName =
   'OnboardingTemplateSelectionButtonWrapper';
 
-export const OnboardingTemplateSelectionCurrentTemplateContainer = styled.div`
-  min-height: 45vh;
+export const OnboardingTemplateSelectionCurrentTemplateContainer = styled.div<{
+  mobile?: boolean;
+}>`
+  min-height: 46vh;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -106,11 +113,18 @@ export const OnboardingTemplateSelectionImage = styled.img`
 OnboardingTemplateSelectionCurrentTemplateTitle.displayName =
   'OnboardingTemplateSelectionCurrentTemplateTitle';
 
-export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled.p`
+export const OnboardingTemplateSelectionCurrentTemplateParagraph = styled(
+  ScrollBarProvider
+).attrs<{
+  direction?: 'left' | 'right';
+}>({ direction: 'right' })<{
+  mobile?: boolean;
+}>`
   margin-block: 1rem;
   font-size: 1rem;
+  padding-inline: 1rem;
   color: ${CV_GRAY};
-  ${({ mobile }) => !mobile && `height: 45vh;overflow-y:auto;`}
+  ${({ mobile }) => !mobile && `height: 48vh;overflow-y:auto;`}
 `;
 OnboardingTemplateSelectionCurrentTemplateParagraph.displayName =
   'OnboardingTemplateSelectionCurrentTemplateParagraph';
@@ -130,7 +144,9 @@ export const OnboardingTemplateSelectionCarouselNavigationButton = styled.div.at
   {
     className: BO_RADIUS_HALF,
   }
-)`
+)<{
+  dir?: 'left' | 'right';
+}>`
   position: absolute;
   inset-block: calc(50% - 1rem);
   width: 2.5rem;
@@ -181,7 +197,9 @@ export const OnboardingTemplateSelectionCarouselInnerContainer = styled.div`
 OnboardingTemplateSelectionCarouselInnerContainer.displayName =
   'OnboardingTemplateSelectionCarouselInnerContainer';
 
-export const OnboardingTemplateSelectionGalleryContainer = styled.div`
+export const OnboardingTemplateSelectionGalleryContainer = styled.div<{
+  mobile?: boolean;
+}>`
   ${({ mobile }) => !mobile && 'width: 17.5rem;'}
   position:sticky;
   z-index: 1;
@@ -191,6 +209,7 @@ export const OnboardingTemplateSelectionGalleryContainer = styled.div`
     `
   top: 4rem;
   margin-block-start: 1.5rem;
+  z-index: 101;
   `}
   background-color: ${CV_WHITE};
   font-size: 1rem;
@@ -200,7 +219,10 @@ export const OnboardingTemplateSelectionGalleryContainer = styled.div`
 OnboardingTemplateSelectionGalleryContainer.displayName =
   'OnboardingTemplateSelectionGalleryContainer';
 
-export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div`
+export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div<{
+  mobile?: boolean;
+  isCollapsed?: boolean;
+}>`
   // background-color: #2b7be40d;
   background-color: ${TCV_VERY_TRANSPARENT};
   display: block;
@@ -222,7 +244,10 @@ export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div`
 OnboardingTemplateSelectionGalleryContainerBackground.displayName =
   'OnboardingTemplateSelectionGalleryContainerBackground';
 
-export const OnboardingTemplateSelectionGalleryContentWrapper = styled.div`
+export const OnboardingTemplateSelectionGalleryContentWrapper = styled.div<{
+  mobile?: boolean;
+  isCollapsed?: boolean;
+}>`
   // transition: height 0.25s, max-height 0.25s;
   ${({ isCollapsed, mobile }) =>
     mobile && isCollapsed
@@ -262,7 +287,9 @@ OnboardingTemplateSelectionGalleryTitleMenuButton.displayName =
 
 export const OnboardingTemplateSelectionGallerySuggestion = styled.div.attrs({
   className: BO_RADIUS_HALF,
-})`
+})<{
+  active?: boolean;
+}>`
   color: ${TCV_WARM};
   padding: 0.7rem;
   margin: 0.7rem;
@@ -276,7 +303,10 @@ export const OnboardingTemplateSelectionGalleryItemDetails = styled.details.attr
   {
     className: BO_RADIUS_HALF,
   }
-)`
+)<{
+  isOpen?: boolean;
+  active?: boolean;
+}>`
   ${({ active }) => active && `background-color: ${CV_WHITE};`}
   padding: 0.7rem;
   margin-inline: 0.7rem;
@@ -301,7 +331,10 @@ export const OnboardingTemplateSelectionGalleryItemSummery = styled.summary.attr
   {
     className: BO_RADIUS_HALF,
   }
-)`
+)<{
+  isOpen?: boolean;
+  active?: boolean;
+}>`
   ${({ isOpen }) => (isOpen ? `color: ${TCV_DEFAULT};` : `color: ${CV_GRAY};`)}
   ${({ active }) => active && `background-color: ${CV_WHITE};`}
   display: flex;
@@ -336,7 +369,9 @@ export const OnboardingTemplateSelectionGalleryItemSubItem = styled.div`
 OnboardingTemplateSelectionGalleryItemSubItem.displayName =
   'OnboardingTemplateSelectionGalleryItemSubItem';
 
-export const OnboardingTemplateSelectionNodeContainer = styled.div`
+export const OnboardingTemplateSelectionNodeContainer = styled.div<{
+  mobile?: boolean;
+}>`
   width: 100% !important;
   border: 1px solid ${CV_DISTANT};
   overflow-y: auto;
@@ -357,7 +392,7 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
     right: 0;
     width: 100%;
     height: 110%;
-    z-index: 1;
+    z-index: 100;
   }
 
   & > div {
@@ -367,6 +402,17 @@ export const OnboardingTemplateSelectionNodeContainer = styled.div`
 `;
 OnboardingTemplateSelectionNodeContainer.displayName =
   'OnboardingTemplateSelectionNodeContainer';
+
+export const OnboardingTemplateSelectionNodeEmptyContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${CV_DISTANT};
+`;
+OnboardingTemplateSelectionNodeEmptyContainer.displayName =
+  'OnboardingTemplateSelectionNodeEmptyContainer';
 
 export const OnboardingTemplateSelectionSelectedModalContainer = styled.div`
   display: grid;

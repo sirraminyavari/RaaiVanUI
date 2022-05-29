@@ -1,22 +1,17 @@
 // import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import OnboardingTeamCreationSetNameBannerImage from 'assets/images/onboarding-team-creation-set-name.svg?file';
-// import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamCreationSetNameBanner = () => {
-  // const { RVDic } = useWindow();
-  // const { teamState } = useOnboardingTeamContent();
-
-  // ! RVDic i18n localization
-  // const RVDicِTeamAvatarPlaceholder = RVDic.ClickToUploadTheTeamLogo;
-
+  const { isMobile } = DimensionHelper();
   return (
     <>
-      <Styles.OnboardingTeamImageBannerWrapper>
+      <Styles.OnboardingTeamImageBannerWrapper isMobile={isMobile}>
         <div>
           <Styles.OnboardingTeamAvatarPlaceholder
             backgroundImageURL={OnboardingTeamCreationSetNameBannerImage}
-          ></Styles.OnboardingTeamAvatarPlaceholder>
+          />
         </div>
       </Styles.OnboardingTeamImageBannerWrapper>
     </>

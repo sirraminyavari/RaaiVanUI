@@ -80,6 +80,7 @@ const OnboardingTemplateSetupContent = () => {
       <Styles.OnboardingTemplateSetupTitle>
         {RVDicOnboardingTemplateSetupTitle}
       </Styles.OnboardingTemplateSetupTitle>
+      {!isLoading && <Styles.OnboardingTemplateSetupCelebrateAnimation />}
 
       <Button
         style={{ paddingInline: '4rem' }}

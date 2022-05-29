@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { OnboardingCenterizeContent } from 'views/Onboarding/items/Onboarding.styles';
 import { TCV_WARM, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import { BO_RADIUS_HALF, BO_RADIUS_CIRCLE } from 'constant/constants';
 
-export const VideoPlayerContainer = styled.div`
+export const VideoPlayerContainer = styled.div<{ isPlaying?: boolean }>`
   position: relative;
   max-width: 100%;
   ${({ isPlaying }) =>

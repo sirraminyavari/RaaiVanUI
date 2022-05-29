@@ -1,7 +1,7 @@
 import * as Styles from './OnboardingTemplateSelection.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const OnboardingTemplateSelectionGalleryItem = ({
   Name,
@@ -12,6 +12,11 @@ const OnboardingTemplateSelectionGalleryItem = ({
   ...restProps
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(active);
+  }, [active]);
+
   return (
     <Styles.OnboardingTemplateSelectionGalleryItemDetails
       open={isOpen}

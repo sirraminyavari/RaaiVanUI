@@ -7,7 +7,7 @@ import { ONBOARDING_TEMPLATE_SELECTION_PATH } from 'views/Onboarding/items/other
 import { decodeBase64 } from 'helpers/helpers';
 
 const OnboardingTemplateContent = () => {
-  const { RVDic, RVGlobal } = useWindow();
+  const { RVDic, RVGlobal } = useWindow() as Window;
   const history = useHistory();
 
   const goToTemplateSelectionView = () =>

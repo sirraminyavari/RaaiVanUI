@@ -1,4 +1,10 @@
+import type { SVGProps } from 'react';
 import React from 'react';
+
+interface TeamMemberCountIconType extends SVGProps<SVGSVGElement> {
+  membersCount?: 'lessThan10' | 'between11To20' | 'moreThan20';
+  size?: string;
+}
 
 /**
  * @component - TeamMemberCount Icon component
@@ -6,7 +12,11 @@ import React from 'react';
  * @param {'lessThan10' | 'between11To20' |'moreThan20'} props.membersCount
  * @return {JSX.Element}
  */
-function TeamMemberCountIcon({ size, membersCount, ...props }) {
+function TeamMemberCountIcon({
+  size,
+  membersCount,
+  ...props
+}: TeamMemberCountIconType) {
   return (
     <>
       <svg

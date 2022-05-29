@@ -220,11 +220,20 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
   });
 };
 
+//TODO needs review to complete api return types
+export interface getAllFieldsOfActivityReturnType {
+  Items: {
+    NodeID: string;
+    Name: string;
+    AvatarName: string;
+  }[];
+}
+
 /**
  * @description fetches all fields of activity
  */
 export const getAllFieldsOfActivity = () => {
-  return apiCallWrapper(
+  return apiCallWrapper<getAllFieldsOfActivityReturnType>(
     API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
     {}
   );

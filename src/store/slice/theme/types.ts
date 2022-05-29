@@ -27,6 +27,7 @@ export interface IThemeState {
   currentTheme?: any;
   isDarkMode: boolean;
   hasSidebarPattern: boolean;
+  hasSidebar: boolean;
 }
 
 export const EmptyThemeState: IThemeState = {
@@ -46,4 +47,5 @@ export const EmptyThemeState: IThemeState = {
   currentTheme: null,
   isDarkMode: false,
   hasSidebarPattern: true,
+  hasSidebar: false,
 };

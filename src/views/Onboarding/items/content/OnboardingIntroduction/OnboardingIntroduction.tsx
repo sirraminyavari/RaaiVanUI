@@ -8,9 +8,11 @@ import { ONBOARDING_USER_INFO_PATH } from '../../others/constants';
 import { decodeBase64 } from 'helpers/helpers';
 
 const OnboardingIntroductionContent = () => {
-  const [introductionStep, setIntroductionStep] = useState(false);
+  const [introductionStep, setIntroductionStep] = useState<string | false>(
+    false
+  );
 
-  const { RVDic, RVGlobal } = useWindow();
+  const { RVDic, RVGlobal } = useWindow() as Window;
   const history = useHistory();
 
   //! RVDic i18n localization
@@ -29,7 +31,9 @@ const OnboardingIntroductionContent = () => {
 
   return (
     <GlobalStyles.OnboardingFixedLayout>
-      <Styles.OnboardingIntroductionWrapper className={introductionStep}>
+      <Styles.OnboardingIntroductionWrapper
+        className={introductionStep ? introductionStep : undefined}
+      >
         <Styles.OnboardingIntroductionText>
           <Styles.WaveContent>
             <Styles.EmojiImage src={EmojiHello} />

@@ -5,10 +5,12 @@ import {
   useOnboardingTeamContent,
   OnboardingTeamStepContextActions,
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const OnboardingTeamCreationSetNameContent = () => {
   const { dispatch: dispatchTeam, teamState } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
+  const { isTabletOrMobile } = DimensionHelper();
 
   //TODO update RVDic i18n
   //! RVDic i18n localization
@@ -34,8 +36,9 @@ const OnboardingTeamCreationSetNameContent = () => {
         <Styles.OnboardingTeamTitleDescription>
           {RVDicِTeamNameDescription}
         </Styles.OnboardingTeamTitleDescription>
-        <Styles.OnboardingTeamInputWrapper>
+        <Styles.OnboardingTeamInputWrapper isMobile={isTabletOrMobile}>
           <AnimatedInput
+            //@ts-ignore
             style={{ fontSize: '1rem' }}
             value={teamState.teamName}
             onChange={setTeamName}

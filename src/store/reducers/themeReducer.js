@@ -31,6 +31,8 @@ export const themeSlice = createSlice({
     currentTheme: null,
     isDarkMode: false,
     hasSidebarPattern: true,
+    //! hide sidebar view completely
+    hideSidebar: false,
   },
   reducers: {
     toggleSidebar: (state, action) => {
@@ -75,6 +77,12 @@ export const themeSlice = createSlice({
     },
     setSidebarPattern: (state, action) => {
       state.hasSidebarPattern = action.payload;
+    },
+    //! hide sidebar view completely
+    //? this action has to be called again with empty string to unhide sidebar!!!
+    setSidebarVisibility: (state, action) => {
+      if (action.payload === 'hidden') state.hideSidebar = true;
+      else state.hideSidebar = false;
     },
   },
 });
