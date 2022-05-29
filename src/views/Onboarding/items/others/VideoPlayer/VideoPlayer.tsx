@@ -4,7 +4,7 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 
 //TODO remaining work in documenting and event handling
 function VideoPlayer({ controls, videoSrcList, ...restProps }) {
-  const VideoRef = useRef(null);
+  const VideoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const primaryButtonHandler = () => {

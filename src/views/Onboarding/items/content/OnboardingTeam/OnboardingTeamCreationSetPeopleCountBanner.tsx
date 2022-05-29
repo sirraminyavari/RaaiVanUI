@@ -15,7 +15,6 @@ const OnboardingTeamCreationSetPeopleCountBanner = () => {
       case 'between11To20':
         return between11To20Image;
       case 'moreThan20':
-        console.log(peopleCount);
         return moreThan20Image;
       default:
         return lessThan10Image;

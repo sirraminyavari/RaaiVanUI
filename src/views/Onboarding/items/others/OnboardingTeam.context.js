@@ -1,5 +1,6 @@
 import { createContext, useReducer, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { devConsole } from 'helpers/helpers';
 
 import OnboardingTeamCreationChoiceContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationChoiceContent';
 import OnboardingTeamCreationSetNameContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetNameContent';
@@ -126,8 +127,6 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
             else if (teamState.workField.fieldName)
               await onboardingTeamFieldOfExpertiseSave({
                 ApplicationID: prevState.applicationID,
-
-                //TODO API not accepting emptyFieldName for team's workField
                 workFieldName: teamState.workField.fieldName,
               });
             resolve();
@@ -138,7 +137,6 @@ export const stepperReducer = (prevState, { stateKey, stateValue, type }) => {
     case ONBOARDING_TEAM_CREATION_COMPLETED:
       return { ...prevState, completed: true };
     case ONBOARDING_TEAM_TEMPLATE_SELECTION:
-      console.log({ myStecp: prevState });
       return {
         ...prevState,
         completed: false,
@@ -228,7 +226,7 @@ export function OnboardingTeamStepContextProvider({ children }) {
   const [states, dispatch] = useReducer(stepperReducer, initialState);
 
   useEffect(() => {
-    console.log({ states });
+    devConsole({ states });
     if (states.completed) {
       dispatch({ type: ONBOARDING_TEAM_TEMPLATE_SELECTION });
       history.push(ONBOARDING_TEMPLATE_PATH);

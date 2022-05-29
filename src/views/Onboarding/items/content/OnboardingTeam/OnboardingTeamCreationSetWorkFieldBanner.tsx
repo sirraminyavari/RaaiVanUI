@@ -15,7 +15,6 @@ const OnboardingTeamCreationSetWorkFieldBanner = () => {
     else return lessThan10Images;
   };
 
-  //TODO refactor is needed!
   const workFieldBannerImage = (workField: string) => {
     const assets = {
       laptop: 'DEVELOPMENT',
