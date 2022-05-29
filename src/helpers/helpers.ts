@@ -446,3 +446,13 @@ export const avatarIconURL = ({
   } else if (ImageURL) return ImageURL;
   else return defaultURL;
 };
+
+/**
+ * @description Simple wrapper for console.log to be rendered only in development stages
+ */
+
+export const devConsole = (message?: any, ...optionalParams: any[]) => {
+  if (window.RVGlobal?.IsDev) {
+    console.log(message, ...optionalParams);
+  }
+};

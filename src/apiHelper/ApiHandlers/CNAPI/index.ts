@@ -221,7 +221,7 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
 };
 
 //TODO needs review to complete api return types
-export interface getAllFieldsOfActivityReturnType {
+export interface IGetAllFieldsOfActivity {
   Items: {
     NodeID: string;
     Name: string;
@@ -233,7 +233,7 @@ export interface getAllFieldsOfActivityReturnType {
  * @description fetches all fields of activity
  */
 export const getAllFieldsOfActivity = () => {
-  return apiCallWrapper<getAllFieldsOfActivityReturnType>(
+  return apiCallWrapper<IGetAllFieldsOfActivity>(
     API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
     {}
   );

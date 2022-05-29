@@ -59,11 +59,11 @@ const OnboardingTemplateSetupContent = () => {
     );
     history.push(CLASSES_PATH);
   };
-  //TODO update RVDic i18n
+
   //! RVDic i18n localization
   const RVDicOnboardingTemplateSetupUnderstood = RVDic.YesssLetsGo;
-  const RVDicOnboardingTemplateSetupNavbarDescriptionTitle = `سایدبار ناوبری کلیک‌مایند`;
-  const RVDicOnboardingTemplateSetupNavbarDescription = `.در کلیک مایند سایدبار سمت راست نقش ناوبری کاربر بین دسته‌ها و تمپلیتها را به عهده دارد و راه دسترسی کاربر به آیتم‌های یک تمپلیت از سایدبار است`;
+  const RVDicOnboardingTemplateSetupNavbarDescriptionTitle = RVDic.Sidebar;
+  const RVDicOnboardingTemplateSetupNavbarDescription = RVDic._HelpSidebar;
   const RVDicOnboardingTemplateSetupTitle =
     RVDic.AreYouReadyToStartYourJourneyOnRaaiVan.replace(
       '[RaaiVan]',
@@ -75,7 +75,9 @@ const OnboardingTemplateSetupContent = () => {
       <Styles.OnboardingTemplateSetupTitle>
         {RVDicOnboardingTemplateSetupTitle}
       </Styles.OnboardingTemplateSetupTitle>
-      {!isLoading && <Styles.OnboardingTemplateSetupCelebrateAnimation />}
+      {!isLoading && (
+        <Styles.OnboardingTemplateSetupCelebrateAnimation keepLastFrame />
+      )}
 
       <Button
         style={{ paddingInline: '4rem' }}
