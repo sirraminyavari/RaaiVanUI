@@ -8,6 +8,7 @@ import {
   ID_PATTERNS_Jalali,
   Other_Patterns,
 } from './_IdPatterns';
+import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
 
 const _selectedPatternMockData = [
   {
@@ -38,6 +39,8 @@ const CodingPattern = ({}) => {
     contentWidth: '64rem',
     titleClass: 'rv-default',
   });
+  const context = useTemplateContext();
+  console.log(context);
 
   const openModal = () => setModalInfo({ ...modalInfo, show: true });
 

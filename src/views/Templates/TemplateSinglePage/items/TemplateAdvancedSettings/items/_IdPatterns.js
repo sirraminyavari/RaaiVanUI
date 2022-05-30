@@ -1,7 +1,7 @@
 export const ID_PATTERNS_Jalali = [
   {
     id: 1,
-    type: 'JalaliDate',
+    type: 'PYearS',
     title: 'سال 4رقمی خورشیدی',
     example: '1400',
   },

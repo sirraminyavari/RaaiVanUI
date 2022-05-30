@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   CV_DISTANT,
   CV_GRAY_DARK,
+  TCV_DEFAULT,
 } from '../../../../../../constant/CssVariables';
 import {
   FLEX_CCC,
@@ -11,6 +12,7 @@ import {
   FLEX_RSS,
 } from '../../../../../../constant/StyledCommonCss';
 import AnimatedInput from '../../../../../../components/Inputs/AnimatedInput';
+import RxInput from 'components/Inputs/RxInput';
 
 export const UploaderContainer = styled.div`
   padding: 1rem;
@@ -43,6 +45,8 @@ export const BlockSection = styled.div`
 
 export const BlockSectionTitle = styled.div`
   width: 9rem;
+  line-hieght: 3rem;
+  height: 3rem;
   color: ${CV_GRAY_DARK};
   font-weight: 500;
 `;
@@ -51,15 +55,24 @@ export const BlockSectionInputContainer = styled.div`
   flex: 1;
 `;
 
-export const TemplateIdInput = styled(AnimatedInput).attrs({
+export const TemplateIdInput = styled(RxInput).attrs({
+  delayTime: 1000,
   type: 'text',
 })`
   height: 3rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid ${CV_DISTANT};
+  padding: 0.5rem;
   max-width: 28rem;
   width: 100%;
+  outline: none;
+
+  &:focus {
+    border: 0.0625rem solid ${TCV_DEFAULT};
+  }
 `;
 
-export const SuccessMessageInput = styled(AnimatedInput).attrs({
+export const SuccessMessageInput = styled(TemplateIdInput).attrs({
   type: 'text',
 })`
   height: 3rem;

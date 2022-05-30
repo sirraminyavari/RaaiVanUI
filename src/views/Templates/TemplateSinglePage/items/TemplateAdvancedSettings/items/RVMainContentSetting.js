@@ -2,8 +2,14 @@ import CoverPatternUploader from './CoverPatternUploader';
 import * as Styled from './RVMainContentSettingStyles';
 import CodingPattern from './CodingPattern';
 import CustomSelect from '../../../../../../components/Inputs/CustomSelect/CustomSelect';
+import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
+import { setServiceSuccessMessage } from 'apiHelper/ApiHandlers/CNAPI/api-service';
+import InfoMessage from 'components/toasts/info-toast/InfoMessage';
 
 const RVMainContentSetting = () => {
+  const { RVDic } = window;
+  const { SuccessMessage, NodeTypeID } = useTemplateContext();
+
   const AdminOption = [
     {
       id: 1,
@@ -11,6 +17,22 @@ const RVMainContentSetting = () => {
       title: 'مسئول ثبت حوزه',
     },
   ];
+
+  const handleTemplateIdStateChange = async (e) => {
+    const Message = e?.target?.value;
+    const { ErrorText } = await setServiceSuccessMessage({
+      NodeTypeID,
+      Message,
+    });
+
+    if (ErrorText) {
+      InfoMessage({
+        type: 'error',
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+    }
+  };
+
   return (
     <>
       <Styled.UploaderContainer>
@@ -28,7 +50,11 @@ const RVMainContentSetting = () => {
         <Styled.BlockSection>
           <Styled.BlockSectionTitle>{'شناسه تمپلیت'}</Styled.BlockSectionTitle>
           <Styled.BlockSectionInputContainer>
-            <Styled.TemplateIdInput placeholder={'شناسه تمپلیت'} />
+            <Styled.TemplateIdInput
+              placeholder={'شناسه تمپلیت'}
+              value={SuccessMessage}
+              onChange={handleTemplateIdStateChange}
+            />
           </Styled.BlockSectionInputContainer>
         </Styled.BlockSection>
 
