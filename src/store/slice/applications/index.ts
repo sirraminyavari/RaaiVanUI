@@ -54,10 +54,7 @@ const slice = createSlice({
     addApplication: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
     },
-    clearApplications: (
-      state: IApplicationState,
-      action: PayloadAction<any>
-    ) => {
+    clearApplications: (state: IApplicationState) => {
       state.userApps = [];
     },
     setFetchingApps: (state: IApplicationState, action: PayloadAction<any>) => {

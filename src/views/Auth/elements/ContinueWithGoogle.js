@@ -7,13 +7,11 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 import { Base64 } from 'js-base64';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-import { useDispatch, useSelector } from 'react-redux';
-import loggedInAction from 'store/actions/auth/loggedInAction';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import APIHandler from 'apiHelper/APIHandler';
 import { getCaptchaToken } from 'helpers/helpers';
-import afterLogin from 'utils/OnboardingRoute/afterLogin';
-import setAuthUserAction from 'store/actions/auth/setAuthUserAction';
+import { useAuthSlice } from 'store/slice/auth';
 
 /**
  * It's not completed.
@@ -25,6 +23,7 @@ const ContinueWithGoogle = ({ ...props }) => {
   const { RVDic, RVGlobal, GlobalUtilities } = window;
 
   const dispatch = useDispatch();
+  const { actions: authActions } = useAuthSlice();
 
   const reqParams = GlobalUtilities.request_params();
 
@@ -60,7 +59,7 @@ const ContinueWithGoogle = ({ ...props }) => {
           console.log(result, 'result google');
           // afterLogin(result);
 
-          dispatch(loggedInAction(result));
+          dispatch(authActions.loggedIn(result));
           // dispatch(setAuthUserAction(result?.User));
           // window.RVGlobal.IsAuthenticated = true;
           // window.location.href = afterLogin(response) || '/workspaces';

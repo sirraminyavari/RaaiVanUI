@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import setSelectedOrgDomainAction from 'store/actions/auth/setSelectedOrgDomainAction';
+import { useAuthSlice } from 'store/slice/auth';
 import styled from 'styled-components';
 import { ShakeAnimate } from './Animate.style';
 
@@ -11,6 +11,8 @@ const { RV_Float } = window;
 
 const OrgDomains = () => {
   const dispatch = useDispatch();
+
+  const { actions: authActions } = useAuthSlice();
 
   const { orgDomains, orgDomainsError } = useSelector((state) => ({
     orgDomains: state.auth.orgDomains,
@@ -22,7 +24,7 @@ const OrgDomains = () => {
    * @param { React.FormEvent<HTMLInputElement>} event - index of selected orgDomain
    */
   const onSelectItem = (event) => {
-    dispatch(setSelectedOrgDomainAction(orgDomains[event.target.value]));
+    dispatch(authActions.setSelectedOrgDomain(orgDomains[event.target.value]));
   };
 
   return (

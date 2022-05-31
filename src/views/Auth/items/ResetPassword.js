@@ -8,10 +8,10 @@ import { MAIN_BLUE } from 'constant/Colors';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import setPasswordAction from 'store/actions/auth/setPassAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
+import { useAuthSlice } from 'store/slice/auth';
 
 const { RVDic } = window;
 
@@ -19,6 +19,8 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
   const { goBack } = useHistory();
   const passRef = useRef();
+
+  const { actions: authActions } = useAuthSlice();
 
   //If true, the typed password will be shown.
   const [passVisible, setPassVisible] = useState(false);
@@ -46,7 +48,7 @@ const ResetPassword = () => {
    * @param {String} value - password input
    */
   const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
+    dispatch(authActions.setPassword(value));
   };
   /**
    * When the password input is focused, the password validator will be shown.

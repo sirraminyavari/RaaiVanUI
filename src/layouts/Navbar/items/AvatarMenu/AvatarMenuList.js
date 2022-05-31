@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
-import logoutAction from 'store/actions/auth/logoutAction';
 import AvatarMenuItem from './AvatarMenuItem';
 import menuLinkItems from './MenuLinkItems';
 import Checkbox from 'components/Checkbox/Checkbox';
@@ -23,6 +22,7 @@ import usePreventScroll from 'hooks/usePreventScroll';
 import useRouteListener from 'hooks/useRouteListener';
 import { useApplicationSlice } from 'store/slice/applications';
 import { selectApplication } from 'store/slice/applications/selectors';
+import { useAuthSlice } from 'store/slice/auth';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
@@ -34,6 +34,8 @@ const AvatarMenuList = () => {
   const { userApps: teams, currentApp: selectedTeam } =
     useSelector(selectApplication);
   const { actions: applicationActions } = useApplicationSlice();
+
+  const { actions: authActions } = useAuthSlice();
 
   useRouteListener(ReactTooltip.hide);
   usePreventScroll(containerRef);
@@ -48,7 +50,7 @@ const AvatarMenuList = () => {
 
   //! Logs user out from application.
   const handleLogout = () => {
-    dispatch(logoutAction());
+    dispatch(authActions.logout({}));
   };
 
   const handleCheckbox = (e) => {

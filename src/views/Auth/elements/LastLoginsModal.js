@@ -6,7 +6,7 @@ import { decode } from 'js-base64';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import setIsAthunticatedAction from 'store/actions/auth/setIsAthunticatedAction';
+import { useAuthSlice } from 'store/slice/auth';
 import styled from 'styled-components';
 
 const { RVDic } = window;
@@ -17,6 +17,8 @@ const { RVDic } = window;
 const LastLoginsModal = ({ isVisible }) => {
   const dispatch = useDispatch();
 
+  const { actions: authActions } = useAuthSlice();
+
   const { lastLogins, loginMessage } = useSelector((state) => ({
     lastLogins: state.auth.lastLogins,
     loginMessage: state.auth.auth?.LoginMessage,
@@ -25,7 +27,7 @@ const LastLoginsModal = ({ isVisible }) => {
    * By clicking close button, will fire.
    */
   const onClose = () => {
-    dispatch(setIsAthunticatedAction(true));
+    dispatch(authActions.setIsAthunticated(true));
   };
   const isMediumScreen = useMediaQuery({ query: '(min-width: 1224px)' });
 

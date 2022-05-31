@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from 'react';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Exception from 'components/Exception/Exception';
-import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
@@ -29,8 +28,7 @@ import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 import { useThemeSlice } from 'store/slice/theme';
 import { useApplicationSlice } from 'store/slice/applications';
 import { useSidebarSlice } from 'store/slice/sidebar';
-
-const { setIsAthunticated } = loginSlice.actions;
+import { useAuthSlice } from 'store/slice/auth';
 
 const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
@@ -57,6 +55,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
 
   const { actions: applicationActions } = useApplicationSlice();
   const { actions: sidebarActions } = useSidebarSlice();
+  const { actions: authActions } = useAuthSlice();
 
   const {
     actions: {
@@ -216,7 +215,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   } else if (route?.RedirectToLogin && !isAuthView) {
     //! If check route api is resolved and user is not authenticated, then redirect to login page.
     //! Also update redux state and RVGlobal object in window.
-    dispatch(setIsAthunticated(false));
+    dispatch(authActions.setIsAthunticated(false));
     setRVGlobal({ IsAuthenticated: false });
     return (
       <Redirect

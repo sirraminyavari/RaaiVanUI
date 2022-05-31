@@ -9,10 +9,7 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import loginAction from 'store/actions/auth/loginAction';
-import setEmailAction from 'store/actions/auth/setEmailAction';
-import setPasswordAction from 'store/actions/auth/setPassAction';
-import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
+import { useAuthSlice } from 'store/slice/auth';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import LastLoginsModal from '../elements/LastLoginsModal';
@@ -24,6 +21,8 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const passRef = useRef();
   const emailRef = useRef();
+
+  const { actions: authActions } = useAuthSlice();
 
   const { push } = useHistory();
   // If true, typed password will be visible
@@ -79,7 +78,7 @@ const SignIn = () => {
    * @param {String} value - email input
    */
   const onEmailChanged = (value) => {
-    dispatch(setEmailAction(value));
+    dispatch(authActions.setEmail(value));
   };
 
   /**
@@ -87,7 +86,7 @@ const SignIn = () => {
    * @param {String} value - password input
    */
   const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
+    dispatch(authActions.setPassword(value));
   };
   /**
    * Sends email & password to server by dispatching 'loginAction'
@@ -100,7 +99,7 @@ const SignIn = () => {
     const invitationId = reqParams?.get_value('inv');
 
     dispatch(
-      loginAction({
+      authActions.login({
         email: email,
         password: password,
         invitationId: invitationId,
@@ -113,7 +112,9 @@ const SignIn = () => {
    */
   const onForgot = () => {
     dispatch(
-      signupLoadFilesAction('/auth/forgotPassword' + window.location.search)
+      authActions.signupLoadFiles(
+        '/auth/forgotPassword' + window.location.search
+      )
     );
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
@@ -124,9 +125,11 @@ const SignIn = () => {
    */
   const onCreateAccount = () => {
     setSignUpClicked(true);
-    dispatch(setEmailAction(''));
-    dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
+    dispatch(authActions.setEmail(''));
+    dispatch(authActions.setPassword(''));
+    dispatch(
+      authActions.signupLoadFiles('/auth/register' + window.location.search)
+    );
     // push('/auth/register');
   };
 

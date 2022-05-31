@@ -5,4 +5,4 @@ import { EmptyMonitoringState } from './types';
 const selectSlice = (state: RootState) =>
   state?.monitoring || EmptyMonitoringState;
 
-export const selectSidebar = createSelector([selectSlice], (state) => state);
+export const selectMonitoring = createSelector([selectSlice], (state) => state);

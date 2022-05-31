@@ -61,16 +61,77 @@ export const loginSlice = createSlice({
     loginStart: (state, action) => {
       state.isFetching = true;
     },
-    loginSuccess: (state, action) => {
-      state.auth = action.payload;
-      state.isFetching = false;
-    },
     loginFailed: (state, action) => {
       state.error = action.payload;
       state.isFetching = false;
       state.emailError = action.payload;
       state.passwordError = action.payload;
     },
+    setPasswordError: (state, action) => {
+      state.passwordError = action.payload;
+    },
+    setEmailError: (state, action) => {
+      state.emailError = action.payload;
+    },
+    setOrgDomainsError: (state, action) => {
+      state.orgDomainsError = action.payload;
+    },
+    loginSuccess: (state, action) => {
+      state.auth = action.payload;
+      state.isFetching = false;
+    },
+    showLastLogins: (state, action) => {
+      state.lastLoginModal = true;
+      state.lastLoginMessage = action.payload.message;
+      state.lastLogins = action.payload.lastLogins;
+    },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+      state.emailError = null;
+    },
+    setPassword: (state, action) => {
+      state.password = action.payload;
+      state.passwordError = null;
+    },
+    setAuthUser: (state, action) => {
+      state.authUser = action.payload;
+    },
+    signupLoadFiles: (state, action) => {
+      state.fetchingFiles = true;
+    },
+    signupLoadFilesSuccess: (state, action) => {
+      state.fetchingFiles = false;
+      state.routeHistory = action.payload.destination;
+      state.passwordPolicy = action.payload.result;
+    },
+    signupLoadFilesFailed: (state, action) => {
+      state.fetchingFiles = false;
+    },
+    setLoginRoute: (state, action) => {
+      state.routeHistory = action.payload;
+    },
+    resetAllErrors: (state, action) => {
+      state.passwordError = null;
+      state.verifyCodeError = null;
+      state.emailError = null;
+      state.nameError = null;
+      state.familyError = null;
+      state.orgDomainsError = null;
+    },
+    setSelectedOrgDomain: (state, action) => {
+      state.selectedDomain = action.payload;
+      state.orgDomainsError = null;
+    },
+    setIsAthunticated: (state, action) => {
+      state.isAuthenticated = action.payload;
+    },
+    setCaptchaToken: (state, action) => {
+      state.captchaToken = action.payload;
+    },
+    logoutSuccess: (state, action) => {
+      state.isAuthenticated = false;
+    },
+
     sendVerifyCode: (state, action) => {
       state.isFetching = true;
     },
@@ -164,17 +225,6 @@ export const loginSlice = createSlice({
     sendResetPasswordTicketFailed: (state, action) => {
       state.isFetching = false;
     },
-    signupLoadFiles: (state, action) => {
-      state.fetchingFiles = true;
-    },
-    signupLoadFilesSuccess: (state, action) => {
-      state.fetchingFiles = false;
-      state.routeHistory = action.payload.destination;
-      state.passwordPolicy = action.payload.result;
-    },
-    signupLoadFilesFailed: (state, action) => {
-      state.fetchingFiles = false;
-    },
     resetPassword: (state, action) => {
       state.isFetching = true;
     },
@@ -185,36 +235,12 @@ export const loginSlice = createSlice({
       state.isFetching = false;
       state.verifyCodeError = action.payload;
     },
-    logoutSuccess: (state, action) => {
-      state.isAuthenticated = false;
-    },
-    setEmail: (state, action) => {
-      state.email = action.payload;
-      state.emailError = null;
-    },
-    setEmailError: (state, action) => {
-      state.emailError = action.payload;
-    },
-    setPassword: (state, action) => {
-      state.password = action.payload;
-      state.passwordError = null;
-    },
-    setPasswordError: (state, action) => {
-      state.passwordError = action.payload;
-    },
     setOrgDomains: (state, action) => {
       state.orgDomains = action.payload;
-    },
-    setOrgDomainsError: (state, action) => {
-      state.orgDomainsError = action.payload;
     },
     setName: (state, action) => {
       state.name = action.payload;
       state.nameError = null;
-    },
-    setSelectedOrgDomain: (state, action) => {
-      state.selectedDomain = action.payload;
-      state.orgDomainsError = null;
     },
     setNameError: (state, action) => {
       state.nameError = action.payload;
@@ -238,19 +264,8 @@ export const loginSlice = createSlice({
     setVerifyCodeError: (state, action) => {
       state.verifyCodeError = action.payload;
     },
-    setLoginRoute: (state, action) => {
-      state.routeHistory = action.payload;
-    },
     setPasswordFocus: (state, action) => {
       state.isPasswordFocused = action.payload;
-    },
-    resetAllErrors: (state, action) => {
-      state.passwordError = null;
-      state.verifyCodeError = null;
-      state.emailError = null;
-      state.nameError = null;
-      state.familyError = null;
-      state.orgDomainsError = null;
     },
     resetAllInputs: (state, action) => {
       state.password = '';
@@ -259,20 +274,6 @@ export const loginSlice = createSlice({
       state.name = '';
       state.family = '';
       state.selectedDomain = null;
-    },
-    showLastLogins: (state, action) => {
-      state.lastLoginModal = true;
-      state.lastLoginMessage = action.payload.message;
-      state.lastLogins = action.payload.lastLogins;
-    },
-    setCaptchaToken: (state, action) => {
-      state.captchaToken = action.payload;
-    },
-    setIsAthunticated: (state, action) => {
-      state.isAuthenticated = action.payload;
-    },
-    setAuthUser: (state, action) => {
-      state.authUser = action.payload;
     },
   },
 });

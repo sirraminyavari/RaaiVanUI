@@ -17,6 +17,58 @@ import {
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
+export const login = ({
+  Username,
+  Password,
+  DomainName,
+  RememberMe,
+  Captcha,
+  InvitationID,
+}: {
+  Username: string;
+  Password: string;
+  DomainName?: string;
+  RememberMe?: boolean;
+  Captcha?: string;
+  InvitationID?: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'Login'), {
+    UserName: encodeBase64(Username),
+    Password: encodeBase64(Password),
+    DomainName,
+    RememberMe,
+    Captcha,
+    InvitationID,
+  });
+};
+
+export const loginStepTwo = ({
+  Token,
+  Code,
+  RememberMe,
+  InvitationID,
+}: {
+  Token: string;
+  Code: string;
+  RememberMe?: boolean;
+  InvitationID?: string;
+}): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'LoginStepTwo'), {
+    TwoStepToken: Token,
+    Code,
+    RememberMe,
+    InvitationID,
+  });
+};
+
+export const logout = (): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'Logout'), {});
+};
+
+export const getDomains = (): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetDomains'), {});
+};
+
 export const setVariable = ({
   Name,
   Value,

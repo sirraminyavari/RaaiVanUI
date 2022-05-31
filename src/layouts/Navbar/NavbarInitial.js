@@ -8,11 +8,11 @@ import QuestionIcon from 'components/Icons/QuestionIcon/QuestionIcon';
 import TeamIcon from 'components/Icons/TeamIcon/TeamIcon';
 import ExitIcon from 'components/Icons/ExitIcon/ExitIcon';
 import useWindow from 'hooks/useWindowContext';
-import logoutAction from 'store/actions/auth/logoutAction';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import { HELP_PATH, TEAMS_PATH } from 'constant/constants';
 import { selectTheme } from 'store/slice/theme/selectors';
+import { useAuthSlice } from 'store/slice/auth';
 
 const NavbarInitial = () => {
   const dispatch = useDispatch();
@@ -20,6 +20,8 @@ const NavbarInitial = () => {
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
   const { activePath } = useSelector(selectTheme);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const { actions: authActions } = useAuthSlice();
 
   const onLogoutDone = () => {};
 
@@ -31,7 +33,7 @@ const NavbarInitial = () => {
   //! Logs user out from application.
   const handleLogout = () => {
     setIsLoggingOut(true);
-    dispatch(logoutAction(onLogoutDone, onLogoutError));
+    dispatch(authActions.logout({ done: onLogoutDone, error: onLogoutError }));
   };
 
   const isHelpPathActive = activePath === HELP_PATH;

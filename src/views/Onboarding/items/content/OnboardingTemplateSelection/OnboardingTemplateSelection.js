@@ -7,7 +7,7 @@ import OnboardingTemplateSelectionNode from './OnboardingTemplateSelectionNode';
 import OnboardingTemplateSelectionCarousel from './OnboardingTemplateSelectionCarousel';
 import OnboardingTemplateSelectionSelectedModal from './OnboardingTemplateSelectionSelectedModal';
 import Button from 'components/Buttons/Button';
-import { getTemplates } from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -42,7 +42,7 @@ const OnboardingTemplateSelectionContent = () => {
     const templateTagID =
       workField.fieldID !== 'OTHERS' ? workField?.fieldID : undefined;
     (async () => {
-      await getTemplates({ TagID: undefined }).then((res) => {
+      await API.CN.getTemplates({ TagID: undefined }).then((res) => {
         const parsedTemplates = parseTemplates(res);
         setTemplates(parsedTemplates);
         if (parsedTemplates?.AllTemplates.length) {
@@ -51,7 +51,7 @@ const OnboardingTemplateSelectionContent = () => {
       });
 
       if (templateTagID)
-        getTemplates({ TagID: templateTagID }).then((res) => {
+        API.CN.getTemplates({ TagID: templateTagID }).then((res) => {
           const parsedSuggestionTemplates = parseTemplates(res);
           setTemplates((templates) => ({
             ...templates,

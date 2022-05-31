@@ -1,4 +1,5 @@
 import { IApplicationState } from 'store/slice/applications/types';
+import { IAuthState } from 'store/slice/auth/types';
 import { IMonitoringState } from 'store/slice/monitoring/types';
 import { INotificationState } from 'store/slice/notification/types';
 import { IOnboardingState } from 'store/slice/onboarding/types';
@@ -12,4 +13,5 @@ export interface RootState {
   notifications: INotificationState;
   sidebarItems: ISidebarState;
   monitoring: IMonitoringState;
+  auth: IAuthState;
 }

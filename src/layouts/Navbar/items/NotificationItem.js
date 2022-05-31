@@ -7,7 +7,7 @@ import { decodeBase64, getURL } from 'helpers/helpers';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import useNotificationsSlice from 'store/slice/notification';
+import { useNotificationsSlice } from 'store/slice/notification';
 
 const { GlobalUtilities, RVDic } = window;
 

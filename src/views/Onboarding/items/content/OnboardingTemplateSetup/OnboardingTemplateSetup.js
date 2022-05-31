@@ -5,8 +5,7 @@ import CliqMindLogo from 'assets/images/cliqmind_logo_mini.svg?file';
 import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
 import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
-import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNAPI';
-import { themeSlice } from 'store/reducers/themeReducer';
+import API from 'apiHelper';
 import { decodeBase64 } from 'helpers/helpers';
 import {
   setOnboardingTemplateStatusCompleted,
@@ -16,7 +15,6 @@ import { useDispatch } from 'react-redux';
 import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
 import { useThemeSlice } from 'store/slice/theme';
 import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
-const { setSidebarContent, toggleSidebar } = themeSlice.actions;
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
@@ -30,10 +28,10 @@ const OnboardingTemplateSetupContent = () => {
   } = useThemeSlice();
 
   const activateTemplateHandler = async (template, appId) => {
-    const { Template } = await getTemplateJSON({
+    const { Template } = await API.CN.getTemplateJSON({
       NodeTypeID: template?.NodeTypeID,
     });
-    return activateTemplate({ Template: Template });
+    return API.CN.activateTemplate({ Template: Template });
   };
 
   useEffect(() => {
