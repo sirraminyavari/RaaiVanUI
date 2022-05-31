@@ -39,8 +39,8 @@ export const RemoveIconButton = styled.button`
 `;
 
 export const CheckboxSymbol = styled.section`
-  height: 1.25rem;
   width: 1.25rem;
+  aspect-ratio: 1/1;
   border-radius: 100%;
   border: 1px solid ${CV_DISTANT};
   flex: 1.25rem;

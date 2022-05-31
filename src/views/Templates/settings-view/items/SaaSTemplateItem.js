@@ -64,26 +64,19 @@ const ItemHead = styled.div`
   color: ${CV_GRAY_DARK};
   margin: 2.8rem 0 0.2rem 0;
 `;
+
 const SubItems = styled.div`
   display: block;
   margin: 1.3rem 0;
 `;
+
 const ArrowIconWrapper = styled.div`
   width: 20px;
-  margin-${({ rtl }) => (rtl ? 'left' : 'right')}: 0.5rem;
+  ${({ rtl }) => (rtl ? 'margin-left' : 'margin-right')}: 0.5rem;
   height: 2.5rem;
-  ${FLEX_CCC}
+  ${FLEX_CCC};
 `;
-const NodeIcon = styled(CaretIcon).attrs((props) => ({
-  size: props.size,
-  dir: props.dir,
-}))`
-  color: ${CV_GRAY_DARK};
-  cursor: pointer;
-  transform: ${({ opened, rtl }) =>
-    opened ? `rotate(${rtl ? '-90' : '90'}deg)` : 'rotate(0)'};
-  transition: all 0.3s ease-out;
-`;
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -102,4 +95,16 @@ const Grid = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+const NodeIcon = styled(CaretIcon).attrs((props) => ({
+  size: props.size,
+  dir: props.dir,
+}))`
+  color: ${CV_GRAY_DARK};
+  cursor: pointer;
+  transform: ${({ opened, rtl }) =>
+    opened ? `rotate(${rtl ? '-90' : '90'}deg)` : 'rotate(0)'};
+  transition: all 0.3s ease-out;
+`;
+
 export default SaaSTemplateItem;

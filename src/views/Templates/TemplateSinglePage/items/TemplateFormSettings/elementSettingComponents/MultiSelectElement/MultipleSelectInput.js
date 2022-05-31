@@ -2,10 +2,7 @@ import * as Styled from '../SingleSelectElement/SingleSelectInputStyle';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import ColorPicker from '../sharedItems/ColorPicker';
-import {
-  OptionContainer,
-  Separator,
-} from '../SingleSelectElement/SingleSelectInputStyle';
+import { OptionContainer } from '../SingleSelectElement/SingleSelectInputStyle';
 import styled from 'styled-components';
 import { CV_DISTANT } from 'constant/CssVariables';
 
@@ -40,8 +37,8 @@ const MultipleSelectInput = ({
   );
 };
 const CheckboxSymbol = styled.div`
-  height: 1.25rem;
   width: 1.25rem;
+  aspect-ratio: 1/1;
   border-radius: 0.35rem;
   border: 1px solid ${CV_DISTANT};
   flex: 1.25rem;

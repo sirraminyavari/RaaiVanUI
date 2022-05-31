@@ -58,7 +58,7 @@ const SingleSelectInput = ({
               handleOptionMinChange(decodeBase64(e?.target?.value, index))
             }
           >
-            >{'کمینه پاسخ'}
+            {'کمینه پاسخ'}
           </Styled.MinMaxInputTitle>
         )}
         <Styled.MinMaxInput />

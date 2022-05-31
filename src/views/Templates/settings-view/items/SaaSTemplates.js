@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 import SaaSTemplateItem from './SaaSTemplateItem';
 
-const SaaSTemplates = ({
-  nodes,
-  handleAddNodeType,
-  handleDeleteNode,
-  ...rest
-}) => {
+const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
   const [nodeList, setNodeList] = useState([]);
 
   useEffect(() => {
@@ -15,10 +10,20 @@ const SaaSTemplates = ({
   }, [nodes]);
 
   const loadNodeTypes = () => {
+    console.log(nodes);
     const _nodes = nodes?.NodeTypes.map((x) => ({
       ...x,
       TypeName: decodeBase64(x?.TypeName),
     }))?.filter((x) => x?.IsCategory || x?.ParentID);
+
+    const unCategorized = nodes?.NodeTypes.map((x) => {
+      return {
+        ...x,
+        TypeName: decodeBase64(x?.TypeName),
+      };
+    })?.filter((x) => !x?.IsCategory && !x?.ParentID);
+
+    console.log(unCategorized);
 
     console.log(_nodes);
 
@@ -31,9 +36,18 @@ const SaaSTemplates = ({
           Sub: _nodes.filter((l) => l?.ParentID === x?.NodeTypeID),
         })),
     ];
+    list.push({
+      NodeTypeID: 'unCategorized',
+      TypeName: 'غیر دسته‌بندی‌شده',
+      isExpanded: false,
+      Sub: unCategorized,
+    });
     setNodeList(list);
   };
 
+  useEffect(() => {
+    console.log(nodeList);
+  }, [nodeList]);
   return (
     <>
       {nodeList.map((x) => (
