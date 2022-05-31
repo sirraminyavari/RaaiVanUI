@@ -6,7 +6,7 @@ export const COLUMNS = [
     Cell: ({ value }) => (
       <div style={{ textAlign: 'center', alignItems: 'center' }}>
         {' '}
-        <img src={`${value}`} style={{ width: '2rem' }} />{' '}
+        <img src={`${value}`} style={{ width: '2rem' }} alt="" />{' '}
       </div>
     ),
     accessor: 'IconURL',

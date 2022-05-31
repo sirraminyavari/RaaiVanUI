@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useMediaQuery } from 'react-responsive';
 
 export const Container = styled.div`
   border-radius: 0.35rem;
@@ -15,9 +14,9 @@ export const Title = styled.h1`
 `;
 
 export const GridButton = styled.div`
-  display: grid
+  display: grid;
   grid-template-columns: repeat(1, 1fr);
-  grid-gap: 2px
+  grid-gap: 2px;
 `;
 
 export const ExcelContainer = styled.div`
