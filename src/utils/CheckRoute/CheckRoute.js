@@ -6,8 +6,6 @@ import { useEffect, useState, useRef } from 'react';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Exception from 'components/Exception/Exception';
-import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -26,15 +24,13 @@ import {
   VERIFICATION_PATH,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
-// import { getUnderMenuPermissions } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
 import { API_Provider } from 'helpers/helpers';
 import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
 import { useThemeSlice } from 'store/slice/theme';
+import { useApplicationSlice } from 'store/slice/applications';
+import { useSidebarSlice } from 'store/slice/sidebar';
 
 const { setIsAthunticated } = loginSlice.actions;
-const { setCurrentApp } = ApplicationsSlice.actions;
-const { setSidebarDnDTree } = sidebarMenuSlice.actions;
 
 const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
@@ -58,6 +54,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
   const lastLocation = getLastLocation();
+
+  const { actions: applicationActions } = useApplicationSlice();
+  const { actions: sidebarActions } = useSidebarSlice();
 
   const {
     actions: {
@@ -163,9 +162,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       };
       //! Set selected app.
       dispatch(setSelectedTeam(application));
-      dispatch(setCurrentApp(route?.Application));
+      dispatch(applicationActions.setCurrentApp(route?.Application));
       //! Get configs based on current application.
-      dispatch(getConfigPanels());
+      dispatch(sidebarActions.getConfigPanels());
       // dispatch(getUnderMenuPermissions(['Reports']));
     }
 
@@ -175,11 +174,11 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       dispatch(toggleSidebar(false));
       //! Clear selected team.
       dispatch(setSelectedTeam({ name: null, id: null }));
-      dispatch(setCurrentApp(null));
+      dispatch(applicationActions.setCurrentApp(null));
       //! Reset sidebar content to default.
       dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' }));
       //! Clear sidebar tree items.
-      dispatch(setSidebarDnDTree({}));
+      dispatch(sidebarActions.setSidebarDnDTree({}));
     }
 
     //! Set active path on every route change.

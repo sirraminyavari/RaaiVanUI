@@ -1,18 +1,13 @@
 import { put, select, takeEvery } from 'redux-saga/effects';
 import { applicationActions as actions } from '.';
 import { onboardingActions } from '../onboarding';
+import { sidebarActions } from '../sidebar';
 import API from 'apiHelper';
 import { setRVGlobal } from 'helpers/helpers';
 import { selectApplicationSlice } from './selectors';
 import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
 import { PayloadAction } from '@reduxjs/toolkit';
-import {
-  IAppID,
-  IAppIDs,
-  IAppIDTitle,
-  IAppIDUserID,
-  IWorkspaceIDTitle,
-} from './types';
+import { IAppID, IAppIDUserID } from './types';
 
 function* getApplications() {
   const res = yield API.RV.getApplications({ Archive: false });
@@ -44,7 +39,9 @@ function* removeApplication(values: PayloadAction<IAppID>) {
   } else if (res?.Succeed) {
     done && done(ApplicationID);
     yield put(actions.removeApplicationSuccessful(newApps));
-    yield put(actions.setApplicationsOrder(newApps));
+    yield API.RV.setApplicationsOrder({
+      ApplicationIDs: newApps.map((ap) => ap.ApplicationID),
+    });
     yield put(actions.getArchivedApplications({}));
   }
 }
@@ -70,39 +67,6 @@ function* recoverApplication(values: PayloadAction<IAppID>) {
   }
 }
 
-function* createApplication(values: PayloadAction<IWorkspaceIDTitle>) {
-  const { WorkspaceID, Title, error, done } = values?.payload || {};
-
-  const appState = yield select(selectApplicationSlice);
-
-  const res = yield API.RV.createApplication({ WorkspaceID, Title });
-
-  if (res?.ErrorText) {
-    error && error(res?.ErrorText);
-  } else if (res?.Succeed) {
-    done && done(res);
-    const createdApp = res?.Application;
-    const appUsers = res?.ApplicationUsers;
-    createdApp.Users = appUsers;
-    const newApps = [...appState.userApps, createdApp];
-    yield put(actions.addApplication(newApps));
-    yield put(actions.setApplicationsOrder(newApps));
-  }
-}
-
-function* modifyApplication(values: PayloadAction<IAppIDTitle>) {
-  const { ApplicationID, Title, error, done } = values?.payload || {};
-
-  const res = yield API.RV.modifyApplication({ ApplicationID, Title });
-
-  if (res?.ErrorText) {
-    error && error(res?.ErrorText);
-  } else if (res?.Succeed) {
-    done && done(res);
-    yield put(actions.getApplications({}));
-  }
-}
-
 function* selectApplication(values: PayloadAction<IAppID>) {
   const { ApplicationID, error, done } = values?.payload || {};
 
@@ -123,9 +87,9 @@ function* selectApplication(values: PayloadAction<IAppID>) {
       IsSystemAdmin: !!res?.IsSystemAdmin,
     });
 
-    yield put(onboardingActions.getSidebarNodeTypes({}));
-    yield put(onboardingActions.getConfigPanels({}));
-    yield put(onboardingActions.getUnderMenuPermissions(['Reports']));
+    yield put(sidebarActions.getSidebarNodeTypes({}));
+    yield put(sidebarActions.getConfigPanels());
+    yield put(sidebarActions.checkAuthority({ Permissions: ['Reports'] }));
 
     if (!!res?.ProductTour) {
       yield put(onboardingActions.onboardingName(res?.ProductTour?.Name || ''));
@@ -199,14 +163,6 @@ function* getApplicationsOrder(
   yield put(actions.setApplications([...orderedApps, ...extraApps]));
 }
 
-function* setApplicationsOrder(values: PayloadAction<IAppIDs>) {
-  const { ApplicationIDs, done, error } = values.payload;
-  const res: any = yield API.RV.setApplicationsOrder({ ApplicationIDs });
-
-  if (res?.Succeed) done && done();
-  else error && error();
-}
-
 export function* applicationSaga() {
   yield takeEvery(actions.getApplications.type, getApplications);
   yield takeEvery(
@@ -215,8 +171,6 @@ export function* applicationSaga() {
   );
   yield takeEvery(actions.removeApplication.type, removeApplication);
   yield takeEvery(actions.recoverApplication.type, recoverApplication);
-  yield takeEvery(actions.createApplication.type, createApplication);
-  yield takeEvery(actions.modifyApplication.type, modifyApplication);
   yield takeEvery(actions.selectApplication.type, selectApplication);
   yield takeEvery(
     actions.unsubscribeFromApplication.type,
@@ -227,5 +181,4 @@ export function* applicationSaga() {
     removeUserFromApplication
   );
   yield takeEvery(actions.getApplicationsOrder.type, getApplicationsOrder);
-  yield takeEvery(actions.setApplicationsOrder.type, setApplicationsOrder);
 }

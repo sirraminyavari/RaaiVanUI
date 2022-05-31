@@ -22,10 +22,11 @@ import { C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
-import { getNotificationsCount } from 'store/actions/global/NotificationActions';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getURL } from 'helpers/helpers';
 import WithAvatar from 'components/Avatar/WithAvatar';
+import { useNotificationsSlice } from 'store/slice/notification';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const Avatar = WithAvatar({
   Component: AvatarComponent,
@@ -41,11 +42,6 @@ const MobileMenu = lazy(() =>
   import(
     /* webpackChunkName: "nav-mobile-menu-component"*/ './items/MobileMenu'
   )
-);
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
 );
 
 const selectAuthUser = createSelector(
@@ -64,7 +60,7 @@ const NavbarPlaceholder = () => <div />;
 const Navbar = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const { isSidebarOpen } = useSelector(selectTheme);
   const authUser = useSelector(selectAuthUser);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat, GlobalUtilities } = useWindow();
@@ -77,8 +73,10 @@ const Navbar = () => {
   const isTeamsView = pathname === TEAMS_PATH;
   const isSearchView = pathname.slice(0, 9) === getURL('Search');
 
+  const { actions: notificationActions } = useNotificationsSlice();
+
   const getNotifs = () => {
-    dispatch(getNotificationsCount());
+    dispatch(notificationActions.getNotificationsCount());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);

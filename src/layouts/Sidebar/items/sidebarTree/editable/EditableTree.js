@@ -3,20 +3,11 @@
  */
 import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import EditableItem from './EditableItem';
 import useWindow from 'hooks/useWindowContext';
-import {
-  moveSidebarNode,
-  reorderSidebarNode,
-} from 'store/actions/sidebar/sidebarMenuAction';
-
-const selectSidebarDnDTree = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.dndTree
-);
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 /**
  * Renders nodes tree in editable format.
@@ -24,26 +15,36 @@ const selectSidebarDnDTree = createSelector(
  */
 const EditableTree = () => {
   const dispatch = useDispatch();
-  const dndTree = useSelector(selectSidebarDnDTree);
+  const { dndTree } = useSelector(selectSidebar);
 
-  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+  const { actions: sidebarActions } = useSidebarSlice();
+
   const { RVGlobal } = useWindow();
 
   const isSaaS = RVGlobal.SAASBasedMultiTenancy;
 
   //! Mutate tree.
   const handleOnMutateTree = (newTree) => {
-    dispatch(setSidebarDnDTree(newTree));
+    dispatch(sidebarActions.setSidebarDnDTree(newTree));
   };
 
   //! Fires when user drags and drops a node.
   const handleOnMoveItem = (newTree, source, destination) => {
     if (source?.parentId === destination?.parentId) {
-      dispatch(reorderSidebarNode(newTree, source, destination));
+      dispatch(
+        sidebarActions.reorderSidebarNodeTypes({
+          NodeTypeIDs: newTree.items[source.parentId].children || [],
+        })
+      );
     } else {
-      dispatch(moveSidebarNode(newTree, source, destination));
+      dispatch(
+        sidebarActions.moveSidebarNodeType({
+          NodeTypeID: source.id,
+          ParentID: destination.parentId,
+        })
+      );
     }
-    dispatch(setSidebarDnDTree(newTree));
+    dispatch(sidebarActions.setSidebarDnDTree(newTree));
   };
 
   //! Render custom item.

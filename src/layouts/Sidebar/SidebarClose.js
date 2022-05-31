@@ -3,42 +3,26 @@
  */
 import { lazy, Suspense, memo } from 'react';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 import { MAIN_CONTENT } from 'constant/constants';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const SidebarContentClose = lazy(() =>
   import(/* webpackChunkName: "sidebar-close-content"*/ './items/ContentClose')
 );
 
-const selectTeam = createSelector(
-  (state) => state.applications,
-  (theme) => theme.currentApp
-);
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
-
-const selectHasPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
-);
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
 const CloseSidebar = () => {
-  const selectedTeam = useSelector(selectTeam);
-  const sidebarContent = useSelector(selectSidebarContent);
-  const hasPattern = useSelector(selectHasPattern);
-  const isOpen = useSelector(selectIsSidebarOpen);
+  const {
+    isSidebarOpen: isOpen,
+    hasSidebarPattern: hasPattern,
+    sidebarContent,
+  } = useSelector(selectTheme);
+
+  const { currentApp: selectedTeam } = useSelector(selectApplication);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
   const isTeamSelected = !!selectedTeam?.ApplicationID;

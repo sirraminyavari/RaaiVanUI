@@ -1,16 +1,11 @@
 import { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
 import { SETTING_CONTENT, SETT_URL_CONTENT } from 'constant/constants';
 import { useThemeSlice } from 'store/slice/theme';
-
-const selectConfigPanels = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.configPanels
-);
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 const TeamSettings = () => {
   const { RVDic } = useWindow();
@@ -20,7 +15,7 @@ const TeamSettings = () => {
     actions: { setSidebarContent },
   } = useThemeSlice();
 
-  const panels = useSelector(selectConfigPanels);
+  const { configPanels: panels } = useSelector(selectSidebar);
 
   const handleClickPanel = useCallback(
     (url) => () => {

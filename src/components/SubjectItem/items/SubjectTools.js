@@ -10,9 +10,7 @@ import TrashIcon from 'components/Icons/TrashIcon';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-
-const { setFavoriteNodesCount } = sidebarMenuSlice.actions;
+import { useSidebarSlice } from 'store/slice/sidebar';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
@@ -32,6 +30,8 @@ const SubjectTools = ({
   }));
   const dispatch = useDispatch();
 
+  const { actions: sidebarActions } = useSidebarSlice();
+
   const [bookmarkFetching, setBookmarkFetching] = useState(false);
 
   const onEdit = () => {};
@@ -49,7 +49,9 @@ const SubjectTools = ({
           response?.Succeed &&
           response.Succeed === 'OperationCompletedSuccessfully'
         ) {
-          dispatch(setFavoriteNodesCount(favoriteNodesCount - 1));
+          dispatch(
+            sidebarActions.setFavoriteNodesCount(favoriteNodesCount - 1)
+          );
 
           onBookmarLocally && onBookmarLocally(nodeId);
         }
@@ -62,7 +64,9 @@ const SubjectTools = ({
           response?.Succeed &&
           response.Succeed === 'OperationCompletedSuccessfully'
         ) {
-          dispatch(setFavoriteNodesCount(favoriteNodesCount + 1));
+          dispatch(
+            sidebarActions.setFavoriteNodesCount(favoriteNodesCount + 1)
+          );
 
           onBookmarLocally && onBookmarLocally(nodeId);
         }

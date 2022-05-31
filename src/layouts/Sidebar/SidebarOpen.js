@@ -3,7 +3,6 @@
  */
 import { lazy, Suspense, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
@@ -18,14 +17,10 @@ import {
 import useWindow from 'hooks/useWindowContext';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { useThemeSlice } from 'store/slice/theme';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
 );
 
 const OpenSidebar = () => {
@@ -36,12 +31,12 @@ const OpenSidebar = () => {
     actions: { setOpenWidth, setCurrentWidth },
   } = useThemeSlice();
   const themeState = useSelector(selectTheme);
+  const { name: onboardingName } = useSelector(selectOnboarding);
 
   const sidebarContent = themeState.sidebarContent;
   const sidebarOpenWidth = themeState.sidebarOpenWidth;
   const isOpen = themeState.isSidebarOpen;
   const hasPattern = themeState.hasSidebarPattern;
-  const onboardingName = useSelector(selectOnboardingName);
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

@@ -1,6 +1,5 @@
 import { useEffect, lazy } from 'react';
 import { useDispatch } from 'react-redux';
-import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import WithSuspense from 'components/WithSuspense/WithSuspense';
 import { Redirect, Route } from 'react-router-dom';
 import { MAIN_CONTENT, SETT_WORKSPACE_CONTENT } from 'constant/constants';
@@ -14,6 +13,7 @@ import {
   WORKSPACE_USER_MANAGEMENT_PATH,
 } from './items/others/constants';
 import { useThemeSlice } from 'store/slice/theme';
+import { useApplicationSlice } from 'store/slice/applications';
 
 const TeamsWorkspaceView = WithSuspense(
   lazy(() =>
@@ -65,8 +65,10 @@ const TeamsView = () => {
     actions: { setSidebarContent },
   } = useThemeSlice();
 
+  const { actions: applicationActions } = useApplicationSlice();
+
   useEffect(() => {
-    dispatch(getApplications());
+    dispatch(applicationActions.getApplications());
 
     //! Set sidebar content for all sub-routes
     dispatch(

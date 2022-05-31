@@ -9,7 +9,7 @@ import { getCurrentTheme as getThemeApi } from 'apiHelper/ApiHandlers/usersApi';
  */
 function* getThemes() {
   const res = yield getThemesApi();
-  yield put(actions.setThemes(res?.Themes));
+  yield put(actions.setTheme(res?.Themes));
 }
 
 /**

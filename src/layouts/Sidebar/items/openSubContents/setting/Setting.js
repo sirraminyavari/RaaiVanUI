@@ -2,7 +2,6 @@
  * Renders Settings or config panel links instead of regular menu in sidebar.
  */
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
@@ -25,11 +24,7 @@ import {
 import WorkspaceContent from './items/workspace/WorkspaceContent';
 import OnboardingContent from './items/onboarding/OnboardingContent';
 import { useThemeSlice } from 'store/slice/theme';
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const SidebarSettingContent = () => {
   const dispatch = useDispatch();
@@ -39,7 +34,7 @@ const SidebarSettingContent = () => {
     actions: { setSidebarContent },
   } = useThemeSlice();
 
-  const selectedContent = useSelector(selectSidebarContent);
+  const { sidebarContent: selectedContent } = useSelector(selectTheme);
 
   const currentContent = selectedContent.current;
   const previousContent = selectedContent.prev;

@@ -1,7 +1,5 @@
 import { useEffect, memo, useState, createContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
-//import { getThemes, getCurrentTheme } from 'store/actions/themes/ThemeActions';
 import * as Styled from 'views/Profile/Profile.styles';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import ThemeToggle from 'components/Toggle/Toggle';
@@ -30,11 +28,13 @@ const ProfileCustomization = ({ route }) => {
   const {
     actions: { setDarkMode, setSidebarPattern },
   } = useThemeSlice();
-  const themeState = useSelector(selectTheme);
 
-  const allThemes = themeState.themes;
-  const isDarkMode = themeState.isDarkMode;
-  const hasSidebarPattern = themeState.hasSidebarPattern;
+  const {
+    themes: allThemes,
+    isDarkMode,
+    hasSidebarPattern,
+  } = useSelector(selectTheme);
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     !!currentUser?.Settings?.[SIDEBAR_WINDOW]
   );

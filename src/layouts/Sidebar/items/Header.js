@@ -5,7 +5,6 @@ import { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import { createSelector } from 'reselect';
 import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
 import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
@@ -14,16 +13,8 @@ import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
-
-const selectTeam = createSelector(
-  (state) => state.applications,
-  (theme) => theme.currentApp
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
@@ -32,12 +23,11 @@ const SidebarHeader = () => {
   const {
     actions: { toggleSidebar },
   } = useThemeSlice();
-  const themeState = useSelector(selectTheme);
 
-  const isSidebarOpen = themeState.isSidebarOpen;
-  const selectedTeam = useSelector(selectTeam);
-  const hasPattern = themeState.hasSidebarPattern;
-  const onboardingName = useSelector(selectOnboardingName);
+  const { isSidebarOpen, hasSidebarPattern: hasPattern } =
+    useSelector(selectTheme);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+  const { currentApp: selectedTeam } = useSelector(selectApplication);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
   //! Check if onboarding is activated on 'intro' mode.

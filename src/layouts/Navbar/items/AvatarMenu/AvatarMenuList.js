@@ -5,7 +5,6 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Cookie from 'js-cookie';
-import { createSelector } from 'reselect';
 import ReactTooltip from 'react-tooltip';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import logoutAction from 'store/actions/auth/logoutAction';
@@ -17,22 +16,13 @@ import { C_RED, TC_VERYWARM, C_GRAY } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
 import { CV_RED } from 'constant/CssVariables';
-import { selectApplication } from 'store/actions/applications/ApplicationsAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import { HOME_PATH } from 'constant/constants';
 import usePreventScroll from 'hooks/usePreventScroll';
 import useRouteListener from 'hooks/useRouteListener';
-
-const selectApplications = createSelector(
-  (state) => state.applications,
-  (applications) => applications.userApps
-);
-
-const selectedApplication = createSelector(
-  (state) => state.applications,
-  (theme) => theme.currentApp
-);
+import { useApplicationSlice } from 'store/slice/applications';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
@@ -40,8 +30,10 @@ const AvatarMenuList = () => {
   const avatarMenuRef = useRef();
   const containerRef = useRef();
   const { RVDic, RV_RTL, RVGlobal } = useWindow();
-  const teams = useSelector(selectApplications);
-  const selectedTeam = useSelector(selectedApplication);
+
+  const { userApps: teams, currentApp: selectedTeam } =
+    useSelector(selectApplication);
+  const { actions: applicationActions } = useApplicationSlice();
 
   useRouteListener(ReactTooltip.hide);
   usePreventScroll(containerRef);
@@ -75,7 +67,13 @@ const AvatarMenuList = () => {
 
   //! Select a team.
   const handleTeamSelect = (appId) => {
-    dispatch(selectApplication(appId, onSelectDone, onSelectError));
+    dispatch(
+      applicationActions.selectApplication({
+        ApplicationID: appId,
+        done: onSelectDone,
+        error: onSelectError,
+      })
+    );
   };
 
   return (

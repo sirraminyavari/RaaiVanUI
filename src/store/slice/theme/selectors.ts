@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from 'types/RootState';
-import { EmptyThemeState } from './types';
+import { EmptyThemeState, IThemeState } from './types';
 
-const selectSlice = (state: RootState) => state?.theme || EmptyThemeState;
+export const selectThemeSlice = (state: RootState): IThemeState =>
+  state?.theme || EmptyThemeState;
 
-export const selectTheme = createSelector([selectSlice], (state) => state);
+export const selectTheme = createSelector([selectThemeSlice], (state) => state);

@@ -2,9 +2,9 @@ import { useDispatch } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import CancelIcon from 'components/Icons/CloseIcon/CloseIcon';
 import EditableTree from 'layouts/Sidebar/items/sidebarTree/editable/EditableTree';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import { MANAGE_CONTENT, MAIN_CONTENT } from 'constant/constants';
 import { useThemeSlice } from 'store/slice/theme';
+import { useSidebarSlice } from 'store/slice/sidebar';
 
 const SidebarManageContent = () => {
   const dispatch = useDispatch();
@@ -13,10 +13,10 @@ const SidebarManageContent = () => {
     actions: { setSidebarContent },
   } = useThemeSlice();
 
-  const { closeOpenMenus } = sidebarMenuSlice.actions;
+  const { actions: sidebarActions } = useSidebarSlice();
 
   const handleOnClick = () => {
-    dispatch(closeOpenMenus());
+    dispatch(sidebarActions.closeOpenMenus());
     dispatch(
       setSidebarContent({ current: MAIN_CONTENT, prev: MANAGE_CONTENT })
     );

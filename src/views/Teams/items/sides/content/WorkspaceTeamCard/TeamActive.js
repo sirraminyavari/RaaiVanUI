@@ -16,13 +16,6 @@ import Badge from 'components/Badge/Badge';
 import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { decodeBase64 } from 'helpers/helpers';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
-import {
-  removeApplication,
-  recycleApplication,
-  selectApplication,
-  unsubscribeFromApplication,
-  getApplicationUsers,
-} from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
 import SortHandle from '../SortHandle';
@@ -40,6 +33,8 @@ import { SIDEBAR_WINDOW } from 'constant/constants';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import UserInvitationDialog from './UserInviteDialog';
 import { useThemeSlice } from 'store/slice/theme';
+import API from 'apiHelper';
+import { useApplicationSlice } from 'store/slice/applications';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
@@ -61,6 +56,8 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const {
     actions: { toggleSidebar },
   } = useThemeSlice();
+
+  const { actions: applicationActions } = useApplicationSlice();
 
   const actionRef = useRef();
   const { isSelecting, selectingAppId } = useSelector(selectingApp);
@@ -171,7 +168,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   //! Undo team delete.
   const undoTeamDelete = (appId) => {
-    dispatch(recycleApplication(appId, () => {}, true));
+    dispatch(applicationActions.recoverApplication({ ApplicationID: appId }));
   };
 
   //! Redirect user to right path when team selection was successful.
@@ -190,7 +187,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const handleTeamSelect = (onSuccess, onError) => {
     if (isDeleting) return;
 
-    dispatch(selectApplication(appId, onSuccess, onError));
+    dispatch(
+      applicationActions.selectApplication({
+        ApplicationID: appId,
+        done: onSuccess,
+        error: onError,
+      })
+    );
   };
 
   //! Go to team settings page.
@@ -209,12 +212,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
 
   const getAdditionalTeamUsers = () => {
     if (isDeleting) return;
-    dispatch(getApplicationUsers(appId, '', onGetUsers));
+    onGetUsers();
   };
 
   //! Get users for each team.
-  const onGetUsers = (users) => {
-    setUsers(users);
+  const onGetUsers = async () => {
+    const res = await API.Users.getApplicationUsers({ ApplicationID: appId });
+    setUsers(res?.Users || []);
   };
 
   //! Shows invitation modal.
@@ -229,12 +233,23 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
   const handleConfirmation = () => {
     switch (confirm.type) {
       case EXIT_TEAM_CONFIRM:
-        !isRemovable && dispatch(unsubscribeFromApplication(appId));
+        !isRemovable &&
+          dispatch(
+            applicationActions.unsubscribeFromApplication({
+              ApplicationID: appId,
+            })
+          );
         resetConfirm();
         break;
       case DELETE_TEAM_CONFIRM:
         setIsDeleting(true);
-        dispatch(removeApplication(appId, onRemoveDone, onRemoveError));
+        dispatch(
+          applicationActions.removeApplication({
+            ApplicationID: appId,
+            done: onRemoveDone,
+            error: onRemoveError,
+          })
+        );
         resetConfirm();
         break;
 

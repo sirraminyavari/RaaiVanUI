@@ -3,34 +3,20 @@
  */
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import { createSelector } from 'reselect';
 import DragIcon from 'components/Icons/DragIcon/Drag';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import { C_DISTANT } from 'constant/Colors';
 import { MANAGE_CONTENT } from 'constant/constants';
 import { mutateTree } from '@atlaskit/tree';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import {
-  renameSidebarNode,
-  deleteSidebarNode,
-  recoverSidebarNode,
-} from 'store/actions/sidebar/sidebarMenuAction';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import getIcon from 'utils/treeUtils/getItemIcon';
 import useWindow from 'hooks/useWindowContext';
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const INDENT_PER_LEVEL = 27;
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
-
-const selectTree = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.dndTree
-);
 
 /**
  * @typedef ItemType
@@ -65,21 +51,31 @@ const EditableBranch = (props) => {
     // snapshot
   } = itemProps;
 
-  const sidebarContent = useSelector(selectSidebarContent);
-  const tree = useSelector(selectTree);
+  const { dndTree: tree } = useSelector(selectSidebar);
+  const { sidebarContent } = useSelector(selectTheme);
   const dispatch = useDispatch();
-  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+  const { actions: sidebarActions } = useSidebarSlice();
 
   const isManageContent = sidebarContent.current === MANAGE_CONTENT;
 
   //! Undo node deletion.
   const undoDelete = (node) => {
-    dispatch(recoverSidebarNode(node));
+    dispatch(
+      sidebarActions.recoverSidebarNodeType({
+        NodeTypeID: node.id,
+        ChildrenIDs: node.children || [],
+      })
+    );
   };
 
   //! Undo node edition.
   const undoEdit = () => {
-    dispatch(renameSidebarNode(item?.id, item?.data?.title));
+    dispatch(
+      sidebarActions.renameSidebarNodeType({
+        NodeTypeID: item?.id,
+        Name: item?.data?.title,
+      })
+    );
   };
 
   //! Fires when the node is removed.
@@ -105,8 +101,14 @@ const EditableBranch = (props) => {
     const removeOnParent = mutateTree(deleteOnItem, item?.parent, {
       children: itemParent.children.filter((child) => child !== item?.id),
     });
-    dispatch(setSidebarDnDTree(removeOnParent));
-    dispatch(deleteSidebarNode(item, false, onDeleteDone));
+    dispatch(sidebarActions.setSidebarDnDTree(removeOnParent));
+    dispatch(
+      sidebarActions.removeSidebarNodeType({
+        NodeType: item,
+        RemoveHierarchy: false,
+        done: onDeleteDone,
+      })
+    );
   };
 
   //! Fires on rename item.
@@ -123,7 +125,12 @@ const EditableBranch = (props) => {
       onUndo: undoEdit,
       toastId: `edit-${item?.id}`,
     });
-    dispatch(renameSidebarNode(item?.id, trimmedTitle));
+    dispatch(
+      sidebarActions.renameSidebarNodeType({
+        NodeTypeID: item?.id,
+        Name: trimmedTitle,
+      })
+    );
   };
 
   return (

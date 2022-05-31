@@ -198,6 +198,31 @@ export const getApplications = ({ Archive }: { Archive?: boolean } = {}) => {
   });
 };
 
+export const getApplicationsMonitoring = ({
+  TotalUsersCount,
+  MembersCount,
+  LastActivityTime,
+  LoginsCountSinceNDaysAgo,
+  Count,
+  LowerBoundary,
+}: {
+  TotalUsersCount: boolean;
+  MembersCount: boolean;
+  LastActivityTime: boolean;
+  LoginsCountSinceNDaysAgo: number;
+  Count: number;
+  LowerBoundary: number;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetApplicationsMonitoring'), {
+    TotalUsersCount,
+    MembersCount,
+    LastActivityTime,
+    LoginsCountSinceNDaysAgo,
+    Count,
+    LowerBoundary,
+  });
+};
+
 export const removeApplication = ({
   ApplicationID,
 }: {

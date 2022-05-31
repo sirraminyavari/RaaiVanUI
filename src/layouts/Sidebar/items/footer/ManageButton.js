@@ -1,8 +1,6 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import EditIcon from 'components/Icons/EditIcons/Edit';
-import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import {
   MANAGE_CONTENT,
   MAIN_CONTENT,
@@ -12,11 +10,8 @@ import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
-
-const selectedOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 /**
  * Renders a button for sidebar footer.
@@ -31,9 +26,10 @@ const ManageButton = () => {
   } = useThemeSlice();
   const themeState = useSelector(selectTheme);
 
+  const { actions: sidebarActions } = useSidebarSlice();
+
+  const { name: onboardingName } = useSelector(selectOnboarding);
   const isSidebarOpen = themeState.isSidebarOpen;
-  const onboardingName = useSelector(selectedOnboardingName);
-  const { closeOpenMenus } = sidebarMenuSlice.actions;
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -42,7 +38,7 @@ const ManageButton = () => {
   //! Fires on button click.
   const handleManageButton = () => {
     if (isIntroOnboarding) return;
-    dispatch(closeOpenMenus());
+    dispatch(sidebarActions.closeOpenMenus());
     dispatch(
       setSidebarContent({ current: MANAGE_CONTENT, prev: MAIN_CONTENT })
     );

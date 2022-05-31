@@ -1,3 +1,5 @@
+import { IReduxActionCall } from '../types';
+
 export interface IApplicationState {
   userApps: any[];
   userArchivedApps: any[];
@@ -17,32 +19,13 @@ export const EmptyApplicationState: IApplicationState = {
   currentApp: null,
 };
 
-interface IRequest {
-  done?: (res?: any) => any;
-  error?: (err?: string) => any;
-}
-
-interface IAppID extends IRequest {
+interface IAppID extends IReduxActionCall {
   ApplicationID: string;
 }
 
-interface IWorkspaceIDTitle extends IRequest {
-  WorkspaceID: string;
-  Title: string;
-}
-
-interface IAppIDTitle extends IRequest {
-  ApplicationID: string;
-  Title: string;
-}
-
-interface IAppIDUserID extends IRequest {
+interface IAppIDUserID extends IReduxActionCall {
   ApplicationID: string;
   UserID: string;
 }
 
-interface IAppIDs extends IRequest {
-  ApplicationIDs: string[];
-}
-
-export type { IAppID, IWorkspaceIDTitle, IAppIDTitle, IAppIDUserID, IAppIDs };
+export type { IAppID, IAppIDUserID };

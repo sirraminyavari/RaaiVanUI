@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from './WorkspacePanel.styles';
 import SpaceHeader from './WorkspaceHeader';
-import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
 import { reorder } from 'helpers/helpers';
 import NewTeam from '../WorkspaceTeamCard/NewTeam';
 import ArchivedTeams from '../ArchivedTeams/WorkspaceArchivedTeams';
@@ -11,36 +9,26 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Flipper, Flipped } from 'react-flip-toolkit';
 import DragItem from '../WorkspaceTeamCard/DragTeam';
-import { setApplicationsOrder } from 'store/actions/applications/ApplicationsAction';
 import WorkspaceTeamsSkeleton from '../../../others/skeletons/WorkspaceTeams';
-
-const { setApplications } = ApplicationsSlice.actions;
-
-const selectApplications = createSelector(
-  (state) => state.applications,
-  (applications) => applications.userApps
-);
-
-const selectArchivedApplications = createSelector(
-  (state) => state.applications,
-  (applications) => applications.userArchivedApps
-);
-
-const selectIsFetchingApps = createSelector(
-  (state) => state.applications,
-  (applications) => applications.isFetching
-);
+import { useApplicationSlice } from 'store/slice/applications';
+import API from 'apiHelper';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const WorkspacePanel = ({ space }) => {
   const dispatch = useDispatch();
-  const teams = useSelector(selectApplications);
-  const archivedApps = useSelector(selectArchivedApplications);
-  const isFetching = useSelector(selectIsFetchingApps);
 
-  const moveCard = (dragIndex, hoverIndex) => {
+  const {
+    userApps: teams,
+    userArchivedApps: archivedApps,
+    isFetching,
+  } = useSelector(selectApplication);
+
+  const { actions: applicationActions } = useApplicationSlice();
+
+  const moveCard = async (dragIndex, hoverIndex) => {
     const reordered = reorder(teams, dragIndex, hoverIndex);
-    dispatch(setApplicationsOrder(reordered));
-    dispatch(setApplications(reordered));
+    await API.RV.setApplicationsOrder({ ApplicationIDs: reordered });
+    dispatch(applicationActions.setApplications(reordered));
   };
   const checkWorkspaceHasArchivedApps = () => {
     const workspaceArchivedApps = archivedApps
@@ -48,9 +36,9 @@ const WorkspacePanel = ({ space }) => {
         if (app.WorkspaceID === space.WorkspaceID) {
           return app;
         }
-        return;
+        return null;
       })
-      .filter((app) => app);
+      .filter((app) => !!app);
     if (workspaceArchivedApps.length > 0) return true;
     else return false;
   };

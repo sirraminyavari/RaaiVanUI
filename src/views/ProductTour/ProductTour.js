@@ -4,9 +4,10 @@ import './ProductTour.css';
 import { steps } from './steps';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleActivation } from 'store/reducers/onboardingReducer';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const ProductTour = () => {
-  const { active, fromStep } = useSelector((state) => state.onboarding);
+  const { active, fromStep } = useSelector(selectOnboarding);
   const dispatch = useDispatch();
 
   return (

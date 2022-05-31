@@ -53,7 +53,7 @@ const slice = createSlice({
     },
     getThemes: (state: IThemeState, action: PayloadAction<any>) => {},
     getCurrentTheme: (state: IThemeState, action: PayloadAction<any>) => {},
-    setThemes: (state: IThemeState, action: PayloadAction<any>) => {
+    setTheme: (state: IThemeState, action: PayloadAction<any>) => {
       state.themes = action.payload;
     },
     setCurrentTheme: (state: IThemeState, action: PayloadAction<any>) => {

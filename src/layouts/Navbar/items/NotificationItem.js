@@ -5,15 +5,17 @@ import * as Styled from '../Navbar.styles';
 import Avatar from 'components/Avatar/Avatar';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { removeNotification } from 'store/actions/global/NotificationActions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { TCV_DEFAULT } from 'constant/CssVariables';
+import useNotificationsSlice from 'store/slice/notification';
 
 const { GlobalUtilities, RVDic } = window;
 
 const NotificationItem = (props) => {
   const { notif } = props;
   const dispatch = useDispatch();
+
+  const { actions: notificationActions } = useNotificationsSlice();
 
   const onRemoveDone = () => {
     return;
@@ -31,7 +33,11 @@ const NotificationItem = (props) => {
 
   const handleDeleteNotif = () => {
     dispatch(
-      removeNotification(notif?.NotificationID, onRemoveDone, onRemoveError)
+      notificationActions.removeNotification({
+        NotificationID: notif?.NotificationID,
+        done: onRemoveDone,
+        error: onRemoveError,
+      })
     );
   };
 

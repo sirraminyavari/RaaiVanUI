@@ -9,11 +9,6 @@ import { CustomSettingContext } from './Profile-Customization';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 
-// const selectIsCollapsed = createSelector(
-//   (state) => state.theme,
-//   (theme) => theme.isSidebarCollapsed
-// );
-
 const setThemeAPI = API_Provider(USERS_API, SET_THEME);
 
 const ThemePreview = ({ preview }) => {

@@ -3,7 +3,7 @@ import { RootState } from 'types/RootState';
 import { EmptyApplicationState } from './types';
 
 export const selectApplicationSlice = (state: RootState) =>
-  state?.application || EmptyApplicationState;
+  state?.applications || EmptyApplicationState;
 
 export const selectApplication = createSelector(
   [selectApplicationSlice],

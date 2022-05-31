@@ -3,22 +3,17 @@
  */
 import { lazy, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import {
   MANAGE_CONTENT,
   PROFILE_CONTENT,
   SETTING_CONTENT,
   TEMPLATE_CONTENT,
 } from 'constant/constants';
-import { getFavoriteNodesCount } from 'store/actions/sidebar/sidebarMenuAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 import useWindowContext from 'hooks/useWindowContext';
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const SidebarSetting = lazy(() =>
   import(
@@ -72,14 +67,16 @@ const getSidebarContent = (content) => {
 const SidebarOnOpen = () => {
   const containerRef = useRef();
   const dispatch = useDispatch();
-  const content = useSelector(selectSidebarContent);
+  const { sidebarContent: content } = useSelector(selectTheme);
 
   const { RV_Float } = useWindowContext();
+
+  const { actions: sidebarActions } = useSidebarSlice();
 
   usePreventScroll(containerRef);
 
   useEffect(() => {
-    dispatch(getFavoriteNodesCount());
+    dispatch(sidebarActions.getFavoriteNodesCount());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
 import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
@@ -13,17 +12,13 @@ import logoutAction from 'store/actions/auth/logoutAction';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import { HELP_PATH, TEAMS_PATH } from 'constant/constants';
-
-const selectActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
-);
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const NavbarInitial = () => {
   const dispatch = useDispatch();
   const { RVGlobal, RV_RTL, RVDic } = useWindow();
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
-  const activePath = useSelector(selectActivePath);
+  const { activePath } = useSelector(selectTheme);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const onLogoutDone = () => {};

@@ -5,32 +5,21 @@ import { applicationSaga } from './saga';
 import {
   EmptyApplicationState,
   IAppID,
-  IAppIDs,
-  IAppIDTitle,
   IAppIDUserID,
   IApplicationState,
-  IWorkspaceIDTitle,
 } from './types';
 
 const slice = createSlice({
-  name: 'application',
+  name: 'applications',
   initialState: EmptyApplicationState,
   reducers: {
     selectApplication: (
       state: IApplicationState,
       action: PayloadAction<IAppID>
     ) => {},
-    createApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IWorkspaceIDTitle>
-    ) => {},
     getApplicationsOrder: (
       state: IApplicationState,
       action: PayloadAction<{ UnorderedApplications: any[] }>
-    ) => {},
-    setApplicationsOrder: (
-      state: IApplicationState,
-      action: PayloadAction<IAppIDs>
     ) => {},
     getApplications: (state: IApplicationState, action: PayloadAction<any>) => {
       state.isFetching = true;
@@ -65,10 +54,6 @@ const slice = createSlice({
     addApplication: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
     },
-    modifyApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppIDTitle>
-    ) => {},
     clearApplications: (
       state: IApplicationState,
       action: PayloadAction<any>
