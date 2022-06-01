@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function useAutoSave(editorState, onAutoSave, interval = 5000) {
   const [isHot, setIsHot] = useState(false);
@@ -16,11 +16,11 @@ export default function useAutoSave(editorState, onAutoSave, interval = 5000) {
     setTimer();
     return () => clearTimeout(timer.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [editorState]);
 
   useEffect(() => {
     if (!isHot) return;
-    const {hasChanged, changes, hasResorted, sort} = detectChanges(
+    const { hasChanged, changes, hasResorted, sort } = detectChanges(
       lastEditorState,
       editorState
     );
@@ -48,10 +48,10 @@ function detectChanges(lastEditorState, editorState) {
   const createdBlocks = newBlockMap.filter((_, key) => !lastBlockMap.get(key));
 
   const lastSort = lastBlockMap
-    .map((b) => ({key: b.getKey(), depth: b.getDepth()}))
+    .map((b) => ({ key: b.getKey(), depth: b.getDepth() }))
     .toArray();
   const newSort = newBlockMap
-    .map((b) => ({key: b.getKey(), depth: b.getDepth()}))
+    .map((b) => ({ key: b.getKey(), depth: b.getDepth() }))
     .toArray();
   const hasResorted = (() => {
     let i = 0,
@@ -76,13 +76,13 @@ function detectChanges(lastEditorState, editorState) {
 
   return {
     hasChanged: updatedBlocks.size || removedBlocks.size || createdBlocks.size,
-    changes: {updatedBlocks, removedBlocks, createdBlocks},
+    changes: { updatedBlocks, removedBlocks, createdBlocks },
     hasResorted,
     sort: newSort,
   };
 }
 
-function toArr(obj: {[key: string]: any}) {
+function toArr(obj: { [key: string]: any }) {
   const o = {};
   for (const key in obj) {
     o[key] = obj[key].toArray().map((b) => b.toObject());
