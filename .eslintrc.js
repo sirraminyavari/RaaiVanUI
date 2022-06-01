@@ -14,7 +14,17 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.ts?(x)'],
-      rules: { 'prettier/prettier': ['warn', prettierOptions] },
+      rules: {
+        'prettier/prettier': ['warn', prettierOptions],
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_',
+          },
+        ],
+      },
     },
   ],
 };

@@ -10,9 +10,9 @@ interface IAPICallOptions {
 export const apiCallWrapper = <T = unknown>(
   api: any,
   data: any = {},
-  { parser }: IAPICallOptions = {}
-): Promise<T & { error: unknown }> => {
-  return new Promise((resolve, reject) => {
+  {parser}: IAPICallOptions = {}
+): Promise<T & {error?: unknown}> => {
+  return new Promise((resolve, _reject) => {
     try {
       api?.fetch(
         data,
@@ -22,14 +22,14 @@ export const apiCallWrapper = <T = unknown>(
         (err: unknown) => {
           console.error(err);
           //@ts-ignore
-          resolve({ error: err });
+          resolve({error: err});
           //reject(err);
         }
       );
     } catch (err) {
       console.error(err);
       //@ts-ignore
-      resolve({ error: err });
+      resolve({error: err});
       //reject(err);
     }
   });
