@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
-import { CV_GRAY_DARK } from 'constant/CssVariables';
+import { CV_GRAY_DARK, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import TemplateInlineEdit from './TemplatesInlineEdit';
 import TemplateCreateNew from './TemplateCreateNew';
 import SaaSTemplateCard from './SaaSTemplateCard';
@@ -9,11 +9,19 @@ import { useContext, useState } from 'react';
 import { TemplateListContext } from '../TemplatesSettings';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import useWindowContext from 'hooks/useWindowContext';
+import { IoCheckmarkCircle } from 'react-icons/io5';
 
-const SaaSTemplateItem = ({ NodeTypeID, TypeName, Sub, isExpanded }) => {
+const SaaSTemplateItem = ({
+  NodeTypeID,
+  TypeName,
+  Sub,
+  isExpanded,
+  unCategorized,
+}) => {
   const { handleDeleteNode, handleAddNodeType } =
     useContext(TemplateListContext);
 
+  const [editMode, setEditMode] = useState(false);
   const [isOpen, setIsOpen] = useState(isExpanded);
 
   const { RV_RTL } = useWindowContext();
@@ -34,25 +42,44 @@ const SaaSTemplateItem = ({ NodeTypeID, TypeName, Sub, isExpanded }) => {
             dir={RV_RTL ? 'left' : 'right'}
           />
         </ArrowIconWrapper>
-        <TemplateInlineEdit
-          value={TypeName}
-          color={CV_GRAY_DARK}
-          fontSize={'1rem'}
-        />
-        <TemplateDeleteButton onDeleteConfirm={() => handleDelete()} />
+
+        {unCategorized && <NonEditingTitle>{TypeName}</NonEditingTitle>}
+
+        {!unCategorized && (
+          <TemplateInlineEdit
+            value={TypeName}
+            color={CV_GRAY_DARK}
+            onModeChange={(mode) => setEditMode(mode)}
+            fontSize={'1rem'}
+          >
+            {!unCategorized && !editMode && (
+              <TemplateDeleteButton onDeleteConfirm={() => handleDelete()} />
+            )}
+
+            {!unCategorized && editMode && (
+              <ConfirmButton onDeleteConfirm={() => handleDelete()}>
+                <IoCheckmarkCircle size={20} />
+              </ConfirmButton>
+            )}
+          </TemplateInlineEdit>
+        )}
       </ItemHead>
+
       <SubItems>
         {isOpen && (
           <Grid>
             {Sub?.map((x) => (
               <SaaSTemplateCard key={x?.NodeTypeID} {...x} />
             ))}
-            <TemplateCreateNew
-              parent={NodeTypeID}
-              isSaaS={true}
-              title={TypeName}
-              onSubmit={(value, parent) => handleAddNodeType(value, parent)}
-            />
+
+            {!unCategorized && (
+              <TemplateCreateNew
+                parent={NodeTypeID}
+                isSaaS={true}
+                title={TypeName}
+                onSubmit={(value, parent) => handleAddNodeType(value, parent)}
+              />
+            )}
           </Grid>
         )}
       </SubItems>
@@ -77,6 +104,16 @@ const ArrowIconWrapper = styled.div`
   ${FLEX_CCC};
 `;
 
+const ConfirmButton = styled.button`
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border-radius: 100%;
+  background-color: ${CV_WHITE};
+  color: ${TCV_DEFAULT};
+  margin: 0 2rem;
+  cursor: pointer;
+`;
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -94,6 +131,13 @@ const Grid = styled.div`
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
   }
+`;
+
+const NonEditingTitle = styled.div`
+  font-weight: 600;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  font-size: 1rem;
 `;
 
 const NodeIcon = styled(CaretIcon).attrs((props) => ({

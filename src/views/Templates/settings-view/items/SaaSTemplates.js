@@ -23,16 +23,13 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
       };
     })?.filter((x) => !x?.IsCategory && !x?.ParentID);
 
-    console.log(unCategorized);
-
-    console.log(_nodes);
-
     let list = [
       ..._nodes
         .filter((x) => x?.IsCategory)
         .map((x) => ({
           ...x,
           isExpanded: true,
+          unCategorized: false,
           Sub: _nodes.filter((l) => l?.ParentID === x?.NodeTypeID),
         })),
     ];
@@ -40,6 +37,7 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
       NodeTypeID: 'unCategorized',
       TypeName: 'غیر دسته‌بندی‌شده',
       isExpanded: false,
+      unCategorized: true,
       Sub: unCategorized,
     });
     setNodeList(list);
