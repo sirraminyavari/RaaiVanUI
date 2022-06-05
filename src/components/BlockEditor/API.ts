@@ -6,12 +6,12 @@ import type {
   ISortBlocks,
   ISaveHTMLContent,
 } from './BlockEditor.type';
-import {API_Provider} from 'helpers/helpers';
-import {apiCallWrapper} from 'apiHelper/ApiHandlers/apiCallHelpers';
+import { API_Provider } from 'helpers/helpers';
+import { apiCallWrapper } from 'apiHelper/ApiHandlers/apiCallHelpers';
 
-const {Base64} = window;
+const { Base64 } = window;
 
-export const getWikiBlocks: IGetWikiBlocks = async ({ownerId}) => {
+export const getWikiBlocks: IGetWikiBlocks = async ({ ownerId }) => {
   return await apiCallWrapper<IGetWikiBlock>(
     API_Provider('WikiAPI', 'GetWikiBlocks'),
     {
@@ -35,14 +35,17 @@ export const saveBlocks: ISaveBlocks = async ({
   });
 };
 
-export const removeBlocks: IRemoveBlocks = async ({ownerId, content} = {}) => {
+export const removeBlocks: IRemoveBlocks = async ({
+  ownerId,
+  content,
+} = {}) => {
   return await apiCallWrapper(API_Provider('WikiAPI', 'RemoveBlocks'), {
     OwnerID: ownerId,
     Content: Base64.encode(JSON.stringify(content || {})),
   });
 };
 
-export const sortBlocks: ISortBlocks = async ({ownerId, content} = {}) => {
+export const sortBlocks: ISortBlocks = async ({ ownerId, content } = {}) => {
   return await apiCallWrapper(API_Provider('WikiAPI', 'SortBlocks'), {
     OwnerID: ownerId,
     Content: Base64.encode(JSON.stringify(content || {})),
@@ -61,8 +64,8 @@ export const saveHTMLContent: ISaveHTMLContent = async ({
   });
 };
 
-export const suggestTags = async ({text = '', count = 10} = {}) => {
-  const result = await apiCallWrapper<{Items?: any[]}>(
+export const suggestTags = async ({ text = '', count = 10 } = {}) => {
+  const result = await apiCallWrapper<{ Items?: any[] }>(
     API_Provider('RVAPI', 'SuggestTags'),
     {
       SearchText: Base64.encode(text),

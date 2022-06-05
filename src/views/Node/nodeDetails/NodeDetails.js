@@ -3,7 +3,7 @@
  */
 
 import APIHandler from 'apiHelper/APIHandler';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 // import NodeView from '../Node-view';
 import Collector from './items/Collector';
 // import styled from 'styled-components';
@@ -14,12 +14,12 @@ export const PropsContext = React.createContext();
 const getNode = new APIHandler('CNAPI', 'GetNode');
 
 const NodeDetails = (props) => {
-  const {route} = props || {};
-  const {NodeID} = route || {};
+  const { route } = props || {};
+  const { NodeID } = route || {};
   const [nodeDetails, setNodeDetails] = useState(null);
 
   useEffect(() => {
-    getNode?.fetch({NodeID: NodeID}, (result) => {
+    getNode?.fetch({ NodeID: NodeID }, (result) => {
       setNodeDetails(result);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
