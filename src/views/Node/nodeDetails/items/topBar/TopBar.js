@@ -183,6 +183,7 @@ const TopBar = ({
                   {RVDic.RelatedNode}
                 </Styles.NodeTopBarRelatedTopicsTitle>
                 <LastTopicsTabs
+                  noAllTemplateButton
                   floatBox
                   provideNodes={onApplyNodeType && onApplyNodeType}
                   relatedNodes={relatedNodes}
