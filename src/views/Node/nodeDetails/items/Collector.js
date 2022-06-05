@@ -5,7 +5,7 @@ import {
   getFormInstance,
   initializeOwnerFormInstance,
 } from 'apiHelper/ApiHandlers/FGAPI';
-import React, {useState, lazy, Suspense, useEffect} from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import {
   Container,
@@ -27,7 +27,7 @@ const SideColumn = lazy(() =>
   )
 );
 
-const {RV_RTL, RV_RevFloat} = window;
+const { RV_RTL, RV_RevFloat } = window;
 /**
  *
  * @param {Component} children - the componet that renders inside AdvancedSearchComponent
@@ -46,7 +46,7 @@ const Collector = ({
 
   useEffect(() => {
     (async () => {
-      const {InstanceID} = await initializeOwnerFormInstance({
+      const { InstanceID } = await initializeOwnerFormInstance({
         OwnerID: nodeId,
       });
       const formInstance = await getFormInstance({
@@ -54,7 +54,7 @@ const Collector = ({
         LimitOwnerID: null,
         ShowAllIfNoLimit: true,
       });
-      console.log({formInstance});
+      console.log({ formInstance });
 
       setFields(formInstance);
     })();

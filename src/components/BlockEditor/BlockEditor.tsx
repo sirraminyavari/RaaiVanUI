@@ -1,18 +1,20 @@
-import {useLayoutEffect, useRef} from 'react';
-import {convertToRaw} from 'draft-js';
-import BlockEditor, {defaultTheme} from '@sirraminyavari/rv-block-editor';
+import { useLayoutEffect, useRef } from 'react';
+import { convertToRaw } from 'draft-js';
+import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
 import useAutoSave from './useAutoSave';
-import {dict} from './data';
+import { dict } from './data';
 import plugins from './plugins';
 import useWindow from 'hooks/useWindowContext';
 
-function BE({
+//TODO BlockEditorWrapper component needs review and refactor !!!
+
+function BlockEditorWrapper({
   editorState,
   setEditorState,
   handleSaveBlocks,
   // handleSaveRawHtmlContent,
 }) {
-  const {RV_Direction, RV_RTL} = useWindow();
+  const { RV_Direction, RV_RTL } = useWindow();
   const editorRef = useRef<HTMLElement>();
   useLayoutEffect(
     () => void setImmediate(() => editorRef.current?.focus()),
@@ -50,4 +52,7 @@ function BE({
     />
   );
 }
-export default BE;
+
+BlockEditorWrapper.displayName = 'BlockEditorWrapper';
+
+export default BlockEditorWrapper;
