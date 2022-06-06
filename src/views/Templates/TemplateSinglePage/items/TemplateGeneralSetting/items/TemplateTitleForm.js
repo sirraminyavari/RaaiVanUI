@@ -8,6 +8,7 @@ import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { useTemplateContext } from '../../../TemplateProvider';
 import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import { decodeBase64 } from 'helpers/helpers';
+import RxTextarea from 'components/Inputs/RxTextarea';
 
 const TemplateTitleForm = ({ name }) => {
   const { RVDic } = window;
@@ -53,6 +54,7 @@ const TemplateTitleForm = ({ name }) => {
       <TitleInput value={title} onChange={handleTitleChange} delayTime={1000} />
 
       <SubtitleInput
+        row="1"
         placeholder={'راهنمای تکمیل قالب'}
         value={subtitle}
         onChange={handleSubtitleChange}
@@ -69,7 +71,7 @@ const Container = styled.div`
 
 const TitleInput = styled(RxInput)`
   height: 2.75rem;
-  width: 18.75rem;
+  width: 36rem;
   outline: none;
   border: none;
   border-bottom: 1px solid ${CV_DISTANT};
@@ -78,8 +80,7 @@ const TitleInput = styled(RxInput)`
   font-size: 1.75rem;
 `;
 
-const SubtitleInput = styled(RxInput)`
-  height: 1.6rem;
+const SubtitleInput = styled(RxTextarea)`
   max-width: 48rem;
   width: 100%;
   outline: none;

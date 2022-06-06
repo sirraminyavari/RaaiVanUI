@@ -56,13 +56,6 @@ const FormBuilder = () => {
     <>
       <Styles.FormBuilderLayout rtl={rtl}>
         <Breadcrumb items={breadItems} />
-
-        <AnimatedTextArea
-          autoresize={true}
-          placeholder={'توضیحات'}
-          value={description}
-          onChange={(e) => setDescription(e?.target?.value)}
-        />
         <Droppable droppableId={FORM_BUILDER_ID}>
           {(provided) => (
             <DroppableContainer

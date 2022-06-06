@@ -1,4 +1,3 @@
-import EmojiCategoryList from './EmojiCategoryList';
 import { useEmojiContext } from '../EmojiContext';
 import styled from 'styled-components';
 import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';

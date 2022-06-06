@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import styled from 'styled-components';
-import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK, TCV_WARM } from 'constant/CssVariables';
 import { FLEX_RCA } from 'constant/StyledCommonCss';
 
 const TemplateInlineEdit = ({
   value,
   onConfirm,
-  color = TCV_WARM,
+  color = CV_GRAY_DARK,
   fontSize = '1rem',
   onModeChange,
   children,

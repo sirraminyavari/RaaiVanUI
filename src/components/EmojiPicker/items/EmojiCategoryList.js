@@ -8,11 +8,13 @@ import { useMemo } from 'react';
 
 const EmojiCategoryList = () => {
   const { selectedCategoryIndex } = useEmojiContext();
+
   const list = useMemo(
     () =>
       getEmojiType()?.map((x) => <EmojiCategoryItem key={x?.key} type={x} />),
     []
   );
+
   return (
     <Container shift={selectedCategoryIndex}>
       <EmojiRecent />
@@ -20,6 +22,7 @@ const EmojiCategoryList = () => {
     </Container>
   );
 };
+
 const Container = styled.div`
   height: 11rem;
   ${FLEX_RSS};

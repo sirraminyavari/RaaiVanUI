@@ -3,8 +3,11 @@ import { FLEX_CCC } from '../../../constant/StyledCommonCss';
 import { useEffect, useState } from 'react';
 import { getEmojis } from './emojis';
 import LoadingIconFlat from '../../Icons/LoadingIcons/LoadingIconFlat';
+import useLocalStorage from 'hooks/useLocalStorage';
+import { getUUID } from 'helpers/helpers';
 
 const EmojiCategoryItem = ({ type }) => {
+  const [storedValue, setValue] = useLocalStorage('RESENT_USED_EMOJIS', []);
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,12 +20,25 @@ const EmojiCategoryItem = ({ type }) => {
     loadActivities();
   }, []);
 
+  const handleEmojiClick = (emoji) => {
+    const filteredList = storedValue.filter((x) => x !== emoji);
+    filteredList.unshift(emoji);
+    if (setValue) {
+      setValue(filteredList);
+    }
+  };
+
   return (
     <GridWrapper>
       {!loading ? (
         <Grid>
           {list.map((x) => (
-            <EmojiContainer key={x?.id}>{x?.src}</EmojiContainer>
+            <EmojiContainer
+              onClick={() => handleEmojiClick(x?.title)}
+              key={x?.id}
+            >
+              {x?.src}
+            </EmojiContainer>
           ))}
         </Grid>
       ) : (
@@ -33,6 +49,7 @@ const EmojiCategoryItem = ({ type }) => {
     </GridWrapper>
   );
 };
+
 const GridWrapper = styled.div`
   height: 9rem;
   overflow: scroll;

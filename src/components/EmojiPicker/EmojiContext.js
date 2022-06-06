@@ -8,7 +8,7 @@ export const useEmojiContext = () => {
 };
 
 export const EmojiContextProvider = ({ children }) => {
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(1);
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
 
   const handleCategorySelect = (index) => {
     setSelectedCategoryIndex(index);
