@@ -8,7 +8,7 @@ declare module '*.svg?file' {
 interface Window {
   IsAuthenticated?: boolean;
   RVDic: { [key: string]: any };
-  RVGlobal: { [key: string]: any };
+  RVGlobal: { IsDev: boolean; [key: string]: any };
   RVAPI: { [key: string]: any };
   GlobalUtilities: { [key: string]: any };
   DynamicFileUtilities: unknown;

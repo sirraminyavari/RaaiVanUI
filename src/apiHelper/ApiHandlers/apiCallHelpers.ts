@@ -11,8 +11,8 @@ export const apiCallWrapper = <T = unknown>(
   api: any,
   data: any = {},
   { parser }: IAPICallOptions = {}
-): Promise<T & { error: unknown }> => {
-  return new Promise((resolve, reject) => {
+): Promise<T & { error?: unknown }> => {
+  return new Promise((resolve, _reject) => {
     try {
       api?.fetch(
         data,

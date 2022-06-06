@@ -223,6 +223,7 @@ const AdvanceSearchDesktop = ({
                   <LastTopicsTabs
                     provideNodes={onApplyNodeType && onApplyNodeType}
                     relatedNodes={relatedNodes}
+                    defaultChecked
                   />
                 )}
 

@@ -1,26 +1,10 @@
+import type { ILottieMaker } from 'components/LottieMaker/LottieMaker';
 import LottieMaker from 'components/LottieMaker/LottieMaker';
 
-interface EmptyStateType {
-  loop?: boolean;
-  width?: string;
-  height?: string;
-}
-function EmptyState({
-  loop = false,
-  width = '5rem',
-  height = 'auto',
-}: EmptyStateType): JSX.Element {
+function EmptyState(props: Omit<ILottieMaker, 'animationJSON'>): JSX.Element {
   const data = require('./item.json');
 
-  return (
-    <LottieMaker
-      animationJSON={data}
-      loop={loop}
-      autoplay={true}
-      width={width}
-      height={height}
-    />
-  );
+  return <LottieMaker animationJSON={data} autoplay {...props} />;
 }
 
 EmptyState.displayName = 'LottieEmptyState';

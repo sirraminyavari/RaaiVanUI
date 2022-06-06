@@ -226,7 +226,7 @@ export const setApplicationFieldOfExpertise = ({
 };
 
 //TODO needs review to complete api return types
-interface selectApplicationReturnType {
+interface ISelectApplication {
   AccessToken: string;
   AppID: string;
   IsSystemAdmin: boolean;
@@ -299,7 +299,7 @@ export const recoverApplication = ({
  * @description select application
  */
 export const selectApplication = (data: { ApplicationID: string }) => {
-  return apiCallWrapper<selectApplicationReturnType>(
+  return apiCallWrapper<ISelectApplication>(
     API_Provider(RV_API, SELECT_APPLICATION),
     data
   );

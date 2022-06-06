@@ -12,12 +12,11 @@ const OnboardingTeamCreationSetNameContent = () => {
   const { RVDic } = useWindow();
   const { isTabletOrMobile } = DimensionHelper();
 
-  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِYourTeamName = RVDic.TeamName;
   const RVDicِTeamName = RVDic.TeamName;
   const RVDicِTeamNameDescription =
-    '.برای تیمی که قصد ایجاد آن را دارید، یک نام وارد کنید';
+    RVDic.Checks.EnterANameForTheTeamYouWantToCreate;
 
   const setTeamName = (teamName) => {
     dispatchTeam({

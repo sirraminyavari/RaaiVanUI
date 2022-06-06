@@ -10,28 +10,30 @@ import {
 } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import {
   getAllFieldsOfActivity,
-  getAllFieldsOfActivityReturnType,
+  IGetAllFieldsOfActivity,
 } from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [workFields, setWorkFields] = useState<
-    getAllFieldsOfActivityReturnType['Items']
+    IGetAllFieldsOfActivity['Items']
   >([]);
   const workFieldInputRef = useRef<HTMLInputElement>();
 
   const { RVDic } = useWindow();
   const {
     dispatch: dispatchTeamPage,
-    teamState: { workField },
+    teamState: { workField, teamName },
   } = useOnboardingTeamContent();
 
-  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِTeamWorkFieldHeadCount = RVDic.FieldOfActivity;
   const RVDicِTeamWorkFieldHeadCountDescription =
-    'فعالیت **نام تیم** در سازمان شما در چه حوزه‌ای است؟';
+    RVDic.WhatIsTheFieldOfActivityOfTeamNInYourOrganization.replace(
+      '[n]',
+      teamName
+    );
   const RVDicOthersField = RVDic.Other;
   const RVDicOthersInputField = RVDic.Checks.EnterYourFieldOfActivity;
 

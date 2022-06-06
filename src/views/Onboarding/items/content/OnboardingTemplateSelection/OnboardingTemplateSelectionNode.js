@@ -3,16 +3,17 @@ import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import API from 'apiHelper';
 import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
-// import useWindow from 'hooks/useWindowContext';
+import useWindow from 'hooks/useWindowContext';
 import EmptyState from 'components/EmptyState/EmptyState';
 
+//TODO replace FormFill component with a labels only kind ...
+
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
-  // const { RVDic } = useWindow();
+  const { RVDic } = useWindow();
   const [templateNodeElements, setTemplateNodeElements] = useState(false);
 
-  //TODO update RVDic i18n
   //! RVDic i18n localization
-  const RVDicِNothingToDisplayTemplate = 'این تمپلیت فیلد قابل نمایشی ندارد!';
+  const RVDicِNothingToDisplayTemplate = RVDic.ThisTemplateHasNoFieldsToDisplay;
 
   useEffect(() => {
     (async () => {
@@ -21,7 +22,6 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
         NodeTypeID: activeTemplate?.NodeTypeID,
       });
       setTemplateNodeElements(formElements);
-      console.warn({ formElements, activeTemplate });
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTemplate?.NodeTypeID]);
@@ -36,7 +36,7 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
             ) : (
               <Styles.OnboardingTemplateSelectionNodeEmptyContainer>
                 <div>
-                  <EmptyState loop />
+                  <EmptyState keepLastFrame />
                   {RVDicِNothingToDisplayTemplate}
                 </div>
               </Styles.OnboardingTemplateSelectionNodeEmptyContainer>

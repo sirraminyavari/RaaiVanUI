@@ -143,6 +143,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
           showAll
           relatedNodes={relatedNodes}
           provideNodes={provideNodes}
+          defaultChecked
         />
       )}
       {isFetching ? (

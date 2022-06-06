@@ -12,14 +12,13 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
 
   const {
     dispatch: dispatchTeamPage,
-    teamState: { peopleCount },
+    teamState: { peopleCount, teamName },
   } = useOnboardingTeamContent();
 
-  //TODO update RVDic i18n
   //! RVDic i18n localization
   const RVDicِYourTeamHeadCount = RVDic.TeamSize;
   const RVDicِYourTeamHeadCountDescription =
-    'اندازه تیم **نام تیم** در سازمان شما چند نفر است؟';
+    RVDic.WhatIsTheSizeOfTeamNInYourOrganization.replace('[n]', teamName);
   const RVDicLessThan10People = RVDic.LessThanN.replace(
     '[n]',
     RVDic.NPeople.replace('[n]', 10)
