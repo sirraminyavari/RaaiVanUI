@@ -1,16 +1,22 @@
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useDispatch, useSelector } from 'react-redux';
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingTeamCreationSetNameContent = () => {
-  const { dispatch: dispatchTeam, teamState } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
   const { isTabletOrMobile } = DimensionHelper();
+
+  const dispatch = useDispatch();
+
+  const {
+    teamState: { teamName },
+  } = useSelector(selectOnboarding);
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   //! RVDic i18n localization
   const RVDicِYourTeamName = RVDic.TeamName;
@@ -19,11 +25,9 @@ const OnboardingTeamCreationSetNameContent = () => {
     RVDic.Checks.EnterANameForTheTeamYouWantToCreate;
 
   const setTeamName = (teamName) => {
-    dispatchTeam({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
-      stateKey: 'teamName',
-      stateValue: teamName,
-    });
+    dispatch(
+      onboardingActions.teamSetState({ key: 'teamName', value: teamName })
+    );
   };
 
   return (
@@ -39,7 +43,7 @@ const OnboardingTeamCreationSetNameContent = () => {
           <AnimatedInput
             //@ts-ignore
             style={{ fontSize: '1rem' }}
-            value={teamState.teamName}
+            value={teamName}
             onChange={setTeamName}
             placeholder={RVDicِTeamName}
           />

@@ -6,8 +6,9 @@ import API from 'apiHelper';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
 import { useHistory } from 'react-router-dom';
-import { toggleActivation } from 'store/reducers/onboardingReducer';
 import APIHandler from 'apiHelper/APIHandler';
+import { useDispatch } from 'react-redux';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const activateTemplate = async (x, appId) => {
   const res = await API.CN.getTemplateJSON({ NodeTypeID: x.id });
@@ -17,6 +18,10 @@ const activateTemplate = async (x, appId) => {
 const FinalStep = () => {
   const { info, dispatch } = useContext(StepperContext);
   const history = useHistory();
+
+  const reduxDispatch = useDispatch();
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   useEffect(() => {
     let delay = undefined;
@@ -50,7 +55,7 @@ const FinalStep = () => {
       { data: encode(finish_on_start) },
       (res) => {
         // redirect to clickmind workspace
-        dispatch(toggleActivation());
+        reduxDispatch(onboardingActions.toggleActivation());
         history.push(RVAPI?.ClassesPageURL());
       }
     );

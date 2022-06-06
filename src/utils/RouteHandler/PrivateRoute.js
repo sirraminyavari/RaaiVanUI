@@ -5,9 +5,10 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { LOGIN_PATH } from 'constant/constants';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector(selectAuth);
 
   return (
     <Route

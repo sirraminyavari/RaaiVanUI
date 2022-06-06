@@ -2,17 +2,17 @@ import { SAVE_USER_SETTINGS_ITEM, USERS_API } from 'constant/apiConstants';
 import { API_Provider } from 'helpers/helpers';
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  onboardingName,
-  setNewDocMenu,
-  toggleActivation,
-} from 'store/reducers/onboardingReducer';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 import * as Style from './styled';
 
 const saveUserSettingsItem = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
 
 const TourBox = ({ goTo, current, total, guidance }) => {
   const dispatch = useDispatch();
+
+  const {
+    actions: { onboardingName, setNewDocMenu },
+  } = useOnboardingSlice();
 
   useEffect(() => {
     if (current === 2) {

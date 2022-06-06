@@ -10,16 +10,12 @@ import Button from 'components/Buttons/Button';
 import API from 'apiHelper';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { useDispatch } from 'react-redux';
-import { setOnboardingTemplates } from 'store/reducers/onboardingReducer';
-import { themeSlice } from 'store/reducers/themeReducer';
-const { toggleSidebar } = themeSlice.actions;
+import { useDispatch, useSelector } from 'react-redux';
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import { useThemeSlice } from 'store/slice/theme';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
@@ -28,17 +24,21 @@ const OnboardingTemplateSelectionContent = () => {
   const [isSelectedModalShown, setIsSelectedModalShown] = useState(false);
   const { RVDic } = useWindow();
   const history = useHistory();
-  const reduxDispatch = useDispatch();
   const { isTabletOrMobile } = DimensionHelper();
+
+  const dispatch = useDispatch();
+
   const {
-    dispatch,
     disableContinue,
     selectedTemplates,
     teamState: { workField },
-  } = useOnboardingTeamContent();
+  } = useSelector(selectOnboarding);
+
+  const { actions: onboardingActions } = useOnboardingSlice();
+  const { actions: themeActions } = useThemeSlice();
 
   useEffect(() => {
-    reduxDispatch(toggleSidebar(false));
+    dispatch(themeActions.toggleSidebar(false));
     const templateTagID =
       workField.fieldID !== 'OTHERS' ? workField?.fieldID : undefined;
     (async () => {
@@ -68,7 +68,7 @@ const OnboardingTemplateSelectionContent = () => {
   }, []);
 
   const gotoTemplateSetup = () => {
-    reduxDispatch(setOnboardingTemplates(selectedTemplateArray));
+    dispatch(onboardingActions.setOnboardingTemplates(selectedTemplateArray));
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 
@@ -84,10 +84,9 @@ const OnboardingTemplateSelectionContent = () => {
         ...restTemplateProps,
       };
     });
-    await dispatch({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE,
-      stateValue: defaultTemplatesObject,
-    });
+
+    dispatch(onboardingActions.setTeamDefaultTemplate(defaultTemplatesObject));
+
     const defaultSelectedTemplateArray = Object.values(
       defaultTemplatesObject
     ).map(({ NodeTypeID, IconURL, TypeName }) => ({
@@ -95,7 +94,11 @@ const OnboardingTemplateSelectionContent = () => {
       IconURL,
       TypeName,
     }));
-    reduxDispatch(setOnboardingTemplates(defaultSelectedTemplateArray));
+
+    dispatch(
+      onboardingActions.setOnboardingTemplates(defaultSelectedTemplateArray)
+    );
+
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 

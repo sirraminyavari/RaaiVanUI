@@ -1,12 +1,11 @@
 import Modal from 'components/Modal/Modal';
 import useWindow from 'hooks/useWindowContext';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import * as Styled from './OnboardingTemplateSelection.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const OnboardingTemplateSelectionSelectedModal = ({
   appTitle,
@@ -14,17 +13,19 @@ const OnboardingTemplateSelectionSelectedModal = ({
   setIsModalShown,
   templates,
 }) => {
-  const { selectedTemplates, dispatch } = useOnboardingTeamContent();
   const { RVDic } = useWindow();
+
+  const dispatch = useDispatch();
+
+  const { selectedTemplates } = useSelector(selectOnboarding);
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   //! RVDic i18n localization
   const RVDicOnboardingDeselectTemplate = RVDic.Unselect;
 
   const deselectTemplateHandler = (template) => {
-    dispatch({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_REMOVE_TEMPLATE,
-      stateKey: template.NodeTypeID,
-    });
+    dispatch(onboardingActions.teamRemoveTemplate({ id: template.NodeTypeID }));
+
     if (Object.keys(selectedTemplates).length === 1) setIsModalShown(false);
   };
 

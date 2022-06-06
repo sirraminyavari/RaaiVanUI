@@ -5,6 +5,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { InjectedReducersType } from 'utils/types/injector-typings';
 
+const VERSION_REDUCER_KEY = 'raaivanVersion';
+
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
@@ -14,6 +16,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
     return (state) => state;
   } else {
     return combineReducers({
+      [VERSION_REDUCER_KEY]: (state = {}) => state,
       ...injectedReducers,
     });
   }

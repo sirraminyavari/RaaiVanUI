@@ -65,6 +65,10 @@ const slice = createSlice({
     setSidebarPattern: (state: IThemeState, action: PayloadAction<any>) => {
       state.hasSidebarPattern = action.payload;
     },
+    setSidebarVisibility: (state: IThemeState, action) => {
+      if (action.payload === 'hidden') state.hideSidebar = true;
+      else state.hideSidebar = false;
+    },
   },
 });
 

@@ -28,6 +28,8 @@ export interface IThemeState {
   isDarkMode: boolean;
   hasSidebarPattern: boolean;
   hasSidebar: boolean;
+  //! hide sidebar view completely
+  hideSidebar: boolean;
 }
 
 export const EmptyThemeState: IThemeState = {
@@ -48,4 +50,5 @@ export const EmptyThemeState: IThemeState = {
   isDarkMode: false,
   hasSidebarPattern: true,
   hasSidebar: false,
+  hideSidebar: false,
 };

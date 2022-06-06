@@ -1,75 +1,45 @@
-import { useMemo } from 'react';
 import * as Styles from './OnboardingTeam.styles';
 import useWindow from 'hooks/useWindowContext';
 import Stepper from 'components/Stepper/Stepper';
 import TransitionSwitchWrapper from 'utils/RouteHandler/TransitionSwitchWrapper';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import Button from 'components/Buttons/Button';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingTeamContent = () => {
   const { RVDic } = useWindow();
   const { isTabletOrMobile } = DimensionHelper();
+
+  const dispatch = useDispatch();
+
   const {
     ContentComponent,
     BannerComponent,
     stepsCount,
     activeStep,
-    nextStepAction,
     disableContinue,
-    apiCall,
     loading,
-    dispatch,
-    teamState,
-  } = useOnboardingTeamContent();
+  } = useSelector(selectOnboarding);
 
-  const goToStep = async (stepActionType) => {
-    dispatch({ type: stepActionType });
-  };
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   const StepArguments = [
     {
-      onClick: () =>
-        goToStep(
-          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_NAME
-        ),
+      onClick: () => dispatch(onboardingActions.teamSetName()),
     },
     {
-      onClick: () =>
-        goToStep(
-          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_PEOPLE_COUNT
-        ),
+      onClick: () => dispatch(onboardingActions.teamSetPeopleCount()),
     },
     {
-      onClick: () =>
-        goToStep(
-          OnboardingTeamStepContextActions.ONBOARDING_TEAM_CREATION_SET_WORK_FIELD
-        ),
+      onClick: () => dispatch(onboardingActions.teamSetWorkField()),
     },
   ];
 
-  const goToNextStep = useMemo(
-    () => async () => {
-      dispatch({
-        type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_LOADING,
-        stateKey: 'loading',
-        stateValue: true,
-      });
-
-      try {
-        if (apiCall) await apiCall({ dispatch, teamState });
-        dispatch({ type: nextStepAction });
-      } catch (error) {
-        alert(error);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nextStepAction, teamState]
-  );
+  const goToNextStep = () =>
+    dispatch(onboardingActions.goToNextOnboardingStep());
 
   //! RVDic i18n localization
   const RVDicSaveAndNext = RVDic.SaveAndNext;
