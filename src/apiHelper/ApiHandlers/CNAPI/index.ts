@@ -264,6 +264,19 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
   });
 };
 
+export const setAvatar = ({
+  ID,
+  AvatarName,
+}: {
+  ID: string;
+  AvatarName: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'SetAvatar'), {
+    ID,
+    AvatarName,
+  });
+};
+
 //TODO needs review to complete api return types
 export interface IGetAllFieldsOfActivity {
   Items: {

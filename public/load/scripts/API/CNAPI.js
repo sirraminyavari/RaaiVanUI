@@ -1142,6 +1142,15 @@
         return CNAPI._send(url, params, queryString);
     },
 
+    SetAvatar: function (params) {
+        params = params || {};
+
+        var url = CNAPI.ResponseURL + "/SetAvatar?timeStamp=" + new Date().getTime();
+        var queryString = (params.ID ? "&ID=" + params.ID : "") +
+            (params.AvatarName ? "&AvatarName=" + params.AvatarName : "");
+        return CNAPI._send(url, params, queryString);
+    },
+
     /* Service */
 
     GetService: function (params) {

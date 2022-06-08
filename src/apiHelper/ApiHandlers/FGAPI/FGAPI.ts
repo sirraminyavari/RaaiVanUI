@@ -153,6 +153,7 @@ export const getFormInstance = ({
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customizedElements = {
   'short text': {
     Type: 'Text',
