@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePagination, useTable } from 'react-table';
+import { usePagination, useTable } from '@cliqmind/react-table';
 import * as Styled from './MyTbl.stles';
 import { useHistory } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';

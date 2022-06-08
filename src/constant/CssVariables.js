@@ -16,13 +16,12 @@ export const TCV_DEFAULT = 'var(--rv-color)';
  */
 export const TCV_VERY_TRANSPARENT = 'var(--rv-color-verytransparent)';
 
-//TODO needs to be replaced with right css variable ...
 /**
  * @description Css variable
  * @mode Theme
- * @color (#2B7BE411)
+ * @color (#2b7be40d)
  */
-export const TCV_HIGHLY_TRANSPARENT_WARM = '#2B7BE411';
+export const TCV_HIGHLY_TRANSPARENT = 'var(--rv-color-highlytransparent)';
 /**
  * @description Css variable
  * @mode Theme
