@@ -3,7 +3,7 @@ import { getUUID } from 'helpers/helpers';
 import formElementList from './items/FormElements';
 import produce from 'immer';
 import { getElementType } from './elementSettingComponents/ElementTypeFinder';
-import { saveFormElements } from 'apiHelper/ApiHandlers/FGAPI';
+import { saveFormElements } from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
 import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
 
 const TemplateFormContext = createContext({});

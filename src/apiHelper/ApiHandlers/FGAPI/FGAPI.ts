@@ -11,7 +11,7 @@ import {
   encodeBase64,
   extend,
 } from 'helpers/helpers';
-import { apiCallWrapper } from './apiCallHelpers';
+import { apiCallWrapper } from '../apiCallHelpers';
 
 /**
  * @description gets the elements of a form
