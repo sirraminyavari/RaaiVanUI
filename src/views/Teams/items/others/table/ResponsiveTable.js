@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTable } from 'react-table';
+import { useTable } from '@cliqmind/react-table';
 
 //TODO add jsDoc and PropTypes
 const ResponsiveTable = ({ data, columns }) => {
