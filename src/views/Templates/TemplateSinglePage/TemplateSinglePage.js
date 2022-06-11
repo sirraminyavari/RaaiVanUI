@@ -47,7 +47,7 @@ const TemplateSinglePage = () => {
   );
 
   const itemSettings = lazy(() =>
-    import('./items/TemplateItemsSettings/TemplateItemSettings')
+    import('./items/TemplateItemsSettings/TemplateItemSettings.tsx')
   );
 
   useEffect(() => {

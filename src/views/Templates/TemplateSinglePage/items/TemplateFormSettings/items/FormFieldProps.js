@@ -63,7 +63,7 @@ const FieldWrapper = styled.div`
 const SimpleInput = styled.input`
   outline: none;
   border: none;
-  border-bottom: 0.0625rem solid ${CV_DISTANT};
+  border-bottom: 0.0625rem solid '#E6F4F1';
   color: ${CV_GRAY};
   width: 100%;
 `;

@@ -23,6 +23,7 @@ const MultipleSelectInput = ({
         <CheckboxSymbol />
         <Styled.OptionTextInput
           value={decodeBase64(option?.text)}
+          placeholder={`گزینه ${index + 1}`}
           onChange={(e) =>
             handleOptionTextChange(encodeBase64(e?.target.value), index)
           }
