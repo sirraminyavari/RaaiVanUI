@@ -234,10 +234,9 @@ export const TableColumnResizer = styled.div`
   height: 100%;
   border-radius: 15%;
   position: absolute;
-  ${RV_Float}: -0.13rem;
+  inset-inline-end: -0.1rem;
   top: 0;
-  // transform: translateX(-50%);
-  // z-index: 1;
+  z-index: 1;
   //! prevents from scrolling while dragging on touch devices
   touch-action: none;
   ${({ isResizing }) => isResizing && 'background: black;'}

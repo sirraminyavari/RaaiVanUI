@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import TabItem from './TabItem';
 import Button from 'components/Buttons/Button';
-import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
+import { USER_MORE_RELATED_TOPICS_PATH, USER_PATH } from 'constant/constants';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
 const DEFAULT_TAB = 'all-classes';
@@ -14,6 +14,8 @@ const LastTopicsTabs = ({
   showAll,
   relatedTopicsLink,
   floatBox,
+  defaultChecked = false,
+  noAllTemplateButton = false,
 } = {}) => {
   const getAllNodeTypeIds = () =>
     showAll
@@ -21,10 +23,13 @@ const LastTopicsTabs = ({
       : relatedNodes?.NodeTypes?.map((nodeType) => nodeType?.NodeTypeID);
 
   const [isMoreShown, setIsMoreShown] = useState(false);
-  const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
+  const [activeTab, setActiveTab] = useState(
+    defaultChecked ? DEFAULT_TAB : undefined
+  );
   const [nodeTypeIds, setNodeTypeIds] = useState(getAllNodeTypeIds());
 
   const location = useLocation();
+  const history = useHistory();
 
   const isRelatedPage = location.pathname.includes(
     USER_MORE_RELATED_TOPICS_PATH
@@ -57,6 +62,9 @@ const LastTopicsTabs = ({
   };
 
   const handleItemClick = (item) => {
+    if (!location.pathname.startsWith(USER_PATH)) {
+      history.push(USER_PATH);
+    }
     setActiveTab(item?.NodeTypeID);
     setNodeTypeIds([item?.NodeTypeID]);
   };
@@ -70,12 +78,14 @@ const LastTopicsTabs = ({
     <ScrollBarProvider style={{ paddingBottom: '0.5rem', width: '100%' }}>
       <Styled.TopicsTabsContainer>
         <Styled.TabsContainer>
-          <TabItem
-            item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
-            isActive={activeTab === DEFAULT_TAB}
-            noImage
-            onTabClick={handleClickAll}
-          />
+          {!noAllTemplateButton && (
+            <TabItem
+              item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
+              isActive={activeTab === DEFAULT_TAB}
+              noImage
+              onTabClick={handleClickAll}
+            />
+          )}
           {sortedNodes
             ?.filter((itm, ind) => ind <= 2)
             .map((item, index) => (

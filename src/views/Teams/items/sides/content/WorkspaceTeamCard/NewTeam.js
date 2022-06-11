@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from './WorkspaceTeamCard.styles';
 import * as GlobalStyled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
-import CreateModal from 'components/Modal/types/create/CreateModal';
-import { createApplication } from 'store/actions/applications/ApplicationsAction';
+// import CreateModal from 'components/Modal/types/create/CreateModal';
+// import { createApplication } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 import { useHistory } from 'react-router-dom';
 import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
 
+//TODO remove commented code after functionality testings ...
 const NewTeam = ({ WorkspaceID }) => {
-  const [isModalShown, setIsModalShown] = useState(false);
-  const [teamName, setTeamName] = useState('');
+  // const [isModalShown, setIsModalShown] = useState(false);
+  // const [teamName, setTeamName] = useState('');
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { RV_RevFloat, RV_Float, RVDic } = useWindow();
   const isMobileScreen = useMediaQuery({
     query: '(max-width: 970px)',
@@ -28,29 +29,29 @@ const NewTeam = ({ WorkspaceID }) => {
   };
 
   //! Close modal and cancel add team proccess.
-  const handleCancelCreate = () => {
-    setIsModalShown(false);
-    setTeamName('');
-  };
+  // const handleCancelCreate = () => {
+  //   setIsModalShown(false);
+  //   setTeamName('');
+  // };
 
-  const handleInputChange = (inputValue) => {
-    setTeamName(inputValue);
-  };
+  // const handleInputChange = (inputValue) => {
+  //   setTeamName(inputValue);
+  // };
 
   //! Add team and call api.
-  const handleTeamCreate = () => {
-    if (!!teamName) {
-      dispatch(createApplication(teamName, WorkspaceID, console.log));
-      setIsModalShown(false);
-    }
-  };
+  // const handleTeamCreate = () => {
+  //   if (!!teamName) {
+  //     dispatch(createApplication(teamName, WorkspaceID, console.log));
+  //     setIsModalShown(false);
+  //   }
+  // };
 
   const createNewTeamTitle = RVDic.CreateN.replace(
     '[n]',
     RVDic.NewN.replace('[n]', RVDic.Team)
   );
 
-  const newTeamName = RVDic.NewN.replace('[n]', RVDic.TeamName);
+  // const newTeamName = RVDic.NewN.replace('[n]', RVDic.TeamName);
 
   return (
     <GlobalStyled.TeamContainer
@@ -61,7 +62,7 @@ const NewTeam = ({ WorkspaceID }) => {
       onClick={handleAddTeam}
       style={{ cursor: 'pointer' }}
     >
-      <CreateModal
+      {/* <CreateModal
         isOpen={isModalShown}
         onInputChange={handleInputChange}
         inputValue={teamName}
@@ -70,7 +71,7 @@ const NewTeam = ({ WorkspaceID }) => {
         modalTitle={createNewTeamTitle}
         modalWidth="35%"
         placeholder={newTeamName}
-      />
+      /> */}
       <Styled.NewTeamWrapper>
         <PlusIcon size={40} />
         <Styled.NewTeamLabel>

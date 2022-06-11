@@ -10,6 +10,7 @@ export const onboardingSlice = createSlice({
     active: false,
     teamName: undefined,
     templates: [],
+    showProductTour: true,
   },
   reducers: {
     onboardingName: (state, action) => {
@@ -23,10 +24,13 @@ export const onboardingSlice = createSlice({
     },
     toggleActivation: (state) => {
       console.log(state, '***** state *****');
-      state.active = !state.active;
+      if (state.showProductTour) state.active = !state.active;
     },
     setOnboardingTeamName: (state, action) => {
       state.teamName = action.payload;
+    },
+    setOnboardingProductTourStatus: (state, action) => {
+      state.showProductTour = action.payload;
     },
     setOnboardingTemplates: (state, action) => {
       console.log({ action });
@@ -49,6 +53,7 @@ export const {
   setOnboardingTeamName,
   setOnboardingTemplates,
   setOnboardingTemplateStatusCompleted,
+  setOnboardingProductTourStatus,
 } = onboardingSlice.actions;
 
 export default onboardingSlice.reducer;

@@ -18,6 +18,8 @@ import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/co
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useDispatch } from 'react-redux';
 import { setOnboardingTemplates } from 'store/reducers/onboardingReducer';
+import { themeSlice } from 'store/reducers/themeReducer';
+const { toggleSidebar } = themeSlice.actions;
 
 const OnboardingTemplateSelectionContent = () => {
   const [templates, setTemplates] = useState([]);
@@ -27,7 +29,7 @@ const OnboardingTemplateSelectionContent = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const reduxDispatch = useDispatch();
-  const { isTabletOrMobile, isMobile } = DimensionHelper();
+  const { isTabletOrMobile } = DimensionHelper();
   const {
     dispatch,
     disableContinue,
@@ -36,6 +38,7 @@ const OnboardingTemplateSelectionContent = () => {
   } = useOnboardingTeamContent();
 
   useEffect(() => {
+    reduxDispatch(toggleSidebar(false));
     const templateTagID =
       workField.fieldID !== 'OTHERS' ? workField?.fieldID : undefined;
     (async () => {
@@ -69,7 +72,7 @@ const OnboardingTemplateSelectionContent = () => {
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 
-  const setDefaultTemplates = () => {
+  const setDefaultTemplates = async () => {
     const defaultTemplates = templates.AllTemplates.filter(
       (template) => template.IsDefaultTemplate
     );
@@ -81,10 +84,19 @@ const OnboardingTemplateSelectionContent = () => {
         ...restTemplateProps,
       };
     });
-    dispatch({
+    await dispatch({
       type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_DEFAULT_TEMPLATE,
       stateValue: defaultTemplatesObject,
     });
+    const defaultSelectedTemplateArray = Object.values(
+      defaultTemplatesObject
+    ).map(({ NodeTypeID, IconURL, TypeName }) => ({
+      NodeTypeID,
+      IconURL,
+      TypeName,
+    }));
+    reduxDispatch(setOnboardingTemplates(defaultSelectedTemplateArray));
+    history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 
   const selectedTemplateCount = useMemo(() => {
@@ -122,11 +134,7 @@ const OnboardingTemplateSelectionContent = () => {
           <OnboardingTemplateSelectionCurrentTemplate
             activeTemplate={activateTemplate}
           />
-          {!isMobile && (
-            <OnboardingTemplateSelectionNode
-              activeTemplate={activateTemplate}
-            />
-          )}
+          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
         </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={
@@ -139,7 +147,7 @@ const OnboardingTemplateSelectionContent = () => {
         />
         <Styles.OnboardingTemplateSelectionButtonWrapper>
           <Button
-            style={{ paddingInline: '3rem', height: '3rem' }}
+            style={{ paddingInline: '3rem' }}
             disable={disableContinue}
             onClick={gotoTemplateSetup}
           >
@@ -155,7 +163,7 @@ const OnboardingTemplateSelectionContent = () => {
             </>
           ) : (
             <Button
-              style={{ paddingInline: '1rem', height: '3rem' }}
+              style={{ paddingInline: '1rem' }}
               type="primary-o"
               onClick={setDefaultTemplates}
             >
@@ -166,9 +174,7 @@ const OnboardingTemplateSelectionContent = () => {
             appTitle={`${selectedTemplateCount} ${RVDicSelectedTemplates}`}
             isModalShown={isSelectedModalShown}
             setIsModalShown={setIsSelectedModalShown}
-            templates={
-              activeTag ? activeTag.Templates : templates?.AllTemplates
-            }
+            templates={templates?.AllTemplates}
           />
         </Styles.OnboardingTemplateSelectionButtonWrapper>
       </div>

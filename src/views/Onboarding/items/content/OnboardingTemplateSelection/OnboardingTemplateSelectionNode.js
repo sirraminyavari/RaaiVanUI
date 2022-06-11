@@ -3,9 +3,17 @@ import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNAPI';
 import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
+import useWindow from 'hooks/useWindowContext';
+import EmptyState from 'components/EmptyState/EmptyState';
+
+//TODO replace FormFill component with a labels only kind ...
 
 const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
+  const { RVDic } = useWindow();
   const [templateNodeElements, setTemplateNodeElements] = useState(false);
+
+  //! RVDic i18n localization
+  const RVDicِNothingToDisplayTemplate = RVDic.ThisTemplateHasNoFieldsToDisplay;
 
   useEffect(() => {
     (async () => {
@@ -14,7 +22,6 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
         NodeTypeID: activeTemplate?.NodeTypeID,
       });
       setTemplateNodeElements(formElements);
-      console.warn({ formElements, activeTemplate });
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTemplate?.NodeTypeID]);
@@ -23,7 +30,18 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
     <div>
       <Styles.OnboardingTemplateSelectionNodeContainer>
         {templateNodeElements ? (
-          <FormFill data={templateNodeElements} editable />
+          <>
+            {templateNodeElements?.Elements?.length ? (
+              <FormFill data={templateNodeElements} editable />
+            ) : (
+              <Styles.OnboardingTemplateSelectionNodeEmptyContainer>
+                <div>
+                  <EmptyState keepLastFrame />
+                  {RVDicِNothingToDisplayTemplate}
+                </div>
+              </Styles.OnboardingTemplateSelectionNodeEmptyContainer>
+            )}
+          </>
         ) : (
           <FieldsLoadingSkelton />
         )}

@@ -142,7 +142,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               editModeVisible={false}
               title={RVDic.Summary}
               style={{ display: 'flex', flexGrow: 1 }}
-              iconComponent={<TextIcon color={CV_GRAY} />}
+              iconComponent={<TextIcon rightSided color={CV_GRAY} />}
             >
               {nodeDetails?.Name?.Editable ? (
                 <Input

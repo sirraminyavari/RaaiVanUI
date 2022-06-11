@@ -18,6 +18,7 @@ import {
   API_NAME_CN_RENAME_NODE_TYPE,
 } from 'constant/api-names-cn';
 import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
+import { IGetChildNodesRequest, IGetNodesRequest } from './types';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
@@ -149,10 +150,40 @@ export const removeMember = (NodeID, UserID) => {
   });
 };
 
-export const addNode = (Name, NodeTypeID) => {
+export const getNodes = (params: IGetNodesRequest) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetNodes'), {
+    ...params,
+    NodeIDs: (params.NodeIDs || []).join('|'),
+    NodeTypeIDs: (params.NodeTypeIDs || []).join('|'),
+    RelatedToIDs: (params.RelatedToIDs || []).join('|'),
+    CreatorUserIDs: (params.CreatorUserIDs || []).join('|'),
+    FormFilters: !params.FormFilters
+      ? undefined
+      : encodeBase64(JSON.stringify(params.FormFilters)),
+    SearchText: encodeBase64(params.SearchText || ''),
+  });
+};
+
+export const getChildNodes = (params: IGetChildNodesRequest) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetNodes'), {
+    ...params,
+    SearchText: encodeBase64(params.SearchText || ''),
+  });
+};
+
+export const addNode = ({
+  Name,
+  NodeTypeID,
+  ParentNodeID,
+}: {
+  Name: string;
+  NodeTypeID: string;
+  ParentNodeID?: string;
+}) => {
   return apiCallWrapper(API_Provider(CN_API, 'AddNode'), {
     NodeTypeID,
     Name: encodeBase64(Name),
+    ParentNodeID,
   });
 };
 
@@ -160,6 +191,19 @@ export const modifyNodeName = (Name, NodeID) => {
   return apiCallWrapper(API_Provider(CN_API, 'ModifyNodeName'), {
     NodeID,
     Name: encodeBase64(Name),
+  });
+};
+
+export const moveNode = ({
+  NodeIDs,
+  ParentID,
+}: {
+  NodeIDs: string[];
+  ParentID?: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'MoveNode'), {
+    NodeIDs: NodeIDs.join('|'),
+    ParentNodeID: ParentID,
   });
 };
 
@@ -220,11 +264,33 @@ export const moveNodeType = ({ NodeTypeID, ParentID }) => {
   });
 };
 
+export const setAvatar = ({
+  ID,
+  AvatarName,
+}: {
+  ID: string;
+  AvatarName: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'SetAvatar'), {
+    ID,
+    AvatarName,
+  });
+};
+
+//TODO needs review to complete api return types
+export interface IGetAllFieldsOfActivity {
+  Items: {
+    NodeID: string;
+    Name: string;
+    AvatarName: string;
+  }[];
+}
+
 /**
  * @description fetches all fields of activity
  */
 export const getAllFieldsOfActivity = () => {
-  return apiCallWrapper(
+  return apiCallWrapper<IGetAllFieldsOfActivity>(
     API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
     {}
   );

@@ -83,20 +83,26 @@ const OnboardingTeamContent = () => {
             centerize={[3, null].includes(stepsCount)}
             noFullHeight
             noOutline
+            singleColumn={isTabletOrMobile}
             style={{
               width: '100%',
               marginBlockStart: 0,
               minHeight: 'calc(100vh - 15rem)',
+              ...(isTabletOrMobile
+                ? {}
+                : {
+                    flexDirection: 'row-reverse',
+                  }),
             }}
           >
+            {BannerComponent && (
+              <>
+                <BannerComponent sticky={!isTabletOrMobile} />
+              </>
+            )}
             {ContentComponent && (
               <>
                 <ContentComponent />
-              </>
-            )}
-            {BannerComponent && !isTabletOrMobile && (
-              <>
-                <BannerComponent />
               </>
             )}
           </WelcomeLayout>

@@ -126,7 +126,7 @@ const Creators = ({ creatorsList, nodeDetails }) => {
                         alignItems: 'center',
                       }}
                     >
-                      <Profile src={avatarUrl} />
+                      <Profile small src={avatarUrl} />
                       <ProducerName className="rv-gray">
                         {name.length > 20
                           ? `${name.substring(0, 20)}...`
@@ -166,8 +166,9 @@ const Maintainer = styled.div`
   cursor: pointer;
 `;
 const Profile = styled.img`
-  width: 2.1rem;
-  height: 2.1rem;
+  ${({ small }) => `width: ${small ? '2.1rem' : '2.6rem'};`}
+
+  aspect-ratio: 1;
   border-radius: 1.5rem;
 
   border-width: 0.09rem;

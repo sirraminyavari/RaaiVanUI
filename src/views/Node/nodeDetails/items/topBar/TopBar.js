@@ -164,7 +164,7 @@ const TopBar = ({
                 {bookmarkStatus === 'liked' ? (
                   <>
                     <FilledBookmarkIcon className={'rv-default rv-white'} />
-                    {RVDic.Bookmark}
+                    {RVDic.Bookmarked}
                   </>
                 ) : (
                   <>
@@ -183,6 +183,7 @@ const TopBar = ({
                   {RVDic.RelatedNode}
                 </Styles.NodeTopBarRelatedTopicsTitle>
                 <LastTopicsTabs
+                  noAllTemplateButton
                   floatBox
                   provideNodes={onApplyNodeType && onApplyNodeType}
                   relatedNodes={relatedNodes}
