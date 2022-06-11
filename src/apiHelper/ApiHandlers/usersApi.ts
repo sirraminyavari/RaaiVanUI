@@ -28,11 +28,11 @@ import {
 } from 'constant/api-names-users';
 import { apiCallWrapper } from './apiCallHelpers';
 
-declare global {
-  interface Window {
-    GlobalUtilities: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     GlobalUtilities: any;
+//   }
+// }
 
 const { GlobalUtilities } = window;
 const reqParams = GlobalUtilities.request_params();

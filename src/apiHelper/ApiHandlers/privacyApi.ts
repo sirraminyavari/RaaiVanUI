@@ -6,11 +6,11 @@ import {
   API_NAME_PRVC_SET_AUDIENCE,
 } from 'constant/api-names-privacy';
 
-declare global {
-  interface Window {
-    RVGlobal?: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     RVGlobal?: any;
+//   }
+// }
 
 export const checkAuthority = () => {
   const roles = (window?.RVGlobal?.AccessRoles || []).map((r) => r.Name);
