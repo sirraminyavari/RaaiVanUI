@@ -1,5 +1,5 @@
 import * as Styles from './TemplateItemSettingStyles';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useTemplateContext } from '../../TemplateProvider';
 import api from 'apiHelper';
 import { decodeBase64 } from 'helpers/helpers';
@@ -12,8 +12,8 @@ import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
 import TemplateItemSettingListItem from './items/TemplateItemSettingListItem';
 import { ScrollProvider } from 'views/Node/nodeDetails/NodeDetails.style';
 import TemplateItemSettingAddNew from './items/TemplateItemSettingAddNode';
-import { StyledAnimatedInput } from 'views/AdminPanel/PanelsView/Users/items/invitation/InvitaionStyle';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import { CSSTransition } from 'react-transition-group';
 
 const TemplateItemSettings = () => {
   const { RVDic } = window;
@@ -47,7 +47,8 @@ const TemplateItemSettings = () => {
     LowerBoundary: 1,
     Count: 10,
   });
-  const [createNewNode, setCreateNewNode] = useState(true);
+  const [createNewNode, setCreateNewNode] = useState(false);
+  const createNodeEl = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,7 +99,7 @@ const TemplateItemSettings = () => {
           <Styles.Spacer />
 
           {!nodesQuery?.Archive && (
-            <Styles.CreateNodeButton>
+            <Styles.CreateNodeButton onClick={() => setCreateNewNode(true)}>
               <HiLightningBolt size={20} />
               <div>{'سند مارکتینگ جدید'}</div>
             </Styles.CreateNodeButton>
@@ -137,8 +138,8 @@ const TemplateItemSettings = () => {
           )}
         </Styles.TemplateItemRowSection>
 
-        {createNewNode && (
-          <TemplateItemSettingAddNew>
+        {createNewNode && !nodesQuery?.Archive && (
+          <TemplateItemSettingAddNew ref={createNodeEl}>
             <Styles.AddNewNodeActionRow>
               <Styles.SaveNewNodeButton>{RVDic?.Save}</Styles.SaveNewNodeButton>
 
@@ -146,7 +147,9 @@ const TemplateItemSettings = () => {
                 {'ذخیره و ایجاد بعدی'}
               </Styles.SaveAndAddNewNodeButton>
 
-              <Styles.CancelNodeCreateButton>
+              <Styles.CancelNodeCreateButton
+                onClick={() => setCreateNewNode(false)}
+              >
                 <CloseIcon outline={true} size={20} />
               </Styles.CancelNodeCreateButton>
             </Styles.AddNewNodeActionRow>

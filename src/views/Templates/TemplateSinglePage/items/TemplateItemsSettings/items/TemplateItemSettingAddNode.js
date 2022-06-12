@@ -2,8 +2,13 @@ import styled from 'styled-components';
 import { TCV_DEFAULT, CV_DISTANT } from 'constant/CssVariables';
 import { FLEX_RCB, FLEX_CCC } from 'constant/StyledCommonCss';
 import { IoFileTrayFullOutline } from 'react-icons/io5';
+import api from 'apiHelper';
 
 const TemplateItemSettingAddNew = ({ children, ...props }) => {
+  const saveNode = async () => {
+    await api?.CN?.addNode({});
+  };
+
   return (
     <ItemContainer>
       <IconContainer>

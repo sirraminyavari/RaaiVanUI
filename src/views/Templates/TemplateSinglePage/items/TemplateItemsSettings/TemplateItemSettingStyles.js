@@ -15,6 +15,28 @@ import styled from 'styled-components';
 export const TemplateItemContainer = styled.div`
   ${ViewContentCard};
   min-height: calc(100vh - 6.5rem);
+
+  .transition-enter {
+    opacity: 0;
+    transform: translate(0, 0.3rem);
+  }
+
+  .transition-enter-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: all 200ms ease-in;
+  }
+
+  .transition-exit {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .transition-exit-active {
+    opacity: 0;
+    transform: translate(0, 0.3rem);
+    transition: all 200ms ease-in;
+  }
 `;
 TemplateItemContainer.displayName = 'TemplateItemContainer';
 
@@ -99,9 +121,12 @@ export const AddNewNodeActionRow = styled.div`
   padding: 0 1.8rem;
 `;
 
-export const CancelNodeCreateButton = styled.button`
+export const CancelNodeCreateButton = styled(Button).attrs({
+  type: 'negative-o',
+})`
   ${FLEX_CCC};
   width: 2.38rem;
+  padding: 0;
   aspect-ratio: 1;
   border-radius: 100%;
   border: 0.0625rem solid ${CV_RED};

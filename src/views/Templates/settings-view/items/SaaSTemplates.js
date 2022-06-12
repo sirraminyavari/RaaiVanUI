@@ -15,8 +15,6 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
       TypeName: decodeBase64(x?.TypeName),
     }))?.filter((x) => x?.IsCategory || x?.ParentID);
 
-    console.log(_nodes);
-
     let list = [
       ..._nodes
         .filter((x) => x?.IsCategory)
