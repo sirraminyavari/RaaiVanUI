@@ -10,18 +10,12 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
   }, [nodes]);
 
   const loadNodeTypes = () => {
-    console.log(nodes);
     const _nodes = nodes?.NodeTypes.map((x) => ({
       ...x,
       TypeName: decodeBase64(x?.TypeName),
     }))?.filter((x) => x?.IsCategory || x?.ParentID);
 
-    const unCategorized = nodes?.NodeTypes.map((x) => {
-      return {
-        ...x,
-        TypeName: decodeBase64(x?.TypeName),
-      };
-    })?.filter((x) => !x?.IsCategory && !x?.ParentID);
+    console.log(_nodes);
 
     let list = [
       ..._nodes
@@ -29,23 +23,12 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
         .map((x) => ({
           ...x,
           isExpanded: true,
-          unCategorized: false,
           Sub: _nodes.filter((l) => l?.ParentID === x?.NodeTypeID),
         })),
     ];
-    list.push({
-      NodeTypeID: 'unCategorized',
-      TypeName: 'غیر دسته‌بندی‌شده',
-      isExpanded: false,
-      unCategorized: true,
-      Sub: unCategorized,
-    });
     setNodeList(list);
   };
 
-  useEffect(() => {
-    console.log(nodeList);
-  }, [nodeList]);
   return (
     <>
       {nodeList.map((x) => (
