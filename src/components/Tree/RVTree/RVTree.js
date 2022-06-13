@@ -1,33 +1,60 @@
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import styled from 'styled-components';
+import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
+import React, { useState } from 'react';
 
-const RVTree = ({ id, components, ...rest }) => {
-  const { itemWrapper, arrowIcon, addButton } = components;
+const RVTree = ({ tree: _tree, children, onMove, onSort }) => {
+  const [tree, setTree] = useState(_tree);
+  const onExpand = (id) => {
+    setTree(mutateTree(tree, id, { isExpanded: true }));
+  };
 
-  const handleDragEnd = (e) => {};
+  const onCollapse = (id) => {
+    setTree(mutateTree(tree, id, { isExpanded: false }));
+  };
+
+  const onDragEnd = (src, dest) => {
+    if (!dest) {
+      return;
+    }
+
+    if (dest?.parentId === src?.parentId) {
+      // sort action
+      const newTree = moveItemOnTree(tree, src, dest);
+      handleSortNodes(newTree?.items[`${src?.parentId}`]?.children);
+      setTree(newTree);
+    } else {
+      // move action
+      const id = tree?.items[`${src?.parentId}`]?.children[src?.index];
+      handleMoveItem(id, dest?.parentId);
+      const newTree = moveItemOnTree(tree, src, dest);
+      setTree(newTree);
+    }
+  };
+
+  const handleMoveItem = (id, parentId) => {
+    onMove && onMove(id, parentId);
+  };
+
+  const handleSortNodes = (ids) => {
+    onSort && onSort(ids);
+  };
+
+  const renderItem = (props) => React.cloneElement(children, props);
 
   return (
-    <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
-      <Droppable draggableId={id}>
-        {(provided, snapshot) => {
-          return (
-            <NodeTitleContainer
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            />
-          );
-        }}
-      </Droppable>
-    </DragDropContext>
+    <div>
+      {tree?.rootId && (
+        <Tree
+          tree={tree}
+          renderItem={renderItem}
+          onExpand={onExpand}
+          onCollapse={onCollapse}
+          onDragEnd={onDragEnd}
+          offsetPerLevel={0}
+          isDragEnabled={true}
+          isNestingEnabled={true}
+        />
+      )}
+    </div>
   );
 };
-const NodeTitleContainer = styled.li`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 1.5rem;
-  line-height: 1.5rem;
-  margin: 0.7rem 0;
-`;
 export default RVTree;

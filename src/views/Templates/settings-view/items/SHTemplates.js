@@ -76,6 +76,8 @@ const SHTemplates = ({ nodes }) => {
         }
       });
     };
+
+    console.log(Tree, tree);
     addLeaf(Tree);
     return tree;
   };

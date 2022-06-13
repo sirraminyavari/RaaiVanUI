@@ -7,11 +7,15 @@ export const useEmojiContext = () => {
   return context;
 };
 
-export const EmojiContextProvider = ({ children }) => {
+export const EmojiContextProvider = ({ onSelect, children }) => {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
 
   const handleCategorySelect = (index) => {
     setSelectedCategoryIndex(index);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    onSelect && onSelect();
   };
 
   return (
@@ -19,6 +23,7 @@ export const EmojiContextProvider = ({ children }) => {
       value={{
         selectedCategoryIndex,
         handleCategorySelect,
+        handleEmojiSelect,
       }}
     >
       {children}

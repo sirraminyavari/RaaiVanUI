@@ -17,7 +17,7 @@ import { CSSTransition } from 'react-transition-group';
 
 const TemplateItemSettings = () => {
   const { RVDic } = window;
-  const { NodeTypeID, title, ...context } = useTemplateContext();
+  const { NodeTypeID, title, IsTree, ...rest } = useTemplateContext();
   const [nodes, setNodes] = useState([]);
   const [totalNodes, setTotalNodes] = useState();
   const breadItems = [

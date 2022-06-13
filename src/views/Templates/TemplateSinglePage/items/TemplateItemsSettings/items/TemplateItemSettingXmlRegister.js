@@ -1,4 +1,5 @@
 import Button from 'components/Buttons/Button';
+import RxInput from 'components/Inputs/RxInput';
 import styled from 'styled-components';
 
 const TemplateItemSettingXMlRegister = () => {

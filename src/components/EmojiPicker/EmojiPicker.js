@@ -1,9 +1,9 @@
 import { EmojiContextProvider } from './EmojiContext';
 import EmojiPickerContent from './items/EmojiPickerContent';
 
-const EmojiPicker = () => {
+const EmojiPicker = ({ onEmojiSelect }) => {
   return (
-    <EmojiContextProvider>
+    <EmojiContextProvider onSelect={onEmojiSelect}>
       <EmojiPickerContent />
     </EmojiContextProvider>
   );
