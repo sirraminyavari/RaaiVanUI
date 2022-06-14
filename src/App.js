@@ -15,8 +15,20 @@ import CheckRoute from 'utils/CheckRoute/CheckRoute';
 import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
 import { CV_WHITE } from 'constant/CssVariables';
 import { avatarIconURL } from 'helpers/helpers';
+import { ThemeContextProvider } from '@cliqmind/rv-components';
 
-const { RV_RTL, GlobalUtilities } = window;
+const {
+  RVDic,
+  RVGlobal,
+  RVAPI,
+  GlobalUtilities,
+  DynamicFileUtilities,
+  RV_RTL,
+  RV_Float,
+  RV_RevFloat,
+  RV_Direction,
+  Base64,
+} = window;
 
 const MainLayout = lazy(() =>
   import(/* webpackChunkName: "layout-main"*/ 'layouts/MainLayout')
@@ -35,35 +47,49 @@ window.alert = function (txt, props) {
 
 const App = () => {
   return (
-    <ErrorBoundry>
-      <ToastContainer
-        style={{ zIndex: GlobalUtilities.zindex.alert() }}
-        bodyClassName="rv-font-default"
-      />
+    <ThemeContextProvider
+      value={{
+        RVDic,
+        RVGlobal,
+        RVAPI,
+        GlobalUtilities,
+        DynamicFileUtilities,
+        RV_RTL,
+        RV_Float,
+        RV_RevFloat,
+        RV_Direction,
+      }}
+    >
+      <ErrorBoundry>
+        <ToastContainer
+          style={{ zIndex: GlobalUtilities.zindex.alert() }}
+          bodyClassName="rv-font-default"
+        />
 
-      <StoreProvider>
-        <ErrorBoundry>
-          <Suspense fallback={<LogoLoader />}>
-            <Router>
-              <ScrollToTop />
-              <Switch>
-                <Route
-                  path={AUTH_PATH}
-                  render={(props) => (
-                    <CheckRoute
-                      props={props}
-                      name={LOGIN_NAME}
-                      component={AuthView}
-                    />
-                  )}
-                />
-                <PrivateRoute path={ROOT_PATH} component={MainLayout} />
-              </Switch>
-            </Router>
-          </Suspense>
-        </ErrorBoundry>
-      </StoreProvider>
-    </ErrorBoundry>
+        <StoreProvider>
+          <ErrorBoundry>
+            <Suspense fallback={<LogoLoader />}>
+              <Router>
+                <ScrollToTop />
+                <Switch>
+                  <Route
+                    path={AUTH_PATH}
+                    render={(props) => (
+                      <CheckRoute
+                        props={props}
+                        name={LOGIN_NAME}
+                        component={AuthView}
+                      />
+                    )}
+                  />
+                  <PrivateRoute path={ROOT_PATH} component={MainLayout} />
+                </Switch>
+              </Router>
+            </Suspense>
+          </ErrorBoundry>
+        </StoreProvider>
+      </ErrorBoundry>
+    </ThemeContextProvider>
   );
 };
 
