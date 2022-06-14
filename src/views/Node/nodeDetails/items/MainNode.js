@@ -15,11 +15,14 @@ import styled from 'styled-components';
 import { RVDic } from 'utils/TestUtils/fa';
 import CreatableSelect from 'react-select/creatable';
 import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI';
+import useWindow from 'hooks/useWindowContext';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
 const ModifyNodeTags = new APIHandler('CNAPI', 'ModifyNodeTags');
 const MainNode = ({ nodeDetails, nodeId, fields }) => {
+  const { RV_RTL } = useWindow();
+
   const [titleEditMode, setTitleEditMode] = useState(false);
 
   //TODO identify `descEditMode` usage ...
@@ -61,9 +64,9 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
       });
       console.log({ saveResult });
 
-      alert('saved', {
-        Timeout: 1000,
-      });
+      // alert('saved', {
+      //   Timeout: 1000,
+      // });
     }
     setWhichElementChanged(null);
   };
@@ -84,9 +87,9 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
         (res) => {
           console.log(res, 'save result', desc);
 
-          alert('saved', {
-            Timeout: 1000,
-          });
+          // alert('saved', {
+          //   Timeout: 1000,
+          // });
         }
       );
     }
@@ -102,9 +105,9 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
     ModifyNodeTags.fetch(
       { NodeID: NodeID, Tags: encodeBase64(readyToSaveKeywords) },
       (res) => {
-        alert('saved', {
-          Timeout: 1000,
-        });
+        // alert('saved', {
+        //   Timeout: 1000,
+        // });
       }
     );
   };
@@ -142,7 +145,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               editModeVisible={false}
               title={RVDic.Summary}
               style={{ display: 'flex', flexGrow: 1 }}
-              iconComponent={<TextIcon rightSided color={CV_GRAY} />}
+              iconComponent={<TextIcon rightSided={RV_RTL} color={CV_GRAY} />}
             >
               {nodeDetails?.Name?.Editable ? (
                 <Input
@@ -192,7 +195,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               editModeVisible={false}
               title={RVDic.Keywords}
               style={{ display: 'flex', flexGrow: 1 }}
-              iconComponent={<TextIcon color={CV_GRAY} />}
+              iconComponent={<TextIcon rightSided={RV_RTL} color={CV_GRAY} />}
             >
               <CellContainer>
                 <CreatableSelect

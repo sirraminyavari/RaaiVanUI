@@ -109,9 +109,9 @@ const FileField = ({
                 setReadyToUploadFiles(files);
                 return [...prevFiles, ...files];
               });
-              alert('saved', {
-                Timeout: 1000,
-              });
+              // alert('saved', {
+              //   Timeout: 1000,
+              // });
             }
           }
         })
@@ -128,9 +128,9 @@ const FileField = ({
     if (isSaved) setAllFiles(files);
     setDeleteModalStatus(false);
 
-    alert('saved', {
-      Timeout: 1000,
-    });
+    // alert('saved', {
+    //   Timeout: 1000,
+    // });
   };
 
   return (

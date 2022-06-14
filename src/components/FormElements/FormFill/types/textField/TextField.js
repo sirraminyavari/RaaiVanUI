@@ -2,26 +2,22 @@
  * This field helps user to type something according to defined pattern for it.
  */
 
-import Input from 'components/Inputs/Input';
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import EmailValidator from 'utils/Validation/EmailValidator';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TimeValidator from 'utils/Validation/TimeValidator';
 import UrlValidator from 'utils/Validation/UrlValidator';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
-import { number } from 'persian-rex';
 import CustomValidator from 'utils/Validation/CustomValidator';
 import FormCell from '../../FormCell';
 import TextIcon from 'components/Icons/TextIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
-import { decodeBase64 } from 'helpers/helpers';
 import { EditableContext } from '../../FormFill';
+import useWindow from 'hooks/useWindowContext';
 
-const { GlobalUtilities } = window;
-const { to_json } = GlobalUtilities || {};
 const TextField = ({
   value,
   onAnyFieldChanged,
@@ -35,9 +31,10 @@ const TextField = ({
   number = false,
   save,
 }) => {
+  const { GlobalUtilities, RV_RTL } = useWindow();
   const [error, setError] = useState(null);
 
-  const parseDecodeInfo = to_json(decodeInfo);
+  const parseDecodeInfo = GlobalUtilities.to_json(decodeInfo);
   const { Pattern } = parseDecodeInfo || {};
 
   const errorHandler = (value) => {
@@ -81,7 +78,7 @@ const TextField = ({
         number ? (
           <NumberIcon color={CV_GRAY} size={'1.25rem'} />
         ) : (
-          <TextIcon color={CV_GRAY} size={'1.25rem'} />
+          <TextIcon rightSided={RV_RTL} color={CV_GRAY} size={'1.25rem'} />
         )
       }
       title={decodeTitle}

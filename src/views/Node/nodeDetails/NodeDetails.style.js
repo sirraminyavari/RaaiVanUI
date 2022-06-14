@@ -7,6 +7,7 @@ import {
   TCV_VERY_TRANSPARENT,
   CV_BLACK,
   TCV_WARM,
+  TCV_DEFAULT,
 } from 'constant/CssVariables';
 import { BG_WHITE, C_GRAY, TC_WARM } from 'constant/Colors';
 import {
@@ -174,7 +175,7 @@ export const SideHeaderIconWrapper = styled.div.attrs({
 export const SideHeaderTitle = styled.div.attrs({
   className: `${TC_WARM}`,
 })`
-  font-size: 1rem;
+  font-size: 1.13rem;
 `;
 
 export const SideActionItemWrapper = styled.div`
@@ -221,7 +222,7 @@ export const DocInfoID = styled.div.attrs({
   className: `${C_GRAY}`,
 })`
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 `;
 
 export const DocTagsContainer = styled.div`
@@ -256,7 +257,7 @@ export const DocItemHeader = styled.div`
 `;
 
 export const ItemHeaderTitle = styled(Heading)`
-  font-size: 1rem;
+  font-size: 1.01rem;
 `;
 // export const ItemHeaderTitle = styled.div.attrs({
 //   className: `${C_GRAY_DARK}`,
@@ -320,7 +321,7 @@ export const DocSettingTitle = styled.div.attrs({
   className: `${C_GRAY}`,
 })`
   margin: 1rem 0;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 `;
 
 export const TimeLineContainer = styled.div`
@@ -383,4 +384,27 @@ export const SecuritySelectWrapper = styled.div`
   ${FLEX_RCB}
   gap: 1rem;
   padding: 0.5rem 1rem;
+`;
+
+//TODO extract TagContent with proper component name!
+
+export const TagContent = styled.div.attrs({ className: BO_RADIUS_CIRCLE })`
+  position: relative;
+  margin-inline: 0.5rem;
+  padding-block: 0.05rem;
+  padding-inline: 0.4rem;
+  font-size: 0.88rem;
+  color: ${TCV_WARM};
+  display: inline-flex;
+  overflow: hidden;
+
+  & > span {
+    background-color: ${TCV_DEFAULT};
+    opacity: 0.1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0;
+  }
 `;

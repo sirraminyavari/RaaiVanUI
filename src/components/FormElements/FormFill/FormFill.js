@@ -94,9 +94,6 @@ const FormFill = ({ data, editable, ...props }) => {
           setTempForm(syncTempFormWithBackEnd);
           console.log('failed');
           return false;
-          alert('failed', {
-            Timeout: 500,
-          });
         }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
