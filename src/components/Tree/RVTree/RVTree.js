@@ -1,8 +1,9 @@
 import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
 import React, { useState } from 'react';
 
-const RVTree = ({ tree: _tree, children, onMove, onSort }) => {
-  const [tree, setTree] = useState(_tree);
+const RVTree = ({ data, children, onMove, onSort }) => {
+  const [tree, setTree] = useState(data);
+
   const onExpand = (id) => {
     setTree(mutateTree(tree, id, { isExpanded: true }));
   };
@@ -38,7 +39,12 @@ const RVTree = ({ tree: _tree, children, onMove, onSort }) => {
     onSort && onSort(ids);
   };
 
-  const renderItem = (props) => React.cloneElement(children, props);
+  const renderItem = (props) => {
+    console.log(props);
+    console.log(children);
+
+    return React.cloneElement(React.Children.only(children), props);
+  };
 
   return (
     <div>

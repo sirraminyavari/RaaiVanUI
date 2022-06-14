@@ -14,6 +14,7 @@ import { ScrollProvider } from 'views/Node/nodeDetails/NodeDetails.style';
 import TemplateItemSettingAddNew from './items/TemplateItemSettingAddNode';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CSSTransition } from 'react-transition-group';
+import TemplateItemSettingListTree from './items/TemplateItemSettingListTree';
 
 const TemplateItemSettings = () => {
   const { RVDic } = window;
@@ -52,18 +53,18 @@ const TemplateItemSettings = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { TotalCount, Nodes, ...rest } = await api?.CN?.getNodes({
+      const { TotalCount, Nodes } = await api?.CN?.getNodes({
         LowerBoundary: nodesQuery?.LowerBoundary,
         Archive: nodesQuery?.Archive,
         SearchText: nodesQuery?.searchText,
       });
-      console.log(TotalCount, Nodes, rest);
       const _nodes = nodes.concat(Nodes);
       setNodes(_nodes);
       setTotalNodes(TotalCount);
     };
 
     fetchData();
+    return () => setNodes([]);
   }, [nodesQuery]);
 
   const toggleArchiveState = () => {
@@ -72,10 +73,14 @@ const TemplateItemSettings = () => {
   };
 
   const list = useMemo(() => {
-    return nodes.map((i) => {
-      const { NodeID } = i;
-      return <TemplateItemSettingListItem key={NodeID} {...i} />;
-    });
+    if (false) {
+      return nodes.map((i) => {
+        const { NodeID } = i;
+        return <TemplateItemSettingListItem key={NodeID} {...i} />;
+      });
+    } else {
+      return <TemplateItemSettingListTree nodes={nodes} />;
+    }
   }, [nodes]);
 
   const loadMore = () => {
@@ -155,7 +160,7 @@ const TemplateItemSettings = () => {
             </Styles.AddNewNodeActionRow>
           </TemplateItemSettingAddNew>
         )}
-        <div>{list}</div>
+        <TemplateItemSettingListTree nodes={nodes} />
       </Styles.TemplateItemContainer>
     </>
   );

@@ -21,4 +21,9 @@ export interface IRVTreeProps {
   children?: ReactNode;
 }
 
+export interface IRVTreeItem {}
+/**
+ * example
+ */
+
 export declare const RVTree = (props: IRVTreeProps) => JSX.Element;
