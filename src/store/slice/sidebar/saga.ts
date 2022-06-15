@@ -12,6 +12,8 @@ import {
 import { selectThemeSlice } from '../theme/selectors';
 
 function* getSidebarNodeTypes(values: PayloadAction<IReduxActionCall>) {
+  const { done } = values.payload || {};
+
   const res = yield call(API.CN.getNodeTypes, {
     Icon: true,
     Count: 1000,
@@ -20,7 +22,7 @@ function* getSidebarNodeTypes(values: PayloadAction<IReduxActionCall>) {
   });
 
   if (!!res?.NodeTypes || !!res?.Tree) {
-    values.payload.done && values.payload.done();
+    done && done();
     const dndTree = provideDnDTree(res);
     yield put(actions.setSidebarNodeTypes(res.NodeTypes || []));
     yield put(actions.setSidebarTree(res.Tree));
@@ -31,13 +33,13 @@ function* getSidebarNodeTypes(values: PayloadAction<IReduxActionCall>) {
 function* renameSidebarNodeType(
   values: PayloadAction<{ NodeTypeID: string; Name: string }>
 ) {
-  const { NodeTypeID, Name } = values.payload;
+  const { NodeTypeID, Name } = values.payload || {};
   yield call(API.CN.renameNodeType, { NodeTypeID, Name });
   yield put(actions.getSidebarNodeTypes({}));
 }
 
 function* removeSidebarNodeType(values: PayloadAction<IRemoveNodeTypeRequest>) {
-  const { NodeType, RemoveHierarchy, done } = values.payload;
+  const { NodeType, RemoveHierarchy, done } = values.payload || {};
 
   const res = yield call(API.CN.removeNodeType, {
     NodeTypeID: NodeType?.NodeTypeID,
@@ -53,7 +55,7 @@ function* removeSidebarNodeType(values: PayloadAction<IRemoveNodeTypeRequest>) {
 function* recoverSidebarNodeType(
   values: PayloadAction<IRecoverNodeTypeRequest>
 ) {
-  const { NodeTypeID, ChildrenIDs } = values.payload;
+  const { NodeTypeID, ChildrenIDs } = values.payload || {};
   const res = yield call(API.CN.recoverNodeType, { NodeTypeID });
 
   if (res?.Succeed) {
@@ -69,7 +71,7 @@ function* recoverSidebarNodeType(
 }
 
 function* moveSidebarNodeType(values: PayloadAction<IMoveNodeTypeRequest>) {
-  const { NodeTypeID, ParentID } = values.payload;
+  const { NodeTypeID, ParentID } = values.payload || {};
 
   const { selectedTeam } = yield select(selectThemeSlice);
 
@@ -87,7 +89,7 @@ function* moveSidebarNodeType(values: PayloadAction<IMoveNodeTypeRequest>) {
 function* reorderSidebarNodeTypes(
   values: PayloadAction<{ NodeTypeIDs: string[] }>
 ) {
-  const { NodeTypeIDs } = values.payload;
+  const { NodeTypeIDs } = values.payload || {};
   yield call(API.CN.setNodeTypesOrder, { NodeTypeIDs });
   yield put(actions.getSidebarNodeTypes({}));
 }
@@ -108,7 +110,7 @@ function* checkAuthority(values: PayloadAction<{ Permissions: string[] }>) {
 
   yield put(
     actions.setUnderMenuList(
-      values.payload.Permissions.filter((p) => !!(res || {})[p])
+      (values.payload?.Permissions || []).filter((p) => !!(res || {})[p])
     )
   );
 }

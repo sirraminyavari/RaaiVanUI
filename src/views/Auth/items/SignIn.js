@@ -107,6 +107,7 @@ const SignIn = () => {
         '/auth/forgotPassword' + window.location.search
       )
     );
+
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };

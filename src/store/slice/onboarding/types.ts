@@ -1,7 +1,8 @@
-import React from 'react';
-import OnboardingTeamCreationChoiceContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationChoiceContent';
-
-const ONBOARDING_TEAM_CREATION_SET_NAME = 'ONBOARDING_TEAM_CREATION_SET_NAME';
+export type IOnboardingComponentName =
+  | 'choice'
+  | 'set-name'
+  | 'people-count'
+  | 'work-field';
 
 export interface IOnboardingState {
   //product tour
@@ -15,8 +16,7 @@ export interface IOnboardingState {
   //end of: product tour
 
   //onboarding
-  BannerComponent: React.FC | null;
-  ContentComponent: React.FC;
+  componentName: IOnboardingComponentName;
   nextStepAction: any;
   activeStep?: number;
   stepsCount?: number;
@@ -48,9 +48,8 @@ export const EmptyOnboardingState: IOnboardingState = {
   templates: [],
   showProductTour: true,
 
-  BannerComponent: null,
-  ContentComponent: OnboardingTeamCreationChoiceContent,
-  nextStepAction: ONBOARDING_TEAM_CREATION_SET_NAME,
+  componentName: 'choice',
+  nextStepAction: undefined,
   activeStep: undefined,
   stepsCount: undefined,
   WorkspaceID: undefined,

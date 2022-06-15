@@ -23,7 +23,6 @@ import {
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-// import { invitationSlice } from 'store/reducers/invitationsReducer';
 
 // const {
 //   setTeamInvitations,

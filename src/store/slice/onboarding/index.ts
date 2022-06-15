@@ -1,12 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer } from 'utils/redux-injectors';
-import OnboardingTeamCreationSetNameBanner from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetNameBanner';
-import OnboardingTeamCreationSetNameContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetNameContent';
-import OnboardingTeamCreationSetPeopleCountBanner from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetPeopleCountBanner';
-import OnboardingTeamCreationSetPeopleCountContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetPeopleCountContent';
-import OnboardingTeamCreationSetWorkFieldBanner from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetWorkFieldBanner';
-import OnboardingTeamCreationSetWorkFieldContent from 'views/Onboarding/items/content/OnboardingTeam/OnboardingTeamCreationSetWorkFieldContent';
 import {
   EmptyOnboardingState,
   IOnboardingState,
@@ -86,8 +80,7 @@ const slice = createSlice({
       );
     },
     teamSetName: (state: IOnboardingState) => {
-      state.BannerComponent = OnboardingTeamCreationSetNameBanner;
-      state.ContentComponent = OnboardingTeamCreationSetNameContent;
+      state.componentName = 'set-name';
       state.nextStepAction = onboardingActions.teamSetPeopleCount;
       state.disableContinue = state.teamState.teamName === '';
       state.loading = false;
@@ -96,8 +89,7 @@ const slice = createSlice({
       state.stepsCount = 3;
     },
     teamSetPeopleCount: (state: IOnboardingState) => {
-      state.BannerComponent = OnboardingTeamCreationSetPeopleCountBanner;
-      state.ContentComponent = OnboardingTeamCreationSetPeopleCountContent;
+      state.componentName = 'people-count';
       state.nextStepAction = onboardingActions.teamSetWorkField;
       state.disableContinue = !state.teamState.peopleCount;
       state.loading = false;
@@ -106,8 +98,7 @@ const slice = createSlice({
       state.stepsCount = 3;
     },
     teamSetWorkField: (state: IOnboardingState) => {
-      state.BannerComponent = OnboardingTeamCreationSetWorkFieldBanner;
-      state.ContentComponent = OnboardingTeamCreationSetWorkFieldContent;
+      state.componentName = 'work-field';
       state.nextStepAction = onboardingActions.teamCreationCompleted;
       state.disableContinue = !state.teamState.workField.fieldID;
       state.loading = false;

@@ -4,7 +4,7 @@
  */
 import { useEffect, useState, useRef } from 'react';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Exception from 'components/Exception/Exception';
 import { decodeBase64, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
@@ -28,6 +28,7 @@ import { useThemeSlice } from 'store/slice/theme';
 import { useApplicationSlice } from 'store/slice/applications';
 import { useSidebarSlice } from 'store/slice/sidebar';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
@@ -49,6 +50,8 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
   const lastLocation = getLastLocation();
+
+  const authState = useSelector(selectAuth);
 
   const { actions: applicationActions } = useApplicationSlice();
   const { actions: sidebarActions } = useSidebarSlice();
@@ -114,6 +117,12 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   };
 
   useEffect(() => {
+    if (authState.isAuthenticated === undefined)
+      dispatch(authActions.setIsAthunticated(!!window.IsAuthenticated));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (isSwitchAllowed) return;
 
     const params = { ...routeParams, ...getQueryParams() };
@@ -127,10 +136,6 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         RouteName: _name,
         Parameters: _params,
       });
-
-      console.log({ ...res, _name }, 'ramin');
-      console.log({ cur: window.location.href, pre: prevURL }, 'ramin 2');
-      window._alert('ramin');
 
       //! The location after check route api resolves.
       const currentURL = window.location.href;

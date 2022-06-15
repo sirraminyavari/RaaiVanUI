@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { applicationActions as actions } from '.';
 import { onboardingActions } from '../onboarding';
 import { sidebarActions } from '../sidebar';
@@ -10,14 +10,14 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { IAppID, IAppIDUserID } from './types';
 
 function* getApplications() {
-  const res = yield API.RV.getApplications({ Archive: false });
-  yield put(res?.Applications || []);
+  const res = yield call(API.RV.getApplications, { Archive: false });
+  yield put(actions.setApplications(res?.Applications || []));
   yield put(actions.getArchivedApplications({}));
   yield put(actions.setFetchingApps(false));
 }
 
 function* getArchivedApplications() {
-  const res = yield API.RV.getApplications({ Archive: true });
+  const res = yield call(API.RV.getApplications, { Archive: true });
   yield put(actions.setArchivedApplications(res?.Applications || []));
 }
 
@@ -30,7 +30,7 @@ function* removeApplication(values: PayloadAction<IAppID>) {
     (app) => app.ApplicationID !== ApplicationID
   );
 
-  const res = yield API.RV.removeApplication({
+  const res = yield call(API.RV.removeApplication, {
     ApplicationID: ApplicationID,
   });
 
@@ -39,7 +39,7 @@ function* removeApplication(values: PayloadAction<IAppID>) {
   } else if (res?.Succeed) {
     done && done(ApplicationID);
     yield put(actions.removeApplicationSuccessful(newApps));
-    yield API.RV.setApplicationsOrder({
+    yield call(API.RV.setApplicationsOrder, {
       ApplicationIDs: newApps.map((ap) => ap.ApplicationID),
     });
     yield put(actions.getArchivedApplications({}));
@@ -55,7 +55,7 @@ function* recoverApplication(values: PayloadAction<IAppID>) {
     (app) => app.ApplicationID !== ApplicationID
   );
 
-  const res = yield API.RV.recoverApplication({
+  const res = yield call(API.RV.recoverApplication, {
     ApplicationID: ApplicationID,
   });
 
@@ -77,7 +77,7 @@ function* selectApplication(values: PayloadAction<IAppID>) {
     })
   );
 
-  const res = yield API.RV.selectApplication({ ApplicationID });
+  const res = yield call(API.RV.selectApplication, { ApplicationID });
 
   if (res?.ErrorText) {
     error && error(res?.ErrorText);
@@ -96,7 +96,7 @@ function* selectApplication(values: PayloadAction<IAppID>) {
       yield put(onboardingActions.onboardingStep(res?.ProductTour?.Step || 0));
 
       if (res?.ProductTour?.Name) {
-        yield put(onboardingActions.toggleActivation({}));
+        yield put(onboardingActions.toggleActivation());
       }
       done && done(CLASSES_PATH);
     } else {
@@ -115,7 +115,7 @@ function* selectApplication(values: PayloadAction<IAppID>) {
 function* unsubscribeFromApplication(values: PayloadAction<IAppID>) {
   const { ApplicationID, error, done } = values?.payload || {};
 
-  const res = yield API.RV.unsubscribeFromApplication({
+  const res = yield call(API.RV.unsubscribeFromApplication, {
     ApplicationID: ApplicationID,
   });
 
@@ -130,7 +130,7 @@ function* unsubscribeFromApplication(values: PayloadAction<IAppID>) {
 function* removeUserFromApplication(values: PayloadAction<IAppIDUserID>) {
   const { ApplicationID, UserID, error, done } = values?.payload || {};
 
-  const res = yield API.RV.removeUserFromApplication({
+  const res = yield call(API.RV.removeUserFromApplication, {
     ApplicationID: ApplicationID,
     UserID: UserID,
   });
@@ -146,9 +146,9 @@ function* removeUserFromApplication(values: PayloadAction<IAppIDUserID>) {
 function* getApplicationsOrder(
   values: PayloadAction<{ UnorderedApplications: any[] }>
 ) {
-  const { UnorderedApplications: Apps } = values.payload;
+  const { UnorderedApplications: Apps } = values.payload || {};
 
-  const ordered: string[] = yield API.RV.getApplicationsOrder();
+  const ordered: string[] = yield call(API.RV.getApplicationsOrder);
 
   yield put(actions.setFetchingApps(false));
 

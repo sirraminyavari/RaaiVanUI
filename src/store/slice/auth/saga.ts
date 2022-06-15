@@ -12,7 +12,7 @@ import { IReduxActionCall } from '../types';
 import { decodeBase64 } from 'helpers/helpers';
 
 function* logout(values: PayloadAction<IReduxActionCall>) {
-  const { done, error } = values.payload;
+  const { done, error } = values.payload || {};
 
   const res = yield call(API.RV.logout);
 
@@ -45,11 +45,13 @@ function* getDomains(values: PayloadAction<IReduxActionCall>) {
 
 function* signupLoadFiles(values: PayloadAction<{ destination: string }>) {
   try {
+    const { destination } = values.payload || {};
+
     yield put(actions.setLoginRoute(SIGN_UP_EMAIL));
     yield put(actions.setPassword(''));
     yield put(
       actions.signupLoadFilesSuccess({
-        destination: values.payload.destination,
+        destination,
       })
     );
   } catch (err) {

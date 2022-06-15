@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { devConsole } from 'helpers/helpers';
 
@@ -6,8 +6,13 @@ import { ONBOARDING_TEMPLATE_PATH } from './constants';
 import { useOnboardingSlice } from 'store/slice/onboarding';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import {
+  EmptyOnboardingState,
+  IOnboardingState,
+} from 'store/slice/onboarding/types';
 
-export const OnboardingTeamStepContext = createContext();
+export const OnboardingTeamStepContext =
+  createContext<IOnboardingState>(EmptyOnboardingState);
 
 export function OnboardingTeamStepContextProvider({ children }) {
   const history = useHistory();

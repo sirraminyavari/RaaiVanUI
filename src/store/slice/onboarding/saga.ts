@@ -11,7 +11,7 @@ import { selectOnboardingSlice } from './selectors';
 function* setTeamName(
   values: PayloadAction<{ WorkspaceID?: string; TeamName: string }>
 ) {
-  const { WorkspaceID, TeamName } = values.payload;
+  const { WorkspaceID, TeamName } = values.payload || {};
 
   let wsId = WorkspaceID;
 
@@ -51,7 +51,7 @@ const serverValue = {
 function* setTeamSize(
   values: PayloadAction<{ ApplicationID: string; Size: string }>
 ) {
-  const { ApplicationID, Size } = values.payload;
+  const { ApplicationID, Size } = values.payload || {};
 
   yield call(API.RV.setApplicationSize, {
     ApplicationID,
@@ -76,7 +76,7 @@ function* setFieldOfExpertise(
     teamName,
     showProductTour,
     fieldOfExpertise: { id: fieldId, name: fieldName },
-  } = values.payload;
+  } = values.payload || {};
 
   yield call(API.RV.setApplicationFieldOfExpertise, {
     ApplicationID: applicationId,
@@ -102,7 +102,7 @@ function* setFieldOfExpertise(
 
 function* goToNextOnboardingStep() {
   const state = yield select(selectOnboardingSlice);
-
+  console.log(state.apiName, 'ramin api');
   yield put(actions.setLoading(true));
 
   switch (state.apiName) {

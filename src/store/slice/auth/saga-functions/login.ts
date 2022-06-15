@@ -7,7 +7,7 @@ import { selectAuthSlice } from '../selectors';
 import afterLogin from 'utils/OnboardingRoute/afterLogin';
 
 export function* login(values: PayloadAction<ILoginRequest>) {
-  const { Username, Password, InvitationID } = values.payload;
+  const { Username, Password, InvitationID } = values.payload || {};
 
   const {
     orgDomains,

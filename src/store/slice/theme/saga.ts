@@ -1,14 +1,13 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { themeActions as actions } from '.';
-import { getThemes as getThemesApi } from 'apiHelper/ApiHandlers/RVApi';
-import { getCurrentTheme as getThemeApi } from 'apiHelper/ApiHandlers/usersApi';
+import API from 'apiHelper';
 
 /**
  * @description A function (action) that gets all themes from server.
  * @returns -Dispatch to redux store.
  */
 function* getThemes() {
-  const res = yield getThemesApi();
+  const res = yield call(API.RV.getThemes);
   yield put(actions.setTheme(res?.Themes));
 }
 
@@ -17,7 +16,7 @@ function* getThemes() {
  * @returns -Dispatch to redux store.
  */
 function* getCurrentTheme() {
-  const res = yield getThemeApi();
+  const res = yield call(API.Users.getCurrentTheme);
   yield put(actions.setTheme(res?.Theme));
 }
 

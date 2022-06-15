@@ -70,7 +70,7 @@ const slice = createSlice({
     },
     signupLoadFilesSuccess: (
       state: IAuthState,
-      action: PayloadAction<{ destination: string; result: any }>
+      action: PayloadAction<{ destination: string; result?: any }>
     ) => {
       state.fetchingFiles = false;
       state.routeHistory = action.payload.destination;

@@ -8,6 +8,13 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useOnboardingSlice } from 'store/slice/onboarding';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import OnboardingTeamCreationSetNameBanner from './OnboardingTeamCreationSetNameBanner';
+import OnboardingTeamCreationSetPeopleCountBanner from './OnboardingTeamCreationSetPeopleCountBanner';
+import OnboardingTeamCreationSetWorkFieldBanner from './OnboardingTeamCreationSetWorkFieldBanner';
+import OnboardingTeamCreationSetWorkFieldContent from './OnboardingTeamCreationSetWorkFieldContent';
+import OnboardingTeamCreationSetPeopleCountContent from './OnboardingTeamCreationSetPeopleCountContent';
+import OnboardingTeamCreationSetNameContent from './OnboardingTeamCreationSetNameContent';
+import OnboardingTeamCreationChoiceContent from './OnboardingTeamCreationChoiceContent';
 
 const OnboardingTeamContent = () => {
   const { RVDic } = useWindow();
@@ -15,14 +22,8 @@ const OnboardingTeamContent = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    ContentComponent,
-    BannerComponent,
-    stepsCount,
-    activeStep,
-    disableContinue,
-    loading,
-  } = useSelector(selectOnboarding);
+  const { stepsCount, activeStep, disableContinue, loading, componentName } =
+    useSelector(selectOnboarding);
 
   const { actions: onboardingActions } = useOnboardingSlice();
 
@@ -43,6 +44,7 @@ const OnboardingTeamContent = () => {
 
   //! RVDic i18n localization
   const RVDicSaveAndNext = RVDic.SaveAndNext;
+
   return (
     <Styles.OnboardingTeamContentContainer>
       <Styles.OnboardingTeamWelcomeLayoutWrapper
@@ -65,15 +67,30 @@ const OnboardingTeamContent = () => {
                   }),
             }}
           >
-            {BannerComponent && (
-              <>
-                <BannerComponent sticky={!isTabletOrMobile} />
-              </>
+            {componentName === 'set-name' && (
+              <OnboardingTeamCreationSetNameBanner sticky={!isTabletOrMobile} />
             )}
-            {ContentComponent && (
-              <>
-                <ContentComponent />
-              </>
+            {componentName === 'people-count' && (
+              <OnboardingTeamCreationSetPeopleCountBanner
+                sticky={!isTabletOrMobile}
+              />
+            )}
+            {componentName === 'work-field' && (
+              <OnboardingTeamCreationSetWorkFieldBanner
+                sticky={!isTabletOrMobile}
+              />
+            )}
+            {componentName === 'choice' && (
+              <OnboardingTeamCreationChoiceContent />
+            )}
+            {componentName === 'set-name' && (
+              <OnboardingTeamCreationSetNameContent />
+            )}
+            {componentName === 'people-count' && (
+              <OnboardingTeamCreationSetPeopleCountContent />
+            )}
+            {componentName === 'work-field' && (
+              <OnboardingTeamCreationSetWorkFieldContent />
             )}
           </WelcomeLayout>
         </TransitionSwitchWrapper>

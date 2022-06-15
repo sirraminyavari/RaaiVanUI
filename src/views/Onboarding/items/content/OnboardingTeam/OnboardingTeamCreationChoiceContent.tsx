@@ -39,13 +39,8 @@ const OnboardingTeamCreationChoiceContent = () => {
 
   const goToTheDefaultEntranceRoute = () => history.push('/');
 
-  const goToNextStep = useMemo(
-    () => () => {
-      if (!!nextStepAction) dispatch(nextStepAction());
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nextStepAction]
-  );
+  const goToNextStep = () =>
+    dispatch(onboardingActions.goToNextOnboardingStep());
 
   return (
     <>

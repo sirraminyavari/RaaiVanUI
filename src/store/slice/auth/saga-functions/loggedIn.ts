@@ -24,7 +24,7 @@ const confirm = (result, returnUrl, msg) => {
 };
 
 export function* loggedIn(values: PayloadAction<any>) {
-  const result = values.payload;
+  const result = values.payload || {};
 
   // The following steps are necessary to be done
   window.IsAuthenticated = true;

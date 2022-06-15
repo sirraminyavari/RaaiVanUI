@@ -33,7 +33,7 @@ const dialog = (data: any, invitationId?: string) => {
 };
 
 export function* loginStepTwo(values: PayloadAction<any>) {
-  const data = values.payload;
+  const data = values.payload || {};
 
   const {
     objects: { invitationId },
