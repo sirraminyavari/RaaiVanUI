@@ -1,10 +1,7 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { authActions as actions } from '.';
 import API from 'apiHelper';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ILoginRequest } from './types';
-import { selectAuthSlice } from './selectors';
-import afterLogin from 'utils/OnboardingRoute/afterLogin';
 import { login } from './saga-functions/login';
 import { loginStepTwo } from './saga-functions/loginStepTwo';
 import { loggedIn } from './saga-functions/loggedIn';

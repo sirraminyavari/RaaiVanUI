@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
-import { createSelector } from 'reselect';
 import ReactTooltip from 'react-tooltip';
 import * as GlobalStyled from 'views/Teams/Teams.styles';
 import * as Styled from './WorkspaceTeamCard.styles';
@@ -35,14 +34,10 @@ import UserInvitationDialog from './UserInviteDialog';
 import { useThemeSlice } from 'store/slice/theme';
 import API from 'apiHelper';
 import { useApplicationSlice } from 'store/slice/applications';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const EXIT_TEAM_CONFIRM = 'exit-team';
 const DELETE_TEAM_CONFIRM = 'remove-team';
-
-const selectingApp = createSelector(
-  (state) => state?.applications,
-  (applications) => applications?.selectingApp
-);
 
 const Avatar = WithAvatar({
   Component: AvatarComponent,
@@ -57,10 +52,13 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
     actions: { toggleSidebar },
   } = useThemeSlice();
 
+  const {
+    selectingApp: { isSelecting, selectingAppId },
+  } = useSelector(selectApplication);
+
   const { actions: applicationActions } = useApplicationSlice();
 
   const actionRef = useRef();
-  const { isSelecting, selectingAppId } = useSelector(selectingApp);
   const { RVDic, RV_Float, RV_RevFloat, RV_RTL, RVGlobal, GlobalUtilities } =
     useWindow();
   const [isModalShown, setIsModalShown] = useState(false);

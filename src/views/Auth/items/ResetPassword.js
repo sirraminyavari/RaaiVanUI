@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const { RVDic } = window;
 
@@ -27,21 +28,7 @@ const ResetPassword = () => {
   //If true, means the password input is focused(to showing the Password validation).
   const [passFocused, setPassFocused] = useState(false);
 
-  const { email, password, passwordError } = useSelector((state) => ({
-    email: state.auth.email,
-    password: state.auth.password,
-    emailError: state.auth.emailError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    routeHistory: state.auth.routeHistory,
-    passwordPolicy: state.auth.passwordPolicy,
-    lastLoginModal: state.auth.lastLoginModal,
-    verifyCodeToken: state.auth.verifyCodeToken,
-    verifyCode: state.auth.verifyCode,
-    verifyCodeError: state.auth.verifyCodeError,
-    verifyCodeLength: state.auth.verifyCodeLength,
-    passwordError: state.auth.passwordError,
-  }));
+  const { email, password, passwordError } = useSelector(selectAuth);
 
   /**
    * Synchronously sets inputted password to redux state.

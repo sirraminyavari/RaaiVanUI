@@ -19,6 +19,7 @@ import {
 import { REGISTER_PATH } from 'constant/constants';
 import VerificationCodeDialog from 'components/OTP/VerificationCodeDialog';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 
@@ -28,9 +29,7 @@ const ForgotPassword = () => {
 
   const { actions: authActions } = useAuthSlice();
 
-  const { initialEmail } = useSelector((state) => ({
-    initialEmail: state.auth.email,
-  }));
+  const { email: initialEmail } = useSelector(selectAuth);
 
   const [email, setEmail] = useState(initialEmail);
   const [emailError, setEmailError] = useState('');

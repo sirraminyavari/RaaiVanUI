@@ -21,7 +21,7 @@ const ThemePreview = ({ preview }) => {
   const themeState = useSelector(selectTheme);
 
   const hasPattern = themeState.hasSidebarPattern;
-  // const isSidebarCollapsed = useSelector(selectIsCollapsed);
+
   const isDarkMode = themeState.isDarkMode;
   const currentTheme = themeState.currentTheme;
   const { isSidebarCollapsed } = useContext(CustomSettingContext);

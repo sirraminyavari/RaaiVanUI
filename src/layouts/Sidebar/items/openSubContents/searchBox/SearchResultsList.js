@@ -4,7 +4,6 @@
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';

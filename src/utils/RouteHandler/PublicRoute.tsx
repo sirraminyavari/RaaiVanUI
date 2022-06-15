@@ -3,11 +3,12 @@
  * ... Otherwise, redirects user to '/workspaces' route.
  */
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { TEAMS_PATH } from 'constant/constants';
+import { selectAuth } from 'store/slice/auth/selectors';
+import { useSelector } from 'react-redux';
 
 const PublicRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector(selectAuth);
 
   return (
     <Route

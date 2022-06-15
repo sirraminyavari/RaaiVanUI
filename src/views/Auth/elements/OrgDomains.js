@@ -4,6 +4,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 import styled from 'styled-components';
 import { ShakeAnimate } from './Animate.style';
 
@@ -14,10 +15,7 @@ const OrgDomains = () => {
 
   const { actions: authActions } = useAuthSlice();
 
-  const { orgDomains, orgDomainsError } = useSelector((state) => ({
-    orgDomains: state.auth.orgDomains,
-    orgDomainsError: state.auth.orgDomainsError,
-  }));
+  const { orgDomains, orgDomainsError } = useSelector(selectAuth);
 
   /**
    * By clicking the 'option' will fire.

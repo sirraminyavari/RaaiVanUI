@@ -17,6 +17,22 @@ export interface IAuthState {
     reloadAfterLogin: boolean;
   };
   authUser?: any;
+
+  //must decide
+  isAuthenticated?: boolean;
+  lastLogins: any[];
+  loginMessage?: string;
+  resetPasswordAddress: {
+    email?: string;
+    phone?: string;
+  };
+  isFetching?: boolean;
+  fetchingFiles?: boolean;
+  routeHistory?: any;
+  passwordPolicy?: any;
+  showLastLoginsModal?: boolean;
+  captchaToken?: any;
+  //end of must decide
 }
 
 export const EmptyAuthState: IAuthState = {
@@ -36,6 +52,13 @@ export const EmptyAuthState: IAuthState = {
     reloadAfterLogin: false,
   },
   authUser: window.RVGlobal?.CurrentUser,
+
+  //must decide
+  isAuthenticated: undefined,
+  lastLogins: [],
+  loginMessage: undefined,
+  resetPasswordAddress: {},
+  //end of: must decide
 };
 
 interface ILoginRequest {

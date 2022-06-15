@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import LastLoginsModal from '../elements/LastLoginsModal';
@@ -40,18 +41,8 @@ const SignIn = () => {
     isFetching,
     fetchingFiles,
     routeHistory,
-    lastLoginModal,
-  } = useSelector((state) => ({
-    email: state.auth.email,
-    emailError: state.auth.emailError,
-    password: state.auth.password,
-    passwordError: state.auth.passwordError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    routeHistory: state.auth.routeHistory,
-    passwordPolicy: state.auth.passwordPolicy,
-    lastLoginModal: state.auth.lastLoginModal,
-  }));
+    showLastLoginsModal: lastLoginModal,
+  } = useSelector(selectAuth);
 
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   useEffect(() => {
@@ -100,9 +91,9 @@ const SignIn = () => {
 
     dispatch(
       authActions.login({
-        email: email,
-        password: password,
-        invitationId: invitationId,
+        Username: email,
+        Password: password,
+        InvitationID: invitationId,
       })
     );
   };

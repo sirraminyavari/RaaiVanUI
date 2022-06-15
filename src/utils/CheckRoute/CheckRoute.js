@@ -23,8 +23,7 @@ import {
   VERIFICATION_PATH,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
-import { API_Provider } from 'helpers/helpers';
-import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
+import API from 'apiHelper';
 import { useThemeSlice } from 'store/slice/theme';
 import { useApplicationSlice } from 'store/slice/applications';
 import { useSidebarSlice } from 'store/slice/sidebar';
@@ -40,8 +39,6 @@ const setLastLocation = (data, routeName, pathMatch) =>
   });
 
 const getLastLocation = () => window.__LastLocation || {};
-
-const checkRouteAPI = API_Provider(RV_API, CHECK_ROUTE);
 
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
@@ -125,23 +122,27 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     //! Set check route flag to true.
     setIsChecking(true);
 
-    checkRouteAPI.fetch(
-      { RouteName: name, Parameters: params },
-      (response) => {
-        //! The location after check route api resolves.
-        const currentURL = window.location.href;
-        //! Store current url in urlRef.
-        urlRef.current = currentURL;
-        //! If the location before and after check route api are same,
-        //! then set check route flag to false and set route object.
-        prevURL === currentURL && setRoute(response);
-        setIsChecking(false);
-      },
-      (error) => {
-        console.log(error);
-        setIsChecking(false);
-      }
-    );
+    const check = async (_name, _params) => {
+      const res = await API.RV.checkRoute({
+        RouteName: _name,
+        Parameters: _params,
+      });
+
+      console.log({ ...res, _name }, 'ramin');
+      console.log({ cur: window.location.href, pre: prevURL }, 'ramin 2');
+      window._alert('ramin');
+
+      //! The location after check route api resolves.
+      const currentURL = window.location.href;
+      //! Store current url in urlRef.
+      urlRef.current = currentURL;
+      //! If the location before and after check route api are same,
+      //! then set check route flag to false and set route object.
+      prevURL === currentURL && setRoute(res);
+      setIsChecking(false);
+    };
+
+    check(name, params);
 
     //? Due to memory leak error in check route.
     //! Clean up.

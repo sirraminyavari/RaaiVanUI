@@ -3,8 +3,8 @@
  * ... Otherwise, redirects user to '/auth/login' route.
  */
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { LOGIN_PATH } from 'constant/constants';
+import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/slice/auth/selectors';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {

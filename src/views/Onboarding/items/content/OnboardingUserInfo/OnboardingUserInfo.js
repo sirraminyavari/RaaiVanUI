@@ -15,9 +15,10 @@ import {
 } from 'apiHelper/ApiHandlers/usersApi';
 import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const OnboardingUserInfoContent = () => {
-  const currentUser = useSelector((state) => state.auth.authUser);
+  const { authUser: currentUser } = useSelector(selectAuth);
 
   const [isLoading, setIsLoading] = useState(false);
   const [currentUserInfo, setCurrentUserInfo] = useState({

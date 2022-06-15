@@ -33,7 +33,7 @@ export function* loggedIn(values: PayloadAction<any>) {
   let msg = result.LoginMessage ? decodeBase64(result.LoginMessage) : null;
 
   const {
-    optinos: { reloadAfterLogin, returnUrl },
+    options: { reloadAfterLogin, returnUrl },
   } = yield select(selectAuthSlice);
 
   if (reloadAfterLogin) {

@@ -7,6 +7,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 import styled from 'styled-components';
 
 const { RVDic } = window;
@@ -19,10 +20,8 @@ const LastLoginsModal = ({ isVisible }) => {
 
   const { actions: authActions } = useAuthSlice();
 
-  const { lastLogins, loginMessage } = useSelector((state) => ({
-    lastLogins: state.auth.lastLogins,
-    loginMessage: state.auth.auth?.LoginMessage,
-  }));
+  const { lastLogins, loginMessage } = useSelector(selectAuth);
+
   /**
    * By clicking close button, will fire.
    */
@@ -61,6 +60,7 @@ const LastLoginsModal = ({ isVisible }) => {
     </Modal>
   );
 };
+
 export default LastLoginsModal;
 
 const Row = styled.div`

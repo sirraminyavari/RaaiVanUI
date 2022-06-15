@@ -12,7 +12,7 @@ export function* login(values: PayloadAction<ILoginRequest>) {
   const {
     orgDomains,
     selectedDomain,
-    optinos: { useCaptcha },
+    options: { useCaptcha },
   } = yield select(selectAuthSlice);
 
   if (Username && Password && (!orgDomains?.length || !!selectedDomain)) {

@@ -3,12 +3,11 @@ import OnboardingTeamItem from './OnboardingTeamItem';
 import { decodeBase64 } from 'helpers/helpers';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingContent = () => {
-  const { teamName, templates } = useSelector(({ onboarding }) => ({
-    teamName: onboarding.teamName,
-    templates: onboarding.templates,
-  }));
+  const { teamName, templates } = useSelector(selectOnboarding);
+
   return (
     <>
       <Styled.PanelListWrapper>

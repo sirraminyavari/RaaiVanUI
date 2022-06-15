@@ -4,7 +4,6 @@
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import AvatarComponent from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
@@ -27,6 +26,7 @@ import { getURL } from 'helpers/helpers';
 import WithAvatar from 'components/Avatar/WithAvatar';
 import { useNotificationsSlice } from 'store/slice/notification';
 import { selectTheme } from 'store/slice/theme/selectors';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const Avatar = WithAvatar({
   Component: AvatarComponent,
@@ -44,11 +44,6 @@ const MobileMenu = lazy(() =>
   )
 );
 
-const selectAuthUser = createSelector(
-  (state) => state.auth,
-  (auth) => auth.authUser
-);
-
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
 
 const NavbarPlaceholder = () => <div />;
@@ -61,7 +56,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { isSidebarOpen } = useSelector(selectTheme);
-  const authUser = useSelector(selectAuthUser);
+  const { authUser } = useSelector(selectAuth);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat, GlobalUtilities } = useWindow();
 

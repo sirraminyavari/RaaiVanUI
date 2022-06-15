@@ -17,6 +17,19 @@ import {
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
 
+export const checkRoute = ({
+  RouteName,
+  Parameters,
+}: {
+  RouteName: string;
+  Parameters: any;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'CheckRoute'), {
+    RouteName,
+    Parameters,
+  });
+};
+
 export const login = ({
   Username,
   Password,
