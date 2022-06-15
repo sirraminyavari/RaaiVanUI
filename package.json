@@ -5,6 +5,7 @@
   "proxy": "http://cliqmind-dev.ir",
   "dependencies": {
     "@atlaskit/tree": "^8.6.0",
+    "@cliqmind/react-table": "^7.8.0-dev.1",
     "@draft-js-plugins/editor": "^4.1.0",
     "@draft-js-plugins/mention": "^4.5.1",
     "@lottiefiles/react-lottie-player": "^3.4.1",
@@ -61,7 +62,6 @@
     "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
     "react-string-replace": "^0.4.4",
-    "react-table": "^7.6.3",
     "react-table-sticky": "^1.1.3",
     "react-toastify": "^7.0.3",
     "react-tooltip": "^4.2.21",

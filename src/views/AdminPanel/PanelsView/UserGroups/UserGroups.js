@@ -2,13 +2,7 @@ import * as Styled from './UserGroupsStyles';
 import useWindow from 'hooks/useWindowContext';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  addNode,
-  getGroupsAll,
-  modifyNodeName,
-  removeNode,
-  saveMembers,
-} from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
   GroupItem,
@@ -35,7 +29,7 @@ const UserGroups = () => {
 
   useEffect(() => {
     (async () => {
-      const groups = await getGroupsAll();
+      const groups = await API.CN.getGroupsAll();
       setNodeTypeID(groups[0]?.NodeTypeID);
       setGroups(groups);
       setLoading(false);
@@ -55,14 +49,14 @@ const UserGroups = () => {
   const handleModalConfirm = async (name, users, nodeId) => {
     const userIds = users.map((x) => x?.UserID);
     if (nodeId) {
-      await modifyNodeName(name, nodeId);
-      await saveMembers(nodeId, userIds);
-      const groups = await getGroupsAll();
+      await API.CN.modifyNodeName(name, nodeId);
+      await API.CN.saveMembers(nodeId, userIds);
+      const groups = await API.CN.getGroupsAll();
       setGroups(groups);
     } else {
-      const node = await addNode(name, NodeTypeID);
-      await saveMembers(node?.Node?.NodeID, userIds);
-      const groups = await getGroupsAll();
+      const node = await API.CN.addNode({ Name: name, NodeTypeID });
+      await API.CN.saveMembers(node?.Node?.NodeID, userIds);
+      const groups = await API.CN.getGroupsAll();
       setGroups(groups);
     }
   };
@@ -73,14 +67,14 @@ const UserGroups = () => {
    * @returns {Promise<void>}
    */
   const handleModalDelete = async (nodeId) => {
-    const { ErrorText } = await removeNode(nodeId);
+    const { ErrorText } = await API.CN.removeNode(nodeId);
     if (ErrorText) {
       return InfoToast({
         type: 'error',
         message: RVDic.MSG[ErrorText] || ErrorText,
       });
     } else {
-      const groups = await getGroupsAll();
+      const groups = await API.CN.getGroupsAll();
       setGroups(groups);
     }
   };

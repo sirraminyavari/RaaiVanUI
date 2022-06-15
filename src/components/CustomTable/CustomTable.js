@@ -7,7 +7,7 @@ import {
   useResizeColumns,
   useSortBy,
   usePagination,
-} from 'react-table';
+} from '@cliqmind/react-table';
 import { useSticky } from 'react-table-sticky';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import * as Styled from './CustomTable.styles';
@@ -246,6 +246,10 @@ const CustomTable = (props) => {
                         <Styled.TableColumnResizer
                           isResizing={column.isResizing}
                           {...column.getResizerProps()}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
                         />
                       )}
                     </Styled.TableHeader>

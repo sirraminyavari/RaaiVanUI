@@ -2,6 +2,7 @@ import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { CN_API } from 'constant/apiConstants';
 import { apiCallWrapper } from '../apiCallHelpers';
 import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
+import { IGetChildNodesRequest, IGetNodesRequest } from './types';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
@@ -157,10 +158,40 @@ export const removeMember = (NodeID, UserID) => {
   });
 };
 
-export const addNode = (Name, NodeTypeID) => {
+export const getNodes = (params: IGetNodesRequest) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetNodes'), {
+    ...params,
+    NodeIDs: (params.NodeIDs || []).join('|'),
+    NodeTypeIDs: (params.NodeTypeIDs || []).join('|'),
+    RelatedToIDs: (params.RelatedToIDs || []).join('|'),
+    CreatorUserIDs: (params.CreatorUserIDs || []).join('|'),
+    FormFilters: !params.FormFilters
+      ? undefined
+      : encodeBase64(JSON.stringify(params.FormFilters)),
+    SearchText: encodeBase64(params.SearchText || ''),
+  });
+};
+
+export const getChildNodes = (params: IGetChildNodesRequest) => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetNodes'), {
+    ...params,
+    SearchText: encodeBase64(params.SearchText || ''),
+  });
+};
+
+export const addNode = ({
+  Name,
+  NodeTypeID,
+  ParentNodeID,
+}: {
+  Name: string;
+  NodeTypeID: string;
+  ParentNodeID?: string;
+}) => {
   return apiCallWrapper(API_Provider(CN_API, 'AddNode'), {
     NodeTypeID,
     Name: encodeBase64(Name),
+    ParentNodeID,
   });
 };
 
@@ -168,6 +199,19 @@ export const modifyNodeName = (Name, NodeID) => {
   return apiCallWrapper(API_Provider(CN_API, 'ModifyNodeName'), {
     NodeID,
     Name: encodeBase64(Name),
+  });
+};
+
+export const moveNode = ({
+  NodeIDs,
+  ParentID,
+}: {
+  NodeIDs: string[];
+  ParentID?: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'MoveNode'), {
+    NodeIDs: NodeIDs.join('|'),
+    ParentNodeID: ParentID,
   });
 };
 
@@ -238,6 +282,19 @@ export const moveNodeType = ({
 
 export const getFavoriteNodesCount = () => {
   return apiCallWrapper(API_Provider(CN_API, 'GetFavoriteNodesCount'), {});
+};
+
+export const setAvatar = ({
+  ID,
+  AvatarName,
+}: {
+  ID: string;
+  AvatarName: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'SetAvatar'), {
+    ID,
+    AvatarName,
+  });
 };
 
 //TODO needs review to complete api return types

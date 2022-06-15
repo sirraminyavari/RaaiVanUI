@@ -11,7 +11,7 @@ import {
   encodeBase64,
   extend,
 } from 'helpers/helpers';
-import { apiCallWrapper } from './apiCallHelpers';
+import { apiCallWrapper } from '../apiCallHelpers';
 
 /**
  * @description gets the elements of a form
@@ -153,6 +153,7 @@ export const getFormInstance = ({
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customizedElements = {
   'short text': {
     Type: 'Text',

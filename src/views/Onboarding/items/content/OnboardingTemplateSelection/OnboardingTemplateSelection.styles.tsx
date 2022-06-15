@@ -8,8 +8,7 @@ import {
   CV_DISTANT,
   CV_WHITE,
   TCV_DEFAULT,
-  TCV_VERY_TRANSPARENT,
-  TCV_HIGHLY_TRANSPARENT_WARM,
+  TCV_HIGHLY_TRANSPARENT,
 } from 'constant/CssVariables';
 import { BO_RADIUS_HALF } from 'constant/constants';
 import {
@@ -225,7 +224,7 @@ export const OnboardingTemplateSelectionGalleryContainerBackground = styled.div<
   isCollapsed?: boolean;
 }>`
   // background-color: #2b7be40d;
-  background-color: ${TCV_HIGHLY_TRANSPARENT_WARM};
+  background-color: ${TCV_HIGHLY_TRANSPARENT};
   display: block;
 
   ${({ mobile }) => !mobile && `height: calc(100vh - 4rem);`}

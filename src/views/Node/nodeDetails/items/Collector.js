@@ -4,7 +4,7 @@
 import {
   getFormInstance,
   initializeOwnerFormInstance,
-} from 'apiHelper/ApiHandlers/FGAPI';
+} from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
 import { useState, lazy, Suspense, useEffect } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import {
