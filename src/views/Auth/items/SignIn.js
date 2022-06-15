@@ -91,8 +91,8 @@ const SignIn = () => {
 
     dispatch(
       authActions.login({
-        Username: email,
-        Password: password,
+        Username: email || '',
+        Password: password || '',
         InvitationID: invitationId,
       })
     );
@@ -103,9 +103,9 @@ const SignIn = () => {
    */
   const onForgot = () => {
     dispatch(
-      authActions.signupLoadFiles(
-        '/auth/forgotPassword' + window.location.search
-      )
+      authActions.signupLoadFiles({
+        destination: '/auth/forgotPassword' + window.location.search,
+      })
     );
 
     setForgotPassClicked(true);
@@ -120,7 +120,9 @@ const SignIn = () => {
     dispatch(authActions.setEmail(''));
     dispatch(authActions.setPassword(''));
     dispatch(
-      authActions.signupLoadFiles('/auth/register' + window.location.search)
+      authActions.signupLoadFiles({
+        destination: '/auth/register' + window.location.search,
+      })
     );
     // push('/auth/register');
   };
@@ -149,6 +151,7 @@ const SignIn = () => {
             ...common_style,
             marginBottom: '1.75rem',
           }}
+          className=""
         >
           {RVDic?.Login}
         </Heading>

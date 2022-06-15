@@ -47,7 +47,7 @@ function* signupLoadFiles(values: PayloadAction<{ destination: string }>) {
   try {
     const { destination } = values.payload || {};
 
-    yield put(actions.setLoginRoute(SIGN_UP_EMAIL));
+    yield put(actions.setLoginRoute({ destination: SIGN_UP_EMAIL }));
     yield put(actions.setPassword(''));
     yield put(
       actions.signupLoadFilesSuccess({

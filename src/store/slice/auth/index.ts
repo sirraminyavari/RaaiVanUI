@@ -65,7 +65,10 @@ const slice = createSlice({
       window.RVGlobal.CurrentUser = action.payload;
       window.RVGlobal.CurrentUserID = action.payload?.UserID;
     },
-    signupLoadFiles: (state: IAuthState, action) => {
+    signupLoadFiles: (
+      state: IAuthState,
+      action: PayloadAction<{ destination: string }>
+    ) => {
       state.fetchingFiles = true;
     },
     signupLoadFilesSuccess: (
@@ -79,7 +82,10 @@ const slice = createSlice({
     signupLoadFilesFailed: (state: IAuthState, action) => {
       state.fetchingFiles = false;
     },
-    setLoginRoute: (state: IAuthState, action) => {
+    setLoginRoute: (
+      state: IAuthState,
+      action: PayloadAction<{ destination: string }>
+    ) => {
       state.routeHistory = action.payload;
     },
     resetAllErrors: (state: IAuthState) => {
@@ -100,7 +106,7 @@ const slice = createSlice({
     setCaptchaToken: (state: IAuthState, action) => {
       state.captchaToken = action.payload;
     },
-    getDomains: (state, action) => {
+    getDomains: (state, action: PayloadAction<IReduxActionCall>) => {
       //state.loading = true;
     },
     getDomainsResponse: (state: IAuthState, action) => {
