@@ -1,8 +1,20 @@
 import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const RVTree = ({ data, children, onMove, onSort }) => {
+const RVTree = ({
+  data,
+  children,
+  onMove,
+  onSort,
+  isDragEnabled,
+  isNestingEnabled,
+  offsetPerLevel,
+}) => {
   const [tree, setTree] = useState(data);
+
+  useEffect(() => {
+    setTree(data);
+  }, [data]);
 
   const onExpand = (id) => {
     setTree(mutateTree(tree, id, { isExpanded: true }));
@@ -40,10 +52,9 @@ const RVTree = ({ data, children, onMove, onSort }) => {
   };
 
   const renderItem = (props) => {
-    console.log(props);
-    console.log(children);
-
-    return React.cloneElement(React.Children.only(children), props);
+    return typeof children === 'function'
+      ? children(props)
+      : React.cloneElement(React.Children.only(children), props);
   };
 
   return (
@@ -55,9 +66,9 @@ const RVTree = ({ data, children, onMove, onSort }) => {
           onExpand={onExpand}
           onCollapse={onCollapse}
           onDragEnd={onDragEnd}
-          offsetPerLevel={0}
-          isDragEnabled={true}
-          isNestingEnabled={true}
+          offsetPerLevel={offsetPerLevel}
+          isDragEnabled={isDragEnabled}
+          isNestingEnabled={isNestingEnabled}
         />
       )}
     </div>

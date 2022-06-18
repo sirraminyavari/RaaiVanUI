@@ -15,9 +15,12 @@ export interface ITreeModel {
 }
 
 export interface IRVTreeProps {
-  tree: ITreeModel;
+  data: ITreeModel;
   onMove?: (id: string, parentId: string) => void;
   onSort?: (ids: Array<strnig>) => void;
+  isDragEnabled: boolean;
+  isNestingEnabled: boolean;
+  offsetPerLevel: number;
   children?: ReactNode;
 }
 

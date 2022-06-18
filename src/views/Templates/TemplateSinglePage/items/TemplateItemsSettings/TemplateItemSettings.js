@@ -10,11 +10,12 @@ import TemplateItemSettingExcelRegister from './items/TemplateItemSettingExcelRe
 import TemplateItemSettingXMlRegister from './items/TemplateItemSettingXmlRegister';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
 import TemplateItemSettingListItem from './items/TemplateItemSettingListItem';
-import { ScrollProvider } from 'views/Node/nodeDetails/NodeDetails.style';
 import TemplateItemSettingAddNew from './items/TemplateItemSettingAddNode';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { CSSTransition } from 'react-transition-group';
 import TemplateItemSettingListTree from './items/TemplateItemSettingListTree';
+import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
+import { node } from 'prop-types';
 
 const TemplateItemSettings = () => {
   const { RVDic } = window;
@@ -63,6 +64,7 @@ const TemplateItemSettings = () => {
       setTotalNodes(TotalCount);
     };
 
+    console.log('reload again');
     fetchData();
     return () => setNodes([]);
   }, [nodesQuery]);
@@ -73,13 +75,38 @@ const TemplateItemSettings = () => {
   };
 
   const list = useMemo(() => {
-    if (false) {
-      return nodes.map((i) => {
-        const { NodeID } = i;
-        return <TemplateItemSettingListItem key={NodeID} {...i} />;
-      });
+    if (!IsTree) {
+      return (
+        <Styles.ListWrapper>
+          <ScrollBarProvider>
+            {createNewNode && !nodesQuery?.Archive && (
+              <Styles.AddNewItemWapper>
+                <TemplateItemSettingAddNew
+                  onClose={() => setCreateNewNode(false)}
+                />
+              </Styles.AddNewItemWapper>
+            )}
+            {nodes?.map((i) => {
+              const { NodeID } = i;
+              return <TemplateItemSettingListItem key={NodeID} {...i} />;
+            })}
+          </ScrollBarProvider>
+        </Styles.ListWrapper>
+      );
     } else {
-      return <TemplateItemSettingListTree nodes={nodes} />;
+      return (
+        <>
+          <Styles.TreeHeading>
+            <Styles.TilteHeading>{'نام آیتم'}</Styles.TilteHeading>
+            <Styles.CodeTitleHaeading>{'کد آبتم'}</Styles.CodeTitleHaeading>
+            <Styles.CreationDateHeading>
+              {'تاریخ ایجاد'}
+            </Styles.CreationDateHeading>
+            <Styles.ThumbnailHeading></Styles.ThumbnailHeading>
+          </Styles.TreeHeading>
+          <TemplateItemSettingListTree nodes={nodes} />
+        </>
+      );
     }
   }, [nodes]);
 
@@ -143,24 +170,7 @@ const TemplateItemSettings = () => {
           )}
         </Styles.TemplateItemRowSection>
 
-        {createNewNode && !nodesQuery?.Archive && (
-          <TemplateItemSettingAddNew ref={createNodeEl}>
-            <Styles.AddNewNodeActionRow>
-              <Styles.SaveNewNodeButton>{RVDic?.Save}</Styles.SaveNewNodeButton>
-
-              <Styles.SaveAndAddNewNodeButton>
-                {'ذخیره و ایجاد بعدی'}
-              </Styles.SaveAndAddNewNodeButton>
-
-              <Styles.CancelNodeCreateButton
-                onClick={() => setCreateNewNode(false)}
-              >
-                <CloseIcon outline={true} size={20} />
-              </Styles.CancelNodeCreateButton>
-            </Styles.AddNewNodeActionRow>
-          </TemplateItemSettingAddNew>
-        )}
-        <TemplateItemSettingListTree nodes={nodes} />
+        {list}
       </Styles.TemplateItemContainer>
     </>
   );

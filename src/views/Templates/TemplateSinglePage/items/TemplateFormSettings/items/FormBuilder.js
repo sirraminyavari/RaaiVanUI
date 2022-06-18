@@ -3,7 +3,6 @@ import { decodeBase64 } from 'helpers/helpers';
 import { useTemplateContext } from '../../../TemplateProvider';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { useState } from 'react';
-import AnimatedTextArea from 'components/Inputs/AnimatedTextArea/AnimatedTextArea';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import {
   DraggableFormObject,

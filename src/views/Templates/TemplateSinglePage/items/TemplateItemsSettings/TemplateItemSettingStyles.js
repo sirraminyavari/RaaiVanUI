@@ -49,6 +49,17 @@ export const TemplateItemRowSection = styled.div`
 `;
 TemplateItemRowSection.displayName = 'TemplateItemTitleSection';
 
+export const AddNewItemWapper = styled.div`
+  width: 100%;
+  border: solid 0.0625rem var(--rv-color-distant);
+  height: 5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-sizing: content-box;
+  border: 0.0625rem solid #e6f4f1;
+`;
+AddNewItemWapper.displayName = 'AddNewItemWrapper';
+
 export const TitleIcon = styled.img`
   width: 2rem;
   aspect-ratio: 1;
@@ -149,4 +160,36 @@ export const SaveAndAddNewNodeButton = styled(Button).attrs({
   padding: 0;
   min-width: 8.5rem;
   border-radius: 1.5rem;
+`;
+
+export const TreeHeading = styled.div`
+  ${FLEX_RCB};
+  height: 2rem;
+  border-bottom: 0.0625rem solid var(--rv-color-distant);
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+`;
+
+export const TilteHeading = styled.div`
+  flex: 6;
+  font-size: 0.8rem;
+  color: var(--rv-color-distant);
+`;
+
+export const CodeTitleHaeading = styled.div`
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--rv-color-distant);
+`;
+
+export const CreationDateHeading = styled.div`
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--rv-color-distant);
+`;
+
+export const ThumbnailHeading = styled.div`
+  flex: 2;
+  font-size: 0.8rem;
+  color: var(--rv-color-distant);
 `;
