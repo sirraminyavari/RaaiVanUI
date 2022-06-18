@@ -39,6 +39,8 @@ const ContributorItem = ({ item, onRemove, setPercent }) => {
             textAlign: 'center',
           }}
           type="number"
+          min="0"
+          max="100"
           placeholder={item?.percent ? '%' + item?.percent : RVDic.Percent}
           onChange={(event) =>
             setPercent({ percent: +event.target.value, item: item })

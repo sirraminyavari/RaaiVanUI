@@ -27,7 +27,7 @@ const FormCell = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            minWidth: '17rem',
+            width: 'clamp(5rem,15vw,17rem)',
           }}
         >
           <div
@@ -82,7 +82,7 @@ const Title = styled(Heading)`
 `;
 const Children = styled.div`
   width: 100%;
-  display: flex;
+  display: contents;
   align-items: flex-end;
   justify-content: flex-start;
   flex: 1;

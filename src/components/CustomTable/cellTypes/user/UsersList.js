@@ -36,6 +36,7 @@ const UsersList = (props) => {
                 color={CV_BLACK}
                 className="table-user-avatar"
                 userImage={IconURL}
+                radius={false}
               />
               <Styled.UserLinkHeading className="table-user-view" type="h6">
                 {decodeBase64(FullName)}

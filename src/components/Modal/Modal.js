@@ -16,6 +16,7 @@ const Modal = ({
   contentWidth,
   titleClass,
   titleContainerClass,
+  preventParentScroll,
   ...props
 }) => {
   const { GlobalUtilities } = useWindow();
@@ -29,6 +30,9 @@ const Modal = ({
     setShowState(show);
     if (!!show) {
       _setDisposed(false);
+      if (preventParentScroll) document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
   }, [show]);
 
