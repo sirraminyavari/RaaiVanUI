@@ -57,6 +57,7 @@ const SubjectField = ({
         style={{ padding: '0', height: '50%' }}
         stick
         show={isVisible}
+        preventParentScroll
       >
         <ItemSelection
           nodeTypes={parseDecodeInfo?.NodeTypes}

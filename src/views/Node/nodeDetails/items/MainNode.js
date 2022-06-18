@@ -16,6 +16,7 @@ import { RVDic } from 'utils/TestUtils/fa';
 import CreatableSelect from 'react-select/creatable';
 import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI';
 import useWindow from 'hooks/useWindowContext';
+import NodePageRelatedNodeItems from './topBar/NodePageRelatedNodeItems';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -139,6 +140,10 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
             <Heading type={'h1'}>{title}</Heading>
           )}
         </TitleContainer>
+
+        <>
+          <NodePageRelatedNodeItems />
+        </>
         <TitleContainer>
           <>
             <FormCell
