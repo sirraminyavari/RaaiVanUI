@@ -1,7 +1,7 @@
 import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
-import { CV_DISTANT, CV_RED } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, CV_RED } from 'constant/CssVariables';
 import { FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
 
 export const NodeTopBarShadowButton = styled(Button)`
@@ -40,7 +40,7 @@ NodeTopBarBottomRow.displayName = 'NodeTopBarBottomRow';
 
 export const NodeTopBarRelatedTopicsContainer = styled.div`
   ${FLEX_RCB}
-  gap: 1rem;
+  // gap: 1rem;
 
   max-width: 100%;
   overflow-x: auto;
@@ -48,14 +48,12 @@ export const NodeTopBarRelatedTopicsContainer = styled.div`
 NodeTopBarRelatedTopicsContainer.displayName =
   'NodeTopBarRelatedTopicsContainer';
 
-export const NodeTopBarRelatedTopicsTitle = styled.div.attrs({
-  className: `${C_DISTANT}`,
-})`
-  padding: 0 1rem;
-  border-left: 1px solid ${CV_DISTANT};
-  min-width: 8rem;
+export const NodeTopBarRelatedTopicsTitle = styled.div`
+  margin-inline-end: 3vw;
+  color: ${CV_GRAY};
+  width: clamp(5rem, 15vw, 17rem);
   height: 2rem;
-  ${FLEX_RCC}
+  font-size: 1rem;
 `;
 NodeTopBarRelatedTopicsTitle.displayName = 'NodeTopBarRelatedTopicsTitle';
 

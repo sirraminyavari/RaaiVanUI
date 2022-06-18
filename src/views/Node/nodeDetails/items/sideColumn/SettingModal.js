@@ -76,7 +76,15 @@ const Setting = () => {
         disable={true}
         onToggle={handleAccessLink}
         isChecked={accessLink}
-        title={RVDic.CreatePublicURL + '(' + RVDic.CommingSoon + ')'}
+        title={
+          <>
+            {RVDic.CreatePublicURL}{' '}
+            <Styled.TagContent>
+              <span />
+              {RVDic.CommingSoon}
+            </Styled.TagContent>
+          </>
+        }
         titleClass={`${C_GRAY_DARK} side-setting-toggle`}
       />
     </Styled.SettingContainer>

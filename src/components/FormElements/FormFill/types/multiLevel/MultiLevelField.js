@@ -138,9 +138,11 @@ const customStyles = {
     color: isSelected ? TCV_WARM : CV_GRAY,
     margin: '0.35rem 0.5rem 0.35rem 0.5rem',
     cursor: 'pointer',
-    minWidth: '10rem',
+    // minWidth: '10rem',
     padding: '0.2rem 0.2rem 0.2rem 0.2rem',
     backgroundColor: isFocused && CV_FREEZED,
+    maxWidth: '100%',
+    overflowX: 'hidden',
     ':hover': {
       color: TCV_WARM,
       backgroundColor: CV_FREEZED,
