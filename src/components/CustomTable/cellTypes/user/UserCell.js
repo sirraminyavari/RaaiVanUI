@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import * as Styled from './UserCell.styles';
 import UsersList from './UsersList';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
@@ -9,7 +9,7 @@ import AddNewUserButton from 'components/CustomTable/AddNewButton';
 import UserIcon from 'components/Icons/UserIconIo';
 
 const UserCell = (props) => {
-  const { RVDic } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
 
   const {
     value,
@@ -53,8 +53,8 @@ const UserCell = (props) => {
     };
   }, [canEdit, initialUsers, isNewRow]);
 
-  const normalizeSelectedUsers =
-    users?.length > 0
+  const normalizeSelectedUsers = useMemo(() => {
+    return users?.length > 0
       ? users?.map((user) => {
           const temp = {
             id: user.ID,
@@ -62,6 +62,7 @@ const UserCell = (props) => {
           return temp;
         })
       : [];
+  }, [users]);
 
   const updateCell = (users) => {
     let userCell = {
@@ -75,6 +76,7 @@ const UserCell = (props) => {
   };
 
   const handleAddNewPerson = (person) => {
+    if (!person) return setUsers([]);
     const { avatarUrl: IconURL, id: ID, name } = person;
     let newUser = { ID, UserID: ID, FullName: name, IconURL };
 
@@ -121,13 +123,29 @@ const UserCell = (props) => {
       {renderUsers()}
       <Styled.PeoplePickerWrapper>
         <PeoplePicker
-          onByMe={() => {}}
+          onByMe={(state) => {
+            const currentUser = {
+              ...RVGlobal.CurrentUser,
+              id: RVGlobal.CurrentUser.UserID,
+              avatarUrl: RVGlobal.CurrentUser.ProfileImageURL,
+              name: RVGlobal.CurrentUser.FullName,
+            };
+            console.log({ state, currentUser });
+            if (!state) handleRemoveUser(currentUser);
+            else handleAddNewPerson(currentUser);
+          }}
           onBlur={() => {}}
-          onByPeople={handleAddNewPerson}
-          isByMe={false}
-          pickedPeople={isNewRow ? normalizeSelectedUsers : []}
+          onByPeople={(e) => {
+            console.log({ e });
+            handleAddNewPerson(e);
+          }}
+          isByMe={normalizeSelectedUsers?.find(
+            (y) => y.id === RVGlobal.CurrentUser.UserID
+          )}
+          pickedPeople={normalizeSelectedUsers}
           onVisible={() => {}}
           multi={isMultiSelect}
+          fixedPositioning
           buttonComponent={
             <AddNewUserButton
               title={

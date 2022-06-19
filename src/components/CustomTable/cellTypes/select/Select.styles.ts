@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import styled from 'styled-components';
 import {
   CV_BLACK,
@@ -13,12 +14,12 @@ import Heading from 'components/Heading/Heading';
 const { RV_Float } = window;
 
 export const selectStyles = {
-  control: (styles) => ({
+  control: (styles: CSSProperties) => ({
     ...styles,
     backgroundColor: 'inherit',
     borderColor: CV_DISTANT,
   }),
-  option: (styles, { isSelected }) => ({
+  option: (styles: CSSProperties, { isSelected }: { isSelected: boolean }) => ({
     ...styles,
     backgroundColor: CV_WHITE,
     width: '90%',
@@ -37,17 +38,17 @@ export const selectStyles = {
       backgroundColor: CV_WHITE,
     },
   }),
-  indicatorsContainer: (styles) => ({
+  indicatorsContainer: (styles: CSSProperties) => ({
     ...styles,
     svg: {
       color: TCV_DEFAULT,
     },
   }),
-  indicatorSeparator: (styles) => ({
+  indicatorSeparator: (styles: CSSProperties) => ({
     ...styles,
     display: 'none',
   }),
-  singleValue: (styles) => ({
+  singleValue: (styles: CSSProperties) => ({
     ...styles,
     backgroundColor: CV_DISTANT,
     padding: '0.2rem',
@@ -55,14 +56,14 @@ export const selectStyles = {
     borderRadius: '0.2rem',
     maxWidth: '95%',
   }),
-  multiValue: (styles) => ({
+  multiValue: (styles: CSSProperties) => ({
     ...styles,
     backgroundColor: CV_DISTANT,
     padding: '0.1rem',
     fontSize: '1rem',
     borderRadius: '0.2rem',
   }),
-  multiValueRemove: (styles) => ({
+  multiValueRemove: (styles: CSSProperties) => ({
     ...styles,
     color: CV_RED,
     ':hover': {
@@ -89,7 +90,7 @@ export const EmptyCellView = styled.div`
   color: ${CV_DISTANT};
   width: 100%;
   text-align: start;
-  padding-${RV_Float}: 0.7rem;
+  padding-inline-start: 0.7rem;
 `;
 
 export const CellViewContainer = styled.div`

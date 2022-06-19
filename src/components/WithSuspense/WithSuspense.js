@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
  * ```
  * @param {Component} Component - React lazy import
  * @param {function} Loading - loading component e.g. LogoLoader, Shimmer or component Skeleton
- * @return {JSX.Element}
+ * @return {()=>JSX.Element}
  */
 const WithSuspense =
   (Component, Loading = undefined) =>

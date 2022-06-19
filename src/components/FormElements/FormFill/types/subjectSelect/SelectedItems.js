@@ -1,3 +1,4 @@
+import { getNodePageUrl } from 'apiHelper/getPageUrl';
 import Heading from 'components/Heading/Heading';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { TC_WARM } from 'constant/Colors';
@@ -10,18 +11,21 @@ import {
 } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SelectedItem = ({ item, onRemove, editMode }) => {
   const { Name, IconURL } = item || {};
 
   return (
-    <Maintainer className={'rv-border-radius-half'}>
-      <Icon src={IconURL} />
+    <Link to={getNodePageUrl(item.ID)} target="_blank">
+      <Maintainer className={'rv-border-radius-half'}>
+        <Icon src={IconURL} />
 
-      <Title>{decodeBase64(Name)}</Title>
-      {editMode && <CustomCloseIcon onClick={() => onRemove(item)} />}
-    </Maintainer>
+        <Title>{decodeBase64(Name)}</Title>
+        {editMode && <CustomCloseIcon onClick={() => onRemove(item)} />}
+      </Maintainer>
+    </Link>
   );
 };
 export default SelectedItem;
