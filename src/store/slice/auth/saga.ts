@@ -29,7 +29,7 @@ function* logout(values: PayloadAction<IReduxActionCall>) {
   }
 }
 
-function* getDomains(values: PayloadAction<IReduxActionCall>) {
+function* getDomains(_values: PayloadAction<IReduxActionCall>) {
   const res = yield call(API.RV.getDomains);
 
   yield put(
@@ -59,7 +59,7 @@ function* signupLoadFiles(values: PayloadAction<{ destination: string }>) {
   }
 }
 
-function* setLoginRoute(values: PayloadAction<{ destination: string }>) {
+function* setLoginRoute(_values: PayloadAction<{ destination: string }>) {
   yield put(actions.resetAllErrors());
 }
 

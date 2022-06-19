@@ -30,6 +30,7 @@ const OnboardingTeamCreationChoiceContent = () => {
   useEffect(() => {
     const UrlQuery = new URLSearchParams(location.search);
     const workspaceID = UrlQuery.get('workspaceID');
+
     if (workspaceID !== null) {
       dispatch(onboardingActions.teamSetWorkspaceId(workspaceID));
       goToNextStep();

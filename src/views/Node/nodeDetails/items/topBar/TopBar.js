@@ -10,7 +10,7 @@ import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Eye';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';

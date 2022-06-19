@@ -9,9 +9,9 @@ const slice = createSlice({
   name: 'auth',
   initialState: EmptyAuthState,
   reducers: {
-    login: (state: IAuthState, action: PayloadAction<ILoginRequest>) => {},
-    loginStepTwo: (state: IAuthState, action: PayloadAction<any>) => {},
-    loggedIn: (state: IAuthState, action: PayloadAction<any>) => {},
+    login: (_state: IAuthState, _action: PayloadAction<ILoginRequest>) => {},
+    loginStepTwo: (_state: IAuthState, _action: PayloadAction<any>) => {},
+    loggedIn: (_state: IAuthState, _action: PayloadAction<any>) => {},
     loginSuccess: (state: IAuthState, action: PayloadAction<any>) => {
       state.lastLogins =
         action.payload.LastLogins || action.payload.lastLogins || [];
@@ -33,7 +33,10 @@ const slice = createSlice({
       state.emailError = action.payload;
       state.passwordError = action.payload;
     },
-    logout: (state: IAuthState, action: PayloadAction<IReduxActionCall>) => {},
+    logout: (
+      _state: IAuthState,
+      _action: PayloadAction<IReduxActionCall>
+    ) => {},
     logoutSuccess: (state: IAuthState) => {
       state.isAuthenticated = false;
     },
@@ -67,7 +70,7 @@ const slice = createSlice({
     },
     signupLoadFiles: (
       state: IAuthState,
-      action: PayloadAction<{ destination: string }>
+      _action: PayloadAction<{ destination: string }>
     ) => {
       state.fetchingFiles = true;
     },
@@ -79,14 +82,14 @@ const slice = createSlice({
       state.routeHistory = action.payload.destination;
       state.passwordPolicy = action.payload.result;
     },
-    signupLoadFilesFailed: (state: IAuthState, action) => {
+    signupLoadFilesFailed: (state: IAuthState, _action) => {
       state.fetchingFiles = false;
     },
     setLoginRoute: (
       state: IAuthState,
       action: PayloadAction<{ destination: string }>
     ) => {
-      state.routeHistory = action.payload;
+      state.routeHistory = action.payload.destination;
     },
     resetAllErrors: (state: IAuthState) => {
       state.passwordError = undefined;
@@ -106,10 +109,10 @@ const slice = createSlice({
     setCaptchaToken: (state: IAuthState, action) => {
       state.captchaToken = action.payload;
     },
-    getDomains: (state, action: PayloadAction<IReduxActionCall>) => {
+    getDomains: (_state, _action: PayloadAction<IReduxActionCall>) => {
       //state.loading = true;
     },
-    getDomainsResponse: (state: IAuthState, action) => {
+    getDomainsResponse: (_state: IAuthState, _action) => {
       //state.domainsList = action.payload;
       //state.loading = false;
     },
