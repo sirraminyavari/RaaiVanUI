@@ -65,10 +65,19 @@ const EditContributersModal = ({
     const filledContPercent = readyToUpdate?.reduce((x, y) => ({
       percent: +x?.percent + y?.percent,
     }))?.percent;
-    if (filledContPercent <= 100) {
+
+    if (contList?.length === 2 && filledContPercent <= 101) {
+      const syncedPercentageUpdate = contList?.map((x) =>
+        x.id === item.id
+          ? { ...x, percent: percent }
+          : { ...x, percent: 100 - percent }
+      );
+      setContList(syncedPercentageUpdate);
+    } else if (filledContPercent <= 100) {
       setContList(readyToUpdate);
     }
   };
+
   const onRemove = (event) => {
     const newList = contList.filter((x) => x.id !== event.id);
 

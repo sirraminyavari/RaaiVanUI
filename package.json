@@ -21,6 +21,7 @@
     "@types/rimraf": "^3.0.2",
     "@types/shelljs": "^0.8.11",
     "axios": "^0.21.1",
+    "caniuse-lite": "^1.0.30001352",
     "classnames": "^2.2.6",
     "dompurify": "^2.2.6",
     "downshift": "^6.1.0",
