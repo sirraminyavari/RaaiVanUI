@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
@@ -8,7 +8,6 @@ import TeamMemberIcon from 'components/Icons/TeamMemberIcon/TeamMemberIcon';
 import NewTeamIcon from 'components/Icons/NewTeamIcon/NewTeamIcon';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useOnboardingSlice } from 'store/slice/onboarding';
-import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingTeamCreationChoiceContent = () => {
   const { RVDic } = useWindow();
@@ -17,8 +16,6 @@ const OnboardingTeamCreationChoiceContent = () => {
   const { isMobile } = DimensionHelper();
 
   const dispatch = useDispatch();
-
-  const { nextStepAction } = useSelector(selectOnboarding);
 
   const { actions: onboardingActions } = useOnboardingSlice();
 
@@ -41,7 +38,7 @@ const OnboardingTeamCreationChoiceContent = () => {
   const goToTheDefaultEntranceRoute = () => history.push('/');
 
   const goToNextStep = () =>
-    dispatch(onboardingActions.goToNextOnboardingStep());
+    dispatch(onboardingActions.goToNextOnboardingStep({}));
 
   return (
     <>

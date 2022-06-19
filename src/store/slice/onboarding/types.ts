@@ -4,6 +4,12 @@ export type IOnboardingComponentName =
   | 'people-count'
   | 'work-field';
 
+export type IOnboardingNextStepAction =
+  | 'set-team-name'
+  | 'set-people-count'
+  | 'set-work-field'
+  | 'team-creation-completed';
+
 export interface IOnboardingState {
   //product tour
   name: string;
@@ -17,7 +23,7 @@ export interface IOnboardingState {
 
   //onboarding
   componentName: IOnboardingComponentName;
-  nextStepAction: any;
+  nextStepAction: IOnboardingNextStepAction;
   activeStep?: number;
   stepsCount?: number;
   WorkspaceID?: string;
@@ -49,7 +55,7 @@ export const EmptyOnboardingState: IOnboardingState = {
   showProductTour: true,
 
   componentName: 'choice',
-  nextStepAction: undefined,
+  nextStepAction: 'set-team-name',
   activeStep: undefined,
   stepsCount: undefined,
   WorkspaceID: undefined,

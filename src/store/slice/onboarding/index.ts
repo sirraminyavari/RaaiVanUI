@@ -1,6 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { useInjectSaga } from 'redux-injectors';
 import { createSlice } from 'utils/@reduxjs/toolkit';
 import { useInjectReducer } from 'utils/redux-injectors';
+import { onboardingSaga } from './saga';
 import {
   EmptyOnboardingState,
   IOnboardingState,
@@ -49,16 +51,12 @@ const slice = createSlice({
     },
 
     setTeamName: (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state: IOnboardingState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<{ WorkspaceID?: string; TeamName: string }>
+      _state: IOnboardingState,
+      _action: PayloadAction<{ WorkspaceID?: string; TeamName: string }>
     ) => {},
     setTeamSize: (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state: IOnboardingState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<{ ApplicationID: string; Size: string }>
+      _state: IOnboardingState,
+      _action: PayloadAction<{ ApplicationID: string; Size: string }>
     ) => {},
     setTeamSizeSuccessful: (
       state: IOnboardingState,
@@ -68,10 +66,8 @@ const slice = createSlice({
       (window.RVGlobal || {}).IsSystemAdmin = action.payload.IsSystemAdmin;
     },
     setFieldOfExpertise: (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state: IOnboardingState,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      action: PayloadAction<ISetFieldOfExpertiseRequest>
+      _state: IOnboardingState,
+      _action: PayloadAction<ISetFieldOfExpertiseRequest>
     ) => {},
 
     teamCreationChoice: (state: IOnboardingState) => {
@@ -81,7 +77,7 @@ const slice = createSlice({
     },
     teamSetName: (state: IOnboardingState) => {
       state.componentName = 'set-name';
-      state.nextStepAction = onboardingActions.teamSetPeopleCount;
+      state.nextStepAction = 'set-people-count';
       state.disableContinue = state.teamState.teamName === '';
       state.loading = false;
       state.apiName = 'teamName';
@@ -90,7 +86,7 @@ const slice = createSlice({
     },
     teamSetPeopleCount: (state: IOnboardingState) => {
       state.componentName = 'people-count';
-      state.nextStepAction = onboardingActions.teamSetWorkField;
+      state.nextStepAction = 'set-work-field';
       state.disableContinue = !state.teamState.peopleCount;
       state.loading = false;
       state.apiName = 'teamSize';
@@ -99,7 +95,7 @@ const slice = createSlice({
     },
     teamSetWorkField: (state: IOnboardingState) => {
       state.componentName = 'work-field';
-      state.nextStepAction = onboardingActions.teamCreationCompleted;
+      state.nextStepAction = 'team-creation-completed';
       state.disableContinue = !state.teamState.workField.fieldID;
       state.loading = false;
       state.apiName = 'fieldOfExpertise';
@@ -168,7 +164,7 @@ const slice = createSlice({
       state.selectedTemplates = {};
       state.disableContinue = true;
     },
-    goToNextOnboardingStep: () => {},
+    goToNextOnboardingStep: (_state: IOnboardingState, _action) => {},
   },
 });
 
@@ -176,5 +172,6 @@ export const { actions: onboardingActions } = slice;
 
 export const useOnboardingSlice = () => {
   useInjectReducer({ key: slice.name, reducer: slice.reducer });
+  useInjectSaga({ key: slice.name, saga: onboardingSaga });
   return { actions: slice.actions };
 };

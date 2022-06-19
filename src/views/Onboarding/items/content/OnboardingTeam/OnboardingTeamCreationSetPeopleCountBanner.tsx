@@ -2,15 +2,16 @@ import * as Styles from './OnboardingTeam.styles';
 import { OTHERS as lessThan10Image } from 'assets/images/onboarding/illustration/lessThen10/lessThen10';
 import { OTHERS as between11To20Image } from 'assets/images/onboarding/illustration/between11To20/between11To20';
 import { OTHERS as moreThan20Image } from 'assets/images/onboarding/illustration/moreThan20/moreThan20';
-import { useOnboardingTeamContent } from 'views/Onboarding/items/others/OnboardingTeam.context';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+
+type IPeopleCount = 'between11To20' | 'moreThan20' | 'lessThan10';
 
 const OnboardingTeamCreationSetPeopleCountBanner = () => {
-  const { teamState } = useOnboardingTeamContent();
+  const { teamState } = useSelector(selectOnboarding);
   const { isMobile } = DimensionHelper();
-  const peopleCountImageSrc = (
-    peopleCount: 'between11To20' | 'moreThan20' | 'lessThan10'
-  ) => {
+  const peopleCountImageSrc = (peopleCount: IPeopleCount) => {
     switch (peopleCount) {
       case 'between11To20':
         return between11To20Image;
@@ -23,7 +24,9 @@ const OnboardingTeamCreationSetPeopleCountBanner = () => {
   return (
     <Styles.OnboardingTeamImageBannerWrapper
       isMobile={isMobile}
-      BackgroundImage={peopleCountImageSrc(teamState.peopleCount)}
+      BackgroundImage={peopleCountImageSrc(
+        teamState.peopleCount as unknown as IPeopleCount
+      )}
     >
       <div />
     </Styles.OnboardingTeamImageBannerWrapper>

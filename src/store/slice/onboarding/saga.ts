@@ -4,7 +4,10 @@ import { themeActions } from '../theme';
 import { applicationActions } from '../applications';
 import API from 'apiHelper';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { ISetFieldOfExpertiseRequest } from './types';
+import {
+  IOnboardingNextStepAction,
+  ISetFieldOfExpertiseRequest,
+} from './types';
 import { MAIN_CONTENT, SETT_ONBOARDING_CONTENT } from 'constant/constants';
 import { selectOnboardingSlice } from './selectors';
 
@@ -102,7 +105,7 @@ function* setFieldOfExpertise(
 
 function* goToNextOnboardingStep() {
   const state = yield select(selectOnboardingSlice);
-  console.log(state.apiName, 'ramin api');
+
   yield put(actions.setLoading(true));
 
   switch (state.apiName) {
@@ -140,10 +143,25 @@ function* goToNextOnboardingStep() {
       break;
   }
 
-  yield put(state.nextStepAction || actions.teamSetName);
+  const nextAction: IOnboardingNextStepAction = state.nextStepAction;
+
+  switch (nextAction) {
+    case 'set-team-name':
+      yield put(actions.teamSetName());
+      break;
+    case 'set-people-count':
+      yield put(actions.teamSetPeopleCount());
+      break;
+    case 'set-work-field':
+      yield put(actions.teamSetWorkField());
+      break;
+    case 'team-creation-completed':
+      yield put(actions.teamCreationCompleted());
+      break;
+  }
 }
 
-export function* notificationsSaga() {
+export function* onboardingSaga() {
   yield takeLatest(actions.setTeamName.type, setTeamName);
   yield takeLatest(actions.setTeamSize.type, setTeamSize);
   yield takeLatest(actions.setFieldOfExpertise.type, setFieldOfExpertise);

@@ -75,7 +75,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
         ''
       ) : (
         <Styles.OnboardingTeamButtonInputWrapper wrap>
-          {workFields.map(({ NodeID, Name, AvatarName }) => (
+          {(workFields || []).map(({ NodeID, Name, AvatarName }) => (
             <>
               <PanelButton
                 secondary
