@@ -3,41 +3,30 @@
  */
 import { lazy, Suspense, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 import { MAIN_CONTENT } from 'constant/constants';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
-import { themeSlice } from 'store/reducers/themeReducer';
-
-const { toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const SidebarContentOpenMobile = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
 );
 
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
-
-const selectHasPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
-);
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
 const OpenSidebar = () => {
   const dispatch = useDispatch();
-  const sidebarContent = useSelector(selectSidebarContent);
-  const isOpen = useSelector(selectIsSidebarOpen);
-  const hasPattern = useSelector(selectHasPattern);
+
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+  const themeState = useSelector(selectTheme);
+
+  const sidebarContent = themeState.sidebarContent;
+  const isOpen = themeState.isSidebarOpen;
+  const hasPattern = themeState.hasSidebarPattern;
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

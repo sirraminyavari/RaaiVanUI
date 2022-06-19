@@ -3,18 +3,21 @@ import NodeList from 'components/NodeList/NodeList';
 import { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { toggleActivation } from 'store/reducers/onboardingReducer';
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import ProductTour from 'views/ProductTour/ProductTour';
 
 const AdvancedSearchView = (props) => {
   const { route } = props;
-  const { onboardingName } = useSelector((state) => state.onboarding);
 
   const dispatch = useDispatch();
 
+  const { name: onboardingName } = useSelector(selectOnboarding);
+  const { actions: onboardingActions } = useOnboardingSlice();
+
   useEffect(() => {
-    if (onboardingName === 'intro') dispatch(toggleActivation());
+    if (onboardingName === 'intro')
+      dispatch(onboardingActions.toggleActivation());
   }, [props.route]);
 
   const nodeType =

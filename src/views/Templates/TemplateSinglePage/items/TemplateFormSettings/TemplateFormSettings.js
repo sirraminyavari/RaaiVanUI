@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
+import { useThemeSlice } from 'store/slice/theme';
 import { TemplateFormProvider } from './TemplateFormContext';
-import { getFormElements } from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
+import API from 'apiHelper';
 import TemplateFormWrapper from './TemplateFormWrapper';
 
 const TemplateFormSettings = () => {
-  const { toggleSidebar } = themeSlice.actions;
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
   const dispatch = useDispatch();
   const [formInitialState, setFormInitialState] = useState([]);
 
@@ -16,7 +18,7 @@ const TemplateFormSettings = () => {
   }, []);
 
   const initForm = async () => {
-    const data = await getFormElements({
+    const data = await API.FG.getFormElements({
       FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
     });
     console.log(data);

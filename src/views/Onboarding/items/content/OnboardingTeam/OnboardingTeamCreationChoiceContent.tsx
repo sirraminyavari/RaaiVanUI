@@ -1,23 +1,23 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import * as GlobalStyles from 'views/Onboarding/items/Onboarding.styles';
 import TeamMemberIcon from 'components/Icons/TeamMemberIcon/TeamMemberIcon';
 import NewTeamIcon from 'components/Icons/NewTeamIcon/NewTeamIcon';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const OnboardingTeamCreationChoiceContent = () => {
   const { RVDic } = useWindow();
   const history = useHistory();
   const location = useLocation();
   const { isMobile } = DimensionHelper();
-  const { dispatch: dispatchTeamPage, nextStepAction } =
-    useOnboardingTeamContent();
+
+  const dispatch = useDispatch();
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   //! RVDic i18n localization
   const RVDicCreateNewTeam = RVDic.CreateNewN.replace('[n]', RVDic.Team);
@@ -27,11 +27,9 @@ const OnboardingTeamCreationChoiceContent = () => {
   useEffect(() => {
     const UrlQuery = new URLSearchParams(location.search);
     const workspaceID = UrlQuery.get('workspaceID');
+
     if (workspaceID !== null) {
-      dispatchTeamPage({
-        type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_WORKSPACE_ID,
-        stateValue: workspaceID,
-      });
+      dispatch(onboardingActions.teamSetWorkspaceId(workspaceID));
       goToNextStep();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,13 +37,8 @@ const OnboardingTeamCreationChoiceContent = () => {
 
   const goToTheDefaultEntranceRoute = () => history.push('/');
 
-  const goToNextStep = useMemo(
-    () => () => {
-      dispatchTeamPage({ type: nextStepAction });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nextStepAction]
-  );
+  const goToNextStep = () =>
+    dispatch(onboardingActions.goToNextOnboardingStep({}));
 
   return (
     <>

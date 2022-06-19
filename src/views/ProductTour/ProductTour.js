@@ -3,11 +3,16 @@ import React, { Suspense } from 'react';
 import './ProductTour.css';
 import { steps } from './steps';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleActivation } from 'store/reducers/onboardingReducer';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const ProductTour = () => {
-  const { active, fromStep } = useSelector((state) => state.onboarding);
+  const { active, fromStep } = useSelector(selectOnboarding);
   const dispatch = useDispatch();
+
+  const {
+    actions: { toggleActivation },
+  } = useOnboardingSlice();
 
   return (
     <Suspense fallback={React.Fragment}>
@@ -25,6 +30,7 @@ const ProductTour = () => {
         closeWithMask={false}
         onRequestClose={() => {
           dispatch(toggleActivation());
+          // eslint-disable-next-line no-self-assign
           window.location.href = window.location.href;
         }}
       />

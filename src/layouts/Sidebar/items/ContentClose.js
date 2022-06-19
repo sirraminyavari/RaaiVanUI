@@ -4,24 +4,18 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import withTheme from 'components/withTheme/withTheme';
 import * as Styled from '../Sidebar.styles';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
-
-//! Gets unfiltered nodes for closed sidebar menu.
-const selectSidebarNodes = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.nodeTypes
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 /**
  * Renders content for the sidebar in close mode.
@@ -29,6 +23,7 @@ const selectSidebarNodes = createSelector(
  */
 const SidebarOnClose = ({ theme }) => {
   const dispatch = useDispatch();
+
   const itemRef = useRef();
   const listRef = useRef();
   const containerRef = useRef();
@@ -40,9 +35,11 @@ const SidebarOnClose = ({ theme }) => {
   const [isDown, setIsDown] = useState(false);
   //! If true, scroll is at the very top, If not, its not!
   const [isUp, setIsUp] = useState(false);
-  const sidebarNodes = useSelector(selectSidebarNodes);
+  const { nodeTypes: sidebarNodeTypes } = useSelector(selectSidebar);
   const { handleSettings } = theme.actions;
-  const { setSidebarContent } = themeSlice.actions;
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
 
   usePreventScroll(containerRef);
 
@@ -103,7 +100,7 @@ const SidebarOnClose = ({ theme }) => {
     return true;
   };
 
-  const filteredSidebarNodes = sidebarNodes?.filter(checkValidNodes);
+  const filteredSidebarNodes = sidebarNodeTypes?.filter(checkValidNodes);
   const hasSidebarNodes = !!filteredSidebarNodes.length;
   //! Shows the chevron if there are enough nodes.
   useLayoutEffect(() => {
@@ -119,7 +116,7 @@ const SidebarOnClose = ({ theme }) => {
       setHasArrow(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sidebarNodes]);
+  }, [sidebarNodeTypes]);
 
   return (
     <>

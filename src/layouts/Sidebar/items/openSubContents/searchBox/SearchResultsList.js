@@ -4,24 +4,14 @@
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
-import { createSelector } from 'reselect';
 import SearchResultItem from './SearchResultItem';
 import useWindow from 'hooks/useWindowContext';
 import { decodeBase64 } from 'helpers/helpers';
-
-const selectSidebarNodes = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.nodeTypes
-);
-
-const selectSearchText = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.searchText
-);
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 const SearchResultsList = () => {
-  const sidebarNodes = useSelector(selectSidebarNodes);
-  const searchText = useSelector(selectSearchText);
+  const { nodeTypes: sidebarNodeTypes, searchText } =
+    useSelector(selectSidebar);
   const { GlobalUtilities } = useWindow();
 
   // const nodes = sidebarNodes.filter((node) => {
@@ -31,7 +21,7 @@ const SearchResultsList = () => {
 
   return (
     <Styled.MenuTreeContainer>
-      {sidebarNodes
+      {sidebarNodeTypes
         ?.filter((node) =>
           GlobalUtilities.is_search_match(
             decodeBase64(node?.TypeName),

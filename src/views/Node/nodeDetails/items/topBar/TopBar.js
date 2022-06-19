@@ -10,15 +10,14 @@ import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Eye';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import { decode } from 'js-base64';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
 import Creators from './Creators';
 import * as Styles from './TopBar.style';
-import { themeSlice } from 'store/reducers/themeReducer';
-const { toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const { RVDic, RV_RTL } = window || {};
 
@@ -33,7 +32,11 @@ const TopBar = ({
   sideColumn,
   hierarchy,
 }) => {
-  const { VisitsCount, Contributors } = nodeDetails || {};
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
+  const { VisitsCount } = nodeDetails || {};
 
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
   const [sideDetailsHover, setSideDetailsHover] = useState(false);
@@ -43,19 +46,15 @@ const TopBar = ({
 
   const dispatch = useDispatch();
 
-  const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
-    (state) => ({
-      teamName: state?.theme?.selectedTeam?.name,
-      onboardingName: state?.onboarding?.name,
-      newDocMenu: state?.onboarding?.newDocMenu,
-      selectedApp: state?.selectedTeam,
-    })
-  );
+  const { selectedTeam: selectedApp } = useSelector(selectTheme);
+  const teamName = selectedApp?.name;
+
   const extendedHierarchy = hierarchy?.map((level) => ({
     id: level?.NodeTypeID,
     title: decodeBase64(level?.TypeName),
     linkTo: `/classes/${level?.NodeTypeID}`,
   }));
+
   const { NodeType, Name } = nodeDetails || {};
 
   const breadcrumbItems = [
@@ -71,18 +70,12 @@ const TopBar = ({
     ...extendedHierarchy,
   ];
 
-  const getTypeName = () => {
-    return nodeType?.TypeName
-      ? decode(nodeType?.TypeName)
-      : teamName
-      ? teamName
-      : '';
-  };
   const onSideDetailsClick = () => {
     setSideDetailsHover(!sideDetailsHover);
     onSideColumnClicked(!sideColumn);
     dispatch(toggleSidebar(false));
   };
+
   const onBookmarkPressed = (e) => {
     if (bookmarkStatus === 'liked') {
       unlikeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {

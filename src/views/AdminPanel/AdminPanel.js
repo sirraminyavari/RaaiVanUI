@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 import Panel from './Panel';
 
 const Configuration = () => {
-  const panels = useSelector((state) => state.sidebarItems.configPanels);
+  const { configPanels: panels } = useSelector(selectSidebar);
 
   return (
     <div

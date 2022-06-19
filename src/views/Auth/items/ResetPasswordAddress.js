@@ -1,14 +1,15 @@
 import Button from 'components/Buttons/Button';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { selectAuth } from 'store/slice/auth/selectors';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 
 const ResetPasswordAddress = () => {
-  const { phone, email } = useSelector((state) => ({
-    email: state.auth.resetPasswordAddress?.email,
-    phone: state.auth.resetPasswordAddress?.phone,
-  }));
+  const {
+    resetPasswordAddress: { email, phone },
+  } = useSelector(selectAuth);
+
   const hideString = (value, index, replacement) => {
     return (
       value?.substr(0, index) +

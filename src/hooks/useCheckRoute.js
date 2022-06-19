@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useQuery from 'hooks/useQuery';
-import { API_Provider } from 'helpers/helpers';
-import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
+import API from 'apiHelper';
 
 /**
  * This hook checks every route for permission.
@@ -15,18 +14,20 @@ const useCheckRoute = (name) => {
   const routeParams = useParams();
   const queryParams = useQuery();
   const params = { ...routeParams, ...queryParams };
-  const apiHandler = API_Provider(RV_API, CHECK_ROUTE);
 
   useEffect(() => {
     const prevURL = window.location.href;
-    apiHandler.fetch(
-      { RouteName: name, Parameters: params, ParseResults: true },
-      (response) => {
-        const currentURL = window.location.href;
-        prevURL === currentURL && setResult(response);
-      },
-      (error) => console.log(error)
-    );
+
+    const check = async (name, params) => {
+      const res = await API.RV.checkRoute({
+        RouteName: name,
+        Parameters: params,
+      });
+
+      if (prevURL === window.location.href) setResult(res);
+    };
+
+    check(name, params);
 
     return () => {
       setResult({});

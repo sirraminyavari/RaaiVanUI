@@ -3,7 +3,6 @@
  */
 import { lazy, Suspense, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ListItem from './ListItem';
 import BookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
@@ -13,6 +12,7 @@ import StatisticBarIcon from 'components/Icons/StatisticBarIcon/StatisticBar';
 import useWindow from 'hooks/useWindowContext';
 import { getURL } from 'helpers/helpers';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 const TemplatesGalleryModal = lazy(() =>
   import(
@@ -20,23 +20,16 @@ const TemplatesGalleryModal = lazy(() =>
   )
 );
 
-const selectFavoriteNodesCount = createSelector(
-  (state) => state?.sidebarItems,
-  (sidebarItems) => sidebarItems?.favoriteNodesCount
-);
-// const selectUnderMenuList = createSelector(
-//   (state) => state?.sidebarItems,
-//   (sidebarItems) => sidebarItems?.underMenuList
-// );
-
 /**
  * Renders some items after nodes item inside sidebar menu.
  * @returns {React.Component}
  */
 const UnderMenuList = () => {
   const { RVDic } = useWindow();
-  const favoriteNodesCount = useSelector(selectFavoriteNodesCount);
-  // const protectedItems = useSelector(selectUnderMenuList);
+
+  const { favoriteNodesCount /*, underMenuList */ } =
+    useSelector(selectSidebar);
+
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
 
   //! Opens gallery modal.

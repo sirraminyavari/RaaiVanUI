@@ -3,7 +3,6 @@
  */
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import NavButtonsList from './buttonsList';
 import MenuIcon from 'components/Icons/MenuIcon/HamburgerMenuIcon';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
@@ -12,14 +11,10 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import { BG_RED, C_WHITE, TC_WARM } from 'constant/Colors';
 import Badge from 'components/Badge/Badge';
 import useWindow from 'hooks/useWindowContext';
-
-const selectNotificationsCount = createSelector(
-  (state) => state.notifications,
-  (notifications) => notifications.notificationsCount
-);
+import { selectNotifications } from 'store/slice/notification/selectors';
 
 const NavMenus = () => {
-  const notifsCount = useSelector(selectNotificationsCount);
+  const { notificationsCount: notifsCount } = useSelector(selectNotifications);
   const { RV_Float, RVGlobal } = useWindow();
 
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;

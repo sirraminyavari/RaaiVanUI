@@ -1,22 +1,6 @@
 import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
-import {
-  ADD_NODE_TYPE,
-  CN_API,
-  GET_CHILD_NODE_TYPES,
-  MOVE_NODE_TYPE,
-  SET_NODE_TYPE_ORDER,
-  ACTIVATE_TEMPLATE,
-  GET_TEMPLATES,
-  GET_TEMPLATE_JSON,
-  GET_TEMPLATE_TAGS,
-  GET_NODE_TYPES,
-} from 'constant/apiConstants';
+import { CN_API } from 'constant/apiConstants';
 import { apiCallWrapper } from '../apiCallHelpers';
-import {
-  API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY,
-  API_NAME_CN_REMOVE_NODE_TYPE,
-  API_NAME_CN_RENAME_NODE_TYPE,
-} from 'constant/api-names-cn';
 import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
 import { IGetChildNodesRequest, IGetNodesRequest } from './types';
 
@@ -37,8 +21,22 @@ export const getNodeTypes = ({
   HasChild,
   Tree,
   CheckAccess,
+}: {
+  NodeTypeIDs?: string[];
+  GrabSubNodeTypes?: boolean;
+  SearchText?: string;
+  IsKnowledge?: boolean;
+  IsDocument?: boolean;
+  Archive?: boolean;
+  Icon?: boolean;
+  Extensions?: string[];
+  Count?: number;
+  LowerBoundary?: number;
+  HasChild?: boolean;
+  Tree?: boolean;
+  CheckAccess?: boolean;
 }) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_NODE_TYPES), {
+  return apiCallWrapper(API_Provider(CN_API, 'GetNodeTypes'), {
     NodeTypeIDs: (NodeTypeIDs || []).join('|'),
     GrabSubNodeTypes,
     SearchText,
@@ -61,7 +59,7 @@ export const getNodeTypes = ({
  * @param {string} Name new name of the class/template
  */
 export const renameNodeType = ({ NodeTypeID, Name }) => {
-  return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_RENAME_NODE_TYPE), {
+  return apiCallWrapper(API_Provider(CN_API, 'RenameNodeType'), {
     NodeTypeID,
     Name: encodeBase64(Name),
   });
@@ -77,6 +75,10 @@ export const removeNodeType = ({
   NodeTypeIDs,
   NodeTypeID,
   RemoveHierarchy,
+}: {
+  NodeTypeIDs?: string[];
+  NodeTypeID?: string;
+  RemoveHierarchy?: boolean;
 }) => {
   const ids = NodeTypeIDs?.length
     ? NodeTypeIDs
@@ -84,9 +86,15 @@ export const removeNodeType = ({
     ? [NodeTypeID]
     : [];
 
-  return apiCallWrapper(API_Provider(CN_API, API_NAME_CN_REMOVE_NODE_TYPE), {
+  return apiCallWrapper(API_Provider(CN_API, 'RemoveNodeType'), {
     NodeTypeIDs: ids,
     RemoveHierarchy,
+  });
+};
+
+export const recoverNodeType = ({ NodeTypeID }: { NodeTypeID: string }) => {
+  return apiCallWrapper(API_Provider(CN_API, 'RecoverNodeType'), {
+    NodeTypeID,
   });
 };
 
@@ -234,7 +242,7 @@ export const getChildNodeTypes = ({
   archive = false,
   icon = true,
 }) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_CHILD_NODE_TYPES), {
+  return apiCallWrapper(API_Provider(CN_API, 'GetChildNodeTypes'), {
     NodeTypeID: nodeTypeId,
     Count: count,
     Archive: archive,
@@ -250,18 +258,30 @@ export const getChildNodeTypes = ({
  * @return {Promise<ValidationOptions.unknown>}
  */
 export const addNodeType = ({ Name, ParentID, IsCategory }) => {
-  return apiCallWrapper(API_Provider(CN_API, ADD_NODE_TYPE), {
+  return apiCallWrapper(API_Provider(CN_API, 'AddNodeType'), {
     Name: encodeBase64(Name),
     ParentID,
     IsCategory,
   });
 };
 
-export const moveNodeType = ({ NodeTypeID, ParentID }) => {
-  return apiCallWrapper(API_Provider(CN_API, MOVE_NODE_TYPE), {
+export const moveNodeType = ({
+  NodeTypeIDs,
+  NodeTypeID,
+  ParentID,
+}: {
+  NodeTypeIDs?: string[];
+  NodeTypeID?: string;
+  ParentID?: string;
+}) => {
+  return apiCallWrapper(API_Provider(CN_API, 'MoveNodeType'), {
     ParentID,
-    NodeTypeID,
+    NodeTypeID: NodeTypeID || (NodeTypeIDs || []).join('|'),
   });
+};
+
+export const getFavoriteNodesCount = () => {
+  return apiCallWrapper(API_Provider(CN_API, 'GetFavoriteNodesCount'), {});
 };
 
 export const setAvatar = ({
@@ -291,63 +311,7 @@ export interface IGetAllFieldsOfActivity {
  */
 export const getAllFieldsOfActivity = () => {
   return apiCallWrapper<IGetAllFieldsOfActivity>(
-    API_Provider(CN_API, API_NAME_CN_GET_ALL_FIELDS_OF_ACTIVITY),
+    API_Provider(CN_API, 'GetAllFieldsOfActivity'),
     {}
   );
-};
-
-/**
- * @description fetches the categories of templates
- * @returns Promise.
- */
-export const getTemplateTags = () => {
-  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_TAGS), {});
-};
-
-/**
- * @description Get templates.
- * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
- * @returns Promise.
- */
-export const getTemplates = ({ TagID }) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATES), { TagID });
-};
-
-/**
- * @description Gets a template object
- * @param {String} prop.NodeTypeID the id of the template
- * @returns Promise.
- */
-export const getTemplateJSON = ({ NodeTypeID }) => {
-  return apiCallWrapper(API_Provider(CN_API, GET_TEMPLATE_JSON), {
-    NodeTypeID,
-  });
-};
-
-export const setNodeTypesOrder = ({ NodeTypeIDs }) => {
-  return apiCallWrapper(API_Provider(CN_API, SET_NODE_TYPE_ORDER), {
-    NodeTypeIDs: NodeTypeIDs.join('|'),
-  });
-};
-
-/**
- * @description Activate a template.
- * @param {any} Template -The template object to be activated.
- * @returns Promise.
- */
-export const activateTemplate = ({ Template }) => {
-  return apiCallWrapper(API_Provider(CN_API, ACTIVATE_TEMPLATE), {
-    Template: encodeBase64(JSON.stringify(Template || {})),
-  });
-};
-
-/**
- * @description get the preview of a Template
- * @param {string} NodeTypeID -The template object to be activated.
- * @returns Promise.
- */
-export const getTemplatePreview = ({ NodeTypeID }) => {
-  return apiCallWrapper(API_Provider(CN_API, 'GetTemplatePreview'), {
-    NodeTypeID,
-  });
 };

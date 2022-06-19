@@ -1,5 +1,4 @@
 import { useContext, useRef, useEffect } from 'react';
-import { createSelector } from 'reselect';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import * as Styled from 'views/Search/SearchView.styles';
@@ -12,18 +11,14 @@ import SearchTypeButtons from './SearchTypeButtons';
 import SearchAdvancedButtons from './SearchAdvancedButtons';
 import SearchTypeCollapsed from './SearchTypeCollapsed';
 import Heading from 'components/Heading/Heading';
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const SearchActions = () => {
   const { RVDic } = useWindow();
   const { searchText, setSearchText, isAsideOpen, totalCount } =
     useContext(searchContext);
   const searchInputRef = useRef();
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const { isSidebarOpen } = useSelector(selectTheme);
 
   const { Search, SearchResults, SearchResultsForN } = RVDic || {};
 

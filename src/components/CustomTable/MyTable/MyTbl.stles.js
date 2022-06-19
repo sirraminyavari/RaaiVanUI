@@ -1,11 +1,4 @@
-import {
-  TBO_WARM,
-  C_DISTANT,
-  C_WHITE,
-  C_RED,
-  BO_GRAY,
-  C_GRAY,
-} from 'constant/Colors';
+import { C_GRAY } from 'constant/Colors';
 import styled from 'styled-components';
 
 export const TableContainer = styled.div`
@@ -32,10 +25,10 @@ export const TableRowHeader = styled.div.attrs({
   width: 100%;
   grid-area: content;
 
-  textalign: center;
-  alignitems: center;
+  text-align: center;
+  align-items: center;
   font-size: 0.75rem;
-  justfy-content: center;
+  justify-content: center;
   padding: 0rem;
 `;
 export const TRow = styled.div.attrs({ className: `${C_GRAY}` })`
@@ -46,9 +39,9 @@ export const TRow = styled.div.attrs({ className: `${C_GRAY}` })`
   width: 100%;
   font-size: 0.78rem;
   padding: 0rem;
-  textalign: center;
-  alignitems: center;
-  justfy-content: center;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
   border-bottom: 1px solid var(--rv-gray-color);
   &:hover {
     cursor: pointer;

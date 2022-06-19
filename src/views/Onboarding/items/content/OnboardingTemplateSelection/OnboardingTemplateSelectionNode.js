@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import * as Styles from './OnboardingTemplateSelection.styles';
-import { getTemplatePreview } from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 import FieldsLoadingSkelton from 'views/Node/nodeDetails/items/FieldsLoadingSkelton';
 import useWindow from 'hooks/useWindowContext';
 import EmptyState from 'components/EmptyState/EmptyState';
@@ -18,7 +18,7 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
   useEffect(() => {
     (async () => {
       setTemplateNodeElements(false);
-      const formElements = await getTemplatePreview({
+      const formElements = await API.CN.getTemplatePreview({
         NodeTypeID: activeTemplate?.NodeTypeID,
       });
       setTemplateNodeElements(formElements);

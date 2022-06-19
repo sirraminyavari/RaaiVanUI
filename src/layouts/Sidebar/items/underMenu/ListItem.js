@@ -3,17 +3,12 @@
  */
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import Badge from 'components/Badge/Badge';
 import { TBG_DEFAULT } from 'constant/Colors';
 import { INTRO_ONBOARD } from 'constant/constants';
-
-const selecteOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 /**
  * @typedef PropType
@@ -31,7 +26,8 @@ const selecteOnboardingName = createSelector(
  */
 const ListItem = (props) => {
   const { icon: Icon, title, badge, linkTo = '#', onClick } = props;
-  const onboardingName = useSelector(selecteOnboardingName);
+
+  const { name: onboardingName } = useSelector(selectOnboarding);
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =

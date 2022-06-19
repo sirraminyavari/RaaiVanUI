@@ -5,46 +5,29 @@ import { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import { createSelector } from 'reselect';
 import Logo_Fa from 'assets/images/cliqmind_logo_white.svg';
 import Logo_En from 'assets/images/cliqmind_logo_white_en.svg';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import ToggleIcon from 'components/Icons/SidebarToggleIcons/Toggle';
 import { HOME_PATH, INTRO_ONBOARD, MOBILE_BOUNDRY } from 'constant/constants';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
 import useWindow from 'hooks/useWindowContext';
-
-const { toggleSidebar } = themeSlice.actions;
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
-const selectTeam = createSelector(
-  (state) => state.applications,
-  (theme) => theme.currentApp
-);
-
-const selectHasPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const SidebarHeader = () => {
   const dispatch = useDispatch();
   const { RV_RevFloat, RV_Float, RVGlobal, RV_RTL } = useWindow();
 
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const selectedTeam = useSelector(selectTeam);
-  const hasPattern = useSelector(selectHasPattern);
-  const onboardingName = useSelector(selectOnboardingName);
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
+  const { isSidebarOpen, hasSidebarPattern: hasPattern } =
+    useSelector(selectTheme);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+  const { currentApp: selectedTeam } = useSelector(selectApplication);
 
   const isSaas = RVGlobal.SAASBasedMultiTenancy;
   //! Check if onboarding is activated on 'intro' mode.

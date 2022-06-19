@@ -17,16 +17,14 @@ import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { MOBILE_BOUNDRY } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import { CV_WHITE } from 'constant/CssVariables';
-import { loginSlice } from 'store/reducers/loginReducer';
 import ImageCropperComponent from 'components/ImageCropper/ImageCropper';
 import WithAvatar from 'components/Avatar/WithAvatar';
+import { useAuthSlice } from 'store/slice/auth';
 
 const ImageCropper = WithAvatar({
   Component: ImageCropperComponent,
   componentURLProp: 'image',
 });
-
-const { setAuthUser } = loginSlice.actions;
 
 const MAX_IMAGE_SIZE = 5000000;
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
@@ -53,6 +51,8 @@ const ProfileMain = (props) => {
   });
   const { GlobalUtilities, RVGlobal } = useWindow();
   const dispatch = useDispatch();
+
+  const { actions: authActions } = useAuthSlice();
 
   const coverImage = !!HighQualityCoverPhotoURL
     ? GlobalUtilities.add_timestamp(HighQualityCoverPhotoURL)
@@ -138,7 +138,7 @@ const ProfileMain = (props) => {
   const handleOnUploadDone = (newImageURL) => {
     setProfilePhoto(newImageURL);
     dispatch(
-      setAuthUser({
+      authActions.setAuthUser({
         ...RVGlobal?.CurrentUser,
         ProfileImageURL: newImageURL,
       })

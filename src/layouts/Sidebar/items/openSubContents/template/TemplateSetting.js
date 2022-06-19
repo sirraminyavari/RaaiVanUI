@@ -4,7 +4,7 @@ import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
 import { NavLink, useLocation } from 'react-router-dom';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import { useDispatch } from 'react-redux';
-import { themeSlice } from 'store/reducers/themeReducer';
+import { useThemeSlice } from 'store/slice/theme';
 
 const TemplateSetting = () => {
   const { pathname } = useLocation();
@@ -13,7 +13,9 @@ const TemplateSetting = () => {
   const root = path.filter((x, i) => i < path.length - 1).join('/');
 
   const dispatch = useDispatch();
-  const { setSidebarContent } = themeSlice.actions;
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
   const { RV_RevFloat } = window;
 
   const handleOnClick = () => {

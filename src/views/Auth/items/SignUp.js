@@ -21,9 +21,9 @@ import {
   validateUserCreation,
 } from 'apiHelper/ApiHandlers/usersApi';
 import { LOGIN_PATH } from 'constant/constants';
-import loggedInAction from 'store/actions/auth/loggedInAction';
 import VerificationCodeDialog from 'components/OTP/VerificationCodeDialog';
 import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
+import { useAuthSlice } from 'store/slice/auth';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 /**
@@ -36,6 +36,8 @@ const SignUp = () => {
   const { push } = useHistory();
 
   const dispatch = useDispatch();
+
+  const { actions: authActions } = useAuthSlice();
 
   //If true, means the password input is focused (to show the Password validation).
   const [passFocused, setPassFocused] = useState(false);
@@ -148,7 +150,7 @@ const SignUp = () => {
       done(RVDic.MSG[results.ErrorText] || results.ErrorText);
     else {
       done();
-      dispatch(loggedInAction(results));
+      dispatch(authActions.loggedIn(results));
     }
   };
 

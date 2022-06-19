@@ -2,23 +2,14 @@
  * Renders all menu items at once.
  */
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import DragAndDropTree from 'components/Tree/DragAndDropTree/DragAndDropTree';
 import ReadableItem from './ReadableItem';
 import OnboardingItem from './OnboardingItem';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { isEmpty } from 'helpers/helpers';
-
-const selectSidebarDnDTree = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.dndTree
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 /**
  * Renders nodes tree in readable format.
@@ -26,9 +17,9 @@ const selectOnboardingName = createSelector(
  */
 const ReadableTree = () => {
   const dispatch = useDispatch();
-  const sidebarDnDTree = useSelector(selectSidebarDnDTree);
-  const onboardingName = useSelector(selectOnboardingName);
-  const { setSidebarDnDTree } = sidebarMenuSlice.actions;
+  const { dndTree: sidebarDnDTree } = useSelector(selectSidebar);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+  const { actions: sidebarActions } = useSidebarSlice();
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -36,7 +27,7 @@ const ReadableTree = () => {
 
   //! Mutate tree.
   const handleMutateTree = (tree) => {
-    dispatch(setSidebarDnDTree(tree));
+    dispatch(sidebarActions.setSidebarDnDTree(tree));
   };
 
   //! Render custom item.

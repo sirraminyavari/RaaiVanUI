@@ -14,21 +14,23 @@ import {
 } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { TemplateProvider } from './TemplateProvider';
-import { themeSlice } from 'store/reducers/themeReducer';
 import { useDispatch } from 'react-redux';
 import { TEMPLATE_CONTENT } from '../../../constant/constants';
+import { useThemeSlice } from 'store/slice/theme';
 
 const TemplateSinglePage = () => {
   const dispatch = useDispatch();
   const { path } = useRouteMatch();
   const { pathname } = useLocation();
-  console.log(path);
+
   const { id: NodeTypeID } = useParams();
   const [loading, setLoading] = useState(true);
   const [extensions, setExtensions] = useState({});
   const [service, setService] = useState({});
 
-  const { setSidebarContent } = themeSlice.actions;
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
 
   const generalSetting = lazy(() =>
     import('./items/TemplateGeneralSetting/TemplateGeneralSettings')

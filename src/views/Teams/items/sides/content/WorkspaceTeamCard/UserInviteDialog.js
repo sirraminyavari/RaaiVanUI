@@ -23,22 +23,11 @@ import {
 import { USERS_API, INVITE_USER } from 'constant/apiConstants';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-// import { invitationSlice } from 'store/reducers/invitationsReducer';
 
 // const {
 //   setTeamInvitations,
 //   // closeInvitationModal
 // } = invitationSlice.actions;
-
-// const selectTeamInvitationList = createSelector(
-//   (state) => state?.invitations,
-//   (invitations) => invitations?.teamInvitationList
-// );
-
-// const selectInvitationModal = createSelector(
-//   (state) => state?.invitations,
-//   (invitations) => invitations?.invitationModal
-// );
 
 const inviteUserAPI = API_Provider(USERS_API, INVITE_USER);
 
@@ -51,9 +40,7 @@ const DEFAULT_INPUT_COUNT = 3;
 const UserInviteDialog = (props) => {
   // const dispatch = useDispatch();
   const { RVDic, GlobalUtilities } = useWindow();
-  // const teamInvitations = useSelector(selectTeamInvitationList);
   const [inviteValues, setInviteValues] = useState({});
-  // const { isOpen, inviteApp } = useSelector(selectInvitationModal);
   const { setIsInviteShown, isInviteShown, app } = props;
 
   // const [invileLink, setInviteLink] = useState(

@@ -1,34 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NotificationsHeader from './NotificationsHeader';
 import NotificationItem from './NotificationItem';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import LoadingIconFlat from 'components/Icons/LoadingIcons/LoadingIconFlat';
 import usePreventScroll from 'hooks/usePreventScroll';
-import {
-  getNotificationsCount,
-  getNotificationsList,
-  setNotificationsAsSeen,
-} from 'store/actions/global/NotificationActions';
-
-const selectNotificatios = createSelector(
-  (state) => state.notifications,
-  (notifications) => notifications.notificationsList
-);
-
-const selectIsFetchingNotifs = createSelector(
-  (state) => state.notifications,
-  (notifications) => notifications.isFetchingNotifsList
-);
+import { useNotificationsSlice } from 'store/slice/notification';
+import { selectNotifications } from 'store/slice/notification/selectors';
 
 const NotificationsMenu = () => {
   const dispatch = useDispatch();
   const containerRef = useRef();
-  const notifications = useSelector(selectNotificatios);
-  const isFetchingNotifs = useSelector(selectIsFetchingNotifs);
+
+  const {
+    notificationsList: notifications,
+    isFetchingNotifsList: isFetchingNotifs,
+  } = useSelector(selectNotifications);
+
   const [fetchCount, setFetchCount] = useState(10);
+
+  const { actions: notificationActions } = useNotificationsSlice();
 
   usePreventScroll(containerRef);
 
@@ -39,7 +31,11 @@ const NotificationsMenu = () => {
     const hasUnseenNotifs = !!unseenNotifs?.length;
     const unseenNotifsId = unseenNotifs?.map((notif) => notif?.NotificationID);
     if (hasUnseenNotifs) {
-      dispatch(setNotificationsAsSeen(unseenNotifsId));
+      dispatch(
+        notificationActions.setNotificationsAsSeen({
+          NotificationIDs: unseenNotifsId,
+        })
+      );
     }
     if (isFetchingNotifs) return;
     if (notifications.length < fetchCount) return;
@@ -47,8 +43,8 @@ const NotificationsMenu = () => {
   };
 
   useEffect(() => {
-    dispatch(getNotificationsCount());
-    dispatch(getNotificationsList(fetchCount));
+    dispatch(notificationActions.getNotificationsCount());
+    dispatch(notificationActions.getNotifications({ Count: fetchCount }));
   }, [dispatch, fetchCount]);
 
   return (

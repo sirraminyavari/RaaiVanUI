@@ -9,10 +9,8 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import loginAction from 'store/actions/auth/loginAction';
-import setEmailAction from 'store/actions/auth/setEmailAction';
-import setPasswordAction from 'store/actions/auth/setPassAction';
-import signupLoadFilesAction from 'store/actions/auth/signupLoadFilesAction';
+import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import LastLoginsModal from '../elements/LastLoginsModal';
@@ -24,6 +22,8 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const passRef = useRef();
   const emailRef = useRef();
+
+  const { actions: authActions } = useAuthSlice();
 
   const { push } = useHistory();
   // If true, typed password will be visible
@@ -41,18 +41,8 @@ const SignIn = () => {
     isFetching,
     fetchingFiles,
     routeHistory,
-    lastLoginModal,
-  } = useSelector((state) => ({
-    email: state.auth.email,
-    emailError: state.auth.emailError,
-    password: state.auth.password,
-    passwordError: state.auth.passwordError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    routeHistory: state.auth.routeHistory,
-    passwordPolicy: state.auth.passwordPolicy,
-    lastLoginModal: state.auth.lastLoginModal,
-  }));
+    showLastLoginsModal: lastLoginModal,
+  } = useSelector(selectAuth);
 
   //When component will unmount, will be 'false' to prevent auto fire of related useEffect.
   useEffect(() => {
@@ -79,7 +69,7 @@ const SignIn = () => {
    * @param {String} value - email input
    */
   const onEmailChanged = (value) => {
-    dispatch(setEmailAction(value));
+    dispatch(authActions.setEmail(value));
   };
 
   /**
@@ -87,7 +77,7 @@ const SignIn = () => {
    * @param {String} value - password input
    */
   const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
+    dispatch(authActions.setPassword(value));
   };
   /**
    * Sends email & password to server by dispatching 'loginAction'
@@ -100,10 +90,10 @@ const SignIn = () => {
     const invitationId = reqParams?.get_value('inv');
 
     dispatch(
-      loginAction({
-        email: email,
-        password: password,
-        invitationId: invitationId,
+      authActions.login({
+        Username: email || '',
+        Password: password || '',
+        InvitationID: invitationId,
       })
     );
   };
@@ -113,8 +103,11 @@ const SignIn = () => {
    */
   const onForgot = () => {
     dispatch(
-      signupLoadFilesAction('/auth/forgotPassword' + window.location.search)
+      authActions.signupLoadFiles({
+        destination: '/auth/forgotPassword' + window.location.search,
+      })
     );
+
     setForgotPassClicked(true);
     // push('/auth/forgotPassword');
   };
@@ -124,9 +117,13 @@ const SignIn = () => {
    */
   const onCreateAccount = () => {
     setSignUpClicked(true);
-    dispatch(setEmailAction(''));
-    dispatch(setPasswordAction(''));
-    dispatch(signupLoadFilesAction('/auth/register' + window.location.search));
+    dispatch(authActions.setEmail(''));
+    dispatch(authActions.setPassword(''));
+    dispatch(
+      authActions.signupLoadFiles({
+        destination: '/auth/register' + window.location.search,
+      })
+    );
     // push('/auth/register');
   };
 
@@ -154,6 +151,7 @@ const SignIn = () => {
             ...common_style,
             marginBottom: '1.75rem',
           }}
+          className=""
         >
           {RVDic?.Login}
         </Heading>
