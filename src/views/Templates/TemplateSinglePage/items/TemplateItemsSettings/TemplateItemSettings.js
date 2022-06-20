@@ -11,17 +11,16 @@ import TemplateItemSettingXMlRegister from './items/TemplateItemSettingXmlRegist
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
 import TemplateItemSettingListItem from './items/TemplateItemSettingListItem';
 import TemplateItemSettingAddNew from './items/TemplateItemSettingAddNode';
-import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { CSSTransition } from 'react-transition-group';
 import TemplateItemSettingListTree from './items/TemplateItemSettingListTree';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import { node } from 'prop-types';
 
 const TemplateItemSettings = () => {
-  const { RVDic } = window;
-  const { NodeTypeID, title, IsTree, ...rest } = useTemplateContext();
+  const { RVDic, RV_RTL } = window;
+  const { NodeTypeID, title, IsTree } = useTemplateContext();
   const [nodes, setNodes] = useState([]);
   const [totalNodes, setTotalNodes] = useState();
+  const [nextPageIsLoading, setNextPageIsLoading] = useState(false);
+
   const breadItems = [
     {
       id: 1,
@@ -44,13 +43,14 @@ const TemplateItemSettings = () => {
       linkTo: '',
     },
   ];
+
   const [nodesQuery, setNodesQuery] = useState({
     searchText: '',
     LowerBoundary: 1,
     Count: 10,
   });
+
   const [createNewNode, setCreateNewNode] = useState(false);
-  const createNodeEl = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,9 +62,10 @@ const TemplateItemSettings = () => {
       const _nodes = nodes.concat(Nodes);
       setNodes(_nodes);
       setTotalNodes(TotalCount);
+      setNextPageIsLoading(false);
     };
 
-    console.log('reload again');
+    console.log(nodesQuery?.LowerBoundary);
     fetchData();
     return () => setNodes([]);
   }, [nodesQuery]);
@@ -74,16 +75,28 @@ const TemplateItemSettings = () => {
     setNodesQuery({ ...nodesQuery, Archive: !nodesQuery?.Archive });
   };
 
+  const scrollOptions = {
+    offset: 200,
+    onEndReach: () => {
+      console.log('end is here');
+      if (!nextPageIsLoading) {
+        setNextPageIsLoading(true);
+        loadMore();
+      }
+    },
+  };
+
   const list = useMemo(() => {
     if (!IsTree) {
       return (
         <Styles.ListWrapper>
-          <ScrollBarProvider>
+          <ScrollBarProvider
+            direction={RV_RTL ? 'right' : 'left'}
+            scrollEndOptions={scrollOptions}
+          >
             {createNewNode && !nodesQuery?.Archive && (
               <Styles.AddNewItemWapper>
-                <TemplateItemSettingAddNew
-                  onClose={() => setCreateNewNode(false)}
-                />
+                <TemplateItemSettingAddNew onClose={setCreateNewNode(false)} />
               </Styles.AddNewItemWapper>
             )}
             {nodes?.map((i) => {
