@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import * as Styled from './select.styles';
+import * as Styled from './Select.styles';
 import CustomSelect from 'components/Inputs/CustomSelect/CustomSelect';
 import { decodeBase64 } from 'helpers/helpers';
 import { useCellProps } from 'components/CustomTable/tableUtils';
