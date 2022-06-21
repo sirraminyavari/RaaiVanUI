@@ -126,6 +126,12 @@ export const ListWrapper = styled.div`
   overflow-y: auto;
 `;
 
+export const TreeWrapper = styled.div`
+  height: calc(100vh - 23.5rem);
+  padding: 0 0.5rem;
+  overflow-y: auto;
+`;
+
 export const AddNewNodeActionRow = styled.div`
   ${FLEX_RCS}
   gap: 0.5rem;
@@ -192,4 +198,19 @@ export const ThumbnailHeading = styled.div`
   flex: 2;
   font-size: 0.8rem;
   color: var(--rv-color-distant);
+`;
+
+export const TreeButton = styled.button`
+  ${FLEX_CCC};
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 100%;
+  border: none;
+  cursor: pointer;
+  background-color: var(--rv-white-color);
+  color: var(--rv-color-distant);
+
+  &:hover {
+    color: var(--rv-color);
+  }
 `;

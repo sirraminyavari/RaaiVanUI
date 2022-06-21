@@ -13,6 +13,7 @@ import TemplateItemSettingListItem from './items/TemplateItemSettingListItem';
 import TemplateItemSettingAddNew from './items/TemplateItemSettingAddNode';
 import TemplateItemSettingListTree from './items/TemplateItemSettingListTree';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
+import { IoGitBranchOutline } from 'react-icons/io5';
 
 const TemplateItemSettings = () => {
   const { RVDic, RV_RTL } = window;
@@ -20,6 +21,7 @@ const TemplateItemSettings = () => {
   const [nodes, setNodes] = useState([]);
   const [totalNodes, setTotalNodes] = useState();
   const [nextPageIsLoading, setNextPageIsLoading] = useState(false);
+  const [isTree, setIsTree] = useState(IsTree);
 
   const breadItems = [
     {
@@ -59,26 +61,26 @@ const TemplateItemSettings = () => {
         Archive: nodesQuery?.Archive,
         SearchText: nodesQuery?.searchText,
       });
-      const _nodes = nodes.concat(Nodes);
-      setNodes(_nodes);
-      setTotalNodes(TotalCount);
+      setNodes([...nodes, ...Nodes]);
       setNextPageIsLoading(false);
+      setTotalNodes(TotalCount);
     };
 
-    console.log(nodesQuery?.LowerBoundary);
     fetchData();
-    return () => setNodes([]);
   }, [nodesQuery]);
 
   const toggleArchiveState = () => {
     setNodes([]);
-    setNodesQuery({ ...nodesQuery, Archive: !nodesQuery?.Archive });
+    setNodesQuery({
+      ...nodesQuery,
+      LowerBoundary: 1,
+      Archive: !nodesQuery?.Archive,
+    });
   };
 
   const scrollOptions = {
     offset: 200,
     onEndReach: () => {
-      console.log('end is here');
       if (!nextPageIsLoading) {
         setNextPageIsLoading(true);
         loadMore();
@@ -86,8 +88,14 @@ const TemplateItemSettings = () => {
     },
   };
 
+  const loadMore = () => {
+    if (nodes.length >= totalNodes) return;
+    const lowerBoundary = nodes?.length + 1;
+    setNodesQuery({ ...nodesQuery, LowerBoundary: lowerBoundary });
+  };
+
   const list = useMemo(() => {
-    if (!IsTree) {
+    if (!isTree || nodesQuery?.Archive) {
       return (
         <Styles.ListWrapper>
           <ScrollBarProvider
@@ -117,18 +125,18 @@ const TemplateItemSettings = () => {
             </Styles.CreationDateHeading>
             <Styles.ThumbnailHeading></Styles.ThumbnailHeading>
           </Styles.TreeHeading>
-          <TemplateItemSettingListTree nodes={nodes} />
+          <Styles.TreeWrapper>
+            <ScrollBarProvider
+              direction={RV_RTL ? 'right' : 'left'}
+              scrollEndOptions={scrollOptions}
+            >
+              <TemplateItemSettingListTree nodes={nodes} />
+            </ScrollBarProvider>
+          </Styles.TreeWrapper>
         </>
       );
     }
-  }, [nodes]);
-
-  const loadMore = () => {
-    if (nodes.length >= totalNodes) return;
-
-    const lowerBoundary = nodesQuery?.LowerBoundary + 1;
-    setNodesQuery({ ...nodesQuery, LowerBoundary: lowerBoundary });
-  };
+  }, [nodes, isTree]);
 
   return (
     <>
@@ -162,7 +170,6 @@ const TemplateItemSettings = () => {
             delayTime={1000}
             value={nodesQuery?.searchText}
             onChange={(e) => {
-              console.log(e);
               setNodesQuery({ ...nodesQuery, searchText: e?.target?.value });
             }}
           />
@@ -171,6 +178,10 @@ const TemplateItemSettings = () => {
 
           {!nodesQuery.Archive && (
             <>
+              <Styles.TreeButton onClick={() => setIsTree(!isTree)}>
+                <IoGitBranchOutline size={24} />
+              </Styles.TreeButton>
+
               <Styles.ArchiveButton onClick={toggleArchiveState}>
                 <ArchiveIcon size={16} />
                 <div>{RVDic?.Archive}</div>
