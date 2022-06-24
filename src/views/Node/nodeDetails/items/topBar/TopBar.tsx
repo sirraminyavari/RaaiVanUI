@@ -18,20 +18,32 @@ import Creators from './Creators';
 import * as Styles from './TopBar.style';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
-
-const { RVDic, RV_RTL } = window || {};
+import useWindow from 'hooks/useWindowContext';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
 
+export type ITopBar = {
+  nodeDetails: {
+    VisitsCount: number;
+    LikeStatue?: boolean;
+    [key: string]: any;
+  };
+  // nodeType;
+  // onApplyNodeType: () => void;
+  onSideColumnClicked: (sideColumnStatus: boolean | undefined) => void;
+  sideColumn?: boolean;
+  hierarchy?: any;
+};
+
 const TopBar = ({
   nodeDetails,
-  nodeType,
-  onApplyNodeType = () => {},
+  // nodeType,
+  // onApplyNodeType = () => {},
   onSideColumnClicked,
   sideColumn,
   hierarchy,
-}) => {
+}: ITopBar) => {
   const {
     actions: { toggleSidebar },
   } = useThemeSlice();
@@ -43,6 +55,8 @@ const TopBar = ({
   const [bookmarkStatus, setBookmarkStatus] = useState(
     nodeDetails?.LikeStatue ? 'liked' : 'disLiked'
   );
+
+  const { RVDic } = useWindow();
 
   const dispatch = useDispatch();
 
@@ -76,7 +90,7 @@ const TopBar = ({
     dispatch(toggleSidebar(false));
   };
 
-  const onBookmarkPressed = (e) => {
+  const onBookmarkPressed = () => {
     if (bookmarkStatus === 'liked') {
       unlikeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {
         if (
@@ -97,7 +111,6 @@ const TopBar = ({
       });
     }
   };
-  const { RVGlobal } = window;
 
   return (
     <div
@@ -183,8 +196,7 @@ const TopBar = ({
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  ...(RV_RTL && { marginRight: '2rem' }),
-                  ...(!RV_RTL && { marginLeft: '2rem' }),
+                  marginInlineStart: '2rem',
                 }}
               >
                 <Creators
