@@ -17,9 +17,8 @@ import {
 import UrgentCreate from './items/UrgentCreate';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
-import _ from 'lodash';
-import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import APIHandler from 'apiHelper/APIHandler';
+import RelatedTopicsTab from 'components/RelatedTopicsTab/RelatedTopicsTab';
 
 const { RVDic, RVGlobal } = window;
 /**
@@ -35,13 +34,14 @@ const AdvanceSearchDesktop = ({
   itemSelectionMode,
   isProfile,
   onApplyNodeType,
+  relatedNodeID,
   ...props
 }) => {
   const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
 
   const { offsetTop, offsetLeft } = advancedSearchButtonRef?.current || {};
 
-  const nodeTypeId = nodeType?.NodeTypeID;
+  const nodeTypeId = relatedNodeID || nodeType?.NodeTypeID;
   const { RV_RTL, RV_RevFloat } = window;
   // if has a char, will find it.
   const [searchText, setSearchText] = useState('');
@@ -136,7 +136,7 @@ const AdvanceSearchDesktop = ({
   const getRelatedNodes = () => {
     getNodeInfoAPI.fetch(
       {
-        NodeID: RVGlobal?.CurrentUser?.UserID,
+        NodeID: relatedNodeID || RVGlobal?.CurrentUser?.UserID,
         In: true,
         Out: true,
         InTags: true,
@@ -219,11 +219,12 @@ const AdvanceSearchDesktop = ({
                 }}
                 {...props}
               >
-                {isProfile && (
-                  <LastTopicsTabs
+                {(isProfile || relatedNodeID) && (
+                  <RelatedTopicsTab
                     provideNodes={onApplyNodeType && onApplyNodeType}
                     relatedNodes={relatedNodes}
-                    defaultChecked
+                    defaultChecked={isProfile}
+                    showAll
                   />
                 )}
 

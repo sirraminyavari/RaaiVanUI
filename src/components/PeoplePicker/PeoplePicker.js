@@ -35,6 +35,7 @@ const PeoplePicker = ({
   multi,
   onBlur,
   direction = 'top',
+  fixedPositioning = false,
 
   onVisible,
 }) => {
@@ -42,7 +43,9 @@ const PeoplePicker = ({
   const [isFetching, setIsFetching] = useState(true);
   const [extraData, setExtraData] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [buttonBoundingRect, setButtonBoundingRect] = useState(undefined);
 
+  const buttonRef = useRef();
   const pickerRef = useRef();
   useEffect(() => {
     onVisible(isPickerVisible);
@@ -79,6 +82,11 @@ const PeoplePicker = ({
   const onPicker = () => {
     setPickerVisible(!isPickerVisible);
   };
+
+  const ClonedButtonComponent = React.cloneElement(buttonComponent, {
+    onClick: onPicker,
+    ref: buttonRef,
+  });
 
   const fetchUsers = (count = 20, lowerBoundary = 1, done) => {
     getUsersAPI.fetch(
@@ -117,20 +125,29 @@ const PeoplePicker = ({
     onByMe(e);
     setPickerVisible(false);
   };
+  const setButtonBoundingRectOnScroll = () => {
+    setButtonBoundingRect(buttonRef.current?.getBoundingClientRect());
+  };
+
+  useEffect(() => {
+    setButtonBoundingRectOnScroll();
+    window.addEventListener('scroll', setButtonBoundingRectOnScroll);
+    return () => {
+      window.removeEventListener('scroll', setButtonBoundingRectOnScroll);
+    };
+  }, []);
 
   return (
     <Container ref={pickerRef}>
       {/* {buttonComponent} */}
-      {isFetching && isPickerVisible ? (
-        <LogoLoader />
-      ) : (
-        React.cloneElement(buttonComponent, { onClick: onPicker })
-      )}
+      {isFetching && isPickerVisible ? <LogoLoader /> : ClonedButtonComponent}
 
       <PeopleBody
-        direction={direction}
+        Direction={direction}
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}
+        triggerButtonRect={fixedPositioning && buttonBoundingRect}
+        onScrollCapture={() => alert('sad')}
       >
         <div
           style={{

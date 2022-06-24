@@ -9,13 +9,22 @@ export const Container = styled.div`
 `;
 export const PeopleBody = styled.div`
   display: ${({ isVisible }) => (isVisible ? 'flex' : 'none')};
-  position: absolute;
+  position: ${({ triggerButtonRect }) =>
+    triggerButtonRect ? 'fixed' : 'absolute'};
   flex-direction: column;
   align-items: center;
-  /* ${({ direction }) => `${direction}:3rem`} */
-  bottom: ${({ direction }) => direction === 'bottom' && `4rem`};
-  top: ${({ direction }) => direction === 'top' && `3rem`};
+  /* ${({ Direction }) => `${Direction}:3rem`} */
+  bottom: ${({ Direction }) => Direction === 'bottom' && `4rem`};
+  top: ${({ Direction }) => Direction === 'top' && `3rem`};
   left: -1rem;
+  ${({ triggerButtonRect }) =>
+    `${
+      triggerButtonRect &&
+      `top: ${triggerButtonRect.y + triggerButtonRect.height}px;left: ${
+        triggerButtonRect.x
+      }px;`
+    }`}
+
   box-shadow: 1px 3px 20px ${CV_DISTANT};
   padding: 0rem 0.75rem 0rem 0.75rem;
   min-width: 14.5rem;

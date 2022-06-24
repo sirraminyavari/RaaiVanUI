@@ -3,7 +3,7 @@ import { EditorState, convertFromRaw } from 'draft-js';
 // import {stateToHTML} from 'draft-js-export-html';
 import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 
-import { getWikiBlocks, saveBlocks, saveHTMLContent } from './API';
+import { getWikiBlocks, saveBlocks, saveHTMLContent, suggestTags } from './API';
 import { textColors, highlightColors } from './data';
 
 import BE from './BlockEditor';
@@ -11,10 +11,12 @@ import {
   IHandleSaveBlocks,
   IHandleSaveRawHtmlContent,
 } from './BlockEditor.type';
+import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
 
 const Block = ({ nodeId }) => {
   const [editorState, setEditorState] = useState(null);
 
+  //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
     (legacyContent: string) => {
       setEditorState(
@@ -22,7 +24,21 @@ const Block = ({ nodeId }) => {
           convertFromRaw(
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
-              getMentionLink: ({ id }) => `https://google.com/search?q=${id}`,
+              getMentionLink: async (search) => {
+                console.log(search);
+                const rawMentions = await suggestTags({ text: search });
+                const mentions = rawMentions.map((suggestTag) => ({
+                  ...suggestTag,
+                  id: suggestTag.ItemID,
+                  name: suggestTag.Name,
+                  avatar: suggestTag.ImageURL,
+                  link:
+                    suggestTag.Type === 'User'
+                      ? getProfilePageUrl(suggestTag.ItemID)
+                      : getNodePageUrl(suggestTag.ItemID),
+                }));
+                return mentions;
+              },
             })
           )
         )

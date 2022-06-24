@@ -22,6 +22,7 @@ export const highlightColors = [
 
 // end config
 
+//TODO implement RVDic i18n to the BlockEditor
 export const dict = {
   en: {
     'plugins.paragraph.unstyled': 'Paragraph',
