@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { createSelector } from 'reselect';
 import { useSelector } from 'react-redux';
 import CustomSwiper from 'components/CustomSwiper/CustomSwiper';
 import TemplateCard from 'components/TemplatesGallery/TemplateCard';
@@ -17,15 +16,11 @@ import {
   TemplatesGalleryContext,
   DESCRIPTIONS_CONTENT,
 } from 'components/TemplatesGallery/TemplatesGallery';
-
-const selectCurrentApp = createSelector(
-  (state) => state?.applications,
-  (applications) => applications?.currentApp
-);
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const TemplateGalleryMain = () => {
   const { RVDic } = useWindow();
-  const currentApp = useSelector(selectCurrentApp);
+  const { currentApp } = useSelector(selectApplication);
   const { templatesObject, setContent, setCurrentTemplate } = useContext(
     TemplatesGalleryContext
   );

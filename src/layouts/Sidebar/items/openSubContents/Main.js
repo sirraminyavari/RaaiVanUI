@@ -4,9 +4,6 @@
 import { useEffect, useCallback, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { createSelector } from 'reselect';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { themeSlice } from 'store/reducers/themeReducer';
 import ReadableTree from 'layouts/Sidebar/items/sidebarTree/readable/ReadableTree';
 import UnderMenuList from 'layouts/Sidebar/items/underMenu/UnderMenuList';
 import SearchBox from 'layouts/Sidebar/items/openSubContents/searchBox/SearchBox';
@@ -20,31 +17,23 @@ import {
   CLASSES_PATH,
 } from 'constant/constants';
 import { decodeBase64 } from 'helpers/helpers';
-
-const { setSearchText } = sidebarMenuSlice.actions;
-const { setSidebarContent } = themeSlice.actions;
-
-const selectShowSearchResults = createSelector(
-  (state) => state.sidebarItems,
-  (sidebarItems) => sidebarItems.showSearchResults
-);
-
-const selectTeam = createSelector(
-  (state) => state.applications,
-  (theme) => theme.currentApp
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 const SidebarMainContent = () => {
   const dispatch = useDispatch();
 
-  const showSearchResults = useSelector(selectShowSearchResults);
-  const selectedTeam = useSelector(selectTeam);
-  const onboardingName = useSelector(selectOnboardingName);
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
+
+  const { actions: sidebarActions } = useSidebarSlice();
+  const { showSearchResults } = useSelector(selectSidebar);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+  const { currentApp: selectedTeam } = useSelector(selectApplication);
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -62,7 +51,7 @@ const SidebarMainContent = () => {
   useEffect(() => {
     //! clean up
     return () => {
-      dispatch(setSearchText(''));
+      dispatch(sidebarActions.setSearchText(''));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

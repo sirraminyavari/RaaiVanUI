@@ -16,7 +16,6 @@ import {
 } from './AdvancedSearch.style';
 import UrgentCreate from './items/UrgentCreate';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import { useSelector } from 'react-redux';
 import { advancedSearchButtonRef } from 'components/AdvancedSearch/items/FilterBar/FilterBar';
 import _ from 'lodash';
 import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
@@ -69,10 +68,6 @@ const AdvanceSearchDesktop = ({
   const [byPeople, setByPeople] = useState([]);
 
   const [relatedNodes, setRelatedNodes] = useState([]);
-
-  const { onboardingName } = useSelector((state) => ({
-    onboardingName: state.onboarding.name,
-  }));
 
   useEffect(() => {
     if (isProfile) getRelatedNodes();

@@ -6,7 +6,6 @@ import AnimatedInput from 'components/Inputs/AnimatedInput';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import CreateAccountButtons from './CreateAccountButtons';
 import SetPasswordInput from 'components/Inputs/SetPassword/SetPasswordInput';
 import ForgotPasswordWrapper from './ForgotPasswordWrapper';
@@ -18,8 +17,9 @@ import {
   setPassword as savePassword,
 } from 'apiHelper/ApiHandlers/usersApi';
 import { REGISTER_PATH } from 'constant/constants';
-import loggedInAction from 'store/actions/auth/loggedInAction';
 import VerificationCodeDialog from 'components/OTP/VerificationCodeDialog';
+import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const { RVDic, RVGlobal, GlobalUtilities } = window;
 
@@ -27,9 +27,9 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
   const { goBack, push } = useHistory();
 
-  const { initialEmail } = useSelector((state) => ({
-    initialEmail: state.auth.email,
-  }));
+  const { actions: authActions } = useAuthSlice();
+
+  const { email: initialEmail } = useSelector(selectAuth);
 
   const [email, setEmail] = useState(initialEmail);
   const [emailError, setEmailError] = useState('');
@@ -94,7 +94,7 @@ const ForgotPassword = () => {
       done(RVDic.MSG[results.ErrorText] || results.ErrorText);
     else {
       done();
-      dispatch(loggedInAction(results));
+      dispatch(authActions.loggedIn(results));
     }
   };
 
@@ -179,15 +179,6 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  align-items: center;
-  justify-content: center;
-  padding-top: 1rem;
-`;
 
 const common_style = {
   marginBottom: '0.75rem',

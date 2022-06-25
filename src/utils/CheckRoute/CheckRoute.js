@@ -4,12 +4,8 @@
  */
 import { useEffect, useState, useRef } from 'react';
 import { Redirect, useLocation, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Exception from 'components/Exception/Exception';
-import { themeSlice } from 'store/reducers/themeReducer';
-import { ApplicationsSlice } from 'store/reducers/applicationsReducer';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
-import { loginSlice } from 'store/reducers/loginReducer';
 import { decodeBase64, setRVGlobal } from 'helpers/helpers';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import {
@@ -27,21 +23,12 @@ import {
   VERIFICATION_PATH,
   VERIFY_RESET_PATH,
 } from 'constant/constants';
-// import { getUnderMenuPermissions } from 'store/actions/sidebar/sidebarMenuAction';
-import getConfigPanels from 'store/actions/sidebar/sidebarPanelsAction';
-import { API_Provider } from 'helpers/helpers';
-import { CHECK_ROUTE, RV_API } from 'constant/apiConstants';
-
-const { setIsAthunticated } = loginSlice.actions;
-const { setCurrentApp } = ApplicationsSlice.actions;
-const { setSidebarDnDTree } = sidebarMenuSlice.actions;
-const {
-  toggleNavSide,
-  setSelectedTeam,
-  setActivePath,
-  setSidebarContent,
-  toggleSidebar,
-} = themeSlice.actions;
+import API from 'apiHelper';
+import { useThemeSlice } from 'store/slice/theme';
+import { useApplicationSlice } from 'store/slice/applications';
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const setLastLocation = (data, routeName, pathMatch) =>
   (window.__LastLocation = {
@@ -54,8 +41,6 @@ const setLastLocation = (data, routeName, pathMatch) =>
 
 const getLastLocation = () => window.__LastLocation || {};
 
-const checkRouteAPI = API_Provider(RV_API, CHECK_ROUTE);
-
 const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   //! Get route permission object based on route name.
   const location = useLocation();
@@ -65,6 +50,22 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   const urlRef = useRef(window.location.href);
   const routeParams = useParams();
   const lastLocation = getLastLocation();
+
+  const authState = useSelector(selectAuth);
+
+  const { actions: applicationActions } = useApplicationSlice();
+  const { actions: sidebarActions } = useSidebarSlice();
+  const { actions: authActions } = useAuthSlice();
+
+  const {
+    actions: {
+      toggleNavSide,
+      setSelectedTeam,
+      setActivePath,
+      setSidebarContent,
+      toggleSidebar,
+    },
+  } = useThemeSlice();
 
   const authPathList = [
     FORGOT_PASS_PATH,
@@ -116,6 +117,12 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   };
 
   useEffect(() => {
+    if (authState.isAuthenticated === undefined)
+      dispatch(authActions.setIsAthunticated(!!window.IsAuthenticated));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (isSwitchAllowed) return;
 
     const params = { ...routeParams, ...getQueryParams() };
@@ -124,23 +131,23 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
     //! Set check route flag to true.
     setIsChecking(true);
 
-    checkRouteAPI.fetch(
-      { RouteName: name, Parameters: params },
-      (response) => {
-        //! The location after check route api resolves.
-        const currentURL = window.location.href;
-        //! Store current url in urlRef.
-        urlRef.current = currentURL;
-        //! If the location before and after check route api are same,
-        //! then set check route flag to false and set route object.
-        prevURL === currentURL && setRoute(response);
-        setIsChecking(false);
-      },
-      (error) => {
-        console.log(error);
-        setIsChecking(false);
-      }
-    );
+    const check = async (_name, _params) => {
+      const res = await API.RV.checkRoute({
+        RouteName: _name,
+        Parameters: _params,
+      });
+
+      //! The location after check route api resolves.
+      const currentURL = window.location.href;
+      //! Store current url in urlRef.
+      urlRef.current = currentURL;
+      //! If the location before and after check route api are same,
+      //! then set check route flag to false and set route object.
+      prevURL === currentURL && setRoute(res);
+      setIsChecking(false);
+    };
+
+    check(name, params);
 
     //? Due to memory leak error in check route.
     //! Clean up.
@@ -160,9 +167,9 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       };
       //! Set selected app.
       dispatch(setSelectedTeam(application));
-      dispatch(setCurrentApp(route?.Application));
+      dispatch(applicationActions.setCurrentApp(route?.Application));
       //! Get configs based on current application.
-      dispatch(getConfigPanels());
+      dispatch(sidebarActions.getConfigPanels());
       // dispatch(getUnderMenuPermissions(['Reports']));
     }
 
@@ -172,11 +179,11 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
       dispatch(toggleSidebar(false));
       //! Clear selected team.
       dispatch(setSelectedTeam({ name: null, id: null }));
-      dispatch(setCurrentApp(null));
+      dispatch(applicationActions.setCurrentApp(null));
       //! Reset sidebar content to default.
       dispatch(setSidebarContent({ current: MAIN_CONTENT, prev: '' }));
       //! Clear sidebar tree items.
-      dispatch(setSidebarDnDTree({}));
+      dispatch(sidebarActions.setSidebarDnDTree({}));
     }
 
     //! Set active path on every route change.
@@ -214,7 +221,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
   } else if (route?.RedirectToLogin && !isAuthView) {
     //! If check route api is resolved and user is not authenticated, then redirect to login page.
     //! Also update redux state and RVGlobal object in window.
-    dispatch(setIsAthunticated(false));
+    dispatch(authActions.setIsAthunticated(false));
     setRVGlobal({ IsAuthenticated: false });
     return (
       <Redirect

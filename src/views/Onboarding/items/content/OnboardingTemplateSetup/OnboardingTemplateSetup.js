@@ -4,31 +4,34 @@ import * as Styles from './OnboardingTemplateSetup.styles';
 import CliqMindLogo from 'assets/images/cliqmind_logo_mini.svg?file';
 import Button from 'components/Buttons/Button';
 import { useEffect, useState } from 'react';
-import { useOnboardingTeamContent } from '../../others/OnboardingTeam.context';
-import { getTemplateJSON, activateTemplate } from 'apiHelper/ApiHandlers/CNAPI';
-import { themeSlice } from 'store/reducers/themeReducer';
+import API from 'apiHelper';
 import { decodeBase64 } from 'helpers/helpers';
-import {
-  setOnboardingTemplateStatusCompleted,
-  toggleActivation,
-} from 'store/reducers/onboardingReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CLASSES_PATH, MAIN_CONTENT } from 'constant/constants';
+import { useThemeSlice } from 'store/slice/theme';
 import InfoCircleIcon from 'components/Icons/InfoCircleIcon/InfoIcon';
-const { setSidebarContent, toggleSidebar } = themeSlice.actions;
+import { useOnboardingSlice } from 'store/slice/onboarding';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const OnboardingTemplateSetupContent = () => {
   const { RVDic, RVGlobal } = useWindow();
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const dispatch = useDispatch();
-  const { selectedTemplates, applicationID } = useOnboardingTeamContent();
+
+  const { selectedTemplates, applicationID } = useSelector(selectOnboarding);
+
+  const { actions: onboardingActions } = useOnboardingSlice();
+
+  const {
+    actions: { setSidebarContent, toggleSidebar },
+  } = useThemeSlice();
 
   const activateTemplateHandler = async (template, appId) => {
-    const { Template } = await getTemplateJSON({
+    const { Template } = await API.CN.getTemplateJSON({
       NodeTypeID: template?.NodeTypeID,
     });
-    return activateTemplate({ Template: Template });
+    return API.CN.activateTemplate({ Template: Template });
   };
 
   useEffect(() => {
@@ -39,7 +42,11 @@ const OnboardingTemplateSetupContent = () => {
       ).map((template) => {
         return () =>
           activateTemplateHandler(template, applicationID).then(() =>
-            dispatch(setOnboardingTemplateStatusCompleted(template.NodeTypeID))
+            dispatch(
+              onboardingActions.setOnboardingTemplateStatusCompleted(
+                template.NodeTypeID
+              )
+            )
           );
       });
       for (let i = 0; i < selectedTemplatesAPICallbacks.length; i++)
@@ -50,7 +57,7 @@ const OnboardingTemplateSetupContent = () => {
   }, [selectedTemplates]);
 
   const goToApplication = () => {
-    dispatch(toggleActivation());
+    dispatch(onboardingActions.toggleActivation());
     dispatch(
       setSidebarContent({
         current: MAIN_CONTENT,

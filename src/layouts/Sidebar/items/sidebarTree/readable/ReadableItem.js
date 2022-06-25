@@ -4,33 +4,18 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { Link } from 'react-router-dom';
 import { mutateTree } from '@atlaskit/tree';
-import { createSelector } from 'reselect';
 import { useDispatch, useSelector } from 'react-redux';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import getIcon from 'utils/treeUtils/getItemIcon';
 import { INTRO_ONBOARD } from 'constant/constants';
 import { getURL } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 //! Default indent per level for tree items.
 const INDENT_PER_LEVEL = 27;
-
-const { setSidebarDnDTree } = sidebarMenuSlice.actions;
-
-const selectTree = createSelector(
-  (state) => state?.sidebarItems,
-  (sidebarItems) => sidebarItems?.dndTree
-);
-
-const selectActivePath = createSelector(
-  (state) => state?.theme,
-  (theme) => theme?.activePath
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state?.onboarding,
-  (onboarding) => onboarding?.name
-);
 
 /**
  * @typedef PropType
@@ -52,11 +37,13 @@ const ReadableItem = (props) => {
 
   const { GlobalUtilities } = useWindow();
 
-  const tree = useSelector(selectTree);
-  const activePath = useSelector(selectActivePath);
-  const onboardingName = useSelector(selectOnboardingName);
-
   const dispatch = useDispatch();
+
+  const { dndTree: tree } = useSelector(selectSidebar);
+  const { activePath } = useSelector(selectTheme);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+
+  const { actions: sidebarActions } = useSidebarSlice();
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -69,7 +56,7 @@ const ReadableItem = (props) => {
       const mutatedTree = mutateTree(tree, itemId, {
         isExpanded: !item?.isExpanded,
       });
-      dispatch(setSidebarDnDTree(mutatedTree));
+      dispatch(sidebarActions.setSidebarDnDTree(mutatedTree));
     }
   };
 

@@ -10,6 +10,7 @@ interface WindowContextType {
   RV_Float: 'right' | 'left';
   RV_RevFloat: 'right' | 'left';
   RV_Direction: 'rtl' | 'ltr';
+  IsAuthenticated?: boolean;
 }
 
 export const WindowContext = createContext<WindowContextType>({
@@ -22,6 +23,7 @@ export const WindowContext = createContext<WindowContextType>({
   RV_RevFloat: 'right',
   RVDic: {},
   RV_Direction: 'rtl',
+  IsAuthenticated: false,
 });
 
 export const WindowProvider = ({ children }) => {
@@ -35,6 +37,7 @@ export const WindowProvider = ({ children }) => {
     RV_RevFloat,
     RVDic,
     RV_Direction,
+    IsAuthenticated,
   } = window;
 
   return (
@@ -49,6 +52,7 @@ export const WindowProvider = ({ children }) => {
         RV_RevFloat,
         RVDic,
         RV_Direction,
+        IsAuthenticated,
       }}
     >
       {children}

@@ -5,14 +5,13 @@ import workFieldAssets from 'assets/images/onboarding/workFieldAssets/workFieldA
 import PanelButton from 'components/Buttons/PanelButton';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
-import {
   getAllFieldsOfActivity,
   IGetAllFieldsOfActivity,
 } from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const OnboardingTeamCreationSetWorkFieldContent = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,10 +21,14 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
   const workFieldInputRef = useRef<HTMLInputElement>();
 
   const { RVDic } = useWindow();
+
+  const dispatch = useDispatch();
+
   const {
-    dispatch: dispatchTeamPage,
-    teamState: { workField, teamName },
-  } = useOnboardingTeamContent();
+    teamState: { teamName, workField },
+  } = useSelector(selectOnboarding);
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   //! RVDic i18n localization
   const RVDicِTeamWorkFieldHeadCount = RVDic.FieldOfActivity;
@@ -39,11 +42,9 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
 
   const setOnboardingTeamWorkField =
     (workField: { fieldID: string; fieldName: string }) => () => {
-      dispatchTeamPage({
-        type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
-        stateKey: 'workField',
-        stateValue: workField,
-      });
+      dispatch(
+        onboardingActions.teamSetState({ key: 'workField', value: workField })
+      );
     };
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const OnboardingTeamCreationSetWorkFieldContent = () => {
         ''
       ) : (
         <Styles.OnboardingTeamButtonInputWrapper wrap>
-          {workFields.map(({ NodeID, Name, AvatarName }) => (
+          {(workFields || []).map(({ NodeID, Name, AvatarName }) => (
             <>
               <PanelButton
                 secondary

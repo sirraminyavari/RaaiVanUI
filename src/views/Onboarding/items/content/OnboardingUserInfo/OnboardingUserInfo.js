@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { loginSlice } from 'store/reducers/loginReducer';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import AvatarImageCropper from 'components/ImageCropper/AvatarImageCropper';
@@ -15,11 +14,11 @@ import {
   setUserFirstAndLastName,
 } from 'apiHelper/ApiHandlers/usersApi';
 import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';
-
-const { setAuthUser } = loginSlice.actions;
+import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const OnboardingUserInfoContent = () => {
-  const currentUser = useSelector((state) => state.auth.authUser);
+  const { authUser: currentUser } = useSelector(selectAuth);
 
   const [isLoading, setIsLoading] = useState(false);
   const [currentUserInfo, setCurrentUserInfo] = useState({
@@ -30,6 +29,8 @@ const OnboardingUserInfoContent = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
+
+  const { actions: authActions } = useAuthSlice();
 
   //! RVDic i18n localization
   const RVDicFirstName = RVDic.FirstName;
@@ -48,7 +49,7 @@ const OnboardingUserInfoContent = () => {
     setCurrentUserInfo((state) => {
       const updatedUserInfo = { ...state, ...newInfo };
       dispatch(
-        setAuthUser({
+        authActions.setAuthUser({
           ...currentUser,
           FirstName: encodeBase64(updatedUserInfo.FirstName),
           LastName: encodeBase64(updatedUserInfo.LastName),
@@ -60,7 +61,7 @@ const OnboardingUserInfoContent = () => {
 
   const onImageUpload = (newImageURL) => {
     dispatch(
-      setAuthUser({
+      authActions.setAuthUser({
         ...currentUser,
         ProfileImageURL: newImageURL,
       })

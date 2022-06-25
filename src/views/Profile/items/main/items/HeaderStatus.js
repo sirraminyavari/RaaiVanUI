@@ -6,10 +6,8 @@ import {
   getFavoriteNodesCount,
   getIntellectualPropertiesCount,
 } from 'apiHelper/apiFunctions';
-import { sidebarMenuSlice } from 'store/reducers/sidebarMenuReducer';
 import useWindowContext from 'hooks/useWindowContext';
-
-const { setFavoriteNodesCount } = sidebarMenuSlice.actions;
+import { useSidebarSlice } from 'store/slice/sidebar';
 
 const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
   const dispatch = useDispatch();
@@ -17,6 +15,8 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
   const [favoriteNodes, setFavoriteNodes] = useState(0);
   const [intellectualCounts, setIntellectualCounts] = useState(0);
   const userId = user?.UserID;
+
+  const { actions: sidebarActions } = useSidebarSlice();
 
   useEffect(() => {
     //! Get favorite nodes count.
@@ -30,7 +30,7 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
         setFavoriteNodes(favoriteNodesCount);
         //! If current user is the profile owner, then update the sidebar count too.
         if (RVGlobal.CurrentUser.UserID === userId) {
-          dispatch(setFavoriteNodesCount(favoriteNodesCount));
+          dispatch(sidebarActions.setFavoriteNodesCount(favoriteNodesCount));
         }
       })
       .catch((err) => console.log(err));

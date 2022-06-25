@@ -1,17 +1,13 @@
 import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import useWindow from 'hooks/useWindowContext';
 import { INTRO_ONBOARD } from 'constant/constants';
-
-const selecteOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const ItemIcon = (item, onExpand, onCollapse) => {
   const { RV_RevFloat } = useWindow();
-  const onboardingName = useSelector(selecteOnboardingName);
+
+  const { name: onboardingName } = useSelector(selectOnboarding);
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =

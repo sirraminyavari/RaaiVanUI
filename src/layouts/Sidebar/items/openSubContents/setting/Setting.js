@@ -2,11 +2,9 @@
  * Renders Settings or config panel links instead of regular menu in sidebar.
  */
 import { useSelector, useDispatch } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import SettingIcon from 'components/Icons/SettingIcon/Setting';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
-import { themeSlice } from 'store/reducers/themeReducer';
 import SettingItems from './SettingItem';
 import UsersContent from './items/users/UsersContent';
 import TeamSettings from './items/team-settings/TeamSettings';
@@ -25,17 +23,18 @@ import {
 } from 'constant/constants';
 import WorkspaceContent from './items/workspace/WorkspaceContent';
 import OnboardingContent from './items/onboarding/OnboardingContent';
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 const SidebarSettingContent = () => {
   const dispatch = useDispatch();
   const { RV_RevFloat, RVDic } = useWindow();
-  const selectedContent = useSelector(selectSidebarContent);
-  const { setSidebarContent } = themeSlice.actions;
+
+  const {
+    actions: { setSidebarContent },
+  } = useThemeSlice();
+
+  const { sidebarContent: selectedContent } = useSelector(selectTheme);
 
   const currentContent = selectedContent.current;
   const previousContent = selectedContent.prev;

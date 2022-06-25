@@ -15,7 +15,7 @@ import {
   TEN_TO_TWENTY,
 } from '../../constant/constants';
 import InfoToast from '../../components/toasts/info-toast/InfoToast';
-import { getTemplateTags } from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 
 const useTeamSettings = (props) => {
   const { IconURL, ...appInfo } = props?.route?.Application;
@@ -37,7 +37,7 @@ const useTeamSettings = (props) => {
   });
 
   useEffect(async () => {
-    const tagList = await getTemplateTags();
+    const tagList = await API.CN.getTemplateTags();
 
     const fields = tagList?.Tags?.map((x) => ({
       value: x?.NodeID,

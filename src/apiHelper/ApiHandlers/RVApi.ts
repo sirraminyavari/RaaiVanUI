@@ -1,4 +1,4 @@
-import { API_Provider, encodeBase64 } from 'helpers/helpers';
+import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import {
   CREATE_APPLICATION,
   CREATE_WORKSPACE,
@@ -11,8 +11,105 @@ import {
   REMOVE_WORKSPACE,
   SET_APPLICATION_SIZE,
   SET_APPLICATION_FIELD_OF_EXPERTISE,
+  GET_APPLICATIONS,
+  REMOVE_APPLICATION,
+  RECYCLE_APPLICATION,
 } from 'constant/apiConstants';
 import { apiCallWrapper } from './apiCallHelpers';
+
+export const checkRoute = ({
+  RouteName,
+  Parameters,
+}: {
+  RouteName: string;
+  Parameters: any;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'CheckRoute'), {
+    RouteName,
+    Parameters,
+  });
+};
+
+export const login = ({
+  Username,
+  Password,
+  DomainName,
+  RememberMe,
+  Captcha,
+  InvitationID,
+}: {
+  Username: string;
+  Password: string;
+  DomainName?: string;
+  RememberMe?: boolean;
+  Captcha?: string;
+  InvitationID?: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'Login'), {
+    UserName: encodeBase64(Username),
+    Password: encodeBase64(Password),
+    DomainName,
+    RememberMe,
+    Captcha,
+    InvitationID,
+  });
+};
+
+export const loginStepTwo = ({
+  Token,
+  Code,
+  RememberMe,
+  InvitationID,
+}: {
+  Token: string;
+  Code: string;
+  RememberMe?: boolean;
+  InvitationID?: string;
+}): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'LoginStepTwo'), {
+    TwoStepToken: Token,
+    Code,
+    RememberMe,
+    InvitationID,
+  });
+};
+
+export const logout = (): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'Logout'), {});
+};
+
+export const getDomains = (): Promise<any> => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetDomains'), {});
+};
+
+export const setVariable = ({
+  Name,
+  Value,
+  ApplicationIndependent,
+}: {
+  Name: string;
+  Value: string;
+  ApplicationIndependent?: boolean;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'SetVariable'), {
+    Name,
+    Value,
+    ApplicationIndependent,
+  });
+};
+
+export const getVariable = ({
+  Name,
+  ApplicationIndependent,
+}: {
+  Name: string;
+  ApplicationIndependent?: boolean;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetVariable'), {
+    Name,
+    ApplicationIndependent,
+  });
+};
 
 /**
  * @description get all workspaces
@@ -93,7 +190,14 @@ export const renameWorkspace = ({ Name, WorkspaceID }) => {
  */
 export const createApplication = ({ WorkspaceID, Title }) => {
   return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
-    WorkspaceID: WorkspaceID,
+    WorkspaceID,
+    Title: encodeBase64(Title),
+  });
+};
+
+export const modifyApplication = ({ ApplicationID, Title }) => {
+  return apiCallWrapper(API_Provider(RV_API, CREATE_APPLICATION), {
+    ApplicationID,
     Title: encodeBase64(Title),
   });
 };
@@ -143,6 +247,68 @@ interface ISelectApplication {
 }
 
 /**
+ * @param {boolean} Archive if true, retrieves archived applications
+ */
+export const getApplications = ({ Archive }: { Archive?: boolean } = {}) => {
+  return apiCallWrapper(API_Provider(RV_API, GET_APPLICATIONS), {
+    Archive: Archive === true,
+  }).then((res: any) => {
+    if ((res?.Applications || []).length) {
+      res.Applications.forEach((app) => {
+        app.Users = (res.ApplicationUsers || {})[app.ApplicationID] || [];
+      });
+    }
+
+    return res;
+  });
+};
+
+export const getApplicationsMonitoring = ({
+  TotalUsersCount,
+  MembersCount,
+  LastActivityTime,
+  LoginsCountSinceNDaysAgo,
+  Count,
+  LowerBoundary,
+}: {
+  TotalUsersCount: boolean;
+  MembersCount: boolean;
+  LastActivityTime: boolean;
+  LoginsCountSinceNDaysAgo: number;
+  Count: number;
+  LowerBoundary: number;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetApplicationsMonitoring'), {
+    TotalUsersCount,
+    MembersCount,
+    LastActivityTime,
+    LoginsCountSinceNDaysAgo,
+    Count,
+    LowerBoundary,
+  });
+};
+
+export const removeApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, REMOVE_APPLICATION), {
+    ApplicationID,
+  });
+};
+
+export const recoverApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, RECYCLE_APPLICATION), {
+    ApplicationID,
+  });
+};
+
+/**
  * @description select application
  */
 export const selectApplication = (data: { ApplicationID: string }) => {
@@ -177,10 +343,71 @@ export const removeSystemAdmin = (UserID) => {
  * @param UserID
  * @return {Promise<unknown>}
  */
-export const removeUserFromApplication = (UserID) => {
+export const removeUserFromApplication = ({
+  ApplicationID,
+  UserID,
+}: {
+  ApplicationID: string;
+  UserID: string;
+}) => {
   const removeUserFromApplicationAPI = API_Provider(
     RV_API,
     'RemoveUserFromApplication'
   );
-  return apiCallWrapper(removeUserFromApplicationAPI, { UserID });
+  return apiCallWrapper(removeUserFromApplicationAPI, {
+    ApplicationID,
+    UserID,
+  });
+};
+
+export const unsubscribeFromApplication = ({
+  ApplicationID,
+}: {
+  ApplicationID: string;
+}) => {
+  return apiCallWrapper(API_Provider(RV_API, 'UnsubscribeFromApplication'), {
+    ApplicationID,
+  });
+};
+
+const getAppsOrderVariableName = (): string =>
+  !window.RVGlobal?.CurrentUser?.UserID
+    ? ''
+    : `ApplicationsOrder_${window.RVGlobal.CurrentUser.UserID}`;
+
+export const setApplicationsOrder = async ({
+  ApplicationIDs,
+}: {
+  ApplicationIDs: string[];
+}) => {
+  const varName = getAppsOrderVariableName();
+
+  return !varName
+    ? {}
+    : await setVariable({
+        Name: varName,
+        Value: encodeBase64(JSON.stringify({ Order: ApplicationIDs })),
+        ApplicationIndependent: true,
+      });
+};
+
+export const getApplicationsOrder = async (): Promise<string[]> => {
+  const varName = getAppsOrderVariableName();
+
+  if (!varName) return [];
+  else {
+    const res: any = await getVariable({
+      Name: varName,
+      ApplicationIndependent: true,
+    });
+
+    return (
+      (window.GlobalUtilities.to_json(decodeBase64(res?.Value)) || {}).Order ||
+      []
+    );
+  }
+};
+
+export const getThemes = () => {
+  return apiCallWrapper(API_Provider(RV_API, 'GetThemes'), {});
 };

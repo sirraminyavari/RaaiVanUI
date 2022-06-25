@@ -10,20 +10,17 @@ import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Eye';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import { decode } from 'js-base64';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
 import Creators from './Creators';
 import * as Styles from './TopBar.style';
-import { themeSlice } from 'store/reducers/themeReducer';
-const { toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
 
-const { RVDic, RVAPI, RV_RTL, RVGlobal } = window || {};
+const { RVDic, RV_RTL } = window || {};
 
-const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
 
@@ -35,50 +32,29 @@ const TopBar = ({
   sideColumn,
   hierarchy,
 }) => {
-  const { VisitsCount, Contributors } = nodeDetails || {};
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
+  const { VisitsCount } = nodeDetails || {};
 
   const isTabletOrMobile = DimensionHelper().isTabletOrMobile;
-  const [relatedNodes, setRelatedNodes] = useState(null);
   const [sideDetailsHover, setSideDetailsHover] = useState(false);
   const [bookmarkStatus, setBookmarkStatus] = useState(
     nodeDetails?.LikeStatue ? 'liked' : 'disLiked'
   );
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    getRelatedNodes();
-  }, []);
-  const getRelatedNodes = () => {
-    getNodeInfoAPI.fetch(
-      {
-        NodeID: RVGlobal?.CurrentUser?.UserID,
-        In: true,
-        Out: true,
-        InTags: true,
-        OutTags: true,
-        ParseResults: true,
-      },
-      (response) => {
-        if (response && response.NodeTypes) {
-          setRelatedNodes(response);
-        }
-      }
-    );
-  };
 
-  const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
-    (state) => ({
-      teamName: state?.theme?.selectedTeam?.name,
-      onboardingName: state?.onboarding?.name,
-      newDocMenu: state?.onboarding?.newDocMenu,
-      selectedApp: state?.selectedTeam,
-    })
-  );
+  const { selectedTeam: selectedApp } = useSelector(selectTheme);
+  const teamName = selectedApp?.name;
+
   const extendedHierarchy = hierarchy?.map((level) => ({
     id: level?.NodeTypeID,
     title: decodeBase64(level?.TypeName),
     linkTo: `/classes/${level?.NodeTypeID}`,
   }));
+
   const { NodeType, Name } = nodeDetails || {};
 
   const breadcrumbItems = [
@@ -94,18 +70,12 @@ const TopBar = ({
     ...extendedHierarchy,
   ];
 
-  const getTypeName = () => {
-    return nodeType?.TypeName
-      ? decode(nodeType?.TypeName)
-      : teamName
-      ? teamName
-      : '';
-  };
   const onSideDetailsClick = () => {
     setSideDetailsHover(!sideDetailsHover);
     onSideColumnClicked(!sideColumn);
     dispatch(toggleSidebar(false));
   };
+
   const onBookmarkPressed = (e) => {
     if (bookmarkStatus === 'liked') {
       unlikeNode.fetch({ NodeID: nodeDetails?.NodeID }, (response) => {
@@ -128,7 +98,6 @@ const TopBar = ({
     }
   };
   const { RVGlobal } = window;
-  const avatar = RVGlobal?.CurrentUser?.ProfileImageURL;
 
   return (
     <div
@@ -136,7 +105,7 @@ const TopBar = ({
         width: '100%',
       }}
     >
-      {relatedNodes ? (
+      {nodeDetails ? (
         <Styles.NodeTopBarContainer>
           <Styles.NodeTopBarTopRow isTabletOrMobile={isTabletOrMobile}>
             <Styles.NodeTopBarBreadcrumbWrapper>
@@ -177,19 +146,6 @@ const TopBar = ({
           </Styles.NodeTopBarTopRow>
 
           <Styles.NodeTopBarBottomRow mobileView={isTabletOrMobile}>
-            {relatedNodes?.TotalRelationsCount > 0 && (
-              <Styles.NodeTopBarRelatedTopicsContainer>
-                <Styles.NodeTopBarRelatedTopicsTitle>
-                  {RVDic.RelatedNode}
-                </Styles.NodeTopBarRelatedTopicsTitle>
-                <LastTopicsTabs
-                  noAllTemplateButton
-                  floatBox
-                  provideNodes={onApplyNodeType && onApplyNodeType}
-                  relatedNodes={relatedNodes}
-                />
-              </Styles.NodeTopBarRelatedTopicsContainer>
-            )}
             <Styles.NodeTopBarSpace />
             <div
               style={{

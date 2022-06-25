@@ -17,7 +17,7 @@ import {
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // import useCheckRoute from 'hooks/useCheckRoute';
 import Routes from 'routes/AuthRoutes/Auth.routes';
-import setCaptchaTokenAction from 'store/actions/auth/setCaptchaToken';
+import { useAuthSlice } from 'store/slice/auth';
 import {
   BackgroundImage,
   Center,
@@ -49,6 +49,8 @@ const AuthView = () => {
   const dispatch = useDispatch();
   const { push } = useHistory();
   let location = useLocation();
+
+  const { actions: authActions } = useAuthSlice();
 
   useEffect(() => {
     let files = [{ Root: 'API/', Ext: 'js', Childs: ['RVAPI', 'UsersAPI'] }];
@@ -172,7 +174,7 @@ const AuthView = () => {
     GlobalUtilities?.init_recaptcha((captcha) => {
       captcha?.getToken((token) => {
         //use token
-        dispatch(setCaptchaTokenAction(token));
+        dispatch(authActions.setCaptchaToken(token));
       });
     });
   };

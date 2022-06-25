@@ -1,43 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './final.step.css';
 import Loading from 'assets/images/loading_cliqmind.gif';
 import { StepperContext } from './context/stepper.context';
-import APIHandler from 'apiHelper/APIHandler';
+import API from 'apiHelper';
 import { encode } from 'js-base64';
 import { finish_on_start } from './message';
 import { useHistory } from 'react-router-dom';
-import { toggleActivation } from 'store/reducers/onboardingReducer';
+import APIHandler from 'apiHelper/APIHandler';
+import { useDispatch } from 'react-redux';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
-const activateTemplate = (x, appId) => {
-  const handler = new APIHandler('CNAPI', 'GetTemplateJSON');
-  const activator = new APIHandler('CNAPI', 'ActivateTemplate');
-
-  return new Promise((resolve, reject) => {
-    handler.fetch(
-      {
-        NodeTypeID: x.id,
-      },
-      (content) => {
-        activator.fetch(
-          {
-            Template: JSON.stringify(content.Template),
-          },
-          (res) => {
-            if (!!res.Succeed) {
-              resolve(res);
-            } else {
-              reject(res);
-            }
-          }
-        );
-      }
-    );
-  });
+const activateTemplate = async (x, appId) => {
+  const res = await API.CN.getTemplateJSON({ NodeTypeID: x.id });
+  return await API.CN.activateTemplate({ Template: res.Template });
 };
 
 const FinalStep = () => {
   const { info, dispatch } = useContext(StepperContext);
   const history = useHistory();
+
+  const reduxDispatch = useDispatch();
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   useEffect(() => {
     let delay = undefined;
@@ -71,7 +55,7 @@ const FinalStep = () => {
       { data: encode(finish_on_start) },
       (res) => {
         // redirect to clickmind workspace
-        dispatch(toggleActivation());
+        reduxDispatch(onboardingActions.toggleActivation());
         history.push(RVAPI?.ClassesPageURL());
       }
     );

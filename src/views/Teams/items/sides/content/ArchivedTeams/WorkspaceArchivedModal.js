@@ -7,15 +7,17 @@ import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import Avatar from 'components/Avatar/Avatar';
 import useWindow from 'hooks/useWindowContext';
-import { recycleApplication } from 'store/actions/applications/ApplicationsAction';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import TeamConfirm from '../TeamConfirm';
+import { useApplicationSlice } from 'store/slice/applications';
 
 const WorkspaceArchivedModal = (props) => {
   const dispatch = useDispatch();
   const { RVDic, GlobalUtilities } = useWindow();
   const [recycledIds, setRecycledIds] = useState([]);
   const [recyclingIds, setRecyclingIds] = useState([]);
+
+  const { actions: applicationActions } = useApplicationSlice();
 
   const {
     isOpen,
@@ -43,7 +45,12 @@ const WorkspaceArchivedModal = (props) => {
   };
 
   const recycleTeam = (teamId) => {
-    dispatch(recycleApplication(teamId, onRecycleDone));
+    dispatch(
+      applicationActions.recoverApplication({
+        ApplicationID: teamId,
+        done: onRecycleDone,
+      })
+    );
     setRecyclingIds((oldIds) => [...oldIds, teamId]);
   };
 

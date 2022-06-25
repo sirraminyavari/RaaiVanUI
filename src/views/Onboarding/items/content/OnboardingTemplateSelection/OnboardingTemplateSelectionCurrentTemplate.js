@@ -2,30 +2,31 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTemplateSelection.styles';
 import Button from 'components/Buttons/Button';
 import { decodeBase64 } from 'helpers/helpers';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
-  const { dispatch, selectedTemplates } = useOnboardingTeamContent();
   const { isTabletOrMobile } = DimensionHelper();
 
+  const dispatch = useDispatch();
+
+  const { selectedTemplates } = useSelector(selectOnboarding);
+  const { actions: onboardingActions } = useOnboardingSlice();
+
   const selectTemplateHandler = (template) => {
-    dispatch({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_TEMPLATE,
-      stateKey: template.NodeTypeID,
-      stateValue: template,
-    });
+    dispatch(
+      onboardingActions.setTeamTemplate({
+        id: template.NodeTypeID,
+        value: template,
+      })
+    );
   };
 
   const deselectTemplateHandler = (template) => {
-    dispatch({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_REMOVE_TEMPLATE,
-      stateKey: template.NodeTypeID,
-    });
+    dispatch(onboardingActions.teamRemoveTemplate({ id: template.NodeTypeID }));
   };
 
   const isTemplateSelected = (selectedTemplates, activeTemplate) => {

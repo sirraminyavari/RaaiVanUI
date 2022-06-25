@@ -1,8 +1,7 @@
 import useAllScripts from 'hooks/useAllScripts';
 import { encode } from 'js-base64';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import login from '../../store/actions/auth/loginAction';
+import { useDispatch } from 'react-redux';
+import { useAuthSlice } from 'store/slice/auth';
 
 const scripts = [
   { src: 'scripts/USR/LoginControl.js', id: 'LoginControl.js' },
@@ -11,7 +10,7 @@ const scripts = [
 
 const Login = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const { actions: authActions } = useAuthSlice();
 
   useAllScripts(scripts);
   return (
@@ -61,7 +60,10 @@ const Login = () => {
         }}
         onClick={() => {
           dispatch(
-            login({ UserName: encode('admin'), Password: encode('admin') })
+            authActions.login({
+              UserName: encode('admin'),
+              Password: encode('admin'),
+            })
           );
         }}
       ></div>

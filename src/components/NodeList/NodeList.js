@@ -1,10 +1,10 @@
 import APIHandler from 'apiHelper/APIHandler';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
 import SubjectItem from 'components/SubjectItem/screen/SubjectItem';
-import usePrevious from 'hooks/usePrevious';
 import { encode } from 'js-base64';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import useTraceUpdate from 'utils/TraceHelper/traceHelper';
 import IntroNodes from './IntroNodes';
 
@@ -50,9 +50,7 @@ const NodeList = (props) => {
   const [bookmarkedList, setBookmarkedList] = useState([]);
   // useTraceUpdate(props);
 
-  const { onboardingName } = useSelector((state) => ({
-    onboardingName: state.onboarding.name,
-  }));
+  const { name: onboardingName } = useSelector(selectOnboarding);
 
   // Changes 'extraData' by changes in the searchText, dateFilter, nodeTypeId, formFilters values.
   useEffect(() => {

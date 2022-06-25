@@ -5,21 +5,12 @@ import { memo, forwardRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { createSelector } from 'reselect';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import NavbarIcons from './NavbarIcons/NavbarIcons';
 import Badge from 'components/Badge/Badge';
 import { TBO_WARM, BG_RED } from 'constant/Colors';
-
-const selectNotificationsCount = createSelector(
-  (state) => state.notifications,
-  (notifications) => notifications.notificationsCount
-);
-
-const selectActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
-);
+import { selectNotifications } from 'store/slice/notification/selectors';
+import { selectTheme } from 'store/slice/theme/selectors';
 
 /**
  * @typedef BTNType
@@ -41,8 +32,9 @@ const selectActivePath = createSelector(
  * @param {PropType} props
  */
 const MenuItem = forwardRef((props, ref) => {
-  const activePath = useSelector(selectActivePath);
-  const notifsCount = useSelector(selectNotificationsCount);
+  const { notificationsCount: notifsCount } = useSelector(selectNotifications);
+  const { activePath } = useSelector(selectTheme);
+
   const { title, icon, linkTo } = props.btnProps;
   const { badge, withArrow } = props;
 

@@ -7,17 +7,16 @@ import ArchivedModal from './WorkspaceArchivedModal';
 import SortHandle from '../SortHandle';
 import useWindow from 'hooks/useWindowContext';
 import TeamPatternDefault from 'assets/images/intersection-2.svg';
-import { getApplications } from 'store/actions/applications/ApplicationsAction';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { useApplicationSlice } from 'store/slice/applications';
 
 const WorkspaceArchivedTeams = ({ archives, hasHandle, space }) => {
   const dispatch = useDispatch();
   const [isModalShown, setIsModalShown] = useState(false);
   const { RV_RevFloat, RV_RTL, RVDic } = useWindow();
-  // const isMobile = useMediaQuery({
-  //   query: '(max-width: 970px)',
-  // });
   const { isTabletOrMobile, isMobile } = DimensionHelper();
+
+  const { actions: applicationActions } = useApplicationSlice();
 
   const getModalWidth = () => {
     if (isMobile) {
@@ -37,7 +36,7 @@ const WorkspaceArchivedTeams = ({ archives, hasHandle, space }) => {
   const handleCloseArchivedModal = (hasRecycledApps) => {
     setIsModalShown(false);
     if (hasRecycledApps) {
-      dispatch(getApplications());
+      dispatch(applicationActions.getApplications());
     }
   };
 

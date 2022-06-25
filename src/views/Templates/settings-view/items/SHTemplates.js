@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 import Tree, { moveItemOnTree, mutateTree } from '@atlaskit/tree';
 import SHTemplateItem from './SHTemplateItem';
-import {
-  moveNodeType,
-  renameNodeType,
-  setNodeTypesOrder,
-} from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 
 const SHTemplates = ({ nodes }) => {
   const [tree, setTree] = useState({});
@@ -88,7 +84,7 @@ const SHTemplates = ({ nodes }) => {
   };
 
   const handleMoveItem = (id, parentId) => {
-    moveNodeType({
+    API.CN.moveNodeType({
       NodeTypeID: id,
       ParentID: parentId,
     })
@@ -99,7 +95,7 @@ const SHTemplates = ({ nodes }) => {
   };
 
   const handleSortNodes = (NodeTypeIDs) => {
-    setNodeTypesOrder({
+    API.CN.setNodeTypesOrder({
       NodeTypeIDs,
     })
       .then((res) => {
@@ -113,7 +109,7 @@ const SHTemplates = ({ nodes }) => {
   const handleRenameNode = (name, id) => {
     const data = tree?.items[`${id}`]?.data;
     setTree(mutateTree(tree, id, { data: { ...data, title: name } }));
-    renameNodeType({
+    API.CN.renameNodeType({
       Name: name,
       NodeTypeID: id,
     }).then((res) => {

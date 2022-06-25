@@ -32,6 +32,8 @@ import {
 } from 'constant/constants';
 import Button from 'components/Buttons/Button';
 import ShadowButton from 'components/Buttons/ShadowButton';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -92,16 +94,9 @@ const FilterBar = ({
   itemSelectionMode,
   isProfile,
 }) => {
-  const history = useHistory();
-
-  const { teamName, onboardingName, selectedApp, newDocMenu } = useSelector(
-    (state) => ({
-      teamName: state?.theme?.selectedTeam?.name,
-      onboardingName: state?.onboarding?.name,
-      newDocMenu: state?.onboarding?.newDocMenu,
-      selectedApp: state?.selectedTeam,
-    })
-  );
+  const { selectedTeam: selectedApp } = useSelector(selectTheme);
+  const teamName = selectedApp.name;
+  const { name: onboardingName } = useSelector(selectOnboarding);
 
   const defaultDropDownLabel = {
     icon: <AddIcon className={'rv-default'} style={{ fontSize: '1.2rem' }} />,

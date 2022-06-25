@@ -12,7 +12,7 @@ import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import { provideTemplatesForTree } from './templateUtils';
 import { TEMPLATES_SETTING_PATH } from 'constant/constants';
-import { getTemplates } from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 
 export const MAIN_CONTENT = 'main';
 export const CATEGORY_CONTENT = 'category';
@@ -42,7 +42,7 @@ const TemplatesGallery = ({ isOpen, onModalClose } = {}) => {
 
   //! Fetch templates.
   useEffect(async () => {
-    const response = await getTemplates();
+    const response = await API.CN.getTemplates();
 
     setTree(provideTemplatesForTree(response));
     setTemplatesObject(response);

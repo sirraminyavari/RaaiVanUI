@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import * as Styles from '../TemplateItemSettingStyles';
-import { TCV_DEFAULT, CV_DISTANT } from 'constant/CssVariables';
+import { CV_DISTANT } from 'constant/CssVariables';
 import { FLEX_RCB, FLEX_CCC } from 'constant/StyledCommonCss';
 import { IoFileTrayFullOutline } from 'react-icons/io5';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { useState } from 'react';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 
-const TemplateItemSettingAddNew = ({ children, onClose, onSave }) => {
+const TemplateItemSettingAddNew = ({ onClose, onSave }) => {
   const { RVDic } = window;
 
   const [name, setName] = useState('');

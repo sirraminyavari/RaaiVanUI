@@ -4,7 +4,6 @@
 import { lazy, Suspense, memo, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { createSelector } from 'reselect';
 import { useMediaQuery } from 'react-responsive';
 import AvatarComponent from 'components/Avatar/Avatar';
 import NavbarSearchInput from './items/SearchInput';
@@ -22,10 +21,12 @@ import { C_WHITE } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useInterval from 'hooks/useInterval';
-import { getNotificationsCount } from 'store/actions/global/NotificationActions';
 import defaultProfileImage from 'assets/images/default-profile-photo.png';
 import { getURL } from 'helpers/helpers';
 import WithAvatar from 'components/Avatar/WithAvatar';
+import { useNotificationsSlice } from 'store/slice/notification';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const Avatar = WithAvatar({
   Component: AvatarComponent,
@@ -43,16 +44,6 @@ const MobileMenu = lazy(() =>
   )
 );
 
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
-const selectAuthUser = createSelector(
-  (state) => state.auth,
-  (auth) => auth.authUser
-);
-
 const UNKNOWN_IMAGE = '../../Images/unknown.jpg';
 
 const NavbarPlaceholder = () => <div />;
@@ -64,8 +55,8 @@ const NavbarPlaceholder = () => <div />;
 const Navbar = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  const authUser = useSelector(selectAuthUser);
+  const { isSidebarOpen } = useSelector(selectTheme);
+  const { authUser } = useSelector(selectAuth);
   const [showSearch, setShowSearch] = useState(false);
   const { RVDic, RV_RevFloat, GlobalUtilities } = useWindow();
 
@@ -77,8 +68,10 @@ const Navbar = () => {
   const isTeamsView = pathname === TEAMS_PATH;
   const isSearchView = pathname.slice(0, 9) === getURL('Search');
 
+  const { actions: notificationActions } = useNotificationsSlice();
+
   const getNotifs = () => {
-    dispatch(getNotificationsCount());
+    dispatch(notificationActions.getNotificationsCount());
   };
 
   useInterval(getNotifs, GET_NOTIFS_INTERVAL);

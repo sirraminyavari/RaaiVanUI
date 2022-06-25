@@ -108,12 +108,15 @@ const MultiSelectField = ({
         </SelectedMaintainer>
       ) : ( */}
       <Select
-        onBlur={() => save(elementId)}
+        onBlur={() => {
+          save(elementId);
+        }}
         options={normalizedOptions}
         value={selectedOptions}
         isMulti
         isClearable={false}
         isDisabled={!editable}
+        closeMenuOnSelect={false}
         styles={customStyles}
         onChange={(event) => onAnyFieldChanged(elementId, event, type)}
         className="basic-multi-select"

@@ -16,8 +16,8 @@ const RVTree = ({
     setTree(data);
   }, [data]);
 
-  const onExpand = (id) => {
-    setTree(mutateTree(tree, id, { isExpanded: true }));
+  const onExpand = (id, item = {}) => {
+    setTree(mutateTree(tree, id, { ...item, isExpanded: true }));
   };
 
   const onCollapse = (id) => {
@@ -51,10 +51,32 @@ const RVTree = ({
     onSort && onSort(ids);
   };
 
+  //! pass props to tree item as a child
   const renderItem = (props) => {
     return typeof children === 'function'
-      ? children(props)
-      : React.cloneElement(React.Children.only(children), props);
+      ? children({ ...props, loadChildrenAndExpand })
+      : React.cloneElement(React.Children.only(children), {
+          ...props,
+          loadChildrenAndExpand,
+        });
+  };
+
+  const loadChildrenAndExpand = ({ id, children, childrenObjects }) => {
+    const _tree = {
+      rootId: tree?.rootId,
+      items: {
+        ...tree?.items,
+        ...childrenObjects,
+      },
+    };
+
+    setTree(
+      mutateTree(_tree, id, {
+        children,
+        isExpanded: true,
+        isChildrenLoading: false,
+      })
+    );
   };
 
   return (

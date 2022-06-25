@@ -14,7 +14,7 @@ import LottieMaker from 'components/LottieMaker/LottieMaker';
 import LottieJson from 'assets/lotties/big-data-analysis.json';
 import Heading from 'components/Heading/Heading';
 import { CLASSES_PATH } from 'constant/constants';
-import { activateTemplate, getTemplateJSON } from 'apiHelper/ApiHandlers/CNAPI';
+import API from 'apiHelper';
 
 const TemplateDescription = () => {
   const { currentTemplate, currentCategory, setContent, setCurrentTemplate } =
@@ -53,14 +53,14 @@ const TemplateDescription = () => {
     setIsActivating(true);
 
     //first, get the template object
-    const response = await getTemplateJSON({
+    const response = await API.CN.getTemplateJSON({
       NodeTypeID: currentTemplate?.NodeTypeID,
     });
 
     //then, activate the template
     const acRes = !response?.Template
       ? null
-      : await activateTemplate({ Template: response.Template });
+      : await API.CN.activateTemplate({ Template: response.Template });
 
     setIsActivating(false);
 

@@ -11,15 +11,17 @@ import {
   USER_PATH,
   USER_SECURITY_PATH,
 } from 'constant/constants';
-import { themeSlice } from 'store/reducers/themeReducer';
 import profileRoutes from 'routes/MainRoutes/Profile.routes';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
-
-const { setSidebarContent, toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
 
 const Profile = (props) => {
   const { route } = props;
   const dispatch = useDispatch();
+
+  const {
+    actions: { setSidebarContent, toggleSidebar },
+  } = useThemeSlice();
 
   const userId = props?.match?.params?.uid;
   const pathName = props?.location?.pathname;

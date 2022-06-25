@@ -8,10 +8,11 @@ import { MAIN_BLUE } from 'constant/Colors';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import setPasswordAction from 'store/actions/auth/setPassAction';
 import styled from 'styled-components';
 import { Box } from '../AuthView.style';
 import PasswordValidation from '../../../components/PasswordValidation/PasswordValidation';
+import { useAuthSlice } from 'store/slice/auth';
+import { selectAuth } from 'store/slice/auth/selectors';
 
 const { RVDic } = window;
 
@@ -20,33 +21,21 @@ const ResetPassword = () => {
   const { goBack } = useHistory();
   const passRef = useRef();
 
+  const { actions: authActions } = useAuthSlice();
+
   //If true, the typed password will be shown.
   const [passVisible, setPassVisible] = useState(false);
   //If true, means the password input is focused(to showing the Password validation).
   const [passFocused, setPassFocused] = useState(false);
 
-  const { email, password, passwordError } = useSelector((state) => ({
-    email: state.auth.email,
-    password: state.auth.password,
-    emailError: state.auth.emailError,
-    isFetching: state.auth.isFetching,
-    fetchingFiles: state.auth.fetchingFiles,
-    routeHistory: state.auth.routeHistory,
-    passwordPolicy: state.auth.passwordPolicy,
-    lastLoginModal: state.auth.lastLoginModal,
-    verifyCodeToken: state.auth.verifyCodeToken,
-    verifyCode: state.auth.verifyCode,
-    verifyCodeError: state.auth.verifyCodeError,
-    verifyCodeLength: state.auth.verifyCodeLength,
-    passwordError: state.auth.passwordError,
-  }));
+  const { email, password, passwordError } = useSelector(selectAuth);
 
   /**
    * Synchronously sets inputted password to redux state.
    * @param {String} value - password input
    */
   const onPasswordChanged = (value) => {
-    dispatch(setPasswordAction(value));
+    dispatch(authActions.setPassword(value));
   };
   /**
    * When the password input is focused, the password validator will be shown.

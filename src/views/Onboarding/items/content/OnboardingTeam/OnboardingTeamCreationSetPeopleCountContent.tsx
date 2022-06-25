@@ -2,18 +2,20 @@ import useWindow from 'hooks/useWindowContext';
 import * as Styles from './OnboardingTeam.styles';
 import TeamMemberCountIcon from 'components/Icons/TeamMemberIcon/TeamMemberCountIcon';
 import PanelButton from 'components/Buttons/PanelButton';
-import {
-  useOnboardingTeamContent,
-  OnboardingTeamStepContextActions,
-} from 'views/Onboarding/items/others/OnboardingTeam.context';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { useOnboardingSlice } from 'store/slice/onboarding';
 
 const OnboardingTeamCreationSetPeopleCountContent = () => {
   const { RVDic } = useWindow();
 
+  const dispatch = useDispatch();
+
   const {
-    dispatch: dispatchTeamPage,
-    teamState: { peopleCount, teamName },
-  } = useOnboardingTeamContent();
+    teamState: { teamName, peopleCount },
+  } = useSelector(selectOnboarding);
+
+  const { actions: onboardingActions } = useOnboardingSlice();
 
   //! RVDic i18n localization
   const RVDicِYourTeamHeadCount = RVDic.TeamSize;
@@ -33,11 +35,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
   );
 
   const setOnboardingTeamPeopleCount = (peopleCount) => () => {
-    dispatchTeamPage({
-      type: OnboardingTeamStepContextActions.ONBOARDING_TEAM_SET_STATE,
-      stateKey: 'peopleCount',
-      stateValue: peopleCount,
-    });
+    dispatch(
+      onboardingActions.teamSetState({ key: 'peopleCount', value: peopleCount })
+    );
   };
 
   return (

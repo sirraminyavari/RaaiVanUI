@@ -1,5 +1,3 @@
-export const API_NAME_CN_RENAME_NODE_TYPE = 'RenameNodeType';
-export const API_NAME_CN_REMOVE_NODE_TYPE = 'RemoveNodeType';
 export const API_NAME_CN_GET_SERVICE = 'GetService';
 export const API_NAME_CN_SET_SERVICE_TITLE = 'SetServiceTitle';
 export const API_NAME_CN_SET_SERVICE_DESCRIPTION = 'SetServiceDescription';

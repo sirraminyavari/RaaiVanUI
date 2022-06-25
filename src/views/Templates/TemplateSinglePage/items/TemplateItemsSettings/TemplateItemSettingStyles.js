@@ -51,7 +51,6 @@ TemplateItemRowSection.displayName = 'TemplateItemTitleSection';
 
 export const AddNewItemWapper = styled.div`
   width: 100%;
-  border: solid 0.0625rem var(--rv-color-distant);
   height: 5rem;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
@@ -59,6 +58,15 @@ export const AddNewItemWapper = styled.div`
   border: 0.0625rem solid #e6f4f1;
 `;
 AddNewItemWapper.displayName = 'AddNewItemWrapper';
+
+export const TreeAddNewItemWapper = styled.div`
+  width: 100%;
+  border-bottom: solid 0.0625rem var(--rv-color-distant);
+  height: 5rem;
+  margin-bottom: 0.5rem;
+  box-sizing: content-box;
+`;
+TreeAddNewItemWapper.displayName = 'TreeAddNewItemWapper';
 
 export const TitleIcon = styled.img`
   width: 2rem;
@@ -122,8 +130,11 @@ SearchBox.displayName = 'SearchBox';
 
 export const ListWrapper = styled.div`
   height: calc(100vh - 21.5rem);
-  padding: 0 0.5rem;
   overflow-y: auto;
+`;
+
+export const ListContainer = styled.div`
+  padding: 0 0.5rem;
 `;
 
 export const TreeWrapper = styled.div`

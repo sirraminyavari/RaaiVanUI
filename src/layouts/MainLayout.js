@@ -2,7 +2,6 @@ import { Suspense, memo, lazy, useEffect } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import { createSelector } from 'reselect';
 import Routes from 'routes/MainRoutes/Main.routes';
 import OpenSidebar from './Sidebar/SidebarOpen';
 import OpenSidebarMobile from './Sidebar/SidebarOpenMobile';
@@ -23,11 +22,11 @@ import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
 import useWindow from 'hooks/useWindowContext';
 import { NavbarContainer } from './Navbar/Navbar.styles';
-import { themeSlice } from 'store/reducers/themeReducer';
 import TestView from 'views/TestView/TestView';
-import { getSidebarNodeTypes } from 'store/actions/sidebar/sidebarMenuAction';
-
-const { toggleSidebar } = themeSlice.actions;
+import { useThemeSlice } from 'store/slice/theme';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { useSidebarSlice } from 'store/slice/sidebar';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const Navbar = lazy(() =>
   import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
@@ -82,37 +81,6 @@ const switchRoutes = (
   </Switch>
 );
 
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
-const selectHasNavSide = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasNavSide
-);
-
-//! hide sidebar view completely
-const selectHideSidebar = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hideSidebar
-);
-
-const selectedApp = createSelector(
-  (state) => state.theme,
-  (theme) => theme.selectedTeam
-);
-
-const selectedActivePath = createSelector(
-  (state) => state.theme,
-  (theme) => theme.activePath
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
-);
-
 /**
  * Renders main layout of the app.
  */
@@ -120,17 +88,24 @@ const Main = () => {
   const dispatch = useDispatch();
   const { RVGlobal } = useWindow();
 
-  //! Check if the sidebar is open.
-  const isSidebarOpen = useSelector(selectIsSidebarOpen);
-  //! Check if navbar or sidebar are enabled for current route.
-  const hasNavSide = useSelector(selectHasNavSide);
-  //! hide sidebar view completely
-  const hideSidebar = useSelector(selectHideSidebar);
-  //! Get selected team.
-  const selectedTeam = useSelector(selectedApp);
+  const {
+    actions: { toggleSidebar },
+  } = useThemeSlice();
+
+  const themeState = useSelector(selectTheme);
   //! Get onboarding stage name.
-  const onboardingName = useSelector(selectOnboardingName);
-  const activePath = useSelector(selectedActivePath);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+
+  const { actions: sidebarActions } = useSidebarSlice();
+
+  //! Check if the sidebar is open.
+  const isSidebarOpen = themeState.isSidebarOpen;
+  //! Check if navbar or sidebar are enabled for current route.
+  const hasNavSide = themeState.hasNavSide;
+  const hideSidebar = themeState.hasSidebar;
+  //! Get selected team.
+  const selectedTeam = themeState.selectedTeam;
+  const activePath = themeState.activePath;
 
   //! Check if onboarding is activated on 'intro' mode.
   const isIntroOnboarding =
@@ -170,7 +145,7 @@ const Main = () => {
   };
 
   //update the list of templates in sidebar
-  useEffect(() => dispatch(getSidebarNodeTypes()), []);
+  useEffect(() => dispatch(sidebarActions.getSidebarNodeTypes()), []);
 
   return (
     <>

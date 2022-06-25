@@ -5,7 +5,6 @@ import * as Styled from './WorkspaceTeamCard.styles';
 import * as GlobalStyled from 'views/Teams/Teams.styles';
 import PlusIcon from 'components/Icons/PlusIcon/PlusIcon';
 // import CreateModal from 'components/Modal/types/create/CreateModal';
-// import { createApplication } from 'store/actions/applications/ApplicationsAction';
 import useWindow from 'hooks/useWindowContext';
 import { useHistory } from 'react-router-dom';
 import { ONBOARDING_USER_TEAM_PATH } from 'views/Onboarding/items/others/constants';

@@ -3,13 +3,11 @@
  */
 import { lazy, Suspense, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 import * as Styled from './Sidebar.styles';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import SidebarHeader from './items/Header';
 import SidebarFooter from './items/footer/Footer';
 import Resizable from 'components/Resizable/Resizable';
-import { themeSlice } from 'store/reducers/themeReducer';
 import {
   MIN_WIDTH,
   MAX_WIDTH,
@@ -17,47 +15,28 @@ import {
   INTRO_ONBOARD,
 } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+import { selectTheme } from 'store/slice/theme/selectors';
+import { useThemeSlice } from 'store/slice/theme';
+import { selectOnboarding } from 'store/slice/onboarding/selectors';
 
 const SidebarContentOpen = lazy(() =>
   import(/* webpackChunkName: "sidebar-open-content"*/ './items/ContentOpen')
-);
-
-const { setOpenWidth, setCurrentWidth } = themeSlice.actions;
-
-const selectSidebarContent = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarContent
-);
-
-const selectOpenWidth = createSelector(
-  (state) => state.theme,
-  (theme) => theme.sidebarOpenWidth
-);
-
-const selectHasPattern = createSelector(
-  (state) => state.theme,
-  (theme) => theme.hasSidebarPattern
-);
-
-const selectIsSidebarOpen = createSelector(
-  (state) => state.theme,
-  (theme) => theme.isSidebarOpen
-);
-
-const selectOnboardingName = createSelector(
-  (state) => state.onboarding,
-  (onboarding) => onboarding.name
 );
 
 const OpenSidebar = () => {
   const dispatch = useDispatch();
   const { RV_RTL } = useWindow();
 
-  const sidebarContent = useSelector(selectSidebarContent);
-  const sidebarOpenWidth = useSelector(selectOpenWidth);
-  const isOpen = useSelector(selectIsSidebarOpen);
-  const hasPattern = useSelector(selectHasPattern);
-  const onboardingName = useSelector(selectOnboardingName);
+  const {
+    actions: { setOpenWidth, setCurrentWidth },
+  } = useThemeSlice();
+  const themeState = useSelector(selectTheme);
+  const { name: onboardingName } = useSelector(selectOnboarding);
+
+  const sidebarContent = themeState.sidebarContent;
+  const sidebarOpenWidth = themeState.sidebarOpenWidth;
+  const isOpen = themeState.isSidebarOpen;
+  const hasPattern = themeState.hasSidebarPattern;
 
   const isMainContent = sidebarContent.current === MAIN_CONTENT;
 

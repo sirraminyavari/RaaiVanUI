@@ -1,8 +1,8 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { FLEX_CCC, FLEX_RCS } from 'constant/StyledCommonCss';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import DragIcon from 'components/Icons/DragIcon/Drag';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import InlineEdit from 'components/InlineEdit/InlineEdit';
 import api from 'apiHelper';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
@@ -15,8 +15,9 @@ const TemplateItemSettingListTreeItem = ({
   provided,
   depth,
   item,
-  onCollpase,
+  onCollapse,
   onExpand,
+  loadChildrenAndExpand,
   snapshot,
   onAddChild,
 }) => {
@@ -49,11 +50,60 @@ const TemplateItemSettingListTreeItem = ({
   };
 
   const handleCreateNode = async (name) => {
-    return await api?.CN?.addNode({
+    const { Node, ...rest } = await api?.CN?.addNode({
       Name: name,
       ParentNodeID: NodeID,
       NodeTypeID: NodeTypeID,
     });
+    // let childrenObjects = {
+    //   [`${Node?.NodeID}`]: {
+    //     id: Node?.NodeID,
+    //     children: [],
+    //     hasChildren: false,
+    //     isExpanded: false,
+    //     isChildrenLoading: false,
+    //     data: { ...Node },
+    //   },
+    // };
+    // const children = [...item?.children, Node?.NodeID];
+    // loadChildrenAndExpand({ id: NodeID, children, childrenObjects });
+    if (Node) {
+      await handleLoadChildren();
+    }
+    return rest;
+  };
+
+  const handleLoadChildren = async () => {
+    if (loadChildrenAndExpand) {
+      //load children and prepare data
+      const { Nodes } = await api?.CN?.getChildNodes({ NodeID });
+      let childrenObjects = {};
+      Nodes.forEach((x) => {
+        childrenObjects = {
+          ...childrenObjects,
+          [`${x?.NodeID}`]: {
+            id: x?.NodeID,
+            children: [],
+            hasChildren: x?.HasChild,
+            isExpanded: false,
+            isChildrenLoading: false,
+            data: { ...x },
+          },
+        };
+      });
+
+      const children = Object.keys(childrenObjects);
+
+      loadChildrenAndExpand({ id: NodeID, children, childrenObjects });
+    }
+  };
+
+  const handleExpand = () => {
+    if (item?.isExpanded) {
+      onCollapse(NodeID);
+    } else {
+      handleLoadChildren();
+    }
   };
 
   return (
@@ -63,12 +113,12 @@ const TemplateItemSettingListTreeItem = ({
         ref={provided?.innerRef}
         {...provided.draggableProps}
       >
-        <Container {...provided?.dragHandleProps} {...{ rtl, depth }}>
-          <TitleBlock>
+        <Container {...provided?.dragHandleProps}>
+          <TitleBlock {...{ rtl, depth }}>
             <ArrowIconWrapper>
               {item?.hasChildren && (
                 <NodeIcon
-                  onClick={() => {}}
+                  onClick={handleExpand}
                   size={20}
                   rtl={rtl}
                   opened={item?.isExpanded}
@@ -124,8 +174,6 @@ const TreeItemRow = styled.div`
 `;
 const Container = styled.div`
   ${FLEX_RCS};
-  ${({ rtl, depth }) =>
-    rtl ? `margin-right: ${3 * depth}rem` : `margin-left: ${3 * depth}rem`};
   cursor: pointer;
   width: 100%;
   height: 5rem;
@@ -168,21 +216,25 @@ const DragPaneIcon = styled(DragIcon).attrs((props) => ({
 `;
 
 const TitleBlock = styled.div`
-  flex: 6;
+  flex: 60%;
   ${FLEX_RCS};
   gap: 1rem;
+  ${({ rtl, depth }) =>
+    rtl
+      ? `padding-right: ${1.5 * depth}rem`
+      : `padding-left: ${1.5 * depth}rem`};
 `;
 
 const CodeBlock = styled.div`
-  flex: 1;
+  flex: 10%;
 `;
 
 const CreationDateBlock = styled.div`
-  flex: 1;
+  flex: 10%;
 `;
 
 const ThumbBlock = styled.div`
-  flex: 2;
+  flex: 20%;
 `;
 
 const ItemIconContainer = styled.div`
