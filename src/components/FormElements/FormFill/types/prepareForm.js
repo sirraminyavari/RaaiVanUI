@@ -1,5 +1,4 @@
 import { encodeBase64 } from 'helpers/helpers';
-import { encode } from 'js-base64';
 
 const prepareForm = (prevForm, elementId, event, type) => {
   const { Elements } = prevForm || {};

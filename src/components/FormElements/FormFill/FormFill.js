@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
 import TextField from './types/textField/TextField';
+import ParagraphField from './types/ParagraphField/ParagraphField';
 import styled from 'styled-components';
 import MultiLevelField from './types/multiLevel/MultiLevelField';
 import BinaryField from './types/binary/BinaryField';
@@ -138,19 +139,35 @@ const FormFill = ({ data, editable, ...props }) => {
             );
 
           case 'Text': {
-            return (
-              <TextField
-                decodeInfo={decodeInfo}
-                decodeTitle={decodeTitle}
-                elementId={ElementID}
-                type={Type}
-                onAnyFieldChanged={onAnyFieldChanged}
-                value={TextValue}
-                save={(id) => {
-                  saveFieldChanges(FormObject, id);
-                }}
-              />
-            );
+            const { UseSimpleEditor } = JSON.parse(decodeInfo || '{}');
+            if (UseSimpleEditor)
+              return (
+                <TextField
+                  decodeInfo={decodeInfo}
+                  decodeTitle={decodeTitle}
+                  elementId={ElementID}
+                  type={Type}
+                  onAnyFieldChanged={onAnyFieldChanged}
+                  value={TextValue}
+                  save={(id) => {
+                    saveFieldChanges(FormObject, id);
+                  }}
+                />
+              );
+            else
+              return (
+                <ParagraphField
+                  decodeInfo={decodeInfo}
+                  decodeTitle={decodeTitle}
+                  elementId={ElementID}
+                  type={Type}
+                  onAnyFieldChanged={onAnyFieldChanged}
+                  value={TextValue}
+                  save={(id) => {
+                    saveFieldChanges(FormObject, id);
+                  }}
+                />
+              );
           }
           case 'Select':
             return (
