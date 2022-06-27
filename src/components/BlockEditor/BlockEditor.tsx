@@ -1,10 +1,11 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { convertToRaw } from 'draft-js';
 import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
 import plugins from './plugins';
 import useWindow from 'hooks/useWindowContext';
+import styled from 'styled-components';
 
 //TODO BlockEditorWrapper component needs review and refactor !!!
 
@@ -12,47 +13,62 @@ function BlockEditorWrapper({
   editorState,
   setEditorState,
   handleSaveBlocks,
+  debugMode = false,
+  textarea = false,
+  readOnly = false,
   // handleSaveRawHtmlContent,
 }) {
   const { RV_Direction, RV_RTL } = useWindow();
   const editorRef = useRef<HTMLElement>();
-  useLayoutEffect(
-    () => void setImmediate(() => editorRef.current?.focus()),
-    []
-  );
+  // useEffect(
+  // () => void setImmediate(() => editorRef.current?.focus()),
+  //   []
+  // );
 
   useAutoSave(
     editorState,
     (changes, _sort) => {
       // const entityMap = editorState.getCurrentContent ().getEntityMap ()
       // setTimeout(() => {
-      handleSaveBlocks({
-        content: convertToRaw(editorState.getCurrentContent()),
-        removeBlocks: changes.removedBlocks.map((b) => b.key),
-      });
+      handleSaveBlocks &&
+        handleSaveBlocks({
+          content: convertToRaw(editorState.getCurrentContent()),
+          removeBlocks: changes.removedBlocks.map((b) => b.key),
+        });
       // }, 1000);
     },
     1000
   );
 
   return (
-    <BlockEditor
-      ref={editorRef}
-      editorState={editorState}
-      onChange={setEditorState}
-      dict={dict}
-      lang={RV_RTL ? 'fa' : 'en'}
-      dir={RV_Direction}
-      plugins={plugins}
-      styles={defaultTheme}
-      portalNode={document.getElementById('block-editor-portal')}
-      debugMode={false}
-      readOnly={false}
-      textarea={false}
-    />
+    <BlockEditorStyler textarea={textarea}>
+      <BlockEditor
+        ref={editorRef}
+        editorState={editorState}
+        onChange={setEditorState}
+        dict={dict}
+        lang={RV_RTL ? 'fa' : 'en'}
+        dir={RV_Direction}
+        plugins={plugins}
+        styles={defaultTheme}
+        portalNode={document.getElementById('block-editor-portal')}
+        debugMode={debugMode}
+        readOnly={readOnly}
+        textarea={textarea}
+      />
+    </BlockEditorStyler>
   );
 }
 
 BlockEditorWrapper.displayName = 'BlockEditorWrapper';
 
 export default BlockEditorWrapper;
+
+const BlockEditorStyler = styled.div<{ textarea?: boolean }>`
+  width: 100%;
+  & > div {
+    font-family: inherit;
+
+    ${({ textarea }) => textarea && 'max-width: 98%;'}
+  }
+`;
