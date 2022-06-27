@@ -1,7 +1,7 @@
 // import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { decodeBase64 } from 'helpers/helpers';
 import _ from 'lodash';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import MultiLeveltype from './types/multiLevel/MultiLevelType';
 import MultiSelectField from './types/multiSelect/MultiSelectField';
 import SingleSelectField from './types/singleSelect/SingleSelectField';
@@ -39,7 +39,12 @@ const FormFill = ({ data, editable, ...props }) => {
     });
   }, []);
   // console.log(editable, 'editable editable editable');
-  const onAnyFieldChanged = async (elementId, event, type) => {
+  const onAnyFieldChanged = async (
+    elementId,
+    event,
+    type,
+    saveOnChange = false
+  ) => {
     const readyToUpdate = prepareForm(tempForm, elementId, event, type);
     setTempForm(readyToUpdate);
 
@@ -52,7 +57,7 @@ const FormFill = ({ data, editable, ...props }) => {
         await saveFieldChanges(readyToUpdate, elementId);
         break;
       case 'Text':
-        await saveFieldChanges(readyToUpdate, elementId);
+        // await saveFieldChanges(readyToUpdate, elementId);
         break;
       case 'File':
         const result = await saveFieldChanges(readyToUpdate, elementId);
@@ -60,10 +65,12 @@ const FormFill = ({ data, editable, ...props }) => {
       default:
         break;
     }
+    if (saveOnChange) await saveFieldChanges(readyToUpdate, elementId);
   };
-  const saveFieldChanges = useMemo(
-    () => async (readyToUpdate, elementId) => {
+  const saveFieldChanges = useCallback(
+    async (readyToUpdate, elementId) => {
       console.log('saveFieldChanges', {
+        readyToUpdate,
         whichElementChanged,
         elementId,
       });
@@ -82,7 +89,7 @@ const FormFill = ({ data, editable, ...props }) => {
               x?.ElementID === elementId ? saveResult[0] : x
             ),
           };
-          console.log({ freshForm });
+          // console.log({ freshForm });
           setSyncTempFormWithBackEnd(freshForm);
           setTempForm(freshForm);
           setWhichElementChanged(null);
@@ -149,8 +156,8 @@ const FormFill = ({ data, editable, ...props }) => {
                   type={Type}
                   onAnyFieldChanged={onAnyFieldChanged}
                   value={TextValue}
-                  save={(id) => {
-                    saveFieldChanges(FormObject, id);
+                  save={() => {
+                    saveFieldChanges(FormObject, ElementID);
                   }}
                 />
               );
@@ -163,8 +170,8 @@ const FormFill = ({ data, editable, ...props }) => {
                   type={Type}
                   onAnyFieldChanged={onAnyFieldChanged}
                   value={TextValue}
-                  save={(id) => {
-                    saveFieldChanges(FormObject, id);
+                  save={() => {
+                    saveFieldChanges(FormObject, ElementID);
                   }}
                 />
               );
