@@ -38,13 +38,13 @@ const BinaryField = ({
           onClick={() =>
             onAnyFieldChanged(elementId, { label: yes, value: true }, type)
           }
-          isSelected={value}
+          isSelected={value === true}
         >
           {yes}
         </Bit>
         <Divider isSelected={true} />
         <Bit
-          isSelected={!value}
+          isSelected={value === false}
           onClick={() =>
             onAnyFieldChanged(elementId, { label: no, value: false }, type)
           }
