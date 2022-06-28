@@ -80,6 +80,11 @@ const BlockEditorStyler = styled.div.attrs<{
     max-width: 100%;
     margin-block: 0;
     box-shadow: unset;
+    padding-block: 0;
+
+      & > div:first-of-type {
+        margin-block: 0;
+      }
     `}
   }
 `;
