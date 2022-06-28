@@ -141,7 +141,7 @@ const FormFill = ({ data, editable, ...props }) => {
                 type={Type}
                 onAnyFieldChanged={onAnyFieldChanged}
                 elementId={ElementID}
-                value={DateValue_Jalali}
+                value={TextValue}
               />
             );
 

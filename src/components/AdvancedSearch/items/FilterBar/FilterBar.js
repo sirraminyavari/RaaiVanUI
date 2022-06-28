@@ -418,7 +418,7 @@ const FilterBar = ({
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"
-            type="jalali"
+            // type="jalali"
             hasFooter
             range
             headerTitle="فیلتر تاریخ ایجاد"

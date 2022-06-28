@@ -27,7 +27,7 @@ const FormCell = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            width: 'clamp(5rem,15vw,17rem)',
+            width: !isTabletOrMobile && 'clamp(5rem,15vw,17rem)',
           }}
         >
           <div

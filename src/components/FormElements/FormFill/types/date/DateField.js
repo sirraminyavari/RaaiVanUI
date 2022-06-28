@@ -31,7 +31,7 @@ const DateField = ({
       <CustomDatePicker
         label={RVDic?.SelectDate}
         mode="button"
-        type="jalali"
+        // type="jalali"
         clearButton
         headerTitle="فیلتر تاریخ ایجاد"
         CustomButton={({ onClick }) => (
@@ -39,7 +39,9 @@ const DateField = ({
             {value ? value : RVDic.DateSelect}
           </Button>
         )}
-        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+        onDateSelect={(event) =>
+          onAnyFieldChanged(elementId, event, type, true)
+        }
       />
     </FormCell>
   );
