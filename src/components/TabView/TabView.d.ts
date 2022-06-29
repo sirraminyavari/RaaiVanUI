@@ -1,18 +1,26 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
-/**
- * Tab view props
- * @interface ITabViewProps
- * @property {number} Tab selection row height in rem
- * @property {event} Tab selection row height in rem
- *
- */
-export interface ITabViewProps {
-  height: number;
-  onSelect: (key: stirng) => void;
-  children?: ReactNode;
+export interface ITabViewChildrenProps {
   type: 'Item' | 'Action';
-  key?: string;
+  children?: ReactNode;
 }
 
-export declare const TabView = (props: ITabViewProps) => JSX.Element;
+export interface ITabViewItemProps extends ITabViewChildrenProps {
+  label: string;
+}
+
+export interface ITabviewProps {
+  height?: number;
+  onSelect?: (key: string) => void;
+  children?: ReactNode;
+}
+
+export interface TabViewSub {
+  Item: TabViewItem;
+  Action: TabViewAction;
+}
+export declare const TabViewItem: FC<ITabViewItemProps>;
+
+export declare const TabViewAction: FC<ITabViewChildrenProps>;
+
+export declare const TabView: FC<ITabviewProps> & TabViewSub;
