@@ -63,6 +63,7 @@ import DatePickerFooter from './DatePickerFooter';
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
  * @property {string} format - The date picker format.
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
+ * @property {boolean} closeOnDateSelect - A flag that determine if date picker should close after date is selected.
  * @property {Object} inputStyle - Style for input.
  * @property {String} inputClass - Class for input.
  * @property {Object} buttonStyle - Style for button.
@@ -99,6 +100,7 @@ const CustomDatePicker = (props) => {
     headerTitle,
     onChangeVisibility,
     justCalendar,
+    closeOnDateSelect,
     ...rest
   } = props;
 
@@ -240,6 +242,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, true);
         }
+
         // console.log(showDate);
         break;
 
@@ -303,6 +306,8 @@ const CustomDatePicker = (props) => {
     if (mode === 'input') {
       inputRef.current.value = formatDate(selectedDay);
     }
+
+    if (closeOnDateSelect) toggleCalendar();
   };
 
   //! Calls whenever user fills the input manually.
@@ -351,6 +356,7 @@ const CustomDatePicker = (props) => {
       } else {
         setSelectedDate('');
         onDateSelect(null);
+        if (closeOnDateSelect) toggleCalendar();
       }
     }
 

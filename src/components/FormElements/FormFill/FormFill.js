@@ -122,7 +122,7 @@ const FormFill = ({ data, editable, ...props }) => {
           Title,
           SelectedItems,
           TextValue,
-          DateValue_Jalali,
+          DateValue,
           FloatValue,
           BitValue,
           Files,

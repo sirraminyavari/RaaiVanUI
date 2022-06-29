@@ -84,6 +84,7 @@ const BlockEditorStyler = styled.div.attrs<{
 
       & > div:first-of-type {
         margin-block: 0;
+        margin-inline: 0;
       }
     `}
   }
