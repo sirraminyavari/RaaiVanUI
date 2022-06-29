@@ -18,6 +18,7 @@ function ParagraphField({
   elementId,
   decodeTitle,
   type,
+  save,
 }) {
   const [editorState, setEditorState] = useState(null);
 
@@ -73,16 +74,9 @@ function ParagraphField({
   //use 'saveBlocks' api to save a block
   //content: { blocks: 'array of the blocks to be saved', entityMap: 'current version of entity map' }
   //insertAfterKey: the key of the last block that is places immediately before the blocks to be saved
-  const handleSaveBlocks: IHandleSaveBlocks = async ({
-    content,
-    insertAfterKey,
-    removeBlocks,
-  } = {}) => {
-    onAnyFieldChanged(elementId, JSON.stringify(content), type);
-    console.log(
-      { content, insertAfterKey, removeBlocks },
-      "blocks 'save blocks'"
-    );
+  const handleSaveBlocks: IHandleSaveBlocks = async ({ content } = {}) => {
+    //TODO investigate why save functionality not working when using the [props.save] function
+    await onAnyFieldChanged(elementId, JSON.stringify(content), type, true);
   };
 
   return (

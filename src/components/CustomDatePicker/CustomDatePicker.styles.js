@@ -29,7 +29,8 @@ export const CalendarContainer = styled.div`
 
   .Calendar {
     box-shadow: 0px 10px 40px #2023314d;
-    color: black !important;
+    // color: black !important;
+    border-radius: 0.85rem;
   }
 
   .Calendar__header {
@@ -37,18 +38,23 @@ export const CalendarContainer = styled.div`
   }
 
   .Calendar__weekDays {
-    color: ${TCV_VERYWARM} !important;
+    color: #c3c3c3 !important;
     font-weight: bold;
+    font-size: 0.8rem;
   }
 
   .Calendar__monthText {
-    color: ${TCV_VERYWARM} !important;
+    color: ${TCV_WARM} !important;
     font-size: 1.1rem;
   }
 
   .Calendar__yearText {
-    color: ${TCV_WARM} !important;
+    color: ${TCV_DEFAULT} !important;
     font-size: 1.1rem;
+  }
+
+  .Calendar__weekDay {
+    border-bottom: none;
   }
 
   .Calendar__yearSelectorAnimationWrapper {
@@ -56,13 +62,14 @@ export const CalendarContainer = styled.div`
   }
   .Calendar__monthSelector {
     position: relative;
-    top: 0.15rem;
-    height: 94%;
+    top: 0.2rem;
+    height: 100%;
+    padding: 0;
   }
   .Calendar__yearSelectorWrapper {
     position: relative;
     top: 0.2rem;
-    height: 93%;
+    height: 100%;
   }
 
   .Calendar__monthSelectorItemText {
@@ -105,12 +112,12 @@ export const CalendarContainer = styled.div`
 
   .Calendar__day.-selectedStart:hover,
   .Calendar__day.-selectedEnd:hover {
-    background-color: ${TCV_DEFAULT} !important;
+    border-color: ${TCV_DEFAULT} !important;
   }
 
-  .Calendar__day.today-date:hover {
-    background-color: ${TCV_VERYWARM} !important;
-  }
+  // .Calendar__day.today-date:hover {
+  //   background-color: ${TCV_VERYWARM} !important;
+  // }
 
   .Calendar__day.selected-date:hover {
     background-color: ${TCV_DEFAULT} !important;
@@ -121,8 +128,8 @@ export const CalendarContainer = styled.div`
   }
 
   .today-date {
-    color: ${CV_WHITE} !important;
-    background-color: ${TCV_DEFAULT} !important;
+    // color: ${CV_WHITE} !important;
+    border-color: ${TCV_DEFAULT} !important;
   }
 
   .selected-date {

@@ -10,7 +10,6 @@ export const NodeTopBarShadowButton = styled(Button)<{ $isEnabled?: boolean }>`
   background-color: white;
   border-width: 0.06rem;
   padding: 0.5rem;
-  /* border-color: ${({ $isEnabled }) => ($isEnabled ? '#BAC9DC' : 'white')}; */
   border-style: solid;
   transition: border-color 0.5s, box-shadow 0.5s;
   display: flex;
@@ -18,12 +17,6 @@ export const NodeTopBarShadowButton = styled(Button)<{ $isEnabled?: boolean }>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* color: ${({ $isEnabled }) => ($isEnabled ? '#2B7BE4' : '#BAC9DC')}; */
-  /* :hover {
-    border-width: 0.06rem;
-    border-color: #bac9dc;
-    border-style: solid;
-  } */
   /* ${({ $isEnabled }) => $isEnabled && 'rv-border-warm-red'} */
 `;
 
@@ -34,14 +27,11 @@ export const NodeTopBarBottomRow = styled.div<{ mobileView?: boolean }>`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 5rem;
 `;
 NodeTopBarBottomRow.displayName = 'NodeTopBarBottomRow';
 
 export const NodeTopBarRelatedTopicsContainer = styled.div`
   ${FLEX_RCS}
-  // gap: 1rem;
-
   max-width: 100%;
 `;
 NodeTopBarRelatedTopicsContainer.displayName =

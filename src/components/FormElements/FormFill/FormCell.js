@@ -27,7 +27,7 @@ const FormCell = ({
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            width: 'clamp(5rem,15vw,17rem)',
+            width: !isTabletOrMobile && 'clamp(5rem,15vw,17rem)',
           }}
         >
           <div
@@ -47,7 +47,7 @@ const FormCell = ({
         )}
       </CellName>
       <Children>{children}</Children>
-      {editMode && (
+      {!!editMode && (
         <SaveButton style={{ margin: '0 1rem 0 1rem' }} onClick={onSave} />
       )}
     </Container>

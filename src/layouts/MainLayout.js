@@ -102,7 +102,7 @@ const Main = () => {
   const isSidebarOpen = themeState.isSidebarOpen;
   //! Check if navbar or sidebar are enabled for current route.
   const hasNavSide = themeState.hasNavSide;
-  const hideSidebar = themeState.hasSidebar;
+  const hideSidebar = themeState.hideSidebar;
   //! Get selected team.
   const selectedTeam = themeState.selectedTeam;
   const activePath = themeState.activePath;

@@ -31,7 +31,7 @@ const AnimatedInput = React.forwardRef(
       value = '',
       error = null,
       disabled,
-      onChange,
+      onChange = () => {},
       afterChangeListener,
       children,
       placeholderClass,

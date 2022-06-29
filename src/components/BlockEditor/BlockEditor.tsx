@@ -64,11 +64,27 @@ BlockEditorWrapper.displayName = 'BlockEditorWrapper';
 
 export default BlockEditorWrapper;
 
-const BlockEditorStyler = styled.div<{ textarea?: boolean }>`
+const BlockEditorStyler = styled.div.attrs<{
+  textarea?: boolean;
+}>(({ textarea }) => textarea && { className: 'rv-input' })<{
+  textarea?: boolean;
+}>`
   width: 100%;
+  transition: border 0.3s;
   & > div {
     font-family: inherit;
 
-    ${({ textarea }) => textarea && 'max-width: 98%;'}
+    ${({ textarea }) =>
+      textarea &&
+      `
+    max-width: 100%;
+    margin-block: 0;
+    box-shadow: unset;
+    padding-block: 0;
+
+      & > div:first-of-type {
+        margin-block: 0;
+      }
+    `}
   }
 `;
