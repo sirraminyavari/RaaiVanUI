@@ -188,7 +188,9 @@ const prepareForm = (prevForm, elementId, event, type) => {
                 DateValue: moment(event, 'YYYY/MM/DD')
                   .locale('en')
                   .format('YYYY/MM/DD'),
-                TextValue: event,
+                TextValue: moment(event, 'YYYY/MM/DD')
+                  .locale('en')
+                  .format('YYYY/MM/DD'),
               }
             : x
         ),

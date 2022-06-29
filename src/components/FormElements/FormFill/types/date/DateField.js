@@ -1,17 +1,14 @@
-import Button from 'components/Buttons/Button';
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import { CV_GRAY } from 'constant/CssVariables';
-import React, { useContext, useState } from 'react';
-import {
-  IoCafeOutline,
-  IoCalendarClearOutline,
-  IoCalendarOutline,
-} from 'react-icons/io5';
+import { CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
+import moment from 'jalali-moment';
+import React, { useContext } from 'react';
+import { IoCalendarOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 import { EditableContext } from '../../FormFill';
 
-const { RVDic } = window;
+//TODO change of implementation and  refactoring is immanent
+const { RVDic, RV_RTL } = window;
 const DateField = ({
   value,
   decodeInfo,
@@ -33,11 +30,20 @@ const DateField = ({
         mode="button"
         // type="jalali"
         clearButton
+        closeOnDateSelect
         headerTitle="فیلتر تاریخ ایجاد"
         CustomButton={({ onClick }) => (
-          <Button disable={!editable} onClick={onClick}>
-            {value ? value : RVDic.DateSelect}
-          </Button>
+          <CalendarTriggerButton
+            disable={!editable}
+            onClick={editable && onClick}
+          >
+            {value
+              ? `${moment(value)
+                  .locale(RV_RTL ? 'fa' : 'en')
+                  .format('dddd')} ${value}`
+              : RVDic.DateSelect}
+            <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
+          </CalendarTriggerButton>
         )}
         onDateSelect={(event) =>
           onAnyFieldChanged(elementId, event, type, true)
@@ -48,6 +54,19 @@ const DateField = ({
 };
 export default DateField;
 
-const Maintainer = styled.div`
+const CalendarTriggerButton = styled.button.attrs(({ disable }) => ({
+  className: !disable && 'rv-input',
+}))`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  width: 15rem;
+  ${({ disable }) => !disable && `color:${CV_GRAY};`}
+  padding-inline: 1rem;
+  padding-block: 0.6rem;
+
+  & > svg {
+    ${({ disable }) => disable && `display:none;`}
+  }
 `;
