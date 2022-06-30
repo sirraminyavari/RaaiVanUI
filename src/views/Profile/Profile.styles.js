@@ -44,6 +44,7 @@ import {
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
+import Heading from 'components/Heading/Heading';
 
 const { RV_Float, RV_RevFloat, RV_RTL, GlobalUtilities } = window;
 
@@ -363,8 +364,9 @@ export const UsenameWrapper = styled.div.attrs({
   margin-bottom: 2rem;
 `;
 
-export const SectionTitle = styled.div.attrs({
+export const SectionTitle = styled(Heading).attrs({
   className: `${C_GRAY}`,
+  type: 'h5',
 })`
   font-size: 0.9rem;
   margin-top: 2.5rem;
@@ -387,6 +389,7 @@ export const StatusWrapper = styled.div.attrs({
   color: ${CV_GRAY};
   font-size: 1rem;
   ${FLEX_RCC}
+  text-transform: capitalize;
 `;
 
 export const StatusCount = styled.span.attrs({

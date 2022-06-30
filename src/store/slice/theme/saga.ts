@@ -17,7 +17,7 @@ function* getThemes() {
  */
 function* getCurrentTheme() {
   const res = yield call(API.Users.getCurrentTheme);
-  yield put(actions.setTheme(res?.Theme));
+  yield put(actions.setCurrentTheme(res?.Theme));
 }
 
 export function* themeSaga() {

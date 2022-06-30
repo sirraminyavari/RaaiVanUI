@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IHeadingType } from './types';
 
 /**
  * @typedef props input properties
@@ -13,28 +14,50 @@ import styled from 'styled-components';
  * @property { bool } darkBackground determines if the heading is rendered on a dark background or not
  */
 
-const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
+const Heading = ({
+  type = 'H1',
+  darkBackground,
+  className,
+  style,
+  children,
+  ...props
+}: {
+  type: IHeadingType;
+  darkBackground;
+  className;
+  style;
+  children;
+}) => {
   const { GlobalUtilities } = window;
   const values = resolveValues({ type, darkBackground, GlobalUtilities });
 
   return (
     <StyledElement
       className={values.class + ' ' + (className || ' ')}
-      style={GlobalUtilities.extend(props.style || {}, {
+      style={GlobalUtilities.extend(style || {}, {
         fontSize: values.size,
         fontWeight: values.weight || 'normal',
       })}
       {...props}
     >
-      {props.children}
+      {children}
     </StyledElement>
   );
 };
 
 export default Heading;
 
-const resolveValues = ({ type, darkBackground, GlobalUtilities }) => {
-  if (GlobalUtilities.get_type(type) === 'string') type = type.toLowerCase();
+const resolveValues = ({
+  type,
+  darkBackground,
+  GlobalUtilities,
+}: {
+  type: IHeadingType;
+  darkBackground?: boolean;
+  GlobalUtilities: any;
+}) => {
+  if (GlobalUtilities.get_type(type) === 'string')
+    type = type.toLowerCase() as unknown as IHeadingType;
 
   const dic = {
     h1: { class: 'rv-warm', size: '1.4rem', weight: 'bold' },
@@ -46,7 +69,7 @@ const resolveValues = ({ type, darkBackground, GlobalUtilities }) => {
   };
 
   return GlobalUtilities.extend(
-    dic[type] || resolveValues({ type: 'h2' }),
+    dic[type] || resolveValues({ type: 'h2', GlobalUtilities }),
     darkBackground ? { class: 'rv-white' } : {}
   );
 };

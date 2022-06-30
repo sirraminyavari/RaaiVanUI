@@ -130,7 +130,9 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   return (
     <Styled.LastTopicsContainer>
       <Styled.Header>
-        <Styled.Title>آخرین موضوعات مرتبط با من</Styled.Title>
+        <Styled.Title>
+          {isAuthUser ? RVDic.LastItemsRelatedToMe : RVDic.LastRelatedItems}
+        </Styled.Title>
         <Button classes="see-all-button">
           <Link to={relatedTopicsLink} style={{ color: TCV_DEFAULT }}>
             {RVDic.ShowAll}
@@ -158,7 +160,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
             <Styled.EmptyStateWrapper>
               <EmptyState />
               <Styled.EmptyStateMessage>
-                موضوعی مرتبط با شما یافت نشد
+                {RVDic.NoRelatedItemsFound}
               </Styled.EmptyStateMessage>
             </Styled.EmptyStateWrapper>
           )}
