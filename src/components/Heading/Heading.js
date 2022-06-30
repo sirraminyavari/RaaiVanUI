@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 /**
  * @typedef props input properties
@@ -17,7 +18,7 @@ const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
   const values = resolveValues({ type, darkBackground, GlobalUtilities });
 
   return (
-    <div
+    <StyledElement
       className={values.class + ' ' + (className || ' ')}
       style={GlobalUtilities.extend(props.style || {}, {
         fontSize: values.size,
@@ -26,7 +27,7 @@ const Heading = ({ type = 'H1', darkBackground, className, ...props }) => {
       {...props}
     >
       {props.children}
-    </div>
+    </StyledElement>
   );
 };
 
@@ -49,3 +50,9 @@ const resolveValues = ({ type, darkBackground, GlobalUtilities }) => {
     darkBackground ? { class: 'rv-white' } : {}
   );
 };
+
+const StyledElement = styled.div`
+  ::first-letter {
+    text-transform: capitalize;
+  }
+`;

@@ -4,9 +4,9 @@ const fs = require('fs');
 let packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json'));
 
 let saasProxy = packageJson.proxy;
-const orgProxy = saasProxy + ':1234';
+const orgProxy = saasProxy.replace('https:', 'http:') + ':1234';
 
-let isOrg = (process.env.REACT_APP_ENV || '_').toLowerCase() == 'org';
+let isOrg = (process.env.REACT_APP_ENV || '_').toLowerCase() === 'org';
 
 let proxy = process.env.REACT_APP_PROXY || (isOrg ? orgProxy : saasProxy);
 

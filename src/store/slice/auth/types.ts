@@ -54,7 +54,7 @@ export const EmptyAuthState: IAuthState = {
   authUser: window.RVGlobal?.CurrentUser,
 
   //must decide
-  isAuthenticated: window.IsAuthenticated,
+  isAuthenticated: window.IsAuthenticated || window.RVGlobal?.IsAuthenticated,
   lastLogins: [],
   loginMessage: undefined,
   resetPasswordAddress: {},
