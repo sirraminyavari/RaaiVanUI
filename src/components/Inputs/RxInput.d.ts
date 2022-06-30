@@ -1,13 +1,13 @@
-import React, { forwardRef } from 'react';
-import { SiJenkinsx } from 'react-icons/si';
+import React, { FC } from 'react';
 /**
  *
  */
-export interface IRxInput extends HTMLInputElement {
+export interface IRxInputProps {
   delayTime: number;
+  placeholder: string;
+  value: string;
+  onChange: (e?: any) => void;
 }
 
-// export function RxInput(
-//   render: React.ForwardRefRenderFunction<HTMLInputElement, IRxInput>
-// ): React.ForwardRefExoticComponent<React.RefAttributes<any>>;
-export declare const RxInput = (props: IRxInput) => JSX.Element;
+declare const RxInput: FC<IRxInputProps>;
+export default RxInput;
