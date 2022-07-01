@@ -7,19 +7,19 @@ export const ID_PATTERNS_Jalali = [
   },
   {
     id: 1,
-    type: 'JalaliDate',
+    type: 'PYears',
     title: 'سال 2رقمی خورشیدی',
     example: '00',
   },
   {
     id: 1,
-    type: 'JalaliDate',
+    type: 'PMonth',
     title: 'ماه خورشیدی',
     example: '12',
   },
   {
     id: 1,
-    type: 'JalaliDate',
+    type: 'PDay',
     title: 'روز خورشیدی',
     example: '23',
   },
@@ -28,11 +28,13 @@ export const ID_PATTERNS_Jalali = [
 export const ID_PATTERNS_Georgian = [
   {
     id: 1,
+    type: 'GYearsS',
     title: 'سال 4رقمی میلادی',
     example: '2022',
   },
   {
     id: 1,
+    type: 'GYear',
     title: 'سال 2رقمی میلادی',
     example: '22',
   },
@@ -51,31 +53,37 @@ export const ID_PATTERNS_Georgian = [
 export const Other_Patterns = [
   {
     id: 1,
+    type: 'RND',
     title: 'عدد تصادفی',
     example: '15',
   },
   {
     id: 1,
+    type: 'AlphaNumeric',
     title: 'الفبایی عددی',
     example: '15',
   },
   {
     id: 1,
+    type: '-',
     title: '-',
     example: '15',
   },
   {
     id: 1,
+    type: '_',
     title: '_',
     example: '15',
   },
   {
     id: 1,
+    type: '|',
     title: '|',
     example: '15',
   },
   {
     id: 1,
+    type: '/',
     title: '/',
     example: '15',
   },
@@ -112,11 +120,11 @@ export const ID_PATTERNS = [
     title: 'تعداد موضوعات در سال میلادی جاری',
     example: '15',
   },
-  {
-    id: 6,
-    title: 'فیلدی از فرم',
-    example: '15',
-  },
+  // {
+  //   id: 6,
+  //   title: 'فیلدی از فرم',
+  //   example: '15',
+  // },
   {
     id: 6,
     title: 'کد حوزه ثبت',

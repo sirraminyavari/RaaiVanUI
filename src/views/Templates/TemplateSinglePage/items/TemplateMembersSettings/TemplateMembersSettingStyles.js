@@ -1,11 +1,17 @@
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
-import { FLEX_RCB } from 'constant/StyledCommonCss';
+import {
+  FLEX_CSA,
+  FLEX_CSB,
+  FLEX_RCB,
+  FLEX_RCE,
+} from 'constant/StyledCommonCss';
 import styled from 'styled-components';
 
 export const MemberBlock = styled.div`
-  height: 27rem;
+  ${FLEX_CSB};
+  min-height: calc((100vh - 9rem) / 2);
   position: relative;
+  padding: 0 1rem;
   box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
   border-radius: 0.625rem;
   padding: 4rem 1.5rem 1.5rem 1.5rem;
@@ -31,14 +37,25 @@ export const ReturnButton = styled(Button).attrs({
 `;
 ReturnButton.displayName = 'ReturnButton';
 
+export const MembersSettingBlockWrapper = styled.div`
+  width: 100%;
+`;
+
+export const MembersSettingBlockTitle = styled.div`
+  color: var(--rv-color-distant);
+  font-size: 0.8rem;
+`;
+
 export const MembersSettingBlock = styled.div`
   ${FLEX_RCB};
+  width: 100%;
 `;
 MembersSettingBlock.displayName = 'MembersSettingBlock';
 
 export const MembersSettingMicroBlock = styled.div`
   ${FLEX_RCB};
-  width: 22.5rem;
+  width: 21rem;
+  min-height: 2.5rem;
   gap: 0.5rem;
 `;
 MembersSettingMicroBlock.displayName = 'MembersSettingMicroBlock';
@@ -55,7 +72,17 @@ export const MembersSettingMicroBlockTitle = styled.div`
 MembersSettingMicroBlockTitle.displayName = 'MembersSettingMicroBlockTitle';
 
 export const MembersSettingBlockContainer = styled.div`
-  max-width: 50rem;
+  max-width: 54rem;
   width: 100%;
+  height: 100%;
+  flex: 1;
 `;
 MembersSettingBlockContainer.displayName = 'MembersSettingBlockContainer';
+
+export const Spacer = styled.div`
+  height: 3rem;
+`;
+
+export const ToggleButtonWrapper = styled.div`
+  ${FLEX_RCE};
+`;

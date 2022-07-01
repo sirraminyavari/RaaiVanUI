@@ -35,7 +35,7 @@ export const DropDown = styled.div`
   box-shadow: 1px 5px 20px #0000001f;
   height: 300px;
   width: 306px;
-  z-index: 1;
+  z-index: 100;
 `;
 DropDown.displayName = 'DropDown';
 

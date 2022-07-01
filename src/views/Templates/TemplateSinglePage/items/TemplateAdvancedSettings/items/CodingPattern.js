@@ -1,5 +1,5 @@
 import * as Styled from './CodingPattrenStyles';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import Modal from '../../../../../../components/Modal/Modal';
 import CloseIcon from '../../../../../../components/Icons/CloseIcon/CloseIcon';
 import {
@@ -9,6 +9,7 @@ import {
   Other_Patterns,
 } from './_IdPatterns';
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
+import { AdvandcedContenxt } from '../TemplateAdvancedSettings';
 
 const _selectedPatternMockData = [
   {
@@ -40,7 +41,9 @@ const CodingPattern = ({}) => {
     titleClass: 'rv-default',
   });
   const context = useTemplateContext();
-  console.log(context);
+  const { nodeType } = useContext(AdvandcedContenxt);
+
+  console.log(nodeType);
 
   const openModal = () => setModalInfo({ ...modalInfo, show: true });
 

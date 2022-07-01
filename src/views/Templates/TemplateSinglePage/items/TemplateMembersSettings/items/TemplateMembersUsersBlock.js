@@ -9,6 +9,7 @@ import MembersPreview from 'components/MembersPreview/MembersPreview';
 
 const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
   const { ServiceAdmins, FreeUsers, NodeTypeID } = useTemplateContext();
+
   const [serviceAdmins, setServiceAdmins] = useState(
     ServiceAdmins.map((u) => ({
       id: u?.UserID,
@@ -24,10 +25,6 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
     }))
   );
 
-  const handleAdminUserDropdwonClose = (data) => {
-    console.log(data);
-  };
-
   const showErrorToast = (err) => {
     InfoToast({
       type: 'error',
@@ -36,7 +33,6 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
   };
 
   const handleAdminUserStateChange = async ({ user, state }) => {
-    console.log(user);
     if (state) {
       const { ErrorText } = await api?.CN?.addServiceAdmin({
         UserID: user?.id,
@@ -90,7 +86,6 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
             {'کاربران ویژه'}
           </Styled.MembersSettingMicroBlockTitle>
           <UserGroupSelect
-            onClose={handleAdminUserDropdwonClose}
             selectGroupEnabled={false}
             selectedUsers={ServiceAdmins?.map((x) => x?.UserID)}
             onUserStateChange={handleAdminUserStateChange}
@@ -107,6 +102,8 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
           />
         </Styled.MembersSettingMicroBlock>
       </Styled.MembersSettingBlock>
+
+      <Styled.Spacer />
 
       <Styled.MembersSettingBlock>
         <Styled.MembersSettingMicroBlock>
