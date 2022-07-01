@@ -1,5 +1,6 @@
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import { CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
+import useWindow from 'hooks/useWindowContext';
 import moment from 'jalali-moment';
 import React, { useContext } from 'react';
 import { IoCalendarOutline } from 'react-icons/io5';
@@ -8,7 +9,7 @@ import FormCell from '../../FormCell';
 import { EditableContext } from '../../FormFill';
 
 //TODO change of implementation and  refactoring is immanent
-const { RVDic, RV_RTL } = window;
+
 const DateField = ({
   value,
   decodeInfo,
@@ -19,6 +20,7 @@ const DateField = ({
   ...props
 }) => {
   const editable = useContext(EditableContext);
+  const { RVDic, RV_RTL } = useWindow();
   return (
     <FormCell
       iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}
@@ -38,16 +40,18 @@ const DateField = ({
             onClick={editable && onClick}
           >
             {value
-              ? `${moment(value)
+              ? `${moment
+                  .from(value, 'en', RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY')
                   .locale(RV_RTL ? 'fa' : 'en')
-                  .format('dddd')} ${value}`
+                  .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}`
               : RVDic.DateSelect}
             <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
           </CalendarTriggerButton>
         )}
-        onDateSelect={(event) =>
-          onAnyFieldChanged(elementId, event, type, true)
-        }
+        onDateSelect={(event) => {
+          onAnyFieldChanged(elementId, event, type, true);
+          alert(event);
+        }}
       />
     </FormCell>
   );

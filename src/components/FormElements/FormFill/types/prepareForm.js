@@ -185,12 +185,14 @@ const prepareForm = (prevForm, elementId, event, type) => {
           x?.ElementID === elementId
             ? {
                 ...requireItems(x),
-                DateValue: moment(event, 'YYYY/MM/DD')
+                DateValue: moment
+                  .from(event, window.RV_RTL ? 'fa' : 'en', 'YYYY/MM/DD')
                   .locale('en')
                   .format('YYYY/MM/DD'),
-                TextValue: moment(event, 'YYYY/MM/DD')
-                  .locale('en')
-                  .format('YYYY/MM/DD'),
+                TextValue: moment
+                  .from(event, window.RV_RTL ? 'fa' : 'en', 'YYYY/MM/DD')
+                  .locale(window.RV_RTL ? 'fa' : 'en')
+                  .format(window.RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'),
               }
             : x
         ),
