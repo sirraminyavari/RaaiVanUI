@@ -1,10 +1,4 @@
-import {
-  BG_WHITE,
-  BO_DISTANT,
-  BO_FREEZED,
-  TBG_DEFAULT,
-  TBG_WARM,
-} from 'constant/Colors';
+import { BG_WHITE, BO_DISTANT, TBG_DEFAULT, TBG_WARM } from 'constant/Colors';
 import {
   BO_RADIUS_CIRCLE,
   BO_RADIUS_HALF,
@@ -52,6 +46,7 @@ export const RelatedTopicsTabMoreTopicsContainer = styled.div.attrs({
   background-color: ${CV_WHITE};
   max-height: ${({ isOpen }) => (isOpen ? '10.4rem' : '0')};
   overflow: hidden;
+  overflow-y: auto;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
   transition: all 0.5s ease;
 
@@ -87,13 +82,15 @@ export const RelatedTopicsTabItemContainer = styled.div.attrs<{
   className: `${BO_RADIUS_HALF} ${BO_DISTANT} ${
     props.isActive ? (props.hasMore ? TBG_WARM : TBG_DEFAULT) : BG_WHITE
   }`,
-}))<{ isActive?: boolean; hasMore?: boolean }>`
+}))<{ isActive?: boolean; hasMore?: boolean; visible?: boolean }>`
   flex: 0 0 auto;
   ${FLEX_RCB}
   height: 2.5rem;
   padding: 0 0.5rem;
   cursor: pointer;
   ${({ hasMore }) => !!hasMore && 'border: none;'}
+  ${({ visible }) => !visible && 'visibility: hidden;'}
+  ${({ visible }) => !visible && 'display: none;'}
   margin-inline-end: 0.5rem;
   margin-block: 0.25rem;
 

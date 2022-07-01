@@ -73,7 +73,7 @@ const Tooltip = ({
   ignoreTip,
 }: ITooltip) => {
   if (!!ignoreTip) {
-    return children;
+    return <>{children}</>;
   }
 
   return (

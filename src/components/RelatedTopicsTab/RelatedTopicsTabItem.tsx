@@ -14,13 +14,18 @@ export type IRelatedTopicsTabItem = {
   isActive?: boolean;
   noImage?: boolean;
   hasMore?: boolean;
+  visible?: boolean;
   item?: { [key: string]: any };
   onTabClick?: MouseEventHandler<HTMLDivElement>;
   style?: CSSProperties;
+  id?: string;
 };
 
 const RelatedTopicsTabItem = forwardRef<HTMLDivElement, IRelatedTopicsTabItem>(
-  ({ isActive, noImage, hasMore, item, onTabClick, style }, ref) => {
+  (
+    { isActive, noImage, hasMore, item, onTabClick, style, id, visible = true },
+    ref
+  ) => {
     const getIcon = () => {
       if (!!noImage) return;
       if (!!hasMore) {
@@ -43,6 +48,8 @@ const RelatedTopicsTabItem = forwardRef<HTMLDivElement, IRelatedTopicsTabItem>(
         isActive={isActive}
         onClick={onTabClick}
         style={style}
+        id={id}
+        visible={visible}
       >
         {getIcon()}
         <Styled.RelatedTopicsTabItemTitle isActive={isActive}>
