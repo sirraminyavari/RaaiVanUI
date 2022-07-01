@@ -6,6 +6,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import { useOnboardingSlice } from 'store/slice/onboarding';
+import { useCallback } from 'react';
 
 const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
@@ -16,15 +17,22 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { selectedTemplates } = useSelector(selectOnboarding);
   const { actions: onboardingActions } = useOnboardingSlice();
 
-  const selectTemplateHandler = (template) => {
-    // console.log({ id: template.NodeTypeID, value: template });
-    dispatch(
-      onboardingActions.setTeamTemplate({
-        id: template.NodeTypeID,
-        value: template,
-      })
-    );
-  };
+  const selectTemplateHandler = useCallback(
+    (template) => {
+      console.log({ id: template.NodeTypeID, value: template });
+      dispatch(
+        onboardingActions.setTeamTemplate({
+          id: template.NodeTypeID,
+          value: {
+            NodeTypeID: template.NodeTypeID,
+            IconURL: template.IconURL,
+            TypeName: template.TypeName,
+          },
+        })
+      );
+    },
+    [dispatch, onboardingActions]
+  );
 
   const deselectTemplateHandler = (template) => {
     dispatch(onboardingActions.teamRemoveTemplate({ id: template.NodeTypeID }));

@@ -38,11 +38,18 @@ const slice = createSlice({
     setOnboardingProductTourStatus: (state, action) => {
       state.showProductTour = action.payload;
     },
+    setOnboardingSelectedTemplatesArray: (state: IOnboardingState) => {
+      state.templates = Object.values(state.selectedTemplates);
+    },
     setOnboardingSelectedTemplates: (
       state: IOnboardingState,
       action: PayloadAction<any>
     ) => {
       state.selectedTemplates = action.payload;
+    },
+    removeOnboardingSelectedTemplates: (state: IOnboardingState) => {
+      state.selectedTemplates = {};
+      state.disableContinue = true;
     },
     setOnboardingTemplateStatusCompleted: (
       state: IOnboardingState,
@@ -162,10 +169,6 @@ const slice = createSlice({
         state.selectedTemplates;
       state.selectedTemplates = templates;
       state.disableContinue = !Object.keys(templates).length;
-    },
-    teamRemoveAllTemplates: (state: IOnboardingState) => {
-      state.selectedTemplates = {};
-      state.disableContinue = true;
     },
     goToNextOnboardingStep: (_state: IOnboardingState, _action) => {},
   },

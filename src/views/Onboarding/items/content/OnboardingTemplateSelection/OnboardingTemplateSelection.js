@@ -68,7 +68,7 @@ const OnboardingTemplateSelectionContent = () => {
   }, []);
 
   const gotoTemplateSetup = () => {
-    dispatch(onboardingActions.setOnboardingTemplates(selectedTemplateArray));
+    dispatch(onboardingActions.setOnboardingSelectedTemplatesArray());
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 
@@ -92,7 +92,6 @@ const OnboardingTemplateSelectionContent = () => {
       IconURL,
       TypeName,
     }));
-    // console.log({ defaultSelectedTemplateArray, defaultTemplatesObject });
 
     dispatch(
       onboardingActions.setOnboardingSelectedTemplates(
@@ -100,23 +99,12 @@ const OnboardingTemplateSelectionContent = () => {
       )
     );
 
-    history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
-  }, [dispatch, history, onboardingActions, templates.AllTemplates]);
+    // history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
+  }, [dispatch, onboardingActions, templates.AllTemplates]);
 
   const selectedTemplateCount = useMemo(() => {
     const selectedTemplateKeys = Object.keys(selectedTemplates);
     return selectedTemplateKeys.length;
-  }, [selectedTemplates]);
-
-  const selectedTemplateArray = useMemo(() => {
-    const selectedTemplateValues = Object.values(selectedTemplates).map(
-      ({ NodeTypeID, IconURL, TypeName }) => ({
-        NodeTypeID,
-        IconURL,
-        TypeName,
-      })
-    );
-    return selectedTemplateValues;
   }, [selectedTemplates]);
 
   //! RVDic i18n localization
