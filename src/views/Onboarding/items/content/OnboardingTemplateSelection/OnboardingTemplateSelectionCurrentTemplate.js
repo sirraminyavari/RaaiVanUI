@@ -17,6 +17,7 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { actions: onboardingActions } = useOnboardingSlice();
 
   const selectTemplateHandler = (template) => {
+    // console.log({ id: template.NodeTypeID, value: template });
     dispatch(
       onboardingActions.setTeamTemplate({
         id: template.NodeTypeID,

@@ -27,13 +27,23 @@ function* setTeamName(
   }
 
   if (wsId) {
-    const res = yield call(API.RV.createApplication, {
+    const createApplicationResponse = yield call(API.RV.createApplication, {
       WorkspaceID: wsId,
       Title: TeamName,
     });
 
+    const res = yield call(API.RV.selectApplication, {
+      ApplicationID: createApplicationResponse.Application?.ApplicationID,
+    });
+
     if (res?.Succeed) {
-      yield put(actions.setOnboardingTeamName(TeamName));
+      yield put(
+        actions.setOnboardingTeamName({
+          TeamName,
+          ApplicationID: createApplicationResponse.Application?.ApplicationID,
+          IsSystemAdmin: res?.IsSystemAdmin === true,
+        })
+      );
 
       yield put(
         themeActions.setSidebarContent({
@@ -60,15 +70,6 @@ function* setTeamSize(
     ApplicationID,
     Size: serverValue[Size],
   });
-
-  const res = yield call(API.RV.selectApplication, { ApplicationID });
-
-  yield put(
-    actions.setTeamSizeSuccessful({
-      ApplicationID,
-      IsSystemAdmin: res?.IsSystemAdmin === true,
-    })
-  );
 }
 
 function* setFieldOfExpertise(
@@ -128,7 +129,6 @@ function* goToNextOnboardingStep() {
     case 'teamSize':
       yield put(
         actions.setTeamSize({
-          ApplicationID: state.applicationID,
           Size: state.teamState.peopleCount,
         })
       );
