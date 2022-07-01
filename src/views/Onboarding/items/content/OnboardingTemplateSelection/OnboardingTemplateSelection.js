@@ -9,7 +9,7 @@ import OnboardingTemplateSelectionSelectedModal from './OnboardingTemplateSelect
 import Button from 'components/Buttons/Button';
 import API from 'apiHelper';
 import { parseTemplates } from 'components/TemplatesGallery/templateUtils.js';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ONBOARDING_TEMPLATE_SETUP_PATH } from 'views/Onboarding/items/others/constants';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,7 +72,7 @@ const OnboardingTemplateSelectionContent = () => {
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   };
 
-  const setDefaultTemplates = async () => {
+  const setDefaultTemplates = useCallback(async () => {
     const defaultTemplates = templates.AllTemplates.filter(
       (template) => template.IsDefaultTemplate
     );
@@ -85,8 +85,6 @@ const OnboardingTemplateSelectionContent = () => {
       };
     });
 
-    dispatch(onboardingActions.setTeamDefaultTemplate(defaultTemplatesObject));
-
     const defaultSelectedTemplateArray = Object.values(
       defaultTemplatesObject
     ).map(({ NodeTypeID, IconURL, TypeName }) => ({
@@ -94,13 +92,16 @@ const OnboardingTemplateSelectionContent = () => {
       IconURL,
       TypeName,
     }));
+    // console.log({ defaultSelectedTemplateArray, defaultTemplatesObject });
 
     dispatch(
-      onboardingActions.setOnboardingTemplates(defaultSelectedTemplateArray)
+      onboardingActions.setOnboardingSelectedTemplates(
+        defaultSelectedTemplateArray
+      )
     );
 
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
-  };
+  }, [dispatch, history, onboardingActions, templates.AllTemplates]);
 
   const selectedTemplateCount = useMemo(() => {
     const selectedTemplateKeys = Object.keys(selectedTemplates);

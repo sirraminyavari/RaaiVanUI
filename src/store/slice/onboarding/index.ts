@@ -38,11 +38,11 @@ const slice = createSlice({
     setOnboardingProductTourStatus: (state, action) => {
       state.showProductTour = action.payload;
     },
-    setOnboardingTemplates: (
+    setOnboardingSelectedTemplates: (
       state: IOnboardingState,
       action: PayloadAction<any>
     ) => {
-      state.templates = action.payload;
+      state.selectedTemplates = action.payload;
     },
     setOnboardingTemplateStatusCompleted: (
       state: IOnboardingState,
