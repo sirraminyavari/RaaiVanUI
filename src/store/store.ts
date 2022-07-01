@@ -41,7 +41,7 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
   migrate: createMigrate(migrations, { debug: MIGRATION_DEBUG }),
   whitelist: ['theme', 'sidebarItems', 'applications', 'raaivanVersion'],
-  blacklist: [],
+  blacklist: ['onboarding'],
 };
 
 const persistedReducer = persistReducer(persistConfig, createReducer());

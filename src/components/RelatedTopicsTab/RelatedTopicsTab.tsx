@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import * as Styled from 'components/RelatedTopicsTab/RelatedTopicsTab.style';
 import RelatedTopicsTabItem from './RelatedTopicsTabItem';
@@ -38,6 +38,9 @@ const RelatedTopicsTab = ({
     defaultChecked ? DEFAULT_TAB : undefined
   );
   const [nodeTypeIds, setNodeTypeIds] = useState(getAllNodeTypeIds());
+  const relatedItemsContainerElement = useRef<HTMLDivElement>();
+  const [moreRelatedItemOffset, setMoreRelatedItemOffset] =
+    useState<number>(-1);
 
   const location = useLocation();
 
@@ -58,6 +61,50 @@ const RelatedTopicsTab = ({
     (acc, prev) => acc + prev?.Count,
     0
   );
+
+  const calculateOffsetItems = () => {
+    setMoreRelatedItemOffset(-1);
+    const { width } =
+      relatedItemsContainerElement.current!.getBoundingClientRect();
+    const RelatedTopicsMoreButtonWidth =
+      relatedItemsContainerElement
+        .current!.querySelector(`:scope>div#RelatedTopicsMoreButton`)
+        ?.getBoundingClientRect()?.width || 0;
+    const itemElements = relatedItemsContainerElement.current!.querySelectorAll(
+      `:scope>div:not(#RelatedTopicsMoreButton)`
+    );
+
+    let availableWidthInContainer = width - RelatedTopicsMoreButtonWidth;
+    console.log({
+      sortedNodes,
+      availableWidthInContainer,
+      RelatedTopicsMoreButtonWidth,
+    });
+    for (let idx = 0; idx < itemElements.length; idx++) {
+      const itemElementWidth = itemElements[idx].getBoundingClientRect().width;
+      console.log(itemElements[idx], {
+        availableWidthInContainer,
+        itemElementWidth,
+      });
+      availableWidthInContainer -= itemElementWidth;
+      if (availableWidthInContainer < 0 && idx === 0) {
+        setMoreRelatedItemOffset(0);
+        break;
+      }
+      if (availableWidthInContainer < 0) {
+        setMoreRelatedItemOffset(idx - 1);
+        break;
+      }
+      if (idx + 1 === sortedNodes.length) return setMoreRelatedItemOffset(idx);
+    }
+  };
+  useLayoutEffect(() => {
+    calculateOffsetItems();
+    window.addEventListener('resize', calculateOffsetItems);
+    return () => {
+      window.removeEventListener('resize', calculateOffsetItems);
+    };
+  }, []);
 
   const sortedNodes = relatedNodes?.NodeTypes?.sort(
     (a, b) => b.Count - a.Count
@@ -87,7 +134,9 @@ const RelatedTopicsTab = ({
 
   return (
     <Styled.RelatedTopicsTabContainer>
-      <Styled.RelatedTopicsTabInnerContainer>
+      <Styled.RelatedTopicsTabInnerContainer
+        ref={relatedItemsContainerElement as RefObject<HTMLDivElement>}
+      >
         {!noAllTemplateButton && (
           <RelatedTopicsTabItem
             item={{ NodeType: 'همه قالب ها', Count: allNodesCount }}
@@ -97,24 +146,31 @@ const RelatedTopicsTab = ({
           />
         )}
         {sortedNodes
-          ?.filter((itm, ind) => ind <= 1)
-          .map((item) => (
+          // ?.filter((itm, ind) => ind <= 1)
+          .map((item, idx) => (
             <RelatedTopicsTabItem
               item={item}
               key={item?.NodeTypeID}
               isActive={activeTab === item?.NodeTypeID}
               onTabClick={() => handleItemClick(item)}
+              visible={
+                moreRelatedItemOffset === -1 || idx <= moreRelatedItemOffset
+              }
             />
           ))}
-        {!!moreNodesCount && (
-          <RelatedTopicsTabItem
-            item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
-            isActive={isMoreShown}
-            noImage
-            hasMore
-            onTabClick={handleMoreTopics}
-          />
-        )}
+
+        <RelatedTopicsTabItem
+          item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
+          isActive={isMoreShown}
+          noImage
+          hasMore
+          onTabClick={handleMoreTopics}
+          id="RelatedTopicsMoreButton"
+          visible={
+            moreRelatedItemOffset === -1 ||
+            sortedNodes.length > moreRelatedItemOffset + 1
+          }
+        />
       </Styled.RelatedTopicsTabInnerContainer>
       <Styled.RelatedTopicsTabMoreTopicsContainer
         isOpen={isMoreShown}
@@ -122,13 +178,14 @@ const RelatedTopicsTab = ({
       >
         <Styled.RelatedTopicsTabMoreTopicsWrapper>
           {sortedNodes
-            ?.filter((itm, ind) => ind > 1)
-            .map((item) => (
+            // ?.filter((itm, ind) => ind > 1)
+            .map((item, idx) => (
               <RelatedTopicsTabItem
                 item={item}
                 key={item?.NodeTypeID}
                 isActive={activeTab === item?.NodeTypeID}
                 onTabClick={() => handleItemClick(item)}
+                visible={idx > moreRelatedItemOffset}
               />
             ))}
         </Styled.RelatedTopicsTabMoreTopicsWrapper>

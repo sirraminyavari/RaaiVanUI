@@ -29,16 +29,27 @@ const slice = createSlice({
       state: IOnboardingState,
       action: PayloadAction<any>
     ) => {
-      state.teamName = action.payload;
+      state.teamName = action.payload.TeamName;
+      state.applicationID = action.payload.ApplicationID;
+
+      (window.RVGlobal || {}).ApplicationID = action.payload.ApplicationID;
+      (window.RVGlobal || {}).IsSystemAdmin = action.payload.IsSystemAdmin;
     },
     setOnboardingProductTourStatus: (state, action) => {
       state.showProductTour = action.payload;
     },
-    setOnboardingTemplates: (
+    setOnboardingSelectedTemplatesArray: (state: IOnboardingState) => {
+      state.templates = Object.values(state.selectedTemplates);
+    },
+    setOnboardingSelectedTemplates: (
       state: IOnboardingState,
       action: PayloadAction<any>
     ) => {
-      state.templates = action.payload;
+      state.selectedTemplates = action.payload;
+    },
+    removeOnboardingSelectedTemplates: (state: IOnboardingState) => {
+      state.selectedTemplates = {};
+      state.disableContinue = true;
     },
     setOnboardingTemplateStatusCompleted: (
       state: IOnboardingState,
@@ -56,7 +67,7 @@ const slice = createSlice({
     ) => {},
     setTeamSize: (
       _state: IOnboardingState,
-      _action: PayloadAction<{ ApplicationID: string; Size: string }>
+      _action: PayloadAction<{ Size: string }>
     ) => {},
     setTeamSizeSuccessful: (
       state: IOnboardingState,
@@ -139,7 +150,6 @@ const slice = createSlice({
         ...state.selectedTemplates,
         [action.payload.id]: action.payload.value,
       };
-
       state.selectedTemplates = templates;
       state.disableContinue = !Object.keys(templates).length;
     },
@@ -159,10 +169,6 @@ const slice = createSlice({
         state.selectedTemplates;
       state.selectedTemplates = templates;
       state.disableContinue = !Object.keys(templates).length;
-    },
-    teamRemoveAllTemplates: (state: IOnboardingState) => {
-      state.selectedTemplates = {};
-      state.disableContinue = true;
     },
     goToNextOnboardingStep: (_state: IOnboardingState, _action) => {},
   },
