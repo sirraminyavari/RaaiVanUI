@@ -52,7 +52,7 @@ export const TourActionBar = style.div`
 `;
 export const TourBarBlock = style.div`
     span {
-        margin-left: 6px;
+        margin-inline-end: 6px;
         font-size: 14px;
     }
 `;
