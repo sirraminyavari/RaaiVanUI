@@ -3,7 +3,6 @@
  */
 import type { ReactNode } from 'react';
 import { cloneElement } from 'react';
-import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
 export type ITooltip = {
@@ -83,6 +82,7 @@ const Tooltip = ({
           'data-tip': '',
           'data-for': tipId,
         })}
+      {/*@ts-expect-error */}
       <ReactTooltip
         id={tipId}
         disable={effect === 'float' ? false : !!disable} //! disable 'true' works only with 'solid' effect.
@@ -110,34 +110,6 @@ const Tooltip = ({
   );
 };
 
-Tooltip.propTypes = {
-  tipId: PropTypes.string.isRequired,
-  place: PropTypes.string,
-  type: PropTypes.string,
-  effect: PropTypes.string,
-  event: PropTypes.string,
-  multiline: PropTypes.bool,
-  clickable: PropTypes.bool,
-  delayHide: PropTypes.number,
-  delayShow: PropTypes.number,
-  disable: PropTypes.bool,
-  className: PropTypes.string,
-  border: PropTypes.bool,
-  backgroundColor: PropTypes.string,
-  borderColor: PropTypes.string,
-  arrowColor: PropTypes.string,
-  renderContent: PropTypes.func,
-  ignoreTip: PropTypes.bool,
-};
-
-Tooltip.defaultProps = {
-  place: 'bottom',
-  type: 'dark',
-  effect: 'float',
-  event: '', //! Empty means 'hover' event.
-  ignoreTip: false,
-};
-
-Tooltip.displayName = 'CustomeTooltip';
+Tooltip.displayName = 'CustomTooltip';
 
 export default Tooltip;

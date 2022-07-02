@@ -4,10 +4,11 @@ import * as Styled from '../TemplateMembersSettingStyles';
 import api from 'apiHelper';
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { RVDic } from 'utils/TestUtils/fa';
 import MembersPreview from 'components/MembersPreview/MembersPreview';
+import useWindow from 'hooks/useWindowContext';
 
 const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
+  const { RVDic } = useWindow();
   const { ServiceAdmins, FreeUsers, NodeTypeID } = useTemplateContext();
 
   const [serviceAdmins, setServiceAdmins] = useState(

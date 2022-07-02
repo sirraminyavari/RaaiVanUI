@@ -8,7 +8,9 @@ export const OnboardingTemplateWrapper = styled(OnboardingCenterizeContent)`
 `;
 OnboardingTemplateWrapper.displayName = 'OnboardingTemplateWrapper';
 
-export const OnboardingTemplateTitle = styled(Heading).attrs({ type: 'H1' })`
+export const OnboardingTemplateTitle = styled(Heading).attrs({ type: 'H1' })<{
+  fontSize?: string;
+}>`
   color: ${CV_GRAY_DARK};
   max-width: 60rem;
   text-align: center;
@@ -21,9 +23,13 @@ export const OnboardingTemplateTitle = styled(Heading).attrs({ type: 'H1' })`
 `;
 OnboardingTemplateTitle.displayName = 'OnboardingTemplateTitle';
 
-export const RVDicOnboardingTemplateDescription = styled(Heading).attrs({
+export const RVDicOnboardingTemplateDescription = styled(Heading).attrs<{
+  type?: string;
+}>({
   type: 'H6',
-})`
+})<{
+  fontSize?: string;
+}>`
   color: ${CV_GRAY};
   max-width: 60rem;
   text-align: center;
