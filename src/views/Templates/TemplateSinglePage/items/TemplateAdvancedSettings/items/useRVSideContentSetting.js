@@ -14,7 +14,7 @@ import {
 } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 
 /**
- * @description
+ * @component
  */
 const useRVSideContentSetting = () => {
   const { RVDic } = window;
