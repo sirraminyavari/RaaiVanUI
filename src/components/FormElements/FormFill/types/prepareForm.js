@@ -1,5 +1,5 @@
 import { encodeBase64 } from 'helpers/helpers';
-import { encode } from 'js-base64';
+import moment from 'jalali-moment';
 
 const prepareForm = (prevForm, elementId, event, type) => {
   const { Elements } = prevForm || {};
@@ -178,6 +178,27 @@ const prepareForm = (prevForm, elementId, event, type) => {
         ),
       };
       return node;
+    case 'Date':
+      const myDate = {
+        ...prevForm,
+        Elements: Elements?.map((x) =>
+          x?.ElementID === elementId
+            ? {
+                ...requireItems(x),
+                DateValue: moment
+                  .from(event, window.RV_RTL ? 'fa' : 'en', 'YYYY/MM/DD')
+                  .locale('en')
+                  .format('YYYY/MM/DD'),
+                TextValue: moment
+                  .from(event, window.RV_RTL ? 'fa' : 'en', 'YYYY/MM/DD')
+                  .locale(window.RV_RTL ? 'fa' : 'en')
+                  .format(window.RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'),
+              }
+            : x
+        ),
+      };
+      console.log({ myDate });
+      return myDate;
     default:
       return prevForm;
   }

@@ -38,7 +38,7 @@ const slice = createSlice({
     setSelectedTeam: (state: IThemeState, action: PayloadAction<any>) => {
       state.selectedTeam = action.payload;
     },
-    handleSettings: (state: IThemeState, action: PayloadAction<any>) => {
+    handleSettings: (state: IThemeState, _action: PayloadAction<any>) => {
       if (!state.isSidebarOpen) {
         state.isSidebarOpen = true;
       } else {
@@ -51,8 +51,8 @@ const slice = createSlice({
     setCurrentWidth: (state: IThemeState, action: PayloadAction<any>) => {
       state.sidebarCurrentWidth = getWidth(action.payload);
     },
-    getThemes: (state: IThemeState, action: PayloadAction<any>) => {},
-    getCurrentTheme: (state: IThemeState, action: PayloadAction<any>) => {},
+    getThemes: (_state: IThemeState, _action: PayloadAction<any>) => {},
+    getCurrentTheme: (_state: IThemeState, _action: PayloadAction<any>) => {},
     setTheme: (state: IThemeState, action: PayloadAction<any>) => {
       state.themes = action.payload;
     },

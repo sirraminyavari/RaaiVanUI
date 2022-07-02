@@ -11,7 +11,7 @@ import { useSidebarSlice } from 'store/slice/sidebar';
 
 const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
   const dispatch = useDispatch();
-  const { RVGlobal } = useWindowContext();
+  const { RVGlobal, RVDic } = useWindowContext();
   const [favoriteNodes, setFavoriteNodes] = useState(0);
   const [intellectualCounts, setIntellectualCounts] = useState(0);
   const userId = user?.UserID;
@@ -58,7 +58,7 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
   return (
     <Styled.HeaderStatusContainer>
       <Styled.StatusWrapper>
-        <span>تعداد آیتم‌ها</span>
+        <span>{RVDic.NumberOfN.replace('[n]', RVDic.Nodes)}</span>
         <Styled.StatusCount>{intellectualCounts}</Styled.StatusCount>
       </Styled.StatusWrapper>
       <Styled.StatusWrapper
@@ -67,11 +67,11 @@ const HeaderStatus = ({ user, relatedNodesCount = 0 }) => {
           borderRight: `1px solid ${CV_DISTANT}`,
         }}
       >
-        <span>تعداد آیتم‌های مرتبط</span>
+        <span>{RVDic.NumberOfN.replace('[n]', RVDic.RelatedNodes)}</span>
         <Styled.StatusCount>{relatedNodesCount}</Styled.StatusCount>
       </Styled.StatusWrapper>
       <Styled.StatusWrapper>
-        <span>تعداد موضوعات نشان شده</span>
+        <span>{RVDic.NumberOfN.replace('[n]', RVDic.BookmarkedSubjects)}</span>
         <Styled.StatusCount>{favoriteNodes}</Styled.StatusCount>
       </Styled.StatusWrapper>
     </Styled.HeaderStatusContainer>

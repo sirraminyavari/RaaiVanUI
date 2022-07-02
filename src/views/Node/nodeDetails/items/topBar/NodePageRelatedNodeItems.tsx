@@ -2,18 +2,26 @@
  * here we make the top bar for NodeDetails
  */
 import APIHandler from 'apiHelper/APIHandler';
+import { getClassesPageUrl } from 'apiHelper/getPageUrl';
+import RelatedTopicsTab from 'components/RelatedTopicsTab/RelatedTopicsTab';
 import useWindow from 'hooks/useWindowContext';
-import React, { useEffect, useState } from 'react';
-import LastTopicsTabs from 'views/Profile/items/main/items/LastTopicsTabs';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import * as Styles from './TopBar.style';
 
 export type INodePageRelatedNodeItems = {
   onApplyNodeType: () => void;
+  NodeID: string;
+  ClassID: string;
 };
 
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
 
-const NodePageRelatedNodeItems = ({ onApplyNodeType = () => {} }) => {
+const NodePageRelatedNodeItems = ({
+  onApplyNodeType = () => {},
+  ClassID,
+  NodeID,
+}) => {
   const [relatedNodes, setRelatedNodes] = useState<
     | {
         AppID: string;
@@ -24,11 +32,12 @@ const NodePageRelatedNodeItems = ({ onApplyNodeType = () => {} }) => {
     | undefined
   >();
   const { RVDic, RVGlobal } = useWindow();
+  const history = useHistory();
 
   const getRelatedNodes = () => {
     getNodeInfoAPI.fetch(
       {
-        NodeID: RVGlobal?.CurrentUser?.UserID,
+        NodeID: NodeID || RVGlobal?.CurrentUser?.UserID,
         In: true,
         Out: true,
         InTags: true,
@@ -43,6 +52,11 @@ const NodePageRelatedNodeItems = ({ onApplyNodeType = () => {} }) => {
     );
   };
 
+  const onRelatedItemClick = ({ NodeTypeID }) => {
+    const classURL = getClassesPageUrl(NodeTypeID);
+    history.push(classURL);
+  };
+
   useEffect(() => {
     getRelatedNodes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,13 +69,14 @@ const NodePageRelatedNodeItems = ({ onApplyNodeType = () => {} }) => {
           <Styles.NodeTopBarRelatedTopicsTitle>
             {RVDic.RelatedNode}
           </Styles.NodeTopBarRelatedTopicsTitle>
-          <LastTopicsTabs
+          <RelatedTopicsTab
             noAllTemplateButton
             floatBox
             provideNodes={onApplyNodeType}
             relatedNodes={relatedNodes}
-            showAll={undefined}
-            relatedTopicsLink={undefined}
+            showAll={true}
+            itemOnClick={onRelatedItemClick}
+            relatedTopicsLink={getClassesPageUrl(ClassID, NodeID)}
           />
         </Styles.NodeTopBarRelatedTopicsContainer>
       )}

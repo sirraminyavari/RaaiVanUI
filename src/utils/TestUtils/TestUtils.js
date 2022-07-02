@@ -8,8 +8,9 @@ const AllTheProviders = ({ children }) => {
   // const gb = require('../../../public/load/scripts/GlobalUtilities');
   const prefix = '../../../public/load/scripts/';
 
-  const jq = require(prefix + 'jQuery/jquery');
-  const gu = require(prefix + 'GlobalUtilities');
+  require(prefix + 'jQuery/jquery');
+  require(prefix + 'GlobalUtilities');
+
   // require('http://185.239.107.180/api/rv/language_dictionary');
   return (
     <StoreProvider>

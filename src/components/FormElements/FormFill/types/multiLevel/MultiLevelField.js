@@ -1,7 +1,7 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
 import FilterIconIo from 'components/Icons/FilterIconIo';
 import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
@@ -35,10 +35,12 @@ const MultiLevelField = ({
     })
   );
 
-  useEffect(async () => {
-    const firstLevel = await getChildNodes(NodeType?.ID);
-    const { Nodes } = firstLevel || {};
-    setLevels(Levels.map((x, index) => (index === 0 ? { nodes: Nodes } : x)));
+  useEffect(() => {
+    (async () => {
+      const firstLevel = await getChildNodes(NodeType?.ID);
+      const { Nodes } = firstLevel || {};
+      setLevels(Levels.map((x, index) => (index === 0 ? { nodes: Nodes } : x)));
+    })();
   }, []);
   useEffect(() => {}, [levels]);
 
@@ -78,7 +80,7 @@ const MultiLevelField = ({
         {levels?.map((x, index) => {
           const { ID, Name } = value[index] || {};
           return (
-            <>
+            <Fragment key={ID}>
               {!!normalizedOptions(x) || value[index] ? (
                 <SelectContainer>
                   <Select
@@ -107,7 +109,7 @@ const MultiLevelField = ({
                   />
                 </SelectContainer>
               ) : null}
-            </>
+            </Fragment>
           );
         })}
       </SelectorContainer>

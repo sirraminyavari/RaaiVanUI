@@ -63,6 +63,7 @@ import DatePickerFooter from './DatePickerFooter';
  * @property {('small' | 'medium' | 'large')} size - The date picker size.
  * @property {string} format - The date picker format.
  * @property {boolean} fromToday - A flag that determine if date picker should begins from today or not.
+ * @property {boolean} closeOnDateSelect - A flag that determine if date picker should close after date is selected.
  * @property {Object} inputStyle - Style for input.
  * @property {String} inputClass - Class for input.
  * @property {Object} buttonStyle - Style for button.
@@ -99,6 +100,7 @@ const CustomDatePicker = (props) => {
     headerTitle,
     onChangeVisibility,
     justCalendar,
+    closeOnDateSelect,
     ...rest
   } = props;
 
@@ -107,7 +109,13 @@ const CustomDatePicker = (props) => {
   const [range, setRange] = useState(initRange);
   const [activeFooter, setActiveFooter] = useState('');
   const inputRef = useRef();
-  const { RVDic } = useWindow();
+  const { RVDic, RV_RTL } = useWindow();
+
+  const setDatePickerLocale = (type) => {
+    if (type) return getLocale(type);
+    if (RV_RTL) return getLocale(datePickerTypes.jalali);
+    return getLocale(datePickerTypes.gregorian);
+  };
 
   //! Change server value to datepicker friendly object.
   const dateStringToObject = (item) => {
@@ -234,6 +242,7 @@ const CustomDatePicker = (props) => {
         if (mode === 'input') {
           inputRef.current.value = formatDate(showDate, true);
         }
+
         // console.log(showDate);
         break;
 
@@ -297,6 +306,8 @@ const CustomDatePicker = (props) => {
     if (mode === 'input') {
       inputRef.current.value = formatDate(selectedDay);
     }
+
+    if (closeOnDateSelect) toggleCalendar();
   };
 
   //! Calls whenever user fills the input manually.
@@ -345,6 +356,7 @@ const CustomDatePicker = (props) => {
       } else {
         setSelectedDate('');
         onDateSelect(null);
+        if (closeOnDateSelect) toggleCalendar();
       }
     }
 
@@ -421,7 +433,7 @@ const CustomDatePicker = (props) => {
                 shouldHighlightWeekends
                 calendarClassName={`${size}-calendar`}
                 calendarTodayClassName="today-date"
-                locale={getLocale(type)}
+                locale={setDatePickerLocale(type)}
                 calendarRangeStartClassName="date-range-start"
                 calendarRangeEndClassName="date-range-end"
                 calendarRangeBetweenClassName="date-range-between"
@@ -485,7 +497,7 @@ const CustomDatePicker = (props) => {
             calendarRangeBetweenClassName="date-range-between"
             calendarSelectedDayClassName="selected-date"
             wrapperClassName="date-picker"
-            locale={getLocale(type)}
+            locale={setDatePickerLocale(type)}
             {...rest}
           />
         </Styled.CalendarContainer>

@@ -232,7 +232,9 @@ const UserInfos = (props) => {
             onEdit={handleEditEmail}
             type="email"
           />
-          <Styled.SectionTitle>درباره کاربر</Styled.SectionTitle>
+          <Styled.SectionTitle>
+            {RVDic.AboutN.replace('[n]', RVDic.User)}
+          </Styled.SectionTitle>
           {isSaas && (
             <ProfileInfoItem
               isAuthUser={isAuthUser}

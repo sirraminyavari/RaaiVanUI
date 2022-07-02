@@ -19,7 +19,7 @@ import {
 import FieldsLoadingSkelton from './FieldsLoadingSkelton';
 import MainNode from './MainNode';
 import TopBar from './topBar/TopBar';
-import BlockEditor from 'components/BlockEditor/Block';
+import BlockEditor from 'views/Node/nodeDetails/items/WikiBlock';
 
 const SideColumn = lazy(() =>
   import(

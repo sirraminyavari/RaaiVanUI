@@ -13,7 +13,8 @@ const setThemeAPI = API_Provider(USERS_API, SET_THEME);
 
 const ThemePreview = ({ preview }) => {
   const dispatch = useDispatch();
-  const { RV_Float, RVAPI, RVGlobal, DynamicFileUtilities } = useWindow();
+  const { RV_Float, RVAPI, RVGlobal, DynamicFileUtilities, RVDic } =
+    useWindow();
 
   const {
     actions: { setCurrentTheme },
@@ -69,7 +70,7 @@ const ThemePreview = ({ preview }) => {
           <div>
             <CheckIcon size={40} />
           </div>
-          <div>پوسته فعلی</div>
+          <div>{RVDic.CurrentTheme}</div>
         </Styled.PreviewSelectionWrapper>
       )}
     </Styled.ThemePreviewContainer>

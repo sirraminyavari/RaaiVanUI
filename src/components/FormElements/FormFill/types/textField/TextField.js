@@ -12,11 +12,11 @@ import UrlValidator from 'utils/Validation/UrlValidator';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import CustomValidator from 'utils/Validation/CustomValidator';
 import FormCell from '../../FormCell';
-import TextIcon from 'components/Icons/TextIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
 import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
+import TextInputIcon from 'components/Icons/InputIcon/TextInputIcon';
 
 const TextField = ({
   value,
@@ -31,7 +31,7 @@ const TextField = ({
   number = false,
   save,
 }) => {
-  const { GlobalUtilities, RV_RTL } = useWindow();
+  const { GlobalUtilities } = useWindow();
   const [error, setError] = useState(null);
 
   const parseDecodeInfo = GlobalUtilities.to_json(decodeInfo);
@@ -78,7 +78,7 @@ const TextField = ({
         number ? (
           <NumberIcon color={CV_GRAY} size={'1.25rem'} />
         ) : (
-          <TextIcon rightSided={RV_RTL} color={CV_GRAY} size={'1.25rem'} />
+          <TextInputIcon color={CV_GRAY} size={'1.1rem'} />
         )
       }
       title={decodeTitle}

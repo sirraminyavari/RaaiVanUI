@@ -6,24 +6,22 @@ import APIHandler from 'apiHelper/APIHandler';
 import FormCell from 'components/FormElements/FormFill/FormCell';
 import FormFill from 'components/FormElements/FormFill/FormFill';
 import Heading from 'components/Heading/Heading';
-import TextIcon from 'components/Icons/TextIcon';
 import Input from 'components/Inputs/Input';
 import { CV_DISTANT, CV_GRAY, CV_WHITE } from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { RVDic } from 'utils/TestUtils/fa';
 import CreatableSelect from 'react-select/creatable';
 import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI';
-import useWindow from 'hooks/useWindowContext';
 import NodePageRelatedNodeItems from './topBar/NodePageRelatedNodeItems';
+import SummeryInputIcon from 'components/Icons/InputIcon/SummeryInputIcon.tsx';
+import useWindowContext from 'hooks/useWindowContext';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
 const ModifyNodeTags = new APIHandler('CNAPI', 'ModifyNodeTags');
-const MainNode = ({ nodeDetails, nodeId, fields }) => {
-  const { RV_RTL } = useWindow();
 
+const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const [titleEditMode, setTitleEditMode] = useState(false);
 
   //TODO identify `descEditMode` usage ...
@@ -34,6 +32,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const [desc, setDesc] = useState(
     decodeBase64(nodeDetails?.Description?.Value)
   );
+  const { RVDic } = useWindowContext();
 
   useEffect(() => {
     if (descEditMode) setTitle(decodeBase64(nodeDetails?.Name?.Value));
@@ -48,11 +47,12 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
           })
         : []
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodeDetails?.Name?.Value]);
 
-  const onEditTitle = () => {
-    setTitleEditMode(true);
-  };
+  // const onEditTitle = () => {
+  //   setTitleEditMode(true);
+  // };
   const onSaveTitle = async () => {
     setTitleEditMode(false);
     if (whichElementChanged === 'title') {
@@ -75,9 +75,9 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
     setWhichElementChanged('title');
     setTitle(event.target.value);
   };
-  const onEditDesc = () => {
-    setDescEditMode(true);
-  };
+  // const onEditDesc = () => {
+  //   setDescEditMode(true);
+  // };
 
   const onSaveDesc = () => {
     if (whichElementChanged === 'desc') {
@@ -117,7 +117,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
     <>
       <Main>
         <TitleContainer style={{ marginBottom: '3rem' }}>
-          {nodeDetails?.Name?.Editable ? (
+          {nodeDetails?.Name?.Editable && nodeDetails?.Name?.Value ? (
             <Input
               onChange={onTitleChange}
               value={title}
@@ -142,7 +142,10 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
         </TitleContainer>
 
         <>
-          <NodePageRelatedNodeItems />
+          <NodePageRelatedNodeItems
+            ClassID={nodeDetails?.NodeType?.Value[0]?.ID}
+            NodeID={nodeId}
+          />
         </>
         <TitleContainer>
           <>
@@ -150,7 +153,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               editModeVisible={false}
               title={RVDic.Summary}
               style={{ display: 'flex', flexGrow: 1 }}
-              iconComponent={<TextIcon rightSided={RV_RTL} color={CV_GRAY} />}
+              iconComponent={<SummeryInputIcon color={CV_GRAY} />}
             >
               {nodeDetails?.Name?.Editable ? (
                 <Input
@@ -200,7 +203,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               editModeVisible={false}
               title={RVDic.Keywords}
               style={{ display: 'flex', flexGrow: 1 }}
-              iconComponent={<TextIcon rightSided={RV_RTL} color={CV_GRAY} />}
+              // iconComponent={}
             >
               <CellContainer>
                 <CreatableSelect

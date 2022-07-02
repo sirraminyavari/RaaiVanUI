@@ -108,7 +108,7 @@ const DateCell = (props) => {
         renderContent={() => (
           <CustomDatePicker
             mode="button"
-            type="jalali"
+            // type="jalali"
             range={false}
             size="small"
             justCalendar

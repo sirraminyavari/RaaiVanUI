@@ -1,3 +1,4 @@
+import { getProfilePageUrl } from 'apiHelper/getPageUrl';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import UserIconIo from 'components/Icons/UserIconIo';
@@ -11,6 +12,7 @@ import {
 } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 
@@ -75,27 +77,29 @@ const UserSelect = ({
             <Select>
               {value.map((x) => {
                 return (
-                  <SelectedUser>
-                    <Avatar src={x?.IconURL} />
-                    <UserName>{decodeBase64(x.Name)}</UserName>
-                    {editMode && (
-                      <CustomCloseIcon
-                        onClick={() => {
-                          onAnyFieldChanged(
-                            elementId,
-                            {
-                              id: x.ID,
-                              name: x.Name,
-                              IconURL: x?.IconURL,
-                              multiSelect: multiSelect,
-                            },
-                            type
-                          );
-                        }}
-                        size={'1rem'}
-                      />
-                    )}
-                  </SelectedUser>
+                  <Link to={getProfilePageUrl(x.ID)} target="_blank">
+                    <SelectedUser>
+                      <Avatar src={x?.IconURL} />
+                      <UserName>{decodeBase64(x.Name)}</UserName>
+                      {editMode && (
+                        <CustomCloseIcon
+                          onClick={() => {
+                            onAnyFieldChanged(
+                              elementId,
+                              {
+                                id: x.ID,
+                                name: x.Name,
+                                IconURL: x?.IconURL,
+                                multiSelect: multiSelect,
+                              },
+                              type
+                            );
+                          }}
+                          size={'1rem'}
+                        />
+                      )}
+                    </SelectedUser>
+                  </Link>
                 );
               })}
             </Select>

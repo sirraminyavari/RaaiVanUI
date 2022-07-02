@@ -2,15 +2,14 @@ import Button from 'components/Buttons/Button';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT, CV_GRAY, CV_RED } from 'constant/CssVariables';
-import { FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
+import { FLEX_RCS } from 'constant/StyledCommonCss';
 
-export const NodeTopBarShadowButton = styled(Button)`
+export const NodeTopBarShadowButton = styled(Button)<{ $isEnabled?: boolean }>`
   box-shadow: ${({ $isEnabled }) => $isEnabled && `1px 3px 20px ${CV_DISTANT}`};
   border-radius: 100rem;
   background-color: white;
   border-width: 0.06rem;
   padding: 0.5rem;
-  /* border-color: ${({ $isEnabled }) => ($isEnabled ? '#BAC9DC' : 'white')}; */
   border-style: solid;
   transition: border-color 0.5s, box-shadow 0.5s;
   display: flex;
@@ -18,32 +17,22 @@ export const NodeTopBarShadowButton = styled(Button)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* color: ${({ $isEnabled }) => ($isEnabled ? '#2B7BE4' : '#BAC9DC')}; */
-  /* :hover {
-    border-width: 0.06rem;
-    border-color: #bac9dc;
-    border-style: solid;
-  } */
   /* ${({ $isEnabled }) => $isEnabled && 'rv-border-warm-red'} */
 `;
 
 NodeTopBarShadowButton.displayName = 'NodeTopBarShadowButton';
-export const NodeTopBarBottomRow = styled.div`
+export const NodeTopBarBottomRow = styled.div<{ mobileView?: boolean }>`
   display: flex;
   flex-direction: ${({ mobileView }) => (mobileView ? 'column' : 'row')};
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 5rem;
 `;
 NodeTopBarBottomRow.displayName = 'NodeTopBarBottomRow';
 
 export const NodeTopBarRelatedTopicsContainer = styled.div`
-  ${FLEX_RCB}
-  // gap: 1rem;
-
+  ${FLEX_RCS}
   max-width: 100%;
-  overflow-x: auto;
 `;
 NodeTopBarRelatedTopicsContainer.displayName =
   'NodeTopBarRelatedTopicsContainer';
@@ -51,13 +40,14 @@ NodeTopBarRelatedTopicsContainer.displayName =
 export const NodeTopBarRelatedTopicsTitle = styled.div`
   margin-inline-end: 3vw;
   color: ${CV_GRAY};
-  width: clamp(5rem, 15vw, 17rem);
   height: 2rem;
   font-size: 1rem;
+  width: clamp(5rem, 12vw, 17rem);
+  flex-shrink: 0;
 `;
 NodeTopBarRelatedTopicsTitle.displayName = 'NodeTopBarRelatedTopicsTitle';
 
-export const NodeTopBarTopRow = styled.div`
+export const NodeTopBarTopRow = styled.div<{ isTabletOrMobile?: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;
@@ -86,13 +76,6 @@ export const NodeTopBarContainer = styled.div`
   position: relative;
 `;
 NodeTopBarContainer.displayName = 'NodeTopBarContainer';
-
-export const NodeTopBarBreadcrumbContainer = styled.div`
-  position: absolute;
-  ${({ dir }) => dir}: 2rem;
-  top: 1rem;
-`;
-NodeTopBarBreadcrumbContainer.displayName = 'NodeTopBarBreadcrumbContainer';
 
 export const NodeTopBarBreadcrumbItem = styled.span.attrs({
   className: C_DISTANT,

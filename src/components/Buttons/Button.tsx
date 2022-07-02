@@ -1,4 +1,5 @@
-import {
+import classNames from 'classnames';
+import React, {
   forwardRef,
   HTMLAttributes,
   DetailedHTMLProps,
@@ -7,7 +8,7 @@ import {
 } from 'react';
 import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
 
-export type IButtonType = Omit<
+export type IButton = Omit<
   DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
   'ref'
 > & {
@@ -15,7 +16,6 @@ export type IButtonType = Omit<
   type?:
     | 'disabled'
     | 'primary'
-    | 'secondary'
     | 'primary-o'
     | 'secondary-o'
     | 'negative'
@@ -40,7 +40,7 @@ export type IButtonType = Omit<
  * @property { bool } [props.isCustomButton] if true, ignores default styles of button types
  * @property { function } [props.onClick] @fires onClick when the button is clicked and is not disabled or in loading state
  */
-const Button = forwardRef<HTMLDivElement, IButtonType>(
+const Button = forwardRef<HTMLDivElement, IButton>(
   (
     {
       type = 'primary',
@@ -58,12 +58,11 @@ const Button = forwardRef<HTMLDivElement, IButtonType>(
     return (
       <div
         ref={ref}
-        className={
-          ($circleEdges ? 'rv-circle' : 'rv-border-radius-half') +
-          (isCustomButton ? '' : resolveClass({ type, disable })) +
-          ' ' +
-          (props.classes || className || ' ')
-        }
+        className={classNames(
+          !isCustomButton && resolveClass({ type, disable }),
+          props.classes || className,
+          $circleEdges ? 'rv-circle' : 'rv-border-radius-half'
+        )}
         style={props.style}
         onClick={disable || loading ? undefined : onClick}
         {...props}
@@ -85,14 +84,12 @@ const Button = forwardRef<HTMLDivElement, IButtonType>(
 export default Button;
 
 const resolveClass = ({
-  type,
+  type = 'primary',
   disable,
 }: {
-  type: Exclude<IButtonType['type'], undefined>;
+  type: Exclude<IButton['type'], undefined>;
   disable?: boolean;
 }) => {
-  if (disable) type = 'disabled';
-
   const dic = {
     disabled: 'rv-action-button-disabled',
     primary: 'rv-action-button',
@@ -103,7 +100,6 @@ const resolveClass = ({
     'negative-secondary-o': 'rv-action-button-negative-so',
   };
 
-  return (
-    ' rv-action-button-base ' + (dic[type] || resolveClass({ type: 'primary' }))
-  );
+  if (disable) return classNames('rv-action-button-base', dic.disabled);
+  return classNames('rv-action-button-base', dic[type]);
 };

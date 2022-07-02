@@ -1,20 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
 import { EditorState, convertFromRaw } from 'draft-js';
-// import {stateToHTML} from 'draft-js-export-html';
 import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 
-import { getWikiBlocks, saveBlocks, saveHTMLContent } from './API';
-import { textColors, highlightColors } from './data';
-
-import BE from './BlockEditor';
 import {
-  IHandleSaveBlocks,
-  IHandleSaveRawHtmlContent,
-} from './BlockEditor.type';
+  getWikiBlocks,
+  saveBlocks,
+  suggestTags,
+} from 'components/BlockEditor/API';
+import { textColors, highlightColors } from 'components/BlockEditor/data';
 
-const Block = ({ nodeId }) => {
+import BlockEditor from 'components/BlockEditor/BlockEditor';
+import { IHandleSaveBlocks } from 'components/BlockEditor/BlockEditor.type';
+import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
+
+const WikiBlock = ({ nodeId }) => {
   const [editorState, setEditorState] = useState(null);
 
+  //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
     (legacyContent: string) => {
       setEditorState(
@@ -22,7 +24,21 @@ const Block = ({ nodeId }) => {
           convertFromRaw(
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
-              getMentionLink: ({ id }) => `https://google.com/search?q=${id}`,
+              getMentionLink: async (search) => {
+                console.log(search);
+                const rawMentions = await suggestTags({ text: search });
+                const mentions = rawMentions.map((suggestTag) => ({
+                  ...suggestTag,
+                  id: suggestTag.ItemID,
+                  name: suggestTag.Name,
+                  avatar: suggestTag.ImageURL,
+                  link:
+                    suggestTag.Type === 'User'
+                      ? getProfilePageUrl(suggestTag.ItemID)
+                      : getNodePageUrl(suggestTag.ItemID),
+                }));
+                return mentions;
+              },
             })
           )
         )
@@ -65,25 +81,16 @@ const Block = ({ nodeId }) => {
     // console.log(result, "blocks 'save blocks'");
   };
 
-  const _handleSaveRawHtmlContent: IHandleSaveRawHtmlContent = async ({
-    html,
-    css,
-  } = {}) => {
-    const result = await saveHTMLContent({ ownerId: nodeId, html, css });
-    console.log(result, "blocks 'save html content'");
-  };
-
   return editorState ? (
     <>
-      <BE
+      <BlockEditor
         editorState={editorState}
         setEditorState={setEditorState}
         handleSaveBlocks={handleSaveBlocks}
-        // handleSaveRawHtmlContent={_handleSaveRawHtmlContent}
       />
     </>
   ) : (
     ''
   );
 };
-export default Block;
+export default WikiBlock;

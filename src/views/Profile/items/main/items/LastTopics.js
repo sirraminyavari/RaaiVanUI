@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import * as Styled from 'views/Profile/Profile.styles';
 import Button from 'components/Buttons/Button';
 import { TCV_DEFAULT } from 'constant/CssVariables';
-import LastTopicTabs from './LastTopicsTabs';
 import TopicItem from './TopicItem';
 import { API_Provider } from 'helpers/helpers';
 import { CN_API, GET_NODES, GET_NODE_INFO } from 'constant/apiConstants';
@@ -11,6 +10,7 @@ import EmptyState from 'components/EmptyState/EmptyState';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { USER_MORE_RELATED_TOPICS_PATH } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
+import RelatedTopicsTab from 'components/RelatedTopicsTab/RelatedTopicsTab';
 
 const getNodesAPI = API_Provider(CN_API, GET_NODES);
 const getNodeInfoAPI = API_Provider(CN_API, GET_NODE_INFO);
@@ -130,7 +130,9 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
   return (
     <Styled.LastTopicsContainer>
       <Styled.Header>
-        <Styled.Title>آخرین موضوعات مرتبط با من</Styled.Title>
+        <Styled.Title>
+          {isAuthUser ? RVDic.LastItemsRelatedToMe : RVDic.LastRelatedItems}
+        </Styled.Title>
         <Button classes="see-all-button">
           <Link to={relatedTopicsLink} style={{ color: TCV_DEFAULT }}>
             {RVDic.ShowAll}
@@ -138,7 +140,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
         </Button>
       </Styled.Header>
       {!!NodeTypes?.length && (
-        <LastTopicTabs
+        <RelatedTopicsTab
           relatedTopicsLink={relatedTopicsLink}
           showAll
           relatedNodes={relatedNodes}
@@ -158,7 +160,7 @@ const LastRelatedTopics = ({ relatedNodes, user, isAuthUser }) => {
             <Styled.EmptyStateWrapper>
               <EmptyState />
               <Styled.EmptyStateMessage>
-                موضوعی مرتبط با شما یافت نشد
+                {RVDic.NoRelatedItemsFound}
               </Styled.EmptyStateMessage>
             </Styled.EmptyStateWrapper>
           )}
