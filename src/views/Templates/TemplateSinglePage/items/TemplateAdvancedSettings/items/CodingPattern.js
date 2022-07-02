@@ -68,25 +68,25 @@ const CodingPattern = ({}) => {
   );
 
   const JalaliDateItems = useMemo(() => {
-    return ID_PATTERNS_Jalali?.map((x) => {
+    return ID_PATTERNS_Jalali(RVDic)?.map((x) => {
       return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
     });
   }, [selectedPattern]);
 
   const GeorgianDateItems = useMemo(() => {
-    return ID_PATTERNS_Georgian?.map((x) => {
+    return ID_PATTERNS_Georgian(RVDic)?.map((x) => {
       return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
     });
   }, [selectedPattern]);
 
   const IdPatternsItems = useMemo(() => {
-    return ID_PATTERNS?.map((x) => {
+    return ID_PATTERNS(RVDic)?.map((x) => {
       return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
     });
   }, [selectedPattern]);
 
   const OtherPatternsItems = useMemo(() => {
-    return Other_Patterns?.map((x) => {
+    return Other_Patterns(RVDic)?.map((x) => {
       return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
     });
   }, [selectedPattern]);

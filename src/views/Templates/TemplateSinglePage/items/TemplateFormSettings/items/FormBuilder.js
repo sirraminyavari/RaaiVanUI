@@ -56,7 +56,7 @@ const FormBuilder = () => {
       <Styles.FormBuilderLayout rtl={rtl}>
         <Breadcrumb items={breadItems} />
         <Droppable droppableId={FORM_BUILDER_ID}>
-          {(provided) => (
+          {(provided, snapshot) => (
             <DroppableContainer
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -94,6 +94,7 @@ const FormBuilder = () => {
                 );
               })}
               {provided.placeholder}
+              {/* {true && <Styles.DragPlaceholder></Styles.DragPlaceholder>} */}
             </DroppableContainer>
           )}
         </Droppable>

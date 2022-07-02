@@ -17,15 +17,24 @@ const DndHandler = () => {
     }
 
     if (destination?.droppableId === source?.droppableId) {
-      console.log(e);
-      // move item
-      console.log('move item');
       moveItem(e);
     }
   };
 
+  const handleDragStart = (e) => {
+    console.log('drag start', e);
+  };
+
+  const handleDragUpdate = (e) => {
+    console.log('drag update', e);
+  };
+
   return (
-    <DragDropContext onDragEnd={handleDrag}>
+    <DragDropContext
+      onDragEnd={handleDrag}
+      onDragStart={handleDragStart}
+      onDragUpdate={handleDragUpdate}
+    >
       <Styled.FormElementListPanel>
         <FormElementList />
       </Styled.FormElementListPanel>

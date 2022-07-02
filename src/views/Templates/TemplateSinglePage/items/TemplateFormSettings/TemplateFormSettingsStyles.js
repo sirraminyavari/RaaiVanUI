@@ -141,3 +141,10 @@ export const Clone = styled(FormElementItem)`
   //  display: none !important;
   //}
 `;
+
+export const DragPlaceholder = styled.div`
+  height: 6rem;
+  width: 100%;
+  background-color: #2b7be40d;
+  border-radius: 0.8rem;
+`;

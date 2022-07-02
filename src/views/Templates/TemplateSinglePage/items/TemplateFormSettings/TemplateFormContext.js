@@ -62,7 +62,6 @@ export const TemplateFormProvider = ({ children, initialState }) => {
   const formPreProcessDataModel = (data) => {
     const { Elements } = data || {};
     const modified = Elements?.map((x) => getElementType(x));
-    console.log(Elements);
     if (modified) {
       setFormObjects(modified);
     }

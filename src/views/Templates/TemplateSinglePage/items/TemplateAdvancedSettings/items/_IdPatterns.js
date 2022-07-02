@@ -1,4 +1,4 @@
-export const ID_PATTERNS_Jalali = [
+export const ID_PATTERNS_Jalali = (dic) => [
   {
     id: 1,
     type: 'PYearS',
@@ -25,7 +25,7 @@ export const ID_PATTERNS_Jalali = [
   },
 ];
 
-export const ID_PATTERNS_Georgian = [
+export const ID_PATTERNS_Georgian = (dic) => [
   {
     id: 1,
     type: 'GYearsS',
@@ -50,7 +50,7 @@ export const ID_PATTERNS_Georgian = [
   },
 ];
 
-export const Other_Patterns = [
+export const Other_Patterns = (dic) => [
   {
     id: 1,
     type: 'RND',
@@ -89,7 +89,7 @@ export const Other_Patterns = [
   },
 ];
 
-export const ID_PATTERNS = [
+export const ID_PATTERNS = (dic) => [
   {
     id: 1,
     title: 'موضوعات',

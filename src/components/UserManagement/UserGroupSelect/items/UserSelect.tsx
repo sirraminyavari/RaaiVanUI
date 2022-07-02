@@ -30,7 +30,6 @@ const UserSelect = () => {
               checked={selectedUsers?.includes(id)}
               onChange={(e) => {
                 const { checked, value } = e?.target;
-                console.log(checked, value);
                 handleUserCheck && handleUserCheck(u, checked);
               }}
             >
