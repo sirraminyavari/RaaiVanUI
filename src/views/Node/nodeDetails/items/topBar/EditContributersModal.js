@@ -1,12 +1,11 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
-import Heading from 'components/Heading/Heading';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Modal from 'components/Modal/Modal';
-import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
+// import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
+import UserGroupSelect from 'components/UserManagement/UserGroupSelect/UserGroupSelect';
 import {
   CV_DISTANT,
-  CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_RED,
   CV_WHITE,
@@ -16,7 +15,6 @@ import { decodeBase64 } from 'helpers/helpers';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ContributorItem from './ContributorItem';
 
 const SetContributors = new APIHandler('CNAPI', 'SetContributors');
@@ -52,7 +50,7 @@ const EditContributersModal = ({
   }, [nodeDetails?.Contributors?.Value]);
   const onByPeople = (event) => {
     console.log(!!contList.find((x) => x.id === event.id), 'people');
-
+    console.log(event, 'mypeople');
     const newList = !!contList.find((x) => x.id === event.id)
       ? contList
       : [...contList, { ...event, percent: 0 }];
@@ -116,14 +114,14 @@ const EditContributersModal = ({
   };
 
   const changeOccured = () => {
-    const contributers = nodeDetails?.Contributors?.Value?.map((x) => {
-      return {
-        avatarUrl: x?.ProfileImageURL,
-        id: x?.UserID,
-        name: decodeBase64(x?.FirstName) + ' ' + decodeBase64(x?.LastName),
-        percent: +x?.Share,
-      };
-    });
+    // const contributers = nodeDetails?.Contributors?.Value?.map((x) => {
+    //   return {
+    //     avatarUrl: x?.ProfileImageURL,
+    //     id: x?.UserID,
+    //     name: decodeBase64(x?.FirstName) + ' ' + decodeBase64(x?.LastName),
+    //     percent: +x?.Share,
+    //   };
+    // });
 
     return _.isEqual(contList, recentContributors);
   };
@@ -149,6 +147,7 @@ const EditContributersModal = ({
           </Title>
           {contList?.map((x) => (
             <ContributorItem
+              key={x.id}
               item={x}
               setPercent={updatePercent}
               onRemove={onRemove}
@@ -158,7 +157,7 @@ const EditContributersModal = ({
         <Bottom>
           {console.log(contList, 'contList')}
           <BottomMain>
-            <PeoplePicker
+            {/* <PeoplePicker
               onByMe={() => {}}
               onBlur={() => {}}
               onByPeople={onByPeople}
@@ -172,6 +171,12 @@ const EditContributersModal = ({
                   {RVDic.AddN.replace('[n]', RVDic.Author)}
                 </Button>
               }
+            /> */}
+
+            <UserGroupSelect
+              selectGroupEnabled={false}
+              selectedUsers={contList.map(({ id }) => id)}
+              onUserStateChange={({ user }) => onByPeople(user)}
             />
 
             <Button

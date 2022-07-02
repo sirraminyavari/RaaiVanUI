@@ -76,7 +76,7 @@ const SideColumn = (props) => {
         return <Setting />;
 
       case MODAL_CONTENTS.security:
-        return <Security />;
+        return <Security NodeTypeID={nodeDetails?.NodeTypeID} />;
 
       default:
         return null;
@@ -92,12 +92,13 @@ const SideColumn = (props) => {
         className={`${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`}
       >
         <Modal
-          contentWidth="33%"
+          contentWidth="clamp(25rem,50%,60rem)"
           contentClass="node-page-side-modal-content"
           titleContainerClass="node-page-side-modal-header"
           show={sideModal.isShown}
           title={sideModal.title}
           onClose={onModalClose}
+          middle
         >
           {getModalContent()}
         </Modal>
