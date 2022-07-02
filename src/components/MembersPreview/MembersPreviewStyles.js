@@ -38,7 +38,7 @@ Image.dispalyName = 'Image';
 export const DropDown = styled.div`
   background-color: ${CV_WHITE};
   display: block;
-  z-index: 4;
+  z-index: 1000;
   box-shadow: 1px 3px 20px #2b7be429;
   padding: 1rem 2rem;
   border-radius: 0.625rem;

@@ -72,11 +72,14 @@ const SHTemplates = ({ nodes }) => {
         }
       });
     };
+
+    console.log(Tree, tree);
     addLeaf(Tree);
     return tree;
   };
 
   const renderItem = (props) => {
+    console.log(props);
     return <SHTemplateItem {...props} onRenameSubmit={handleRenameNode} />;
   };
 
@@ -117,16 +120,21 @@ const SHTemplates = ({ nodes }) => {
   return (
     <div>
       {tree.rootId && (
-        <Tree
-          tree={tree}
-          renderItem={renderItem}
-          onExpand={onExpand}
-          onCollapse={onCollapse}
-          onDragEnd={onDragEnd}
-          offsetPerLevel={0}
-          isDragEnabled={true}
-          isNestingEnabled={true}
-        />
+        <>
+          <Tree
+            tree={tree}
+            renderItem={renderItem}
+            onExpand={onExpand}
+            onCollapse={onCollapse}
+            onDragEnd={onDragEnd}
+            offsetPerLevel={0}
+            isDragEnabled={true}
+            isNestingEnabled={true}
+          />
+          {/* <RVTree tree={tree}>
+            <SHTemplateItem />
+          </RVTree> */}
+        </>
       )}
     </div>
   );

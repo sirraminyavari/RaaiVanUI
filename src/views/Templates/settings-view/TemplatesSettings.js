@@ -130,7 +130,9 @@ const TemplateSettingsContainer = styled.div`
 const ViewCard = styled.div`
   ${ViewContentCard}
 `;
-const ViewTitle = styled(Heading)``;
+const ViewTitle = styled(Heading)`
+  margin-bottom: 1.5rem;
+`;
 
 const ActionBarContainer = styled.div`
   ${FLEX_RCB};

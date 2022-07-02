@@ -8,7 +8,7 @@ import {
 import CheckIcon from '../../Icons/CheckIcons/Check';
 
 /**
- * @description A Checkbox implemented using RaaiVan design system guide lines. Supports all of the functionality of an HTML5 checkbox, and exposes a similar API.
+ * @description A Checkbox implemented using RaaiVan design system guidelines. Supports all of the functionality of an HTML5 checkbox, and exposes a similar API.
  * RVCheckbox can be either checked, unchecked, indeterminate, or disabled.
  * @type {React.<JSX>}
  */

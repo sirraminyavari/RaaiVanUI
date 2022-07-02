@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { decodeBase64 } from 'helpers/helpers';
 import SaaSTemplateItem from './SaaSTemplateItem';
 
-const SaaSTemplates = ({
-  nodes,
-  handleAddNodeType,
-  handleDeleteNode,
-  ...rest
-}) => {
+const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
   const [nodeList, setNodeList] = useState([]);
 
   useEffect(() => {
@@ -19,8 +14,6 @@ const SaaSTemplates = ({
       ...x,
       TypeName: decodeBase64(x?.TypeName),
     }))?.filter((x) => x?.IsCategory || x?.ParentID);
-
-    console.log(_nodes);
 
     let list = [
       ..._nodes

@@ -1,7 +1,6 @@
 import * as Styled from './TabViewStyle';
 import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
 import useTabView from './useTabView';
-import { BodyWrapper } from './TabViewStyle';
 
 const TabContext = createContext({});
 

@@ -23,6 +23,7 @@ const SingleSelectInput = ({
         <Styled.CheckboxSymbol />
         <Styled.OptionTextInput
           value={decodeBase64(option?.text)}
+          placeholder={`گزینه ${index + 1}`}
           onChange={(e) =>
             handleOptionTextChange(encodeBase64(e?.target.value), index)
           }
@@ -58,7 +59,7 @@ const SingleSelectInput = ({
               handleOptionMinChange(decodeBase64(e?.target?.value, index))
             }
           >
-            >{'کمینه پاسخ'}
+            {'کمینه پاسخ'}
           </Styled.MinMaxInputTitle>
         )}
         <Styled.MinMaxInput />

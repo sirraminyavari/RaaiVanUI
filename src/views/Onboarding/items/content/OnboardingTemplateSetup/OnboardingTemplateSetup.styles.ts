@@ -34,7 +34,7 @@ OnboardingTemplateSetupDescriptionWrapper.displayName =
   'OnboardingTemplateSetupDescriptionWrapper';
 
 export const OnboardingTemplateSetupTitleDescription = styled(Heading).attrs({
-  type: 'h5',
+  type: 'H5',
 })<{ mediumFontWeight?: boolean }>`
   color: ${CV_GRAY};
 

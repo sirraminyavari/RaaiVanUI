@@ -9,10 +9,11 @@ import { MainFormContainer } from './TemplateGeneralSettingsStyles';
 import TemplateTitleForm from './items/TemplateTitleForm';
 import CMConfidentialitySetting from './CMConfidetialitySetting/CMConfidentialitySetting';
 import { PRIVACY_OBJECT_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
+import { ReturnButton } from '../../TemplateSinglePageStyles';
 
 const TemplateGeneralSettings = () => {
   const { id, title } = useParams();
-  const { RVDic, RVGlobal } = window;
+  const { RVDic, RV_RTL, RVGlobal } = window;
   const isSaas = RVGlobal?.SAASBasedMultiTenancy;
 
   const breadItems = [
@@ -42,6 +43,7 @@ const TemplateGeneralSettings = () => {
       <Styled.MainForm>
         <Breadcrumb items={breadItems} />
 
+        <ReturnButton rtl={RV_RTL}>{RVDic?.Return}</ReturnButton>
         <MainFormContainer>
           <TemplateUploadIcon />
           {/*<AvatarImageCropper />*/}

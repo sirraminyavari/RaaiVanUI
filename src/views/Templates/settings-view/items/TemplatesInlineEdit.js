@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import styled from 'styled-components';
-import { CV_DISTANT, TCV_WARM } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY_DARK, TCV_WARM } from 'constant/CssVariables';
+import { FLEX_RCA } from 'constant/StyledCommonCss';
 
 const TemplateInlineEdit = ({
   value,
   onConfirm,
-  color = TCV_WARM,
+  color = CV_GRAY_DARK,
   fontSize = '1rem',
+  onModeChange,
+  children,
 }) => {
   const editEl = useRef();
   const [title, setTitle] = useState(value);
@@ -32,24 +35,40 @@ const TemplateInlineEdit = ({
     }
   };
 
+  useEffect(
+    () => {
+      if (onModeChange) {
+        onModeChange(editMode);
+      }
+    } /* eslint-disable-line */,
+    [editMode]
+  );
+
   return (
     <TitleContainer ref={editEl}>
-      {!editMode && (
-        <Title
-          color={color}
-          fontSize={fontSize}
-          onDoubleClick={(e) => setEditMode(!editMode)}
-        >
-          {value}
-        </Title>
-      )}
-      {editMode && (
-        <EditableElement onChange={(e) => setTitle(e)}>
-          <EditModTitle onKeyPress={(e) => handleEnterKey(e)}>
+      <div>
+        {!editMode && (
+          <Title
+            color={color}
+            fontSize={fontSize}
+            onDoubleClick={(e) => setEditMode(!editMode)}
+          >
             {value}
-          </EditModTitle>
-        </EditableElement>
-      )}
+          </Title>
+        )}
+        {editMode && (
+          <EditableElement onChange={(e) => setTitle(e)}>
+            <EditModTitle
+              onKeyPress={(e) => handleEnterKey(e)}
+              fontSize={fontSize}
+            >
+              {value}
+            </EditModTitle>
+          </EditableElement>
+        )}
+      </div>
+
+      {children && <div>{children}</div>}
     </TitleContainer>
   );
 };
@@ -78,21 +97,27 @@ const EditableElement = (props) => {
 };
 const TitleContainer = styled.div`
   user-select: none;
+  ${FLEX_RCA};
 `;
 
 const Title = styled.div`
   font-size: ${({ fontSize }) => fontSize};
   user-select: none;
   padding: 0.2rem 0;
-  height: 2rem;
-  line-height: 2rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
   color: ${({ color }) => color};
   font-weight: 600;
 `;
 
 const EditModTitle = styled(Title)`
   color: ${CV_DISTANT};
+  font-size: ${({ fontSize }) => fontSize};
+  font-weight: 600;
   outline: none;
+  padding: 0.2rem 0;
+  height: 2.5rem;
+  line-height: 2.5rem;
   border-bottom: 1px solid ${CV_DISTANT};
 `;
 export default TemplateInlineEdit;

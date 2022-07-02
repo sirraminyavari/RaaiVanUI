@@ -61,7 +61,7 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
         <ToggleNecessaryState {...{ current, setFormObjects }} />
       </Styles.Row>
 
-      {(type !== 'paragraph' || 'phone') && (
+      {(type !== 'paragraph' || type !== 'phone') && (
         <Styles.Row>
           <ToggleUniqueValueState {...{ current, setFormObjects }} />
         </Styles.Row>

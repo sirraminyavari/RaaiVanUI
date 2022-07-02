@@ -1,20 +1,53 @@
 import styled from 'styled-components';
 import { FLEX_CCC } from '../../../constant/StyledCommonCss';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import useLocalStorge from 'hooks/useLocalStorage';
+import { Emoji } from './EmojiPickerStyles';
+import { getUUID } from 'helpers/helpers';
 
 const EmojiRecent = () => {
-  const [list, setList] = useState([]);
+  const [storedValue, setValue] = useLocalStorge('RESENT_USED_EMOJIS', []);
+  const [recentEmojis, setRecentEmojis] = useState([]);
+
+  const handleEmojiClick = (emoji) => {
+    const filteredList = storedValue.filter((x) => x !== emoji);
+    filteredList.unshift(emoji);
+    if (setValue) {
+      setValue(filteredList);
+    }
+  };
+
+  const list = useMemo(() => {
+    return recentEmojis?.map((x) => (
+      <EmojiContainer key={x?.id} onClick={() => handleEmojiClick(x?.title)}>
+        {x?.src}
+      </EmojiContainer>
+    ));
+  }, [recentEmojis]);
+
+  useEffect(() => {
+    (async () => {
+      const array = [];
+
+      for (const item of storedValue) {
+        const { default: src } = await import(`assets/images/emojis/${item}`);
+        array.push({
+          id: getUUID(),
+          title: item,
+          src: <Emoji src={src} width="16px" height="16px" />,
+        });
+      }
+      setRecentEmojis(array);
+    })();
+  }, [storedValue]);
 
   return (
     <GridWrapper>
-      <Grid>
-        {list?.map((x) => (
-          <EmojiContainer key={x?.id}>{x?.src}</EmojiContainer>
-        ))}
-      </Grid>
+      <Grid>{list}</Grid>
     </GridWrapper>
   );
 };
+
 const GridWrapper = styled.div`
   height: 8rem;
   overflow: scroll;

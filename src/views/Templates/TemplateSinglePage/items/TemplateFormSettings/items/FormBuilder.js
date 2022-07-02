@@ -3,7 +3,6 @@ import { decodeBase64 } from 'helpers/helpers';
 import { useTemplateContext } from '../../../TemplateProvider';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { useState } from 'react';
-import AnimatedTextArea from 'components/Inputs/AnimatedTextArea/AnimatedTextArea';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import {
   DraggableFormObject,
@@ -56,13 +55,6 @@ const FormBuilder = () => {
     <>
       <Styles.FormBuilderLayout rtl={rtl}>
         <Breadcrumb items={breadItems} />
-
-        <AnimatedTextArea
-          autoresize={true}
-          placeholder={'توضیحات'}
-          value={description}
-          onChange={(e) => setDescription(e?.target?.value)}
-        />
         <Droppable droppableId={FORM_BUILDER_ID}>
           {(provided) => (
             <DroppableContainer

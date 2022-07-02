@@ -69,7 +69,7 @@ const ColorPicker = ({ color, onSelect }) => {
       {open && (
         <PickerLayout>
           <TabView height={2.5}>
-            <TabView.Item label="رنگ">
+            <TabView.Item label="رنگ" type="Item">
               <ColorsGrid>
                 {colors.map((c, i) => {
                   return (
@@ -83,7 +83,7 @@ const ColorPicker = ({ color, onSelect }) => {
               </ColorsGrid>
             </TabView.Item>
 
-            <TabView.Action>
+            <TabView.Action type="Action">
               <CloseButton onClick={(e) => close(e)}>
                 <CloseIcon outline={true} size={20} />
               </CloseButton>
@@ -97,8 +97,8 @@ const ColorPicker = ({ color, onSelect }) => {
 const Container = styled.div`
   position: relative;
   ${FLEX_CCC};
-  height: 2rem;
   width: 2rem;
+  aspect-ratio: 1/1;
   border-radius: 100%;
   border: solid 0.0625rem ${CV_DISTANT};
   cursor: pointer;

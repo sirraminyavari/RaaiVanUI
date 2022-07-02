@@ -173,7 +173,7 @@ export const getNodes = (params: IGetNodesRequest) => {
 };
 
 export const getChildNodes = (params: IGetChildNodesRequest) => {
-  return apiCallWrapper(API_Provider(CN_API, 'GetNodes'), {
+  return apiCallWrapper(API_Provider(CN_API, 'GetChildNodes'), {
     ...params,
     SearchText: encodeBase64(params.SearchText || ''),
   });

@@ -48,7 +48,7 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
 
       {parent && isSaaS && (
         <CartButton onClick={(e) => setModalInfo({ ...modalInfo, show: true })}>
-          <AddIcon circleOutline={true} size={44} />
+          <AddNewIcon circleOutline={true} size={44} />
           <CardTitle>{`ایجاد تمپلیت جدید در ${title}`}</CardTitle>
         </CartButton>
       )}
@@ -125,6 +125,18 @@ const CardTitle = styled.div`
   text-overflow: ellipsis;
   font-size: 1.1rem;
   text-align: center;
+  transition: all 0.15s ease-out;
+
+  ${CartButton}:hover & {
+    color: ${TCV_DEFAULT};
+  }
+`;
+
+const AddNewIcon = styled(AddIcon).attrs({})`
+  transition: all 0.15s ease-out;
+  ${CartButton}:hover & {
+    color: ${TCV_DEFAULT};
+  }
 `;
 
 const ModalContent = styled.div`

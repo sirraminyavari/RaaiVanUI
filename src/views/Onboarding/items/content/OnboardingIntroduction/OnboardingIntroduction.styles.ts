@@ -30,7 +30,7 @@ export const EmojiImage = styled.img`
 `;
 EmojiImage.displayName = 'EmojiImage';
 
-export const OnboardingIntroductionText = styled(Heading)`
+export const OnboardingIntroductionText = styled(Heading).attrs({ type: 'H1' })`
   font-size: 3rem !important;
   opacity: 0;
   transform: scale(0);

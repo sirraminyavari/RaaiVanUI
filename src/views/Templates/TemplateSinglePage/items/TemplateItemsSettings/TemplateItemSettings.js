@@ -1,4 +1,11 @@
+import { TemplateItemProvider } from './TemplateItemProvider';
+import TemplateItems from './TemplateItems';
+
 const TemplateItemSettings = () => {
-  return <div>template items settings</div>;
+  return (
+    <TemplateItemProvider>
+      <TemplateItems />
+    </TemplateItemProvider>
+  );
 };
 export default TemplateItemSettings;

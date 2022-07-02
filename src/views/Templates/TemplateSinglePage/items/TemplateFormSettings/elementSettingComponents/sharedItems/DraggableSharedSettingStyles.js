@@ -9,7 +9,7 @@ import {
 
 export const FieldsContainer = styled.div`
   ${FLEX_RSB};
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 export const FieldWrapper = styled.div`
@@ -20,7 +20,7 @@ export const FieldWrapper = styled.div`
 export const SimpleInput = styled.input`
   outline: none;
   border: none;
-  border-bottom: 0.0625rem solid ${CV_DISTANT};
+  border-bottom: 0.0625rem solid #e6f4f1;
   color: ${CV_GRAY};
   width: 100%;
 `;

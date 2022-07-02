@@ -4,6 +4,7 @@ import {
   CV_GRAY,
   CV_GRAY_DARK,
   CV_WHITE,
+  TCV_DEFAULT,
 } from 'constant/CssVariables';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { encodeBase64 } from 'helpers/helpers';
@@ -15,6 +16,7 @@ const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {
   const handleCardClick = () => {
     history.push(`${path}/${NodeTypeID}/${encodeBase64(TypeName)}`);
   };
+
   return (
     <CardContainer onClick={handleCardClick}>
       <Image src={IconURL} alt={TypeName} />
@@ -34,6 +36,10 @@ const CardContainer = styled.div`
   background-color: ${CV_WHITE};
   padding: 1rem;
   cursor: pointer;
+
+  &:hover {
+    border-color: ${TCV_DEFAULT};
+  }
 `;
 const Image = styled.img`
   width: 2.8rem;

@@ -4,7 +4,7 @@ import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 
 export const DroppableContainer = styled.div`
   margin-top: 2rem;
-  height: calc(100vh - 29rem);
+  height: calc(100vh - 22rem);
   width: 100%;
   overflow: scroll;
 `;

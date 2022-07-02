@@ -28,11 +28,11 @@ const BinaryTypeMainSetting = ({ current, setFormObjects }) => {
   return (
     <OptionContainer>
       <OptionItem>
-        <Input value={Yes} onChange={handleYesOption} />
+        <Input value={Yes} placeholder={'گزینه 1'} onChange={handleYesOption} />
       </OptionItem>
       <Divider></Divider>
       <OptionItem>
-        <Input value={No} onChange={handleNoOption} />
+        <Input value={No} placeholder={'گزینه 2'} onChange={handleNoOption} />
       </OptionItem>
     </OptionContainer>
   );

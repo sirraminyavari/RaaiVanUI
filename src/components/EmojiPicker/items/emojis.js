@@ -1,61 +1,69 @@
 import { Emoji } from './EmojiPickerStyles';
+import people from '../data/people.json';
+import animals from '../data/animals.json';
+import activity from '../data/activity.json';
+import objects from '../data/objects.json';
+import food from '../data/food.json';
+import symbols from '../data/symbols.json';
+import flags from '../data/flags.json';
+import travel from '../data/travel.json';
+import { getUUID } from 'helpers/helpers';
 
 export const getEmojiType = () => {
   return [
     {
-      key: 'smileys',
-      total: 432,
+      key: 'people',
     },
     {
       key: 'animals',
-      total: 209,
     },
     {
-      key: 'objects',
-      total: 192,
+      key: 'food',
     },
     {
       key: 'activity',
-      total: 185,
     },
     {
-      key: 'buildings',
-      total: 100,
+      key: 'travel',
     },
     {
-      key: 'people',
-      total: 173,
-    },
-    {
-      key: 'nature',
-      total: 168,
+      key: 'objects',
     },
     {
       key: 'symbols',
-      total: 336,
+    },
+    {
+      key: 'flags',
     },
   ];
 };
 
-export const getEmojis = async (type) => {
-  const files = Array(type?.total)
-    .fill(1)
-    .map((x, i) => x + i);
+export const getEmojis = async ({ key }) => {
+  const _emojis = emojiList().filter(({ category }) => category === key);
+
   const array = [];
-  for (const fileIndex of files) {
+  for (const item of _emojis) {
+    const { title } = item;
+    const { default: src } = await import(`assets/images/emojis/${title}`);
+
     array.push({
-      id: fileIndex,
-      src: (
-        <Emoji
-          src={
-            (await import(`assets/images/emojis/${type?.key}/${fileIndex}.svg`))
-              ?.default
-          }
-          width="16px"
-          height="16px"
-        />
-      ),
+      id: getUUID(),
+      title,
+      src: <Emoji src={src} width="16px" height="16px" />,
     });
   }
   return array;
+};
+
+export const emojiList = () => {
+  return [
+    ...animals,
+    ...food,
+    ...people,
+    ...activity,
+    ...objects,
+    ...symbols,
+    ...flags,
+    ...travel,
+  ];
 };
