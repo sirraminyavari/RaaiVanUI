@@ -16,8 +16,8 @@ import {
 import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import useWindow from 'hooks/useWindowContext';
 
-const { RVDic } = window;
 const SingleSelectField = ({
   value,
   decodeInfo,
@@ -28,6 +28,7 @@ const SingleSelectField = ({
   save,
   ...props
 }) => {
+  const { RVDic } = useWindow();
   const editable = useContext(EditableContext);
   const [isFocused, setIsFocused] = useState(false);
   const parseDecodeInfo = JSON.parse(decodeInfo);
@@ -123,7 +124,7 @@ const SingleSelectField = ({
           />
         ) : (
           <SelectedMaintainer>
-            <Selected>{selectedValue.label}</Selected>
+            <Selected>{value ? value : RVDic.Select}</Selected>
           </SelectedMaintainer>
         )}
         {/* )} */}
