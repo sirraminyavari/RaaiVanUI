@@ -1,10 +1,11 @@
 import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
 import styled from 'styled-components';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
 
 const MultiSelectField = ({
@@ -18,6 +19,7 @@ const MultiSelectField = ({
   ...props
 }) => {
   const parseDecodeInfo = JSON.parse(decodeInfo);
+  const [isFocused, setIsFocused] = useState(false);
   const { Options } = parseDecodeInfo || {};
   const decodeValue = decodeBase64(value);
 
@@ -107,21 +109,38 @@ const MultiSelectField = ({
           ))}
         </SelectedMaintainer>
       ) : ( */}
-      <Select
-        onBlur={() => {
-          save(elementId);
+      <OnClickAway
+        style={{}}
+        onAway={() => setIsFocused(false)}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
         }}
-        options={normalizedOptions}
-        value={selectedOptions}
-        isMulti
-        isClearable={false}
-        isDisabled={!editable}
-        closeMenuOnSelect={false}
-        styles={customStyles}
-        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-        className="basic-multi-select"
-        classNamePrefix="select"
-      />
+      >
+        {isFocused ? (
+          <Select
+            onBlur={() => {
+              save(elementId);
+            }}
+            options={normalizedOptions}
+            value={selectedOptions}
+            isMulti
+            isClearable={false}
+            isDisabled={!editable}
+            closeMenuOnSelect={false}
+            styles={customStyles}
+            onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          />
+        ) : (
+          <SelectedMaintainer>
+            {selectedOptions.map(({ label }, idx) => {
+              return <Selected key={idx}>{label}</Selected>;
+            })}
+          </SelectedMaintainer>
+        )}
+      </OnClickAway>
       {/* )} */}
     </FormCell>
   );
@@ -129,7 +148,10 @@ const MultiSelectField = ({
 export default MultiSelectField;
 const Selected = styled.div`
   background-color: #e6f4f1;
+  margin-block: 0.18rem;
+  margin-inline: 0.5rem;
   padding: 0.5rem;
+  border-radius: 0.5rem;
 `;
 const SelectedMaintainer = styled.div`
   display: flex;

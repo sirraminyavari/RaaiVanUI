@@ -16,6 +16,8 @@ import { modifyNodeName } from 'apiHelper/ApiHandlers/CNAPI';
 import NodePageRelatedNodeItems from './topBar/NodePageRelatedNodeItems';
 import SummeryInputIcon from 'components/Icons/InputIcon/SummeryInputIcon.tsx';
 import useWindowContext from 'hooks/useWindowContext';
+import ParagraphField from 'components/FormElements/FormFill/types/ParagraphField/ParagraphField';
+import TagIcon from 'components/Icons/TagIcon/TagIcon';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -79,26 +81,23 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   //   setDescEditMode(true);
   // };
 
-  const onSaveDesc = () => {
-    if (whichElementChanged === 'desc') {
-      setDescEditMode(false);
-      const { NodeID } = nodeDetails || {};
-      ModifyNodeDescription.fetch(
-        { NodeID: NodeID, Description: encodeBase64(desc) },
-        (res) => {
-          console.log(res, 'save result', desc);
+  const onSaveDesc = (textFieldValue) => {
+    setDescEditMode(false);
+    const { NodeID } = nodeDetails || {};
+    ModifyNodeDescription.fetch(
+      {
+        NodeID: NodeID,
+        Description: encodeBase64(textFieldValue),
+      },
+      (res) => {
+        console.log(res, 'save result', textFieldValue);
 
-          // alert('saved', {
-          //   Timeout: 1000,
-          // });
-        }
-      );
-    }
+        // alert('saved', {
+        //   Timeout: 1000,
+        // });
+      }
+    );
     setWhichElementChanged(null);
-  };
-  const onDescChange = (event) => {
-    setWhichElementChanged('desc');
-    setDesc(event.target.value);
   };
   const onSaveKeywords = (event) => {
     const readyToSaveKeywords = keywords.map((x) => x.value).join('~');
@@ -147,79 +146,43 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
             NodeID={nodeId}
           />
         </>
-        <TitleContainer>
-          <>
-            <FormCell
-              editModeVisible={false}
-              title={RVDic.Summary}
-              style={{ display: 'flex', flexGrow: 1 }}
+        <>
+          {nodeDetails?.Description?.Editable ? (
+            <ParagraphField
+              decodeTitle={RVDic.Summary}
               iconComponent={<SummeryInputIcon color={CV_GRAY} />}
-            >
-              {nodeDetails?.Name?.Editable ? (
-                <Input
-                  style={{
-                    fontSize: '1.1rem',
-                    fontWeight: '300',
-                    width: '100%',
-                  }}
-                  onChange={onDescChange}
-                  value={desc}
-                  onBlur={onSaveDesc}
-                />
-              ) : (
-                <Heading type={'h3'}>{desc}</Heading>
-              )}
-              {/* {descEditMode ? (
-              <CellContainer>
-                <Input
-                  style={{ width: '90%' }}
-                  onChange={onDescChange}
-                  value={desc}
-                />
-                <SaveButton
-                  style={{ margin: '0 1rem 0 1rem' }}
-                  onClick={onSaveDesc}
-                />
-              </CellContainer>
-            ) : (
-              <>
-                {nodeDetails?.Name?.Editable && (
-                  <PencilIcon
-                    size={'1.5rem'}
-                    style={{ margin: '0 1rem 0 1rem' }}
-                    color={TCV_WARM}
-                    onClick={onEditDesc}
-                  />
-                )}
-                <Heading type={'h3'}>{desc}</Heading>
-              </>
-            )} */}
-            </FormCell>
-          </>
-        </TitleContainer>
+              onAnyFieldChanged={(_, fieldValue) => onSaveDesc(fieldValue)}
+              value={desc}
+            />
+          ) : (
+            <Heading type={'h3'}>{desc}</Heading>
+          )}
+        </>
         <TitleContainer>
-          <>
-            <FormCell
-              editModeVisible={false}
-              title={RVDic.Keywords}
-              style={{ display: 'flex', flexGrow: 1 }}
-              // iconComponent={}
-            >
-              <CellContainer>
-                <CreatableSelect
-                  value={keywords}
-                  isMulti
-                  isDisabled={!nodeDetails?.Keywords?.Editable}
-                  isClearable
-                  onBlur={onSaveKeywords}
-                  onChange={setKeywords}
-                  styles={customStyles}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                />
-              </CellContainer>
-            </FormCell>
-          </>
+          <FormCell
+            editModeVisible={false}
+            title={RVDic.Keywords}
+            style={{ display: 'flex', flexGrow: 1 }}
+            iconComponent={<TagIcon size="1.25rem" color={CV_GRAY} />}
+          >
+            <CellContainer>
+              <CreatableSelect
+                value={keywords}
+                isMulti
+                isDisabled={!nodeDetails?.Keywords?.Editable}
+                isClearable
+                onBlur={onSaveKeywords}
+                onChange={setKeywords}
+                styles={customStyles}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                components={{
+                  DropdownIndicator: () => null,
+                  IndicatorSeparator: () => null,
+                }}
+              />
+            </CellContainer>
+          </FormCell>
         </TitleContainer>
         {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
       </Main>
@@ -232,7 +195,6 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 100rem;
 `;
 const TitleContainer = styled.div`
   display: flex;

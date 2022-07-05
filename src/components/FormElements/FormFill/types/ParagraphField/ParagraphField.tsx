@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { EditorState, convertFromRaw } from 'draft-js';
 import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 import { textColors, highlightColors } from 'components/BlockEditor/data';
-
 import BlockEditor from 'components/BlockEditor/BlockEditor';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { IHandleSaveBlocks } from 'components/BlockEditor/BlockEditor.type';
 import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
 import FormCell from '../../FormCell';
@@ -17,10 +17,11 @@ function ParagraphField({
   onAnyFieldChanged,
   elementId,
   decodeTitle,
+  iconComponent = <ParagraphInputIcon color={CV_GRAY} size={'1.4rem'} />,
   type,
-  save,
 }) {
   const [editorState, setEditorState] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
@@ -82,18 +83,28 @@ function ParagraphField({
   return (
     <>
       {/*@ts-expect-error */}
-      <FormCell
-        iconComponent={<ParagraphInputIcon color={CV_GRAY} size={'1.4rem'} />}
-        title={decodeTitle}
-      >
-        {editorState && (
-          <BlockEditor
-            editorState={editorState}
-            setEditorState={setEditorState}
-            handleSaveBlocks={handleSaveBlocks}
-            textarea
-          />
-        )}
+      <FormCell iconComponent={iconComponent} title={decodeTitle}>
+        {/*@ts-expect-error */}
+        <OnClickAway
+          style={{ width: '100%' }}
+          onAway={() => setIsFocused(false)}
+          onClick={() => {
+            if (isFocused) return;
+            setIsFocused(true);
+          }}
+        >
+          <>
+            {editorState && (
+              <BlockEditor
+                editorState={editorState}
+                setEditorState={setEditorState}
+                handleSaveBlocks={handleSaveBlocks}
+                textarea
+                readOnly={!isFocused}
+              />
+            )}
+          </>
+        </OnClickAway>
       </FormCell>
     </>
   );

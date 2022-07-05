@@ -43,12 +43,9 @@ export const Container = styled.div`
   padding-block: 2rem;
 `;
 export const ScrollProvider = styled.div`
-  width: calc(${({ isAdvancedShow }) => (isAdvancedShow ? '100%' : '100%')});
+  width: 100%;
 
   box-shadow: 1px 3px 20px #0000001f;
-`;
-export const Scrollable = styled.div`
-  width: 100%;
 `;
 export const Maintainer = styled.div`
   width: 100%;
@@ -56,15 +53,16 @@ export const Maintainer = styled.div`
   transition: min-width 0.5s, width 0.5s, left 0.5s;
 `;
 export const Side = styled.div`
-  position: fixed;
-  top: 7rem;
-  ${({ dir }) => dir}: 0;
-  height: calc(100vh - 9rem);
-  padding: ${({ rtl }) => (rtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
+  height: calc(100vh - 4rem);
+  padding: ${({ isRtl }) => (isRtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
   // transition: width 0.5s, opacity 0.5s;
   z-index: 10;
+  padding: 0 0 0 0rem;
+  position: fixed;
+  top: 4rem;
+  inset-inline-end: 0;
 `;
 
 export const TopFilter = styled.div`
@@ -118,8 +116,6 @@ export const Space = styled.div`
 
 export const SideColumnMaintainer = styled.div`
   box-shadow: 1px 3px 20px #0000001f;
-  // display: flex;
-  // flex: 1;
   width: 100%;
   height: 100%;
   user-select: none;

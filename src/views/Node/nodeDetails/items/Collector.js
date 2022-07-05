@@ -20,6 +20,7 @@ import FieldsLoadingSkelton from './FieldsLoadingSkelton';
 import MainNode from './MainNode';
 import TopBar from './topBar/TopBar';
 import BlockEditor from 'views/Node/nodeDetails/items/WikiBlock';
+import WelcomeLayout from 'layouts/WelcomeLayout';
 
 const SideColumn = lazy(() =>
   import(
@@ -42,7 +43,6 @@ const Collector = ({
 }) => {
   const [sideColumn, setSideColumn] = useState(false);
   const [fields, setFields] = useState(null);
-  const isTabletOrMobile = DimensionHelper()?.isTabletOrMobile;
 
   useEffect(() => {
     (async () => {
@@ -61,69 +61,43 @@ const Collector = ({
   }, [nodeId]);
 
   return (
-    <Container
-      isAdvancedShow={false}
-      className={'rv-bg-color-white'}
-      RV_RTL={RV_RTL}
-    >
-      <ScrollProvider
-        className={`${'rv-bg-color-white'} rv-border-radius-half`}
+    <WelcomeLayout centerize>
+      <Maintainer
         isAdvancedShow={sideColumn}
+        className={`${'rv-bg-color-white'} rv-border-radius-half`}
+        fullWidth={sideColumn}
       >
-        <Scrollable isAdvancedShow={sideColumn}>
-          <Maintainer
-            isAdvancedShow={sideColumn}
-            className={`${'rv-bg-color-white'} rv-border-radius-half`}
-            fullWidth={sideColumn}
-          >
-            {/* <LoadingSkelton /> */}
-            <TopFilter>
-              <TopBar
-                onSideColumnClicked={setSideColumn}
-                sideColumn={sideColumn}
-                nodeDetails={nodeDetails}
-                hierarchy={hierarchy}
-              />
-            </TopFilter>
-            <div
-              style={{
-                padding: '0 3.5rem 3.5rem',
-                maxWidth: '100%',
-                overflow: 'hidden',
-              }}
-              {...props}
-            >
-              {fields ? (
-                <MainNode
-                  nodeDetails={nodeDetails}
-                  nodeId={nodeId}
-                  fields={fields}
-                  {...props}
-                />
-              ) : (
-                <FieldsLoadingSkelton />
-              )}
-            </div>
-          </Maintainer>
-          <BlockEditor nodeId={nodeId} />
-        </Scrollable>
-      </ScrollProvider>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {!itemSelectionMode && (
-          <Space
-            $isEnabled={sideColumn}
-            dir={RV_RevFloat}
-            rtl={RV_RTL}
-            mobileView={isTabletOrMobile}
+        {/* <LoadingSkelton /> */}
+        <TopFilter>
+          <TopBar
+            onSideColumnClicked={setSideColumn}
+            sideColumn={sideColumn}
+            nodeDetails={nodeDetails}
+            hierarchy={hierarchy}
           />
-        )}
-        <Side $isEnabled={sideColumn} dir={RV_RevFloat} rtl={RV_RTL}>
+        </TopFilter>
+        <div
+          style={{
+            padding: '0 3.5rem 3.5rem',
+            maxWidth: '100%',
+            overflow: 'hidden',
+          }}
+          {...props}
+        >
+          {fields ? (
+            <MainNode
+              nodeDetails={nodeDetails}
+              nodeId={nodeId}
+              fields={fields}
+              {...props}
+            />
+          ) : (
+            <FieldsLoadingSkelton />
+          )}
+        </div>
+        <BlockEditor nodeId={nodeId} />
+
+        <Side $isEnabled={sideColumn} isRtl={RV_RTL}>
           <Suspense fallback={<></>}>
             {console.log('render', new Date())}
             {sideColumn && (
@@ -134,8 +108,8 @@ const Collector = ({
             )}
           </Suspense>
         </Side>
-      </div>
-    </Container>
+      </Maintainer>
+    </WelcomeLayout>
   );
 };
 export default Collector;
