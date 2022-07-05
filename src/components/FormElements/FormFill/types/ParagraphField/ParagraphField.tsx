@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { EditorState, convertFromRaw } from 'draft-js';
 import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 import { textColors, highlightColors } from 'components/BlockEditor/data';
@@ -11,6 +11,7 @@ import ParagraphInputIcon from 'components/Icons/InputIcon/ParagraphInputIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import { suggestTags } from 'components/BlockEditor/API';
 import { decodeBase64 } from 'helpers/helpers';
+import { EditableContext } from '../../FormFill';
 
 function ParagraphField({
   value,
@@ -19,8 +20,10 @@ function ParagraphField({
   decodeTitle,
   iconComponent = <ParagraphInputIcon color={CV_GRAY} size={'1.4rem'} />,
   type,
+  isEditable = true,
 }) {
   const [editorState, setEditorState] = useState(null);
+  const editable = useContext(EditableContext);
   const [isFocused, setIsFocused] = useState(false);
 
   //TODO needs checking for arguments ...
@@ -100,7 +103,7 @@ function ParagraphField({
                 setEditorState={setEditorState}
                 handleSaveBlocks={handleSaveBlocks}
                 textarea
-                readOnly={!isFocused}
+                readOnly={!isEditable || !editable || !isFocused}
               />
             )}
           </>

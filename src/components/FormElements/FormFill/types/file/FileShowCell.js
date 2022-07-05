@@ -5,11 +5,11 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import TrashIcon from 'components/Icons/TrashIcon/Trash';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { decodeBase64, fileSizeLabel } from 'helpers/helpers';
+import { avatarIconURL, decodeBase64, fileSizeLabel } from 'helpers/helpers';
 import { useEffect, useState } from 'react';
 import { basename, extname } from 'path';
 
-const FileShowCell = ({ file, onDelete, uploadingFile }) => {
+const FileShowCell = ({ file, onDelete, uploadingFile, isEditable }) => {
   const { RVDic, RVAPI } = useWindow();
   const [uploadFileInfo, setUploadFileInfo] = useState();
   const isTabletOrMobile = DimensionHelper()?.isTabletOrMobile;
@@ -48,19 +48,24 @@ const FileShowCell = ({ file, onDelete, uploadingFile }) => {
                   width={uploadingFile?.percentCompleted}
                 />
               </Styled.FileFieldProgressBar>
-              <Styled.FileFieldRemoveButton
-                onClick={uploadingFile?.cancelFunction}
-              >
-                <TrashIcon size={'1em'} />
-              </Styled.FileFieldRemoveButton>
+
+              {isEditable && (
+                <Styled.FileFieldRemoveButton
+                  onClick={uploadingFile?.cancelFunction}
+                >
+                  <TrashIcon size={'1em'} />
+                </Styled.FileFieldRemoveButton>
+              )}
             </>
           ) : (
             <>
               <Styled.FileFieldAvatarWrapper>
-                <Styled.FileFieldAvatar
-                  className="form-file-show-avatar"
-                  userImage={'https://i.pravatar.cc/300'}
-                />
+                {file.Creator && (
+                  <Styled.FileFieldAvatar
+                    className="form-file-show-avatar"
+                    userImage={avatarIconURL(file.Creator)}
+                  />
+                )}
                 <Styled.FileFieldMutedInfoText width="5rem" truncate>
                   {fileSizeLabel(file?.Size)}
                 </Styled.FileFieldMutedInfoText>
@@ -75,9 +80,11 @@ const FileShowCell = ({ file, onDelete, uploadingFile }) => {
                   {RVDic.Download}
                 </Link>
               </Styled.FileFieldDownloadButton>
-              <Styled.FileFieldRemoveButton onClick={onDelete}>
-                <TrashIcon size={15} />
-              </Styled.FileFieldRemoveButton>
+              {isEditable && (
+                <Styled.FileFieldRemoveButton onClick={onDelete}>
+                  <TrashIcon size={15} />
+                </Styled.FileFieldRemoveButton>
+              )}
             </>
           )}
         </Styled.FileFieldActionWrapper>

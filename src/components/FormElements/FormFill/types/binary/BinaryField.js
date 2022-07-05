@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import FormCell from '../../FormCell';
 import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
@@ -10,9 +10,8 @@ import {
 } from 'constant/CssVariables';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import ToggleIcon from 'components/Icons/ToggleIcon';
-
-const { GlobalUtilities } = window;
-const { to_json } = GlobalUtilities || {};
+import { EditableContext } from '../../FormFill';
+import useWindow from 'hooks/useWindowContext';
 
 const BinaryField = ({
   value,
@@ -23,6 +22,10 @@ const BinaryField = ({
   type,
   ...props
 }) => {
+  const {
+    GlobalUtilities: { to_json },
+  } = useWindow();
+  const editable = useContext(EditableContext);
   const [isFocused, setIsFocused] = useState(false);
   const parseDecodeInfo = to_json(decodeInfo);
   const { Yes, No } = parseDecodeInfo || {};
@@ -46,6 +49,7 @@ const BinaryField = ({
           <Bit
             onClick={() =>
               isFocused &&
+              editable &&
               onAnyFieldChanged(elementId, { label: yes, value: true }, type)
             }
             isFocused={isFocused}
@@ -59,6 +63,7 @@ const BinaryField = ({
             isSelected={value === false}
             onClick={() =>
               isFocused &&
+              editable &&
               onAnyFieldChanged(elementId, { label: no, value: false }, type)
             }
           >

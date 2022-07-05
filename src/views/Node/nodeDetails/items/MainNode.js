@@ -121,7 +121,6 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
               onChange={onTitleChange}
               value={title}
               onFocus={() => {
-                console.log('focused');
                 setTitleEditMode(true);
               }}
               onBlur={onSaveTitle}
@@ -147,16 +146,13 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
           />
         </>
         <>
-          {nodeDetails?.Description?.Editable ? (
-            <ParagraphField
-              decodeTitle={RVDic.Summary}
-              iconComponent={<SummeryInputIcon color={CV_GRAY} />}
-              onAnyFieldChanged={(_, fieldValue) => onSaveDesc(fieldValue)}
-              value={desc}
-            />
-          ) : (
-            <Heading type={'h3'}>{desc}</Heading>
-          )}
+          <ParagraphField
+            decodeTitle={RVDic.Summary}
+            iconComponent={<SummeryInputIcon color={CV_GRAY} />}
+            onAnyFieldChanged={(_, fieldValue) => onSaveDesc(fieldValue)}
+            value={desc}
+            isEditable={nodeDetails?.Description?.Editable}
+          />
         </>
         <TitleContainer>
           <FormCell
@@ -177,8 +173,10 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
                 className="basic-multi-select"
                 classNamePrefix="select"
                 components={{
-                  DropdownIndicator: () => null,
-                  IndicatorSeparator: () => null,
+                  Menu: () => null, // Remove menu
+                  MenuList: () => null, // Remove menu list
+                  DropdownIndicator: () => null, // Remove dropdown icon
+                  IndicatorSeparator: () => null, // Remove separator
                 }}
               />
             </CellContainer>
@@ -209,6 +207,9 @@ const CellContainer = styled.div`
 
 const customStyles = {
   option: (provided, state) => ({
+    ...provided,
+  }),
+  menuPortal: (provided, state) => ({
     ...provided,
   }),
   control: (provided) => ({

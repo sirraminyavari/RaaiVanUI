@@ -12,7 +12,7 @@ import UrlValidator from 'utils/Validation/UrlValidator';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import CustomValidator from 'utils/Validation/CustomValidator';
 import FormCell from '../../FormCell';
-import { CV_GRAY } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
 import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
@@ -33,7 +33,8 @@ const TextField = ({
   number = false,
   save,
 }) => {
-  const { GlobalUtilities } = useWindow();
+  const { GlobalUtilities, RVDic } = useWindow();
+  const editable = useContext(EditableContext);
   const [error, setError] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -74,7 +75,6 @@ const TextField = ({
       }
     }
   };
-  const editable = useContext(EditableContext);
   return (
     <FormCell
       iconComponent={
@@ -94,7 +94,7 @@ const TextField = ({
           setIsFocused(true);
         }}
       >
-        {isFocused ? (
+        {isFocused && editable ? (
           <AnimatedInput
             type={type || parseDecodeInfo?.pattern}
             placeholder={placeholder}
@@ -109,11 +109,13 @@ const TextField = ({
               console.log('onBlur!!!', new Date());
               save(elementId);
             }}
-            style={{ width: number ? '7rem' : '100%' }}
+            style={{ width: number ? '7rem' : '100%', fontSize: '1rem' }}
             children={null}
           />
         ) : (
-          <TextFieldBlurContext>{value}</TextFieldBlurContext>
+          <TextFieldBlurContext muted={!value}>
+            {value ? value : RVDic.Select}
+          </TextFieldBlurContext>
         )}
       </OnClickAway>
     </FormCell>
@@ -139,6 +141,8 @@ TextField.propType = {
 };
 
 const TextFieldBlurContext = styled.span`
-  padding-block: 0.41rem;
+  padding-block: 0.6rem;
   display: block;
+  font-size: 1rem;
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;

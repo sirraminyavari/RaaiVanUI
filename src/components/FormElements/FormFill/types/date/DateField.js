@@ -1,5 +1,5 @@
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import { CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import moment from 'jalali-moment';
 import React, { useContext, useState } from 'react';
@@ -37,7 +37,7 @@ const DateField = ({
           setIsFocused(true);
         }}
       >
-        {isFocused ? (
+        {isFocused && editable ? (
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"
@@ -75,7 +75,7 @@ const DateField = ({
               .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}
           </CalendarBlurContext>
         ) : (
-          <CalendarBlurContext>{RVDic.DateSelect}</CalendarBlurContext>
+          <CalendarBlurContext muted>{RVDic.DateSelect}</CalendarBlurContext>
         )}
       </OnClickAway>
     </FormCell>
@@ -104,4 +104,6 @@ const CalendarBlurContext = styled.span`
   font-size: 1rem;
   padding-block: 0.54rem;
   display: block;
+
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;
