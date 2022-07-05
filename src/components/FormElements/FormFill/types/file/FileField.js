@@ -8,9 +8,10 @@ import FileShowCell from './FileShowCell';
 import { getUploadLink } from 'apiHelper/apiFunctions';
 import axios from 'axios';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { randomNumber } from 'helpers/helpers';
+import { EditableContext } from '../../FormFill';
 
 const FileField = ({
   value,
@@ -23,6 +24,7 @@ const FileField = ({
   ...rest
 }) => {
   const { RVDic } = useWindow();
+  const editable = useContext(EditableContext);
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState([]);
   const [readyToUploadFiles, setReadyToUploadFiles] = useState([]);
@@ -156,6 +158,7 @@ const FileField = ({
       <Styled.FilesContainer isTabletOrMobile={isTabletOrMobile}>
         {allFiles?.map((file, key) => (
           <FileShowCell
+            isEditable={editable}
             file={file}
             key={key}
             onDelete={() => setDeleteModalStatus(file.FileID)}
@@ -164,20 +167,22 @@ const FileField = ({
         {uploadingFiles?.map((file, key) => {
           return <FileShowCell uploadingFile={file} key={key} />;
         })}
-        <CustomDropZone
-          maxFiles={2} //! (infoJSON?.MaxCount)
-          maxTotalSize={2} //! (infoJSON?.TotalSize)
-          maxEachSize={1} //! (infoJSON?.MaxSize)
-          accept={['image/*']} //! (infoJSON?.AllowedExtensions)
-          onUpload={(acceptedFiles) =>
-            handleUploadFile(acceptedFiles, allFiles)
-          }
-          placeholders={{
-            main: RVDic.DropFilesHere,
-            dragging: 'اینجا رها کنید...',
-          }}
-          onError={(error) => console.log(error)}
-        />
+        {editable && (
+          <CustomDropZone
+            maxFiles={2} //! (infoJSON?.MaxCount)
+            maxTotalSize={2} //! (infoJSON?.TotalSize)
+            maxEachSize={1} //! (infoJSON?.MaxSize)
+            accept={['image/*']} //! (infoJSON?.AllowedExtensions)
+            onUpload={(acceptedFiles) =>
+              handleUploadFile(acceptedFiles, allFiles)
+            }
+            placeholders={{
+              main: RVDic.DropFilesHere,
+              dragging: 'اینجا رها کنید...',
+            }}
+            onError={(error) => console.log(error)}
+          />
+        )}
       </Styled.FilesContainer>
     </FormCell>
   );

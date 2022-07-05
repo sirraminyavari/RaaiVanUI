@@ -4,14 +4,11 @@ import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
 import RadioButtonIcon from 'components/Icons/RadioButtonIcon';
 import {
-  CV_DISTANT,
   CV_GRAY,
-  TCV_DEFAULT,
-  TCV_VERYWARM,
   TCV_WARM,
   CV_WHITE,
-  CV_RED_LIGHTWARM,
   CV_FREEZED,
+  CV_DISTANT,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
@@ -103,16 +100,7 @@ const SingleSelectField = ({
           setIsFocused(true);
         }}
       >
-        {/* {value ? (
-        <Selected
-          className={'rv-border-radius-half'}
-          onClick={() =>
-            onAnyFieldChanged(elementId, { value: null, label: null }, type)
-          }>
-          {selectedValue?.label}
-        </Selected>
-      ) : ( */}
-        {isFocused ? (
+        {isFocused && editable ? (
           <Select
             onBlur={() => save(elementId)}
             options={normalizedOptions}
@@ -124,10 +112,9 @@ const SingleSelectField = ({
           />
         ) : (
           <SelectedMaintainer>
-            <Selected>{value ? value : RVDic.Select}</Selected>
+            <Selected muted={!value}>{value ? value : RVDic.Select}</Selected>
           </SelectedMaintainer>
         )}
-        {/* )} */}
       </OnClickAway>
     </FormCell>
   );
@@ -136,9 +123,11 @@ export default SingleSelectField;
 
 const Selected = styled.div`
   background-color: #e6f4f1;
-  margin-block: 0;
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
+  margin-block: 0.18rem;
   margin-inline: 0.5rem;
-  padding: 0.5rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.4rem;
   border-radius: 0.5rem;
 `;
 const SelectedMaintainer = styled.div`

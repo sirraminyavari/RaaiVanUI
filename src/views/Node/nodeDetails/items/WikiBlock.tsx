@@ -25,7 +25,7 @@ const WikiBlock = ({ nodeId }) => {
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
               getMentionLink: async (search) => {
-                console.log(search);
+                console.log({ search });
                 const rawMentions = await suggestTags({ text: search });
                 const mentions = rawMentions.map((suggestTag) => ({
                   ...suggestTag,

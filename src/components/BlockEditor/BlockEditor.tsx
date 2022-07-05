@@ -67,7 +67,7 @@ export default BlockEditorWrapper;
 const BlockEditorStyler = styled.div.attrs<{
   readOnly?: boolean;
   textarea?: boolean;
-}>(({ textarea, readOnly }) => textarea && { className: 'rv-input' })<{
+}>(({ textarea }) => textarea && { className: 'rv-input' })<{
   readOnly?: boolean;
   textarea?: boolean;
 }>`
@@ -83,6 +83,10 @@ const BlockEditorStyler = styled.div.attrs<{
     readOnly &&
     `
       border-color: transparent;
+      &:hover {
+        border-color: transparent;
+
+      }
   `}
   & > div {
     font-family: inherit;

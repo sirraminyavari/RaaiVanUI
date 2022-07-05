@@ -1,4 +1,10 @@
-import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_FREEZED,
+  CV_GRAY,
+  CV_WHITE,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React, { useContext, useState } from 'react';
 import Select from 'react-select';
@@ -7,6 +13,7 @@ import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
 import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import useWindow from 'hooks/useWindowContext';
 
 const MultiSelectField = ({
   value,
@@ -18,6 +25,7 @@ const MultiSelectField = ({
   save,
   ...props
 }) => {
+  const { RVDic } = useWindow();
   const parseDecodeInfo = JSON.parse(decodeInfo);
   const [isFocused, setIsFocused] = useState(false);
   const { Options } = parseDecodeInfo || {};
@@ -98,17 +106,6 @@ const MultiSelectField = ({
       title={decodeTitle}
       {...props}
     >
-      {/* {value && selectedOptions?.length > 0 ? (
-        <SelectedMaintainer>
-          {selectedOptions?.map((x) => (
-            <Selected
-              className={'rv-border-radius-half'}
-              onClick={() => onAnyFieldChanged(elementId, [], type)}>
-              {x?.label}
-            </Selected>
-          ))}
-        </SelectedMaintainer>
-      ) : ( */}
       <OnClickAway
         style={{}}
         onAway={() => setIsFocused(false)}
@@ -117,7 +114,7 @@ const MultiSelectField = ({
           setIsFocused(true);
         }}
       >
-        {isFocused ? (
+        {isFocused && editable ? (
           <Select
             onBlur={() => {
               save(elementId);
@@ -134,14 +131,15 @@ const MultiSelectField = ({
             classNamePrefix="select"
           />
         ) : (
-          <SelectedMaintainer>
-            {selectedOptions.map(({ label }, idx) => {
-              return <Selected key={idx}>{label}</Selected>;
-            })}
+          <SelectedMaintainer muted={!selectedOptions.length}>
+            {selectedOptions.length
+              ? selectedOptions.map(({ label }, idx) => {
+                  return <Selected key={label + idx}>{label}</Selected>;
+                })
+              : RVDic.Select}
           </SelectedMaintainer>
         )}
       </OnClickAway>
-      {/* )} */}
     </FormCell>
   );
 };
@@ -150,11 +148,13 @@ const Selected = styled.div`
   background-color: #e6f4f1;
   margin-block: 0.18rem;
   margin-inline: 0.5rem;
-  padding: 0.5rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.4rem;
   border-radius: 0.5rem;
 `;
 const SelectedMaintainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;
