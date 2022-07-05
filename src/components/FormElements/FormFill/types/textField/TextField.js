@@ -17,6 +17,8 @@ import NumberIcon from 'components/Icons/NymberIcon';
 import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
 import TextInputIcon from 'components/Icons/InputIcon/TextInputIcon';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
+import styled from 'styled-components';
 
 const TextField = ({
   value,
@@ -33,6 +35,7 @@ const TextField = ({
 }) => {
   const { GlobalUtilities } = useWindow();
   const [error, setError] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const parseDecodeInfo = GlobalUtilities.to_json(decodeInfo);
   const { Pattern } = parseDecodeInfo || {};
@@ -83,23 +86,36 @@ const TextField = ({
       }
       title={decodeTitle}
     >
-      <AnimatedInput
-        type={type || parseDecodeInfo?.pattern}
-        placeholder={placeholder}
-        error={error}
-        disabled={!editable}
-        afterChangeListener={() => errorHandler(value)}
-        value={!!value ? value : ''}
-        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-        onBlur={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('onBlur!!!', new Date());
-          save(elementId);
+      <OnClickAway
+        style={{ width: '100%' }}
+        onAway={() => setIsFocused(false)}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
         }}
-        style={{ width: number ? '7rem' : '100%' }}
-        children={null}
-      />
+      >
+        {isFocused ? (
+          <AnimatedInput
+            type={type || parseDecodeInfo?.pattern}
+            placeholder={placeholder}
+            error={error}
+            disabled={!editable}
+            afterChangeListener={() => errorHandler(value)}
+            value={!!value ? value : ''}
+            onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+            onBlur={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('onBlur!!!', new Date());
+              save(elementId);
+            }}
+            style={{ width: number ? '7rem' : '100%' }}
+            children={null}
+          />
+        ) : (
+          <TextFieldBlurContext>{value}</TextFieldBlurContext>
+        )}
+      </OnClickAway>
     </FormCell>
   );
 };
@@ -121,3 +137,8 @@ TextField.propType = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
+
+const TextFieldBlurContext = styled.span`
+  padding-block: 0.41rem;
+  display: block;
+`;

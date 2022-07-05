@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
@@ -14,6 +14,7 @@ import {
   CV_FREEZED,
 } from 'constant/CssVariables';
 import styled from 'styled-components';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
 
 const { RVDic } = window;
@@ -28,6 +29,7 @@ const SingleSelectField = ({
   ...props
 }) => {
   const editable = useContext(EditableContext);
+  const [isFocused, setIsFocused] = useState(false);
   const parseDecodeInfo = JSON.parse(decodeInfo);
   const { Options } = parseDecodeInfo || {};
   const normalizedOptions = Options?.map((x) => {
@@ -92,7 +94,15 @@ const SingleSelectField = ({
       title={decodeTitle}
       {...props}
     >
-      {/* {value ? (
+      <OnClickAway
+        style={{}}
+        onAway={() => setIsFocused(false)}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
+        }}
+      >
+        {/* {value ? (
         <Selected
           className={'rv-border-radius-half'}
           onClick={() =>
@@ -101,16 +111,23 @@ const SingleSelectField = ({
           {selectedValue?.label}
         </Selected>
       ) : ( */}
-      <Select
-        onBlur={() => save(elementId)}
-        options={normalizedOptions}
-        styles={customStyles}
-        isDisabled={!editable}
-        value={selectedValue}
-        placeholder={RVDic.Select}
-        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-      />
-      {/* )} */}
+        {isFocused ? (
+          <Select
+            onBlur={() => save(elementId)}
+            options={normalizedOptions}
+            styles={customStyles}
+            isDisabled={!editable}
+            value={selectedValue}
+            placeholder={RVDic.Select}
+            onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+          />
+        ) : (
+          <SelectedMaintainer>
+            <Selected>{selectedValue.label}</Selected>
+          </SelectedMaintainer>
+        )}
+        {/* )} */}
+      </OnClickAway>
     </FormCell>
   );
 };
@@ -118,5 +135,13 @@ export default SingleSelectField;
 
 const Selected = styled.div`
   background-color: #e6f4f1;
+  margin-block: 0;
+  margin-inline: 0.5rem;
   padding: 0.5rem;
+  border-radius: 0.5rem;
+`;
+const SelectedMaintainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;

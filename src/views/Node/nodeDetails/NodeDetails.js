@@ -27,7 +27,7 @@ const NodeDetails = (props) => {
 
   return (
     <PropsContext.Provider value={props}>
-      <WelcomeLayout withScrollbar noOutline>
+      <>
         {/* If True, will render MobileView component */}
         <Collector
           nodeId={NodeID}
@@ -36,7 +36,7 @@ const NodeDetails = (props) => {
           {...props}
         />
         {/* <NodeView {...props} /> */}
-      </WelcomeLayout>
+      </>
     </PropsContext.Provider>
   );
 };
