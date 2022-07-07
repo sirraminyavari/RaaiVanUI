@@ -1,22 +1,45 @@
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import ArrowIcon from 'components/Icons/ArrowIcons/Arrow';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import { useDispatch } from 'react-redux';
 import { useThemeSlice } from 'store/slice/theme';
+import { useState, useEffect } from 'react';
+import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
+import api from 'apiHelper';
 
 const TemplateSetting = () => {
+  const { RVDic } = window;
   const { pathname } = useLocation();
   const path = pathname.split('/');
-  const title = decodeBase64(path[path.length - 2]);
+  const id = decodeBase64(path[path.length - 2]);
   const root = path.filter((x, i) => i < path.length - 1).join('/');
+
+  const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState('');
+  const [iconUrl, setIconURL] = useState();
 
   const dispatch = useDispatch();
   const {
     actions: { setSidebarContent },
   } = useThemeSlice();
   const { RV_RevFloat } = window;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { TypeName, IconURL } = (
+        await api?.CN?.getNodeTypes({
+          NodeTypeIDs: [id],
+          Icon: true,
+        })
+      )?.NodeTypes[0];
+      setTitle(decodeBase64(TypeName));
+      setIconURL(IconURL);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const handleOnClick = () => {
     dispatch(
@@ -49,15 +72,21 @@ const TemplateSetting = () => {
     },
     {
       id: 5,
-      title: 'اعضا',
+      title: RVDic?.Members,
       linkTo: `${root}/members`,
     },
   ];
+
+  if (loading) return <LogoLoader />;
+
   return (
     <>
       <Styled.SidebarTitle>
         <Styled.CenterIcon>
-          <Styled.TitleText>{title}</Styled.TitleText>
+          <Styled.TitleTextContainer>
+            <Styled.TitleImage src={iconUrl} />
+            <Styled.TitleText>{title}</Styled.TitleText>
+          </Styled.TitleTextContainer>
         </Styled.CenterIcon>
         <Styled.SettingWrapper onClick={handleOnClick}>
           <ArrowIcon dir={RV_RevFloat} size={25} />

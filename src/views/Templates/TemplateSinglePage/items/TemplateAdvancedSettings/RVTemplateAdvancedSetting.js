@@ -14,6 +14,7 @@ import RVMainContentSetting from './items/RVMainContentSetting';
 const RVTemplateAdvancedSetting = () => {
   const { RVDic, RV_RTL: rtl } = window;
   const { id, title } = useParams();
+
   const breadItems = [
     {
       id: 1,

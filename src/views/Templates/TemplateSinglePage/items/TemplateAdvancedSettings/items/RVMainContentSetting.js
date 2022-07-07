@@ -5,10 +5,12 @@ import CustomSelect from '../../../../../../components/Inputs/CustomSelect/Custo
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
 import { setServiceSuccessMessage } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import InfoMessage from 'components/toasts/info-toast/InfoMessage';
+import useAdvancedSetting from '../useAdvancedSetting';
 
 const RVMainContentSetting = () => {
   const { RVDic } = window;
   const { SuccessMessage, NodeTypeID } = useTemplateContext();
+  const { Pattern } = useAdvancedSetting();
 
   const AdminOption = [
     {
@@ -63,7 +65,7 @@ const RVMainContentSetting = () => {
             {'الگوی کددهی آیتم‌ها'}
           </Styled.BlockSectionTitle>
           <Styled.BlockSectionInputContainer>
-            <CodingPattern />
+            <CodingPattern pattern={Pattern} />
           </Styled.BlockSectionInputContainer>
         </Styled.BlockSection>
 

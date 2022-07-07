@@ -27,6 +27,7 @@ export const SideForm = styled.div`
   border-radius: 0.625rem;
   box-shadow: 1px 5px 15px #0000001f;
   flex-basis: 19.8rem;
+  min-width: 19rem;
   min-height: calc(100vh - 8rem);
   overflow: hidden;
   background-color: ${CV_GRAY_LIGHT};

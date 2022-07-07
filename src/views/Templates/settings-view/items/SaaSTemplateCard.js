@@ -14,7 +14,7 @@ const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {
   const { path } = useRouteMatch();
 
   const handleCardClick = () => {
-    history.push(`${path}/${NodeTypeID}/${encodeBase64(TypeName)}`);
+    history.push(`${path}/${NodeTypeID}`);
   };
 
   return (

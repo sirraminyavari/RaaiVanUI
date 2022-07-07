@@ -36,16 +36,17 @@ export const EditButton = styled.button`
   }
 `;
 export const InputData = styled.div`
-  height: 3rem;
+  min-height: 3rem;
   flex: 1;
   ${({ modal }) => !modal && ' max-width: 38rem'};
   width: 100%;
   border: 0.0625rem solid ${CV_DISTANT};
   border-radius: 0.5rem;
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   ${FLEX_RCS};
   ${({ modal }) => (!modal ? FLEX_RCS : FLEX_RCC)};
   gap: 0.5rem;
+  flex-flow: wrap;
   background-color: ${CV_WHITE};
 `;
 

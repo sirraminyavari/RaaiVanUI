@@ -120,7 +120,7 @@ export const setAdditionalIdPattern = ({
 }) => {
   return apiCallWrapper(API_Provider(CN_API, 'SetAdditionalIDPattern'), {
     NodeTypeID,
-    AdditionalIDPattern: encodeBase64(Pattern),
+    AdditionalIDPattern: Pattern,
   });
 };
 
@@ -314,4 +314,22 @@ export const getAllFieldsOfActivity = () => {
     API_Provider(CN_API, 'GetAllFieldsOfActivity'),
     {}
   );
+};
+
+/**
+ * @description generate example out of a ptternID
+ * @param {string} NodeTypeID the id of class/template
+ * @param {string} AdditionalIDPattern is the pattern in which the example are made from
+ */
+export const generateAdditionalID = ({
+  NodeTypeID,
+  AdditionalIDPattern,
+}: {
+  NodeTypeID: string;
+  AdditionalIDPattern: string;
+}) => {
+  return apiCallWrapper<any>(API_Provider(CN_API, 'GenerateAdditionalID'), {
+    NodeTypeID,
+    AdditionalIDPattern,
+  });
 };
