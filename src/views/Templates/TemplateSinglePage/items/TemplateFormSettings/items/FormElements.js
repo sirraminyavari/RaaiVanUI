@@ -19,6 +19,8 @@ import {
 import CellPhoneIcon from 'components/Icons/CellPhoneIcon/CellPhoneIcon';
 import { IoMdRadioButtonOn } from 'react-icons/io';
 import { BsTable } from 'react-icons/bs';
+import ShortTextIcon from 'components/Icons/ShortTextIcon';
+import ParagraphIcon from 'components/Icons/ParagraphIcon';
 
 const sharedProps = {
   Name: '', //optional
@@ -42,7 +44,7 @@ const formElementList = () => {
           id: getUUID(),
           title: 'متن کوتاه',
           type: 'shortText',
-          icon: <TextInputIcon size={size} />,
+          icon: <ShortTextIcon size={size} />,
           data: {
             ...sharedProps,
             Type: 'Text',
@@ -53,7 +55,7 @@ const formElementList = () => {
           id: getUUID(),
           title: 'پاراگراف',
           type: 'paragraph',
-          icon: <TextAreaIcon size={size} />,
+          icon: <ParagraphIcon size={size} />,
           data: {
             ...sharedProps,
             Type: 'Text',
