@@ -143,8 +143,19 @@ export const Clone = styled(FormElementItem)`
 `;
 
 export const DragPlaceholder = styled.div`
-  height: 6rem;
-  width: 100%;
   background-color: #2b7be40d;
   border-radius: 0.8rem;
+  top: ${({ clientY }) => clientY - 8 || 0}px;
+  left: ${({ clientX }) => clientX || 0}px;
+  height: ${({ clientHeight }) => clientHeight || 0}px;
+  width: ${({ clientWidth }) => clientWidth || 0}px;
+  position: absolute;
+
+  ${FLEX_CCC};
+  color: var(--rv-color-distant);
+
+  svg {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
 `;

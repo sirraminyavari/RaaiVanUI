@@ -7,6 +7,7 @@ export const DroppableContainer = styled.div`
   height: calc(100vh - 22rem);
   width: 100%;
   overflow: scroll;
+  position: relative;
 `;
 
 export const DraggableFormObject = styled.div`

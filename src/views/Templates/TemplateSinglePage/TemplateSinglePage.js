@@ -67,8 +67,6 @@ const TemplateSinglePage = () => {
         setExtensions(_extensions);
         setService(_service);
         setLoading(false);
-
-        console.log(_extensions, _service);
       }
     };
     fetchData();

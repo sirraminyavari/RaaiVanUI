@@ -8,6 +8,8 @@ import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
 
 const TemplateFormContext = createContext({});
 
+export const FORM_BUILDER_ID = 'FORM_BUILDER_ID';
+
 export const useTemplateFormContext = () => {
   const context = useContext(TemplateFormContext);
   return context;
@@ -71,7 +73,7 @@ export const TemplateFormProvider = ({ children, initialState }) => {
     formPreProcessDataModel(initialState);
   }, [initialState]);
 
-  useEffect(() => console.log(formObjects), [formObjects]);
+  useEffect(() => {}, [formObjects]);
 
   const saveForm = async () => {
     const Elements = formObjects

@@ -8,7 +8,7 @@ const FormElementList = () => {
   return (
     <Styles.FormElementList>
       {_list.map((x) => {
-        const { id, title, items } = x;
+        const { id, title, items, type } = x;
         return (
           <Styles.FromElementGroupLabel key={id}>
             <Styles.FromElementGroupLabel>{title}</Styles.FromElementGroupLabel>
@@ -22,10 +22,14 @@ const FormElementList = () => {
                   <Styles.FormElementListWrapper
                     height={(items?.length - 1) * 6.4}
                   >
-                    {[...items].map((l, index) => {
-                      const { title, id, icon } = l;
+                    {items?.map((l, index) => {
+                      const { title, id, icon, type } = l;
                       return (
-                        <Draggable key={id} draggableId={`${id}`} index={index}>
+                        <Draggable
+                          key={id}
+                          draggableId={`${id}-${type}`}
+                          index={index}
+                        >
                           {(provided, snapshot) => (
                             <>
                               <Styles.FormElementItem

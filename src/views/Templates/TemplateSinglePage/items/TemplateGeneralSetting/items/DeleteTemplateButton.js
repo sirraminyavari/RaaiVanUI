@@ -10,24 +10,25 @@ import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import { removeNodeType } from 'apiHelper/ApiHandlers/CNAPI';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { useHistory } from 'react-router-dom';
+import { TEMPLATES_SETTING_PATH } from 'constant/constants';
 
 const DeleteTemplateButton = () => {
+  const { RVDic } = window;
   const [modalInfo, setModalInfo] = useState({
-    title: 'حذف تمپلیت',
+    title: RVDic?.RemoveN.replace('[n]', RVDic?.Template),
     contentWidth: '25%',
     middle: true,
     show: false,
     titleClass: 'rv-red',
     titleContainerClass: 'modal-title-bar',
   });
-
-  const { RVDic } = window;
   const { Title, NodeTypeID } = useTemplateContext();
+  const history = useHistory();
 
   const onModalConfirm = async () => {
     setModalInfo({ ...modalInfo, show: false });
-
-    const { ErrorText } = await removeNodeType({ NodeTypeID });
+    const { ErrorText, Succeed } = await removeNodeType({ NodeTypeID });
 
     if (ErrorText) {
       InfoToast({
@@ -36,6 +37,8 @@ const DeleteTemplateButton = () => {
         message: RVDic?.MSG[ErrorText] || ErrorText,
       });
     }
+
+    if (Succeed) history?.push(TEMPLATES_SETTING_PATH);
   };
 
   const onModalCancel = () => {
@@ -46,7 +49,7 @@ const DeleteTemplateButton = () => {
     <>
       <DeleteButton onClick={() => setModalInfo({ ...modalInfo, show: true })}>
         <TrashIcon />
-        <div>{'حذف تمپلیت'}</div>
+        <div>{RVDic?.RemoveN.replace('[n]', RVDic?.Template)}</div>
       </DeleteButton>
 
       <Modal
@@ -55,7 +58,10 @@ const DeleteTemplateButton = () => {
       >
         <DeleteConfirmMSG
           title={decodeBase64(`${Title}`)}
-          question={'آیا از حذف تمپلیت اطمینان دارید؟'}
+          question={RVDic.Confirms.AreYouSureYouWantToDeleteTheN.replace(
+            '[n]',
+            RVDic.Template
+          )}
           warning={
             'تمپلیت‌ها پس از حذف در قسمت بایگانی در مدیریت تمپلیت‌ها .قابل بازیابی و استفاده مجدد هستند'
           }
@@ -87,9 +93,6 @@ const DeleteButton = styled.button`
   ${FLEX_RCC};
   cursor: pointer;
   gap: 0.5rem;
-  position: absolute;
-  right: 0;
-  left: 0;
   bottom: 1.5rem;
   transition: all 0.15s ease-in-out;
 

@@ -21,7 +21,6 @@ const TemplateFormSettings = () => {
     const data = await API.FG.getFormElements({
       FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
     });
-    console.log(data);
     setFormInitialState(data);
   };
 

@@ -1,5 +1,5 @@
 import * as Styled from './TemplateGeneralSettingsStyles';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { decodeBase64 } from 'helpers/helpers';
 import TemplateUploadIcon from './items/TemplateUploadIcon';
@@ -10,26 +10,29 @@ import TemplateTitleForm from './items/TemplateTitleForm';
 import CMConfidentialitySetting from './CMConfidetialitySetting/CMConfidentialitySetting';
 import { PRIVACY_OBJECT_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
 import { ReturnButton } from '../../TemplateSinglePageStyles';
+import { useTemplateContext } from '../../TemplateProvider';
+import { TEAM_SETTINGS_PATH, TEMPLATES_SETTING_PATH } from 'constant/constants';
 
 const TemplateGeneralSettings = () => {
-  const { id, title } = useParams();
   const { RVDic, RV_RTL, RVGlobal } = window;
   const isSaas = RVGlobal?.SAASBasedMultiTenancy;
+  const { Title } = useTemplateContext();
+  const history = useHistory();
 
   const breadItems = [
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: '',
+      linkTo: TEAM_SETTINGS_PATH,
     },
     {
       id: 2,
-      title: 'مدیریت قالب ها',
-      linkTo: '',
+      title: RVDic?.TemplateManagement,
+      linkTo: TEMPLATES_SETTING_PATH,
     },
     {
       id: 3,
-      title: `قالب ${decodeBase64(title)}`,
+      title: `قالب ${decodeBase64(Title)}`,
       linkTo: '',
     },
     {
@@ -38,28 +41,34 @@ const TemplateGeneralSettings = () => {
       linkTo: '',
     },
   ];
+
   return (
     <Styled.Container>
       <Styled.MainForm>
         <Breadcrumb items={breadItems} />
 
-        <ReturnButton rtl={RV_RTL}>{RVDic?.Return}</ReturnButton>
+        <ReturnButton
+          $rtl={RV_RTL}
+          onClick={() => history.push(TEMPLATES_SETTING_PATH)}
+        >
+          {RVDic?.Return}
+        </ReturnButton>
         <MainFormContainer>
           <TemplateUploadIcon />
           {/*<AvatarImageCropper />*/}
-          <TemplateTitleForm name={decodeBase64(title)} />
+          <TemplateTitleForm name={decodeBase64(Title)} />
         </MainFormContainer>
 
         {isSaas ? (
           <CMConfidentialitySetting type={PRIVACY_OBJECT_TYPE?.NodeType} />
-        ) : (
-          ''
-        )}
+        ) : null}
       </Styled.MainForm>
 
       <Styled.SideForm>
-        <Styled.SideFormHeader>{'تنظیمات عمومی'}</Styled.SideFormHeader>
+        <Styled.SideFormHeader>{RVDic?.GeneralSettings}</Styled.SideFormHeader>
         <TemplateGeneralSettingSideForm />
+
+        <Styled.Spacer />
 
         <DeleteTemplateButton />
       </Styled.SideForm>

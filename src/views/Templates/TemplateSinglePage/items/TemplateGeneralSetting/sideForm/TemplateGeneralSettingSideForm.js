@@ -3,6 +3,8 @@ import ToggleButton from 'components/Buttons/Toggle/Toggle';
 import { useTemplateGeneralSettingSideForm } from './useTemplateGeneralSettingSideForm';
 
 const TemplateGeneralSettingSideForm = () => {
+  const { RVDic } = window;
+
   const {
     wiki,
     posts,
@@ -21,9 +23,9 @@ const TemplateGeneralSettingSideForm = () => {
   return (
     <Styled.Container>
       <Styled.Block>
-        <Styled.Title>{'ساختار قالب'}</Styled.Title>
+        <Styled.Title>{RVDic?.TemplateStructure}</Styled.Title>
         <Styled.Section>
-          <Styled.ItemTitle>{'دانش‌نامه قالب فعال باشد'}</Styled.ItemTitle>
+          <Styled.ItemTitle>{RVDic?.EnableWiki}</Styled.ItemTitle>
           <ToggleButton value={wiki} onToggle={handleWikiState} />
         </Styled.Section>
 

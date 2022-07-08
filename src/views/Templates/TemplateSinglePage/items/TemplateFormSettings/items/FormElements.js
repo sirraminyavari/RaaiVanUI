@@ -8,6 +8,7 @@ import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon
 import {
   BsFileEarmarkArrowUp,
   FiToggleLeft,
+  GiCannonShot,
   IoDocumentOutline,
   IoFilter,
   IoIosCheckboxOutline,
@@ -40,7 +41,7 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'متن کوتاه',
-          type: 'short text',
+          type: 'shortText',
           icon: <TextInputIcon size={size} />,
           data: {
             ...sharedProps,
@@ -192,6 +193,7 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'چندسطحی',
+          type: 'multi',
           icon: <IoFilter size={size} />,
           data: {
             ...sharedProps,
@@ -268,6 +270,7 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'جدول',
+          type: 'table',
           icon: <BsTable size={size} />,
           data: {
             ...sharedProps,
@@ -291,4 +294,12 @@ const formElementList = () => {
     },
   ];
 };
+
+export const flatFormElements = () => {
+  const list = formElementList()
+    ?.map(({ items }) => items)
+    .flat();
+  return list;
+};
+
 export default formElementList;

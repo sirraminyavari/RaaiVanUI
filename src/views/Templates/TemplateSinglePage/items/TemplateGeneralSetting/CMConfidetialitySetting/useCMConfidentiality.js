@@ -35,7 +35,8 @@ export const useCMConfidentiality = ({ type }) => {
   const [selectedGroups, setSelectedGroups] = useState(accessTypes);
   const [audiences, setAudiences] = useState();
   useEffect(() => {
-    (async () => {
+    let isMounted = true;
+    const fetchData = async () => {
       const _audience = await getAudience({ ObjectID: NodeTypeID, Type: type });
       const _groups = await getGroupsAll();
       const _users = await getUsers({ IsApproved: true });
@@ -43,7 +44,11 @@ export const useCMConfidentiality = ({ type }) => {
       setGroups(_groups);
       setAudiences(_audience);
       setLoading(false);
-    })();
+    };
+    isMounted && fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleUserSelect = (id, state, type) => {
@@ -94,13 +99,18 @@ export const useCMConfidentiality = ({ type }) => {
   };
 
   useEffect(() => {
-    (async () => {
+    let isMounted = true;
+    const setPermisson = async () => {
       if (selectedOption === 'GRANTED') {
         await setBasicPermission({ DefaultValue: true });
       } else if (selectedOption === 'CLASSIFIED') {
         await setBasicPermission({ DefaultValue: false });
       }
-    })();
+    };
+    isMounted && setPermisson();
+    return () => {
+      isMounted = false;
+    };
   }, [selectedOption]);
 
   const setBasicPermission = async ({ DefaultValue }) => {
