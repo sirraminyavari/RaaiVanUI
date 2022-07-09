@@ -13,6 +13,7 @@ import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
 import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import * as Styles from '../formField.styles';
 import useWindow from 'hooks/useWindowContext';
 
 const MultiSelectField = ({
@@ -108,7 +109,6 @@ const MultiSelectField = ({
     >
       <OnClickAway
         style={{}}
-        onAway={() => setIsFocused(false)}
         onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
@@ -118,6 +118,7 @@ const MultiSelectField = ({
           <Select
             onBlur={() => {
               save(elementId);
+              setIsFocused(false);
             }}
             options={normalizedOptions}
             value={selectedOptions}
@@ -131,30 +132,20 @@ const MultiSelectField = ({
             classNamePrefix="select"
           />
         ) : (
-          <SelectedMaintainer muted={!selectedOptions.length}>
+          <Styles.SelectedFieldItemContainer muted={!selectedOptions.length}>
             {selectedOptions.length
               ? selectedOptions.map(({ label }, idx) => {
-                  return <Selected key={label + idx}>{label}</Selected>;
+                  return (
+                    <Styles.SelectedFieldItem key={label + idx}>
+                      {label}
+                    </Styles.SelectedFieldItem>
+                  );
                 })
               : RVDic.Select}
-          </SelectedMaintainer>
+          </Styles.SelectedFieldItemContainer>
         )}
       </OnClickAway>
     </FormCell>
   );
 };
 export default MultiSelectField;
-const Selected = styled.div`
-  background-color: #e6f4f1;
-  margin-block: 0.18rem;
-  margin-inline: 0.5rem;
-  padding-inline: 0.5rem;
-  padding-block: 0.4rem;
-  border-radius: 0.5rem;
-`;
-const SelectedMaintainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  ${({ muted }) => muted && `color:${CV_DISTANT};`}
-`;

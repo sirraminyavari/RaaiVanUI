@@ -1,19 +1,14 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
 import FilterIconIo from 'components/Icons/FilterIconIo';
-import {
-  CV_DISTANT,
-  CV_FREEZED,
-  CV_GRAY,
-  CV_WHITE,
-  TCV_WARM,
-} from 'constant/CssVariables';
-import React, { useContext, useEffect, useState } from 'react';
+import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import * as Styles from '../formField.styles';
 
 const normalizedOptions = (options) =>
   options?.nodes?.map((x) => {
@@ -50,33 +45,40 @@ const MultiLevelField = ({
       setLevels(Levels.map((x, index) => (index === 0 ? { nodes: Nodes } : x)));
     })();
   }, []);
-  useEffect(() => {}, [levels]);
 
-  const onLevelSelected = async (elementId, event, type, index) => {
-    const selectedTemp = selectedLevels?.map((x, ind) =>
-      ind === index
-        ? { ID: event?.value?.NodeID, Name: event?.label }
-        : ind > index
-        ? { ID: '', Name: '' }
-        : x
-    );
-    setSelectedLevels(selectedTemp);
-
-    onAnyFieldChanged(elementId, selectedTemp, type);
-    const exceptFirstLevel = await getChildNodes(
-      NodeType?.ID,
-      event?.value?.NodeID
-    );
-    const { Nodes } = exceptFirstLevel || {};
-
-    if (index + 1 < Levels.length) {
-      const newLevels = levels.map((x, ind) =>
-        ind === index + 1 ? { nodes: Nodes } : x
+  const onLevelSelected = useCallback(
+    async (elementId, event, type, index) => {
+      const selectedTemp = selectedLevels?.map((x, ind) =>
+        ind === index
+          ? { ID: event?.value?.NodeID, Name: event?.label }
+          : ind > index
+          ? { ID: '', Name: '' }
+          : x
       );
+      setSelectedLevels(selectedTemp);
 
-      setLevels(newLevels);
-    }
-  };
+      const exceptFirstLevel = await getChildNodes(
+        NodeType?.ID,
+        event?.value?.NodeID
+      );
+      const { Nodes } = exceptFirstLevel || {};
+
+      if (index + 1 < Levels.length) {
+        const newLevels = levels.map((x, ind) =>
+          ind === index + 1 ? { nodes: Nodes } : x
+        );
+
+        setLevels(newLevels);
+      }
+      onAnyFieldChanged(
+        elementId,
+        selectedTemp,
+        type,
+        index === Levels.length - 1
+      );
+    },
+    [Levels]
+  );
   const editable = useContext(EditableContext);
   return (
     <FormCell
@@ -86,7 +88,9 @@ const MultiLevelField = ({
     >
       <OnClickAway
         style={{}}
-        onAway={() => setIsFocused(false)}
+        onAway={() => {
+          setIsFocused(false);
+        }}
         onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
@@ -105,9 +109,6 @@ const MultiLevelField = ({
                     {!!normalizedOptions(x) || value[index] ? (
                       <SelectContainer>
                         <Select
-                          onBlur={() =>
-                            index === levels?.length - 1 && save(elementId)
-                          }
                           isDisabled={!editable}
                           options={normalizedOptions(x)}
                           styles={customStyles}
@@ -136,18 +137,23 @@ const MultiLevelField = ({
                     ) : null}
                   </>
                 );
+              return null;
             })}
           </SelectorContainer>
         ) : (
-          <SelectedMaintainer
+          <Styles.SelectedFieldItemContainer
             muted={!value.length === value.filter(({ ID }) => !!ID).length}
           >
             {value.length === value.filter(({ ID }) => !!ID).length
               ? value.map(({ Name, ID }) => {
-                  return <Selected key={ID}>{decodeBase64(Name)}</Selected>;
+                  return (
+                    <Styles.SelectedFieldItem key={ID}>
+                      {decodeBase64(Name)}
+                    </Styles.SelectedFieldItem>
+                  );
                 })
               : RVDic.Select}
-          </SelectedMaintainer>
+          </Styles.SelectedFieldItemContainer>
         )}
       </OnClickAway>
     </FormCell>
@@ -165,21 +171,6 @@ const SelectorContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0 -1rem 0 -1rem;
-`;
-
-const Selected = styled.div`
-  background-color: #e6f4f1;
-  margin-block: 0.18rem;
-  margin-inline: 0.5rem;
-  padding-inline: 0.5rem;
-  padding-block: 0.4rem;
-  border-radius: 0.5rem;
-`;
-const SelectedMaintainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;
 
 const customStyles = {

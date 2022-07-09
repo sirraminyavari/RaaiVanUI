@@ -3,16 +3,10 @@ import Select from 'react-select';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
 import RadioButtonIcon from 'components/Icons/RadioButtonIcon';
-import {
-  CV_GRAY,
-  TCV_WARM,
-  CV_WHITE,
-  CV_FREEZED,
-  CV_DISTANT,
-} from 'constant/CssVariables';
-import styled from 'styled-components';
+import { CV_GRAY, TCV_WARM, CV_WHITE, CV_FREEZED } from 'constant/CssVariables';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import * as Styles from '../formField.styles';
 import useWindow from 'hooks/useWindowContext';
 
 const SingleSelectField = ({
@@ -94,7 +88,6 @@ const SingleSelectField = ({
     >
       <OnClickAway
         style={{}}
-        onAway={() => setIsFocused(false)}
         onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
@@ -102,7 +95,7 @@ const SingleSelectField = ({
       >
         {isFocused && editable ? (
           <Select
-            onBlur={() => save(elementId)}
+            onBlur={() => save(elementId) && setIsFocused(false)}
             options={normalizedOptions}
             styles={customStyles}
             isDisabled={!editable}
@@ -111,27 +104,14 @@ const SingleSelectField = ({
             onChange={(event) => onAnyFieldChanged(elementId, event, type)}
           />
         ) : (
-          <SelectedMaintainer>
-            <Selected muted={!value}>{value ? value : RVDic.Select}</Selected>
-          </SelectedMaintainer>
+          <Styles.SelectedFieldItemContainer>
+            <Styles.SelectedFieldItem muted={!value}>
+              {value ? value : RVDic.Select}
+            </Styles.SelectedFieldItem>
+          </Styles.SelectedFieldItemContainer>
         )}
       </OnClickAway>
     </FormCell>
   );
 };
 export default SingleSelectField;
-
-const Selected = styled.div`
-  background-color: #e6f4f1;
-  ${({ muted }) => muted && `color:${CV_DISTANT};`}
-  margin-block: 0.18rem;
-  margin-inline: 0.5rem;
-  padding-inline: 0.5rem;
-  padding-block: 0.4rem;
-  border-radius: 0.5rem;
-`;
-const SelectedMaintainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`;

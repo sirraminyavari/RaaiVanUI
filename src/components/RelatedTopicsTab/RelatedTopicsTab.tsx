@@ -75,17 +75,8 @@ const RelatedTopicsTab = ({
     );
 
     let availableWidthInContainer = width - RelatedTopicsMoreButtonWidth;
-    console.log({
-      sortedNodes,
-      availableWidthInContainer,
-      RelatedTopicsMoreButtonWidth,
-    });
     for (let idx = 0; idx < itemElements.length; idx++) {
       const itemElementWidth = itemElements[idx].getBoundingClientRect().width;
-      console.log(itemElements[idx], {
-        availableWidthInContainer,
-        itemElementWidth,
-      });
       availableWidthInContainer -= itemElementWidth;
       if (availableWidthInContainer < 0 && idx === 0) {
         setMoreRelatedItemOffset(0);

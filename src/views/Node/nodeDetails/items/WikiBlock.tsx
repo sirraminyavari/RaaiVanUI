@@ -10,11 +10,15 @@ import {
 import { textColors, highlightColors } from 'components/BlockEditor/data';
 
 import BlockEditor from 'components/BlockEditor/BlockEditor';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { IHandleSaveBlocks } from 'components/BlockEditor/BlockEditor.type';
 import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
 
-const WikiBlock = ({ nodeId }) => {
+export type WikiBlockEditor = { nodeId?: string; editable?: boolean };
+
+const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
   const [editorState, setEditorState] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
@@ -81,16 +85,27 @@ const WikiBlock = ({ nodeId }) => {
     // console.log(result, "blocks 'save blocks'");
   };
 
-  return editorState ? (
+  return (
     <>
-      <BlockEditor
-        editorState={editorState}
-        setEditorState={setEditorState}
-        handleSaveBlocks={handleSaveBlocks}
-      />
+      <OnClickAway
+        style={{}}
+        onAway={() => setIsFocused(false)}
+        onDoubleClick={() => {
+          if (isFocused) return;
+          alert('asdasdasd');
+          setIsFocused(true);
+        }}
+      >
+        {editorState && (
+          <BlockEditor
+            editorState={editorState}
+            setEditorState={setEditorState}
+            handleSaveBlocks={handleSaveBlocks}
+            readOnly={!(editable && isFocused)}
+          />
+        )}
+      </OnClickAway>
     </>
-  ) : (
-    ''
   );
 };
 export default WikiBlock;
