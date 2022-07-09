@@ -12,13 +12,13 @@ import UrlValidator from 'utils/Validation/UrlValidator';
 import MobileNumberValidator from 'utils/Validation/MobileNumberValidator';
 import CustomValidator from 'utils/Validation/CustomValidator';
 import FormCell from '../../FormCell';
-import { CV_DISTANT, CV_GRAY } from 'constant/CssVariables';
+import { CV_GRAY } from 'constant/CssVariables';
 import NumberIcon from 'components/Icons/NymberIcon';
 import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
 import TextInputIcon from 'components/Icons/InputIcon/TextInputIcon';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
-import styled from 'styled-components';
+import * as Styles from '../formField.styles';
 
 const TextField = ({
   value,
@@ -88,7 +88,6 @@ const TextField = ({
     >
       <OnClickAway
         style={{ width: '100%' }}
-        onAway={() => setIsFocused(false)}
         onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
@@ -96,7 +95,7 @@ const TextField = ({
       >
         {isFocused && editable ? (
           <AnimatedInput
-            type={type || parseDecodeInfo?.pattern}
+            type={number ? 'number' : type || parseDecodeInfo?.pattern}
             placeholder={placeholder}
             error={error}
             disabled={!editable}
@@ -104,18 +103,18 @@ const TextField = ({
             value={!!value ? value : ''}
             onChange={(event) => onAnyFieldChanged(elementId, event, type)}
             onBlur={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
+              // e.preventDefault();
+              // e.stopPropagation();
               console.log('onBlur!!!', new Date());
               save(elementId);
+              setIsFocused(false);
             }}
             style={{ width: number ? '7rem' : '100%', fontSize: '1rem' }}
-            children={null}
           />
         ) : (
-          <TextFieldBlurContext muted={!value}>
+          <Styles.TextFieldBlurContext muted={!value}>
             {value ? value : RVDic.Select}
-          </TextFieldBlurContext>
+          </Styles.TextFieldBlurContext>
         )}
       </OnClickAway>
     </FormCell>
@@ -139,10 +138,3 @@ TextField.propType = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
-
-const TextFieldBlurContext = styled.span`
-  padding-block: 0.6rem;
-  display: block;
-  font-size: 1rem;
-  ${({ muted }) => muted && `color:${CV_DISTANT};`}
-`;

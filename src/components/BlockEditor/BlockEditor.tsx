@@ -76,6 +76,7 @@ const BlockEditorStyler = styled.div.attrs<{
   ${({ textarea }) =>
     !textarea &&
     `
+      margin-block-start: 3.5rem;
       padding-inline: 3.5rem;
   `}
   ${({ textarea, readOnly }) =>

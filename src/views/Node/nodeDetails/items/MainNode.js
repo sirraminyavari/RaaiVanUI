@@ -18,6 +18,7 @@ import SummeryInputIcon from 'components/Icons/InputIcon/SummeryInputIcon.tsx';
 import useWindowContext from 'hooks/useWindowContext';
 import ParagraphField from 'components/FormElements/FormFill/types/ParagraphField/ParagraphField';
 import TagIcon from 'components/Icons/TagIcon/TagIcon';
+import WikiBlockEditor from 'views/Node/nodeDetails/items/WikiBlock';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -167,6 +168,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
                 isMulti
                 isDisabled={!nodeDetails?.Keywords?.Editable}
                 isClearable
+                placeholder={RVDic.Select}
                 onBlur={onSaveKeywords}
                 onChange={setKeywords}
                 styles={customStyles}
@@ -183,6 +185,8 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
           </FormCell>
         </TitleContainer>
         {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
+
+        <WikiBlockEditor nodeId={nodeId} editable={nodeDetails?.Editable} />
       </Main>
     </>
   );

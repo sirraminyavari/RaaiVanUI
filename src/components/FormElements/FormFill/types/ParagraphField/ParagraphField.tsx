@@ -87,7 +87,6 @@ function ParagraphField({
     <>
       {/*@ts-expect-error */}
       <FormCell iconComponent={iconComponent} title={decodeTitle}>
-        {/*@ts-expect-error */}
         <OnClickAway
           style={{ width: '100%' }}
           onAway={() => setIsFocused(false)}
@@ -103,7 +102,7 @@ function ParagraphField({
                 setEditorState={setEditorState}
                 handleSaveBlocks={handleSaveBlocks}
                 textarea
-                readOnly={!isEditable || !editable || !isFocused}
+                readOnly={!(isEditable || editable) || !isFocused}
               />
             )}
           </>
