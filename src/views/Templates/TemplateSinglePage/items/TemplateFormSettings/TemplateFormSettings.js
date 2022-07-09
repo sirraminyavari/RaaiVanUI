@@ -9,6 +9,7 @@ const TemplateFormSettings = () => {
   const {
     actions: { toggleSidebar },
   } = useThemeSlice();
+
   const dispatch = useDispatch();
   const [formInitialState, setFormInitialState] = useState([]);
 

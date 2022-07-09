@@ -60,7 +60,6 @@ const FormBuilder = ({ placeholderProps }) => {
 
   const placeholder = useMemo(() => {
     const { icon } = placeholderProps || {};
-    console.log(icon);
     return (
       placeholderProps && (
         <Styles.DragPlaceholder {...placeholderProps}>

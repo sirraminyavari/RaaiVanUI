@@ -27,18 +27,24 @@ const TemplateSetting = () => {
   const { RV_RevFloat } = window;
 
   useEffect(() => {
+    let isMount = true;
     const fetchData = async () => {
-      const { TypeName, IconURL } = (
-        await api?.CN?.getNodeTypes({
-          NodeTypeIDs: [id],
-          Icon: true,
-        })
-      )?.NodeTypes[0];
+      const { TypeName, IconURL } =
+        (
+          await api?.CN?.getNodeTypes({
+            NodeTypeIDs: [id],
+            Icon: true,
+          })
+        )?.NodeTypes[0] || {};
       setTitle(decodeBase64(TypeName));
       setIconURL(IconURL);
       setLoading(false);
     };
-    fetchData();
+    isMount && fetchData();
+
+    return () => {
+      isMount = false;
+    };
   }, []);
 
   const handleOnClick = () => {

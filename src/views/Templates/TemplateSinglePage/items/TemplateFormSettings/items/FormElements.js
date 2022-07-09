@@ -30,6 +30,7 @@ const sharedProps = {
   UniqueValue: false, //default: false
   Weight: null, //default: null
 };
+
 const formElementList = () => {
   const { RVDic } = window;
   const size = 22;
@@ -211,9 +212,8 @@ const formElementList = () => {
             Type: 'Numeric',
             Info: {
               PatternName: 'rating',
-              min: '',
-              max: '',
               ViewType: 'numeric',
+              rateNumber: 10,
             },
           },
         },

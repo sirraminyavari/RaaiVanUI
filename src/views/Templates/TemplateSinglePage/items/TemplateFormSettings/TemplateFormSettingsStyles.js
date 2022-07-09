@@ -58,7 +58,7 @@ export const FormElementListPanel = styled.div`
   margin: -1.85rem -1rem 0 0;
   z-index: 1;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
-  overflow: scroll;
+  overflow: hidden;
 `;
 
 export const FormPanel = styled.div`
@@ -69,8 +69,17 @@ export const FormPanel = styled.div`
   padding: 0 1rem;
 `;
 
+export const FormList = styled.ul`
+  padding: 0 0.5rem;
+`;
+
 export const FormElementList = styled.ul`
-  padding: 0;
+  padding: 0rem;
+`;
+
+export const ListWrapper = styled.div`
+  height: calc(100vh - 15rem);
+  overflow: scroll;
 `;
 
 export const FormElementListWrapper = styled.div`
@@ -110,6 +119,7 @@ export const FromElementGroupLabel = styled.div`
   color: ${CV_GRAY};
   list-style-type: none;
   margin-bottom: 1rem;
+  ${({ $rtl }) => ($rtl ? 'padding-right: 1rem' : 'padding-left: 1rem')};
 `;
 
 export const IconWrapper = styled.div`
@@ -157,5 +167,28 @@ export const DragPlaceholder = styled.div`
   svg {
     width: 2rem !important;
     height: 2rem !important;
+  }
+`;
+
+export const SearchFieldContainer = styled.div`
+  ${FLEX_RCB};
+  gap: 0.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid var(--rv-color-distant);
+  padding: 0 0.5rem;
+  color: var(--rv-color-distant);
+  overflow: hidden;
+  margin-bottom: 1rem;
+
+  input {
+    border: none;
+    outline: none;
+    flex: 1;
+    height: 2.5rem;
+  }
+
+  input::placeholder {
+    color: var(--rv-color-distant);
   }
 `;
