@@ -7,6 +7,7 @@ import SaveIcon from 'components/Icons/SaveIcon/Save';
 import DndHandler from './items/DndHandler';
 import { useTemplateContext } from '../../TemplateProvider';
 import { useTemplateFormContext } from './TemplateFormContext';
+import { useState } from 'react';
 
 const TemplateFormWrapper = () => {
   const { RV_RTL: rtl } = window;
@@ -23,10 +24,7 @@ const TemplateFormWrapper = () => {
           <Styled.ButtonTitle>{'پیش‌نمایش'}</Styled.ButtonTitle>
         </Button>
 
-        <Button type="negative-o">
-          <TrashIcon size={17} />
-          <Styled.ButtonTitle>{'حذف فرم'}</Styled.ButtonTitle>
-        </Button>
+        <FormDeleteButton />
 
         <Button type="primary" onClick={saveForm}>
           <SaveIcon size={17} />
@@ -38,6 +36,20 @@ const TemplateFormWrapper = () => {
         <DndHandler />
       </Styled.MainContent>
     </Styled.Container>
+  );
+};
+
+const FormDeleteButton = () => {
+  const { RVDic } = window;
+  const [modalInfo, setModalInfo] = useState({
+    show: false,
+    title: 'حذف فرم',
+  });
+  return (
+    <Button type="negative-o">
+      <TrashIcon size={17} />
+      <Styled.ButtonTitle>{'حذف فرم'}</Styled.ButtonTitle>
+    </Button>
   );
 };
 export default TemplateFormWrapper;

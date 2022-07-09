@@ -73,7 +73,7 @@ export const TemplateFormProvider = ({ children, initialState }) => {
     formPreProcessDataModel(initialState);
   }, [initialState]);
 
-  useEffect(() => {}, [formObjects]);
+  useEffect(() => console.log(formObjects), [formObjects]);
 
   const saveForm = async () => {
     const Elements = formObjects
@@ -82,7 +82,6 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         ElementID: getUUID(),
         ...x,
       }));
-    console.log(Elements);
     const { ErrorText, Succeed } = await saveFormElements({
       FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
       Elements,
