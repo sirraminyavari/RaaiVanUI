@@ -92,7 +92,6 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
         onAway={() => setIsFocused(false)}
         onDoubleClick={() => {
           if (isFocused) return;
-          alert('asdasdasd');
           setIsFocused(true);
         }}
       >
