@@ -30,6 +30,7 @@
             IsDirector: null,
             IsSystemAdmin: null,
             LimitOwnerID: params.LimitOwnerID,
+            EnforceLimits: !!params.EnforceLimits,
             Filled: false,
             Elements: [],
             IsWorkFlowAdmin: params.IsWorkFlowAdmin,
@@ -99,6 +100,7 @@
                 FGAPI.GetFormInstance({
                     InstanceID: that.Objects.InstanceID,
                     LimitOwnerID: that.Objects.LimitOwnerID,
+                    EnforceLimits: that.Objects.EnforceLimits,
                     ShowAllIfNoLimit: that.Options.ShowAllIfNoLimit,
                     PollAbstract: that.Options.PollAbstract,
                     ParseResults: true,
@@ -219,7 +221,7 @@
             var elements = params.Elements || [];
             var showEmptyMessage = true;
             for (var i = 0, lnt = elements.length; i < lnt; ++i) {
-                if (that.Options.HideEmptyElements && that.isempty(elements[i])) continue;
+                if ((that.Options.HideEmptyElements || elements[i].IsWorkFlowField) && that.isempty(elements[i])) continue;
                 that.add_element(elements[i]);
                 showEmptyMessage = false;
             }
@@ -687,16 +689,16 @@
 
         goto_edit_mode: function () {
             var that = this;
-            
-            if (!that.Options.Editable) return;
-            
-            for (var i = 0, lnt = (that.Objects.Elements || []).length; i < lnt; ++i) {
-                if (that.Objects.Elements[i].BodyTextManager.is_edit_mode()) continue;
 
-                that.Objects.Elements[i].BodyTextManager.goto_edit_mode();
-                that.Objects.Elements[i].BodyTextManager.set_data();
-            }
-            
+            if (!that.Options.Editable) return;
+
+            (that.Objects.Elements || [])
+                .filter(elem => !elem.BodyTextManager.is_edit_mode() && !elem.Data.IsWorkFlowField)
+                .forEach(elem => {
+                    elem.BodyTextManager.goto_edit_mode();
+                    elem.BodyTextManager.set_data();
+                });
+
             that.Objects.Editing = true;
             that._set_edit_icon(that.Objects.Editing);
             
@@ -709,15 +711,15 @@
             
             var set_things = function (p) {
                 p = p || {};
-                
-                for (var i = 0, lnt = (that.Objects.Elements || []).length; i < lnt; ++i) {
-                    if ((p.Erred || {})[that.Objects.Elements[i].Data.ElementID]) continue;
-                    
-                    if (that.Objects.Editing) that.Objects.Elements[i].BodyTextManager.goto_edit_mode();
-                    else if (!that.Options.ElementsEditable) that.Objects.Elements[i].BodyTextManager.goto_view_mode();
 
-                    that.Objects.Elements[i].BodyTextManager.set_data();
-                }
+                (that.Objects.Elements || [])
+                    .filter(elem => !(p.Erred || {})[elem.Data.ElementID] && !elem.Data.IsWorkFlowField)
+                    .forEach(elem => {
+                        if (that.Objects.Editing) elem.BodyTextManager.goto_edit_mode();
+                        else if (!that.Options.ElementsEditable) elem.BodyTextManager.goto_view_mode();
+
+                        elem.BodyTextManager.set_data();
+                    });
 
                 that._set_edit_icon(that.Objects.Editing);
 
@@ -790,7 +792,8 @@
             var valuesCount = (element.Abstract || {}).ValuesCount;
             var editionsCount = element.EditionsCount;
             
-            var showEditButton = that.Options.Editable && that.Options.ElementsEditable && !isFormType;
+            var showEditButton = that.Options.Editable && that.Options.ElementsEditable &&
+                !isFormType && !element.IsWorkFlowField;
             var hint = null;
             
             var creatorUserId = (element.Creator || {}).UserID;

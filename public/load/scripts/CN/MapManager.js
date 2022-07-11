@@ -970,16 +970,14 @@
         tree_nodes_edit: function (nodeType, done) {
             var that = this;
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
-                    Style: "margin:0rem auto; padding:1rem;", Name: "container",
-                    Childs: [
-                        that.tree_edit_help_button(),
-                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "_div", Style: "overflow:hidden;" }
-                    ]
-                }
-            ]);
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin:0rem auto; padding:1rem;", Name: "container",
+                Childs: [
+                    that.tree_edit_help_button(),
+                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "_div", Style: "overflow:hidden;" }
+                ]
+            }]);
 
             GlobalUtilities.loading(elems["_div"]);
             GlobalUtilities.show(elems["container"], { OnClose: function () { done(); } });

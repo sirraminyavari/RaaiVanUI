@@ -2118,7 +2118,7 @@ if (!window.GlobalUtilities) window.GlobalUtilities = {
             width = "calc(" + (height * 2) + "rem - " + (margin * 2) + "px)";
             height = height + "rem";
         }
-
+        
         var elems = GlobalUtilities.create_nested_elements([{
             Type: "label", Name: "container",
             Childs: [{

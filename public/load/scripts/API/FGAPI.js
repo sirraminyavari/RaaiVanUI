@@ -262,6 +262,7 @@
         var queryString = (params.InstanceID ? "&InstanceID=" + params.InstanceID : "") +
             (params.LimitOwnerID ? "&LimitOwnerID=" + params.LimitOwnerID : "") +
             (params.ShowAllIfNoLimit ? "&ShowAllIfNoLimit=" + params.ShowAllIfNoLimit : "") +
+            (params.EnforceLimits ? "&EnforceLimits=" + params.EnforceLimits : "") +
             (params.PollAbstract ? "&PollAbstract=" + params.PollAbstract : "");
         return FGAPI._send(url, params, queryString);
     },
@@ -396,6 +397,14 @@
             (params.Count ? "&Count=" + params.Count : "") +
             (params.SortByElementID ? "&SortByElementID=" + params.SortByElementID : "") +
             (params.DESC ? "&DESC=" + params.DESC : "");
+        return FGAPI._send(url, params, queryString);
+    },
+
+    InitializeTemplateForm: function (params) {
+        params = params || {};
+
+        var url = FGAPI.ResponseURL + "/InitializeTemplateForm?timeStamp=" + new Date().getTime();
+        var queryString = (params.NodeTypeID ? "&NodeTypeID=" + params.NodeTypeID : "");
         return FGAPI._send(url, params, queryString);
     },
 
