@@ -1,16 +1,9 @@
-import {
-  CV_DISTANT,
-  CV_FREEZED,
-  CV_GRAY,
-  CV_WHITE,
-  TCV_WARM,
-} from 'constant/CssVariables';
+import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React, { useContext, useState } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import CheckBoxIconIo from 'components/Icons/CheckBoxIconIo';
-import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
 import * as Styles from '../formField.styles';

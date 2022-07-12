@@ -14,6 +14,6 @@ export const getNodePageUrl = (NodeID: string) => {
 
 export const getClassesPageUrl = (ClassID: string, RelatedNodeID?: string) => {
   return `${CLASSES_WITHID_PATH.replace(':id', ClassID)}${
-    RelatedNodeID ? `?relatedNodeID=${RelatedNodeID}` : ''
+    RelatedNodeID ? `?RelatedID=${RelatedNodeID}` : ''
   }`;
 };
