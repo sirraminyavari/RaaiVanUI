@@ -42,6 +42,7 @@ const NodeList = (props) => {
     onClickItem,
     selectedFilters,
   } = props || {};
+
   useTraceUpdate(props);
 
   // to refresh the list value by changing the data, its value will change

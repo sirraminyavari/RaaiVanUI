@@ -12,6 +12,12 @@
         ];
     };
 
+    var get_functions = function () {
+        return [
+            { option: "isEmpty", type: "function", argsLength: 2 }
+        ];
+    };
+
     var parse_variables = variables =>
         (variables || []).reduce((pre, cur) => (pre[cur.Name] = cur.Label, pre), {});
 
@@ -35,11 +41,66 @@
         var that = this;
 
         GlobalUtilities.load_files([{ Root: "jQuery/selectize/", Childs: ["selectize.default.css", "selectize.js"] }], {
-            OnLoad: () => that.initialize()
+            OnLoad: () => that.preinit()
         });
     };
 
     RVFormula.prototype = {
+        preinit: function () {
+            var that = this;
+
+            Selectize.define('function_arguments', function (options) {
+                var functionArgsClass = function (thisRef) {
+                    var self = thisRef;
+                    var original = self.setup;
+
+                    self.setup = function () {
+                        var option_render = self.settings.render.option;
+                        var item_render = self.settings.render.item;
+
+                        /* -- manipulate the rendering of the options
+                        self.settings.render.option = function (option) {
+                            // "render" the original option to get the current HTML
+                            var html = option_render.apply(self, arguments);
+                            var $html = jQuery(html);
+                            console.log(option, "ramin");
+                            if (option.first_func_arg) $html.addClass("first-func-arg");
+                            else if (option.last_func_arg) $html.addClass("last-func-arg");
+                            console.log(jQuery('<div>').append($html.clone()).html(), "ramin 2");
+                            // return NEW $html element as HTML string
+                            return jQuery('<div>').append($html.clone()).html();
+                        }
+                        */
+
+                        self.settings.render.item = function (option) {
+                            // "render" the original item to get the current HTML
+                            var html = item_render.apply(self, arguments);
+                            var $html = jQuery(html);
+
+                            var formula = self.items.map(value => self.options[value]);
+                            
+                            if (RVFormula.has_open_function(formula)) {
+                                if (formula[formula.length - 1].type === "function")
+                                    $html.addClass("selectize-first-func-arg");
+
+                                if (!RVFormula.has_open_function(formula.concat([option])))
+                                    $html.addClass("selectize-last-func-arg");
+                            }
+                            
+                            // return NEW $html element as HTML string
+                            return jQuery('<div>').append($html.clone()).html();
+                        }
+
+                        original.apply(self, arguments);
+                    };
+                };
+
+                functionArgsClass(this, options);
+            });
+
+            that.initialize();
+        },
+
         initialize: function () {
             var that = this;
 
@@ -47,7 +108,7 @@
             var initialOptions = (initialFormula || []).map(x => that.create_option(x));
 
             that.Objects.CurrentOptions = that.get_options().concat(initialOptions);
-            
+
             var formulaInput = that.Objects.FormulaInput = jQuery(that.Container).selectize({
                 delimiter: ",",
                 items: initialOptions.map(x => x.value), //initial value
@@ -58,6 +119,7 @@
                 openOnFocus: true,
                 closeAfterSelect: false,
                 allowEmptyOption: false,
+                plugins: ["function_arguments"],
                 create: function (input) {
                     var isNumber = (input === "0") || (!isNaN(+input) && (+input > 0));
                     var foundOption = that.Objects.CurrentOptions.find(c => c.option == input);
@@ -92,7 +154,8 @@
             option: op.option,
             value: GlobalUtilities.random(1, 99999),
             type: op.type,
-            variable: op.variable
+            variable: op.variable,
+            argsLength: op.argsLength
         }),
 
         ends_with_operator: function () {
@@ -125,6 +188,10 @@
             return (this.Objects.Formula || []).filter(op => op.type === "braces_close").length;
         },
 
+        has_open_function: function (formula) {
+            return RVFormula.has_open_function(formula || this.Objects.Formula || []);
+        },
+
         is_value: (op) => ["variable", "number"].some(tp => op.type === tp),
 
         is_valid_option: function (op) {
@@ -133,17 +200,21 @@
             if (op.type === "braces_open")
                 return that.ends_with_operator() || that.ends_with_braces_open();
             else if (op.type === "braces_close")
-                return (that.close_braces_count() < that.open_braces_count()) &&
+                return (that.close_braces_count() < that.open_braces_count()) && !that.has_open_function() &&
                     (that.ends_with_value() || that.ends_with_braces_close());
             else if (that.is_value(op))
-                return that.ends_with_braces_open() || that.ends_with_operator();
+                return that.ends_with_braces_open() || that.ends_with_operator() || that.has_open_function();
             else if (op.type === "operator")
-                return that.ends_with_value() || that.ends_with_braces_close();
+                return (that.ends_with_value() || that.ends_with_braces_close()) && !that.has_open_function();
+            else if (op.type === "function")
+                return (that.ends_with_braces_open() || that.ends_with_operator()) && !that.has_open_function();
             else return false;
         },
 
         is_valid_formula: function () {
-            return !this.ends_with_operator() && (this.open_braces_count() === this.close_braces_count());
+            return !this.ends_with_operator() &&
+                (this.open_braces_count() === this.close_braces_count()) &&
+                !this.has_open_function();
         },
 
         get_options: function () {
@@ -153,6 +224,7 @@
                 option: that.Options.Variables[key], type: "variable", variable: key
             }))
                 .concat(get_operators())
+                .concat(get_functions())
                 .map(o => that.create_option(o))
                 .filter(op => !!that.is_valid_option(op));
         },
@@ -165,6 +237,14 @@
         }
     };
 
+    RVFormula.has_open_function = function (formula) {
+        formula = formula || [];
+        var lastFuncIndex = formula.map(op => op.type).lastIndexOf("function");
+        var lastFunc = lastFuncIndex >= 0 ? formula[lastFuncIndex] : null;
+
+        return !!lastFunc && ((formula.length - lastFuncIndex - lastFunc.argsLength) <= 0);
+    };
+
     RVFormula.parse_formula = function (formula, variables) {
         variables = variables || {};
 
@@ -174,9 +254,12 @@
             .filter(itm => !!itm)
             .map(itm => {
                 var op = get_operators().find(x => x.option == itm);
+                var func = get_functions().find(x => x.option === itm);
 
                 if (!!op)
                     return op;
+                else if (!!func)
+                    return func;
                 else if (/^\[\[[a-zA-Z0-9\-]+\]\]$/ig.test(itm)) {
                     //itm is variable
                     var key = itm.substring(2, itm.length - 2);

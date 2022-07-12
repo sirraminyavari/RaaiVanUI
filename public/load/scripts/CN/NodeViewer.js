@@ -274,17 +274,26 @@
                             Type: "div", Class: "small-12 medium-12 large-12", Name: "similarNodes",
                             Style: "margin-bottom:1rem; display:none; position:relative;" +
                                 "padding-" + RV_Float + ":6rem;",
-                            Childs: [
-                                {
-                                    Type: "div",
-                                    Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;" +
-                                        "font-size:0.7rem; font-weight:bold; margin-top:0.2rem;",
-                                    Childs: [{ Type: "text", TextValue: RVDic.SimilarNodes + ":" }]
-                                }
-                            ]
+                            Childs: [{
+                                Type: "div",
+                                Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;" +
+                                    "font-size:0.7rem; font-weight:bold; margin-top:0.2rem;",
+                                Childs: [{ Type: "text", TextValue: RVDic.SimilarNodes + ":" }]
+                            }]
                         },
                         {
                             Type: "div", Class: "small-12 medium-12 large-12", Name: "knowledgableUsers",
+                            Style: "margin-bottom:1rem; display:none; position:relative;" +
+                                "padding-" + RV_Float + ":6rem;",
+                            Childs: [{
+                                Type: "div",
+                                Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;" +
+                                    "font-size:0.7rem; font-weight:bold; margin-top:0.2rem;",
+                                Childs: [{ Type: "text", TextValue: RVDic.KnowledgablePeople + ":" }]
+                            }]
+                        },
+                        {
+                            Type: "div", Class: "small-12 medium-12 large-12", Name: "relatedQuestions",
                             Style: "margin-bottom:1rem; display:none; position:relative;" +
                                 "padding-" + RV_Float + ":6rem;",
                             Childs: [
@@ -292,8 +301,9 @@
                                     Type: "div",
                                     Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;" +
                                         "font-size:0.7rem; font-weight:bold; margin-top:0.2rem;",
-                                    Childs: [{ Type: "text", TextValue: RVDic.KnowledgablePeople + ":" }]
-                                }
+                                    Childs: [{ Type: "text", TextValue: RVDic.RelatedQuestions + ":" }]
+                                },
+                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "questions" }
                             ]
                         }
                     ]
@@ -444,6 +454,7 @@
                 if (that.Objects.IsAuthenticated) {
                     if (false) that.show_similar_nodes(elems["similarNodes"], params);
                     if (!that.Options.HideContributors) that.show_knowledgable_users(elems["knowledgableUsers"], params);
+                    if (false) that.show_related_questions(elems["relatedQuestions"], elems["questions"], params);
                 }
 
                 if (contribution) that.set_contributors(elems["contributors"], params);
@@ -2485,14 +2496,12 @@
                 if (!(nodeOwner || {}).NodeID) return jQuery(ownerArea).fadeOut(0);
                 else jQuery(ownerArea).fadeIn(0);
 
-                GlobalUtilities.create_nested_elements([
-                    {
-                        Type: "div", Class: "small-12 medium-12 large-12",
-                        Style: "margin-bottom:0.3rem; text-align:center; font-size:0.7rem; font-weight:bold;",
-                        Link: CNAPI.NodePageURL({ NodeID: nodeOwner.NodeID }),
-                        Childs: [{ Type: "text", TextValue: nodeOwner.Name }]
-                    }
-                ], ownerArea);
+                GlobalUtilities.create_nested_elements([{
+                    Type: "div", Class: "small-12 medium-12 large-12",
+                    Style: "margin-bottom:0.3rem; text-align:center; font-size:0.7rem; font-weight:bold;",
+                    Link: CNAPI.NodePageURL({ NodeID: nodeOwner.NodeID }),
+                    Childs: [{ Type: "text", TextValue: nodeOwner.Name }]
+                }], ownerArea);
             };
 
             _set_owner();
@@ -3106,6 +3115,41 @@
                         OwnerID: params.NodeID,
                         Editable: params.IsAreaAdmin || params.IsServiceAdmin || params.IsSystemAdmin
                     });
+                }
+            });
+        },
+
+        show_related_questions: function (container, itemsContainer) {
+            var that = this;
+
+            GlobalUtilities.load_files(["SimpleListViewer/NewSimpleListViewer.js", "API/QAAPI.js", "QA/QuestionMini.js"], {
+                OnLoad: () => that._show_related_questions(container, itemsContainer)
+            });
+        },
+
+        _show_related_questions: function (container, itemsContainer) {
+            var that = this;
+
+            new NewSimpleListViewer(itemsContainer, {
+                AutoGrow: false,
+                Options: {
+                    InnerWidthOffset: 0, Width: null,
+                    OnDataRequest: function (options, done, setTotalCount) {
+                        QAAPI.GetQuestions(GlobalUtilities.extend(options || {}, {
+                            NodeID: that.Objects.NodeID, ParseResults: true,
+                            ResponseHandler: function (result) {
+                                if (result.TotalCount) jQuery(container).fadeIn(500);
+                                setTotalCount(result.TotalCount);
+                                done((result || {}).Questions || []);
+                            }
+                        }));
+                    },
+                    OnNothingFound: function () {
+                    },
+                    ItemBuilder: function (container, item, params) {
+                        new QuestionMini(container, item, { HideSender: true });
+                        params.OnAfterAdd();
+                    }
                 }
             });
         }

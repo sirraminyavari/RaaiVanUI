@@ -504,3 +504,11 @@
 .selectize-dropdown .optgroup:first-child{
     border-top:0 none;
 }
+
+.selectize-first-func-arg {
+    border-left: 2px solid var(--rv-color-warm);
+}
+
+.selectize-last-func-arg {
+    border-right: 2px solid var(--rv-color-warm);
+}

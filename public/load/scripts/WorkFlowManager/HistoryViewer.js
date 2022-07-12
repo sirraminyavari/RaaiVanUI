@@ -45,6 +45,7 @@
 
         add_history: function (state, params) {
             params = params || {};
+            state = state || {};
 
             if (state.ErrorText) return;
 
@@ -65,50 +66,44 @@
 
             var nodeInfo = director.NodeName == "" ? "" : " - " + director.NodeName + " (" + director.NodeType + ")";
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-quarter SoftBorder", 
-                    Style: "font-size:x-small; margin-bottom:0.3rem; padding:0.5rem", Name: "historyDiv",
-                    Childs: [
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Style: "font-weight:bold; margin-bottom:0.5rem;",
-                            Childs: [{ Type: "text", TextValue: stateTitle }]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12",
-                            Style: "position:relative; padding-" + RV_Float + ":3.5rem; min-height:2.6rem;",
-                            Childs: [
-                                {
-                                    Type: "div", Style: "position:absolute; width:3rem;top:0rem;" + RV_Float + ":0rem;",
-                                    Childs: [
-                                        {
-                                            Type: "img", Class: "rv-border-radius-quarter", Tooltip: director.FullName,
-                                            Style: "width:2.5rem; height:2.5rem;", Name: "userImage",
-                                            Link: RVAPI.UserPageURL({ UserID: director.UserID }),
-                                            Attributes: [{ Name: "src", Value: director.ProfileImageURL }]
-                                        }
-                                    ]
-                                },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "descriptionArea" },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "pollArea" },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "formsArea" },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "attachmentsArea" }
-                            ]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12 RevDirection RevTextAlign",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "Direction TextAlign",
-                                    Style: "display:inline-block; color:green; font-size:x-small;",
-                                    Childs: [{ Type: "text", TextValue: sendDate }]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]);
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12 rv-border-radius-quarter SoftBorder",
+                Style: "font-size:x-small; margin-bottom:0.3rem; padding:0.5rem", Name: "historyDiv",
+                Childs: [
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12",
+                        Style: "font-weight:bold; margin-bottom:0.5rem;",
+                        Childs: [{ Type: "text", TextValue: stateTitle }]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12",
+                        Style: "position:relative; padding-" + RV_Float + ":3.5rem; min-height:2.6rem;",
+                        Childs: [
+                            {
+                                Type: "div", Style: "position:absolute; width:3rem;top:0rem;" + RV_Float + ":0rem;",
+                                Childs: [{
+                                    Type: "img", Class: "rv-border-radius-quarter", Tooltip: director.FullName,
+                                    Style: "width:2.5rem; height:2.5rem;", Name: "userImage",
+                                    Link: RVAPI.UserPageURL({ UserID: director.UserID }),
+                                    Attributes: [{ Name: "src", Value: director.ProfileImageURL }]
+                                }]
+                            },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "descriptionArea" },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "pollArea" },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "formsArea" },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "attachmentsArea" }
+                        ]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12 RevDirection RevTextAlign",
+                        Childs: [{
+                            Type: "div", Class: "Direction TextAlign",
+                            Style: "display:inline-block; color:green; font-size:x-small;",
+                            Childs: [{ Type: "text", TextValue: sendDate }]
+                        }]
+                    }
+                ]
+            }]);
 
             GlobalUtilities.append_markup_text(elems["descriptionArea"], description);
             
