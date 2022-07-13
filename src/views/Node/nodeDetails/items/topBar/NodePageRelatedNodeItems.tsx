@@ -53,7 +53,7 @@ const NodePageRelatedNodeItems = ({
   };
 
   const onRelatedItemClick = ({ NodeTypeID }) => {
-    const classURL = getClassesPageUrl(NodeTypeID);
+    const classURL = getClassesPageUrl(NodeTypeID, NodeID);
     history.push(classURL);
   };
 
