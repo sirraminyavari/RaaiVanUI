@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, cloneElement, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Sticker from './Sticker';
@@ -6,8 +6,7 @@ import useWindowSize from 'hooks/useWindowSize';
 import useOutsideClick from 'hooks/useOutsideClick';
 import usePrevious from 'hooks/usePrevious';
 import useWindowScroll from 'hooks/useWindowScroll';
-import { getUUID } from 'helpers/helpers';
-import { CV_WHITE } from 'constant/CssVariables';
+import { WindowContext } from 'context/WindowProvider';
 
 const { jQuery } = window;
 const Empty = (props) => <>{props.children}</>;
@@ -50,6 +49,7 @@ const ArrowRadius = 0.4;
  * ```
  */
 const PopupMenu = (props) => {
+  const { GlobalUtilities } = useContext(WindowContext);
   let {
     align,
     arrowClass,
@@ -63,9 +63,11 @@ const PopupMenu = (props) => {
     hoverTimeout,
     children,
   } = props;
-  const [menuContainerId] = useState(getUUID);
-  const [arrowId] = useState(getUUID);
-  const [menuId] = useState(getUUID);
+
+  const mainId = 'r' + GlobalUtilities.random_str(10);
+  const menuContainerId = 'r' + GlobalUtilities.random_str(10);
+  const arrowId = 'r' + GlobalUtilities.random_str(10);
+  const menuId = 'r' + GlobalUtilities.random_str(10);
 
   align = String(align).toLowerCase().charAt(0);
   trigger = String(trigger || 'hover');
@@ -97,13 +99,11 @@ const PopupMenu = (props) => {
         positionInfo: stickerPos,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [align, arrowId]);
+  }, [stickerPos]);
 
   useEffect(() => {
     //cleanup
     return () => clearHideTimeout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useOutsideClick(
@@ -141,7 +141,7 @@ const PopupMenu = (props) => {
         };
   //end of Mouse Events
 
-  const Container = showMenu || true ? Sticker : Empty;
+  const Container = showMenu ? Sticker : Empty;
 
   return (
     <Container
@@ -150,11 +150,13 @@ const PopupMenu = (props) => {
       leftOffset={leftOffset}
       topOffset={topOffset}
       onReposition={(pos) => setStickerPos(pos)}
-      onClick={trigger !== 'click' ? null : () => setShowMenu(!showMenu)}
-      onMouseOver={mouseOver}
-      onMouseOut={mouseOut}
     >
-      {children[0]}
+      {cloneElement(children[0], {
+        id: mainId,
+        onClick: trigger !== 'click' ? null : () => setShowMenu(!showMenu),
+        onMouseOver: mouseOver,
+        onMouseOut: mouseOut,
+      })}
       {showMenu && (
         <MenuContainer
           id={menuContainerId}
@@ -173,11 +175,11 @@ const PopupMenu = (props) => {
           </ArrowContainer>
           <MenuContent
             id={menuId}
-            className={`rv-border-radius-half ${menuClass || ''}`}
+            className={'rv-border-radius-half ' + menuClass}
             style={info.contentStyle || {}}
             menuStyle={menuStyle}
           >
-            {children[1]}
+            {cloneElement(children[1])}
           </MenuContent>
         </MenuContainer>
       )}
@@ -200,6 +202,7 @@ PopupMenu.propTypes = {
 
 PopupMenu.defaultProps = {
   align: 'bottom',
+  menuClass: 'SoftBackgroundColor SoftBorder',
   hoverTimeout: 200,
 };
 
@@ -237,9 +240,12 @@ const MenuArrow = styled.div`
   width: ${ArrowWidth}rem;
   height: ${ArrowWidth}rem;
   opacity: 1;
+
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -op-transform: rotate(45deg);
   transform: rotate(45deg);
-  background-color: ${CV_WHITE};
-  box-shadow: 1px 3px 20px var(--rv-color-verytransparent) !important;
 
   ${({ align }) => ['t', 'r'].some((x) => align === x) && 'border-top-width:0;'}
   ${({ align }) =>
@@ -255,14 +261,12 @@ const MenuArrow = styled.div`
 const MenuContent = styled.div`
   padding: 0.7rem;
   opacity: 1;
-  background-color: ${CV_WHITE};
-  box-shadow: 1px 3px 20px var(--rv-color-verytransparent) !important;
   ${({ menuStyle }) => menuStyle || ' '}
 `;
 
 /**
  * @typedef CalculatePositionType
- * @property {HTMLElement} contentDom Content element.
+ *  @property {HTMLElement} contentDom Content element.
  * @property {HTMLElement} arrowDom Arrow element.
  * @property {*} positionInfo The position info.
  * @property {string} align The align parameter.
@@ -284,7 +288,7 @@ export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
   let _moveOffset = 6,
     _movement = 0;
 
-  if (positionInfo.leftMovement !== 0 && (align === 't' || align === 'b')) {
+  if (positionInfo.leftMovement != 0 && (align == 't' || align == 'b')) {
     let movedRight = positionInfo.leftMovement > 0;
     _movement = positionInfo.leftMovement + (movedRight ? 1 : -1) * _moveOffset;
 
@@ -292,7 +296,7 @@ export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
 
     ret.contentStyle.direction = movedRight ? 'ltr' : 'rtl';
 
-    if (align === 'b') {
+    if (align == 'b') {
       ret.arrowStyle.margin =
         '0px ' +
         (movedRight ? 0 : sideMargin) +
@@ -308,7 +312,7 @@ export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
     }
   }
 
-  if (positionInfo.topMovement !== 0 && (align === 'l' || align === 'r')) {
+  if (positionInfo.topMovement != 0 && (align == 'l' || align == 'r')) {
     var curTopMargin = String(jQuery(arrowDom).css('marginTop'));
     curTopMargin = curTopMargin.length
       ? Number(curTopMargin.substr(0, curTopMargin.length - 2))
@@ -319,3 +323,5 @@ export const calculatePosition = ({ arrowDom, align, positionInfo }) => {
 
   return ret;
 };
+
+const Wrapper = styled.span``;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import useCatchEvent from '../../hooks/useCatchEvent';
 
 const { GlobalUtilities, jQuery } = window;
 
@@ -9,69 +9,56 @@ const Sticker = ({
   leftOffset,
   topOffset,
   onReposition,
-  show = true,
-  onClick,
-  onMouseOver,
-  onMouseOut,
   ...props
 }) => {
-  const mainRef = React.useRef();
-  const stickerRef = React.useRef();
+  const mainRef = React.createRef();
+  const stickerRef = React.createRef();
 
   align = String(align).toLowerCase().charAt(0);
 
   const [info, setInfo] = useState({});
 
-  const isVisible =
-    !!mainRef?.current && GlobalUtilities.is_visible(mainRef.current);
+  const isVisible = useCatchEvent(
+    () => GlobalUtilities.is_visible(mainRef.current),
+    {}
+  );
 
   useEffect(() => {
-    if (!show) setInfo({});
-    else if (isVisible) {
-      const pos = calculatePosition({
-        mainDom: mainRef.current,
-        stickerDom: stickerRef.current,
-        align,
-        fit,
-        leftOffset,
-        topOffset,
-      });
-
-      setInfo(pos);
+    if (isVisible) {
+      setInfo(
+        calculatePosition({
+          mainDom: mainRef.current,
+          stickerDom: stickerRef.current,
+          align,
+          fit,
+          leftOffset,
+          topOffset,
+        })
+      );
     }
-  }, [align, fit, isVisible, leftOffset, topOffset, show]);
+  }, [isVisible]);
 
   useEffect(() => {
-    if (
-      show &&
-      info.css &&
-      GlobalUtilities.get_type(onReposition) === 'function'
-    )
+    if (info.css && GlobalUtilities.get_type(onReposition) == 'function')
       onReposition(info.positionInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [info, show]);
+  }, [info]);
 
-  if ((props.children || []).length !== 2) return <></>;
+  if ((props.children || []).length != 2) return <></>;
 
   return (
     <>
-      <Wrapper
-        ref={mainRef}
-        onClick={onClick}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-      >
-        {props.children[0]}
-      </Wrapper>
-      <Wrapper
-        ref={stickerRef}
-        style={GlobalUtilities.extend({}, info.css || { opacity: 0 }, {
-          position: 'fixed',
-          zIndex: GlobalUtilities.zindex.dialog(),
-        })}
-      >
-        {show && props.children[1]}
-      </Wrapper>
+      {React.cloneElement(props.children[0], { ref: mainRef })}
+      {React.cloneElement(props.children[1], {
+        ref: stickerRef,
+        style: GlobalUtilities.extend(
+          props.children[1].props.style || {},
+          info.css || { opacity: 0 },
+          {
+            position: 'fixed',
+            zIndex: GlobalUtilities.zindex.dialog(),
+          }
+        ),
+      })}
     </>
   );
 };
@@ -99,7 +86,7 @@ const calculatePosition = ({
   var actualWidth = sticker[0].offsetWidth;
   var actualHeight = sticker[0].offsetHeight;
   var dir =
-    align === 'a'
+    align == 'a'
       ? pos.top > jQuery(document).scrollTop() + jQuery(window).height() / 2
         ? 't'
         : 'b'
@@ -155,16 +142,14 @@ const calculatePosition = ({
         dir: 'right',
       };
       break;
-    default:
-      break;
   }
 
   let scrollTop = 0;
-  if (align === 'l' || align === 'r') {
+  if (align == 'l' || align == 'r') {
     let obj = mainDom;
     while (obj) {
       if (
-        ((obj.style || {}).position || ' ').toLowerCase() === 'fixed' ||
+        ((obj.style || {}).position || ' ').toLowerCase() == 'fixed' ||
         (scrollTop = jQuery(obj).scrollTop())
       )
         break;
@@ -195,9 +180,9 @@ const calculatePosition = ({
     css: GlobalUtilities.extend(
       {
         top:
-          (align === 't' || align === 'b' ? _newTop : computedTop) -
+          (align == 't' || align == 'b' ? _newTop : computedTop) -
           GlobalUtilities.scrolltop(document.body),
-        left: align === 'l' || align === 'r' ? _newLeft : computedLeft,
+        left: align == 'l' || align == 'r' ? _newLeft : computedLeft,
       },
       fit ? { width: pos.width } : {}
     ),
@@ -213,5 +198,3 @@ const calculatePosition = ({
     },
   };
 };
-
-const Wrapper = styled.span``;

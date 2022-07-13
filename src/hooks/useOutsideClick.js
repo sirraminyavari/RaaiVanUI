@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 const { GlobalUtilities } = window;
 
 function useOutsideClick(callback, nodes) {
-  if (GlobalUtilities.get_type(nodes) != 'array') nodes = [nodes];
+  if (GlobalUtilities.get_type(nodes) !== 'array') nodes = [nodes];
 
   const handleClick = (e) => {
     let clickItems = nodes
       .map((nd) =>
-        GlobalUtilities.get_type(nd) == 'string'
+        GlobalUtilities.get_type(nd) === 'string'
           ? document.getElementById(nd)
           : (nd || {}).current
       )
