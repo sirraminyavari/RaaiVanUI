@@ -6,8 +6,6 @@ import APIHandler from 'apiHelper/APIHandler';
 import React, { useEffect, useState } from 'react';
 // import NodeView from '../Node-view';
 import Collector from './items/Collector';
-// import styled from 'styled-components';
-import WelcomeLayout from 'layouts/WelcomeLayout';
 
 export const PropsContext = React.createContext();
 

@@ -28,16 +28,6 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   const [title, setTitle] = useState(decodeBase64(nodeDetails?.Name?.Value));
   const { RVDic } = useWindowContext();
 
-  // useEffect(() => {
-  //   setTitle(decodeBase64(nodeDetails?.Name?.Value));
-  //   setDesc(decodeBase64(nodeDetails?.Description?.Value));
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [nodeDetails?.Name, nodeDetails?.Description]);
-
-  // const onEditTitle = () => {
-  //   setTitleEditMode(true);
-  // };
   const onSaveTitle = async () => {
     setTitleEditMode(false);
     if (whichElementChanged === 'title') {
@@ -73,29 +63,33 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
   return (
     <>
       <Main>
-        <TitleContainer style={{ marginBottom: '3rem' }}>
-          {nodeDetails?.Name?.Editable ? (
-            <Input
-              onChange={onTitleChange}
-              defaultValue={title}
-              onFocus={() => {
-                setTitleEditMode(true);
-              }}
-              onBlur={onSaveTitle}
-              style={{
-                fontSize: '1.4rem',
-                fontWeight: 'bold',
-                borderWidth: 0,
-                borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
-                borderRadius: 0,
-                borderColor: `${CV_DISTANT}`,
-                width: '100%',
-              }}
-            />
-          ) : (
-            <Heading type={'h1'}>{title}</Heading>
-          )}
-        </TitleContainer>
+        {nodeDetails?.Name?.Value !== undefined && (
+          <TitleContainer style={{ marginBottom: '3rem' }}>
+            {nodeDetails?.Name?.Editable ? (
+              <Input
+                onChange={onTitleChange}
+                defaultValue={decodeBase64(nodeDetails?.Name?.Value)}
+                onFocus={() => {
+                  setTitleEditMode(true);
+                }}
+                onBlur={onSaveTitle}
+                style={{
+                  fontSize: '1.4rem',
+                  fontWeight: 'bold',
+                  borderWidth: 0,
+                  borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
+                  borderRadius: 0,
+                  borderColor: `${CV_DISTANT}`,
+                  width: '100%',
+                }}
+              />
+            ) : (
+              <Heading type={'h1'}>
+                {decodeBase64(title || nodeDetails?.Name?.Value)}
+              </Heading>
+            )}
+          </TitleContainer>
+        )}
 
         <>
           <NodePageRelatedNodeItems
@@ -103,7 +97,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
             NodeID={nodeId}
           />
         </>
-        <>
+        {nodeDetails?.Description?.Value !== undefined && (
           <ParagraphField
             decodeTitle={RVDic.Summary}
             iconComponent={<SummeryInputIcon color={CV_GRAY} />}
@@ -111,7 +105,7 @@ const MainNode = ({ nodeDetails, nodeId, fields }) => {
             value={decodeBase64(nodeDetails?.Description?.Value)}
             isEditable={nodeDetails?.Description?.Editable}
           />
-        </>
+        )}
         <TitleContainer>
           <KeywordField
             Keywords={nodeDetails?.Keywords}
