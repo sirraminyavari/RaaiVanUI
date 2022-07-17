@@ -1,10 +1,11 @@
 import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
-import { CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
+import { CV_DISTANT, CV_GRAY, TCV_DEFAULT } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import moment from 'jalali-moment';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoCalendarOutline } from 'react-icons/io5';
 import styled from 'styled-components';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import FormCell from '../../FormCell';
 import { EditableContext } from '../../FormFill';
 
@@ -20,6 +21,7 @@ const DateField = ({
   ...props
 }) => {
   const editable = useContext(EditableContext);
+  const [isFocused, setIsFocused] = useState(false);
   const { RVDic, RV_RTL } = useWindow();
   return (
     <FormCell
@@ -27,32 +29,55 @@ const DateField = ({
       title={decodeTitle}
       {...props}
     >
-      <CustomDatePicker
-        label={RVDic?.SelectDate}
-        mode="button"
-        // type="jalali"
-        clearButton
-        closeOnDateSelect
-        headerTitle="فیلتر تاریخ ایجاد"
-        CustomButton={({ onClick }) => (
-          <CalendarTriggerButton
-            disable={!editable}
-            onClick={editable && onClick}
-          >
-            {value
-              ? `${moment
-                  .from(value, 'en', RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY')
-                  .locale(RV_RTL ? 'fa' : 'en')
-                  .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}`
-              : RVDic.DateSelect}
-            <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
-          </CalendarTriggerButton>
-        )}
-        onDateSelect={(event) => {
-          onAnyFieldChanged(elementId, event, type, true);
-          alert(event);
+      <OnClickAway
+        style={{ width: '100%' }}
+        onAway={() => setIsFocused(false)}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
         }}
-      />
+      >
+        {isFocused && editable ? (
+          <CustomDatePicker
+            label={RVDic?.SelectDate}
+            mode="button"
+            // type="jalali"
+            clearButton
+            closeOnDateSelect
+            // headerTitle="فیلتر تاریخ ایجاد"
+            CustomButton={({ onClick }) => (
+              <CalendarTriggerButton
+                disable={!editable}
+                onClick={editable && onClick}
+              >
+                {value
+                  ? `${moment
+                      .from(
+                        value,
+                        'en',
+                        RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY'
+                      )
+                      .locale(RV_RTL ? 'fa' : 'en')
+                      .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}`
+                  : RVDic.DateSelect}
+                <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
+              </CalendarTriggerButton>
+            )}
+            onDateSelect={(event) => {
+              onAnyFieldChanged(elementId, event, type, true);
+            }}
+          />
+        ) : value ? (
+          <CalendarBlurContext>
+            {moment
+              .from(value, 'en', RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY')
+              .locale(RV_RTL ? 'fa' : 'en')
+              .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}
+          </CalendarBlurContext>
+        ) : (
+          <CalendarBlurContext muted>{RVDic.DateSelect}</CalendarBlurContext>
+        )}
+      </OnClickAway>
     </FormCell>
   );
 };
@@ -73,4 +98,12 @@ const CalendarTriggerButton = styled.button.attrs(({ disable }) => ({
   & > svg {
     ${({ disable }) => disable && `display:none;`}
   }
+`;
+
+const CalendarBlurContext = styled.span`
+  font-size: 1rem;
+  padding-block: 0.54rem;
+  display: block;
+
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;

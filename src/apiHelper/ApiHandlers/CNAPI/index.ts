@@ -35,7 +35,7 @@ export const getNodeTypes = ({
   HasChild?: boolean;
   Tree?: boolean;
   CheckAccess?: boolean;
-}) => {
+} = {}) => {
   return apiCallWrapper(API_Provider(CN_API, 'GetNodeTypes'), {
     NodeTypeIDs: (NodeTypeIDs || []).join('|'),
     GrabSubNodeTypes,

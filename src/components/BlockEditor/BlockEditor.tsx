@@ -41,7 +41,7 @@ function BlockEditorWrapper({
   );
 
   return (
-    <BlockEditorStyler textarea={textarea}>
+    <BlockEditorStyler textarea={textarea} readOnly={readOnly}>
       <BlockEditor
         ref={editorRef}
         editorState={editorState}
@@ -65,27 +65,49 @@ BlockEditorWrapper.displayName = 'BlockEditorWrapper';
 export default BlockEditorWrapper;
 
 const BlockEditorStyler = styled.div.attrs<{
+  readOnly?: boolean;
   textarea?: boolean;
 }>(({ textarea }) => textarea && { className: 'rv-input' })<{
+  readOnly?: boolean;
   textarea?: boolean;
 }>`
   width: 100%;
   transition: border 0.3s;
+  ${({ textarea }) =>
+    !textarea &&
+    `
+      margin-block-start: 3.5rem;
+      padding-inline: 3.5rem;
+  `}
+  ${({ textarea, readOnly }) =>
+    textarea &&
+    readOnly &&
+    `
+      border-color: transparent;
+      &:hover {
+        border-color: transparent;
+
+      }
+  `}
   & > div {
     font-family: inherit;
-
+    max-width: 100%;
+    margin-block: 0.5rem;
+    padding-block: 0.3rem;
+    padding-inline: 0.5rem;
     ${({ textarea }) =>
       textarea &&
       `
     max-width: 100%;
     margin-block: 0;
-    box-shadow: unset;
+    box-shadow: unset;   
+    border-width: 1px;
     padding-block: 0;
 
       & > div:first-of-type {
         margin-block: 0;
         margin-inline: 0;
       }
-    `}
+    `};
   }
 `;

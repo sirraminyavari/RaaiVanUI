@@ -14,19 +14,22 @@ const slice = createSlice({
   initialState: EmptyApplicationState,
   reducers: {
     selectApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppID>
+      _state: IApplicationState,
+      _action: PayloadAction<IAppID>
     ) => {},
     getApplicationsOrder: (
-      state: IApplicationState,
-      action: PayloadAction<{ UnorderedApplications: any[] }>
+      _state: IApplicationState,
+      _action: PayloadAction<{ UnorderedApplications: any[] }>
     ) => {},
-    getApplications: (state: IApplicationState, action: PayloadAction<any>) => {
+    getApplications: (
+      state: IApplicationState,
+      _action: PayloadAction<any>
+    ) => {
       state.isFetching = true;
     },
     getArchivedApplications: (
-      state: IApplicationState,
-      action: PayloadAction<any>
+      _state: IApplicationState,
+      _action: PayloadAction<any>
     ) => {},
     setApplications: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
@@ -38,8 +41,8 @@ const slice = createSlice({
       state.userArchivedApps = action.payload;
     },
     removeApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppID>
+      _state: IApplicationState,
+      _action: PayloadAction<IAppID>
     ) => {},
     removeApplicationSuccessful: (
       state: IApplicationState,
@@ -48,8 +51,8 @@ const slice = createSlice({
       state.userApps = action.payload;
     },
     recoverApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppID>
+      _state: IApplicationState,
+      _action: PayloadAction<IAppID>
     ) => {},
     addApplication: (state: IApplicationState, action: PayloadAction<any>) => {
       state.userApps = action.payload;
@@ -67,12 +70,12 @@ const slice = createSlice({
       state.currentApp = action.payload;
     },
     unsubscribeFromApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppID>
+      _state: IApplicationState,
+      _action: PayloadAction<IAppID>
     ) => {},
     removeUserFromApplication: (
-      state: IApplicationState,
-      action: PayloadAction<IAppIDUserID>
+      _state: IApplicationState,
+      _action: PayloadAction<IAppIDUserID>
     ) => {},
   },
 });

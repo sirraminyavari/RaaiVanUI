@@ -493,7 +493,8 @@
             
             var necessary = params.Necessary === true;
             var uniqueValue = params.UniqueValue === true;
-
+            var isWorkFlowField = params.IsWorkFlowField === true;
+            
             var isParagraph = (type == "Text") && !params.IsTextInput &&
                 !info.UseSimpleEditor && !info.PatternName && !info.Pattern;
             var hasUniqueCheckbox = !isParagraph && ["Text", "Numeric"].some(t => type == t);
@@ -503,7 +504,7 @@
             
             var _create_checkbox = function (p) {
                 p = p || {};
-
+                
                 return {
                     Type: "div",
                     Style: "display:flex; flex-flow:row; align-items:center; margin-bottom:0.5rem;",
@@ -516,7 +517,7 @@
                         {
                             Type: "switch", Name: p.Name,
                             Style: "flex:0 0 auto; margin-top:0.2rem;",
-                            Params: GlobalUtilities.extend(FormElementTypeSettings.SwitchParams, { Checked: p.Value })
+                            Params: GlobalUtilities.extend({}, FormElementTypeSettings.SwitchParams, { Checked: p.Value })
                         }
                     ]
                 };
@@ -616,6 +617,9 @@
                                                     })),
                                                     (!hasUniqueCheckbox ? null : _create_checkbox({
                                                         Value: uniqueValue, Title: RVDic.UniqueValue, Name: "uniqueCheckbox"
+                                                    })),
+                                                    (!["Text", "Numeric"].some(t => t === type) ? null : _create_checkbox({
+                                                        Value: isWorkFlowField, Title: RVDic.FG.IsWorkFlowField, Name: "isWorkFlowField"
                                                     }))
                                                 ]
                                             },
@@ -947,6 +951,7 @@
                     Weight: newWeight,
                     Necessary: elems["necessaryCheckbox"] ? elems["necessaryCheckbox"].Checkbox.checked : null,
                     UniqueValue: elems["uniqueCheckbox"] ? elems["uniqueCheckbox"].Checkbox.checked : null,
+                    IsWorkFlowField: elems["isWorkFlowField"] ? elems["isWorkFlowField"].Checkbox.checked : null,
                     Privacy: (privacyObj || {}).get_data ? privacyObj.get_data() : null
                 };
             };

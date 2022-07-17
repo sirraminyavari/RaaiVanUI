@@ -348,62 +348,56 @@
         create_director_area: function (container) {
             var that = this;
 
-            var elems = GlobalUtilities.create_nested_elements([
-                {
-                    Type: "div", Class: "small-12 medium-12 large-12",
-                    Style: "position:relative; padding-" + RV_Float + ":2.5rem; min-height:2rem;",
-                    Childs: [
-                        {
-                            Type: "div", Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;",
-                            Childs: [
-                                {
-                                    Type: "i", Class: "fa fa-pencil fa-2x rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
-                                    Attributes: [{ Name: "aria-hidden", Value: true }]
-                                }
-                            ]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea",
-                            Childs: [
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "info", Style: "margin-bottom:0.5rem;" },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "bodyTextArea" }
-                            ]
-                        },
-                        {
-                            Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea", Style: "display:none;",
-                            Childs: [
-                                {
-                                    Type: "div", Class: "small-12 medium-12 large-12",
-                                    Style: "position:relative; padding-" + RV_RevFloat + ":10rem; margin-bottom:0.5rem;",
-                                    Childs: [
-                                        {
-                                            Type: "div",
-                                            Style: "position:absolute; top:0rem;" + RV_RevFloat + ":0rem; bottom:0rem; width:9rem;",
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-12 medium-12 large-12",
+                Style: "position:relative; padding-" + RV_Float + ":2.5rem; min-height:2rem;",
+                Childs: [
+                    {
+                        Type: "div", Style: "position:absolute; top:0rem;" + RV_Float + ":0rem;",
+                        Childs: [{
+                            Type: "i", Class: "fa fa-pencil fa-2x rv-icon-button", Name: "editButton", Tooltip: RVDic.Edit,
+                            Attributes: [{ Name: "aria-hidden", Value: true }]
+                        }]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12", Name: "viewArea",
+                        Childs: [
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "info", Style: "margin-bottom:0.5rem;" },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "bodyTextArea" }
+                        ]
+                    },
+                    {
+                        Type: "div", Class: "small-12 medium-12 large-12", Name: "editArea", Style: "display:none;",
+                        Childs: [
+                            {
+                                Type: "div", Class: "small-12 medium-12 large-12",
+                                Style: "position:relative; padding-" + RV_RevFloat + ":10rem; margin-bottom:0.5rem;",
+                                Childs: [
+                                    {
+                                        Type: "div",
+                                        Style: "position:absolute; top:0rem;" + RV_RevFloat + ":0rem; bottom:0rem; width:9rem;",
+                                        Childs: [{
+                                            Type: "middle",
                                             Childs: [
                                                 {
-                                                    Type: "middle",
-                                                    Childs: [
-                                                        {
-                                                            Type: "checkbox", Name: "necessaryCheckbox",
-                                                            Style: "width:1.2rem; height:1.2rem; cursor:pointer;"
-                                                        },
-                                                        {
-                                                            Type: "div", Style: "display:inline-block; margin-" + RV_Float + ":0.5rem;",
-                                                            Childs: [{ Type: "text", TextValue: RVDic.Necessary }]
-                                                        }
-                                                    ]
+                                                    Type: "checkbox", Name: "necessaryCheckbox",
+                                                    Style: "width:1.2rem; height:1.2rem; cursor:pointer;"
+                                                },
+                                                {
+                                                    Type: "div", Style: "display:inline-block; margin-" + RV_Float + ":0.5rem;",
+                                                    Childs: [{ Type: "text", TextValue: RVDic.Necessary }]
                                                 }
                                             ]
-                                        },
-                                        { Type: "div", Class: "small-12 medium-12 large-12", Name: "nodeTypeSelect" }
-                                    ]
-                                },
-                                { Type: "div", Class: "small-12 medium-12 large-12", Name: "descriptionArea" }
-                            ]
-                        }
-                    ]
-                }
-            ], container);
+                                        }]
+                                    },
+                                    { Type: "div", Class: "small-12 medium-12 large-12", Name: "nodeTypeSelect" }
+                                ]
+                            },
+                            { Type: "div", Class: "small-12 medium-12 large-12", Name: "descriptionArea" }
+                        ]
+                    }
+                ]
+            }], container);
 
             var viewArea = elems["viewArea"];
             var editArea = elems["editArea"];
@@ -693,10 +687,29 @@
                 }
                 else if (selectedAction == "SetScore") {
                     jQuery(elems["actionOptions"]).fadeIn(0);
+
                     optionsObj = that.render_formula_input(elems["actionOptions"], {
                         IsVariable: false,
                         Formula: Base64.decode(action.Formula),
                         IgnoreVariableID: action.ActionID
+                    });
+                }
+                else if (selectedAction == "SaveNumberToFormField") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+
+                    optionsObj = that.render_action_number_form_field(elems["actionOptions"], {
+                        IsVariable: false,
+                        SaveToFormElement: action.SaveToFormElement,
+                        Formula: Base64.decode(action.Formula),
+                    });
+                }
+                else if (selectedAction == "SaveTextToFormField") {
+                    jQuery(elems["actionOptions"]).fadeIn(0);
+
+                    optionsObj = that.render_action_text_form_field(elems["actionOptions"], {
+                        IsVariable: false,
+                        SaveToFormElement: action.SaveToFormElement,
+                        VariableDefaultValue: Base64.decode(action.VariableDefaultValue)
                     });
                 }
                 else {
@@ -786,6 +799,8 @@
                     ActionID: action.ActionID, ConnectionID: that.Objects.Edge.ID, Action: actionType,
                     VariableType: options.VariableType, VariableName: Base64.encode(options.VariableName),
                     VariableDefaultValue: Base64.encode(options.VariableDefaultValue),
+                    SaveToFormElementID: (options.SaveToFormElement || {}).ElementID,
+                    SaveToFormElementTitle: (options.SaveToFormElement || {}).Title,
                     Formula: Base64.encode(options.Formula), ParseResults: true,
                     ResponseHandler: function (result) {
                         if (result.ErrorText) alert(RVDic.MSG[result.ErrorText] || result.ErrorText);
@@ -1130,6 +1145,220 @@
                     };
                 }
             };
+        },
+
+        render_action_number_form_field: function (container, options) {
+            var that = this;
+
+            var retObj = null;
+
+            GlobalUtilities.load_files(["API/FGAPI.js"], {
+                OnLoad: () => retObj = that._render_action_number_form_field(container, options)
+            });
+
+            return {
+                get_data: () => !retObj ? false : retObj.get_data()
+            };
+        },
+
+        render_action_text_form_field: function (container, options) {
+            var that = this;
+
+            var retObj = null;
+
+            GlobalUtilities.load_files(["API/FGAPI.js"], {
+                OnLoad: () => retObj = that._render_action_text_form_field(container, options)
+            });
+
+            return {
+                get_data: () => !retObj ? false : retObj.get_data()
+            };
+        },
+
+        _render_action_number_form_field: function (container, options) {
+            var that = this;
+            options = options || {};
+
+            container.innerHTML = "";
+
+            var elementId = (options.SaveToFormElement || {}).ElementID;
+            var elementTitle = (options.SaveToFormElement || {}).Title;
+
+            var setFormField = (element) => {
+                elementId = element.ElementID;
+                elementTitle = element.Title;
+
+                elems["formField"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([{
+                    Type: "text", TextValue: Base64.decode(element.Title)
+                }], elems["formField"]);
+            };
+
+            var handleFormFieldClick = () =>
+                that.select_field_of_form(false, (element => setFormField(element)));
+
+            var elems = GlobalUtilities.create_nested_elements([
+                {
+                    Type: "div", Style: "display: flex; flex-flow: row; padding: 1rem 0;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 3.5rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.Field + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto; cursor: pointer;", Name: "formField",
+                            Properties: [{ Name: "onclick", Value: handleFormFieldClick }],
+                            Childs: [{ Type: "text", TextValue: RVDic.Select }]
+                        }
+                    ]
+                },
+                { Type: "div", Name: "formula" }
+            ], container);
+
+            if (options.SaveToFormElement) setFormField(options.SaveToFormElement);
+
+            var formulaObj = that.render_formula_input(elems["formula"], options);
+
+            return {
+                get_data: function () {
+                    var formula = formulaObj.get_data();
+
+                    return (formula === false) || !elementId ? false : {
+                        Formula: formula.Formula,
+                        SaveToFormElement: {
+                            ElementID: elementId,
+                            Title: elementTitle
+                        }
+                    };
+                }
+            };
+        },
+
+        _render_action_text_form_field: function (container, options) {
+            var that = this;
+            options = options || {};
+
+            container.innerHTML = "";
+
+            var elementId = (options.SaveToFormElement || {}).ElementID;
+            var elementTitle = (options.SaveToFormElement || {}).Title;
+
+            var setFormField = (element) => {
+                elementId = element.ElementID;
+                elementTitle = element.Title;
+
+                elems["formField"].innerHTML = "";
+
+                GlobalUtilities.create_nested_elements([{
+                    Type: "text", TextValue: Base64.decode(element.Title)
+                }], elems["formField"]);
+            };
+
+            var handleFormFieldClick = () =>
+                that.select_field_of_form(true, (element => setFormField(element)));
+
+            var elems = GlobalUtilities.create_nested_elements([
+                {
+                    Type: "div", Style: "display: flex; flex-flow: row; padding: 1rem 0;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 3.5rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.Field + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto; cursor: pointer;", Name: "formField",
+                            Properties: [{ Name: "onclick", Value: handleFormFieldClick }],
+                            Childs: [{ Type: "text", TextValue: RVDic.Select }]
+                        }
+                    ]
+                },
+                {
+                    Type: "div", Style: "display: flex; flex-flow: row;",
+                    Childs: [
+                        {
+                            Type: "div", Style: "flex: 0 0 auto; width: 3.5rem;",
+                            Childs: [{ Type: "text", TextValue: RVDic.Text + ":" }]
+                        },
+                        {
+                            Type: "div", Style: "flex: 1 1 auto; cursor: pointer;",
+                            Childs: [{ Type: "input", Class: "rv-input", Style: "width: 100%;", Name: "textInput" }]
+                        }
+                    ]
+                }
+            ], container);
+
+            if (options.SaveToFormElement) setFormField(options.SaveToFormElement);
+
+            if (options.VariableDefaultValue) elems["textInput"].value = options.VariableDefaultValue;
+
+            return {
+                get_data: function () {
+                    return !elementId ? false : {
+                        VariableDefaultValue: elems["textInput"].value.trim(),
+                        SaveToFormElement: {
+                            ElementID: elementId,
+                            Title: elementTitle
+                        }
+                    };
+                }
+            };
+        },
+
+        select_field_of_form: function (textOnly, onSelect) {
+            var elems = GlobalUtilities.create_nested_elements([{
+                Type: "div", Class: "small-10 medium-8 large-6 rv-border-radius-1 SoftBackgroundColor",
+                Style: "margin: 0 auto; padding: 1rem;", Name: "container",
+                Childs: [
+                    { Type: "div", Name: "formSelect" },
+                    {
+                        Type: "div", Name: "elements",
+                        Style: "display: flex; flex-flow:column; gap: 0.5rem; padding-top: 1rem;"
+                    }
+                ]
+            }]);
+
+            var add_elements = (elements) => {
+                GlobalUtilities.create_nested_elements(elements.map(elem => ({
+                    Type: "div", Style: "padding: 0.5rem; cursor: pointer;",
+                    Class: "rv-border-radius-quarter SoftShadow rv-bg-color-white-softer",
+                    Properties: [{
+                        Name: "onclick",
+                        Value: () => {
+                            showed.Close();
+                            !!onSelect && onSelect(elem);
+                        }
+                    }],
+                    Childs: [{ Type: "text", TextValue: Base64.decode(elem.Title) }]
+                })), elems["elements"]);
+            };
+
+            var formSelect = GlobalUtilities.append_autosuggest(elems["formSelect"], {
+                InputClass: "rv-input",
+                InputStyle: "width:100%; font-size:0.7rem;",
+                InnerTitle: RVDic.Form + "...",
+                AjaxDataSource: FGAPI.GetForms(),
+                ResponseParser: responseText =>
+                    (JSON.parse(responseText).Forms || []).map(f => [Base64.decode(f.Title), f.FormID]),
+                OnSelect: () => {
+                    var formId = formSelect.values[formSelect.selectedIndex];
+
+                    elems["elements"].innerHTML = "";
+                    GlobalUtilities.loading(elems["elements"]);
+
+                    var types = (textOnly ? ["Text"] : ["Text", "Numeric"]).join(",");
+
+                    FGAPI.GetFormElements({
+                        FormID: formId, Type: types, ParseResults: true,
+                        ResponseHandler: result => {
+                            elems["elements"].innerHTML = "";
+                            add_elements(result.Elements || []);
+                        }
+                    });
+                }
+            });
+
+            var showed = GlobalUtilities.show(elems["container"]);
         },
 
         get_workflow_variables: function (callback, ignoreVariableId) {

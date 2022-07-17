@@ -127,9 +127,15 @@ export const saveFormElements = ({ FormID, Name, Description, Elements }) => {
   });
 };
 
-/**
- *
- */
+export const initializeTemplateForm = ({
+  NodeTypeID,
+}: {
+  NodeTypeID: string;
+}) => {
+  return apiCallWrapper(API_Provider(FG_API, 'InitializeTemplateForm'), {
+    NodeTypeID,
+  });
+};
 
 export const initializeOwnerFormInstance = ({ OwnerID }) => {
   return apiCallWrapper(
@@ -137,9 +143,6 @@ export const initializeOwnerFormInstance = ({ OwnerID }) => {
     { OwnerID }
   );
 };
-/**
- *
- */
 
 export const getFormInstance = ({
   InstanceID,

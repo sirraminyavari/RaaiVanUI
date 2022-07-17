@@ -490,7 +490,7 @@
             });
 
             if (Connections.length) jQuery(elems["optionsArea"]).fadeIn(500);
-
+            
             if (formInstanceIdToBeFilled) {
                 jQuery(elems["formToBeFilled"]).fadeIn(0);
 
@@ -499,7 +499,7 @@
                 GlobalUtilities.load_files(["FormsManager/FormViewer.js"], {
                     OnLoad: function () {
                         that.Objects.FormViewer = new FormViewer(elems["formToBeFilled"], {
-                            InstanceID: formInstanceIdToBeFilled, LimitOwnerID: workflowStateId,
+                            InstanceID: formInstanceIdToBeFilled, LimitOwnerID: workflowStateId, EnforceLimits: true,
                             ShowAllIfNoLimit: true, Editable: true, HideHeader: false, HideDescription: true, FillButton: false
                         });
                     }

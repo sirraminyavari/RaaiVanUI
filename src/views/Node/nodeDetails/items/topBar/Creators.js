@@ -63,7 +63,12 @@ const Creators = ({ creatorsList, nodeDetails }) => {
           {contributors?.length > 2 ? (
             <MultiCreator>
               <Profile src={contributors[0].avatarUrl} isSaas={false} />
-              <Others>{`+${contributors?.length - 1}`}</Others>
+              <Others
+                style={{
+                  ...(RV_RTL && { right: '-0.5rem' }),
+                  ...(!RV_RTL && { left: '-0.5rem' }),
+                }}
+              >{`+${contributors?.length - 1}`}</Others>
             </MultiCreator>
           ) : (
             <>
@@ -182,11 +187,12 @@ const Others = styled.div`
   border-radius: 1.5rem;
   background-color: #e6f4f1;
   position: relative;
-  right: -0.3rem;
+  inset-inline-start: -0.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${TCV_DEFAULT};
+  direction: ltr;
 `;
 const MultiCreator = styled.div`
   display: flex;

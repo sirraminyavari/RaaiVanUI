@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import FormCell from '../../FormCell';
 import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
@@ -8,10 +8,10 @@ import {
   TCV_DEFAULT,
   TCV_HIGHLY_TRANSPARENT,
 } from 'constant/CssVariables';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import ToggleIcon from 'components/Icons/ToggleIcon';
-
-const { GlobalUtilities } = window;
-const { to_json } = GlobalUtilities || {};
+import { EditableContext } from '../../FormFill';
+import useWindow from 'hooks/useWindowContext';
 
 const BinaryField = ({
   value,
@@ -22,6 +22,11 @@ const BinaryField = ({
   type,
   ...props
 }) => {
+  const {
+    GlobalUtilities: { to_json },
+  } = useWindow();
+  const editable = useContext(EditableContext);
+  const [isFocused, setIsFocused] = useState(false);
   const parseDecodeInfo = to_json(decodeInfo);
   const { Yes, No } = parseDecodeInfo || {};
   const yes = decodeBase64(Yes);
@@ -33,25 +38,39 @@ const BinaryField = ({
       title={decodeTitle}
       {...props}
     >
-      <Maintainer>
-        <Bit
-          onClick={() =>
-            onAnyFieldChanged(elementId, { label: yes, value: true }, type)
-          }
-          isSelected={value === true}
-        >
-          {yes}
-        </Bit>
-        <Divider isSelected={true} />
-        <Bit
-          isSelected={value === false}
-          onClick={() =>
-            onAnyFieldChanged(elementId, { label: no, value: false }, type)
-          }
-        >
-          {no}
-        </Bit>
-      </Maintainer>
+      <OnClickAway
+        onAway={() => setIsFocused(false)}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
+        }}
+      >
+        <Maintainer>
+          <Bit
+            onClick={() =>
+              isFocused &&
+              editable &&
+              onAnyFieldChanged(elementId, { label: yes, value: true }, type)
+            }
+            isFocused={isFocused}
+            isSelected={value === true}
+          >
+            {yes}
+          </Bit>
+          <Divider isFocused={isFocused} isSelected={value !== null} />
+          <Bit
+            isFocused={isFocused}
+            isSelected={value === false}
+            onClick={() =>
+              isFocused &&
+              editable &&
+              onAnyFieldChanged(elementId, { label: no, value: false }, type)
+            }
+          >
+            {no}
+          </Bit>
+        </Maintainer>
+      </OnClickAway>
     </FormCell>
   );
 };
@@ -99,11 +118,16 @@ const Bit = styled.div`
     border-radius: 0.5rem;
     border-color: ${CV_DISTANT};
   }
+
+  ${({ isSelected, isFocused }) =>
+    `border-color: ${isSelected && !isFocused && CV_DISTANT}`};
 `;
 const Divider = styled.div`
   width: 0.05rem;
   height: 2.4rem;
   background-color: ${({ isSelected }) =>
     isSelected ? TCV_DEFAULT : CV_DISTANT};
+  ${({ isSelected, isFocused }) =>
+    `background-color: ${isSelected && !isFocused && CV_DISTANT}`};
   margin: 0 0rem 0 0rem;
 `;

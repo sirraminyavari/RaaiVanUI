@@ -1,22 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Select from 'react-select';
 import FormCell from '../../FormCell';
 import { decodeBase64 } from 'helpers/helpers';
 import RadioButtonIcon from 'components/Icons/RadioButtonIcon';
-import {
-  CV_DISTANT,
-  CV_GRAY,
-  TCV_DEFAULT,
-  TCV_VERYWARM,
-  TCV_WARM,
-  CV_WHITE,
-  CV_RED_LIGHTWARM,
-  CV_FREEZED,
-} from 'constant/CssVariables';
-import styled from 'styled-components';
+import { CV_GRAY, TCV_WARM, CV_WHITE, CV_FREEZED } from 'constant/CssVariables';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { EditableContext } from '../../FormFill';
+import * as Styles from '../formField.styles';
+import useWindow from 'hooks/useWindowContext';
 
-const { RVDic } = window;
 const SingleSelectField = ({
   value,
   decodeInfo,
@@ -27,7 +19,9 @@ const SingleSelectField = ({
   save,
   ...props
 }) => {
+  const { RVDic } = useWindow();
   const editable = useContext(EditableContext);
+  const [isFocused, setIsFocused] = useState(false);
   const parseDecodeInfo = JSON.parse(decodeInfo);
   const { Options } = parseDecodeInfo || {};
   const normalizedOptions = Options?.map((x) => {
@@ -92,31 +86,32 @@ const SingleSelectField = ({
       title={decodeTitle}
       {...props}
     >
-      {/* {value ? (
-        <Selected
-          className={'rv-border-radius-half'}
-          onClick={() =>
-            onAnyFieldChanged(elementId, { value: null, label: null }, type)
-          }>
-          {selectedValue?.label}
-        </Selected>
-      ) : ( */}
-      <Select
-        onBlur={() => save(elementId)}
-        options={normalizedOptions}
-        styles={customStyles}
-        isDisabled={!editable}
-        value={selectedValue}
-        placeholder={RVDic.Select}
-        onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-      />
-      {/* )} */}
+      <OnClickAway
+        style={{}}
+        onClick={() => {
+          if (isFocused) return;
+          setIsFocused(true);
+        }}
+      >
+        {isFocused && editable ? (
+          <Select
+            onBlur={() => save(elementId) && setIsFocused(false)}
+            options={normalizedOptions}
+            styles={customStyles}
+            isDisabled={!editable}
+            value={selectedValue}
+            placeholder={RVDic.Select}
+            onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+          />
+        ) : (
+          <Styles.SelectedFieldItemContainer>
+            <Styles.SelectedFieldItem muted={!value}>
+              {value ? value : RVDic.Select}
+            </Styles.SelectedFieldItem>
+          </Styles.SelectedFieldItemContainer>
+        )}
+      </OnClickAway>
     </FormCell>
   );
 };
 export default SingleSelectField;
-
-const Selected = styled.div`
-  background-color: #e6f4f1;
-  padding: 0.5rem;
-`;

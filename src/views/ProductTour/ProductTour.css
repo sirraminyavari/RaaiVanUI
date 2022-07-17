@@ -1,5 +1,4 @@
 .helper {
-  direction: rtl;
   line-height: 1.3;
   min-width: 400px;
 }
@@ -15,6 +14,6 @@
 }
 .reactour__close {
   position: fixed !important;
-  right: 90% !important;
+  inset-inline-start: 90% !important;
   top: 20px;
 }

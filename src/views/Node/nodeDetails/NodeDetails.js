@@ -6,8 +6,6 @@ import APIHandler from 'apiHelper/APIHandler';
 import React, { useEffect, useState } from 'react';
 // import NodeView from '../Node-view';
 import Collector from './items/Collector';
-// import styled from 'styled-components';
-import WelcomeLayout from 'layouts/WelcomeLayout';
 
 export const PropsContext = React.createContext();
 
@@ -27,7 +25,7 @@ const NodeDetails = (props) => {
 
   return (
     <PropsContext.Provider value={props}>
-      <WelcomeLayout withScrollbar noOutline>
+      <>
         {/* If True, will render MobileView component */}
         <Collector
           nodeId={NodeID}
@@ -36,7 +34,7 @@ const NodeDetails = (props) => {
           {...props}
         />
         {/* <NodeView {...props} /> */}
-      </WelcomeLayout>
+      </>
     </PropsContext.Provider>
   );
 };

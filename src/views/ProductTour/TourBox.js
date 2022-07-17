@@ -1,5 +1,6 @@
 import { SAVE_USER_SETTINGS_ITEM, USERS_API } from 'constant/apiConstants';
-import { API_Provider } from 'helpers/helpers';
+import { API_Provider, decodeBase64 } from 'helpers/helpers';
+import useWindowContext from 'hooks/useWindowContext';
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useOnboardingSlice } from 'store/slice/onboarding';
@@ -8,6 +9,7 @@ import * as Style from './styled';
 const saveUserSettingsItem = API_Provider(USERS_API, SAVE_USER_SETTINGS_ITEM);
 
 const TourBox = ({ goTo, current, total, guidance }) => {
+  const { RVDic, RVGlobal } = useWindowContext();
   const dispatch = useDispatch();
 
   const {
@@ -47,20 +49,25 @@ const TourBox = ({ goTo, current, total, guidance }) => {
       {current === 0 && (
         <Style.Wellcoming>
           <Style.WellcomingTitle>
-            به کلیک مایند خوش اومدی{' '}
+            {RVDic.WelcomeToRaaiVan.replace(
+              '[RaaiVan]',
+              decodeBase64(RVGlobal.SystemName)
+            )}{' '}
           </Style.WellcomingTitle>
           <Style.WellcomingContent>
-            اینجا فضای اختصاصی تیمته که با کمک اون قراره حسابی به تیمت کمک کنیم
-            حافظه قوی‌تری داشته‌باشه
+            {RVDic.X.ProductTours.Intro.WelcomeMessage}
           </Style.WellcomingContent>
           <Style.WellcomingContent>
             {' '}
-            آماده‌ای یه گشت‌و‌گذار کوچولو توی کلیک‌مایندِ خودت بزنی؟{' '}
+            {RVDic.X.ProductTours.Intro.WelcomeConfirm.replace(
+              '[RaaiVan]',
+              decodeBase64(RVGlobal.SystemName)
+            )}{' '}
           </Style.WellcomingContent>
 
           <Style.WellcomingActionWrapper>
             <Style.NextButton onClick={() => next()}>
-              آره! با کمال میل!
+              {`${RVDic.Yes}! ${RVDic.WithPleasure}!`}
             </Style.NextButton>
           </Style.WellcomingActionWrapper>
         </Style.Wellcoming>
@@ -75,14 +82,14 @@ const TourBox = ({ goTo, current, total, guidance }) => {
               {current !== 1 && (
                 <Style.PrevButton onClick={() => goTo(current - 1)}>
                   {' '}
-                  قبلی{' '}
+                  {RVDic.Previous}{' '}
                 </Style.PrevButton>
               )}
             </Style.TourBarBlock>
 
             <Style.TourBarBlock>
               <span>{current}</span>
-              <span>از</span>
+              <span>{RVDic.Of}</span>
               <span>{total}</span>
             </Style.TourBarBlock>
 
@@ -90,14 +97,14 @@ const TourBox = ({ goTo, current, total, guidance }) => {
               {current !== total && (
                 <Style.NextButton onClick={() => next()}>
                   {' '}
-                  بعدی{' '}
+                  {RVDic.Next}{' '}
                 </Style.NextButton>
               )}
 
               {current === total && (
                 <Style.NextButton onClick={() => letsGo()}>
                   {' '}
-                  عالیه! بزن بریم{' '}
+                  {`${RVDic.Great_exclamation}! ${RVDic.LetsGo}`}{' '}
                 </Style.NextButton>
               )}
             </Style.TourBarBlock>

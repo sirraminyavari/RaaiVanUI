@@ -42,28 +42,25 @@ const App = () => {
         style={{ zIndex: GlobalUtilities.zindex.alert() }}
         bodyClassName="rv-font-default"
       />
-
       <StoreProvider>
-        <ErrorBoundry>
-          <Suspense fallback={<LogoLoader />}>
-            <Router>
-              <ScrollToTop />
-              <Switch>
-                <Route
-                  path={AUTH_PATH}
-                  render={(props) => (
-                    <CheckRoute
-                      props={props}
-                      name={LOGIN_NAME}
-                      component={AuthView}
-                    />
-                  )}
-                />
-                <PrivateRoute path={ROOT_PATH} component={MainLayout} />
-              </Switch>
-            </Router>
-          </Suspense>
-        </ErrorBoundry>
+        <Suspense fallback={<LogoLoader />}>
+          <Router>
+            <ScrollToTop />
+            <Switch>
+              <Route
+                path={AUTH_PATH}
+                render={(props) => (
+                  <CheckRoute
+                    props={props}
+                    name={LOGIN_NAME}
+                    component={AuthView}
+                  />
+                )}
+              />
+              <PrivateRoute path={ROOT_PATH} component={MainLayout} />
+            </Switch>
+          </Router>
+        </Suspense>
       </StoreProvider>
     </ErrorBoundry>
   );

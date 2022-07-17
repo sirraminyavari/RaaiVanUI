@@ -1,4 +1,5 @@
-﻿if (!window.WFAPI) window.WFAPI = {
+﻿
+if (!window.WFAPI) window.WFAPI = {
     ResponseURL: "/api/workflow",
 
     _send: function (url, params, queryString) {
@@ -150,7 +151,9 @@
             (params.VariableName ? "&VariableName=" + params.VariableName : "") +
             (!["undefined", "null"].some(nl => GlobalUtilities.get_type(params.VariableDefaultValue) == nl) ?
                 "&VariableDefaultValue=" + params.VariableDefaultValue : "") +
-            (params.Formula ? "&Formula=" + params.Formula : "");
+            (params.Formula ? "&Formula=" + params.Formula : "") +
+            (params.SaveToFormElementID ? "&SaveToFormElementID=" + params.SaveToFormElementID : "") + 
+            (params.SaveToFormElementTItle ? "&SaveToFormElementTitle=" + params.SaveToFormElementTitle : "");
         return WFAPI._send(url, params, queryString);
     },
 
@@ -165,7 +168,9 @@
             (params.VariableName ? "&VariableName=" + params.VariableName : "") +
             (!["undefined", "null"].some(nl => GlobalUtilities.get_type(params.VariableDefaultValue) == nl) ?
                 "&VariableDefaultValue=" + params.VariableDefaultValue : "") +
-            (params.Formula ? "&Formula=" + params.Formula : "");
+            (params.Formula ? "&Formula=" + params.Formula : "") +
+            (params.SaveToFormElementID ? "&SaveToFormElementID=" + params.SaveToFormElementID : "") +
+            (params.SaveToFormElementTItle ? "&SaveToFormElementTitle=" + params.SaveToFormElementTitle : "");
         return WFAPI._send(url, params, queryString);
     },
 

@@ -16,8 +16,8 @@ const ContributorItem = ({ item, onRemove, setPercent }) => {
   console.log(item, '&&&&&&');
   return (
     <Container>
-      <Profile src={item.avatarUrl} />
-      <Title>{item?.name}</Title>
+      <Profile src={item.src || item.avatarUrl} />
+      <Title>{item?.title || item?.name}</Title>
 
       <MainSide>
         <ContributeContainer>

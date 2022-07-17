@@ -53,6 +53,8 @@ const FormFill = ({ data, editable, ...props }) => {
 
     switch (type) {
       case 'Date':
+        await saveFieldChanges(readyToUpdate, elementId);
+        break;
       case 'Binary':
         await saveFieldChanges(readyToUpdate, elementId);
         break;
