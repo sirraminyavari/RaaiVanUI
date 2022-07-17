@@ -8,7 +8,6 @@ import DndHandler from './items/DndHandler';
 import { useTemplateContext } from '../../TemplateProvider';
 import { useTemplateFormContext } from './TemplateFormContext';
 import { useState } from 'react';
-import Modal from 'components/Modal/Modal';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 
 const TemplateFormWrapper = () => {

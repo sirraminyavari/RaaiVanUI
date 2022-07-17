@@ -9,16 +9,14 @@ import useAdvancedSetting from '../useAdvancedSetting';
 
 const RVMainContentSetting = () => {
   const { RVDic } = window;
-  const { SuccessMessage, NodeTypeID } = useTemplateContext();
+  const {
+    SuccessMessage,
+    NodeTypeID,
+    AdminType,
+    MaxAcceptableAdminLevel,
+    ...rest
+  } = useTemplateContext();
   const { Pattern } = useAdvancedSetting();
-
-  const AdminOption = [
-    {
-      id: 1,
-      value: '',
-      title: 'مسئول ثبت حوزه',
-    },
-  ];
 
   const handleTemplateIdStateChange = async (e) => {
     const Message = e?.target?.value;
@@ -35,6 +33,31 @@ const RVMainContentSetting = () => {
     }
   };
 
+  const AdminTypeOptions = [
+    {
+      id: 1,
+      value: 'AreaAdmin',
+      label: RVDic.CN.Service.AdminType.AreaAdmin,
+    },
+    {
+      id: 2,
+      value: 'ComplexAdmin',
+      label: RVDic.CN.Service.AdminType.ComplexAdmin,
+    },
+    {
+      id: 3,
+      value: 'SpecificNode',
+      label: RVDic.CN.Service.AdminType.SpecificNode,
+    },
+    {
+      id: 4,
+      value: 'Registerer',
+      label: RVDic.CN.Service.AdminType.Registerer,
+    },
+  ];
+
+  const handleAdminTypeSelect = ({ value, label }) => {};
+
   return (
     <>
       <Styled.UploaderContainer>
@@ -45,7 +68,6 @@ const RVMainContentSetting = () => {
           <CoverPatternUploader />
         </Styled.UploaderWrapper>
       </Styled.UploaderContainer>
-
       <Styled.Block>
         <Styled.BlockTitle>{'کددهی و ثبت'}</Styled.BlockTitle>
 
@@ -76,7 +98,6 @@ const RVMainContentSetting = () => {
           </Styled.BlockSectionInputContainer>
         </Styled.BlockSection>
       </Styled.Block>
-
       <Styled.Block>
         <Styled.BlockTitle>{'تنظیمات سرویس'}</Styled.BlockTitle>
 
@@ -93,8 +114,14 @@ const RVMainContentSetting = () => {
           <Styled.AdminInputContainer>
             <CustomSelect
               placeholder=""
-              options={AdminOption}
-              onChange={(e) => {}}
+              options={AdminTypeOptions}
+              defaultValue={{
+                value: AdminType,
+                label:
+                  AdminTypeOptions?.find((a) => a?.value === AdminType)
+                    ?.label || '',
+              }}
+              onChange={handleAdminTypeSelect}
             />
 
             <Styled.ProcessInput
