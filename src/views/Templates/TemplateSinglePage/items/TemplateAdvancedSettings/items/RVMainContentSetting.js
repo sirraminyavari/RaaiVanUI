@@ -6,23 +6,21 @@ import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateP
 import { setServiceSuccessMessage } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import InfoMessage from 'components/toasts/info-toast/InfoMessage';
 import useAdvancedSetting from '../useAdvancedSetting';
+import api from 'apiHelper';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { setNodeTypeAdditionalId } from 'apiHelper/ApiHandlers/CNAPI';
 
 const RVMainContentSetting = () => {
   const { RVDic } = window;
-  const {
-    SuccessMessage,
-    NodeTypeID,
-    AdminType,
-    MaxAcceptableAdminLevel,
-    ...rest
-  } = useTemplateContext();
-  const { Pattern } = useAdvancedSetting();
+  const { SuccessMessage, NodeTypeID, AdminType, MaxAcceptableAdminLevel } =
+    useTemplateContext();
+  const { Pattern, additionalID } = useAdvancedSetting();
 
   const handleTemplateIdStateChange = async (e) => {
-    const Message = e?.target?.value;
-    const { ErrorText } = await setServiceSuccessMessage({
+    const AdditionalID = e?.target?.value;
+    const { ErrorText } = await setNodeTypeAdditionalId({
       NodeTypeID,
-      Message,
+      AdditionalID,
     });
 
     if (ErrorText) {
@@ -56,7 +54,48 @@ const RVMainContentSetting = () => {
     },
   ];
 
-  const handleAdminTypeSelect = ({ value, label }) => {};
+  const handleAdminTypeSelect = async ({ value }) => {
+    const { ErrorText } = await api?.CN?.setServiceAdminType({
+      NodeTypeID,
+      AdminType: value,
+    });
+
+    if (ErrorText)
+      InfoToast({
+        type: 'error',
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+  };
+
+  const handleMaxAcceptableAdminLevelStateChange = async (e) => {
+    const { value: Level } = e?.target || {};
+
+    const { ErrorText } = await api?.CN?.setMaxAcceptableAdminLevel({
+      NodeTypeID,
+      Level,
+    });
+
+    if (ErrorText)
+      InfoToast({
+        type: 'error',
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+  };
+
+  const handleSuccessMessageStateChange = async (e) => {
+    const { value: Message } = e?.target || {};
+
+    const { ErrorText } = await api?.CN?.setServiceSuccessMessage({
+      NodeTypeID,
+      Message,
+    });
+
+    if (ErrorText)
+      InfoToast({
+        type: 'error',
+        message: RVDic?.MSG[ErrorText] || ErrorText,
+      });
+  };
 
   return (
     <>
@@ -75,8 +114,8 @@ const RVMainContentSetting = () => {
           <Styled.BlockSectionTitle>{'شناسه تمپلیت'}</Styled.BlockSectionTitle>
           <Styled.BlockSectionInputContainer>
             <Styled.TemplateIdInput
-              placeholder={'شناسه تمپلیت'}
-              value={SuccessMessage}
+              pvalue={additionalID}
+              laceholder={'شناسه تمپلیت'}
               onChange={handleTemplateIdStateChange}
             />
           </Styled.BlockSectionInputContainer>
@@ -92,9 +131,15 @@ const RVMainContentSetting = () => {
         </Styled.BlockSection>
 
         <Styled.BlockSection>
-          <Styled.BlockSectionTitle>{'پیام موفقیت'}</Styled.BlockSectionTitle>
+          <Styled.BlockSectionTitle>
+            {RVDic?.SuccessMessage}
+          </Styled.BlockSectionTitle>
           <Styled.BlockSectionInputContainer>
-            <Styled.SuccessMessageInput placeholder={'پیام موفقیت'} />
+            <Styled.SuccessMessageInput
+              value={SuccessMessage}
+              onChange={handleSuccessMessageStateChange}
+              placeholder={RVDic?.SuccessMessage}
+            />
           </Styled.BlockSectionInputContainer>
         </Styled.BlockSection>
       </Styled.Block>
@@ -129,6 +174,8 @@ const RVMainContentSetting = () => {
             />
 
             <Styled.ProcessInput
+              value={MaxAcceptableAdminLevel || ''}
+              onChange={handleMaxAcceptableAdminLevelStateChange}
               placeholder={'حداکثر سطح مورد قبول برای مسئول'}
             />
           </Styled.AdminInputContainer>

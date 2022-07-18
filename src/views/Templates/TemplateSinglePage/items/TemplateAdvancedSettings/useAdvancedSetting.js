@@ -4,6 +4,7 @@ import { AdvandcedContenxt } from './TemplateAdvancedSettings';
 const useAdvancedSetting = () => {
   const { RVDic, GlobalUtilities } = window;
   const [Pattern, setPattern] = useState();
+  const [additionalID, setAdditionalID] = useState();
 
   const { nodeType: item } = useContext(AdvandcedContenxt);
   useEffect(() => {
@@ -12,7 +13,7 @@ const useAdvancedSetting = () => {
       const { AdditionalIDPattern, AdditionalID } = item?.NodeTypes[0] || {};
 
       const p = parsePattern(AdditionalIDPattern);
-      console.log(p);
+      setAdditionalID(AdditionalID);
       setPattern(p);
     }
   }, [item]);
@@ -119,6 +120,7 @@ const useAdvancedSetting = () => {
 
   return {
     Pattern,
+    additionalID,
   };
 };
 export default useAdvancedSetting;

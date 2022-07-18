@@ -45,7 +45,7 @@ export const BlockSection = styled.div`
 
 export const BlockSectionTitle = styled.div`
   width: 9rem;
-  line-hieght: 3rem;
+  line-height: 3rem;
   height: 3rem;
   color: ${CV_GRAY_DARK};
   font-weight: 500;
@@ -80,12 +80,21 @@ export const SuccessMessageInput = styled(TemplateIdInput).attrs({
   width: 100%;
 `;
 
-export const ProcessInput = styled(AnimatedInput).attrs({
+export const ProcessInput = styled(RxInput).attrs({
+  delayTime: 1000,
   type: 'text',
 })`
   height: 3rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid ${CV_DISTANT};
+  padding: 0.5rem;
   max-width: 28rem;
   width: 100%;
+  outline: none;
+
+  &:focus {
+    border: 0.0625rem solid ${TCV_DEFAULT};
+  }
 `;
 
 export const AdminInputContainer = styled.div`
