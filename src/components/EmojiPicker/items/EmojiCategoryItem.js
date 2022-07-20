@@ -5,12 +5,14 @@ import { getEmojis } from './emojis';
 import LoadingIconFlat from '../../Icons/LoadingIcons/LoadingIconFlat';
 import useLocalStorage from 'hooks/useLocalStorage';
 import { getUUID } from 'helpers/helpers';
+import { useEmojiContext } from '../EmojiContext';
 
 const EmojiCategoryItem = ({ type }) => {
   const [storedValue, setValue] = useLocalStorage('RESENT_USED_EMOJIS', []);
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { handleEmojiSelect } = useEmojiContext();
   useEffect(() => {
     const loadActivities = async () => {
       const el = await getEmojis(type);
@@ -26,6 +28,7 @@ const EmojiCategoryItem = ({ type }) => {
     if (setValue) {
       setValue(filteredList);
     }
+    handleEmojiSelect && handleEmojiSelect(emoji);
   };
 
   return (

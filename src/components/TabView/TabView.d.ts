@@ -8,7 +8,10 @@ export interface ITabViewChildrenProps {
 export interface ITabViewItemProps extends ITabViewChildrenProps {
   label: string;
 }
-
+/**
+ * @description
+ * @param {number} height: ;
+ */
 export interface ITabviewProps {
   height?: number;
   onSelect?: (key: string) => void;

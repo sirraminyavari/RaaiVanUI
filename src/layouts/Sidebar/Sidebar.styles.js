@@ -17,7 +17,7 @@ import {
   BO_WHITE,
 } from 'constant/Colors';
 import { CV_FREEZED, CV_WHITE } from 'constant/CssVariables';
-import { FLEX_RCB, FLEX_RCC } from 'constant/StyledCommonCss';
+import { FLEX_RCB, FLEX_RCC, FLEX_RCS } from 'constant/StyledCommonCss';
 
 const { RV_Float, RV_RevFloat, RV_RTL, RVDic } = window;
 
@@ -37,6 +37,18 @@ export const TitleText = styled.span.attrs({ className: C_WHITE })`
   text-transform: capitalize;
   user-select: none;
   ${TruncateTextCss}
+`;
+
+export const TitleTextContainer = styled.div`
+  ${FLEX_RCS};
+  width: 12rem;
+  gap: 0.5rem;
+`;
+
+export const TitleImage = styled.img`
+  width: 1.5rem;
+  aspect-ratio: 1;
+  border-radius: 100%;
 `;
 
 export const CenterIcon = styled.div`

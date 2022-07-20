@@ -7,12 +7,19 @@ import {
 } from 'constant/CssVariables';
 import { IoAdd } from 'react-icons/io5';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import TabView from 'components/TabView/TabView';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
+import useOnClickOutside from 'hooks/useOnClickOutside';
 
 const ColorPicker = ({ color, onSelect }) => {
   const [open, setOpen] = useState(false);
+  const pickerEl = useRef();
+
+  useOnClickOutside(pickerEl, () => {
+    close && close();
+  });
+
   const colors = [
     '#FF0000',
     '#DF234F',
@@ -67,7 +74,7 @@ const ColorPicker = ({ color, onSelect }) => {
     <Container color={color} onClick={() => setOpen(true)}>
       {color === '' && <IoAdd size={24} />}
       {open && (
-        <PickerLayout>
+        <PickerLayout ref={pickerEl}>
           <TabView height={2.5}>
             <TabView.Item label="رنگ" type="Item">
               <ColorsGrid>

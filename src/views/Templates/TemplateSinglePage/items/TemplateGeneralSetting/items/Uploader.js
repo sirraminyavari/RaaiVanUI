@@ -2,19 +2,61 @@ import styled from 'styled-components';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
 import { BsFileEarmarkArrowUp } from 'react-icons/all';
+import { useState, useRef, useCallback, useEffect, Suspense } from 'react';
+import { useDropzone } from 'react-dropzone';
+import ImageCropModal from 'components/ImageCropper/ImageCropperModal';
+import { readFile } from 'components/ImageCropper/cropUtils';
+import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 
 const Uploader = () => {
+  const [modalInfo, setModalInfo] = useState({
+    isShown: false,
+    title: '',
+    aspect: 1,
+    file: null,
+    imgSrc: null,
+  });
+
+  const onDrop = useCallback((files) => {
+    const file = files[0];
+    const renderFile = async () => {
+      const fileData = await readFile(file);
+      setModalInfo({
+        ...modalInfo,
+        isShown: true,
+        file: file,
+        imgSrc: fileData,
+      });
+    };
+    renderFile();
+  }, []);
+
+  useEffect(() => {
+    console.log(modalInfo);
+  }, [modalInfo]);
+  const { getInputProps, getRootProps } = useDropzone({ onDrop });
+
   return (
     <>
-      <Container>
+      <Container {...getRootProps()}>
+        <input {...getInputProps()} />
         <div>
           <Icon size={36} />
         </div>
         <Message>{'برای آپلود فایل خود را درون کادر نقطه‌چین بکشید'}</Message>
       </Container>
+      <Suspense fallback={<ModalFallbackLoader />}>
+        <ImageCropModal
+          modalProps={modalInfo}
+          cropShape="round"
+          showGrid={true}
+          onCloseModal={() => setModalInfo({ ...modalInfo, isShown: false })}
+        />
+      </Suspense>
     </>
   );
 };
+
 const Container = styled.div`
   ${FLEX_CCC};
   width: 100%;

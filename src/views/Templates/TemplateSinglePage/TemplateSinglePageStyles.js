@@ -7,7 +7,7 @@ export const ReturnButton = styled(Button).attrs({
 })`
   position: absolute;
   top: 1rem;
-  ${({ rtl }) => (rtl ? 'left: 1rem' : 'right: 1rem')};
+  ${({ $rtl }) => ($rtl ? 'left: 1rem' : 'right: 1rem')};
   height: 2rem;
   width: 10rem;
   border: 0.0625rem solid ${CV_WHITE};

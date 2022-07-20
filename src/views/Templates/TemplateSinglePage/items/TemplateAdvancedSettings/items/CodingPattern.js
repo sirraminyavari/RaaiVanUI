@@ -1,5 +1,5 @@
 import * as Styled from './CodingPattrenStyles';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Modal from '../../../../../../components/Modal/Modal';
 import CloseIcon from '../../../../../../components/Icons/CloseIcon/CloseIcon';
 import {
@@ -9,30 +9,12 @@ import {
   Other_Patterns,
 } from './_IdPatterns';
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
-import { AdvandcedContenxt } from '../TemplateAdvancedSettings';
+import api from 'apiHelper';
+import InfoToast from 'components/toasts/info-toast/InfoToast';
 
-const _selectedPatternMockData = [
-  {
-    id: 1,
-    title: 'سال 4رقمی',
-    preview: '1400',
-  },
-  {
-    id: 2,
-    title: 'ماه 2رقمی',
-    preview: '01',
-  },
-  {
-    id: 3,
-    title: 'کد تمپلیت',
-    preview: '123',
-  },
-];
-const CodingPattern = ({}) => {
+const CodingPattern = ({ pattern }) => {
   const { RVDic } = window;
-  const [selectedPattern, setSelectedPattern] = useState(
-    _selectedPatternMockData
-  );
+  const [selectedPattern, setSelectedPattern] = useState(pattern);
   const [modalInfo, setModalInfo] = useState({
     show: false,
     title: 'الگوی کددهی آیتم‌ها',
@@ -40,54 +22,169 @@ const CodingPattern = ({}) => {
     contentWidth: '64rem',
     titleClass: 'rv-default',
   });
-  const context = useTemplateContext();
-  const { nodeType } = useContext(AdvandcedContenxt);
+  const { NodeTypeID } = useTemplateContext();
+  const [exampleDic, setExampleDic] = useState({});
 
-  console.log(nodeType);
+  useEffect(() => {
+    setSelectedPattern(pattern);
+  }, [pattern]);
+
+  useEffect(() => {
+    const _pattern = encodePattern();
+    const genertePattern = async () => {
+      const { Dic } = await api?.CN?.generateAdditionalID({
+        NodeTypeID,
+        AdditionalIDPattern: _pattern,
+      });
+      setExampleDic(Dic);
+    };
+    genertePattern();
+  }, [selectedPattern]);
 
   const openModal = () => setModalInfo({ ...modalInfo, show: true });
 
   const closeModal = () => setModalInfo({ ...modalInfo, show: false });
 
+  const encodePattern = () => {
+    let _pattern = '';
+    selectedPattern?.forEach((p) => {
+      const { Name, ElementID, Value, Length } = p;
+
+      if (['/', '|', '-', '_'].includes(Name)) {
+        _pattern = `${_pattern}${Name}`;
+      } else if (Name === 'AlphaNumeric') {
+        _pattern = `${_pattern}${Value}`;
+      } else {
+        _pattern = `${_pattern}~[[${Name}]]`;
+      }
+    });
+    return _pattern;
+  };
+
+  const savePatternID = async () => {
+    const _pattern = encodePattern();
+    const { ErrorText, Succeed } = await api?.CN?.setAdditionalIdPattern({
+      NodeTypeID,
+      Pattern: _pattern,
+    });
+
+    if (ErrorText)
+      InfoToast({ type: 'error', message: RVDic?.MSG[ErrorText] || ErrorText });
+
+    if (Succeed) {
+      InfoToast({ type: 'info', message: RVDic?.MSG[Succeed] || Succeed });
+      setModalInfo({ ...modalInfo, show: false });
+    }
+  };
+
+  const handlePatternSelect = (Name) => {
+    let _pattern = [...selectedPattern];
+    if (Name === 'AlphaNumeric') {
+      _pattern.push({
+        Name,
+        Title: RVDic.CN.AddIDPattern[Name] || Name,
+        Value: 0,
+      });
+    } else if (['/', '-', '|', '_'].includes(Name)) {
+      _pattern.push({
+        Name,
+        Title: RVDic.CN.AddIDPattern[Name] || Name,
+      });
+    } else {
+      _pattern.push({
+        Name,
+        Title: RVDic.CN.AddIDPattern[Name] || Name,
+      });
+    }
+    setSelectedPattern(_pattern);
+  };
+
+  const handleRemoveItem = (index) => {
+    let _pattern = [...selectedPattern];
+    _pattern?.splice(index, 1);
+    setSelectedPattern(_pattern);
+  };
+
   const selectedPatternItems = useMemo(
     () =>
-      selectedPattern?.map((x) => {
-        const { id, title } = x;
-        return <SelectedItem key={id} item={x} />;
+      selectedPattern?.map((x, index) => {
+        return (
+          <SelectedItem
+            key={`selected-item-${index}`}
+            item={x}
+            onRemove={() => handleRemoveItem(index)}
+          />
+        );
       }),
     [selectedPattern]
   );
 
   const selectedPatternPreview = useMemo(
     () =>
-      selectedPattern?.map((x) => {
-        const { id, preview } = x;
-        return <Styled.PreviewItem key={id}>{preview}</Styled.PreviewItem>;
+      selectedPattern?.map((x, index) => {
+        const { Name, Value } = x;
+        return (
+          <Styled.PreviewItem key={`selected-item-preview-${index}`}>
+            {Value ? Value : exampleDic[`${Name}`] || Name}
+          </Styled.PreviewItem>
+        );
       }),
-    [selectedPattern]
+    [selectedPattern, exampleDic]
   );
 
   const JalaliDateItems = useMemo(() => {
-    return ID_PATTERNS_Jalali?.map((x) => {
-      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    return ID_PATTERNS_Jalali?.map((Name) => {
+      return (
+        <PatternCheckbox
+          onChange={() => handlePatternSelect(Name)}
+          key={`item${Name}`}
+          checked={!!selectedPattern?.find((x) => x?.Name === Name)}
+        >
+          {RVDic?.CN.AddIDPattern[Name] || Name}
+        </PatternCheckbox>
+      );
     });
   }, [selectedPattern]);
 
   const GeorgianDateItems = useMemo(() => {
-    return ID_PATTERNS_Georgian?.map((x) => {
-      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    return ID_PATTERNS_Georgian?.map((Name) => {
+      return (
+        <PatternCheckbox
+          onChange={() => handlePatternSelect(Name)}
+          key={`item${Name}`}
+          checked={!!selectedPattern?.find((x) => x?.Name === Name)}
+        >
+          {RVDic?.CN.AddIDPattern[Name] || Name}
+        </PatternCheckbox>
+      );
     });
   }, [selectedPattern]);
 
   const IdPatternsItems = useMemo(() => {
-    return ID_PATTERNS?.map((x) => {
-      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    return ID_PATTERNS?.map((Name) => {
+      return (
+        <PatternCheckbox
+          onChange={() => handlePatternSelect(Name)}
+          key={`item-${Name}`}
+          checked={!!selectedPattern?.find((x) => x?.Name === Name)}
+        >
+          {RVDic?.CN.AddIDPattern[Name] || Name}
+        </PatternCheckbox>
+      );
     });
   }, [selectedPattern]);
 
   const OtherPatternsItems = useMemo(() => {
-    return Other_Patterns?.map((x) => {
-      return <PatternCheckbox key={x?.id}>{x?.title}</PatternCheckbox>;
+    return Other_Patterns?.map((Name) => {
+      return (
+        <PatternCheckbox
+          onChange={() => handlePatternSelect(Name)}
+          key={`item-${Name}`}
+          checked={!!selectedPattern?.find((x) => x?.Name === Name)}
+        >
+          {RVDic?.CN.AddIDPattern[Name] || Name}
+        </PatternCheckbox>
+      );
     });
   }, [selectedPattern]);
 
@@ -98,7 +195,7 @@ const CodingPattern = ({}) => {
 
       <Modal onClose={closeModal} {...modalInfo}>
         <Styled.ExampleContainer>
-          <Styled.ExampleTitle>{'مثال'}</Styled.ExampleTitle>
+          <Styled.ExampleTitle>{RVDic?.Example}</Styled.ExampleTitle>
           <Styled.ExamplePreviewContainer>
             {selectedPatternPreview}
           </Styled.ExamplePreviewContainer>
@@ -111,7 +208,7 @@ const CodingPattern = ({}) => {
 
         <Styled.ItemSelectionBlock>
           <Styled.ItemSelectionBlockTitle>
-            {'تاریخ'}
+            {RVDic?.Date}
           </Styled.ItemSelectionBlockTitle>
           <Styled.ItemSelectionBlockPatternsContainer>
             <Styled.ListContainer>{JalaliDateItems}</Styled.ListContainer>
@@ -121,7 +218,7 @@ const CodingPattern = ({}) => {
 
         <Styled.ItemSelectionBlock>
           <Styled.ItemSelectionBlockTitle>
-            {'آیتم'}
+            {RVDic.FG.ElementTypes.Node}
           </Styled.ItemSelectionBlockTitle>
           <Styled.ItemSelectionBlockPatternsContainer>
             <Styled.ListContainer>{IdPatternsItems}</Styled.ListContainer>
@@ -130,7 +227,7 @@ const CodingPattern = ({}) => {
 
         <Styled.ItemSelectionBlock>
           <Styled.ItemSelectionBlockTitle>
-            {'سایر'}
+            {RVDic?.Other}
           </Styled.ItemSelectionBlockTitle>
           <Styled.ItemSelectionBlockPatternsContainer>
             <Styled.ListContainer>{OtherPatternsItems}</Styled.ListContainer>
@@ -138,7 +235,7 @@ const CodingPattern = ({}) => {
         </Styled.ItemSelectionBlock>
 
         <Styled.ActionBar>
-          <Styled.ActionButton type="primary">
+          <Styled.ActionButton type="primary" onClick={savePatternID}>
             {'ثبت الگوی کددهی'}
           </Styled.ActionButton>
         </Styled.ActionBar>
@@ -147,11 +244,12 @@ const CodingPattern = ({}) => {
   );
 };
 
-const SelectedItem = ({ item }) => {
+const SelectedItem = ({ item, onRemove }) => {
+  const { Title } = item;
   return (
     <Styled.Item>
-      <div>{item?.title}</div>
-      <Styled.RemoveIconButton>
+      <div>{Title}</div>
+      <Styled.RemoveIconButton onClick={onRemove}>
         <CloseIcon outline={true} size={22} />
       </Styled.RemoveIconButton>
     </Styled.Item>

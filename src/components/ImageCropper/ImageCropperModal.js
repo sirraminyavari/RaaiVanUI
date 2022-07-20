@@ -104,6 +104,10 @@ const ImageCropModal = (props) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
+  useEffect(() => {
+    console.log(modalProps);
+  }, [modalProps]);
+
   return (
     <Modal
       show={modalProps?.isShown}

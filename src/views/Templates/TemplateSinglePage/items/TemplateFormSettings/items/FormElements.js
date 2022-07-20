@@ -8,6 +8,7 @@ import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon
 import {
   BsFileEarmarkArrowUp,
   FiToggleLeft,
+  GiCannonShot,
   IoDocumentOutline,
   IoFilter,
   IoIosCheckboxOutline,
@@ -18,6 +19,8 @@ import {
 import CellPhoneIcon from 'components/Icons/CellPhoneIcon/CellPhoneIcon';
 import { IoMdRadioButtonOn } from 'react-icons/io';
 import { BsTable } from 'react-icons/bs';
+import ShortTextIcon from 'components/Icons/ShortTextIcon';
+import ParagraphIcon from 'components/Icons/ParagraphIcon';
 
 const sharedProps = {
   Name: '', //optional
@@ -27,6 +30,7 @@ const sharedProps = {
   UniqueValue: false, //default: false
   Weight: null, //default: null
 };
+
 const formElementList = () => {
   const { RVDic } = window;
   const size = 22;
@@ -40,8 +44,8 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'متن کوتاه',
-          type: 'short text',
-          icon: <TextInputIcon size={size} />,
+          type: 'shortText',
+          icon: <ShortTextIcon size={size} />,
           data: {
             ...sharedProps,
             Type: 'Text',
@@ -52,7 +56,7 @@ const formElementList = () => {
           id: getUUID(),
           title: 'پاراگراف',
           type: 'paragraph',
-          icon: <TextAreaIcon size={size} />,
+          icon: <ParagraphIcon size={size} />,
           data: {
             ...sharedProps,
             Type: 'Text',
@@ -192,6 +196,7 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'چندسطحی',
+          type: 'multi',
           icon: <IoFilter size={size} />,
           data: {
             ...sharedProps,
@@ -207,9 +212,8 @@ const formElementList = () => {
             Type: 'Numeric',
             Info: {
               PatternName: 'rating',
-              min: '',
-              max: '',
               ViewType: 'numeric',
+              rateNumber: 10,
             },
           },
         },
@@ -268,6 +272,7 @@ const formElementList = () => {
         {
           id: getUUID(),
           title: 'جدول',
+          type: 'table',
           icon: <BsTable size={size} />,
           data: {
             ...sharedProps,
@@ -291,4 +296,12 @@ const formElementList = () => {
     },
   ];
 };
+
+export const flatFormElements = () => {
+  const list = formElementList()
+    ?.map(({ items }) => items)
+    .flat();
+  return list;
+};
+
 export default formElementList;

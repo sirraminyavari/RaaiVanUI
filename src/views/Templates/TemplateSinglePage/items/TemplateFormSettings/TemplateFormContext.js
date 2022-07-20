@@ -8,6 +8,8 @@ import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
 
 const TemplateFormContext = createContext({});
 
+export const FORM_BUILDER_ID = 'FORM_BUILDER_ID';
+
 export const useTemplateFormContext = () => {
   const context = useContext(TemplateFormContext);
   return context;
@@ -62,7 +64,6 @@ export const TemplateFormProvider = ({ children, initialState }) => {
   const formPreProcessDataModel = (data) => {
     const { Elements } = data || {};
     const modified = Elements?.map((x) => getElementType(x));
-    console.log(Elements);
     if (modified) {
       setFormObjects(modified);
     }
@@ -81,7 +82,6 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         ElementID: getUUID(),
         ...x,
       }));
-    console.log(Elements);
     const { ErrorText, Succeed } = await saveFormElements({
       FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
       Elements,

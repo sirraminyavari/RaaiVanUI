@@ -45,7 +45,7 @@ const SHTemplateItem = ({
   };
 
   const handleCardClick = () => {
-    history.push(`${path}/${item?.id}/${encodeBase64(item?.data?.title)}`);
+    history.push(`${path}/${item?.id}`);
   };
 
   return (

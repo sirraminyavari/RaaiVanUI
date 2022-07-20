@@ -7,5 +7,5 @@ export interface IMemberPreviewProps {
   showMore: boolean;
 }
 
-const MembersPreview: FC<IMembersPreviewProps>;
+declare const MembersPreview: FC<IMembersPreviewProps>;
 export default MembersPreview;

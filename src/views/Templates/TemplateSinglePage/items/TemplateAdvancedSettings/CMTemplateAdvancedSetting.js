@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import CodingPattern from './items/CodingPattern';
 import CoverPatternUploader from './items/CoverPatternUploader';
+import useAdvancedSetting from './useAdvancedSetting';
 
 const CMTemplateAdvancedSetting = () => {
   const { RVDic, RV_RTL: rtl } = window;
   const { id, title } = useParams();
+  const { Pattern } = useAdvancedSetting();
+
   const breadItems = [
     {
       id: 1,
@@ -44,7 +47,7 @@ const CMTemplateAdvancedSetting = () => {
 
         <Styles.InputContainer>
           <Styles.InputLabel>{'الگوی کددهی آیتم‌ها'}</Styles.InputLabel>
-          <CodingPattern />
+          <CodingPattern pattern={Pattern} />
         </Styles.InputContainer>
 
         <Styles.InputContainer>
