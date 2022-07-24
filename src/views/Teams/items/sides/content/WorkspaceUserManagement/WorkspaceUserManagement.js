@@ -17,7 +17,7 @@ import {
   WORKSPACES_PATH,
   WORKSPACE_USER_MANAGEMENT_PATH,
 } from 'views/Teams/items/others/constants';
-import { removeWorkspaceUser } from 'apiHelper/ApiHandlers/RVApi';
+import { removeWorkspaceUser } from 'apiHelper/ApiHandlers/RVAPI';
 import { getWorkspaceUsers } from 'apiHelper/ApiHandlers/usersApi';
 import WorkspaceUserManagementTableData from './WorkspaceUserManagementTableData';
 import WorkspaceUserManagementTableColumnHead from './WorkspaceUserManagementTableColumnHead';

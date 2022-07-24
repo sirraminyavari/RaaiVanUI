@@ -2,7 +2,7 @@ import React from 'react';
 import Shimmer from 'components/Shimmer/Shimmer';
 import Avatar from 'components/Avatar/Avatar';
 import styled from 'styled-components';
-import { randomNumber } from 'helpers/helpers';
+import { random } from 'helpers/helpers';
 import classNames from 'classnames';
 
 const OnboardingTeamItem = ({ TypeName, IconURL, isLoading = true }) => {
@@ -54,6 +54,6 @@ const WorkspacePanelHeaderSkeleton = styled(Shimmer)`
     height: 0.8rem;
     display: inline-block;
     border-radius: 0.8rem;
-    width: ${randomNumber(35, 95)}%;
+    width: ${random(35, 95)}%;
   }
 `;
