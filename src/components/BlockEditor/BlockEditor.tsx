@@ -3,7 +3,7 @@ import { convertToRaw } from 'draft-js';
 import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
-import plugins from './plugins';
+import Plugins from './plugins';
 import useWindow from 'hooks/useWindowContext';
 import styled from 'styled-components';
 
@@ -20,6 +20,7 @@ function BlockEditorWrapper({
 }) {
   const { RV_Direction, RV_RTL } = useWindow();
   const editorRef = useRef<HTMLElement>();
+  const initializePluginsInstance = Plugins();
   // useEffect(
   // () => void setImmediate(() => editorRef.current?.focus()),
   //   []
@@ -49,7 +50,7 @@ function BlockEditorWrapper({
         dict={dict}
         lang={RV_RTL ? 'fa' : 'en'}
         dir={RV_Direction}
-        plugins={plugins}
+        plugins={initializePluginsInstance}
         styles={defaultTheme}
         portalNode={document.getElementById('block-editor-portal')}
         debugMode={debugMode}
