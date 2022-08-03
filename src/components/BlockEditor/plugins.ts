@@ -24,6 +24,7 @@ const Plugins = () =>
       _plugins.createLinksPlugin(),
       _plugins.createTextAnnotationsPlugin({ textColors, highlightColors }),
       _plugins.createBlockAlignmentPlugin(),
+      //@ts-expect-error
       _plugins.createMentionPlugin({
         async suggestionsFilter(search: string) {
           const rawMentions = (await suggestTags({ text: search })) as Array<{

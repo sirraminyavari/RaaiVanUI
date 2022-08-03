@@ -34,9 +34,13 @@ function ParagraphField({
           convertFromRaw(
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
+              //@ts-expect-error
               getMentionLink: async (search) => {
                 console.log(search);
-                const rawMentions = await suggestTags({ text: search });
+                const rawMentions = await suggestTags({
+                  //@ts-expect-error
+                  text: search,
+                });
                 const mentions = rawMentions.map((suggestTag) => ({
                   ...suggestTag,
                   id: suggestTag.ItemID,

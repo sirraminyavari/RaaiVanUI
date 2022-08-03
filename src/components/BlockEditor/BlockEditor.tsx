@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { convertToRaw } from 'draft-js';
-import BlockEditor, { defaultTheme } from '@sirraminyavari/rv-block-editor';
+import { BlockEditor, defaultTheme } from '@sirraminyavari/rv-block-editor';
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
 import Plugins from './plugins';
@@ -44,6 +44,7 @@ function BlockEditorWrapper({
   return (
     <BlockEditorStyler textarea={textarea} readOnly={readOnly}>
       <BlockEditor
+        //@ts-expect-error
         ref={editorRef}
         editorState={editorState}
         onChange={setEditorState}
@@ -52,7 +53,9 @@ function BlockEditorWrapper({
         dir={RV_Direction}
         plugins={initializePluginsInstance}
         styles={defaultTheme}
-        portalNode={document.getElementById('block-editor-portal')}
+        portalNode={
+          document.getElementById('block-editor-portal') as HTMLElement
+        }
         debugMode={debugMode}
         readOnly={readOnly}
         textarea={textarea}
