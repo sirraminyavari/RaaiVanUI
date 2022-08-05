@@ -2014,10 +2014,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sirraminyavari/rv-block-editor@^0.3.14-dev-1":
-  version "0.3.14-dev-1"
-  resolved "https://npm.pkg.github.com/download/@sirraminyavari/rv-block-editor/0.3.14-dev-1/5e28f87755c629f6aed44109e472da856366ed680c73791c6a727a8e5f420c57#b2517cd7929cd7a198a58d861e55f671c9ee0774"
-  integrity sha512-6P5fNKxvkeQC7F9IBH7LLljDc9Rl7pXnYligH+MbmVC99mxuZDg9GZ3XWxwIzHlsxc4Ie51ZlhniL/ifJbkVcA==
+"@sirraminyavari/rv-block-editor@^0.3.15-alpha":
+  version "0.3.15-alpha"
+  resolved "https://npm.pkg.github.com/download/@sirraminyavari/rv-block-editor/0.3.15-alpha/88a4315c9fd2db3ba1ca9c86d2ab93742f9b9320bfa459f6aa69525d5a152aac#2a7c8af274a1aa103e57cf81b0ec22b63d17ccf8"
+  integrity sha512-6E3ndP1U0udFNJf2+VFOFs6vCuWcxNi+jpCuNdAMzCXCCHLxFIREMfLQviN40ylXfd/QJ1O6R3575xGkF7Ax+g==
   dependencies:
     "@draft-js-plugins/editor" "^4.1.0"
     "@draft-js-plugins/linkify" "^4.2.0"
