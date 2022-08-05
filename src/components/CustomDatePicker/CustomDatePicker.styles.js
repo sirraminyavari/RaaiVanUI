@@ -161,8 +161,8 @@ export const CalendarContainer = styled.div`
   .medium-calendar {
     font-size: 0.55rem !important;
     position: absolute !important;
-    left: 50% !important;
-    margin-left: -9rem !important;
+    // left: 50% !important;
+    // margin-left: -9rem !important;
     height: ${({ hasFooter }) => (hasFooter ? '23.2rem' : '20.2rem')};
   }
 

@@ -12,7 +12,7 @@ import * as Styles from '../formField.styles';
 
 const normalizedOptions = (options) =>
   options?.nodes?.map((x) => {
-    return { label: decodeBase64(x.Name), value: { ...x } };
+    return { label: window.Base64.decode(x.Name), value: { ...x } };
   });
 
 const { RVDic } = window;
@@ -112,7 +112,10 @@ const MultiLevelField = ({
                           isDisabled={!editable}
                           options={normalizedOptions(x)}
                           styles={customStyles}
-                          value={{ value: ID, label: decodeBase64(Name) }}
+                          value={{
+                            value: ID,
+                            label: window.Base64.decode(Name),
+                          }}
                           placeholder={RVDic.Select}
                           isSearchable={true}
                           onChange={(event, triggeredAction) => {
@@ -142,9 +145,13 @@ const MultiLevelField = ({
           </SelectorContainer>
         ) : (
           <Styles.SelectedFieldItemContainer
-            muted={!value.length === value.filter(({ ID }) => !!ID).length}
+            muted={
+              value.length === 0 ||
+              value.length !== value.filter(({ ID }) => !!ID).length
+            }
           >
-            {value.length === value.filter(({ ID }) => !!ID).length
+            {value.length === value.filter(({ ID }) => !!ID).length &&
+            value.length
               ? value.map(({ Name, ID }) => {
                   return (
                     <Styles.SelectedFieldItem key={ID}>

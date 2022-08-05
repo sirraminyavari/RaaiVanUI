@@ -57,9 +57,7 @@ const NewNode = lazy(() =>
 );
 
 const NodeView = lazy(() =>
-  import(
-    /* webpackChunkName: "node-view "*/ 'views/Node/nodeDetails/NodeDetails'
-  )
+  import(/* webpackChunkName: "node-view "*/ 'views/Node/Node')
 );
 
 //const NodeView = lazy(() =>
@@ -173,7 +171,7 @@ const routes = [
   {
     path: NODE_PATH,
     name: NODE_NAME,
-    exact: true,
+    exact: false,
     hasNavSide: true,
     component: NodeView,
   },
