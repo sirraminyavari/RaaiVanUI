@@ -1,10 +1,7 @@
 /**
  * A component for advanced searching
  */
-import {
-  getFormInstance,
-  initializeOwnerFormInstance,
-} from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
+import { getFormInstance } from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
 import { useState, lazy, Suspense, useEffect } from 'react';
 import { Maintainer, TopFilter, Side } from '../NodeDetails.style';
 import FieldsLoadingSkelton from './FieldsLoadingSkelton';
@@ -29,6 +26,8 @@ const Collector = ({
   nodeDetails,
   nodeId,
   hierarchy,
+  InstanceID,
+  newNode = false,
   ...props
 }) => {
   const [sideColumn, setSideColumn] = useState(false);
@@ -36,19 +35,20 @@ const Collector = ({
 
   useEffect(() => {
     (async () => {
-      const { InstanceID } = await initializeOwnerFormInstance({
-        OwnerID: nodeId,
-      });
-      const formInstance = await getFormInstance({
-        InstanceID: InstanceID,
-        LimitOwnerID: null,
-        ShowAllIfNoLimit: true,
-      });
+      const formInstance = newNode
+        ? nodeDetails
+        : InstanceID
+        ? await getFormInstance({
+            InstanceID: InstanceID,
+            LimitOwnerID: null,
+            ShowAllIfNoLimit: true,
+          })
+        : null;
       console.log({ formInstance });
 
       setFields(formInstance);
     })();
-  }, [nodeId]);
+  }, [InstanceID, nodeDetails, newNode]);
 
   return (
     <WelcomeLayout centerize>
@@ -57,14 +57,15 @@ const Collector = ({
         className={`${'rv-bg-color-white'} rv-border-radius-half`}
         fullWidth={sideColumn}
       >
-        {/* <LoadingSkelton /> */}
         <TopFilter>
-          <TopBar
-            onSideColumnClicked={setSideColumn}
-            sideColumn={sideColumn}
-            nodeDetails={nodeDetails}
-            hierarchy={hierarchy}
-          />
+          {!newNode && (
+            <TopBar
+              onSideColumnClicked={setSideColumn}
+              sideColumn={sideColumn}
+              nodeDetails={nodeDetails}
+              hierarchy={hierarchy}
+            />
+          )}
         </TopFilter>
         <div
           style={{
@@ -79,6 +80,9 @@ const Collector = ({
               nodeDetails={nodeDetails}
               nodeId={nodeId}
               fields={fields}
+              InstanceID={InstanceID}
+              newNode={newNode}
+              NodeTypeID={nodeId}
               {...props}
             />
           ) : (
@@ -88,7 +92,6 @@ const Collector = ({
 
         <Side $isEnabled={sideColumn} isRtl={RV_RTL}>
           <Suspense fallback={<></>}>
-            {console.log('render', new Date())}
             {sideColumn && (
               <SideColumn
                 setSideColumn={setSideColumn}

@@ -89,10 +89,10 @@ const TextType = (props) => {
         savedData={items}
         resetMe={resetValue}
       />
-      <Styled.ExactOrFiltersWrapper>
+      {/* <Styled.ExactOrFiltersWrapper>
         <OrFilter isChecked={or} onToggle={handleOrFilter} />
         <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
-      </Styled.ExactOrFiltersWrapper>
+      </Styled.ExactOrFiltersWrapper> */}
     </Styled.FilterContainer>
   );
 };

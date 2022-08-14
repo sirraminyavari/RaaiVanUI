@@ -380,36 +380,40 @@ const Table = (props) => {
   }, []);
 
   //! Create new row and add it to the beginning of the row list.
-  const createNewRow = (tempRowId) => {
-    let newRow = tableColumns
-      ?.filter((col) => col?.Type !== cellTypes.separator) //! Exclude separator type.
-      .map((column) => {
-        let extendedColumn = Object.assign({}, column, {
-          FormID: '',
-          InstanceID: tempRowId, //! add temporary id until row is saved(and gets real id).
-          RefElementID: '',
-          GuidItems: [],
-          SelectedItems: [],
-          TextValue: '',
-        });
+  const createNewRow = useCallback(
+    async (tempRowId) => {
+      // if (tableData === undefined) {}
+      let newRow = tableColumns
+        ?.filter((col) => col?.Type !== cellTypes.separator) //! Exclude separator type.
+        .map((column) => {
+          let extendedColumn = Object.assign({}, column, {
+            FormID: '',
+            InstanceID: tempRowId, //! add temporary id until row is saved(and gets real id).
+            RefElementID: '',
+            GuidItems: [],
+            SelectedItems: [],
+            TextValue: '',
+          });
 
-        return normalizeCell(extendedColumn);
-      })
-      .reduce(
-        //! Reduce to one object(suitable for table format).
-        (acc, column) => {
-          return {
-            ...acc,
-            [`${column.Type}_${column.ElementID}`]: column,
-          };
-        },
-        { id: tempRowId }
-      );
+          return normalizeCell(extendedColumn);
+        })
+        .reduce(
+          //! Reduce to one object(suitable for table format).
+          (acc, column) => {
+            return {
+              ...acc,
+              [`${column.Type}_${column.ElementID}`]: column,
+            };
+          },
+          { id: tempRowId }
+        );
 
-    newRow.current = newRow;
-    beforeEditRowsRef.current = rows;
-    setRows((oldRows) => [newRow, ...oldRows]);
-  };
+      newRow.current = newRow;
+      beforeEditRowsRef.current = rows;
+      setRows((oldRows) => [newRow, ...oldRows]);
+    },
+    [tableData]
+  );
 
   return (
     <CustomTable

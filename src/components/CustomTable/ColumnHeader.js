@@ -14,36 +14,26 @@ const ColumnHeader = ({ column, allColumns }) => {
           <Styled.HeaderAsterisk>*</Styled.HeaderAsterisk>
         )}
       </Heading>
-      <>
+      <div className="table-sort-arrow">
         {column.isSorted ? (
           column.isSortedDesc ? (
-            <Arrow
-              dir="down"
-              circle
-              color={CV_GRAY_DARK}
-              size={24}
-              className="table-sort-arrow"
-            />
+            <>
+              <Arrow dir="down" color={CV_GRAY_DARK} size={15} />
+            </>
           ) : (
-            <Arrow
-              dir="up"
-              circle
-              color={CV_GRAY_DARK}
-              size={24}
-              className="table-sort-arrow"
-            />
+            <>
+              <Arrow dir="up" color={CV_GRAY_DARK} size={15} />
+            </>
           )
         ) : (
           column.canSort && (
-            <Arrow
-              dir="up-down"
-              color={CV_DISTANT}
-              size={20}
-              className="table-sort-arrow"
-            />
+            <>
+              <Arrow dir="up" color={CV_DISTANT} size={15} />
+              <Arrow dir="down" color={CV_DISTANT} size={15} />
+            </>
           )
         )}
-      </>
+      </div>
     </Styled.HeaderWrapper>
   );
 };

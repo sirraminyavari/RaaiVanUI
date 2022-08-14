@@ -34,6 +34,7 @@ import Button from 'components/Buttons/Button';
 import ShadowButton from 'components/Buttons/ShadowButton';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { getNewNodePageUrl } from 'apiHelper/getPageUrl';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -254,7 +255,7 @@ const FilterBar = ({
       });
 
       if (item.value === 'completeAction') {
-        push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+        push(getNewNodePageUrl(nodeTypeId));
         // SubmitNewNode(nodeTypeId);
         // window.open(RVAPI.NewNodePageURL({ NodeTypeID: nodeTypeId }));
       } else if (item?.value === 'urgentAction') {
@@ -263,7 +264,7 @@ const FilterBar = ({
       }
     } else {
       // SubmitNewNode(nodeTypeId);
-      push(RVAPI?.NewNodePageURL({ NodeTypeID: nodeTypeId }));
+      push(getNewNodePageUrl(nodeTypeId));
     }
   };
 

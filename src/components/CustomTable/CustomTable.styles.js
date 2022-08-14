@@ -125,7 +125,7 @@ export const Table = styled.div`
     position: fixed;
     ${RV_Float}: 2.15rem;
     background-color: ${CV_WHITE};
-    border-${RV_RevFloat}: 1px solid ${CV_DISTANT};
+    border-${RV_RevFloat}: 1px solid ${CV_FREEZED};
   }
 `;
 
@@ -204,7 +204,7 @@ export const Tr = styled.div`
 
   :last-child {
     > div:not(:first-child) {
-      border-bottom: 1px solid ${CV_DISTANT};
+      border-bottom: 1px solid ${CV_FREEZED};
     }
   }
 
@@ -229,8 +229,9 @@ export const TableRowIndex = styled(Heading).attrs({
 
 export const TableColumnResizer = styled.div`
   display: inline-block;
-  background: ${CV_GRAY};
-  width: 0.18rem;
+  background: ${CV_FREEZED};
+  opacity: 1;
+  width: 0.06rem;
   height: 100%;
   border-radius: 15%;
   position: absolute;
@@ -248,7 +249,7 @@ export const TableCell = styled.div`
   padding: 0.3rem;
   text-align: center;
   position: relative;
-  border-${RV_Float}: 1px solid ${CV_DISTANT};
+  border-${RV_Float}: 1px solid ${CV_FREEZED};
 
   :hover:not(:first-child):not(:nth-child(2)) {
     div[data-edit-icon-wrapper] {
@@ -258,7 +259,7 @@ export const TableCell = styled.div`
   }
 
   :not(:first-child) {
-    border-bottom: 1px solid ${CV_DISTANT};
+    border-bottom: 1px solid ${CV_FREEZED};
   }
 
   :nth-child(1) {
@@ -267,6 +268,10 @@ export const TableCell = styled.div`
   }
 
   :nth-child(2) {
+    border-${RV_Float}: 0 !important;
+  }
+
+  :nth-child(3) {
     border-${RV_Float}: 0 !important;
   }
 `;

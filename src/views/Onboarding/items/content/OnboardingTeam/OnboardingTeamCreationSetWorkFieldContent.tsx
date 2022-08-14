@@ -6,7 +6,7 @@ import PanelButton from 'components/Buttons/PanelButton';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import {
   getAllFieldsOfActivity,
-  IGetAllFieldsOfActivity,
+  IGetAllFieldsOfActivityResponse,
 } from 'apiHelper/ApiHandlers/CNAPI';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ import { useOnboardingSlice } from 'store/slice/onboarding';
 const OnboardingTeamCreationSetWorkFieldContent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [workFields, setWorkFields] = useState<
-    IGetAllFieldsOfActivity['Items']
+    IGetAllFieldsOfActivityResponse['Items']
   >([]);
   const workFieldInputRef = useRef<HTMLInputElement>();
 

@@ -20,9 +20,10 @@ export const SelectedFieldItem = styled.div<{ muted?: boolean }>`
 `;
 SelectedFieldItem.displayName = 'SelectedFieldItem';
 
-export const SelectedFieldItemContainer = styled.div`
+export const SelectedFieldItemContainer = styled.div<{ muted?: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  ${({ muted }) => muted && `color:${CV_DISTANT};`}
 `;
 SelectedFieldItemContainer.displayName = 'SelectedFieldItemContainer';

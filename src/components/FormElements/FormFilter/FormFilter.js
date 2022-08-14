@@ -37,6 +37,8 @@ import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
  * @component
  * @param {PropType} props -Props that are passed to component.
  */
+
+//TODO: Update RVDic object dictionary
 const FormFilter = (props) => {
   const {
     filters,
@@ -67,7 +69,8 @@ const FormFilter = (props) => {
 
   //! Close form filter.
   const closeFormFilter = () => {
-    onCloseFilter();
+    onCloseFilter && onCloseFilter();
+    handleOnFilterClick();
   };
 
   return (
@@ -127,7 +130,7 @@ const FormFilter = (props) => {
 FormFilter.Checkbox = CheckboxType;
 FormFilter.Text = TextType;
 FormFilter.Date = DateType;
-FormFilter.Select = SelectType;
+FormFilter.Select = CheckboxType;
 FormFilter.Numeric = NumericType;
 FormFilter.User = UserType;
 FormFilter.Node = NodeType;
