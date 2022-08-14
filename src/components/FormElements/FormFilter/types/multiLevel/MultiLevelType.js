@@ -230,8 +230,8 @@ const MultiLevelType = (props) => {
           alignItems: 'center',
         }}
       >
-        <OrFilter isChecked={or} onToggle={handleOrFilter} />
-        <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
+        {/* <OrFilter isChecked={or} onToggle={handleOrFilter} />
+        <ExactFilter onToggle={handleExactFilter} isChecked={exact} /> */}
       </div>
       {levelList && (
         <Modal

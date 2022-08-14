@@ -216,7 +216,7 @@ const ItemProducerHandler = ({
                         }
                         ref={provided.innerRef}
                       >
-                        {isDragDisabled && <DragIcon color={'grey'} />}
+                        {!isDragDisabled && <DragIcon color={'grey'} />}
                         <Container>
                           {type === 'text' ? (
                             <Input

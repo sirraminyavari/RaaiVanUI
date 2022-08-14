@@ -87,7 +87,7 @@ const SelectType = (props) => {
         onSelect={handleOnChange}
         selecteds={value?.TextItems}
       />
-      <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
+      {/* <ExactFilter onToggle={handleExactFilter} isChecked={exact} /> */}
     </Styled.SelectContainer>
   );
 };
