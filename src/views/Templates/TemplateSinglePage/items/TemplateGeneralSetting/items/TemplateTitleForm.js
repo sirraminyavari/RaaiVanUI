@@ -9,6 +9,7 @@ import { useTemplateContext } from '../../../TemplateProvider';
 import { setServiceDescription } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import { decodeBase64 } from 'helpers/helpers';
 import RxTextarea from 'components/Inputs/RxTextarea';
+import BlockEditorWrapper from 'components/BlockEditor/BlockEditor';
 
 const TemplateTitleForm = ({ name }) => {
   const { RVDic } = window;
@@ -60,6 +61,12 @@ const TemplateTitleForm = ({ name }) => {
         onChange={handleSubtitleChange}
         delayTime={1000}
       />
+
+      {/* <BlockEditorWrapper
+        textarea={true}
+        editorState={subtitle}
+        setEditorState={(e) => console.log(e)}
+      /> */}
     </Container>
   );
 };

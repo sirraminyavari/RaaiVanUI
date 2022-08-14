@@ -1,8 +1,7 @@
 import * as Styles from '../TemplateFormSettingsStyles';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, getUUID } from 'helpers/helpers';
 import { useTemplateContext } from '../../../TemplateProvider';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
-import { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import {
   DraggableFormObject,
@@ -15,12 +14,15 @@ import DragIcon from 'components/Icons/DragIcon/Drag';
 import { getDraggableElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
 import SideFormElementSetting from './SideFormElementSetting';
 import DraggableSharedSetting from '../elementSettingComponents/sharedItems/DraggableSharedSetting';
+import { TEMPLATES_SETTING_PATH } from 'constant/constants';
+import { ReturnButton } from '../../../TemplateSinglePageStyles';
+import { useHistory } from 'react-router-dom';
+import 'components/ScrollBarProvider/scrollbar.css';
+import { useEffect, useState, useMemo } from 'react';
+import { FORM_BUILDER_ID } from '../TemplateFormContext';
 
-export const FORM_BUILDER_ID = 'FORM_BUILDER_ID';
-
-const FormBuilder = () => {
+const FormBuilder = ({ placeholderProps }) => {
   const { RV_RTL: rtl, RVDic } = window;
-  const [description, setDescription] = useState('');
   const { Title } = useTemplateContext();
   const {
     formObjects,
@@ -29,6 +31,10 @@ const FormBuilder = () => {
     setFormObjects,
     removeItem,
   } = useTemplateFormContext();
+  const history = useHistory();
+
+  const returnToTemplates = () => history.push(TEMPLATES_SETTING_PATH);
+
   const breadItems = [
     {
       id: 1,
@@ -37,8 +43,8 @@ const FormBuilder = () => {
     },
     {
       id: 2,
-      title: 'مدیریت قالب ها',
-      linkTo: '',
+      title: RVDic?.TemplateManagement,
+      linkTo: TEMPLATES_SETTING_PATH,
     },
     {
       id: 3,
@@ -51,12 +57,29 @@ const FormBuilder = () => {
       linkTo: '',
     },
   ];
+
+  const placeholder = useMemo(() => {
+    const { icon } = placeholderProps || {};
+    return (
+      placeholderProps && (
+        <Styles.DragPlaceholder {...placeholderProps}>
+          {icon}
+        </Styles.DragPlaceholder>
+      )
+    );
+  }, [placeholderProps]);
+
   return (
     <>
-      <Styles.FormBuilderLayout rtl={rtl}>
+      <Styles.FormBuilderLayout $rtl={rtl}>
         <Breadcrumb items={breadItems} />
+
+        <ReturnButton onClick={returnToTemplates} $rtl={rtl}>
+          {RVDic?.Return}
+        </ReturnButton>
+
         <Droppable droppableId={FORM_BUILDER_ID}>
-          {(provided) => (
+          {(provided, snapshot) => (
             <DroppableContainer
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -67,7 +90,11 @@ const FormBuilder = () => {
                   setFormObjects,
                 });
                 return (
-                  <Draggable key={x?.id} draggableId={`${x?.id}`} index={index}>
+                  <Draggable
+                    key={x?.id}
+                    draggableId={`${x?.id}-${x?.type}`}
+                    index={index}
+                  >
                     {(provided) => (
                       <DraggableFormObject
                         ref={provided.innerRef}
@@ -94,6 +121,7 @@ const FormBuilder = () => {
                 );
               })}
               {provided.placeholder}
+              {placeholder}
             </DroppableContainer>
           )}
         </Droppable>

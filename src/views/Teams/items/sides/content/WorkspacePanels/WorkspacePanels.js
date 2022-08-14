@@ -2,7 +2,7 @@ import Header from '../WorkspacesHeader/WorkspacesHeader';
 import * as Styled from './WorkspacePanel.styles';
 import DesktopWorkSpace from './WorkspacePanel';
 import { useEffect, useState } from 'react';
-import { getWorkspaces } from 'apiHelper/ApiHandlers/RVApi';
+import { getWorkspaces } from 'apiHelper/ApiHandlers/RVAPI';
 import WorkspacePanelSkeleton from 'views/Teams/items/others/skeletons/WorkspacePanel';
 
 const WorkspacePanels = () => {

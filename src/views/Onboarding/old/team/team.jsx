@@ -10,7 +10,7 @@ import {
   createApplication,
   createWorkspace,
   selectApplication,
-} from 'apiHelper/ApiHandlers/RVApi';
+} from 'apiHelper/ApiHandlers/RVAPI';
 import { decodeBase64 } from 'helpers/helpers';
 
 const { RVDic } = window;

@@ -6,7 +6,7 @@ import UserDeleteButton from './UserDeleteButton';
 import UserGroupEdit from './UserGroupEdit';
 import { useMemo, useState } from 'react';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVApi';
+import { addSystemAdmin, removeSystemAdmin } from 'apiHelper/ApiHandlers/RVAPI';
 import useWindowContext from 'hooks/useWindowContext';
 
 const SaasUsersListRow = ({

@@ -5,6 +5,7 @@ import APIHandler from 'apiHelper/APIHandler';
 import moment from 'jalali-moment';
 import { Subject } from 'rxjs';
 import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
+import { IJsonObject } from 'models/IJsonObject';
 
 const { GlobalUtilities, RVAPI } = window;
 
@@ -333,14 +334,92 @@ export const formatDeltaDays = (value, local = getLanguage()) => {
   return formatter.format(Math.round(deltaDays), 'days');
 };
 
+export const getType = (() => {
+  var f = function () {}.constructor;
+  var j = {}.constructor;
+  var a = [].constructor;
+  var s = 'gesi'.constructor;
+  var n = (2).constructor;
+  var b = true.constructor;
+  var t = new Date().constructor;
+
+  return function (value: any): string {
+    if (value === null) return 'null';
+    else if (value === undefined) return 'undefined';
+
+    switch (value.constructor) {
+      case f:
+        return 'function';
+      case j:
+        return 'json';
+      case a:
+        return 'array';
+      case s:
+        return 'string';
+      case n:
+        return 'number';
+      case b:
+        return 'boolean';
+      case t:
+        return 'datetime';
+      default:
+        return String(typeof value);
+    }
+  };
+})();
+
 /**
  * @description Generates a 10 digit random number
  * @param {number} [min] - Sets the possible **minimum** value
  * @param {number} [max] - sets the possible **maximum** value
  * @return {number}
  */
-export const randomNumber = (min, max) => {
-  return GlobalUtilities?.random(min, max);
+export const random = (min?: number, max?: number): number => {
+  if (!min || isNaN(min)) min = 0;
+  if (max !== 0 && (!max || isNaN(max))) max = 9999999999;
+
+  if (max < min) {
+    var t = min;
+    min = max;
+    max = t;
+  }
+
+  if (min === max) return min;
+
+  var lnt = String(max).length;
+
+  return (
+    (Number((Math.random() * Math.pow(10, lnt + 1)).toFixed(0)) %
+      (max - min + 1)) +
+    min
+  );
+};
+
+export const randomString = (length: number = 0): string => {
+  const str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+  if (getType(length) !== 'number' || length <= 0) length = 10;
+  let ret = '';
+  for (var i = 0; i < length; ++i) ret += str[random(0, str.length - 1)];
+  return ret;
+};
+
+export const cloneJsonObject = <T>(object: T): T => {
+  switch (getType(object)) {
+    case 'json':
+    case 'array':
+      return JSON.parse(JSON.stringify(object)) as unknown as T;
+    case 'function':
+      return object;
+    default:
+      return cloneJsonObject<{ x: T }>({ x: object }).x;
+  }
+};
+
+export const removeEmptyKeys = (jsonObject: IJsonObject): IJsonObject => {
+  Object.keys(jsonObject)
+    .filter((k) => jsonObject[k] === null || jsonObject[k] === undefined)
+    .forEach((k) => delete jsonObject[k]);
+  return jsonObject;
 };
 
 /**
@@ -456,3 +535,5 @@ export const devConsole = (message?: any, ...optionalParams: any[]) => {
     console.log(message, ...optionalParams);
   }
 };
+
+export const range = (length: number) => [...Array.from(Array(length).keys())];

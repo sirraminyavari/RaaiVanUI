@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Button from 'components/Buttons/Button';
 import AlertIcon from 'components/Icons/AlertIcon/AlertIcon';
-import { randomNumber } from 'helpers/helpers';
+import { random } from 'helpers/helpers';
 import VerificationInputWithTimer from 'components/OTP/VerificationInputWithTimer';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import {
@@ -17,7 +17,7 @@ import { WORKSPACES_PATH } from '../../others/constants';
 import {
   removeWorkspaceTicket,
   removeWorkspace,
-} from 'apiHelper/ApiHandlers/RVApi';
+} from 'apiHelper/ApiHandlers/RVAPI';
 const WorkspaceDeleteContent = () => {
   const [pendingPromise, setPendingPromise] = useState(false);
   const [resetCountdown, setResetCountdown] = useState(0);
@@ -62,7 +62,7 @@ const WorkspaceDeleteContent = () => {
     });
     setOTPError('');
     setOTPLoading(false);
-    setResetCountdown(randomNumber(1));
+    setResetCountdown(random(1));
   };
 
   const ReturnToWorkspaces = () => history.push(WORKSPACES_PATH);
@@ -82,7 +82,7 @@ const WorkspaceDeleteContent = () => {
     } else {
       setOTPError(RVDic.MSG[ErrorText] || ErrorText);
 
-      setOTPShake(randomNumber(1, 50));
+      setOTPShake(random(1, 50));
     }
     setPendingPromise(false);
   };

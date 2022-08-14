@@ -15,7 +15,7 @@ export const EmojiContextProvider = ({ onSelect, children }) => {
   };
 
   const handleEmojiSelect = (emoji) => {
-    onSelect && onSelect();
+    onSelect && onSelect(emoji);
   };
 
   return (

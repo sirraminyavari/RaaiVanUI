@@ -15,7 +15,7 @@ import {
   REMOVE_APPLICATION,
   RECYCLE_APPLICATION,
 } from 'constant/apiConstants';
-import { apiCallWrapper } from './apiCallHelpers';
+import { apiCallWrapper } from '../apiCallHelpers';
 
 export const checkRoute = ({
   RouteName,

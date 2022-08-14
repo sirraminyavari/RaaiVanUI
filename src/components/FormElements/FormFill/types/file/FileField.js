@@ -10,7 +10,7 @@ import axios from 'axios';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { useContext, useMemo, useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
-import { randomNumber } from 'helpers/helpers';
+import { random } from 'helpers/helpers';
 import { EditableContext } from '../../FormFill';
 
 const FileField = ({
@@ -50,7 +50,7 @@ const FileField = ({
     //! Prepare upload data
     let formData = new FormData();
     formData.append('file', file);
-    const uploadID = randomNumber();
+    const uploadID = random();
     const cancelTokenSource = axios.CancelToken.source();
     setUploadingFiles((items) => {
       return [

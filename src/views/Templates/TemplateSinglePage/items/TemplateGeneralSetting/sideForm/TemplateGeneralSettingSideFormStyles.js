@@ -4,6 +4,7 @@ import { FLEX_RCB } from 'constant/StyledCommonCss';
 
 export const Container = styled.div`
   padding: 0 1.5rem;
+  width: 100%;
 `;
 Container.displayName = 'Container';
 
@@ -28,5 +29,9 @@ Section.displayName = 'Section';
 export const ItemTitle = styled.div`
   font-size: 1rem;
   color: ${CV_GRAY_DARK};
+  width: 13rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 ItemTitle.displayName = 'ItemTitle';

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { CV_GRAY_LIGHT, CV_WHITE } from 'constant/CssVariables';
-import { FLEX_CCC, FLEX_RSS } from 'constant/StyledCommonCss';
+import { FLEX_CCC, FLEX_CSA, FLEX_RSS } from 'constant/StyledCommonCss';
 
 export const Container = styled.div`
   display: flex;
@@ -27,11 +27,17 @@ export const SideForm = styled.div`
   border-radius: 0.625rem;
   box-shadow: 1px 5px 15px #0000001f;
   flex-basis: 19.8rem;
+  min-width: 19rem;
   min-height: calc(100vh - 8rem);
   overflow: hidden;
   background-color: ${CV_GRAY_LIGHT};
-  position: relative;
+  padding-bottom: 1rem;
   z-index: 0;
+  ${FLEX_CSA}
+`;
+
+export const Spacer = styled.div`
+  flex: 1;
 `;
 
 export const SideFormHeader = styled.div`

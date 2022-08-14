@@ -1,30 +1,37 @@
 import UserGroupSelect from 'components/UserManagement/UserGroupSelect/UserGroupSelect';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Styled from '../TemplateMembersSettingStyles';
 import api from 'apiHelper';
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import MembersPreview from 'components/MembersPreview/MembersPreview';
 import useWindow from 'hooks/useWindowContext';
+import { decodeBase64 } from 'helpers/helpers';
 
 const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
   const { RVDic } = useWindow();
   const { ServiceAdmins, FreeUsers, NodeTypeID } = useTemplateContext();
 
-  const [serviceAdmins, setServiceAdmins] = useState(
-    ServiceAdmins.map((u) => ({
-      id: u?.UserID,
-      title: u?.FullName,
-      src: u?.ImageURL,
-    }))
-  );
-  const [freeUsers, setFreeUsers] = useState(
-    FreeUsers.map((u) => ({
-      id: u?.UserID,
-      title: u?.FullName,
-      src: u?.ImageURL,
-    }))
-  );
+  const [serviceAdmins, setServiceAdmins] = useState([]);
+  const [freeUsers, setFreeUsers] = useState([]);
+
+  useEffect(() => {
+    setServiceAdmins(
+      ServiceAdmins.map((u) => ({
+        id: u?.UserID,
+        title: decodeBase64(u?.FullName),
+        src: u?.ImageURL,
+      }))
+    );
+
+    setFreeUsers(
+      FreeUsers?.map((u) => ({
+        id: u?.UserID,
+        title: decodeBase64(u?.FullName),
+        src: u?.ImageURL,
+      }))
+    );
+  }, []);
 
   const showErrorToast = (err) => {
     InfoToast({
@@ -33,7 +40,7 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
     });
   };
 
-  const handleAdminUserStateChange = async ({ user, state }) => {
+  const handleAdminUserStateChange = useCallback(async ({ user, state }) => {
     if (state) {
       const { ErrorText } = await api?.CN?.addServiceAdmin({
         UserID: user?.id,
@@ -41,7 +48,10 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
       });
       ErrorText && showErrorToast(ErrorText);
       if (!ErrorText) {
-        setServiceAdmins([...serviceAdmins, user]);
+        const userExist = serviceAdmins?.find((u) => u?.id === user?.id);
+        if (!userExist) {
+          setServiceAdmins((prev) => [...prev, user]);
+        }
       }
     } else {
       const { ErrorText } = await api?.CN?.removeServiceAdmin({
@@ -50,13 +60,12 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
       });
       ErrorText && showErrorToast(ErrorText);
       if (!ErrorText) {
-        const _filtered = serviceAdmins?.filter((x) => x?.id !== user?.id);
-        setServiceAdmins(_filtered);
+        setServiceAdmins((prev) => prev?.filter((x) => x?.id !== user?.id));
       }
     }
-  };
+  }, []);
 
-  const handleFreeUserStateChange = async ({ user, state }) => {
+  const handleFreeUserStateChange = useCallback(async ({ user, state }) => {
     if (state) {
       const { ErrorText } = await api?.CN?.addFreeUser({
         UserID: user?.id,
@@ -64,7 +73,10 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
       });
       ErrorText && showErrorToast(ErrorText);
       if (!ErrorText) {
-        setFreeUsers([...serviceAdmins, user]);
+        const userExit = freeUsers?.find((u) => u?.id === user?.id);
+        if (!userExit) {
+          setFreeUsers((prev) => [...prev, user]);
+        }
       }
     } else {
       const { ErrorText } = await api?.CN?.removeFreeUser({
@@ -73,11 +85,12 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
       });
       ErrorText && showErrorToast(ErrorText);
       if (!ErrorText) {
-        const _filtered = freeUsers?.filter((x) => x?.id !== user?.id);
-        setFreeUsers(_filtered);
+        setFreeUsers((prev) => prev?.filter((u) => u?.id !== user?.id));
       }
     }
-  };
+  }, []);
+
+  useEffect(() => console.log(serviceAdmins));
 
   return (
     <Styled.MembersSettingBlockContainer>
@@ -113,7 +126,7 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
           </Styled.MembersSettingMicroBlockTitle>
           <UserGroupSelect
             selectGroupEnabled={false}
-            selectedUsers={freeUsers?.map((x) => x?.UserID)}
+            selectedUsers={FreeUsers?.map((x) => x?.UserID)}
             onUserStateChange={handleFreeUserStateChange}
           />
         </Styled.MembersSettingMicroBlock>

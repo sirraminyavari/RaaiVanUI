@@ -14,6 +14,7 @@ import RVMainContentSetting from './items/RVMainContentSetting';
 const RVTemplateAdvancedSetting = () => {
   const { RVDic, RV_RTL: rtl } = window;
   const { id, title } = useParams();
+
   const breadItems = [
     {
       id: 1,
@@ -41,7 +42,7 @@ const RVTemplateAdvancedSetting = () => {
     <Container>
       <MainContent>
         <Breadcrumb items={breadItems} />
-        <Styles.ReturnButton rtl={rtl}>{RVDic?.Return}</Styles.ReturnButton>
+        <Styles.ReturnButton $rtl={rtl}>{RVDic?.Return}</Styles.ReturnButton>
         <RVMainContentSetting />
       </MainContent>
       <SideContent>

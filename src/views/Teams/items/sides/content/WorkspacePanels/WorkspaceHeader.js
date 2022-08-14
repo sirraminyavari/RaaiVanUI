@@ -10,7 +10,7 @@ import SpaceIcon from 'components/Icons/SpaceIcon/SpaceIcon';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { decodeBase64 } from 'helpers/helpers';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
-import { renameWorkspace } from 'apiHelper/ApiHandlers/RVApi';
+import { renameWorkspace } from 'apiHelper/ApiHandlers/RVAPI';
 import {
   WORKSPACE_USER_MANAGEMENT_PATH,
   WORKSPACE_REMOVE_PATH,

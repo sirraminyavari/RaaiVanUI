@@ -7,6 +7,8 @@ import SaveIcon from 'components/Icons/SaveIcon/Save';
 import DndHandler from './items/DndHandler';
 import { useTemplateContext } from '../../TemplateProvider';
 import { useTemplateFormContext } from './TemplateFormContext';
+import { useState } from 'react';
+import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 
 const TemplateFormWrapper = () => {
   const { RV_RTL: rtl } = window;
@@ -23,10 +25,7 @@ const TemplateFormWrapper = () => {
           <Styled.ButtonTitle>{'پیش‌نمایش'}</Styled.ButtonTitle>
         </Button>
 
-        <Button type="negative-o">
-          <TrashIcon size={17} />
-          <Styled.ButtonTitle>{'حذف فرم'}</Styled.ButtonTitle>
-        </Button>
+        <FormDeleteButton />
 
         <Button type="primary" onClick={saveForm}>
           <SaveIcon size={17} />
@@ -38,6 +37,44 @@ const TemplateFormWrapper = () => {
         <DndHandler />
       </Styled.MainContent>
     </Styled.Container>
+  );
+};
+
+const FormDeleteButton = () => {
+  const { RVDic } = window;
+  const [modalInfo, setModalInfo] = useState({
+    show: false,
+    title: 'حذف فرم',
+    messageWarning:
+      '. پس از انتخاب حذف فرم، تمامی فیلدها حذف خواهند شد آیتم‌هایی که قبلا تکمیل شده‌اند بدون تغییر باقی خواهند .ماند ولی آیتم‌های جدید شامل فرم فعلی نخواهند بود',
+    messageTitle: 'آیا از این کار اطمینان دارید؟',
+    confirmText: 'حذف فرم',
+    cancelText: 'بازگشت',
+  });
+
+  const close = () => setModalInfo({ ...modalInfo, show: false });
+
+  const open = () => setModalInfo({ ...modalInfo, show: true });
+
+  const confirm = () => {
+    // confirm
+    close();
+  };
+
+  return (
+    <>
+      <Button type="negative-o" onClick={open}>
+        <TrashIcon size={17} />
+        <Styled.ButtonTitle>{'حذف فرم'}</Styled.ButtonTitle>
+      </Button>
+
+      <DeleteConfirmModal
+        onClose={close}
+        onCancel={close}
+        onConfirm={confirm}
+        {...modalInfo}
+      />
+    </>
   );
 };
 export default TemplateFormWrapper;
