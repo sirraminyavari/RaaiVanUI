@@ -18,7 +18,15 @@ const FormField = (props) => {
   } = props;
   const { FormID: tableId } = toJSON(decodeInfo);
   const { RVDic } = useWindow();
-
+  console.log({
+    tableColumns,
+    tableData,
+    decodeInfo,
+    decodeTitle,
+    elementId,
+    type,
+    rest,
+  });
   const renderTable = () => {
     return (
       <>

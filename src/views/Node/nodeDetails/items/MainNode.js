@@ -20,6 +20,7 @@ import KeywordField from 'components/FormElements/FormFill/types/keywordField/Ke
 import Button from 'components/Buttons/Button';
 import { useHistory } from 'react-router-dom';
 import { getNodePageUrl } from 'apiHelper/getPageUrl';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -34,7 +35,8 @@ const MainNode = ({
   InstanceID,
 }) => {
   const history = useHistory();
-  const [titleEditMode, setTitleEditMode] = useState(false);
+  const { isTabletOrDesktop, isTablet, isMobile } = DimensionHelper();
+  const [titleEditMode, setTitleEditMode] = useState(newNode);
 
   const [whichElementChanged, setWhichElementChanged] = useState(null);
   const [title, setTitle] = useState(decodeBase64(nodeDetails?.Name?.Value));
@@ -105,15 +107,18 @@ const MainNode = ({
     <>
       <Main>
         {nodeDetails?.Name?.Value !== undefined && (
-          <TitleContainer style={{ marginBottom: '3rem' }}>
+          <TitleContainer newNode={newNode}>
             {nodeDetails?.Name?.Editable ? (
-              <Input
+              <TitleInput
                 onChange={onTitleChange}
                 defaultValue={decodeBase64(nodeDetails?.Name?.Value)}
                 onFocus={() => {
                   setTitleEditMode(true);
                 }}
+                autoFocus={true}
+                placeholder={RVDic.Title}
                 onBlur={onSaveTitle}
+                titleEditMode={titleEditMode}
                 style={{
                   fontSize: '1.4rem',
                   fontWeight: 'bold',
@@ -149,13 +154,13 @@ const MainNode = ({
             isEditable={nodeDetails?.Description?.Editable}
           />
         )}
-        <TitleContainer>
+        <>
           <KeywordField
             Keywords={nodeDetails?.Keywords}
             onSaveKeywords={onSaveKeywords}
             isEditable={nodeDetails?.Description?.Editable}
           />
-        </TitleContainer>
+        </>
         {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
 
         {!newNode && (
@@ -163,9 +168,15 @@ const MainNode = ({
         )}
 
         {newNode && (
-          <Button type="primary" onClick={onCreateNode}>
+          <SubmitButton
+            type="primary"
+            onClick={onCreateNode}
+            isTabletOrDesktop={isTabletOrDesktop}
+            isTablet={isTablet}
+            isMobile={isMobile}
+          >
             {RVDic.CreateN.replace('[n]', RVDic.Node)}
-          </Button>
+          </SubmitButton>
         )}
       </Main>
     </>
@@ -178,8 +189,40 @@ const Main = styled.div`
   flex-direction: column;
   width: 100%;
 `;
+
+const SubmitButton = styled(Button)`
+  margin-block-start: 1.5rem;
+  margin-inline: auto;
+  width: ${({ isTabletOrDesktop, isTablet, isMobile }) => {
+    switch (true) {
+      case isMobile:
+        return '100%';
+      case isTablet:
+        return '75%';
+      case isTabletOrDesktop:
+      default:
+        return '50%';
+    }
+  }};
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-block: ${({ newNode }) => (newNode ? 0 : 1.5)}rem;
+`;
+
+const TitleInput = styled(Input)`
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-width: 0;
+  border-bottom-width: ${({ titleEditMode }) => (titleEditMode ? 1 : 0)}px;
+  border-radius: 0;
+  border-color: ${CV_DISTANT} !important;
+  width: 100%;
+
+  &::-webkit-input-placeholder {
+    color: ${CV_DISTANT};
+  }
 `;
