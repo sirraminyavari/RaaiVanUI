@@ -58,14 +58,15 @@ const Collector = ({
         fullWidth={sideColumn}
       >
         <TopFilter>
-          {!newNode && (
-            <TopBar
-              onSideColumnClicked={setSideColumn}
-              sideColumn={sideColumn}
-              nodeDetails={nodeDetails}
-              hierarchy={hierarchy}
-            />
-          )}
+          {/* {!newNode && ( */}
+          <TopBar
+            newNode={newNode}
+            onSideColumnClicked={setSideColumn}
+            sideColumn={sideColumn}
+            nodeDetails={nodeDetails}
+            hierarchy={hierarchy}
+          />
+          {/* )} */}
         </TopFilter>
         <div
           style={{
@@ -89,17 +90,18 @@ const Collector = ({
             <FieldsLoadingSkelton />
           )}
         </div>
-
-        <Side $isEnabled={sideColumn} isRtl={RV_RTL}>
-          <Suspense fallback={<></>}>
-            {sideColumn && (
-              <SideColumn
-                setSideColumn={setSideColumn}
-                nodeDetails={nodeDetails}
-              />
-            )}
-          </Suspense>
-        </Side>
+        {!newNode && (
+          <Side $isEnabled={sideColumn} isRtl={RV_RTL}>
+            <Suspense fallback={<></>}>
+              {sideColumn && (
+                <SideColumn
+                  setSideColumn={setSideColumn}
+                  nodeDetails={nodeDetails}
+                />
+              )}
+            </Suspense>
+          </Side>
+        )}
       </Maintainer>
     </WelcomeLayout>
   );

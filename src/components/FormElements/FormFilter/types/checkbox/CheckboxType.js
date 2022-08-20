@@ -5,12 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import Checkbox from 'components/Inputs/checkbox/Checkbox';
-import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
-import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
-import Select from 'react-select';
 import useWindow from 'hooks/useWindowContext';
-import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import SelectInputField from 'components/FormElements/ElementTypes/Select/SelectInputField';
 
 /**
  * @typedef PropType
@@ -33,7 +29,7 @@ const CheckboxType = (props) => {
   const [exact, setExact] = useState(value ? value?.Exact : false);
   const [or, setOr] = useState(value ? value?.Or : true);
 
-  const { GlobalUtilities, RVDic } = useWindow();
+  const { GlobalUtilities } = useWindow();
 
   const { Options } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
 
@@ -46,11 +42,6 @@ const CheckboxType = (props) => {
 
   //! Fires on checkbox value change.
   const handleOnItemSelect = useCallback((items) => {
-    // if (!item?.isChecked) {
-    //   setItems((oldItems) => oldItems.filter((c) => c !== item?.value));
-    // } else {
-    //   setItems((oldItems) => [...oldItems, item?.value]);
-    // }
     setItems(
       items.map((item) => {
         return item.value;
@@ -101,31 +92,14 @@ const CheckboxType = (props) => {
   return (
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      {/* <Checkbox
+
+      <SelectInputField
         options={options}
-        onSelect={handleOnItemSelect}
-        selecteds={value?.TextItems}
-      /> */}
-      <Select
-        onBlur={() => {
-          // save(elementId);
-          // setIsFocused(false);
-        }}
-        options={options}
-        // value={}
-        isMulti
-        isClearable={false}
-        closeMenuOnSelect={false}
-        styles={customStyles}
+        isEditable
+        isFocused
         onChange={handleOnItemSelect}
-        className="basic-multi-select"
-        classNamePrefix="select"
-        placeholder={RVDic.Select}
+        isMulti
       />
-      {/* <Styled.ExactOrFiltersWrapper>
-        <OrFilter isChecked={or} onToggle={handleOrFilter} />
-        <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
-      </Styled.ExactOrFiltersWrapper> */}
     </Styled.FilterContainer>
   );
 };
@@ -139,54 +113,3 @@ CheckboxType.propTypes = {
 CheckboxType.displayName = 'FilterCheckboxComponent';
 
 export default CheckboxType;
-
-const customStyles = {
-  option: (
-    styles,
-    { data, isDisabled, isFocused, isSelected },
-    provided,
-    state
-  ) => ({
-    ...provided,
-    color: isSelected ? TCV_WARM : CV_GRAY,
-    margin: '0.35rem 0.5rem 0.35rem 0.5rem',
-    padding: '0.2rem 0.2rem 0.2rem 0.2rem',
-    backgroundColor: isFocused && CV_FREEZED,
-    ':hover': {
-      color: TCV_WARM,
-      backgroundColor: CV_FREEZED,
-      padding: '0.2rem 0.2rem 0.2rem 0.2rem',
-    },
-  }),
-  control: (provided) => ({
-    // none of react-select's styles are passed to <Control />
-    ...provided,
-    minWidth: '13rem',
-    borderColor: CV_WHITE,
-    backgroundColor: CV_WHITE,
-    ':focus': {
-      borderWidth: 0,
-    },
-    ':hover': {},
-  }),
-  multiValue: (styles, { data }) => {
-    return {
-      ...styles,
-      backgroundColor: '#e6f4f1',
-      borderRadius: '0.5rem',
-      padding: '0.3rem',
-    };
-  },
-  multiValueRemove: (styles, { data }) => {
-    return {
-      ...styles,
-    };
-  },
-  menu: (provided) => ({
-    ...provided,
-    borderColor: '#e6f4f1',
-    ':hover': {
-      borderWidth: 0,
-    },
-  }),
-};

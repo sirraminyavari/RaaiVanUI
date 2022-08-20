@@ -4,12 +4,10 @@
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Cookie from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import LogoutIcon from 'components/Icons/LogoutIcon/Logouticon';
 import AvatarMenuItem from './AvatarMenuItem';
 import menuLinkItems from './MenuLinkItems';
-import Checkbox from 'components/Checkbox/Checkbox';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import { C_RED, TC_VERYWARM, C_GRAY } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
@@ -23,13 +21,14 @@ import useRouteListener from 'hooks/useRouteListener';
 import { useApplicationSlice } from 'store/slice/applications';
 import { selectApplication } from 'store/slice/applications/selectors';
 import { useAuthSlice } from 'store/slice/auth';
+import LanguageSwitch from './LanguageSwitch';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const avatarMenuRef = useRef();
   const containerRef = useRef();
-  const { RVDic, RV_RTL, RVGlobal } = useWindow();
+  const { RVDic, RVGlobal } = useWindow();
 
   const { userApps: teams, currentApp: selectedTeam } =
     useSelector(selectApplication);
@@ -51,13 +50,6 @@ const AvatarMenuList = () => {
   //! Logs user out from application.
   const handleLogout = () => {
     dispatch(authActions.logout({}));
-  };
-
-  const handleCheckbox = (e) => {
-    e.target.checked
-      ? Cookie.set('rv_lang', 'en')
-      : Cookie.set('rv_lang', 'fa');
-    window.location.reload();
   };
 
   const onSelectDone = () => {
@@ -114,6 +106,7 @@ const AvatarMenuList = () => {
           })}
         </div>
       </ScrollBarProvider>
+      {RVGlobal?.IsDev && <LanguageSwitch />}
       <Styled.Divider />
       <AvatarMenuItem
         title={RVDic.Logout}
@@ -122,13 +115,6 @@ const AvatarMenuList = () => {
         iconColor={CV_RED}
         textClass={C_RED}
       />
-      {RVGlobal?.IsDev && (
-        <Checkbox
-          title={RV_RTL ? 'انگلیسی' : 'english'}
-          changeHandler={handleCheckbox}
-          isChecked={Cookie.get('rv_lang') === 'en'}
-        />
-      )}
     </Styled.AvatarMenuContainer>
   );
 };
