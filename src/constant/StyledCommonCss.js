@@ -140,6 +140,18 @@ export const FLEX_RCS = css`
 
 /**
  * @description 'Flex'
+ * @Direction 'C'olumn
+ * @Align 'C'enter
+ * @Justify flex-'S'tart
+ */
+export const FLEX_CCS = css`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+/**
+ * @description 'Flex'
  * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify flex-'E'nd

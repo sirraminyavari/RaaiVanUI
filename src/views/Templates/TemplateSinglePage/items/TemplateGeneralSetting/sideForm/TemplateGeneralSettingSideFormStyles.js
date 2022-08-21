@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { CV_DISTANT, CV_GRAY_DARK } from 'constant/CssVariables';
 import { FLEX_RCB } from 'constant/StyledCommonCss';
+import { MEDIUM_BOUNDRY } from 'constant/constants';
 
 export const Container = styled.div`
   padding: 0 1.5rem;
