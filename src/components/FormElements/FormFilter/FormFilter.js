@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
 import CheckboxType from './types/checkbox/CheckboxType';
-import SelectType from './types/select/SelectType';
 import NumericType from './types/numeric/NumericType';
 import UserType from './types/user/UserType';
 import NodeType from './types/node/NodeType';
@@ -59,7 +58,21 @@ const FormFilter = (props) => {
 
   //! Clalls when user clicks on filter button.
   const handleOnFilterClick = () => {
-    onFilter && onFilter(values);
+    console.clear();
+    console.log({ values });
+    onFilter &&
+      onFilter(
+        values
+        // {
+        //   'aa4c4953-8f6f-820f-a87a-a055b7ac5b12': {
+        //     Data: { From: '1401/5/22', To: '1401/5/31' },
+        //     DateFrom: '1401/5/22',
+        //     DateTo: '1401/5/31',
+        //     JSONValue: { DateFrom: '1401/5/22', DateTo: '1401/5/31' },
+        //     Type: 'date',
+        //   },
+        // }
+      );
   };
 
   //! clear the filter form.
@@ -97,20 +110,18 @@ const FormFilter = (props) => {
             </Styled.FormFilterHeader>
           )}
           <ScrollBarProvider style={{ padding: '1.5rem', width: '100%' }}>
-            {/* <Styled.FiltersWrapper> */}
             {filters.map((filter, key) => {
+              if (!FormFilter[filter.Type]) return null;
+              const FormFilterComponent = FormFilter[filter.Type];
               return (
-                <Fragment key={key}>
-                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                    FormFilter[filter.Type]({
-                      onChange: handleOnChange,
-                      data: filter,
-                      value: values[filter.ElementID],
-                    })}
-                </Fragment>
+                <FormFilterComponent
+                  key={key}
+                  onChange={handleOnChange}
+                  data={filter}
+                  value={values[filter.ElementID]}
+                />
               );
             })}
-            {/* </Styled.FiltersWrapper> */}
           </ScrollBarProvider>
           <Styled.FilterButtonWrapper>
             <FilterButton

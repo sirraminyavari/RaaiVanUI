@@ -2,7 +2,7 @@
   "name": "raaivan-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://cliqmind-dev.ir",
+  "proxy": "https://cliqmind-dev.ir",
   "dependencies": {
     "@atlaskit/tree": "^8.6.0",
     "@cliqmind/react-table": "^7.8.0-dev.1",

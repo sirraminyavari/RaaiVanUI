@@ -12,32 +12,32 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [16]
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
+    # steps:
+    #   - name: Checkout 🛎️
+    #     uses: actions/checkout@v2
+    #     with:
+    #       persist-credentials: false
 
-      - name: Setup node env
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          registry-url: 'https://npm.pkg.github.com'
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    #   - name: Setup node env
+    #     uses: actions/setup-node@v3
+    #     with:
+    #       node-version: ${{ matrix.node }}
+    #       registry-url: 'https://npm.pkg.github.com'
+    #     env:
+    #       NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Install and Build 🔧
-        run: | # Install npm packages and build the Storybook files
-          yarn install
-          yarn add -D @etchteam/storybook-addon-css-variables-theme@^1.1.1 @storybook/addon-actions@^6.4.18 @storybook/addon-docs@^6.4.18 @storybook/addon-essentials@^6.4.18 @storybook/addon-links@^6.4.18 @storybook/node-logger@^6.4.18 @storybook/preset-create-react-app@^3.2.0 @storybook/react@^6.4.18
-          yarn run build-storybook
+    #   - name: Install and Build 🔧
+    #     run: | # Install npm packages and build the Storybook files
+    #       yarn install
+    #       yarn add -D @etchteam/storybook-addon-css-variables-theme@^1.1.1 @storybook/addon-actions@^6.4.18 @storybook/addon-docs@^6.4.18 @storybook/addon-essentials@^6.4.18 @storybook/addon-links@^6.4.18 @storybook/node-logger@^6.4.18 @storybook/preset-create-react-app@^3.2.0 @storybook/react@^6.4.18
+    #       yarn run build-storybook
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
-        with:
-          ssh-key: ${{ secrets.STORYBOOK_DEPLOY_KEY }}
-          repository-name: sirraminyavari/RaaiVanUI-Storybook
-          branch: main # The branch the action should deploy to.
-          folder: storybook-static # The folder that the build-storybook script generates files.
-          clean: true # Automatically remove deleted files from the deploy branch
-          target-folder: # The folder that we serve our Storybook files from
+    #   - name: Deploy 🚀
+    #     uses: JamesIves/github-pages-deploy-action@v4.2.3
+    #     with:
+    #       ssh-key: ${{ secrets.STORYBOOK_DEPLOY_KEY }}
+    #       repository-name: sirraminyavari/RaaiVanUI-Storybook
+    #       branch: main # The branch the action should deploy to.
+    #       folder: storybook-static # The folder that the build-storybook script generates files.
+    #       clean: true # Automatically remove deleted files from the deploy branch
+    #       target-folder: # The folder that we serve our Storybook files from

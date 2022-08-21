@@ -4,12 +4,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import ItemProducer from 'components/ItemProducer/ItemProducer';
+import { decodeBase64 } from 'helpers/helpers';
 import AtSignIcon from 'components/Icons/AtSignIcon/AtSign';
-import { API_Provider } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
-import { CN_API, GET_NODES } from 'constant/apiConstants';
+import SubjectSelectInputField from 'components/FormElements/ElementTypes/subjectSelect/SubjectSelectInputField';
 
 /**
  * @typedef PropType
@@ -26,41 +24,12 @@ import { CN_API, GET_NODES } from 'constant/apiConstants';
  */
 const NodeType = (props) => {
   const { onChange, data, value } = props;
-  const { ElementID, Title, Info } = data || {}; //! Meta data to feed component.
+  const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
   const { GlobalUtilities } = useWindow();
 
-  const { NodeTypes } = GlobalUtilities.to_json(decodeBase64(Info)) || {};
-  const getNodesAPI = API_Provider(CN_API, GET_NODES);
   const [items, setItems] = useState([]);
   const [resetValue, setResetValue] = useState(null);
-
-  //! Fetch nodes based on nodeTypes passed to component.
-  const fetchNodes = (searchText) => {
-    const nodeTypeIds = NodeTypes?.map((node) => node?.NodeTypeID).join('|');
-    return new Promise((resolve, reject) => {
-      getNodesAPI.fetch(
-        {
-          NodeTypeID: nodeTypeIds,
-          UseNodeTypeHierarchy: true,
-          SearchText: encodeBase64(searchText),
-          // Count: 5,
-          // LowerBoundary: 'number',
-          // CreationDateFrom: 'date',
-          // CreationDateTo: 'date',
-          // FormFilters: '',
-        },
-        (response) => {
-          const nodes = response.Nodes.map((node) => ({
-            id: node?.NodeID,
-            value: decodeBase64(node?.Name),
-          }));
-          resolve(nodes);
-        },
-        (error) => reject(error)
-      );
-    });
-  };
 
   const handleSelectNodes = (nodes) => {
     setItems(nodes);
@@ -68,17 +37,16 @@ const NodeType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const nodeIds = items?.map((node) => node?.id);
+    const nodeIds = items?.map((node) => node?.ID);
     const JSONValue = { GuidItems: nodeIds };
-
     //! Send back value to parent on select.
     onChange({
       id,
       value: {
         Type: 'node',
-        GuidItems: !items?.length ? null : nodeIds.join('|'),
+        GuidItems: !items?.length ? undefined : nodeIds.join('|'),
         Data: items,
-        JSONValue: !items?.length ? null : JSONValue,
+        JSONValue: !items?.length ? undefined : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,13 +67,11 @@ const NodeType = (props) => {
           {decodeBase64(Title)}
         </Styled.FilterTitle>
       </Styled.NodeTitleWrapper>
-      <ItemProducer
-        type="autosuggest"
-        fetchItems={fetchNodes}
-        isDragDisabled={true}
-        onItems={handleSelectNodes}
-        style={{ width: '100%' }}
-        resetMe={resetValue}
+
+      <SubjectSelectInputField
+        value={items}
+        onChange={handleSelectNodes}
+        isEditable
       />
     </Styled.FilterContainer>
   );

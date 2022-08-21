@@ -1,6 +1,7 @@
 import API from 'apiHelper';
 import { createFormInstance } from 'apiHelper/apiFunctions';
 import APIHandler from 'apiHelper/APIHandler';
+import useWindow from 'hooks/useWindowContext';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Collector from '../nodeDetails/items/Collector';
@@ -14,6 +15,7 @@ const NodeDetails = (props) => {
   const { id: NodeTypeID } = useParams();
   const [FormInstance, setFormInstance] = useState();
   const [InstanceID, setInstanceID] = useState();
+  const { RVGlobal } = useWindow();
 
   useEffect(() => {
     ownerForm?.fetch({ OwnerID: NodeTypeID }, async (result) => {
@@ -34,6 +36,8 @@ const NodeDetails = (props) => {
         Name: { Editable: true, Value: '' },
         Description: { Editable: true, Value: '' },
         Keywords: { Editable: true, Value: [] },
+        Contributors: { Value: [{ ...RVGlobal.CurrentUser, Share: 100 }] },
+        NodeID: NodeTypeID,
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

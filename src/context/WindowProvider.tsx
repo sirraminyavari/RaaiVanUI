@@ -11,6 +11,7 @@ interface WindowContextType {
   RV_RevFloat: 'right' | 'left';
   RV_Direction: 'rtl' | 'ltr';
   IsAuthenticated?: boolean;
+  RV_Lang?: 'en' | 'fa';
 }
 
 export const WindowContext = createContext<WindowContextType>({
@@ -38,6 +39,7 @@ export const WindowProvider = ({ children }) => {
     RVDic,
     RV_Direction,
     IsAuthenticated,
+    RV_Lang,
   } = window;
 
   return (
@@ -53,6 +55,7 @@ export const WindowProvider = ({ children }) => {
         RVDic,
         RV_Direction,
         IsAuthenticated,
+        RV_Lang,
       }}
     >
       {children}

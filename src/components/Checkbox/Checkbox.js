@@ -5,6 +5,7 @@ import * as Styled from './Checkbox.styles';
 
 /**
  * @typedef PropType
+ * @property {string} title - A string for Checkbox label
  * @property {boolean} isChecked - A boolean that shows if checkbox is checked or not.
  * @property {function} changeHandler -A callback function that returns checkbox changed value.
  */

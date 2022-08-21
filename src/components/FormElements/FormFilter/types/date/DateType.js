@@ -25,7 +25,7 @@ const DateType = (props) => {
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
   // if has value, filters node that is in the period of the selected date.
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(undefined);
 
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
 
@@ -43,7 +43,7 @@ const DateType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const JSONValue = from || to ? { DateFrom: from, DateTo: to } : null;
+    const JSONValue = from || to ? { DateFrom: from, DateTo: to } : undefined;
 
     //! Send back value to parent on select.
     onChange({
@@ -83,18 +83,20 @@ const DateType = (props) => {
             >
               {to || from ? (
                 <>
-                  {RVDic?.From} {from} {RVDic?.To} {to}
+                  {from && `${RVDic?.From} ${from}`}{' '}
+                  {to && `${RVDic?.To} ${to}`}
                 </>
               ) : (
                 <>{RVDic?.DateSelect}</>
               )}
             </Button>
           )}
-          onDateSelect={({ from = null, to = null }) => {
+          onDateSelect={({ from, to }) => {
             onDateFrom(from);
             onDateTo(to);
             setDate(`${from}${to}`);
           }}
+          clearButton
         />
       </Styled.DatePickerWrapper>
     </Styled.FilterContainer>
