@@ -3,8 +3,8 @@ import TableIcon from 'components/Icons/TableIcon/TableIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import { toJSON } from 'helpers/helpers';
 import Table from './Table';
-import * as Styled from './FormField.styles';
 import useWindow from 'hooks/useWindowContext';
+import styled from 'styled-components';
 
 const FormField = (props) => {
   const {
@@ -51,9 +51,14 @@ const FormField = (props) => {
       title={decodeTitle}
       {...rest}
     >
-      <Styled.TableWrapper>{renderTable()}</Styled.TableWrapper>
+      <TableWrapper>{renderTable()}</TableWrapper>
     </FormCell>
   );
 };
 
 export default FormField;
+
+export const TableWrapper = styled.div`
+  width: calc(100% - 2rem);
+  min-width: 20rem;
+`;

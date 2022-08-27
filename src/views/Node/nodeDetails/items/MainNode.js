@@ -34,6 +34,7 @@ const MainNode = ({
   NodeTypeID,
   InstanceID,
 }) => {
+  //TODO: Update RVDic object dictionary
   const history = useHistory();
   const { isTabletOrDesktop, isTablet, isMobile } = DimensionHelper();
   const [titleEditMode, setTitleEditMode] = useState(newNode);
@@ -191,7 +192,7 @@ const Main = styled.div`
 `;
 
 const SubmitButton = styled(Button)`
-  margin-block-start: 1.5rem;
+  margin-block-start: 3.5rem;
   margin-inline: auto;
   width: ${({ isTabletOrDesktop, isTablet, isMobile }) => {
     switch (true) {

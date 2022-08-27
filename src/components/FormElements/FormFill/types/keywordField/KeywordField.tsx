@@ -6,7 +6,7 @@ import TagIcon from 'components/Icons/TagIcon/TagIcon';
 import { CV_GRAY, CV_WHITE } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import styled from 'styled-components';
-import * as Styles from '../formField.styles';
+import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 
 type Props = {
@@ -53,47 +53,45 @@ function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
             setIsFocused(true);
           }}
         >
-          {isFocused && isEditable ? (
-            <CellContainer>
-              <CreatableSelect
-                value={keywords}
-                isMulti
-                isDisabled={!Keywords?.Editable}
-                isClearable
-                placeholder={RVDic.Select}
-                onBlur={() => {
-                  onSaveKeywords(keywords);
-                  setIsFocused(false);
-                }}
-                onChange={setKeywords}
-                styles={customStyles}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                components={{
-                  Menu: () => null, // Remove menu
-                  MenuList: () => null, // Remove menu list
-                  DropdownIndicator: () => null, // Remove dropdown icon
-                  IndicatorSeparator: () => null, // Remove separator
-                }}
-              />
-            </CellContainer>
-          ) : (
-            <Styles.SelectedFieldItemContainer>
-              {keywords.length ? (
-                keywords.map((keyword, id) => {
-                  return (
-                    <Styles.SelectedFieldItem key={id}>
-                      {keyword.label}
-                    </Styles.SelectedFieldItem>
-                  );
-                })
-              ) : (
-                <Styles.SelectedFieldItemContainer muted>
-                  {RVDic.Select}
-                </Styles.SelectedFieldItemContainer>
-              )}
-            </Styles.SelectedFieldItemContainer>
-          )}
+          <Styles.SelectedFieldItemContainer>
+            {isFocused && isEditable ? (
+              <CellContainer>
+                <CreatableSelect
+                  value={keywords}
+                  isMulti
+                  isDisabled={!Keywords?.Editable}
+                  isClearable
+                  placeholder={RVDic.Select}
+                  onBlur={() => {
+                    onSaveKeywords(keywords);
+                    setIsFocused(false);
+                  }}
+                  onChange={setKeywords}
+                  styles={customStyles}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  components={{
+                    Menu: () => null, // Remove menu
+                    MenuList: () => null, // Remove menu list
+                    DropdownIndicator: () => null, // Remove dropdown icon
+                    IndicatorSeparator: () => null, // Remove separator
+                  }}
+                />
+              </CellContainer>
+            ) : keywords.length ? (
+              keywords.map((keyword, id) => {
+                return (
+                  <Styles.SelectedFieldItem key={id}>
+                    {keyword.label}
+                  </Styles.SelectedFieldItem>
+                );
+              })
+            ) : (
+              <Styles.SelectedFieldItem muted>
+                {RVDic.Select}
+              </Styles.SelectedFieldItem>
+            )}
+          </Styles.SelectedFieldItemContainer>
         </OnClickAway>
       </FormCell>
     </>

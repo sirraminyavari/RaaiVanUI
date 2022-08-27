@@ -26,7 +26,8 @@ export interface ISubjectSelectInputField {
   onChange;
   propsContext?: { [key: string]: any };
   isEditable: boolean;
-  value;
+  value: { [key: string]: any }[];
+  fullWidth?: boolean;
 }
 
 const SubjectSelectInputField = ({
@@ -35,8 +36,10 @@ const SubjectSelectInputField = ({
   onChange,
   propsContext,
   isEditable,
+  fullWidth,
 }: ISubjectSelectInputField) => {
   const { RVDic } = useWindow();
+  const { isMobile, isTabletOrMobile } = DimensionHelper();
 
   const [isVisible, setIsVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState<ISubjectSelectInputItem[]>(
@@ -64,7 +67,7 @@ const SubjectSelectInputField = ({
       <Modal
         onClose={onClose}
         // @ts-expect-error
-        contentWidth={DimensionHelper().isTabletOrMobile ? '98%' : '90%'}
+        contentWidth={isTabletOrMobile ? '98%' : '90%'}
         style={{ padding: '0', height: '50%' }}
         stick
         show={isVisible}
@@ -96,7 +99,12 @@ const SubjectSelectInputField = ({
       {value?.length > 0 ? (
         <EditModeContainer>
           {value.map((x) => (
-            <SelectedItem item={x} onRemove={onRemove} editMode={isEditable} />
+            <SelectedItem
+              item={x}
+              onRemove={onRemove}
+              editMode={isEditable}
+              fullWidth={fullWidth || isMobile}
+            />
           ))}
           {isEditable && <AddButton onClick={() => setIsVisible(true)} />}
         </EditModeContainer>
@@ -105,7 +113,9 @@ const SubjectSelectInputField = ({
           muted
           onClick={() => setIsVisible(true)}
         >
-          {RVDic.NodeSelect}
+          <Styles.SelectedFieldItem>
+            {RVDic.NodeSelect}
+          </Styles.SelectedFieldItem>
         </Styles.SelectedFieldItemContainer>
       )}
     </>

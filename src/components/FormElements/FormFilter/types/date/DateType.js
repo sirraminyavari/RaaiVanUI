@@ -22,6 +22,7 @@ import Button from 'components/Buttons/Button';
 const DateType = (props) => {
   const { onChange, data, value } = props;
   const { RVDic } = useWindow();
+
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
   // if has value, filters node that is in the period of the selected date.
@@ -81,10 +82,10 @@ const DateType = (props) => {
                   : 'rv-border-white rv-distant'
               }
             >
-              {to || from ? (
+              {value?.DateFrom || value?.DateTo ? (
                 <>
-                  {from && `${RVDic?.From} ${from}`}{' '}
-                  {to && `${RVDic?.To} ${to}`}
+                  {value?.DateFrom && `${RVDic?.From} ${value?.DateFrom}`}{' '}
+                  {value?.DateTo && `${RVDic?.To} ${value?.DateTo}`}
                 </>
               ) : (
                 <>{RVDic?.DateSelect}</>
