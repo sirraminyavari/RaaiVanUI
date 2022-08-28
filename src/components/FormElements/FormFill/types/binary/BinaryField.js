@@ -7,6 +7,7 @@ import ToggleIcon from 'components/Icons/ToggleIcon';
 import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
 import BinaryInputField from 'components/FormElements/ElementTypes/binary/BinaryInputField';
+import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 
 const BinaryField = ({
   value,
@@ -40,16 +41,20 @@ const BinaryField = ({
           setIsFocused(true);
         }}
       >
-        <BinaryInputField
-          isEditable={editable}
-          isFocused={isFocused}
-          noLabel={no}
-          yesLabel={yes}
-          value={value}
-          onChange={(event) => {
-            onAnyFieldChanged(elementId, event, type);
-          }}
-        />
+        <Styles.SelectedFieldItemContainer>
+          <Styles.SelectedFieldItem>
+            <BinaryInputField
+              isEditable={editable}
+              isFocused={isFocused}
+              noLabel={no}
+              yesLabel={yes}
+              value={value}
+              onChange={(event) => {
+                onAnyFieldChanged(elementId, event, type);
+              }}
+            />
+          </Styles.SelectedFieldItem>
+        </Styles.SelectedFieldItemContainer>
       </OnClickAway>
     </FormCell>
   );

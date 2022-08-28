@@ -431,9 +431,8 @@ export const AvatarMenuContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 14rem;
-  margin: 0.5rem;
-  margin-inline-start: 1rem;
-  margin-inline-end: 0;
+  margin-block: 0.5rem;
+  margin-inline: 1rem;
 `;
 
 export const AvatarMenuItem = styled.div.attrs({

@@ -7,12 +7,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const SelectedItem = ({ item, onRemove, editMode }) => {
+const SelectedItem = ({ item, onRemove, editMode, fullWidth }) => {
   const { Name, IconURL } = item || {};
 
   return (
     <Link to={getNodePageUrl(item.ID)} target="_blank">
-      <Maintainer className={'rv-border-radius-half'}>
+      <Maintainer className={'rv-border-radius-half'} fullWidth={fullWidth}>
         <Icon src={IconURL} />
 
         <Title>{decodeBase64(Name)}</Title>
@@ -23,8 +23,8 @@ const SelectedItem = ({ item, onRemove, editMode }) => {
 };
 export default SelectedItem;
 
-const Maintainer = styled.div`
-  width: 70%;
+const Maintainer = styled.div<{ fullWidth?: boolean }>`
+  width: ${({ fullWidth }) => (fullWidth ? 100 : 70)}%;
   height: 3rem;
   border-style: solid;
   border-color: #e6f4f1;

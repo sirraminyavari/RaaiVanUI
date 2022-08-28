@@ -4,16 +4,23 @@ import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
 import { isArray } from 'lodash';
 
+type OptionType = { label: string; value: string | number };
 export interface ISelectInputField {
-  selectedValue?:
-    | { label: string; value: string | number }
-    | { label: string; value: string | number }[];
+  selectedValue?: OptionType | OptionType[];
   isEditable?: boolean;
-  onChange?: (event: { label: string; value: string | number }) => void;
+  onChange?: (
+    event: OptionType,
+    actionMeta: {
+      action?: string;
+      option?: OptionType | undefined;
+      name?: string | undefined;
+    }
+  ) => void;
   onBlur?: () => void;
-  options: { label: string; value: string | number }[];
+  options: OptionType[];
   isFocused?: boolean;
   isMulti?: boolean;
+  isSearchable?: boolean;
   className?: string;
   classNamePrefix?: string;
 }
@@ -21,11 +28,12 @@ export interface ISelectInputField {
 const SelectInputField = ({
   selectedValue,
   isEditable,
-  onChange,
+  onChange = () => {},
   onBlur,
   options,
   isFocused,
   isMulti,
+  isSearchable,
   classNamePrefix,
   className,
 }: ISelectInputField) => {
@@ -35,16 +43,17 @@ const SelectInputField = ({
     <Select
       onBlur={onBlur}
       options={options}
-      styles={customStyles}
       isDisabled={!isEditable}
       value={selectedValue}
       placeholder={RVDic.Select}
-      onChange={onChange}
       isMulti={isMulti}
       classNamePrefix={classNamePrefix}
       className={className}
       closeMenuOnSelect={!isMulti}
       isClearable={false}
+      isSearchable={isSearchable}
+      styles={customStyles}
+      onChange={onChange}
     />
   ) : (
     <Styles.SelectedFieldItemContainer
@@ -62,7 +71,9 @@ const SelectInputField = ({
             );
           })
         ) : (
-          RVDic.Select
+          <Styles.SelectedFieldItem muted>
+            {RVDic.Select}
+          </Styles.SelectedFieldItem>
         )
       ) : (
         <Styles.SelectedFieldItem muted={selectedValue === undefined}>
@@ -94,7 +105,7 @@ const customStyles = {
   control: (provided) => ({
     // none of react-select's styles are passed to <Control />
     ...provided,
-    minWidth: '7rem',
+    minWidth: '9rem',
     borderColor: CV_WHITE,
     backgroundColor: CV_WHITE,
     ':focus': {
@@ -105,27 +116,31 @@ const customStyles = {
   singleValue: (styles) => {
     return {
       ...styles,
-      backgroundColor: '#e6f4f1',
+      // backgroundColor: '#e6f4f1',
       borderRadius: '0.5rem',
       padding: '0.3rem',
+      minWidth: '9rem',
     };
   },
   menu: (provided) => ({
     ...provided,
     borderColor: '#e6f4f1',
+    minWidth: '9rem',
 
     ':hover': {
       borderWidth: 0,
     },
   }),
-  multiValue: (styles) => {
-    return {
-      ...styles,
-      backgroundColor: '#e6f4f1',
-      borderRadius: '0.5rem',
-      padding: '0.3rem',
-    };
-  },
+  multiValue: (provided) => ({
+    ...provided,
+    borderColor: '#e6f4f1',
+    minWidth: '9rem',
+    padding: '0.3rem',
+
+    ':hover': {
+      borderWidth: 0,
+    },
+  }),
   multiValueRemove: (styles) => {
     return {
       ...styles,
