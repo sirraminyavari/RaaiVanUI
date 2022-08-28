@@ -5,6 +5,8 @@ import { TCV_DEFAULT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import { Link } from 'react-router-dom';
 import * as Styles from './UserSelectInputField.styles';
+import * as GlobalStyles from 'components/FormElements/ElementTypes/formElements.styles';
+import useWindow from 'hooks/useWindowContext';
 
 export interface IUserSelectInputField {
   value: {
@@ -51,6 +53,8 @@ const UserSelectInputField = ({
   isEditable,
   isMulti = false,
 }: IUserSelectInputField) => {
+  const { RVDic } = useWindow();
+
   const normalizeValue =
     value.length > 0
       ? value?.map((x) => {
@@ -64,7 +68,7 @@ const UserSelectInputField = ({
   return (
     <>
       <Styles.UserSelectInputFieldMaintainer>
-        {value?.length > 0 && (
+        {value?.length > 0 ? (
           <Styles.UserSelectInputFieldSelect>
             {value.map((x) => {
               return (
@@ -92,6 +96,12 @@ const UserSelectInputField = ({
               );
             })}
           </Styles.UserSelectInputFieldSelect>
+        ) : (
+          <GlobalStyles.SelectedFieldItemContainer>
+            <GlobalStyles.SelectedFieldItem muted>
+              {RVDic.Select}
+            </GlobalStyles.SelectedFieldItem>
+          </GlobalStyles.SelectedFieldItemContainer>
         )}
         <PeoplePicker
           onByMe={() => {}}

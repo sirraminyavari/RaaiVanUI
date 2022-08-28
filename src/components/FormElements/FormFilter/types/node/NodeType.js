@@ -69,6 +69,7 @@ const NodeType = (props) => {
       </Styled.NodeTitleWrapper>
 
       <SubjectSelectInputField
+        fullWidth
         value={items}
         onChange={handleSelectNodes}
         isEditable

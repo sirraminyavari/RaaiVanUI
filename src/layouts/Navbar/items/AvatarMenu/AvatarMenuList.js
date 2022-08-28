@@ -22,6 +22,7 @@ import { useApplicationSlice } from 'store/slice/applications';
 import { selectApplication } from 'store/slice/applications/selectors';
 import { useAuthSlice } from 'store/slice/auth';
 import LanguageSwitch from './LanguageSwitch';
+import { isArray } from 'lodash';
 
 const AvatarMenuList = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ const AvatarMenuList = () => {
           />
         );
       })}
-      <Styled.Divider />
+      {isArray(teams) && teams.length ? <Styled.Divider /> : null}
       <ScrollBarProvider style={{ maxHeight: '10rem' }}>
         <div ref={containerRef}>
           {teams?.map((team) => {
@@ -106,6 +107,7 @@ const AvatarMenuList = () => {
           })}
         </div>
       </ScrollBarProvider>
+      <Styled.Divider />
       {RVGlobal?.IsDev && <LanguageSwitch />}
       <Styled.Divider />
       <AvatarMenuItem
