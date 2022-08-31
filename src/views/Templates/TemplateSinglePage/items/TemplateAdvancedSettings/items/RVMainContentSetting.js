@@ -3,7 +3,6 @@ import * as Styled from './RVMainContentSettingStyles';
 import CodingPattern from './CodingPattern';
 import CustomSelect from '../../../../../../components/Inputs/CustomSelect/CustomSelect';
 import { useTemplateContext } from 'views/Templates/TemplateSinglePage/TemplateProvider';
-import { setServiceSuccessMessage } from 'apiHelper/ApiHandlers/CNAPI/api-service';
 import InfoMessage from 'components/toasts/info-toast/InfoMessage';
 import useAdvancedSetting from '../useAdvancedSetting';
 import api from 'apiHelper';
