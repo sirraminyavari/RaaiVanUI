@@ -92,6 +92,30 @@ export const FLEX_CSB = css`
 
 /**
  * @description 'Flex'
+ * @Direction 'C'olumn
+ * @Align flex-'S'tart
+ * @Justify space-'E'nd
+ */
+export const FLEX_CSE = css`
+  ${FLEX_COLUMN}
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+/**
+ * @description 'Flex'
+ * @Direction 'C'olumn
+ * @Align flex-'E'nd
+ * @Justify space-'S'tart
+ */
+export const FLEX_CES = css`
+  ${FLEX_COLUMN}
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+/**
+ * @description 'Flex'
  * @Direction 'R'ow
  * @Align 'C'enter
  * @Justify space-'A'round

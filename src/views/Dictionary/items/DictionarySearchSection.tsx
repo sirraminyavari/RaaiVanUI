@@ -9,38 +9,32 @@ export interface ISearchSection {
 }
 
 const SearchSection: React.FC<ISearchSection> = ({ onSelect }) => {
-  const { selected, setSelected, list } = useDictionaryContext();
+  const { selected, setSelected, list, searchItem } = useDictionaryContext();
   const [searchText, setSearchText] = useState<string>('');
-
-  const handleSearchChange = (e) => {
-    setSearchText(e?.target?.value || '');
-  };
 
   useEffect(() => {
     selected && onSelect && onSelect(selected);
   }, [selected]);
 
   const List = useMemo(() => {
-    return list
-      ?.filter((x) => x?.title.includes(searchText))
-      ?.map((x) => {
-        const { title, id } = x;
-        return (
-          <ListItem
-            key={id}
-            $isSelected={selected?.id === x?.id}
-            onClick={() => setSelected(x)}
-          >
-            {title}
-          </ListItem>
-        );
-      });
-  }, [searchText, selected]);
+    return list?.map((x) => {
+      const { title, id } = x;
+      return (
+        <ListItem
+          key={id}
+          $isSelected={selected?.id === x?.id}
+          onClick={() => setSelected(x)}
+        >
+          {title}
+        </ListItem>
+      );
+    });
+  }, [list, selected]);
 
   return (
     <Container>
       <InputContainer>
-        <Input value={searchText} onChange={handleSearchChange} />
+        <Input value={searchText} onChange={searchItem} />
         <SearchIcon size={24} />
       </InputContainer>
       <ListWrapper>{List}</ListWrapper>

@@ -10,12 +10,26 @@ export const useDictionaryContext = () => {
 
 const DictionaryProvider = ({ children }: any) => {
   const [selected, setSelected] = useState<any>();
+  const [filteredList, setFilteredList] = useState(ListData);
+
+  const next = () => {};
+
+  const prev = () => {};
+
+  const searchItem = (e) => {
+    const _list = ListData?.filter((x) => x?.title.includes(e?.target?.value));
+    setFilteredList(_list);
+  };
+
   return (
     <DictionaryContext.Provider
       value={{
         selected,
         setSelected,
-        list: ListData,
+        next,
+        prev,
+        list: filteredList,
+        searchItem,
       }}
     >
       {children}

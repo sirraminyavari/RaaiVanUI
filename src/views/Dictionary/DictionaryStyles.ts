@@ -13,7 +13,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const SelectedItemContent = styled.div`
-  padding: 1.75rem;
+  padding: 2.5rem 2.5rem 1.5rem 2.5rem;
   ${FLEX_RSB};
   gap: 1rem;
   width: 100%;

@@ -27,8 +27,12 @@ const Header: React.FC<IHeaderProps> = ({ onCategorySelect }) => {
     <Container>
       <Title>Cliqmind Dictionary</Title>
       <FilterBlock>
-        <CategorySelect />
-        <SectionSelect />
+        <div style={{ flex: 1 }}>
+          <CategorySelect />
+        </div>
+        <div style={{ flex: 1 }}>
+          <SectionSelect />
+        </div>
       </FilterBlock>
 
       <AvatarWrapper />
@@ -56,11 +60,15 @@ const FilterBlock = styled.div`
 
 const CategorySelect = styled(CustomSelect).attrs({
   placeholder: 'Select Section',
-})``;
+})`
+  width: 100%;
+`;
 
 const SectionSelect = styled(CustomSelect).attrs({
   placeholder: 'Select Category',
-})``;
+})`
+  width: 100%;
+`;
 
 export default Header;
 function useWindow(): { RVDic: any; RV_RevFloat: any; GlobalUtilities: any } {
