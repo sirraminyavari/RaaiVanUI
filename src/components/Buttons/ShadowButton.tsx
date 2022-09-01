@@ -1,21 +1,25 @@
+import { IButton } from './Button';
 import { CV_DISTANT, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
 import styled from 'styled-components';
 import Button from './Button';
 
+export interface IShadowButton extends IButton {
+  active?: boolean;
+}
+
 /**
  * @description a customized version of Button component that has a shadow in active mode
- * @param {boolean} active determines if the button is active
  */
-const ShadowButton = ({ active, ...props } = {}) => {
+const ShadowButton = ({ active, ...props }: IShadowButton) => {
   return <StyledButton active={active} {...props} />;
 };
 
 export default ShadowButton;
 
 const StyledButton = styled(Button).attrs({
-  className: 'rv-border-white rv-circle',
-  isCustomButton: true,
-})`
+  className: 'rv-border-white rv-circle' as string,
+  isCustomButton: true as boolean,
+})<IButton & { active?: boolean }>`
   box-shadow: ${({ active }) => !!active && `1px 3px 20px ${CV_DISTANT}`};
   background-color: ${CV_WHITE};
   padding: 0.5rem;
