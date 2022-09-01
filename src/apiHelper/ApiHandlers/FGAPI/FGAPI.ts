@@ -3,6 +3,7 @@ import {
   API_NAME_FG_GET_FORM_INSTANCE,
   API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE,
   API_NAME_FG_SAVE_FORM_ELEMENTS,
+  API_NAME_FG_SAVE_FORM_INSTANCE_ELEMENTS,
 } from 'constant/api-names-fg';
 import { FG_API } from 'constant/apiConstants';
 import {
@@ -154,6 +155,39 @@ export const getFormInstance = ({
     LimitOwnerID,
     ShowAllIfNoLimit,
   });
+};
+
+interface ISaveFormInstanceElements {
+  Elements: {
+    ElementID: string;
+    InstanceID: string;
+    RefElementID?: '';
+    Title: string;
+    SequenceNumber: number;
+    Filled?: boolean;
+    Type: 'Form';
+    Info: {
+      FormID: string;
+      FormName: string;
+    };
+    TextValue: string;
+    FloatValue: string;
+    BitValue: string;
+    DateValue: string;
+    GuidItems: any[];
+    Files: string[];
+  }[];
+}
+
+export const saveFormInstanceElements = ({
+  Elements,
+}: ISaveFormInstanceElements) => {
+  return apiCallWrapper(
+    API_Provider(FG_API, API_NAME_FG_SAVE_FORM_INSTANCE_ELEMENTS),
+    {
+      Elements,
+    }
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

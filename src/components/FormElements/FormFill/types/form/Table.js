@@ -11,7 +11,7 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64, getWeekDay } from 'helpers/helpers';
+import { decodeBase64, getWeekDay, random } from 'helpers/helpers';
 import {
   createFormInstance,
   removeFormInstance,
@@ -22,14 +22,15 @@ import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { getTableOptions } from './FormFieldUtils';
 import saveForm from '../saveForm';
+import { saveFormInstanceElements } from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
 
 /**
  * @typedef PropType
  * @type {Object}
  * @property {Array} tableColumns - A list of columns for table.
  * @property {Array} tableData - A list of rows for table.
- * @property {String} tableId - The id of the table.
- * @property {String} tableOwnerId - The id of the owner of the table.
+ * @property {String} FormID - The id of the table.
+ * @property {String} ElementID - The id of the owner of the table.
  * @property {Boolean} isEditable - Whether table is editable or not?
  * @property {Boolean} isResizable - Whether table is resizable or not?
  * @property {Boolean} editByCell - Whether single cell is editable or not?
@@ -46,19 +47,24 @@ const Table = (props) => {
   const {
     tableColumns,
     tableData,
-    tableId,
-    tableOwnerId,
+    FormID,
+    ElementID,
     isEditable,
     isResizable,
     editByCell,
     isNestedTable,
     onTableContentChange,
+    title,
+    RefElementID,
+    SequenceNumber,
+    InstanceID,
   } = props;
 
   const { GlobalUtilities } = useWindow();
 
   const [rows, setRows] = useState([]);
   const [tableContent, setTableContent] = useState([]);
+  const [tableFormID, setTableFormID] = useState(FormID);
   const newRowRef = useRef({});
   const beforeEditRowsRef = useRef(null);
 
@@ -81,15 +87,15 @@ const Table = (props) => {
   const memoizedData = useMemo(() => rows, [rows]);
 
   //! Get table data.
-  const getFormData = () => {
-    getOwnerFormInstances(tableId, tableOwnerId)
+  const getFormData = useCallback(() => {
+    return getOwnerFormInstances(tableFormID, ElementID)
       .then((response) => {
         const rows = prepareRows(response?.TableContent, tableColumns);
         setRows(rows);
         setTableContent(response?.TableContent);
       })
       .catch((error) => console.log(error));
-  };
+  }, [tableFormID, ElementID]);
 
   //! Update table content(client side).
   const updateRowCell = (rowId, columnId, cell) => {
@@ -135,6 +141,10 @@ const Table = (props) => {
     }
   };
   const memoizedUpdateCellData = useCallback(updateCellData, []);
+
+  const hasInitiated = useMemo(() => {
+    return !!(ElementID && RefElementID && ElementID !== RefElementID);
+  }, [ElementID, RefElementID]);
 
   //! Reorder table rows by drag and drop(client side now & need to save order).
   const reorderRow = (startIndex, endIndex) => {
@@ -213,6 +223,7 @@ const Table = (props) => {
 
       onTableContentChange && onTableContentChange(newTableContent);
       return;
+      getFormData();
     }
 
     //! Do this in main table.
@@ -287,34 +298,64 @@ const Table = (props) => {
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
   //! Save row.
-  const saveRow = (newRowElements) => {
-    //! Create new row instance.
-    createFormInstance(tableId, tableOwnerId)
-      .then((response) => {
-        if (response?.Succeed) {
-          const instanceId = response?.Instance?.InstanceID;
-          const extendedElements = newRowElements.map((element) => {
-            return { ...element, InstanceID: instanceId };
-          });
+  const saveRow = useCallback(
+    async (newRowElements) => {
+      //! Create new row instance.
+      let newElementID;
+      if (!hasInitiated) {
+        const { FilledElements } = await saveFormInstanceElements({
+          Elements: [
+            {
+              ElementID,
+              InstanceID,
+              Title: title,
+              SequenceNumber,
+              Filled: false,
+              Type: 'Form',
+            },
+          ],
+        });
+        newElementID = FilledElements?.NewElementID;
+        setTableFormID(newElementID);
 
-          //! Save elements to the row instance that just has been created.
-          saveForm(extendedElements)
-            .then((response) => {
-              getFormData(); //! Refresh table data.
-              newRowRef.current = {};
-            })
-            .catch((error) => console.log(error, 'save row error'));
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+        await getFormData(); //! Refresh table data.
+      }
+      createFormInstance(newElementID || tableFormID, ElementID, true)
+        .then((response) => {
+          if (response?.Succeed) {
+            const instanceId = response?.Instance?.InstanceID;
+            const extendedElements = newRowElements.map((element) => {
+              return { ...element, InstanceID: instanceId };
+            });
+
+            //! Save elements to the row instance that just has been created.
+            saveForm(extendedElements)
+              .then((response) => {
+                getFormData(); //! Refresh table data.
+                newRowRef.current = {};
+              })
+              .catch((error) => console.log(error, 'save row error'));
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+    [
+      hasInitiated,
+      tableFormID,
+      ElementID,
+      InstanceID,
+      title,
+      SequenceNumber,
+      getFormData,
+    ]
+  );
 
   //! Add new row.
-  const addRow = () => {
+  const addRow = async () => {
     let elements = Object.values(newRowRef.current);
     saveRow(elements);
   };
-  const memoizedAddRow = useCallback(addRow, []);
+  const memoizedAddRow = useCallback(addRow, [saveRow]);
 
   //! Duplicate a given row.
   const duplicateRow = (row) => {
@@ -382,7 +423,6 @@ const Table = (props) => {
   //! Create new row and add it to the beginning of the row list.
   const createNewRow = useCallback(
     async (tempRowId) => {
-      // if (tableData === undefined) {}
       let newRow = tableColumns
         ?.filter((col) => col?.Type !== cellTypes.separator) //! Exclude separator type.
         .map((column) => {
@@ -436,7 +476,7 @@ const Table = (props) => {
       isLoading={false}
       onSearch={handleOnSearch}
       getColumnsOption={getTableOptions}
-      tableId={tableId}
+      FormID={tableFormID}
       getCellProps={(cell) => ({})}
       tableMirror={Table}
       onCreateNewRow={createNewRow}
@@ -448,8 +488,8 @@ const Table = (props) => {
 Table.propTypes = {
   tableColumns: PropTypes.array,
   tableData: PropTypes.array,
-  tableId: PropTypes.string,
-  tableOwnerId: PropTypes.string,
+  FormID: PropTypes.string,
+  ElementID: PropTypes.string,
   isEditable: PropTypes.bool,
   isResizable: PropTypes.bool,
   editByCell: PropTypes.bool,

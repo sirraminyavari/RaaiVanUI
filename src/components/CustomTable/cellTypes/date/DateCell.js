@@ -29,6 +29,7 @@ const DateCell = (props) => {
 
   //! Prepare date format for date picker.
   const normalizeDate = (date) => {
+    return date;
     const dateArray = date
       ?.split(' ')[0]
       ?.split('/')
@@ -69,10 +70,9 @@ const DateCell = (props) => {
   //! Update cell value.
   const updateCell = (date) => {
     if (!date || normalizeDate(DateValue) === date) return;
-    const dateArray = date?.split('/');
-    const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
-
-    let dateCell = { ...value, DateValue: dateString };
+    // const dateArray = date?.split('/');
+    // const dateString = [dateArray[1], dateArray[2], dateArray[0]].join('/');
+    let dateCell = { ...value, DateValue: date };
 
     onCellChange(rowId, columnId, dateCell, value);
   };
@@ -108,7 +108,7 @@ const DateCell = (props) => {
         renderContent={() => (
           <CustomDatePicker
             mode="button"
-            // type="jalali"
+            type="jalali"
             range={false}
             size="small"
             justCalendar

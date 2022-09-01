@@ -138,3 +138,9 @@ export const CV_RED_LIGHTWARM = 'var(--rv-red-color-lightwarm)';
  * @color (#bc183e)
  */
 export const CV_RED_WARM = 'var(--rv-red-color-warm)';
+
+//TODO additonal colors
+
+export const CV_1 = '#E6F4F1';
+export const CV_2 = '#E2A923';
+export const CV_3 = '#16D493';
