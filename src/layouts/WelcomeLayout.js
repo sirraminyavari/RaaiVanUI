@@ -23,7 +23,7 @@ import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
  * ```
  *
  * @param {object} props - WelcomeLayout component props
- * @param {JSX.Element[]} [props.children=[]] - JSX Children passed to the component
+ * @param {React.ReactNode} [props.children=[]] - JSX Children passed to the component
  * @param {JSX.Element} [props.Wrapper="div"] - JSX or HTML Element to wrap the layout to fit styling need
  * @param {boolean} [props.noOutline=false] - remove outline shadow surrounding the layout
  * @param {boolean} [props.noPadding=false] - remove padding surrounding each column in the layout
@@ -63,7 +63,7 @@ function WelcomeLayout({
       Padding={!noPadding}
       centerize={centerize}
       FullHeight={!noFullHeight}
-      className={classNames(BG_GRAY_LIGHT, BO_RADIUS_UNIT, className)}
+      className={classNames(BO_RADIUS_UNIT, className)}
       isMobile={singleColumn || isMobileScreen}
       style={{ ...style, overflow: 'inherit !important' }}
     >

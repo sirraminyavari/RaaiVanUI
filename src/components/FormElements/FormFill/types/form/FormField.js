@@ -12,30 +12,30 @@ const FormField = (props) => {
     tableData,
     decodeInfo,
     decodeTitle,
-    elementId,
+    ElementID,
+    InstanceID,
+    RefElementID,
+    SequenceNumber,
     type,
     ...rest
   } = props;
-  const { FormID: tableId } = toJSON(decodeInfo);
+  const { FormID } = toJSON(decodeInfo);
   const { RVDic } = useWindow();
-  console.log({
-    tableColumns,
-    tableData,
-    decodeInfo,
-    decodeTitle,
-    elementId,
-    type,
-    rest,
-  });
+
   const renderTable = () => {
     return (
       <>
         {tableColumns ? (
           <Table
+            ElementID={ElementID}
+            InstanceID={InstanceID}
+            RefElementID={RefElementID}
+            SequenceNumber={SequenceNumber}
             tableColumns={tableColumns}
             tableData={tableData}
-            tableOwnerId={elementId}
-            tableId={tableId}
+            tableOwnerId={ElementID}
+            FormID={FormID}
+            title={decodeTitle}
             editByCell={true}
           />
         ) : (

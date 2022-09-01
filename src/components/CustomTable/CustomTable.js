@@ -35,7 +35,7 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 /**
  * @typedef PropType
  * @type {Object}
- * @property {String} tableId - The id of the table.
+ * @property {String} FormID - The id of the table.
  * @property {Boolean} editable - If true table cells are editable.
  * @property {Boolean} resizable - If true table columns are resizable.
  * @property {Boolean} editByCell - If true every single cell can be edited.
@@ -65,7 +65,7 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
 const CustomTable = (props) => {
   //! Properties that passed to custom table component.
   const {
-    tableId,
+    FormID,
     editable: isTableEditable,
     resizable: isTableResizable,
     editByCell,
@@ -168,7 +168,7 @@ const CustomTable = (props) => {
       tempRowId,
       setTempRowId,
       getColumnsOption,
-      tableId,
+      FormID,
       tableMirror,
       editByCell,
       initialState: {
@@ -261,7 +261,7 @@ const CustomTable = (props) => {
               onDragEnd={handleDragEnd}
               onBeforeDragStart={handleBeforeDragStart}
             >
-              <Droppable droppableId={tableId}>
+              <Droppable droppableId={FormID}>
                 {(provided, _) => (
                   <Styled.TableBody
                     isRowDragging={isRowDragging}

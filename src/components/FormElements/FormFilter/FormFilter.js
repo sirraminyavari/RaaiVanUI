@@ -58,21 +58,7 @@ const FormFilter = (props) => {
 
   //! Clalls when user clicks on filter button.
   const handleOnFilterClick = () => {
-    console.clear();
-    console.log({ values });
-    onFilter &&
-      onFilter(
-        values
-        // {
-        //   'aa4c4953-8f6f-820f-a87a-a055b7ac5b12': {
-        //     Data: { From: '1401/5/22', To: '1401/5/31' },
-        //     DateFrom: '1401/5/22',
-        //     DateTo: '1401/5/31',
-        //     JSONValue: { DateFrom: '1401/5/22', DateTo: '1401/5/31' },
-        //     Type: 'date',
-        //   },
-        // }
-      );
+    onFilter && onFilter(values);
   };
 
   //! clear the filter form.

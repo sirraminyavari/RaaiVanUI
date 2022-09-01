@@ -21,4 +21,5 @@ interface Window {
     decode: (Base64URI: string) => string;
     encode: (Base64URI: string) => string;
   };
+  loadDashboard: () => void;
 }
