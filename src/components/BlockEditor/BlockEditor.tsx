@@ -6,6 +6,7 @@ import { dict } from './data';
 import Plugins from './plugins';
 import useWindow from 'hooks/useWindowContext';
 import styled from 'styled-components';
+import Heading from 'components/Heading/Heading';
 
 //TODO BlockEditorWrapper component needs review and refactor !!!
 
@@ -18,9 +19,13 @@ function BlockEditorWrapper({
   readOnly = false,
   // handleSaveRawHtmlContent,
 }) {
-  const { RV_Direction, RV_RTL } = useWindow();
+  const { RV_Direction, RV_RTL, RVDic } = useWindow();
   const editorRef = useRef<HTMLElement>();
   const initializePluginsInstance = Plugins();
+
+  //! RVDic i18n variables
+  const RVDicDoubleClickToEdit = RVDic.DoubleClickToEdit;
+  const RVDicClickToEdit = RVDic.ClickToEdit;
   // useEffect(
   // () => void setImmediate(() => editorRef.current?.focus()),
   //   []
@@ -43,6 +48,14 @@ function BlockEditorWrapper({
 
   return (
     <BlockEditorStyler textarea={textarea} readOnly={readOnly}>
+      {readOnly && (
+        <Heading
+          type="H5"
+          style={{ paddingInline: '1rem', textAlign: 'center' }}
+        >
+          {textarea ? RVDicClickToEdit : RVDicDoubleClickToEdit}
+        </Heading>
+      )}
       <BlockEditor
         //@ts-expect-error
         ref={editorRef}
