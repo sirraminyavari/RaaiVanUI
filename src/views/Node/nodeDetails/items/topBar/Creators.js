@@ -12,8 +12,9 @@ import UserIconIo from 'components/Icons/UserIconIo';
 import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
+import * as Styles from './TopBar.style';
 
-const { GlobalUtilities, RV_Float, RV_RTL, RVDic } = window;
+const { GlobalUtilities, RV_RTL, RVDic } = window;
 const Creators = ({ creatorsList, nodeDetails }) => {
   const dialogRef = useRef();
   const [hoverCreators, sethoverCreators] = useState(false);
@@ -146,11 +147,12 @@ const Creators = ({ creatorsList, nodeDetails }) => {
           </VerticalList>
         </Maintainer>
       ) : (
-        <UserIconIo
+        <Styles.NodeTopBarShadowButton
           onClick={editContributors}
-          color={CV_GRAY}
-          size={'1.5rem'}
-        />
+          active={editContModalVisible}
+        >
+          <UserIconIo size={'1.5rem'} />
+        </Styles.NodeTopBarShadowButton>
       )}
       <EditContributersModal
         isVisible={editContModalVisible}
