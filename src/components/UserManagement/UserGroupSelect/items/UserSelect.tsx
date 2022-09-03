@@ -17,10 +17,15 @@ const UserSelect = () => {
   const list = useMemo(() => {
     return users
       ?.map((x) => ({
-        id: x?.UserID,
-        src: x?.ProfileImageURL,
-        title: x?.FullName,
+        id: x?.UserID as string,
+        src: x?.ProfileImageURL as string,
+        title: x?.FullName as string,
       }))
+      .filter((userItem) => {
+        if (searchText === '') return userItem;
+        if (userItem?.title.includes(searchText)) return true;
+        else return false;
+      })
       .map((u) => {
         const { id } = u;
         return (
@@ -38,7 +43,7 @@ const UserSelect = () => {
           </Styles.ObjectItemContainer>
         );
       });
-  }, [users, selectedUsers]);
+  }, [users, selectedUsers, searchText]);
 
   return (
     <>

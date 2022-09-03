@@ -1,23 +1,19 @@
 import Button from 'components/Buttons/Button';
+import ShadowButton from 'components/Buttons/ShadowButton';
 import styled from 'styled-components';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT, CV_GRAY, CV_RED } from 'constant/CssVariables';
 import { FLEX_RCS } from 'constant/StyledCommonCss';
 
-export const NodeTopBarShadowButton = styled(Button)<{ $isEnabled?: boolean }>`
+export const NodeTopBarShadowButton = styled(ShadowButton)<{
+  $isEnabled?: boolean;
+}>`
   box-shadow: ${({ $isEnabled }) => $isEnabled && `1px 3px 20px ${CV_DISTANT}`};
-  border-radius: 100rem;
-  background-color: white;
-  border-width: 0.06rem;
-  padding: 0.5rem;
-  border-style: solid;
-  transition: border-color 0.5s, box-shadow 0.5s;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  /* ${({ $isEnabled }) => $isEnabled && 'rv-border-warm-red'} */
+
+  &:hover {
+    border-color: transparent;
+    box-shadow: none;
+  }
 `;
 
 NodeTopBarShadowButton.displayName = 'NodeTopBarShadowButton';

@@ -11,6 +11,7 @@ import Modal from 'components/Modal/Modal';
 import UserGroupUpsertModal from '../CreateUserGroupModal/UserGroupUpsertModal';
 import api from 'apiHelper';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import Sticker from 'components/PopupMenu/Sticker';
 
 interface IUserStateChangeProps {
   user: ISelectedObject;
@@ -168,10 +169,11 @@ const UserGroupSelect: FC<IUserGroupSelect> = (props) => {
       }}
     >
       <Styles.Container>
-        <Styles.ToggleButton onClick={open}>
-          {'انتخاب اعضا'}
-        </Styles.ToggleButton>
-        {isOpen && (
+        {/* @ts-expect-error */}
+        <Sticker fit show={isOpen} align="top">
+          <Styles.ToggleButton onClick={open}>
+            {'انتخاب اعضا'}
+          </Styles.ToggleButton>
           <Styles.DropDown ref={dropDownEl}>
             <TabView>
               {selectUserEnabled && (
@@ -205,7 +207,7 @@ const UserGroupSelect: FC<IUserGroupSelect> = (props) => {
               </TabView.Action>
             </TabView>
           </Styles.DropDown>
-        )}
+        </Sticker>
       </Styles.Container>
 
       <Modal {...info} onClose={onCancel}>

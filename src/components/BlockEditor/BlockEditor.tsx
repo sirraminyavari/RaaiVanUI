@@ -26,7 +26,6 @@ function BlockEditorWrapper({
 
   //! RVDic i18n variables
   const RVDicDoubleClickToEdit = RVDic.DoubleClickToEdit;
-  const RVDicClickToEdit = RVDic.ClickToEdit;
   // useEffect(
   // () => void setImmediate(() => editorRef.current?.focus()),
   //   []
@@ -54,7 +53,7 @@ function BlockEditorWrapper({
           type="H5"
           style={{ paddingInline: '1rem', textAlign: 'center' }}
         >
-          {showHint && (textarea ? RVDicClickToEdit : RVDicDoubleClickToEdit)}
+          {showHint && (textarea ? '' : RVDicDoubleClickToEdit)}
         </Heading>
       )}
       <BlockEditor

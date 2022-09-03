@@ -114,7 +114,7 @@ const TextField = ({
             />
           ) : (
             <Styles.SelectedFieldItem muted={!value}>
-              {value ? value : RVDic.Select}
+              {value ? value : editable && RVDic.Select}
             </Styles.SelectedFieldItem>
           )}
         </Styles.SelectedFieldItemContainer>
