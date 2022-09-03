@@ -106,6 +106,7 @@ function ParagraphField({
                 setEditorState={setEditorState}
                 handleSaveBlocks={handleSaveBlocks}
                 textarea
+                showHint={isEditable}
                 readOnly={!(isEditable || editable) || !isFocused}
               />
             )}

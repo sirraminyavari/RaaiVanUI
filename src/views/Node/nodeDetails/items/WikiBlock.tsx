@@ -101,6 +101,7 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
       >
         {editorState && (
           <BlockEditor
+            showHint={editable}
             editorState={editorState}
             setEditorState={setEditorState}
             handleSaveBlocks={handleSaveBlocks}

@@ -17,6 +17,7 @@ function BlockEditorWrapper({
   debugMode = false,
   textarea = false,
   readOnly = false,
+  showHint = false,
   // handleSaveRawHtmlContent,
 }) {
   const { RV_Direction, RV_RTL, RVDic } = useWindow();
@@ -53,7 +54,7 @@ function BlockEditorWrapper({
           type="H5"
           style={{ paddingInline: '1rem', textAlign: 'center' }}
         >
-          {textarea ? RVDicClickToEdit : RVDicDoubleClickToEdit}
+          {showHint && (textarea ? RVDicClickToEdit : RVDicDoubleClickToEdit)}
         </Heading>
       )}
       <BlockEditor
