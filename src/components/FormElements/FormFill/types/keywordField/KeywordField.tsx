@@ -88,7 +88,7 @@ function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
               })
             ) : (
               <Styles.SelectedFieldItem muted>
-                {RVDic.Select}
+                {Keywords?.Editable ? RVDic.Select : ''}
               </Styles.SelectedFieldItem>
             )}
           </Styles.SelectedFieldItemContainer>
