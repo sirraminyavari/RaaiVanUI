@@ -35,6 +35,18 @@ const Collector = ({
 
   useEffect(() => {
     (async () => {
+      if (newNode) {
+        const formInstance = await getFormInstance({
+          InstanceID: InstanceID,
+          LimitOwnerID: null,
+          ShowAllIfNoLimit: true,
+        });
+        console.log({ formInstance });
+
+        setFields(formInstance);
+      } else {
+        setFields(nodeDetails);
+      }
       const formInstance = newNode
         ? nodeDetails
         : InstanceID
@@ -43,7 +55,7 @@ const Collector = ({
             LimitOwnerID: null,
             ShowAllIfNoLimit: true,
           })
-        : null;
+        : nodeDetails;
       console.log({ formInstance });
 
       setFields(formInstance);
@@ -58,7 +70,6 @@ const Collector = ({
         fullWidth={sideColumn}
       >
         <TopFilter>
-          {/* {!newNode && ( */}
           <TopBar
             newNode={newNode}
             onSideColumnClicked={setSideColumn}
@@ -66,7 +77,6 @@ const Collector = ({
             nodeDetails={nodeDetails}
             hierarchy={hierarchy}
           />
-          {/* )} */}
         </TopFilter>
         <div
           style={{

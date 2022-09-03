@@ -37,7 +37,7 @@ const FormFill = ({ data, editable, ...props }) => {
         };
       }),
     });
-  }, []);
+  }, [data]);
 
   const onAnyFieldChanged = async (
     elementId,

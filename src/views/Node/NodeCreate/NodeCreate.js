@@ -20,16 +20,14 @@ const NodeDetails = (props) => {
   useEffect(() => {
     ownerForm?.fetch({ OwnerID: NodeTypeID }, async (result) => {
       const formId = result?.FormID;
-      const {
-        Instance: { InstanceID },
-      } = await createFormInstance(formId, NodeTypeID, true);
+      const { Instance } = await createFormInstance(formId, NodeTypeID, true);
 
       const formInstance = await API.FG.getFormInstance({
-        InstanceID,
+        InstanceID: Instance?.InstanceID,
         LimitOwnerID: null,
         ShowAllIfNoLimit: true,
       });
-      setInstanceID(InstanceID);
+      setInstanceID(Instance?.InstanceID);
       setFormInstance({
         ...formInstance,
         Editable: true,
