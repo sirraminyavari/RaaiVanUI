@@ -32,6 +32,7 @@ const SingleSelectField = ({
   const decodeValue = decodeBase64(value);
   const selectedValue = normalizedOptions.find((x) => x.value === decodeValue);
 
+  if (!editable && value.length === 0) return <></>;
   return (
     <FormCell
       iconComponent={<RadioButtonIcon color={CV_GRAY} size={'1.25rem'} />}

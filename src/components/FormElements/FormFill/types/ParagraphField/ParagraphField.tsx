@@ -13,6 +13,21 @@ import { suggestTags } from 'components/BlockEditor/API';
 import { decodeBase64 } from 'helpers/helpers';
 import { EditableContext } from '../../FormFill';
 
+export interface IParagraphField {
+  value: string;
+  onAnyFieldChanged?: (
+    elementId?: String,
+    content?: string,
+    type?: string,
+    force?: true
+  ) => void;
+  elementId?: string;
+  decodeTitle?: string;
+  iconComponent?: JSX.Element;
+  type?: string;
+  isEditable?: boolean;
+}
+
 function ParagraphField({
   value,
   onAnyFieldChanged,
@@ -20,10 +35,11 @@ function ParagraphField({
   decodeTitle,
   iconComponent = <ParagraphInputIcon color={CV_GRAY} size={'1.4rem'} />,
   type,
-  isEditable = true,
-}) {
+  isEditable,
+}: IParagraphField) {
   const [editorState, setEditorState] = useState(null);
-  const editable = useContext(EditableContext);
+  const editableCtx = useContext(EditableContext);
+  const editable = isEditable || editableCtx;
   const [isFocused, setIsFocused] = useState(false);
 
   //TODO needs checking for arguments ...
@@ -84,9 +100,12 @@ function ParagraphField({
   //insertAfterKey: the key of the last block that is places immediately before the blocks to be saved
   const handleSaveBlocks: IHandleSaveBlocks = async ({ content } = {}) => {
     //TODO investigate why save functionality not working when using the [props.save] function
-    await onAnyFieldChanged(elementId, JSON.stringify(content), type, true);
+    if (onAnyFieldChanged)
+      await onAnyFieldChanged(elementId, JSON.stringify(content), type, true);
   };
 
+  //@ts-expect-error
+  if (!editable && !editorState?.getCurrentContent().hasText()) return <></>;
   return (
     <>
       {/*@ts-expect-error */}
@@ -106,8 +125,8 @@ function ParagraphField({
                 setEditorState={setEditorState}
                 handleSaveBlocks={handleSaveBlocks}
                 textarea
-                showHint={isEditable}
-                readOnly={!(isEditable || editable) || !isFocused}
+                showHint={editable}
+                readOnly={!editable || !isFocused}
               />
             )}
           </>

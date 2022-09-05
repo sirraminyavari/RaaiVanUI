@@ -21,6 +21,8 @@ const MultiLevelField = ({
   const { NodeType, Levels } = parseDecodeInfo || {};
 
   const editable = useContext(EditableContext);
+
+  if (!editable && value.length === 0) return <></>;
   return (
     <FormCell
       iconComponent={<FilterIconIo color={CV_GRAY} size={'1.25rem'} />}

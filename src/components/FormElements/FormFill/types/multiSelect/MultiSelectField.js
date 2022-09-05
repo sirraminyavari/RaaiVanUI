@@ -41,6 +41,7 @@ const MultiSelectField = ({
       : [];
   const editable = useContext(EditableContext);
 
+  if (!editable && value.length === 0) return <></>;
   return (
     <FormCell
       iconComponent={<CheckBoxIconIo color={CV_GRAY} size={'1.25rem'} />}

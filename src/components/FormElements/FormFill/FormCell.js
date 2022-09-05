@@ -58,7 +58,7 @@ export default FormCell;
 const Container = styled.div`
   display: flex;
   flex-direction: ${({ wrap }) => (wrap ? 'column' : 'row')};
-  align-items: baseline;
+  align-items: flex-start;
   margin-block: 1rem;
 `;
 const CellName = styled.div`

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import FormCell from '../../FormCell';
 import AtIcon from 'components/Icons/AtIcon';
 import { CV_GRAY } from 'constant/CssVariables';
 import useWindow from 'hooks/useWindowContext';
 import SubjectSelectInputField from 'components/FormElements/ElementTypes/subjectSelect/SubjectSelectInputField';
+import { EditableContext } from '../../FormFill';
 
 const SubjectField = ({
   value,
@@ -19,6 +20,7 @@ const SubjectField = ({
   const {
     GlobalUtilities: { to_json },
   } = useWindow();
+  const editable = useContext(EditableContext);
   const [editMode, setEditMode] = useState(false);
 
   const onSave = () => {
@@ -28,10 +30,11 @@ const SubjectField = ({
 
   const parseDecodeInfo = to_json(decodeInfo);
 
+  if (!editable && value.length === 0) return <></>;
   return (
     <>
       <FormCell
-        editMode={editMode}
+        editMode={editable && editMode}
         editModeVisible={true}
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}

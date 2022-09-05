@@ -75,6 +75,8 @@ const TextField = ({
       }
     }
   };
+
+  if (!editable && !value) return <></>;
   return (
     <FormCell
       iconComponent={

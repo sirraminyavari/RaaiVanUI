@@ -135,6 +135,7 @@ const EditContributersModal = ({
       stick
       style={{ padding: 0 }}
       show={isVisible}
+      preventParentScroll
     >
       <Top className="rv-border-radius-half">
         <Header>{RVDic.EditN.replace('[n]', RVDic.MainAuthors)}</Header>
