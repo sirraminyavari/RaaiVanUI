@@ -116,6 +116,7 @@ const ItemProducerHandler = ({
     let tempItems = [...items];
     tempItems[index].id = event.target.value;
     tempItems[index].value = event.target.value;
+    console.log('tempItems', tempItems);
     setItems(tempItems);
   };
   /**

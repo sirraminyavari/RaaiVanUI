@@ -9,7 +9,6 @@ import CheckboxType from './types/checkbox/CheckboxType';
 import NumericType from './types/numeric/NumericType';
 import UserType from './types/user/UserType';
 import NodeType from './types/node/NodeType';
-import FileType from './types/file/FileType';
 import BinaryType from './types/binary/BinaryType';
 import FormType from './types/form/FormType';
 import MultiLevelType from './types/multiLevel/MultiLevelType';
@@ -132,7 +131,7 @@ FormFilter.Numeric = NumericType;
 FormFilter.User = UserType;
 FormFilter.Node = NodeType;
 FormFilter.Binary = BinaryType;
-FormFilter.File = FileType;
+FormFilter.File = TextType;
 FormFilter.Form = FormType;
 FormFilter.MultiLevel = MultiLevelType;
 
@@ -145,6 +144,6 @@ FormFilter.propTypes = {
   containerStyles: PropTypes.object,
 };
 
-FormFilter.displayName = 'FilterFormElements';
+FormFilter.displayName = 'FormFilter';
 
 export default FormFilter;
