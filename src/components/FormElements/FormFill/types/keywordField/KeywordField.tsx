@@ -37,6 +37,7 @@ function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!Keywords.Editable && keywords.length === 0) return <></>;
   return (
     <>
       {/*@ts-expect-error */}
@@ -97,6 +98,7 @@ function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
     </>
   );
 }
+KeywordField.displayName = 'KeywordField';
 
 export default KeywordField;
 

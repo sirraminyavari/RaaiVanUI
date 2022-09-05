@@ -28,6 +28,7 @@ const BinaryField = ({
   const yes = decodeBase64(Yes);
   const no = decodeBase64(No);
 
+  if (!editable && !value) return <></>;
   return (
     <FormCell
       iconComponent={<ToggleIcon color={CV_GRAY} size={'1.25rem'} />}

@@ -5,11 +5,13 @@ import { toJSON } from 'helpers/helpers';
 import Table from './Table';
 import useWindow from 'hooks/useWindowContext';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { EditableContext } from '../../FormFill';
 
 const FormField = (props) => {
   const {
     tableColumns,
-    tableData,
+    tableData = [],
     decodeInfo,
     decodeTitle,
     ElementID,
@@ -21,6 +23,7 @@ const FormField = (props) => {
   } = props;
   const { FormID } = toJSON(decodeInfo);
   const { RVDic } = useWindow();
+  const editable = useContext(EditableContext);
 
   const renderTable = () => {
     return (
@@ -45,6 +48,7 @@ const FormField = (props) => {
     );
   };
 
+  if (!editable && tableData?.length === 0) return <></>;
   return (
     <FormCell
       iconComponent={<TableIcon size={'1.22rem'} color={CV_GRAY} />}

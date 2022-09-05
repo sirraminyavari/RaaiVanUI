@@ -170,7 +170,7 @@ const UserGroupSelect: FC<IUserGroupSelect> = (props) => {
     >
       <Styles.Container>
         {/* @ts-expect-error */}
-        <Sticker fit show={isOpen} align="top">
+        <Sticker fit show={isOpen} align="auto">
           <Styles.ToggleButton onClick={open}>
             {'انتخاب اعضا'}
           </Styles.ToggleButton>

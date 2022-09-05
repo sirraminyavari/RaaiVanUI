@@ -1,10 +1,11 @@
 import UserIconIo from 'components/Icons/UserIconIo';
 import { CV_GRAY } from 'constant/CssVariables';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import FormCell from '../../FormCell';
 import UserSelectInputField from 'components/FormElements/ElementTypes/userSelect/UserSelectInputField';
 import useWindow from 'hooks/useWindowContext';
+import { EditableContext } from '../../FormFill';
 
 const UserSelect = ({
   value,
@@ -19,6 +20,7 @@ const UserSelect = ({
   const {
     GlobalUtilities: { to_json },
   } = useWindow();
+  const editable = useContext(EditableContext);
 
   const [editMode, setEditMode] = useState(false);
 
@@ -29,10 +31,11 @@ const UserSelect = ({
     setEditMode(!editMode);
   };
 
+  if (!editable && value.length === 0) return <></>;
   return (
     <Container>
       <FormCell
-        editMode={editMode}
+        editMode={editable && editMode}
         editModeVisible={true}
         onEdit={() => setEditMode(!editMode)}
         onSave={onSave}

@@ -24,6 +24,8 @@ const DateField = ({
   const editable = useContext(EditableContext);
   const [isFocused, setIsFocused] = useState(false);
   const { RVDic, RV_RTL } = useWindow();
+
+  if (!editable && !value) return <></>;
   return (
     <FormCell
       iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}

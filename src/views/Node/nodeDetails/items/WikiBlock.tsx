@@ -89,12 +89,14 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
     // console.log(result, "blocks 'save blocks'");
   };
 
+  //@ts-expect-error
+  if (!editable && !editorState?.getCurrentContent().hasText()) return <></>;
   return (
     <>
       <OnClickAway
         style={{}}
         onAway={() => setIsFocused(false)}
-        onDoubleClick={() => {
+        onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
         }}

@@ -20,7 +20,7 @@ const FileField = ({
   onAnyFieldChanged,
   elementId,
   type,
-  Files,
+  Files = [],
   ...rest
 }) => {
   const { RVDic } = useWindow();
@@ -135,6 +135,7 @@ const FileField = ({
     // });
   };
 
+  if (!editable && Files?.length === 0) return <></>;
   return (
     <FormCell
       iconComponent={<FileFormatIcon size={'1.25rem'} color={CV_GRAY} />}
