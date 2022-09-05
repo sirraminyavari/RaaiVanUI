@@ -35,6 +35,7 @@ export type ITopBar = {
   sideColumn?: boolean;
   hierarchy?: any;
   newNode?: boolean;
+  contribution?: boolean;
 };
 
 const TopBar = ({
@@ -43,6 +44,7 @@ const TopBar = ({
   sideColumn,
   hierarchy,
   newNode,
+  contribution,
 }: ITopBar) => {
   const {
     actions: { toggleSidebar },
@@ -204,18 +206,20 @@ const TopBar = ({
                   />
                 </Styles.NodeTopBarShadowButton>
               )}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  marginInlineStart: '2rem',
-                }}
-              >
-                <Creators
-                  creatorsList={nodeDetails?.Contributors?.Value || []}
-                  nodeDetails={nodeDetails}
-                />
-              </div>
+              {contribution && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginInlineStart: '2rem',
+                  }}
+                >
+                  <Creators
+                    creatorsList={nodeDetails?.Contributors?.Value || []}
+                    nodeDetails={nodeDetails}
+                  />
+                </div>
+              )}
             </div>
           </Styles.NodeTopBarBottomRow>
         </Styles.NodeTopBarContainer>

@@ -28,6 +28,7 @@ const Collector = ({
   hierarchy,
   InstanceID,
   newNode = false,
+  contribution,
   ...props
 }) => {
   const [sideColumn, setSideColumn] = useState(false);
@@ -76,6 +77,7 @@ const Collector = ({
             sideColumn={sideColumn}
             nodeDetails={nodeDetails}
             hierarchy={hierarchy}
+            contribution={contribution}
           />
         </TopFilter>
         <div

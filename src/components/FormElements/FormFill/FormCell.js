@@ -34,6 +34,7 @@ const FormCell = ({
             style={{
               display: 'flex',
               alignItems: 'center',
+              alignSelf: 'flex-start',
               justifyContent: 'center',
               fontSize: '1.25rem',
             }}

@@ -51,7 +51,7 @@ function BlockEditorWrapper({
       {readOnly && (
         <Heading
           type="H5"
-          style={{ paddingInline: '1rem', textAlign: 'center' }}
+          style={{ paddingInline: 0, textAlign: textarea ? 'start' : 'center' }}
         >
           {showHint && RVDicClickToEdit}
         </Heading>

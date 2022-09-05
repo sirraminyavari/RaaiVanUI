@@ -15,6 +15,7 @@ const NodeDetails = (props) => {
   const { id: NodeID } = useParams();
   const [nodeDetails, setNodeDetails] = useState(null);
   const [FormInstanceID, setFormInstanceID] = useState();
+  const [isContributionEnabled, setIsContributionEnabled] = useState(false);
 
   useLayoutEffect(() => {
     (async () => {
@@ -24,8 +25,15 @@ const NodeDetails = (props) => {
       const { InstanceID } = await initializeOwnerFormInstance({
         OwnerID: NodeID,
       });
-      console.log({ nodeInstance });
       setFormInstanceID(InstanceID);
+
+      //decide whether to show contribution component or not
+      if ('EnableContribution' in (nodeDetails?.Service || {}))
+        setIsContributionEnabled(nodeDetails?.Service?.EnableContribution);
+      else if ('EnableContribution' in (nodeDetails || {}))
+        setIsContributionEnabled(nodeDetails?.EnableContribution);
+      else if (nodeInstance?.Contributors?.Value.length)
+        setIsContributionEnabled(true);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -37,6 +45,7 @@ const NodeDetails = (props) => {
           nodeId={NodeID}
           InstanceID={FormInstanceID}
           nodeDetails={nodeDetails}
+          contribution={isContributionEnabled}
           hierarchy={route?.Hierarchy || []}
           {...props}
         />
