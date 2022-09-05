@@ -2,11 +2,13 @@ import { useMemo } from 'react';
 
 import {
   plugins as _plugins,
-  defaultTheme,
+  // defaultTheme,
 } from '@sirraminyavari/rv-block-editor';
+import 'prismjs/themes/prism-tomorrow.min.css';
 import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
 
 import { suggestTags } from './API';
+import * as styles from './blockEditorCodeBlockTheme.module.css';
 import { textColors, highlightColors } from './data';
 
 const Plugins = () =>
@@ -15,11 +17,11 @@ const Plugins = () =>
       _plugins.createBasicInlineStylesPlugin(),
       _plugins.createParagraphPlugin(),
       _plugins.createHeadingsPlugin(),
-      _plugins.createListsPlugin({ styles: defaultTheme }),
-      _plugins.createCheckableListPlugin({ styles: defaultTheme }),
+      _plugins.createListsPlugin({ styles: styles }),
+      _plugins.createCheckableListPlugin({ styles: styles }),
       _plugins.createAccordionPlugin(),
       _plugins.createQuotePlugin(),
-      _plugins.createCodeBlockPlugin({ styles: defaultTheme }),
+      _plugins.createCodeBlockPlugin({ styles: styles }),
       _plugins.createSoftNewlinePlugin(),
       _plugins.createLinksPlugin(),
       _plugins.createTextAnnotationsPlugin({ textColors, highlightColors }),

@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import { convertToRaw } from 'draft-js';
-import { BlockEditor, defaultTheme } from '@sirraminyavari/rv-block-editor';
+import { BlockEditor } from '@sirraminyavari/rv-block-editor';
 import useAutoSave from './useAutoSave';
 import { dict } from './data';
 import Plugins from './plugins';
 import useWindow from 'hooks/useWindowContext';
 import styled from 'styled-components';
 import Heading from 'components/Heading/Heading';
+import * as styles from './blockEditorCodeBlockTheme.module.css';
 
 //TODO BlockEditorWrapper component needs review and refactor !!!
 
@@ -65,7 +66,8 @@ function BlockEditorWrapper({
         lang={RV_RTL ? 'fa' : 'en'}
         dir={RV_Direction}
         plugins={initializePluginsInstance}
-        styles={defaultTheme}
+        //@ts-expect-error
+        styles={styles}
         portalNode={
           document.getElementById('block-editor-portal') as HTMLElement
         }
