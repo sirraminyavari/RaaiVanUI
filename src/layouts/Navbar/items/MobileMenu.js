@@ -34,13 +34,16 @@ const NavMenus = () => {
 
   return (
     <PopupMenu
-      arrowClass="no-arrow"
-      menuStyle={`border: 0; margin: 0.8rem 0.2rem;`}
+      arrowStyle={{ display: 'none' }}
+      menuStyle={{ border: 0, margin: '0.8rem 0.2rem', padding: 0 }}
       trigger="click"
+      align="bottom"
+      leftOffset={-100}
     >
       <div>
         <MenuIcon size={30} className={C_WHITE} style={{ cursor: 'pointer' }} />
       </div>
+
       <Styled.MenuOptionsWrapper>
         {flattenedButtons?.map((btn) => {
           const { badge, linkTo, title, icon, index } = btn;

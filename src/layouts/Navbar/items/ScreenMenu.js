@@ -45,7 +45,11 @@ const WideScreenMenu = () => {
               <PopupMenu
                 key={popupMenuLeftOffset}
                 arrowStyle="display: none;"
-                menuStyle="border: 0; background-color: transparent;"
+                menuStyle={{
+                  border: 0,
+                  backgroundColor: 'transparent',
+                  padding: 0,
+                }}
                 trigger={actions.length ? 'hover' : 'click'}
                 align="bottom"
                 leftOffset={popupMenuLeftOffset}
