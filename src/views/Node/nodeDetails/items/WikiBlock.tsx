@@ -28,24 +28,17 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
           convertFromRaw(
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
-              //@ts-expect-error
-              getMentionLink: async (search) => {
-                console.log({ search });
-                const rawMentions = await suggestTags({
-                  //@ts-expect-error
-                  text: search,
-                });
-                const mentions = rawMentions.map((suggestTag) => ({
-                  ...suggestTag,
-                  id: suggestTag.ItemID,
-                  name: suggestTag.Name,
-                  avatar: suggestTag.ImageURL,
-                  link:
-                    suggestTag.Type === 'User'
-                      ? getProfilePageUrl(suggestTag.ItemID)
-                      : getNodePageUrl(suggestTag.ItemID),
-                }));
-                return mentions;
+              getMentionLink: (search) => {
+                switch (search.type) {
+                  case 'User':
+                    return getProfilePageUrl(search.id);
+                  case 'Node':
+                    return getNodePageUrl(search.id);
+                  case 'File':
+                    return `/download/${search.id}`;
+                  default:
+                    return '/';
+                }
               },
             })
           )

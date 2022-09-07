@@ -1,7 +1,7 @@
 /**
  * Renders a list of navbar buttons for non-mobile screens.
  */
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import * as Styled from 'layouts/Navbar/Navbar.styles';
 import MenuItem from './MenuItem';
 import NavButtonsList from './buttonsList';
@@ -9,11 +9,20 @@ import PopupMenu from 'components/PopupMenu/PopupMenu';
 import useWindow from 'hooks/useWindowContext';
 import NavButtonMenu from './NavButtonMenu';
 import NotificationsMenu from './NotificationsMenu';
+import { useSelector } from 'react-redux';
 // import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 const WideScreenMenu = () => {
+  const { hasNavSide, isSidebarOpen } = useSelector((state) => state.theme);
   const { RVGlobal } = useWindow();
   const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
+
+  const popupMenuLeftOffset = useMemo(async () => {
+    await new Promise((resolve) => setTimeout(() => resolve(), 500));
+    if (!hasNavSide) return 10;
+    if (isSidebarOpen) return 80;
+    return 1;
+  }, [hasNavSide, isSidebarOpen]);
 
   return (
     <Styled.WideScreenMenu>
@@ -34,10 +43,16 @@ const WideScreenMenu = () => {
           <Fragment key={index}>
             {actions ? (
               <PopupMenu
+                key={popupMenuLeftOffset}
                 arrowStyle="display: none;"
-                menuStyle="border: 0; background-color: transparent;"
+                menuStyle={{
+                  border: 0,
+                  backgroundColor: 'transparent',
+                  padding: 0,
+                }}
                 trigger={actions.length ? 'hover' : 'click'}
                 align="bottom"
+                leftOffset={popupMenuLeftOffset}
               >
                 <div>
                   <MenuItem
