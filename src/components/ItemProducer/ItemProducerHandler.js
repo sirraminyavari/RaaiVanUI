@@ -116,6 +116,7 @@ const ItemProducerHandler = ({
     let tempItems = [...items];
     tempItems[index].id = event.target.value;
     tempItems[index].value = event.target.value;
+    console.log('tempItems', tempItems);
     setItems(tempItems);
   };
   /**
@@ -216,7 +217,7 @@ const ItemProducerHandler = ({
                         }
                         ref={provided.innerRef}
                       >
-                        {isDragDisabled && <DragIcon color={'grey'} />}
+                        {!isDragDisabled && <DragIcon color={'grey'} />}
                         <Container>
                           {type === 'text' ? (
                             <Input

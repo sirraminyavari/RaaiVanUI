@@ -1,5 +1,7 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Button from 'components/Buttons/Button';
+import CloseButton from 'components/Buttons/CloseButton';
+import Heading from 'components/Heading/Heading';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import Modal from 'components/Modal/Modal';
 // import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
@@ -133,12 +135,11 @@ const EditContributersModal = ({
       stick
       style={{ padding: 0 }}
       show={isVisible}
+      preventParentScroll
     >
       <Top className="rv-border-radius-half">
-        <Header type="h2">
-          {RVDic.EditN.replace('[n]', RVDic.MainAuthors)}
-        </Header>
-        <Close onClick={onClose} />
+        <Header>{RVDic.EditN.replace('[n]', RVDic.MainAuthors)}</Header>
+        <CloseButton onClick={onClose} />
       </Top>
       <Maintainer className="rv-border-radius-half">
         <Main>
@@ -181,7 +182,7 @@ const EditContributersModal = ({
 
             <Button
               onClick={onSave}
-              style={{ width: '6.5rem', height: '3rem' }}
+              style={{ width: '6.5rem', height: '2.7rem' }}
               type={'primary'}
               disable={changeOccured()}
             >
@@ -190,7 +191,7 @@ const EditContributersModal = ({
           </BottomMain>
           <Button
             onClick={onClose}
-            style={{ width: '6.5rem', height: '3rem' }}
+            style={{ width: '6.5rem', height: '2.7rem' }}
             type={'negative-o'}
           >
             {RVDic.Return}
@@ -216,7 +217,7 @@ const Title = styled.div`
   color: ${CV_DISTANT};
   /* padding: 0 2rem 0 2rem; */
 `;
-const Header = styled.div`
+const Header = styled(Heading)`
   display: flex;
   color: ${TCV_DEFAULT};
   padding: 0 2rem 0 2rem;
@@ -224,6 +225,7 @@ const Header = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem !important;
 `;
 
 const Top = styled.div`
@@ -261,10 +263,4 @@ const Main = styled.div`
   background-color: ${CV_WHITE};
   flex-grow: 1;
   flex-direction: column;
-`;
-const Close = styled(CloseIcon)`
-  color: ${CV_DISTANT};
-  :hover {
-    color: ${CV_RED};
-  }
 `;

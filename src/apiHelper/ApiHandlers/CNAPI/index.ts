@@ -2,7 +2,12 @@ import { API_Provider, decodeBase64, encodeBase64 } from 'helpers/helpers';
 import { CN_API } from 'constant/apiConstants';
 import { apiCallWrapper } from '../apiCallHelpers';
 import * as UserDecoders from 'apiHelper/ApiHandlers/UsersAPI/decoders';
-import { IGetChildNodesRequest, IGetNodesRequest } from './types';
+import {
+  IGetChildNodesRequest,
+  IGetNodeResponse,
+  IGetNodesRequest,
+  IRegisterNewNodeResponse,
+} from './types';
 
 /**
  * @description fetches NodeTypes based on provided parameters and filters
@@ -298,7 +303,7 @@ export const setAvatar = ({
 };
 
 //TODO needs review to complete api return types
-export interface IGetAllFieldsOfActivity {
+export interface IGetAllFieldsOfActivityResponse {
   Items: {
     NodeID: string;
     Name: string;
@@ -310,7 +315,7 @@ export interface IGetAllFieldsOfActivity {
  * @description fetches all fields of activity
  */
 export const getAllFieldsOfActivity = () => {
-  return apiCallWrapper<IGetAllFieldsOfActivity>(
+  return apiCallWrapper<IGetAllFieldsOfActivityResponse>(
     API_Provider(CN_API, 'GetAllFieldsOfActivity'),
     {}
   );
@@ -332,4 +337,44 @@ export const generateAdditionalID = ({
     NodeTypeID,
     AdditionalIDPattern,
   });
+};
+
+/**
+ * @description fetches Node instance item
+ */
+export const getNode = ({ NodeID }: { NodeID: string }) => {
+  return apiCallWrapper<IGetNodeResponse>(API_Provider(CN_API, 'GetNode'), {
+    NodeID,
+  });
+};
+
+/**
+ * @description create a Node item from parent instance
+ */
+export const registerNewNode = (options: {
+  NodeTypeID?: string;
+  Name: string;
+  Tags?: string[];
+  Description: string;
+  Contributors?: unknown;
+  OwnerID?: string;
+  FormInstanceID?: string;
+  WorkFlowID?: string;
+  CreationDate?: string;
+  ParentNodeID: string;
+  PreviousVersionID?: string;
+  DocumentTreeNodeID?: string;
+  AdminAreaID?: string;
+  Logo?: string | null;
+  GetExtendInfo?: boolean;
+  GetWorkFlowInfo?: boolean;
+}) => {
+  return apiCallWrapper<IRegisterNewNodeResponse>(
+    API_Provider(CN_API, 'RegisterNewNode'),
+    {
+      ...options,
+      Name: encodeBase64(options.Name),
+      Tags: encodeBase64(options.Tags?.join('|')),
+    }
+  );
 };

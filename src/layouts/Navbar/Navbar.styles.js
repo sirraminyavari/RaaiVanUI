@@ -255,7 +255,7 @@ export const NotificationsMenuContainer = styled.div.attrs({
   height: auto;
   min-height: 3rem;
   padding-bottom: 0;
-  margin: -0.7rem 0;
+  margin: 0;
   overflow: hidden;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
 `;
@@ -400,7 +400,7 @@ export const MenuOptionsWrapper = styled.div.attrs({
   flex-wrap: wrap;
   align-items: center;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  margin: -10px;
+  // margin: 10px;
 `;
 
 export const NavMenuOption = styled.div.attrs({
@@ -431,9 +431,8 @@ export const AvatarMenuContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 14rem;
-  margin: 0.5rem;
-  margin-inline-start: 1rem;
-  margin-inline-end: 0;
+  margin-block: 0.5rem;
+  margin-inline: 1rem;
 `;
 
 export const AvatarMenuItem = styled.div.attrs({

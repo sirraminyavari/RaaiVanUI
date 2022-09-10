@@ -1379,9 +1379,10 @@ export const getOwnerFormInstances = (formId, ownerId) => {
  * @description Create form instance.
  * @param {String} formId -The id of the form.
  * @param {String} ownerId -The id of the form owner.
+ * @param {Boolean} IsTemporary - Is form instance Temporary ?
  * @returns Promise.
  */
-export const createFormInstance = (formId, ownerId) => {
+export const createFormInstance = (formId, ownerId, IsTemporary) => {
   const createFormInstanceAPI = API_Provider(FG_API, CREATE_FORM_INSTANCE);
 
   return new Promise((resolve, reject) => {
@@ -1390,6 +1391,7 @@ export const createFormInstance = (formId, ownerId) => {
         {
           FormID: formId,
           OwnerID: ownerId,
+          IsTemporary,
         },
         (response) => {
           resolve(response);

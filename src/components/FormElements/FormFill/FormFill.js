@@ -37,8 +37,8 @@ const FormFill = ({ data, editable, ...props }) => {
         };
       }),
     });
-  }, []);
-  // console.log(editable, 'editable editable editable');
+  }, [data]);
+
   const onAnyFieldChanged = async (
     elementId,
     event,
@@ -131,6 +131,9 @@ const FormFill = ({ data, editable, ...props }) => {
           TableColumns,
           TableContent,
           GuidItems,
+          InstanceID,
+          RefElementID,
+          SequenceNumber,
         } = item || {};
         const decodeInfo = decodeBase64(Info);
         const decodeTitle = decodeBase64(Title);
@@ -299,9 +302,12 @@ const FormFill = ({ data, editable, ...props }) => {
                 decodeInfo={decodeInfo}
                 decodeTitle={decodeTitle}
                 type={Type}
-                elementId={ElementID}
+                ElementID={ElementID}
                 tableColumns={TableColumns}
                 tableData={TableContent}
+                InstanceID={InstanceID}
+                RefElementID={RefElementID}
+                SequenceNumber={SequenceNumber}
               />
             );
 
@@ -318,6 +324,8 @@ const FormFill = ({ data, editable, ...props }) => {
     </EditableContext.Provider>
   );
 };
+
+FormFill.displayName = 'FormFill';
 
 export default FormFill;
 

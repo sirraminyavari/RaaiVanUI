@@ -5,10 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import Checkbox from 'components/Inputs/checkbox/Checkbox';
-import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
-import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
+import SelectInputField from 'components/FormElements/ElementTypes/Select/SelectInputField';
 
 /**
  * @typedef PropType
@@ -38,17 +36,17 @@ const CheckboxType = (props) => {
   //! Checkbox options.
   const options = (Options || []).map((option) => ({
     value: decodeBase64(option),
-    title: decodeBase64(option),
+    label: decodeBase64(option),
     group: 'checkbox-filter',
   }));
 
   //! Fires on checkbox value change.
-  const handleOnItemSelect = useCallback((item) => {
-    if (!item?.isChecked) {
-      setItems((oldItems) => oldItems.filter((c) => c !== item?.value));
-    } else {
-      setItems((oldItems) => [...oldItems, item?.value]);
-    }
+  const handleOnItemSelect = useCallback((items) => {
+    setItems(
+      items.map((item) => {
+        return item.value;
+      })
+    );
   }, []);
 
   //! Fires on 'Exact' toggle change.
@@ -94,15 +92,14 @@ const CheckboxType = (props) => {
   return (
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      <Checkbox
+
+      <SelectInputField
         options={options}
-        onSelect={handleOnItemSelect}
-        selecteds={value?.TextItems}
+        isEditable
+        isFocused
+        onChange={handleOnItemSelect}
+        isMulti
       />
-      <Styled.ExactOrFiltersWrapper>
-        <OrFilter isChecked={or} onToggle={handleOrFilter} />
-        <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
-      </Styled.ExactOrFiltersWrapper>
     </Styled.FilterContainer>
   );
 };

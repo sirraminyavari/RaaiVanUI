@@ -6,11 +6,9 @@ import PropTypes from 'prop-types';
 import TextType from './types/text/TextType';
 import DateType from './types/date/DateType';
 import CheckboxType from './types/checkbox/CheckboxType';
-import SelectType from './types/select/SelectType';
 import NumericType from './types/numeric/NumericType';
 import UserType from './types/user/UserType';
 import NodeType from './types/node/NodeType';
-import FileType from './types/file/FileType';
 import BinaryType from './types/binary/BinaryType';
 import FormType from './types/form/FormType';
 import MultiLevelType from './types/multiLevel/MultiLevelType';
@@ -37,6 +35,8 @@ import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
  * @component
  * @param {PropType} props -Props that are passed to component.
  */
+
+//TODO: Update RVDic object dictionary
 const FormFilter = (props) => {
   const {
     filters,
@@ -67,7 +67,8 @@ const FormFilter = (props) => {
 
   //! Close form filter.
   const closeFormFilter = () => {
-    onCloseFilter();
+    onCloseFilter && onCloseFilter();
+    handleOnFilterClick();
   };
 
   return (
@@ -94,20 +95,18 @@ const FormFilter = (props) => {
             </Styled.FormFilterHeader>
           )}
           <ScrollBarProvider style={{ padding: '1.5rem', width: '100%' }}>
-            {/* <Styled.FiltersWrapper> */}
             {filters.map((filter, key) => {
+              if (!FormFilter[filter.Type]) return null;
+              const FormFilterComponent = FormFilter[filter.Type];
               return (
-                <Fragment key={key}>
-                  {FormFilter[filter.Type] && //! Check if this type of filter component exists.
-                    FormFilter[filter.Type]({
-                      onChange: handleOnChange,
-                      data: filter,
-                      value: values[filter.ElementID],
-                    })}
-                </Fragment>
+                <FormFilterComponent
+                  key={key}
+                  onChange={handleOnChange}
+                  data={filter}
+                  value={values[filter.ElementID]}
+                />
               );
             })}
-            {/* </Styled.FiltersWrapper> */}
           </ScrollBarProvider>
           <Styled.FilterButtonWrapper>
             <FilterButton
@@ -127,12 +126,12 @@ const FormFilter = (props) => {
 FormFilter.Checkbox = CheckboxType;
 FormFilter.Text = TextType;
 FormFilter.Date = DateType;
-FormFilter.Select = SelectType;
+FormFilter.Select = CheckboxType;
 FormFilter.Numeric = NumericType;
 FormFilter.User = UserType;
 FormFilter.Node = NodeType;
 FormFilter.Binary = BinaryType;
-FormFilter.File = FileType;
+FormFilter.File = TextType;
 FormFilter.Form = FormType;
 FormFilter.MultiLevel = MultiLevelType;
 
@@ -145,6 +144,6 @@ FormFilter.propTypes = {
   containerStyles: PropTypes.object,
 };
 
-FormFilter.displayName = 'FilterFormElements';
+FormFilter.displayName = 'FormFilter';
 
 export default FormFilter;

@@ -4,10 +4,8 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Styled from '../types.styles';
-import { encodeBase64, decodeBase64 } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import ItemProducer from 'components/ItemProducer/ItemProducer';
-import ExactFilter from 'components/FormElements/FormFilter/items/ExactToggle';
-import OrFilter from 'components/FormElements/FormFilter/items/OrAndToggle';
 import useWindow from 'hooks/useWindowContext';
 
 /**
@@ -28,8 +26,6 @@ const TextType = (props) => {
   const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
   const [items, setItems] = useState(!!value ? value?.TextItems : []);
-  const [exact, setExact] = useState(!!value ? value?.Exact : false);
-  const [or, setOr] = useState(!!value ? value?.Or : true);
   const [resetValue, setResetValue] = useState(null);
   const { GlobalUtilities } = useWindow();
 
@@ -37,24 +33,14 @@ const TextType = (props) => {
     setItems(items);
   };
 
-  //! Fires on 'Exact' toggle change.
-  const handleExactFilter = (exactValue) => {
-    setExact(exactValue);
-  };
-
-  //! Fires on 'OrAnd' toggle change.
-  const handleOrFilter = (orValue) => {
-    setOr(orValue);
-  };
-
   useEffect(() => {
     const id = ElementID;
 
-    const textItems = items?.map((item) => encodeBase64(item?.value));
+    const textItems = items?.map((item) => item?.value);
     const JSONValue = {
       TextItems: textItems,
-      Exact: exact,
-      Or: or,
+      Exact: false,
+      Or: true,
     };
 
     //! Send back value to parent on add text.
@@ -63,14 +49,14 @@ const TextType = (props) => {
       value: {
         Type: 'text',
         TextItems: items,
-        Exact: exact,
-        Or: or,
+        Exact: false,
+        Or: true,
         Data: items,
         JSONValue: !items?.length ? null : JSONValue,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, exact, or]);
+  }, [items]);
 
   useEffect(() => {
     if (value === undefined) {
@@ -89,10 +75,6 @@ const TextType = (props) => {
         savedData={items}
         resetMe={resetValue}
       />
-      <Styled.ExactOrFiltersWrapper>
-        <OrFilter isChecked={or} onToggle={handleOrFilter} />
-        <ExactFilter onToggle={handleExactFilter} isChecked={exact} />
-      </Styled.ExactOrFiltersWrapper>
     </Styled.FilterContainer>
   );
 };

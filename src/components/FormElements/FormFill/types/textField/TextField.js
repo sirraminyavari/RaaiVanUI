@@ -18,7 +18,7 @@ import { EditableContext } from '../../FormFill';
 import useWindow from 'hooks/useWindowContext';
 import TextInputIcon from 'components/Icons/InputIcon/TextInputIcon';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
-import * as Styles from '../formField.styles';
+import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 
 const TextField = ({
   value,
@@ -75,6 +75,8 @@ const TextField = ({
       }
     }
   };
+
+  if (!editable && !value) return <></>;
   return (
     <FormCell
       iconComponent={
@@ -93,29 +95,31 @@ const TextField = ({
           setIsFocused(true);
         }}
       >
-        {isFocused && editable ? (
-          <AnimatedInput
-            type={number ? 'number' : type || parseDecodeInfo?.pattern}
-            placeholder={placeholder}
-            error={error}
-            disabled={!editable}
-            afterChangeListener={() => errorHandler(value)}
-            value={!!value ? value : ''}
-            onChange={(event) => onAnyFieldChanged(elementId, event, type)}
-            onBlur={(e) => {
-              // e.preventDefault();
-              // e.stopPropagation();
-              console.log('onBlur!!!', new Date());
-              save(elementId);
-              setIsFocused(false);
-            }}
-            style={{ width: number ? '7rem' : '100%', fontSize: '1rem' }}
-          />
-        ) : (
-          <Styles.TextFieldBlurContext muted={!value}>
-            {value ? value : RVDic.Select}
-          </Styles.TextFieldBlurContext>
-        )}
+        <Styles.SelectedFieldItemContainer>
+          {isFocused && editable ? (
+            <AnimatedInput
+              type={number ? 'number' : type || parseDecodeInfo?.pattern}
+              placeholder={placeholder}
+              error={error}
+              disabled={!editable}
+              afterChangeListener={() => errorHandler(value)}
+              value={!!value ? value : ''}
+              onChange={(event) => onAnyFieldChanged(elementId, event, type)}
+              onBlur={(e) => {
+                // e.preventDefault();
+                // e.stopPropagation();
+                console.log('onBlur!!!', new Date());
+                save(elementId);
+                setIsFocused(false);
+              }}
+              style={{ width: number ? '7rem' : '100%', fontSize: '1rem' }}
+            />
+          ) : (
+            <Styles.SelectedFieldItem muted={!value}>
+              {value ? value : editable && RVDic.Select}
+            </Styles.SelectedFieldItem>
+          )}
+        </Styles.SelectedFieldItemContainer>
       </OnClickAway>
     </FormCell>
   );

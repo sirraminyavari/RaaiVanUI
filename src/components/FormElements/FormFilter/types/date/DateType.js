@@ -4,6 +4,7 @@ import DatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import * as Styled from '../types.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
+import Button from 'components/Buttons/Button';
 
 /**
  * @typedef PropType
@@ -20,9 +21,14 @@ import useWindow from 'hooks/useWindowContext';
  */
 const DateType = (props) => {
   const { onChange, data, value } = props;
-  const { RVDic, RV_Lang } = useWindow();
+  const { RVDic } = useWindow();
+
   const [from, setFrom] = useState(value?.DateFrom);
   const [to, setTo] = useState(value?.DateTo);
+  // if has value, filters node that is in the period of the selected date.
+  const [date, setDate] = useState(undefined);
+
+  const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
 
   const { ElementID, Title } = data || {}; //! Meta data to feed component.
 
@@ -38,7 +44,7 @@ const DateType = (props) => {
 
   useEffect(() => {
     const id = ElementID;
-    const JSONValue = from || to ? { DateFrom: from, DateTo: to } : null;
+    const JSONValue = from || to ? { DateFrom: from, DateTo: to } : undefined;
 
     //! Send back value to parent on select.
     onChange({
@@ -58,36 +64,41 @@ const DateType = (props) => {
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
       <Styled.DatePickerWrapper>
-        <Styled.DateSpanTitle>{RVDic?.From}</Styled.DateSpanTitle>
-        <Styled.DatePicker>
-          <DatePicker
-            size="small"
-            clearButton
-            onDateSelect={onDateFrom}
-            mode="input"
-            type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
-            label={RVDic?.DateSelect}
-            value={from}
-            shouldClear={!!from && value === undefined}
-            maximumDate={to ?? null}
-          />
-        </Styled.DatePicker>
-      </Styled.DatePickerWrapper>
-      <Styled.DatePickerWrapper>
-        <Styled.DateSpanTitle>{RVDic?.To}</Styled.DateSpanTitle>
-        <Styled.DatePicker>
-          <DatePicker
-            size="small"
-            clearButton
-            onDateSelect={onDateTo}
-            mode="input"
-            type={RV_Lang === 'fa' ? 'jalali' : '‫‪gregorian‬‬'}
-            label={RVDic?.DateSelect}
-            value={to}
-            shouldClear={!!to && value === undefined}
-            minimumDate={from ?? null}
-          />
-        </Styled.DatePicker>
+        <DatePicker
+          label={RVDic?.SelectDate}
+          mode="button"
+          range
+          headerTitle={RVDic?.DateSelect}
+          onChangeVisibility={setCalendarPickerClicked}
+          CustomButton={({ onClick }) => (
+            <Button
+              onClick={() => {
+                onClick();
+              }}
+              $isEnabled={date || calendarPickerClicked}
+              className={
+                calendarPickerClicked || date
+                  ? 'rv-border-distant rv-default'
+                  : 'rv-border-white rv-distant'
+              }
+            >
+              {value?.DateFrom || value?.DateTo ? (
+                <>
+                  {value?.DateFrom && `${RVDic?.From} ${value?.DateFrom}`}{' '}
+                  {value?.DateTo && `${RVDic?.To} ${value?.DateTo}`}
+                </>
+              ) : (
+                <>{RVDic?.DateSelect}</>
+              )}
+            </Button>
+          )}
+          onDateSelect={({ from, to }) => {
+            onDateFrom(from);
+            onDateTo(to);
+            setDate(`${from}${to}`);
+          }}
+          clearButton
+        />
       </Styled.DatePickerWrapper>
     </Styled.FilterContainer>
   );

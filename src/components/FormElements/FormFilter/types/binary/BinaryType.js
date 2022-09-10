@@ -1,12 +1,12 @@
 /**
  * Renders a binary filter.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from '../types.styles';
-import Radio from 'components/Inputs/radio/Radio';
 import useWindow from 'hooks/useWindowContext';
+import BinaryInputField from 'components/FormElements/ElementTypes/binary/BinaryInputField';
 
 /**
  * @typedef PropType
@@ -24,22 +24,12 @@ import useWindow from 'hooks/useWindowContext';
 const BinaryType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title, Info } = data; //! Meta data to feed component.
-  const [bitValue, setBitValue] = useState(!!value ? value?.Data : null);
+  const [bitValue, setBitValue] = useState(!!value ? value?.Data : undefined);
 
   const { GlobalUtilities } = useWindow();
 
   //! Binary titles.
   const { Yes, No } = GlobalUtilities.to_json(decodeBase64(Info));
-
-  //! Binary options.
-  const options = [
-    { value: 'yes', title: decodeBase64(Yes), group: 'binary-filter' },
-    { value: 'no', title: decodeBase64(No), group: 'binary-filter' },
-  ];
-
-  const handleOnBinarySelect = useCallback((bitValue) => {
-    setBitValue(bitValue);
-  }, []);
 
   useEffect(() => {
     const id = ElementID;
@@ -49,9 +39,9 @@ const BinaryType = (props) => {
       id,
       value: {
         Type: 'binary',
-        Bit: bitValue === null ? null : bitValue === 'yes',
+        Bit: bitValue === null ? null : bitValue,
         Data: bitValue,
-        JSONValue: bitValue === null ? null : { Bit: bitValue === 'yes' },
+        JSONValue: bitValue === null ? null : { Bit: bitValue },
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,10 +57,15 @@ const BinaryType = (props) => {
   return (
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      <Radio
-        options={options}
-        onSelect={handleOnBinarySelect}
-        selected={value?.Data}
+      <BinaryInputField
+        isEditable
+        isFocused
+        noLabel={decodeBase64(No)}
+        yesLabel={decodeBase64(Yes)}
+        value={bitValue}
+        onChange={({ value }) => {
+          setBitValue(value);
+        }}
       />
     </Styled.FilterContainer>
   );

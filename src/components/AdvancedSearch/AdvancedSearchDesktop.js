@@ -86,18 +86,25 @@ const AdvanceSearchDesktop = ({
       if (value[key].Type === 'form') {
         let formTemp = {};
         Object?.keys(value[key]?.JSONValue)?.map((miniKey, index) => {
-          formTemp = {
-            [miniKey]: value[key]?.JSONValue[miniKey]?.JSONValue,
-            ...formTemp,
-          };
+          if (value[key]?.JSONValue[miniKey]?.JSONValue)
+            formTemp = {
+              [miniKey]: value[key]?.JSONValue[miniKey]?.JSONValue,
+              ...formTemp,
+            };
           return null;
         });
-        temp = { [key]: formTemp, ...temp };
-        setFormFilters(temp);
+
+        if (Object.keys(formTemp).length) temp = { [key]: formTemp, ...temp };
+      } else if (value[key].Type === 'date') {
+        if (value[key]?.JSONValue) {
+          temp = { [key]: value[key]?.JSONValue, ...temp };
+        }
       } else {
-        temp = { [key]: value[key]?.JSONValue, ...temp };
-        setFormFilters(temp);
+        if (value[key]?.JSONValue) {
+          temp = { [key]: value[key]?.JSONValue, ...temp };
+        }
       }
+      setFormFilters(JSON.parse(JSON.stringify(temp)));
       return temp;
     });
   };
@@ -300,4 +307,6 @@ const AdvanceSearchDesktop = ({
     </Container>
   );
 };
+
+AdvanceSearchDesktop.displayName = 'AdvanceSearchDesktop';
 export default AdvanceSearchDesktop;

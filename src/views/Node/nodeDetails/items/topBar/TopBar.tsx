@@ -34,15 +34,17 @@ export type ITopBar = {
   onSideColumnClicked: (sideColumnStatus: boolean | undefined) => void;
   sideColumn?: boolean;
   hierarchy?: any;
+  newNode?: boolean;
+  contribution?: boolean;
 };
 
 const TopBar = ({
   nodeDetails,
-  // nodeType,
-  // onApplyNodeType = () => {},
   onSideColumnClicked,
   sideColumn,
   hierarchy,
+  newNode,
+  contribution,
 }: ITopBar) => {
   const {
     actions: { toggleSidebar },
@@ -73,14 +75,23 @@ const TopBar = ({
 
   const breadcrumbItems = [
     { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
+
     {
-      title: decodeBase64(NodeType?.Value[0]?.Name),
-      linkTo: `/classes/${NodeType?.Value[0]?.ID}`,
+      title: decodeBase64(
+        newNode ? nodeDetails?.Title : NodeType?.Value[0]?.Name
+      ),
+      linkTo: `/classes/${
+        newNode ? nodeDetails?.NodeID : NodeType?.Value[0]?.ID
+      }`,
     },
-    {
-      title: decodeBase64(Name?.Value),
-      linkTo: `/node/${nodeDetails?.NodeID}`,
-    },
+    ...(!newNode
+      ? [
+          {
+            title: decodeBase64(Name?.Value),
+            linkTo: `/node/${nodeDetails?.NodeID}`,
+          },
+        ]
+      : []),
     ...extendedHierarchy,
   ];
 
@@ -125,37 +136,39 @@ const TopBar = ({
               <Breadcrumb items={breadcrumbItems} />
             </Styles.NodeTopBarBreadcrumbWrapper>
 
-            <Styles.NodeTopBarCounterBookmarkContainer>
-              <Styles.NodeTopBarViewCount>
-                <Eye
-                  className="rv-default"
-                  color={CV_DISTANT}
-                  style={{ margin: '0 0.5rem 0 0.5rem' }}
-                />
-                {VisitsCount}
-              </Styles.NodeTopBarViewCount>
-              <Button
-                onClick={onBookmarkPressed}
-                style={{
-                  borderRadius: '10rem',
-                  height: '2rem',
-                  whiteSpace: 'nowrap',
-                }}
-                type={bookmarkStatus === 'liked' ? 'primary' : 'primary-o'}
-              >
-                {bookmarkStatus === 'liked' ? (
-                  <>
-                    <FilledBookmarkIcon className={'rv-default rv-white'} />
-                    {RVDic.Bookmarked}
-                  </>
-                ) : (
-                  <>
-                    <OutLineBookmarkIcon className={'rv-default'} />
-                    {RVDic.Bookmark}
-                  </>
-                )}
-              </Button>
-            </Styles.NodeTopBarCounterBookmarkContainer>
+            {!newNode && (
+              <Styles.NodeTopBarCounterBookmarkContainer>
+                <Styles.NodeTopBarViewCount>
+                  <Eye
+                    className="rv-default"
+                    color={CV_DISTANT}
+                    style={{ margin: '0 0.5rem 0 0.5rem' }}
+                  />
+                  {VisitsCount}
+                </Styles.NodeTopBarViewCount>
+                <Button
+                  onClick={onBookmarkPressed}
+                  style={{
+                    borderRadius: '10rem',
+                    height: '2rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                  type={bookmarkStatus === 'liked' ? 'primary' : 'primary-o'}
+                >
+                  {bookmarkStatus === 'liked' ? (
+                    <>
+                      <FilledBookmarkIcon className={'rv-default rv-white'} />
+                      {RVDic.Bookmarked}
+                    </>
+                  ) : (
+                    <>
+                      <OutLineBookmarkIcon className={'rv-default'} />
+                      {RVDic.Bookmark}
+                    </>
+                  )}
+                </Button>
+              </Styles.NodeTopBarCounterBookmarkContainer>
+            )}
           </Styles.NodeTopBarTopRow>
 
           <Styles.NodeTopBarBottomRow mobileView={isTabletOrMobile}>
@@ -167,43 +180,46 @@ const TopBar = ({
                 alignItems: 'center',
               }}
             >
-              <Styles.NodeTopBarShadowButton
-                onMouseEnter={() => setSideDetailsHover(true)}
-                onMouseLeave={() => setSideDetailsHover(false)}
-                onClick={onSideDetailsClick}
-                $isEnabled={sideColumn || sideDetailsHover}
-                className={
-                  sideColumn
-                    ? 'rv-border-distant rv-default'
-                    : sideDetailsHover
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }
-              >
-                <DocIcon
-                  size={'1.5rem'}
+              {!newNode && (
+                <Styles.NodeTopBarShadowButton
+                  onMouseEnter={() => setSideDetailsHover(true)}
+                  onMouseLeave={() => setSideDetailsHover(false)}
+                  onClick={onSideDetailsClick}
+                  $isEnabled={sideColumn || sideDetailsHover}
                   className={
                     sideColumn
-                      ? 'rv-default'
+                      ? 'rv-border-distant rv-default'
                       : sideDetailsHover
-                      ? 'rv-default'
-                      : 'rv-distant'
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
                   }
-                />
-              </Styles.NodeTopBarShadowButton>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  marginInlineStart: '2rem',
-                }}
-              >
-                <Creators
-                  creatorsList={nodeDetails?.Contributors?.Value}
-                  nodeDetails={nodeDetails}
-                />
-              </div>
+                >
+                  <DocIcon
+                    size={'1.5rem'}
+                    className={
+                      sideColumn
+                        ? 'rv-default'
+                        : sideDetailsHover
+                        ? 'rv-default'
+                        : 'rv-distant'
+                    }
+                  />
+                </Styles.NodeTopBarShadowButton>
+              )}
+              {contribution && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginInlineStart: '2rem',
+                  }}
+                >
+                  <Creators
+                    creatorsList={nodeDetails?.Contributors?.Value || []}
+                    nodeDetails={nodeDetails}
+                  />
+                </div>
+              )}
             </div>
           </Styles.NodeTopBarBottomRow>
         </Styles.NodeTopBarContainer>

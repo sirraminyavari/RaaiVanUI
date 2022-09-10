@@ -4,22 +4,23 @@ import useWindow from 'hooks/useWindowContext';
 import FormCell from '../../FormCell';
 import TagIcon from 'components/Icons/TagIcon/TagIcon';
 import { CV_GRAY, CV_WHITE } from 'constant/CssVariables';
-import APIHandler from 'apiHelper/APIHandler';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import styled from 'styled-components';
-
-const ModifyNodeTags = new APIHandler('CNAPI', 'ModifyNodeTags');
+import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 
 type Props = {
   Keywords: {
     Value: { label: string; value: string }[];
     Editable?: boolean;
   };
-  NodeID: string;
+  isEditable?: boolean;
+  onSaveKeywords: (keywords: Props['Keywords']['Value']) => void;
 };
 
-function KeywordField({ Keywords, NodeID }: Props) {
+function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
   const [keywords, setKeywords] = useState<Props['Keywords']['Value']>([]);
+  const [isFocused, setIsFocused] = useState(false);
   const { RVDic } = useWindow();
 
   useEffect(() => {
@@ -36,18 +37,7 @@ function KeywordField({ Keywords, NodeID }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSaveKeywords = () => {
-    const readyToSaveKeywords = keywords.map((x) => x.value).join('~');
-    ModifyNodeTags.fetch(
-      { NodeID: NodeID, Tags: encodeBase64(readyToSaveKeywords) },
-      (_res) => {
-        // alert('saved', {
-        //   Timeout: 1000,
-        // });
-      }
-    );
-  };
-
+  if (!Keywords.Editable && keywords.length === 0) return <></>;
   return (
     <>
       {/*@ts-expect-error */}
@@ -57,30 +47,58 @@ function KeywordField({ Keywords, NodeID }: Props) {
         style={{ display: 'flex', flexGrow: 1 }}
         iconComponent={<TagIcon size="1.25rem" color={CV_GRAY} />}
       >
-        <CellContainer>
-          <CreatableSelect
-            value={keywords}
-            isMulti
-            isDisabled={!Keywords?.Editable}
-            isClearable
-            placeholder={RVDic.Select}
-            onBlur={onSaveKeywords}
-            onChange={setKeywords}
-            styles={customStyles}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            components={{
-              Menu: () => null, // Remove menu
-              MenuList: () => null, // Remove menu list
-              DropdownIndicator: () => null, // Remove dropdown icon
-              IndicatorSeparator: () => null, // Remove separator
-            }}
-          />
-        </CellContainer>
+        <OnClickAway
+          style={{}}
+          onClick={() => {
+            if (isFocused) return;
+            setIsFocused(true);
+          }}
+        >
+          <Styles.SelectedFieldItemContainer>
+            {isFocused && isEditable ? (
+              <CellContainer>
+                <CreatableSelect
+                  value={keywords}
+                  isMulti
+                  isDisabled={!Keywords?.Editable}
+                  isClearable
+                  placeholder={RVDic.Select}
+                  onBlur={() => {
+                    onSaveKeywords(keywords);
+                    setIsFocused(false);
+                  }}
+                  onChange={setKeywords}
+                  styles={customStyles}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  components={{
+                    Menu: () => null, // Remove menu
+                    MenuList: () => null, // Remove menu list
+                    DropdownIndicator: () => null, // Remove dropdown icon
+                    IndicatorSeparator: () => null, // Remove separator
+                  }}
+                />
+              </CellContainer>
+            ) : keywords.length ? (
+              keywords.map((keyword, id) => {
+                return (
+                  <Styles.SelectedFieldItem key={id}>
+                    {keyword.label}
+                  </Styles.SelectedFieldItem>
+                );
+              })
+            ) : (
+              <Styles.SelectedFieldItem muted>
+                {Keywords?.Editable ? RVDic.Select : ''}
+              </Styles.SelectedFieldItem>
+            )}
+          </Styles.SelectedFieldItemContainer>
+        </OnClickAway>
       </FormCell>
     </>
   );
 }
+KeywordField.displayName = 'KeywordField';
 
 export default KeywordField;
 

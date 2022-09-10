@@ -301,7 +301,7 @@ export const validateFileUpload = (files, types) => {
  */
 export const engToPerDate = (date, format = 'YYYY/MM/DD') => {
   if (!date) return;
-  return moment(date, format).locale('fa').format(format);
+  return moment(date).locale('fa').format(format);
 };
 
 /**

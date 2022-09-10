@@ -34,6 +34,7 @@ const FormCell = ({
             style={{
               display: 'flex',
               alignItems: 'center',
+              alignSelf: 'flex-start',
               justifyContent: 'center',
               fontSize: '1.25rem',
             }}
@@ -58,8 +59,8 @@ export default FormCell;
 const Container = styled.div`
   display: flex;
   flex-direction: ${({ wrap }) => (wrap ? 'column' : 'row')};
-  align-items: center;
-  margin-block: 1.25rem;
+  align-items: flex-start;
+  margin-block: 1rem;
 `;
 const CellName = styled.div`
   display: flex;

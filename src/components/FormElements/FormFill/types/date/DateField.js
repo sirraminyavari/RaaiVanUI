@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import FormCell from '../../FormCell';
 import { EditableContext } from '../../FormFill';
+import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 
 //TODO change of implementation and  refactoring is immanent
 
@@ -23,6 +24,8 @@ const DateField = ({
   const editable = useContext(EditableContext);
   const [isFocused, setIsFocused] = useState(false);
   const { RVDic, RV_RTL } = useWindow();
+
+  if (!editable && !value) return <></>;
   return (
     <FormCell
       iconComponent={<IoCalendarOutline color={CV_GRAY} size={'1.25rem'} />}
@@ -37,46 +40,52 @@ const DateField = ({
           setIsFocused(true);
         }}
       >
-        {isFocused && editable ? (
-          <CustomDatePicker
-            label={RVDic?.SelectDate}
-            mode="button"
-            // type="jalali"
-            clearButton
-            closeOnDateSelect
-            // headerTitle="فیلتر تاریخ ایجاد"
-            CustomButton={({ onClick }) => (
-              <CalendarTriggerButton
-                disable={!editable}
-                onClick={editable && onClick}
-              >
-                {value
-                  ? `${moment
-                      .from(
-                        value,
-                        'en',
-                        RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY'
-                      )
-                      .locale(RV_RTL ? 'fa' : 'en')
-                      .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}`
-                  : RVDic.DateSelect}
-                <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
-              </CalendarTriggerButton>
-            )}
-            onDateSelect={(event) => {
-              onAnyFieldChanged(elementId, event, type, true);
-            }}
-          />
-        ) : value ? (
-          <CalendarBlurContext>
-            {moment
-              .from(value, 'en', RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY')
-              .locale(RV_RTL ? 'fa' : 'en')
-              .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}
-          </CalendarBlurContext>
-        ) : (
-          <CalendarBlurContext muted>{RVDic.DateSelect}</CalendarBlurContext>
-        )}
+        <Styles.SelectedFieldItemContainer>
+          {isFocused && editable ? (
+            <CustomDatePicker
+              label={RVDic?.SelectDate}
+              mode="button"
+              // type="jalali"
+              clearButton
+              closeOnDateSelect
+              // headerTitle="فیلتر تاریخ ایجاد"
+              CustomButton={({ onClick }) => (
+                <CalendarTriggerButton
+                  disable={!editable}
+                  onClick={editable && onClick}
+                >
+                  {value
+                    ? `${moment
+                        .from(
+                          value,
+                          'en',
+                          RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY'
+                        )
+                        .locale(RV_RTL ? 'fa' : 'en')
+                        .format(
+                          `dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`
+                        )}`
+                    : RVDic.DateSelect}
+                  <IoCalendarOutline color={TCV_DEFAULT} size={'1.25rem'} />
+                </CalendarTriggerButton>
+              )}
+              onDateSelect={(event) => {
+                onAnyFieldChanged(elementId, event, type, true);
+              }}
+            />
+          ) : value ? (
+            <Styles.SelectedFieldItem>
+              {moment
+                .from(value, 'en', RV_RTL ? 'jYYYY/jMM/jDD' : 'MM/DD/YYYY')
+                .locale(RV_RTL ? 'fa' : 'en')
+                .format(`dddd ${RV_RTL ? 'YYYY/MM/DD' : 'MM/DD/YYYY'}`)}
+            </Styles.SelectedFieldItem>
+          ) : (
+            <Styles.SelectedFieldItem muted>
+              {RVDic.DateSelect}
+            </Styles.SelectedFieldItem>
+          )}
+        </Styles.SelectedFieldItemContainer>
       </OnClickAway>
     </FormCell>
   );

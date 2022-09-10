@@ -27,13 +27,14 @@ export const ToggleButton = styled.button`
 ToggleButton.displayName = 'Button';
 
 export const DropDown = styled.div`
-  position: absolute;
-  top: -1.5rem;
-  right: 3.5rem;
+  // position: absolute;
+  // top: -1.5rem;
+  // right: 3.5rem;
   background-color: var(--rv-white-color);
   border-radius: 0.8rem;
   box-shadow: 1px 5px 20px #0000001f;
   height: 300px;
+  overflow-y: auto;
   width: 306px;
   z-index: 100;
 `;

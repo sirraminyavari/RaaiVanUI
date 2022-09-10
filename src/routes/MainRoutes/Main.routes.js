@@ -42,20 +42,25 @@ import {
   MONITORING_NAME,
   MONITORING_PATH,
   MONITORING_TEAMS_PATH,
-  MONITORING_TEAMS_NAME,
+  // MONITORING_TEAMS_NAME,
   TEMPLATES_SETTING_SINGLE_PATH,
   TEMPLATES_SETTING_SINGLE_NAME,
   DICTIONARY_PATH,
   DICTIONARY_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
-import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
+// import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
 
 const ErrorView = lazy(() =>
   import(/* webpackChunkName: "error-view"*/ 'views/Error/ErrorView')
 );
 const NewNode = lazy(() =>
-  import(/* webpackChunkName: "new-node-view"*/ 'views/NewNode/NewNode')
+  import(
+    /* webpackChunkName: "new-node-view"*/ 'views/Node/NodeCreate/NodeCreate'
+  )
+);
+const NewNodeOld = lazy(() =>
+  import(/* webpackChunkName: "new-node-old-view"*/ 'views/NewNode/NewNode')
 );
 
 const NodeView = lazy(() =>
@@ -170,6 +175,13 @@ const routes = [
     component: ChangePassword,
   },
   {
+    path: NEWNODE_PATH.replace('/:id', '/old/:id'),
+    name: NEWNODE_NAME,
+    exact: true,
+    hasNavSide: true,
+    component: NewNodeOld,
+  },
+  {
     path: NEWNODE_PATH,
     name: NEWNODE_NAME,
     exact: true,
@@ -179,7 +191,7 @@ const routes = [
   {
     path: NODE_PATH,
     name: NODE_NAME,
-    exact: true,
+    exact: false,
     hasNavSide: true,
     component: NodeView,
   },

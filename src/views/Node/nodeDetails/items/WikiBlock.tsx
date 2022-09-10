@@ -28,20 +28,17 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
           convertFromRaw(
             convertLegacyHtmlToEditorState(legacyContent, {
               colors: { textColors, highlightColors },
-              getMentionLink: async (search) => {
-                console.log({ search });
-                const rawMentions = await suggestTags({ text: search });
-                const mentions = rawMentions.map((suggestTag) => ({
-                  ...suggestTag,
-                  id: suggestTag.ItemID,
-                  name: suggestTag.Name,
-                  avatar: suggestTag.ImageURL,
-                  link:
-                    suggestTag.Type === 'User'
-                      ? getProfilePageUrl(suggestTag.ItemID)
-                      : getNodePageUrl(suggestTag.ItemID),
-                }));
-                return mentions;
+              getMentionLink: (search) => {
+                switch (search.type) {
+                  case 'User':
+                    return getProfilePageUrl(search.id);
+                  case 'Node':
+                    return getNodePageUrl(search.id);
+                  case 'File':
+                    return `/download/${search.id}`;
+                  default:
+                    return '/';
+                }
               },
             })
           )
@@ -85,18 +82,21 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
     // console.log(result, "blocks 'save blocks'");
   };
 
+  //@ts-expect-error
+  if (!editable && !editorState?.getCurrentContent().hasText()) return <></>;
   return (
     <>
       <OnClickAway
         style={{}}
         onAway={() => setIsFocused(false)}
-        onDoubleClick={() => {
+        onClick={() => {
           if (isFocused) return;
           setIsFocused(true);
         }}
       >
         {editorState && (
           <BlockEditor
+            showHint={editable}
             editorState={editorState}
             setEditorState={setEditorState}
             handleSaveBlocks={handleSaveBlocks}

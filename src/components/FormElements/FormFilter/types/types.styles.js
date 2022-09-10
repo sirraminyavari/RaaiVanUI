@@ -13,6 +13,7 @@ export const FilterTitle = styled.div.attrs({
   className: C_BLACK,
 })`
   font-size: 1rem;
+  margin-block-end: 1rem;
 `;
 
 export const FilterContainer = styled.div`
@@ -60,7 +61,7 @@ export const CheckboxOptionsLabel = styled.label`
 
 //! Date styles
 export const DatePickerWrapper = styled.div`
-  ${FLEX_RCB}
+  ${FLEX_RCC}
   margin: 1rem 0;
 `;
 

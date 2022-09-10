@@ -1,14 +1,13 @@
 /**
  * Renders a user filter.
- */
-import { useState, useEffect } from 'react';
+ */ import styled from 'styled-components';
+import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { decodeBase64, encodeBase64 } from 'helpers/helpers';
-import ItemProducer from 'components/ItemProducer/ItemProducer';
-import { API_Provider } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import * as Styled from '../types.styles';
 import useWindow from 'hooks/useWindowContext';
-import { GET_USERS, USERS_API } from 'constant/apiConstants';
+import UserSelectInputField from 'components/FormElements/ElementTypes/userSelect/UserSelectInputField';
+import { isArray } from 'lodash';
 
 /**
  * @typedef PropType
@@ -26,35 +25,40 @@ import { GET_USERS, USERS_API } from 'constant/apiConstants';
 const UserType = (props) => {
   const { onChange, data, value } = props;
   const { ElementID, Title } = data || {}; //! Meta data to feed component.
-  const getUsersAPI = API_Provider(USERS_API, GET_USERS);
 
   // const { MultiSelect } = JSON.parse(decodeBase64(Info));
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState();
   const [resetValue, setResetValue] = useState(null);
   const { GlobalUtilities } = useWindow();
 
-  //! Fetch users based on search text.
-  const fetchUsers = (searchText) => {
-    return new Promise((resolve, reject) => {
-      getUsersAPI.fetch(
-        {
-          SearchText: encodeBase64(searchText),
-          Count: 20,
-        },
-        (response) => {
-          const users = response?.Users?.map((user) => ({
-            id: user?.UserID,
-            value: decodeBase64(user?.FullName),
-          }));
-          resolve(users);
-        },
-        (error) => reject(error)
-      );
+  const handleSelectUsers = useCallback(
+    (selectedUser) => {
+      const isItemExists =
+        items && items.find((user) => user.id === selectedUser.id);
+      console.log({ isItemExists, selectedUser, items });
+      if (isItemExists) return;
+      setItems((prevItems) => {
+        if (isArray(prevItems)) return [...prevItems, selectedUser];
+        return [selectedUser];
+      });
+    },
+    [items]
+  );
+  const handleRemoveUsers = useCallback((selectedUser) => {
+    setItems((prevItems) => {
+      if (isArray(prevItems))
+        return [...prevItems.filter((user) => user.id !== selectedUser.id)];
+      return [selectedUser];
     });
-  };
+  }, []);
 
-  const handleSelectUsers = (users) => {
-    setItems(users);
+  const normalizeSelectedUsers = (users) => {
+    return users?.map((user) => ({
+      ID: user.id,
+      UserID: user.id,
+      Name: user.name,
+      IconURL: user.avatarUrl,
+    }));
   };
 
   useEffect(() => {
@@ -85,14 +89,16 @@ const UserType = (props) => {
   return (
     <Styled.FilterContainer>
       <Styled.FilterTitle>{decodeBase64(Title)}</Styled.FilterTitle>
-      <ItemProducer
-        type="autosuggest"
-        fetchItems={fetchUsers}
-        isDragDisabled={true}
-        onItems={handleSelectUsers}
-        style={{ width: '100%' }}
-        resetMe={resetValue}
-      />
+      <FilterUserComponentContainer>
+        <UserSelectInputField
+          value={normalizeSelectedUsers(value?.Data)}
+          isEditable
+          onChange={handleSelectUsers}
+          onRemove={handleRemoveUsers}
+          save={setItems}
+          isMulti
+        />
+      </FilterUserComponentContainer>
     </Styled.FilterContainer>
   );
 };
@@ -106,3 +112,9 @@ UserType.propTypes = {
 UserType.displayName = 'FilterUserComponent';
 
 export default UserType;
+
+const FilterUserComponentContainer = styled.div`
+  & > div {
+    justify-content: flex-end;
+  }
+`;
