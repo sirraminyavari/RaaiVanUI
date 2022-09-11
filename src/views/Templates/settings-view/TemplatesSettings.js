@@ -18,6 +18,7 @@ import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
 import { TEMPLATES_ARCHIVE_PATH } from 'constant/constants';
 import { useHistory } from 'react-router-dom';
+import { decodeBase64 } from 'helpers/helpers';
 
 export const TemplateListContext = createContext({});
 const TemplatesSettings = () => {
@@ -43,6 +44,17 @@ const TemplatesSettings = () => {
   useEffect(() => {
     loadNodeTypes();
   }, []);
+
+  // useEffect(
+  //   () =>
+  //     console.log(
+  //       data.NodeTypes.map((x) => ({
+  //         ...x,
+  //         name: decodeBase64(x.TypeName),
+  //       }))
+  //     ),
+  //   [data]
+  // );
 
   //! Redirect to archived templates view.
   const handleGoToArchives = () => {
