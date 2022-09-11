@@ -11,9 +11,9 @@ import * as Styled from './Avatar.styles';
  * @type {Object}
  * @property {number} [radius] - The radius of the avatar's circle.
  * @property {string} userImage - User's image for avatar.
- * @property {string} color - The color of Avatar.
- * @property {object} imageStyles - Styles for image.
- * @property {string} imageClasses - Classes for image.
+ * @property {string} [color] - The color of Avatar.
+ * @property {object} [imageStyles] - Styles for image.
+ * @property {string} [imageClasses] - Classes for image.
  */
 
 /**

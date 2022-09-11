@@ -19,7 +19,6 @@ export const AccordionDetails = styled.details.attrs({
   margin-block: 0.4rem;
   display: flex;
   align-items: center;
-  cursor: pointer;
   transition: color 0.3s;
   & > svg {
     transition: transform 0.3s, color 0.3s;

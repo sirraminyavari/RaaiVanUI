@@ -2,6 +2,7 @@ import type {
   DetailedHTMLProps,
   DetailsHTMLAttributes,
   PropsWithoutRef,
+  ReactNode,
 } from 'react';
 import { useState, useEffect } from 'react';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
@@ -15,7 +16,7 @@ export interface IAccordion
       HTMLDetailsElement
     >
   > {
-  label?: string;
+  label?: ReactNode;
   labelClassName?: string;
   caretClassName?: string;
 }

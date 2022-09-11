@@ -37,3 +37,22 @@ export const setNotificationsAsSeen = ({
     }
   );
 };
+
+export const GetDashboards = (properties: {
+  NodeTypeID?: string;
+  Type?: 'WorkFlow';
+  Done?: boolean;
+  LowerBoundary?: number;
+  Count?: number;
+}) => {
+  return apiCallWrapper(
+    API_Provider(NOTIFICATIONS_API, 'GetDashboards'),
+    properties
+  );
+};
+
+export const GetDashboardsCount = () => {
+  return apiCallWrapper<any>(
+    API_Provider(NOTIFICATIONS_API, 'GetDashboardsCount')
+  );
+};
