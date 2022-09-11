@@ -4,11 +4,14 @@ import { useThemeSlice } from 'store/slice/theme';
 import { TemplateFormProvider } from './TemplateFormContext';
 import API from 'apiHelper';
 import TemplateFormWrapper from './TemplateFormWrapper';
+import { useTemplateContext } from '../../TemplateProvider';
 
 const TemplateFormSettings = () => {
   const {
     actions: { toggleSidebar },
   } = useThemeSlice();
+
+  const { NodeTypeID } = useTemplateContext();
 
   const dispatch = useDispatch();
   const [formInitialState, setFormInitialState] = useState([]);
@@ -19,10 +22,12 @@ const TemplateFormSettings = () => {
   }, []);
 
   const initForm = async () => {
+    const { FormID } =
+      (await API.FG.initializeTemplateForm({ NodeTypeID }))?.Form || '';
     const data = await API.FG.getFormElements({
-      FormID: '84B18DE6-E3CC-4245-86A7-11AD7D48AE8E',
+      FormID,
     });
-    setFormInitialState(data);
+    setFormInitialState({ ...data, FormID });
   };
 
   return (
