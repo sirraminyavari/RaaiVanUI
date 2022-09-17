@@ -24,6 +24,19 @@ const SaaSTemplates = ({ nodes, handleAddNodeType, handleDeleteNode }) => {
           Sub: _nodes.filter((l) => l?.ParentID === x?.NodeTypeID),
         })),
     ];
+    list = [
+      ...list,
+      {
+        TypeName: 'دسته بندی نشده',
+        isExpanded: true,
+        unCategorized: true,
+        Sub: nodes?.NodeTypes.map((x) => ({
+          ...x,
+          TypeName: decodeBase64(x?.TypeName),
+        })).filter((l) => !(l?.IsCategory || l?.ParentID)),
+      },
+    ];
+    console.log(_nodes.filter((l) => !(l?.IsCategory || l?.ParentID)));
     setNodeList(list);
   };
 
