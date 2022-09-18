@@ -1,18 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { EditorState, convertFromRaw } from 'draft-js';
-import { convertLegacyHtmlToEditorState } from '@sirraminyavari/rv-block-editor';
 
-import {
-  getWikiBlocks,
-  saveBlocks,
-  suggestTags,
-} from 'components/BlockEditor/API';
-import { textColors, highlightColors } from 'components/BlockEditor/data';
+import { getWikiBlocks, saveBlocks } from 'components/BlockEditor/API';
 
 import BlockEditor from 'components/BlockEditor/BlockEditor';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import { IHandleSaveBlocks } from 'components/BlockEditor/BlockEditor.type';
-import { getNodePageUrl, getProfilePageUrl } from 'apiHelper/getPageUrl';
+
+import BlockEditorLegacyHtmlParser from 'components/BlockEditor/BlockEditorLegacyHtmlParser';
 
 export type WikiBlockEditor = { nodeId?: string; editable?: boolean };
 
@@ -22,39 +17,16 @@ const WikiBlock = ({ nodeId, editable }: WikiBlockEditor) => {
 
   //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
-    (legacyContent: string) => {
-      setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw(
-            convertLegacyHtmlToEditorState(legacyContent, {
-              colors: { textColors, highlightColors },
-              getMentionLink: (search) => {
-                switch (search.type) {
-                  case 'User':
-                    return getProfilePageUrl(search.id);
-                  case 'Node':
-                    return getNodePageUrl(search.id);
-                  case 'File':
-                    return `/download/${search.id}`;
-                  default:
-                    return '/';
-                }
-              },
-            })
-          )
-        )
-      );
-    },
+    BlockEditorLegacyHtmlParser,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [EditorState]
   );
-
   //update the content when the value of 'nodeId' changes
   useEffect(() => {
     (async () => {
       const data = await getWikiBlocks({ ownerId: nodeId });
       if (data.Wiki?.blocks?.length === 0 && data?.LegacyWiki)
-        convertLegacyHtmlStringToEditorState(data?.LegacyWiki);
+        convertLegacyHtmlStringToEditorState(data?.LegacyWiki, setEditorState);
       else
         setEditorState(
           data?.Wiki
