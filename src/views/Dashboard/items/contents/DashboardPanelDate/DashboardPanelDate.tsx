@@ -4,9 +4,16 @@ import * as Styles from './DashboardPanelDate.styles';
 
 export interface IDashboardPanelDate {
   minimal?: boolean;
+  dateObject: {
+    date: string;
+    time: string;
+  };
 }
 
-const DashboardPanelDate = ({ minimal }: IDashboardPanelDate): JSX.Element => {
+const DashboardPanelDate = ({
+  minimal,
+  dateObject,
+}: IDashboardPanelDate): JSX.Element => {
   // const { RVDic } = useWindow();
 
   //TODO RVDic initialization !!
@@ -14,8 +21,8 @@ const DashboardPanelDate = ({ minimal }: IDashboardPanelDate): JSX.Element => {
   return (
     <Styles.DashboardPanelDateContainer minimal={minimal}>
       {!minimal && <Styles.DashboardPanelDateCalendarIcon />}
-      <span>15:58</span>
-      <span>1400/02/09</span>
+      <span>{dateObject.time}</span>
+      <span>{dateObject.date}</span>
     </Styles.DashboardPanelDateContainer>
   );
 };

@@ -378,3 +378,24 @@ export const registerNewNode = (options: {
     }
   );
 };
+
+export const GetPendingMembers = (properties: {
+  NodeID?: string;
+  LowerBoundary?: number;
+  Count?: number;
+}) => {
+  return apiCallWrapper<{
+    Members: {
+      FirstName: string;
+      ImageURL: string;
+      IsAdmin: boolean;
+      IsPending: boolean;
+      LastName: string;
+      Status: string;
+      UserID: string;
+      UserName: string;
+    }[];
+    NodeID: string;
+    TotalCount: number;
+  }>(API_Provider(CN_API, 'GetPendingMembers'), properties);
+};

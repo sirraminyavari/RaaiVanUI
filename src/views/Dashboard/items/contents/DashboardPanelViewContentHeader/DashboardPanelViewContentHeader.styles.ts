@@ -4,7 +4,6 @@ import Heading from 'components/Heading/Heading';
 
 export const DashboardPanelViewContentHeaderContainer = styled.div`
   position: relative;
-  width: calc(100% - 18.75rem);
   height: 100%;
 `;
 DashboardPanelViewContentHeaderContainer.displayName =
@@ -49,6 +48,7 @@ export const DashboardPanelViewContentHeaderSearchContainer = styled.div`
   display: flex;
   align-items: center;
   margin-block-end: 1.5rem;
+  max-width: clamp(15rem, 60vw, 30rem);
 `;
 DashboardPanelViewContentHeaderSearchContainer.displayName =
   'DashboardPanelViewContentHeaderSearchContainer';

@@ -7,10 +7,15 @@ import {
   CV_FREEZED,
 } from 'constant/CssVariables';
 import Accordion from 'components/Accordion/Accordion';
+import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon/ExternalLinkIcon';
 
 export const DashboardPanelViewDoneItemsContainer = styled.div`
-  padding-block: 1.125rem;
+  padding-block-start: 1.125rem;
   padding-inline: 1.2rem;
+
+  &:last-of-type {
+    padding-block-end: 1.125rem;
+  }
 `;
 DashboardPanelViewDoneItemsContainer.displayName =
   'DashboardPanelViewDoneItemsContainer';
@@ -29,6 +34,7 @@ export const DashboardPanelViewDoneItemAccordion = styled(Accordion)`
     & > svg:first-of-type {
       font-size: 1.2rem;
       color: ${CV_GRAY};
+      flex-shrink: 0;
     }
   }
   &[open] > summary {
@@ -46,6 +52,7 @@ export const DashboardPanelViewDoneItemLabel = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 `;
 DashboardPanelViewDoneItemLabel.displayName = 'DashboardPanelViewDoneItemLabel';
 
@@ -67,6 +74,7 @@ export const DashboardPanelViewDoneItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 DashboardPanelViewDoneItemContainer.displayName =
   'DashboardPanelViewDoneItemContainer';
@@ -75,6 +83,21 @@ export const DashboardPanelViewDoneItemTitle = styled.span`
   font-size: 1rem;
 `;
 DashboardPanelViewDoneItemTitle.displayName = 'DashboardPanelViewDoneItemTitle';
+
+export const DashboardPanelViewDoneItemExternalLinkIcon = styled(
+  ExternalLinkIcon
+)`
+  font-size: 0.9rem;
+  margin-inline: 0.4rem;
+  color: ${CV_DISTANT};
+  cursor: pointer;
+
+  &:hover {
+    color: ${TCV_DEFAULT};
+  }
+`;
+DashboardPanelViewDoneItemExternalLinkIcon.displayName =
+  'DashboardPanelViewDoneItemExternalLinkIcon';
 
 export const DashboardPanelViewDoneItemSeparator = styled.div`
   margin-inline: 1.34375rem;

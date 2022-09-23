@@ -38,21 +38,70 @@ export const setNotificationsAsSeen = ({
   );
 };
 
+export interface IGetDashboardResponse {
+  TotalCount: number;
+  Items: {
+    ActionDate: string;
+    DashboardID: string;
+    Done: boolean;
+    ExpirationDate: string;
+    Info: string;
+    NodeID: string;
+    NodeAdditionalID: string;
+    NodeName: string;
+    Name?: string;
+    NodeType: string;
+    Removable: boolean;
+    Seen: boolean;
+    SendDate: string;
+    SenderUserID: string;
+    SubType: string;
+    Type: 'Knowledge' | 'MembershipRequest' | 'WorkFlow';
+    UserID: string;
+    ViewDate: string;
+  }[];
+}
 export const GetDashboards = (properties: {
   NodeTypeID?: string;
-  Type?: 'WorkFlow';
+  Type?: 'Knowledge' | 'MembershipRequest' | 'WorkFlow';
   Done?: boolean;
   LowerBoundary?: number;
   Count?: number;
+  SubType?: string;
+  SubTypeTitle?: string;
+  DistinctItems?: boolean;
+  InWorkFlow?: boolean;
 }) => {
-  return apiCallWrapper(
+  return apiCallWrapper<IGetDashboardResponse>(
     API_Provider(NOTIFICATIONS_API, 'GetDashboards'),
     properties
   );
 };
 
+export interface IGetDashboardsCountItems {
+  DateOfEffect: string;
+  DateOfEffect_Jalali: string;
+  Done: number;
+  DoneAndInWorkFlow: number;
+  DoneAndNotInWorkFlow: number;
+  NodeType: string;
+  NodeTypeID: string;
+  NotSeen: number;
+  Sub: IGetDashboardsCountItems[];
+  SubType: string;
+  SubTypeTitle: string;
+  ToBeDone: number;
+  IconURL?: string;
+  Type: 'Knowledge' | 'MembershipRequest' | 'WorkFlow';
+}
 export const GetDashboardsCount = () => {
-  return apiCallWrapper<any>(
-    API_Provider(NOTIFICATIONS_API, 'GetDashboardsCount')
-  );
+  return apiCallWrapper<{
+    AppID: string;
+    Done: number;
+    DoneAndInWorkFlow: number;
+    DoneAndNotInWorkFlow: number;
+    NotSeen: number;
+    ToBeDone: number;
+    Items: IGetDashboardsCountItems[];
+  }>(API_Provider(NOTIFICATIONS_API, 'GetDashboardsCount'));
 };

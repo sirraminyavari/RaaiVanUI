@@ -1,7 +1,7 @@
 import * as Styles from './DashboardPanelViewHeader.styles';
 
 export interface IDashboardPanelViewHeader {
-  title: string;
+  title?: string;
   onReturn: () => void;
 }
 

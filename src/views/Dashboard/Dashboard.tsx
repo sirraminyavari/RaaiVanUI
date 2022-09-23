@@ -9,6 +9,7 @@ import {
   DASHBOARD_TO_BE_DONE_PATH,
   DASHBOARD_REQUEST_PATH,
 } from './items/others/constants';
+import { DashboardStepContextProvider } from './items/others/Dashboard.context';
 
 //TODO a permanent fix is needed for the  () => JSX.Element type accepted by <Route/> component ...
 
@@ -56,22 +57,28 @@ const DashboardRequestView: FunctionComponent = WithSuspense(
 const OnboardingView = () => {
   return (
     <>
-      <TransitionSwitchWrapper>
-        <Route exact path={DASHBOARD_OLD_PATH} component={DashboardOldView} />
-        <Route exact path={DASHBOARD_PATH} component={DashboardView} />
-        <Route exact path={DASHBOARD_DONE_PATH} component={DashboardDoneView} />
-        <Route
-          exact
-          path={DASHBOARD_REQUEST_PATH}
-          component={DashboardRequestView}
-        />
-        <Route
-          exact
-          path={DASHBOARD_TO_BE_DONE_PATH}
-          component={DashboardToBeDoneView}
-        />
-        <Redirect to={DASHBOARD_PATH} />
-      </TransitionSwitchWrapper>
+      <DashboardStepContextProvider>
+        <TransitionSwitchWrapper>
+          <Route exact path={DASHBOARD_OLD_PATH} component={DashboardOldView} />
+          <Route exact path={DASHBOARD_PATH} component={DashboardView} />
+          <Route
+            exact
+            path={DASHBOARD_DONE_PATH}
+            component={DashboardDoneView}
+          />
+          <Route
+            exact
+            path={DASHBOARD_REQUEST_PATH}
+            component={DashboardRequestView}
+          />
+          <Route
+            exact
+            path={DASHBOARD_TO_BE_DONE_PATH}
+            component={DashboardToBeDoneView}
+          />
+          <Redirect to={DASHBOARD_PATH} />
+        </TransitionSwitchWrapper>
+      </DashboardStepContextProvider>
     </>
   );
 };

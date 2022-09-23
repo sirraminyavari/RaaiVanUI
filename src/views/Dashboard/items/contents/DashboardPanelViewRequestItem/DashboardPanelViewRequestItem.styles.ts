@@ -12,10 +12,15 @@ import Accordion from 'components/Accordion/Accordion';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import CheckIcon from 'components/Icons/CheckIcons/Check';
 import Avatar from 'components/Avatar/Avatar';
+import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon/ExternalLinkIcon';
 
 export const DashboardPanelViewRequestItemsContainer = styled.div`
-  padding-block: 1.125rem;
+  padding-block-start: 1.125rem;
   padding-inline: 1.2rem;
+
+  &:last-of-type {
+    padding-block-end: 1.125rem;
+  }
 `;
 DashboardPanelViewRequestItemsContainer.displayName =
   'DashboardPanelViewRequestItemsContainer';
@@ -34,6 +39,7 @@ export const DashboardPanelViewRequestItemAccordion = styled(Accordion)`
     & > svg:first-of-type {
       font-size: 1.2rem;
       color: ${CV_GRAY};
+      flex-shrink: 0;
     }
   }
   &[open] > summary {
@@ -51,6 +57,7 @@ export const DashboardPanelViewRequestItemLabelContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 `;
 DashboardPanelViewRequestItemLabelContainer.displayName =
   'DashboardPanelViewRequestItemLabelContainer';
@@ -104,7 +111,24 @@ export const DashboardPanelViewRequestItemRejectButton = styled(CloseIcon)`
 DashboardPanelViewRequestItemRejectButton.displayName =
   'DashboardPanelViewRequestItemRejectButton';
 
-export const DashboardPanelViewRequestItemAcceptButton = styled(CheckIcon)`
+export const DashboardPanelViewRequestItemExternalLinkIcon = styled(
+  ExternalLinkIcon
+)`
+  font-size: 0.9rem;
+  margin-inline: 0.4rem;
+  color: ${CV_DISTANT};
+  cursor: pointer;
+
+  &:hover {
+    color: ${TCV_DEFAULT};
+  }
+`;
+DashboardPanelViewRequestItemExternalLinkIcon.displayName =
+  'DashboardPanelViewRequestItemExternalLinkIcon';
+
+export const DashboardPanelViewRequestItemAcceptButton = styled(
+  CheckIcon
+).attrs({ bold: true })`
   font-size: 2.4rem;
   color: ${TCV_DEFAULT};
   border-radius: 100%;
@@ -121,6 +145,7 @@ export const DashboardPanelViewRequestItemUserContainer = styled.span`
   padding-block: 0.6rem;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 0.5rem;
   width: 100%;
   border-block-end-color: ${CV_FREEZED};

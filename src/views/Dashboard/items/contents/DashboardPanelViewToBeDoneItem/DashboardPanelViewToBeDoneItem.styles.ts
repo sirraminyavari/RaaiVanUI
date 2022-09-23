@@ -63,6 +63,7 @@ export const DashboardPanelViewToBeDoneItemTitleContainer = styled.div`
   display: flex;
   gap: 1rem;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 DashboardPanelViewToBeDoneItemTitleContainer.displayName =
   'DashboardPanelViewToBeDoneItemTitleContainer';
@@ -79,6 +80,21 @@ export const DashboardPanelViewToBeDoneItemTitle = styled.div`
 DashboardPanelViewToBeDoneItemTitle.displayName =
   'DashboardPanelViewToBeDoneItemTitle';
 
+export const DashboardPanelViewToBeDoneItemTitleLink = styled.a`
+  font-size: inherit;
+  font-weight: inherit;
+  color: ${CV_GRAY_DARK};
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding-block: 0.5rem;
+  &:hover {
+    color: ${TCV_DEFAULT};
+  }
+`;
+DashboardPanelViewToBeDoneItemTitleLink.displayName =
+  'DashboardPanelViewToBeDoneItemTitleLink';
+
 export const DashboardPanelViewToBeDoneItemTitleID = styled.div`
   font-size: 0.875rem;
   font-weight: 400;
@@ -91,6 +107,7 @@ export const DashboardPanelViewToBeDoneItemStatusBadgeContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 `;
 DashboardPanelViewToBeDoneItemStatusBadgeContainer.displayName =
   'DashboardPanelViewToBeDoneItemStatusBadgeContainer';

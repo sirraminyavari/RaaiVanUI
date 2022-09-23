@@ -3,6 +3,7 @@ import DashboardCardItem from './DashboardCardItem';
 import { useHistory } from 'react-router-dom';
 import {
   DASHBOARD_DONE_PATH,
+  DASHBOARD_REQUEST_PATH,
   DASHBOARD_TO_BE_DONE_PATH,
 } from './../../others/constants';
 import * as Styles from './DashboardCardsBlock.styles';
@@ -15,7 +16,7 @@ export interface IDashboardCardsBlock {
     NotSeen?: number;
     ToBeDone?: number;
     Type: string;
-    title?: string;
+    NodeType?: string;
     info?: string;
     ToBeDoneBadge?: number;
     DoneLabel?: string;
@@ -31,11 +32,15 @@ const DashboardCardsBlock = ({
 }: IDashboardCardsBlock): JSX.Element => {
   const history = useHistory();
 
+  //TODO RVDic initialization !!
+
+  const RVDicWaitingFor = 'در انتظار بررسی';
+
   const notificationItemsCount = useMemo(() => cardItems.length, [cardItems]);
 
   const labelClickHandler =
-    (type: 'Done' | 'ToBeDone', NodeTypeID?: string) => () => {
-      if (cardType === 'template' && NodeTypeID) {
+    (type: 'Done' | 'ToBeDone' | 'request', NodeTypeID?: string) => () => {
+      if (NodeTypeID) {
         const DashboardDoneView = DASHBOARD_DONE_PATH.replace(
           ':NodeID',
           NodeTypeID
@@ -44,9 +49,10 @@ const DashboardCardsBlock = ({
           ':NodeID',
           NodeTypeID
         );
+        const DashboardRequestsView = DASHBOARD_REQUEST_PATH;
         if (type === 'Done') history.push(DashboardDoneView);
+        else if (type === 'request') history.push(DashboardRequestsView);
         else history.push(DashboardToBeDoneView);
-      } else {
       }
     };
 
@@ -65,9 +71,14 @@ const DashboardCardsBlock = ({
               cardType={cardType}
               onDoneClick={labelClickHandler('Done', cardItems?.NodeTypeID)}
               onToBeDoneClick={labelClickHandler(
-                'ToBeDone',
+                cardItems.Type === 'MembershipRequest' ? 'request' : 'ToBeDone',
                 cardItems?.NodeTypeID
               )}
+              ToBeDoneLabel={
+                cardItems.Type === 'MembershipRequest'
+                  ? RVDicWaitingFor
+                  : undefined
+              }
               {...cardItems}
             />
           ))}

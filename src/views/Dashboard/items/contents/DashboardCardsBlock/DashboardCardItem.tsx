@@ -8,7 +8,7 @@ export interface IDashboardCardItem {
   Done?: number;
   ToBeDone?: number;
   Type: string;
-  title?: string;
+  NodeType?: string;
   info?: string;
   DoneLabel?: string | false;
   ToBeDoneLabel?: string | false;
@@ -24,7 +24,7 @@ const DashboardCardItem = ({
   ToBeDone,
   ToBeDoneLabel,
   ToBeDoneBadge,
-  title,
+  NodeType,
   info,
   onToBeDoneClick,
   onDoneClick,
@@ -40,7 +40,7 @@ const DashboardCardItem = ({
       <Styles.DashboardCardItem>
         <Styles.DashboardCardItemTitle forTemplates={cardType === 'template'}>
           <Styles.DashboardCardItemImage src="/images/Preview.png" />
-          {title}
+          {NodeType}
           {info && (
             <>
               <PopupMenu>
@@ -50,7 +50,7 @@ const DashboardCardItem = ({
             </>
           )}
         </Styles.DashboardCardItemTitle>
-        {ToBeDoneLabel !== false && (
+        {ToBeDoneLabel !== false && ToBeDone! > 0 && (
           <Styles.DashboardCardItemLabelContainer onClick={onToBeDoneClick}>
             <Styles.DashboardCardItemLabelText>
               {ToBeDoneLabel || RVDicToBeDone}
@@ -63,7 +63,7 @@ const DashboardCardItem = ({
             </Styles.DashboardCardItemLabelNumber>
           </Styles.DashboardCardItemLabelContainer>
         )}
-        {DoneLabel !== false && (
+        {DoneLabel !== false && Done! > 0 && (
           <Styles.DashboardCardItemLabelContainer isDone onClick={onDoneClick}>
             <Styles.DashboardCardItemLabelText>
               {DoneLabel || RVDicDone}
