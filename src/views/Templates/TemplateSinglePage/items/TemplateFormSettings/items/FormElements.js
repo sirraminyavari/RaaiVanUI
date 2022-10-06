@@ -199,6 +199,7 @@ const formElementList = () => {
           type: 'multi',
           icon: <IoFilter size={size} />,
           data: {
+            Type: 'MutliLevel',
             ...sharedProps,
           },
         },
