@@ -93,6 +93,7 @@ export const RelatedTopicsTabItemContainer = styled.div.attrs<{
   ${({ visible }) => !visible && 'display: none;'}
   margin-inline-end: 0.5rem;
   margin-block: 0.25rem;
+  max-width: 100%;
 
   .tab-item-tooltip {
     border-radius: 50%;

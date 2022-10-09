@@ -8,7 +8,7 @@ import {
   QUESTIONS_PATH,
   TEAMS_PATH,
 } from 'constant/constants';
-const { RVDic } = window;
+const { RVDic, RVGlobal } = window;
 
 const NavButtons = [
   { index: '1', title: RVDic.Home, icon: 'home', linkTo: HOME_PATH },
@@ -62,12 +62,16 @@ const NavButtons = [
     icon: 'messages',
     linkTo: MESSAGES_PATH,
   },
-  {
-    index: '6',
-    title: RVDic.Dashboard,
-    icon: 'dashboard',
-    linkTo: DASHBOARD_PATH,
-  },
+  ...(RVGlobal.IsDev
+    ? [
+        {
+          index: '6',
+          title: RVDic.Dashboard,
+          icon: 'dashboard',
+          linkTo: DASHBOARD_PATH,
+        },
+      ]
+    : []),
   {
     index: '7',
     title: RVDic.Notifications,

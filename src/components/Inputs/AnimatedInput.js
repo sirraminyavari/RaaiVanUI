@@ -16,6 +16,7 @@ import {
  * @param {React.CSSProperties} style - Inline style for 'Container'.
  * @param {String} value - Typed value.
  * @param {String} error - If it has value, the Input border changes to RED and shows the 'error' value under it.
+ * @param {FunctionalComponent} Icon - A react JSX component for using as input icon.
  * @callback onFocus - Fires when the input receives the focus.
  * @callback onBlur - Fires when the loses the focus.
  * @callback onChange - Fires when the user typing a new char.
@@ -36,6 +37,7 @@ const AnimatedInput = React.forwardRef(
       children,
       placeholderClass,
       placeholderFocusedClass,
+      Icon,
       ...props
     },
     ref
@@ -89,6 +91,7 @@ const AnimatedInput = React.forwardRef(
           inputFocused={inputFocused || value.length > 0}
         >
           <StyledInput
+            Icon={Icon}
             value={value}
             type={type}
             disabled={disabled}

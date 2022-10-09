@@ -767,3 +767,15 @@ export const SEARCH_API = 'SearchAPI';
  * @class 'SearchAPI'
  */
 export const SEARCH = 'Search';
+
+/**
+ * @description 'WorkflowAPI'
+ * @mode API class
+ */
+export const WF_API = 'WFAPI';
+
+/**
+ * @description 'KnowledgeAPI'
+ * @mode API class
+ */
+export const KNOWLEDGE_API = 'KnowledgeAPI';

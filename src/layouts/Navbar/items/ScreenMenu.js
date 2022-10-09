@@ -29,8 +29,8 @@ const WideScreenMenu = () => {
       {NavButtonsList?.map((btn) => {
         const { actions, badge, index } = btn;
 
-        //! Remove 'navigation', 'question' and 'dashboard' in SAAS mode.
-        if (isSaas && ['2', '3', '6'].includes(btn.index)) {
+        //! Remove 'navigation' and 'question' in SAAS mode.
+        if (isSaas && ['2', '3'].includes(btn.index)) {
           return null;
         }
 

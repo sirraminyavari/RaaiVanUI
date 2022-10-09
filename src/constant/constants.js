@@ -58,6 +58,7 @@ export const ERROR_NAME = 'error';
 export const NEWNODE_PATH = '/node/create/:id';
 export const NEWNODE_NAME = 'newnode';
 export const NODE_PATH = getURL('Node', { NodeID: ':id' });
+export const NODE_OLD_PATH = '/node/old/:id';
 export const NODE_NAME = 'node';
 export const FORM_PATH = getURL('Form', { ID: ':InstanceID' });
 export const FORM_NAME = 'form';

@@ -12,6 +12,7 @@ import { CV_GRAY } from 'constant/CssVariables';
 import { suggestTags } from 'components/BlockEditor/API';
 import { decodeBase64 } from 'helpers/helpers';
 import { EditableContext } from '../../FormFill';
+import BlockEditorLegacyHtmlParser from 'components/BlockEditor/BlockEditorLegacyHtmlParser';
 
 export interface IParagraphField {
   value: string;
@@ -44,36 +45,7 @@ function ParagraphField({
 
   //TODO needs checking for arguments ...
   const convertLegacyHtmlStringToEditorState = useCallback(
-    (legacyContent: string) => {
-      setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw(
-            convertLegacyHtmlToEditorState(legacyContent, {
-              colors: { textColors, highlightColors },
-              //@ts-expect-error
-              getMentionLink: async (search) => {
-                console.log(search);
-                const rawMentions = await suggestTags({
-                  //@ts-expect-error
-                  text: search,
-                });
-                const mentions = rawMentions.map((suggestTag) => ({
-                  ...suggestTag,
-                  id: suggestTag.ItemID,
-                  name: suggestTag.Name,
-                  avatar: suggestTag.ImageURL,
-                  link:
-                    suggestTag.Type === 'User'
-                      ? getProfilePageUrl(suggestTag.ItemID)
-                      : getNodePageUrl(suggestTag.ItemID),
-                }));
-                return mentions;
-              },
-            })
-          )
-        )
-      );
-    },
+    BlockEditorLegacyHtmlParser,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [EditorState]
   );
@@ -88,7 +60,10 @@ function ParagraphField({
         );
       } catch (err) {
         if (value.length)
-          convertLegacyHtmlStringToEditorState(`<span>${value}</span>`);
+          convertLegacyHtmlStringToEditorState(
+            `<span>${value}</span>`,
+            setEditorState
+          );
         else setEditorState(EditorState.createEmpty());
       }
     })();

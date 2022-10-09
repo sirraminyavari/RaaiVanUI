@@ -1,5 +1,11 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
-import { CV_FREEZED, CV_GRAY, CV_WHITE, TCV_WARM } from 'constant/CssVariables';
+import {
+  CV_FREEZED,
+  CV_GRAY,
+  CV_WHITE,
+  TCV_WARM,
+  TCV_VERY_TRANSPARENT,
+} from 'constant/CssVariables';
 import { useCallback, useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
@@ -37,7 +43,7 @@ const MultiLevelInputField = ({
   NodeType,
   Levels,
 }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, RV_RTL } = useWindow();
 
   const [levels, setLevels] = useState<{ nodes: any[] }[]>([]);
   const [selectedLevels, setSelectedLevels] = useState(
@@ -105,37 +111,51 @@ const MultiLevelInputField = ({
               return (
                 <>
                   {!!normalizedOptions(x) || value[index] ? (
-                    <SelectContainer>
-                      <Select
-                        isDisabled={!isEditable}
-                        options={normalizedOptions(x)}
-                        styles={customStyles}
-                        value={{
-                          value: ID,
-                          label: decodeBase64(Name),
-                        }}
-                        placeholder={RVDic.Select}
-                        isSearchable={true}
-                        onChange={(event, triggeredAction) => {
-                          if (triggeredAction.action === 'clear') {
-                            const selectedTemp = selectedLevels?.map(
-                              (x, ind) => {
-                                return ind === index
-                                  ? { ID: undefined, Name: undefined }
-                                  : x;
-                              }
-                            );
-                            setSelectedLevels(selectedTemp);
-                            onAnyFieldChanged &&
-                              onAnyFieldChanged(elementId, selectedTemp, type);
-                            setLevels(selectedTemp);
-                            // Clear happened
-                          } else {
-                            onLevelSelected(elementId, event, type, index);
-                          }
-                        }}
-                      />
-                    </SelectContainer>
+                    <>
+                      {index !== 0 && (
+                        <SelectContainer noMargin>
+                          <Styles.SelectedFieldChevron
+                            dir={RV_RTL ? 'left' : 'right'}
+                            small={false}
+                          />
+                        </SelectContainer>
+                      )}
+                      <SelectContainer>
+                        <Select
+                          isDisabled={!isEditable}
+                          options={normalizedOptions(x)}
+                          styles={customStyles}
+                          value={{
+                            value: ID,
+                            label: decodeBase64(Name),
+                          }}
+                          placeholder={RVDic.Select}
+                          isSearchable={true}
+                          onChange={(event, triggeredAction) => {
+                            if (triggeredAction.action === 'clear') {
+                              const selectedTemp = selectedLevels?.map(
+                                (x, ind) => {
+                                  return ind === index
+                                    ? { ID: undefined, Name: undefined }
+                                    : x;
+                                }
+                              );
+                              setSelectedLevels(selectedTemp);
+                              onAnyFieldChanged &&
+                                onAnyFieldChanged(
+                                  elementId,
+                                  selectedTemp,
+                                  type
+                                );
+                              setLevels(selectedTemp);
+                              // Clear happened
+                            } else {
+                              onLevelSelected(elementId, event, type, index);
+                            }
+                          }}
+                        />
+                      </SelectContainer>
+                    </>
                   ) : null}
                 </>
               );
@@ -151,11 +171,22 @@ const MultiLevelInputField = ({
         >
           {value.length === value.filter(({ ID }) => !!ID).length &&
           value.length ? (
-            value.map(({ Name, ID }) => {
+            value.map(({ Name, ID }, idx) => {
               return (
-                <Styles.SelectedFieldItem key={ID}>
-                  {decodeBase64(Name)}
-                </Styles.SelectedFieldItem>
+                <>
+                  {idx !== 0 && (
+                    <Styles.SelectedFieldItem chevron key={ID}>
+                      <Styles.SelectedFieldChevron
+                        dir={RV_RTL ? 'left' : 'right'}
+                        small={false}
+                      />
+                    </Styles.SelectedFieldItem>
+                  )}
+
+                  <Styles.SelectedFieldItem key={ID}>
+                    {decodeBase64(Name)}
+                  </Styles.SelectedFieldItem>
+                </>
               );
             })
           ) : (
@@ -169,9 +200,14 @@ const MultiLevelInputField = ({
 
 export default MultiLevelInputField;
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<{ noMargin?: boolean }>`
   display: flex;
-  margin: 0 1rem 0 1rem;
+  ${({ noMargin }) =>
+    !noMargin &&
+    `
+  margin-inline: 1rem;
+  `}
+  align-items: center;
 `;
 const SelectorContainer = styled.div`
   display: flex;
@@ -211,7 +247,7 @@ const customStyles = {
   singleValue: (styles) => {
     return {
       ...styles,
-      backgroundColor: '#e6f4f1',
+      backgroundColor: TCV_VERY_TRANSPARENT,
       borderRadius: '0.5rem',
       padding: '0.3rem',
       minWidth: '9rem',
@@ -219,7 +255,7 @@ const customStyles = {
   },
   menu: (provided) => ({
     ...provided,
-    borderColor: '#e6f4f1',
+    borderColor: TCV_VERY_TRANSPARENT,
     minWidth: '9rem',
   }),
 };

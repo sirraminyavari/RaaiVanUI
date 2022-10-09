@@ -18,15 +18,16 @@ const ArrowRadius = 0.4;
 /**
  * @typedef PropType
  * @property {('top' | 'left' | 'bottom' | 'right')} [align] - The popup alignment.
- * @property {string} arrowClass -The Class for arrow element.
+ * @property {string} [arrowClass] -The Class for arrow element.
  * @property {string} [menuClass] -The Class for menu container.
- * @property {string} menuStyle -The style for menu container.
- * @property {string} arrowStyle -The style for arrow.
- * @property {string} leftOffset -The left offset.
- * @property {string} topOffset -The top offset.
- * @property {('hover' | 'click')} trigger -The popup menu show option.
+ * @property {string} [menuStyle] -The style for menu container.
+ * @property {string} [arrowStyle] -The style for arrow.
+ * @property {number} [leftOffset] -The left offset.
+ * @property {number} [topOffset] -The top offset.
+ * @property {('hover' | 'click')} [trigger] -The popup menu show option.
  * @property {number} [hoverTimeout] -The popup timeout on hover.
- * @property {boolean} fit -The parameter that determines menu width will be equal to the reference component.
+ * @property {boolean} [fit] -The parameter that determines menu width will be equal to the reference component.
+ * @property {React.ReactNode} children
  */
 
 /**

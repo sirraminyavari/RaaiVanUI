@@ -45,6 +45,7 @@ import {
   // MONITORING_TEAMS_NAME,
   TEMPLATES_SETTING_SINGLE_PATH,
   TEMPLATES_SETTING_SINGLE_NAME,
+  NODE_OLD_PATH,
   DICTIONARY_PATH,
   DICTIONARY_NAME,
 } from 'constant/constants';
@@ -69,12 +70,12 @@ const NodeView = lazy(() =>
   )
 );
 
-//const NodeView = lazy(() =>
-//  import(
-//    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
-//    'views/Node/Node-view'
-//  )
-//);
+const NodeViewOld = lazy(() =>
+  import(
+    /* webpackChunkName: "node-old-view " 'views/Node/Node-view' */
+    'views/Node/Node-view'
+  )
+);
 
 const FormView = lazy(() =>
   import(/* webpackChunkName: "form-view"*/ 'views/Form/Form-view')
@@ -187,6 +188,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: NewNode,
+  },
+  {
+    path: NODE_OLD_PATH,
+    name: NODE_NAME,
+    exact: false,
+    hasNavSide: true,
+    component: NodeViewOld,
   },
   {
     path: NODE_PATH,

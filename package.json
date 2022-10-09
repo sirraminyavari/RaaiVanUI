@@ -11,7 +11,7 @@
     "@lottiefiles/react-lottie-player": "^3.4.1",
     "@mui/base": "^5.0.0-alpha.93",
     "@reduxjs/toolkit": "^1.5.0",
-    "@sirraminyavari/rv-block-editor": "^0.3.15-dev.4",
+    "@sirraminyavari/rv-block-editor": "^0.3.15-dev.5",
     "@stfy/react-editor.js": "^1.0.3",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",

@@ -118,8 +118,12 @@ NodeTopBarViewCount.displayName = 'NodeTopBarViewCount';
 
 export const NodeTopBarCounterBookmarkContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 1rem;
+  width: 100%;
 `;
 NodeTopBarCounterBookmarkContainer.displayName =
   'NodeTopBarCounterBookmarkContainer';

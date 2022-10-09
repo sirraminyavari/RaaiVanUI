@@ -58,7 +58,7 @@ const NavbarRoutes = [
   {
     path: DASHBOARD_PATH,
     name: DASHBOARD_NAME,
-    exact: true,
+    exact: false,
     hasNavSide: true,
     component: Dashboard,
   },
