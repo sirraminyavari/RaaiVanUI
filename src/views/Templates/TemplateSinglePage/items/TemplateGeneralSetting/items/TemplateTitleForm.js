@@ -78,7 +78,8 @@ const Container = styled.div`
 
 const TitleInput = styled(RxInput)`
   height: 2.75rem;
-  width: 36rem;
+  max-width: 36rem;
+  width: 100%;
   outline: none;
   border: none;
   border-bottom: 1px solid ${CV_DISTANT};

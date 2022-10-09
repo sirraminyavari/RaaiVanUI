@@ -89,16 +89,17 @@ const AdvancedConfidentialitySelect = ({ permissionType, label }) => {
             onChange={handleSelection}
           />
         </Styled.BlockSelectWrapper>
+        <Styled.SelectorBlock>
+          <Styled.CustomizedSelectionContainer>
+            {selected === 'CUSTOMIZED' && (
+              <>
+                <SelectObject type={permissionType} />
 
-        <Styled.CustomizedSelectionContainer>
-          {selected === 'CUSTOMIZED' && (
-            <>
-              <SelectObject type={permissionType} />
-
-              <MembersPreview members={members} size={2.5} maxItems={4} />
-            </>
-          )}
-        </Styled.CustomizedSelectionContainer>
+                <MembersPreview members={members} size={2.5} maxItems={4} />
+              </>
+            )}
+          </Styled.CustomizedSelectionContainer>
+        </Styled.SelectorBlock>
       </Styled.SelectionBlock>
     </>
   );

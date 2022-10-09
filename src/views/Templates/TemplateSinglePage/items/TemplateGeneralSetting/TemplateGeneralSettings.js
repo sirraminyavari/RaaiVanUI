@@ -54,7 +54,9 @@ const TemplateGeneralSettings = () => {
           {RVDic?.Return}
         </ReturnButton>
         <MainFormContainer>
-          <TemplateUploadIcon />
+          <div>
+            <TemplateUploadIcon />
+          </div>
           {/*<AvatarImageCropper />*/}
           <TemplateTitleForm name={decodeBase64(Title)} />
         </MainFormContainer>
