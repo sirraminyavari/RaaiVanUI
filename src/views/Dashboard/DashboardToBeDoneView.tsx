@@ -3,6 +3,7 @@ import {
   IGetDashboardsCountItems,
 } from 'apiHelper/ApiHandlers/NotificationsAPI';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindowContext from 'hooks/useWindowContext';
 import WelcomeLayout from 'layouts/WelcomeLayout';
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -20,6 +21,7 @@ import * as dashboardAPI from './items/others/DashboardApiCalls';
 const DashboardDoneView = (): JSX.Element => {
   const history = useHistory();
   const { isTabletOrMobile } = DimensionHelper();
+  const { RVDic } = useWindowContext();
   const { NodeID } = useParams<{ NodeID: string }>();
   const { dashboards } = useDashboardContext();
   const [dashboardDetails, setDashboardDetails] =
@@ -38,17 +40,24 @@ const DashboardDoneView = (): JSX.Element => {
     }[]
   >([]);
 
+  //TODO RVDic initialization !!
+  const RVDicDashboardSubTypes = RVDic.NTFN.DashboardSubTypes;
+
   useEffect(() => {
     const dashboardItem = dashboards?.ItemSubs.find(
       (item) => item.NodeTypeID === NodeID
     );
+
     const doneItemNodeTypes = dashboardItem?.Sub.map((item) => ({
-      NodeType: decodeBase64(item.SubTypeTitle),
+      NodeType:
+        RVDicDashboardSubTypes[item.SubType] || decodeBase64(item.SubTypeTitle),
       NodeID: item.SubTypeTitle,
       Badge: item.ToBeDone,
     })).filter((item) => item.Badge > 0);
+
     setToBeDoneItemNodeTypes(doneItemNodeTypes || []);
     setDashboardDetails(dashboardItem);
+
     (async () => {
       const toBeDoneItems = await dashboardAPI.fetchDashboardItem({
         NodeTypeID: NodeID,
@@ -65,8 +74,6 @@ const DashboardDoneView = (): JSX.Element => {
   const returnToDashboard = () => {
     history.push(DASHBOARD_PATH);
   };
-
-  //TODO RVDic initialization !!
 
   return (
     <WelcomeLayout singleColumn noFullHeight noPadding>

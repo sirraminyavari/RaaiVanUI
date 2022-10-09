@@ -26,7 +26,7 @@ const DashboardPanelViewSidebar = ({
 }: IDashboardPanelViewSidebar): JSX.Element => {
   const [toggled, setToggled] =
     useState<IDashboardPanelViewSidebar['nodeTypes'][number]>();
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
 
   useEffect(() => {
     onToggle && onToggle(toggled);

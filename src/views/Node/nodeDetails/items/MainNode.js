@@ -21,6 +21,7 @@ import Button from 'components/Buttons/Button';
 import { useHistory } from 'react-router-dom';
 import { getNodePageUrl } from 'apiHelper/getPageUrl';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import WorkflowField from './workflow/WorkflowField';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -43,7 +44,7 @@ const MainNode = ({
   const [title, setTitle] = useState(decodeBase64(nodeDetails?.Name?.Value));
   const [description, setDescription] = useState(null);
   const [keywords, setKeywords] = useState(undefined);
-  const { RVDic } = useWindowContext();
+  const { RVDic, RVGlobal } = useWindowContext();
 
   const onSaveTitle = async () => {
     setTitleEditMode(false);
@@ -136,6 +137,13 @@ const MainNode = ({
               </Heading>
             )}
           </TitleContainer>
+        )}
+        {RVGlobal.IsDev && !newNode && (
+          <WorkflowField
+            NodeID={nodeId}
+            Status={nodeDetails.Status}
+            EvaluationNeeded={nodeDetails.EvaluationNeeded}
+          />
         )}
 
         <>

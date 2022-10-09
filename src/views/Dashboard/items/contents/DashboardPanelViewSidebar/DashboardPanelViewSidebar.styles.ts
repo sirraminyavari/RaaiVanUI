@@ -12,7 +12,7 @@ import ChevronIcon from 'components/Icons/ChevronIcons/Chevron';
 export const DashboardPanelViewSidebarContainer = styled.div<{
   mobile?: boolean;
 }>`
-  padding-block: 1.625rem;
+  padding-block: 0.325rem;
   padding-inline: 1.0625rem;
   background-color: ${CV_WHITE};
   background-image: linear-gradient(
@@ -28,8 +28,8 @@ export const DashboardPanelViewSidebarContainer = styled.div<{
     !mobile
       ? 'width: 18.75rem;'
       : `overflow-y:auto;
-    border-bottom-left-radius: 0.8125rem;
-    border-bottom-right-radius: 0.8125rem;
+    border-bottom-left-radius: 1.125rem;
+    border-bottom-right-radius: 1.125rem;
     `}
 
   transition: height 0.3s;
@@ -47,6 +47,8 @@ export const DashboardPanelViewSidebarTitle = styled.h3<{
   margin-block-end: 1.5rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 `;
 DashboardPanelViewSidebarTitle.displayName = 'DashboardPanelViewSidebarTitle';
 
