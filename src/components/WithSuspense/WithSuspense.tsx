@@ -16,7 +16,7 @@ function WithSuspense<T = never>(
   Component: LazyExoticComponent<() => JSX.Element>,
   Loading = () => <></>
 ) {
-  return (props: T) => {
+  return (props: any) => {
     return (
       <Suspense
         fallback={Loading ? <Loading /> : <LogoLoader style={undefined} />}

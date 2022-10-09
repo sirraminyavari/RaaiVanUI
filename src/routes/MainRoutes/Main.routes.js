@@ -46,6 +46,8 @@ import {
   TEMPLATES_SETTING_SINGLE_PATH,
   TEMPLATES_SETTING_SINGLE_NAME,
   NODE_OLD_PATH,
+  DICTIONARY_PATH,
+  DICTIONARY_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 // import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
@@ -142,14 +144,18 @@ const MonitoringView = lazy(() =>
 
 const MonitoringTeamView = lazy(() =>
   import(
-    /* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
+    /* webpackChunkName: "teams-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
   )
 );
 
 const SingleTemplateView = lazy(() =>
   import(
-    /* webpackChunkName: "monitoring-view"*/ 'views/Templates/TemplateSinglePage/TemplateSinglePage'
+    /* webpackChunkName: "template-settings-view"*/ 'views/Templates/TemplateSinglePage/TemplateSinglePage'
   )
+);
+
+const Dictionary = lazy(() =>
+  import(/* webpackChunkName: "dictionary-view"*/ 'views/Dictionary/Dictionary')
 );
 
 const routes = [
@@ -316,6 +322,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: MonitoringTeamView,
+  },
+  {
+    path: DICTIONARY_PATH,
+    name: DICTIONARY_NAME,
+    exact: true,
+    hasNavSide: false,
+    component: Dictionary,
   },
   // {
   //   path: MONITORING_TEAMS_PATH,

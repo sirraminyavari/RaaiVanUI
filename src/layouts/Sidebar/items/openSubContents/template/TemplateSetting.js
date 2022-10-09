@@ -11,9 +11,10 @@ import api from 'apiHelper';
 
 const TemplateSetting = () => {
   const { RVDic } = window;
+
   const { pathname } = useLocation();
   const path = pathname.split('/');
-  const id = decodeBase64(path[path.length - 2]);
+  const id = path[3];
   const root = path.filter((x, i) => i < path.length - 1).join('/');
 
   const [loading, setLoading] = useState(true);
@@ -29,18 +30,17 @@ const TemplateSetting = () => {
   useEffect(() => {
     let isMount = true;
     const fetchData = async () => {
-      const { TypeName, IconURL } =
-        (
-          await api?.CN?.getNodeTypes({
-            NodeTypeIDs: [id],
-            Icon: true,
-          })
-        )?.NodeTypes[0] || {};
+      const { error, ...res } = await api?.CN?.getNodeTypes({
+        NodeTypeIDs: [id],
+        Icon: true,
+      });
+      const { TypeName, IconURL } = res?.NodeTypes[0] || {};
       setTitle(decodeBase64(TypeName));
       setIconURL(IconURL);
       setLoading(false);
     };
-    isMount && fetchData();
+
+    id && isMount && fetchData();
 
     return () => {
       isMount = false;
