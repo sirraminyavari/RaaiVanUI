@@ -54,6 +54,7 @@ const SelectInputField = ({
   const { RVDic } = useWindow();
   const SelectComponent = isCreatable ? CreatableSelect : Select;
 
+  // return isFocused && isEditable ? (
   return isFocused && isEditable ? (
     <SelectComponent
       onBlur={onBlur}
@@ -69,7 +70,11 @@ const SelectInputField = ({
       isSearchable={isSearchable}
       styles={customStyles}
       onChange={onChange}
-      components={components}
+      components={{
+        ...components,
+        ClearIndicator: () => <Styles.SelectInputClearButton />,
+        CrossIcon: () => <Styles.SelectInputRemoveButton />,
+      }}
     />
   ) : (
     <Styles.SelectedFieldItemContainer
@@ -127,10 +132,15 @@ const customStyles = {
     minWidth: '9rem',
     borderColor: CV_WHITE,
     backgroundColor: CV_WHITE,
-    ':focus': {
-      border: 0,
-    },
-    ':hover': {},
+    borderRadius: '0.5rem',
+    // ':focus': {
+    //   border: 0,
+    // },
+  }),
+  input: (provided) => ({
+    ...provided,
+    minWidth: '4rem',
+    cursor: 'text',
   }),
   menu: (provided) => ({
     ...provided,
@@ -148,8 +158,12 @@ const customStyles = {
       padding: '0.3rem',
       minWidth: 'initial',
       justifyContent: 'space-between',
-      borderRadius: '0.4725rem',
-      fontSize: '.8125rem',
+      marginBlock: '0.18rem',
+      marginInline: '0.5rem',
+      paddingInline: '0.5rem',
+      paddingBlock: '0.4rem',
+      borderRadius: '0.5rem',
+      fontSize: '0.93rem',
     };
   },
   multiValue: (provided) => ({
@@ -160,8 +174,12 @@ const customStyles = {
     padding: '0.3rem',
     display: 'flex',
     justifyContent: 'space-between',
-    borderRadius: '0.4725rem',
-    fontSize: '.8125rem',
+    marginBlock: '0.18rem',
+    marginInline: '0.5rem',
+    paddingInline: '0.5rem',
+    paddingBlock: '0.4rem',
+    borderRadius: '0.5rem',
+    fontSize: '0.93rem',
 
     ':hover': {
       borderWidth: 0,
@@ -170,7 +188,6 @@ const customStyles = {
   valueContainer: (styles) => {
     return {
       ...styles,
-      fontSize: '.8125rem',
     };
   },
   multiValueLabel: (styles) => {
@@ -183,7 +200,6 @@ const customStyles = {
   singleValueLabel: (styles) => {
     return {
       ...styles,
-      paddingInlineEnd: '0.6125rem',
       fontSize: '.8125rem',
     };
   },

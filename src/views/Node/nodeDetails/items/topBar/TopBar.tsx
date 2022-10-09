@@ -156,12 +156,19 @@ const TopBar = ({
                   >
                     {bookmarkStatus === 'liked' ? (
                       <>
-                        <FilledBookmarkIcon className={'rv-default rv-white'} />
+                        <FilledBookmarkIcon
+                          className={'rv-default rv-white'}
+                          style={{ marginInlineEnd: '0.5rem' }}
+                        />
                         {RVDic.Bookmarked}
                       </>
                     ) : (
                       <>
-                        <OutLineBookmarkIcon className={'rv-default'} />
+                        <OutLineBookmarkIcon
+                          className={'rv-default'}
+                          style={{ marginInlineEnd: '0.5rem' }}
+                        />
+
                         {RVDic.Bookmark}
                       </>
                     )}
