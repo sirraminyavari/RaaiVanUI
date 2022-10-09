@@ -8,10 +8,11 @@ import { decodeBase64 } from 'helpers/helpers';
 import styled from 'styled-components';
 import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
+import SelectInputField from 'components/FormElements/ElementTypes/Select/SelectInputField';
 
 type Props = {
   Keywords: {
-    Value: { label: string; value: string }[];
+    Value: { label: string; value: string | number }[];
     Editable?: boolean;
   };
   isEditable?: boolean;
@@ -57,20 +58,22 @@ function KeywordField({ Keywords, onSaveKeywords, isEditable }: Props) {
           <Styles.SelectedFieldItemContainer>
             {isFocused && isEditable ? (
               <CellContainer>
-                <CreatableSelect
-                  value={keywords}
+                <SelectInputField
+                  options={keywords}
+                  selectedValue={keywords}
+                  isFocused={isFocused}
                   isMulti
-                  isDisabled={!Keywords?.Editable}
+                  isCreatable
+                  isEditable={Keywords?.Editable}
                   isClearable
-                  placeholder={RVDic.Select}
                   onBlur={() => {
                     onSaveKeywords(keywords);
                     setIsFocused(false);
                   }}
-                  onChange={setKeywords}
-                  styles={customStyles}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
+                  onChange={(e) => {
+                    setKeywords(e as Props['Keywords']['Value']);
+                  }}
+                  // styles={customStyles}
                   components={{
                     Menu: () => null, // Remove menu
                     MenuList: () => null, // Remove menu list

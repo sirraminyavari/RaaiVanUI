@@ -49,14 +49,19 @@ function BlockEditorWrapper({
 
   return (
     <BlockEditorStyler textarea={textarea} readOnly={readOnly}>
-      {readOnly && (
+      {
         <Heading
           type="H5"
-          style={{ paddingInline: 0, textAlign: textarea ? 'start' : 'center' }}
+          style={{
+            height: readOnly && showHint ? '1.8rem' : '0rem',
+            paddingInline: 0,
+            textAlign: textarea ? 'start' : 'center',
+            transition: 'height 0.5s',
+          }}
         >
-          {showHint && RVDicClickToEdit}
+          {readOnly && showHint && RVDicClickToEdit}
         </Heading>
-      )}
+      }
       <BlockEditor
         //@ts-expect-error
         ref={editorRef}
