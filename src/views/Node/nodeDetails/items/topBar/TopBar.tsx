@@ -65,6 +65,9 @@ const TopBar = ({
   const { selectedTeam: selectedApp } = useSelector(selectTheme);
   const teamName = selectedApp?.name;
 
+  //TODO RVDic !
+  const RVDicBookmarkToastMsg = '.این آیتم به لیست آیتم‌های نشان‌شده اضافه شد';
+
   const extendedHierarchy = hierarchy?.map((level) => ({
     id: level?.NodeTypeID,
     title: decodeBase64(level?.TypeName),
@@ -118,6 +121,8 @@ const TopBar = ({
           response.Succeed === 'OperationCompletedSuccessfully'
         ) {
           setBookmarkStatus('liked');
+          //@ts-ignore
+          alert(RVDicBookmarkToastMsg, { type: 'success' });
         }
       });
     }

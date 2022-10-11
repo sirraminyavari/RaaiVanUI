@@ -12,6 +12,7 @@ import UserGroupUpsertModal from '../CreateUserGroupModal/UserGroupUpsertModal';
 import api from 'apiHelper';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import Sticker from 'components/PopupMenu/Sticker';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 
 interface IUserStateChangeProps {
   user: ISelectedObject;
@@ -174,39 +175,47 @@ const UserGroupSelect: FC<IUserGroupSelect> = (props) => {
           <Styles.ToggleButton onClick={open}>
             {'انتخاب اعضا'}
           </Styles.ToggleButton>
-          <Styles.DropDown ref={dropDownEl}>
-            <TabView>
-              {selectUserEnabled && (
-                <TabView.Item label={RVDic?.Members} type="Item">
-                  <UserSelect />
-                </TabView.Item>
-              )}
-
-              {selectGroupEnabled && (
-                <TabView.Item label={RVDic?.Groups} type="Item">
-                  <Styles.AddNewGroupButtonContainer
-                    onClick={openNewGroupDialog}
-                  >
-                    <BsPlusCircle size={20} />
-                    <div>{'ساخت گروه کاربری جدید'}</div>
-                  </Styles.AddNewGroupButtonContainer>
-                  <GroupSelect />
-                </TabView.Item>
-              )}
-
-              <TabView.Action type="Action">
-                {expnadable && (
-                  <Styles.ResizeButton>
-                    <ResizeIcon size={17} />
-                  </Styles.ResizeButton>
+          <OnClickAway
+            style={{}}
+            onAway={() => {
+              if (!isOpen) return;
+              close();
+            }}
+          >
+            <Styles.DropDown ref={dropDownEl}>
+              <TabView>
+                {selectUserEnabled && (
+                  <TabView.Item label={RVDic?.Members} type="Item">
+                    <UserSelect />
+                  </TabView.Item>
                 )}
 
-                <Styles.CloseButton onClick={close}>
-                  <CloseIcon outline={true} size={22} />
-                </Styles.CloseButton>
-              </TabView.Action>
-            </TabView>
-          </Styles.DropDown>
+                {selectGroupEnabled && (
+                  <TabView.Item label={RVDic?.Groups} type="Item">
+                    <Styles.AddNewGroupButtonContainer
+                      onClick={openNewGroupDialog}
+                    >
+                      <BsPlusCircle size={20} />
+                      <div>{'ساخت گروه کاربری جدید'}</div>
+                    </Styles.AddNewGroupButtonContainer>
+                    <GroupSelect />
+                  </TabView.Item>
+                )}
+
+                <TabView.Action type="Action">
+                  {expnadable && (
+                    <Styles.ResizeButton>
+                      <ResizeIcon size={17} />
+                    </Styles.ResizeButton>
+                  )}
+
+                  <Styles.CloseButton onClick={close}>
+                    <CloseIcon outline={true} size={22} />
+                  </Styles.CloseButton>
+                </TabView.Action>
+              </TabView>
+            </Styles.DropDown>
+          </OnClickAway>
         </Sticker>
       </Styles.Container>
 

@@ -70,6 +70,7 @@ const ScrollBarProvider = ({
       const isFirefox = navigator.userAgent.indexOf('firefox') !== -1;
       // prevent from scrolling parent elements
       function scrollWheelHandler(event) {
+        if (document.body.style.overflow === 'hidden') return false;
         let deltaX =
           event.deltaX * -1 || // wheel event
           event.wheelDeltaX / 4 || // mousewheel
@@ -110,12 +111,13 @@ const ScrollBarProvider = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [containerRef.current]
+    [containerRef.current, document.body.style.overflow]
   );
 
   return (
     <>
       <PerfectScrollbar
+        options={{ wheelPropagation: false }}
         containerRef={(el) => (containerRef.current = el)}
         className={`${alignClass} ${bgColorClass} ${className || ' '}`}
         onScrollY={

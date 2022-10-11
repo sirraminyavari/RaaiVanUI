@@ -26,11 +26,11 @@ const MainLayout = lazy(() =>
 window._alert = window.alert;
 window.avatarIconURL = avatarIconURL;
 
-window.alert = function (txt, props) {
+window.alert = function (txt, { type, ...props } = {}) {
   toast(txt, {
     position: RV_RTL ? 'bottom-left' : 'bottom-right',
-    style: { backgroundColor: CV_WHITE },
-
+    style: !type ? { backgroundColor: CV_WHITE } : {},
+    type,
     ...props,
   });
 };
