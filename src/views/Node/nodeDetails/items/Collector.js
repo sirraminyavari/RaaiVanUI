@@ -8,6 +8,7 @@ import FieldsLoadingSkelton from './FieldsLoadingSkelton';
 import MainNode from './MainNode';
 import TopBar from './topBar/TopBar';
 import WelcomeLayout from 'layouts/WelcomeLayout';
+import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 
 const SideColumn = lazy(() =>
   import(
@@ -31,6 +32,7 @@ const Collector = ({
   contribution,
   ...props
 }) => {
+  const { isTabletOrMobile } = DimensionHelper();
   const [sideColumn, setSideColumn] = useState(false);
   const [fields, setFields] = useState(null);
 
@@ -64,58 +66,64 @@ const Collector = ({
   }, [InstanceID, nodeDetails, newNode]);
 
   return (
-    <WelcomeLayout centerize>
-      <Maintainer
-        isAdvancedShow={sideColumn}
-        className={`${'rv-bg-color-white'} rv-border-radius-half`}
-        fullWidth={sideColumn}
-      >
-        <TopFilter>
-          <TopBar
-            newNode={newNode}
-            onSideColumnClicked={setSideColumn}
-            sideColumn={sideColumn}
-            nodeDetails={nodeDetails}
-            hierarchy={hierarchy}
-            contribution={contribution}
-          />
-        </TopFilter>
-        <div
-          style={{
-            padding: '0 3.5rem 3.5rem',
-            maxWidth: '100%',
-            overflow: 'hidden',
-          }}
-          {...props}
+    <Maintainer
+      isAdvancedShow={sideColumn}
+      className={`${'rv-bg-color-white'} rv-border-radius-half`}
+      portalMode={!isTabletOrMobile}
+    >
+      <WelcomeLayout centerize>
+        <>
+          <div
+            style={{
+              padding: '0 3.5rem 3.5rem',
+              maxWidth: '100%',
+              overflow: 'hidden',
+            }}
+            {...props}
+          >
+            <TopFilter>
+              <TopBar
+                newNode={newNode}
+                onSideColumnClicked={setSideColumn}
+                sideColumn={sideColumn}
+                nodeDetails={nodeDetails}
+                hierarchy={hierarchy}
+                contribution={contribution}
+              />
+            </TopFilter>
+            {fields ? (
+              <MainNode
+                nodeDetails={nodeDetails}
+                nodeId={nodeId}
+                fields={fields}
+                InstanceID={InstanceID}
+                newNode={newNode}
+                NodeTypeID={nodeId}
+                {...props}
+              />
+            ) : (
+              <FieldsLoadingSkelton />
+            )}
+          </div>
+        </>
+      </WelcomeLayout>
+      {!newNode && (
+        <Side
+          $isEnabled={sideColumn}
+          isRtl={RV_RTL}
+          portalMode={isTabletOrMobile}
         >
-          {fields ? (
-            <MainNode
-              nodeDetails={nodeDetails}
-              nodeId={nodeId}
-              fields={fields}
-              InstanceID={InstanceID}
-              newNode={newNode}
-              NodeTypeID={nodeId}
-              {...props}
-            />
-          ) : (
-            <FieldsLoadingSkelton />
-          )}
-        </div>
-        {!newNode && (
-          <Side $isEnabled={sideColumn} isRtl={RV_RTL}>
-            <Suspense fallback={<></>}>
-              {sideColumn && (
-                <SideColumn
-                  setSideColumn={setSideColumn}
-                  nodeDetails={nodeDetails}
-                />
-              )}
-            </Suspense>
-          </Side>
-        )}
-      </Maintainer>
-    </WelcomeLayout>
+          <Suspense fallback={<></>}>
+            {sideColumn && (
+              <SideColumn
+                setSideColumn={setSideColumn}
+                nodeDetails={nodeDetails}
+              />
+            )}
+          </Suspense>
+        </Side>
+      )}
+    </Maintainer>
   );
 };
 export default Collector;

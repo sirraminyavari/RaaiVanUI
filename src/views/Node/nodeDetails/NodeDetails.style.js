@@ -8,6 +8,7 @@ import {
   CV_BLACK,
   TCV_WARM,
   TCV_DEFAULT,
+  CV_GRAY_DARK,
 } from 'constant/CssVariables';
 import { BG_WHITE, C_GRAY, TC_WARM } from 'constant/Colors';
 import {
@@ -51,18 +52,40 @@ export const Maintainer = styled.div`
   width: 100%;
   max-height: 100%;
   transition: min-width 0.5s, width 0.5s, left 0.5s;
+  display: flex;
+  position: relative;
+
+  & > div:first-of-type {
+    width: 100%;
+    transition: width 0.5s, opacity 0.5s;
+    margin-block-start: 1rem;
+  }
+  ${({ isAdvancedShow, portalMode }) =>
+    isAdvancedShow && portalMode
+      ? `
+      & > div:first-of-type {
+    width: calc(100% - 27rem);
+
+  }
+  `
+      : `
+      & > div:first-of-type {
+    width: calc(100% - 2rem);
+
+  }`}
 `;
 export const Side = styled.div`
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 5.5rem);
   padding: ${({ isRtl }) => (isRtl ? '0 0.5rem 0 1rem' : '0 1rem 0 0.5rem')};
   opacity: ${({ $isEnabled }) => ($isEnabled ? '1' : '0')};
   width: ${({ $isEnabled }) => ($isEnabled ? '25rem' : '0rem')};
-  // transition: width 0.5s, opacity 0.5s;
+  transition: width 0.5s, opacity 0.5s;
   z-index: 10;
   padding: 0 0 0 0rem;
   position: fixed;
-  top: 4rem;
+  top: 5rem;
   inset-inline-end: 0;
+  ${({ portalMode }) => !portalMode && `position: sticky;`}
 `;
 
 export const TopFilter = styled.div`
@@ -269,19 +292,27 @@ export const LogItemContainer = styled.div`
   margin: 1rem 0;
 
   .log-item-avatar {
-    width: 2.2rem;
-    height: 2.2rem;
-    min-width: 2.2rem;
-    min-height: 2.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border: none;
+    aspect-ratio: 1;
+    margin-inline-start: 0.8rem;
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
 `;
 
 export const LogWrapper = styled.div`
-  width: 45%;
   ${({ start }) => start && FLEX_RCS}
   ${({ end }) => end && FLEX_RCE}
-  gap: 0.2rem;
+  gap: 0.5rem;
+  font-size: 1rem;
+
+  svg {
+    font-size: 1.8rem;
+  }
 `;
 export const Line = styled.div`
   height: 1.3rem;
@@ -301,6 +332,7 @@ export const LogItemTitle = styled.div.attrs({
 
 export const LogItemRecordDate = styled.div`
   width: 100%;
+  color: ${CV_GRAY_DARK};
 `;
 
 export const DocSettingContainer = styled.div.attrs({

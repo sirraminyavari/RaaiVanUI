@@ -112,14 +112,6 @@ const MultiLevelInputField = ({
                 <>
                   {!!normalizedOptions(x) || value[index] ? (
                     <>
-                      {index !== 0 && (
-                        <SelectContainer noMargin>
-                          <Styles.SelectedFieldChevron
-                            dir={RV_RTL ? 'left' : 'right'}
-                            small={false}
-                          />
-                        </SelectContainer>
-                      )}
                       <SelectContainer>
                         <Select
                           isDisabled={!isEditable}

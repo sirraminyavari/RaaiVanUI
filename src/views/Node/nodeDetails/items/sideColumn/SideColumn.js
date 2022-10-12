@@ -9,6 +9,7 @@ import SideHeader from './SideHeader';
 import SideInfo from './SideInfo';
 import SideSetting from './SideSetting';
 import SideSecurity from './SideSecurity';
+import SideHistoryLog from './SideHistoryLog';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import usePreventScroll from 'hooks/usePreventScroll';
 import Modal from 'components/Modal/Modal';
@@ -105,7 +106,7 @@ const SideColumn = (props) => {
         <SideHeader />
         <ScrollBarProvider className="node-page-side-scrollbar">
           <SideInfo />
-          {/* <SideHistoryLog /> */}
+          <SideHistoryLog />
           <SideSetting />
           <SideSecurity />
         </ScrollBarProvider>

@@ -19,21 +19,23 @@ const SideHistoryLog = () => {
     setSideModal((prev) => ({
       ...prev,
       isShown: true,
-      title: '*#*مشاهده تاریخچه تغییرات',
+      title: 'مشاهده تاریخچه تغییرات',
       content: 'history',
     }));
   };
 
   return (
-    <Styled.DocHistoryLogContainer onClick={handleLogClick}>
-      <DocItemHeader title="*#*مشاهده تاریخچه تغییرات" />
+    <Styled.DocHistoryLogContainer
+    // onClick={handleLogClick}
+    >
+      <DocItemHeader title="مشاهده تاریخچه تغییرات" />
       <LogItem
         icon={CalendarIcon}
         date={CreationDate}
         user={Creator}
         title={RVDic.CreationDate}
       />
-      <LogItem title={RVDic.Update} />
+      {/* <LogItem title={RVDic.Update} /> */}
     </Styled.DocHistoryLogContainer>
   );
 };

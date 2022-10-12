@@ -158,10 +158,10 @@ const customStyles = {
       padding: '0.3rem',
       minWidth: 'initial',
       justifyContent: 'space-between',
-      marginBlock: '0.18rem',
+      marginBlock: '0',
       marginInline: '0.5rem',
       paddingInline: '0.5rem',
-      paddingBlock: '0.4rem',
+      paddingBlock: '0.2rem',
       borderRadius: '0.5rem',
       fontSize: '0.93rem',
     };
