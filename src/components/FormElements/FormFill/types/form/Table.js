@@ -174,31 +174,37 @@ const Table = (props) => {
 
   //! Delete table row.
   const removeRow = (row) => {
-    const rowIndex = row?.index;
-    const rowId = row?.original?.id;
+    console.log({ row, rows });
+    if (typeof row === 'string' && row.startsWith('new_')) {
+      setRows((old) => old.filter((row) => row?.id !== row));
+      getFormData();
+    } else {
+      const rowIndex = row?.index;
+      const rowId = row?.original?.id;
 
-    removeFormInstance(rowId)
-      .then((response) => {
-        if (response?.Succeed) {
-          const message = 'ردیف حذف شد';
-          const toastId = `delete-${rowId}`;
-          UndoToast({
-            toastId,
-            message,
-            autoClose: 10000,
-            onUndo: () => undoRowDelete(rowId),
-            closeButton: (
-              <CloseIcon
-                onClick={() => closeUndoToast(toastId)}
-                color={CV_RED}
-              />
-            ),
-          });
+      removeFormInstance(rowId)
+        .then((response) => {
+          if (response?.Succeed) {
+            const message = 'ردیف حذف شد';
+            const toastId = `delete-${rowId}`;
+            UndoToast({
+              toastId,
+              message,
+              autoClose: 10000,
+              onUndo: () => undoRowDelete(rowId),
+              closeButton: (
+                <CloseIcon
+                  onClick={() => closeUndoToast(toastId)}
+                  color={CV_RED}
+                />
+              ),
+            });
 
-          setRows((old) => old.filter((row, index) => index !== rowIndex));
-        }
-      })
-      .catch((error) => console.log(error));
+            setRows((old) => old.filter((row, index) => index !== rowIndex));
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   };
   const memoizedRemoveRow = useCallback(removeRow, []);
 
@@ -263,6 +269,7 @@ const Table = (props) => {
         // console.log(error, 'save row error')
       });
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedEditRow = useCallback(editRow, [
     rows,
     tableContent,
@@ -320,7 +327,7 @@ const Table = (props) => {
 
         await getFormData(); //! Refresh table data.
       }
-      createFormInstance(newElementID || tableFormID, ElementID, true)
+      createFormInstance(newElementID || tableFormID, ElementID)
         .then((response) => {
           if (response?.Succeed) {
             const instanceId = response?.Instance?.InstanceID;
@@ -352,8 +359,9 @@ const Table = (props) => {
 
   //! Add new row.
   const addRow = async () => {
+    alert('adding row');
     let elements = Object.values(newRowRef.current);
-    saveRow(elements);
+    // saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, [saveRow]);
 

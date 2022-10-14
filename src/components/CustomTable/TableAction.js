@@ -21,7 +21,7 @@ const TableAction = (props) => {
 
   //TODO: Update RVDic object dictionary
 
-  const { tempRowId, setTempRowId, onEditRowCancel, addRow } =
+  const { tempRowId, setTempRowId, onEditRowCancel, addRow, removeRow } =
     tableInstance || {};
 
   //! Fires on search input change.
@@ -46,7 +46,8 @@ const TableAction = (props) => {
   }, [searchText]);
 
   const handleCancelChange = () => {
-    onEditRowCancel && onEditRowCancel();
+    // onEditRowCancel && onEditRowCancel();
+    removeRow && removeRow(tempRowId);
     setTempRowId(null);
   };
 

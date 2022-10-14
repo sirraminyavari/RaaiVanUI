@@ -28,7 +28,7 @@ const SideHistoryLog = () => {
     <Styled.DocHistoryLogContainer
     // onClick={handleLogClick}
     >
-      <DocItemHeader title="مشاهده تاریخچه تغییرات" />
+      {/* <DocItemHeader title="مشاهده تاریخچه تغییرات" /> */}
       <LogItem
         icon={CalendarIcon}
         date={CreationDate}

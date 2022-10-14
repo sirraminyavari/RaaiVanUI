@@ -17,9 +17,12 @@ export const StyledInput = styled(Input)`
   width: 100%;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
-
-  :disabled {
-    //background: white;
+  -moz-appearance: textfield;
+  touch-action: none;
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 

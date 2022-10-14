@@ -114,6 +114,10 @@ const TextField = ({
                   save(elementId);
                   setIsFocused(false);
                 }}
+                onWheel={(event) => {
+                  event.preventDefault();
+                  event.currentTarget.blur();
+                }}
                 style={{ width: '100%', fontSize: '1rem' }}
               />
               <Styles.SelectedFieldTextCounterContainer muted>
@@ -122,7 +126,11 @@ const TextField = ({
             </>
           ) : (
             <Styles.SelectedFieldItem muted={!value}>
-              {value ? value : editable && RVDic.Select}
+              {value
+                ? !isNaN(value)
+                  ? parseFloat(value).toLocaleString()
+                  : value
+                : editable && RVDic.Select}
             </Styles.SelectedFieldItem>
           )}
         </Styles.SelectedFieldItemContainer>

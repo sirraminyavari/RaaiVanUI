@@ -98,7 +98,7 @@ const SelectInputField = ({
         )
       ) : (
         <Styles.SelectedFieldItem
-          selectInput
+          selectInput={selectedValue !== undefined}
           muted={selectedValue === undefined}
         >
           {selectedValue && !isArray(selectedValue)
