@@ -152,24 +152,26 @@ const MainNode = ({
             NodeID={nodeId}
           />
         </>
-        {nodeDetails?.Description?.Value !== undefined && (
-          <ParagraphField
-            decodeTitle={RVDic.Summary}
-            iconComponent={<SummeryInputIcon color={CV_GRAY} />}
-            onAnyFieldChanged={(_, fieldValue) =>
-              newNode ? setDescription(fieldValue) : onSaveDesc(fieldValue)
-            }
-            value={decodeBase64(nodeDetails?.Description?.Value)}
-            isEditable={nodeDetails?.Description?.Editable}
-          />
+        {nodeDetails?.DisableAbstractAndKeywords === false && (
+          <>
+            {nodeDetails?.Description?.Value !== undefined && (
+              <ParagraphField
+                decodeTitle={RVDic.Summary}
+                iconComponent={<SummeryInputIcon color={CV_GRAY} />}
+                onAnyFieldChanged={(_, fieldValue) =>
+                  newNode ? setDescription(fieldValue) : onSaveDesc(fieldValue)
+                }
+                value={decodeBase64(nodeDetails?.Description?.Value)}
+                isEditable={nodeDetails?.Description?.Editable}
+              />
+            )}
+            <KeywordField
+              Keywords={nodeDetails?.Keywords}
+              onSaveKeywords={onSaveKeywords}
+              isEditable={nodeDetails?.Description?.Editable}
+            />
+          </>
         )}
-        <>
-          <KeywordField
-            Keywords={nodeDetails?.Keywords}
-            onSaveKeywords={onSaveKeywords}
-            isEditable={nodeDetails?.Description?.Editable}
-          />
-        </>
         {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
 
         {!newNode && (
