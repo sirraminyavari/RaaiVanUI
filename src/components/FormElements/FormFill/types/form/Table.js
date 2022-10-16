@@ -116,10 +116,9 @@ const Table = (props) => {
   const updateCellData = (rowId, columnId, newCellData, oldCellValue) => {
     // console.log({ newCellData }, { oldCellValue }, 'step one');
     const isNewRow = rowId.split('_')[0] === 'new';
-
     if (isNewRow) {
       //! If new row is being edited.
-      saveRow([newCellData]);
+      saveRow([newCellData], true);
     } else {
       //! Row already exists.
       if (editByCell) {
@@ -306,7 +305,14 @@ const Table = (props) => {
 
   //! Save row.
   const saveRow = useCallback(
-    async (newRowElements) => {
+    async (newRowElements, isNewRow = false) => {
+      if (isNewRow && newRowElements[0]?.ElementID) {
+        newRowRef.current = {
+          ...newRowRef.current,
+          [newRowElements[0].ElementID]: newRowElements[0],
+        };
+        return;
+      }
       //! Create new row instance.
       let newElementID;
       if (!hasInitiated) {
@@ -359,9 +365,8 @@ const Table = (props) => {
 
   //! Add new row.
   const addRow = async () => {
-    alert('adding row');
     let elements = Object.values(newRowRef.current);
-    // saveRow(elements);
+    saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, [saveRow]);
 
