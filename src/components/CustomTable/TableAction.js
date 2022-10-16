@@ -51,8 +51,8 @@ const TableAction = (props) => {
     setTempRowId(null);
   };
 
-  const handleAcceptChanges = () => {
-    // addRow && addRow();
+  const handleAcceptChanges = async () => {
+    addRow && (await addRow());
     //* simple promise mock ...
     setSaveBtnLoadingStatus(true);
     new Promise((resolve) =>
