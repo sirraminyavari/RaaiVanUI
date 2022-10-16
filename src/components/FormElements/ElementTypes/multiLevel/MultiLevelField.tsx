@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
+import SelectInputField from '../Select/SelectInputField';
 
 const normalizedOptions = (options) =>
   options?.nodes?.map((x) => {
@@ -113,16 +114,16 @@ const MultiLevelInputField = ({
                   {!!normalizedOptions(x) || value[index] ? (
                     <>
                       <SelectContainer>
-                        <Select
-                          isDisabled={!isEditable}
+                        <SelectInputField
+                          isEditable={isEditable as boolean}
+                          isFocused={isFocused}
                           options={normalizedOptions(x)}
-                          styles={customStyles}
-                          value={{
+                          // styles={customStyles}
+                          selectedValue={{
                             value: ID,
                             label: decodeBase64(Name),
                           }}
-                          placeholder={RVDic.Select}
-                          isSearchable={true}
+                          isSearchable
                           onChange={(event, triggeredAction) => {
                             if (triggeredAction.action === 'clear') {
                               const selectedTemp = selectedLevels?.map(

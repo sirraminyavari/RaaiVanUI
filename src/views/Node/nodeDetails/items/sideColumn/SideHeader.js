@@ -1,7 +1,7 @@
 /**
  * Renders header for node age side.
  */
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
 import useWindow from 'hooks/useWindowContext';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
@@ -12,13 +12,17 @@ import TrashIcon from 'components/Icons/TrashIcon';
 import { removeNode, recycleNode } from 'apiHelper/apiFunctions';
 import UndoToast from 'components/toasts/undo-toast/UndoToast';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
+import { useHistory } from 'react-router-dom';
 import { SideContext } from './SideColumn';
+import { getClassesPageUrl, getNodePageUrl } from 'apiHelper/getPageUrl';
 
 const SideHeader = () => {
+  const history = useHistory();
   const { RVDic } = useWindow();
+
   const { handleCloseSide, nodeDetails } = useContext(SideContext);
 
-  const { NodeID } = nodeDetails || {};
+  const { NodeID, NodeTypeID } = nodeDetails || {};
 
   /**
    * Make an info toast.
@@ -35,7 +39,7 @@ const SideHeader = () => {
   };
 
   //! Recover node.
-  const handleRecycleNode = () => {
+  const handleRecycleNode = useCallback(() => {
     //! API call to recycle document.
     recycleNode(NodeID)
       .then((response) => {
@@ -43,16 +47,18 @@ const SideHeader = () => {
           //! Dispatch success toast.
           const successMSG = 'سند با موفقیت بازیافت شد';
           makeInfoToast(successMSG, 'error');
+
+          history.push(getNodePageUrl(NodeID));
         }
       })
       .catch((error) => {
         //! Dispatch error toast.
         makeInfoToast(error.message, 'error');
       });
-  };
+  }, [NodeID]);
 
   //! Remove node.
-  const handleRemoveDoc = () => {
+  const handleRemoveDoc = useCallback(() => {
     //! API call to remove document.
     removeNode(NodeID)
       .then((response) => {
@@ -67,6 +73,7 @@ const SideHeader = () => {
             onUndo: handleRecycleNode,
             toastId: `node-page-remove-${NodeID}`,
           });
+          history.push(getClassesPageUrl(NodeTypeID));
         }
 
         if (response?.ErrorText) {
@@ -81,7 +88,7 @@ const SideHeader = () => {
         //! Dispatch error toast.
         makeInfoToast(error.message, 'error');
       });
-  };
+  }, [NodeTypeID]);
 
   //! Provide action for header.
   const Actions = () => {

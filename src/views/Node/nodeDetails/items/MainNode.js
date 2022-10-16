@@ -152,7 +152,7 @@ const MainNode = ({
             NodeID={nodeId}
           />
         </>
-        {nodeDetails?.DisableAbstractAndKeywords === false && (
+        {nodeDetails?.DisableAbstractAndKeywords !== true && (
           <>
             {nodeDetails?.Description?.Value !== undefined && (
               <ParagraphField

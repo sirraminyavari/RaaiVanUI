@@ -2,11 +2,18 @@ import DragIcon from 'components/Icons/DragIcon/Drag';
 import RowActionMenu from './RowActionMenu';
 import RowEditMenu from './RowEditMenu';
 import * as Styled from 'components/CustomTable/CustomTable.styles';
-import PopupMenu from 'components/PopupMenu/PopupMenu';
+import Popover from '@mui/base/PopperUnstyled';
+// import PopupMenu from 'components/PopupMenu/PopupMenu';
 import useWindow from 'hooks/useWindowContext';
+import { useState } from 'react';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
 
+//TODO extract popover !
 const ActionsCell = (props) => {
   const { RV_Float } = useWindow();
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(false);
+  const id = open ? 'simple-popover' : undefined;
   const { cell } = props;
   const { row, tempRowId, editingRowId, dragHandleProps } = cell || {};
 
@@ -27,16 +34,34 @@ const ActionsCell = (props) => {
         {isNewRow ? (
           <DragIcon />
         ) : (
-          <PopupMenu
-            trigger="click"
-            align={RV_Float}
-            menuClass="table-action-menu"
-          >
+          <>
             <div>
-              <DragIcon />
+              <DragIcon
+                aria-describedby={id}
+                onClick={(event) => {
+                  setAnchorEl(event.currentTarget);
+                  setOpen((prev) => !prev);
+                }}
+              />
             </div>
-            <RowActionMenu cell={cell} />
-          </PopupMenu>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              popperOptions={{ placement: RV_Float }}
+              placement="auto"
+            >
+              <OnClickAway
+                style={{}}
+                onAway={() => {
+                  setOpen(false);
+                }}
+                onClick={() => {}}
+              >
+                <RowActionMenu cell={cell} />
+              </OnClickAway>
+            </Popover>
+          </>
         )}
       </Styled.RowDragHandleWrapper>
     );
