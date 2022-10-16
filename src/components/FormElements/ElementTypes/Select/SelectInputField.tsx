@@ -146,6 +146,7 @@ const customStyles = {
     ...provided,
     borderColor: TCV_VERY_TRANSPARENT,
     minWidth: '9rem',
+    zIndex: 5,
 
     ':hover': {
       borderWidth: 0,
