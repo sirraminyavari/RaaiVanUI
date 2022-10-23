@@ -178,7 +178,10 @@ const AdvanceSearchDesktop = ({
               ref.getBoundingClientRect = () => {
                 const original = ref._getBoundingClientRect();
 
-                return { ...original, height: Math.round(original.height) };
+                return {
+                  ...original,
+                  // height: Math.round(original.height)
+                };
               };
             }
           }}

@@ -136,19 +136,17 @@ const RelatedTopicsTab = ({
             onTabClick={handleClickAll}
           />
         )}
-        {sortedNodes
-          // ?.filter((itm, ind) => ind <= 1)
-          .map((item, idx) => (
-            <RelatedTopicsTabItem
-              item={item}
-              key={item?.NodeTypeID}
-              isActive={activeTab === item?.NodeTypeID}
-              onTabClick={() => handleItemClick(item)}
-              visible={
-                moreRelatedItemOffset === -1 || idx <= moreRelatedItemOffset
-              }
-            />
-          ))}
+        {sortedNodes?.map((item, idx) => (
+          <RelatedTopicsTabItem
+            item={item}
+            key={item?.NodeTypeID}
+            isActive={activeTab === item?.NodeTypeID}
+            onTabClick={() => handleItemClick(item)}
+            visible={
+              moreRelatedItemOffset === -1 || idx <= moreRelatedItemOffset
+            }
+          />
+        ))}
 
         <RelatedTopicsTabItem
           item={{ NodeType: 'سایر آیتم‌ها', Count: moreNodesCount }}
@@ -168,17 +166,15 @@ const RelatedTopicsTab = ({
         isFloat={!!floatBox}
       >
         <Styled.RelatedTopicsTabMoreTopicsWrapper>
-          {sortedNodes
-            // ?.filter((itm, ind) => ind > 1)
-            .map((item, idx) => (
-              <RelatedTopicsTabItem
-                item={item}
-                key={item?.NodeTypeID}
-                isActive={activeTab === item?.NodeTypeID}
-                onTabClick={() => handleItemClick(item)}
-                visible={idx > moreRelatedItemOffset}
-              />
-            ))}
+          {sortedNodes?.map((item, idx) => (
+            <RelatedTopicsTabItem
+              item={item}
+              key={item?.NodeTypeID}
+              isActive={activeTab === item?.NodeTypeID}
+              onTabClick={() => handleItemClick(item)}
+              visible={idx > moreRelatedItemOffset}
+            />
+          ))}
         </Styled.RelatedTopicsTabMoreTopicsWrapper>
         {!isRelatedPage && (
           <Button classes="more-topics-button" style={{ maxWidth: '12rem' }}>

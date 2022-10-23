@@ -115,6 +115,7 @@ const BlockEditorStyler = styled.div.attrs<{
   `}
   & > div {
     font-family: inherit;
+    font-size: 0.93rem;
     max-width: 100%;
     margin-block: 0.5rem;
     padding-block: 0.3rem;

@@ -59,24 +59,17 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
             value={value}
             onChange={(e) => setValue(e)}
             placeholder={'نام دسته جدید را وارد کنید'}
+            autoFocus
           />
         </ModalContent>
         <ModalActionBar>
-          <Button
-            type="primary"
-            style={buttonStyles}
-            onClick={() => handleModalConfirm()}
-          >
+          <ActionButton type="primary" onClick={() => handleModalConfirm()}>
             {RVDic?.Save}
-          </Button>
+          </ActionButton>
 
-          <Button
-            type="negative-o"
-            style={buttonStyles}
-            onClick={() => handleModalCancel()}
-          >
+          <ActionButton type="negative-o" onClick={() => handleModalCancel()}>
             {RVDic?.Return}
-          </Button>
+          </ActionButton>
         </ModalActionBar>
       </Modal>
     </>
@@ -151,8 +144,9 @@ const ModalActionBar = styled.div`
   padding: 1rem;
 `;
 
-const buttonStyles = {
-  height: '3rem',
-  width: '7.5rem',
-};
+const ActionButton = styled(Button)`
+  min-width: 7.5rem;
+  min-height: 3rem;
+  border-radius: 0.8125rem;
+`;
 export default TemplateCreateNew;

@@ -6,7 +6,7 @@ import { MEDIUM_BOUNDRY, MOBILE_BOUNDRY } from 'constant/constants';
 export const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
+  gap: 0.75rem;
   margin-top: 4rem;
   max-width: 60rem;
   width: 100%;
@@ -41,12 +41,14 @@ export const BlockTitle = styled.div`
   width: 11.25rem;
   font-weight: 500;
   color: ${CV_GRAY_DARK};
+  flex-shrink: 0;
 `;
 BlockTitle.displayName = 'BlockTitle';
 
 export const BlockSelectWrapper = styled.div`
   max-width: 23.5rem;
-  width: 100%;
+  // width: 100%;
+  min-width: 14rem;
   grid-column: 2 / span 2;
 `;
 BlockSelectWrapper.displayName = 'BlockSelectWrapper';

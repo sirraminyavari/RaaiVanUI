@@ -11,7 +11,7 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64, getWeekDay, random } from 'helpers/helpers';
+import { decodeBase64, getWeekDay } from 'helpers/helpers';
 import {
   createFormInstance,
   removeFormInstance,
@@ -65,6 +65,7 @@ const Table = (props) => {
   const [rows, setRows] = useState([]);
   const [tableContent, setTableContent] = useState([]);
   const [tableFormID, setTableFormID] = useState(FormID);
+  const [isNewRowEmpty, setIsNewRowEmpty] = useState(true);
   const newRowRef = useRef({});
   const beforeEditRowsRef = useRef(null);
 
@@ -298,9 +299,9 @@ const Table = (props) => {
       setRows(beforeEditRowsRef.current);
       beforeEditRowsRef.current = null;
       newRowRef.current = {};
+      setIsNewRowEmpty(true);
     }
   };
-
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
   //! Save row.
@@ -311,6 +312,7 @@ const Table = (props) => {
           ...newRowRef.current,
           [newRowElements[0].ElementID]: newRowElements[0],
         };
+        setIsNewRowEmpty(false);
         return;
       }
       //! Create new row instance.
@@ -346,6 +348,7 @@ const Table = (props) => {
               .then((response) => {
                 getFormData(); //! Refresh table data.
                 newRowRef.current = {};
+                setIsNewRowEmpty(true);
               })
               .catch((error) => console.log(error, 'save row error'));
           }
@@ -366,7 +369,7 @@ const Table = (props) => {
   //! Add new row.
   const addRow = async () => {
     let elements = Object.values(newRowRef.current);
-    saveRow(elements);
+    await saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, [saveRow]);
 
@@ -494,6 +497,7 @@ const Table = (props) => {
       tableMirror={Table}
       onCreateNewRow={createNewRow}
       onDuplicateRow={memoizedDuplicateRow}
+      isNewRowEmpty={isNewRowEmpty}
     />
   );
 };

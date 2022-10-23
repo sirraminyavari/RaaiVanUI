@@ -103,15 +103,21 @@ const Input = React.forwardRef(
     //end of handle key down events
 
     return (
-      <InputContainer className={Icon && 'rv-input'}>
+      <InputContainer
+        className={cn(
+          Icon && error && 'rv-input-invalid',
+          Icon && 'rv-input',
+          Icon && shaking && 'rv-shake'
+        )}
+      >
         {Icon && <Icon />}
         <input
           ref={ref}
           type={type}
           className={cn(
             !Icon && 'rv-input',
-            error && 'rv-input-invalid',
-            shaking && 'rv-shake',
+            !Icon && error && 'rv-input-invalid',
+            !Icon && shaking && 'rv-shake',
             className
           )}
           style={GlobalUtilities.extend(
@@ -160,7 +166,7 @@ const InputContainer = styled.div`
   align-items: center;
 
   ${({ className }) =>
-    className === 'rv-input' &&
+    className.split(' ').includes('rv-input') &&
     `
     padding: 0;
     border-radius: 0.3rem;
@@ -194,7 +200,7 @@ export const ButtonContainer = styled.div`
 
 const ErrorContainer = styled.div`
   position: absolute;
-  bottom: -1rem;
+  bottom: -1.2rem;
   height: 1rem;
   font-size: 0.6rem;
   ${RV_Float}:0.5rem
