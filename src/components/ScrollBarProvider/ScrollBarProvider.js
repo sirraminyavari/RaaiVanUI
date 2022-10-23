@@ -117,7 +117,7 @@ const ScrollBarProvider = ({
   return (
     <>
       <PerfectScrollbar
-        options={{ wheelPropagation: false }}
+        options={{ wheelPropagation: true }}
         containerRef={(el) => (containerRef.current = el)}
         className={`${alignClass} ${bgColorClass} ${className || ' '}`}
         onScrollY={

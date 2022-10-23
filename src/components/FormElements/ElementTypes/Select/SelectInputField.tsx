@@ -125,6 +125,9 @@ const customStyles = {
       backgroundColor: CV_FREEZED,
       padding: '0.2rem 0.2rem 0.2rem 0.2rem',
     },
+    cursor: 'pointer',
+
+    // minWidth: '10rem',
   }),
   control: (provided) => ({
     // none of react-select's styles are passed to <Control />
@@ -156,7 +159,6 @@ const customStyles = {
     return {
       ...styles,
       backgroundColor: TCV_VERY_TRANSPARENT,
-      padding: '0.3rem',
       minWidth: 'initial',
       justifyContent: 'space-between',
       marginBlock: '0',

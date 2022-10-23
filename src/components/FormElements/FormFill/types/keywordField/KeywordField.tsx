@@ -53,6 +53,9 @@ function KeywordField({ Keywords, onSaveKeywords }: Props) {
             if (isFocused) return;
             setIsFocused(true);
           }}
+          onAway={() => {
+            setIsFocused(false);
+          }}
         >
           <Styles.SelectedFieldItemContainer>
             <CellContainer>

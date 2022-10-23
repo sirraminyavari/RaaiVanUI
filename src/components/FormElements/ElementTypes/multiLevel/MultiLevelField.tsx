@@ -1,13 +1,5 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
-import {
-  CV_FREEZED,
-  CV_GRAY,
-  CV_WHITE,
-  TCV_WARM,
-  TCV_VERY_TRANSPARENT,
-} from 'constant/CssVariables';
 import { useCallback, useEffect, useState } from 'react';
-import Select from 'react-select';
 import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styles from '../formElements.styles';
@@ -16,7 +8,7 @@ import SelectInputField from '../Select/SelectInputField';
 
 const normalizedOptions = (options) =>
   options?.nodes?.map((x) => {
-    return { label: window.Base64.decode(x.Name), value: { ...x } };
+    return { label: window.Base64.decode(x.Name), value: x.ID };
   });
 
 export interface IMultiLevelInputField {
@@ -208,47 +200,3 @@ const SelectorContainer = styled.div`
   flex-wrap: wrap;
   margin: 0 -1rem 0 -1rem;
 `;
-
-const customStyles = {
-  option: (styles, { isFocused, isSelected }, provided) => ({
-    ...provided,
-    color: isSelected ? TCV_WARM : CV_GRAY,
-    margin: '0.35rem 0.5rem 0.35rem 0.5rem',
-    cursor: 'pointer',
-    // minWidth: '10rem',
-    padding: '0.2rem 0.2rem 0.2rem 0.2rem',
-    backgroundColor: isFocused && CV_FREEZED,
-    maxWidth: '100%',
-    overflowX: 'hidden',
-    ':hover': {
-      color: TCV_WARM,
-      backgroundColor: CV_FREEZED,
-      padding: '0.2rem 0.2rem 0.2rem 0.2rem',
-    },
-  }),
-  control: (provided) => ({
-    // none of react-select's styles are passed to <Control />
-    ...provided,
-    borderColor: CV_WHITE,
-    backgroundColor: CV_WHITE,
-    minWidth: '9rem',
-
-    ':focus': {
-      border: 0,
-    },
-  }),
-  singleValue: (styles) => {
-    return {
-      ...styles,
-      backgroundColor: TCV_VERY_TRANSPARENT,
-      borderRadius: '0.5rem',
-      padding: '0.3rem',
-      minWidth: '9rem',
-    };
-  },
-  menu: (provided) => ({
-    ...provided,
-    borderColor: TCV_VERY_TRANSPARENT,
-    minWidth: '9rem',
-  }),
-};
