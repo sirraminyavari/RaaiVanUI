@@ -20,6 +20,7 @@ import TextInputIcon from 'components/Icons/InputIcon/TextInputIcon';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import * as Styles from 'components/FormElements/ElementTypes/formElements.styles';
 import { isNumber } from 'lodash';
+import { numberThousandSeparator } from 'helpers/helpers';
 
 const TextField = ({
   value,
@@ -156,7 +157,9 @@ const TextField = ({
           setIsFocused(true);
         }}
         onAway={() => {
-          if (errorHandler) setIsFocused(false);
+          if (errorHandler) {
+            setIsFocused(false);
+          }
         }}
       >
         <Styles.SelectedFieldItemContainer>
@@ -203,7 +206,7 @@ const TextField = ({
             <Styles.SelectedFieldItem muted={!value}>
               {value
                 ? !isNaN(value) && CommaSeparator
-                  ? parseFloat(value).toLocaleString()
+                  ? numberThousandSeparator(`${value}`)
                   : value
                 : editable && RVDic.Select}
             </Styles.SelectedFieldItem>
