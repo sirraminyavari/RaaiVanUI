@@ -14,6 +14,7 @@ export const getElementType = (data) => {
 
 const TextTypeFinder = (data) => {
   const { Info } = data || {};
+  console.log(Info);
   const _getObject = (type) => {
     const _list = formElementList() || [];
     let el =
@@ -24,34 +25,35 @@ const TextTypeFinder = (data) => {
         : _list
             .find((x) => x?.type === 'Numeric')
             ?.items?.find((x) => x?.type === type) || {};
-    return { ...el, data: data };
+    console.log(el);
+    return { ...el, data };
   };
 
   if (
-    (Info.hasOwnProperty('min') || Info.hasOwnProperty('max')) &&
-    !Info.hasOwnProperty('PatternName')
+    (Info?.hasOwnProperty('min') || Info?.hasOwnProperty('max')) &&
+    !Info?.hasOwnProperty('PatternName')
   ) {
     return _getObject('paragraph');
   } else if (
-    Info.hasOwnProperty('UseSimpleEditor') &&
-    !Info.hasOwnProperty('PatternName')
+    Info?.hasOwnProperty('UseSimpleEditor') &&
+    !Info?.hasOwnProperty('PatternName')
   ) {
     return _getObject('short text');
   } else if (
-    Info.hasOwnProperty('UseSimpleEditor') &&
-    Info.PatternName === 'email'
+    Info?.hasOwnProperty('UseSimpleEditor') &&
+    Info?.PatternName === 'email'
   ) {
     return _getObject('email');
   } else if (
-    Info.hasOwnProperty('UseSimpleEditor') &&
-    (Info.PatternName === 'mobile' ||
-      Info.PatternName === 'phone' ||
-      Info.PatternName === 'phoneByNationalCode')
+    Info?.hasOwnProperty('UseSimpleEditor') &&
+    (Info?.PatternName === 'mobile' ||
+      Info?.PatternName === 'phone' ||
+      Info?.PatternName === 'phoneByNationalCode')
   ) {
     return _getObject('phone');
   } else if (
-    Info.hasOwnProperty('UseSimpleEditor') &&
-    Info.PatternName === 'url'
+    Info?.hasOwnProperty('UseSimpleEditor') &&
+    Info?.PatternName === 'url'
   ) {
     return _getObject('url');
   }
@@ -66,7 +68,7 @@ const NumericTypeFinder = (data) => {
       ?.items?.find((x) => x?.type === type);
     return { ...el, data: data };
   };
-  if (Info.hasOwnProperty('currency')) {
+  if (Info?.hasOwnProperty('currency')) {
     return _getObject('Numeric');
   } else {
     return _getObject('Rating');
@@ -74,11 +76,11 @@ const NumericTypeFinder = (data) => {
 };
 
 const getObject = (data) => {
-  const { Type } = data?.Info || {};
+  const { Type } = data;
   const _list =
     formElementList()
       .map((x) => x?.items)
       .flat() || [];
-  const el = _list.find((x) => x?.data?.Info?.Type === Type);
+  const el = _list.find((x) => x?.data?.Type === Type);
   return { ...el, data: data };
 };

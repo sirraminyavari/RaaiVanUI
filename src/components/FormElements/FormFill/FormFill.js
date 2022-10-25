@@ -235,6 +235,7 @@ const FormFill = ({ data, editable, ...props }) => {
             );
 
           case 'Numeric':
+            // has patterns of number, nationalCode, currecy, postalCode and Rating
             return (
               <TextField
                 decodeInfo={decodeInfo}
