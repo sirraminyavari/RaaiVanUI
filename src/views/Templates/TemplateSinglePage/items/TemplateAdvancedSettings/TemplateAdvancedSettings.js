@@ -37,7 +37,6 @@ const TemplateAdvancedSettings = () => {
       ) : (
         <RVTemplateAdvancedSetting />
       )}
-      ;
     </AdvandcedContenxt.Provider>
   );
 };

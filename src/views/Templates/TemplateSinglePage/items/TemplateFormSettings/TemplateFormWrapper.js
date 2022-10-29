@@ -9,11 +9,17 @@ import { useTemplateContext } from '../../TemplateProvider';
 import { useTemplateFormContext } from './TemplateFormContext';
 import { useState } from 'react';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
+import { useHistory } from 'react-router-dom';
+import { TEMPLATES_SETTING_SINGLE_PATH } from 'constant/constants';
 
 const TemplateFormWrapper = () => {
   const { RV_RTL: rtl } = window;
-  const { Title } = useTemplateContext();
+  const { Title, NodeTypeID } = useTemplateContext();
+  const history = useHistory();
   const { saveForm } = useTemplateFormContext();
+
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
   return (
     <Styled.Container rtl={rtl}>
       <Styled.ActionHeader rtl={rtl}>
@@ -27,10 +33,30 @@ const TemplateFormWrapper = () => {
 
         <FormDeleteButton />
 
-        <Button type="primary" onClick={saveForm}>
-          <SaveIcon size={17} />
-          <Styled.ButtonTitle>{'انتشار فرم'}</Styled.ButtonTitle>
-        </Button>
+        <Styled.CustomDropdownMenu
+          data={[
+            {
+              colorClass: 'rv-default',
+              icon: <SaveIcon size={17} />,
+              label: 'انتشار فرم و بازگشت',
+              value: 'saveAndExit',
+            },
+          ]}
+          onSelectItem={(e) => {
+            saveForm();
+            returnToTemplates();
+          }}
+          defaultValue={{
+            colorClass: 'rv-default',
+            icon: <SaveIcon size={17} />,
+            label: 'انتشار فرم',
+            value: 'save',
+          }}
+          hiddenSelectedItem={false}
+          onClickLabel={() => {
+            saveForm();
+          }}
+        />
       </Styled.ActionHeader>
 
       <Styled.MainContent>

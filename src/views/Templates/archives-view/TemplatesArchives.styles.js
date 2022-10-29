@@ -13,26 +13,8 @@ export const TemplatesViewContainer = styled.div.attrs({
   box-shadow: 1px 5px 15px #0000001f;
   margin: 1rem;
   padding: 1rem;
-  padding-top: 3.5rem;
+  padding-top: 1.5rem;
   user-select: none;
-
-  .templates-breadcrumb {
-    ${RV_Float}: 1rem;
-  }
-
-  .templates-archives-return-button {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    width: 8rem;
-    height: 1.7rem;
-    border-radius: 1rem;
-    border-color: ${CV_WHITE};
-
-    :hover {
-      border-color: ${CV_RED};
-    }
-  }
 `;
 
 export const TemplatesViewTitle = styled.div.attrs({
@@ -40,4 +22,18 @@ export const TemplatesViewTitle = styled.div.attrs({
 })`
   font-size: 1.1rem;
   font-weight: bold;
+`;
+
+export const TemplatesViewBreadcrumbContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+  padding-block-start: 1rem;
+
+  .templates-breadcrumb {
+    // ${RV_Float}: 1rem;
+    position: unset;
+  }
 `;

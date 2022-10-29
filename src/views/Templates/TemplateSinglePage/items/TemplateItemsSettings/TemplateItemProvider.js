@@ -37,8 +37,7 @@ export const TemplateItemProvider = ({ children }) => {
     },
     {
       id: 4,
-      title: 'تنظیمات پیشرفته',
-      linkTo: '',
+      title: 'آیتم ها',
     },
   ];
 

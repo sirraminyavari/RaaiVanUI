@@ -21,7 +21,7 @@ export const MainForm = styled.div`
   background-color: ${CV_GRAY_LIGHT};
   flex: 4.5;
   min-height: calc(100vh - 8rem);
-  padding: 5.25rem 1.5rem 1.5rem 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem 1.5rem;
   width: 100%;
 
   @media screen and (max-width: ${MEDIUM_BOUNDRY}) {
@@ -71,4 +71,16 @@ export const SideFormHeader = styled.div`
   background-color: ${CV_WHITE};
   color: #002479;
   font-size: 18px;
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+
+  & > div:first-of-type {
+    position: unset;
+  }
 `;

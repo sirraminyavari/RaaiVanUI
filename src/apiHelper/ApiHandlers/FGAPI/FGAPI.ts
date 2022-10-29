@@ -208,13 +208,17 @@ const customizedElements = {
     Type: 'Text',
     Info: { UseSimpleEditor: true, PatternName: 'url' },
   },
+  regex: {
+    Type: 'Text',
+    Info: { UseSimpleEditor: true, Pattern: '' },
+  },
   number: {
     Type: 'Numeric',
     Info: {
       min: '[number]',
       max: '[number]',
-      PatternName: 'number | currency | nationalCode | postalCode | none',
-      currency: 'IRT | IRR | USD | EUR | none',
+      PatternName: 'number | currency | nationalCode | postalCode ',
+      currency: 'IRT | IRR | USD | EUR ',
       separator: true,
       percentage: true,
     },
