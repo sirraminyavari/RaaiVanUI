@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 export const TemplateItemContainer = styled.div`
   ${ViewContentCard};
+  padding-block-start: 0.5rem;
   min-height: calc(100vh - 6.5rem);
 
   .transition-enter {
@@ -223,5 +224,17 @@ export const TreeButton = styled.button`
 
   &:hover {
     color: var(--rv-color);
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+
+  & > div:first-of-type {
+    position: unset;
   }
 `;

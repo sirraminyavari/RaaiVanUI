@@ -9,21 +9,28 @@ import { MainFormContainer } from './TemplateGeneralSettingsStyles';
 import TemplateTitleForm from './items/TemplateTitleForm';
 import CMConfidentialitySetting from './CMConfidetialitySetting/CMConfidentialitySetting';
 import { PRIVACY_OBJECT_TYPE } from 'apiHelper/ApiHandlers/privacyApi';
-import { ReturnButton } from '../../TemplateSinglePageStyles';
 import { useTemplateContext } from '../../TemplateProvider';
-import { TEAM_SETTINGS_PATH, TEMPLATES_SETTING_PATH } from 'constant/constants';
+import {
+  TEAM_SETTINGS_PATH,
+  TEMPLATES_SETTING_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
+import ReturnButton from 'components/Buttons/ReturnButton';
 
 const TemplateGeneralSettings = () => {
   const { RVDic, RV_RTL, RVGlobal } = window;
   const isSaas = RVGlobal?.SAASBasedMultiTenancy;
-  const { Title } = useTemplateContext();
+  const { Title, NodeTypeID } = useTemplateContext();
   const history = useHistory();
+
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
 
   const breadItems = [
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: TEAM_SETTINGS_PATH,
+      linkTo: TEAM_SETTINGS_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 2,
@@ -33,26 +40,22 @@ const TemplateGeneralSettings = () => {
     {
       id: 3,
       title: `قالب ${decodeBase64(Title)}`,
-      linkTo: '',
+      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 4,
       title: 'عمومی',
-      linkTo: '',
     },
   ];
 
   return (
     <Styled.Container>
       <Styled.MainForm>
-        <Breadcrumb items={breadItems} />
+        <Styled.HeaderContainer>
+          <Breadcrumb items={breadItems} />
 
-        <ReturnButton
-          $rtl={RV_RTL}
-          onClick={() => history.push(TEMPLATES_SETTING_PATH)}
-        >
-          {RVDic?.Return}
-        </ReturnButton>
+          <ReturnButton onClick={returnToTemplates} />
+        </Styled.HeaderContainer>
         <MainFormContainer>
           <div>
             <TemplateUploadIcon />

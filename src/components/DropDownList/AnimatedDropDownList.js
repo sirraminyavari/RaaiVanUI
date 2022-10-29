@@ -66,6 +66,7 @@ const AnimatedDropDownList = ({
   onClickLabel,
   onDropDownOpen,
   introMode,
+  ...props
 }) => {
   const { button, label, item, container, itemContainer } = customStyle;
   const {
@@ -154,7 +155,7 @@ const AnimatedDropDownList = ({
   };
 
   return (
-    <Container ref={buttonRef}>
+    <Container ref={buttonRef} {...props}>
       <DropDownButton className={containerClass} style={{ ...container }}>
         <Rotater
           $dropedDown={dropedDown}

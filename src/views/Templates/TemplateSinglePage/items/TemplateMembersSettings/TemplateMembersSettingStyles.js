@@ -11,10 +11,10 @@ export const MemberBlock = styled.div`
   ${FLEX_CSB};
   min-height: calc((100vh - 9rem) / 2);
   position: relative;
-  padding: 0 1rem;
   box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
   border-radius: 0.625rem;
   padding: 4rem 1.5rem 1.5rem 1.5rem;
+  padding-block-start: 0.5rem;
   background-color: var(--rv-gray-color-light);
   margin-bottom: 1.5rem;
 `;
@@ -85,4 +85,17 @@ export const Spacer = styled.div`
 
 export const ToggleButtonWrapper = styled.div`
   ${FLEX_RCE};
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+  width: 100%;
+
+  & > div:first-of-type {
+    position: unset;
+  }
 `;

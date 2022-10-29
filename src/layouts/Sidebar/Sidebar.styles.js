@@ -411,6 +411,12 @@ export const SettingItemWrapper = styled.div.attrs({
     background-color: rgb(43, 123, 228, 0.2);
   }
   transition: all 0.3s linear;
+  ${({ active }) =>
+    active &&
+    `
+  font-weight:bold;
+  background-color: rgb(43, 123, 228, 0.1);
+  `}
 `;
 
 export const PanelImage = styled.img`

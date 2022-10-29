@@ -5,7 +5,7 @@ import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { MAIN_CONTENT, SETTING_CONTENT } from 'constant/constants';
 import { useDispatch } from 'react-redux';
 import { useThemeSlice } from 'store/slice/theme';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import api from 'apiHelper';
 
@@ -55,33 +55,41 @@ const TemplateSetting = () => {
       })
     );
   };
-  const items = [
-    {
-      id: 1,
-      title: 'عمومی',
-      linkTo: `${root}/basic`,
-    },
-    {
-      id: 2,
-      title: 'مدیریت فرم',
-      linkTo: `${root}/forms`,
-    },
-    {
-      id: 3,
-      title: 'تنظیمات پیشرفته',
-      linkTo: `${root}/advanced`,
-    },
-    {
-      id: 4,
-      title: 'آیتم‌ها',
-      linkTo: `${root}/items`,
-    },
-    {
-      id: 5,
-      title: RVDic?.Members,
-      linkTo: `${root}/members`,
-    },
-  ];
+  const items = useMemo(
+    () => [
+      {
+        id: 1,
+        title: 'عمومی',
+        linkTo: `${root}/basic`,
+        isActive: pathname === `${root}/basic`,
+      },
+      {
+        id: 2,
+        title: 'مدیریت فرم',
+        linkTo: `${root}/forms`,
+        isActive: pathname === `${root}/forms`,
+      },
+      {
+        id: 3,
+        title: 'تنظیمات پیشرفته',
+        linkTo: `${root}/advanced`,
+        isActive: pathname === `${root}/advanced`,
+      },
+      {
+        id: 4,
+        title: 'آیتم‌ها',
+        linkTo: `${root}/items`,
+        isActive: pathname === `${root}/items`,
+      },
+      {
+        id: 5,
+        title: RVDic?.Members,
+        linkTo: `${root}/members`,
+        isActive: pathname === `${root}/members`,
+      },
+    ],
+    [pathname]
+  );
 
   if (loading) return <LogoLoader />;
 
@@ -100,9 +108,14 @@ const TemplateSetting = () => {
       </Styled.SidebarTitle>
       <Styled.PanelListWrapper>
         {items?.map((x) => {
-          const { id, title, linkTo } = x;
+          const { id, title, linkTo, isActive } = x;
           return (
-            <Styled.SettingItemWrapper key={id} as={NavLink} to={linkTo}>
+            <Styled.SettingItemWrapper
+              key={id}
+              as={NavLink}
+              to={linkTo}
+              active={isActive}
+            >
               <Styled.SettingItemTitle>{title}</Styled.SettingItemTitle>
             </Styled.SettingItemWrapper>
           );

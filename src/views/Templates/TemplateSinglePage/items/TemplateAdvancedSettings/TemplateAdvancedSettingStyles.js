@@ -10,12 +10,14 @@ import AnimatedInput from '../../../../../components/Inputs/AnimatedInput';
 
 export const Container = styled.div`
   ${ViewContentCard};
+  padding-block-start: 0.5rem;
 `;
 
 export const CMContentContainer = styled.div`
   width: 100%;
   max-width: 56rem;
   margin: 7rem auto;
+  margin-block-start: 1rem;
 `;
 
 export const IdInput = styled(AnimatedInput)`
@@ -49,4 +51,15 @@ export const InputLabel = styled.div`
   font-weight: 500;
   color: ${CV_GRAY_DARK};
   margin-bottom: 0.5rem;
+`;
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+
+  & > div:first-of-type {
+    position: unset;
+  }
 `;

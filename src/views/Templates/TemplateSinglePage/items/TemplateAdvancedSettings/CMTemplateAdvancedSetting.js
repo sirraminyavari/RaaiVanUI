@@ -1,43 +1,55 @@
 import * as Styles from './TemplateAdvancedSettingStyles';
 import { decodeBase64 } from 'helpers/helpers';
-import { useParams } from 'react-router-dom';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import CodingPattern from './items/CodingPattern';
 import CoverPatternUploader from './items/CoverPatternUploader';
 import useAdvancedSetting from './useAdvancedSetting';
+import {
+  TEAM_SETTINGS_PATH,
+  TEMPLATES_SETTING_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
+import { useTemplateContext } from '../../TemplateProvider';
+import ReturnButton from 'components/Buttons/ReturnButton';
+import { useHistory } from 'react-router-dom';
 
 const CMTemplateAdvancedSetting = () => {
   const { RVDic, RV_RTL: rtl } = window;
-  const { id, title } = useParams();
+  const { Title, NodeTypeID } = useTemplateContext();
   const { Pattern } = useAdvancedSetting();
+  const history = useHistory();
+
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
 
   const breadItems = [
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: '',
+      linkTo: TEAM_SETTINGS_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 2,
-      title: 'مدیریت قالب ها',
-      linkTo: '',
+      title: RVDic?.TemplateManagement,
+      linkTo: TEMPLATES_SETTING_PATH,
     },
     {
       id: 3,
-      title: `قالب ${decodeBase64(title)}`,
-      linkTo: '',
+      title: `قالب ${decodeBase64(Title)}`,
+      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 4,
       title: 'تنظیمات پیشرفته',
-      linkTo: '',
     },
   ];
 
   return (
     <Styles.Container>
-      <Breadcrumb items={breadItems} />
-      <Styles.ReturnButton rtl={rtl}>{RVDic?.Return}</Styles.ReturnButton>
+      <Styles.HeaderContainer>
+        <Breadcrumb items={breadItems} />
+        <ReturnButton onClick={returnToTemplates} />
+      </Styles.HeaderContainer>
 
       <Styles.CMContentContainer>
         <Styles.InputContainer>

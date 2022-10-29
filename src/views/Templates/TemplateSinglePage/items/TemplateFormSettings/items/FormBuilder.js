@@ -1,5 +1,5 @@
 import * as Styles from '../TemplateFormSettingsStyles';
-import { decodeBase64, getUUID } from 'helpers/helpers';
+import { decodeBase64 } from 'helpers/helpers';
 import { useTemplateContext } from '../../../TemplateProvider';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
@@ -14,15 +14,22 @@ import DragIcon from 'components/Icons/DragIcon/Drag';
 import { getDraggableElementSetting } from '../elementSettingComponents/ComponentsLookupTable';
 import SideFormElementSetting from './SideFormElementSetting';
 import DraggableSharedSetting from '../elementSettingComponents/sharedItems/DraggableSharedSetting';
-import { TEMPLATES_SETTING_PATH } from 'constant/constants';
+import {
+  TEAM_SETTINGS_PATH,
+  TEMPLATES_SETTING_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
 import { ReturnButton } from '../../../TemplateSinglePageStyles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import 'components/ScrollBarProvider/scrollbar.css';
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { FORM_BUILDER_ID } from '../TemplateFormContext';
+import OnClickAway from 'components/OnClickAway/OnClickAway';
+import HandIcon from 'components/Icons/HandIcon/HandIcon';
 
 const FormBuilder = ({ placeholderProps }) => {
   const { RV_RTL: rtl, RVDic } = window;
+  const { id } = useParams();
   const { Title } = useTemplateContext();
   const {
     formObjects,
@@ -33,13 +40,14 @@ const FormBuilder = ({ placeholderProps }) => {
   } = useTemplateFormContext();
   const history = useHistory();
 
-  const returnToTemplates = () => history.push(TEMPLATES_SETTING_PATH);
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', id));
 
   const breadItems = [
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: '',
+      linkTo: TEAM_SETTINGS_PATH,
     },
     {
       id: 2,
@@ -49,12 +57,11 @@ const FormBuilder = ({ placeholderProps }) => {
     {
       id: 3,
       title: `قالب ${decodeBase64(Title)}`,
-      linkTo: '',
+      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', id),
     },
     {
       id: 4,
       title: 'مدیریت فرم',
-      linkTo: '',
     },
   ];
 
@@ -90,36 +97,48 @@ const FormBuilder = ({ placeholderProps }) => {
                   setFormObjects,
                 });
                 return (
-                  <Draggable
-                    key={x?.id}
-                    draggableId={`${x?.id}-${x?.type}`}
-                    index={index}
+                  <OnClickAway
+                    onAway={() => {
+                      setFocusedObject();
+                    }}
                   >
-                    {(provided) => (
-                      <DraggableFormObject
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                      >
-                        <DraggableFormObjectHandle
-                          {...provided.dragHandleProps}
+                    <Draggable
+                      key={x?.id}
+                      draggableId={`${x?.id}-${x?.type}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <DraggableFormObject
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
                         >
-                          <DragIcon size={28} />
-                        </DraggableFormObjectHandle>
-                        <DraggableFormObjectMainContent
-                          focused={focusedObject === x?.id}
-                          onClick={() => setFocusedObject(x?.id)}
-                        >
-                          <DraggableSharedSetting
-                            {...{ current: x, setFormObjects, removeItem }}
+                          <DraggableFormObjectHandle
+                            {...provided.dragHandleProps}
                           >
-                            {formSettingComponent}
-                          </DraggableSharedSetting>
-                        </DraggableFormObjectMainContent>
-                      </DraggableFormObject>
-                    )}
-                  </Draggable>
+                            <DragIcon size={28} />
+                          </DraggableFormObjectHandle>
+                          <DraggableFormObjectMainContent
+                            focused={focusedObject === x?.id}
+                            onClick={() => setFocusedObject(x?.id)}
+                          >
+                            <DraggableSharedSetting
+                              {...{ current: x, setFormObjects, removeItem }}
+                            >
+                              {formSettingComponent}
+                            </DraggableSharedSetting>
+                          </DraggableFormObjectMainContent>
+                        </DraggableFormObject>
+                      )}
+                    </Draggable>
+                  </OnClickAway>
                 );
               })}
+              {[...formObjects].length === 0 && (
+                <Styles.DroppablePlaceholderContainer>
+                  <HandIcon />
+                  <span>برای ایجاد فرم، فیلد مورد نظر را اینجا رها کنید</span>
+                </Styles.DroppablePlaceholderContainer>
+              )}
               {provided.placeholder}
               {placeholder}
             </DroppableContainer>

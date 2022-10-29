@@ -12,9 +12,15 @@ import TemplateItemSettingListTree from './items/TemplateItemSettingListTree';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { IoGitBranchOutline } from 'react-icons/io5';
 import { useTemplateItemContext } from './TemplateItemProvider';
+import { useTemplateContext } from '../../TemplateProvider';
+import { decodeBase64 } from 'helpers/helpers';
+import ReturnButton from 'components/Buttons/ReturnButton';
+import { useHistory } from 'react-router-dom';
+import { TEMPLATES_SETTING_SINGLE_PATH } from 'constant/constants';
 
 const TemplateItems = () => {
   const { RVDic, RV_RTL } = window;
+  const history = useHistory();
 
   const {
     nodes,
@@ -29,6 +35,9 @@ const TemplateItems = () => {
     nodesQuery,
     setNodesQuery,
   } = useTemplateItemContext();
+  const { Title, NodeTypeID } = useTemplateContext();
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
 
   const list = useMemo(() => {
     if (!isTree || nodesQuery?.Archive || nodesQuery?.searchText !== '') {
@@ -90,20 +99,26 @@ const TemplateItems = () => {
   return (
     <>
       <Styles.TemplateItemContainer>
-        <Breadcrumb items={breadItems} />
+        <Styles.HeaderContainer>
+          <Breadcrumb items={breadItems} />
+
+          <ReturnButton onClick={returnToTemplates} />
+        </Styles.HeaderContainer>
         <Styles.TemplateItemRowSection>
           <Styles.TitleIcon src={icon} />
 
-          <Styles.Title>{'اسناد مارکتینگ'}</Styles.Title>
+          <Styles.Title>{decodeBase64(Title)}</Styles.Title>
 
-          <Styles.NodeCounts>{`${totalNodes} مورد`}</Styles.NodeCounts>
+          {totalNodes && (
+            <Styles.NodeCounts>{`${totalNodes} مورد`}</Styles.NodeCounts>
+          )}
 
           <Styles.Spacer />
 
           {!nodesQuery?.Archive && (
             <Styles.CreateNodeButton onClick={() => setCreateNewNode(true)}>
               <HiLightningBolt size={20} />
-              <div>{'سند مارکتینگ جدید'}</div>
+              <div>{`${decodeBase64(Title)} جدید`}</div>
             </Styles.CreateNodeButton>
           )}
 
@@ -136,7 +151,7 @@ const TemplateItems = () => {
                 <div>{RVDic?.Archive}</div>
               </Styles.ArchiveButton>
 
-              <TemplateItemSettingXMlRegister />
+              {/* <TemplateItemSettingXMlRegister /> */}
 
               <TemplateItemSettingExcelRegister />
             </>
