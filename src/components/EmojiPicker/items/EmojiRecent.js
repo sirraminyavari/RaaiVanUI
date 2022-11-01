@@ -1,46 +1,61 @@
 import styled from 'styled-components';
 import { FLEX_CCC } from '../../../constant/StyledCommonCss';
-import { useEffect, useMemo, useState } from 'react';
-import useLocalStorge from 'hooks/useLocalStorage';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Emoji } from './EmojiPickerStyles';
 import { getUUID } from 'helpers/helpers';
+import { useEmojiContext } from '../EmojiContext';
 
 const EmojiRecent = () => {
-  const [storedValue, setValue] = useLocalStorge('RESENT_USED_EMOJIS', []);
-  const [recentEmojis, setRecentEmojis] = useState([]);
-
-  const handleEmojiClick = (emoji) => {
-    const filteredList = storedValue.filter((x) => x !== emoji);
-    filteredList.unshift(emoji);
-    if (setValue) {
-      setValue(filteredList);
-    }
-  };
+  const { recentEmojis, setRecentEmojis, handleEmojiSelect } =
+    useEmojiContext();
+  const handleEmojiClick = useCallback(
+    (emoji) => {
+      const filteredList = recentEmojis.filter((x) => x.title !== emoji.title);
+      filteredList.unshift(emoji);
+      if (setRecentEmojis) {
+        setRecentEmojis(filteredList);
+      }
+      handleEmojiSelect && handleEmojiSelect(emoji);
+    },
+    [recentEmojis, setRecentEmojis]
+  );
 
   const list = useMemo(() => {
     return recentEmojis?.map((x) => (
-      <EmojiContainer key={x?.id} onClick={() => handleEmojiClick(x?.title)}>
-        {x?.src}
+      <EmojiContainer key={x?.id} onClick={() => handleEmojiClick(x)}>
+        <Emoji
+          src={`/images/twemoji.svg#${x.title.match(/(?<=_).*(?=\.)/)}`}
+          width="16px"
+          height="16px"
+        />
       </EmojiContainer>
     ));
   }, [recentEmojis]);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const array = [];
+
+  //     for (const item of recentEmojis) {
+  //       // const { default: src } = await import(`assets/images/emojis/${item.match}`);
+  //       array.push({
+  //         id: getUUID(),
+  //         title: item,
+  //         src: (
+  //           <Emoji
+  //             src={`/images/twemoji.svg#${item.match(/(?<=_).*(?=\.)/)}`}
+  //             width="16px"
+  //             height="16px"
+  //           />
+  //         ),
+  //       });
+  //     }
+  //     setRecentEmojis(array);
+  //   })();
+  // }, []);
   useEffect(() => {
-    (async () => {
-      const array = [];
-
-      for (const item of storedValue) {
-        const { default: src } = await import(`assets/images/emojis/${item}`);
-        array.push({
-          id: getUUID(),
-          title: item,
-          src: <Emoji src={src} width="16px" height="16px" />,
-        });
-      }
-      setRecentEmojis(array);
-    })();
-  }, [storedValue]);
-
+    console.log(list);
+  }, [list]);
   return (
     <GridWrapper>
       <Grid>{list}</Grid>

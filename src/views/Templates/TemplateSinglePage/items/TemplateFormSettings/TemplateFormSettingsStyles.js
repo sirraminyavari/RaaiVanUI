@@ -96,7 +96,9 @@ export const FormBuilderLayout = styled.div`
   box-shadow: 1px 5px 20px #0000001f;
   height: calc(100vh - 13rem);
   position: relative;
-  padding: 4rem 2rem;
+  padding-inline: 2rem;
+  padding-block-start: 1rem;
+  padding-block-end: 4rem;
 `;
 
 export const FormSetting = styled.div`
@@ -233,5 +235,17 @@ export const DroppablePlaceholderContainer = styled.div`
     path {
       stroke-width: 0.7rem;
     }
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+
+  & > div:first-of-type {
+    position: unset;
   }
 `;

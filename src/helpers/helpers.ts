@@ -6,6 +6,7 @@ import moment from 'jalali-moment';
 import { Subject } from 'rxjs';
 import * as AvatarSVGS from 'assets/images/avatars/AvatarProfileAssets';
 import { IJsonObject } from 'models/IJsonObject';
+import deepmerge from 'deepmerge';
 
 const { GlobalUtilities, RVAPI } = window;
 
@@ -463,46 +464,47 @@ export const fileSizeLabel = (size) => {
     );
 };
 
-export const extend = (...args) => {
-  let jsonValue = args.length ? args[0] : {};
+export const extend = (object, objectToExtend) => {
+  return deepmerge(object, objectToExtend);
+  // let jsonValue = args.length ? args[0] : {};
 
-  let hasLevel =
-    args.length > 0 &&
-    GlobalUtilities.get_type(args[args.length - 1]) === 'number';
-  let level = hasLevel ? args[args.length - 1] : 3;
+  // let hasLevel =
+  //   args.length > 0 &&
+  //   GlobalUtilities.get_type(args[args.length - 1]) === 'number';
+  // let level = hasLevel ? args[args.length - 1] : 3;
 
-  args =
-    args.length === (hasLevel ? 2 : 1) &&
-    GlobalUtilities.get_type(jsonValue) === 'array'
-      ? jsonValue
-      : args;
+  // args =
+  //   args.length === (hasLevel ? 2 : 1) &&
+  //   GlobalUtilities.get_type(jsonValue) === 'array'
+  //     ? jsonValue
+  //     : args;
 
-  let first = args.length > 0 ? args[0] : null;
-  let second = args.length > 1 ? args[1] : null;
+  // let first = args.length > 0 ? args[0] : null;
+  // let second = args.length > 1 ? args[1] : null;
 
-  if (
-    GlobalUtilities.get_type(first) !== 'json' ||
-    GlobalUtilities.get_type(second) !== 'json'
-  )
-    return first;
+  // if (
+  //   GlobalUtilities.get_type(first) !== 'json' ||
+  //   GlobalUtilities.get_type(second) !== 'json'
+  // )
+  //   return first;
 
-  for (let o in second) {
-    let type = GlobalUtilities.get_type(second[o]);
-    if (type === 'undefined') continue;
+  // for (let o in second) {
+  //   let type = GlobalUtilities.get_type(second[o]);
+  //   if (type === 'undefined') continue;
 
-    if (
-      GlobalUtilities.get_type(first[o]) === 'json' &&
-      GlobalUtilities.get_type(second[o]) === 'json' &&
-      level > 0
-    )
-      first[o] = extend(first[o] || {}, second[o], level - 1);
-    else first[o] = second[o];
-  }
+  //   if (
+  //     GlobalUtilities.get_type(first[o]) === 'json' &&
+  //     GlobalUtilities.get_type(second[o]) === 'json' &&
+  //     level > 0
+  //   )
+  //     first[o] = extend(first[o] || {}, second[o], level - 1);
+  //   else first[o] = second[o];
+  // }
 
-  let newArgs = [first];
-  for (let i = 2, lnt = args.length; i < lnt; ++i) newArgs.push(args[i]);
+  // let newArgs = [first];
+  // for (let i = 2, lnt = args.length; i < lnt; ++i) newArgs.push(args[i]);
 
-  return extend(newArgs, level);
+  // return extend(newArgs, level);
 };
 
 /**

@@ -6,11 +6,8 @@ import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import * as Styled from './TemplatesArchives.styles';
 import { TEAM_SETTINGS_PATH, TEMPLATES_SETTING_PATH } from 'constant/constants';
-import {
-  getChildNodeTypes,
-  getNodeTypes,
-  recoverNodeType,
-} from 'apiHelper/apiFunctions';
+import { recoverNodeType } from 'apiHelper/apiFunctions';
+import API from 'apiHelper';
 import useWindow from 'hooks/useWindowContext';
 import ReturnButton from 'components/Buttons/ReturnButton';
 import WelcomeLayout from 'layouts/WelcomeLayout';
@@ -28,7 +25,7 @@ const TemplatesArchives = () => {
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: TEAM_SETTINGS_PATH.replace(':id', ''),
+      // linkTo: TEAM_SETTINGS_PATH.replace(':id', ''),
     },
     {
       id: 2,
@@ -66,13 +63,15 @@ const TemplatesArchives = () => {
   //! Get node types.
   useEffect(() => {
     setIsFetching(true);
-    getChildNodeTypes('', '', true, true)
+    API.CN.getNodeTypes({ Archive: true, Icon: true })
       .then((response) => {
         if (response?.NodeTypes) {
           setArchivedTemplates(
-            response?.NodeTypes.filter(({ IsCategory }) => !IsCategory)
+            response?.NodeTypes.filter(({ IsCategory }) => IsCategory !== true)
           );
-          allArchivesRef.current = response?.NodeTypes;
+          allArchivesRef.current = response?.NodeTypes.filter(
+            ({ IsCategory }) => IsCategory !== true
+          );
         }
         setIsFetching(false);
       })
@@ -91,12 +90,14 @@ const TemplatesArchives = () => {
     if (searchText.length > 2) {
       setIsFetching(true);
 
-      getNodeTypes(searchText, true)
+      API.CN.getNodeTypes({ Archive: true, Icon: true, SearchText: searchText })
         .then((response) => {
           if (response?.NodeTypes) {
             console.log(response);
             setArchivedTemplates(
-              response?.NodeTypes.filter(({ IsCategory }) => !IsCategory)
+              response?.NodeTypes.filter(
+                ({ IsCategory }) => IsCategory !== true
+              )
             );
           }
           setIsFetching(false);

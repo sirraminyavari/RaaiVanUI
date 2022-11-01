@@ -16,7 +16,10 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TemplateCreateNew from './items/TemplateCreateNew';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
-import { TEMPLATES_ARCHIVE_PATH } from 'constant/constants';
+import {
+  TEMPLATES_ARCHIVE_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
 import { useHistory } from 'react-router-dom';
 import { decodeBase64 } from 'helpers/helpers';
 
@@ -37,7 +40,6 @@ const TemplatesSettings = () => {
     {
       id: 2,
       title: 'تنظیمات تمپلیت‌ها',
-      linkTo: '',
     },
   ];
 
@@ -82,7 +84,10 @@ const TemplatesSettings = () => {
       IsCategory: isSaaS && ParentID,
     }).then((res) => {
       if (res?.Succeed) {
-        loadNodeTypes();
+        history.push(
+          TEMPLATES_SETTING_SINGLE_PATH.replace(':id', res?.NodeTypeID)
+        );
+        // loadNodeTypes();
       }
     });
   };

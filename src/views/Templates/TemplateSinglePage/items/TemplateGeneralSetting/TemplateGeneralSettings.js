@@ -30,7 +30,7 @@ const TemplateGeneralSettings = () => {
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: TEAM_SETTINGS_PATH.replace(':id', NodeTypeID),
+      // linkTo: TEAM_SETTINGS_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 2,

@@ -15,17 +15,16 @@ import { getDraggableElementSetting } from '../elementSettingComponents/Componen
 import SideFormElementSetting from './SideFormElementSetting';
 import DraggableSharedSetting from '../elementSettingComponents/sharedItems/DraggableSharedSetting';
 import {
-  TEAM_SETTINGS_PATH,
   TEMPLATES_SETTING_PATH,
   TEMPLATES_SETTING_SINGLE_PATH,
 } from 'constant/constants';
-import { ReturnButton } from '../../../TemplateSinglePageStyles';
 import { useHistory, useParams } from 'react-router-dom';
 import 'components/ScrollBarProvider/scrollbar.css';
 import { useMemo } from 'react';
 import { FORM_BUILDER_ID } from '../TemplateFormContext';
 import OnClickAway from 'components/OnClickAway/OnClickAway';
 import HandIcon from 'components/Icons/HandIcon/HandIcon';
+import ReturnButton from 'components/Buttons/ReturnButton';
 
 const FormBuilder = ({ placeholderProps }) => {
   const { RV_RTL: rtl, RVDic } = window;
@@ -47,7 +46,7 @@ const FormBuilder = ({ placeholderProps }) => {
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: TEAM_SETTINGS_PATH,
+      // linkTo: TEAM_SETTINGS_PATH,
     },
     {
       id: 2,
@@ -79,11 +78,11 @@ const FormBuilder = ({ placeholderProps }) => {
   return (
     <>
       <Styles.FormBuilderLayout $rtl={rtl}>
-        <Breadcrumb items={breadItems} />
+        <Styles.HeaderContainer>
+          <Breadcrumb items={breadItems} />
 
-        <ReturnButton onClick={returnToTemplates} $rtl={rtl}>
-          {RVDic?.Return}
-        </ReturnButton>
+          <ReturnButton onClick={returnToTemplates} />
+        </Styles.HeaderContainer>
 
         <Droppable droppableId={FORM_BUILDER_ID}>
           {(provided, snapshot) => (
@@ -99,7 +98,7 @@ const FormBuilder = ({ placeholderProps }) => {
                 return (
                   <OnClickAway
                     onAway={() => {
-                      setFocusedObject();
+                      // setFocusedObject();
                     }}
                   >
                     <Draggable

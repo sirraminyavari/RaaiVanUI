@@ -8,9 +8,11 @@ import { useThemeSlice } from 'store/slice/theme';
 import { useState, useEffect, useMemo } from 'react';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import api from 'apiHelper';
+import useWindowContext from 'hooks/useWindowContext';
 
 const TemplateSetting = () => {
-  const { RVDic } = window;
+  const { RV_RevFloat, RVGlobal, RVDic } = useWindowContext();
+  const isSaas = (RVGlobal || {}).SAASBasedMultiTenancy;
 
   const { pathname } = useLocation();
   const path = pathname.split('/');
@@ -25,7 +27,6 @@ const TemplateSetting = () => {
   const {
     actions: { setSidebarContent },
   } = useThemeSlice();
-  const { RV_RevFloat } = window;
 
   useEffect(() => {
     let isMount = true;
@@ -81,12 +82,16 @@ const TemplateSetting = () => {
         linkTo: `${root}/items`,
         isActive: pathname === `${root}/items`,
       },
-      {
-        id: 5,
-        title: RVDic?.Members,
-        linkTo: `${root}/members`,
-        isActive: pathname === `${root}/members`,
-      },
+      ...(!isSaas
+        ? [
+            {
+              id: 5,
+              title: RVDic?.Members,
+              linkTo: `${root}/members`,
+              isActive: pathname === `${root}/members`,
+            },
+          ]
+        : []),
     ],
     [pathname]
   );

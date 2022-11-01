@@ -3,6 +3,10 @@ import { useState, useEffect, useMemo } from 'react';
 import { useTemplateContext } from '../../TemplateProvider';
 import api from 'apiHelper';
 import { decodeBase64 } from 'helpers/helpers';
+import {
+  TEMPLATES_SETTING_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
 
 const TemplateItemContext = createContext({});
 
@@ -13,7 +17,7 @@ export const useTemplateItemContext = () => {
 
 export const TemplateItemProvider = ({ children }) => {
   const { RVDic } = window;
-  const { title, IsTree } = useTemplateContext();
+  const { Title, IsTree, NodeTypeID } = useTemplateContext();
   const [nodes, setNodes] = useState([]);
   const [totalNodes, setTotalNodes] = useState();
   const [nextPageIsLoading, setNextPageIsLoading] = useState(false);
@@ -23,17 +27,17 @@ export const TemplateItemProvider = ({ children }) => {
     {
       id: 1,
       title: RVDic?.TeamManagement,
-      linkTo: '',
+      // linkTo: TEAM_SETTINGS_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 2,
-      title: 'مدیریت قالب ها',
-      linkTo: '',
+      title: RVDic?.TemplateManagement,
+      linkTo: TEMPLATES_SETTING_PATH,
     },
     {
       id: 3,
-      title: `قالب ${decodeBase64(title)}`,
-      linkTo: '',
+      title: `قالب ${decodeBase64(Title)}`,
+      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID),
     },
     {
       id: 4,

@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
 import { BsFileEarmarkArrowUp } from 'react-icons/all';
-import { useState, useRef, useCallback, useEffect, Suspense } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageCropModal from 'components/ImageCropper/ImageCropperModal';
 import { readFile } from 'components/ImageCropper/cropUtils';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 
-const Uploader = () => {
+const Uploader = ({ uploadID, setOpenStatus }) => {
   const [modalInfo, setModalInfo] = useState({
     isShown: false,
     title: '',
@@ -16,6 +16,10 @@ const Uploader = () => {
     file: null,
     imgSrc: null,
   });
+
+  useEffect(() => {
+    setOpenStatus && setOpenStatus(modalInfo.isShown);
+  }, [modalInfo, setOpenStatus]);
 
   const onDrop = useCallback((files) => {
     const file = files[0];
@@ -50,6 +54,8 @@ const Uploader = () => {
           modalProps={modalInfo}
           cropShape="round"
           showGrid={true}
+          uploadType="Icon"
+          uploadId={uploadID}
           onCloseModal={() => setModalInfo({ ...modalInfo, isShown: false })}
         />
       </Suspense>
