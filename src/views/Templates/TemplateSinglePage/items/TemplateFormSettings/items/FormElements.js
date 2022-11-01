@@ -49,7 +49,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, min: '', max: '', Sample: '' },
+            Info: { UseSimpleEditor: true, Min: '', Max: '', Sample: '' },
           },
         },
         {
@@ -61,8 +61,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Text',
             Info: {
-              min: '',
-              max: '',
+              Min: '',
+              Max: '',
               Sample: '',
             },
           },
@@ -105,8 +105,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Numeric',
             Info: {
-              min: '',
-              max: '',
+              Min: '',
+              Max: '',
               PatternName: 'NONE',
               currency: 'NONE',
               separator: true,

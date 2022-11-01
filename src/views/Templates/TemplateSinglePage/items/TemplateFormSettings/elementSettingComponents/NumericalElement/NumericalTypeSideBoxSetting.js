@@ -7,7 +7,7 @@ import produce from 'immer';
 
 const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { RVDic } = window;
-  const { PatternName, min, max, currency, separator, percentage } =
+  const { PatternName, Min, Max, currency, separator, percentage } =
     current?.data?.Info || {};
 
   const patternOptions = [
@@ -108,7 +108,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         let _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.min = e?.target?.value;
+        _current.data.Info.Min = e?.target?.value;
       })
     );
   };
@@ -117,7 +117,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         let _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.max = e?.target?.value;
+        _current.data.Info.Max = e?.target?.value;
       })
     );
   };
@@ -195,7 +195,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
               <Styles.ToggleRowTitle>
                 {PatternName === 'PRICE' ? 'حداقل مبلغ' : 'حداقل مقدار'}
               </Styles.ToggleRowTitle>
-              <Styles.Input value={min} onChange={handleMinStateChange} />
+              <Styles.Input value={Min} onChange={handleMinStateChange} />
             </Styles.InputRowContainer>
           </Styles.Row>
 
@@ -204,7 +204,7 @@ const NumericalTypeSideBoxSetting = ({ current, setFormObjects }) => {
               <Styles.ToggleRowTitle>
                 {PatternName === 'PRICE' ? 'حداکثر مبلغ' : 'حداکثر مقدار'}
               </Styles.ToggleRowTitle>
-              <Styles.Input value={max} onChange={handleMaxStateChange} />
+              <Styles.Input value={Max} onChange={handleMaxStateChange} />
             </Styles.InputRowContainer>
           </Styles.Row>
         </>

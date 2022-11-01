@@ -75,14 +75,17 @@ export const TemplateFormProvider = ({ children, initialState }) => {
 
   useEffect(() => console.log(formObjects), [formObjects]);
 
-  const saveForm = async () => {
+  const saveForm = async (clear = false) => {
     const { FormID } = initialState;
-    const Elements = formObjects
-      .map((x) => x?.data)
-      .map((x) => ({
-        ElementID: getUUID(),
-        ...x,
-      }));
+    const Elements = clear
+      ? []
+      : formObjects
+          .map((x) => x?.data)
+          .map((x) => ({
+            ElementID: getUUID(),
+            ...x,
+          }));
+    if (clear) setFormObjects([]);
     const { ErrorText, Succeed } = await saveFormElements({
       FormID,
       Elements,

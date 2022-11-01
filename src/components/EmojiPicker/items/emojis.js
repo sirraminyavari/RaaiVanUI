@@ -44,12 +44,18 @@ export const getEmojis = async ({ key }) => {
   const array = [];
   for (const item of _emojis) {
     const { title } = item;
-    const { default: src } = await import(`assets/images/emojis/${title}`);
+    // const { default: src } = await import(`assets/images/emojis/${title}`);
 
     array.push({
       id: getUUID(),
       title,
-      src: <Emoji src={src} width="16px" height="16px" />,
+      src: (
+        <Emoji
+          src={`/images/twemoji.svg#${title.match(/(?<=_).*(?=\.)/)}`}
+          width="16px"
+          height="16px"
+        />
+      ),
     });
   }
   return array;

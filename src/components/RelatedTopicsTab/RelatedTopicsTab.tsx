@@ -86,7 +86,8 @@ const RelatedTopicsTab = ({
         setMoreRelatedItemOffset(idx - 1);
         break;
       }
-      if (idx + 1 === sortedNodes.length) return setMoreRelatedItemOffset(idx);
+      if (idx + 1 === (sortedNodes || [])?.length)
+        return setMoreRelatedItemOffset(idx);
     }
   };
   useLayoutEffect(() => {
@@ -157,7 +158,7 @@ const RelatedTopicsTab = ({
           id="RelatedTopicsMoreButton"
           visible={
             moreRelatedItemOffset === -1 ||
-            sortedNodes.length > moreRelatedItemOffset + 1
+            sortedNodes?.length > moreRelatedItemOffset + 1
           }
         />
       </Styled.RelatedTopicsTabInnerContainer>

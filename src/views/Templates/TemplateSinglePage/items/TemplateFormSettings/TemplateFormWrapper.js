@@ -11,12 +11,15 @@ import { useState } from 'react';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
 import { useHistory } from 'react-router-dom';
 import { TEMPLATES_SETTING_SINGLE_PATH } from 'constant/constants';
+import Modal from 'components/Modal/Modal';
+import OnboardingTemplateSelectionNode from 'views/Onboarding/items/content/OnboardingTemplateSelection/OnboardingTemplateSelectionNode';
 
 const TemplateFormWrapper = () => {
   const { RV_RTL: rtl } = window;
   const { Title, NodeTypeID } = useTemplateContext();
   const history = useHistory();
   const { saveForm } = useTemplateFormContext();
+  const [showcaseModalStatus, setShowcaseModalStatus] = useState(false);
 
   const returnToTemplates = () =>
     history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
@@ -26,12 +29,21 @@ const TemplateFormWrapper = () => {
         <Styled.HeaderTitle>{decodeBase64(`${Title}`)}</Styled.HeaderTitle>
         <Styled.Spacer />
 
-        <Button type="secondary-o">
+        <Button type="secondary-o" onClick={() => setShowcaseModalStatus(true)}>
           <PreviewIcon size={17} />
           <Styled.ButtonTitle>{'پیش‌نمایش'}</Styled.ButtonTitle>
         </Button>
+        <Modal
+          middle
+          title="پیش‌نمایش"
+          show={showcaseModalStatus}
+          contentWidth="clamp(18rem,85%,50rem)"
+          onClose={() => setShowcaseModalStatus(false)}
+        >
+          <OnboardingTemplateSelectionNode Elements={[]} />
+        </Modal>
 
-        <FormDeleteButton />
+        <FormDeleteButton onDelete={() => saveForm(true)} />
 
         <Styled.CustomDropdownMenu
           data={[
@@ -46,6 +58,7 @@ const TemplateFormWrapper = () => {
             saveForm();
             returnToTemplates();
           }}
+          onDropDownOpen={() => {}}
           defaultValue={{
             colorClass: 'rv-default',
             icon: <SaveIcon size={17} />,
@@ -66,7 +79,7 @@ const TemplateFormWrapper = () => {
   );
 };
 
-const FormDeleteButton = () => {
+const FormDeleteButton = ({ onDelete }) => {
   const { RVDic } = window;
   const [modalInfo, setModalInfo] = useState({
     show: false,
@@ -84,6 +97,7 @@ const FormDeleteButton = () => {
 
   const confirm = () => {
     // confirm
+    onDelete && onDelete();
     close();
   };
 

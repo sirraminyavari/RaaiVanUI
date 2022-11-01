@@ -1,7 +1,8 @@
 import formElementList from '../items/FormElements';
 
 export const getElementType = (data) => {
-  const { Type } = data;
+  const { Type, Info } = data;
+  if (Info?.PatternName === 'nationalCode') return NumericTypeFinder(data);
   switch (Type) {
     case 'Text':
       return TextTypeFinder(data);
@@ -28,9 +29,13 @@ const TextTypeFinder = (data) => {
     console.log(el);
     return { ...el, data };
   };
-
   if (
-    (Info?.hasOwnProperty('min') || Info?.hasOwnProperty('max')) &&
+    Info?.hasOwnProperty('PatternName') &&
+    Info?.PatternName === 'nationalCode'
+  ) {
+    return _getObject('short text');
+  } else if (
+    (Info?.hasOwnProperty('Min') || Info?.hasOwnProperty('Max')) &&
     !Info?.hasOwnProperty('PatternName')
   ) {
     return _getObject('paragraph');

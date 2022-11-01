@@ -31,7 +31,7 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         const _current = d.find((x) => x?.id === current?.id);
-        _current.data.Info.min = e?.target?.value;
+        _current.data.Info.Min = e?.target?.value;
       })
     );
   };
@@ -40,7 +40,7 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         const _current = d.find((x) => x?.id === current?.id);
-        _current.data.Info.max = e?.target?.value;
+        _current.data.Info.Max = e?.target?.value;
       })
     );
   };
@@ -74,7 +74,7 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
               {'حداقل تعداد کاراکتر'}
             </Styles.ToggleRowTitle>
             <Styles.Input
-              value={data?.Info?.min}
+              value={data?.Info?.Min}
               onChange={handleMinCharStateChange}
             />
           </Styles.InputRowContainer>
@@ -84,7 +84,7 @@ const TextTypeSideBoxSetting = ({ current, setFormObjects }) => {
               {'حداکثر تعداد کاراکتر'}
             </Styles.ToggleRowTitle>
             <Styles.Input
-              value={data?.Info?.max}
+              value={data?.Info?.Max}
               onChange={handleMaxCharStateChange}
             />
           </Styles.InputRowContainer>
