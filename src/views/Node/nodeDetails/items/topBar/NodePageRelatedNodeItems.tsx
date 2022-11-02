@@ -13,6 +13,7 @@ export type INodePageRelatedNodeItems = {
   onApplyNodeType: () => void;
   NodeID: string;
   ClassID: string;
+  noTitle?: boolean;
 };
 
 const getNodeInfoAPI = new APIHandler('CNAPI', 'GetRelatedNodesAbstract');
@@ -21,6 +22,7 @@ const NodePageRelatedNodeItems = ({
   onApplyNodeType = () => {},
   ClassID,
   NodeID,
+  noTitle,
 }) => {
   const [relatedNodes, setRelatedNodes] = useState<
     | {
@@ -66,9 +68,11 @@ const NodePageRelatedNodeItems = ({
     <>
       {relatedNodes && relatedNodes.TotalRelationsCount > 0 && (
         <Styles.NodeTopBarRelatedTopicsContainer>
-          <Styles.NodeTopBarRelatedTopicsTitle>
-            {RVDic.RelatedNode}
-          </Styles.NodeTopBarRelatedTopicsTitle>
+          {!noTitle && (
+            <Styles.NodeTopBarRelatedTopicsTitle>
+              {RVDic.RelatedNode}
+            </Styles.NodeTopBarRelatedTopicsTitle>
+          )}
           <RelatedTopicsTab
             noAllTemplateButton
             floatBox

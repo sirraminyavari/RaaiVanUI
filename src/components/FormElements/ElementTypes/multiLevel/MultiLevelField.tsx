@@ -1,15 +1,10 @@
 import { getChildNodes } from 'apiHelper/apiFunctions';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { decodeBase64 } from 'helpers/helpers';
 import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
 import SelectInputField from '../Select/SelectInputField';
-
-const normalizedOptions = (options) =>
-  options?.nodes?.map((x) => {
-    return { label: window.Base64.decode(x.Name), value: x.ID };
-  });
 
 export interface IMultiLevelInputField {
   selectedValue?: { label: string; value: string | number }[];
@@ -45,6 +40,19 @@ const MultiLevelInputField = ({
     })
   );
 
+  const normalizedOptions = useMemo(
+    () =>
+      levels.map((level) =>
+        level?.nodes?.map((node) => {
+          return {
+            label: window.Base64.decode(node.Name),
+            value: node.ID || node.NodeID,
+          };
+        })
+      ),
+    [levels]
+  );
+
   useEffect(() => {
     (async () => {
       const firstLevel = await getChildNodes(NodeType?.ID);
@@ -56,19 +64,17 @@ const MultiLevelInputField = ({
 
   const onLevelSelected = useCallback(
     async (elementId, event, type, index) => {
+      console.log({ elementId, event, type, index });
       const selectedTemp = selectedLevels?.map((x, ind) =>
         ind === index
-          ? { ID: event?.value?.NodeID, Name: event?.label }
+          ? { ID: event?.value, Name: event?.label }
           : ind > index
           ? { ID: '', Name: '' }
           : x
       );
       setSelectedLevels(selectedTemp);
 
-      const exceptFirstLevel = await getChildNodes(
-        NodeType?.ID,
-        event?.value?.NodeID
-      );
+      const exceptFirstLevel = await getChildNodes(NodeType?.ID, event?.value);
       const { Nodes } = exceptFirstLevel || {};
 
       if (index + 1 < Levels.length) {
@@ -103,13 +109,13 @@ const MultiLevelInputField = ({
             )
               return (
                 <>
-                  {!!normalizedOptions(x) || value[index] ? (
+                  {!!normalizedOptions[index] || value[index] ? (
                     <>
                       <SelectContainer>
                         <SelectInputField
                           isEditable={isEditable as boolean}
                           isFocused={isFocused}
-                          options={normalizedOptions(x)}
+                          options={normalizedOptions[index]}
                           // styles={customStyles}
                           selectedValue={{
                             value: ID,
