@@ -16,8 +16,8 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate, Elements }) => {
   const RVDicِNothingToDisplayTemplate = RVDic.ThisTemplateHasNoFieldsToDisplay;
 
   useEffect(() => {
-    if (Elements) return setTemplateNodeElements(Elements);
     (async () => {
+      if (Elements) return setTemplateNodeElements({ Elements });
       setTemplateNodeElements(false);
       const formElements = await API.CN.getTemplatePreview({
         NodeTypeID: activeTemplate?.NodeTypeID,

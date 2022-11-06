@@ -1,4 +1,4 @@
-import Select from 'react-select';
+import Select, { GroupBase, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import {
   CV_GRAY,
@@ -58,7 +58,7 @@ const SelectInputField = ({
   return isFocused && isEditable ? (
     <SelectComponent
       onBlur={onBlur}
-      options={options}
+      options={options || []}
       isDisabled={!isEditable}
       value={selectedValue}
       placeholder={RVDic.Select}
@@ -69,7 +69,9 @@ const SelectInputField = ({
       isClearable={isClearable}
       isSearchable={isSearchable}
       styles={customStyles}
-      onChange={onChange}
+      onChange={(options, action) => {
+        onChange(options, action);
+      }}
       components={{
         ...components,
         ClearIndicator: () => <Styles.SelectInputClearButton />,
@@ -114,7 +116,7 @@ SelectInputField.displayName = 'SelectInputField';
 export default SelectInputField;
 
 const customStyles = {
-  option: ({ isFocused, isSelected }, provided) => ({
+  option: (_, { isFocused, isSelected }, provided) => ({
     ...provided,
     color: isSelected ? TCV_WARM : CV_GRAY,
     margin: '0.35rem 0.5rem 0.35rem 0.5rem',
@@ -226,4 +228,4 @@ const customStyles = {
       },
     };
   },
-};
+} as unknown as StylesConfig<OptionType, boolean, GroupBase<OptionType>>;

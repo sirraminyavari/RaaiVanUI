@@ -41,15 +41,8 @@ const TextField = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const parseDecodeInfo = GlobalUtilities.to_json(decodeInfo);
-  const {
-    Pattern,
-    PatternName,
-    Min,
-    Max,
-    MaxLength = 512,
-    MinLength = 6,
-    CommaSeparator,
-  } = parseDecodeInfo || {};
+  const { Pattern, PatternName, Min, Max, CommaSeparator } =
+    parseDecodeInfo || {};
 
   const errorHandler = useMemo(() => {
     if (value === '' && isRequired) {
@@ -68,11 +61,11 @@ const TextField = ({
       setError('مقدار این فیلد کمتر از حد مجاز است');
       return false;
     }
-    if (!number && MaxLength && value.length > MaxLength) {
+    if (!number && Max && value?.length > Max) {
       setError('تعداد کاراکترهای این فیلد بیشتر از حد مجاز است');
       return false;
     }
-    if (!number && MinLength && value.length < MinLength) {
+    if (!number && Min && value?.length < Min) {
       setError('تعداد کاراکترهای این فیلد کمتر از حد مجاز است');
       return false;
     }
@@ -126,17 +119,7 @@ const TextField = ({
     }
     setError(null);
     return true;
-  }, [
-    isRequired,
-    number,
-    Max,
-    Min,
-    MaxLength,
-    MinLength,
-    PatternName,
-    customPattern,
-    value,
-  ]);
+  }, [isRequired, number, Max, Min, PatternName, customPattern, value]);
 
   if (!editable && !value) return <></>;
   return (
@@ -191,14 +174,14 @@ const TextField = ({
                   event.currentTarget.blur();
                 }}
                 style={{ width: '100%', fontSize: '1rem' }}
-                min={Min}
-                max={Max}
-                maxlength={MaxLength}
-                minlength={MinLength}
+                min={number ? Min : undefined}
+                max={number ? Max : undefined}
+                maxlength={!number ? Max || 250 : undefined}
+                minlength={!number ? Min : undefined}
               />
               {!number && (
                 <Styles.SelectedFieldTextCounterContainer muted>
-                  {value ? value.length : '-'} / {MaxLength || '-'}
+                  {value ? value.length : '-'} / {Max || '-'}
                 </Styles.SelectedFieldTextCounterContainer>
               )}
             </>
