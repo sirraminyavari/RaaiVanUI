@@ -5,7 +5,7 @@ import TemplateCard from 'components/TemplatesGallery/TemplateCard';
 import EmptyTemplateCard from 'components/TemplatesGallery/EmptyTemplateCard';
 import useWindow from 'hooks/useWindowContext';
 import * as Styled from 'components/TemplatesGallery/TemplatesGallery.styles';
-import GalleryMainImage from 'assets/images/template-gallery.svg';
+import GalleryMainImage from 'assets/images/template-gallery-2x.png';
 import Input from 'components/Inputs/Input';
 import SearchIcon from 'components/Icons/SearchIcon/Search';
 import { CV_DISTANT, CV_WHITE } from 'constant/CssVariables';

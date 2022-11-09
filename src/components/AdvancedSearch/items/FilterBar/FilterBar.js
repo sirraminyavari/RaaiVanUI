@@ -14,8 +14,7 @@ import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon
 import Filter from 'components/Icons/FilterIcon/Filter';
 import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
 import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
-import Search from 'components/Icons/SearchIcon/Search';
-import AnimatedInput from 'components/Inputs/AnimatedInput';
+import SearchInput from 'components/Inputs/SearchInput';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import { decodeBase64 } from 'helpers/helpers';
 import { decode } from 'js-base64';
@@ -35,6 +34,7 @@ import ShadowButton from 'components/Buttons/ShadowButton';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import { getNewNodePageUrl } from 'apiHelper/getPageUrl';
+import NodePageRelatedNodeItems from 'views/Node/nodeDetails/items/topBar/NodePageRelatedNodeItems';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -137,7 +137,8 @@ const FilterBar = ({
   const [calendarPickerClicked, setCalendarPickerClicked] = useState(false);
   const [isInOnBoarding, setIsInOnBoarding] = useState(false);
 
-  const { goBack, push } = useHistory();
+  const { goBack, push, location } = useHistory();
+  const RelatedID = new URLSearchParams(location.search).get('RelatedID');
 
   // const isInOnBoarding = onboardingName === INTRO_ONBOARD;
   // const isInOnBoarding = true;
@@ -301,6 +302,11 @@ const FilterBar = ({
     : [
         { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
         ...extendedHierarchy,
+
+        {
+          id: 4,
+          title: RVDic.RelatedNodes,
+        },
       ];
 
   const hasSelectedNodeType = () => !!nodeTypeId || !!nodeType?.NodeTypeID;
@@ -358,7 +364,7 @@ const FilterBar = ({
           </Button>
         ) : (
           <>
-            {!isProfile && (
+            {!isProfile && !RelatedID && (
               <div data-tut={'new_doc_menu'}>
                 {market?.length > 0 && (
                   <AnimatedDropDownList
@@ -398,22 +404,11 @@ const FilterBar = ({
       </TopRow>
 
       <BottomRow>
-        <AnimatedInput
+        <SearchInput
           value={searchText}
-          placeholderClass={'rv-distant'}
           onChange={onTextSearch}
           afterChangeListener={() => onSearch(searchText)}
           style={{ maxWidth: '60%' }}
-          placeholder={RVDic?.Search}
-          placeholderFocusedClass={'rv-default'}
-          children={
-            <Search
-              style={{
-                transform: `${RV_RTL ? 'rotate(0deg)' : 'rotate(90deg)'}`,
-              }}
-              className={'rv-distant'}
-            />
-          }
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <CustomDatePicker
@@ -461,7 +456,8 @@ const FilterBar = ({
               onByDate(value);
             }}
           />
-          {!isProfile && (
+
+          {!isProfile && !RelatedID && (
             <ShadowButton
               style={commonStyle}
               onMouseEnter={() => setBookmarkHover(true)}
@@ -556,6 +552,13 @@ const FilterBar = ({
           )}
         </div>
       </BottomRow>
+      <div style={{ width: '100%', paddingBlock: '0.5rem' }}>
+        <NodePageRelatedNodeItems
+          noTitle
+          ClassID={nodeTypeId}
+          NodeID={RelatedID}
+        />
+      </div>
     </Container>
   );
 };

@@ -280,7 +280,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             />
           ) : (
             <Styled.TeamDeleteWrapper onClick={handleTeamDelete}>
-              <TrashIcon />
+              <TrashIcon className="team-action-icon" />
               <span className="team-action-title">
                 {RVDic.RemoveN.replace('[n]', RVDic.Team)}
               </span>
@@ -288,7 +288,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           )
         ) : (
           <Styled.TeamExitWrapper onClick={onExitTeamClick}>
-            <ExitIcon size={22} />
+            <ExitIcon className="team-action-icon" size={22} />
             <span className="team-action-title">
               {RVDic.LeaveN.replace('[n]', RVDic.Team)}
             </span>
@@ -296,7 +296,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         )}
         {isEditable && (
           <Styled.TeamExitWrapper onClick={onTeamSettingsClick}>
-            <SettingIcon size={18} />
+            <SettingIcon className="team-action-icon" size={18} />
             <span className="team-action-title">{RVDic.TeamSettings}</span>
           </Styled.TeamExitWrapper>
         )}
