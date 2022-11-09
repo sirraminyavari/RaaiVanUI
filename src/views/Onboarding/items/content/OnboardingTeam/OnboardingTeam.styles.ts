@@ -81,6 +81,7 @@ OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
 
 export const OnboardingTeamInputWrapper = styled.div<{ isMobile?: boolean }>`
   margin-block-start: ${({ isMobile }) => (isMobile ? '2rem' : '8rem')};
+  margin-inline-start: 1rem;
   margin-inline-end: 1rem;
   max-width: ${({ isMobile }) => (isMobile ? '85%' : '30vw')};
   width: 100%;

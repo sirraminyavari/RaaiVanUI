@@ -100,7 +100,7 @@ function* selectApplication(values: PayloadAction<IAppID>) {
       }
       done && done(CLASSES_PATH);
     } else {
-      done && done(HOME_PATH);
+      done && done(CLASSES_PATH);
     }
   }
 

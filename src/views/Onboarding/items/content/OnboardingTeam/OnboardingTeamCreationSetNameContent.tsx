@@ -46,6 +46,7 @@ const OnboardingTeamCreationSetNameContent = () => {
             value={teamName}
             onChange={setTeamName}
             placeholder={RVDicِTeamName}
+            maxLength={64}
           />
         </Styles.OnboardingTeamInputWrapper>
       </>

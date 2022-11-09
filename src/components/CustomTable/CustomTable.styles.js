@@ -250,6 +250,7 @@ export const TableCell = styled.div`
   text-align: center;
   position: relative;
   border-${RV_Float}: 1px solid ${CV_FREEZED};
+  background-color: ${CV_WHITE};
 
   :hover:not(:first-child):not(:nth-child(2)) {
     div[data-edit-icon-wrapper] {

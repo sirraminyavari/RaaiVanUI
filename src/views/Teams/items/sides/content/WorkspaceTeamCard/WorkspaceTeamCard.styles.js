@@ -44,6 +44,10 @@ export const TeamActionContainer = styled.div.attrs({
     font-size: 0.8rem;
     font-weight: 500;
   }
+  .team-action-icon {
+    ${FLEX_RCS}
+    width: 1rem;
+  }
 `;
 
 export const TeamDeleteWrapper = styled.div`

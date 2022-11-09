@@ -231,12 +231,12 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         }}
       />
     );
-  } else if (route?.RedirectToHome && !isHomeView) {
+  } else if (route?.RedirectToHome && !isClassesView) {
     //! If check route api is resolved and user is authenticated, then redirect to home page.
     return (
       <Redirect
         to={{
-          pathname: HOME_PATH,
+          pathname: CLASSES_PATH,
           state: { from: props.location },
         }}
       />

@@ -1,4 +1,5 @@
 import {
+  CLASSES_PATH,
   DASHBOARD_PATH,
   EXPLORER_PATH,
   GRAPH_PATH,
@@ -11,7 +12,8 @@ import {
 const { RVDic, RVGlobal } = window;
 
 const NavButtons = [
-  { index: '1', title: RVDic.Home, icon: 'home', linkTo: HOME_PATH },
+  { index: '1', title: RVDic.Home, icon: 'home', linkTo: CLASSES_PATH },
+  { index: '1-2', title: RVDic.Network, icon: 'network', linkTo: HOME_PATH },
   {
     index: '2',
     title: RVDic.Navigation,
