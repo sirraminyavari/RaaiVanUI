@@ -27,6 +27,8 @@ const Maintainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: 3rem;
+  justify-content: flex-start;
+  align-items: center;
 `;
 const Vertical = styled.div`
   width: 0.25rem;

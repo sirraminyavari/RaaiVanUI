@@ -42,6 +42,7 @@ export const Placeholder = styled.span`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  text-transform: capitalize;
 
   ${RV_Float}: 0.5rem;
 `;
@@ -56,7 +57,7 @@ export const Label = styled.label`
       top: -10px;
       padding: 2px 10px;
       background-color: #ffffff;
-      text-transform: uppercase;
+      text-transform: capitalize;
       letter-spacing: 0.8px;
       font-size: 11px;
       line-height: 14px;

@@ -1,11 +1,17 @@
 import Heading from 'components/Heading/Heading';
-import { CV_DISTANT, CV_GRAY, TCV_WARM } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  TCV_HIGHLY_TRANSPARENT,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SaveButton from './items/SaveButton';
 import { EditableContext } from './FormFill';
 import EditCircleIcon from 'components/Icons/EditIcons/EditCircle';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { BO_RADIUS_HALF } from 'constant/constants';
 
 const FormCell = ({
   children,
@@ -57,11 +63,18 @@ const FormCell = ({
 };
 export default FormCell;
 
-const Container = styled.div`
+const Container = styled.div.attrs({ className: BO_RADIUS_HALF })`
   display: flex;
   flex-direction: ${({ wrap }) => (wrap ? 'column' : 'row')};
   align-items: flex-start;
-  margin-block: 1rem;
+  margin-block: 0.5rem;
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${TCV_HIGHLY_TRANSPARENT};
+  }
 `;
 const CellName = styled.div`
   display: flex;
