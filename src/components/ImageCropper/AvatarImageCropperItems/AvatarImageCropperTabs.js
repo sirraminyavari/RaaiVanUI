@@ -136,14 +136,6 @@ function AvatarImageCropperTabs({
   return (
     <>
       <TabView key={targetFile}>
-        <TabView.Item type="Item" label={RVDicPicture}>
-          <ImageCropperSelection
-            imageSrc={internalImageSrc}
-            fileInputRef={avatarUploadRef}
-            onImageEditChange={onImageEditChangeHandler}
-            onImageEditorDelete={onImageEditDeleteHandler}
-          />
-        </TabView.Item>
         {!noAvatarTab && (
           <TabView.Item
             type="Item"
@@ -156,6 +148,14 @@ function AvatarImageCropperTabs({
             />
           </TabView.Item>
         )}
+        <TabView.Item type="Item" label={RVDicPicture}>
+          <ImageCropperSelection
+            imageSrc={internalImageSrc}
+            fileInputRef={avatarUploadRef}
+            onImageEditChange={onImageEditChangeHandler}
+            onImageEditorDelete={onImageEditDeleteHandler}
+          />
+        </TabView.Item>
         {children}
         {CustomTabAction && (
           <TabView.Action type="Action">

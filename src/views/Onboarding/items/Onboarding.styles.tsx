@@ -59,6 +59,7 @@ export const OnboardingPageDescriptionText = styled.div`
   padding-inline: 4rem;
   max-width: 60rem;
   font-size: 1.1rem;
+  margin-inline: 1rem;
   &::first-letter {
     text-transform: capitalize;
   }
@@ -70,5 +71,6 @@ export const OnboardingPageTitleText = styled(Heading).attrs({ type: 'H2' })`
     text-transform: capitalize;
   }
   font-size: 2.5rem !important;
+  margin-inline: 1rem;
 `;
 OnboardingPageTitleText.displayName = 'OnboardingPageTitleText';
