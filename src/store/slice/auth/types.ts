@@ -53,6 +53,8 @@ export const EmptyAuthState: IAuthState = {
   },
   authUser: window.RVGlobal?.CurrentUser,
 
+  showLastLoginsModal: false,
+
   //must decide
   isAuthenticated: window.IsAuthenticated || window.RVGlobal?.IsAuthenticated,
   lastLogins: [],
