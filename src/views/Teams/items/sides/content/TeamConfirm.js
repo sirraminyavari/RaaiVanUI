@@ -19,6 +19,7 @@ const TeamConfirm = (props) => {
       onConfirm={onConfirm}
       onCancel={handleCloseConfirm}
       onClose={handleCloseConfirm}
+      colorType="default"
     >
       <Styled.TeamConfirmMessage>{message}</Styled.TeamConfirmMessage>
     </Confirm>

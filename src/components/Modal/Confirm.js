@@ -14,6 +14,7 @@ const Confirm = ({
   confirmText,
   cancelText,
   title,
+  colorType = 'error',
   ...props
 }) => {
   const [showState, setShowState] = useState(props.show !== false);
@@ -41,7 +42,7 @@ const Confirm = ({
       title={title}
       contentClass="small-8 medium-6 large-4"
       middle={true}
-      titleClass="RedColor"
+      titleClass={colorType === 'error' ? 'RedColor' : ''}
       show={showState}
       onClose={handleOnClose}
       {...props}
@@ -49,7 +50,7 @@ const Confirm = ({
       <Message>{props.children}</Message>
       <ButtonsContainer>
         <Button
-          type="negative"
+          type={colorType === 'error' ? 'negative' : 'primary'}
           style={GlobalUtilities.extend(
             {
               flex: '0 0 auto',
