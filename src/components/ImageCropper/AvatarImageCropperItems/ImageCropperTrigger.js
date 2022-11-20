@@ -1,6 +1,7 @@
 import * as Styles from './AvatarImageCropper.styles';
 import AddImageIcon from 'components/Icons/AddImageIcon/AddImageIcon';
 import Avatar from 'components/Avatar/Avatar';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import useWindow from 'hooks/useWindowContext';
 
 /**
@@ -10,20 +11,28 @@ import useWindow from 'hooks/useWindowContext';
  * @return {JSX.Element}
  */
 function ImageCropperTrigger({ imageSrc, ...restProps }) {
-  const { GlobalUtilities } = useWindow();
+  const { GlobalUtilities, RVDic } = useWindow();
+  const RVDicAvatar = RVDic.Avatar;
 
   return (
-    <Styles.ImageCropperTriggerAvatar {...restProps}>
-      {imageSrc ? (
-        <Avatar
-          userImage={GlobalUtilities.add_timestamp(imageSrc)}
-          className="cropper-avatar"
-          imageStyles={{ width: '100%', height: '100%' }}
-        />
-      ) : (
-        <AddImageIcon />
-      )}
-    </Styles.ImageCropperTriggerAvatar>
+    <Tooltip
+      tipId={'ImageCropperTrigger'}
+      effect="solid"
+      place="top"
+      renderContent={() => RVDicAvatar}
+    >
+      <Styles.ImageCropperTriggerAvatar {...restProps}>
+        {imageSrc ? (
+          <Avatar
+            userImage={GlobalUtilities.add_timestamp(imageSrc)}
+            className="cropper-avatar"
+            imageStyles={{ width: '100%', height: '100%' }}
+          />
+        ) : (
+          <AddImageIcon />
+        )}
+      </Styles.ImageCropperTriggerAvatar>
+    </Tooltip>
   );
 }
 

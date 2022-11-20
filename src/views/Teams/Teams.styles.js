@@ -106,6 +106,7 @@ const getDragCss = (props) => {
 export const TeamContainer = styled.div.attrs({
   className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
+  max-width: 50vw;
   width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
   height: 12.7rem;
   padding: 0.5rem 1.5rem;
@@ -204,7 +205,7 @@ export const DesktopWelcomeSide = styled.div`
 `;
 
 export const WorkspaceImageWrapper = styled.div`
-  width: 50%;
+  width: 70%;
   // max-width: 18rem;
   margin-block-start: 5rem;
   aspect-ratio: 1;

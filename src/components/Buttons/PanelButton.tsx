@@ -85,6 +85,7 @@ const StyledPanelButton = styled.button.attrs({
   box-sizing: border-box;
   position: relative;
   line-height: 1.1rem;
+  border-width: 0.15rem;
 
   &.secondary {
     color: ${CV_GRAY};

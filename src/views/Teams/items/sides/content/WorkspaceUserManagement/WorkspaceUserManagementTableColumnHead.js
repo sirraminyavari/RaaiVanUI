@@ -7,29 +7,33 @@ function WorkspaceUserManagementTableColumnHead({ isMobile }) {
   const RVDicLastActivityTime = RVDic.LastActivityTime;
   return [
     {
-      Header: RVDicFullName,
+      Header: '',
       accessor: 'col1',
+    },
+    {
+      Header: RVDicFullName,
+      accessor: 'col2',
     },
     //* remove [col2] and [col3] of the table on mobile view
     ...(!isMobile
       ? [
           {
             Header: `${RVDic.Mobile}/${RVDic.Email}`,
-            accessor: 'col2',
+            accessor: 'col3',
           },
           {
             Header: RVDicLastActivityTime,
-            accessor: 'col3',
+            accessor: 'col4',
           },
         ]
       : []),
     {
       Header: RVDicTeams,
-      accessor: 'col4',
+      accessor: 'col5',
     },
     {
       Header: '',
-      accessor: 'col5',
+      accessor: 'col6',
     },
   ];
 }

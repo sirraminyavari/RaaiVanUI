@@ -4,13 +4,12 @@ import UserPlusIcon from 'components/Icons/UserPlusIcon/UserPlus';
 import useWindow from 'hooks/useWindowContext';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
-import AvatarComponent from 'components/Avatar/Avatar';
 import { decodeBase64 } from 'helpers/helpers';
 import usePreventScroll from 'hooks/usePreventScroll';
 import WithAvatar from 'components/Avatar/WithAvatar';
 
 const Avatar = WithAvatar({
-  Component: AvatarComponent,
+  Component: Styled.ExtraUserItemAvatar,
   componentURLProp: 'userImage',
 });
 

@@ -42,9 +42,8 @@ export const WorkspaceUserManagementTableContainer = styled.div`
       td {
         padding-block: 1rem;
         padding-inline: 2rem;
-        :first-of-type {
+        :nth-of-type(2) {
           font-weight: bold;
-          padding-inline-start: 1rem;
         }
         > div {
           display: flex;

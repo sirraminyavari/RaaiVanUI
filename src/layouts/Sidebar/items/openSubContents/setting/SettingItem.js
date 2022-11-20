@@ -10,6 +10,7 @@ import {
 import useWindow from 'hooks/useWindowContext';
 import { useHistory } from 'react-router-dom';
 import { useThemeSlice } from 'store/slice/theme';
+import TeamSettings from './items/team-settings/TeamSettings';
 
 const SettingItem = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const SettingItem = () => {
   } = useThemeSlice();
 
   const settingItems = [
-    { id: '1', title: RVDic.Settings, icon: SETT_TEAM_CONTENT },
+    // { id: '1', title: RVDic.Settings, icon: SETT_TEAM_CONTENT },
     // { id: '2', title: RVDic.UserManagement, icon: SETT_USERS_CONTENT },
     { id: '3', title: RVDic.TemplateManagement, icon: SETT_CLASSES_CONTENT },
     // { id: '4', title: RVDic.NotificationSettings, icon: SETT_NOTIFS_CONTENT },
@@ -39,6 +40,7 @@ const SettingItem = () => {
 
   return (
     <>
+      <TeamSettings />
       {settingItems?.map((item, key) => {
         return (
           <Styled.SettingItemWrapper

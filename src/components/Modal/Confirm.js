@@ -51,13 +51,10 @@ const Confirm = ({
       <ButtonsContainer>
         <Button
           type={colorType === 'error' ? 'negative' : 'primary'}
-          style={GlobalUtilities.extend(
-            {
-              flex: '0 0 auto',
-              width: '6rem',
-            },
-            RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
-          )}
+          style={GlobalUtilities.extend({
+            flex: '0 0 auto',
+            minWidth: '6rem',
+          })}
           onClick={handleOnConfirm}
         >
           {confirmText ?? RVDic.Confirm}
@@ -66,7 +63,7 @@ const Confirm = ({
           type="primary-o"
           style={{
             flex: '0 0 auto',
-            width: '6rem',
+            minWidth: '6rem',
           }}
           onClick={handleOnCancel}
         >
@@ -89,4 +86,8 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-flow: row;
   justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  align-items: center;
 `;
