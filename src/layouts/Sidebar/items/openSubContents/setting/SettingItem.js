@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import iconList from './iconList';
 import {
@@ -8,14 +8,19 @@ import {
   SETT_TEAM_CONTENT,
 } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useThemeSlice } from 'store/slice/theme';
+import { selectApplication } from 'store/slice/applications/selectors';
 import TeamSettings from './items/team-settings/TeamSettings';
 
 const SettingItem = () => {
   const dispatch = useDispatch();
   const { RVDic } = useWindow();
   const history = useHistory();
+  const location = useLocation();
+  const {
+    currentApp: { ApplicationID: currentApplicationID },
+  } = useSelector(selectApplication);
 
   const {
     actions: { setSidebarContent },
@@ -32,6 +37,8 @@ const SettingItem = () => {
   const onSettingItemClick = useCallback((current) => {
     if (current === 'setting-classes') {
       history.push('/templates/settings');
+    } else if (current === 'teamsettings') {
+      history.push(`/teamsettings/${currentApplicationID}`);
     } else {
       dispatch(setSidebarContent({ current, prev: SETTING_CONTENT }));
     }
@@ -40,11 +47,19 @@ const SettingItem = () => {
 
   return (
     <>
+      <Styled.SettingItemWrapper
+        active={location.pathname === `/teamsettings/${currentApplicationID}`}
+        onClick={() => onSettingItemClick('teamsettings')}
+      >
+        {iconList['setting-team']({ size: 20 })}
+        <Styled.SettingItemTitle>{RVDic.TeamSettings}</Styled.SettingItemTitle>
+      </Styled.SettingItemWrapper>
       <TeamSettings />
       {settingItems?.map((item, key) => {
         return (
           <Styled.SettingItemWrapper
             key={key}
+            active={location.pathname === `/templates/settings`}
             onClick={() => onSettingItemClick(item?.icon)}
           >
             {iconList[item?.icon]({ size: 20 })}

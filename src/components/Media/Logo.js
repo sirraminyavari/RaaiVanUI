@@ -16,7 +16,7 @@ const Logo = () => {
     <Container href="https://cliqmind.com">
       {/* <Image src={isSaas ? RVGlobal.LogoURL : RVGlobal.LogoMiniURL} /> */}
       <Image
-        src={RV_Lang === 'en' ? cliqmind_logo_white_en : cliqmind_logo_white}
+        src={RV_Lang === 'en' ? cliqmind_logo_white_en : cliqmind_logo_white_en}
       />
     </Container>
   );

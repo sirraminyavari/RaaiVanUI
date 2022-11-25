@@ -430,18 +430,25 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </PopupMenu>
               ) : (
                 isAdmin && (
-                  <Styled.AddUserWrapper
-                    usersCount={shownUsers?.length}
-                    onClick={handleInviteUser}
-                    rtl={RV_RTL}
-                    dir={RV_RevFloat}
+                  <Tooltip
+                    tipId={'RenameWorkspaceTitle'}
+                    effect="solid"
+                    place="top"
+                    renderContent={() => RVDic.AddMember}
                   >
-                    <UserPlusIcon
-                      size={22}
-                      color={TCV_DEFAULT}
-                      style={{ marginLeft: '0.4rem' }}
-                    />
-                  </Styled.AddUserWrapper>
+                    <Styled.AddUserWrapper
+                      usersCount={shownUsers?.length}
+                      onClick={handleInviteUser}
+                      rtl={RV_RTL}
+                      dir={RV_RevFloat}
+                    >
+                      <UserPlusIcon
+                        size={22}
+                        color={TCV_DEFAULT}
+                        style={{ marginLeft: '0.4rem' }}
+                      />
+                    </Styled.AddUserWrapper>
+                  </Tooltip>
                 )
               )}
             </Styled.TeamAvatarsWrapper>
