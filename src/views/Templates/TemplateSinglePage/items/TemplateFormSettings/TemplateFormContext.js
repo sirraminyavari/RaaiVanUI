@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { getUUID } from 'helpers/helpers';
 import formElementList from './items/FormElements';
 import produce from 'immer';
+import API from 'apiHelper';
 import { getElementType } from './elementSettingComponents/ElementTypeFinder';
 import { saveFormElements } from 'apiHelper/ApiHandlers/FGAPI/FGAPI';
 import InfoToast from '../../../../../components/toasts/info-toast/InfoToast';
@@ -104,6 +105,19 @@ export const TemplateFormProvider = ({ children, initialState }) => {
     }
   };
 
+  const loadMultiLevelChildNodes = async () => {
+    const { NodeTypes } = await API.CN.getNodeTypes({});
+    return NodeTypes;
+  };
+
+  const getMultiLevelNodeDepth = async (NodeTypeID) => {
+    return API.CN.GetTreeDepth({ NodeTypeID });
+  };
+
+  const loadTableForms = async () => {
+    return API.FG.GetForms({});
+  };
+
   return (
     <TemplateFormContext.Provider
       value={{
@@ -116,6 +130,9 @@ export const TemplateFormProvider = ({ children, initialState }) => {
         duplicateItem,
         removeItem,
         saveForm,
+        loadMultiLevelChildNodes,
+        getMultiLevelNodeDepth,
+        loadTableForms,
       }}
     >
       {children}

@@ -9,13 +9,14 @@ const SideFormElementSetting = ({
   focusedObject,
   formObjects,
   setFormObjects,
+  ...props
 }) => {
   const component = useMemo(() => {
     if (focusedObject) {
       const el = formObjects?.find((x) => x?.id === focusedObject) || null;
       return (
         <Container>
-          {getSideFormElementSetting({ current: el, setFormObjects })}
+          {getSideFormElementSetting({ current: el, setFormObjects, ...props })}
         </Container>
       );
     }

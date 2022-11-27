@@ -198,9 +198,18 @@ const formElementList = () => {
           title: 'چندسطحی',
           type: 'multi',
           icon: <IoFilter size={size} />,
+          nodes: [],
+          selectedNodeDepth: undefined,
           data: {
-            Type: 'MutliLevel',
+            Type: 'MultiLevel',
             ...sharedProps,
+            UniqueValue: false,
+            Necessary: false,
+            Info: {
+              NodeType: undefined,
+              // Levels: ['2KfYs9iq2KfZhg==', '2LTZh9ix', '2YXYrdmE2Yc='],
+              Levels: [],
+            },
           },
         },
         {
@@ -275,7 +284,10 @@ const formElementList = () => {
           title: 'جدول',
           type: 'table',
           icon: <BsTable size={size} />,
+          tableForms: undefined,
           data: {
+            Type: 'Form',
+            Info: { FormID: undefined, FormName: undefined },
             ...sharedProps,
           },
         },

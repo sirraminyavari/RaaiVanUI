@@ -399,3 +399,10 @@ export const GetPendingMembers = (properties: {
     TotalCount: number;
   }>(API_Provider(CN_API, 'GetPendingMembers'), properties);
 };
+
+export const GetTreeDepth = (properties: { NodeTypeID?: string }) => {
+  return apiCallWrapper<{
+    AppID: string;
+    Depth: number;
+  }>(API_Provider(CN_API, 'GetTreeDepth'), properties);
+};

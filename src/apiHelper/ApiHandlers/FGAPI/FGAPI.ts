@@ -1,4 +1,5 @@
 import {
+  API_NAME_FG_GET_FORMS,
   API_NAME_FG_GET_FORM_ELEMENTS,
   API_NAME_FG_GET_FORM_INSTANCE,
   API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE,
@@ -199,6 +200,26 @@ export const saveFormInstanceElements = ({
       Elements,
     }
   );
+};
+
+interface IGetForms {
+  Archive?: boolean;
+  Count?: number;
+  LowerBoundary?: number;
+  SearchText?: string;
+}
+export const GetForms = ({
+  Archive,
+  Count,
+  LowerBoundary,
+  SearchText,
+}: IGetForms) => {
+  return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORMS), {
+    Archive,
+    Count,
+    LowerBoundary,
+    SearchText,
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

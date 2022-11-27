@@ -407,7 +407,9 @@ const FilterBar = ({
         <SearchInput
           value={searchText}
           onChange={onTextSearch}
-          afterChangeListener={() => onSearch(searchText)}
+          afterChangeListener={() => {
+            onSearch(searchText);
+          }}
           style={{ maxWidth: '60%' }}
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>

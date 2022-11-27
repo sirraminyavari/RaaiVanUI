@@ -18,6 +18,10 @@ import SeparatorTypeMainSetting from './SeparatorTypeElement/SeparatorTypeMainSe
 import SeparatorTypeSideBoxSetting from './SeparatorTypeElement/SeparatorTypeSideboxSetting';
 import SelectSideBoxSetting from './sharedItems/SelectSideBoxSetting';
 import MultiSelectMainSetting from './MultiSelectElement/MultiSelectMainSetting';
+import MultiLevelMainSetting from './MultiLevelElement/MultiLevelMainSetting';
+import MultiLevelSideBoxSetting from './MultiLevelElement/MultiLevelSideBoxSetting';
+import TableMainSetting from './TableElement/TableMainSetting';
+import TableSideBoxSetting from './TableElement/TableSideBoxSetting';
 
 const componentsArray = [
   {
@@ -116,6 +120,26 @@ const componentsArray = [
       };
     },
   },
+  {
+    key: 'MultiLevel',
+    value: (props) => {
+      return {
+        // main: <div>content</div>,
+        main: MultiLevelMainSetting(props),
+        sideBox: MultiLevelSideBoxSetting({ ...props }),
+      };
+    },
+  },
+  {
+    key: 'Form',
+    value: (props) => {
+      return {
+        // main: <div>content</div>,
+        main: TableMainSetting(props),
+        sideBox: TableSideBoxSetting({ ...props }),
+      };
+    },
+  },
 ];
 
 export const getDraggableElementSetting = (props) => {
@@ -129,5 +153,6 @@ export const getSideFormElementSetting = (props) => {
   const key = props?.current?.data?.Type;
   const { sideBox } =
     componentsArray?.find((x) => x?.key === key)?.value(props) || {};
+  console.log({ key, sideBox });
   return sideBox;
 };
