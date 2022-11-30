@@ -44,6 +44,7 @@ const CardContainer = styled.div`
 const Image = styled.img`
   width: 2.8rem;
   height: 2.8rem;
+  border-radius: 100%;
 `;
 const Title = styled.div`
   font-size: 1rem;

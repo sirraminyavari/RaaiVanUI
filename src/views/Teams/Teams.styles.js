@@ -106,27 +106,15 @@ const getDragCss = (props) => {
 export const TeamContainer = styled.div.attrs({
   className: `${BG_WHITE} ${BO_DISTANT} ${BO_RADIUS_HALF}`,
 })`
-  width: calc(${({ isMobile }) => (isMobile ? '100%' : '50% - 0.5rem')});
+  width: 100%;
   height: 12.7rem;
   padding: 0.5rem 1.5rem;
   ${getBorderCss}
   position: relative;
-  float: ${RV_Float};
-  margin-bottom: 1rem;
   overflow: hidden;
   user-select: none;
   ${({ isArchive }) => isArchive && `background-color: ${CV_FREEZED};`}
   ${getDragCss}
-  ${({ isMobile }) =>
-    !isMobile &&
-    `
-    :nth-child(2n+1){
-      margin-${RV_RevFloat}: 0.5rem;
-    }
-    :nth-child(2n){
-      margin-${RV_Float}: 0.5rem;
-    }
-  `}
 
   .team-extra-users {
     background-color: ${CV_FREEZED};
@@ -204,7 +192,7 @@ export const DesktopWelcomeSide = styled.div`
 `;
 
 export const WorkspaceImageWrapper = styled.div`
-  width: 40%;
+  width: 70%;
   // max-width: 18rem;
   margin-block-start: 5rem;
   aspect-ratio: 1;

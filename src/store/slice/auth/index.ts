@@ -20,9 +20,11 @@ const slice = createSlice({
       state.isFetching = false;
     },
     showLastLogins: (state: IAuthState, action: PayloadAction<any>) => {
-      state.showLastLoginsModal = true;
       state.loginMessage = action.payload.message;
       state.lastLogins = action.payload.lastLogins;
+      state.showLastLoginsModal = Boolean(
+        action.payload.message && action.payload.lastLogins
+      );
     },
     loginStart: (state: IAuthState) => {
       state.isFetching = true;

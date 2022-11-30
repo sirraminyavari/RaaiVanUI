@@ -38,8 +38,7 @@ function Stepper({ stepsCount, activeStep, stepArguments }) {
               {...(stepArguments[idx] ? stepArguments[idx] : {})}
             />
           );
-        })
-        .reverse()}
+        })}
     </StyledStepperIndicatorWrapper>
   );
 }

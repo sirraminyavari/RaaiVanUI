@@ -3,7 +3,7 @@ import Button from 'components/Buttons/Button';
 // import TwitterIcon from 'components/Icons/SocialMediaIcons/Twitter';
 import LinkedIcon from 'components/Icons/SocialMediaIcons/LinkedIn';
 import useHover from 'hooks/useHover';
-import WorkspaceImage from 'assets/images/workspaces-2x.png?file';
+import WorkspaceImage from 'assets/images/workspace-2.svg?file';
 import useWindow from 'hooks/useWindowContext';
 import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
 import { CV_GRAY_LIGHT } from 'constant/CssVariables';

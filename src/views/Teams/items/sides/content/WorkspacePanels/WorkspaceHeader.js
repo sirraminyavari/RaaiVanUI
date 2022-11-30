@@ -15,6 +15,7 @@ import {
   WORKSPACE_USER_MANAGEMENT_PATH,
   WORKSPACE_REMOVE_PATH,
 } from '../../../others/constants';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 /**
  *
@@ -39,6 +40,14 @@ const WorkspaceHeader = ({ space }) => {
     );
   const RVDicDeleteConfirmWarning = RVDic._HelpRemoveWorkspace;
   const RVDicRemoveWorkspace = RVDic.RemoveN.replace('[n]', RVDic.Workspace);
+  const RVDicWorkspaceSettings = RVDic.SettingsOfN.replace(
+    '[n]',
+    RVDic.Workspace
+  );
+  const RVDicEditWorkspaceName = RVDic.EditN.replace(
+    '[n]',
+    RVDic.WorkspaceName
+  );
   const RVDicPermanentlyRemove = RVDic.RemovePermanently;
   // const userAuthority = space.Editable ? RVDic.Admin : RVDic.OrdinaryUser;
 
@@ -98,22 +107,43 @@ const WorkspaceHeader = ({ space }) => {
           style={{ marginInlineEnd: '0.6rem' }}
         />
         {space.Editable ? (
-          <Styled.SpaceHeaderTitleInput
-            defaultValue={decodeBase64(space.Name)}
-            onBlur={onWorkspaceRename}
-          />
+          <Tooltip
+            tipId={'RenameWorkspaceTitle'}
+            effect="solid"
+            place="top"
+            renderContent={() => RVDicEditWorkspaceName}
+          >
+            <Styled.SpaceHeaderTitleInput
+              defaultValue={decodeBase64(space.Name)}
+              onBlur={onWorkspaceRename}
+            />
+          </Tooltip>
         ) : (
           <span>{`${decodeBase64(space.Name)}`}</span>
         )}
       </Styled.SpaceHeaderTitle>
       {space.Removable && (
         <Styled.SpaceHeaderActions>
-          <Styled.TrashIconWrapper onClick={onTrashClick}>
-            <TrashIcon size={'0.8rem'} />
-          </Styled.TrashIconWrapper>
-          <Styled.SettingIconWrapper onClick={handleSpaceSetting}>
-            <SettingIcon size={'1rem'} />
-          </Styled.SettingIconWrapper>
+          <Tooltip
+            tipId={'RemoveWorkspaceIcon'}
+            effect="solid"
+            place="top"
+            renderContent={() => RVDicRemoveWorkspace}
+          >
+            <Styled.TrashIconWrapper onClick={onTrashClick}>
+              <TrashIcon size={'0.8rem'} />
+            </Styled.TrashIconWrapper>
+          </Tooltip>
+          <Tooltip
+            tipId={'workspaceSettingIcon'}
+            effect="solid"
+            place="top"
+            renderContent={() => RVDicWorkspaceSettings}
+          >
+            <Styled.SettingIconWrapper onClick={handleSpaceSetting}>
+              <SettingIcon size={'1rem'} />
+            </Styled.SettingIconWrapper>
+          </Tooltip>
         </Styled.SpaceHeaderActions>
       )}
     </Styled.SpaceHeaderContainer>

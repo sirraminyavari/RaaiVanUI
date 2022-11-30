@@ -10,6 +10,7 @@ import {
 } from './types';
 import { MAIN_CONTENT, SETT_ONBOARDING_CONTENT } from 'constant/constants';
 import { selectOnboardingSlice } from './selectors';
+import { decodeBase64 } from 'helpers/helpers';
 
 function* setTeamName(
   values: PayloadAction<{ WorkspaceID?: string; TeamName: string }>
@@ -21,7 +22,14 @@ function* setTeamName(
   if (!!WorkspaceID) yield put(actions.setOnboardingProductTourStatus(false));
   else {
     const res = yield call(API.RV.createWorkspace, {
-      Name: window.RVDic.Default,
+      Name:
+        window.RV_Lang === 'en'
+          ? `${decodeBase64(window.RVGlobal.CurrentUser.FirstName)}'s ${
+              window.RVDic.Workspace
+            }`
+          : `${window.RVDic.Workspace} ${decodeBase64(
+              window.RVGlobal.CurrentUser.FirstName
+            )}`,
     });
     wsId = res?.Workspace?.WorkspaceID;
   }

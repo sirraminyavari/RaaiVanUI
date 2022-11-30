@@ -21,6 +21,7 @@ const Title = styled.div`
   display: flex;
   align-self: flex-start;
   align-items: center;
+  padding-inline: 0.7rem;
   margin: ${() =>
     DimensionHelper().isTabletOrMobile ? '0 0.5rem 0 0.5rem' : '0'};
 `;

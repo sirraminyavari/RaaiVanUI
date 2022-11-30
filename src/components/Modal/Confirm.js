@@ -14,6 +14,7 @@ const Confirm = ({
   confirmText,
   cancelText,
   title,
+  colorType = 'error',
   ...props
 }) => {
   const [showState, setShowState] = useState(props.show !== false);
@@ -41,7 +42,7 @@ const Confirm = ({
       title={title}
       contentClass="small-8 medium-6 large-4"
       middle={true}
-      titleClass="RedColor"
+      titleClass={colorType === 'error' ? 'RedColor' : ''}
       show={showState}
       onClose={handleOnClose}
       {...props}
@@ -49,14 +50,11 @@ const Confirm = ({
       <Message>{props.children}</Message>
       <ButtonsContainer>
         <Button
-          type="negative"
-          style={GlobalUtilities.extend(
-            {
-              flex: '0 0 auto',
-              width: '6rem',
-            },
-            RV_RTL ? { marginLeft: '1rem' } : { marginRight: '1rem' }
-          )}
+          type={colorType === 'error' ? 'negative' : 'primary'}
+          style={GlobalUtilities.extend({
+            flex: '0 0 auto',
+            minWidth: '6rem',
+          })}
           onClick={handleOnConfirm}
         >
           {confirmText ?? RVDic.Confirm}
@@ -65,7 +63,7 @@ const Confirm = ({
           type="primary-o"
           style={{
             flex: '0 0 auto',
-            width: '6rem',
+            minWidth: '6rem',
           }}
           onClick={handleOnCancel}
         >
@@ -88,4 +86,8 @@ const ButtonsContainer = styled.div`
   display: flex;
   flex-flow: row;
   justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  align-items: center;
 `;

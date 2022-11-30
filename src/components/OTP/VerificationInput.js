@@ -44,6 +44,14 @@ const VerificationInput = ({
     setInputArray([...Array(length).keys()].map((i) => -1));
   }, [length]);
 
+  const onCodePaste = (event) => {
+    const code = event.clipboardData.getData('text/plain');
+    if (!isNaN(code) && code.length === length) {
+      setInputArray([...code]);
+      setIndex(length - 1);
+    }
+  };
+
   /**
    * By typing or deleting,
    * focus of verification-code cell will change.
@@ -58,7 +66,7 @@ const VerificationInput = ({
 
     // according to input array length, produces cells with help of 'map'.
     return (
-      <Maintainer>
+      <Maintainer onPaste={onCodePaste}>
         {inputArray.map((value, index) => {
           itemsRef.current = itemsRef.current.slice(0, 6);
           /**

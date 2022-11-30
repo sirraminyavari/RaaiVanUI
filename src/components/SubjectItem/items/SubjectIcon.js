@@ -16,4 +16,5 @@ const Icon = styled.img`
   display: block;
   width: auto;
   height: auto;
+  border-radius: 100%;
 `;

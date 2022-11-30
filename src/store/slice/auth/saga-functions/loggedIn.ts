@@ -43,7 +43,7 @@ export function* loggedIn(values: PayloadAction<any>) {
       RVDic.Confirms.DoYouWantToRefreshThePage;
     yield confirm(result, returnUrl, msg);
   } else {
-    if ((result?.LastLogins || []).length > 0)
+    if ((result?.LastLogins || []).length > 0 && msg)
       yield put(
         actions.showLastLogins({
           message: msg,

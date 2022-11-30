@@ -2,6 +2,7 @@ import * as Styles from './OnboardingTemplateSelection.styles';
 import { decodeBase64 } from 'helpers/helpers';
 import CaretIcon from 'components/Icons/CaretIcons/Caret';
 import { useEffect, useState } from 'react';
+import useWindowContext from 'hooks/useWindowContext';
 
 const OnboardingTemplateSelectionGalleryItem = ({
   Name,
@@ -11,6 +12,7 @@ const OnboardingTemplateSelectionGalleryItem = ({
   active,
   ...restProps
 }) => {
+  const { RV_RevFloat } = useWindowContext();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const OnboardingTemplateSelectionGalleryItem = ({
           onClick && onClick(event);
         }}
       >
-        <CaretIcon dir="left" />
+        <CaretIcon dir={RV_RevFloat} />
         {decodeBase64(Name)}
       </Styles.OnboardingTemplateSelectionGalleryItemSummery>
       {Templates.map((template) => {

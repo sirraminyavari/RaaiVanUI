@@ -28,15 +28,15 @@ function WorkspaceUserManagementTableData({
             userImage={GlobalUtilities.add_timestamp(User.ImageURL)}
             userObject={User}
           />
-          {decodeBase64(User.FullName)}
         </>
       ),
+      col2: <>{decodeBase64(User.FullName)}</>,
       //* remove [col2] and [col3] of the table on mobile view
       ...(!isMobile && {
-        col2: decodeBase64(User.MainEmailAddress),
-        col3: decodeBase64(User.LastActivityTime_Local),
+        col3: decodeBase64(User.MainEmailAddress),
+        col4: decodeBase64(User.LastActivityTime_Local),
       }),
-      col4: Applications.map(
+      col5: Applications.map(
         ({ ApplicationID, Title, IconURL }, idx, ApplicationsArray) => {
           if (idx < 5)
             return (
@@ -64,7 +64,7 @@ function WorkspaceUserManagementTableData({
           return;
         }
       ),
-      col5: (
+      col6: (
         <Button
           type="negative-o"
           key={User.MainEmailAddress}
@@ -74,7 +74,7 @@ function WorkspaceUserManagementTableData({
           {RVDicRemoveFromAllTeams}
         </Button>
       ),
-      col6: '',
+      col7: '',
     };
   });
 }

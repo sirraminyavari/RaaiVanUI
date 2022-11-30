@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Styled from 'layouts/Sidebar/Sidebar.styles';
 import useWindow from 'hooks/useWindowContext';
@@ -41,6 +41,7 @@ const allPermissions = [
 const TeamSettings = () => {
   const { RVDic } = useWindow();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const {
     actions: { setSidebarContent },
@@ -72,6 +73,7 @@ const TeamSettings = () => {
             onClick={handleClickPanel(panel?.URL)}
             key={key}
             as={NavLink}
+            isSelected={location.pathname === `/configuration/${panel?.URL}`}
             to={`/configuration/${panel?.URL}`}
           >
             <Styled.PanelImage

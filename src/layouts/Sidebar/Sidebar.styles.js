@@ -414,7 +414,7 @@ export const SettingItemWrapper = styled.div.attrs({
   ${({ active }) =>
     active &&
     `
-  font-weight:bold;
+  // font-weight:bold;
   background-color: rgb(43, 123, 228, 0.1);
   `}
 `;

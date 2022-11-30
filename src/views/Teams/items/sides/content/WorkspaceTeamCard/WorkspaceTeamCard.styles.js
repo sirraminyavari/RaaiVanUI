@@ -25,6 +25,7 @@ import {
   CV_GRAY_DARK,
   TCV_WARM,
 } from 'constant/CssVariables';
+import Avatar from 'components/Avatar/Avatar';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
@@ -98,6 +99,9 @@ export const TeamTitle = styled.div.attrs({
   font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   .team-inline-edit-text {
     white-space: nowrap;
@@ -206,6 +210,13 @@ export const ExtraUserTitle = styled.span.attrs({
   className: C_GRAY,
 })`
   margin: 0 0.5rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const ExtraUserItemAvatar = styled(Avatar)`
+  flex-shrink: 0;
 `;
 
 export const NewTeamWrapper = styled.div.attrs({

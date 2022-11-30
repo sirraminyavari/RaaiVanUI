@@ -12,7 +12,7 @@ import {
 import UserGroupMembers from './items/UserGroupMembers';
 import UserGroupUpsertModal from './items/UserGroupUpsertModal';
 import { getUsers } from 'apiHelper/ApiHandlers/usersApi';
-import groupImg from 'assets/images/groups.png';
+import groupImg from 'assets/images/team-manager.svg';
 import PeopleIcon from 'components/Icons/PeopleIcon/PeopleIcon';
 import SearchInput from 'components/Inputs/SearchInput';
 import InfoToast from 'components/toasts/info-toast/InfoToast';

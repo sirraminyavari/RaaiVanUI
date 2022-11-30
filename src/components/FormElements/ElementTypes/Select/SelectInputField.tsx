@@ -28,6 +28,7 @@ export interface ISelectInputField {
   onBlur?: () => void;
   options: OptionType[];
   isFocused?: boolean;
+  onFocus?: () => {};
   isMulti?: boolean;
   isSearchable?: boolean;
   isClearable?: boolean;
@@ -43,6 +44,7 @@ const SelectInputField = ({
   onBlur,
   options,
   isFocused,
+  onFocus,
   isMulti,
   isSearchable,
   classNamePrefix,
@@ -57,6 +59,7 @@ const SelectInputField = ({
   // return isFocused && isEditable ? (
   return isFocused && isEditable ? (
     <SelectComponent
+      onFocus={onFocus}
       onBlur={onBlur}
       options={options || []}
       isDisabled={!isEditable}
