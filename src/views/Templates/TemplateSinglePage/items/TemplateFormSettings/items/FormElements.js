@@ -200,6 +200,7 @@ const formElementList = () => {
           icon: <IoFilter size={size} />,
           nodes: [],
           selectedNodeDepth: undefined,
+          isTree: false,
           data: {
             Type: 'MultiLevel',
             ...sharedProps,

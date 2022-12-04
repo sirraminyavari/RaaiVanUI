@@ -431,9 +431,9 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
               ) : (
                 isAdmin && (
                   <Tooltip
-                    tipId={'RenameWorkspaceTitle'}
+                    tipId={'addUserToWorkspace'}
                     effect="solid"
-                    place="top"
+                    place="bottom"
                     renderContent={() => RVDic.AddMember}
                   >
                     <Styled.AddUserWrapper

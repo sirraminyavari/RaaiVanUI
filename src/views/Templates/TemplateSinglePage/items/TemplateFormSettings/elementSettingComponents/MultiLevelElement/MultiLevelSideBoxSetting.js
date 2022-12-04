@@ -3,6 +3,8 @@ import * as Styles from '../sharedItems/SharedStyles';
 import produce from 'immer';
 import { decodeBase64 } from 'helpers/helpers';
 import SelectInputField from 'components/FormElements/ElementTypes/Select/SelectInputField';
+import ToggleButton from 'components/Buttons/Toggle/Toggle';
+import Button from 'components/Buttons/Button';
 
 const MultiLevelSideBoxSetting = ({
   current,
@@ -10,7 +12,7 @@ const MultiLevelSideBoxSetting = ({
   loadMultiLevelChildNodes,
   getMultiLevelNodeDepth,
 }) => {
-  const { nodes, data } = current || {};
+  const { nodes, data, isTree } = current || {};
 
   const NodeTypes = async () => {
     const nodeTypes = await loadMultiLevelChildNodes();
@@ -43,6 +45,16 @@ const MultiLevelSideBoxSetting = ({
       })
     );
   };
+
+  const toggleTreeMode = (state) => {
+    setFormObjects(
+      produce((d) => {
+        const _current = d?.find((x) => x?.id === current?.id);
+        _current.isTree = state;
+      })
+    );
+  };
+
   return (
     <Styles.Row
       onFocusCapture={() => {
@@ -51,6 +63,19 @@ const MultiLevelSideBoxSetting = ({
       }}
     >
       <ToggleNecessaryState {...{ current, setFormObjects }} />
+      <Styles.ToggleRow>
+        <Styles.ToggleRowTitle>{'ویرایش درخت'}</Styles.ToggleRowTitle>
+        <div>
+          <ToggleButton value={isTree} onToggle={toggleTreeMode} />
+        </div>
+      </Styles.ToggleRow>
+      {/* {isTree ? (
+        <Styles.ToggleRow>
+          <Button type="primary" style={{ marginInline: 'auto' }}>
+            ویرایش درخت
+          </Button>
+        </Styles.ToggleRow>
+      ) : ( */}
       <Styles.ToggleRow>
         <Styles.ToggleRowTitle>{'کلاس'}</Styles.ToggleRowTitle>
         <SelectInputField
@@ -70,6 +95,7 @@ const MultiLevelSideBoxSetting = ({
           }}
         />
       </Styles.ToggleRow>
+      {/* )} */}
     </Styles.Row>
   );
 };

@@ -92,6 +92,7 @@ export const UrgentButtonCancel = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 
   :hover {
     border-color: ${CV_RED};

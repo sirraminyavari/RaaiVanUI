@@ -19,7 +19,7 @@ import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import { decodeBase64 } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { BackButton, BottomRow, Container, TopRow } from './FilterBar.style';
@@ -109,8 +109,6 @@ const FilterBar = ({
     color: 'white',
   };
 
-  // Typed value in search input.
-  const [searchText, setSearchText] = useState('');
   // if True, filters Bookmarked nodes(under develop)
   // const [bookmarked, setBookmarked] = useState(false);
 
@@ -271,7 +269,7 @@ const FilterBar = ({
 
   // By typing in the search input will fire
   const onTextSearch = (value) => {
-    setSearchText(value);
+    onSearch(value.target.value);
   };
 
   const onAdvancedFilterClick = () => {
@@ -329,7 +327,7 @@ const FilterBar = ({
           {nodeType?.IconURL && (
             <img
               alt={''}
-              style={{ height: '3rem', aspectRatio: 1 }}
+              style={{ height: '3rem', aspectRatio: 1, borderRadius: '100%' }}
               src={nodeType?.IconURL}
             />
           )}
@@ -405,11 +403,8 @@ const FilterBar = ({
 
       <BottomRow>
         <SearchInput
-          value={searchText}
           onChange={onTextSearch}
-          afterChangeListener={() => {
-            onSearch(searchText);
-          }}
+          delayTime={300}
           style={{ maxWidth: '60%' }}
         />
         <div style={{ display: 'flex', flexDirection: 'row' }}>

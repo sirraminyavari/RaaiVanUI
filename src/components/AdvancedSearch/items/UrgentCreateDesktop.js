@@ -152,7 +152,7 @@ const UrgentCreateDesktop = ({
         <UrgentButtonCancel
           style={cancelButton}
           $circleEdges={true}
-          type={'primary-o'}
+          type={'negative-o'}
         >
           <UrgentIconCancel
             onClick={onDismiss}

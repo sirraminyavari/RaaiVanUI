@@ -1,61 +1,24 @@
-import styled from 'styled-components';
+import { CV_DISTANT } from 'constant/CssVariables';
 import * as Styles from '../sharedItems/SharedStyles';
-import produce from 'immer';
-import SelectInputField from 'components/FormElements/ElementTypes/Select/SelectInputField';
-import { decodeBase64 } from 'helpers/helpers';
+import styled from 'styled-components';
 
 const TableMainSetting = ({ current, setFormObjects, loadTableForms }) => {
-  const { data, tableForms } = current || {};
-
-  const getTableForms = async () => {
-    const { Forms } = await loadTableForms();
-    console.log({ Forms });
-    setFormObjects(
-      produce((d) => {
-        const _current = d?.find((x) => x?.id === current?.id);
-        _current.tableForms = Forms.map((item) => ({
-          value: item.FormID,
-          label: decodeBase64(item.Title),
-        }));
-      })
-    );
-  };
-
-  const setTableForm = ({ value, label }) => {
-    setFormObjects(
-      produce((d) => {
-        const _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info = { FormName: label, FormID: value };
-      })
-    );
-  };
+  const { data } = current || {};
 
   return (
     <>
-      <Container
-        onFocusCapture={() => {
-          getTableForms();
-          // if (data.Info.NodeType?.ID) setMultiLevelDepth(data.Info.NodeType?.ID);
-        }}
-      >
-        <TextFieldContainer>
-          {`انتخاب فرم`}
+      <Container>
+        {data.Info?.FormName ? (
+          <Styles.ToggleRow>
+            <Styles.ToggleRowTitle>کلاس انتخاب شده</Styles.ToggleRowTitle>
 
-          <SelectInputField
-            isFocused
-            isEditable
-            options={tableForms}
-            selectedValue={
-              data.Info.FormID
-                ? {
-                    label: decodeBase64(data.Info.FormName),
-                    value: data.Info.FormID,
-                  }
-                : undefined
-            }
-            onChange={setTableForm}
-          />
-        </TextFieldContainer>
+            {data.Info?.FormName}
+          </Styles.ToggleRow>
+        ) : (
+          <Styles.ToggleRow>
+            <Styles.ToggleRowTitle>کلاسی انتخاب نشده است</Styles.ToggleRowTitle>
+          </Styles.ToggleRow>
+        )}
       </Container>
     </>
   );
@@ -73,4 +36,17 @@ const TextFieldContainer = styled.div`
   display: flex;
   align-items: center;
   column-gap: 1rem;
+  ${({ muted }) =>
+    muted &&
+    `
+  color: ${CV_DISTANT};
+  `}
+`;
+
+const TextField = styled.span`
+  ${({ muted }) =>
+    muted &&
+    `
+  color: ${CV_DISTANT};
+  `}
 `;
