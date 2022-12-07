@@ -220,6 +220,7 @@ const AdvanceSearchDesktop = ({
                   itemSelectionMode={itemSelectionMode}
                   bookmarked={bookmarked}
                   isProfile={isProfile}
+                  withRelatedNodes={Boolean(relatedNodeID)}
                 />
               </TopFilter>
               <div

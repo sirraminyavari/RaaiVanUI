@@ -35,6 +35,7 @@ import { selectTheme } from 'store/slice/theme/selectors';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import { getNewNodePageUrl } from 'apiHelper/getPageUrl';
 import NodePageRelatedNodeItems from 'views/Node/nodeDetails/items/topBar/NodePageRelatedNodeItems';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -94,6 +95,7 @@ const FilterBar = ({
   bookmarked,
   itemSelectionMode,
   isProfile,
+  withRelatedNodes,
 }) => {
   const { selectedTeam: selectedApp } = useSelector(selectTheme);
   const teamName = selectedApp.name;
@@ -301,10 +303,14 @@ const FilterBar = ({
         { id: selectedApp?.id, title: teamName, linkTo: '/classes' },
         ...extendedHierarchy,
 
-        {
-          id: 4,
-          title: RVDic.RelatedNodes,
-        },
+        ...(Boolean(RelatedID)
+          ? [
+              {
+                id: 4,
+                title: RVDic.RelatedNodes,
+              },
+            ]
+          : []),
       ];
 
   const hasSelectedNodeType = () => !!nodeTypeId || !!nodeType?.NodeTypeID;
@@ -327,15 +333,23 @@ const FilterBar = ({
           {nodeType?.IconURL && (
             <img
               alt={''}
-              style={{ height: '3rem', aspectRatio: 1, borderRadius: '100%' }}
+              style={{
+                height: '3rem',
+                aspectRatio: 1,
+                borderRadius: '100%',
+                marginInlineEnd: '0.5rem',
+              }}
               src={nodeType?.IconURL}
             />
           )}
-          <Heading style={{ margin: '0 1rem 0 0rem' }} type={'h1'}>
+          <Heading style={{ marginBlock: '0rem' }} type={'h1'}>
             {isProfile ? RVDic.RelatedNodes : getTypeName()}
           </Heading>
           {!_.isNull(totalFound) && (
-            <Heading style={{ margin: '0 1rem 0 1rem' }} type={'h6'}>
+            <Heading
+              style={{ marginBlockEnd: '1rem', marginInlineStart: '1rem' }}
+              type={'h6'}
+            >
               {RVDic?.NItems?.replace('[n]', totalFound)}
             </Heading>
           )}
@@ -407,7 +421,13 @@ const FilterBar = ({
           delayTime={300}
           style={{ maxWidth: '60%' }}
         />
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginInlineStart: '1rem',
+          }}
+        >
           <CustomDatePicker
             label={RVDic?.SelectDate}
             mode="button"
@@ -417,36 +437,43 @@ const FilterBar = ({
             headerTitle="فیلتر تاریخ ایجاد"
             onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
-              <ShadowButton
-                onClick={() => {
-                  onClick();
-                }}
-                onMouseEnter={() => setDateHover(true)}
-                onMouseLeave={() => setDateHover(false)}
-                style={commonStyle}
-                $isEnabled={date || calendarPickerClicked}
-                className={
-                  calendarPickerClicked || date
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }
+              <Tooltip
+                tipId={RVDic?.CreationDate}
+                effect="solid"
+                place="top"
+                renderContent={() => RVDic?.CreationDate}
               >
-                {date ? (
-                  <FilledCalendarIcon
-                    size={'1.5rem'}
-                    className={'rv-default'}
-                  />
-                ) : (
-                  <EmptyCalendarIcon
-                    size={'1.5rem'}
-                    className={
-                      calendarPickerClicked || dateHover
-                        ? 'rv-default'
-                        : 'rv-distant'
-                    }
-                  />
-                )}
-              </ShadowButton>
+                <ShadowButton
+                  onClick={() => {
+                    onClick();
+                  }}
+                  onMouseEnter={() => setDateHover(true)}
+                  onMouseLeave={() => setDateHover(false)}
+                  style={commonStyle}
+                  $isEnabled={date || calendarPickerClicked}
+                  className={
+                    calendarPickerClicked || date
+                      ? 'rv-border-distant rv-default'
+                      : 'rv-border-white rv-distant'
+                  }
+                >
+                  {date ? (
+                    <FilledCalendarIcon
+                      size={'1.5rem'}
+                      className={'rv-default'}
+                    />
+                  ) : (
+                    <EmptyCalendarIcon
+                      size={'1.5rem'}
+                      className={
+                        calendarPickerClicked || dateHover
+                          ? 'rv-default'
+                          : 'rv-distant'
+                      }
+                    />
+                  )}
+                </ShadowButton>
+              </Tooltip>
             )}
             onDateSelect={(value) => {
               setDate(value);
@@ -455,27 +482,37 @@ const FilterBar = ({
           />
 
           {!isProfile && !RelatedID && (
-            <ShadowButton
-              style={commonStyle}
-              onMouseEnter={() => setBookmarkHover(true)}
-              onMouseLeave={() => setBookmarkHover(false)}
-              onClick={() => onByBookmarked(!isBookMarked)}
-              $isEnabled={isBookMarked}
-              className={
-                isBookMarked
-                  ? 'rv-border-distant rv-default'
-                  : 'rv-border-white rv-distant'
-              }
+            <Tooltip
+              tipId={RVDic?.BookmarkedSubjects}
+              effect="solid"
+              place="top"
+              renderContent={() => RVDic?.BookmarkedSubjects}
             >
-              {isBookMarked ? (
-                <FilledBookmarkIcon size={'1.5rem'} className={'rv-default'} />
-              ) : (
-                <OutLineBookmarkIcon
-                  size={'1.5rem'}
-                  className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-                />
-              )}
-            </ShadowButton>
+              <ShadowButton
+                style={commonStyle}
+                onMouseEnter={() => setBookmarkHover(true)}
+                onMouseLeave={() => setBookmarkHover(false)}
+                onClick={() => onByBookmarked(!isBookMarked)}
+                $isEnabled={isBookMarked}
+                className={
+                  isBookMarked
+                    ? 'rv-border-distant rv-default'
+                    : 'rv-border-white rv-distant'
+                }
+              >
+                {isBookMarked ? (
+                  <FilledBookmarkIcon
+                    size={'1.5rem'}
+                    className={'rv-default'}
+                  />
+                ) : (
+                  <OutLineBookmarkIcon
+                    size={'1.5rem'}
+                    className={bookmarkHover ? 'rv-default' : 'rv-distant'}
+                  />
+                )}
+              </ShadowButton>
+            </Tooltip>
           )}
           {!isProfile && (
             <PeoplePicker
@@ -486,31 +523,40 @@ const FilterBar = ({
               pickedPeople={people}
               onVisible={setPeoplePickerVisibility}
               buttonComponent={
-                <ShadowButton
-                  style={commonStyle}
-                  // onClick={onClick}
-                  onMouseEnter={() => setPeopleHover(true)}
-                  onMouseLeave={() => setPeopleHover(false)}
-                  $isEnabled={
-                    (people || []).length || isByMe || peoplePickerVisibility
-                  }
-                  className={
-                    isByMe || (people || []).length || peoplePickerVisibility
-                      ? 'rv-border-distant rv-default'
-                      : 'rv-border-white rv-distant'
-                  }
+                <Tooltip
+                  tipId={RVDic?.Creator}
+                  effect="solid"
+                  place="top"
+                  renderContent={() => RVDic?.Creator}
                 >
-                  <PersonIcon
-                    size={'1.5rem'}
+                  <ShadowButton
+                    style={commonStyle}
+                    // onClick={onClick}
+                    onMouseEnter={() => setPeopleHover(true)}
+                    onMouseLeave={() => setPeopleHover(false)}
+                    $isEnabled={
+                      (people || []).length || isByMe || peoplePickerVisibility
+                    }
                     className={
                       isByMe || (people || []).length || peoplePickerVisibility
-                        ? 'rv-default'
-                        : peopleHover
-                        ? 'rv-default'
-                        : 'rv-distant'
+                        ? 'rv-border-distant rv-default'
+                        : 'rv-border-white rv-distant'
                     }
-                  />
-                </ShadowButton>
+                  >
+                    <PersonIcon
+                      size={'1.5rem'}
+                      className={
+                        isByMe ||
+                        (people || []).length ||
+                        peoplePickerVisibility
+                          ? 'rv-default'
+                          : peopleHover
+                          ? 'rv-default'
+                          : 'rv-distant'
+                      }
+                    />
+                  </ShadowButton>
+                </Tooltip>
               }
             />
           )}
@@ -549,13 +595,15 @@ const FilterBar = ({
           )}
         </div>
       </BottomRow>
-      <div style={{ width: '100%', paddingBlock: '0.5rem' }}>
-        <NodePageRelatedNodeItems
-          noTitle
-          ClassID={nodeTypeId}
-          NodeID={RelatedID}
-        />
-      </div>
+      {RelatedID ? (
+        <div style={{ width: '100%', paddingBlock: '0.5rem' }}>
+          <NodePageRelatedNodeItems
+            noTitle
+            ClassID={nodeTypeId}
+            NodeID={RelatedID}
+          />
+        </div>
+      ) : null}
     </Container>
   );
 };
