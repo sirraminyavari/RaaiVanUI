@@ -116,6 +116,7 @@ const MultiLevelInputField = ({
                           isEditable={isEditable as boolean}
                           isFocused={isFocused}
                           options={normalizedOptions[index]}
+                          placeholder={`${RVDic.LevelSelect} ${index + 1}`}
                           // styles={customStyles}
                           selectedValue={{
                             value: ID,

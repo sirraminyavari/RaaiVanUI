@@ -11,6 +11,7 @@ import {
 import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
 import { isArray } from 'lodash';
+import { useMemo } from 'react';
 
 type OptionType = { label: string; value: string | number };
 export interface ISelectInputField {
@@ -34,6 +35,7 @@ export interface ISelectInputField {
   isClearable?: boolean;
   className?: string;
   classNamePrefix?: string;
+  placeholder?: string;
   components?: any;
 }
 
@@ -52,9 +54,17 @@ const SelectInputField = ({
   isClearable = false,
   components,
   isCreatable = false,
+  placeholder,
 }: ISelectInputField) => {
   const { RVDic } = useWindow();
   const SelectComponent = isCreatable ? CreatableSelect : Select;
+
+  const memoizedSelectedValue = useMemo(() => {
+    if (!selectedValue) return undefined;
+    if (isArray(selectedValue)) return selectedValue;
+    if (selectedValue.value || selectedValue.label) return selectedValue;
+    return undefined;
+  }, [selectedValue]);
 
   // return isFocused && isEditable ? (
   return isFocused && isEditable ? (
@@ -63,8 +73,8 @@ const SelectInputField = ({
       onBlur={onBlur}
       options={options || []}
       isDisabled={!isEditable}
-      value={selectedValue}
-      placeholder={RVDic.Select}
+      value={memoizedSelectedValue}
+      placeholder={placeholder || RVDic.Select}
       isMulti={isMulti}
       classNamePrefix={classNamePrefix}
       className={className}
@@ -92,7 +102,7 @@ const SelectInputField = ({
           selectedValue.map(({ label }, idx) => {
             return (
               <Styles.SelectedFieldItem selectInput key={label + idx}>
-                {label}
+                {label || placeholder}
               </Styles.SelectedFieldItem>
             );
           })
