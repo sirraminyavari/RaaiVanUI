@@ -92,6 +92,7 @@ export const UrgentButtonCancel = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 
   :hover {
     border-color: ${CV_RED};
@@ -115,7 +116,9 @@ export const UrgentInput = styled.div`
   max-height: ${({ isVisible, liteMode }) =>
     isVisible ? (liteMode ? '5rem' : '13rem') : '0rem'};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transition: max-width 0.5s, max-height 0.5s, opacity 0.5s;
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  transition: max-width 0.5s, max-height 0.5s, opacity 0.5s,
+    visibility 0.3s ${({ isVisible }) => (isVisible ? '0.1s' : '0s')};
 `;
 export const UrgentInputMobile = styled.div`
   border-radius: 0.75rem;

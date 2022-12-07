@@ -36,9 +36,7 @@ const FormBuilder = ({ placeholderProps }) => {
     setFocusedObject,
     setFormObjects,
     removeItem,
-    loadMultiLevelChildNodes,
-    getMultiLevelNodeDepth,
-    loadTableForms,
+    ...otherTemplateFormContext
   } = useTemplateFormContext();
   const history = useHistory();
 
@@ -97,7 +95,7 @@ const FormBuilder = ({ placeholderProps }) => {
                 const formSettingComponent = getDraggableElementSetting({
                   current: x,
                   setFormObjects,
-                  loadMultiLevelChildNodes,
+                  ...otherTemplateFormContext,
                 });
                 return (
                   <OnClickAway
@@ -129,9 +127,7 @@ const FormBuilder = ({ placeholderProps }) => {
                                 current: x,
                                 setFormObjects,
                                 removeItem,
-                                loadMultiLevelChildNodes,
-                                getMultiLevelNodeDepth,
-                                loadTableForms,
+                                ...otherTemplateFormContext,
                               }}
                             >
                               {formSettingComponent}
@@ -162,9 +158,7 @@ const FormBuilder = ({ placeholderProps }) => {
             formObjects,
             setFormObjects,
             focusedObject,
-            loadMultiLevelChildNodes,
-            getMultiLevelNodeDepth,
-            loadTableForms,
+            ...otherTemplateFormContext,
           }}
         />
       </Styles.FormSetting>

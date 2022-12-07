@@ -98,6 +98,7 @@ const OnboardingTemplateSelectionContent = () => {
         defaultSelectedTemplateArray
       )
     );
+    gotoTemplateSetup();
 
     // history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
   }, [dispatch, onboardingActions, templates.AllTemplates]);

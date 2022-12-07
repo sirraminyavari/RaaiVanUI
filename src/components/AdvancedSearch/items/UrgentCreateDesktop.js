@@ -2,6 +2,7 @@
  * Creates a SubjectItem urgently
  */
 import APIHandler from 'apiHelper/APIHandler';
+import Avatar from 'components/Avatar/Avatar';
 import Button from 'components/Buttons/Button';
 import { decode, encode } from 'js-base64';
 import React, { useEffect, useRef, useState } from 'react';
@@ -84,11 +85,12 @@ const UrgentCreateDesktop = ({
       className={'rv-border-default rv-border-radius-half'}
     >
       {nodeType?.IconURL && (
-        <div style={{ width: '7.5rem' }}>
-          <img
+        <div style={{ width: '4.5rem', flexShrink: 0 }}>
+          <Avatar
             style={{ height: '4rem', aspectRatio: 1 }}
-            src={nodeType?.IconURL}
+            userImage={nodeType?.IconURL}
             alt={''}
+            radius={'4rem'}
           />
         </div>
       )}
@@ -152,7 +154,7 @@ const UrgentCreateDesktop = ({
         <UrgentButtonCancel
           style={cancelButton}
           $circleEdges={true}
-          type={'primary-o'}
+          type={'negative-o'}
         >
           <UrgentIconCancel
             onClick={onDismiss}

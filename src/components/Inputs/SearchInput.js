@@ -34,7 +34,7 @@ const CustomInput = styled(RxInput).attrs({
 const SearchInput = React.forwardRef((props, ref) => {
   return (
     <InputWrapper>
-      <CustomInput ref={ref} {...props} />
+      <CustomInput {...props} ref={ref} />
       <SearchIcon size={23} className={'rv-distant'} />
     </InputWrapper>
   );

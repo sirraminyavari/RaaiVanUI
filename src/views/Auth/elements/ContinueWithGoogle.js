@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import APIHandler from 'apiHelper/APIHandler';
 import { getCaptchaToken } from 'helpers/helpers';
 import { useAuthSlice } from 'store/slice/auth';
-import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 
 /**
  * It's not completed.
@@ -88,24 +87,19 @@ const ContinueWithGoogle = ({ ...props }) => {
     <GoogleLogin
       clientId={(RVGlobal || {}).GoogleSignInClientID}
       buttonText={RVDic.SignInWithGoogle}
-      render={(renderProps) =>
-        loading ? (
-          <LogoLoader
-            style={{ maxHeight: '2.55rem', transform: 'scale(0.5)' }}
-          />
-        ) : (
-          <Button
-            type={'primary-o'}
-            onClick={renderProps.onClick}
-            style={{ width: '100%' }}
-            {...props}
-            disabled={renderProps.disabled}
-          >
-            <GoogleIcon style={{ fontSize: '1rem' }} />
-            <Label>{RVDic.SignInWithGoogle}</Label>
-          </Button>
-        )
-      }
+      render={(renderProps) => (
+        <Button
+          type={'primary-o'}
+          onClick={renderProps.onClick}
+          style={{ width: '100%' }}
+          {...props}
+          disabled={renderProps.disabled}
+          loading={loading}
+        >
+          <GoogleIcon style={{ fontSize: '1rem' }} />
+          <Label>{RVDic.SignInWithGoogle}</Label>
+        </Button>
+      )}
       onRequest={() => setLoading(true)}
       onSuccess={onGoogleSuccess}
       onFailure={onGoogleFailed}
