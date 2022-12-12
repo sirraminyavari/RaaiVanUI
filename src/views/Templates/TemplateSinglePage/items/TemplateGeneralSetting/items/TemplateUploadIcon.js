@@ -16,6 +16,7 @@ const TemplateUploadIcon = () => {
   const { RV_RTL, RVDic } = window;
   const [openState, setOpenState] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [newUploadedImageURL, setNewUploadedImageURL] = useState('');
   const { NodeTypeID: ID, IconURL } = useTemplateContext();
 
   const open = () => setOpenState(true);
@@ -31,12 +32,15 @@ const TemplateUploadIcon = () => {
       InfoToast({ type: 'error', message: RVDic?.MSG[ErrorText] || ErrorText });
     else close();
   };
-
+  const handleUploadDone = (newImageURL) => {
+    setIsUploadModalOpen(false);
+    setNewUploadedImageURL(newImageURL);
+  };
   return (
     <Styles.Container>
       <Styles.Icon>
         {IconURL ? (
-          <Styles.AvatarIcon url={IconURL} />
+          <Styles.AvatarIcon url={newUploadedImageURL || IconURL} />
         ) : (
           <ImageIcon size={54} />
         )}
@@ -62,6 +66,7 @@ const TemplateUploadIcon = () => {
                     <Uploader
                       uploadID={ID}
                       setOpenStatus={setIsUploadModalOpen}
+                      onDone={handleUploadDone}
                     />
                   </Styles.TabViewContentWrapper>
                 </TabView.Item>

@@ -165,6 +165,7 @@ function AvatarImageCropperTabs({
       </TabView>
       <ImageCropperUploadInput
         ref={avatarUploadRef}
+        accept=".jpg,.jpeg,.png,.gif"
         onImageChange={({ imageSrc, targetFile }) => {
           setInternalImageSrc(imageSrc);
           setTargetFile(targetFile);
