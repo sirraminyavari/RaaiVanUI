@@ -38,12 +38,14 @@ export const TeamActionContainer = styled.div.attrs({
   min-height: 2.2rem;
   padding: 0 0.8rem;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  text-transform: capitalize;
 
   .team-action-title {
     margin: 0.5rem;
     font-size: 0.8rem;
     font-weight: 500;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
   .team-action-icon {
     ${FLEX_RCS}
@@ -234,6 +236,10 @@ export const NewTeamLabel = styled.div.attrs({
 })`
   margin: 1rem 0 0 0;
   font-size: 1.2rem;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 export const AddUserModalHeader = styled.div`

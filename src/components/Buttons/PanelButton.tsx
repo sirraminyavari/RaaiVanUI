@@ -87,6 +87,10 @@ const StyledPanelButton = styled.button.attrs({
   line-height: 1.1rem;
   border-width: 0.15rem;
 
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
   &.secondary {
     color: ${CV_GRAY};
   }

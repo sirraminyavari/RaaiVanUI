@@ -114,4 +114,8 @@ const Label = styled.div`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   margin: 0 0.8rem;
+  text-transform: lowercase;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;

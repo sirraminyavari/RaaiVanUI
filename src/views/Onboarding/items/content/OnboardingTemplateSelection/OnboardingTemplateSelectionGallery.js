@@ -42,7 +42,7 @@ const OnboardingTemplateSelectionGallery = ({
               </Styles.OnboardingTemplateSelectionGalleryTitleMenuButton>
             </>
           )}
-          {RVDicOnboardingTemplateGallery}
+          <span>{RVDicOnboardingTemplateGallery}</span>
         </Styles.OnboardingTemplateSelectionGalleryTitle>
         <Styles.OnboardingTemplateSelectionGalleryContentWrapper
           isCollapsed={isCollapsed}

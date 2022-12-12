@@ -41,9 +41,7 @@ export const OnboardingIntroductionText = styled(Heading).attrs({ type: 'H1' })`
   justify-content: center;
   align-items: center;
   column-gap: 1rem;
-  &::first-letter {
-    text-transform: capitalize;
-  }
+  text-transform: capitalize;
 `;
 OnboardingIntroductionText.displayName = 'OnboardingIntroductionText';
 

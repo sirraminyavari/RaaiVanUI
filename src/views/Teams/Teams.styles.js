@@ -238,12 +238,18 @@ export const WelcomeMessage = styled.span.attrs({
   className: C_GRAY,
 })`
   font-size: 1rem;
-  text-transform: capitalize;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
-export const TeamConfirmMessage = styled.span`
+export const TeamConfirmMessage = styled.div`
   font-size: 1rem;
   color: ${CV_GRAY_DARK};
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 export const WorkspaceDeleteContainer = styled.div`
@@ -311,6 +317,9 @@ export const WorkspaceSettingsHeaderContainer = styled.div`
   }
   .pageTitle {
     padding-block: 1.5rem;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 `;
 

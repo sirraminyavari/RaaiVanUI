@@ -51,11 +51,11 @@ const OnboardingTeamCreationChoiceContent = () => {
             onClick={goToTheDefaultEntranceRoute}
           >
             <TeamMemberIcon />
-            {RVDicAlreadyInATeam}
+            <span>{RVDicAlreadyInATeam}</span>
           </Styles.OnboardingTeamHugePanelButton>
           <Styles.OnboardingTeamHugePanelButton onClick={goToNextStep}>
             <NewTeamIcon />
-            {RVDicCreateNewTeam}
+            <span>{RVDicCreateNewTeam}</span>
           </Styles.OnboardingTeamHugePanelButton>
         </Styles.OnboardingTeamFlatPanelButtonGroup>
       </GlobalStyles.OnboardingCenterizeContent>

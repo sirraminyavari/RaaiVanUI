@@ -55,7 +55,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
           onClick={setOnboardingTeamPeopleCount('lessThan10')}
         >
           <TeamMemberCountIcon membersCount="lessThan10" size={'1em'} />
-          {RVDicLessThan10People}
+          <Styles.OnboardingPanelButtonLabel>
+            {RVDicLessThan10People}
+          </Styles.OnboardingPanelButtonLabel>
         </PanelButton>
         <PanelButton
           secondary
@@ -63,7 +65,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
           onClick={setOnboardingTeamPeopleCount('between11To20')}
         >
           <TeamMemberCountIcon membersCount="between11To20" size={'1em'} />
-          {RVDicBetween11To20People}
+          <Styles.OnboardingPanelButtonLabel>
+            {RVDicBetween11To20People}
+          </Styles.OnboardingPanelButtonLabel>
         </PanelButton>
         <PanelButton
           secondary
@@ -71,7 +75,9 @@ const OnboardingTeamCreationSetPeopleCountContent = () => {
           onClick={setOnboardingTeamPeopleCount('moreThan20')}
         >
           <TeamMemberCountIcon membersCount="moreThan20" size={'1em'} />
-          {RVDicMoreThan20People}
+          <Styles.OnboardingPanelButtonLabel>
+            {RVDicMoreThan20People}
+          </Styles.OnboardingPanelButtonLabel>
         </PanelButton>
       </Styles.OnboardingTeamButtonInputWrapper>
     </>

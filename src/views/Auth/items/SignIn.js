@@ -220,7 +220,7 @@ const SignIn = () => {
           loading={forgotPassClicked && fetchingFiles}
           onClick={onForgot}
         >
-          {RVDic?.ForgotMyPassword}
+          <ButtonLabel>{RVDic?.ForgotMyPassword}</ButtonLabel>
         </Button>
         <CreateAccountButtons
           isVisible={true}
@@ -240,6 +240,12 @@ const Container = styled.form`
   flex-direction: column;
   width: 80%;
   padding-top: 1rem;
+`;
+const ButtonLabel = styled.form`
+  text-transform: lowercase;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 const common_style = {
