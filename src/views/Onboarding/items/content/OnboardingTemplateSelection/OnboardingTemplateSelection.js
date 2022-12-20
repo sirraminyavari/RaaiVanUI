@@ -67,10 +67,10 @@ const OnboardingTemplateSelectionContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const gotoTemplateSetup = () => {
+  const gotoTemplateSetup = useCallback(() => {
     dispatch(onboardingActions.setOnboardingSelectedTemplatesArray());
     history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
-  };
+  }, [dispatch, history, onboardingActions]);
 
   const setDefaultTemplates = useCallback(async () => {
     const defaultTemplates = templates.AllTemplates.filter(
@@ -101,7 +101,7 @@ const OnboardingTemplateSelectionContent = () => {
     gotoTemplateSetup();
 
     // history.push(ONBOARDING_TEMPLATE_SETUP_PATH);
-  }, [dispatch, onboardingActions, templates.AllTemplates]);
+  }, [dispatch, gotoTemplateSetup, onboardingActions, templates.AllTemplates]);
 
   const selectedTemplateCount = useMemo(() => {
     const selectedTemplateKeys = Object.keys(selectedTemplates);
@@ -121,14 +121,6 @@ const OnboardingTemplateSelectionContent = () => {
         mobile={isTabletOrMobile}
       />
       <div>
-        <Styles.OnboardingTemplateSelectionTemplatePanel
-          mobile={isTabletOrMobile}
-        >
-          <OnboardingTemplateSelectionCurrentTemplate
-            activeTemplate={activateTemplate}
-          />
-          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
-        </Styles.OnboardingTemplateSelectionTemplatePanel>
         <OnboardingTemplateSelectionCarousel
           templates={
             activeTag
@@ -138,6 +130,15 @@ const OnboardingTemplateSelectionContent = () => {
           activateTemplate={setActivateTemplate}
           activeTemplate={activateTemplate}
         />
+        <Styles.OnboardingTemplateSelectionTemplatePanel
+          mobile={isTabletOrMobile}
+        >
+          <OnboardingTemplateSelectionCurrentTemplate
+            activeTemplate={activateTemplate}
+          />
+          <OnboardingTemplateSelectionNode activeTemplate={activateTemplate} />
+        </Styles.OnboardingTemplateSelectionTemplatePanel>
+
         <Styles.OnboardingTemplateSelectionButtonWrapper>
           <Button
             style={{ paddingInline: '3rem' }}

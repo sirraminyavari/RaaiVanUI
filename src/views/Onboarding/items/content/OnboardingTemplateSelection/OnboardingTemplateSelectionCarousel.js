@@ -11,12 +11,13 @@ const OnboardingTemplateSelectionCarousel = ({
   const { selectedTemplates } = useOnboardingTeamContent();
 
   return (
-    <Carousel key={random()}>
+    <Carousel key={random()} style={{ marginBlockEnd: '2rem' }}>
       {(templates || []).map((template, idx) => {
         const { IconURL, TypeName, NodeTypeID } = template;
         return (
           <PanelButton
             grayScale
+            key={NodeTypeID}
             active={NodeTypeID === activeTemplate?.NodeTypeID}
             checked={Object.keys(selectedTemplates).includes(NodeTypeID)}
             onClick={() => {
