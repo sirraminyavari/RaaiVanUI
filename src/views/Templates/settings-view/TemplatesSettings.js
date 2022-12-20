@@ -77,17 +77,18 @@ const TemplatesSettings = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleAddNodeType = (Name, ParentID) => {
+  const handleAddNodeType = (Name, ParentID, IsCategory = false) => {
     addNodeType({
       Name,
       ParentID,
-      IsCategory: isSaaS && ParentID,
+      IsCategory: IsCategory || (isSaaS && ParentID),
     }).then((res) => {
       if (res?.Succeed) {
-        history.push(
-          TEMPLATES_SETTING_SINGLE_PATH.replace(':id', res?.NodeTypeID)
-        );
-        // loadNodeTypes();
+        if (res.NodeType?.IsCategory) loadNodeTypes();
+        else
+          history.push(
+            TEMPLATES_SETTING_SINGLE_PATH.replace(':id', res?.NodeTypeID)
+          );
       }
     });
   };
