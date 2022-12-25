@@ -41,11 +41,13 @@ const TemplatesGallery = ({ isOpen, onModalClose } = {}) => {
   };
 
   //! Fetch templates.
-  useEffect(async () => {
-    const response = await API.CN.getTemplates();
+  useEffect(() => {
+    (async () => {
+      const response = await API.CN.getTemplates();
 
-    setTree(provideTemplatesForTree(response));
-    setTemplatesObject(response);
+      setTree(provideTemplatesForTree(response));
+      setTemplatesObject(response);
+    })();
 
     //! Clean up.
     return () => {
