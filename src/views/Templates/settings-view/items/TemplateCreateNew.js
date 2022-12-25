@@ -24,7 +24,7 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
 
   const handleModalConfirm = () => {
     if (onSubmit && value) {
-      onSubmit(value, parent);
+      onSubmit(value, parent, parent ? false : true);
     }
     setModalInfo({ ...modalInfo, show: false });
   };

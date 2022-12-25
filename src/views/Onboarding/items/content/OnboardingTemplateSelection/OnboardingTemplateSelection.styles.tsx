@@ -27,7 +27,8 @@ export const OnboardingTemplateSelectionWrapper = styled.div<{
   position: relative;
 
   & > div:last-of-type {
-    padding: 3vh 4vw;
+    padding-inline: 4vw;
+    padding-block: 1vh 3vh;
     ${({ mobile }) => (mobile ? 'width:100%;' : 'width:calc(100% - 17.5rem);')}
   }
 `;
