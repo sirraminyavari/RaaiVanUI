@@ -21,6 +21,9 @@ export const OnboardingTeamHugePanelButton = styled(PanelButton)`
   width: 16rem;
   font-size: 1.13rem;
 
+  & > span:first-letter {
+    text-transform: uppercase;
+  }
   & > svg {
     font-size: 5.63rem;
   }
@@ -179,3 +182,10 @@ export const OnboardingTeamWelcomeLayoutWrapper = styled.div<{
 `;
 OnboardingTeamWelcomeLayoutWrapper.displayName =
   'OnboardingTeamWelcomeLayoutWrapper';
+
+export const OnboardingPanelButtonLabel = styled.span`
+  &:first-letter {
+    text-transform: uppercase;
+  }
+`;
+OnboardingPanelButtonLabel.displayName = 'OnboardingPanelButtonLabel';

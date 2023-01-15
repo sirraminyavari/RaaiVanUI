@@ -30,6 +30,10 @@ export const WorkspaceUserManagementTableContainer = styled.div`
           display: block;
           width: 23rem;
         }
+
+        &:first-letter {
+          text-transform: uppercase;
+        }
       }
     }
     tbody {

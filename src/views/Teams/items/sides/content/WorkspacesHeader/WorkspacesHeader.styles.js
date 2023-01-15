@@ -18,4 +18,7 @@ export const HeaderTitle = styled.span.attrs({
 })`
   font-size: 1.1rem;
   font-weight: 500;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;

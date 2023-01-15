@@ -165,4 +165,8 @@ const TitleArea = styled.div`
   font-weight: 600;
   font-size: 0.9rem;
   text-align: center;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;

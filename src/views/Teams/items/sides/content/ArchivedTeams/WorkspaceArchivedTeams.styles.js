@@ -68,4 +68,8 @@ export const ArchivedTeamsLabel = styled.div.attrs({
   className: C_RED,
 })`
   margin: 1rem 0 0 0;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;

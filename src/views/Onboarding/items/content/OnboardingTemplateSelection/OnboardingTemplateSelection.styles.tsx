@@ -272,7 +272,7 @@ export const OnboardingTemplateSelectionGalleryTitle = styled.div`
   padding-block: 0.7rem;
   ${FLEX_RCS}
 
-  &::first-letter {
+  > span::first-letter {
     text-transform: capitalize;
   }
 `;
@@ -296,6 +296,7 @@ export const OnboardingTemplateSelectionGallerySuggestion = styled.div.attrs({
   margin: 0.7rem;
   ${({ active }) => active && `background-color: ${CV_WHITE};`}
   cursor: pointer;
+  text-transform: capitalize;
 `;
 OnboardingTemplateSelectionGallerySuggestion.displayName =
   'OnboardingTemplateSelectionGallerySuggestion';

@@ -28,9 +28,11 @@ const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
         {title}
       </TextContainer>
       <TextContainer color={CV_GRAY_DARK} bold bottomMargin="1rem">
-        {question}
+        <div>{question}</div>
       </TextContainer>
-      <TextContainer color={CV_RED}>{warning}</TextContainer>
+      <TextContainer color={CV_RED}>
+        <div>{warning}</div>
+      </TextContainer>
     </>
   );
 };
@@ -63,4 +65,8 @@ const TextContainer = styled.div`
   margin-bottom: ${({ bottomMargin }) => (bottomMargin ? bottomMargin : '')};
   color: ${({ color }) => (color ? color : 'unset')};
   font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
+
+  > div::first-letter {
+    text-transform: uppercase;
+  }
 `;

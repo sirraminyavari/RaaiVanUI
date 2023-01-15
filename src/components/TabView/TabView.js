@@ -107,7 +107,7 @@ const Item = ({ label, ...rest }) => {
       width={width}
       onClick={onSelect}
     >
-      {label}
+      <span>{label}</span>
     </Styled.TabViewItem>
   );
 };

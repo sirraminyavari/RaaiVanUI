@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import Heading from 'components/Heading/Heading';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import {
   addNodeType,
   getNodeTypes,
@@ -45,7 +45,7 @@ const TemplatesSettings = () => {
 
   useEffect(() => {
     loadNodeTypes();
-  }, []);
+  }, [searchText]);
 
   // useEffect(
   //   () =>
@@ -63,25 +63,27 @@ const TemplatesSettings = () => {
     history.push(TEMPLATES_ARCHIVE_PATH);
   };
 
-  const loadNodeTypes = () => {
+  const loadNodeTypes = useCallback(() => {
     setLoading(true);
     getNodeTypes({
       Icon: true,
       Tree: true,
       Count: 100000,
+      CheckAccess: true,
+      SearchText: searchText,
     })
       .then((res) => {
         setData(res);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  };
+  }, [searchText]);
 
   const handleAddNodeType = (Name, ParentID, IsCategory = false) => {
     addNodeType({
       Name,
       ParentID,
-      IsCategory: IsCategory || (isSaaS && ParentID),
+      IsCategory: isSaaS ? IsCategory || ParentID : undefined,
     }).then((res) => {
       if (res?.Succeed) {
         if (res.NodeType?.IsCategory) loadNodeTypes();

@@ -8,7 +8,7 @@ import ImageCropModal from 'components/ImageCropper/ImageCropperModal';
 import { readFile } from 'components/ImageCropper/cropUtils';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 
-const Uploader = ({ uploadID, setOpenStatus }) => {
+const Uploader = ({ uploadID, setOpenStatus, onDone }) => {
   const [modalInfo, setModalInfo] = useState({
     isShown: false,
     title: '',
@@ -21,19 +21,30 @@ const Uploader = ({ uploadID, setOpenStatus }) => {
     setOpenStatus && setOpenStatus(modalInfo.isShown);
   }, [modalInfo, setOpenStatus]);
 
-  const onDrop = useCallback((files) => {
-    const file = files[0];
-    const renderFile = async () => {
-      const fileData = await readFile(file);
-      setModalInfo({
-        ...modalInfo,
-        isShown: true,
-        file: file,
-        imgSrc: fileData,
-      });
-    };
-    renderFile();
-  }, []);
+  const onDrop = useCallback(
+    (files) => {
+      const file = files[0];
+      const renderFile = async () => {
+        const fileData = await readFile(file);
+        setModalInfo({
+          ...modalInfo,
+          isShown: true,
+          file: file,
+          imgSrc: fileData,
+        });
+      };
+      renderFile();
+    },
+    [modalInfo]
+  );
+
+  const onUploadDone = useCallback(
+    (newImageURL) => {
+      onDone(newImageURL);
+      setModalInfo({ ...modalInfo, isShown: false });
+    },
+    [modalInfo, onDone]
+  );
 
   useEffect(() => {
     console.log(modalInfo);
@@ -43,7 +54,7 @@ const Uploader = ({ uploadID, setOpenStatus }) => {
   return (
     <>
       <Container {...getRootProps()}>
-        <input {...getInputProps()} />
+        <input {...getInputProps()} accept=".jpg,.jpeg,.png,.gif" />
         <div>
           <Icon size={36} />
         </div>
@@ -56,6 +67,7 @@ const Uploader = ({ uploadID, setOpenStatus }) => {
           showGrid={true}
           uploadType="Icon"
           uploadId={uploadID}
+          onUploadDone={onUploadDone}
           onCloseModal={() => setModalInfo({ ...modalInfo, isShown: false })}
         />
       </Suspense>
