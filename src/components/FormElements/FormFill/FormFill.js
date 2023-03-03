@@ -162,7 +162,7 @@ const FormFill = ({ data, editable, ...props }) => {
                   type={Type}
                   onAnyFieldChanged={onAnyFieldChanged}
                   value={TextValue}
-                  save={() => {
+                  save={(ElementID) => {
                     saveFieldChanges(FormObject, ElementID);
                   }}
                 />

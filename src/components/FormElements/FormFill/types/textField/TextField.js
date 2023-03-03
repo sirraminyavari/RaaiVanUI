@@ -141,7 +141,7 @@ const TextField = ({
         }}
         onAway={() => {
           if (errorHandler) {
-            setIsFocused(false);
+            // setIsFocused(false);
           }
         }}
       >
@@ -163,7 +163,7 @@ const TextField = ({
                 onBlur={(e) => {
                   // e.preventDefault();
                   // e.stopPropagation();
-                  // console.log('onBlur!!!', new Date());
+                  // alert('onBlur!!!' + new Date());
                   if (errorHandler) {
                     save(elementId);
                     setIsFocused(false);
