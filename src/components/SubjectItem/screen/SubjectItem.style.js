@@ -58,6 +58,7 @@ export const Root = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
+  cursor: pointer;
 `;
 export const InputMode = styled.div`
   background-color: green;

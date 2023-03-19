@@ -38,7 +38,7 @@ export const TopRow = styled.div`
   align-items: center;
   width: 100%;
   align-self: flex-end;
-  padding-block: 3rem 1rem;
+  padding-block: 1rem 1rem;
   // padding-inline: 1rem;
   justify-content: space-between;
 `;

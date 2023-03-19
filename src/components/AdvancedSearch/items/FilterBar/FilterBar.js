@@ -7,13 +7,7 @@ import CustomDatePicker from 'components/CustomDatePicker/CustomDatePicker';
 import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
 import Heading from 'components/Heading/Heading';
 import AddIcon from 'components/Icons/AddIcon/AddIcon';
-import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
-import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
-import EmptyCalendarIcon from 'components/Icons/CalendarIcon/EmptyCalendarIcon';
-import FilledCalendarIcon from 'components/Icons/CalendarIcon/FilledCalendarIcon';
-import Filter from 'components/Icons/FilterIcon/Filter';
 import FlashIcon from 'components/Icons/FlashIcon/FlashIcon';
-import PersonIcon from 'components/Icons/PersonIcon/PersonIcon';
 import SearchInput from 'components/Inputs/SearchInput';
 import PeoplePicker from 'components/PeoplePicker/PeoplePicker';
 import { decodeBase64 } from 'helpers/helpers';
@@ -35,7 +29,14 @@ import { selectTheme } from 'store/slice/theme/selectors';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import { getNewNodePageUrl } from 'apiHelper/getPageUrl';
 import NodePageRelatedNodeItems from 'views/Node/nodeDetails/items/topBar/NodePageRelatedNodeItems';
-import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import {
+  BookmarkSvg,
+  CalendarClearSvg,
+  CalendarSvg,
+  FunnelSvg,
+  PersonCircleSvg,
+  RVSizeProp,
+} from '@cliqmind/rv-components';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -345,14 +346,6 @@ const FilterBar = ({
           <Heading style={{ marginBlock: '0rem' }} type={'h1'}>
             {isProfile ? RVDic.RelatedNodes : getTypeName()}
           </Heading>
-          {!_.isNull(totalFound) && (
-            <Heading
-              style={{ marginBlockEnd: '1rem', marginInlineStart: '1rem' }}
-              type={'h6'}
-            >
-              {RVDic?.NItems?.replace('[n]', totalFound)}
-            </Heading>
-          )}
         </div>
         {isProfile && (
           <BackButton
@@ -416,16 +409,32 @@ const FilterBar = ({
       </TopRow>
 
       <BottomRow>
-        <SearchInput
-          onChange={onTextSearch}
-          delayTime={300}
-          style={{ maxWidth: '60%' }}
-        />
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '450px',
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'center',
+          }}
+        >
+          <SearchInput onChange={onTextSearch} delayTime={300} fullWidth />
+          {!_.isNull(totalFound) && (
+            <Heading
+              style={{
+                whiteSpace: 'nowrap',
+              }}
+              type={'h6'}
+            >
+              {RVDic?.NItems?.replace('[n]', totalFound)}
+            </Heading>
+          )}
+        </div>
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
-            marginInlineStart: '1rem',
+            gap: '.5rem',
           }}
         >
           <CustomDatePicker
@@ -437,43 +446,27 @@ const FilterBar = ({
             headerTitle="فیلتر تاریخ ایجاد"
             onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
-              <Tooltip
-                tipId={RVDic?.CreationDate}
-                effect="solid"
-                place="top"
-                renderContent={() => RVDic?.CreationDate}
+              <ShadowButton
+                onClick={() => {
+                  onClick();
+                }}
+                active={date || calendarPickerClicked}
+                // fullCircle
+                size={RVSizeProp.medium}
+                rounded="half"
               >
-                <ShadowButton
-                  onClick={() => {
-                    onClick();
-                  }}
-                  onMouseEnter={() => setDateHover(true)}
-                  onMouseLeave={() => setDateHover(false)}
-                  style={commonStyle}
-                  $isEnabled={date || calendarPickerClicked}
-                  className={
-                    calendarPickerClicked || date
-                      ? 'rv-border-distant rv-default'
-                      : 'rv-border-white rv-distant'
-                  }
-                >
-                  {date ? (
-                    <FilledCalendarIcon
-                      size={'1.5rem'}
-                      className={'rv-default'}
-                    />
-                  ) : (
-                    <EmptyCalendarIcon
-                      size={'1.5rem'}
-                      className={
-                        calendarPickerClicked || dateHover
-                          ? 'rv-default'
-                          : 'rv-distant'
-                      }
-                    />
-                  )}
-                </ShadowButton>
-              </Tooltip>
+                {date ? (
+                  <CalendarSvg
+                    size={'1.5rem'}
+                    outline={calendarPickerClicked || dateHover}
+                  />
+                ) : (
+                  <CalendarClearSvg
+                    size={'1.5rem'}
+                    outline={calendarPickerClicked || dateHover}
+                  />
+                )}
+              </ShadowButton>
             )}
             onDateSelect={(value) => {
               setDate(value);
@@ -482,37 +475,14 @@ const FilterBar = ({
           />
 
           {!isProfile && !RelatedID && (
-            <Tooltip
-              tipId={RVDic?.BookmarkedSubjects}
-              effect="solid"
-              place="top"
-              renderContent={() => RVDic?.BookmarkedSubjects}
+            <ShadowButton
+              onClick={() => onByBookmarked(!isBookMarked)}
+              active={isBookMarked}
+              size={RVSizeProp.medium}
+              rounded="half"
             >
-              <ShadowButton
-                style={commonStyle}
-                onMouseEnter={() => setBookmarkHover(true)}
-                onMouseLeave={() => setBookmarkHover(false)}
-                onClick={() => onByBookmarked(!isBookMarked)}
-                $isEnabled={isBookMarked}
-                className={
-                  isBookMarked
-                    ? 'rv-border-distant rv-default'
-                    : 'rv-border-white rv-distant'
-                }
-              >
-                {isBookMarked ? (
-                  <FilledBookmarkIcon
-                    size={'1.5rem'}
-                    className={'rv-default'}
-                  />
-                ) : (
-                  <OutLineBookmarkIcon
-                    size={'1.5rem'}
-                    className={bookmarkHover ? 'rv-default' : 'rv-distant'}
-                  />
-                )}
-              </ShadowButton>
-            </Tooltip>
+              <BookmarkSvg size={'1.4rem'} outline={!isBookMarked} />
+            </ShadowButton>
           )}
           {!isProfile && (
             <PeoplePicker
@@ -523,73 +493,39 @@ const FilterBar = ({
               pickedPeople={people}
               onVisible={setPeoplePickerVisibility}
               buttonComponent={
-                <Tooltip
-                  tipId={RVDic?.Creator}
-                  effect="solid"
-                  place="top"
-                  renderContent={() => RVDic?.Creator}
+                <ShadowButton
+                  onClick={() => onByBookmarked(!isBookMarked)}
+                  active={
+                    (people || []).length || isByMe || peoplePickerVisibility
+                  }
+                  size={RVSizeProp.medium}
+                  rounded="half"
                 >
-                  <ShadowButton
-                    style={commonStyle}
-                    // onClick={onClick}
-                    onMouseEnter={() => setPeopleHover(true)}
-                    onMouseLeave={() => setPeopleHover(false)}
-                    $isEnabled={
+                  <PersonCircleSvg
+                    size={'1.4rem'}
+                    outline={
                       (people || []).length || isByMe || peoplePickerVisibility
                     }
-                    className={
-                      isByMe || (people || []).length || peoplePickerVisibility
-                        ? 'rv-border-distant rv-default'
-                        : 'rv-border-white rv-distant'
-                    }
-                  >
-                    <PersonIcon
-                      size={'1.5rem'}
-                      className={
-                        isByMe ||
-                        (people || []).length ||
-                        peoplePickerVisibility
-                          ? 'rv-default'
-                          : peopleHover
-                          ? 'rv-default'
-                          : 'rv-distant'
-                      }
-                    />
-                  </ShadowButton>
-                </Tooltip>
+                  />
+                </ShadowButton>
               }
             />
           )}
           {(advancedButton || isProfile_all()) && (
             <ShadowButton
-              style={{
-                marginRight: '0.5rem',
-                minWidth: '7rem',
-                color:
-                  advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
-              }}
+              // style={{
+              //   color:
+              //     advancedSearch || filterHover ? 'rv-default' : 'rv-distant',
+              // }}
               ref={advancedSearchButtonRef}
               onMouseEnter={() => setFilterHover(true)}
               onMouseLeave={() => setFilterHover(false)}
               onClick={onAdvancedFilterClick}
-              $isEnabled={advancedSearch}
-              className={
-                advancedSearch
-                  ? 'rv-border-distant rv-default'
-                  : 'rv-border-white rv-distant'
-              }
+              active={advancedSearch}
+              size={RVSizeProp.medium}
+              rounded="half"
             >
-              <Filter
-                size={'1.5rem'}
-                className={
-                  advancedSearch
-                    ? 'rv-default'
-                    : filterHover
-                    ? 'rv-default'
-                    : 'rv-distant'
-                }
-                style={{ marginLeft: '0.5rem' }}
-              />
+              <FunnelSvg size={'1.2rem'} active={advancedSearch} />
               {RVDic?.Advanced}
             </ShadowButton>
           )}
