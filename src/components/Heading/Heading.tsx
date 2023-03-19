@@ -1,12 +1,10 @@
-import type { HTMLProps, PropsWithChildren } from 'react';
-import React from 'react';
 import classnames from 'classnames';
+import { RVTypography, Typography } from '@cliqmind/rv-components';
 
-export type IHeading = HTMLProps<HTMLDivElement> &
-  PropsWithChildren<{
-    type: 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6';
-    darkBackground?: boolean;
-  }>;
+export type IHeading = RVTypography & {
+  type: 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6';
+  darkBackground?: boolean;
+};
 
 /**
  * @component
@@ -31,7 +29,7 @@ function Heading({
   });
 
   return (
-    <div
+    <Typography
       className={classnames(values.class, className)}
       style={{
         ...style,
@@ -41,7 +39,7 @@ function Heading({
       {...props}
     >
       {props.children}
-    </div>
+    </Typography>
   );
 }
 

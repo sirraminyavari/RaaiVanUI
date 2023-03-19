@@ -27,6 +27,14 @@ import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { useSidebarSlice } from 'store/slice/sidebar';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import {
+  CMLogoSvg,
+  HomeSvg,
+  Scrollbar,
+  SidebarMain,
+} from '@cliqmind/rv-components';
+import * as SidebarStyles from './NewSidebar/Sidebar.styles';
+import PrimarySidebar from './NewSidebar/MainSidebar';
 
 const Navbar = lazy(() =>
   import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
@@ -150,20 +158,27 @@ const Main = () => {
   return (
     <>
       {hasNavSide ? (
-        <Styled.MainContainer>
-          {!hideSidebar && getSidebar()}
-          <Styled.ContentWrapper
+        <SidebarStyles.MainLayout>
+          {/* {!hideSidebar && getSidebar()} */}
+          {/* <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}
-          >
-            <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
+          > */}
+          {/* <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
               {isTeamSelected ? <Navbar /> : <NavbarInitial />}
-            </Suspense>
+            </Suspense> */}
+          <SidebarStyles.MainLayoutSidebarContainer>
+            <PrimarySidebar />
+          </SidebarStyles.MainLayoutSidebarContainer>
+          <SidebarStyles.MainLayoutContentContainer>
             <Suspense fallback={<LogoLoader />}>
-              <Styled.Content>{switchRoutes}</Styled.Content>
+              <Scrollbar>
+                <>{switchRoutes}</>
+              </Scrollbar>
             </Suspense>
-          </Styled.ContentWrapper>
-        </Styled.MainContainer>
+          </SidebarStyles.MainLayoutContentContainer>
+          {/* </Styled.ContentWrapper> */}
+        </SidebarStyles.MainLayout>
       ) : (
         <>{switchRoutes}</>
       )}

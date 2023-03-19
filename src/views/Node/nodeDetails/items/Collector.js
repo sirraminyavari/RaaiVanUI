@@ -68,10 +68,10 @@ const Collector = ({
   return (
     <Maintainer
       isAdvancedShow={sideColumn}
-      className={`${'rv-bg-color-white'} rv-border-radius-half`}
+      // className={`${'rv-bg-color-white'} rv-border-radius-half`}
       portalMode={!isTabletOrMobile}
     >
-      <WelcomeLayout centerize>
+      <WelcomeLayout centerize noOutline>
         <>
           <div
             style={{

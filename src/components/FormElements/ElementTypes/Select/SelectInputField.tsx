@@ -1,4 +1,4 @@
-import Select, { GroupBase, StylesConfig } from 'react-select';
+import { GroupBase, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import {
   CV_GRAY,
@@ -12,6 +12,7 @@ import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
 import { isArray } from 'lodash';
 import { useMemo } from 'react';
+import { Select } from '@cliqmind/rv-components';
 
 type OptionType = { label: string; value: string | number };
 export interface ISelectInputField {
@@ -61,35 +62,37 @@ const SelectInputField = ({
 
   const memoizedSelectedValue = useMemo(() => {
     if (!selectedValue) return undefined;
-    if (isArray(selectedValue)) return selectedValue;
-    if (selectedValue.value || selectedValue.label) return selectedValue;
+    if (isArray(selectedValue))
+      return selectedValue.map(({ label, value }) => String(label || value));
+    if (selectedValue.value || selectedValue.label)
+      return [String(selectedValue.label || selectedValue.value)];
     return undefined;
   }, [selectedValue]);
 
   // return isFocused && isEditable ? (
   return isFocused && isEditable ? (
-    <SelectComponent
+    <Select
       onFocus={onFocus}
       onBlur={onBlur}
       options={options || []}
-      isDisabled={!isEditable}
-      value={memoizedSelectedValue}
+      disabled={!isEditable}
       placeholder={placeholder || RVDic.Select}
       isMulti={isMulti}
-      classNamePrefix={classNamePrefix}
       className={className}
-      closeMenuOnSelect={!isMulti}
       isClearable={isClearable}
-      isSearchable={isSearchable}
-      styles={customStyles}
-      onChange={(options, action) => {
-        onChange(options, action);
-      }}
-      components={{
-        ...components,
-        ClearIndicator: () => <Styles.SelectInputClearButton />,
-        CrossIcon: () => <Styles.SelectInputRemoveButton />,
-      }}
+      defaultValue={memoizedSelectedValue}
+      // classNamePrefix={classNamePrefix}
+      // closeMenuOnSelect={!isMulti}
+      // isSearchable={isSearchable}
+      // styles={customStyles}
+      // onChange={(options, action) => {
+      //   onChange(options, action);
+      // }}
+      // components={{
+      //   ...components,
+      //   ClearIndicator: () => <Styles.SelectInputClearButton />,
+      //   CrossIcon: () => <Styles.SelectInputRemoveButton />,
+      // }}
     />
   ) : (
     <Styles.SelectedFieldItemContainer

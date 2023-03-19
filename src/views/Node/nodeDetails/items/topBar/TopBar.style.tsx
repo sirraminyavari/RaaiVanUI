@@ -124,6 +124,7 @@ export const NodeTopBarCounterBookmarkContainer = styled.div`
   flex-wrap: wrap;
   justify-content: end;
   row-gap: 1rem;
+  column-gap: 1rem;
   width: 100%;
 `;
 NodeTopBarCounterBookmarkContainer.displayName =

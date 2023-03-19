@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { debounceTime, Subject } from 'rxjs';
 import { tap, distinctUntilChanged } from 'rxjs/operators';
 import { createSubject } from 'helpers/helpers';
+import { RVColorProp, RVVariantProp, TextInput } from '@cliqmind/rv-components';
 
 /**
  * @description simple input with delay time extension
@@ -42,11 +43,14 @@ const RxInput = React.forwardRef(
     };
 
     return (
-      <input
+      <TextInput
         value={inputValue}
         onChange={(e) => handleInputChange(e)}
-        {...props}
         ref={forwardedRef}
+        variant={RVVariantProp.outline}
+        color={RVColorProp.distant}
+        IconPosition="trailing"
+        {...props}
       />
     );
   }

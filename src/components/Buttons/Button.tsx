@@ -1,17 +1,15 @@
 import classNames from 'classnames';
-import React, {
-  forwardRef,
-  HTMLAttributes,
-  DetailedHTMLProps,
-  MouseEventHandler,
-  ReactNode,
-} from 'react';
+import { forwardRef, MouseEventHandler, ReactNode } from 'react';
+import {
+  Button as ButtonComponent,
+  RVButton,
+  RVColorProp,
+  RVSizeProp,
+  RVVariantProp,
+} from '@cliqmind/rv-components';
 import LoadingIconFlat from '../Icons/LoadingIcons/LoadingIconFlat';
 
-export type IButton = Omit<
-  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-  'ref'
-> & {
+export type IButton = Omit<RVButton, 'type' | 'ref'> & {
   children?: ReactNode;
   type?:
     | 'disabled'
@@ -23,7 +21,7 @@ export type IButton = Omit<
     | 'negative-secondary-o';
   className?: string;
   classes?: string;
-  onClick?: MouseEventHandler<HTMLDivElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   loading?: boolean;
   disable?: boolean;
   $circleEdges?: boolean;
@@ -40,7 +38,7 @@ export type IButton = Omit<
  * @property { bool } [props.isCustomButton] if true, ignores default styles of button types
  * @property { function } [props.onClick] @fires onClick when the button is clicked and is not disabled or in loading state
  */
-const Button = forwardRef<HTMLDivElement, IButton>(
+const Button = forwardRef<HTMLButtonElement, IButton>(
   (
     {
       type = 'primary',
@@ -48,6 +46,7 @@ const Button = forwardRef<HTMLDivElement, IButton>(
       disable = false,
       $circleEdges = false,
       isCustomButton = false,
+      size = RVSizeProp.medium,
       onClick,
       className,
       children,
@@ -56,15 +55,15 @@ const Button = forwardRef<HTMLDivElement, IButton>(
     ref
   ) => {
     return (
-      <div
+      <ButtonComponent
         ref={ref}
-        className={classNames(
-          !isCustomButton && resolveClass({ type, disable }),
-          props.classes || className,
-          $circleEdges ? 'rv-circle' : 'rv-border-radius-half'
-        )}
+        size={size}
+        rounded={$circleEdges ? 'full' : 'half'}
+        className={classNames(props.classes || className)}
         style={props.style}
+        disabled={disable}
         onClick={disable || loading ? undefined : onClick}
+        {...(!isCustomButton && resolveClass({ type }))}
         {...props}
       >
         {!loading ? (
@@ -76,7 +75,7 @@ const Button = forwardRef<HTMLDivElement, IButton>(
             <span style={{ color: 'transparent' }}>1</span>
           </>
         )}
-      </div>
+      </ButtonComponent>
     );
   }
 );
@@ -85,21 +84,36 @@ export default Button;
 
 const resolveClass = ({
   type = 'primary',
-  disable,
 }: {
   type: Exclude<IButton['type'], undefined>;
-  disable?: boolean;
 }) => {
   const dic = {
-    disabled: 'rv-action-button-disabled',
-    primary: 'rv-action-button',
-    'primary-o': 'rv-action-button-o',
-    'secondary-o': 'rv-action-button-secondary-o',
-    negative: 'rv-action-button-negative',
-    'negative-o': 'rv-action-button-negative-o',
-    'negative-secondary-o': 'rv-action-button-negative-so',
+    disabled: {
+      disabled: true,
+    },
+    primary: {
+      variant: RVVariantProp.primary,
+    },
+    'primary-o': {
+      variant: RVVariantProp.outline,
+    },
+    'secondary-o': {
+      variant: RVVariantProp.outline,
+      color: RVColorProp.distant,
+    },
+    negative: {
+      variant: RVVariantProp.primary,
+      color: RVColorProp.crayola,
+    },
+    'negative-o': {
+      variant: RVVariantProp.outline,
+      color: RVColorProp.crayola,
+    },
+    'negative-secondary-o': {
+      variant: RVVariantProp.outline,
+      color: RVColorProp.crayola,
+    },
   };
 
-  if (disable) return classNames('rv-action-button-base', dic.disabled);
-  return classNames('rv-action-button-base', dic[type]);
+  return dic[type];
 };

@@ -13,6 +13,12 @@ import { decodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import PencilIcon from 'components/Icons/EditIcons/Pencil';
 import * as Styles from './TopBar.style';
+import {
+  Avatar,
+  AvatarGroup,
+  RVSizeProp,
+  RVVariantProp,
+} from '@cliqmind/rv-components';
 
 const { GlobalUtilities, RV_RTL, RVDic } = window;
 const Creators = ({ creatorsList, nodeDetails }) => {
@@ -73,33 +79,17 @@ const Creators = ({ creatorsList, nodeDetails }) => {
             </MultiCreator>
           ) : (
             <>
-              {contributors?.length === 2 ? (
-                <MultiCreator>
-                  <Profile
-                    // style={{ zIndex: `${GlobalUtilities.zindex.alert()}` }}
-                    src={contributors[0].avatarUrl}
-                    isSaas={false}
+              <AvatarGroup>
+                {contributors.map(({ avatarUrl }) => (
+                  <Avatar
+                    src={avatarUrl}
+                    size={RVSizeProp.small}
+                    variant={RVVariantProp.white}
+                    fullCircle
+                    stacked
                   />
-                  <Profile
-                    style={{
-                      position: 'relative',
-                      ...(RV_RTL && { right: '-0.5rem' }),
-                      ...(!RV_RTL && { left: '-0.5rem' }),
-                    }}
-                    src={contributors[1].avatarUrl}
-                    isSaas={false}
-                  />
-                </MultiCreator>
-              ) : (
-                <Profile
-                  style={{
-                    position: 'relative',
-                    right: '-0.5rem',
-                  }}
-                  src={contributors[0].avatarUrl}
-                  isSaas={false}
-                />
-              )}
+                ))}
+              </AvatarGroup>
             </>
           )}
           <VerticalList

@@ -4,13 +4,12 @@
 import APIHandler from 'apiHelper/APIHandler';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
-import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Eye';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
@@ -19,6 +18,8 @@ import * as Styles from './TopBar.style';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import useWindow from 'hooks/useWindowContext';
+import { BookmarkSvg, RVSizeProp } from '@cliqmind/rv-components';
+import ShadowButton from 'components/Buttons/ShadowButton';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
@@ -145,6 +146,7 @@ const TopBar = ({
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
+                gap: '1rem',
               }}
             ></div>
             <Styles.NodeTopBarCounterBookmarkContainer>
@@ -152,19 +154,12 @@ const TopBar = ({
                 <>
                   <Button
                     onClick={onBookmarkPressed}
-                    style={{
-                      borderRadius: '10rem',
-                      height: '2rem',
-                      whiteSpace: 'nowrap',
-                    }}
+                    style={{}}
                     type={bookmarkStatus === 'liked' ? 'primary' : 'primary-o'}
                   >
                     {bookmarkStatus === 'liked' ? (
                       <>
-                        <FilledBookmarkIcon
-                          className={'rv-default rv-white'}
-                          style={{ marginInlineEnd: '0.5rem' }}
-                        />
+                        <BookmarkSvg />
                         {RVDic.Bookmarked}
                       </>
                     ) : (
@@ -185,7 +180,6 @@ const TopBar = ({
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    marginInline: '2rem',
                   }}
                 >
                   <Creators
@@ -195,30 +189,16 @@ const TopBar = ({
                 </div>
               )}
               {!newNode && (
-                <Styles.NodeTopBarShadowButton
+                <ShadowButton
                   onMouseEnter={() => setSideDetailsHover(true)}
                   onMouseLeave={() => setSideDetailsHover(false)}
                   onClick={onSideDetailsClick}
-                  $isEnabled={sideColumn || sideDetailsHover}
-                  className={
-                    sideColumn
-                      ? 'rv-border-distant rv-default'
-                      : sideDetailsHover
-                      ? 'rv-border-distant rv-default'
-                      : 'rv-border-white rv-distant'
-                  }
+                  active={sideColumn}
+                  size={RVSizeProp.medium}
+                  rounded="half"
                 >
-                  <DocIcon
-                    size={'1.5rem'}
-                    className={
-                      sideColumn
-                        ? 'rv-default'
-                        : sideDetailsHover
-                        ? 'rv-default'
-                        : 'rv-distant'
-                    }
-                  />
-                </Styles.NodeTopBarShadowButton>
+                  <DocIcon size="1.5rem" />
+                </ShadowButton>
               )}
               <Styles.NodeTopBarViewCount>
                 <Eye
