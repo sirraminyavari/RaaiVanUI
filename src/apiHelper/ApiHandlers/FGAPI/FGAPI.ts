@@ -1,4 +1,5 @@
 import {
+  API_NAME_FG_GET_FORMS,
   API_NAME_FG_GET_FORM_ELEMENTS,
   API_NAME_FG_GET_FORM_INSTANCE,
   API_NAME_FG_INITIALIZE_OWNER_FORM_INSTANCE,
@@ -42,28 +43,35 @@ export const getFormElements = ({
         Help: decodeBase64(e?.Help),
         Info: !info
           ? undefined
-          : extend({}, info, {
-              Options: !info.Options?.length
-                ? undefined
-                : info.Options.map((o) => decodeBase64(o)),
-              Yes: !info.Yes ? undefined : decodeBase64(info.Yes),
-              No: !info.No ? undefined : decodeBase64(info.No),
-              NodeTypes: !(info.NodeTypes || []).length
-                ? undefined
-                : info.NodeTypes.map((nt) => ({
-                    ...nt,
-                    NodeType: decodeBase64(nt.NodeType),
-                  })),
-              FormName: !info.FormName
-                ? undefined
-                : decodeBase64(info.FormName),
-              NodeType: !info.NodeType
-                ? undefined
-                : { ...info.NodeType, Name: decodeBase64(info.NodeType?.Name) },
-              Levels: !info.Levels?.length
-                ? undefined
-                : info.Levels.map((l) => decodeBase64(l)),
-            }),
+          : extend(
+              {},
+              {
+                ...info,
+                Options: !info.Options?.length
+                  ? undefined
+                  : info.Options.map((o) => decodeBase64(o)),
+                Yes: !info.Yes ? undefined : decodeBase64(info.Yes),
+                No: !info.No ? undefined : decodeBase64(info.No),
+                NodeTypes: !(info.NodeTypes || []).length
+                  ? undefined
+                  : info.NodeTypes.map((nt) => ({
+                      ...nt,
+                      NodeType: decodeBase64(nt.NodeType),
+                    })),
+                FormName: !info.FormName
+                  ? undefined
+                  : decodeBase64(info.FormName),
+                NodeType: !info.NodeType
+                  ? undefined
+                  : {
+                      ...info.NodeType,
+                      Name: decodeBase64(info.NodeType?.Name),
+                    },
+                Levels: !info.Levels?.length
+                  ? undefined
+                  : info.Levels.map((l) => decodeBase64(l)),
+              }
+            ),
       };
     }),
   }));
@@ -91,31 +99,35 @@ export const saveFormElements = ({ FormID, Name, Description, Elements }) => {
             ? null
             : encodeBase64(
                 JSON.stringify(
-                  extend({}, e.Info || {}, {
-                    Options: !e?.Info?.Options?.length
-                      ? undefined
-                      : e.Info.Options.map((o) => encodeBase64(o)),
-                    Yes: !e?.Info?.Yes ? undefined : encodeBase64(e.Info.Yes),
-                    No: !e?.Info?.No ? undefined : encodeBase64(e.Info.No),
-                    NodeTypes: !e?.Info?.NodeTypes?.length
-                      ? undefined
-                      : e.Info.NodeTypes.map((nt) => ({
-                          ...nt,
-                          NodeType: encodeBase64(nt.NodeType),
-                        })),
-                    FormName: !e?.Info?.FormName
-                      ? undefined
-                      : encodeBase64(e.Info.FormName),
-                    NodeType: !e?.Info?.NodeType
-                      ? undefined
-                      : {
-                          ...e.Info.NodeType,
-                          Name: encodeBase64(e.Info.NodeType?.Name),
-                        },
-                    Levels: !e?.Info?.Levels?.length
-                      ? undefined
-                      : e.Info.Levels.map((l) => encodeBase64(l)),
-                  })
+                  extend(
+                    {},
+                    {
+                      ...(e.Info || {}),
+                      Options: !e?.Info?.Options?.length
+                        ? undefined
+                        : e.Info.Options.map((o) => encodeBase64(o)),
+                      Yes: !e?.Info?.Yes ? undefined : encodeBase64(e.Info.Yes),
+                      No: !e?.Info?.No ? undefined : encodeBase64(e.Info.No),
+                      NodeTypes: !e?.Info?.NodeTypes?.length
+                        ? undefined
+                        : e.Info.NodeTypes.map((nt) => ({
+                            ...nt,
+                            NodeType: encodeBase64(nt.NodeType),
+                          })),
+                      FormName: !e?.Info?.FormName
+                        ? undefined
+                        : encodeBase64(e.Info.FormName),
+                      NodeType: !e?.Info?.NodeType
+                        ? undefined
+                        : {
+                            ...e.Info.NodeType,
+                            Name: encodeBase64(e.Info.NodeType?.Name),
+                          },
+                      Levels: !e?.Info?.Levels?.length
+                        ? undefined
+                        : e.Info.Levels.map((l) => encodeBase64(l)),
+                    }
+                  )
                 )
               ),
           Help: encodeBase64(e.Help), //optional
@@ -190,11 +202,31 @@ export const saveFormInstanceElements = ({
   );
 };
 
+interface IGetForms {
+  Archive?: boolean;
+  Count?: number;
+  LowerBoundary?: number;
+  SearchText?: string;
+}
+export const GetForms = ({
+  Archive,
+  Count,
+  LowerBoundary,
+  SearchText,
+}: IGetForms) => {
+  return apiCallWrapper(API_Provider(FG_API, API_NAME_FG_GET_FORMS), {
+    Archive,
+    Count,
+    LowerBoundary,
+    SearchText,
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customizedElements = {
   'short text': {
     Type: 'Text',
-    Info: { UseSimpleEditor: true },
+    Info: { UseSimpleEditor: true, PatternName: 'nationalCode' },
   },
   paragraph: {
     Type: 'Text',
@@ -208,13 +240,17 @@ const customizedElements = {
     Type: 'Text',
     Info: { UseSimpleEditor: true, PatternName: 'url' },
   },
+  regex: {
+    Type: 'Text',
+    Info: { UseSimpleEditor: true, Pattern: '' },
+  },
   number: {
     Type: 'Numeric',
     Info: {
       min: '[number]',
       max: '[number]',
-      PatternName: 'number | currency | nationalCode | postalCode | none',
-      currency: 'IRT | IRR | USD | EUR | none',
+      PatternName: 'number | currency | postalCode ',
+      currency: 'IRT | IRR | USD | EUR ',
       separator: true,
       percentage: true,
     },

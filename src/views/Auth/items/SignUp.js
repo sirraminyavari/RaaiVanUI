@@ -57,8 +57,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  // const [firstName, setFirstName] = useState('');
+  // const [lastName, setLastName] = useState('');
 
   const [shake, setShake] = useState(0);
 
@@ -92,8 +92,8 @@ const SignUp = () => {
     const invalidEmail =
       !GlobalUtilities.is_valid_email(email) && !MobileNumberValidator(email);
     const invalidPassword = !CheckPassword(password, passwordPolicy);
-    const invalidFirstName = !firstName.trim();
-    const invalidLastName = !lastName.trim();
+    // const invalidFirstName = !firstName.trim();
+    // const invalidLastName = !lastName.trim();
     const unavailableEmail =
       emailsDic[(email || ' ').trim().toLowerCase()] === false;
 
@@ -112,8 +112,8 @@ const SignUp = () => {
     if (
       invalidEmail ||
       invalidPassword ||
-      invalidFirstName ||
-      invalidLastName ||
+      // invalidFirstName ||
+      // invalidLastName ||
       unavailableEmail
     ) {
       setShake(GlobalUtilities.random());
@@ -123,8 +123,8 @@ const SignUp = () => {
     setIsSending(true);
 
     const results = await createUserToken({
-      FirstName: firstName.trim(),
-      LastName: lastName.trim(),
+      // FirstName: firstName.trim(),
+      // LastName: lastName.trim(),
       Contact: email,
       Password: password,
     });
@@ -200,7 +200,7 @@ const SignUp = () => {
             onFocusChange={(v) => setPassFocused(v)}
           />
 
-          <RowItems>
+          {/* <RowItems>
             <AnimatedInput
               onChange={(v) => setFirstName(v)}
               value={firstName}
@@ -215,7 +215,7 @@ const SignUp = () => {
               style={{ marginInlineStart: '1rem', ...common_style }}
               shake={shake}
             />
-          </RowItems>
+          </RowItems> */}
 
           {!passFocused && (
             <Heading
@@ -250,7 +250,8 @@ const SignUp = () => {
             type="primary"
             loading={isSending}
             disable={
-              !email || !password || !firstName.trim() || !lastName.trim()
+              !email || !password
+              // || !firstName.trim() || !lastName.trim()
             }
             style={{
               width: '100%',

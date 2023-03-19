@@ -17,16 +17,16 @@ export interface ISubjectSelectInputItem {
 }
 export interface ISubjectSelectInputField {
   info: {
-    MultiSelect: boolean;
+    MultiSelect?: boolean;
     NodeTypes: {
       NodeTypeID: string;
       NodeType: string;
     }[];
   };
-  onChange;
+  onChange?: (values: { ID: string; Name: string; IconURL: string }[]) => void;
   propsContext?: { [key: string]: any };
-  isEditable: boolean;
-  value: { [key: string]: any }[];
+  isEditable?: boolean;
+  value?: ISubjectSelectInputItem[];
   fullWidth?: boolean;
 }
 
@@ -50,7 +50,7 @@ const SubjectSelectInputField = ({
     const readyToSave = selectedItems?.map((x) => {
       return { ID: x.NodeID, Name: decodeBase64(x.Name), IconURL: x.IconURL };
     });
-    onChange(readyToSave);
+    onChange && onChange(readyToSave);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedItems]);
@@ -77,7 +77,6 @@ const SubjectSelectInputField = ({
           nodeTypes={info?.NodeTypes}
           routeProps={propsContext}
           multiSelection={info?.MultiSelect}
-          //join('|')
           onClose={() => {
             setIsVisible(false);
           }}

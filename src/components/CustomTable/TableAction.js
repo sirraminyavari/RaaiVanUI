@@ -21,8 +21,14 @@ const TableAction = (props) => {
 
   //TODO: Update RVDic object dictionary
 
-  const { tempRowId, setTempRowId, onEditRowCancel, addRow } =
-    tableInstance || {};
+  const {
+    tempRowId,
+    setTempRowId,
+    onEditRowCancel,
+    addRow,
+    removeRow,
+    isNewRowEmpty,
+  } = tableInstance || {};
 
   //! Fires on search input change.
   const handleInputChange = (e) => {
@@ -46,12 +52,13 @@ const TableAction = (props) => {
   }, [searchText]);
 
   const handleCancelChange = () => {
-    onEditRowCancel && onEditRowCancel();
+    // onEditRowCancel && onEditRowCancel();
+    removeRow && removeRow(tempRowId);
     setTempRowId(null);
   };
 
-  const handleAcceptChanges = () => {
-    // addRow && addRow();
+  const handleAcceptChanges = async () => {
+    addRow && (await addRow());
     //* simple promise mock ...
     setSaveBtnLoadingStatus(true);
     new Promise((resolve) =>
@@ -91,6 +98,7 @@ const TableAction = (props) => {
               onClick={handleAcceptChanges}
               loading={saveBtnLoadingStatus}
               classes="table-action-apply-change-btn"
+              disable={isNewRowEmpty}
             >
               <SaveIcon size={18} />
               <span>ثبت تغییرات</span>

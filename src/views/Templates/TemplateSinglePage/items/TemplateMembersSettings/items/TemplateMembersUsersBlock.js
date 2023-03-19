@@ -122,7 +122,7 @@ const TemplateMembersUsersBlock = ({ users: _users, groups }) => {
       <Styled.MembersSettingBlock>
         <Styled.MembersSettingMicroBlock>
           <Styled.MembersSettingMicroBlockTitle>
-            {'کاربران ویژه'}
+            {'کاربران عادی'}
           </Styled.MembersSettingMicroBlockTitle>
           <UserGroupSelect
             selectGroupEnabled={false}

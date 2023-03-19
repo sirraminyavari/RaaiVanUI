@@ -1,5 +1,5 @@
 import * as Styled from 'views/Teams/Teams.styles';
-import WorkspaceDeleteImage from 'assets/images/workspace-delete.svg?file';
+import WorkspaceDeleteImage from 'assets/images/workspace-delete-2.svg?file';
 import { useHistory } from 'react-router-dom';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ReturnButton from 'components/Buttons/ReturnButton';

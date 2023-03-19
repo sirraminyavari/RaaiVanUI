@@ -1,7 +1,7 @@
 import { getNodePageUrl } from 'apiHelper/getPageUrl';
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
 import { TC_WARM } from 'constant/Colors';
-import { CV_FREEZED, CV_GRAY, CV_RED } from 'constant/CssVariables';
+import { CV_FREEZED, CV_GRAY, CV_RED, CV_WHITE } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -33,6 +33,7 @@ const Maintainer = styled.div<{ fullWidth?: boolean }>`
   align-items: center;
   flex-direction: row;
   margin: 0.25rem 0rem 0.25rem 0rem;
+  background-color: ${CV_WHITE};
 `;
 const Icon = styled.img`
   height: 2.2rem;

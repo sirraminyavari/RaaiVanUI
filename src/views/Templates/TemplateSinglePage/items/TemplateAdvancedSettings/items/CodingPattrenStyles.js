@@ -16,7 +16,7 @@ import {
 import Button from '../../../../../../components/Buttons/Button';
 
 export const CodingPatternContainer = styled.div`
-  ${FLEX_RCS};
+  ${FLEX_RSS};
   gap: 1rem;
 `;
 

@@ -58,6 +58,7 @@ export const ERROR_NAME = 'error';
 export const NEWNODE_PATH = '/node/create/:id';
 export const NEWNODE_NAME = 'newnode';
 export const NODE_PATH = getURL('Node', { NodeID: ':id' });
+export const NODE_OLD_PATH = '/node/old/:id';
 export const NODE_NAME = 'node';
 export const FORM_PATH = getURL('Form', { ID: ':InstanceID' });
 export const FORM_NAME = 'form';
@@ -172,7 +173,8 @@ export const TEMPLATES_ARCHIVE_PATH = '/templates/archived';
 export const TEMPLATES_ARCHIVE_NAME = 'admin_configuration';
 export const TEAM_SETTINGS_PATH = '/teamsettings/:id';
 export const TEAM_SETTINGS_NAME = 'TeamSettings';
-
+export const DICTIONARY_PATH = '/dictionary';
+export const DICTIONARY_NAME = 'dictionary';
 // export const MONITORING_PATH = getURL('Monitoring')
 // // '/monitoring';
 // //

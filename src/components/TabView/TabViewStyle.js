@@ -36,6 +36,10 @@ export const TabViewItem = styled.div`
   font-size: 1rem;
   user-select: none;
   transition: all 300ms ease-out;
+
+  > span:first-letter {
+    text-transform: uppercase;
+  }
 `;
 TabViewItem.displayName = 'TabViewItem';
 

@@ -27,7 +27,8 @@ export const OnboardingTemplateSelectionWrapper = styled.div<{
   position: relative;
 
   & > div:last-of-type {
-    padding: 3vh 4vw;
+    padding-inline: 4vw;
+    padding-block: 1vh 3vh;
     ${({ mobile }) => (mobile ? 'width:100%;' : 'width:calc(100% - 17.5rem);')}
   }
 `;
@@ -271,7 +272,7 @@ export const OnboardingTemplateSelectionGalleryTitle = styled.div`
   padding-block: 0.7rem;
   ${FLEX_RCS}
 
-  &::first-letter {
+  > span::first-letter {
     text-transform: capitalize;
   }
 `;
@@ -295,6 +296,7 @@ export const OnboardingTemplateSelectionGallerySuggestion = styled.div.attrs({
   margin: 0.7rem;
   ${({ active }) => active && `background-color: ${CV_WHITE};`}
   cursor: pointer;
+  text-transform: capitalize;
 `;
 OnboardingTemplateSelectionGallerySuggestion.displayName =
   'OnboardingTemplateSelectionGallerySuggestion';

@@ -206,7 +206,7 @@ export default EditContributersModal;
 
 const Maintainer = styled.div`
   // width: 35.5rem;
-  height: 37.5rem;
+  min-height: 35.5rem;
   display: flex;
   background-color: ${CV_WHITE};
   padding: 1rem 2rem 1rem 2rem;

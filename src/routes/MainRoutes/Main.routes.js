@@ -45,6 +45,9 @@ import {
   // MONITORING_TEAMS_NAME,
   TEMPLATES_SETTING_SINGLE_PATH,
   TEMPLATES_SETTING_SINGLE_NAME,
+  NODE_OLD_PATH,
+  DICTIONARY_PATH,
+  DICTIONARY_NAME,
 } from 'constant/constants';
 import TestView from 'views/TestView/TestView';
 // import Teams from '../../views/Monitoring/MonitoringTeams/Teams';
@@ -67,12 +70,12 @@ const NodeView = lazy(() =>
   )
 );
 
-//const NodeView = lazy(() =>
-//  import(
-//    /* webpackChunkName: "node-view " 'views/Node/nodeDetails/NodeDetails' */
-//    'views/Node/Node-view'
-//  )
-//);
+const NodeViewOld = lazy(() =>
+  import(
+    /* webpackChunkName: "node-old-view " 'views/Node/Node-view' */
+    'views/Node/Node-view'
+  )
+);
 
 const FormView = lazy(() =>
   import(/* webpackChunkName: "form-view"*/ 'views/Form/Form-view')
@@ -141,14 +144,18 @@ const MonitoringView = lazy(() =>
 
 const MonitoringTeamView = lazy(() =>
   import(
-    /* webpackChunkName: "monitoring-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
+    /* webpackChunkName: "teams-view"*/ 'views/Monitoring/MonitoringTeams/Teams'
   )
 );
 
 const SingleTemplateView = lazy(() =>
   import(
-    /* webpackChunkName: "monitoring-view"*/ 'views/Templates/TemplateSinglePage/TemplateSinglePage'
+    /* webpackChunkName: "template-settings-view"*/ 'views/Templates/TemplateSinglePage/TemplateSinglePage'
   )
+);
+
+const Dictionary = lazy(() =>
+  import(/* webpackChunkName: "dictionary-view"*/ 'views/Dictionary/Dictionary')
 );
 
 const routes = [
@@ -181,6 +188,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: NewNode,
+  },
+  {
+    path: NODE_OLD_PATH,
+    name: NODE_NAME,
+    exact: false,
+    hasNavSide: true,
+    component: NodeViewOld,
   },
   {
     path: NODE_PATH,
@@ -308,6 +322,13 @@ const routes = [
     exact: true,
     hasNavSide: true,
     component: MonitoringTeamView,
+  },
+  {
+    path: DICTIONARY_PATH,
+    name: DICTIONARY_NAME,
+    exact: true,
+    hasNavSide: false,
+    component: Dictionary,
   },
   // {
   //   path: MONITORING_TEAMS_PATH,

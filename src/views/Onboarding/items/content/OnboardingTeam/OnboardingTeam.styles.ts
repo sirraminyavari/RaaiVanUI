@@ -21,6 +21,9 @@ export const OnboardingTeamHugePanelButton = styled(PanelButton)`
   width: 16rem;
   font-size: 1.13rem;
 
+  & > span:first-letter {
+    text-transform: uppercase;
+  }
   & > svg {
     font-size: 5.63rem;
   }
@@ -81,6 +84,7 @@ OnboardingTeamImageBanner.displayName = 'OnboardingTeamImageBanner';
 
 export const OnboardingTeamInputWrapper = styled.div<{ isMobile?: boolean }>`
   margin-block-start: ${({ isMobile }) => (isMobile ? '2rem' : '8rem')};
+  margin-inline-start: 1rem;
   margin-inline-end: 1rem;
   max-width: ${({ isMobile }) => (isMobile ? '85%' : '30vw')};
   width: 100%;
@@ -178,3 +182,10 @@ export const OnboardingTeamWelcomeLayoutWrapper = styled.div<{
 `;
 OnboardingTeamWelcomeLayoutWrapper.displayName =
   'OnboardingTeamWelcomeLayoutWrapper';
+
+export const OnboardingPanelButtonLabel = styled.span`
+  &:first-letter {
+    text-transform: uppercase;
+  }
+`;
+OnboardingPanelButtonLabel.displayName = 'OnboardingPanelButtonLabel';

@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { FLEX_CCC } from 'constant/StyledCommonCss';
 import { BsFileEarmarkArrowUp } from 'react-icons/all';
-import { useState, useRef, useCallback, useEffect, Suspense } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageCropModal from 'components/ImageCropper/ImageCropperModal';
 import { readFile } from 'components/ImageCropper/cropUtils';
 import ModalFallbackLoader from 'components/Loaders/ModalFallbackLoader/ModalFallbackLoader';
 
-const Uploader = () => {
+const Uploader = ({ uploadID, setOpenStatus, onDone }) => {
   const [modalInfo, setModalInfo] = useState({
     isShown: false,
     title: '',
@@ -17,19 +17,34 @@ const Uploader = () => {
     imgSrc: null,
   });
 
-  const onDrop = useCallback((files) => {
-    const file = files[0];
-    const renderFile = async () => {
-      const fileData = await readFile(file);
-      setModalInfo({
-        ...modalInfo,
-        isShown: true,
-        file: file,
-        imgSrc: fileData,
-      });
-    };
-    renderFile();
-  }, []);
+  useEffect(() => {
+    setOpenStatus && setOpenStatus(modalInfo.isShown);
+  }, [modalInfo, setOpenStatus]);
+
+  const onDrop = useCallback(
+    (files) => {
+      const file = files[0];
+      const renderFile = async () => {
+        const fileData = await readFile(file);
+        setModalInfo({
+          ...modalInfo,
+          isShown: true,
+          file: file,
+          imgSrc: fileData,
+        });
+      };
+      renderFile();
+    },
+    [modalInfo]
+  );
+
+  const onUploadDone = useCallback(
+    (newImageURL) => {
+      onDone(newImageURL);
+      setModalInfo({ ...modalInfo, isShown: false });
+    },
+    [modalInfo, onDone]
+  );
 
   useEffect(() => {
     console.log(modalInfo);
@@ -39,7 +54,7 @@ const Uploader = () => {
   return (
     <>
       <Container {...getRootProps()}>
-        <input {...getInputProps()} />
+        <input {...getInputProps()} accept=".jpg,.jpeg,.png,.gif" />
         <div>
           <Icon size={36} />
         </div>
@@ -50,6 +65,9 @@ const Uploader = () => {
           modalProps={modalInfo}
           cropShape="round"
           showGrid={true}
+          uploadType="Icon"
+          uploadId={uploadID}
+          onUploadDone={onUploadDone}
           onCloseModal={() => setModalInfo({ ...modalInfo, isShown: false })}
         />
       </Suspense>

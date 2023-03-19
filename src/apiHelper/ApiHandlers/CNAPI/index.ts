@@ -378,3 +378,31 @@ export const registerNewNode = (options: {
     }
   );
 };
+
+export const GetPendingMembers = (properties: {
+  NodeID?: string;
+  LowerBoundary?: number;
+  Count?: number;
+}) => {
+  return apiCallWrapper<{
+    Members: {
+      FirstName: string;
+      ImageURL: string;
+      IsAdmin: boolean;
+      IsPending: boolean;
+      LastName: string;
+      Status: string;
+      UserID: string;
+      UserName: string;
+    }[];
+    NodeID: string;
+    TotalCount: number;
+  }>(API_Provider(CN_API, 'GetPendingMembers'), properties);
+};
+
+export const GetTreeDepth = (properties: { NodeTypeID?: string }) => {
+  return apiCallWrapper<{
+    AppID: string;
+    Depth: number;
+  }>(API_Provider(CN_API, 'GetTreeDepth'), properties);
+};

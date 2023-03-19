@@ -5,6 +5,7 @@ import * as Styles from './OnboardingTemplateSelection.styles';
 import OnboardingTemplateSelectionGalleryItem from './OnboardingTemplateSelectionGalleryItem';
 import { useState } from 'react';
 import { BO_RADIUS_HALF } from 'constant/constants';
+import OnboardingTemplateSelectionGalleryItemSkeleton from './OnboardingTemplateSelectionGalleryItemSkeleton';
 
 // TODO extract Dropdown as a dedicated component
 const OnboardingTemplateSelectionGallery = ({
@@ -41,37 +42,43 @@ const OnboardingTemplateSelectionGallery = ({
               </Styles.OnboardingTemplateSelectionGalleryTitleMenuButton>
             </>
           )}
-          {RVDicOnboardingTemplateGallery}
+          <span>{RVDicOnboardingTemplateGallery}</span>
         </Styles.OnboardingTemplateSelectionGalleryTitle>
         <Styles.OnboardingTemplateSelectionGalleryContentWrapper
           isCollapsed={isCollapsed}
           mobile={mobile}
         >
-          <Styles.OnboardingTemplateSelectionGallerySuggestion
-            onClick={() => {
-              setActiveTag(undefined);
-              setActiveID(undefined);
-            }}
-            active={activeID === undefined}
-          >
-            {RVDicOnboardingTemplateSuggestionGallery}
-          </Styles.OnboardingTemplateSelectionGallerySuggestion>
-          {templates?.Tags?.map((Tag, idx) => {
-            const { Name, NodeID, Templates } = Tag;
-            return (
-              <OnboardingTemplateSelectionGalleryItem
-                Name={Name}
-                Templates={Templates}
-                key={NodeID}
+          {templates?.Tags ? (
+            <>
+              <Styles.OnboardingTemplateSelectionGallerySuggestion
                 onClick={() => {
-                  setActiveTag(Tag);
-                  setActiveID(NodeID);
+                  setActiveTag(undefined);
+                  setActiveID(undefined);
                 }}
-                active={activeID === NodeID}
-                activateTemplate={activateTemplate}
-              />
-            );
-          })}
+                active={activeID === undefined}
+              >
+                {RVDicOnboardingTemplateSuggestionGallery}
+              </Styles.OnboardingTemplateSelectionGallerySuggestion>
+              {templates?.Tags?.map((Tag, idx) => {
+                const { Name, NodeID, Templates } = Tag;
+                return (
+                  <OnboardingTemplateSelectionGalleryItem
+                    Name={Name}
+                    Templates={Templates}
+                    key={NodeID}
+                    onClick={() => {
+                      setActiveTag(Tag);
+                      setActiveID(NodeID);
+                    }}
+                    active={activeID === NodeID}
+                    activateTemplate={activateTemplate}
+                  />
+                );
+              })}
+            </>
+          ) : (
+            <OnboardingTemplateSelectionGalleryItemSkeleton />
+          )}
         </Styles.OnboardingTemplateSelectionGalleryContentWrapper>
       </Styles.OnboardingTemplateSelectionGalleryContainerBackground>
     </Styles.OnboardingTemplateSelectionGalleryContainer>

@@ -5,7 +5,7 @@ import Button from 'components/Buttons/Button';
 import GoogleIcon from 'components/Icons/GoogleIcon';
 import { TCV_DEFAULT } from 'constant/CssVariables';
 import { Base64 } from 'js-base64';
-import React from 'react';
+import { useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -21,6 +21,8 @@ const ContinueWithGoogle = ({ ...props }) => {
   // We use ref to pass component dimension to 'UpToDownAnimate'
 
   const { RVDic, RVGlobal, GlobalUtilities } = window;
+
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const { actions: authActions } = useAuthSlice();
@@ -64,6 +66,7 @@ const ContinueWithGoogle = ({ ...props }) => {
           // window.RVGlobal.IsAuthenticated = true;
           // window.location.href = afterLogin(response) || '/workspaces';
         }
+        setLoading(false);
       }
     );
   };
@@ -75,6 +78,7 @@ const ContinueWithGoogle = ({ ...props }) => {
    */
   const onGoogleFailed = (event) => {
     console.log('change route');
+    setLoading(false);
   };
 
   return !(RVGlobal || {}).GoogleSignInClientID ? (
@@ -90,11 +94,13 @@ const ContinueWithGoogle = ({ ...props }) => {
           style={{ width: '100%' }}
           {...props}
           disabled={renderProps.disabled}
+          loading={loading}
         >
           <GoogleIcon style={{ fontSize: '1rem' }} />
           <Label>{RVDic.SignInWithGoogle}</Label>
         </Button>
       )}
+      onRequest={() => setLoading(true)}
       onSuccess={onGoogleSuccess}
       onFailure={onGoogleFailed}
       cookiePolicy={'single_host_origin'}
@@ -108,4 +114,8 @@ const Label = styled.div`
   color: ${TCV_DEFAULT};
   font-size: 0.8rem;
   margin: 0 0.8rem;
+  text-transform: lowercase;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;

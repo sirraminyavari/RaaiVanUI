@@ -27,6 +27,7 @@ WaveContent.displayName = 'WaveContent';
 export const EmojiImage = styled.img`
   width: 3rem !important;
   margin: 0.3rem;
+  margin-block-start: -0.6rem;
 `;
 EmojiImage.displayName = 'EmojiImage';
 
@@ -36,9 +37,11 @@ export const OnboardingIntroductionText = styled(Heading).attrs({ type: 'H1' })`
   transform: scale(0);
   transition: opacity 1s, filter 1s, transform 1s;
   text-align: center;
-  &::first-letter {
-    text-transform: capitalize;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+  text-transform: capitalize;
 `;
 OnboardingIntroductionText.displayName = 'OnboardingIntroductionText';
 

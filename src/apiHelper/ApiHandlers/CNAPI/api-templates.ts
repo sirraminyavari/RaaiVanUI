@@ -12,10 +12,10 @@ export const getTemplateTags = () => {
 
 /**
  * @description Get templates.
- * @param {String?} TagID if provided, fetches the templates related to this tag, otherwise fetches all of the templates
+ * @param {String} [props.TagID] if provided, fetches the templates related to this tag, otherwise fetches all of the templates
  * @returns Promise.
  */
-export const getTemplates = ({ TagID }) => {
+export const getTemplates = ({ TagID }: { TagID?: string } = {}) => {
   return apiCallWrapper(API_Provider(CN_API, 'GetTemplates'), { TagID });
 };
 

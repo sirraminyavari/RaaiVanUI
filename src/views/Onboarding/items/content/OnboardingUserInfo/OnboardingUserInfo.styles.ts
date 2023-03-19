@@ -14,6 +14,7 @@ OnboardingUserInfoInputContainer.displayName =
 
 export const OnboardingUserInfoInputWrapper = styled.div`
   margin-block: 1rem;
+  font-size: 1.175rem;
 `;
 OnboardingUserInfoInputWrapper.displayName = 'OnboardingUserInfoInputWrapper';
 

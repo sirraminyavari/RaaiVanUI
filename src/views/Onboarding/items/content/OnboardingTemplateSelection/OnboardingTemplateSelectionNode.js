@@ -8,7 +8,7 @@ import EmptyState from 'components/EmptyState/EmptyState';
 
 //TODO replace FormFill component with a labels only kind ...
 
-const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
+const OnboardingTemplateSelectionNode = ({ activeTemplate, Elements }) => {
   const { RVDic } = useWindow();
   const [templateNodeElements, setTemplateNodeElements] = useState(false);
 
@@ -17,6 +17,7 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
 
   useEffect(() => {
     (async () => {
+      if (Elements) return setTemplateNodeElements({ Elements });
       setTemplateNodeElements(false);
       const formElements = await API.CN.getTemplatePreview({
         NodeTypeID: activeTemplate?.NodeTypeID,
@@ -24,7 +25,7 @@ const OnboardingTemplateSelectionNode = ({ activeTemplate }) => {
       setTemplateNodeElements(formElements);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTemplate?.NodeTypeID]);
+  }, [activeTemplate?.NodeTypeID, Elements]);
 
   return (
     <div>

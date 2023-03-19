@@ -11,7 +11,7 @@ import {
   prepareRows,
 } from 'components/CustomTable/tableUtils';
 import useWindow from 'hooks/useWindowContext';
-import { decodeBase64, getWeekDay, random } from 'helpers/helpers';
+import { decodeBase64, getWeekDay } from 'helpers/helpers';
 import {
   createFormInstance,
   removeFormInstance,
@@ -65,6 +65,7 @@ const Table = (props) => {
   const [rows, setRows] = useState([]);
   const [tableContent, setTableContent] = useState([]);
   const [tableFormID, setTableFormID] = useState(FormID);
+  const [isNewRowEmpty, setIsNewRowEmpty] = useState(true);
   const newRowRef = useRef({});
   const beforeEditRowsRef = useRef(null);
 
@@ -116,10 +117,9 @@ const Table = (props) => {
   const updateCellData = (rowId, columnId, newCellData, oldCellValue) => {
     // console.log({ newCellData }, { oldCellValue }, 'step one');
     const isNewRow = rowId.split('_')[0] === 'new';
-
     if (isNewRow) {
       //! If new row is being edited.
-      saveRow([newCellData]);
+      saveRow([newCellData], true);
     } else {
       //! Row already exists.
       if (editByCell) {
@@ -174,31 +174,37 @@ const Table = (props) => {
 
   //! Delete table row.
   const removeRow = (row) => {
-    const rowIndex = row?.index;
-    const rowId = row?.original?.id;
+    console.log({ row, rows });
+    if (typeof row === 'string' && row.startsWith('new_')) {
+      setRows((old) => old.filter((row) => row?.id !== row));
+      getFormData();
+    } else {
+      const rowIndex = row?.index;
+      const rowId = row?.original?.id;
 
-    removeFormInstance(rowId)
-      .then((response) => {
-        if (response?.Succeed) {
-          const message = 'ردیف حذف شد';
-          const toastId = `delete-${rowId}`;
-          UndoToast({
-            toastId,
-            message,
-            autoClose: 10000,
-            onUndo: () => undoRowDelete(rowId),
-            closeButton: (
-              <CloseIcon
-                onClick={() => closeUndoToast(toastId)}
-                color={CV_RED}
-              />
-            ),
-          });
+      removeFormInstance(rowId)
+        .then((response) => {
+          if (response?.Succeed) {
+            const message = 'ردیف حذف شد';
+            const toastId = `delete-${rowId}`;
+            UndoToast({
+              toastId,
+              message,
+              autoClose: 10000,
+              onUndo: () => undoRowDelete(rowId),
+              closeButton: (
+                <CloseIcon
+                  onClick={() => closeUndoToast(toastId)}
+                  color={CV_RED}
+                />
+              ),
+            });
 
-          setRows((old) => old.filter((row, index) => index !== rowIndex));
-        }
-      })
-      .catch((error) => console.log(error));
+            setRows((old) => old.filter((row, index) => index !== rowIndex));
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   };
   const memoizedRemoveRow = useCallback(removeRow, []);
 
@@ -263,6 +269,7 @@ const Table = (props) => {
         // console.log(error, 'save row error')
       });
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const memoizedEditRow = useCallback(editRow, [
     rows,
     tableContent,
@@ -292,14 +299,22 @@ const Table = (props) => {
       setRows(beforeEditRowsRef.current);
       beforeEditRowsRef.current = null;
       newRowRef.current = {};
+      setIsNewRowEmpty(true);
     }
   };
-
   const memoizedOnEditRowCancel = useCallback(onEditCancel, []);
 
   //! Save row.
   const saveRow = useCallback(
-    async (newRowElements) => {
+    async (newRowElements, isNewRow = false) => {
+      if (isNewRow && newRowElements[0]?.ElementID) {
+        newRowRef.current = {
+          ...newRowRef.current,
+          [newRowElements[0].ElementID]: newRowElements[0],
+        };
+        setIsNewRowEmpty(false);
+        return;
+      }
       //! Create new row instance.
       let newElementID;
       if (!hasInitiated) {
@@ -320,7 +335,7 @@ const Table = (props) => {
 
         await getFormData(); //! Refresh table data.
       }
-      createFormInstance(newElementID || tableFormID, ElementID, true)
+      createFormInstance(newElementID || tableFormID, ElementID)
         .then((response) => {
           if (response?.Succeed) {
             const instanceId = response?.Instance?.InstanceID;
@@ -333,6 +348,7 @@ const Table = (props) => {
               .then((response) => {
                 getFormData(); //! Refresh table data.
                 newRowRef.current = {};
+                setIsNewRowEmpty(true);
               })
               .catch((error) => console.log(error, 'save row error'));
           }
@@ -353,7 +369,7 @@ const Table = (props) => {
   //! Add new row.
   const addRow = async () => {
     let elements = Object.values(newRowRef.current);
-    saveRow(elements);
+    await saveRow(elements);
   };
   const memoizedAddRow = useCallback(addRow, [saveRow]);
 
@@ -481,6 +497,7 @@ const Table = (props) => {
       tableMirror={Table}
       onCreateNewRow={createNewRow}
       onDuplicateRow={memoizedDuplicateRow}
+      isNewRowEmpty={isNewRowEmpty}
     />
   );
 };

@@ -16,8 +16,8 @@ const TimeLineItem = ({ isLast }) => {
         />
       </Link>
       <div>
-        <Styled.TimeLineTitle>*#*تغییر در دانشنامه</Styled.TimeLineTitle>
-        <Styled.TimeLineDate>*#*1400/05/29 17:09</Styled.TimeLineDate>
+        <Styled.TimeLineTitle>تغییر در دانشنامه</Styled.TimeLineTitle>
+        <Styled.TimeLineDate>1400/05/29 17:09</Styled.TimeLineDate>
       </div>
     </Styled.TimeLineItemContainer>
   );

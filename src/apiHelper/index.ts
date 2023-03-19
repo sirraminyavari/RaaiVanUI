@@ -9,6 +9,7 @@ import * as RV_Dictionary from './ApiHandlers/RVAPI/dictionary/dictionary';
 import * as Search from './ApiHandlers/SearchAPI';
 import * as Users from './ApiHandlers/usersApi';
 import * as Notifications from './ApiHandlers/NotificationsAPI';
+import * as WFAPI from './ApiHandlers/WFAPI';
 
 export const API = {
   CN: { ...CN, ...CNServices, ...CNTemplates },
@@ -19,6 +20,7 @@ export const API = {
   Search,
   Users,
   Notifications,
+  WFAPI,
 };
 
 export default API;

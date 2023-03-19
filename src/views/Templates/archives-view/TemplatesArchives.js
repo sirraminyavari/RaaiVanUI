@@ -5,14 +5,12 @@ import SearchTemplates from '../items/SearchTemplates';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import * as Styled from './TemplatesArchives.styles';
-import { TEMPLATES_SETTING_PATH } from 'constant/constants';
-import {
-  getChildNodeTypes,
-  getNodeTypes,
-  recoverNodeType,
-} from 'apiHelper/apiFunctions';
+import { TEAM_SETTINGS_PATH, TEMPLATES_SETTING_PATH } from 'constant/constants';
+import { recoverNodeType } from 'apiHelper/apiFunctions';
+import API from 'apiHelper';
 import useWindow from 'hooks/useWindowContext';
-import Button from 'components/Buttons/Button';
+import ReturnButton from 'components/Buttons/ReturnButton';
+import WelcomeLayout from 'layouts/WelcomeLayout';
 
 const TemplatesArchives = () => {
   const { GlobalUtilities, RVDic } = useWindow();
@@ -24,16 +22,19 @@ const TemplatesArchives = () => {
   const history = useHistory();
 
   const breadcrumbItems = [
-    { id: 1, title: 'تنظیمات تیم', linkTo: '#' },
+    {
+      id: 1,
+      title: RVDic?.TeamManagement,
+      // linkTo: TEAM_SETTINGS_PATH.replace(':id', ''),
+    },
     {
       id: 2,
-      title: 'تنظیمات کلاس ها',
+      title: RVDic?.TemplateManagement,
       linkTo: TEMPLATES_SETTING_PATH,
     },
     {
       id: 3,
       title: 'بایگانی کلاس‌ها',
-      linkTo: '#',
     },
   ];
 
@@ -62,11 +63,15 @@ const TemplatesArchives = () => {
   //! Get node types.
   useEffect(() => {
     setIsFetching(true);
-    getChildNodeTypes('', '', true)
+    API.CN.getNodeTypes({ Archive: true, Icon: true })
       .then((response) => {
         if (response?.NodeTypes) {
-          setArchivedTemplates(response?.NodeTypes);
-          allArchivesRef.current = response?.NodeTypes;
+          setArchivedTemplates(
+            response?.NodeTypes.filter(({ IsCategory }) => IsCategory !== true)
+          );
+          allArchivesRef.current = response?.NodeTypes.filter(
+            ({ IsCategory }) => IsCategory !== true
+          );
         }
         setIsFetching(false);
       })
@@ -85,11 +90,15 @@ const TemplatesArchives = () => {
     if (searchText.length > 2) {
       setIsFetching(true);
 
-      getNodeTypes(searchText, true)
+      API.CN.getNodeTypes({ Archive: true, Icon: true, SearchText: searchText })
         .then((response) => {
           if (response?.NodeTypes) {
             console.log(response);
-            setArchivedTemplates(response?.NodeTypes);
+            setArchivedTemplates(
+              response?.NodeTypes.filter(
+                ({ IsCategory }) => IsCategory !== true
+              )
+            );
           }
           setIsFetching(false);
         })
@@ -108,15 +117,11 @@ const TemplatesArchives = () => {
   }, [searchText]);
 
   return (
-    <Styled.TemplatesViewContainer>
-      <Breadcrumb className="templates-breadcrumb" items={breadcrumbItems} />
-      <Button
-        onClick={handleClickBack}
-        type="negative-o"
-        classes="templates-archives-return-button"
-      >
-        {RVDic.Return}
-      </Button>
+    <WelcomeLayout singleColumn withScrollbar>
+      <Styled.TemplatesViewBreadcrumbContainer>
+        <Breadcrumb className="templates-breadcrumb" items={breadcrumbItems} />
+        <ReturnButton onClick={handleClickBack} />
+      </Styled.TemplatesViewBreadcrumbContainer>
       <Styled.TemplatesViewTitle>بایگانی کلاس‌ها</Styled.TemplatesViewTitle>
       <SearchTemplates
         onChange={handleChangeInput}
@@ -132,7 +137,7 @@ const TemplatesArchives = () => {
           templates={archivedTemplates}
         />
       )}
-    </Styled.TemplatesViewContainer>
+    </WelcomeLayout>
   );
 };
 

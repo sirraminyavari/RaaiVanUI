@@ -152,7 +152,7 @@ const WorkspaceDeleteContent = () => {
           loading={pendingPromise}
           disable={!OTPProperties?.Timeout}
           onClick={handleRemoveWorkspaceButton}
-          type="negative-o"
+          type="negative"
           style={{ marginInline: '0.5rem' }}
         >
           {RVDicConfirmDelete}

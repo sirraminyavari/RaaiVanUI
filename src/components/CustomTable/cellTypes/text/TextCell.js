@@ -50,6 +50,11 @@ const TextCell = (props) => {
   const handleInputBlur = () => {
     !editByCell && updateCell();
   };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab' || rowId.includes('new_')) {
+      updateCell();
+    }
+  };
 
   //! Check if 'table' or 'cell' are editable; or is row in edit mode.
   if (!canEdit) {
@@ -71,6 +76,7 @@ const TextCell = (props) => {
       <Input
         onChange={handleInputChange}
         onBlur={handleInputBlur}
+        onKeyDown={handleKeyDown}
         className="table-number-input"
         type="text"
         value={textValue}

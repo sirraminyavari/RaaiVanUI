@@ -12,6 +12,7 @@ import { useContext, useMemo, useState } from 'react';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { random } from 'helpers/helpers';
 import { EditableContext } from '../../FormFill';
+import UndoToast from 'components/toasts/undo-toast/UndoToast';
 
 const FileField = ({
   value,
@@ -23,7 +24,7 @@ const FileField = ({
   Files = [],
   ...rest
 }) => {
-  const { RVDic } = useWindow();
+  const { RVDic, GlobalUtilities } = useWindow();
   const editable = useContext(EditableContext);
   const [deleteModalStatus, setDeleteModalStatus] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState([]);
@@ -35,7 +36,11 @@ const FileField = ({
   //TODO Improve upload handling functionality via Redux-SAGA or queue alternatives
   //TODO add comments and JSDoc templates
 
-  // const infoJSON = GlobalUtilities.to_json(decodeInfo) || {};
+  //TODO RVDic i18n initializations
+  const EVDicRemoveUpload = 'فایل آپلود شده حذف شد';
+
+  const { ImageOnly, AllowedExtensions } =
+    GlobalUtilities.to_json(decodeInfo) || {};
   const saveFunctionality = useMemo(
     () =>
       async (files = allFiles) => {
@@ -124,15 +129,27 @@ const FileField = ({
   //! remove Item from uploadList
   const handleRemoveFile = (FileID) => async () => {
     // console.log(acceptedFiles);
-
+    const deleteableFile = allFiles?.find(
+      (fileItem) => fileItem.FileID === FileID
+    );
     const files = allFiles?.filter((fileItem) => fileItem.FileID !== FileID);
     const isSaved = await onAnyFieldChanged(elementId, files, 'File');
     if (isSaved) setAllFiles(files);
     setDeleteModalStatus(false);
-
-    // alert('saved', {
-    //   Timeout: 1000,
-    // });
+    UndoToast({
+      type: 'error',
+      autoClose: 10000,
+      message: EVDicRemoveUpload,
+      onUndo: async () => {
+        const isSaved = await onAnyFieldChanged(
+          elementId,
+          [...allFiles, deleteableFile],
+          'File'
+        );
+        if (isSaved) setAllFiles(files);
+      },
+      toastId: `node-page-file-remove`,
+    });
   };
 
   if (!editable && Files?.length === 0) return <></>;
@@ -173,7 +190,7 @@ const FileField = ({
             maxFiles={2} //! (infoJSON?.MaxCount)
             maxTotalSize={2} //! (infoJSON?.TotalSize)
             maxEachSize={1} //! (infoJSON?.MaxSize)
-            accept={['image/*']} //! (infoJSON?.AllowedExtensions)
+            accept={ImageOnly ? ['image/*'] : AllowedExtensions} //! (infoJSON?.AllowedExtensions)
             onUpload={(acceptedFiles) =>
               handleUploadFile(acceptedFiles, allFiles)
             }

@@ -147,7 +147,7 @@ const PeoplePicker = ({
         className={'rv-bg-color-white rv-border-radius-half'}
         isVisible={isPickerVisible}
         triggerButtonRect={fixedPositioning && buttonBoundingRect}
-        onScrollCapture={() => alert('sad')}
+        // onScrollCapture={() => alert('sad')}
       >
         <div
           style={{

@@ -1,5 +1,5 @@
 import * as Styled from './TemplateFormSettingsStyles';
-import { decodeBase64 } from 'helpers/helpers';
+import { decodeBase64, encodeBase64 } from 'helpers/helpers';
 import Button from 'components/Buttons/Button';
 import PreviewIcon from 'components/Icons/PreviewIcon/PreviewIcon';
 import TrashIcon from 'components/Icons/TrashIcon';
@@ -7,30 +7,100 @@ import SaveIcon from 'components/Icons/SaveIcon/Save';
 import DndHandler from './items/DndHandler';
 import { useTemplateContext } from '../../TemplateProvider';
 import { useTemplateFormContext } from './TemplateFormContext';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm';
+import { useHistory } from 'react-router-dom';
+import { TEMPLATES_SETTING_SINGLE_PATH } from 'constant/constants';
+import Modal from 'components/Modal/Modal';
+import OnboardingTemplateSelectionNode from 'views/Onboarding/items/content/OnboardingTemplateSelection/OnboardingTemplateSelectionNode';
 
 const TemplateFormWrapper = () => {
   const { RV_RTL: rtl } = window;
-  const { Title } = useTemplateContext();
-  const { saveForm } = useTemplateFormContext();
+  const { Title, NodeTypeID } = useTemplateContext();
+  const history = useHistory();
+  const { saveForm, formObjects } = useTemplateFormContext();
+  const [showcaseModalStatus, setShowcaseModalStatus] = useState(false);
+
+  const previewMockFormGenerator = useMemo(
+    () =>
+      (formObjects || []).map((item) => ({
+        BitValue: null,
+        CreationDate: '',
+        DateValue: null,
+        DateValue_Jalali: null,
+        EditionsCount: 0,
+        Filled: false,
+        FloatValue: null,
+        FormID: '',
+        GuidItems: [],
+        Help: '',
+        InstanceID: '',
+        IsWorkFlowField: false,
+        LastModificationDate: '',
+        Name: '',
+        Necessary: false,
+        SelectedItems: [],
+        SequenceNumber: 1,
+        TextValue: '',
+        ...item.data,
+        ElementID: item.id,
+        Value: '',
+        Info: encodeBase64(JSON.stringify(item.data.Info)),
+      })),
+    [formObjects]
+  );
+
+  const returnToTemplates = () =>
+    history.push(TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID));
   return (
     <Styled.Container rtl={rtl}>
       <Styled.ActionHeader rtl={rtl}>
         <Styled.HeaderTitle>{decodeBase64(`${Title}`)}</Styled.HeaderTitle>
         <Styled.Spacer />
 
-        <Button type="secondary-o">
+        <Button type="secondary-o" onClick={() => setShowcaseModalStatus(true)}>
           <PreviewIcon size={17} />
           <Styled.ButtonTitle>{'پیش‌نمایش'}</Styled.ButtonTitle>
         </Button>
+        <Modal
+          middle
+          title="پیش‌نمایش"
+          show={showcaseModalStatus}
+          contentWidth="clamp(18rem,85%,50rem)"
+          onClose={() => setShowcaseModalStatus(false)}
+        >
+          <OnboardingTemplateSelectionNode
+            Elements={previewMockFormGenerator}
+          />
+        </Modal>
 
-        <FormDeleteButton />
+        <FormDeleteButton onDelete={() => saveForm(true)} />
 
-        <Button type="primary" onClick={saveForm}>
-          <SaveIcon size={17} />
-          <Styled.ButtonTitle>{'انتشار فرم'}</Styled.ButtonTitle>
-        </Button>
+        <Styled.CustomDropdownMenu
+          data={[
+            {
+              colorClass: 'rv-default',
+              icon: <SaveIcon size={17} />,
+              label: 'انتشار فرم و بازگشت',
+              value: 'saveAndExit',
+            },
+          ]}
+          onSelectItem={(e) => {
+            saveForm();
+            returnToTemplates();
+          }}
+          onDropDownOpen={() => {}}
+          defaultValue={{
+            colorClass: 'rv-default',
+            icon: <SaveIcon size={17} />,
+            label: 'انتشار فرم',
+            value: 'save',
+          }}
+          hiddenSelectedItem={false}
+          onClickLabel={() => {
+            saveForm();
+          }}
+        />
       </Styled.ActionHeader>
 
       <Styled.MainContent>
@@ -40,7 +110,7 @@ const TemplateFormWrapper = () => {
   );
 };
 
-const FormDeleteButton = () => {
+const FormDeleteButton = ({ onDelete }) => {
   const { RVDic } = window;
   const [modalInfo, setModalInfo] = useState({
     show: false,
@@ -58,6 +128,7 @@ const FormDeleteButton = () => {
 
   const confirm = () => {
     // confirm
+    onDelete && onDelete();
     close();
   };
 

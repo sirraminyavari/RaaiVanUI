@@ -95,6 +95,7 @@ const ImageCropModal = (props) => {
       onUploadDone(newImageURL);
     } catch (err) {
       setIsSavingImage(false);
+      console.log({ err });
       alert(RVDic?.MSG[err] || 'operation failed');
     }
   };

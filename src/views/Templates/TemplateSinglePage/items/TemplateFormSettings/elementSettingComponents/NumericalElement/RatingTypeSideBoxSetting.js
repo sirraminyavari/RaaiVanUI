@@ -3,13 +3,13 @@ import ToggleNecessaryState from '../sharedItems/ToggleNecessaryState';
 import produce from 'immer';
 const RatingTypeSideBoxSetting = ({ current, setFormObjects }) => {
   const { type, data } = current || {};
-  const { ViewType, min, max } = data?.Info || {};
+  const { ViewType, Min, Max } = data?.Info || {};
 
   const handleMinStateChange = (e) => {
     setFormObjects(
       produce((d) => {
         const _current = d.find((x) => x.id === current.id);
-        _current.data.Info.min = e?.target?.value;
+        _current.data.Info.Min = e?.target?.value;
       })
     );
   };
@@ -18,7 +18,7 @@ const RatingTypeSideBoxSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         const _current = d.find((x) => x.id === current.id);
-        _current.data.Info.max = e?.target?.value;
+        _current.data.Info.Max = e?.target?.value;
       })
     );
   };
@@ -63,14 +63,14 @@ const RatingTypeSideBoxSetting = ({ current, setFormObjects }) => {
           <Styles.Row>
             <Styles.InputRowContainer>
               <Styles.ToggleRowTitle>{'کمترین مقدار'}</Styles.ToggleRowTitle>
-              <Styles.Input value={min} onChange={handleMinStateChange} />
+              <Styles.Input value={Min} onChange={handleMinStateChange} />
             </Styles.InputRowContainer>
           </Styles.Row>
 
           <Styles.Row>
             <Styles.InputRowContainer>
               <Styles.ToggleRowTitle>{'بیشترین مقدار'}</Styles.ToggleRowTitle>
-              <Styles.Input value={max} onChange={handleMaxStateChange} />
+              <Styles.Input value={Max} onChange={handleMaxStateChange} />
             </Styles.InputRowContainer>
           </Styles.Row>
         </>

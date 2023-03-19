@@ -1,16 +1,16 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import * as Styles from './BinaryInputField.styles';
 
 export interface IBinaryInputField {
   isFocused: boolean;
   isEditable: boolean;
-  onChange: ({ label: string, value: boolean }) => void;
+  onChange: ({ label, value }: any) => void;
   yesLabel: ReactNode;
   noLabel: ReactNode;
   value: boolean;
 }
 
-const BinaryInputField = ({
+const BinaryInputField: React.FC<IBinaryInputField> = ({
   isFocused,
   isEditable,
   onChange,

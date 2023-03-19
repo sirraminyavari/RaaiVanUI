@@ -55,6 +55,7 @@ const DEFAULT_MODAL_PROPS = { show: false, title: '', type: '', content: null };
  * @property {PaginationType} pagination - A callback function that duplicates a row record.
  * @property {any} tableMirror - An instance of the table itself.
  * @property {Function} getColumnsOption - A callback that gets necessary options for the table.
+ * @property {Boolean} isNewRowEmpty - A flag that indicates if new row has data or not
  */
 
 /**
@@ -86,6 +87,7 @@ const CustomTable = (props) => {
     tableMirror,
     getColumnsOption,
     getCellProps = defaultPropGetter,
+    isNewRowEmpty,
   } = props;
 
   const [selectedCell, setSelectedCell] = useState(null);
@@ -171,6 +173,7 @@ const CustomTable = (props) => {
       FormID,
       tableMirror,
       editByCell,
+      isNewRowEmpty,
       initialState: {
         ...paginationStates,
       },

@@ -1,6 +1,8 @@
 /**
  * A component for rendering the name of the item creator.
  */
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { random } from 'helpers/helpers';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -9,12 +11,22 @@ const SubjectCreator = ({ firstName, lastName, userProfile, style }) => {
 
   return (
     <Container style={style}>
-      <Profile src={userProfile} isSaas={isSaas} />
-      {!isSaas && (
-        <ProducerName className="rv-gray">
-          {firstName}
-          {lastName}
-        </ProducerName>
+      {!isSaas ? (
+        <>
+          <Profile src={userProfile} isSaas={isSaas} />
+          <ProducerName className="rv-gray">
+            {`${firstName} ${lastName}`}
+          </ProducerName>
+        </>
+      ) : (
+        <Tooltip
+          tipId={'SubjectCreator' + random()}
+          effect="solid"
+          place="top"
+          renderContent={() => `${firstName} ${lastName}`}
+        >
+          <Profile src={userProfile} isSaas={isSaas} />
+        </Tooltip>
       )}
     </Container>
   );

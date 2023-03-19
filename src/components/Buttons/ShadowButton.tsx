@@ -30,6 +30,7 @@ const StyledButton = styled(Button).attrs({
   justify-content: center;
   cursor: pointer;
   color: ${({ active }) => (active ? TCV_DEFAULT : CV_DISTANT)};
+  column-gap: 0.25rem;
 
   :hover {
     color: ${TCV_DEFAULT};

@@ -178,7 +178,10 @@ const AdvanceSearchDesktop = ({
               ref.getBoundingClientRect = () => {
                 const original = ref._getBoundingClientRect();
 
-                return { ...original, height: Math.round(original.height) };
+                return {
+                  ...original,
+                  // height: Math.round(original.height)
+                };
               };
             }
           }}
@@ -217,6 +220,7 @@ const AdvanceSearchDesktop = ({
                   itemSelectionMode={itemSelectionMode}
                   bookmarked={bookmarked}
                   isProfile={isProfile}
+                  withRelatedNodes={Boolean(relatedNodeID)}
                 />
               </TopFilter>
               <div

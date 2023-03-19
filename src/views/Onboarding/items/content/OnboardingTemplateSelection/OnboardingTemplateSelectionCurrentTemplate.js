@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
 import { useOnboardingSlice } from 'store/slice/onboarding';
 import { useCallback } from 'react';
+import OnboardingTemplateSelectionCurrentTemplateSkeleton from './OnboardingTemplateSelectionCurrentTemplateSkeleton';
 
 const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
   const { RVDic } = useWindow();
@@ -61,7 +62,7 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
       <Styles.OnboardingTemplateSelectionCurrentTemplateContainer
         mobile={isTabletOrMobile}
       >
-        {activeTemplate && (
+        {activeTemplate ? (
           <>
             <Styles.OnboardingTemplateSelectionImage
               src={activeTemplate?.IconURL}
@@ -102,6 +103,8 @@ const OnboardingTemplateSelectionCurrentTemplate = ({ activeTemplate }) => {
               )}
             </Styles.OnboardingTemplateSelectionButtonWrapper>
           </>
+        ) : (
+          <OnboardingTemplateSelectionCurrentTemplateSkeleton />
         )}
       </Styles.OnboardingTemplateSelectionCurrentTemplateContainer>
     </>

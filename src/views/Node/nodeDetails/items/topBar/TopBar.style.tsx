@@ -49,6 +49,7 @@ export const NodeTopBarTopRow = styled.div<{ isTabletOrMobile?: boolean }>`
   width: 100%;
   margin: 1rem 1rem 1rem 0rem;
   justify-content: space-between;
+  flex-wrap: wrap;
 
   ${({ isTabletOrMobile }) =>
     isTabletOrMobile
@@ -118,8 +119,12 @@ NodeTopBarViewCount.displayName = 'NodeTopBarViewCount';
 
 export const NodeTopBarCounterBookmarkContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  row-gap: 1rem;
+  width: 100%;
 `;
 NodeTopBarCounterBookmarkContainer.displayName =
   'NodeTopBarCounterBookmarkContainer';

@@ -137,7 +137,7 @@ const UrgentCreateMobile = ({
             className={' rv-border-red rv-border-radius-1'}
             onClick={onDismiss}
             $circleEdges={true}
-            type={'primary-o'}
+            type={'negative-o'}
             style={{
               borderRadius: '10rem',
               display: 'flex',

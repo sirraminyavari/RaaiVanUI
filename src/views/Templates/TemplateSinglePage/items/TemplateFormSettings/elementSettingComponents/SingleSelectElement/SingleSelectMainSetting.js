@@ -35,7 +35,7 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         const _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.Items[index].max = value;
+        _current.data.Info.Items[index].Max = value;
       })
     );
   };
@@ -44,7 +44,7 @@ const SingleSelectMainSetting = ({ current, setFormObjects }) => {
     setFormObjects(
       produce((d) => {
         const _current = d?.find((x) => x?.id === current?.id);
-        _current.data.Info.Items[index].min = value;
+        _current.data.Info.Items[index].Min = value;
       })
     );
   };

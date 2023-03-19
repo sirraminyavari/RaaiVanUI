@@ -44,25 +44,23 @@ const CMConfidentialitySetting = ({ type }) => {
       }}
     >
       <Styled.Container>
-        <Styled.SelectionBlock>
-          <Styled.BlockTitle>{'تنظیمات محرمانگی'}</Styled.BlockTitle>
-          <Styled.BlockSelectWrapper>
-            <CustomSelect
-              defaultValue={{
-                value: selectedOption,
-                label: options?.find((x) => x?.value === selectedOption)?.label,
-              }}
-              placeholder=""
-              components={{
-                DropdownIndicator: CustomSelectIndicator,
-                Option: UserAccessTypeOption,
-              }}
-              classNamePrefix="select"
-              options={options}
-              onChange={handleSelection}
-            />
-          </Styled.BlockSelectWrapper>
-        </Styled.SelectionBlock>
+        <Styled.BlockTitle>{'تنظیمات محرمانگی'}</Styled.BlockTitle>
+        <Styled.BlockSelectWrapper>
+          <CustomSelect
+            defaultValue={{
+              value: selectedOption,
+              label: options?.find((x) => x?.value === selectedOption)?.label,
+            }}
+            placeholder=""
+            components={{
+              DropdownIndicator: CustomSelectIndicator,
+              Option: UserAccessTypeOption,
+            }}
+            classNamePrefix="select"
+            options={options}
+            onChange={handleSelection}
+          />
+        </Styled.BlockSelectWrapper>
       </Styled.Container>
 
       {selectedOption === 'CLASSIFIED' && (

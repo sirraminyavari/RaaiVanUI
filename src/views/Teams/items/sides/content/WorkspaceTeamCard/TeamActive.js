@@ -280,7 +280,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
             />
           ) : (
             <Styled.TeamDeleteWrapper onClick={handleTeamDelete}>
-              <TrashIcon />
+              <TrashIcon className="team-action-icon" />
               <span className="team-action-title">
                 {RVDic.RemoveN.replace('[n]', RVDic.Team)}
               </span>
@@ -288,7 +288,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
           )
         ) : (
           <Styled.TeamExitWrapper onClick={onExitTeamClick}>
-            <ExitIcon size={22} />
+            <ExitIcon className="team-action-icon" size={22} />
             <span className="team-action-title">
               {RVDic.LeaveN.replace('[n]', RVDic.Team)}
             </span>
@@ -296,7 +296,7 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
         )}
         {isEditable && (
           <Styled.TeamExitWrapper onClick={onTeamSettingsClick}>
-            <SettingIcon size={18} />
+            <SettingIcon className="team-action-icon" size={18} />
             <span className="team-action-title">{RVDic.TeamSettings}</span>
           </Styled.TeamExitWrapper>
         )}
@@ -430,18 +430,25 @@ const ActiveTeam = forwardRef(({ team, isDragging }, ref) => {
                 </PopupMenu>
               ) : (
                 isAdmin && (
-                  <Styled.AddUserWrapper
-                    usersCount={shownUsers?.length}
-                    onClick={handleInviteUser}
-                    rtl={RV_RTL}
-                    dir={RV_RevFloat}
+                  <Tooltip
+                    tipId={'addUserToWorkspace'}
+                    effect="solid"
+                    place="bottom"
+                    renderContent={() => RVDic.AddMember}
                   >
-                    <UserPlusIcon
-                      size={22}
-                      color={TCV_DEFAULT}
-                      style={{ marginLeft: '0.4rem' }}
-                    />
-                  </Styled.AddUserWrapper>
+                    <Styled.AddUserWrapper
+                      usersCount={shownUsers?.length}
+                      onClick={handleInviteUser}
+                      rtl={RV_RTL}
+                      dir={RV_RevFloat}
+                    >
+                      <UserPlusIcon
+                        size={22}
+                        color={TCV_DEFAULT}
+                        style={{ marginLeft: '0.4rem' }}
+                      />
+                    </Styled.AddUserWrapper>
+                  </Tooltip>
                 )
               )}
             </Styled.TeamAvatarsWrapper>

@@ -25,6 +25,7 @@ import {
   CV_GRAY_DARK,
   TCV_WARM,
 } from 'constant/CssVariables';
+import Avatar from 'components/Avatar/Avatar';
 
 const { RV_Float, RV_RTL, RV_RevFloat } = window;
 
@@ -37,12 +38,18 @@ export const TeamActionContainer = styled.div.attrs({
   min-height: 2.2rem;
   padding: 0 0.8rem;
   box-shadow: 1px 3px 20px ${TCV_VERY_TRANSPARENT};
-  text-transform: capitalize;
 
   .team-action-title {
     margin: 0.5rem;
     font-size: 0.8rem;
     font-weight: 500;
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+  .team-action-icon {
+    ${FLEX_RCS}
+    width: 1rem;
   }
 `;
 
@@ -94,6 +101,9 @@ export const TeamTitle = styled.div.attrs({
   font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   .team-inline-edit-text {
     white-space: nowrap;
@@ -202,6 +212,13 @@ export const ExtraUserTitle = styled.span.attrs({
   className: C_GRAY,
 })`
   margin: 0 0.5rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const ExtraUserItemAvatar = styled(Avatar)`
+  flex-shrink: 0;
 `;
 
 export const NewTeamWrapper = styled.div.attrs({
@@ -219,6 +236,10 @@ export const NewTeamLabel = styled.div.attrs({
 })`
   margin: 1rem 0 0 0;
   font-size: 1.2rem;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
 
 export const AddUserModalHeader = styled.div`

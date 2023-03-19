@@ -1,3 +1,4 @@
+import useLocalStorage from 'hooks/useLocalStorage';
 import { createContext, useContext, useState } from 'react';
 
 const EmojiContext = createContext({});
@@ -8,6 +9,10 @@ export const useEmojiContext = () => {
 };
 
 export const EmojiContextProvider = ({ onSelect, children }) => {
+  const [recentEmojis, setRecentEmojis] = useLocalStorage(
+    'RESENT_USED_EMOJIS',
+    []
+  );
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
 
   const handleCategorySelect = (index) => {
@@ -24,6 +29,8 @@ export const EmojiContextProvider = ({ onSelect, children }) => {
         selectedCategoryIndex,
         handleCategorySelect,
         handleEmojiSelect,
+        recentEmojis,
+        setRecentEmojis,
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import * as Styled from './Badge.styles';
  *
  * @typedef PropType
  * @type {Object}
- * @property {string|number} children - The value of the badge.
+ * @property {ReactNode} children - The value of the badge.
  * @property {('default'|'error')} type - type of the badge
  */
 

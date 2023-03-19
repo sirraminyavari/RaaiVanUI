@@ -1,4 +1,13 @@
+import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 import styled from 'styled-components';
+
+interface IShimmer
+  extends Omit<
+    DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+    'ref'
+  > {
+  darkMode?: boolean;
+}
 
 /**
  * @component
@@ -22,7 +31,11 @@ import styled from 'styled-components';
  * ```
  *
  */
-const Shimmer = ({ children, darkMode = false, ...restProps }) => {
+const Shimmer = ({
+  children,
+  darkMode = false,
+  ...restProps
+}: PropsWithChildren<IShimmer>) => {
   return (
     <ShimmerElement {...restProps} darkMode={darkMode}>
       {children}
@@ -31,7 +44,7 @@ const Shimmer = ({ children, darkMode = false, ...restProps }) => {
 };
 export default Shimmer;
 
-const ShimmerElement = styled.div`
+const ShimmerElement = styled.div<{ darkMode: boolean }>`
   .shimmerEffect > * {
     border-color: transparent !important;
     color: transparent !important;

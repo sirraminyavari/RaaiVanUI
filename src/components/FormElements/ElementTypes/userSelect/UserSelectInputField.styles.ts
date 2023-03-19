@@ -1,5 +1,11 @@
 import CloseIcon from 'components/Icons/CloseIcon/CloseIcon';
-import { CV_DISTANT, CV_GRAY, CV_RED, TCV_WARM } from 'constant/CssVariables';
+import {
+  CV_DISTANT,
+  CV_GRAY,
+  CV_RED,
+  CV_WHITE,
+  TCV_WARM,
+} from 'constant/CssVariables';
 import styled from 'styled-components';
 
 export const UserSelectInputFieldSelect = styled.div`
@@ -37,6 +43,7 @@ export const UserSelectInputFieldSelectedUser = styled.div`
   margin: 0 0.25rem 0 0.25rem;
   justify-content: space-between;
   height: 3rem;
+  background-color: ${CV_WHITE};
 
   & > a {
     display: flex;

@@ -49,7 +49,7 @@ const formElementList = () => {
           data: {
             ...sharedProps,
             Type: 'Text',
-            Info: { UseSimpleEditor: true, min: '', max: '', Sample: '' },
+            Info: { UseSimpleEditor: true, Min: '', Max: '', Sample: '' },
           },
         },
         {
@@ -61,8 +61,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Text',
             Info: {
-              min: '',
-              max: '',
+              Min: '',
+              Max: '',
               Sample: '',
             },
           },
@@ -105,8 +105,8 @@ const formElementList = () => {
             ...sharedProps,
             Type: 'Numeric',
             Info: {
-              min: '',
-              max: '',
+              Min: '',
+              Max: '',
               PatternName: 'NONE',
               currency: 'NONE',
               separator: true,
@@ -198,8 +198,19 @@ const formElementList = () => {
           title: 'چندسطحی',
           type: 'multi',
           icon: <IoFilter size={size} />,
+          nodes: [],
+          selectedNodeDepth: undefined,
+          isTree: false,
           data: {
+            Type: 'MultiLevel',
             ...sharedProps,
+            UniqueValue: false,
+            Necessary: false,
+            Info: {
+              NodeType: undefined,
+              // Levels: ['2KfYs9iq2KfZhg==', '2LTZh9ix', '2YXYrdmE2Yc='],
+              Levels: [],
+            },
           },
         },
         {
@@ -274,7 +285,10 @@ const formElementList = () => {
           title: 'جدول',
           type: 'table',
           icon: <BsTable size={size} />,
+          tableForms: undefined,
           data: {
+            Type: 'Form',
+            Info: { FormID: undefined, FormName: undefined },
             ...sharedProps,
           },
         },

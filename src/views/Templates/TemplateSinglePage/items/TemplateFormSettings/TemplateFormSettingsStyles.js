@@ -5,6 +5,7 @@ import {
   CV_GRAY_DARK,
   CV_GRAY_LIGHT,
   CV_WHITE,
+  TCV_DEFAULT,
 } from 'constant/CssVariables';
 import {
   FLEX_CCC,
@@ -12,6 +13,7 @@ import {
   FLEX_RCS,
   FLEX_RSB,
 } from 'constant/StyledCommonCss';
+import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
 
 export const Container = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};
@@ -94,7 +96,9 @@ export const FormBuilderLayout = styled.div`
   box-shadow: 1px 5px 20px #0000001f;
   height: calc(100vh - 13rem);
   position: relative;
-  padding: 4rem 2rem;
+  padding-inline: 2rem;
+  padding-block-start: 1rem;
+  padding-block-end: 4rem;
 `;
 
 export const FormSetting = styled.div`
@@ -190,5 +194,58 @@ export const SearchFieldContainer = styled.div`
 
   input::placeholder {
     color: var(--rv-color-distant);
+  }
+`;
+
+export const CustomDropdownMenu = styled(AnimatedDropDownList)`
+  width: 11rem;
+
+  & > div:first-of-type {
+    color: ${CV_WHITE};
+
+    & > div:first-of-type {
+      background-color: ${TCV_DEFAULT};
+      border-top-left-radius: 0.45rem;
+      border-bottom-left-radius: 0.45rem;
+    }
+    & > button:last-of-type {
+      background-color: ${TCV_DEFAULT};
+      border-top-right-radius: 0.45rem;
+      border-bottom-right-radius: 0.45rem;
+    }
+  }
+  & > div:last-of-type {
+    color: ${TCV_DEFAULT};
+  }
+`;
+
+export const DroppablePlaceholderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: ${CV_DISTANT};
+  font-size: 1.1rem;
+  row-gap: 1rem;
+
+  svg {
+    font-size: 8rem;
+    path {
+      stroke-width: 0.7rem;
+    }
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-block-end: 1rem;
+
+  & > div:first-of-type {
+    position: unset;
   }
 `;

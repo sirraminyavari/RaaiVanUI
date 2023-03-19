@@ -45,7 +45,7 @@ CarouselContainer.displayName = 'CarouselContainer';
 
 export const CarouselInnerContainer = styled.div`
   width: 100%;
-  margin-block-start: 2rem;
+  margin-block: 0.7rem;
   padding-block: 0.7rem;
   overflow-x: auto;
   scroll-behavior: smooth;

@@ -115,7 +115,23 @@ export const ButtonContainer = styled(({ isActive, ref, ...props }) => (
   align-items: center;
   top: -0.2rem;
   padding: 0.5rem;
-  border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
+  position: relative;
+
+  ${({ isActive }) =>
+    isActive &&
+    `
+  &:after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 2.5%;
+    width: 95%;
+    height: 0.3rem;
+    background-color: ${CV_WHITE};
+    border-radius:0.625rem 0.625rem 0 0;
+  }
+  `}
+  // border-bottom: ${({ isActive }) => (isActive ? '0.2rem solid #fff' : '')};
 
   &:hover {
     background-color: ${TCV_VERY_TRANSPARENT};

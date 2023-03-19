@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import useWindowContext from 'hooks/useWindowContext';
 import Heading from 'components/Heading/Heading';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import {
   addNodeType,
   getNodeTypes,
@@ -16,8 +16,12 @@ import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import TemplateCreateNew from './items/TemplateCreateNew';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import ArchiveIcon from 'components/Icons/ArchiveIcon/ArchiveIcon';
-import { TEMPLATES_ARCHIVE_PATH } from 'constant/constants';
+import {
+  TEMPLATES_ARCHIVE_PATH,
+  TEMPLATES_SETTING_SINGLE_PATH,
+} from 'constant/constants';
 import { useHistory } from 'react-router-dom';
+import { decodeBase64 } from 'helpers/helpers';
 
 export const TemplateListContext = createContext({});
 const TemplatesSettings = () => {
@@ -36,41 +40,57 @@ const TemplatesSettings = () => {
     {
       id: 2,
       title: 'تنظیمات تمپلیت‌ها',
-      linkTo: '',
     },
   ];
 
   useEffect(() => {
     loadNodeTypes();
-  }, []);
+  }, [searchText]);
+
+  // useEffect(
+  //   () =>
+  //     console.log(
+  //       data.NodeTypes.map((x) => ({
+  //         ...x,
+  //         name: decodeBase64(x.TypeName),
+  //       }))
+  //     ),
+  //   [data]
+  // );
 
   //! Redirect to archived templates view.
   const handleGoToArchives = () => {
     history.push(TEMPLATES_ARCHIVE_PATH);
   };
 
-  const loadNodeTypes = () => {
+  const loadNodeTypes = useCallback(() => {
     setLoading(true);
     getNodeTypes({
       Icon: true,
       Tree: true,
       Count: 100000,
+      CheckAccess: true,
+      SearchText: searchText,
     })
       .then((res) => {
         setData(res);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  };
+  }, [searchText]);
 
-  const handleAddNodeType = (Name, ParentID) => {
+  const handleAddNodeType = (Name, ParentID, IsCategory = false) => {
     addNodeType({
       Name,
       ParentID,
-      IsCategory: isSaaS && ParentID,
+      IsCategory: isSaaS ? IsCategory || ParentID : undefined,
     }).then((res) => {
       if (res?.Succeed) {
-        loadNodeTypes();
+        if (res.NodeType?.IsCategory) loadNodeTypes();
+        else
+          history.push(
+            TEMPLATES_SETTING_SINGLE_PATH.replace(':id', res?.NodeTypeID)
+          );
       }
     });
   };

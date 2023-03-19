@@ -14,7 +14,11 @@ export const SpaceContainer = styled.div`
 `;
 
 export const TeamListContainer = styled.div`
-  white-space: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
+  justify-content: center;
   &:after {
     content: '';
     clear: both;

@@ -8,6 +8,7 @@ import DashboardIcon from 'components/Icons/DashboardIcon/DashboardIcon';
 import NotificationsIcon from 'components/Icons/NotificationsIcon/NotificationsIcon';
 import DirectionIcon from 'components/Icons/DirectionIcon/DirectionIcon';
 import MessagesIcon from 'components/Icons/MessagesIcon/MessagesIcon';
+import GlobeIcon from 'components/Icons/GlobeIcon/Globe';
 
 const NavbarIcons = {
   home: HomeIcon,
@@ -20,6 +21,7 @@ const NavbarIcons = {
   plus: PlusIcon,
   site: SiteMapIcon,
   target: TargetIcon,
+  network: GlobeIcon,
 };
 
 export default NavbarIcons;

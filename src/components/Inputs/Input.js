@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import usePeriod from '../../hooks/usePeriod';
+import { CV_DISTANT } from 'constant/CssVariables';
 // import { WindowContext } from '../../context/WindowProvider';
 
 /**
@@ -14,6 +16,7 @@ import usePeriod from '../../hooks/usePeriod';
  * @property {method} changeOrEnterListener - a combination of 'afterChangeListener' & 'enterListener'
  * @property {number} timeout - determines the timeout for 'afterChangeListener' and 'onEnterOrChange' events
  * @property {object} children - a component that will be rendedred as a button
+ * @property {FunctionalComponent} [Icon] - a component to be used as Input field icon
  */
 
 /**
@@ -36,6 +39,7 @@ const Input = React.forwardRef(
       className,
       style,
       children,
+      Icon,
       ...props
     },
     ref
@@ -99,16 +103,23 @@ const Input = React.forwardRef(
     //end of handle key down events
 
     return (
-      <InputContainer>
+      <InputContainer
+        className={cn(
+          Icon && error && 'rv-input-invalid',
+          Icon && 'rv-input',
+          Icon && shaking && 'rv-shake'
+        )}
+      >
+        {Icon && <Icon />}
         <input
           ref={ref}
           type={type}
-          className={
-            'rv-input' +
-            (error ? ' rv-input-invalid ' : ' ') +
-            (shaking ? ' rv-shake ' : ' ') +
-            (className ? className : '')
-          }
+          className={cn(
+            !Icon && 'rv-input',
+            !Icon && error && 'rv-input-invalid',
+            !Icon && shaking && 'rv-shake',
+            className
+          )}
           style={GlobalUtilities.extend(
             style || {},
             {
@@ -151,6 +162,28 @@ export default Input;
 const InputContainer = styled.div`
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+
+  ${({ className }) =>
+    className.split(' ').includes('rv-input') &&
+    `
+    padding: 0;
+    border-radius: 0.3rem;
+  input {
+    border-radius: 0.3rem;
+    outline: none;
+    border:none;
+    padding-inline-start: 0;
+    padding-block: 0.5rem;
+    margin: 0;
+  }
+  svg {
+    font-size: 1.5rem;
+    margin-inline: 1rem;
+    color: ${CV_DISTANT};
+  }
+  `}
 `;
 
 export const ButtonContainer = styled.div`
@@ -167,7 +200,7 @@ export const ButtonContainer = styled.div`
 
 const ErrorContainer = styled.div`
   position: absolute;
-  bottom: -1rem;
+  bottom: -1.2rem;
   height: 1rem;
   font-size: 0.6rem;
   ${RV_Float}:0.5rem

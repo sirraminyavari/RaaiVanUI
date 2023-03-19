@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FLEX_CCC, FLEX_CSC } from 'constant/StyledCommonCss';
 import { CV_RED, CV_WHITE, TCV_DEFAULT } from 'constant/CssVariables';
+import Avatar from 'components/Avatar/Avatar';
 
 export const Container = styled.div`
   height: 8rem;
@@ -15,6 +16,16 @@ export const Icon = styled.div`
   border-radius: 100%;
   background-color: #eef1f5;
   color: ${TCV_DEFAULT};
+`;
+export const AvatarIcon = styled(Avatar)`
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+  }
 `;
 
 export const AddButton = styled.div`

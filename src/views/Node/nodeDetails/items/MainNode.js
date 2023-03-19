@@ -21,6 +21,7 @@ import Button from 'components/Buttons/Button';
 import { useHistory } from 'react-router-dom';
 import { getNodePageUrl } from 'apiHelper/getPageUrl';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import WorkflowField from './workflow/WorkflowField';
 
 //TODO replace ModifyNodeDescription and ModifyNodeTags API Handler Calls with apiHelper imports
 const ModifyNodeDescription = new APIHandler('CNAPI', 'ModifyNodeDescription');
@@ -43,7 +44,7 @@ const MainNode = ({
   const [title, setTitle] = useState(decodeBase64(nodeDetails?.Name?.Value));
   const [description, setDescription] = useState(null);
   const [keywords, setKeywords] = useState(undefined);
-  const { RVDic } = useWindowContext();
+  const { RVDic, RVGlobal } = useWindowContext();
 
   const onSaveTitle = async () => {
     setTitleEditMode(false);
@@ -137,6 +138,13 @@ const MainNode = ({
             )}
           </TitleContainer>
         )}
+        {RVGlobal.IsDev && !newNode && (
+          <WorkflowField
+            NodeID={nodeId}
+            Status={nodeDetails.Status}
+            EvaluationNeeded={nodeDetails.EvaluationNeeded}
+          />
+        )}
 
         <>
           <NodePageRelatedNodeItems
@@ -144,24 +152,26 @@ const MainNode = ({
             NodeID={nodeId}
           />
         </>
-        {nodeDetails?.Description?.Value !== undefined && (
-          <ParagraphField
-            decodeTitle={RVDic.Summary}
-            iconComponent={<SummeryInputIcon color={CV_GRAY} />}
-            onAnyFieldChanged={(_, fieldValue) =>
-              newNode ? setDescription(fieldValue) : onSaveDesc(fieldValue)
-            }
-            value={decodeBase64(nodeDetails?.Description?.Value)}
-            isEditable={nodeDetails?.Description?.Editable}
-          />
+        {nodeDetails?.DisableAbstractAndKeywords !== true && (
+          <>
+            {nodeDetails?.Description?.Value !== undefined && (
+              <ParagraphField
+                decodeTitle={RVDic.Summary}
+                iconComponent={<SummeryInputIcon color={CV_GRAY} />}
+                onAnyFieldChanged={(_, fieldValue) =>
+                  newNode ? setDescription(fieldValue) : onSaveDesc(fieldValue)
+                }
+                value={decodeBase64(nodeDetails?.Description?.Value)}
+                isEditable={nodeDetails?.Description?.Editable}
+              />
+            )}
+            <KeywordField
+              Keywords={nodeDetails?.Keywords}
+              onSaveKeywords={onSaveKeywords}
+              isEditable={nodeDetails?.Description?.Editable}
+            />
+          </>
         )}
-        <>
-          <KeywordField
-            Keywords={nodeDetails?.Keywords}
-            onSaveKeywords={onSaveKeywords}
-            isEditable={nodeDetails?.Description?.Editable}
-          />
-        </>
         {fields && <FormFill editable={nodeDetails?.Editable} data={fields} />}
 
         {!newNode && (

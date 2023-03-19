@@ -28,12 +28,16 @@ const Modal = ({
 
   useEffect(() => {
     setShowState(show);
-    if (!!show) {
-      _setDisposed(false);
+    if (showState) {
       if (preventParentScroll) document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
+  }, [showState]);
+
+  useEffect(() => {
+    setShowState(show);
+    if (show) _setDisposed(false);
   }, [show]);
 
   useEffect(() => {
@@ -119,7 +123,8 @@ const Container = styled.div`
   width: 100%;
   overflow: auto;
   z-index: ${({ GlobalUtilities }) => GlobalUtilities.zindex.dialog()};
-  ${({ middle }) => middle && `justify-content: center; padding-bottom:15vh;`}
+  // ${({ middle }) =>
+    middle && `justify-content: center; padding-bottom:15vh;`}
   ${({ noBackground }) => !noBackground && `background: rgba(0, 0, 0, 0.75);`}
 `;
 
@@ -131,6 +136,8 @@ const EmptyTitleSide = styled.div`
 const ContentContainer = styled.div`
   flex: 0 0 auto;
   width: 100%;
+  height: 100%;
+  overflow: auto;
 `;
 
 const ContentSection = styled.div`
@@ -158,4 +165,8 @@ const TitleArea = styled.div`
   font-weight: 600;
   font-size: 0.9rem;
   text-align: center;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
 `;
