@@ -79,12 +79,14 @@ const SidebarContentClasses: SidebarContentFunction<{
             },
             noIndicator: true,
             menuTrigger: true,
+            path: '/logo',
           }
         : {
             Icon: CMLogoSvg,
             title: '',
             onClick: () => {},
             noIndicator: true,
+            path: '/logo',
           },
 
       {
@@ -93,6 +95,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(CLASSES_PATH);
         },
+        path: '/classes',
       },
       {
         Icon: NotificationSvg,
@@ -100,6 +103,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/notifications',
       },
       {
         Icon: SocialSvg,
@@ -107,6 +111,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/home',
       },
       {
         Icon: BriefcaseSvg,
@@ -114,6 +119,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/work',
       },
       {
         Icon: ChatBubblesSvg,
@@ -121,6 +127,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/chat',
       },
       {
         Icon: ShapesSvg,
@@ -128,6 +135,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/shapes',
       },
       {
         Icon: HammerWrenchSvg,
@@ -135,6 +143,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/settings',
       },
       {
         Icon: DashboardSvg,
@@ -142,6 +151,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/dashboard',
       },
       {
         Icon: ChartColumnBarSvg,
@@ -149,6 +159,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/charts',
       },
       {
         Icon: SettingsSvg,
@@ -156,6 +167,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
+        path: '/settings-2/',
       },
     ],
     mainSidebarSecondaryLinks: [...(defaults?.mainSidebarSecondaryLinks || [])],
@@ -168,6 +180,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(CLASSES_PATH);
         },
+        path: '',
       },
       {
         badge: 1265,
@@ -176,6 +189,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(`${CLASSES_PATH}?bookmarked=1`);
         },
+        path: '',
       },
       {
         badge: 1265,
@@ -184,6 +198,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(`${CLASSES_PATH}?drafts=1`);
         },
+        path: '',
       },
       ...sidebarTree.map((item) => {
         const title = decodeBase64(item.TypeName);

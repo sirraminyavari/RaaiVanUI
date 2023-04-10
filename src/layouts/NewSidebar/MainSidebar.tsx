@@ -22,6 +22,7 @@ const PrimarySidebar = () => {
   return (
     <div style={{ display: 'flex' }}>
       <SidebarMain
+        currentPath={history.location.pathname}
         primaryLinks={mainSidebarPrimaryLinks || []}
         secondaryLinks={mainSidebarSecondaryLinks || []}
       >

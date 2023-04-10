@@ -16,6 +16,7 @@ const SidebarContentDefault: SidebarContentFunction = ({
           history.push(TEAMS_PATH);
           setIsSubMenuToggled(false);
         },
+        path: '/workspaces',
       },
     ],
     subSidebarLinks: [],

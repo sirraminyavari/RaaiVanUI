@@ -22,6 +22,7 @@ const SidebarContentWorkspaces: SidebarContentFunction = ({
         title: '',
         onClick: () => {},
         noIndicator: true,
+        path: '/logo',
       },
     ],
     mainSidebarSecondaryLinks: [...(defaults?.mainSidebarSecondaryLinks || [])],
