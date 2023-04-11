@@ -1,11 +1,13 @@
-import React from 'react';
+import { FunctionComponent } from 'react';
 
 export interface IWithAvatar {
-  Component?: any;
-  componentURLProp?: any;
-  AvatarSVGObject?: any;
+  componentURLProp?: string;
+  Component?: FunctionComponent<Record<string | 'src', any>>;
+  AvatarSVGObject?: Record<string, string>;
 }
 
-declare const WithAvatar: React.FC<IWithAvatar>;
+declare const WithAvatar: (
+  IWithAvatar
+) => FunctionComponent<Record<string, any>>;
 
 export default WithAvatar;

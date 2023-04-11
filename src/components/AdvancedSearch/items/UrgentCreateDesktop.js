@@ -1,6 +1,7 @@
 /**
  * Creates a SubjectItem urgently
  */
+import { RVSizeProp } from '@cliqmind/rv-components';
 import APIHandler from 'apiHelper/APIHandler';
 import Avatar from 'components/Avatar/Avatar';
 import Button from 'components/Buttons/Button';
@@ -118,9 +119,7 @@ const UrgentCreateDesktop = ({
           disable={
             isFetching || isFetchingContinually || urgentInput?.length === 0
           }
-          $circleEdges={true}
           style={{
-            ...urgentButton,
             cursor:
               !isFetching ||
               !isFetchingContinually ||
@@ -137,9 +136,7 @@ const UrgentCreateDesktop = ({
           disable={
             isFetching || isFetchingContinually || urgentInput.length === 0
           }
-          $circleEdges={true}
           style={{
-            ...urgentButton,
             cursor:
               !isFetching ||
               !isFetchingContinually ||
@@ -151,17 +148,13 @@ const UrgentCreateDesktop = ({
         >
           {RVDic?.Save + ' ' + RVDic?.And + ' ' + RVDic?.Next}
         </Button>
-        <UrgentButtonCancel
-          style={cancelButton}
-          $circleEdges={true}
-          type={'negative-o'}
-        >
+        <Button fullCircle size={RVSizeProp.small} type={'negative-o'}>
           <UrgentIconCancel
             onClick={onDismiss}
             $circleEdges={true}
             style={urgentCancelIcon}
           ></UrgentIconCancel>
-        </UrgentButtonCancel>
+        </Button>
       </ButtonContainer>
     </UrgentInput>
   );

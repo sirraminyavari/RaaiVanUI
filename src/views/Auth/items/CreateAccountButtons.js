@@ -17,11 +17,12 @@ const CreateAccountButtons = ({
         <ContinueWithGoogle style={{ width: '100%', common_style }} />
         <Button
           type="secondary-o"
-          style={{ ...common_style, fontSize: '1rem', width: '100%' }}
+          style={{ ...common_style }}
           onClick={() => {
             setLoading(true);
             onCreateAccountClick();
           }}
+          fullWidth
           loading={loading}
         >
           {label}

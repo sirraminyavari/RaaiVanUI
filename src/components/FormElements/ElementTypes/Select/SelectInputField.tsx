@@ -11,7 +11,7 @@ import {
 import * as Styles from '../formElements.styles';
 import useWindow from 'hooks/useWindowContext';
 import { isArray } from 'lodash';
-import { useMemo } from 'react';
+import { KeyboardEventHandler, useMemo, useState } from 'react';
 import { Select } from '@cliqmind/rv-components';
 
 type OptionType = { label: string; value: string | number };
@@ -59,6 +59,8 @@ const SelectInputField = ({
 }: ISelectInputField) => {
   const { RVDic } = useWindow();
   const SelectComponent = isCreatable ? CreatableSelect : Select;
+  const [inputValue, setInputValue] = useState('');
+  const [value, setValue] = useState<any>([]);
 
   const memoizedSelectedValue = useMemo(() => {
     if (!selectedValue) return undefined;
@@ -69,7 +71,26 @@ const SelectInputField = ({
     return undefined;
   }, [selectedValue]);
 
-  // return isFocused && isEditable ? (
+  const createOption = (label: string) => ({
+    label,
+    value: label,
+  });
+  const handleKeyDown: KeyboardEventHandler = (event) => {
+    console.log(event);
+
+    if (!inputValue) return;
+    switch (event.key) {
+      case 'Enter':
+      case 'Tab':
+        setValue((prev) => {
+          onChange([...prev, createOption(inputValue)], {});
+          return [...prev, createOption(inputValue)];
+        });
+        setInputValue('');
+        event.preventDefault();
+    }
+  };
+
   return isFocused && isEditable ? (
     <Select
       onFocus={onFocus}
@@ -81,18 +102,26 @@ const SelectInputField = ({
       className={className}
       isClearable={isClearable}
       defaultValue={memoizedSelectedValue}
-      // classNamePrefix={classNamePrefix}
-      // closeMenuOnSelect={!isMulti}
-      // isSearchable={isSearchable}
-      // styles={customStyles}
-      // onChange={(options, action) => {
-      //   onChange(options, action);
-      // }}
-      // components={{
-      //   ...components,
-      //   ClearIndicator: () => <Styles.SelectInputClearButton />,
-      //   CrossIcon: () => <Styles.SelectInputRemoveButton />,
-      // }}
+      //@ts-expect-error
+      onChange={onChange}
+      {...(isCreatable
+        ? {
+            inputValue,
+            classNamePrefix,
+            closeMenuOnSelect: !isMulti,
+            isSearchable,
+            styles: customStyles,
+            components: {
+              ...components,
+              ClearIndicator: () => <Styles.SelectInputClearButton />,
+              CrossIcon: () => <Styles.SelectInputRemoveButton />,
+            },
+            onChange: (newValue) => setValue(newValue as unknown as string),
+            onInputChange: (newValue) => setInputValue(newValue),
+            onKeyDown: handleKeyDown,
+            value,
+          }
+        : {})}
     />
   ) : (
     <Styles.SelectedFieldItemContainer
