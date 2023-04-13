@@ -4,9 +4,13 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import useSidebarContent from './sidebarContents/useSidebarContent';
 import { selectApplication } from 'store/slice/applications/selectors';
+import { useHistory } from 'react-router-dom';
 import { decodeBase64 } from 'helpers/helpers';
+import SidebarUserAvatar from './sidebarContents/sidebarUserAvatar';
+import { PROFILE_USER } from 'constant/constants';
 
 const PrimarySidebar = () => {
+  const history = useHistory();
   const [isSubMenuToggled, setIsSubMenuToggled] = useState(false);
   const urlParams = useParams();
   const {
@@ -20,7 +24,14 @@ const PrimarySidebar = () => {
       <SidebarMain
         primaryLinks={mainSidebarPrimaryLinks || []}
         secondaryLinks={mainSidebarSecondaryLinks || []}
-      />
+      >
+        <SidebarUserAvatar
+          onClick={() => {
+            history.push(PROFILE_USER);
+            setIsSubMenuToggled(false);
+          }}
+        />
+      </SidebarMain>
       <SidebarSubMenu
         menuSubTitle={decodeBase64(workspaceApplication.currentApp?.Title)}
         menuTitle={decodeBase64(workspaceApplication.currentApp?.Website)}

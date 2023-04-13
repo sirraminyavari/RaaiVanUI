@@ -1,15 +1,23 @@
 import {
   Avatar,
   BookmarkSvg,
+  BriefcaseSvg,
+  ChartColumnBarSvg,
+  ChatBubblesSvg,
   CMLogoSvg,
+  DashboardSvg,
   FileTrayFullSvg,
   GridSvg,
+  HammerWrenchSvg,
   HomeSvg,
   MenuSvg,
+  NotificationSvg,
   RVAvatar,
   RVColorProp,
   RVSizeProp,
   RVVariantProp,
+  SettingsSvg,
+  ShapesSvg,
   SocialSvg,
 } from '@cliqmind/rv-components';
 import {
@@ -87,7 +95,63 @@ const SidebarContentClasses: SidebarContentFunction<{
         },
       },
       {
+        Icon: NotificationSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
         Icon: SocialSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: BriefcaseSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: ChatBubblesSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: ShapesSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: HammerWrenchSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: DashboardSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: ChartColumnBarSvg,
+        noIndicator: false,
+        onClick: () => {
+          history.push(HOME_PATH);
+        },
+      },
+      {
+        Icon: SettingsSvg,
         noIndicator: false,
         onClick: () => {
           history.push(HOME_PATH);

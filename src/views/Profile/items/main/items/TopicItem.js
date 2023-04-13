@@ -5,18 +5,11 @@ import {
   CV_RED,
   TCV_DEFAULT,
   TCV_VERYWARM,
-  TCV_WARM,
 } from 'constant/CssVariables';
 import * as Styled from 'views/Profile/Profile.styles';
-import Avatar from 'components/Avatar/Avatar';
-import AnimatedDropDownList from 'components/DropDownList/AnimatedDropDownList';
+import { Avatar, RVSizeProp, RVVariantProp } from '@cliqmind/rv-components';
 import PieChart from 'components/PieChart/PieChart';
-import { BG_FREEZED, C_RED, TC_DEFAULT, TC_VERYWARM } from 'constant/Colors';
-import {
-  BO_RADIUS_QUARTER,
-  IGNORE_RADIUS_LEFT,
-  IGNORE_RADIUS_RIGHT,
-} from 'constant/constants';
+import { C_RED, TC_DEFAULT, TC_VERYWARM } from 'constant/Colors';
 import { decodeBase64, getURL } from 'helpers/helpers';
 import useWindow from 'hooks/useWindowContext';
 
@@ -98,7 +91,12 @@ const TopicItem = ({ item }) => {
   return (
     <Styled.TopicItemWrapper>
       <Styled.TopicItemIconWrapper>
-        <img width={50} src={item?.IconURL} alt="topic-item-logo" />
+        <Avatar
+          size={RVSizeProp.small}
+          src={item?.IconURL}
+          variant={RVVariantProp.white}
+          alt="topic-item-logo"
+        />
         <Styled.TopicItemCreationDate>
           {item?.CreationDate}
         </Styled.TopicItemCreationDate>
@@ -139,8 +137,10 @@ const TopicItem = ({ item }) => {
             }}
           /> */}
           <Avatar
-            style={{ width: '3rem', height: '3rem' }}
-            userImage={avatarURL}
+            size={RVSizeProp.small}
+            variant={RVVariantProp.white}
+            fullCircle
+            src={avatarURL}
           />
         </Styled.TopicItemContentActions>
       </Styled.TopicItemContentWrapper>

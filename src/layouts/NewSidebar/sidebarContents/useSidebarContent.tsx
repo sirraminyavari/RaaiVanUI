@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import type { History } from 'history';
-import { CLASSES_PATH, TEAMS_PATH } from 'constant/constants';
+import {
+  CLASSES_PATH,
+  NODE_PATH,
+  PROFILE_USER,
+  TEAMS_PATH,
+} from 'constant/constants';
 import { useHistory } from 'react-router-dom';
 import SidebarContentWorkspaces from './sidebarContentsworkspaces';
 import { RVSidebarMain, RVSidebarSubMenu } from '@cliqmind/rv-components';
@@ -8,6 +13,8 @@ import SidebarContentClasses from './sidebarContentsClasses';
 import { useSelector } from 'react-redux';
 import { selectSidebar } from 'store/slice/sidebar/selectors';
 import SidebarContentDefault from './sidebarContentsDefault';
+import SidebarContentNodePage from './sidebarContentsNodePage';
+import SidebarContentsProfile from './sidebarContentsProfile';
 
 interface useSidebarContentPropsType {
   isSubMenuToggled: boolean;
@@ -61,6 +68,22 @@ const useSidebarContent = ({
         });
       case pathname.startsWith(CLASSES_PATH):
         return SidebarContentClasses({
+          history,
+          isSubMenuToggled,
+          setIsSubMenuToggled,
+          urlParams,
+          sidebarTree: tree,
+        });
+      case pathname.startsWith(NODE_PATH.replace(':id', '')):
+        return SidebarContentClasses({
+          history,
+          isSubMenuToggled,
+          setIsSubMenuToggled,
+          urlParams,
+          sidebarTree: tree,
+        });
+      case pathname.startsWith('/' + PROFILE_USER):
+        return SidebarContentsProfile({
           history,
           isSubMenuToggled,
           setIsSubMenuToggled,

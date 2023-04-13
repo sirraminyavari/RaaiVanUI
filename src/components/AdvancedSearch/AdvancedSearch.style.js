@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import Input from 'components/Inputs/Input';
-import Button from 'components/Buttons/Button';
 import {
   CV_RED_SOFT,
   CV_DISTANT,
@@ -84,20 +83,6 @@ export const UrgentIconCancel = styled(CloseIcon)`
     color: ${CV_RED};
   }
 `;
-export const UrgentButtonCancel = styled(Button)`
-  border-color: ${CV_RED_SOFT};
-  border-radius: 10rem;
-  border-width: 1px;
-  border-style: solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-
-  :hover {
-    border-color: ${CV_RED};
-  }
-`;
 
 export const UrgentInput = styled.div`
   border-radius: 0.75rem;
@@ -154,6 +139,7 @@ export const ButtonContainer = styled.div`
   justify-content: ${() =>
     DimensionHelper()?.isTabletOrMobile ? 'center' : 'flex-end'};
   align-items: center;
+  gap: 0.5rem;
 
   min-width: ${() => (DimensionHelper()?.isTabletOrMobile ? '90%' : '50%')};
 `;

@@ -2,7 +2,7 @@
  * here we make the top bar for NodeDetails
  */
 import APIHandler from 'apiHelper/APIHandler';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
+// import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import DocIcon from 'components/Icons/DocIcon';
@@ -18,7 +18,18 @@ import * as Styles from './TopBar.style';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import useWindow from 'hooks/useWindowContext';
-import { BookmarkSvg, RVSizeProp } from '@cliqmind/rv-components';
+import {
+  ArrowCircleSvg,
+  BookmarkSvg,
+  ChatBubbleSvg,
+  ReaderSvg,
+  RowItem,
+  RVSizeProp,
+  RVVariantProp,
+  Typography,
+  Breadcrumb,
+  FileTrayFullSvg,
+} from '@cliqmind/rv-components';
 import ShadowButton from 'components/Buttons/ShadowButton';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
@@ -139,7 +150,24 @@ const TopBar = ({
         <Styles.NodeTopBarContainer>
           <Styles.NodeTopBarTopRow isTabletOrMobile={isTabletOrMobile}>
             <Styles.NodeTopBarBreadcrumbWrapper>
-              <Breadcrumb items={breadcrumbItems} />
+              {/* <Breadcrumb items={breadcrumbItems} /> */}
+              <Breadcrumb
+                Icon={FileTrayFullSvg}
+                variant={RVVariantProp.white}
+                size={RVSizeProp.medium}
+                routeLinks={[
+                  { label: 'Citations', path: '' },
+                  {
+                    label: 'NodePage',
+                    path: '',
+                    adjacentPaths: [
+                      { label: 'Citations', path: '' },
+                      { label: 'Citations', path: '' },
+                      { label: 'Citations', path: '' },
+                    ],
+                  },
+                ]}
+              />
             </Styles.NodeTopBarBreadcrumbWrapper>
             <div
               style={{
@@ -152,27 +180,61 @@ const TopBar = ({
             <Styles.NodeTopBarCounterBookmarkContainer>
               {!newNode && (
                 <>
-                  <Button
-                    onClick={onBookmarkPressed}
-                    style={{}}
-                    type={bookmarkStatus === 'liked' ? 'primary' : 'primary-o'}
+                  <RowItem
+                    size={RVSizeProp.small}
+                    ActionsComponent={
+                      <div
+                        style={{
+                          display: 'flex',
+                          columnGap: '.5rem',
+                        }}
+                      >
+                        <Button variant={RVVariantProp.white}>back</Button>
+                        <Button fullWidth noWrap style={{ width: 200 }}>
+                          <ArrowCircleSvg
+                            width="1.3em"
+                            height="1.3em"
+                            direction="up"
+                          />
+                          publish
+                        </Button>
+                      </div>
+                    }
                   >
-                    {bookmarkStatus === 'liked' ? (
-                      <>
-                        <BookmarkSvg />
-                        {RVDic.Bookmarked}
-                      </>
-                    ) : (
-                      <>
-                        <OutLineBookmarkIcon
-                          className={'rv-default'}
-                          style={{ marginInlineEnd: '0.5rem' }}
-                        />
-
-                        {RVDic.Bookmark}
-                      </>
-                    )}
-                  </Button>
+                    <Typography type="H1">
+                      CliqMind UX writing improvement and other correction
+                    </Typography>
+                  </RowItem>
+                  {!newNode && (
+                    <ShadowButton
+                      onMouseEnter={() => setSideDetailsHover(true)}
+                      onMouseLeave={() => setSideDetailsHover(false)}
+                      onClick={onSideDetailsClick}
+                      active={sideColumn}
+                      size={RVSizeProp.medium}
+                      rounded="half"
+                    >
+                      <DocIcon size="1.5rem" />
+                    </ShadowButton>
+                  )}
+                  <ShadowButton
+                    // onClick={onSideDetailsClick}
+                    active={sideColumn}
+                    size={RVSizeProp.medium}
+                    rounded="half"
+                    style={{ fontSize: '1.4rem' }}
+                  >
+                    <ChatBubbleSvg />
+                  </ShadowButton>
+                  <ShadowButton
+                    onClick={onBookmarkPressed}
+                    active={sideColumn}
+                    size={RVSizeProp.medium}
+                    rounded="half"
+                    style={{ fontSize: '1.4rem' }}
+                  >
+                    <BookmarkSvg outline={bookmarkStatus !== 'liked'} />
+                  </ShadowButton>
                 </>
               )}
               {contribution && (
@@ -188,18 +250,7 @@ const TopBar = ({
                   />
                 </div>
               )}
-              {!newNode && (
-                <ShadowButton
-                  onMouseEnter={() => setSideDetailsHover(true)}
-                  onMouseLeave={() => setSideDetailsHover(false)}
-                  onClick={onSideDetailsClick}
-                  active={sideColumn}
-                  size={RVSizeProp.medium}
-                  rounded="half"
-                >
-                  <DocIcon size="1.5rem" />
-                </ShadowButton>
-              )}
+
               <Styles.NodeTopBarViewCount>
                 <Eye
                   className="rv-default"
