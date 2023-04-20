@@ -13,7 +13,6 @@ import SidebarContentClasses from './sidebarContentsClasses';
 import { useSelector } from 'react-redux';
 import { selectSidebar } from 'store/slice/sidebar/selectors';
 import SidebarContentDefault from './sidebarContentsDefault';
-import SidebarContentNodePage from './sidebarContentsNodePage';
 import SidebarContentsProfile from './sidebarContentsProfile';
 
 interface useSidebarContentPropsType {
@@ -58,45 +57,13 @@ const useSidebarContent = ({
           setIsSubMenuToggled,
           urlParams,
         });
-      case pathname === CLASSES_PATH:
-        return SidebarContentClasses({
-          history,
-          isSubMenuToggled,
-          setIsSubMenuToggled,
-          urlParams,
-          sidebarTree: tree,
-        });
-      case pathname.startsWith(CLASSES_PATH):
-        return SidebarContentClasses({
-          history,
-          isSubMenuToggled,
-          setIsSubMenuToggled,
-          urlParams,
-          sidebarTree: tree,
-        });
-      case pathname.startsWith(NODE_PATH.replace(':id', '')):
-        return SidebarContentClasses({
-          history,
-          isSubMenuToggled,
-          setIsSubMenuToggled,
-          urlParams,
-          sidebarTree: tree,
-        });
-      case pathname.startsWith('/' + PROFILE_USER):
-        return SidebarContentsProfile({
-          history,
-          isSubMenuToggled,
-          setIsSubMenuToggled,
-          urlParams,
-          sidebarTree: tree,
-        });
-
       default:
-        return SidebarContentDefault({
+        return SidebarContentClasses({
           history,
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
+          sidebarTree: tree,
         });
     }
   }, [

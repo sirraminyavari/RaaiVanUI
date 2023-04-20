@@ -19,14 +19,14 @@ const SidebarUserAvatar = (props: Record<string, any>) => {
     <AvatarUser
       color={RVColorProp.inherit}
       variant={RVVariantProp.outline}
-      size={RVSizeProp.medium}
+      size={RVSizeProp.small}
       style={{
         textAlign: 'center',
         marginInline: 'auto',
-        paddingBlock: '.5rem',
         cursor: 'pointer',
-        width: '4rem',
-        marginBottom: '1rem',
+        width: '2rem',
+        padding: 0,
+        borderStyle: 'none',
       }}
       userObject={authUser}
       {...props}

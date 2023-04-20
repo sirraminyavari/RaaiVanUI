@@ -6,8 +6,7 @@ import useSidebarContent from './sidebarContents/useSidebarContent';
 import { selectApplication } from 'store/slice/applications/selectors';
 import { useHistory } from 'react-router-dom';
 import { decodeBase64 } from 'helpers/helpers';
-import SidebarUserAvatar from './sidebarContents/sidebarUserAvatar';
-import { PROFILE_USER } from 'constant/constants';
+import styles from './sidebarStyles.module.scss';
 
 const PrimarySidebar = () => {
   const history = useHistory();
@@ -25,20 +24,14 @@ const PrimarySidebar = () => {
         currentPath={history.location.pathname}
         primaryLinks={mainSidebarPrimaryLinks || []}
         secondaryLinks={mainSidebarSecondaryLinks || []}
-      >
-        <SidebarUserAvatar
-          onClick={() => {
-            history.push(PROFILE_USER);
-            setIsSubMenuToggled(false);
-          }}
-        />
-      </SidebarMain>
+      ></SidebarMain>
       <SidebarSubMenu
         menuSubTitle={decodeBase64(workspaceApplication.currentApp?.Title)}
         menuTitle={decodeBase64(workspaceApplication.currentApp?.Website)}
         open={isSubMenuToggled}
         CloseTrigger={setIsSubMenuToggled}
         links={subSidebarLinks || []}
+        className={styles.sidebarSubMenu}
       />
     </div>
   );

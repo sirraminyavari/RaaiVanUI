@@ -23,11 +23,15 @@ import {
 import {
   CLASSES_PATH,
   CLASSES_WITHID_PATH,
+  DASHBOARD_PATH,
   HOME_PATH,
+  MESSAGES_PATH,
+  REPORTS_PATH,
 } from 'constant/constants';
 import { SidebarContentFunction } from './useSidebarContent';
 import SidebarContentDefault from './sidebarContentsDefault';
 import { decodeBase64 } from 'helpers/helpers';
+import useWindowContext from 'hooks/useWindowContext';
 
 const SidebarContentClasses: SidebarContentFunction<{
   sidebarTree: Record<string, any>;
@@ -38,6 +42,7 @@ const SidebarContentClasses: SidebarContentFunction<{
   urlParams,
   sidebarTree = {},
 }) => {
+  const { RVGlobal } = useWindowContext();
   const defaults = SidebarContentDefault({
     history,
     isSubMenuToggled,
@@ -61,6 +66,9 @@ const SidebarContentClasses: SidebarContentFunction<{
             {...props}
             src={avatarURL}
             size={RVSizeProp.small}
+            style={{
+              width: '1.5rem',
+            }}
             variant={RVVariantProp.white}
             color={RVColorProp.platinum}
           />
@@ -113,62 +121,66 @@ const SidebarContentClasses: SidebarContentFunction<{
         },
         path: '/home',
       },
-      {
-        Icon: BriefcaseSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/work',
-      },
-      {
-        Icon: ChatBubblesSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/chat',
-      },
-      {
-        Icon: ShapesSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/shapes',
-      },
-      {
-        Icon: HammerWrenchSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/settings',
-      },
-      {
-        Icon: DashboardSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/dashboard',
-      },
-      {
-        Icon: ChartColumnBarSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/charts',
-      },
-      {
-        Icon: SettingsSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/settings-2/',
-      },
+      ...(RVGlobal.IsSystemAdmin
+        ? [
+            {
+              Icon: BriefcaseSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(HOME_PATH);
+              },
+              path: '/work',
+            },
+            {
+              Icon: ChatBubblesSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(MESSAGES_PATH);
+              },
+              path: MESSAGES_PATH,
+            },
+            {
+              Icon: ShapesSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(HOME_PATH);
+              },
+              path: '/shapes',
+            },
+            {
+              Icon: HammerWrenchSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push('/templates/settings');
+              },
+              path: '/templates/settings',
+            },
+            {
+              Icon: DashboardSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(DASHBOARD_PATH);
+              },
+              path: DASHBOARD_PATH,
+            },
+            {
+              Icon: ChartColumnBarSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(REPORTS_PATH);
+              },
+              path: REPORTS_PATH,
+            },
+            {
+              Icon: SettingsSvg,
+              noIndicator: false,
+              onClick: () => {
+                history.push(HOME_PATH);
+              },
+              path: '/settings-2/',
+            },
+          ]
+        : []),
     ],
     mainSidebarSecondaryLinks: [...(defaults?.mainSidebarSecondaryLinks || [])],
     subSidebarLinks: [

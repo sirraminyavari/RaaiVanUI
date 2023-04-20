@@ -11,7 +11,6 @@ import ProductTour from 'views/ProductTour/ProductTour';
 const AdvancedSearchView = ({ route }) => {
   const dispatch = useDispatch();
   const params = useParams();
-  console.log({ params });
 
   const { name: onboardingName } = useSelector(selectOnboarding);
   const { actions: onboardingActions } = useOnboardingSlice();

@@ -105,7 +105,7 @@ const TemplatesSettings = () => {
 
   return (
     <TemplateSettingsContainer rtl={RV_RTL}>
-      <ViewCard>
+      <>
         <Breadcrumb items={breadcrumbs} />
         <ViewTitle>{'تنظیمات تمپلیت‌ها'}</ViewTitle>
 
@@ -138,7 +138,7 @@ const TemplatesSettings = () => {
             <SHTemplates nodes={data} />
           )}
         </TemplateListContext.Provider>
-      </ViewCard>
+      </>
     </TemplateSettingsContainer>
   );
 };
