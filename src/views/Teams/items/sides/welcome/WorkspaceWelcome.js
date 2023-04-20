@@ -49,7 +49,6 @@ const DesktopWelcome = () => {
         ref={buttonRef}
         type="primary-o"
         style={{
-          width: '8rem',
           textAlign: 'center',
           borderColor: !isButtonHovered && '#fff',
           backgroundColor: CV_GRAY_LIGHT,
