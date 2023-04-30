@@ -31,6 +31,7 @@ import {
   FileTrayFullSvg,
 } from '@cliqmind/rv-components';
 import ShadowButton from 'components/Buttons/ShadowButton';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
@@ -146,29 +147,32 @@ const TopBar = ({
         width: '100%',
       }}
     >
+      <BreadcrumbLayout
+        Icon={(props) => <FileTrayFullSvg size="2rem" {...props} />}
+        size={RVSizeProp.small}
+        searchInputPlaceholder={RVDic?.SearchInN.replace(
+          '[n]',
+          RVDic?.Keywords
+        )}
+        routeLinks={[
+          // { label: String(teamName), path: '/classes' },
+          {
+            label: decodeBase64(
+              newNode ? nodeDetails?.Title : NodeType?.Value[0]?.Name
+            ),
+            path: `/classes/${
+              newNode ? nodeDetails?.NodeID : NodeType?.Value[0]?.ID
+            }`,
+          },
+          {
+            label: decodeBase64(Name?.Value),
+            path: `/node/${nodeDetails?.NodeID}`,
+          },
+        ]}
+      />
       {nodeDetails ? (
         <Styles.NodeTopBarContainer>
           <Styles.NodeTopBarTopRow isTabletOrMobile={isTabletOrMobile}>
-            <Styles.NodeTopBarBreadcrumbWrapper>
-              {/* <Breadcrumb items={breadcrumbItems} /> */}
-              <Breadcrumb
-                Icon={FileTrayFullSvg}
-                variant={RVVariantProp.white}
-                size={RVSizeProp.medium}
-                routeLinks={[
-                  { label: 'Citations', path: '' },
-                  {
-                    label: 'NodePage',
-                    path: '',
-                    adjacentPaths: [
-                      { label: 'Citations', path: '' },
-                      { label: 'Citations', path: '' },
-                      { label: 'Citations', path: '' },
-                    ],
-                  },
-                ]}
-              />
-            </Styles.NodeTopBarBreadcrumbWrapper>
             <div
               style={{
                 display: 'flex',
@@ -201,8 +205,40 @@ const TopBar = ({
                       </div>
                     }
                   >
+                    {/* {nodeDetails?.Name?.Value !== undefined && (
+                      <TitleContainer newNode={newNode}>
+                        {nodeDetails?.Name?.Editable ? (
+                          <TitleInput
+                            onChange={onTitleChange}
+                            defaultValue={decodeBase64(
+                              nodeDetails?.Name?.Value
+                            )}
+                            onFocus={() => {
+                              setTitleEditMode(true);
+                            }}
+                            autoFocus={true}
+                            placeholder={RVDic.Title}
+                            onBlur={onSaveTitle}
+                            titleEditMode={titleEditMode}
+                            style={{
+                              fontSize: '1.4rem',
+                              fontWeight: 'bold',
+                              borderWidth: 0,
+                              borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
+                              borderRadius: 0,
+                              borderColor: `${CV_DISTANT}`,
+                              width: '100%',
+                            }}
+                          />
+                        ) : (
+                          <Heading type={'h1'}>
+                            {decodeBase64(title || nodeDetails?.Name?.Value)}
+                          </Heading>
+                        )}
+                      </TitleContainer>
+                    )} */}
                     <Typography type="H1">
-                      CliqMind UX writing improvement and other correction
+                      {decodeBase64(nodeDetails?.Name?.Value)}
                     </Typography>
                   </RowItem>
                   {!newNode && (
@@ -217,7 +253,7 @@ const TopBar = ({
                       <DocIcon size="1.5rem" />
                     </ShadowButton>
                   )}
-                  <ShadowButton
+                  {/* <ShadowButton
                     // onClick={onSideDetailsClick}
                     active={sideColumn}
                     size={RVSizeProp.medium}
@@ -225,7 +261,7 @@ const TopBar = ({
                     style={{ fontSize: '1.4rem' }}
                   >
                     <ChatBubbleSvg />
-                  </ShadowButton>
+                  </ShadowButton> */}
                   <ShadowButton
                     onClick={onBookmarkPressed}
                     active={sideColumn}

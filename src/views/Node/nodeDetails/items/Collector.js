@@ -75,7 +75,7 @@ const Collector = ({
         <>
           <div
             style={{
-              padding: '0 3.5rem 3.5rem',
+              // padding: '0 3.5rem 3.5rem',
               maxWidth: '100%',
               overflow: 'hidden',
             }}

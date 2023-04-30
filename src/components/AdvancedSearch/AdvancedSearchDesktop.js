@@ -73,7 +73,9 @@ const AdvanceSearchDesktop = ({
     if (isProfile) getRelatedNodes();
   }, []);
 
-  useEffect(() => setIsBookMarked(bookmarked === true), [bookmarked]);
+  useEffect(() => {
+    setIsBookMarked(bookmarked === true);
+  }, [bookmarked]);
 
   useEffect(() => {
     const { offsetTop } = advancedSearchButtonRef?.current || {};

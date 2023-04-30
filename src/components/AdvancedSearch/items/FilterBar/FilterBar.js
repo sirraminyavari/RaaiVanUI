@@ -19,6 +19,7 @@ import { useHistory } from 'react-router-dom';
 import { BackButton, BottomRow, Container, TopRow } from './FilterBar.style';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 import {
+  CLASSES_PATH,
   INTRO_ONBOARD,
   USER_MORE_RELATED_TOPICS_PATH,
   USER_WITHID_PATH,
@@ -31,12 +32,18 @@ import { getNewNodePageUrl } from 'apiHelper/getPageUrl';
 import NodePageRelatedNodeItems from 'views/Node/nodeDetails/items/topBar/NodePageRelatedNodeItems';
 import {
   BookmarkSvg,
+  ButtonGroup,
   CalendarClearSvg,
   CalendarSvg,
+  FlashSvg,
   FunnelSvg,
+  GridSvg,
   PersonCircleSvg,
+  PlusSvg,
   RVSizeProp,
 } from '@cliqmind/rv-components';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 
 export const advancedSearchButtonRef = React.createRef();
 
@@ -172,11 +179,14 @@ const FilterBar = ({
 
   // Gets typeName by retrieving it from the hierarchy.
   const getTypeName = () => {
-    return nodeType?.TypeName
-      ? decode(nodeType?.TypeName)
-      : teamName
-      ? teamName
-      : '';
+    if (location.pathname !== CLASSES_PATH) {
+      if (nodeType?.TypeName) return decode(nodeType?.TypeName);
+      if (teamName) return teamName;
+    }
+
+    if (bookmarked) return 'Bookmarked';
+    return 'EveryThing';
+    // if (Draft) return 'bookmarked';
   };
 
   // By changing 'hierarchy' will fire.
@@ -322,51 +332,64 @@ const FilterBar = ({
   return (
     <Container>
       {!itemSelectionMode && <Breadcrumb items={breadcrumbItems} />}
-      <TopRow>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: '1.5rem',
-          }}
-        >
-          {nodeType?.IconURL && (
+      <BreadcrumbLayout
+        searchInputPlaceholder={RVDic?.SearchInN.replace(
+          '[n]',
+          RVDic?.Keywords
+        )}
+        Icon={() =>
+          location.pathname !== CLASSES_PATH ? (
             <img
               alt={''}
               style={{
                 height: '3rem',
                 aspectRatio: 1,
-                borderRadius: '100%',
+                borderRadius: '25%',
                 marginInlineEnd: '0.5rem',
               }}
               src={nodeType?.IconURL}
             />
-          )}
-          <Heading style={{ marginBlock: '0rem' }} type={'h1'}>
-            {isProfile ? RVDic.RelatedNodes : getTypeName()}
-          </Heading>
-        </div>
-        {isProfile && (
-          <BackButton
-            className={'rv-border-radius-half'}
-            onClick={() => goBack()}
-            style={{ color: CV_RED, padding: '0.5rem' }}
-            type={'secondary-o'}
-          >
-            {RVDic.Return}
-          </BackButton>
-        )}
-
-        {/* Don't forget to add this for urgent create in itemSelection mode
-          && market?.length > 0
-          */}
-
+          ) : bookmarked ? (
+            <BookmarkSvg
+              size="1.6rem"
+              style={{
+                marginInlineEnd: '0.5rem',
+              }}
+              outline
+            />
+          ) : (
+            <GridSvg
+              size="1.6rem"
+              style={{
+                marginInlineEnd: '0.5rem',
+              }}
+              outline
+            />
+          )
+        }
+        routeLinks={[
+          {
+            path: '',
+            label: isProfile ? RVDic.RelatedNodes : getTypeName(),
+          },
+        ]}
+      >
         {itemSelectionMode ? (
-          <Button onClick={onCreateUrgent} type={'primary'}>
-            <FlashIcon className={'rv-white'} style={{ fontSize: '1.2rem' }} />
-            <div style={{ margin: '0 1rem 0 1rem' }}>{RVDic?.AddQuickly}</div>
-          </Button>
+          location.pathname !== CLASSES_PATH && (
+            <ButtonGroup>
+              <Button size={RVSizeProp.small} rounded={undefined}>
+                <PlusSvg style={{ marginBlock: '0.05rem' }} />
+                {RVDic?.AddQuickly}
+              </Button>
+              <Button
+                size={RVSizeProp.small}
+                rounded={undefined}
+                onClick={onCreateUrgent}
+              >
+                <FlashSvg style={{ marginBlock: '0.05rem' }} />
+              </Button>
+            </ButtonGroup>
+          )
         ) : (
           <>
             {!isProfile && !RelatedID && (
@@ -406,7 +429,17 @@ const FilterBar = ({
             )}
           </>
         )}
-      </TopRow>
+        {isProfile && (
+          <BackButton
+            className={'rv-border-radius-half'}
+            onClick={() => goBack()}
+            style={{ color: CV_RED, padding: '0.5rem' }}
+            type={'secondary-o'}
+          >
+            {RVDic.Return}
+          </BackButton>
+        )}
+      </BreadcrumbLayout>
 
       <BottomRow>
         <div
@@ -418,7 +451,12 @@ const FilterBar = ({
             alignItems: 'center',
           }}
         >
-          <SearchInput onChange={onTextSearch} delayTime={300} fullWidth />
+          <SearchInput
+            onChange={onTextSearch}
+            delayTime={300}
+            fullWidth
+            placeholder={RVDic?.SearchInN.replace('[n]', RVDic?.Keywords)}
+          />
           {!_.isNull(totalFound) && (
             <Heading
               style={{
@@ -446,27 +484,35 @@ const FilterBar = ({
             headerTitle="فیلتر تاریخ ایجاد"
             onChangeVisibility={setCalendarPickerClicked}
             CustomButton={({ onClick }) => (
-              <ShadowButton
-                onClick={() => {
-                  onClick();
-                }}
-                active={date || calendarPickerClicked}
-                // fullCircle
-                size={RVSizeProp.medium}
-                rounded="half"
-              >
-                {date ? (
-                  <CalendarSvg
-                    size={'1.5rem'}
-                    outline={calendarPickerClicked || dateHover}
-                  />
-                ) : (
-                  <CalendarClearSvg
-                    size={'1.5rem'}
-                    outline={calendarPickerClicked || dateHover}
-                  />
+              <Tooltip
+                tipId="filterbar-footer-created-date"
+                // offset={{ [RV_Float]: -16 }}
+                place={'top'}
+                effect="solid"
+                renderContent={() => (
+                  <span style={{ textTransform: 'capitalize' }}>
+                    Created date
+                  </span>
                 )}
-              </ShadowButton>
+              >
+                <ShadowButton
+                  onClick={() => {
+                    onClick();
+                  }}
+                  active={date || calendarPickerClicked}
+                  fullCircle
+                  size={RVSizeProp.medium}
+                  rounded="half"
+                >
+                  {date ? (
+                    <CalendarSvg outline={calendarPickerClicked || dateHover} />
+                  ) : (
+                    <CalendarClearSvg
+                      outline={calendarPickerClicked || dateHover}
+                    />
+                  )}
+                </ShadowButton>
+              </Tooltip>
             )}
             onDateSelect={(value) => {
               setDate(value);
@@ -475,14 +521,27 @@ const FilterBar = ({
           />
 
           {!isProfile && !RelatedID && (
-            <ShadowButton
-              onClick={() => onByBookmarked(!isBookMarked)}
-              active={isBookMarked}
-              size={RVSizeProp.medium}
-              rounded="half"
+            <Tooltip
+              tipId="filterbar-footer-bookmarked"
+              // offset={{ [RV_Float]: -16 }}
+              place={'top'}
+              effect="solid"
+              renderContent={() => (
+                <span style={{ textTransform: 'capitalize' }}>
+                  Show bookmarked only
+                </span>
+              )}
             >
-              <BookmarkSvg size={'1.4rem'} outline={!isBookMarked} />
-            </ShadowButton>
+              <ShadowButton
+                onClick={() => push(`?bookmarked=${isBookMarked ? 0 : 1}`)}
+                active={isBookMarked}
+                size={RVSizeProp.medium}
+                rounded="half"
+                fullCircle
+              >
+                <BookmarkSvg outline={!isBookMarked} />
+              </ShadowButton>
+            </Tooltip>
           )}
           {!isProfile && (
             <PeoplePicker
@@ -493,21 +552,35 @@ const FilterBar = ({
               pickedPeople={people}
               onVisible={setPeoplePickerVisibility}
               buttonComponent={
-                <ShadowButton
-                  onClick={() => onByBookmarked(!isBookMarked)}
-                  active={
-                    (people || []).length || isByMe || peoplePickerVisibility
-                  }
-                  size={RVSizeProp.medium}
-                  rounded="half"
+                <Tooltip
+                  tipId="filterbar-footer-created-by"
+                  // offset={{ [RV_Float]: -16 }}
+                  place={'top'}
+                  effect="solid"
+                  renderContent={() => (
+                    <span style={{ textTransform: 'capitalize' }}>
+                      Created by
+                    </span>
+                  )}
                 >
-                  <PersonCircleSvg
-                    size={'1.4rem'}
-                    outline={
+                  <ShadowButton
+                    onClick={() => setPeoplePickerVisibility((prev) => !prev)}
+                    active={
                       (people || []).length || isByMe || peoplePickerVisibility
                     }
-                  />
-                </ShadowButton>
+                    size={RVSizeProp.medium}
+                    rounded="half"
+                    fullCircle
+                  >
+                    <PersonCircleSvg
+                      outline={
+                        (people || []).length ||
+                        isByMe ||
+                        peoplePickerVisibility
+                      }
+                    />
+                  </ShadowButton>
+                </Tooltip>
               }
             />
           )}
@@ -525,7 +598,7 @@ const FilterBar = ({
               size={RVSizeProp.medium}
               rounded="half"
             >
-              <FunnelSvg size={'1.2rem'} active={advancedSearch} />
+              <FunnelSvg active={advancedSearch} />
               {RVDic?.Advanced}
             </ShadowButton>
           )}

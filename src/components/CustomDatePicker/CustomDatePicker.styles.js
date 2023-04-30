@@ -230,10 +230,10 @@ export const CalendarTitle = styled.span.attrs({
 
 export const FooterButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-tems: center;
-  padding: 0.7rem !important;
-  position: absolute;
-  bottom: -2.3rem;
+  // justify-content: space-between;
+  // align-tems: center;
+  // padding: 0.7rem !important;
+  // position: absolute;
+  // bottom: -2.3rem;
   width: 100%;
 `;

@@ -108,36 +108,6 @@ const MainNode = ({
   return (
     <>
       <Main>
-        {nodeDetails?.Name?.Value !== undefined && (
-          <TitleContainer newNode={newNode}>
-            {nodeDetails?.Name?.Editable ? (
-              <TitleInput
-                onChange={onTitleChange}
-                defaultValue={decodeBase64(nodeDetails?.Name?.Value)}
-                onFocus={() => {
-                  setTitleEditMode(true);
-                }}
-                autoFocus={true}
-                placeholder={RVDic.Title}
-                onBlur={onSaveTitle}
-                titleEditMode={titleEditMode}
-                style={{
-                  fontSize: '1.4rem',
-                  fontWeight: 'bold',
-                  borderWidth: 0,
-                  borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
-                  borderRadius: 0,
-                  borderColor: `${CV_DISTANT}`,
-                  width: '100%',
-                }}
-              />
-            ) : (
-              <Heading type={'h1'}>
-                {decodeBase64(title || nodeDetails?.Name?.Value)}
-              </Heading>
-            )}
-          </TitleContainer>
-        )}
         {RVGlobal.IsDev && !newNode && (
           <WorkflowField
             NodeID={nodeId}

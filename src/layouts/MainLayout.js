@@ -7,7 +7,7 @@ import OpenSidebar from './Sidebar/SidebarOpen';
 import OpenSidebarMobile from './Sidebar/SidebarOpenMobile';
 import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import * as Styled from './MainLayout.styles';
+// import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
 import {
   MOBILE_BOUNDRY,
@@ -21,30 +21,25 @@ import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
 import useWindow from 'hooks/useWindowContext';
-import { NavbarContainer } from './Navbar/Navbar.styles';
+// import { NavbarContainer } from './Navbar/Navbar.styles';
 import TestView from 'views/TestView/TestView';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { useSidebarSlice } from 'store/slice/sidebar';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
-import {
-  CMLogoSvg,
-  HomeSvg,
-  Scrollbar,
-  SidebarMain,
-} from '@cliqmind/rv-components';
+import { Scrollbar } from '@cliqmind/rv-components';
 import * as SidebarStyles from './NewSidebar/Sidebar.styles';
 import PrimarySidebar from './NewSidebar/MainSidebar';
 
-const Navbar = lazy(() =>
-  import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
-);
+// const Navbar = lazy(() =>
+//   import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
+// );
 
-const NavbarInitial = lazy(() =>
-  import(
-    /* webpackChunkName: "nav-not-selected-team-component"*/ './Navbar/NavbarInitial'
-  )
-);
+// const NavbarInitial = lazy(() =>
+//   import(
+//     /* webpackChunkName: "nav-not-selected-team-component"*/ './Navbar/NavbarInitial'
+//   )
+// );
 
 const { RVGlobal } = window;
 const isDev = (RVGlobal || {}).IsDev;

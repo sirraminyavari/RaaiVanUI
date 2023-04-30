@@ -32,6 +32,7 @@ import { SidebarContentFunction } from './useSidebarContent';
 import SidebarContentDefault from './sidebarContentsDefault';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
+import { useEffect } from 'react';
 
 const SidebarContentClasses: SidebarContentFunction<{
   sidebarTree: Record<string, any>;
@@ -49,6 +50,7 @@ const SidebarContentClasses: SidebarContentFunction<{
     setIsSubMenuToggled,
     urlParams,
   });
+
   const ClassAvatar =
     (avatarURL: string) =>
     ({ className, ...props }: RVAvatar) =>
@@ -103,7 +105,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(CLASSES_PATH);
         },
-        path: '/classes',
+        path: CLASSES_PATH,
       },
       {
         Icon: NotificationSvg,
@@ -119,7 +121,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(HOME_PATH);
         },
-        path: '/home',
+        path: HOME_PATH,
       },
       ...(RVGlobal.IsSystemAdmin
         ? [
@@ -186,13 +188,14 @@ const SidebarContentClasses: SidebarContentFunction<{
     subSidebarLinks: [
       ...(defaults?.subSidebarLinks || []),
       {
-        badge: 1265,
+        badge: sidebarTree.length,
         title: 'Everything',
         Icon: GridSvg,
         onClick: () => {
           history.push(CLASSES_PATH);
         },
-        path: '',
+        path: `${CLASSES_PATH}`,
+        id: `${CLASSES_PATH}`,
       },
       {
         badge: 1265,
@@ -201,7 +204,8 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(`${CLASSES_PATH}?bookmarked=1`);
         },
-        path: '',
+        id: `${CLASSES_PATH}?bookmarked=1`,
+        path: `${CLASSES_PATH}?bookmarked=1`,
       },
       {
         badge: 1265,
@@ -210,12 +214,15 @@ const SidebarContentClasses: SidebarContentFunction<{
         onClick: () => {
           history.push(`${CLASSES_PATH}?drafts=1`);
         },
-        path: '',
+        path: `${CLASSES_PATH}?drafts=1`,
+        id: `${CLASSES_PATH}?drafts=1`,
       },
       ...sidebarTree.map((item) => {
         const title = decodeBase64(item.TypeName);
         if (item.Sub)
           return {
+            id: item.NodeTypeID,
+            path: CLASSES_WITHID_PATH.replace(':id', item.NodeTypeID),
             title: title,
             Icon: ClassAvatar(item.IconURL),
             onClick: () => {
@@ -223,6 +230,8 @@ const SidebarContentClasses: SidebarContentFunction<{
             },
 
             childItems: item.Sub?.map((subItem) => ({
+              id: subItem.NodeTypeID,
+              path: CLASSES_WITHID_PATH.replace(':id', item.NodeTypeID),
               title: decodeBase64(subItem.TypeName),
               Icon: ClassAvatar(subItem.IconURL),
               onClick: () => {
@@ -239,6 +248,8 @@ const SidebarContentClasses: SidebarContentFunction<{
             onClick: () => {
               history.push(CLASSES_WITHID_PATH.replace(':id', item.NodeTypeID));
             },
+            id: CLASSES_WITHID_PATH.replace(':id', item.NodeTypeID),
+            path: CLASSES_WITHID_PATH.replace(':id', item.NodeTypeID),
           };
       }),
     ],

@@ -49,7 +49,9 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       size = RVSizeProp.medium,
       onClick,
       className,
+      classes,
       children,
+      style = {},
       ...props
     },
     ref
@@ -58,9 +60,15 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
       <ButtonComponent
         ref={ref}
         size={size}
-        rounded={$circleEdges ? 'full' : 'half'}
-        className={classNames(props.classes || className)}
-        style={props.style}
+        rounded={
+          $circleEdges !== undefined
+            ? $circleEdges
+              ? 'full'
+              : 'half'
+            : undefined
+        }
+        className={classNames(classes || className)}
+        style={{ boxSizing: 'content-box', ...style }}
         disabled={disable}
         onClick={disable || loading ? undefined : onClick}
         {...(!isCustomButton && resolveClass({ type }))}

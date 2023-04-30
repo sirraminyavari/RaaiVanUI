@@ -149,6 +149,14 @@ const SubjectItemDesktop = ({
           </div>
         }
       >
+        {IconURL && (
+          <Avatar
+            src={IconURL}
+            size={RVSizeProp.medium}
+            variant={RVVariantProp.white}
+            style={{ marginInlineEnd: '1.25rem' }}
+          />
+        )}
         <span
           style={{
             whiteSpace: 'nowrap',
