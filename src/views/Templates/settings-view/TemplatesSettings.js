@@ -22,6 +22,8 @@ import {
 } from 'constant/constants';
 import { useHistory } from 'react-router-dom';
 import { decodeBase64 } from 'helpers/helpers';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
+import { HammerWrenchSvg } from '@cliqmind/rv-components';
 
 export const TemplateListContext = createContext({});
 const TemplatesSettings = () => {
@@ -33,13 +35,12 @@ const TemplatesSettings = () => {
   const [loading, setLoading] = useState(true);
   const breadcrumbs = [
     {
-      id: 1,
-      title: RVDic?.TeamManagement,
-      linkTo: '',
+      label: RVDic?.TeamManagement,
+      path: '',
     },
     {
-      id: 2,
-      title: 'تنظیمات تمپلیت‌ها',
+      label: 'Template settings',
+      path: '',
     },
   ];
 
@@ -106,8 +107,14 @@ const TemplatesSettings = () => {
   return (
     <TemplateSettingsContainer rtl={RV_RTL}>
       <>
-        <Breadcrumb items={breadcrumbs} />
-        <ViewTitle>{'تنظیمات تمپلیت‌ها'}</ViewTitle>
+        <BreadcrumbLayout
+          Icon={HammerWrenchSvg}
+          searchInputPlaceholder={RVDic?.SearchInN.replace(
+            '[n]',
+            RVDic?.Keywords
+          )}
+          routeLinks={breadcrumbs}
+        />
 
         <ActionBarContainer>
           <SearchInput

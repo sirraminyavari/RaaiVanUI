@@ -7,12 +7,14 @@ const SidebarContentNodePage: SidebarContentFunction = ({
   isSubMenuToggled,
   setIsSubMenuToggled,
   urlParams,
+  selectedApplication,
 }) => {
   const defaults = SidebarContentDefault({
     history,
     isSubMenuToggled,
     setIsSubMenuToggled,
     urlParams,
+    selectedApplication,
   });
   return {
     mainSidebarPrimaryLinks: [
