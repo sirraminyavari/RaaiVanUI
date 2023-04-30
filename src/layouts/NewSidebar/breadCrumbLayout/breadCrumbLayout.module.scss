@@ -1,0 +1,25 @@
+.breadcrumbLayoutContainer {
+  padding-inline: 2rem;
+  padding-block: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.breadcrumbContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.breadcrumb a span {
+  font-weight: bold !important;
+}
+
+.breadcrumbSearchInput {
+  width: 30.625rem;
+}
