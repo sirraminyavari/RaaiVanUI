@@ -11,6 +11,8 @@ import ImageCropper from 'components/ImageCropper/ImageCropper';
 import CustomInput from './items/CustomInput';
 import TabView from '../../components/TabView/TabView';
 import CloseIcon from '../../components/Icons/CloseIcon/CloseIcon';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
+import { SettingsSvg } from '@cliqmind/rv-components';
 
 const TeamSettings = (props) => {
   const {
@@ -26,11 +28,27 @@ const TeamSettings = (props) => {
     setApplicationInfo,
     saveInfo,
   } = useTeamSettings(props);
-
+  const breadcrumbs = [
+    {
+      label: RVDic?.TeamManagement,
+      path: '',
+    },
+    {
+      label: 'Template settings',
+      path: '',
+    },
+  ];
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
-        <Breadcrumb items={breadCrumbItems} />
+        <BreadcrumbLayout
+          Icon={SettingsSvg}
+          searchInputPlaceholder={RVDic?.SearchInN.replace(
+            '[n]',
+            RVDic?.Keywords
+          )}
+          routeLinks={breadcrumbs}
+        />
 
         <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
 

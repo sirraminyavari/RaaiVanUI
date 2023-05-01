@@ -27,12 +27,13 @@ import {
   HOME_PATH,
   MESSAGES_PATH,
   REPORTS_PATH,
+  TEAM_SETTINGS_PATH,
+  TEMPLATES_SETTING_PATH,
 } from 'constant/constants';
 import { SidebarContentFunction } from './useSidebarContent';
 import SidebarContentDefault from './sidebarContentsDefault';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
-import { useEffect } from 'react';
 
 const SidebarContentClasses: SidebarContentFunction<{
   sidebarTree: Record<string, any>;
@@ -42,6 +43,7 @@ const SidebarContentClasses: SidebarContentFunction<{
   history,
   urlParams,
   sidebarTree = {},
+  selectedApplication,
 }) => {
   const { RVGlobal } = useWindowContext();
   const defaults = SidebarContentDefault({
@@ -49,6 +51,7 @@ const SidebarContentClasses: SidebarContentFunction<{
     isSubMenuToggled,
     setIsSubMenuToggled,
     urlParams,
+    selectedApplication,
   });
 
   const ClassAvatar =
@@ -107,14 +110,14 @@ const SidebarContentClasses: SidebarContentFunction<{
         },
         path: CLASSES_PATH,
       },
-      {
-        Icon: NotificationSvg,
-        noIndicator: false,
-        onClick: () => {
-          history.push(HOME_PATH);
-        },
-        path: '/notifications',
-      },
+      // {
+      //   Icon: NotificationSvg,
+      //   noIndicator: false,
+      //   onClick: () => {
+      //     history.push(HOME_PATH);
+      //   },
+      //   path: '/notifications',
+      // },
       {
         Icon: SocialSvg,
         noIndicator: false,
@@ -125,14 +128,14 @@ const SidebarContentClasses: SidebarContentFunction<{
       },
       ...(RVGlobal.IsSystemAdmin
         ? [
-            {
-              Icon: BriefcaseSvg,
-              noIndicator: false,
-              onClick: () => {
-                history.push(HOME_PATH);
-              },
-              path: '/work',
-            },
+            // {
+            //   Icon: BriefcaseSvg,
+            //   noIndicator: false,
+            //   onClick: () => {
+            //     history.push(HOME_PATH);
+            //   },
+            //   path: '/work',
+            // },
             {
               Icon: ChatBubblesSvg,
               noIndicator: false,
@@ -141,21 +144,21 @@ const SidebarContentClasses: SidebarContentFunction<{
               },
               path: MESSAGES_PATH,
             },
-            {
-              Icon: ShapesSvg,
-              noIndicator: false,
-              onClick: () => {
-                history.push(HOME_PATH);
-              },
-              path: '/shapes',
-            },
+            // {
+            //   Icon: ShapesSvg,
+            //   noIndicator: false,
+            //   onClick: () => {
+            //     history.push(HOME_PATH);
+            //   },
+            //   path: '/shapes',
+            // },
             {
               Icon: HammerWrenchSvg,
               noIndicator: false,
               onClick: () => {
-                history.push('/templates/settings');
+                history.push(TEMPLATES_SETTING_PATH);
               },
-              path: '/templates/settings',
+              path: TEMPLATES_SETTING_PATH,
             },
             {
               Icon: DashboardSvg,
@@ -173,14 +176,26 @@ const SidebarContentClasses: SidebarContentFunction<{
               },
               path: REPORTS_PATH,
             },
-            {
-              Icon: SettingsSvg,
-              noIndicator: false,
-              onClick: () => {
-                history.push(HOME_PATH);
-              },
-              path: '/settings-2/',
-            },
+            ...(selectedApplication?.ApplicationID
+              ? [
+                  {
+                    Icon: SettingsSvg,
+                    noIndicator: false,
+                    onClick: () => {
+                      history.push(
+                        TEAM_SETTINGS_PATH.replace(
+                          ':id',
+                          selectedApplication?.ApplicationID
+                        )
+                      );
+                    },
+                    path: TEAM_SETTINGS_PATH.replace(
+                      ':id',
+                      selectedApplication?.ApplicationID
+                    ),
+                  },
+                ]
+              : []),
           ]
         : []),
     ],

@@ -12,8 +12,7 @@ import { RVSidebarMain, RVSidebarSubMenu } from '@cliqmind/rv-components';
 import SidebarContentClasses from './sidebarContentsClasses';
 import { useSelector } from 'react-redux';
 import { selectSidebar } from 'store/slice/sidebar/selectors';
-import SidebarContentDefault from './sidebarContentsDefault';
-import SidebarContentsProfile from './sidebarContentsProfile';
+import { selectApplication } from 'store/slice/applications/selectors';
 
 interface useSidebarContentPropsType {
   isSubMenuToggled: boolean;
@@ -36,6 +35,14 @@ export type SidebarContentFunction<T = Record<string, any>> = ({
 }: useSidebarContentPropsType &
   T & {
     history: History;
+    selectedApplication: {
+      ApplicationID: string;
+      WorkspaceID: string;
+      Title: string;
+      Tagline: string;
+      Website: string;
+      About: string;
+    };
   }) => useSidebarContentReturnType;
 
 const useSidebarContent = ({
@@ -46,7 +53,7 @@ const useSidebarContent = ({
   const history = useHistory();
   const pathname = history.location.pathname;
   const { tree } = useSelector(selectSidebar);
-  console.log({ tree, urlParams });
+  const { currentApp } = useSelector(selectApplication);
 
   const currentRouteSidebarProps = useMemo(() => {
     switch (true) {
@@ -56,6 +63,7 @@ const useSidebarContent = ({
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
+          selectedApplication: currentApp,
         });
       default:
         return SidebarContentClasses({
@@ -64,9 +72,11 @@ const useSidebarContent = ({
           setIsSubMenuToggled,
           urlParams,
           sidebarTree: tree,
+          selectedApplication: currentApp,
         });
     }
   }, [
+    currentApp,
     history,
     isSubMenuToggled,
     pathname,
