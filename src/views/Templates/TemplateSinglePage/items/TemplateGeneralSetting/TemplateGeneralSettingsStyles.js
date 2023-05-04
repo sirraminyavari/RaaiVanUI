@@ -17,8 +17,8 @@ export const Container = styled.div`
 export const MainForm = styled.div`
   position: relative;
   border-radius: 0.625rem;
-  box-shadow: 1px 5px 15px #0000001f;
-  background-color: ${CV_GRAY_LIGHT};
+  // box-shadow: 1px 5px 15px #0000001f;
+  // background-color: ${CV_GRAY_LIGHT};
   flex: 4.5;
   min-height: calc(100vh - 8rem);
   padding: 1.25rem 1.5rem 1.5rem 1.5rem;

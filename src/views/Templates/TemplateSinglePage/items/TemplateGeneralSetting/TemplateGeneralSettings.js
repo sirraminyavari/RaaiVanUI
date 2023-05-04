@@ -51,11 +51,6 @@ const TemplateGeneralSettings = () => {
   return (
     <Styled.Container>
       <Styled.MainForm>
-        <Styled.HeaderContainer>
-          <Breadcrumb items={breadItems} />
-
-          <ReturnButton onClick={returnToTemplates} />
-        </Styled.HeaderContainer>
         <MainFormContainer>
           <div>
             <TemplateUploadIcon />
