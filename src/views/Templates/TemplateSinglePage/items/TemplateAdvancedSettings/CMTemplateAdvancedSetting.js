@@ -36,7 +36,7 @@ const CMTemplateAdvancedSetting = () => {
     {
       id: 3,
       title: `قالب ${decodeBase64(Title)}`,
-      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', NodeTypeID),
+      linkTo: TEMPLATES_SETTING_SINGLE_PATH.replace(':id', ''),
     },
     {
       id: 4,
@@ -46,11 +46,6 @@ const CMTemplateAdvancedSetting = () => {
 
   return (
     <Styles.Container>
-      <Styles.HeaderContainer>
-        <Breadcrumb items={breadItems} />
-        <ReturnButton onClick={returnToTemplates} />
-      </Styles.HeaderContainer>
-
       <Styles.CMContentContainer>
         <Styles.InputContainer>
           <Styles.InputLabel>{'شناسه تمپلیت'}</Styles.InputLabel>
