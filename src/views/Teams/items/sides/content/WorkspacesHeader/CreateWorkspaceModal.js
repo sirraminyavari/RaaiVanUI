@@ -17,12 +17,7 @@ const ButtonWrapper = styled.div`
   padding-inline: 12.5%;
   width: 100%;
   justify-content: center;
-  > div {
-    margin-inline: 0.5rem;
-    flex-grow: 1;
-    flex-basis: 0;
-    max-width: 7rem;
-  }
+  gap: 1rem;
 `;
 /**
  *

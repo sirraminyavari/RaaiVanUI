@@ -73,6 +73,7 @@ const ButtonContainer = styled.div`
   width: 100%;
   text-align: end;
   padding-left: 1.5rem;
+  display: flex;
 `;
 ButtonContainer.displayName = 'ButtonContainer';
 
@@ -81,7 +82,6 @@ const ButtonView = styled.button`
   color: var(--rv-red-color);
   background-color: transparent;
   border: 1px solid var(--rv-red-color);
-  height: 1.7rem;
   line-height: 1.7rem;
   padding: 0 1.7rem;
   border-radius: 0.5rem;
@@ -131,7 +131,6 @@ const ModelActionBar = styled.div`
 ModelActionBar.displayName = 'ModelActionBar';
 
 const buttonStyles = {
-  height: '3rem',
   width: '7.5rem',
 };
 export default UserDeleteButton;

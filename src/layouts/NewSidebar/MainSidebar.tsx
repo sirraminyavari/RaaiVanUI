@@ -7,7 +7,14 @@ import { selectApplication } from 'store/slice/applications/selectors';
 import { useHistory } from 'react-router-dom';
 import { decodeBase64 } from 'helpers/helpers';
 import styles from './sidebarStyles.module.scss';
-import { CLASSES_PATH, HOME_PATH } from 'constant/constants';
+import {
+  CLASSES_PATH,
+  CONFIG_GROUPS_PATH,
+  CONFIG_USERS_PATH,
+  HOME_PATH,
+  PROFILE_USER,
+  TEAM_SETTINGS_PATH,
+} from 'constant/constants';
 
 const PrimarySidebar = () => {
   const history = useHistory();
@@ -25,10 +32,16 @@ const PrimarySidebar = () => {
 
     switch (true) {
       case history.location.pathname.startsWith(CLASSES_PATH):
+      case history.location.pathname.startsWith(
+        TEAM_SETTINGS_PATH.replace('/:id', '')
+      ):
+      case history.location.pathname === CONFIG_USERS_PATH:
+      case history.location.pathname === CONFIG_GROUPS_PATH:
+      case history.location.pathname === `/${PROFILE_USER}`:
         setIsSubMenuToggled(true);
         break;
       case history.location.pathname === HOME_PATH:
-        setIsSubMenuToggled(true);
+        setIsSubMenuToggled(false);
         break;
 
       default:

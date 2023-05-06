@@ -2,9 +2,14 @@ import { Dispatch, SetStateAction, useMemo } from 'react';
 import type { History } from 'history';
 import {
   CLASSES_PATH,
+  CONFIG_GROUPS_PATH,
+  CONFIG_USERS_PATH,
+  HOME_PATH,
   NODE_PATH,
   PROFILE_USER,
+  TEMPLATES_SETTING_PATH,
   TEAMS_PATH,
+  TEAM_SETTINGS_PATH,
 } from 'constant/constants';
 import { useHistory } from 'react-router-dom';
 import SidebarContentWorkspaces from './sidebarContentsworkspaces';
@@ -13,6 +18,9 @@ import SidebarContentClasses from './sidebarContentsClasses';
 import { useSelector } from 'react-redux';
 import { selectSidebar } from 'store/slice/sidebar/selectors';
 import { selectApplication } from 'store/slice/applications/selectors';
+import SidebarContentTeamSettings from './sidebarContentsTeamSettings';
+import SidebarContentsEmptyAction from './sidebarContentsEmptyAction';
+import SidebarContentProfile from './sidebarContentsProfile';
 
 interface useSidebarContentPropsType {
   isSubMenuToggled: boolean;
@@ -65,13 +73,42 @@ const useSidebarContent = ({
           urlParams,
           selectedApplication: currentApp,
         });
-      default:
+      case pathname === `/${PROFILE_USER}`:
+        return SidebarContentProfile({
+          history,
+          isSubMenuToggled,
+          setIsSubMenuToggled,
+          urlParams,
+          selectedApplication: currentApp,
+        });
+
+      case pathname === CONFIG_USERS_PATH:
+      case pathname === CONFIG_GROUPS_PATH:
+      case pathname.startsWith(TEAM_SETTINGS_PATH.replace('/:id', '')):
+        return SidebarContentTeamSettings({
+          history,
+          isSubMenuToggled,
+          setIsSubMenuToggled,
+          urlParams,
+          selectedApplication: currentApp,
+        });
+      case pathname === CLASSES_PATH:
         return SidebarContentClasses({
           history,
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
           sidebarTree: tree,
+          selectedApplication: currentApp,
+        });
+      case pathname === HOME_PATH:
+      case pathname === TEMPLATES_SETTING_PATH:
+      default:
+        return SidebarContentsEmptyAction({
+          history,
+          isSubMenuToggled,
+          setIsSubMenuToggled,
+          urlParams,
           selectedApplication: currentApp,
         });
     }

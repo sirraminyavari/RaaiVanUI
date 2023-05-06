@@ -63,8 +63,8 @@ const WorkspaceHeader = () => {
         placeholder={RVDic.WorkspaceName}
       />
       <Styled.HeaderTitle>{RVDic.YourWorkspaces}</Styled.HeaderTitle>
-      <Button style={{ minWidth: '10rem' }} onClick={handleAddSpace}>
-        <AddIcon size={'1.5rem'} style={{ marginInlineEnd: '.25rem' }} />
+      <Button onClick={handleAddSpace}>
+        <AddIcon style={{ marginInlineEnd: '.25rem' }} />
         {RVDicNewWorkspace}
       </Button>
     </Styled.HeaderContainer>
