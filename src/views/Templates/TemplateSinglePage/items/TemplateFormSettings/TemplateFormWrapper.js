@@ -55,7 +55,6 @@ const TemplateFormWrapper = () => {
   return (
     <Styled.Container rtl={rtl}>
       <Styled.ActionHeader rtl={rtl}>
-        <Styled.HeaderTitle>{decodeBase64(`${Title}`)}</Styled.HeaderTitle>
         <Styled.Spacer />
 
         <Button type="secondary-o" onClick={() => setShowcaseModalStatus(true)}>

@@ -11,24 +11,6 @@ import { checkUserName, createUser } from 'apiHelper/ApiHandlers/usersApi';
 const UsersCreate = ({ onClose }) => {
   const { RV_RTL, RVDic, RVGlobal } = useWindowContext();
 
-  const breadCrumbItems = [
-    {
-      id: 1,
-      title: RVDic?.TeamManagement,
-      linkTo: '',
-    },
-    {
-      id: 2,
-      title: RVDic?.UserManagement,
-      linkTo: '',
-    },
-    {
-      id: 3,
-      title: RVDic?.CreateNewN?.replace(`[n]`, RVDic.User),
-      linkTo: '',
-    },
-  ];
-
   const [loader, setLoader] = useState(false);
   const [shake, setShake] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -65,7 +47,6 @@ const UsersCreate = ({ onClose }) => {
 
   return (
     <>
-      <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
       <Styled.HeadingWrapper>
         {RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
       </Styled.HeadingWrapper>
@@ -119,14 +100,7 @@ const UsersCreate = ({ onClose }) => {
           />
         </>
         <UserCreateStyle.ActionBar>
-          <Button
-            onClick={submit}
-            style={{
-              height: '3rem',
-              width: '8.25rem',
-            }}
-            disable={!formIsValid()}
-          >
+          <Button onClick={submit} disable={!formIsValid()}>
             {RVDic?.Send}
           </Button>
         </UserCreateStyle.ActionBar>

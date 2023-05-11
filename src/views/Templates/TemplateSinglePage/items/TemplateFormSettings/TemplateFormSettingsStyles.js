@@ -22,7 +22,7 @@ export const Container = styled.div`
 export const ActionHeader = styled.div`
   ${FLEX_RCB};
   margin-block-start: 2rem;
-  width: 110%;
+  width: 100%;
   height: 6rem;
   background-color: ${CV_WHITE};
   gap: 1rem;

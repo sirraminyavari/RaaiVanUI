@@ -50,8 +50,6 @@ const TeamSettings = (props) => {
           routeLinks={breadcrumbs}
         />
 
-        <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
-
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
             <ImageCropper
@@ -193,16 +191,7 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.SettingActionBar>
-            <Button
-              type="primary"
-              style={{
-                height: '3rem',
-                width: '7.6rem',
-                fontSize: '1rem',
-                borderRadius: '0.8rem',
-              }}
-              onClick={saveInfo}
-            >
+            <Button type="primary" fullWidth onClick={saveInfo}>
               {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>

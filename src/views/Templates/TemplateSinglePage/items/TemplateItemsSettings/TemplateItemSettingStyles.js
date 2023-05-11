@@ -87,12 +87,7 @@ export const NodeCounts = styled.div`
 
 export const CreateNodeButton = styled(Button).attrs({
   type: 'primary',
-})`
-  height: 3rem;
-  min-width: 13.5rem;
-  font-size: 1.125rem;
-  gap: 1rem;
-`;
+})``;
 
 export const ArchiveButton = styled.button`
   ${FLEX_RCC};

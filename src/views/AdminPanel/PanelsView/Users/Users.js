@@ -11,6 +11,7 @@ import UsersCreate from './UsersCreate';
 import { getUserInvitations, getUsers } from 'apiHelper/ApiHandlers/usersApi';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import { CSSTransition } from 'react-transition-group';
+import Button from 'components/Buttons/Button';
 
 const Users = (props) => {
   const animationDuration = 200;
@@ -92,7 +93,6 @@ const Users = (props) => {
           unmountOnExit
         >
           <Styled.ContentWrapper>
-            <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
             <Styled.HeadingWrapper>
               {SAASBasedMultiTenancy ? RVDic?.TeamMembers : RVDic?.Users}
             </Styled.HeadingWrapper>
@@ -105,11 +105,11 @@ const Users = (props) => {
                 delayTime={1000}
               />
 
-              <AddUserButton onClick={() => setShowInvitationForm(true)}>
+              <Button onClick={() => setShowInvitationForm(true)}>
                 {SAASBasedMultiTenancy
                   ? RVDic?.InviteNewTeamMate
                   : RVDic?.CreateNewN?.replace(`[n]`, RVDic.User)}
-              </AddUserButton>
+              </Button>
             </Styled.TopBar>
 
             {!dataIsFetching ? (

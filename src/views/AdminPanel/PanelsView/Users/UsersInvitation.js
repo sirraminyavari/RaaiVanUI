@@ -34,7 +34,6 @@ const UsersInvitation = ({ onClose, ApplicationID }) => {
 
   return (
     <>
-      <Styled.BreadCrumbWrapper items={breadCrumbItems} rtl={RV_RTL} />
       <Styled.HeadingWrapper>{RVDic.InviteNewTeamMate}</Styled.HeadingWrapper>
       <Styled.ReturnButtonWrapper rtl={RV_RTL}>
         <Styled.ReturnButton onClick={onClose}>

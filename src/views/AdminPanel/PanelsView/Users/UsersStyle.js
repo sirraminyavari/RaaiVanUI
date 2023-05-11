@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Heading from 'components/Heading/Heading';
 import { CV_RED, CV_WHITE } from 'constant/CssVariables';
 
@@ -8,14 +7,6 @@ const UserManagementContainer = styled.div`
   padding: 1rem;
 `;
 UserManagementContainer.displayName = 'UserManagementContainer';
-
-const BreadCrumbWrapper = styled(Breadcrumb)`
-  position: absolute;
-  top: 1.5rem;
-  ${({ rtl }) => (rtl ? 'right: 1.5rem;' : 'left: 1.5rem;')};
-  transition: all 200ms ease-in-out;
-`;
-BreadCrumbWrapper.displayName = 'BreadCrumbWrapper';
 
 const ReturnButtonWrapper = styled.div`
   position: absolute;
@@ -47,16 +38,17 @@ ReturnButton.displayName = 'ReturnButton';
 const HeadingWrapper = styled(Heading).attrs({
   type: 'H1',
 })`
+  margin-block: 0.5rem;
   font-size: 1.375rem;
 `;
 HeadingWrapper.displayName = 'HeadingWrapper';
 
 const UserManagementContentCard = styled.div`
   position: relative;
-  box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
+  // box-shadow: 0.06rem 0.29rem 0.98rem #0000001f;
   border-radius: 0.625rem;
-  padding: 4rem 1.5rem 1.5rem 1.5rem;
-  background-color: var(--rv-gray-color-light);
+  padding: 0rem 1.5rem 1.5rem 1.5rem;
+  // background-color: var(--rv-gray-color-light);
   min-height: calc(100vh - 8rem);
 
   .modal-title-bar {
@@ -108,7 +100,6 @@ TopBar.displayName = 'TopBar';
 
 export {
   UserManagementContainer,
-  BreadCrumbWrapper,
   ReturnButtonWrapper,
   TopBar,
   ContentWrapper,

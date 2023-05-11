@@ -14,7 +14,7 @@ ListHeader.displayName = 'ListHeader';
 
 export const ListHeaderRow = styled.tr`
   display: block;
-  height: 2.8rem;
+  // height: 2.8rem;
   line-height: 2.8rem;
   border-bottom: 0.08rem solid var(--rv-color-distant);
   color: var(--rv-color-distant);
@@ -27,6 +27,9 @@ export const ListHeaderItem = styled.th`
   text-align: ${({ centralized }) => (centralized ? 'center' : 'auto')};
   font-weight: 400;
   user-select: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 ListHeaderItem.displayName = 'ListHeaderItem';
 
@@ -37,7 +40,7 @@ ListBody.displayName = 'ListBody';
 
 export const ListRow = styled.tr`
   display: block;
-  height: 5.125rem;
+  // height: 5.125rem;
   line-height: 5.125rem;
   border-bottom: 0.08rem solid var(--rv-color-distant);
 `;
@@ -55,7 +58,7 @@ export const ShowMoreButton = styled.button`
   background-color: white;
   outline: none;
   width: 9.7rem;
-  height: 2rem;
+  // height: 2rem;
   line-height: 2rem;
   color: var(--rv-color-actionbutton);
   border: 1px solid transparent;
